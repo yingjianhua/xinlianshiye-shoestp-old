@@ -195,10 +195,10 @@
 
           /*!* 轮播样式 - 图片高度不一致时 - 有空 隙 *!*/
           /*问题当高度一致时发现图片显示不完全*/
-          /*.swipe-item{*/
-            /*width: 100%;*/
-            /*height: 8.5rem;*/
-          /*}*/
+          .swipe-item{
+            width: 100%;
+            height: 12rem;
+          }
           .swipe-item img{
             width: 100%;
             height: 100%;
