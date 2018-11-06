@@ -197,7 +197,7 @@
           /*问题当高度一致时发现图片显示不完全*/
           .swipe-item{
             width: 100%;
-            height: 12rem;
+            height: 8.5rem;
           }
           .swipe-item img{
             width: 100%;

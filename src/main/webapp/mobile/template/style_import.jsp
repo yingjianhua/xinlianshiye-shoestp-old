@@ -27,14 +27,10 @@
     <link href="/home/static/themes/default/mobile/css/layer-mobile.css" rel="stylesheet" type="text/css">
     <link href="/home/static/themes/default/mobile/css/default.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="/home/static/css/swiper.min.css">
-    <!-- Google Tag Manager -->
-    <%--<script type="text/javascript" async="" src="/home/static/themes/default/mobile/js/js"></script>--%>
     <script type="text/javascript" async="" src="/home/static/themes/default/mobile/js/conversion_async.js"></script>
-    <script type="text/javascript" async="" src="/home/static/themes/default/mobile/js/analytics.js"></script>
     <script type="text/javascript" async="" src="/home/static/themes/default/mobile/js/tracking.js"></script>
-    <script type="text/javascript" async="" src="/home/static/js/gtm.js"></script>
     <script type="text/javascript" async="" src="/home/static/js/swiper.min.js"></script>
-   
+
     <script>
         (function (w, d, s, l, i) {
             w[l] = w[l] || [];
