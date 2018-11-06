@@ -286,7 +286,7 @@ body{
 
 #romania .romania-poster{
     width: 980px;
-    height: 1200px;
+    height: 1150px;
     background: url("../imgs/romaniaPoster-01.png") center no-repeat;
     background-size: 100% 100%;
     position: relative;
@@ -297,29 +297,36 @@ body{
     background-color: white;
     position: fixed;
     right: 0;
-    top: 200px;
+    top: 100px;
     z-index: 999;
 }
 #romania .romania-poster .language p{
-    height: 60px;
+    height: 80px;
     line-height: 60px;
     font-size: 30px;
     border-bottom: 1px solid #aaaaaa;
 }
-#romania .romania-poster .language p span{
+#romania .romania-poster .language p span.lan{
     font-size: 30px;
+		margin: 10px 0;
     border-right: 1px solid #aaaaaa;
-    padding-right: 30px;
+		display: inline-block;
+		width: 200px;
 }
 #romania .romania-poster .language p img{
     vertical-align: middle;
-    height: 35px;
+    height: 40px;
     margin-left: 30px;
+		margin-bottom: 10px;
 }
 #romania .romania-poster .language ul.language-show li{
     list-style-type: none;
     font-size: 40px;
     line-height: 80px;
+		text-align: left;
+}
+#romania .romania-poster .language ul.language-show li a{
+	color:#5E5E5E;
 }
 #romania .romania-poster .language ul.language-show li img{
     height: 30px;
@@ -336,12 +343,13 @@ body{
 }
 #romania .romania-poster > p{
     margin-left: 60px;
-    width: 680px;
+    width: 750px;
 }
 #romania .romania-poster p.title-text{
-    font-size: 60px;
+    font-size: 65px;
     font-weight: bold;
     padding-top: 170px;
+		line-height: 90px;
 }
 #romania .romania-poster p.slogan{
     font-size: 60px;
@@ -350,12 +358,13 @@ body{
 }
 #romania .romania-poster p.time{
     font-size: 40px;
+    font-weight: 700;
 }
 #romania .romania-poster p.content-01{
-    font-size: 40px;
+    font-size: 30px;
 }
 #romania .romania-poster p.content-02{
-    font-size: 30px;
+    font-size: 35px;
 }
 #romania .romania-poster .image-bottom button,#romania .romania-poster .image-bottom a{
     display: inline-block;
@@ -376,7 +385,7 @@ body{
 }
 #romania .producrt{
     width: 980px;
-    height: 1200px;
+    height: 1120px;
     background: url("../imgs/header-image01.png") center no-repeat;
     background-size: 100% 100%;
     position: relative;
@@ -384,7 +393,7 @@ body{
     text-align: center;
 }
 #romania .producrt h2{
-    padding-top: 120px;
+    padding-top: 160px;
     font-size: 60px;
     color: white;
 }

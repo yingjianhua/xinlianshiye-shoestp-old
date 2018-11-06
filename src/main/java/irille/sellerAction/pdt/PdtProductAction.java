@@ -1,22 +1,7 @@
 package irille.sellerAction.pdt;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
-
 import irille.core.sys.Sys;
 import irille.core.sys.SysSeqDAO;
 import irille.pub.Str;
@@ -33,23 +18,29 @@ import irille.pub.util.CacheUtils;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.pdt.inf.IPdtProductAction;
-import irille.shop.pdt.Pdt;
-import irille.shop.pdt.PdtCat;
-import irille.shop.pdt.PdtProduct;
-import irille.shop.pdt.PdtProductDAO;
-import irille.shop.pdt.PdtSpec;
-import irille.shop.pdt.PdtSpecDAO;
+import irille.shop.pdt.*;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltFreightSeller;
 import irille.shop.usr.UsrProductCategory;
 import irille.view.Page;
 import irille.view.pdt.PdtProductSaveView;
 import irille.view.pdt.PdtProductSpecSaveView;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtProductAction {
 
-	private static final long serialVersionUID = 1L;
-	private List<PdtSpec> _SpecListLine = new ArrayList<PdtSpec>();
+    private static final long serialVersionUID = 1L;
+    private List<PdtSpec> _SpecListLine = new ArrayList<PdtSpec>();
     private static PdtProductDAO.pageSelect pageSelect = new PdtProductDAO.pageSelect();
 
     public String pdtProductList() throws Exception {
@@ -74,7 +65,7 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
     public void setData(String data) {
         this.data = data;
     }
-    
+
     /**
      * @throws Exception
      * @Description: VUe 发布商品
@@ -84,7 +75,6 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
     public void saveProduct() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         PdtProductSaveView pdtProductSaveView = objectMapper.readValue(data, PdtProductSaveView.class);
-
         PdtProduct pdtProduct = new PdtProduct();
         pdtProduct.setPkey(pdtProductSaveView.getId());
         pdtProduct.setName(objectMapper.writeValueAsString(pdtProductSaveView.getPdtName()));
@@ -101,16 +91,23 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
         pdtProduct.setPurPrice(BigDecimal.valueOf(pdtProductSaveView.getPurPrice()));
         pdtProduct.setMktPrice(BigDecimal.valueOf(pdtProductSaveView.getMktPrice()));
         pdtProduct.setWsPrice(BigDecimal.valueOf(pdtProductSaveView.getPrice()));
-        pdtProduct.setMinOq(pdtProductSaveView.getMin_oq());
+        /**
+         * @Description: 如果没有填写起订量 那么为1双
+         * @date 2018/11/6 15:00
+         * @author lijie@shoestp.cn
+         */
+        if (pdtProductSaveView.getMin_oq() < 1) {
+            pdtProduct.setMinOq(1);
+        } else {
+            pdtProduct.setMinOq(pdtProductSaveView.getMin_oq());
+        }
         pdtProduct.setMaxOq(pdtProductSaveView.getMax_oq());
         pdtProduct.setSales(0);
         pdtProduct.setWarnStock(pdtProductSaveView.getWarnStock());
-        
-        pdtProduct.setNormAttr(pdtProductSaveView.getAttr().stream().filter(o->o!=null).map(String::valueOf).collect(Collectors.joining(",")));
+        pdtProduct.setNormAttr(pdtProductSaveView.getAttr().stream().filter(o -> o != null).map(String::valueOf).collect(Collectors.joining(",")));
         pdtProduct.setColorAttr(pdtProductSaveView.getSpecColor().stream().map(String::valueOf).collect(Collectors.joining(",")));
         pdtProduct.setSizeAttr(pdtProductSaveView.getSpecSize().stream().map(String::valueOf).collect(Collectors.joining(",")));
-        
-        pdtProduct.setState(pdtProductSaveView.isState() ? Sys.OYn.YES.getLine().getKey() : Sys.OYn.NO.getLine().getKey());
+        pdtProduct.stState(pdtProductSaveView.isState() ? Pdt.OState.ON : Pdt.OState.OFF);
         pdtProduct.stSoldInTime(pdtProductSaveView.isSoldInStatus());
         if (pdtProductSaveView.isSoldInStatus()) {
             if (pdtProductSaveView.getSoldInTime() == null) {
@@ -129,6 +126,9 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
         pdtProduct.setWidth(BigDecimal.valueOf(pdtProductSaveView.getWidth()));
         pdtProduct.setHeight(BigDecimal.valueOf(pdtProductSaveView.getHeight()));
         pdtProduct.setLength(BigDecimal.valueOf(pdtProductSaveView.getLength()));
+        if (pdtProductSaveView.getBriefDescription() != null && pdtProductSaveView.getBriefDescription().length() > 500) {
+
+        }
         pdtProduct.setBriefDescription(pdtProductSaveView.getBriefDescription());
         pdtProduct.setDescription(objectMapper.writeValueAsString(pdtProductSaveView.getDescription()));
         List<PdtSpec> list = new ArrayList<>();
@@ -179,8 +179,6 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
 
 
         pdtProduct.setStock(countStock);
-//            pdtProduct.setStock(pdtProductSaveView.getStock());
-//        }
         if (pdtProduct.getPkey() < 0) {
             PdtProductDAO.Publish publishDao = new PdtProductDAO.Publish();
             publishDao.setB(pdtProduct);
@@ -194,7 +192,6 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
             upd2.commit();
             write();
         }
-
     }
 
     /**
@@ -320,10 +317,10 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
                     .WHERE(PdtProduct.T.PRODUCT_TYPE, " <> ?", Pdt.OProductType.GROUP.getLine().getKey())
                     .WHERE(PdtProduct.T.STATE, "<>2").ORDER_BY(PdtProduct.T.UPDATE_TIME, "desc");
             if (getCat() > 0) {
-                List list= (List) pageSelect.getCatsNodeByCatId(getCat()).stream().map(o -> {
+                List list = (List) pageSelect.getCatsNodeByCatId(getCat()).stream().map(o -> {
                     return String.valueOf(o);
                 }).collect(Collectors.toList());
-                q.WHERE(getCat() != 0, PdtProduct.T.CATEGORY, "in (" + String.join(",",list) + ")");
+                q.WHERE(getCat() != 0, PdtProduct.T.CATEGORY, "in (" + String.join(",", list) + ")");
             }
             Integer totalCount = q.queryCount();
             setStart(getStart() - 1 > -1 ? getStart() - 1 : 0);
@@ -432,12 +429,12 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
                 multiLanguageTrans = translateUtil.getMultiLanguageTrans(name.getString("zh_TW"), true);
             }
         }
-        if (multiLanguageTrans != null && !"" .equals(multiLanguageTrans)) {
+        if (multiLanguageTrans != null && !"".equals(multiLanguageTrans)) {
             _bean.setName(multiLanguageTrans);
         }
         JSONObject json = new JSONObject();
         String status = _bean.getDescription().substring(0, 1);
-        if ("1" .equals(status)) {
+        if ("1".equals(status)) {
             _bean.setDescription(_bean.getDescription().substring(1, _bean.getDescription().length()));
             _bean.setDescription(translateUtil.getMultiLanguageTrans(_bean.getDescription(), true));
             _bean = subPro(_bean);
@@ -490,7 +487,7 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
                 _picture = picture;
             }
         }
-        if (!"" .equals(_picture) && _picture != null) {
+        if (!"".equals(_picture) && _picture != null) {
             pro.setPicture(_picture);
             return pro;
         }

@@ -11,7 +11,7 @@
 <body>
 <div id="romania">
     <div class="romania-poster">
-        <p class="white-text title-text">ROMANIA OFFLINE SH0ES PERCHASING</p>
+        <p class="white-text title-text">ROMANIA OFFLINE SHOES PERCHASING</p>
         <p class="yellow-text slogan">New era</p>
         <p class="yellow-text slogan">New trade</p>
         <p class="yellow-text slogan">New trends</p>
@@ -19,7 +19,7 @@
         <p class="yellow-text content-01">Exhibition hall opens all year round</p>
         <p class="white-text content-02">Magozinul Universal Dragonul Rosu Strada Drumul Garii 12,Bucuresti 077190</p>
         <div class="language">
-            <p><span @click="handleLanguage">= Language</span><a href="https://www.shoestp.com/home/usr_UsrPurchase"><img src="imgs/return-home.png"/></a></p>
+            <p><span class="lan" @click="handleLanguage"><span style="font-size: 40px;border: none;padding: 0;">=</span> English</span><a href="https://www.shoestp.com/home/usr_UsrPurchase"><img src="imgs/return-home.png"/></a></p>
             <ul class="language-show" v-show="languageShow">
                 <li><a href="romania-index-en.html"><img src="imgs/language-en.png"/> English</a></li>
                 <li><a href="romania-index-ro.html"><img src="imgs/language-fr.png"/> România</a></li>
@@ -27,13 +27,13 @@
             </ul>
         </div>
         <div class="image-bottom">
-            <a class="btn"  href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">get free sample</a>
+            <a class="btn"  href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">Get Free Sample</a>
             <a class="btn">Onlione Ordering Opening Soon</a>
         </div>
     </div>
     <div class="producrt">
         <h2>PRODUCT DISPLAY</h2>
-        <mu-carousel hide-controls interval="900000">
+        <mu-carousel hide-controls>
             <mu-carousel-item v-for="item in carouselProducrt">
                 <h2>{{ item.title }}</h2>
                 <div class="detail">
