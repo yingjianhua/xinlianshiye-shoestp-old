@@ -1,0 +1,1927 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>An Online B2B market——-Shoestp.com,gathering 300 professional shoes manufacture companies Business
+        backstage</title>
+    <script type="text/javascript" src="../../../umeditor1_2_2/third-party/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../../umeditor1_2_2/umeditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../../umeditor1_2_2/umeditor.js"></script>
+    <link href="../../../umeditor1_2_2/themes/default/css/umeditor.css" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../../static/admin/layui/css/layui.css"/>
+    <link rel="stylesheet" type="text/css" href="../../static/admin/css/admin.css"/>
+    <script src="/home/static/js/vue.min.js"></script>
+    <script src="/home/static/js/qs.js"></script>
+    <script src="/home/static/js/axios.min.js"></script>
+    <script src="/home/static/js/element-ui.js"></script>
+    <link rel="stylesheet" type="text/css" href="/home/static/css/element-ui.css"/>
+    <style>
+    .el-upload-list--picture-card .el-upload-list__item{
+    	line-height:145px;
+    }
+    .el-upload-list--picture-card .el-upload-list__item>img{
+    	width:100%;
+    	height:auto;
+    	display:inline-block;
+    	vertical-align: middle;
+    }
+    .el-upload-list--picture-card .el-upload-list__item-status-label{
+    	line-height:32px;
+    }
+        .outer_div {
+            position: fixed;
+            right: 0;
+            bottom: 123px;
+            z-index: 999;
+            text-align: center;
+            background-color: #909399;
+            padding: 12px;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            cursor: pointer;
+        }
+
+        .inner_span {
+            float: left;
+            font-size: 14px;
+            color: #fff;
+            margin-left: 8px;
+        }
+
+        .inner_icon {
+            float: left;
+            color: #fff;
+            margin-top: 3px;
+        }
+
+        .tc {
+            text-align: center;
+        }
+
+        .mb15 {
+            margin-bottom: 15px;
+        }
+
+        .ml15 {
+            margin-left: 15px;
+        }
+
+        .pt8 {
+            padding-top: 8px;
+        }
+
+        .w100p {
+            width: 100%;
+        }
+        .pl30{
+        	padding-left: 30px;
+        }
+
+		/*checkbox宽度随字数增加而增加 */
+        .el-checkbox {
+            width: 110px;
+/*             padding-left: 30px; */
+            margin-left: 0px;
+        }
+
+         .el-checkbox + .el-checkbox {
+             margin-left: 0;
+         }
+        .el-checkbox.two-size {
+            width: 220px;
+        }
+        /*.two-size + .el-checkbox{
+            padding-left: 60px;
+        }*/
+        .el-checkbox.three-size {
+            width: 330px;
+        }
+        /*.three-size + .el-checkbox{
+            padding-left: 90px;
+        }*/
+        /*checkbox增加border */
+        .checkbox-have-bb .el-checkbox-group {
+            border-bottom: 1px solid #eee;
+        }
+
+        .el-card .el-form-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .el-card {
+            border-width: 0;
+        }
+
+        .el-card__header {
+            position: relative;
+            padding: 0 20px;
+            font-size: 15px;
+            position: relative;
+            top: 10px;
+            border-bottom-width: 0;
+        }
+
+        /* 价格里面checkbox的上下间距 */
+        /*.checkbox-group .el-form-item__content {*/
+        /*line-height: 25px;*/
+        /*}*/
+
+
+        .pr8 {
+            padding-right: 8px;
+        }
+
+        .newColor .el-checkbox__input.is-checked .el-checkbox__inner {
+            border: 0;
+            background: #fff;
+        }
+
+        .newColor .el-checkbox__inner {
+            border: 0;
+            background: #fff;
+        }
+
+        .newSize .el-checkbox__input.is-checked .el-checkbox__inner {
+            border: 0;
+            background: #fff;
+        }
+
+        .newSize .el-checkbox__inner {
+            border: 0;
+            background: #fff;
+        }
+
+        .el-popover.el-popper {
+            width: 258px !important;
+        }
+    </style>
+</head>
+<body>
+<div id="main">
+    <el-form ref="mainform" label-width="120px" :rules="rules" :model="status" v-loading.fullscreen="loading"
+             :element-loading-text="loadingTitle"
+             element-loading-spinner="el-icon-loading"
+             element-loading-background="rgba(0, 0, 0, 0.8)"
+    >
+        <el-button size="mini" round @click="javascript:history.back()" v-show="showBack">返回</el-button>
+
+        <el-card class="box-card">
+            <div slot="header" class="clearfix">
+                <span>商品名称</span>
+            </div>
+
+            <el-form-item
+                    :label="d.displayName"
+                    v-if="d.isEnabled"
+                    v-for="d in language"
+                    :key="d.shortName"
+                    :rules="d.shortName==='en'?{ validator: validatePdtName, trigger: 'blur' }:null"
+                    :required="d.shortName==='en'"
+                    prop="pdtName"
+
+            >
+                <el-input :placeholder="d.displayName" v-model="status.pdtName[d.shortName]"></el-input>
+            </el-form-item>
+
+        </el-card>
+        <el-card class="box-card">
+            <div slot="header" class="clearfix">
+                <span>商品基本资料</span>
+            </div>
+
+            <el-form-item label="商品分类" prop="productCat">
+                <el-col :span="11">
+                    <el-cascader
+                            class="w100p"
+                            placeholder="商品分类"
+                            :options="productCats"
+                            filterable
+                            v-model="temp.productCat"
+                            @change="selectPdtCat"
+                    ></el-cascader>
+                </el-col>
+            </el-form-item>
+            <el-form-item label="店铺分类" prop="supplierCat">
+                <el-col :span="11">
+                    <el-cascader
+                            class="w100p"
+                            placeholder="店铺分类"
+                            :options="supplierCat"
+                            filterable
+                            v-model="temp.supplierCat"
+                    ></el-cascader>
+                </el-col>
+            </el-form-item>
+            <!--编号-->
+            <el-form-item label="编号"
+                          required
+            >
+                <el-col :span="5">
+                    <el-form-item
+                            prop="number_left"
+                            :rules="     {required: true, message: '请输入编码前缀', trigger: ['change', 'blur']}"
+                    >
+                        <el-input placeholder="编号" v-model="status.number_left"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col class="tc" :span="1"> -</el-col>
+                <el-col :span="5">
+                    <el-form-item
+                            prop="number_right"
+                            :rules="     {required: true, message: '请输入编码前缀', trigger: ['change', 'blur']}"
+                    >
+                        <el-input placeholder="编号" v-model="status.number_right"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="5" class="ml15">
+                    <el-button @click="genrateNumber" :disabled="genrateNumberFirst">生成编号</el-button>
+                </el-col>
+            </el-form-item>
+            <el-form-item label="SKU" prop="sku">
+                <el-form-item>
+                    <el-input placeholder="SKU" v-model="status.sku"></el-input>
+                </el-form-item>
+            </el-form-item>
+        </el-card>
+        <el-card class="box-card checkbox-have-bb">
+            <div slot="header" class="clearfix">
+                <span>商品属性</span>
+            </div>
+            <!--迭代出来-->
+            <template v-if="attr.length>0">
+                <el-form-item :label="d.name" v-for="(d,index) in attr" :key="d.id"
+                >
+                    <el-checkbox-group v-model="temp.attr[d.id]" class="pl30">
+                        <el-checkbox :label="dd.id" :key="dd.id" :true-label="dd.id"
+                                     size="small"
+                                     v-for="dd in d.items"
+                                     :class="[getByteLen(dd.name)>15?'three-size':getByteLen(dd.name)>6?'two-size':'']"
+                        >
+                            {{dd.name}}
+                        </el-checkbox>
+                    </el-checkbox-group>
+                </el-form-item>
+            </template>
+
+            <el-form-item label="商品图片(最多六张)"
+                          prop="pdtPics"
+                          :rules=" { validator: validatePic, trigger: 'blur' }"
+                          required
+            >
+                <el-upload
+                        list-type="picture-card"
+                        action="/seller/pdt_PdtProduct_upload?widthLimit=0"
+                        :on-remove="(res,file)=>{return handleRemove(res,null)}"
+                        :on-success="(res,file)=>{return handlesuccess(res,file,null)}"
+                        :file-list="_filelist"
+                        :before-upload="validatePidSzie"
+                        multiple="true"
+                        limit="6"
+                >
+                    <i class="el-icon-plus"></i>
+                </el-upload>
+            </el-form-item>
+
+        </el-card>
+        <el-card class="box-card">
+            <div slot="header" class="clearfix">
+                <span>商品销售信息</span>
+            </div>
+            <el-form-item label="商城价格" prop="price">
+                <el-col :span="11">
+                    <el-input placeholder="price" v-model="status.price">
+                        <span slot="suffix" class="pr8">美元</span>
+                    </el-input>
+                </el-col>
+            </el-form-item>
+
+            <el-form-item label="市场价" prop="mktPrice">
+                <el-col :span="11">
+                    <el-input placeholder="price" v-model="status.mktPrice">
+                        <span slot="suffix" class="pr8">美元</span>
+                    </el-input>
+                </el-col>
+            </el-form-item>
+
+            <el-form-item label="进货价" prop="purPrice">
+                <el-col :span="11">
+                    <el-input placeholder="price" v-model="status.purPrice">
+                        <span slot="suffix" class="pr8">美元</span>
+                    </el-input>
+                </el-col>
+            </el-form-item>
+
+            <el-form-item label="起订量" prop="min_oq">
+                <el-col :span="11">
+                    <el-input placeholder="起订量" v-model="status.min_oq">
+                        <span slot="suffix" class="pr8">双</span>
+                    </el-input>
+                </el-col>
+            </el-form-item>
+            <el-form-item label="最大购买量" prop="max_oq">
+                <el-col :span="11">
+                    <el-input placeholder="最大购买量" v-model="status.max_oq">
+                        <span slot="suffix" class="pr8">双</span>
+                    </el-input>
+                </el-col>
+            </el-form-item>
+            <el-form-item label="总库存">
+                <el-col :span="11">
+                    <el-input placeholder="总库存(根据所有规格得出)" v-bind:value="_AllStock" disabled>
+                        <span slot="suffix" class="pr8">双(根据所有规格库存计算得出)</span>
+                    </el-input>
+                </el-col>
+            </el-form-item>
+            <el-form-item label="警告库存" prop="warnStock">
+                <el-col :span="11">
+                    <el-input placeholder="警告库存" v-model="status.warnStock">
+                        <span slot="suffix" class="pr8">双</span>
+                    </el-input>
+                </el-col>
+            </el-form-item>
+            <el-card class="box-card mb15">
+                <el-form-item label="颜色" class="checkbox-group color">
+                    <el-checkbox-group v-model="temp.specColor" class="pt8 pl30">
+                        <el-checkbox v-for="dd in color" :label="dd" :key="dd.id"
+                        	:class="[getByteLen(dd.name)>15?'three-size':getByteLen(dd.name)>6?'two-size':'']"
+                        >
+                            <el-popover
+                                    placement="top"
+                                    width="130"
+                                    :disabled="dd.createBy"
+                                    trigger="hover"
+                                    @hide="colorPopHide">
+                                <input style="position:unset;width:52%;" v-model="editColorData" placeholder="请输入颜色"
+                                       class="el-input__inner"/>
+                                <el-button type="primary" icon="el-icon-edit" @click="editColor(dd)"
+                                           style="margin:0;"></el-button>
+                                <el-button type="primary" icon="el-icon-delete" @click="delColor(dd.id)"
+                                           style="margin:0;"></el-button>
+                                <span slot="reference">
+			                           			{{dd.name}}
+			                           		</span>
+                            </el-popover>
+                        </el-checkbox>
+                    </el-checkbox-group>
+                    <div class="newColor">
+                        <el-input v-if="addNewColor" v-model="newColor" placeholder="请输入内容"></el-input>
+                        <a @click="toAddNewColor" style="cursor:pointer;color: rgb(64,158,255);">添加颜色</a>
+                        <a @click="addNewColor=false;newColor=''" v-if="addNewColor"
+                           style="cursor:pointer;color: rgb(64,158,255);">取消</a>
+                    </div>
+                </el-form-item>
+
+                <el-form-item label="尺码" class="checkbox-group size">
+                    <el-checkbox-group v-model="temp.specSize" class="pt8 pl30">
+                        <el-checkbox v-for="dd in size" :label="dd" :key="dd.id"
+                        	:class="[getByteLen(dd.name)>15?'three-size':getByteLen(dd.name)>6?'two-size':'']"
+                        >
+                            <el-popover
+                                    placement="top"
+                                    width="130"
+                                    trigger="hover"
+                                    :disabled="dd.createBy"
+                                    @hide="sizePopHide">
+                                <input style="position:unset;width:52%;" v-model="editSizeData" placeholder="请输入尺寸"
+                                       class="el-input__inner"/>
+                                <el-button type="primary" icon="el-icon-edit" @click="editSize(dd)"
+                                           style="margin:0;"></el-button>
+                                <el-button type="primary" icon="el-icon-delete" @click="delSize(dd.id)"
+                                           style="margin:0;"></el-button>
+                                <span slot="reference">
+	                           			{{dd.name}}
+	                           		</span>
+                            </el-popover>
+                        </el-checkbox>
+
+                    </el-checkbox-group>
+                    <div class="newSize" v-if="size&&size.length>0">
+                        <el-input v-if="addNewSize" v-model="newSize" placeholder="请输入内容"></el-input>
+                        <a @click="toAddNewSize" style="cursor:pointer;color: rgb(64,158,255);">添加尺码</a>
+                        <a @click="addNewSize=false;newSize=''" v-if="addNewSize"
+                           style="cursor:pointer;color: rgb(64,158,255);">取消</a>
+
+                    </div>
+                </el-form-item>
+            </el-card>
+
+            <el-card class="box-card mb15" v-if="status.spec&&status.spec.length>0">
+                <table class="spec-table">
+                    <tr>
+                        <td>
+                            属性
+                        </td>
+                        <td>
+                            SKU
+                        </td>
+                        <td>
+                            价格($)
+                        </td>
+                        <td>
+                            库存(必填,默认值:500)
+                        </td>
+                        <td>
+                            重量(千克)
+                        </td>
+                        <td>
+                            批量
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>组合属性</label>
+                        </td>
+                        <td>
+                            <el-button type="text" @click="syncs('sku')">同步</el-button>
+                        </td>
+                        <!--<td>-->
+                        <!--<el-button type="text">同步</el-button>-->
+                        <!--</td>-->
+                        <td>
+                            <el-button type="text" @click="syncs('price')">同步</el-button>
+                        </td>
+                        <td>
+                            <el-button type="text" @click="syncs('stock')">同步</el-button>
+                        </td>
+                        <td>
+                            <el-button type="text" @click="syncs('weight')">同步</el-button>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr v-for="d in status.spec">
+                        <td>{{d.name}}</td>
+                        <td>
+                            <el-input placeholder="SKU" v-model="d.sku"/>
+                        </td>
+                        <!--<td>加价</td>-->
+                        <td>
+                            <el-input v-model="d.price"
+                                      :blur="validatorSpecPrice(null,d.price,function(value){
+                                errorMessages[d.name+'_price']=value})"></el-input>
+                            <span style="color: red">  {{ errorMessages[d.name+'_price']}}</span>
+                        </td>
+                        <td>
+                            <el-input v-model="d.stock"
+                                      :blur="validatorNumbers(d.stock,d.stock,function(value){errorMessages[d.name+'_stock']=value})"
+                            >
+                            </el-input>
+                            <span style="color: red">  {{ errorMessages[d.name+'_stock']}}</span>
+                        </td>
+                        <td>
+                            <el-input v-model="d.weight"
+                                      :blur="validatorNumbers(null,d.weight,function(value){errorMessages[d.name+'_weight']=value})"
+                            ></el-input>
+                            <span style="color: red">  {{ errorMessages[d.name+'_weight']}}</span>
+                        </td>
+                        <td>
+                            <el-popover
+                                    width="140"
+                                    trigger="hover"
+                                    placement="right"
+                                    open-delay="200"
+                            >
+                                <div style="text-align: right; margin: 0">
+                                    <el-button @click="syncs('price',d,'color')" mini>同步同颜色价格</el-button>
+                                    <el-button @click="syncs('stock',d,'color')" mini>同步同颜色库存</el-button>
+                                    <el-button @click="syncs('price',d,'size')" mini>同步同尺寸价格</el-button>
+                                    <el-button @click="syncs('stock',d,'size')" mini>同步同尺寸库存</el-button>
+                                </div>
+                                <el-button slot="reference">批量</el-button>
+                            </el-popover>
+
+                        </td>
+                    </tr>
+                </table>
+            </el-card>
+            <el-card v-if="temp.specColor.length">
+
+                <div v-for="d in temp.specColor" style="margin-top: 15px">
+                    <el-form-item
+                            :label="'商品图片(最多六张):'+d.name"
+                    >
+                        <el-upload
+                                :on-remove="(res,file)=>{return handleRemove(res, d)}"
+                                :on-success="(res,file)=>{return handlesuccess(res,file, d)}"
+                                :before-upload="validatePidSzie"
+                                :file-list="_specPicList(d)"
+                                action="/seller/pdt_PdtProduct_upload?widthLimit=0"
+                                list-type="picture-card"
+                                limit="6"
+                                multiple="true"
+
+                        >
+                            <i class="el-icon-plus"></i>
+                        </el-upload>
+
+                    </el-form-item>
+                </div>
+            </el-card>
+            <el-form-item label="销售状态">
+                <el-switch
+                        v-model="status.state"
+                        active-color="#13ce66"
+                        inactive-color="#ff4949"
+                        active-text="上架"
+                        inactive-text="下架"
+                >
+                </el-switch>
+            </el-form-item>
+            <!--<el-form-item label="定时上架">-->
+            <!--<el-col :span="2">-->
+            <!--<el-switch-->
+            <!--v-model="status.soldInStatus"-->
+            <!--active-color="#13ce66"-->
+            <!--inactive-color="#ff4949">-->
+            <!--</el-switch>-->
+            <!--</el-col>-->
+            <!--<el-col class="line" :span="5">-->
+            <!--<el-date-picker-->
+            <!--v-model="status.soldInTime"-->
+            <!--v-show="status.soldInStatus"-->
+            <!--type="datetimerange"-->
+            <!--range-separator="至"-->
+            <!--start-placeholder="开始日期"-->
+            <!--end-placeholder="结束日期"-->
+            <!--align="right">-->
+            <!--</el-date-picker>-->
+            <!--</el-col>-->
+            <!--</el-form-item>-->
+        </el-card>
+        <el-card class="box-card">
+            <div slot="header" class="clearfix">
+                <span>物流信息</span>
+            </div>
+            <el-form-item label="是否免运费">
+                <el-switch
+                        v-model="status.freeShipping"
+                        active-color="#13ce66"
+                        inactive-color="#ff4949"
+                        active-text="免运费"
+                >
+                </el-switch>
+            </el-form-item>
+
+            <el-form-item label="重量" prop="weight">
+                <el-col :span="11">
+                    <el-input placeholder="重量" v-model="status.weight"
+                    >
+                        <span slot="suffix" class="pr8">克</span>
+                    </el-input>
+                </el-col>
+            </el-form-item>
+
+            <el-form-item label="长" prop="length">
+                <el-col :span="11">
+                    <el-input placeholder="长" v-model="status.length">
+                        <span slot="suffix" class="pr8">厘米</span>
+                    </el-input>
+                </el-col>
+            </el-form-item>
+
+            <el-form-item label="宽" prop="width">
+                <el-col :span="11">
+                    <el-input placeholder="宽" v-model="status.width">
+                        <span slot="suffix" class="pr8">厘米</span>
+                    </el-input>
+                </el-col>
+            </el-form-item>
+
+            <el-form-item label="高" prop="height">
+                <el-col :span="11">
+                    <el-input placeholder="高" v-model="status.height">
+                        <span slot="suffix" class="pr8">厘米</span>
+                    </el-input>
+                </el-col>
+            </el-form-item>
+        </el-card>
+        <el-card class="box-card" shadow="never">
+            <div slot="header" class="clearfix">
+                <span>商品描述</span>
+            </div>
+            <el-form-item label="简述">
+                <el-input
+                        type="textarea"
+                        :autosize="{ minRows: 5, maxRows:8}"
+                        placeholder="请输入内容"
+                        v-model="status.briefDescription">
+                </el-input>
+            </el-form-item>
+
+            <!--<el-form-item-->
+            <!--&gt;-->
+            <!--:label="d.displayName"-->
+
+            <!---->
+            <!---->
+            <!--prop="pdtName"-->
+            <!--<el-input :placeholder="d.displayName" v-model="status.pdtName[d.shortName]"></el-input>-->
+
+
+            <el-form-item label="详细描述"
+                          required
+            >
+                <el-tabs type="card"
+                         style="width: 100%;"
+                         :before-leave="tabChange"
+                >
+                    <el-tab-pane :label="d.displayName"
+                                 v-for="d in language" v-if="d.isEnabled"
+                                 :key="d.shortName"
+
+                    >
+
+                    </el-tab-pane>
+
+                </el-tabs>
+                <el-input
+                        style="width: 100%;"
+                        type="textarea"
+                        id="description"
+                        :autosize="{ minRows: 50, maxRows:8}"
+                        placeholder="请输入内容"
+                >
+                </el-input>
+            </el-form-item>
+        </el-card>
+        <el-form-item class="tc">
+            <el-button type="primary" @click="submitForm('mainform')">立即创建
+            </el-button>
+            <el-button @click="resetForm('mainform')">重置</el-button>
+        </el-form-item>
+    </el-form>
+
+    <div class="outer_div" style="right: -71px;" @click="clickMe" @mouseenter="enterMe" @mouseleave="leaveMe">
+        <i class="el-icon-back inner_icon"></i>
+        <span class="inner_span">回到列表</span>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    var um = UM.getEditor('description', {imageUrl: '/seller/pdt_PdtProduct_upload'});
+    var baseImageUrl = parent.imgUrlconfig ? parent.imgUrlconfig : "https://image.shoestp.com"
+    var getTreeDeepArr = function (key, treeData) {
+
+        var arr = []; // 在递归时操作的数组
+        var returnArr = []; // 存放结果的数组
+        var depth = 0; // 定义全局层级
+        // 定义递归函数
+        function childrenEach(childrenData, depthN) {
+
+            for (var j = 0; j < childrenData.length; j++) {
+
+                depth = depthN; // 将执行的层级赋值 到 全局层级
+
+                arr[depthN] = (childrenData[j].value);
+
+                if (childrenData[j].value == key) {
+
+                    // returnArr = arr; // 原写法不行, 因 此赋值存在指针关系
+                    returnArr = arr.slice(0, depthN + 1); //将目前匹配的数组，截断并保存到结果数组，
+                    break
+
+                } else {
+
+                    if (childrenData[j].children) {
+
+                        depth++;
+                        childrenEach(childrenData[j].children, depth);
+
+                    }
+                }
+
+            }
+            return returnArr;
+        }
+
+        return childrenEach(treeData, depth);
+    }
+    var getTreeDeepArrs = function (key, treeData, id, chilren) {
+        var arr = []; // 在递归时操作的数组
+        var returnArr = []; // 存放结果的数组
+        var depth = 0; // 定义全局层级
+        // 定义递归函数
+        function childrenEach(childrenData, depthN, id, chilren) {
+
+            for (var j = 0; j < childrenData.length; j++) {
+
+                depth = depthN; // 将执行的层级赋值 到 全局层级
+
+                arr[depthN] = (childrenData[j][id]);
+
+                if (childrenData[j][id] == key) {
+
+                    // returnArr = arr; // 原写法不行, 因 此赋值存在指针关系
+                    returnArr = arr.slice(0, depthN + 1); //将目前匹配的数组，截断并保存到结果数组，
+                    break
+
+                } else {
+
+                    if (childrenData[j][chilren]) {
+
+                        depth++;
+                        childrenEach(childrenData[j][chilren], depth, id, chilren);
+
+                    }
+                }
+
+            }
+            return returnArr;
+        }
+
+        return childrenEach(treeData, depth, id, chilren);
+    }
+
+    function getParms(name, defaultValue) {
+        var url = window.location.href;
+        var l = url.lastIndexOf(name)
+        if (l != -1) {
+            var ll = url.indexOf("&");
+            if (ll == -1 || l > ll) {
+                ll = url.length
+            }
+            url = url.substring(l, ll);
+            var result = url.split("=")
+            if (result.length == 2) {
+                switch (typeof defaultValue) {
+                    case "number":
+                        return parseInt(result[1]);
+                    case "boolean":
+                        return Boolean(result[1])
+                    default:
+                        return result[1];
+                }
+            }
+        } else {
+            if (defaultValue == 'NONE') {
+                return null;
+            }
+            if (defaultValue == null) {
+                return -1;
+            }
+            return defaultValue
+        }
+        return -1;
+    }
+
+    function formateArray(data) {
+        var result = null;
+        if (data.length > 0) {
+            result = [];
+        }
+        for (var i = 0; i < data.length; i++) {
+            result.push({
+                value: data[i].pkey,
+                label: data[i].name,
+                children: formateArray(data[i].children)
+            })
+        }
+        return result;
+    }
+
+    var validatorNumbers = function (rule, value, callback) {
+        if (value) {
+            if (!/^\d+(?=\.{0,1}\d+$|$)/.test(value)) {
+                callback('请输入有效数字')
+                return
+            }
+            value = parseInt(value)
+            if (value > 999999999) {
+                callback('输入数字过长')
+                return
+
+            }
+        }
+        callback()
+    }
+    var validatordescription = function (value) {
+        if (value)
+            for (var key in value) {
+                if (value[key]) {
+                    if (value[key].replace(/" "/g, "").length > 0) {
+                        return true;
+                    }
+                }
+            }
+        return false;
+
+    }
+    var app = new Vue({
+        el: '#main',
+        data() {
+
+            return {
+                showBack: false,
+                language: [],
+                loading: false,
+                loadingTitle: "",
+                status: {
+                    id: -1,
+                    pdtName: {},
+                    productCat: null,
+                    supplierCat: null,
+                    number_left: "TOP",
+                    number_right: null,
+                    sku: null,
+                    attr: {},
+                    pdtPics: {},
+                    specSize: [],
+                    specColor: [],
+                    spec: [],
+                    price: null,
+                    min_oq: null,
+                    max_oq: null,
+                    warnStock: null,
+                    state: true,
+                    soldInStatus: false,
+                    soldInTime: null,
+                    weight: null,
+                    height: null,
+                    width: null,
+                    length: null,
+                    briefDescription: null,
+                    freeShipping: null,
+                    from: -1,
+                    mktPrice: null,
+                    purPrice: null,
+                    description: {}
+                },
+                temp: {
+                    specColor: [],
+                    specSize: [],
+                    specList: {}
+                    ,
+                    productCat: [],
+                    supplierCat: [],
+                    message: {},
+                    activeTabName: "",
+                    attr: {}
+                }, attr: [],
+                errorMessages: {},
+                addNewColor: false,
+                newColor: '',
+                editColorData: '',
+                addNewSize: false,
+                editNewSize: false,
+                editSizeData: '',
+                newSize: '',
+                genrateNumberFirst: false,
+                color: [],
+                size: [],
+                supplierCat: [],
+                productCats: [],
+                message: [],
+                rules:
+                    {
+                        productCat: [
+                            {required: true, message: '请选择分类', trigger: ['change', 'blur']}
+                        ],
+                        supplierCat:
+                            [
+                                {required: true, message: '请选择分类', trigger: ['change', 'blur']}
+                            ],
+                        price:
+                            [
+                                {required: true, message: '请输入商城价格', trigger: ['change', 'blur']},
+                                {
+                                    validator: validatorNumbers, trigger: ['blur', 'change']
+                                }
+                            ],
+                        mktPrice:
+                            [
+                                {required: true, message: '请输入市场价格', trigger: ['change', 'blur']},
+                                {
+                                    validator: validatorNumbers, trigger: ['blur', 'change']
+                                }
+                            ],
+                        purPrice:
+                            [
+                                {required: true, message: '请输入进货价价格', trigger: ['change', 'blur']},
+                                {
+                                    validator: validatorNumbers, trigger: ['blur', 'change']
+                                }
+                            ],
+                        min_oq:
+                            [
+                                {required: true, message: '请输入最小起购量', trigger: ['change', 'blur']},
+                                {
+                                    validator: validatorNumbers, trigger: ['blur', 'change']
+                                }
+                            ],
+                        max_oq:
+                            [
+                                {required: true, message: '请输入最大购买量', trigger: ['change', 'blur']},
+                                {
+                                    validator: validatorNumbers, trigger: ['blur', 'change']
+                                }
+                            ],
+                        warnStock:
+                            [
+                                {required: true, message: '请输入警告库存', trigger: ['change', 'blur']},
+                                {
+                                    validator: validatorNumbers, trigger: ['blur', 'change']
+                                }
+                            ],
+                        stock:
+                            [
+                                {required: true, message: '请输入长度', trigger: ['change', 'blur']},
+
+                                {validator: validatorNumbers, trigger: ['blur', 'change']}
+                            ],
+                        weight:
+                            [
+                                {validator: validatorNumbers, trigger: ['blur', 'change']}
+                            ],
+                        height:
+                            [
+                                {validator: validatorNumbers, trigger: ['blur', 'change']}
+                            ],
+                        length:
+                            [
+                                {validator: validatorNumbers, trigger: ['blur', 'change']}
+                            ],
+                        width:
+                            [
+                                {validator: validatorNumbers, trigger: ['blur', 'change']}
+                            ],
+                        sku:
+                            [
+                                {required: true, message: '请输入sku', trigger: ['blur']},
+                                {
+                                    min: 0,
+                                    max: 15,
+                                    message: '长度在1-15位之间',
+                                    trigger: ['blur']
+                                }
+                            ],
+                    }
+            }
+        }, computed: {
+            createSpec: function () {
+                return this.$data.temp.specSize + this.$data.temp.specColor
+            }, _AllStock: function () {
+                var temp = 0;
+                for (var key in this.status.spec) {
+                    temp += parseInt(this.status.spec[key].stock);
+                }
+                return temp
+            }, _filelist: function () {
+                var filelist = [];
+                for (var key in this.status.pdtPics) {
+                    filelist.push({
+                        name: this.status.pdtPics[key],
+                        url: baseImageUrl + this.status.pdtPics[key]
+                    })
+                }
+                return filelist
+            }
+        },
+        methods: {
+        	// 获取文字长度 - 设置固定宽度
+        	getByteLen(val) {
+        	    if (val){
+
+      		  let len = 0
+      		  for (let i = 0; i < val.length; i++) {
+      		    if (val[i].match(/[^\x00-\xff]/gi) != null) {
+      		      len += 1
+      		    } else {
+      		      len += 0.5
+      		    }
+      		  }
+      		  return Math.floor(len)
+                }
+      		},
+            colorPopHide: function () {
+                this.newColor = '';
+            },
+            editColor: function (color) {
+                var self = this;
+                if (self.editColorData == '') {
+                    self.$message({
+                        type: 'error',
+                        message: '请输入名称!'
+                    });
+                    return;
+                }
+                self.loading = true;
+                self.loadingTitle = "提交中,请等待翻译结束"
+                self.post(
+                    "/seller/pdt_PdtColor_updColorBySup",
+                    {"bean.pkey": color.id, "bean.name": self.editColorData, "bean.rowVersion": color.rowVersion},
+                    function (res) {
+                        if (res.data.success == false) {
+                            self.loading = false;
+                            self.$message({
+                                type: 'error',
+                                message: res.data.msg == undefined ? "未知错误" : res.data.msg
+                            });
+
+                            return;
+                        }
+                        var color = self.color;
+
+                        for (var i in color) {
+                            if (color[i].id == res.data.pkey) {
+                                self.color.splice(i, 1);
+                                break;
+                            }
+                        }
+                        self.color.push({
+                            id: res.data.pkey,
+                            name: res.data.name,
+                            createBy: res.data.createBy,
+                            rowVersion: res.data.rowVersion
+                        })
+                        self.$message({
+                            type: 'success',
+                            message: '修改成功!'
+                        });
+
+                        self.loading = false;
+                        self.editColorData = '';
+                    },
+                    function (err) {
+                        self.loading = false;
+                        console.log(err)
+                    }
+                )
+            },
+            delColor: function (id) {
+                var self = this;
+                this.$confirm('此操作将删除此颜色, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    self.post(
+                        "/seller/pdt_PdtColor_delColorBySup",
+                        {"pkey": id},
+                        function (res) {
+                            if (res.data.success == false) {
+                                self.$message({
+                                    type: 'error',
+                                    message: res.data.msg == undefined ? "未知错误" : res.data.msg
+                                });
+                                return;
+                            }
+                            var color = self.color;
+                            for (var i in color) {
+                                if (color[i].id == res.data.items) {
+                                    self.color.splice(i, 1);
+                                    break;
+                                }
+                            }
+                            self.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                        },
+                        function (err) {
+                        }
+                    )
+
+
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+            },
+            toAddNewColor: function () {
+                var self = this;
+                if (this.newColor == '' && this.addNewColor == false) {
+                    //当点击添加颜色按钮且输入框未激活未输入时
+                    this.addNewColor = true;
+                    //
+                } else if (this.newColor == '' && this.addNewColor == true) {
+                    // 	当点击添加颜色按钮且输入框激活未输入时
+                    this.addNewColor = false;
+
+                } else if (this.newColor != '') {
+                    //当输入框输入后
+                    self.loading = true;
+                    self.loadingTitle = "提交中,请等待翻译结束"
+                    self.post(
+                        "/seller/pdt_PdtColor_insColorBySup",
+                        {"bean.name": self.newColor},
+                        function (res) {
+                            if (res.data.success == false) {
+                                self.loading = false;
+                                self.$message({
+                                    type: 'error',
+                                    message: res.data.msg == undefined ? "未知错误" : res.data.msg
+                                });
+
+                                return;
+                            }
+                            self.color.push({
+                                id: res.data.pkey,
+                                name: res.data.name,
+                                createBy: res.data.create_by,
+                                rowVersion: res.data.rowVersion
+                            })
+                            self.newColor = "";
+                            self.addNewColor = false;
+                            self.loading = false;
+                        },
+                        function (err) {
+                            console.log(err)
+                            self.loading = false;
+
+                        }
+                    )
+                }
+            },
+            sizePopHide: function () {
+                this.newSize = '';
+                this.editNewSize = false;
+            },
+            editSize: function (size) {
+                var self = this;
+                if (self.editSizeData == '') {
+                    self.$message({
+                        type: 'error',
+                        message: '请输入名称!'
+                    });
+                    return;
+                }
+                self.loading = true;
+                self.loadingTitle = "提交中,请等待翻译结束"
+                self.post(
+                    "/seller/pdt_PdtSize_updSizeBySup",
+                    {"bean.pkey": size.id, "bean.name": self.editSizeData, "bean.rowVersion": size.rowVersion},
+                    function (res) {
+                        if (res.data.success == false) {
+                            self.loading = false;
+                            self.$message({
+                                type: 'error',
+                                message: res.data.msg == undefined ? "未知错误" : res.data.msg
+                            });
+
+                            return;
+                        }
+                        var size = self.size;
+                        for (var i in size) {
+                            if (size[i].id == res.data.pkey) {
+                                self.size.splice(i, 1);
+                                break;
+                            }
+                        }
+                        self.size.push({
+                            id: res.data.pkey,
+                            name: res.data.name,
+                            createBy: res.data.createBy,
+                            rowVersion: res.data.rowVersion
+                        })
+                        self.$alert('修改成功', '消息', {
+                            confirmButtonText: '确定',
+//                             callback: action => {
+//                                 window.location.href = "/seller/admin/index/Product-List.html";
+//                             }
+                        });
+
+                        self.editSizeData = '';
+                        self.loading = false;
+                    },
+                    function (err) {
+                        self.loading = false;
+                        console.log(err)
+                    }
+                )
+            },
+            delSize: function (id) {
+                var self = this;
+                this.$confirm('此操作将删除此尺寸, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    self.post(
+                        "/seller/pdt_PdtSize_delSizeBySup",
+                        {"pkey": id},
+                        function (res) {
+                            if (res.data.success == false) {
+                                self.$message({
+                                    type: 'error',
+                                    message: res.data.msg == undefined ? "未知错误" : res.data.msg
+                                });
+
+                                return;
+                            }
+                            var size = self.size;
+                            for (var i in size) {
+                                if (size[i].id == res.data.items) {
+                                    self.size.splice(i, 1);
+                                    break;
+                                }
+                            }
+                            self.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                        },
+                        function (err) {
+                        }
+                    )
+
+
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+            },
+            toAddNewSize: function () {
+                var self = this;
+                if (this.newSize == '' && this.addNewSize == false) {
+                    //当点击添加颜色按钮且输入框未激活未输入时
+                    this.addNewSize = true;
+
+                } else if (this.newSize == '' && this.addNewSize == true) {
+                    //当点击添加颜色按钮且输入框激活未输入时
+                    this.addNewSize = false;
+
+                } else if (this.newSize != '') {
+                    //当输入框输入后
+                    self.loading = true;
+                    self.loadingTitle = "提交中,请等待翻译结束"
+                    self.post(
+                        "/seller/pdt_PdtSize_insSizeBySup",
+                        {"bean.name": self.newSize},
+                        function (res) {
+                            if (res.data.success == false) {
+                                self.loading = false;
+                                self.$message({
+                                    type: 'error',
+                                    message: res.data.msg == undefined ? "未知错误" : res.data.msg
+                                });
+
+                                return;
+                            }
+                            self.size.push({
+                                id: res.data.pkey,
+                                name: res.data.name,
+                                createBy: res.data.create_by,
+                                rowVersion: res.data.rowVersion
+                            })
+                            self.newSize = "";
+                            self.addNewSize = false;
+                            self.loading = false;
+                        },
+                        function (err) {
+                            self.loading = false;
+                        }
+                    )
+                }
+            },
+            _specPicList: function (d) {
+                var self = this
+                for (var key in self.status.spec) {
+                    if (self.status.spec[key].color === d.id) {
+                        if (self.status.spec[key].pic) {
+                            var temp = [];
+                            for (var key2 in self.status.spec[key].pic) {
+                                if (self.status.spec[key].pic[key2])
+                                    if (self.status.spec[key].pic[key2].length > 0) {
+                                        temp.push({
+                                            name: self.status.spec[key].pic[key2],
+                                            url: baseImageUrl + self.status.spec[key].pic[key2]
+                                        })
+                                    }
+                            }
+                            return temp
+                        }
+                    }
+                }
+
+
+            },
+            tabChange: function (activeName, oldActiveName) {
+                if (activeName != null && oldActiveName != null) {
+                    this.temp.activeTabName = activeName;
+                    this.status.description[this.language[oldActiveName].shortName] = this.um.getContent()
+                    if (this.status.description[this.language[activeName].shortName] != null) {
+                        this.um.setContent(this.status.description[this.language[activeName].shortName])
+                    } else {
+                        this.um.setContent("")
+                    }
+                }
+            },
+            clickMe: function () {
+                this.$confirm('此操作将停止编辑操作', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.$message({
+                        type: 'success',
+                        message: '跳转成功!',
+                    });
+                    window.location.href = "/seller/admin/index/Product-List.html";
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '请继续编辑'
+                    });
+                });
+            },
+            enterMe: function () {
+                $(".outer_div").animate({right: 0})
+            },
+            leaveMe: function () {
+                $(".outer_div").animate({right: -71})
+            },
+            validatorNumber: function (rule, value, callback) {
+                validatorNumbers(rule, value, callback)
+            },
+            validatePidSzie: function (file) {
+                //校验文件大小
+                const isSize = new Promise(function (resolve, reject) {
+                    var _URL = window.URL || window.webkitURL;
+                    var img = new Image();
+                    img.onload = function () {
+                        var valid = img.width / img.height == 1 && img.width % img.height == 0;
+                        valid ? resolve() : reject();
+                    }
+                    img.src = _URL.createObjectURL(file);
+                }).then(() => {
+                    return file;
+                }, () => {
+                    this.$notify({
+                        title: '提示',
+                        message: '上传图片宽高比列建议为 1:1'
+                    });
+                    return file;
+                });
+
+                var isLt2M = file.size / 1024 / 1024 < 5;
+                do {
+                    if (file.type === 'image/jpeg') {
+                        break
+                    }
+                    if (file.type === 'image/png') {
+                        break
+                    }
+                    if (file.type === 'image/gif') {
+                        break
+                    }
+                    if (file.type === 'image/jpg') {
+                        break
+                    }
+                    this.$message.error('上传图片不是个图片文件');
+                    return false;
+                } while (false)
+
+                if (!isLt2M) {
+                    this.$message.error('上传头像图片大小不能超过 5MB!');
+                }
+                return isLt2M && isSize;
+
+            },
+            validatePdtName: function (rule, value, callback) {
+                if (value == null) {
+                    callback("请输入产品名称");
+                }
+                if (value["en"] == null) {
+                    callback("请输入产品名称,英文必填");
+                    return
+                }
+                if (value["en"].length < 1) {
+                    callback("请输入产品名称,英文必填");
+                    return
+                }
+                callback()
+            }, validatorSpecPrice: function (rule, value, callback) {
+                if (typeof value === 'undefined' || value === null) {
+                    callback()
+                    return
+                } else {
+                    if (!/^\d+(?=\.{0,1}\d+$|$)/.test(value)) {
+                        callback('请输入有效数字')
+                        return
+                    }
+                    value = parseInt(value)
+                    if (value > 999999999) {
+                        callback('输入数字过长')
+                        return
+                    }
+                    if (value.length < 1) {
+                        callback()
+                        return
+                    }
+                    if (value > 99999999) {
+                        callback('请输入数字,长度在1-8之间')
+                        return
+                    }
+                    var price = this.$data.status.price
+                    if (price != null) {
+                        if (parseInt(price) <= value) {
+                            callback()
+                        } else {
+                            callback('规格价格必须大于等于商城价格')
+                        }
+                    } else {
+                        callback('请先输入商城价,在输入该价格')
+                    }
+                }
+            },
+            validatePic: function (rule, value, callback) {
+                if (value == null) {
+                    callback("请上传图片")
+                }
+                var length = 0;
+                for (var ever in value) {
+                    length++;
+                }
+                if (length > 0) {
+                    callback()
+                    return;
+                }
+                callback("请上传图片");
+            }, validateSpecPic: function (rule, value, callback) {
+                var colorId = value.color
+                var specItem = this.$data.status.spec
+                var length = 0
+                for (var i = 0; i < specItem.length; i++) {
+                    if (specItem[i].color === colorId) {
+                        if (specItem[i].pic != null) {
+                            for (var key in specItem[i].pic) {
+                                length++
+                            }
+                        }
+                    }
+                }
+                if (length > 0) {
+                    callback()
+                } else {
+                    var self = this
+                    for (var i = 0; i < this.$data.temp.specColor.length; i++) {
+                        if (this.$data.temp.specColor[i].id === colorId && this.$data.temp.message[colorId] == null) {
+                            this.$notify({
+                                title: '提示',
+                                message: "产品规格 颜色:[" + this.$data.temp.specColor[i].name + "]必须上传一张图片",
+                                duration: 0,
+                                onClose: function (vue) {
+                                    delete  self.$data.temp.message[colorId];
+                                }
+                            })
+                            this.$data.temp.message[colorId] = colorId
+                        }
+                    }
+                    ;
+                    callback("请上传图片");
+                }
+            }
+            ,
+            syncs: function (fld, d, type) {
+                var self = this
+                var spec = self.status.spec;
+                if (!d) {
+                    if (fld === 'sku') {
+                        for (var i = 1; i < spec.length; i++) {
+                            self.$set(spec[i], fld, spec[0][fld])
+                        }
+                    } else {
+                        validatorNumbers(null, spec[0][fld], function (value) {
+                            if (!value || value < 1) {
+                                for (var i = 1; i < spec.length; i++) {
+                                    self.$set(spec[i], fld, spec[0][fld])
+                                }
+                            }
+                        })
+                    }
+                } else {
+
+                    validatorNumbers(null, d[fld], function (value) {
+                        if (!value || value < 1) {
+                            for (var i = 0; i < spec.length; i++) {
+                                if (spec[i][type] === d[type]) {
+                                    self.$set(spec[i], fld, d[fld])
+                                }
+                            }
+                        }
+                    })
+                }
+
+            }
+            ,
+            genrateNumber: function () {
+                var self = this;
+                this.post("/seller/pdt_PdtProduct_getSeqnumInt", null, function (res) {
+                    self.$set(self.$data.status, "number_right", res.data.CODE)
+                    self.$data.genrateNumberFirst = true;
+                }, function error(err) {
+                    self.$message({
+                        message: "生成编号错误" + err,
+                        type: 'warning'
+                    });
+                })
+
+            }, load() {
+                var self = this;
+                this.get("/seller/pdt_PdtAttr_AttrList", null, function (res) {
+                    if (res.data.ret == 1) {
+                        self.$set(self, "attr", res.data.result)
+                    }
+                }, function (err) {
+                    self.$message({
+                        message: "载入产品属性信息错误" + err,
+                        type: 'warning'
+                    });
+                })
+                this.get("/seller/pdt_PdtColor_getColorList", null, function (res) {
+                    var color = []
+                    // let colorattr = []
+                    for (var i = 0; i < res.data.result.length; i++) {
+                        var t = res.data.result[i];
+                        color.push({id: t.id, name: t.name, createBy: t.create_by, rowVersion: t.row_version})
+                    }
+
+                    self.$set(self, "color", color)
+                }, function (err) {
+                    self.$message({
+                        message: "载入产品颜色信息错误" + err,
+                        type: 'warning'
+                    });
+                })
+                this.get("/seller/pdt_PdtCat_getPdtCatList", null, function (res) {
+                    self.$set(self, "productCats", res.data.result)
+                }, function (err) {
+                    self.$message({
+                        message: "载入产品分类信息错误" + err,
+                        type: 'warning'
+                    });
+                })
+                this.get("/seller/usr_UsrProductCategory_getCategoryTree", null, function (res) {
+                    if (res.data.items === null || res.data.items.length < 1) {
+                        self.$alert('请添加店铺分类', '消息', {
+                            confirmButtonText: '确定',
+                        });
+                    } else {
+                        self.$set(self, "supplierCat", formateArray(res.data.items))
+                    }
+                }, function (err) {
+                    self.$message({
+                        message: "载入产品规格信息错误" + err,
+                        type: 'warning'
+                    });
+                })
+                this.get("/plt_PltConfig_enabledLanguage", null, function (res) {
+                    self.$set(self, "language", res.data)
+                }, function (err) {
+                    self.$message({
+                        message: "载入语言信息错误" + err,
+                        type: 'warning'
+                    });
+                })
+
+                var id = getParms("id", -1)
+                if (id > 0) {
+                    self.showBack = true
+                    this.get(
+                        getParms("copy", -1) > 0 ? "/seller/pdt_PdtProduct_copyProduct" :
+                            "/seller/pdt_PdtProduct_viewProduct",
+                        {
+                            id: id
+                        },
+                        function (ress) {
+                            self.get("/seller/pdt_PdtSize_listAll", {productcategory: ress.data.result.productCat}, function (res) {
+                                var size = []
+                                var tempsize = []
+                                var stastus_size = ress.data.result.specSize;
+                                for (var i = 0; i < res.data.items.length; i++) {
+                                    var t = res.data.items[i];
+                                    var tt = {id: t.pkey, name: t.name, createBy: t.createBy, rowVersion: t.rowVersion}
+                                    size.push(tt)
+                                    for (var j = 0; j < stastus_size.length; j++) {
+                                        if (t.pkey == stastus_size[j]) {
+                                            tempsize.push(tt)
+                                        }
+                                    }
+                                }
+                                self.$set(self, "size", size)
+                                self.$set(self.$data.temp, "specSize", tempsize)
+                                var tempcolor = [];
+                                var stastus_color = ress.data.result.specColor;
+                                var color = self.$data.color
+                                for (var i = 0; i < stastus_color.length; i++) {
+                                    for (var key in color) {
+                                        if (color[key].id == stastus_color[i]) {
+                                            tempcolor.push(color[key]);
+                                        }
+                                    }
+                                }
+                                self.$set(self.$data.temp, "specColor", tempcolor)
+
+                                self.$set(self, "status", ress.data.result)
+                                var temp = {}
+                                for (var key in ress.data.result.attr) {
+                                    temp[getTreeDeepArrs(ress.data.result.attr[key], self.attr, "id", "items")[0]] = ress.data.result.attr[key]
+                                }
+                                self.$set(self.temp, "attr", temp)
+
+                                self.$set(self.$data.temp, "productCat", getTreeDeepArr(ress.data.result.productCat, self.$data.productCats))
+                                self.$set(self.$data.temp, "supplierCat", getTreeDeepArr(ress.data.result.supplierCat, self.$data.supplierCat))
+                                if (self.temp.activeTabName && self.temp.activeTabName.length > 0) {
+                                    self.um.setContent(ress.data.result.description[self.$data.language[self.temp.activeTabName].shortName])
+                                } else {
+                                    self.um.setContent(ress.data.result.description[self.$data.language[0].shortName])
+                                }
+                            }, function (err) {
+                                self.$message({
+                                    message: '载入商品信息时发生错误' + err,
+                                    type: 'warning'
+                                });
+                            })
+                        }, function (err) {
+                            self.$message({
+                                message: "载入商品信息时发生错误" + err,
+                                type: 'warning'
+                            });
+                        }
+                    )
+                }
+                sessionStorage["save"] = JSON.stringify(this.$data)
+            }
+            ,
+            submitForm(formName) {
+                var self = this;
+                if (self.temp.activeTabName && self.temp.activeTabName.length > -1) {
+                    self.status.description[self.language[self.temp.activeTabName].shortName] = self.um.getContent()
+                } else {
+                    self.status.description[self.language[0].shortName] = self.um.getContent()
+                }
+                var temp = 0
+                for (var key in self.errorMessages) {
+                    if (self.errorMessages[key] && self.errorMessages[key].length > 0) {
+                        temp++;
+                    }
+                }
+                if (!validatordescription(self.status.description)) {
+                    this.$alert('请完善商品详情信息', '消息', {
+                        confirmButtonText: '确定',
+                    });
+                    return
+                }
+                if (self.status.spec.length < 1) {
+                    this.$alert('请添加规格', '消息', {
+                        confirmButtonText: '确定',
+                    });
+                    return
+                }
+                var temp_attr = [];
+                for (var key in self.temp.attr) {
+                    temp_attr.push(self.temp.attr[key])
+                }
+                self.status.attr = temp_attr;
+                this.$refs[formName].validate((valid) => {
+                    if (valid && temp === 0 && validatordescription(self.status.description)) {
+                        self.loading = true;
+                        self.loadingTitle = "提交中,请等待翻译结束"
+                        self.post(
+                            "/seller/pdt_PdtProduct_saveProduct",
+                            {data: JSON.stringify(self.status)},
+                            function (res) {
+                                if (res.data.ret == 1) {
+                                    self.$alert('添加成功', '消息', {
+                                        confirmButtonText: '确定',
+                                        callback: action => {
+                                            window.location.href = "/seller/admin/index/Product-List.html";
+                                        }
+                                    });
+                                } else {
+                                    self.$alert(res.data.msg, '消息', {
+                                        confirmButtonText: '确定',
+                                    });
+                                }
+                                self.loading = false;
+                                self.load()
+                            },
+                            function (err) {
+                                self.$alert("保存商品失败" + err, '消息', {
+                                    confirmButtonText: '确定',
+                                });
+                                self.loading = false;
+                            }
+                        )
+                    } else {
+                        console.log(valid)
+                        this.$alert('请完善商品信息', '消息', {
+                            confirmButtonText: '确定',
+                        });
+                        //  console.log('error submit!!');
+                        return false;
+                    }
+                });
+            }
+            ,
+            resetForm(formName) {
+                var self = this
+                var obj = JSON.parse(sessionStorage["save"]);
+                var text
+                if (self.temp.activeTabName && self.temp.activeTabName.length > 0) {
+                    text = obj["status"].description[self.$data.language[self.temp.activeTabName].shortName]
+                } else {
+                    text = obj["status"].description[self.$data.language[0].shortName]
+                }
+                if (text) {
+                    self.um.setContent(text)
+                } else {
+                    self.um.setContent("")
+                }
+                self.$set(self, "status", obj["status"])
+                self.$set(self, "temp", obj["temp"])
+                self.$set(self, "genrateNumberFirst", false)
+            }
+            ,
+            handleRemove(file, d) {
+                if (file.status === 'success')
+                    if (d == null) {
+                        delete  this.status.pdtPics[file.name];
+                    } else {
+                        for (var key in this.status.spec) {
+                            if (this.status.spec[key].color === d.id) {
+                                delete  this.status.spec[key].pic[file.name]
+                            }
+                        }
+                    }
+
+            }
+            ,
+            handlesuccess: function (response, file, d) {
+                if (response.result === null || typeof response.result === 'undefined') {
+                    this.$notify({
+                        title: '提示',
+                        message: '网络错误建议重新上传'
+                    });
+                    return;
+                }
+                if (response.result.state == "SUCCESS") {
+                    if (d == null) {
+                        var pdtimg = this.status.pdtPics
+                        if (pdtimg == null) {
+                            pdtimg = {}
+                        }
+                        pdtimg[response.result.originalName] = response.result.url
+                        this.$set(this.$data.status, "pdtPics", pdtimg)
+                    }
+                    else {
+                        for (var key in this.status.spec) {
+                            console.log(this.status.spec[key].color)
+                            if (this.status.spec[key].color === d.id) {
+                                this.status.spec[key].pic[response.result.originalName] = response.result.url
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            ,
+            selectPdtCat: function (id, i) {
+                var self = this
+                this.get("/seller/pdt_PdtSize_listAll", {productcategory: id[id.length - 1]}, function (res) {
+                    var size = []
+                    for (var i = 0; i < res.data.items.length; i++) {
+                        var t = res.data.items[i];
+                        // size.push({id: t.pkey, name: t.name})
+                        // size.push()
+                        size.push({id: t.pkey, name: t.name, createBy: t.createBy, rowVersion: t.rowVersion})
+                    }
+                    self.$set(self, "size", size)
+                }, function (error) {
+                    if (i && i > 3) {
+                        self.$message({
+                            message: "获取产品尺码信息失败" + error,
+                            type: 'warning'
+                        });
+                    } else {
+                        self.selectPdtCat(id, i ? i++ : i = 0)
+                    }
+                })
+            }
+        },
+        beforeCreate: function () {
+            this.post = function (url, data, then, error) {
+                axios({
+                    method: "POST",
+                    url: url,
+                    data: Qs.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                }).then(then).catch(error);
+            }
+            this.get = function (url, parm, then, error) {
+                axios.get(url, {
+                    params: parm
+                }).then(then).catch(error)
+            }
+        }
+        ,
+        beforeUpdate: function () {
+            if (this.status.qty == 0) {
+                this.status.qty = this.result.min_oq
+            }
+
+            // var self = this
+            // console.log(self.language)
+            // for (var key in this.language) {
+            //     self["um" + this.language[key].shortName] = ;
+            //     self["um" + this.language[key].shortName].setHeight(600)
+            //     self["um" + this.language[key].shortName]
+            //     console.log("um_" + this.language[key].shortName)
+            // }
+        }
+        , mounted() {
+            this.um = UM.getEditor('description', {imageUrl: '/seller/pdt_PdtProduct_upload'})
+            this.um.setHeight(600);
+            this.load()
+        },
+        watch: {
+            "createSpec":
+                function (n, o) {
+                    var self = this;
+                    var specs = self.status.spec
+                    var color = self.temp.specColor;
+                    var size = self.temp.specSize;
+                    var newspec = []
+                    if (n.length > 0) {
+                        for (var i = 0; i < color.length; i++) {
+                            for (var j = 0; j < size.length; j++) {
+                                var key = size[j].name + "-" + color[i].name;
+                                newspec.push({
+                                    id: -1,
+                                    name: key,
+                                    sku: null,
+                                    pic: {},
+                                    price: null,
+                                    stock: null,
+                                    weight: null,
+                                    color: color[i].id,
+                                    size: size[j].id
+                                })
+                            }
+                        }
+                        for (var i = 0; i < newspec.length; i++) {
+                            for (var j = 0; j < specs.length; j++) {
+                                if (newspec[i].size === specs[j].size && specs[j].color === newspec[i].color) {
+                                    newspec[i] = specs[j]
+                                }
+                            }
+                        }
+                        self.$set(self.$data.status, "spec", newspec);
+                        self.$set(self.$data.status, "specColor", [])
+                        self.$set(self.$data.status, "specSize", [])
+                        for (var key in color) {
+                            self.$data.status.specColor.push(color[key].id)
+                        }
+                        for (var key in size) {
+                            if (size[key] && size[key].id) {
+                                if (size[key] !== 'null') {
+                                    self.$data.status.specSize.push(size[key].id)
+                                }
+                            }
+                        }
+                    }
+                },
+            "temp.productCat": function (n, o) {
+                if (typeof this.$data.temp.productCat != "undefined") {
+                    if (this.$data.temp.productCat.length > 0) {
+                        this.$set(this.$data.status, "productCat", this.$data.temp.productCat[this.$data.temp.productCat.length - 1])
+                    }
+                }
+            }, "temp.supplierCat": function (n, o) {
+                if (typeof this.$data.temp.supplierCat != "undefined") {
+                    if (this.$data.temp.supplierCat.length > 0) {
+                        this.$set(this.$data.status, "supplierCat", this.$data.temp.supplierCat[this.$data.temp.supplierCat.length - 1])
+                    }
+                }
+            }
+
+        }
+
+    })
+
+</script>
+<style>
+    .spec-table {
+        width: 100%;
+    }
+
+    .spec-table td {
+        width: 250px;
+    }
+
+    .spec-table tr:first-child {
+        background: #EEEEEE;
+    }
+
+    .spec-table tr:nth-of-type(2) {
+        background: #F7F7F7;
+    }
+</style>
+
+</html>

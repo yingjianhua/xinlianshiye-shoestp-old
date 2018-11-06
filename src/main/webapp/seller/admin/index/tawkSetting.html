@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		 <meta charset="UTF-8">
+    <title>An Online B2B market——-Shoestp.com,gathering 300 professional shoes manufacture companies Business backstage</title>
+    <script type="text/javascript" src="../../../umeditor1_2_2/third-party/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../../umeditor1_2_2/umeditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../../umeditor1_2_2/umeditor.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../../umeditor1_2_2/umeditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../../umeditor1_2_2/umeditor.js"></script>
+    <link href="../../../umeditor1_2_2/themes/default/css/umeditor.css" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../../static/admin/layui/css/layui.css"/>
+    <script src="../../static/admin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="../../static/admin/css/admin.css"/>
+    <script src="/home/static/js/vue.min.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
+    <script src="/home/static/js/qs.js"></script>
+    <script src="/home/static/js/axios.min.js"></script>
+    <script src="/home/static/js/element-ui.js"></script>
+    <link rel="stylesheet" type="text/css" href="/home/static/css/element-ui.css"/>
+    <style type="text/css">
+		.el-form-item__label{
+			width:188px;
+		}    
+		.el-input__inner{
+			width:360px;
+		}
+		
+		.el-cascader .el-input input{
+			width:188px;
+		}
+		
+		.el-form-item__content .el-input{
+			width:188px;
+		}
+		
+		.el-form-item__content .el-input .el-input__inner{
+			width:188px;
+		}
+		.avatar-uploader .el-upload {
+		    border: 1px dashed #d9d9d9;
+		    border-radius: 6px;
+		    cursor: pointer;
+		    position: relative;
+		    overflow: hidden;
+		  }
+		  .avatar-uploader .el-upload:hover {
+		    border-color: #409EFF;
+		  }
+		  .avatar-uploader-icon {
+		    font-size: 28px;
+		    color: #8c939d;
+		    width: 178px;
+		    height: 178px;
+		    line-height: 178px;
+		    text-align: center;
+		  }
+		  .avatar {
+		    width: 178px;
+		    height: 178px;
+		    display: block;
+		  }
+    </style>
+	</head>
+<body>
+	<div id="main">
+		 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+				  <legend>在线聊天设置</legend>
+		</fieldset>
+		
+		<div v-if="settingFlag == false" style="padding-left: 32px;">
+			<a href="https://dashboard.tawk.to/signup" target="_blank">没有tawk账号?去注册</a>/
+			<a @click="toSetting">已有 tawk账号,进入设置</a>
+		</div>
+		
+		<el-form label-width="80px" v-if="settingFlag">
+			<el-form-item label="标题" label-width="188px">
+	    		<el-input v-model="bean.title"></el-input><!-- v-model="form.name" -->
+		  	</el-form-item>
+		  	
+		  	<el-form-item label="代码内容" label-width="188px" style="width:780px;">
+	    		<el-input type="textarea" autosize v-model="bean.demo"></el-input><!-- v-model="form.name" -->
+		  	</el-form-item>
+		  	
+		  	<el-form-item label="类型" label-width="188px">
+	    		<el-select v-model="bean.type" placeholder="请选择" @change="select"><!--  @change="select" -->
+				    <el-option
+				      v-for="item in types"
+				      :key="item.key"
+				      :label="item.value"
+				      :value="item.key">
+				    </el-option>
+				  </el-select>
+		  	</el-form-item>
+		  	
+		  	<el-form-item label="启用/停用" label-width="188px">
+	    		<el-switch
+				  v-model="bean.enabled"
+				  active-color="#13ce66"
+				  inactive-color="#ff4949">
+				</el-switch>
+		  	</el-form-item>
+		  	<el-form-item label-width="188px">
+	  			<el-button style="background-color: #009688;color: #fff;" @click="bean.pkey == ''?addThisIm('bean'):editThisIm('bean')">{{bean.pkey == ''?'确认添加':'确认修改'}}</el-button>
+	  			<el-button v-if="bean.account != ''" style="background-color: #009688;color: #fff;" @click="toManager('bean')">进入消息平台</el-button>
+	  		</el-form-item>
+		</el-form>
+		
+		<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+		</fieldset>
+		
+		<div v-if="nextSetting" style="padding-left: 32px;">
+			<a @click="toSetNextIm">继续设置{{next}}</a>
+		</div>
+		<el-form label-width="80px" v-if="nextSettingForm">
+			<el-form-item label="标题" label-width="188px">
+	    		<el-input v-model="bean2.title"></el-input><!-- v-model="form.name" -->
+		  	</el-form-item>
+		  	
+		  	<el-form-item label="代码内容" label-width="188px" style="width:780px;">
+	    		<el-input type="textarea" autosize v-model="bean2.demo"></el-input><!-- v-model="form.name" -->
+		  	</el-form-item>
+		  	
+		  	<el-form-item label="类型" label-width="188px">
+	    		<el-select v-model="bean2.type" placeholder="请选择">
+				    <el-option
+				      v-for="item in types2"
+				      :key="item.key"
+				      :label="item.value"
+				      :value="item.key"
+				      :disabled="item.disabled">
+				    </el-option>
+				  </el-select>
+		  	</el-form-item>
+		  	
+		  	<el-form-item label="启用/停用" label-width="188px">
+	    		<el-switch
+				  v-model="bean2.enabled"
+				  active-color="#13ce66"
+				  inactive-color="#ff4949">
+				</el-switch>
+		  	</el-form-item>
+		  	
+	  		<el-form-item label-width="188px">
+	  			<el-button style="background-color: #009688;color: #fff;" @click="bean2.pkey == ''?addThisIm('bean2'):editThisIm('bean2')">{{bean2.pkey == ''?'确认添加':'确认修改'}}</el-button>
+	  			<el-button v-if="bean2.account != ''" style="background-color: #009688;color: #fff;" @click="toManager('bean2')">进入消息平台</el-button>
+	  		</el-form-item>
+		</el-form>
+	</div>
+	<script>
+	var layer;
+	layui.use(['layer','jquery'], function(){
+		layer 	= layui.layer;
+	})
+		var app = new Vue({
+			el:"#main",
+			 data() {
+			      return {
+			    	imList:[],
+			    	bean:{
+			    		pkey:'',
+			    		enabled:false,
+			    		demo:'',
+			    		title:'',
+			    		type:'',
+			    		account:''
+			    	},
+			    	bean2:{
+			    		pkey:'',
+			    		enabled:'',
+			    		demo:'',
+			    		title:'',
+			    		type:'',
+			    		account:''
+			    	},
+			    	nextSetting:false,
+			    	nextSettingForm:false,
+			    	next:'',
+			    	settingFlag:false,
+			    	twoFlag:false,
+			        types: [],
+			        types2: [],
+			        value2: true,
+			        device:'',
+			        threeFlag:false,
+			      }
+			    },
+			    methods:{
+			    	toSetting:function(){
+			    		this.settingFlag = true;
+			    	},
+			    	trimBlank:function(str){
+			    		return str.replace(/\s+/g, "");
+			    	},
+			    	toSetNextIm:function(){
+			    		this.nextSettingForm = true;
+			    	},
+			    	toManager:function(btn){
+			    		var self = this;
+			    		window.open('https://dashboard.tawk.to/#/admin/'+self[btn].account);
+			    	},
+			    	select:function(){
+			    		if(this.bean.type == 1){
+			    			this.next = '手机';
+			    			if(this.imList.length > 0){
+			    				this.bean2.type = 0;
+				    			this.nextSetting = true;
+			    			}
+			    		}else if(this.bean.type == 0){
+			    			this.next = '电脑';
+			    			if(this.imList.length > 0){
+			    				this.bean2.type = 1;
+				    			this.nextSetting = true;
+			    			}
+			    		}else if(this.bean.type == 2){
+			    			this.nextSetting = false;
+			    			this.nextSettingForm = false;
+			    		}
+			    		
+			    		for(var i = 0;i<this.types2.length;i++){
+							if(this.types2[i].key == 2){
+								this.types2[i].disabled = true;
+							}else if(this.types2[i].key == this.bean.type){
+								this.types2[i].disabled = true;
+							}else{
+								this.types2[i].disabled = false;
+							}
+		            	} 
+			    	},
+			    	editThisIm:function(btn){
+			    		var self = this;
+			    		var enabled = self[btn].enabled;
+			    		var param = {};
+			    		if(enabled == true){
+			    			param['bean.enabled'] = 1;
+			    		}else{
+			    			param['bean.enabled'] = 0;
+			    		}
+			    		var demo = self[btn].demo;
+			    		param['bean.pkey'] = self[btn].pkey;
+			    		param['bean.demo'] = demo;
+			    		param['bean.title'] = self[btn].title;
+			    		param['bean.type'] = self[btn].type;
+			    		 self.post("/seller/usr_UsrSupIm_updImSetting",param,
+	                            function (res) {
+			    					console.log(res);
+		        		  			 if(res.data.ret == 1){
+		        		  				 self.$alert('修改成功', '消息', {
+			                                confirmButtonText: '确定',
+			                                callback: action => {
+			                                   location.reload();
+			                                  }
+			                             });
+		        		  			}else{
+		        		  				layer.msg(res.data.msg,{icon:2,time:2000})
+		        		  			}
+	                            },
+	                            function (err) {
+	                                self.$alert(err, '消息', {
+	                                    confirmButtonText: '确定',
+	                                });
+	                                parent.hideShade();
+	                                self.loading = false;
+	                            }
+	                        ) 
+			    	},
+			    	addThisIm:function(btn){
+			    		var self = this;
+			    		var enabled = self[btn].enabled;
+			    		var param = {};
+			    		if(enabled == true){
+			    			param['bean.enabled'] = 1;
+			    		}else{
+			    			param['bean.enabled'] = 0;
+			    		}
+			    		var demo = self[btn].demo;
+			    		if(demo == '' || demo == undefined){
+			    			self.$alert("请输入tawk代码", '消息', {
+                                confirmButtonText: '确定',
+                            });
+			    			return;
+			    		}
+			    		if(self[btn].type == ''){
+			    			self.$alert("请选择设备类型", '消息', {
+                                confirmButtonText: '确定',
+                            });
+			    			return;
+			    		}
+			    		param['bean.demo'] = demo;
+			    		param['bean.title'] = self[btn].title;
+			    		param['bean.type'] = self[btn].type;
+			    		
+			    		console.log(param);
+			    		 self.post("/seller/usr_UsrSupIm_addImSetting",param,
+	                            function (res) {
+		        		  			 if(res.data.ret == 1){
+		        		  				 self.$alert('添加成功', '消息', {
+			                                confirmButtonText: '确定',
+			                                callback: action => {
+			                                   location.reload();
+			                                  }
+			                             });
+		        		  			}else{
+		        		  				layer.msg(res.data.msg,{icon:2,time:2000})
+		        		  			}
+	                            },
+	                            function (err) {
+	                                self.$alert(err, '消息', {
+	                                    confirmButtonText: '确定',
+	                                });
+	                                parent.hideShade();
+	                                self.loading = false;
+	                            }
+	                        ) 
+			    	}
+			    },
+			    beforeCreate: function () {
+		            this.post = function (url, data, then, error) {
+		                axios({
+		                    method: "POST",
+		                    url: url,
+		                    data: Qs.stringify(data),
+		                    headers: {
+		                        'Content-Type': 'application/x-www-form-urlencoded'
+		                    }
+		                }).then(then).catch(error);
+		            }
+		            this.get = function (url, parm, then, error) {
+		                axios.get(url, {
+		                    params: parm
+		                }).then(then).catch(error)
+		            }
+		        },
+		    mounted:function(){
+		    	var self = this;
+		    	self.get("/seller/usr_UsrSupIm_getDeviceType", null, function (res) {
+		    		self.$set(self, "types", res.data.items);
+		    		self.$set(self, "types2", res.data.items);
+	            }, function (err) {
+	                console.log(err);
+	            })
+	            self.get("/seller/usr_UsrSupIm_getImSetting", null, function (res) {
+	            	self.$set(self, "imList", res.data.items);
+	            	var items = res.data.items;
+	            	console.log(items)
+	            	if(items.length > 0){
+	            		self.settingFlag = true;
+	            	}
+	            	if(items.length == 1){
+	            		self.bean.pkey = items[0].pkey;
+		            	self.bean.enabled = items[0].enabled == 1?true:false;
+		            	self.bean.demo = items[0].demo;
+		            	self.bean.title = items[0].title;
+		            	self.bean.type = items[0].type;
+		            	self.bean.account = items[0].account;
+	            	}else if(items.length == 2){
+	            		self.bean.pkey = items[0].pkey;
+		            	self.bean.enabled = items[0].enabled == 1?true:false;
+		            	self.bean.demo = items[0].demo;
+		            	self.bean.title = items[0].title;
+		            	self.bean.type = items[0].type;
+		            	self.bean.account = items[0].account;
+	            		self.bean2.pkey = items[1].pkey;
+		            	self.bean2.enabled = items[1].enabled == 1?true:false;
+		            	self.bean2.demo = items[1].demo;
+		            	self.bean2.title = items[1].title;
+		            	self.bean2.type = items[1].type;
+		            	self.bean2.account = items[1].account;
+		            	
+	            	}
+	            	for(var i = 0;i<self.types2.length;i++){
+						if(self.types2[i].key == 2){
+							self.types2[i].disabled = true;
+						}else if(self.types2[i].key == self.bean.type){
+							self.types2[i].disabled = true;
+						}
+	            	} 
+	            	
+	            	if(self.bean2.pkey != ""){
+	            		self.nextSettingForm = true;
+	            	}
+	            	if(self.bean.type == 1 && self.bean.type != 2 && self.bean2.pkey == "" && self.imList.length > 0){
+	            		self.next = '手机';
+	            		self.nextSetting = true;
+	            	}else if(self.bean.type == 0 && self.bean.type != 2 && self.bean2.pkey == "" && self.imList.length > 0){
+	            		self.next = '电脑';
+	            		self.nextSetting = true;
+	            	}else if(self.bean.type == 2 && self.bean2.pkey == ""){
+	            		self.nextSetting = false;
+	            	}
+	            }, function (err) {
+	                console.log(err);
+	            })
+		    }
+		});
+	</script>
+	</body>
+</html>

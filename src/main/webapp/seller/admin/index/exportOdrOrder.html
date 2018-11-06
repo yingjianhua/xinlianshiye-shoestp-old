@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>An Online B2B market——-Shoestp.com,gathering 300 professional shoes manufacture companies Business backstage</title>
+    <link rel="stylesheet" type="text/css" href="../../static/admin/layui/css/layui.css"/>
+    <link rel="stylesheet" type="text/css" href="../../static/admin/layui/css/laydate.css"/>
+    <link rel="stylesheet" type="text/css" href="../../static/admin/css/admin.css"/>
+    <script src="../../static/admin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../static/admin/js/jquery-1.11.1.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../static/admin/js/common.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../static/admin/js/main.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+<div class="layui-card">
+    <div class="layui-card-header">筛选日期</div>
+    <div class="layui-card-body">
+        <form class="layui-form">
+            <div class="layui-row">
+                <div class="layui-inline">
+                    <label class="layui-form-label">从</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="date" id="startDate" lay-verify="date" placeholder="起始时间"
+                               autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">到</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="date" id="endDate" lay-verify="date" placeholder="结束时间"
+                               autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item" pane="">
+                <label class="layui-form-label">导出字段</label>
+                <div class="layui-input-block" id="flds">
+                </div>
+            </div>
+            <div class="layui-row">
+                <button class="layui-btn" id="download">筛选并下载</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+</body>
+<script>
+    $(document).ready(function () {
+        var initdata = [
+            {title: "订单号", fld: "orderid", check: true, disabled: true},
+            {title: "邮箱（用户ID）", fld: "email", check: false, disabled: false},
+            {title: "国家", fld: "country", check: false, disabled: false},
+            {title: "下单时间", fld: "odrtime", check: false, disabled: false},
+            {title: "运费", fld: "freightprice", check: false, disabled: false},
+            {title: "保险费", fld: "safeprice", check: false, disabled: false},
+            {title: "订单总额", fld: "countprice", check: false, disabled: false},
+            {title: "订单状态", fld: "odrtpye", check: false, disabled: false},
+            // {title: "配送方式", fld: "odrstate", check: false, disabled: false},
+
+            {title: "付款方式", fld: "paytype", check: false, disabled: false},
+            {title: "收货姓名", fld: "name", check: false, disabled: false},
+            {title: "收货地址", fld: "address", check: false, disabled: false}
+        ]
+        $.each(initdata, function (i, d) {
+            var option = "<input type='checkbox' class='flds'  lay-skin=\"primary\" title='" + d.title + "'"
+            option = option + "fld='" + d.fld + "' "
+            if (d.check) {
+                option += "checked "
+            }
+            if (d.disabled) {
+                option += "disabled "
+            }
+            $("#flds").append(option + ">");
+        })
+        $("#download").bind("click", function () {
+            url = "./odr_OdrExportExcel_export?";
+            $("input.flds").each(function () {
+                if ($(this).prop("checked")) {
+                    url = url + "fld=" + $(this).attr("fld") + "&"
+                }
+            })
+            var startDate = $("#startDate").val();
+            if (startDate != null || startDate.length > 1) {
+                url = url + "startDate=" + startDate + "&"
+            }
+            var endDate = $("#endDate").val();
+            if (endDate != null || endDate.length > 1) {
+                url = url + "endDate=" + endDate
+            }
+            window.open(url);
+        })
+    })
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        lay('.date').each(function () {
+            laydate.render({
+                elem: this
+                , trigger: 'click', done: function (value, date, endDate) {
+                    // alert(value); //得到日期生成的值，如：2017-08-18
+                }
+            });
+        });
+    });
+</script>
+</html>

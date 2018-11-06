@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./jquery-3.2.1.js"></script>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        .w_1200{
+            width: 1200px;
+            min-width: 1200px;
+            margin: 0 auto;
+        }
+        .fl{
+            float: left;
+        }
+        .fr{
+            float: right;
+        }
+        .clear{
+            clear: both;
+        }
+        ul,li{
+            list-style: none;
+        }
+        img{
+            width: 100%;  
+            height: 100%;       
+        }
+        #inquire_list{
+            font-size: 14px;
+        }
+        #inquire_list ul li:first-child{
+            border-top: 1px solid #f2f2f2;
+        }
+        #inquire_list ul li{
+            padding: 60px 0 ;
+            border-bottom: 1px solid #f2f2f2;          
+        }
+        #inquire_list ul li .icon-email{
+            display: inline-block;
+            width: 12px;
+            height: 8px;
+            background: url('./images/email.png') 100% 100% no-repeat;
+        }
+        #inquire_list ul li .icon-name{
+            display: inline-block;
+            width: 10px;
+            height: 12px;
+            background: url('./images/name.png') 100% 100% no-repeat;
+        }
+        #inquire_list ul li>div{
+            width: 570px;
+        }
+        #inquire_list ul li div .img{
+            width: 240px;
+            font-size: 0;
+        }
+        #inquire_list ul li div .info{
+            width: 300px;
+            height: 240px;
+            position: relative;
+            font-size: 12px;
+        }
+        #inquire_list ul li div .info div{
+            line-height: 180%;
+        }
+        #inquire_list ul li div .info .email{
+            padding-bottom:20px;
+            border-bottom: 1px solid #f2f2f2;
+        }
+        #inquire_list ul li div .info .detail{
+            font-size: 12px;
+            padding-top: 20px;
+            height: 130px;
+            line-height: 150%;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 6;
+            -ms-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            white-space: normal;
+            word-wrap:break-word;
+            word-break:break-all;
+            word-wrap:break-word;
+            position: relative;
+            max-height: 130px;
+        }
+            /* #inquire_list ul li div .info .detail::after{
+                content: "...";
+                position: absolute;
+                bottom: 0; 
+                right: 0;
+                padding-left: 40px;
+                background: -webkit-linear-gradient(left, transparent, #fff 55%);
+                background: -o-linear-gradient(right, transparent, #fff 55%);
+                background: -moz-linear-gradient(right, transparent, #fff 55%);
+                background: linear-gradient(to right, transparent, #fff 55%);
+            } */
+        #inquire_list ul li div .info div:last-child .btn_detail{
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 30px;
+            width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #f2f2f2;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+        #inquire_list ul li div .info div:last-child .btn_detail .icon-detail{
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: url('./images/detail.png') 100% 100% no-repeat;
+        }
+        #inquire_list ul li div .info div:last-child div:nth-child(2){
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+        #inquire_list ul li div .info div:last-child .nation{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #inquire_list ul li div .info div:last-child .icon-nation{
+            display: inline-block;
+            width: 40px;
+            height: 28px;
+        }
+    </style>
+</head>
+<body>
+    <div class="w_1200" id="inquire_list">
+        <ul>
+            <li>
+                <div class="fl">
+                        <div class="img fl">
+                            <img src="./images/none.jpg" alt="">
+                        </div>
+                        <div class="info fr">
+                            <div>
+                                <div class="fl">
+                                    <i class="icon-name"></i>&nbsp;&nbsp;<span>Name:&nbsp;&nbsp; <span>nicole</span></span>
+                                </div>
+                                <div class="fr">
+                                    <span>2018.2.27</span>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="email">
+                                <i class="icon-email"></i>&nbsp;&nbsp;<span>E-mail:&nbsp;&nbsp;<span>111111@outlook.com</span></span>
+                            </div>
+                            <div class="detail">
+                                    Message: we aren's s we need shoes
+                            </div>
+                            <div>
+                                <div class="btn_detail">
+                                    <span>View Detail</span>&nbsp;&nbsp;
+                                    <i class="icon-detail"></i>
+                                </div>
+                                <div class="nation">
+                                    <span>From China：</span>
+                                    <i class="icon-nation"><img src="./images/nation.png" alt=""></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                </div>
+                <div class="fr">
+                        <div class="img fl">
+                                <img src="./images/shoes.jpg" alt="">
+                            </div>
+                            <div class="info fr">
+                                <div>
+                                    <div class="fl">
+                                        <i class="icon-name"></i>&nbsp;&nbsp;<span>Name:&nbsp;&nbsp; <span>nicole</span></span>
+                                    </div>
+                                    <div class="fr">
+                                        <span>2018.2.27</span>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                                <div class="email">
+                                    <i class="icon-email"></i>&nbsp;&nbsp;<span>E-mail:&nbsp;&nbsp;<span>111111@outlook.com</span></span>
+                                </div>
+                                <div class="detail" title="">
+                                        Message:2222222 sales wn's casual shoes sales n's casual shoes sales wn'n's casual shoes sales wn's can's casn's casual shoes sales wn's casual shoes sales wn's can's casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wsual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wsual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales ws casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wwn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wsual shoes sales wn's casual shoes sales wn's casual shoes sales w focused on men's casual shoes sales we need shoes customization,shoes providers. Could you tell me which port you ship?Usually how many days to produce? What kind of payment term you accept? pls email us.pls email us.pls email us.pls ema  Message: we are focused on men's casual shoes sales we need shoes  Message: we are focused on men's casual shoes sales we need shoes  Message: we are focused on men's casual shoes sales we need shoes
+                                </div>
+                                <div>
+                                    <div class="btn_detail">
+                                        <span>View Detail</span>&nbsp;&nbsp;
+                                        <i class="icon-detail"></i>
+                                    </div>
+                                    <div class="nation">
+                                        <span>From China：</span>
+                                        <i class="icon-nation"><img src="./images/nation.png" alt=""></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </li>
+            <li>
+                    <div class="fl">
+                            <div class="img fl">
+                                <img src="./images/none.jpg" alt="">
+                            </div>
+                            <div class="info fr">
+                                <div>
+                                    <div class="fl">
+                                        <i class="icon-name"></i>&nbsp;&nbsp;<span>Name:&nbsp;&nbsp; <span>nicole</span></span>
+                                    </div>
+                                    <div class="fr">
+                                        <span>2018.2.27</span>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                                <div class="email">
+                                    <i class="icon-email"></i>&nbsp;&nbsp;<span>E-mail:&nbsp;&nbsp;<span>111111@outlook.com</span></span>
+                                </div>
+                                <div class="detail">
+                                        Message:3333333 we aren's cn's casual shoes sales wn's casual shoes sales n's casual shoes sales wn'n's casual shoes sales wn's can's casn's casual shoes sales wn's casual shoes sales wn's can's casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wsual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wsual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales ws casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wwn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wsual shoes sales wn's casual shoes sales wn's casual shoes sales w focused on men's casual shoes sales we need shoes customization,shoes providers. Could you tell me which port you ship?Usually how many days to produce? What kind of payment term you accept? pls email us.pls email us.pls email us.pls ema  Message: we are focused on men's casual shoes sales we need shoes  Message: we are focused on men's casual shoes sales we need shoes  Message: we are focused on men's casual shoes sales we need shoes
+                                </div>
+                                <div>
+                                    <div class="btn_detail">
+                                        <span>View Detail</span>&nbsp;&nbsp;
+                                        <i class="icon-detail"></i>
+                                    </div>
+                                    <div class="nation">
+                                        <span>From China：</span>
+                                        <i class="icon-nation"><img src="./images/nation.png" alt=""></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                    </div>
+                    <div class="fr">
+                            <div class="img fl">
+                                    <img src="./images/shoes.jpg" alt="">
+                                </div>
+                                <div class="info fr">
+                                    <div>
+                                        <div class="fl">
+                                            <i class="icon-name"></i>&nbsp;&nbsp;<span>Name:&nbsp;&nbsp; <span>nicole</span></span>
+                                        </div>
+                                        <div class="fr">
+                                            <span>2018.2.27</span>
+                                        </div>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="email">
+                                        <i class="icon-email"></i>&nbsp;&nbsp;<span>E-mail:&nbsp;&nbsp;<span>111111@outlook.com</span></span>
+                                    </div>
+                                    <div class="detail">
+                                            Message: 44444we aren's cn's casual shoes sales wn's casual shoes sales n's casual shoes sales wn'n's casual shoes sales wn's can's casn's casual shoes sales wn's casual shoes sales wn's can's casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wsual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wsual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales ws casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wwn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wsual shoes sales wn's casual shoes sales wn's casual shoes sales w focused on men's casual shoes sales we need shoes customization,shoes providers. Could you tell me which port you ship?Usually how many days to produce? What kind of payment term you accept? pls email us.pls email us.pls email us.pls ema  Message: we are focused on men's casual shoes sales we need shoes  Message: we are focused on men's casual shoes sales we need shoes  Message: we are focused on men's casual shoes sales we need shoes
+                                    </div>
+                                    <div>
+                                        <div class="btn_detail">
+                                            <span>View Detail</span>&nbsp;&nbsp;
+                                            <i class="icon-detail"></i>
+                                        </div>
+                                        <div class="nation">
+                                            <span>From China：</span>
+                                            <i class="icon-nation"><img src="./images/nation.png" alt=""></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                    </div>
+                    <div class="clear"></div>
+                </li>
+                <li>
+                        <div class="fl">
+                                <div class="img fl">
+                                    <img src="./images/none.jpg" alt="">
+                                </div>
+                                <div class="info fr">
+                                    <div>
+                                        <div class="fl">
+                                            <i class="icon-name"></i>&nbsp;&nbsp;<span>Name:&nbsp;&nbsp; <span>nicole</span></span>
+                                        </div>
+                                        <div class="fr">
+                                            <span>2018.2.27</span>
+                                        </div>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="email">
+                                        <i class="icon-email"></i>&nbsp;&nbsp;<span>E-mail:&nbsp;&nbsp;<span>111111@outlook.com</span></span>
+                                    </div>
+                                    <div class="detail">
+                                            Message: we aren's cn's casual shoes sales wn's casual shoes sales n's casual shoes sales wn'n's casual shoes sales wn's can's casn's casual shoes sales wn's casual shoes sales wn's can's casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wsual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wsual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales ws casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wwn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wsual shoes sales wn's casual shoes sales wn's casual shoes sales w focused on men's casual shoes sales we need shoes customization,shoes providers. Could you tell me which port you ship?Usually how many days to produce? What kind of payment term you accept? pls email us.pls email us.pls email us.pls ema  Message: we are focused on men's casual shoes sales we need shoes  Message: we are focused on men's casual shoes sales we need shoes  Message: we are focused on men's casual shoes sales we need shoes
+                                    </div>
+                                    <div>
+                                        <div class="btn_detail">
+                                            <span>View Detail</span>&nbsp;&nbsp;
+                                            <i class="icon-detail"></i>
+                                        </div>
+                                        <div class="nation">
+                                            <span>From China：</span>
+                                            <i class="icon-nation"><img src="./images/nation.png" alt=""></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                        </div>
+                        <div class="fr">
+                                <div class="img fl">
+                                        <img src="./images/shoes.jpg" alt="">
+                                    </div>
+                                    <div class="info fr">
+                                        <div>
+                                            <div class="fl">
+                                                <i class="icon-name"></i>&nbsp;&nbsp;<span>Name:&nbsp;&nbsp; <span>nicole</span></span>
+                                            </div>
+                                            <div class="fr">
+                                                <span>2018.2.27</span>
+                                            </div>
+                                            <div class="clear"></div>
+                                        </div>
+                                        <div class="email">
+                                            <i class="icon-email"></i>&nbsp;&nbsp;<span>E-mail:&nbsp;&nbsp;<span>111111@outlook.com</span></span>
+                                        </div>
+                                        <div class="detail">
+                                                Message: we aren's cn's casual shoes sales wn's casual shoes sales n's casual shoes sales wn'n's casual shoes sales wn's can's casn's casual shoes sales wn's casual shoes sales wn's can's casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wsual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wsual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales ws casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wwn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wsual shoes sales wn's casual shoes sales wn's casual shoes sales w focused on men's casual shoes sales we need shoes customization,shoes providers. Could you tell me which port you ship?Usually how many days to produce? What kind of payment term you accept? pls email us.pls email us.pls email us.pls ema  Message: we are focused on men's casual shoes sales we need shoes  Message: we are focused on men's casual shoes sales we need shoes  Message: we are focused on men's casual shoes sales we need shoes
+                                        </div>
+                                        <div>
+                                            <div class="btn_detail">
+                                                <span>View Detail</span>&nbsp;&nbsp;
+                                                <i class="icon-detail"></i>
+                                            </div>
+                                            <div class="nation">
+                                                <span>From China：</span>
+                                                <i class="icon-nation"><img src="./images/nation.png" alt=""></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clear"></div>
+                        </div>
+                        <div class="clear"></div>
+                    </li>
+                    <li>
+                            <div class="fl">
+                                    <div class="img fl">
+                                        <img src="./images/none.jpg" alt="">
+                                    </div>
+                                    <div class="info fr">
+                                        <div>
+                                            <div class="fl">
+                                                <i class="icon-name"></i>&nbsp;&nbsp;<span>Name:&nbsp;&nbsp; <span>nicole</span></span>
+                                            </div>
+                                            <div class="fr">
+                                                <span>2018.2.27</span>
+                                            </div>
+                                            <div class="clear"></div>
+                                        </div>
+                                        <div class="email">
+                                            <i class="icon-email"></i>&nbsp;&nbsp;<span>E-mail:&nbsp;&nbsp;<span>111111@outlook.com</span></span>
+                                        </div>
+                                        <div class="detail">
+                                                Message: we aren's cn's casual shoes sales wn's casual shoes sales n's casual shoes sales wn'n's casual shoes sales wn's can's casn's casual shoes sales wn's casual shoes sales wn's can's casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wsual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wsual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales ws casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wwn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wsual shoes sales wn's casual shoes sales wn's casual shoes sales w focused on men's casual shoes sales we need shoes customization,shoes providers. Could you tell me which port you ship?Usually how many days to produce? What kind of payment term you accept? pls email us.pls email us.pls email us.pls ema  Message: we are focused on men's casual shoes sales we need shoes  Message: we are focused on men's casual shoes sales we need shoes  Message: we are focused on men's casual shoes sales we need shoes
+                                        </div>
+                                        <div>
+                                            <div class="btn_detail">
+                                                <span>View Detail</span>&nbsp;&nbsp;
+                                                <i class="icon-detail"></i>
+                                            </div>
+                                            <div class="nation">
+                                                <span>From China：</span>
+                                                <i class="icon-nation"><img src="./images/nation.png" alt=""></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clear"></div>
+                            </div>
+                            <div class="fr">
+                                    <div class="img fl">
+                                            <img src="./images/shoes.jpg" alt="">
+                                        </div>
+                                        <div class="info fr">
+                                            <div>
+                                                <div class="fl">
+                                                    <i class="icon-name"></i>&nbsp;&nbsp;<span>Name:&nbsp;&nbsp; <span>nicole</span></span>
+                                                </div>
+                                                <div class="fr">
+                                                    <span>2018.2.27</span>
+                                                </div>
+                                                <div class="clear"></div>
+                                            </div>
+                                            <div class="email">
+                                                <i class="icon-email"></i>&nbsp;&nbsp;<span>E-mail:&nbsp;&nbsp;<span>111111@outlook.com</span></span>
+                                            </div>
+                                            <div class="detail">
+                                                    Message: we aren's cn's casual shoes sales wn's casual shoes sales n's casual shoes sales wn'n's casual shoes sales wn's can's casn's casual shoes sales wn's casual shoes sales wn's can's casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wsual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wsual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales ws casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wwn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wn's casual shoes sales wsual shoes sales wn's casual shoes sales wn's casual shoes sales w focused on men's casual shoes sales we need shoes customization,shoes providers. Could you tell me which port you ship?Usually how many days to produce? What kind of payment term you accept? pls email us.pls email us.pls email us.pls ema  Message: we are focused on men's casual shoes sales we need shoes  Message: we are focused on men's casual shoes sales we need shoes  Message: we are focused on men's casual shoes sales we need shoes
+                                            </div>
+                                            <div>
+                                                <div class="btn_detail">
+                                                    <span>View Detail</span>&nbsp;&nbsp;
+                                                    <i class="icon-detail"></i>
+                                                </div>
+                                                <div class="nation">
+                                                    <span>From China：</span>
+                                                    <i class="icon-nation"><img src="./images/nation.png" alt=""></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clear"></div>
+                            </div>
+                            <div class="clear"></div>
+                        </li>
+        </ul>
+    </div>
+</body>
+<script>
+    $('#inquire_list').on('mouseover mouseout','.detail',function(event){
+        if(event.type == 'mouseover'){
+            $(this).attr('title',$(this).text()) 
+        }
+    })
+</script>
+</html>

@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html class="iframe-h">
+
+<head>
+<meta charset="UTF-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>An Online B2B market——-Shoestp.com,gathering 300 professional shoes manufacture companies Business backstage</title>
+<link rel="stylesheet" type="text/css"
+	href="../../static/admin/layui/css/layui.css" />
+<link rel="stylesheet" type="text/css"
+	href="../../static/admin/css/admin.css" />
+<link rel="stylesheet" type="text/css"
+	href="../../static/admin/layui/css/laydate.css" />
+<style>
+.layui-form-item .layui-inline {
+	margin-bottom: 5px;
+	margin-right: 10px;
+	float: left;
+}
+
+.product{
+	width:100%;
+	padding:10px 0;
+	border-bottom:1px dashed #000;
+	display: flex;
+	cursor:pointer;
+	justify-content:center;
+	margin-top: -1px;
+}
+
+.selected{
+	border: 1px solid red;
+}
+.selected:after{
+	content: "";
+    position: relative;
+    right: 0px;
+    top: 94px;
+    width: 17px;
+    height: 21px;
+    background: url(/home/static/images/ico/goods-selected_on.png) no-repeat 100%;
+}
+
+.product-img{
+	display:inline-block;
+	height: 100%;
+	width: 20%;
+}
+.product-img img{
+	width:100%;
+}
+
+.production{
+	display:inline-block;
+	height: 100%;
+	width: 80%;
+	margin-left: 18px;
+}
+
+.production-name{
+	width: 100%;
+    font-size: 12px;
+}
+
+.production-p{
+	font-size: 12px;
+    margin-top: 5px;
+}
+
+</style>
+</head>
+
+<body class="min-width1200 p015">
+	<div class="wrap-container clearfix">
+		<div class="column-content-detail">
+			<form class="layui-form">
+				<div class="layui-form-item">
+					<div class="layui-inline" style="margin-top: 8px;">活动名称:</div>
+					<div class="layui-input-inline">
+						<input type="text" name="title" placeholder="请输入活动名称"
+							autocomplete="off" class="layui-input" id="group_title">
+					</div>
+						<button type="button" class="layui-btn layui-btn-normal"
+							id="select">
+							<i class="layui-icon layui-icon-search">&#xe615;</i> 搜索
+						</button>
+						<button type="button" class="layui-btn layui-btn-normal"
+							id="addUnion">
+							<i class="layui-icon layui-icon-add-1">&#xe654;</i> 添加
+						</button>
+						<button type="button" class="layui-btn layui-btn-normal"
+							id="copyDetail">
+							<i class="layui-icon layui-icon-release">&#xe654;</i> 一键复制原产品详情
+						</button>
+						<!-- <button type="button" class="layui-btn layui-btn-normal"
+							id="cleanOrder">清算活动订单</button> -->
+				</div>
+			</form>
+
+
+
+			<div class="layui-form" id="table-list">
+				<table class="layui-table" lay-even lay-skin="nob">
+					<thead>
+						<tr>
+							<th>活动名称</th>
+							<th style=" width: 169px;">开始时间</th>
+							<th style=" width: 169px;">结束时间</th>
+							<th style="width: 88px;">活动状态</th>
+							<th style="width: 98px;">总订购数</th>
+							<th style="width: 98px;">采购人数</th>
+							<th style="text-align: center;">操作</th>
+						</tr>
+					</thead>
+					<tbody id="rowlist">
+
+					</tbody>
+				</table>
+
+				<div id="noAct" style="display:none;margin: 0px 20px; border: 0px none; color: rgb(153, 153, 153); text-align: center; padding: 20px; font-size: 20px;">
+					暂无活动
+				</div>
+
+				<div class="page-wrap">
+					<ul class="pagination">
+						<!-- <li class="disabled"><span>«</span></li>
+
+						<li><a href="#">»</a></li> -->
+					</ul>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div id="prmProList">
+
+	</div>
+	<!-- 添加活动的模态框 -->
+	<div id="addUnionModel" style="display:none;overflow-y:  hidden;">
+		<div style="float:left;height: 700px;overflow-y: auto;" class="col-md-6">
+			<form class="layui-form" id="unionForm">
+			  <div class="layui-form-item" style="margin-top:20px;">
+			    <label class="layui-form-label">活动名称</label>
+			    <div class="layui-input-block">
+			      <input type="text" name="bean.title" id="title" maxlength="15" placeholder="请输入活动名称" autocomplete="off" class="layui-input"  style="float: left;width: 93%;">
+			    </div>
+			  </div>
+			  <div class="layui-form-item">
+			  	  <label class="layui-form-label">持续时间</label>
+			  	  <input type="text" class="layui-input" id="startTime" name="bean.startTime" style="float: left;width: 34%;" placeholder="请输入开始时间">
+			  	  <label class="layui-form-label" style="text-align: center; width: 5px;">-</label>
+			  	  <input type="text" class="layui-input" id="endTime" name="bean.endTime" style="float: left;width: 34%;" placeholder="请输入结束时间">
+			  </div>
+			 <div class="layui-form-item">
+			    <label class="layui-form-label">预告时间</label>
+			    <div class="layui-input-block"  style="float: left;width: 74%;margin-left:0;">
+			      <select name="bean.preTime" lay-filter="aihao" id="preTime">
+			        <option value="30">提前一个月</option>
+			        <option value="15">提前十五天</option>
+			        <option value="7">提前七天</option>
+			        <option value="3">提前三天</option>
+			      </select>
+			    </div>
+			  </div>
+			  <div class="layui-form-item">
+			  	<label class="layui-form-label">活动商品</label>
+			  	<input class="searchAddWords" placeholder="请输入产品编号或者产品名称进行搜索" style="
+    width: 50%;
+    margin-top: 9px;
+"><button type="button" class="codeAndNameAdd" style="
+    background-color: #2e8ded;
+    color: #fff;
+    border: 0;
+    padding: 0 10px;
+    margin-left: 13px;
+">搜索</button>
+			  	<br /><br /><br />
+			  	<ul id="unionGoods">
+
+			  	</ul>
+			  </div>
+				</form>
+			</div>
+			<div>
+    <label class="layui-form-label" style="padding-left: 0;padding-top: 20px;text-align: left;font-weight: bold;margin-left:20px;font-size: 16px;">商品列表</label>
+    
+    <input class="searchWords" placeholder="请输入产品编号或者产品名称进行搜索" style="
+    width: 25%;
+    margin-top: 19px;
+"><button type="button" class="codeAndName" style="
+    background-color: #2e8ded;
+    color: #fff;
+    border: 0;
+    padding: 0 10px;
+    margin-left: 13px;
+">搜索</button>
+<button type="button" class="addSelected" style="
+    background-color: #2e8ded;
+    color: #fff;
+    border: 0;
+    padding: 0 10px;
+    margin-left: 13px;
+">添加所有</button>
+</div>
+			<div id="goodsList" style="float:left;overflow-y:auto;height:650px;"class="col-md-6">
+				<ul id="goodsUl">
+
+
+				</ul>
+			</div>
+		<div style="clear:both;"></div>
+	</div>
+	</div>
+	<!-- 以上是添加活动的模态框 -->
+
+	<div id="editUnionModel" style="display:none;overflow-y:  hidden;">
+		<div style="float:left;height:700px;overflow-y: auto;" class="col-md-6">
+		<form class="layui-form" id="editForm">
+			<input type="hidden" id="editPkey" name="bean.pkey"/>
+		  <div class="layui-form-item" style="margin-top:20px;">
+		    <label class="layui-form-label">活动名称</label>
+		    <div class="layui-input-block">
+		      <input type="text" name="bean.title" id="editTitle" maxlength="15"  placeholder="请输入活动名称" autocomplete="off" class="layui-input"  style="float: left;width: 93%;">
+		    </div>
+		  </div>
+		  <div class="layui-form-item">
+		  	<label class="layui-form-label">持续时间</label>
+		  	  <input type="text" class="layui-input" id="editStartTime" name="bean.startTime" style="float: left;width: 34%;" placeholder="请输入开始时间">
+		  	  <label class="layui-form-label" style="text-align: center; width: 5px;">-</label>
+		  	  <input type="text" class="layui-input" id="editEndTime" name="bean.endTime" style="float: left;width: 34%;" placeholder="请输入结束时间">
+		  </div>
+		 <div class="layui-form-item">
+		    <label class="layui-form-label">预告时间</label>
+		    <div class="layui-input-block"  style="float: left;width: 74%;margin-left:0;" id="editSelect">
+		      <select name="bean.preTime" lay-filter="aihao" id="editPreTime">
+		        <option value="30">提前一个月</option>
+		        <option value="15">提前十五天</option>
+		        <option value="7">提前七天</option>
+		        <option value="3">提前三天</option>
+		      </select>
+		    </div>
+		  </div>
+		  <div class="layui-form-item">
+		  	<label class="layui-form-label">活动商品</label>
+		  	<input class="searchAddWords" placeholder="请输入产品编号或者产品名称进行搜索" style="
+    width: 50%;
+    margin-top: 9px;
+"><button type="button" class="codeAndNameAdd" style="
+    background-color: #2e8ded;
+    color: #fff;
+    border: 0;
+    padding: 0 10px;
+    margin-left: 13px;
+">搜索</button>
+		  	<br /><br /><br />
+		  	<ul id="editUnionGoods">
+
+		  	</ul>
+		  </div>
+			</form>
+			</div>
+
+			<div>
+    <label class="layui-form-label" style="padding-left: 0;padding-top: 20px;text-align: left;font-weight: bold;margin-left:20px;font-size: 16px;">商品列表</label>
+    
+    <input class="searchWords" placeholder="请输入产品编号或者产品名称进行搜索" style="
+    width: 25%;
+    margin-top: 19px;
+"><button type="button" class="codeAndName" style="
+    background-color: #2e8ded;
+    color: #fff;
+    border: 0;
+    padding: 0 10px;
+    margin-left: 13px;
+">搜索</button>
+</div>
+			<div id="editGoodsList" style="float:left;overflow-y:auto;height:650px;"class="col-md-6">
+				<ul id="editGoodsUl">
+
+				</ul>
+			</div>
+		<div style="clear:both;"></div>
+	</div>
+
+
+		<div class="layui-form" id="lineList" style="display:none;">
+        <table class="layui-table" lay-even lay-skin="nob">
+        	<thead>
+				<tr>
+					<th width="150" style="text-align:center;">产品信息</th>
+					<th width="150" style="text-align:center;">采购价</th>
+					<th width="150" style="text-align:center;">起订量</th>
+					<th width="150" style="text-align:center;">采购人数</th>
+					<th width="150" style="text-align:center;">已采购量</th>
+					<th width="150" style="text-align:center;">总金额</th>
+					<th width="150" style="text-align:center;">状态</th>
+					<th width="150" style="text-align:center;">操作</th>
+				</tr>
+			</thead>
+				<tbody id="unionLineList">
+
+				</tbody>
+        </table>
+    	</div>
+    	<form action="/home/odr_OdrOrder_toSettlementPage" target="_blank"  method="post" id="buynow">
+	         <input type="hidden" name="jsonCarts" value="" class="carts"/>
+	         <input type="hidden" name="supplier" value=""/>
+	         <input type="hidden" name="enterType" value='2' />
+     	</form>
+    <!-- <div id="specList" style="display:none;">
+
+    </div> -->
+	<script src="../../static/admin/js/jquery-1.11.1.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../static/admin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+	<!-- <script src="../../static/admin/layui/laydate.js" type="text/javascript" charset="utf-8"></script> -->
+	<script src="../../static/admin/js/common.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+
+	/* ===== 以下为添加活动及商品  =====*/
+	var formLayui;
+	layui.use(['laydate','table','element','form'], function(){
+		var laydate = layui.laydate;
+		var element = layui.element;
+		var table = layui.table;
+		formLayui = layui.form();
+
+		//执行一个laydate实例
+		laydate.render({
+			elem: '#startTime' //指定元素
+			,type:'datetime'
+		});
+		//执行一个laydate实例
+		laydate.render({
+			elem: '#endTime' //指定元素
+			,type:'datetime'
+		});
+	});
+	
+	$(".codeAndName").on("click",function(){
+		var codeOrName = $(this).prev().val();
+		var goods = $(this).parent().next().find("ul").children("li");
+		if(codeOrName.trim() != ""){
+			$(goods).hide();
+			for(var i=0;i<goods.length;i++){
+				var name = $(goods[i]).find(".production-name").text();
+				var code = $(goods[i]).find(".production-p.code").text();
+				if(name.indexOf(codeOrName) != -1 || code.indexOf(codeOrName) != -1){
+					$(goods[i]).show();
+				}
+			}
+		}else{
+			$(goods).show();
+		}
+	})
+	
+	$(".codeAndNameAdd").on("click",function(){
+		var codeOrName = $(this).prev().val();
+		var goods = $(this).siblings("ul").children("li");
+		if(codeOrName.trim() != ""){
+			$(goods).hide();
+			for(var i=0;i<goods.length;i++){
+				var name = $(goods[i]).find(".production-name").text();
+				var code = $(goods[i]).find(".production-p.code").text();
+				if(name.indexOf(codeOrName) != -1 || code.indexOf(codeOrName) != -1){
+					$(goods[i]).show();
+				}
+			}
+		}else{
+			$(goods).show();
+		}
+	})
+	
+	document.onkeydown = function(e){
+    var ev = document.all ? window.event : e;
+    if(ev.keyCode==13) {
+    	$(".codeAndName").click();
+    }
+}
+
+
+	/* ===== 以下为获得活动列表 =====*/
+	 var loadPage = $(function(){
+			$.ajax({
+				url:'/seller/prm_PrmGroupPurchase_groupList',
+				type:'post',
+				dataType:'JSON',
+				success:function(data){
+					renderListData(data);
+				}
+			})
+		})
+
+	/*======以上为获得活动列表======*/
+	function delThis(pkey){
+		var delWin = layer.confirm("确认删除吗?",{icon:3,title:"提示"},function(index){
+			$.ajax({
+				url:'/seller/prm_PrmGroupPurchase_logicDelete',
+				type:'post',
+				data:{"pkey":pkey},
+				dataType:'json',
+				success:function(data){
+					if(data.ret == 1){
+						layer.msg("删除成功",{time:3000});
+						layer.close(delWin);
+						location.reload();
+					}else{
+						layer.msg("删除失败",{time:3000});
+						layer.close(delWin);
+						location.reload();
+					}
+				}
+			})
+		})
+	}
+	 var actState = -1;
+	function editThis(btn){
+		
+		var startTd = new Date($(btn).parent().siblings("td:eq(2)").text());
+		var endTd = new Date($(btn).parent().siblings("td:eq(3)").text());
+		var now = new Date();
+		if(startTd.getTime() < now.getTime() && endTd.getTime() >now.getTime()){
+			layer.msg("活动进行中,不可进行修改",{time:3000});
+			return;
+		}
+		var pkey = $(btn).attr("data");
+		var editWin = layer.open({
+			type:1,
+			title:'团购活动编辑',
+			area:['1200px','800px'],
+			shadeClose: false, //点击遮罩关闭
+            content: $('#editUnionModel'),//此处ID为以上书写的最外层DIV的ID
+            btn: ['确定', '取消'],
+            yes: function (index, layero) {//添加人员
+            	if(actState == 4){
+            		layer.close(editWin);
+            		return;
+            	}
+            	var title = $("#editTitle").val();
+        		var startTime = $("#editStartTime").val();
+        		var endTime = $("#editEndTime").val();
+        		var unionGoods = $("#editUnionGoods").children("li").length;
+        		var reg = /[^0-9.]/g;
+
+        		if(title == "" || title == "undefined"){
+        			 layer.msg("活动名称不能为空",{time:3000});
+        			 return;
+        		}
+        		if(startTime == "" || startTime == "undefined"){
+        			 layer.msg("开始时间不能为空",{time:3000});
+        			 return;
+        		}
+        		if(endTime == "" || endTime == "undefined"){
+        			 layer.msg("结束时间不能为空",{time:3000});
+        			 return;
+        		}
+        		if(unionGoods <= 0 || unionGoods == "undefined"){
+        			 layer.msg("活动商品不能为空",{time:3000});
+        			 return;
+        		}
+        		
+        		var startDate = new Date(startTime);
+        		var endDate = new Date(endTime);
+        		if(endDate.getTime() <= startDate.getTime()){
+        			layer.msg("结束时间不能早于开始时间",{icon:2,time:2000});
+        			return;
+        		}
+        		var amt = $("#editUnionGoods input[name$=amt]");
+        		for(var i=0;i<amt.length;i++){
+        			if($(amt[i]).val() == "" || $(amt[i]).val() == 0){
+        				layer.msg("请输入采购价",{icon:2,time:2000});
+        				return;
+        			}
+        		}
+        		var qty = $("#editUnionGoods input[name$=qty]");
+        		for(var i=0;i<qty.length;i++){
+        			if($(qty[i]).val() == ""){
+        				layer.msg("请输入最小生产量",{icon:2,time:2000});
+        				return;
+        			}
+        		}
+        		var minOq = $("#editUnionGoods input[name$=minOq]");
+        		for(var i=0;i<minOq.length;i++){
+        			if($(minOq[i]).val() == ""){
+        				layer.msg("请输入起订量",{icon:2,time:2000});
+        				return;
+        			}
+        		}
+            	 $.ajax({
+            		url:'/seller/prm_PrmGroupPurchase_upd',
+            		type:'post',
+            		data:$("#editForm").serialize(),
+            		dataType:'json',
+            		success:function(data){
+            			if(data.success == true){
+            				layer.msg("修改成功",{icon:1,time:3000});
+            				layer.close(editWin);
+            			}else{
+            				layer.msg("修改失败",{icon:2,time:3000});
+            			}
+            		},
+            		error:function(){
+            			layer.msg("请填写正确的信息",{icon:2,time:3000});
+            		}
+            	});
+            },
+            btn2: function (index, layero) {
+
+                return;
+            },
+            cancel: function () {
+            	$("#editStartTime").attr("readonly","");
+				$("#editEndTime").attr("readonly","");
+				$("#editTitle").attr("readonly","");
+                return;
+            },
+            end: function () {
+            	$("#title").val("");
+            	$("#startTime").val("");
+            	$("#endTime").val("");
+            	$("#editUnionGoods").html("");
+                $('#editUnionModel').css("display", "none");
+                $(".searchWords").val("");
+            },
+            success:function(){
+            	$.ajax({
+            		url:'/seller/prm_PrmGroupPurchase_load',
+            		type:'post',
+            		data:{"pkey":pkey},
+            		dataType:'JSON',
+            		success:function(data){
+            			if(data.union.status == 2 || data.union.status == 4){
+            				$("#editStartTime").attr("readonly","readonly");
+            				$("#editEndTime").attr("readonly","readonly");
+            				$("#editTitle").attr("readonly","readonly");
+            			}
+            			actState = data.union.status;
+            			$("#editTitle").val(data.union.title);
+            			$("#editStartTime").val(data.union.startTime);
+            			$("#editEndTime").val(data.union.endTime);
+            			$("#editPkey").val(data.union.pkey);
+            			var select = $("dd[lay-value="+data.union.preTime+"]");
+            			$(".layui-select-title").siblings("dl").find(select).click();
+
+            			var li = '';
+            			$.each(data.unionLine,function(i,val){
+            				li = li + '<li num-data="'+ i +'" class="product" product-pkey="'+val.sourcePro.pkey+'">'+
+        					'<div class="product-img" style="text-align: center;">'+
+    						'<img src="'+parent.imgUrlconfig+getProPic(val.pro.picture)+'">'+
+    					'</div>'+
+    					'<div class="production" style="width: 80%;">'+
+    						'<p class="production-name">'+toCutStr(val.pro.name)+'</p>'+
+    						'<p class="production-p code">产品编号: '+val.pro.code+'</p>'+
+    						/* '<p class="production-p wsPrice">批发价: '+val.sourcePro.wsPrice+'</p>'+ */
+    						'<div style="display:inline-block;width: 100%;" class="info">'+
+	    						'<p style="margin: 10px 12px 10px 0;float: left;">'+
+	    							'<span>采购价</span>'+
+	    							'<span style="border: 1px solid #ccc;">$<input maxlength="6" value="'+val.pro.curPrice+'" onpaste="return false;" onkeyup="this.value=this.value.replace(/[^0-9.]/g,\'\')" name="listLine['+ i +'].amt" style="border: 0;text-align:right;width: 38px;" class="price"></span>'+
+	    						'</p>'+
+	    						'<p style="margin: 10px 12px;float: left;">'+
+		    						'<span>起订量</span>'+
+		    						'<input value="'+val.pro.minOq+'" onpaste="return false;" maxlength="6"  onkeyup="this.value=this.value.replace(/[^0-9.]/g,\'\')" name="listLine['+i+'].minOq" style="margin:0 5px;width: 38px;text-align:right;" class="minOq">双'+
+	    						'</p>'+
+	    						'<p style="margin: 10px 12px;float: left;">'+
+	    							'<span>最小生产量</span>'+
+	    							'<input value="'+val.count+'" onpaste="return false;" maxlength="6" onkeyup="this.value=this.value.replace(/[^0-9.]/g,\'\')" name="listLine['+ i +'].qty" style="margin:0 5px;width: 38px;text-align:right;" class="count">双'+
+	    						'</p>'+
+	    					'</div>'+
+    					'</div>'+
+    					'<input type="hidden" name="listLine['+i+'].groupLinePkey" value="'+val.pkey+'"/>'+
+    					'<input type="hidden" name="listLine['+i+'].product" value="'+val.pro.pkey+'" class="productPkey">'+
+    					judgeTypeButton(val.pkey,val.pro.state)+
+    					//'<button type="button" onclick="cancelChoose(this)" style="width: 28px;margin: 0 6px;background-color:#3fe4d5;border: 0;color: #fff;font-size: 12px;padding: 10px 2px;border-radius: 5px;">上架/下架</button>'+
+    				'</li>';
+            			});
+
+            			$("#editUnionGoods").html(li);
+            		}
+            	});
+
+
+            	$.ajax({
+            		url:'/seller/pdt_PdtProduct_getAllPdt',
+            		type:'post',
+            		dataType:'JSON',
+            		success:function(data){
+            			var li = '';
+            			$.each(data.items,function(i,val){
+            				li = li + '<li num-data='+i+' class="product">'+
+            							'<div class="product-img" ><img src="'+parent.imgUrlconfig+getProPic(val.picture)+'"/></div>'+
+            						  	'<div class="production">'+
+            						  		'<p class="production-name">'+val.name+'</p>'+
+            						  		'<p class="production-p code">产品编号: '+val.code+'</p>'+
+            						  		'<p class="production-p supplier">供应商: '+getSymbolWord(val.supplier)+'</p>'+
+            						  		'<p class="production-p wsPrice">价格: '+val.curPrice+'</p>'+
+            						  		'<p class="production-p minOq">起发量:'+val.minOq+'</p>'+
+            						  	'</div>'+
+            						  	'<input type="hidden" value='+val.pkey+' class="pkey" />'+
+            						  '</li>';
+            			});
+
+            			$("#editGoodsUl").html(li);
+            		}
+            	});
+
+            }
+		});
+	}
+	
+	$(".addSelected").on("click",function(){
+		var products = $("#goodsUl .product");
+		for(var i=0;i<products.length;i++){
+			toAddGoods(products[i]);
+		}
+	})
+
+	function judgeTypeButton(pkey,type){
+		if(type == 1){
+			return '<button type="button" pkey='+pkey+' state=0 onclick="underCarriageThis(this)" style="width: 28px;margin: 0 6px;background-color:#5f6f87;border: 0;color: #fff;font-size: 12px;padding: 10px 2px;border-radius: 5px;">下架</button>';
+		}else{
+			return '<button type="button" pkey='+pkey+' state=1 onclick="underCarriageThis(this)" style="width: 28px;margin: 0 6px;background-color:#42a4ff;border: 0;color: #fff;font-size: 12px;padding: 10px 2px;border-radius: 5px;">上架</button>';
+		}
+	};/**获取产品图片*/
+	function getProPic(str){
+		return str.split(",")[0];
+	}
+
+	/*获取单一活动下的活动明细*/
+	function chooseThis(pkey){
+		layer.open({
+			type:1,
+			title:'活动产品信息',
+			area:['1200px','700px'],
+			shadeClose: false, //点击遮罩关闭
+            content: $('#lineList'),//此处ID为以上书写的最外层DIV的ID
+            btn: ['确定', '取消'],
+            yes: function (index, layero) {//添加人员
+
+            },
+            btn2: function (index, layero) {
+                return;
+            },
+            cancel: function () {
+                return;
+            },
+            end: function () {
+                $('#lineList').css("display", "none");
+            },
+            success:function(){
+            	$.ajax({
+            		url:'/seller/prm_PrmGroupPurchase_showUnionPro',
+            		type:'post',
+            		data:{"pkey":pkey},
+            		dataType:'JSON',
+            		success:function(data){
+            			var tr = '';
+	            		   $.each(data.items,function(i,val){
+	            		   	   tr = tr + '<tr>';
+	            			   tr = tr +'<td>'+
+	            			   				'<img src="'+parent.imgUrlconfig+getProPic(val.product.picture)+'" style="width: 89px;margin-top: 4px;float: left;"/>'+
+	            			   				'<p style="font-size: 12px;float: left;margin-top: 30px;padding-left: 12px;width: 133px;">'+toCutStr(val.product.name)+'</p>'+
+	            			   			'</td>'+
+	            			   			'<td style="text-align:right;">$'+val.product.curPrice+'</td>'+
+	            			   			'<td style="text-align:right;">'+val.count+'</td>'+
+	            			   			'<td style="text-align:right;">'+val.personCount+'</td>'+
+	            			   			'<td style="text-align:right;">'+judge(val.boughtCount)+'</td>'+
+	            			   			'<td style="text-align:right;">$'+judge(val.boughtCount) * judge(val.product.curPrice)+'</td>'+
+	            			   			'<td style="text-align:center;">'+toGetState(pkey,val.state)+'</td>'+
+	            			   			'<td style="text-align:center;">'+judgeSend(val.flag,val.state,val.pkey,val.product.state,val.pkey)+'</td>';
+	            		   		tr = tr + '</tr>';
+	            		   })
+	            		   $("#unionLineList").html(tr);
+						   formLayui.render('checkbox');
+            		}
+            	})
+            }
+		});
+	}
+
+	function judgeSend(flag,state,pkey,status,pdtpkey){
+		if(flag == 1){
+			if(state == 0){
+				return judgeCarriage(status,pdtpkey);
+			}else{
+				return '<a>订单已发送</a>';
+			}
+		}else{
+			if(state == 0){
+				return '<a onclick="sendThisLine('+pkey+')" style="color:#1E9FFF;display:block;">订单发送给供应商</a>' + judgeCarriage(status,pdtpkey);
+			}else{
+				return '<a>订单已发送</a>';
+			}
+		}
+	}
+
+	function judgeCarriage(state,pkey){
+		if(state == 1){
+			return "<a onclick='underCarriageThis(this)' pkey="+pkey+" state=0 style='color:#1E9FFF;display:block;'>下架此商品</a>";
+		}else{
+			return "<a onclick='underCarriageThis(this)' pkey="+pkey+" state=1 style='color:#1E9FFF;display:block;'>上架此商品</a>";
+		}
+	}
+
+	function underCarriageThis(btn){
+		var pkey = $(btn).attr("pkey");
+		var state = $(btn).attr("state");
+		$.ajax({
+			url:'/seller/prm_PrmGroupPurchase_underCarriage',
+			type:'post',
+			data:{"pkey":pkey,"state":state},
+			dataType:'json',
+			success:function(data){
+				if(data.ret == 1){
+					if(state == 1){
+						layer.msg("上架成功",{time:3000});
+						if($("#editUnionModel").css("display") == "none"){
+							$(btn).after(judgeCarriage(1,pkey));
+							$(btn).remove();
+						}else{
+							$(btn).after(judgeTypeButton(pkey,1));
+							$(btn).remove();
+						}
+					}else{
+						layer.msg("下架成功",{time:3000});
+						if($("#editUnionModel").css("display") == "none"){
+							$(btn).after(judgeCarriage(0,pkey));
+							$(btn).remove();
+						}else{
+							$(btn).after(judgeTypeButton(pkey,0));
+							$(btn).remove();
+						}
+					}
+				}else{
+					layer.msg(data.msg,{time:3000});
+				}
+			}
+		})
+	}
+
+	function sendThisLine(pkey){
+		$.ajax({
+			url:'/seller/prm_PrmGroupPurchase_send',
+			type:'post',
+			data:{"linePkey":pkey},
+			dataType:'json',
+			success:function(data){
+				if(data.success == true){
+					$("#buynow input[name='jsonCarts']").val(JSON.stringify(data.jsonCarts));
+					$("#buynow input[name='supplier']").val(data.supplier);
+					$("#buynow").submit();
+					//window.open(window.location.protocol + "//" + window.location.host + "/home/prm_PrmGroupPurchase_send?id="+pkey + "&supLoginName="+data.supplier);
+				}else{
+					layer.msg(data.msg,{time:3000});
+				}
+			}
+		})
+	}
+
+	function judge(num){
+		if(num == null || num == "undefined"){
+			num = 0;
+		}
+		return Number(num);
+	}
+
+	//活动内产品状态
+	function toGetState(pkey,lineState){
+		if(lineState == 0){
+			var state = Number($("#group_state_" + pkey).attr("state"));
+			var status='';
+			switch(state){
+				case 0:
+					status = "未开始售卖";
+					break;
+				case 1:
+					status = "未开始售卖";
+					break;
+				case 2:
+					status = "售卖中";
+					break;
+				case 3:
+					status = "售卖中";
+					break;
+				case 4:
+					status = "结束售卖";
+					break;
+			}
+			return status;
+		}else{
+			return "已售完";
+		}
+
+	}
+
+	//活动状态
+	function toGetStatus(state){
+		var status = '';
+		switch(state){
+			case 0:
+				status = "未开始";
+				break;
+			case 1:
+				status = "即将开始";
+				break;
+			case 2:
+				status = "进行中";
+				break;
+			case 3:
+				status = "即将结束";
+				break;
+			case 4:
+				status = "已结束";
+				break;
+
+		}
+		return status;
+	}
+	var nowTime = new Date();
+
+	/*==== 添加活动 ====*/
+		$("#addUnion").click(function(){
+			var addWin = layer.open({
+				type:1,
+				title:'团购活动添加',
+				area:['1200px','800px'],
+				shadeClose: false, //点击遮罩关闭
+	            content: $('#addUnionModel'),//此处ID为以上书写的最外层DIV的ID
+	            btn: ['确定', '取消'],
+	            yes: function (index, layero) {//添加人员
+	            		var title = $("#title").val();
+	            		var startTime = $("#startTime").val();
+	            		var endTime = $("#endTime").val();
+	            		
+	            		var unionGoods = $("#unionGoods").children("li").length;
+	            		var reg = /[^0-9.]/g;
+
+	            		if(title == "" || title == "undefined"){
+	            			 layer.msg("活动名称不能为空",{time:3000});
+	            			 return;
+	            		}
+	            		if(startTime == "" || startTime == "undefined"){
+	            			 layer.msg("开始时间不能为空",{time:3000});
+	            			 return;
+	            		}
+	            		if(endTime == "" || endTime == "undefined"){
+	            			 layer.msg("结束时间不能为空",{time:3000});
+	            			 return;
+	            		}
+	            		if(unionGoods <= 0 || unionGoods == "undefined"){
+	            			 layer.msg("活动商品不能为空",{time:3000});
+	            			 return;
+	            		}
+	            		
+	            		var startDate = new Date(startTime);
+	            		var endDate = new Date(endTime);
+	            		if(endDate.getTime() <= startDate.getTime()){
+	            			layer.msg("结束时间不能早于开始时间",{icon:2,time:2000});
+	            			return;
+	            		}
+	            		
+	            		if(startDate.getTime() < nowTime){
+	            			layer.msg("开始时间不能早于系统时间",{icon:2,time:2000});
+	            			return;
+	            		}
+	            		var amt = $("#unionGoods input[name$=amt]");
+	            		for(var i=0;i<amt.length;i++){
+	            			if($(amt[i]).val() == "" || $(amt[i]).val() == 0){
+	            				layer.msg("请输入采购价",{icon:2,time:2000});
+	            				return;
+	            			}
+	            		}
+	            		var qty = $("#unionGoods input[name$=qty]");
+	            		for(var i=0;i<qty.length;i++){
+	            			if($(qty[i]).val() == ""){
+	            				layer.msg("请输入最小生产量",{icon:2,time:2000});
+	            				return;
+	            			}
+	            		}
+	            		
+	            		var minOq = $("#unionGoods input[name$=minOq]");
+	            		for(var i=0;i<minOq.length;i++){
+	            			if($(minOq[i]).val() == ""){
+	            				layer.msg("请输入起订量",{icon:2,time:2000});
+	            				return;
+	            			}
+	            		}
+		               $.ajax({
+		            	   url:'/seller/prm_PrmGroupPurchase_ins',
+		            	   type:'post',
+		            	   data: $("#unionForm").serialize(),
+		            	   dataType:'JSON',
+		            	   success:function(data){
+		            		   if(data.success == true){
+			            		   layer.msg("添加成功",{time:3000});
+			            		   layer.close(addWin);
+			            		   location.reload();
+		            		   }else{
+		            			   layer.msg(data.msg,{time:3000});
+		            		   }
+		            	   },
+		            		error:function(){
+		            			layer.msg("请填写正确的信息",{icon:2,time:3000});
+		            		}
+		               });
+	            },
+	            btn2: function (index, layero) {
+	                return;
+	            },
+	            cancel: function () {
+	                return;
+	            },
+	            end: function () {
+	            	$("#title").val("");
+	            	$("#startTime").val("");
+	            	$("#endTime").val("");
+	            	$("#unionGoods").html("");
+	                $('#addUnionModel').css("display", "none");
+	                $(".searchWords").val("");
+	                loadPage;
+	            },
+	            success:function(){
+	            	$("#addUnionModel").parent("div").css("overflow","hidden");
+	            	$.ajax({
+	            		url:'/seller/pdt_PdtProduct_getAllPdt',
+	            		type:'post',
+	            		dataType:'JSON',
+	            		success:function(data){
+	            			var li = '';
+	            			$.each(data.items,function(i,val){
+	            				li = li + '<li num-data='+i+' class="product" data="'+val.pkey+'">'+
+	            							'<div class="product-img" ><img src="'+parent.imgUrlconfig+getProPic(val.picture)+'"/></div>'+
+	            						  	'<div class="production">'+
+	            						  		'<p class="production-name">'+val.name+'</p>'+
+	            						  		'<p class="production-p code">产品编号: '+val.code+'</p>'+
+	            						  		'<p class="production-p supplier">供应商: '+getSymbolWord(val.supplier)+'</p>'+
+	            						  		'<p class="production-p wsPrice">价格: '+val.curPrice+'</p>'+
+	            						  		'<p class="production-p minOq">最小订货量:'+val.minOq+'</p>'+
+	            						  	'</div>'+
+	            						  	'<input type="hidden" value='+val.pkey+' class="pkey" />'+
+	            						  '</li>';
+	            			});
+
+	            			$("#goodsUl").html(li);
+	            		}
+	            	});
+	            }
+			});
+		});
+
+	//从产品区域添加产品到活动商品列表
+	function toAddGoods(btn){
+		var productPkey = $(btn).children(".pkey").val();
+		var actPro;
+		if($("#addUnionModel").css("display") == "none"){
+			actPro = $("#editUnionGoods").children("li");
+		}else{
+			actPro = $("#unionGoods").children("li");
+		}
+		for(var i=0;i<actPro.length;i++){
+			var actProPkey = $(actPro[i]).attr("product-pkey");
+			if(productPkey == actProPkey){
+				layer.msg("此商品已添加,请勿重复添加");
+				return;
+			}
+		}
+		
+		var img = $(btn).children(".product-img").children("img").attr("src");
+		var name = $(btn).children(".production").children(".production-name").text();
+		var code = $(btn).children(".production").children(".code").text().split(":")[1];
+		var supplier = $(btn).children(".production").children(".supplier").text().split(":")[1];
+		var wsPrice = $(btn).children(".production").children(".wsPrice").text().split(":")[1].trim();
+		var minOq = $(btn).children(".production").children(".minOq").text().split(":")[1].trim();
+		var length;
+		if($("#addUnionModel").css("display") == "none"){
+			length  = $("#editUnionGoods").children("li").length;
+		}else{
+			length  = $("#unionGoods").children("li").length;
+		}
+
+		var li = '<li num-data="'+length+'" class="product" product-pkey="'+productPkey+'">'+
+						'<div class="product-img" style="text-align: center;">'+
+							'<img src="'+img+'">'+
+						'</div>'+
+						'<div class="production" style="width: 80%;">'+
+							'<p class="production-name">'+toCutStr(name)+'</p>'+
+							'<p class="production-p code">产品编号: '+code+'</p>'+
+							'<p class="production-p wsPrice">批发价: '+wsPrice+'</p>'+
+							'<div style="display:inline-block;width: 100%;" class="info">'+
+								'<p style="margin: 10px 12px 10px 0;float: left;">'+
+									'<span>采购价</span>'+
+									'<span style="border: 1px solid #ccc;">$<input onpaste="return false;" maxlength="6" onkeyup="this.value=this.value.replace(/[^0-9.]/g,\'\')" name="listLine['+length+'].amt" value="'+wsPrice+'" style="border: 0;text-align:right;width: 38px;" class="price"></span>'+
+								'</p>'+
+								'<p style="margin: 10px 12px;float: left;">'+
+									'<span>起订量</span>'+
+									'<input onpaste="return false;" maxlength="6" onkeyup="this.value=this.value.replace(/[^0-9.]/g,\'\')" name="listLine['+length+'].minOq" value="1" style="margin:0 5px;width: 38px;text-align:right;" class="minOq">双'+
+								'</p>'+
+								'<p style="margin: 10px 12px;float: left;">'+
+									'<span>最小生产量</span>'+
+									'<input onpaste="return false;"  maxlength="6" onkeyup="this.value=this.value.replace(/[^0-9.]/g,\'\')" value="'+minOq+'" name="listLine['+length+'].qty" style="margin:0 5px;width: 38px;text-align:right;" class="count">双'+
+								'</p>'+
+							'</div>'+
+						'</div>'+
+						'<input type="hidden" name="listLine['+length+'].product" value="'+productPkey+'" class="productPkey">'+
+					'<button type="button" onclick="cancelChoose(this)" style="width: 28px;margin: 0 6px;background-color:#3fe4d5;border: 0;color: #fff;font-size: 12px;padding: 10px 2px;border-radius: 5px;">取消选择</button>'+
+				'</li>';
+
+		if($("#addUnionModel").css("display") == "none"){
+			$("#editUnionGoods").append(li);
+		}else{
+			$("#unionGoods").append(li);
+		}
+		layer.msg("添加成功",{icon:1,time:1500});
+	}
+	/* function keyPress() {
+	     var keyCode = event.keyCode;
+	     console.log(keyCode);
+	     if ((keyCode >= 48 && keyCode <= 57) || keyCode == 46)
+	    {
+	       event.returnValue = true;
+	     } else {
+           event.returnValue = false;
+	    }
+	 } */
+
+	//剪切产品名称
+	function toCutStr(str){
+		var strArr = str.split(" ");
+		str = "";
+		for(var i in strArr){
+			if(i < 5){
+				str = str + strArr[i] + " ";
+			}
+		}
+		return str;
+	}
+
+	//点击商品列表中的商品
+	$("#goodsUl").on("click","li",function(){
+		toAddGoods(this);
+	});
+	//点击商品列表中的商品
+	$("#editGoodsUl").on("click","li",function(){
+		if(actState >= 4){
+			layer.msg("活动已结束,无法添加商品",{icon:2,time:2000})
+			return;
+		}
+		toAddGoods(this);
+	});
+
+	//取消已选择的商品
+	function cancelChoose(btn){
+		var liArr = $(btn).parent().nextAll();
+		for(var i = 0 ; i < liArr.length;i++){
+			var index = $(liArr[i]).attr("num-data") - 1;
+			$(liArr[i]).attr("num-data",index);
+			$(liArr[i]).children(".productPkey").attr("name","listLine["+index+"].product");
+			$(liArr[i]).children(".info").children("p .price").attr("name","listLine["+index+"].price");
+			$(liArr[i]).children(".info").children("p .count").attr("name","listLine["+index+"].qty");
+		}
+		$(btn).parent().remove();
+		var prod = $(btn).prev().val();
+		layer.msg("取消成功",{icon:1,time:2000});
+	}
+	
+	function getSymbolWord(str){
+		var word = str.split("##")[1];
+		return word;
+	}
+
+	$("#select").on("click",function(){
+		var title = $("#group_title").val();
+		$.ajax({
+			url:'/seller/prm_PrmGroupPurchase_groupList',
+			type:'post',
+			data:{"title":title},
+			dataType:'json',
+			success:function(data){
+				$("#rowlist tr").remove();
+				renderListData(data);
+			}
+		})
+	})
+
+
+	function toThisPage(i){
+		$.ajax({
+			url:'/seller/prm_PrmGroupPurchase_groupList',
+			type:'post',
+			data:{"pageNumber":i},
+			dataType:'json',
+			success:function(data){
+				renderListData(data);
+			}
+		});
+	}
+
+
+	function renderListData(data){
+		var tr = '';
+		if(data.items == undefined){
+			$("#noAct").show();
+			$("#noAct").text(data.msg);
+			return;
+		}
+		if(data.items.length <= 0){
+			$("#noAct").show();
+			return;
+		}
+		$("#noAct").hide();
+		var pkey = data.supplier;
+		$.each(data.items,function(i,val){
+			tr = tr + '<tr>'+
+							'<td><a href="/home/usr_UsrSupplier_gtSupGroup?pkey='+pkey+'&prmPkey='+val.pkey+'" target="_blank">'+val.title+'</a></td>'+
+							'<td>'+val.startTime+'</td>'+
+							'<td>'+val.endTime+'</td>'+
+							'<td id="group_state_'+val.pkey+'" state="'+val.status+'">'+toGetStatus(val.status)+'</td>'+
+							'<td>'+val.boughtCount+'</td>'+
+							'<td>'+val.personCount+'</td>'+
+							'<td style="text-align:center;">'+
+								'<button class="layui-btn layui-btn-mini layui-btn-normal" onclick="chooseThis('+val.pkey+')"><i class="layui-icon">&#xe615;</i></button>'+
+								'<button class="layui-btn layui-btn-mini layui-btn-normal" onclick="editThis(this)" data="'+val.pkey+'"><i class="layui-icon">&#xe642;</i></button>'+
+								'<button class="layui-btn layui-btn-mini layui-btn-danger" onclick="delThis('+val.pkey+')"><i class="layui-icon">&#xe640;</i></button>'+
+							'</td>'+
+					  '</tr>';
+		});
+
+		var page = '';
+		if(data.currentPage == 1){
+			page = '<li class="disabled"><span>«</span></li>';
+		}else{
+			page = '<li style="cursor:pointer;" class="frontPage" onclick="frontPage('+data.currentPage+')"><a>«</a></li>';
+		}
+		var flag = false;
+		for(var i = 1 ; i <= data.total ; i++){
+			if (data.total <= 8) {
+                if (i == data.currentPage) {
+                    page += '<li class="active"><span>' + i + '</span></li>';
+                } else {
+                    page += '<li style="cursor:pointer;" onclick="toThisPage(' + i + ')"><a >' + i + '</a></li>'
+                }
+            } else {
+                if (i == data.currentPage) {
+                    page += '<li class="active"><span>' + i + '</span></li>';
+                    flag = false;
+                } else if (i > (data.currentPage) - 5 && i < data.currentPage + 7) {
+                    page += '<li style="cursor:pointer;" onclick="selectpruduct(' + i + ')"><a >' + i + '</a></li>'
+                    flag = false;
+                } else if (flag == false) {
+                    page += '<li><a >...</a></li>'
+                    flag = true;
+                }
+            }
+			
+		}
+
+		if(data.currentPage == data.total){
+			page += '<li class="disabled"><span>»</span></li>';
+		}else{
+			page += '<li style="cursor:pointer;" class="backPage" onclick="backPage('+data.currentPage+','+data.total+')"><a>»</a></li>';
+		}
+		$(".pagination").html(page);
+		$("#rowlist").html(tr);
+		// layui.use函数内定义的formLayui，在页面onload时未定义，需要延后
+		setTimeout(function(){
+			formLayui.render('checkbox');
+		},20)
+	}
+
+
+	function frontPage(page){
+		var index = page--;
+		if(index <= 0){
+			$(".frontPage").addClass("disabled");
+			$(".frontPage").html('<span>«</span>');
+			return;
+		}
+		toThisPage(index);
+	}
+	function backPage(page,pageMax){
+		var index = page++;
+		if(page >= pageMax){
+			$(".backPage").addClass("disabled");
+			$(".backPage").html('<span>»</span>');
+			return;
+		}
+		toThisPage(index);
+	}
+
+	$("#copyDetail").on("click",function(){
+		$.ajax({
+			url:'/seller/prm_PrmGroupPurchase_copyDetail',
+			type:'post',
+			dataType:'json',
+			success:function(data){
+				if(data.ret == 1){
+					layer.msg("复制成功",{time:2000,icon:1});
+					return;
+				}else{
+					layer.msg(data.msg,{time:2000,icon:2});
+					return;
+				}
+			}
+		})
+	})
+
+</script>
+</body>
+</html>

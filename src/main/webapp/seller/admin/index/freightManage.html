@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>An Online B2B market——-Shoestp.com,gathering 300 professional shoes manufacture companies Business backstage</title>
+<link rel="stylesheet" type="text/css"
+	href="../../static/admin/layui/css/layui.css" />
+<link rel="stylesheet" type="text/css"
+	href="../../static/admin/css/admin.css" />
+<style>
+
+	.fl{
+		float: left;
+	}
+	.red{
+	color: red;}
+	/* 自定义 input label宽度变大点 */
+	.my-form .layui-input-block{
+		margin-left: 150px;
+	}
+	.my-form .layui-form-label{
+		width: 120px;
+	}
+	/* 表格里显示的 logo图大小 */
+	#appendF img{
+		width: 100px;
+	}
+	/* 分区里的header */
+	.section-select-header{
+		height: 36px;
+		line-height: 36px;
+		padding-left: 15px;
+		font-weight: bold;
+		border-top: 1px solid #ccc;
+		border-bottom: 1px solid #ccc;
+	}
+	/* 分区里的content框 */
+	.section-select-content-wrap{
+		border: 1px solid #ccc;
+		border-top-width: 0;
+	}
+	/* 国家列表外框 */
+	dl.content-wrap{
+		margin-bottom: 30px;
+		border: 1px solid #ccc;
+		border-top-width: 0;
+		border-bottom-width: 0;
+	}
+	/* 国家列表item */
+	.content-wrap dd{
+		height: 30px;
+		line-height: 30px;
+		padding-left: 15px;
+		border-bottom: 1px solid #ccc;
+	}
+	.content-wrap dd input[type="checkbox"]{
+		position: relative;
+		top: 2px;
+		margin-right: 4px;
+	}
+	/* input前的label不换行 */
+	.layui-form-label{
+		white-space: nowrap;
+		text-align: left;
+	}
+	/* 添加分区时，修改默认的clear，否则左侧div-float 会影响布局 */
+	#addfrom .layui-form-item:nth-child(2),#addfrom .layui-form-item:nth-child(3){
+		clear: none;
+	}
+	#addfrom .layui-form-item:nth-child(2):after,#addfrom .layui-form-item:nth-child(3):after{
+		clear: none;
+	}
+	/* hover时，地区的显示与隐藏 */
+	#sdiv .layui-icon{
+		padding-left: 10px;
+		/* visibility: hidden; */
+		cursor: pointer;
+	}
+	#sdiv .section-item{
+		margin-bottom: 10px;
+	}
+	#sdiv .section-item:hover .layui-icon{
+		visibility: visible;
+	}
+
+	/* 自定义单图上传btn的样式 */
+	.upload-pic-wrap {
+    width: 150px;
+    height: 150px;
+		padding: 0;
+    text-align: center;
+    border-radius: 6px;
+    border: 2px solid #eee;
+    background: #fff;
+	}
+	.upload-pic-wrap .layui-upload-img{
+    width: 100%;
+    height: 100%;
+		object-fit: contain;
+    border-radius: 6px;
+	}
+	img[src=""]{
+		opacity: 0;
+	}
+	/* 上传图片时，layui自动生成的input => 隐藏 */
+	.layui-upload-file{
+		display: none;
+	}
+</style>
+</head>
+
+<body>
+	<!-- <h1 style="font-size:24px;" onclick="delFreight()">
+		运费管理
+	</h1> -->
+	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+	  <legend>运费管理</legend>
+	</fieldset>
+
+	<div class="min-width1200" style="padding: 0 20px;">
+		<div class="demoTable" style="text-align:right;">
+			快递公司：
+			<div class="layui-inline">
+				<input class="layui-input" name="keyword" id="Sfind"
+					autocomplete="off">
+			</div>
+			<button class="layui-btn layui-btn-normal" data-type="reload" onclick="slelectfreight()">
+				<i class="layui-icon layui-icon-search">&#xe615;</i> 搜索
+			</button>
+			<button class="layui-btn layui-btn-normal" data-type="reload" onclick="addFreight()">
+				<i class="layui-icon layui-icon-add-1">&#xe654;</i> 新增公司
+			</button>
+			<button class="layui-btn layui-btn-primary" data-type="reload" onclick="adddefault()">恢复默认</button>
+		</div>
+
+		<table class="layui-table" id="LAY_table_freight" lay-filter="useruv" lay-skin="line">
+			<colgroup>
+		    	<col width="80">
+		    	<col width="200">
+		    	<col width="150">
+		    	<col width="150">
+		    	<col width="150">
+		    	<col>
+		    	<col width="220">
+		    </colgroup>
+
+		    <thead>
+				<tr>
+					<th>序号</th>
+					<th>快递公司</th>
+					<th>LOGO</th>
+					<th>启用</th>
+					<th>计算方式</th>
+					<th>分区设置</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+
+			<tbody id="appendF"></tbody>
+
+		</table>
+		<div class="page-wrap">
+						<ul class="pagination">
+						</ul>
+		</div>
+	<!-- 	修改表单 -->
+		<div id="updshowForm" style="padding: 28px 100px 20px 40px; display: none;">
+			<form class="layui-form my-form" id="updFreightForm" lay-filter="updshowForm">
+				<div class="layui-form-item">
+				    <label class="layui-form-label"><span class="red">*</span>快递公司</label>
+				     <input type="hidden" name="bean.pkey" id="updpkey" />
+				     <input type="hidden" id="supper">
+				    <div class="layui-input-block">
+				      <input type="text" name="bean.company" id="updcompany" required  lay-verify="required" placeholder="快递公司名称" autocomplete="off" class="layui-input"  maxlength="20">
+				    </div>
+				</div>
+
+				<div class="layui-form-item">
+				    <label class="layui-form-label"><span class="red">*</span>LOGO</label>
+				    <div class="layui-input-block">
+					    <input type="hidden" name="bean.logo" id="updlogotext" />
+
+					    <button type="button"  class="layui-btn upload-pic-wrap" id="updimglogo">
+								<img class="layui-upload-img" id="updlogo" src="">
+							</button>
+					</div>
+			    </div>
+
+			    <div class="layui-form-item">
+				    <label class="layui-form-label">查询快递单号地址</label>
+				    <div class="layui-input-block">
+					    <input type="text" name="bean.expressUrl" id="updexpressUrl" placeholder="快递单号地址" autocomplete="off" class="layui-input"  maxlength="40">
+					</div>
+			    </div>
+
+			    <div class="layui-form-item">
+				    <label class="layui-form-label"><span class="red">*</span>排序优先级</label>
+				    <div class="layui-input-block">
+				    	<input type="text" name="bean.sort" id="updsort" required  lay-verify="required" placeholder="排序优先级" autocomplete="off" class="layui-input" maxlength="4" />
+				   	</div>
+			    </div>
+
+			    <div class="layui-form-item">
+				    <label class="layui-form-label"><span class="red">*</span>启用</label>
+				    <div class="layui-input-block">
+						<input type="radio" name="bean.enabled" value="1" title="启用" id="updqen" >
+		    					<input type="radio" name="bean.enabled" value="0" title="停用" id="updqed" >
+					</div>
+			    </div>
+
+			    <div class="layui-form-item">
+				    <label class="layui-form-label"><span class="red">*</span>使用接口</label>
+				    <div class="layui-input-block">
+						<input type="radio" name="bean.useInterface" value="1" title="启用" id="upden" >
+		    					<input type="radio" name="bean.useInterface" value="0" title="停用" id="upded" >
+					</div>
+			    </div>
+
+			    <div class="layui-form-item">
+				    <label class="layui-form-label"><span class="red">*</span>计算方式</label>
+				    <div class="layui-input-block">
+		    					<input type="radio" name="bean.type" value="0" title="重量" id="updtypeone">
+						<input type="radio" name="bean.type" value="1" title="体积" id="updtypetwo">
+						<input type="radio" name="bean.type" value="2" title="件数" id="updtypethre">
+					</div>
+			    </div>
+
+			    <div class="layui-form-item">
+				  <div class="layui-inline">
+				    <label class="layui-form-label"><span class="red">*</span>范围</label>
+
+				    <div class="layui-input-inline" style="width: 160px;">
+				      <input type="number" name="bean.weightMin" onblur="changem(this)" placeholder="最小重量/体积/件数" autocomplete="off" class="layui-input" id="updweightMin" maxlength="10">
+				    </div>
+				    <div class="layui-form-mid">-</div>
+				    <div class="layui-input-inline" style="width: 160px;">
+				      <input type="number" name="bean.weightMax" onblur="changem(this)" placeholder="最大重量/体积/件数" autocomplete="off" class="layui-input"  id="updweightMax"  maxlength="10">
+					  <input type="hidden" name="bean.rowVersion" id="updrowVersion">
+				    </div>
+				  </div>
+				</div>
+			</form>
+		</div>
+
+	<!-- 	添加表单 -->
+		<div id="addshowForm" style="padding: 28px 100px 20px 40px; display: none;">
+			<form class="layui-form my-form" id="addFreightForm">
+				<div class="layui-form-item">
+				    <label class="layui-form-label"><span class="red">*</span>快递公司</label>
+				    <div class="layui-input-block">
+				      <input type="text" name="bean.company" required   id="addcompanys" lay-verify="required" placeholder="快递公司名称" autocomplete="off" class="layui-input" maxlength="20">
+				    </div>
+				</div>
+
+			    <div class="layui-form-item">
+				    <label class="layui-form-label"><span class="red">*</span>LOGO</label>
+				    <div class="layui-input-block">
+					    <input type="hidden" name="bean.logo" id="addlogotext" />
+
+					    <button type="button"  class="layui-btn upload-pic-wrap" id="imglogo">
+								<img class="layui-upload-img" id="addlogo"  name="bean.logo" src="../../static/admin/images/icon-add-pic-02.png">
+							</button>
+					</div>
+			    </div>
+
+			    <div class="layui-form-item">
+				    <label class="layui-form-label">查询快递单号地址</label>
+				    <div class="layui-input-block">
+					    <input type="text" name="bean.expressUrl" id="addexpressUrl" placeholder="快递单号地址" autocomplete="off" class="layui-input" maxlength="40">
+					</div>
+			    </div>
+
+			    <div class="layui-form-item">
+				    <label class="layui-form-label"><span class="red">*</span>排序优先级</label>
+				    <div class="layui-input-block">
+					    <input type="text" name="bean.sort" required  id="addsort"  lay-verify="required" placeholder="排序优先级" autocomplete="off" class="layui-input" maxlength="4">
+					</div>
+			    </div>
+
+			    <div class="layui-form-item">
+				    <label class="layui-form-label"><span class="red">*</span>使用接口</label>
+				    <div class="layui-input-block">
+						<input type="radio" name="bean.useInterface" id="addutfo" value="1" title="启用">
+      					<input type="radio" name="bean.useInterface" id="addutft" value="0" title="停用" checked>
+					</div>
+			    </div>
+
+			    <div class="layui-form-item">
+				    <label class="layui-form-label"><span class="red">*</span>计算方式</label>
+				    <div class="layui-input-block">
+      					<input type="radio" name="bean.type"id="addtpo" value="0" title="重量" checked>
+						<input type="radio" name="bean.type" id="addtpt" value="1" title="体积">
+						<input type="radio" name="bean.type" id="addtps" value="2" title="件数">
+					</div>
+			    </div>
+
+			    <div class="layui-form-item">
+				  <div class="layui-inline">
+				    <label class="layui-form-label"><span class="red">*</span>范围</label>
+
+				    <div class="layui-input-inline" style="width: 160px;">
+				      <input type="number" name="bean.weightMin" onblur="changem(this)" id="addweightMin" placeholder="最小重量/体积/件数" autocomplete="off" class="layui-input" maxlength="10">
+				    </div>
+				    <div class="layui-form-mid">-</div>
+				    <div class="layui-input-inline" style="width: 160px;">
+				      <input type="number" name="bean.weightMax" onblur="changem(this)" id="addweightMax" placeholder="最大重量/体积/件数" autocomplete="off" class="layui-input" maxlength="10">
+				    </div>
+				  </div>
+				</div>
+			</form>
+		</div>
+
+	<!-- 删除表单 -->
+		<div id="delshowForm" style="display: none;text-align: center;">
+			<form id="delFreightForm">
+				<div style="padding: 30px 0 10px;">
+					是否确定删除快递公司:<span id="delcompanytext"></span>
+					<input type="hidden" id="delpkey" name="bean.pkey">
+					<input type="hidden" id="delcompany" name="bean.company">
+				</div>
+			</form>
+		</div>
+
+	<!-- 	分区表单 -->
+		<div  id="Sectiondiv" style="display: none;">
+			<h1 style="padding-left: 15px;margin-bottom: 15px;margin-top: 15px;">
+				快递公司:<span id="scomp"> </span>
+				<button class="layui-btn layui-btn-small"  onclick="addsection()">新增分区</button>
+				<input type="hidden" id="comp">
+			</h1>
+			<div class="layui-clear">
+				<div class="fl" style="width: 300px;margin-left: 15px;">
+					<h3 class="section-select-header" style="border-left: 1px solid #ccc;border-right: 1px solid #ccc;">地区设置:</h3>
+					<div id="sdiv" class="section-select-content-wrap" style="padding: 10px;"></div>
+				</div>
+
+				<div style="margin-left: 330px;">
+					<div id="addsection" style="display: none; padding-right: 30px;">
+						<form id="addfrom" class="layui-form">
+							<h3 class="section-select-header" style="border-top-width: 0;border-bottom-width: 0;">新增分区</h3>
+							<div class="layui-form-item">
+								<label class="layui-form-label">快递公司:</label>
+								<div class="layui-input-block">
+						      <span id="addcomp" style="line-height: 38px;"></span> <input type="hidden" id="addpkey" name="bean.main">
+						    </div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label"><span class="red">*</span>分区:</label>
+								<div class="layui-input-block">
+						      <input type="text" name="bean.section" maxlength="50" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input" id="addsectionin">
+						    </div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">简介:</label>
+								<div class="layui-input-block">
+						      <input type="text" name="bean.brief" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input" id="addbrief">
+						    </div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label"><span class="red">*</span>免运费额度:</label>
+								<div class="layui-input-inline">
+									<input type="radio" name="bean.free" value="1" title="启用">
+									<input type="radio" name="bean.free" value="0" id="freeck" checked="checked" title="停用">
+						    </div>
+								<div class="layui-inline" style="margin-right: 0;">
+									<input type="text" name="bean.freePrice" id="addfreeprice" onkeyup='clearNoNum(this)'  lay-verify="number" placeholder="0.00" class="layui-input">
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label"><span class="red">*</span>附加费用:</label>
+								<div class="layui-input-block">
+						      <input type="text" name="bean.extraPrice" required  lay-verify="required" onkeyup='clearNoNum(this)' placeholder="0.00"  value="0" autocomplete="off" class="layui-input" id="addextraPrice" lay-verify="number">
+						    </div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label"><span class="red">*</span>运费计算方式:</label>
+								<div class="layui-input-block">
+					      			<div id="addtype" class="layui-form-mid"></div>
+					      		</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label" id="tone"></label>
+					      <div id="ttwo" class="layui-input-block"></div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label" id="xone"></label>
+					      <div id="xtwo" class="layui-input-block"></div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label" id="tthree"></label>
+					      <div id="tfour" class="layui-input-block"></div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label" id="xthree"></label>
+					      <div id="xfour" class="layui-input-block"></div>
+							</div>
+
+						</form>
+						<button class="layui-btn" onclick='addcom()'>提交</button>
+					</div>
+
+					<div id="updsection" style="display: none; ">
+						<form id="updfrom" class="layui-form">
+							<h3 class="section-select-header" style="border-top-width: 0;border-bottom-width: 0;">修改分区</h3>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">快递公司:</label>
+								<div class="layui-input-block">
+						      <span id="updcomp" style="line-height: 38px;"></span>
+									<input type="hidden" id="updpkeyfenqu" name="bean.pkey">
+									<input type="hidden" id="updmain" name="bean.main">
+									<input type="hidden" id="updVersion" name="bean.rowVersion">
+						    </div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label"><span class="red">*</span>分区:</label>
+								<div class="layui-input-block">
+						      <input type="text" name="bean.section" autocomplete="off" class="layui-input" id="updsectionin">
+						    </div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">简介:</label>
+								<div class="layui-input-block">
+						      <input type="text" name="bean.brief" autocomplete="off" class="layui-input" id="updbrief">
+						    </div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label"><span class="red">*</span>免运费额度:</label>
+								<div class="layui-input-inline">
+									<input type="radio" name="bean.free" value="1" title="启用">
+									<input type="radio" name="bean.free" value="0" id="freedis" checked="checked" title="停用">
+						    </div>
+								<div class="layui-inline" style="margin-right: 0;">
+									<input type="text" name="bean.freePrice" onkeyup="clearNoNum(this)" id="updfreePrice" lay-verify="number" placeholder="0.00" class="layui-input">
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label"><span class="red">*</span>附加费用:</label>
+								<div class="layui-input-block">
+						      <input type="text" name="bean.extraPrice" required onkeyup="clearNoNum(this)"  lay-verify="required" placeholder="0.00" autocomplete="off" class="layui-input" id="updextraPrice" lay-verify="number">
+						    </div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label"><span class="red">*</span>运费计算方式:</label>
+								<div class="layui-input-block">
+					      			<div id="updtype" class="layui-form-mid"></div>
+					      		</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label" id="updtone"></label>
+					      <div id="updttwo" class="layui-input-block"></div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label" id="updxone"></label>
+					      <div id="updxtwo" class="layui-input-block"></div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label" id="updtthree"></label>
+					      <div id="updtfour" class="layui-input-block"></div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label" id="updxthree"></label>
+					      <div id="updxfour" class="layui-input-block"></div>
+							</div>
+						</form>
+							<button class="layui-btn" onclick='updcom()'>修改</button>
+					</div>
+
+					<div id="oncountry" style="display: none; ">
+
+						<div class="layui-clear">
+							<div class="fl" style="width: 300px; max-height: 640px;overflow: auto;">
+								<input type="hidden" id="addsectionpkey">
+								<dl id="sectioncountry" class="content-wrap"></dl>
+							</div>
+
+							<div style="margin-left: 315px;width: 300px; max-height: 640px;overflow: auto;">
+								<dl  id="addcountry" class="content-wrap"></dl>
+							</div>
+						</div>
+						<div style="padding-top: 15px; text-align: center;">
+							<button class="layui-btn" onclick="onaddcountry()">添加国家</button>
+							<button class="layui-btn" onclick="ondelcountry()">移除国家</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<div  id="delsection" style="display: none; ">
+			<div style="padding: 28px 15px 0;">确定删除区间:<span id="delsectionspan" ></span> <input type="hidden" id="delspkey"></div>
+		</div>
+	</div>
+</body>
+<script src="../../static/admin/js/jquery-1.11.1.js"
+	type="text/javascript" charset="utf-8"></script>
+<script src="../../static/admin/layui/layui.js" type="text/javascript"
+	charset="utf-8"></script>
+<!-- <script src="../../static/admin/layui/laydate.js" type="text/javascript"
+	charset="utf-8"></script> -->
+<script src="../../static/admin/js/common.js" type="text/javascript"
+	charset="utf-8"></script>
+<script type="text/javascript">
+function clearNoNum(obj){ 
+    obj.value = obj.value.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符  
+    obj.value = obj.value.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的  
+    obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$","."); 
+    obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');//只能输入两个小数  
+    if(obj.value.indexOf(".")< 0 && obj.value !=""){//以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额 
+        obj.value= parseFloat(obj.value); 
+    } 
+}
+
+function onaddcountry()
+{
+	var b = $("#sectioncountry").find("input:checked");
+	var array= new Array();
+	for (var i = 0; i < b.length; i++) {
+		var numPkey = b.get(i);
+		array.push($(numPkey).val());
+	}
+	var sectionpkey= $("#addsectionpkey").val();
+	var pkeys = "";
+	var num=0;
+	array.forEach(function(pkey, index) {
+			num+=1;
+		if(index!=0)
+		{pkeys+=","+pkey;
+		}else{ pkeys += pkey
+		};
+	})
+	if(num!=0){
+		$.ajax({
+			type:'post',
+			url:'/seller/plt_PltCountryFreight_ins',
+			data:{"section":sectionpkey,"pkeys":pkeys},
+			dataType:"json",
+			success:function(data){
+				layer.msg("添加成功",{time:3000});
+				selectcountry(sectionpkey);
+			},error:function(){
+				console.log("error")
+			}
+		})
+	}else{
+		layer.msg("您没有选中的国家",{time:3000});
+	}
+
+}
+function ondelcountry()
+{
+	var b = $("#addcountry").find("input:checked");
+	var array= new Array();
+	for (var i = 0; i < b.length; i++) {
+		var numPkey = b.get(i);
+		array.push($(numPkey).val());
+	}
+	var num=0;
+	var pkeys = "";
+	array.forEach(function(pkey, index) {
+		num+=1;
+		if(index!=0){
+		pkeys+=","+pkey;
+		}else{ pkeys += pkey};
+	})
+	if(num!=0){
+	$.ajax({
+		type:'post',
+		url:'/seller/plt_PltCountryFreight_del',
+		data:{"pkeys":pkeys},
+		dataType:"json",
+		success:function(data){
+			layer.msg("移除成功",{time:3000});
+			selectcountry($("#addsectionpkey").val());
+		},error:function(){
+
+		}
+	})
+		}else{
+		layer.msg("您没有选中的国家",{time:3000});
+	}
+}
+
+
+
+
+function selectcountry(countrypkey)
+{
+	$("#addsectionpkey").val(countrypkey);
+	$("#addcountry").empty();
+	$("#sectioncountry").empty();
+	var supplier=$("#supper").val();
+	$("#oncountry").css("display","inline-block");
+	if( $("#updsection").css("display")!='none'){
+		$("#updsection").css("display","none");
+	}
+	if( $("#addsection").css("display")!='none'){
+		$("#addsection").css("display","none");
+	}
+	//查询当前已添加国家
+	var filter= "[{'property':'region','value':"+countrypkey+"}]";
+		$.ajax({
+			type:'post',
+			url:'/seller/plt_PltCountryFreight_list',
+			data:{"filter":filter},
+			dataType : "json",
+			success : function(data){
+				var dt = "<dt class='section-select-header'>已添加国家</dt>";
+				var dd = "";
+				$.each(data.items,function(i,addcountry){
+
+					dd = dd + "<dd  onclick='onclickdd(this)'>  <input type='checkbox' name='bean.pkey' value="+addcountry.pkey+"  />"
+							+ addcountry.countrys
+							+ "</dd>";
+				})
+				$("#addcountry").html(dt + dd);
+			}
+
+		})
+		//查询未添加国家
+		$.ajax({
+			type:'post',
+			url:'/seller/plt_PltCountryFreight_list',
+			data:'',
+			dataType : "json",
+			success : function(data){
+				$.ajax({
+					type:'post',
+					url:'/seller/plt_PltCountry_list',
+					data:'',
+					dataType:"json",
+					success:function(datacountry){
+
+						var dt = "<dt class='section-select-header'>选择国家"+
+									"<input style='width: 150px;margin-left: 11px;'>"+
+									"<input type='button' id='search' value='搜索' style='margin: 0 3px;color: #fff;background-color: #009688;border: 0;font-size: 8px;padding: 2px 6px;'></dt>";
+						var dd = "";
+						$.each(datacountry.items,function(i,country){
+							var added = false;
+							$.each(data.items,function(j,addedCountry){
+								if(addedCountry.country.split("##")[0] == country.id)
+								{
+									added = true;
+									return false;
+								}
+							});
+							if(!added) {
+								dd = dd + "<dd onclick='onclickdd(this)'>  <input type='checkbox' name='bean.pkey' value="+country.id+"  />"
+										+country.name
+										+"</dd>";
+							}
+						})
+
+						$("#sectioncountry").html(dt + dd);
+						
+						
+						$("#search").on("click",function(){
+							var country = $(this).prev().val();
+							var countries = $("#sectioncountry").find("dd");
+							if(country.trim() != ""){
+								for(var i = 0;i<countries.length;i++){
+									var text = $(countries[i]).text();
+									if(text.indexOf(country) != -1){
+										$(countries[i]).show();
+									}else{
+										$(countries[i]).hide();
+									}
+								}
+							}else{
+								$(countries).show();
+							}
+						})
+					}
+				})
+			}
+
+		})
+}
+document.onkeydown = function(e){
+    var ev = document.all ? window.event : e;
+    if(ev.keyCode==13) {
+    	$("#search").click();
+    }
+}
+
+function  onclickdd(btn){
+	$(btn).children().attr("checked","checked")
+}
+
+function changem(btn){
+	if($(btn).val()<0||$(btn).val()==""){
+		$(btn).val(0);
+	}
+}
+
+
+
+
+//LOGO上传
+layui.use(['upload','form'],function(){
+	var upload = layui.upload; //得到 upload 对象
+	var form = layui.form(); //得到 upload 对象
+	form.render()
+	upload.render({
+	    elem: '#imglogo'
+	   ,url: '/seller/plt_PltFreightSeller_upload'
+	   ,size: 2000 //限制文件大小，单位 KB
+	   ,accept: 'file'
+	   ,fileAccept: 'image/*'
+	   ,exts: "jpg|png"
+	   ,done: function(res){
+	    $('#addlogo').attr('src',res.result.url+"?x-oss-process=image/resize,m_fixed,h_146,w_146");
+	    $('#addlogotext').val($('#addlogo').attr('src'));
+	   if(res.code > 0){
+	   return layer.msg('上传失败')};
+	                }
+	          }
+	   );
+	upload.render({
+	    elem: '#updimglogo'
+	   ,url: '/seller/plt_PltFreightSeller_upload'
+	   ,size: 2000 //限制文件大小，单位 KB
+	   ,accept: 'file'
+	   ,fileAccept: 'image/*'
+	   ,exts: "jpg|png"
+	   ,done: function(res){
+	    $('#updlogo').attr('src',res.result.url+"?x-oss-process=image/resize,m_fixed,h_146,w_146");
+	    $('#updlogotext').val($('#updlogo').attr('src'));
+	   if(res.code > 0){
+	   return layer.msg('上传失败')};
+	                }
+	          }
+	   );
+})
+//加载所有快递公司
+	var limit=10;
+	window.onload = function() {
+		find(0);
+	}
+	var inpage=0;
+	function  find(index){
+		inpage=index;
+		$("#appendF").empty();
+		$(".pagination").empty();
+		$.ajax({
+			type : 'post',
+			url : '/seller/plt_PltFreightSeller_listfreightlike',
+			data : {"Start":inpage,"Limit":limit},
+			dataType:"JSON",
+			success : function(data) {
+				publicdata(data);
+			}
+		})
+	}
+
+	function publicdata(data){
+		if(data.result.totalCount>0){
+					var tr = '';
+					$.each(data.result.items,function(i, val) {
+										tr = tr
+												+ "<tr><td>"+ (i+1)+ "</td><td>"
+												+ val.company
+												+ "</td> <td>"
+												+"<img src='"+parent.imgUrlconfig+val.logo+"'>"
+												+ "</td> <td>";
+
+												if(val.enabled==1)
+												{
+													tr=tr+"启用</td>"
+												}else{
+													tr=tr+"停用</td>"
+												}
+												tr =tr+"<td>"+ val.type+"</td>"
+	+ "<td><button class='layui-btn layui-btn-primary layui-btn-small'  pkey-data="+val.id+" company-data='"+val.company+"' type-data='"+val.type+"' onclick='findsection(this)'>分区</button></td>"
+	+"<td><button class='layui-btn layui-btn-normal layui-btn-small' company-data='"+val.id+"' onclick='updFreight(this)'>修改</button>"
+	+"<button class='layui-btn layui-btn-danger layui-btn-small'  pkey-data="+val.id+" company-data='"+val.company+"'  id='test' onclick='delFreight(this)'>删除</button></td></tr>";
+									})
+					$("#appendF").append(tr);
+
+ 						var page = "";
+ 						if(data.result.currentPage==1){
+ 							page = "<li class='disabled'><span>«</span></li>";
+ 						}else{
+							page = "<li style='cursor:pointer;' class='frontPage'  onclick='find("+(data.result.start-5)+")'><a>«</a></li>";
+						}
+						for(var i = 1 ; i <= data.result.totalPage ; i++){
+							if((data.result.currentPage-2)<i&&(data.result.currentPage+2)>i){
+							if(i== data.result.currentPage){
+								page += '<li class="active"><span>'+i+'</span></li>';
+							}else{
+								var pagestart=(i-1)*5;
+								page += '<li style="cursor:pointer;" onclick="find('+pagestart+')"><a >'+i+'</a></li>'
+							}
+							}
+						}
+						if(data.result.currentPage==data.result.totalPage){
+							page += '<li class="disabled"><span>»</span></li>';
+						}else{
+							page += "<li style='cursor:pointer;' class='backPage'   onclick='find("+(data.result.start+5)+")'><a>»</a></li>";
+						}
+ 						$(".pagination").html(page);
+
+
+				}else{
+// 					alert("您的没有运费公司")
+					$("#appendF").append("<tr><td colspan='7' style='text-align:center;color: #999;height: 150px;'>暂无匹配的运费公司</td></tr>");
+				}
+	}
+
+	//查询公司
+	function slelectfreight(){
+
+		$("#appendF").empty();
+		$(".pagination").empty();
+		var find=$("#Sfind").val();
+		var filter="";
+		$.ajax({
+			type : 'post',
+			url : '/seller/plt_PltFreightSeller_listfreightlike',
+			data :{"selectcompany":find},
+			dataType:'JSON',
+			success : function(data) {
+					publicdata(data);
+			}
+		})
+	}
+	var sctiontypes="";
+// 	分区设置
+	function findsection(btn){
+		layer.open({
+			type:1,
+			title:'区间设置',
+			area:['960px','800px'],
+			content:$('#Sectiondiv'),
+			shadeClise:	false,
+			success:function(index,layero){
+				$("#sdiv").empty();
+				$("#updsection").css("display","none");
+				$("#addsection").css("display","none");
+				$("#oncountry").css("display","none");
+				var key=$(btn).attr('pkey-data');
+				var comp=$(btn).attr('company-data');
+				sctiontypes=$(btn).attr('type-data');
+				$("#addcomp").text(comp);
+				$("#updcomp").text(comp);
+				$("#comp").val(comp);
+				$("#scomp").text(comp);
+				$("#addpkey").val(key);
+				$("#updpkey").val(key);
+				sectionfind(key);
+			}
+
+		})
+	}
+
+	function   sectionfind(key){
+			$("#oncountry").css("display","none");
+				var filter= "[{'property':'main','value':"+key+"}]";
+				$.ajax({
+					type : 'post',
+					url : '/seller/plt_PltFreightSellerLine_list',
+					data : {"filter":filter},
+					dataType : "json",
+					success : function(data) {
+						$.each(data.items,function(i,val){
+								$("#supper").val(val.supplier);
+								$("#sdiv").append(
+										"<div class='section-item'><lable >"+val.section+"</lable>"
+										+"<span class='f-r'>"
+										+"<i class='layui-icon'  data-tip='国家设置' onclick='selectcountry("+val.pkey+")' >&#xe620;</i>"
+										+"<i class='layui-icon' data-tip='修改' onclick='stionupd("+val.pkey+")' >&#xe621;</i>"
+										+"<i class='layui-icon' data-tip='删除' pkey-data="+val.pkey+" section-data='"+val.section+"' onclick='delsection(this)' >&#xe640;</i>"
+										+"</span></div>");
+
+						})
+
+					}
+				});
+	}
+
+
+	//删除区间
+	function delsection(btn){
+
+		var index =layer.open({
+			type:1,
+			title:'删除区间',
+			area:['200px','200px'],
+			content:$("#delsection"),
+			shadeClise:false,
+			btn : [ '确定', '取消' ],
+			success:function(index,layero){
+				$("#delsectionspan").text($(btn).attr("section-data"));
+				$("#delspkey").val($(btn).attr("pkey-data"));
+			},
+			yes : function(index, layero) {
+				var itemnum=$(".section-item").length;
+							if(itemnum>1)
+							{
+								var pkey =$("#delspkey").val();
+								$.ajax({
+									type:'post',
+									url:'/seller/plt_PltFreightSellerLine_del',
+									data:{"pkey":pkey},
+									success:function(data){
+										layer.msg("删除成功",{icon:1,time:2000});
+										layer.close(index);
+										$("#sdiv").empty();
+										$("#updsection").css("display","none");
+										$("#addsection").css("display","none");
+										var key=$("#addpkey").val();
+										sectionfind(key);
+									}
+								});
+							}else{
+								layer.close(index);
+								alert("地区至少要有一个");
+							}
+
+			},
+			btn2 : function(index, layero) {
+				return;
+			},
+			cancel : function() {
+				return;
+			},
+			end : function() {
+				$('#delsection').css("display", "none");
+			}
+
+
+		})
+	}
+
+// 	添加区间
+	function  addcom()
+	{
+		$.ajax({
+			type:'post',
+			url:'/seller/plt_PltFreightSellerLine_ins',
+			data:$('#addfrom').serialize(),
+			dataType:'json',
+			success:function(data){
+				if(data.ret == 1){
+					layer.msg("添加成功",{time:3000});
+					var	key=$("#addpkey").val();
+							$("#addsectionin").val("");
+							$("#addbrief").val("");
+							$("#addextraPrice").val("");
+							$("#addweightPrice").val("");
+							$("#addaggravatePrice ").val("");
+							$("#freeck").attr("checked",true);
+							$("#addfreePrice").val("");
+							$("#sdiv").empty();
+							sectionfind(key);
+					$("#addsection").css("display","none");
+				}else{
+					layer.msg(data.msg,{time:3000});
+				}
+
+			}
+
+
+		})
+
+
+	}
+//	修改区域设置
+	function  updcom()
+	{
+		$.ajax({
+			type:'post',
+			url:'/seller/plt_PltFreightSellerLine_upd',
+			data:$('#updfrom').serialize(),
+			success:function(data){
+					if(data.ret==1)
+						{
+						layer.msg("修改成功",{time:3000});
+						var	key=$("#updpkey").val();
+							$("#updsectionin").val("");
+							$("#updbrief").val("");
+							$("#updextraPrice").val("");
+							$("#updweightPrice").val("");
+							$("#updaggravatePrice ").val("");
+							$("#freeck").attr("checked",true);
+							$("#updfreePrice").val("");
+							$("#sdiv").empty();
+							sectionfind(key);
+							$("#updsection").css("display","none");
+					}else{
+						layer.msg(data.msg,{time:3000});
+					}
+			
+			
+			}
+
+
+		})
+
+ 	}
+
+
+
+// 	显示添加区间区域
+	function addsection()
+	{
+
+		$("#addsection").css("display","inline-block");
+		if( $("#updsection").css("display")!='none'){
+			$("#updsection").css("display","none");
+		}
+		if( $("#oncountry").css("display")!='none'){
+			$("#oncountry").css("display","none");
+		}
+				$("#tone").empty();
+				$("#ttwo").empty();
+				$("#tthree").empty();
+				$("#tfour").empty();
+				$("#xone").empty();
+				$("#xtwo").empty();
+				$("#xthree").empty();
+				$("#xfour").empty();
+				typeclick(sctiontypes);
+	}
+	function  typeclick(type){
+			if(type=="重量")
+						{
+							//重量
+							$("#addtype").text("重量");//显示类型
+							$("#tone").append("首重重量:");
+							$("#ttwo").append("<div class='layui-inline'><input type='number' name='bean.weightSection' onkeyup='clearNoNum(this)' class='inputup layui-input'  placeholder='0.00' value='1'></div><div class='layui-inline'><div class='layui-form-mid'>KG</div></div> ");
+							$("#tthree").append("首重价格:");
+							$("#tfour").append("<div class='layui-inline'><div class='layui-form-mid'>$</div></div><div class='layui-inline'><input type='number' onkeyup='clearNoNum(this)' name='bean.weightPrice' class='inputup layui-input'  placeholder='0.00' value='1'></div> ");
+							$("#xone").append("续重重量:");
+							$("#xtwo").append("<div class='layui-inline'><input type='number' onkeyup='clearNoNum(this)' name='bean.aggravateSection' class='inputup layui-input' placeholder='0.00' value='1'></div><div class='layui-inline'><div class='layui-form-mid'>KG</div></div></div> ");
+							$("#xthree").append("续重价格:");
+							$("#xfour").append("<div class='layui-inline'><div class='layui-form-mid'>$</div></div><div class='layui-inline'><input onkeyup='clearNoNum(this)' type='number' name='bean.aggravatePrice' class='inputup layui-input' placeholder='0.00' value='1'></div> ");
+						}else if(type=="体积"){
+							//体积
+							$("#addtype").text("体积");//显示类型
+							$("#tone").append("首寄体积:");
+							$("#ttwo").append("<div class='layui-inline'><input onkeyup='clearNoNum(this)' type='number' name='bean.weightSection'  class='inputup layui-input'  placeholder='0.00' value='1'></div><div class='layui-inline'><div class='layui-form-mid'>m³</div></div>");
+							$("#tthree").append("首寄价格:");
+							$("#tfour").append("<div class='layui-inline'><div class='layui-form-mid'>$</div></div><div class='layui-inline'><input onkeyup='clearNoNum(this)' type='number' name='bean.weightPrice' class='inputup layui-input'  placeholder='0.00' value='1'></div>");
+							$("#xone").append("续寄体积:");
+							$("#xtwo").append("<div class='layui-inline'><input onkeyup='clearNoNum(this)' type='number' name='bean.aggravateSection' class='inputup layui-input' placeholder='0.00' value='1'></div><div class='layui-inline'><div class='layui-form-mid'>m³</div></div></div>");
+							$("#xthree").append("续寄价格:");
+							$("#xfour").append("<div class='layui-inline'><div class='layui-form-mid'>$</div></div><div class='layui-inline'><input onkeyup='clearNoNum(this)' type='number' name='bean.aggravatePrice' class='inputup layui-input' placeholder='0.00' value='1'></div>");
+						}else{
+							//件数
+							$("#addtype").text("件数");//显示类型
+							$("#tone").append("首寄件数:");
+							$("#ttwo").append("<div class='layui-inline'><input onkeyup='clearNoNum(this)' type='number' name='bean.weightSection'  class='inputup layui-input'  placeholder='0.00' value='5'></div><div class='layui-inline'><div class='layui-form-mid'>件</div></div>");
+							$("#tthree").append("首寄价格:");
+							$("#tfour").append("<div class='layui-inline'><div class='layui-form-mid'>$</div></div><div class='layui-inline'><input onkeyup='clearNoNum(this)' type='number' name='bean.weightPrice' class='inputup layui-input'  placeholder='0.00' value='10'></div>");
+							$("#xone").append("续寄件数:");
+							$("#xtwo").append("<div class='layui-inline'><input onkeyup='clearNoNum(this)' type='number' name='bean.aggravateSection' class='inputup layui-input' placeholder='0.00' value='1'></div><div class='layui-inline'><div class='layui-form-mid'>件</div></div></div>");
+							$("#xthree").append("续寄价格:");
+							$("#xfour").append("<div class='layui-inline'><div class='layui-form-mid'>$</div></div><div class='layui-inline'><input onkeyup='clearNoNum(this)' type='number' name='bean.aggravatePrice' class='inputup layui-input' placeholder='0.00' value='10'></div>");
+						}
+	}
+
+// 	显示修改区域
+	function  stionupd(pkey){
+		$("#updtype").val();//显示类型
+		$("#updsection").css("display","inline-block");
+		if( $("#addsection").css("display")!='none'){
+			$("#addsection").css("display","none");
+		}
+		if( $("#oncountry").css("display")!='none'){
+			$("#oncountry").css("display","none");
+		}
+				$("#updtone").empty();
+				$("#updttwo").empty();
+				$("#updtthree").empty();
+				$("#updtfour").empty();
+				$("#updxone").empty();
+				$("#updxtwo").empty();
+				$("#updxthree").empty();
+				$("#updxfour").empty();
+				if(sctiontypes=="重量")
+				{
+					//重量
+					$("#updtype").text("重量");//显示类型
+					$("#updtone").append("首重重量:");
+					$("#updttwo").append("<div class='layui-inline'><input type='number' name='bean.weightSection'  class='inputup layui-input'  id='updweightSection' placeholder='0.00' value='1'></div><div class='layui-inline'><div class='layui-form-mid'>KG</div></div>");
+					$("#updtthree").append("首重价格:");
+					$("#updtfour").append("<div class='layui-inline'><div class='layui-form-mid'>$</div></div><div class='layui-inline'><input type='number' name='bean.weightPrice' class='inputup layui-input' id='updweightPrice'  placeholder='0.00' value='1'></div>");
+					$("#updxone").append("续重重量:");
+					$("#updxtwo").append("<div class='layui-inline'><input type='number' name='bean.aggravateSection' class='inputup layui-input' id='updaggravateSection' placeholder='0.00' value='1'></div><div class='layui-inline'><div class='layui-form-mid'>KG</div></div></div> ");
+					$("#updxthree").append("续重价格:");
+					$("#updxfour").append("<div class='layui-inline'><div class='layui-form-mid'>$</div></div><div class='layui-inline'><input type='number' name='bean.aggravatePrice' class='inputup layui-input' id='updaggravatePrice' placeholder='0.00' value='1'></div>");
+				}else if(sctiontypes=="体积"){
+					//体积
+					$("#updtype").text("体积");//显示类型
+					$("#updtone").append("首寄体积:");
+					$("#updttwo").append("<div class='layui-inline'><input type='number' name='bean.weightSection'  class='inputup layui-input'  id='updweightSection' placeholder='0.00' value='1'></div><div class='layui-inline'><div class='layui-form-mid'>m³</div></div>");
+					$("#tthree").append("首寄价格:");
+					$("#updtfour").append("<div class='layui-inline'><div class='layui-form-mid'>$</div></div><div class='layui-inline'><input type='number' name='bean.weightPrice' class='inputup layui-input' id='updweightPrice'  placeholder='0.00' value='1'></div> ");
+					$("#updxone").append("续寄体积:");
+					$("#updxtwo").append("<div class='layui-inline'><input type='number' name='bean.aggravateSection' class='inputup layui-input' id='updaggravateSection' placeholder='0.00' value='1'></div><div class='layui-inline'><div class='layui-form-mid'>m³</div></div></div> ");
+					$("#updxthree").append("续寄价格:");
+					$("#updxfour").append("<div class='layui-inline'><div class='layui-form-mid'>$</div></div><div class='layui-inline'><input type='number' name='bean.aggravatePrice' class='inputup layui-input' id='updaggravatePrice' placeholder='0.00' value='10'></div>");
+				}else{
+					//件数
+					$("#updtype").text("件数");//显示类型
+					$("#updtone").append("首寄件数:");
+					$("#updttwo").append("<div class='layui-inline'><input type='number' name='bean.weightSection'  class='inputup layui-input'  id='updweightSection' placeholder='0.00' value='1'></div><div class='layui-inline'><div class='layui-form-mid'>件</div></div>");
+					$("#updtthree").append("首寄价格:");
+					$("#updtfour").append("<div class='layui-inline'><div class='layui-form-mid'>$</div></div><div class='layui-inline'><input type='number' name='bean.weightPrice' class='inputup layui-input' id='updweightPrice'  placeholder='0.00' value='1'></div>");
+					$("#updxone").append("续寄件数:");
+					$("#updxtwo").append("<div class='layui-inline'><input type='number' name='bean.aggravateSection' class='inputup layui-input' id='updaggravateSection' placeholder='0.00' value='1'></div><div class='layui-inline'><div class='layui-form-mid'>件</div></div></div>");
+					$("#updxthree").append("续寄价格:");
+					$("#updxfour").append("<div class='layui-inline'><div class='layui-form-mid'>$</div></div><div class='layui-inline'><input type='number' name='bean.aggravatePrice' class='inputup layui-input' id='updaggravatePrice' placeholder='0.00' value='10'></div>");
+				}
+
+		$.ajax({
+			type:'post',
+			url:'/seller/plt_PltFreightSellerLine_load',
+			data:{"pkey":pkey},
+			dataType : "json",
+			success:function(data){
+					$("#updmain").val(data.main.split("##")[1]);
+					$("#updpkeyfenqu").val(data.pkey);
+					$("#updsectionin").val(data.section);
+					$("#updbrief").val(data.brief);
+					$("#updextraPrice").val(data.extraPrice);
+					$("#updweightPrice").val(data.weightPrice);
+					$("#updaggravatePrice").val(data.aggravatePrice);
+					$("#updweightSection").val(data.weightSection);
+					$("#updaggravateSection").val(data.aggravateSection);
+					$("#updVersion").val(data.rowVersion);
+					if(data.free==1)
+					{
+						$("#freedis").prop("checked","checked");
+					}else
+					{
+						$("#freeen").prop("checked",'checked');
+					}
+
+					$("#updfreePrice").val(data.freePrice);
+
+			}
+		})
+
+	}
+
+
+	$('.inputup').keyup(function(){
+		var c=$(this);
+        if(/[^\d]/.test(c.val())){//替换非数字字符
+          var temp_amount=c.val().replace(/[^\d]/g,'');
+          $(this).val(temp_amount);
+        }
+
+
+	})
+
+
+	//添加快递公司
+	function addFreight() {
+		layer.open({
+					type : 1,
+					title : '新增公司',
+					area : [ '700px', '700px' ],
+					shadeClose : false, //点击遮罩关闭
+					content : $('#addshowForm'),
+					btn : [ '确定', '取消' ],
+					success:function(){
+						$("#addcompanys").val("");
+						$("#addlogo").attr("src","../../static/admin/images/icon-add-pic-02.png");
+						$("#addexpressUrl").val("");
+						$("#addsort").val("");
+						$("#addutfo").removeAttr("checked");
+						$("#addutft").prop("checked",true);
+						$("#addtps").removeAttr("checked");
+						$("#addtpt").removeAttr("checked");
+						$("#addtpo").prop("checked",true);
+						$("#addweightMin").val("");
+						$("#addweightMax").val("");
+						layui.use(['upload','form'],function(){
+							var form=layui.form();
+							form.render();
+						})
+					},
+					yes : function(index, layero) {
+						$.ajax({
+									type : 'post',
+									url : '/seller/plt_PltFreightSeller_ins',
+									data : $('#addFreightForm').serialize(),
+									dataType:'JSON',
+									success : function(data) {
+										if(data.ret == 1){
+											layer.closeAll();
+											layer.msg("添加成功",{time:3000});
+											 find(0);
+										}else{
+											layer.msg(data.msg,{time:3000});
+										}
+
+									}
+								});
+					},
+					btn2 : function(index, layero) {
+						return;
+					},
+					cancel : function() {
+						return;
+					},
+					end : function() {
+						$('#addshowForm').css("display", "none");
+					}
+				});
+	}
+
+
+// 	修改公司
+	function updFreight(comp) {
+		layui.use(['upload','form'],function(){
+			var form = layui.form(); //得到 upload 对象
+			var index =layer.open({
+						type : 1,
+						title : '修改',
+						area : [ '700px', '700px' ],
+						shadeClose : false, //点击遮罩关闭
+						content : $('#updshowForm'),
+						btn : [ '确定', '取消' ],
+						success:function(){
+							$.ajax({
+								type : 'post',
+								url : '/seller/plt_PltFreightSeller_load',
+								data : {"pkey":$(comp).attr("company-data")},
+								dataType:'JSON',
+								success : function(data) {
+												$("#updpkey").val(data.pkey);
+												$("#updcompany").val(data.company);
+												$("#updlogotext").attr('src',data.logo);
+												$("#updlogo").attr('src',data.logo);
+												$("#updexpress_url").val(data.expressUrl);
+												$("#updsort").val(data.sort);
+												$("#updweightMin").val(data.weightMin);
+												$("#updweightMax").val(data.weightMax);
+												$("#updrowVersion").val(data.rowVersion);
+												if(data.enabled==1){
+													$("#updqen").prop("checked",true);
+												}else{
+													$("#updqed").prop("checked",true);
+												}
+												if(data.useInterface==1){
+													$("#upden").prop("checked",true);
+												}else{
+													$("#upded").prop("checked",true);
+												}
+												if(data.type==1){
+													$("#updtypeone").prop("checked",true);
+												}else if(data.type==1){
+													$("#updtypetwo").prop("checked",true);
+												}else{
+													$("#updtypethre").prop("checked",true);
+												}
+								form.render()
+							}})
+							},
+						yes : function(index, layero) {
+							$.ajax({
+										type : 'post',
+										url : '/seller/plt_PltFreightSeller_upd',
+										data : $('#updFreightForm').serialize(),
+										dataType:"JSON",
+										success : function(data) {
+
+											if(data.success==true)
+											{
+												layer.msg("修改成功",{time:3000});
+												layer.close(index);
+												find(0);
+											}else{
+												layer.msg(data.msg,{time:3000});
+											}
+										}
+									});
+						},
+						btn2 : function(index, layero) {
+							return;
+						},
+						cancel : function() {
+							return;
+						},
+						end : function() {
+							$('#updshowForm').css("display", "none");
+						}
+					});
+		})
+
+	}
+// 	删除公司
+	function delFreight(btn) {
+		var delWin = layer.open({
+					type : 1,
+					title : '删除快递公司',
+					area : [ '360px', '180px' ],
+					shadeClose : false, //点击遮罩关闭
+					content : $('#delshowForm'),
+					btn : [ '确定', '取消' ],
+					success:function(){
+					$("#delpkey").val($(btn).attr("pkey-data"));
+					$("#delcompany").val($(btn).attr("company-data"));
+					$("#delcompanytext").text($(btn).attr("company-data"));
+					},
+					yes : function(index, layero) {
+						$.ajax({
+									type : 'post',
+									url : '/seller/plt_PltFreightSeller_del',
+									data : $('#delFreightForm').serialize(),
+									success : function(data) {
+										if(data.ret == 1){
+											layer.msg("删除成功",{time:3000});
+											layer.close(delWin);
+											find(0);
+										}else{
+											layer.msg(data.msg,{time:3000});
+										}
+
+									}
+								});
+					},
+					btn2 : function(index, layero) {
+						return;
+					},
+					cancel : function() {
+						return;
+					},
+					end : function() {
+						$('#delShowForm').css("display", "none");
+					}
+				});
+	}
+	function adddefault(){
+		layui.use(['layer'],function(){
+			var layer = layui.layer;
+			layer.confirm('你确定要恢复系统默认吗？', {
+			  btn: ['确定', '取消'] //可以无限个按钮
+			  ,yes: function(index, layero){
+				  layer.close(index);
+					$.ajax({
+		 		 		type:'post',
+		 		 		url:'/seller/plt_PltFreightSeller_recovery',
+		 		 		data:'',
+		 		 		dataType:'json',
+		 				success:function(data){
+		 					if(data.ret == 1){
+		 						layer.msg("已恢复默认",{time:3000});
+			 					find(0);
+		 					}else{
+		 						layer.msg(data.msg,{time:3000});
+		 					}
+		 				}
+		 		 	})
+
+			  }
+			});
+
+		})
+	}
+	
+	var tip_index;
+// 分区中地区 鼠标移上去 - 显示修改、删除
+$("#sdiv").delegate(".layui-icon","mouseenter",function(){
+	// 提示的内容
+	var tipContent = $(this).data("tip");
+	tip_index = layer.tips(tipContent, this, {
+		tips: 1,
+		time: 0
+	})
+})
+// 分区中地区 鼠标移出来 - 隐藏修改、删除
+$("#sdiv").delegate(".layui-icon","mouseleave",function(){
+	layer.close(tip_index);
+})
+</script>
+</html>

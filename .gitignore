@@ -1,0 +1,16 @@
+#Maven
+target/
+
+#svn
+.svn
+
+#idea
+.idea
+
+#eclipse
+.settings
+.project
+.classpath
+*.sql
+README.md
+shoestp.iml

@@ -1,0 +1,222 @@
+/*p,h1,h2,h3,h4,h5,h6{
+
+}*/
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+ul,li{
+    list-style: none;
+}
+body,html{
+    height: 100%;
+}
+
+
+.w_1200{
+    /*width: 1200px;*/
+    min-width: 1200px;
+    margin: 0 auto;
+}
+.main{
+    padding: 50px 93px;
+    height: 100%;
+}
+.main_left{
+    width: 550px;
+    float: left;
+}
+.main_right{
+    width: 400px;
+    float: right;
+}
+.font-bold{
+    font-weight: bold;
+}
+.inputHeight{
+    height: 30px;
+}
+.main_left header{
+    display: flex;
+    align-items: center;
+}
+.main_left header>div:nth-child(2){
+    margin-left: 10px;
+}
+.main_left header>div:nth-child(2)>h2{
+    margin-bottom: 10px;
+}
+.main_left>div:nth-of-type(1) h1{
+    margin: 20px 0;
+}
+.box{
+    border: 1px solid gray;
+    margin-bottom: 20px;
+}
+.chooseImg input{
+            display: none;
+    }
+    .clear{
+        clear: both;
+    }
+    h3{
+        margin: 10px 0;
+    }
+    .form_footer{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+    }
+    .form_code{
+        width: 100%;
+        height: 30px;
+        border: 1px solid gray;
+    }
+   .submit{
+        width: 100%;
+        height: 30px;
+        border: none;
+        color: white;
+        font-size: 16px;
+        background-color: #003d80;
+    }
+    .chooseImg{
+        height: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+.chooseImg .chooseBox{
+    width: 100px;
+    height: 100%;
+    margin:0 0 2px 7px;
+}
+.chooseBox p{
+    text-align: center;
+    border: 1px solid red;
+    border-radius: 23px;
+    color: red;
+    cursor: pointer;
+    display: none;
+}
+.chooseImg .chooseBox img{
+    width: 100px;
+    height: 100px;
+}
+textarea::-webkit-input-placeholder { /* WebKit browsers */ 
+font-size:16px;
+} 
+input::-webkit-input-placeholder { /* WebKit browsers */ 
+/*font-size:16px;*/
+} 
+textarea::-moz-placeholder { /* Mozilla Firefox 4 to 18 */ 
+font-size:16px;
+} 
+input::-moz-placeholder { /* Mozilla Firefox 19+ */ 
+font-size:16px;
+} 
+textarea::-ms-input-placeholder { /* Internet Explorer 10+ */ 
+font-size:16px;
+}
+form{
+    margin: 15px 0;
+}
+.form_header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.form_main{
+    border:  1px solid gray;
+}
+.form_main textarea{
+     border: none;
+     resize: none;
+     width: 548px;
+    height: 398px;
+    max-width: 548px;
+    max-height: 398px;
+    outline:none;
+}
+.marginBottom{
+    margin-bottom: 15px;
+}
+.marginRight{
+    margin-right: 15px;
+}
+.main_right p{
+    line-height: 25px;
+}
+.main_rightB{
+    margin-top: 50px;
+}
+
+/* 选购商品css */
+a{
+    text-decoration: none;
+}
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
+
+main .goods-box>ul>li:first-child{
+    min-height: 182px;;
+    padding-bottom:20px; 
+    border-bottom: 1px dashed #ddd;
+}
+main .goods-box>ul>li{
+    min-height: 182px;
+    padding:20px 0; 
+    border-bottom: 1px dashed #ddd;
+}
+main .goods-box>ul>li:last-child{
+    min-height: 182px;;
+    margin-bottom:20px; 
+    border-bottom: 1px dashed #ddd;
+}
+main .goods-box .goods-pic img{
+    width: 100%;
+    height: 100%;
+}
+main .goods-box .goods-pic{
+    width: 182px;
+    height: 182px;
+    border: 1px solid #ddd;
+}
+main .goods-box .goods-info{
+    width: 790px;
+}
+main .goods-box .goods-info .goods-info-name{
+    height: 28px;
+    line-height: 25px;
+    overflow: hidden;
+    border-bottom: 1px dashed #ddd;
+}
+main .goods-box .goods-info .goods-info-detail{
+    padding-top: 5px;
+    line-height: 180%;
+    font-size: 14px;
+}
+main .goods-box .goods-info .goods-info-remove{
+    margin-top: 5px;
+    height: 22px;
+    line-height: 22px;
+}
+main .goods-box .goods-info .goods-info-remove span{
+    display: inline-block;
+    cursor: pointer;
+}
+main .goods-box .goods-info .goods-info-remove i{
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    overflow: hidden;
+    background: url(https://www.shoestp.com//static/ico/normal2.png) -349px -115px no-repeat;
+    float: left;
+    margin: 4px 3px;
+}

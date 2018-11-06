@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>数据统计</title>
+ <script src="/home/static/js/vue.min.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
+    <script src="/home/static/js/qs.js"></script>
+    <script src="/home/static/js/axios.min.js"></script>
+    <script src="/home/static/js/element-ui.js"></script>
+    <script type="text/javascript" src="../../static/admin/lib/echarts/echarts-all.js"></script>
+    <script type="text/javascript" src="../../static/admin/lib/echarts/echarts-map.js"></script>
+    <script type="text/javascript" src="../../static/admin/lib/echarts/chart/map.js"></script>
+    <script type="text/javascript" src="../../static/admin/lib/echarts/chart/china.js"></script>
+    <script type="text/javascript" src="../../static/admin/lib/echarts/chart/world.js"></script>
+    <link rel="stylesheet" type="text/css" href="/home/static/css/element-ui.css"/>
+     <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_832132_uboptbpb4k9.css"/>
+     <script  src="//at.alicdn.com/t/font_832132_uboptbpb4k9.js"></script>
+        <style type="text/css">
+    
+    @font-face {
+  font-family: 'iconfont';  /* project id 832132 */
+  src: url('//at.alicdn.com/t/font_832132_uboptbpb4k9.eot');
+  src: url('//at.alicdn.com/t/font_832132_uboptbpb4k9.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_832132_uboptbpb4k9.woff') format('woff'),
+  url('//at.alicdn.com/t/font_832132_uboptbpb4k9.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_832132_uboptbpb4k9.svg#iconfont') format('svg');
+}
+/*顶部4个group */
+.panel-group {margin-top: 18px;}
+.panel-group .card-panel-col{
+    margin-bottom: 32px;
+  }
+.panel-group .card-panel {
+    height: 108px;
+    cursor: pointer;
+    font-size: 12px;
+    position: relative;
+    overflow: hidden;
+    color: #666;
+    background: #fff;
+    box-shadow: 4px 4px 40px rgba(0, 0, 0, .05);
+    border-color: rgba(0, 0, 0, .05);
+  }
+.panel-group .card-panel:hover .card-panel-icon-wrapper {
+        color: #fff;
+      }
+.panel-group .card-panel:hover .icon-people {
+         background: #40c9c6;
+      }
+.panel-group .card-panel:hover .icon-message {
+        background: #36a3f7;
+      }
+.panel-group .card-panel:hover .icon-money {
+        background: #f4516c;
+      }
+.panel-group .card-panel:hover .icon-shopping {
+        background: #34bfa3
+      }
+      
+.panel-group .card-panel .icon-people {
+      color: #40c9c6;
+    }
+.panel-group .card-panel .icon-message {
+      color: #36a3f7;
+    }
+.panel-group .card-panel .icon-money {
+      color: #f4516c;
+    }
+.panel-group .card-panel .icon-shopping {
+      color: #34bfa3
+    }
+.panel-group .card-panel .card-panel-icon-wrapper {
+      float: left;
+      margin: 14px 0 0 14px;
+      padding: 16px;
+      transition: all 0.38s ease-out;
+      border-radius: 6px;
+    }
+.panel-group .card-panel .card-panel-icon {
+      float: left;
+      font-size: 48px;
+    }
+.panel-group .card-panel .card-panel-description {
+      float: right;
+      font-weight: bold;
+      margin: 26px;
+      margin-left: 0px;
+    }
+.panel-group .card-panel .card-panel-description .card-panel-text {
+        line-height: 18px;
+        color: rgba(0, 0, 0, 0.45);
+        font-size: 16px;
+        margin-bottom: 12px;
+      }
+.panel-group .card-panel .card-panel-description .card-panel-num {
+        font-size: 20px;
+      }
+/*顶部4个group - end */
+
+
+		.el-form-item__label{
+			width:188px;
+		}    
+		.el-input__inner{
+			width:360px;
+		}
+		
+		.el-cascader .el-input input{
+			width:188px;
+		}
+		
+		.el-form-item__content .el-input{
+			width:188px;
+		}
+		
+		.el-form-item__content .el-input .el-input__inner{
+			width:188px;
+		}
+		.avatar-uploader .el-upload {
+		    border: 1px dashed #d9d9d9;
+		    border-radius: 6px;
+		    cursor: pointer;
+		    position: relative;
+		    overflow: hidden;
+		  }
+		  .avatar-uploader .el-upload:hover {
+		    border-color: #409EFF;
+		  }
+		  .avatar-uploader-icon {
+		    font-size: 28px;
+		    color: #8c939d;
+		    width: 178px;
+		    height: 178px;
+		    line-height: 178px;
+		    text-align: center;
+		  }
+		  .avatar {
+		    width: 178px;
+		    height: 178px;
+		    display: block;
+		  }
+		  .entityPhoto .el-upload.el-upload--picture-card,.contactsPhoto .el-upload.el-upload--picture-card,.certPhoto .el-upload.el-upload--picture-card{
+		  	display:none;
+		  }
+		  
+		  .card-panel-num{
+		  	text-align:right;
+		  }
+		  .top_button_group{
+		  	background-color:#fff;
+		  	display: block;
+		  	padding:25px 0;
+		  }
+		  .top_button{
+		  	background-color:#F3F3F3;
+		  	border:1px solid #D7D7D7;
+		  }
+		  .top_button:hover{
+		  	background-color:#06DA83;
+		  	
+		  }
+		  .top_button:hover span{
+			  	color:#fff;
+		  	}
+		  	.top_button:focus{
+		  	background-color:#06DA83;
+		  	
+		  }
+		  	.top_button:focus span{
+			  	color:#fff;
+		  	}
+		  .top_button span{
+		  	color:#A6A9A7;
+		  }
+		  .top_nav{
+		  	border-radius:5px;
+		  	cursor:url("/seller/static/admin/images/click.ico"),pointer !important;
+		  }	
+		  
+		  .top_nav .big_icon{
+		  	float:right;
+		  	color:#fff;
+		  	margin-right:14px;
+		  	margin-top:16px;
+		  }	
+		  
+		  .top_nav .card-panel-description{
+		  	float:left !important;
+		  	margin-left:23px !important;
+		  	margin-right:0 !important;
+		  }
+    </style>
+</head>
+<body style="margin:0;">
+	<div id="main" style="margin-left:39px;">
+	
+	<el-button-group class="top_button_group">
+	  <el-button type="primary" class="top_button" @click="chooseDataTime(1)">实时数据 </el-button>
+	  <el-button type="primary" class="top_button" @click="chooseDataTime(2)">当月数据</el-button>
+	  <el-button type="primary" class="top_button" @click="chooseDataTime(3)">历史数据</el-button>
+	</el-button-group>
+	
+	<div style="width:1022px;min-width:1022px;padding-right:38px">
+	<el-row :gutter="10" class="panel-group" style="margin-left:0;margin-top:50px;margin-bottom:-5px">
+	    <el-col :xs="24" :sm="12" :lg="6" class="card-panel-col">
+	      <div class="card-panel top_nav" style="background-color:#5968D7;">
+	        <div class="card-panel-description">
+	          <div class="card-panel-text" style="color:#fff;">浏览量</div>
+	          <div class="card-panel-num" style="color:#fff;">{{top_data.browse}}</div>
+	        </div>
+	        
+	        <div class="big_icon">	
+	          <i class="el-icon-view card-panel-icon"></i>
+            </div>
+	      </div>
+	    </el-col>
+	    
+	    
+	     <el-col :xs="24" :sm="12" :lg="6" class="card-panel-col">
+	      <div class="card-panel top_nav" style="background-color:#6DCFF6;">
+	        <div class="card-panel-description">
+	          <div class="card-panel-text" style="color:#fff;">访客量</div>
+	          <div class="card-panel-num" style="color:#fff;">{{top_data.visit}}</div>
+	        </div>
+	        
+	        
+	        <div class="big_icon">	
+	          <i class="iconfont icon-icon card-panel-icon"></i>
+            </div>
+	      </div>
+	    </el-col>
+	    
+	     <el-col :xs="24" :sm="12" :lg="6" class="card-panel-col">
+	      <div class="card-panel top_nav" style="background-color:#FFFFFF;">
+	        <div class="card-panel-description">
+	          <div class="card-panel-text" style="color:#333333;">订单金额（GMV）</div>
+	          <div class="card-panel-num" style="color:#4489FF;text-align:left;">{{top_data.money}}</div>
+	        </div>
+	        
+	        <div class="big_icon" style="color:#4489FF">	
+	          <i class="iconfont icon-dingdan card-panel-icon"></i>
+            </div>
+	      </div>
+	    </el-col>
+	    
+	    
+	     <el-col :xs="24" :sm="12" :lg="6" class="card-panel-col">
+	      <div class="card-panel top_nav" style="background-color:#FFFFFF;">
+	        <div class="card-panel-description">
+	          <div class="card-panel-text" style="color:#333333;">实际成交金额</div>
+	          <div class="card-panel-num" style="color:#26CB9F;text-align:left;">{{top_data.real_money}}</div>
+	        </div>
+	        
+	        <div class="big_icon" style="color:rgb(255,190,1)">	
+	          <i class="iconfont icon-chengjiao card-panel-icon"></i>
+            </div>
+	      </div>
+	    </el-col>
+	    </el-row>
+	    <el-row :gutter="10" class="panel-group" style="margin-left:0;">
+	     <el-col :xs="24" :sm="12" :lg="6" class="card-panel-col">
+	      <div class="card-panel top_nav" style="background-color:#FFFFFF;">
+	        <div class="card-panel-description">
+	          <div class="card-panel-text" style="color:#333333;">注册供应商</div>
+	          <div class="card-panel-num" style="color:#6DCFF6;text-align:left;">{{top_data.supplier}}</div>
+	        </div>
+	        
+	        <div class="big_icon" style="color:#6DCFF6">	
+	          <i class="iconfont icon-zhuce card-panel-icon"></i>
+            </div>
+	      </div>
+	    </el-col>
+	    
+	     <el-col :xs="24" :sm="12" :lg="6" class="card-panel-col">
+	      <div class="card-panel top_nav" style="background-color:#4489FF;">
+	        <div class="card-panel-description">
+	          <div class="card-panel-text" style="color:#FFFFFF;">注册采购商</div>
+	          <div class="card-panel-num" style="color:#FFFFFF;text-align:left;">{{top_data.purchase}}</div>
+	        </div>
+	        
+	        <div class="big_icon" style="color:#FFFFFF">	
+	          <i class="iconfont icon-zhuce1 card-panel-icon"></i>
+            </div>
+	      </div>
+	    </el-col>
+	    
+	    
+	     <el-col :xs="24" :sm="12" :lg="6" class="card-panel-col">
+	      <div class="card-panel top_nav" style="background-color:#FFFFFF;">
+	        
+	        <div class="card-panel-description">
+	          <div class="card-panel-text" style="color:#333333;">总商品量</div>
+	          <div class="card-panel-num" style="color:#5968D7;text-align:left;">{{top_data.products}}</div>
+	        </div>
+	        
+	        <div class="big_icon" style="color:#5968D7">	
+	          <i class="iconfont icon-shangpin card-panel-icon"></i>
+            </div>
+	      </div>
+	    </el-col>
+	    
+	    
+	     <el-col :xs="24" :sm="12" :lg="6" class="card-panel-col">
+	      <div class="card-panel top_nav" style="background-color:#26CB9F;">
+	        <div class="card-panel-description">
+	          <div class="card-panel-text" style="color:#FFFFFF;">总询盘量</div>
+	          <div class="card-panel-num" style="color:#FFFFFF;text-align:left;">{{top_data.enquiry}}</div>
+	        </div>
+	        
+	        <div class="big_icon" style="color:#FFFFFF">	
+	          <i class="iconfont icon-kehuxunpan card-panel-icon"></i>
+            </div>
+	      </div>
+	    </el-col>
+	    
+	  </el-row>
+	  
+	  <div style="">
+		  <h2 style="font-weight:500;color:#656565;border-bottom: 5px solid #4489FF; padding-bottom: 28px;padding-top: 12px;margin-bottom: 0;">运营数据</h2>
+		  <div id="operationData" style="height:400px;background-color:#fff;"></div>
+	  </div>
+	  
+	  
+	  <div style="background-color: rgb(243,243,243);">
+		  <h2 style="font-weight:500;color:#656565;border-bottom: 5px solid #4489FF; padding-bottom: 28px;padding-top: 12px;margin-bottom: 0;">商机数据</h2>
+		  <el-row :gutter="20" style="margin-bottom: 20px;background-color:#fff;">
+			  <el-col :xs="16" :sm="16" :md="16" :lg="16" :xl="16" style="">
+			  	<div id="pdtCategory" style="width:100%;height:400px;"></div>
+			  </el-col>
+			  <el-col :xs="8" :sm="8" :md="8"  :lg="8" :xl="8" style="text-align:center;">
+			  	<div  style="width:100%;height:400px;display:  flex;justify-content:  center;align-items:  center;">
+			  		<img alt="" src="../../static/admin/images/Graphs Icon@3x.png" height="161" width="202">
+			  	</div>
+			  </el-col>
+		  </el-row>
+		  
+		  <el-row :gutter="20" style="margin-bottom: 20px;">
+			  <el-col :xs="24" :sm="12" :md="12" style="background-color:#fff;padding-bottom: 20px;">
+			  	<div id="flowSource" style="width:100%;height:400px;"></div>
+			  </el-col>
+			  <el-col :xs="24" :sm="12" :md="12" style="background-color:#fff;padding-bottom: 20px;">
+			  	<div id="flowTerminal" style="width:100%;height:400px;"></div>
+			  </el-col>
+			</el-row>
+	  </div>
+	  
+	  
+	  <div style="background-color: rgb(243,243,243);">
+		  	<h2 style="font-weight:500;border-bottom: 5px solid rgb(49,212,146); padding-bottom: 28px;padding-top: 12px;margin-bottom: 0;">访客地域分布</h2>
+			<div style="background-color: #fff;">
+				<el-container>
+				  <el-main>
+					<div style="text-align: center;margin-bottom: 25px;">
+						<el-radio label="world" v-model="map.type" @change="chooseThisMap">全部访客地域分布</el-radio>
+			  			<el-radio label="china" v-model="map.type" @change="chooseThisMap">供应商地域分布</el-radio>
+					</div>
+					 <div :style="{height:'400px',width:'100%',margin:'0 auto'}" id="world"></div>
+				 </el-main>
+				  <el-aside width="28%">
+				  <el-card class="box-card" style="margin-top:38px;width:100%;float: right;">
+					  <div slot="header" class="clearfix">
+					    <span>{{map.title}}</span>
+					  </div>
+					  <div v-for="key in map.showData" :key="key" class="text item" style="margin:20px 0">
+					    	<span style="display:block;width: 128px;float: left;">{{key.name}}</span>
+							<span>{{key.value}}</span>
+							<div style="clear:both;"></div>
+					  </div>
+					</el-card>
+				</el-aside>
+				</el-container>
+			
+				
+			</div>
+			<!-- <div style="background-color: #fff;margin-top: 48px;">
+				<el-container>
+				  <el-main>
+					<div style="text-align: center;margin-bottom: 25px;">
+						<el-radio label="1" v-model="allVisitorFromChina">全部访客地域分布</el-radio>
+			  			<el-radio label="2" v-model="allVisitorFromChina">供应商地域分布</el-radio>
+					</div>
+					 <div :style="{height:'400px',width:'100%',margin:'0 auto'}" id="china"></div>
+				 </el-main>
+				  <el-aside width="28%">
+				  
+				  <el-card class="box-card" style="margin-top:38px;width:100%;float: right;">
+					  <div slot="header" class="clearfix">
+					    <span>地区排行</span>
+					  </div>
+					  <div v-for="key in chinaData" :key="key" class="text item" style="margin:20px 0">
+					    	<span style="display:block;width: 128px;float: left;">{{key.name}}</span>
+							<span>{{key.value}}</span>
+							<div style="clear:both;"></div>
+					  </div>
+					</el-card>
+				</el-aside>
+				</el-container>
+		</div> -->
+	  </div>
+	  </div>
+	</div>
+</body>
+<script type="text/javascript">
+	var app = new Vue({
+		el:"#main",
+	    data() {
+		      return {
+		        chart: null,
+		        dataTime:1,
+		        top_data:{
+		        	browse:1222,
+		        	visit:1222,
+		        	money:12,
+		        	real_money:1222,
+		        	supplier:1222,
+		        	purchase:1222,
+		        	products:1222,
+		        	enquiry:1222,
+		        },
+		        map:{
+		        	title:'国家排行',
+		        	type:'world',
+		        	data:[
+							{name: '俄罗斯', value: 0.2},
+							{name: '中国', value: 0.2},
+							{name: '美国', value: 0.2},
+							{name: '罗马尼亚', value: 0.2},
+							{name: '非洲', value: 0.2},
+		              ],
+		              showData:[
+		     		           {
+		     		        	   name:'俄罗斯',
+		     			        	value:'20%'
+		     			           },
+		     			           {
+		     		        	   name:'中国',
+		     			        	value:'20%'
+		     			           },
+		     			           {
+		     		        	   name:'美国',
+		     			        	value:'20%'
+		     			           },
+		     			           {
+		     		        	   name:'罗马尼亚',
+		     			        	value:'20%'
+		     			           },
+		     			           {
+		     		        	   name:'其它',
+		     			        	value:'20%'
+		     			           },
+		     			        ]
+		        },
+		        business_data:{
+		        	x_axis:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+		        	browse_data:[2.0, 5, 7.0, 23, 25, 76, 135, 162, 32, 20, 6, 3],
+		        	visit_data:[2, 5, 9, 26, 28,70, 175, 182, 48, 18, 6, 2],
+		        },
+		        opportunity_data:{
+		        	category_data:['男鞋','女鞋','童鞋','其他'],
+		        	sales_data:[18203, 23489, 29034, 104970],
+		        },
+		        flow_source:{
+		        	source_name_array:['谷歌搜索','百度搜索','直接访问','其他'],
+		        	data:[
+		            	    {
+			            		   value:335, name:'谷歌搜索'
+			            		},{
+			            		   value:310, name:'百度搜索'
+			            		},{
+			            		   value:234, name:'直接访问'
+			            		},{
+			            		   value:135, name:'其他'
+			            		}],
+		        },
+		        flow_terminal:{
+		        	terminal_name_array:['PC端','Android','IOS','其他'],
+		        	data:[
+       				   {
+    					   value:335, name:'PC端'
+    					},{
+    					   value:234, name:'Android'
+    					},{
+    					   value:135, name:'IOS'
+    					},{
+    					    value:1548, name:'其他'
+    					}],
+		        },
+		        countryData:[
+		           {
+	        	   name:'俄罗斯',
+		        	value:'20%'
+		           },
+		           {
+	        	   name:'中国',
+		        	value:'20%'
+		           },
+		           {
+	        	   name:'美国',
+		        	value:'20%'
+		           },
+		           {
+	        	   name:'罗马尼亚',
+		        	value:'20%'
+		           },
+		           {
+	        	   name:'其它',
+		        	value:'20%'
+		           },
+		        ],
+		        chinaData:[
+	   	           {
+	           	   name:'北京',
+	   	        	value:'20%'
+	   	           },
+	   	           {
+	           	   name:'台湾',
+	   	        	value:'20%'
+	   	           },
+	   	           {
+	           	   name:'江苏',
+	   	        	value:'20%'
+	   	           },
+	   	           {
+	           	   name:'浙江',
+	   	        	value:'20%'
+	   	           },
+	   	           {
+	           	   name:'西藏',
+	   	        	value:'20%'
+	   	           },
+	   	        ],
+		      	chinaDetail:[  
+	                  {name: '北京',value: 0.2 },{name: '台湾',value: 0.4 },  
+	                  {name: '江苏',value: 0.15 },{name: '浙江',value: 0.12 },  
+	                  {name: '西藏',value: 0.12 }  
+	              ],
+	              worldDetail:[
+						{name: '俄罗斯', value: 0.2},
+						{name: '中国', value: 0.2},
+						{name: '美国', value: 0.2},
+						{name: '罗马尼亚', value: 0.2},
+						{name: '非洲', value: 0.2},
+	              ],
+	              worldMap:{
+	                  'Russia': '俄罗斯',
+	                  'China': '中国',
+	                  'United States': '美国',
+	                  'Romania': '罗马尼亚',
+	                  'Africa': '非洲',
+	              } 
+		      
+		      };
+		    },
+		 mounted() {
+		  this.renderOperationalData();
+		  this.renderBusinessOppData();
+	      this.renderConfigure();
+	      //this.renderChinaConfigure();
+	    },
+	    methods:{
+	    	chooseDataTime:function(val){
+	    		self.dataTime = val;
+	    	},
+	    	chooseThisMap:function(val){
+	    		var self = this;
+	    		self.map.type = val;
+	    		if(val == 'world'){
+		    		self.map.data = self.worldDetail;
+		    		self.map.showData = self.countryData;
+		    		self.map.title = '国家排行';
+	    		}else{
+	    			self.map.data = self.chinaDetail;
+	    			self.map.showData = self.chinaData;
+	    			self.map.title = '地区排行';
+	    		}
+	    		self.renderConfigure();
+	    	},
+	    	renderOperationalData(){
+	    		var self = this;
+	    		var operationChart = echarts.init(document.getElementById('operationData'));
+	    		operationOption = {
+	    		    tooltip: {
+	    		        trigger: 'axis',
+	    		        axisPointer: {
+	    		            type: 'cross',
+	    		            crossStyle: {
+	    		                color: '#999'
+	    		            }
+	    		        }
+	    		    },
+	    		    toolbox: {
+	    		        feature: {
+	    		            dataView: {show: true, readOnly: false},
+	    		            magicType: {show: true, type: ['line', 'bar']},
+	    		            restore: {show: true},
+	    		            saveAsImage: {show: true}
+	    		        }
+	    		    },
+	    		    legend: {
+	    		        data:['浏览量','访客量'],
+	    		        orient:'vertical',
+	    		        x:'right',
+	    		        y:'center',
+	    		    },
+	    		    xAxis: [
+	    		        {
+	    		            type: 'category',
+	    		            data: self.business_data.x_axis,
+	    		            axisPointer: {
+	    		                type: 'shadow'
+	    		            }
+	    		        }
+	    		    ],
+	    		    yAxis: [
+	    		        {
+	    		            type: 'value',
+	    		            name: '',
+	    		            min: 0,
+	    		            max: 600,
+	    		            interval: 50,
+	    		            axisLabel: {
+	    		                formatter: '{value}'
+	    		            }
+	    		        }
+	    		    ],
+	    		    series: [
+	    		        {
+	    		            name:'浏览量',
+	    		            type:'bar',
+	    		            data:self.business_data.browse_data,
+	    		            itemStyle:{
+                                normal:{
+                                    color:'rgba(68,137,255,0.5)',
+                                },
+                                emphasis:{
+                                	color:'rgba(68,137,255,1)'
+                                }
+                            },
+	    		        },
+	    		        {
+	    		            name:'访客量',
+	    		            type:'bar',
+	    		            data:self.business_data.visit_data,
+	    		            itemStyle:{
+	    		            	normal:{
+                                    color:'rgba(6,218,131,0.5)',
+                                },
+                                emphasis:{
+                                	color:'rgba(6,218,131,1)'
+                                }
+                            },
+	    		        }
+	    		    ]
+	    		};
+
+	    		operationChart.setOption(operationOption);
+	    	},
+	    	renderBusinessOppData(){
+	    		var self = this;
+	    		var pdtCategoryChart = echarts.init(document.getElementById('pdtCategory'));
+	    		var flowSourceChart = echarts.init(document.getElementById('flowSource'));
+	    		var flowTerminalChart = echarts.init(document.getElementById('flowTerminal'));
+	    		var pdtCategoryArray=self.opportunity_data.category_data;
+	    		var pdtSalesArray=self.opportunity_data.sales_data;
+	    		var pdtColorArray=['#4489FF','#5A67D7','#06DA83','#6DCFF6'];
+	    		pdtCategoryOption = {
+	    				title: {
+	    					text: '商品分类',
+	    					subtext: ''
+	    				},
+	    				tooltip: {
+	    					trigger: 'axis',
+	    					axisPointer: 
+	    					{type: 'shadow'}
+	    				},
+	    				legend: {
+	    					data: ['']
+	    				},
+	    				grid: {
+	    					left: '1%',
+	    					right: '3%', 
+	    					bottom: '1%',
+	    					containLabel: true
+	    				},
+	    				xAxis: {
+	    					type: 'value', 
+	    					boundaryGap: [0, 0.01]
+	    				},
+	    				yAxis: {
+	    					type: 'category',
+	    					data:pdtCategoryArray
+	    		   		},
+	    		   		series: [
+	    		   		    {
+	    		   		    	name: '销售量',
+	    		   		    	type: 'bar', 
+	    		   		    	barWidth : 30, 
+	    		   		    	data: pdtSalesArray, 
+	    		   		    	itemStyle: {
+	    		   		    		normal: {
+	    		   		    			barBorderRadius:[0, 20, 20, 0],
+	    								color: function(params) {
+	    									var colorList = pdtColorArray;
+	    		   	                    	return colorList[params.dataIndex]
+	    		   	                    },
+	    		   	                    label: {
+	    		   	                    	show: true,
+	    		   	                    	position: 'top',
+	    		   	                    	formatter: '{b}\n{c}'} 
+	    		   	                    }
+	    		   		    	}
+	    		   		    }]
+	    		   		};	
+	    		
+	    		var flowSourceColorArray=['#4489FF','#5A67D7','#06DA83','#6DCFF6'];
+	    		var flowSourceNameArray=self.flow_source.source_name_array;
+	    		flowSourceOption= {
+	    				title:{
+	    					text:'流量来源'
+	    				},
+	    				tooltip: { 
+	    					trigger: 'item',
+	    					formatter: "{a} <br/>{b}: {c} ({d}%)"
+	    				},
+	    				color:flowSourceColorArray,
+	    				legend: {
+	    					orient: 'horizontal',
+	    					x: 'center',
+	    					y:'bottom',
+	    					data:flowSourceNameArray
+	    				},
+	    				series: [
+	    				    { 
+	    				    	name:'流量来源',
+	    				    	type:'pie',
+	    				    	radius: ['50%', '70%'],
+	    			            avoidLabelOverlap: false,
+	    			            label: {
+	    			            	normal: {
+	    			            		show: false, 
+	    			            		position: 'center'
+	    			            	},
+	    			            	emphasis: {
+	    			            		show: true,
+	    			            		textStyle: {
+	    			            			fontSize: '30',
+	    			            			fontWeight: 'bold'}
+	    			            		}
+	    			            	},
+	    			            	labelLine: {
+	    			            		normal: {
+	    			            			show: false
+	    			            		} 
+	    			            	},
+	    			            	data:self.flow_source.data
+	    			          }]
+	    				};
+	    		var flowTerminalNameArray=self.flow_terminal.terminal_name_array;
+	    		
+	    		var flowTerminalColorArray=['#4489FF','#5A67D7','#06DA83','#6DCFF6'];
+	    		
+	    		flowTerminalOption= {
+	    				title:{
+	    					text:'流量终端'
+	    				},
+	    				tooltip: { 
+	    					trigger: 'item',
+	    					formatter: "{a} <br/>{b}: {c} ({d}%)"},
+	    					color:flowTerminalColorArray,
+	    					legend: {
+	    						orient: 'horizontal',
+	    						x: 'center',
+	    						y:'bottom',
+	    						data:flowTerminalNameArray
+	    					},
+	    					series: [
+	    					    { 
+	    					    	name:'流量终端',type:'pie',radius: ['50%', '70%'],
+	                				avoidLabelOverlap: false,
+	                				label: {
+	                					normal: {
+	                						show: false, 
+	                						position: 'center'
+	                					},
+	                					emphasis: {
+	                						show: true,
+	                						textStyle: {
+	                							fontSize: '30',
+	                							fontWeight: 'bold'
+	                						}
+	                					}
+	                				},
+	                				labelLine: {
+	                					normal: {
+	                						show: false
+	                					} 
+	                				},
+	                				data:self.flow_terminal.data
+	                				}]
+	    					};
+	    		pdtCategoryChart.setOption(pdtCategoryOption);	
+	    		flowSourceChart.setOption(flowSourceOption);	
+	    		flowTerminalChart.setOption(flowTerminalOption);
+	    	},
+	    	renderConfigure(){
+	    		var self = this;
+		        var myChart = echarts.init(document.getElementById("world")); //这里是为了获得容器所在位置    
+		        var option = {
+			            tooltip: {
+			                trigger: 'item',
+			                formatter: '{b}-{c}'
+			            },
+			            visualMap: {  
+			                left: 'right',
+			                min: 0,
+			                max: 1,   
+			                inRange: {
+			                	color: ['#10A0D4', '#9DE292', '#3E7AB8', '#FAC940', '#FE7701']
+			                },
+			                text:['High','Low'],           // 文本，默认为数值文本
+			                calculable: true
+		                    
+		                },  
+			            series: [
+			                {
+			                    type: 'map',
+			                    mapType: self.map.type, // 自定义扩展图表类型
+			                    itemStyle:{
+			                        //normal:{label:{show:true}},
+			                        emphasis:{label:{show:true}}
+			                    },
+			                    data:self.map.data,
+			                    // 自定义名称映射
+			                    nameMap: self.worldMap,
+			                }
+			            ]
+			        };
+		        myChart.setOption(option);
+	    	},
+	    	/* renderChinaConfigure(){
+	    		 var self = this;
+		    	  var option = {
+			    			  tooltip: {
+			  	                trigger: 'item',
+			  	                formatter: '{b}-{c}'
+			  	            },
+				            visualMap: {  
+				                left: 'right',
+				                min: 0,
+				                max: 1,   
+				                inRange: {
+				                    color: ['#10A0D4', '#9DE292', '#3E7AB8', '#FAC940', '#FE7701']
+				                },
+				                text:['High','Low'],           // 文本，默认为数值文本
+				                calculable: true
+			                    
+			                },  
+				            series: [
+				                {
+				                    type: 'map',
+				                    mapType: 'china', // 自定义扩展图表类型
+				                    //roam: true, //使地图可拖动
+				                    itemStyle:{
+				                        // normal:{label:{show:true}},
+				                        emphasis:{label:{show:true}}
+				                    },
+				                    data:self.chinaDetail
+				                }
+				            ]
+				        };
+		    	  var myChart = echarts.init(document.getElementById("china")); //这里是为了获得容器所在位置    
+			      myChart.setOption(option);
+	    	} */
+	    }
+	   /*  props: ["userJson"],
+	    data() {
+	      return {
+	        chart: null,
+	        allVisitorFromWorld:'1',
+	        allVisitorFromChina:'1',
+	        countryData:[
+	           {
+        	   name:'俄罗斯',
+	        	value:'20%'
+	           },
+	           {
+        	   name:'中国',
+	        	value:'20%'
+	           },
+	           {
+        	   name:'美国',
+	        	value:'20%'
+	           },
+	           {
+        	   name:'罗马尼亚',
+	        	value:'20%'
+	           },
+	           {
+        	   name:'其它',
+	        	value:'20%'
+	           },
+	        ],
+	        chinaData:[
+   	           {
+           	   name:'北京',
+   	        	value:'20%'
+   	           },
+   	           {
+           	   name:'台湾',
+   	        	value:'20%'
+   	           },
+   	           {
+           	   name:'江苏',
+   	        	value:'20%'
+   	           },
+   	           {
+           	   name:'浙江',
+   	        	value:'20%'
+   	           },
+   	           {
+           	   name:'西藏',
+   	        	value:'20%'
+   	           },
+   	        ],
+	      	chinaDetail:[  
+                  {name: '北京',value: 0.2 },{name: '台湾',value: 0.4 },  
+                  {name: '江苏',value: 0.15 },{name: '浙江',value: 0.12 },  
+                  {name: '西藏',value: 0.12 }  
+              ],
+              worldDetail:[
+					{name: '俄罗斯', value: 0.2},
+					{name: '中国', value: 0.2},
+					{name: '美国', value: 0.2},
+					{name: '罗马尼亚', value: 0.2},
+					{name: '非洲', value: 0.2},
+              ],
+              worldMap:{
+                  'Russia': '俄罗斯',
+                  'China': '中国',
+                  'United States': '美国',
+                  'Romania': '罗马尼亚',
+                  'Africa': '非洲',
+              } 
+	      
+	      };
+	    },
+	    mounted() {
+	      this.worldConfigure();
+	      this.chinaConfigure();
+	    },
+	    beforeDestroy() {
+	      if (!this.chart) {
+	        return;
+	      }
+	      this.chart.dispose();
+	      this.chart = null;
+	    },
+	    methods: {
+	    	randomData() {  
+	    	     return Math.round(Math.random()*500);  
+	    	},
+	      worldConfigure() {
+	    	var self = this;
+	        var myChart = echarts.init(document.getElementById("world")); //这里是为了获得容器所在位置    
+	        var option = {
+		            tooltip: {
+		                trigger: 'item',
+		                formatter: '{b}-{c}'
+		            },
+		            visualMap: {  
+		                left: 'right',
+		                min: 0,
+		                max: 1,   
+		                inRange: {
+		                	color: ['#10A0D4', '#9DE292', '#3E7AB8', '#FAC940', '#FE7701']
+		                },
+		                text:['High','Low'],           // 文本，默认为数值文本
+		                calculable: true
+	                    
+	                },  
+		            series: [
+		                {
+		                    type: 'map',
+		                    mapType: 'world', // 自定义扩展图表类型
+		                    itemStyle:{
+		                        //normal:{label:{show:true}},
+		                        emphasis:{label:{show:true}}
+		                    },
+		                    data:self.worldDetail,
+		                    // 自定义名称映射
+		                    nameMap: self.worldMap,
+		                }
+		            ]
+		        };
+	        myChart.setOption(option);
+	      },
+	      chinaConfigure(){
+	    	  var self = this;
+	    	  var option = {
+		    			  tooltip: {
+		  	                trigger: 'item',
+		  	                formatter: '{b}-{c}'
+		  	            },
+			            visualMap: {  
+			                left: 'right',
+			                min: 0,
+			                max: 1,   
+			                inRange: {
+			                    color: ['#10A0D4', '#9DE292', '#3E7AB8', '#FAC940', '#FE7701']
+			                },
+			                text:['High','Low'],           // 文本，默认为数值文本
+			                calculable: true
+		                    
+		                },  
+			            series: [
+			                {
+			                    type: 'map',
+			                    mapType: 'china', // 自定义扩展图表类型
+			                    //roam: true, //使地图可拖动
+			                    itemStyle:{
+			                        // normal:{label:{show:true}},
+			                        emphasis:{label:{show:true}}
+			                    },
+			                    data:self.chinaDetail
+			                }
+			            ]
+			        };
+	    	  var myChart = echarts.init(document.getElementById("china")); //这里是为了获得容器所在位置    
+		      myChart.setOption(option);
+	      }
+	    } */
+	})
+	
+	
+</script>
+</html>

@@ -1,0 +1,1797 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>An Online B2B market——-Shoestp.com,gathering 300 professional shoes manufacture companies Business backstage</title>
+    <script src="../../static/admin/js/jquery-1.11.1.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8" src="../../../umeditor1_2_2/umeditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../../umeditor1_2_2/umeditor.js"></script>
+    <script type="text/javascript" src="../../../umeditor1_2_2/third-party/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../../umeditor1_2_2/umeditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../../umeditor1_2_2/umeditor.js"></script>
+    <script src="../../static/admin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../static/admin/js/common.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../static/admin/js/main.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../static/admin/lib/echarts/echarts.js"></script>
+    <link href="../../../umeditor1_2_2/themes/default/css/umeditor.css" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../../static/admin/layui/css/layui.css"/>
+    <link rel="stylesheet" type="text/css" href="../../static/admin/css/admin.css"/>
+    <link rel="stylesheet" type="text/css" href="../../static/admin/layui/css/laydate.css"/>
+
+
+    <style>
+        .layui-form-label {
+            width: 120px;
+        }
+
+        .layui-input-block {
+            margin-left: 150px;
+        }
+
+        /* 短的input设置为425px */
+        .w425, .layui-form-item .layui-input-inline.w425 {
+            width: 425px;
+        }
+
+        /* 设置单个checkbox的最iao宽度 */
+        #SingleSelection .layui-form-checkbox > span, #PdtColor .layui-form-checkbox > span {
+            min-width: 80px;
+        }
+
+        /* 选择图片的input按钮 使页面上不占位 */
+        .layui-upload-file {
+            position: absolute;
+            z-index: -1;
+        }
+
+        /* 文字居中 */
+        .tc {
+            text-align: center;
+        }
+
+        .w92 {
+            min-width: 92px;
+        }
+
+        .mr15 {
+            margin-right: 15px;
+        }
+
+        .mb15 {
+            margin-bottom: 15px;
+        }
+
+        .layui-form-item .layui-inline.mb0 {
+            margin-bottom: 0;
+            color: #808080;
+        }
+
+        /* 多图上传时显示的样式 第一个为 img */
+        .layui-upload td:first-child {
+            text-align: center;
+        }
+
+        /* 多图上传时 img显示的样式 */
+        .layui-upload td:first-child img {
+            height: 40px;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+        /* 有单位显示的input外框 */
+        .unit-input-wrap {
+            position: relative;
+        }
+
+        .unit-input-wrap .layui-input {
+            padding: 0 22px 0 32px;
+        }
+
+        .unit-input-wrap .input-name {
+            position: absolute;
+            left: 10px;
+            top: 9px;
+            color: #999;
+        }
+
+        .unit-input-wrap .unit {
+            position: absolute;
+            right: 6px;
+            top: 9px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+<!-- style="display:none" -->
+<form action="" id="addForm" style="display:none">
+
+    <!-- 		peky -->
+    <input type="text" name="bean.pkey" id="bPkey" autocomplete="off" class="layui-input">pkey
+    <!-- 		名称 -->
+    <input type="text" name="bean.name" id="bName" autocomplete="off" class="layui-input">名称
+    <!-- 		产品类目 -->
+    <input type="text" name="bean.category" id="bCategory" autocomplete="off" class="layui-input">产品
+    <!-- 		店铺类目 -->
+    <input type="text" name="bean.categoryDiy" id="bCategoryDiy" autocomplete="off" class="layui-input">店铺
+    <!-- 		编号 -->
+    <input type="text" name="bean.code" id="bCode" autocomplete="off" class="layui-input">编号
+    <!-- 		价格 -->
+    <input type="text" name="bean.curPrice" id="bCurPrice" autocomplete="off" class="layui-input">价格
+    <!-- 		出厂编码 -->
+    <input type="text" name="bean.sku" id="bSku" autocomplete="off" class="layui-input">编码
+    <!-- 		起订量 -->
+    <input type="text" name="bean.minOq" id="bMinOq" autocomplete="off" class="layui-input">起订量
+    <!-- 		最大购买量 -->
+    <input type="text" name="bean.maxOq" id="bMaxOq" autocomplete="off" class="layui-input">最大
+    <!-- 		库存 -->
+    <input type="text" name="bean.stock" id="bStock" autocomplete="off" class="layui-input">库存
+    <!-- 		库存警告 -->
+    <input type="text" name="bean.warnStock" id="bWarnStock" autocomplete="off" class="layui-input">警告
+    <!-- 		销售状态上架下架 -->
+    <input type="text" name="bean.state" id="bState" value="1" autocomplete="off" class="layui-input">上架
+    <!-- 		定时上架 -->
+    <input type="text" name="bean.soldInTime" id="bSoldInTime" value="0" autocomplete="off" class="layui-input">定时
+    <!-- 		上架时间(开始) -->
+    <input type="text" name="bean.soldTimeB" id="bSoldTimeB" autocomplete="off" class="layui-input">开始
+    <!-- 		上架时间 (结束)-->
+    <input type="text" name="bean.soldTimeE" id="bSoldTimeE" autocomplete="off" class="layui-input">结束
+    <!-- 		免运费 -->
+    <input type="text" name="bean.isFreeShipping" id="bIsFreeShipping" autocomplete="off" class="layui-input">运费
+    <!-- 		重量 -->
+    <input type="text" name="bean.weight" id="bWeight" autocomplete="off" class="layui-input">重量
+    <!-- 		长 -->
+    <input type="text" name="bean.length" id="bLength" autocomplete="off" class="layui-input">长
+    <!-- 		宽 -->
+    <input type="text" name="bean.width" id="bWidth" autocomplete="off" class="layui-input">宽
+    <!-- 		高 -->
+    <input type="text" name="bean.height" id="bHeight" autocomplete="off" class="layui-input">高
+    <!-- 		简短描述 -->
+    <input type="text" name="bean.briefDescription" id="bBriefDescription" autocomplete="off" class="layui-input">描述
+    <!-- 		详细介绍 -->
+    <input type="text" name="bean.description" id="bdescription" autocomplete="off" class="layui-input">详细
+    <!-- 		规格属性 -->
+    <input type="text" name="bean.sizeAttr" id="bSizeAttr" autocomplete="off" class="layui-input">规格
+    <!-- 		颜色属性 -->
+    <input type="text" name="bean.colorAttr" id="bColor" autocomplete="off" class="layui-input">颜色
+    <!-- 		商品属性 -->
+    <input type="text" name="bean.normAttr" id="bNormAttr" autocomplete="off" class="layui-input">商品
+    <!-- 		产品图片		 -->
+    <input type="text" name="bean.picture" id="bPicture" autocomplete="off" class="layui-input">产品
+    <!-- 		rowVersion		 -->
+    <input type="text" name="bean.rowVersion" id="bRowVersion" autocomplete="off" class="layui-input">rowVersion
+</form>
+
+
+<div class="layui-form min-width1200" action="" style="width:90%;margin: 0 auto;" lay-filter="example">
+
+
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>商品基本资料</legend>
+    </fieldset>
+
+    <!-- <div class="layui-form-item">
+	    <label class="layui-form-label"><span style="color: red">* </span>名称:</label>
+	    <div class="layui-input-block" id="PdtNames">
+
+	    </div>
+	  </div>-->
+    <div class="layui-form-item" id="PdtNames">
+
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"><span style="color: red">* </span>平台分类</label>
+        <div class="layui-input-inline w425">
+            <select name="bean.category" lay-verify="required" lay-filter="PdtCat" lay-search="" id="PdtCat">
+                <option value="">直接选择或搜索选择</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"><span style="color: red">* </span>店铺分类</label>
+        <div class="layui-input-inline w425">
+            <select name="bean.categoryDiy" lay-verify="required" lay-search="" id="UsrSupplierCategory">
+                <option value="">直接选择或搜索选择</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">编号:</label>
+
+        <div class="layui-input-inline" style="width: 100px;">
+            <input type="text" id="PdtCodeMin" lay-verify="required" placeholder="" autocomplete="off"
+                   class="layui-input" value="TOP">
+        </div>
+        <div class="layui-form-mid">-</div>
+        <div class="layui-input-inline" style="width: 300px;">
+            <input type="text" lay-verify="code" lay-verify="required" id="PdtCodeMax" placeholder="" autocomplete="off"
+                   class="layui-input">
+
+        </div>
+        <div class="layui-input-inline" style="width: 300px;">
+            <span style="font-size: 15px;color: #808080;line-height: 38px;">编号长度8位以内</span>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"><span style="color: red">* </span>sku（出厂编码）:</label>
+        <div class="layui-input-block w425">
+            <input type="tel" name="bean.sku" id="PdtSku" lay-verify="sku" autocomplete="off" placeholder=""
+                   class="layui-input">
+        </div>
+    </div>
+
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend><span style="color: red">* </span>商品属性</legend>
+    </fieldset>
+
+    <div id="SingleSelection">
+
+    </div>
+
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend><span style="color: red">* </span>上传图片</legend>
+    </fieldset>
+
+    <div class="layui-upload">
+        <div class="layui-upload-list">
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th>文件名</th>
+                    <th>大小</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody id="demoList"></tbody>
+            </table>
+        </div>
+        <div class="tc">
+            <button type="button" class="layui-btn layui-btn-primary mr15" id="testList">选择多文件</button>
+            <button type="button" class="layui-btn layui-btn-normal" id="testListAction">开始上传</button>
+        </div>
+    </div>
+
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>商品销售信息</legend>
+    </fieldset>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"><span style="color: red">* </span>价格:</label>
+        <div class="layui-input-block">
+            <input type="number" name="bean.curPrice" id="PdtPrice" lay-verify="required|numbers" autocomplete="off"
+                   placeholder="$" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"><span style="color: red">* </span>起订量:</label>
+        <div class="layui-input-block">
+            <input type="number" name="bean.minOq" id="PdtMinOq" lay-verify="required|number" autocomplete="off"
+                   placeholder="1--10000" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"><span style="color: red">* </span>最大购买量:</label>
+        <div class="layui-input-block">
+            <input type="number" name="bean.maxOq" id="PdtMaxOq" lay-verify="required|number" autocomplete="off"
+                   placeholder="1--10000" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"><span style="color: red">* </span>库存:</label>
+        <div class="layui-input-block">
+            <input type="number" name="bean.stock" id="PdtStock" lay-verify="required|number" autocomplete="off"
+                   placeholder="" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"><span style="color: red">* </span>警告库存:</label>
+        <div class="layui-input-block">
+            <input type="number" name="bean.warnStock" id="PdtWarnStock" lay-verify="required|number" autocomplete="off"
+                   placeholder="" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item" pane="">
+        <label class="layui-form-label"><span style="color: red">* </span>尺码:</label>
+        <div class="layui-input-block" id="PdtSize">
+            <div class="layui-form-mid" style="color: #999;">请选择平台分类</div>
+        </div>
+    </div>
+
+    <div class="layui-form-item" pane="">
+        <label class="layui-form-label"><span style="color: red">* </span>颜色:</label>
+        <div class="layui-input-block" id="PdtColor">
+        </div>
+    </div>
+
+    <div class="layui-form-item" style="display: none;">
+        <label class="layui-form-label">属性关联项:</label>
+        <div class="layui-input-block" id="PdtSpec">
+            <table class="layui-table">
+                <colgroup>
+                    <col width="15%">
+                    <col>
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>属性</th>
+                    <th>SKU（出厂编码）</th>
+                    <th>价格($)</th>
+                    <th>库存</th>
+                    <th>重量(千克)</th>
+                    <!-- 			        <th>批量</th> -->
+                </tr>
+                <tr>
+                    <th>组合属性</th>
+                    <th>
+                        <button class="layui-btn layui-btn-primary" lay-filter="copysku" id="copysku" name="copysku">
+                            同步
+                        </button>
+                    </th>
+                    <th>
+                        <button class="layui-btn layui-btn-primary" lay-filter="copyprice" id="copyprice"
+                                name="copyprice">同步
+                        </button>
+                    </th>
+                    <th>
+                        <button class="layui-btn layui-btn-primary" lay-filter="copystore" id="copystore"
+                                name="copystore">同步
+                        </button>
+                    </th>
+                    <th>
+                        <button class="layui-btn layui-btn-primary" lay-filter="copyweight" id="copyweight"
+                                name="copyweight">同步
+                        </button>
+                    </th>
+                </tr>
+                </thead>
+                <tbody id="ProductSpec">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item" style="display: none;">
+        <label class="layui-form-label">颜色关联项:</label>
+        <div class="layui-input-block" id="PdtColorAssociation">
+            <table class="layui-table">
+                <colgroup>
+                    <col width="15%">
+                    <col>
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>颜色</th>
+                    <th>上传图片(图片大小建议:500*500像素)</th>
+                </tr>
+                </thead>
+                <tbody id="ColorAssociation">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">销售状态:</label>
+        <div class="layui-input-block">
+            <div class="layui-inline">
+                <input type="checkbox" id="stateSwitch" name="bean.state" lay-filter="PdtState" lay-skin="switch"
+                       lay-text="">
+            </div>
+            <!-- <span class="undercarriage-txt">下架</span> -->
+            <div class="layui-inline mb0">
+                <div class="layui-form-mid">
+                    <span class="">下架</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-input-block" id="TimedShelves">
+            <div class="layui-inline">
+                <input type="checkbox" name="bean.soldInTime" id="PdtsoldInTime" lay-filter="PdtSoldInTime"
+                       lay-skin="switch" lay-text="">
+            </div>
+            <div class="layui-inline mb0">
+                <div class="layui-form-mid">
+                    <span class="">定时上架</span>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">上架时间(开始):</label>
+                <div class="layui-input-inline">
+                    <input type="datatime" name="bean.soldTimeB" class="layui-input" id="PdtSoldTimeB" lay-verify=""
+                           placeholder="yyyy-MM-dd HH:mm:ss">
+                </div>
+                <label class="layui-form-label">上架时间(结束):</label>
+                <div class="layui-input-inline">
+                    <input type="datatime" name="bean.soldTimeE" class="layui-input" id="PdtSoldTimeE" lay-verify=""
+                           placeholder="yyyy-MM-dd HH:mm:ss">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 	  <div class="layui-form-item"> -->
+    <!-- 	    <label class="layui-form-label">默认评论:</label> -->
+    <!-- 	    <div class="layui-input-block"> -->
+    <!-- 	      <input type="checkbox" name="close" lay-filter="Obtained" lay-skin="switch" lay-text="" > -->
+    <!-- 	    </div> -->
+    <!-- 	    <div> -->
+    <!-- 		    <label class="layui-form-label" style="width:10%">默认评论平均分:</label> -->
+    <!-- 		    <div class="layui-input-inline"> -->
+    <!-- 		      <input type="text" name="" lay-verify="" placeholder="0" autocomplete="off" class="layui-input"> -->
+    <!-- 		    </div> -->
+    <!-- 		    <label class="layui-form-label" style="width:10%">默认评论人数:</label> -->
+    <!-- 		    <div class="layui-input-inline"> -->
+    <!-- 		      <input type="text" name="" lay-verify="" placeholder="0" autocomplete="off" class="layui-input"> -->
+    <!-- 		    </div> -->
+    <!-- 	    </div> -->
+    <!-- 	  </div> -->
+
+    <!-- 	  <div class="layui-form-item"> -->
+    <!-- 	    <div class="layui-inline"> -->
+    <!-- 	      <label class="layui-form-label">收藏数:</label> -->
+    <!-- 	      <div class="layui-input-inline"> -->
+    <!-- 	        <input type="tel" name="" lay-verify="required|phone" autocomplete="off" class="layui-input"> -->
+    <!-- 	      </div> -->
+    <!-- 	    </div> -->
+    <!-- 	  </div> -->
+    <input type="hidden" id="enName">
+    <input type="hidden" id="zh_TWName">
+    <input type="hidden" id="pdtProduct">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>商品物流信息</legend>
+    </fieldset>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">免运费</label>
+        <div class="layui-input-block">
+            <input type="radio" name="bean.isFreeShipping" lay-filter='PdtIsFreeShipping' value="1" title="是"
+                   checked="">
+            <input type="radio" name="bean.isFreeShipping" lay-filter='PdtIsFreeShipping' value="0" title="否">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"><span style="color: red">* </span>重量:</label>
+        <div class="layui-input-inline" style="width: 590px;">
+            <input type="number" name="bean.weight" id="PdtWeight" lay-verify="required|number" placeholder="请输入重量"
+                   autocomplete="off" class="layui-input">
+        </div>
+        <div style="padding-top: 8px;font-size: 15px;color: #808080;">千克</div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label"><span style="color: red">* </span>体积:</label>
+            <div class="layui-input-inline unit-input-wrap">
+                <div class="input-name">长:</div>
+                <input type="number" name="bean.length" id="PdtLength" lay-verify="required|numbers" autocomplete="off"
+                       class="layui-input" placeholder="">
+                <div class="unit">m</div>
+            </div>
+
+            <div class="layui-input-inline unit-input-wrap">
+                <div class="input-name">宽:</div>
+                <input type="number" name="bean.width" id="PdtWidth" lay-verify="required|numbers" autocomplete="off"
+                       class="layui-input" placeholder="">
+                <div class="unit">m</div>
+            </div>
+
+            <div class="layui-input-inline unit-input-wrap">
+                <div class="input-name">高:</div>
+                <input type="number" name="bean.height" id="PdtHeight" lay-verify="required|numbers" autocomplete="off"
+                       class="layui-input" placeholder="">
+                <div class="unit">m</div>
+            </div>
+        </div>
+    </div>
+
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>商品文字描述</legend>
+    </fieldset>
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">简短介绍</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入内容" name="bean.briefDescription" id="PdtBriefDescription" lay-verify="required"
+                      class="layui-textarea"></textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">详细介绍</label>
+        <div class="layui-input-block">
+            <div id="description" type="text/plain" name="bean.description" style="width:100%;height:350px;"></div>
+        </div>
+    </div>
+    <input id="description1" value="" type="hidden">
+
+    <div class="tc mb15">
+        <button class="layui-btn" lay-submit="" lay-submit lay-filter="demo1">立即提交</button>
+        <button type="reset" class="layui-btn layui-btn-primary w92">重置</button>
+    </div>
+
+</div>
+</body>
+<script type="text/javascript">
+
+
+    UM.getEditor('description', {});
+    layui.use(['layer', 'form', 'element', 'jquery', 'dialog', 'upload', 'laydate'], function () {
+        var layer = layui.layer;
+        var element = layui.element();
+        var form = layui.form();
+        var $ = layui.jquery;
+        var dialog = layui.dialog;
+        var upload = layui.upload;
+        var laydate = layui.laydate;
+
+
+        //尺码分类
+        form.on('select(PdtCat)', function (data) {
+            /* var v = $("#PdtCat").next().children("div").children("input").val();
+			alert(v) */
+            $($("#PdtCat").next())
+            var productcategory = $('#PdtCat option:selected').parent().attr("value");
+            // alert(productcategory)
+            var t2 = $('#PdtCat option:selected').val();
+            $("#").empty();
+            $.ajax({
+                type: 'post',
+                url: '/seller/pdt_PdtSize_listAll',//_productCategory
+                data: {
+                    "productcategory": productcategory
+                },//{"filter" :"[{'property':'productCategory','value':'"+productcategory+"'}]"},
+                dataType: 'json',
+                success: function (data) {
+                    $("#PdtSize").empty();
+                    layui.each(data.items, function (key, value) {
+                        $("#PdtSize").append("<input type='checkbox' pk='" + value.pkey + "' class='noonclick' lay-filter='PdtSize' name='bean.sizeAttr' lay-skin='primary' title='" + value.name + "' value='" + value.name + "'>");
+                    });
+                    form.render();
+                }
+            });
+        })
+
+
+        //勾选尺码或者颜色时初始化属性关联项和颜色关联项的内容
+        function initSpec(checked, pkk) {
+            var colorpkey = "";
+            var sizepkey = "";
+            var color_size = "";
+            var bool = checked;
+            var pkk = pkk
+            console.log(bool)
+            console.log(pkk)
+            $("#ProductSpec").empty();
+
+            // $("#ColorAssociation").empty();
+
+
+            var selectedSizes = $("input:checkbox[name='bean.sizeAttr']:checked");
+            var selectedColors = $("input:checkbox[name='bean.color']:checked");
+            if (selectedSizes.length > 0 && selectedColors.length == 0) {
+                selectedSizes.each(function () {
+                    sizepkey = $(this).attr("pk")
+                    color_size = colorpkey + "_" + sizepkey;
+                    size = $(this).val();
+                    appendSpec(color_size, size, "");
+                    var test1 = document.getElementById("ColorAssociation");
+                    var test2 = document.getElementById("checked" + colorpkey + "");
+                    if (bool) {
+                        console.log("增加")
+                        if ($("#checked" + pkk + "").attr("lod") == 1) {
+                            $("#checked" + pkk + "").show()
+                        } else {
+                            if (!$.contains(test1, test2)) {
+                                appendColorPic(colorpkey, color);
+
+                            }
+                        }
+                    } else {
+                        if ($("#checked" + pkk + "").attr("lod") == 1) {
+                            console.log("隐藏")
+                            $("#checked" + pkk + "").hide()
+                        } else {
+                            console.log("删除")
+                            $("#checked" + pkk + "").remove()
+                        }
+                    }
+                });
+            } else if (selectedSizes.length == 0 && selectedColors.length > 0) {
+                selectedColors.each(function () {
+                    colorpkey = $(this).attr("pk")
+                    color_size = colorpkey + "_" + sizepkey;
+                    color = $(this).val();
+                    var test1 = document.getElementById("ColorAssociation");
+                    var test2 = document.getElementById("checked" + colorpkey + "");
+
+                    if (!$.contains(test1, test2)) {
+                        console.log("添加图片")
+                        appendColorPic(colorpkey, color);
+                    } else {
+
+                    }
+
+                    appendSpec(color_size, "", color);
+                });
+            } else if (selectedSizes.length > 0 && selectedColors.length > 0) {
+                selectedColors.each(function () {
+                    color = $(this).val();
+                    colorpkey = $(this).attr("pk")
+                    var test1 = document.getElementById("ColorAssociation");
+                    var test2 = document.getElementById("checked" + colorpkey + "");
+                    if (bool) {
+                        console.log("增加")
+                        if ($("#checked" + pkk + "").attr("lod") == 1) {
+                            $("#checked" + pkk + "").show()
+                        } else {
+                            if (!$.contains(test1, test2)) {
+                                appendColorPic(colorpkey, color);
+
+                            }
+                        }
+                    } else {
+                        if ($("#checked" + pkk + "").attr("lod") == 1) {
+                            console.log("隐藏")
+                            $("#checked" + pkk + "").hide()
+                        } else {
+                            console.log("删除")
+                            $("#checked" + pkk + "").remove()
+                        }
+                    }
+                    selectedSizes.each(function () {
+                        sizepkey = $(this).attr("pk")
+                        color_size = colorpkey + "_" + sizepkey;
+                        size = $(this).val();
+                        appendSpec(color_size, size, color);
+                    });
+                });
+
+            }
+
+        }
+
+        //添加属性关联项的页面内容
+        function appendSpec(id, size, color) {
+            $("#ProductSpec").closest(".layui-form-item").fadeIn();
+            $("#ProductSpec").append("<tr id='sizechecked" + id + "'><th><span>" + size + "+" + color + "</span></th><th><input type='text' name='sku' id='' lay-verify='required' autocomplete='off' placeholder='' class='layui-input'></th><th><input type='text' name='price' lay-verify='required' placeholder='￥' autocomplete='off' class='layui-input'></th><th><input type='text' name='store' placeholder='0' lay-verify='required' autocomplete='off' class='layui-input'></th><th><input type='text' name='weight' placeholder='0' lay-verify='required' autocomplete='off' class='layui-input'></th></tr>");
+        }
+
+        //添加颜色关联项的页面内容
+        function appendColorPic(id, color) {
+            $("#ColorAssociation").closest(".layui-form-item").fadeIn();
+            $("#ColorAssociation").append("<tr id='checked" + id + "'>"
+                + "<td>" + color + "</td>"
+                + "<td>"
+                + "<div class='layui-upload'>"
+                //+"<button type='button' class='layui-btn layui-btn-normal' id='selectPicAsColor_"+id+"'>选择多文件</button>"
+                + "<div class='layui-upload-list'>"
+                + "<table class='layui-table' style='display: none;'>"
+                + "<thead><tr><th>文件名</th><th>大小</th><th>状态</th><th>操作</th></tr></thead>"
+                + "<tbody id='colorPicList_" + id + "'></tbody>"
+                + "</table>"
+                + "</div>"
+                + "<div class='tc'>"
+                + "<button type='button' class='layui-btn layui-btn-primary mr15' id='selectPicAsColor_" + id + "'>选择多文件</button>"
+                + "<button type='button' class='layui-btn layui-btn-normal' style='display: none;' id='uploadPicAsColor_" + id + "'>开始上传</button>"
+                + "</div>"
+                + "<input type='text'  id='colorPrice" + id + "' layui-hide style='display:none' >"
+                + "</div>"
+                + "</td>"
+                + "</tr>");
+            addPicture(id);
+        }
+
+        function addPicture(id) {
+            var add_url = [];
+            var colorPicList = $("#colorPicList_" + id);
+            var uploadListIns = upload.render({
+                elem: '#selectPicAsColor_' + id,
+                url: '/seller/pdt_PdtProduct_upload?widthLimit=0',
+                accept: 'images',
+                multiple: true,
+                auto: false,
+                bindAction: '#uploadPicAsColor_' + id,
+                choose: function (obj) {
+                    console.log(obj)
+                    console.log("id")
+                    $('#selectPicAsColor_' + id).siblings(".layui-btn").fadeIn()
+                        .closest(".layui-upload").find(".layui-table").fadeIn();
+                    var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+                    //读取本地文件
+                    obj.preview(function (index, file, result) {
+                        //alert(564)
+                        tr = $(['<tr id="upload-' + index + '" >'
+                            , '<td><img src="' + result + '" alt="' + file.name + '" class="layui-upload-img"></td>'
+                            , '<td>' + (file.size / 1014).toFixed(1) + 'kb</td>'
+                            , '<td>等待上传</td>'
+                            , '<td>'
+                            , '<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>'
+                            , '<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
+                            , '</td>'
+                            , '</tr>'].join(''));
+                        //单个重传
+                        tr.find('.demo-reload').on('click', function () {
+                            obj.upload(index, file);
+                        });
+                        //删除
+                        tr.find('.demo-delete').on('click', function () {
+                            delete files[index]; //删除对应的文件
+                            // 只剩下一个商品后，点击删除（没有商品了）隐藏table
+                            // if( $("#colorPicList_"+id).find("tr").length == 1 ){
+                            // 	$('#selectPicAsColor_'+id).siblings(".layui-btn").fadeOut()
+                            // 	.closest(".layui-upload").find(".layui-table").fadeOut();
+                            // }
+
+                            //uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                        });
+                        colorPicList.append(tr);
+                    });
+                },
+                done: function (data, index, upload) {
+                    var res = data.result;
+                    if (res.state == 'SUCCESS') { //上传成功
+                        var tr = colorPicList.find('tr#upload-' + index)
+                            , tds = tr.children();
+                        add_url.push(res.url);
+                        tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
+                        tds.eq(3).html(''); //清空操作
+                        var colorPrice = "";
+                        $("#checked" + id + "").attr("lod", "1");
+                        if ($("#colorPrice" + id).val() != null && $("#colorPrice" + id).val() != "") {
+                            colorPrice = $("#colorPrice" + id).val() + "," + res.url;
+                        } else {
+                            colorPrice = $("#colorPrice" + id).val() + res.url;
+                        }
+//				    url.join(",")
+                        $("#colorPrice" + id).val(colorPrice);
+                        form.render();
+                        return delete this.files[index]; //删除文件队列已经上传成功的文件
+                    }
+                    this.error(index, upload);
+                },
+                error: function (index, upload) {
+                    var tr = colorPicList.find('tr#upload-' + index)
+                        , tds = tr.children();
+                    tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
+                    tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+                }
+            });
+            $("#colorPrice").val(add_url);//产品图片
+            form.render();
+        }
+
+        //商品尺寸多选
+        form.on('checkbox(PdtSize)', function (data) {
+            initSpec();
+        })
+        form.on('checkbox(PdtColor)', function (data) {
+            var url = [];
+            var checked = data.elem.checked;
+            var value = data.value;
+            var pkk = data.elem.id.substring(9)
+            initSpec(checked, pkk);
+        });
+
+
+        var htmlpk = location.href.split("=")[1];
+//	 	var htmlpk = 22;
+        var specListLine = "";
+
+        function dname(doc) {
+            $(".language").each(function (index, elment) {
+                if ($(elment).attr("id") != doc) {
+                    $(elment).remove();
+                }
+            })
+        }
+
+        if (htmlpk != null && htmlpk != "") {
+
+            $("#bPkey").val(htmlpk);
+            //监听修改提交
+            form.on('submit(demo1)', function (data) {
+                if (!verify()) {
+                    return;
+                }
+                var enname = $("#Pdten").val();
+                var zh_TWname = $("#Pdtzh_TW").val();
+                var enname1 = $("#enName").val();
+                var zh_TWname1 = $("#zh_TWName").val();
+                if (enname.trim() != enname1.trim()) {
+                    dname("Pdten");
+                } else if (zh_TWname.trim() != zh_TWname1.trim()) {
+                    dname("Pdtzh_TW");
+                } else {
+
+                }
+                submitButton();
+
+                var dom_specs = $("#ProductSpec").children("tr");
+                var dom_picture = $("#ColorAssociation").children("tr");
+                var specListLine = "";
+                var picture = [];
+                var a = "sizechecked";
+                debugger
+                //alert(dom_picture.length)
+                if (status == 1) {
+                    //修改product 新增spec
+                    dom_specs.each(function (index) {
+                        var color_size = $(this).attr("id").substring(a.length).split("_");
+                        var spec = "specListLine[" + index + "].color=" + color_size[0]
+                            + "&specListLine[" + index + "].size=" + color_size[1]
+                            + "&specListLine[" + index + "].pkey=" + -1
+                            + "&specListLine[" + index + "].sku=" + $(this).find("input[name=sku]").val()
+                            + "&specListLine[" + index + "].price=" + $(this).find("input[name=price]").val()
+                            + "&specListLine[" + index + "].storeCount=" + $(this).find("input[name=store]").val()
+                            + "&specListLine[" + index + "].weight=" + $(this).find("input[name=weight]").val()
+                            + "&specListLine[" + index + "].rowVersion=" + 1
+                            + "&specListLine[" + index + "].markup=" + 0
+                            + "&specListLine[" + index + "].product=" + $("#pdtProduct").val()
+                            + "&specListLine[" + index + "].keyName=" + $(this).find("th:first").find("span").text()
+                            + "&specListLine[" + index + "].pics=" + $("#colorPrice" + color_size[0]).val()
+                        specListLine += "&" + spec;
+                    })
+                } else {
+                    //修改product 修改spec
+                    dom_specs.each(function (index) {
+                        var color_size = $(this).attr("id").substring(a.length).split("_");
+                        var spec = "specListLine[" + index + "].color=" + color_size[0]
+                            + "&specListLine[" + index + "].size=" + color_size[1]
+                            + "&specListLine[" + index + "].pkey=" + $(this).find("input[name=pkey]").val()
+                            + "&specListLine[" + index + "].sku=" + $(this).find("input[name=sku]").val()
+                            + "&specListLine[" + index + "].price=" + $(this).find("input[name=price]").val()
+                            + "&specListLine[" + index + "].storeCount=" + $(this).find("input[name=store]").val()
+                            + "&specListLine[" + index + "].weight=" + $(this).find("input[name=weight]").val()
+                            + "&specListLine[" + index + "].rowVersion=" + $(this).find("input[name=rowVersion]").val()
+                            + "&specListLine[" + index + "].markup=" + 0
+                            + "&specListLine[" + index + "].product=" + $("#pdtProduct").val()
+                            + "&specListLine[" + index + "].keyName=" + $(this).find("th:first").find("span").text()
+                            + "&specListLine[" + index + "].pics=" + $("#colorPrice" + color_size[0]).val()
+                        specListLine += "&" + spec;
+                    })
+                }
+                if ("<p>" + $("#description1").val().trim() + "</p>" == $("#description").html().trim() || $("#description1").val().trim() == $("#description").html().trim()) {
+
+                    var s = $("#bdescription").val();
+                    var a = "0" + s;
+                    $("#bdescription").val(a);
+                } else {
+                    var s = $("#bdescription").val();
+                    var a = "1" + s;
+                    $("#bdescription").val(a);
+                }
+                $.ajax({
+                    type: 'post',
+                    async: false,
+                    url: '/seller/pdt_PdtProduct_usrUpdRun',
+                    data: $("#addForm").serialize() + specListLine,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.success) {
+                            alert("修改成功");
+                            location.reload();
+                        } else {
+                            alert(data.msg);
+                        }
+                    }
+                });
+                form.render();
+                return false;
+            });
+        } else {
+            //监听新增提交
+            form.on('submit(demo1)', function (data) {
+                if (!verify()) {
+                    return;
+                }
+                submitButton();
+
+                var dom_specs = $("#ProductSpec").children("tr");
+                var dom_picture = $("#ColorAssociation").children("tr");
+                var specListLine = "";
+                var picture = [];
+                var a = "sizechecked";
+                dom_specs.each(function (index) {
+                    var color_size = $(this).attr("id").substring(a.length).split("_");
+                    console.log($("input#colorPrice" + color_size[0]).valueOf())
+                    var spec = "specListLine[" + index + "].color=" + color_size[0]
+                        + "&specListLine[" + index + "].size=" + color_size[1]
+                        + "&specListLine[" + index + "].sku=" + $(this).find("input[name=sku]").val()
+                        + "&specListLine[" + index + "].price=" + $(this).find("input[name=price]").val()
+                        + "&specListLine[" + index + "].storeCount=" + $(this).find("input[name=store]").val()
+                        + "&specListLine[" + index + "].weight=" + $(this).find("input[name=weight]").val()
+                        + "&specListLine[" + index + "].pics=" + $("#colorPrice" + color_size[0]).val()
+                    specListLine += "&" + spec;
+                })
+
+                $.ajax({
+                    type: 'post',
+                    async: false,
+                    url: '/seller/pdt_PdtProduct_ins',
+                    data: $("#addForm").serialize() + specListLine,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.success) {
+                            alert("添加成功");
+                        } else {
+                            alert(data.msg);
+                        }
+                    }
+                });
+                // form.render();
+                return false;
+            });
+
+            //alert(789)
+
+        }
+
+        function submitButton() {
+
+            var normAttr = [];
+            var PdtSize = [];
+            var PdtColor = [];
+            var beanname = {};
+            var isFreeShiping;
+            //商品属性
+            $("input:checkbox[name='beanPdtAttr']:checked").each(function () {
+                normAttr.push($(this).attr("pk"));
+            });
+            //免运费
+            $("input:radio[name='bean.isFreeShipping']:checked").each(function () {
+                $("#bIsFreeShipping").val($(this).val());
+            });
+            //规格
+            $("input:checkbox[name='bean.sizeAttr']:checked").each(function () {
+                PdtSize.push($(this).attr("pk"));
+            });
+            //颜色
+            $("input:checkbox[name='bean.color']:checked").each(function () {
+                PdtColor.push($(this).attr("pk"));
+            });
+            $("#bNormAttr").val(normAttr.join(","));//商品属性
+
+
+            $("input[name='PdtName']").each(function () {
+                beanname[$(this).attr("key")] = $(this).val();
+            })
+
+            $("#bName").val(JSON.stringify(beanname));//名称
+            $("#bName").children("key");
+
+            $("#bCategory").val($("#PdtCat").find("option:selected").attr("pk"));//产品类目
+            $("#bCategoryDiy").val($("#UsrSupplierCategory").find("option:selected").val());//店铺类目
+            $("#bCode").val($("#PdtCodeMin").val() + "-" + $("#PdtCodeMax").val() + "-" + $("#PdtSku").val());//编号
+            $("#bSku").val($("#PdtSku").val());//出厂编码
+//	 		$("#").val();//规格属性
+//	 		$("#bCurPrice").val();//产品图片
+            $("#bCurPrice").val($("#PdtPrice").val());//商城价格
+            $("#bMinOq").val($("#PdtMinOq").val());//起订量
+            $("#bMaxOq").val($("#PdtMaxOq").val());//最大购买量
+            $("#bStock").val($("#PdtStock").val());//库存
+            $("#bWarnStock").val($("#PdtWarnStock").val());//库存警告
+//	 		$("#bState").val();//销售状态上架下架
+//	 		$("#bSoldInTime").val();//定时上架
+//	 		$("#bSolTimeB").val();//上架时间开始
+//	 		$("#bSolTimeE").val();//上架时间结束curprice
+//	 		$("#bIsFreeShipping").val();//免运费
+            $("#bWeight").val($("#PdtWeight").val());//重量
+            $("#bLength").val($("#PdtLength").val());//长
+            $("#bWidth").val($("#PdtWidth").val());//宽
+            $("#bHeight").val($("#PdtHeight").val());//高
+            $("#bBriefDescription").val($("#PdtBriefDescription").val());//简短描述
+            $("#bdescription").val(UM.getEditor('description').getContent());//详细介绍
+            $("#bSizeAttr").val(PdtSize.join(","));//规格属性
+            $("#bColor").val(PdtColor.join(","));//颜色属性
+
+        }
+
+
+        //多文件列表示例
+        var add_url = [];
+        var demoListView = $('#demoList')
+            , uploadListIns = upload.render({
+            elem: '#testList'
+            , url: '/seller/pdt_PdtProduct_upload?widthLimit=0'//sys_SysAccessory_uploadImage?/seller/pdt_PdtProduct_upload?widthLimit=0
+            , accept: 'file'
+            , multiple: true
+            , auto: false
+            , bindAction: '#testListAction'
+            , choose: function (obj) {
+                var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+                var tr = [];
+                //读取本地文件
+                obj.preview(function (index, file, result) {
+                    tr = $(['<tr id="upload-' + index + '">'
+                        , '<td><img src="' + result + '" alt="' + file.name + '" class="layui-upload-img"></td>'
+                        , '<td>' + (file.size / 1014).toFixed(1) + 'kb</td>'
+                        , '<td>等待上传</td>'
+                        , '<td>'
+                        , '<button class="layui-btn layui-btn-small demo-reload layui-hide">重传</button>'
+                        , '<button class="layui-btn layui-btn-small layui-btn-danger demo-delete">删除</button>'
+                        , '</td>'
+                        , '</tr>'].join(''));
+                    //单个重传
+                    tr.find('.demo-reload').on('click', function () {
+                        obj.upload(index, file);
+                    });
+
+                    //删除
+                    tr.find('.demo-delete').on('click', function (res) {
+                        console.log(res)
+                        debugger
+                        delete files[index]; //删除对应的文件
+                        tr.remove();
+                        uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                    });
+
+                    demoListView.append(tr);
+                });
+            }
+            , done: function (data, index, upload) {
+                res = data.result;
+                console.log(data)
+                if (res.state == 'SUCCESS') { //上传成功
+                    var tr = demoListView.find('tr#upload-' + index)
+                        , tds = tr.children();
+                    add_url.push(res.url);
+                    tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
+                    tds.eq(3).html(''); //清空操作
+                    add_url.join(",");
+                    var pic = $("#bPicture").val();
+                    pic[res.originalName] = res.url
+                    $("#bPicture").val(pic);
+                    form.render();
+                    return delete this.files[index]; //删除文件队列已经上传成功的文件
+                }
+                this.error(index, upload);
+            }
+            , error: function (index, upload) {
+                var tr = demoListView.find('tr#upload-' + index)
+                    , tds = tr.children();
+                tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
+                tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+            }
+        });
+
+        //上架下架
+        form.on('switch(PdtState)', function (data) {
+            if (this.checked) {
+// 				$('#TimedShelves').removeClass('layui-hide');
+                $("#bState").val(0);
+                $("#bSolTimeB").val();//上架时间开始
+                $("#bSolTimeE").val();//上架时间结束
+            } else if (this.checked == false) {
+                $("#bState").val(1);
+            }
+            form.render();
+        });
+
+        //定时上架
+        form.on('switch(PdtSoldInTime)', function (data) {
+            if (this.checked) {
+                $("#bSoldInTime").val(1);
+                laydate.render({
+                    elem: '#PdtSoldTimeB'
+                    , type: 'datetime'
+                    , done: function (value, data, endDate) {
+                        $("#bSoldTimeB").val(value);//上架时间开始
+                    }
+                });
+                laydate.render({
+                    elem: '#PdtSoldTimeE'
+                    , type: 'datetime'
+                    , done: function (value, data, endDate) {
+                        $("#bSoldTimeE").val(value);//上架时间结束
+                    }
+                });
+                form.render();
+                return;
+            }
+            $("#bSoldInTime").val(0);
+            $("#bSolTimeB").val();//上架时间开始
+            $("#bSolTimeE").val();//上架时间结束
+            form.render();
+        });
+        laydate.render({
+            elem: '#PdtSoldTimeB'
+            , type: 'datetime'
+            , done: function (value, data, endDate) {
+                $("#bSoldTimeB").val(value);//上架时间开始
+            }
+        });
+        laydate.render({
+            elem: '#PdtSoldTimeE'
+            , type: 'datetime'
+            , done: function (value, data, endDate) {
+                $("#bSoldTimeE").val(value);//上架时间结束
+            }
+        });
+
+        //自定义验证规则
+        form.verify({
+            name: function (value) {
+                console.log(value);
+                if (value.length < 0) {
+
+                    return '用户名不能为空';
+                }
+            },
+            code: function (value) {
+                if (value.length > 8) {
+                    return '编号不能大于8位数';
+                }
+            },
+            PdtCat: function (value) {
+                if (value == "") {
+                    return '请选择平台分类';
+                }
+            },
+            numbers: [/(^[1-9]\d*$)|(\d{1,})/, '必须为数字1'],
+        });
+
+        function verify() {
+            var normAttr = [];
+            var PdtSize = [];
+            var PdtColor = [];
+            var description = UM.getEditor('description').getContent()
+            $("input:checkbox[name='beanPdtAttr']:checked").each(function () {
+                normAttr.push($(this).attr("pk"));
+            });
+            //规格
+            $("input:checkbox[name='bean.sizeAttr']:checked").each(function () {
+                PdtSize.push($(this).attr("pk"));
+            });
+            //颜色
+            $("input:checkbox[name='bean.color']:checked").each(function () {
+                PdtColor.push($(this).attr("pk"));
+            });
+// 			debugger
+            if (normAttr.length == 0) {
+                alert("属性不能为空");
+                return false;
+            }
+            if (PdtSize.length == 0) {
+                alert("尺寸不能为空");
+                return false;
+            }
+            if (PdtColor.length == 0) {
+                alert("颜色不能为空");
+                return false;
+            }
+            if (description == "") {
+                alert("详细描述不能为空");
+                return false;
+            }
+            if ($("#bPicture").val() == "") {
+                alert("图片不能为空");
+                return false;
+            }
+            return true;
+        }
+
+
+        //同步按钮
+        $(document).on('click', '#copysku', function () {
+            var value = $("input[name=sku]").val();
+            $("input[name=sku]").val(value);
+
+        });
+        $(document).on('click', '#copyprice', function () {
+            var value = $("input[name=price]").val();
+            $("input[name=price]").val(value);
+        });
+        $(document).on('click', '#copystore', function () {
+            var value = $("input[name=store]").val();
+            $("input[name=store]").val(value);
+        });
+        $(document).on('click', '#copyweight', function () {
+            var value = $("input[name=weight]").val();
+            $("input[name=weight]").val(value);
+        });
+
+
+        form.render();
+    });
+
+    //平台分类
+    $.ajax({
+        type: 'post',
+        async: false,
+        url: '/seller/pdt_PdtCat_list',
+        dataType: 'json',
+        success: function (CatData) {
+            layui.each(CatData.items, function (key, CatValue) {
+                if (CatValue.categoryUp == null) {
+                    console.log()
+                    $("#PdtCat").append("<optgroup value='" + CatValue.pkey + "' id='PdtCat" + CatValue.pkey + "' label='├" + CatValue.name + "' ></optgroup>");
+                    layui.each(CatData.items, function (key, CatValueTwo) {
+                        if (CatValueTwo.categoryUp != null) {
+                            if (CatValue.pkey == CatValueTwo.categoryUp.split("##")[0]) {
+                                $('#PdtCat' + CatValue.pkey).append("<option value='" + CatValueTwo.pkey + "' disabled >｜├" + CatValueTwo.name + "</option>");
+                                layui.each(CatData.items, function (key, CatValueThree) {
+                                    if (CatValueThree.categoryUp != null) {
+                                        if (CatValueTwo.pkey == CatValueThree.categoryUp.split("##")[0]) {
+                                            $('#PdtCat' + CatValue.pkey).append("<option pk='" + CatValueThree.pkey + "' value='" + CatValueThree.pkey + "'  >｜｜├" + CatValueThree.name + "</option>");
+                                        }
+                                    }
+                                })
+                            }
+                        }
+                    })
+                }
+            })
+        }
+    })
+    //店铺分类
+    $.ajax({
+        type: 'post',
+        async: false,
+        url: '/seller/usr_UsrProductCategory_list',
+        data: '',
+        dataType: 'json',
+        success: function (data) {
+            layui.each(data.items, function (key, value) {
+                console.log(value.pkey)
+                console.log(value.name)
+                $("#UsrSupplierCategory").append("<option value='" + value.pkey + "'>" + value.name + "</option>");
+            });
+        }
+    });
+
+    //颜色
+    $.ajax({
+        type: 'post',
+        async: false,
+        url: '/seller/pdt_PdtColor_list',
+        data: '',
+        dataType: 'json',
+        success: function (data) {
+            layui.each(data.items, function (key, value) {
+                $("#PdtColor").append("<input type='checkbox' id='colorAttr" + value.pkey + "' pk='" + value.pkey + "' class='noonclick' lay-filter='PdtColor' id='color" + value.pkey + "' name='bean.color' lay-skin='primary' title='" + value.name + "' value='" + value.name + "'>");
+            });
+        }
+    });
+
+    //自动生成编号
+    $.ajax({
+        type: 'post',
+        async: false,
+        url: '/seller/pdt_PdtProduct_getSeqnumInt',
+        data: '',
+        dataType: 'json',
+        success: function (data) {
+            $("#PdtCodeMax").val(data.CODE);
+        }
+    })
+
+
+</script>
+
+<!-- 复制产品 -->
+<script type="text/javascript">
+    //多语言input框
+    $.ajax({
+        type: 'post',
+        async: false,
+        url: '/plt_PltConfig_enabledLanguage',
+        data: '',
+        dataType: 'json',
+        success: function (data) {
+            $.each(data, function (key, value) {
+                if (value.isEnabled) {
+                    $("#PdtNames").append(
+                        ' <div style="margin-bottom: 15px;">' +
+                        '	<label class="layui-form-label"><span style="color: red">* </span>名称 - ' + value.displayName + ':</label>' +
+                        '    <div class="layui-input-block">' +
+                        '      <input type="tel" name="PdtName" lay-verify="required" id="Pdt' + value.shortName + '"  key=' + value.shortName + ' autocomplete="off" placeholder="请用' + value.displayName + '表达商品" class="layui-input language" >' +
+                        '    </div>' +
+                        ' </div>'
+                    )
+                    //id="PdtName"
+                }
+            })
+        }
+    });
+
+    //商品属性
+    //AttrLinelist
+    $.ajax({
+        type: 'post',
+        async: false,
+        url: '/seller/pdt_PdtAttr_AttrLinelist',
+        data: '',
+        dataType: 'json',
+        success: function (attrData) {
+            layui.each(attrData.items, function (key, attrValue) {
+                $("#SingleSelection").prepend("<div class='layui-form-item'><label class='layui-form-label'>" + attrValue.name + ":</label><div class='layui-input-block' id='AttributeLine" + attrValue.pkey + "'></div></div>");
+                layui.each(attrValue.attrLine, function (key, attrLineValue) {
+                    //					console.log(attrLineValue);
+                    $('#AttributeLine' + attrValue.pkey).prepend("<input id='PdtAttrLine" + attrLineValue.pkey + "' pk='" + attrLineValue.pkey + "' type='checkbox' lay-filter='radioFilter' name='beanPdtAttr' lay-skin='primary'  value='" + attrLineValue.name + "' title='" + attrLineValue.name + "'  >");
+                })
+            })
+        }
+    });
+    var htmlpk = location.href.split("=")[1];
+    // 	var htmlpk = 22;
+    if (htmlpk != null && htmlpk != "") {
+// 	if(1==1){
+        layui.use(['layer', 'form', 'element', 'jquery', 'dialog', 'upload', 'laydate'], function () {
+            var layer = layui.layer;
+            var element = layui.element();
+            var form = layui.form();
+            var $ = layui.jquery;
+            var dialog = layui.dialog;
+            var upload = layui.upload;
+            var laydate = layui.laydate;
+            //复制产品
+            $.ajax({
+                type: 'post',
+                async: false,
+                url: '/seller/pdt_PdtProduct_list',
+                data: {"filter": "[{'property':'pkey','value':'" + htmlpk + "'}]"},
+                dataType: 'json',
+                success: function (data) {
+                    layui.each(data.items, function (key, Productvalue) {
+                        $("#bRowVersion").val(Productvalue.rowVersion);
+                        $("#Pdten").val(Productvalue.name);
+                        $.each(JSON.parse(Productvalue.name), function (key, value) {
+                            $("#Pdt" + key).val(value);
+                            $("#" + key + "Name").val(value);
+                        })
+                        $("#PdtCat").val(Productvalue.category);//atype是select的id
+                        $("#UsrSupplierCategory").val(Productvalue.categoryDiy);
+                        $("#PdtSku").val(Productvalue.sku);
+                        var normAttr = Productvalue.normAttr.split(",")
+                        layui.each(normAttr, function (key, normAttrvalue) {
+                            $("#PdtAttrLine" + normAttrvalue).attr('checked', 'checked');
+                            form.render();
+                        })
+                        $("#PdtPrice").val(Productvalue.curPrice);
+                        $("#PdtMinOq").val(parseInt(Productvalue.minOq));
+                        $("#PdtMaxOq").val(parseInt(Productvalue.maxOq));
+                        $("#PdtStock").val(parseInt(Productvalue.stock));
+                        $("#PdtWarnStock").val(parseInt(Productvalue.warnStock));
+                        $("#description").val(Productvalue.description);
+                        $("#description1").val(Productvalue.description);
+                        $("#pdtProduct").val(Productvalue.pkey);
+                        var productcategory = $('#PdtCat option:selected').parent().attr('value');
+                        var t2 = $('#PdtCat option:selected').val();
+                        var sizeAttr = Productvalue.sizeAttr.split(",");
+                        var colorAttr = Productvalue.colorAttr.split(",");
+                        layui.each(colorAttr, function (key, colorAttrValue) {
+                            $("#colorAttr" + colorAttrValue).attr('checked', 'checked');
+                            form.render();
+                        })
+                        //"bean" :"[{'property':'productCategory','value':'"+productcategory+"'}]",
+                        $.ajax({
+                            type: 'post',
+                            url: '/seller/pdt_PdtSize_listAll',//_productCategory
+                            data: {"productcategory": Productvalue.category},
+                            dataType: 'json',
+                            success: function (sizedata) {
+                                layui.each(sizedata.items, function (key, SizeValue) {
+                                    $("#PdtSize").append("<input type='checkbox' id='PdtSizeAttr" + SizeValue.pkey + "' class='noonclick' pk='" + SizeValue.pkey + "' lay-filter='PdtSize' name='bean.sizeAttr' lay-skin='primary' title='" + SizeValue.name + "' value='" + SizeValue.name + "'>");
+                                    form.render();
+                                });
+                                layui.each(sizeAttr, function (key, sizeAttrValue) {
+                                    $("#PdtSizeAttr" + sizeAttrValue).attr('checked', 'checked');
+                                    initSpec();
+                                })
+                                $.ajax({
+                                    type: 'post',
+                                    url: '/seller/pdt_PdtSpec_list',//_productCategory
+                                    data: {"filter": "[{'property':'product','value':'" + htmlpk + "'}]"},
+                                    dataType: 'json',
+                                    success: function (specdata) {
+                                        var PdtSize = [];
+                                        var PdtColor = [];
+                                        //规格
+                                        $("input:checkbox[name='bean.sizeAttr']:checked").each(function () {
+                                            PdtSize.push($(this).attr("pk"));
+                                        });
+                                        //颜色
+                                        $("input:checkbox[name='bean.color']:checked").each(function () {
+                                            PdtColor.push($(this).attr("pk"));
+                                        });
+                                        var pictures = {};
+                                        layui.each(specdata.items, function (key, specValue) {
+                                            var pics = "";
+                                            if (specValue.pics == "" || specValue.pics == null) {
+                                                pics = "";
+                                            } else {
+                                                pics = specValue.pics;
+                                            }
+
+
+                                            var color = specValue.color.split("#")[0];
+                                            var color_size = specValue.color.split("#")[0] + "_" + specValue.size.split("#")[0];
+                                            $("#sizechecked" + color_size).find("th input:eq(0)").val(specValue.pkey);
+                                            $("#sizechecked" + color_size).find("th input:eq(1)").val(specValue.sku);
+                                            $("#sizechecked" + color_size).find("th input:eq(2)").val(specValue.price);
+                                            $("#sizechecked" + color_size).find("th input:eq(3)").val(specValue.storeCount);
+                                            $("#sizechecked" + color_size).find("th input:eq(4)").val(specValue.weight);
+                                            $("#sizechecked" + color_size).find("th input:eq(5)").val(specValue.rowVersion);
+                                            var picture = "";
+                                            if (specValue.pics != null && specValue.pics != "") {
+                                                picture = specValue.pics.split(",");
+                                            }
+                                            pictures[specValue.color] = specValue.pics;
+                                        })
+                                        layui.each(pictures, function (key, values) {//
+                                            var colorkey = key.split("#")[0];
+
+                                            var picturesvalue = values;
+                                            if (picturesvalue != null && picturesvalue != "") {
+                                                picturesvalue = values.split(",");
+                                            }
+
+                                            layui.each(picturesvalue, function (key, value) {
+                                                $("#colorPrice" + colorkey).val(values);
+                                                var tr = $(['<tr id="' + value + '">'
+                                                    , '<td><img src="' + value + '" alt="' + value + '" class="layui-upload-img"></td>'
+                                                    , '<td>0kb</td>'
+                                                    , '<td>已上传</td>'
+                                                    , '<td>'
+                                                    , '<button class="layui-btn layui-btn-small demo-reload layui-hide">重传</button>'
+                                                    , '<button class="layui-btn layui-btn-small layui-btn-danger demo-delete "  >删除</button>'
+                                                    , '</td>'
+                                                    , '</tr>'].join(''));
+                                                //单个重传
+                                                tr.find('.demo-reload').on('click', function () {
+                                                    obj.upload(value, value);
+                                                });
+                                                //删除
+                                                tr.find('.demo-delete').on('click', function () {
+                                                    delete value[value]; //删除对应的文件
+                                                    //alert(888)
+                                                    var input = $(this).parent().parent().parent().parent().parent().parent();
+                                                    var input1 = $(input).find("input").last();
+                                                    $(input1).val("");
+                                                    var sibtr = $(this).parent().parent().siblings();
+                                                    $(sibtr).each(function (index, e) {
+                                                        var i = $(input1).val();
+                                                        if (index == 0) {
+                                                            i += $(e).attr("id");
+                                                        } else {
+                                                            i += "," + $(e).attr("id");
+                                                        }
+                                                        input1.val(i);
+                                                    })
+                                                    tr.remove(input.val());
+//						 				          uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                                                });
+                                                $("#colorPicList_" + colorkey).append(tr);
+                                            })
+                                        })
+                                    }
+                                })
+                                form.render();
+                            }
+                        });
+                        if (Productvalue.state == 0) {
+//			 				$('#TimedShelves').removeClass('layui-hide');
+                            $("#bState").val(0);
+                            $("#bSolTimeB").val();//上架时间开始
+                            $("#bSolTimeE").val();//上架时间结束
+                            $("#stateSwitch").attr("checked", "checked");
+                        } else {
+                            $("#bState").val(1);
+                        }
+
+                        if (Productvalue.soldInTime == 1) {
+                            $("#bSoldInTime").val(1);
+                            $("#PdtsoldInTime").attr("checked", "checked");
+                            $("#PdtSoldTimeB").val(Productvalue.soldTimeB);
+                            $("#PdtSoldTimeE").val(Productvalue.soldTimeE);
+                            $("#bSoldTimeB").val(Productvalue.soldTimeB);
+                            $("#bSoldTimeE").val(Productvalue.soldTimeE);
+
+                            laydate.render({
+                                elem: '#PdtSoldTimeB'
+                                , type: 'datetime'
+                                , done: function (value, data, endDate) {
+                                    $("#bSoldTimeB").val(value);//上架时间开始
+                                }
+                            });
+                            laydate.render({
+                                elem: '#PdtSoldTimeE'
+                                , type: 'datetime'
+                                , done: function (value, data, endDate) {
+                                    $("#bSoldTimeE").val(value);//上架时间结束
+                                }
+                            });
+                            form.render();
+                        } else {
+                            $("#bSoldInTime").val(0);
+                            $("#bSolTimeB").val();//上架时间开始
+                            $("#bSolTimeE").val();//上架时间结束
+                            form.render();
+                        }
+                        $("#PdtWeight").val(parseInt(Productvalue.weight));
+                        $("#PdtLength").val(Productvalue.length);
+                        $("#PdtWidth").val(Productvalue.width);
+                        $("#PdtHeight").val(Productvalue.height);
+                        $("#PdtBriefDescription").val(Productvalue.briefDescription);
+                        UM.getEditor('description').setContent(Productvalue.description);
+                        $("#bPicture").val(Productvalue.picture);
+                        var price = Productvalue.picture.split(",");
+                        var color_size = [];
+                        layui.each(price, function (key, value) {
+                            var tr = $(['<tr id="' + value + '">'
+                                , '<td><img src="' + value + '" alt="' + value + '" class="layui-upload-img"></td>'
+                                , '<td>0kb</td>'
+                                , '<td>已上传</td>'
+                                , '<td>'
+                                , '<button class="layui-btn layui-btn-small demo-reload layui-hide">重传</button>'
+                                , '<button class="layui-btn layui-btn-small layui-btn-danger demo-delete "  >删除</button>'
+                                , '</td>'
+                                , '</tr>'].join(''));
+                            //单个重传
+                            tr.find('.demo-reload').on('click', function () {
+                                obj.upload(value, value);
+                            });
+                            //删除
+                            tr.find('.demo-delete').on('click', function () {
+                                delete value[value]; //删除对应的文件
+                                //alert(999)
+                                tr.remove();
+                                var t = bb(value, $("#bPicture").val())
+                                $("#bPicture").val(t)
+//	 				          uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                            });
+                            $("#demoList").append(tr);
+                        })
+
+                        if (Productvalue.isFreeShipping == 1) {
+// 							$("[name=bean.isFreeShipping]:eq(0)").attr("checked",false);
+                            $("[name='bean.isFreeShipping']:eq(1)").attr("checked", "checked")
+                        } else {
+                            $("[name='bean.isFreeShipping']:eq(2)").attr("checked", "checked")
+                        }
+                        form.render();
+                    });
+                }
+            })
+
+
+            //勾选尺码或者颜色时初始化属性关联项和颜色关联项的内容
+            function initSpec() {
+                var colorpkey = "";
+                var sizepkey = "";
+                var color_size = "";
+                $("#ProductSpec").empty();
+                $("#ColorAssociation").empty();
+                var selectedSizes = $("input:checkbox[name='bean.sizeAttr']:checked");
+                var selectedColors = $("input:checkbox[name='bean.color']:checked");
+                if (selectedSizes.length > 0 && selectedColors.length == 0) {
+                    selectedSizes.each(function () {
+                        sizepkey = $(this).attr("pk")
+                        color_size = colorpkey + "_" + sizepkey;
+                        size = $(this).val();
+                        appendSpec(color_size, size, "");
+                    });
+                } else if (selectedSizes.length == 0 && selectedColors.length > 0) {
+                    selectedColors.each(function () {
+                        colorpkey = $(this).attr("pk")
+                        color_size = colorpkey + "_" + sizepkey;
+                        color = $(this).val();
+                        appendColorPic(colorpkey, color);
+                        appendSpec(color_size, "", color);
+                    });
+                } else if (selectedSizes.length > 0 && selectedColors.length > 0) {
+                    selectedColors.each(function () {
+                        color = $(this).val();
+                        colorpkey = $(this).attr("pk")
+                        appendColorPic(colorpkey, color);
+                        selectedSizes.each(function () {
+                            sizepkey = $(this).attr("pk")
+                            color_size = colorpkey + "_" + sizepkey;
+                            size = $(this).val();
+                            appendSpec(color_size, size, color);
+                        });
+                    });
+                }
+            }
+
+            //添加属性关联项的页面内容
+            function appendSpec(id, size, color) {
+                $("#ProductSpec").closest(".layui-form-item").fadeIn();
+                $("#ProductSpec").append("<tr id='sizechecked" + id + "'><th><span>" + size + "+" + color + "</span><input type='text' value='' name='pkey'  layui-hide style='display:none' ></th><th><input type='text' name='sku' id='' lay-verify='' autocomplete='off' placeholder='' class='layui-input'></th><th><input type='text' name='price' placeholder='￥' autocomplete='off' class='layui-input'></th><th><input type='text' name='store' placeholder='0' autocomplete='off' class='layui-input'></th><th><input type='text' name='weight' placeholder='0' autocomplete='off' class='layui-input'></th><th layui-hide style='display:none'><input type='text' value='' name='rowVersion'  layui-hide style='display:none' ></th></tr>");
+            }
+
+            //添加颜色关联项的页面内容
+            function appendColorPic(id, color) {
+                $("#ColorAssociation").closest(".layui-form-item").fadeIn();
+                $("#ColorAssociation").append("<tr id='checked" + id + "' lod=1> "
+                    + "<td>" + color + "</td>"
+                    + "<td>"
+                    + "<div class='layui-upload'>"
+                    //+"<button type='button' class='layui-btn layui-btn-normal' id='selectPicAsColor_"+id+"'>选择多文件</button>"
+                    + "<div class='layui-upload-list'>"
+                    + "<table class='layui-table' style='display: none;'>"
+                    + "<thead><tr><th>文件名</th><th>大小</th><th>状态</th><th>操作</th></tr></thead>"
+                    + "<tbody id='colorPicList_" + id + "'></tbody>"
+                    + "</table>"
+                    + "</div>"
+                    + "<div class='tc'>"
+                    + "<button type='button' class='layui-btn layui-btn-primary mr15' id='selectPicAsColor_" + id + "'>选择多文件</button>"
+                    + "<button type='button' class='layui-btn layui-btn-normal' style='display: none;' id='uploadPicAsColor_" + id + "'>开始上传</button>"
+                    + "</div>"
+                    + "<input type='text' value=''  id='colorPrice" + id + "' layui-hide style='display:none' class='colorinput' >"
+                    + "</div>"
+                    + "</td>"
+                    + "</tr>");
+                addPicture(id);
+            }
+
+            function addPicture(id) {
+                var add_url = [];
+                var colorPicList = $("#colorPicList_" + id);
+                var uploadListIns = upload.render({
+                    elem: '#selectPicAsColor_' + id,
+                    url: '/seller/pdt_PdtProduct_upload?widthLimit=0',
+                    accept: 'images',
+                    multiple: true,
+                    auto: false,
+                    bindAction: '#uploadPicAsColor_' + id,
+                    choose: function (obj) {
+                        $('#selectPicAsColor_' + id).siblings(".layui-btn").fadeIn()
+                            .closest(".layui-upload").find(".layui-table").fadeIn();
+                        var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+                        //读取本地文件
+                        obj.preview(function (index, file, result) {
+                            tr = $(['<tr id="upload-' + index + '" >'
+                                , '<td><img src="' + result + '" alt="' + file.name + '" class="layui-upload-img"></td>'
+                                , '<td>' + (file.size / 1014).toFixed(1) + 'kb</td>'
+                                , '<td>等待上传</td>'
+                                , '<td>'
+                                , '<button class="layui-btn layui-btn-small demo-reload layui-hide">重传</button>'
+                                , '<button class="layui-btn layui-btn-small layui-btn-danger demo-delete">删除</button>'
+                                , '</td>'
+                                , '</tr>'].join(''));
+                            //单个重传
+                            tr.find('.demo-reload').on('click', function () {
+                                obj.upload(index, file);
+                            });
+                            //删除
+                            tr.find('.demo-delete').on('click', function () {
+                                delete files[index]; //删除对应的文件
+                                // alert(6666)
+                                uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+
+                                tr.remove();
+                            });
+                            colorPicList.append(tr);
+                        });
+                    },
+                    done: function (data, index, upload) {
+                        var res = data.result;
+                        if (res.state == 'SUCCESS') { //上传成功
+                            var tr = colorPicList.find('tr#upload-' + index)
+                                , tds = tr.children();
+                            add_url.push(res.url);
+                            tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
+                            tds.eq(3).html(''); //清空操作
+                            $("#checked" + id + "").attr("lod", "1");
+                            var colorPrice = "";
+                            if ($("#colorPrice" + id).val() != null && $("#colorPrice" + id).val() != "") {
+                                colorPrice = $("#colorPrice" + id).val() + "," + res.url;
+                            } else {
+                                colorPrice = $("#colorPrice" + id).val() + res.url;
+                            }
+//				        url.join(",")
+                            $("#colorPrice" + id).val(colorPrice);
+                            form.render();
+                            return delete this.files[index]; //删除文件队列已经上传成功的文件
+                        }
+                        this.error(index, upload);
+                    },
+                    error: function (index, upload) {
+                        var tr = colorPicList.find('tr#upload-' + index)
+                            , tds = tr.children();
+                        tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
+                        tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+                    }
+                });
+                $("#colorPrice").val(add_url);//产品图片
+                form.render();
+            }
+
+
+        })
+
+    }
+
+
+    $(document).on("click", ".demo-delete", function () {
+        var id = $(this).parent().parent().parent().attr("id");
+        if (id == "demoList") {
+            return;
+        } else {
+            if (status == 1) {
+                var input = $(this).parent().parent().parent().parent().parent().parent();
+                var input1 = $(input).find("input").last();
+                $(input1).val("");
+                var sibtr = $(this).parent().parent().siblings();
+                $(sibtr).each(function (index, e) {
+                    var i = $(input1).val();
+                    if (index == 0) {
+                        i += $(e).attr("id");
+                    } else {
+                        i += "," + $(e).attr("id");
+                    }
+                    input1.val(i);
+                })
+                $(this).parent().parent().remove();
+            }
+        }
+    })
+
+    function bb(value, container) {
+        var c = 0;
+        if (value.length == 0)
+            return '';
+
+        //去除前后逗号
+        value = value.replace(/^,/, '').replace(/,$/, '');
+        container = container.replace(/^,/, '').replace(/,$/, '');
+
+        if (container == value) {
+            return '';
+        }
+
+        var sArray = container.split(',');
+        for (var i = sArray.length - 1; i >= 0; --i) {
+            if (sArray[i] == value && c == 0) {
+                sArray[i] = undefined;
+                c++;
+            }
+
+        }
+
+        var result = sArray.join(',');
+        //因为undefined会连接成,,所以要将,,换成,
+        result = result.replace(/,,/, ',');
+        result = result.replace(/^,/, '').replace(/,$/, '');
+
+        return result;
+    }
+
+
+    var status = 0
+    $("#PdtSize").on("click", $(".noonclick").next(), function () {
+        status = 1;
+    })
+
+    $("#PdtColor").on("click", $(".noonclick").next(), function () {
+        status = 1;
+    })
+
+
+    $("#PdtCat").next().find("dl").on("click", "dd", function () {
+
+        //alert(666)
+    })
+
+
+</script>
+
+
+</html>

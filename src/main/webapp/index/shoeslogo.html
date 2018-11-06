@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>新联--鞋乐购--大数据</title>
+		<script src="./shoeslogo/js/vue.min.js"></script>
+	    <script src="./shoeslogo/js/qs.js"></script>
+	    <script src="./shoeslogo/js/axios.min.js"></script>
+	    <script src="./shoeslogo/js/element-ui.js"></script>
+	    <script src="./shoeslogo/js/vue-count-to.min.js"></script>
+	    <script src="./shoeslogo/js/data.js"></script>
+	    <script type="text/javascript" src="./shoeslogo/echarts/echarts-all.js"></script>
+	    <script type="text/javascript" src="./shoeslogo/echarts/echarts-map.js"></script>
+	    <script type="text/javascript" src="./shoeslogo/echarts/chart/map.js"></script>
+	    <script type="text/javascript" src="./shoeslogo/echarts/chart/china.js"></script>
+	    <script type="text/javascript" src="./shoeslogo/echarts/chart/world.js"></script>
+	    <script type="text/javascript" src="./shoeslogo/component/operation.js"></script>
+	    <script type="text/javascript" src="./shoeslogo/component/pie.js"></script>
+	    <script type="text/javascript" src="./shoeslogo/component/op.js"></script>
+	    <script type="text/javascript" src="./shoeslogo/component/p.js"></script>
+	    <script type="text/javascript" src="./shoeslogo/component/world.js"></script>
+	    <script type="text/javascript" src="./shoeslogo/component/nameMap.js"></script>
+	    <!-- <script src="./shoeslogo/js/jquery-1.11.1.js" type="text/javascript"></script> -->
+	    <script type="text/javascript" src="./shoeslogo/component/scroll.js"></script>
+	    <script type="text/javascript" src="./shoeslogo/component/orderDetail.js"></script>
+	      <script type="text/javascript" src="./shoeslogo/component/register.js"></script>
+			<script type="text/javascript" src="./shoeslogo/js/jquery1.42.min.js"></script>
+			<script type="text/javascript" src="./shoeslogo/js/jquery.SuperSlide.2.1.1.js"></script>
+
+	    <link rel="stylesheet" type="text/css" href="./shoeslogo/css/element-ui.css"/>
+	    <link rel="stylesheet" type="text/css" href="./shoeslogo/css/index.css"/>
+	</head>
+	<body>
+		<div id="main" >
+			<div class="bg">
+				<img src="./shoeslogo/images/background.png"/>
+				<div v-if="flag == 2" style="position:fixed;left: 50%;top: 0%;transform: translate(-50%);width: 50%;padding-top: 100%;">
+					<div class="wave ripple danger">
+						<div class="circle"></div>
+						<div class="circle"></div>
+						<div class="circle"></div>
+						<div class="content">
+							<i class="fa fa-bell"></i>
+						</div>
+					</div>
+				</div>
+
+				<img v-if="flag == 2" src="./shoeslogo/images/loveBg.png" style="width: 60%;"/>
+			</div>
+
+			<div class="content">
+				<div class="nav_bg">
+					<div @click="chooseThisNav(1)">
+						<img src="./shoeslogo/images/logo.png"/>
+					</div>
+					<hr />
+					<div @click="chooseThisNav(2)">
+						<img src="./shoeslogo/images/atd.png"/>
+					</div>
+				</div>
+				<transition name="el-fade-in-linear">
+				<div v-show="flag == 1" class="transition-box">
+				<div class="nav1" v-show="flag == 1" style="display: block;">
+					<el-row :gutter="220" type="flex" justify="center" style="max-height: 220px;">
+						<el-col :xs="24" :sm="12" :lg="12" style="margin-left:98px;">
+							<fieldset class="field">
+								<legend class="field_title">总浏览量(PV)</legend>
+							</fieldset>
+							<scroll ref="browse_ref" @allbrowse="getNewBrowse" :time="browse_change_time_num" :id="'browse_count'" :number="all_browse" style="left: -51px;"></scroll>
+						</el-col>
+						<el-col :xs="24" :sm="12" :lg="12" style="padding-left:166px;">
+							<fieldset class="field">
+								<legend class="field_title">总交易金额(元)</legend>
+							</fieldset>
+							<scroll @allmoney="getNewMoney" :time="all_money_time"  :id="'money_count'" :number="all_transaction" style="left: -44px;"></scroll>
+						</el-col>
+					</el-row>
+					<order :id="'order1'" :time="30*1000" :orders="order_info" style="position:absolute;left: 41.6%;width: 18%;top: 14%;z-index: 999;"></order>
+
+					<el-row :gutter="28" type="flex" align="bottom" style="padding:0 50px;" >
+						<el-col :xs="24" :sm="12" :lg="4" style="position: relative;top: -63px;">
+							<div class="my-panel-title-wrap mini shadow-light" style="background-size: 100%;background-position: left;">商品类目分析</div>
+							<div class="shadow-light">
+								<div style="width:100%;height:211px;">
+									<pie3 :id="'pie1'" :browse_data="pie3.browse_data" :title="pie3.title" :browse_name="pie3.browse_name" :field="pie3.field"></pie3>
+								</div>
+								<div style="background: linear-gradient(to bottom left, rgb(43,53,106) , rgb(34,17,52));padding:8px 20px;">
+									<div v-for="(key,index) in category_ranking" v-if="index < 5" :key="key" class="before-have-sort" :class="[index>2?'before-have-sort_other':'before-have-sort_'+index]" style="margin:20px 0">
+								    	<span v-if="index>2" class="sort_num" style="bottom: -2px;">{{index+1}}</span>
+								    	<span style="color:#fff;font-size:10px;display:block;width: 98px;float: left;margin-left: 17px;">{{key.name}}</span>
+										<span style="color: #ea6957;font-size: 12px;">{{key.qty}}件</span>
+										<div style="clear:both;"></div>
+								  	</div>
+								</div>
+							</div>.
+							
+						</el-col>
+						<el-col :xs="24" :sm="12" :lg="16" style="position: relative;top: -50px;">
+							<div class="my-panel-title-wrap" style="font-size:23px;text-align:center;background-size: 100%;background-position: left;">实时数据统计</div>
+							<el-row :gutter="36" class="nav_info" style="width: 100%;">
+											<el-col :xs="24" :sm="24" :lg="7" class="nav_info_detail">
+												<p style="margin-bottom:0;">今日注册量</p>
+									  			<el-row :gutter="39" style="padding-bottom:0px;">
+									  				<el-col :xs="20" :sm="20" :lg="8" :xl="7">
+									  					<h3 class="detail_h3" style="margin-left:0;"><count-to :start-val="old_today_register" :end-val="today_register" :duration="3000" class="card-panel-num"/><ren>元</ren></h3>
+									  				</el-col>
+									  				<el-col :xs="20" :sm="20" :lg="16" :xl="14" style="float: right;">
+									  					<span class="detail_span" style="margin-left: 18%;">较昨日: <i :class="{'rise':yesterday_register>0,descend:yesterday_register<0}"></i><br /><count-to :start-val="0" :end-val="Math.abs(yesterday_register)" :duration="3000" class="card-panel-num"/>元</span>
+									  				</el-col>
+									  			</el-row>
+											</el-col>
+											<el-col :xs="24" :sm="24" :lg="7" class="nav_info_detail">
+												<p style="margin-bottom:0;">今日浏览量</p>
+									  			<el-row :gutter="39" style="padding-bottom:0px;">
+									  				<el-col :xs="20" :sm="20" :lg="8" :xl="7">
+									  					<h3 class="detail_h3" style="margin-left:0;"><count-to :start-val="old_today_browse" :end-val="today_browse" :duration="3000" class="card-panel-num"/></h3>
+									  				</el-col>
+									  				<el-col :xs="20" :sm="20" :lg="16" :xl="14" style="float: right;">
+									  					<span class="detail_span" style="margin-left: 18%;">较昨日: <i :class="{'rise':yesterday_browse>0,descend:yesterday_browse<0}"></i><br /><count-to :start-val="0" :end-val="Math.abs(yesterday_browse)" :duration="3000" class="card-panel-num"/></span>
+									  				</el-col>
+									  			</el-row>
+											</el-col>
+											<el-col :xs="24" :sm="24" :lg="7" class="nav_info_detail">
+												<p style="margin-bottom:0;">今日成交金额</p>
+									  			<el-row :gutter="39" style="padding-bottom:0px;">
+									  				<el-col :xs="20" :sm="20" :lg="8" :xl="7">
+									  					<h3 class="detail_h3" style="margin-left:0;"><count-to :start-val="old_today_money" :end-val="today_money" :duration="3000" class="card-panel-num"/><ren>人</ren></h3>
+									  				</el-col>
+									  				<el-col :xs="20" :sm="20" :lg="16" :xl="14" style="float: right;">
+									  					<span class="detail_span" style="margin-left: 18%;">较昨日: <i :class="{'rise':yesterday_money>0,descend:yesterday_money<0}"></i><br /><count-to :start-val="0" :end-val="Math.abs(yesterday_money)" :duration="3000" class="card-panel-num"/>人</span>
+									  				</el-col>
+									  			</el-row>
+											</el-col>
+										</el-row>
+							<div style="background-color: rgb(34,17,52);" class="shadow">
+								<el-row>
+									<el-col :xs="24" :sm="12" :lg="12">
+										<world style="margin-top:94px;":data-color="dataMap.dataColor" :data-images="dataMap.dataImages" :id="'world3'" :height="400" :width="513" :size="'1.2'" :type="'china'" :data="dataMap.data"></world>
+									</el-col>
+									<el-col :xs="24" :sm="12" :lg="11">
+										<el-row :gutter="28" style="margin-top: 172px;">
+											<!-- <el-col :xs="24" :sm="12" :lg="12" style="width: 50%;">
+												<div style="background-image: url(./shoeslogo/images/other_bg.png);background-size: 100% 100%;width: 100%;height: 100%;">
+													<span style="font-size: 16px;color: #4786ce;margin-left:26px;">受助者</span>
+													<span style="font-size: 26px;color: #ffffff;margin-left:24px;line-height: 54px;">{{entrepreneur}}人</span>
+													<i class="rise" style="margin-left:36px;"></i>
+												</div>
+											</el-col>
+											<el-col :xs="24" :sm="12" :lg="12">
+												<div style="background-image: url(./shoeslogo/images/other_bg.png);background-size: 100% 100%;width: 101%;height: 100%;">
+													<span style="font-size: 16px;color: #4786ce;margin-left:26px;">关爱者</span>
+													<span style="font-size: 26px;color: #ffffff;margin-left:24px;line-height: 54px;">{{caring_person}}人</span>
+													<i class="rise" style="margin-left:36px;"></i>
+												</div>
+											</el-col> -->
+											<el-col :xs="24" :sm="12" :lg="24" style="margin-top:64px;    padding-bottom: 32px;">
+												<div class="my-panel-title-wrap mini" style="background-position: left;">成交数据</div>
+												<div style="width:100%;height:198px;">
+													<register :id="'register2'" :x_axis="register_data.x_axis" :browse_data="register_data.browse_data" :field="register_data.field"></register>
+												</div>
+											</el-col>
+										</el-row>
+									</el-col>
+								</el-row>
+							</div>
+						</el-col>
+						<el-col :xs="24" :sm="12" :lg="4" style="margin-bottom: 16px;position: relative;top: -75px;">
+
+
+							<el-row :gutter='15'>
+								<el-col :xs="24" :sm="24" :lg="24">
+									<div class="my-panel-title-wrap mini shadow-light" style="background-size: 100%;background-position: left;padding-bottom: 0;">流量终端</div>
+									<div style="width:100%;height:215px;" class="shadow-light">
+										<pie :browse_data="pie.browse_data" :title="pie.title" :browse_name="pie.browse_name" :field="pie.field"></pie>
+									</div>
+								</el-col>
+
+								<el-col :xs="24" :sm="24" :lg="24" style="margin-top: 28px;">
+									<div class="my-panel-title-wrap mini shadow-light" style="background-size: 100%;background-position: left;padding-bottom: 0;">流量来源</div>
+									<div style="width:100%;height:215px;" class="shadow-light">
+										<pie2 :id="'testpie6'" :flow_source="pie2.flow_source" :source_name_array="pie2.source_name_array" :field="pie2.field" :title="pie2.title"></pie2>
+									</div>
+								</el-col>
+							</el-row>
+
+
+						</el-col>
+					</el-row>
+				</div>
+				</div>
+				</transition>
+
+				<transition name="el-fade-in-linear">
+				<div v-show="flag == 2"  class="transition-box">
+				<div class="nav2" v-show="flag == 2">
+					<div style="background-image: url(./shoeslogo/images/other_bg.png);background-size: 100% 100%;width: 328px;height: 63px;position: absolute;top: 202px;left: 222px;border: 1px solid #22306a;">
+						<p style="color:#fff;margin: 10px 0;"><span style="font-size: 19px;color: #4786ce;margin-left:31px;position: relative;top: -6px;">创业者</span><span style="font-size: 31px;color: #ffffff;margin-left:30px;">{{entrepreneur}}人</span><i class="rise" style="margin-left:65px;"></i></p>
+					</div>
+					<div style="background-image: url(./shoeslogo/images/other_bg.png);background-size: 100% 100%;width: 328px;height: 63px;position: absolute;top: 202px;left: 1402px;border: 1px solid #22306a;">
+						<p style="color:#fff;margin: 10px 0;"><span style="font-size: 19px;color: #4786ce;margin-left:31px;position: relative;top: -6px;">关爱者</span><span style="font-size: 31px;color: #ffffff;margin-left:30px;">{{caring_person}}人</span><i class="rise" style="margin-left:65px;"></i></p>
+					</div>
+					<div style="height: 200px;">
+						<fieldset class="field" style="margin:37px auto 0">
+							<legend class="field_title">奉献能量值</legend>
+						</fieldset>
+						<scroll :has-interval="0" :id="'browse_count'" :number="power_value" style="left: -6px;top:-121px;"></scroll>
+					</div>
+
+					<el-row :gutter="49" style="padding: 0 79px;">
+						<el-col :xs="24" :sm="24" :lg="5">
+							<el-row>
+								<el-col :xs="24" :sm="24" :lg="24">
+									<div class="column-nav">大爱榜</div>
+								</el-col>
+								<el-col :xs="24" :sm="24" :lg="24" class="shadow-light">
+									<div style="width:100%;height:220px;background: linear-gradient(to bottom left, rgb(43,53,106) , rgb(34,17,52));display: flex;justify-content: center;align-items: center;">
+										<div class="flexColum">
+											<div class="before-have-sort before-have-sort_1 before_qita"></div>
+											<img :src="love_list[1].img" style="width:50px;height:50px;border-radius: 50%;"/>
+											<span style="font-size: 14px;color: #ffffff;text-align:center;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;width: 80px;">{{love_list[1].name}}</span>
+											<span style="font-size: 14px;color: #f6487a;">{{love_list[1].power}}</span>
+										</div>
+										<div class="flexColum">
+											<div class="before-have-sort before-have-sort_0 before_one before_qita"></div>
+											<img :src="love_list[0].img" style="width:60px;height:60px;position: relative;top: -10px;border-radius: 50%;"/>
+											<span style="font-size: 14px;color: #ffffff;text-align:center;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;width: 80px;">{{love_list[0].name}}</span>
+											<span style="font-size: 14px;color: #f6487a;">{{love_list[0].power}}</span>
+										</div>
+										<div class="flexColum">
+											<div class="before-have-sort before-have-sort_2 before_qita"></div>
+											<img :src="love_list[2].img" style="width:50px;height:50px;border-radius: 50%;"/>
+											<span style="font-size: 14px;color: #ffffff;text-align:center;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;width: 80px;">{{love_list[2].name}}</span>
+											<span style="font-size: 14px;color: #f6487a;">{{love_list[2].power}}</span>
+										</div>
+									</div>
+								</el-col>
+								<el-col :xs="24" :sm="24" :lg="24" class="shadow-light">
+									<div style="background: linear-gradient(to bottom left, rgb(43,53,106) , rgb(34,17,52));padding:23px 20px;">
+										<div v-for="(key,index) in love_list" v-if="index > 2 && index < 9" :key="key" class="before-have-sort" :class="[index>2?'before-have-sort_other':'before-have-sort_'+index]" style="margin:0 0 20px 0">
+								    	<span v-if="index>2" class="sort_num">{{index+1}}</span>
+								    	<span style="color:#fff;font-size:12px;display:block;width: 98px;float: left;margin-left: 17px;position: relative;top: 4px;">{{key.name}}</span>
+											<span style="color: #ea6957;font-size: 12px;">{{key.power}}</span>
+											<div style="clear:both;"></div>
+									  	</div>
+									</div>
+								</el-col>
+							</el-row>
+						</el-col>
+						<el-col :xs="24" :sm="24" :lg="14">
+							<el-row>
+								<el-col :xs="24" :sm="24" :lg="24" style="padding-top: 36px;">
+									<!-- <order :id="'order1'" :orders="history_detail"></order> -->
+									
+									<div id="shoesATB5" style="width: 500px;margin: 0 auto;">
+										<div style="height: 270px;overflow: hidden;">
+										<ul class="opera_detail">
+											<li v-for="(key,index) in history_detail">
+												<p>
+													<span>恭喜!来自{{key.from}}的</span>
+													<span>{{key.name}}</span>
+													<span>{{key.operation}}</span>
+													<!-- <span style="float:right;">{{key.time}}</span> -->
+												</p>
+											</li>
+										</ul>
+										</div>
+									</div>
+
+									<!-- <ul class="opera_detail">
+										<li v-for="(key,index) in history_detail">
+											<p>
+												<span>{{key.from}}</span>
+												<span>{{key.name}}</span>
+												<span>{{key.operation}}</span>
+												<span style="float:right;">{{key.time}}</span>
+											</p>
+										</li>
+									</ul> -->
+								</el-col>
+								<el-col :xs="24" :sm="24" :lg="24" style="margin-top: 108px;">
+									<el-row :gutter="23">
+											<div id="carouselPicsListWrap">
+											<ul style="overflow:hidden; zoom:1;margin: 0;padding: 0;">
+												<li class="love-detail" v-for="(key,index) in power_list">
+														<img :src="key.icon"  />
+													<p class="ellipsis_1">{{key.name}}</p>
+													<p>
+														<span>收益:</span>
+														<span class="power">{{key.power}}</span>
+														<span>能量</span>
+													</p>
+												</li>
+											</ul>
+										</div>
+
+									</el-row>
+								</el-col>
+							</el-row>
+						</el-col>
+						<el-col :xs="24" :sm="24" :lg="5">
+							<el-row>
+								<el-col :xs="24" :sm="24" :lg="24">
+									<div class="column-nav">创业榜</div>
+								</el-col>
+								<el-col :xs="24" :sm="24" :lg="24" class="shadow-light">
+										<div style="width:100%;height:220px;background: linear-gradient(to bottom left, rgb(43,53,106) , rgb(34,17,52));display: flex;justify-content: center;align-items: center;">
+										<div class="flexColum">
+											<div class="before-have-sort before-have-sort_1 before_qita"></div>
+											<img :src="entrepreneurship_list[1].img" style="width:50px;height:50px;border-radius: 50%;"/>
+											<span style="font-size: 14px;color: #ffffff;text-align:center;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;width: 80px;">{{entrepreneurship_list[1].name}}</span>
+											<span style="font-size: 14px;color: #f6487a;">{{entrepreneurship_list[1].power}}</span>
+										</div>
+										<div class="flexColum">
+											<div class="before-have-sort before-have-sort_0 before_one before_qita"></div>
+											<img :src="entrepreneurship_list[0].img" style="width:60px;height:60px;position: relative;top: -10px;border-radius: 50%;"/>
+											<span style="font-size: 14px;color: #ffffff;text-align:center;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;width: 80px;">{{entrepreneurship_list[0].name}}</span>
+											<span style="font-size: 14px;color: #f6487a;">{{entrepreneurship_list[0].power}}</span>
+										</div>
+										<div class="flexColum">
+											<div class="before-have-sort before-have-sort_2 before_qita"></div>
+											<img :src="entrepreneurship_list[2].img" style="width:50px;height:50px;border-radius: 50%;"/>
+											<span style="font-size: 14px;color: #ffffff;text-align:center;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;width: 80px;">{{entrepreneurship_list[2].name}}</span>
+											<span style="font-size: 14px;color: #f6487a;">{{entrepreneurship_list[2].power}}</span>
+										</div>
+									</div>
+								</el-col>
+								<el-col :xs="24" :sm="24" :lg="24" class="shadow-light">
+									<div style="background: linear-gradient(to bottom left, rgb(43,53,106) , rgb(34,17,52));padding:23px 20px;">
+										<div v-for="(key,index) in entrepreneurship_list" v-if="index > 2 && index < 9" :key="key" class="before-have-sort" :class="[index>2?'before-have-sort_other':'before-have-sort_'+index]" style="margin:0 0 20px 0">
+									    	<span class="sort_num">{{index+1}}</span>
+									    	<span style="color:#fff;font-size:10px;display:block;width: 98px;float: left;margin-left: 17px;position: relative;top: 4px;">{{key.name}}</span>
+											<span style="color: #ea6957;font-size: 12px;">{{key.power}}</span>
+											<div style="clear:both;"></div>
+									  	</div>
+									</div>
+								</el-col>
+							</el-row>
+						</el-col>
+					</el-row>
+
+
+
+				</div>
+				</div>
+				</transition>
+
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		new Vue({
+			el:'#main',
+			data(){
+				return{
+					flag:1,
+					haveCarousel: false,
+					haveCarousel_ATB5: false,
+					all_browse:data.all_browse,						//总浏览量
+					all_transaction:data.all_transaction,			//总交易金额
+					power_value:data.power_value,					//奉献能量值
+					today_register:data.today_register,				//今日注册量
+					yesterday_register:data.yesterday_register,		//较昨日注册量
+					today_browse:data.today_browse,					//今日浏览量
+					yesterday_browse:data.yesterday_browse,			//较昨日浏览量
+					today_money:data.today_money,					//今日交易金额
+					old_today_money:0,								//变化前交易金额
+					yesterday_money:data.yesterday_money,			//较昨日交易金额
+					entrepreneur:data.entrepreneur,					//创业者
+					caring_person:data.caring_person,				//关爱者
+					category_ranking:data.category_ranking,			
+					love_list:data.love_list,
+					entrepreneurship_list:data.entrepreneurship_list,
+					power_list:[],
+					history_detail:data.history_detail,
+					old_today_browse :0,
+					old_today_register:0,
+					
+					browse_change_time:data.setting.browse_change_time,
+					money_change_time:data.setting.money_change_time,
+					register_change_time:data.setting.register_change_time,
+					entrepreneur_change_time:data.setting.entrepreneur_change_time,
+					today_money_change_time:data.setting.today_money_change_time,
+					
+					caring_person_change_time:data.setting.caring_person_change_time,
+					bubble_change_time:data.setting.bubble_change_time,
+					
+					timer:{},
+					bubble_flag:false,
+					
+					entrepreneur_time:0,
+					register_time:0,
+					caringPerson_time:0,
+					browse_time:0,
+					today_money_time:0,
+					bubble_time:0,
+					all_money_time:3000,
+					
+					 pie:{										//设备占比
+				        	browse_data:data.terminal_browse_data,
+				        	browse_name:["PC","IOS","Android","其他"],
+				        	field:['访问来源'],
+				        	title:["流量终端"],
+				        },
+					pie3:{
+			        	browse_data:["41","34","25"],
+			        	browse_name:["男鞋","女鞋","童鞋"],
+			        	field:['销售量',],
+			        	title:["商品分类"],
+			        },
+					 
+			        register_data:{					//注册信息
+			        	x_axis:['8月28日','9月4日','9月11日','9月18日','9月25日','10月2日','10月9日','10月16日'],
+			        	browse_data:data.register_data,
+			        	field:['成交额']
+			        },
+			        dataMap:{
+			        	type:'china',
+			        	id:'world',
+			        	dataColor:['#FB505F','#54F5FF','#FAC942','#B52ACC','#FF5160'],
+						dataImages:['image://./shoestp/images/dw1.png','image://./shoestp/images/dw2.png','image://./shoestp/images/dw3.png','image://./shoestp/images/dw4.png','image://./shoestp/images/dw5.png'],
+			        	data:[
+								{name: '浙江',value: 500 },{name: '广东',value: 200 },
+		                  		{name: '四川',value: 300 },{name: '福建',value: 400 },
+			            ],
+		        	},
+		        	order_info:[],
+
+		        	business_data:{
+			        	x_axis:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+			        	browse_data:[2.0, 5, 7.0, 23, 25, 76, 135, 162, 32, 20, 6, 3],
+			        	visit_data:[2, 5, 9, 26, 28,70, 175, 182, 48, 18, 6, 2],
+			        	field:['浏览量','访问量']
+			        },
+			        pie2:{
+						flow_source:["0.3","0.3","0.1","0.3"],
+						source_name_array:["谷歌搜索","百度搜索","直接访问","其他"],
+						title:['流量来源'],
+						field:["谷歌搜索","百度搜索","直接访问","其他"]
+			        },
+				}
+			},
+			computed:{
+			},
+			mounted(){
+				var self = this;
+				self.entrepreneur_time=self.entrepreneur_change_time_num();
+				self.register_time=self.register_change_time_num();
+				self.caringPerson_time=self.caring_person_change_time_num();
+				//self.money_time = self.money_change_time_num();
+				self.browse_time = self.browse_change_time_num();
+				self.all_money_time = self.money_change_time_num();
+				self.today_money_time = self.today_money_change_time_num();
+				self.bubble_time = self.bubble_change_time_num();
+				
+				axios.get('/temporary/DataLogo_getLogoDataInfo', {
+					params: {pkey:1}
+					}).then(function (response) {
+						self.all_browse = response.data.data.allBrowse;
+						self.all_transaction = response.data.data.allMoney; 
+						self.today_register = response.data.data.todayRegister;
+						self.today_browse = response.data.data.todayBrowse;
+						self.today_money = response.data.data.todaySuccess;
+						self.yesterday_money = response.data.data.yesterdayAllMoney;
+						self.today_browse = response.data.data.todayBrowse;
+						self.power_value = response.data.data.abilityValue;
+						self.caring_person = response.data.data.caregiver;
+						self.entrepreneur = response.data.data.beneficiaries;
+						
+						self.old_today_register = response.data.data.todayRegister;
+						self.old_today_browse = response.data.data.todayBrowse;
+						self.old_today_money = response.data.data.todaySuccess;
+				})
+				
+				 axios.get('/temporary/DataInfo_getDataInfo', {
+					params: {pkey:1,type:0}
+					}).then(function (response) {
+						var data = response.data.items;
+						self.order_info = [];
+						for(var i =0;i<data.length;i++){
+							var obj = {};
+							obj.from = "来自"+data[i].fromName;
+							obj.name = data[i].name;
+							obj.type = data[i].status;
+							obj.money = data[i].amount;
+							obj.state = '2018-10-23';
+							self.order_info.push(obj);
+						}
+				}) 
+				
+				 axios.get('/temporary/BigLoveList_getHeadPicInfo', {}).then(function (response) {
+					 var items = [];
+					 for(var i in response.data){
+						 var data = JSON.parse(response.data[i]);
+						 var result = [];
+						 if(i == 'rankEndow' && data.status == 1){
+							 result = data.result.rankList;
+							 self.love_list = [];
+							 var big_love_power = 600;
+							 for(var i=0;i<result.length;i++){
+								 big_love_power = big_love_power - Math.floor(Math.random()*5+1)*10;
+								 var love_obj = {};
+								 love_obj.img = result[i].headPic;
+								 love_obj.name = result[i].nickname;
+								 love_obj.power = big_love_power;
+								 self.love_list.push(love_obj);
+							 }
+						 }else if(i == 'rankIntegral' && data.status == 1){
+							 result = data.result.disView;
+							 self.entrepreneurship_list = [];
+							 var big_love_power = 1600;
+							 for(var i=0;i<result.length;i++){
+								 big_love_power = big_love_power - Math.floor(Math.random()*5+1)*10;
+								 var love_obj = {};
+								 love_obj.img = result[i].headPic;
+								 love_obj.name = result[i].nickname;
+								 love_obj.power = big_love_power;
+								 self.entrepreneurship_list.push(love_obj);
+							 }
+						 }
+						 for(var i=0;i<result.length;i++){
+							 var obj = {};	
+							 var data_obj = result[i];
+							 if(data_obj.headPic != '' && data_obj.headPic.indexOf("https")!=-1){
+								 obj.icon = data_obj.headPic;
+								 obj.name = data_obj.nickname;
+								 obj.power = Math.floor(Math.random()*20+1)*10;
+								 items.push(obj);
+							 }
+						 }
+					 }
+					 self.power_list = self.shuffle(items);
+					 if( !self.haveCarousel && self.power_list && self.power_list.length && self.flag == 2){
+							self.haveCarousel = true;
+							self.$nextTick(()=>{
+								jQuery("#carouselPicsListWrap").slide({
+									mainCell:"ul",
+									autoPlay:true,
+									effect:"leftMarquee",
+									vis:7,
+									interTime:50
+								});
+							})
+						}
+							
+				}) 
+				
+				axios.get('/temporary/BigLoveList_getRegListInfo', {
+					params: {pkey:1}
+					}).then(function (response) {
+						var data = response.data.items;
+						self.history_detail = [];
+						for(var i =0;i<data.length;i++){
+							var obj = {};
+							obj.from = data[i].fromName;
+							obj.name = data[i].name;
+							obj.operation = data[i].operation;
+							var date = new Date();
+							obj.time = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+							self.history_detail.push(obj);
+						}
+						/* setTimeout(function(){
+							self.$nextTick(()=>{
+								jQuery("#shoesATB5").slide({mainCell:"ul.opera_detail",autoPage:true,effect:"topLoop",autoPlay:true,vis:5});
+							})
+						},3000); */
+						
+				})
+				self.browseInterval();
+				self.allMoneyInterval();
+				self.todayMoneyInterval();
+				self.registerInterval();
+				self.entrepreneurInterval();
+				self.caringPersonInterval();
+				
+			},
+			watch:{
+				/* power_list(){
+						
+						if(this.power_list.length > 0){
+							console.log("watch2")
+							jQuery("#carouselPicsListWrap").slide({
+								mainCell:"ul",
+								autoPlay:true,
+								effect:"leftMarquee",
+								vis:7,
+								interTime:50
+							});
+						}
+						
+				}, */
+				entrepreneur_time:{
+					handler(newValue, oldValue){
+						clearInterval(this.timer['entrepreneur']);
+						this.entrepreneurInterval();
+					},
+				},
+				register_time:{
+					handler(newValue, oldValue){
+						clearInterval(this.timer['register']);
+						this.registerInterval();
+					},
+				},
+				caringPerson_time:{
+					handler(newValue, oldValue){
+						clearInterval(this.timer['caringPerson']);
+						this.caringPersonInterval();
+					},
+				},
+				browse_time:{
+					handler(newValue, oldValue){
+						clearInterval(this.timer['browse']);
+						this.browseInterval();
+					},
+				},
+				today_money_time:{
+					handler(newValue, oldValue){
+						clearInterval(this.timer['todayMoney']);
+						this.todayMoneyInterval();
+					},
+				},
+				all_money_time:{
+					handler(newValue, oldValue){
+						clearInterval(this.timer['allMoney']);
+						this.allMoneyInterval();
+					},
+				},
+				bubble_time:{
+					handler(newValue, oldValue){
+						if(this.bubble_flag){
+							clearInterval(this.timer['bubble']);
+							this.getBubble();
+						}
+					},
+				}
+			},
+			methods:{
+				browse_change_time_num:function(){
+					return this.getRandomFromInterval(this.browse_change_time[0],this.browse_change_time[1]);
+				},
+				money_change_time_num:function(){
+					return this.getRandomFromInterval(this.money_change_time[0],this.money_change_time[1]);
+				},
+				register_change_time_num:function(){
+					return this.getRandomFromInterval(this.register_change_time[0],this.register_change_time[1]);
+				},
+				caring_person_change_time_num:function(){
+					return this.getRandomFromInterval(this.caring_person_change_time[0],this.caring_person_change_time[1]);
+				},
+				bubble_change_time_num:function(){
+					return this.getRandomFromInterval(this.bubble_change_time[0],this.bubble_change_time[1]);
+				},
+				entrepreneur_change_time_num:function(){
+					return this.getRandomFromInterval(this.entrepreneur_change_time[0],this.entrepreneur_change_time[1]);
+				},
+				today_money_change_time_num:function(){
+					return this.getRandomFromInterval(this.today_money_change_time[0],this.today_money_change_time[1]);
+				},
+				browseInterval:function(){
+					var self = this;
+					self.timer['browse'] = setInterval(function(){
+						axios.get('/temporary/DataLogo_getLogoDataInfo', {
+							params: {
+								pkey:1,
+								type:1
+							}
+						}).then(function (response) {
+								self.all_browse =  response.data.data.allBrowse;
+								self.old_today_browse = self.today_browse;
+								self.today_browse = response.data.data.todayBrowse;
+								self.yesterday_browse = response.data.data.yesterdayBrowse;
+								self.browse_time = self.browse_change_time_num();
+						})	
+					},self.browse_time);
+				},
+				
+				allMoneyInterval:function(){
+					var self = this;
+					self.timer['allMoney'] = setInterval(function(){
+						axios.get('/temporary/DataLogo_getLogoDataInfo', {
+							params: {
+								pkey:1,
+								type:2
+							}
+						}).then(function (response) {
+								self.all_transaction = response.data.data.allMoney;
+								self.all_money_time = money_change_time_num();
+						})	
+					},self.all_money_time);
+				},
+				
+				todayMoneyInterval:function(){
+					var self = this;
+					self.timer['todayMoney'] = setInterval(function(){
+						axios.get('/temporary/DataLogo_getLogoDataInfo', {
+							params: {
+								pkey:1,
+								type:7
+							}
+						}).then(function (response) {
+							self.all_transaction = response.data.data.allMoney;
+							self.old_today_money = self.today_money;
+							self.today_money = response.data.data.todaySuccess;
+							self.yesterday_money = response.data.data.yesterdayAllMoney;
+							self.today_money_time = today_money_change_time_num();
+						})	
+					},self.today_money_time);
+				},
+				
+				
+				caringPersonInterval:function(){
+					var self = this;
+					self.timer['caringPerson'] = setInterval(function(){
+						axios.get('/temporary/DataLogo_getLogoDataInfo', {
+							params: {pkey:1,type:4}
+							}).then(function (response) {
+								self.caring_person = response.data.data.caregiver;
+								self.caringPerson_time=self.caring_person_change_time_num();
+						})
+					},self.caringPerson_time)
+				},
+				
+				registerInterval:function(){
+					var self = this;
+					self.timer['register'] = setInterval(function(){
+						axios.get('/temporary/DataLogo_getLogoDataInfo', {
+							params: {pkey:1,type:6}
+							}).then(function (response) {
+								self.old_today_register = self.today_register;
+								self.today_register = response.data.data.todayRegister;
+								self.yesterday_register = response.data.data.yesterdayRegister;
+								self.register_time=self.register_change_time_num();
+						})
+					},self.register_time)
+				},
+				
+				entrepreneurInterval:function(){
+					var self = this;
+					self.timer['entrepreneur'] = setInterval(function(){
+						axios.get('/temporary/DataLogo_getLogoDataInfo', {
+							params: {pkey:1,type:3}
+							}).then(function (response) {
+								self.entrepreneur = response.data.data.beneficiaries;
+								self.entrepreneur_time=self.entrepreneur_change_time_num();
+						})
+					},self.entrepreneur_time)
+				},
+				getRandomFromInterval:function(start,end){
+					var random = Math.floor(Math.random()*(end-start+1)+start);
+					return random;
+				},
+				shuffle:function(arr){
+					var _arr = arr.slice()
+					  for (let i = 0; i < _arr.length; i++) {
+					    var j = this.getRandomFromInterval(0, i)
+					    // 将 _arr[i]与_arr中随机的项交换
+					    var t = _arr[i]
+					    _arr[i] = _arr[j]
+					    _arr[j] = t
+					  }
+					  return _arr
+				},
+				getNewBrowse:function(val){
+					var self = this;
+					self.old_today_browse = self.today_browse;
+					self.today_browse = val.todayBrowse;
+					self.yesterday_browse = val.yesterdayBrowse;
+				},
+				getNewMoney:function(val){
+					var self = this;
+					//self.old_today_money = self.today_money;
+					//self.today_money = val.todaySuccess;
+					//self.yesterday_money = val.yesterdayAllMoney;
+				},
+				chooseThisNav:function(nav){
+					var self = this;
+					self.flag = nav;
+					if(nav == 2){
+						self.getBubble();
+						if(!self.haveCarousel_ATB5 && self.history_detail && self.history_detail.length){
+							self.haveCarousel_ATB5 = true;
+							self.$nextTick(()=>{
+								jQuery("#shoesATB5").slide({mainCell:".opera_detail",autoPage:true,effect:"topLoop",autoPlay:true,vis:5});
+								
+							})
+						}
+						if(!self.haveCarousel && self.power_list && self.power_list.length){
+							self.haveCarousel = true;
+							self.$nextTick(()=>{
+								jQuery("#carouselPicsListWrap").slide({
+									mainCell:"ul",
+									autoPlay:true,
+									effect:"leftMarquee",
+									vis:7,
+									interTime:50
+								});
+							})
+						}
+					}
+					if(nav == 1){
+						self.bubble_flag = false;
+						window.clearInterval(self.timer['bubble'])
+					}
+				},
+				getBubble:function(){
+					var self = this;
+					self.timer['bubble'] = setInterval(function(){
+						var power = Math.floor(Math.random()*20+1)*10;
+						axios.get('/temporary/DataLogo_getLogoDataInfo', {
+							params: {pkey:1,type:5,power:power}
+							}).then(function (response) {
+								self.power_value = response.data.data.abilityValue;
+								//self.today_register = response.data.data.todayRegister;
+						})
+						
+						var width = Math.random()*window.innerWidth;
+						var left = width<191?191:(width- 191);
+						var content=`
+							<div class="qiqiu qiqiu${Math.ceil(Math.random()*5)}" style="left: ${left+'px'};">
+								<img src="${self.power_list[Math.ceil(Math.random()*self.power_list.length)].icon}"/>
+								<span class="value">${power}</span>
+								<span class="text">能量值</span>
+							</div>
+						`
+						$("body").append(content)
+						self.bubble_time = self.bubble_change_time_num();
+					},self.bubble_time);
+				}
+			}
+		})
+	</script>
+</html>

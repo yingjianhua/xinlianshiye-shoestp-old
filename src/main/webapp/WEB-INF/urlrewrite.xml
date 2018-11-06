@@ -1,0 +1,132 @@
+<urlrewrite>
+    <rule>
+        <note>
+            商品页面的伪静态
+        </note>
+        <from>^/(.*_p)([1234567890]{1,}).html</from>
+        <to type="forward">/home/pdt_PdtProduct_gtProductsInfo?id=$2</to>
+    </rule>
+    <rule>
+        <note>
+            资源文件
+        </note>
+        <from>^/static/*</from>
+        <to type="redirect">/home/static/$1</to>
+    </rule>
+    <rule>
+        <note>
+            商品页面
+        </note>
+        <from>^/pdt_PdtProduct_gtProductsInfo?id=([1234567890]{1,})</from>
+        <to type="redirect">/home/pdt_PdtProduct_gtProductsInfo?id=$1</to>
+    </rule>
+
+    <rule>
+        <note>
+            罗马尼亚店铺资源文件
+        </note>
+        <from>^/m/romania/(.*).css</from>
+        <to type="redirect">/home/$1.css</to>
+    </rule>
+    <rule>
+        <note>
+            罗马尼亚店铺js文件
+        </note>
+        <from>^/m/romania/(.*).js</from>
+        <to type="redirect">/home/$1.js</to>
+    </rule>
+    <rule>
+        <note>
+            罗马尼亚店铺
+        </note>
+        <from>^/m/romania[/]$</from>
+        <to type="forward">/home/usr_UsrSupplier_gtSupIndex?pkey=262</to>
+    </rule>
+    <rule>
+        <note>
+            报名页 罗马尼亚
+        </note>
+        <from>^/country/Romania-Pantofi-en-gros/*</from>
+        <to type="forward">/home/activity/$1</to>
+    </rule>
+    <!--<outbound-rule>-->
+    <!--<from>^/home/pdt_PdtProduct_gtProductsInfo?id=([0-9]{1,})$</from>-->
+    <!--<to>/world/$1/$2</to>-->
+    <!--</outbound-rule>-->
+    <!---->
+    <!--<rule>-->
+    <!--<note>-->
+    <!--报名页 英文-->
+    <!--</note>-->
+    <!--<from>^/country/Romania-Pantofi-en-gros/en</from>-->
+    <!--<to type="forward">/home/activity/en</to>-->
+    <!--</rule>-->
+    <!--<rule>-->
+    <!--<note>-->
+    <!--报名页 中文-->
+    <!--</note>-->
+    <!--<from>^/country/Romania-Pantofi-en-gros/cn</from>-->
+    <!--<to type="forward">/home/activity/cn/</to>-->
+    <!--</rule>-->
+
+    <!--
+
+
+       INSTALLATION
+
+           in your web.xml add...
+
+           <filter>
+               <filter-name>UrlRewriteFilter</filter-name>
+               <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
+               <init-param>
+                   <param-name>logLevel</param-name>
+                   <param-value>WARN</param-value>
+               </init-param>
+           </filter>
+           <filter-mapping>
+               <filter-name>UrlRewriteFilter</filter-name>
+               <url-pattern>/*</url-pattern>
+           </filter-mapping>
+
+        EXAMPLES
+
+        Redirect one url
+           <rule>
+               <from>/some/old/page.html</from>
+               <to type="redirect">/very/new/page.html</to>
+           </rule>
+
+       Redirect a directory
+           <rule>
+               <from>/some/olddir/(.*)</from>
+               <to type="redirect">/very/newdir/$1</to>
+           </rule>
+
+       Clean a url
+           <rule>
+               <from>/products/([0-9]+)</from>
+               <to>/products/index.jsp?product_id=$1</to>
+           </rule>
+       eg, /products/1234 will be passed on to /products/index.jsp?product_id=1234 without the user noticing.
+
+       Browser detection
+           <rule>
+               <condition name="user-agent">Mozilla/[1-4]</condition>
+               <from>/some/page.html</from>
+               <to>/some/page-for-old-browsers.html</to>
+           </rule>
+       eg, will pass the request for /some/page.html on to /some/page-for-old-browsers.html only for older
+       browsers whose user agent strings match Mozilla/1, Mozilla/2, Mozilla/3 or Mozilla/4.
+
+       Centralised browser detection
+           <rule>
+               <condition name="user-agent">Mozilla/[1-4]</condition>
+               <set type="request" name="browser">moz</set>
+           </rule>
+       eg, all requests will be checked against the condition and if matched
+       request.setAttribute("browser", "moz") will be called.
+
+
+   -->
+</urlrewrite>

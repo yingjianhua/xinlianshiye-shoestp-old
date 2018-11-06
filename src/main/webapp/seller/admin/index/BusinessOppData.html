@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+ <script type="text/javascript" src="../../../umeditor1_2_2/third-party/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../../umeditor1_2_2/umeditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../../umeditor1_2_2/umeditor.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../../umeditor1_2_2/umeditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../../umeditor1_2_2/umeditor.js"></script>
+    <link href="../../../umeditor1_2_2/themes/default/css/umeditor.css" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../../static/admin/layui/css/layui.css"/>
+    <script src="../../static/admin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="../../static/admin/css/admin.css"/>
+    <script src="/home/static/js/vue.min.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
+    <script src="/home/static/js/qs.js"></script>
+    <script src="/home/static/js/axios.min.js"></script>
+    <script src="/home/static/js/element-ui.js"></script>
+    <link rel="stylesheet" type="text/css" href="/home/static/css/element-ui.css"/>
+    <script src="../../static/admin/lib/echarts/echarts-all.js"></script>
+    <script src="../../static/admin/lib/echarts/echarts.js" ></script>
+    <style type="text/css">
+		.el-form-item__label{
+			width:188px;
+		}    
+		.el-input__inner{
+			width:360px;
+		}
+		
+		.el-cascader .el-input input{
+			width:188px;
+		}
+		
+		.el-form-item__content .el-input{
+			width:188px;
+		}
+		
+		.el-form-item__content .el-input .el-input__inner{
+			width:188px;
+		}
+		.avatar-uploader .el-upload {
+		    border: 1px dashed #d9d9d9;
+		    border-radius: 6px;
+		    cursor: pointer;
+		    position: relative;
+		    overflow: hidden;
+		  }
+		  .avatar-uploader .el-upload:hover {
+		    border-color: #409EFF;
+		  }
+		  .avatar-uploader-icon {
+		    font-size: 28px;
+		    color: #8c939d;
+		    width: 178px;
+		    height: 178px;
+		    line-height: 178px;
+		    text-align: center;
+		  }
+		  .avatar {
+		    width: 178px;
+		    height: 178px;
+		    display: block;
+		  }
+		  .entityPhoto .el-upload.el-upload--picture-card,.contactsPhoto .el-upload.el-upload--picture-card,.certPhoto .el-upload.el-upload--picture-card{
+		  	display:none;
+		  }
+    </style>
+	</head>
+<body>
+<div id="main">
+    <el-row :gutter="20" style="background:#efefef;margin-bottom: 20px;">
+	  <el-col :sm="16" >
+	  	<div id="pdtCategory" style="width:100%;height:400px;"></div>
+	  </el-col>
+	  <el-col :xs="4" :sm="4" :md="4">
+	  	<div  style="width:100%;height:400px;line-height:400px;">
+	  	<img alt="" src="../../static/admin/images/Graphs Icon@3x.png" height="220">
+	  	</div>
+	  </el-col>
+  </el-row>
+  
+  <el-row :gutter="200" style="background:#efefef;margin-bottom: 20px;">
+	  <el-col :xs="24" :sm="12" :md="6">
+	  	<div id="flowSource" style="width:100%;height:400px;"></div>
+	  </el-col>
+	  <el-col :xs="24" :sm="12" :md="6">
+	  	<div id="flowTerminal" style="width:100%;height:400px;"></div>
+	  </el-col>
+	</el-row>
+    
+</div>    
+</body>
+<script type="text/javascript">   
+
+var app = new Vue({
+	el:"#main",
+	mounted(){
+		var pdtCategoryChart = echarts.init(document.getElementById('pdtCategory'));
+		var flowSourceChart = echarts.init(document.getElementById('flowSource'));
+		var flowTerminalChart = echarts.init(document.getElementById('flowTerminal'));
+		var pdtCategoryArray=['男鞋','女鞋','童鞋','其他'];
+		var pdtSalesArray=[18203, 23489, 29034, 104970];
+		var pdtColorArray=['#4489FF','#5A67D7','#06DA83','#6DCFF6'];
+		pdtCategoryOption = {title: {text: '商品分类',subtext: ''},tooltip: {trigger: 'axis',axisPointer: {type: 'shadow'}},legend: {data: ['']},grid: {left: '1%',right: '3%', bottom: '1%',containLabel: true},xAxis: {type: 'value', boundaryGap: [0, 0.01]},yAxis: {type: 'category',data:pdtCategoryArray
+		   		   			},series: [{name: '销售量',type: 'bar', barWidth : 30, data: pdtSalesArray, itemStyle: {normal: {
+								color: function(params) {var colorList = pdtColorArray;
+		   	                    return colorList[params.dataIndex]},label: {show: true,position: 'top',formatter: '{b}\n{c}'} }}}]};	
+		var flowSourceColorArray=['#4489FF','#5A67D7','#06DA83','#6DCFF6'];
+		var flowSourceNameArray=['谷歌搜索','百度搜索','直接访问','其他'];
+		flowSourceOption= {tooltip: { trigger: 'item',formatter: "{a} <br/>{b}: {c} ({d}%)"},color:flowSourceColorArray,legend: {orient: 'vertical',x: 'left',data:flowSourceNameArray},series: [{ name:'流量来源',type:'pie',radius: ['50%', '70%'],
+			               avoidLabelOverlap: false,label: {normal: {show: false, position: 'center'},emphasis: {show: true,textStyle: {fontSize: '30',fontWeight: 'bold'}}},labelLine: {normal: {show: false} },data:[{value:335, name:'谷歌搜索'},{value:310, name:'百度搜索'},{value:234, name:'直接访问'},{value:135, name:'其他'}]}]};
+		var flowTerminalNameArray=['PC端','Android','IOS','其他'];
+		var flowTerminalColorArray=['#4489FF','#5A67D7','#06DA83','#6DCFF6'];
+		flowTerminalOption= {tooltip: { trigger: 'item',formatter: "{a} <br/>{b}: {c} ({d}%)"},color:flowTerminalColorArray,legend: {orient: 'vertical',x: 'left',data:flowTerminalNameArray},series: [{ name:'流量终端',type:'pie',radius: ['50%', '70%'],
+            avoidLabelOverlap: false,label: {normal: {show: false, position: 'center'},emphasis: {show: true,textStyle: {fontSize: '30',fontWeight: 'bold'}}},labelLine: {normal: {show: false} },data:[{value:335, name:'PC端'},{value:234, name:'Android'},{value:135, name:'IOS'},{value:1548, name:'其他'}]}]};
+		pdtCategoryChart.setOption(pdtCategoryOption);	
+		flowSourceChart.setOption(flowSourceOption);	
+		flowTerminalChart.setOption(flowTerminalOption);	
+	},
+	beforeCreated:function(){
+	}
+})
+  </script>
+</html>

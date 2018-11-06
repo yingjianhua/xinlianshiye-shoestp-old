@@ -1,0 +1,263 @@
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Arial, Verdana;
+}
+
+.color666 {
+    color: #666666;
+}
+ul,li{
+    list-style: none;
+}
+.clear{
+    clear: both;
+}
+body,
+html {
+    min-width: 320px;
+    max-width: 640px;
+    height: 100%;
+    margin: 0 auto;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #333;
+    background-color: #fff;
+}
+main{
+    width: 100%;
+    min-height: 240px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+.clearfloat:after{display:block;clear:both;content:"";visibility:hidden;height:0}
+   .clearfloat{zoom:1}
+.main {
+    width: 96%;
+    padding:3.4%;
+    background: #fff;
+    margin: 0 auto;
+}
+.main_left,.main_right{
+    width: 100%;
+}
+
+.font-bold {
+    font-weight: bold;
+}
+
+.inputHeight {
+    height: 1.87rem;
+}
+
+.main_left header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+
+.main_left header>div:nth-child(2) {
+    height: 100%;
+    margin-left: 0.62rem;
+}
+
+.main_left header>div:nth-child(2)>h2,.main_left header>div:nth-child(2)>p {
+    line-height: 120%;
+}
+
+.main_left>div:nth-of-type(1) h1 {
+    font-size: 1.5rem;
+    margin: 1.25rem 0;
+}
+
+.box {
+
+    margin-bottom: 1.25rem;
+}
+
+.chooseImg input {
+    display: none;
+}
+
+.form_footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form_code {
+    width: 100%;
+    height: 1.875rem;
+    border: 1px solid #bababa;
+}
+
+.submit {
+    width: 100%;
+    height: 1.875rem;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    background-color: #003d80;
+}
+
+.chooseImg {
+    height: 100%;
+}
+
+.chooseImg img {
+    width: 5.5rem;
+    height: 5.5rem;
+}
+input{
+    border: none;
+    border: 1px solid #bababa;
+}
+textarea::-webkit-input-placeholder {
+    font-size: 1rem;
+}
+.chooseImg .chooseBox {
+    width: 100px;
+    height: 100%;
+    margin: 0 0 2px 7px;
+    float: left;
+}
+.chooseBox p {
+    text-align: center;
+    border: 1px solid red;
+    border-radius: 23px;
+    color: red;
+    cursor: pointer;
+    display: none;
+}
+
+textarea::-moz-placeholder {
+    font-size: 1rem;
+}
+
+input::-moz-placeholder {
+    font-size: 1rem;
+}
+
+textarea::-ms-input-placeholder {
+    font-size: 1rem;
+}
+
+form {
+    width: 100%;
+    margin: 1rem 0;
+}
+
+.form_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form_main {
+    border: 1px solid #bababa;
+}
+.footer {
+    margin: 2.5rem 0;
+}
+
+.footer h2 {
+    margin-bottom: 1rem;
+}
+
+.form_main textarea {
+    border: none;
+    resize: none;
+    width: 100%;
+    height: 15rem;
+    outline: none;
+}
+
+.marginBottom {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.marginRight {
+    margin-right: 1rem;
+}
+
+.main_right p {
+    line-height: 1.56rem;
+}
+
+.main_rightB {
+    margin-top: 3.75rem;
+}
+
+.main_rightB h2 {
+    margin: 0.62rem 0;
+}
+
+.main_rightT h2 {
+    margin: 0 0 0.62rem 0;
+}
+
+/* 选购商品css */
+a{
+    text-decoration: none;
+}
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
+
+main .goods-box>ul>li{
+    padding: 0.1rem 0 0.2rem 0;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #ddd;
+}
+main .goods-box>ul>li:last-child{
+    border:none;
+}
+main .goods-box .goods-pic img{
+    width: 100%;
+    height: 100%;
+}
+main .goods-box .goods-pic{
+    /* margin-top: 0.2rem; */
+    width: 26.5625%;
+    height: 5rem;
+    text-align: center;
+    background-size: 20.125786%;
+    border-radius: 0.04rem;
+}
+main .goods-box .goods-info{
+    width: 67.66666667%;
+}
+main .goods-box .goods-info .goods-info-name{
+    /* height: 28px; */
+    line-height: 1.125rem;
+    overflow: hidden;
+}
+main .goods-box .goods-info .goods-info-name a{
+    display: inline-block;
+    width: 100%;
+}
+main .goods-box .goods-info .goods-info-detail{
+    line-height: 1.125rem;
+    margin: 0.1rem 0;
+    font-size: 0.9rem;
+    color: #bdbdbd;
+}
+main .goods-box .goods-info .goods-info-remove{
+    font-size: 0.8rem;
+    margin: 0.2rem 0 0.3rem;
+    line-height: 1.125rem;
+    color: #bdbdbd;
+   text-align: right;
+}
+main .goods-box .goods-info .goods-info-remove span{
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: underline;
+}

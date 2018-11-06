@@ -1,0 +1,22 @@
+@charset "UTF-8";
+.FontColor,a.FontColor,a.FontColor:hover,a:hover{color:#333333;}
+.FontBgColor{background-color:#333333;}
+.FontBorderColor{border-color:#333333;}
+.FontBorderHoverColor:hover, a.FontBorderHoverColor:hover{border-color:#333333;}
+.NavBgColor{background-color:#333333;}
+.NavHoverBgColor:hover{background-color:#424242;}
+.NavBorderColor1{border-color:#333333;}
+.NavBorderColor2{border-color:#333333;}
+.CategoryBgColor{background-color:#424242;}
+.PriceColor{color:#101010;}
+.AddtoCartBgColor{background-color:#D80000;}
+.BuyNowBgColor{background-color:#FF9900;}
+.ReviewBgColor{background-color:#FF9900;}
+.DiscountBgColor{background-color:#D80000;}
+.DiscountBorderColor{border-color:#D80000;}
+.ProListBgColor{background-color:#FF9900;}
+.ProListHoverBgColor:hover{background-color:#FF9900;}
+.GoodBorderColor{border-color:#626262;}
+.GoodBorderHoverColor:hover{border-color:#D80000;}
+.GoodBorderColor.selected{border-color:#D80000;}
+.GoodBorderBottomHoverColor{border-bottom-color:#D80000;}

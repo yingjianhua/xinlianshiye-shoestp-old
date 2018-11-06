@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>An Online B2B market——-Shoestp.com,gathering 300 professional shoes manufacture companies Business
+        backstage</title>
+    <script src="../../static/admin/js/jquery-1.11.1.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8" src="../../../umeditor1_2_2/umeditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../../umeditor1_2_2/umeditor.js"></script>
+    <script type="text/javascript" src="../../../umeditor1_2_2/third-party/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../../umeditor1_2_2/umeditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../../umeditor1_2_2/umeditor.js"></script>
+    <script src="../../static/admin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+    <link href="../../../umeditor1_2_2/themes/default/css/umeditor.css" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../../static/admin/layui/css/layui.css"/>
+    <link rel="stylesheet" type="text/css" href="../../static/admin/css/admin.css"/>
+    <style type="text/css">
+        .p30 {
+            padding: 0 30px;
+        }
+
+        .pt15 {
+            padding-top: 15px;
+        }
+
+        .pb15 {
+            padding-bottom: 15px;
+        }
+
+        .mb10 {
+            margin-bottom: 10px;
+        }
+
+        .tc {
+            text-align: center;
+        }
+
+        .tr {
+            text-align: right;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        .my-add-icon {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .my-add-icon:before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 4px;
+            height: 50px;
+            border-radius: 4px;
+            background: #ddd;
+        }
+
+        .my-add-icon:after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 4px;
+            border-radius: 4px;
+            background: #ddd;
+        }
+
+        .my-add-icon:hover:before, .my-add-icon:hover:after {
+            background: #ccc;
+        }
+
+        .my-add-icon:hover {
+            border-color: #ccc;
+        }
+
+        .layui-elem-quote {
+            margin: 15px 0;
+        }
+
+        .layui-input-block {
+            margin-left: 210px;
+        }
+
+        .layui-form-label {
+            width: 180px;
+        }
+
+        .layui-upload-list {
+            width: 100%;
+            height: 100%;
+        }
+
+        .layui-upload-list img {
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            max-height: 150px;
+            object-fit: contain;
+        }
+
+        .upload-pic-wrap {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 15px;
+            padding: 5px;
+            text-align: center;
+            border-radius: 6px;
+            border: 2px solid #eee;
+            background: #fff;
+        }
+
+        .upload-pic-wrap-long {
+            width: 450px;
+            height: 150px;
+            margin-bottom: 15px;
+            padding: 5px;
+            border-radius: 6px;
+            border: 2px solid #eee;
+            background: #fff;
+            box-sizing: border-box;
+        }
+
+        .upload-pic-wrap-multipal img {
+            display: block;
+            object-fit: contain;
+            width: 450px;
+            height: 150px;
+            line-height: 150px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: 2px solid #eee;
+            background: #fff;
+        }
+
+        .multipal-pic-wrap img {
+            margin-right: 15px;
+        }
+
+        /* 该页的input宽度 */
+        .w-input, .layui-form-item .w-input {
+            width: 450px;
+        }
+
+        .no-border {
+            border-width: 0;
+        }
+
+        .layui-marginLeft210 {
+            margin-left: 210px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <!-- 	<label class="layui-form-label">店铺类型：</label>  -->
+    <!-- 	<select id="bussType"  lay-filter="aihao"> -->
+    <!--         <option value="0">请选择店铺类型</option> -->
+    <!--      </select>        -->
+    <br/>
+
+    <br/>
+
+    <input type="hidden" id="saveCountry">
+    <input type="hidden" id="saveProvince">
+</div>
+<form class="layui-form min-width1200 pt15">
+    <!-- <div class="layui-form-item">
+     <div class="layui-input-block">
+        <input type="text" name="bstype" id="btype" lay-verify="required" placeholder="" autocomplete="off" class="layui-input w-input">
+
+      </div>
+       </div> -->
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">店铺类型：</label>
+        <div class="layui-input-block w-input">
+            <select id="bussType" lay-filter="bussType">
+                <option value="0">请选择店铺类型</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">位置：</label>
+        <div class="layui-input-block">
+            <input type="text" name="location" id="location" readonly="readonly" autocomplete="off" placeholder=""
+                   class="layui-input w-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">生产能力：</label>
+        <div class="layui-input-block">
+            <input type="text" name="procp" id="procp" lay-verify="required" placeholder="" autocomplete="off"
+                   class="layui-input w-input">
+        </div>
+
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">生产人数：</label>
+        <div class="layui-input-block">
+            <input type="text" name="devenum" id="devenum" lay-verify="required" placeholder="" autocomplete="off"
+                   class="layui-input w-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">员工总数：</label>
+        <div class="layui-input-block">
+            <input type="text" name="temploy" id="temploy" lay-verify="required" placeholder="" autocomplete="off"
+                   class="layui-input w-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">年销售量：</label>
+        <div class="layui-input-block">
+            <input type="text" name="sales" id="sales" lay-verify="required" placeholder="" autocomplete="off"
+                   class="layui-input w-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">前三市场：</label>
+        <div class="layui-input-block">
+            <textarea placeholder="" class="layui-textarea w-input" id="topmar" name="topmar"></textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">材料选择：</label>
+        <div class="layui-input-block">
+            <textarea placeholder="" class="layui-textarea w-input" id="matsel" name="matsel"></textarea>
+        </div>
+    </div>
+    <div class="layui-upload">
+        <label class="layui-form-label">头像：</label>
+        <div class="layui-input-block">
+            <button type="button" class="upload-pic-wrap" id="headbutton">
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" id="headpro" src="../../static/admin/images/icon-add-pic-02.png">
+                    <p id="demoText"></p>
+                </div>
+            </button>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">部门：</label>
+        <div class="layui-input-block">
+            <input type="text" name="depment" lay-verify="required" id="depment" placeholder="" autocomplete="off"
+                   class="layui-input w-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">职称：</label>
+        <div class="layui-input-block">
+            <input type="text" name="jobtitle" lay-verify="required" id="jobtitle" placeholder="" autocomplete="off"
+                   class="layui-input w-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">网站：</label>
+        <div class="layui-input-block">
+            <input type="text" name="website" lay-verify="required" id="website" placeholder="" autocomplete="off"
+                   class="layui-input w-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">国家：</label>
+
+        <div class="layui-input-block w-input">
+            <select id="countrySelect" lay-filter="countrySelect" onchange="getProvince()">
+                <option value="0">请选择国家</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">省份：</label>
+
+        <div class="layui-input-block w-input">
+            <select id="provinceSelect" lay-filter="aihao">
+                <option value="0">请选择省份</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">市：</label>
+        <div class="layui-input-block">
+            <input type="text" name="city" lay-verify="required" id="city" placeholder="" autocomplete="off"
+                   class="layui-input w-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+
+        <label class="layui-form-label">供应商首页产品展示：</label>
+        <form class="layui-form" style="display: inline-block;">
+            <div class="layui-form-item" style="margin: 0;width: 20px;display: inline-block;">
+                <div class="layui-input-block" style="margin: 0;" id="pdtShow">
+                </div>
+            </div>
+        </form>
+    </div>
+    </div>
+    <div class="layui-upload">
+        <label class="layui-form-label">LOGO：</label>
+        <div class="layui-input-block">
+            <button type="button" class="upload-pic-wrap" id="btnlogo">
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" id="logo" src="../../static/admin/images/icon-add-pic-02.png">
+                    <p id="demoText"></p>
+                </div>
+            </button>
+        </div>
+    </div>
+    <div class="layui-upload">
+        <label class="layui-form-label">店招背景：</label>
+        <div class="layui-input-block">
+            <button type="button" class="upload-pic-wrap-long" id="btnbackgrd">
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" id="backgrd" src="../../static/admin/images/icon-add-pic-02.png">
+                    <p id="demoText"></p>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">移动端广告图上传：</label>
+        <div class="layui-upload layui-marginLeft210">
+            <div class="layui-upload-list">
+                <div id="mobphoto">
+
+                </div>
+            </div>
+            <!-- <button type="button" class="layui-btn layui-btn-normal" id="mobphotoUpLoad">点击添加图片</button> -->
+            <button type="button" class="upload-pic-wrap-long" id="mobphotoUpLoad">
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" src="../../static/admin/images/icon-add-pic-02.png">
+                </div>
+            </button>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">广告图上传：</label>
+        <div class="layui-upload layui-marginLeft210">
+            <div class="layui-upload-list">
+                <div id="photo">
+
+                </div>
+            </div>
+            <!-- <button type="button" class="layui-btn layui-btn-normal" id="photoUpLoad">点击添加图片</button> -->
+            <button type="button" class="upload-pic-wrap-long" id="photoUpLoad">
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" src="../../static/admin/images/icon-add-pic-02.png">
+                </div>
+            </button>
+        </div>
+    </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">广告链接：</label>
+        <div class="layui-input-block" id="gglinks">
+            <input type="text" name="advliks" id="advliks1" lay-verify="required" placeholder="请输入链接" autocomplete="off"
+                   class="layui-input w-input mb10">
+            <input type="text" name="advliks" id="advliks2" lay-verify="required" placeholder="请输入链接" autocomplete="off"
+                   class="layui-input w-input mb10">
+            <input type="text" name="advliks" id="advliks3" lay-verify="required" placeholder="请输入链接" autocomplete="off"
+                   class="layui-input w-input mb10">
+            <input type="text" name="advliks" id="advliks4" lay-verify="required" placeholder="请输入链接" autocomplete="off"
+                   class="layui-input w-input mb10">
+            <input type="text" name="advliks" id="advliks5" lay-verify="required" placeholder="请输入链接" autocomplete="off"
+                   class="layui-input w-input mb10">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">企业图片上传：</label>
+        <div class="layui-upload layui-marginLeft210">
+
+            <div class="layui-upload-list">
+                <div id="enterphoto">
+
+                </div>
+            </div>
+            <!-- <button type="button" class="layui-btn layui-btn-normal" id="enterUpLoad">点击添加图片</button> -->
+            <button type="button" class="upload-pic-wrap-long" id="enterUpLoad">
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" src="../../static/admin/images/icon-add-pic-02.png">
+                </div>
+            </button>
+        </div>
+    </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">企业链接：</label>
+        <div class="layui-input-block">
+            <input type="text" name="imglinks" id="imglinks1" lay-verify="required" placeholder="请输入链接"
+                   autocomplete="off" class="layui-input w-input mb10">
+            <input type="text" name="imglinks" id="imglinks2" lay-verify="required" placeholder="请输入链接"
+                   autocomplete="off" class="layui-input w-input mb10">
+            <input type="text" name="imglinks" id="imglinks3" lay-verify="required" placeholder="请输入链接"
+                   autocomplete="off" class="layui-input w-input mb10">
+            <input type="text" name="imglinks" id="imglinks4" lay-verify="required" placeholder="请输入链接"
+                   autocomplete="off" class="layui-input w-input mb10">
+            <input type="text" name="imglinks" id="imglinks5" lay-verify="required" placeholder="请输入链接"
+                   autocomplete="off" class="layui-input w-input mb10">
+        </div>
+    </div>
+</form>
+<hr>
+<div class="layui-form-item">
+    <label class="layui-form-label">个性装修：</label>
+</div>
+<div style="width:70%; margin-left: 210px;">
+    <h2>首页个性装修:
+        <form class="layui-form" style="display: inline-block;">
+            <div class="layui-form-item" style="margin: 0;width: 20px;">
+                <div class="layui-input-block" style="margin: 0;" id="homePageOnDiv">
+                </div>
+            </div>
+        </form>
+    </h2>
+    <textarea id="hptemp" name="hptemp" style="width:100%;height:350px;"></textarea>
+
+    <br>
+    <h2>产品页个性装修：</h2>
+    <form class="layui-form" style="display: inline-block;">
+        <div class="layui-form-item" style="margin: 0;width: 20px;">
+            <div class="layui-input-block" style="margin: 0;" id="PdtPageOnDiv">
+            </div>
+        </div>
+    </form>
+    <textarea id="prdtemp" name="prdtemp" style="width:100%;height:350px;"></textarea>
+
+    <br>
+    <h2>联系页个性装修：</h2>
+    <form class="layui-form" style="display: inline-block;">
+        <div class="layui-form-item" style="margin: 0;width: 20px;">
+            <div class="layui-input-block" style="margin: 0;" id="CntPageOnDiv">
+            </div>
+        </div>
+    </form>
+    <textarea id="contemp" name="contemp" style="width:100%;height:350px;"></textarea>
+    <br>
+</div>
+
+<form id="decinf" style="display:none">
+    <!-- <input type="text" name="bean.businessTyp"   id="bbtype"  lay-verify="required"  autocomplete="off" class="layui-input"> -->
+    <input type="text" name="bean.category" id="bcate" lay-verify="required" autocomplete="off" class="layui-input">
+    <input type="text" name="bean.location" id="blocation" lay-verify="required" autocomplete="off" class="layui-input">
+    <input type="text" name="bean.production" id="bprocp" lay-verify="required" autocomplete="off" class="layui-input">
+    <input type="text" name="bean.developer" id="bdevenum" lay-verify="required" autocomplete="off" class="layui-input">
+    <input type="text" name="bean.totalEmployees" id="btemploy" lay-verify="required" autocomplete="off"
+           class="layui-input">
+    <input type="text" name="bean.annualSales" id="bsales" lay-verify="required" autocomplete="off" class="layui-input">
+    <input type="text" name="bean.top3Markets" id="btopmar" lay-verify="required" autocomplete="off"
+           class="layui-input">
+    <input type="text" name="bean.materials" id="bmatsel" lay-verify="required" autocomplete="off" class="layui-input">
+    <input type="text" name="bean.headPic" id="bheadpro" lay-verify="required" autocomplete="off" class="layui-input">
+    <input type="text" name="bean.department" id="bdepment" lay-verify="required" autocomplete="off"
+           class="layui-input">
+    <input type="text" name="bean.jobTitle" id="bjobtitle" lay-verify="required" autocomplete="off" class="layui-input">
+    <input type="text" name="bean.webSite" id="bwebsite" lay-verify="required" autocomplete="off" class="layui-input">
+    <input type="text" name="bean.country" id="bcountry" lay-verify="required" autocomplete="off" class="layui-input">
+    <input type="text" name="bean.province" id="bprovince" lay-verify="required" autocomplete="off" class="layui-input">
+    <input type="text" name="bean.city" id="bcity" lay-verify="required" autocomplete="off" class="layui-input">
+    <input type="text" name="bean.isPro" id="bopend" ; lay-verify="required" autocomplete="off" class="layui-input">
+    <input type="text" name="bean.logo" id="blogo" lay-verify="required" autocomplete="off" class="layui-input">
+    <input type="text" name="bean.signBackgd" id="bbackgrd" lay-verify="required" autocomplete="off"
+           class="layui-input">
+
+    <input type="text" name="bean.homePageOn" id="bhomePageOn" lay-verify="required" autocomplete="off"
+           class="layui-input">
+    <input type="text" name="bean.productPageOn" id="bproductPageOn" lay-verify="required" autocomplete="off"
+           class="layui-input">
+    <input type="text" name="bean.contactPageOn" id="bcontactPageOn" lay-verify="required" autocomplete="off"
+           class="layui-input">
+
+
+    <input type="text" name="bean.adPhoto" id="badvfig" lay-verify="required" autocomplete="off" class="layui-input">
+    <input type="text" name="bean.adPhotoMobile" id="bmobadv" lay-verify="required" autocomplete="off"
+           class="layui-input">
+    <input type="text" name="bean.adPhotoLink" id="badvliks" lay-verify="required" autocomplete="off"
+           class="layui-input">
+    <input type="text" name="bean.companyPhoto" id="bentimg" lay-verify="required" autocomplete="off"
+           class="layui-input">
+    <input type="text" name="bean.companyPhotoLink" id="bimglinks" lay-verify="required" autocomplete="off"
+           class="layui-input">
+    <input type="text" name="bean.homePageDiy" id="bhptemp" lay-verify="required" autocomplete="off"
+           class="layui-input">
+    <input type="text" name="bean.productPageDiy" id="bprdtemp" lay-verify="required" autocomplete="off"
+           class="layui-input">
+    <input type="text" name="bean.contactPageDiy" id="bcontemp" lay-verify="required" autocomplete="off"
+           class="layui-input">
+    <input type="text" name="bean.rowVersion" id="rowVersion" lay-verify="required" autocomplete="off"
+           class="layui-input">
+</form>
+<hr>
+<!-- <div style="display:none" id="mobphoto1"></div>
+<div style="display:none" id="photo1"></div>
+<div style="display:none" id="enterphoto1"></div> -->
+<div class="tc pb15">
+    <button class="layui-btn layui-btn-lg" onclick="getCommit()">提交装修信息</button>
+</div>
+<script type="text/javascript">
+    UM.getEditor('hptemp', {imageUrl: '/seller/usr_UsrSupplier_upload'});
+    UM.getEditor('prdtemp', {imageUrl: '/seller/usr_UsrSupplier_upload'});
+    UM.getEditor('contemp', {imageUrl: '/seller/usr_UsrSupplier_upload'});
+
+</script>
+<script>
+    var provinceJson;
+
+    function getContextPath() {
+        var pathName = document.location.pathname;
+        var index = pathName.substr(1).indexOf("/");
+        var result = pathName.substr(0, index + 1);
+        return result;
+    }
+
+    var form;
+    layui.use(['upload', 'form'], function () {
+        var $ = layui.jquery
+            , upload = layui.upload;
+        form = layui.form()
+        form.render();
+        var loading;
+        //渲染页面
+        $.ajax({
+            type: 'post',
+            url: '/seller/usr_UsrSupplier_getCountryAndSupType',
+            dataType: 'json',
+            cache: false,
+            beforeSend: function () {
+                parent.showShade();
+                loading = layer.load();
+            },
+            complete: function () {
+                parent.hideShade();
+                layer.close(loading);
+            },
+            success: function (data) {
+                if (data.success == false) {
+                    layer.open({content: data.msg});
+                    parent.hideShade();
+                    layer.close(loading);
+                    return;
+                }
+                $.each(data.category, function (i, categoryValue) {
+                    if (categoryValue.pkey == data.items.category.pkey) {
+                        $("#bussType").append("<option selected='selected' value='" + categoryValue.pkey + "' >" + categoryValue.name + "</option> ");
+                    } else {
+                        $("#bussType").append("<option  value='" + categoryValue.pkey + "'>" + categoryValue.name + "</option> ");
+                    }
+                });
+                var country;
+                $.each(data.country, function (i, countryValue) {
+                    if (countryValue.pkey == data.items.country.pkey) {
+                        country = data.items.country.pkey;
+                        $("#countrySelect").append("<option selected='selected' value='" + countryValue.pkey + "' >" + countryValue.name + "</option> ");
+                    } else {
+                        $("#countrySelect").append("<option  value='" + countryValue.pkey + "'>" + countryValue.name + "</option> ");
+                    }
+                });
+                $.each(data.province, function (i, provinceValue) {
+                    var main = provinceValue.main.split('##');
+                    if (main[0] == country) {
+                        if (provinceValue.pkey == data.items.province.pkey) {
+                            $("#provinceSelect").append("<option selected='selected' value='" + provinceValue.pkey + "' >" + provinceValue.name + "</option> ");
+                        } else {
+                            $("#provinceSelect").append("<option  value='" + provinceValue.pkey + "' >" + provinceValue.name + "</option> ");
+                        }
+
+                    }
+                });
+                if (data.items.isPro == '1') {
+                    $("#pdtShow").html("<input type='checkbox' checked=''   diyType='showCode' name='open' lay-skin='switch' lay-filter='switchTest' lay-text='ON|OFF'>");
+                } else {
+                    $("#pdtShow").html("<input type='checkbox' name='close' diyType='showCode' lay-skin='switch' lay-filter='switchTest' lay-text='ON|OFF'>");
+                }
+                $("#bopend").val(data.items.isPro);
+                $("#bhomePageOn").val(data.items.homePageOn);
+                $("#bproductPageOn").val(data.items.productPageOn);
+                $("#bcontactPageOn").val(data.items.contactPageOn);
+                if (data.items.homePageOn == '1') {
+                    $("#homePageOnDiv").html("<input type='checkbox' checked=''   diyType='homeDiy' name='open' lay-skin='switch' lay-filter='switchTest' lay-text='ON|OFF'>");
+                } else {
+                    $("#homePageOnDiv").html("<input type='checkbox' name='close' diyType='homeDiy' lay-skin='switch' lay-filter='switchTest' lay-text='ON|OFF'>");
+                }
+                if (data.items.productPageOn == '1') {
+                    $("#PdtPageOnDiv").html("<input type='checkbox' checked='' name='open'   diyType='pdtDiy'  lay-skin='switch' lay-filter='switchTest' lay-text='ON|OFF'>");
+                } else {
+                    $("#PdtPageOnDiv").html("<input type='checkbox' name='close' lay-skin='switch' diyType='pdtDiy' lay-filter='switchTest' lay-text='ON|OFF'>");
+                }
+                if (data.items.contactPageOn == '1') {
+                    $("#CntPageOnDiv").html("<input type='checkbox' checked='' name='open' lay-skin='switch' lay-filter='switchTest' diyType='cntDiy' lay-text='ON|OFF'>");
+                } else {
+                    $("#CntPageOnDiv").html("<input type='checkbox' name='close' lay-skin='switch'  diyType='cntDiy' lay-filter='switchTest'   lay-text='ON|OFF'>");
+                }
+                form.render("select");
+                provinceJson = data.province;
+                $("#location").val(data.items.location);
+                $("#procp").val(data.items.production);
+                $("#devenum").val(data.items.developer);
+                $("#temploy").val(data.items.totalEmployees);
+                $("#sales").val(data.items.annualSales);
+                $("#topmar").val(data.items.top3Markets);
+                $("#matsel").val(data.items.materials);
+                if(data.items.headPic){
+	                $('#headpro').attr('src', parent.imgUrlconfig + data.items.headPic);
+	                $('#bheadpro').val(data.items.headPic);
+                }
+                $("#depment").val(data.items.department);
+                $("#jobtitle").val(data.items.jobTitle);
+                $("#website").val(data.items.webSite);
+                $("#city").val(data.items.city);
+                $("#rowVersion").val(data.items.rowVersion);
+                if(data.items.logo){
+	                $('#logo').attr('src', parent.imgUrlconfig + data.items.logo);
+	                $('#blogo').val(data.items.logo);
+                }
+                if (data.items.isPro == 1) {
+                    $("#bopend").val(1);
+                } else {
+                    $("#bopend").val(0);
+                }
+                form.render();
+                $("#advliks").val(data.items.adPhotoLink);
+                if (data.items.adPhotoLink != null) {
+                    var gglink = data.items.adPhotoLink.split(',');
+                    $.each(gglink, function (i, item) {
+                        i++;
+                        $("#advliks" + i + "").val(item);
+                    });
+                }
+
+                $("#bimglinks").val(data.items.companyPhotoLink);
+                if (data.items.companyPhotoLink != null) {
+                    var companylink = data.items.companyPhotoLink.split(',');
+                    $.each(companylink, function (i, item) {
+                        i++;
+                        $("#imglinks" + i + "").val(item);
+                    });
+                }
+                if (data.items.homePageDiy != null) {
+                    UM.getEditor('hptemp').setContent(data.items.homePageDiy);
+                } else {
+                    UM.getEditor('hptemp').setContent("");
+                }
+                if (data.items.productPageDiy != null) {
+                    UM.getEditor('prdtemp').setContent(data.items.productPageDiy);
+                } else {
+                    UM.getEditor('prdtemp').setContent("");
+                }
+                if (data.items.contactPageDiy != null) {
+                    UM.getEditor('contemp').setContent(data.items.contactPageDiy);
+                } else {
+                    UM.getEditor('contemp').setContent("");
+                }
+                $("#bhptemp").val(UM.getEditor('hptemp').getContent());
+                $("#bprdtemp").val(UM.getEditor('prdtemp').getContent());
+                $("#bcontemp").val(UM.getEditor('contemp').getContent());
+                if (data.items.adPhoto != null) {
+                    var adphoto = data.items.adPhoto.split(',');
+                    $.each(adphoto, function (i, item) {
+                        if (item != "") {
+                            var idName = 'img' + i;
+                            $("#photo").append('<div class="upload-pic-wrap-long"><div class="layui-upload-list"><img src="' + parent.imgUrlconfig + item + '"  id=' + idName + '  onclick="remove(img' + i + ')"></div></div>');
+                            //$("#photo1").append('<div class="upload-pic-wrap-long"><div class="layui-upload-list"><img src="'+item+'"  id='+idName+'  onclick="remove(img'+i+')"></div></div>');
+                        }
+
+                    });
+                }
+                if (data.items.adPhotoMobile != null) {
+                    var mobadphoto = data.items.adPhotoMobile.split(',');
+                    $.each(mobadphoto, function (i, item) {
+                        if (item != "") {
+                            var idName = 'mobimg' + i;
+                            $("#mobphoto").append('<div class="upload-pic-wrap-long"><div class="layui-upload-list"><img src="' + parent.imgUrlconfig + item + '" id=' + idName + ' onclick="remove(mobimg' + i + ')"></div></div>');
+                            //$("#mobphoto1").append('<div class="upload-pic-wrap-long"><div class="layui-upload-list"><img src="'+item+'" id='+idName+' onclick="remove(mobimg'+i+')"></div></div>');
+                        }
+                    })
+
+                }
+                if (data.items.companyPhoto != null) {
+                    var companyphoto = data.items.companyPhoto.split(',');
+                    $.each(companyphoto, function (i, item) {
+                        if (item != "") {
+                            var idName = 'enterimg' + i;
+                            $("#enterphoto").append('<div class="upload-pic-wrap-long"><div class="layui-upload-list"><img src="' + parent.imgUrlconfig + item + '"  id=' + idName + ' onclick="remove(enterimg' + i + ')"></div></div>');
+                            //$("#enterphoto1").append('<div class="upload-pic-wrap-long"><div class="layui-upload-list"><img src="'+item+'"  id='+idName+' onclick="remove(enterimg'+i+')"></div></div>');
+                        }
+                    });
+                }
+            }
+        })
+        form.on('switch(switchTest)', function (data) {
+            var diytype = $(this).attr("diytype");
+            if (this.checked) {
+
+                if (diytype == "showCode") {
+                    $("#bopend").val(1)
+                }
+                if (diytype == "homeDiy") {
+                    $("#bhomePageOn").val(1);
+                }
+                if (diytype == "pdtDiy") {
+                    $("#bproductPageOn").val(1);
+                }
+                if (diytype == "cntDiy") {
+                    $("#bcontactPageOn").val(1);
+                }
+
+            } else {
+                if (diytype == "showCode") {
+                    $("#bopend").val(0);
+                }
+                if (diytype == "homeDiy") {
+                    $("#bhomePageOn").val(0);
+                }
+                if (diytype == "pdtDiy") {
+                    $("#bproductPageOn").val(0);
+                }
+                if (diytype == "cntDiy") {
+                    $("#bcontactPageOn").val(0);
+                }
+            }
+        });
+        //头像上传
+        upload.render({
+            elem: '#headbutton'
+            , url: '/seller/usr_UsrSupplier_upload'
+            , size: 2000 //限制文件大小，单位 KB
+            , accept: 'file'
+            , before: function () {
+                layer.load();
+            }
+            , fileAccept: 'image/*'
+            , exts: "jpg|png|gif|bmp|jpeg|pdf"
+            , done: function (res) {
+                layer.closeAll();
+                if (res.ret == 1) {
+                    $('#headpro').attr('src', parent.imgUrlconfig + res.result.url);
+                    $('#bheadpro').val(res.result.url);
+                } else {
+                    layer.msg('上传失败', {time: 3000});
+                }
+            }
+        });
+        //LOGO上传
+        upload.render({
+            elem: '#btnlogo'
+            , url: '/seller/usr_UsrSupplier_upload'
+            , size: 2000 //限制文件大小，单位 KB
+            , accept: 'file'
+            , before: function () {
+                layer.load();
+            }
+            , fileAccept: 'image/*'
+            , exts: "jpg|png|gif|bmp|jpeg|pdf"
+            , done: function (res) {
+                layer.closeAll();
+                if (res.ret == 1) {
+                    $('#logo').attr('src', parent.imgUrlconfig + res.result.url);
+                    $('#blogo').val(res.result.url);
+                } else {
+                    layer.msg('上传失败', {time: 3000});
+                }
+            }
+        });
+        //店招背景图上传
+        upload.render({
+            elem: '#btnbackgrd'
+            , url: '/seller/usr_UsrSupplier_upload'
+            , size: 2000 //限制文件大小，单位 KB
+            , accept: 'file'
+            , before: function () {
+                layer.load();
+            }
+            , fileAccept: 'image/*'
+            , exts: "jpg|png|gif|bmp|jpeg|pdf"
+            , done: function (res) {
+                layer.closeAll();
+                $('#backgrd').attr('src', parent.imgUrlconfig + res.result.url);
+                $('#bbackgrd').val(res.result.url);
+                if (res.code > 0) {
+                    return layer.msg('上传失败');
+                }
+            }
+        });
+        //广告多图片上传
+        upload.render({
+            elem: '#photoUpLoad'
+            , url: '/seller/usr_UsrSupplier_upload'
+            , size: 2000 //限制文件大小，单位 KB
+            , accept: 'file'
+            , before: function () {
+                layer.load();
+            }
+            , fileAccept: 'image/*'
+            , exts: "jpg|png|gif|bmp|jpeg|pdf"
+            , done: function (res) {
+                layer.closeAll();
+                var i = $('#photo img').length;
+                if ($('#photo img').length <= 4) {
+                    if (res.result.state == 'SUCCESS') {
+                        $("#photo").append('<div class="upload-pic-wrap-long"><div class="layui-upload-list"><img src=' + parent.imgUrlconfig + res.result.url + ' id="img' + i + '" onclick="remove(img' + i + ')"></div></div>');
+                        //$("#photo1").append('<div class="upload-pic-wrap-long"><div class="layui-upload-list"><img src='+res.result.url+' id="img'+i+'" onclick="remove(img'+i+')"></div></div>');
+                        // 上传5张时，隐藏添加按钮
+                        if ($('#photo img').length == 5) {
+                            $("#photoUpLoad").fadeOut()
+                        }
+                    } else {
+                        layer.msg("图片上传失败！");
+                    }
+                } else {
+                    layer.msg("图片上传数量不得超过五张");
+                }
+            }
+        });
+        //移动端广告图
+        upload.render({
+            elem: '#mobphotoUpLoad'
+            , url: '/seller/usr_UsrSupplier_upload'
+            , size: 2000 //限制文件大小，单位 KB
+            , accept: 'file'
+            , before: function () {
+                layer.load();
+            }
+            , fileAccept: 'image/*'
+            , exts: "jpg|png|gif|bmp|jpeg|pdf"
+            , done: function (res) {
+                layer.closeAll();
+                var i = $('#mobphoto img').length;
+                if ($('#mobphoto img').length <= 4) {
+                    if (res.result.state == 'SUCCESS') {
+                        $("#mobphoto").append('<div class="upload-pic-wrap-long"><div class="layui-upload-list"><img src=' + parent.imgUrlconfig + res.result.url + ' id="mobimg' + i + '"  onclick="remove(mobimg' + i + ')"></div></div>');
+                        //$("#mobphoto1").append('<div class="upload-pic-wrap-long"><div class="layui-upload-list"><img src='+res.result.url+' id="mobimg'+i+'"  onclick="remove(mobimg'+i+')"></div></div>');
+                        // 上传5张时，隐藏添加按钮
+                        if ($('#mobphoto img').length == 5) {
+                            $("#mobphotoUpLoad").fadeOut()
+                        }
+                    } else {
+                        layer.msg("图片上传失败！");
+                    }
+                } else {
+                    layer.msg("图片上传数量不得超过五张");
+                }
+            }
+        });
+        //企业广告图上传
+        upload.render({
+            elem: '#enterUpLoad'
+            , url: '/seller/usr_UsrSupplier_upload'
+            , size: 2000 //限制文件大小，单位 KB
+            , accept: 'file'
+            , before: function () {
+                layer.load();
+            }
+            , fileAccept: 'image/*'
+            , exts: "jpg|png|gif|bmp|jpeg|pdf"
+            , done: function (res) {
+                layer.closeAll();
+                var i = $('#enterphoto img').length;
+                if ($('#enterphoto img').length <= 4) {
+                    if (res.result.state == 'SUCCESS') {
+                        $("#enterphoto").append('<div class="upload-pic-wrap-long"><div class="layui-upload-list"><img src=' + parent.imgUrlconfig + res.result.url + ' id="enterimg' + i + '" onclick="remove(enterimg' + i + ')"></div></div>');
+                        //$("#enterphoto1").append('<div class="upload-pic-wrap-long"><div class="layui-upload-list"><img src='+res.result.url+' id="enterimg'+i+'" onclick="remove(enterimg'+i+')"></div></div>');
+                        // 上传5张时，隐藏添加按钮
+                        if ($('#enterphoto img').length == 5) {
+                            $("#enterUpLoad").fadeOut()
+                        }
+                    } else {
+                        layer.msg("图片上传失败！");
+                    }
+                } else {
+                    layer.msg("图片上传数量不得超过五张");
+                }
+            }
+        });
+        form.on('select(countrySelect)', function (data) {
+            //console.log(data.value);
+            var countryPkey = data.value;
+            console.log(countryPkey);
+            $("#provinceSelect").html("<option  value='0'>请选择省份</option> ");
+            $.each(provinceJson, function (i, provinceValue) {
+                var main = provinceValue.main.split('##');
+                if (countryPkey == main[0]) {
+                    $("#provinceSelect").append("<option   selected='selected' value='" + provinceValue.pkey + "'>" + provinceValue.name + "</option> ");
+                }
+            });
+            form.render("select");
+        });
+    })
+
+    function getCommit() {
+        if ($("#procp").val() == '') {
+            layer.open({content: '生产能力不能为空!'});
+            return;
+        }
+        ;
+        if ($("#devenum").val() == '') {
+            layer.open({content: '生产人数不能为空'});
+            return;
+        }
+        ;
+        if ($("#temploy").val() == '') {
+            layer.open({content: '员工总数不能为空'});
+            return;
+        }
+        ;
+        if ($("#sales").val() == '') {
+            layer.open({content: '年销售量不能为空'});
+            return;
+        }
+        ;
+
+        $("#mobphoto img").each(function (i) {
+            if ($("#bmobadv").val() == '') {
+                var url = $(this).attr("src").replace(parent.imgUrlconfig, "");
+                $("#bmobadv").val(url);
+            } else {
+                var url = $(this).attr("src").replace(parent.imgUrlconfig, "");
+                $("#bmobadv").val($("#bmobadv").val() + "," + url);
+            }
+        });
+        $("#photo img").each(function (i) {
+
+            if ($("#badvfig").val() == '') {
+                var url = $(this).attr("src").replace(parent.imgUrlconfig, "");
+                $("#badvfig").val(url);
+            } else {
+                var url = $(this).attr("src").replace(parent.imgUrlconfig, "");
+                $("#badvfig").val($("#badvfig").val() + "," + url);
+            }
+        });
+        $("#enterphoto img").each(function (i) {
+            if ($("#bentimg").val() == '') {
+                var url = $(this).attr("src").replace(parent.imgUrlconfig, "");
+                $("#bentimg").val(url);
+            } else {
+                var url = $(this).attr("src").replace(parent.imgUrlconfig, "");
+                $("#bentimg").val($("#bentimg").val() + "," + url);
+            }
+        });
+        /*  console.log($("input[name='opend']").attr("checked"));
+        if($("input[name='opend']").attr("checked")){
+         $("#bopend").val(1);
+         }else{
+         $("#bopend").val(0);
+         } */
+        if ($("#bussType option:selected").val() == 0) {
+            layer.open({content: '请选择店铺类型'});
+            return;
+        }
+        if ($("#countrySelect option:selected").val() == 0) {
+            layer.open({content: '请选择国家'});
+            return;
+        }
+        if ($("#provinceSelect option:selected").val() == 0) {
+            layer.open({content: '请选择省份'});
+            return;
+        }
+        //$("#bbtype").val($("#bussType option:selected").val());
+        $("#bcate").val($("#bussType option:selected").val());
+        $("#blocation").val($("#location").val());
+        $("#bprocp").val($("#procp").val());
+        $("#bdevenum").val($("#devenum").val());
+        $("#btemploy").val($("#temploy").val());
+        $("#bsales").val($("#sales").val());
+        $("#btopmar").val($("#topmar").val());
+        $("#bmatsel").val($("#bmatsel").val());
+        $("#bdepment").val($("#depment").val());
+        $("#bjobtitle").val($("#jobtitle").val());
+        $("#bwebsite").val($("#website").val());
+        $("#bcountry").val($("#countrySelect option:selected").val());
+        $("#bprovince").val($("#provinceSelect option:selected").val());
+        $("#bcity").val($("#city").val());
+        $("#badvliks").val($("#advliks").val())
+        $("#bprdtemp").val(UM.getEditor('prdtemp').getContent());
+        $("#bhptemp").val(UM.getEditor('hptemp').getContent());
+        $("#bcontemp").val(UM.getEditor('contemp').getContent());
+        var advliks = '';
+        if ($("#advliks1").val() != '') {
+            advliks = $("#advliks1").val();
+        }
+        if ($("#advliks2").val() != '') {
+            advliks = advliks + "," + $("#advliks2").val();
+        }
+        if ($("#advliks3").val() != '') {
+            advliks = advliks + "," + $("#advliks3").val();
+        }
+        if ($("#advliks4").val() != '') {
+            advliks = advliks + "," + $("#advliks4").val();
+        }
+        if ($("#advliks5").val() != '') {
+            advliks = advliks + "," + $("#advliks5").val();
+        }
+        $("#badvliks").val(advliks);
+        var bimglinks = '';
+        if ($("#imglinks1").val() != '') {
+            bimglinks = $("#imglinks1").val();
+        }
+        if ($("#imglinks2").val() != '') {
+            bimglinks = bimglinks + "," + $("#imglinks2").val();
+        }
+        if ($("#imglinks3").val() != '') {
+            bimglinks = bimglinks + "," + $("#imglinks3").val();
+        }
+        if ($("#imglinks4").val() != '') {
+            bimglinks = bimglinks + "," + $("#imglinks4").val();
+        }
+        if ($("#imglinks5").val() != '') {
+            bimglinks = bimglinks + "," + $("#imglinks5").val();
+        }
+        $("#bimglinks").val(bimglinks);
+        //$("#badvliks").val($("#advliks1").val()+","+$("#advliks2").val()+","+$("#advliks3").val()+","+$("#advliks4").val()+","+$("#advliks5").val());
+        //$("#bimglinks").val($("#imglinks1").val()+","+$("#imglinks2").val()+","+$("#imglinks3").val()+","+$("#imglinks4").val()+","+$("#imglinks4").val());
+        var updLoading;
+
+        $.ajax({
+            type: 'post',
+            url: '/seller/usr_UsrSupplier_UpdBizDiy',
+            data: $("#decinf").serialize(),
+            dataType: 'json',
+            beforeSend: function () {
+                parent.showShade();
+                updLoading = layer.load();
+            },
+            complete: function () {
+                parent.hideShade();
+                layer.close(updLoading);
+            },
+            success: function (data) {
+                if (data.ret == 1) {
+                    layer.open({content: '更新成功'});
+                } else {
+                    layer.open({content: data.msg});
+
+                }
+                parent.hideShade();
+            }
+        })
+    }
+
+    function remove(id) {
+        layer.open({
+            content: '确认删除该图片？'
+            , btn: ['确定', '取消']
+            , yes: function (index, layero) {
+                // 页面上删除对应元素 原先直接写$(id).remove(); but之后img包裹了外框
+                if ($(id).closest(".upload-pic-wrap-long").length > 0) {
+                    // 显示 添加按钮 - 5张后会隐藏按钮
+                    $(id).closest(".layui-upload").find("button").fadeIn()
+                    // 移除点击的当前图片
+                    $(id).closest(".upload-pic-wrap-long").remove();
+                }
+                layer.close(index);
+            }
+        });
+    }
+</script>
+</body>
+</html>

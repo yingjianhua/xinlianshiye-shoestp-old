@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html class="iframe-h">
+
+<head>
+<meta charset="UTF-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>欧贸通商家端</title>
+<link rel="stylesheet" type="text/css"
+	href="../../static/admin/layui/css/layui.css" />
+<link rel="stylesheet" type="text/css"
+	href="../../static/admin/css/admin.css" />
+<link rel="stylesheet" type="text/css"
+	href="../../static/admin/layui/css/laydate.css" />
+<style>
+.layui-form-item .layui-inline {
+	margin-bottom: 5px;
+	margin-right: 10px;
+	float: left;
+}
+</style>
+</head>
+
+<body>
+	<div class="wrap-container clearfix">
+		<div class="column-content-detail">
+			<form class="layui-form">
+				<div class="layui-form-item">
+					<div class="layui-inline" style="margin-top: 8px;">收货人:</div>
+					<div class="layui-inline">
+						<input type="text" name="title" placeholder="请输入收货人"
+							autocomplete="off" class="layui-input" ID="shou">
+					</div>
+					<div class="layui-inline" style="margin-top: 8px;">
+						<P>订单编号:</P>
+					</div>
+					<div class="layui-inline">
+						<input type="text" name="title" placeholder="请输入订单编号"
+							autocomplete="off" class="layui-input" ID="odrid">
+					</div>
+					<div style="margin-top: 10px; float: left;">
+						<label class="layui-form-label">活动时间:</label> <input type="date"
+							ID="starttime"> <input type="date" ID="endtime">
+					</div>
+					<div style="margin-top: 10px; float: left; width: 100%;">
+						<div class="layui-inline">
+							<label class="layui-inline">支付方式:</label> <select name="states"
+								lay-filter="status" ID="paytype">
+								<option value="">请选择订单支付方式</option>
+								<option value="">所有支付</option>
+								<option value="0">TT</option>
+								<option value="1">支付宝</option>
+								<option value="2">微信</option>
+
+							</select>
+						</div>
+						<div class="layui-inline">
+							<label class=layui-inline>订单状态:</label> <select name="states"
+								lay-filter="status" ID="odrtype">
+								<option value="">请选择订单状态</option>
+								<option value="">所有订单</option>
+								<option value="0">等待付款</option>
+								<option value="1">等待确认付款</option>
+								<option value="2">确认发货</option>
+								<option value="3">已发货</option>
+								<option value="4">完成订单</option>
+								<option value="5">取消订单</option>
+							</select>
+						</div>
+						<button type="button" class="layui-btn layui-btn-normal"
+							ID="select">搜索</button>
+					</div>
+				</div>
+			</form>
+			<div class="layui-form" id="table-list">
+				<table class="layui-table" lay-even lay-skin="nob">
+					<thead>
+
+						<tr>
+							<th></th>
+							<th width="150">商品详情</th>
+							<th width="150">单价</th>
+							<th width="150">数量</th>
+							<th width="150">订单总价</th>
+							<th width="150">订单状态</th>
+							<th>状态与操作</th>
+						</tr>
+					</thead>
+
+					<tbody id="rowlist">
+
+					</tbody>
+				
+				</table>
+
+
+
+				<div class="page-wrap">
+					<ul class="pagination">
+						<li class="disabled"><span>«</span></li>
+						<li class="active"><span>1</span></li>
+						<li><a href="#">2</a></li>
+						<li><a href="#">»</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="addmain" style="margin-top: 28px; display: none;">
+        <div style="padding:10px;padding-left:60px;">
+        	<form id="orderForm">
+        	
+            <div style="margin:10px 0;">
+            	订单号(<label style="color: red">*</label>)：
+            <span id="test" name="bean.orderid"></span> 
+           <input type="hidden" name="bean.orderid" id="test1"  />
+          <input type="hidden" name="bean.pkey" id="test2"  />
+           <input type="hidden" name="bean.rowVersion" id="test3"  />
+           <input type="hidden" name="bean.odrtype" value="6">
+             </div>
+			<table>
+				<tr>
+					<td rowspan="4"   valign="top">取消原因(<label style="color: red">*</label>)：</td>	
+					<td><input type="radio"  name="bean.odrcancel" value="缺货" checked="checked" />缺货</td>
+				</tr>
+				<tr>
+					<td>
+					<input type="radio" name="bean.odrcancel" value="不是有效订单"  />不是有效订单
+					</td>
+				</tr>
+				<tr>
+					<td>
+					<input type="radio"  name="bean.odrcancel" value="买家主动要求" />买家主动要求
+					</td>
+				</tr>
+				<tr>
+					
+					<td>
+					<input type="radio"  name="bean.odrcancel" value="其他原因" />其他原因
+					</td>
+				</tr>
+			</table>
+			</form>
+		</div>
+     </div>   
+	<script src="../../static/admin/js/jquery-1.11.1.js"
+		type="text/javascript" charset="utf-8"></script>
+	<script src="../../static/admin/layui/layui.js" type="text/javascript"
+		charset="utf-8"></script>
+	<script src="../../static/admin/layui/laydate.js"
+		type="text/javascript" charset="utf-8"></script>
+	<script src="../../static/admin/js/common.js" type="text/javascript"
+		charset="utf-8"></script>
+	<script type="text/javascript">
+		layui.use('laydate', function() {
+			var laydate = layui.laydate;
+			var endDate = laydate.render({
+				elem : '#end_time',//选择器结束时间
+				type : 'datetime',
+				min : "1970-1-1",//设置min默认最小值
+				done : function(value, date) {
+					startDate.config.max = {
+						year : date.year,
+						month : date.month - 1,//关键
+						date : date.date,
+						hours : 0,
+						minutes : 0,
+						seconds : 0
+					}
+				}
+			});
+			//日期范围
+			var startDate = laydate.render({
+				elem : '#start_time',
+				type : 'datetime',
+				max : "2099-12-31",//设置一个默认最大值
+				done : function(value, date) {
+					endDate.config.min = {
+						year : date.year,
+						month : date.month - 1, //关键
+						date : date.date,
+						hours : 0,
+						minutes : 0,
+						seconds : 0
+					};
+				}
+			});
+
+		});
+
+	window.onload = function() {
+		$.ajax({
+			type : 'post',
+			url : 'http://localhost:8080/shoestp/manage/odr_OdrOdr_listall',
+			data:'',
+			success : function(data) {
+				data = JSON.parse(data);
+				$.each(data.items,function(i, val) {
+					$("#rowlist").append(
+						"<tr><td><input type='checkbox' name='' lay-skin='primary'lay-filter='allChoose'>"
+						+ "<div class='layui-unselect layui-form-checkbox' lay-skin='primary'><i class='layui-icon'></i></div>"
+						+ "</td>"
+						+ "<td colspan='4'>订单号:&nbsp;&nbsp;"
+						+ val.orderid
+						+ "&nbsp;&nbsp;&nbsp;&nbsp;订单时间:&nbsp;&nbsp;"
+						+ val.odrtime
+						+ "</td>"
+						+"<td>订单状态:"+val.odrtype.split("##")[1]+"</td>"
+						+ "<td ><button  class='layui-btn' align: 'right'>查看订单</button></td>"
+						+ "</tr>");
+					console.log("here");
+					console.log(val);
+					console.log(val.lines);
+					$.each(val.lines,function(i,line){
+						$("#rowlist").append("<tr>"+"<td></td>"
+							+"<td>"
+							+"<img src='"+line.imgs+"'>"+line.productsize.split("##")[1]+"</td>"
+							+"<td>"+line.price+"</td>"
+							+"<td>"+line.num+"</td>"
+							+"<td>"+val.countprice+"</td>"
+							+"<td></td>"
+							+"<td><button  class='layui-btn'  onclick='check("+val.orderid+","+val.pkey+","+val.rowVersion+")'>取消订单</button></td>"
+							+"</tr>"
+						)
+					})
+			})
+			}
+		})
+	};
+	
+	$("#select").click(function(){
+		$('#rowlist').html("");
+		var shou=$("#shou").val();
+		var odrid=$("#odrid").val();
+		var start=$("#starttime").val();
+		var end=$("#endtime").val();
+		var pay=$("#paytype").val();
+		var odrtype=$("#odrtype").val();
+	
+		var filter= '[';
+		var  num=0;
+		if(shou!=null&&shou!=""){
+			filter += '{"property":"main.name","value":"1##' + shou + '"},';	
+			num+=1;	
+		}
+		if(odrid!=null&&odrid!=""){
+			filter += '{"property":"orderid", "value":"1##' + odrid + '"},';
+			num+=1;	
+		}
+		if(start!=null&&start!="")
+		{
+			filter += '{"property":"odrtime" ,"value" :"5##' + start + '"},';
+			num+=1;	
+		}
+		if(end!=null&&end!="")
+		{
+			filter += '{"property":"odrtime" ,"value" : "8##' + end + '"},';
+			num+=1;	
+		}
+		if(pay!=null&&pay!="")
+		{
+			filter += '{"property":"paytype" ,"value":"' + pay + '"},';
+			num+=1;	
+		}
+		if(odrtype!=null&&odrtype!="")
+		{
+			filter += '{"property":"odrtype","value":"' + odrtype + '"},';
+			num+=1;	
+		}
+		//filter +='{"property":"count","value":"6##5"}';
+		filter=filter.substr(0,filter.length-1);
+		if(num>0)
+		{filter +="]";
+		}
+		
+		//alert(filter);
+
+// 		var json=JSON.parse(filter);
+// 		alert(JSON.parse(filter));
+		$.ajax({
+			type : 'post',
+			url : 'http://localhost:8080/shoestp/manage/odr_OdrOdr_list',
+			data:
+				{
+// 				page: 1,
+// 					start: 0,
+// 					limit: 20,
+				"filter":filter
+				}
+			,
+			async:false,
+			success : function(data) {
+		//	alert("进入模糊查询")
+				data = JSON.parse(data);
+				$.each(data.items,function(i, val) {
+					$("#rowlist").append(
+						"<tr><td><input type='checkbox' name='' lay-skin='primary'lay-filter='allChoose'>"
+						+ "<div class='layui-unselect layui-form-checkbox' lay-skin='primary'><i class='layui-icon'></i></div>"
+						+ "</td>"
+						+ "<td colspan='4'>订单号:&nbsp;&nbsp;"
+						+ val.orderid
+						+ "&nbsp;&nbsp;&nbsp;&nbsp;订单时间:&nbsp;&nbsp;"
+						+ val.odrtime
+						+ "</td>"
+						+"<td>订单状态:"+val.odrtype.split("##")[1]+"</td>"
+						+ "<td ><button  class='layui-btn' align: 'right'>查看订单</button></td>"
+						+ "</tr>");
+					console.log("here");
+					console.log(val);
+					console.log(val.lines);
+					$.each(val.lines,function(i,line){
+						$("#rowlist").append("<tr>"+"<td></td>"
+							+"<td>"
+							+"<img src='"+line.imgs+"'>"+line.productsize.split("##")[1]+"</td>"
+							+"<td>"+line.price+"</td>"
+							+"<td>"+line.num+"</td>"
+							+"<td>"+val.countprice+"</td>"
+							+"<td></td>"
+							+"<td><button   type='button' class='layui-btn' onclick='check("+val.orderid+","+val.pkey+","+val.rowVersion+")'>取消订单</button></td>"
+							+"</tr>"
+						)
+					})
+			})
+			},error:function(){
+			console.log("error");
+			}
+		})
+	
+	})
+	
+	/*$("#cancelb").click(function(){
+				check();
+			
+	})*/
+	
+	 function check(orderid,pkey,rowVersion) {
+        layer.open({
+            type: 1,
+            title: '用户信息',
+            area: ['300px', '300px'],
+            shadeClose: false, //点击遮罩关闭
+            content: $('#addmain'),
+            btn: ['确定', '取消'],
+			success:function(){
+				$("#test").text(orderid);
+				$("#test1").val(orderid);
+				$("#test2").val(pkey);
+				$("#test3").val(rowVersion);
+			},
+            yes: function (index, layero) {
+                //做数据校验
+                 var val=$('input:radio[name="identity"]:checked').val();
+                 $.ajax({
+                 type:'post',
+                 url:'http://localhost:8080/shoestp/manage/odr_OdrOdr_upds',
+                 data:$('#orderForm').serialize(),
+                 success:function(data){
+                 		alert("订单取消成功");
+                 }
+                 })
+                
+            },
+            btn2: function (index, layero) {
+                return;
+            },
+            cancel: function () {
+                return;
+            },
+            end: function () {
+                $('#addmain').css("display", "none");
+            }
+        });
+    }
+</script>
+</body>
+</html>

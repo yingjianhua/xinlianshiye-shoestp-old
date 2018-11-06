@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>罗马尼亚</title>
+    <script src="js/vue.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/muse-ui/dist/muse-ui.css">
+    <script src="https://unpkg.com/muse-ui/dist/muse-ui.js"></script>
+    <link rel="stylesheet" href="css/romania-index.css">
+</head>
+<body>
+<div id="romania">
+    <div class="romania-poster">
+        <p class="white-text title-text">罗马尼亚<br>线下鞋子采购</p>
+        <p class="yellow-text slogan">新时代</p>
+        <p class="yellow-text slogan">新贸易</p>
+        <p class="yellow-text slogan">新趋势</p>
+        <p class="yellow-text time">2018.12.4-2018.12.19</p>
+        <p class="yellow-text content-01">展厅全年开放</p>
+        <p class="white-text content-02">环球龙红街店Drumul Garii 12<br>布加勒斯特077190</p>
+        <div class="language">
+            <p><span @click="handleLanguage">= Language</span><a href="https://www.shoestp.com/home/usr_UsrPurchase"><img src="imgs/return-home.png"/></a></p>
+            <ul class="language-show" v-show="languageShow">
+                <li><a href="romania-index-en.html"><img src="imgs/language-en.png"/> English</a></li>
+                <li><a href="romania-index-ro.html"><img src="imgs/language-fr.png"/> România</a></li>
+                <li><a href="romania-index-zh.html"><img src="imgs/language-zh.png"/> 中文</a></li>
+            </ul>
+        </div>
+        <div class="image-bottom">
+            <!-- <button>获得免费样品</button> -->
+            <a class="btn"  href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">获得免费样品</a>
+            <a class="btn">在线订购即将开业</a>
+        </div>
+    </div>
+    <div class="producrt">
+        <h2>产品展示</h2>
+        <mu-carousel hide-controls interval="900000">
+            <mu-carousel-item v-for="item in carouselProducrt">
+                <h2>{{ item.title }}</h2>
+                <div class="detail">
+                    <img :src="item.imageUrl">
+                    <h4>{{ item.contentTitle }}</h4>
+                    <p>{{ item.content }}</p>
+                </div>
+            </mu-carousel-item>
+        </mu-carousel>
+        <a class="producrt-button inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">立即获取免费样品</a>
+    </div>
+    <!---->
+    <div class="rmnybottomsev">
+        <div class="rmnybsevcon">
+            <h2 class="rmnybsevconzh">关于相关数据</h2>
+            <h3>合作制造商的数据和鞋类数据</h3>
+            <img src="imgs/rmnyb23.png" alt="">
+            <p>本次精挑细选<span class="bigblue">500</span>家鞋企<br>提供<span class="bigyellow">500-800</span>双精品鞋款<br><span class="bigblue">24</span>小时客服</p>
+            <!-- <span>立即获取免费样品</span> -->
+            <a class="producrt-button inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">立即获取免费样品</a>
+        </div>
+    </div>
+    <div class="rmnybottomsix">
+        <div class="rmnybsixcon">
+            <h2>关于新联</h2>
+            <h3>鞋业产业链电子商务平台</h3>
+            <p>温州新联实业股份有限公司成立于2015年，坐落于远近闻名，具有“中国鞋都”之称的温州。在温州这个拥有悠久鞋类发展史的城市里，诞生出一批又一批优秀制鞋企业。在这样的大环境下，新联实业通过独特的“B2B2C”新商业模式，成为全球第一家鞋产业链整合服务平台。</p>
+            <div class="rmnybsiximgs">
+                <img src="imgs/rmnyb19.png" alt="">
+                <img src="imgs/rmnyb20.png" alt="">
+                <img src="imgs/rmnyb21.png" alt="">
+            </div>
+            <!-- <span>立即申请</span> -->
+            <a class="inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">立即申请</a>
+        </div>
+    </div>
+    <div class="rmnybottomfiv">
+        <div class="rmnybfivcon">
+            <h2>我们的优势</h2>
+            <img src="imgs/rmnyb14.png" alt="">
+            <div class="rmnybfivad clearfloat">
+                <div class="advantage">
+                    <img src="imgs/rmnyb15.png" alt="">
+                    <h4>采购</h4>
+                    <p>我们特有的全球联合采购机制线上线下均可订货保证你的小额订单也能保时保质保量完成出货</p>
+                </div>
+                <div class="advantage">
+                    <img src="imgs/rmnyb16.png" alt="">
+                    <h4>质量</h4>
+                    <p>精挑细选优质安全的材质制作工艺符合国际标准多年经验的质检员为您把控每一双鞋的每一个细节</p>
+                </div>
+                <div class="advantage">
+                    <img src="imgs/rmnyb17.png" alt="">
+                    <h4>价格</h4>
+                    <p>厂家直接发货没有中间经销商赚差价在保证品质的前提下出售最低的价格保证您最大的利润</p>
+                </div>
+                <div class="advantage">
+                    <img src="imgs/rmnyb18.png" alt="">
+                    <h4>设计</h4>
+                    <p>拥有每日上千款更新的速度满足你对鞋类所有美的需求拥有国际大牌知名设计师创作掌握全球时尚动态</p>
+                </div>
+            </div>
+            <!-- <span>现在注册</span> -->
+            <a class="inline-block-h80" href="https://www.shoestp.com/home/usr_UsrPurchase_sign">现在注册</a>
+        </div>
+    </div>
+    <div class="rmnybottomfth">
+        <div class="rmnybfthcon">
+            <img src="imgs/rmnyb7.png" alt="">
+            <h2>罗马尼亚展厅</h2>
+            <h3>关于罗马尼亚订单</h3>
+            <p>我们后期还将会在<br>这些国家开展国际订货会</p>
+            <div class="rmnybfthconimgs">
+                <img src="imgs/rmnyb8.png" alt="">
+                <img src="imgs/rmnyb9.png" alt="">
+                <img src="imgs/rmnyb10.png" alt="">
+                <img src="imgs/rmnyb11.png" alt="">
+                <img src="imgs/rmnyb12.png" alt="">
+                <img src="imgs/rmnyb13.png" alt="">
+            </div>
+            <!-- <span>预定你的座位</span> -->
+            <a class="inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">预定你的座位</a>
+        </div>
+    </div>
+    <div class="rmnybottomthred">
+        <div class="rmnybthcon">
+            <h2>供应商工厂展示</h2>
+            <div class="rmnybthimgs">
+                <img src="imgs/rmnyb3.png" alt="">
+                <img src="imgs/rmnyb4.png" alt="">
+                <img src="imgs/rmnyb5.png" alt="">
+                <img src="imgs/rmnyb6.png" alt="">
+            </div>
+            <!-- <span>立即获取免费样品</span> -->
+            <a class="inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">立即获取免费样品</a>
+        </div>
+    </div>
+    <div class="rmnybottomsecond">
+        <div class="rmnybscon">
+            <h2>订购会地址/联系方式</h2>
+            <h2>FOR THE COMERCE FAIR</h2>
+            <div class="bscontactus">
+                <p>联系人： Romanesc</p>
+                <p>网址：https://www.shoestp.com/m/romania/</p>
+                <p>电话: 0762  900  529</p>
+                <p>Whatsapp:+40 762 900 529</p>
+            </div>
+            <div class="bscontactus">
+                <p>邮箱：544414672@qq.com </p>
+                <p>(în limba română service)</p>
+                <p>marketing@shoestp.com (English service)</p>
+            </div>
+            <div class="bscontactus">
+                <p>展览地址:</p>
+                <p>Magazinul Universal Dragonul Roșu Strada</p>
+                <p>Drumul Garii 12,București 077190</p>
+            </div>
+        </div>
+    </div>
+    <div class="rmnybottomfirst">
+        <img src="imgs/rmnyb2.png" alt="">
+        <div class="rmnybfcon">
+            <h2>免费注册会员</h2>
+            <!-- <span>预定你的座位</span> -->
+            <a class="inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">预定你的座位</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    new Vue({
+        el:'#romania',
+        data:{
+            languageShow:false,
+            carouselProducrt:[{
+                title:'男士',
+                imageUrl:'imgs/menShoes.png',
+                contentTitle:'男士皮鞋',
+                content:'成熟，稳重，低调，奢华'
+            },{
+                title:'女士',
+                imageUrl:'imgs/wumenShoes.png',
+                contentTitle:'女士高跟鞋',
+                content:'成熟的魅力'
+            },{
+                title:'儿童',
+                imageUrl:'imgs/kidsShoes.png',
+                contentTitle:'童鞋',
+                content:'耐用舒适'
+            }]
+        },
+        methods:{
+            handleLanguage:function () {
+                this.languageShow = !this.languageShow;
+            }
+        }
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../static/js/jquery-3.2.1.js"></script>
+    <link rel="stylesheet" href="../static/css/xunpanPC.css">
+</head>
+<body>
+    <main>
+        <div class="box">
+            <div class="main">
+                 <!-- 选购商品框 -->
+                 <div class="goods-box">
+                        <ul>
+                            <li>
+                                <div class="goods-pic fl">
+                                    <a href=""><img src="../static/images/image/商品.jpg" alt=""></a>
+                                    
+                                </div>                               
+                                <div class="goods-info fr">
+                                    <div class="goods-info-name">
+                                        <a href="">fashion new man casual shoes</a>
+                                    </div>
+                                    <div class="goods-info-detail">
+                                            Item No. LH01611111
+                                    </div>
+                                    <div class="goods-info-remove">
+                                            <span>Remove</span>
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                            </li>     
+                                     
+                        </ul>
+                    </div>
+                <div class="main_left">
+                    <header>
+                        <div>
+                            <img src="../static/images/image/RFQ.png" alt="">
+                        </div>
+                        <div>
+                            <h2 style="font-size:22px">Request for Quotation</h2>
+                            <p class="color666">One Request，Multiple Quotes</p>
+                        </div>
+                    </header>
+                    <div>
+                        <h1>Tell suppliers what you need</h1>
+                        <p class="font-bold" style="margin-bottom:10px">Complete Your RFQ</p>
+                        <p class="color666">The more specific your information, the more accurately we can match your request to the right suppliers</p>
+                    </div>
+                    <form action="" method="post" enctype="multipart/form-data">
+                        <div class="form_header marginBottom">
+                            <input type="text" placeholder=" Name" class="inputHeight marginRight" style="width:40%">
+                            <input type="email" placeholder=" Email" class="inputHeight" style="width:60%">
+                        </div>
+                        <div class="form_header marginBottom">
+                            <select name="Country" notnull="" class="inputHeight">
+                                <option value="">
+                                    ---Please Select Your Country---
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form_main marginBottom">                          
+                                 <textarea name="" id="" class="form_textarea" placeholder=" Product Detailed Specifications.
+ Describe about your perferred unit price,
+ destination port and the payment methods.
+                                 "></textarea>
+                            <div class="chooseImg clearfloat">
+                                <div class="chooseBox">
+                                    <img src="../static/images/image/upImg.png" alt="" onclick="addClick(this)" title="点击上传图片或更换图片">
+                                    <input type="file" name="photo" accept="image/*" autocomplete="off" onchange="imgChange(this)"> 
+                                    <p class="telete" onclick="deleteImg(this)">Delete</p>
+                                </div>    
+                            </div>
+                        </div>
+                        <div class="form_footer marginBottom">
+                            <input type="text" placeholder=" Enter quantity" class="inputHeight" style="width:30%;margin-right:0.5rem;">
+                            <input type="text" placeholder=" Verification code:" class="inputHeight" style="margin-right:0.3rem;width:36%">
+                            <div class="form_code" style="width:32%">
+
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <input type="submit" value="Submit RFQ" class="submit">
+                            </div>
+                        </div>
+                    </form>
+                    <div class="footer">
+                        <div>
+                            <h2>How to Get Quotes quickly?</h2>
+                            <div class="color666">
+                                <span>Submit RFQ</span> → <span>Compare Quotes</span> → <span>Contact Supplier</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="main_right">
+                      <div class="main_rightT color666">
+                          <h2 style="margin-top:0;color:black">About Posting Buy Offer</h2>
+                          <p>Here, you can ask the price and delivery</p>
+                          <p>deadline of products in our website.Besides,</p>
+                          <p>you can post buy offers or customize the products.</p>
+                          <p>After receiving your requirements,</p>
+                          <p>we will match the suitable shoes factories for you.</p>
+                      </div>
+                      <div class="main_rightB color666">
+                          <h2 style="color:black">Contact us</h2>
+                          <p>TEL：+86-577-85887585 Fax：+86-577-89711316</p>
+                          <p>Mail：marketing@shoestp.com</p>
+                          <p>Thanks for your interest in our website</p>
+                          <p>Any further suggestions are sincerely</p>
+                          <p>welcomed by us xiuchuan@shoestp.cn</p>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+<script src="../static/js/index.js">
+
+</script>
+<script type="text/javascript">
+   window.onload=function(){
+	   $.ajax({
+			type:'post',
+			url:'http://'+window.location.host+'/seller/usr_UsrSupplier_selSupplier',
+			dataType:'json',
+			success:function(data){
+			$.each(data,function(i,item){
+			$("#channel_id").append("<option value='"+data.item+"'>"+data.item+"</option>");//新增	
+			});
+			}
+		})
+   }
+   
+   
+   
+
+</script>
+</html>

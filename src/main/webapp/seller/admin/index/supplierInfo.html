@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		 <meta charset="UTF-8">
+    <title>An Online B2B market——-Shoestp.com,gathering 300 professional shoes manufacture companies Business backstage</title>
+    <script type="text/javascript" src="../../../umeditor1_2_2/third-party/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../../umeditor1_2_2/umeditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../../umeditor1_2_2/umeditor.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../../umeditor1_2_2/umeditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../../umeditor1_2_2/umeditor.js"></script>
+    <link href="../../../umeditor1_2_2/themes/default/css/umeditor.css" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../../static/admin/layui/css/layui.css"/>
+    <script src="../../static/admin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="../../static/admin/css/admin.css"/>
+    <script src="/home/static/js/vue.min.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
+    <script src="/home/static/js/qs.js"></script>
+    <script src="/home/static/js/axios.min.js"></script>
+    <script src="/home/static/js/element-ui.js"></script>
+    <link rel="stylesheet" type="text/css" href="/home/static/css/element-ui.css"/>
+    <style type="text/css">
+		.el-form-item__label{
+			width:188px;
+		}    
+		.el-input__inner{
+			width:360px;
+		}
+		
+		.el-cascader .el-input input{
+			width:188px;
+		}
+		
+		.el-form-item__content .el-input{
+			width:188px;
+		}
+		
+		.el-form-item__content .el-input .el-input__inner{
+			width:188px;
+		}
+		.avatar-uploader .el-upload {
+		    border: 1px dashed #d9d9d9;
+		    border-radius: 6px;
+		    cursor: pointer;
+		    position: relative;
+		    overflow: hidden;
+		  }
+		  .avatar-uploader .el-upload:hover {
+		    border-color: #409EFF;
+		  }
+		  .avatar-uploader-icon {
+		    font-size: 28px;
+		    color: #8c939d;
+		    width: 178px;
+		    height: 178px;
+		    line-height: 178px;
+		    text-align: center;
+		  }
+		  .avatar {
+		    width: 178px;
+		    height: 178px;
+		    display: block;
+		  }
+		  .entityPhoto .el-upload.el-upload--picture-card,.contactsPhoto .el-upload.el-upload--picture-card,.certPhoto .el-upload.el-upload--picture-card{
+		  	display:none;
+		  }
+    </style>
+	</head>
+<body>
+	<div id="main">
+		<el-form label-width="80px"><!-- ref="form" :model="form"  -->
+				<blockquote class="layui-elem-quote" style="color: #666;">
+					最后编辑时间:{{supplier.updateTime}}
+				</blockquote>
+				 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+				  <legend>公司基本信息<i class="el-icon-caret-top" @click="slide('companyInfo')"></i></legend>
+				</fieldset>
+				<div id="companyInfo">
+					 <el-form-item label="公司名称" label-width="188px">
+				    	<el-input v-model="supplier.name" :disabled="flag"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+					  <el-form-item label="企业性质" label-width="188px">
+				    	<el-input v-model="supplier.companyNature"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+					   <el-form-item label="企业类型" label-width="188px">
+				    	<el-input v-model="supplier.companyType"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+					   <el-form-item label="类别" label-width="188px">
+					    <el-select placeholder="请选择分类" v-model="selectedCategory"><!--  v-model="form.region" -->
+					    	<el-option v-for="category in categories" :key="category.id" :label="category.name" :value="category.id" ></el-option>
+					    </el-select>
+					  </el-form-item>
+					  
+					  <el-form-item label="公司官网地址" label-width="188px">
+				    	<el-input v-model="supplier.webSite"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+					  <el-form-item label="公司所在地" label-width="188px">
+						  <el-cascader :disabled="flag" style="width:188px;" :options="countries" @active-item-change="handleItemChange" :props="props" v-model="generalAddress"></el-cascader>
+							<el-input :disabled="flag" placeholder="请输入城市" v-model="supplier.city"></el-input><!-- v-model="form.name" -->
+							<el-input :disabled="flag" placeholder="请输入详细地址" v-model="supplier.companyAddr"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+					  <el-form-item label="公司电话" label-width="188px">
+					    	<el-input :disabled="flag" v-model="supplier.telephone"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+					  <el-form-item label="公司邮箱" label-width="188px">
+					    	<el-input :disabled="flag" v-model="supplier.email"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+					  <el-form-item label="公司传真" label-width="188px">
+					    	<el-input v-model="supplier.fax"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+					  <el-form-item label="注册资金" label-width="188px">
+					    	<el-input :disabled="flag" v-model="supplier.registeredCapital"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+					   <el-form-item label="企业成立时间" label-width="188px">
+				    	 <el-date-picker
+				    	  :disabled="flag"
+					      v-model="supplier.companyEstablishTime"
+					      type="date"
+					      placeholder="选择日期"
+					      format="yyyy 年 MM 月 dd 日">
+					    </el-date-picker>
+					  </el-form-item>
+					  
+					   <el-form-item label="业务期限" label-width="188px">
+				    	<el-input v-model="supplier.operationTerm"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+					   <el-form-item label="主要销售区" label-width="188px">
+				    	<el-input v-model="supplier.mainSalesArea"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+					   <el-form-item label="主要产品" label-width="188px">
+				    	<el-input v-model="supplier.mainProd"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+					   <el-form-item label="生产模式" label-width="188px">
+				    	<el-input v-model="supplier.prodPattern"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+					  <el-form-item label="备注" label-width="188px">
+				    	<el-input v-model="supplier.des"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+					  <el-form-item label="公司信用代码" label-width="188px">
+					    	<el-input v-model="supplier.creditCode"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+					  <el-form-item label="QQ" label-width="188px">
+				    	<el-input v-model="supplier.qq"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+					  <el-form-item label="法定代表人/首席执行官" label-width="188px">
+					    	<el-input :disabled="flag" v-model="supplier.entity"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+					  <el-form-item label="营业执照有效期" label-width="188px">
+					    <el-date-picker v-model="businessLicenseTime" 
+					    				 :disabled="flag"
+					    				type="daterange" 
+					    				align="right" 
+					    				unlink-panels 
+					    				range-separator="至" 
+					    				start-placeholder="开始日期" 
+					    				end-placeholder="结束日期"
+      									:picker-options="pickerOptions2">
+    					</el-date-picker>
+					  </el-form-item>
+					  
+					  <el-form-item label="营业执照是否长期" label-width="188px">
+					    <el-switch :disabled="flag" v-model="secularFlag"></el-switch><!-- v-model="form.delivery" -->
+					  </el-form-item>
+					  
+					  <el-form-item label="纳税人类型" label-width="188px">
+					    	<el-input v-model="supplier.taxpayerType"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+					  
+					   <el-form-item label="法人身份证号码" label-width="188px">
+				    	<el-input :disabled="flag" v-model="supplier.idCard"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+					  <el-form-item label="法人身份证照片"  label-width="188px" class="entityPhoto">
+								 <el-upload
+								  :disabled="flag"
+								  action="/seller/usr_UsrSupplier_upload?widthLimit=0"
+								  accept="image/jpeg,image/gif,image/png"
+								  list-type="picture-card"
+								  :limit="2"
+								  :on-preview="handlePictureCardPreview"
+								  :on-remove="handleRemove"
+								  :file-list="entityPhoto">
+								  <i class="el-icon-plus"></i>
+								</el-upload>
+								<el-dialog :visible.sync="dialogVisible">
+								  <img width="100%" :src="dialogImageUrl" alt="">
+								</el-dialog>
+                        </el-upload>
+                    </el-form-item>
+				</div>
+				
+				<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+				  <legend>运营信息
+				  		<i class="el-icon-caret-top" @click="slide('service')"></i>
+				  </legend>
+				</fieldset>
+				<div id="service">
+						<el-form-item label="联系人头像" label-width="188px">
+				    	 <el-upload
+						  class="avatar-uploader"
+						  action="/seller/usr_UsrSupplier_upload?widthLimit=0"
+						  accept="image/jpeg,image/gif,image/png"
+						  :show-file-list="false"
+						  :on-success="(res,file)=>{return handlesuccess(res,file,'head')}"
+						  :before-upload="beforeAvatarUpload">
+						  <img v-if="head" :src="parent.imgUrlconfig+head" class="avatar">
+						  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+						</el-upload>
+					  </el-form-item>
+					
+				
+					  <el-form-item label="联系人" label-width="188px">
+				    	<el-input v-model="supplier.contacts"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  <el-form-item label="联系人部门" label-width="188px">
+				    	<el-input v-model="supplier.department"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  <el-form-item label="联系人职称" label-width="188px">
+				    	<el-input v-model="supplier.jobTitle"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+					  <el-form-item label="手机" label-width="188px">
+				    	<el-input v-model="supplier.phone"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+					  <el-form-item label="结算开户行" label-width="188px">
+				    	<el-input v-model="supplier.settlementBank"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+					  <el-form-item label="银行账号" label-width="188px">
+				    	<el-input  v-model="supplier.bankAccount"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+					  <el-form-item label="银行开户行" label-width="188px">
+				    	<el-input  v-model="supplier.bankBranch"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+					  <el-form-item label="开户行所在地" label-width="188px">
+						  <el-cascader
+						  	  v-model="bankAddress"
+							  :options="countries"
+							  @active-item-change="handleItemChange"
+							  :props="props"
+							></el-cascader>
+					 </el-form-item>
+					 
+					 <el-form-item label="运营负责人身份证号码" label-width="188px">
+				    	<el-input  v-model="supplier.operateIdCard"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					 
+					 <el-form-item label="运营负责人身份证照片" label-width="188px" class="contactsPhoto">
+								 <el-upload
+								  :disabled="flag"
+								  action="/seller/usr_UsrSupplier_upload?widthLimit=0"
+								  accept="image/jpeg,image/gif,image/png"
+								  list-type="picture-card"
+								  :limit="2"
+								  :on-preview="handlePictureCardPreview"
+								  :on-remove="handleRemove"
+								  :file-list="contactsPhoto">
+								  <i class="el-icon-plus"></i>
+								</el-upload>
+								<el-dialog :visible.sync="dialogVisible">
+								  <img width="100%" :src="dialogImageUrl" alt="">
+								</el-dialog>
+                        </el-upload>
+                    </el-form-item>
+				</div>
+				
+				<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+				  <legend>平台店铺相关信息
+				  		<i class="el-icon-caret-top" @click="slide('other')"></i>
+				  </legend>
+				</fieldset>
+				<div id="other">
+						<el-form-item label="网站显示名称" label-width="188px" :style="{width:getWidth(tabLength)}">
+							<template>
+							  <el-tabs v-model="activeName" @tab-click="handleClick">
+							    <el-tab-pane v-for="(language,index) in languages" :label="language.displayName" :name="index">
+									<el-input v-model="showName[language.shortName]" :placeholder="language.displayName" style="margin:5px 0;"></el-input>
+								</el-tab-pane>
+							  </el-tabs>
+							</template>
+						</el-form-item>
+					 <!-- <el-form-item label="网站显示名称" label-width="188px" style="width:188px;">
+				    	<el-input v-model="supplier.showName" style="margin:5px 0;">
+				    		<template slot="prepend">英语</template>
+				    	</el-input>
+				    	<el-input v-model="supplier.showName" style="margin:5px 0;">
+				    		<template slot="prepend">简体中文</template>
+				    	</el-input>
+				    	<el-input v-model="supplier.showName" style="margin:5px 0;">
+				    		<template slot="prepend">繁体中文</template>
+				    	</el-input>
+					  </el-form-item> -->
+					  
+					 <!--  <el-form-item label="tawk在线聊天设置" label-width="188px">
+					  	<div v-if="tawkFlag == false">
+						  	<a v-if="supplier.tawkSetting == ''" style="cursor:pointer;">暂无tawk账号,去注册</a>
+						  	/
+						  	<a v-if="supplier.tawkSetting == ''" style="cursor:pointer;" @click="settingTawk">已有tawk账号,去设置</a>
+					  	</div>
+				    	<el-input type="textarea" autosize style="width:188px" v-model="supplier.tawkSetting" v-if="tawkFlag" placeholder="请设置您的tawk代码"></el-input>v-model="form.name"
+					  </el-form-item> -->
+				
+					  <el-form-item label="店铺关键字" label-width="188px">
+				    	<el-input v-model="supplier.seoTitle"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+					  <el-form-item label="搜索引擎说明" label-width="188px">
+				    	<el-input v-model="supplier.seoContent"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+					  <el-form-item label="认证状态" label-width="188px">
+					    <el-switch :disabled="true" v-model="authFlag"></el-switch><!-- v-model="form.delivery" -->
+					  </el-form-item>
+					  
+					  <el-form-item label="认证时间" label-width="188px">
+					    <el-input :disabled="true" v-model="supplier.authTime"></el-input>
+					  </el-form-item>
+					  
+				</div>
+				
+				<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+				  <legend>资质证书
+				  		<i class="el-icon-caret-top" @click="slide('datum')"></i>
+				  </legend>
+				</fieldset>
+				<div id="datum">
+					<el-form-item label="营业执照" label-width="188px" class="certPhoto">
+				    	 <el-upload
+				    	  :disabled="flag"
+						  class="avatar-uploader"
+						  action="/seller/usr_UsrSupplier_upload?widthLimit=0"
+						  accept="image/jpeg,image/gif,image/png"
+						  :show-file-list="false"
+						  :on-preview="handlePictureCardPreview"
+						  :on-success="handleAvatarSuccess"
+						  :before-upload="beforeAvatarUpload">
+						  <img :src="certPhoto" class="avatar">
+						</el-upload>
+					  </el-form-item>
+					  <el-form-item label="合作凭证" label-width="188px">
+				    	 <el-upload
+						  class="avatar-uploader"
+						  action="/seller/pdt_PdtProduct_upload?widthLimit=0"
+						  accept="image/jpeg,image/gif,image/png"
+						  :show-file-list="false"
+						  :on-success="(res,file)=>{return handlesuccess(res,file,'coopCertPhoto')}"
+						  :before-upload="beforeAvatarUpload">
+						  <img v-if="coopCertPhoto" :src="parent.imgUrlconfig+coopCertPhoto" class="avatar">
+						  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+						</el-upload>
+					  </el-form-item>
+				</div>
+				<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+				  <legend>营销设置
+				  		<i class="el-icon-caret-top" @click="slide('setup')"></i>
+				  </legend>
+				</fieldset>
+				<div id="setup">
+					<el-form-item label="跟踪代码" label-width="188px">
+				    	<el-input v-model="supplier.traceCode"></el-input><!-- v-model="form.name" -->
+					 </el-form-item>
+					 
+					 <el-form-item label="自定义链接名称" label-width="188px">
+				    	<el-input v-model="supplier.webSizeTitle"></el-input><!-- v-model="form.name" -->
+					  </el-form-item>
+					  
+<!-- 					  <el-form-item label="第三方统计地址" label-width="188px"> -->
+<!-- 				    	<el-input v-model="supplier.tongjiUrl"></el-input>v-model="form.name" -->
+<!-- 					  </el-form-item> -->
+					  
+<!-- 					  <el-form-item label="第三方统计密码" label-width="188px"> -->
+<!-- 				    	<el-input v-model="supplier.tongjiPwd"></el-input>v-model="form.name" -->
+<!-- 					  </el-form-item> -->
+				</div>
+			  <el-form-item>
+			    <el-button type="primary" @click="submitForm">修改</el-button><!-- @click="onSubmit" -->
+			  </el-form-item>
+		</el-form>
+	</div>
+	<script>
+	var layer;
+	layui.use(['layer','jquery'], function(){
+		layer 	= layui.layer;
+	})
+		var app = new Vue({
+			el:"#main",
+			 data() {
+			      return {
+			    	categories:[],
+			    	countries:[],
+			    	supplier:{},
+			        props: {
+			        	label:'name',
+			        	value:'pkey',
+			          	children:'provinces'
+			        },
+			        selectedCategory:'',
+			        generalAddress:[],
+			        businessLicenseTime:[],
+			        secularFlag:null,
+			        entityPhoto:[],
+		            head:'',
+		            bankAddress:[],
+		            contactsPhoto:[],
+		            authFlag:null,
+		            certPhoto:'',
+		            noImage:'/seller/static/admin/images/blank.gif',
+		            coopCertPhoto:'',
+		           // tawkFlag:false,
+		            flag:true,
+			        //"/home/static/images/user/aCanvas.jpg","/home/static/images/user/aCanvas.jpg"
+			        dialogImageUrl: '',
+			        dialogVisible: false,
+			        languages:[],
+			        tabLength:0,
+			        showName:{},
+			        
+			        activeName: 'second',
+			        
+			        pickerOptions2: {
+			            shortcuts: [{
+			              text: '最近一周',
+			              onClick(picker) {
+			                const end = new Date();
+			                const start = new Date();
+			                start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+			                picker.$emit('pick', [start, end]);
+			              }
+			            }, {
+			              text: '最近一个月',
+			              onClick(picker) {
+			                const end = new Date();
+			                const start = new Date();
+			                start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+			                picker.$emit('pick', [start, end]);
+			              }
+			            }, {
+			              text: '最近三个月',
+			              onClick(picker) {
+			                const end = new Date();
+			                const start = new Date();
+			                start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+			                picker.$emit('pick', [start, end]);
+			              }
+			            }]
+			          },
+			          
+			          imageUrl:''
+			      };
+			    },
+
+			    methods: {
+			    	getSupType:function(){
+			    		return 1;
+			    	},
+			    	/* settingTawk:function(){
+			    		this.tawkFlag = true;
+			    	}, */
+			    	getWidth:function(width){
+			    		return width * 100 +'px';
+			    	},
+			      handleItemChange(val) {
+			        setTimeout(_ => {
+			        }, 300);
+			      },
+			      handleRemove(file, fileList) {
+			          console.log(file, fileList);
+			        },
+			        
+			        handleClick(tab, event) {
+			        	
+			          },
+			        
+		        handlePictureCardPreview(file) {
+		          this.dialogImageUrl = file.url;
+		          this.dialogVisible = true;
+		        },
+		        handleAvatarSuccess(res, file) {
+		            this.imageUrl = URL.createObjectURL(file.raw);
+		        },
+		        handleCoopCertPhotoSuccess(res,file){
+		        	this.coopCertPhoto = URL.createObjectURL(file.raw);
+		        },
+		          beforeAvatarUpload(file) {
+		            const isJPG = file.type === 'image/jpeg';
+		            const isLt2M = file.size / 1024 / 1024 < 2;
+
+		            if (!isJPG) {
+		              this.$message.error('上传头像图片只能是 JPG 格式!');
+		            }
+		            if (!isLt2M) {
+		              this.$message.error('上传头像图片大小不能超过 2MB!');
+		            }
+		            return isJPG && isLt2M;
+		          },
+		          slide:function(data){
+		        	  if($("#"+data).is(":visible")){
+		        		  //可见
+			        	  $("#"+data).slideUp("slow");
+		        		  $("#"+data).prev().find("i").removeClass("el-icon-caret-top");
+		        		  $("#"+data).prev().find("i").addClass("el-icon-caret-bottom");
+		        	  }else{
+		        		  //不可见
+						  $("#"+data).slideDown("slow");
+						  $("#"+data).prev().find("i").removeClass("el-icon-caret-bottom");
+		        		  $("#"+data).prev().find("i").addClass("el-icon-caret-top");
+		        	  }
+		          },
+		          submitForm:function(){
+		        	  var self = this; 
+		        	  if(self.showName['en'].trim() == ""){
+							 layer.msg("【网站显示名称】中英语语种必填",{icon:2,time:2000})
+							 return;
+						 }else if(self.showName["zh_TW"].trim() == ""){
+							 layer.msg("【网站显示名称】中繁体中文必填",{icon:2,time:2000})
+							 return;
+						 }else if(self.showName["zh_CN"].trim() == ""){
+							 layer.msg("【网站显示名称】中简体中文必填",{icon:2,time:2000})
+							 return;
+						 }
+		        	  var param = self.initForm();
+		        	   var loading;
+		        	  loading = layer.msg('正在修改请稍候。。。', {icon: 16,time: 100000,shade : [0.5 , '#000' , true]});
+		        	  self.post("/seller/usr_UsrSupplier_updInfo",param,
+	                            function (res) {
+		        		  			if(res.data.ret == 1){
+		        		  				layer.msg("修改成功",{icon:1,time:2000},function(){
+		        		  					location.reload();
+		        		  				})
+		        		  			}else{
+		        		  				layer.msg(res.data.msg,{icon:2,time:2000})
+		        		  			}
+	                                layer.close(loading);
+	                            },
+	                            function (err) {
+	                                self.$alert(err, '消息', {
+	                                    confirmButtonText: '确定',
+	                                });
+	                                parent.hideShade();
+	                                self.loading = false;
+	                            }
+	                        ) 
+		          },
+		          initForm:function(){
+		        	  var self = this; 
+		        	  var param = {};
+		        	 param['bean.pkey'] = self.supplier.pkey;
+		        	 param['bean.companyNature'] = self.supplier.companyNature;
+		        	 param['bean.companyType'] = self.supplier.companyType;
+		        	 param['bean.webSite'] = self.supplier.webSite;
+		        	 param['bean.fax'] = self.supplier.fax;
+		        	 param['bean.operationTerm'] = self.supplier.operationTerm;
+		        	 param['bean.mainSalesArea'] = self.supplier.mainSalesArea;
+		        	 param['bean.mainProd'] = self.supplier.mainProd;
+		        	 param['bean.prodPattern'] = self.supplier.prodPattern;
+		        	 param['bean.des'] = self.supplier.des;
+		        	 param['bean.creditCode'] = self.supplier.creditCode;
+		        	 param['bean.qq'] = self.supplier.qq;
+		        	 param['bean.taxpayerType'] = self.supplier.taxpayerType;
+		        	 param['bean.contacts'] = self.supplier.contacts;
+		        	 param['bean.phone'] = self.supplier.phone;
+					 param['bean.seoTitle'] = self.supplier.seoTitle;
+					 param['bean.showName'] = self.supplier.showName;
+					 param['bean.seoContent'] = self.supplier.seoContent;
+					 param['bean.traceCode'] = self.supplier.traceCode;
+					 param['bean.webSizeTitle'] = self.supplier.webSizeTitle;
+					 param['bean.tongjiUrl'] = self.supplier.tongjiUrl;
+					 param['bean.tongjiPwd'] = self.supplier.tongjiPwd;
+					 param['bean.department'] = self.supplier.department;
+					 param['bean.jobTitle'] = self.supplier.jobTitle;
+					 param['showName'] = JSON.stringify(self.showName);
+		        	 param['bean.category'] = self.selectedCategory;
+					 param['bean.bankCountry'] = self.bankAddress[0];
+					 param['bean.bankProvince'] = self.bankAddress[1];
+					 param['bean.headPic'] = self.head;
+					 param['bean.coopCertPhoto'] = self.coopCertPhoto;
+					 param['bean.settlementBank'] = self.supplier.settlementBank;
+					 param['bean.bankAccount'] = self.supplier.bankAccount;
+					 param['bean.bankBranch'] = self.supplier.bankBranch;
+					 param['bean.bankCountry'] = self.bankAddress[0];
+					 param['bean.bankProvince'] = self.bankAddress[1];
+					 return param;
+		          },
+		          handlesuccess: function (response, file ,photo) {
+		        	  	var self = this;
+		                if (response.ret != 1 || response.result.state != "SUCCESS") {
+		                    this.$notify({
+		                        title: '提示',
+		                        message: '网络错误建议重新上传'
+		                    });
+		                    return;
+		                }
+		                if(response.result.state != "SUCCESS"){
+		                	this.$notify({
+		                        title: '提示',
+		                        message: '未知错误'
+		                    });
+		                }else{
+		                	self[photo] = response.result.url;
+		                }
+		                //if (response.result.state == "SUCCESS") {
+		                    /* if (d == null) {
+		                        var pdtimg = this.status.pdtPics
+		                        if (pdtimg == null) {
+		                            pdtimg = {}
+		                        }
+		                        pdtimg[response.result.originalName] = response.result.url
+		                        this.$set(this.$data.status, "pdtPics", pdtimg)
+		                    }
+		                    else {
+		                        d.pic[response.result.originalName] = response.result.url;
+		                    } */
+		                //}
+		            },
+		       },
+			    beforeCreate: function () {
+		            this.post = function (url, data, then, error) {
+		                axios({
+		                    method: "POST",
+		                    url: url,
+		                    data: Qs.stringify(data),
+		                    headers: {
+		                        'Content-Type': 'application/x-www-form-urlencoded'
+		                    }
+		                }).then(then).catch(error);
+		            }
+		            this.get = function (url, parm, then, error) {
+		                axios.get(url, {
+		                    params: parm
+		                }).then(then).catch(error)
+		            }
+		        },
+			    mounted:function(){
+			    	var self = this;
+			    	//supplier对象
+			    	this.get("/seller/usr_UsrSupplier_loadOnlineSup", null, function (res) {
+			    		self.$set(self, "supplier", res.data);
+			    		self.$set(self, "selectedCategory", Number(res.data.category.split("##")[0]));
+			    		//公司所在地
+			    		var country = Number(res.data.country.split("##")[0]);
+			    		var province = Number(res.data.province.split("##")[0]);
+			    		self.generalAddress.push(country);
+			    		self.generalAddress.push(province);
+			    		//营业执照时间
+			    		var beginTime = new Date(res.data.businessLicenseBeginTime);
+			    		var endTime = new Date(res.data.businessLicenseEndTime);
+			    		self.businessLicenseTime.push(beginTime);
+			    		self.businessLicenseTime.push(endTime);
+			    		//营业执照是否长期
+			    		switch(res.data.businessLicenseIsSecular){
+			    			case 1:
+			    				self.secularFlag = true;
+			    				break;
+			    			case 0:
+			    				self.secularFlag = false;
+			    				break;
+			    			default:
+			    				self.secularFlag = false;
+			    		}
+			    		//法人身份证
+			    		var idCardFrontPhoto = {};
+			    		if(res.data.idCardFrontPhoto == ''){
+			    			idCardFrontPhoto.url = self.noImage
+			    		}else{
+			    			idCardFrontPhoto.url = parent.imgUrlconfig + res.data.idCardFrontPhoto;
+			    		}
+			    		idCardFrontPhoto.name = "身份证正面";
+			    		
+			    		var idCardBackPhoto = {};
+			    		idCardBackPhoto.name = "身份证反面";
+			    		if(res.data.idCardBackPhoto == ''){
+			    			idCardBackPhoto.url = self.noImage
+			    		}else{
+			    			idCardBackPhoto.url = parent.imgUrlconfig + res.data.idCardBackPhoto;
+			    		}
+			    		self.entityPhoto.push(idCardFrontPhoto);
+			    		self.entityPhoto.push(idCardBackPhoto);
+			    		//联系人头像
+			    		self.head =  res.data.headPic;
+			    		//银行国家省份
+			    		var bankCountry = Number(res.data.bankCountry.split("##")[0]);
+			    		var bankProvince = Number(res.data.bankProvince.split("##")[0]);
+			    		self.bankAddress.push(bankCountry);
+			    		self.bankAddress.push(bankProvince);
+			    		//联系人身份证
+			    		var contactsFrontPhoto = {};
+			    		contactsFrontPhoto.name = "身份证正面";
+			    		if(res.data.contactsIdCardFrontPhoto == ''){
+			    			contactsFrontPhoto.url = self.noImage
+			    		}else{
+			    			contactsFrontPhoto.url = parent.imgUrlconfig + res.data.contactsIdCardFrontPhoto;
+			    		}
+			    		
+			    		var contactsCardBackPhoto = {};
+			    		contactsCardBackPhoto.name = "身份证反面"; 
+			    		if(res.data.contactsIdCardBackPhoto == ''){
+			    			contactsCardBackPhoto.url = self.noImage
+			    		}else{
+			    			contactsCardBackPhoto.url = parent.imgUrlconfig + res.data.contactsIdCardBackPhoto;
+			    		}
+			    		
+			    		self.contactsPhoto.push(contactsFrontPhoto);
+			    		self.contactsPhoto.push(contactsCardBackPhoto);
+			    		
+			    		//认证状态
+			    		switch(res.data.isAuth){
+		    			case 1:
+		    				self.authFlag = true;
+		    				break;
+		    			case 0:
+		    				self.authFlag = false;
+		    				break;
+		    			default:
+		    				self.authFlag = false;
+		    			}
+			    		
+			    		//资质证书
+			    		if(res.data.certPhoto == ''){
+			    			self.certPhoto = self.noImage
+			    		}else{
+			    			self.certPhoto = parent.imgUrlconfig + res.data.certPhoto;;
+			    		}
+			    		//合作凭证
+			            self.coopCertPhoto = res.data.coopCertPhoto;
+			    		
+			          //语言集合
+				    	self.get("/seller/plt_PltConfig_enabledLanguage", null, function (res) {
+				    		self.$set(self, "languages", res.data);
+				    		self.$set(self, "tabLength", res.data.length);
+				    		for(var i in self.languages){
+				    			for(var key in self.languages[i]){
+				    				if(key == 'shortName'){
+				    					self.showName[self.languages[i][key]] = '';
+				    				}
+				    			}
+				    		}
+				    		
+				    		var showname = self.supplier.showname;
+				    		for(var key in showname){
+				    			self.showName[key] = showname[key];
+				    		}
+			            }, function (err) {
+			                console.log(err);
+			            })
+		            }, function (err) {
+		                console.log(err);
+		            })
+			    	//国家集合
+			    	this.get("/home/plt_PltCountry_countries", null, function (res) {
+			    		self.$set(self, "countries", res.data.items)
+		            }, function (err) {
+		                console.log(err);
+		            })
+			    	//supplier分类集合
+			    	this.get("/seller/usr_UsrSupplierCategory_listTop", null, function (res) {
+			    		self.$set(self, "categories", res.data.result);
+		            }, function (err) {
+		                console.log(err);
+		            })
+		            
+			    }
+			    	
+		});
+	</script>
+	</body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>An Online B2B market——-Shoestp.com,gathering 300 professional shoes manufacture companies Business
+        backstage</title>
+    <script src="../../static/admin/js/jquery-1.11.1.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8" src="../../../umeditor1_2_2/umeditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../../umeditor1_2_2/umeditor.js"></script>
+    <script type="text/javascript" src="../../../umeditor1_2_2/third-party/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../../umeditor1_2_2/umeditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../../umeditor1_2_2/umeditor.js"></script>
+    <script src="/home/static/js/vue.min.js"></script>
+    <script src="/home/static/js/qs.js"></script>
+    <script src="/home/static/js/axios.min.js"></script>
+    <script src="/home/static/js/element-ui.js"></script>
+    <link rel="stylesheet" type="text/css" href="/home/static/css/element-ui.css"/>
+</head>
+<body class="min-width1200 p015 pt15">
+
+<div class="main">
+    <el-row :gutter="20">
+        <el-col :span="3">
+            <el-input v-model="page.keyword" size="mini" placeholder="商品名称"/>
+        </el-col>
+        <el-col :span="3">
+            <el-input v-model="page.number" size="mini" placeholder="产品编号"/>
+        </el-col>
+        <el-col :span="3">
+            <el-cascader
+                    :options="options"
+                    v-model="page.cat"
+                    size="mini"
+                    clearable
+                    :change-on-select="true"
+            >
+            </el-cascader>
+
+        </el-col>
+        <el-col :span="2">
+            <el-button type="primary" size="mini" native-tpye="button" @click="getTableData()">
+                搜索
+            </el-button>
+        </el-col>
+    </el-row>
+    <el-table
+            :data="tableData"
+            stripe
+            height="990"
+            style="width: 100%"
+    >
+        <el-table-column
+                label="商品图片"
+        >
+            <template slot-scope="scope">
+                <img :src="getPic(scope.row.picture)" style="max-width: 150px">
+            </template>
+        </el-table-column>
+        <el-table-column
+                label="编号"
+                prop="code"
+        >
+        </el-table-column>
+        <el-table-column
+                label="名称"
+                prop="name"
+        >
+            <template slot-scope="scope">
+                <a :href="'/home/pdt_PdtProduct_gtProductsInfo?id='+scope.row.pkey"
+                   target="_blank">{{scope.row.name}}</a>
+            </template>
+        </el-table-column>
+        <el-table-column
+                v-for="d in tablecCol"
+                :key="d.prop"
+                :prop="d.prop"
+                :label="d.label"
+                :formatter="d.formatter"
+        >
+        </el-table-column>
+        <el-table-column
+                fixed="right"
+                label="操作"
+        >
+            <template slot-scope="scope">
+                <!--<el-button type="text" size="small" @click="edit(scope.row)">编辑</el-button>-->
+                <a :href="'/seller/admin/index/product-release.html?id='+scope.row.pkey" target="_blank">编辑</a>
+                <a :href="'/seller/admin/index/product-release.html?copy=1&id='+scope.row.pkey" target="_blank">复制</a>
+                <!--<el-button type="text" size="small" @click="copy(scope.row)">复制</el-button>-->
+                <el-button type="text" size="small" @click="remove(scope.row)">删除</el-button>
+            </template>
+        </el-table-column>
+    </el-table>
+    <el-pagination
+            :current-page="page.curr"
+            :page-sizes="page.showItems"
+            :page-size="page.showItem"
+            :total="page.total"
+            layout="total, sizes, prev, pager, next, jumper"
+            @current-change="handleCurrentChange"
+            @size-change="handleSizeChange"
+    />
+</div>
+</body>
+<script>
+    new Vue({
+        el: '.main',
+        data() {
+            return {
+                tablecCol: [{
+                    label: '商品分类',
+                    prop: 'category'
+                }, {
+                    label: '店铺分类',
+                    prop: 'categoryDiy',
+                    formatter: function (row, column, cellValue, index) {
+                        if (!cellValue) {
+                            return '无'
+                        }
+                        return cellValue
+                    }
+                }, {
+                    label: '价格',
+                    prop: 'cur_price',
+                    formatter: function (row) {
+                        return '$' + row.cur_price
+                    }
+                }, {
+                    label: '更新时间',
+                    prop: 'update_time'
+                }
+                ],
+                options: [],
+                tableData: [],
+                page: {
+                    curr: 1,
+                    total: 99,
+                    showItem: 20,
+                    showItems: [20, 50, 100],
+                    keyword: null,
+                    number: "",
+                    cat: 0
+                }
+            }
+        },
+        mounted() {
+            var self = this
+            this.getTableData()
+            axios({
+                url: '/seller/pdt_PdtCat_getPdtCatList',
+                method: 'get'
+            }).then(function (res) {
+                self.$set(self, "options", res.data.result)
+            })
+        }
+        ,
+        methods: {
+            handleSizeChange(val) {
+                this.page.showItem = val
+                this.handleCurrentChange(this.page.curr)
+            }
+            ,
+            handleCurrentChange(val) {
+                this.page.curr = val
+                this.getTableData()
+            }
+            ,
+            getTableData() {
+                const data = {
+                    'start': this.page.curr,
+                    'limit': this.page.showItem,
+                    name: this.page.keyword,
+                    number: this.page.number,
+                    cat: this.page.cat[this.page.cat.length-1]
+                }
+                const self = this
+                axios({
+                    url: '/seller/pdt_PdtProduct_layuiList',
+                    method: 'post',
+                    data:
+                        Qs.stringify(data)
+                }).then(res => {
+                    self.tableData = res.data.result.items
+                    self.page.total = res.data.result.totalCount
+                }).catch(err => {
+                    console.log(err)
+                })
+            }
+            ,
+            getPic(val) {
+                if (val) {
+                    if (val.split(',').length > 0) {
+                        return "//image.shoestp.com" + val.split(',')[0] + '?x-oss-process=image/resize,m_fixed,h_250,w_250'
+                    }
+                }
+                return val
+            }
+            ,
+            edit(row) {
+                this.$router.push('/product/view?id=' + row.pkey)
+            }
+            ,
+            copy(row) {
+                this.$router.push('/product/view?id=' + row.pkey + '&Copy=1')
+            }
+            ,
+            remove(row) {
+                const self = this
+                this.$confirm('是否删除该商品', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    axios({
+                        url: '/seller/pdt_PdtProduct_delDetails',
+                        method: 'post',
+                        data: Qs.stringify({
+                            pkey: row.pkey
+                        })
+                    }).then(res => {
+                        if (res.data.success) {
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            })
+                            self.getTableData()
+                        }
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    })
+                })
+            }
+        }
+    })
+
+</script>
+
+</html>

@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html class="iframe-h">
+
+<head>
+<meta charset="UTF-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>An Online B2B market——-Shoestp.com,gathering 300 professional shoes manufacture companies Business backstage</title>
+<link rel="stylesheet" type="text/css"
+	href="../../static/admin/layui/css/layui.css" />
+<link rel="stylesheet" type="text/css"
+	href="../../static/admin/css/admin.css" />
+<link rel="stylesheet" type="text/css"
+	href="../../static/admin/layui/css/laydate.css" />
+<style>
+/*设置  最小宽度 */
+.min-width1200{
+	min-width: 1250px;
+}
+.layui-form-item .layui-inline {
+	margin-bottom: 5px;
+	margin-right: 10px;
+	float: left;
+}
+.tc{
+	text-align: center;
+}
+.mr20{
+	margin-right: 20px;
+}
+.mb10{
+	margin-bottom: 10px;
+}
+.mt10{
+	margin-top: 10px;
+}
+.fr{
+	float: right;
+}
+.por{
+	position: relative;
+}
+/* div模拟table的thead */
+.like-table-head{
+	min-height: 20px;
+	line-height: 20px;
+	padding: 9px 15px;
+	margin-top: 10px;
+	font-size: 14px;
+	border: 1px solid #e2e2e2;
+	background-color: #f2f2f2;
+}
+.table-box .layui-table{
+	margin: 0;
+}
+.btn_slide:after{
+	content:"显示更多";
+	display: inline-block;
+	cursor: pointer;
+}
+.btn_slide.active:after{
+	content:"隐藏";
+	display: inline-block;
+	cursor: pointer;
+}
+
+.btn_slide{
+	position: absolute;
+	right: 10px;
+	bottom: 10px;
+}
+
+/* 防止与自定义的header冲突 */
+.table-box tbody tr:first-child td{
+	border-top-width: 0;
+}
+/* .table-box:nth-child(2) tbody tr:first-child td:nth-child(5),.table-box:nth-child(2) tbody tr:first-child td:nth-child(6){
+	border-bottom-width: 0;
+}
+.table-box:last-child tbody tr:first-child td:nth-child(5),.table-box:last-child tbody tr:first-child td:nth-child(6){
+	border-bottom-width: 1px;
+}
+.table-box + .table-box{
+	margin-top:1px;
+} */
+</style>
+</head>
+
+<body style="height: 100%;">
+	<div class="wrap-container clearfix min-width1200">
+		<div class="column-content-detail">
+			<form class="layui-form">
+				<div class="layui-form-item">
+					<div class="layui-inline">
+						<label class="layui-form-label">采购商:</label>
+						<div class="layui-input-inline">
+							<input type="text" name="title" placeholder="请输入采购商邮箱" autocomplete="off" class="layui-input" id="shou">
+						</div>
+					</div>
+
+					<div class="layui-inline">
+						<label class="layui-form-label">订单编号:</label>
+						<div class="layui-input-inline">
+							<input type="text" name="title" placeholder="请输入订单编号"
+								autocomplete="off" class="layui-input" id="odrid">
+						</div>
+					</div>
+
+					<div class="layui-inline">
+						<label class="layui-form-label">下单时间:</label>
+						<div class="layui-input-inline">
+							<input type="text" name="title" placeholder="开始时间" autocomplete="off" class="layui-input" id="start_time">
+						</div>
+						<div class="layui-form-mid">
+							-
+						</div>
+						<div class="layui-input-inline">
+							<input type="text" name="title" placeholder="结束时间" autocomplete="off" class="layui-input" id="end_time">
+						</div>
+					</div>
+
+				</div>
+
+				<div class="layui-form-item">
+					<div class="layui-inline">
+						<label class="layui-form-label">支付方式:</label>
+						<div class="layui-input-inline">
+							<select name="payType" lay-filter="" id="paytype">
+								<option value="">请选择订单支付方式</option>
+								<option value="">请选择订单支付方式</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="layui-inline">
+						<label class="layui-form-label">订单状态:</label>
+						<div class="layui-input-inline">
+							<select name="states" lay-filter="" id="odrstate">
+								<option value="">请选择订单状态</option>
+								<option value="">请选择订单状态</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="layui-inline">
+						<button type="button" class="layui-btn layui-btn-xs layui-btn-normal" id="select" style="margin-left: 110px;">
+							<i class="layui-icon">&#xe615;</i> 搜索
+						</button>
+					</div>
+				</div>
+
+			</form>
+
+			<div id="table-list">
+				<div id="rowlist"></div>
+				<div class="tc mt10" id="ordercount">
+					共<spen></spen>条订单
+				</div>
+				<div class="page-wrap">
+					<ul class="pagination">
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="addmain" style="display: none;">
+        <div style="padding:10px;">
+        	<form  class="layui-form" id="orderForm">
+        		<div class="layui-form-item">
+					<label class="layui-form-label">订单号:</label>
+					<div class="layui-input-block">
+					   <span id="test" name="bean.orderNum" style="line-height: 38px;"></span>
+					   <input type="hidden" name="bean.orderNum" id="test1"  />
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">取消原因:</label>
+					<div class="layui-input-block">
+					   <input type="radio"  name="bean.odrCancel" value="0" title="缺货" checked="checked" />
+					   <br />
+					   <input type="radio"  name="bean.odrCancel" value="1" title="不是有效订单"  />
+					   <br />
+					   <input type="radio"  name="bean.odrCancel" value="2" title="买家主动要求" />
+					   <br />
+					   <input type="radio"  name="bean.odrCancel" value="3" title="其他原因" />
+					</div>
+				</div>
+			</form>
+		</div>
+     </div>
+	<script src="../../static/admin/js/jquery-1.11.1.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../static/admin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+	<!-- <script src="../../static/admin/layui/laydate.js" type="text/javascript" charset="utf-8"></script> -->
+	<script src="../../static/admin/js/common.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+	// 大于该数量（hideLineNum）时，隐藏并只显示2(showLineNum)条
+	var hideLineNum = 10;
+	var showLineNum = 2;
+
+	function cancelcheck(number) {
+       var index= layer.open({
+            type: 1,
+            title: '用户信息',
+            area: ['400px', '360px'],
+            shadeClose: false, //点击遮罩关闭
+            content: $('#addmain'),
+            btn: ['确定', '取消'],
+			success:function(){
+				$("#test").text(number);
+				$("#test1").val(number);
+			},
+            yes: function (index, layero) {
+                 var val=$('input:radio[name="identity"]:checked').val();
+                 $.ajax({
+                 type:'post',
+                 url:'/seller/odr_OdrOrder_cancel',
+                 data:$('#orderForm').serialize(),
+                 success:function(data){
+                	 layer.close(index);
+                	 window.location.reload();
+                 }
+                 });
+
+            },
+            btn2: function (index, layero) {
+                return;
+            },
+            cancel: function () {
+                return;
+            },
+            end: function () {
+                $('#addmain').css("display", "none");
+            }
+        });
+    }
+	function getStatusName(status) {
+		if(status==0)
+			return "待付款";
+		if(status==1)
+			return "等待确认付款";
+		if(status==2)
+			return "付款错误";
+		if(status==3)
+			return "等待发货";
+		if(status==4)
+			return "已发货";
+		if(status==5)
+			return "完成订单";
+		if(status==6)
+			return "已取消订单";
+		if(status==7)
+			return "已删除";
+	}
+	function getIcon(type){
+		if(type == 1){
+			return "<img src='../../static/admin/images/jpcartjptb222.png'/>";
+		}else{
+			return "<img src='../../static/admin/images/jpcartnptb222.png'/>";
+		}
+	}
+	function  listshow(data){
+		var str = ""
+		$.each(data.items,function(i, val) {
+			str +='<div class="table-wrap">'+
+						'<div class="like-table-head">'+
+							'<span class="mr20">订单编号:'+getIcon(0)+val.number+'</span> 下单时间:'+new Date(val.date).toLocaleString()+'<a href="javascript:void(0);"></a>'+
+							 '<ul style="width: 63%;float: right;">'+
+								'<li style="display: inline-block;width: 8%;text-align: center;">产品单价</li>'+
+								'<li style="display: inline-block;width: 14%;text-align: center;">购买数量</li>'+
+								'<li style="display: inline-block;width: 27.3%;text-align: center;">购买总价</li>'+
+								'<li style="display: inline-block;width: 27%;text-align: center;">订单状态</li>'+
+								'<li style="display: inline-block;width: 21%;text-align: center;">操作</li>'+
+							'</ul>'+ 
+						'</div>';
+						// 数量没有超出，全部显示
+						if( val.lines.length < hideLineNum ){
+							str +='<div class="table-box">' +
+						'<table class="layui-table" lay-even>'+
+							'<colgroup>'+
+							   ' <col width="300">'+
+							    '<col width="80">'+
+							    '<col width="80">'+
+							    '<col width="150">'+
+							    '<col width="150">'+
+							    '<col width="132">'+
+							'</colgroup>'+
+							'<tbody>';
+							//GENERAL(0,"普通产品"),GROUP(1,"联合采购产品");
+							$.each(val.lines,function(i,line){
+								str+="<tr>"
+									+"<td><img src='"+parent.imgUrlconfig+line.spec.images+"?x-oss-process=image/resize,m_fixed,h_240,w_240' width='30px' height='30px'>"+line.spec.productName+"</br>商品规格:"+line.spec.keyName+"</td>"
+									+"<td style='text-align:right;'>"+line.spec.price+"</td>"
+									+"<td style='text-align:right;'>"+line.qty+"</td>"
+									+"<td style='text-align:right;'>"+line.subtotal+"</td>";
+									if(i==0) {
+										str+="<td rowspan='99' class='tc'>"+getStatusName(val.status)+"</td>"
+											+"<td rowspan='99' class='tc'><a href='/seller/admin/index/odrorderline.html?orderNum="+val.number+"' class='layui-btn layui-btn-small layui-btn-normal'  align: 'right'>查看订单</a>"
+										if(val.status==2||val.status==3||val.status==5)
+											str+="<button  class='layui-btn layui-btn-small layui-btn-primary'  onclick='cancelcheck("+val.number+")'>取消订单</button>";
+										str+="</td>";
+									}
+									str+="</tr>";
+							})
+							str+='</tbody>'
+							+'</table>'
+							+'</div>';
+						// 数量超出，显示2条
+						}else{
+							str +='<div class="table-box">' +
+							'<table class="layui-table" lay-even>'+
+							'<colgroup>'+
+								 ' <col width="300">'+
+									'<col width="80">'+
+									'<col width="80">'+
+									'<col width="150">'+
+									'<col width="150">'+
+									'<col width="132">'+
+							'</colgroup>'+
+							'<tbody>';
+							//GENERAL(0,"普通产品"),GROUP(1,"联合采购产品");
+							$.each(val.lines,function(i,line){
+								if( i>=hideLineNum ) return false;
+								str+="<tr>"
+									+"<td><img src='"+parent.imgUrlconfig+line.spec.images+"?x-oss-process=image/resize,m_fixed,h_240,w_240' width='30px' height='30px'>"+line.spec.productName+"</br>商品规格:"+line.spec.keyName+"</td>"
+									+"<td style='text-align:right;'>"+line.spec.price+"</td>"
+									+"<td style='text-align:right;'>"+line.qty+"</td>"
+									+"<td style='text-align:right;'>"+line.subtotal+"</td>";
+									if(i==0) {
+										str+="<td rowspan='99' class='tc'>"+getStatusName(val.status)+"</td>"
+											+"<td rowspan='99' class='tc por'><a href='/seller/admin/index/odrorderline.html?orderNum="+val.number+"' class='layui-btn layui-btn-small layui-btn-normal'  align: 'right'>查看订单</a>"
+											+"<div class='btn_slide'><div>"
+										if(val.status==2||val.status==3||val.status==5)
+											str+="<button  class='layui-btn layui-btn-small layui-btn-primary'  onclick='cancelcheck("+val.number+")'>取消订单</button>";
+										str+="</td>";
+									}
+									str+="</tr>";
+							})
+							str+='</tbody>'
+							+'</table>'
+							+'</div>';
+
+							str +='<div class="table-box">' +
+							'<table class="layui-table" lay-even>'+
+							'<colgroup>'+
+								 ' <col width="300">'+
+									'<col width="80">'+
+									'<col width="80">'+
+									'<col width="150">'+
+									'<col width="150">'+
+									'<col width="132">'+
+							'</colgroup>'+
+							'<tbody>';
+							//GENERAL(0,"普通产品"),GROUP(1,"联合采购产品");
+							$.each(val.lines,function(i,line){
+								if( i<hideLineNum ) return true;
+								str+="<tr>"
+									+"<td><img src='"+parent.imgUrlconfig+line.spec.images+"?x-oss-process=image/resize,m_fixed,h_240,w_240' width='30px' height='30px'>"+line.spec.productName+"</br>商品规格:"+line.spec.keyName+"</td>"
+									+"<td style='text-align:right;'>"+line.spec.price+"</td>"
+									+"<td style='text-align:right;'>"+line.qty+"</td>"
+									+"<td style='text-align:right;'>"+line.subtotal+"</td>";
+									if(i==hideLineNum) {
+										str+="<td rowspan='99' class='tc'></td>"
+											+"<td rowspan='99' class='tc'></td>";
+									}
+									str+="</tr>";
+							})
+							str+='</tbody>'
+							+'</table>'
+							+'</div>';
+						}
+						str +='</div>';
+			    })
+				$("#rowlist").append(str);
+
+				// 点击下拉 - 手风琴效果
+				// $(".table-wrap").delegate(".btn_slide","click",function(e){
+				// 	$(this).toggleClass("active").closest(".table-wrap").find(".table-box").slideToggle();
+				// });
+				// table隐藏，只显示第一个
+				// $("#rowlist .table-wrap:first-child .btn_slide").trigger("click");
+				$(".table-box + .table-box").hide();
+				$(".table-wrap").delegate(".btn_slide","click",function(e){
+					console.log("btn_slide");
+					$(this).toggleClass("active").closest(".table-box").siblings(".table-box").slideToggle();
+				});
+
+
+			var page = "";
+			if(data.currentPage==1){
+				page = "<li class='disabled'><span>«</span></li>";
+			}else{
+				page = "<li style='cursor:pointer;' class='frontPage'  onclick='loadorder("+(data.start-data.limit)+")'><a>«</a></li>";
+			}
+			if($.isEmptyObject(getParams()))
+				$("#ordercount").html('共<spen>'+data.totalCount+'</spen>条订单');
+			else
+				$("#ordercount").html('共搜索到<spen>'+data.totalCount+'</spen>条订单');
+
+			// 没有搜索到信息时，不显示 分页
+			if( data.totalCount == 0 ){
+				return
+			}
+
+			for(var i = 1 ; i <= data.totalPage ; i++){
+			if((data.currentPage-2)<i&&(data.currentPage+2)>i){
+				if(i == data.currentPage){
+					page += '<li class="active"><span>'+i+'</span></li>';
+				}else{
+					page += '<li style="cursor:pointer;" onclick="loadorder('+(i-1)*data.limit*1+')"><a >'+i+'</a></li>'
+				}
+			}
+			}
+			if(data.currentPage==data.totalPage){
+				page += '<li class="disabled"><span>»</span></li>';
+			}else{
+				page += "<li style='cursor:pointer;' class='backPage'   onclick='loadorder("+(data.start+data.limit)+")'><a>»</a></li>";
+			}
+			$(".pagination").html(page);
+	}
+	function loadpay(){
+		$.ajax({
+			type : 'post',
+			url : '/seller/odr_OdrOrder_loadpay',
+			async:false,
+			dataType:'JSON',
+			success : function(data) {
+			$.each(data.result,function(i,val){
+				$("#paytype").append("<option value='"+val.id+"'>"+val.name+"</option>");
+			})
+			//form.render("select")
+			}
+		})
+	}
+	function loadstate(){
+		$.ajax({
+			type : 'post',
+			url : '/seller/odr_OdrOrder_loadstate',
+			async:false,
+			dataType:'JSON',
+			success : function(data) {
+				$.each(data.STORE_ROOT,function(i,val){
+					$("#odrstate").append("<option value='"+val.pkey+"'>"+val.name+"</option>");
+				})
+			}
+
+		})
+	}
+	function notEmpty(value) {
+		return value!=null&&value!="";
+	}
+	function getParams() {
+		var params = {};
+		var email=$("#shou").val();
+		var number=$("#odrid").val();
+		var beginTime=$("#start_time").val();
+		var endTime=$("#end_time").val();
+		var payType=$("#paytype").val();
+		var status=$("#odrstate").val();
+		if(notEmpty(email))
+			params["search.email"] = email;
+		if(notEmpty(number))
+			params["search.number"] = number;
+		if(notEmpty(beginTime))
+			params["search.beginTime"] = beginTime;
+		if(notEmpty(endTime))
+			params["search.endTime"] = endTime;
+		if(notEmpty(payType))
+			params["search.payType"] = payType;
+		if(notEmpty(status))
+			params["search.status"] = status;
+		return params;
+	}
+	function  loadorder(index){
+		start=index;
+		$('#rowlist').empty();
+		$(".pagination").empty();
+		var params = getParams();
+		params["start"] = start;
+		params["limit"] = limit;
+		$.ajax({
+			type : 'post',
+			url : '/seller/odr_OdrOrder_list',
+			data:params,
+			async:false,
+			dataType:'json',
+			success : function(data) {
+				if(data.ret == 1)
+					listshow(data.result);
+				else
+					console.log(data.msg)
+			},
+			error:function(){
+				console.log("error");
+			}
+		})
+	}
+	$("#select").click(function(){
+		loadorder(start);
+	})
+	var start=0;
+	var limit=20;
+	$(document).ready(function() {
+		loadorder(start);
+		loadpay();
+		loadstate();
+	})
+	layui.use(['laydate','form'], function() {
+		var form = layui.form();
+			form.render();
+		var laydate = layui.laydate;
+		var endDate = laydate.render({
+			elem : '#end_time',//选择器结束时间
+			type : 'datetime',
+			min : "1970-1-1",//设置min默认最小值
+			done : function(value, date) {
+				startDate.config.max = {
+					year : date.year,
+					month : date.month - 1,//关键
+					date : date.date,
+					hours : 0,
+					minutes : 0,
+					seconds : 0
+				}
+			}
+		});
+		//日期范围
+		var startDate = laydate.render({
+			elem : '#start_time',
+			type : 'datetime',
+			max : "2099-12-31",//设置一个默认最大值
+			done : function(value, date) {
+				endDate.config.min = {
+					year : date.year,
+					month : date.month - 1, //关键
+					date : date.date,
+					hours : 0,
+					minutes : 0,
+					seconds : 0
+				};
+			}
+		});
+	});
+</script>
+</body>
+</html>

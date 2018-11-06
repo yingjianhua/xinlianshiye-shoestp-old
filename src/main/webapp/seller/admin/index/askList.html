@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<title>An Online B2B market——-Shoestp.com,gathering 300 professional shoes manufacture companies Business backstage</title>
+	<link rel="stylesheet" type="text/css" href="../../static/admin/layui/css/layui.css" />
+	<link rel="stylesheet" type="text/css" href="../../static/admin/css/admin.css" />
+	<script src="../../static/admin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../static/admin/js/jquery-1.11.1.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body class="min-width1200 p015">
+	<div  class="layui-form" style="padding-top: 15px;">
+		<div class="layui-form-item">
+			<form id="selForm">
+				<div class="layui-form-mid">国家</div>
+				<div class="layui-input-inline">
+					<input type="text" name="countryName" placeholder="请输入国家名称" autocomplete="off" class="layui-input" id="consult_country">
+				</div>
+	
+				<label class="layui-form-label">询盘标题</label>
+				<div class="layui-input-inline">
+					<input type="text" name="title" placeholder="请输入询盘名称" autocomplete="off" class="layui-input" id="consult_title">
+				</div>
+			</form>
+			<label class="layui-form-label" style="width: 15px;"></label>
+			<button class="layui-btn layui-btn-normal" id="select">搜索</button>
+		</div>
+	</div>
+
+	<table class="layui-table" lay-skin="line" id="showLine">
+		<colgroup>
+			<col>
+			<col width="180">
+			<col width="150">
+			<col width="150">
+			<col width="200">
+			<col width="200">
+		</colgroup>
+		<thead>
+<!-- 			<tr> -->
+<!-- 				<form id="selForm" style="display: none"> -->
+<!-- 					<th>国家</th> -->
+<!-- 					<th> -->
+<!-- 						<input type="text" name="countryName" placeholder="请输入国家名称" autocomplete="off" class="layui-input" id="consult_country"> -->
+<!-- 					</th> -->
+<!-- 					<th>询盘标题</th> -->
+<!-- 					<th> -->
+<!-- 						<input type="text" name="title" placeholder="请输入询盘名称" autocomplete="off" class="layui-input" id="consult_title"> -->
+<!-- 					</th> -->
+<!-- 				</form> -->
+<!-- 				<th></th> -->
+<!-- 				<th> -->
+<!-- 					<button class="layui-btn layui-btn-normal" id="select">搜索</button> -->
+<!-- 				</th> -->
+<!-- 			</tr> -->
+			<tr>
+				<th>询盘名称</th>
+				<th>名字</th>
+				<th>国家</th>
+				<th>已抢单</th>
+				<th>时间</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody id="lineShow">
+		</tbody>
+	</table>
+	
+	<div id="page"></div>
+	<script type="text/javascript">
+	layui.use('laypage', function(){
+		 var laypage = layui.laypage;
+		 var page = 1;
+		 var limit = 20;
+		 var country = '';
+		 var title = '';
+		 var _self = this;
+		 init_data();
+		
+		function init_data(){
+			var params = {"start":page == 1?0:(page-1)*limit,"limit":limit};
+			if(country != ''){
+				params.countryName = country;
+			}
+			if(title != ''){
+				params.title = title;
+			}
+			$.ajax({
+				type: 'post',
+				url: '/seller/usr_UsrConsult_page',
+				data:params,
+				dataType: 'json',
+				success: function (data) {
+					if (data.ret == 1) {
+						renderList(data.result);
+						renderPage(data.result.currentPage,data.result.totalCount);
+					}
+				}
+			})
+		}
+		
+		var renderList = function (result) {
+				$("#lineShow").html("");
+				if (result && result.totalCount > 0) {
+					$.each(result.items, function (i, val) {
+						var email = val.email;
+						if (val.email == null) {
+							email = '暂无';
+						}
+						if(val.supplierCount != 5){
+							$("#lineShow").append(
+								"<tr>" +
+								"<td>" + val.title + "</td>" +
+								"<td>" + val.name + "</td>" +
+								"<td>" + val.countryName + "</td>" +
+								"<td>" + val.supplierCount + "/"+(val.supplierCount+val.count)+"</td>" +
+								"<td>" + val.createTime + "</td>" +
+								"<td><a class='layui-btn layui-btn-small layui-btn-normal' href='/seller/admin/index/ask.html?askid=" + val.id + "'>查看</a></td>" +
+								"</tr>"
+							);
+						}
+						if(val.supplierCount == 5){
+							$("#lineShow").append(
+								"<tr>" +
+								"<td>" + val.title + "</td>" +
+								"<td>" + val.name + "</td>" +
+								"<td>" + val.countryName + "</td>" +
+								"<td>已抢完</td>" +
+								"<td>" + val.createTime + "</td>" +
+								"<td><a class='layui-btn layui-btn-small layui-btn-normal' href='/seller/admin/index/ask.html?askid=" + val.id + "'>查看</a></td>" +
+								"</tr>"
+							);
+						}
+						
+						
+						
+					})
+				}
+			}
+		
+		function renderPage(curr,page1){
+			//执行一个laypage实例
+			  laypage.render({
+			    elem: 'page',
+			    limit:limit,
+			    curr:curr,
+			    count: page1,
+			    jump:function(obj,first){
+			    	if(!first){
+			    		page = obj.curr;
+				    	init_data();
+			    	}
+			    }
+			  });
+		}
+		/* 
+		$('#select').click(function () {
+			$.ajax({
+				type: 'post',
+				url: '/seller/usr_UsrConsult_page',
+				data: $("#selForm").serialize(),
+				dataType: 'json',
+				success: function (data) {
+					if (data.ret == 1) {
+						renderList(data.result)
+					}
+				}
+			})
+		}) */
+		
+		
+		$("#select").on("click",function(){
+			country = $("#consult_country").val();
+			title = $("#consult_title").val();
+			init_data();
+		})
+		
+		
+		
+		 
+		 
+	});
+	
+	 
+	
+			
+			/* window.onload = function () {
+				
+			}
+			
+			
+			 */
+	</script>
+</body>
+
+</html>

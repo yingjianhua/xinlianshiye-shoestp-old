@@ -1,0 +1,78 @@
+Ext.define('mvc.view.usr.UsrPurchase.InfoWin',{
+extend : 'Ext.window.Window',
+layout : 'fit',
+width : 600,
+form : null,
+resizable : true,
+modal : true,
+iconCls : 'app-icon',
+insFlag : true,
+initComponent : function(){
+		this.items =[{
+		anchor : '100%',
+		plain : true,
+		xtype : Ext.create('mvc.view.usr.UsrPurchase.InfoForm',{	insFlag : this.insFlag})
+	}];
+		this.buttonAlign = 'right',
+this.buttons =[{
+		text : '重置',
+		iconCls : 'win-refresh-icon',
+		scope : this,
+		handler : this.onReset
+	},{
+		text : '关闭',
+		iconCls : 'win-close-icon',
+		scope : this,
+		handler : this.onClose
+	},{
+		text : '立即发送',
+		iconCls : 'win-save-icon',
+		scope : this,
+		handler : this.onSave
+	}];
+		this.callParent(arguments);
+		this.addEvents('create');
+		this.form = this.items.items[0];
+},
+setActiveRecord : function(record){
+	this.form.activeRecord = record;
+	if (record || this.form.activeRecord) {
+		this.form.getForm().loadRecord(record);
+	} else {
+		this.form.getForm().reset();
+	}
+},
+onReset : function(){
+		this.setActiveRecord(this.form.activeRecord);
+},
+onClose : function(){
+		this.close();
+},
+onSave : function(){
+		var form = this.form.getForm();
+		var formData = form.getValues();
+		form.findField('pkey').setValue(this.data.unionPkey);
+		form.findField('rowVersion').setValue(this.data.rowVersion);
+		if (form.isValid()) {
+			Ext.MessageBox.confirm(msg_confirm_title, '提交入驻申请?',
+					function(btn) {
+						if (btn != 'yes')
+							return;
+						form.submit({
+							url : form.url,
+							submitEmptyText: false,
+							type : 'ajax',
+							params : formData,
+							success : function(form, action) {
+								alert("请等待审核");
+							},
+							failure : mvc.Tools.formFailure(),
+							waitTitle : wait_title,
+							waitMsg : wait_msg,
+							scope : this
+						});
+					});
+		}
+		
+}
+});

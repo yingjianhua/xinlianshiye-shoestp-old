@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html class="iframe-h">
+
+<head>
+<meta charset="UTF-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>An Online B2B market——-Shoestp.com,gathering 300 professional shoes manufacture companies Business backstage</title>
+<link rel="stylesheet" type="text/css"
+	href="../../static/admin/layui/css/layui.css" />
+<link rel="stylesheet" type="text/css"
+	href="../../static/admin/css/admin.css" />
+<link rel="stylesheet" type="text/css"
+	href="../../static/admin/layui/css/laydate.css" />
+	<style>
+		.mb15 {
+		    margin-bottom: 15px;
+		}
+		.layui-card {
+		    margin-bottom: 15px;
+		    border-radius: 2px;
+		    background-color: #fff;
+		    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+		}
+		.left-card{
+			float: left;
+			width: 400px;
+		}
+		.left-card .layui-card-body>div{
+			margin-bottom: 10px;
+		}
+		.right-card{
+			margin-left: 430px;
+		}
+		.right-card .layui-card-body>div{
+			margin-bottom: 10px;
+		}
+		.layui-card .form-label-name{
+			display: inline-block;
+			min-width: 80px;
+			white-space: nowrap;
+		}
+		/* 卡片面板 */
+		.layui-card{margin-bottom: 15px; border-radius: 2px; border: 1px solid rgb(226, 226, 226); background-color: #f8f8f8;}
+		.layui-card:last-child{margin-bottom: 0;}
+		.layui-card-header{position: relative; height: 42px; line-height: 42px; padding: 0 15px; color: #333; border-radius: 2px 2px 0 0; font-size: 14px; border-bottom: 1px solid rgb(226, 226, 226);}
+		.layui-card-body{position: relative; padding: 10px 15px; line-height: 24px;background-color: #fff;}
+		.layui-card-body[pad15]{padding: 15px;}
+		.layui-card-body[pad20]{padding: 20px;}
+		.layui-card-body .layui-table{margin: 5px 0;}
+		.layui-card .layui-tab{margin: 0;}
+
+		.waitcpmfirm{
+			padding-top: 16px;
+			text-align: center;
+		}
+		.are-you-sure-content{
+			display: inline-block;
+			margin-bottom: 25px;
+		}
+		.pr15{
+			padding-right: 15px;
+		}
+		.layui-form-label{
+			white-space: nowrap;
+		}
+		.layui-layer-page.layui-layer .layui-layer-content{
+			overflow: visible;
+		}
+
+		/* input框里 有前缀的状态 */
+		.prefix-input-wrap{
+			position: relative;
+		}
+		.prefix-input-wrap .layui-input{
+			padding-left: 32px;
+		}
+		.prefix-input-wrap .input-prefix-symble{
+			position: absolute;
+			left: 0;
+			top: 50%;
+			transform: translateY(-50%);
+			width: 36px;
+			text-align: center;
+			color: #aaa;
+		}
+/* 		规格图片的小大 */
+		.spec-pic{
+			width: 50px;
+			height: 50px;
+		    margin-right: 10px;
+		}
+	</style>
+	<script src="../../static/admin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body class="min-width1200">
+
+<div class="column-content-detail">
+	<div class="mb15">
+		<span>订单号:</span><label id="orderid"></label> <a href="odrorder.html" class="layui-btn layui-btn-primary">返回</a> <a class="layui-btn" onclick="preview()">打印订单</a>
+	</div>
+	<div id="addressfrom" style="display: none;" class="waitcpmfirm">
+				<form id="ressfrom" class="layui-form pr15">
+					<input type="text" name="bean.pkey"  id="asspkey" style="display: none;" />
+					<input type="text" name="bean.rowVersion" style="display: none;" id="assrowVersion"/>
+					<div class="layui-form-item">
+						<label class="layui-form-label">名字：</label>
+						<div class="layui-input-block">
+							<input type="text" name="bean.name" id="assname" class="layui-input"/>
+						</div>
+					</div>
+
+					<div class="layui-form-item">
+						<label class="layui-form-label">姓氏：</label>
+						<div class="layui-input-block">
+							<input type="text" id="asssurname" class="layui-input"  maxlength=20/>
+						</div>
+					</div>
+
+					<div class="layui-form-item">
+						<label class="layui-form-label">国家：</label>
+						<div class="layui-input-block" id="odrcountryDiv">
+							<select class="layui-input"  lay-filter="odrcountry" id="odrcountry"   name="odrcountry"  >
+								<option  value="">请选择国家</option>
+							</select>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">省份：</label>
+						<div class="layui-input-block" id="odrprovinceDiv">
+							<select class="layui-input"   lay-filter="status" id="odrprovince">
+								<option value=""  >请选择省份</option>
+							</select>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">城市：</label>
+						<div class="layui-input-block">
+							<input type="text" name="" id="asscity" class="layui-input"  maxlength=20 />
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">详细地址：</label>
+						<div class="layui-input-block">
+							<input type="text" name="bean.address" id="assaddress" class="layui-input"   maxlength=30/>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">邮政编码：</label>
+						<div class="layui-input-block">
+							<input type="text" name="bean.postalcode" id="asspostalcode" class="layui-input"  maxlength=20 />
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">电话号码：</label>
+						<div class="layui-input-block">
+							<input type="text" name="bean.phone" id="assphone" class="layui-input"  maxlength=20 />
+						</div>
+					</div>
+   			</form>
+
+     </div>
+
+     	<div id="ofrom" style="display: none;" class="waitcpmfirm pr15">
+				<form id="updorderfrom">
+					<div class="layui-form-item">
+						<label class="layui-form-label">订单号：</label>
+						<div class="layui-form-mid"  >
+							<input type="hidden" name="bean.orderNum" id="oorderNum" class="layui-input" />
+							<label id="oorderNumbel" > </label>
+						</div>
+					</div>
+
+					<div class="layui-form-item">
+						<label class="layui-form-label">产品总价：</label>
+						<div class="layui-input-block prefix-input-wrap">
+							<label class="input-prefix-symble currencySymbol"></label>
+							<input type="text" name="bean.prodPrice" onblur="changecount()" id="oprodPrice" class="layui-input"  onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"  />
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">运费：</label>
+						<div class="layui-input-block prefix-input-wrap">
+							<label class="input-prefix-symble currencySymbol"></label>
+							<input type="text" name="bean.freightPrice" onblur="changecount()" id="ofreightPrice" class="layui-input" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" />
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">保险费：</label>
+						<div class="layui-input-block prefix-input-wrap">
+							<label class="input-prefix-symble currencySymbol"></label>
+							<input type="text" name="bean.insurancePrice" onblur="changecount()" id="oinsurancePrice" class="layui-input"  onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">订单备注内容：</label>
+						<div class="layui-input-block">
+							<input type="text" name="bean.odrRemarks" id="oodrRemarks"  class="layui-input" />
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">订单总额：</label>
+						<div class="layui-input-block prefix-input-wrap">
+							<label class="input-prefix-symble currencySymbol"></label>
+							<input type="text"  name="bean.priceTotal" id="opriceTotal" readonly="readonly"  class="layui-input" />
+						</div>
+					</div>
+   			</form>
+     </div>
+	<div class="layui-clear">
+	    <div class="left-card">
+	    	<div class="layui-card">
+				  <div class="layui-card-header" >收货地址: <span  id="addresslayui"></span> </div>
+				  <div class="layui-card-body">
+			    	<div> <span class="form-label-name">名字:</span>		<label id="name"></label> <label id="surname"></label></div>
+						<div> <span class="form-label-name">地址:</span>		<label id="address"></label></div>
+						<div> <span class="form-label-name">邮政编码:</span> <label id="postalcode"></label></div>
+						<div> <span class="form-label-name">电话:</span>		<label id="phone"></label></div>
+				  </div>
+			</div>
+				<div class="layui-card">
+				  <div class="layui-card-header">账单地址:  </div>
+				  <div class="layui-card-body">
+			    	<div> <span class="form-label-name">名字:</span>		<label id="zdname"></label></div>
+						<div> <span class="form-label-name">地址:</span>		<label id="zdaddress"></label></div>
+						<div> <span class="form-label-name">邮政编码:</span> <label id="zdpostalcode"></label></div>
+						<div> <span class="form-label-name">电话:</span>		<label id="zdphone"></label></div>
+				  </div>
+			</div>
+			<div class="layui-card">
+				  <div class="layui-card-header"  >配送方式:  <span  id="payshowlayui"></span></div>
+				  <div class="layui-card-body">
+				 		<div> <span class="form-label-name">配送方式:</span><label id="deliveryType"></label></div>
+						<div> <span class="form-label-name">付款方式:</span><label id="paytype"></label></div>
+				  </div>
+			</div>
+	    </div>
+	    <div class="right-card">
+	     	<div class="layui-card">
+				  <div class="layui-card-header"  >订单信息<span id="orderlayui" ></span>  </div>
+				  <div class="layui-card-body" style="min-height: 318px;">
+
+			   		<div> <span class="form-label-name">订单号:</span> <label id="orderids"></label></div>
+						<div> <span class="form-label-name">用户名:</span> <a herf="" > <label id="email"></label></a> [会员]</div>
+						<div> <span class="form-label-name">下单时间:</span> <label id="odrtime"></label></div>
+						<div> <span class="form-label-name">订单状态:</span> <label id="odrstates"></label>
+						<form id="orderForm" style="display: none">
+							<input type="text" id="odrid"  name="bean.orderNum">
+							<input type="text" id="queodrstate" name="bean.state">
+						</form>
+
+						<button id="confir" class="layui-btn layui-btn-small"  style="display: none;"  onclick="check()">确认收款</button>
+						<button id="waiterro" class="layui-btn layui-btn-small"  style="display: none;"  onclick="checkerro()">付款错误</button>
+						 <button id="deliver" class="layui-btn layui-btn-small"  style="display: none;" onclick="check2()">确认发货</button></div>
+						<div> <span class="form-label-name">产品总价:</span> <label class="currencySymbol"></label> <label id="prodPrice"></label></div>
+						<div> <span class="form-label-name">运费:</span> <label class="currencySymbol"></label> <label id="freightprice"></label></div>
+						<div> <span class="form-label-name">保险费:</span> <label class="currencySymbol"></label> <label id="insurancePrice"></label></div>
+						<div> <span class="form-label-name">订单备注内容:</span> <label id="remarks"></label> </div>
+						<div> <span class="form-label-name">订单总价:</span> <label class="currencySymbol"></label> <label id="priceTotal"></label></div>
+				  </div>
+			</div>
+	    </div>
+	</div>
+
+		<div id="waitcpmfirm" style="display: none;" class="waitcpmfirm">
+       			<span class="are-you-sure-content">点击确认收款后,需要您发货</span>
+       			<br />
+       			您确认已收到款项?
+        </div>
+        <div id="Paymenterrorform" style="display: none;padding-top: 16px;text-align: center;"  class="Paymenterrorform">
+       			<span class="are-you-sure-content">点击付款错误后，订单异常</span>
+       			<br />
+       			您确认付款错误?
+        </div>
+        <div id="delive" style="display:none; padding-top: 20px; padding-right: 20px;">
+        	<form id="deform">
+        		<div class="layui-form-item">
+					<label class="layui-form-label">订单编号：</label>
+					<div class="layui-form-mid"  >
+						<label id="deodrid"></label>
+						<input type="hidden" name="bean.orderNum" id="depkey">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">发货方式：</label>
+					<div class="layui-form-mid"  >
+						<label id=dedelive></label>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">运单号：</label>
+					<div class="layui-input-block">
+						<input class="layui-input" type="text" id="dewaybillid" name="bean.expressNum"   maxlength=20   onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">包裹备注：</label>
+					<div class="layui-input-block">
+						<input class="layui-input" type="text" id="deremark" name="bean.pagRemarks">
+       					<input type="hidden"  name="bean.state" value="4">
+					</div>
+				</div>
+
+<!--        		<div>订单编号:<label id="deodrid"></label><input type="hidden" name="bean.orderNum" id="depkey"> </div> -->
+<!--        		<div>发货方式: <label id=dedelive></label> </div> -->
+<!--        		<div>运单号: <input type="text" id="dewaybillid" name="bean.expressNum"> </div> -->
+<!--        		<div>包裹备注: <input type="text" id="deremark" name="bean.pagRemarks"> -->
+<!--        			<input type="hidden"  name="bean.state" value="4"> -->
+<!--        		</div> -->
+       		</form>
+        </div>
+
+         <div id="psform" style="display:none;padding: 15px 15px 0 0;">
+        	<form id="psbd" class="layui-form">
+						<div class="layui-form-item">
+							<label class="layui-form-label">订单编号：</label>
+							<div class="layui-form-mid">
+								<label id="inpsorderNumbh"></label>
+								<input type="hidden" name="bean.orderNum" id="inpsorderNum">
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label class="layui-form-label">发货方式：</label>
+							<div class="layui-input-block" id="dedelivetypeDiv">
+								<select class="layui-input"  lay-filter="dedelivetype" name="bean.delivery" id="dedelivetype"  >
+									<option  value="">请选择快递公司</option>
+								</select>
+							</div>
+						</div>
+       		</form>
+				</div>
+        </div>
+
+       <table  class="layui-table" lay-skin="line">
+	       <colgroup>
+			    <col width="80">
+			    <col>
+			    <col width="200">
+			    <col width="150">
+			    <col width="100">
+			    <col width="180">
+		   </colgroup>
+	       <thead>
+	       	<tr>
+			       	<td>序号</td>
+			       	<td>产品</td>
+			       	<td>属性</td>
+			       	<td>价格</td>
+			       	<td>数量</td>
+	       			<td>小计</td>
+	       	 </tr>
+	       	 </thead>
+	       	 <tbody id="product"></tbody>
+       </table>
+
+	  <table  class="layui-table" lay-skin="line">
+	  	   <colgroup>
+			    <col width="150">
+			    <col width="120">
+			    <col width="120">
+			    <col width="180">
+		   </colgroup>
+	       <thead>
+	       	<tr>
+			       	<td>时间</td>
+			       	<td>状态</td>
+			       	<td>操作员</td>
+			       	<td>描述</td>
+	       	 </tr>
+	       	 </thead>
+     				 <tbody id="historys"></tbody>
+       </table>
+	<!--endprint-->
+ </div>
+
+</body>
+<script src="../../static/admin/js/jquery-1.11.1.js"
+	type="text/javascript" charset="utf-8"></script>
+<script src="../../static/admin/layui/layui.js" type="text/javascript"
+	charset="utf-8"></script>
+<!-- <script src="../../static/admin/layui/laydate.js" type="text/javascript"
+	charset="utf-8"></script> -->
+<script src="../../static/admin/js/common.js" type="text/javascript"
+	charset="utf-8"></script>
+<script type="text/javascript">
+	var orderstatus=""; //当前订单状态
+	var loginname="";
+	var shaddress="";
+	var provincelist="";
+	var odrid="";
+	function getUrlParam(name)
+			{
+			var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+			var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+			if (r!=null) return unescape(r[2]); return null; //返回参数值
+			}
+	window.onload=function(){
+		odrid=getUrlParam('orderNum');
+		$("#orderid").text(odrid);
+		$("#orderids").text(odrid);
+		$.ajax({
+			type:"post",
+			url:'/seller/odr_OdrOrder_select',
+			data:{"orderNum":odrid},
+			dataType:'json',
+			success: function(data)
+			{
+				if(data.ret == 1){
+					renderData(data.result);
+				}else{
+					if(data.msg != undefined){
+						layer.msg(data.msg,{time:3000});
+					}
+					renderData(data.result);
+				}
+				layui.use(['layer', 'form'], function(){
+  var layer = layui.layer,form = layui.form();
+
+  	form.on('select(odrcountry)', function(id){
+			renderprovince(id.value);
+		})
+});
+			}
+		})
+
+	}
+
+	function preview(){
+		window.location.href="/home/odr_OdrOrder_junpOrderPrint?orderId="+getUrlParam('orderNum');
+	}
+
+	function renderData(data){
+			if(data.status==0){
+			orderstatus="待付款";
+			}else if(data.status==1){
+			orderstatus="等待确认付款";
+			}else if(data.status==2){
+			orderstatus="付款错误";
+			}else if(data.status==3){
+			orderstatus="等待发货";
+			}else if(data.status==4){
+			orderstatus="已发货";
+			}else if(data.status==5){
+			orderstatus="完成订单";
+			}else if(data.status==6){
+			orderstatus="已取消订单";
+			}else if(data.status==7){
+			orderstatus="已删除";
+			}
+			$("#addresslayui").empty();
+			$("#payshowlayui").empty();
+			$("#orderlayui").empty();
+			if(!(orderstatus=="完成订单"||orderstatus=="已取消订单"||orderstatus=="已删除")){
+				$("#addresslayui").append("<a class='layui-btn layui-btn-primary layui-btn-small'  onclick='addresssshow()'>编辑 </a>");
+				$("#payshowlayui").append("<a class='layui-btn layui-btn-primary layui-btn-small'  onclick='payshow()'>编辑 </a> ");
+				$("#orderlayui").append("<a class='layui-btn layui-btn-primary layui-btn-small' onclick='ordershow()'>编辑 </a> ");
+			}
+			if(orderstatus=="等待确认付款"){
+				$("#confir").css("display","inline-block");
+				$("#waiterro").css("display","inline-block");
+			}
+			if(orderstatus=="等待发货"||orderstatus=="付款错误"){
+				$("#deliver").css("display","inline-block");
+			}
+			$("#odrstates").text(orderstatus);
+			$("#phone").text(data.contactNum);//电话
+			$("#odrtime").text(new Date(data.date).toLocaleString());//下单时间
+			$("#insurancePrice").text(data.insurance);//保险费
+			$("#name").text(data.shipName);//收货人名称
+			$("#freightprice").text(data.shippingCharges);//运费
+			$("#prodPrice").text(data.subtotal);//产品总金额
+			$("#priceTotal").text(data.total);//产品总价
+			$("#deliveryType").text(data.deliveryType);
+			$("#dedelive").text(data.deliveryType);
+				$("#paytype").text(data.payType.name);
+			$("#product").empty();
+			$.each(data.lines,function(i,line){//产品列表
+				$("#product").append(
+					"<tr> <td>"+(i+1)+"</td>"
+					+"<td><a href='/home/pdt_PdtProduct_gtProductsInfo?id="+line.spec.product+"'  target='_blank'><img class='spec-pic' src='"+parent.imgUrlconfig + line.spec.images+"'/>" +line.spec.productName+"</a></td>"
+					+"<td>"+line.spec.size+"</td>"
+					+"<td>"+line.spec.price+"</td>"
+					+"<td>"+line.qty+"</td>"
+					+"<td>"+line.subtotal+"</td></tr>"
+				)
+			})
+			$("#historys").empty();
+					$.each(data.historys,function(i,his){
+						var str=""
+						if(his.status==0){
+							str="待付款";
+							}else if(his.status==1){
+							str="等待确认付款";
+							}else if(his.status==2){
+							str="付款错误";
+							}else if(his.status==3){
+							str="等待发货";
+							}else if(his.status==4){
+							str="已发货";
+							}else if(his.status==5){
+							str="完成订单";
+							}else if(his.status==6){
+							str="已取消订单";
+							}else if(his.status==7){
+							str="已删除";
+							}
+						$("#historys").append(
+	 							"<tr><td>"+new Date(his.date).toLocaleString()+"</td><td>"+str+"</td><td>"+his.operator+" </td><td>"+his.descrip+"</td></tr>"
+								);
+			})
+
+			$("#remarks").text(data.remark);//订单备注
+			shaddress=data.shipAddress;
+			$("#surname").text(shaddress.surname);
+			$("#postalcode").text(shaddress.postalCode);
+			var strline=shaddress.address+","+shaddress.city+","+shaddress.region.name+","+shaddress.country.name;
+			$("#address").text(strline);
+			$("#email").text(data.usrEmail);
+			var jsonadds=data.billAddress;
+			var str=jsonadds.address+","+jsonadds.city+","+jsonadds.region.name+","+jsonadds.country.name;
+			$("#zdname").text(jsonadds.name+" "+jsonadds.surname);
+			$("#zdpostalcode").text(jsonadds.postalCode);
+			$("#zdphone").text(jsonadds.phone);
+			$("#zdaddress").text(str);
+ 			loginname=data.operator;
+ 			$("#odrid").val(odrid);
+ 			$(".currencySymbol").text(data.currencySymbol);
+ 			$("#derowVersion").val(data.rowVersion);
+
+	}
+	function renderCountries(){
+	 layui.use('form', function(){
+		var form = layui.form();
+			var option = '';
+					$.ajax({
+							type:'post',
+							url:'/home/plt_PltCountry_list',
+							dataType:'JSON',
+							success:function(data){
+							$("#odrcountry").empty();
+								option = "<option  >请选择国家</option>";
+								$("#odrcountry").append(option);
+								$.each(data.result,function(i,line){
+									option = "<option  value='"+line.id+"'>"+line.name+"</option>";
+									$("#odrcountry").append(option);
+								})
+								renderprovince(shaddress.country.Id);
+								form.render("select");
+								$('#odrcountry').next().find('.layui-anim').children('dd[lay-value="'+shaddress.country.id+'"]').click();
+							}
+						})
+
+
+		});
+	}
+
+
+	function renderprovince(countries){
+	 layui.use('form', function(){
+		var form = layui.form();
+			var option = '';
+					$.ajax({
+							type:'post',
+							url:'/home/plt_PltProvince_list',
+							data:{"countryId":countries},
+							dataType:'JSON',
+							success:function(data){
+									$("#odrprovince").empty();
+								if( data.result.length>0 ){
+									$.each(data.result,function(i,line){
+										option = "<option value='"+line.id+"'>"+line.name+"</option>";
+										$("#odrprovince").append(option);
+									})
+									form.render("select");
+								$('#odrprovince').next().find('.layui-anim').children('dd[lay-value="'+shaddress.region.id+'"]').click();
+								}
+
+							}
+						})
+
+		});
+	}
+
+	function getIcon(type){
+		if(type == 1){
+			return "<img src='../../static/admin/images/jpcartjptb222.png'/>";
+		}else{
+			return "<img src='../../static/admin/images/jpcartnptb222.png'/>";
+		}
+	}
+
+	function changecount(){
+			var product= verifyNum(parseInt($("#oprodPrice").val()));
+			var fre=verifyNum(parseInt($("#ofreightPrice").val()));
+			var isp=verifyNum(parseInt($("#oinsurancePrice").val()));
+			var count=product+fre+isp;
+				$("#opriceTotal").val(count);
+
+	}
+
+	function verifyNum(param){
+		if(isNaN(param)){
+			return 0;
+		}else{
+			return param;
+		}
+	}
+
+	 function check() {
+		 var confirmWin = layer.open({
+	            type: 1,
+	            title: '确认收款',
+	            area: ['300px', '200px'],
+	            shadeClose: false, //点击遮罩关闭
+	            content: $('#waitcpmfirm'),//此处ID为以上书写的最外层DIV的ID
+	            btn: ['确定', '取消'],
+  				success:function(index, layero) {
+	            	$("#queodrstate").val(3);
+	            },
+	            yes: function (index, layero) {//添加人员
+	            $.ajax({
+	                 type:'post',
+	                 url:'/seller/odr_OdrOrder_updline',
+	                 data:$('#orderForm').serialize(),
+	                 dataType:'json',
+	                 success:function(data){
+	                	 if(data.ret == 1){
+	                		 $('#waiterro').css("display", "none");
+		                	 $("#confir").css("display","none");
+		                	 var  hisdesclibe="Update order status from 等待付款 to 等待发货"
+	                		 $.ajax({
+		                			type:'post',
+		                			url:'/seller/odr_OdrHistory_ins',
+		                			data:{"hisdescibe":hisdesclibe,"histype":3,"histmain":odrid},
+		                			dataType:"json",
+		                			success:function(history){
+		                				if(history.ret == 1){
+		                					layer.msg("已确认收款",{icon:1,time:2000})
+		                					layer.close(confirmWin);
+		                					window.onload();
+		                				}else{
+		                					layer.msg(history.msg,{icon:2,time:2000});
+		                				}
+		                			}
+		                		})
+	                	 }else{
+	                		 layer.msg(data.msg,{icon:2,time:2000});
+	                	 }
+	                 }
+	                 })
+	            },
+	            btn2: function (index, layero) {
+	                return;
+	            },
+	            cancel: function () {
+	                return;
+	            },
+	            end: function () {
+
+	            }
+	        });
+	    }
+	     function checkerro() {
+		  var wrongWin = layer.open({
+	            type: 1,
+	            title: '付款错误',
+	            area: ['300px', '200px'],
+	            shadeClose: false, //点击遮罩关闭
+	            content: $('#Paymenterrorform'),//此处ID为以上书写的最外层DIV的ID
+	            btn: ['确定', '取消'],
+	            success:function(index, layero) {
+	            	$("#queodrstate").val(2);
+	            },
+	            yes: function (index, layero) {//添加人员
+	            $.ajax({
+	                 type:'post',
+	                 url:'/seller/odr_OdrOrder_updline',
+	                 data:$('#orderForm').serialize(),
+	                 dataType:'json',
+	                 success:function(data){
+	                	 if(data.ret == 1){
+	                		 $('#waiterro').css("display", "none");
+		                	 $("#confir").css("display","none");
+		                	 var  hisdesclibe="Update order status from 等待付款 to 付款错误"
+		                	 $.ajax({
+		                			type:'post',
+		                			url:'/seller/odr_OdrHistory_ins',
+		                			data:{"hisdescibe":hisdesclibe,"histype":3,"histmain":odrid},
+		                			dataType:"json",
+		                			success:function(data){
+		                				if(data.ret == 1){
+		                					layer.msg("已付款错误",{icon:1,time:2000})
+		                					layer.close(wrongWin);
+		                					window.onload();
+		                				}else{
+		                					 layer.msg(data.msg,{icon:2,time:2000});
+		                				}
+
+		                			}
+		                		})
+	                	 }else{
+	                		 layer.msg(data.msg,{icon:2,time:2000});
+	                	 }
+	                 }
+	                 })
+	            },
+	            btn2: function (index, layero) {
+	                return;
+	            },
+	            cancel: function () {
+	                return;
+	            },
+	            end: function () {
+// 	            	 $('#confir').css("display", "none");
+// 	                $('#waiterro').css("display", "none");
+
+	            }
+	        });
+	    }
+
+	 function check2() {
+	        var sendWin = layer.open({
+	            type: 1,
+	            title: '确认发货',
+	            area: ['400px', '340px'],
+	            shadeClose: false, //点击遮罩关闭
+	            content: $('#delive'),//此处ID为以上书写的最外层DIV的ID
+	            btn: ['确定', '取消'],
+				success:function(index, layero) {
+					$("#depkey").val(odrid);
+					$("#deodrid").text(odrid);
+				},
+	            yes: function (index, layero) {//添加人员
+		            if($("#dewaybillid").val().trim()==""){
+		            	layer.msg('运单号不能为空');
+		            }else {
+
+		            	 $.ajax({
+			                 type:'post',
+			                 url:'/seller/odr_OdrOrder_upddeliver',
+			                 data:$('#deform').serialize(),
+			                 success:function(data){
+			                	 if(data.ret == 1){
+			                		 $("#deliver").css("display","none");
+				                	 var  hisdesclibe="Update order status from 等待发货 to 已发货"
+				                	 $.ajax({
+				                			type:'post',
+				                			url:'/seller/odr_OdrHistory_ins',
+				                			data:{"hisdescibe":hisdesclibe,"histype":4,"histmain":odrid},
+				                			dataType:"json",
+				                			success:function(data){
+				                				if(data.ret == 1){
+			                						layer.msg('确认发货成功');
+				                					setTimeout(function(){
+				                					layer.close(sendWin);
+				                						window.onload();
+				                					},2000)
+				                				}else{
+				                					 layer.msg(data.msg,{icon:2,time:2000});
+				                				}
+				                			}
+				                		})
+			                	 }else{
+			                		 layer.msg(data.msg,{icon:2,time:2000});
+			                	 }
+			                 }
+		                 })
+		            }
+	            },
+	            btn2: function (index, layero) {
+	                return;
+	            },
+	            cancel: function () {
+	                return;
+	            },
+	            end: function () {
+	        //     $('#deliver').css("display", "none");
+	           //     $('#addmain').css("display", "none");
+	            }
+	        });
+	    }
+	function addresssshow(){
+		 var editAddress = layer.open({
+	            type: 1,
+	            title: '修改地址',
+	            area: ['500px', '540px'],
+	            shadeClose: false,
+	            content: $('#addressfrom'),
+	            btn: ['确定', '取消'],
+	            success:function(){
+	            $("#assname").val($("#name").text());
+	            $("#asscity").val(shaddress.city);
+	            $("#assaddress").val(shaddress.address);
+				$("#asssurname").val(shaddress.surname);
+				$("#asspostalcode").val($("#postalcode").text());
+				$("#assphone").val($("#phone").text());
+				renderCountries();
+	            },
+	            yes: function (index, layero) {
+	            	var str={"city": $("#asscity").val(),
+	            	"region":{"id":$("#odrprovince").val(),"name":$('dd[lay-value="'+$("#odrprovince").val()+'"]').text()},
+	            	"country":{"id":$("#odrcountry").val(),"name":$('dd[lay-value="'+$("#odrcountry").val()+'"]').text()},
+	            	"address":$("#assaddress").val(),
+	            	"surname":$("#asssurname").val(),
+	            	"postalCode":$("#asspostalcode").val(),
+	            	"name":$("#assname").val(),
+	            	"phone":$("#assphone").val()
+	            	};
+						$.ajax({
+							type:'post',
+							url:'/seller/odr_OdrOrder_updaddress',
+							data:{"bean.address":JSON.stringify(str),"bean.orderNum":odrid},
+							success:function(data){
+								if(data.ret == 1){
+									layer.msg("修改成功",{icon:1,time:2000});
+									layer.close(editAddress);
+	    							window.onload();
+								}else{
+									layer.msg(data.msg,{time:3000});
+								}
+							}
+						})
+	            },
+	            btn2: function (index, layero) {
+	                return;
+	            },
+	            cancel: function () {
+	                return;
+	            },
+	            end: function () {
+	            	if($("#assphone").val() == "" || $("#assphone").val() == undefined){
+	            		$("#assphone").val($("#assphone").attr("placeholder"))
+	            	}
+	            	if($("#assaddress").val() == "" || $("#assaddress").val() == undefined){
+	            		$("#assaddress").val($("#assaddress").attr("placeholder"))
+	            	}
+	            	if($("#asspostalcode").val() == "" || $("#asspostalcode").val() == undefined){
+	            		$("#asspostalcode").val($("#asspostalcode").attr("placeholder"))
+	            	}
+	            	if($("#assname").val() == "" || $("#assname").val() == undefined){
+	            		$("#assname").val($("#assname").attr("placeholder"))
+	            	}
+	                $('#addmain').css("display", "none");
+	            }
+	        });
+	}
+
+	function  payshow(){
+			var methodWin = layer.open({
+	            type: 1,
+	            title: '修改配送方式',
+	            area: ['400px', '240px'],
+	            shadeClose: false, //点击遮罩关闭
+	            content: $('#psform'),//此处ID为以上书写的最外层DIV的ID
+	            btn: ['确定', '取消'],
+				success:function(index, layero) {
+					$("#inpsorderNum").val(odrid);
+					$("#inpsorderNumbh").text(odrid);
+					var option="";
+
+					 $.ajax({
+		                 type:'post',
+		                 url:'/seller/plt_PltFreightSeller_listfreight',
+		                 dataType:'json',
+		                 success:function(data){
+		                	 if(data.data != undefined){
+		                		 $("#dedelivetype").empty();
+			                 	$.each(data.data,function(i,line){
+			                 				if($("#deliveryType").text()==line.company){
+			                 					option += "<option  value='"+line.company+"' selected>"+line.company+"</option>";
+			                 					//$('#dedelivetype').next().find('.layui-anim').children('dd[lay-value="'+line.id+'"]').click();
+			                 				}else{
+				                 				option += "<option  value='"+line.company+"'>"+line.company+"</option>";
+			                 				}
+
+			                 	})
+			                 	$("#dedelivetype").append(option);
+
+												layui.use(['form'], function(){
+													var form = layui.form();
+													form.render("select","dedelivetype")
+												})
+
+		                	 }else{
+		                		 layer.msg(data.msg,{time:3000});
+		                	 }
+
+		                 }
+		                 })
+				},
+	            yes: function (index, layero) {//添加人员
+	            	 $.ajax({
+		                 type:'post',
+		                 url:'/seller/odr_OdrOrder_updcompany',
+		                 data:$('#psbd').serialize(),
+		                 success:function(data){
+		                		layer.closeAll();
+		    					window.onload();
+		                 }
+		                 })
+
+
+	            },
+	            btn2: function (index, layero) {
+	                return;
+	            },
+	            cancel: function () {
+	                return;
+	            },
+	            end: function () {
+	            }
+	        });
+
+	}
+
+
+	function ordershow(){
+		 var contentWin = layer.open({
+	            type: 1,
+	            title: '修改订单',
+	            area: ['400px', '440px'],
+	            shadeClose: false, //点击遮罩关闭
+	            content: $('#ofrom'),//此处ID为以上书写的最外层DIV的ID
+	            btn: ['确定', '取消'],
+	            success:function (index, layero) {
+	         	   $("#oorderNumbel").text($("#orderids").text().trim());
+	            	$("#oorderNum").val($("#orderids").text().trim());//订单编号
+	            	$("#oprodPrice").val($("#prodPrice").text().trim());//
+				    $("#opriceTotal").val($("#priceTotal").text().trim());
+					$("#ofreightPrice").val($("#freightprice").text().trim());
+					$("#oinsurancePrice").val($("#insurancePrice").text().trim());
+					$("#oodrRemarks").val($("#remarks").text().trim());
+
+	            },
+	            yes: function (index, layero) {//添加人员
+	            	if($("#oprodPrice").val()==""){
+						layer.msg('产品总价不可为空', {icon: 2,time:1000});
+	            		return
+	            	}
+	            	if($("#ofreightPrice").val()==""){
+						layer.msg('运费不可为空', {icon: 2,time:1000});
+	            		return
+	            	}
+	            	if($("#oinsurancePrice").val()==""){
+						layer.msg('保险费不可为空', {icon: 2,time:1000});
+	            		return
+	            	}
+						$.ajax({
+							type:'post',
+							url:'/seller/odr_OdrOrder_updorder',
+							data:$('#updorderfrom').serialize(),
+							success:function(data){
+								if(data.ret == 1){
+									layer.close(contentWin);
+		    						window.onload();
+								}else{
+									layer.msg(data.msg,{time:3000});
+								}
+							}
+						})
+	            },
+	            btn2: function (index, layero) {
+	                return;
+	            },
+	            cancel: function () {
+	                return;
+	            },
+	            end: function () {
+// 	            	if($("#asspostalcode").val() == "" || $("#asspostalcode").val() == undefined){
+// 	            		$("#asspostalcode").val($("#asspostalcode").attr("placeholder"))
+// 	            	}
+// 	            	if($("#oprodPrice").val() == "" || $("#oprodPrice").val() == undefined){
+// 	            		$("#oprodPrice").val(Number($("#oprodPrice").attr("placeholder")))
+// 	            	}
+// 	            	if($("#ofreightPrice").val() == "" || $("#ofreightPrice").val() == undefined){
+// 	            		$("#ofreightPrice").val(Number($("#ofreightPrice").attr("placeholder")))
+// 	            	}
+// 	            	if($("#oinsurancePrice").val() == "" || $("#oinsurancePrice").val() == undefined){
+// 	            		$("#oinsurancePrice").val(Number($("#oinsurancePrice").attr("placeholder")))
+// 	            	}
+// 	            	if($("#oodrRemarks").val() == "" || $("#oodrRemarks").val() == undefined){
+// 	            		$("#oodrRemarks").val($("#oodrRemarks").attr("placeholder"))
+// 	            	}
+// 	            	if($("#opriceTotal").val() == "" || $("#opriceTotal").val() == undefined){
+// 	            		$("#opriceTotal").val(Number($("#opriceTotal").attr("placeholder")))
+// 	            	}
+// 	            	changecount();
+	                $('#addmain').css("display", "none");
+	            }
+	        });
+	}
+
+
+
+	</script>
+</html>

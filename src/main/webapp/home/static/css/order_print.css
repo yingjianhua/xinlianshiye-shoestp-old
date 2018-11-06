@@ -1,0 +1,144 @@
+@charset "utf-8";
+
+.mt30{
+	margin-top: 30px;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+}
+.main{
+    margin: 60px 0px 0px 60px;
+    width: 1100px;
+}
+/* 订单信息 - 块级信息 - ul*/
+.order-info-group{
+	display: inline-block;
+	vertical-align: top;
+	width: 250px;
+	padding-left: 15px;
+	box-sizing: border-box;
+}
+.order-info-group:first-child{
+	padding-left: 0;
+}
+li{
+    list-style-type: none;
+    font-size: 12px;
+    line-height: 20px;
+}
+h1.title{
+    font-weight: bold;
+    color: #424242;
+    line-height: 36px;
+		font-size: 23px;
+}
+.sub-title {
+	  line-height: 36px;
+		font-weight: bold;
+		color: #424242;
+    font-size: 15px;
+}
+
+[v-cloak]{
+	display: none;
+}
+
+/* 详细信息 */
+.order-details {
+    margin-top: 10px;
+}
+.order-details .detail-item{
+		display: flex;
+}
+.flex{
+	display: flex;
+}
+.order-details .detail-item .name{
+		min-width: 60px;
+		flex-shrink: 0;
+}
+.order-details .detail-item .content{
+		padding-left: 4px;
+}
+.normal-style{
+	font-size: 12px;
+	line-height: 20px;
+}
+table{
+	border-collapse: collapse;
+	table-layout:fixed;
+	word-break:break-all;
+}
+.table-goods,.table-operate{
+	margin: 0;
+	width: 1006px;
+}
+.table-goods{
+	text-align: center;
+	border-bottom: 3px solid black;
+}
+
+.table-goods-th,.table-operate-th{
+	width: 100%;
+	height: 36px;
+	font-size: 15px;
+	line-height: 36px;
+	font-weight: bold;
+	color: #424242;
+	background-color: #eee;
+	text-align: center;
+}
+.table-goods-tr td,.table-operate-tr td{
+	height: 46px;
+	text-align: center;
+	line-height: 46px;
+	font-size: 12px;
+	overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap
+}
+.table-goods-tr {
+	border-bottom: 1px solid #c2c2c2;
+}
+
+.goods-img{
+	display: block;
+	float: left;
+	width: 30px;
+	height: 30px;
+	background-color: gray;
+	margin-top: 8px;
+}
+.table-operate-tr td{
+	height: 25px;
+	line-height: 25px;
+}
+/* 描述内容 内容较长，左对齐 */
+.table-operate-tr td:nth-child(4) {
+    text-align: left;
+    text-indent: 15px;
+}
+
+/* 合计 - 位置 */
+.total-info{
+	width: 1006px;
+	height: 46px;
+	line-height: 46px;
+	/* text-indent: 755px; */
+	text-align: right;
+	font-size: 15px;
+	font-weight: bold;
+	color: #424242;
+}
+.total-info .total-num{
+	display: inline-block;
+	width: 7%;
+	text-align: center;
+}
+.total-info .total-count{
+	display: inline-block;
+	width: 12%;
+	text-align: center;
+}

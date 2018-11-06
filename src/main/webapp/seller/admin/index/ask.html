@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<title>An Online B2B market——-Shoestp.com,gathering 300 professional shoes manufacture companies Business backstage</title>
+	<link rel="stylesheet" type="text/css" href="../../static/admin/layui/css/layui.css" />
+	<link rel="stylesheet" type="text/css" href="../../static/admin/css/admin.css" />
+	<script src="../../static/admin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../static/admin/js/jquery-1.11.1.js" type="text/javascript" charset="utf-8"></script>
+	<!-- <script src="../../static/admin/layui/laydate.js" type="text/javascript" charset="utf-8"></script> -->
+	<script src="../../static/admin/js/common.js" type="text/javascript" charset="utf-8"></script>
+	<!-- <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.4.6/lib/theme-chalk/index.css">
+	<script src="https://unpkg.com/element-ui@2.4.6/lib/index.js"></script> -->
+	<script src="/home/static/js/vue.min.js"></script>
+	<script src="/home/static/js/lodash.min.js"></script>
+	<script src="/home/static/js/axios.min.js"></script>
+	<script src="/home/static/js/element-ui.js"></script>
+	<link rel="stylesheet" type="text/css" href="/home/static/css/element-ui.css"/>
+	<script type="text/javascript" src="/home/static/js/qs.js"></script>
+	<style>
+		[v-cloak] {
+		  display: none;
+		}
+		.tl{
+			text-align: left;
+		}
+		.tc{
+			text-align: center;
+		}
+		.tr{
+			text-align: right;
+		}
+		.layui-input.no-border, .layui-textarea.no-border {
+			border-color: transparent;
+			background: transparent;
+			transition: none;
+			-webkit-transition: none;
+			resize: none;
+			border-width: 0;
+		}
+
+		.layui-input.no-border:hover, .layui-textarea.no-border:hover {
+			border: none;
+		}
+		.layui-input.no-border, .layui-textarea.no-border{
+			/* width: 500px; */
+			height: auto;
+		}
+
+		.layui-textarea{
+			resize: none;
+		}
+
+		.goods-pic-wrap img {
+			object-fit: contain;
+			width: 120px;
+			height: 120px;
+			margin-right: 8px;
+			padding: 6px;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+		}
+
+		.need-input-field {
+			width: 500px;
+			min-width: 500px;
+			margin: 0;
+	    box-sizing: border-box;
+			background: #f4f4f4;
+		}
+		/*抢单框*/
+		.rob-wrap{
+			padding-right: 5px;
+		}
+		/*询盘记录框*/
+		.inquiry-record{
+			padding: 15px;
+		}
+		/*field框*/
+		.layui-elem-field{
+		    border-radius: 6px;
+		}
+		/*发送的时间框*/
+		.sendTime{
+			margin-bottom: 6px;
+			color: #aaa;
+		}
+		/*对话内容框*/
+		.dialog-box{
+			float: left;
+			padding: 10px 15px;
+			border-radius: 6px;
+			color: #444;
+	    background-color: #ddd;
+		}
+		/*p2S-wrap框*/
+		.dialog-box.p2S-wrap{
+			float: right;
+			color: #fff;
+			background-color: #1E9FFF;
+		}
+		/* 询盘记录框 */
+		.message-wrap{
+			max-height: 490px;
+			overflow-y: scroll;
+			margin-bottom: 15px;
+			padding-right: 10px;
+		}
+		.message-wrap .message{
+			margin-bottom: 15px;
+		}
+		/* 询盘记录 - 发送信息框  */
+		.message-send-wrap{
+			position: relative;
+		}
+		/* 询盘记录 - 发送信息textarea */
+		.consult_msg{
+			height: 120px;
+			width: 100%;
+			resize: none;
+	    padding: 4px 8px;
+			border-color: #ddd;
+			box-sizing: border-box;
+		}
+		/* 询盘记录 - 发送按钮  */
+		.answer_button{
+			position: absolute;
+			right: 15px;
+			bottom: 10px;
+		}
+		.clearfloat:after {
+            content: "";
+            height: 0;
+            line-height: 0;
+            display: block;
+            visibility: hidden;
+            clear: both;
+        }
+
+        .clearfloat {
+            zoom: 1;
+        }
+
+        .fl {
+            float: left;
+        }
+
+        .fr {
+            float: right;
+        }
+	</style>
+	<!-- 新内容 -->
+	<style>
+
+		#lib_user_contact_supplier .other_party{
+		float: left;
+		margin-top: 20px;
+		}
+		#lib_user_contact_supplier .other_party .user_goods_time{
+		text-align: left;
+		line-height: 26px;
+		}
+		#lib_user_contact_supplier  .user_goods_time{
+		text-align: right;
+		line-height: 26px;
+		}
+		#lib_user_contact_supplier .user_goods_pic{
+		margin:25px 0 0 20px;
+		}
+		#lib_user_contact_supplier .contact_supplier_main {
+		padding: 20px;
+		background-color: #ffffff;
+		margin-bottom: 20px;
+		}
+		#lib_user_contact_supplier .contact_supplier_main .border_hr{
+		height: 1px;
+		border-bottom: dashed 1px #e5e5e5;
+		margin: 20px 0;
+		}
+		#lib_user_contact_supplier .contact_supplier_main  .user_goods_info{
+		padding: 20px;
+		box-sizing: border-box;
+		overflow: auto;
+		}
+		#lib_user_contact_supplier .contact_supplier_main  .user_live_box{
+		border: solid 1px #e5e5e5;
+		}
+		#lib_user_contact_supplier .contact_supplier_main  .user_goods_info p{
+		line-height: 20px;
+		}
+		#lib_user_contact_supplier .contact_supplier_main  .user_goods_info .goods_info_head .goods_info_title{
+		width: 200px;
+		font-size: 16px;
+		overflow: hidden;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		-ms-text-overflow: ellipsis;
+		text-overflow: ellipsis;
+		white-space: normal;
+		word-wrap:break-word;
+		word-break:break-all;
+		word-wrap:break-word;
+		position: relative;
+		}
+		#lib_user_contact_supplier .contact_supplier_main  .user_goods_info .goods_info_body{
+		border-bottom: dashed 1px #e5e5e5;
+		padding: 17px 0;
+		position: relative;
+		}
+		#lib_user_contact_supplier .rotate{
+		transform: rotate(180deg);
+		}
+		#lib_user_contact_supplier .contact_supplier_main  .user_goods_info .goods_info_body .goods_box_btn{
+		background: url(../../static/admin/images/double-arrow.png)  no-repeat;
+		background-size: cover;
+		width: 16px;
+		height: 16px;
+		margin: 0 auto;
+		position: absolute;
+		right: 0;
+		bottom: 20px;
+		cursor: pointer;
+		transition: all 0.6s;
+		}
+		#lib_user_contact_supplier .contact_supplier_main  .user_goods_info .goods_info_body>div:first-child{
+		width: 75px;
+		height: 75px;
+		border: solid 1px #e5e5e5;
+		margin-right: 10px;
+		}
+		#lib_user_contact_supplier .contact_supplier_main  .user_goods_info .goods_info_body>div:nth-child(2){
+		line-height: 24px;
+		}
+		#lib_user_contact_supplier .contact_supplier_main   .inquiry_content_main{
+		padding: 10px;
+		border: solid 1px #e5e5e5;
+		width: 90%;
+		display: none;
+		margin:  auto;
+		margin-bottom: 10px;
+		}
+		#lib_user_contact_supplier .contact_supplier_main   .inquiry_content_main .inquiry_content{
+		line-height: 20px;
+		/* min-height: 35px; */
+		overflow: auto;
+		text-indent: 2em;
+		}
+		#lib_user_contact_supplier .contact_supplier_main  .inquiry_content_main .inquiry_content_img{
+		height: 92px;
+		margin-top: 5px;
+		overflow: auto;
+		border-top: 1px dashed #e5e5e5;
+		}
+		#lib_user_contact_supplier .contact_supplier_main   .inquiry_content_main .inquiry_content_img ul li{
+		width: 71px;
+		height: 71px;
+		border: solid 1px #e5e5e5;
+		float: left;
+		margin: 10px 10px 9px 0;
+		}
+		#lib_user_contact_supplier .contact_supplier_main   .inquiry_content_main .inquiry_content_img ul li img{
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		}
+
+		/* upload按钮改回默认样式 */
+		.el-upload--picture-card {
+			position: absolute;
+			right: 93px;
+			bottom: 9px;
+			z-index: 9;
+			width: auto;
+			height: auto;
+			line-height: normal;
+			border-width: 0;
+			border-radius: 0;
+			box-sizing: border-box;
+			background-color: #fbfdff;
+		}
+		/* 上传图片预览的大小 */
+		.el-upload-list--picture-card .el-upload-list__item{
+			width: 84px;
+			height: 84px;
+		}
+
+		/* upload 图片预览 */
+		.el-upload-list--picture-card .el-upload-list__item-thumbnail{
+			object-fit: contain;
+		}
+
+		/* dialog内图片大小 */
+		.dialog-box img{
+			width: 70px;
+			height: 70px;
+			object-fit: contain;
+			margin: 10px 10px 10px 0;
+			border-radius: 4px;
+		}
+	</style>
+</head>
+
+
+
+<body class="p015 pt15">
+	<div id="app" v-cloak>
+		<div class="layui-form-item">
+			<label class="layui-form-label">询盘名称：</label>
+			<div class="layui-input-block">
+				<div id="consult_title" class="layui-input no-border">
+					{{inquiryInfo.title}}
+				</div>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">产品图片：</label>
+			<div class="layui-input-block goods-pic-wrap" id="img">
+				<img v-if="inquiryImgs" :src="parent.imgUrlconfig+inquiryImgs[0]">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">产品编号：</label>
+			<div class="layui-input-block">
+				<input type="text" name="proId" :value="inquiryInfo.productNum"
+					id="proId" readonly="readonly" autocomplete="off" class="layui-input no-border">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">姓名：</label>
+			<div class="layui-input-block">
+				<div id="consult_name" class="layui-input no-border">
+					{{inquiryInfo.name}}
+				</div>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">国家：</label>
+			<div class="layui-input-block">
+				<div id="consult_country" class="layui-input  no-border">
+					{{inquiryInfo.countryName}}
+				</div>
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">时间：</label>
+			<div class="layui-input-block">
+				<div id="consult_createTime" class="layui-input no-border">
+					{{inquiryInfo.createTime}}
+				</div>
+			</div>
+		</div>
+
+		<!-- <div class="layui-form-item">
+			<label class="layui-form-label">内容：</label>
+			<div class="layui-input-block">
+				<textarea class="layui-textarea no-border" id="consult_content" rows="" cols="" readonly="readonly"></textarea>
+			</div>
+		</div> -->
+
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+
+				<fieldset id="answer_container" class="layui-elem-field need-input-field rob-wrap" v-if="!isInquiryOwer">
+					<legend>抢单</legend>
+					<div class="layui-field-box">
+						<form class="layui-form" id="formid">
+							<div class="layui-form-item layui-form-text">
+								<label class="layui-form-label">留言：</label>
+								<div class="layui-input-block">
+									<textarea placeholder="" class="layui-textarea" id="leavMsg"></textarea>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">报价：</label>
+								<div class="layui-input-block">
+									<input type="text" id="offer" autocomplete="off" class="layui-input" >
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">已抢单：</label>
+								<div class="layui-input-block">
+									<div id="consult_count" class="layui-input" >
+										{{inquiryInfo.supplierCount}}"/5   仅剩"{{5-inquiryInfo.supplierCount}}
+									</div>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<div class="layui-input-block" id="combtn">
+									<button type="button" class="layui-btn" id="quote_button" lay-filter="formDemo"
+										@click="quote">立即抢单</button>
+										<button type="button" class="layui-btn" id="quote_button" lay-filter="formDemo"
+										@click="goBack">返回</button>
+								</div>
+							</div>
+							<input type="text" name="bean.user" id="bean.user" style="display: none" autocomplete="off" class="layui-input">
+							<input type="text" name="bean.ask" id="ask" style="display: none" autocomplete="off" class="layui-input">
+						</form>
+					</div>
+				</fieldset>
+
+
+				<fieldset id="message_container" class="layui-elem-field need-input-field inquiry-record" v-else>
+					<legend class="message">询盘记录</legend>
+					<div class="message-wrap">
+
+						<!-- 商品详情 - 可展开 -->
+						<div id="lib_user_contact_supplier">
+							<div class="contact_supplier_main">
+									<div class="user_goods_main">
+											<div class="user_goods_content clearfloat">
+												<div class="fl" style="width:100%">
+													<div class="user_goods_time">{{inquiryInfo.createTime}}</div>
+													<div class="user_live_box">
+															<div class="user_goods_info" style="border: none;overflow: inherit;">
+																	<div class="goods_info_head clearfloat">
+																		<div class="fl goods_info_title">
+																				{{inquiryInfo.title}}
+																		</div>
+
+																	</div>
+																	<div class="goods_info_body clearfloat">
+																		<div class="fl">
+																			<img class="img-contain" v-if="inquiryImgs" :src="parent.imgUrlconfig+inquiryImgs[0]" alt="" style="width:100%">
+																		</div>
+																		<div class="fl">
+																			<div>
+																				Article no：<span>{{inquiryInfo.productNum}}</span>
+																			</div>
+																			<div>
+																				Quantity  ：<span>{{inquiryInfo.quantity}}</span> Pair
+																			</div>
+																			<!-- <div>
+																				<div class="clearfloat">
+																					Supplier ：<span>{{inquiryInfo.supplierCount}}</span>
+																				</div>
+																			</div> -->
+																		</div>
+																		<!-- 展开关闭 按钮 -->
+																		<div class="goods_box_btn rotate"></div>
+																	</div>
+																</div>
+																<!-- 询盘内容 -->
+																<div class="inquiry_content_main">
+																	<div class="inquiry_content">
+																		<p>
+																				{{inquiryInfo.content}}
+																		</p>
+																	</div>
+																	<div class="inquiry_content_img" v-if="inquiryImgs && inquiryImgs.length > 1">
+																		<ul class="clearfloat">
+																			<li v-for="(item, index) in inquiryImgs" v-if="index > 0">
+																					<img  class="img-contain" :src="parent.imgUrlconfig+item" alt="">
+																				</li>
+																		</ul>
+																	</div>
+																</div>
+													</div>
+												</div>
+											</div>
+										</div>
+							</div>
+						</div>
+						<!-- 商品详情 - 可展开 - end -->
+
+						<!-- 对话信息展示 -->
+						<template v-if="inquiryDialogs">
+							<div class="message clearfix" v-for="dialog in inquiryDialogs">
+								<div class="tc sendTime">
+									{{dialog.sendTime}}
+								</div>
+								<div class="dialog-box" :class="{'p2S-wrap': !dialog.p2S}">
+									<!-- {{dialog.content}} -->
+									<!-- 将内容转换为 图片+文字 -->
+									<!-- 提取img拼接字符串并循环显示 -->
+									<div class="" v-if="textToImgsContent(dialog.content,0)">
+										<img :src="parent.imgUrlconfig+imgSrc" v-for="imgSrc in textToImgsContent(dialog.content,0)" alt="">
+									</div>
+									<!-- 提取img拼接字符串 剩余的txt -->
+									<div class="">
+										{{textToImgsContent(dialog.content,1)}}
+									</div>
+								</div>
+							</div>
+						</template>
+						<!-- 对话信息展示 - end -->
+				  </div>
+
+					<div class="por">
+						<div class="chooseImg">
+							<el-upload
+								action="/seller/usr_UsrConsultMessage_upload"
+								list-type="picture-card"
+								ref="uploadImgs"
+								:limit="5"
+								:on-success="handlePictureCardPreview"
+								:on-remove="handleRemove"
+								>
+								<button type="button" class="layui-btn answer_button" style="bottom:-10px;" :disabled="noUpload" ref="uploadBtn">Upload imgs</button>
+							</el-upload>
+						</div>
+						<div class="message-send-wrap">
+							<textarea class="consult_msg" id="consult_msg" v-model="sendMsgContent"></textarea>
+							<button type="button" class="layui-btn answer_button" id="answer_button"
+							@click="sendMsg" lay-filter="formDemo" style="bottom:0">发送</button>
+							<button type="button" class="layui-btn" id="goBack_button"
+							@click="goBack" lay-filter="formDemo">返回</button>
+						</div>
+					</div>
+				</fieldset>
+
+
+			</div>
+		</div>
+	</div>
+	<!-- <script>
+		Date.prototype.Format = function (fmt) { //author: meizz
+			var o = {
+				"M+": this.getMonth() + 1, //月份
+				"d+": this.getDate(), //日
+				"H+": this.getHours(), //小时
+				"m+": this.getMinutes(), //分
+				"s+": this.getSeconds(), //秒
+				"q+": Math.floor((this.getMonth() + 3) / 3), //季度
+				"S": this.getMilliseconds() //毫秒
+			};
+			if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+			for (var k in o)
+				if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" +
+					o[k]).substr(("" + o[k]).length)));
+			return fmt;
+		}
+	</script> -->
+
+	<script>
+		var vm = new Vue({
+			el: '#app',
+			data: {
+				imgsToUpload:[],       // 需要upload的img - 显示在页面上
+        myImgLabelBefore:"<IMG_START>", //自定义的imgs前缀标签
+        myImgLabelAfter:"<IMG_END>",    //自定义的imgs后缀标签
+        		noUpload:false,
+				askid: 0,								//询盘id
+				relation: 0,						// 发送消息时 携带的参数
+				inquiryInfo:{},         //询盘商品信息
+				isInquiryOwer: true, 		// 是否是专属询盘 - 是：
+				sendMsgContent:""				//准备发送的内容
+			},
+			computed:{
+				inquiryImgs: function(){
+					if( this.inquiryInfo.image ){
+						return this.inquiryInfo.image.split(",");
+					}else{
+						return null;
+					}
+				},
+				// 单纯的询盘对话信息 []
+				inquiryDialogs: function(){
+					if( this.inquiryInfo && this.inquiryInfo.relations ){
+						return this.inquiryInfo.relations[0].msgs;
+					}
+					return null;
+				}
+			},
+			mounted:function(){
+				if (this.getUrlParam('askid') != null) {
+					this.askid = this.getUrlParam('askid');
+				}
+				// 获取页面信息 - all
+				this.getInquiryInfo();
+			},
+			methods:{
+				// 获取url带过来的参数
+				 getUrlParam(name){
+					var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+					var r = window.location.search.substr(1).match(reg); //匹配目标参数
+					if (r != null) return unescape(r[2]);
+					return null; //返回参数值
+				},
+				// 获取询盘的信息
+				getInquiryInfo(){
+					axios.post('/seller/usr_UsrConsult_detail',Qs.stringify({
+        		id:this.askid
+      		}, {allowDots: true}))
+					.then((res)=>{
+						console.log('suc-data',res)
+						if(res.data.ret == 1 ){
+							this.inquiryInfo = res.data.result;
+							if (!res.data.result) return;
+							if (res.data.result.relations) { //专属询盘
+								this.isInquiryOwer = true;
+								// if (res.data.result.relations[0].msgs) {
+								this.relation = res.data.result.relations[0].id;
+								// 显示最下面的信息
+								this.$nextTick(()=>{
+									$(".message-wrap").scrollTop(300000);
+								})
+								// }
+							} else { //公共询盘
+								this.isInquiryOwer = false;
+							}
+
+						}else{
+							layer.msg('获取失败,'+ res.data.msg, {icon: 2});
+						}
+					})
+				},
+
+				// 抢单
+			 quote() {
+				if ($("#leavMsg").val() == '') {
+					layer.msg('内容不能为空', {time: 3000});
+					return false;
+				}
+				if ($("#offer").val() == '') {
+					layer.msg('报价不能为空', {time: 3000});
+					return false;
+				}
+				if (isNaN($('#offer').val())) {
+					layer.msg('报价必须为数字', {time: 3000});
+					return false;
+				}
+				this.submit();
+			},
+			submit:_.debounce(function() {
+				$.ajax({
+					type: "post",
+					url: "/seller/usr_UsrConsult_quote",
+					data: {
+						id: this.askid,
+						msg: $("#leavMsg").val(),
+						quotedPrice: $("#offer").val()
+					},
+					dataType: "json",
+					success: function (data) {
+						if (data.ret == 1) {
+							layer.msg('抢单成功');
+							layer.confirm('抢单成功', {
+								  btn: ['确定'],
+								  closeBtn:0
+								}, function(index, layero){
+									location.href = location.href;
+								});
+						} else {
+							layer.msg(data.msg, {time: 3000});
+						}
+					}
+				})
+			}, 1000, {leading:true, trailing:false}),
+            goBack(){
+				window.history.go(-1);
+			}
+			,	// 发送消息
+				sendMsg() {
+					// 将上传的图片 以字符串的形式拼接在txt后面"<IMG_START><IMG_END>"
+          			let textImgs = (this.imgsToUpload && this.imgsToUpload.length)? (this.myImgLabelBefore+ this.imgsToUpload.join(",") +this.myImgLabelAfter):"";
+					// 没有数据时,不触发
+					if( $.trim(this.sendMsgContent + textImgs) == "") return;
+					$.ajax({
+						type: "post",
+						url: "/seller/usr_UsrConsultMessage_send2Purchase",
+						data: {
+							relation: this.relation,
+							content: this.sendMsgContent + textImgs
+						},
+						dataType: "json",
+						success:  (data) => {
+							if (data.ret == 1) {
+								this.getInquiryInfo();
+								this.imgsToUpload= [];
+								this.$refs.uploadImgs.clearFiles();
+								this.sendMsgContent = "";
+								// this.inquiryInfo.relations[0].msgs.push({
+								// 	content: this.sendMsgContent,
+								// 	p2S: false,
+								// 	sendTime: new Date().Format("yyyy/MM/dd HH:mm")
+								// })
+								// this.$nextTick(()=>{
+								// 	$(".message-wrap").scrollTop(300000);
+								// })
+							} else {
+								layer.msg(data.msg, {time: 3000});
+							}
+						}
+					})
+				},
+
+				// 图片上传成功时的预览
+        handlePictureCardPreview(response, file, fileList){
+          if( response.ret != 1 ) {
+						layer.msg(response.msg, {icon: 2});
+						this.$refs.uploadImgs.clearFiles();
+						return;
+					}
+          this.imgsToUpload.push(response.result.url);
+          if(this.imgsToUpload.length == 5){
+	          this.$refs.uploadBtn.style.backgroundColor = "#c2c2c2";
+			  this.noUpload = true;
+          }
+        },
+        // elementui - 删除操作
+        handleRemove(file, fileList) {
+          // 清空imgs数组
+          this.imgsToUpload=[];
+          // 删除图片后，将授予的图片地址放入数组
+					if( !fileList ) return;
+          $.each(fileList,(i,v)=>{
+            this.imgsToUpload.push(v.response.result.url)
+          })
+          
+          if(this.imgsToUpload.length < 5){
+        	  this.$refs.uploadBtn.style.backgroundColor = "#009688";
+        	  this.noUpload = false;
+          }
+        },
+
+				// 服务器返回的msg内容，提取其中的imgs
+        // type为0时，返回img的拼接字符串
+        // type为1时，返回img之外的文字
+        textToImgsContent(txt,type){
+          if( !txt ) return null;
+
+          let firstIndex = txt.search(this.myImgLabelBefore);
+          if( type==0 ){
+            if( firstIndex == -1 ) return null;
+            let lastIndex = txt.search(this.myImgLabelAfter);
+            // 获取上传前拼接的img字符串
+            let imgsTxt = txt.slice(firstIndex+this.myImgLabelBefore.length,lastIndex);
+            return imgsTxt.split(',');
+          }else if( type==1 ){
+            if( firstIndex == -1 ) return txt;
+            return txt.slice(0,firstIndex);
+          }
+        }
+			}
+		})
+
+		// 点击下拉事件
+		$('#message_container').on('click','.goods_box_btn',function(){
+			$(this).parent().parent().siblings('.inquiry_content_main').stop().slideToggle();
+			$(this).toggleClass('rotate')
+		})
+	</script>
+</body>
+
+</html>

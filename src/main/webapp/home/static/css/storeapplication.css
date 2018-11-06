@@ -1,0 +1,412 @@
+
+	.xmg-storeapplication000{
+		display: inline-block;
+/* 		width:534px; */
+		height:158px;
+		line-height:158px;
+		margin:90px auto 400px;
+	    padding: 0 30px;
+		background:#e5e5e5;
+		text-align:center;
+		font-size:14px;
+	}
+	.xmg-storeapplication000 a{
+		font-size:18px;
+		font-weight:bold;
+		color:#0050a8;
+	}
+	
+
+
+	.w1200{
+		width:1200px;
+		min-width:1200px;
+		margin:0 auto;
+	}
+	.w880{
+		width:880px;
+		min-width:880px;
+		margin:0 auto;
+	}
+	.xmg-storeapplication111 .xmg-common h5,
+	.xmg-storeapplication222 .xmg-common h5,
+	.xmg-storeapplication333 .xmg-common h5{
+		font-size:14px;
+		height:40px;
+		line-height:40px;
+		padding-left:20px;
+		  background-image: -moz-linear-gradient( 90deg, rgb(242,242,242) 0%, rgb(251,251,251) 100%);
+  background-image: -webkit-linear-gradient( 90deg, rgb(242,242,242) 0%, rgb(251,251,251) 100%);
+  background-image: -ms-linear-gradient( 90deg, rgb(242,242,242) 0%, rgb(251,251,251) 100%);
+  border-left:1px solid #e5e5e5;
+  border-right:1px solid #e5e5e5;
+	}
+
+	.xmg-storeapplication111 .xmg-common ul li{
+		min-height:24px;
+		line-height:24px;
+		padding:10px 0;
+	}
+	.xmg-storeapplication111 .xmg-common ul li p{
+		width:236px;
+		text-align:right;
+		float:left;
+	}
+	.xmg-storeapplication111 .xmg-common ul li p i{
+		color:#db0000;
+	}
+	.xmg-storeapplication111 .xmg-common ul li>input,
+	.xmg-storeapplication111 .xmg-common ul li select{
+		float:left;
+		width:240px;
+		height:22px;
+		border:1px solid #e5e5e5;
+		padding-left:4px;
+		font-size:12px;
+		color:#666;
+	}
+	.xmg-storeapplication111 .xmg-common ul li .w130{
+		width:130px;
+	}
+		.xmg-storeapplication111 .xmg-common ul li .w362{
+		width:362px;
+	}
+		.xmg-storeapplication111 .xmg-common ul li .w110{
+		width:110px;
+		margin-right:10px;
+	}
+	.xmg-storeapplication111 .xmg-common ul li span{
+		margin-left:10px;
+	}
+	.xmg-storeapplication111 .xmg-common ul li b{
+		float: left;
+		color:#E0E0E0;
+		height:24px;
+		line-height:24px;
+		margin:0 10px;
+	}
+	.xmg-storeapplication111 .xmg-bottom a{
+	    display: inline-block;
+		height:36px;
+		line-height:36px;
+		min-width:150px;
+		margin-right: 15px;
+		padding: 0 30px;
+		text-align:center;
+		color:#fff;
+		background:#db0000;
+		border-radius:6px;
+		font-weight:bold;
+		font-size:16px;
+	}
+	.xmg-storeapplication111 .xmg-bottom a:last-child{
+		margin-right: 0;
+	}
+	
+
+
+	.xmg-storeapplication222 .xmg-common ul li{
+		height:24px;
+		line-height:24px;
+		padding:10px 0;
+	}
+	.xmg-storeapplication222 .xmg-common ul li p{
+		width:236px;
+		text-align:right;
+		float:left;
+	}
+	.xmg-storeapplication222 .xmg-common ul li p i{
+		color:#db0000;
+	}
+	.xmg-storeapplication222 .xmg-common ul li>input,
+	.xmg-storeapplication222 .xmg-common ul li select{
+		float:left;
+		width:224px;
+		height:22px;
+		border:1px solid #e5e5e5;
+		padding-left:4px;
+		font-size:12px;
+		color:#666;
+	}
+	.xmg-storeapplication222 .xmg-common ul li .w130{
+		width:130px;
+	}
+		.xmg-storeapplication222 .xmg-common ul li .w362{
+		width:362px;
+	}
+		.xmg-storeapplication222 .xmg-common ul li .w110{
+		width:110px;
+		margin-right:10px;
+	}
+	.xmg-storeapplication222 .xmg-common ul li span{
+		margin-left:10px;
+	}
+	.xmg-storeapplication222 .xmg-common ul li b{
+		float: left;
+		color:#E0E0E0;
+		height:24px;
+		line-height:24px;
+		margin:0 10px;
+	}
+	.xmg-storeapplication222 .xmg-bottom{
+		text-align: center;
+	}
+	.xmg-storeapplication222 .xmg-bottom a{
+		display:inline-block;
+		height:36px;
+		line-height:36px;
+		width:216px;
+		text-align:center;
+		color:#fff;
+		background:#db0000;
+		border-radius:6px;
+		margin:0 10px;
+		font-weight:bold;
+		font-size:16px;
+		margin-top:30px;
+	}
+	.xmg-storeapplication222 .xmg-bottom a.previous{
+		width:96px;
+		color:#666;
+		background:#e5e5e5;
+	}
+	
+
+
+
+
+	.xmg-storeapplication333 .xmg-common ul li{
+		
+		line-height:30px;
+		padding:10px 0;
+	}
+	.xmg-storeapplication333 .xmg-common ul li p{
+		padding-right: 20px;
+		padding-left:  20px;
+	}
+	.xmg-storeapplication333 .xmg-common ul li p i{
+		color:#db0000;
+	}
+	.xmg-storeapplication333 .xmg-common ul li p a{
+		color:#0050a8;
+	}
+	.xmg-storeapplication333 .xmg-common ul li .w130{
+		width:130px;
+	}
+		.xmg-storeapplication333 .xmg-common ul li .w362{
+		width:362px;
+	}
+		.xmg-storeapplication333 .xmg-common ul li .w110{
+		width:110px;
+		margin-right:10px;
+	}
+	.xmg-storeapplication333 .xmg-common ul li span{
+		margin-left:10px;
+	}
+	.xmg-storeapplication333 .xmg-common ul li b{
+		float: left;
+		color:#E0E0E0;
+		height:24px;
+		line-height:24px;
+		margin:0 10px;
+	}
+	.xmg-storeapplication333 .xmg-bottom{
+		text-align: center;
+	}
+	.xmg-storeapplication333 .xmg-bottom a{
+		display:inline-block;
+		height:36px;
+		line-height:36px;
+/* 		width:108px; */
+		padding: 0 30px;
+		text-align:center;
+		color:#fff;
+		background:#db0000;
+		border-radius:6px;
+		margin:0 10px;
+		font-weight:bold;
+		font-size:16px;
+		margin-top:30px;
+	}
+	.xmg-storeapplication333 .xmg-bottom a.previous{
+/* 		width:96px; */
+		padding: 0 30px;
+		color:#666;
+		background:#e5e5e5;
+	}
+	.xmg-storeapplication333 .xmg-common ul h3{
+		color:#999;
+		margin:-10px 0 20px 22px;
+	}
+	.xmg-storeapplication333 .xmg-common ul h2{
+		margin:36px 0 10px 22px;
+	}
+	i.dengpao{
+		background:url(../images/dengpaotb.png) no-repeat 0 0;
+		width:12px;
+		height:15px;
+		display:inline-block;
+		    margin-bottom: -3px;
+	}
+	
+
+
+
+
+
+
+
+
+	i.dagou{
+		background:url(../images/dagou.png) no-repeat 0 0;
+		width:28px;
+		height:28px;
+		display:inline-block;
+		margin-bottom: -7px;
+	}
+	.xmg-tc{
+		
+	}
+	.xmg-tc .xmg-tcbg{
+		position:fixed;
+		top:0;
+		left:0;
+		width:100%;
+		height:100%;
+		background:rgba(0,0,0,0.5);
+		z-index:996;
+	}
+	.xmg-tc .xmg-tcbox{
+		position:fixed;
+		top:50%;
+		left:50%;
+		background:#fff;
+		overflow:hidden;
+		width: 318px;
+/*   		height: 130px; */
+  		margin:-65px 0 0 -159px;
+		box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.5);
+		z-index:997;
+		border-radius:6px;
+	}
+	.xmg-tc .xmg-tcbox .xmg-tcclose{
+		position:absolute;
+		top:2px;
+		right:10px;
+		font-size:28px;
+		color:#666;
+		cursor:pointer;
+	}
+	.xmg-tc .xmg-tcbox p{
+/* 		height:72px; */
+/* 		line-height:72px; */
+/* 		padding-left:20px; */
+	    line-height: 36px;
+	    padding: 20px;
+		font-size:16px;
+		color:#666;
+		font-weight:bold;
+	}
+	.xmg-tc .xmg-tcbox .xmg-bottom{
+		height:58px;
+		line-height:58px;
+		background:#eee;
+	}
+	.xmg-tc .xmg-tcbox .xmg-bottom a{
+/* 		width:66px; */
+		height:26px;
+		padding: 0 6px;
+		text-align: center;
+		line-height:26px;
+		color:#fff;
+		border-radius:6px;
+		float:right;
+		background:#db0000;
+		margin:16px 20px 20px 20px;
+	}
+	
+
+
+
+	.xmg-storeapplication111,
+	.xmg-storeapplication222,
+	.xmg-storeapplication333,
+	.xmg-storeapplication444{
+		padding-bottom:100px;
+	}
+	.xmg-storeapplication111 .xmg-top,
+	.xmg-storeapplication222 .xmg-top,
+	.xmg-storeapplication333 .xmg-top,
+	.xmg-storeapplication444 .xmg-top{
+		width:880px;
+		height:40px;
+		margin-top:62px;
+	}
+	.xmg-storeapplication111 .xmg-common .xmg-t,
+	.xmg-storeapplication222 .xmg-common .xmg-t,
+	.xmg-storeapplication333 .xmg-common .xmg-t,
+	.xmg-storeapplication444 .xmg-common .xmg-t{
+		border-left:10px solid #0050a8;
+		height:40px;
+		margin-top:38px;
+	}
+	.xmg-storeapplication111 .xmg-common .xmg-t h4,
+	.xmg-storeapplication222 .xmg-common .xmg-t h4,
+	.xmg-storeapplication333 .xmg-common .xmg-t h4,
+	.xmg-storeapplication444 .xmg-common .xmg-t h4{
+		border-top:1px solid #e5e5e5;
+		border-right:1px solid #e5e5e5;
+		border-bottom:1px dashed #e5e5e5;
+		height:38px;
+		line-height:38px;
+		font-size:20px;
+		color:#0050a8;
+		font-weight:bold;
+		padding-left:10px;
+	}
+	.xmg-storeapplication111 .xmg-common ul,
+	.xmg-storeapplication222 .xmg-common ul,
+	.xmg-storeapplication333 .xmg-common ul,
+	.xmg-storeapplication444 .xmg-common ul{
+		border:1px solid #e5e5e5;
+		margin-bottom:20px;
+		padding: 15px 0;
+	}
+	.xmg-storeapplication444 .xmg-common ul{
+		padding: 30px;
+	}
+	.xmg-storeapplication444 .xmg-common ul li{
+		width:534px;
+		height:158px;
+		line-height:24px;
+		margin:90px auto 80px;
+		background:#e5e5e5;
+		text-align:center;
+	}
+	.xmg-storeapplication444 .xmg-common ul li h2{
+		padding-top:52px;
+		font-size:18px;
+		font-weight:bold;
+	}
+	.xmg-storeapplication444 .xmg-common ul li h3{
+		margin-top:12px;
+		font-size:12px;
+		/*font-weight:bold;*/
+	} 
+	.xmg-storeapplication444 .xmg-bottom{
+		text-align: right;
+	}
+	.xmg-storeapplication444 .xmg-bottom a{
+		display:inline-block;
+		height:36px;
+		line-height:36px;
+		width:76px;
+		text-align:center;
+		color:#fff;
+		background:#db0000;
+		border-radius:6px;
+		margin:0 10px;
+		font-weight:bold;
+		font-size:16px;
+		margin-top:30px;
+	}

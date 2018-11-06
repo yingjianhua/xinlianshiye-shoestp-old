@@ -1,0 +1,96 @@
+/* * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+} */
+img.lazy{background: url('/static/images/loading.gif') 50% no-repeat;
+}
+.clearfloat:after{display:block;clear:both;content:"";visibility:hidden;height:0}
+   .clearfloat{zoom:1}
+body {
+    font-family: "Microsoft yahei", Arial;
+    /* background: #eee; */
+}
+area{
+    outline: none;
+}
+.supbanner{
+    background-color: #f9f9f9; ;
+}
+
+.cata-box ul li {
+    float: left;
+    width: 260px;
+    height: 260px;
+    background: #979797;
+    margin-right: 8px;
+    list-style: none;
+    position: relative;
+    overflow: hidden;
+    line-height: 25px;
+    text-align: left;
+}
+
+.cata-box ul li .cover a {
+    width: 30px;
+    height: 30px;
+    background: #ffffff;
+    display: block;
+    border-radius: 50%;
+    line-height: 30px;
+    margin: 30px auto;
+}
+
+.cata-box ul li .cover a i {
+    color: #313131;
+}
+
+.cata-box ul li .cover {
+    width: 260px;
+    height: 70px;
+    background: #313131;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    text-align: left;
+    color: #ffffff;
+    padding: 15px;
+    transform: translateY(220px);
+    -webkit-transform: translateY(220px);
+    -moz-transform: translateY(220px);
+    transition: all 0.7s;
+    -webkit-transition: all 0.7s;
+    -moz-transition: all 0.7s;
+    opacity: 0.8;
+}
+
+.cata-box ul li .cover p {
+    font-size: 14px;
+    line-height: 18px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: normal;
+    word-wrap:break-word;
+    word-break:break-all;
+    word-wrap:break-word;
+    position: relative;
+    max-height: 35px;
+}
+.cata-box ul li .cover h3{
+    margin-top: 10px; 
+    font-size: 16px;
+}
+.cata-box ul li:hover {
+    box-shadow: 0px 5px 10px 0px rgba(51, 51, 51, 0.35);
+    -moz-box-shadow: 0px 5px 10px 0px rgba(51, 51, 51, 0.35);
+    -webkit-box-shadow: 0px 5px 10px 0px rgba(51, 51, 51, 0.35);
+}
+.cata-box ul li:hover .cover {
+    transform: translateY(0px);
+    -webkit-transform: translateY(0px);
+    -moz-transform: translateY(0px);
+}
