@@ -9,23 +9,25 @@
     <link href="../home/static/themes/default/mobile/css/goods.css" rel="stylesheet" type="text/css">
     <style>
         /* 内容高度与宽度相等显示 */
-        .h100p_box{
-          position: relative;
-          padding-top: 100%;
+        .h100p_box {
+            position: relative;
+            padding-top: 100%;
         }
+
         /* 轮播外框  - 高度与宽度相等 */
-        .carousel-wrap{
-          position: absolute;
-          left: 0;
-          top: 0;
-          height: 100%;
-          width: 100%;
+        .carousel-wrap {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
         }
+
         /* 图片contain显示 */
-        .img-contain{
-          height: 100%;
-          width: 100%;
-          object-fit: contain;
+        .img-contain {
+            height: 100%;
+            width: 100%;
+            object-fit: contain;
         }
 
         .detail_desc table {
@@ -143,13 +145,13 @@
     </div>
 
     <div class="detail_pic clean ui_border_b">
-      <div class="h100p_box">
-        <el-carousel :interval="3000" arrow="always" ref="image" height="100%" class="carousel-wrap">
-          <el-carousel-item v-for="(item, index) in _img" :key="item.id" :name="item.name" v-if="index < 6">
-            <img :src="'${envConfig.imageBaseUrl}'+item.src" class="img-contain"/>
-          </el-carousel-item>
-        </el-carousel>
-      </div>
+        <div class="h100p_box">
+            <el-carousel :interval="3000" arrow="always" ref="image" height="100%" class="carousel-wrap">
+                <el-carousel-item v-for="(item, index) in _img" :key="item.id" :name="item.name" v-if="index < 6">
+                    <img :src="'${envConfig.imageBaseUrl}'+item.src" class="img-contain"/>
+                </el-carousel-item>
+            </el-carousel>
+        </div>
         <!-- Swiper -->
         <%-- <div class="swiper-container goods-info-swiper">
             <div class="swiper-wrapper">
@@ -519,7 +521,9 @@
 
             }, inquiry: function () {
                 var self = this;
-                self.post("pdt_PdtConsultPdtList_add", {product: self.result.pdtId}, function (res) {
+                self.post("/home/pdt_PdtConsultPdtList_add", {
+                    product: self.result.pdtId
+                }, function (res) {
                     if (res.status == 200) {
                         if (res.data.ret == 1) {
                             self.$message({
@@ -527,7 +531,7 @@
                                 type: 'success',
                                 showClose: true,
                                 dangerouslyUseHTMLString: true,
-                                message: lang_obj.global.inqadd + '<br><br><a class="btn-to-publish" href="/home/usr_UsrConsult_publishView?product_id=' + res.data.result.id + '">' + lang_obj.global.inquery + '</a>'
+                                message: lang_obj.global.inqadd + '<br><br><a class="btn-to-publish" href="/home/usr_UsrConsult_publishView?supplierId='+self.result.supId+'&product_id=' + res.data.result.id + '">' + lang_obj.global.inquery + '</a>'
                             })
                         } else if (res.data.ret == -1) {
                             self.goLoginPage();

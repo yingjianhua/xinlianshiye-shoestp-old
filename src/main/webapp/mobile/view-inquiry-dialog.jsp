@@ -13,11 +13,7 @@
     <!-- Google Tag Manager -->
     <script type="text/javascript" async="" src="/home/static/themes/default/mobile/js/js">
     </script>
-    <script type="text/javascript" async="" src="/home/static/themes/default/mobile/js/tracking.js">
-    </script>
     <script type="text/javascript" async="" src="/home/static/themes/default/mobile/js/conversion_async.js">
-    </script>
-    <script type="text/javascript" async="" src="/home/static/themes/default/mobile/js/analytics.js">
     </script>
     <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
