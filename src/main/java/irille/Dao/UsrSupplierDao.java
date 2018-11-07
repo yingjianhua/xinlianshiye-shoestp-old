@@ -1,9 +1,12 @@
 package irille.Dao;
 
+import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplierRole;
+import irille.view.usr.UsrshopSettingView;
+import irille.view.usr.shopSettingView;
 
 import java.util.Map;
 
@@ -32,4 +35,7 @@ public class UsrSupplierDao {
                 .FROM(UsrSupplier.class)).queryMap();
 
     }
+    public UsrSupplier getUsrShopSetting(int i) {
+    	return  BeanBase.load(UsrSupplier.class, i);
+	}
 }

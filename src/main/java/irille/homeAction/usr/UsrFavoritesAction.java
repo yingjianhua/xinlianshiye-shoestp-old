@@ -1,13 +1,6 @@
 package irille.homeAction.usr;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import irille.Service.Usr.IUsrSupplier;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
 import irille.homeAction.usr.dto.FavoritesView;
@@ -18,15 +11,18 @@ import irille.pub.i18n.I18NUtil;
 import irille.pub.idu.IduPage;
 import irille.pub.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.pub.util.TranslateLanguage.translateUtil;
-import irille.shop.pdt.PdtCat;
-import irille.shop.pdt.PdtCatDAO;
-import irille.shop.pdt.PdtProduct;
-import irille.shop.pdt.PdtProductDAO;
-import irille.shop.pdt.PdtSpec;
-import irille.shop.usr.Usr;
+import irille.shop.pdt.*;
 import irille.shop.usr.UsrCart;
 import irille.shop.usr.UsrFavorites;
 import irille.shop.usr.UsrFavoritesDAO;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import javax.inject.Inject;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 采购商action
@@ -36,7 +32,9 @@ import irille.shop.usr.UsrFavoritesDAO;
 public class UsrFavoritesAction extends HomeAction<UsrFavorites> {
 	private static final LogMessage LOG = new LogMessage(UsrFavoritesAction.class);
     private static final PdtCatDAO.Query CATQUERY = new PdtCatDAO.Query();
-    private static final UsrFavoritesDAO.PageSelect pageSelect = new UsrFavoritesDAO.PageSelect();
+
+    @Inject
+    IUsrSupplier usrSupplier;
 
     private static final String timeout_err = "timeout.";
     private byte code;
@@ -148,10 +146,9 @@ public class UsrFavoritesAction extends HomeAction<UsrFavorites> {
         page.setStart(pageNumber);
         page.setLimit(8);
 
-        UsrFavoritesDAO.PageSelect pageSelect = new UsrFavoritesDAO.PageSelect();
-        List pageFavorites = pageSelect.getFavoritesListByCat(page, -1, getPurchase().getPkey(), Sys.OYn.NO);
+        List pageFavorites = usrSupplier.getFavoritesListByCat(page, -1, getPurchase().getPkey(), Sys.OYn.NO);
         setFavoritesViews(pageFavorites);
-        pageCount = (int) Math.ceil((double) pageSelect.getFavoritesCountByCat(page, category, getPurchase().getPkey(), Sys.OYn.NO) / 8);
+        pageCount = (int) Math.ceil((double) usrSupplier.getFavoritesCountByCat(page, category, getPurchase().getPkey(), Sys.OYn.NO) / 8);
         setResult("/home/recyclebin.jsp");
         return HomeAction.TRENDS;
     }
@@ -164,8 +161,7 @@ public class UsrFavoritesAction extends HomeAction<UsrFavorites> {
         page.setStart(pageNumber);
         page.setLimit(8);
 
-        UsrFavoritesDAO.PageSelect pageSelect = new UsrFavoritesDAO.PageSelect();
-        List pageFavorites = pageSelect.getFavoritesListByCat(page, -1, getPurchase().getPkey(), Sys.OYn.NO);
+        List pageFavorites = usrSupplier.getFavoritesListByCat(page, -1, getPurchase().getPkey(), Sys.OYn.NO);
         setFavoritesViews(pageFavorites);
 //        pageCount = (int) Math.ceil((double) pageSelect.getFavoritesCountByCat(page, category, getPurchase().getPkey(), Sys.OYn.NO) / 8);
         write(pageFavorites);
@@ -185,9 +181,9 @@ public class UsrFavoritesAction extends HomeAction<UsrFavorites> {
         IduPage page = new IduPage();
         page.setStart(pageNumber);
         page.setLimit(8);
-        List pageFavorites = pageSelect.getFavoritesListByCat(page, category, getPurchase().getPkey(), Sys.OYn.YES);
+        List pageFavorites = usrSupplier.getFavoritesListByCat(page, category, getPurchase().getPkey(), Sys.OYn.YES);
         setFavoritesViews(pageFavorites);
-        pageCount = (int) Math.ceil((double) pageSelect.getFavoritesCountByCat(page, category, getPurchase().getPkey(), Sys.OYn.YES) / 8);
+        pageCount = (int) Math.ceil((double) usrSupplier.getFavoritesCountByCat(page, category, getPurchase().getPkey(), Sys.OYn.YES) / 8);
         setResult("/home/my-favorite.jsp");
         return HomeAction.TRENDS;
     }
@@ -198,7 +194,7 @@ public class UsrFavoritesAction extends HomeAction<UsrFavorites> {
         }
         IduPage page = new IduPage();
         page.setStart(pageNumber);
-        List pageFavorites = pageSelect.getFavoritesListByCat(page, category, getPurchase().getPkey(), Sys.OYn.YES);
+        List pageFavorites = usrSupplier.getFavoritesListByCat(page, category, getPurchase().getPkey(), Sys.OYn.YES);
         write(pageFavorites);
     }
 
@@ -225,56 +221,6 @@ public class UsrFavoritesAction extends HomeAction<UsrFavorites> {
         }
     }
 
-
-//	private String catViewList;
-    /**
-     * 将收藏夹中的商品批量加入到购物车
-     *
-     * @author liyichao
-     * @throws Exception
-     */
-//	public void favoriteToCart() throws Exception{
-//		JSONObject json = new JSONObject();
-//		JSONArray jo = new JSONArray(getCatViewList());
-//		List<UsrCart> cartList = new ArrayList<UsrCart>();
-//		int errCount = 0;
-//		for(int i=0;i<jo.length();i++){
-//			JSONObject frontJSON = jo.getJSONObject(i);
-//			PdtSpec spec = null;
-//			try{
-//				spec = BeanBase.list(PdtSpec.class,PdtSpec.T.PRODUCT.getFld().getCodeSqlField() + " = " + frontJSON.get("product"),false).get(0);
-//				//需要获得规格/采购商/类型
-//				Integer test = frontJSON.getInt("joinType");
-//				UsrCart existsCart = UsrCart.chkUniqueSpec_purchase(false, spec.getPkey(), HomeAction.getPurchase().getPkey());
-//				if(existsCart == null){
-//					UsrCart cart = new UsrCart();
-//					cart.setPurchase(HomeAction.getPurchase().getPkey());
-//					cart.setSpec(spec.getPkey());
-//					cart.setQty(frontJSON.getInt("qty"));
-//					cart.setAmtTotal(new BigDecimal(cart.getQty()).multiply(new BigDecimal(frontJSON.getDouble("amtTotal"))));
-//					cart.setSupplier(frontJSON.getInt("supplier"));
-//					cartList.add(cart);
-//				}else{
-//					existsCart.setQty(existsCart.getQty()+frontJSON.getInt("qty"));
-//					existsCart.setAmtTotal(existsCart.getAmtTotal().add(new BigDecimal(frontJSON.getInt("qty")).multiply(new BigDecimal(frontJSON.getDouble("amtTotal")))));
-//					existsCart.upd();
-//				}
-//			}catch(ArrayIndexOutOfBoundsException e){
-//				errCount++;
-//				throw LOG.err(Usr.ErrMsgs.emptyErr,PdtSpec.TB.getName());
-//			}finally{
-//				continue;
-//			}
-//		}
-//		
-//		UsrCartDAO.AddCartList cartDAO = new UsrCartDAO.AddCartList();
-//		cartDAO.setCartList(cartList);
-//		cartDAO.commit();
-//		json.put("errCount",errCount);
-//		json.put("success",true);
-//		writeSuccess(json);
-//		
-//	}
 
 
     private Integer pdtPkey;
@@ -459,10 +405,4 @@ public class UsrFavoritesAction extends HomeAction<UsrFavorites> {
     public void setPdtPkey(Integer pdtPkey) {
         this.pdtPkey = pdtPkey;
     }
-//	public String getCatViewList() {
-//		return catViewList;
-//	}
-//	public void setCatViewList(String catViewList) {
-//		this.catViewList = catViewList;
-//	}
 }
