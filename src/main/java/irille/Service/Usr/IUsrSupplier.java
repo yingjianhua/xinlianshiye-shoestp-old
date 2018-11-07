@@ -2,8 +2,13 @@ package irille.Service.Usr;
 
 import com.google.inject.ImplementedBy;
 import irille.Service.Usr.Imp.UsrSupplierImp;
+import irille.core.sys.Sys;
+import irille.homeAction.usr.dto.FavoritesView;
+import irille.pub.idu.IduPage;
 import irille.view.usr.UsrSupplierInfoView;
 import irille.view.usr.UsrshopSettingView;
+
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,11 +24,20 @@ public interface IUsrSupplier {
      * @author lijie@shoestp.cn
      */
     UsrSupplierInfoView getInfoById(int i);
-    
+
     /**
      * @deprecated:获取店铺装修信息
      * @date 2018/11/6 20:55
      * @author zjl
      */
     UsrshopSettingView getSettingInfoById(int i);
+
+    /**
+     * @Description: 根据分类获取收藏夹内容
+     * @author lijie@shoestp.cn
+     * @date 2018/8/22 18:23
+     */
+    List<FavoritesView> getFavoritesListByCat(IduPage page, int cat, int purId, Sys.OYn showState);
+
+    Long getFavoritesCountByCat(IduPage page, int cat, int purId, Sys.OYn showState);
 }
