@@ -529,6 +529,10 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     @Inject
     IUsrSupplier usrSupplier;
 
+    
+    public void getShopSetting() throws IOException{
+    	write(usrSupplier.getSettingInfoById(getSupplier().getPkey()));
+    }
 
     @Override
     public void Info() throws IOException {

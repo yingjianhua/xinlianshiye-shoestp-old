@@ -22,7 +22,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 产品
@@ -1058,16 +1060,16 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
         Sales(T.SALES),
         Favorites(T.Favorite_Count),
         Price(T.CUR_PRICE),
-        New(T.IS_NEW),
+        New(T.UPDATE_TIME,T.MY_ORDER),
         Hot(T.IS_HOT);
 
-        private IEnumFld fld;
+        private List<IEnumFld> fld;
 
-        ProductsIndexOrderByType(IEnumFld fld) {
-            this.fld = fld;
+        ProductsIndexOrderByType(IEnumFld... fld) {
+            this.fld = Arrays.asList(fld);
         }
 
-        public IEnumFld getFld() {
+        public List<IEnumFld> getFld() {
             return fld;
         }
     }
