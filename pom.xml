@@ -27,9 +27,6 @@
                 <environment>dev</environment>
                 <!--此处为对应的环境放置配置文件的目录，上一步创建的为dev,这里设置为dev。下面两个目录配置参照此处 -->
             </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault><!--此处将dev设置为默认环境 -->
-            </activation>
         </profile>
         <profile>
             <id>test</id>
@@ -42,6 +39,18 @@
             <properties>
                 <environment>prod</environment>
             </properties>
+            <!--<activation>-->
+                <!--<activeByDefault>true</activeByDefault>&lt;!&ndash;此处将dev设置为默认环境 &ndash;&gt;-->
+            <!--</activation>-->
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <environment>test</environment>
+            </properties>
+            <!--<activation>-->
+                <!--<activeByDefault>true</activeByDefault>&lt;!&ndash;此处将dev设置为默认环境 &ndash;&gt;-->
+            <!--</activation>-->
         </profile>
     </profiles>
 
