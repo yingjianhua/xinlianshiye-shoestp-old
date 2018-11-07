@@ -1,6 +1,7 @@
 package irille.homeAction.usr;
 
 import com.sun.mail.util.MailSSLSocketFactory;
+import irille.Service.Pdt.IPdtProduct;
 import irille.homeAction.HomeAction;
 import irille.homeAction.cnt.dto.CntAd_IndexCategoryView;
 import irille.homeAction.usr.dto.PurchaseIndexView;
@@ -18,7 +19,7 @@ import irille.shop.cnt.CntAd.OAdLocation;
 import irille.shop.cnt.CntAdDAO;
 import irille.shop.odr.OdrOrder;
 import irille.shop.odr.OdrOrderDAO;
-import irille.shop.pdt.PdtProductDAO;
+import irille.Service.Pdt.Imp.PdtproductPageselect;
 import irille.shop.plt.PltCountryDAO;
 import irille.shop.usr.*;
 import irille.view.cnt.IndexAdView4Mobile;
@@ -35,6 +36,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.inject.Inject;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
@@ -57,12 +59,17 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
 
     private static UsrPurchaseDAO.Query query = new UsrPurchaseDAO.Query();
 
-    private static final PdtProductDAO.pageSelect pdtPageSelectt = new PdtProductDAO.pageSelect();
+    @Inject
+    private PdtproductPageselect pdtPageSelectt = new PdtproductPageselect();
     private static final UsrSupplierDAO.pageSelect suppPageSelect = new UsrSupplierDAO.pageSelect();
     private static final CntAdDAO.pageSelect adPageSelect = new CntAdDAO.pageSelect();
     private static final UsrPurchaseDAO.pageselect purpageselect = new UsrPurchaseDAO.pageselect();
     private static final OdrOrderDAO.Query odrQuery = new OdrOrderDAO.Query();
     private static final UsrCartDAO.Query usrCatQuery = new UsrCartDAO.Query();
+
+
+    @Inject
+    private IPdtProduct pdtProduct;
 
     private String password;
     private String password2;
@@ -136,7 +143,7 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
         page.setLimit(isMobile() ? 8 : 21);
         purchaseIndexView.setSupplier(suppPageSelect.getSupplierInfo(page));
         page.setLimit(6);
-        purchaseIndexView.setNewProducts(pdtPageSelectt.getNewProductsList(page));
+        purchaseIndexView.setNewProducts(pdtProduct.getNewProductsListByIndex(page));
 
         indexAdView4Mobile = new IndexAdView4Mobile();
         indexAdView4Mobile.setProductCategoryAd(CntAdDAO.listViewBySignagePosition(osignage, OAdLocation.PDT_CAT, 0, 4));

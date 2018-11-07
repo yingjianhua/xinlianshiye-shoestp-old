@@ -1,5 +1,6 @@
 package irille.shop.usr;
 
+import irille.Dao.PdtProductDao;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
 import irille.homeAction.usr.dto.FavoritesView;
@@ -21,6 +22,7 @@ import irille.shop.usr.UsrFavorites.T;
 import irille.view.Page;
 import irille.view.usr.FavoriteView;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +53,8 @@ public class UsrFavoritesDAO {
     }
 
     public static class PageSelect extends IduOther<PageSelect, UsrFavorites> {
-        private final PdtProductDAO.pageSelect pageSelect = new PdtProductDAO.pageSelect();
+        @Inject
+        PdtProductDao pdtProductDao;
 
         /**
          * @Description: 根据分类获取收藏夹内容
@@ -77,7 +80,7 @@ public class UsrFavoritesDAO {
                     .leftjoin(PdtProduct.T.PKEY, UsrFavorites.T.PRODUCT)
                     .eqAutoAnd(UsrFavorites.T.SHOW_STATE, showState.getLine().getKey())
             ;
-            sql.in(PdtProduct.T.CATEGORY, pageSelect.getCatsNodeByCatId(cat), s -> {
+            sql.in(PdtProduct.T.CATEGORY, pdtProductDao.getCatsNodeByCatId(cat), s -> {
                 if (s == null) {
                     return false;
                 }
@@ -115,7 +118,7 @@ public class UsrFavoritesDAO {
                     .eqAutoAnd(UsrFavorites.T.SHOW_STATE, showState.getLine().getKey())
             ;
             if (cat > 0) {
-                sql.in(PdtProduct.T.CATEGORY, pageSelect.getCatsNodeByCatId(cat), s -> {
+                sql.in(PdtProduct.T.CATEGORY, pdtProductDao.getCatsNodeByCatId(cat), s -> {
                     if (s == null) {
                         return false;
                     }

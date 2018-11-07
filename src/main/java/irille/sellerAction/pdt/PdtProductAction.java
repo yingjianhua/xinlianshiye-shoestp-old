@@ -2,12 +2,12 @@ package irille.sellerAction.pdt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
+import irille.Service.Manage.Pdt.IPdtProduct;
+import irille.Service.Pdt.Imp.PdtproductPageselect;
 import irille.core.sys.Sys;
 import irille.core.sys.SysSeqDAO;
 import irille.pub.Str;
 import irille.pub.bean.BeanBase;
-import irille.pub.bean.Query;
-import irille.pub.bean.query.BeanQuery;
 import irille.pub.idu.Idu;
 import irille.pub.idu.IduPage;
 import irille.pub.svr.Env;
@@ -21,27 +21,28 @@ import irille.sellerAction.pdt.inf.IPdtProductAction;
 import irille.shop.pdt.*;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltFreightSeller;
-import irille.shop.usr.UsrProductCategory;
-import irille.view.Page;
 import irille.view.pdt.PdtProductSaveView;
 import irille.view.pdt.PdtProductSpecSaveView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtProductAction {
 
     private static final long serialVersionUID = 1L;
     private List<PdtSpec> _SpecListLine = new ArrayList<PdtSpec>();
-    private static PdtProductDAO.pageSelect pageSelect = new PdtProductDAO.pageSelect();
+
+    @Inject
+    private IPdtProduct pdtProductManage;
+    @Inject
+    private PdtproductPageselect pdtpageSelect;
 
     public String pdtProductList() throws Exception {
         setResult("Product-List.html");
@@ -200,9 +201,8 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
      * @date 2018/8/24 16:35
      */
     public void viewProduct() throws IOException {
-        PdtProductDAO.pageSelect pageSelec = new PdtProductDAO.pageSelect();
         try {
-            write(pageSelec.sellerGetProductById(Integer.valueOf(String.valueOf(getId())), getSupplier().getPkey()));
+            write(pdtpageSelect.sellerGetProductById(Integer.valueOf(String.valueOf(getId())), getSupplier().getPkey()));
             return;
         } catch (JSONException e) {
             e.printStackTrace();
@@ -211,9 +211,8 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
     }
 
     public void copyProduct() {
-        PdtProductDAO.pageSelect pageSelec = new PdtProductDAO.pageSelect();
         try {
-            write(pageSelec.sellerCopyProductById(Integer.valueOf(String.valueOf(getId())), getSupplier().getPkey()));
+            write(pdtpageSelect.sellerCopyProductById(Integer.valueOf(String.valueOf(getId())), getSupplier().getPkey()));
             return;
         } catch (JSONException e) {
             e.printStackTrace();
@@ -304,37 +303,7 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
         if (getSupplier() == null) {
             writeTimeout();
         } else {
-            BeanQuery q = Query
-                    .SELECT(PdtProduct.T.PKEY, PdtProduct.T.NAME, PdtProduct.T.CODE, PdtProduct.T.CUR_PRICE, PdtProduct.T.PICTURE, PdtProduct.T.UPDATE_TIME)
-                    .SELECT(PdtCat.T.NAME, "category")
-                    .SELECT(UsrProductCategory.T.NAME, "categoryDiy")
-                    .FROM(PdtProduct.class)
-                    .LEFT_JOIN(PdtCat.class, PdtProduct.T.CATEGORY, PdtCat.T.PKEY)
-                    .LEFT_JOIN(UsrProductCategory.class, PdtProduct.T.CATEGORY_DIY, UsrProductCategory.T.PKEY)
-                    .WHERE(getName() != null && getName().length() > 0, PdtProduct.T.NAME, "like ?", "%" + getName() + "%")
-                    .WHERE(getNumber() != null && getNumber().length() > 0, PdtProduct.T.CODE, "like ?", "%" + getNumber() + "%")
-                    .WHERE(PdtProduct.T.SUPPLIER, "=?", getSupplier().getPkey())
-                    .WHERE(PdtProduct.T.PRODUCT_TYPE, " <> ?", Pdt.OProductType.GROUP.getLine().getKey())
-                    .WHERE(PdtProduct.T.STATE, "<>2").ORDER_BY(PdtProduct.T.UPDATE_TIME, "desc");
-            if (getCat() > 0) {
-                List list = (List) pageSelect.getCatsNodeByCatId(getCat()).stream().map(o -> {
-                    return String.valueOf(o);
-                }).collect(Collectors.toList());
-                q.WHERE(getCat() != 0, PdtProduct.T.CATEGORY, "in (" + String.join(",", list) + ")");
-            }
-            Integer totalCount = q.queryCount();
-            setStart(getStart() - 1 > -1 ? getStart() - 1 : 0);
-            List<Map> list = q.limit(getStart() * getLimit(), getLimit()).queryMaps();
-
-//             目前过滤器的搜索，是肯定会带初始条件的
-            Page page = new Page(list.stream().map(o -> {
-                o.put("category", translateUtil.getLanguage(o.get("category"), PltConfigDAO.supplierLanguage(getSupplier())));
-                o.put("name", translateUtil.getLanguage(o.get("name"), PltConfigDAO.supplierLanguage(getSupplier())));
-                o.put("categoryDiy", translateUtil.getLanguage(o.get("categoryDiy"), PltConfigDAO.supplierLanguage(getSupplier())));
-                o.put("update_time", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(o.get("update_time")));
-                return o;
-            }).collect(Collectors.toList()), getStart(), getLimit(), totalCount);
-            write(page);
+            write(pdtProductManage.getProductList(getName(), getNumber(), getSupplier().getPkey(), getCat(), getStart(), getLimit()));
         }
     }
 
