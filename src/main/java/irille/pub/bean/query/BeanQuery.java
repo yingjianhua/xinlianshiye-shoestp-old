@@ -101,6 +101,14 @@ public class BeanQuery<T> extends AbstractQuery {
 		sql.WHERE(conditions, params);
 		return this;
 	}
+	public BeanQuery<T> OR() {
+		sql.OR();
+		return this;
+	}
+	public BeanQuery<T> AND() {
+		sql.AND();
+		return this;
+	}
 	public <T2 extends BeanMain<?, ?>> BeanQuery<T> LEFT_JOIN(Class<T2> beanClass, IEnumFld fld1, IEnumFld fld2) {
 		sql.LEFT_JOIN(beanClass, fld1, fld2);
 		return this;

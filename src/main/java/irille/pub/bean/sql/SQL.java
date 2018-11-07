@@ -89,6 +89,14 @@ public class SQL {
 	  return mybatisSQL.getSelf();
   }
   
+  public <T extends BeanMain<?, ?>> SQL OR() {
+	  return mybatisSQL.OR();
+  }
+  
+  public <T extends BeanMain<?, ?>> SQL AND() {
+	  return mybatisSQL.AND();
+  }
+  
   public <T extends BeanMain<?, ?>> SQL ORDER_BY(IEnumFld fld, String type) {
 	  return mybatisSQL.ORDER_BY(fld, type);
   }

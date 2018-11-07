@@ -68,9 +68,9 @@ public class UsrConsultRelationDAO {
 			view.setCount(consult.getCount());
 			view.setSupplierCount(UsrConsultDAO.max_count-consult.getCount());
 			view.setHaveNewMsg(bean.gtPToSNewMsg());
-//			view.setEmail(bean.getEmail());
 			view.setContent(consult.getContent());
 			view.setCreateTime(consult.getCreateTime());
+			view.setEmail(consult.gtPurchase().getEmail());
 			views.add(view);
 		}
 		return new Page<>(views, start, limit, totalCount);
