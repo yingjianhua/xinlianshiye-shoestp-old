@@ -9,6 +9,7 @@ import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.IEnumFld;
 import irille.pub.util.FormaterSql.FormaterSql;
+import irille.pub.util.SEOUtils;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.Pdt;
@@ -214,7 +215,7 @@ public class PdtProductDao {
         Map result = new HashMap();
         List<Map> list = query.queryMaps();
         list = list.stream().map(o -> {
-            o.put("rewrite", o.get("name"));
+            o.put("rewrite", SEOUtils.getPdtProductTitle(Integer.parseInt(String.valueOf(o.get("pkey"))),String.valueOf(o.get("name"))));
             return o;
         }).collect(Collectors.toList());
         result.put("items", SetBeans.setList(list, PdtProductBaseInfoView.class));
