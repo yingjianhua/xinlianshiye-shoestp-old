@@ -73,11 +73,11 @@
         <li class="enterprise-nav-item">
           <a href="/home/usr_UsrSupplier_gtSupContact?pkey=${supView.pkey}"><s:text name="Global.Contact_Us"/></a>
         </li>
-        <c:if test="${supView.prmAuthrity == true}">
-        	<li class="enterprise-nav-item GroupPurchase">
-			<a href="/home/usr_UsrSupplier_gtSupGroup?pkey=${supView.pkey}"><s:text name="Global.Joint_Procurement"/></a>
-			</li>
-        </c:if>
+        <%--<c:if test="${supView.prmAuthrity == true}">--%>
+        	<%--<li class="enterprise-nav-item GroupPurchase">--%>
+			<%--<a href="/home/usr_UsrSupplier_gtSupGroup?pkey=${supView.pkey}"><s:text name="Global.Joint_Procurement"/></a>--%>
+			<%--</li>--%>
+        <%--</c:if>--%>
 
       </ul>
     </div>

@@ -62,10 +62,10 @@
                 <a :href="'/home/usr_UsrSupplier_gtSupContact?pkey='+goodsInfo.supId"><s:text
                         name="contactUs"/></a>
             </li>
-            <li>
-                <a :href="'/home/usr_UsrSupplier_gtSupGroup?pkey='+goodsInfo.supId"><s:text
-                        name="group_order.activity"/></a>
-            </li>
+            <%--<li>--%>
+                <%--<a :href="'/home/usr_UsrSupplier_gtSupGroup?pkey='+goodsInfo.supId"><s:text--%>
+                        <%--name="group_order.activity"/></a>--%>
+            <%--</li>--%>
         </ul>
     </div>
 
