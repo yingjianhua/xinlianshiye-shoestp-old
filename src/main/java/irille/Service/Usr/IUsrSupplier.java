@@ -3,6 +3,7 @@ package irille.Service.Usr;
 import com.google.inject.ImplementedBy;
 import irille.Service.Usr.Imp.UsrSupplierImp;
 import irille.view.usr.UsrSupplierInfoView;
+import irille.view.usr.UsrshopSettingView;
 
 /**
  * Created by IntelliJ IDEA.
@@ -18,4 +19,11 @@ public interface IUsrSupplier {
      * @author lijie@shoestp.cn
      */
     UsrSupplierInfoView getInfoById(int i);
+    
+    /**
+     * @deprecated:获取店铺装修信息
+     * @date 2018/11/6 20:55
+     * @author zjl
+     */
+    UsrshopSettingView getSettingInfoById(int i);
 }

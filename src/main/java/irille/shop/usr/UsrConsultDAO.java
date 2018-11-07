@@ -8,6 +8,7 @@ import irille.pub.Log;
 import irille.pub.Str;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
+import irille.pub.bean.sql.AbstractSQL;
 import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduIns;
 import irille.pub.svr.Env;
@@ -157,38 +158,24 @@ public class UsrConsultDAO {
 	 * @throws JSONException 
 	 */
 	public static Page<ConsultView> pagePublic(int start, int limit, String countryName, String title,String qdvalue,Integer supplier, Language lang) throws JSONException {
-//		//String where = T.COUNT+">0"; 已经抢单完毕的询盘也显示
-//		List<Serializable> params = new ArrayList<>();
-//		String sql = "select a.* from "+UsrConsult.TB.getCodeSqlTb()+" a";
-//		if(!Str.isEmpty(countryName)) {
-//			sql += " left join "+PltCountry.TB.getCodeSqlTb()+" b on a."+T.COUNTRY+"=b."+PltCountry.T.PKEY+" where b."+PltCountry.T.NAME+"=?";
-//			params.add(countryName);
-//		} else {
-//			sql += " where 1=1";
-//		}
-//		if(!Str.isEmpty(title)) {
-//			sql += (" AND "+T.TITLE+" like ?");
-//			params.add("%"+title+"%");
-//		}
-//		sql += (" order by "+T.CREATE_TIME+" desc");
-//		SqlQuery q = Query.sql(sql, params);
-//		Integer totalCount = q.queryCount();
-//		List<UsrConsult> list = q.limit(start, limit).queryList(UsrConsult.class);
-		
 		BeanQuery<UsrConsult> q = Query.SELECT(UsrConsult.class);
-		q.WHERE(T.IS_PUBLIC, "=?", true);
+		if(!Str.isEmpty(qdvalue)) {
+			q.LEFT_JOIN(UsrConsultRelation.class, T.PKEY, UsrConsultRelation.T.CONSULT);
+			if(qdvalue.equals("1")) {
+				q.AND().WHERE(UsrConsultRelation.T.SUPPLIER," = ? ",supplier);
+			}
+			if(qdvalue.equals("0")) {
+				q.OR()
+				.WHERE(UsrConsultRelation.T.SUPPLIER," <> ? ",supplier)
+				.OR()
+				.WHERE(UsrConsultRelation.T.SUPPLIER," is null ");
+				
+			}
+		}
+		q.AND().WHERE(T.IS_PUBLIC, "=?", true);
 		if(!Str.isEmpty(countryName)) {
 			q.LEFT_JOIN(PltCountry.class, T.COUNTRY, PltCountry.T.PKEY);
 			q.WHERE(PltCountry.T.NAME, " like ? ","%"+countryName+"%" );
-		}
-		if(!Str.isEmpty(qdvalue)) {
-			q.LEFT_JOIN(UsrConsultRelation.class, T.PKEY, UsrConsultRelation.T.CONSULT);
-			if(qdvalue.equals("0")) {
-				q.WHERE(UsrConsultRelation.T.SUPPLIER," is null");
-			}
-			if(qdvalue.equals("1")) {
-				q.WHERE(UsrConsultRelation.T.SUPPLIER," = ? ",supplier);
-			}
 		}
 		if(!Str.isEmpty(title))
 			q.WHERE(T.TITLE, "like ?", "%"+title+"%");
@@ -211,9 +198,9 @@ public class UsrConsultDAO {
 			view.setName(bean.getName());
 			view.setCount(bean.getCount());
 			view.setSupplierCount(UsrConsultRelationDAO.countByConsult(bean.getPkey()));
-			//view.setEmail(bean.getEmail());
 			view.setContent(bean.getContent());
 			view.setCreateTime(bean.getCreateTime());
+			view.setEmail(bean.gtPurchase().getEmail());
 			views.add(view);
 		}
 		return new Page<>(views, start, limit, totalCount);

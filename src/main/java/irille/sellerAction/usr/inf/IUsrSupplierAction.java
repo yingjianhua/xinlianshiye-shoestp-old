@@ -128,5 +128,8 @@ public interface IUsrSupplierAction extends ISellerAction {
 
     @RequestMapping(alias = "商家退出(NEW)", sort = 45)
     void logout() throws Exception;
+    
+    @RequestMapping(alias = "获取店铺装修信息(NEW)", sort = 46)
+    void getShopSetting() throws Exception;
 
 }
