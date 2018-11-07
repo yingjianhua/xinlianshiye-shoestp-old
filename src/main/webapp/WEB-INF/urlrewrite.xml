@@ -42,13 +42,7 @@
         <from>^/m/romania[/]$</from>
         <to type="forward">/home/usr_UsrSupplier_gtSupIndex?pkey=262</to>
     </rule>
-    <rule>
-        <note>
-            报名页 罗马尼亚
-        </note>
-        <from>^/country/Romania-Pantofi-en-gros/*</from>
-        <to type="forward">/home/activity/$1</to>
-    </rule>
+
     <!--<outbound-rule>-->
     <!--<from>^/home/pdt_PdtProduct_gtProductsInfo?id=([0-9]{1,})$</from>-->
     <!--<to>/world/$1/$2</to>-->
