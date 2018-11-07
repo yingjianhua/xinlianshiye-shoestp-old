@@ -190,7 +190,7 @@
 		              <div class="goods-pic pic_box">
 		                <a href="/${pro.rewrite}"  title="${pro.pdt.name}" target="_blank">
 		              	<c:forTokens items="${pro.pdt.picture}" var="pic" delims="," end="0">
-		                  <img src="${envConfig.imageBaseUrl}${pic}?x-oss-process=image/resize,m_pad,h_130,w_165" >
+		                  <img src="${envConfig.imageBaseUrl}${pic}?x-oss-process=image/resize,m_pad,h_256,w_256" >
 		              	</c:forTokens>
 		                </a>
 		                <span></span>
