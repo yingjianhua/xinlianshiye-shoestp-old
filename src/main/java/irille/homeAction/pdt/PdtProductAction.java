@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import irille.Service.Pdt.IPdtProduct;
+import irille.Service.Pdt.Imp.PdtproductPageselect;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
 import irille.homeAction.pdt.dto.ProductInfoView;
@@ -29,6 +31,7 @@ import lombok.Setter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -38,10 +41,17 @@ import java.util.Map;
 public class PdtProductAction extends HomeAction<PdtProduct> {
 
     private static final PdtProductDAO.Query Pdtquery = new PdtProductDAO.Query();
-    private static PdtProductDAO.pageSelect pdtpageSelect = new PdtProductDAO.pageSelect();
+
+
+
+    @Inject
+    private PdtproductPageselect pdtpageSelect = new PdtproductPageselect();
     private static final OdrOrderDAO.Query Odrderquery = new OdrOrderDAO.Query();
     private static final PdtCommentDAO.pageSelect commentPageSelect = new PdtCommentDAO.pageSelect();
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    @Inject
+    private IPdtProduct pdtProduct;
 
     @Override
     public PdtProduct insRun() throws Exception {
@@ -182,7 +192,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
         iduPage.setLimit(getLimit());
         iduPage.setStart(getPage());
         iduPage.setWhere(getWhere());
-        write(objectMapper.writeValueAsString(pdtpageSelect.getProductsIndexByCategory(iduPage, getOrderfld(), isOrder(), getCated(), getSpec(), getOnlyFld(), getKeyword(), getType())));
+        write(objectMapper.writeValueAsString(pdtProduct.getProductListByCategory(iduPage, getOrderfld(), isOrder(), getCated(), getSpec(), getOnlyFld(), getKeyword(), getType())));
     }
 
     /***
@@ -193,11 +203,10 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
      * @date 2018/7/23 19:16
      */
     public void gtProductsIndexHotListAjax() throws Exception {
-        PdtProductDAO.pageSelect pageSelect = new PdtProductDAO.pageSelect();
         IduPage iduPage = new IduPage();
         iduPage.setLimit(getLimit());
         iduPage.setStart(getPage());
-        write(new ObjectMapper().writeValueAsString(pageSelect.getProductsIndexHot(iduPage)));
+        write(pdtProduct.getProductsIndexHot(iduPage));
     }
 
     /***
@@ -208,11 +217,10 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
      * @date 2018/7/23 19:16
      */
     public void gtProductsIndexCategoriesListAjax() throws Exception {
-        PdtProductDAO.pageSelect pageSelect = new PdtProductDAO.pageSelect();
         IduPage iduPage = new IduPage();
         iduPage.setLimit(getLimit());
         iduPage.setStart(getPage());
-        write(new ObjectMapper().writeValueAsString(pageSelect.getProductsIndexCategories(iduPage)));
+        write(new ObjectMapper().writeValueAsString(pdtpageSelect.getProductsIndexCategories(iduPage)));
     }
 
     /***
@@ -223,12 +231,11 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
      * @date 2018/7/24 15:49
      */
     public void gtNewProducts() throws Exception {
-        PdtProductDAO.pageSelect pageSelect = new PdtProductDAO.pageSelect();
         IduPage iduPage = new IduPage();
         iduPage.setLimit(getLimit());
         iduPage.setStart(getPage());
         iduPage.setWhere(String.valueOf(getCated()));
-        write(objectMapper.writeValueAsString(pageSelect.getNewProducts(iduPage)));
+        write(objectMapper.writeValueAsString(pdtpageSelect.getNewProducts(iduPage)));
     }
 
 
@@ -285,7 +292,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
         IduPage page = new IduPage();
         page.setStart(getPage());
         page.setLimit(getLimit());
-        write(pdtpageSelect.getYouMayLike(page, getCated()));
+        write(pdtProduct.getYouMayLike(page, getCated()));
     }
 
     private Integer id;

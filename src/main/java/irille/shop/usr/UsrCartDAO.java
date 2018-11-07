@@ -10,7 +10,6 @@ import irille.pub.idu.IduOther;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtProduct;
-import irille.shop.pdt.PdtProductDAO;
 import irille.shop.pdt.PdtSpec;
 import irille.shop.prm.PrmGroupPurchase;
 import irille.shop.prm.PrmGroupPurchaseLine;
@@ -50,57 +49,6 @@ public class UsrCartDAO {
         }
     }
 
-    public static class InsCart extends IduIns<InsCart, UsrCart> {
-        private static final PdtProductDAO.pageSelect pdtselect = new PdtProductDAO.pageSelect();
-
-        /**
-         * 加入购物车
-         * 没有规格记录,插入数据
-         * 如果已有规格记录,update记录
-         *
-         * @author lijie@shoestp.cn
-         * @Description: 加入购物车
-         * @date 2018/8/8 10:54
-         */
-//        public int inserCart(long specId, int qty, int purId) {
-//            BigDecimal qtys = BigDecimal.valueOf(qty);
-//            PdtSpec spec = BeanBase.get(PdtSpec.class, specId);
-//            FormaterSql sql = FormaterSql.build(this);
-//            sql.select(UsrCart.T.PKEY, UsrCart.T.QTY, UsrCart.T.ROW_VERSION).eq(UsrCart.T.SPEC).and().eq(UsrCart.T.CART_TYPE);
-//            List parmList = new ArrayList();
-//            parmList.add(specId);
-//            parmList.add(Usr.OJoinType.GENERAL.getLine().getKey());
-//            Map result = sql.castMap((BeanBase.queryOneRowIsNull(sql.buildSql(), sql.getParms(parmList))));
-//            if (qtys.compareTo(spec.getStoreCount()) < 1) {
-//                if (result == null) {
-//                    UsrCart usrCart = new UsrCart();
-//                    usrCart.setPurchase(purId);
-//                    usrCart.setSupplier(spec.gtProduct().gtSupplier().getPkey());
-//                    usrCart.setSpec(spec.getPkey());
-//                    usrCart.setQty(qty);
-//                    usrCart.setAmtTotal(qtys.multiply(spec.getPrice()));
-//                    usrCart.setCartType(Usr.OJoinType.GENERAL.getLine().getKey());
-//                    usrCart.setRelatedGroup(0);
-//                    setB(usrCart);
-//                    commit();
-//                } else {
-//                    sql.clean().update(UsrCart.T.QTY, UsrCart.T.ROW_VERSION, UsrCart.T.AMT_TOTAL).eq(UsrCart.T.PKEY).and().eq(UsrCart.T.QTY).and().eq(UsrCart.T.ROW_VERSION);
-//                    parmList.clear();
-//                    parmList.add(qtys);
-//                    parmList.add(Long.valueOf(String.valueOf(result.get(UsrCart.T.ROW_VERSION.getFld().getCodeSqlField()))) + 1);
-//                    parmList.add(spec.getPrice().multiply(qtys));
-//                    parmList.add(result.get(UsrCart.T.PKEY.getFld().getCodeSqlField()));
-//                    parmList.add(result.get(UsrCart.T.QTY.getFld().getCodeSqlField()));
-//                    parmList.add(result.get(UsrCart.T.ROW_VERSION.getFld().getCodeSqlField()));
-//                    return BeanBase.executeUpdate(sql.buildSql(), sql.getParms(parmList));
-//                }
-//                return 1;
-//            }
-//            return -2;
-//        }
-
-
-    }
 
     /**
      * 商品加入到购物车(需判断联合采购商品还是普通商品)

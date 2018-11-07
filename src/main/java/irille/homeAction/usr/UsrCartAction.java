@@ -56,9 +56,8 @@ import irille.shop.usr.UsrSupplierDAO;
 
 public class UsrCartAction extends HomeAction<UsrCart> {
 	private static final LogMessage LOG = new LogMessage(UsrCartAction.class);
-	
+
 	private static final UsrCartDAO.Query query = new UsrCartDAO.Query();// 购物车
-    private static final UsrCartDAO.InsCart inserCart = new UsrCartDAO.InsCart();// 购物车
 	private static final PdtProductDAO.Query productQuery = new PdtProductDAO.Query();// 产品
 	private static final PdtSpecDAO.Query specQuery = new PdtSpecDAO.Query();// 产品规格
 	private static final UsrSupplierDAO.Query supplierQuery = new UsrSupplierDAO.Query();// 商家
@@ -165,16 +164,16 @@ public class UsrCartAction extends HomeAction<UsrCart> {
 		write(json.toString());
 
 	}
-	
+
 	private String cartPkeys;
-	
+
 	public String getCartPkeys() {
 		return cartPkeys;
 	}
 	public void setCartPkeys(String cartPkeys) {
 		this.cartPkeys = cartPkeys;
 	}
-	
+
 	private Map<String,Object> dataMap = new HashMap<String,Object>();
 	public Map<String, Object> getDataMap() {
 		return dataMap;
@@ -182,15 +181,15 @@ public class UsrCartAction extends HomeAction<UsrCart> {
 	public void setDataMap(Map<String, Object> dataMap) {
 		this.dataMap = dataMap;
 	}
-	
-	
+
+
 	//购物车预结算页面 chenlili
 	/**
 	 * @author chenlili
 	 * @updateBy liyichao
 	 * @updateTime 2018-8-17
 	 * @return
-	 * @throws JSONException 
+	 * @throws JSONException
 	 */
 	@NeedLogin
 	public String showAdvCart() throws JSONException {
@@ -244,7 +243,7 @@ public class UsrCartAction extends HomeAction<UsrCart> {
 		}
 		//UsrSupplier supplier = carts.get(0).gtSupplier();
 		List<PltPay> payList = BeanBase.list(PltPay.class,PltPay.T.SUPPLIER.getFld().getCodeSqlField() + " in("+supId+") AND " + PltPay.T.ENABLED.getFld().getCodeSqlField() + " = ? ",false,Sys.OEnabled.TRUE.getLine().getKey());
-		List<PltPayView> payViewList = PltPayView.build(payList); 
+		List<PltPayView> payViewList = PltPayView.build(payList);
 		Integer totalQty = 0;
 		BigDecimal totalAmt = BigDecimal.ZERO;
 		for(UsrCart cart : carts){
@@ -330,7 +329,7 @@ public class UsrCartAction extends HomeAction<UsrCart> {
 //		                  mapTest.get(usrcart.gtSpec().gtColor()).add(sz);
 //		              }
 //		              product.put(usrcart.gtSpec().gtProduct(), mapTest);
-//		        	
+//
 //				  }
 //				cart.put("0", product);
 //			}else {
@@ -367,7 +366,7 @@ public class UsrCartAction extends HomeAction<UsrCart> {
 //		              PdtProduct pct= usrcart.gtSpec().gtProduct();
 //		              pct.setCurPrice(usrcart.gtRelatedGroup().getAmt());
 //		              productB.put(pct, mapTest);
-//		        	
+//
 //				  }
 //				cart.put("1", productB);
 //			}
@@ -390,7 +389,7 @@ public class UsrCartAction extends HomeAction<UsrCart> {
 
 	/**
 	 * xiayan 验证购物车中选中的商品是否是同一商店
-	 * 
+	 *
 	 * @throws JSONException
 	 * @throws IOException
 	 */
@@ -464,7 +463,7 @@ public class UsrCartAction extends HomeAction<UsrCart> {
 
 	/**
 	 * xiayan app点击提交购物车 cartStr ：购物车pkey字符串 以逗号分隔
-	 * 
+	 *
 	 * @return
 	 * @throws Exception
 	 */
@@ -482,7 +481,7 @@ public class UsrCartAction extends HomeAction<UsrCart> {
 				setResult("/");
 				return TRENDS;
 			}
-			
+
 			if (Integer.valueOf(loadCart.gtSpec().gtProduct().getProductType()).equals(Integer.valueOf(Pdt.OProductType.GROUP.getLine().getKey()))) {
 				pitchOnCart.add(loadCart);
 			} else {
@@ -679,7 +678,7 @@ public class UsrCartAction extends HomeAction<UsrCart> {
 
 	/**
 	 * xiayan 修改购物车的数据
-	 * 
+	 *
 	 * @throws JSONException
 	 */
 	public void updateCart() throws Exception {
@@ -840,12 +839,12 @@ public class UsrCartAction extends HomeAction<UsrCart> {
 		json.put("spec", new JSONArray(irille.homeAction.usr.dto.SpecView.build(cartList),false));
 		writerOrExport(json);
 	}
-	
-	
+
+
 	/**
 	 * 处理购物车中提交的数据
 	 * @author liyichao
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void cartSubmit() throws Exception{
 		if(getPurchase() == null){
@@ -860,26 +859,26 @@ public class UsrCartAction extends HomeAction<UsrCart> {
 		OdrOrderAction.getConfirmOrderMap().put(getPurchase().getPkey(), cartPkeys);
 		writerOrExport(json);
 	}
-	
+
 	private Integer pdtPkey;
 	/**
 	 * 查询该商品下对应的规格
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void getSpecByProduct() throws Exception{
 		PdtProduct pdt = BeanBase.load(PdtProduct.class, pdtPkey);
 		String[] colorArr = pdt.getColorAttr().split(",");
 		String[] sizeArr = pdt.getSizeAttr().split(",");
-		
+
 		JSONObject json = new JSONObject();
 		json.put("color", new JSONArray(ColorView.buildColor(pdtPkey,colorArr),false));
 		json.put("size", new JSONArray(irille.homeAction.usr.dto.SpecView.buildSize(sizeArr),false));
-		
+
 		writerOrExport(json);
 	}
-	
+
 	/**
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void getColorAndSize() throws Exception{
 		JSONObject json = new JSONObject();
@@ -891,10 +890,10 @@ public class UsrCartAction extends HomeAction<UsrCart> {
 		sizeMap = irille.homeAction.usr.dto.SpecView.buildSize(specList);
 		json.put("color", new JSONArray(ColorView.buildColor(getPdtPkey(),colorArr),false));
 		json.put("size", sizeMap);
-		
+
 		writerOrExport(json);
 	}
-	
+
 	private String pdtPkeys;
 	public String getPdtPkeys() {
 		return pdtPkeys;
@@ -934,7 +933,7 @@ public class UsrCartAction extends HomeAction<UsrCart> {
 		}
 		write();
 	}
-	
+
 	public void delCartBySpec() throws Exception{
 		UsrCart cart = BeanBase.chk(UsrCart.class, getPkey());
 		if(cart != null){
@@ -944,7 +943,7 @@ public class UsrCartAction extends HomeAction<UsrCart> {
 		}
 		write();
 	}
-	
+
 	private Integer sizePkey;
 	private Integer colorPkey;
 	private Integer groupPkey;
@@ -967,14 +966,14 @@ public class UsrCartAction extends HomeAction<UsrCart> {
 		addSpec.commit();
 		write();
 	}
-	
+
 	private List<UsrCart> specList;
 	/**
 	 * 将商品加入购物车
 	 * 使用:传入产品pkey ->  属性名:pdtPkey
 	 * @author liyichao
 	 * @updatetime 2018-8-16
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@NeedLogin
 	public void boughtPro() throws Exception {
@@ -1011,8 +1010,8 @@ public class UsrCartAction extends HomeAction<UsrCart> {
 		json.put("catPkeys", addCart.pkeys);
 		writeSuccess(json);
 	}
-	
-	
+
+
 	/**
 	 * 修改购物车中商品数量
 	 * @return
@@ -1025,7 +1024,7 @@ public class UsrCartAction extends HomeAction<UsrCart> {
 	}
 	private String jsonCarts;
 	private String pid;
-	
+
 	public String getPid() {
 		return pid;
 	}
@@ -1041,7 +1040,7 @@ public class UsrCartAction extends HomeAction<UsrCart> {
 	public void setJsonCarts(String jsonCarts) {
 		this.jsonCarts = jsonCarts;
 	}
-	
+
 	@NeedLogin
 	public void judgeBuyNow() throws IOException{
 		try {
@@ -1103,10 +1102,10 @@ public class UsrCartAction extends HomeAction<UsrCart> {
 		JSONObject js=new JSONObject(jsonCarts);
 		Iterator it=js.keys();
 		while (it.hasNext()) {
-			 //获取map的key  
-            String key = (String) it.next();  
-            //得到value的值  
-            Integer value = (Integer) js.get(key); 
+			 //获取map的key
+            String key = (String) it.next();
+            //得到value的值
+            Integer value = (Integer) js.get(key);
             UsrCart uc=new UsrCart();
 			uc.setSpec(Integer.valueOf(key));
 			uc.setQty(value);
@@ -1116,7 +1115,7 @@ public class UsrCartAction extends HomeAction<UsrCart> {
 		}
 		UsrSupplier supplier = carts.get(0).gtSupplier();
 		List<PltPay> payList = BeanBase.list(PltPay.class,PltPay.T.SUPPLIER.getFld().getCodeSqlField() + " = ? AND " + PltPay.T.ENABLED.getFld().getCodeSqlField() + " = ? ",false,supplier.getPkey(),Sys.OEnabled.TRUE.getLine().getKey());
-		List<PltPayView> payViewList = PltPayView.build(payList); 
+		List<PltPayView> payViewList = PltPayView.build(payList);
 		Integer totalQty = 0;
 		BigDecimal totalAmt = BigDecimal.ZERO;
 		for(UsrCart cart : carts){
@@ -1152,7 +1151,7 @@ public class UsrCartAction extends HomeAction<UsrCart> {
         setResult("/home/buyNow.jsp");
         return TRENDS;
 	}
-	
+
 	public Integer getGroupPkey() {
 		return groupPkey;
 	}
