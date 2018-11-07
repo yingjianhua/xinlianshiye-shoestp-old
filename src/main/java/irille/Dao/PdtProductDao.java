@@ -62,8 +62,9 @@ public class PdtProductDao {
                 .WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.GENERAL)
                 .WHERE(UsrSupplier.T.STATUS, "=?", Usr.OStatus.APPR)
                 .LEFT_JOIN(UsrSupplier.class, PdtProduct.T.SUPPLIER, UsrSupplier.T.PKEY)
-                .ORDER_BY(
-                        PdtProduct.T.UPDATE_TIME, "desc").ORDER_BY(PdtProduct.T.MY_ORDER, "desc")
+                .ORDER_BY(UsrSupplier.T.SORT, "desc")
+                .ORDER_BY(PdtProduct.T.UPDATE_TIME, "desc")
+                .ORDER_BY(PdtProduct.T.MY_ORDER, "desc")
                 .limit(page.getStart(), page.getLimit())
 
         ;
@@ -115,6 +116,8 @@ public class PdtProductDao {
         ).FROM(PdtProduct.class)
                 .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON)
                 .WHERE(PdtProduct.T.IS_VERIFY, "=?", YES)
+                .WHERE(UsrSupplier.T.STATUS, "=?", Usr.OStatus.APPR)
+                .LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, PdtProduct.T.SUPPLIER)
                 .limit(pdtProductView.getPage().getStart(), pdtProductView.getPage().getLimit());
         if (pdtProductView.getCategory() > -1) {
             query.WHERE(PdtProduct.T.CATEGORY, "in(" + String.join(",", getCatsNodeByCatId(pdtProductView.getCategory())) + ")");
@@ -210,12 +213,10 @@ public class PdtProductDao {
                 }
             }
         }
-        query.WHERE(UsrSupplier.T.STATUS, "=?", Usr.OStatus.APPR);
-        query.LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, PdtProduct.T.SUPPLIER);
         Map result = new HashMap();
         List<Map> list = query.queryMaps();
         list = list.stream().map(o -> {
-            o.put("rewrite", SEOUtils.getPdtProductTitle(Integer.parseInt(String.valueOf(o.get("pkey"))),String.valueOf(o.get("name"))));
+            o.put("rewrite", SEOUtils.getPdtProductTitle(Integer.parseInt(String.valueOf(o.get("pkey"))), String.valueOf(o.get("name"))));
             return o;
         }).collect(Collectors.toList());
         result.put("items", SetBeans.setList(list, PdtProductBaseInfoView.class));
