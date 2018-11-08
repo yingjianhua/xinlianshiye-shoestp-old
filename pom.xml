@@ -39,9 +39,12 @@
             <properties>
                 <environment>prod</environment>
             </properties>
-            <!--<activation>-->
-                <!--<activeByDefault>true</activeByDefault>&lt;!&ndash;此处将dev设置为默认环境 &ndash;&gt;-->
-            <!--</activation>-->
+        </profile>
+        <profile>
+            <id>docker</id>
+            <properties>
+                <environment>docker</environment>
+            </properties>
         </profile>
     </profiles>
 
