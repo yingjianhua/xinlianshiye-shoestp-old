@@ -10,7 +10,9 @@ body, textarea, input, button, select, keygen, legend {
     -webkit-text-size-adjust: none;
     outline: 0;
 }
-
+body{
+    font-size:12px !important;
+}
 header, footer, section, article, aside, nav, hgroup, address, figure, figcaption, menu, details {
     display: block;
 }
@@ -355,7 +357,7 @@ body {
 #goodsInfo .xmgTabNav {
     height: 40px;
     line-height: 40px;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 #goodsInfo .xmgTabNav ul li {
