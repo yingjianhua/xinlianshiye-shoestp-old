@@ -615,12 +615,12 @@ public class PdtProductDAO {
                 SELECT(T.PKEY, T.PICTURE, T.NAME, T.CUR_PRICE)
                         .FROM(PdtProduct.class)
                         .WHERE(T.SUPPLIER, "=?", supplier)
-                        .WHERE(T.IS_NEW, "=?", Sys.OYn.YES)
+//                        .WHERE(T.IS_NEW, "=?", Sys.OYn.YES)
                         .WHERE(T.STATE, "=?", Pdt.OState.ON)
                         .WHERE(T.IS_INDEX, "=?", Sys.OYn.YES)
                         .WHERE(T.IS_VERIFY, "=?", Sys.OYn.YES)
                         .WHERE(T.PRODUCT_TYPE, "=?", Pdt.OProductType.GENERAL)
-                        .ORDER_BY(T.VERIFY_TIME, "DESC")
+                        .ORDER_BY(T.UPDATE_TIME, "DESC")
                         .LIMIT(0, 8);
             }};
 
