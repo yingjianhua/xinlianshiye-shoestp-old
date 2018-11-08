@@ -1,19 +1,19 @@
 package irille.homeAction.usr.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import irille.pub.util.DataFilters;
 import irille.pub.util.SetBeans.SetBean.Annotations.SetBean;
 
 import java.util.List;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 /**
+ *
  * Created by IntelliJ IDEA.
  * User: lijie@shoestp.cn
  * Date: 2018/7/19
  * Time: 16:34
  */
-public class Page_supplierInfoView {
+public class SupplierListView {
 
     private int pkey;
     @JsonSerialize(using=irille.pub.i18n.I18NFieldSerializer.class)

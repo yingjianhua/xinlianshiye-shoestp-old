@@ -1,15 +1,12 @@
 package irille.sellerAction.usr;
 
 import irille.Service.Usr.IUsrSupplierService;
-import irille.homeAction.HomeAction;
-import irille.homeAction.usr.dto.Page_supplierView;
 import irille.pub.Exp;
 import irille.pub.Str;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.SqlQuery;
 import irille.pub.bean.sql.SQL;
-import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.FldLanguage.Language;
 import irille.pub.verify.RandomImageServlet;
@@ -319,53 +316,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
         this._showItem = showItem;
     }
 
-    private Page_supplierView _supplierDto;
 
-    public Page_supplierView getSupplierDto() {
-        return _supplierDto;
-    }
-
-    public void setSupplierDto(Page_supplierView supplierDto) {
-        this._supplierDto = supplierDto;
-    }
-
-    /***
-     * 获取供应商列表信息
-     * @author lijie@shoestp.cn
-     * @param
-     * @return
-     * @date 2018/7/20 10:14
-     */
-    public String gtSupplier() throws Exception {
-        UsrSupplierDAO.pageSelect pageSelect = new UsrSupplierDAO.pageSelect();
-        IduPage iduPage = new IduPage();
-        iduPage.setStart(0);
-        iduPage.setLimit(3);
-        iduPage.setWhere(String.valueOf(getCated()));
-        Page_supplierView page_supplierDto = new Page_supplierView();
-        page_supplierDto.setRecommendList(pageSelect.getSupplierListAndPdtList(iduPage));
-        iduPage.setStart(getCurr());
-        iduPage.setWhere(String.valueOf(getCated()));
-        iduPage.setLimit(getShowItem());
-        page_supplierDto.setManufacturersList(pageSelect.getSupplierListAndPdtList(iduPage));
-        page_supplierDto.setCategory(pageSelect.getCategory());
-        _supplierDto = page_supplierDto;
-        setResult("supplier.jsp");
-        return HomeAction.TRENDS;
-    }
-
-    public String gtSupplierAjax() throws Exception {
-        UsrSupplierDAO.pageSelect pageSelect = new UsrSupplierDAO.pageSelect();
-        IduPage iduPage = new IduPage();
-        iduPage.setStart(getCurr());
-        iduPage.setLimit(getShowItem());
-        iduPage.setWhere(String.valueOf(getCated()));
-        Page_supplierView page_supplierDto = new Page_supplierView();
-        page_supplierDto.setManufacturersList(pageSelect.getSupplierListAndPdtList(iduPage));
-        setSupplierDto(page_supplierDto);
-        setResult("Ajax_supplier.jsp");
-        return HomeAction.TRENDS;
-    }
 
     public String getEmail() {
         return email;

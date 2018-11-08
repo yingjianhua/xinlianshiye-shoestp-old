@@ -1,5 +1,7 @@
 package irille.pub.util;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -32,4 +34,11 @@ public class CacheUtils {
             return new JsonParser().parse(PdtSize.get(PdtSize.class, s).getName()).getAsJsonObject();
         }
     });
+
+    /**
+     * @Description: 目前给单页做缓存
+     * @date 2018/11/8 14:34
+     * @author lijie@shoestp.cn
+     */
+    public static Cache cache = Caffeine.newBuilder().expireAfterAccess(15, TimeUnit.MINUTES).build();
 }

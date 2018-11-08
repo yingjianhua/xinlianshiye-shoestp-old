@@ -1,10 +1,10 @@
 package irille.action.seller.usr.impl;
 
+import irille.Service.Usr.IUsrSupplierService;
 import irille.action.seller.SellerAction;
 import irille.action.seller.usr.IUsrSupplierAction;
 import irille.homeAction.HomeAction;
 import irille.homeAction.usr.dto.Page_supplierView;
-import irille.pub.DateTools;
 import irille.pub.Exp;
 import irille.pub.Str;
 import irille.pub.bean.BeanBase;
@@ -28,6 +28,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -43,6 +44,9 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     private String email;
     private String password;
     private String vCode;
+
+    @Inject
+    IUsrSupplierService usrSupplierService;
 
     @Override
     public void login() throws IOException {
@@ -186,11 +190,11 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
         iduPage.setLimit(3);
         iduPage.setWhere(String.valueOf(getCated()));
         Page_supplierView page_supplierDto = new Page_supplierView();
-        page_supplierDto.setRecommendList(pageSelect.getSupplierListAndPdtList(iduPage));
+        page_supplierDto.setRecommendList(usrSupplierService.getSupplierListAndPdtList(iduPage));
         iduPage.setStart(getCurr());
         iduPage.setWhere(String.valueOf(getCated()));
         iduPage.setLimit(getShowItem());
-        page_supplierDto.setManufacturersList(pageSelect.getSupplierListAndPdtList(iduPage));
+        page_supplierDto.setManufacturersList(usrSupplierService.getSupplierListAndPdtList(iduPage));
         page_supplierDto.setCategory(pageSelect.getCategory());
         _supplierDto = page_supplierDto;
         setResult("supplier.jsp");
@@ -204,15 +208,12 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
         iduPage.setLimit(getShowItem());
         iduPage.setWhere(String.valueOf(getCated()));
         Page_supplierView page_supplierDto = new Page_supplierView();
-        page_supplierDto.setManufacturersList(pageSelect.getSupplierListAndPdtList(iduPage));
+        page_supplierDto.setManufacturersList(usrSupplierService.getSupplierListAndPdtList(iduPage));
         setSupplierDto(page_supplierDto);
         setResult("Ajax_supplier.jsp");
         return HomeAction.TRENDS;
     }
 
-    public static void main(String[] args) {
-        System.out.println(DateTools.getDigest((1 + "123456").toLowerCase()));
-    }
 
     /**
      * 获取国家数据,省份数据,以及供应商分类数据,采购商信息,返会给前端页面

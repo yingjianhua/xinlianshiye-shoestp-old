@@ -407,9 +407,9 @@
             <c:forEach var="d" items="${purchaseIndexView.newProducts}">
                 <div class="item fl">
                     <div class="img pic_box">
-                        <a href="/home/pdt_PdtProduct_gtProductsInfo?id=${d.id}"
+                        <a href="/${d.rewrite}"
                            title="${d.name}">
-                            <img src="${envConfig.imageBaseUrl}${d.image}">
+                            <img src="${envConfig.imageBaseUrl}${d.image}?x-oss-process=image/resize,m_pad,h_170,w_170">">
                         </a>
                         <span>
                             </span>
