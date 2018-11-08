@@ -1,6 +1,6 @@
 package irille.homeAction.usr;
 
-import irille.Service.Usr.IUsrSupplier;
+import irille.Service.Usr.IUsrSupplierService;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
 import irille.homeAction.usr.dto.FavoritesView;
@@ -34,7 +34,7 @@ public class UsrFavoritesAction extends HomeAction<UsrFavorites> {
     private static final PdtCatDAO.Query CATQUERY = new PdtCatDAO.Query();
 
     @Inject
-    IUsrSupplier usrSupplier;
+    IUsrSupplierService usrSupplier;
 
     private static final String timeout_err = "timeout.";
     private byte code;

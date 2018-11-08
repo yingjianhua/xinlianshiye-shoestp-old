@@ -1056,12 +1056,12 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
      * @date 2018/7/23 15:28
      */
     public enum ProductsIndexOrderByType {
-        MostPopular(UsrSupplier.T.SORT,T.MY_ORDER),
-        Sales(UsrSupplier.T.SORT,T.SALES),
-        Favorites(UsrSupplier.T.SORT,T.Favorite_Count),
-        Price(UsrSupplier.T.SORT,T.CUR_PRICE),
-        New(UsrSupplier.T.SORT, T.UPDATE_TIME, T.MY_ORDER),
-        Hot(UsrSupplier.T.SORT,T.IS_HOT);
+        MostPopular(T.MY_ORDER),
+        Sales(T.SALES),
+        Favorites(T.Favorite_Count),
+        Price(T.CUR_PRICE),
+        New(T.MY_ORDER,T.UPDATE_TIME),
+        Hot(T.IS_HOT);
 
         private List<IEnumFld> fld;
 

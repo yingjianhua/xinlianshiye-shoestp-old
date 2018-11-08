@@ -17,7 +17,7 @@ import java.util.List;
  * Time: 16:23
  */
 @ImplementedBy(UsrSupplierImp.class)
-public interface IUsrSupplier {
+public interface IUsrSupplierService {
     /**
      * @Description: 获取的商家详细信息
      * @date 2018/11/5 16:36
