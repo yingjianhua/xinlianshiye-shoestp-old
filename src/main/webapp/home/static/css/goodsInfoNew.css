@@ -307,11 +307,25 @@ body {
     display: inline-block;
 }
 
+#goodsInfo .xmgHead .mxgP {
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
 #goodsInfo .xmgHead .mxgP i,
 #goodsInfo .xmgHead .mxgP p,
 #goodsInfo .xmgHead .mxgP a,
 #goodsInfo .xmgHead .mxgP a img {
     display: inline-block;
+    color: #ffffff;
+    text-decoration: none;
 }
 
 #goodsInfo .xmgHead .mxgP i {
@@ -1978,6 +1992,7 @@ body {
     outline: 0;
     font-weight: bold;
 }
+
 .blank12 {
     margin: 0px auto;
     clear: both;
@@ -1985,9 +2000,26 @@ body {
     font-size: 1px;
     overflow: hidden;
 }
+
 #turn_page {
     text-align: center;
     height: 35px;
     line-height: 35px;
     clear: both;
+}
+
+#c3 {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 4px 10px 4px 3px;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border-radius: 24px;
+    background-image: -webkit-gradient(linear, right top, left top, from(#5780f1), to(#85a5ff));
+    background-image: linear-gradient(to left, #5780f1, #85a5ff);
+    text-decoration: none !important;
+    height: 18px;
+    line-height: 1px;
 }
