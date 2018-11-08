@@ -1060,7 +1060,7 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
         Sales(T.SALES),
         Favorites(T.Favorite_Count),
         Price(T.CUR_PRICE),
-        New(T.UPDATE_TIME,T.MY_ORDER),
+        New(T.MY_ORDER,T.UPDATE_TIME),
         Hot(T.IS_HOT);
 
         private List<IEnumFld> fld;

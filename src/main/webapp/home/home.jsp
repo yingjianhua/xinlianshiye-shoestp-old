@@ -589,7 +589,7 @@
                                        target="_blank">
                                         <img class="lazy" src=""
                                              data-original="${envConfig.imageBaseUrl}${d.image}?x-oss-process=image/resize,m_fixed,h_200,w_200" width="230"
-                                             height="230" alt="" style="display: inline;">
+                                             height="230" alt="">
                                         <p class="newP">${d.name}</p>
                                         <h3>${env.currency.symbols}${d.price}</h3>
                                     </a>

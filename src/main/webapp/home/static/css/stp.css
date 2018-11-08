@@ -341,13 +341,21 @@ body {
 }
 
 #xl-banner_four .product_ul_list li {
-    width: 232px;
-    height: 316px;
+    width: 200px;
+    height: 286px;
     background-color: #ffffff;
     margin-top: 10px;
     margin-bottom: 20px;
+    margin-right: 40px;
+}
+#xl-banner_four .product_ul_list li:nth-child(3n){
+	margin-right: 0;
 }
 #xl-banner_four .product_ul_list li a img{
+   display: block;
+   margin: 0 auto;
+   width: 200px;
+   height: 200px;
    object-fit: contain;
 }
 #xl-banner_four .product_ul_list li p {
@@ -360,7 +368,7 @@ body {
 
 #xl-banner_four .product_ul_list li p, #xl-banner_four .product_ul_list li h3 {
     line-height: 18px;
-    padding: 0 0 0 10px;
+    padding: 0 8px 0 10px;
 }
 
 .sub_button {
@@ -450,11 +458,17 @@ body {
     cursor: pointer;
     width: 132px;
     height: 95px;
+    line-height: 95px;
+    text-align: center;
 }
 
 .xl-box .box_body_list .item img {
-    width: 133px;
-    height: 95px;
+    /*width: 133px;
+    height: 95px;*/
+    width: 90px;
+    height: 65px;
+    margin-top: 10px;
+    object-fit: contain;
 }
 
 .xl-box .box_body_list .item:hover ._hover {
@@ -467,7 +481,8 @@ body {
     width: 133px;
     height: 95px;
     position: absolute;
-    margin-top: -95px;
+    /*margin-top: -95px;*/
+    margin-top: -77px;
     padding: 15px 10px;
     box-sizing: border-box;
 }

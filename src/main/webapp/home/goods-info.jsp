@@ -27,17 +27,36 @@
     <div class="xmgHead">
         <div class="w1200">
             <div class="xmgImg fl">
-                <img :src="_logo" :alt="goodsInfo.supName"/>
+                <a :href="'/home/usr_UsrSupplier_gtSupIndex?pkey='+goodsInfo.supId">
+                    <img :src="_logo" :alt="goodsInfo.supName"/>
+                </a>
             </div>
             <div class="mxgP fl">
                 <i></i>
-                <p>{{goodsInfo.supName}}</p>
-                <a href="#" target="_blank">
-                    <img class="xmgIcon1" src="./static/images/certification-o.png" alt="#"/>
-                </a>
-                <a href="#" target="_blank">
-                    <img class="xmgIcon2" src="./static/images/defence-safe-o.png" alt="#"/>
-                </a>
+
+                <p><a :href="'/home/usr_UsrSupplier_gtSupIndex?pkey='+goodsInfo.supId">{{goodsInfo.supName}}</a></p>
+                <%--<a href="#" target="_blank">--%>
+                <%--<img class="xmgIcon1" src="./static/images/certification-o.png" alt="#"/>--%>
+                <%--</a>--%>
+                <%--<a href="#" target="_blank">--%>
+                <%--<img class="xmgIcon2" src="./static/images/defence-safe-o.png" alt="#"/>--%>
+                <%--</a>--%>
+                <c:if test="${supView.isAuth == 1}">
+                    <a id="c1" data="${supView.pkey }">
+                        <img class="icon" src="/home/static/images/certification-o.png" alt="">
+                    </a>
+
+                    <a id="c2" data="${supView.pkey }">
+                        <img class="icon" src="/home/static/images/defence-safe-o.png" alt="">
+                    </a>
+                </c:if>
+                <c:if test="${not empty supView.authAge && supView.authAge > 0}">
+                    <a class="icon-years-limit" id="c3" data="${supView.pkey }">
+                        <img class="icon" src="/home/static/images/doller_pic_o.png" alt="">
+                        <span class="years-num">${supView.authAge}</span>
+                        <span class="years-unit">YRS</span>
+                    </a>
+                </c:if>
             </div>
             <a class="xmgBtn fr" :href="'/home/usr_UsrConsult_publishView?supplierId='+goodsInfo.supId"
                target="_blank"></a>
@@ -63,8 +82,8 @@
                         name="contactUs"/></a>
             </li>
             <%--<li>--%>
-                <%--<a :href="'/home/usr_UsrSupplier_gtSupGroup?pkey='+goodsInfo.supId"><s:text--%>
-                        <%--name="group_order.activity"/></a>--%>
+            <%--<a :href="'/home/usr_UsrSupplier_gtSupGroup?pkey='+goodsInfo.supId"><s:text--%>
+            <%--name="group_order.activity"/></a>--%>
             <%--</li>--%>
         </ul>
     </div>
@@ -116,9 +135,6 @@
             <!--选择颜色规格数量-->
             <div class="xmgR fr">
                 <h2>{{goodsInfo.pdtName}}</h2>
-                <div class="xmgT1">
-                    <a href="#" target="_blank">{{goodsInfo.supName}}</a>
-                </div>
                 <div class="xmgT2"><s:text name="products.itemCode"/>: {{goodsInfo.itemCode}}</div>
 
                 <div class="xmgT3 info_review clearfloat">
@@ -884,7 +900,7 @@
             }
         }, computed: {
             _logo() {
-                return this.image(this.goodsInfo.logo,"?x-oss-process=image/resize,m_pad,h_130,w_165");
+                return this.image(this.goodsInfo.logo, "?x-oss-process=image/resize,m_pad,h_130,w_165");
             },
             _jsonCarts() {
                 var temp = {}

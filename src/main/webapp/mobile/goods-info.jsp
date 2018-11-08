@@ -119,8 +119,13 @@
 <%@include file="/mobile/template/header.jsp" %>
 <div class="wrapper" id="goods_main">
     <div class="txt" style="background-color:#0c1B8E;display: flex;align-items: center;padding: 10px 15px;">
-        <img alt="" :src="'${envConfig.imageBaseUrl}'+result.logo" width="65" height="50" class="mr10">
-        <span class="mr10" style="color:white">{{result.supName}}</span>
+        <a :href="'/home/usr_UsrSupplier_gtSupIndex?pkey='+result.supId" class="mr10">
+            <img alt="" :src="'${envConfig.imageBaseUrl}'+result.logo" width="65" height="50" class="mr10">
+        </a>
+        <span class="mr10" style="color:white">
+               <a :href="'/home/usr_UsrSupplier_gtSupIndex?pkey='+result.supId"
+                  class="mr10" style="color: #fff">       {{result.supName}}        </a>
+            </span>
         <div v-if="result.authTime==1" style="display: flex;align-items: center;">
             <a :href="'/home/usr_UsrSupplier_gtSupInfo?pkey='+result.supId" class="mr10">
                 <img class="icon" src="./static/images/certification-o.png" alt="">
@@ -175,8 +180,6 @@
         <div class="prod_info_brief">
             <!-- Item Code -->
             <div><s:text name="Global.Product_Number"/>: {{_itemCode}}
-                <div style="display: inline;border: 1px solid black;text-align: center;margin-left: 10px;"><a
-                        :href="linkToShop" style="font-weight: bold;">{{result.supName}}</a></div>
             </div>
         </div>
         <div class="clean prod_info_price">
@@ -531,7 +534,7 @@
                                 type: 'success',
                                 showClose: true,
                                 dangerouslyUseHTMLString: true,
-                                message: lang_obj.global.inqadd + '<br><br><a class="btn-to-publish" href="/home/usr_UsrConsult_publishView?supplierId='+self.result.supId+'&product_id=' + res.data.result.id + '">' + lang_obj.global.inquery + '</a>'
+                                message: lang_obj.global.inqadd + '<br><br><a class="btn-to-publish" href="/home/usr_UsrConsult_publishView?supplierId=' + self.result.supId + '&product_id=' + res.data.result.id + '">' + lang_obj.global.inquery + '</a>'
                             })
                         } else if (res.data.ret == -1) {
                             self.goLoginPage();

@@ -1,6 +1,6 @@
 package irille.sellerAction.usr;
 
-import irille.Service.Usr.IUsrSupplier;
+import irille.Service.Usr.IUsrSupplierService;
 import irille.homeAction.HomeAction;
 import irille.homeAction.usr.dto.Page_supplierView;
 import irille.pub.Exp;
@@ -527,9 +527,9 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
 
     /*                 新的写法   分割线               */
     @Inject
-    IUsrSupplier usrSupplier;
+    IUsrSupplierService usrSupplier;
 
-    
+
     public void getShopSetting() throws IOException{
     	write(usrSupplier.getSettingInfoById(getSupplier().getPkey()));
     }
