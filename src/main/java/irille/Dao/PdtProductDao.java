@@ -56,19 +56,12 @@ public class PdtProductDao {
                 PdtProduct.T.CUR_PRICE
         )
                 .FROM(PdtProduct.class)
-                .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON)
-                .WHERE(PdtProduct.T.IS_VERIFY, "=?", YES)
-                .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON)
-                .WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.GENERAL)
-                .WHERE(UsrSupplier.T.STATUS, "=?", Usr.OStatus.APPR)
-                .LEFT_JOIN(UsrSupplier.class, PdtProduct.T.SUPPLIER, UsrSupplier.T.PKEY)
-                .ORDER_BY(UsrSupplier.T.SORT, "desc")
-                .ORDER_BY(PdtProduct.T.UPDATE_TIME, "desc")
-                .ORDER_BY(PdtProduct.T.MY_ORDER, "desc")
                 .limit(page.getStart(), page.getLimit())
 
         ;
-
+        productRules(query);
+//                .ORDER_BY(UsrSupplier.T.SORT, "desc")
+        newProduct(query);
         if (page.getWhere() != null) {
             if (page.getWhere() != null && page.getWhere().length() > 0) {
                 query.WHERE(PdtProduct.T.CATEGORY, "=?", page.getWhere());
@@ -114,11 +107,8 @@ public class PdtProductDao {
                 PdtProduct.T.CUR_PRICE,
                 PdtProduct.T.Favorite_Count
         ).FROM(PdtProduct.class)
-                .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON)
-                .WHERE(PdtProduct.T.IS_VERIFY, "=?", YES)
-                .WHERE(UsrSupplier.T.STATUS, "=?", Usr.OStatus.APPR)
-                .LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, PdtProduct.T.SUPPLIER)
                 .limit(pdtProductView.getPage().getStart(), pdtProductView.getPage().getLimit());
+        productRules(query);
         if (pdtProductView.getCategory() > -1) {
             query.WHERE(PdtProduct.T.CATEGORY, "in(" + String.join(",", getCatsNodeByCatId(pdtProductView.getCategory())) + ")");
         }
@@ -375,4 +365,34 @@ public class PdtProductDao {
         }
         return pkeys;
     }
+
+    /**
+     * @Description: 商品显示统一逻辑
+     * 修改的时候,PdtProduct.ProductsIndexOrderByType  一起修改
+     * @date 2018/11/8 9:57
+     * @author lijie@shoestp.cn
+     */
+    private BeanQuery productRules(BeanQuery query) {
+        return query.WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON)
+                .WHERE(PdtProduct.T.IS_VERIFY, "=?", YES)
+                .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON)
+                .WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.GENERAL)
+                .WHERE(UsrSupplier.T.STATUS, "=?", Usr.OStatus.APPR)
+                .LEFT_JOIN(UsrSupplier.class, PdtProduct.T.SUPPLIER, UsrSupplier.T.PKEY)
+                .ORDER_BY(UsrSupplier.T.IS_AUTH, "desc");
+
+    }
+
+    /**
+     * @Description: 新品排序规则..解决 排序规则碎片化问题 (未完成)
+     * @date 2018/11/8 11:04
+     * @author lijie@shoestp.cn
+     */
+    private BeanQuery newProduct(BeanQuery query) {
+        return query.ORDER_BY(PdtProduct.T.MY_ORDER, "desc")
+                .ORDER_BY(PdtProduct.T.UPDATE_TIME, "desc");
+    }
+
+
+
 }

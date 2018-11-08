@@ -1,13 +1,23 @@
 package irille.Service.Usr.Imp;
 
-import com.google.gson.JsonParser;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import irille.Dao.PdtProductDao;
 import irille.Dao.UsrSupplierDao;
-import irille.Service.Usr.IUsrSupplier;
+import irille.Service.Usr.IUsrSupplierService;
 import irille.core.sys.Sys;
 import irille.homeAction.usr.dto.FavoritesView;
 import irille.pub.bean.BeanBase;
 import irille.pub.idu.IduPage;
+import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.shop.pdt.PdtProduct;
@@ -17,18 +27,13 @@ import irille.shop.usr.UsrSupplier;
 import irille.view.usr.UsrSupplierInfoView;
 import irille.view.usr.UsrshopSettingView;
 
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Created by IntelliJ IDEA.
  * User: lijie@shoestp.cn
  * Date: 2018/11/5
  * Time: 16:25
  */
-public class UsrSupplierImp implements IUsrSupplier {
+public class UsrSupplierImp implements IUsrSupplierService {
     @Inject
     UsrSupplierDao usrSupplierDao;
     @Inject
@@ -41,19 +46,91 @@ public class UsrSupplierImp implements IUsrSupplier {
     }
 
     @Override
-    public UsrshopSettingView getSettingInfoById(int i) {
-        UsrSupplier us = usrSupplierDao.getUsrShopSetting(i);
-        UsrshopSettingView ssv = new UsrshopSettingView();
-        ssv.setLogo(us.getLogo());
-        ssv.setSignBackGD(us.getSignBackgd());
-        ssv.setAdPhoto(us.getAdPhoto());
-        ssv.setAdPhotoLink(us.getAdPhotoLink());
-        ssv.setCompanyPhoto(new JsonParser().parse(us.getCompanyPhoto()).getAsJsonObject());
-        ssv.setCompanyPhotoLink(us.getCompanyPhotoLink());
-        ssv.setHomePageDIY(us.getHomePageDiy());
-        ssv.setHomePageOn(us.getHomePageOn());
-        return ssv;
-    }
+	public UsrshopSettingView getSettingInfoById(int i) {
+		UsrSupplier us = usrSupplierDao.getUsrShopSetting(i);
+		UsrshopSettingView ssv = new UsrshopSettingView();
+		ssv.setLogo(us.getLogo());
+		ssv.setSignBackGD(us.getSignBackgd());
+		Map<String, String[]> AdPhotoMap = new HashMap<>();
+		if (us.getAdPhoto() != null && us.getAdPhoto().length() > 0) {
+			try {
+				new JSONObject().getJSONObject(us.getAdPhoto());
+			} catch (JSONException e) {
+				String[] str = us.getAdPhoto().split(",");
+				for (int k = 0; k < Language.values().length; k++) {
+					AdPhotoMap.put(Language.values()[k].toString(), str);
+				}
+				ssv.setAdPhoto(AdPhotoMap);
+			}
+		} else {
+			String[] str = { " " };
+			for (int k = 0; k < Language.values().length; k++) {
+				AdPhotoMap.put(Language.values()[k].toString(), str);
+			}
+			ssv.setAdPhoto(AdPhotoMap);
+		}
+
+		Map<String, String[]> AdPhotoLinkMap = new HashMap<>();
+		if (us.getAdPhotoLink() != null && us.getAdPhotoLink().length() > 0) {
+			try {
+				new JSONObject().getJSONObject(us.getAdPhotoLink());
+			} catch (JSONException e) {
+				String[] str = us.getAdPhotoLink().split(",");
+				for (int k = 0; k < Language.values().length; k++) {
+					AdPhotoLinkMap.put(Language.values()[k].toString(), str);
+				}
+				ssv.setAdPhotoLink(AdPhotoLinkMap);
+			}
+		} else {
+			String[] str = { " " };
+			for (int k = 0; k < Language.values().length; k++) {
+				AdPhotoLinkMap.put(Language.values()[k].toString(), str);
+			}
+			ssv.setAdPhotoLink(AdPhotoLinkMap);
+		}
+
+		Map<String, String[]> CompanyPhotoMap = new HashMap<>();
+		if (us.getCompanyPhoto() != null && us.getCompanyPhoto().length() > 0) {
+			try {
+				new JSONObject().getJSONObject(us.getCompanyPhoto());
+			} catch (JSONException e) {
+				String[] str = us.getCompanyPhoto().split(",");
+				for (int k = 0; k < Language.values().length; k++) {
+					CompanyPhotoMap.put(Language.values()[k].toString(), str);
+				}
+				ssv.setCompanyPhoto(CompanyPhotoMap);
+			}
+		} else {
+			String[] str = { " " };
+			for (int k = 0; k < Language.values().length; k++) {
+				CompanyPhotoMap.put(Language.values()[k].toString(), str);
+			}
+			ssv.setCompanyPhoto(CompanyPhotoMap);
+		}
+
+		Map<String, String[]> CompanyPhotoLinkMap = new HashMap<>();
+		if (us.getCompanyPhotoLink() != null && us.getCompanyPhotoLink().length() > 0) {
+			try {
+				new JSONObject().getJSONObject(us.getCompanyPhoto());
+			} catch (JSONException e) {
+				String[] str = us.getCompanyPhotoLink().split(",");
+				for (int k = 0; k < Language.values().length; k++) {
+					CompanyPhotoLinkMap.put(Language.values()[k].toString(), str);
+				}
+				ssv.setCompanyPhotoLink(CompanyPhotoLinkMap);
+			}
+		} else {
+			String[] str = { " " };
+			for (int k = 0; k < Language.values().length; k++) {
+				CompanyPhotoLinkMap.put(Language.values()[k].toString(), str);
+			}
+			ssv.setCompanyPhotoLink(CompanyPhotoLinkMap);
+		}
+
+		ssv.setHomePageDIY(us.getHomePageDiy());
+		ssv.setHomePageOn(us.getHomePageOn());
+		return ssv;
+	}
 
 
     public List<FavoritesView> getFavoritesListByCat(IduPage page, int cat, int purId, Sys.OYn showState) {
