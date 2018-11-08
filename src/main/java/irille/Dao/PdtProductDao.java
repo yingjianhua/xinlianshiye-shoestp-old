@@ -28,9 +28,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static irille.core.sys.Sys.OYn.YES;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -57,10 +57,8 @@ public class PdtProductDao {
         )
                 .FROM(PdtProduct.class)
                 .limit(page.getStart(), page.getLimit())
-
         ;
         productRules(query);
-//                .ORDER_BY(UsrSupplier.T.SORT, "desc")
         newProduct(query);
         if (page.getWhere() != null) {
             if (page.getWhere() != null && page.getWhere().length() > 0) {
@@ -88,13 +86,10 @@ public class PdtProductDao {
                 PdtProduct.T.CUR_PRICE
         ).FROM(PdtProduct.class)
                 .WHERE(PdtProduct.T.IS_HOT, "=?", YES)
-                .WHERE(PdtProduct.T.IS_VERIFY, "=?", Sys.OYn.YES)
-                .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON)
-                .WHERE(UsrSupplier.T.STATUS, "=?", Usr.OStatus.APPR)
-                .LEFT_JOIN(UsrSupplier.class, PdtProduct.T.SUPPLIER, UsrSupplier.T.PKEY)
                 .limit(page.getStart(), page.getLimit())
-                .ORDER_BY(PdtProduct.T.MY_ORDER, "desc")
         ;
+        productRules(query);
+        query.ORDER_BY(PdtProduct.T.MY_ORDER, "desc");
         return query.queryMaps();
     }
 
@@ -110,7 +105,9 @@ public class PdtProductDao {
                 .limit(pdtProductView.getPage().getStart(), pdtProductView.getPage().getLimit());
         productRules(query);
         if (pdtProductView.getCategory() > -1) {
-            query.WHERE(PdtProduct.T.CATEGORY, "in(" + String.join(",", getCatsNodeByCatId(pdtProductView.getCategory())) + ")");
+            List list = getCatsNodeByCatId(pdtProductView.getCategory());
+            if (list != null)
+                query.WHERE(PdtProduct.T.CATEGORY, "in(" + String.join(",", list) + ")");
         }
         //TODO
         /**
@@ -142,7 +139,7 @@ public class PdtProductDao {
          */
         if (pdtProductView.getKeyword() != null && pdtProductView.getKeyword().length() > 0) {
             try {
-                query.WHERE(PdtProduct.T.NAME, "%" + URLDecoder.decode(pdtProductView.getKeyword(), "utf-8") + "%");
+                query.WHERE(PdtProduct.T.NAME, "like ?", "%" + URLDecoder.decode(pdtProductView.getKeyword(), "utf-8") + "%");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
@@ -163,8 +160,7 @@ public class PdtProductDao {
                 }
                 break;
                 case New: {
-                    query.ORDER_BY(PdtProduct.T.UPDATE_TIME, "desc");
-                    query.ORDER_BY(PdtProduct.T.MY_ORDER, "desc");
+                    newProduct(query);
                 }
                 break;
             }
@@ -176,12 +172,21 @@ public class PdtProductDao {
                     PdtProduct.ProductsIndexOrderByType orderByType = PdtProduct.ProductsIndexOrderByType.valueOf(URLDecoder.decode(fld, "utf-8").replace(" ", ""));
                     if (orderByType != null) {
                         if (pdtProductView.isOrder()) {
-                            for (IEnumFld iEnumFld : orderByType.getFld()) {
-                                query.ORDER_BY(iEnumFld, "desc");
+                            if (orderByType == PdtProduct.ProductsIndexOrderByType.New) {
+                                newProduct(query, "desc");
+                            } else {
+                                for (IEnumFld iEnumFld : orderByType.getFld()) {
+                                    query.ORDER_BY(iEnumFld, "desc");
+                                }
                             }
                         } else {
-                            for (IEnumFld iEnumFld : orderByType.getFld()) {
-                                query.ORDER_BY(iEnumFld, "asc");
+                            if (orderByType == PdtProduct.ProductsIndexOrderByType.New) {
+                                newProduct(query, "asc");
+
+                            } else {
+                                for (IEnumFld iEnumFld : orderByType.getFld()) {
+                                    query.ORDER_BY(iEnumFld, "asc");
+                                }
                             }
                         }
                         String pageWhere = pdtProductView.getPage().getWhere();
@@ -208,7 +213,7 @@ public class PdtProductDao {
         list = list.stream().map(o -> {
             o.put("rewrite", SEOUtils.getPdtProductTitle(Integer.parseInt(String.valueOf(o.get("pkey"))), String.valueOf(o.get("name"))));
             return o;
-        }).collect(Collectors.toList());
+        }).collect(toList());
         result.put("items", SetBeans.setList(list, PdtProductBaseInfoView.class));
         result.put("total", query.queryCount());
         if (pdtProductView.getCategory() > -1) {
@@ -254,29 +259,32 @@ public class PdtProductDao {
         if (id < 1) {
             return null;
         }
-        FormaterSql sql = FormaterSql.build();
-        sql.select(PdtCat.T.PKEY).eq(PdtCat.T.CATEGORY_UP);
-        List<Object[]> l = new ArrayList();
-        List<Object[]> tList = BeanBase.list(sql.buildSql(), id);
+        BeanQuery query = new BeanQuery();
+        query.SELECT(
+                PdtCat.T.PKEY
+        ).FROM(PdtCat.class).WHERE(PdtCat.T.CATEGORY_UP, "=?", id);
+        List<PdtCat> l = new ArrayList();
+        List<PdtCat> tList = query.queryList();
         List ttList = new ArrayList();
         l.addAll(tList);
-        List result = new ArrayList();
-        result.add(id);
+        List<String> result = new ArrayList();
+        result.add(String.valueOf(id));
         do {
             ttList.clear();
-            for (Object[] objects : tList) {
-                ttList.addAll(BeanBase.list(sql.buildSql(), sql.castLong(objects)));
+            for (PdtCat objects : tList) {
+                ttList.addAll(new BeanQuery().SELECT(
+                        PdtCat.T.PKEY
+                        ).FROM(PdtCat.class).WHERE(PdtCat.T.CATEGORY_UP, "=?", objects.getPkey()).queryList()
+                );
             }
             l.addAll(ttList);
             tList.clear();
             tList.addAll(ttList);
             if (ttList.size() < 1) break;
         } while (true);
-        sql.clean();
-        for (Object[] o : l) {
-            Long ll = sql.castLong(o);
-            if (ll > 0) {
-                result.add(ll);
+        for (PdtCat o : l) {
+            if (o.getPkey() > 0) {
+                result.add(String.valueOf(o.getPkey()));
             }
         }
         return result;
@@ -298,7 +306,7 @@ public class PdtProductDao {
         if (cat > 0) {
             List list = (List) getCatsNodeByCatId(cat).stream().map(o -> {
                 return String.valueOf(o);
-            }).collect(Collectors.toList());
+            }).collect(toList());
             q.WHERE(cat != 0, PdtProduct.T.CATEGORY, "in (" + String.join(",", list) + ")");
         }
         Integer totalCount = q.queryCount();
@@ -311,7 +319,7 @@ public class PdtProductDao {
             o.put("categoryDiy", translateUtil.getLanguage(o.get("categoryDiy"), PltConfigDAO.supplierLanguage(supplierId)));
             o.put("update_time", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(o.get("update_time")));
             return o;
-        }).collect(Collectors.toList()), start, limit, totalCount);
+        }).collect(toList()), start, limit, totalCount);
         return page;
     }
 
@@ -373,13 +381,14 @@ public class PdtProductDao {
      * @author lijie@shoestp.cn
      */
     private BeanQuery productRules(BeanQuery query) {
+//        PdtProduct.ProductsIndexOrderByType
         return query.WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON)
                 .WHERE(PdtProduct.T.IS_VERIFY, "=?", YES)
                 .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON)
                 .WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.GENERAL)
                 .WHERE(UsrSupplier.T.STATUS, "=?", Usr.OStatus.APPR)
-                .LEFT_JOIN(UsrSupplier.class, PdtProduct.T.SUPPLIER, UsrSupplier.T.PKEY)
-                .ORDER_BY(UsrSupplier.T.IS_AUTH, "desc");
+                .ORDER_BY(UsrSupplier.T.IS_AUTH, "desc")
+                .LEFT_JOIN(UsrSupplier.class, PdtProduct.T.SUPPLIER, UsrSupplier.T.PKEY);
 
     }
 
@@ -389,10 +398,16 @@ public class PdtProductDao {
      * @author lijie@shoestp.cn
      */
     private BeanQuery newProduct(BeanQuery query) {
-        return query.ORDER_BY(PdtProduct.T.MY_ORDER, "desc")
-                .ORDER_BY(PdtProduct.T.UPDATE_TIME, "desc");
+        return newProduct(query, "desc");
     }
 
+    private BeanQuery newProduct(BeanQuery query, String type) {
+        return query
+                .ORDER_BY(PdtProduct.T.PKEY, type)
+                .ORDER_BY(PdtProduct.T.MY_ORDER, type)
+                .ORDER_BY(PdtProduct.T.UPDATE_TIME, type)
+                ;
+    }
 
 
 }

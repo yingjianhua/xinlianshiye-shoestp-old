@@ -3,6 +3,7 @@ package irille.homeAction.usr;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import irille.Service.Usr.IUsrSupplierService;
 import irille.homeAction.HomeAction;
 import irille.homeAction.usr.dto.Page_supplierView;
 import irille.homeAction.usr.dto.ProductView;
@@ -22,6 +23,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -29,12 +31,16 @@ import java.util.List;
 import java.util.Map;
 
 public class UsrSupplierAction extends HomeAction<UsrSupplier> {
-	private static final UsrSupplierDAO.pageSelect pageSelect = new UsrSupplierDAO.pageSelect();
+    private static final UsrSupplierDAO.pageSelect pageSelect = new UsrSupplierDAO.pageSelect();
     private Integer _length;
     private String category;
     private String sort;
     private Integer pageNumber;
     private List<ProductView> _productView;
+
+    @Inject
+    IUsrSupplierService usrSupplierService;
+
 
     public Integer getPageNumber() {
         return pageNumber;
@@ -67,12 +73,14 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
     public void setLength(Integer _length) {
         this._length = _length;
     }
+
     public List<ProductView> get_productView() {
-		return _productView;
-	}
-	public void set_productView(List<ProductView> _productView) {
-		this._productView = _productView;
-	}
+        return _productView;
+    }
+
+    public void set_productView(List<ProductView> _productView) {
+        this._productView = _productView;
+    }
 
     /**
      * 返回店铺首页
@@ -81,7 +89,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
      * @author liyichao
      */
     public String gtSupIndex() {
-    	setSupView(UsrSupplierDAO.Select.getSupView(curLanguage(),getPkey(),1));
+        setSupView(UsrSupplierDAO.Select.getSupView(curLanguage(), getPkey(), 1));
         setResult("/home/shop-index.jsp");
         return HomeAction.TRENDS;
     }
@@ -114,15 +122,18 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
     public void setCatName(String catName) {
         this.catName = catName;
     }
-	 private SupplierView supView;
-    public SupplierView getSupView() {
-		return supView;
-	}
-	public void setSupView(SupplierView supView) {
-		this.supView = supView;
-	}
 
-	/**
+    private SupplierView supView;
+
+    public SupplierView getSupView() {
+        return supView;
+    }
+
+    public void setSupView(SupplierView supView) {
+        this.supView = supView;
+    }
+
+    /**
      * 返回供应商产品页面|根据产品分类和页码搜索产品|根据Most Popular/Sales/Favorites/New/Price进行排序
      *
      * @throws JSONException
@@ -139,12 +150,11 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
     }
 
     public String gtSupPro() throws JSONException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-    	setSupView(UsrSupplierDAO.Select.getSupView(curLanguage(),getPkey(), 2));
-    	setTopDiyCat(UsrProductCategoryDAO.Sellect.getTopCat(curLanguage(),getPkey()));
+        setSupView(UsrSupplierDAO.Select.getSupView(curLanguage(), getPkey(), 2));
+        setTopDiyCat(UsrProductCategoryDAO.Sellect.getTopCat(curLanguage(), getPkey()));
         setResult("/home/shop-productCenter.jsp");
         return HomeAction.TRENDS;
     }
-
 
 
     /**
@@ -153,7 +163,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
      * @author liyichao
      */
     public String gtSupInfo() throws JSONException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-    	setSupView(UsrSupplierDAO.Select.getSupView(curLanguage(),getPkey(),3));
+        setSupView(UsrSupplierDAO.Select.getSupView(curLanguage(), getPkey(), 3));
         setResult("/home/shop-company.jsp");
         return HomeAction.TRENDS;
     }
@@ -164,7 +174,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
      * @author liyichao
      */
     public String gtSupContact() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, JSONException {
-    	setSupView(UsrSupplierDAO.Select.getSupView(curLanguage(),getPkey(),3));
+        setSupView(UsrSupplierDAO.Select.getSupView(curLanguage(), getPkey(), 3));
         setResult("/home/shop-contactUs.jsp");
         return HomeAction.TRENDS;
     }
@@ -179,6 +189,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
     public void setGroupState(String groupState) {
         this.groupState = groupState;
     }
+
     public List<PrmGroupPurchase> getUnionList() {
         return unionList;
     }
@@ -188,12 +199,14 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
     }
 
     private List<CategoryView> catList;
+
     public List<CategoryView> getCatList() {
-		return catList;
-	}
-	public void setCatList(List<CategoryView> catList) {
-		this.catList = catList;
-	}
+        return catList;
+    }
+
+    public void setCatList(List<CategoryView> catList) {
+        this.catList = catList;
+    }
 
     /**
      * 返回联合采购页面
@@ -202,12 +215,12 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
      * @author liyichao
      */
     public String gtSupGroup() throws JSONException {
-    	setSupView(UsrSupplierDAO.Select.getSupView(curLanguage(),getPkey(),1));
-    	PrmGroupPurchaseDAO.GroupList group = new PrmGroupPurchaseDAO.GroupList();
+        setSupView(UsrSupplierDAO.Select.getSupView(curLanguage(), getPkey(), 1));
+        PrmGroupPurchaseDAO.GroupList group = new PrmGroupPurchaseDAO.GroupList();
         group.setSellerPkey((Integer) getPkey());
         group.commit();
         unionList = group.getGroupList();
-    	setCatList(PdtCatDAO.listTopCatView(curLanguage()));
+        setCatList(PdtCatDAO.listTopCatView(curLanguage()));
         setResult("/home/groupPurchase.jsp");
         return TRENDS;
     }
@@ -269,7 +282,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
         iduPage.setLimit(3);
         iduPage.setWhere(String.valueOf(getCated()));
         Page_supplierView page_supplierDto = new Page_supplierView();
-        page_supplierDto.setRecommendList(pageSelect.getSupplierListAndPdtList(iduPage));
+        page_supplierDto.setRecommendList(usrSupplierService.getSupplierListAndPdtList(iduPage));
         iduPage.setStart(getPage());
         iduPage.setWhere(String.valueOf(getCated()));
         int i = getLimit();
@@ -278,7 +291,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
         }
         iduPage.setStart(3);
         iduPage.setLimit(i);
-        page_supplierDto.setManufacturersList(pageSelect.getSupplierListAndPdtList(iduPage));
+        page_supplierDto.setManufacturersList(usrSupplierService.getSupplierListAndPdtList(iduPage));
         page_supplierDto.setCategory(UsrSupplierCategoryDAO.listViewIsTop(curLanguage()));
         _supplierDto = page_supplierDto;
         setResult("/home/supplier.jsp");
@@ -291,13 +304,13 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
      * @author liyichao
      * @date 2018/10/11
      */
-   public void getSupplierList() throws JsonProcessingException, IOException{
-	   IduPage page = new IduPage();
-	   page.setStart(getStart());
-	   page.setLimit(getLimit());
-	   Map map = pageSelect.SupplierList(page, getCated(), curLanguage());
-	   write(new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL).writeValueAsString(map));
-   }
+    public void getSupplierList() throws JsonProcessingException, IOException {
+        IduPage page = new IduPage();
+        page.setStart(getStart());
+        page.setLimit(getLimit());
+        Map map = pageSelect.SupplierList(page, getCated(), curLanguage());
+        write(new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL).writeValueAsString(map));
+    }
 
     /***
      * ajax返回供应商及三个商品列表
@@ -313,9 +326,10 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
         iduPage.setLimit(getLimit());
         //修改
         iduPage.setWhere(String.valueOf(getCated()));
-        write(new ObjectMapper().writeValueAsString(pageSelect.getSupplierListAndPdtList(iduPage)));
+        write(new ObjectMapper().writeValueAsString(usrSupplierService.getSupplierListAndPdtList(iduPage)));
 
     }
+
     /***
      * ajax返回供应商列表
      * @author lijie@shoestp.cn
@@ -331,7 +345,6 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
         write(pageSelect.getSupplierList(iduPage, getCated()));
     }
 
-
     /***
      * ajax返回供应商列表
      * @author lijie@shoestp.cn
@@ -344,17 +357,15 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
         IduPage iduPage = new IduPage();
         iduPage.setStart(getPage());
         iduPage.setLimit(getLimit());
-        JSONObject json=new JSONObject();
-        json.put(STORE_TOTAL,BeanBase.list(UsrSupplier.class,"",false).size());
-
-       // json.put(STORE_ROOT,new ObjectMapper().writeValueAsString(pageSelect.getSupplierListAndPdtList(iduPage)));
-        json.put(STORE_ROOT, new JSONArray(pageSelect.getSupplierListAndPdtList(iduPage),false));
+        JSONObject json = new JSONObject();
+        json.put(STORE_TOTAL, BeanBase.list(UsrSupplier.class, "", false).size());
+        json.put(STORE_ROOT, new JSONArray(usrSupplierService.getSupplierListAndPdtList(iduPage), false));
         writerOrExport(json);
     }
+
     @Override
     public void list() throws Exception {
-    	// TODO Auto-generated method stub
-    	super.list();
+        super.list();
     }
 
 

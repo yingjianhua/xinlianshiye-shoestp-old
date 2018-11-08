@@ -3,7 +3,7 @@ package irille.shop.usr;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import irille.core.sys.Sys;
-import irille.homeAction.usr.dto.Page_supplierInfoView;
+import irille.homeAction.usr.dto.SupplierListView;
 import irille.homeAction.usr.dto.Page_supplierProductView;
 import irille.pub.DateTools;
 import irille.pub.LogMessage;
@@ -15,10 +15,8 @@ import irille.pub.svr.DbPool;
 import irille.pub.svr.Env;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.FldLanguage.Language;
-import irille.pub.util.DataFilters;
 import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.SEOUtils;
-import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.pub.validate.ValidForm;
 import irille.pub.validate.ValidRegex;
@@ -168,7 +166,7 @@ public class UsrSupplierDAO {
             sql.LIMIT(page.getStart(), page.getLimit());
 
 
-            List<Page_supplierInfoView> views = irille.pub.bean.Query.sql(sql).queryMaps().stream().map(bean -> new Page_supplierInfoView() {{
+            List<SupplierListView> views = irille.pub.bean.Query.sql(sql).queryMaps().stream().map(bean -> new SupplierListView() {{
                 setPkey((Integer) bean.get(UsrSupplier.T.PKEY.getFld().getCodeSqlField()));
                 setLogo((String) bean.get(UsrSupplier.T.LOGO.getFld().getCodeSqlField()));
                 setName((String) bean.get(UsrSupplier.T.NAME.getFld().getCodeSqlField()));
@@ -239,67 +237,7 @@ public class UsrSupplierDAO {
             return BeanBase.list(sql.buildSql());
         }
 
-        /***
-         * 获取Supplier页面数据       返回供应商列表及三个商品
-         * @author lijie@shoestp.cn
-         * @param
-         * @return
-         * @date 2018/7/19 16:26
-         */
-        public List<Page_supplierInfoView> getSupplierListAndPdtList(IduPage page) {
-            FormaterSql sql = FormaterSql.build();
-            //获取所有公司
-            sql.select(
-                    T.PKEY,
-                    T.LOGO,
-                    T.PROD_PATTERN, //公司生产模式
-                    T.NAME //公司名称
-            ).desc(UsrSupplier.T.SORT)
-                    .page(page.getStart(), page.getLimit()).eqAutoAnd(T.IS_AUTH, Usr.OIsAuth.YES);
-            if (page.getWhere() != null && !page.getWhere().equalsIgnoreCase("-1")) {
-                sql.leftjoin(UsrSupplierCategory.T.SHOW_NAME, T.CATEGORY)
-                        .eqAutoAnd(UsrSupplierCategory.T.PKEY, page.getWhere());
-            }
-            List queryResult = sql.castListMap(BeanBase.list(sql.buildSql(), sql.getParms()));
-            List<Page_supplierInfoView> result = new ArrayList();
-            for (int i = 0; i < queryResult.size(); i++) {
-                Page_supplierInfoView page_supplierDto = SetBeans.set(queryResult.get(i), Page_supplierInfoView.class);
-                List proDucts = new ArrayList();
-                List<Object[]> t = BeanBase.list(
-                        sql.clean().select(
-                                PdtProduct.T.PKEY,
-                                PdtProduct.T.PICTURE,
-                                PdtProduct.T.NAME
-                        )
-                                .desc(PdtProduct.T.MY_ORDER)
-                                .eqAutoAnd(PdtProduct.T.SUPPLIER, page_supplierDto.getPkey())
-                                .eqAutoAnd(PdtProduct.T.IS_VERIFY, Sys.OYn.YES.getLine().getKey())
-                                .limit(3)
-                                .offset(0)
-                                .buildSql()
-                        , sql.getParms()
-                );
-                page_supplierDto.setProDuctCount(
-                        sql.castLong(
-                                BeanBase.queryOneRow(
-                                        sql.buildCountSql(), sql.getParms()
-                                )
-                        )
-                );
-                for (Object[] objects1 : t) {
-                    Page_supplierProductView supplierProDuctDto = new Page_supplierProductView();
-                    supplierProDuctDto.setPkey(sql.castLong(objects1));
-                    supplierProDuctDto.setPicture(DataFilters.ImageUrl_NoHost_String(String.valueOf(objects1[1])));
-                    supplierProDuctDto.setRewrite(SEOUtils.getPdtProductTitle((int) supplierProDuctDto.getPkey(), String.valueOf(objects1[2])));
-                    proDucts.add(supplierProDuctDto);
-                }
-                page_supplierDto.setProDuctDtos(
-                        proDucts
-                );
-                result.add(page_supplierDto);
-            }
-            return result;
-        }
+
 
         /***
          * 获取供应商列表

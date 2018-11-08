@@ -9,8 +9,8 @@ import java.util.List;
  * Time: 14:05
  */
 public class Page_supplierView {
-    private List<Page_supplierInfoView> recommendList;
-    private List<Page_supplierInfoView> manufacturersList;
+    private List<SupplierListView> recommendList;
+    private List<SupplierListView> manufacturersList;
     private List<Page_supplierProductView> category;
 
 

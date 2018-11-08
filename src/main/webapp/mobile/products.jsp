@@ -417,7 +417,7 @@
                                 '           <div class="img pic_box">' +
                                 '               <a href="/home/pdt_PdtProduct_gtProductsInfo?id=' + value.id + '"' +
                                 '               title="' + value.name + '">' +
-                                '                   <img src="${envConfig.imageBaseUrl}' + value.image + '">' +
+                                '                   <img src="${envConfig.imageBaseUrl}' + value.image + '?x-oss-process=image/resize,m_pad,h_160,w_160">' +
                                 '                   <span>' +
                                 '                  </span>' +
                                 '               </a>' +

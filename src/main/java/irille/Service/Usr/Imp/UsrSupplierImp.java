@@ -1,20 +1,11 @@
 package irille.Service.Usr.Imp;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.inject.Inject;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import irille.Dao.PdtProductDao;
 import irille.Dao.UsrSupplierDao;
 import irille.Service.Usr.IUsrSupplierService;
 import irille.core.sys.Sys;
 import irille.homeAction.usr.dto.FavoritesView;
+import irille.homeAction.usr.dto.SupplierListView;
 import irille.pub.bean.BeanBase;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage.Language;
@@ -26,6 +17,14 @@ import irille.shop.usr.UsrFavorites;
 import irille.shop.usr.UsrSupplier;
 import irille.view.usr.UsrSupplierInfoView;
 import irille.view.usr.UsrshopSettingView;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -199,4 +198,9 @@ public class UsrSupplierImp implements IUsrSupplierService {
         }
         return sql.castLong(BeanBase.queryOneRowIsNull(sql.buildCountSql(), sql.getParms()));
     }
+
+	@Override
+	public List<SupplierListView> getSupplierListAndPdtList(IduPage iduPage) {
+		return usrSupplierDao.getSupplierListAndPdtList(iduPage);
+	}
 }

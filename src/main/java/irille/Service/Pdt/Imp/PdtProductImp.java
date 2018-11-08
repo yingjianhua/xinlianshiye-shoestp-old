@@ -37,7 +37,6 @@ public class PdtProductImp implements IPdtProduct {
     @Override
     public List<PdtProductBaseInfoView> getProductsIndexHot(IduPage iduPage) {
         List<Map> result = pdtProductDao.getProductsIndexHot(iduPage);
-
         return SetBeans.setList(fromPdtProductBaseInfoView(result), PdtProductBaseInfoView.class);
     }
 
@@ -68,6 +67,15 @@ public class PdtProductImp implements IPdtProduct {
 
             }
         }
+        /**
+         * @Description: 现在转变分页逻辑 不再是 页面数
+         * @date 2018/11/8 17:51
+         * @author lijie@shoestp.cn
+         */
+        if (page.getStart() > 0) {
+            page.setStart(page.getStart() - 1);
+        }
+        page.setStart(page.getStart() * page.getLimit());
         return pdtProductDao.getProductList(pdtProductView);
     }
 

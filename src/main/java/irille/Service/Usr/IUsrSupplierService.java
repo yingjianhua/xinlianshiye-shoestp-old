@@ -4,6 +4,7 @@ import com.google.inject.ImplementedBy;
 import irille.Service.Usr.Imp.UsrSupplierImp;
 import irille.core.sys.Sys;
 import irille.homeAction.usr.dto.FavoritesView;
+import irille.homeAction.usr.dto.SupplierListView;
 import irille.pub.idu.IduPage;
 import irille.view.usr.UsrSupplierInfoView;
 import irille.view.usr.UsrshopSettingView;
@@ -40,4 +41,6 @@ public interface IUsrSupplierService {
     List<FavoritesView> getFavoritesListByCat(IduPage page, int cat, int purId, Sys.OYn showState);
 
     Long getFavoritesCountByCat(IduPage page, int cat, int purId, Sys.OYn showState);
+
+    List<SupplierListView> getSupplierListAndPdtList(IduPage iduPage);
 }
