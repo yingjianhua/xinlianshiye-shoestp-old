@@ -304,7 +304,7 @@ public class translateUtil {
                 if (sourece.charAt(0) == '{' && sourece.charAt(sourece.length() - 1) == '}') {
                     JsonObject jsonObject1 = (JsonObject) new JsonParser().parse(String.valueOf(sourece));
                     if (jsonObject1.has(language.toString())) {
-                        if (jsonObject1.get(language.toString()).getAsString().length() < 1) {
+                        if (jsonObject1.get(language.toString()).getAsString().replace(" ", "").length() < 1) {
                             return jsonObject1.get(FldLanguage.Language.en.toString()).getAsString();
                         } else {
                             return jsonObject1.get(language.toString()).getAsString();
