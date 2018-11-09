@@ -34,7 +34,7 @@ body{
     background-color: rgb(228,53,59);
     color: white;
     margin-bottom: 75px;
-    box-shadow: 0 0 35px 0px grey;
+    box-shadow: 0 0 35px 0px rgba(255, 53, 59, 0.5);
 }
 .rmnybottomsev{
     width: 100%;
@@ -533,7 +533,7 @@ body{
 }
 .rmnybfchoose  p{
     display: inline-block;
-    width: 85%;
+    width: 90%;
     margin-left: 3%;
     font-size: 36px;
     color: white;
@@ -564,7 +564,7 @@ body{
     background-color: black;
     color: white;
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 100px;
 }
 .rmnybfthcon h2 {
     font-size: 4em;
