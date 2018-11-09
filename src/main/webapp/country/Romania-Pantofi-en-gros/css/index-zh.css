@@ -1,0 +1,129 @@
+.banner_03 .banner-title{
+  margin-bottom: 10px;
+}
+.banner_04 .pos-right .fs20{
+  line-height: 36px;
+  margin-bottom: 30px;
+}
+
+.banner_05 .bg {
+  background: url(../images/advantage.png) no-repeat 374px top/380px;
+}
+.banner_05 .pos-left{
+  width: 33%;
+}
+/* .banner_05 .ul-wrap{
+  margin-top: 0;
+  margin-bottom:100px;
+}
+.banner_05 .ul-wrap .item{
+  margin-bottom: 10px;
+  padding-left: 0;
+}
+.banner_05 .ul-wrap .item:after{
+  display: none;
+}
+.banner_05 .left-item{
+  text-align: right;
+}
+.banner_05 .left-item .blue-title{
+  flex-grow: 1;
+}
+.banner_05 .pos-left .left-item:first-child .ul-wrap{
+  margin-bottom: 105px;
+}
+.banner_05 .left-item .ul-wrap .item{
+  padding-right: 93px;
+  white-space: nowrap;
+}
+.banner_05 .btn-normal-red{
+  bottom: -10px;
+} */
+.banner_05 .pos-left .blue-title{
+  flex-grow: 1;
+  text-align: right;
+}
+.banner_05 .pos-left .left-item:first-child .ul-wrap{
+  margin-bottom: 105px;
+}
+
+.banner_07 .right-content-wrap{
+  text-align: right;
+  /* justify-content: flex-end; */
+}
+.banner_07 .ul-wrap{
+  margin-bottom: -10px;
+}
+.banner_07 .ul-wrap .item{
+  margin-bottom: 0;
+  color: #999;
+}
+.banner_07 .ul-wrap .item:after{
+  display: none;
+}
+.banner_07 .right-content-wrap .right-title{
+  margin-bottom: 30px;
+}
+.banner_07 .right-content-wrap .right-sub-title{
+  margin-bottom: 10px;
+}
+.banner_07 .btn-normal-red{
+  margin-top: 50px;
+}
+
+.banner_10 .form-box{
+  top: -90px;
+  min-width: 615px;
+  min-height: 385px;
+  padding:  40px 40px 50px;
+}
+.banner_10 .form-box .form-content{
+  margin-top: 8px;
+  margin-bottom: 24px;
+}
+
+
+@media screen and (max-width: 1199px){
+  .btn-normal-red{
+    padding: 0 24px;
+    font-size: 22px;
+  }
+  .banner_05 .bg {
+    background: url(../images/advantage.png) no-repeat 300px 50px/320px;
+  }
+  /* .banner_05 .pos-left .left-item:first-child .ul-wrap{
+    margin-top: 0;
+  }
+  .banner_05 .left-item .ul-wrap .item{
+    padding-right: 73px;
+  } */
+  .banner_10 .form-box{
+    top: -90px;
+    min-width: 455px;
+    min-height: 305px;
+    padding:  30px 30px 40px;
+  }
+  .banner_10 .form-box .form-content{
+    margin-top: 6px;
+    margin-bottom: 20px;
+  }
+}
+
+@media screen and (min-width: 1920px){
+  .banner_05 .bg {
+    background: url(../images/advantage.png) no-repeat 500px top/480px;
+  }
+  /* .banner_05 .pos-left .left-item:first-child .ul-wrap{
+    margin-top: 0;
+  }
+  .banner_05 .left-item .ul-wrap .item{
+    padding-right: 113px;
+  } */
+  .banner_05 .pos-left .left-item:first-child .ul-wrap{
+    margin-bottom: 35px;
+  }
+  .banner_10 .form-box .form-content{
+    margin-top: 10px;
+    margin-bottom: 40px;
+  }
+}
