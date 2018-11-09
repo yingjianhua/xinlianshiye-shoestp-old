@@ -49,9 +49,9 @@ body{
     margin-bottom: 15px;
 }
 .rmnybsevcon h3{
-    width: 73%;
+    width: 70%;
     margin: 0 auto;
-    font-size: 2.2em;
+    font-size: 2.5em;
     font-weight: 500;
     margin-bottom: 70px;
 }
@@ -60,20 +60,38 @@ body{
     margin-left: 10%;
     margin-bottom: 45px;
 }
-.rmnybsevcon p{
-    font-size: 3.5em;
+.rmnybsevcon p.pur_p{
+    font-size: 45px;
     line-height: 90px;
     margin-bottom: 50px;
+		text-align: left;
+		width: 68%;
+		margin: 0 auto;
+		color: #5E5E5E;
+}
+.rmnybsevcon p.pur_p.margin_bottom_20{
+		margin-bottom: 40px;
+}
+.rmnybsevcon p .dot{
+		display: inline-block;
+		width: 15px;
+		height: 15px;
+		border: 2px solid #0154A2;
+		border-radius: 50%;
+		margin-bottom: 10px;
+		margin-right: 10px;
 }
 .rmnybsevcon p .bigblue{
     font-size: 1.7em;
     color: rgb(0,81,158);
     margin: 45px 10px;
+		font-weight: 700;
 }
 .rmnybsevcon p .bigyellow{
     font-size: 1.4em;
     color: rgb(255,210,0);
     margin: 40px auto;
+		font-weight: 700;
 }
 .rmnybsevcon>span{
     width: 50%;
@@ -91,13 +109,12 @@ body{
     padding-top: 100px;
 }
 .rmnybsixcon h2{
-    font-size: 3.5em;
+	font-size: 55px;
 }
 .rmnybsixcon h3{
-    font-size: 2em;
-    opacity: 0.7;
+    font-size: 30px;
     margin-bottom: 30px;
-    font-weight: normal;
+		font-weight: 500;
 }
 .rmnybsixcon p{
     width: 86%;
@@ -106,6 +123,7 @@ body{
     line-height: 45px;
     margin-bottom: 20px;
     font-size: 1.8em;
+		color: #5E5E5E;
 }
 .rmnybsixcon .rmnybsiximgs{
     width: 86%;
@@ -294,17 +312,16 @@ body{
 #romania .romania-poster .language{
     width: 320px;
     padding: 0 20px;
-    background-color: white;
+    background-color: #f7f7f7;
     position: fixed;
     right: 0;
-    top: 100px;
+    top: 400px;
     z-index: 999;
 }
 #romania .romania-poster .language p{
     height: 80px;
     line-height: 60px;
     font-size: 30px;
-    border-bottom: 1px solid #aaaaaa;
 }
 #romania .romania-poster .language p span.lan{
     font-size: 30px;
@@ -343,34 +360,37 @@ body{
 }
 #romania .romania-poster > p{
     margin-left: 60px;
-    width: 750px;
+    width: 800px;
 }
 #romania .romania-poster p.title-text{
-    font-size: 65px;
-    font-weight: bold;
-    padding-top: 170px;
-		line-height: 90px;
-}
-#romania .romania-poster p.slogan{
     font-size: 60px;
     font-weight: bold;
-    line-height: 80px;
+    padding-top: 200px;
+		line-height: 70px;
+		margin-bottom: 10px;
+}
+#romania .romania-poster p.slogan{
+    font-size: 65px;
+    line-height: 70px;
 }
 #romania .romania-poster p.time{
-    font-size: 40px;
+    font-size: 45px;
     font-weight: 700;
+		margin-top: 10px;
 }
 #romania .romania-poster p.content-01{
     font-size: 30px;
 }
 #romania .romania-poster p.content-02{
     font-size: 35px;
+		line-height: 35px;
 }
 #romania .romania-poster .image-bottom button,#romania .romania-poster .image-bottom a{
     display: inline-block;
     padding: 0 20px;
     height: 80px;
     line-height: 80px;
+		font-weight: bold;
     border: none;
     border-radius: 10px;
     font-size: 30px;
@@ -385,16 +405,17 @@ body{
 }
 #romania .producrt{
     width: 980px;
-    height: 1120px;
+    height: 1200px;
     background: url("../imgs/header-image01.png") center no-repeat;
     background-size: 100% 100%;
     position: relative;
     top: -120px;
     text-align: center;
+		padding-top: 160px;
 }
-#romania .producrt h2{
-    padding-top: 160px;
+#romania .producrt .pro-text{
     font-size: 60px;
+		line-height: 70px;
     color: white;
 }
 #romania .producrt .mu-carousel-item h2{
@@ -408,7 +429,8 @@ body{
     background-color: white;
 }
 #romania .producrt .mu-carousel{
-    height: 700px;
+    height: 640px;
+		margin-top: 40px;
 }
 #romania .producrt .mu-carousel-item .detail img{
     width: 100%;
@@ -434,14 +456,14 @@ body{
     border-radius: 4px;
 }
 #romania .producrt .mu-carousel-indicator-icon{
-    width: 52px;
-    height: 12px;
-    border-radius: 4px;
+    width: 80px;
+    height: 20px;
+    border-radius: 10px;
     opacity: 1;
 }
 #romania .producrt .mu-carousel-indicator-button__active .mu-carousel-indicator-icon{
-    width: 72px;
-    background-color: blue;
+    width: 140px;
+    background-color: #0154a2;
 }
 #romania .producrt .producrt-button{
     height: 80px;
@@ -477,4 +499,154 @@ body{
 }
 #romania .rmnybsevconzh{
     font-size: 4em;
+}
+#romania .romania-poster .logo{
+		width: 250px;
+		position: absolute;
+		right: 60px;
+		top: 100px;
+}
+.rmnybottomsev .rmny_title{
+		font-size: 60px;
+}
+
+.rmnybottomfirst .rmnybfchoose{
+    position: absolute;
+    top: 50%;
+    left: 10.5%;
+    width: 75%;
+}
+.rmnybfchoose  div{
+
+}
+.rmnybfchoose  input{
+    display: none;
+    width: 30px;
+    height: 30px;
+}
+.rmnybfchoose  label{
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    margin-top: 14px;
+    border: 2px solid blue;
+}
+.rmnybfchoose  p{
+    display: inline-block;
+    width: 85%;
+    margin-left: 3%;
+    font-size: 36px;
+    color: white;
+}
+.rmnybfchoose  label,.rmnybfchoose  p{
+    vertical-align: text-top;
+}
+.rmnybfchoose  label img{
+    width: 150%;
+    margin-top: -40%;
+    margin-left: 20%;
+}
+
+.rmnybfcon h2 {
+    font-size: 4.2em;
+    padding: 0 0;
+}
+.rmnybfcon h3 {
+    font-size: 2em;
+    padding: 0px 0 50px;
+}
+.rmnybthcon h2 {
+    font-size: 4.2em;
+}
+#romania .rmnymap{
+    width: 100%;
+    height: 550px;
+    background-color: black;
+    color: white;
+    text-align: center;
+    margin-bottom: 50px;
+}
+.rmnybfthcon h2 {
+    font-size: 4em;
+}
+.rmnybfthcon p {
+    display: inline-block;
+    width: 60%;
+    margin: 0 auto;
+    text-align: left;
+    font-size: 2.4em;
+    opacity: 1;
+    padding-left: 0.5em;
+    margin-bottom: 13px;
+    font-weight: normal;
+}
+.rmnybfthcon div .graycircle{
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background-color: grey;
+    border-radius: 50%;
+    margin-top: 20px;
+}
+.rmnybfthcon div .graycircle,.rmnybfthcon p{
+    vertical-align: text-top;
+}
+.rmnybfthcon a{
+    margin-top: 40px;
+}
+.rmnybfivcon>img {
+    width: 60%;
+    margin-bottom: 75px;
+}
+.rmnybfivad .advantage {
+    float: left;
+    width: 100%;
+    margin-bottom: 50px;
+}
+.advantage img {
+    width: 20%;
+    margin-bottom: 20px;
+}
+.advantage h4 {
+    font-size: 4em;
+    color: rgb(41,75,174);
+    margin-bottom: 10px;
+}
+.advantage p {
+    width: 70%;
+    height: auto;
+    margin: 0 auto;
+    font-size: 2em;
+    text-align: center;
+    line-height: 45px;
+    opacity: 1;
+    margin-bottom: 20px;
+}
+.advantage div{
+    width: 55%;
+    margin: 0 auto;
+    text-align: left;
+    margin-bottom: 20px;
+}
+.advantage div span{
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background-color: grey;
+    border-radius: 50%;
+    vertical-align: text-top;
+    margin-top: 17px;
+}
+.advantage div p{
+    display: inline-block;
+    vertical-align: text-top;
+    width: 92%;
+    text-align: left;
+    padding-left: 0.5em;
+    margin-bottom: 0;
+    font-size: 2.2em;
+    opacity: 0.5;
+}
+.red-title{
+		color: red;
 }

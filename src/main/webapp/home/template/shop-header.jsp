@@ -62,13 +62,13 @@
     <div class="wide">
       <ul class="clean enterprise-nav-list">
         <li class="enterprise-nav-item">
-          <a class="" href="/home/usr_UsrSupplier_gtSupIndex?pkey=${supView.pkey}"><s:text name="Global.Home" /></a>
+          <a class="" href="/home/usr_UsrSupplier_gtSupIndex?pkey=${supView.pkey}"><s:text name="companyHome" /></a>
         </li>
         <li class="enterprise-nav-item">
           <a href="/home/usr_UsrSupplier_gtSupPro?pkey=${supView.pkey}"><s:text name="shop-header.Product_Center"/></a>
         </li>
         <li class="enterprise-nav-item">
-          <a href="/home/usr_UsrSupplier_gtSupInfo?pkey=${supView.pkey}"><s:text name="Global.Company"/></a>
+          <a href="/home/usr_UsrSupplier_gtSupInfo?pkey=${supView.pkey}"><s:text name="companyProfile"/></a>
         </li>
         <li class="enterprise-nav-item">
           <a href="/home/usr_UsrSupplier_gtSupContact?pkey=${supView.pkey}"><s:text name="Global.Contact_Us"/></a>
