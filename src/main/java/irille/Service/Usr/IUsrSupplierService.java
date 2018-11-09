@@ -6,6 +6,7 @@ import irille.core.sys.Sys;
 import irille.homeAction.usr.dto.FavoritesView;
 import irille.homeAction.usr.dto.SupplierListView;
 import irille.pub.idu.IduPage;
+import irille.pub.tb.FldLanguage;
 import irille.view.usr.UsrSupplierInfoView;
 import irille.view.usr.UsrshopSettingView;
 
@@ -42,5 +43,18 @@ public interface IUsrSupplierService {
 
     Long getFavoritesCountByCat(IduPage page, int cat, int purId, Sys.OYn showState);
 
-    List<SupplierListView> getSupplierListAndPdtList(IduPage iduPage);
+
+    /**
+     * @Description: 供应商页
+     * @date 2018/11/9 14:37
+     * @author lijie@shoestp.cn
+     */
+    List<SupplierListView> getSupplierListAndPdtList(IduPage iduPage, FldLanguage.Language language);
+
+    /**
+     * @Description: 首页供应商列表
+     * @date 2018/11/9 14:08
+     * @author lijie@shoestp.cn
+     */
+    List getSupplierInfo(IduPage page);
 }

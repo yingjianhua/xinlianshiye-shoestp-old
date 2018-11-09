@@ -26,7 +26,6 @@ import irille.shop.plt.PltErate;
 import irille.shop.plt.PltErateDAO;
 import irille.shop.usr.UsrFavorites;
 import irille.shop.usr.UsrSupplier;
-import irille.view.pdt.PdtCategoriesView;
 import irille.view.pdt.PdtProductSaveView;
 import irille.view.pdt.PdtProductSpecSaveView;
 import irille.view.pdt.PdtYouMayLikeView;
@@ -213,40 +212,6 @@ public class PdtproductPageselect {
 
 
 
-    /**
-     * @Description:获取所有产品分类
-     * @author lijie@shoestp.cn
-     * @date 2018/7/23 14:10
-     */
-    public Map getProductsIndexCategories(IduPage iduPage) throws JSONException, JsonProcessingException {
-        FormaterSql sql = FormaterSql.build(Debug);
-        //查询大类
-        sql.select(
-                PdtCat.T.PKEY,
-                PdtCat.T.NAME
-        )
-                .Andwhere(PdtCat.T.DELETED + "=0 AND ")
-                .isNull(PdtCat.T.CATEGORY_UP)
-                .page(iduPage.getStart(), iduPage.getLimit());
-        List<Object[]> list = BeanBase.list(sql.buildSql());
-        List list1 = new ArrayList();
-        for (Object[] o : list) {
-            PdtCategoriesView pdtCategoriesView = new PdtCategoriesView();
-            pdtCategoriesView.setPkey(sql.castLong(o));
-            pdtCategoriesView.setName(translateUtil.getLanguage(o[1], HomeAction.curLanguage()));
-            sql.cleanWhere()
-                    .eq(
-                            PdtCat.T.CATEGORY_UP
-                    )
-                    .Andwhere(PdtCat.T.DELETED + "=0");
-            pdtCategoriesView.setItems(sql.castListMap(BeanBase.list(sql.buildSql(), pdtCategoriesView.getPkey())));
-            list1.add(pdtCategoriesView);
-        }
-        Map map = new HashMap();
-        map.put("items", list1);
-
-        return map;
-    }
 
     /**
      * @Description: 获取指定分类id下面的子类

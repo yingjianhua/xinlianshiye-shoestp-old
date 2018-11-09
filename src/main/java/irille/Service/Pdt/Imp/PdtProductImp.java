@@ -1,16 +1,19 @@
 package irille.Service.Pdt.Imp;
 
+import irille.Aops.Caches;
 import irille.Dao.PdtProductDao;
 import irille.Service.Pdt.IPdtProduct;
 import irille.homeAction.HomeAction;
 import irille.homeAction.pdt.dto.PdtProductView;
 import irille.pub.idu.IduPage;
+import irille.pub.tb.FldLanguage;
 import irille.pub.util.SEOUtils;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtProduct;
 import irille.view.pdt.PdtProductBaseInfoView;
+import irille.view.pdt.PdtProductCatView;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -30,13 +33,13 @@ public class PdtProductImp implements IPdtProduct {
 
     @Override
     public List<PdtProductBaseInfoView> getNewProductsListByIndex(IduPage iduPage) {
-        List<Map> result = pdtProductDao.getNewProductsList(iduPage);
+        List<Map> result = pdtProductDao.getNewProductsList(iduPage.getStart(), iduPage.getLimit(), iduPage.getWhere());
         return SetBeans.setList(fromPdtProductBaseInfoView(result), PdtProductBaseInfoView.class);
     }
 
     @Override
     public List<PdtProductBaseInfoView> getProductsIndexHot(IduPage iduPage) {
-        List<Map> result = pdtProductDao.getProductsIndexHot(iduPage);
+        List<Map> result = pdtProductDao.getProductsIndexHot(iduPage.getStart(), iduPage.getLimit());
         return SetBeans.setList(fromPdtProductBaseInfoView(result), PdtProductBaseInfoView.class);
     }
 
@@ -90,6 +93,12 @@ public class PdtProductImp implements IPdtProduct {
             setImage(bean.getPicture());
             setName(bean.getName());
         }}).collect(Collectors.toList());
+    }
+
+    @Caches
+    @Override
+    public List<PdtProductCatView> getProductsIndexCategories(int start, int limit, FldLanguage.Language language) {
+        return pdtProductDao.getCatChildNodesByCatId(0, language);
     }
 
 

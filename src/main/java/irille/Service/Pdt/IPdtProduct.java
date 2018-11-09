@@ -3,7 +3,9 @@ package irille.Service.Pdt;
 import com.google.inject.ImplementedBy;
 import irille.Service.Pdt.Imp.PdtProductImp;
 import irille.pub.idu.IduPage;
+import irille.pub.tb.FldLanguage;
 import irille.view.pdt.PdtProductBaseInfoView;
+import irille.view.pdt.PdtProductCatView;
 
 import java.util.List;
 import java.util.Map;
@@ -41,4 +43,11 @@ public interface IPdtProduct {
 
     List<PdtProductBaseInfoView> getYouMayLike(IduPage iduPage, int cat);
 
+
+    /**
+     * @Description: 商品页  侧边栏 商品分类
+     * @date 2018/11/9 9:40
+     * @author lijie@shoestp.cn
+     */
+    List<PdtProductCatView> getProductsIndexCategories(int start, int limit, FldLanguage.Language language);
 }

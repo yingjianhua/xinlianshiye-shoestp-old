@@ -2,9 +2,12 @@ package irille.config;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.matcher.Matchers;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
+import irille.Aops.Caches;
+import irille.Aops.CacheAopsInterceptor;
 import org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter;
 
 import javax.inject.Singleton;
@@ -25,6 +28,7 @@ public class GuiceConfig extends GuiceServletContextListener {
                     @Override
                     protected void configureServlets() {
                         // Struts 2 setup
+                        binder().bindInterceptor(Matchers.any(), Matchers.annotatedWith(Caches.class), new CacheAopsInterceptor());
                         bind(StrutsPrepareAndExecuteFilter.class).in(Singleton.class);
                         filter("/*").through(StrutsPrepareAndExecuteFilter.class);
                     }

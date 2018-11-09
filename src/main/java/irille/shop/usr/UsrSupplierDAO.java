@@ -195,31 +195,6 @@ public class UsrSupplierDAO {
         }
 
 
-        /***
-         *  首页 供应商列表
-         *  审核  通过了  店铺 可以显示
-         *  认证只是有个认证标识
-         *
-         * 主键 公司图片  图片链接 公司名
-         * @return
-         */
-        public List getSupplierInfo(IduPage page) {
-            FormaterSql sql = FormaterSql.build();
-            sql.select(
-                    T.PKEY,
-                    T.LOGO,
-                    T.COMPANY_PHOTO,
-                    T.COMPANY_PHOTO_LINK,
-                    T.NAME
-            ).page(page)
-                    .eqAutoAnd(T.STATUS, OStatus.APPR)
-                    .eqAutoAnd("logo != '' and company_photo!='' ")
-                    .asc(T.SORT)
-                    .desc(T.UPDATE_TIME)
-            ;
-            List list = BeanBase.list(sql.buildSql(), sql.getParms());
-            return sql.castListMap(list);
-        }
 
         /***
          * 获取分类

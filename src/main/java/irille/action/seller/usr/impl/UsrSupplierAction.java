@@ -190,11 +190,11 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
         iduPage.setLimit(3);
         iduPage.setWhere(String.valueOf(getCated()));
         Page_supplierView page_supplierDto = new Page_supplierView();
-        page_supplierDto.setRecommendList(usrSupplierService.getSupplierListAndPdtList(iduPage));
+        page_supplierDto.setRecommendList(usrSupplierService.getSupplierListAndPdtList(iduPage,HomeAction.curLanguage()));
         iduPage.setStart(getCurr());
         iduPage.setWhere(String.valueOf(getCated()));
         iduPage.setLimit(getShowItem());
-        page_supplierDto.setManufacturersList(usrSupplierService.getSupplierListAndPdtList(iduPage));
+        page_supplierDto.setManufacturersList(usrSupplierService.getSupplierListAndPdtList(iduPage,HomeAction.curLanguage()));
         page_supplierDto.setCategory(pageSelect.getCategory());
         _supplierDto = page_supplierDto;
         setResult("supplier.jsp");
@@ -208,7 +208,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
         iduPage.setLimit(getShowItem());
         iduPage.setWhere(String.valueOf(getCated()));
         Page_supplierView page_supplierDto = new Page_supplierView();
-        page_supplierDto.setManufacturersList(usrSupplierService.getSupplierListAndPdtList(iduPage));
+        page_supplierDto.setManufacturersList(usrSupplierService.getSupplierListAndPdtList(iduPage,HomeAction.curLanguage()));
         setSupplierDto(page_supplierDto);
         setResult("Ajax_supplier.jsp");
         return HomeAction.TRENDS;

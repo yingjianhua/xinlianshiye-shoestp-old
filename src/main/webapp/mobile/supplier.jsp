@@ -9,13 +9,6 @@
     <link href="/home/static/themes/default/mobile/css/supplier.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="/home/static/themes/default/mobile/js/swipe.js"></script>
     <script type="text/javascript" src="/home/static/themes/default/mobile/js/supplier.js"></script>
-
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-122336495-1');
-    </script>
     <style type="text/css">
       .footer_top{background:#f4f7fb;}
       .spsearchm{background-color:#f9f9f9;}
@@ -127,7 +120,7 @@
                                             <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=${d.pkey}"
                                                target="_blank"></a>
                                         </div>
-                                    </div> 
+                                    </div>
                                     <!-- .ti2_left -->
                                     <div class="ti2_right fr">
                                         <div class="ti2p">
@@ -137,7 +130,7 @@
                                         <div class="ti2i">
                                                 ${d.prodpattern}
                                         </div>
-                                    </div> 
+                                    </div>
                                     <!-- .ti2_right -->
                                 </div>
                             </div>
@@ -197,11 +190,11 @@
 	var limit = 6;
 	var cated = -1;
 	var self = this;
-	
+
 	window.onload = function(){
 		  getData();
 	}
-	
+
 	function getData(){
 		var start = this.page == 1?0:(this.page - 1) * this.limit;
 	  var param = {"start":start,"limit":limit,"cated":cated};
@@ -224,8 +217,8 @@
 		  }
 	  })
 	}
-	
-	
+
+
   $('#scren_cate .t').click(function(e) {
     e.stopPropagation();
     $('#scren_cate .ct').toggle(0);
@@ -271,7 +264,7 @@
   			}
   		}) */
   });
-  
+
   function renderData(data){
 	  $.each(data, function (i, d) {
 		  var prbox = "";
@@ -280,7 +273,7 @@
 							"<a href='/home/pdt_PdtProduct_gtProductsInfo?id="+v.pkey+"'><img src='${envConfig.imageBaseUrl}"+v.picture+"'></a>"+
 						"</div>";
           })
-          
+
     	    $("#supListMain").append(" <div class='list_item fl' style='margin-bottom:0'><div class='ht clean'><div class='fl pic'>"
     	    +"<a href='/home/usr_UsrSupplier_gtSupIndex?pkey="+d.pkey+"' target='_blank'>"
     	    +"<img src='${envConfig.imageBaseUrl}"+d.logo+"'></a>"
@@ -297,10 +290,10 @@
     	    +"<div class='probox clean'>"
     	    + prbox
     	    +"</div>"
-    	    +"</div></div>"); 
+    	    +"</div></div>");
       		})
   }
-  
+
   function getProdpatternd(data){
 	  if(data == "null" || data == null){
 		  return "";

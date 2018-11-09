@@ -8,9 +8,11 @@ import irille.homeAction.usr.dto.FavoritesView;
 import irille.homeAction.usr.dto.SupplierListView;
 import irille.pub.bean.BeanBase;
 import irille.pub.idu.IduPage;
+import irille.pub.tb.FldLanguage;
 import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
+import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.prm.PrmGroupPurchaseLine;
 import irille.shop.usr.UsrFavorites;
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by IntelliJ IDEA.
@@ -45,91 +48,91 @@ public class UsrSupplierImp implements IUsrSupplierService {
     }
 
     @Override
-	public UsrshopSettingView getSettingInfoById(int i) {
-		UsrSupplier us = usrSupplierDao.getUsrShopSetting(i);
-		UsrshopSettingView ssv = new UsrshopSettingView();
-		ssv.setLogo(us.getLogo());
-		ssv.setSignBackGD(us.getSignBackgd());
-		Map<String, String[]> AdPhotoMap = new HashMap<>();
-		if (us.getAdPhoto() != null && us.getAdPhoto().length() > 0) {
-			try {
-				new JSONObject().getJSONObject(us.getAdPhoto());
-			} catch (JSONException e) {
-				String[] str = us.getAdPhoto().split(",");
-				for (int k = 0; k < Language.values().length; k++) {
-					AdPhotoMap.put(Language.values()[k].toString(), str);
-				}
-				ssv.setAdPhoto(AdPhotoMap);
-			}
-		} else {
-			String[] str = { " " };
-			for (int k = 0; k < Language.values().length; k++) {
-				AdPhotoMap.put(Language.values()[k].toString(), str);
-			}
-			ssv.setAdPhoto(AdPhotoMap);
-		}
+    public UsrshopSettingView getSettingInfoById(int i) {
+        UsrSupplier us = usrSupplierDao.getUsrShopSetting(i);
+        UsrshopSettingView ssv = new UsrshopSettingView();
+        ssv.setLogo(us.getLogo());
+        ssv.setSignBackGD(us.getSignBackgd());
+        Map<String, String[]> AdPhotoMap = new HashMap<>();
+        if (us.getAdPhoto() != null && us.getAdPhoto().length() > 0) {
+            try {
+                new JSONObject().getJSONObject(us.getAdPhoto());
+            } catch (JSONException e) {
+                String[] str = us.getAdPhoto().split(",");
+                for (int k = 0; k < Language.values().length; k++) {
+                    AdPhotoMap.put(Language.values()[k].toString(), str);
+                }
+                ssv.setAdPhoto(AdPhotoMap);
+            }
+        } else {
+            String[] str = {" "};
+            for (int k = 0; k < Language.values().length; k++) {
+                AdPhotoMap.put(Language.values()[k].toString(), str);
+            }
+            ssv.setAdPhoto(AdPhotoMap);
+        }
 
-		Map<String, String[]> AdPhotoLinkMap = new HashMap<>();
-		if (us.getAdPhotoLink() != null && us.getAdPhotoLink().length() > 0) {
-			try {
-				new JSONObject().getJSONObject(us.getAdPhotoLink());
-			} catch (JSONException e) {
-				String[] str = us.getAdPhotoLink().split(",");
-				for (int k = 0; k < Language.values().length; k++) {
-					AdPhotoLinkMap.put(Language.values()[k].toString(), str);
-				}
-				ssv.setAdPhotoLink(AdPhotoLinkMap);
-			}
-		} else {
-			String[] str = { " " };
-			for (int k = 0; k < Language.values().length; k++) {
-				AdPhotoLinkMap.put(Language.values()[k].toString(), str);
-			}
-			ssv.setAdPhotoLink(AdPhotoLinkMap);
-		}
+        Map<String, String[]> AdPhotoLinkMap = new HashMap<>();
+        if (us.getAdPhotoLink() != null && us.getAdPhotoLink().length() > 0) {
+            try {
+                new JSONObject().getJSONObject(us.getAdPhotoLink());
+            } catch (JSONException e) {
+                String[] str = us.getAdPhotoLink().split(",");
+                for (int k = 0; k < Language.values().length; k++) {
+                    AdPhotoLinkMap.put(Language.values()[k].toString(), str);
+                }
+                ssv.setAdPhotoLink(AdPhotoLinkMap);
+            }
+        } else {
+            String[] str = {" "};
+            for (int k = 0; k < Language.values().length; k++) {
+                AdPhotoLinkMap.put(Language.values()[k].toString(), str);
+            }
+            ssv.setAdPhotoLink(AdPhotoLinkMap);
+        }
 
-		Map<String, String[]> CompanyPhotoMap = new HashMap<>();
-		if (us.getCompanyPhoto() != null && us.getCompanyPhoto().length() > 0) {
-			try {
-				new JSONObject().getJSONObject(us.getCompanyPhoto());
-			} catch (JSONException e) {
-				String[] str = us.getCompanyPhoto().split(",");
-				for (int k = 0; k < Language.values().length; k++) {
-					CompanyPhotoMap.put(Language.values()[k].toString(), str);
-				}
-				ssv.setCompanyPhoto(CompanyPhotoMap);
-			}
-		} else {
-			String[] str = { " " };
-			for (int k = 0; k < Language.values().length; k++) {
-				CompanyPhotoMap.put(Language.values()[k].toString(), str);
-			}
-			ssv.setCompanyPhoto(CompanyPhotoMap);
-		}
+        Map<String, String[]> CompanyPhotoMap = new HashMap<>();
+        if (us.getCompanyPhoto() != null && us.getCompanyPhoto().length() > 0) {
+            try {
+                new JSONObject().getJSONObject(us.getCompanyPhoto());
+            } catch (JSONException e) {
+                String[] str = us.getCompanyPhoto().split(",");
+                for (int k = 0; k < Language.values().length; k++) {
+                    CompanyPhotoMap.put(Language.values()[k].toString(), str);
+                }
+                ssv.setCompanyPhoto(CompanyPhotoMap);
+            }
+        } else {
+            String[] str = {" "};
+            for (int k = 0; k < Language.values().length; k++) {
+                CompanyPhotoMap.put(Language.values()[k].toString(), str);
+            }
+            ssv.setCompanyPhoto(CompanyPhotoMap);
+        }
 
-		Map<String, String[]> CompanyPhotoLinkMap = new HashMap<>();
-		if (us.getCompanyPhotoLink() != null && us.getCompanyPhotoLink().length() > 0) {
-			try {
-				new JSONObject().getJSONObject(us.getCompanyPhoto());
-			} catch (JSONException e) {
-				String[] str = us.getCompanyPhotoLink().split(",");
-				for (int k = 0; k < Language.values().length; k++) {
-					CompanyPhotoLinkMap.put(Language.values()[k].toString(), str);
-				}
-				ssv.setCompanyPhotoLink(CompanyPhotoLinkMap);
-			}
-		} else {
-			String[] str = { " " };
-			for (int k = 0; k < Language.values().length; k++) {
-				CompanyPhotoLinkMap.put(Language.values()[k].toString(), str);
-			}
-			ssv.setCompanyPhotoLink(CompanyPhotoLinkMap);
-		}
+        Map<String, String[]> CompanyPhotoLinkMap = new HashMap<>();
+        if (us.getCompanyPhotoLink() != null && us.getCompanyPhotoLink().length() > 0) {
+            try {
+                new JSONObject().getJSONObject(us.getCompanyPhoto());
+            } catch (JSONException e) {
+                String[] str = us.getCompanyPhotoLink().split(",");
+                for (int k = 0; k < Language.values().length; k++) {
+                    CompanyPhotoLinkMap.put(Language.values()[k].toString(), str);
+                }
+                ssv.setCompanyPhotoLink(CompanyPhotoLinkMap);
+            }
+        } else {
+            String[] str = {" "};
+            for (int k = 0; k < Language.values().length; k++) {
+                CompanyPhotoLinkMap.put(Language.values()[k].toString(), str);
+            }
+            ssv.setCompanyPhotoLink(CompanyPhotoLinkMap);
+        }
 
-		ssv.setHomePageDIY(us.getHomePageDiy());
-		ssv.setHomePageOn(us.getHomePageOn());
-		return ssv;
-	}
+        ssv.setHomePageDIY(us.getHomePageDiy());
+        ssv.setHomePageOn(us.getHomePageOn());
+        return ssv;
+    }
 
 
     public List<FavoritesView> getFavoritesListByCat(IduPage page, int cat, int purId, Sys.OYn showState) {
@@ -199,8 +202,17 @@ public class UsrSupplierImp implements IUsrSupplierService {
         return sql.castLong(BeanBase.queryOneRowIsNull(sql.buildCountSql(), sql.getParms()));
     }
 
-	@Override
-	public List<SupplierListView> getSupplierListAndPdtList(IduPage iduPage) {
-		return usrSupplierDao.getSupplierListAndPdtList(iduPage);
-	}
+    @Override
+    public List<SupplierListView> getSupplierListAndPdtList(IduPage iduPage, FldLanguage.Language language) {
+        List<SupplierListView> list = usrSupplierDao.getSupplierListAndPdtList(iduPage.getStart(), iduPage.getLimit(), iduPage.getWhere());
+        return list.stream().map(supplierListView -> {
+            supplierListView.setProdpattern(translateUtil.getLanguage(supplierListView.getProdpattern(), language));
+            return supplierListView;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List getSupplierInfo(IduPage page) {
+        return usrSupplierDao.getSupplier(page.getStart(), page.getLimit());
+    }
 }

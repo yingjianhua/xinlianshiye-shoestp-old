@@ -2,7 +2,11 @@ package irille.Service.Manage.Pdt;
 
 import com.google.inject.ImplementedBy;
 import irille.Service.Manage.Pdt.Imp.PdtProductImp;
+import irille.pub.tb.FldLanguage;
 import irille.view.Page;
+import irille.view.pdt.PdtProductCatView;
+
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -13,4 +17,6 @@ import irille.view.Page;
 @ImplementedBy(PdtProductImp.class)
 public interface IPdtProduct {
     Page getProductList(String name,String number,Integer supplierId,int cat,int start,int limit);
+
+    List<PdtProductCatView> getCatChildNodesByCatId(int i, FldLanguage.Language supplierLanguage);
 }

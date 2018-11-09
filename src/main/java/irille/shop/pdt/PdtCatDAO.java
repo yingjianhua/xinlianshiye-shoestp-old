@@ -1,79 +1,71 @@
 package irille.shop.pdt;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import org.json.JSONException;
-
 import irille.core.sys.Sys.OYn;
 import irille.pub.Log;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.BeanBase;
-import irille.pub.bean.Query;
 import irille.pub.bean.query.SqlQuery;
 import irille.pub.bean.sql.I18NSQL;
 import irille.pub.bean.sql.SQL;
-import irille.pub.idu.IduDel;
 import irille.pub.idu.IduIns;
 import irille.pub.idu.IduOther;
 import irille.pub.idu.IduUpd;
 import irille.pub.svr.Env;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.FldLanguage.Language;
-import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.pub.validate.ValidForm;
 import irille.shop.pdt.PdtCat.T;
-import irille.shop.usr.UsrProductCategory;
-import irille.shop.usr.UsrSupplierCategory;
 import irille.view.pdt.CategoryView;
-import irille.view.pdt.PdtProductCatView;
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class PdtCatDAO {
     public static final Log LOG = new Log(PdtCatDAO.class);
-    
-    public static class Sellect extends IduOther<Sellect,PdtCat>{
-    	private static String pkeys = "";
-		/**
-		 * 通过id查询所有子分类id
-		 */
-		public static String getAllChild(FldLanguage.Language lang,Integer id) {
-			List<PdtCat> allCatBySup = getAllCat(lang);
-			pkeys = String.valueOf(id);
-			getChildPkeys(allCatBySup,id);
-			return pkeys;
-		}
-		
-		/**
-		 * 递归查询子分类id
-		 */
-		public static void getChildPkeys(List<PdtCat> categories,Integer id) {
-			for(PdtCat cat : categories) {
-				if(cat.getCategoryUp() == null) {
-					continue;
-				}
-				if(cat.getCategoryUp().equals(id)) {
-					pkeys += ","+String.valueOf(cat.getPkey());
-					getChildPkeys(categories,cat.getPkey());
-				}else {
-					continue;
-				}
-			}
-		}
-		
-		/**
-		 * 查询所有分类
-		 */
-		public static List<PdtCat> getAllCat(FldLanguage.Language lang){
-			SQL sql = new I18NSQL(lang) {{
-				SELECT(PdtCat.class)
-				.FROM(PdtCat.class);
-			}};
-			return irille.pub.bean.Query.sql(sql).queryList(PdtCat.class);
-		}
+
+    public static class Sellect extends IduOther<Sellect, PdtCat> {
+        private static String pkeys = "";
+
+        /**
+         * 通过id查询所有子分类id
+         */
+        public static String getAllChild(FldLanguage.Language lang, Integer id) {
+            List<PdtCat> allCatBySup = getAllCat(lang);
+            pkeys = String.valueOf(id);
+            getChildPkeys(allCatBySup, id);
+            return pkeys;
+        }
+
+        /**
+         * 递归查询子分类id
+         */
+        public static void getChildPkeys(List<PdtCat> categories, Integer id) {
+            for (PdtCat cat : categories) {
+                if (cat.getCategoryUp() == null) {
+                    continue;
+                }
+                if (cat.getCategoryUp().equals(id)) {
+                    pkeys += "," + String.valueOf(cat.getPkey());
+                    getChildPkeys(categories, cat.getPkey());
+                } else {
+                    continue;
+                }
+            }
+        }
+
+        /**
+         * 查询所有分类
+         */
+        public static List<PdtCat> getAllCat(FldLanguage.Language lang) {
+            SQL sql = new I18NSQL(lang) {{
+                SELECT(PdtCat.class)
+                        .FROM(PdtCat.class);
+            }};
+            return irille.pub.bean.Query.sql(sql).queryList(PdtCat.class);
+        }
     }
 
     /**
@@ -83,7 +75,7 @@ public class PdtCatDAO {
      * @author yingjianhua
      */
     public static List<CategoryView> listTopCatView(Language lang) throws JSONException {
-        List<PdtCat> list = irille.pub.bean.Query.SELECT(PdtCat.class).WHERE(T.CATEGORY_UP, "is NULL").WHERE(T.DELETED," = ?" ,OYn.NO).queryList();
+        List<PdtCat> list = irille.pub.bean.Query.SELECT(PdtCat.class).WHERE(T.CATEGORY_UP, "is NULL").WHERE(T.DELETED, " = ?", OYn.NO).queryList();
         List<CategoryView> views = new ArrayList<>();
         for (PdtCat line : list) {
             CategoryView view = new CategoryView();
@@ -96,7 +88,7 @@ public class PdtCatDAO {
 
     public static class Query extends IduOther<Query, PdtCat> {
         public static List<PdtCat> listSub(Integer pkey) {
-            return BeanBase.list(PdtCat.class, PdtCat.T.CATEGORY_UP.getFld().getCodeSqlField() + " = ? AND "+PdtCat.T.DELETED.getFld().getCodeSqlField() + " = ?", false, pkey,OYn.NO.getLine().getKey());
+            return BeanBase.list(PdtCat.class, PdtCat.T.CATEGORY_UP.getFld().getCodeSqlField() + " = ? AND " + PdtCat.T.DELETED.getFld().getCodeSqlField() + " = ?", false, pkey, OYn.NO.getLine().getKey());
         }
 
         /**
@@ -105,36 +97,10 @@ public class PdtCatDAO {
          * @return
          */
         public static List<PdtCat> listTopCat() {
-            return BeanBase.list(PdtCat.class, PdtCat.T.CATEGORY_UP.getFld().getCodeSqlField() + " is NULL  AND "+PdtCat.T.DELETED.getFld().getCodeSqlField() + " = " +OYn.NO.getLine().getKey(), false);
+            return BeanBase.list(PdtCat.class, PdtCat.T.CATEGORY_UP.getFld().getCodeSqlField() + " is NULL  AND " + PdtCat.T.DELETED.getFld().getCodeSqlField() + " = " + OYn.NO.getLine().getKey(), false);
         }
 
-        /**
-         * @Description: 根据分类获取该节点子节点
-         * @author lijie@shoestp.cn
-         * @date 2018/8/22 21:59
-         */
-        public List<PdtProductCatView> getCatChildNodesByCatId(Integer integer, FldLanguage.Language language) {
-            FormaterSql sql = FormaterSql.build();
-            if (integer == null || integer == 0) {
-                sql.isNull(PdtCat.T.CATEGORY_UP);
-            } else {
-                sql.eqAutoAnd(PdtCat.T.CATEGORY_UP, integer);
-            }
-            List<PdtProductCatView> result = PdtCat.list(PdtCat.class, sql.toWhereString(), false, sql.getParms()).stream().filter(s -> !s.gtDeleted()).map(s -> {
-                PdtProductCatView pdtProductVueView = new PdtProductCatView();
-                translateUtil.getAutoTranslate(s, language);
-                pdtProductVueView
-                        .setValue(s.getPkey())
-                        .setLabel(s.getName())
-                ;
-                List l = getCatChildNodesByCatId(s.getPkey(), language);
-                if (l.size() > 1) {
-                    pdtProductVueView.setChildren(l);
-                }
-                return pdtProductVueView;
-            }).collect(Collectors.toList());
-            return result;
-        }
+
     }
 
     public static class InsMap extends IduOther<InsMap, PdtCat> {
@@ -185,48 +151,48 @@ public class PdtCatDAO {
         @Override
         public void before() {
             PdtCat dbBean = loadThisBeanAndLock();
-            PropertyUtils.copyPropertiesWithout(dbBean, getB(), PdtCat.T.PKEY, PdtCat.T.CREATE_BY, PdtCat.T.CREATE_TIME,PdtCat.T.DELETED);
+            PropertyUtils.copyPropertiesWithout(dbBean, getB(), PdtCat.T.PKEY, PdtCat.T.CREATE_BY, PdtCat.T.CREATE_TIME, PdtCat.T.DELETED);
             setB(translateUtil.autoTranslate(dbBean));
             super.before();
 
         }
     }
-    
-    public static class Ins extends IduIns<Ins,PdtCat>{
-    	@Override
-    	public void before() {
-    		ValidForm.validEmpty(getB().getName(),T.NAME);
-    		super.before();
-    		getB().setDeleted(OYn.NO.getLine().getKey());
-    		getB().setCreateBy(getUser().getPkey());
-    		getB().setCreateTime(Env.getSystemTime());
-    		setB(translateUtil.autoTranslate(getB()));
-    	}
+
+    public static class Ins extends IduIns<Ins, PdtCat> {
+        @Override
+        public void before() {
+            ValidForm.validEmpty(getB().getName(), T.NAME);
+            super.before();
+            getB().setDeleted(OYn.NO.getLine().getKey());
+            getB().setCreateBy(getUser().getPkey());
+            getB().setCreateTime(Env.getSystemTime());
+            setB(translateUtil.autoTranslate(getB()));
+        }
     }
-    
-    public static class Del extends IduUpd<Upd,PdtCat>{
-    	
-    	@Override
-    	public void before() {
-    		super.before();
-    		getB().setDeleted(OYn.YES.getLine().getKey());
-    		PdtCat dbBean=loadThisBeanAndLock();
-    		PropertyUtils.copyProperties(dbBean, getB(), T.DELETED);
-    		setB(dbBean);
-    	}
-    	
-    	public void valid() {
-    			super.valid();
-    			SQL sql = new SQL(){{
-    				SELECT(PdtCat.class);
-    				FROM(PdtCat.class);
-    				WHERE(T.CATEGORY_UP,"=?").PARAM(getB().getPkey());
-    			}};
-    			SqlQuery query = irille.pub.bean.Query.sql(sql);
-    			Integer count = query.queryCount();
-    			if(count > 0){
-    				throw LOG.err("hasChild","存在下级分类,不可删除");
-    			}
-    		}
+
+    public static class Del extends IduUpd<Upd, PdtCat> {
+
+        @Override
+        public void before() {
+            super.before();
+            getB().setDeleted(OYn.YES.getLine().getKey());
+            PdtCat dbBean = loadThisBeanAndLock();
+            PropertyUtils.copyProperties(dbBean, getB(), T.DELETED);
+            setB(dbBean);
+        }
+
+        public void valid() {
+            super.valid();
+            SQL sql = new SQL() {{
+                SELECT(PdtCat.class);
+                FROM(PdtCat.class);
+                WHERE(T.CATEGORY_UP, "=?").PARAM(getB().getPkey());
+            }};
+            SqlQuery query = irille.pub.bean.Query.sql(sql);
+            Integer count = query.queryCount();
+            if (count > 0) {
+                throw LOG.err("hasChild", "存在下级分类,不可删除");
+            }
+        }
     }
 }

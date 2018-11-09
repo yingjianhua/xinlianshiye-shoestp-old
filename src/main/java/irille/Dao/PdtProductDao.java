@@ -1,5 +1,6 @@
 package irille.Dao;
 
+import irille.Aops.Caches;
 import irille.core.sys.Sys;
 import irille.homeAction.pdt.dto.PdtProductView;
 import irille.pub.bean.BeanBase;
@@ -7,6 +8,7 @@ import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduPage;
+import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumFld;
 import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.SEOUtils;
@@ -21,6 +23,7 @@ import irille.shop.usr.UsrProductCategory;
 import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
 import irille.view.pdt.PdtProductBaseInfoView;
+import irille.view.pdt.PdtProductCatView;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -28,6 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static irille.core.sys.Sys.OYn.YES;
 import static java.util.stream.Collectors.toList;
@@ -47,7 +51,8 @@ public class PdtProductDao {
      * @return List
      * @date 2018/7/23 14:38
      */
-    public List getNewProductsList(IduPage page) {
+    @Caches
+    public List getNewProductsList(int start, int limit, String where) {
         BeanQuery query = new BeanQuery();
         query.SELECT(
                 PdtProduct.T.PKEY,
@@ -56,13 +61,13 @@ public class PdtProductDao {
                 PdtProduct.T.CUR_PRICE
         )
                 .FROM(PdtProduct.class)
-                .limit(page.getStart(), page.getLimit())
+                .limit(start, limit)
         ;
         productRules(query);
         newProduct(query);
-        if (page.getWhere() != null) {
-            if (page.getWhere() != null && page.getWhere().length() > 0) {
-                query.WHERE(PdtProduct.T.CATEGORY, "=?", page.getWhere());
+        if (where != null) {
+            if (where != null && where.length() > 0) {
+                query.WHERE(PdtProduct.T.CATEGORY, "=?", where);
             }
         }
         return query.queryMaps();
@@ -77,7 +82,7 @@ public class PdtProductDao {
      * @return
      * @date 2018/7/23 14:47
      */
-    public List<Map> getProductsIndexHot(IduPage page) {
+    public List<Map> getProductsIndexHot(int start, int limit) {
         BeanQuery query = new BeanQuery();
         query.SELECT(
                 PdtProduct.T.PKEY,
@@ -86,7 +91,7 @@ public class PdtProductDao {
                 PdtProduct.T.CUR_PRICE
         ).FROM(PdtProduct.class)
                 .WHERE(PdtProduct.T.IS_HOT, "=?", YES)
-                .limit(page.getStart(), page.getLimit())
+                .limit(start, limit)
         ;
         productRules(query);
         query.ORDER_BY(PdtProduct.T.MY_ORDER, "desc");
@@ -103,6 +108,7 @@ public class PdtProductDao {
                 PdtProduct.T.Favorite_Count
         ).FROM(PdtProduct.class)
                 .limit(pdtProductView.getPage().getStart(), pdtProductView.getPage().getLimit());
+        query.ORDER_BY(UsrSupplier.T.IS_AUTH, "desc");
         productRules(query);
         if (pdtProductView.getCategory() > -1) {
             List list = getCatsNodeByCatId(pdtProductView.getCategory());
@@ -173,7 +179,7 @@ public class PdtProductDao {
                     if (orderByType != null) {
                         if (pdtProductView.isOrder()) {
                             if (orderByType == PdtProduct.ProductsIndexOrderByType.New) {
-                                newProduct(query, "desc");
+                                newProduct(query, true);
                             } else {
                                 for (IEnumFld iEnumFld : orderByType.getFld()) {
                                     query.ORDER_BY(iEnumFld, "desc");
@@ -181,8 +187,7 @@ public class PdtProductDao {
                             }
                         } else {
                             if (orderByType == PdtProduct.ProductsIndexOrderByType.New) {
-                                newProduct(query, "asc");
-
+                                newProduct(query, false);
                             } else {
                                 for (IEnumFld iEnumFld : orderByType.getFld()) {
                                     query.ORDER_BY(iEnumFld, "asc");
@@ -387,7 +392,6 @@ public class PdtProductDao {
                 .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON)
                 .WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.GENERAL)
                 .WHERE(UsrSupplier.T.STATUS, "=?", Usr.OStatus.APPR)
-                .ORDER_BY(UsrSupplier.T.IS_AUTH, "desc")
                 .LEFT_JOIN(UsrSupplier.class, PdtProduct.T.SUPPLIER, UsrSupplier.T.PKEY);
 
     }
@@ -398,16 +402,44 @@ public class PdtProductDao {
      * @author lijie@shoestp.cn
      */
     private BeanQuery newProduct(BeanQuery query) {
-        return newProduct(query, "desc");
+        return newProduct(query, true);
     }
 
-    private BeanQuery newProduct(BeanQuery query, String type) {
+    private BeanQuery newProduct(BeanQuery query, boolean type) {
         return query
-                .ORDER_BY(PdtProduct.T.PKEY, type)
-                .ORDER_BY(PdtProduct.T.MY_ORDER, type)
-                .ORDER_BY(PdtProduct.T.UPDATE_TIME, type)
+                .ORDER_BY(PdtProduct.T.PKEY, type ? "desc" : "asc")
+                .ORDER_BY(PdtProduct.T.MY_ORDER, type ? "asc" : "desc")
+                .ORDER_BY(PdtProduct.T.UPDATE_TIME, type ? "desc" : "asc")
                 ;
     }
 
 
+    /**
+     * @Description: 根据分类获取该节点子节点
+     * @author lijie@shoestp.cn
+     * @date 2018/8/22 21:59
+     */
+    public List<PdtProductCatView> getCatChildNodesByCatId(Integer integer, FldLanguage.Language language) {
+        FormaterSql sql = FormaterSql.build();
+        if (integer == null || integer == 0) {
+            sql.isNull(PdtCat.T.CATEGORY_UP);
+        } else {
+            sql.eqAutoAnd(PdtCat.T.CATEGORY_UP, integer);
+        }
+        List<PdtProductCatView> result = PdtCat.list(PdtCat.class, sql.toWhereString(), false, sql.getParms()).stream().filter(s -> !s.gtDeleted()).map(s -> {
+            PdtProductCatView pdtProductVueView = new PdtProductCatView();
+            translateUtil.getAutoTranslate(s, language);
+            pdtProductVueView
+                    .setValue(s.getPkey());
+            pdtProductVueView
+                    .setLabel(s.getName())
+            ;
+            List l = getCatChildNodesByCatId(s.getPkey(), language);
+            if (l.size() > 1) {
+                pdtProductVueView.setChildren(l);
+            }
+            return pdtProductVueView;
+        }).collect(Collectors.toList());
+        return result;
+    }
 }

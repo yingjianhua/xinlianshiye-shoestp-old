@@ -43,7 +43,6 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
     private static final PdtProductDAO.Query Pdtquery = new PdtProductDAO.Query();
 
 
-
     @Inject
     private PdtproductPageselect pdtpageSelect = new PdtproductPageselect();
     private static final OdrOrderDAO.Query Odrderquery = new OdrOrderDAO.Query();
@@ -217,10 +216,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
      * @date 2018/7/23 19:16
      */
     public void gtProductsIndexCategoriesListAjax() throws Exception {
-        IduPage iduPage = new IduPage();
-        iduPage.setLimit(getLimit());
-        iduPage.setStart(getPage());
-        write(new ObjectMapper().writeValueAsString(pdtpageSelect.getProductsIndexCategories(iduPage)));
+        write(pdtProduct.getProductsIndexCategories(getStart(), getLimit(), HomeAction.curLanguage()));
     }
 
     /***
