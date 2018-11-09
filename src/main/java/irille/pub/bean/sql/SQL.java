@@ -59,6 +59,10 @@ public class SQL {
 	  return mybatisSQL.LEFT_OUTER_JOIN(beanClass, fld1, fld2);
   }
   
+  public <T extends BeanMain<?, ?>> SQL LEFT_JOIN(String join) {
+	  return mybatisSQL.LEFT_OUTER_JOIN(join);
+  }
+  
   public <T extends BeanMain<?, ?>> SQL WHERE(IEnumFld fld, String conditions) {
 	  return mybatisSQL.WHERE(fld, conditions);
   }

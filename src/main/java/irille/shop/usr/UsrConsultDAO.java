@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.json.JSONException;
 
+import irille.core.sys.Sys;
 import irille.pub.Log;
 import irille.pub.Str;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
-import irille.pub.bean.sql.AbstractSQL;
 import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduIns;
 import irille.pub.svr.Env;
@@ -116,14 +116,6 @@ public class UsrConsultDAO {
 		BeanQuery<UsrConsult> q = Query.SELECT(UsrConsult.class).WHERE(T.PURCHASE, "=?", purchase);
 		Integer totalCount = q.queryCount();
 		List<UsrConsult> list = q.limit(start, limit).queryList();
-//		SQL sql = new SQL(){{
-//			SELECT(UsrConsult.class);
-//			FROM(UsrConsult.class);
-//			WHERE(UsrConsult.T.PURCHASE, "=?").PARAM(purchase);
-//		}};
-//		SqlQuery q = Query.sql(sql);
-//		Integer totalCount = q.queryCount();
-//		List<UsrConsult> list = q.limit(start, limit).queryList(UsrConsult.class);
 		List<ConsultView> views = new ArrayList<>();
 		for(UsrConsult bean: list) {
 			List<ConsultRelationView> rvs = new ArrayList<>();
@@ -158,51 +150,71 @@ public class UsrConsultDAO {
 	 * @throws JSONException 
 	 */
 	public static Page<ConsultView> pagePublic(int start, int limit, String countryName, String title,String qdvalue,Integer supplier, Language lang) throws JSONException {
-		BeanQuery<UsrConsult> q = Query.SELECT(UsrConsult.class);
-		if(!Str.isEmpty(qdvalue)) {
-			q.LEFT_JOIN(UsrConsultRelation.class, T.PKEY, UsrConsultRelation.T.CONSULT);
-			if(qdvalue.equals("1")) {
-				q.AND().WHERE(UsrConsultRelation.T.SUPPLIER," = ? ",supplier);
-			}
-			if(qdvalue.equals("0")) {
-				q.OR()
-				.WHERE(UsrConsultRelation.T.SUPPLIER," <> ? ",supplier)
-				.OR()
-				.WHERE(UsrConsultRelation.T.SUPPLIER," is null ");
-				
+		String pkeys = "";
+		if(supplier != null) {
+			List<UsrConsultRelation> relations = Query.SELECT(UsrConsultRelation.T.CONSULT).FROM(UsrConsultRelation.class).WHERE(supplier!=null,UsrConsultRelation.T.SUPPLIER," = ?", supplier).queryList();
+			
+			for(UsrConsultRelation r:relations) {
+				if(pkeys.equals("")) {
+					pkeys += r.getConsult();
+				}else {
+					pkeys += "," + r.getConsult();
+				}
 			}
 		}
-		q.AND().WHERE(T.IS_PUBLIC, "=?", true);
-		if(!Str.isEmpty(countryName)) {
-			q.LEFT_JOIN(PltCountry.class, T.COUNTRY, PltCountry.T.PKEY);
-			q.WHERE(PltCountry.T.NAME, " like ? ","%"+countryName+"%" );
-		}
-		if(!Str.isEmpty(title))
-			q.WHERE(T.TITLE, "like ?", "%"+title+"%");
-		q.ORDER_BY(T.CREATE_TIME, "desc");
-		Integer totalCount = q.queryCount();
-		List<UsrConsult> list = q.limit(start, limit).queryList();
+		
+		
 		List<ConsultView> views = new ArrayList<>();
-		for(UsrConsult bean: list) {
-			//为私有询盘,不显示在公共询盘列表中
-			//私有询盘为,剩余抢单次数为0,并且询盘关联表有一条数据的
-			//公共询盘为,剩余抢单次数不为0,或者询盘关联表数据不止一条
-			PltCountry country = bean.gtCountry();
-			ConsultView view = new ConsultView();
-			view.setId(bean.getPkey());
-			view.setTitle(bean.getTitle());
-			view.setImage(bean.getImage());
-			view.setCountry(country.getPkey());
-			view.setCountryName(country.getName(lang));
-			view.setCountryFlag(country.getNationalFlag());
-			view.setName(bean.getName());
-			view.setCount(bean.getCount());
-			view.setSupplierCount(UsrConsultRelationDAO.countByConsult(bean.getPkey()));
-			view.setContent(bean.getContent());
-			view.setCreateTime(bean.getCreateTime());
-			view.setEmail(bean.gtPurchase().getEmail());
-			views.add(view);
+		String symbol = "";
+		if(!Str.isEmpty(qdvalue)) {
+			if(qdvalue.equals("0")) {
+				symbol = " not in ";
+			}
+			if(qdvalue.equals("1")) {
+				symbol = " in ";
+			}
 		}
+		BeanQuery<UsrConsult> sql = Query.SELECT(UsrConsult.class);
+		
+		if(!Str.isEmpty(countryName)) {
+			sql.LEFT_JOIN(PltCountry.class, T.COUNTRY, PltCountry.T.PKEY);
+			sql.WHERE(PltCountry.T.NAME, " like ? ","%"+countryName+"%" );
+		}
+		Integer totalCount =0;
+		if(!Str.isEmpty(title))
+			sql.WHERE(UsrConsult.T.TITLE, "like ?", "%"+title+"%");
+		
+			sql.WHERE(!pkeys.equals(""),UsrConsult.T.PKEY, symbol+"("+pkeys+")");
+		sql.WHERE(UsrConsult.T.IS_PUBLIC,"=?",Sys.OYn.YES)
+		.ORDER_BY(UsrConsult.T.CREATE_TIME, " DESC ")
+		.ORDER_BY(UsrConsult.T.PKEY, " DESC ");
+		 
+		 if(qdvalue == null || !qdvalue.equals("1") || !pkeys.equals("")) {
+			 totalCount = sql.queryCount();
+			 List<UsrConsult> list = sql.limit(start, limit).queryList();
+				
+				for(UsrConsult bean: list) {
+					//为私有询盘,不显示在公共询盘列表中
+					//私有询盘为,剩余抢单次数为0,并且询盘关联表有一条数据的
+					//公共询盘为,剩余抢单次数不为0,或者询盘关联表数据不止一条
+					PltCountry country = bean.gtCountry();
+					ConsultView view = new ConsultView();
+					view.setId(bean.getPkey());
+					view.setTitle(bean.getTitle());
+					view.setImage(bean.getImage());
+					view.setCountry(country.getPkey());
+					view.setCountryName(country.getName(lang));
+					view.setCountryFlag(country.getNationalFlag());
+					view.setName(bean.getName());
+					view.setCount(bean.getCount());
+					view.setSupplierCount(UsrConsultRelationDAO.countByConsult(bean.getPkey()));
+					view.setContent(bean.getContent());
+					view.setCreateTime(bean.getCreateTime());
+					view.setEmail(bean.gtPurchase().getEmail());
+					views.add(view);
+				}
+		 }
+
 		return new Page<>(views, start, limit, totalCount);
 	}
 	
@@ -246,6 +258,7 @@ public class UsrConsultDAO {
 		if(bean == null)
 			return null;
 		else {
+			
 			PltCountry country = bean.gtCountry();
 			ConsultView view = new ConsultView();
 			view.setTitle(bean.getTitle());
@@ -260,6 +273,7 @@ public class UsrConsultDAO {
 			view.setCountryName(country.getName(lang));
 			view.setCountryFlag(country.getNationalFlag());
 			view.setName(bean.getName());
+			view.setEmail(bean.gtPurchase().getEmail());
 			view.setSupplierCount(UsrConsultRelationDAO.countByConsult(bean.getPkey()));
 			view.setCount(bean.getCount());
 			view.setHaveNewMsg(UsrConsultRelationDAO.countPurchaseNewMsg(pkey)>0?true:false);
