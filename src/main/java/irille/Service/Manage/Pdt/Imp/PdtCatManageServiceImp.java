@@ -1,7 +1,7 @@
 package irille.Service.Manage.Pdt.Imp;
 
 import irille.Dao.PdtProductCatDao;
-import irille.Service.Manage.Pdt.IPdtCatService;
+import irille.Service.Manage.Pdt.IPdtCatManageService;
 import irille.view.Page;
 import irille.view.usr.Manage.PdtCatsView;
 import org.start2do.SetBean.SetBeans;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * Date: 2018/11/8
  * Time: 11:32
  */
-public class PdtCatServiceImp implements IPdtCatService {
+public class PdtCatManageServiceImp implements IPdtCatManageService {
     @Inject
     PdtProductCatDao pdtProductCatDao;
 

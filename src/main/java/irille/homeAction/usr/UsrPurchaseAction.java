@@ -142,7 +142,7 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
             page.setLimit(2);
             purchaseIndexView.setHeadedBottomTopAds(adPageSelect.getAdsInfo(page, CntAd.OAdLocation.INDEX_RIGHT_BOTTOM, osignage));
         }
-        page.setStart(0);
+         page.setStart(0);
         page.setLimit(isMobile() ? 8 : 21);
         purchaseIndexView.setSupplier(usrSupplierService.getSupplierInfo(page));
         page.setLimit(6);

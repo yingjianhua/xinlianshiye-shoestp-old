@@ -1,7 +1,7 @@
 package irille.Service.Manage.Pdt.Imp;
 
 import irille.Dao.PdtProductDao;
-import irille.Service.Manage.Pdt.IPdtProduct;
+import irille.Service.Manage.Pdt.IPdtProductManageService;
 import irille.pub.tb.FldLanguage;
 import irille.view.Page;
 import irille.view.pdt.PdtProductCatView;
@@ -15,7 +15,7 @@ import java.util.List;
  * Date: 2018/11/7
  * Time: 15:55
  */
-public class PdtProductImp implements IPdtProduct {
+public class PdtProductManageServiceImp implements IPdtProductManageService {
 
     @Inject
     PdtProductDao pdtProductDao;

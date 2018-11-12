@@ -1,6 +1,6 @@
 package irille.sellerAction.usr;
 
-import irille.Service.Manage.Pdt.IPdtCatService;
+import irille.Service.Manage.Pdt.IPdtCatManageService;
 import irille.pub.Exp;
 import irille.pub.Str;
 import irille.pub.bean.BeanBase;
@@ -22,7 +22,7 @@ import java.util.List;
 public class UsrProductCategoryAction extends SellerAction<UsrProductCategory> implements IUsrProductCategoryAction {
 
     @Inject
-    IPdtCatService usrSupplierCatService;
+    IPdtCatManageService usrSupplierCatService;
 
 
     /**

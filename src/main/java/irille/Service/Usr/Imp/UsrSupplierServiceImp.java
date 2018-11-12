@@ -9,29 +9,21 @@ import irille.homeAction.usr.dto.SupplierListView;
 import irille.pub.bean.BeanBase;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage;
-import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.prm.PrmGroupPurchaseLine;
 import irille.shop.usr.UsrFavorites;
-import irille.shop.usr.UsrSupplier;
-import irille.view.usr.UsrSupplierInfoView;
-import irille.view.usr.UsrshopSettingView;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
+import javax.inject.Inject;
 
 /**
  * Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/5 Time: 16:25
  */
-public class UsrSupplierImp implements IUsrSupplierService {
+public class UsrSupplierServiceImp implements IUsrSupplierService {
 
   @Inject
   UsrSupplierDao usrSupplierDao;
@@ -39,62 +31,6 @@ public class UsrSupplierImp implements IUsrSupplierService {
   PdtProductDao pdtProductDao;
 
   @Override
-  public UsrSupplierInfoView getInfoById(int i) {
-    Map map = usrSupplierDao.getInfoById(i);
-    return SetBeans.set(map, UsrSupplierInfoView.class);
-  }
-
-  @Override
-  public UsrshopSettingView getSettingInfoById(int i) {
-    UsrSupplierImp imp = new UsrSupplierImp();
-    UsrSupplier us = usrSupplierDao.getUsrShopSetting(i);
-    UsrshopSettingView ssv = new UsrshopSettingView();
-    ssv.setLogo(us.getLogo());
-    ssv.setSignBackGD(us.getSignBackgd());
-    ssv.setAdPhoto(imp.isJson(us.getAdPhoto()).toString());
-    ssv.setAdPhotoLink(imp.isJson(us.getAdPhotoLink()).toString());
-    ssv.setCompanyPhoto(imp.isJson(us.getCompanyPhoto()).toString());
-    ssv.setCompanyPhotoLink(imp.isJson(us.getCompanyPhotoLink()).toString());
-    ssv.setHomePageDIY(imp.isJson(us.getHomePageDiy()).toString());
-    ssv.setHomePageOn(us.getHomePageOn());
-    return ssv;
-  }
-
-  private JSONObject isJson(String str) {
-    UsrSupplierImp imp = new UsrSupplierImp();
-    JSONObject json = new JSONObject();
-    Language[] lang = Language.values();
-    if (!(imp.idJson(str))) {
-      for (Language language : lang) {
-        try {
-          if (str.isEmpty() || str == null) {
-            json.put(language.toString(), " ");
-          } else {
-            json.put(language.toString(), str);
-          }
-        } catch (JSONException e) {
-          e.printStackTrace();
-        }
-      }
-      return json;
-    }
-    try {
-      json = new JSONObject(str);
-    } catch (JSONException e) {
-      e.printStackTrace();
-    }
-    return json;
-  }
-
-  private boolean idJson(String str) {
-    try {
-      JSONObject json = new JSONObject(str);
-      return true;
-    } catch (JSONException e) {
-      return false;
-    }
-  }
-
   public List<FavoritesView> getFavoritesListByCat(IduPage page, int cat, int purId,
       Sys.OYn showState) {
     FormaterSql sql = FormaterSql.build(this);
@@ -130,6 +66,7 @@ public class UsrSupplierImp implements IUsrSupplierService {
     return result;
   }
 
+  @Override
   public Long getFavoritesCountByCat(IduPage page, int cat, int purId, Sys.OYn showState) {
     FormaterSql sql = FormaterSql.build(this);
     sql.select(UsrFavorites.T.PKEY, UsrFavorites.T.PRODUCT, PdtProduct.T.NAME, PdtProduct.T.PICTURE,
@@ -171,10 +108,5 @@ public class UsrSupplierImp implements IUsrSupplierService {
     return usrSupplierDao.getSupplier(page.getStart(), page.getLimit());
   }
 
-  public void updShopSetting(int i, UsrshopSettingView bean) {
-    UsrSupplier user = usrSupplierDao.getUsrShopSetting(i);
-    System.out.println(bean);
-    user.setLogo(bean.getLogo());
-    user.setSignBackgd(bean.getSignBackGD());
-  }
+
 }

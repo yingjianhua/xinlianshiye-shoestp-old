@@ -1,6 +1,6 @@
 package irille.sellerAction.usr;
 
-import irille.Service.Usr.IUsrSupplierService;
+import irille.Service.Manage.Usr.IUsrSupplierManageService;
 import irille.pub.Exp;
 import irille.pub.Str;
 import irille.pub.bean.BeanBase;
@@ -499,17 +499,16 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
 
   /*                 新的写法   分割线               */
   @Inject
-  IUsrSupplierService usrSupplier;
+  IUsrSupplierManageService usrSupplierManageService;
 
 
   public void getShopSetting() throws IOException {
-    System.out.println(usrSupplier.getSettingInfoById(getSupplier().getPkey()));
-    write(usrSupplier.getSettingInfoById(getSupplier().getPkey()));
+    write(usrSupplierManageService.getSettingInfoById(getSupplier().getPkey()));
   }
 
   @Override
   public void Info() throws IOException {
-    write(usrSupplier.getInfoById(getSupplier().getPkey()));
+    write(usrSupplierManageService.getInfoById(getSupplier().getPkey()));
   }
 
   public void logout() throws IOException, JSONException {
@@ -522,7 +521,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
   UsrshopSettingView view;
 
   public void updShopSetting() throws IOException {
-    usrSupplier.updShopSetting(getSupplier().getPkey(), getView());
+    usrSupplierManageService.updShopSetting(getSupplier().getPkey(), getView());
     write();
   }
 }
