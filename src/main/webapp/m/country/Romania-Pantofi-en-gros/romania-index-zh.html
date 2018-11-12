@@ -13,7 +13,7 @@
 <body>
 <div id="romania" @click="contrast">
     <div class="romania-poster">
-        <img class="logo" src="imgs/logo-01_03.png" alt="">
+        <a class="logo" href="https://www.shoestp.com/home/usr_UsrPurchase"><img src="imgs/logo-01_03.png" alt=""></a>
         <p class="white-text title-text">罗马尼亚<br>线下鞋样品鉴会</p>
         <p class="yellow-text slogan">新时代</p>
         <p class="yellow-text slogan">新贸易</p>
@@ -40,9 +40,11 @@
         <mu-carousel hide-controls>
             <mu-carousel-item v-for="item in carouselProducrt">
                 <div class="detail">
-                    <img :src="item.imageUrl">
-                    <h4>{{ item.contentTitle }}</h4>
-                    <p>{{ item.content }}</p>
+                    <a :href="item.url">
+                        <img :src="item.imageUrl">
+                        <h4>{{ item.contentTitle }}</h4>
+                        <p>{{ item.content }}</p>
+                    </a>
                 </div>
             </mu-carousel-item>
         </mu-carousel>
@@ -155,7 +157,7 @@
         </div>
     </div>
     <div class="rmnymap">
-        <iframe src="map.html" frameborder="0" width="100%" height="550px"></iframe>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2846.9033669333626!2d26.175497615524637!3d44.476153479101654!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40b1f9ac606033e3%3A0x7d391e85ce7a445b!2z5Lit5Zu957qi6b6Z5biC5Zy6!5e0!3m2!1szh-CN!2s!4v1541991096910" width="980" height="550" frameborder="0" style="border:0" allowfullscreen></iframe>
     </div>
     <div class="rmnybottomthred">
         <div class="rmnybthcon">
@@ -219,17 +221,20 @@
                 title:'MAN',
                 imageUrl:'imgs/menShoes.png',
                 contentTitle:'男士皮鞋',
-                content:'成熟&稳重&低调&奢华'
+                content:'成熟&稳重&低调&奢华',
+                url:'https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373'
             },{
                 title:'WUMAN',
                 imageUrl:'imgs/wumenShoes.png',
                 contentTitle:'女式高跟鞋',
-                content:'成熟&优雅'
+                content:'成熟&优雅',
+                url:'https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=380'
             },{
                 title:'KIDS',
                 imageUrl:'imgs/kidsShoes.png',
-                contentTitle:'童鞋',
-                content:'舒适&耐磨'
+                contentTitle:'儿童鞋',
+                content:'舒适&耐磨',
+                url:'https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=387'
             }],
             checkinput:[
                 {

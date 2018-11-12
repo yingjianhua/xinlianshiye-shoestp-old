@@ -13,13 +13,13 @@
 <body>
 <div id="romania" @click="contrast">
     <div class="romania-poster">
-        <img class="logo" src="imgs/logo-01_03.png" alt="">
-        <p class="white-text title-text">ROMANIA OFFLINE <br>SHOES PERCHASING</p>
+        <a class="logo" href="https://www.shoestp.com/home/usr_UsrPurchase"><img src="imgs/logo-01_03.png" alt=""></a>
+        <p class="white-text title-text">ROMANIAN OFFLINE <br>SHOES PURCHASING</p>
         <p class="yellow-text slogan">New Trends</p>
         <p class="yellow-text slogan">New Trade</p>
         <p class="yellow-text slogan">New Era</p>
         <p class="yellow-text time">2018.12.4-2018.12.19</p>
-        <p class="yellow-text content-01">Exhibition hall opens all year round</p>
+        <p class="yellow-text content-01">Exhibition Hall Opens All Year Round</p>
         <p class="white-text content-02">Magozinul Universal Dragonul Rosu Strada Drumul Garii 12,Bucuresti 077190</p>
         <div class="language">
             <p><span class="lan" @click="handleLanguage"><span style="font-size: 40px;border: none;padding: 0;">=</span> English</span><a href="https://www.shoestp.com/home/usr_UsrPurchase"><img src="imgs/return-home.png"/></a></p>
@@ -40,9 +40,11 @@
         <mu-carousel hide-controls>
             <mu-carousel-item v-for="item in carouselProducrt">
                 <div class="detail">
-                    <img :src="item.imageUrl">
-                    <h4>{{ item.contentTitle }}</h4>
-                    <p>{{ item.content }}</p>
+					<a :href="item.url">
+						<img :src="item.imageUrl">
+						<h4>{{ item.contentTitle }}</h4>
+						<p>{{ item.content }}</p>
+					</a>
                 </div>
             </mu-carousel-item>
         </mu-carousel>
@@ -84,7 +86,7 @@
                         <p>Once we know your goals, we will set up a step-by-step production process together with you that ensures you get the best deal</p>
                         <div>
                             <span></span>
-                            <p>24-hour hotline service</p>
+                            <p>24-hour hotline service;</p>
                         </div>
                         <div>
                             <span></span>
@@ -97,15 +99,15 @@
                         <p>Shoes' quality is the soul for New Union, we have very strong design and manufacturing team, as well as having strict and effective quality control policy on each stage.</p>
                         <div>
                             <span></span>
-                            <p>Experienced quality inspector will ensure your shoes' quality</p>
+                            <p>Experienced quality inspector will ensure your shoes' quality;</p>
                         </div>
                         <div>
                             <span></span>
-                            <p>Strict quality control policy</p>
+                            <p>Strict quality control policy;</p>
                         </div>
                         <div>
                             <span></span>
-                            <p>Products meet the demands of various chemical and physical testing in main markets</p>
+                            <p>Products meet the demands of various chemical and physical testing in main markets.</p>
                         </div>
                     </div>
                     <div class="advantage">
@@ -114,11 +116,11 @@
                         <p>Through out the production process, managers in charge of cutting, stitching and lasting check the quality of shoes constantly. We are not satisfied unless every pair is perfect</p>
                         <div>
                             <span></span>
-                            <p>Conduct chemical test according to your requirements</p>
+                            <p>Conduct chemical test according to your requirements;</p>
                         </div>
                         <div>
                             <span></span>
-                            <p>Offer lower price to ensure the maximum profits for your bussiness</p>
+                            <p>Offer lower price to ensure the maximum profits for your bussiness.</p>
                         </div>
                     </div>
                     <div class="advantage">
@@ -127,11 +129,11 @@
                         <p>We have experienced designers who can design more than 2,000 new shoe models every year. Our designers consider themselves footwear fashion artists</p>
                         <div>
                             <span></span>
-                            <p>Professional customization service to ensure you get awesome shoes</p>
+                            <p>Professional customization service to ensure you get awesome shoes;</p>
                         </div>
                         <div>
                             <span></span>
-                            <p>experienced designers will give you more practical and distinguished suggestions</p>
+                            <p>experienced designers will give you more practical and distinguished suggestions;</p>
                         </div>
                     </div>
                 </div>
@@ -155,7 +157,7 @@
         </div>
     </div>
     <div class="rmnymap">
-        <iframe src="map.html" frameborder="0" width="100%" height="550px"></iframe>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2846.9033669333626!2d26.175497615524637!3d44.476153479101654!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40b1f9ac606033e3%3A0x7d391e85ce7a445b!2z5Lit5Zu957qi6b6Z5biC5Zy6!5e0!3m2!1szh-CN!2s!4v1541991096910" width="980" height="550" frameborder="0" style="border:0" allowfullscreen></iframe>
     </div>
     <div class="rmnybottomthred">
         <div class="rmnybthcon">
@@ -218,18 +220,21 @@
             carouselProducrt:[{
                 title:'MAN',
                 imageUrl:'imgs/menShoes.png',
-                contentTitle:'Men\'s leather shoes',
-                content:'Mature, steady, low-key, luxury'
+                contentTitle:'Men\'s Leather Shoes',
+                content:'Simple But Fashionable',
+				url:'https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373'
             },{
                 title:'WUMAN',
                 imageUrl:'imgs/wumenShoes.png',
-                contentTitle:'Women\'s high heels',
-                content:'luxuryMature charm'
+                contentTitle:'Women\'s High Heels',
+                content:'Stylish, Lightweght',
+				url:'https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=380'
             },{
                 title:'KIDS',
                 imageUrl:'imgs/kidsShoes.png',
-                contentTitle:'Kid\'s shoes',
-                content:'Durable & Comfortable '
+                contentTitle:'Kid\'s Shoes',
+                content:'Abrasion-resistant, Slip-resustant',
+				url:'https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=387'
             }],
 			checkinput:[
                 {
