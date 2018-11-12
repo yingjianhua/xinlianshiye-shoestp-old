@@ -24,195 +24,157 @@ import org.json.JSONObject;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Created by IntelliJ IDEA.
- * User: lijie@shoestp.cn
- * Date: 2018/11/5
- * Time: 16:25
+ * Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/5 Time: 16:25
  */
 public class UsrSupplierImp implements IUsrSupplierService {
-    @Inject
-    UsrSupplierDao usrSupplierDao;
-    @Inject
-    PdtProductDao pdtProductDao;
 
-    @Override
-    public UsrSupplierInfoView getInfoById(int i) {
-        Map map = usrSupplierDao.getInfoById(i);
-        return SetBeans.set(map, UsrSupplierInfoView.class);
-    }
+  @Inject
+  UsrSupplierDao usrSupplierDao;
+  @Inject
+  PdtProductDao pdtProductDao;
 
-    @Override
-    public UsrshopSettingView getSettingInfoById(int i) {
-        UsrSupplier us = usrSupplierDao.getUsrShopSetting(i);
-        UsrshopSettingView ssv = new UsrshopSettingView();
-        ssv.setLogo(us.getLogo());
-        ssv.setSignBackGD(us.getSignBackgd());
-        Map<String, String[]> AdPhotoMap = new HashMap<>();
-        if (us.getAdPhoto() != null && us.getAdPhoto().length() > 0) {
-            try {
-                new JSONObject().getJSONObject(us.getAdPhoto());
-            } catch (JSONException e) {
-                String[] str = us.getAdPhoto().split(",");
-                for (int k = 0; k < Language.values().length; k++) {
-                    AdPhotoMap.put(Language.values()[k].toString(), str);
-                }
-                ssv.setAdPhoto(AdPhotoMap);
-            }
-        } else {
-            String[] str = {" "};
-            for (int k = 0; k < Language.values().length; k++) {
-                AdPhotoMap.put(Language.values()[k].toString(), str);
-            }
-            ssv.setAdPhoto(AdPhotoMap);
+  @Override
+  public UsrSupplierInfoView getInfoById(int i) {
+    Map map = usrSupplierDao.getInfoById(i);
+    return SetBeans.set(map, UsrSupplierInfoView.class);
+  }
+
+  @Override
+  public UsrshopSettingView getSettingInfoById(int i) {
+    UsrSupplierImp imp = new UsrSupplierImp();
+    UsrSupplier us = usrSupplierDao.getUsrShopSetting(i);
+    UsrshopSettingView ssv = new UsrshopSettingView();
+    ssv.setLogo(us.getLogo());
+    ssv.setSignBackGD(us.getSignBackgd());
+    ssv.setAdPhoto(imp.isJson(us.getAdPhoto()).toString());
+    ssv.setAdPhotoLink(imp.isJson(us.getAdPhotoLink()).toString());
+    ssv.setCompanyPhoto(imp.isJson(us.getCompanyPhoto()).toString());
+    ssv.setCompanyPhotoLink(imp.isJson(us.getCompanyPhotoLink()).toString());
+    ssv.setHomePageDIY(imp.isJson(us.getHomePageDiy()).toString());
+    ssv.setHomePageOn(us.getHomePageOn());
+    return ssv;
+  }
+
+  private JSONObject isJson(String str) {
+    UsrSupplierImp imp = new UsrSupplierImp();
+    JSONObject json = new JSONObject();
+    Language[] lang = Language.values();
+    if (!(imp.idJson(str))) {
+      for (Language language : lang) {
+        try {
+          if (str.isEmpty() || str == null) {
+            json.put(language.toString(), " ");
+          } else {
+            json.put(language.toString(), str);
+          }
+        } catch (JSONException e) {
+          e.printStackTrace();
         }
+      }
+      return json;
+    }
+    try {
+      json = new JSONObject(str);
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    return json;
+  }
 
-        Map<String, String[]> AdPhotoLinkMap = new HashMap<>();
-        if (us.getAdPhotoLink() != null && us.getAdPhotoLink().length() > 0) {
-            try {
-                new JSONObject().getJSONObject(us.getAdPhotoLink());
-            } catch (JSONException e) {
-                String[] str = us.getAdPhotoLink().split(",");
-                for (int k = 0; k < Language.values().length; k++) {
-                    AdPhotoLinkMap.put(Language.values()[k].toString(), str);
-                }
-                ssv.setAdPhotoLink(AdPhotoLinkMap);
-            }
-        } else {
-            String[] str = {" "};
-            for (int k = 0; k < Language.values().length; k++) {
-                AdPhotoLinkMap.put(Language.values()[k].toString(), str);
-            }
-            ssv.setAdPhotoLink(AdPhotoLinkMap);
+  private boolean idJson(String str) {
+    try {
+      JSONObject json = new JSONObject(str);
+      return true;
+    } catch (JSONException e) {
+      return false;
+    }
+  }
+
+  public List<FavoritesView> getFavoritesListByCat(IduPage page, int cat, int purId,
+      Sys.OYn showState) {
+    FormaterSql sql = FormaterSql.build(this);
+    sql.select(UsrFavorites.T.PKEY, UsrFavorites.T.PRODUCT, PdtProduct.T.PRODUCT_TYPE,
+        PdtProduct.T.NAME,
+        PdtProduct.T.PICTURE, PdtProduct.T.CUR_PRICE
+
+    ).eqAutoAnd(UsrFavorites.T.PURCHASE, purId, s -> {
+      if (s == null) {
+        return false;
+      }
+      return s.intValue() > 0 ? true : false;
+    }).page(page).leftjoin(PdtProduct.T.PKEY, UsrFavorites.T.PRODUCT)
+        .eqAutoAnd(UsrFavorites.T.SHOW_STATE,
+            showState.getLine().getKey());
+    sql.in(PdtProduct.T.CATEGORY, pdtProductDao.getCatsNodeByCatId(cat), s -> {
+      if (s == null) {
+        return false;
+      }
+      return s.size() > 0 ? true : false;
+    });
+    List result = new ArrayList();
+    List list = sql.castListMap(BeanBase.list(sql.buildSql(), sql.getParms()));
+    sql.clean().select(PrmGroupPurchaseLine.T.PKEY).eq(PrmGroupPurchaseLine.T.PRODUCT);
+    list.forEach(s -> {
+      FavoritesView view = SetBeans.set(s, FavoritesView.class);
+      if (view.getGroupLine() != null && view.getGroupLine() == 1) {
+        view.setGroupLine(
+            sql.castInt(BeanBase.queryOneRowIsNull(sql.buildSql(), view.getPdtPkey())));
+      }
+      result.add(view);
+    });
+    return result;
+  }
+
+  public Long getFavoritesCountByCat(IduPage page, int cat, int purId, Sys.OYn showState) {
+    FormaterSql sql = FormaterSql.build(this);
+    sql.select(UsrFavorites.T.PKEY, UsrFavorites.T.PRODUCT, PdtProduct.T.NAME, PdtProduct.T.PICTURE,
+        PdtProduct.T.CUR_PRICE
+
+    ).eqAutoAnd(UsrFavorites.T.PURCHASE, purId, s -> {
+      if (s == null) {
+        return false;
+      }
+      return s.intValue() > 0 ? true : false;
+    }).page(page).leftjoin(PdtProduct.T.PKEY, UsrFavorites.T.PRODUCT)
+        .eqAutoAnd(UsrFavorites.T.SHOW_STATE,
+            showState.getLine().getKey());
+    if (cat > 0) {
+      sql.in(PdtProduct.T.CATEGORY, pdtProductDao.getCatsNodeByCatId(cat), s -> {
+        if (s == null) {
+          return false;
         }
-
-        Map<String, String[]> CompanyPhotoMap = new HashMap<>();
-        if (us.getCompanyPhoto() != null && us.getCompanyPhoto().length() > 0) {
-            try {
-                new JSONObject().getJSONObject(us.getCompanyPhoto());
-            } catch (JSONException e) {
-                String[] str = us.getCompanyPhoto().split(",");
-                for (int k = 0; k < Language.values().length; k++) {
-                    CompanyPhotoMap.put(Language.values()[k].toString(), str);
-                }
-                ssv.setCompanyPhoto(CompanyPhotoMap);
-            }
-        } else {
-            String[] str = {" "};
-            for (int k = 0; k < Language.values().length; k++) {
-                CompanyPhotoMap.put(Language.values()[k].toString(), str);
-            }
-            ssv.setCompanyPhoto(CompanyPhotoMap);
-        }
-
-        Map<String, String[]> CompanyPhotoLinkMap = new HashMap<>();
-        if (us.getCompanyPhotoLink() != null && us.getCompanyPhotoLink().length() > 0) {
-            try {
-                new JSONObject().getJSONObject(us.getCompanyPhoto());
-            } catch (JSONException e) {
-                String[] str = us.getCompanyPhotoLink().split(",");
-                for (int k = 0; k < Language.values().length; k++) {
-                    CompanyPhotoLinkMap.put(Language.values()[k].toString(), str);
-                }
-                ssv.setCompanyPhotoLink(CompanyPhotoLinkMap);
-            }
-        } else {
-            String[] str = {" "};
-            for (int k = 0; k < Language.values().length; k++) {
-                CompanyPhotoLinkMap.put(Language.values()[k].toString(), str);
-            }
-            ssv.setCompanyPhotoLink(CompanyPhotoLinkMap);
-        }
-
-        ssv.setHomePageDIY(us.getHomePageDiy());
-        ssv.setHomePageOn(us.getHomePageOn());
-        return ssv;
+        return s.size() > 0 ? true : false;
+      });
     }
+    return sql.castLong(BeanBase.queryOneRowIsNull(sql.buildCountSql(), sql.getParms()));
+  }
 
+  @Override
+  public List<SupplierListView> getSupplierListAndPdtList(IduPage iduPage,
+      FldLanguage.Language language) {
+    List<SupplierListView> list = usrSupplierDao
+        .getSupplierListAndPdtList(iduPage.getStart(), iduPage.getLimit(), iduPage.getWhere());
+    return list.stream().map(supplierListView -> {
+      supplierListView
+          .setProdpattern(translateUtil.getLanguage(supplierListView.getProdpattern(), language));
+      return supplierListView;
+    }).collect(Collectors.toList());
+  }
 
-    public List<FavoritesView> getFavoritesListByCat(IduPage page, int cat, int purId, Sys.OYn showState) {
-        FormaterSql sql = FormaterSql.build(this);
-        sql.select(
-                UsrFavorites.T.PKEY,
-                UsrFavorites.T.PRODUCT,
-                PdtProduct.T.PRODUCT_TYPE,
-                PdtProduct.T.NAME,
-                PdtProduct.T.PICTURE,
-                PdtProduct.T.CUR_PRICE
+  @Override
+  public List getSupplierInfo(IduPage page) {
+    return usrSupplierDao.getSupplier(page.getStart(), page.getLimit());
+  }
 
-        )
-                .eqAutoAnd(UsrFavorites.T.PURCHASE, purId, s -> {
-                    if (s == null)
-                        return false;
-                    return s.intValue() > 0 ? true : false;
-                }).page(page)
-                .leftjoin(PdtProduct.T.PKEY, UsrFavorites.T.PRODUCT)
-                .eqAutoAnd(UsrFavorites.T.SHOW_STATE, showState.getLine().getKey())
-        ;
-        sql.in(PdtProduct.T.CATEGORY, pdtProductDao.getCatsNodeByCatId(cat), s -> {
-            if (s == null) {
-                return false;
-            }
-            return s.size() > 0 ? true : false;
-        });
-        List result = new ArrayList();
-        List list = sql.castListMap(BeanBase.list(sql.buildSql(), sql.getParms()));
-        sql.clean().select(PrmGroupPurchaseLine.T.PKEY).eq(PrmGroupPurchaseLine.T.PRODUCT);
-        list.forEach(s -> {
-            FavoritesView view = SetBeans.set(s, FavoritesView.class);
-            if (view.getGroupLine() != null && view.getGroupLine() == 1) {
-                view.setGroupLine(sql.castInt(BeanBase.queryOneRowIsNull(sql.buildSql(), view.getPdtPkey())));
-            }
-            result.add(view);
-        });
-        return result;
-    }
-
-    public Long getFavoritesCountByCat(IduPage page, int cat, int purId, Sys.OYn showState) {
-        FormaterSql sql = FormaterSql.build(this);
-        sql.select(
-                UsrFavorites.T.PKEY,
-                UsrFavorites.T.PRODUCT,
-                PdtProduct.T.NAME,
-                PdtProduct.T.PICTURE,
-                PdtProduct.T.CUR_PRICE
-
-        )
-                .eqAutoAnd(UsrFavorites.T.PURCHASE, purId, s -> {
-                    if (s == null)
-                        return false;
-                    return s.intValue() > 0 ? true : false;
-                }).page(page)
-                .leftjoin(PdtProduct.T.PKEY, UsrFavorites.T.PRODUCT)
-                .eqAutoAnd(UsrFavorites.T.SHOW_STATE, showState.getLine().getKey())
-        ;
-        if (cat > 0) {
-            sql.in(PdtProduct.T.CATEGORY, pdtProductDao.getCatsNodeByCatId(cat), s -> {
-                if (s == null) {
-                    return false;
-                }
-                return s.size() > 0 ? true : false;
-            });
-        }
-        return sql.castLong(BeanBase.queryOneRowIsNull(sql.buildCountSql(), sql.getParms()));
-    }
-
-    @Override
-    public List<SupplierListView> getSupplierListAndPdtList(IduPage iduPage, FldLanguage.Language language) {
-        List<SupplierListView> list = usrSupplierDao.getSupplierListAndPdtList(iduPage.getStart(), iduPage.getLimit(), iduPage.getWhere());
-        return list.stream().map(supplierListView -> {
-            supplierListView.setProdpattern(translateUtil.getLanguage(supplierListView.getProdpattern(), language));
-            return supplierListView;
-        }).collect(Collectors.toList());
-    }
-
-    @Override
-    public List getSupplierInfo(IduPage page) {
-        return usrSupplierDao.getSupplier(page.getStart(), page.getLimit());
-    }
+  public void updShopSetting(int i, UsrshopSettingView bean) {
+    UsrSupplier user = usrSupplierDao.getUsrShopSetting(i);
+    System.out.println(bean);
+    user.setLogo(bean.getLogo());
+    user.setSignBackgd(bean.getSignBackGD());
+  }
 }

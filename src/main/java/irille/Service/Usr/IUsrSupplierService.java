@@ -57,4 +57,6 @@ public interface IUsrSupplierService {
      * @author lijie@shoestp.cn
      */
     List getSupplierInfo(IduPage page);
+
+    void updShopSetting(int i,UsrshopSettingView bean);
 }

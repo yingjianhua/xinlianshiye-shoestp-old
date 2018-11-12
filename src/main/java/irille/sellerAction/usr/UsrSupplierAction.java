@@ -21,6 +21,7 @@ import irille.shop.usr.UsrSupplierDAO;
 import irille.shop.usr.UsrUserDAO;
 import irille.view.usr.AccountSettingsView;
 import irille.view.usr.UserView;
+import irille.view.usr.UsrshopSettingView;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.struts2.ServletActionContext;
@@ -32,6 +33,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
 
@@ -272,6 +274,30 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
         write();
     }
 
+    private UsrshopSettingView usv;
+    
+    /**
+     * 店铺装修
+     *
+     * @author yingjianhua
+     */
+    public void Updsuppliersetting() throws Exception {
+    	UsrSupplier us=new UsrSupplier();
+    	us.setPkey(getSupplier().getPkey());
+    	us.setAdPhoto(usv.getAdPhoto());
+    	us.setAdPhotoLink(usv.getAdPhotoLink());
+    	us.setCompanyPhoto(usv.getCompanyPhoto());
+    	us.setCompanyPhotoLink(usv.getCompanyPhotoLink());
+    	us.setHomePageDiy(usv.getHomePageDIY());
+    	us.setHomePageOn(usv.getHomePageOn());
+    	us.setLogo(usv.getLogo());
+    	us.setSignBackgd(usv.getSignBackGD());
+    	setBean(us);
+    	UsrSupplierDAO.setting st=new UsrSupplierDAO.setting();
+    	st.setB(getBean());
+    	st.commit();
+        write();
+    }
     @Override
     public void getLoginMsg() throws Exception {
         // TODO Auto-generated method stub
@@ -425,7 +451,15 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     @Setter
     private String showName;
 
-    public void updInfo() throws Exception {
+    public UsrshopSettingView getUsv() {
+		return usv;
+	}
+
+	public void setUsv(UsrshopSettingView usv) {
+		this.usv = usv;
+	}
+
+	public void updInfo() throws Exception {
         try {
             JSONObject json = new JSONObject(getShowName());
             Iterator<String> jsonIte = json.keys();
@@ -482,6 +516,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
 
 
     public void getShopSetting() throws IOException{
+    	System.out.println(usrSupplier.getSettingInfoById(getSupplier().getPkey()));
     	write(usrSupplier.getSettingInfoById(getSupplier().getPkey()));
     }
 
@@ -493,5 +528,12 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     public void logout() throws IOException, JSONException {
         setUser(null);
         writeSuccess();
+    }
+    @Getter
+    @Setter
+    UsrshopSettingView view;
+    public void updShopSetting() throws IOException {
+    	usrSupplier.updShopSetting(getSupplier().getPkey(),getView());
+    	write();
     }
 }
