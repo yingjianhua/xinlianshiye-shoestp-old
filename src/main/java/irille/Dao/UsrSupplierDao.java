@@ -13,6 +13,7 @@ import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.Usr;
 import irille.shop.usr.UsrProductCategory;
 import irille.shop.usr.UsrSupplier;
+import irille.shop.usr.UsrSupplier.T;
 import irille.shop.usr.UsrSupplierCategory;
 import irille.shop.usr.UsrSupplierRole;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class UsrSupplierDao {
    * @date 2018/11/5 17:30
    * @author lijie@shoestp.cn
    */
-  public Map<String, Object> getInfoById(int i) {
+  public Map<String, Object> getInfoById(int id) {
     SQL sql = new SQL();
     return Query.sql(sql.SELECT(
         UsrSupplier.T.PKEY,
@@ -38,7 +39,8 @@ public class UsrSupplierDao {
     ).SELECT(
         UsrSupplierRole.T.NAME.getFld().getTb().getCode() + "." + UsrSupplierRole.T.NAME.getFld()
             .getCodeSqlField() + " as  role_name"
-    ).LEFT_JOIN(UsrSupplierRole.class, UsrSupplier.T.ROLE, UsrSupplierRole.T.PKEY)
+    ).WHERE(T.PKEY, "=?", id)
+        .LEFT_JOIN(UsrSupplierRole.class, UsrSupplier.T.ROLE, UsrSupplierRole.T.PKEY)
         .FROM(UsrSupplier.class)).queryMap();
 
   }
