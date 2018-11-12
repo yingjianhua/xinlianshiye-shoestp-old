@@ -1,7 +1,7 @@
 package irille.homeAction.usr;
 
 import com.sun.mail.util.MailSSLSocketFactory;
-import irille.Service.Pdt.IPdtProduct;
+import irille.Service.Pdt.IPdtProductService;
 import irille.Service.Usr.IUsrSupplierService;
 import irille.homeAction.HomeAction;
 import irille.homeAction.cnt.dto.CntAd_IndexCategoryView;
@@ -69,7 +69,7 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
 
 
     @Inject
-    private IPdtProduct pdtProduct;
+    private IPdtProductService pdtProduct;
     @Inject
     private IUsrSupplierService usrSupplierService;
 
