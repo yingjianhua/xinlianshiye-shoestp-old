@@ -281,7 +281,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
         iduPage.setLimit(3);
         iduPage.setWhere(String.valueOf(getCated()));
         Page_supplierView page_supplierDto = new Page_supplierView();
-        page_supplierDto.setRecommendList(usrSupplierService.getSupplierListAndPdtList(iduPage,HomeAction.curLanguage()));
+        page_supplierDto.setRecommendList(usrSupplierService.getSupplierListAndPdtList(iduPage, HomeAction.curLanguage()));
         iduPage.setStart(getPage());
         iduPage.setWhere(String.valueOf(getCated()));
         int i = getLimit();
@@ -290,7 +290,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
         }
         iduPage.setStart(3);
         iduPage.setLimit(i);
-        page_supplierDto.setManufacturersList(usrSupplierService.getSupplierListAndPdtList(iduPage,HomeAction.curLanguage()));
+        page_supplierDto.setManufacturersList(usrSupplierService.getSupplierListAndPdtList(iduPage, HomeAction.curLanguage()));
         page_supplierDto.setCategory(UsrSupplierCategoryDAO.listViewIsTop(curLanguage()));
         _supplierDto = page_supplierDto;
         setResult("/home/supplier.jsp");
@@ -324,7 +324,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
         iduPage.setLimit(getLimit());
         //修改
         iduPage.setWhere(String.valueOf(getCated()));
-        write(new ObjectMapper().writeValueAsString(usrSupplierService.getSupplierListAndPdtList(iduPage,HomeAction.curLanguage())));
+        write(new ObjectMapper().writeValueAsString(usrSupplierService.getSupplierListAndPdtList(iduPage, HomeAction.curLanguage())));
 
     }
 
@@ -357,7 +357,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
         iduPage.setLimit(getLimit());
         JSONObject json = new JSONObject();
         json.put(STORE_TOTAL, BeanBase.list(UsrSupplier.class, "", false).size());
-        json.put(STORE_ROOT, new JSONArray(usrSupplierService.getSupplierListAndPdtList(iduPage,HomeAction.curLanguage()), false));
+        json.put(STORE_ROOT, new JSONArray(usrSupplierService.getSupplierListAndPdtList(iduPage, HomeAction.curLanguage()), false));
         writerOrExport(json);
     }
 

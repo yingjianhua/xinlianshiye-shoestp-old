@@ -160,5 +160,5 @@ public class ConsultView implements BaseView {
 	public void setRelations(List<ConsultRelationView> relations) {
 		this.relations = relations;
 	}
-	
+
 }

@@ -1,0 +1,397 @@
+.change_lang{
+  position: fixed;
+  top: 80px;
+  left: 70%;
+  cursor: pointer;
+  z-index: 99;
+  color: #000;
+}
+.change_lang dt{
+  min-width: 202px;
+  height: 40px;
+  line-height: 40px;
+  background-color: #edf1f5;
+  /* border-radius: 0px 3px 3px 0px; */
+}
+
+.change_lang .bar-left{
+  position: relative;
+}
+.change_lang .bar-left:after{
+  content:"";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 12px;
+  width: 1px;
+  background: #999;
+}
+.change_lang .icon-flag{
+  width: 16px;
+  height: 11px;
+  margin: 0 10px 0 7px;
+  position: relative;
+  top: -2px;
+}
+.change_lang .to-home{
+  display: inline-block;
+}
+.change_lang .icon-home{
+  position: relative;
+  top: -2px;
+  width: 18px;
+  height: 18px;
+  padding-left: 20px;
+  vertical-align: middle;
+}
+.change_lang dt .icon-two-bar{
+  width: 13px;
+  height: 7px;
+  position: relative;
+  margin-right: 6px;
+}
+.change_lang dt .rotate{
+  transform: rotate(180deg);
+}
+.change_lang dd{
+ display: none;
+ background-color: #ffffff;
+ border-radius: 0px 0px 3px 3px;
+}
+.change_lang dd a{
+  display: block;
+  height: 34px;
+  line-height: 34px;
+  overflow: hidden;
+  color: #000000;
+  text-decoration: none;
+}
+
+.w1200{
+  width: 1200px;
+  min-width: 1200px;
+  margin: 0 auto;
+}
+/* 含手机的 banner 行 */
+.banner_03{
+  padding: 200px 0 0;
+}
+.banner_03 .banner-sub-title{
+  margin-bottom: 60px;
+}
+.banner_03 .ul-wrap{
+  position: relative;
+  top: -60px;
+  color: #4d4d4d;
+}
+.banner_03 .ul-wrap .item{
+  position: relative;
+  padding-left: 30px;
+  margin-bottom: 20px;
+  color: #4d4d4d;
+}
+.banner_03 .ul-wrap .item:after{
+  position: absolute;
+  content:"";
+  left: 0;
+  top: 38px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid #00519e;
+}
+.banner_03 .phone-pic{
+  width: 38%;
+}
+
+
+/* 含手机的 banner 行 */
+.banner_04{
+  padding: 200px 0 0;
+}
+.banner_04 .bg-logo{
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  transform: translate(-40%, -25%);
+  width: 37.25%;
+}
+.banner_04 .pos-left, .banner_04 .pos-right{
+  width: 46%;
+}
+.banner_04 .pos-left .banner-sub-title{
+  margin-bottom: 50px;
+}
+.banner_04 .company-pic-item{
+  width: 48%;
+}
+.banner_04 .pos-left .btn-normal-red{
+  margin-top: 40px;
+}
+
+.banner_04 .pos-right .right-title{
+  margin-bottom: 15px;
+}
+.banner_04 .pos-right .fs20{
+  line-height: 32px;
+  margin-bottom: 50px;
+  color: #999;
+}
+
+/* 含4个重点的 banner 行 */
+.banner_05{
+  padding: 175px 0 0;
+}
+.banner_05 .bg{
+  background: url("../images/advantage.png") no-repeat 344px center / 472px;
+}
+.banner_05 .icon{
+  width: 70px;
+  height: 70px;
+  padding: 10px;
+  margin: 0 10px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #ea876f;
+  box-sizing: border-box;
+}
+.banner_05 .icon-safe{
+  background: #5cc8a6;
+}
+.banner_05 .icon-menu{
+  background: #84abe0;
+}
+.banner_05 .icon-design{
+  background: #e281a4;
+}
+.banner_05 .banner-title{
+  margin-bottom: 140px;
+}
+/* .banner_05 .pos-left{
+  margin-bottom: 140px;
+} */
+.banner_05 .blue-title{
+  line-height: 70px;
+  color: #294bae;
+}
+.banner_05 .sub-title{
+  line-height: 30px;
+  color:#333;
+}
+.banner_05 .pos-left, .banner_05 .pos-right{
+  width: 30%;
+}
+.banner_05 .pos-left .left-item:first-child .ul-wrap{
+  margin-bottom: 140px;
+}
+.banner_05 .right-item .icon{
+  position: absolute;
+  left: -90px;
+  top: 0;
+}
+.banner_05 .ul-wrap{
+  margin-top: 30px;
+  margin-bottom: 45px;
+}
+.banner_05 .ul-wrap .item{
+  position: relative;
+  line-height: 28px;
+  padding-left: 15px;
+  margin-bottom: 5px;
+  color:#aaa;
+}
+.banner_05 .ul-wrap .item:after{
+  position: absolute;
+  content:"";
+  left: 0;
+  top: 10px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #a9a7aa;
+}
+/* 按钮 */
+.banner_05 .btn-normal-red{
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+}
+
+/* 工厂实拍的 banner 行  */
+.banner_06{
+  padding: 200px 0 0;
+}
+.banner_06 .banner-title{
+  margin-bottom: 90px;
+}
+.banner_06 .company-pics-wrap{
+  margin-bottom: 65px;
+}
+.banner_06 .company-pics-wrap .pic-item{
+  width: 24%;
+}
+
+/* 展示厅实拍的 banner 行 */
+.banner_07{
+  min-height: 830px;
+  padding: 135px 0 45px;
+  overflow: hidden;
+}
+.banner_07 .show-room-pic{
+  height: 650px;
+  position: absolute;
+  right: 50%;
+}
+.banner_07 .right-content-wrap{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 50%;
+  height: 650px;
+  padding-left: 72px;
+}
+.banner_07 .right-content-wrap .right-title{
+  margin-bottom: 50px;
+}
+.banner_07 .ul-wrap{
+  margin-bottom: 50px;
+  line-height: 46px;
+  color: 666;
+}
+.banner_07 .ul-wrap .item{
+  position: relative;
+  margin-bottom: 10px;
+}
+.banner_07 .ul-wrap .item:after{
+  content:"";
+  position: absolute;
+  left: -15px;
+  top: 20px;
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  background: #b2b2b2;
+}
+
+/* 地址详情 */
+.banner_09{
+  padding-top: 70px;
+  padding-bottom: 110px;
+  background: #fbf8fb;
+}
+.banner_09 .banner_09-title{
+  margin-bottom: 30px;
+}
+.banner_09 ul{
+  line-height: 56px;
+}
+.banner_09 ul span.title{
+  font-weight: bold;
+}
+
+
+/* 最底部 */
+.banner_10{
+  min-height: 430px;
+  background: url("../images/bg-bottom.png") no-repeat center / cover;
+}
+.banner_10 .w1200{
+  padding: 0 24px 0 15px;
+}
+.banner_10 .ul-wrap{
+  line-height: 56px;
+  color: #fff;
+}
+.banner_10 .ul-wrap .item{
+  position: relative;
+  padding-left: 46px;
+}
+.banner_10 .ul-wrap .item:after{
+  content:"";
+  position: absolute;
+  left: 0;
+  top: 16px;
+  height: 25px;
+  width: 31px;
+  background: url("../images/icon-right.png") no-repeat center / 100%;
+}
+
+.banner_10 .form-box{
+  position: relative;
+  top: -90px;
+  min-width: 615px;
+  padding:  40px 40px 50px;
+  text-align: center;
+  border-radius: 10px;
+  background: #fff;
+}
+.banner_10 .form-box .form-content{
+  line-height: 1.4;
+  margin-top: 4px;
+  margin-bottom: 24px;
+}
+
+
+@media screen and (max-width: 1199px){
+  .w1200{
+    width: 980px;
+    min-width: 980px;
+  }
+  .btn-normal-red{
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 20px;
+    font-size: 26px;
+    border-radius: 5px;
+  }
+  .banner-title{
+    text-align: center;
+    font-size: 54px;
+  }
+  .fs20{
+    font-size: 16px;
+  }
+  .fs22 {
+    font-size: 18px;
+  }
+  .fs24 {
+    font-size: 20px;
+  }
+  .fs28{
+    font-size: 24px;
+  }
+  .fs30 {
+    font-size: 26px;
+  }
+  .fs32 {
+    font-size: 28px;
+  }
+  .fs34 {
+    font-size: 30px;
+  }
+  .fs36 {
+    font-size: 32px;
+  }
+  .fs38 {
+    font-size: 34px;
+  }
+  .fs42{
+    font-size: 36px;
+  }
+  .fs50 {
+    font-size: 42px;
+  }
+  .fs52 {
+    font-size: 44px;
+  }
+  .fs64{
+    font-size: 50px;
+  }
+  /* .banner_03, .banner_04, .banner_05, .banner_06 {
+    padding-top: 50px;
+  } */
+}

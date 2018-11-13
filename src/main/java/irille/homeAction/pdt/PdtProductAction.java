@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
-import irille.Service.Pdt.IPdtProduct;
+import irille.Service.Pdt.IPdtProductService;
 import irille.Service.Pdt.Imp.PdtproductPageselect;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
@@ -50,7 +50,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Inject
-    private IPdtProduct pdtProduct;
+    private IPdtProductService pdtProduct;
 
     @Override
     public PdtProduct insRun() throws Exception {
