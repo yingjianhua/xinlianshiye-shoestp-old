@@ -1,6 +1,6 @@
 package irille.sellerAction.pdt;
 
-import irille.Service.Manage.Pdt.IPdtProduct;
+import irille.Service.Manage.Pdt.IPdtProductManageService;
 import irille.pub.Str;
 import irille.pub.idu.IduPage;
 import irille.sellerAction.SellerAction;
@@ -19,7 +19,7 @@ import java.util.TreeMap;
 
 public class PdtCatAction extends SellerAction<PdtCat> implements IPdtCatAction {
     @Inject
-    IPdtProduct iPdtProduct;
+    IPdtProductManageService iPdtProduct;
 
 
     public String orderBy() {

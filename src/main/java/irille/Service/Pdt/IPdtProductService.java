@@ -1,7 +1,7 @@
 package irille.Service.Pdt;
 
 import com.google.inject.ImplementedBy;
-import irille.Service.Pdt.Imp.PdtProductImp;
+import irille.Service.Pdt.Imp.PdtProductServiceImp;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage;
 import irille.view.pdt.PdtProductBaseInfoView;
@@ -16,8 +16,8 @@ import java.util.Map;
  * Date: 2018/11/7
  * Time: 14:50
  */
-@ImplementedBy(PdtProductImp.class)
-public interface IPdtProduct {
+@ImplementedBy(PdtProductServiceImp.class)
+public interface IPdtProductService {
     /**
      * @Description: 首页 获取新品
      * @date 2018/11/7 15:05

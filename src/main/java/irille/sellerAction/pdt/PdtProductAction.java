@@ -2,7 +2,7 @@ package irille.sellerAction.pdt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
-import irille.Service.Manage.Pdt.IPdtProduct;
+import irille.Service.Manage.Pdt.IPdtProductManageService;
 import irille.Service.Pdt.Imp.PdtproductPageselect;
 import irille.core.sys.Sys;
 import irille.core.sys.SysSeqDAO;
@@ -40,7 +40,7 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
     private List<PdtSpec> _SpecListLine = new ArrayList<PdtSpec>();
 
     @Inject
-    private IPdtProduct pdtProductManage;
+    private IPdtProductManageService pdtProductManage;
     @Inject
     private PdtproductPageselect pdtpageSelect;
 

@@ -2,7 +2,7 @@ package irille.Service.Pdt.Imp;
 
 import irille.Aops.Caches;
 import irille.Dao.PdtProductDao;
-import irille.Service.Pdt.IPdtProduct;
+import irille.Service.Pdt.IPdtProductService;
 import irille.homeAction.HomeAction;
 import irille.homeAction.pdt.dto.PdtProductView;
 import irille.pub.idu.IduPage;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  * Date: 2018/11/7
  * Time: 14:54
  */
-public class PdtProductImp implements IPdtProduct {
+public class PdtProductServiceImp implements IPdtProductService {
 
     @Inject
     PdtProductDao pdtProductDao;

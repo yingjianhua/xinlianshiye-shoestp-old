@@ -319,8 +319,8 @@ body{
     z-index: 999;
 }
 #romania .romania-poster .language p{
-    height: 80px;
-    line-height: 60px;
+    height: 70px;
+    line-height: 50px;
     font-size: 30px;
 }
 #romania .romania-poster .language p span.lan{
@@ -436,14 +436,15 @@ body{
     width: 100%;
 }
 #romania .producrt .mu-carousel-item .detail h4{
-    font-size: 40px;
+    font-size: 46px;
     text-align: left;
     font-weight: 500;
     margin-left: 40px;
     margin-top: 20px;
+		color: #000000;
 }
 #romania .producrt .mu-carousel-item .detail p{
-    font-size: 30px;
+    font-size: 36px;
     text-align: left;
     margin-left: 40px;
     color: #aaaaaa;
@@ -500,14 +501,18 @@ body{
 #romania .rmnybsevconzh{
     font-size: 4em;
 }
-#romania .romania-poster .logo{
-		width: 250px;
-		position: absolute;
-		right: 60px;
-		top: 100px;
+#romania .romania-poster a.logo{
+    width: 250px;
+    position: absolute;
+    right: 60px;
+    top: 100px;
 }
+#romania .romania-poster a.logo img{
+    width: 100%;
+}
+
 .rmnybottomsev .rmny_title{
-		font-size: 60px;
+    font-size: 60px;
 }
 
 .rmnybottomfirst .rmnybfchoose{
@@ -557,6 +562,7 @@ body{
 }
 .rmnybthcon h2 {
     font-size: 4.2em;
+    text-shadow: -30px -30px 5px rgba(155, 155, 155, 0.1);
 }
 #romania .rmnymap{
     width: 100%;
@@ -632,7 +638,7 @@ body{
     display: inline-block;
     width: 15px;
     height: 15px;
-    background-color: grey;
+    background-color: #909090;
     border-radius: 50%;
     vertical-align: text-top;
     margin-top: 17px;
