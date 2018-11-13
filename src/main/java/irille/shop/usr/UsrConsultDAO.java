@@ -1,14 +1,8 @@
 package irille.shop.usr;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONException;
-
 import irille.pub.Log;
 import irille.pub.Str;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
-import irille.pub.bean.sql.AbstractSQL;
 import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduIns;
 import irille.pub.svr.Env;
@@ -21,12 +15,16 @@ import irille.shop.usr.UsrConsult.T;
 import irille.view.Page;
 import irille.view.usr.ConsultRelationView;
 import irille.view.usr.ConsultView;
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsrConsultDAO {
 	public static final Log LOG = new Log(UsrConsultDAO.class);
 	//最大询盘抢单剩余次数
 	public static final int max_count = 5;
-	
+
 	/**
 	 * 统计该采购商当前发布了几个询盘
 	 * @param purchase
@@ -50,18 +48,18 @@ public class UsrConsultDAO {
 	public static class Publish extends IduIns<Publish, UsrConsult> {
 		private ConsultView v;
 		private int purchase;
-		
+
 		public Publish(ConsultView v, int purchase) {
 			this.v = v;
 			this.purchase = purchase;
 		}
-		
+
 		@Override
 		public void before() {
 			UsrConsult bean = new UsrConsult();
 			ValidForm vf = FormValid(bean);
 			ValidRegex vr = RegexValid(bean);
-			
+
 			bean.setTitle(v.getTitle());
 			bean.setImage(v.getImage());
 			if(v.getProduct() != null) {
@@ -86,14 +84,14 @@ public class UsrConsultDAO {
 			bean.setQuantity(v.getQuantity());
 			bean.setCreateTime(Env.getTranBeginTime());
 			bean.setRowVersion((short)0);
-			
+
 			vf.validExists(PltCountry.TB, PltCountry.T.PKEY, v.getCountry());
 			vf.validNotEmpty(T.TITLE, T.NAME, T.EMAIL, T.CONTENT, T.QUANTITY);
 			vr.validEmail(T.EMAIL);
-			
+
 			setB(bean);
 		}
-		
+
 		@Override
 		public void after() {
 			super.after();
@@ -104,7 +102,7 @@ public class UsrConsultDAO {
 			}
 		}
 	}
-	
+
 	/**
 	 * 分页查询我的询盘列表
 	 * @param start
@@ -155,7 +153,7 @@ public class UsrConsultDAO {
 	 * @param limit
 	 * @return
 	 * @author yingjianhua
-	 * @throws JSONException 
+	 * @throws JSONException
 	 */
 	public static Page<ConsultView> pagePublic(int start, int limit, String countryName, String title,String qdvalue,Integer supplier, Language lang) throws JSONException {
 		BeanQuery<UsrConsult> q = Query.SELECT(UsrConsult.class);
@@ -169,7 +167,7 @@ public class UsrConsultDAO {
 				.WHERE(UsrConsultRelation.T.SUPPLIER," <> ? ",supplier)
 				.OR()
 				.WHERE(UsrConsultRelation.T.SUPPLIER," is null ");
-				
+
 			}
 		}
 		q.AND().WHERE(T.IS_PUBLIC, "=?", true);
@@ -205,7 +203,7 @@ public class UsrConsultDAO {
 		}
 		return new Page<>(views, start, limit, totalCount);
 	}
-	
+
 	/**
 	 * 判断采购商是否是该询盘的拥有着
 	 * @param pkey
@@ -221,11 +219,11 @@ public class UsrConsultDAO {
 		Integer c = Query.sql(sql).queryCount();
 		return c>0;
 	}
-	
+
 	public static void delete(Integer pkey) {
 		//级联删除供应商关联
 		UsrConsultRelationDAO.deleteByConsult(pkey);
-		
+
 		//删除询盘
 		SQL sql = new SQL(){{
 			DELETE_FROM(UsrConsult.class);
@@ -233,13 +231,13 @@ public class UsrConsultDAO {
 		}};
 		Query.sql(sql).executeUpdate();
 	}
-	
+
 	/**
-	 * 获取公共询盘详情信息 
+	 * 获取公共询盘详情信息
 	 * @param pkey
 	 * @return
 	 * @author yingjianhua
-	 * @throws JSONException 
+	 * @throws JSONException
 	 */
 	public static ConsultView load(Integer pkey, Language lang) throws JSONException {
 		UsrConsult bean = UsrConsult.chk(UsrConsult.class, pkey);

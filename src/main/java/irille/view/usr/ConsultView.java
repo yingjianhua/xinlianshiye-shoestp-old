@@ -1,11 +1,10 @@
 package irille.view.usr;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import irille.view.BaseView;
 
 import java.util.Date;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class ConsultView implements BaseView {
 	private Integer id;
@@ -27,7 +26,7 @@ public class ConsultView implements BaseView {
 	@JsonFormat(pattern="yyyy.MM.dd", timezone="GMT+8")
 	private Date createTime;
 	private List<ConsultRelationView> relations;//询盘关联供应商,包含留言记录
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -136,5 +135,5 @@ public class ConsultView implements BaseView {
 	public void setRelations(List<ConsultRelationView> relations) {
 		this.relations = relations;
 	}
-	
+
 }
