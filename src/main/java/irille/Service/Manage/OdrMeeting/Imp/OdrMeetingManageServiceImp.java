@@ -1,6 +1,7 @@
 package irille.Service.Manage.OdrMeeting.Imp;
 
 import irille.Dao.OdrMeetingDao;
+import irille.Entity.OdrerMeetings.Enums.OrdrerMettingAuditStatus;
 import irille.Service.Manage.OdrMeeting.IOdrMeetingManageService;
 import irille.pub.idu.IduPage;
 import irille.view.Manage.OdrMeeting.OdrMeetingInfoView;
@@ -26,24 +27,28 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
   }
 
   @Override
-  public OdrMeetingInfoView getMyOdrMeetingInfo(IduPage iduPage) {
+  public OdrMeetingInfoView getMyOdrMeetingInfo(IduPage iduPage, OrdrerMettingAuditStatus status) {
     return null;
   }
 
   @Override
-  public OdrMeetingInfoView getMyOdrMeetingList(IduPage iduPage) {
+  public OdrMeetingInfoView getMyOdrMeetingList(IduPage iduPage, OrdrerMettingAuditStatus status) {
     return null;
   }
 
   @Override
-  public OdrMeetingInfoView getMyJoinOdrMeetingList(IduPage iduPage) {
+  public OdrMeetingInfoView getMyJoinOdrMeetingList(IduPage iduPage,
+      OrdrerMettingAuditStatus status) {
     return null;
   }
 
   @Override
-  public OdrMeetingInfoView getMyOtherOdrMeetingList(IduPage iduPage) {
+  public OdrMeetingInfoView getMyOtherOdrMeetingList(IduPage iduPage,
+      OrdrerMettingAuditStatus status) {
     return null;
   }
+
+
 
 
 }
