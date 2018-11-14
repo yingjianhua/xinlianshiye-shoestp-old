@@ -1,4 +1,6 @@
 package irille.shop.usr;
+
+import irille.core.sys.Sys;
 import irille.pub.Log;
 import irille.pub.Str;
 import irille.pub.bean.Query;
@@ -15,10 +17,9 @@ import irille.shop.usr.UsrConsult.T;
 import irille.view.Page;
 import irille.view.usr.ConsultRelationView;
 import irille.view.usr.ConsultView;
-import org.json.JSONException;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.json.JSONException;
 
 public class UsrConsultDAO {
 	public static final Log LOG = new Log(UsrConsultDAO.class);
@@ -151,7 +152,7 @@ public class UsrConsultDAO {
 		String pkeys = "";
 		if(supplier != null) {
 			List<UsrConsultRelation> relations = Query.SELECT(UsrConsultRelation.T.CONSULT).FROM(UsrConsultRelation.class).WHERE(supplier!=null,UsrConsultRelation.T.SUPPLIER," = ?", supplier).queryList();
-			
+
 			for(UsrConsultRelation r:relations) {
 				if(pkeys.equals("")) {
 					pkeys += r.getConsult();
@@ -160,8 +161,8 @@ public class UsrConsultDAO {
 				}
 			}
 		}
-		
-		
+
+
 		List<ConsultView> views = new ArrayList<>();
 		String symbol = "";
 		if(!Str.isEmpty(qdvalue)) {
@@ -173,7 +174,7 @@ public class UsrConsultDAO {
 			}
 		}
 		BeanQuery<UsrConsult> sql = Query.SELECT(UsrConsult.class);
-		
+
 		if(!Str.isEmpty(countryName)) {
 			sql.LEFT_JOIN(PltCountry.class, T.COUNTRY, PltCountry.T.PKEY);
 			sql.WHERE(PltCountry.T.NAME, " like ? ","%"+countryName+"%" );
@@ -181,16 +182,16 @@ public class UsrConsultDAO {
 		Integer totalCount =0;
 		if(!Str.isEmpty(title))
 			sql.WHERE(UsrConsult.T.TITLE, "like ?", "%"+title+"%");
-		
+
 			sql.WHERE(!pkeys.equals(""),UsrConsult.T.PKEY, symbol+"("+pkeys+")");
-		sql.WHERE(UsrConsult.T.IS_PUBLIC,"=?",Sys.OYn.YES)
+		sql.WHERE(UsrConsult.T.IS_PUBLIC,"=?", Sys.OYn.YES)
 		.ORDER_BY(UsrConsult.T.CREATE_TIME, " DESC ")
 		.ORDER_BY(UsrConsult.T.PKEY, " DESC ");
-		 
+
 		 if(qdvalue == null || !qdvalue.equals("1") || !pkeys.equals("")) {
 			 totalCount = sql.queryCount();
 			 List<UsrConsult> list = sql.limit(start, limit).queryList();
-				
+
 				for(UsrConsult bean: list) {
 					//为私有询盘,不显示在公共询盘列表中
 					//私有询盘为,剩余抢单次数为0,并且询盘关联表有一条数据的
@@ -256,7 +257,7 @@ public class UsrConsultDAO {
 		if(bean == null)
 			return null;
 		else {
-			
+
 			PltCountry country = bean.gtCountry();
 			ConsultView view = new ConsultView();
 			view.setTitle(bean.getTitle());
