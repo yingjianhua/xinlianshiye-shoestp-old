@@ -31,14 +31,14 @@ public class OdrOrder extends BeanLong<OdrOrder>{
 	//	DELIVERY(PltFreightSeller.fldOutKey().setName("快递公司").setNull()),//发货方式
 		DELIVERY(SYS.STR__100_NULL,"发货方式"),
 		PAG_REMARKS(SYS.REM__200_NULL,"包裹备注"),
-		ODR_REMARKS(SYS.REM__200_NULL,"订单备注"), 
+		ODR_REMARKS(SYS.REM__200_NULL,"订单备注"),
 		TIME(SYS.DATE_TIME,"下单时间"),
 		STATE(TB.crt(Odr.OdrState.DEFAULT)),//订单状态
 		TYPE(TB.crt(Odr.OdrType.DEFAULT)),
 		FREIGHT_PRICE(SYS.PRICE,"运费"),
 		INSURANCE_PRICE(SYS.PRICE,"保险费"),
 		PROD_PRICE(SYS.PRICE_NULL,"产品总价"),
-		PRICE_TOTAL(SYS.PRICE_NULL,"总价"),  
+		PRICE_TOTAL(SYS.PRICE_NULL,"总价"),
 		CURRENCY(PltErate.fldOutKey("currency", "货币")),
 		ADDRESS(SYS.JSON,"收货地址"),
 		NAME(SYS.STR__20,"名字"),
@@ -64,8 +64,8 @@ public class OdrOrder extends BeanLong<OdrOrder>{
 			_fld=TB.addOutKey(clazz,this,name,isnull);
 		}
 		private T(IEnumFld fld,boolean... isnull) {
-			this(fld,null,isnull); 
-		} 
+			this(fld,null,isnull);
+		}
 		private T(IEnumFld fld, String name,boolean... null1) {
 			_fld=TB.add(fld,this,name,null1);
 		}
@@ -73,7 +73,7 @@ public class OdrOrder extends BeanLong<OdrOrder>{
 			_fld=TB.add(fld,this,name,strLen);
 		}
 		private T(Fld<?> fld) {
-			_fld=TB.add(fld,this); 
+			_fld=TB.add(fld,this);
 		}
 		public Fld<?> getFld(){
 			return _fld;
