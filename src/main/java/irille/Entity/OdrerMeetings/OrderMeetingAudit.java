@@ -23,7 +23,6 @@ public class OrderMeetingAudit extends BeanInt<OrderMeetingAudit> {
   public enum T implements IEnumFld {
     PKEY(TB.crtIntPkey()),
     OrderMeeting(irille.Entity.OdrerMeetings.OrderMeeting.fldOutKey()),
-    NAME(SYS.STR__200_NULL, "订购会标题"),
     STATUS(TB.crt(OrdrerMettingAuditStatus.DEFAULT)),
     MESSAGE(SYS.STR__200_NULL, "消息"),
     TYPE(TB.crt(OrderMettingAuditType.DEFAULT)),
