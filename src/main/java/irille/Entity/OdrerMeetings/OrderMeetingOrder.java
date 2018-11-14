@@ -1,15 +1,11 @@
 package irille.Entity.OdrerMeetings;
 
-import irille.Entity.OdrerMeetings.Enums.OrderMettingProductStatus;
 import irille.pub.bean.BeanInt;
 import irille.pub.svr.Env;
 import irille.pub.tb.Fld;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
 import irille.shop.odr.OdrOrder;
-import irille.shop.pdt.PdtProduct;
-import irille.shop.usr.UsrSupplier;
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -74,188 +70,74 @@ public class OrderMeetingOrder extends BeanInt<OrderMeetingOrder> {
 
   //>>>以下是自动产生的源代码行--源代码--请保留此行用于识别>>>
   //实例变量定义-----------------------------------------
-  private Integer _pkey;  // 编号  INT
-  private Integer _productid;  // 产品 <表主键:PdtProduct>  INT
-  private Integer _supplierid;  // 供应商 <表主键:UsrSupplier>  INT
-  private Integer _ordermeetingid;  // 订购会信息 <表主键:OrderMeeting>  INT
-  private Byte _status;  // 供应商认证 <OrderMettingProductStatus>  BYTE
-  // OFF:0,下架
-  // ON:1,上架
-  // DELETE:2,违规下架
-  private Integer _moq;  // 原起订量  INT
-  private BigDecimal _price;  // 原商品价格  DEC(14,4)
-  private Integer _newmoq;  // 活动起订量  INT
-  private BigDecimal _newprice;  // 活动价  DEC(14,4)
-  private Integer _targetCount;  // 目标量  INT
-  private Date _updatedTime;  // 更新时间  TIME
-  private Short _rowVersion;  // 版本  SHORT
+  private Integer _pkey;	// 编号  INT
+  private Integer _ordermeetingid;	// 订购会信息 <表主键:OrderMeeting>  INT
+  private Long _orderid;	// 订单管理 <表主键:OdrOrder>  LONG
+  private Date _createdTime;	// 建档时间  TIME
+  private Short _rowVersion;	// 版本  SHORT
 
-  @Override
-  public OrderMeetingOrder init() {
-    super.init();
-    _productid = null;  // 产品 <表主键:PdtProduct>  INT
-    _supplierid = null;  // 供应商 <表主键:UsrSupplier>  INT
-    _ordermeetingid = null;  // 订购会信息 <表主键:OrderMeeting>  INT
-    _status = OrderMettingProductStatus.DEFAULT.getLine()
-        .getKey();  // 供应商认证 <OrderMettingProductStatus>  BYTE
-    _moq = 0;  // 原起订量  INT
-    _price = ZERO;  // 原商品价格  DEC(14,4)
-    _newmoq = 0;  // 活动起订量  INT
-    _newprice = ZERO;  // 活动价  DEC(14,4)
-    _targetCount = 0;  // 目标量  INT
-    _updatedTime = Env.getTranBeginTime();  // 更新时间  TIME
-    _rowVersion = 0;  // 版本  SHORT
+	@Override
+  public OrderMeetingOrder init(){
+		super.init();
+    _ordermeetingid=null;	// 订购会信息 <表主键:OrderMeeting>  INT
+    _orderid=null;	// 订单管理 <表主键:OdrOrder>  LONG
+    _createdTime=Env.getTranBeginTime();	// 建档时间  TIME
+    _rowVersion=0;	// 版本  SHORT
     return this;
   }
 
   //方法----------------------------------------------
-  public Integer getPkey() {
+  public Integer getPkey(){
     return _pkey;
   }
-
-  public void setPkey(Integer pkey) {
-    _pkey = pkey;
+  public void setPkey(Integer pkey){
+    _pkey=pkey;
   }
-
-  public Integer getProductid() {
-    return _productid;
-  }
-
-  public void setProductid(Integer productid) {
-    _productid = productid;
-  }
-
-  public PdtProduct gtProductid() {
-    if (getProductid() == null) {
-      return null;
-    }
-    return (PdtProduct) get(PdtProduct.class, getProductid());
-  }
-
-  public void stProductid(PdtProduct productid) {
-    if (productid == null) {
-      setProductid(null);
-    } else {
-      setProductid(productid.getPkey());
-    }
-  }
-
-  public Integer getSupplierid() {
-    return _supplierid;
-  }
-
-  public void setSupplierid(Integer supplierid) {
-    _supplierid = supplierid;
-  }
-
-  public UsrSupplier gtSupplierid() {
-    if (getSupplierid() == null) {
-      return null;
-    }
-    return (UsrSupplier) get(UsrSupplier.class, getSupplierid());
-  }
-
-  public void stSupplierid(UsrSupplier supplierid) {
-    if (supplierid == null) {
-      setSupplierid(null);
-    } else {
-      setSupplierid(supplierid.getPkey());
-    }
-  }
-
-  public Integer getOrdermeetingid() {
+  public Integer getOrdermeetingid(){
     return _ordermeetingid;
   }
-
-  public void setOrdermeetingid(Integer ordermeetingid) {
-    _ordermeetingid = ordermeetingid;
+  public void setOrdermeetingid(Integer ordermeetingid){
+    _ordermeetingid=ordermeetingid;
   }
-
-  public OrderMeeting gtOrdermeetingid() {
-    if (getOrdermeetingid() == null) {
+  public OrderMeeting gtOrdermeetingid(){
+    if(getOrdermeetingid()==null)
       return null;
-    }
-    return (OrderMeeting) get(OrderMeeting.class, getOrdermeetingid());
+    return (OrderMeeting)get(OrderMeeting.class,getOrdermeetingid());
   }
-
-  public void stOrdermeetingid(OrderMeeting ordermeetingid) {
-    if (ordermeetingid == null) {
+  public void stOrdermeetingid(OrderMeeting ordermeetingid){
+    if(ordermeetingid==null)
       setOrdermeetingid(null);
-    } else {
+    else
       setOrdermeetingid(ordermeetingid.getPkey());
-    }
   }
-
-  public Byte getStatus() {
-    return _status;
+  public Long getOrderid(){
+    return _orderid;
   }
-
-  public void setStatus(Byte status) {
-    _status = status;
+  public void setOrderid(Long orderid){
+    _orderid=orderid;
   }
-
-  public OrderMettingProductStatus gtStatus() {
-    return (OrderMettingProductStatus) (OrderMettingProductStatus.OFF.getLine().get(_status));
+  public OdrOrder gtOrderid(){
+    if(getOrderid()==null)
+      return null;
+    return (OdrOrder)get(OdrOrder.class,getOrderid());
   }
-
-  public void stStatus(OrderMettingProductStatus status) {
-    _status = status.getLine().getKey();
+  public void stOrderid(OdrOrder orderid){
+    if(orderid==null)
+      setOrderid(null);
+    else
+      setOrderid(orderid.getPkey());
   }
-
-  public Integer getMoq() {
-    return _moq;
+  public Date getCreatedTime(){
+    return _createdTime;
   }
-
-  public void setMoq(Integer moq) {
-    _moq = moq;
+  public void setCreatedTime(Date createdTime){
+    _createdTime=createdTime;
   }
-
-  public BigDecimal getPrice() {
-    return _price;
-  }
-
-  public void setPrice(BigDecimal price) {
-    _price = price;
-  }
-
-  public Integer getNewmoq() {
-    return _newmoq;
-  }
-
-  public void setNewmoq(Integer newmoq) {
-    _newmoq = newmoq;
-  }
-
-  public BigDecimal getNewprice() {
-    return _newprice;
-  }
-
-  public void setNewprice(BigDecimal newprice) {
-    _newprice = newprice;
-  }
-
-  public Integer getTargetCount() {
-    return _targetCount;
-  }
-
-  public void setTargetCount(Integer targetCount) {
-    _targetCount = targetCount;
-  }
-
-  public Date getUpdatedTime() {
-    return _updatedTime;
-  }
-
-  public void setUpdatedTime(Date updatedTime) {
-    _updatedTime = updatedTime;
-  }
-
-  public Short getRowVersion() {
+  public Short getRowVersion(){
     return _rowVersion;
   }
-
-  public void setRowVersion(Short rowVersion) {
-    _rowVersion = rowVersion;
+  public void setRowVersion(Short rowVersion){
+    _rowVersion=rowVersion;
   }
 
   //<<<以上是自动产生的源代码行--源代码--请保留此行用于识别<<<
