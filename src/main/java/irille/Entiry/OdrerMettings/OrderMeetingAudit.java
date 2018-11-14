@@ -1,7 +1,7 @@
 package irille.Entiry.OdrerMettings;
 
-import irille.Entiry.OdrerMettings.Enums.OdrerMettingAuditStatus;
-import irille.Entiry.OdrerMettings.Enums.OdrerMettingAuditType;
+import irille.Entiry.OdrerMettings.Enums.OrdrerMettingAuditStatus;
+import irille.Entiry.OdrerMettings.Enums.OrderMettingAuditType;
 import irille.pub.bean.BeanInt;
 import irille.pub.svr.Env;
 import irille.pub.tb.Fld;
@@ -24,9 +24,9 @@ public class OrderMeetingAudit extends BeanInt<OrderMeetingAudit> {
     PKEY(TB.crtIntPkey()),
     OrderMeeting(irille.Entiry.OdrerMettings.OrderMeeting.fldOutKey()),
     NAME(SYS.STR__200_NULL, "订购会标题"),
-    STATUS(TB.crt(OdrerMettingAuditStatus.DEFAULT)),
+    STATUS(TB.crt(OrdrerMettingAuditStatus.DEFAULT)),
     MESSAGE(SYS.STR__200_NULL, "消息"),
-    TYPE(TB.crt(OdrerMettingAuditType.DEFAULT)),
+    TYPE(TB.crt(OrderMettingAuditType.DEFAULT)),
     SUPPLIERID(UsrSupplier.fldOutKey().setNull()),
     SNAPSHOT(SYS.JSON, "快照"),
     CREATED_TIME(SYS.CREATED_DATE_TIME),
@@ -81,13 +81,17 @@ public class OrderMeetingAudit extends BeanInt<OrderMeetingAudit> {
   private Integer _pkey;	// 编号  INT
   private Integer _ordermeeting;	// 订购会信息 <表主键:OrderMeeting>  INT
   private String _name;	// 订购会标题  STR(200)<null>
-  private Byte _status;	// 供应商认证 <OdrerMettingAuditStatus>  BYTE
-	// NO:0,未认证
-	// YES:1,已认证
+  private Byte _status;	// 订购会状态 <OrdrerMettingAuditStatus>  BYTE
+	// PENDING:0,待审核
+	// VERIFYING:1,审核中
+	// PROCEEDING:2,通过
+	// FAILED:3,未通过
+	// TOBEGIN:4,即将开始
+	// SUSPEND:6,暂停
   private String _message;	// 消息  STR(200)<null>
-  private Byte _type;	// 供应商认证 <OdrerMettingAuditType>  BYTE
-	// NO:0,未认证
-	// YES:1,已认证
+  private Byte _type;	// 供应商认证类型 <OrderMettingAuditType>  BYTE
+	// PLATFORM:0,平台
+	// SUPPLIER:1,商家
   private Integer _supplierid;	// 供应商 <表主键:UsrSupplier>  INT<null>
   private String _snapshot;	// 快照  JSONOBJECT
   private Date _createdTime;	// 建档时间  TIME
@@ -98,12 +102,12 @@ public class OrderMeetingAudit extends BeanInt<OrderMeetingAudit> {
 		super.init();
     _ordermeeting=null;	// 订购会信息 <表主键:OrderMeeting>  INT
     _name=null;	// 订购会标题  STR(200)
-    _status=OdrerMettingAuditStatus.DEFAULT.getLine().getKey();	// 供应商认证 <OdrerMettingAuditStatus>  BYTE
+    _status=OrdrerMettingAuditStatus.DEFAULT.getLine().getKey();	// 订购会状态 <OrdrerMettingAuditStatus>  BYTE
     _message=null;	// 消息  STR(200)
-    _type=OdrerMettingAuditType.DEFAULT.getLine().getKey();	// 供应商认证 <OdrerMettingAuditType>  BYTE
+    _type=OrderMettingAuditType.DEFAULT.getLine().getKey();	// 供应商认证类型 <OrderMettingAuditType>  BYTE
     _supplierid=null;	// 供应商 <表主键:UsrSupplier>  INT
     _snapshot=null;	// 快照  JSONOBJECT
-    _createdTime= Env.getTranBeginTime();	// 建档时间  TIME
+    _createdTime=Env.getTranBeginTime();	// 建档时间  TIME
     _rowVersion=0;	// 版本  SHORT
     return this;
   }
@@ -144,10 +148,10 @@ public class OrderMeetingAudit extends BeanInt<OrderMeetingAudit> {
   public void setStatus(Byte status){
     _status=status;
   }
-  public OdrerMettingAuditStatus gtStatus(){
-    return (OdrerMettingAuditStatus)(OdrerMettingAuditStatus.NO.getLine().get(_status));
+  public OrdrerMettingAuditStatus gtStatus(){
+    return (OrdrerMettingAuditStatus)(OrdrerMettingAuditStatus.PENDING.getLine().get(_status));
   }
-  public void stStatus(OdrerMettingAuditStatus status){
+  public void stStatus(OrdrerMettingAuditStatus status){
     _status=status.getLine().getKey();
   }
   public String getMessage(){
@@ -162,10 +166,10 @@ public class OrderMeetingAudit extends BeanInt<OrderMeetingAudit> {
   public void setType(Byte type){
     _type=type;
   }
-  public OdrerMettingAuditType gtType(){
-    return (OdrerMettingAuditType)(OdrerMettingAuditType.NO.getLine().get(_type));
+  public OrderMettingAuditType gtType(){
+    return (OrderMettingAuditType)(OrderMettingAuditType.PLATFORM.getLine().get(_type));
   }
-  public void stType(OdrerMettingAuditType type){
+  public void stType(OrderMettingAuditType type){
     _type=type.getLine().getKey();
   }
   public Integer getSupplierid(){

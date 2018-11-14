@@ -77,9 +77,10 @@ public class OrderMeetingExhibition extends BeanInt<OrderMeetingExhibition> {
   private String _coutry;	// 订购会标题  STR(200)<null>
   private Date _startTime;	// 结束时间  TIME
   private Date _endTime;	// 开始时间  TIME
-  private Byte _status;	// 供应商认证 <OrderMeetingExhibitionStatus>  BYTE
-	// NO:0,未认证
-	// YES:1,已认证
+  private Byte _status;	// 供应商场地 <OrderMeetingExhibitionStatus>  BYTE
+	// FAILED:0,未通过
+	// PASS:1,通过
+	// DELETE:2,删除
   private Date _createdTime;	// 建档时间  TIME
   private Short _rowVersion;	// 版本  SHORT
 
@@ -90,8 +91,8 @@ public class OrderMeetingExhibition extends BeanInt<OrderMeetingExhibition> {
     _coutry=null;	// 订购会标题  STR(200)
     _startTime=null;	// 结束时间  TIME
     _endTime=null;	// 开始时间  TIME
-    _status=OrderMeetingExhibitionStatus.DEFAULT.getLine().getKey();	// 供应商认证 <OrderMeetingExhibitionStatus>  BYTE
-    _createdTime= Env.getTranBeginTime();	// 建档时间  TIME
+    _status=OrderMeetingExhibitionStatus.DEFAULT.getLine().getKey();	// 供应商场地 <OrderMeetingExhibitionStatus>  BYTE
+    _createdTime=Env.getTranBeginTime();	// 建档时间  TIME
     _rowVersion=0;	// 版本  SHORT
     return this;
   }
@@ -134,7 +135,7 @@ public class OrderMeetingExhibition extends BeanInt<OrderMeetingExhibition> {
     _status=status;
   }
   public OrderMeetingExhibitionStatus gtStatus(){
-    return (OrderMeetingExhibitionStatus)(OrderMeetingExhibitionStatus.NO.getLine().get(_status));
+    return (OrderMeetingExhibitionStatus)(OrderMeetingExhibitionStatus.FAILED.getLine().get(_status));
   }
   public void stStatus(OrderMeetingExhibitionStatus status){
     _status=status.getLine().getKey();

@@ -1,6 +1,6 @@
 package irille.Entiry.OdrerMettings;
 
-import irille.Entiry.OdrerMettings.Enums.OdrerMettingProductStatus;
+import irille.Entiry.OdrerMettings.Enums.OrderMettingProductStatus;
 import irille.pub.bean.BeanInt;
 import irille.pub.svr.Env;
 import irille.pub.tb.Fld;
@@ -24,7 +24,7 @@ public class OrderMeetingProduct extends BeanInt<OrderMeetingProduct> {
     PRODUCTID(PdtProduct.fldOutKey()),
     SUPPLIERID(UsrSupplier.fldOutKey()),
     ORDERMEETINGID(OrderMeeting.fldOutKey()),
-    STATUS(TB.crt(OdrerMettingProductStatus.DEFAULT)),
+    STATUS(TB.crt(OrderMettingProductStatus.DEFAULT)),
     MOQ(SYS.INT, "原起订量"),
     PRICE(SYS.PRICE, "原商品价格"),
     NEWMOQ(SYS.INT, "活动起订量"),
@@ -83,9 +83,10 @@ public class OrderMeetingProduct extends BeanInt<OrderMeetingProduct> {
   private Integer _productid;	// 产品 <表主键:PdtProduct>  INT
   private Integer _supplierid;	// 供应商 <表主键:UsrSupplier>  INT
   private Integer _ordermeetingid;	// 订购会信息 <表主键:OrderMeeting>  INT
-  private Byte _status;	// 供应商认证 <OdrerMettingProductStatus>  BYTE
-	// NO:0,未认证
-	// YES:1,已认证
+  private Byte _status;	// 供应商认证 <OrderMettingProductStatus>  BYTE
+	// OFF:0,下架
+	// ON:1,上架
+	// DELETE:2,违规下架
   private Integer _moq;	// 原起订量  INT
   private BigDecimal _price;	// 原商品价格  DEC(14,4)
   private Integer _newmoq;	// 活动起订量  INT
@@ -100,13 +101,13 @@ public class OrderMeetingProduct extends BeanInt<OrderMeetingProduct> {
     _productid=null;	// 产品 <表主键:PdtProduct>  INT
     _supplierid=null;	// 供应商 <表主键:UsrSupplier>  INT
     _ordermeetingid=null;	// 订购会信息 <表主键:OrderMeeting>  INT
-    _status=OdrerMettingProductStatus.DEFAULT.getLine().getKey();	// 供应商认证 <OdrerMettingProductStatus>  BYTE
+    _status=OrderMettingProductStatus.DEFAULT.getLine().getKey();	// 供应商认证 <OrderMettingProductStatus>  BYTE
     _moq=0;	// 原起订量  INT
     _price=ZERO;	// 原商品价格  DEC(14,4)
     _newmoq=0;	// 活动起订量  INT
     _newprice=ZERO;	// 活动价  DEC(14,4)
     _targetCount=0;	// 目标量  INT
-    _updatedTime= Env.getTranBeginTime();	// 更新时间  TIME
+    _updatedTime=Env.getTranBeginTime();	// 更新时间  TIME
     _rowVersion=0;	// 版本  SHORT
     return this;
   }
@@ -175,10 +176,10 @@ public class OrderMeetingProduct extends BeanInt<OrderMeetingProduct> {
   public void setStatus(Byte status){
     _status=status;
   }
-  public OdrerMettingProductStatus gtStatus(){
-    return (OdrerMettingProductStatus)(OdrerMettingProductStatus.NO.getLine().get(_status));
+  public OrderMettingProductStatus gtStatus(){
+    return (OrderMettingProductStatus)(OrderMettingProductStatus.OFF.getLine().get(_status));
   }
-  public void stStatus(OdrerMettingProductStatus status){
+  public void stStatus(OrderMettingProductStatus status){
     _status=status.getLine().getKey();
   }
   public Integer getMoq(){

@@ -1,6 +1,6 @@
 package irille.Entiry.OdrerMettings;
 
-import irille.Entiry.OdrerMettings.Enums.OdrerMettingStatus;
+import irille.Entiry.OdrerMettings.Enums.OrdrerMettingAuditStatus;
 import irille.pub.bean.BeanInt;
 import irille.pub.svr.Env;
 import irille.pub.tb.Fld;
@@ -23,7 +23,7 @@ public class OrderMeeting extends BeanInt<OrderMeeting> {
     PKEY(TB.crtIntPkey()),
     SUPPLIERID(UsrSupplier.fldOutKey()),
     NAME(SYS.STR__200_NULL, "订购会标题"),
-    STATUS(TB.crt(OdrerMettingStatus.DEFAULT)),
+    STATUS(TB.crt(OrdrerMettingAuditStatus.DEFAULT)),
     EXHIBITION(OrderMeetingExhibition.fldOutKey()),
     CUSTOM_EXHIBITION(SYS.STR__200_NULL),
     COUNTRY(PltCountry.fldOutKey()),
@@ -88,9 +88,13 @@ public class OrderMeeting extends BeanInt<OrderMeeting> {
   private Integer _pkey;	// 编号  INT
   private Integer _supplierid;	// 供应商 <表主键:UsrSupplier>  INT
   private String _name;	// 订购会标题  STR(200)<null>
-  private Byte _status;	// 供应商认证 <OdrerMettingStatus>  BYTE
-	// NO:0,未认证
-	// YES:1,已认证
+  private Byte _status;	// 订购会状态 <OrdrerMettingAuditStatus>  BYTE
+	// PENDING:0,待审核
+	// VERIFYING:1,审核中
+	// PROCEEDING:2,通过
+	// FAILED:3,未通过
+	// TOBEGIN:4,即将开始
+	// SUSPEND:6,暂停
   private Integer _exhibition;	// 订购会-会场信息 <表主键:OrderMeetingExhibition>  INT
   private String _customExhibition;	// 字符200  STR(200)<null>
   private Integer _country;	// 国家管理 <表主键:PltCountry>  INT
@@ -110,7 +114,7 @@ public class OrderMeeting extends BeanInt<OrderMeeting> {
 		super.init();
     _supplierid=null;	// 供应商 <表主键:UsrSupplier>  INT
     _name=null;	// 订购会标题  STR(200)
-    _status=OdrerMettingStatus.DEFAULT.getLine().getKey();	// 供应商认证 <OdrerMettingStatus>  BYTE
+    _status=OrdrerMettingAuditStatus.DEFAULT.getLine().getKey();	// 订购会状态 <OrdrerMettingAuditStatus>  BYTE
     _exhibition=null;	// 订购会-会场信息 <表主键:OrderMeetingExhibition>  INT
     _customExhibition=null;	// 字符200  STR(200)
     _country=null;	// 国家管理 <表主键:PltCountry>  INT
@@ -122,7 +126,7 @@ public class OrderMeeting extends BeanInt<OrderMeeting> {
     _postcode=null;	// 字符20  STR(20)
     _mailname=null;	// 字符20  STR(20)
     _mailtel=null;	// 字符20  STR(20)
-    _updatedTime= Env.getTranBeginTime();	// 更新时间  TIME
+    _updatedTime=Env.getTranBeginTime();	// 更新时间  TIME
     _rowVersion=0;	// 版本  SHORT
     return this;
   }
@@ -163,10 +167,10 @@ public class OrderMeeting extends BeanInt<OrderMeeting> {
   public void setStatus(Byte status){
     _status=status;
   }
-  public OdrerMettingStatus gtStatus(){
-    return (OdrerMettingStatus)(OdrerMettingStatus.NO.getLine().get(_status));
+  public OrdrerMettingAuditStatus gtStatus(){
+    return (OrdrerMettingAuditStatus)(OrdrerMettingAuditStatus.PENDING.getLine().get(_status));
   }
-  public void stStatus(OdrerMettingStatus status){
+  public void stStatus(OrdrerMettingAuditStatus status){
     _status=status.getLine().getKey();
   }
   public Integer getExhibition(){
