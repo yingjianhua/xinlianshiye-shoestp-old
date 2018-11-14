@@ -1,7 +1,7 @@
-package irille.Entiry.OdrerMettings;
+package irille.Entiry.OdrerMeetings;
 
-import irille.Entiry.OdrerMettings.Enums.OrdrerMettingAuditStatus;
-import irille.Entiry.OdrerMettings.Enums.OrderMettingAuditType;
+import irille.Entiry.OdrerMeetings.Enums.OrdrerMettingAuditStatus;
+import irille.Entiry.OdrerMeetings.Enums.OrderMettingAuditType;
 import irille.pub.bean.BeanInt;
 import irille.pub.svr.Env;
 import irille.pub.tb.Fld;
@@ -22,7 +22,7 @@ public class OrderMeetingAudit extends BeanInt<OrderMeetingAudit> {
 
   public enum T implements IEnumFld {
     PKEY(TB.crtIntPkey()),
-    OrderMeeting(irille.Entiry.OdrerMettings.OrderMeeting.fldOutKey()),
+    OrderMeeting(irille.Entiry.OdrerMeetings.OrderMeeting.fldOutKey()),
     NAME(SYS.STR__200_NULL, "订购会标题"),
     STATUS(TB.crt(OrdrerMettingAuditStatus.DEFAULT)),
     MESSAGE(SYS.STR__200_NULL, "消息"),

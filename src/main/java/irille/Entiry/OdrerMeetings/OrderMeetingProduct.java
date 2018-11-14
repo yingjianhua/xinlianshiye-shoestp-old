@@ -1,6 +1,6 @@
-package irille.Entiry.OdrerMettings;
+package irille.Entiry.OdrerMeetings;
 
-import irille.Entiry.OdrerMettings.Enums.OrderMettingProductStatus;
+import irille.Entiry.OdrerMeetings.Enums.OrderMettingProductStatus;
 import irille.pub.bean.BeanInt;
 import irille.pub.svr.Env;
 import irille.pub.tb.Fld;
