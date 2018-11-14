@@ -1,4 +1,4 @@
-package irille.Entiry.OdrerMeetings.Enums;
+package irille.Entity.OdrerMeetings.Enums;
 
 import irille.pub.tb.EnumLine;
 import irille.pub.tb.IEnumOpt;

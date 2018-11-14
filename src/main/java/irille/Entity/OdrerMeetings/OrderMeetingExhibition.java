@@ -1,6 +1,6 @@
-package irille.Entiry.OdrerMeetings;
+package irille.Entity.OdrerMeetings;
 
-import irille.Entiry.OdrerMeetings.Enums.OrderMeetingExhibitionStatus;
+import irille.Entity.OdrerMeetings.Enums.OrderMeetingExhibitionStatus;
 import irille.pub.bean.BeanInt;
 import irille.pub.svr.Env;
 import irille.pub.tb.Fld;
