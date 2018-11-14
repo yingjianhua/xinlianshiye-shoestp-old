@@ -7,7 +7,7 @@ import irille.pub.tb.IEnumOpt;
  * Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/13 Time: 16:21
  */
 public enum OrderMettingProductStatus implements IEnumOpt {
-  OFF(0, "下架"), ON(1, "上架"), DELETE(2, "违规下架");
+  OFF(0, "下架"), ON(1, "上架"), IRREGULARITIESDELETE(2, "违规下架"), DELETE(3, "删除");
   public static final String NAME = "供应商认证";
   public static final OrderMettingProductStatus DEFAULT = OFF;
   private EnumLine _line;
