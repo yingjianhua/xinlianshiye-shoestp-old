@@ -1,7 +1,8 @@
 package irille.homeAction.usr;
 
 import com.sun.mail.util.MailSSLSocketFactory;
-import irille.Service.Pdt.IPdtProduct;
+import irille.Service.Pdt.IPdtProductService;
+import irille.Service.Usr.IUsrSupplierService;
 import irille.homeAction.HomeAction;
 import irille.homeAction.cnt.dto.CntAd_IndexCategoryView;
 import irille.homeAction.usr.dto.PurchaseIndexView;
@@ -57,7 +58,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPurchaseAction {
     private static LogMessage LOG = new LogMessage(UsrPurchaseAction.class);
 
-    private static UsrPurchaseDAO.Query query = new UsrPurchaseDAO.Query();
 
     @Inject
     private PdtproductPageselect pdtPageSelectt = new PdtproductPageselect();
@@ -69,7 +69,9 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
 
 
     @Inject
-    private IPdtProduct pdtProduct;
+    private IPdtProductService pdtProduct;
+    @Inject
+    private IUsrSupplierService usrSupplierService;
 
     private String password;
     private String password2;
@@ -140,8 +142,9 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
             page.setLimit(2);
             purchaseIndexView.setHeadedBottomTopAds(adPageSelect.getAdsInfo(page, CntAd.OAdLocation.INDEX_RIGHT_BOTTOM, osignage));
         }
+         page.setStart(0);
         page.setLimit(isMobile() ? 8 : 21);
-        purchaseIndexView.setSupplier(suppPageSelect.getSupplierInfo(page));
+        purchaseIndexView.setSupplier(usrSupplierService.getSupplierInfo(page));
         page.setLimit(6);
         purchaseIndexView.setNewProducts(pdtProduct.getNewProductsListByIndex(page));
 

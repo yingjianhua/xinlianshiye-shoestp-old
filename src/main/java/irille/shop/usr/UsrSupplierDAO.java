@@ -28,6 +28,7 @@ import irille.shop.plt.*;
 import irille.shop.plt.PltPay.OPay_Mode;
 import irille.shop.prm.PrmGroupPurchase;
 import irille.shop.usr.Usr.OStatus;
+import irille.shop.usr.UsrPurchaseDAO.Uda;
 import irille.shop.usr.UsrSupplier.T;
 import irille.view.usr.AccountSettingsView;
 import irille.view.usr.SupplierView;
@@ -53,7 +54,6 @@ public class UsrSupplierDAO {
         view.setName(bean.getName());
         return view;
     }
-
     /**
      * 商家端,商家账户设置页面需要的信息
      *
@@ -195,31 +195,6 @@ public class UsrSupplierDAO {
         }
 
 
-        /***
-         *  首页 供应商列表
-         *  审核  通过了  店铺 可以显示
-         *  认证只是有个认证标识
-         *
-         * 主键 公司图片  图片链接 公司名
-         * @return
-         */
-        public List getSupplierInfo(IduPage page) {
-            FormaterSql sql = FormaterSql.build();
-            sql.select(
-                    T.PKEY,
-                    T.LOGO,
-                    T.COMPANY_PHOTO,
-                    T.COMPANY_PHOTO_LINK,
-                    T.NAME
-            ).page(page)
-                    .eqAutoAnd(T.STATUS, OStatus.APPR)
-                    .eqAutoAnd("logo != '' and company_photo!='' ")
-                    .asc(T.SORT)
-                    .desc(T.UPDATE_TIME)
-            ;
-            List list = BeanBase.list(sql.buildSql(), sql.getParms());
-            return sql.castListMap(list);
-        }
 
         /***
          * 获取分类
@@ -349,7 +324,6 @@ public class UsrSupplierDAO {
             setB(dbBean);
         }
     }
-
     public static class UpdDiy extends IduUpd<UpdDiy, UsrSupplier> {
         @Override
         public void before() {
@@ -953,4 +927,21 @@ public class UsrSupplierDAO {
         ssv.setShopcategory(us.getCategory());
         return ssv;
     }
+    
+    /**
+     * 修改装修店铺
+     * 商家 @author  wilson zhang
+     */
+    public static class setting extends IduOther<Uda,UsrSupplier>{
+
+        @Override
+        public void before() {
+            super.before();
+            UsrSupplier dbBean = loadThisBeanAndLock();
+            PropertyUtils.copyProperties(dbBean, getB(),T.LOGO,T.SIGN_BACKGD,T.AD_PHOTO,T.AD_PHOTO_LINK,T.COMPANY_PHOTO,T.COMPANY_PHOTO_LINK,T.HOME_PAGE_DIY,T.HOME_PAGE_ON);
+            setB(dbBean);
+        }
+    	
+    }
+    
 }

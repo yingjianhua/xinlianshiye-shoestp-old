@@ -2,21 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ROMANIA</title>
+    <meta name="description" content="We will have a showroom in Romanian offline shoes purchasing. During this show, you can experience hundreds of styles of shoes locally and get your choosing shoes with factory direct price. Also, you can receive professional advice from customization. In this purchasing, nearly 500 different styles of Men’s shoes, women’s shoes and kid’s shoes will be displayed. If you reserve your seat online, you will get a secret gift when you come. Several free samples of shoes will also be supplied in this show.">
+    <meta name="Keywords" content="shoes purchasing, Men’s leather shoes, boy’s shoes, Men’s casual shoes, Men’s Sneakers, Children sandals, Men’s shoes, Women’s shoes, Women’s high heels, Women’s sandals, shoe companies, shoe suppliers, sneaker manufacturers, shoe factories, shoe manufacturing companies, sneaker manufacturer, china footwear manufacturer, sport shoes manufacturer, footwear factory.">
+    <title>Romanian Offline Shoes Purchasing</title>
     <script src="js/vue.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/muse-ui/dist/muse-ui.css">
     <script src="https://unpkg.com/muse-ui/dist/muse-ui.js"></script>
     <link rel="stylesheet" href="css/romania-index.css">
 </head>
 <body>
-<div id="romania">
+<div id="romania" @click="contrast">
     <div class="romania-poster">
-        <p class="white-text title-text">ROMANIA OFFLINE SHOES PERCHASING</p>
-        <p class="yellow-text slogan">New era</p>
-        <p class="yellow-text slogan">New trade</p>
-        <p class="yellow-text slogan">New trends</p>
+        <a class="logo" href="https://www.shoestp.com/home/usr_UsrPurchase"><img src="imgs/logo-01_03.png" alt=""></a>
+        <p class="white-text title-text">ROMANIAN OFFLINE <br>SHOES PURCHASING</p>
+        <p class="yellow-text slogan">New Trends</p>
+        <p class="yellow-text slogan">New Trade</p>
+        <p class="yellow-text slogan">New Era</p>
         <p class="yellow-text time">2018.12.4-2018.12.19</p>
-        <p class="yellow-text content-01">Exhibition hall opens all year round</p>
+        <p class="yellow-text content-01">Exhibition Hall Opens All Year Round</p>
         <p class="white-text content-02">Magozinul Universal Dragonul Rosu Strada Drumul Garii 12,Bucuresti 077190</p>
         <div class="language">
             <p><span class="lan" @click="handleLanguage"><span style="font-size: 40px;border: none;padding: 0;">=</span> English</span><a href="https://www.shoestp.com/home/usr_UsrPurchase"><img src="imgs/return-home.png"/></a></p>
@@ -27,19 +30,21 @@
             </ul>
         </div>
         <div class="image-bottom">
-            <a class="btn"  href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">Get Free Sample</a>
+            <a class="btn"  href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">Get Secret Gift</a>
             <a class="btn">Onlione Ordering Opening Soon</a>
         </div>
     </div>
     <div class="producrt">
-        <h2>PRODUCT DISPLAY</h2>
+        <h2 class="pro-text">PRODUCT</h2>
+		<p class="pro-text">DISPLAY</p>
         <mu-carousel hide-controls>
             <mu-carousel-item v-for="item in carouselProducrt">
-                <h2>{{ item.title }}</h2>
                 <div class="detail">
-                    <img :src="item.imageUrl">
-                    <h4>{{ item.contentTitle }}</h4>
-                    <p>{{ item.content }}</p>
+					<a :href="item.url">
+						<img :src="item.imageUrl">
+						<h4>{{ item.contentTitle }}</h4>
+						<p>{{ item.content }}</p>
+					</a>
                 </div>
             </mu-carousel-item>
         </mu-carousel>
@@ -48,10 +53,12 @@
 
     <div class="rmnybottomsev">
         <div class="rmnybsevcon">
-            <img src="imgs/rmnyb22.png" alt="">
-            <h3>Cooperative manufacturer's data and footwear data</h3>
+			<h2 class="rmny_title">Shoes Purchasing Online</h2>
+            <h3>Get your choosing shoes from our online shoes shop</h3>
             <img src="imgs/rmnyb23.png" alt="">
-            <p>The <span class="bigblue">500</span> shoe <br>companies were selected <br><span class="bigyellow">500-800</span> pairs of <br>premium shoes.<br><span class="bigblue">24</span> hours customer service</p>
+            <p class="pur_p"><span class="dot"></span>More than <span class="bigblue">500</span> shoe companies were selected </p>
+			<p class="pur_p"><span class="dot"></span><span class="bigyellow">500-800</span> pairs of premium shoes.</p>
+			<p class="pur_p margin_bottom_20"><span class="dot"></span><span class="bigblue">24</span> hours customer service</p>
             <a class="producrt-button inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">Get Free Sample Now</a>
         </div>
     </div>
@@ -69,54 +76,92 @@
         </div>
     </div>
     <div class="rmnybottomfiv">
-        <div class="rmnybfivcon">
-            <h2>Our Advantage</h2>
-            <img src="imgs/rmnyb14.png" alt="">
-            <div class="rmnybfivad clearfloat">
-                <div class="advantage">
-                    <img src="imgs/rmnyb15.png" alt="">
-                    <h4>PURCHASE</h4>
-                    <p>Our unique global joint procurement mechanism Online and offline can be ordered Guarantee your small order.Can also be shipped in timeand quality.</p>
+            <div class="rmnybfivcon">
+                <h2>Get Your Project Started<br><span class="red-title">Faster</span> With New Union</h2>
+                <img src="imgs/rmnyb14.png" alt="">
+                <div class="rmnybfivad clearfloat">
+                    <div class="advantage">
+                        <img src="imgs/rmnyb15.png" alt="">
+                        <h4>CONSULTATION</h4>
+                        <p>Once we know your goals, we will set up a step-by-step production process together with you that ensures you get the best deal</p>
+                        <div>
+                            <span></span>
+                            <p>24-hour hotline service;</p>
+                        </div>
+                        <div>
+                            <span></span>
+                            <p>Professional advice about customization service to ensure you get the best shoes</p>
+                        </div>
+                    </div>
+                    <div class="advantage">
+                        <img src="imgs/rmnyb16.png" alt="">
+                        <h4>QUALITY CONTROL</h4>
+                        <p>Shoes' quality is the soul for New Union, we have very strong design and manufacturing team, as well as having strict and effective quality control policy on each stage.</p>
+                        <div>
+                            <span></span>
+                            <p>Experienced quality inspector will ensure your shoes' quality;</p>
+                        </div>
+                        <div>
+                            <span></span>
+                            <p>Strict quality control policy;</p>
+                        </div>
+                        <div>
+                            <span></span>
+                            <p>Products meet the demands of various chemical and physical testing in main markets.</p>
+                        </div>
+                    </div>
+                    <div class="advantage">
+                        <img src="imgs/rmnyb17.png" alt="">
+                        <h4>MANUFACTURING</h4>
+                        <p>Through out the production process, managers in charge of cutting, stitching and lasting check the quality of shoes constantly. We are not satisfied unless every pair is perfect</p>
+                        <div>
+                            <span></span>
+                            <p>Conduct chemical test according to your requirements;</p>
+                        </div>
+                        <div>
+                            <span></span>
+                            <p>Offer lower price to ensure the maximum profits for your bussiness.</p>
+                        </div>
+                    </div>
+                    <div class="advantage">
+                        <img src="imgs/rmnyb18.png" alt="">
+                        <h4>DESIGN</h4>
+                        <p>We have experienced designers who can design more than 2,000 new shoe models every year. Our designers consider themselves footwear fashion artists</p>
+                        <div>
+                            <span></span>
+                            <p>Professional customization service to ensure you get awesome shoes;</p>
+                        </div>
+                        <div>
+                            <span></span>
+                            <p>experienced designers will give you more practical and distinguished suggestions;</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="advantage">
-                    <img src="imgs/rmnyb16.png" alt="">
-                    <h4>QUALITY</h4>
-                    <p>Carefully selected quality and safe materials The production process conforms to international standards Quality inspectors with years of experience for you to control.Every detail of every pair of shoes</p>
-                </div>
-                <div class="advantage">
-                    <img src="imgs/rmnyb17.png" alt="">
-                    <h4>PRICE</h4>
-                    <p>Factory direct delivery No intermediate dealers make a difference Under the premise of ensuring quality Sell the lowest price to guarantee your maximum profit</p>
-                </div>
-                <div class="advantage">
-                    <img src="imgs/rmnyb18.png" alt="">
-                    <h4>DESIGN</h4>
-                    <p>Have the speed of thousands of updates per day Meet all your needs for footwear International famous designers design Master global fashion trends </p>
-                </div>
+                <a class="inline-block-h80" href="https://www.shoestp.com/home/usr_UsrPurchase_sign">Register Now</a>
             </div>
-            <a class="inline-block-h80" href="https://www.shoestp.com/home/usr_UsrPurchase_sign">Register Now</a>
         </div>
-    </div>
     <div class="rmnybottomfth">
         <div class="rmnybfthcon">
             <img src="imgs/rmnyb7.png" alt="">
             <h2>Romanian Showroom</h2>
-            <h3>About Romania Order</h3>
-            <p>We will also hold international <br>offline purchasing in these <br>countries soon after.</p>
-            <div class="rmnybfthconimgs">
-                <img src="imgs/rmnyb8.png" alt="">
-                <img src="imgs/rmnyb9.png" alt="">
-                <img src="imgs/rmnyb10.png" alt="">
-                <img src="imgs/rmnyb11.png" alt="">
-                <img src="imgs/rmnyb12.png" alt="">
-                <img src="imgs/rmnyb13.png" alt="">
+            <div>
+                <span class="graycircle"></span><p>Experiencing hundreds of styles of shoes locally</p>
+            </div>
+            <div>
+                <span class="graycircle"></span><p>Factory direct with reliable platform</p>
+            </div>
+            <div>
+                <span class="graycircle"></span><p>Professional advice about customization</p>
             </div>
             <a class="inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">Reserve Your Seat</a>
         </div>
     </div>
+    <div class="rmnymap">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2846.9033669333626!2d26.175497615524637!3d44.476153479101654!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40b1f9ac606033e3%3A0x7d391e85ce7a445b!2z5Lit5Zu957qi6b6Z5biC5Zy6!5e0!3m2!1szh-CN!2s!4v1541991096910" width="980" height="550" frameborder="0" style="border:0" allowfullscreen></iframe>
+    </div>
     <div class="rmnybottomthred">
         <div class="rmnybthcon">
-            <h2>Factory Assembly Line Show</h2>
+            <h2>Suppliers' Factory Show</h2>
             <div class="rmnybthimgs">
                 <img src="imgs/rmnyb3.png" alt="">
                 <img src="imgs/rmnyb4.png" alt="">
@@ -131,18 +176,18 @@
             <h2>ADDRESS / CONTACT</h2>
             <h2>FOR THE COMERCE FAIR</h2>
             <div class="bscontactus">
-                <p>Contact : Romanesc</p>
-                <p>Website：https://www.shoestp.com/m/romania/</p>
-                <p>Telefon ： 0762  900  529</p>
-                <p>Whatsapp：+40 762 900 529</p>
+                <p><strong>Persoana de contact</strong>: Romanesc</p>
+                <p><strong>Website</strong>：https://www.shoestp.com/m/romania/</p>
+                <p><strong>Telefon</strong>： 0762  900  529</p>
+                <p><strong>Whatsapp</strong>：+40 762 900 529</p>
             </div>
             <div class="bscontactus">
-                <p>E-mail：544414672@qq.com Adresă expoziție:</p>
+                <p><strong>E-mail</strong>：544414672@qq.com Adresă expoziție:</p>
                 <p>(în limba română service)</p>
                 <p>marketing@shoestp.com (English service)</p>
             </div>
             <div class="bscontactus">
-                <p>Adresă expoziție:</p>
+                <p><strong>Exhibition address</strong>:</p>
                 <p>Magazinul Universal Dragonul Roșu Strada</p>
                 <p>Drumul Garii 12,București 077190</p>
             </div>
@@ -151,8 +196,17 @@
     <div class="rmnybottomfirst">
         <img src="imgs/rmnyb2.png" alt="">
         <div class="rmnybfcon">
-            <h2>Free Registration Member</h2>
+            <h2>Your Business<br>Needs Are Unique?</h2>
+            <h3>Let us help you meet those needs!<br>Talk to us and get your free samples now.</h3>
             <a class="inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">Reserve Your Seat</a>
+        </div>
+        <div class="rmnybfchoose">
+            <div v-for="item,index in checkinput">
+            <label :for="item.title" @click="changeclick(index)"><img src="imgs/yes.png" :alt="item.title" v-show="item.checked"></label>
+            <input type="checkbox" :name="item.title" v-model="item.checked">
+            <p>{{item.content}}</p>
+        </div>
+
         </div>
     </div>
 </div>
@@ -162,26 +216,57 @@
         el:'#romania',
         data:{
             languageShow:false,
+            languageObj: null,
             carouselProducrt:[{
                 title:'MAN',
                 imageUrl:'imgs/menShoes.png',
-                contentTitle:'Men\'s leather shoes',
-                content:'Mature, steady, low-key, luxury'
+                contentTitle:'Men\'s Leather Shoes',
+                content:'Simple But Fashionable',
+				url:'https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373'
             },{
                 title:'WUMAN',
                 imageUrl:'imgs/wumenShoes.png',
-                contentTitle:'Women\'s high heels',
-                content:'luxuryMature charm'
+                contentTitle:'Women\'s High Heels',
+                content:'Stylish, Lightweght',
+				url:'https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=380'
             },{
                 title:'KIDS',
                 imageUrl:'imgs/kidsShoes.png',
-                contentTitle:'Kids shoes',
-                content:'Durable & Comfortable '
-            }]
+                contentTitle:'Kid\'s Shoes',
+                content:'Abrasion-resistant, Slip-resustant',
+				url:'https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=387'
+            }],
+			checkinput:[
+                {
+                    title:'inputcheck1',
+                    checked:true,
+                    content:'More Choice of Shoes Styles'
+                },
+                {
+                    title:'inputcheck2',
+                    checked:true,
+                    content:'Local Touring Experience of Shoes Fashion Show'
+                },
+                {
+                    title:'inputcheck3',
+                    checked:true,
+                    content:'Factory Direct with Reliable Native Service'
+                }
+            ]
+
         },
         methods:{
             handleLanguage:function () {
+                this.languageObj = event.target;
                 this.languageShow = !this.languageShow;
+            },
+			changeclick:function (index) {
+                this.checkinput[index].checked = !this.checkinput[index].checked;
+            },
+            contrast: function () {
+                if (this.languageObj != event.target){
+                    this.languageShow = false;
+                }
             }
         }
     })

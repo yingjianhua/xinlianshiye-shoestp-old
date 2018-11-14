@@ -1,0 +1,80 @@
+/* 顶部文字 */
+.banner_01 .header-text {
+    padding-top: 60px;
+}
+.banner_01 .header-text > p:first-child{
+  width: 760px!important;
+}
+@media screen and (max-width: 1900px){
+
+  .banner_01 {
+    height: 710px;
+    background-size: 1400px;
+  }
+  .banner_01 .header-text {
+      padding-top: 60px;
+  }
+  .banner_01 .header-text > p{
+    width: 540px;
+  }
+}
+@media screen and (max-width: 1200px){
+  .banner_01 {
+    height: 580px;
+    background-size: 1200px;
+  }
+}
+
+
+.banner_04 .banner-title{
+  font-size: 50px;
+}
+.banner_04 .pos-right .fs20{
+  margin-bottom: 20px;
+}
+
+.banner_05 .banner-title{
+  font-size: 56px;
+}
+.banner_05 .ul-wrap {
+  margin-bottom: 120px;
+}
+.banner_05 .pos-left .left-item:first-child .ul-wrap{
+  margin-bottom: 45px;
+}
+.banner_05 .btn-normal-red{
+  bottom: -100px;
+}
+.banner_06 {
+  padding-top: 300px;
+}
+
+@media screen and (max-width: 1199px){
+  .banner_04 .banner-title {
+    font-size: 42px;
+  }
+  .banner_05 .banner-title{
+    font-size: 44px;
+  }
+  .banner_05 .blue-title{
+    font-size: 26px;
+  }
+  .banner_05 .btn-normal-red{
+    bottom: 0;
+  }
+  .banner_06 {
+    padding-top: 160px;
+  }
+}
+
+@media screen and (min-width: 1920px){
+  .banner_05 .banner-title{
+    font-size: 64px;
+  }
+  .banner_05 .btn-normal-red{
+    bottom: -140px;
+  }
+  .banner_06 {
+    padding-top: 400px;
+  }
+}

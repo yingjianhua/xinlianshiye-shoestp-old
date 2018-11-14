@@ -276,13 +276,12 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
      */
     @Override
     public String execute() throws Exception {
-        UsrSupplierDAO.pageSelect pageSelect = new UsrSupplierDAO.pageSelect();
         IduPage iduPage = new IduPage();
         iduPage.setStart(0);
         iduPage.setLimit(3);
         iduPage.setWhere(String.valueOf(getCated()));
         Page_supplierView page_supplierDto = new Page_supplierView();
-        page_supplierDto.setRecommendList(usrSupplierService.getSupplierListAndPdtList(iduPage));
+        page_supplierDto.setRecommendList(usrSupplierService.getSupplierListAndPdtList(iduPage, HomeAction.curLanguage()));
         iduPage.setStart(getPage());
         iduPage.setWhere(String.valueOf(getCated()));
         int i = getLimit();
@@ -291,7 +290,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
         }
         iduPage.setStart(3);
         iduPage.setLimit(i);
-        page_supplierDto.setManufacturersList(usrSupplierService.getSupplierListAndPdtList(iduPage));
+        page_supplierDto.setManufacturersList(usrSupplierService.getSupplierListAndPdtList(iduPage, HomeAction.curLanguage()));
         page_supplierDto.setCategory(UsrSupplierCategoryDAO.listViewIsTop(curLanguage()));
         _supplierDto = page_supplierDto;
         setResult("/home/supplier.jsp");
@@ -320,30 +319,29 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
      * @date 2018/7/20 16:27
      */
     public void gtSupplierAndPdtListAjax() throws Exception {
-        UsrSupplierDAO.pageSelect pageSelect = new UsrSupplierDAO.pageSelect();
         IduPage iduPage = new IduPage();
         iduPage.setStart(getPage());
         iduPage.setLimit(getLimit());
         //修改
         iduPage.setWhere(String.valueOf(getCated()));
-        write(new ObjectMapper().writeValueAsString(usrSupplierService.getSupplierListAndPdtList(iduPage)));
+        write(new ObjectMapper().writeValueAsString(usrSupplierService.getSupplierListAndPdtList(iduPage, HomeAction.curLanguage())));
 
     }
 
-    /***
-     * ajax返回供应商列表
-     * @author lijie@shoestp.cn
-     * @param
-     * @return
-     * @date 2018/7/20 16:27
-     */
-    public void gtSupplierAjax() throws Exception {
-        UsrSupplierDAO.pageSelect pageSelect = new UsrSupplierDAO.pageSelect();
-        IduPage iduPage = new IduPage();
-        iduPage.setStart(getPage());
-        iduPage.setLimit(getLimit());
-        write(pageSelect.getSupplierList(iduPage, getCated()));
-    }
+//    /***
+//     * ajax返回供应商列表
+//     * @author lijie@shoestp.cn
+//     * @param
+//     * @return
+//     * @date 2018/7/20 16:27
+//     */
+//    public void gtSupplierAjax() throws Exception {
+//        UsrSupplierDAO.pageSelect pageSelect = new UsrSupplierDAO.pageSelect();
+//        IduPage iduPage = new IduPage();
+//        iduPage.setStart(getPage());
+//        iduPage.setLimit(getLimit());
+//        write(pageSelect.getSupplierList(iduPage, getCated()));
+//    }
 
     /***
      * ajax返回供应商列表
@@ -359,7 +357,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
         iduPage.setLimit(getLimit());
         JSONObject json = new JSONObject();
         json.put(STORE_TOTAL, BeanBase.list(UsrSupplier.class, "", false).size());
-        json.put(STORE_ROOT, new JSONArray(usrSupplierService.getSupplierListAndPdtList(iduPage), false));
+        json.put(STORE_ROOT, new JSONArray(usrSupplierService.getSupplierListAndPdtList(iduPage, HomeAction.curLanguage()), false));
         writerOrExport(json);
     }
 

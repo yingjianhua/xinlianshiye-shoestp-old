@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
-import irille.Service.Pdt.IPdtProduct;
+import irille.Service.Pdt.IPdtProductService;
 import irille.Service.Pdt.Imp.PdtproductPageselect;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
@@ -43,7 +43,6 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
     private static final PdtProductDAO.Query Pdtquery = new PdtProductDAO.Query();
 
 
-
     @Inject
     private PdtproductPageselect pdtpageSelect = new PdtproductPageselect();
     private static final OdrOrderDAO.Query Odrderquery = new OdrOrderDAO.Query();
@@ -51,7 +50,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Inject
-    private IPdtProduct pdtProduct;
+    private IPdtProductService pdtProduct;
 
     @Override
     public PdtProduct insRun() throws Exception {
@@ -217,10 +216,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
      * @date 2018/7/23 19:16
      */
     public void gtProductsIndexCategoriesListAjax() throws Exception {
-        IduPage iduPage = new IduPage();
-        iduPage.setLimit(getLimit());
-        iduPage.setStart(getPage());
-        write(new ObjectMapper().writeValueAsString(pdtpageSelect.getProductsIndexCategories(iduPage)));
+        write(pdtProduct.getProductsIndexCategories(getStart(), getLimit(), HomeAction.curLanguage()));
     }
 
     /***

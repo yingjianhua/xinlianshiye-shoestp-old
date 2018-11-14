@@ -2,21 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>România</title>
+    <meta name="description" content="Vom deschide o sală de expoziții pentru târgul românesc de achiziții de încălțăminte offline. În acest showroom, puteți experimenta sute de stiluri de pantofi în zona locală și puteți cumpăra alegerea încălțămintei direct la prețul fabricii. În plus, puteți obține sfaturi profesionale de la personalizare. În această achiziție, vor fi expuse aproape 500 de stiluri diferite de încălțăminte pentru bărbați, femei și copii. Dacă rezervați un loc online, veți primi un dar misterios când veți ajunge. Mai multe pantofi gratuite vor fi disponibile la această expoziție.">
+    <meta name="Keywords" content="Pantofi de piele pentru bărbați, pantofi pentru bărbați, pantofi pentru bărbați, încălțăminte pentru bărbați, pantofi pentru bărbați, sandale pentru copii, încălțăminte pentru bărbați, încălțăminte pentru femei, tocuri pentru femei, sandale doamnelor, firme de încălțăminte, furnizori de încălțăminte Companie, producător de pantofi sport, producător chinez de încălțăminte, producător de pantofi sport, fabrică de încălțăminte.">
+    <title>Reuniunea de achiziție offline a încălțămintei din România</title>
     <script src="js/vue.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/muse-ui/dist/muse-ui.css">
     <script src="https://unpkg.com/muse-ui/dist/muse-ui.js"></script>
     <link rel="stylesheet" href="css/romania-index.css">
 </head>
 <body>
-<div id="romania">
+<div id="romania" @click="contrast">
     <div class="romania-poster">
-        <p class="white-text title-text">România online pantofi de cumparare</p>
-        <p class="yellow-text slogan">Nouă eră</p>
-        <p class="yellow-text slogan">Comerțul nou</p>
-        <p class="yellow-text slogan">Noile tendințe</p>
+        <a class="logo" href="https://www.shoestp.com/home/usr_UsrPurchase"><img src="imgs/logo-01_03.png" alt=""></a>
+        <p class="white-text title-text" style="font-size: 50px;padding-top: 180px;">ADUNARE DE APRECIERE<br/>A MOSTRELOR DE PANTOFI<br>OFFLINE, ROMANIA</p>
+        <p class="yellow-text slogan">NOUA TENDINță</p>
+        <p class="yellow-text slogan">NOUL COMERț</p>
+        <p class="yellow-text slogan">NOUA ERă</p>
         <p class="yellow-text time">2018.12.4-2018.12.19</p>
-        <p class="yellow-text content-01">Sala de expoziții se deschide pe tot parcursul anului</p>
+        <p class="yellow-text content-01">Pavilionul românesc este deschis pe tot parcursul anului</p>
         <p class="white-text content-02">Magazinul Universal Dragonul Roșu Strada Drumul Garii 12,București 077190</p>
         <div class="language">
             <p><span class="lan" @click="handleLanguage"><span style="font-size: 40px;border: none;padding: 0;">=</span> România</span><a href="https://www.shoestp.com/home/usr_UsrPurchase"><img src="imgs/return-home.png"/></a></p>
@@ -27,141 +30,183 @@
             </ul>
         </div>
         <div class="image-bottom">
-            <a class="btn"  href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">obțineți mostra gratuită</a>
-            <a class="btn">Comandă online Deschidere în curând</a>
+            <a class="btn"  href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">Obțineți Cadouri Surpriză</a>
+            <a class="btn">Achiziționarea online va începe imediat</a>
         </div>
     </div>
     <div class="producrt">
-        <h2>Afișarea produselor</h2>
+        <h2 class="pro-text">AFIșAREA</h2>
+        <p class="pro-text">PRODUSELOR</p>
         <mu-carousel hide-controls>
             <mu-carousel-item v-for="item in carouselProducrt">
-                <h2>{{ item.title }}</h2>
                 <div class="detail">
-                    <img :src="item.imageUrl">
-                    <h4>{{ item.contentTitle }}</h4>
-                    <p>{{ item.content }}</p>
+                    <a :href="item.url">
+                        <img :src="item.imageUrl">
+                        <h4>{{ item.contentTitle }}</h4>
+                        <p>{{ item.content }}</p>
+                    </a>
                 </div>
             </mu-carousel-item>
         </mu-carousel>
-        <a class="producrt-button inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">Obțineți exemplul gratuit acum</a>
+        <a class="producrt-button inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">Obțineți Mostre Gratuite Acum</a>
     </div>
-    <!---->
+
     <div class="rmnybottomsev">
         <div class="rmnybsevcon">
-            <h2 class="rmnybsevconzh">Despre Date Corelate</h2>
-            <h3>Datele producătorului cooperatist și detalii privind încălțămintea</h3>
+            <h2 class="rmny_title">Magazin <br>online de pantofi</h2>
+            <h3>Vino la magazinul online pentru a cumpăra pantofii pe care îi vrei.</h3>
             <img src="imgs/rmnyb23.png" alt="">
-            <p>Pantoful <span class="bigblue">500</span>  <br>au fost selectate companii<br><span class="bigyellow">500-800</span> de perechi de <br>pantofi premium.<br>Serviciu clienti<span class="bigblue">24</span> de ore </p>
-            <a class="producrt-button inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">Obțineți exemplul gratuit acum</a>
+            <p class="pur_p"><span class="dot"></span>Sunt peste <span class="bigblue">500</span> de furnizori de pantofi</p>
+            <p class="pur_p"><span class="dot"></span>Sunt disponibile<span class="bigyellow">500-800</span> stiluri și mostre de pantofi</p>
+            <p class="pur_p margin_bottom_20"><span class="dot"></span>Serviciul de relații cu clienții 
+de <span class="bigblue">24/24</span> online</p>
+            <a class="producrt-button inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">Obțineți Mostre Gratuite Acum</a>
         </div>
     </div>
     <div class="rmnybottomsix">
         <div class="rmnybsixcon">
-            <h2>Despre Noua Uniune</h2>
-            <h3>Pantofi lanț industria de e-commerce platformă</h3>
-            <p>Înființată în 2015, Wenzhou New Union Industrial Co, Ltd. este situat în Wenzhou, care este faimos pentru "China Shoes Capital". În Wenzhou, un oraș cu o istorie îndelungată de dezvoltare a încălțămintei, s-au născut o serie de întreprinderi de încălțăminte. Noua Uniune Industrială a devenit prima platformă de servicii de integrare a lanțului de pantofi din lume prin intermediul modelului său unic de afaceri "B2B2C".</p>
+            <h2>Despre Xinlian Industry</h2>
+            <h3>O stație o platformă soluția pentru lanțul de încălțăminte</h3>
+            <p>Wenzhou Xinlian Industrial Co., Ltd. a fost înființată în anul 2015 și este situat în Wenzhou, care este cunoscut sub numele de "China Shoes Capital". Orașul Wenzhou, împreună cu lunga istorie a dezvoltării industriei de încălțăminte, au dat naștere unor furnizori excelenți de încălțăminte pentru comerțul exterior.Wenzhou Xinlian Industrial Co., Ltd a devenit prima soluție la nivel mondial pentru lanțul de încălțăminte datorită modelului său unic de afaceri B2B2C.</p>
             <div class="rmnybsiximgs">
                 <img src="imgs/rmnyb19.png" alt="">
                 <img src="imgs/rmnyb20.png" alt="">
                 <img src="imgs/rmnyb21.png" alt="">
             </div>
-            <a class="inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">Solicitați acum</a>
+            <a class="inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">Solicitați Acum</a>
         </div>
     </div>
     <div class="rmnybottomfiv">
         <div class="rmnybfivcon">
-            <h2>Avantajul Nostru</h2>
+            <h2>Xinlian Industry vă va <br>ajuta să câștigați avantajul și să <br>vă depășiți colegii!</h2>
             <img src="imgs/rmnyb14.png" alt="">
             <div class="rmnybfivad clearfloat">
                 <div class="advantage">
                     <img src="imgs/rmnyb15.png" alt="">
-                    <h4>cumpărare</h4>
-                    <p>Unicul nostru mecanism global de achiziții publice online și offline poate fi comandat Garanția comenzii dvs. mici. Pot fi, de asemenea, expediate la timp
-                        și calitatea.</p>
+                    <h4>CONSULTAŢIE</h4>
+                    <p>Odată ce vă cunoaștem cerințele, vom colabora cu dvs. pentru a dezvolta un proces de producție pas cu pas pentru a vă asigura că beneficiați de cea mai bună experiență de servicii și de prețuri la produse</p>
+                    <div>
+                        <span></span>
+                        <p>Linia telefonică de asistență este disponibilă permanent, 24 de ore/zi.</p>
+                    </div>
+                    <div>
+                        <span></span>
+                        <p>Furnizați sfaturi profesionale pe baza nevoilor dvs. pentru a vă asigura că puteți găsi pantofii pe care îi doriți cel mai mult.</p>
+                    </div>
                 </div>
                 <div class="advantage">
                     <img src="imgs/rmnyb16.png" alt="">
-                    <h4>calitate</h4>
-                    <p>Produse de calitate selectate cu grijă și materiale sigure. Procesul de producție este conform standardelor internaționale
-                        Inspectori de calitate cu ani de experiență pentru a vă controla. Fiecare detaliu al fiecărei perechi de pantofi</p>
+                    <h4>CONTROLUL CALITĂȚII</h4>
+                    <p>Pentru Xinlian Industry, calitatea este sufletul, avem un sistem strict și eficient <br>de control al calității.</p>
+                    <div>
+                        <span></span>
+                        <p>Inspectori cu experiență fac verificări la toate nivelurile</p>
+                    </div>
+                    <div>
+                        <span></span>
+                        <p>Sistem de control strict al calității</p>
+                    </div>
+                    <div>
+                        <span></span>
+                        <p>Se asigură că fiecare detaliu al fiecărei perechi de pantofi este asigurat prin diferite teste chimice și fizice de pe piețele majore.</p>
+                    </div>
                 </div>
                 <div class="advantage">
                     <img src="imgs/rmnyb17.png" alt="">
-                    <h4>Preț</h4>
-                    <p>Livrare directă din fabricăNu există dealeri intermediari
-                        face diferenta Sub premisa asigurarii calitatii Vindem cel mai mic pret pentru a garanta profitul maxim</p>
+                    <h4>PRODUCȚIA</h4>
+                    <p>Ne străduim să perfecționăm fiecare pereche de pantofi. Șlefuirea, lustruirea și polizarea, fiecare proces are o persoană dedicată responsabilă pentru inspecția continuă.</p>
+                    <div>
+                        <span></span>
+                        <p>Testarea produselor conform cerințelor, asigurarea calității</p>
+                    </div>
+                    <div>
+                        <span></span>
+                        <p>Sub premisa asigurării calității, prețul de vânzare direct din fabrică vă va maximiza profiturile.</p>
+                    </div>
                 </div>
                 <div class="advantage">
                     <img src="imgs/rmnyb18.png" alt="">
-                    <h4>proiecta</h4>
-                    <p>Au viteza de mii de actualizări
-                        pe zi Faceți cunoștință cu toate nevoile dvs. pentru încălțăminte Design faimos de designeri faimoși
-                        Master tendințe de moda la nivel mondial</p>
+                    <h4>DESIGN</h4>
+                    <p>Mulți designeri cu experiență în design internațional, cu peste 2000 de actualizări în fiecare an, care vă vor ajuta să înțelegeți cele mai recente tendințe ale modei la nivel global</p>
+                    <div>
+                        <span></span>
+                        <p>Serviciu profesional personalizat pentru a vă asigura că obțineți pantofi excelenți;</p>
+                    </div>
+                    <div>
+                        <span></span>
+                        <p>Designerii experimentați vă vor oferi mai multe sfaturi practice și excelente</p>
+                    </div>
                 </div>
             </div>
-            <a class="inline-block-h80" href="https://www.shoestp.com/home/usr_UsrPurchase_sign">Înregistrează-te acum</a>
+            <a class="inline-block-h80" href="https://www.shoestp.com/home/usr_UsrPurchase_sign">Înregistrați-vă Acum</a>
         </div>
     </div>
     <div class="rmnybottomfth">
         <div class="rmnybfthcon">
             <img src="imgs/rmnyb7.png" alt="">
-            <h2>Salonul Românesc</h2>
-            <h3>Despre Ordinul României</h3>
-            <p>De asemenea, vom fi internați <br>
-                achiziționarea offline în acestea <br>
-                țări imediat după.
-            </p>
-            <div class="rmnybfthconimgs">
-                <img src="imgs/rmnyb8.png" alt="">
-                <img src="imgs/rmnyb9.png" alt="">
-                <img src="imgs/rmnyb10.png" alt="">
-                <img src="imgs/rmnyb11.png" alt="">
-                <img src="imgs/rmnyb12.png" alt="">
-                <img src="imgs/rmnyb13.png" alt="">
+            <h2>Pavilionul Românesc</h2>
+            <div>
+                <span class="graycircle"></span><p>Puteți experimenta mai mult de 100 de pantofi de calitate la fața locului.</p>
             </div>
-            <a class="inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">Rezervați Scaunul</a>
+            <div>
+                <span class="graycircle"></span><p>Platformă verticală fiabilă pentru vânzări directe din fabrică</p>
+            </div>
+            <div>
+                <span class="graycircle"></span><p>Consultanță profesională personalizată pentru servicii</p>
+            </div>
+            <a class="inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">Rezervați-vă locurile</a>
         </div>
+    </div>
+    <div class="rmnymap">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2846.9033669333626!2d26.175497615524637!3d44.476153479101654!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40b1f9ac606033e3%3A0x7d391e85ce7a445b!2z5Lit5Zu957qi6b6Z5biC5Zy6!5e0!3m2!1szh-CN!2s!4v1541991096910" width="980" height="550" frameborder="0" style="border:0" allowfullscreen></iframe>
     </div>
     <div class="rmnybottomthred">
         <div class="rmnybthcon">
-            <h2>Afișaj Linie De<br/>
-                Asamblare A Fabricii</h2>
+            <h2>Prezentarea <br>furnizorului de partener</h2>
             <div class="rmnybthimgs">
                 <img src="imgs/rmnyb3.png" alt="">
                 <img src="imgs/rmnyb4.png" alt="">
                 <img src="imgs/rmnyb5.png" alt="">
                 <img src="imgs/rmnyb6.png" alt="">
             </div>
-            <a class="inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">Obțineți exemplul gratuit acum</a>
+            <a class="inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">Obțineți Mostre Gratuite</a>
         </div>
     </div>
     <div class="rmnybottomsecond">
         <div class="rmnybscon">
-            <h2>Adresă / Contact</h2>
-            <h2>Pentru târgul de comert</h2>
+            <h2>ADRESA ȘI DATE DE CONTACT <br>ALE CAMEREI DE <br>COMERȚ DIN ROMÂNIA</h2>
+            <h2></h2>
             <div class="bscontactus">
-                <p>A lua legatura: : Romanesc</p>
-                <p>Website：https://www.shoestp.com/m/romania/</p>
-                <p>Telefon ： 0762  900  529</p>
-                <p>Whatsapp：+40 762 900 529</p>
+                <p><strong>Persoana de contact:</strong> Romanesc</p>
+                <p><strong>Site-ul:</strong>https://www.shoestp.com/m/romania/</p>
+                <p><strong>Telefon:</strong> 0762  900  529</p>
+                <p><strong>WhatsApp:</strong>+40 762 900 529</p>
             </div>
             <div class="bscontactus">
-                <p>E-mail：544414672@qq.com Adresă expoziție:</p>
-                <p>(în limba română service)</p>
-                <p>marketing@shoestp.com (English service)</p>
+                <p><strong>E-mail:</strong>544414672@qq.com</p>
+                <p>(în serviciul românesc)</p>
+                <p>marketing@shoestp.com (serviciul în limba engleză)</p>
             </div>
             <div class="bscontactus">
-                <p>Adresă expoziție:</p>
-                <p>Magazinul Universal Dragonul Roșu Strada</p>
-                <p>Drumul Garii 12,București 077190</p>
+                <p><strong>Adresa Expoziției:</strong></p>
+                <p>Universal Dragon Red Street Store</p>
+                <p>Drumul Garii 12, Bucharest 077190</p>
             </div>
         </div>
     </div>
     <div class="rmnybottomfirst">
         <img src="imgs/rmnyb2.png" alt="">
         <div class="rmnybfcon">
-            <h2>Membru Gratuit De înregistrare</h2>
-            <a class="inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">Rezervați Scaunul</a>
+            <h2>Nevoile dvs. <br>de afaceri sunt unice?</h2>
+            <h3>Să vă ajutăm să satisfaceți aceste nevoi! <br>Contactați-ne pentru a obține imediat mostre gratuite.</h3>
+            <a class="inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">Rezervați-vă locurile</a>
+        </div>
+        <div class="rmnybfchoose">
+            <div v-for="item,index in checkinput">
+                <label :for="item.title" @click="changeclick(index)"><img src="imgs/yes.png" :alt="item.title" v-show="item.checked"></label>
+                <input type="checkbox" :name="item.title" v-model="item.checked">
+                <p>{{item.content}}</p>
+            </div>
         </div>
     </div>
 </div>
@@ -171,27 +216,59 @@
         el:'#romania',
         data:{
             languageShow:false,
+            languageObj: null,
             carouselProducrt:[{
                 title:'MAN',
                 imageUrl:'imgs/menShoes.png',
-                contentTitle:'Mature, constant, cu un preț',
-                content:'Mature, constant, cu un preț scăzut, de lux'
+                contentTitle:'Pantofi Din Piele Pentru Bărbați',
+                content:'De lux și cu preț scăzut pentru bărbați',
+                url:'https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373'
             },{
                 title:'WUMAN',
                 imageUrl:'imgs/wumenShoes.png',
-                contentTitle:'Tocuri înalte pentru femei',
-                content:'Farmecul matur'
+                contentTitle:'Pantofi cu toc pentru damă ',
+                content:'Maturi&eleganți ',
+                url:'https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=380'
             },{
                 title:'KIDS',
                 imageUrl:'imgs/kidsShoes.png',
-                contentTitle:'Pantofi pentru copii',
-                content:'Durabil și confortabil '
-            }]
+                contentTitle:'Încălțăminte de sport pentru copii',
+                content:'Confortabili&Rezistenți,Sportivi&Confortabili',
+                url:'https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=387'
+            }],
+            checkinput:[
+                {
+                    title:'inputcheck1',
+                    checked:true,
+                    content:'Mai multe selecții de pantofi'
+                },
+                {
+                    title:'inputcheck2',
+                    checked:true,
+                    content:'Expoziție locală de pantofi la modă'
+                },
+                {
+                    title:'inputcheck3',
+                    checked:true,
+                    content:'Vânzare directă la prețul din fabrică, experiența serviciilor locale '
+                }
+            ]
+
         },
         methods:{
             handleLanguage:function () {
+                this.languageObj = event.target;
                 this.languageShow = !this.languageShow;
+            },
+            changeclick:function (index) {
+                this.checkinput[index].checked = !this.checkinput[index].checked;
+            },
+            contrast: function () {
+                if (this.languageObj != event.target){
+                    this.languageShow = false;
+                }
             }
+
         }
     })
 </script>

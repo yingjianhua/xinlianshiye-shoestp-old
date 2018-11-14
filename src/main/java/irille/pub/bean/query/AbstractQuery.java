@@ -74,7 +74,7 @@ public abstract class AbstractQuery {
 		int s = sql.indexOf(" LIMIT");
 		if(s!=-1)
 			sql = sql.substring(0, s);
-		sql = sql.replaceFirst("(select|SELECT)\\s+.*\\s+(FROM|from)", "SELECT COUNT(1) FROM");
+		sql = sql.replaceFirst("(select|SELECT)\\s+.*?\\s+(FROM|from)", "SELECT COUNT(1) FROM");
 		return query(rs->ResultMapper.asObject(rs, Integer.class), needDebug(), sql, getParams());
 	}
 	

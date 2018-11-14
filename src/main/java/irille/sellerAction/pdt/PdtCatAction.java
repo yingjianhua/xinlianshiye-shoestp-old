@@ -1,23 +1,26 @@
 package irille.sellerAction.pdt;
 
+import irille.Service.Manage.Pdt.IPdtProductManageService;
 import irille.pub.Str;
 import irille.pub.idu.IduPage;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.pdt.inf.IPdtCatAction;
 import irille.shop.pdt.PdtCat;
-import irille.shop.pdt.PdtCatDAO;
 import irille.shop.plt.PltConfigDAO;
+import org.apache.struts2.ServletActionContext;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.apache.struts2.ServletActionContext;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 public class PdtCatAction extends SellerAction<PdtCat> implements IPdtCatAction {
+    @Inject
+    IPdtProductManageService iPdtProduct;
+
 
     public String orderBy() {
         return " ORDER BY PKEY ASC";
@@ -69,9 +72,8 @@ public class PdtCatAction extends SellerAction<PdtCat> implements IPdtCatAction 
     }
 
     public void getPdtCatList() {
-        PdtCatDAO.Query query = new PdtCatDAO.Query();
         try {
-            write(query.getCatChildNodesByCatId(0, PltConfigDAO.supplierLanguage(getSupplier())));
+            write(iPdtProduct.getCatChildNodesByCatId(0, PltConfigDAO.supplierLanguage(getSupplier())));
         } catch (IOException e) {
             e.printStackTrace();
         }

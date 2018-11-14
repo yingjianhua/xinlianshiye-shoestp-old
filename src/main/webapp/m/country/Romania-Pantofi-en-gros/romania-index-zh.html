@@ -2,21 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>罗马尼亚</title>
+    <meta name="description" content="我们将为罗马尼亚线下鞋类采购会开设一个展厅。 在这个展厅，您可以在当地体验数百种款式的鞋子，并直接以工厂价购买您选择的鞋子。 此外，您可以从定制中获得专业建议。 在此次采购中，将展出近500种不同风格的男鞋，女鞋和童鞋。 如果您在线预订座位，那么当您来到时，您将收到一份神秘礼物。 本次展会还将提供几款免费鞋样。">
+    <meta name="Keywords" content="鞋子采购，男士皮鞋，男童鞋，男士休闲鞋，男士运动鞋，儿童凉鞋，男鞋，女鞋，女士高跟鞋，女士凉鞋，鞋类公司，鞋子供应商，运动鞋制造商，鞋厂，制鞋公司，运动鞋制造商，中国鞋类制造商，运动鞋制造商，鞋类工厂。">
+    <title>罗马尼亚鞋类线下采购会</title>
     <script src="js/vue.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/muse-ui/dist/muse-ui.css">
     <script src="https://unpkg.com/muse-ui/dist/muse-ui.js"></script>
     <link rel="stylesheet" href="css/romania-index.css">
 </head>
 <body>
-<div id="romania">
+<div id="romania" @click="contrast">
     <div class="romania-poster">
-        <p class="white-text title-text">罗马尼亚<br>线下鞋子采购</p>
+        <a class="logo" href="https://www.shoestp.com/home/usr_UsrPurchase"><img src="imgs/logo-01_03.png" alt=""></a>
+        <p class="white-text title-text">罗马尼亚<br>线下鞋样品鉴会</p>
         <p class="yellow-text slogan">新时代</p>
         <p class="yellow-text slogan">新贸易</p>
         <p class="yellow-text slogan">新趋势</p>
         <p class="yellow-text time">2018.12.4-2018.12.19</p>
-        <p class="yellow-text content-01">展厅全年开放</p>
+        <p class="yellow-text content-01">罗马尼亚当地展厅全年开放</p>
         <p class="white-text content-02">环球龙红街店Drumul Garii 12<br>布加勒斯特077190</p>
         <div class="language">
             <p><span class="lan" @click="handleLanguage"><span style="font-size: 40px;border: none;padding: 0;">=</span> 中文</span><a href="https://www.shoestp.com/home/usr_UsrPurchase"><img src="imgs/return-home.png"/></a></p>
@@ -27,128 +30,164 @@
             </ul>
         </div>
         <div class="image-bottom">
-            <!-- <button>获得免费样品</button> -->
-            <a class="btn"  href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">获得免费样品</a>
-            <a class="btn">在线订购即将开业</a>
+            <a class="btn"  href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">获得神秘礼品</a>
+            <a class="btn">在线采购马上开始</a>
         </div>
     </div>
     <div class="producrt">
-        <h2>产品展示</h2>
+        <h2 class="pro-text">产品展示</h2>
+        <p class="pro-text"></p>
         <mu-carousel hide-controls>
             <mu-carousel-item v-for="item in carouselProducrt">
-                <h2>{{ item.title }}</h2>
                 <div class="detail">
-                    <img :src="item.imageUrl">
-                    <h4>{{ item.contentTitle }}</h4>
-                    <p>{{ item.content }}</p>
+                    <a :href="item.url">
+                        <img :src="item.imageUrl">
+                        <h4>{{ item.contentTitle }}</h4>
+                        <p>{{ item.content }}</p>
+                    </a>
                 </div>
             </mu-carousel-item>
         </mu-carousel>
         <a class="producrt-button inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">立即获取免费样品</a>
     </div>
-    <!---->
+
     <div class="rmnybottomsev">
         <div class="rmnybsevcon">
-            <h2 class="rmnybsevconzh">关于相关数据</h2>
-            <h3>合作制造商的数据和鞋类数据</h3>
+            <h2 class="rmny_title">鞋样在线商城</h2>
+            <h3>来在线商城选购你想要的鞋样</h3>
             <img src="imgs/rmnyb23.png" alt="">
-            <p>本次精挑细选<span class="bigblue">500</span>家鞋企<br>提供<span class="bigyellow">500-800</span>双精品鞋款<br><span class="bigblue">24</span>小时客服</p>
-            <!-- <span>立即获取免费样品</span> -->
+            <p class="pur_p"><span class="dot"></span>超过 <span class="bigblue">500</span> 家鞋供应商入驻 </p>
+            <p class="pur_p"><span class="dot"></span><span class="bigyellow">500-800</span> 款鞋样可选</p>
+            <p class="pur_p margin_bottom_20"><span class="dot"></span><span class="bigblue">24</span> 小时客服在线</p>
             <a class="producrt-button inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">立即获取免费样品</a>
         </div>
     </div>
     <div class="rmnybottomsix">
         <div class="rmnybsixcon">
-            <h2>关于新联</h2>
-            <h3>鞋业产业链电子商务平台</h3>
-            <p>温州新联实业股份有限公司成立于2015年，坐落于远近闻名，具有“中国鞋都”之称的温州。在温州这个拥有悠久鞋类发展史的城市里，诞生出一批又一批优秀制鞋企业。在这样的大环境下，新联实业通过独特的“B2B2C”新商业模式，成为全球第一家鞋产业链整合服务平台。</p>
+            <h2>关于新联实业</h2>
+            <h3>鞋产业链一站式解决方案平台</h3>
+            <p>温州新联实业有限公司成立于2015年，坐落于誉有“中国鞋都”之称的温州。温州这座城市，伴随着悠久的鞋业发展史，孕育出了一批优秀的外贸鞋供应商。温州新联实业因它独有的B2B2C新型商业模式，已经成为了世界首家鞋产业链一站式解决方案的平台。</p>
             <div class="rmnybsiximgs">
                 <img src="imgs/rmnyb19.png" alt="">
                 <img src="imgs/rmnyb20.png" alt="">
                 <img src="imgs/rmnyb21.png" alt="">
             </div>
-            <!-- <span>立即申请</span> -->
             <a class="inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">立即申请</a>
         </div>
     </div>
     <div class="rmnybottomfiv">
         <div class="rmnybfivcon">
-            <h2>我们的优势</h2>
+            <h2>新联实业将助您<br><span class="red-title">更快</span>赢得先机，超越同行！</h2>
             <img src="imgs/rmnyb14.png" alt="">
             <div class="rmnybfivad clearfloat">
                 <div class="advantage">
                     <img src="imgs/rmnyb15.png" alt="">
-                    <h4>采购</h4>
-                    <p>我们特有的全球联合采购机制线上线下均可订货保证你的小额订单也能保时保质保量完成出货</p>
+                    <h4>咨询</h4>
+                    <p>一旦我们知道了您的需求，我们将与您一起制定逐步的生产流程，以确保您能获得最好的服务体验和产品价格</p>
+                    <div>
+                        <span></span>
+                        <p>24小时热线服务</p>
+                    </div>
+                    <div>
+                        <span></span>
+                        <p>根据您的需求提供专业性的建议，以确保能找到您最想要的鞋子</p>
+                    </div>
                 </div>
                 <div class="advantage">
                     <img src="imgs/rmnyb16.png" alt="">
-                    <h4>质量</h4>
-                    <p>精挑细选优质安全的材质制作工艺符合国际标准多年经验的质检员为您把控每一双鞋的每一个细节</p>
+                    <h4>质量控制</h4>
+                    <p>对于新联实业来说，质量就是灵魂，我们有着一套严格高效的质量控制体系。</p>
+                    <div>
+                        <span></span>
+                        <p>经验丰富的质检员层层把关</p>
+                    </div>
+                    <div>
+                        <span></span>
+                        <p>严格的质量控制制度</p>
+                    </div>
+                    <div>
+                        <span></span>
+                        <p>通过主要市场上的各种化工、物理测试，确保每一双鞋的每一个细节</p>
+                    </div>
                 </div>
                 <div class="advantage">
                     <img src="imgs/rmnyb17.png" alt="">
-                    <h4>价格</h4>
-                    <p>厂家直接发货没有中间经销商赚差价在保证品质的前提下出售最低的价格保证您最大的利润</p>
+                    <h4>制造</h4>
+                    <p>对于每双鞋子我们都精益求精。冲裁、鞋面缝合以及抛光润色，每一道工序都有专人负责、不断检查。</p>
+                    <div>
+                        <span></span>
+                        <p>根据要求进行产品测试，保证质量</p>
+                    </div>
+                    <div>
+                        <span></span>
+                        <p>在保证品质的前提下，厂家直销价让您利润最大化</p>
+                    </div>
                 </div>
                 <div class="advantage">
                     <img src="imgs/rmnyb18.png" alt="">
                     <h4>设计</h4>
-                    <p>拥有每日上千款更新的速度满足你对鞋类所有美的需求拥有国际大牌知名设计师创作掌握全球时尚动态</p>
+                    <p>多名拥有国际大牌设计经验设计师，每年2,000多款更新速度带您一起掌握全球时尚最新动态</p>
+                    <div>
+                        <span></span>
+                        <p>专业的定制化服务，确保您获得超棒的鞋款</p>
+                    </div>
+                    <div>
+                        <span></span>
+                        <p>经验丰富的设计师将为您提供更实用，更卓越的建议</p>
+                    </div>
                 </div>
             </div>
-            <!-- <span>现在注册</span> -->
-            <a class="inline-block-h80" href="https://www.shoestp.com/home/usr_UsrPurchase_sign">现在注册</a>
+            <a class="inline-block-h80" href="https://www.shoestp.com/home/usr_UsrPurchase_sign">马上注册</a>
         </div>
     </div>
     <div class="rmnybottomfth">
         <div class="rmnybfthcon">
             <img src="imgs/rmnyb7.png" alt="">
             <h2>罗马尼亚展厅</h2>
-            <h3>关于罗马尼亚订单</h3>
-            <p>我们后期还将会在<br>这些国家开展国际订货会</p>
-            <div class="rmnybfthconimgs">
-                <img src="imgs/rmnyb8.png" alt="">
-                <img src="imgs/rmnyb9.png" alt="">
-                <img src="imgs/rmnyb10.png" alt="">
-                <img src="imgs/rmnyb11.png" alt="">
-                <img src="imgs/rmnyb12.png" alt="">
-                <img src="imgs/rmnyb13.png" alt="">
+            <div>
+                <span class="graycircle"></span><p>您可以实地体验百多款精品鞋</p>
             </div>
-            <!-- <span>预定你的座位</span> -->
-            <a class="inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">预定你的座位</a>
+            <div>
+                <span class="graycircle"></span><p>值得您信赖的工厂直销垂直平台</p>
+            </div>
+            <div>
+                <span class="graycircle"></span><p>定制化服务专业建议</p>
+            </div>
+            <a class="inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">预定您的席位</a>
         </div>
+    </div>
+    <div class="rmnymap">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2846.9033669333626!2d26.175497615524637!3d44.476153479101654!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40b1f9ac606033e3%3A0x7d391e85ce7a445b!2z5Lit5Zu957qi6b6Z5biC5Zy6!5e0!3m2!1szh-CN!2s!4v1541991096910" width="980" height="550" frameborder="0" style="border:0" allowfullscreen></iframe>
     </div>
     <div class="rmnybottomthred">
         <div class="rmnybthcon">
-            <h2>供应商工厂展示</h2>
+            <h2>合作供应商展示</h2>
             <div class="rmnybthimgs">
                 <img src="imgs/rmnyb3.png" alt="">
                 <img src="imgs/rmnyb4.png" alt="">
                 <img src="imgs/rmnyb5.png" alt="">
                 <img src="imgs/rmnyb6.png" alt="">
             </div>
-            <!-- <span>立即获取免费样品</span> -->
-            <a class="inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">立即获取免费样品</a>
+            <a class="inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">获取免费样品</a>
         </div>
     </div>
     <div class="rmnybottomsecond">
         <div class="rmnybscon">
-            <h2>订购会地址/联系方式</h2>
-            <h2>FOR THE COMERCE FAIR</h2>
+            <h2>罗马尼亚商会</h2>
+            <h2>地址及联系方式</h2>
             <div class="bscontactus">
-                <p>联系人： Romanesc</p>
-                <p>网址：https://www.shoestp.com/m/romania/</p>
-                <p>电话: 0762  900  529</p>
-                <p>Whatsapp:+40 762 900 529</p>
+                <p><strong>联系人</strong>: Romanesc</p>
+                <p><strong>网站</strong>：https://www.shoestp.com/m/romania/</p>
+                <p><strong>电话</strong>： 0762  900  529</p>
+                <p><strong>WhatsApp</strong>：+40 762 900 529</p>
             </div>
             <div class="bscontactus">
-                <p>邮箱：544414672@qq.com </p>
+                <p><strong>邮件</strong>：544414672@qq.com Adresă expoziție:</p>
                 <p>(în limba română service)</p>
                 <p>marketing@shoestp.com (English service)</p>
             </div>
             <div class="bscontactus">
-                <p>展览地址:</p>
+                <p><strong>展厅地址</strong>:</p>
                 <p>Magazinul Universal Dragonul Roșu Strada</p>
                 <p>Drumul Garii 12,București 077190</p>
             </div>
@@ -157,9 +196,17 @@
     <div class="rmnybottomfirst">
         <img src="imgs/rmnyb2.png" alt="">
         <div class="rmnybfcon">
-            <h2>免费注册会员</h2>
-            <!-- <span>预定你的座位</span> -->
+            <h2>您的业务需求<br>是独一无二的?</h2>
+            <h3>让我们帮助您满足这些需求！<br>请与我们联系，立即获取免费样品。</h3>
             <a class="inline-block-h80" href="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">预定你的座位</a>
+        </div>
+        <div class="rmnybfchoose">
+            <div v-for="item,index in checkinput">
+                <label :for="item.title" @click="changeclick(index)"><img src="imgs/yes.png" :alt="item.title" v-show="item.checked"></label>
+                <input type="checkbox" :name="item.title" v-model="item.checked">
+                <p>{{item.content}}</p>
+            </div>
+
         </div>
     </div>
 </div>
@@ -169,27 +216,59 @@
         el:'#romania',
         data:{
             languageShow:false,
+            languageObj: null,
             carouselProducrt:[{
-                title:'男士',
+                title:'MAN',
                 imageUrl:'imgs/menShoes.png',
                 contentTitle:'男士皮鞋',
-                content:'成熟，稳重，低调，奢华'
+                content:'成熟&稳重&低调&奢华',
+                url:'https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373'
             },{
-                title:'女士',
+                title:'WUMAN',
                 imageUrl:'imgs/wumenShoes.png',
-                contentTitle:'女士高跟鞋',
-                content:'成熟的魅力'
+                contentTitle:'女式高跟鞋',
+                content:'成熟&优雅',
+                url:'https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=380'
             },{
-                title:'儿童',
+                title:'KIDS',
                 imageUrl:'imgs/kidsShoes.png',
-                contentTitle:'童鞋',
-                content:'耐用舒适'
-            }]
+                contentTitle:'儿童鞋',
+                content:'舒适&耐磨',
+                url:'https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=387'
+            }],
+            checkinput:[
+                {
+                    title:'inputcheck1',
+                    checked:true,
+                    content:'更多鞋样选择'
+                },
+                {
+                    title:'inputcheck2',
+                    checked:true,
+                    content:'本土化的时尚鞋展'
+                },
+                {
+                    title:'inputcheck3',
+                    checked:true,
+                    content:'厂家直销价格 本土服务体验'
+                }
+            ]
+
         },
         methods:{
             handleLanguage:function () {
+                this.languageObj = event.target;
                 this.languageShow = !this.languageShow;
+            },
+            changeclick:function (index) {
+                this.checkinput[index].checked = !this.checkinput[index].checked;
+            },
+            contrast: function () {
+                if (this.languageObj != event.target){
+                    this.languageShow = false;
+                }
             }
+
         }
     })
 </script>

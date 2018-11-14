@@ -1,0 +1,298 @@
+images@charset "utf-8";
+*{
+	margin: 0;
+	padding: 0;
+}
+.white-text{
+	color: white;
+}
+.yellow-text{
+	color: #ffd200;
+}
+a{
+	text-decoration: none;
+}
+.margin_around{
+	margin-left: 15px;
+	margin-right: 15px;
+}
+
+#app{
+	width: 100%;
+	min-width: 980px;
+}
+.banner_01{
+	width: 100%;
+	height: 977px;
+	background: #00478a url(../images/header-back.png) no-repeat center / 1920px;
+}
+.banner_01 .logo-and-text{
+	position: absolute;
+	right: 200px;
+	top: 40px;
+	width: 200px;
+}
+.banner_01 .header-text{
+    width: 1200px;
+    margin: 0 auto;
+    padding-top: 200px;
+}
+.banner_01 .header-text > p{
+	width: 600px;
+}
+.banner_01 .header-text .text-title{
+	font-size: 56px;
+	line-height: 60px;
+	font-weight: 700;
+	margin-bottom: 10px;
+}
+.banner_01 .header-text .text-slogan{
+	font-size: 50px;
+	line-height: 50px;
+}
+.banner_01 .header-text .text-time{
+	font-size: 40px;
+	font-weight: 700;
+	margin-top: 10px;
+}
+.banner_01 .header-text .text-address,
+.banner_01 .header-text .text-content{
+	font-size: 30px;
+}
+.btn{
+	display: inline-block;
+	height: 45px;
+	font-size: 30px;
+	background-color: #E43527;
+	color: white;
+	line-height: 45px;
+	padding: 0 10px;
+	border-radius: 5px;
+	margin-top: 10px;
+	margin-right: 10px;
+	font-weight: 700;
+}
+.banner_01 .btn-grey{
+	background: #dfdfdf;
+    color: #6f6f6f;
+}
+
+.banner_02{
+	width: 100%;
+	height: 970px;
+	background: url(../images/bg-bar.png) no-repeat top center / 1920px;
+	position: relative;
+	top: -120px;
+}
+.banner_02 .yellow_01{
+	width: 50%;
+	height: 114px;
+	position: relative;
+	left: 50%;
+	background-color: #FFD200;;
+}
+.banner_02 .yellow_02{
+	width: 100%;
+	height: 856px;
+	background-color: #FFD200;;
+}
+.banner_02 .block{
+	width: 1200px;
+	margin: 0 auto;
+	text-align: center;
+	padding-top: 100px;
+}
+.banner_02 .block .product-title{
+	text-align: left;
+	font-size: 50px;
+}
+.banner_02 .block .el-carousel__container{
+	height: 400px;
+}
+.banner_02 .block .product-image{
+	display: inline-block;
+	width: 32%;
+	height: 340px;
+	vertical-align: middle;
+	background-color: #fff;
+}
+.banner_02 .block .product-image img{
+	width: 100%;
+}
+.banner_02 .block .pi-title{
+	text-align: left;
+	padding-left: 20px;
+	margin-top: 10px;
+	font-size: 24px;
+}
+.banner_02 .block .pi-content{
+	font-size: 20px;
+	color: #999;
+	margin-left: 20px;
+	text-align: left;
+}
+.banner_02 .block .el-carousel__indicators{
+	text-align: left;
+	transform: none;
+	left: 0;
+}
+.banner_02 .block .el-carousel__button{
+	height: 10px;
+	width: 40px;
+	border-radius: 4px;
+	opacity: 1;
+}
+.banner_02 .block .el-carousel__indicator.is-active button{
+	width: 80px;
+	background-color: #0000FF;
+}
+
+@media screen and (max-width: 1900px) {
+	.banner_01{
+		height: 610px;
+		background-size: 1200px;
+	}
+	.banner_01 .header-text{
+		width: 980px;
+		padding-top: 100px;
+	}
+	.banner_01 .header-text > p{
+		width: 500px;
+	}
+	.banner_01 .header-text .text-title{
+		font-size: 46px;
+		line-height: 50px;
+	}
+	.banner_01 .header-text .text-slogan{
+		font-size: 40px;
+		line-height: 40px;
+	}
+	.banner_01 .header-text .text-time{
+		font-size: 30px;
+	}
+	.banner_01 .header-text .text-address,
+	.banner_01 .header-text .text-content{
+		font-size: 20px;
+	}
+	.btn{
+		height: 35px;
+		font-size: 20px;
+		line-height: 35px;
+	}
+	.banner_02{
+		background-size: 1200px;
+		top: -75px;
+		height: 700px;
+	}
+	.banner_02 .yellow_01{
+		height: 70px;
+	}
+	.banner_02 .yellow_02{
+		width: 100%;
+		height: 700px;
+		background-color: #FFD200;
+	}
+	.banner_02 .block{
+		width: 980px;
+		padding-top: 100px;
+	}
+	.banner_02 .block .product-title{
+		font-size: 40px;
+	}
+	.banner_02 .block .el-carousel__container{
+		height: 340px;
+	}
+	.banner_02 .block .product-image{
+		width: 31.8%;
+		height: 280px;
+	}
+	.banner_02 .block .pi-title{
+		font-size: 18px;
+	}
+	.banner_02 .block .pi-content{
+		font-size: 16px;
+		margin-left: 20px;
+	}
+	.banner_02 .block .el-carousel__button{
+		width: 30px;
+	}
+	.banner_02 .block .el-carousel__indicator.is-active button{
+		width: 60px;
+	}
+}
+
+
+@media screen and (max-width: 1200px) {
+	.banner_01{
+		height: 500px;
+		background-size: 980px;
+	}
+	.banner_01 .header-text{
+		width: 612px;
+		padding-top: 80px;
+	}
+	.banner_01 .header-text > p{
+		width: 400px;
+	}
+	.banner_01 .header-text .text-title{
+		font-size: 36px;
+		line-height: 40px;
+	}
+	.banner_01 .header-text .text-slogan{
+		font-size: 30px;
+		line-height: 30px;
+	}
+	.banner_01 .header-text .text-time{
+		font-size: 20px;
+	}
+	.banner_01 .header-text .text-address,
+	.banner_01 .header-text .text-content{
+		font-size: 16px;
+	}
+	.btn{
+		height: 30px;
+		font-size: 16px;
+		line-height: 30px;
+	}
+	.banner_02{
+		background-size: 980px;
+		top: -60px;
+		height: 520px;
+	}
+	.banner_02 .yellow_01{
+		height: 58px;
+	}
+	.banner_02 .yellow_02{
+		width: 100%;
+		height: 520px;
+		background-color: #FFD200;
+	}
+	.banner_02 .block{
+		width: 612px;
+		padding-top: 80px;
+	}
+	.banner_02 .block .product-title{
+		font-size: 30px;
+	}
+	.banner_02 .block .el-carousel__container{
+		height: 240px;
+	}
+	.banner_02 .block .product-image{
+		width: 31%;
+		height: 200px;
+		vertical-align: top;
+	}
+	.banner_02 .block .pi-title{
+		font-size: 16px;
+	}
+	.banner_02 .block .pi-content{
+		font-size: 12px;
+		margin-left: 20px;
+	}
+	.banner_02 .block .el-carousel__button{
+		width: 30px;
+	}
+	.banner_02 .block .el-carousel__indicator.is-active button{
+		width: 60px;
+	}
+}

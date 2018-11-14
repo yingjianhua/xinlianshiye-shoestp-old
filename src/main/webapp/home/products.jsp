@@ -105,23 +105,7 @@
         <%--</div>--%>
         <div class="blank15"></div>
         <div style="overflow:hidden;">
-            <!-- swf_obj.js文件找不到 -->
-            <!-- <script type="text/javascript" src="./static/swf_obj.js">
-            </script> -->
             <div id="swfContents_7"></div>
-            <!--             <script type="text/javascript"> -->
-            <%--//                 var xmlData = '<list><\/list>';--%>
-            <%--//                 var flashvars = {--%>
-            <%--//                     xmlData: xmlData--%>
-            <%--//                 };--%>
-            <%--//                 var params = {--%>
-            <%--//                     menu: false,--%>
-            <%--//                     wmode: 'transparent'--%>
-            <%--//                 };--%>
-            <%--//                 var attributes = {};--%>
-            <%--//                 swfobject.embedSWF('/static/images/swf/ad.swf', 'swfContents_7', '', '', '9', 'expressInstall.swf',--%>
-            <%--//                     flashvars, params, attributes);--%>
-            <!--             </script> -->
         </div>
         <div class="blank20"></div>
     </div>
@@ -381,29 +365,34 @@
                 page: 1,
                 limit: 5,
             }, dataType: "json", success: function (result) {
-                if (result) {
-                    $.each(result.items, function (i, v) {
-                        var _html = "";
-
-                        $.each(
-                            v.items, function (i, v) {
-                                _html += "<dd>\n" +
-                                    "<a class=\"catalog " + ((v.pkey == cated) ? "current" : "") + "\" href=\"/home/pdt_PdtProduct?cated=" + v.pkey + "\">" + v.name + "</a>\n" +
-                                    "</dd>\n";
-                            }
-                        )
-                        $("dl.cate_menu").append(
-                            "    <dd class=\"first\">\n" +
-                            "                    <a href=\"/home/pdt_PdtProduct?cated=" + v.pkey + ((v.pkey == cated) ? "\" class='current'" : "") + "\">" + v.name + "</a>\n" +
-                            "                    <dl class=\"catalog_" + v.pkey + "\">\n"
-                            + _html +
+                if (result.ret === 1) {
+                    for (var key in result.result) {
+                        var v = result.result[key]
+                        $("dl.cate_menu").append("    <dd class=\"first\">\n" +
+                            "                    <a href=\"/home/pdt_PdtProduct?cated=" + v.value + ((v.value == cated) ? "\" class='current'" : "") + "\">" + v.label + "</a>\n" +
+                            "                    <dl class=\"catalog_" + v.value + "\">\n" +
+                            treeHtml(v.children) +
                             "                    </dl>\n" +
-                            "                </dd>"
-                        );
-                    })
+                            "                </dd>")
+                        ;
+                    }
+
                 }
             }
         })
+    }
+
+    function treeHtml(list) {
+        var _html = ''
+        if (list) {
+            $.each(list, function (index, v) {
+                _html += "<dl class=\"catalog\"><dd>\n" +
+                    "<a class=\"catalog " + ((v.value == cated) ? "current" : "") + "\" href=\"/home/pdt_PdtProduct?cated=" + v.value + "\">" + v.label + "</a>\n" +
+                    treeHtml(v.children) +
+                    "</dd></dl>";
+            })
+        }
+        return _html
     }
 
     var last;
@@ -523,8 +512,8 @@
         InitList(_orderfld, true, _page, _showItem)
         InitHotList();
         InitCategories();
-        $(".prod_sort.fl a").each(function (i,v) {
-            if ($(v).attr('action')==_orderfld){
+        $(".prod_sort.fl a").each(function (i, v) {
+            if ($(v).attr('action') == _orderfld) {
                 $(v).addClass('cur')
             }
         })
