@@ -21,6 +21,11 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
   }
 
   @Override
+  public void removeOdrMeeting(int... id) {
+
+  }
+
+  @Override
   public OdrMeetingInfoView getMyOdrMeetingInfo(IduPage iduPage) {
     return null;
   }

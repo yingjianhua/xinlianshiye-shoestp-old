@@ -1,6 +1,7 @@
 package irille.Service.Manage.OdrMeeting;
 
 import com.google.inject.ImplementedBy;
+import irille.Entity.OdrerMeetings.Enums.OrdrerMettingAuditStatus;
 import irille.Service.Manage.OdrMeeting.Imp.OdrMeetingManageServiceImp;
 import irille.pub.idu.IduPage;
 import irille.view.Manage.OdrMeeting.OdrMeetingInfoView;
@@ -19,34 +20,34 @@ public interface IOdrMeetingManageService {
   void insOdrMeeting(OdrMeetingInfoView getOdrMeetingInfoView);
 
   /**
-   * @Description: 删除订购会信息  (逻辑删除
+   * @Description: 删除订购会信息  (逻辑删除) 待定
    * @date 2018/11/14 13:56
    */
-  void removeOdrMeeting();
+  void removeOdrMeeting(int... id);
 
   /**
    * @Description:获取订购会详细信息
    * @date 2018/11/14 13:34
    */
-  OdrMeetingInfoView getMyOdrMeetingInfo(IduPage iduPage);
+  OdrMeetingInfoView getMyOdrMeetingInfo(IduPage iduPage, OrdrerMettingAuditStatus status);
 
   /**
    * @Description:获取我发起的订购订购会 列表
    * @date 2018/11/14 13:30
    */
-  OdrMeetingInfoView getMyOdrMeetingList(IduPage iduPage);
+  OdrMeetingInfoView getMyOdrMeetingList(IduPage iduPage, OrdrerMettingAuditStatus status);
 
   /**
    * @Description: 获取我加入的订购会 列表
    * @date 2018/11/14 13:32
    */
-  OdrMeetingInfoView getMyJoinOdrMeetingList(IduPage iduPage);
+  OdrMeetingInfoView getMyJoinOdrMeetingList(IduPage iduPage, OrdrerMettingAuditStatus status);
 
   /**
    * @Description: 获取我的其他订购会 列表
    * @date 2018/11/14 13:32
    */
-  OdrMeetingInfoView getMyOtherOdrMeetingList(IduPage iduPage);
+  OdrMeetingInfoView getMyOtherOdrMeetingList(IduPage iduPage, OrdrerMettingAuditStatus status);
 
 
 }

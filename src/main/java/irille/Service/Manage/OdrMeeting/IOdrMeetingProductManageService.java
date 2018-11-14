@@ -2,6 +2,7 @@ package irille.Service.Manage.OdrMeeting;
 
 import com.google.inject.ImplementedBy;
 import irille.Service.Manage.OdrMeeting.Imp.OdrMeetingProductManageServiceImp;
+import irille.pub.idu.IduPage;
 import irille.view.Manage.OdrMeeting.OdrMeetingProductView;
 import java.util.List;
 
@@ -17,5 +18,5 @@ public interface IOdrMeetingProductManageService {
    * @date 2018/11/14 14:16
    * @author lijie@shoestp.cn
    */
-  List<OdrMeetingProductView> getOdrMeetingProductList(int odrMeetingId);
+  List<OdrMeetingProductView> getOdrMeetingProductList(IduPage iduPage, int odrMeetingId);
 }

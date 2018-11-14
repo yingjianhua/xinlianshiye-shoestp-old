@@ -11,7 +11,7 @@ public class OdrMeetingProductView {
   private int id;
   private int pdtId;
   private String pdtName;
-  //商品类型
+  //商品类型  区分自有还是采购商
   private boolean pdtType;
   private int supplierId;
   private int moq;
