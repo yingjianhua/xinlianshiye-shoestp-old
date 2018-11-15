@@ -11,21 +11,24 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by IntelliJ IDEA.
- * User: lijie@shoestp.cn
- * Date: 2018/11/8
- * Time: 11:32
+ * Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/8 Time: 11:32
  */
 public class PdtCatManageServiceImp implements IPdtCatManageService {
-    @Inject
-    PdtProductCatDao pdtProductCatDao;
 
-    @Override
-    public Page getProductCatList(int start, int limit, int supplierId) {
-        List<PdtCatsView> list = pdtProductCatDao.getPdtCatBySupplierId(supplierId).stream().map(map -> {
-            PdtCatsView pdtCatsView=new PdtCatsView();
-            return SetBeans.set(map, PdtCatsView.class);
+  @Inject
+  PdtProductCatDao pdtProductCatDao;
+
+  @Override
+  public Page getProductCatList(int start, int limit, int supplierId) {
+    List<PdtCatsView> list = pdtProductCatDao.getPdtCatBySupplierId(supplierId).stream()
+        .map(map -> {
+          return SetBeans.set(map, PdtCatsView.class);
         }).collect(Collectors.toList());
-        return null;
-    }
+    ;
+    Page page = new Page(
+        list, start, limit,
+        pdtProductCatDao.getPdtCatCountBySupplierId(supplierId)
+    );
+    return page;
+  }
 }

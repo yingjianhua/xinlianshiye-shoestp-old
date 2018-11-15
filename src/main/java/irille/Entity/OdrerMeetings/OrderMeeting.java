@@ -4,6 +4,7 @@ import irille.Entity.OdrerMeetings.Enums.OrdrerMettingAuditStatus;
 import irille.pub.bean.BeanInt;
 import irille.pub.svr.Env;
 import irille.pub.tb.Fld;
+import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
 import irille.shop.plt.PltCountry;
@@ -22,7 +23,7 @@ public class OrderMeeting extends BeanInt<OrderMeeting> {
   public enum T implements IEnumFld {
     PKEY(TB.crtIntPkey()),
     SUPPLIERID(UsrSupplier.fldOutKey()),
-    NAME(SYS.STR__200_NULL, "订购会标题"),
+    NAME(SYS.MUILTI_LANGUAGE, "订购会标题"),
     STATUS(TB.crt(OrdrerMettingAuditStatus.DEFAULT)),
     EXHIBITION(OrderMeetingExhibition.fldOutKey()),
     CUSTOM_EXHIBITION(SYS.STR__200_NULL),
@@ -87,11 +88,11 @@ public class OrderMeeting extends BeanInt<OrderMeeting> {
   //实例变量定义-----------------------------------------
   private Integer _pkey;	// 编号  INT
   private Integer _supplierid;	// 供应商 <表主键:UsrSupplier>  INT
-  private String _name;	// 订购会标题  STR(200)<null>
+  private String _name;	// 订购会标题  JSONOBJECT
   private Byte _status;	// 订购会状态 <OrdrerMettingAuditStatus>  BYTE
 	// PENDING:0,待审核
 	// VERIFYING:1,审核中
-	// PROCEEDING:2,通过
+	// PASS:2,通过
 	// FAILED:3,未通过
 	// TOBEGIN:4,即将开始
 	// SUSPEND:6,暂停
@@ -113,7 +114,7 @@ public class OrderMeeting extends BeanInt<OrderMeeting> {
   public OrderMeeting init(){
 		super.init();
     _supplierid=null;	// 供应商 <表主键:UsrSupplier>  INT
-    _name=null;	// 订购会标题  STR(200)
+    _name=null;	// 订购会标题  JSONOBJECT
     _status=OrdrerMettingAuditStatus.DEFAULT.getLine().getKey();	// 订购会状态 <OrdrerMettingAuditStatus>  BYTE
     _exhibition=null;	// 订购会-会场信息 <表主键:OrderMeetingExhibition>  INT
     _customExhibition=null;	// 字符200  STR(200)
@@ -160,6 +161,18 @@ public class OrderMeeting extends BeanInt<OrderMeeting> {
   }
   public void setName(String name){
     _name=name;
+  }
+  public JSONObject gtName() throws JSONException {
+    return getName()==null?new JSONObject():new JSONObject(getName());
+  }
+  public void stName(JSONObject name){
+    setName(name==null?null:name.toString());
+  }
+  public String getName(FldLanguage.Language l) throws JSONException {
+    return gtName().has(l.name())?gtName().getString(l.name()):"";
+  }
+  public void setName(String name, FldLanguage.Language l) throws JSONException {
+    stName(gtName().put(l.name(), name));
   }
   public Byte getStatus(){
     return _status;
