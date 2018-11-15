@@ -1,5 +1,6 @@
 package irille.view.Manage.OdrMeeting;
 
+import irille.view.BaseView;
 import lombok.Data;
 
 import java.util.Date;
@@ -8,7 +9,7 @@ import java.util.Date;
  * 订购会列表（参与）
  */
 @Data
-public class OdrMeetingParticipatelistView {
+public class OdrMeetingParticipatelistView  implements BaseView {
     private int id;// pkey
     private String images;//缩略图
     private String name;//订购会名称

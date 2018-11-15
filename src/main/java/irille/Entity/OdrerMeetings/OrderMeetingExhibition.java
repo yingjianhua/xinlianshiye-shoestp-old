@@ -20,7 +20,8 @@ public class OrderMeetingExhibition extends BeanInt<OrderMeetingExhibition> {
 
   public enum T implements IEnumFld {
     PKEY(TB.crtIntPkey()),
-    ADDRESS(SYS.STR__200_NULL, "订购会标题"),
+    ADDRESS(SYS.STR__200_NULL, "展厅地址"),
+    NAME(SYS.STR__200_NULL, "订购会标题"),
     COUNTRY(PltCountry.fldOutKey()),
     STATUS(TB.crt(OrderMeetingExhibitionStatus.DEFAULT)),
     CREATED_TIME(SYS.CREATED_DATE_TIME),
