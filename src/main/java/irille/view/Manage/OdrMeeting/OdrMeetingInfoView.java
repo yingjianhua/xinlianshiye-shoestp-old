@@ -17,6 +17,7 @@ public class OdrMeetingInfoView {
   private String customExhibition;
   private int country;
   private String status;
+  private Integer statusId;
   private String logo;
   private Date start_time;
   private Date end_time;

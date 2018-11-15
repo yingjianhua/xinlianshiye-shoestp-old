@@ -15,9 +15,10 @@ public class OdrMeetingProductView {
   private boolean pdtType;
   private int supplierId;
   private int moq;
-  private int price;
+  private double price;
   private int newMoq;
-  private int newPrice;
+  private double newPrice;
+  private int targetCount;
   private String status;
   //是否有订单
   private boolean hasOrder;

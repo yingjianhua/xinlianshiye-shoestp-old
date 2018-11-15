@@ -6,6 +6,8 @@ import irille.Entity.OdrerMeetings.Enums.OrderMeetingAuditStatus;
 import irille.Service.Manage.OdrMeeting.Imp.OdrMeetingManageServiceImp;
 import irille.pub.idu.IduPage;
 import irille.view.Manage.OdrMeeting.OdrMeetingInfoView;
+import irille.view.Manage.OdrMeeting.Sale.OdrMeetingSaleInfoView;
+import java.util.List;
 
 /**
  * 商家端 订购会接口
@@ -20,6 +22,13 @@ public interface IOdrMeetingManageService {
    */
   void insOdrMeeting(OdrMeetingInfoView getOdrMeetingInfoView, int supplierId)
       throws JsonProcessingException;
+
+  /**
+   * @Description: 获取单个订购会信息
+   * @date 2018/11/15 14:06
+   */
+  OdrMeetingInfoView getOdrMeetingInfo(int id);
+
 
   /**
    * @Description: 删除订购会信息  (逻辑删除) 待定
@@ -57,4 +66,12 @@ public interface IOdrMeetingManageService {
    */
   void joInOdrMeeting(int odrMeetIng, int supplier);
 
+
+  /**
+   * @Description: 获取某个订购会销售明细
+   * @date 2018/11/15 15:06
+   * @author lijie@shoestp.cn
+   */
+
+  List<OdrMeetingSaleInfoView> getMeetingSaleInfo(int start, int limit, int odrMeeting, int type,int supplierId);
 }

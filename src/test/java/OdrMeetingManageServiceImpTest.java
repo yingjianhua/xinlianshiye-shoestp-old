@@ -1,7 +1,10 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
+import irille.Dao.OdrMeetingDao;
 import irille.Service.Manage.OdrMeeting.IOdrMeetingManageService;
 import irille.Service.Manage.OdrMeeting.Imp.OdrMeetingManageServiceImp;
+import irille.core.prv.PrvRoleAct;
 import irille.pub.svr.DbPool;
+import irille.pub.svr.StartInitServlet;
 import irille.view.Manage.OdrMeeting.OdrMeetingInfoView;
 import java.sql.SQLException;
 import java.util.Date;
@@ -18,6 +21,8 @@ public class OdrMeetingManageServiceImpTest {
 
   @Before
   public void create() {
+    StartInitServlet.initBeanLoad();
+    PrvRoleAct.TB.getCode();
     iOdrMeetingManageService = new OdrMeetingManageServiceImp();
   }
 
@@ -43,9 +48,14 @@ public class OdrMeetingManageServiceImpTest {
   }
 
 
+  @Test
+  public void isJoinOdrMeeting() {
+    OdrMeetingDao dao = new OdrMeetingDao();
+    dao.isJoinOdrMeeting(1, 1);
+  }
+
   @After
   public void end() throws SQLException {
     DbPool.getInstance().getConn().commit();
-
   }
 }

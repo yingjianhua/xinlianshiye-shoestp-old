@@ -79,16 +79,13 @@ public class OrderMeetingAudit extends BeanInt<OrderMeetingAudit> {
   //实例变量定义-----------------------------------------
   private Integer _pkey;	// 编号  INT
   private Integer _ordermeeting;	// 订购会信息 <表主键:OrderMeeting>  INT
-  private String _name;	// 订购会标题  STR(200)<null>
-  private Byte _status;	// 订购会状态 <OrdrerMettingAuditStatus>  BYTE
+  private Byte _status;	// 订购会状态 <OrderMeetingAuditStatus>  BYTE
 	// PENDING:0,待审核
 	// VERIFYING:1,审核中
-	// PROCEEDING:2,通过
-	// FAILED:3,未通过
-	// TOBEGIN:4,即将开始
-	// SUSPEND:6,暂停
+	// PASS:2,审核通过
+	// DELETE:6,活动已删除
   private String _message;	// 消息  STR(200)<null>
-  private Byte _type;	// 供应商认证类型 <OrderMettingAuditType>  BYTE
+  private Byte _type;	// 供应商认证类型 <OrderMeetingAuditType>  BYTE
 	// PLATFORM:0,平台
 	// SUPPLIER:1,商家
   private Integer _supplierid;	// 供应商 <表主键:UsrSupplier>  INT<null>
@@ -100,10 +97,9 @@ public class OrderMeetingAudit extends BeanInt<OrderMeetingAudit> {
   public OrderMeetingAudit init(){
 		super.init();
     _ordermeeting=null;	// 订购会信息 <表主键:OrderMeeting>  INT
-    _name=null;	// 订购会标题  STR(200)
-    _status= OrderMeetingAuditStatus.DEFAULT.getLine().getKey();	// 订购会状态 <OrdrerMettingAuditStatus>  BYTE
+    _status=OrderMeetingAuditStatus.DEFAULT.getLine().getKey();	// 订购会状态 <OrderMeetingAuditStatus>  BYTE
     _message=null;	// 消息  STR(200)
-    _type= OrderMeetingAuditType.DEFAULT.getLine().getKey();	// 供应商认证类型 <OrderMettingAuditType>  BYTE
+    _type=OrderMeetingAuditType.DEFAULT.getLine().getKey();	// 供应商认证类型 <OrderMeetingAuditType>  BYTE
     _supplierid=null;	// 供应商 <表主键:UsrSupplier>  INT
     _snapshot=null;	// 快照  JSONOBJECT
     _createdTime=Env.getTranBeginTime();	// 建档时间  TIME
@@ -134,12 +130,6 @@ public class OrderMeetingAudit extends BeanInt<OrderMeetingAudit> {
       setOrdermeeting(null);
     else
       setOrdermeeting(ordermeeting.getPkey());
-  }
-  public String getName(){
-    return _name;
-  }
-  public void setName(String name){
-    _name=name;
   }
   public Byte getStatus(){
     return _status;

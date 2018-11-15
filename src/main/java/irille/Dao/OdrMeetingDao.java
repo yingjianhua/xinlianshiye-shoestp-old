@@ -1,16 +1,22 @@
 package irille.Dao;
 
+import irille.Entity.OdrerMeetings.Enums.OrderMeetingAuditStatus;
 import irille.Entity.OdrerMeetings.Enums.OrderMeetingStatus;
 import irille.Entity.OdrerMeetings.OrderMeeting;
 import irille.Entity.OdrerMeetings.OrderMeeting.T;
 import irille.Entity.OdrerMeetings.OrderMeetingAudit;
+import irille.Entity.OdrerMeetings.OrderMeetingOrder;
+import irille.Entity.OdrerMeetings.OrderMeetingProduct;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.Bean;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduUpd;
+import irille.shop.odr.Odr.OdrType;
+import irille.shop.odr.OdrOrder;
 import irille.view.Manage.OdrMeeting.OdrMeetingLaunchlistView;
+import irille.view.Manage.OdrMeeting.Sale.OdrMeetingSaleInfoView;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,17 +33,17 @@ public class OdrMeetingDao {
   public boolean isJoinOdrMeeting(int odrMeetIngId, int supplier) {
     //参加的人不能是发起人,且不再审核列状态中  订购会已通过审核 状态为即将开始
     BeanQuery query = new BeanQuery();
-    query
+    query.SELECT(OrderMeeting.T.SUPPLIERID)
         .FROM(OrderMeetingAudit.class)
         .LEFT_JOIN(OrderMeeting.class, T.PKEY, OrderMeetingAudit.T.OrderMeeting)
-        .WHERE(T.SUPPLIERID, "<> ?", supplier)
+        .WHERE(OrderMeeting.T.SUPPLIERID, "<> ?", supplier)
         .WHERE(OrderMeeting.T.STATUS, "=?", OrderMeetingStatus.TOBEGIN)
         .WHERE(OrderMeetingAudit.T.SUPPLIERID, "=?", supplier)
+        .WHERE(OrderMeetingAudit.T.STATUS, "<>?", OrderMeetingAuditStatus.PASS)
 //        .WHERE(OrderMeetingAudit.T.STATUS, "=?", OrderMeetingAuditStatus.PASS)
         .WHERE(OrderMeetingAudit.T.OrderMeeting, "=?", odrMeetIngId)
     ;
-
-    return query.queryCount() > 0;
+    return query.queryCount() == 0;
   }
 
 
@@ -133,6 +139,31 @@ public class OdrMeetingDao {
         + "  from " + OrderMeeting.TB.getCodeSqlTb()
         + " where " + OrderMeeting.T.PKEY.getFld().getCodeSqlField()
         + " in(" + pkeys + ")");
+  }
+
+  public OrderMeeting getOdrMeetingInfo(int id) {
+    BeanQuery query = new BeanQuery();
+    return
+        (OrderMeeting) query.SELECT(
+            OrderMeeting.class
+        ).FROM(
+            OrderMeeting.class
+        ).WHERE(
+            T.SUPPLIERID, "=?", id
+        ).query(OrderMeeting.class);
+  }
+
+  public List<OdrMeetingSaleInfoView> getMeetingAllSaleInfo(int start, int limit, int odrMeeting) {
+    BeanQuery query = new BeanQuery();
+    query
+        .SELECT()
+        .FROM(OrderMeetingOrder.class)
+        .LEFT_JOIN(OdrOrder.class, OdrOrder.T.PKEY, OrderMeetingOrder.T.ORDERID)  //联合订单表
+        .LEFT_JOIN(OrderMeetingProduct.class, OrderMeetingProduct.T.ORDERMEETINGID,  //联合 产品表区分产品
+            OrderMeetingOrder.T.ORDERMEETINGID)
+        .WHERE(OdrOrder.T.TYPE, "=?", OdrType.STATEONE) //联合采购订单
+        .WHERE(OrderMeetingOrder.T.ORDERMEETINGID, "=?", odrMeeting);
+    return null;
   }
 
   /**
