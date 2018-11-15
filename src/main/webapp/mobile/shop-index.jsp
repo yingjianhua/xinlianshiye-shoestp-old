@@ -208,11 +208,11 @@
                 </div>
 
                 <!-- 轮播图 - end -->
-                <div class="clean">
+                <%--<div class="clean">--%>
                     <%-- <c:if test="${supView.homePageDiyMobile != null && supView.homePageDiyMobile != ''}">
                         ${supView.homePageDiyMobile}
                     </c:if> --%>
-                </div>
+                <%--</div>--%>
                 <!-- 商品栏 - 标题 -->
                 <div class="info-group-header">
                     <!-- PRODUCTS -->

@@ -63,13 +63,13 @@
 	<%@ include file="/home/template/new-header.jsp" %>
 	<%@ include file="/home/template/shop-header.jsp" %>
 
-  <c:if test="${supView.homePageOn==1}">
-   <div class="clean">
-    	<c:if test="${supView.homePageDiy != null && supView.homePageDiy != ''}">
-	    	${supView.homePageDiy}
-    	</c:if>
-    </div>
-  </c:if>
+  <%--<c:if test="${supView.homePageOn==1}">--%>
+   <%--<div class="clean">--%>
+    	<%--<c:if test="${supView.homePageDiy != null && supView.homePageDiy != ''}">--%>
+	    	<%--${supView.homePageDiy}--%>
+    	<%--</c:if>--%>
+    <%--</div>--%>
+  <%--</c:if>--%>
   <!-- 大轮播 图 top -->
 
   <c:if test="${supView.homePageOn!=1}">
@@ -165,53 +165,53 @@
   </div>
   </c:if>
 
-  <c:if test="${supView.isPro==1}">
-  <div class="clean">
+  <%--<c:if test="${supView.isPro==1}">--%>
+  <%--<div class="clean">--%>
 
-    <div class="wide">
-      <div class="enterprise-info-wrap">
-        <h3 class="enterprise-info-title">
-          <s:text name="hottestItems"/>
-          <!-- 查看更多-按钮 -->
-          <div class="tip-info fr">
-            <a href="/home/usr_UsrSupplier_gtSupPro?pkey=${supView.pkey}">
-              <span><s:text name="read_more"/></span>
-              <i class="icon icon-plus"></i>
-            </a>
-          </div>
-        </h3>
+    <%--<div class="wide">--%>
+      <%--<div class="enterprise-info-wrap">--%>
+        <%--<h3 class="enterprise-info-title">--%>
+          <%--<s:text name="hottestItems"/>--%>
+          <%--<!-- 查看更多-按钮 -->--%>
+          <%--<div class="tip-info fr">--%>
+            <%--<a href="/home/usr_UsrSupplier_gtSupPro?pkey=${supView.pkey}">--%>
+              <%--<span><s:text name="read_more"/></span>--%>
+              <%--<i class="icon icon-plus"></i>--%>
+            <%--</a>--%>
+          <%--</div>--%>
+        <%--</h3>--%>
 
 
-        <!-- 商品展示 -->
-        <div class="goods-wrap">
-          <c:forEach items="${supView.productList}" var="pro" varStatus="index">
-		          <div class="goods-box">
-		            <div class="goods-item">
-		              <div class="goods-pic pic_box">
-		                <a href="/${pro.rewrite}"  title="${pro.pdt.name}" target="_blank">
-		              	<c:forTokens items="${pro.pdt.picture}" var="pic" delims="," end="0">
-		                  <img src="${envConfig.imageBaseUrl}${pic}?x-oss-process=image/resize,m_pad,h_256,w_256" >
-		              	</c:forTokens>
-		                </a>
-		                <span></span>
-		              </div>
-		              <h5 class="goods-title">
-		                <a href="/${pro.rewrite}" title="${pro.pdt.name}" target="_blank">${pro.pdt.name}</a>
-		              </h5>
-		              <div class="goods-price">
-		              	${env.currency.symbols}${pro.pdt.curPrice}
-		              </div>
-		              <div class="btn btn-enter">
-		                <a href="/${pro.rewrite}" class="btn btn-enter" target="_blank"><s:text name="show_now"/></a>
-		              </div>
-		            </div>
-		          </div>
-		</c:forEach>
-        </div>
-      </div>
-    </div>
-  </div>
-</c:if>
+        <%--<!-- 商品展示 -->--%>
+        <%--<div class="goods-wrap">--%>
+          <%--<c:forEach items="${supView.productList}" var="pro" varStatus="index">--%>
+		          <%--<div class="goods-box">--%>
+		            <%--<div class="goods-item">--%>
+		              <%--<div class="goods-pic pic_box">--%>
+		                <%--<a href="/${pro.rewrite}"  title="${pro.pdt.name}" target="_blank">--%>
+		              	<%--<c:forTokens items="${pro.pdt.picture}" var="pic" delims="," end="0">--%>
+		                  <%--<img src="${envConfig.imageBaseUrl}${pic}?x-oss-process=image/resize,m_pad,h_256,w_256" >--%>
+		              	<%--</c:forTokens>--%>
+		                <%--</a>--%>
+		                <%--<span></span>--%>
+		              <%--</div>--%>
+		              <%--<h5 class="goods-title">--%>
+		                <%--<a href="/${pro.rewrite}" title="${pro.pdt.name}" target="_blank">${pro.pdt.name}</a>--%>
+		              <%--</h5>--%>
+		              <%--<div class="goods-price">--%>
+		              	<%--${env.currency.symbols}${pro.pdt.curPrice}--%>
+		              <%--</div>--%>
+		              <%--<div class="btn btn-enter">--%>
+		                <%--<a href="/${pro.rewrite}" class="btn btn-enter" target="_blank"><s:text name="show_now"/></a>--%>
+		              <%--</div>--%>
+		            <%--</div>--%>
+		          <%--</div>--%>
+		<%--</c:forEach>--%>
+        <%--</div>--%>
+      <%--</div>--%>
+    <%--</div>--%>
+  <%--</div>--%>
+<%--</c:if>--%>
 
   <%@ include file="/home/template/new-foot.jsp" %>
   ${supView.traceCode}
