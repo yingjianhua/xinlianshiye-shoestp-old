@@ -27,6 +27,9 @@
                 <environment>dev</environment>
                 <!--此处为对应的环境放置配置文件的目录，上一步创建的为dev,这里设置为dev。下面两个目录配置参照此处 -->
             </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
         </profile>
         <profile>
             <id>test</id>

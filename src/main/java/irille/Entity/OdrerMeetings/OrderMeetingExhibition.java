@@ -6,6 +6,8 @@ import irille.pub.svr.Env;
 import irille.pub.tb.Fld;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
+import irille.shop.plt.PltCountry;
+
 import java.util.Date;
 
 /**
@@ -19,9 +21,7 @@ public class OrderMeetingExhibition extends BeanInt<OrderMeetingExhibition> {
   public enum T implements IEnumFld {
     PKEY(TB.crtIntPkey()),
     ADDRESS(SYS.STR__200_NULL, "订购会标题"),
-    COUNTRY(SYS.STR__200_NULL, "订购会标题"),
-    START_TIME(SYS.TIME, "结束时间"),
-    END_TIME(SYS.TIME, "开始时间"),
+    COUNTRY(PltCountry.fldOutKey()),
     STATUS(TB.crt(OrderMeetingExhibitionStatus.DEFAULT)),
     CREATED_TIME(SYS.CREATED_DATE_TIME),
     ROW_VERSION(SYS.ROW_VERSION),
