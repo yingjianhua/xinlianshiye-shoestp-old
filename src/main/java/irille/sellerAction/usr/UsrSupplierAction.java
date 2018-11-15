@@ -23,6 +23,7 @@ import irille.view.usr.AccountSettingsView;
 import irille.view.usr.UserView;
 import irille.view.usr.UsrshopSettingView;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 import javax.inject.Inject;
@@ -262,7 +263,8 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     UsrUserDAO.updSupplierPassword(getSupplier().getPkey(), oldPwd, newPwd);
     write();
   }
-
+  @Getter
+  @Setter
   private UsrshopSettingView usv;
 
   /**
@@ -278,12 +280,16 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     us.setCompanyPhoto(usv.getCompanyPhoto());
     us.setCompanyPhotoLink(usv.getCompanyPhotoLink());
     us.setHomePageDiy(usv.getHomePageDIY());
-    us.setHomePageOn(usv.getHomePageOn());
+    us.stHomePageOn(usv.isHomePageOn());
     us.setLogo(usv.getLogo());
     us.setSignBackgd(usv.getSignBackGD());
-    setBean(us);
+    us.setCompanyIntroductionPageCustomDecoration(usv.getCompanyIntroductionPageCustomDecoration());
+    us.stBottomHomeProductsOn(usv.isBottomproductdisplay());
+    us.stHomePosterOn(usv.isHomebigposter());
+    us.stHomeBusinessBigPosterOn(usv.isHomebusinessbigposter());
+    us.stCompanyIntroductionPageCustomDecorationOn(usv.isAboutpagecustomdecoration());
     UsrSupplierDAO.setting st = new UsrSupplierDAO.setting();
-    st.setB(getBean());
+    st.setB(us);
     st.commit();
     write();
   }
@@ -438,13 +444,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
   @Setter
   private String showName;
 
-  public UsrshopSettingView getUsv() {
-    return usv;
-  }
 
-  public void setUsv(UsrshopSettingView usv) {
-    this.usv = usv;
-  }
 
   public void updInfo() throws Exception {
     try {

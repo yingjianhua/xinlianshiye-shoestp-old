@@ -932,14 +932,14 @@ public class UsrSupplierDAO {
      * 修改装修店铺
      * 商家 @author  wilson zhang
      */
-    public static class setting extends IduOther<Uda,UsrSupplier>{
+    public static class setting extends IduUpd<setting,UsrSupplier>{
 
         @Override
         public void before() {
-            super.before();
             UsrSupplier dbBean = loadThisBeanAndLock();
-            PropertyUtils.copyProperties(dbBean, getB(),T.LOGO,T.SIGN_BACKGD,T.AD_PHOTO,T.AD_PHOTO_LINK,T.COMPANY_PHOTO,T.COMPANY_PHOTO_LINK,T.HOME_PAGE_DIY,T.HOME_PAGE_ON);
+            PropertyUtils.copyProperties(dbBean, getB(),T.LOGO,T.SIGN_BACKGD,T.AD_PHOTO,T.AD_PHOTO_LINK,T.COMPANY_PHOTO,T.COMPANY_PHOTO_LINK,T.HOME_PAGE_DIY,T.HOME_PAGE_ON,T.COMPANY_INTRODUCTION_PAGE_CUSTOM_DECORATION,T.BOTTOM_HOME_PRODUCTS_ON,T.HOME_POSTER_ON,T.HOME_BUSINESS_BIG_POSTER_ON,T.COMPANY_INTRODUCTION_PAGE_CUSTOM_DECORATION_ON);
             setB(dbBean);
+            super.before();
         }
     	
     }
