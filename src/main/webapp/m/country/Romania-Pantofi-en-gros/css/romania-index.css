@@ -15,7 +15,9 @@ body{
 .clearfloat{
     zoom:1;
 }
-
+a{
+	text-decoration: none;
+}
 .inline-block-h80{
   display: inline-block;
   line-height: 80px;
@@ -258,8 +260,8 @@ body{
     background-color: #fbf8fb;
 }
 .rmnybottomsecond .rmnybscon{
-    width: 83%;
-    margin-left: 16%;
+    width: 90%;
+    margin-left: 10%;
 }
 .rmnybscon h2{
     font-size: 3.2em;
@@ -304,7 +306,7 @@ body{
 
 #romania .romania-poster{
     width: 980px;
-    height: 1150px;
+    height: 1160px;
     background: url("../imgs/romaniaPoster-01.png") center no-repeat;
     background-size: 100% 100%;
     position: relative;
@@ -360,7 +362,7 @@ body{
 }
 #romania .romania-poster > p{
     margin-left: 60px;
-    width: 800px;
+    width: 810px;
 }
 #romania .romania-poster p.title-text{
     font-size: 60px;
@@ -383,7 +385,7 @@ body{
 }
 #romania .romania-poster p.content-02{
     font-size: 35px;
-		line-height: 35px;
+		line-height: 40px;
 }
 #romania .romania-poster .image-bottom button,#romania .romania-poster .image-bottom a{
     display: inline-block;
@@ -517,7 +519,7 @@ body{
 
 .rmnybottomfirst .rmnybfchoose{
     position: absolute;
-    top: 50%;
+    top: 55%;
     left: 10.5%;
     width: 75%;
 }
@@ -558,6 +560,7 @@ body{
 }
 .rmnybfcon h3 {
     font-size: 2em;
+		font-weight: 500;
     padding: 0px 0 50px;
 }
 .rmnybthcon h2 {

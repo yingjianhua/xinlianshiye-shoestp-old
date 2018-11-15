@@ -112,11 +112,12 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName{
 		Is_Pro(SYS.NY, "供应商首页产品展示"),//供应商首页产品展
 		LOGO(SYS.URL__NULL, "logo"),//logo 150*150像素 
 		SIGN_BACKGD(SYS.URL__NULL, "店招背景"),//店招背景 1920x150像素 
-		AD_PHOTO(SYS.STR__1000_NULL, "广告图"),//广告图 图片大小建议: 1200*550像素
+		AD_PHOTO(SYS.MUILTI_LANGUAGE_NULL, "广告图"),//广告图 图片大小建议: 1200*550像素
 		AD_PHOTO_MOBILE(SYS.STR__1000_NULL,"移动端广告图"),//移动端广告图 图片大小建议: 640*340像素
-		AD_PHOTO_LINK(SYS.STR__1000_NULL, "广告连接"),//广告连接 外链必须使用完整域名，即包含http://或https://，例： https://www.google.com。内链不需加域名，例: /products/ 
-		COMPANY_PHOTO(SYS.STR__1000_NULL, "企业图片"),//企业图片 图片大小建议: 780x480像素
-		COMPANY_PHOTO_LINK(SYS.STR__1000_NULL, "企业图片连接"),//企业图片连接 外链必须使用完整域名，即包含http://或https://，例： https://www.google.com。内链不需加域名，例: /products/ 
+		AD_PHOTO_LINK(SYS.MUILTI_LANGUAGE_NULL, "广告连接"),//广告连接 外链必须使用完整域名，即包含http://或https://，例： https://www.google.com。内链不需加域名，例: /products/
+		COMPANY_PHOTO(SYS.MUILTI_LANGUAGE_NULL, "企业图片"),//企业图片 图片大小建议: 780x480像素
+		COMPANY_PHOTO_LINK(SYS.MUILTI_LANGUAGE_NULL, "企业图片连接"),//企业图片连接 外链必须使用完整域名，即包含http://或https://，例： https://www.google.com。内链不需加域名，例: /products/
+
 		/**
 		 * 个性装修 
 		选择模板
@@ -124,12 +125,17 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName{
 		HOME_PAGE_DIY(SYS.MUILTI_LANGUAGE_NULL, "首页个性装修"),//首页个性装修  多国语言
 		PRODUCT_PAGE_DIY(SYS.MUILTI_LANGUAGE_NULL, "产品页个性装修"),//产品页个性装修  多国语言
 		CONTACT_PAGE_DIY(SYS.MUILTI_LANGUAGE_NULL, "联系页个性装修"),//联系页个性装修  多国语言
+        COMPANY_INTRODUCTION_PAGE_CUSTOM_DECORATION(SYS.MUILTI_LANGUAGE_NULL, "公司介绍页自定义装修"),//公司介绍页自定义装修  多国语言
 		HOME_PAGE_DIY_MOBILE(SYS.STR__1000_NULL, "首页个性装修（移动）"),//首页个性装修（移动）
 		PRODUCT_PAGE_DIY_MOBILE(SYS.STR__1000_NULL, "产品页个性装修（移动）"),//产品页个性装修（移动）
 		CONTACT_PAGE_DIY_MOBILE(SYS.STR__1000_NULL, "联系页个性装修（移动）"),//联系页个性装修（移动）
 		HOME_PAGE_ON(SYS.NY,"首页个性装修开关"),
 		PRODUCT_PAGE_ON(SYS.NY,"产品页个性装修开关"),
 		CONTACT_PAGE_ON(SYS.NY,"联系页个性装修开关"),
+        BOTTOM_HOME_PRODUCTS_ON(SYS.NY,"首页底部产品展示开关"),
+        HOME_POSTER_ON(SYS.NY,"首页大海报开关"),
+        HOME_BUSINESS_BIG_POSTER_ON(SYS.NY,"首页企业大海报开关"),
+        COMPANY_INTRODUCTION_PAGE_CUSTOM_DECORATION_ON(SYS.NY,"公司介绍页自定义装修开关"),
 		/**
 		 * 营销设置
 		 */
@@ -243,8 +249,8 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName{
   private String _top3Markets;	// Top 3 Markets  JSONOBJECT<null>
   private String _materials;	// Materials  JSONOBJECT<null>
   private String _headPic;	// 头像  STR(200)<null>
-  private String _department;	// Department  JSONOBJECT<null>
-  private String _jobTitle;	// Job_Title  JSONOBJECT<null>
+  private String _department;	// 联系人部门  JSONOBJECT<null>
+  private String _jobTitle;	// 联系人职称  JSONOBJECT<null>
   private String _website;	// Website  STR(100)<null>
   private Integer _country;	// 国家管理 <表主键:PltCountry>  INT
   private Integer _province;	// 省份 <表主键:PltProvince>  INT
@@ -254,14 +260,15 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName{
 	// NO:0,否
   private String _logo;	// logo  STR(200)<null>
   private String _signBackgd;	// 店招背景  STR(200)<null>
-  private String _adPhoto;	// 广告图  STR(1000)<null>
+  private String _adPhoto;	// 广告图  JSONOBJECT<null>
   private String _adPhotoMobile;	// 移动端广告图  STR(1000)<null>
-  private String _adPhotoLink;	// 广告连接  STR(1000)<null>
-  private String _companyPhoto;	// 企业图片  STR(1000)<null>
-  private String _companyPhotoLink;	// 企业图片连接  STR(1000)<null>
+  private String _adPhotoLink;	// 广告连接  JSONOBJECT<null>
+  private String _companyPhoto;	// 企业图片  JSONOBJECT<null>
+  private String _companyPhotoLink;	// 企业图片连接  JSONOBJECT<null>
   private String _homePageDiy;	// 首页个性装修  JSONOBJECT<null>
   private String _productPageDiy;	// 产品页个性装修  JSONOBJECT<null>
   private String _contactPageDiy;	// 联系页个性装修  JSONOBJECT<null>
+  private String _companyIntroductionPageCustomDecoration;	// 公司介绍页自定义装修  JSONOBJECT<null>
   private String _homePageDiyMobile;	// 首页个性装修（移动）  STR(1000)<null>
   private String _productPageDiyMobile;	// 产品页个性装修（移动）  STR(1000)<null>
   private String _contactPageDiyMobile;	// 联系页个性装修（移动）  STR(1000)<null>
@@ -272,6 +279,18 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName{
 	// YES:1,是
 	// NO:0,否
   private Byte _contactPageOn;	// 联系页个性装修开关 <OYn>  BYTE
+	// YES:1,是
+	// NO:0,否
+  private Byte _bottomHomeProductsOn;	// 首页底部产品展示开关 <OYn>  BYTE
+	// YES:1,是
+	// NO:0,否
+  private Byte _homePosterOn;	// 首页大海报开关 <OYn>  BYTE
+	// YES:1,是
+	// NO:0,否
+  private Byte _homeBusinessBigPosterOn;	// 首页企业大海报开关 <OYn>  BYTE
+	// YES:1,是
+	// NO:0,否
+  private Byte _companyIntroductionPageCustomDecorationOn;	// 公司介绍页自定义装修开关 <OYn>  BYTE
 	// YES:1,是
 	// NO:0,否
   private String _traceCode;	// 跟踪代码  TEXT(200)<null>
@@ -343,8 +362,8 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName{
     _top3Markets=null;	// Top 3 Markets  JSONOBJECT
     _materials=null;	// Materials  JSONOBJECT
     _headPic=null;	// 头像  STR(200)
-    _department=null;	// Department  JSONOBJECT
-    _jobTitle=null;	// Job_Title  JSONOBJECT
+    _department=null;	// 联系人部门  JSONOBJECT
+    _jobTitle=null;	// 联系人职称  JSONOBJECT
     _website=null;	// Website  STR(100)
     _country=null;	// 国家管理 <表主键:PltCountry>  INT
     _province=null;	// 省份 <表主键:PltProvince>  INT
@@ -352,20 +371,25 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName{
     _isPro=OYn.DEFAULT.getLine().getKey();	// 供应商首页产品展示 <OYn>  BYTE
     _logo=null;	// logo  STR(200)
     _signBackgd=null;	// 店招背景  STR(200)
-    _adPhoto=null;	// 广告图  STR(1000)
+    _adPhoto=null;	// 广告图  JSONOBJECT
     _adPhotoMobile=null;	// 移动端广告图  STR(1000)
-    _adPhotoLink=null;	// 广告连接  STR(1000)
-    _companyPhoto=null;	// 企业图片  STR(1000)
-    _companyPhotoLink=null;	// 企业图片连接  STR(1000)
+    _adPhotoLink=null;	// 广告连接  JSONOBJECT
+    _companyPhoto=null;	// 企业图片  JSONOBJECT
+    _companyPhotoLink=null;	// 企业图片连接  JSONOBJECT
     _homePageDiy=null;	// 首页个性装修  JSONOBJECT
     _productPageDiy=null;	// 产品页个性装修  JSONOBJECT
     _contactPageDiy=null;	// 联系页个性装修  JSONOBJECT
+    _companyIntroductionPageCustomDecoration=null;	// 公司介绍页自定义装修  JSONOBJECT
     _homePageDiyMobile=null;	// 首页个性装修（移动）  STR(1000)
     _productPageDiyMobile=null;	// 产品页个性装修（移动）  STR(1000)
     _contactPageDiyMobile=null;	// 联系页个性装修（移动）  STR(1000)
     _homePageOn=OYn.DEFAULT.getLine().getKey();	// 首页个性装修开关 <OYn>  BYTE
     _productPageOn=OYn.DEFAULT.getLine().getKey();	// 产品页个性装修开关 <OYn>  BYTE
     _contactPageOn=OYn.DEFAULT.getLine().getKey();	// 联系页个性装修开关 <OYn>  BYTE
+    _bottomHomeProductsOn=OYn.DEFAULT.getLine().getKey();	// 首页底部产品展示开关 <OYn>  BYTE
+    _homePosterOn=OYn.DEFAULT.getLine().getKey();	// 首页大海报开关 <OYn>  BYTE
+    _homeBusinessBigPosterOn=OYn.DEFAULT.getLine().getKey();	// 首页企业大海报开关 <OYn>  BYTE
+    _companyIntroductionPageCustomDecorationOn=OYn.DEFAULT.getLine().getKey();	// 公司介绍页自定义装修开关 <OYn>  BYTE
     _traceCode=null;	// 跟踪代码  TEXT(200)
     _webSizeTitle=null;	// 自定义链接名称  STR(100)
     _webSite=null;	// 网址  STR(100)
@@ -1138,6 +1162,18 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName{
   public void setAdPhoto(String adPhoto){
     _adPhoto=adPhoto;
   }
+  public JSONObject gtAdPhoto() throws JSONException {
+    return getAdPhoto()==null?new JSONObject():new JSONObject(getAdPhoto());
+  }
+  public void stAdPhoto(JSONObject adPhoto){
+    setAdPhoto(adPhoto==null?null:adPhoto.toString());
+  }
+  public String getAdPhoto(FldLanguage.Language l) throws JSONException {
+    return gtAdPhoto().has(l.name())?gtAdPhoto().getString(l.name()):"";
+  }
+  public void setAdPhoto(String adPhoto, FldLanguage.Language l) throws JSONException {
+    stAdPhoto(gtAdPhoto().put(l.name(), adPhoto));
+  }
   public String getAdPhotoMobile(){
     return _adPhotoMobile;
   }
@@ -1150,17 +1186,53 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName{
   public void setAdPhotoLink(String adPhotoLink){
     _adPhotoLink=adPhotoLink;
   }
+  public JSONObject gtAdPhotoLink() throws JSONException {
+    return getAdPhotoLink()==null?new JSONObject():new JSONObject(getAdPhotoLink());
+  }
+  public void stAdPhotoLink(JSONObject adPhotoLink){
+    setAdPhotoLink(adPhotoLink==null?null:adPhotoLink.toString());
+  }
+  public String getAdPhotoLink(FldLanguage.Language l) throws JSONException {
+    return gtAdPhotoLink().has(l.name())?gtAdPhotoLink().getString(l.name()):"";
+  }
+  public void setAdPhotoLink(String adPhotoLink, FldLanguage.Language l) throws JSONException {
+    stAdPhotoLink(gtAdPhotoLink().put(l.name(), adPhotoLink));
+  }
   public String getCompanyPhoto(){
     return _companyPhoto;
   }
   public void setCompanyPhoto(String companyPhoto){
     _companyPhoto=companyPhoto;
   }
+  public JSONObject gtCompanyPhoto() throws JSONException {
+    return getCompanyPhoto()==null?new JSONObject():new JSONObject(getCompanyPhoto());
+  }
+  public void stCompanyPhoto(JSONObject companyPhoto){
+    setCompanyPhoto(companyPhoto==null?null:companyPhoto.toString());
+  }
+  public String getCompanyPhoto(FldLanguage.Language l) throws JSONException {
+    return gtCompanyPhoto().has(l.name())?gtCompanyPhoto().getString(l.name()):"";
+  }
+  public void setCompanyPhoto(String companyPhoto, FldLanguage.Language l) throws JSONException {
+    stCompanyPhoto(gtCompanyPhoto().put(l.name(), companyPhoto));
+  }
   public String getCompanyPhotoLink(){
     return _companyPhotoLink;
   }
   public void setCompanyPhotoLink(String companyPhotoLink){
     _companyPhotoLink=companyPhotoLink;
+  }
+  public JSONObject gtCompanyPhotoLink() throws JSONException {
+    return getCompanyPhotoLink()==null?new JSONObject():new JSONObject(getCompanyPhotoLink());
+  }
+  public void stCompanyPhotoLink(JSONObject companyPhotoLink){
+    setCompanyPhotoLink(companyPhotoLink==null?null:companyPhotoLink.toString());
+  }
+  public String getCompanyPhotoLink(FldLanguage.Language l) throws JSONException {
+    return gtCompanyPhotoLink().has(l.name())?gtCompanyPhotoLink().getString(l.name()):"";
+  }
+  public void setCompanyPhotoLink(String companyPhotoLink, FldLanguage.Language l) throws JSONException {
+    stCompanyPhotoLink(gtCompanyPhotoLink().put(l.name(), companyPhotoLink));
   }
   public String getHomePageDiy(){
     return _homePageDiy;
@@ -1216,6 +1288,24 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName{
   public void setContactPageDiy(String contactPageDiy, FldLanguage.Language l) throws JSONException {
     stContactPageDiy(gtContactPageDiy().put(l.name(), contactPageDiy));
   }
+  public String getCompanyIntroductionPageCustomDecoration(){
+    return _companyIntroductionPageCustomDecoration;
+  }
+  public void setCompanyIntroductionPageCustomDecoration(String companyIntroductionPageCustomDecoration){
+    _companyIntroductionPageCustomDecoration=companyIntroductionPageCustomDecoration;
+  }
+  public JSONObject gtCompanyIntroductionPageCustomDecoration() throws JSONException {
+    return getCompanyIntroductionPageCustomDecoration()==null?new JSONObject():new JSONObject(getCompanyIntroductionPageCustomDecoration());
+  }
+  public void stCompanyIntroductionPageCustomDecoration(JSONObject companyIntroductionPageCustomDecoration){
+    setCompanyIntroductionPageCustomDecoration(companyIntroductionPageCustomDecoration==null?null:companyIntroductionPageCustomDecoration.toString());
+  }
+  public String getCompanyIntroductionPageCustomDecoration(FldLanguage.Language l) throws JSONException {
+    return gtCompanyIntroductionPageCustomDecoration().has(l.name())?gtCompanyIntroductionPageCustomDecoration().getString(l.name()):"";
+  }
+  public void setCompanyIntroductionPageCustomDecoration(String companyIntroductionPageCustomDecoration, FldLanguage.Language l) throws JSONException {
+    stCompanyIntroductionPageCustomDecoration(gtCompanyIntroductionPageCustomDecoration().put(l.name(), companyIntroductionPageCustomDecoration));
+  }
   public String getHomePageDiyMobile(){
     return _homePageDiyMobile;
   }
@@ -1269,6 +1359,54 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName{
   }
   public void stContactPageOn(Boolean contactPageOn){
     _contactPageOn=booleanToByte(contactPageOn);
+  }
+  public Byte getBottomHomeProductsOn(){
+    return _bottomHomeProductsOn;
+  }
+  public void setBottomHomeProductsOn(Byte bottomHomeProductsOn){
+    _bottomHomeProductsOn=bottomHomeProductsOn;
+  }
+  public Boolean gtBottomHomeProductsOn(){
+    return byteToBoolean(_bottomHomeProductsOn);
+  }
+  public void stBottomHomeProductsOn(Boolean bottomHomeProductsOn){
+    _bottomHomeProductsOn=booleanToByte(bottomHomeProductsOn);
+  }
+  public Byte getHomePosterOn(){
+    return _homePosterOn;
+  }
+  public void setHomePosterOn(Byte homePosterOn){
+    _homePosterOn=homePosterOn;
+  }
+  public Boolean gtHomePosterOn(){
+    return byteToBoolean(_homePosterOn);
+  }
+  public void stHomePosterOn(Boolean homePosterOn){
+    _homePosterOn=booleanToByte(homePosterOn);
+  }
+  public Byte getHomeBusinessBigPosterOn(){
+    return _homeBusinessBigPosterOn;
+  }
+  public void setHomeBusinessBigPosterOn(Byte homeBusinessBigPosterOn){
+    _homeBusinessBigPosterOn=homeBusinessBigPosterOn;
+  }
+  public Boolean gtHomeBusinessBigPosterOn(){
+    return byteToBoolean(_homeBusinessBigPosterOn);
+  }
+  public void stHomeBusinessBigPosterOn(Boolean homeBusinessBigPosterOn){
+    _homeBusinessBigPosterOn=booleanToByte(homeBusinessBigPosterOn);
+  }
+  public Byte getCompanyIntroductionPageCustomDecorationOn(){
+    return _companyIntroductionPageCustomDecorationOn;
+  }
+  public void setCompanyIntroductionPageCustomDecorationOn(Byte companyIntroductionPageCustomDecorationOn){
+    _companyIntroductionPageCustomDecorationOn=companyIntroductionPageCustomDecorationOn;
+  }
+  public Boolean gtCompanyIntroductionPageCustomDecorationOn(){
+    return byteToBoolean(_companyIntroductionPageCustomDecorationOn);
+  }
+  public void stCompanyIntroductionPageCustomDecorationOn(Boolean companyIntroductionPageCustomDecorationOn){
+    _companyIntroductionPageCustomDecorationOn=booleanToByte(companyIntroductionPageCustomDecorationOn);
   }
   public String getTraceCode(){
     return _traceCode;

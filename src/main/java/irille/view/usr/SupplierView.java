@@ -134,11 +134,16 @@ public class SupplierView implements BaseView{
 	// NO:0,否
 	private String logo; // logo STR(200)<null>
 	private String signBackgd; // 店招背景 STR(200)<null>
+	@JsonSerialize(using=I18NFieldSerializer.class)
 	private String adPhoto; // 广告图 STR(200)<null>
 	private String adPhotoMobile; // 移动端广告图 STR(200)<null>
+	@JsonSerialize(using=I18NFieldSerializer.class)
 	private String adPhotoLink; // 广告连接 STR(200)<null>
+	@JsonSerialize(using=I18NFieldSerializer.class)
 	private String companyPhoto; // 企业图片 STR(200)<null>
+	@JsonSerialize(using=I18NFieldSerializer.class)
 	private String companyPhotoLink; // 企业图片连接 STR(200)<null>
+	@JsonSerialize(using=I18NFieldSerializer.class)
 	private String homePageDiy; // 首页个性装修 JSONOBJECT<null>
 	private String productPageDiy; // 产品页个性装修 JSONOBJECT<null>
 	private String contactPageDiy; // 联系页个性装修 JSONOBJECT<null>
