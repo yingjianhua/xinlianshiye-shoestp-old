@@ -1,5 +1,6 @@
-package irille.shop.plt;
+package 备份.irille.shop.plt;
 
+import irille.shop.plt.PltFreightSeller;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

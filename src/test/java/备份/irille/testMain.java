@@ -1,3 +1,5 @@
+package 备份.irille;
+
 import irille.core.prv.PrvRoleAct;
 import irille.pub.bean.Bean;
 import irille.pub.bean.BeanBase;

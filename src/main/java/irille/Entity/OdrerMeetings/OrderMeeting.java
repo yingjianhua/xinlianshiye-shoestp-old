@@ -1,6 +1,6 @@
 package irille.Entity.OdrerMeetings;
 
-import irille.Entity.OdrerMeetings.Enums.OrdrerMettingAuditStatus;
+import irille.Entity.OdrerMeetings.Enums.OrderMeetingStatus;
 import irille.pub.bean.BeanInt;
 import irille.pub.svr.Env;
 import irille.pub.tb.Fld;
@@ -24,7 +24,7 @@ public class OrderMeeting extends BeanInt<OrderMeeting> {
     PKEY(TB.crtIntPkey()),
     SUPPLIERID(UsrSupplier.fldOutKey()),
     NAME(SYS.MUILTI_LANGUAGE, "订购会标题"),
-    STATUS(TB.crt(OrdrerMettingAuditStatus.DEFAULT)),
+    STATUS(TB.crt(OrderMeetingStatus.DEFAULT)),
     EXHIBITION(OrderMeetingExhibition.fldOutKey()),
     CUSTOM_EXHIBITION(SYS.STR__200_NULL),
     COUNTRY(PltCountry.fldOutKey()),
@@ -89,13 +89,12 @@ public class OrderMeeting extends BeanInt<OrderMeeting> {
   private Integer _pkey;	// 编号  INT
   private Integer _supplierid;	// 供应商 <表主键:UsrSupplier>  INT
   private String _name;	// 订购会标题  JSONOBJECT
-  private Byte _status;	// 订购会状态 <OrdrerMettingAuditStatus>  BYTE
-	// PENDING:0,待审核
-	// VERIFYING:1,审核中
-	// PASS:2,通过
-	// FAILED:3,未通过
-	// TOBEGIN:4,即将开始
-	// SUSPEND:6,暂停
+  private Byte _status;	// 订购会状态 <OrdrerMettingStatus>  BYTE
+	// TOBEGIN:2,即将开始
+	// ACTIVITY:3,活动中
+	// SUSPEND:4,暂停
+	// END:5,活动结束
+	// DELETE:6,活动已删除
   private Integer _exhibition;	// 订购会-会场信息 <表主键:OrderMeetingExhibition>  INT
   private String _customExhibition;	// 字符200  STR(200)<null>
   private Integer _country;	// 国家管理 <表主键:PltCountry>  INT
@@ -115,7 +114,7 @@ public class OrderMeeting extends BeanInt<OrderMeeting> {
 		super.init();
     _supplierid=null;	// 供应商 <表主键:UsrSupplier>  INT
     _name=null;	// 订购会标题  JSONOBJECT
-    _status=OrdrerMettingAuditStatus.DEFAULT.getLine().getKey();	// 订购会状态 <OrdrerMettingAuditStatus>  BYTE
+    _status= OrderMeetingStatus.DEFAULT.getLine().getKey();	// 订购会状态 <OrdrerMettingStatus>  BYTE
     _exhibition=null;	// 订购会-会场信息 <表主键:OrderMeetingExhibition>  INT
     _customExhibition=null;	// 字符200  STR(200)
     _country=null;	// 国家管理 <表主键:PltCountry>  INT
@@ -180,10 +179,10 @@ public class OrderMeeting extends BeanInt<OrderMeeting> {
   public void setStatus(Byte status){
     _status=status;
   }
-  public OrdrerMettingAuditStatus gtStatus(){
-    return (OrdrerMettingAuditStatus)(OrdrerMettingAuditStatus.PENDING.getLine().get(_status));
+  public OrderMeetingStatus gtStatus(){
+    return (OrderMeetingStatus)(OrderMeetingStatus.TOBEGIN.getLine().get(_status));
   }
-  public void stStatus(OrdrerMettingAuditStatus status){
+  public void stStatus(OrderMeetingStatus status){
     _status=status.getLine().getKey();
   }
   public Integer getExhibition(){

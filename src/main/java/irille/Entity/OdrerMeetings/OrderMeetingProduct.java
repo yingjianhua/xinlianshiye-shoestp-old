@@ -1,6 +1,6 @@
 package irille.Entity.OdrerMeetings;
 
-import irille.Entity.OdrerMeetings.Enums.OrderMettingProductStatus;
+import irille.Entity.OdrerMeetings.Enums.OrderMeetingProductStatus;
 import irille.pub.bean.BeanInt;
 import irille.pub.svr.Env;
 import irille.pub.tb.Fld;
@@ -24,7 +24,7 @@ public class OrderMeetingProduct extends BeanInt<OrderMeetingProduct> {
     PRODUCTID(PdtProduct.fldOutKey()),
     SUPPLIERID(UsrSupplier.fldOutKey()),
     ORDERMEETINGID(OrderMeeting.fldOutKey()),
-    STATUS(TB.crt(OrderMettingProductStatus.DEFAULT)),
+    STATUS(TB.crt(OrderMeetingProductStatus.DEFAULT)),
     MOQ(SYS.INT, "原起订量"),
     PRICE(SYS.PRICE, "原商品价格"),
     NEWMOQ(SYS.INT, "活动起订量"),
@@ -101,7 +101,7 @@ public class OrderMeetingProduct extends BeanInt<OrderMeetingProduct> {
     _productid=null;	// 产品 <表主键:PdtProduct>  INT
     _supplierid=null;	// 供应商 <表主键:UsrSupplier>  INT
     _ordermeetingid=null;	// 订购会信息 <表主键:OrderMeeting>  INT
-    _status=OrderMettingProductStatus.DEFAULT.getLine().getKey();	// 供应商认证 <OrderMettingProductStatus>  BYTE
+    _status= OrderMeetingProductStatus.DEFAULT.getLine().getKey();	// 供应商认证 <OrderMettingProductStatus>  BYTE
     _moq=0;	// 原起订量  INT
     _price=ZERO;	// 原商品价格  DEC(14,4)
     _newmoq=0;	// 活动起订量  INT
@@ -176,10 +176,10 @@ public class OrderMeetingProduct extends BeanInt<OrderMeetingProduct> {
   public void setStatus(Byte status){
     _status=status;
   }
-  public OrderMettingProductStatus gtStatus(){
-    return (OrderMettingProductStatus)(OrderMettingProductStatus.OFF.getLine().get(_status));
+  public OrderMeetingProductStatus gtStatus(){
+    return (OrderMeetingProductStatus)(OrderMeetingProductStatus.OFF.getLine().get(_status));
   }
-  public void stStatus(OrderMettingProductStatus status){
+  public void stStatus(OrderMeetingProductStatus status){
     _status=status.getLine().getKey();
   }
   public Integer getMoq(){

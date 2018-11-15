@@ -1,4 +1,4 @@
-package irille.tools;
+package 备份.irille.tools;
 
 import java.util.HashSet;
 import java.util.List;
@@ -19,7 +19,7 @@ import irille.shop.pdt.PdtSize;
 import irille.shop.pdt.PdtSpec;
 
 public class TestColorOrSizeExists {
-	
+
 	static {
 		PdtSize.TB.getCode();
 		PdtColor.TB.getCode();
@@ -29,13 +29,13 @@ public class TestColorOrSizeExists {
 	}
 
 	static ObjectMapper mapper = new ObjectMapper().setSerializationInclusion(Include.NON_NULL);
-	
+
 	static Set<Integer> allSize = Query.SELECT(PdtSize.T.PKEY).FROM(PdtSize.class).queryList(Integer.class).stream().collect(Collectors.toSet());
-	
+
 	static Set<Integer> allColor = Query.SELECT(PdtColor.T.PKEY).FROM(PdtColor.class).queryList(Integer.class).stream().collect(Collectors.toSet());
-	
+
 	static Set<Integer> allAttrLine = Query.SELECT(PdtAttrLine.T.PKEY).FROM(PdtAttrLine.class).queryList(Integer.class).stream().collect(Collectors.toSet());
-	
+
 //	@Test
 	public void testSpec() {
 		System.out.println("-----------------------------------------校验规格表-------------------------------------------------");
@@ -61,7 +61,7 @@ public class TestColorOrSizeExists {
 		System.out.println("下面这些颜色不存在");
 		toConsole(noColor);
 	}
-	
+
 //	@Test
 	public void testProduct() {
 		System.out.println("-----------------------------------------校验产品表-------------------------------------------------");
@@ -140,7 +140,7 @@ public class TestColorOrSizeExists {
 		System.out.println("下面这些属性明细异常");
 		toConsole(illeageAttrLine);
 	}
-	
+
 	public static String toStr(Object o) {
 		try {
 			return mapper.writeValueAsString(o);
@@ -148,9 +148,9 @@ public class TestColorOrSizeExists {
 			return "";
 		}
 	}
-	
+
 	public static void toConsole(Object o) {
 		System.out.println(toStr(o));
 	}
-	
+
 }

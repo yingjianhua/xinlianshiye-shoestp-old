@@ -1,5 +1,6 @@
-package irille.pub.bean.query;
+package 备份.irille.pub.bean.query;
 
+import irille.pub.bean.query.BeanQuery;
 import java.util.List;
 
 import irille.pub.Str;

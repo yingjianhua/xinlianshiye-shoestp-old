@@ -1,7 +1,7 @@
 package irille.Entity.OdrerMeetings;
 
-import irille.Entity.OdrerMeetings.Enums.OrdrerMettingAuditStatus;
-import irille.Entity.OdrerMeetings.Enums.OrderMettingAuditType;
+import irille.Entity.OdrerMeetings.Enums.OrderMeetingAuditStatus;
+import irille.Entity.OdrerMeetings.Enums.OrderMeetingAuditType;
 import irille.pub.bean.BeanInt;
 import irille.pub.svr.Env;
 import irille.pub.tb.Fld;
@@ -23,9 +23,9 @@ public class OrderMeetingAudit extends BeanInt<OrderMeetingAudit> {
   public enum T implements IEnumFld {
     PKEY(TB.crtIntPkey()),
     OrderMeeting(irille.Entity.OdrerMeetings.OrderMeeting.fldOutKey()),
-    STATUS(TB.crt(OrdrerMettingAuditStatus.DEFAULT)),
+    STATUS(TB.crt(OrderMeetingAuditStatus.DEFAULT)),
     MESSAGE(SYS.STR__200_NULL, "消息"),
-    TYPE(TB.crt(OrderMettingAuditType.DEFAULT)),
+    TYPE(TB.crt(OrderMeetingAuditType.DEFAULT)),
     SUPPLIERID(UsrSupplier.fldOutKey().setNull()),
     SNAPSHOT(SYS.JSON, "快照"),
     CREATED_TIME(SYS.CREATED_DATE_TIME),
@@ -101,9 +101,9 @@ public class OrderMeetingAudit extends BeanInt<OrderMeetingAudit> {
 		super.init();
     _ordermeeting=null;	// 订购会信息 <表主键:OrderMeeting>  INT
     _name=null;	// 订购会标题  STR(200)
-    _status=OrdrerMettingAuditStatus.DEFAULT.getLine().getKey();	// 订购会状态 <OrdrerMettingAuditStatus>  BYTE
+    _status= OrderMeetingAuditStatus.DEFAULT.getLine().getKey();	// 订购会状态 <OrdrerMettingAuditStatus>  BYTE
     _message=null;	// 消息  STR(200)
-    _type=OrderMettingAuditType.DEFAULT.getLine().getKey();	// 供应商认证类型 <OrderMettingAuditType>  BYTE
+    _type= OrderMeetingAuditType.DEFAULT.getLine().getKey();	// 供应商认证类型 <OrderMettingAuditType>  BYTE
     _supplierid=null;	// 供应商 <表主键:UsrSupplier>  INT
     _snapshot=null;	// 快照  JSONOBJECT
     _createdTime=Env.getTranBeginTime();	// 建档时间  TIME
@@ -147,10 +147,10 @@ public class OrderMeetingAudit extends BeanInt<OrderMeetingAudit> {
   public void setStatus(Byte status){
     _status=status;
   }
-  public OrdrerMettingAuditStatus gtStatus(){
-    return (OrdrerMettingAuditStatus)(OrdrerMettingAuditStatus.PENDING.getLine().get(_status));
+  public OrderMeetingAuditStatus gtStatus(){
+    return (OrderMeetingAuditStatus)(OrderMeetingAuditStatus.PENDING.getLine().get(_status));
   }
-  public void stStatus(OrdrerMettingAuditStatus status){
+  public void stStatus(OrderMeetingAuditStatus status){
     _status=status.getLine().getKey();
   }
   public String getMessage(){
@@ -165,10 +165,10 @@ public class OrderMeetingAudit extends BeanInt<OrderMeetingAudit> {
   public void setType(Byte type){
     _type=type;
   }
-  public OrderMettingAuditType gtType(){
-    return (OrderMettingAuditType)(OrderMettingAuditType.PLATFORM.getLine().get(_type));
+  public OrderMeetingAuditType gtType(){
+    return (OrderMeetingAuditType)(OrderMeetingAuditType.PLATFORM.getLine().get(_type));
   }
-  public void stType(OrderMettingAuditType type){
+  public void stType(OrderMeetingAuditType type){
     _type=type.getLine().getKey();
   }
   public Integer getSupplierid(){
