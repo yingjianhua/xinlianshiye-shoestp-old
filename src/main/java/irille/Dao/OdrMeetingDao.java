@@ -76,7 +76,7 @@ public class OdrMeetingDao {
                 WHERE(OrderMeeting.T.SUPPLIERID, " =?", getSupplier);
             }
 
-            WHERE(OrderMeeting.T.STATUS, " <>?", OrderMeetingAuditStatus.DELETE.getLine().getKey());
+            WHERE(OrderMeeting.T.STATUS, " <>?", OrderMeetingStatus.DELETE.getLine().getKey());
             ORDER_BY(OrderMeeting.T.UPDATED_TIME, "desc");
         }};
         Integer count = Query.sql(sql).queryCount();
@@ -130,7 +130,7 @@ public class OdrMeetingDao {
             if (getSupplier != null) {
                 WHERE(OrderMeetingAudit.T.SUPPLIERID, " =?", getSupplier);
             }
-            WHERE(OrderMeeting.T.STATUS, " <> ?", OrderMeetingExhibitionStatus.DELETE.getLine().getKey());
+            WHERE(OrderMeeting.T.STATUS, " <> ?", OrderMeetingStatus.DELETE.getLine().getKey());
             ORDER_BY(OrderMeeting.T.UPDATED_TIME, "desc");
         }};
         Integer count = Query.sql(sql).queryCount();

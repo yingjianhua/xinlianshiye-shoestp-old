@@ -89,7 +89,7 @@ public class OrderMeeting extends BeanInt<OrderMeeting> {
   private Integer _pkey;	// 编号  INT
   private Integer _supplierid;	// 供应商 <表主键:UsrSupplier>  INT
   private String _name;	// 订购会标题  JSONOBJECT
-  private Byte _status;	// 订购会状态 <OrdrerMettingStatus>  BYTE
+  private Byte _status;	// 订购会状态 <OrderMeetingStatus>  BYTE
 	// TOBEGIN:2,即将开始
 	// ACTIVITY:3,活动中
 	// SUSPEND:4,暂停
@@ -114,7 +114,7 @@ public class OrderMeeting extends BeanInt<OrderMeeting> {
 		super.init();
     _supplierid=null;	// 供应商 <表主键:UsrSupplier>  INT
     _name=null;	// 订购会标题  JSONOBJECT
-    _status= OrderMeetingStatus.DEFAULT.getLine().getKey();	// 订购会状态 <OrdrerMettingStatus>  BYTE
+    _status=OrderMeetingStatus.DEFAULT.getLine().getKey();	// 订购会状态 <OrderMeetingStatus>  BYTE
     _exhibition=null;	// 订购会-会场信息 <表主键:OrderMeetingExhibition>  INT
     _customExhibition=null;	// 字符200  STR(200)
     _country=null;	// 国家管理 <表主键:PltCountry>  INT
