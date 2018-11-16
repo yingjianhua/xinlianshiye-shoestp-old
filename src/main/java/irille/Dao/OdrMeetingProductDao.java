@@ -12,24 +12,24 @@ import irille.pub.bean.query.BeanQuery;
  */
 public class OdrMeetingProductDao {
 
-  /**
-   * @Description: 检查是否有条件参加添加该商品到订购会
-   * @date 2018/11/15 11:21
-   * @author lijie@shoestp.cn
-   */
-  public boolean isAddToOdrMeeting(int odrMeetingId, int supplier) {
-    BeanQuery query = new BeanQuery();
-    query.SELECT(T.SUPPLIERID)
-        .FROM(OrderMeetingAudit.class)
-        .LEFT_JOIN(OrderMeeting.class, T.PKEY, OrderMeetingAudit.T.OrderMeeting)
-        .WHERE(T.SUPPLIERID, "= ?", supplier)  //判断是不是发起人
-        .WHERE(T.STATUS, "=?", OrderMeetingStatus.TOBEGIN)  //判断订购会状态
-        .WHERE(OrderMeetingAudit.T.SUPPLIERID, "=?", supplier)   //判断是通过的供应商
-        .WHERE(OrderMeetingAudit.T.STATUS, "=?", OrderMeetingAuditStatus.PASS)  //状态通过
-        .WHERE(OrderMeetingAudit.T.OrderMeeting, "=?", odrMeetingId)
-    ;
-    return query.queryCount() > 0;
-  }
+    /**
+     * @Description: 检查是否有条件参加添加该商品到订购会
+     * @date 2018/11/15 11:21
+     * @author lijie@shoestp.cn
+     */
+    public boolean isAddToOdrMeeting(int odrMeetingId, int supplier) {
+        BeanQuery query = new BeanQuery();
+        query.SELECT(T.SUPPLIERID)
+                .FROM(OrderMeetingAudit.class)
+                .LEFT_JOIN(OrderMeeting.class, T.PKEY, OrderMeetingAudit.T.OrderMeeting)
+                .WHERE(T.SUPPLIERID, "= ?", supplier)  //判断是不是发起人
+                .WHERE(T.STATUS, "=?", OrderMeetingStatus.TOBEGIN)  //判断订购会状态
+                .WHERE(OrderMeetingAudit.T.SUPPLIERID, "=?", supplier)   //判断是通过的供应商
+                .WHERE(OrderMeetingAudit.T.STATUS, "=?", OrderMeetingAuditStatus.ACTIVITY)  //状态通过
+                .WHERE(OrderMeetingAudit.T.OrderMeeting, "=?", odrMeetingId)
+        ;
+        return query.queryCount() > 0;
+    }
 
 
 }
