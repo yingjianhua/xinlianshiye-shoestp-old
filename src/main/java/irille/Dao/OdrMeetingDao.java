@@ -36,16 +36,16 @@ public class OdrMeetingDao {
     public boolean isJoinOdrMeeting(int odrMeetIngId, int supplier) {
         //参加的人不能是发起人,且不再审核列状态中  订购会已通过审核 状态为即将开始
         BeanQuery query = new BeanQuery();
-        query.SELECT(OrderMeeting.T.SUPPLIERID)
-                .FROM(OrderMeetingAudit.class)
-                .LEFT_JOIN(OrderMeeting.class, OrderMeetingAudit.T.PKEY, OrderMeetingAudit.T.OrderMeeting)
-                .WHERE(OrderMeeting.T.SUPPLIERID, "<> ?", supplier)
-                .WHERE(OrderMeeting.T.STATUS, "=?", OrderMeetingStatus.TOBEGIN)
-                .WHERE(OrderMeetingAudit.T.SUPPLIERID, "=?", supplier)
-                .WHERE(OrderMeetingAudit.T.STATUS, "<>?", OrderMeetingAuditStatus.ACTIVITY)
-//        .WHERE(OrderMeetingAudit.T.STATUS, "=?", OrderMeetingAuditStatus.PASS)
-                .WHERE(OrderMeetingAudit.T.OrderMeeting, "=?", odrMeetIngId)
-        ;
+//        query.SELECT(OrderMeeting.T.SUPPLIERID)
+//                .FROM(OrderMeetingAudit.class)
+//                .LEFT_JOIN(OrderMeeting.class, OrderMeetingAudit.T.PKEY, OrderMeetingAudit.T.OrderMeeting)
+//                .WHERE(OrderMeeting.T.SUPPLIERID, "<> ?", supplier)
+//                .WHERE(OrderMeeting.T.STATUS, "=?", OrderMeetingStatus.TOBEGIN)
+//                .WHERE(OrderMeetingAudit.T.SUPPLIERID, "=?", supplier)
+//                .WHERE(OrderMeetingAudit.T.STATUS, "<>?", OrderMeetingAuditStatus.ACTIVITY)
+////        .WHERE(OrderMeetingAudit.T.STATUS, "=?", OrderMeetingAuditStatus.PASS)
+//                .WHERE(OrderMeetingAudit.T.OrderMeeting, "=?", odrMeetIngId)
+//        ;
         return query.queryCount() == 0;
     }
 
@@ -120,7 +120,7 @@ public class OdrMeetingDao {
             ).SELECT(OrderMeetingExhibition.T.COUNTRY, "omecountry");
             FROM(OrderMeeting.class);
             LEFT_JOIN(OrderMeetingExhibition.class, OrderMeetingExhibition.T.PKEY, OrderMeeting.T.EXHIBITION);
-            LEFT_JOIN(OrderMeetingAudit.class, OrderMeetingAudit.T.OrderMeeting, OrderMeeting.T.PKEY);
+      //      LEFT_JOIN(OrderMeetingAudit.class, OrderMeetingAudit.T.OrderMeeting, OrderMeeting.T.PKEY);
             if (name != null) {
                 WHERE(OrderMeeting.T.NAME, " like '%" + name + "%'");
             }
@@ -181,7 +181,7 @@ public class OdrMeetingDao {
             ).SELECT(OrderMeetingExhibition.T.COUNTRY, "omecountry");
             FROM(OrderMeeting.class);
             LEFT_JOIN(OrderMeetingExhibition.class, OrderMeetingExhibition.T.PKEY, OrderMeeting.T.EXHIBITION);
-            LEFT_JOIN(OrderMeetingAudit.class, OrderMeetingAudit.T.OrderMeeting, OrderMeeting.T.PKEY);
+         //   LEFT_JOIN(OrderMeetingAudit.class, OrderMeetingAudit.T.OrderMeeting, OrderMeeting.T.PKEY);
             WHERE(OrderMeeting.T.STATUS, " <>", OrderMeetingExhibitionStatus.DELETE.getLine().getKey());
             if (name.equals("")) {
                 WHERE(OrderMeeting.T.NAME, " like %?%", name);

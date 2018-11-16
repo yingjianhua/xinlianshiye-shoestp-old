@@ -117,9 +117,9 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
     public void joInOdrMeeting(int odrMeetIngId, int supplier) {
         if (odrMeetingDao.isJoinOdrMeeting(odrMeetIngId, supplier)) {
             OrderMeetingAudit audit = new OrderMeetingAudit();
-            audit.setOrdermeeting(odrMeetIngId);
-            audit.stStatus(OrderMeetingAuditStatus.DEFAULT);
-            audit.stType(OrderMeetingAuditType.SUPPLIER);
+//            audit.setOrdermeeting(odrMeetIngId);
+//            audit.stStatus(OrderMeetingAuditStatus.DEFAULT);
+//            audit.stType(OrderMeetingAuditType.SUPPLIER);
             audit.setSupplierid(supplier);
             audit.setCreatedTime(new Date());
             odrMeetingAuditInsDao.setB(audit).commit();
