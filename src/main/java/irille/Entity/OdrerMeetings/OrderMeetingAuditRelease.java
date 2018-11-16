@@ -26,7 +26,6 @@ public class OrderMeetingAuditRelease extends BeanInt<OrderMeetingAuditRelease> 
     ODRMEETING(OrderMeeting.fldOutKey()),
     STATUS(TB.crt(OrderMeetingAuditStatus.DEFAULT)),
     MESSAGE(SYS.STR__200_NULL, "消息"),
-    SNAPSHOT(SYS.JSON, "快照"),
     CREATED_TIME(SYS.CREATED_DATE_TIME),
     ROW_VERSION(SYS.ROW_VERSION),
     //>>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
@@ -85,7 +84,6 @@ public class OrderMeetingAuditRelease extends BeanInt<OrderMeetingAuditRelease> 
 	// DISCONTINUATION:3,停用
 	// DELETE:4,已删除
   private String _message;	// 消息  STR(200)<null>
-  private String _snapshot;	// 快照  JSONOBJECT
   private Date _createdTime;	// 建档时间  TIME
   private Short _rowVersion;	// 版本  SHORT
 
@@ -95,7 +93,6 @@ public class OrderMeetingAuditRelease extends BeanInt<OrderMeetingAuditRelease> 
     _odrmeeting=null;	// 订购会信息 <表主键:OrderMeeting>  INT
     _status=OrderMeetingAuditStatus.DEFAULT.getLine().getKey();	// 参加订购会状态 <OrderMeetingAuditStatus>  BYTE
     _message=null;	// 消息  STR(200)
-    _snapshot=null;	// 快照  JSONOBJECT
     _createdTime=Env.getTranBeginTime();	// 建档时间  TIME
     _rowVersion=0;	// 版本  SHORT
     return this;
@@ -142,18 +139,6 @@ public class OrderMeetingAuditRelease extends BeanInt<OrderMeetingAuditRelease> 
   }
   public void setMessage(String message){
     _message=message;
-  }
-  public String getSnapshot(){
-    return _snapshot;
-  }
-  public void setSnapshot(String snapshot){
-    _snapshot=snapshot;
-  }
-  public JSONObject gtSnapshot() throws JSONException {
-    return getSnapshot()==null?new JSONObject():new JSONObject(getSnapshot());
-  }
-  public void stSnapshot(JSONObject snapshot){
-    setSnapshot(snapshot==null?null:snapshot.toString());
   }
   public Date getCreatedTime(){
     return _createdTime;
