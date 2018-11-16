@@ -74,10 +74,9 @@ public class OrderMeetingExhibition extends BeanInt<OrderMeetingExhibition> {
   //>>>以下是自动产生的源代码行--源代码--请保留此行用于识别>>>
   //实例变量定义-----------------------------------------
   private Integer _pkey;	// 编号  INT
-  private String _address;	// 订购会标题  STR(200)<null>
-  private String _coutry;	// 订购会标题  STR(200)<null>
-  private Date _startTime;	// 结束时间  TIME
-  private Date _endTime;	// 开始时间  TIME
+  private String _address;	// 展厅地址  STR(200)<null>
+  private String _name;	// 订购会标题  STR(200)<null>
+  private Integer _country;	// 国家管理 <表主键:PltCountry>  INT
   private Byte _status;	// 供应商场地 <OrderMeetingExhibitionStatus>  BYTE
 	// FAILED:0,未通过
 	// PASS:1,通过
@@ -88,10 +87,9 @@ public class OrderMeetingExhibition extends BeanInt<OrderMeetingExhibition> {
 	@Override
   public OrderMeetingExhibition init(){
 		super.init();
-    _address=null;	// 订购会标题  STR(200)
-    _coutry=null;	// 订购会标题  STR(200)
-    _startTime=null;	// 结束时间  TIME
-    _endTime=null;	// 开始时间  TIME
+    _address=null;	// 展厅地址  STR(200)
+    _name=null;	// 订购会标题  STR(200)
+    _country=null;	// 国家管理 <表主键:PltCountry>  INT
     _status=OrderMeetingExhibitionStatus.DEFAULT.getLine().getKey();	// 供应商场地 <OrderMeetingExhibitionStatus>  BYTE
     _createdTime=Env.getTranBeginTime();	// 建档时间  TIME
     _rowVersion=0;	// 版本  SHORT
@@ -111,23 +109,28 @@ public class OrderMeetingExhibition extends BeanInt<OrderMeetingExhibition> {
   public void setAddress(String address){
     _address=address;
   }
-  public String getCoutry(){
-    return _coutry;
+  public String getName(){
+    return _name;
   }
-  public void setCoutry(String coutry){
-    _coutry=coutry;
+  public void setName(String name){
+    _name=name;
   }
-  public Date getStartTime(){
-    return _startTime;
+  public Integer getCountry(){
+    return _country;
   }
-  public void setStartTime(Date startTime){
-    _startTime=startTime;
+  public void setCountry(Integer country){
+    _country=country;
   }
-  public Date getEndTime(){
-    return _endTime;
+  public PltCountry gtCountry(){
+    if(getCountry()==null)
+      return null;
+    return (PltCountry)get(PltCountry.class,getCountry());
   }
-  public void setEndTime(Date endTime){
-    _endTime=endTime;
+  public void stCountry(PltCountry country){
+    if(country==null)
+      setCountry(null);
+    else
+      setCountry(country.getPkey());
   }
   public Byte getStatus(){
     return _status;

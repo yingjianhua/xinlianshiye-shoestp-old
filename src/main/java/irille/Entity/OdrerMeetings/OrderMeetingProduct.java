@@ -86,7 +86,8 @@ public class OrderMeetingProduct extends BeanInt<OrderMeetingProduct> {
   private Byte _status;	// 供应商认证 <OrderMettingProductStatus>  BYTE
 	// OFF:0,下架
 	// ON:1,上架
-	// DELETE:2,违规下架
+	// IRREGULARITIESDELETE:2,违规下架
+	// DELETE:3,删除
   private Integer _moq;	// 原起订量  INT
   private BigDecimal _price;	// 原商品价格  DEC(14,4)
   private Integer _newmoq;	// 活动起订量  INT

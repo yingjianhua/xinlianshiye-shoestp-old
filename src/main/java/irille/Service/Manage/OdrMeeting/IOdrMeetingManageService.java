@@ -1,13 +1,10 @@
 package irille.Service.Manage.OdrMeeting;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.inject.ImplementedBy;
-import irille.Entity.OdrerMeetings.Enums.OrderMeetingAuditStatus;
+import irille.Entity.OdrerMeetings.Enums.OrdrerMettingAuditStatus;
 import irille.Service.Manage.OdrMeeting.Imp.OdrMeetingManageServiceImp;
 import irille.pub.idu.IduPage;
 import irille.view.Manage.OdrMeeting.OdrMeetingInfoView;
-import irille.view.Manage.OdrMeeting.Sale.OdrMeetingSaleInfoView;
-import java.util.List;
 
 /**
  * 商家端 订购会接口
@@ -42,17 +39,21 @@ public interface IOdrMeetingManageService {
    */
   OdrMeetingInfoView getMyOdrMeetingInfo(IduPage iduPage, OrderMeetingAuditStatus status);
 
+  OdrMeetingInfoView getMyOdrMeetingInfo(Integer pkey);
+
   /**
    * @Description:获取我发起的订购订购会 列表
    * @date 2018/11/14 13:30
    */
   OdrMeetingInfoView getMyOdrMeetingList(IduPage iduPage, OrderMeetingAuditStatus status);
+  Page getMyOdrMeetingList(Integer start, Integer limit, String name, Integer state, Integer supplierpkey );
 
   /**
    * @Description: 获取我加入的订购会 列表
    * @date 2018/11/14 13:32
    */
   OdrMeetingInfoView getMyJoinOdrMeetingList(IduPage iduPage, OrderMeetingAuditStatus status);
+  Page  getMyJoinOdrMeetingList(Integer start, Integer limit, String name, Integer state, Integer supplierpkey);
 
   /**
    * @Description: 获取我的其他订购会 列表
@@ -65,7 +66,20 @@ public interface IOdrMeetingManageService {
    * @date 2018/11/15 11:18
    */
   void joInOdrMeeting(int odrMeetIng, int supplier);
+  Page getMyOtherOdrMeetingList(Integer start, Integer limit, String name, Integer state, Integer supplierpkey);
 
+/**
+*@Description:  获取订购会状态列表
+*@date 2018/11/15 11:33
+*@anthor wilson zhang
+*/
+JSONObject loadstate() throws Exception;
+/**
+*@Description:   批量删除
+*@date 2018/11/15 18:04
+*@anthor wilson zhang
+*/
+void batchdelete(String pkeys);
 
   /**
    * @Description: 获取某个订购会销售明细
@@ -74,4 +88,10 @@ public interface IOdrMeetingManageService {
    */
 
   List<OdrMeetingSaleInfoView> getMeetingSaleInfo(int start, int limit, int odrMeeting, int type,int supplierId);
+/**
+*@Description:   订购会列表  修改状态
+*@date 2018/11/15 18:04
+*@anthor wilson zhang
+*/
+void Meettingupdstate(Integer pkey,Integer state);
 }

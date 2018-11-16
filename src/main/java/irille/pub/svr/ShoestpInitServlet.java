@@ -3,6 +3,7 @@ package irille.pub.svr;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
+import irille.Entity.OdrerMeetings.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,6 +45,11 @@ public class ShoestpInitServlet extends HttpServlet {
 				System.out.println("类初始加载：" + tb.getTb().getCode());
 			}
 		}
+		OrderMeeting.TB.getCode();
+		OrderMeetingAudit.TB.getCode();
+		OrderMeetingExhibition.TB.getCode();
+		OrderMeetingOrder.TB.getCode();
+		OrderMeetingProduct.TB.getCode();
 	}
 	
 	public void createTable(Class<?> beanClass) {

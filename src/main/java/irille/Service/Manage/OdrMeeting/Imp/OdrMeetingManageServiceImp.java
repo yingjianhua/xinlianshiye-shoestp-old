@@ -1,19 +1,10 @@
 package irille.Service.Manage.OdrMeeting.Imp;
 
 import irille.Dao.OdrMeetingDao;
-import irille.Dao.Old.OdrMeeting.OdrMeetingAuditInsDao;
-import irille.Dao.Old.OdrMeeting.OdrMeetingInsDao;
-import irille.Entity.OdrerMeetings.Enums.OrderMeetingAuditStatus;
-import irille.Entity.OdrerMeetings.Enums.OrderMeetingAuditType;
-import irille.Entity.OdrerMeetings.Enums.OrderMeetingStatus;
-import irille.Entity.OdrerMeetings.OrderMeeting;
-import irille.Entity.OdrerMeetings.OrderMeetingAudit;
+import irille.Entity.OdrerMeetings.Enums.OrdrerMettingAuditStatus;
 import irille.Service.Manage.OdrMeeting.IOdrMeetingManageService;
 import irille.pub.idu.IduPage;
 import irille.view.Manage.OdrMeeting.OdrMeetingInfoView;
-import irille.view.Manage.OdrMeeting.Sale.OdrMeetingSaleInfoView;
-import java.util.Date;
-import java.util.List;
 import javax.inject.Inject;
 
 /**
@@ -89,25 +80,23 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
   }
 
   @Override
-  public OdrMeetingInfoView getMyOdrMeetingInfo(IduPage iduPage, OrderMeetingAuditStatus status) {
+  public OdrMeetingInfoView getMyOdrMeetingInfo(Integer pkeys) {
     return null;
   }
 
   @Override
-  public OdrMeetingInfoView getMyOdrMeetingList(IduPage iduPage, OrderMeetingAuditStatus status) {
-    return null;
+  public Page getMyOdrMeetingList(Integer start, Integer limit, String name, Integer state, Integer supplierpkey) {
+    return OdrMeetingDao.Launchlist(start,limit,name,state,supplierpkey);
   }
 
   @Override
-  public OdrMeetingInfoView getMyJoinOdrMeetingList(IduPage iduPage,
-      OrderMeetingAuditStatus status) {
-    return null;
+  public Page getMyJoinOdrMeetingList(Integer start, Integer limit, String name, Integer state, Integer supplierpkey) {
+    return OdrMeetingDao.participatelist(start,limit,name,state,supplierpkey);
   }
 
   @Override
-  public OdrMeetingInfoView getMyOtherOdrMeetingList(IduPage iduPage,
-      OrderMeetingAuditStatus status) {
-    return null;
+  public  Page getMyOtherOdrMeetingList(Integer start, Integer limit, String name, Integer state, Integer supplierpkey) {
+    return OdrMeetingDao.Otherlist(start,limit,name,state,supplierpkey);
   }
 
   @Override
@@ -122,11 +111,45 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
       odrMeetingAuditInsDao.setB(audit).commit();
     }
   }
+  @Override
+  public JSONObject loadstate() throws Exception {
+    JSONObject json = new JSONObject();
+    JSONArray ja = new JSONArray();
+    System.out.println("进入状态");
+    for(OrdrerMettingAuditStatus o:OrdrerMettingAuditStatus.values())
+    {
+      System.out.println(o.getLine().getKey()+"当前状态");
+      if(o.getLine().getKey()==6){
+        continue;
+      }
+      JSONObject lineJsona = new JSONObject();
+      lineJsona.put("name", o.getLine().getName());
+      lineJsona.put("id", o.getLine().getKey());
+      ja.put(lineJsona);
+    }
+    json.put("STORE_ROOT",ja);
+   return json;
+  }
 
   @Override
   public List<OdrMeetingSaleInfoView> getMeetingSaleInfo(int start, int limit, int odrMeeting,
       int type, int supplierId) {
     return odrMeetingDao.getMeetingAllSaleInfo(start, limit, odrMeeting);
+  }
+  @Override
+  public void batchdelete(String pkeys) {
+    OdrMeetingDao.batchdelete(pkeys);
+  }
+
+  @Override
+  public void Meettingupdstate(Integer pkey, Integer state) {
+    OdrMeetingDao.Meettingupdstate mgd=  new OdrMeetingDao.Meettingupdstate();
+    OrderMeeting om=new OrderMeeting();
+    om.setPkey(pkey);
+    om.setStatus(state.byteValue());
+    mgd.setB(om);
+    mgd.commit();
+
   }
 
 
