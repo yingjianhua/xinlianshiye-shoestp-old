@@ -99,8 +99,8 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
     }
 
     @Override
-    public Page getMyOdrMeetingList(Integer start, Integer limit, String name, Integer state, Integer supplierpkey) {
-        return odrMeetingDao.Launchlist(start, limit, name, state, supplierpkey);
+    public Page getMyOdrMeetingList(Integer start, Integer limit, String name,Integer supstate, Integer state, Integer supplierpkey) {
+        return odrMeetingDao.Launchlist(start, limit, name,supstate, state, supplierpkey);
     }
 
     @Override
@@ -127,13 +127,27 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
     }
 
     @Override
+    public JSONObject loadsupstate() throws Exception {
+        JSONObject json = new JSONObject();
+        JSONArray ja = new JSONArray();
+        for (OrderMeetingAuditStatus o : OrderMeetingAuditStatus.values()) {
+            if (o.getLine().getKey() == 4) {
+                continue;
+            }
+            JSONObject lineJsona = new JSONObject();
+            lineJsona.put("name", o.getLine().getName());
+            lineJsona.put("id", o.getLine().getKey());
+            ja.put(lineJsona);
+        }
+        json.put("STORE_ROOT", ja);
+        return json;
+    }
+    @Override
     public JSONObject loadstate() throws Exception {
         JSONObject json = new JSONObject();
         JSONArray ja = new JSONArray();
-        System.out.println("进入状态");
-        for (OrderMeetingAuditStatus o : OrderMeetingAuditStatus.values()) {
-            System.out.println(o.getLine().getKey() + "当前状态");
-            if (o.getLine().getKey() == 6) {
+        for (OrderMeetingStatus o : OrderMeetingStatus.values()) {
+            if (o.getLine().getKey() == 9) {
                 continue;
             }
             JSONObject lineJsona = new JSONObject();

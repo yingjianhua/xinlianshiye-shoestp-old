@@ -12,15 +12,16 @@ import java.util.Date;
  */
 @Data
 public class OdrMeetingLaunchlistView {
-    private int id; //订购会PKYS
+    private Integer id; //订购会PKYS
     private String images;//缩略图
     @JsonSerialize(using= I18NFieldSerializer.class)
     private String name;//订购会名称
     @JsonSerialize(using= I18NFieldSerializer.class)
     private String country;//国家
-    private int state;//状态
+    private Integer state;// 订购会状态
     @JsonFormat(pattern="yyyy.MM.dd", timezone="GMT+8")
     private Date starttime;//开始时间
     @JsonFormat(pattern="yyyy.MM.dd", timezone="GMT+8")
     private Date endtime;//结束时间
+    private Integer supplierstate;// 订购会状态
 }

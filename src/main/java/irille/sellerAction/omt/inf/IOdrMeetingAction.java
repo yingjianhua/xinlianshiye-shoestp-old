@@ -7,8 +7,8 @@ import irille.view.Page;
 
 @Controller(module="用户管理", name="联合订单")
 public interface IOdrMeetingAction extends ISellerAction {
-    @RequestMapping(alias="状态列表", sort=1)
-    public void loadstate() throws Exception;
+    @RequestMapping(alias="审核状态列表", sort=1)
+    public void loadsupstate() throws Exception;
     @RequestMapping(alias="发起订购会列表", sort=2)
     public void getMyOdrMeetingList() throws Exception;
     @RequestMapping(alias="加入订购会列表", sort=3)
@@ -19,5 +19,7 @@ public interface IOdrMeetingAction extends ISellerAction {
     public void batchdelete() throws Exception;
     @RequestMapping(alias="订购会列表  修改状态", sort=6)
     public void Meettingupdstate() throws Exception;
+    @RequestMapping(alias="状态列表", sort=1)
+    public void loadstate() throws Exception;
 
 }
