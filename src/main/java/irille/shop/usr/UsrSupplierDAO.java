@@ -3,8 +3,8 @@ package irille.shop.usr;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import irille.core.sys.Sys;
-import irille.homeAction.usr.dto.SupplierListView;
 import irille.homeAction.usr.dto.Page_supplierProductView;
+import irille.homeAction.usr.dto.SupplierListView;
 import irille.pub.DateTools;
 import irille.pub.LogMessage;
 import irille.pub.PropertyUtils;
@@ -28,12 +28,10 @@ import irille.shop.plt.*;
 import irille.shop.plt.PltPay.OPay_Mode;
 import irille.shop.prm.PrmGroupPurchase;
 import irille.shop.usr.Usr.OStatus;
-import irille.shop.usr.UsrPurchaseDAO.Uda;
 import irille.shop.usr.UsrSupplier.T;
 import irille.view.usr.AccountSettingsView;
 import irille.view.usr.SupplierView;
 import irille.view.usr.shopSettingView;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -54,6 +52,7 @@ public class UsrSupplierDAO {
         view.setName(bean.getName());
         return view;
     }
+
     /**
      * 商家端,商家账户设置页面需要的信息
      *
@@ -160,17 +159,17 @@ public class UsrSupplierDAO {
                 ORDER_BY(T.SORT, "asc");
                 ORDER_BY(T.UPDATE_TIME, "desc");
             }};
-
             Map map = new HashMap();
-            map.put("total", irille.pub.bean.Query.sql(sql).queryCount());
+            map.put("total", irille.pub.bean.Query.sql(sql).queryMaps().size());
             sql.LIMIT(page.getStart(), page.getLimit());
 
 
             List<SupplierListView> views = irille.pub.bean.Query.sql(sql).queryMaps().stream().map(bean -> new SupplierListView() {{
-                setPkey((Integer) bean.get(UsrSupplier.T.PKEY.getFld().getCodeSqlField()));
-                setLogo((String) bean.get(UsrSupplier.T.LOGO.getFld().getCodeSqlField()));
-                setName((String) bean.get(UsrSupplier.T.NAME.getFld().getCodeSqlField()));
-                setProdpattern((String) bean.get(UsrSupplier.T.PROD_PATTERN.getFld().getCodeSqlField()));
+                setPkey((Integer) bean.get(T.PKEY.getFld().getCodeSqlField()));
+                setLogo((String) bean.get(T.LOGO.getFld().getCodeSqlField()));
+                setName((String) bean.get(T.NAME.getFld().getCodeSqlField()));
+                System.out.println(bean);
+                setProdpattern((String) bean.get(T.PROD_PATTERN.getFld().getCodeSqlField()));
                 setProDuctCount(Long.valueOf((bean.get("prodCount") == null ? 0 : bean.get("prodCount")).toString()));
                 SQL prodSQL = new SQL() {{
                     SELECT(PdtProduct.T.PKEY, PdtProduct.T.PICTURE, PdtProduct.T.NAME);
@@ -195,7 +194,6 @@ public class UsrSupplierDAO {
         }
 
 
-
         /***
          * 获取分类
          * @author lijie@shoestp.cn
@@ -211,7 +209,6 @@ public class UsrSupplierDAO {
             );
             return BeanBase.list(sql.buildSql());
         }
-
 
 
         /***
@@ -324,6 +321,7 @@ public class UsrSupplierDAO {
             setB(dbBean);
         }
     }
+
     public static class UpdDiy extends IduUpd<UpdDiy, UsrSupplier> {
         @Override
         public void before() {
@@ -927,21 +925,21 @@ public class UsrSupplierDAO {
         ssv.setShopcategory(us.getCategory());
         return ssv;
     }
-    
+
     /**
      * 修改装修店铺
      * 商家 @author  wilson zhang
      */
-    public static class setting extends IduUpd<setting,UsrSupplier>{
+    public static class setting extends IduUpd<setting, UsrSupplier> {
 
         @Override
         public void before() {
             UsrSupplier dbBean = loadThisBeanAndLock();
-            PropertyUtils.copyProperties(dbBean, getB(),T.LOGO,T.SIGN_BACKGD,T.AD_PHOTO,T.AD_PHOTO_LINK,T.COMPANY_PHOTO,T.COMPANY_PHOTO_LINK,T.HOME_PAGE_DIY,T.HOME_PAGE_ON,T.COMPANY_INTRODUCTION_PAGE_CUSTOM_DECORATION,T.BOTTOM_HOME_PRODUCTS_ON,T.HOME_POSTER_ON,T.HOME_BUSINESS_BIG_POSTER_ON,T.COMPANY_INTRODUCTION_PAGE_CUSTOM_DECORATION_ON);
+            PropertyUtils.copyProperties(dbBean, getB(), T.LOGO, T.SIGN_BACKGD, T.AD_PHOTO, T.AD_PHOTO_LINK, T.COMPANY_PHOTO, T.COMPANY_PHOTO_LINK, T.HOME_PAGE_DIY, T.HOME_PAGE_ON, T.COMPANY_INTRODUCTION_PAGE_CUSTOM_DECORATION, T.BOTTOM_HOME_PRODUCTS_ON, T.HOME_POSTER_ON, T.HOME_BUSINESS_BIG_POSTER_ON, T.COMPANY_INTRODUCTION_PAGE_CUSTOM_DECORATION_ON);
             setB(dbBean);
             super.before();
         }
-    	
+
     }
-    
+
 }

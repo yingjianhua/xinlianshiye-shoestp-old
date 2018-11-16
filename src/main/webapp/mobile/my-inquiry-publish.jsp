@@ -399,384 +399,385 @@
 
 <%-- start 用 vue --%>
 <script>
-  function gtag_report_conversion(url) {
-    var callback = function () {
-      if (typeof(url) != 'undefined') {
-        window.location = url;
-      }
-    };
-    gtag('event', 'conversion', {
-      'send_to': 'AW-783435725/2sU4CMb_io8BEM2PyfUC',
-      'event_callback': callback
-    });
-    return false;
-  }
+    function gtag_report_conversion(url) {
+        var callback = function () {
+            if (typeof(url) != 'undefined') {
+                window.location = url;
+            }
+        };
+        gtag('event', 'conversion', {
+            'send_to': 'AW-783435725/2sU4CMb_io8BEM2PyfUC',
+            'event_callback': callback
+        });
+        return false;
+    }
 
-  var vm = new Vue({
-    el: "#app",
-    data: {
-      imgsToUpload: []       // 需要upload的img - 显示在页面上
-      , rq_mark: true        // 开关
-      , goodsList: []        //供选择的商品列表
-      , selectGoodsIndex: -1       //勾选的商品下标
-      , countryList: []        //城市列表
-      , param_product_id: -1 //传过来的id(询盘商品列表对应的id)
-      , submitObj: {          // 需要上传给后台的对象
-        vCode: "",
-        v: {
-          title: "",
-          image: "",
-          product: undefined,
-          name: "",
-          email: "",
-          country: undefined,
-          quantity: undefined,
-          content: "",
-          supplierId: -1  //商店进来时，携带 商店参数
-        }
-      }
-    },
-    methods: {
-      // 点击选择商品 - 远程获取 goodsList
-      toSelectPdt() {
-        // 清空之前选中的，如果之前选中并提交过，则选中该goods
-        $(".choose-goods-wrap .goods-item").removeClass("selected")
-        if (this.selectGoodsIndex != -1) {
-          $(".choose-goods-wrap .goods-item").eq(this.selectGoodsIndex).addClass("selected");
-        }
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            imgsToUpload: []       // 需要upload的img - 显示在页面上
+            , rq_mark: true        // 开关
+            , goodsList: []        //供选择的商品列表
+            , selectGoodsIndex: -1       //勾选的商品下标
+            , countryList: []        //城市列表
+            , param_product_id: -1 //传过来的id(询盘商品列表对应的id)
+            , submitObj: {          // 需要上传给后台的对象
+                vCode: "",
+                v: {
+                    title: "",
+                    image: "",
+                    product: undefined,
+                    name: "",
+                    email: "",
+                    country: undefined,
+                    quantity: undefined,
+                    content: "",
+                    supplierId: -1  //商店进来时，携带 商店参数
+                }
+            }
+        },
+        methods: {
+            // 点击选择商品 - 远程获取 goodsList
+            toSelectPdt() {
+                // 清空之前选中的，如果之前选中并提交过，则选中该goods
+                $(".choose-goods-wrap .goods-item").removeClass("selected")
+                if (this.selectGoodsIndex != -1) {
+                    $(".choose-goods-wrap .goods-item").eq(this.selectGoodsIndex).addClass("selected");
+                }
 
-        $(".modal").fadeIn();
-        $(".modal-wrap.choose-goods-wrap").fadeIn();
-      },
+                $(".modal").fadeIn();
+                $(".modal-wrap.choose-goods-wrap").fadeIn();
+            },
 
-      // 点击商品 显示选中 or 取消选中
-      clickPdt(e) {
-        let currentTarget = $(e.currentTarget);
-        // 点击的是删除
-        if ($(e.target).hasClass("close")) {
-          layer.open({
-            content: lang_obj.my_inquiry_publish.deletethisgoods
-            , btn: ['yes', 'no']
-            , yes: (index) => {
-              layer.close(index);
-              axios.post('/home/pdt_PdtConsultPdtList_deletes',
-                  Qs.stringify({ids: currentTarget.data("goodsId")}))
-              .then((res) => {
+            // 点击商品 显示选中 or 取消选中
+            clickPdt(e) {
+                let currentTarget = $(e.currentTarget);
+                // 点击的是删除
+                if ($(e.target).hasClass("close")) {
+                    layer.open({
+                        content: lang_obj.my_inquiry_publish.deletethisgoods
+                        , btn: ['yes', 'no']
+                        , yes: (index) => {
+                            layer.close(index);
+                            axios.post('/home/pdt_PdtConsultPdtList_deletes',
+                                Qs.stringify({ids: currentTarget.data("goodsId")}))
+                                .then((res) => {
 
-                // 提交成功时
-                if (res.data.ret == 1) {
-                  currentTarget[0].style.display = "none";
-                  // 如果删除的是已选中的商品，清空显示在页面上的商品信息
-                  if (this.goodsList[this.selectGoodsIndex].id == e.target.dataset.goodsId) {
+                                    // 提交成功时
+                                    if (res.data.ret == 1) {
+                                        currentTarget[0].style.display = "none";
+                                        // 如果删除的是已选中的商品，清空显示在页面上的商品信息
+                                        if (this.goodsList[this.selectGoodsIndex].id == e.target.dataset.goodsId) {
+                                            this.selectGoodsIndex = -1;
+                                            this.submitObj.v.product = "";
+                                        }
+                                        // this.goodsList.splice( currentTarget.data("goodsIndex"), 1 );
+                                        // 提示信息
+                                        layer.open({
+                                            content: 'delete success!'
+                                            , style: 'bottom: auto;'
+                                            , skin: 'msg'
+                                            , time: 2 //2秒后自动关闭
+                                        });
+                                        // 提交失败时
+
+                                    } else {
+                                        layer.open({
+                                            content: res.data.msg
+                                            , btn: 'ok'
+                                        });
+                                    }
+                                })
+
+                        }
+                    });
+                    // 否则是选中 事件
+                } else {
+                    $(e.currentTarget).toggleClass("selected").siblings(".goods-item").removeClass(
+                        "selected");
+                }
+            },
+
+            // 取消弹框选择
+            cancelSelectedGoods() {
+                $(".modal").fadeOut();
+                $(".modal-wrap.choose-goods-wrap").fadeOut();
+            },
+
+            // 选好商品后提交商品 （确认弹框）
+            submitSelectedGoods() {
+                // 如果选中商品，复制图片地址 及 goodsId
+                let target = $(".choose-goods-wrap .goods-item.selected");
+                if (target.length > 0) {
+                    this.selectGoodsIndex = target.data("goodsIndex");
+                    this.submitObj.v.product = target.data("productId");
+
+                    // 如果勾选了"use products title"
+                    if ($("#use-title").prop("checked")) {
+                        this.submitObj.v.title = target.find(".goods-name").text();
+                    }
+                    // 否则清空上传的img地址 及 goodsId
+                } else {
                     this.selectGoodsIndex = -1;
                     this.submitObj.v.product = "";
-                  }
-                  // this.goodsList.splice( currentTarget.data("goodsIndex"), 1 );
-                  // 提示信息
-                  layer.open({
-                    content: 'delete success!'
-                    , style: 'bottom: auto;'
-                    , skin: 'msg'
-                    , time: 2 //2秒后自动关闭
-                  });
-                  // 提交失败时
-
-                } else {
-                  layer.open({
-                    content: res.data.msg
-                    , btn: 'ok'
-                  });
+                    //layer.open({content:'No product was selected.',btn: 'ok'});
                 }
-              })
 
+                // 模态框隐藏
+                $(".modal").fadeOut();
+                $(".modal-wrap.choose-goods-wrap").fadeOut();
+            },
+            // 整个form提交
+            submit() {
+                if (!this.isFormatRight()) return;
+                // 拼接多图 地址
+                // this.submitObj.v.image =   this.imgsToUpload.join(",");
+                let goodsIndex = $(".choose-goods-list .goods-item.selected").data("goodsIndex"); //获取选中的商品所在list的下标
+                // 提交时，如果勾选了商品，则上传的图片第一张为该商品图，后面4张为上传的图片
+                if ($(".choose-goods-list .goods-item.selected").length > 0) {
+                    if (this.imgsToUpload.length > 4) {
+                        this.submitObj.v.image = this.goodsList[goodsIndex].imgs.split(',')[0] + ","
+                            + this.imgsToUpload.slice(0, 4).join(",");
+                    } else if (this.imgsToUpload.length == 0) {
+                        this.submitObj.v.image = this.goodsList[goodsIndex].imgs.split(',')[0]
+                    } else {
+                        this.submitObj.v.image = this.goodsList[goodsIndex].imgs.split(',')[0] + ","
+                            + this.imgsToUpload.join(",");
+                    }
+                } else {
+                    this.submitObj.v.image = this.imgsToUpload.join(",");
+                }
+
+                // 如果没有选择goods，or没有上传图片
+                if (this.submitObj.v.image.length == 0) {
+                    layer.open({
+                        content: lang_obj.my_inquiry_publish.Pleaseselect_a_goods
+                        , style: 'bottom: auto;'
+                        , skin: 'msg'
+                        , time: 3 //2秒后自动关闭
+                    });
+                    return
+                }
+
+                // axios({
+                //     method: 'post',
+                //     url: '/home/usr_UsrConsult_publish',
+                //     headers: {
+                //         'Content-type': 'application/x-www-form-urlencoded'
+                //     },
+                //     params: {
+                //       'vCode':this.submitObj.vCode,
+                //       'v.title':this.submitObj.v.title,
+                //       "vCode":this.submitObj.vCode,
+                //       "v.title":this.submitObj.v.title,
+                //       "v.image":this.submitObj.v.image,
+                //       "v.product":this.submitObj.v.product,
+                //       "v.name":this.submitObj.v.name,
+                //       "v.email":this.submitObj.v.email,
+                //       "v.country":this.submitObj.v.country,
+                //       "v.quantity":this.submitObj.v.quantity,
+                //       "v.content":this.submitObj.v.content
+                //     }
+                // })
+                //     .then((response) => {
+                //         console.log(response);
+                //     })
+                //     .catch((error) => {
+                //         console.log(error);
+                //     });
+
+                if (this.rq_mark) {
+                    this.rq_mark = false;
+
+                    axios.post('/home/usr_UsrConsult_publish',
+                        Qs.stringify(this.submitObj, {allowDots: true}))
+                        .then((res) => {
+                            this.rq_mark = true;
+
+                            // 提交成功时
+                            if (res.data.ret == 1) {
+                                // 提示信息
+                                layer.open({
+                                    content: lang_obj.my_inquiry_publish.submitsuccess
+                                    , style: 'bottom: auto;'
+                                    , skin: 'msg'
+                                    , time: 2 //2秒后自动关闭
+                                });
+                                setTimeout(function () {
+                                    gtag_report_conversion()
+
+                                    window.location.href = '/home/usr_UsrConsult_listView';
+                                }, 2000)
+
+                                // 未登录时
+                            } else if (res.data.ret == -1) {
+                                if (this.param_product_id != -1) {
+                                    window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView?product_id='
+                                        + this.param_product_id;
+                                } else {
+                                    window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
+                                }
+                                // 提交失败时
+                            } else {
+                                layer.open({
+                                    content: res.data.msg
+                                    , btn: 'ok'
+                                });
+                                $("#imgVcode").attr("src", "/servlet/verify.img?r=" + Math.random())
+                            }
+
+                        })
+                        .catch((err) => {
+                            this.rq_mark = true;
+                        })
+                }
+
+            },
+
+            // 判断form内容是否符合格式
+            isFormatRight() {
+                let inquiry_form = $('#inquiry_form');
+                let notnull = $('*[notnull]', inquiry_form);
+                notnull.removeClass('null');
+
+                var status = 0;
+                // 判断是否为空
+                notnull.each(function (index, element) {
+                    if ($(element).val() == '' || $(element).val() == "undefined") {
+                        $(element).addClass('null').focus();
+                        status = 1;
+                        // 提示信息
+                        layer.open({
+                            content: lang_obj.my_inquiry_publish.completeinformation
+                            , style: 'bottom: auto;'
+                            , skin: 'msg'
+                            , time: 2 //2秒后自动关闭
+                        });
+                    } else {
+                        $(element).removeClass('null');
+                    }
+                });
+
+                // 标题长度限制
+                if ($('#title').val().trim().length > 200) {
+                    $('#title').addClass('null').focus();
+                    status = 1;
+                    // 提示信息
+                    layer.open({
+                        content: lang_obj.my_inquiry_publish.thecompatibletitle
+                        , style: 'bottom: auto;'
+                        , skin: 'msg'
+                        , time: 2 //2秒后自动关闭
+                    });
+                }
+                var Email = $('input[name=Email]', inquiry_form);
+                if (/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/.test(
+                    Email.val()) == false) {
+                    Email.addClass('null').focus();
+                    status = 1;
+                    // 提示信息
+                    layer.open({
+                        content: lang_obj.my_inquiry_publish.thecorrectEmail
+                        , style: 'bottom: auto;'
+                        , skin: 'msg'
+                        , time: 2 //2秒后自动关闭
+                    });
+                }
+                var quantity = $('input[name=Subject]', inquiry_form);
+                if (/^[0-9]*$/.test(quantity.val()) == false || quantity.val() > 2147483647) {
+                    quantity.addClass('null').focus();
+                    status = 1;
+                    // 提示信息
+                    layer.open({
+                        content: lang_obj.my_inquiry_publish.thecorrectquantity
+                        , style: 'bottom: auto;'
+                        , skin: 'msg'
+                        , time: 2 //2秒后自动关闭
+                    });
+                }
+
+                if (status) {
+                    return false;
+                }
+                return true;
+            },
+
+            // 上传图片更改
+            changeImg(e) {
+                let file = e.target.files[0];
+                let formImgData = new FormData()  // 创建form对象
+                formImgData.append('file', file, file.name)  // 通过append向form对象添加数据
+                axios.post('/home/usr_UsrConsult_upload', formImgData, {
+                    headers: {'Content-Type': 'multipart/form-data'}
+                })
+                    .then(response => {
+                        if (response.data.ret == 1) {
+                            // 添加图片后，在前面显示 img
+                            this.imgsToUpload.push(response.data.result.url);
+                        }
+                    })
+            },
+            // 点击删除 upload的img
+            deleteImg(e) {
+                let index = $(e.target).data("index");
+                this.imgsToUpload.splice(index, 1);
             }
-          });
-          // 否则是选中 事件
-        } else {
-          $(e.currentTarget).toggleClass("selected").siblings(".goods-item").removeClass(
-              "selected");
-        }
-      },
 
-      // 取消弹框选择
-      cancelSelectedGoods() {
+        },
+
+        mounted() {
+            // 获取国家列表
+            axios.get('/home/plt_PltCountry_list')
+                .then((res) => {
+                    this.countryList = res.data.result;
+                })
+                .catch((err) => {
+                    console.log(lang_obj.my_inquiry_publish.goodsListerr);
+                });
+
+            // 获取商品列表
+            this.submitObj.v.supplierId = getQueryString("supplierId") ? getQueryString("supplierId")
+                : -1;
+            axios.get('/home/pdt_PdtConsultPdtList_list',
+                {params: {supplierId: this.submitObj.v.supplierId}})
+                .then((res) => {
+
+                    if (res.data.ret == 1) {
+                        this.goodsList = res.data.result;
+
+                        // 如果是在商品页 添加了inquiry商品后 直接点进来的，则默认勾选该商品
+                        if (getQueryString("product_id")) {
+                            this.param_product_id = getQueryString("product_id");
+                            $.each(res.data.result, (index, value) => {
+                                if (value.id == this.param_product_id) {
+                                    $("#use-title").prop("checked", true);
+                                    this.selectGoodsIndex = index;
+                                    this.submitObj.v.product = value.productId;
+                                    this.submitObj.v.title = value.name;
+                                }
+                            })
+                        }
+                    } else if (res.data.ret == -1) {
+                        if (this.param_product_id != -1) {
+                            window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView?product_id='
+                                + this.param_product_id;
+                        } else {
+                            window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
+                        }
+                    }
+                })
+                .catch((err) => {
+                    console.log(lang_obj.my_inquiry_publish.goodsListerr);
+                });
+        }
+    })
+
+    // 点击删除弹出框
+    $(".modal-wrap .modal-header .close,.modal-wrap .btn-cancel-chooseGoods").click(function () {
         $(".modal").fadeOut();
         $(".modal-wrap.choose-goods-wrap").fadeOut();
-      },
-
-      // 选好商品后提交商品 （确认弹框）
-      submitSelectedGoods() {
-        // 如果选中商品，复制图片地址 及 goodsId
-        let target = $(".choose-goods-wrap .goods-item.selected");
-        if (target.length > 0) {
-          this.selectGoodsIndex = target.data("goodsIndex");
-          this.submitObj.v.product = target.data("productId");
-
-          // 如果勾选了"use products title"
-          if ($("#use-title").prop("checked")) {
-            this.submitObj.v.title = target.find(".goods-name").text();
-          }
-          // 否则清空上传的img地址 及 goodsId
-        } else {
-          this.selectGoodsIndex = -1;
-          this.submitObj.v.product = "";
-          //layer.open({content:'No product was selected.',btn: 'ok'});
-        }
-
-        // 模态框隐藏
-        $(".modal").fadeOut();
-        $(".modal-wrap.choose-goods-wrap").fadeOut();
-      },
-      // 整个form提交
-      submit() {
-        if (!this.isFormatRight()) return;
-        // 拼接多图 地址
-        // this.submitObj.v.image =   this.imgsToUpload.join(",");
-        let goodsIndex = $(".choose-goods-list .goods-item.selected").data("goodsIndex"); //获取选中的商品所在list的下标
-        // 提交时，如果勾选了商品，则上传的图片第一张为该商品图，后面4张为上传的图片
-        gtag_report_conversion()
-        if ($(".choose-goods-list .goods-item.selected").length > 0) {
-          if (this.imgsToUpload.length > 4) {
-            this.submitObj.v.image = this.goodsList[goodsIndex].imgs.split(',')[0] + ","
-                + this.imgsToUpload.slice(0, 4).join(",");
-          } else if (this.imgsToUpload.length == 0) {
-            this.submitObj.v.image = this.goodsList[goodsIndex].imgs.split(',')[0]
-          } else {
-            this.submitObj.v.image = this.goodsList[goodsIndex].imgs.split(',')[0] + ","
-                + this.imgsToUpload.join(",");
-          }
-        } else {
-          this.submitObj.v.image = this.imgsToUpload.join(",");
-        }
-
-        // 如果没有选择goods，or没有上传图片
-        if (this.submitObj.v.image.length == 0) {
-          layer.open({
-            content: lang_obj.my_inquiry_publish.Pleaseselect_a_goods
-            , style: 'bottom: auto;'
-            , skin: 'msg'
-            , time: 3 //2秒后自动关闭
-          });
-          return
-        }
-
-        // axios({
-        //     method: 'post',
-        //     url: '/home/usr_UsrConsult_publish',
-        //     headers: {
-        //         'Content-type': 'application/x-www-form-urlencoded'
-        //     },
-        //     params: {
-        //       'vCode':this.submitObj.vCode,
-        //       'v.title':this.submitObj.v.title,
-        //       "vCode":this.submitObj.vCode,
-        //       "v.title":this.submitObj.v.title,
-        //       "v.image":this.submitObj.v.image,
-        //       "v.product":this.submitObj.v.product,
-        //       "v.name":this.submitObj.v.name,
-        //       "v.email":this.submitObj.v.email,
-        //       "v.country":this.submitObj.v.country,
-        //       "v.quantity":this.submitObj.v.quantity,
-        //       "v.content":this.submitObj.v.content
-        //     }
-        // })
-        //     .then((response) => {
-        //         console.log(response);
-        //     })
-        //     .catch((error) => {
-        //         console.log(error);
-        //     });
-
-        if (this.rq_mark) {
-          this.rq_mark = false;
-
-          axios.post('/home/usr_UsrConsult_publish',
-              Qs.stringify(this.submitObj, {allowDots: true}))
-          .then((res) => {
-            this.rq_mark = true;
-
-            // 提交成功时
-            if (res.data.ret == 1) {
-              // 提示信息
-              layer.open({
-                content: lang_obj.my_inquiry_publish.submitsuccess
-                , style: 'bottom: auto;'
-                , skin: 'msg'
-                , time: 2 //2秒后自动关闭
-              });
-              setTimeout(function () {
-                window.location.href = '/home/usr_UsrConsult_listView';
-              }, 2000)
-
-              // 未登录时
-            } else if (res.data.ret == -1) {
-              if (this.param_product_id != -1) {
-                window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView?product_id='
-                    + this.param_product_id;
-              } else {
-                window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
-              }
-              // 提交失败时
-            } else {
-              layer.open({
-                content: res.data.msg
-                , btn: 'ok'
-              });
-              $("#imgVcode").attr("src", "/servlet/verify.img?r=" + Math.random())
-            }
-
-          })
-          .catch((err) => {
-            this.rq_mark = true;
-          })
-        }
-
-      },
-
-      // 判断form内容是否符合格式
-      isFormatRight() {
-        let inquiry_form = $('#inquiry_form');
-        let notnull = $('*[notnull]', inquiry_form);
-        notnull.removeClass('null');
-
-        var status = 0;
-        // 判断是否为空
-        notnull.each(function (index, element) {
-          if ($(element).val() == '' || $(element).val() == "undefined") {
-            $(element).addClass('null').focus();
-            status = 1;
-            // 提示信息
-            layer.open({
-              content: lang_obj.my_inquiry_publish.completeinformation
-              , style: 'bottom: auto;'
-              , skin: 'msg'
-              , time: 2 //2秒后自动关闭
-            });
-          } else {
-            $(element).removeClass('null');
-          }
-        });
-
-        // 标题长度限制
-        if ($('#title').val().trim().length > 200) {
-          $('#title').addClass('null').focus();
-          status = 1;
-          // 提示信息
-          layer.open({
-            content: lang_obj.my_inquiry_publish.thecompatibletitle
-            , style: 'bottom: auto;'
-            , skin: 'msg'
-            , time: 2 //2秒后自动关闭
-          });
-        }
-        var Email = $('input[name=Email]', inquiry_form);
-        if (/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/.test(
-            Email.val()) == false) {
-          Email.addClass('null').focus();
-          status = 1;
-          // 提示信息
-          layer.open({
-            content: lang_obj.my_inquiry_publish.thecorrectEmail
-            , style: 'bottom: auto;'
-            , skin: 'msg'
-            , time: 2 //2秒后自动关闭
-          });
-        }
-        var quantity = $('input[name=Subject]', inquiry_form);
-        if (/^[0-9]*$/.test(quantity.val()) == false || quantity.val() > 2147483647) {
-          quantity.addClass('null').focus();
-          status = 1;
-          // 提示信息
-          layer.open({
-            content: lang_obj.my_inquiry_publish.thecorrectquantity
-            , style: 'bottom: auto;'
-            , skin: 'msg'
-            , time: 2 //2秒后自动关闭
-          });
-        }
-
-        if (status) {
-          return false;
-        }
-        return true;
-      },
-
-      // 上传图片更改
-      changeImg(e) {
-        let file = e.target.files[0];
-        let formImgData = new FormData()  // 创建form对象
-        formImgData.append('file', file, file.name)  // 通过append向form对象添加数据
-        axios.post('/home/usr_UsrConsult_upload', formImgData, {
-          headers: {'Content-Type': 'multipart/form-data'}
-        })
-        .then(response => {
-          if (response.data.ret == 1) {
-            // 添加图片后，在前面显示 img
-            this.imgsToUpload.push(response.data.result.url);
-          }
-        })
-      },
-      // 点击删除 upload的img
-      deleteImg(e) {
-        let index = $(e.target).data("index");
-        this.imgsToUpload.splice(index, 1);
-      }
-
-    },
-
-    mounted() {
-      // 获取国家列表
-      axios.get('/home/plt_PltCountry_list')
-      .then((res) => {
-        this.countryList = res.data.result;
-      })
-      .catch((err) => {
-        console.log(lang_obj.my_inquiry_publish.goodsListerr);
-      });
-
-      // 获取商品列表
-      this.submitObj.v.supplierId = getQueryString("supplierId") ? getQueryString("supplierId")
-          : -1;
-      axios.get('/home/pdt_PdtConsultPdtList_list',
-          {params: {supplierId: this.submitObj.v.supplierId}})
-      .then((res) => {
-
-        if (res.data.ret == 1) {
-          this.goodsList = res.data.result;
-
-          // 如果是在商品页 添加了inquiry商品后 直接点进来的，则默认勾选该商品
-          if (getQueryString("product_id")) {
-            this.param_product_id = getQueryString("product_id");
-            $.each(res.data.result, (index, value) => {
-              if (value.id == this.param_product_id) {
-                $("#use-title").prop("checked", true);
-                this.selectGoodsIndex = index;
-                this.submitObj.v.product = value.productId;
-                this.submitObj.v.title = value.name;
-              }
-            })
-          }
-        } else if (res.data.ret == -1) {
-          if (this.param_product_id != -1) {
-            window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView?product_id='
-                + this.param_product_id;
-          } else {
-            window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
-          }
-        }
-      })
-      .catch((err) => {
-        console.log(lang_obj.my_inquiry_publish.goodsListerr);
-      });
-    }
-  })
-
-  // 点击删除弹出框
-  $(".modal-wrap .modal-header .close,.modal-wrap .btn-cancel-chooseGoods").click(function () {
-    $(".modal").fadeOut();
-    $(".modal-wrap.choose-goods-wrap").fadeOut();
-    $("#use-title").prop("checked", false);
-  })
+        $("#use-title").prop("checked", false);
+    })
 </script>
 
 </body>
