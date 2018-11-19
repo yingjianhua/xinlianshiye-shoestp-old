@@ -22,36 +22,12 @@
     <link rel="stylesheet" href="./static/css/color.css" type="text/css">
     <link rel="stylesheet" href="./static/css/animate.min.css" type="text/css">
     <link rel="stylesheet" href="./static/css/swiper.min.css" type="text/css">
-
-    <script type="text/javascript">
-
-        (function (w, d, s, l, i) {
-            w[l] = w[l] || [];
-            w[l].push({
-                'gtm.start': new Date().getTime(),
-                event: 'gtm.js'
-            });
-            var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s),
-                dl = l != 'dataLayer' ? '&l=' + l : '';
-            j.async = true;
-            j.src =
-                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-            f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-KNPHSJ6');
-    </script>
     <script type="text/javascript" src="./static/js/jquery-1.7.2.min.js">
     </script>
     <script src="./static/js/swiper.min.js" type="text/javascript">
     </script>
     <script src="./static/js/lazyload.min.js" type="text/javascript">
     </script>
-    <%-- <script type="text/javascript" src="./static/js/global(2).js">
-    </script> --%>
-    <%-- <script type="text/javascript" src="./static/js/main.js"> --%>
-    </script>
-    <%-- <script src="./static/js/saved_resource" type="text/javascript">
-    </script> --%>
 
     <style type="text/css">
         /* .supbanner *,
@@ -154,72 +130,70 @@
                 </div>
                 <div class="list">
                     <%--    原先动态的  暂做静态处理 --%>
-             <%--        <c:forEach var="d" items="${supplierDto.recommendList}">
-                        <div class="item clean">
-                            <div class="pi0 fl">
-                                <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=${d.pkey}" target="_blank">
-                                    <img src="${envConfig.imageBaseUrl}${d.logo}">
-                                </a>
-                            </div>
-                            <div class="name fr">
-                                <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=${d.pkey}" target="_blank">${d.name}</a>
-                            </div>
+                    <%--        <c:forEach var="d" items="${supplierDto.recommendList}">
+                               <div class="item clean">
+                                   <div class="pi0 fl">
+                                       <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=${d.pkey}" target="_blank">
+                                           <img src="${envConfig.imageBaseUrl}${d.logo}">
+                                       </a>
+                                   </div>
+                                   <div class="name fr">
+                                       <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=${d.pkey}" target="_blank">${d.name}</a>
+                                   </div>
+                               </div>
+                           </c:forEach>--%>
+                    <div class="item clean">
+                        <div class="pi0 fl">
+                            <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=38" target="_blank">
+                                <img src="${envConfig.imageBaseUrl}/u_file/1807/photo/ee39200944.jpg">
+                            </a>
                         </div>
-                    </c:forEach>--%>
-                         <div class="item clean">
-                            <div class="pi0 fl">
-                                <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=38" target="_blank">
-                                    <img src="${envConfig.imageBaseUrl}/u_file/1807/photo/ee39200944.jpg">
-                                </a>
-                            </div>
-                            <div class="name fr">
-                                <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=38" target="_blank">中武鞋业</a>
-                            </div>
+                        <div class="name fr">
+                            <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=38" target="_blank">中武鞋业</a>
                         </div>
-   					   <div class="item clean">
-                            <div class="pi0 fl">
-                                <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=33" target="_blank">
-                                    <img src="${envConfig.imageBaseUrl}/u_file/1807/photo/61e11d65cd.jpg">
-                                </a>
-                            </div>
-                            <div class="name fr">
-                                <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=33" target="_blank">奥康国际</a>
-                            </div>
+                    </div>
+                    <div class="item clean">
+                        <div class="pi0 fl">
+                            <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=33" target="_blank">
+                                <img src="${envConfig.imageBaseUrl}/u_file/1807/photo/61e11d65cd.jpg">
+                            </a>
                         </div>
-                           					   <div class="item clean">
-                            <div class="pi0 fl">
-                                <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=279" target="_blank">
-                                    <img src="${envConfig.imageBaseUrl}/u_file/1807/photo/7ba79feb71.png">
-                                </a>
-                            </div>
-                            <div class="name fr">
-                                <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=279" target="_blank">浙江剑鲨鞋业有限公司</a>
-                            </div>
+                        <div class="name fr">
+                            <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=33" target="_blank">奥康国际</a>
                         </div>
-                           					   <div class="item clean">
-                            <div class="pi0 fl">
-                                <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=301" target="_blank">
-                                    <img src="${envConfig.imageBaseUrl}/u_file/1808/photo/a37c34f89d.jpg">
-                                </a>
-                            </div>
-                            <div class="name fr">
-                                <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=301" target="_blank">温州展豪鞋业有限公司</a>
-                            </div>
+                    </div>
+                    <div class="item clean">
+                        <div class="pi0 fl">
+                            <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=279" target="_blank">
+                                <img src="${envConfig.imageBaseUrl}/u_file/1807/photo/7ba79feb71.png">
+                            </a>
                         </div>
-                           					   <div class="item clean">
-                            <div class="pi0 fl">
-                                <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=28" target="_blank">
-                                    <img src="${envConfig.imageBaseUrl}/u_file/1710/photo/f5fcec0bb1.jpg">
-                                </a>
-                            </div>
-                            <div class="name fr">
-                                <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=28" target="_blank">温州卓诗尼鞋业有限公司</a>
-                            </div>
+                        <div class="name fr">
+                            <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=279" target="_blank">浙江剑鲨鞋业有限公司</a>
                         </div>
-                   
-                   
-                   
-                   
+                    </div>
+                    <div class="item clean">
+                        <div class="pi0 fl">
+                            <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=301" target="_blank">
+                                <img src="${envConfig.imageBaseUrl}/u_file/1808/photo/a37c34f89d.jpg">
+                            </a>
+                        </div>
+                        <div class="name fr">
+                            <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=301" target="_blank">温州展豪鞋业有限公司</a>
+                        </div>
+                    </div>
+                    <div class="item clean">
+                        <div class="pi0 fl">
+                            <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=28" target="_blank">
+                                <img src="${envConfig.imageBaseUrl}/u_file/1710/photo/f5fcec0bb1.jpg">
+                            </a>
+                        </div>
+                        <div class="name fr">
+                            <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=28" target="_blank">温州卓诗尼鞋业有限公司</a>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
             <!-- .suside_rm -->
@@ -227,364 +201,361 @@
                 <span class="t0"><s:text name="recommend"/></span>
             </div>
             <!-- .htitle -->
-            <div class="scrollbox" style="height:274px;"   id="iibox">
+            <div class="scrollbox" style="height:274px;" id="iibox">
                 <div class="lbtn btn"></div>
                 <div class="rbtn btn"></div>
                 <div style="width:100%; overflow:hidden; position:relative;">
                     <div class="suplist_pro clean sbox2" style="width:10000%;">
                         <div class="ii fl">
-<%--                             <c:forEach --%>
-<%--                                     items="${supplierDto.recommendList}" --%>
-<%--                                     var="d" --%>
-<%--                             > --%>
-<!--                                 <div class="list_item fl" style="margin-bottom:0"> -->
-<!--                                     <div class="ht clean"> -->
-<!--                                         <div class="fl pic"> -->
-<%--                                             <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=${d.pkey}" --%>
-<!--                                                target="_blank"> -->
-<%--                                                 <img src="${envConfig.imageBaseUrl}${d.logo}"> --%>
-<!--                                             </a> -->
-<!--                                         </div> -->
-<!--                                         <div class="info fr"> -->
-<!--                                             <div class="name"> -->
-<%--                                                 <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=${d.pkey}" --%>
-<%--                                                    target="_blank">${d.name}</a> --%>
-<!--                                             </div> -->
-<!--                                             <div class="ti2 clean"> -->
-<!--                                                 <div class="ti2_left fl"> -->
-<!--                                                     <div class="ti2p"> -->
-<%--                                                         <s:text name="comment.product"/> --%>
-<!--                                                     </div> -->
-<!--                                                     <div class="ti2n"> -->
-<%--                                                         <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=${d.pkey}" --%>
-<%--                                                            target="_blank">${d.proDuctCount}</a> --%>
-<!--                                                     </div> -->
-<!--                                                 </div> -->
-<!--                                                 .ti2_left -->
-<!--                                                 <div class="ti2_right fr"> -->
-<!--                                                     <div class="ti2p"> -->
-<%--                                                         <s:text name="ProductsStyle"/> --%>
-<!--                                                     </div> -->
-<!--                                                     <div class="ti2i"> -->
-<%--                                                         <s:if test="d.prodpattern!=null"> --%>
-<%--                                                             ${d.prodpattern} --%>
-<%--                                                         </s:if> --%>
-<%--                                                         <s:else> --%>
-<%--                                                             I18N --%>
-<%--                                                         </s:else> --%>
-<!--                                                     </div> -->
-<!--                                                 </div> -->
-<!--                                                 .ti2_right -->
-<!--                                             </div> -->
-<!--                                         </div> -->
-<!--                                     </div> -->
-<!--                                     .ht -->
-<!--                                     <div class="probox clean"> -->
-<%--                                         <c:forEach --%>
-<%--                                                 items="${d.proDuctDtos}" --%>
-<%--                                                 var="dd" --%>
-<%--                                         > --%>
-<!--                                             <div class="item fl"> -->
-<%--                                                     <a href="/home/pdt_PdtProduct_gtProductsInfo?id=${dd.pkey}" --%>
-<%--                                                 <a href="/${dd.rewrite}" --%>
-<!--                                                    target="_blank"> -->
-<%--                                                     <img src="${envConfig.imageBaseUrl}${dd.picture}"> --%>
-<!--                                                 </a> -->
-<!--                                             </div> -->
-<%--                                         </c:forEach> --%>
-<!--                                     </div> -->
-<!--                                 </div> -->
+                            <%--                             <c:forEach --%>
+                            <%--                                     items="${supplierDto.recommendList}" --%>
+                            <%--                                     var="d" --%>
+                            <%--                             > --%>
+                            <!--                                 <div class="list_item fl" style="margin-bottom:0"> -->
+                            <!--                                     <div class="ht clean"> -->
+                            <!--                                         <div class="fl pic"> -->
+                            <%--                                             <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=${d.pkey}" --%>
+                            <!--                                                target="_blank"> -->
+                            <%--                                                 <img src="${envConfig.imageBaseUrl}${d.logo}"> --%>
+                            <!--                                             </a> -->
+                            <!--                                         </div> -->
+                            <!--                                         <div class="info fr"> -->
+                            <!--                                             <div class="name"> -->
+                            <%--                                                 <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=${d.pkey}" --%>
+                            <%--                                                    target="_blank">${d.name}</a> --%>
+                            <!--                                             </div> -->
+                            <!--                                             <div class="ti2 clean"> -->
+                            <!--                                                 <div class="ti2_left fl"> -->
+                            <!--                                                     <div class="ti2p"> -->
+                            <%--                                                         <s:text name="comment.product"/> --%>
+                            <!--                                                     </div> -->
+                            <!--                                                     <div class="ti2n"> -->
+                            <%--                                                         <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=${d.pkey}" --%>
+                            <%--                                                            target="_blank">${d.proDuctCount}</a> --%>
+                            <!--                                                     </div> -->
+                            <!--                                                 </div> -->
+                            <!--                                                 .ti2_left -->
+                            <!--                                                 <div class="ti2_right fr"> -->
+                            <!--                                                     <div class="ti2p"> -->
+                            <%--                                                         <s:text name="ProductsStyle"/> --%>
+                            <!--                                                     </div> -->
+                            <!--                                                     <div class="ti2i"> -->
+                            <%--                                                         <s:if test="d.prodpattern!=null"> --%>
+                            <%--                                                             ${d.prodpattern} --%>
+                            <%--                                                         </s:if> --%>
+                            <%--                                                         <s:else> --%>
+                            <%--                                                             I18N --%>
+                            <%--                                                         </s:else> --%>
+                            <!--                                                     </div> -->
+                            <!--                                                 </div> -->
+                            <!--                                                 .ti2_right -->
+                            <!--                                             </div> -->
+                            <!--                                         </div> -->
+                            <!--                                     </div> -->
+                            <!--                                     .ht -->
+                            <!--                                     <div class="probox clean"> -->
+                            <%--                                         <c:forEach --%>
+                            <%--                                                 items="${d.proDuctDtos}" --%>
+                            <%--                                                 var="dd" --%>
+                            <%--                                         > --%>
+                            <!--                                             <div class="item fl"> -->
+                            <%--                                                     <a href="/home/pdt_PdtProduct_gtProductsInfo?id=${dd.pkey}" --%>
+                            <%--                                                 <a href="/${dd.rewrite}" --%>
+                            <!--                                                    target="_blank"> -->
+                            <%--                                                     <img src="${envConfig.imageBaseUrl}${dd.picture}"> --%>
+                            <!--                                                 </a> -->
+                            <!--                                             </div> -->
+                            <%--                                         </c:forEach> --%>
+                            <!--                                     </div> -->
+                            <!--                                 </div> -->
 
-<%--                             </c:forEach> --%>
-					         <div class="list_item fl"  id="listitems1" style="margin-bottom:0">
-                                    <div class="ht clean">
-                                        <div class="fl pic">
+                            <%--                             </c:forEach> --%>
+                            <div class="list_item fl" id="listitems1" style="margin-bottom:0">
+                                <div class="ht clean">
+                                    <div class="fl pic">
+                                        <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=283"
+                                           target="_blank">
+                                            <img src="${envConfig.imageBaseUrl}/u_file/1808/photo/564fc63d74.jpg">
+                                        </a>
+                                    </div>
+                                    <div class="info fr">
+                                        <div class="name">
                                             <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=283"
-                                               target="_blank">
-                                                <img src="${envConfig.imageBaseUrl}/u_file/1808/photo/564fc63d74.jpg">
-                                            </a>
+                                               target="_blank">温州市丰盛鞋业有限公司</a>
                                         </div>
-                                        <div class="info fr">
-                                            <div class="name">
-                                                <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=283"
-                                                   target="_blank">温州市丰盛鞋业有限公司</a>
-                                            </div>
-                                            <div class="ti2 clean">
-                                                <div class="ti2_left fl">
-                                                    <div class="ti2p">
-                                                        <s:text name="comment.product"/>
-                                                    </div>
-                                                    <div class="ti2n">
-                                                        <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=283"
-                                                           target="_blank">19</a>
-                                                    </div>
+                                        <div class="ti2 clean">
+                                            <div class="ti2_left fl">
+                                                <div class="ti2p">
+                                                    <s:text name="comment.product"/>
                                                 </div>
-                                                <!-- .ti2_left -->
-                                                <div class="ti2_right fr">
-                                                    <div class="ti2p">
-                                                        <s:text name="ProductsStyle"/>
-                                                    </div>
-                                                    <div class="ti2i">
-                                                        OEM
-                                                    </div>
+                                                <div class="ti2n">
+                                                    <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=283"
+                                                       target="_blank">19</a>
                                                 </div>
-                                                <!-- .ti2_right -->
                                             </div>
+                                            <!-- .ti2_left -->
+                                            <div class="ti2_right fr">
+                                                <div class="ti2p">
+                                                    <s:text name="ProductsStyle"/>
+                                                </div>
+                                                <div class="ti2i">
+                                                    OEM
+                                                </div>
+                                            </div>
+                                            <!-- .ti2_right -->
                                         </div>
-                                    </div>
-                                    <!-- .ht -->
-                                    <div class="probox clean">
-			                                 <div class="item fl">
-			                                    <a href="/home/pdt_PdtProduct_gtProductsInfo?id=6761" target="_blank">
-			                                        <img src="${envConfig.imageBaseUrl}/u_file/1808/products/14/7c1d3eec5c.jpg">
-			                                    </a>
-			                                </div>
-			                                    <div class="item fl">
-			                                    <a href="/home/pdt_PdtProduct_gtProductsInfo?id=6766" target="_blank">
-			                                        <img src="${envConfig.imageBaseUrl}/u_file/1808/products/14/366eeccafe.jpg">
-			                                    </a>
-			                                </div>
-			                                    <div class="item fl">
-			                                    <a href="/home/pdt_PdtProduct_gtProductsInfo?id=6767" target="_blank">
-			                                        <img src="${envConfig.imageBaseUrl}/u_file/1808/products/14/5fa096ba61.jpg">
-			                                    </a>
-			                                </div>
-                                      
                                     </div>
                                 </div>
+                                <!-- .ht -->
+                                <div class="probox clean">
+                                    <div class="item fl">
+                                        <a href="/home/pdt_PdtProduct_gtProductsInfo?id=6761" target="_blank">
+                                            <img src="${envConfig.imageBaseUrl}/u_file/1808/products/14/7c1d3eec5c.jpg">
+                                        </a>
+                                    </div>
+                                    <div class="item fl">
+                                        <a href="/home/pdt_PdtProduct_gtProductsInfo?id=6766" target="_blank">
+                                            <img src="${envConfig.imageBaseUrl}/u_file/1808/products/14/366eeccafe.jpg">
+                                        </a>
+                                    </div>
+                                    <div class="item fl">
+                                        <a href="/home/pdt_PdtProduct_gtProductsInfo?id=6767" target="_blank">
+                                            <img src="${envConfig.imageBaseUrl}/u_file/1808/products/14/5fa096ba61.jpg">
+                                        </a>
+                                    </div>
 
-						     <div class="list_item fl" id="listitems2" style="margin-bottom:0">
-                                    <div class="ht clean">
-                                        <div class="fl pic">
+                                </div>
+                            </div>
+
+                            <div class="list_item fl" id="listitems2" style="margin-bottom:0">
+                                <div class="ht clean">
+                                    <div class="fl pic">
+                                        <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=23"
+                                           target="_blank">
+                                            <img src="${envConfig.imageBaseUrl}/u_file/1807/photo/f44b4e85f9.png">
+                                        </a>
+                                    </div>
+                                    <div class="info fr">
+                                        <div class="name">
                                             <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=23"
-                                               target="_blank">
-                                                <img src="${envConfig.imageBaseUrl}/u_file/1807/photo/f44b4e85f9.png">
-                                            </a>
+                                               target="_blank">温州市亿力洲鞋业有限公司</a>
                                         </div>
-                                        <div class="info fr">
-                                            <div class="name">
-                                                <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=23"
-                                                   target="_blank">温州市亿力洲鞋业有限公司</a>
-                                            </div>
-                                            <div class="ti2 clean">
-                                                <div class="ti2_left fl">
-                                                    <div class="ti2p">
-                                                        <s:text name="comment.product"/>
-                                                    </div>
-                                                    <div class="ti2n">
-                                                        <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=23"
-                                                           target="_blank">10</a>
-                                                    </div>
+                                        <div class="ti2 clean">
+                                            <div class="ti2_left fl">
+                                                <div class="ti2p">
+                                                    <s:text name="comment.product"/>
                                                 </div>
-                                                <!-- .ti2_left -->
-                                                <div class="ti2_right fr">
-                                                    <div class="ti2p">
-                                                        <s:text name="ProductsStyle"/>
-                                                    </div>
-                                                    <div class="ti2i">
-                                                        ODM
-                                                    </div>
+                                                <div class="ti2n">
+                                                    <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=23"
+                                                       target="_blank">10</a>
                                                 </div>
-                                                <!-- .ti2_right -->
                                             </div>
+                                            <!-- .ti2_left -->
+                                            <div class="ti2_right fr">
+                                                <div class="ti2p">
+                                                    <s:text name="ProductsStyle"/>
+                                                </div>
+                                                <div class="ti2i">
+                                                    ODM
+                                                </div>
+                                            </div>
+                                            <!-- .ti2_right -->
                                         </div>
-                                    </div>
-                                    <!-- .ht -->
-                                    <div class="probox clean">
-			                                 <div class="item fl">
-			                                    <a href="/home/pdt_PdtProduct_gtProductsInfo?id=340" target="_blank">
-			                                        <img src="${envConfig.imageBaseUrl}/u_file/1709/products/26/8e21d4de82.jpg">
-			                                    </a>
-			                                </div>
-			                                    <div class="item fl">
-			                                    <a href="/home/pdt_PdtProduct_gtProductsInfo?id=344" target="_blank">
-			                                        <img src="${envConfig.imageBaseUrl}/u_file/1709/products/27/32e53fb695.jpg">
-			                                    </a>
-			                                </div>
-			                                    <div class="item fl">
-			                                    <a href="/home/pdt_PdtProduct_gtProductsInfo?id=343" target="_blank">
-			                                        <img src="${envConfig.imageBaseUrl}/u_file/1709/products/27/8eff14dd8b.jpg">
-			                                    </a>
-			                                </div>
-                                      
                                     </div>
                                 </div>
+                                <!-- .ht -->
+                                <div class="probox clean">
+                                    <div class="item fl">
+                                        <a href="/home/pdt_PdtProduct_gtProductsInfo?id=340" target="_blank">
+                                            <img src="${envConfig.imageBaseUrl}/u_file/1709/products/26/8e21d4de82.jpg">
+                                        </a>
+                                    </div>
+                                    <div class="item fl">
+                                        <a href="/home/pdt_PdtProduct_gtProductsInfo?id=344" target="_blank">
+                                            <img src="${envConfig.imageBaseUrl}/u_file/1709/products/27/32e53fb695.jpg">
+                                        </a>
+                                    </div>
+                                    <div class="item fl">
+                                        <a href="/home/pdt_PdtProduct_gtProductsInfo?id=343" target="_blank">
+                                            <img src="${envConfig.imageBaseUrl}/u_file/1709/products/27/8eff14dd8b.jpg">
+                                        </a>
+                                    </div>
 
-   										<div class="list_item fl"  id="listitems3"  style="margin-bottom:0">
-                                    <div class="ht clean">
-                                        <div class="fl pic">
+                                </div>
+                            </div>
+
+                            <div class="list_item fl" id="listitems3" style="margin-bottom:0">
+                                <div class="ht clean">
+                                    <div class="fl pic">
+                                        <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=30"
+                                           target="_blank">
+                                            <img src="${envConfig.imageBaseUrl}/u_file/1807/photo/1a4a1ebf69.jpg">
+                                        </a>
+                                    </div>
+                                    <div class="info fr">
+                                        <div class="name">
                                             <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=30"
-                                               target="_blank">
-                                                <img src="${envConfig.imageBaseUrl}/u_file/1807/photo/1a4a1ebf69.jpg">
-                                            </a>
+                                               target="_blank">浙江大博文鞋业有限公司</a>
                                         </div>
-                                        <div class="info fr">
-                                            <div class="name">
-                                                <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=30"
-                                                   target="_blank">浙江大博文鞋业有限公司</a>
-                                            </div>
-                                            <div class="ti2 clean">
-                                                <div class="ti2_left fl">
-                                                    <div class="ti2p">
-                                                        <s:text name="comment.product"/>
-                                                    </div>
-                                                    <div class="ti2n">
-                                                        <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=30"
-                                                           target="_blank">53</a>
-                                                    </div>
+                                        <div class="ti2 clean">
+                                            <div class="ti2_left fl">
+                                                <div class="ti2p">
+                                                    <s:text name="comment.product"/>
                                                 </div>
-                                                <!-- .ti2_left -->
-                                                <div class="ti2_right fr">
-                                                    <div class="ti2p">
-                                                        <s:text name="ProductsStyle"/>
-                                                    </div>
-                                                    <div class="ti2i">
-                                                        OBM
-                                                    </div>
+                                                <div class="ti2n">
+                                                    <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=30"
+                                                       target="_blank">53</a>
                                                 </div>
-                                                <!-- .ti2_right -->
                                             </div>
+                                            <!-- .ti2_left -->
+                                            <div class="ti2_right fr">
+                                                <div class="ti2p">
+                                                    <s:text name="ProductsStyle"/>
+                                                </div>
+                                                <div class="ti2i">
+                                                    OBM
+                                                </div>
+                                            </div>
+                                            <!-- .ti2_right -->
                                         </div>
-                                    </div>
-                                    <!-- .ht -->
-                                    <div class="probox clean">
-			                                 <div class="item fl">
-			                                    <a href="/home/pdt_PdtProduct_gtProductsInfo?id=450" target="_blank">
-			                                        <img src="${envConfig.imageBaseUrl}/u_file/1711/products/28/a6f98ddfcc.jpg">
-			                                    </a>
-			                                </div>
-			                                    <div class="item fl">
-			                                    <a href="/home/pdt_PdtProduct_gtProductsInfo?id=455" target="_blank">
-			                                        <img src="${envConfig.imageBaseUrl}/u_file/1711/products/28/b8d652c8a7.jpg">
-			                                    </a>
-			                                </div>
-			                                    <div class="item fl">
-			                                    <a href="/home/pdt_PdtProduct_gtProductsInfo?id=465" target="_blank">
-			                                        <img src="${envConfig.imageBaseUrl}/u_file/1711/products/28/6abdfbdb49.jpg">
-			                                    </a>
-			                                </div>
-                                      
                                     </div>
                                 </div>
+                                <!-- .ht -->
+                                <div class="probox clean">
+                                    <div class="item fl">
+                                        <a href="/home/pdt_PdtProduct_gtProductsInfo?id=450" target="_blank">
+                                            <img src="${envConfig.imageBaseUrl}/u_file/1711/products/28/a6f98ddfcc.jpg">
+                                        </a>
+                                    </div>
+                                    <div class="item fl">
+                                        <a href="/home/pdt_PdtProduct_gtProductsInfo?id=455" target="_blank">
+                                            <img src="${envConfig.imageBaseUrl}/u_file/1711/products/28/b8d652c8a7.jpg">
+                                        </a>
+                                    </div>
+                                    <div class="item fl">
+                                        <a href="/home/pdt_PdtProduct_gtProductsInfo?id=465" target="_blank">
+                                            <img src="${envConfig.imageBaseUrl}/u_file/1711/products/28/6abdfbdb49.jpg">
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </div>
 
 
-
-   										<div class="list_item fl" id="listitems4" style="margin-bottom:0">
-                                    <div class="ht clean">
-                                        <div class="fl pic">
+                            <div class="list_item fl" id="listitems4" style="margin-bottom:0">
+                                <div class="ht clean">
+                                    <div class="fl pic">
+                                        <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=16"
+                                           target="_blank">
+                                            <img src="${envConfig.imageBaseUrl}/u_file/1807/photo/d2e044e034.jpg">
+                                        </a>
+                                    </div>
+                                    <div class="info fr">
+                                        <div class="name">
                                             <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=16"
-                                               target="_blank">
-                                                <img src="${envConfig.imageBaseUrl}/u_file/1807/photo/d2e044e034.jpg">
-                                            </a>
+                                               target="_blank">温州市康睿鞋业有限公司</a>
                                         </div>
-                                        <div class="info fr">
-                                            <div class="name">
-                                                <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=16"
-                                                   target="_blank">温州市康睿鞋业有限公司</a>
-                                            </div>
-                                            <div class="ti2 clean">
-                                                <div class="ti2_left fl">
-                                                    <div class="ti2p">
-                                                        <s:text name="comment.product"/>
-                                                    </div>
-                                                    <div class="ti2n">
-                                                        <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=16"
-                                                           target="_blank">68</a>
-                                                    </div>
+                                        <div class="ti2 clean">
+                                            <div class="ti2_left fl">
+                                                <div class="ti2p">
+                                                    <s:text name="comment.product"/>
                                                 </div>
-                                                <!-- .ti2_left -->
-                                                <div class="ti2_right fr">
-                                                    <div class="ti2p">
-                                                        <s:text name="ProductsStyle"/>
-                                                    </div>
-                                                    <div class="ti2i">
-                                                        OEM
-                                                    </div>
+                                                <div class="ti2n">
+                                                    <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=16"
+                                                       target="_blank">68</a>
                                                 </div>
-                                                <!-- .ti2_right -->
                                             </div>
+                                            <!-- .ti2_left -->
+                                            <div class="ti2_right fr">
+                                                <div class="ti2p">
+                                                    <s:text name="ProductsStyle"/>
+                                                </div>
+                                                <div class="ti2i">
+                                                    OEM
+                                                </div>
+                                            </div>
+                                            <!-- .ti2_right -->
                                         </div>
-                                    </div>
-                                    <!-- .ht -->
-                                    <div class="probox clean">
-			                                 <div class="item fl">
-			                                    <a href="/home/pdt_PdtProduct_gtProductsInfo?id=530" target="_blank">
-			                                        <img src="${envConfig.imageBaseUrl}/u_file/1712/products/05/4646e4c07c.jpg">
-			                                    </a>
-			                                </div>
-			                                    <div class="item fl">
-			                                    <a href="/home/pdt_PdtProduct_gtProductsInfo?id=543" target="_blank">
-			                                        <img src="${envConfig.imageBaseUrl}/u_file/1712/products/06/a26e348ed3.jpg">
-			                                    </a>
-			                                </div>
-			                                    <div class="item fl">
-			                                    <a href="/home/pdt_PdtProduct_gtProductsInfo?id=578" target="_blank">
-			                                        <img src="${envConfig.imageBaseUrl}/u_file/1712/products/22/30258718b7.jpg">
-			                                    </a>
-			                                </div>
-                                      
                                     </div>
                                 </div>
-				
-						
-   										<div class="list_item fl"  id="listitems5" style="margin-bottom:0">
-                                    <div class="ht clean">
-                                        <div class="fl pic">
-                                            <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=34"
-                                               target="_blank">
-                                                <img src="${envConfig.imageBaseUrl}/u_file/1807/photo/1a4a1ebf69.jpg">
-                                            </a>
-                                        </div>
-                                        <div class="info fr">
-                                            <div class="name">
-                                                <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=34"
-                                                   target="_blank">飛耀童鞋</a>
-                                            </div>
-                                            <div class="ti2 clean">
-                                                <div class="ti2_left fl">
-                                                    <div class="ti2p">
-                                                        <s:text name="comment.product"/>
-                                                    </div>
-                                                    <div class="ti2n">
-                                                        <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=34"
-                                                           target="_blank">45</a>
-                                                    </div>
-                                                </div>
-                                                <!-- .ti2_left -->
-                                                <div class="ti2_right fr">
-                                                    <div class="ti2p">
-                                                        <s:text name="ProductsStyle"/>
-                                                    </div>
-                                                    <div class="ti2i">
-                                                        OBM
-                                                    </div>
-                                                </div>
-                                                <!-- .ti2_right -->
-                                            </div>
-                                        </div>
+                                <!-- .ht -->
+                                <div class="probox clean">
+                                    <div class="item fl">
+                                        <a href="/home/pdt_PdtProduct_gtProductsInfo?id=530" target="_blank">
+                                            <img src="${envConfig.imageBaseUrl}/u_file/1712/products/05/4646e4c07c.jpg">
+                                        </a>
                                     </div>
-                                    <!-- .ht -->
-                                    <div class="probox clean">
-			                                 <div class="item fl">
-			                                    <a href="/home/pdt_PdtProduct_gtProductsInfo?id=551" target="_blank">
-			                                        <img src="${envConfig.imageBaseUrl}/u_file/1712/products/11/5af8215863.jpg">
-			                                    </a>
-			                                </div>
-			                                    <div class="item fl">
-			                                    <a href="/home/pdt_PdtProduct_gtProductsInfo?id=556" target="_blank">
-			                                        <img src="${envConfig.imageBaseUrl}/u_file/1712/products/11/e8bcd4f964.jpg">
-			                                    </a>
-			                                </div>
-			                                    <div class="item fl">
-			                                    <a href="/home/pdt_PdtProduct_gtProductsInfo?id=667" target="_blank">
-			                                        <img src="${envConfig.imageBaseUrl}/u_file/1801/products/08/f0d8168eaa.jpg">
-			                                    </a>
-			                                </div>
-                                      
+                                    <div class="item fl">
+                                        <a href="/home/pdt_PdtProduct_gtProductsInfo?id=543" target="_blank">
+                                            <img src="${envConfig.imageBaseUrl}/u_file/1712/products/06/a26e348ed3.jpg">
+                                        </a>
                                     </div>
-                                </div>
-						
+                                    <div class="item fl">
+                                        <a href="/home/pdt_PdtProduct_gtProductsInfo?id=578" target="_blank">
+                                            <img src="${envConfig.imageBaseUrl}/u_file/1712/products/22/30258718b7.jpg">
+                                        </a>
+                                    </div>
 
+                                </div>
+                            </div>
+
+
+                            <div class="list_item fl" id="listitems5" style="margin-bottom:0">
+                                <div class="ht clean">
+                                    <div class="fl pic">
+                                        <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=34"
+                                           target="_blank">
+                                            <img src="${envConfig.imageBaseUrl}/u_file/1807/photo/1a4a1ebf69.jpg">
+                                        </a>
+                                    </div>
+                                    <div class="info fr">
+                                        <div class="name">
+                                            <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=34"
+                                               target="_blank">飛耀童鞋</a>
+                                        </div>
+                                        <div class="ti2 clean">
+                                            <div class="ti2_left fl">
+                                                <div class="ti2p">
+                                                    <s:text name="comment.product"/>
+                                                </div>
+                                                <div class="ti2n">
+                                                    <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=34"
+                                                       target="_blank">45</a>
+                                                </div>
+                                            </div>
+                                            <!-- .ti2_left -->
+                                            <div class="ti2_right fr">
+                                                <div class="ti2p">
+                                                    <s:text name="ProductsStyle"/>
+                                                </div>
+                                                <div class="ti2i">
+                                                    OBM
+                                                </div>
+                                            </div>
+                                            <!-- .ti2_right -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- .ht -->
+                                <div class="probox clean">
+                                    <div class="item fl">
+                                        <a href="/home/pdt_PdtProduct_gtProductsInfo?id=551" target="_blank">
+                                            <img src="${envConfig.imageBaseUrl}/u_file/1712/products/11/5af8215863.jpg">
+                                        </a>
+                                    </div>
+                                    <div class="item fl">
+                                        <a href="/home/pdt_PdtProduct_gtProductsInfo?id=556" target="_blank">
+                                            <img src="${envConfig.imageBaseUrl}/u_file/1712/products/11/e8bcd4f964.jpg">
+                                        </a>
+                                    </div>
+                                    <div class="item fl">
+                                        <a href="/home/pdt_PdtProduct_gtProductsInfo?id=667" target="_blank">
+                                            <img src="${envConfig.imageBaseUrl}/u_file/1801/products/08/f0d8168eaa.jpg">
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </div>
 
 
                         </div>
@@ -717,54 +688,54 @@
     });
 </script>
 <script type="text/javascript">
-	var page = 1;
-	var limit = 6;
-	var cated = -1;
-	var self = this;
-	
-	window.onload = function(){
-		  getData();
-	}
-	
-	$("#newsupmore").on("click",function(){
-		self.page = ++self.page;
-		getData();
-	})
-	
-	$("#scren_cate .ct .i").on("click",function(){
-		$("#main_suplist_pro").html('');
-		self.cated = $(this).attr("cateid");
-		self.page = 1;
-		getData();
-	})
-	
-	function getData(){
-		var start = this.page == 1?0:(this.page - 1) * this.limit;
-		  var param = {"start":start,"limit":limit,"cated":cated};
-		  var self = this;
-		  $.ajax({
-			  url:'/home/usr_UsrSupplier_getSupplierList',
-			  type:'get',
-			  data:param,
-			  dataType:'JSON',
-			  success:function(data){
-				  if(data.items.length == 0){
-					  layer.msg(lang_obj.mobile.No_Data,{time:1200})
-					  return;
-				  }
-				  renderSupplierList(data.items)
-			  }
-		  })
-		}
-	
-	function renderSupplierList(items){
-		$.each(items, function (i, v) {
+    var page = 1;
+    var limit = 6;
+    var cated = -1;
+    var self = this;
+
+    window.onload = function () {
+        getData();
+    }
+
+    $("#newsupmore").on("click", function () {
+        self.page = ++self.page;
+        getData();
+    })
+
+    $("#scren_cate .ct .i").on("click", function () {
+        $("#main_suplist_pro").html('');
+        self.cated = $(this).attr("cateid");
+        self.page = 1;
+        getData();
+    })
+
+    function getData() {
+        var start = this.page == 1 ? 0 : (this.page - 1) * this.limit;
+        var param = {"start": start, "limit": limit, "cated": cated};
+        var self = this;
+        $.ajax({
+            url: '/home/usr_UsrSupplier_getSupplierList',
+            type: 'get',
+            data: param,
+            dataType: 'JSON',
+            success: function (data) {
+                if (data.items.length == 0) {
+                    layer.msg(lang_obj.mobile.No_Data, {time: 1200})
+                    return;
+                }
+                renderSupplierList(data.items)
+            }
+        })
+    }
+
+    function renderSupplierList(items) {
+        $.each(items, function (i, v) {
             var _div = "<div class=\"list_item fl\" style=\"margin-bottom:0\">\n" +
                 "                        <div class=\"ht clean\">\n" +
                 "                            <div class=\"fl pic\">\n" +
                 "                                <a href=\"/home/usr_UsrSupplier_gtSupIndex?pkey=" + v.pkey + "\"\n" +
                 "                                   target=\"_blank\">\n" +
-                "                                    <img src='${envConfig.imageBaseUrl}"+ v.logo + "'>\n" +
+                "                                    <img src='${envConfig.imageBaseUrl}" + v.logo + "'>\n" +
                 "                                </a>\n" +
                 "                            </div>\n" +
                 "                            <div class=\"info fr\">\n" +
@@ -775,7 +746,7 @@
                 "                                <div class=\"ti2 clean\">\n" +
                 "                                    <div class=\"ti2_left fl\">\n" +
                 "                                        <div class=\"ti2p\">\n" +
-                "                                            "+lang_obj.supplier.products+"\n" +
+                "                                            " + lang_obj.supplier.products + "\n" +
                 "                                        </div>\n" +
                 "                                        <div class=\"ti2n\">\n" +
                 "                                            <a href=\"/home/usr_UsrSupplier_gtSupIndex?pkey=" + v.pkey + "\"\n" +
@@ -785,7 +756,7 @@
                 "                                    <!-- .ti2_left -->\n" +
                 "                                    <div class=\"ti2_right fr\">\n" +
                 "                                        <div class=\"ti2p\">\n" +
-                "                                            "+lang_obj.supplier.productsStyle+"\n" +
+                "                                            " + lang_obj.supplier.productsStyle + "\n" +
                 "                                        </div>\n" +
                 "                                        <div class=\"ti2i\">\n" +
                 "                                                " + v.prodpattern + "\n" +
@@ -811,9 +782,9 @@
             _div += prbox + " </div>\n" + "                    </div>"
             $('#main_suplist_pro').append(_div);
         })
-	}
+    }
 
- 	$('#suside_rm .close').click(function (e) {
+    $('#suside_rm .close').click(function (e) {
         e.stopPropagation();
         $('#suside_rm .bar').css('display', 'block');
         $('#suside_rm .list').css('display', 'none');
@@ -826,24 +797,24 @@
         $('#suside_rm .bar').css('display', 'none');
     });
 
-    $('.lbtn.btn').click(function(){
-    	 $('#listitems1').css('display', 'block');
-    	 $('#listitems2').css('display', 'block');
-    	 $('#listitems4').css('display', 'none');
-    	 $('#listitems5').css('display', 'none');
-    }
+    $('.lbtn.btn').click(function () {
+            $('#listitems1').css('display', 'block');
+            $('#listitems2').css('display', 'block');
+            $('#listitems4').css('display', 'none');
+            $('#listitems5').css('display', 'none');
+        }
     );
     $('.rbtn.btn').click(
-    	function(){
-    	
-    		 $('#listitems1').css('display', 'none');
-    	 $('#listitems2').css('display', 'none');
-    	 $('#listitems4').css('display', 'block');
-    	 $('#listitems5').css('display', 'block');
-    		
-    }
+        function () {
+
+            $('#listitems1').css('display', 'none');
+            $('#listitems2').css('display', 'none');
+            $('#listitems4').css('display', 'block');
+            $('#listitems5').css('display', 'block');
+
+        }
     );
-  
+
 </script>
 <%-- <script type="text/javascript">
     index_scr('#iibox', '.sbox2', '.ii', '#iibox .lbtn', '#iibox .rbtn');

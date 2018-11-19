@@ -144,12 +144,6 @@
 <%@ include file="/home/template/new-foot.jsp" %>
 
 <div align="center">
-    <script type="text/javascript" src="./static/js/analytics(1).js"></script>
-    <noscript>
-        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KNPHSJ6" height="0" width="0"
-                style="display:none;visibility:hidden"></iframe>
-    </noscript>
-    <!-- End Google Tag Manager (noscript) -->
 </div>
 <script type="text/javascript">
     var pkey = '${supView.pkey}';
@@ -357,9 +351,6 @@
 </script>
 
 ${supView.traceCode}
-<%-- <script src="./static/js/get_dynamic_config.js"></script>
-<script src="./static/js/get_static_config.0.382.2.2.1344.14.2.22.9.8.2.6.285.js"></script>
-<script src="./static/js/localization.en.0.043117e7a56a2e3ea008a802da2a0076_9f9568ee0491374470a5f78170eb7aed.js"></script> --%>
 </body>
 
 </html>

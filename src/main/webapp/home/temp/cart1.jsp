@@ -272,13 +272,13 @@
             </div>
         </div>
     </div>
-	 
+
     <div id="racePop"  style=" display: none;position:absolute;left:50%;width: 400px;height: 400px;top: 400px;background-color: white; border-style: solid; border-width: 1px;" >
         <div class="div" style="width: 100%; height: 10%; overflow-y: auto;top: 200px;">
         	款式选择
         </div>
         <form id="">
-        
+
         <div>
         	<ul id="colorspec">
         	</ul>
@@ -291,9 +291,9 @@
 	</body>
 
 <script >
-	
-	
-	
+
+
+
 	var colorSpecs = {}; //
 	var carts = {};		//查询当前采购商下的所有购物车
 	var shops = {};		//所有产品下所对应的商家
@@ -333,7 +333,7 @@
 			        +'</div>')
 		})
 	}
-	
+
 	function CheckAll(btn){
 		var checkbox = $(btn).parent().next("table").find("input[type='checkbox']");
 		if($(btn).attr("checked") == "checked"){
@@ -345,26 +345,26 @@
 				checkbox[i].checked = false;
 			}
 		}
-		
+
 	}
-	
-	
-	
-	
+
+
+
+
 	function renderProduct() {
 		$.each(products, function(index, d) {
 			var proId = d.id;
 			var colorList = '';
-			
+
 			var specId = new Array();
 			var i = 0;
 			for (var color in colorSpecs[d.id]){
-				
+
 				colorList +='<img src="'+colorSpecs[d.id][color][0].img+'" width="30" height="30" >';
 				specId[i] = colorSpecs[d.id][color][0].id;
 				i++;
 			}
-			
+
 			$("#shop_"+d.shopId+" tbody").append(
 					'<tr id="product_'+d.id+'">'
 			        +'<td class="last">'
@@ -709,26 +709,8 @@
     		}else{
     			alert("一次只能购买一家店铺的商品");
     		}
-    	} 	
+    	}
       </script>
-    <!-- Google Tag Manager -->
-    <script>
-        (function (w, d, s, l, i) {
-            w[l] = w[l] || [];
-            w[l].push({
-                'gtm.start': new Date().getTime(),
-                event: 'gtm.js'
-            });
-            var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s),
-                dl = l != 'dataLayer' ? '&l=' + l : '';
-            j.async = true;
-            j.src =
-                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-            f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-KNPHSJ6');
-    </script>
-    <!-- End Google Tag Manager -->
     <script type="text/javascript">
         $(window).resize(function () {
             $(window).webDisplay(2);

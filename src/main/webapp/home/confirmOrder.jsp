@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>   
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!-- saved from url=(0042)https://www.shoestp.com/cart/checkout.html -->
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
@@ -12,28 +12,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
     <meta name="renderer" content="webkit">
-    <!-- Google Tag Manager -->
-    <script type="text/javascript" async="" src="./static/js/js.js"></script>
-    <script type="text/javascript" async="" src="./static/js/tracking.js"></script>
-    <script type="text/javascript" async="" src="./static/js/analytics.js"></script>
-    <script async="" src="./static/js/gtm.js"></script>
-    <script>
-        (function (w, d, s, l, i) {
-            w[l] = w[l] || [];
-            w[l].push({
-                'gtm.start': new Date().getTime(),
-                event: 'gtm.js'
-            });
-            var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s),
-                dl = l != 'dataLayer' ? '&l=' + l : '';
-            j.async = true;
-            j.src =
-                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-            f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-KNPHSJ6');
-    </script>
-    <!-- End Google Tag Manager -->
     <meta name="keywords" content="fashion wholesale soes,cheap wholesale shoes,wholesale shoes,shoes customization,shoes trade,shoes,Manufacturers,shoestp">
     <meta name="description" content="foreign trade experts online service! ShoeSTP provides you with customization and wholesale for all kinds of high-quality shoes from 300 professional foreign trade shoes companies!">
     <title>An Online B2B market——-Shoestp.com,gathering 300 professional shoes manufacture companies</title>
@@ -215,7 +193,7 @@
                 <h2>Shipping Address</h2>
                 <div class="contents address">
                     <ul id="lib_address" style="float:left;">
-                    
+
                      <c:forEach items="${confirmView.addressList}" var="address">
                     		<li class="<c:if test="${address.isdefault==1}">cur</c:if>" style="display: list-item;">
 	                            <input type="radio" name="addressRadio"  <c:if test="${address.isdefault==1}">checked="checked"</c:if> value="${address.id}">
@@ -231,7 +209,7 @@
                         </li>
                         <li id="addressInfo" style=""></li>
                         <li id="addressForm" style="display: none;">
-                        
+
                             <script type="text/javascript">
                                 $(document).ready(function () {
                                     user_obj.user_address()
@@ -284,7 +262,7 @@
 												<span class="required">*</span><label>Destination Country/Region:</label>
 											</th>
 											<td>
-												
+
 												<div id="country_chzn" class="chzn-container chzn-container-single" style="width:310px">
 												    <input id="sldCountryHiden" type="hidden" name="bean.country"/>
 													<a href="javascript:void(0)"  class="chzn-single">
@@ -344,7 +322,7 @@
 													<span class="required">*</span><label>State / Province / Region:</label>
 												</th>
 												<td>
-													
+
 														<input id="sldProvinceHiden" type="hidden" name="bean.region"/>
 													<div id="province_chzn" class="chzn-container chzn-container-single" style="width:310px">
 														<a href="javascript:void(0)" class="chzn-single" tabindex="0" >
@@ -366,14 +344,14 @@
 															</c:forEach>
 															<!-- <ul class="chzn-results" id="getProvinces">
 															</ul> -->
-															
+
 														</div>
 													</div>
 													<p class="errorInfo">
 													</p>
 												</td>
 						                 </tr>
-                                            
+
                                                 <th>
                                                     <span class="required">*</span>
                                                     <label>City:</label>
@@ -466,12 +444,12 @@
                     <div class="clear"></div>
                 </div>
             </div>
-            
-            
+
+
             <form id="PlaceOrderFrom" method="post" action="" amountprice="14000.00" userprice="0" userratio="100">
                 <!-- 新换样式 -->
                 <style>
-                    
+
 
                     .flex-start {
                       display: -webkit-box;
@@ -514,7 +492,7 @@
                     #lib_cart .w_five{
                         width: 180px;
                     }
-                    
+
                     .cart-list-item-base-info-wrap{
                         position: relative;
                         padding: 10px 0;
@@ -538,13 +516,13 @@
                         color: #0050a8;
                     }
                     .cart-list-item-base-info-wrap .goods-descript .color-or-type{
-                    
+
                     }
                     .cart-list-item-base-info-wrap .goods-descript .goods-price{
-                    
+
                     }
-                    
-                    
+
+
                     /* 以下为单个商品里 不同规格的信息显示 */
                     .cart-list-item-detail-info-wrap{
                         padding-bottom: 10px;
@@ -620,7 +598,7 @@
                                         .cart-list .remark {
                                             margin: 12px 0 12px 50px;
                                         }
-                    
+
                                         .cart-list .item-total {
                                             text-align: right;
                                             margin: 12px 50px 12px 0;
@@ -645,7 +623,7 @@
                                                 <div class="quantity w_four tc">Quantity</div>
                                                 <div class="total w_five tc">Total</div>
                                               </div>
-                                    
+
                                               <!-- 仿tbody -->
                                               <div class="cart-list-content">
                                                 <!-- 单个商品 - 里面有下拉项 -->
@@ -654,7 +632,7 @@
                                                   <div class="cart-list-item-base-info-wrap flex-center">
                                                     <!-- 单个商品 选中状态 -->
                                                     <div class="checkbox w_one tc">
-                                                    	
+
                                                     </div>
                                                     <div class="w_two flex-start">
                                                       <!-- 商品图片 -->
@@ -676,7 +654,7 @@
                                                       </div>
                                                     </div>
                                                     <div class="goods-price w_three tc">
-                                                     
+
                                                       ${env.currency.symbols}<fmt:formatNumber type="number" value="${confirmView.product.wsPrice}" pattern="0.00" maxFractionDigits="2"/>
                                                     </div>
                                                     <!-- 商品数量 -->
@@ -688,7 +666,7 @@
                                                     </div>
                                                   </div>
                                                   <!-- 单个商品 基础信息 - end -->
-                                    
+
                                                   <!-- 单个商品 详细信息 -->
                                                   <div class="cart-list-item-detail-info-wrap">
                                                   	<c:set value="0" var="index" />
@@ -714,7 +692,7 @@
 				                                                            <!-- 商品价格 -->
 				                                                            <div class="goods-price w_three">
 				                                                              ${env.currency.symbols} <fmt:formatNumber type="number" value="${spec.price}" pattern="0.00" maxFractionDigits="2"/>
-				                                                              
+
 				                                                            </div>
 				                                                            <!-- 商品数量 -->
 				                                                            <div class="goods-num flex-center w_four">
@@ -731,7 +709,7 @@
 		                                                      </div>
 	                                                      </div>
                                                   	</c:forEach>
-                                                  
+
                                                   </div>
                                                   <table style="width: 100%;">
 												    <tbody style="width: 100%;">
@@ -748,9 +726,9 @@
                                                   <!-- 单个商品 详细信息 - end -->
                                                 </div>
                                               </div>
-                                              
-                                              
-                                              
+
+
+
                                               <!-- 仿tbody -->
                                               <!-- 留言 bengin -->
                                               <div class="remark">
@@ -842,7 +820,7 @@
                                 <option value="">Please select</option>
                             </select>
                         </div> -->
-                         
+
                         <script>
                             $(function () {
                                 $('.selcoupon .select').change(function () {
@@ -987,14 +965,14 @@
 		var countryName = $(btn).text();
 		$("#sldCountry").text(countryName);
 	}
-	
+
 	function chooseThisProvice(btn){
 		var province = $(btn).attr("value");
 		var provinceName = $(btn).text();
 		$("#sldProvince").text(provinceName);
 		$("#setAddressId input[name='bean.region']").val(province)
 	}
-	
+
 	$("#lib_address input[type=radio][name=shipping_address_id]").on("change",function(){
 		var purchaseLine = $(this).val();
 		console.log(purchaseLine);
@@ -1003,6 +981,6 @@
 	$(".toSetBillAddress").on("click",function(){
 	window.location.href = "/home/usr_UsrPurchaseLine_addmanagement?jumpUrl="+window.location.pathname+window.location.search;
 })
-	
+
 </script>
 </html>

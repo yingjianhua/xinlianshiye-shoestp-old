@@ -227,14 +227,8 @@
     <!-- 公司头部 - 含背景图 - end -->
     <!-- 底部 -->
     <%@ include file="/mobile/template/foot_menu.jsp" %>
-
-    <!-- Google Tag Manager (noscript) -->
-    <noscript>
-        &lt;iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KNPHSJ6"
-        height="0" width="0" style="display:none;visibility:hidden"&gt;&lt;/iframe&gt;
-    </noscript>
-    <!-- End Google Tag Manager (noscript) -->
-</div>
 </div>
 </body>
+
+
 </html>

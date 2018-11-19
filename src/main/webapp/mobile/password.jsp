@@ -112,7 +112,7 @@
                             <!-- Back -->
                             <s:text name="user.back" />
                         </a>
-                        
+
                     </div>
                     <div class="blank25">
                     </div>
@@ -151,12 +151,6 @@
         </footer>
         <%@ include file="/mobile/template/foot_menu.jsp" %>
         <div align="center">
-            <!-- Google Tag Manager (noscript) -->
-            <noscript>
-                &lt;iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KNPHSJ6"
-                height="0" width="0" style="display:none;visibility:hidden"&gt;&lt;/iframe&gt;
-            </noscript>
-            <!-- End Google Tag Manager (noscript) -->
         </div>
 
       <!--   <iframe src="./minIndex/pixel.html" style="display: none;">
@@ -207,8 +201,8 @@
 				$("#comfirmPwd").val("");
 				$("#tip").html(lang_obj.addressfrom.Successfully_modified);
 				$('.psdModal').show().delay(1500).fadeOut();
-				setTimeout(function () {window.location="/home/usr_UsrPurchase_userIndex"; },1000);    		
-			  
+				setTimeout(function () {window.location="/home/usr_UsrPurchase_userIndex"; },1000);
+
 				}else{
 				$("#oldPwd").val("");
 				$("#newPwd").val("");
@@ -228,4 +222,13 @@
   		}
         </script>
     </body>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-127715615-6"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-127715615-6');
+</script>
+
 </html>

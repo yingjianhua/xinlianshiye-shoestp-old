@@ -1,6 +1,6 @@
 <%@ page pageEncoding="UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
-<%--谷歌统计代码--%>
+<%--谷歌统计代码 运营加的--%>
 <script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
 <script>
   window.dataLayer = window.dataLayer || [];

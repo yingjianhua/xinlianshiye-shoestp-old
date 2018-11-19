@@ -10,22 +10,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="renderer" content="webkit">
-    <script>
-        (function (w, d, s, l, i) {
-            w[l] = w[l] || [];
-            w[l].push({
-                'gtm.start': new Date().getTime(),
-                event: 'gtm.js'
-            });
-            var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s),
-                dl = l != 'dataLayer' ? '&l=' + l : '';
-            j.async = true;
-            j.src =
-                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-            f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-KNPHSJ6');
-    </script>
     <meta name="keywords"
           content="fashion wholesale soes,cheap wholesale shoes,wholesale shoes,shoes customization,shoes trade,shoes,Manufacturers,shoestp">
     <meta name="description"
@@ -56,9 +40,10 @@
 
 <style type="text/css">
     /* brand-line-height */
-    .lh-brand{
-      line-height: 56px;
+    .lh-brand {
+        line-height: 56px;
     }
+
     /* 女鞋标题*/
     .toptic_title_0 {
         position: relative;
@@ -271,9 +256,9 @@
                             </c:forEach>
                         </div>
                         <div class="swiper-pagination swiper-pagination-bullets">
-<%--                             <c:forEach items="${purchaseIndexView.headedSwiperAds}"> --%>
-                                <span class="swiper-pagination-bullet"></span>
-<%--                             </c:forEach> --%>
+                            <%--                             <c:forEach items="${purchaseIndexView.headedSwiperAds}"> --%>
+                            <span class="swiper-pagination-bullet"></span>
+                            <%--                             </c:forEach> --%>
                         </div>
                     </div>
                 </div>
@@ -291,7 +276,8 @@
                     <!--banner右侧2图-->
                     <c:forEach var="d" items="${purchaseIndexView.headedBottomTopAds}">
                         <a href="${d.url}" target="_blank">
-                            <img src="${envConfig.imageBaseUrl}${d.image}" alt="" width="${380/fn:length(purchaseIndexView.headedBottomTopAds)}"
+                            <img src="${envConfig.imageBaseUrl}${d.image}" alt=""
+                                 width="${380/fn:length(purchaseIndexView.headedBottomTopAds)}"
                                  height="170" border="0"
                             >
                         </a>
@@ -317,7 +303,8 @@
             <c:forEach var="d" items="${indexAdView4PC.middleAd[0].items}">
                 <!--Banner下方-->
                 <a href="${d.url}" target="_blank">
-                    <img class="lazy" src="${envConfig.imageBaseUrl}${d.image}" data-original="${envConfig.imageBaseUrl}${d.image}"
+                    <img class="lazy" src="${envConfig.imageBaseUrl}${d.image}"
+                         data-original="${envConfig.imageBaseUrl}${d.image}"
                          width="390" height="156"
                          alt="">
                 </a>
@@ -325,244 +312,257 @@
         </div>
     </c:if>
 
-  <%--  <c:forEach items="${purchaseIndexView.pdtCategoryAds}" var="d" varStatus="status">
-        <div class="xl-banner" id="aaaaaaaa">
+    <%--  <c:forEach items="${purchaseIndexView.pdtCategoryAds}" var="d" varStatus="status">
+          <div class="xl-banner" id="aaaaaaaa">
+              <span class="toptic_title">
+                  <a class="toptic_title_${status.index}" href="/home/pdt_PdtProduct?cated=${d.pkey}"
+                     target="_blank">
+                          ${d.name}
+                  </a>
+              </span>
+              <ul class="women_ul clearfloat">
+                  <li>
+                      <a href="/home/pdt_PdtProduct?cated=${d.pkey}" target="_blank">Global.More+</a>
+                  </li>
+                  <c:forEach var="dd" items="${d.categorys}" step="1">
+                      <li>
+                          <a href="/home/pdt_PdtProduct?cated=${dd.pkey}" target="_blank">${dd.name}</a>
+                      </li>
+                  </c:forEach>
+              </ul>
+
+              <div class="toys">
+                  <div class="${(status.index+1)%2!=0?"toys_right":"toys_left"} left800">
+                      <div class="cata-box">
+                          <ul class="toys_ul">
+                              <c:forEach var="dd" items="${d.ads.items}">
+                                  <li>
+                                      <a target="_blank" href="${dd.url}">
+                                          <img class="lazy" src="${dd.image}" data-original="${dd.pkey}" width="260" height="260"alt="${dd.name}">
+                                          <div class="cover">
+                                              <p>${dd.name}</p>
+                                              <h3></h3>
+                                          </div>
+                                      </a>
+                                  </li>
+                              </c:forEach>
+
+                                  <li>
+                                      <a target="_blank" href="#">
+                                          <img class="lazy" src="/home/static/images/user/aCasual.jpg" width="260" height="260"alt="Casual Men's PU Lace-up Shoes">
+                                          <div class="cover">
+                                              <p>Casual Men's PU Lace-up Shoes</p>
+                                              <h3></h3>
+                                          </div>
+                                      </a>
+                                  </li>
+
+
+                          </ul>
+
+                      </div>
+                  </div>
+                  <div class="${(status.index+1)%2==0?"toys_right":"toys_left"} left380">
+                      <a href="${d.ads.main.url}" target="_blank">
+                          <img class="lazy" src="${d.ads.main.image}"
+                               data-original="${d.ads.main.pkey}" width="380" height="530"
+                               alt="${d.ads.main.name}">
+                      </a>
+                  </div>
+              </div>
+
+          </div>
+
+      </c:forEach> --%>
+
+    <div class="xl-banner" id="aaaaaaaa">
 			<span class="toptic_title">
-				<a class="toptic_title_${status.index}" href="/home/pdt_PdtProduct?cated=${d.pkey}"
-                   target="_blank">
-                        ${d.name}
-                </a>
+				<a class="toptic_title_0" href="/home/pdt_PdtProduct?cated=380" target="_blank"><s:text
+                        name="home.Womens"/></a>
 			</span>
-            <ul class="women_ul clearfloat">
-                <li>
-                    <a href="/home/pdt_PdtProduct?cated=${d.pkey}" target="_blank">Global.More+</a>
-                </li>
-                <c:forEach var="dd" items="${d.categorys}" step="1">
-                    <li>
-                        <a href="/home/pdt_PdtProduct?cated=${dd.pkey}" target="_blank">${dd.name}</a>
-                    </li>
+        <ul class="women_ul clearfloat">
+            <li>
+                <a href="/home/pdt_PdtProduct?cated=380" target="_blank"><s:text name="Global.More"/>+</a>
+            </li>
+            <li>
+                <a href="/home/pdt_PdtProduct?cated=490" target="_blank"><s:text name="home.Womens_Shoes"/></a>
+            </li>
+            <li>
+                <a href="/home/pdt_PdtProduct?cated=385" target="_blank"><s:text name="home.Womens_Boots"/></a>
+            </li>
+            <li>
+                <a href="/home/pdt_PdtProduct?cated=386" target="_blank"><s:text name="home.Womens_Sandals"/></a>
+            </li>
+        </ul>
+        <div class="toys">
+            <div class="toys_right left800">
+                <div class="cata-box">
+                    <ul class="toys_ul">
+                        <c:forEach items="${indexAdView4PC.productCategoryAd }" var="ad">
+                            <c:if test="${ad.category==380 }">
+                                <c:forEach items="${ad.items }" var="line">
+                                    <c:if test="${!line.isPrimary() }">
+                                        <li>
+                                            <a target="_blank" href="${line.url}">
+                                                <img class="lazy" src=""
+                                                     data-original="${envConfig.imageBaseUrl}${line.image}" width="260"
+                                                     height="260" alt="${line.summary }">
+                                                <div class="cover">
+                                                    <p>${line.summary }</p>
+                                                    <h3></h3>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </c:if>
+                                </c:forEach>
+                            </c:if>
+                        </c:forEach>
+                    </ul>
+                </div>
+            </div>
+            <div class="toys_left left380">
+                <c:forEach items="${indexAdView4PC.productCategoryAd }" var="ad">
+                    <c:if test="${ad.category==380 }">
+                        <c:forEach items="${ad.items }" var="line">
+                            <c:if test="${line.isPrimary() }">
+                                <a href="${line.url}" target="_blank">
+                                    <img class="lazy" src="" data-original="${envConfig.imageBaseUrl}${line.image}"
+                                         alt="${line.summary }">
+                                </a>
+                            </c:if>
+                        </c:forEach>
+                    </c:if>
                 </c:forEach>
-            </ul>
-
-            <div class="toys">
-                <div class="${(status.index+1)%2!=0?"toys_right":"toys_left"} left800">
-                    <div class="cata-box">
-                        <ul class="toys_ul">
-                            <c:forEach var="dd" items="${d.ads.items}">
-                                <li>
-                                    <a target="_blank" href="${dd.url}">
-                                        <img class="lazy" src="${dd.image}" data-original="${dd.pkey}" width="260" height="260"alt="${dd.name}">
-                                        <div class="cover">
-                                            <p>${dd.name}</p>
-                                            <h3></h3>
-                                        </div>
-                                    </a>
-                                </li>
-                            </c:forEach>
-
-                                <li>
-                                    <a target="_blank" href="#">
-                                        <img class="lazy" src="/home/static/images/user/aCasual.jpg" width="260" height="260"alt="Casual Men's PU Lace-up Shoes">
-                                        <div class="cover">
-                                            <p>Casual Men's PU Lace-up Shoes</p>
-                                            <h3></h3>
-                                        </div>
-                                    </a>
-                                </li>
-
-
-                        </ul>
-
-                    </div>
-                </div>
-                <div class="${(status.index+1)%2==0?"toys_right":"toys_left"} left380">
-                    <a href="${d.ads.main.url}" target="_blank">
-                        <img class="lazy" src="${d.ads.main.image}"
-                             data-original="${d.ads.main.pkey}" width="380" height="530"
-                             alt="${d.ads.main.name}">
-                    </a>
+            </div>
+        </div>
+    </div>
+    <div class="xl-banner" id="aaaaaaaa">
+			<span class="toptic_title">
+				<a class="toptic_title_1" href="/home/pdt_PdtProduct?cated=373" target="_blank"><s:text
+                        name="home.Mens"/></a>
+			</span>
+        <ul class="women_ul clearfloat">
+            <li>
+                <a href="/home/pdt_PdtProduct?cated=373" target="_blank"><s:text name="Global.More"/>+</a>
+            </li>
+            <li>
+                <a href="/home/pdt_PdtProduct?cated=484" target="_blank"><s:text name="home.Mens_Shoes"/></a>
+            </li>
+            <li>
+                <a href="/home/pdt_PdtProduct?cated=378" target="_blank"><s:text name="home.Mens_Boots"/></a>
+            </li>
+            <li>
+                <a href="/home/pdt_PdtProduct?cated=375" target="_blank"><s:text name="home.Mens_Sandals"/></a>
+            </li>
+        </ul>
+        <div class="toys">
+            <div class="toys_left left800">
+                <div class="cata-box">
+                    <ul class="toys_ul">
+                        <c:forEach items="${indexAdView4PC.productCategoryAd }" var="ad">
+                            <c:if test="${ad.category==373 }">
+                                <c:forEach items="${ad.items }" var="line">
+                                    <c:if test="${!line.isPrimary() }">
+                                        <li>
+                                            <a target="_blank" href="${line.url}">
+                                                <img class="lazy" src=""
+                                                     data-original="${envConfig.imageBaseUrl}${line.image}" width="260"
+                                                     height="260" alt="${line.summary }">
+                                                <div class="cover">
+                                                    <p>${line.summary }</p>
+                                                    <h3></h3>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </c:if>
+                                </c:forEach>
+                            </c:if>
+                        </c:forEach>
+                    </ul>
                 </div>
             </div>
-
-        </div>
-
-    </c:forEach> --%>
-
-      <div class="xl-banner" id="aaaaaaaa">
-			<span class="toptic_title">
-				<a class="toptic_title_0" href="/home/pdt_PdtProduct?cated=380" target="_blank"><s:text name="home.Womens"/></a>
-			</span>
-            <ul class="women_ul clearfloat">
-                <li>
-                    <a href="/home/pdt_PdtProduct?cated=380" target="_blank"><s:text name="Global.More"/>+</a>
-                </li>
-                <li>
-                    <a href="/home/pdt_PdtProduct?cated=490" target="_blank"><s:text name="home.Womens_Shoes"/></a>
-                </li>
-                <li>
-                    <a href="/home/pdt_PdtProduct?cated=385" target="_blank"><s:text name="home.Womens_Boots"/></a>
-                </li>
-                <li>
-                    <a href="/home/pdt_PdtProduct?cated=386" target="_blank"><s:text name="home.Womens_Sandals"/></a>
-                </li>
-            </ul>
-            <div class="toys">
-                <div class="toys_right left800">
-                    <div class="cata-box">
-                        <ul class="toys_ul">
-						<c:forEach items="${indexAdView4PC.productCategoryAd }" var="ad">
-						<c:if test="${ad.category==380 }">
-							<c:forEach items="${ad.items }" var="line">
-								<c:if test="${!line.isPrimary() }">
-								<li>
-		                            <a target="_blank" href="${line.url}">
-		                                 <img class="lazy" src="" data-original="${envConfig.imageBaseUrl}${line.image}" width="260" height="260" alt="${line.summary }">
-		                                 <div class="cover">
-		                                     <p>${line.summary }</p>
-		                                     <h3></h3>
-		                                 </div>
-									</a>
-								</li>
-								</c:if>
-							</c:forEach>
-						</c:if>
-						</c:forEach>
-                        </ul>
-                    </div>
-                </div>
-                <div class="toys_left left380">
+            <div class="toys_right left380">
                 <c:forEach items="${indexAdView4PC.productCategoryAd }" var="ad">
-				<c:if test="${ad.category==380 }">
-					<c:forEach items="${ad.items }" var="line">
-						<c:if test="${line.isPrimary() }">
-	                    <a href="${line.url}" target="_blank">
-	                        <img class="lazy" src="" data-original="${envConfig.imageBaseUrl}${line.image}" alt="${line.summary }">
-	                    </a>
-						</c:if>
-					</c:forEach>
-				</c:if>
-				</c:forEach>
-                </div>
+                    <c:if test="${ad.category==373 }">
+                        <c:forEach items="${ad.items }" var="line">
+                            <c:if test="${line.isPrimary() }">
+                                <a href="${line.url}" target="_blank">
+                                    <img class="lazy" src="" data-original="${envConfig.imageBaseUrl}${line.image}"
+                                         alt="${line.summary }">
+                                </a>
+                            </c:if>
+                        </c:forEach>
+                    </c:if>
+                </c:forEach>
             </div>
         </div>
-        <div class="xl-banner" id="aaaaaaaa">
-			<span class="toptic_title">
-				<a class="toptic_title_1" href="/home/pdt_PdtProduct?cated=373" target="_blank"><s:text name="home.Mens"/></a>
-			</span>
-            <ul class="women_ul clearfloat">
-                <li>
-                    <a href="/home/pdt_PdtProduct?cated=373" target="_blank"><s:text name="Global.More"/>+</a>
-                </li>
-                    <li>
-                        <a href="/home/pdt_PdtProduct?cated=484" target="_blank"><s:text name="home.Mens_Shoes"/></a>
-                    </li>
-                    <li>
-                        <a href="/home/pdt_PdtProduct?cated=378" target="_blank"><s:text name="home.Mens_Boots"/></a>
-                    </li>
-                    <li>
-                        <a href="/home/pdt_PdtProduct?cated=375" target="_blank"><s:text name="home.Mens_Sandals"/></a>
-                    </li>
-            </ul>
-            <div class="toys">
-                <div class="toys_left left800">
-                    <div class="cata-box">
-                        <ul class="toys_ul">
-						<c:forEach items="${indexAdView4PC.productCategoryAd }" var="ad">
-						<c:if test="${ad.category==373 }">
-							<c:forEach items="${ad.items }" var="line">
-								<c:if test="${!line.isPrimary() }">
-								<li>
-		                            <a target="_blank" href="${line.url}">
-		                                 <img class="lazy" src="" data-original="${envConfig.imageBaseUrl}${line.image}" width="260" height="260" alt="${line.summary }">
-		                                 <div class="cover">
-		                                     <p>${line.summary }</p>
-		                                     <h3></h3>
-		                                 </div>
-									</a>
-								</li>
-								</c:if>
-							</c:forEach>
-						</c:if>
-						</c:forEach>
-                        </ul>
-                    </div>
-                </div>
-                <div class="toys_right left380">
-                <c:forEach items="${indexAdView4PC.productCategoryAd }" var="ad">
-				<c:if test="${ad.category==373 }">
-					<c:forEach items="${ad.items }" var="line">
-						<c:if test="${line.isPrimary() }">
-	                    <a href="${line.url}" target="_blank">
-	                        <img class="lazy" src="" data-original="${envConfig.imageBaseUrl}${line.image}" alt="${line.summary }">
-	                    </a>
-						</c:if>
-					</c:forEach>
-				</c:if>
-				</c:forEach>
-                </div>
-            </div>
 
-        </div>
-		<div class="xl-banner" id="aaaaaaaa">
+    </div>
+    <div class="xl-banner" id="aaaaaaaa">
 			<span class="toptic_title">
-				<a class="toptic_title_2" href="/home/pdt_PdtProduct?cated=387" target="_blank"><s:text name="home.Childrens"/></a>
+				<a class="toptic_title_2" href="/home/pdt_PdtProduct?cated=387" target="_blank"><s:text
+                        name="home.Childrens"/></a>
 			</span>
-            <ul class="women_ul clearfloat">
-                <li>
-                    <a href="/home/pdt_PdtProduct?cated=387" target="_blank"><s:text name="Global.More"/>+</a>
-                </li>
-                <li>
-                    <a href="/home/pdt_PdtProduct?cated=508" target="_blank"><s:text name="home.Boy_Collection"/></a>
-                </li>
-                <li>
-                    <a href="/home/pdt_PdtProduct?cated=509" target="_blank"><s:text name="home.Girl_Collection"/></a>
-                </li>
-                <li>
-                    <a href="/home/pdt_PdtProduct?cated=507" target="_blank"><s:text name="home.Baby_Collection"/></a>
-                </li>
-                <li>
-                    <a href="/home/pdt_PdtProduct?cated=519" target="_blank"><s:text name="home.Waterproof_Boots_And_Rain_Boots"/></a>
-                </li>
-            </ul>
-            <div class="toys">
-                <div class="toys_right left800">
-                    <div class="cata-box">
-                        <ul class="toys_ul">
-						<c:forEach items="${indexAdView4PC.productCategoryAd }" var="ad">
-						<c:if test="${ad.category==387 }">
-							<c:forEach items="${ad.items }" var="line">
-								<c:if test="${!line.isPrimary() }">
-								<li>
-		                            <a target="_blank" href="${line.url}">
-		                                 <img class="lazy" src="" data-original="${envConfig.imageBaseUrl}${line.image}" width="260" height="260" alt="${line.summary }">
-		                                 <div class="cover">
-		                                     <p>${line.summary }</p>
-		                                     <h3></h3>
-		                                 </div>
-									</a>
-								</li>
-								</c:if>
-							</c:forEach>
-						</c:if>
-						</c:forEach>
-                        </ul>
-                    </div>
-                </div>
-                <div class="toys_left left380">
-				<c:forEach items="${indexAdView4PC.productCategoryAd }" var="ad">
-				<c:if test="${ad.category==387 }">
-					<c:forEach items="${ad.items }" var="line">
-						<c:if test="${line.isPrimary() }">
-	                    <a href="${line.url}" target="_blank">
-	                        <img class="lazy" src="" data-original="${envConfig.imageBaseUrl}${line.image}" alt="${line.summary }">
-	                    </a>
-						</c:if>
-					</c:forEach>
-				</c:if>
-				</c:forEach>
+        <ul class="women_ul clearfloat">
+            <li>
+                <a href="/home/pdt_PdtProduct?cated=387" target="_blank"><s:text name="Global.More"/>+</a>
+            </li>
+            <li>
+                <a href="/home/pdt_PdtProduct?cated=508" target="_blank"><s:text name="home.Boy_Collection"/></a>
+            </li>
+            <li>
+                <a href="/home/pdt_PdtProduct?cated=509" target="_blank"><s:text name="home.Girl_Collection"/></a>
+            </li>
+            <li>
+                <a href="/home/pdt_PdtProduct?cated=507" target="_blank"><s:text name="home.Baby_Collection"/></a>
+            </li>
+            <li>
+                <a href="/home/pdt_PdtProduct?cated=519" target="_blank"><s:text
+                        name="home.Waterproof_Boots_And_Rain_Boots"/></a>
+            </li>
+        </ul>
+        <div class="toys">
+            <div class="toys_right left800">
+                <div class="cata-box">
+                    <ul class="toys_ul">
+                        <c:forEach items="${indexAdView4PC.productCategoryAd }" var="ad">
+                            <c:if test="${ad.category==387 }">
+                                <c:forEach items="${ad.items }" var="line">
+                                    <c:if test="${!line.isPrimary() }">
+                                        <li>
+                                            <a target="_blank" href="${line.url}">
+                                                <img class="lazy" src=""
+                                                     data-original="${envConfig.imageBaseUrl}${line.image}" width="260"
+                                                     height="260" alt="${line.summary }">
+                                                <div class="cover">
+                                                    <p>${line.summary }</p>
+                                                    <h3></h3>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </c:if>
+                                </c:forEach>
+                            </c:if>
+                        </c:forEach>
+                    </ul>
                 </div>
             </div>
+            <div class="toys_left left380">
+                <c:forEach items="${indexAdView4PC.productCategoryAd }" var="ad">
+                    <c:if test="${ad.category==387 }">
+                        <c:forEach items="${ad.items }" var="line">
+                            <c:if test="${line.isPrimary() }">
+                                <a href="${line.url}" target="_blank">
+                                    <img class="lazy" src="" data-original="${envConfig.imageBaseUrl}${line.image}"
+                                         alt="${line.summary }">
+                                </a>
+                            </c:if>
+                        </c:forEach>
+                    </c:if>
+                </c:forEach>
+            </div>
         </div>
+    </div>
     <div id="xl-products_content">
         <div id="xl-banner_four">
             <!-- 新品start -->
@@ -576,7 +576,8 @@
 						</span>
                     <span class="more lh-brand">
 							<!--                                更多按钮-->
-							<a href="/home/pdt_PdtProduct?orderfld=New" target="_blank"><s:text name="Global.More"/>+</a>
+							<a href="/home/pdt_PdtProduct?orderfld=New" target="_blank"><s:text
+                                    name="Global.More"/>+</a>
 						</span>
                 </div>
                 <div class="product_left">
@@ -588,7 +589,8 @@
                                        title="${d.name}"
                                        target="_blank">
                                         <img class="lazy" src=""
-                                             data-original="${envConfig.imageBaseUrl}${d.image}?x-oss-process=image/resize,m_fixed,h_200,w_200" width="230"
+                                             data-original="${envConfig.imageBaseUrl}${d.image}?x-oss-process=image/resize,m_fixed,h_200,w_200"
+                                             width="230"
                                              height="230" alt="">
                                         <p class="newP">${d.name}</p>
                                         <h3>${env.currency.symbols}${d.price}</h3>
@@ -604,7 +606,8 @@
                 <div class="clearfloat" style="padding:0 15px 0 0;">
 						<span class="toptic_title">
 							<!--                                品牌展示-->
-							<a class="BrandShow" target="_blank" href="/home/usr_UsrSupplier"><s:text name="home.Brand_Show"/></a>
+							<a class="BrandShow" target="_blank" href="/home/usr_UsrSupplier"><s:text
+                                    name="home.Brand_Show"/></a>
 						</span>
                     <span class="more lh-brand">
 							<!--                                更多按钮-->
@@ -621,9 +624,11 @@
                                              data-original="${envConfig.imageBaseUrl}${d.logo}"
                                              style="display: inline;">
                                         <span class="_hover">
-                                               <a target="_blank" href="/home/usr_UsrSupplier_gtSupIndex?pkey=${d.pkey}">
+                                               <a target="_blank"
+                                                  href="/home/usr_UsrSupplier_gtSupIndex?pkey=${d.pkey}">
                                                 <span class="_name"> ${d.name}</span>
-                                                <span class="_enterBtn"><!-- Enter --><s:text name="my-order.See_Details" /></span>
+                                                <span class="_enterBtn"><!-- Enter --><s:text
+                                                        name="my-order.See_Details"/></span>
                                             </a>
                                         </span>
                                 </span>
