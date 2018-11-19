@@ -13,6 +13,7 @@ public abstract class AbstractSQL<T> {
 
   private static final String AND = ") AND (";
   private static final String OR = ") OR (";
+  private static final String or = " OR ";
 
   private final SQLStatement sql = new SQLStatement();
 
@@ -194,6 +195,11 @@ public abstract class AbstractSQL<T> {
     return getSelf();
   }
 
+  public T or() {
+    sql().lastList.add(or);
+    return getSelf();
+  }
+
   public T OR() {
     sql().lastList.add(OR);
     return getSelf();
@@ -362,7 +368,7 @@ public abstract class AbstractSQL<T> {
         String last = "________";
         for (int i = 0, n = parts.size(); i < n; i++) {
           String part = parts.get(i);
-          if (i > 0 && !part.equals(AND) && !part.equals(OR) && !last.equals(AND) && !last.equals(OR)) {
+          if (i > 0 && !part.equals(AND) && !part.equals(OR) && !part.equals(or) && !last.equals(AND) && !last.equals(OR) && !last.equals(or)) {
             builder.append(conjunction);
           }
           builder.append(part);

@@ -3,6 +3,7 @@ package irille.Service.Manage.OdrMeeting.Imp;
 import irille.Dao.OdrMeetingDao;
 import irille.Dao.Old.OdrMeeting.OdrMeetingAuditInsDao;
 import irille.Dao.Old.OdrMeeting.OdrMeetingInsDao;
+import irille.Dao.OrderMeetingAuditDao;
 import irille.Entity.OdrerMeetings.Enums.OrderMeetingAuditStatus;
 import irille.Entity.OdrerMeetings.Enums.OrderMeetingAuditType;
 import irille.Entity.OdrerMeetings.Enums.OrderMeetingStatus;
@@ -169,6 +170,21 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
     @Override
     public void batchdelete(String pkeys) {
         odrMeetingDao.batchdelete(pkeys);
+    }
+
+    @Override
+    public void insertjoinOdr(Integer OMTpkey, Integer supplierkey) {
+        OrderMeetingAuditDao.insertjoinOdr ij=new OrderMeetingAuditDao.insertjoinOdr();
+        OrderMeetingAudit od=new OrderMeetingAudit();
+        od.setOdrmeeting(OMTpkey);
+        od.setSupplierid(supplierkey);
+        ij.setB(od);
+        ij.commit();
+    }
+
+    @Override
+    public void joindelete(String pkeys) {
+        odrMeetingDao.joindelete(pkeys);
     }
 
     @Override

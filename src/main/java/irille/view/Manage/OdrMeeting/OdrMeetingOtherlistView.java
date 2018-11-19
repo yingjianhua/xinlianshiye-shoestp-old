@@ -25,4 +25,5 @@ public class OdrMeetingOtherlistView {
     private Date starttime;//开始时间
     @JsonFormat(pattern="yyyy.MM.dd", timezone="GMT+8")
     private Date endtime;//结束时间
+    private Integer applyodr;
 }

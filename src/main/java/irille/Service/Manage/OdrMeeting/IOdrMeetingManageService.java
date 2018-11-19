@@ -79,11 +79,25 @@ public interface IOdrMeetingManageService {
     JSONObject loadstate() throws Exception;
 
     /**
-     * @Description: 批量删除
+     * @Description:  发布者批量删除
      * @date 2018/11/15 18:04
      * @anthor wilson zhang
      */
     void batchdelete(String pkeys);
+
+    /**
+    *@Description:  添加商家参加订购会
+    *@date 2018/11/19 20:19
+    *@anthor wilson zhang
+    */
+    void insertjoinOdr(Integer OMTpkey,Integer supplierkey);
+
+    /**
+     * @Description: 参加者批量删除
+     * @date 2018/11/15 18:04
+     * @anthor wilson zhang
+     */
+    void joindelete(String pkeys);
 
     /**
      * @Description: 获取某个订购会销售明细

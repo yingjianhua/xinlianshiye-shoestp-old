@@ -164,7 +164,7 @@ public class ResultMapper {
 					default:
 						value = rs.getObject(i+1);
 					}
-					map.put(key, value);
+					map.put(key, rs.wasNull()?null:value);
 				}
 				list.add(map);
 			}

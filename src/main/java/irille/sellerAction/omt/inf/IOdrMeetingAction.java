@@ -15,11 +15,15 @@ public interface IOdrMeetingAction extends ISellerAction {
     public void getMyJoinOdrMeetingList() throws Exception;
     @RequestMapping(alias="其他订购会列表", sort=4)
     public void getMyOtherOdrMeetingList() throws Exception;
-    @RequestMapping(alias="批量删除", sort=5)
+    @RequestMapping(alias="发布 批量删除", sort=5)
     public void batchdelete() throws Exception;
+    @RequestMapping(alias="参加 批量删除", sort=8)
+    public void joindelete() throws Exception;
+    @RequestMapping(alias="参加订购会插入", sort=9)
+    public void joininsert() throws Exception;
     @RequestMapping(alias="订购会列表  修改状态", sort=6)
     public void Meettingupdstate() throws Exception;
-    @RequestMapping(alias="状态列表", sort=1)
+    @RequestMapping(alias="状态列表", sort=7)
     public void loadstate() throws Exception;
 
 }

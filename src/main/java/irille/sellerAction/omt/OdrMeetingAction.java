@@ -54,6 +54,18 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
         odrMeetingManageService.batchdelete(pkeys);
         write();
     }
+    @Override
+    public void joindelete() throws Exception {
+        odrMeetingManageService.joindelete(pkeys);
+        write();
+    }
+
+    @Override
+    public void joininsert() throws Exception {
+        odrMeetingManageService.insertjoinOdr(id,getSupplier().getPkey());
+        write();
+    }
+
     @Setter
     @Getter
     private  Integer id;

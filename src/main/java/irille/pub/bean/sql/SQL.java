@@ -92,7 +92,14 @@ public class SQL {
 	  }
 	  return mybatisSQL.getSelf();
   }
-  
+  public <T extends BeanMain<?, ?>> SQL orWhere(IEnumFld fld, String conditions, Serializable... params) {
+  	return mybatisSQL.or().WHERE(fld, conditions, params);
+  }
+
+	public <T extends BeanMain<?, ?>> SQL or() {
+		return mybatisSQL.or();
+	}
+
   public <T extends BeanMain<?, ?>> SQL OR() {
 	  return mybatisSQL.OR();
   }

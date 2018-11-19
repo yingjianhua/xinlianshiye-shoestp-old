@@ -26,7 +26,7 @@ public class OrderMeetingAudit extends BeanInt<OrderMeetingAudit> {
     STATUS(TB.crt(OrderMeetingAuditStatus.DEFAULT)),
     MESSAGE(SYS.STR__200_NULL, "消息"),
     SUPPLIERID(UsrSupplier.fldOutKey()),
-    SNAPSHOT(SYS.JSON, "快照"),
+    SNAPSHOT(SYS.JSON, "快照",true),
     CREATED_TIME(SYS.CREATED_DATE_TIME),
     ROW_VERSION(SYS.ROW_VERSION),
     //>>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
@@ -86,7 +86,7 @@ public class OrderMeetingAudit extends BeanInt<OrderMeetingAudit> {
 	// DELETE:4,已删除
   private String _message;	// 消息  STR(200)<null>
   private Integer _supplierid;	// 供应商 <表主键:UsrSupplier>  INT
-  private String _snapshot;	// 快照  JSONOBJECT
+  private String _snapshot;	// 快照  JSONOBJECT<null>
   private Date _createdTime;	// 建档时间  TIME
   private Short _rowVersion;	// 版本  SHORT
 
