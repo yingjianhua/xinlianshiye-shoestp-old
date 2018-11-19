@@ -4,12 +4,10 @@ import irille.Dao.OdrMeetingDao;
 import irille.Dao.Old.OdrMeeting.OdrMeetingAuditInsDao;
 import irille.Dao.Old.OdrMeeting.OdrMeetingInsDao;
 import irille.Entity.OdrerMeetings.Enums.OrderMeetingAuditStatus;
-import irille.Entity.OdrerMeetings.Enums.OrderMeetingAuditType;
 import irille.Entity.OdrerMeetings.Enums.OrderMeetingStatus;
 import irille.Entity.OdrerMeetings.OrderMeeting;
 import irille.Entity.OdrerMeetings.OrderMeetingAudit;
 import irille.Service.Manage.OdrMeeting.IOdrMeetingManageService;
-import irille.pub.idu.IduPage;
 import irille.view.Manage.OdrMeeting.OdrMeetingInfoView;
 import irille.view.Manage.OdrMeeting.Sale.OdrMeetingSaleInfoView;
 import irille.view.Page;
@@ -19,6 +17,7 @@ import org.json.JSONObject;
 import javax.inject.Inject;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/14 Time: 13:37
@@ -99,8 +98,8 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
     }
 
     @Override
-    public Page getMyOdrMeetingList(Integer start, Integer limit, String name,Integer supstate, Integer state, Integer supplierpkey) {
-        return odrMeetingDao.Launchlist(start, limit, name,supstate, state, supplierpkey);
+    public Page getMyOdrMeetingList(Integer start, Integer limit, String name, Integer supstate, Integer state, Integer supplierpkey) {
+        return odrMeetingDao.Launchlist(start, limit, name, supstate, state, supplierpkey);
     }
 
     @Override
@@ -117,9 +116,8 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
     public void joInOdrMeeting(int odrMeetIngId, int supplier) {
         if (odrMeetingDao.isJoinOdrMeeting(odrMeetIngId, supplier)) {
             OrderMeetingAudit audit = new OrderMeetingAudit();
-//            audit.setOrdermeeting(odrMeetIngId);
-//            audit.stStatus(OrderMeetingAuditStatus.DEFAULT);
-//            audit.stType(OrderMeetingAuditType.SUPPLIER);
+            audit.setOdrmeeting(odrMeetIngId);
+            audit.stStatus(OrderMeetingAuditStatus.DEFAULT);
             audit.setSupplierid(supplier);
             audit.setCreatedTime(new Date());
             odrMeetingAuditInsDao.setB(audit).commit();
@@ -142,6 +140,7 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
         json.put("STORE_ROOT", ja);
         return json;
     }
+
     @Override
     public JSONObject loadstate() throws Exception {
         JSONObject json = new JSONObject();
@@ -162,7 +161,7 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
     @Override
     public List<OdrMeetingSaleInfoView> getMeetingSaleInfo(int start, int limit, int odrMeeting,
                                                            int type, int supplierId) {
-//    return odrMeetingDao.getMeetingAllSaleInfo(start, limit, odrMeeting);
+        List<Map<String, Object>> maps = odrMeetingDao.getMeetingAllSaleInfo(start, limit, odrMeeting);
         return null;
     }
 

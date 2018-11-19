@@ -168,7 +168,6 @@ public class UsrSupplierDAO {
                 setPkey((Integer) bean.get(T.PKEY.getFld().getCodeSqlField()));
                 setLogo((String) bean.get(T.LOGO.getFld().getCodeSqlField()));
                 setName((String) bean.get(T.NAME.getFld().getCodeSqlField()));
-                System.out.println(bean);
                 setProdpattern((String) bean.get(T.PROD_PATTERN.getFld().getCodeSqlField()));
                 setProDuctCount(Long.valueOf((bean.get("prodCount") == null ? 0 : bean.get("prodCount")).toString()));
                 SQL prodSQL = new SQL() {{

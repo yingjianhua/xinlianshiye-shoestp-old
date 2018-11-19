@@ -8,7 +8,8 @@ import lombok.Data;
 @Data
 public class OdrMeetingSpecSaleInfoView {
 
-  private String name;
-  private double price;
-  private double countPrice;
+    private String name;
+    private double price;
+    private int qty;
+    private double countPrice;
 }
