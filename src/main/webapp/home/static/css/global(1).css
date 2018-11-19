@@ -864,12 +864,14 @@ body.hidden {
     text-align: center;
     text-decoration: none;
 }
+
 /* 分页按钮内容不换行 */
-#turn_page li:first-child font,#turn_page li:first-child a,
-#turn_page li:last-child font,#turn_page li:last-child a{
-	width: auto;
-	white-space: nowrap;
+#turn_page li:first-child font, #turn_page li:first-child a,
+#turn_page li:last-child font, #turn_page li:last-child a {
+    width: auto;
+    white-space: nowrap;
 }
+
 #turn_page .page_item_current {
     background: #333;
     color: #fff;
@@ -1124,11 +1126,12 @@ body.hidden {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
     cursor: pointer;
 }
-#prompt_content .footRegion .btn:last-child, #choose_content .footRegion .btn:last-child{
-  margin-right: 0;
+
+#prompt_content .footRegion .btn:last-child, #choose_content .footRegion .btn:last-child {
+    margin-right: 0;
 }
 
-#prompt_content .footRegion .btn:hover,#choose_content .footRegion .btn:hover {
+#prompt_content .footRegion .btn:hover, #choose_content .footRegion .btn:hover {
     color: #333333;
     text-decoration: none;
     background-color: #e6e6e6;
@@ -1140,7 +1143,7 @@ body.hidden {
     transition: background-position 0.1s linear;
 }
 
-#prompt_content .footRegion .btn-success,#choose_content .footRegion .btn-success {
+#prompt_content .footRegion .btn-success, #choose_content .footRegion .btn-success {
     background-color: #da4f49;
     background-image: -ms-linear-gradient(top, #ee5f5b, #bd362f);
     background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ee5f5b), to(#bd362f));
@@ -1153,20 +1156,21 @@ body.hidden {
     margin-right: 20px;
 }
 
-#prompt_content .footRegion .btn-success:hover,#choose_content .footRegion .btn-success:hover {
+#prompt_content .footRegion .btn-success:hover, #choose_content .footRegion .btn-success:hover {
     background-color: #bd362f;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
     color: #ffffff;
 }
 
-#prompt_content .cart_view,#choose_content .cart_view {
+#prompt_content .cart_view, #choose_content .cart_view {
     position: relative;
     padding: 15px 0 15px;
     font-size: 14px;
     padding-left: 50px;
 }
-#prompt_content .cart_view:before, #choose_content .cart_view:before{
-    content:"";
+
+#prompt_content .cart_view:before, #choose_content .cart_view:before {
+    content: "";
     position: absolute;
     left: 0;
     top: 50%;
@@ -1381,10 +1385,14 @@ body.hidden {
     line-height: 18px;
 }
 
-.follow_toolbox li > a:focus, .follow_toolbox li > a:hover {
-    transform: translateY(-4px);
-    -webkit-transform: translateY(-4px);
-}
+/*.follow_toolbox li > a:focus, .follow_toolbox li > a {*/
+    /*transform: translateY(0px);*/
+/*}*/
+
+/*.follow_toolbox li > a:focus, .follow_toolbox li > a:hover {*/
+    /*transform: translateY(-4px);*/
+    /*-webkit-transform: translateY(-4px);*/
+/*}*/
 
 .follow_facebook {
     background-position: -56px -140px;

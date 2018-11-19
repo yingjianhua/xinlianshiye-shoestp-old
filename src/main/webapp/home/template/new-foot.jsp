@@ -1,6 +1,6 @@
 <%@ page pageEncoding="UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
-<%@ taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <div id="new_foot" style="width:100%">
@@ -47,21 +47,17 @@
                         <ul>
                             <li>
                                 <a rel="nofollow" class="follow_facebook" href="#" target="_blank"
-                                   title="Facebook">Facebook</a>
+                                   title="facebook">Facebook</a>
                             </li>
                             <li>
-                                <a rel="nofollow" class="follow_twitter" href="#" target="_blank" title="Twitter">Twitter</a>
+                                <a rel="nofollow" class="follow_twitter" href="#" target="_blank" title="twitter">Twitter</a>
                             </li>
                             <li>
-                                <a rel="nofollow" class="follow_pinterest" href="#" target="_blank" title="Pinterest">Pinterest</a>
-                            </li>
-                            <li>
-                                <a rel="nofollow" class="follow_youtube" href="#" target="_blank"
-                                   title="YouTube">YouTube</a>
+                                <a rel="nofollow" class="follow_pinterest" href="#" target="_blank" title="pinterest">Pinterest</a>
                             </li>
                             <li>
                                 <a rel="nofollow" class="follow_linkedin" href="#" target="_blank"
-                                   title="LinkedIn">LinkedIn</a>
+                                   title="linkedin">LinkedIn</a>
                             </li>
                         </ul>
                     </div>
@@ -77,6 +73,114 @@
     <span id="showtext"
           style="background-color: #20b3a6;position: fixed;top: 38%;left: 47%;opacity: 0.8;padding: 20px;border-radius:  14px;color: #fff;font-size: 24px;"></span>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $("div.focontact div.follow_toolbox.clearfix a").hover(
+            function () {
+                $(this).css("margin-top", "-4px")
+            }, function () {
+                $(this).css("margin-top", "0px")
+            }
+        )
+        $("div.focontact div.follow_toolbox.clearfix a").each(function (i, v) {
+            var image = back_url = encode_url = "";
+            url = window.location.href;
+            if (url.indexOf("#") > 0) {
+                url = url.substring(0, url.indexOf("#"));
+            }
+            var e_url = encodeURIComponent(url);
+            title = $(v).attr("title")
+            switch (title) {
+                case "delicious":
+                    back_url = "https://delicious.com/post?title=" + title + "&url=" + e_url;
+                    break;
+                case "digg":
+                    back_url = "http://digg.com/submit?phase=2&url=" + e_url + "&title=" + title
+                        + "&bodytext=&topic=tech_deals";
+                    break;
+                case "reddit":
+                    back_url = "http://reddit.com/submit?url=" + e_url + "&title=" + title;
+                    break;
+                case "furl":
+                    back_url = "http://www.furl.net/savedialog.jsp?t=" + title + "&u=" + e_url;
+                    break;
+                case "rawsugar":
+                    back_url = "http://www.rawsugar.com/home/extensiontagit/?turl=" + e_url + "&tttl="
+                        + title;
+                    break;
+                case "stumbleupon":
+                    back_url = "http://www.stumbleupon.com/submit?url=" + e_url + "&title=" + title;
+                    break;
+                case "blogmarks":
+                    break;
+                case "facebook":
+                    back_url = "http://www.facebook.com/share.php?src=bm&v=4&u=" + e_url + "&t=" + title;
+                    break;
+                case "technorati":
+                    back_url = "http://technorati.com/faves?sub=favthis&add=" + e_url;
+                    break;
+                case "spurl":
+                    back_url = "http://www.spurl.net/spurl.php?v=3&title=" + title + "&url=" + e_url;
+                    break;
+                case "simpy":
+                    back_url = "http://www.simpy.com/simpy/LinkAdd.do?title=" + title + "&href=" + e_url;
+                    break;
+                case "ask":
+                    break;
+                case "google":
+                    back_url = "http://www.google.com/bookmarks/mark?op=edit&output=popup&bkmk=" + e_url
+                        + "&title=" + title;
+                    break;
+                case "netscape":
+                    back_url = "http://www.netscape.com/submit/?U=" + e_url + "&T=" + title + "&C=";
+                    break;
+                case "slashdot":
+                    back_url = "http://slashdot.org/bookmark.pl?url=" + url + "&title=" + title;
+                    break;
+                case "backflip":
+                    back_url = "http://www.backflip.com/add_page_pop.ihtml?title=" + title + "&url="
+                        + e_url;
+                    break;
+                case "bluedot":
+                    back_url = "http://bluedot.us/Authoring.aspx?u=" + e_url + "&t=" + title;
+                    break;
+                case "kaboodle":
+                    back_url = "http://www.kaboodle.com/za/selectpage?p_pop=false&pa=url&u=" + e_url;
+                    break;
+                case "squidoo":
+                    back_url = "http://www.squidoo.com/lensmaster/bookmark?" + e_url;
+                    break;
+                case "twitter":
+                    back_url = "https://twitter.com/intent/tweet?status=" + title + ":+" + e_url;
+                    break;
+                case "pinterest":
+                    back_url = "http://pinterest.com/pin/create/button/?url=" + e_url + "&media="
+                        + "&description=" + title;
+                    break;
+                case "vk":
+                    back_url = "http://vk.com/share.php?url=" + url;
+                    break;
+                case "bluedot":
+                    back_url = "http://blinkbits.com/bookmarklets/save.php?v=1&source_url=" + e_url
+                        + "&title=" + title;
+                    break;
+                case "blinkList":
+                    back_url = "http://blinkbits.com/bookmarklets/save.php?v=1&source_url=" + e_url
+                        + "&title=" + title;
+                    break;
+                case "linkedin":
+                    back_url = "http://www.linkedin.com/cws/share?url=" + e_url + "&title=" + title;
+                    break;
+                case "googleplus":
+                    back_url = "https://plus.google.com/share?url=" + e_url;
+                    break;
+            }
+            $(v).attr("href", back_url)
+
+        })
+    })
+</script>
 
 <script type="text/javascript">
     var listpage = {};
