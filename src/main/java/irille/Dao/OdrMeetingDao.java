@@ -142,6 +142,8 @@ public class OdrMeetingDao {
             FROM(OrderMeeting.class);
             LEFT_JOIN(OrderMeetingExhibition.class, OrderMeetingExhibition.T.PKEY, OrderMeeting.T.EXHIBITION);
             LEFT_JOIN(OrderMeetingAudit.class, OrderMeetingAudit.T.ODRMEETING, OrderMeeting.T.PKEY);
+            LEFT_JOIN(OrderMeetingAuditRelease.class,OrderMeetingAuditRelease.T.ODRMEETING,OrderMeeting.T.PKEY);
+            WHERE(OrderMeetingAuditRelease.T.STATUS," =?",OrderMeetingAuditStatus.ACTIVITY.getLine().getKey());
             if (name != null) {
                 WHERE(OrderMeeting.T.NAME, " like '%" + name + "%'");
             }
@@ -213,12 +215,15 @@ public class OdrMeetingDao {
             FROM(OrderMeeting.class);
             LEFT_JOIN(OrderMeetingExhibition.class, OrderMeetingExhibition.T.PKEY, OrderMeeting.T.EXHIBITION);
             LEFT_JOIN(OrderMeetingAudit.class, OrderMeetingAudit.T.ODRMEETING, OrderMeeting.T.PKEY);
+            LEFT_JOIN(OrderMeetingAuditRelease.class,OrderMeetingAuditRelease.T.ODRMEETING,OrderMeeting.T.PKEY);
+            WHERE(OrderMeetingAuditRelease.T.STATUS," =?",OrderMeetingAuditStatus.ACTIVITY.getLine().getKey());
             if (name != null) {
                 WHERE(OrderMeeting.T.NAME, " like  '%" + name + "%'");
             }
             if (onstate != null) {
                 WHERE(OrderMeeting.T.STATUS, " =?", onstate);
             }
+
             WHERE(OrderMeeting.T.SUPPLIERID, " <> ?", getSupplier);
             AND().WHERE(OrderMeeting.T.STATUS, " <>?", OrderMeetingStatus.DELETE.getLine().getKey());
             AND();
