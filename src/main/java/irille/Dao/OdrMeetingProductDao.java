@@ -19,15 +19,15 @@ public class OdrMeetingProductDao {
      */
     public boolean isAddToOdrMeeting(int odrMeetingId, int supplier) {
         BeanQuery query = new BeanQuery();
-        query.SELECT(T.SUPPLIERID)
-                .FROM(OrderMeetingAudit.class)
-                .LEFT_JOIN(OrderMeeting.class, T.PKEY, OrderMeetingAudit.T.OrderMeeting)
-                .WHERE(T.SUPPLIERID, "= ?", supplier)  //判断是不是发起人
-                .WHERE(T.STATUS, "=?", OrderMeetingStatus.TOBEGIN)  //判断订购会状态
-                .WHERE(OrderMeetingAudit.T.SUPPLIERID, "=?", supplier)   //判断是通过的供应商
-                .WHERE(OrderMeetingAudit.T.STATUS, "=?", OrderMeetingAuditStatus.ACTIVITY)  //状态通过
-                .WHERE(OrderMeetingAudit.T.OrderMeeting, "=?", odrMeetingId)
-        ;
+//        query.SELECT(T.SUPPLIERID)
+//                .FROM(OrderMeetingAudit.class)
+//                .LEFT_JOIN(OrderMeeting.class, T.PKEY, OrderMeetingAudit.T.OrderMeeting)
+//                .WHERE(T.SUPPLIERID, "= ?", supplier)  //判断是不是发起人
+//                .WHERE(T.STATUS, "=?", OrderMeetingStatus.TOBEGIN)  //判断订购会状态
+//                .WHERE(OrderMeetingAudit.T.SUPPLIERID, "=?", supplier)   //判断是通过的供应商
+//                .WHERE(OrderMeetingAudit.T.STATUS, "=?", OrderMeetingAuditStatus.ACTIVITY)  //状态通过
+//                .WHERE(OrderMeetingAudit.T.OrderMeeting, "=?", odrMeetingId)
+//        ;
         return query.queryCount() > 0;
     }
 

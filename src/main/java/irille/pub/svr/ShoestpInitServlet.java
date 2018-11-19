@@ -50,6 +50,7 @@ public class ShoestpInitServlet extends HttpServlet {
 		OrderMeetingExhibition.TB.getCode();
 		OrderMeetingOrder.TB.getCode();
 		OrderMeetingProduct.TB.getCode();
+		OrderMeetingAuditRelease.TB.getCode();
 	}
 	
 	public void createTable(Class<?> beanClass) {

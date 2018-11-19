@@ -16,6 +16,10 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
     private IOdrMeetingManageService odrMeetingManageService;
 
     @Override
+    public void loadsupstate() throws Exception {
+        writerOrExport(odrMeetingManageService.loadsupstate());
+    }
+    @Override
     public void loadstate() throws Exception {
         writerOrExport(odrMeetingManageService.loadstate());
     }
@@ -26,9 +30,12 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
     @Getter
     private Integer state;
 
+    @Setter
+    @Getter
+    private Integer supstate;
 
     public void getMyOdrMeetingList() throws Exception {
-        write(odrMeetingManageService.getMyOdrMeetingList(getStart(),getLimit(),name,state,getSupplier().getPkey())); ;
+        write(odrMeetingManageService.getMyOdrMeetingList(getStart(),getLimit(),name,supstate,state,getSupplier().getPkey())); ;
     }
     @Override
     public void getMyJoinOdrMeetingList() throws Exception {

@@ -51,7 +51,7 @@ public interface IOdrMeetingManageService {
      * @Description:获取我发起的订购订购会 列表
      * @date 2018/11/14 13:30
      */
-    Page getMyOdrMeetingList(Integer start, Integer limit, String name, Integer state, Integer supplierpkey);
+    Page getMyOdrMeetingList(Integer start, Integer limit, String name,Integer supstate, Integer state, Integer supplierpkey);
 
     /**
      * @Description: 获取我加入的订购会 列表
@@ -65,6 +65,12 @@ public interface IOdrMeetingManageService {
      */
     Page getMyOtherOdrMeetingList(Integer start, Integer limit, String name, Integer state, Integer supplierpkey);
 
+    /**
+     * @Description: 获取订购会审核状态列表
+     * @date 2018/11/15 11:33
+     * @anthor wilson zhang
+     */
+    JSONObject loadsupstate() throws Exception;
     /**
      * @Description: 获取订购会状态列表
      * @date 2018/11/15 11:33

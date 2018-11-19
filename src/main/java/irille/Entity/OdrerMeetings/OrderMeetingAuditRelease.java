@@ -8,16 +8,17 @@ import irille.pub.tb.Fld;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
 import irille.shop.usr.UsrSupplier;
-import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/13 Time: 16:54
  */
-public class OrderMeetingAudit extends BeanInt<OrderMeetingAudit> {
+public class OrderMeetingAuditRelease extends BeanInt<OrderMeetingAuditRelease> {
 
-  public static final Tb TB = new Tb(OrderMeetingAudit.class, "参加订购会-审核状态").setAutoIncrement()
+  public static final Tb TB = new Tb(OrderMeetingAuditRelease.class, "发布订购会-审核状态").setAutoIncrement()
       .addActIUDL();
 
   public enum T implements IEnumFld {
@@ -25,8 +26,6 @@ public class OrderMeetingAudit extends BeanInt<OrderMeetingAudit> {
     ODRMEETING(OrderMeeting.fldOutKey()),
     STATUS(TB.crt(OrderMeetingAuditStatus.DEFAULT)),
     MESSAGE(SYS.STR__200_NULL, "消息"),
-    SUPPLIERID(UsrSupplier.fldOutKey()),
-    SNAPSHOT(SYS.JSON, "快照"),
     CREATED_TIME(SYS.CREATED_DATE_TIME),
     ROW_VERSION(SYS.ROW_VERSION),
     //>>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
@@ -64,7 +63,7 @@ public class OrderMeetingAudit extends BeanInt<OrderMeetingAudit> {
   }
 
   static { //在此可以加一些对FLD进行特殊设定的代码
-    OrderMeetingAudit.T.PKEY.getFld().getTb().lockAllFlds();//加锁所有字段,不可以修改
+    OrderMeetingAuditRelease.T.PKEY.getFld().getTb().lockAllFlds();//加锁所有字段,不可以修改
   }
 
   public static Fld fldOutKey() {
@@ -85,19 +84,15 @@ public class OrderMeetingAudit extends BeanInt<OrderMeetingAudit> {
 	// DISCONTINUATION:3,停用
 	// DELETE:4,已删除
   private String _message;	// 消息  STR(200)<null>
-  private Integer _supplierid;	// 供应商 <表主键:UsrSupplier>  INT
-  private String _snapshot;	// 快照  JSONOBJECT
   private Date _createdTime;	// 建档时间  TIME
   private Short _rowVersion;	// 版本  SHORT
 
 	@Override
-  public OrderMeetingAudit init(){
+  public OrderMeetingAuditRelease init(){
 		super.init();
     _odrmeeting=null;	// 订购会信息 <表主键:OrderMeeting>  INT
     _status=OrderMeetingAuditStatus.DEFAULT.getLine().getKey();	// 参加订购会状态 <OrderMeetingAuditStatus>  BYTE
     _message=null;	// 消息  STR(200)
-    _supplierid=null;	// 供应商 <表主键:UsrSupplier>  INT
-    _snapshot=null;	// 快照  JSONOBJECT
     _createdTime=Env.getTranBeginTime();	// 建档时间  TIME
     _rowVersion=0;	// 版本  SHORT
     return this;
@@ -144,35 +139,6 @@ public class OrderMeetingAudit extends BeanInt<OrderMeetingAudit> {
   }
   public void setMessage(String message){
     _message=message;
-  }
-  public Integer getSupplierid(){
-    return _supplierid;
-  }
-  public void setSupplierid(Integer supplierid){
-    _supplierid=supplierid;
-  }
-  public UsrSupplier gtSupplierid(){
-    if(getSupplierid()==null)
-      return null;
-    return (UsrSupplier)get(UsrSupplier.class,getSupplierid());
-  }
-  public void stSupplierid(UsrSupplier supplierid){
-    if(supplierid==null)
-      setSupplierid(null);
-    else
-      setSupplierid(supplierid.getPkey());
-  }
-  public String getSnapshot(){
-    return _snapshot;
-  }
-  public void setSnapshot(String snapshot){
-    _snapshot=snapshot;
-  }
-  public JSONObject gtSnapshot() throws JSONException {
-    return getSnapshot()==null?new JSONObject():new JSONObject(getSnapshot());
-  }
-  public void stSnapshot(JSONObject snapshot){
-    setSnapshot(snapshot==null?null:snapshot.toString());
   }
   public Date getCreatedTime(){
     return _createdTime;

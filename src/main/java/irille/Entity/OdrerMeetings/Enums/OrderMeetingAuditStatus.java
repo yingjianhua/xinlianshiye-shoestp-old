@@ -9,7 +9,7 @@ import irille.pub.tb.IEnumOpt;
  * Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/13 Time: 16:21
  */
 public enum OrderMeetingAuditStatus implements IEnumOpt {
-    PENDING(0, "待审核"), VERIFYING(1, "审核中"), ACTIVITY(2, "审核通过"), SUSPEND(3, "暂停"), DELETE(4, "已删除");
+    PENDING(0, "待审核"), ACTIVITY(1, "审核通过"), FAILURE(2, "审核失败"), DISCONTINUATION(3, "停用"), DELETE(4, "已删除");
     public static final String NAME = "参加订购会状态";
     public static final OrderMeetingAuditStatus DEFAULT = PENDING;
     private EnumLine _line;
