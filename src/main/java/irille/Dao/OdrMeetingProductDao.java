@@ -1,11 +1,18 @@
 package irille.Dao;
 
-import irille.Entity.OdrerMeetings.Enums.OrderMeetingAuditStatus;
-import irille.Entity.OdrerMeetings.Enums.OrderMeetingStatus;
 import irille.Entity.OdrerMeetings.OrderMeeting;
 import irille.Entity.OdrerMeetings.OrderMeeting.T;
-import irille.Entity.OdrerMeetings.OrderMeetingAudit;
+import irille.Entity.OdrerMeetings.OrderMeetingProduct;
+import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
+import irille.pub.bean.sql.SQL;
+import irille.shop.pdt.PdtProduct;
+import irille.view.Manage.OdrMeeting.initiatedActivity.orderGoodsView;
+import irille.view.Page;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/14 Time: 13:37
@@ -31,5 +38,53 @@ public class OdrMeetingProductDao {
         return query.queryCount() > 0;
     }
 
+    public Page getOrderGoodsList(Integer start, Integer limit, Integer id) {
+        if (start == null) {
+            start = 0;
+        }
+        if (limit == null) {
+            limit = 10;
+        }
+        SQL sql = new SQL() {
+            {
+                SELECT(OrderMeetingProduct.T.PKEY,PdtProduct.T.NAME, PdtProduct.T.PICTURE)
+                        .SELECT(OrderMeetingProduct.T.SUPPLIERID, "productSupplier")
+                        .SELECT(OrderMeeting.T.SUPPLIERID,
+                                OrderMeetingProduct.T.PRICE,
+                                OrderMeetingProduct.T.MOQ,
+                                OrderMeetingProduct.T.NEWMOQ,
+                                OrderMeetingProduct.T.NEWPRICE,
+                                OrderMeetingProduct.T.TARGET_COUNT,
+                                OrderMeetingProduct.T.STATUS)
+                        .FROM(OrderMeetingProduct.class)
+                        .LEFT_JOIN(PdtProduct.class, PdtProduct.T.PKEY, OrderMeetingProduct.T.PRODUCTID)
+                        .LEFT_JOIN(OrderMeeting.class, T.PKEY, OrderMeetingProduct.T.ORDERMEETINGID)
+                        .WHERE(OrderMeeting.T.PKEY
+                                , "=?", id);
 
+            }
+        };
+        Integer count = Query.sql(sql).queryCount();
+        List<orderGoodsView> viewList = Query.sql(sql).limit(start, limit).queryMaps().stream().map(o -> {
+            orderGoodsView view = new orderGoodsView();
+            view.setId((Integer) o.get(OrderMeetingProduct.T.PKEY.getFld().getCodeSqlField()));
+            if (o.get(PdtProduct.T.PICTURE.getFld().getCodeSqlField()) != null || o.get(PdtProduct.T.PICTURE.getFld().getCodeSqlField()) != "") {
+                view.setImage(String.valueOf(o.get(PdtProduct.T.PICTURE.getFld().getCodeSqlField())).split(",")[0]);
+            }
+            view.setProductName(String.valueOf(o.get(PdtProduct.T.NAME.getFld().getCodeSqlField())));
+            if (o.get(OrderMeeting.T.SUPPLIERID.getFld().getCodeSqlField()).equals(o.get("productSupplier"))) {
+                view.setMode("自有");
+            } else {
+                view.setMode("合作商");
+            }
+            view.setOriginalPurchasePrice(((BigDecimal) o.get(OrderMeetingProduct.T.PRICE.getFld().getCodeSqlField())).doubleValue());
+            view.setOriginalOrderQuantity(Integer.parseInt(o.get(OrderMeetingProduct.T.MOQ.getFld().getCodeSqlField()).toString()));
+            view.setOrderPrice(Integer.parseInt(o.get(OrderMeetingProduct.T.NEWMOQ.getFld().getCodeSqlField()).toString()));
+            view.setOrderQuantityorderPrice(((BigDecimal) o.get(OrderMeetingProduct.T.NEWPRICE.getFld().getCodeSqlField())).doubleValue());
+            view.setTargetAmount((Integer) o.get(OrderMeetingProduct.T.TARGET_COUNT.getFld().getCodeSqlField()));
+            view.setStatus((Byte) o.get(OrderMeetingProduct.T.STATUS.getFld().getCodeSqlField()));
+            return view;
+        }).collect(Collectors.toList());
+        return new Page(viewList, start, limit, count);
+    }
 }

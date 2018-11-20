@@ -2,6 +2,7 @@ package irille.sellerAction.omt;
 
 import irille.Entity.OdrerMeetings.OrderMeeting;
 import irille.Service.Manage.OdrMeeting.IOdrMeetingManageService;
+import irille.Service.Manage.OdrMeeting.IOdrMeetingProductManageService;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.omt.inf.IOdrMeetingAction;
 import irille.view.Page;
@@ -9,11 +10,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.inject.Inject;
+import java.io.IOException;
 
 public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdrMeetingAction {
 
     @Inject
     private IOdrMeetingManageService odrMeetingManageService;
+    @Inject
+    private IOdrMeetingProductManageService odrMeetingProductManageService;
 
     @Override
     public void loadsupstate() throws Exception {
@@ -76,5 +80,11 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
     public void Meettingupdstate() throws Exception {
         odrMeetingManageService.Meettingupdstate(id,fstate);
         write();
+    }
+    public void getorderInformation() throws IOException {
+        write(odrMeetingManageService.getorderInformation(id));
+    }
+    public void getOrderGoodsList() throws IOException {
+        write(odrMeetingProductManageService.getOrderGoodsList(getStart(),getLimit(),id));
     }
 }

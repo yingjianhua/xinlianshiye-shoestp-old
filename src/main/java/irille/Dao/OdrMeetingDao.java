@@ -1,5 +1,6 @@
 package irille.Dao;
 
+import com.sun.net.httpserver.Authenticator;
 import irille.Entity.OdrerMeetings.Enums.OrderMeetingAuditStatus;
 import irille.Entity.OdrerMeetings.Enums.OrderMeetingExhibitionStatus;
 import irille.Entity.OdrerMeetings.Enums.OrderMeetingStatus;
@@ -22,12 +23,18 @@ import irille.shop.usr.UsrSupplier;
 import irille.view.Manage.OdrMeeting.OdrMeetingLaunchlistView;
 import irille.view.Manage.OdrMeeting.OdrMeetingOtherlistView;
 import irille.view.Manage.OdrMeeting.OdrMeetingParticipatelistView;
+import irille.view.Manage.OdrMeeting.initiatedActivity.OrderInformationView;
 import irille.view.Page;
+import jdk.nashorn.internal.objects.annotations.Where;
 import org.apache.commons.lang3.ObjectUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import static irille.pub.bean.Query.SELECT;
 
 /**
  * Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/14 Time: 13:37
@@ -200,7 +207,6 @@ public class OdrMeetingDao {
         SQL sql = new SQL() {{
             SELECT(OrderMeeting.T.PKEY,
                     OrderMeeting.T.LOGO,
-                    OrderMeeting.T.SUPPLIERID,
                     OrderMeeting.T.NAME,
                     OrderMeeting.T.EXHIBITION,
                     OrderMeeting.T.CUSTOM_EXHIBITION,
@@ -311,4 +317,40 @@ public class OdrMeetingDao {
     }
 
 
+    public OrderInformationView getorderInformation(Integer id) {
+        SQL sql = new SQL() {
+            {
+                SELECT(OrderMeeting.T.NAME,"orderingTitle")
+                        .SELECT(OrderMeetingExhibition.T.NAME,"exhibition")
+                        .SELECT(PltCountry.T.NAME,"country")
+                        .SELECT(OrderMeeting.T.LOGO,
+                        OrderMeeting.T.START_TIME,
+                        OrderMeeting.T.END_TIME,
+                        OrderMeeting.T.MAILADDRESS,
+                        OrderMeeting.T.MAILAFULLDDRESS,
+                        OrderMeeting.T.MAILNAME,
+                        OrderMeeting.T.MAILTEL,
+                        OrderMeeting.T.POSTCODE).
+                        FROM(OrderMeeting.class).
+//                        LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, OrderMeeting.T.SUPPLIERID).
+                        LEFT_JOIN(OrderMeetingExhibition.class, OrderMeetingExhibition.T.PKEY, OrderMeeting.T.EXHIBITION).
+                        LEFT_JOIN(PltCountry.class, PltCountry.T.PKEY, OrderMeeting.T.COUNTRY).WHERE(OrderMeeting.T.PKEY
+                ,"=?",id);
+            }
+        };
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Map<String, Object> map = Query.sql(sql).queryMap();
+        OrderInformationView view = new OrderInformationView();
+        view.setOrderingTitle((String) map.get("orderingTitle"));
+        view.setExhibition((String) map.get("exhibition"));
+        view.setCountry((String) map.get("country"));
+        view.setCoverImage((String) map.get(OrderMeeting.T.LOGO.getFld().getCodeSqlField()));
+        view.setOrderStartTime(formatter.format(map.get(OrderMeeting.T.START_TIME.getFld().getCodeSqlField())));
+        view.setOrderEndTime(formatter.format(map.get(OrderMeeting.T.END_TIME.getFld().getCodeSqlField())));
+        view.setAddress((String)map.get(OrderMeeting.T.MAILAFULLDDRESS.getFld().getCodeSqlField()));
+        view.setReceiver((String)map.get(OrderMeeting.T.MAILNAME.getFld().getCodeSqlField()));
+        view.setContactNumber((String)map.get(OrderMeeting.T.MAILTEL.getFld().getCodeSqlField()));
+        view.setZip((String)map.get(OrderMeeting.T.POSTCODE.getFld().getCodeSqlField()));
+        return view;
+    }
 }

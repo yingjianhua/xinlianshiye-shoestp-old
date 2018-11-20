@@ -83,7 +83,7 @@ public class OrderMeetingProduct extends BeanInt<OrderMeetingProduct> {
   private Integer _productid;	// 产品 <表主键:PdtProduct>  INT
   private Integer _supplierid;	// 供应商 <表主键:UsrSupplier>  INT
   private Integer _ordermeetingid;	// 订购会信息 <表主键:OrderMeeting>  INT
-  private Byte _status;	// 供应商认证 <OrderMettingProductStatus>  BYTE
+  private Byte _status;	// 供应商认证 <OrderMeetingProductStatus>  BYTE
 	// OFF:0,下架
 	// ON:1,上架
 	// IRREGULARITIESDELETE:2,违规下架
@@ -102,7 +102,7 @@ public class OrderMeetingProduct extends BeanInt<OrderMeetingProduct> {
     _productid=null;	// 产品 <表主键:PdtProduct>  INT
     _supplierid=null;	// 供应商 <表主键:UsrSupplier>  INT
     _ordermeetingid=null;	// 订购会信息 <表主键:OrderMeeting>  INT
-    _status= OrderMeetingProductStatus.DEFAULT.getLine().getKey();	// 供应商认证 <OrderMettingProductStatus>  BYTE
+    _status=OrderMeetingProductStatus.DEFAULT.getLine().getKey();	// 供应商认证 <OrderMeetingProductStatus>  BYTE
     _moq=0;	// 原起订量  INT
     _price=ZERO;	// 原商品价格  DEC(14,4)
     _newmoq=0;	// 活动起订量  INT

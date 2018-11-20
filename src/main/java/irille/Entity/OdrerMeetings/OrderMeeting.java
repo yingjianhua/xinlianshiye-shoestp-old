@@ -90,11 +90,11 @@ public class OrderMeeting extends BeanInt<OrderMeeting> {
   private Integer _supplierid;	// 供应商 <表主键:UsrSupplier>  INT
   private String _name;	// 订购会标题  JSONOBJECT
   private Byte _status;	// 订购会状态 <OrderMeetingStatus>  BYTE
-	// TOBEGIN:2,即将开始
-	// ACTIVITY:3,活动中
-	// SUSPEND:4,暂停
-	// END:5,活动结束
-	// DELETE:6,活动已删除
+	// TOBEGIN:5,即将开始
+	// ACTIVITY:6,活动中
+	// SUSPEND:7,暂停
+	// END:8,活动结束
+	// DELETE:9,活动已删除
   private Integer _exhibition;	// 订购会-会场信息 <表主键:OrderMeetingExhibition>  INT
   private String _customExhibition;	// 字符200  STR(200)<null>
   private Integer _country;	// 国家管理 <表主键:PltCountry>  INT

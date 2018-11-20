@@ -13,6 +13,8 @@ import irille.Service.Manage.OdrMeeting.IOdrMeetingManageService;
 import irille.pub.idu.IduPage;
 import irille.view.Manage.OdrMeeting.OdrMeetingInfoView;
 import irille.view.Manage.OdrMeeting.Sale.OdrMeetingSaleInfoView;
+import irille.view.Manage.OdrMeeting.initiatedActivity.OrderInformationView;
+import irille.view.Manage.OdrMeeting.initiatedActivity.orderGoodsView;
 import irille.view.Page;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -100,8 +102,8 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
     }
 
     @Override
-    public Page getMyOdrMeetingList(Integer start, Integer limit, String name,Integer supstate, Integer state, Integer supplierpkey) {
-        return odrMeetingDao.Launchlist(start, limit, name,supstate, state, supplierpkey);
+    public Page getMyOdrMeetingList(Integer start, Integer limit, String name, Integer supstate, Integer state, Integer supplierpkey) {
+        return odrMeetingDao.Launchlist(start, limit, name, supstate, state, supplierpkey);
     }
 
     @Override
@@ -127,6 +129,7 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
         }
     }
 
+
     @Override
     public JSONObject loadsupstate() throws Exception {
         JSONObject json = new JSONObject();
@@ -143,6 +146,7 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
         json.put("STORE_ROOT", ja);
         return json;
     }
+
     @Override
     public JSONObject loadstate() throws Exception {
         JSONObject json = new JSONObject();
@@ -198,5 +202,8 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
 
     }
 
-
+    @Override
+    public OrderInformationView getorderInformation(Integer id) {
+        return odrMeetingDao.getorderInformation(id);
+    }
 }
