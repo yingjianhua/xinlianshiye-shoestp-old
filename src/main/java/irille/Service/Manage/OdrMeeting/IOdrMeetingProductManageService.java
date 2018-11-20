@@ -4,7 +4,6 @@ import com.google.inject.ImplementedBy;
 import irille.Service.Manage.OdrMeeting.Imp.OdrMeetingProductManageServiceImp;
 import irille.pub.idu.IduPage;
 import irille.view.Manage.OdrMeeting.OdrMeetingProductView;
-import irille.view.Manage.OdrMeeting.initiatedActivity.orderGoodsView;
 import irille.view.Page;
 
 import java.util.List;
@@ -34,16 +33,23 @@ public interface IOdrMeetingProductManageService {
 
   /**
    *
-   * @Description: 获取订购会商品列表
+   * @Description: 获取订购会商品列表 + 搜索
    * @date 2018/11/19 18:56
    * @author zjl
    */
-  Page getOrderGoodsList(Integer start, Integer limit, Integer id);
+  Page getOrderGoodsList(Integer start, Integer limit, Integer id, Integer status, String inputContent);
 
   /**
    * @Description: 修改订购会产品上下架状态
    * @date 2018/11/20 11:31
    * @author zjl
    */
-  void productStatusModification(Byte status,Integer id);
+  void updateStatus(Integer id);
+  /**
+   * @Description: 删除订购会商品
+   * @date 2018/11/20 19:43
+   * @author zjl
+   */
+  void removeProduct(Integer id,Integer productId);
+
 }

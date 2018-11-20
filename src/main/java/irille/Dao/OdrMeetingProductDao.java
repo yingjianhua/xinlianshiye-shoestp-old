@@ -1,8 +1,10 @@
 package irille.Dao;
 
+import irille.Entity.OdrerMeetings.Enums.OrderMeetingProductStatus;
 import irille.Entity.OdrerMeetings.OrderMeeting;
 import irille.Entity.OdrerMeetings.OrderMeeting.T;
 import irille.Entity.OdrerMeetings.OrderMeetingProduct;
+import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
@@ -38,7 +40,7 @@ public class OdrMeetingProductDao {
         return query.queryCount() > 0;
     }
 
-    public Page getOrderGoodsList(Integer start, Integer limit, Integer id) {
+    public Page getOrderGoodsList(Integer start, Integer limit, Integer id, Integer status, String inputContent) {
         if (start == null) {
             start = 0;
         }
@@ -47,7 +49,7 @@ public class OdrMeetingProductDao {
         }
         SQL sql = new SQL() {
             {
-                SELECT(OrderMeetingProduct.T.PKEY,PdtProduct.T.NAME, PdtProduct.T.PICTURE)
+                SELECT(OrderMeetingProduct.T.PKEY, PdtProduct.T.NAME, PdtProduct.T.PICTURE)
                         .SELECT(OrderMeetingProduct.T.SUPPLIERID, "productSupplier")
                         .SELECT(OrderMeeting.T.SUPPLIERID,
                                 OrderMeetingProduct.T.PRICE,
@@ -59,9 +61,20 @@ public class OdrMeetingProductDao {
                         .FROM(OrderMeetingProduct.class)
                         .LEFT_JOIN(PdtProduct.class, PdtProduct.T.PKEY, OrderMeetingProduct.T.PRODUCTID)
                         .LEFT_JOIN(OrderMeeting.class, T.PKEY, OrderMeetingProduct.T.ORDERMEETINGID)
-                        .WHERE(OrderMeeting.T.PKEY
-                                , "=?", id);
-
+                        .WHERE(OrderMeeting.T.PKEY, "=?", id);
+                if (inputContent != null) {
+                    WHERE(PdtProduct.T.NAME, "like'%" + inputContent + "%'");
+                }
+                switch (status) {
+                    case 1: {
+                        WHERE(OrderMeeting.T.SUPPLIERID, "=", OrderMeetingProduct.T.SUPPLIERID);
+                        break;
+                    }
+                    case 2: {
+                        WHERE(OrderMeeting.T.SUPPLIERID, "<>", OrderMeetingProduct.T.SUPPLIERID);
+                        break;
+                    }
+                }
             }
         };
         Integer count = Query.sql(sql).queryCount();
@@ -86,5 +99,20 @@ public class OdrMeetingProductDao {
             return view;
         }).collect(Collectors.toList());
         return new Page(viewList, start, limit, count);
+    }
+
+    public void updateStatus(Integer id) {
+        OrderMeetingProduct order = BeanBase.load(OrderMeetingProduct.class, id);
+        if (order.getStatus() == 0) {
+            order.setStatus(OrderMeetingProductStatus.ON.getLine().getKey());
+        } else {
+            order.setStatus(OrderMeetingProductStatus.DEFAULT.getLine().getKey());
+        }
+        order.upd();
+    }
+    public void removePorduct(Integer id,Integer productId){
+        OrderMeetingProduct mo = BeanBase.load(OrderMeetingProduct.class, id);
+        mo.setStatus(OrderMeetingProductStatus.DELETE.getLine().getKey());
+        mo.upd();
     }
 }

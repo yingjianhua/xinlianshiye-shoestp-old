@@ -51,12 +51,18 @@ public class OdrMeetingProductManageServiceImp implements IOdrMeetingProductMana
     }
 
     @Override
-    public Page getOrderGoodsList(Integer start, Integer limit, Integer id) {
-        return odrMeetingProductDao.getOrderGoodsList(start,limit,id);
+    public Page getOrderGoodsList(Integer start, Integer limit, Integer id, Integer status, String inputContent) {
+        return odrMeetingProductDao.getOrderGoodsList(start,limit,id,status,inputContent);
     }
 
     @Override
-    public void productStatusModification(Byte status, Integer id) {
-
+    public void updateStatus(Integer id) {
+        odrMeetingProductDao.updateStatus(id);
     }
+
+    @Override
+    public void removeProduct(Integer id, Integer productId) {
+        odrMeetingProductDao.removePorduct(id,productId);
+    }
+
 }

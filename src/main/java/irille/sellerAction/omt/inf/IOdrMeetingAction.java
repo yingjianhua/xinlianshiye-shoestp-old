@@ -33,4 +33,10 @@ public interface IOdrMeetingAction extends ISellerAction {
 
     @RequestMapping(alias = "获取订购会商品列表", sort = 10)
     public void getOrderGoodsList() throws Exception;
+
+    @RequestMapping(alias = "订购会商品上下架状态更新", sort = 11)
+    public void updateStatus() throws Exception;
+
+    @RequestMapping(alias = "订购会商品删除状态改变", sort = 12)
+    public void removeProduct() throws Exception;
 }

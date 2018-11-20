@@ -93,9 +93,28 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
     public void getorderInformation() throws IOException {
         write(odrMeetingManageService.getorderInformation(id));
     }
+    @Setter
+    @Getter
+    private Integer status;
+    @Setter
+    @Getter
+    private String inputContent;
+    @Setter
+    @Getter
+    private Integer productId;
+
     public void getOrderGoodsList() throws IOException {
-        write(odrMeetingProductManageService.getOrderGoodsList(getStart(),getLimit(),id));
+        write(odrMeetingProductManageService.getOrderGoodsList(getStart(),getLimit(),id,status,inputContent));
+    }
+    public void updateStatus() throws IOException {
+        odrMeetingProductManageService.updateStatus(id);
+        write();
     }
 
+
+    public void removeProduct() throws IOException {
+        odrMeetingProductManageService.removeProduct(id,productId);
+        write();
+    }
 
 }
