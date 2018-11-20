@@ -3,6 +3,7 @@ package irille.view.Manage.OdrMeeting;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import irille.pub.i18n.I18NFieldSerializer;
+import irille.view.BaseView;
 import lombok.Data;
 
 import java.util.Date;
@@ -11,7 +12,7 @@ import java.util.Date;
  * 订购会列表（发起）
  */
 @Data
-public class OdrMeetingLaunchlistView {
+public class OdrMeetingLaunchlistView  implements BaseView {
     private Integer id; //订购会PKYS
     private String images;//缩略图
     @JsonSerialize(using= I18NFieldSerializer.class)

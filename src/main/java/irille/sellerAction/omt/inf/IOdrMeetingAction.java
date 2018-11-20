@@ -25,6 +25,8 @@ public interface IOdrMeetingAction extends ISellerAction {
     public void Meettingupdstate() throws Exception;
     @RequestMapping(alias="状态列表", sort=7)
     public void loadstate() throws Exception;
+    @RequestMapping(alias="發佈會 展會列表", sort=7)
+    public void exhibitionlist() throws Exception;
 
     @RequestMapping(alias = "获取订购会信息", sort = 9)
     public void getorderInformation() throws Exception;

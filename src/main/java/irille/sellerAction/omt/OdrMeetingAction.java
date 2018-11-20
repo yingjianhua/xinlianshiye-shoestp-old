@@ -3,6 +3,7 @@ package irille.sellerAction.omt;
 import irille.Entity.OdrerMeetings.OrderMeeting;
 import irille.Service.Manage.OdrMeeting.IOdrMeetingManageService;
 import irille.Service.Manage.OdrMeeting.IOdrMeetingProductManageService;
+import irille.Service.Manage.OdrMeeting.IOdrMeettingExhibitionService;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.omt.inf.IOdrMeetingAction;
 import irille.view.Page;
@@ -19,6 +20,8 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
     @Inject
     private IOdrMeetingProductManageService odrMeetingProductManageService;
 
+    @Inject
+    private IOdrMeettingExhibitionService odrMeettingExhibitionService;
     @Override
     public void loadsupstate() throws Exception {
         writerOrExport(odrMeetingManageService.loadsupstate());
@@ -27,6 +30,12 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
     public void loadstate() throws Exception {
         writerOrExport(odrMeetingManageService.loadstate());
     }
+
+    @Override
+    public void exhibitionlist() throws Exception {
+        write(odrMeettingExhibitionService.listExhibition());
+    }
+
     @Setter
     @Getter
     private  String name;
@@ -53,18 +62,18 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
     @Setter
     @Getter
     private  String pkeys;
-    @Override
+    @Override  //發佈訂購會 刪除訂購會
     public void batchdelete() throws Exception {
         odrMeetingManageService.batchdelete(pkeys);
         write();
     }
-    @Override
+    @Override   //參加訂購會 刪除訂購會
     public void joindelete() throws Exception {
         odrMeetingManageService.joindelete(pkeys);
         write();
     }
 
-    @Override
+    @Override  //參加訂購會 插入訂購會
     public void joininsert() throws Exception {
         odrMeetingManageService.insertjoinOdr(id,getSupplier().getPkey());
         write();
@@ -87,4 +96,6 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
     public void getOrderGoodsList() throws IOException {
         write(odrMeetingProductManageService.getOrderGoodsList(getStart(),getLimit(),id));
     }
+
+
 }
