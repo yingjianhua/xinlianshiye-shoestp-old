@@ -4,6 +4,7 @@ import com.google.inject.ImplementedBy;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import irille.view.Manage.OdrMeeting.initiatedActivity.LaunchlistMeettingView;
 import irille.view.Manage.OdrMeeting.initiatedActivity.OrderInformationView;
 import org.json.JSONObject;
 
@@ -129,4 +130,11 @@ public interface IOdrMeetingManageService {
      * @anthor zjl
      */
     OrderInformationView getorderInformation(Integer id);
+    /**
+    *@Description: 发布订购会
+    *@date 2018/11/20 15:58
+    *@anthor wilson zhang
+    */
+
+    void insOdrmeetting(LaunchlistMeettingView lmv);
 }

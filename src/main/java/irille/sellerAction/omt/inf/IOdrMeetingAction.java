@@ -27,12 +27,15 @@ public interface IOdrMeetingAction extends ISellerAction {
     public void loadstate() throws Exception;
     @RequestMapping(alias="發佈會 展會列表", sort=7)
     public void exhibitionlist() throws Exception;
-
+    @RequestMapping(alias="上传图片",sort=14)
+    public void upload() throws Exception;
     @RequestMapping(alias = "获取订购会信息", sort = 9)
     public void getorderInformation() throws Exception;
 
     @RequestMapping(alias = "获取订购会商品列表", sort = 10)
     public void getOrderGoodsList() throws Exception;
+    @RequestMapping(alias = "插入订购会", sort = 13)
+    public void insOdrmeetting() throws Exception;
 
     @RequestMapping(alias = "订购会商品上下架状态更新", sort = 11)
     public void updateStatus() throws Exception;

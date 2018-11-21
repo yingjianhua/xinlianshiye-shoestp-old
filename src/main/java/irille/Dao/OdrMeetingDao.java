@@ -15,7 +15,6 @@ import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduIns;
-import irille.pub.idu.IduOther;
 import irille.pub.idu.IduUpd;
 import irille.pub.svr.Env;
 import irille.shop.plt.PltCountry;
@@ -25,8 +24,6 @@ import irille.view.Manage.OdrMeeting.OdrMeetingOtherlistView;
 import irille.view.Manage.OdrMeeting.OdrMeetingParticipatelistView;
 import irille.view.Manage.OdrMeeting.initiatedActivity.OrderInformationView;
 import irille.view.Page;
-import jdk.nashorn.internal.objects.annotations.Where;
-import org.apache.commons.lang3.ObjectUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -213,7 +210,8 @@ public class OdrMeetingDao {
                     OrderMeeting.T.COUNTRY,
                     OrderMeeting.T.STATUS,
                     OrderMeeting.T.START_TIME,
-                    OrderMeeting.T.END_TIME
+                    OrderMeeting.T.END_TIME,
+                    OrderMeeting.T.SUPPLIERID
             )
                     .SELECT(OrderMeetingExhibition.T.COUNTRY, "omecountry")
                     .SELECT(OrderMeetingExhibition.T.NAME, "OMENAME")
@@ -255,7 +253,6 @@ public class OdrMeetingDao {
                 oml.setExhibition((String) o.get("OMENAME"));
             }
             //判断当前供应商没有审核过的订购会为负数
-            System.out.println(o.get("OMASTATUS"));
             if(o.get("OMASTATUS")!= null){
                 oml.setApplyodr(Integer.parseInt(String.valueOf(o.get("OMASTATUS"))));
             }else{
@@ -312,6 +309,20 @@ public class OdrMeetingDao {
             OrderMeeting dbBean = loadThisBeanAndLock();
             PropertyUtils.copyProperties(dbBean, getB(), OrderMeeting.T.STATUS);
             setB(dbBean);
+            super.before();
+        }
+    }
+
+    /**
+     *@Description:  商家发布订购会
+     *@date 2018/11/19 20:09
+     *@anthor wilson zhang
+     */
+    public static class insertomt extends IduIns<insertomt, OrderMeeting> {
+        @Override
+        public void before() {
+            getB().setUpdatedTime(Env.getTranBeginTime());
+            getB().setStatus(OrderMeetingStatus.TOBEGIN.getLine().getKey());
             super.before();
         }
     }

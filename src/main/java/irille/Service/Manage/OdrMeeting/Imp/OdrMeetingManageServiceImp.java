@@ -4,15 +4,18 @@ import irille.Dao.OdrMeetingDao;
 import irille.Dao.Old.OdrMeeting.OdrMeetingAuditInsDao;
 import irille.Dao.Old.OdrMeeting.OdrMeetingInsDao;
 import irille.Dao.OrderMeetingAuditDao;
+import irille.Dao.OrderMeetingAuditReleaseDao;
 import irille.Entity.OdrerMeetings.Enums.OrderMeetingAuditStatus;
 import irille.Entity.OdrerMeetings.Enums.OrderMeetingAuditType;
 import irille.Entity.OdrerMeetings.Enums.OrderMeetingStatus;
 import irille.Entity.OdrerMeetings.OrderMeeting;
 import irille.Entity.OdrerMeetings.OrderMeetingAudit;
+import irille.Entity.OdrerMeetings.OrderMeetingAuditRelease;
 import irille.Service.Manage.OdrMeeting.IOdrMeetingManageService;
 import irille.pub.idu.IduPage;
 import irille.view.Manage.OdrMeeting.OdrMeetingInfoView;
 import irille.view.Manage.OdrMeeting.Sale.OdrMeetingSaleInfoView;
+import irille.view.Manage.OdrMeeting.initiatedActivity.LaunchlistMeettingView;
 import irille.view.Manage.OdrMeeting.initiatedActivity.OrderInformationView;
 import irille.view.Manage.OdrMeeting.initiatedActivity.orderGoodsView;
 import irille.view.Page;
@@ -205,5 +208,33 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
     @Override
     public OrderInformationView getorderInformation(Integer id) {
         return odrMeetingDao.getorderInformation(id);
+    }
+
+    @Override//添加发布订购会
+    public void insOdrmeetting(LaunchlistMeettingView lmv) {
+        OdrMeetingDao.insertomt itt=new OdrMeetingDao.insertomt();
+        OrderMeeting omt=new OrderMeeting();
+        omt.setSupplierid(lmv.getSupplierid());
+        omt.setName(lmv.getOrderingTitle());
+        if(lmv.getExhibitionname()!=null && !lmv.getExhibitionname().equals("")){
+            omt.setCustomExhibition(lmv.getExhibitionname());
+        }else{
+            omt.setExhibition(lmv.getExhibition());
+        }
+        omt.setCountry(lmv.getCountry());
+        omt.setLogo(lmv.getCoverImage());
+        omt.setStartTime(lmv.getOrderStartTime());
+        omt.setEndTime(lmv.getOrderEndTime());
+        omt.setMailafullddress(lmv.getAddress());
+        omt.setPostcode(lmv.getZip());
+        omt.setMailname(lmv.getReceiver());
+        omt.setMailtel(lmv.getContactNumber());
+        itt.setB(omt);
+        itt.commit();
+        System.out.println(itt.getB().getPkey()+">>>>>>>>>");
+        OrderMeetingAuditReleaseDao.insertOdr omar=new OrderMeetingAuditReleaseDao.insertOdr();
+        OrderMeetingAuditRelease omare=new OrderMeetingAuditRelease();
+        omare.setOdrmeeting(itt.getB().getPkey());
+        omar.setB(omare).commit();
     }
 }

@@ -1,11 +1,13 @@
 package irille.sellerAction.omt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import irille.Entity.OdrerMeetings.OrderMeeting;
 import irille.Service.Manage.OdrMeeting.IOdrMeetingManageService;
 import irille.Service.Manage.OdrMeeting.IOdrMeetingProductManageService;
 import irille.Service.Manage.OdrMeeting.IOdrMeettingExhibitionService;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.omt.inf.IOdrMeetingAction;
+import irille.view.Manage.OdrMeeting.initiatedActivity.LaunchlistMeettingView;
 import irille.view.Page;
 import lombok.Getter;
 import lombok.Setter;
@@ -108,6 +110,21 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
     }
     public void updateStatus() throws IOException {
         odrMeetingProductManageService.updateStatus(id);
+        write();
+    }
+    /**
+    *@Description: 插入发布订购会
+    *@date 2018/11/20 16:26
+    *@anthor wilson zhang
+    */
+    @Setter
+    @Getter
+    private String llmv;
+    @Override
+    public void insOdrmeetting() throws Exception {
+        LaunchlistMeettingView ll=new ObjectMapper().readValue(llmv,LaunchlistMeettingView.class);
+        ll.setSupplierid(getSupplier().getPkey());
+        odrMeetingManageService.insOdrmeetting(ll);
         write();
     }
 
