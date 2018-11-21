@@ -5,10 +5,8 @@ import irille.pub.i18n.I18NFieldSerializer;
 import irille.view.BaseView;
 import lombok.Data;
 
-import java.math.BigDecimal;
-
 @Data
-public class orderGoodsView implements BaseView {
+public class OrderGoodsView implements BaseView {
     private Integer id;
     private String image;//产品图片
     @JsonSerialize(using= I18NFieldSerializer.class)
