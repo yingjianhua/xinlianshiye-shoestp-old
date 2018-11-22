@@ -129,10 +129,15 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
         write();
     }
 
-
     public void removeProduct() throws IOException {
-        odrMeetingProductManageService.removeProduct(id,productId);
+        odrMeetingProductManageService.removeProduct(id);
         write();
+    }
+    public void getProducts() throws IOException {
+        write(odrMeetingProductManageService.getProducts(getSupplier().getPkey()));
+    }
+    public void getAddedProducts() throws IOException {
+        write(odrMeetingProductManageService.getAddedProducts(id));
     }
     @Setter
     @Getter

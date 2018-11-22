@@ -7,14 +7,12 @@ import irille.Entity.OdrerMeetings.OrderMeetingProduct;
 import irille.Service.Manage.OdrMeeting.IOdrMeetingProductManageService;
 import irille.pub.idu.IduPage;
 import irille.view.Manage.OdrMeeting.OdrMeetingProductView;
-import irille.view.Manage.OdrMeeting.initiatedActivity.orderGoodsView;
+import irille.view.Manage.OdrMeeting.initiatedActivity.AllProductsView;
 import irille.view.Page;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/14 Time: 14:03
@@ -61,8 +59,18 @@ public class OdrMeetingProductManageServiceImp implements IOdrMeetingProductMana
     }
 
     @Override
-    public void removeProduct(Integer id, Integer productId) {
-        odrMeetingProductDao.removePorduct(id,productId);
+    public void removeProduct(Integer id) {
+        odrMeetingProductDao.removePorduct(id);
+    }
+
+    @Override
+    public List<AllProductsView> getProducts(Integer id) {
+        return odrMeetingProductDao.getProducts(id);
+    }
+
+    @Override
+    public List getAddedProducts(Integer id) {
+        return odrMeetingProductDao.getAddedProducts(id);
     }
 
 }
