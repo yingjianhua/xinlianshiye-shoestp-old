@@ -73,4 +73,9 @@ public class OdrMeetingProductManageServiceImp implements IOdrMeetingProductMana
         return odrMeetingProductDao.getAddedProducts(id);
     }
 
+    @Override
+    public void addProducts(Integer id,Integer pkey, List<AllProductsView> list) {
+        odrMeetingProductDao.addProducts(id,pkey,list);
+    }
+
 }

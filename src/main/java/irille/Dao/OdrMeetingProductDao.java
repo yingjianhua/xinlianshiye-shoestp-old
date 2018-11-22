@@ -9,13 +9,19 @@ import irille.pub.PropertyUtils;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
+import irille.pub.bean.query.SqlQuery;
 import irille.pub.bean.sql.SQL;
+import irille.pub.html.Nodes;
+import irille.pub.idu.IduIns;
+import irille.pub.svr.Env;
 import irille.pub.idu.IduUpd;
 import irille.shop.pdt.PdtProduct;
+import irille.shop.pdt.PdtProductDAO;
 import irille.view.Manage.OdrMeeting.initiatedActivity.AllProductsView;
 import irille.view.Manage.OdrMeeting.initiatedActivity.OrderGoodsView;
 import irille.view.Page;
 
+import javax.swing.plaf.SliderUI;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -115,12 +121,14 @@ public class OdrMeetingProductDao {
         } else {
             order.setStatus(OrderMeetingProductStatus.DEFAULT.getLine().getKey());
         }
+        order.setUpdatedTime(Env.getTranBeginTime());
         order.upd();
     }
 
     public void removePorduct(Integer id) {
         OrderMeetingProduct mo = BeanBase.load(OrderMeetingProduct.class, id);
         mo.setStatus(OrderMeetingProductStatus.DELETE.getLine().getKey());
+        mo.setUpdatedTime(Env.getTranBeginTime());
         mo.upd();
     }
 
@@ -130,7 +138,9 @@ public class OdrMeetingProductDao {
                 SELECT(PdtProduct.T.PKEY,
                         PdtProduct.T.NAME,
                         PdtProduct.T.PICTURE,
-                        PdtProduct.T.CODE)
+                        PdtProduct.T.CODE,
+                        PdtProduct.T.CUR_PRICE,
+                        PdtProduct.T.MIN_OQ)
                         .SELECT(OrderMeetingProduct.T.PRICE,
                                 OrderMeetingProduct.T.MOQ,
                                 OrderMeetingProduct.T.NEWPRICE,
@@ -146,34 +156,34 @@ public class OdrMeetingProductDao {
             view.setId(Integer.valueOf(o.get(PdtProduct.T.PKEY.getFld().getCodeSqlField()).toString()));
             if (o.get(PdtProduct.T.PICTURE.getFld().getCodeSqlField()) != null && o.get(PdtProduct.T.PICTURE.getFld().getCodeSqlField()) != "") {
                 view.setImage(String.valueOf(o.get(PdtProduct.T.PICTURE.getFld().getCodeSqlField())).split(",")[0]);
-            }else{
+            } else {
                 view.setImage("");
             }
             view.setName(String.valueOf(o.get(PdtProduct.T.NAME.getFld().getCodeSqlField())));
             view.setCode(String.valueOf(o.get(PdtProduct.T.CODE.getFld().getCodeSqlField())));
-            if(o.get(OrderMeetingProduct.T.PRICE.getFld().getCodeSqlField())!=null&&o.get(OrderMeetingProduct.T.PRICE.getFld().getCodeSqlField())!=""){
-                view.setOldPrice(BigDecimal.valueOf(Double.valueOf(String.valueOf(o.get(OrderMeetingProduct.T.PRICE.getFld().getCodeSqlField())))));
-            }else{
+            if (o.get(PdtProduct.T.CUR_PRICE.getFld().getCodeSqlField()) != null && o.get(PdtProduct.T.CUR_PRICE.getFld().getCodeSqlField()) != "") {
+                view.setOldPrice(BigDecimal.valueOf(Double.valueOf(String.valueOf(o.get(PdtProduct.T.CUR_PRICE.getFld().getCodeSqlField())))));
+            } else {
                 view.setOldPrice(new BigDecimal(0));
             }
-            if(o.get(OrderMeetingProduct.T.MOQ.getFld().getCodeSqlField())!=null&&o.get(OrderMeetingProduct.T.MOQ.getFld().getCodeSqlField())!=""){
-                view.setOldMoq(Integer.valueOf(String.valueOf(o.get(OrderMeetingProduct.T.MOQ.getFld().getCodeSqlField()))));
-            }else{
+            if (o.get(PdtProduct.T.MIN_OQ.getFld().getCodeSqlField()) != null && o.get(PdtProduct.T.MIN_OQ.getFld().getCodeSqlField()) != "") {
+                view.setOldMoq(Integer.valueOf(String.valueOf(o.get(PdtProduct.T.MIN_OQ.getFld().getCodeSqlField()))));
+            } else {
                 view.setOldMoq(0);
             }
-            if(o.get(OrderMeetingProduct.T.NEWPRICE.getFld().getCodeSqlField())!=null&&o.get(OrderMeetingProduct.T.NEWPRICE.getFld().getCodeSqlField())!=""){
+            if (o.get(OrderMeetingProduct.T.NEWPRICE.getFld().getCodeSqlField()) != null && o.get(OrderMeetingProduct.T.NEWPRICE.getFld().getCodeSqlField()) != "") {
                 view.setNewPrice(BigDecimal.valueOf(Double.valueOf(String.valueOf(o.get(OrderMeetingProduct.T.NEWPRICE.getFld().getCodeSqlField())))));
-            }else{
+            } else {
                 view.setNewPrice(new BigDecimal(0));
             }
-            if(o.get(OrderMeetingProduct.T.NEWMOQ.getFld().getCodeSqlField())!=null&&o.get(OrderMeetingProduct.T.NEWMOQ.getFld().getCodeSqlField())!=""){
+            if (o.get(OrderMeetingProduct.T.NEWMOQ.getFld().getCodeSqlField()) != null && o.get(OrderMeetingProduct.T.NEWMOQ.getFld().getCodeSqlField()) != "") {
                 view.setMoq(Integer.valueOf(String.valueOf(o.get(OrderMeetingProduct.T.NEWMOQ.getFld().getCodeSqlField()))));
-            }else{
+            } else {
                 view.setMoq(0);
             }
             if (o.get(OrderMeetingProduct.T.TARGET_COUNT.getFld().getCodeSqlField()) != null && o.get(OrderMeetingProduct.T.TARGET_COUNT.getFld().getCodeSqlField()) != "") {
                 view.setAims(Integer.valueOf(String.valueOf(o.get(OrderMeetingProduct.T.TARGET_COUNT.getFld().getCodeSqlField()))));
-            }else{
+            } else {
                 view.setAims(0);
             }
             return view;
@@ -202,5 +212,41 @@ public class OdrMeetingProductDao {
                 +" =?  WHERE "+ OrderMeetingProduct.T.ORDERMEETINGID.getFld().getCodeSqlField()
                 +" =? AND "+OrderMeetingProduct.T.SUPPLIERID.getFld().getCodeSqlField()+" =?";
        BeanBase.executeUpdate(sql,OrderMeetingProductStatus.DELETE.getLine().getKey(),omp.getOrdermeetingid(),omp.getSupplierid());
+    }
+
+    public void addProducts(Integer id, Integer pkey, List<AllProductsView> list) {
+        for (AllProductsView allProductsView : list) {
+            SQL sql = new SQL() {
+                {
+                    SELECT(OrderMeetingProduct.class)
+                            .FROM(OrderMeetingProduct.class).
+                            WHERE(OrderMeetingProduct.T.PRODUCTID, "=?", allProductsView.getId()).
+                            WHERE(OrderMeetingProduct.T.ORDERMEETINGID, "=?", id);
+                }
+            };
+            OrderMeetingProduct o = Query.sql(sql).query(OrderMeetingProduct.class);
+            if (o != null) {
+                o.setMoq(allProductsView.getOldMoq());
+                o.setPrice(allProductsView.getOldPrice());
+                o.setNewmoq(allProductsView.getMoq());
+                o.setNewprice(allProductsView.getNewPrice());
+                o.setTargetCount(allProductsView.getAims());
+                o.setUpdatedTime(Env.getTranBeginTime());
+                o.upd();
+            } else {
+                o = new OrderMeetingProduct();
+                o.setOrdermeetingid(id);
+                o.setSupplierid(pkey);
+                o.setProductid(allProductsView.getId());
+                o.setMoq(allProductsView.getOldMoq());
+                o.setPrice(allProductsView.getOldPrice());
+                o.setNewmoq(allProductsView.getMoq());
+                o.setNewprice(allProductsView.getNewPrice());
+                o.setTargetCount(allProductsView.getAims());
+                o.setStatus(OrderMeetingProductStatus.ON.getLine().getKey());
+                o.setUpdatedTime(Env.getTranBeginTime());
+                o.ins();
+            }
+        }
     }
 }

@@ -37,6 +37,9 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
     @Inject
     private OdrMeetingAuditInsDao odrMeetingAuditInsDao;
 
+    @Inject
+    private OrderMeetingAuditDao orderMeetingAuditDao;
+
     /**
      * @Description: 添加订购会信息   name 为
      * @date 2018/11/15 11:10
@@ -255,5 +258,10 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
         OrderMeetingAuditRelease omare=new OrderMeetingAuditRelease();
         omare.setOdrmeeting(itt.getB().getPkey());
         omar.setB(omare).commit();
+    }
+
+    @Override
+    public Page cooperationsupplier(Integer start, Integer limit, Integer status, String name, Integer omtid) {
+        return orderMeetingAuditDao.cooperationsupplier(start,limit,status,name,omtid);
     }
 }

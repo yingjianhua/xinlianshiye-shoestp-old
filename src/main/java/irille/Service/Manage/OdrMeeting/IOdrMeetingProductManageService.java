@@ -66,4 +66,11 @@ public interface IOdrMeetingProductManageService {
      * @author zjl
      */
     List getAddedProducts(Integer id);
+
+    /**
+     * @Description: 添加订购会商品
+     * @date 2018/11/22 9:55
+     * @author zjl
+     */
+    void addProducts(Integer id,Integer pkey,List<AllProductsView> list);
 }
