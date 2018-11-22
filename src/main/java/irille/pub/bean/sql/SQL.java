@@ -66,6 +66,9 @@ public class SQL {
   public <T extends BeanMain<?, ?>> SQL WHERE(IEnumFld fld, String conditions) {
 	  return mybatisSQL.WHERE(fld, conditions);
   }
+	public <T extends BeanMain<?, ?>> SQL WHERE(IEnumFld fld, String conditions,IEnumFld fld2) {
+		return mybatisSQL.WHERE(fld, conditions, fld2);
+	}
   
   public <T extends BeanMain<?, ?>> SQL WHERE(IEnumFld fld, String conditions, Serializable... params) {
 	  mybatisSQL.WHERE(fld, conditions);
@@ -92,7 +95,14 @@ public class SQL {
 	  }
 	  return mybatisSQL.getSelf();
   }
-  
+  public <T extends BeanMain<?, ?>> SQL orWhere(IEnumFld fld, String conditions, Serializable... params) {
+  	return mybatisSQL.or().WHERE(fld, conditions, params);
+  }
+
+	public <T extends BeanMain<?, ?>> SQL or() {
+		return mybatisSQL.or();
+	}
+
   public <T extends BeanMain<?, ?>> SQL OR() {
 	  return mybatisSQL.OR();
   }
@@ -180,6 +190,12 @@ public class SQL {
 	public <T extends BeanMain<?, ?>> SQL LEFT_OUTER_JOIN(Class<T> beanClass, IEnumFld fld1, IEnumFld fld2) {
 		return super.LEFT_OUTER_JOIN(tableNameWithAlias(beanClass)+" ON "+columnLabelWithAlias(fld1)+"="+columnLabelWithAlias(fld2));
 	}
+	  public <T extends BeanMain<?, ?>> SQL WHERE(IEnumFld fld, String conditions, IEnumFld fld2) {
+		  if(isSelect())
+			  return super.WHERE(columnLabelWithAlias(fld)+" "+conditions+ " "+columnLabelWithAlias(fld2));
+		  else
+			  return super.WHERE(columnLabel(fld)+" "+conditions+" "+columnLabel(fld2));
+	  }
 	
 	public <T extends BeanMain<?, ?>> SQL WHERE(IEnumFld fld, String conditions) {
 		if(isSelect())

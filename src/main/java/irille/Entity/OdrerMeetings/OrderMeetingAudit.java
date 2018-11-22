@@ -86,7 +86,7 @@ public class OrderMeetingAudit extends BeanInt<OrderMeetingAudit> {
 	// DELETE:4,已删除
   private String _message;	// 消息  STR(200)<null>
   private Integer _supplierid;	// 供应商 <表主键:UsrSupplier>  INT
-  private String _snapshot;	// 快照  JSONOBJECT
+  private String _snapshot;	// 快照  JSONOBJECT<null>
   private Date _createdTime;	// 建档时间  TIME
   private Short _rowVersion;	// 版本  SHORT
 

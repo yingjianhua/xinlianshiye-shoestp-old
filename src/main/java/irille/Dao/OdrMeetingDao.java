@@ -3,29 +3,25 @@ package irille.Dao;
 import irille.Entity.OdrerMeetings.Enums.OrderMeetingAuditStatus;
 import irille.Entity.OdrerMeetings.Enums.OrderMeetingExhibitionStatus;
 import irille.Entity.OdrerMeetings.Enums.OrderMeetingStatus;
-import irille.Entity.OdrerMeetings.*;
+import irille.Entity.OdrerMeetings.OrderMeeting;
+import irille.Entity.OdrerMeetings.OrderMeetingAudit;
+import irille.Entity.OdrerMeetings.OrderMeetingAuditRelease;
+import irille.Entity.OdrerMeetings.OrderMeetingExhibition;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.Bean;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
+import irille.pub.idu.IduOther;
 import irille.pub.idu.IduUpd;
-import irille.shop.odr.Odr;
-import irille.shop.odr.OdrOrder;
-import irille.shop.odr.OdrOrderLine;
-import irille.shop.pdt.PdtProduct;
-import irille.shop.pdt.PdtSpec;
 import irille.shop.plt.PltCountry;
 import irille.view.Manage.OdrMeeting.OdrMeetingLaunchlistView;
 import irille.view.Manage.OdrMeeting.OdrMeetingParticipatelistView;
 import irille.view.Page;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -128,6 +124,7 @@ public class OdrMeetingDao {
             SELECT(
                     OrderMeeting.T.PKEY,
                     OrderMeeting.T.LOGO,
+                    OrderMeeting.T.SUPPLIERID,
                     OrderMeeting.T.NAME,
                     OrderMeeting.T.EXHIBITION,
                     OrderMeeting.T.CUSTOM_EXHIBITION,
@@ -135,10 +132,13 @@ public class OdrMeetingDao {
                     OrderMeeting.T.STATUS,
                     OrderMeeting.T.START_TIME,
                     OrderMeeting.T.END_TIME
-            ).SELECT(OrderMeetingExhibition.T.COUNTRY, "omecountry");
+            ).SELECT(OrderMeetingExhibition.T.COUNTRY, "omecountry")
+                    .SELECT(OrderMeetingExhibition.T.NAME, "OMENAME");
             FROM(OrderMeeting.class);
             LEFT_JOIN(OrderMeetingExhibition.class, OrderMeetingExhibition.T.PKEY, OrderMeeting.T.EXHIBITION);
-            //      LEFT_JOIN(OrderMeetingAudit.class, OrderMeetingAudit.T.OrderMeeting, OrderMeeting.T.PKEY);
+            LEFT_JOIN(OrderMeetingAudit.class, OrderMeetingAudit.T.ODRMEETING, OrderMeeting.T.PKEY);
+            LEFT_JOIN(OrderMeetingAuditRelease.class, OrderMeetingAuditRelease.T.ODRMEETING, OrderMeeting.T.PKEY);
+            WHERE(OrderMeetingAuditRelease.T.STATUS, " =?", OrderMeetingAuditStatus.ACTIVITY.getLine().getKey());
             if (name != null) {
                 WHERE(OrderMeeting.T.NAME, " like '%" + name + "%'");
             }
@@ -148,7 +148,9 @@ public class OdrMeetingDao {
             if (getSupplier != null) {
                 WHERE(OrderMeetingAudit.T.SUPPLIERID, " =?", getSupplier);
             }
+            WHERE(OrderMeeting.T.SUPPLIERID, " <> ?", getSupplier);
             WHERE(OrderMeeting.T.STATUS, " <> ?", OrderMeetingStatus.DELETE.getLine().getKey());
+            WHERE(OrderMeetingAudit.T.STATUS, " =?", OrderMeetingAuditStatus.ACTIVITY.getLine().getKey());
             ORDER_BY(OrderMeeting.T.UPDATED_TIME, "desc");
         }};
         Integer count = Query.sql(sql).queryCount();
@@ -159,13 +161,16 @@ public class OdrMeetingDao {
             oml.setId((Integer) o.get(OrderMeeting.T.PKEY.getFld().getCodeSqlField()));
             oml.setImages((String) o.get(OrderMeeting.T.LOGO.getFld().getCodeSqlField()));
             oml.setName((String) o.get(OrderMeeting.T.NAME.getFld().getCodeSqlField()));
-            System.out.println(o.get(OrderMeeting.T.CUSTOM_EXHIBITION.getFld().getCodeSqlField()));
-            if (o.get(OrderMeeting.T.CUSTOM_EXHIBITION.getFld().getCodeSqlField()) != null) {
+            if (o.get(OrderMeeting.T.CUSTOM_EXHIBITION.getFld().getCodeSqlField()) != null
+                    && !o.get(OrderMeeting.T.CUSTOM_EXHIBITION.getFld().getCodeSqlField()).equals("")) {
                 oml.setExhibition((String) o.get(OrderMeeting.T.CUSTOM_EXHIBITION.getFld().getCodeSqlField()));
             } else {
-                oml.setExhibition((String) o.get(OrderMeetingExhibition.T.NAME.getFld().getCodeSqlField()));
+                oml.setExhibition((String) o.get("OMENAME"));
             }
+            UsrSupplier usr = BeanBase.load(UsrSupplier.class, (Integer)
+                    o.get(OrderMeeting.T.SUPPLIERID.getFld().getCodeSqlField()));
             PltCountry pc = BeanBase.load(PltCountry.class, (Integer) o.get(OrderMeeting.T.COUNTRY.getFld().getCodeSqlField()));
+            oml.setSuppliername(usr.getName());
             oml.setCountry(pc.getName());
             oml.setEndtime((Date) o.get(OrderMeeting.T.END_TIME.getFld().getCodeSqlField()));
             oml.setStarttime((Date) o.get(OrderMeeting.T.START_TIME.getFld().getCodeSqlField()));
@@ -196,40 +201,62 @@ public class OdrMeetingDao {
                     OrderMeeting.T.COUNTRY,
                     OrderMeeting.T.STATUS,
                     OrderMeeting.T.START_TIME,
-                    OrderMeeting.T.END_TIME
-            ).SELECT(OrderMeetingExhibition.T.COUNTRY, "omecountry");
+                    OrderMeeting.T.END_TIME,
+                    OrderMeeting.T.SUPPLIERID
+            )
+                    .SELECT(OrderMeetingExhibition.T.COUNTRY, "omecountry")
+                    .SELECT(OrderMeetingExhibition.T.NAME, "OMENAME")
+                    .SELECT(OrderMeetingAudit.T.STATUS, "OMASTATUS");
             FROM(OrderMeeting.class);
             LEFT_JOIN(OrderMeetingExhibition.class, OrderMeetingExhibition.T.PKEY, OrderMeeting.T.EXHIBITION);
-            //   LEFT_JOIN(OrderMeetingAudit.class, OrderMeetingAudit.T.OrderMeeting, OrderMeeting.T.PKEY);
-            WHERE(OrderMeeting.T.STATUS, " <>", OrderMeetingExhibitionStatus.DELETE.getLine().getKey());
-            if (name.equals("")) {
-                WHERE(OrderMeeting.T.NAME, " like %?%", name);
+            LEFT_JOIN(OrderMeetingAudit.class, OrderMeetingAudit.T.ODRMEETING, OrderMeeting.T.PKEY);
+            LEFT_JOIN(OrderMeetingAuditRelease.class, OrderMeetingAuditRelease.T.ODRMEETING, OrderMeeting.T.PKEY);
+            WHERE(OrderMeetingAuditRelease.T.STATUS, " =?", OrderMeetingAuditStatus.ACTIVITY.getLine().getKey());
+            if (name != null) {
+                WHERE(OrderMeeting.T.NAME, " like  '%" + name + "%'");
             }
             if (onstate != null) {
                 WHERE(OrderMeeting.T.STATUS, " =?", onstate);
             }
+
+            WHERE(OrderMeeting.T.SUPPLIERID, " <> ?", getSupplier);
+            AND().WHERE(OrderMeeting.T.STATUS, " <>?", OrderMeetingStatus.DELETE.getLine().getKey());
+            AND();
+            WHERE(OrderMeetingAudit.T.STATUS, " not in(" + OrderMeetingAuditStatus.ACTIVITY.getLine().getKey() + "," + OrderMeetingAuditStatus.DELETE.getLine().getKey() + ")");
+            or().
+                    WHERE(OrderMeetingAudit.T.PKEY.getFld().getTb().getCode() + "." + OrderMeetingAudit.T.STATUS + " is null ");
+            AND().
+                    WHERE(OrderMeetingAudit.T.SUPPLIERID, " = ?", getSupplier);
+            or().
+                    WHERE(OrderMeetingAudit.T.SUPPLIERID, " is null");
             ORDER_BY(OrderMeeting.T.UPDATED_TIME, "desc");
-            GROUP_BY(OrderMeetingAudit.T.SUPPLIERID);
-            HAVING(OrderMeetingAudit.T.SUPPLIERID.getFld().getCodeSqlField() + "<>" + getSupplier);
         }};
         Integer count = Query.sql(sql).queryCount();
-        List<OdrMeetingParticipatelistView> list = Query.sql(sql).limit(start, limit).queryMaps().stream().map(o -> {
-            OdrMeetingParticipatelistView oml = new OdrMeetingParticipatelistView();
+        List<OdrMeetingOtherlistView> list = Query.sql(sql).limit(start, limit).queryMaps().stream().map(o -> {
+            OdrMeetingOtherlistView oml = new OdrMeetingOtherlistView();
             oml.setId((Integer) o.get(OrderMeeting.T.PKEY.getFld().getCodeSqlField()));
             oml.setImages((String) o.get(OrderMeeting.T.LOGO.getFld().getCodeSqlField()));
             oml.setName((String) o.get(OrderMeeting.T.NAME.getFld().getCodeSqlField()));
-            System.out.println(o.get(OrderMeeting.T.CUSTOM_EXHIBITION.getFld().getCodeSqlField()));
-            System.out.println(">>>>>>>>>>>>>>>>>站厅名称");
-            if (o.get(OrderMeeting.T.CUSTOM_EXHIBITION.getFld().getCodeSqlField()) != null) {
+            if (o.get(OrderMeeting.T.CUSTOM_EXHIBITION.getFld().getCodeSqlField()) != null
+                    && !o.get(OrderMeeting.T.CUSTOM_EXHIBITION.getFld().getCodeSqlField()).equals("")) {
                 oml.setExhibition((String) o.get(OrderMeeting.T.CUSTOM_EXHIBITION.getFld().getCodeSqlField()));
             } else {
-                oml.setExhibition((String) o.get(OrderMeetingExhibition.T.NAME.getFld().getCodeSqlField()));
+                oml.setExhibition((String) o.get("OMENAME"));
             }
+            //判断当前供应商没有审核过的订购会为负数
+            if (o.get("OMASTATUS") != null) {
+                oml.setApplyodr(Integer.parseInt(String.valueOf(o.get("OMASTATUS"))));
+            } else {
+                oml.setApplyodr(-1);
+            }
+            UsrSupplier usr = BeanBase.load(UsrSupplier.class, (Integer)
+                    o.get(OrderMeeting.T.SUPPLIERID.getFld().getCodeSqlField()));
+            oml.setSuppliername(usr.getName());
             PltCountry pc = BeanBase.load(PltCountry.class, (Integer) o.get(OrderMeeting.T.COUNTRY.getFld().getCodeSqlField()));
             oml.setCountry(pc.getName());
             oml.setEndtime((Date) o.get(OrderMeeting.T.END_TIME.getFld().getCodeSqlField()));
             oml.setStarttime((Date) o.get(OrderMeeting.T.START_TIME.getFld().getCodeSqlField()));
-            oml.setState((Integer) o.get(OrderMeeting.T.STATUS.getFld().getCodeSqlField()));
+            oml.setState(Integer.parseInt(String.valueOf(o.get(OrderMeeting.T.STATUS.getFld().getCodeSqlField()))));
             return oml;
         }).collect(Collectors.toList());
         return new Page(list, start, limit, count);
@@ -254,7 +281,10 @@ public class OdrMeetingDao {
      * @anthor wilson zhang
      */
     public void joindelete(String pkeys) {
-
+        Bean.executeUpdate("update " + OrderMeetingAudit.TB.getCodeSqlTb() + " set " + OrderMeetingAudit.T.STATUS.getFld().getCodeSqlField()
+                + "= " + OrderMeetingAuditStatus.DELETE.getLine().getKey()
+                + " where " + OrderMeetingAudit.T.PKEY.getFld().getCodeSqlField()
+                + " in(" + pkeys + ")");
     }
 
     /**
@@ -302,11 +332,42 @@ public class OdrMeetingDao {
     public static class Meettingupdstate extends IduUpd<Meettingupdstate, OrderMeeting> {
         @Override
         public void before() {
+
             OrderMeeting dbBean = loadThisBeanAndLock();
             PropertyUtils.copyProperties(dbBean, getB(), OrderMeeting.T.STATUS);
             setB(dbBean);
             super.before();
         }
+    }
+
+    /**
+     * @Description: 订购会  修改地址
+     * @date 2018/11/14 20:15
+     * @anthor wilson zhang
+     */
+    public static class updaddress extends IduUpd<updaddress, OrderMeeting> {
+        @Override
+        public void before() {
+            OrderMeeting dbBean = loadThisBeanAndLock();
+            PropertyUtils.copyProperties(dbBean, getB(), OrderMeeting.T.MAILAFULLDDRESS, OrderMeeting.T.MAILTEL, OrderMeeting.T.POSTCODE, OrderMeeting.T.MAILNAME);
+            setB(dbBean);
+            super.before();
+        }
+    }
+
+    /**
+     * @Description: 商家发布订购会
+     * @date 2018/11/19 20:09
+     * @anthor wilson zhang
+     */
+    public static class insertomt extends IduIns<insertomt, OrderMeeting> {
+        @Override
+        public void before() {
+            getB().setUpdatedTime(Env.getTranBeginTime());
+            getB().setStatus(OrderMeetingStatus.TOBEGIN.getLine().getKey());
+            super.before();
+        }
+    }
 
     }
 
