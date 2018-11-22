@@ -22,20 +22,11 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <link rel="stylesheet" href="./css/element-ui/element-ui.css">
     <script src="./js/jquery-1.7.2.min.js"></script>
     <script src="./js/vue.js"></script>
+    <script src="./js/axios.min.js"></script>
+    <script src="./js/qs.js"></script>
     <script src="./js/element-ui.js"></script>
 </head>
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
 
-    function gtag() {
-        dataLayer.push(arguments);
-    }
-
-    gtag('js', new Date());
-
-    gtag('config', 'AW-783435725');
-</script>
 <body>
 <!-- 语言切换 -->
 <dl class="change_lang">
@@ -84,9 +75,9 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                 罗马尼当地展厅全年开放
             </p>
             <p class="white-text text-content">环球龙红街店Drumul Garii 12布加勒斯特077190</p>
-            <a class="btn" style="color: #fff;" href="https://www.jsform.com/web/formview/5b87847b75a03c126de93706"
-               target="_blank">获得神秘礼品</a>
-            <a class="btn btn-grey" href="javascript:void(0);">在线采购马上开始</a>
+            <div class="btn pointer" style="color: #fff;" @click="getGift">获得神秘礼品</div>
+            <a class="btn btn-grey pointer"
+               @click='jumpStatistics("https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373")'>部份商品预览</a>
         </div>
     </div>
 
@@ -108,325 +99,407 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                         </div>
                     </el-carousel-item>
                 </el-carousel>
-                <a class="btn btn-normal-red" hrefs="https://www.jsform.com/web/formview/5b87847b75a03c126de93706"
-                   target="_blank">立即获取免费样品</a>
+                <div class="btn btn-normal-red" @click="getGift">立即获取免费样品</div>
             </div>
         </div>
     </div>
-</div>
 
 
-<!-- 含手机的 banner 行 -->
-<div class="banner_03">
-    <div class="w1200">
-        <h1 class="banner-title">鞋样在线商城</h1>
-        <div class="banner-sub-title fs28 tc">来在线商城选购你想要的鞋样</div>
-        <div class="flexible flex-between">
-            <ul class="ul-wrap fs42">
-                <li class="item">
-                    超过 <span class="fs64 color-blue">500</span> 家鞋供应商入驻
-                </li>
-                <li class="item">
-                    <span class="fs64 color-yellow">500-800</span> 款鞋样可选
-                </li>
-                <li class="item">
-                    <span class="fs64 color-blue">24</span> 小时客服在线
-                </li>
-            </ul>
+    <!-- 含手机的 banner 行 -->
+    <div class="banner_03">
+        <div class="w1200">
+            <h1 class="banner-title">鞋样在线商城</h1>
+            <div class="banner-sub-title fs28 tc">来在线商城选购你想要的鞋样</div>
+            <div class="flexible flex-between">
+                <ul class="ul-wrap fs42">
+                    <li class="item">
+                        超过 <span class="fs64 color-blue">500</span> 家鞋供应商入驻
+                    </li>
+                    <li class="item">
+                        <span class="fs64 color-yellow">500-800</span> 款鞋样可选
+                    </li>
+                    <li class="item">
+                        <span class="fs64 color-blue">24</span> 小时客服在线
+                    </li>
+                </ul>
 
-            <img src="./images/phone.png" alt="" class="phone-pic">
-        </div>
-        <div class="tc mt20">
-            <a hrefs="https://www.jsform.com/web/formview/5b87847b75a03c126de93706" target="_blank"
-               class="btn-normal-red">
-                立即获得免费样品
-            </a>
-        </div>
-    </div>
-</div>
-
-<!-- 含背景logo的 banner 行 -->
-<div class="banner_04">
-    <div class="w1200 por">
-        <img src="./images/logo.png" alt="" class="bg-logo">
-        <div class="flexible flex-start flex-between">
-            <div class="pos-left">
-                <h1 class="banner-title tl">关于新联实业</h1>
-                <div class="banner-sub-title fs28 tl">鞋产业链一站式解决方案平台</div>
-                <div class="flexible flex-between">
-                    <img src="./images/company_01.jpg" class="company-pic-item" alt="company's img_01">
-                    <img src="./images/company_02.jpg" class="company-pic-item" alt="company's img_02">
-                </div>
-                <a hrefs="https://www.jsform.com/web/formview/5b87847b75a03c126de93706" class="btn-normal-red"
-                   target="_blank">
-                    立即获得免费样品
+                <img src="./images/phone.png" alt="" class="phone-pic">
+            </div>
+            <div class="tc mt20">
+                <a @click="jumpStatistics('https://www.shoestp.com/')" target="_blank" class="btn-normal-red">
+                    浏览商城
                 </a>
             </div>
-
-            <div class="pos-right">
-                <div class="right-title fs38">企业简介</div>
-                <div class="fs20">
-                    温州新联实业有限公司成立于2015年，坐落于誉有“中国鞋都”之称的温州。温州这座城市，伴随着悠久的鞋业发展史，孕育出了一批优秀的外贸鞋供应商。温州新联实业因它独有的B2B2C新型商业模式，已经成为了世界首家鞋产业链一站式解决方案的平台。
-                </div>
-                <div class="flexible flex-between">
-                    <img src="./images/company_03.jpg" class="company-pic-item" alt="company's img_03">
-                    <img src="./images/company_04.jpg" class="company-pic-item" alt="company's img_04">
-                </div>
-            </div>
         </div>
     </div>
-</div>
 
-<!-- 含4个重点的 banner 行 -->
-<div class="banner_05">
-    <div class="w1200">
-        <h1 class="banner-title">
-            新联实业将助您
-            <br>
-            <span class="color-red">更快</span>赢得先机，超越同行！
-        </h1>
-
-        <div class="bg por">
+    <!-- 含背景logo的 banner 行 -->
+    <div class="banner_04">
+        <div class="w1200 por">
+            <img src="./images/logo.png" alt="" class="bg-logo">
             <div class="flexible flex-start flex-between">
                 <div class="pos-left">
-                    <div class="left-item">
-                        <div class="flexible flex-between">
-                            <h2 class="blue-title fs36">咨询</h2>
-                            <div class="icon-wrap icon-chart">
-                                <img class="icon" src="./images/icon-chart.png" alt="icon-chart">
-                            </div>
-                        </div>
-                        <div class="sub-title fs22">
-                            一旦我们知道了您的需求，我们将与您一起制定逐步的生产流程，以确保您能获得最好的服务体验和产品价格
-                        </div>
-                        <ul class="ul-wrap fs24">
-                            <li class="item">
-                                24小时热线服务
-                            </li>
-                            <li class="item">
-                                根据您的需求提供专业性的建议，以确保能找到您最想要的鞋子
-                            </li>
-                        </ul>
+                    <h1 class="banner-title tl">关于新联实业</h1>
+                    <div class="banner-sub-title fs28 tl">鞋产业链一站式解决方案平台</div>
+                    <div class="flexible flex-between">
+                        <img src="./images/company_01.jpg" class="company-pic-item" alt="company's img_01">
+                        <img src="./images/company_02.jpg" class="company-pic-item" alt="company's img_02">
                     </div>
-
-                    <div class="left-item">
-                        <div class="flexible flex-between">
-                            <h2 class="blue-title fs36">制造</h2>
-                            <div class="icon-wrap icon-menu">
-                                <img class="icon" src="./images/icon-menu.png" alt="icon-menu">
-                            </div>
-                        </div>
-                        <div class="sub-title fs22">
-                            对于每双鞋子我们都精益求精。冲裁、鞋面缝合以及抛光润色，每一道工序都有专人负责、不断检查。
-                        </div>
-                        <ul class="ul-wrap fs24">
-                            <li class="item">
-                                根据要求进行产品测试，保证质量
-                            </li>
-                            <li class="item">
-                                在保证品质的前提下，厂家直销价让您利润最大化
-                            </li>
-                        </ul>
-                    </div>
+                    <a class="btn-normal-red" @click="getGift">
+                        立即获得免费样品
+                    </a>
                 </div>
 
                 <div class="pos-right">
-                    <div class="right-item">
-                        <div class="flexible flex-between por">
-                            <div class="icon-wrap icon-safe">
-                                <img class="icon" src="./images/icon-safe.png" alt="icon-safe">
-                            </div>
-                            <h2 class="blue-title fs36">质量控制</h2>
-                        </div>
-                        <div class="sub-title fs22">
-                            对于新联实业来说，质量就是灵魂，我们有着一套严格高效的质量控制体系。
-                        </div>
-                        <ul class="ul-wrap fs24">
-                            <li class="item">
-                                经验丰富的质检员层层把关
-                            </li>
-                            <li class="item">
-                                严格的质量控制制度
-                            </li>
-                            <li class="item">
-                                通过主要市场上的各种化工、物理测试，确保每一双鞋的每一个细节
-                            </li>
-                        </ul>
+                    <div class="right-title fs38">企业简介</div>
+                    <div class="fs20">
+                        温州新联实业有限公司成立于2015年，坐落于誉有“中国鞋都”之称的温州。温州这座城市，伴随着悠久的鞋业发展史，孕育出了一批优秀的外贸鞋供应商。温州新联实业因它独有的B2B2C新型商业模式，已经成为了世界首家鞋产业链一站式解决方案的平台。
                     </div>
-
-                    <div class="right-item">
-                        <div class="flexible flex-between por">
-                            <div class="icon-wrap icon-design">
-                                <img class="icon" src="./images/icon-design.png" alt="icon-design">
-                            </div>
-                            <h2 class="blue-title fs36">设计</h2>
-                        </div>
-                        <div class="sub-title fs22">
-                            多名拥有国际大牌设计经验设计师，每年2000多款更新速度带您一起掌握全球时尚最新动态。
-                        </div>
-                        <ul class="ul-wrap fs24">
-                            <li class="item">
-                                专业的定制化服务，确保您获得超棒的鞋款;
-                            </li>
-                            <li class="item">
-                                经验丰富的设计师将为您提供更实用，更卓越的建议
-                            </li>
-                        </ul>
+                    <div class="flexible flex-between">
+                        <img src="./images/company_03.jpg" class="company-pic-item" alt="company's img_03">
+                        <img src="./images/company_04.jpg" class="company-pic-item" alt="company's img_04">
                     </div>
                 </div>
             </div>
-            <a hrefs="https://www.shoestp.com/home/usr_UsrPurchase_sign" target="_blank" class="btn-normal-red">
-                马上注册
+        </div>
+    </div>
+
+    <!-- 含4个重点的 banner 行 -->
+    <div class="banner_05">
+        <div class="w1200">
+            <h1 class="banner-title">
+                新联实业将助您
+                <br>
+                <span class="color-red">更快</span>赢得先机，超越同行！
+            </h1>
+
+            <div class="bg por">
+                <div class="flexible flex-start flex-between">
+                    <div class="pos-left">
+                        <div class="left-item">
+                            <div class="flexible flex-between">
+                                <h2 class="blue-title fs36">咨询</h2>
+                                <div class="icon-wrap icon-chart">
+                                    <img class="icon" src="./images/icon-chart.png" alt="icon-chart">
+                                </div>
+                            </div>
+                            <div class="sub-title fs22">
+                                一旦我们知道了您的需求，我们将与您一起制定逐步的生产流程，以确保您能获得最好的服务体验和产品价格
+                            </div>
+                            <ul class="ul-wrap fs24">
+                                <li class="item">
+                                    24小时热线服务
+                                </li>
+                                <li class="item">
+                                    根据您的需求提供专业性的建议，以确保能找到您最想要的鞋子
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="left-item">
+                            <div class="flexible flex-between">
+                                <h2 class="blue-title fs36">制造</h2>
+                                <div class="icon-wrap icon-menu">
+                                    <img class="icon" src="./images/icon-menu.png" alt="icon-menu">
+                                </div>
+                            </div>
+                            <div class="sub-title fs22">
+                                对于每双鞋子我们都精益求精。冲裁、鞋面缝合以及抛光润色，每一道工序都有专人负责、不断检查。
+                            </div>
+                            <ul class="ul-wrap fs24">
+                                <li class="item">
+                                    根据要求进行产品测试，保证质量
+                                </li>
+                                <li class="item">
+                                    在保证品质的前提下，厂家直销价让您利润最大化
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="pos-right">
+                        <div class="right-item">
+                            <div class="flexible flex-between por">
+                                <div class="icon-wrap icon-safe">
+                                    <img class="icon" src="./images/icon-safe.png" alt="icon-safe">
+                                </div>
+                                <h2 class="blue-title fs36">质量控制</h2>
+                            </div>
+                            <div class="sub-title fs22">
+                                对于新联实业来说，质量就是灵魂，我们有着一套严格高效的质量控制体系。
+                            </div>
+                            <ul class="ul-wrap fs24">
+                                <li class="item">
+                                    经验丰富的质检员层层把关
+                                </li>
+                                <li class="item">
+                                    严格的质量控制制度
+                                </li>
+                                <li class="item">
+                                    通过主要市场上的各种化工、物理测试，确保每一双鞋的每一个细节
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="right-item">
+                            <div class="flexible flex-between por">
+                                <div class="icon-wrap icon-design">
+                                    <img class="icon" src="./images/icon-design.png" alt="icon-design">
+                                </div>
+                                <h2 class="blue-title fs36">设计</h2>
+                            </div>
+                            <div class="sub-title fs22">
+                                多名拥有国际大牌设计经验设计师，每年2000多款更新速度带您一起掌握全球时尚最新动态。
+                            </div>
+                            <ul class="ul-wrap fs24">
+                                <li class="item">
+                                    专业的定制化服务，确保您获得超棒的鞋款;
+                                </li>
+                                <li class="item">
+                                    经验丰富的设计师将为您提供更实用，更卓越的建议
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- <a href="https://www.shoestp.com/home/usr_UsrPurchase_sign" target="_blank" class="btn-normal-red">
+                    马上注册
+                </a> -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 工厂实拍的 banner 行  -->
+    <div class="banner_06">
+        <div class="w1200">
+            <h1 class="banner-title">合作供应商展示</h1>
+        </div>
+        <div class="company-pics-wrap flexible flex-between">
+            <img src="./images/work-shop_01.jpg" alt="work shop's show" class="pic-item">
+            <img src="./images/work-shop_02.jpg" alt="work shop's show" class="pic-item">
+            <img src="./images/work-shop_03.jpg" alt="work shop's show" class="pic-item">
+            <img src="./images/work-shop_04.jpg" alt="work shop's show" class="pic-item">
+        </div>
+        <div class="tc">
+            <a class="btn-normal-red" @click="getGift">
+                获得免费样品
             </a>
         </div>
     </div>
-</div>
 
-<!-- 工厂实拍的 banner 行  -->
-<div class="banner_06">
-    <div class="w1200">
-        <h1 class="banner-title">合作供应商展示</h1>
-    </div>
-    <div class="company-pics-wrap flexible flex-between">
-        <img src="./images/work-shop_01.jpg" alt="work shop's show" class="pic-item">
-        <img src="./images/work-shop_02.jpg" alt="work shop's show" class="pic-item">
-        <img src="./images/work-shop_03.jpg" alt="work shop's show" class="pic-item">
-        <img src="./images/work-shop_04.jpg" alt="work shop's show" class="pic-item">
-    </div>
-    <div class="tc">
-        <a hrefs="https://www.jsform.com/web/formview/5b87847b75a03c126de93706" target="_blank" class="btn-normal-red">
-            获得免费样品
-        </a>
-    </div>
-</div>
+    <!-- 展示厅实拍的 banner 行  -->
+    <div class="banner_07 por ">
+        <img src="./images/show-room.jpg" alt="show's room" class="show-room-pic">
+        <div class="w1200 flexible flex-end">
 
-<!-- 展示厅实拍的 banner 行  -->
-<div class="banner_07 por ">
-    <img src="./images/show-room.jpg" alt="show's room" class="show-room-pic">
-    <div class="w1200 flexible flex-end">
+            <div class="right-content-wrap">
+                <div class="right-title fs64">罗马尼亚展厅</div>
+                <!-- <div class="right-sub-title fs38">关于罗马尼亚订单</div> -->
+                <ul class="ul-wrap fs28">
+                    <li class="item">
+                        您可以实地体验百多款精品鞋
+                    </li>
+                    <li class="item">
+                        值得您信赖的工厂直销垂直平台
+                    </li>
+                    <li class="item">
+                        定制化服务专业建议
+                    </li>
+                </ul>
+                <!-- <img src="./images/flags.jpg" alt=""> -->
+                <div class="tr">
+                    <a class="btn-normal-red" @click="getGift">
+                        预定您的席位
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <div class="right-content-wrap">
-            <div class="right-title fs64">罗马尼亚展厅</div>
-            <!-- <div class="right-sub-title fs38">关于罗马尼亚订单</div> -->
-            <ul class="ul-wrap fs28">
-                <li class="item">
-                    您可以实地体验百多款精品鞋
-                </li>
-                <li class="item">
-                    值得您信赖的工厂直销垂直平台
-                </li>
-                <li class="item">
-                    定制化服务专业建议
+    <!-- 地图 -->
+    <div class="banner_08" style="">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5693.8067835435595!2d26.173309385776506!3d44.47615296998695!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40b1f9ac606033e3%3A0x7d391e85ce7a445b!2z5Lit5Zu957qi6b6Z5biC5Zy6!5e0!3m2!1szh-CN!2s!4v1541639443813"
+                class="map-wrap" frameborder="0" style="border:0" allowfullscreen></iframe>
+    </div>
+
+    <!-- 地址详情 -->
+    <div class="banner_09 fs30">
+        <div class="w1200">
+            <h1 class="banner_09-title fs52">
+                罗马尼亚商会
+                <br>
+                地址及联系方式
+            </h1>
+            <div class="flexible flex-between flex-start">
+                <ul class="pos-left">
+                    <li class="item">
+                        <span class="title">联系人：</span>
+                        <span>Romanesc</span>
+                    </li>
+                    <li class="item">
+                        <span class="title">网址：</span>
+                        <span>https://www.shoestp.com/m/romania/</span>
+                    </li>
+                    <li class="item">
+                        <span class="title">电话:</span>
+                        <span>0762 900 529</span>
+                    </li>
+                    <li class="item">
+                        <span class="title">Whatsapp：</span>
+                        <span>+40 762 900 529</span>
+                    </li>
+                </ul>
+
+                <ul class="pos-right">
+                    <li class="item">
+                        <span class="title">展厅地址：</span>
+                        <br>
+                        <span>Universal Dragon Red Shop
+						<br>
+						Strada Drumul Garii 12, Bucharest
+						<br>
+						077190</span>
+                    </li>
+                </ul>
+            </div>
+
+            <ul class="pos-bottom">
+                <li class="item flexible flex-start">
+                    <span class="title">邮箱：</span>
+                    <span>544414672@qq.com (în limba română service)
+						<br>
+						marketing@shoestp.com (English service)</span>
                 </li>
             </ul>
-            <!-- <img src="./images/flags.jpg" alt=""> -->
-            <div class="tr">
-                <a hrefs="https://www.jsform.com/web/formview/5b87847b75a03c126de93706" target="_blank"
-                   class="btn-normal-red">
+        </div>
+    </div>
+
+    <div class="banner_10">
+        <div class="w1200 flexible flex-between">
+            <ul class="ul-wrap fs34">
+                <li class="item">
+                    更多鞋样选择
+                </li>
+                <li class="item">
+                    本土化的时尚鞋展
+                </li>
+                <li class="item">
+                    厂家直销价格 本土服务体验
+                </li>
+            </ul>
+
+            <div class="form-box flexible flex-column flex-center">
+                <h2 class="form-title fs50">
+                    您的业​​务
+                    <br>
+                    需求是独一无二的？
+                </h2>
+
+                <div class="form-content fs24">
+                    让我们帮助您满足这些需求！
+                    <br>
+                    请与我们联系，立即获取免费样品。
+                </div>
+
+                <a class="btn-normal-red" @click="getGift">
                     预定您的席位
                 </a>
             </div>
         </div>
     </div>
-</div>
 
-<!-- 地图 -->
-<div class="banner_08" style="">
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5693.8067835435595!2d26.173309385776506!3d44.47615296998695!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40b1f9ac606033e3%3A0x7d391e85ce7a445b!2z5Lit5Zu957qi6b6Z5biC5Zy6!5e0!3m2!1szh-CN!2s!4v1541639443813"
-            class="map-wrap" frameborder="0" style="border:0" allowfullscreen></iframe>
-</div>
 
-<!-- 地址详情 -->
-<div class="banner_09 fs30">
-    <div class="w1200">
-        <h1 class="banner_09-title fs52">
-            罗马尼亚商会
-            <br>
-            地址及联系方式
-        </h1>
-        <div class="flexible flex-between flex-start">
-            <ul class="pos-left">
-                <li class="item">
-                    <span class="title">联系人：</span>
-                    <span>Romanesc</span>
-                </li>
-                <li class="item">
-                    <span class="title">网址：</span>
-                    <span>https://www.shoestp.com/m/romania/</span>
-                </li>
-                <li class="item">
-                    <span class="title">电话:</span>
-                    <span>0762 900 529</span>
-                </li>
-                <li class="item">
-                    <span class="title">Whatsapp：</span>
-                    <span>+40 762 900 529</span>
-                </li>
-            </ul>
+    <!-- form弹框 -->
+    <transition name="el-fade-in-linear" v-cloak>
+        <div class="modal-wrap" v-show="isFormShow || isTipDialogShow" @mousewheel.prevent>
+            <transition name="el-fade-in-linear">
+                <div class="modal-inner-box" v-show="isFormShow">
+                    <img src="./images/close-black.png" alt="button to close the form" class="btn-close"
+                         @click="isFormShow = false">
+                    <div class="form-title">
+                        2018年
+                        <br>
+                        罗马尼亚线下鞋类采购会
+                    </div>
+                    <el-form ref="form" :model="form" label-width="80px" label-position="top" size="small">
+                        <el-form-item label="联系人:" class="required-label">
+                            <el-input v-model="form.name" placeholder="请输入您的姓名"></el-input>
+                        </el-form-item>
 
-            <ul class="pos-right">
-                <li class="item">
-                    <span class="title">展厅地址：</span>
-                    <br>
-                    <span>Universal Dragon Red Shop
-						<br>
-						Strada Drumul Garii 12, Bucharest
-						<br>
-						077190</span>
-                </li>
-            </ul>
+                        <el-form-item label="国家" class="required-label">
+                            <el-select v-model="form.country">
+                                <el-option value="-1" label="请选择您所在的国家"></el-option>
+                                <el-option v-for="country in countryList" :key="country.id" :label="country.name"
+                                           :value="country.id"></el-option>
+                            </el-select>
+                        </el-form-item>
+
+                        <el-form-item label="电话:" class="required-label">
+                            <el-input v-model="form.tel" placeholder="请输入您的电话号码"></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="电子邮件:" class="required-label">
+                            <el-input v-model="form.email" placeholder="请输入您的邮箱"></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="需求:">
+                            <el-input type="textarea" v-model="form.inquiry" placeholder="请输入您的需求信息"></el-input>
+                        </el-form-item>
+
+
+                        <div class="tc">
+                            <el-button type="danger form-button" @click="formSubmit">提交</el-button>
+                        </div>
+
+                        <div class="tips">
+                            填写并发送表格，您将在
+                            <br>
+                            罗马尼亚展览室获得一份神秘的礼物！
+                            <br>
+                            或者您可以在备注栏填写您的需求，
+                            <br>
+                            我们的工作人员将在第一时间与您联系！
+                            <br>
+                            感谢您的光临，我们将为您
+                            <br>
+                            提供最好的服务！
+                        </div>
+                    </el-form>
+                </div>
+            </transition>
+
+            <!-- 提示弹窗 -->
+            <transition name="el-zoom-in-center">
+                <div class="model-confirm" v-show="isTipDialogShow">
+                    <div class="close-wrap">
+                        <img src="./images/close-red.png" alt="close" class="close" @click="isTipDialogShow=false">
+                    </div>
+                    <div class="model-confirm-content flexible flex-center">
+                        <img src="./images/right-red.png" alt="right" class="icon">
+                        <div>
+                            提交成功
+                        </div>
+                    </div>
+                    <div class="model-confirm-footer" @click="isTipDialogShow = false">
+                        确定
+                    </div>
+                </div>
+            </transition>
         </div>
+    </transition>
 
-        <ul class="pos-bottom">
-            <li class="item flexible flex-start">
-                <span class="title">邮箱：</span>
-                <span>544414672@qq.com (în limba română service)
-						<br>
-						marketing@shoestp.com (English service)</span>
-            </li>
-        </ul>
-    </div>
-</div>
-
-<div class="banner_10">
-    <div class="w1200 flexible flex-between">
-        <ul class="ul-wrap fs34">
-            <li class="item">
-                更多鞋样选择
-            </li>
-            <li class="item">
-                本土化的时尚鞋展
-            </li>
-            <li class="item">
-                厂家直销价格 本土服务体验
-            </li>
-        </ul>
-
-        <div class="form-box flexible flex-column flex-center">
-            <h2 class="form-title fs50">
-                您的业​​务
-                <br>
-                需求是独一无二的？
-            </h2>
-
-            <div class="form-content fs24">
-                让我们帮助您满足这些需求！
-                <br>
-                请与我们联系，立即获取免费样品。
-            </div>
-
-            <a hrefs="https://www.jsform.com/web/formview/5b87847b75a03c126de93706" target="_blank"
-               class="btn-normal-red">
-                预定您的席位
-            </a>
-        </div>
-    </div>
 </div>
 
 <script>
     new Vue({
         el: '#app',
         data: {
+            isFormShow: false, //是否显示弹窗
+            isTipDialogShow: false, //是否显示提示弹窗
+            countryList: [], //国家列表
+            form: {
+                country: "-1"
+            }, //form提交的内容
             productCarousel: [
                 [{
                     url: 'https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373',
@@ -477,6 +550,69 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                     content: '清爽&舒适'
                 }]
             ]
+        },
+
+        mounted() {
+            axios.get('/home/plt_PltCountry_list?lang=zh_CN')
+                .then((res) => {
+                    if (res.data.ret == 1) {
+                        this.countryList = res.data.result
+                    }
+                })
+                .catch(function (err) {
+                    console.log("err");
+                });
+        },
+
+        methods: {
+            // 点击获取礼物 - 弹出form框
+            getGift() {
+                this.isFormShow = true;
+            },
+            // 跳转统计
+            jumpStatistics(url) {
+                window.location = url;
+
+            },
+            formSubmit() {
+                if (!this.form.name || this.form.name == "") {
+                    this.$message.error('姓名不可为空，请重新填写');
+                    return;
+                } else if (!this.form.country || this.form.country == -1) {
+                    this.$message.error('暂未选择国家，请选择');
+                    return;
+                } else if (!this.form.tel || this.form.tel == "") {
+                    this.$message.error('电话号码不可为空，请重新填写');
+                    return;
+                } else if (!(/^\d{1,}$/.test(this.form.tel))) {
+                    this.$message.error('电话号码格式错误，请重新填写');
+                    return;
+                } else if (!this.form.email || this.form.email == "") {
+                    this.$message.error('邮箱不可为空，请重新填写');
+                    return;
+                } else if (!(/[\w]+(\.[\w]+)*@[\w]+(\.[\w])+/.test(this.form.email))) {
+                    this.$message.error('邮箱格式错误，请重新填写');
+                    return;
+                }
+                axios.post('/home/ActivitySignIn_ActivitySignIn_signIn', Qs.stringify({
+                    name: this.form.name,
+                    country: this.form.country,
+                    tel: this.form.tel,
+                    email: this.form.email,
+                    inquiry: this.form.inquiry
+                }, {allowDots: true}))
+                    .then((res) => {
+                        gtag_report_conversion()
+                        if (res.data.ret == 1) {
+                            this.form = {};
+                            this.isFormShow = false;
+                            this.isTipDialogShow = true;
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            }
         }
     })
 </script>
@@ -493,7 +629,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 </script>
 
 <!-- 代码追踪 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-113892728-1"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
 <script>
     window.dataLayer = window.dataLayer || [];
 
@@ -503,9 +639,11 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 
     gtag('js', new Date());
 
-    gtag('config', 'UA-113892728-1');
+    gtag('config', 'AW-783435725');
 </script>
 
+<!-- Event snippet for 提交表单 conversion page
+In your html page, add the snippet and call gtag_report_conversion when someone clicks on the chosen link or button. -->
 <script>
     function gtag_report_conversion(url) {
         var callback = function () {
@@ -519,13 +657,9 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
         });
         return false;
     }
-
-    $(document).ready(function () {
-        $("a.btn-normal-red").on("click", function () {
-            gtag_report_conversion($(this).attr('hrefs'))
-        })
-    })
 </script>
+
+
 <!--Start of Tawk.to Script-->
 <script type="text/javascript">
     var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();

@@ -73,8 +73,10 @@ a{
 	font-weight: 700;
 }
 .banner_01 .btn-grey{
-	background: #dfdfdf;
-    color: #6f6f6f;
+	/* background: #dfdfdf;
+  color: #6f6f6f; */
+  color: #fff;
+	background: #00f;
 }
 
 .banner_02{

@@ -21,26 +21,15 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 		Several free samples of shoes will also be supplied in this show. ">
     <title>Romanian Offline Shoes Purchasing</title>
     <link rel="stylesheet" href="./css/reset.css" media="all">
-    <link rel="stylesheet" href="css/romaina-new.css">
+    <link rel="stylesheet" href="./css/romaina-new.css">
     <link rel="stylesheet" href="./css/index.css" media="all">
     <link rel="stylesheet" href="./css/element-ui/element-ui.css">
     <script src="./js/jquery-1.7.2.min.js"></script>
     <script src="./js/vue.js"></script>
+    <script src="./js/axios.min.js"></script>
+    <script src="./js/qs.js"></script>
     <script src="./js/element-ui.js"></script>
 </head>
-<!-- Global site tag (gtag.js) - Google Ads: 783435725 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-        dataLayer.push(arguments);
-    }
-
-    gtag('js', new Date());
-
-    gtag('config', 'AW-783435725');
-</script>
 
 <body>
 <!-- 语言切换 -->
@@ -84,9 +73,11 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
             <p class="yellow-text text-address">Exhibition Hall Opens All Year Round</p>
             <p class="white-text text-content">Magazinul Universal Dragonul Roșu Strada Drumul Garii 12,București
                 077190</p>
-            <a class="btn following" style="color: #fff;" hrefs="https://www.jsform.com/web/formview/5b87847b75a03c126de93706"
-               target="_blank">Get Secret Gift</a>
-            <a class="btn btn-grey" href="javascript:void(0);">Online Ordering Opening Soon</a>
+            <!-- <a class="btn" style="color: #fff;" href="https://www.jsform.com/web/formview/5b87847b75a03c126de93706" target="_blank">Get Secret Gift</a> -->
+            <div class="btn pointer" @click="getGift" style="color: #fff;">Get Secret Gift</div>
+            <a class="btn btn-grey pointer"
+               @click="jumpStatistics('https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373')">Some
+                Product Previews</a>
         </div>
     </div>
 
@@ -108,330 +99,411 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                         </div>
                     </el-carousel-item>
                 </el-carousel>
-                <a class="btn btn-normal-red following" hrefs="https://www.jsform.com/web/formview/5b87847b75a03c126de93706"
-                   target="_blank">Get Free Sample Now</a>
+                <div class="btn btn-normal-red" @click="getGift">
+                    Get Free Sample Now
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
-<!-- 含手机的 banner 行 -->
-<div class="banner_03">
-    <div class="w1200">
-        <h1 class="banner-title">Shoes Purchasing Online</h1>
-        <div class="banner-sub-title fs28 tc">Get your choosing shoes from our online shoes shop</div>
-        <div class="flexible flex-between">
-            <ul class="ul-wrap fs42">
-                <li class="item">
-                    More than <span class="fs64 color-blue">500</span> shoe <br/> companies were selected
-                </li>
-                <li class="item">
-                    <span class="fs64 color-yellow">500-800</span> pairs of premium shoes
-                </li>
-                <li class="item">
-                    <span class="fs64 color-blue">24</span> hours customer service
-                </li>
-            </ul>
+    <!-- 含手机的 banner 行 -->
+    <div class="banner_03">
+        <div class="w1200">
+            <h1 class="banner-title">Shoes Purchasing Online</h1>
+            <div class="banner-sub-title fs28 tc">Get your choosing shoes from our online shoes shop</div>
+            <div class="flexible flex-between">
+                <ul class="ul-wrap fs42">
+                    <li class="item">
+                        More than <span class="fs64 color-blue">500</span> shoe <br/> companies were selected
+                    </li>
+                    <li class="item">
+                        <span class="fs64 color-yellow">500-800</span> pairs of premium shoes
+                    </li>
+                    <li class="item">
+                        <span class="fs64 color-blue">24</span> hours customer service
+                    </li>
+                </ul>
 
-            <img src="./images/phone.png" alt="" class="phone-pic">
-        </div>
-        <div class="tc mt20">
-            <a hrefs="https://www.jsform.com/web/formview/5b87847b75a03c126de93706" target="_blank"
-               class="btn-normal-red following">
-                Get Free Sample Now
-            </a>
-        </div>
-    </div>
-</div>
-
-<!-- 含背景logo的 banner 行 -->
-<div class="banner_04">
-    <div class="w1200 por">
-        <img src="./images/logo.png" alt="" class="bg-logo">
-        <div class="flexible flex-start flex-between">
-            <div class="pos-left">
-                <h1 class="banner-title tl">About New Union</h1>
-                <div class="banner-sub-title fs28 tl">Shoe industry chain e-commerce platform</div>
-                <div class="flexible flex-between">
-                    <img src="./images/company_01.jpg" class="company-pic-item" alt="company's img_01">
-                    <img src="./images/company_02.jpg" class="company-pic-item" alt="company's img_02">
-                </div>
-                <a hrefs="https://www.jsform.com/web/formview/5b87847b75a03c126de93706" class="btn-normal-red following"
-                   target="_blank">
-                    Request Now
+                <img src="./images/phone.png" alt="" class="phone-pic">
+            </div>
+            <div class="tc mt20">
+                <a @click="jumpStatistics('https://www.shoestp.com/')" class="btn-normal-red">
+                    Browse The Mall
                 </a>
             </div>
-
-            <div class="pos-right">
-                <div class="right-title fs38">Company Profile</div>
-                <div class="fs20">Established in 2015, Wenzhou New Union Industrial Co., Ltd. is located in Wenzhou,
-                    which is famous for its “China Shoes Capital”. In Wenzhou, a city with a long history of footwear
-                    development, a number of outstanding shoe-making enterprises have been born. New Union Industrial
-                    has become the world's first shoe industry chain integration service platform through its unique
-                    “B2B2C” new business model.
-                </div>
-                <div class="flexible flex-between">
-                    <img src="./images/company_03.jpg" class="company-pic-item" alt="company's img_03">
-                    <img src="./images/company_04.jpg" class="company-pic-item" alt="company's img_04">
-                </div>
-            </div>
         </div>
     </div>
-</div>
 
-<!-- 含4个重点的 banner 行 -->
-<div class="banner_05">
-    <div class="w1200">
-        <h1 class="banner-title">
-            Get Your Project
-            <br>
-            Started <span class="color-red">Faster</span> With New Union
-        </h1>
-
-        <div class="bg por">
+    <!-- 含背景logo的 banner 行 -->
+    <div class="banner_04">
+        <div class="w1200 por">
+            <img src="./images/logo.png" alt="" class="bg-logo">
             <div class="flexible flex-start flex-between">
                 <div class="pos-left">
-                    <div class="left-item">
-                        <div class="flexible flex-between">
-                            <h2 class="blue-title fs36">CONSULTATION</h2>
-                            <div class="icon-wrap icon-chart">
-                                <img class="icon" src="./images/icon-chart.png" alt="icon-chart">
-                            </div>
-                        </div>
-
-                        <div class="sub-title fs22">
-                            Once we know your goals, we will set up a step-by-step production process together with you
-                            that ensures you get the best deal.
-                        </div>
-                        <ul class="ul-wrap fs24">
-                            <li class="item">
-                                24-hour hotline service;
-                            </li>
-                            <li class="item">
-                                Professional advice about customization service to ensure you get the best shoes
-                            </li>
-                        </ul>
+                    <h1 class="banner-title tl">About New Union</h1>
+                    <div class="banner-sub-title fs28 tl">Shoe industry chain e-commerce platform</div>
+                    <div class="flexible flex-between">
+                        <img src="./images/company_01.jpg" class="company-pic-item" alt="company's img_01">
+                        <img src="./images/company_02.jpg" class="company-pic-item" alt="company's img_02">
                     </div>
-
-                    <div class="left-item">
-                        <div class="flexible flex-between">
-                            <h2 class="blue-title fs36">MANUFACTURING</h2>
-                            <div class="icon-wrap icon-menu">
-                                <img class="icon" src="./images/icon-menu.png" alt="icon-menu">
-                            </div>
-                        </div>
-
-                        <div class="sub-title fs22">
-                            Throughout the production process, managers in charge of cutting, stitching and lasting
-                            check the quality of shoes constantly. We are not satisfied unless every pair is perfect. 
-                        </div>
-                        <ul class="ul-wrap fs24">
-                            <li class="item">
-                                Conduct chemical test according to your requirements;
-                            </li>
-                            <li class="item">
-                                Offer lower price to ensure the maximum profits for your bussiness.
-                            </li>
-                        </ul>
+                    <div @click="getGift" class="btn-normal-red">
+                        Request Now
                     </div>
                 </div>
 
                 <div class="pos-right">
-                    <div class="right-item">
-                        <div class="flexible flex-between por">
-                            <div class="icon-wrap icon-safe">
-                                <img class="icon" src="./images/icon-safe.png" alt="icon-safe">
-                            </div>
-                            <h2 class="blue-title fs36">QUALITY CONTROL</h2>
-                        </div>
-                        <div class="sub-title fs22">
-                            Shoes' quality is the soul for New Union, we have very strong design and manufacturing team,
-                            as well as having strict and effective quality control policy on each stage.
-                        </div>
-                        <ul class="ul-wrap fs24">
-                            <li class="item">
-                                Experienced quality inspector will ensure your shoes' quality;
-                            </li>
-                            <li class="item">
-                                Strict quality control policy;
-                            </li>
-                            <li class="item">
-                                Products meet the demands of various chemical and physical testing in main markets.
-                            </li>
-                        </ul>
+                    <div class="right-title fs38">Company Profile</div>
+                    <div class="fs20">Established in 2015, Wenzhou New Union Industrial Co., Ltd. is located in Wenzhou,
+                        which is famous for its “China Shoes Capital”. In Wenzhou, a city with a long history of
+                        footwear development, a number of outstanding shoe-making enterprises have been born. New Union
+                        Industrial has become the world's first shoe industry chain integration service platform through
+                        its unique “B2B2C” new business model.
                     </div>
-
-                    <div class="right-item">
-                        <div class="flexible flex-between por">
-                            <div class="icon-wrap icon-design">
-                                <img class="icon" src="./images/icon-design.png" alt="icon-design">
-                            </div>
-                            <h2 class="blue-title fs36">DESIGN</h2>
-                        </div>
-                        <div class="sub-title fs22">
-                            We have experienced designers who can design more than 2，000 new shoe models every year. Our
-                            designers consider themselves footwear fashion artists.
-                        </div>
-                        <ul class="ul-wrap fs24">
-                            <li class="item">
-                                Professional customization service to ensure you get awesome shoes ;
-                            </li>
-                            <li class="item">
-                                experienced designers will give you more practical and distinguished suggestions;
-                            </li>
-                        </ul>
+                    <div class="flexible flex-between">
+                        <img src="./images/company_03.jpg" class="company-pic-item" alt="company's img_03">
+                        <img src="./images/company_04.jpg" class="company-pic-item" alt="company's img_04">
                     </div>
                 </div>
             </div>
-            <a hrefs="https://www.shoestp.com/home/usr_UsrPurchase_sign" target="_blank" class="btn-normal-red following">
-                Register Now
-            </a>
         </div>
     </div>
-</div>
 
-<!-- 工厂实拍的 banner 行  -->
-<div class="banner_06">
-    <div class="w1200">
-        <h1 class="banner-title">Suppliers' Factory Show</h1>
-    </div>
-    <div class="company-pics-wrap flexible flex-between">
-        <img src="./images/work-shop_01.jpg" alt="work shop's show" class="pic-item">
-        <img src="./images/work-shop_02.jpg" alt="work shop's show" class="pic-item">
-        <img src="./images/work-shop_03.jpg" alt="work shop's show" class="pic-item">
-        <img src="./images/work-shop_04.jpg" alt="work shop's show" class="pic-item">
-    </div>
-    <div class="tc">
-        <a hrefs="https://www.jsform.com/web/formview/5b87847b75a03c126de93706" target="_blank" class="btn-normal-red following">
-            Get Free Sample Now
-        </a>
-    </div>
-</div>
+    <!-- 含4个重点的 banner 行 -->
+    <div class="banner_05">
+        <div class="w1200">
+            <h1 class="banner-title">
+                Get Your Project
+                <br>
+                Started <span class="color-red">Faster</span> With New Union
+            </h1>
 
-<!-- 展示厅实拍的 banner 行  -->
-<div class="banner_07 por ">
-    <img src="./images/show-room.jpg" alt="show's room" class="show-room-pic">
-    <div class="w1200 flexible flex-end">
+            <div class="bg por">
+                <div class="flexible flex-start flex-between">
+                    <div class="pos-left">
+                        <div class="left-item">
+                            <div class="flexible flex-between">
+                                <h2 class="blue-title fs36">CONSULTATION</h2>
+                                <div class="icon-wrap icon-chart">
+                                    <img class="icon" src="./images/icon-chart.png" alt="icon-chart">
+                                </div>
+                            </div>
 
-        <div class="right-content-wrap">
-            <div class="right-title fs50">Romanian Showroom</div>
-            <ul class="ul-wrap fs32">
-                <li class="item">
-                    Experiencing hundreds of styles of shoes locally
-                </li>
-                <li class="item">
-                    Factory direct with reliable platform
-                </li>
-                <li class="item">
-                    Professional advice about customization
-                </li>
-            </ul>
-            <a hrefs="https://www.jsform.com/web/formview/5b87847b75a03c126de93706" target="_blank"
-               class="btn-normal-red following">
-                Reserve Your Seat
-            </a>
+                            <div class="sub-title fs22">
+                                Once we know your goals, we will set up a step-by-step production process together with
+                                you that ensures you get the best deal.
+                            </div>
+                            <ul class="ul-wrap fs24">
+                                <li class="item">
+                                    24-hour hotline service;
+                                </li>
+                                <li class="item">
+                                    Professional advice about customization service to ensure you get the best shoes
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="left-item">
+                            <div class="flexible flex-between">
+                                <h2 class="blue-title fs36">MANUFACTURING</h2>
+                                <div class="icon-wrap icon-menu">
+                                    <img class="icon" src="./images/icon-menu.png" alt="icon-menu">
+                                </div>
+                            </div>
+
+                            <div class="sub-title fs22">
+                                Throughout the production process, managers in charge of cutting, stitching and lasting
+                                check the quality of shoes constantly. We are not satisfied unless every pair is
+                                perfect. 
+                            </div>
+                            <ul class="ul-wrap fs24">
+                                <li class="item">
+                                    Conduct chemical test according to your requirements;
+                                </li>
+                                <li class="item">
+                                    Offer lower price to ensure the maximum profits for your bussiness.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="pos-right">
+                        <div class="right-item">
+                            <div class="flexible flex-between por">
+                                <div class="icon-wrap icon-safe">
+                                    <img class="icon" src="./images/icon-safe.png" alt="icon-safe">
+                                </div>
+                                <h2 class="blue-title fs36">QUALITY CONTROL</h2>
+                            </div>
+                            <div class="sub-title fs22">
+                                Shoes' quality is the soul for New Union, we have very strong design and manufacturing
+                                team, as well as having strict and effective quality control policy on each stage.
+                            </div>
+                            <ul class="ul-wrap fs24">
+                                <li class="item">
+                                    Experienced quality inspector will ensure your shoes' quality;
+                                </li>
+                                <li class="item">
+                                    Strict quality control policy;
+                                </li>
+                                <li class="item">
+                                    Products meet the demands of various chemical and physical testing in main markets.
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="right-item">
+                            <div class="flexible flex-between por">
+                                <div class="icon-wrap icon-design">
+                                    <img class="icon" src="./images/icon-design.png" alt="icon-design">
+                                </div>
+                                <h2 class="blue-title fs36">DESIGN</h2>
+                            </div>
+                            <div class="sub-title fs22">
+                                We have experienced designers who can design more than 2，000 new shoe models every year.
+                                Our designers consider themselves footwear fashion artists.
+                            </div>
+                            <ul class="ul-wrap fs24">
+                                <li class="item">
+                                    Professional customization service to ensure you get awesome shoes ;
+                                </li>
+                                <li class="item">
+                                    experienced designers will give you more practical and distinguished suggestions;
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- <a href="https://www.shoestp.com/home/usr_UsrPurchase_sign" target="_blank" class="btn-normal-red">
+                    Register Now
+                </a> -->
+            </div>
         </div>
     </div>
-</div>
 
-<!-- 地图 -->
-<div class="banner_08" style="">
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5693.8067835435595!2d26.173309385776506!3d44.47615296998695!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40b1f9ac606033e3%3A0x7d391e85ce7a445b!2z5Lit5Zu957qi6b6Z5biC5Zy6!5e0!3m2!1szh-CN!2s!4v1541639443813"
-            class="map-wrap" frameborder="0" style="border:0" allowfullscreen></iframe>
-</div>
+    <!-- 工厂实拍的 banner 行  -->
+    <div class="banner_06">
+        <div class="w1200">
+            <h1 class="banner-title">Suppliers' Factory Show</h1>
+        </div>
+        <div class="company-pics-wrap flexible flex-between">
+            <img src="./images/work-shop_01.jpg" alt="work shop's show" class="pic-item">
+            <img src="./images/work-shop_02.jpg" alt="work shop's show" class="pic-item">
+            <img src="./images/work-shop_03.jpg" alt="work shop's show" class="pic-item">
+            <img src="./images/work-shop_04.jpg" alt="work shop's show" class="pic-item">
+        </div>
+        <div class="tc">
+            <div @click="getGift" class="btn-normal-red">
+                Get Free Sample Now
+            </div>
+        </div>
+    </div>
 
-<!-- 地址详情 -->
-<div class="banner_09 fs30">
-    <div class="w1200">
-        <h1 class="banner_09-title fs52">
-            ADDRESS / CONTACT
-            <br>
-            FOR THE COMERCE FAIR
-        </h1>
-        <div class="flexible flex-between flex-start">
-            <ul class="pos-left">
-                <li class="item">
-                    <span class="title">Contact：</span>
-                    <span>Romanesc</span>
-                </li>
-                <li class="item">
-                    <span class="title">Webite：</span>
-                    <span>https://www.shoestp.com/m/romania/</span>
-                </li>
-                <li class="item">
-                    <span class="title">Telephone：</span>
-                    <span>0762 900 529</span>
-                </li>
-                <li class="item">
-                    <span class="title">Whatsapp：</span>
-                    <span>+40 762 900 529</span>
-                </li>
-            </ul>
+    <!-- 展示厅实拍的 banner 行  -->
+    <div class="banner_07 por ">
+        <img src="./images/show-room.jpg" alt="show's room" class="show-room-pic">
+        <div class="w1200 flexible flex-end">
 
-            <ul class="pos-right">
-                <li class="item">
-                    <span class="title">Exhibition Address:</span>
-                    <br>
-                    <span>Universal Dragon Red Shop
+            <div class="right-content-wrap">
+                <div class="right-title fs50">Romanian Showroom</div>
+                <ul class="ul-wrap fs32">
+                    <li class="item">
+                        Experiencing hundreds of styles of shoes locally
+                    </li>
+                    <li class="item">
+                        Factory direct with reliable platform
+                    </li>
+                    <li class="item">
+                        Professional advice about customization
+                    </li>
+                </ul>
+                <div @click="getGift" class="btn-normal-red">
+                    Reserve Your Seat
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 地图 -->
+    <div class="banner_08" style="">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5693.8067835435595!2d26.173309385776506!3d44.47615296998695!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40b1f9ac606033e3%3A0x7d391e85ce7a445b!2z5Lit5Zu957qi6b6Z5biC5Zy6!5e0!3m2!1szh-CN!2s!4v1541639443813"
+                class="map-wrap" frameborder="0" style="border:0" allowfullscreen></iframe>
+    </div>
+
+    <!-- 地址详情 -->
+    <div class="banner_09 fs30">
+        <div class="w1200">
+            <h1 class="banner_09-title fs52">
+                ADDRESS / CONTACT
+                <br>
+                FOR THE COMERCE FAIR
+            </h1>
+            <div class="flexible flex-between flex-start">
+                <ul class="pos-left">
+                    <li class="item">
+                        <span class="title">Contact：</span>
+                        <span>Romanesc</span>
+                    </li>
+                    <li class="item">
+                        <span class="title">Webite：</span>
+                        <span>https://www.shoestp.com/m/romania/</span>
+                    </li>
+                    <li class="item">
+                        <span class="title">Telephone：</span>
+                        <span>0762 900 529</span>
+                    </li>
+                    <li class="item">
+                        <span class="title">Whatsapp：</span>
+                        <span>+40 762 900 529</span>
+                    </li>
+                </ul>
+
+                <ul class="pos-right">
+                    <li class="item">
+                        <span class="title">Exhibition Address:</span>
+                        <br>
+                        <span>Universal Dragon Red Shop
 						<br>
 						Strada Drumul Garii 12, Bucharest
 						<br>
 						077190</span>
+                    </li>
+                </ul>
+            </div>
+
+            <ul class="pos-bottom">
+                <li class="item flexible flex-start">
+                    <span class="title">E-mail：</span>
+                    <span>544414672@qq.com (în limba română service)
+						<br>
+						marketing@shoestp.com (English service)</span>
                 </li>
             </ul>
         </div>
-
-        <ul class="pos-bottom">
-            <li class="item flexible flex-start">
-                <span class="title">E-mail：</span>
-                <span>544414672@qq.com (în limba română service)
-						<br>
-						marketing@shoestp.com (English service)</span>
-            </li>
-        </ul>
     </div>
-</div>
 
-<div class="banner_10">
-    <div class="w1200 flexible flex-between">
-        <ul class="ul-wrap fs34">
-            <li class="item">
-                More Choice of Shoes Styles
-            </li>
-            <li class="item">
-                Local Touring Experience of Shoes Fashion Show
-            </li>
-            <li class="item">
-                Factory Direct with Reliable Native Service
-            </li>
-        </ul>
+    <div class="banner_10">
+        <div class="w1200 flexible flex-between">
+            <ul class="ul-wrap fs34">
+                <li class="item">
+                    More Choice of Shoes Styles
+                </li>
+                <li class="item">
+                    Local Touring Experience of Shoes Fashion Show
+                </li>
+                <li class="item">
+                    Factory Direct with Reliable Native Service
+                </li>
+            </ul>
 
-        <div class="form-box flexible flex-column flex-center">
-            <h2 class="form-title fs50">
-                Your Business
-                <br>
-                Needs Are Unique?
-            </h2>
+            <div class="form-box flexible flex-column flex-center">
+                <h2 class="form-title fs50">
+                    Your Business
+                    <br>
+                    Needs Are Unique?
+                </h2>
 
-            <div class="form-content fs24">
-                Let us help you meet those needs!
-                <br>
-                Talk to us and get your free samples now.
+                <div class="form-content fs24">
+                    Let us help you meet those needs!
+                    <br>
+                    Talk to us and get your free samples now.
+                </div>
+
+                <div @click="getGift" class="btn-normal-red">
+                    Reserve Your Seat
+                </div>
             </div>
-
-            <a hrefs="https://www.jsform.com/web/formview/5b87847b75a03c126de93706" target="_blank"
-               class="btn-normal-red following">
-                Reserve Your Seat
-            </a>
         </div>
     </div>
-</div>
 
+    <!-- form弹框 -->
+    <transition name="el-fade-in-linear">
+        <div class="modal-wrap" v-show="isFormShow || isTipDialogShow" v-cloak @mousewheel.prevent>
+            <transition name="el-fade-in-linear">
+                <div class="modal-inner-box" v-show="isFormShow">
+                    <img src="./images/close-black.png" alt="button to close the form" class="btn-close"
+                         @click="isFormShow = false">
+                    <div class="form-title">
+                        2018 ROMANIAN
+                        <br>
+                        OFFLINE SHOES PURCHASING
+                    </div>
+                    <el-form ref="form" :model="form" label-width="80px" label-position="top" size="small">
+                        <el-form-item label="Contact:" class="required-label">
+                            <el-input v-model="form.name" placeholder="Please input your name"></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="Country" class="required-label">
+                            <el-select v-model="form.country">
+                                <el-option value="-1" label="Please select your country"></el-option>
+                                <el-option v-for="country in countryList" :key="country.id" :label="country.name"
+                                           :value="country.id"></el-option>
+                            </el-select>
+                        </el-form-item>
+
+                        <el-form-item label="Telephone:" class="required-label">
+                            <el-input v-model="form.tel" placeholder="Please input your telephone number."></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="Email:" class="required-label">
+                            <el-input v-model="form.email" placeholder="Please input your E-mail."></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="Inquiry:">
+                            <el-input type="textarea" v-model="form.inquiry"
+                                      placeholder="Please input enquiry information."></el-input>
+                        </el-form-item>
+
+
+                        <div class="tc">
+                            <el-button type="danger form-button" @click="formSubmit">Submit</el-button>
+                        </div>
+
+                        <div class="tips">
+                            Filling in and send the form, you will get a mysterious gift in the Romanian exhibition
+                            room!
+                            Or you can fill your needs in the remark column, our staff will contact you at the first
+                            time!
+                            Thank you for coming, we will provide the best service for you!
+                        </div>
+                    </el-form>
+                </div>
+            </transition>
+
+            <!-- 提示弹窗 -->
+            <transition name="el-fade-in-linear">
+                <div class="model-confirm" v-show="isTipDialogShow">
+                    <div class="close-wrap">
+                        <img src="./images/close-red.png" alt="close" class="close" @click="isTipDialogShow=false">
+                    </div>
+                    <div class="model-confirm-content flexible flex-center">
+                        <img src="./images/right-red.png" alt="right" class="icon">
+                        <div>
+                            Submit
+                            <br>
+                            Successfully！
+                        </div>
+                    </div>
+                    <div class="model-confirm-footer" @click="isTipDialogShow = false">
+                        Determine
+                    </div>
+                </div>
+            </transition>
+        </div>
+    </transition>
+
+
+</div>
 <script>
     new Vue({
         el: '#app',
         data: {
+            isFormShow: false, //是否显示弹窗
+            isTipDialogShow: false, //是否显示提示弹窗
+            countryList: [], //国家列表
+            form: {
+                country: "-1"
+            }, //form提交的内容
             productCarousel: [
                 [{
                     // url:'https://www.shoestp.com/home/pdt_PdtProduct?cated=373',
@@ -485,6 +557,70 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                     content: 'Dynamic,Comfortable'
                 }]
             ]
+        },
+
+        mounted() {
+            axios.get('/home/plt_PltCountry_list?lang=en')
+                .then((res) => {
+                    if (res.data.ret == 1) {
+                        this.countryList = res.data.result
+                    }
+                })
+                .catch(function (err) {
+                    console.log("err");
+                });
+        },
+
+        methods: {
+            // 点击获取礼物 - 弹出form框
+            getGift() {
+                this.isFormShow = true;
+            },
+            // 跳转统计
+            jumpStatistics(url) {
+                // 统计代码
+                window.location = url;
+            },
+            formSubmit() {
+                console.log(this.form.name)
+                if (!this.form.name || this.form.name == "") {
+                    this.$message.error('Names must not be empty.');
+                    return;
+                } else if (!this.form.country || this.form.country == -1) {
+                    this.$message.error('Please choose your country');
+                    return;
+                } else if (!this.form.tel || this.form.tel == "") {
+                    this.$message.error('Please input your telephone number.');
+                    return;
+                } else if (!(/^\d{1,}$/.test(this.form.tel))) {
+                    this.$message.error('Wrong telephone number format');
+                    return;
+                } else if (!this.form.email || this.form.email == "") {
+                    this.$message.error('Please input your mailbox.');
+                    return;
+                } else if (!(/[\w]+(\.[\w]+)*@[\w]+(\.[\w])+/.test(this.form.email))) {
+                    this.$message.error('Error in mailbox format');
+                    return;
+                }
+                axios.post('/home/ActivitySignIn_ActivitySignIn_signIn', Qs.stringify({
+                    name: this.form.name,
+                    country: this.form.country,
+                    tel: this.form.tel,
+                    email: this.form.email,
+                    inquiry: this.form.inquiry
+                }, {allowDots: true}))
+                    .then((res) => {
+                        gtag_report_conversion()
+                        if (res.data.ret == 1) {
+                            this.form = {};
+                            this.isFormShow = false;
+                            this.isTipDialogShow = true;
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            }
         }
     })
 </script>
@@ -501,7 +637,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 </script>
 
 <!-- 代码追踪 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-113892728-1"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
 <script>
     window.dataLayer = window.dataLayer || [];
 
@@ -511,9 +647,11 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 
     gtag('js', new Date());
 
-    gtag('config', 'UA-113892728-1');
+    gtag('config', 'AW-783435725');
 </script>
 
+<!-- Event snippet for 提交表单 conversion page
+In your html page, add the snippet and call gtag_report_conversion when someone clicks on the chosen link or button. -->
 <script>
     function gtag_report_conversion(url) {
         var callback = function () {
@@ -527,12 +665,8 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
         });
         return false;
     }
-    $(document).ready(function () {
-            $("a.following").on("click", function () {
-                gtag_report_conversion($(this).attr('hrefs'))
-            })
-    })
 </script>
+
 
 <!--Start of Tawk.to Script-->
 <script type="text/javascript">

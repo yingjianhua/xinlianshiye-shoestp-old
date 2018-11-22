@@ -21,7 +21,7 @@ var lang_obj={
      delete成功:"删除成功",
      idDefaultAddress:"此地址是默认地址。",
      SetSuccessfully:"成功设置！",
-     
+
      createInfo:"感谢您的订单号{0}, oid {1},和{2},域{3},。",
      payeename:"收款人姓名",
      reaccout:"应收账款账户",
@@ -59,7 +59,7 @@ var lang_obj={
      empty:"您的购物车是空的。",
      Less:"所选数量小于最小数量。",
      ChoiceActivities:"选择活动",
-     
+
      latest:"最新",
      NoActivity:"没有活动",
      dealsEnd:"并且交易结束。",
@@ -158,7 +158,7 @@ var lang_obj={
      CompanyAddress:"公司所在地",
      CompanyDetailedAddress:"公司详细地址",
      RMB:"000元（人民币）",
-     
+
      PleaseCreditCode:"请输入由18位数字或字母组成的统一社会信用代码。",
      ValidityPeriodOfBusinessLicense:"营业执照的有效期",
      Long_term:"长期",
@@ -466,9 +466,9 @@ var lang_obj={
 
 
 
-     
 
-     
+
+
      user:{
              'firstname':"名称",
              'lastname':"姓",
@@ -566,7 +566,7 @@ var lang_obj={
              'whyAsk':"问题？",
 
      },
-     
+
      mobile:{
              'your_bill_addr':"您的帐单邮寄地址",
              'your_ship_addr':"您的送货地址",
@@ -625,11 +625,11 @@ var lang_obj={
              'refine':"滤波器",
 
      },
-     
+
      country:{
              'name':"状态",
      },
-     
+
      cart:{
              'paynow':"立即付款",
              'address':"送货地址",
@@ -653,7 +653,7 @@ var lang_obj={
              'shipmethod':"请选择您的送货方式",
              'subtotal':"小计",
              'nextPay':"继续结帐",
-             'cancel':"取消",	
+             'cancel':"取消",
              'continue':"继续购物",
              'items':"项目",
              'price':"价格",
@@ -663,9 +663,9 @@ var lang_obj={
              'summary':"摘要",
              'status':"状态",
              'subtotal':"小计",
-     
+
      },
-     
+
      groupCart:{
              'General_Goods':"一般商品",
              'Joint_Purchase_Of_Goods':"联合购买商品",
@@ -677,14 +677,14 @@ var lang_obj={
              'Less_Than_Minimum':"选择购买少于最小数量",
 
      },
-     
+
      spec:{
              'product':"产品",
              'size':"产品尺寸",
              'color':"颜色",
 
      },
-     
+
      order_line:{
              'subtotal':"总计",
              'qty':"项目数量",
@@ -692,7 +692,7 @@ var lang_obj={
              'qty':"数量",
              'subtotal':"总",
      },
-     
+
      products:{
              'position':"你的位置",
              'customerReviews':"客户评价",
@@ -716,15 +716,15 @@ var lang_obj={
              'Most_Popular':"最受欢迎",
              'sell_Like_Hot_Cakes':"像热蛋糕一样卖",
 
-     
+
      },
-     
+
      product:{
      product_type:{
              '2':"联合采购产品",
              '1':"普通产品",
      },
-     
+
      min_oq:"订阅",
      size_attr:"大小",
      size_attr:"大小",
@@ -736,9 +736,9 @@ var lang_obj={
      size_attr:"大小",
      is_free_shipping:"免运费",
 
-     
+
      },
-     
+
 
     'my-inquiry-publish':{
              'About_Publishing0':"在这里您可以询问价格和交货<br>我们网站上的产品截止日期。 此外,<br>您可以发布购买要约或自定义产品。 <br>收到您的请求后,我们将与您合作,为合适的鞋厂。",
@@ -761,17 +761,17 @@ var lang_obj={
              'Input_Quantity':"输入数量",
 
      },
-     
+
      comment:{
              'product':"产品",
-     
+
      },
-     
+
      global:{
              'other':"其他",
      n_y:{
           '1':"是",
-          
+
      },
              'default':"默认",
              'Your_Location':"您的位置",
@@ -902,27 +902,27 @@ var lang_obj={
              'Date':"日期",
              'Basic_Information':"基本信息",
 
-     
+
      },
-     
+
      messages:{
              'send_time':"发送时间",
              'read_time':"阅读时间",
              'reply_time':"恢复时间",
              'reply':"回复",
-     
+
      },
-     
+
      order:{
              'supplier':"供应商",
              'address':"地址",
              'postalcode':"邮编/邮政编码",
              'phone':"电话号码",
              'delivery':"付款方式",
-     
+
 
      },
-     
+
      'my-order':{
              'All':"所有",
              'waiting_For_Payment':"等待付款",
@@ -933,20 +933,20 @@ var lang_obj={
              'Carry_Out':"执行",
              'See_Details':"查看详情",
      },
-     
+
      group_order:{
              'activity':"联合采购",
      },
-     
+
      subscribe:{
              'email':"邮箱",
      },
-     
+
      consult:{
      email:"电子信箱",
      quantity:"数量",
      },
-     
+
      supplier:{
              'businesstyp':"商业模式",
              'annualsales':"年销售额",
@@ -992,7 +992,7 @@ var lang_obj={
      idcardbackphoto:"身份证的反面",
 
      },
-     
+
      'supplier-entry':{
              title:"资格审查",
              Apply_For_A_Store:"申请商店",
@@ -1046,35 +1046,35 @@ var lang_obj={
              'If_You_Have_Any_Questions':"如果您有任何疑问,请联系客服",
 
      },
-     
+
      attr:{
              'category':"类别",
-     
+
      },
-     
+
      account:{
              'password':"密码",
 
      },
-     
+
      purchase_line:{
      addrsstype:{
              '1':"账单地址",
              '0':"收货地址",
      },
-     
+
      isdefault:{
              'name':"默认地址",
      },
      address:"地址行",
 
-     
+
      },
-     
+
      group_purchase:{
              'status.2':"正在进行中",
      },
-     
+
      verification:{
              'firstname':"请输入你的名字。",
              'lastname':"请输入您的姓氏。",
@@ -1084,7 +1084,7 @@ var lang_obj={
              'phone':"请输入您的电话号码。",
 
      },
-     
+
      review:{
              'state':"州/省/地区",
              'f_name':"发件人姓名",
@@ -1096,7 +1096,7 @@ var lang_obj={
              'state':"省/州",
 
      },
-     
+
      orders:{
      status:{
              '5':"完成",
@@ -1109,28 +1109,28 @@ var lang_obj={
              '6':"取消订单",
              '7':"删除",
      },
-     
+
 
      },
-     
+
      freight_line:{
              'brief':"档案",
      },
-     
+
      Magazine:{
              'list':"杂志列表",
              'Magazine_Ranking':"杂志排名",
 
      },
-     
+
      purchase:{
              'company':"公司名称",
              'telphone':"手机",
              'email':"电子邮件",
              'country':"国家",
-     
+
      },
-     
+
      groupPurchase:{
              'Activity_Selection':"活动选择",
              'Processing':"正在进行中",
@@ -1138,25 +1138,25 @@ var lang_obj={
              'Other':"其他",
              'No_Activity':"没有活动",
      },
-     
+
      article:{
              'article_category':"分类",
      },
-     
+
      pay:{
      mode:{
              '5':"离线付款",
              '10':"TT付款",
      },
-     
+
      },
-     
+
      'lib-user-menu':{
              'BasicInformation':"基本信息",
              'Inquiry_Management':"查询管理",
 
      },
-     
+
      'new-foot':{
              'Subscribe_To_Our_Newsletter':"订阅我们的时事通讯",
              'Get_Information_Of_Our_Latest_Products_And_Promotions':"获取我们最新产品和促销信息",
@@ -1164,18 +1164,18 @@ var lang_obj={
              'Share_It':"分享它",
 
      },
-     
+
      'new-header':{
              'Purchasing_Center':"采购中心",
              'New_Arrival':"新到货",
              'Romania':"罗马尼亚",
 
      },
-     
+
      'shop-header':{
              'Product_Center':"产品中心",
      },
-     
+
     'web-top':{
              'LogIn':"登录",
              'Or':"或",
@@ -1184,11 +1184,11 @@ var lang_obj={
              'My_Shopping_Cart':"我的购物车",
 
      },
-     
+
      404:{
              'Sorry':"对不起！ 您请求的页面无法找到...",
      },
-     
+
      account_setting:{
              'Gender':"性别",
              'Men':"男",
@@ -1198,9 +1198,9 @@ var lang_obj={
              'New_Email_Address':"新电子邮件地址",
              'Change_Password':"更改密码",
 
-     
+
      },
-     
+
      address:{
              'Management_Address_Book':"管理地址簿",
              'Your_Billing_Address':"您的帐单邮寄地址",
@@ -1220,7 +1220,7 @@ var lang_obj={
              'Do_You_Want_To_Set_It_As_The_Default_Address':"您要将其设置为默认地址吗？",
              'Set_Successfully':"设置成功！",
      },
-     
+
      cart3:{
              'Payment':"付款",
              'Thank_Shopping':"感谢您与我们一起购物！ 您的订单已收到！",
@@ -1237,12 +1237,12 @@ var lang_obj={
              'Waiting_For_Confirmation':"等待确认",
 
      },
-     
+
      cartcheckout:{
              'billing_Address':"帐单邮寄地址",
-     
+
      },
-     
+
      comment_write:{
              'Product_Review':"产品评论",
              'Rating':"评级",
@@ -1257,11 +1257,11 @@ var lang_obj={
              'Comment':"评论",
 
      },
-     
+
      forgetPWD:{
              'fill_In_Completely':"要重设密码,请填写以上内容",
      },
-     
+
      'goods-info':{
              'Share_To':"分享到",
              'Comments':"基于<span> {0}, </ span>的评论",
@@ -1270,15 +1270,15 @@ var lang_obj={
              'Useful':"有用的",
              'Share_To_Facebook':"分享到Facebook",
              'Inventory':"库存",
-     
+
      },
-     
+
     'my-inquiry-view':{
              'View_Inquiry':"查看查询",
              'Article_ID':"文章ID",
 
      },
-     
+
      'order-detail':{
              'Reason_For_Cancellation':"取消原因",
              'Ship_To':"运送到",
@@ -1288,28 +1288,28 @@ var lang_obj={
              'Delivery_Methods':"交付方式",
 
      },
-     
+
      'public-inquiry-list':{
              'Ip_Address_Source':"Ip address source",
-     
+
      },
-     
+
      recyclebin:{
              'Empty_The_Trash':"清空垃圾桶",
              'Determine_Empty':"您确定要清空垃圾箱中的所有物品吗？",
      },
-     
+
      sendEmail:{
              'Please_Enter_Your_Email_Address':"请输入您的电子邮件地址",
      },
-     
+
      sendsuccess:{
              'Description':"我们已向您提供的地址发送了一封电子邮件。 请按照此电子邮件中的说明重置密码。",
              'Not_Received':"还没收到电子邮件吗？",
              'Check':"检查批量和垃圾邮件文件夹。 如果您仍然找不到密码重置电子邮件,请致电我们的客户服务团队。 谢谢！",
 
      },
-     
+
      'shop-company':{
              'Business_Type':"商业类型",
              'Main_Products':"主要产品",
@@ -1335,7 +1335,7 @@ var lang_obj={
              'Supplier_Is_A_Member':"供应商是会员,会员显示年数和徽标",
 
      },
-     
+
      'shop-contactUs':{
              'Contact_Information':"联系信息",
              'Department':"部门",
@@ -1344,22 +1344,22 @@ var lang_obj={
              'About':"关于Shoestp com的网站",
              'Log_In_To_View_All_Information':"<a href='{0},'>登录</a>查看所有信息",
 
-     
+
      },
-     
+
      'shop-index':{
              'Limited_Liability_Company':"有限责任公司",
              'Sales_Area':"销售区域",
 
      },
-     
+
      'shop-productCenter':{
              'Sort_By':"排序方式",
              'Sales':"销售",
              'Classification':"分类",
              'All_Categories':"所有类别",
      },
-     
+
     ' sign-up':{
              'Sign_Up_For_A_New_Account':"注册一个新帐户",
              'The_Email_Address_You_Entered_Is_Incorrect':"您输入的电子邮件地址不正确。",
@@ -1371,7 +1371,7 @@ var lang_obj={
              'Create_My_Account':"创建我的帐户",
 
      },
-     
+
      groupPurchaseGoodsInfo:{
              'End_Of_Sale':"销售终止",
              'Only_Left_Day':"仅离开{0},天",
@@ -1379,9 +1379,9 @@ var lang_obj={
              'Delivery_Information':"交货信息：成功购买后,预计20天内发货。",
              'After_Login':"会员登录后可以进行产品评论,请<a href='{0},'>点击这里</a>登录",
 
-     
+
      },
-     
+
      home:{
              'Womens':"女子区",
              'Womens_Sandals':"女式凉鞋",
@@ -1399,9 +1399,9 @@ var lang_obj={
              'New_Products':"新产品",
              'Brand_Show':"品牌展示",
 
-     
+
      },
-     
+
      'my-favorite':{
              'No_Items':"您的收藏夹中没有任何项目,<a href='{0},'>让我们现在去收集</a>",
              'Empty':"空",
@@ -1413,7 +1413,7 @@ var lang_obj={
              'Already_The_Last_Page':"已经是最后一页",
 
      },
-     
+
      'my-Inbox':{
              'Inbox':"收件箱",
              'Outbox':"发件箱",
@@ -1426,14 +1426,14 @@ var lang_obj={
              'Reply':"回复",
 
      },
-     
+
      'my-inquiry-dialog':{
              'Contact Supplier':"联系供应商",
              'Send':"发",
              'No_Consultation_With_The_Supplier':"不与供应商协商",
 
      },
-     
+
      'my-inquiry-list':{
              'Query_List':"查询列表",
              'Publish_Query':"发布查询",
@@ -1445,7 +1445,7 @@ var lang_obj={
              'Delete_All_Queries':"您确定要删除所有查询吗？",
 
      },
-     
+
      'user-index':{
              'Welcome':"欢迎",
              'Welcome_To_Your_Account_Dashboard':"欢迎使用您的帐户信息中心。 选择以下更新您的个人详细信息,通信首选项并查看您的订单历史记录",
@@ -1455,9 +1455,9 @@ var lang_obj={
              'My_Shipping_Address':"我的送货地址",
              'Service_Help':"服务帮助",
 
-     
+
      },
-     
+
      moblie:{
              'GuangZhou':"广州",
              'Hungary':"匈牙利",
@@ -1465,16 +1465,16 @@ var lang_obj={
              'Chile':"智利",
              'Spain':"西班牙",
 
-     
+
      },
-     
-     
 
 
-     
-     
-     
-     
-     
-     
+
+
+
+
+
+
+
+
 };

@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="https://unpkg.com/muse-ui/dist/muse-ui.css">
     <script src="https://unpkg.com/muse-ui/dist/muse-ui.js"></script>
     <link rel="stylesheet" href="css/romania-index.css">
+    <script src="js/axios.js"></script>
+    <script src="js/qs.js"></script>
 </head>
 <script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
 <script>
@@ -48,8 +50,8 @@
             </ul>
         </div>
         <div class="image-bottom">
-            <a class="btn following" hrefs="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">获得神秘礼品</a>
-            <a class="btn">在线采购马上开始</a>
+            <a class="btn following" href="javascript:void(0);" @click="hoodleShow = true">获得神秘礼品</a>
+            <a class="btn btn-blur" href="https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373">在线采购马上开始</a>
         </div>
     </div>
     <div class="producrt">
@@ -67,7 +69,7 @@
             </mu-carousel-item>
         </mu-carousel>
         <a class="producrt-button inline-block-h80 following"
-           hrefs="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">立即获取免费样品</a>
+           href="javascript:void(0);" @click="hoodleShow = true">立即获取免费样品</a>
     </div>
 
     <div class="rmnybottomsev">
@@ -79,7 +81,7 @@
             <p class="pur_p"><span class="dot"></span><span class="bigyellow">500-800</span> 款鞋样可选</p>
             <p class="pur_p margin_bottom_20"><span class="dot"></span><span class="bigblue">24</span> 小时客服在线</p>
             <a class="producrt-button inline-block-h80 following"
-               hrefs="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">立即获取免费样品</a>
+               href="https://www.shoestp.com/home/usr_UsrPurchase">前往商城</a>
         </div>
     </div>
     <div class="rmnybottomsix">
@@ -93,7 +95,7 @@
                 <img src="imgs/rmnyb20.png" alt="">
                 <img src="imgs/rmnyb21.png" alt="">
             </div>
-            <a class="inline-block-h80 following" hrefs="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">立即申请</a>
+            <a class="inline-block-h80 following" href="javascript:void(0);" @click="hoodleShow = true">立即申请</a>
         </div>
     </div>
     <div class="rmnybottomfiv">
@@ -158,7 +160,6 @@
                     </div>
                 </div>
             </div>
-            <a class="inline-block-h80 following" hrefs="https://www.shoestp.com/home/usr_UsrPurchase_sign">马上注册</a>
         </div>
     </div>
     <div class="rmnybottomfth">
@@ -177,7 +178,7 @@
                 <span class="graycircle"></span>
                 <p>定制化服务专业建议</p>
             </div>
-            <a class="inline-block-h80 following" hrefs="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">预定您的席位</a>
+            <a class="inline-block-h80 following" href="javascript:void(0);" @click="hoodleShow = true">预定您的席位</a>
         </div>
     </div>
     <div class="rmnymap">
@@ -193,7 +194,7 @@
                 <img src="imgs/rmnyb5.png" alt="">
                 <img src="imgs/rmnyb6.png" alt="">
             </div>
-            <a class="inline-block-h80 following" hrefs="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">获取免费样品</a>
+            <a class="inline-block-h80 following" href="javascript:void(0);" @click="hoodleShow = true">获取免费样品</a>
         </div>
     </div>
     <div class="rmnybottomsecond">
@@ -223,7 +224,7 @@
         <div class="rmnybfcon">
             <h2>您的业务需求<br>是独一无二的?</h2>
             <h3>让我们帮助您满足这些需求！<br>请与我们联系，立即获取免费样品。</h3>
-            <a class="inline-block-h80 following" hrefs="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">预定你的座位</a>
+            <a class="inline-block-h80 following" href="javascript:void(0);" @click="hoodleShow = true">预定你的座位</a>
         </div>
         <div class="rmnybfchoose">
             <div v-for="item,index in checkinput">
@@ -235,12 +236,84 @@
 
         </div>
     </div>
+
+    <div class="hoodle" v-show="hoodleShow">
+        <div class="hoodle_modle" @click="close"></div>
+        <div class="hoodle_form">
+            <span class="close-btn" @click="close">+</span>
+            <div class="hf-border">
+                <h2 class="hf-title">
+                    2018年 <br>罗马尼亚线下鞋类采购会
+                </h2>
+                <mu-container>
+                    <mu-form ref="form" :model="hoodleForm" class="mu-demo-form">
+                        <mu-form-item label="联系人:" help-text="" prop="name" :rules="nameRules">
+                            <mu-text-field v-model="hoodleForm.name" prop="name"></mu-text-field>
+                        </mu-form-item>
+                        <mu-form-item label="电话:" prop="tel" :rules="telRules">
+                            <mu-text-field type="number" v-model="hoodleForm.tel" prop="tel"></mu-text-field>
+                        </mu-form-item>
+                        <mu-form-item label="电子邮件:" prop="email" :rules="emailRule">
+                            <mu-text-field v-model="hoodleForm.email" prop="email"></mu-text-field>
+                        </mu-form-item>
+                        <mu-form-item prop="国家" label="Country:">
+                            <mu-select v-model="hoodleForm.country">
+                                <mu-option v-for="item,index in countrys" :key="item.id" :label="item.name"
+                                           :value="item.id"></mu-option>
+                            </mu-select>
+                        </mu-form-item>
+                        <mu-form-item prop="需求" label="Ancheta:">
+                            <mu-text-field class="text-field" v-model="hoodleForm.inquiry" multi-line :rows="3"
+                                           full-width style="height: 160px"></mu-text-field>
+                        </mu-form-item>
+                        <mu-form-item>
+                            <mu-button color="primary" @click="onSubmit">提交</mu-button>
+                        </mu-form-item>
+                    </mu-form>
+                </mu-container>
+                <div class="hf-input">
+                    <p class="hf-text">填写并发送表格，您将在罗马尼亚展览室获得一份神秘的礼物！<br>
+                        或者您可以在备注栏填写您的需求，我们的工作人员将在第一时间与您联系！<br>
+                        感谢您的光临，我们将为您 提供最好的服务！</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="successfully" v-show="successfullyShow">
+        <div class="hoodle_modle" @click="close"></div>
+        <div class="s-success">
+            <span class="red-title close-icon" @clidk="close">+</span>
+            <div class="himt">
+                <img src="imgs/true_03.png" alt="">
+                <p class="red-title himt-text">提交成功</p>
+            </div>
+            <a href="javascript: void(0);" class="btn not-btn" @click="close">确定</a>
+        </div>
+    </div>
 </div>
 
 <script>
     new Vue({
         el: '#romania',
         data: {
+            // rules
+            nameRules: [
+                {validate: (val) => !!val, message: '必须填写用户名'},
+                {validate: (val) => val.length >= 3, message: '用户名长度大于3'}
+            ],
+            telRules: [
+                {validate: (val) => !!val, message: '必须填写手机号'}
+            ],
+            emailRule: [
+                {validate: (val) => !!val, message: '必须填写邮箱'},
+                {
+                    validate: (val) => /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(val),
+                    message: '请输入正确邮箱'
+                }
+            ],
+            hoodleShow: false,
+            successfullyShow: false,
             languageShow: false,
             languageObj: null,
             carouselProducrt: [{
@@ -278,10 +351,32 @@
                     checked: true,
                     content: '厂家直销价格 本土服务体验'
                 }
-            ]
-
+            ],
+            countrys: [],
+            hoodleForm: {
+                name: '',
+                tel: '',
+                email: '',
+                country: '',
+                inquiry: ''
+            }
+        },
+        mounted() {
+            this.acquireCountry()
         },
         methods: {
+            close: function () {
+                this.hoodleShow = false;
+                this.successfullyShow = false;
+                this.$refs.form.clear();
+                this.validateForm = {
+                    name: '',
+                    tel: '',
+                    email: '',
+                    country: '',
+                    inquiry: ''
+                };
+            },
             handleLanguage: function () {
                 this.languageObj = event.target;
                 this.languageShow = !this.languageShow;
@@ -293,8 +388,57 @@
                 if (this.languageObj != event.target) {
                     this.languageShow = false;
                 }
+            },
+            gtag_report_conversion: function (url) {
+                var callback = function () {
+                    if (typeof(url) != 'undefined') {
+                        window.location = url;
+                    }
+                };
+                gtag('event', 'conversion', {
+                    'send_to': 'AW-783435725/2sU4CMb_io8BEM2PyfUC',
+                    'event_callback': callback
+                });
+                return false;
+            },
+            acquireCountry: function () {
+                //获取国家列表
+                var self = this
+                axios.get('/home/plt_PltCountry_list?lang=zh_CN').then(function (res) {
+                    console.log(res.data);
+                    self.countrys = res.data.result
+                }).catch(function (err) {
+                    console.log(err)
+                })
+            },
+            onSubmit: function () {
+                console.log(this.hoodleForm)
+                var self = this;
+                this.$refs.form.validate().then((result) => {
+                    console.log('form valid: ', result)
+                    if (result) {
+                        console.log('提交')
+                        axios.post('/home/ActivitySignIn_ActivitySignIn_signIn',
+                            Qs.stringify({
+                                name: self.hoodleForm.name,
+                                tel: self.hoodleForm.tel,
+                                email: self.hoodleForm.email,
+                                country: self.hoodleForm.country,
+                                inquiry: self.hoodleForm.inquiry
+                            })
+                        ).then(function (res) {
+                            if (res.data.ret == 1) {
+                                console.log('提交成功');
+                                self.hoodleShow = false;
+                                self.successfullyShow = true;
+                            }
+                        }).catch(function (err) {
+                            console.log(err)
+                        })
+                        self.gtag_report_conversion();
+                    }
+                });
             }
-
         }
     })
 </script>
@@ -314,9 +458,21 @@
 
     $(document).ready(function () {
         $("a.following").on("click", function () {
-            gtag_report_conversion($(this).attr('hrefs'))
+            window.location = $(this).attr('hrefs');
         })
     })
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-127715615-6"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'UA-127715615-6');
 </script>
 </body>
 </html>

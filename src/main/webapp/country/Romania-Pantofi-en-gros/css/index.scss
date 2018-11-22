@@ -1,5 +1,8 @@
 @charset 'utf-8';
 @import 'reset';
+[v-cloak]{
+  display: none;
+}
 .change_lang{
   position: fixed;
   top: 80px;

@@ -30,7 +30,7 @@
                 <a href="/home/pdt_PdtProduct" class="ia"><s:text name="Global.Product"/></a>
             </li>
             <li class="item fl">
-                <a href="https://www.shoestp.com/country/Romania-Pantofi-en-gros/romania-index-ro.html"
+                <a href="/country/Romania-Pantofi-en-gros/romania-index-ro.html"
                    class="ia"><s:text name="romanianOfflineExhibition"/></a>
             </li>
             <!--                 <li class="item fl"> -->

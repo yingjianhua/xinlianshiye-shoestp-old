@@ -303,7 +303,9 @@ a{
     padding: 65px 0 50px;
 }
 
-
+#romania{
+    position: relative;
+}
 #romania .romania-poster{
     width: 980px;
     height: 1160px;
@@ -396,9 +398,9 @@ a{
     border: none;
     border-radius: 10px;
     font-size: 30px;
-    color: #6f6f6f;
+    color: white;
     margin-top: 20px;
-    background: #eee;
+    background: #0154a2;
 }
 #romania .romania-poster .image-bottom button:nth-of-type(1),#romania .romania-poster .image-bottom a:nth-of-type(1){
     background-color: #e43527;
@@ -658,4 +660,193 @@ a{
 }
 .red-title{
 		color: red;
+}
+
+.hoodle{
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1100;
+    overflow: hidden;
+}
+.hoodle_modle{
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1110;
+}
+.hoodle_form{
+    width: 80%;
+    position: fixed;
+    top: 50px;
+    left: 10%;
+    margin-left: auto;
+    z-index: 1111;
+    background-color: white;
+    text-align: center;
+}
+.hoodle_form .hf-border{
+    width: 100%;
+    overflow: scroll;
+}
+.hoodle .hoodle_form .close-btn{
+    display: inline-block;
+    font-size: 80px;
+    position: absolute;
+    top: -35px;
+    right: -35px;
+    width: 80px;
+    height: 80px;
+    line-height: 70px;
+    background-color: #000;
+    color: white;
+    border-radius: 50%;
+    transform:rotate(45deg);
+}
+.hoodle_form .hf-title{
+    font-size: 40px;
+    font-weight: bolder;
+    margin-top: 80px;
+}
+.hoodle_form .hf-input{
+    text-align: left;
+    margin-left: 100px;
+    margin-top: 20px;
+}
+.hoodle_form .hf-input .lable-span{
+    font-size: 35px;
+    line-height: 40px;
+		display: block;
+}
+.hoodle_form .hf-input input,
+.hoodle_form .hf-input select{
+    width: 600px;
+    height: 70px;
+    margin-top: 20px;
+    border: 2px solid #CC5522;
+    border-radius: 10px;
+    font-size: 30px;
+    padding: 0 20px;
+    background-color: white;
+}
+.hoodle_form .hf-input textarea{
+    width: 600px;
+    margin-top: 20px;
+    border: 2px solid #CC5522;
+    border-radius: 10px;
+    font-size: 30px;
+    padding: 0 20px;
+}
+.hoodle_form .hf-btn{
+    text-align: center;
+    margin-left: 0;
+    margin-top: 50px;
+}
+.hoodle_form .hf-btn .btn{
+    display: inline-block;
+    width: 350px;
+    height: 100px;
+    line-height: 100px;
+    background-color: red;
+    color: white;
+    font-size: 40px;
+    border-radius: 20px;
+    font-weight: 700;
+}
+.hoodle .hf-input .hf-text{
+    width: 90%;
+    font-size: 25px;
+    text-align: center;
+    margin-bottom: 50px;
+}
+.successfully{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+.successfully .s-success{
+    width: 80%;
+    background-color: white;
+    position: fixed;
+    top: 30%;
+    left: 10%;
+}
+.successfully .s-success .close-icon{
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform:rotate(45deg);
+    font-size: 100px;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+}
+.successfully .s-success .himt{
+    margin-top: 130px;
+}
+.successfully .s-success .himt img{
+    width: 150px;
+    vertical-align: middle;
+}
+.successfully .s-success .himt .himt-text{
+    display: inline-block;
+    font-size: 60px;
+    width: 350px;
+    margin-left: 50px;
+    text-align: left;
+    vertical-align: middle;
+}
+.successfully .s-success .not-btn{
+    display: inline-block;
+    width: 100%;
+    height: 160px;
+    line-height: 160px;
+    background-color: #e43527;
+    color: white;
+    font-weight: 700;
+    font-size: 60px;
+    margin-top: 40px;
+}
+.container{
+    width: 80%;
+}
+.mu-form-item-label{
+    text-align: left;
+    font-size: 40px;
+    line-height: 80px;
+}
+.mu-form-item .mu-input{
+    border: 2px solid #CC5522;
+    border-radius: 10px;
+    height: 70px;
+}
+.mu-text-field-multiline{
+    height: 100%;
+}
+.mu-input{
+    font-size: 35px;
+}
+.mu-list-dense .mu-item{
+    height: 50px;
+}
+.mu-list-dense .mu-item-title{
+    font-size: 30px;
+}
+.mu-form-item .mu-button{
+    margin: 0 auto;
+    width: 350px;
+    height: 100px;
+    background-color: #e43527;
+    border-radius: 10px;
+    font-size: 50px;
+}
+.mu-form-item-help{
+    font-size: 25px;
 }
