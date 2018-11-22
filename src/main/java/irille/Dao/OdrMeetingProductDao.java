@@ -3,11 +3,14 @@ package irille.Dao;
 import irille.Entity.OdrerMeetings.Enums.OrderMeetingProductStatus;
 import irille.Entity.OdrerMeetings.OrderMeeting;
 import irille.Entity.OdrerMeetings.OrderMeeting.T;
+import irille.Entity.OdrerMeetings.OrderMeetingAudit;
 import irille.Entity.OdrerMeetings.OrderMeetingProduct;
+import irille.pub.PropertyUtils;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
+import irille.pub.idu.IduUpd;
 import irille.shop.pdt.PdtProduct;
 import irille.view.Manage.OdrMeeting.initiatedActivity.AllProductsView;
 import irille.view.Manage.OdrMeeting.initiatedActivity.OrderGoodsView;
@@ -185,5 +188,19 @@ public class OdrMeetingProductDao {
             view.add(orderMeetingProduct.getProductid());
         }
         return view;
+    }
+
+
+    /**
+     *@Description:  逻辑删除 参加订购会合作商 所对应的商品
+     *@date 2018/11/22 11:14
+     *@anthor wilson zhang
+     */
+    public  static void deletejoinOdr(OrderMeetingProduct omp){
+        String sql="update "+OrderMeetingProduct.TB.getCodeSqlTb()
+                +" set "+ OrderMeetingProduct.T.STATUS.getFld().getCodeSqlField()
+                +" =?  WHERE "+ OrderMeetingProduct.T.ORDERMEETINGID.getFld().getCodeSqlField()
+                +" =? AND "+OrderMeetingProduct.T.SUPPLIERID.getFld().getCodeSqlField()+" =?";
+       BeanBase.executeUpdate(sql,OrderMeetingProductStatus.DELETE.getLine().getKey(),omp.getOrdermeetingid(),omp.getSupplierid());
     }
 }

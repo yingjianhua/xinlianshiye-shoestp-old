@@ -5,6 +5,7 @@ import irille.Entity.OdrerMeetings.OrderMeeting;
 import irille.Service.Manage.OdrMeeting.IOdrMeetingManageService;
 import irille.Service.Manage.OdrMeeting.IOdrMeetingProductManageService;
 import irille.Service.Manage.OdrMeeting.IOdrMeettingExhibitionService;
+import irille.Service.Manage.OdrMeeting.Imp.OdrMeetingManageServiceImp;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.omt.inf.IOdrMeetingAction;
 import irille.view.Manage.OdrMeeting.initiatedActivity.LaunchlistMeettingView;
@@ -113,6 +114,15 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
         odrMeetingProductManageService.updateStatus(id);
         write();
     }
+    /**
+     *@Description:  逻辑删除 参加订购会合作商
+     *@date 2018/11/22 11:14
+     *@anthor wilson zhang
+     */
+    public void deletejoinOdr(){
+        odrMeetingManageService.deletejoinOdr(id);
+    }
+
     /**
     *@Description: 插入发布订购会
     *@date 2018/11/20 16:26
