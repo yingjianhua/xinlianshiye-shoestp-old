@@ -1,15 +1,25 @@
 package irille.Dao;
 
 import irille.Entity.OdrerMeetings.Enums.OrderMeetingAuditStatus;
+import irille.Entity.OdrerMeetings.Enums.OrderMeetingProductStatus;
+import irille.Entity.OdrerMeetings.OrderMeeting;
 import irille.Entity.OdrerMeetings.OrderMeetingAudit;
 import irille.Entity.OdrerMeetings.OrderMeetingProduct;
 import irille.pub.Log;
 import irille.pub.PropertyUtils;
+import irille.pub.bean.Query;
+import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduDel;
 import irille.pub.idu.IduIns;
 import irille.pub.idu.IduUpd;
 import irille.pub.svr.Env;
 import irille.shop.plt.PltCountryFreightDAO;
+import irille.shop.usr.UsrSupplier;
+import irille.view.Manage.OdrMeeting.OdrAuditsupplierView;
+import irille.view.Page;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class OrderMeetingAuditDao {
     private static final Log LOG = new Log(OrderMeetingAuditDao.class);
@@ -44,5 +54,57 @@ public class OrderMeetingAuditDao {
             OdrMeetingProductDao.deletejoinOdr(omp);
             super.before();
         }
+    }
+
+    /**
+    *@Description:  显示合作商列表
+    *@date 2018/11/22 13:55
+    *@anthor wilson zhang
+    */
+    public Page cooperationsupplier(Integer start, Integer limit,Integer status ,String name,Integer omtid){
+        if (start == null) {
+            start = 0;
+        }
+        if (limit == null) {
+            limit = 10;
+        }
+        SQL sql = new SQL() {{
+            SELECT(OrderMeetingAudit.T.PKEY,"omatid").SELECT(OrderMeetingAudit.T.STATUS,OrderMeetingAudit.T.SAMPLEADDRESS)
+                    .SELECT(UsrSupplier.T.PKEY,"supplierid")
+                            .SELECT(UsrSupplier.T.NAME,UsrSupplier.T.CONTACTS,UsrSupplier.T.EMAIL,
+                            UsrSupplier.T.IS_AUTH,UsrSupplier.T.CERT_PHOTO);
+            FROM(OrderMeetingAudit.class);
+            LEFT_JOIN(UsrSupplier.class,UsrSupplier.T.PKEY,OrderMeetingAudit.T.SUPPLIERID);
+            if (name != null) {
+                WHERE(UsrSupplier.T.NAME, " like  '%" + name + "%'");
+            }
+            if (status != null) {
+                WHERE(OrderMeetingAudit.T.STATUS, " =? ", status);
+            }
+            WHERE(OrderMeetingAudit.T.ODRMEETING,"= ? " , omtid);
+            WHERE(OrderMeetingAudit.T.STATUS, " <>?", OrderMeetingAuditStatus.DELETE.getLine().getKey());
+        }};
+        Integer count = Query.sql(sql).queryCount();
+        Query.sql(sql).limit(start,limit);
+        List<OdrAuditsupplierView>  oal=Query.sql(sql).queryMaps().stream().map(o -> {
+            OdrAuditsupplierView omv =new OdrAuditsupplierView();
+            omv.setId( (Integer)o.get("omatid"));
+            omv.setCompanyname((String) o.get(UsrSupplier.T.NAME));
+            omv.setName((String)o.get(UsrSupplier.T.CONTACTS));
+            omv.setEmail((String)o.get(UsrSupplier.T.EMAIL));
+            omv.setIsauth((Integer)o.get(UsrSupplier.T.IS_AUTH));
+            omv.setImage((String)o.get(UsrSupplier.T.CERT_PHOTO));
+            omv.setStatus(Integer.parseInt(String.valueOf(o.get(OrderMeetingAudit.T.STATUS.getFld().getCodeSqlField()))));
+            omv.setAddress((String)o.get(OrderMeetingAudit.T.SAMPLEADDRESS));
+         SQL sql1=new SQL(){{
+             SELECT(OrderMeetingProduct.class).WHERE(OrderMeetingProduct.T.ORDERMEETINGID," =?",omtid)
+                     .WHERE(OrderMeetingProduct.T.STATUS," =?", OrderMeetingProductStatus.ON)
+                     .WHERE(OrderMeetingProduct.T.SUPPLIERID," =?", (Integer)o.get(UsrSupplier.T.PKEY));
+         }};
+
+            omv.setShopnum(Query.sql(sql1).queryCount());
+            return omv;
+        }).collect(Collectors.toList());
+        return new Page(oal, start, limit, count);
     }
 }

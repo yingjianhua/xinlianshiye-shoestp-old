@@ -25,8 +25,9 @@ public class OrderMeetingAudit extends BeanInt<OrderMeetingAudit> {
     ODRMEETING(OrderMeeting.fldOutKey()),
     STATUS(TB.crt(OrderMeetingAuditStatus.DEFAULT)),
     MESSAGE(SYS.STR__200_NULL, "消息"),
+    SAMPLEADDRESS(SYS.STR__500_NULL,"样品寄送地址"),
     SUPPLIERID(UsrSupplier.fldOutKey()),
-    SNAPSHOT(SYS.JSON, "快照"),
+    SNAPSHOT(SYS.JSON,true),//快照
     CREATED_TIME(SYS.CREATED_DATE_TIME),
     ROW_VERSION(SYS.ROW_VERSION),
     //>>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
@@ -85,8 +86,9 @@ public class OrderMeetingAudit extends BeanInt<OrderMeetingAudit> {
 	// DISCONTINUATION:3,停用
 	// DELETE:4,已删除
   private String _message;	// 消息  STR(200)<null>
+  private String _sampleaddress;	// 样品寄送地址  STR(500)<null>
   private Integer _supplierid;	// 供应商 <表主键:UsrSupplier>  INT
-  private String _snapshot;	// 快照  JSONOBJECT<null>
+  private String _snapshot;	// JSON  JSONOBJECT<null>
   private Date _createdTime;	// 建档时间  TIME
   private Short _rowVersion;	// 版本  SHORT
 
@@ -96,8 +98,9 @@ public class OrderMeetingAudit extends BeanInt<OrderMeetingAudit> {
     _odrmeeting=null;	// 订购会信息 <表主键:OrderMeeting>  INT
     _status=OrderMeetingAuditStatus.DEFAULT.getLine().getKey();	// 参加订购会状态 <OrderMeetingAuditStatus>  BYTE
     _message=null;	// 消息  STR(200)
+    _sampleaddress=null;	// 样品寄送地址  STR(500)
     _supplierid=null;	// 供应商 <表主键:UsrSupplier>  INT
-    _snapshot=null;	// 快照  JSONOBJECT
+    _snapshot=null;	// JSON  JSONOBJECT
     _createdTime=Env.getTranBeginTime();	// 建档时间  TIME
     _rowVersion=0;	// 版本  SHORT
     return this;
@@ -144,6 +147,12 @@ public class OrderMeetingAudit extends BeanInt<OrderMeetingAudit> {
   }
   public void setMessage(String message){
     _message=message;
+  }
+  public String getSampleaddress(){
+    return _sampleaddress;
+  }
+  public void setSampleaddress(String sampleaddress){
+    _sampleaddress=sampleaddress;
   }
   public Integer getSupplierid(){
     return _supplierid;
