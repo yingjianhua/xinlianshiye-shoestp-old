@@ -133,6 +133,7 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
         odrMeetingProductManageService.removeProduct(id);
         write();
     }
+
     public void getProducts() throws IOException {
         write(odrMeetingProductManageService.getProducts(getSupplier().getPkey()));
     }
