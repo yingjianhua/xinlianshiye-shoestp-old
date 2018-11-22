@@ -180,6 +180,13 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
     }
 
     @Override
+    public void updaddress(OrderMeeting omt) {
+        OdrMeetingDao.updaddress ud=new OdrMeetingDao.updaddress();
+        ud.setB(omt);
+        ud.commit();
+    }
+
+    @Override
     public void insertjoinOdr(Integer OMTpkey, Integer supplierkey) {
         OrderMeetingAuditDao.insertjoinOdr ij=new OrderMeetingAuditDao.insertjoinOdr();
         OrderMeetingAudit od=new OrderMeetingAudit();

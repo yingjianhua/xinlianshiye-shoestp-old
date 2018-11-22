@@ -42,4 +42,6 @@ public interface IOdrMeetingAction extends ISellerAction {
 
     @RequestMapping(alias = "订购会商品删除状态改变", sort = 12)
     public void removeProduct() throws Exception;
+    @RequestMapping(alias = "订购会修改地址", sort = 14)
+    public void updaddress() throws Exception;
 }

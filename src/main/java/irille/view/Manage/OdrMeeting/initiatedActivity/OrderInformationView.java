@@ -7,6 +7,8 @@ import lombok.Data;
 
 @Data
 public class OrderInformationView implements BaseView {
+    private Integer Id;
+    @JsonSerialize(using= I18NFieldSerializer.class)
     private String orderingTitle;//订购会标题
     private String exhibition;//展厅
     @JsonSerialize(using= I18NFieldSerializer.class)
@@ -18,4 +20,6 @@ public class OrderInformationView implements BaseView {
     private String receiver;//收货人
     private String contactNumber;//联系电话
     private String zip;//邮编
+    private String msg;//消息
+    private Integer status;  //订购会状态
 }

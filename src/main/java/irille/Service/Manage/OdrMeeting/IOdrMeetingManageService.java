@@ -4,6 +4,7 @@ import com.google.inject.ImplementedBy;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import irille.Entity.OdrerMeetings.OrderMeeting;
 import irille.view.Manage.OdrMeeting.initiatedActivity.LaunchlistMeettingView;
 import irille.view.Manage.OdrMeeting.initiatedActivity.OrderInformationView;
 import org.json.JSONObject;
@@ -87,6 +88,12 @@ public interface IOdrMeetingManageService {
      */
     void batchdelete(String pkeys);
 
+    /**
+    *@Description:  订购会地址修改
+    *@date 2018/11/21 16:37
+    *@anthor wilson zhang
+    */
+    void updaddress(OrderMeeting omt);
     /**
     *@Description:  添加商家参加订购会
     *@date 2018/11/19 20:19

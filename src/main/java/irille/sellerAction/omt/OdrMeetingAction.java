@@ -8,6 +8,7 @@ import irille.Service.Manage.OdrMeeting.IOdrMeettingExhibitionService;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.omt.inf.IOdrMeetingAction;
 import irille.view.Manage.OdrMeeting.initiatedActivity.LaunchlistMeettingView;
+import irille.view.Manage.OdrMeeting.initiatedActivity.OrderInformationView;
 import irille.view.Page;
 import lombok.Getter;
 import lombok.Setter;
@@ -131,6 +132,21 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
 
     public void removeProduct() throws IOException {
         odrMeetingProductManageService.removeProduct(id,productId);
+        write();
+    }
+    @Setter
+    @Getter
+    private String information;
+    @Override
+    public void updaddress() throws Exception {
+        OrderInformationView l=new ObjectMapper().readValue(information,OrderInformationView.class);
+        OrderMeeting omt =new OrderMeeting();
+        omt.setPkey(l.getId());
+        omt.setMailname(l.getReceiver());
+        omt.setPostcode(l.getZip());
+        omt.setMailtel(l.getContactNumber());
+        omt.setMailafullddress(l.getAddress());
+        odrMeetingManageService.updaddress(omt);
         write();
     }
 
