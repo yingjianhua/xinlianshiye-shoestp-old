@@ -100,6 +100,12 @@ public interface IOdrMeetingManageService {
     *@anthor wilson zhang
     */
     void insertjoinOdr(Integer OMTpkey,Integer supplierkey);
+    /**
+    *@Description:  删除合作商  和对应的商品
+    *@date 2018/11/22 11:11
+    *@anthor wilson zhang
+    */
+    void deletejoinOdr(Integer OdrAuditpkey);
 
     /**
      * @Description: 参加者批量删除

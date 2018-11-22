@@ -192,6 +192,21 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
         ij.setB(od);
         ij.commit();
     }
+    /**
+     *@Description:  逻辑删除 参加订购会合作商
+     *@date 2018/11/22 11:14
+     *@anthor wilson zhang
+     */
+    @Override
+    public void deletejoinOdr(Integer OdrAuditpkey){
+        OrderMeetingAuditDao.deletejoinOdr dj= new OrderMeetingAuditDao.deletejoinOdr();
+        OrderMeetingAudit oma=new OrderMeetingAudit();
+        oma.setPkey(OdrAuditpkey);
+        oma.setStatus(OrderMeetingAuditStatus.DELETE.getLine().getKey());
+        dj.setB(oma);
+        dj.commit();
+    }
+
 
     @Override
     public void joindelete(String pkeys) {

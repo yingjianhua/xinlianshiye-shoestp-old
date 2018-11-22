@@ -50,4 +50,6 @@ public interface IOdrMeetingAction extends ISellerAction {
 
     @RequestMapping(alias = "获取已添加订购会商品", sort = 17)
     public void getAddedProducts() throws Exception;
+    @RequestMapping(alias = "逻辑删除 参加订购会合作商", sort = 18)
+    public void deletejoinOdr() throws Exception;
 }
