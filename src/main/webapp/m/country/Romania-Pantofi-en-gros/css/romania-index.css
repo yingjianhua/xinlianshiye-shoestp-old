@@ -1,177 +1,211 @@
 @charset "utf-8";
-body{
-    width:100%;
-    margin:0 auto;
+body {
+    width: 100%;
+    margin: 0 auto;
 }
-*{
-    margin:0;
-    padding:0;
+
+* {
+    margin: 0;
+    padding: 0;
 }
-.clearfloat::after{
+
+.clearfloat::after {
     content: " ";
     display: block;
     clear: both;
 }
-.clearfloat{
-    zoom:1;
-}
-a{
-	text-decoration: none;
-}
-.inline-block-h80{
-  display: inline-block;
-  line-height: 80px;
-  width: auto!important;
-  padding-left: 30px;
-  padding-right: 30px;
+
+.clearfloat {
+    zoom: 1;
 }
 
-.rmnybfcon a,.rmnybthcon a,.rmnybfthcon a,.rmnybfivcon a,.rmnybsixcon a,.rmnybsevcon>a{
+a {
+    text-decoration: none;
+}
+
+.inline-block-h80 {
+    display: inline-block;
+    line-height: 80px;
+    width: auto !important;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.rmnybfcon a, .rmnybthcon a, .rmnybfthcon a, .rmnybfivcon a, .rmnybsixcon a, .rmnybsevcon > a {
     width: 65%;
     height: 60px;
     font-size: 2.4em;
     display: inline-block;
     border-radius: 15px;
     line-height: 60px;
-    background-color: rgb(228,53,59);
+    background-color: rgb(228, 53, 59);
     color: white;
     margin-bottom: 75px;
     box-shadow: 0 0 35px 0px rgba(255, 53, 59, 0.5);
 }
-.rmnybottomsev{
+
+.rmnybottomsev {
     width: 100%;
     text-align: center;
     /*margin-bottom: 40px;*/
 }
-.rmnybottomsev .rmnybsevcon{
+
+.rmnybottomsev .rmnybsevcon {
 
 }
-.rmnybsevcon img:nth-child(1){
+
+.rmnybsevcon img:nth-child(1) {
     width: 75%;
     margin-bottom: 15px;
 }
-.rmnybsevcon h3{
+
+.rmnybsevcon h3 {
     width: 70%;
     margin: 0 auto;
     font-size: 2.5em;
     font-weight: 500;
     margin-bottom: 70px;
 }
-.rmnybsevcon img:nth-child(3){
+
+.rmnybsevcon img:nth-child(3) {
     width: 73%;
     margin-left: 10%;
     margin-bottom: 45px;
 }
-.rmnybsevcon p.pur_p{
+
+.rmnybsevcon p.pur_p {
     font-size: 45px;
     line-height: 90px;
     margin-bottom: 50px;
-		text-align: left;
-		width: 68%;
-		margin: 0 auto;
-		color: #5E5E5E;
+    text-align: left;
+    width: 68%;
+    margin: 0 auto;
+    color: #5E5E5E;
 }
-.rmnybsevcon p.pur_p.margin_bottom_20{
-		margin-bottom: 40px;
+
+.rmnybsevcon p.pur_p.margin_bottom_20 {
+    margin-bottom: 40px;
 }
-.rmnybsevcon p .dot{
-		display: inline-block;
-		width: 15px;
-		height: 15px;
-		border: 2px solid #0154A2;
-		border-radius: 50%;
-		margin-bottom: 10px;
-		margin-right: 10px;
+
+.rmnybsevcon p .dot {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border: 2px solid #0154A2;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    margin-right: 10px;
 }
-.rmnybsevcon p .bigblue{
+
+.rmnybsevcon p .bigblue {
     font-size: 1.7em;
-    color: rgb(0,81,158);
+    color: rgb(0, 81, 158);
     margin: 45px 10px;
-		font-weight: 700;
+    font-weight: 700;
 }
-.rmnybsevcon p .bigyellow{
+
+.rmnybsevcon p .bigyellow {
     font-size: 1.4em;
-    color: rgb(255,210,0);
+    color: rgb(255, 210, 0);
     margin: 40px auto;
-		font-weight: 700;
+    font-weight: 700;
 }
-.rmnybsevcon>span{
+
+.rmnybsevcon > span {
     width: 50%;
 }
-.rmnybottomsix{
+
+.rmnybottomsix {
     width: 100%;
     text-align: center;
     margin-bottom: 40px;
 }
-.rmnybottomsix .rmnybsixcon{
+
+.rmnybottomsix .rmnybsixcon {
     background-image: url(../imgs/rmnyb24.png);
     background-repeat: no-repeat;
     background-size: 40%;
     background-position: 10% 5%;
     padding-top: 100px;
 }
-.rmnybsixcon h2{
-	font-size: 55px;
+
+.rmnybsixcon h2 {
+    font-size: 55px;
 }
-.rmnybsixcon h3{
+
+.rmnybsixcon h3 {
     font-size: 30px;
     margin-bottom: 30px;
-		font-weight: 500;
+    font-weight: 500;
 }
-.rmnybsixcon p{
+
+.rmnybsixcon p {
     width: 86%;
     margin: 0 auto;
     text-align: left;
     line-height: 45px;
     margin-bottom: 20px;
     font-size: 1.8em;
-		color: #5E5E5E;
+    color: #5E5E5E;
 }
-.rmnybsixcon .rmnybsiximgs{
+
+.rmnybsixcon .rmnybsiximgs {
     width: 86%;
     margin: 0 auto;
     margin-bottom: 50px;
 }
-.rmnybsiximgs img{
+
+.rmnybsiximgs img {
     width: 30%;
 }
-.rmnybsiximgs img:nth-child(2){
+
+.rmnybsiximgs img:nth-child(2) {
     margin: auto 3.4%;
 }
-.rmnybsixcon span{
+
+.rmnybsixcon span {
     width: 35%;
 }
-.rmnybottomfiv{
+
+.rmnybottomfiv {
     width: 100%;
     text-align: center;
 }
-.rmnybottomfiv .rmnybfivcon{
+
+.rmnybottomfiv .rmnybfivcon {
 
 }
-.rmnybfivcon h2{
+
+.rmnybfivcon h2 {
     font-size: 4em;
     margin-bottom: 70px;
 }
-.rmnybfivcon>img{
+
+.rmnybfivcon > img {
     width: 60%;
     margin-bottom: 45px;
 }
-.rmnybfivcon .rmnybfivad{
+
+.rmnybfivcon .rmnybfivad {
 
 }
-.rmnybfivad .advantage{
+
+.rmnybfivad .advantage {
     float: left;
     width: 50%;
 }
-.advantage img{
+
+.advantage img {
     width: 20%;
     margin-bottom: 20px;
 }
-.advantage h4{
+
+.advantage h4 {
     font-size: 2.4em;
     margin-bottom: 10px;
 }
-.advantage p{
+
+.advantage p {
     width: 67%;
     height: 405px;
     margin: 0 auto;
@@ -181,26 +215,32 @@ a{
     opacity: 0.6;
     margin-bottom: 30px;
 }
-.rmnybfivcon span{
+
+.rmnybfivcon span {
     width: 30%;
 }
-.rmnybottomfth{
+
+.rmnybottomfth {
     width: 100%;
     text-align: center;
     margin-bottom: 80px;
 }
-.rmnybottomfth .rmnybfthcon{
+
+.rmnybottomfth .rmnybfthcon {
 
 }
-.rmnybfthcon>img{
+
+.rmnybfthcon > img {
     width: 100%;
     margin-bottom: 50px;
 }
-.rmnybfthcon h2{
+
+.rmnybfthcon h2 {
     font-size: 4em;
     margin-bottom: 30px;
 }
-.rmnybfthcon h3{
+
+.rmnybfthcon h3 {
     width: 60%;
     margin-left: 20%;
     text-align: left;
@@ -208,7 +248,8 @@ a{
     margin-bottom: 30px;
     text-align: center;
 }
-.rmnybfthcon p{
+
+.rmnybfthcon p {
     width: 60%;
     margin: 0 auto;
     font-size: 2.5em;
@@ -216,80 +257,97 @@ a{
     margin-bottom: 55px;
     font-weight: bold;
 }
-.rmnybfthcon .rmnybfthconimgs{
+
+.rmnybfthcon .rmnybfthconimgs {
 
 }
-.rmnybfthconimgs img{
+
+.rmnybfthconimgs img {
     height: 55px;
     margin-left: 2%;
     margin-bottom: 45px;
 }
-.rmnybfthcon span{
+
+.rmnybfthcon span {
     width: 45%;
 }
-.rmnybottomthred{
+
+.rmnybottomthred {
     width: 100%;
     margin-bottom: 50px;
 }
-.rmnybottomthred .rmnybthcon{
+
+.rmnybottomthred .rmnybthcon {
     text-align: center;
 }
-.rmnybthcon h2{
+
+.rmnybthcon h2 {
     font-size: 3.2em;
     margin-bottom: 40px;
 }
-.rmnybthcon .rmnybthimgs{
+
+.rmnybthcon .rmnybthimgs {
     width: 90%;
     margin: 0 auto;
     margin-bottom: 20px;
 }
-.rmnybthimgs img{
+
+.rmnybthimgs img {
     width: 47%;
     margin-bottom: 15px;
 }
-.rmnybthimgs img:nth-child(1),.rmnybthimgs img:nth-child(3){
+
+.rmnybthimgs img:nth-child(1), .rmnybthimgs img:nth-child(3) {
     margin-right: 3%;
 }
-.rmnybthcon span{
+
+.rmnybthcon span {
     width: 45%;
 }
 
-.rmnybottomsecond{
+.rmnybottomsecond {
     width: 100%;
     padding-bottom: 100px;
     background-color: #fbf8fb;
 }
-.rmnybottomsecond .rmnybscon{
+
+.rmnybottomsecond .rmnybscon {
     width: 90%;
     margin-left: 10%;
 }
-.rmnybscon h2{
+
+.rmnybscon h2 {
     font-size: 3.2em;
     padding-top: 10px;
 }
-.rmnybscon .bscontactus{
+
+.rmnybscon .bscontactus {
     border-top: 1px solid grey;
     width: 75%;
     margin: 20px 0;
 }
-.bscontactus p{
+
+.bscontactus p {
     font-size: 1.8em;
     height: 50px;
     line-height: 50px;
     margin-bottom: 5px;
 }
-.rmnybscon .bscontactus:nth-child(3){
+
+.rmnybscon .bscontactus:nth-child(3) {
     border-top: none;
 }
 
-.rmnybottomfirst{
+.rmnybottomfirst {
     width: 100%;
     position: relative;
 }
-.rmnybottomfirst img{
+
+.rmnybottomfirst img {
     width: 100%;
 }
-.rmnybottomfirst .rmnybfcon{
+
+.rmnybottomfirst .rmnybfcon {
     position: absolute;
     width: 74%;
     top: -75px;
@@ -298,22 +356,25 @@ a{
     border-radius: 15px;
     text-align: center;
 }
-.rmnybfcon h2{
+
+.rmnybfcon h2 {
     font-size: 3.2em;
     padding: 65px 0 50px;
 }
 
-#romania{
+#romania {
     position: relative;
 }
-#romania .romania-poster{
+
+#romania .romania-poster {
     width: 980px;
     height: 1160px;
     background: url("../imgs/romaniaPoster-01.png") center no-repeat;
     background-size: 100% 100%;
     position: relative;
 }
-#romania .romania-poster .language{
+
+#romania .romania-poster .language {
     width: 320px;
     padding: 0 20px;
     background-color: #f7f7f7;
@@ -322,79 +383,95 @@ a{
     top: 400px;
     z-index: 999;
 }
-#romania .romania-poster .language p{
+
+#romania .romania-poster .language p {
     height: 70px;
     line-height: 50px;
     font-size: 30px;
 }
-#romania .romania-poster .language p span.lan{
+
+#romania .romania-poster .language p span.lan {
     font-size: 30px;
-		margin: 10px 0;
+    margin: 10px 0;
     border-right: 1px solid #aaaaaa;
-		display: inline-block;
-		width: 200px;
+    display: inline-block;
+    width: 200px;
 }
-#romania .romania-poster .language p img{
+
+#romania .romania-poster .language p img {
     vertical-align: middle;
     height: 40px;
     margin-left: 30px;
-		margin-bottom: 10px;
+    margin-bottom: 10px;
 }
-#romania .romania-poster .language ul.language-show li{
+
+#romania .romania-poster .language ul.language-show li {
     list-style-type: none;
     font-size: 40px;
     line-height: 80px;
-		text-align: left;
+    text-align: left;
 }
-#romania .romania-poster .language ul.language-show li a{
-	color:#5E5E5E;
+
+#romania .romania-poster .language ul.language-show li a {
+    color: #5E5E5E;
 }
-#romania .romania-poster .language ul.language-show li img{
+
+#romania .romania-poster .language ul.language-show li img {
     height: 30px;
     vertical-align: middle;
 }
-#romania .romania-poster .image-bottom{
+
+#romania .romania-poster .image-bottom {
     margin-left: 60px;
 }
-#romania .yellow-text{
+
+#romania .yellow-text {
     color: #ffd200;
 }
-#romania .white-text{
+
+#romania .white-text {
     color: white;
 }
-#romania .romania-poster > p{
+
+#romania .romania-poster > p {
     margin-left: 60px;
     width: 810px;
 }
-#romania .romania-poster p.title-text{
+
+#romania .romania-poster p.title-text {
     font-size: 60px;
     font-weight: bold;
     padding-top: 200px;
-		line-height: 70px;
-		margin-bottom: 10px;
+    line-height: 70px;
+    margin-bottom: 10px;
 }
-#romania .romania-poster p.slogan{
+
+#romania .romania-poster p.slogan {
     font-size: 65px;
     line-height: 70px;
 }
-#romania .romania-poster p.time{
+
+#romania .romania-poster p.time {
     font-size: 45px;
     font-weight: 700;
-		margin-top: 10px;
+    margin-top: 10px;
 }
-#romania .romania-poster p.content-01{
+
+#romania .romania-poster p.content-01 {
     font-size: 30px;
 }
-#romania .romania-poster p.content-02{
+
+#romania .romania-poster p.content-02 {
     font-size: 35px;
-		line-height: 40px;
+    line-height: 40px;
 }
-#romania .romania-poster .image-bottom button,#romania .romania-poster .image-bottom a{
+
+#romania .romania-poster .image-bottom button, #romania .romania-poster .image-bottom a {
     display: inline-block;
     padding: 0 20px;
     height: 80px;
     line-height: 80px;
-		font-weight: bold;
+    font-weight: bold;
     border: none;
     border-radius: 10px;
     font-size: 30px;
@@ -402,12 +479,14 @@ a{
     margin-top: 20px;
     background: #0154a2;
 }
-#romania .romania-poster .image-bottom button:nth-of-type(1),#romania .romania-poster .image-bottom a:nth-of-type(1){
+
+#romania .romania-poster .image-bottom button:nth-of-type(1), #romania .romania-poster .image-bottom a:nth-of-type(1) {
     background-color: #e43527;
     color: white;
     margin-right: 20px;
 }
-#romania .producrt{
+
+#romania .producrt {
     width: 980px;
     height: 1200px;
     background: url("../imgs/header-image01.png") center no-repeat;
@@ -415,62 +494,74 @@ a{
     position: relative;
     top: -120px;
     text-align: center;
-		padding-top: 160px;
+    padding-top: 160px;
 }
-#romania .producrt .pro-text{
+
+#romania .producrt .pro-text {
     font-size: 60px;
-		line-height: 70px;
+    line-height: 70px;
     color: white;
 }
-#romania .producrt .mu-carousel-item h2{
+
+#romania .producrt .mu-carousel-item h2 {
     padding: 0;
     font-weight: 300;
 }
-#romania .producrt .mu-carousel-item .detail{
+
+#romania .producrt .mu-carousel-item .detail {
     width: 90%;
     height: 550px;
     margin: 0 auto;
     background-color: white;
 }
-#romania .producrt .mu-carousel{
+
+#romania .producrt .mu-carousel {
     height: 640px;
-		margin-top: 40px;
+    margin-top: 40px;
 }
-#romania .producrt .mu-carousel-item .detail img{
+
+#romania .producrt .mu-carousel-item .detail img {
     width: 100%;
 }
-#romania .producrt .mu-carousel-item .detail h4{
+
+#romania .producrt .mu-carousel-item .detail h4 {
     font-size: 46px;
     text-align: left;
     font-weight: 500;
     margin-left: 40px;
     margin-top: 20px;
-		color: #000000;
+    color: #000000;
 }
-#romania .producrt .mu-carousel-item .detail p{
+
+#romania .producrt .mu-carousel-item .detail p {
     font-size: 36px;
     text-align: left;
     margin-left: 40px;
     color: #aaaaaa;
 }
-#romania .producrt .mu-carousel-indicator-button{
+
+#romania .producrt .mu-carousel-indicator-button {
     width: auto;
     height: auto;
 }
-#romania .producrt .mu-icon-button{
+
+#romania .producrt .mu-icon-button {
     border-radius: 4px;
 }
-#romania .producrt .mu-carousel-indicator-icon{
+
+#romania .producrt .mu-carousel-indicator-icon {
     width: 80px;
     height: 20px;
     border-radius: 10px;
     opacity: 1;
 }
-#romania .producrt .mu-carousel-indicator-button__active .mu-carousel-indicator-icon{
+
+#romania .producrt .mu-carousel-indicator-button__active .mu-carousel-indicator-icon {
     width: 140px;
     background-color: #0154a2;
 }
-#romania .producrt .producrt-button{
+
+#romania .producrt .producrt-button {
     height: 80px;
     font-size: 40px;
     padding: 0 20px;
@@ -480,13 +571,15 @@ a{
     background-color: #e43527;
     color: white;
 }
-#romania .producrt-text{
+
+#romania .producrt-text {
     width: 100%;
     height: 400px;
     margin-top: -120px;
     margin-bottom: 100px;
 }
-#romania .producrt-text .text-content{
+
+#romania .producrt-text .text-content {
     display: inline-block;
     width: 50%;
     height: 100%;
@@ -497,60 +590,70 @@ a{
     font-size: 40px;
     color: #5e5e5e;
 }
-#romania .producrt-text .text-content:nth-of-type(2){
+
+#romania .producrt-text .text-content:nth-of-type(2) {
     background-color: #e43527;
     color: white;
     font-size: 50px;
 }
-#romania .rmnybsevconzh{
+
+#romania .rmnybsevconzh {
     font-size: 4em;
 }
-#romania .romania-poster a.logo{
+
+#romania .romania-poster a.logo {
     width: 250px;
     position: absolute;
     right: 60px;
     top: 100px;
 }
-#romania .romania-poster a.logo img{
+
+#romania .romania-poster a.logo img {
     width: 100%;
 }
 
-.rmnybottomsev .rmny_title{
+.rmnybottomsev .rmny_title {
     font-size: 60px;
 }
 
-.rmnybottomfirst .rmnybfchoose{
+.rmnybottomfirst .rmnybfchoose {
     position: absolute;
     top: 55%;
     left: 10.5%;
     width: 75%;
 }
-.rmnybfchoose  div{
+
+.rmnybfchoose div {
 
 }
-.rmnybfchoose  input{
+
+.rmnybfchoose input {
     display: none;
     width: 30px;
     height: 30px;
 }
-.rmnybfchoose  label{
+
+.rmnybfchoose label {
     display: inline-block;
     width: 30px;
     height: 30px;
     margin-top: 14px;
     border: 2px solid blue;
 }
-.rmnybfchoose  p{
+
+.rmnybfchoose p {
     display: inline-block;
     width: 90%;
     margin-left: 3%;
     font-size: 36px;
     color: white;
 }
-.rmnybfchoose  label,.rmnybfchoose  p{
+
+.rmnybfchoose label, .rmnybfchoose p {
     vertical-align: text-top;
 }
-.rmnybfchoose  label img{
+
+.rmnybfchoose label img {
     width: 150%;
     margin-top: -40%;
     margin-left: 20%;
@@ -560,16 +663,19 @@ a{
     font-size: 4.2em;
     padding: 0 0;
 }
+
 .rmnybfcon h3 {
     font-size: 2em;
-		font-weight: 500;
+    font-weight: 500;
     padding: 0px 0 50px;
 }
+
 .rmnybthcon h2 {
     font-size: 4.2em;
     text-shadow: -30px -30px 5px rgba(155, 155, 155, 0.1);
 }
-#romania .rmnymap{
+
+#romania .rmnymap {
     width: 100%;
     height: 550px;
     background-color: black;
@@ -577,9 +683,11 @@ a{
     text-align: center;
     margin-bottom: 100px;
 }
+
 .rmnybfthcon h2 {
     font-size: 4em;
 }
+
 .rmnybfthcon p {
     display: inline-block;
     width: 60%;
@@ -591,7 +699,8 @@ a{
     margin-bottom: 13px;
     font-weight: normal;
 }
-.rmnybfthcon div .graycircle{
+
+.rmnybfthcon div .graycircle {
     display: inline-block;
     width: 15px;
     height: 15px;
@@ -599,30 +708,37 @@ a{
     border-radius: 50%;
     margin-top: 20px;
 }
-.rmnybfthcon div .graycircle,.rmnybfthcon p{
+
+.rmnybfthcon div .graycircle, .rmnybfthcon p {
     vertical-align: text-top;
 }
-.rmnybfthcon a{
+
+.rmnybfthcon a {
     margin-top: 40px;
 }
-.rmnybfivcon>img {
+
+.rmnybfivcon > img {
     width: 60%;
     margin-bottom: 75px;
 }
+
 .rmnybfivad .advantage {
     float: left;
     width: 100%;
     margin-bottom: 50px;
 }
+
 .advantage img {
     width: 20%;
     margin-bottom: 20px;
 }
+
 .advantage h4 {
     font-size: 4em;
-    color: rgb(41,75,174);
+    color: rgb(41, 75, 174);
     margin-bottom: 10px;
 }
+
 .advantage p {
     width: 70%;
     height: auto;
@@ -633,13 +749,15 @@ a{
     opacity: 1;
     margin-bottom: 20px;
 }
-.advantage div{
+
+.advantage div {
     width: 55%;
     margin: 0 auto;
     text-align: left;
     margin-bottom: 20px;
 }
-.advantage div span{
+
+.advantage div span {
     display: inline-block;
     width: 15px;
     height: 15px;
@@ -648,7 +766,8 @@ a{
     vertical-align: text-top;
     margin-top: 17px;
 }
-.advantage div p{
+
+.advantage div p {
     display: inline-block;
     vertical-align: text-top;
     width: 92%;
@@ -658,11 +777,12 @@ a{
     font-size: 2.2em;
     opacity: 0.5;
 }
-.red-title{
-		color: red;
+
+.red-title {
+    color: #b4b4b4;
 }
 
-.hoodle{
+.hoodle {
     display: block;
     position: absolute;
     top: 0;
@@ -672,13 +792,15 @@ a{
     z-index: 1100;
     overflow: hidden;
 }
-.hoodle_modle{
+
+.hoodle_modle {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
     z-index: 1110;
 }
-.hoodle_form{
+
+.hoodle_form {
     width: 80%;
     position: fixed;
     top: 50px;
@@ -688,11 +810,13 @@ a{
     background-color: white;
     text-align: center;
 }
-.hoodle_form .hf-border{
+
+.hoodle_form .hf-border {
     width: 100%;
     overflow: scroll;
 }
-.hoodle .hoodle_form .close-btn{
+
+.hoodle .hoodle_form .close-btn {
     display: inline-block;
     font-size: 80px;
     position: absolute;
@@ -704,25 +828,29 @@ a{
     background-color: #000;
     color: white;
     border-radius: 50%;
-    transform:rotate(45deg);
+    transform: rotate(45deg);
 }
-.hoodle_form .hf-title{
+
+.hoodle_form .hf-title {
     font-size: 40px;
     font-weight: bolder;
     margin-top: 80px;
 }
-.hoodle_form .hf-input{
+
+.hoodle_form .hf-input {
     text-align: left;
     margin-left: 100px;
     margin-top: 20px;
 }
-.hoodle_form .hf-input .lable-span{
+
+.hoodle_form .hf-input .lable-span {
     font-size: 35px;
     line-height: 40px;
-		display: block;
+    display: block;
 }
+
 .hoodle_form .hf-input input,
-.hoodle_form .hf-input select{
+.hoodle_form .hf-input select {
     width: 600px;
     height: 70px;
     margin-top: 20px;
@@ -732,7 +860,8 @@ a{
     padding: 0 20px;
     background-color: white;
 }
-.hoodle_form .hf-input textarea{
+
+.hoodle_form .hf-input textarea {
     width: 600px;
     margin-top: 20px;
     border: 2px solid #CC5522;
@@ -740,12 +869,14 @@ a{
     font-size: 30px;
     padding: 0 20px;
 }
-.hoodle_form .hf-btn{
+
+.hoodle_form .hf-btn {
     text-align: center;
     margin-left: 0;
     margin-top: 50px;
 }
-.hoodle_form .hf-btn .btn{
+
+.hoodle_form .hf-btn .btn {
     display: inline-block;
     width: 350px;
     height: 100px;
@@ -756,13 +887,15 @@ a{
     border-radius: 20px;
     font-weight: 700;
 }
-.hoodle .hf-input .hf-text{
+
+.hoodle .hf-input .hf-text {
     width: 90%;
     font-size: 25px;
     text-align: center;
     margin-bottom: 50px;
 }
-.successfully{
+
+.successfully {
     position: absolute;
     top: 0;
     left: 0;
@@ -770,32 +903,37 @@ a{
     height: 100%;
     text-align: center;
 }
-.successfully .s-success{
+
+.successfully .s-success {
     width: 80%;
     background-color: white;
     position: fixed;
     top: 30%;
     left: 10%;
 }
-.successfully .s-success .close-icon{
+
+.successfully .s-success .close-icon {
     display: inline-block;
     position: absolute;
     right: 0;
     top: 0;
-    transform:rotate(45deg);
+    transform: rotate(45deg);
     font-size: 100px;
     width: 100px;
     height: 100px;
     line-height: 100px;
 }
-.successfully .s-success .himt{
+
+.successfully .s-success .himt {
     margin-top: 130px;
 }
-.successfully .s-success .himt img{
+
+.successfully .s-success .himt img {
     width: 150px;
     vertical-align: middle;
 }
-.successfully .s-success .himt .himt-text{
+
+.successfully .s-success .himt .himt-text {
     display: inline-block;
     font-size: 60px;
     width: 350px;
@@ -803,43 +941,52 @@ a{
     text-align: left;
     vertical-align: middle;
 }
-.successfully .s-success .not-btn{
+
+.successfully .s-success .not-btn {
     display: inline-block;
     width: 100%;
     height: 160px;
     line-height: 160px;
-    background-color: #e43527;
+    background-color: #51ca98;
     color: white;
     font-weight: 700;
     font-size: 60px;
     margin-top: 40px;
 }
-.container{
+
+.container {
     width: 80%;
 }
-.mu-form-item-label{
+
+.mu-form-item-label {
     text-align: left;
     font-size: 40px;
     line-height: 80px;
 }
-.mu-form-item .mu-input{
+
+.mu-form-item .mu-input {
     border: 2px solid #CC5522;
     border-radius: 10px;
     height: 70px;
 }
-.mu-text-field-multiline{
+
+.mu-text-field-multiline {
     height: 100%;
 }
-.mu-input{
+
+.mu-input {
     font-size: 35px;
 }
-.mu-list-dense .mu-item{
+
+.mu-list-dense .mu-item {
     height: 50px;
 }
-.mu-list-dense .mu-item-title{
+
+.mu-list-dense .mu-item-title {
     font-size: 30px;
 }
-.mu-form-item .mu-button{
+
+.mu-form-item .mu-button {
     margin: 0 auto;
     width: 350px;
     height: 100px;
@@ -847,6 +994,7 @@ a{
     border-radius: 10px;
     font-size: 50px;
 }
-.mu-form-item-help{
+
+.mu-form-item-help {
     font-size: 25px;
 }

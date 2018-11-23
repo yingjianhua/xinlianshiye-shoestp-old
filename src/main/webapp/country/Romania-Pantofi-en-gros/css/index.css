@@ -1,262 +1,330 @@
 @charset "UTF-8";
 body, html, ul, ol, li, span, a, div, dl, dd, dt, p, h1, h2, h3, h4, h5, h6, select, option {
-  padding: 0px;
-  margin: 0px;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box; }
+    padding: 0px;
+    margin: 0px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
 
 html, body {
-  width: 100%;
-  height: 100%; }
+    width: 100%;
+    height: 100%;
+}
 
 body {
-  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif; }
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+}
 
 input {
-  outline: none;
-  border: none; }
+    outline: none;
+    border: none;
+}
 
 img, i, input {
-  vertical-align: middle; }
+    vertical-align: middle;
+}
 
 img {
-  -o-object-fit: contain;
-     object-fit: contain; }
+    -o-object-fit: contain;
+    object-fit: contain;
+}
 
 ul {
-  list-style: none; }
+    list-style: none;
+}
 
 a, a:link, a:visited, a:hover, a:active {
-  display: inline-block;
-  color: inherit;
-  text-decoration: none; }
+    display: inline-block;
+    color: inherit;
+    text-decoration: none;
+}
 
 .clearfix {
-  zoom: 1; }
+    zoom: 1;
+}
 
 .clearfix:after {
-  visibility: hidden;
-  display: block;
-  font-size: 0;
-  content: " ";
-  clear: both;
-  height: 0; }
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
 
 .fl {
-  float: left; }
+    float: left;
+}
 
 .fr {
-  float: right; }
+    float: right;
+}
 
 .por {
-  position: relative; }
+    position: relative;
+}
 
 .block {
-  display: block; }
+    display: block;
+}
 
 .tc {
-  text-align: center; }
+    text-align: center;
+}
 
 .tr {
-  text-align: right; }
+    text-align: right;
+}
 
 .tl {
-  text-align: left !important; }
+    text-align: left !important;
+}
 
 .pointer {
-  cursor: pointer; }
+    cursor: pointer;
+}
 
 /* 两行省略号 */
 .ellipsis_2 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical; }
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
 
 .img-contain {
-  width: 100%;
-  height: 100%;
-  -o-object-fit: contain;
-  object-fit: contain; }
+    width: 100%;
+    height: 100%;
+    -o-object-fit: contain;
+    object-fit: contain;
+}
 
 .flexible {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center; }
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
 
 .flexible.flex-end {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end; }
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+}
 
 .flexible.flex-column {
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column; }
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
 
 .flexible.flex-center {
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center; }
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
 
 .flexible.flex-start {
-  -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: flex-start; }
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+}
 
 .flexible.flex-between {
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between; }
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
 
 .flexible.flex-around {
-  -ms-flex-pack: distribute;
-      justify-content: space-around; }
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+}
 
 .flexible .flex-no-shrink {
-  -ms-flex-negative: 0;
-      flex-shrink: 0; }
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+}
 
 .flexible .flex-grow {
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1; }
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+}
 
 .fs20 {
-  font-size: 20px; }
+    font-size: 20px;
+}
 
 .fs22 {
-  font-size: 22px; }
+    font-size: 22px;
+}
 
 .fs24 {
-  font-size: 24px; }
+    font-size: 24px;
+}
 
 .fs28 {
-  font-size: 28px; }
+    font-size: 28px;
+}
 
 .fs30 {
-  font-size: 30px; }
+    font-size: 30px;
+}
 
 .fs32 {
-  font-size: 32px; }
+    font-size: 32px;
+}
 
 .fs34 {
-  font-size: 34px; }
+    font-size: 34px;
+}
 
 .fs36 {
-  font-size: 36px; }
+    font-size: 36px;
+}
 
 .fs38 {
-  font-size: 38px; }
+    font-size: 38px;
+}
 
 .fs42 {
-  font-size: 42px; }
+    font-size: 42px;
+}
 
 .fs50 {
-  font-size: 50px; }
+    font-size: 50px;
+}
 
 .fs52 {
-  font-size: 52px; }
+    font-size: 52px;
+}
 
 .fs64 {
-  font-size: 64px; }
+    font-size: 64px;
+}
 
 /* 标题 */
 .banner-title {
-  text-align: center;
-  font-size: 64px;
-  white-space: nowrap; }
+    text-align: center;
+    font-size: 64px;
+    white-space: nowrap;
+}
 
 .color-red {
-  color: #e43527; }
+    color: #e43527;
+}
 
 .color-yellow {
-  color: #ffd200; }
+    color: #ffd200;
+}
 
 .color-blue {
-  color: #00519e; }
+    color: #00519e;
+}
 
 .btn-normal-red {
-  display: inline-block;
-  height: 60px;
-  line-height: 60px;
-  padding: 0 25px;
-  white-space: nowrap;
-  text-align: center;
-  font-size: 30px;
-  color: #fff !important;
-  cursor: pointer;
-  border-radius: 5px;
-  background-color: #e43527; }
+    display: inline-block;
+    height: 60px;
+    line-height: 60px;
+    padding: 0 25px;
+    white-space: nowrap;
+    text-align: center;
+    font-size: 30px;
+    color: #fff !important;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #e43527;
+}
 
 .mt20 {
-  margin-top: 20px; }
+    margin-top: 20px;
+}
 
 .modal-wrap {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 999;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.3); }
-  .modal-wrap .modal-inner-box {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.modal-wrap .modal-inner-box {
     position: absolute;
     top: 50%;
     left: 50%;
     -webkit-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
     width: 380px;
     padding: 30px 30px 20px;
     border-radius: 6px;
-    background: #eee; }
-  .modal-wrap .btn-close {
+    background: #eee;
+}
+
+.modal-wrap .btn-close {
     position: absolute;
     right: 0;
     top: 0;
     -webkit-transform: translate3d(50%, -50%, 0);
-            transform: translate3d(50%, -50%, 0);
+    transform: translate3d(50%, -50%, 0);
     width: 34px;
-    cursor: pointer; }
-  .modal-wrap .form-title {
+    cursor: pointer;
+}
+
+.modal-wrap .form-title {
     line-height: 26px;
     font-size: 20px;
     font-weight: bold;
-    text-align: center; }
-  .modal-wrap .el-form-item--small.el-form-item {
-    margin-bottom: 0; }
-  .modal-wrap .el-form-item--small .el-form-item__label {
+    text-align: center;
+}
+
+.modal-wrap .el-form-item--small.el-form-item {
+    margin-bottom: 0;
+}
+
+.modal-wrap .el-form-item--small .el-form-item__label {
     line-height: 30px;
     padding-top: 10px;
     padding-bottom: 0;
     color: #525252;
-    font-size: 18px; }
-  .modal-wrap .required-label .el-form-item__label:after {
+    font-size: 18px;
+}
+
+.modal-wrap .required-label .el-form-item__label:after {
     content: '*';
     position: relative;
     top: 4px;
     color: #f56c6c;
-    margin-left: 4px; }
-  .modal-wrap .el-select {
-    width: 100%; }
-  .modal-wrap .el-input__inner, .modal-wrap .el-input__inner:hover,
-  .modal-wrap .el-select:hover .el-input__inner,
-  .modal-wrap .el-textarea__inner, .modal-wrap .el-textarea__inner:hover {
-    border: 1px solid #f19149; }
-  .modal-wrap .el-input__inner:focus, .modal-wrap .el-textarea__inner:focus, .modal-wrap .el-select .el-input__inner:focus, .modal-wrap .el-select .el-input.is-focus .el-input__inner {
-    border-color: #eb4012; }
-  .modal-wrap .el-button.form-button {
+    margin-left: 4px;
+}
+
+.modal-wrap .el-select {
+    width: 100%;
+}
+
+.modal-wrap .el-input__inner, .modal-wrap .el-input__inner:hover,
+.modal-wrap .el-select:hover .el-input__inner,
+.modal-wrap .el-textarea__inner, .modal-wrap .el-textarea__inner:hover {
+    border: 1px solid #f19149;
+}
+
+.modal-wrap .el-input__inner:focus, .modal-wrap .el-textarea__inner:focus, .modal-wrap .el-select .el-input__inner:focus, .modal-wrap .el-select .el-input.is-focus .el-input__inner {
+    border-color: #eb4012;
+}
+
+.modal-wrap .el-button.form-button {
     line-height: 44px;
     padding: 0 60px;
     margin-top: 25px;
@@ -264,710 +332,882 @@ a, a:link, a:visited, a:hover, a:active {
     background-color: #e73147;
     border-color: #e73147;
     border-radius: 10px;
-    font-size: 20px; }
-  .modal-wrap .tips {
+    font-size: 20px;
+}
+
+.modal-wrap .tips {
     text-align: center;
-    font-size: 16px; }
-  .modal-wrap .model-confirm {
+    font-size: 16px;
+}
+
+.modal-wrap .model-confirm {
     position: absolute;
     top: 50%;
     left: 50%;
     z-index: 9;
     -webkit-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
     min-width: 300px;
     overflow: hidden;
     border-radius: 6px;
-    color: #e73147;
-    background: #fff; }
-    .modal-wrap .model-confirm .close-wrap {
-      padding: 10px 10px 0 0;
-      text-align: right;
-      cursor: pointer; }
-    .modal-wrap .model-confirm .model-confirm-content {
-      padding: 15px 40px 40px;
-      font-size: 20px; }
-      .modal-wrap .model-confirm .model-confirm-content .icon {
-        width: 60px;
-        height: 60px;
-        margin-right: 12px;
-        border-radius: 50%; }
-    .modal-wrap .model-confirm .model-confirm-footer {
-      height: 50px;
-      line-height: 50px;
-      font-size: 24px;
-      text-align: center;
-      cursor: pointer;
-      color: #fff;
-      background: #e73147; }
+    color: #b4b4b4;
+    background: #fff;
+}
+
+.modal-wrap .model-confirm .close-wrap {
+    padding: 10px 10px 0 0;
+    text-align: right;
+    cursor: pointer;
+}
+
+.modal-wrap .model-confirm .model-confirm-content {
+    padding: 15px 40px 40px;
+    font-size: 20px;
+}
+
+.modal-wrap .model-confirm .model-confirm-content .icon {
+    width: 60px;
+    height: 60px;
+    margin-right: 12px;
+    border-radius: 50%;
+}
+
+.modal-wrap .model-confirm .model-confirm-footer {
+    height: 50px;
+    line-height: 50px;
+    font-size: 24px;
+    text-align: center;
+    cursor: pointer;
+    color: #fff;
+    background: #51ca98;
+}
 
 [v-cloak] {
-  display: none; }
+    display: none;
+}
 
 .change_lang {
-  position: fixed;
-  top: 80px;
-  right: 20px;
-  cursor: pointer;
-  z-index: 99;
-  color: #000; }
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    cursor: pointer;
+    z-index: 99;
+    color: #000;
+}
 
 .change_lang dt {
-  min-width: 202px;
-  height: 40px;
-  line-height: 40px;
-  background-color: #edf1f5;
-  /* border-radius: 0px 3px 3px 0px; */ }
+    min-width: 202px;
+    height: 40px;
+    line-height: 40px;
+    background-color: #edf1f5;
+    /* border-radius: 0px 3px 3px 0px; */
+}
 
 .change_lang .bar-left {
-  position: relative; }
+    position: relative;
+}
 
 .change_lang .bar-left:after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
-  height: 12px;
-  width: 1px;
-  background: #999; }
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    height: 12px;
+    width: 1px;
+    background: #999;
+}
 
 .change_lang .icon-flag {
-  width: 16px;
-  height: 11px;
-  margin: 0 10px 0 7px;
-  position: relative;
-  top: -2px; }
+    width: 16px;
+    height: 11px;
+    margin: 0 10px 0 7px;
+    position: relative;
+    top: -2px;
+}
 
 .change_lang .to-home {
-  display: inline-block; }
+    display: inline-block;
+}
 
 .change_lang .icon-home {
-  position: relative;
-  top: -2px;
-  width: 18px;
-  height: 18px;
-  padding-left: 20px;
-  vertical-align: middle; }
+    position: relative;
+    top: -2px;
+    width: 18px;
+    height: 18px;
+    padding-left: 20px;
+    vertical-align: middle;
+}
 
 .change_lang dt .icon-two-bar {
-  width: 13px;
-  height: 7px;
-  position: relative;
-  margin-right: 6px; }
+    width: 13px;
+    height: 7px;
+    position: relative;
+    margin-right: 6px;
+}
 
 .change_lang dt .rotate {
-  -webkit-transform: rotate(180deg);
-          transform: rotate(180deg); }
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
 
 .change_lang dd {
-  display: none;
-  background-color: #ffffff;
-  border-radius: 0px 0px 3px 3px; }
+    display: none;
+    background-color: #ffffff;
+    border-radius: 0px 0px 3px 3px;
+}
 
 .change_lang dd a {
-  display: block;
-  height: 34px;
-  line-height: 34px;
-  overflow: hidden;
-  color: #000000;
-  text-decoration: none; }
+    display: block;
+    height: 34px;
+    line-height: 34px;
+    overflow: hidden;
+    color: #000000;
+    text-decoration: none;
+}
 
 .w1200 {
-  width: 1200px;
-  min-width: 1200px;
-  margin: 0 auto; }
+    width: 1200px;
+    min-width: 1200px;
+    margin: 0 auto;
+}
 
 /* 含手机的 banner 行 */
 .banner_03 {
-  padding: 200px 0 0; }
+    padding: 200px 0 0;
+}
 
 .banner_03 .banner-sub-title {
-  margin-bottom: 60px; }
+    margin-bottom: 60px;
+}
 
 .banner_03 .ul-wrap {
-  position: relative;
-  top: -60px;
-  color: #4d4d4d; }
+    position: relative;
+    top: -60px;
+    color: #4d4d4d;
+}
 
 .banner_03 .ul-wrap .item {
-  position: relative;
-  padding-left: 30px;
-  margin-bottom: 20px;
-  color: #4d4d4d; }
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 20px;
+    color: #4d4d4d;
+}
 
 .banner_03 .ul-wrap .item:after {
-  position: absolute;
-  content: "";
-  left: 0;
-  top: 38px;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  border: 2px solid #00519e; }
+    position: absolute;
+    content: "";
+    left: 0;
+    top: 38px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid #00519e;
+}
 
 .banner_03 .phone-pic {
-  width: 38%; }
+    width: 38%;
+}
 
 /* 含手机的 banner 行 */
 .banner_04 {
-  padding: 200px 0 0; }
+    padding: 200px 0 0;
+}
 
 .banner_04 .bg-logo {
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: -1;
-  -webkit-transform: translate(-40%, -25%);
-          transform: translate(-40%, -25%);
-  width: 37.25%; }
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    -webkit-transform: translate(-40%, -25%);
+    transform: translate(-40%, -25%);
+    width: 37.25%;
+}
 
 .banner_04 .pos-left, .banner_04 .pos-right {
-  width: 46%; }
+    width: 46%;
+}
 
 .banner_04 .pos-left .banner-sub-title {
-  margin-bottom: 50px; }
+    margin-bottom: 50px;
+}
 
 .banner_04 .company-pic-item {
-  width: 48%; }
+    width: 48%;
+}
 
 .banner_04 .pos-left .btn-normal-red {
-  margin-top: 40px; }
+    margin-top: 40px;
+}
 
 .banner_04 .pos-right .right-title {
-  margin-bottom: 15px; }
+    margin-bottom: 15px;
+}
 
 .banner_04 .pos-right .fs20 {
-  line-height: 32px;
-  margin-bottom: 50px;
-  color: #999; }
+    line-height: 32px;
+    margin-bottom: 50px;
+    color: #999;
+}
 
 /* 含4个重点的 banner 行 */
 .banner_05 {
-  padding: 175px 0 0; }
+    padding: 175px 0 0;
+}
 
 .banner_05 .bg {
-  background: url("../images/advantage.png") no-repeat 344px center/472px; }
+    background: url("../images/advantage.png") no-repeat 344px center/472px;
+}
 
 .banner_05 .icon-wrap {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  width: 70px;
-  height: 70px;
-  padding: 10px;
-  margin: 0 10px;
-  -ms-flex-negative: 0;
-      flex-shrink: 0;
-  border-radius: 50%;
-  background: #ea876f;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box; }
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    width: 70px;
+    height: 70px;
+    padding: 10px;
+    margin: 0 10px;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #ea876f;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
 
 .banner_05 .icon-wrap .icon {
-  width: 100%;
-  height: 100%; }
+    width: 100%;
+    height: 100%;
+}
 
 .banner_05 .icon-safe {
-  background: #5cc8a6; }
+    background: #5cc8a6;
+}
 
 .banner_05 .icon-menu {
-  background: #84abe0; }
+    background: #84abe0;
+}
 
 .banner_05 .icon-design {
-  background: #e281a4; }
+    background: #e281a4;
+}
 
 .banner_05 .banner-title {
-  margin-bottom: 140px; }
+    margin-bottom: 140px;
+}
 
 /* .banner_05 .pos-left{
   margin-bottom: 140px;
 } */
 .banner_05 .blue-title {
-  line-height: 70px;
-  color: #294bae;
-  white-space: nowrap; }
+    line-height: 70px;
+    color: #294bae;
+    white-space: nowrap;
+}
 
 .banner_05 .sub-title {
-  line-height: 30px;
-  color: #333; }
+    line-height: 30px;
+    color: #333;
+}
 
 .banner_05 .pos-left, .banner_05 .pos-right {
-  width: 30%; }
+    width: 30%;
+}
 
 .banner_05 .pos-left .left-item:first-child .ul-wrap {
-  margin-bottom: 140px; }
+    margin-bottom: 140px;
+}
 
 .banner_05 .right-item .icon-wrap {
-  position: absolute;
-  left: -90px;
-  top: 0; }
+    position: absolute;
+    left: -90px;
+    top: 0;
+}
 
 .banner_05 .ul-wrap {
-  margin-top: 30px;
-  margin-bottom: 45px; }
+    margin-top: 30px;
+    margin-bottom: 45px;
+}
 
 .banner_05 .ul-wrap .item {
-  position: relative;
-  line-height: 28px;
-  padding-left: 15px;
-  margin-bottom: 5px;
-  color: #aaa; }
+    position: relative;
+    line-height: 28px;
+    padding-left: 15px;
+    margin-bottom: 5px;
+    color: #aaa;
+}
 
 .banner_05 .ul-wrap .item:after {
-  position: absolute;
-  content: "";
-  left: 0;
-  top: 10px;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #a9a7aa; }
-
-/* 按钮 */
-.banner_05 .btn-normal-red {
-  position: absolute;
-  left: 50%;
-  bottom: 10px;
-  -webkit-transform: translateX(-50%);
-          transform: translateX(-50%); }
-
-/* 工厂实拍的 banner 行  */
-.banner_06 {
-  padding: 200px 0 0; }
-
-.banner_06 .banner-title {
-  margin-bottom: 90px; }
-
-.banner_06 .company-pics-wrap {
-  margin-bottom: 65px; }
-
-.banner_06 .company-pics-wrap .pic-item {
-  width: 24%; }
-
-/* 展示厅实拍的 banner 行 */
-.banner_07 {
-  min-height: 830px;
-  padding: 135px 0 45px;
-  overflow: hidden; }
-
-.banner_07 .show-room-pic {
-  height: 650px;
-  position: absolute;
-  right: 50%; }
-
-.banner_07 .right-content-wrap {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  width: 50%;
-  height: 650px;
-  padding-left: 72px; }
-
-.banner_07 .right-content-wrap .right-title {
-  margin-bottom: 50px; }
-
-.banner_07 .ul-wrap {
-  margin-bottom: 50px;
-  line-height: 46px;
-  color: #666; }
-
-.banner_07 .ul-wrap .item {
-  position: relative;
-  margin-bottom: 10px; }
-
-.banner_07 .ul-wrap .item:after {
-  content: "";
-  position: absolute;
-  left: -15px;
-  top: 20px;
-  height: 6px;
-  width: 6px;
-  border-radius: 50%;
-  background: #b2b2b2; }
-
-.banner_08 .map-wrap {
-  width: 100%;
-  height: 650px; }
-
-/* 地址详情 */
-.banner_09 {
-  padding-top: 70px;
-  padding-bottom: 110px;
-  background: #fbf8fb; }
-
-.banner_09 .banner_09-title {
-  margin-bottom: 30px; }
-
-.banner_09 ul {
-  line-height: 56px; }
-
-.banner_09 ul span.title {
-  font-weight: bold; }
-
-/* 最底部 */
-.banner_10 {
-  min-height: 430px;
-  background: url("../images/bg-bottom.png") no-repeat center/cover; }
-
-.banner_10 .w1200 {
-  padding: 0 24px 0 15px; }
-
-.banner_10 .ul-wrap {
-  line-height: 56px;
-  color: #fff; }
-
-.banner_10 .ul-wrap .item {
-  position: relative;
-  padding-left: 46px; }
-
-.banner_10 .ul-wrap .item:after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 16px;
-  height: 25px;
-  width: 31px;
-  background: url("../images/icon-right.png") no-repeat center/100%; }
-
-.banner_10 .form-box {
-  position: relative;
-  top: -90px;
-  min-width: 615px;
-  padding: 40px 40px 50px;
-  text-align: center;
-  border-radius: 10px;
-  background: #fff; }
-
-.banner_10 .form-box .form-content {
-  line-height: 1.4;
-  margin-top: 4px;
-  margin-bottom: 24px; }
-
-@media screen and (max-width: 1199px) {
-  .w1200 {
-    width: 980px;
-    min-width: 980px; }
-
-  .btn-normal-red {
-    height: 40px;
-    line-height: 40px;
-    padding: 0 20px;
-    font-size: 26px;
-    border-radius: 5px; }
-
-  /* 标题 */
-  .banner-title {
-    font-size: 54px; }
-
-  .fs20 {
-    font-size: 16px; }
-
-  .fs22 {
-    font-size: 18px; }
-
-  .fs24 {
-    font-size: 20px; }
-
-  .fs28 {
-    font-size: 24px; }
-
-  .fs30 {
-    font-size: 24px; }
-
-  .fs32 {
-    font-size: 26px; }
-
-  .fs34 {
-    font-size: 28px; }
-
-  .fs36 {
-    font-size: 30px; }
-
-  .fs38 {
-    font-size: 32px; }
-
-  .fs42 {
-    font-size: 32px; }
-
-  .fs50 {
-    font-size: 40px; }
-
-  .fs52 {
-    font-size: 42px; }
-
-  .fs64 {
-    font-size: 54px; }
-
-  .banner_03, .banner_04, .banner_05, .banner_06, .banner_07 {
-    padding-top: 140px; }
-
-  .banner_03 .ul-wrap .item:after {
     position: absolute;
     content: "";
     left: 0;
-    top: 32px; }
+    top: 10px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #a9a7aa;
+}
 
-  .banner_04 .pos-left .banner-sub-title {
-    margin-bottom: 30px; }
+/* 按钮 */
+.banner_05 .btn-normal-red {
+    position: absolute;
+    left: 50%;
+    bottom: 10px;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
 
-  .banner_04 .pos-left .btn-normal-red {
-    margin-top: 30px; }
+/* 工厂实拍的 banner 行  */
+.banner_06 {
+    padding: 200px 0 0;
+}
 
-  .banner_04 .pos-right .right-title {
-    margin-bottom: 12px; }
+.banner_06 .banner-title {
+    margin-bottom: 90px;
+}
 
-  .banner_04 .pos-right .fs20 {
-    line-height: 28px;
-    margin-bottom: 30px; }
+.banner_06 .company-pics-wrap {
+    margin-bottom: 65px;
+}
 
-  .banner_05 .bg {
-    background: url("../images/advantage.png") no-repeat 274px center/372px; }
+.banner_06 .company-pics-wrap .pic-item {
+    width: 24%;
+}
 
-  .banner_05 .icon-wrap {
-    width: 50px;
-    height: 50px;
-    padding: 8px;
-    margin: 0 8px; }
+/* 展示厅实拍的 banner 行 */
+.banner_07 {
+    min-height: 830px;
+    padding: 135px 0 45px;
+    overflow: hidden;
+}
 
-  .banner_05 .right-item .icon-wrap {
-    left: -70px; }
+.banner_07 .show-room-pic {
+    height: 650px;
+    position: absolute;
+    right: 50%;
+}
 
-  .banner_05 .banner-title {
-    margin-bottom: 80px; }
+.banner_07 .right-content-wrap {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: 50%;
+    height: 650px;
+    padding-left: 72px;
+}
 
-  .banner_05 .blue-title {
-    line-height: 50px; }
+.banner_07 .right-content-wrap .right-title {
+    margin-bottom: 50px;
+}
 
-  .banner_05 .sub-title {
-    line-height: 28px; }
-
-  .banner_05 .pos-left .left-item:first-child .ul-wrap {
-    margin-top: 30px;
-    margin-bottom: 120px; }
-
-  .banner_05 .ul-wrap {
-    margin-top: 20px;
-    margin-bottom: 35px; }
-
-  .banner_06 .banner-title {
-    margin-bottom: 80px; }
-
-  .banner_06 .company-pics-wrap {
-    margin-bottom: 45px; }
-
-  .banner_07 {
-    min-height: 645px; }
-
-  .banner_07 .show-room-pic {
-    height: 550px; }
-
-  .banner_07 .right-content-wrap {
-    height: 550px;
-    padding-left: 62px; }
-
-  .banner_07 .right-content-wrap .right-title {
-    margin-bottom: 30px; }
-
-  .banner_07 .ul-wrap {
-    margin-bottom: 30px;
-    line-height: 42px; }
-
-  .banner_08 .map-wrap {
-    height: 500px; }
-
-  .banner_09 {
-    padding-top: 50px;
-    padding-bottom: 90px; }
-
-  .banner_09 .banner_09-title {
-    margin-bottom: 20px; }
-
-  .banner_09 ul {
-    line-height: 46px; }
-
-  .banner_10 {
-    min-height: 350px;
-    padding-top: 20px; }
-
-  .banner_10 .form-box {
-    top: -90px;
-    min-width: 445px;
-    padding: 25px 25px 30px;
-    border-radius: 8px; } }
-@media screen and (min-width: 1920px) {
-  .w1200 {
-    width: 1600px;
-    min-width: 1600px; }
-
-  .btn-normal-red {
-    height: 70px;
-    line-height: 70px;
-    padding: 0 30px;
-    font-size: 36px;
-    border-radius: 10px; }
-
-  /* 标题 */
-  .banner-title {
-    font-size: 74px; }
-
-  .fs20 {
-    font-size: 24px; }
-
-  .fs22 {
-    font-size: 26px; }
-
-  .fs24 {
-    font-size: 28px; }
-
-  .fs28 {
-    font-size: 32px; }
-
-  .fs30 {
-    font-size: 35px; }
-
-  .fs32 {
-    font-size: 37px; }
-
-  .fs34 {
-    font-size: 39px; }
-
-  .fs36 {
-    font-size: 41px; }
-
-  .fs38 {
-    font-size: 43px; }
-
-  .fs42 {
-    font-size: 48px; }
-
-  .fs50 {
-    font-size: 56px; }
-
-  .fs52 {
-    font-size: 58px; }
-
-  .fs64 {
-    font-size: 74px; }
-
-  .banner_03 {
-    padding-top: 120px; }
-
-  .banner_04, .banner_05, .banner_06, .banner_07 {
-    padding-top: 250px; }
-
-  .banner_03 .banner-sub-title {
-    margin-bottom: 150px; }
-
-  .banner_04 .pos-left .banner-sub-title {
-    margin-bottom: 80px; }
-
-  .banner_04 .pos-left .btn-normal-red {
-    margin-top: 50px; }
-
-  .banner_04 .pos-right .right-title {
-    margin-bottom: 20px; }
-
-  .banner_04 .pos-right .fs20 {
+.banner_07 .ul-wrap {
+    margin-bottom: 50px;
     line-height: 46px;
-    margin-bottom: 70px; }
+    color: #666;
+}
 
-  .banner_05 .bg {
-    background: url("../images/advantage.png") no-repeat 504px center/522px; }
-
-  .banner_05 .icon-wrap {
-    width: 90px;
-    height: 90px;
-    padding: 12px;
-    margin: 0 12px; }
-
-  .banner_05 .right-item .icon-wrap {
-    left: -120px; }
-
-  .banner_05 .banner-title {
-    margin-bottom: 150px; }
-
-  .banner_05 .blue-title {
-    line-height: 90px; }
-
-  .banner_05 .sub-title {
-    line-height: 38px; }
-
-  .banner_05 .pos-left .left-item:first-child .ul-wrap {
-    margin-top: 30px;
-    margin-bottom: 150px; }
-
-  .banner_05 .ul-wrap {
-    margin-top: 20px;
-    margin-bottom: 35px; }
-
-  .banner_05 .ul-wrap .item {
+.banner_07 .ul-wrap .item {
     position: relative;
-    line-height: 38px;
-    padding-left: 25px;
-    margin-bottom: 5px;
-    color: #aaa; }
+    margin-bottom: 10px;
+}
 
-  .banner_06 .banner-title {
-    margin-bottom: 140px; }
+.banner_07 .ul-wrap .item:after {
+    content: "";
+    position: absolute;
+    left: -15px;
+    top: 20px;
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    background: #b2b2b2;
+}
 
-  .banner_06 .company-pics-wrap {
-    margin-bottom: 85px; }
+.banner_08 .map-wrap {
+    width: 100%;
+    height: 650px;
+}
 
-  .banner_07 .show-room-pic {
-    height: 750px; }
+/* 地址详情 */
+.banner_09 {
+    padding-top: 70px;
+    padding-bottom: 110px;
+    background: #fbf8fb;
+}
 
-  .banner_07 .right-content-wrap {
-    height: 750px;
-    padding-left: 80px; }
+.banner_09 .banner_09-title {
+    margin-bottom: 30px;
+}
 
-  .banner_07 .right-content-wrap .right-title {
-    margin-bottom: 70px; }
+.banner_09 ul {
+    line-height: 56px;
+}
 
-  .banner_07 .ul-wrap {
-    margin-bottom: 70px;
-    line-height: 52px; }
+.banner_09 ul span.title {
+    font-weight: bold;
+}
 
-  .banner_08 .map-wrap {
-    height: 750px; }
+/* 最底部 */
+.banner_10 {
+    min-height: 430px;
+    background: url("../images/bg-bottom.png") no-repeat center/cover;
+}
 
-  .banner_09 {
-    padding-top: 90px;
-    padding-bottom: 140px; }
+.banner_10 .w1200 {
+    padding: 0 24px 0 15px;
+}
 
-  .banner_09 .banner_09-title {
-    margin-bottom: 40px; }
+.banner_10 .ul-wrap {
+    line-height: 56px;
+    color: #fff;
+}
 
-  .banner_09 ul {
-    line-height: 70px; }
+.banner_10 .ul-wrap .item {
+    position: relative;
+    padding-left: 46px;
+}
 
-  .banner_10 {
-    min-height: 550px; }
+.banner_10 .ul-wrap .item:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 16px;
+    height: 25px;
+    width: 31px;
+    background: url("../images/icon-right.png") no-repeat center/100%;
+}
 
-  .banner_10 .ul-wrap {
-    max-width: 50%; }
-
-  .banner_10 .form-box {
+.banner_10 .form-box {
+    position: relative;
     top: -90px;
-    padding: 45px 25px 50px;
-    border-radius: 8px; }
+    min-width: 615px;
+    padding: 40px 40px 50px;
+    text-align: center;
+    border-radius: 10px;
+    background: #fff;
+}
 
-  .banner_10 .form-box .form-content {
-    line-height: 1.6;
-    margin-bottom: 30px; } }
+.banner_10 .form-box .form-content {
+    line-height: 1.4;
+    margin-top: 4px;
+    margin-bottom: 24px;
+}
+
+@media screen and (max-width: 1199px) {
+    .w1200 {
+        width: 980px;
+        min-width: 980px;
+    }
+
+    .btn-normal-red {
+        height: 40px;
+        line-height: 40px;
+        padding: 0 20px;
+        font-size: 26px;
+        border-radius: 5px;
+    }
+
+    /* 标题 */
+    .banner-title {
+        font-size: 54px;
+    }
+
+    .fs20 {
+        font-size: 16px;
+    }
+
+    .fs22 {
+        font-size: 18px;
+    }
+
+    .fs24 {
+        font-size: 20px;
+    }
+
+    .fs28 {
+        font-size: 24px;
+    }
+
+    .fs30 {
+        font-size: 24px;
+    }
+
+    .fs32 {
+        font-size: 26px;
+    }
+
+    .fs34 {
+        font-size: 28px;
+    }
+
+    .fs36 {
+        font-size: 30px;
+    }
+
+    .fs38 {
+        font-size: 32px;
+    }
+
+    .fs42 {
+        font-size: 32px;
+    }
+
+    .fs50 {
+        font-size: 40px;
+    }
+
+    .fs52 {
+        font-size: 42px;
+    }
+
+    .fs64 {
+        font-size: 54px;
+    }
+
+    .banner_03, .banner_04, .banner_05, .banner_06, .banner_07 {
+        padding-top: 140px;
+    }
+
+    .banner_03 .ul-wrap .item:after {
+        position: absolute;
+        content: "";
+        left: 0;
+        top: 32px;
+    }
+
+    .banner_04 .pos-left .banner-sub-title {
+        margin-bottom: 30px;
+    }
+
+    .banner_04 .pos-left .btn-normal-red {
+        margin-top: 30px;
+    }
+
+    .banner_04 .pos-right .right-title {
+        margin-bottom: 12px;
+    }
+
+    .banner_04 .pos-right .fs20 {
+        line-height: 28px;
+        margin-bottom: 30px;
+    }
+
+    .banner_05 .bg {
+        background: url("../images/advantage.png") no-repeat 274px center/372px;
+    }
+
+    .banner_05 .icon-wrap {
+        width: 50px;
+        height: 50px;
+        padding: 8px;
+        margin: 0 8px;
+    }
+
+    .banner_05 .right-item .icon-wrap {
+        left: -70px;
+    }
+
+    .banner_05 .banner-title {
+        margin-bottom: 80px;
+    }
+
+    .banner_05 .blue-title {
+        line-height: 50px;
+    }
+
+    .banner_05 .sub-title {
+        line-height: 28px;
+    }
+
+    .banner_05 .pos-left .left-item:first-child .ul-wrap {
+        margin-top: 30px;
+        margin-bottom: 120px;
+    }
+
+    .banner_05 .ul-wrap {
+        margin-top: 20px;
+        margin-bottom: 35px;
+    }
+
+    .banner_06 .banner-title {
+        margin-bottom: 80px;
+    }
+
+    .banner_06 .company-pics-wrap {
+        margin-bottom: 45px;
+    }
+
+    .banner_07 {
+        min-height: 645px;
+    }
+
+    .banner_07 .show-room-pic {
+        height: 550px;
+    }
+
+    .banner_07 .right-content-wrap {
+        height: 550px;
+        padding-left: 62px;
+    }
+
+    .banner_07 .right-content-wrap .right-title {
+        margin-bottom: 30px;
+    }
+
+    .banner_07 .ul-wrap {
+        margin-bottom: 30px;
+        line-height: 42px;
+    }
+
+    .banner_08 .map-wrap {
+        height: 500px;
+    }
+
+    .banner_09 {
+        padding-top: 50px;
+        padding-bottom: 90px;
+    }
+
+    .banner_09 .banner_09-title {
+        margin-bottom: 20px;
+    }
+
+    .banner_09 ul {
+        line-height: 46px;
+    }
+
+    .banner_10 {
+        min-height: 350px;
+        padding-top: 20px;
+    }
+
+    .banner_10 .form-box {
+        top: -90px;
+        min-width: 445px;
+        padding: 25px 25px 30px;
+        border-radius: 8px;
+    }
+}
+
+@media screen and (min-width: 1920px) {
+    .w1200 {
+        width: 1600px;
+        min-width: 1600px;
+    }
+
+    .btn-normal-red {
+        height: 70px;
+        line-height: 70px;
+        padding: 0 30px;
+        font-size: 36px;
+        border-radius: 10px;
+    }
+
+    /* 标题 */
+    .banner-title {
+        font-size: 74px;
+    }
+
+    .fs20 {
+        font-size: 24px;
+    }
+
+    .fs22 {
+        font-size: 26px;
+    }
+
+    .fs24 {
+        font-size: 28px;
+    }
+
+    .fs28 {
+        font-size: 32px;
+    }
+
+    .fs30 {
+        font-size: 35px;
+    }
+
+    .fs32 {
+        font-size: 37px;
+    }
+
+    .fs34 {
+        font-size: 39px;
+    }
+
+    .fs36 {
+        font-size: 41px;
+    }
+
+    .fs38 {
+        font-size: 43px;
+    }
+
+    .fs42 {
+        font-size: 48px;
+    }
+
+    .fs50 {
+        font-size: 56px;
+    }
+
+    .fs52 {
+        font-size: 58px;
+    }
+
+    .fs64 {
+        font-size: 74px;
+    }
+
+    .banner_03 {
+        padding-top: 120px;
+    }
+
+    .banner_04, .banner_05, .banner_06, .banner_07 {
+        padding-top: 250px;
+    }
+
+    .banner_03 .banner-sub-title {
+        margin-bottom: 150px;
+    }
+
+    .banner_04 .pos-left .banner-sub-title {
+        margin-bottom: 80px;
+    }
+
+    .banner_04 .pos-left .btn-normal-red {
+        margin-top: 50px;
+    }
+
+    .banner_04 .pos-right .right-title {
+        margin-bottom: 20px;
+    }
+
+    .banner_04 .pos-right .fs20 {
+        line-height: 46px;
+        margin-bottom: 70px;
+    }
+
+    .banner_05 .bg {
+        background: url("../images/advantage.png") no-repeat 504px center/522px;
+    }
+
+    .banner_05 .icon-wrap {
+        width: 90px;
+        height: 90px;
+        padding: 12px;
+        margin: 0 12px;
+    }
+
+    .banner_05 .right-item .icon-wrap {
+        left: -120px;
+    }
+
+    .banner_05 .banner-title {
+        margin-bottom: 150px;
+    }
+
+    .banner_05 .blue-title {
+        line-height: 90px;
+    }
+
+    .banner_05 .sub-title {
+        line-height: 38px;
+    }
+
+    .banner_05 .pos-left .left-item:first-child .ul-wrap {
+        margin-top: 30px;
+        margin-bottom: 150px;
+    }
+
+    .banner_05 .ul-wrap {
+        margin-top: 20px;
+        margin-bottom: 35px;
+    }
+
+    .banner_05 .ul-wrap .item {
+        position: relative;
+        line-height: 38px;
+        padding-left: 25px;
+        margin-bottom: 5px;
+        color: #aaa;
+    }
+
+    .banner_06 .banner-title {
+        margin-bottom: 140px;
+    }
+
+    .banner_06 .company-pics-wrap {
+        margin-bottom: 85px;
+    }
+
+    .banner_07 .show-room-pic {
+        height: 750px;
+    }
+
+    .banner_07 .right-content-wrap {
+        height: 750px;
+        padding-left: 80px;
+    }
+
+    .banner_07 .right-content-wrap .right-title {
+        margin-bottom: 70px;
+    }
+
+    .banner_07 .ul-wrap {
+        margin-bottom: 70px;
+        line-height: 52px;
+    }
+
+    .banner_08 .map-wrap {
+        height: 750px;
+    }
+
+    .banner_09 {
+        padding-top: 90px;
+        padding-bottom: 140px;
+    }
+
+    .banner_09 .banner_09-title {
+        margin-bottom: 40px;
+    }
+
+    .banner_09 ul {
+        line-height: 70px;
+    }
+
+    .banner_10 {
+        min-height: 550px;
+    }
+
+    .banner_10 .ul-wrap {
+        max-width: 50%;
+    }
+
+    .banner_10 .form-box {
+        top: -90px;
+        padding: 45px 25px 50px;
+        border-radius: 8px;
+    }
+
+    .banner_10 .form-box .form-content {
+        line-height: 1.6;
+        margin-bottom: 30px;
+    }
+}
 
 /*# sourceMappingURL=index.css.map */
