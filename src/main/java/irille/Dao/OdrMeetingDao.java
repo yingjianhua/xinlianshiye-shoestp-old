@@ -1,27 +1,35 @@
 package irille.Dao;
 
 import irille.Entity.OdrerMeetings.Enums.OrderMeetingAuditStatus;
-import irille.Entity.OdrerMeetings.Enums.OrderMeetingExhibitionStatus;
 import irille.Entity.OdrerMeetings.Enums.OrderMeetingStatus;
-import irille.Entity.OdrerMeetings.OrderMeeting;
-import irille.Entity.OdrerMeetings.OrderMeetingAudit;
-import irille.Entity.OdrerMeetings.OrderMeetingAuditRelease;
-import irille.Entity.OdrerMeetings.OrderMeetingExhibition;
+import irille.Entity.OdrerMeetings.*;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.Bean;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
-import irille.pub.idu.IduOther;
+import irille.pub.idu.IduIns;
 import irille.pub.idu.IduUpd;
+import irille.pub.svr.Env;
+import irille.shop.odr.Odr;
+import irille.shop.odr.OdrOrder;
+import irille.shop.odr.OdrOrderLine;
+import irille.shop.pdt.PdtColor;
+import irille.shop.pdt.PdtProduct;
+import irille.shop.pdt.PdtSpec;
 import irille.shop.plt.PltCountry;
+import irille.shop.usr.UsrSupplier;
 import irille.view.Manage.OdrMeeting.OdrMeetingLaunchlistView;
+import irille.view.Manage.OdrMeeting.OdrMeetingOtherlistView;
 import irille.view.Manage.OdrMeeting.OdrMeetingParticipatelistView;
 import irille.view.Page;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -292,36 +300,36 @@ public class OdrMeetingDao {
      * @date 2018/11/16 9:46
      * @author lijie@shoestp.cn
      */
-    public List<Map<String, Object>> getMeetingAllSaleInfo(int start, int limit, int odrMeeting) {
-        BeanQuery query = new BeanQuery();
+    public Page getMeetingAllSaleInfo(int start, int limit, int odrMeeting) {
         SQL sql = new SQL();
         sql
                 .SELECT(
-                        PdtProduct.T.PKEY, "pdtId"
-                )
-                .SELECT(
-                        PdtProduct.T.NAME, "pdtName"
-                )
-                .SELECT(
-                        OrderMeetingProduct.T.PKEY,
-                        PdtSpec.T.KEY_NAME,
-                        PdtSpec.T.PICS,
-                        OrderMeetingProduct.T.NEWPRICE,
-                        OrderMeetingProduct.T.NEWMOQ,
+                        OrderMeetingOrder.T.PKEY,
+                        OdrOrder.T.ORDER_NUM,
+                        OdrOrder.T.PRICE_TOTAL,
                         OrderMeetingProduct.T.STATUS
                 )
-
+                .SELECT(PdtProduct.T.PKEY, "pdtId")
+                .SELECT(PdtProduct.T.PICTURE, "pdtImage")
+                .SELECT(PdtProduct.T.NAME, "pdtName")
+                .SELECT("sum(" + OdrOrderLine.T.QTY.getFld().getTb().getCode() + "." + OdrOrderLine.T.QTY.getFld().getCodeSqlField() + ") as qty")
+                .SELECT(OrderMeetingProduct.T.NEWPRICE, "newPrice")
+                .SELECT(PdtProduct.T.SUPPLIER, "pdtSup")
+                .SELECT(OrderMeeting.T.SUPPLIERID, "OmtSup")
                 .FROM(OrderMeetingOrder.class)
-                .LEFT_JOIN(OdrOrder.class, OdrOrder.T.PKEY, OrderMeetingOrder.T.ORDERID)  //联合订单表
-                .LEFT_JOIN(PdtProduct.class, OrderMeetingProduct.T.PRODUCTID, PdtProduct.T.PKEY)  //联合订单表
-                .LEFT_JOIN(OdrOrderLine.class, OdrOrderLine.T.MAIN, OdrOrder.T.PKEY)  //联合订单明细表
-                .LEFT_JOIN(PdtSpec.class, OdrOrderLine.T.SPEC, PdtSpec.T.PKEY)  //联合订单明细表
-                .LEFT_JOIN(OrderMeetingProduct.class, OrderMeetingProduct.T.ORDERMEETINGID,
-                        OrderMeetingOrder.T.ORDERMEETINGID)//联合联合采购订单补充表
+                .LEFT_JOIN(OdrOrder.class, OdrOrder.T.PKEY, OrderMeetingOrder.T.ORDERID)  //订单表
+                .LEFT_JOIN(OdrOrderLine.class, OdrOrder.T.PKEY, OdrOrderLine.T.MAIN)  //订单详细表
+                .LEFT_JOIN(PdtSpec.class, OdrOrderLine.T.SPEC, PdtSpec.T.PKEY)  //规格表
+                .LEFT_JOIN(PdtProduct.class, PdtProduct.T.PKEY, PdtSpec.T.PRODUCT)  //产品表
+                .LEFT_JOIN(OrderMeetingProduct.class, OrderMeetingProduct.T.PRODUCTID, PdtProduct.T.PKEY)  //活动产品表
+                .LEFT_JOIN(OrderMeeting.class, OrderMeeting.T.PKEY, OrderMeetingOrder.T.ORDERMEETINGID)  //活动产品表
+                .LEFT_JOIN(PdtColor.class, PdtColor.T.PKEY, PdtSpec.T.COLOR)  //颜色
                 .WHERE(OdrOrder.T.TYPE, "=?", Odr.OdrType.STATEONE) //订单类型是  联合采购订单
-                .WHERE(OrderMeetingOrder.T.ORDERMEETINGID, "=?", odrMeeting) //并且是该订购会的
-                .GROUP_BY(OrderMeetingProduct.T.PRODUCTID);
-        return Query.sql(sql).queryMaps();
+                .WHERE(OrderMeetingOrder.T.ORDERMEETINGID, "=?", odrMeeting).LIMIT(start, limit)
+                .GROUP_BY(PdtProduct.T.PKEY)
+        ;
+        List<Map<String, Object>> result = Query.sql(sql).queryMaps();
+        return new Page(result, start, limit, Query.sql(sql).queryMaps().size());
     }
 
     /**
@@ -369,6 +377,5 @@ public class OdrMeetingDao {
         }
     }
 
-    }
 
 }

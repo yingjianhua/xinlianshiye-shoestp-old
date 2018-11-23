@@ -1,20 +1,14 @@
 package irille.Service.Manage.OdrMeeting;
 
-import com.google.inject.ImplementedBy;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
-
+import com.google.inject.ImplementedBy;
 import irille.Entity.OdrerMeetings.OrderMeeting;
-import irille.view.Manage.OdrMeeting.initiatedActivity.LaunchlistMeettingView;
-import irille.view.Manage.OdrMeeting.initiatedActivity.OrderInformationView;
-import org.json.JSONObject;
-
-import java.util.List;
-
 import irille.Service.Manage.OdrMeeting.Imp.OdrMeetingManageServiceImp;
 import irille.view.Manage.OdrMeeting.OdrMeetingInfoView;
-import irille.view.Manage.OdrMeeting.Sale.OdrMeetingSaleInfoView;
+import irille.view.Manage.OdrMeeting.initiatedActivity.LaunchlistMeettingView;
+import irille.view.Manage.OdrMeeting.initiatedActivity.OrderInformationView;
 import irille.view.Page;
+import org.json.JSONObject;
 
 /**
  * 商家端 订购会接口
@@ -120,7 +114,7 @@ public interface IOdrMeetingManageService {
      * @author lijie@shoestp.cn
      */
 
-    List<OdrMeetingSaleInfoView> getMeetingSaleInfo(int start, int limit, int odrMeeting, int type, int supplierId);
+    Page getMeetingSaleInfo(int start, int limit, int odrMeeting, int supplierId);
 
     /**
      * @Description: 订购会列表  修改状态

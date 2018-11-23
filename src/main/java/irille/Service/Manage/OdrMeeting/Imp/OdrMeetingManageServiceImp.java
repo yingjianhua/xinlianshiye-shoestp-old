@@ -11,6 +11,7 @@ import irille.Entity.OdrerMeetings.OrderMeeting;
 import irille.Entity.OdrerMeetings.OrderMeetingAudit;
 import irille.Entity.OdrerMeetings.OrderMeetingAuditRelease;
 import irille.Service.Manage.OdrMeeting.IOdrMeetingManageService;
+import irille.pub.util.getValue;
 import irille.view.Manage.OdrMeeting.OdrMeetingInfoView;
 import irille.view.Manage.OdrMeeting.Sale.OdrMeetingSaleInfoView;
 import irille.view.Manage.OdrMeeting.initiatedActivity.LaunchlistMeettingView;
@@ -20,6 +21,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -165,10 +168,26 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
     }
 
     @Override
-    public List<OdrMeetingSaleInfoView> getMeetingSaleInfo(int start, int limit, int odrMeeting,
-                                                           int type, int supplierId) {
-        List<Map<String, Object>> maps = odrMeetingDao.getMeetingAllSaleInfo(start, limit, odrMeeting);
-        return null;
+    public Page getMeetingSaleInfo(int start, int limit, int odrMeeting,
+                                   int supplierId) {
+        Page maps = odrMeetingDao.getMeetingAllSaleInfo(start, limit, odrMeeting);
+        List<OdrMeetingSaleInfoView> odrMeetingSaleInfoViews = new ArrayList<>();
+        for (Object o : maps.getItems()) {
+            Map map = (Map) o;
+            OdrMeetingSaleInfoView saleInfoView = new OdrMeetingSaleInfoView();
+            saleInfoView.setId(Integer.valueOf(String.valueOf(map.get("pkey"))));
+            saleInfoView.setNewPrice(getValue.get(map, "newPrice", BigDecimal.class, BigDecimal.ZERO));
+            saleInfoView.setPrice_total(getValue.get(map, "price_total", BigDecimal.class, BigDecimal.ZERO));
+            saleInfoView.setPdtId(getValue.get(map, "pdtId", Integer.class, -1));
+            saleInfoView.setPdtImage(getValue.get(map, "pdtImage", String.class, ""));
+            saleInfoView.setQty(getValue.get(map, "qty", BigDecimal.class, BigDecimal.ZERO));
+            saleInfoView.setType(map.get("pdtSup") == map.get("OmtSup"));
+            saleInfoView.setPdtName(getValue.get(map, "pdtName", String.class, "No Data"));
+            saleInfoView.setStatus(getValue.get(map, "status", Byte.class, (byte) 0) == 1);
+            odrMeetingSaleInfoViews.add(saleInfoView);
+        }
+        maps.setItems(odrMeetingSaleInfoViews);
+        return maps;
     }
 
     @Override
@@ -178,29 +197,30 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
 
     @Override
     public void updaddress(OrderMeeting omt) {
-        OdrMeetingDao.updaddress ud=new OdrMeetingDao.updaddress();
+        OdrMeetingDao.updaddress ud = new OdrMeetingDao.updaddress();
         ud.setB(omt);
         ud.commit();
     }
 
     @Override
     public void insertjoinOdr(Integer OMTpkey, Integer supplierkey) {
-        OrderMeetingAuditDao.insertjoinOdr ij=new OrderMeetingAuditDao.insertjoinOdr();
-        OrderMeetingAudit od=new OrderMeetingAudit();
+        OrderMeetingAuditDao.insertjoinOdr ij = new OrderMeetingAuditDao.insertjoinOdr();
+        OrderMeetingAudit od = new OrderMeetingAudit();
         od.setOdrmeeting(OMTpkey);
         od.setSupplierid(supplierkey);
         ij.setB(od);
         ij.commit();
     }
+
     /**
-     *@Description:  逻辑删除 参加订购会合作商
-     *@date 2018/11/22 11:14
-     *@anthor wilson zhang
+     * @Description: 逻辑删除 参加订购会合作商
+     * @date 2018/11/22 11:14
+     * @anthor wilson zhang
      */
     @Override
-    public void deletejoinOdr(Integer OdrAuditpkey){
-        OrderMeetingAuditDao.deletejoinOdr dj= new OrderMeetingAuditDao.deletejoinOdr();
-        OrderMeetingAudit oma=new OrderMeetingAudit();
+    public void deletejoinOdr(Integer OdrAuditpkey) {
+        OrderMeetingAuditDao.deletejoinOdr dj = new OrderMeetingAuditDao.deletejoinOdr();
+        OrderMeetingAudit oma = new OrderMeetingAudit();
         oma.setPkey(OdrAuditpkey);
         oma.setStatus(OrderMeetingAuditStatus.DELETE.getLine().getKey());
         dj.setB(oma);
@@ -226,18 +246,19 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
 
     @Override
     public OrderInformationView getorderInformation(Integer id) {
-        return odrMeetingDao.getorderInformation(id);
+        return null;
+//        return odrMeetingDao.getorderInformation(id);
     }
 
     @Override//添加发布订购会
     public void insOdrmeetting(LaunchlistMeettingView lmv) {
-        OdrMeetingDao.insertomt itt=new OdrMeetingDao.insertomt();
-        OrderMeeting omt=new OrderMeeting();
+        OdrMeetingDao.insertomt itt = new OdrMeetingDao.insertomt();
+        OrderMeeting omt = new OrderMeeting();
         omt.setSupplierid(lmv.getSupplierid());
         omt.setName(lmv.getOrderingTitle());
-        if(lmv.getExhibitionname()!=null && !lmv.getExhibitionname().equals("")){
+        if (lmv.getExhibitionname() != null && !lmv.getExhibitionname().equals("")) {
             omt.setCustomExhibition(lmv.getExhibitionname());
-        }else{
+        } else {
             omt.setExhibition(lmv.getExhibition());
         }
         omt.setCountry(lmv.getCountry());
@@ -250,9 +271,9 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
         omt.setMailtel(lmv.getContactNumber());
         itt.setB(omt);
         itt.commit();
-        System.out.println(itt.getB().getPkey()+">>>>>>>>>");
-        OrderMeetingAuditReleaseDao.insertOdr omar=new OrderMeetingAuditReleaseDao.insertOdr();
-        OrderMeetingAuditRelease omare=new OrderMeetingAuditRelease();
+        System.out.println(itt.getB().getPkey() + ">>>>>>>>>");
+        OrderMeetingAuditReleaseDao.insertOdr omar = new OrderMeetingAuditReleaseDao.insertOdr();
+        OrderMeetingAuditRelease omare = new OrderMeetingAuditRelease();
         omare.setOdrmeeting(itt.getB().getPkey());
         omar.setB(omare).commit();
     }
