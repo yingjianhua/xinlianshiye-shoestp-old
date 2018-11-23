@@ -118,10 +118,10 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
     private String inputContent;
     @Setter
     @Getter
-    private Integer productId;
+    private Integer supplierId;
 
     public void getOrderGoodsList() throws IOException {
-        write(odrMeetingProductManageService.getOrderGoodsList(getStart(), getLimit(), id, status, inputContent));
+        write(odrMeetingProductManageService.getOrderGoodsList(getStart(), getLimit(), id, status, inputContent,supplierId));
     }
 
     public void updateStatus() throws IOException {

@@ -49,8 +49,8 @@ public class OdrMeetingProductManageServiceImp implements IOdrMeetingProductMana
     }
 
     @Override
-    public Page getOrderGoodsList(Integer start, Integer limit, Integer id, Integer status, String inputContent) {
-        return odrMeetingProductDao.getOrderGoodsList(start,limit,id,status,inputContent);
+    public Page getOrderGoodsList(Integer start, Integer limit, Integer id, Integer status, String inputContent,Integer supplierId) {
+        return odrMeetingProductDao.getOrderGoodsList(start,limit,id,status,inputContent,supplierId);
     }
 
     @Override

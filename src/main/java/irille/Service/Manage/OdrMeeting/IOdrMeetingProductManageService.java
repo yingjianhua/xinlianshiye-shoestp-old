@@ -37,7 +37,7 @@ public interface IOdrMeetingProductManageService {
      * @date 2018/11/19 18:56
      * @author zjl
      */
-    Page getOrderGoodsList(Integer start, Integer limit, Integer id, Integer status, String inputContent);
+    Page getOrderGoodsList(Integer start, Integer limit, Integer id, Integer status, String inputContent,Integer supplierId);
 
     /**
      * @Description: 修改订购会产品上下架状态

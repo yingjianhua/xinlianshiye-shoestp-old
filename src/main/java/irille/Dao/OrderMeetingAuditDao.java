@@ -86,7 +86,7 @@ public class OrderMeetingAuditDao {
         Query.sql(sql).limit(start, limit);
         List<OdrAuditsupplierView> oal = Query.sql(sql).queryMaps().stream().map(o -> {
             OdrAuditsupplierView omv = new OdrAuditsupplierView();
-            omv.setId((Integer) o.get("omatid"));
+            omv.setId((Integer) o.get("supplierid"));
             omv.setCompanyname((String) o.get(UsrSupplier.T.NAME.getFld().getCodeSqlField()));
             omv.setName((String) o.get(UsrSupplier.T.CONTACTS.getFld().getCodeSqlField()));
             omv.setEmail((String) o.get(UsrSupplier.T.EMAIL.getFld().getCodeSqlField()));

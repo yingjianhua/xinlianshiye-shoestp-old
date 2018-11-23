@@ -51,7 +51,7 @@ public class OdrMeetingProductDao {
         return query.queryCount() > 0;
     }
 
-    public Page getOrderGoodsList(Integer start, Integer limit, Integer id, Integer status, String inputContent) {
+    public Page getOrderGoodsList(Integer start, Integer limit, Integer id, Integer status, String inputContent, Integer supplierId) {
         if (start == null) {
             start = 0;
         }
@@ -75,6 +75,9 @@ public class OdrMeetingProductDao {
                         .WHERE(OrderMeeting.T.PKEY, "=?", id)
                         .WHERE(OrderMeetingProduct.T.STATUS, "<>?", OrderMeetingProductStatus.IRREGULARITIESDELETE.getLine().getKey())
                         .WHERE(OrderMeetingProduct.T.STATUS, "<>?", OrderMeetingProductStatus.DELETE.getLine().getKey());
+                if (supplierId != null) {
+                    WHERE(OrderMeetingProduct.T.SUPPLIERID, "=?", supplierId);
+                }
                 if (inputContent != null) {
                     WHERE(PdtProduct.T.NAME, "like'%" + inputContent + "%'");
                 }
@@ -202,16 +205,16 @@ public class OdrMeetingProductDao {
 
 
     /**
-     *@Description:  逻辑删除 参加订购会合作商 所对应的商品
-     *@date 2018/11/22 11:14
-     *@anthor wilson zhang
+     * @Description: 逻辑删除 参加订购会合作商 所对应的商品
+     * @date 2018/11/22 11:14
+     * @anthor wilson zhang
      */
-    public  static void deletejoinOdr(OrderMeetingProduct omp){
-        String sql="update "+OrderMeetingProduct.TB.getCodeSqlTb()
-                +" set "+ OrderMeetingProduct.T.STATUS.getFld().getCodeSqlField()
-                +" =?  WHERE "+ OrderMeetingProduct.T.ORDERMEETINGID.getFld().getCodeSqlField()
-                +" =? AND "+OrderMeetingProduct.T.SUPPLIERID.getFld().getCodeSqlField()+" =?";
-       BeanBase.executeUpdate(sql,OrderMeetingProductStatus.DELETE.getLine().getKey(),omp.getOrdermeetingid(),omp.getSupplierid());
+    public static void deletejoinOdr(OrderMeetingProduct omp) {
+        String sql = "update " + OrderMeetingProduct.TB.getCodeSqlTb()
+                + " set " + OrderMeetingProduct.T.STATUS.getFld().getCodeSqlField()
+                + " =?  WHERE " + OrderMeetingProduct.T.ORDERMEETINGID.getFld().getCodeSqlField()
+                + " =? AND " + OrderMeetingProduct.T.SUPPLIERID.getFld().getCodeSqlField() + " =?";
+        BeanBase.executeUpdate(sql, OrderMeetingProductStatus.DELETE.getLine().getKey(), omp.getOrdermeetingid(), omp.getSupplierid());
     }
 
     public void addProducts(Integer id, Integer pkey, List<AllProductsView> list) {
