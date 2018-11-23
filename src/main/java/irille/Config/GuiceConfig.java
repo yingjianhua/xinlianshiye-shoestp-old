@@ -1,4 +1,4 @@
-package irille.config;
+package irille.Config;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;

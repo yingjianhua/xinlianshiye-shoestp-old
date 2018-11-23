@@ -7,7 +7,7 @@
     <display-name>irillePlat</display-name>
     <!--GuIce 单例-->
     <listener>
-        <listener-class>irille.config.GuiceConfig</listener-class>
+        <listener-class>irille.Config.GuiceConfig</listener-class>
     </listener>
     <!--GuIce 单例-->
     <filter>
