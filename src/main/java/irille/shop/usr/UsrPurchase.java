@@ -61,15 +61,15 @@ public class UsrPurchase extends BeanInt<UsrPurchase> implements IExtName{
 		public static final Index IDX_GOOGLE_USER_ID = TB.addIndex("google_user_id", true,T.GOOGLE_USER_ID);
 		
 		private Fld _fld;
-		private T(Class clazz,String name,boolean... isnull) 
-			{_fld=TB.addOutKey(clazz,this,name,isnull);	}
-		private T(IEnumFld fld,boolean... isnull) { this(fld,null,isnull); } 
-		private T(IEnumFld fld, String name,boolean... null1) {
-			_fld=TB.add(fld,this,name,null1);}
-		private T(IEnumFld fld, String name,int strLen) {
-			_fld=TB.add(fld,this,name,strLen);}
-		private T(Fld fld) {_fld=TB.add(fld,this); }
-		public Fld getFld(){return _fld;}
+        private T(Class clazz,String name,boolean... isnull)
+        {_fld=TB.addOutKey(clazz,this,name,isnull);	}
+        private T(IEnumFld fld,boolean... isnull) { this(fld,null,isnull); }
+        private T(IEnumFld fld, String name,boolean... null1) {
+            _fld=TB.add(fld,this,name,null1);}
+        private T(IEnumFld fld, String name,int strLen) {
+            _fld=TB.add(fld,this,name,strLen);}
+        private T(Fld fld) {_fld=TB.add(fld,this); }
+        public Fld getFld(){return _fld;}
 		
 	}
 	

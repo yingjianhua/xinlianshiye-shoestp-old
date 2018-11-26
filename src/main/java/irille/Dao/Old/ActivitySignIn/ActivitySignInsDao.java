@@ -18,3 +18,4 @@ public class ActivitySignInsDao extends IduIns<ActivitySignInsDao, ActivityInfo>
         getB().setCreatedTime(new Date());
     }
 }
+
