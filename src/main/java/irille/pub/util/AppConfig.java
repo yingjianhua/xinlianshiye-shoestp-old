@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.sql.SQLException;
 import java.util.Properties;
 import java.util.TimeZone;
@@ -25,7 +26,9 @@ public class AppConfig {
 	public static final ObjectMapper objectMapper;
 	public static final String image_base_url;
 	public static final String mail_template;
+	public static final String mail_template2;
 	public static final String mail_template_file;
+	public static final String mail_template_file2;
 	public static final String mail_template_logo;
 	public static final String mail_template_domain;
 	public static final String mail_template_index;
@@ -53,6 +56,7 @@ public class AppConfig {
 			objectMapper = new ObjectMapper().setSerializationInclusion(Include.NON_NULL);
 			
 			mail_template_file = properties.getProperty("mail.template.file");
+			mail_template_file2 = properties.getProperty("mail.template.file2");
 			mail_template_logo = properties.getProperty("mail.template.logo");
 			mail_template_domain = properties.getProperty("mail.template.domain");
 			mail_template_index = properties.getProperty("mail.template.index");
@@ -66,7 +70,15 @@ public class AppConfig {
 				b.append(buffer).append("\r\n");
 			}
 			mail_template = b.toString();
-			
+
+			in = new BufferedReader(new InputStreamReader(AppConfig.class.getResourceAsStream(mail_template_file2), Charset.forName("utf-8")));
+			 b = new StringBuilder();
+			while((buffer = in.readLine())!=null) {
+				System.out.println(buffer);
+				b.append(buffer).append("\r\n");
+			}
+
+			mail_template2 = b.toString();
 		} catch (Exception e) {
 			LOG.err("properties is not exists", "配置文件【{0}】不存在", filepath);
 			throw new AssertionError();
