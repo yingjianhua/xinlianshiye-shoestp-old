@@ -326,11 +326,55 @@ public class OdrMeetingDao {
                 .LEFT_JOIN(PdtColor.class, PdtColor.T.PKEY, PdtSpec.T.COLOR)  //颜色
                 .WHERE(OdrOrder.T.TYPE, "=?", Odr.OdrType.STATEONE) //订单类型是  联合采购订单
                 .WHERE(OrderMeetingOrder.T.ORDERMEETINGID, "=?", odrMeeting).LIMIT(start, limit)
+
                 .GROUP_BY(PdtProduct.T.PKEY)
         ;
         List<Map<String, Object>> result = Query.sql(sql).queryMaps();
         return new Page(result, start, limit, Query.sql(sql).queryMaps().size());
     }
+
+    public List<Map<String, Object>> getMeetingSpecSaleInfo(int odrMeeting, int pdtId) {
+        SQL sql = new SQL();
+        SQL chlid = new SQL();
+        chlid.SELECT("count(1)").FROM(OrderMeetingOrder.class)
+                .LEFT_JOIN(OdrOrder.class, OdrOrder.T.PKEY, OrderMeetingOrder.T.ORDERID)  //订单表
+                .LEFT_JOIN(OdrOrderLine.class, OdrOrder.T.PKEY, OdrOrderLine.T.MAIN)  //订单详细表
+                .LEFT_JOIN(PdtSpec.class, OdrOrderLine.T.SPEC, PdtSpec.T.PKEY)  //规格表
+                .LEFT_JOIN(PdtProduct.class, PdtProduct.T.PKEY, PdtSpec.T.PRODUCT)  //产品表
+                .LEFT_JOIN(OrderMeetingProduct.class, OrderMeetingProduct.T.PRODUCTID, PdtProduct.T.PKEY)  //活动产品表
+                .LEFT_JOIN(OrderMeeting.class, OrderMeeting.T.PKEY, OrderMeetingOrder.T.ORDERMEETINGID)  //活动产品表
+                .WHERE(OdrOrder.T.TYPE, "=?", Odr.OdrType.STATEONE) //订单类型是  联合采购订单
+                .WHERE(OrderMeetingOrder.T.ORDERMEETINGID, "=?", odrMeeting)
+                .WHERE(" PdtSpec.pkey = id")
+                .GROUP_BY(PdtSpec.T.PKEY);
+
+
+        sql
+                .SELECT(
+                        OdrOrder.T.ORDER_NUM,
+                        OdrOrder.T.PRICE_TOTAL,
+                        OrderMeetingProduct.T.STATUS
+                )
+                .SELECT(PdtSpec.T.PKEY, "id")
+                .SELECT(PdtSpec.T.KEY_NAME, "specName")
+                .SELECT("sum(OdrOrderLine.qty) as qty")
+                .SELECT(OdrOrderLine.T.SUBTOTAL)
+                .SELECT(chlid, "counts")
+                .FROM(OrderMeetingOrder.class)
+                .LEFT_JOIN(OdrOrder.class, OdrOrder.T.PKEY, OrderMeetingOrder.T.ORDERID)  //订单表
+                .LEFT_JOIN(OdrOrderLine.class, OdrOrder.T.PKEY, OdrOrderLine.T.MAIN)  //订单详细表
+                .LEFT_JOIN(PdtSpec.class, OdrOrderLine.T.SPEC, PdtSpec.T.PKEY)  //规格表
+                .LEFT_JOIN(PdtProduct.class, PdtProduct.T.PKEY, PdtSpec.T.PRODUCT)  //产品表
+                .LEFT_JOIN(OrderMeetingProduct.class, OrderMeetingProduct.T.PRODUCTID, PdtProduct.T.PKEY)  //活动产品表
+                .LEFT_JOIN(OrderMeeting.class, OrderMeeting.T.PKEY, OrderMeetingOrder.T.ORDERMEETINGID)  //活动产品表
+                .WHERE(OdrOrder.T.TYPE, "=?", Odr.OdrType.STATEONE) //订单类型是  联合采购订单
+                .WHERE(OrderMeetingOrder.T.ORDERMEETINGID, "=?", odrMeeting)
+                .WHERE(PdtProduct.T.PKEY, "=?", pdtId)
+                .GROUP_BY(PdtSpec.T.PKEY);
+
+        return Query.sql(sql).queryMaps();
+    }
+
 
     /**
      * @Description: 订购会列表  修改状态

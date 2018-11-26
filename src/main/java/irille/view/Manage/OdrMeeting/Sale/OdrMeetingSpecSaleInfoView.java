@@ -1,5 +1,6 @@
 package irille.view.Manage.OdrMeeting.Sale;
 
+import irille.pub.util.SetBeans.SetBean.Annotations.SetBean;
 import lombok.Data;
 
 /**
@@ -8,8 +9,9 @@ import lombok.Data;
 @Data
 public class OdrMeetingSpecSaleInfoView {
 
+    @SetBean(OriginalField = "specName")
     private String name;
     private double price;
     private int qty;
-    private double countPrice;
+    private double subtotal;
 }

@@ -11,9 +11,11 @@ import irille.Entity.OdrerMeetings.OrderMeeting;
 import irille.Entity.OdrerMeetings.OrderMeetingAudit;
 import irille.Entity.OdrerMeetings.OrderMeetingAuditRelease;
 import irille.Service.Manage.OdrMeeting.IOdrMeetingManageService;
+import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.pub.util.getValue;
 import irille.view.Manage.OdrMeeting.OdrMeetingInfoView;
 import irille.view.Manage.OdrMeeting.Sale.OdrMeetingSaleInfoView;
+import irille.view.Manage.OdrMeeting.Sale.OdrMeetingSpecSaleInfoView;
 import irille.view.Manage.OdrMeeting.initiatedActivity.LaunchlistMeettingView;
 import irille.view.Manage.OdrMeeting.initiatedActivity.OrderInformationView;
 import irille.view.Page;
@@ -184,6 +186,12 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
             saleInfoView.setType(map.get("pdtSup") == map.get("OmtSup"));
             saleInfoView.setPdtName(getValue.get(map, "pdtName", String.class, "No Data"));
             saleInfoView.setStatus(getValue.get(map, "status", Byte.class, (byte) 0) == 1);
+            List<Map<String, Object>> map1 = odrMeetingDao.getMeetingSpecSaleInfo(odrMeeting, saleInfoView.getPdtId());
+            List items = new ArrayList();
+            map1.forEach(stringObjectMap -> {
+                items.add(SetBeans.set(stringObjectMap, OdrMeetingSpecSaleInfoView.class));
+            });
+            saleInfoView.setItems(items);
             odrMeetingSaleInfoViews.add(saleInfoView);
         }
         maps.setItems(odrMeetingSaleInfoViews);
