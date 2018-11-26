@@ -1,18 +1,25 @@
 package irille.sellerAction.omt;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import irille.Entity.OdrerMeetings.OrderMeeting;
 import irille.Service.Manage.OdrMeeting.IOdrMeetingManageService;
 import irille.Service.Manage.OdrMeeting.IOdrMeetingProductManageService;
 import irille.Service.Manage.OdrMeeting.IOdrMeettingExhibitionService;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.omt.inf.IOdrMeetingAction;
+import irille.view.Manage.OdrMeeting.initiatedActivity.AllProductsView;
 import irille.view.Manage.OdrMeeting.initiatedActivity.LaunchlistMeettingView;
 import irille.view.Manage.OdrMeeting.initiatedActivity.OrderInformationView;
+import irille.view.Page;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.util.List;
 
 public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdrMeetingAction {
 
@@ -23,12 +30,10 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
 
     @Inject
     private IOdrMeettingExhibitionService odrMeettingExhibitionService;
-
     @Override
     public void loadsupstate() throws Exception {
         writerOrExport(odrMeetingManageService.loadsupstate());
     }
-
     @Override
     public void loadstate() throws Exception {
         writerOrExport(odrMeetingManageService.loadstate());
@@ -41,7 +46,7 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
 
     @Setter
     @Getter
-    private String name;
+    private  String name;
     @Setter
     @Getter
     private Integer state;
@@ -51,30 +56,25 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
     private Integer supstate;
 
     public void getMyOdrMeetingList() throws Exception {
-        write(odrMeetingManageService.getMyOdrMeetingList(getStart(), getLimit(), name, supstate, state, getSupplier().getPkey()));
-        ;
+        write(odrMeetingManageService.getMyOdrMeetingList(getStart(),getLimit(),name,supstate,state,getSupplier().getPkey())); ;
     }
-
     @Override
     public void getMyJoinOdrMeetingList() throws Exception {
-        write(odrMeetingManageService.getMyJoinOdrMeetingList(getStart(), getLimit(), name, state, getSupplier().getPkey()));
+        write(odrMeetingManageService.getMyJoinOdrMeetingList(getStart(),getLimit(),name,state,getSupplier().getPkey()));
     }
 
     @Override
     public void getMyOtherOdrMeetingList() throws Exception {
-        write(odrMeetingManageService.getMyOtherOdrMeetingList(getStart(), getLimit(), name, state, getSupplier().getPkey()));
+        write(odrMeetingManageService.getMyOtherOdrMeetingList(getStart(),getLimit(),name,state,getSupplier().getPkey()));
     }
-
     @Setter
     @Getter
-    private String pkeys;
-
+    private  String pkeys;
     @Override  //發佈訂購會 刪除訂購會
     public void batchdelete() throws Exception {
         odrMeetingManageService.batchdelete(pkeys);
         write();
     }
-
     @Override   //參加訂購會 刪除訂購會
     public void joindelete() throws Exception {
         odrMeetingManageService.joindelete(pkeys);
@@ -83,27 +83,24 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
 
     @Override  //參加訂購會 插入訂購會
     public void joininsert() throws Exception {
-        odrMeetingManageService.insertjoinOdr(id, getSupplier().getPkey());
+        odrMeetingManageService.insertjoinOdr(id,getSupplier().getPkey());
         write();
     }
 
     @Setter
     @Getter
-    private Integer id;
+    private  Integer id;
     @Setter
     @Getter
-    private Integer fstate;//发起订购会修改状态 继续/暂停
-
+    private  Integer fstate;//发起订购会修改状态 继续/暂停
     @Override
     public void Meettingupdstate() throws Exception {
-        odrMeetingManageService.Meettingupdstate(id, fstate);
+        odrMeetingManageService.Meettingupdstate(id,fstate);
         write();
     }
-
     public void getorderInformation() throws IOException {
         write(odrMeetingManageService.getorderInformation(id));
     }
-
     @Setter
     @Getter
     private Integer status;
@@ -115,32 +112,29 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
     private Integer productId;
 
     public void getOrderGoodsList() throws IOException {
-        write(odrMeetingProductManageService.getOrderGoodsList(getStart(), getLimit(), id, status, inputContent));
+        write(odrMeetingProductManageService.getOrderGoodsList(getStart(),getLimit(),id,status,inputContent));
     }
-
     public void updateStatus() throws IOException {
         odrMeetingProductManageService.updateStatus(id);
         write();
     }
-
     /**
-     * @Description: 逻辑删除 参加订购会合作商
-     * @date 2018/11/22 11:14
-     * @anthor wilson zhang
+     *@Description:  逻辑删除 参加订购会合作商
+     *@date 2018/11/22 11:14
+     *@anthor wilson zhang
      */
-    public void deletejoinOdr() {
+    public void deletejoinOdr(){
         odrMeetingManageService.deletejoinOdr(id);
     }
 
     /**
-     * @Description: 插入发布订购会
-     * @date 2018/11/20 16:26
-     * @anthor wilson zhang
-     */
+    *@Description: 插入发布订购会
+    *@date 2018/11/20 16:26
+    *@anthor wilson zhang
+    */
     @Setter
     @Getter
     private String llmv;
-
     @Override
     public void insOdrmeetting() throws Exception {
         LaunchlistMeettingView ll = objectMapper.readValue(llmv, LaunchlistMeettingView.class);
@@ -179,6 +173,22 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
         write();
     }
 
+    @Setter
+    @Getter
+    String products;
+
+    public void addProducts() throws IOException {
+        JsonParser jsonParser = new JsonFactory().createParser(products);
+        List<AllProductsView> productsViewList = new ObjectMapper().readValue(
+                jsonParser, new TypeReference<List<AllProductsView>>() {
+                });
+        odrMeetingProductManageService.addProducts(id, getSupplier().getPkey(), productsViewList);
+        write();
+    }
+
+    public void getPartnerList() throws IOException {
+        write(odrMeetingManageService.cooperationsupplier(getStart(), getLimit(), status, name, id));
+    }
     public void getSalesInfo() throws IOException {
         write(odrMeetingManageService.getMeetingSaleInfo(getStart(), getLimit(), getId(), getSupplier().getPkey()));
     }

@@ -37,7 +37,7 @@ public interface IOdrMeetingProductManageService {
      * @date 2018/11/19 18:56
      * @author zjl
      */
-    Page getOrderGoodsList(Integer start, Integer limit, Integer id, Integer status, String inputContent);
+    Page getOrderGoodsList(Integer start, Integer limit, Integer id, Integer status, String inputContent,Integer supplierId);
 
     /**
      * @Description: 修改订购会产品上下架状态
@@ -66,4 +66,11 @@ public interface IOdrMeetingProductManageService {
      * @author zjl
      */
     List getAddedProducts(Integer id);
+
+    /**
+     * @Description: 添加订购会商品
+     * @date 2018/11/22 9:55
+     * @author zjl
+     */
+    void addProducts(Integer id,Integer pkey,List<AllProductsView> list);
 }

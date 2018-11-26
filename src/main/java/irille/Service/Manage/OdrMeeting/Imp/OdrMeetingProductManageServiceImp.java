@@ -49,8 +49,8 @@ public class OdrMeetingProductManageServiceImp implements IOdrMeetingProductMana
     }
 
     @Override
-    public Page getOrderGoodsList(Integer start, Integer limit, Integer id, Integer status, String inputContent) {
-        return odrMeetingProductDao.getOrderGoodsList(start,limit,id,status,inputContent);
+    public Page getOrderGoodsList(Integer start, Integer limit, Integer id, Integer status, String inputContent,Integer supplierId) {
+        return odrMeetingProductDao.getOrderGoodsList(start,limit,id,status,inputContent,supplierId);
     }
 
     @Override
@@ -71,6 +71,11 @@ public class OdrMeetingProductManageServiceImp implements IOdrMeetingProductMana
     @Override
     public List getAddedProducts(Integer id) {
         return odrMeetingProductDao.getAddedProducts(id);
+    }
+
+    @Override
+    public void addProducts(Integer id,Integer pkey, List<AllProductsView> list) {
+        odrMeetingProductDao.addProducts(id,pkey,list);
     }
 
 }

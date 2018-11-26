@@ -144,4 +144,5 @@ public interface IOdrMeetingManageService {
     */
 
     void insOdrmeetting(LaunchlistMeettingView lmv);
+    Page cooperationsupplier(Integer start, Integer limit,Integer status ,String name,Integer omtid);
 }
