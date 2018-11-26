@@ -427,23 +427,23 @@
               val.name +
               '</div>' +
               '</a>' +
-              ' <div class="procurement-price">' +
-              '<div class="line1">' +
-              '<span>MOQ:' + val.count + '</span>' +
+        /*      ' <div class="procurement-price">' +
+             // '<div class="line1">' +
+            //  '<span>MOQ:' + val.count + '</span>' +
               //'<span class="fr">${env.currency.symbols} '+val.sourcePrice+'</span>'+
-              '</div>' +
+             // '</div>' +
               '<div class="line2">' +
               '<span class="star ' + judgeReview(val.reviewRating) + '"></span>(<span>'
               + val.reviewCount + '</span>)' +
               '<span class="fr" style="font-size: 16px;color: #db0000;">${env.currency.symbols} '
               + val.curPrice + '</span>' +
               '</div>' +
-              '</div>' +
+              '</div>' +*/
               '<div class="procurement-button">' +
               '<span class="bga8" onclick="addThisToFavorite(' + val.productId
               + ')" style=font-size:11px>' + lang_obj.mobile.Collection + '</span>' +
-              '<span class="bgdb" onclick="addThisToCart(' + val.productId + ');">'
-              + lang_obj.mobile.Add_To_Shopping_Cart + '</span>' +
+          /*    '<span class="bgdb" onclick="addThisToCart(' + val.productId + ');">'
+              + lang_obj.mobile.Add_To_Shopping_Cart + '</span>' +*/
               '</div>' +
               '</div>';
         });

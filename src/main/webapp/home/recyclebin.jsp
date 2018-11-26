@@ -280,15 +280,15 @@
                     <div class="xmg-myfcaozuonav">
                         <input type="checkbox" name="ckAll" value="全选/反选" onclick="checkAll()" id="all"/>
                         <a href="javascript:;" id="empty"><s:text name="Emptying"/></a>
-                        <a href="javascript:;" id="addToCart" style="background:#db0000;"><s:text
-                                name="addToCartTo"/></a>
+                        <a href="javascript:;" onclick="addToCart()" id="addToCart" style="background:#db0000;"><s:text
+                                name="my-inquiry-publish.View_Inquiry"/></a>
                     </div>
                 </c:if>
-             <%--    <div class="xmg-myfcaozuonav">
-                    <input type="checkbox" name="ckAll" value="全选/反选" onclick="checkAll()" id="all"/>
-                    <a href="javascript:;" id="empty"><s:text name="emptyRecycleBin"/></a>
-                </div>
- --%>
+                <%--    <div class="xmg-myfcaozuonav">
+                       <input type="checkbox" name="ckAll" value="全选/反选" onclick="checkAll()" id="all"/>
+                       <a href="javascript:;" id="empty"><s:text name="emptyRecycleBin"/></a>
+                   </div>
+    --%>
                 <!-- 有商品时候 end -->
             </div>
         </div>
@@ -362,8 +362,8 @@
 
     .xmg-myf-tc .xmg-box .xmg-bottom a {
         display: inline-block;
-       /*  width: 66px; */
-        padding:0 5px;
+        /*  width: 66px; */
+        padding: 0 5px;
         height: 26px;
         border-radius: 6px;
         text-align: center;
@@ -438,6 +438,26 @@
         });
     }
 
+    function addToCart() {
+        var pkeys = chooseChecked();
+        var result = pkeys.split(",");
+        for (var i = 0; i < result.length; i++) {
+            $.ajax({
+                url: '/home/pdt_PdtConsultPdtList_add',
+                type: 'post',
+                data: {"product": result[i]},
+                dataType: 'json',
+                success: function (data) {
+                    if (data.success == true) {
+                        layer.msg('<s:text name="my-inquiry-publish.View_Inquiry"/>', {icon: 1});
+                    } else {
+                        layer.msg(getMessage(data.msg), {icon: 2, time: 2000});
+                    }
+                }
+            })
+        }
+    }
+
     function restore(id) {
         $.ajax({
             url: '/home/usr_UsrFavorites_restoreFavorite',
@@ -504,13 +524,13 @@
     })
 
     $("#empty").click(function () {
-    	if(document.getElementById("all").checked){
-    	$(".xmg-myf-tc333").show();
-    	}else{
-    	layer.msg(lang_obj.manage.sales.check_choose, {icon: 2, time: 2000});	
-    	}
-    	
-        
+        if (document.getElementById("all").checked) {
+            $(".xmg-myf-tc333").show();
+        } else {
+            layer.msg(lang_obj.manage.sales.check_choose, {icon: 2, time: 2000});
+        }
+
+
     })
     $(".xmg-myf-tc333 .xmg-box .xmg-close,.xmg-myf-tc333 .xmg-box .xmg-bottom a.cancel").click(function () {
         $(".xmg-myf-tc333").hide();

@@ -182,7 +182,7 @@
             <div><s:text name="Global.Product_Number"/>: {{_itemCode}}
             </div>
         </div>
-        <div class="clean prod_info_price">
+<%--        <div class="clean prod_info_price">
             <div class="box_price clean price_1 last_price">
                 <div class="fl title">
                     <!-- Reference Price -->
@@ -197,7 +197,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>--%>
         <div class="clean prod_info_line ui_border_t">
             <div class="clean rows attr_show none" name="Color">
                 <div class="title">
@@ -229,7 +229,7 @@
                 </div>
             </div>
 
-            <div class="clean rows">
+            <%--<div class="clean rows">
                 <div class="title">
                     <!-- MOQ -->
                     <s:text name="products.moq"/>:
@@ -237,8 +237,8 @@
                 <div class="txt">
                     {{result.min_oq}}
                 </div>
-            </div>
-            <div class="clean rows prod_info_qty">
+            </div>--%>
+          <%--  <div class="clean rows prod_info_qty">
                 <div class="title">
                     <!-- QTY -->
                     <s:text name="order_line.qty"/>:
@@ -253,14 +253,14 @@
                     <div class=" add" v-on:click="addStock">
                         +
                     </div>
-                    <%-- <div class="stock">
+                    &lt;%&ndash; <div class="stock">
                         <b id="inventory_number">
                             {{_stock}}
                         </b>
                         <!-- in Stock -->
                         <s:text name="product.stock"/>
-                    </div> --%>
-                </div>
+                    </div> &ndash;%&gt;
+                </div>--%>
                 <div class="txt" v-if="status.isSoleOut">
                     <div class="stock">
                         <span>Sole Out</span>
@@ -275,12 +275,12 @@
             </div>
         </div>
         <div class="widget prod_info_actions clean">
-            <div class="btn_add" style="width:100%;" id="addCart">
+<%--            <div class="btn_add" style="width:100%;" id="addCart">
                 <input type="button" value="<s:text name="mobile.add_to_cart" />"
                        class="btn_global add_btn addtocart AddtoCartBgColor"
                        v-on:click="addCart"
                 >
-            </div>
+            </div>--%>
             <div class="blank15">
             </div>
             <a href="javascript:void(0)" target="_blank" class="btn_global add_btn BuyNowBgColor inquiry_btn"

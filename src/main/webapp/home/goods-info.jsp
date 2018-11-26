@@ -207,7 +207,7 @@
                 </div>
 
 
-                <div class="xmgT4 info_price clearfloat">
+<%--                <div class="xmgT4 info_price clearfloat">
                     <p><s:text name="Global.Proposed_Price"/>:</p>
                     <div class="xmgLeft">
                         <dl>
@@ -233,7 +233,7 @@
                         </dl>
                         <strong id="cur_price" class="price">{{goodsInfo.currency_symbol}}{{goodsInfo.price}}</strong>
                     </div>
-                </div>
+                </div>--%>
 
 
                 <div class="xmgForm" name="xmgForm" id="goodsForm">
@@ -255,7 +255,7 @@
                         </li>
                     </ul>
 
-                    <div class="xmgP">MOQ: {{goodsInfo.min_oq}}</div>
+                    <%--<div class="xmgP">MOQ: {{goodsInfo.min_oq}}</div>--%>
 
 
                     <div class="xmgSeleSize">
@@ -272,16 +272,16 @@
                             <ul>
                                 <li v-for="(v,index) in _specList" :specid="v.id">
                                     <span>{{v.size}}</span>
-                                    <span>{{v.price}}</span>
-                                    <div class="column">
-                                        <a href="javascript:void(0);"
-                                           :class="(_spceCat(v.id)-1<0)?'disable sub':'sub'"
-                                           @click="subSpec(v.id)">-</a>
-                                        <input type="text" class="buy" v-model="status.cat[v.id]"
-                                               onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'>
-                                        <a href="javascript:void(0);" class="add"
-                                           @click="addSpec(v.id)">+</a>
-                                    </div>
+                         <%--           <span>{{v.price}}</span>--%>
+                                    <%--<div class="column">--%>
+                                        <%--<a href="javascript:void(0);"--%>
+                                           <%--:class="(_spceCat(v.id)-1<0)?'disable sub':'sub'"--%>
+                                           <%--@click="subSpec(v.id)">-</a>--%>
+                                        <%--<input type="text" class="buy" v-model="status.cat[v.id]"--%>
+                                               <%--onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'>--%>
+                                        <%--<a href="javascript:void(0);" class="add"--%>
+                                           <%--@click="addSpec(v.id)">+</a>--%>
+                                    <%--</div>--%>
                                 </li>
                             </ul>
 
@@ -293,12 +293,12 @@
 
 
                     <div class="xmgActions">
-                        <input type="button" value="RFQ" class="addRFQ" @click="addRFQ">
-                        <input type="button" value="<s:text name='Global.Add_To_Cart'/>"
+                        <input type="button" value="INQUIRY" class="addRFQ" @click="addRFQ">
+       <%--                 <input type="button" value="<s:text name='Global.Add_To_Cart'/>"
                                class="addtoCart"
                                @click="addtoCart">
                         <input type="button" value="<s:text name='Global.Buy_Now'/>" class="buyNow"
-                               @click="buy">
+                               @click="buy">--%>
 
                         <a href="javascript:;" :class="goodsInfo.favorite?'fav_ed_btn':''"
                            @click="addfav">
@@ -313,7 +313,7 @@
         </div>
 
         <!--你可能会喜欢-->
-        <div class="maylikeNew">
+<%--        <div class="maylikeNew">
             <h3 class="bTitle"><s:text name="Global.You_May_Like"/></h3>
             <div class="mayProlist clearfloat">
                 <dl class="fl" v-for="(v,index) in goodsInfo.youMayLike">
@@ -337,7 +337,7 @@
                 </dl>
             </div>
 
-        </div>
+        </div>--%>
 
         <!--产品详情-->
         <div class="prodDescLeft" style="width:100%;">

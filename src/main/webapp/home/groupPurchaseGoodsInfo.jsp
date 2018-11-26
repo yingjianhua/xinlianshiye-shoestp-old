@@ -149,14 +149,14 @@
 									<span id="time"></span>
 								</div>
 							</div>
-							<div class="activities_right" style="margin-bottom: 20px;">
+					<%--		<div class="activities_right" style="margin-bottom: 20px;">
 								<div>
 									${env.currency.symbols}${product.curPrice}
 								</div>
-								<%-- <del>
+								&lt;%&ndash; <del>
 									${env.currency.symbols}${sourceProduct.curPrice}
-								</del> --%>
-							</div>
+								</del> &ndash;%&gt;
+							</div>--%>
 						</div>
 						<!-- 商品编号 -->
 						<div class="activities_goods_num">
@@ -189,10 +189,10 @@
 										</span>										
 									</c:forEach>
 								</li>
-								<li style="font-size: 12px;">
+							<%--	<li style="font-size: 12px;">
 									<span style="font-weight: bold;">MOQ:</span>
 									<span style="margin-left: 11px;font-size: 14px;">${product.minOq}</span>
-								</li>
+								</li>--%>
 							</ul>
 							<div class="size-main quantity_box" data="">
 									<div  class="attr_show size-list">
@@ -207,13 +207,13 @@
 																<input type="hidden" value="${supplier.pkey}" name="specList[${tally}].supplier"/>
 																<input type="hidden" value="${spec.id}" name="specList[${tally}].spec"/>
 																<span>${spec.size}</span>
-																<span name="specList[${tally}].amt">${env.currency.symbols}${spec.price}</span>
+															<%--	<span name="specList[${tally}].amt">${env.currency.symbols}${spec.price}</span>--%>
 																<%-- <span><fmt:formatNumber type="number" maxFractionDigits="0" value="${product.minOq}" /> <s:text name="groupPurchaseGoodsInfo.Minimum_Order_Quantity"/></span> --%>
-																<div class="column">
+															<%--	<div class="column">
 																		<a href="javascript:;" class="reduce">-</a><!-- disable 输入框中数量为1时添加样式disable -->
 																		<input type="text" value="0" name="specList[${tally}].qty" class="total">
 																		<a href="javascript:;" class="add" >+</a>
-																</div>
+																</div>--%>
 															</li>
 														</c:forEach>
 													</c:forEach>
@@ -246,8 +246,8 @@
 									<input type="button" value="<s:text name='inq'/>"  style="display:inline-block; background:#333;" class="add_btn buynow"
 									    id="add_to_inquiry">
 									 
-									<input type="button" onclick="toAddCart(this)" data="${product.pkey}" value="<s:text name='Global.Add_To_Cart'/>" class="add_btn addtocart AddtoCartBgColor" id="addtocart" style="display: inline-block;">
-									<a onclick="addThisToFavorites(${product.pkey})" id="addFavorite" class="<c:if test="${favorite == null || favorite == ''}">fav_new_btn</c:if><c:if test="${favorite != null}">fav_ed_btn</c:if>" >${product.favoriteCount}</a>
+						<%--			<input type="button" onclick="toAddCart(this)" data="${product.pkey}" value="<s:text name='Global.Add_To_Cart'/>" class="add_btn addtocart AddtoCartBgColor" id="addtocart" style="display: inline-block;">
+									<a onclick="addThisToFavorites(${product.pkey})" id="addFavorite" class="<c:if test="${favorite == null || favorite == ''}">fav_new_btn</c:if><c:if test="${favorite != null}">fav_ed_btn</c:if>" >${product.favoriteCount}</a>--%>
 									<!-- <div style="position:absolute; top:-8px; right:-93px;">
 										<a href="javascript:void(0);">
 											<img src="./static/images/ico/norton.png">
@@ -257,16 +257,16 @@
 							</div>
 							<!-- 购买成功 20天内发货 -->
 							<hr style="width: 335px;height:1px;margin:20px 0;border: none;background-color: #e5e5e5;">
-							<div style="line-height: 20px;">
+					<%--		<div style="line-height: 20px;">
 									<s:text name="groupPurchaseGoodsInfo.Delivery_Information"/>
-							</div>
+							</div>--%>
 						</form>
 					</div>
 				</div>
 				<div class="clearfix">
 				
 					<!-- 商品推荐 -->
-					<div class="maylike_new">
+<%--					<div class="maylike_new">
 						<h3 class="b_title"><s:text name="Global.You_May_Like"/></h3>
 						<div class="may_prolist clean">
 							<c:forEach items="${recommendationPdt}" var="pro">
@@ -292,7 +292,7 @@
 							</c:forEach>
 						
 						</div>
-					</div>
+					</div>--%>
 					<div class="prod_desc_left fl" style="width:100%;">
 						<div class="prod_description">
 							<ul class="pd_title">

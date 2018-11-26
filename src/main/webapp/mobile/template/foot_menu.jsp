@@ -42,7 +42,7 @@
         </div>
     </div>
     <!--购物车 -->
-    <div class="fl item " id="ficon4">
+<%--    <div class="fl item " id="ficon4">
         <div class="pic">
             <a href="/home/usr_UsrCart_cartshopping">
                 <img src="/home/static/themes/default/mobile/images/ficon4.png">
@@ -52,6 +52,19 @@
             <a href="/home/usr_UsrCart_cartshopping">
                 <!-- shopping_cart -->
                 <s:text name="mobile.shopping_cart"/>
+            </a>
+        </div>
+    </div>--%>
+    <div class="fl item " id="ficon4">
+        <div class="pic">
+            <a href="/home/usr_UsrFavorites_myfavorite">
+                <img src="/home/static/themes/default/mobile/images/love.png">
+            </a>
+        </div>
+        <div class="name ">
+            <a href="/home/usr_UsrFavorites_myfavorite">
+                <!-- shopping_cart -->
+                <s:text name="my_fav"/>
             </a>
         </div>
     </div>

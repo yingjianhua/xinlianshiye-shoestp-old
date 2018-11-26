@@ -225,12 +225,12 @@
                                 <s:text name="price" />:
                             </div>
                             <div class="fl">
-                                <div class="price cur_price">
+                <%--                <div class="price cur_price">
                                     <span>
                                         ${env.currency.shortName } ${env.currency.symbols}
                                     </span>
                                     ${product.curPrice}
-                                </div>
+                                </div>--%>
                             </div>
                         </div>
                     </div>
@@ -253,15 +253,15 @@
                     				<span id="days"></span>DAYS <span id="time"></span>
                     			</div>
                     		</div>
-                    		<div class="xmg-r">
+                    		<%--<div class="xmg-r">
                     			<div class="xmg-t">${env.currency.symbols}${product.curPrice}</div>
                     					<c:forEach items="${colorToSpec}" var="colorSpec">
                                     		<c:forEach items="${colorSpec.value}" var="spec">
                                     			<div class="xmg-t" color="${colorSpec.key.pkey}" size="${spec.sizeId}" style="display:none;">${env.currency.symbols}${spec.price}</div>
                                     		</c:forEach>
                                     	</c:forEach>
-                    			<%-- <div class="xmg-b"> ${env.currency.shortName }  ${env.currency.symbols}${product.curPrice}</div> --%>
-                    		</div>
+                    			&lt;%&ndash; <div class="xmg-b"> ${env.currency.shortName }  ${env.currency.symbols}${product.curPrice}</div> &ndash;%&gt;
+                    		</div>--%>
 
                     </div>
 
@@ -325,7 +325,7 @@
                             	<fmt:formatNumber type="number" maxFractionDigits="0" value="${product.minOq}" />
                             </div> --%>
                         </div>
-                        <div class="clean rows prod_info_qty" data="{&quot;min&quot;:${product.minOq},&quot;max&quot;:${product.maxOq}}">
+                       <%-- <div class="clean rows prod_info_qty" data="{&quot;min&quot;:${product.minOq},&quot;max&quot;:${product.maxOq}}">
                             <div class="title">
                                 <!-- QTY -->
                                 <s:text name="order_line.qty" />:
@@ -345,7 +345,7 @@
                                  				<fmt:formatNumber type="number" maxFractionDigits="0" value="${product.minOq}" /> <s:text name="groupPurchaseGoodsInfo.Minimum_Order_Quantity"/>
                                			</b>
                                			
-                                    	<%-- <c:forEach items="${colorToSpec}" var="colorSpec">
+                                    	&lt;%&ndash; <c:forEach items="${colorToSpec}" var="colorSpec">
                                     		<c:forEach items="${colorSpec.value}" var="spec">
                                     			
                                     				<b color="${colorSpec.key.pkey}" size="${spec.sizeId}" style="display:none;">
@@ -359,7 +359,7 @@
                                     				</c:if>
 			                                    	</b>
                                     		</c:forEach>
-                                    	</c:forEach> --%>
+                                    	</c:forEach> &ndash;%&gt;
                                    	
                                 </div>
                             </div>
@@ -371,13 +371,13 @@
                             <a href="javascript:void(0);" class="fl" style="height:2.18rem; margin-left:2%;">
                                 <img src="/home/static/themes/default/mobile/images/norton.png" style="max-height:100%;">
                             </a>
-                        </div>
+                        </div>--%>
                     </div>
                     <div class="widget prod_info_actions clean">
-                        <div class="btn_add" style="width:100%;">
+                  <%--      <div class="btn_add" style="width:100%;">
                             <input type="button" value="<s:text name="addToCartTo" />" data="${product.pkey}" class="btn_global add_btn addtocart AddtoCartBgColor"
                             id="addtocart">
-                        </div>
+                        </div>--%>
                         <div class="blank15">
                         </div>
                         <a id="addInquiry" target="_blank" class="btn_global add_btn BuyNowBgColor inquiry_btn"
