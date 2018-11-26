@@ -41,7 +41,7 @@ public class UsrSupplierManageServiceImp implements IUsrSupplierManageService {
         UsrSupplier us = usrSupplierDao.getUsrShopSetting(i);
         UsrshopSettingView ssv = new UsrshopSettingView();
         ssv.setLogo(us.getLogo());
-        ssv.setSignBackGD(us.getSignBackgd());
+        ssv.setSignBackGD(us.getSignBackgd()==null?"":us.getSignBackgd());
         ssv.setAdPhoto(string(us.getAdPhoto()));
         ssv.setAdPhotoLink(string(us.getAdPhotoLink()));
         ssv.setCompanyPhoto(string(us.getCompanyPhoto()));
