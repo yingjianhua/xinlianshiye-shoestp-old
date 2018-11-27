@@ -41,4 +41,11 @@ public class CacheUtils {
      * @author lijie@shoestp.cn
      */
     public static Cache cache = Caffeine.newBuilder().expireAfterAccess(15, TimeUnit.MINUTES).build();
+    /**
+    *@Description:  PK大赛 联合采购男鞋女鞋儿童鞋分类 缓存数据
+    *@date 2018/11/27 18:57
+    *@anthor wilson zhang
+    */
+    public static Cache groupshopcache = Caffeine.newBuilder().expireAfterAccess(15, TimeUnit.MINUTES).build();
+
 }

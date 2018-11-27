@@ -644,4 +644,8 @@ public class PrmGroupPurchaseAction extends HomeAction<PrmGroupPurchase>{
 		views.put("page", getPage());
 		write(new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL).writeValueAsString(views));
 	}
+
+	public void groupshoplist() throws IOException {
+		write(PrmGroupPurchaseLineDAO.getgroupshoplist(1));
+	}
 }
