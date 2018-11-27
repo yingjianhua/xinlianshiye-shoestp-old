@@ -3,10 +3,13 @@ package irille.Service.Manage.Activity.Imp;
 import irille.Dao.ActivitySignInDao;
 import irille.Dao.Old.ActivitySignIn.ActivitySignInDelDao;
 import irille.Dao.Old.ActivitySignIn.ActivitySignInsDao;
+import irille.Dao.Old.ActivitySignIn.ActivitySignInsGetDao;
 import irille.Entity.Activity.ActivityInfo;
 import irille.Service.Manage.Activity.IActivitySignInInfoManageService;
 import irille.view.ActivitySigninInfo.ActivitySignInInfoView;
 import irille.view.Page;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -27,6 +30,8 @@ public class ActivitySignInInfoManageServiceImp implements IActivitySignInInfoMa
 
     @Inject
     private ActivitySignInDao activitySignInDao;
+    @Inject
+    private ActivitySignInsGetDao activitySignInsGetDao;
 
     @Override
     public int ins(ActivitySignInInfoView activitySignInInfoView) {
@@ -94,4 +99,8 @@ public class ActivitySignInInfoManageServiceImp implements IActivitySignInInfoMa
         return activitySignInInfoView;
     }
 
+    @Override
+    public Page getActivitySignInsList(Integer start, Integer limit) {
+        return activitySignInsGetDao.getPKContestList(start,limit);
+    }
 }

@@ -2,8 +2,12 @@ package irille.Service.Manage.Activity;
 
 import com.google.inject.ImplementedBy;
 import irille.Service.Manage.Activity.Imp.ActivitySignInInfoManageServiceImp;
+import irille.view.ActivitySignInsView;
 import irille.view.ActivitySigninInfo.ActivitySignInInfoView;
 import irille.view.Page;
+import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -30,4 +34,11 @@ public interface IActivitySignInInfoManageService {
      * @author lijie@shoestp.cn
      */
     ActivitySignInInfoView getSignInInfo(int id);
+
+    /**
+     @Description: 获取报名列表
+      * @date 2018/11/23 15:58
+     * @author zjl
+     */
+    Page getActivitySignInsList(Integer start, Integer limit);
 }
