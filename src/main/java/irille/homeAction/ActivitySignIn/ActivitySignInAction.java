@@ -7,6 +7,7 @@ import irille.Dao.Old.ActivitySignIn.ActivitySignInsOneDao;
 import irille.Entity.Activity.ActivityInfo;
 import irille.homeAction.HomeAction;
 import irille.pub.util.AppConfig;
+import irille.pub.util.EmailManager;
 import irille.pub.util.EmailUtils;
 import irille.shop.as.PKContest;
 import irille.view.se.sendEmail;
@@ -90,11 +91,10 @@ public class ActivitySignInAction extends HomeAction<PKContest> {
                 .replaceAll("\\{tel\\}", pk.getTel())
                 .replaceAll("\\{companyname\\}",pk.getCompanyname())
                 .toString();
-        System.out.println(text);
         sendEmail se=new sendEmail();
         se.setSubject("有客户报名了订购会活动");
         se.setContent(text);
-        EmailUtils.sendMail(se);
+        EmailManager.sendMail(se);
     }
 /*    public  void sendemail(PKContest pk) throws GeneralSecurityException {
 
