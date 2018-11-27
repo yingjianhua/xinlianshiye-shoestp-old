@@ -7,7 +7,9 @@ import irille.Dao.Old.ActivitySignIn.ActivitySignInsOneDao;
 import irille.Entity.Activity.ActivityInfo;
 import irille.homeAction.HomeAction;
 import irille.pub.util.AppConfig;
+import irille.pub.util.EmailUtils;
 import irille.shop.as.PKContest;
+import irille.view.se.sendEmail;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -73,14 +75,28 @@ public class ActivitySignInAction extends HomeAction<PKContest> {
         pkContest.setEmail(getEmail());
         pkContest.setCompanyname(getCompanyname());
         activitySignInsOneDao.setB(pkContest).commit();
-        try {
+/*        try {
             sendemail(pkContest);
         } catch (GeneralSecurityException e) {
             e.printStackTrace();
-        }
+        }*/
+        sendEmailLoad(pkContest);
         write();
     }
-    public  void sendemail(PKContest pk) throws GeneralSecurityException {
+    public  void  sendEmailLoad(PKContest pk) throws IOException {
+        String text = AppConfig.mail_template2
+                .replaceAll("\\{name\\}", pk.getName())
+                .replaceAll("\\{email\\}",pk.getEmail())
+                .replaceAll("\\{tel\\}", pk.getTel())
+                .replaceAll("\\{companyname\\}",pk.getCompanyname())
+                .toString();
+        System.out.println(text);
+        sendEmail se=new sendEmail();
+        se.setSubject("有客户报名了订购会活动");
+        se.setContent(text);
+        EmailUtils.sendMail(se);
+    }
+/*    public  void sendemail(PKContest pk) throws GeneralSecurityException {
 
         // 收件人电子邮箱
         String to = "894295467@qq.com";
@@ -113,9 +129,6 @@ public class ActivitySignInAction extends HomeAction<PKContest> {
             // Set Subject: 头部头字段
             message.setSubject("有客户报名了订购会活动");
             // 设置消息体
-            System.out.println("template2");
-
-
             String text = AppConfig.mail_template2
                     .replaceAll("\\{name\\}", pk.getName())
                     .replaceAll("\\{email\\}",pk.getEmail())
@@ -132,6 +145,6 @@ public class ActivitySignInAction extends HomeAction<PKContest> {
         } catch (MessagingException mex) {
             mex.printStackTrace();
         }
-    }
+    }*/
 
 }
