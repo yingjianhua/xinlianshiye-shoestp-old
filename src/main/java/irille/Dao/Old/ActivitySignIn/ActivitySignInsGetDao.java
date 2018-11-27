@@ -2,7 +2,7 @@ package irille.Dao.Old.ActivitySignIn;
 
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
-import irille.shop.as.PKContest;
+import irille.Entity.As.PKContest;
 import irille.view.Page;
 
 import java.util.List;

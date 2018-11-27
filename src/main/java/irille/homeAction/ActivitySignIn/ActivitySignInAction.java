@@ -1,31 +1,18 @@
 package irille.homeAction.ActivitySignIn;
 
 import com.google.inject.Inject;
-import com.sun.mail.util.MailSSLSocketFactory;
 import irille.Dao.Old.ActivitySignIn.ActivitySignInsDao;
 import irille.Dao.Old.ActivitySignIn.ActivitySignInsOneDao;
 import irille.Entity.Activity.ActivityInfo;
 import irille.homeAction.HomeAction;
 import irille.pub.util.AppConfig;
 import irille.pub.util.EmailManager;
-import irille.pub.util.EmailUtils;
-import irille.shop.as.PKContest;
+import irille.Entity.As.PKContest;
 import irille.view.se.sendEmail;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
 import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Properties;
-import java.util.Random;
 
 /**
  * Created by IntelliJ IDEA.

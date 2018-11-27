@@ -3,7 +3,7 @@ package irille.sellerAction.as;
 import irille.Service.Manage.Activity.IActivitySignInInfoManageService;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.as.inf.IActivitySignInsAction;
-import irille.shop.as.PKContest;
+import irille.Entity.As.PKContest;
 import javax.inject.Inject;
 import java.io.IOException;
 
