@@ -239,7 +239,7 @@
                                         </a>
                                     </div>
                                     <div class="price">
-                                            ${pro.pdt.curPrice}
+                                            <%--${pro.pdt.curPrice}--%>
                                     </div>
                                 </div>
                             </div>

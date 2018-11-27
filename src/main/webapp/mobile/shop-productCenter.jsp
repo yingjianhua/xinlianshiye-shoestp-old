@@ -252,7 +252,7 @@
                 '</a>' +
                 '</div>' +
                 '<div class="price">' +
-                '${env.currency.symbols}' + val.pdt.curPrice +
+                <%--'${env.currency.symbols}' + val.pdt.curPrice +--%>
                 '</div>' +
                 '</div>' +
                 '</div>' +

@@ -430,12 +430,12 @@
                                 '           </div>' +
                                 '           <div class="price">' +
                                 '              <span>' +
-                                '                   ${env.currency.symbols}' +
-                                '                   <span class="price_data" keyid="' + value.id + '">' +
-                                '                       ' + value.price + '' +
-                                '                   </span>' +
+                                <%--'                   ${env.currency.symbols}' +--%>
+                                // '                   <span class="price_data" keyid="' + value.id + '">' +
+                                // '                       ' + value.price + '' +
+                                // '                   </span>' +
                                 '              </span>' +
-                                '               USD' +
+                                // '               USD' +
                                 '           </div>' +
                                 '       </div>' +
                                 '   </div>'
