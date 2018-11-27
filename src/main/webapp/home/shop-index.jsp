@@ -207,7 +207,7 @@
                                        target="_blank">${pro.pdt.name}</a>
                                 </h5>
                                 <div class="goods-price">
-                                        ${env.currency.symbols}${pro.pdt.curPrice}
+                                        <%--${env.currency.symbols}${pro.pdt.curPrice}--%>
                                 </div>
                                 <div class="btn btn-enter">
                                     <a href="/${pro.rewrite}" class="btn btn-enter" target="_blank"><s:text

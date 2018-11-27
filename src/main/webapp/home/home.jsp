@@ -593,7 +593,7 @@
                                              width="230"
                                              height="230" alt="">
                                         <p class="newP">${d.name}</p>
-                                        <h3>${env.currency.symbols}${d.price}</h3>
+                                        <%--<h3>${env.currency.symbols}${d.price}</h3>--%>
                                     </a>
                                 </li>
                             </c:forEach>
