@@ -347,19 +347,14 @@ public class OdrMeetingDao {
                 .WHERE(OrderMeetingOrder.T.ORDERMEETINGID, "=?", odrMeeting)
                 .WHERE(" PdtSpec.pkey = id")
                 .GROUP_BY(PdtSpec.T.PKEY);
-
-
         sql
-                .SELECT(
-                        OdrOrder.T.ORDER_NUM,
-                        OdrOrder.T.PRICE_TOTAL,
-                        OrderMeetingProduct.T.STATUS
-                )
                 .SELECT(PdtSpec.T.PKEY, "id")
+                .SELECT(PdtSpec.T.PICS, "pic")
                 .SELECT(PdtSpec.T.KEY_NAME, "specName")
+                .SELECT(OrderMeetingProduct.T.NEWPRICE)
                 .SELECT("sum(OdrOrderLine.qty) as qty")
                 .SELECT(OdrOrderLine.T.SUBTOTAL)
-                .SELECT(chlid, "counts")
+                .SELECT(chlid, "overall")
                 .FROM(OrderMeetingOrder.class)
                 .LEFT_JOIN(OdrOrder.class, OdrOrder.T.PKEY, OrderMeetingOrder.T.ORDERID)  //订单表
                 .LEFT_JOIN(OdrOrderLine.class, OdrOrder.T.PKEY, OdrOrderLine.T.MAIN)  //订单详细表

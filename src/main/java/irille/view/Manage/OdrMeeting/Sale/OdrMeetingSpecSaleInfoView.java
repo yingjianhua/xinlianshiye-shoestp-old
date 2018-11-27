@@ -1,5 +1,7 @@
 package irille.view.Manage.OdrMeeting.Sale;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import irille.pub.i18n.I18NFieldSerializer;
 import irille.pub.util.SetBeans.SetBean.Annotations.SetBean;
 import lombok.Data;
 
@@ -9,9 +11,26 @@ import lombok.Data;
 @Data
 public class OdrMeetingSpecSaleInfoView {
 
+    private int id;
     @SetBean(OriginalField = "specName")
+    @JsonSerialize(using = I18NFieldSerializer.class)
     private String name;
-    private double price;
-    private int qty;
-    private double subtotal;
+    private String order_num;
+    private Integer counts;
+    private Double newprice;
+    private Integer qty;
+    private Double subtotal;
+    private Long overall;
+    private String pic;
+
+    public void setPic(String pic) {
+        if (pic != null) {
+            String[] string = pic.split(",");
+            if (string.length > 0) {
+                this.pic = string[0];
+            } else {
+                this.pic = pic;
+            }
+        }
+    }
 }
