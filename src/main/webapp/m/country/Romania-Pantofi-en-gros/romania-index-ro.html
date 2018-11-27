@@ -72,7 +72,7 @@
                 </div>
             </mu-carousel-item>
         </mu-carousel>
-        <a class="producrt-button inline-block-h80"
+        <a class="producrt-button inline-block-h80 following"
            href="javascript:void(0);" @click="hoodleShow = true">Obțineți
             Mostre Gratuite Acum</a>
     </div>
@@ -88,7 +88,7 @@
                 mostre de pantofi</p>
             <p class="pur_p margin_bottom_20"><span class="dot"></span>Serviciul de relații cu clienții
                 de <span class="bigblue">24/24</span> online</p>
-            <a class="producrt-button inline-block-h80"
+            <a class="producrt-button inline-block-h80 following"
                href="https://www.shoestp.com/home/usr_UsrPurchase">Mergi la mall</a>
         </div>
     </div>
@@ -274,7 +274,7 @@
                             <mu-text-field v-model="hoodleForm.name" prop="name"></mu-text-field>
                         </mu-form-item>
                         <mu-form-item label="Telefon:" prop="tel" :rules="telRules">
-                            <mu-text-field type="number" v-model="hoodleForm.tel" prop="tel"></mu-text-field>
+                            <mu-text-field v-model="hoodleForm.tel" prop="tel"></mu-text-field>
                         </mu-form-item>
                         <mu-form-item label="Email:" prop="email" :rules="emailRule">
                             <mu-text-field v-model="hoodleForm.email" prop="email"></mu-text-field>
@@ -287,7 +287,7 @@
                         </mu-form-item>
                         <mu-form-item prop="Anchetă" label="Ancheta:">
                             <mu-text-field class="text-field" v-model="hoodleForm.inquiry" multi-line :rows="3"
-                                           full-width style="height: 160px"></mu-text-field>
+                                           full-width style="height: 200px"></mu-text-field>
                         </mu-form-item>
                         <mu-form-item>
                             <mu-button color="primary" @click="onSubmit">Submit</mu-button>
@@ -306,14 +306,14 @@
     </div>
 
     <div class="successfully" v-show="successfullyShow">
-        <div class="hoodle_modle" @click="close"></div>
+        <div class="hoodle_modle" @click="hintShow"></div>
         <div class="s-success">
-            <span class="red-title close-icon" @clidk="close">+</span>
+            <span class="red-title close-icon" @click="hintShow">+</span>
             <div class="himt">
-                <img src="imgs/true_03.png" alt="">
-                <p class="red-title himt-text">A depune Cu succes!</p>
+                <img :src="hintImage" alt="">
+                <p class="red-title himt-text">{{ hintText }}</p>
             </div>
-            <a href="javascript: void(0);" class="btn not-btn" @click="close">A determina</a>
+            <a href="javascript: void(0);" class="btn not-btn" @click="hintShow">A determina</a>
         </div>
     </div>
 
@@ -329,7 +329,11 @@
                 {validate: (val) => val.length >= 3, message: 'Durata numelui utilizatorului este mai mare de 3'}
             ],
             telRules: [
-                {validate: (val) => !!val, message: 'Trebuie să completați numărul de telefon'}
+                {validate: (val) => !!val, message: 'Trebuie să completați numărul de telefon'},
+                {
+                    validate: (val) => /^[0-9]{6,}$/.test(val),
+                    message: 'Numărul de telefon trebuie să fie de 6 sau mai multe cifre'
+                }
             ],
             emailRule: [
                 {validate: (val) => !!val, message: 'Trebuie să completați cutia poștală'},
@@ -338,6 +342,8 @@
                     message: 'Introduceți adresa de e-mail corectă'
                 }
             ],
+            hintText: '',
+            hintImage: '',
             hoodleShow: false,
             successfullyShow: false,
             languageShow: false,
@@ -391,11 +397,14 @@
             this.acquireCountry()
         },
         methods: {
+            hintShow: function () {
+                this.successfullyShow = false;
+            },
             close: function () {
                 this.hoodleShow = false;
                 this.successfullyShow = false;
                 this.$refs.form.clear();
-                this.validateForm = {
+                this.hoodleForm = {
                     name: '',
                     tel: '',
                     email: '',
@@ -440,7 +449,7 @@
             onSubmit: function () {
                 console.log(this.hoodleForm)
                 var self = this;
-                this.$refs.form.validate().then((result) => {
+                self.$refs.form.validate().then((result) => {
                     console.log('form valid: ', result)
                     if (result) {
                         axios.post('/home/ActivitySignIn_ActivitySignIn_signIn',
@@ -453,14 +462,26 @@
                             })
                         ).then(function (res) {
                             if (res.data.ret == 1) {
-                                console.log('提交成功')
+                                console.log('提交成功');
                                 self.hoodleShow = false;
                                 self.successfullyShow = true;
+                                self.hintImage = 'imgs/true_03.png';
+                                self.hintText = 'A depune Cu succes!';
+                                self.close();
+                                self.gtag_report_conversion();
+
+                            } else {
+                                console.log('提交失败');
+                                self.successfullyShow = true;
+                                self.hintImage = '';
+                                self.hintText = 'A depune Cu eșuat';
                             }
                         }).catch(function (err) {
-                            console.log(err)
+                            console.log(err);
+                            self.successfullyShow = true;
+                            self.hintImage = '';
+                            self.hintText = 'A depune Cu eroare';
                         })
-                        self.gtag_report_conversion();
                     }
                 });
             }
@@ -480,7 +501,6 @@
         });
         return false;
     }
-
 </script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127715615-6"></script>

@@ -53,8 +53,7 @@
         <div class="image-bottom">
             <a class="btn following" href="javascript:void(0);" @click="hoodleShow = true;">Get Secret
                 Gift</a>
-            <a class="btn btn-blur" href="https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373">Onlione
-                Ordering Opening Soon</a>
+            <a class="btn btn-blur" href="https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373">Onlione Ordering Opening Soon</a>
         </div>
     </div>
     <div class="producrt">
@@ -270,20 +269,18 @@
                             <mu-text-field v-model="hoodleForm.name" prop="name"></mu-text-field>
                         </mu-form-item>
                         <mu-form-item label="Telephone:" prop="tel" :rules="telRules">
-                            <mu-text-field type="number" v-model="hoodleForm.tel" prop="tel"></mu-text-field>
+                            <mu-text-field v-model="hoodleForm.tel" prop="tel"></mu-text-field>
                         </mu-form-item>
                         <mu-form-item label="Email:" prop="email" :rules="emailRule">
                             <mu-text-field v-model="hoodleForm.email" prop="email"></mu-text-field>
                         </mu-form-item>
                         <mu-form-item prop="country" label="Country:">
                             <mu-select v-model="hoodleForm.country">
-                                <mu-option v-for="item,index in countrys" :key="item.id" :label="item.name"
-                                           :value="item.id"></mu-option>
+                                <mu-option v-for="item,index in countrys" :key="item.id" :label="item.name" :value="item.id"></mu-option>
                             </mu-select>
                         </mu-form-item>
                         <mu-form-item prop="inquiry" label="Inquiry:">
-                            <mu-text-field class="text-field" v-model="hoodleForm.inquiry" multi-line :rows="3"
-                                           full-width style="height: 160px"></mu-text-field>
+                            <mu-text-field class="text-field" v-model="hoodleForm.inquiry" multi-line :rows="3" full-width style="height: 200px"></mu-text-field>
                         </mu-form-item>
                         <mu-form-item>
                             <mu-button color="primary" @click="onSubmit">Submit</mu-button>
@@ -292,11 +289,9 @@
                     </mu-form>
                 </mu-container>
                 <div class="hf-input">
-                    <p class="hf-text">Filling in and send the form, you will get a mysterious gift in the Romanian
-                        exhibition room!<br>
-                        Or you can fill your needs in the remark column, our staff will contact you at the first
-                        time!<br>
-                        Thank you for coming, we will provide the best service for you!</p>
+                    <p class="hf-text">Filling in and send the form, you will get a mysterious gift in the Romanian exhibition room!<br>
+                    Or you can fill your needs in the remark column, our staff will contact you at the first time!<br>
+                    Thank you for coming, we will provide the best service for you!</p>
                 </div>
             </div>
 
@@ -304,14 +299,14 @@
     </div>
 
     <div class="successfully" v-show="successfullyShow">
-        <div class="hoodle_modle" @click="close"></div>
+        <div class="hoodle_modle" @click="hintShow"></div>
         <div class="s-success">
-            <span class="red-title close-icon" @clidk="close">+</span>
+            <span class="red-title close-icon" @click="hintShow">+</span>
             <div class="himt">
-                <img src="imgs/true_03.png" alt="">
-                <p class="red-title himt-text">Submit Successfully！</p>
+                <img :src="hintImage" alt="">
+                <p class="red-title himt-text">{{ hintText }}</p>
             </div>
-            <a href="javascript: void(0);" class="btn not-btn" @click="close">Determine</a>
+            <a href="javascript: void(0);" class="btn not-btn" @click="hintShow">Determine</a>
         </div>
     </div>
 </div>
@@ -323,19 +318,19 @@
         data: {
             // rules
             nameRules: [
-                {validate: (val) => !!val, message: 'The user name must be entered'},
-                {validate: (val) => val.length >= 3, message: 'The user name length is greater than 3'}
+                { validate: (val) => !!val, message: 'The user name must be entered'},
+                { validate: (val) => val.length >= 3, message: 'The user name length is greater than 3'}
             ],
             telRules: [
-                {validate: (val) => !!val, message: 'Mobile phone number must be entered'}
+                { validate: (val) => !!val, message: 'Mobile phone number must be entered'},
+                { validate: (val) => /^[0-9]{6,}$/.test(val), message: 'Phone number must be 6 or more digits'}
             ],
             emailRule: [
                 {validate: (val) => !!val, message: 'You have to fill in the mailbox'},
-                {
-                    validate: (val) => /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(val),
-                    message: 'Please enter the correct email address'
-                }
+                {validate: (val) => /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(val), message: 'Please enter the correct email address'}
             ],
+            hintText:'',
+            hintImage:'',
             hoodleShow: false,
             successfullyShow: false,
             languageShow: false,
@@ -376,7 +371,7 @@
                     content: 'Factory Direct with Reliable Native Service'
                 }
             ],
-            countrys: [],
+            countrys:[],
             hoodleForm: {
                 name: '',
                 tel: '',
@@ -389,11 +384,13 @@
             this.acquireCountry()
         },
         methods: {
+            hintShow:function () {
+                this.successfullyShow = false;
+            },
             close: function () {
                 this.hoodleShow = false;
-                this.successfullyShow = false;
                 this.$refs.form.clear();
-                this.validateForm = {
+                this.hoodleForm = {
                     name: '',
                     tel: '',
                     email: '',
@@ -436,9 +433,12 @@
                 })
             },
             onSubmit: function () {
+                console.log(this.hoodleForm)
                 var self = this;
-                this.$refs.form.validate().then((result) => {
+                self.$refs.form.validate().then((result) => {
+                    console.log('form valid: ', result)
                     if (result) {
+                        console.log('提交')
                         axios.post('/home/ActivitySignIn_ActivitySignIn_signIn',
                             Qs.stringify({
                                 name: self.hoodleForm.name,
@@ -448,13 +448,25 @@
                                 inquiry: self.hoodleForm.inquiry
                             })
                         ).then(function (res) {
-                            if (res.data.ret == 1) {
+                            if (res.data.ret == 1){
+                                console.log('提交成功');
                                 self.hoodleShow = false;
                                 self.successfullyShow = true;
-                                self.gtag_report_conversion();
+                                self.hintImage = 'imgs/true_03.png';
+                                self.hintText = 'Submit Successfully！';
+                                self.close();
+                                   self.gtag_report_conversion();
+                            } else {
+                                console.log('提交失败');
+                                self.successfullyShow = true;
+                                self.hintImage = '';
+                                self.hintText = 'Submit Failure';
                             }
                         }).catch(function (err) {
-                            console.log(err)
+                            console.log(err);
+                            self.successfullyShow = true;
+                            self.hintImage = '';
+                            self.hintText = 'Submit An Error';
                         })
 
                     }
@@ -482,11 +494,7 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127715615-6"></script>
 <script>
     window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-        dataLayer.push(arguments);
-    }
-
+    function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'UA-127715615-6');
 </script>

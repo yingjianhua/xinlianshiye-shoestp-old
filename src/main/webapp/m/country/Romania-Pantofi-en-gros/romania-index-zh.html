@@ -50,7 +50,7 @@
             </ul>
         </div>
         <div class="image-bottom">
-            <a class="btn" href="javascript:void(0);" @click="hoodleShow = true">获得神秘礼品</a>
+            <a class="btn following" href="javascript:void(0);" @click="hoodleShow = true">获得神秘礼品</a>
             <a class="btn btn-blur" href="https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373">在线采购马上开始</a>
         </div>
     </div>
@@ -68,7 +68,7 @@
                 </div>
             </mu-carousel-item>
         </mu-carousel>
-        <a class="producrt-button inline-block-h80"
+        <a class="producrt-button inline-block-h80 following"
            href="javascript:void(0);" @click="hoodleShow = true">立即获取免费样品</a>
     </div>
 
@@ -80,7 +80,7 @@
             <p class="pur_p"><span class="dot"></span>超过 <span class="bigblue">500</span> 家鞋供应商入驻 </p>
             <p class="pur_p"><span class="dot"></span><span class="bigyellow">500-800</span> 款鞋样可选</p>
             <p class="pur_p margin_bottom_20"><span class="dot"></span><span class="bigblue">24</span> 小时客服在线</p>
-            <a class="producrt-button inline-block-h80"
+            <a class="producrt-button inline-block-h80 following"
                href="https://www.shoestp.com/home/usr_UsrPurchase">前往商城</a>
         </div>
     </div>
@@ -95,7 +95,7 @@
                 <img src="imgs/rmnyb20.png" alt="">
                 <img src="imgs/rmnyb21.png" alt="">
             </div>
-            <a class="inline-block-h80" href="javascript:void(0);" @click="hoodleShow = true">立即申请</a>
+            <a class="inline-block-h80 following" href="javascript:void(0);" @click="hoodleShow = true">立即申请</a>
         </div>
     </div>
     <div class="rmnybottomfiv">
@@ -194,7 +194,7 @@
                 <img src="imgs/rmnyb5.png" alt="">
                 <img src="imgs/rmnyb6.png" alt="">
             </div>
-            <a class="inline-block-h80" href="javascript:void(0);" @click="hoodleShow = true">获取免费样品</a>
+            <a class="inline-block-h80 following" href="javascript:void(0);" @click="hoodleShow = true">获取免费样品</a>
         </div>
     </div>
     <div class="rmnybottomsecond">
@@ -224,7 +224,7 @@
         <div class="rmnybfcon">
             <h2>您的业务需求<br>是独一无二的?</h2>
             <h3>让我们帮助您满足这些需求！<br>请与我们联系，立即获取免费样品。</h3>
-            <a class="inline-block-h80" href="javascript:void(0);" @click="hoodleShow = true">预定你的座位</a>
+            <a class="inline-block-h80 following" href="javascript:void(0);" @click="hoodleShow = true">预定你的座位</a>
         </div>
         <div class="rmnybfchoose">
             <div v-for="item,index in checkinput">
@@ -251,7 +251,7 @@
                             <mu-text-field v-model="hoodleForm.name" prop="name"></mu-text-field>
                         </mu-form-item>
                         <mu-form-item label="电话:" prop="tel" :rules="telRules">
-                            <mu-text-field type="number" v-model="hoodleForm.tel" prop="tel"></mu-text-field>
+                            <mu-text-field v-model="hoodleForm.tel" prop="tel"></mu-text-field>
                         </mu-form-item>
                         <mu-form-item label="电子邮件:" prop="email" :rules="emailRule">
                             <mu-text-field v-model="hoodleForm.email" prop="email"></mu-text-field>
@@ -264,7 +264,7 @@
                         </mu-form-item>
                         <mu-form-item prop="需求" label="Ancheta:">
                             <mu-text-field class="text-field" v-model="hoodleForm.inquiry" multi-line :rows="3"
-                                           full-width style="height: 160px"></mu-text-field>
+                                           full-width style="height: 200px"></mu-text-field>
                         </mu-form-item>
                         <mu-form-item>
                             <mu-button color="primary" @click="onSubmit">提交</mu-button>
@@ -281,14 +281,14 @@
     </div>
 
     <div class="successfully" v-show="successfullyShow">
-        <div class="hoodle_modle" @click="close"></div>
+        <div class="hoodle_modle" @click="hintShow"></div>
         <div class="s-success">
-            <span class="red-title close-icon" @clidk="close">+</span>
+            <span class="red-title close-icon" @click="hintShow">+</span>
             <div class="himt">
-                <img src="imgs/true_03.png" alt="">
-                <p class="red-title himt-text">提交成功</p>
+                <img :src="hintImage" alt="">
+                <p class="red-title himt-text">{{ hintText }}</p>
             </div>
-            <a href="javascript: void(0);" class="btn not-btn" @click="close">确定</a>
+            <a href="javascript: void(0);" class="btn not-btn" @click="hintShow">确定</a>
         </div>
     </div>
 </div>
@@ -300,10 +300,11 @@
             // rules
             nameRules: [
                 {validate: (val) => !!val, message: '必须填写用户名'},
-                {validate: (val) => val.length >= 3, message: '用户名长度大于3'}
+                {validate: (val) => val.length >= 2, message: '用户名长度大于2个字'}
             ],
             telRules: [
-                {validate: (val) => !!val, message: '必须填写手机号'}
+                {validate: (val) => !!val, message: '必须填写电话号码'},
+                {validate: (val) => /^[0-9]{6,}$/.test(val), message: '电话号码必须是6位以上数字'}
             ],
             emailRule: [
                 {validate: (val) => !!val, message: '必须填写邮箱'},
@@ -312,6 +313,8 @@
                     message: '请输入正确邮箱'
                 }
             ],
+            hintText: '',
+            hintImage: '',
             hoodleShow: false,
             successfullyShow: false,
             languageShow: false,
@@ -365,11 +368,14 @@
             this.acquireCountry()
         },
         methods: {
+            hintShow: function () {
+                this.successfullyShow = false;
+            },
             close: function () {
                 this.hoodleShow = false;
                 this.successfullyShow = false;
                 this.$refs.form.clear();
-                this.validateForm = {
+                this.hoodleForm = {
                     name: '',
                     tel: '',
                     email: '',
@@ -414,7 +420,7 @@
             onSubmit: function () {
                 console.log(this.hoodleForm)
                 var self = this;
-                this.$refs.form.validate().then((result) => {
+                self.$refs.form.validate().then((result) => {
                     console.log('form valid: ', result)
                     if (result) {
                         console.log('提交')
@@ -431,11 +437,22 @@
                                 console.log('提交成功');
                                 self.hoodleShow = false;
                                 self.successfullyShow = true;
+                                self.hintImage = 'imgs/true_03.png';
+                                self.hintText = '提交成功！';
+                                self.gtag_report_conversion();
+                                self.close();
+                            } else {
+                                console.log('提交失败');
+                                self.successfullyShow = true;
+                                self.hintImage = '';
+                                self.hintText = '提交失败';
                             }
                         }).catch(function (err) {
-                            console.log(err)
+                            console.log(err);
+                            self.successfullyShow = true;
+                            self.hintImage = '';
+                            self.hintText = '提交出错';
                         })
-                        self.gtag_report_conversion();
                     }
                 });
             }
@@ -455,12 +472,6 @@
         });
         return false;
     }
-
-    $(document).ready(function () {
-        $("a.following").on("click", function () {
-            window.location = $(this).attr('hrefs');
-        })
-    })
 </script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127715615-6"></script>
