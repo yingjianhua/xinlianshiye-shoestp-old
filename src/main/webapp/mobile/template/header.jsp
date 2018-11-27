@@ -129,12 +129,12 @@ String.prototype.format = function() {
                     <span>
                     </span>
                 </div> --%>
-              <%--   <div class="inq" style="right: 5.3%;">
+                 <div class="inq" style="right: 5.3%;">
                     <a href="/home/usr_UsrConsult_listView">
                         <!-- Inquiry/RFQ -->
                        <s:text name="my-inquiry-publish.View_Inquiry"/>
                     </a>
-                </div> --%>
+                </div>
             </div>
         </div>
         <div class="pop_up nav_side">
@@ -174,12 +174,12 @@ String.prototype.format = function() {
                             <s:text name="products_list"/>
                         </a>
                     </div>
-                    <div class="ui_border_b item">
+             <%--       <div class="ui_border_b item">
                         <a href="/home/usr_UsrPurchase_center">
                             <!-- Purchasing center -->
                             <s:text name="group_order.activity"/>
                         </a>
-                    </div>
+                    </div>--%>
                     <div class="ui_border_b item">
                         <a href="/home/pdt_PdtProduct?orderfld=New">
                             <!-- New Arrival -->
@@ -187,7 +187,7 @@ String.prototype.format = function() {
                         </a>
                     </div>
                     <div class="ui_border_b item">
-                        <a href="/home/usr_UsrSupplier_gtSupIndex?pkey=262">
+                        <a href="https://www.shoestp.com/country/Romania-Pantofi-en-gros/romania-index-ro.html">
                             <!-- România -->
                             <s:text name="Romania"/>
                         </a>

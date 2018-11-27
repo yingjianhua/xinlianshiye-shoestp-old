@@ -284,10 +284,10 @@
                             "                               title=\"" + v.name + "\"\n" +
                             "                               target=\"_blank\">" + v.name + "</a>\n" +
                             "                        </h3>\n" +
-                            "                        <div class=\"prod_price\">\n" +
-                            "                            <em class=\"currency_data PriceColor\">${env.currency.symbols}</em>\n" +
-                            "                            <span class=\"price_data PriceColor\" data=\"" + v.price + "\" keyid=\"" + v.id + "\">" + v.price + "</span>\n" +
-                            "                        </div>\n" +
+                            <%--"                        <div class=\"prod_price\">\n" +--%>
+                            <%--"                            <em class=\"currency_data PriceColor\">${env.currency.symbols}</em>\n" +--%>
+                            <%--"                            <span class=\"price_data PriceColor\" data=\"" + v.price + "\" keyid=\"" + v.id + "\">" + v.price + "</span>\n" +--%>
+                            <%--"                        </div>\n" +--%>
                             "                        <div class=\"free_shipping\"></div>\n" +
                             "                        <div class=\"prod_view\">\n" +
                             "                                <span class=\"favorite add_favorite1\" data=\"" + v.id + "\">\n" +
@@ -345,10 +345,10 @@
                             "                               title=\"" + v.name + "\"\n" +
                             "                               target=\"_blank\">" + v.name + "</a>\n" +
                             "                        </div>\n" +
-                            "                        <div class=\"pro_price\">\n" +
+/*                            "                        <div class=\"pro_price\">\n" +
                             "                            <em class=\"currency_data PriceColor\">${env.currency.symbols}</em>\n" +
                             "                            <span class=\"price_data PriceColor\" data=\"" + v.price + "\">" + v.price + "</span>\n" +
-                            "                        </div>\n" +
+                            "                        </div>\n" +*/
                             "                    </dd>\n" +
                             "                </dl>"
                         );

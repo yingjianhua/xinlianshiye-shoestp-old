@@ -562,21 +562,21 @@
 				'<div class="xmg-item">' +
 				'<div class="xmg-top">' + val.name + '</div>' +
 				'<div class="xmg-common">' +
-				'<div class="xmg-l">' +
+				/*'<div class="xmg-l">' +
 				'<div class="xmg-t" style="font-size:12px;">MOQ:<span>'+val.count+'</span></div>' +
 				'<div class="xmg-b">' + judgeReview(val.reviewRating) + '<span>（' + val.reviewCount +
 				'）</span> </div>' +
 				'</div>' +
 				'<div class="xmg-r">' +
-				/* '<div class="xmg-t">${env.currency.symbols}' + val.sourcePrice + '</div>' + */
+				/!* '<div class="xmg-t">${env.currency.symbols}' + val.sourcePrice + '</div>' + *!/
 				'<div class="xmg-b">${env.currency.symbols}' + val.curPrice + '</div>' +
-				'</div>' +
+				'</div>' +*/
 				'</div>' +
 				'</div>' +
 				'<div class="xmg-bottom">' +
 				'<div class="favorite" onclick="addThisToFavorite(' + val.productId + ')">Favorite</div>' +
-				'<div class="addcart" onclick="addThisToCart(' + val.productId +
-				');"><img src="/home/static/themes/default/mobile/images/myfavorite-carttb.png"/>  Add to Cart</div>' +
+		/*		'<div class="addcart" onclick="addThisToCart(' + val.productId +
+				');"><img src="/home/static/themes/default/mobile/images/myfavorite-carttb.png"/>  Add to Cart</div>' +*/
 				'</div>' +
 				'</div>';
 			$("#proList").append(div);

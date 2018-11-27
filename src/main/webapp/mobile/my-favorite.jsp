@@ -347,7 +347,7 @@
         <input type="checkbox" name="ckAll" value="全选/反选" onclick="checkAll()" id="all"/>
         <div class="xmg-btn xmg-btn-clear"><!-- Clear --><s:text name="clear" /></div>
         <div class="xmg-btn xmg-alladdtocart"><img
-                src="../home/static/themes/default/mobile/images/myfavorite-carttb.png" alt=""/> <!-- Add to Cart --><s:text name="addToCartTo" />
+                src="../home/static/themes/default/mobile/images/myfavorite-carttb.png" alt=""/> <!-- Add to Cart --><s:text name="inq" />
         </div>
     </div>
 </div>
@@ -435,7 +435,7 @@
                 '</div>' +
                 '<div class="xmg-bottom">' +
                 '<div class="del" onclick="recycleThis(' + val.id + ')"><s:text name="cart.remove"/></div>' +
-                '<div class="addcart" onclick="addcart(' + val.id + ')" ><img src="../home/static/themes/default/mobile/images/myfavorite-carttb.png"/>  <s:text name="addToCartTo" /></div>' +
+                '<div class="addcart" onclick="addcart(' + val.id + ')" > <s:text name="my-inquiry-publish.View_Inquiry" /></div>' +
                 '</div>' +
                 '</div>' +
                 '</div>';
@@ -532,28 +532,6 @@
     }
 
     function chooseChecked() {
-        // var ckOnes = document.getElementsByName("ckOne");
-        // var pkeys = '';
-        // for (var i = 0; i < ckOnes.length; i++) {
-        //     if (ckOnes[i].checked == true) {
-        //         if (pkeys == '') {
-        //             pkeys += $(ckOnes[i]).attr("catId");
-        //         } else {
-        //             pkeys += "," + $(ckOnes[i]).attr("catId");
-        //
-        //         }
-        //     }
-        // }
-        // if (pkeys == "" || typeof(pkeys) == "undefined") {
-        //     for (var i = 0; i < ckOnes.length; i++) {
-        //         if (pkeys == '') {
-        //             pkeys += $(ckOnes[i]).attr("catId");
-        //         } else {
-        //             pkeys += "," + $(ckOnes[i]).attr("catId");
-        //
-        //         }
-        //     }
-        // }
         var t = $("div.item2.clean.ui_border_b input[name='ckOne']");
         var postDate = [];
         $.each(t, function (i, v) {
@@ -566,58 +544,28 @@
         throw "Error ";
     }
 
-    /*     $(".xmg-alladdtocart").on("click", function () {
-            var pkeys = chooseChecked();
-            var pkey = pkeys.split(",");
-            var catViewList = [];
-            for (var i in pkey) {
-                var cart = {};
-                cart.supplier = $("#supplier_" + pkey[i]).val().split("##")[0];
-                cart.product = $("#product_" + pkey[i]).val();
-                cart.qty = $("#qty_" + pkey[i]).val();
-                cart.amtTotal = $("#price_" + pkey[i]).html();
-                cart.joinType = $("#joinType_" + pkey[i]).val();
-                catViewList.push(cart);
-            }
-            //_list = catViewList;
-            //console.log(JSON.stringify(catViewList));
 
+
+    function addcart(id) {
+        var pkeys = chooseChecked();
+        var result = pkeys.split(",");
+        for (var i = 0; i < result.length; i++) {
+            console.log(result[i])
             $.ajax({
-                url: '/home/usr_UsrFavorites_favoriteToCart',
+                url: '/home/pdt_PdtConsultPdtList_add',
                 type: 'post',
-                data: {"catViewList": JSON.stringify(catViewList)},
+                data: {"product": result[i]},
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data.errCount)
                     if (data.success == true) {
-                        if (data.errCount > 0) {
-                            console.log(data.errCount + "个产品还未发布规格");
-                        } else {
-                            console.log("加入成功");
-                        }
+                        layer.msg('<s:text name="my-inquiry-publish.View_Inquiry"/>', {icon: 1});
                     } else {
-                        console.log(data.msg);
+                        layer.msg(getMessage(data.msg), {icon: 2, time: 2000});
                     }
                 }
             })
-        }) */
-
-    function addcart(id) {
-        // var supplier = $("#supplier_" + id).val().split("##")[0];
-        // var product = $("#product_" + id).val();
-        // var qty = $("#qty_" + id).val();
-        // var amtTotal = $("#price_" + id).html();
-        // var joinType = $("#joinType_" + id).val();
-        //
-        // var param = {
-        //     "singlePdt.supplier": supplier,
-        //     "pdtPkey": product,
-        //     "singlePdt.qty": qty,
-        //     "singlePdt.amtTotal": amtTotal,
-        //     "singlePdt.cartType": joinType
-        // };
-        //
-        $.ajax({
+        }
+/*        $.ajax({
             url: '/home/usr_UsrFavorites_addSinglePdt',
             type: 'post',
             data: {favoritesPkeys: id},
@@ -637,7 +585,7 @@
                     });
                 }
             }
-        })
+        })*/
     }
 
     $(".ok").on("click", function () {
