@@ -2,6 +2,21 @@
 <%@ taglib uri="/struts-tags" prefix="s"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%--谷歌统计代码 运营加的--%>
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'AW-783435725');
+    gtag('config', 'UA-127715615-6')
+
+</script>
 <script type="text/javascript" src="/home/static/js/lang/${env.curLanguage }.js"></script>
 <script type="text/javascript" src="/home/static/js/moment-with-locales.min.js"></script>
 <%-- <script type="text/javascript" src="../home/static/themes/default/mobile/js/global(1).js"></script> --%>
