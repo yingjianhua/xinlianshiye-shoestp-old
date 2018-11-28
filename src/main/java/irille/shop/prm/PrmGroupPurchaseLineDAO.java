@@ -1,17 +1,26 @@
 package irille.shop.prm;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import irille.pub.Log;
+import irille.pub.bean.BeanBase;
+import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduOther;
 import irille.pub.tb.FldLanguage;
+import irille.pub.util.CacheUtils;
+import irille.pub.util.SetBeans.SetBean.Annotations.SetBean;
+import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.Pdt;
+import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtCatDAO;
 import irille.shop.pdt.PdtProduct;
+import irille.shop.usr.UsrFavorites;
+import irille.view.prm.GproductListView;
 import irille.view.prm.GroupProductView;
+import irille.view.prm.shoesView;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PrmGroupPurchaseLineDAO {
@@ -86,5 +95,62 @@ public class PrmGroupPurchaseLineDAO {
             return map;
 
         }
+    }
+    public static GproductListView getgroupshoplist(Integer purchaseid ){
+        GproductListView glv=new GproductListView();
+        String manpkeys=  PdtCatDAO.Sellect.getAllChild(FldLanguage.Language.en,373);
+        String womanpkeys=  PdtCatDAO.Sellect.getAllChild(FldLanguage.Language.en,380);
+        String children=  PdtCatDAO.Sellect.getAllChild(FldLanguage.Language.en,387);
+        glv.setManshoes( loadshoesView(purchaseid,manpkeys,"mancache"));
+        glv.setWomanshoes( loadshoesView(purchaseid,womanpkeys,"wumancache"));
+        glv.setChildrenshoes( loadshoesView(purchaseid,children,"childrencache"));
+        return  glv;
+    }
+
+    public static   List<shoesView> loadshoesView(Integer purchaseid,String pkeys ,String keycache){
+        List<shoesView> manglv= (List<shoesView>)CacheUtils.groupshopcache.get(keycache,o -> {
+            SQL mansql=new SQL(){{
+                SELECT(PrmGroupPurchaseLine.T.PKEY).SELECT(PdtProduct.T.PKEY,"PPKEY")
+                        .SELECT(PdtProduct.T.NAME,PdtProduct.T.PICTURE)
+                        .FROM(PrmGroupPurchaseLine.class);
+                LEFT_JOIN(PdtProduct.class,PdtProduct.T.PKEY,PrmGroupPurchaseLine.T.PRODUCT);
+                WHERE(PdtProduct.T.CATEGORY," in ("+pkeys+") ");
+            }};
+            List<shoesView> listman= Query.sql(mansql).queryMaps().stream().map(Y ->new shoesView(){{
+                setId((Integer) Y.get(PrmGroupPurchaseLine.T.PKEY.getFld().getCodeSqlField()));
+                setImg((String)Y.get(PdtProduct.T.PICTURE.getFld().getCodeSqlField()));
+                setName((String)Y.get(PdtProduct.T.NAME.getFld().getCodeSqlField()));
+                if(purchaseid!=null){
+                    SQL sql =new SQL(){{
+                        SELECT(UsrFavorites.class).FROM(UsrFavorites.class)
+                                .WHERE(UsrFavorites.T.PRODUCT,"=?",(Integer) Y.get("PPKEY"));
+                        WHERE(UsrFavorites.T.PURCHASE," =? ",purchaseid);
+                    }};
+                    if(Query.sql(sql).queryCount()>0){
+                        setIslove(true);
+                    }else{
+                        setIslove(false);
+                    }
+                }else{
+                    setIslove(false);
+                }
+            }}).collect(Collectors.toList());
+            return  listman;
+        });
+        Set<Integer> intSet = new HashSet<>();
+        Integer i = 10;
+        if(manglv.size()!=0){
+            while (intSet.size() < 6 && i>0) {
+                i--;
+                intSet.add(new Random().nextInt(manglv.size()));
+            }
+        }
+
+        Integer[] ints = intSet.toArray(new Integer[intSet.size()]);
+        List<shoesView> manglvshow=new ArrayList<>();
+        for(int  m=0;m<ints.length;m++) {
+            manglvshow.add(manglv.get(ints[m]));
+        }
+        return  manglvshow;
     }
 }
