@@ -20,6 +20,8 @@
         gtag('js', new Date());
 
         gtag('config', 'UA-122336495-1');
+            gtag('config', 'UA-127715615-6')
+
     </script>
     <meta name="keywords" content="fashion wholesale soes,cheap wholesale shoes,wholesale shoes,shoes customization,shoes trade,shoes,Manufacturers,shoestp">
     <meta name="description" content="foreign trade experts online service! ShoeSTP provides you with customization and wholesale for all kinds of high-quality shoes from 300 professional foreign trade shoes companies!">
@@ -42,7 +44,7 @@
             user_obj.forgot_init();
         });
     </script>
-    
+
 </head>
 
 <body>
@@ -72,7 +74,7 @@
                 <dl>
 					<dt class="">
 						<span> <!--                -->
-							<s:text name="language" />: 
+							<s:text name="language" />:
 							<s:iterator value="env.languages" var="language">
 		                    	<s:if test="shortName==env.curLanguage">
 									<s:if test='#language.shortName=="zh_TW"'>繁体中文</s:if>
@@ -113,7 +115,7 @@
 						</form>
 					</dd>
 				</dl>
-				
+
 				 <script type="text/javascript">
                     $(document).ready(function () {
    						user_obj.sign_in_init();
@@ -249,7 +251,7 @@
         <script type="text/javascript" src="/home/static/js/layer.js"></script>
         <script type="text/javascript">
 	         function junpforget(){
-	         
+
 		    var status='';
 		   			 if(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/.test($('#Email').val())==false){
 						$('#Email').next().show();
@@ -268,11 +270,11 @@
 								}
 							}
 						})
-						
-						
+
+
 					}
-		    
-		   
+
+
 		 	}
 	         function getMessage(str){
 	         	var sourceStr = str;

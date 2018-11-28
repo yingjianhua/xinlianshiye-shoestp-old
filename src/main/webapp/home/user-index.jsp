@@ -19,6 +19,8 @@
 		gtag('js', new Date());
 
 		gtag('config', 'UA-122336495-1');
+		    gtag('config', 'UA-127715615-6')
+
 	</script>
 	<meta name="keywords" content="fashion wholesale soes,cheap wholesale shoes,wholesale shoes,shoes customization,shoes trade,shoes,Manufacturers,shoestp">
 	<meta name="description" content="foreign trade experts online service! ShoeSTP provides you with customization and wholesale for all kinds of high-quality shoes from 300 professional foreign trade shoes companies!">
@@ -189,7 +191,7 @@
 			url:'/home/usr_UsrPurchase_detailById',
 			dataType:'json',
 			success:function(data){
-				if(data.ret != 1) 
+				if(data.ret != 1)
 					return false;
 				var orders = data.result.orders;
 				var favorites = data.result.favorites;
@@ -205,9 +207,9 @@
 					'		</td>'+
 					'		<td>'+order.total+'</td>'+
 					'		<td>'+lang_obj.orders.status[order.status]+'</td>'+
-					'	</tr>'	
+					'	</tr>'
 					);
-				})	
+				})
 				if(defaultAddress)
 					$("#UsrPurchaseLine").append(
 							'<li>'+defaultAddress.surname+' '+defaultAddress.name+'</li>'+
@@ -215,7 +217,7 @@
 							'<li>'+defaultAddress.city+' , '+defaultAddress.region.name+' , '+defaultAddress.postalCode+' , '+defaultAddress.country.name+' </li>'+
 							'<li>'+defaultAddress.phone+'</li>'
 					);
-				
+
 				$.each(favorites,function(index,favorite){
 					$("#UsrFavorites").append(
 					'	<li>'+
@@ -250,14 +252,14 @@
 							'				</dd>'+
 							'			</dl>'+
 							'		</li>'+
-							'	</ul>'		
+							'	</ul>'
 							)
 						})
 				}
 			})
 			user_obj.user_index_init();
 		})
-	
+
 	function cutstr(str, len) {
 		if(str!=null && len!=null){
 	        var str_length = 0;

@@ -3,17 +3,18 @@
 <%--谷歌统计代码 运营加的--%>
 <script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
+    window.dataLayer = window.dataLayer || [];
 
-  function gtag() {
-    dataLayer.push(arguments);
-  }
+    function gtag() {
+        dataLayer.push(arguments);
+    }
 
-  gtag('js', new Date());
+    gtag('js', new Date());
 
-  gtag('config', 'AW-783435725');
+    gtag('config', 'AW-783435725');
+    gtag('config', 'UA-127715615-6')
+
 </script>
-
 <div class="new_header">
     <div class="wide clean">
         <h1 class="pic_box logo fl">
@@ -53,37 +54,37 @@
         </div>
         <!-- .n_search -->
         <script type="text/javascript">
-          $(function () {
+            $(function () {
 
-            $('.n_searico').click(function (e) {
+                $('.n_searico').click(function (e) {
 
-              e.stopPropagation();
+                    e.stopPropagation();
 
-              $(this).css('display', 'none');
+                    $(this).css('display', 'none');
 
-              $('.new_nav_item').css('display', 'none');
+                    $('.new_nav_item').css('display', 'none');
 
-              $('.n_search').fadeIn();
+                    $('.n_search').fadeIn();
+
+                });
+
+                $('.n_search').click(function (e) {
+
+                    e.stopPropagation();
+
+                });
+
+                $('body').click(function () {
+
+                    $('.n_search').css('display', 'none');
+
+                    $('.new_nav_item').fadeIn();
+
+                    $('.n_searico').fadeIn();
+
+                });
 
             });
-
-            $('.n_search').click(function (e) {
-
-              e.stopPropagation();
-
-            });
-
-            $('body').click(function () {
-
-              $('.n_search').css('display', 'none');
-
-              $('.new_nav_item').fadeIn();
-
-              $('.n_searico').fadeIn();
-
-            });
-
-          });
         </script>
     </div>
 </div>

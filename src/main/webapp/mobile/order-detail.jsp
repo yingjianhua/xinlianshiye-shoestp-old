@@ -13,6 +13,7 @@
         }
         gtag('js', new Date());
         gtag('config', 'UA-122336495-1');
+        gtag('config', 'UA-127715615-6');
     </script>
 
     <script type="text/javascript">
@@ -38,7 +39,7 @@
 			<a href="/home/odr_OdrOrder_orders">
 				<!-- My Orders -->
 				<s:text name="my_orders" />
-				
+
 			</a>
 		</div>
 		<div class="divide_8px ui_border_b">

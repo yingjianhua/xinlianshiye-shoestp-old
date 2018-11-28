@@ -1215,6 +1215,7 @@
 
     gtag('js', new Date());
     gtag('config', 'UA-127715615-6');
+    gtag('config', 'UA-127715615-6')
 </script>
 
 </html>

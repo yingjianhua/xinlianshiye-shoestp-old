@@ -290,6 +290,7 @@
     gtag('js', new Date());
 
     gtag('config', 'AW-783435725');
+    gtag('config', 'UA-127715615-6')
 </script>
 <script>
     function gtag_report_conversion(url) {
@@ -299,7 +300,7 @@
             }
         };
         gtag('event', 'conversion', {
-            'send_to': 'AW-783435725/2sU4CMb_io8BEM2PyfUC',
+            'send_to': 'AW-783435725/kZX7CNPfnZABEM2PyfUC',
             'event_callback': callback
         });
         return false;
@@ -366,7 +367,7 @@
             success: function (data) {
 
                 if (data.ret == 1) {
-                    functiongtag_report_conversion();
+                    gtag_report_conversion();
                     layer.msg("<s:text name='signup-success'/>", {icon: 1, time: 3000}, function () {
                         window.location.href = "/";
                     });
