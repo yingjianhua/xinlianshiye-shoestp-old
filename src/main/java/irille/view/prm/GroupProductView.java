@@ -16,8 +16,14 @@ public class GroupProductView implements BaseView{
 	private Integer reviewCount;
 	private String rewrite;
 	private Integer productId;
-	
-	
+	private Boolean ismyfavorite;
+
+	public Boolean getIsmyfavorite() {
+		return ismyfavorite;
+	}
+	public void setIsmyfavorite(Boolean ismyfavorite) {
+		this.ismyfavorite = ismyfavorite;
+	}
 	public Integer getReviewCount() {
 		return reviewCount;
 	}
