@@ -43,7 +43,7 @@ public class PrmGroupPurchaseLineDAO {
          * @param id       活动id
          * @return
          */
-        public static Map getActInfo(FldLanguage.Language lang, Integer start, Integer limit, Integer category, Integer sort, Integer type, Integer id) {
+        public static Map getActInfo(FldLanguage.Language lang, Integer start, Integer limit, Integer category, Integer sort, Integer type, Integer id,Integer purchasepkey) {
             Map map = new HashMap();
             SQL sql = new SQL() {{
                 SELECT(PrmGroupPurchaseLine.T.PKEY, PrmGroupPurchaseLine.T.PRODUCT, PrmGroupPurchaseLine.T.COUNT)
@@ -80,6 +80,7 @@ public class PrmGroupPurchaseLineDAO {
                     .stream()
                     .map(bean -> new GroupProductView() {{
                         PdtProduct product = bean.gtProduct();
+                        setIsmyfavorite(Likebest(purchasepkey, product.getPkey()));
                         setRewrite(bean.getPkey(), product.getName());
                         product = translateUtil.getAutoTranslate(product, lang);
                         setId(bean.getPkey());
@@ -120,20 +121,7 @@ public class PrmGroupPurchaseLineDAO {
                 setId((Integer) Y.get(PrmGroupPurchaseLine.T.PKEY.getFld().getCodeSqlField()));
                 setImg((String)Y.get(PdtProduct.T.PICTURE.getFld().getCodeSqlField()));
                 setName((String)Y.get(PdtProduct.T.NAME.getFld().getCodeSqlField()));
-                if(purchaseid!=null){
-                    SQL sql =new SQL(){{
-                        SELECT(UsrFavorites.class).FROM(UsrFavorites.class)
-                                .WHERE(UsrFavorites.T.PRODUCT,"=?",(Integer) Y.get("PPKEY"));
-                        WHERE(UsrFavorites.T.PURCHASE," =? ",purchaseid);
-                    }};
-                    if(Query.sql(sql).queryCount()>0){
-                        setIslove(true);
-                    }else{
-                        setIslove(false);
-                    }
-                }else{
-                    setIslove(false);
-                }
+                setIslove(Likebest(purchaseid,(Integer) Y.get("PPKEY")));
             }}).collect(Collectors.toList());
             return  listman;
         });
@@ -152,5 +140,23 @@ public class PrmGroupPurchaseLineDAO {
             manglvshow.add(manglv.get(ints[m]));
         }
         return  manglvshow;
+    }
+    /**
+    *@Description:   返回是否是已收藏的
+    *@date 2018/11/28 9:21
+    *@anthor wilson zhang
+    */
+    public static Boolean Likebest(Integer purchaseid,Integer pkey){
+        if(purchaseid!=null){
+            SQL sql =new SQL(){{
+                SELECT(UsrFavorites.class).FROM(UsrFavorites.class)
+                        .WHERE(UsrFavorites.T.PRODUCT,"=?",pkey);
+                WHERE(UsrFavorites.T.PURCHASE," =? ",purchaseid);
+            }};
+            if(Query.sql(sql).queryCount()>0){
+               return  true;
+            }
+        }
+        return false;
     }
 }

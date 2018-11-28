@@ -640,7 +640,7 @@ public class PrmGroupPurchaseAction extends HomeAction<PrmGroupPurchase>{
 	}
 	public void getActProduct() throws IOException {
 		setStart(getPage() <= 1?0:(getPage() - 1) * getLimit());
-		Map views = PrmGroupPurchaseLineDAO.Select.getActInfo(curLanguage(), getStart(), getLimit(), Integer.valueOf(getCategory()), Integer.valueOf(getSort()),getType(),getId());
+		Map views = PrmGroupPurchaseLineDAO.Select.getActInfo(curLanguage(), getStart(), getLimit(), Integer.valueOf(getCategory()), Integer.valueOf(getSort()),getType(),getId(),getPurchase().getPkey());
 		views.put("page", getPage());
 		write(new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL).writeValueAsString(views));
 	}
