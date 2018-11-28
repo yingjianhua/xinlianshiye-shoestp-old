@@ -10,7 +10,7 @@ public class shoesView {
     @JsonSerialize(using = I18NFieldSerializer.class)
     private String name;
     private String img;
-    private Boolean islove;
+    private Boolean isFavorite;
 
     public void setImg(String img) {
         if (img != null && img.length() > 0) {

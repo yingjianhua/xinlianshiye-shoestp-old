@@ -1,18 +1,13 @@
 package irille.shop.prm;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import irille.pub.Log;
-import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduOther;
 import irille.pub.tb.FldLanguage;
 import irille.pub.util.CacheUtils;
-import irille.pub.util.SetBeans.SetBean.Annotations.SetBean;
-import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.Pdt;
-import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtCatDAO;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrFavorites;
@@ -121,7 +116,7 @@ public class PrmGroupPurchaseLineDAO {
                 setId((Integer) Y.get(PrmGroupPurchaseLine.T.PKEY.getFld().getCodeSqlField()));
                 setImg((String)Y.get(PdtProduct.T.PICTURE.getFld().getCodeSqlField()));
                 setName((String)Y.get(PdtProduct.T.NAME.getFld().getCodeSqlField()));
-                setIslove(Likebest(purchaseid,(Integer) Y.get("PPKEY")));
+                setIsFavorite(Likebest(purchaseid,(Integer) Y.get("PPKEY")));
             }}).collect(Collectors.toList());
             return  listman;
         });
