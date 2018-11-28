@@ -139,8 +139,6 @@ public class PrmGroupPurchaseLineDAO {
         });
         Set<Integer> intSet = new HashSet<>();
         Integer i = 10;
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-        System.out.println(manglv);
         if(manglv.size()!=0){
             while (intSet.size() < 6 && i>0) {
                 i--;
@@ -153,8 +151,6 @@ public class PrmGroupPurchaseLineDAO {
         for(int  m=0;m<ints.length;m++) {
             manglvshow.add(manglv.get(ints[m]));
         }
-        System.out.println(manglvshow);
-        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
         return  manglvshow;
     }
 }
