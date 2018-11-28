@@ -655,7 +655,8 @@
     }
 </script>
 <script>
-    var isLogin = ${env.login!=null};
+        var isLogin = ${env.login!=null};
+
     var app = new Vue({
         el: "#app",
         data: {
