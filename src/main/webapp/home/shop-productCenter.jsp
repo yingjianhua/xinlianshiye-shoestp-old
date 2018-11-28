@@ -289,9 +289,9 @@
                 '</h5>' +
                 '<div class="goods-price">' +
                 <%--'${env.currency.symbols}' + val.pdt.curPrice + '</div>' +--%>
-                '<div class="btn btn-enter">' +
-                '<a href="/' + val.rewrite + '" class="btn btn-enter" target="_blank"><s:text name="show_now"/></a>' +
-                '</div>' +
+                // '<div class="btn btn-enter">' +
+                <%--'<a href="/' + val.rewrite + '" class="btn btn-enter" target="_blank"><s:text name="show_now"/></a>' +--%>
+                // '</div>' +
                 '</div>' +
                 '</div>';
             $("#products").append(div);

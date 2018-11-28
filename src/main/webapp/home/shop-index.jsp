@@ -209,10 +209,10 @@
                                 <div class="goods-price">
                                         <%--${env.currency.symbols}${pro.pdt.curPrice}--%>
                                 </div>
-                                <div class="btn btn-enter">
-                                    <a href="/${pro.rewrite}" class="btn btn-enter" target="_blank"><s:text
-                                            name="show_now"/></a>
-                                </div>
+                                <%--<div class="btn btn-enter">--%>
+                                    <%--<a href="/${pro.rewrite}" class="btn btn-enter" target="_blank"><s:text--%>
+                                            <%--name="show_now"/></a>--%>
+                                <%--</div>--%>
                             </div>
                         </div>
                     </c:forEach>
