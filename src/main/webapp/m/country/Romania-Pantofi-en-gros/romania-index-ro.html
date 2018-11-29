@@ -53,7 +53,7 @@
             </ul>
         </div>
         <div class="image-bottom">
-            <a class="btn following" href="javascript:void(0);" @click="hoodleShow = true">Obțineți Cadouri
+            <a class="btn following" href="javascript:void(0);" @click="getGift">Obțineți Cadouri
                 Surpriză</a>
             <a class="btn btn-blur" href="https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373">Achiziționarea
                 online va începe imediat</a>
@@ -74,7 +74,7 @@
             </mu-carousel-item>
         </mu-carousel>
         <a class="producrt-button inline-block-h80 following"
-           href="javascript:void(0);" @click="hoodleShow = true">Obțineți
+           href="javascript:void(0);" @click="getGift">Obțineți
             Mostre Gratuite Acum</a>
     </div>
 
@@ -107,7 +107,7 @@
                 <img src="imgs/rmnyb20.png" alt="">
                 <img src="imgs/rmnyb21.png" alt="">
             </div>
-            <a class="inline-block-h80 following" href="javascript:void(0);" @click="hoodleShow = true">Solicitați
+            <a class="inline-block-h80 following" href="javascript:void(0);" @click="getGift">Solicitați
                 Acum</a>
         </div>
     </div>
@@ -199,7 +199,7 @@
                 <span class="graycircle"></span>
                 <p>Consultanță profesională personalizată pentru servicii</p>
             </div>
-            <a class="inline-block-h80 following" href="javascript:void(0);" @click="hoodleShow = true">Rezervați-vă
+            <a class="inline-block-h80 following" href="javascript:void(0);" @click="getGift">Rezervați-vă
                 locurile</a>
         </div>
     </div>
@@ -216,7 +216,7 @@
                 <img src="imgs/rmnyb5.png" alt="">
                 <img src="imgs/rmnyb6.png" alt="">
             </div>
-            <a class="inline-block-h80 following" href="javascript:void(0);" @click="hoodleShow = true">Obțineți
+            <a class="inline-block-h80 following" href="javascript:void(0);" @click="getGift">Obțineți
                 Mostre Gratuite</a>
         </div>
     </div>
@@ -248,7 +248,7 @@
             <h2>Nevoile dvs. <br>de afaceri sunt unice?</h2>
             <h3>Să vă ajutăm să satisfaceți aceste nevoi! <br>Contactați-ne pentru a obține imediat mostre gratuite.
             </h3>
-            <a class="inline-block-h80 following" href="javascript:void(0);" @click="hoodleShow = true">Rezervați-vă
+            <a class="inline-block-h80 following" href="javascript:void(0);" @click="getGift">Rezervați-vă
                 locurile</a>
         </div>
         <div class="rmnybfchoose">
@@ -398,6 +398,10 @@
             this.acquireCountry()
         },
         methods: {
+            getGift: function{
+                this.gtag_report_conversionGoogle();
+                this.hoodleShow = true;
+            },
             hintShow: function () {
                 this.successfullyShow = false;
             },
@@ -488,6 +492,20 @@
             }
         }
     })
+</script>
+<script>
+    function gtag_report_conversionGoogle(url) {
+        var callback = function () {
+            if (typeof(url) != 'undefined') {
+                window.location = url;
+            }
+        };
+        gtag('event', 'conversion', {
+            'send_to': 'AW-783435725/gYQ7CJq0upABEM2PyfUC',
+            'event_callback': callback
+        });
+        return false;
+    }
 </script>
 <script>
     function gtag_report_conversion(url) {

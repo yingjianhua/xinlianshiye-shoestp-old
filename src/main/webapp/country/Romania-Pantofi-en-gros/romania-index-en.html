@@ -574,6 +574,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
         methods: {
             // 点击获取礼物 - 弹出form框
             getGift() {
+                this.gtag_report_conversionGoogle()
                 this.isFormShow = true;
             },
             // 跳转统计
@@ -624,7 +625,20 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
         }
     })
 </script>
-
+<script>
+    function gtag_report_conversionGoogle(url) {
+        var callback = function () {
+            if (typeof(url) != 'undefined') {
+                window.location = url;
+            }
+        };
+        gtag('event', 'conversion', {
+            'send_to': 'AW-783435725/gYQ7CJq0upABEM2PyfUC',
+            'event_callback': callback
+        });
+        return false;
+    }
+</script>
 <script>
     // 切换语言
     $('.change_lang').hover(function () {

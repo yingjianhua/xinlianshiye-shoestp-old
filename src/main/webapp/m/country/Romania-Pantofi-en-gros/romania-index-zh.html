@@ -51,7 +51,7 @@
             </ul>
         </div>
         <div class="image-bottom">
-            <a class="btn following" href="javascript:void(0);" @click="hoodleShow = true">获得神秘礼品</a>
+            <a class="btn following" href="javascript:void(0);" @click="getGift">获得神秘礼品</a>
             <a class="btn btn-blur" href="https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373">在线采购马上开始</a>
         </div>
     </div>
@@ -70,7 +70,7 @@
             </mu-carousel-item>
         </mu-carousel>
         <a class="producrt-button inline-block-h80 following"
-           href="javascript:void(0);" @click="hoodleShow = true">立即获取免费样品</a>
+           href="javascript:void(0);" @click="getGift">立即获取免费样品</a>
     </div>
 
     <div class="rmnybottomsev">
@@ -96,7 +96,7 @@
                 <img src="imgs/rmnyb20.png" alt="">
                 <img src="imgs/rmnyb21.png" alt="">
             </div>
-            <a class="inline-block-h80 following" href="javascript:void(0);" @click="hoodleShow = true">立即申请</a>
+            <a class="inline-block-h80 following" href="javascript:void(0);" @click="getGift">立即申请</a>
         </div>
     </div>
     <div class="rmnybottomfiv">
@@ -179,7 +179,7 @@
                 <span class="graycircle"></span>
                 <p>定制化服务专业建议</p>
             </div>
-            <a class="inline-block-h80 following" href="javascript:void(0);" @click="hoodleShow = true">预定您的席位</a>
+            <a class="inline-block-h80 following" href="javascript:void(0);" @click="getGift">预定您的席位</a>
         </div>
     </div>
     <div class="rmnymap">
@@ -195,7 +195,7 @@
                 <img src="imgs/rmnyb5.png" alt="">
                 <img src="imgs/rmnyb6.png" alt="">
             </div>
-            <a class="inline-block-h80 following" href="javascript:void(0);" @click="hoodleShow = true">获取免费样品</a>
+            <a class="inline-block-h80 following" href="javascript:void(0);" @click="getGift">获取免费样品</a>
         </div>
     </div>
     <div class="rmnybottomsecond">
@@ -225,7 +225,7 @@
         <div class="rmnybfcon">
             <h2>您的业务需求<br>是独一无二的?</h2>
             <h3>让我们帮助您满足这些需求！<br>请与我们联系，立即获取免费样品。</h3>
-            <a class="inline-block-h80 following" href="javascript:void(0);" @click="hoodleShow = true">预定你的座位</a>
+            <a class="inline-block-h80 following" href="javascript:void(0);" @click="getGift">预定你的座位</a>
         </div>
         <div class="rmnybfchoose">
             <div v-for="item,index in checkinput">
@@ -369,6 +369,10 @@
             this.acquireCountry()
         },
         methods: {
+            getGift: function{
+                this.gtag_report_conversionGoogle();
+                this.hoodleShow = true;
+            },
             hintShow: function () {
                 this.successfullyShow = false;
             },
@@ -459,6 +463,20 @@
             }
         }
     })
+</script>
+<script>
+    function gtag_report_conversionGoogle(url) {
+        var callback = function () {
+            if (typeof(url) != 'undefined') {
+                window.location = url;
+            }
+        };
+        gtag('event', 'conversion', {
+            'send_to': 'AW-783435725/gYQ7CJq0upABEM2PyfUC',
+            'event_callback': callback
+        });
+        return false;
+    }
 </script>
 <script>
     function gtag_report_conversion(url) {

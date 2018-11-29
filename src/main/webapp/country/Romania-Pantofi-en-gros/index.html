@@ -574,6 +574,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
         methods: {
             // 点击获取礼物 - 弹出form框
             getGift() {
+                this.gtag_report_conversionGoogle()
                 this.isFormShow = true;
                 // 统计代码
             },
@@ -634,6 +635,20 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
         $(this).find('dd').stop().slideUp(200);
         $(this).find('.icon-arrow').removeClass('rotate')
     })
+</script>
+<script>
+    function gtag_report_conversionGoogle(url) {
+        var callback = function () {
+            if (typeof(url) != 'undefined') {
+                window.location = url;
+            }
+        };
+        gtag('event', 'conversion', {
+            'send_to': 'AW-783435725/gYQ7CJq0upABEM2PyfUC',
+            'event_callback': callback
+        });
+        return false;
+    }
 </script>
 
 <!-- 代码追踪 -->

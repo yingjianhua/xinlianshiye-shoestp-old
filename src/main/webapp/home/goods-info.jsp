@@ -293,7 +293,7 @@
 
 
                     <div class="xmgActions">
-                        <input type="button" value="INQUIRY" class="addRFQ" @click="addRFQ">
+                        <input type="button" value="<s:text name="inquiry"/>" class="addRFQ" @click="addRFQ">
                         <%--                 <input type="button" value="<s:text name='Global.Add_To_Cart'/>"
                                                 class="addtoCart"
                                                 @click="addtoCart">
