@@ -1,5 +1,6 @@
 package irille.Entity.OdrerMeetings;
 
+import irille.core.sys.Sys;
 import irille.pub.bean.BeanInt;
 import irille.pub.svr.Env;
 import irille.pub.tb.Fld;
@@ -20,6 +21,8 @@ public class OrderMeetingOrder extends BeanInt<OrderMeetingOrder> {
     PKEY(TB.crtIntPkey()),
     ORDERMEETINGID(OrderMeeting.fldOutKey()),
     ORDERID(OdrOrder.fldOutKey()),
+    PAYMENTTIME(SYS.DATE__NULL,"付款时间"),
+    BILLINGSTATUS(TB.crt(Sys.OYn.DEFAULT)),//结算状态
     CREATED_TIME(SYS.CREATED_DATE_TIME),
     ROW_VERSION(SYS.ROW_VERSION),
     //>>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>

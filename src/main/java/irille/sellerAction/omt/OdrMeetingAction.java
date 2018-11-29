@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import irille.Entity.OdrerMeetings.OrderMeeting;
 import irille.Service.Manage.OdrMeeting.IOdrMeetingManageService;
+import irille.Service.Manage.OdrMeeting.IOdrMeetingOrderManageService;
 import irille.Service.Manage.OdrMeeting.IOdrMeetingProductManageService;
 import irille.Service.Manage.OdrMeeting.IOdrMeettingExhibitionService;
 import irille.sellerAction.SellerAction;
@@ -29,6 +30,9 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
 
     @Inject
     private IOdrMeettingExhibitionService odrMeettingExhibitionService;
+
+    @Inject
+    private IOdrMeetingOrderManageService odrMeetingOrderManageService;
 
     @Override
     public void loadsupstate() throws Exception {
@@ -201,5 +205,12 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
 
     public void getPartnerList() throws IOException {
         write(odrMeetingManageService.cooperationsupplier(getStart(), getLimit(), status, name, id));
+    }
+    @Getter
+    @Setter
+    private Integer classification;
+
+    public void getOmtOrderList() throws IOException {
+        write(odrMeetingOrderManageService.getOmtOrderList(id,getStart(),getLimit(),classification,status,inputContent));
     }
 }

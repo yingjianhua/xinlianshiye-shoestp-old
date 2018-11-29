@@ -59,4 +59,7 @@ public interface IOdrMeetingAction extends ISellerAction {
 
     @RequestMapping(alias = "获取订购会合作商列表", sort = 22)
     public void getPartnerList() throws Exception;
+
+    @RequestMapping(alias = "获取订购会订单列表", sort = 23)
+    public void getOmtOrderList() throws Exception;
 }

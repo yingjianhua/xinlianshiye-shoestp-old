@@ -30,6 +30,7 @@ public class OrderMeetingProduct extends BeanInt<OrderMeetingProduct> {
     NEWMOQ(SYS.INT, "活动起订量"),
     NEWPRICE(SYS.PRICE, "活动价"),
     TARGET_COUNT(SYS.INT, "目标量"),
+    BILLINGSTATUS(TB.crt(OrderMeetingProductStatus.DEFAULT)),//状态(OWN:自有,PARTNER:合作商)
     UPDATED_TIME(SYS.UPDATED_DATE_TIME),
     ROW_VERSION(SYS.ROW_VERSION),
     //>>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
