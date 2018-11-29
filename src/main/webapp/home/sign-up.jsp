@@ -292,20 +292,6 @@
     gtag('config', 'AW-783435725');
     gtag('config', 'UA-127715615-6')
 </script>
-<script>
-    function gtag_report_conversion(url) {
-        var callback = function () {
-            if (typeof(url) != 'undefined') {
-                window.location = url;
-            }
-        };
-        gtag('event', 'conversion', {
-            'send_to': 'AW-783435725/kZX7CNPfnZABEM2PyfUC',
-            'event_callback': callback
-        });
-        return false;
-    }
-</script>
 <script type="text/javascript">
     $("#verify").on("click", function () {
         refreshVerify();

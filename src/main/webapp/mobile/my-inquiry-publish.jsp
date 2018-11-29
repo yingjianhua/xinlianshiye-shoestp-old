@@ -186,15 +186,15 @@
                             <label for="use-title" class="flex-grow">
                                 <input type="checkbox" id="use-title">
                                 <span style="color: #777;"><!-- Use products title as RFQ title --><s:text
-                                        name="RFQ_title"/></span>
+                                        name="my-inquiry-publish.Use_Product_Name_As_Title"/></span>
                             </label>
                             <%-- <input class="btn fr" type="button" value="Submit" @click="submitSelectedGoods">
                             <input class="btn fr btn-cancel-chooseGoods" type="reset" value="Cancel" @click="cancelSelectedGoods"> --%>
                             <div>
-                                <input class="btn" type="button" value="Submit"
+                                <input class="btn" type="button" value="<s:text name="mobile.submit"/>"
                                        @click="submitSelectedGoods">
                                 <input class="btn btn-cancel-chooseGoods" type="reset"
-                                       value="Cancel" @click="cancelSelectedGoods">
+                                       value="<s:text name="user.cancel"/>" @click="cancelSelectedGoods">
                             </div>
                         </div>
                     </div>

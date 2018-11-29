@@ -34,7 +34,7 @@
                     <c:if test="${not empty supView.authAge && supView.authAge > 0}">
                         <!-- 自制年限图标 -->
                         <div class="icon icon-years-limit-group">
-                            <a href="/m/spain/company.html#data" target="_blank">
+                            <a href="/home/usr_UsrSupplier_gtSupInfo?pkey=${supView.pkey}"  target="_blank">
                                 <img src="/home/static/themes/default/mobile/images/doller_pic_o.png" alt="">
                                 <span class="years-num">${supView.authAge}</span>
                                 <span class="years-unit">YRS</span>
