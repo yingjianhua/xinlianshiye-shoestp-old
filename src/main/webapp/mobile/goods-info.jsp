@@ -267,12 +267,12 @@
                         <%--<span>Sole Out</span>--%>
                     <%--</div>--%>
                 <%--</div>--%>
-                <%--<a href="javascript:;" class="add_favorite fl" v-on:click="add_favorite"--%>
-                   <%--style="line-height:2.1875rem; height:2.1875rem; font-size:1rem; color:#666; margin-left:6%;"--%>
-                <%-->--%>
-                    <%--<img :src="_favorite" style="vertical-align:middle;">--%>
+                <a href="javascript:;" class="add_favorite fl" v-on:click="add_favorite"
+                   style="line-height:2.1875rem; height:2.1875rem; font-size:1rem; color:#666; margin-left:6%;"
+                >
+                    <img :src="_favorite" style="vertical-align:middle;">
                     <%--{{result.favorite_count}}--%>
-                <%--</a>--%>
+                </a>
             <%--</div>--%>
         </div>
         <div class="widget prod_info_actions clean">
