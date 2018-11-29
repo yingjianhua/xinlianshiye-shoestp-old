@@ -1,0 +1,902 @@
+@charset 'utf-8';
+@import 'reset';
+
+.w1200{
+  width: 1200px;
+  min-width: 1200px;
+  margin: 0 auto;
+  // overflow: hidden;
+}
+.banner-wrap{
+  min-width: 1200px;
+}
+$fs_h1: 210;
+$fs_h3: 75;
+$fs_h4: 50;
+$fs_h5: 30;
+$fs_h6: 20;
+.fs_22{
+  font-size: ($fs_h6 - 8) + px;
+}
+.fs_26{
+  font-size: ($fs_h6 - 4) + px;
+}
+.fs_32{
+  font-size: ($fs_h6 + 2) + px;
+}
+.fs_60{
+  font-size: $fs_h4 + px;
+}
+.h1{
+  font-size: $fs_h1 + px;
+}
+.h3{
+  font-size: $fs_h3 + px;
+}
+.h4{
+  font-size: ($fs_h4 + 6 ) + px;
+}
+.h5{
+  font-size: $fs_h5 + px;
+}
+
+.swiper-slide{
+  text-align: center;
+}
+.swiper-btn-prev{
+  position: absolute;
+  top: 50%;
+  left: auto;
+  right: 50%;
+  z-index: 999;
+  transform: translate(-205px, -50%);
+  cursor: pointer;
+}
+.swiper-btn-next{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  z-index: 999;
+  transform: translate(205px,-50%);
+  cursor: pointer;
+}
+
+// 区域标题
+.zone-title{
+  font-size: ($fs_h4 + 10) + px;
+	color: #fefefe;
+  margin-bottom: 20px;
+}
+.btn-more{
+  display: inline-block;
+  line-height: 35px;
+  padding: 0 24px;
+  font-size: ($fs_h5 - 4) + px;
+	color: #fefefe;
+  border-radius: 22px;
+  background-color: #ffc501;
+  cursor: pointer;
+  &:hover{
+    color: #fefefe;
+  }
+}
+
+// 产品展示列表
+.goods-list{
+  .goods-item{
+    float: left;
+    // width: 390px;
+    width: 32.5%;
+    height: 500px;
+    padding: 15px 10px 15px 20px;
+    // margin-right: 15px;
+    margin-right: 1%;
+    background: #fff;
+
+    &:nth-child(3n){
+      margin-right: 0;
+      // margin-bottom: 15px;
+      margin-bottom: 1%;
+    }
+    &:last-child{
+      margin-bottom: 0;
+    }
+
+  }
+  .goods-pic{
+    position: relative;
+    left: -5px;
+    display: block;
+    margin: 0 auto;
+    width: 360px;
+    height: 360px;
+  }
+  .goods-title{
+    height: 56px;
+    line-height: 28px;
+    font-weight: normal;
+  	color: #666;
+
+    overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  .tools-box{
+    padding-right: 20px;
+    margin-top: 16px;
+    .icon-letter-wrap{
+      position: relative;
+      .tips{
+        position: absolute;
+        right: -15px;
+        bottom: 115%;
+        // line-height: 18px;
+        padding: 4px 12px;
+        transition: opacity 0.2s;
+        opacity: 0;
+        font-weight: bold;
+      	color: #2e469e;
+        background-color: #ddd;
+      	box-shadow: 0px 0px 2px 0px  rgba(102, 102, 102, 0.34);
+      	border-radius: 20px;
+        &:after{
+          content:"";
+          position: absolute;
+          right: 5px;
+          bottom: -5px;
+          border: 5px solid transparent;
+          border-left: 8px solid #ddd;
+        }
+      }
+
+      &:hover .tips{
+        opacity: 1;
+      }
+    }
+    .icon-heart{
+      margin-left: 15px;
+    }
+  }
+}
+
+
+.banner_01{
+  color: #fff;
+  // height: 938px;
+  .txt-box{
+    padding: 120px 0 240px;
+  }
+  .h1{
+    position: relative;
+    z-index: 9;
+  }
+  .h3{
+    margin-top: -24px;
+    margin-bottom: 65px;
+  }
+  .h5{
+    line-height: 1.5;
+    opacity: 0.9;
+  }
+  .flag-pic{
+    position: absolute;
+    left: -153px;
+    top: 68px;
+    z-index: 5;
+  }
+  background: #4d61ac url("../images/banner_01_bg.png") no-repeat center / cover;
+}
+
+// 4张分类 banner
+.banner_02{
+  margin-top: -190px;
+  .cat-item{
+    position: relative;
+    z-index: 1;
+    height: 415px;
+    width: 49%;
+    margin-right: 2%;
+    margin-bottom: 2%;
+    border-radius: 22px;
+    overflow: hidden;
+    cursor: default;
+
+
+    .scale{
+      transition: all 0.6s;
+    }
+    .cat-pic{
+      position: absolute;
+      z-index: -1;
+    }
+    .txt_04{
+    	line-height: 50px;
+    	letter-spacing: 0px;
+    	color: #fff;
+    }
+
+
+    &:nth-child(2n){
+      margin-right: 0;
+    }
+
+    &:hover{
+      .hover-box{
+        opacity: 1;
+      }
+      .bar{
+        width: 68px;
+      }
+      .scale{
+        transform: scale(1.2);
+      }
+    }
+  }
+
+
+  .hover-box{
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.2s;
+    color: #fff;
+    background: rgba(46, 70, 158, 0.85);
+    .bar{
+      height: 10px;
+      // width: 68px;
+      width: 0;
+      transition: width 0.4s;
+      margin-bottom: 45px;
+      background: #ffc501;
+    }
+    .title{
+      margin-bottom: 12px;
+    }
+    .btn-more-simple{}
+  }
+}
+
+// 轮播
+.banner_03{
+  padding: 75px 0;
+  background-color: #f5f5f5;
+  .title{
+    margin-bottom: 105px;
+  	color: #222;
+  }
+
+  img{
+    width: 360px;
+    height: 360px;
+    object-fit: contain;
+  }
+  .img-wrap{
+    position: relative;
+
+    .show-pic{
+      transition: opacity 0.4s;
+      opacity: 1;
+    }
+    .hover-show-pic{
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.4s;
+      opacity: 0;
+    }
+
+    &:hover{
+      .show-pic{
+        opacity: 0;
+      }
+      .hover-show-pic{
+        opacity: 1;
+      }
+    }
+  }
+}
+
+// 男鞋区
+.banner_04{
+  .w1200{
+    padding-top: 780px;  //padding内为绝对定位的背景
+  }
+  position: relative;
+  height: 2030px;
+  background: url("../images/banner_04_bg.png") no-repeat center 265px / 1920px;
+  .bg-loop{
+    position: absolute;
+    top: 400px;
+    left: 20px;
+    z-index: -1;
+  }
+  .bg-shoes{
+    position: absolute;
+    top: 300px;
+    left: 24px;
+    z-index: 1;
+  }
+  .bg-men{
+    position: absolute;
+    top: 125px;
+    left: 440px;
+    z-index: -1;
+  }
+
+  // 内容区域
+  .content-wrap{
+    position: relative;
+    .title-box{
+      position: absolute;
+      top: -170px;
+      right: 0;
+    }
+  }
+}
+
+// 女鞋区
+.banner_05{
+  .w1200{
+    padding-top: 920px;  //padding内为绝对定位的背景
+  }
+  position: relative;
+  height: 2310px;
+  background: url("../images/banner_05_bg.png") no-repeat center 520px / 1920px;
+  .bg-loop{
+    position: absolute;
+    top: 525px;
+    right: 11px;
+    z-index: -1;
+  }
+  .bg-shoes{
+    position: absolute;
+    top: 307px;
+    right: 20px;
+    z-index: 1;
+  }
+  .bg-men{
+    position: absolute;
+    top: 142px;
+    left: 62px;
+    z-index: -1;
+  }
+
+  // 内容区域
+  .content-wrap{
+    position: relative;
+    .title-box{
+      position: absolute;
+      top: -170px;
+      left: 0;
+    }
+  }
+}
+
+// 童鞋区
+.banner_06{
+  .w1200{
+    padding-top: 940px;  //padding内为绝对定位的背景
+  }
+  position: relative;
+  height: 2205px;
+  background: url("../images/banner_06_bg.png") no-repeat center 595px / 1920px;
+  .bg-loop{
+    position: absolute;
+    top: 445px;
+    left: 20px;
+    z-index: -1;
+  }
+  .bg-shoes{
+    position: absolute;
+    top: 315px;
+    left: 78px;
+    z-index: 1;
+  }
+  .bg-men{
+    position: absolute;
+    top: 0px;
+    right: -50px;
+    z-index: -1;
+  }
+
+  // 内容区域
+  .content-wrap{
+    position: relative;
+    .title-box{
+      position: absolute;
+      top: -170px;
+      right: 0;
+      .btn-more{
+        color: #130d00;
+        background-color: #fff;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 979px){
+  $fs_h1: 150;
+  $fs_h3: 40;
+  $fs_h4: 28;
+  $fs_h5: 15;
+  $fs_h6: 12;
+  .zone-title{
+    font-size: ($fs_h4 + 10) + px;
+  }
+  .btn-more{
+    font-size: ($fs_h5 - 4) + px;
+  }
+  .fs_22{
+    font-size: ($fs_h6 - 8) + px;
+  }
+  .fs_26{
+    font-size: ($fs_h6 - 4) + px;
+  }
+  .fs_32{
+    font-size: ($fs_h6 + 2) + px;
+  }
+  .fs_60{
+    font-size: $fs_h4 + px;
+  }
+  .h1{
+    font-size: $fs_h1 + px;
+  }
+  .h3{
+    font-size: $fs_h3 + px;
+  }
+  .h4{
+    font-size: ($fs_h4 + 6 ) + px;
+  }
+  .h5{
+    font-size: $fs_h5 + px;
+  }
+  .goods-list{
+    .goods-item{
+      height: 350px;
+    }
+    .goods-pic{
+      display: block;
+      margin: 0 auto;
+      width: 230px;
+      height: 230px;
+    }
+    .goods-title{
+      height: 44px;
+      line-height: 22px;
+    }
+    .tools-box{
+      margin-top: 14px;
+      img{
+        height: 30px;
+      }
+      .icon-letter-wrap{
+        .tips{
+          right: -25px;
+          &:after{
+            right: 15px;
+          }
+        }
+      }
+    }
+  }
+
+  .w1200{
+    width: 800px;
+    min-width: 800px;
+  }
+  .banner-wrap{
+    overflow: hidden;
+    min-width: 980px;
+  }
+  .banner_04, .banner_05, .banner_06{
+    background-size: 1350px;
+  }
+  .banner_01{
+     .flag-pic{
+       left: -30px;
+       top: 98px;
+       width: 240px;
+     }
+  }
+  .banner_02{
+    margin-top: -120px;
+    ul{
+      width: 800px;
+      margin: 0 auto;
+    }
+    .cat-item{
+      height: 260px;  //282
+    }
+  }
+  .banner_03{
+    height: auto;
+    padding: 60px 0;
+    .title{
+      margin-bottom: 65px;
+    }
+    img{
+      width: 240px;
+      height: 240px;
+    }
+    .swiper-btn-prev{
+      right: 50%;
+      transform: translate(-145px, -50%);
+    }
+    .swiper-btn-next{
+      left: 50%;
+      transform: translate(138px,-50%);
+    }
+  }
+  .banner_04{
+    height: 1430px;
+    background-position: center 185px;
+    .w1200{
+      padding-top: 540px;  //padding内为绝对定位的背景
+    }
+    .bg-loop{
+      top: 340px;
+      width: 250px;
+    }
+    .bg-shoes{
+      top: 270px;
+      width: 252px;
+    }
+    .bg-men{
+      // top: 225px;
+      top: 144px;
+      left: 300px;
+      width: 275px;
+    }
+    .content-wrap{
+      .title-box{
+        top: -130px;
+      }
+    }
+  }
+  .banner_05{
+    height: 1630px;
+    background-position: center 365px;
+    .w1200{
+      padding-top: 670px;  //padding内为绝对定位的背景
+    }
+    .bg-loop{
+      top: 405px;
+      width: 240px;
+    }
+    .bg-shoes{
+      top: 260px;
+      width: 240px;
+    }
+    .bg-men{
+      top: 152px;
+      width: 240px;
+    }
+    .content-wrap{
+      .title-box{
+        top: -130px;
+      }
+    }
+  }
+  .banner_06{
+    height: 1500px;
+    background-position: center 395px;
+    .w1200{
+      padding-top: 600px;  //padding内为绝对定位的背景
+    }
+    .bg-loop{
+      top: 335px;
+      width: 250px;
+    }
+    .bg-shoes{
+      top: 258px;
+      left: 55px;
+      width: 194px;
+    }
+    .bg-men{
+      top: 0px;
+      width: 510px;
+    }
+    .content-wrap{
+      .title-box{
+        top: -130px;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 980px) and (max-width: 1199px){
+  $fs_h1: 170;
+  $fs_h3: 50;
+  $fs_h4: 35;
+  $fs_h5: 20;
+  $fs_h6: 15;
+  .zone-title{
+    font-size: ($fs_h4 + 10) + px;
+  }
+  .btn-more{
+    font-size: ($fs_h5 - 4) + px;
+  }
+  .fs_22{
+    font-size: ($fs_h6 - 8) + px;
+  }
+  .fs_26{
+    font-size: ($fs_h6 - 4) + px;
+  }
+  .fs_32{
+    font-size: ($fs_h6 + 2) + px;
+  }
+  .fs_60{
+    font-size: $fs_h4 + px;
+  }
+  .h1{
+    font-size: $fs_h1 + px;
+  }
+  .h3{
+    font-size: $fs_h3 + px;
+  }
+  .h4{
+    font-size: ($fs_h4 + 6 ) + px;
+  }
+  .h5{
+    font-size: $fs_h5 + px;
+  }
+  .goods-list{
+    .goods-item{
+      height: 400px;
+    }
+    .goods-pic{
+      display: block;
+      margin: 0 auto;
+      width: 280px;
+      height: 280px;
+    }
+    .goods-title{
+      height: 48px;
+      line-height: 24px;
+    }
+    .tools-box{
+      margin-top: 12px;
+      img{
+        height: 30px;
+      }
+      .icon-letter-wrap{
+        .tips{
+          right: -25px;
+          &:after{
+            right: 15px;
+          }
+        }
+      }
+    }
+  }
+
+  .w1200{
+    width: 980px;
+    min-width: 980px;
+  }
+  .banner-wrap{
+    overflow: hidden;
+    min-width: 980px;
+  }
+  .banner_04, .banner_05, .banner_06{
+    background-size: 1600px;
+  }
+  .banner_01{
+     .flag-pic{
+       left: -43px;
+       top: 83px;
+       width: 296px;
+     }
+  }
+  .banner_02{
+    .cat-item{
+      height: 322px;  //282
+    }
+  }
+  .banner_03{
+    height: auto;
+    padding: 60px 0;
+    .title{
+      margin-bottom: 65px;
+    }
+    img{
+      width: 240px;
+      height: 240px;
+    }
+    .swiper-btn-prev{
+      right: 50%;
+      transform: translate(-145px, -50%);
+    }
+    .swiper-btn-next{
+      left: 50%;
+      transform: translate(138px,-50%);
+    }
+  }
+  .banner_04{
+    height: 1650px;
+    background-position: center 155px;
+    .w1200{
+      padding-top: 600px;  //padding内为绝对定位的背景
+    }
+    .bg-loop{
+      top: 350px;
+      width: 312px;
+    }
+    .bg-shoes{
+      top: 270px;
+      width: 314px;
+    }
+    .bg-men{
+      // top: 225px;
+      top: 100px;
+      left: 420px;
+      width: 340px;
+    }
+  }
+  .banner_05{
+    height: 2020px;
+    .w1200{
+      padding-top: 880px;  //padding内为绝对定位的背景
+    }
+    .bg-loop{
+      top: 575px;
+      width: 300px;
+    }
+    .bg-shoes{
+      top: 390px;
+      width: 300px;
+    }
+    .bg-men{
+      top: 192px;
+      width: 300px;
+    }
+  }
+  .banner_06{
+    height: 1800px;
+    background-position: center 465px;
+    .w1200{
+      padding-top: 740px;  //padding内为绝对定位的背景
+    }
+    .bg-loop{
+      top: 395px;
+      width: 300px;
+    }
+    .bg-shoes{
+      top: 298px;
+      left: 55px;
+      width: 234px;
+    }
+    .bg-men{
+      top: 0px;
+      width: 590px;
+    }
+  }
+}
+
+
+@media screen and (min-width: 1920px){
+  $fs_h1: 230;
+  $fs_h3: 90;
+  $fs_h4: 60;
+  $fs_h5: 40;
+  $fs_h6: 30;
+  .zone-title{
+    font-size: ($fs_h4 + 10) + px;
+  }
+  .btn-more{
+    font-size: ($fs_h5 - 4) + px;
+  }
+  .fs_22{
+    font-size: ($fs_h6 - 8) + px;
+  }
+  .fs_26{
+    font-size: ($fs_h6 - 4) + px;
+  }
+  .fs_32{
+    font-size: ($fs_h6 + 2) + px;
+  }
+  .fs_60{
+    font-size: $fs_h4 + px;
+  }
+  .h1{
+    font-size: $fs_h1 + px;
+  }
+  .h3{
+    font-size: $fs_h3 + px;
+  }
+  .h4{
+    font-size: ($fs_h4 + 6 ) + px;
+  }
+  .h5{
+    font-size: $fs_h5 + px;
+  }
+  .goods-list{
+    .goods-item{
+      height: 600px;
+    }
+    .goods-pic{
+      display: block;
+      margin: 0 auto;
+      width: 420px;
+      height: 420px;
+    }
+    .goods-title{
+      height: 72px;
+      line-height: 36px;
+    }
+    .tools-box{
+      margin-top: 26px;
+      .icon-letter-wrap{
+        .tips{
+          right: -25px;
+          &:after{
+            right: 15px;
+          }
+        }
+      }
+    }
+  }
+
+  .w1200{
+    width: 1600px;
+    min-width: 1600px;
+  }
+  .banner-wrap{
+    min-width: 1600px;
+  }
+  .banner_04, .banner_05, .banner_06{
+    background-size: 2300px;
+  }
+  .banner_01{
+     .flag-pic{
+       left: -125px;
+       top: 17px;
+       width: 496px;
+     }
+  }
+  .banner_02{
+    .cat-item{
+      height: 552px;
+    }
+  }
+  .banner_04{
+    .w1200{
+      padding-top: 880px;  //padding内为绝对定位的背景
+    }
+    height: 2400px;
+    .bg-loop{
+      top: 500px;
+    }
+    .bg-shoes{
+      position: absolute;
+      top: 400px;
+    }
+    .bg-men{
+      position: absolute;
+      // top: 225px;
+      top: 200px;
+      left: 640px;
+    }
+  }
+  .banner_05{
+    height: 2780px;
+    .w1200{
+      padding-top: 1020px;  //padding内为绝对定位的背景
+    }
+  }
+  .banner_06{
+    height: 2540px;
+  }
+}
