@@ -1,0 +1,212 @@
+@charset "utf-8";
+
+
+*{
+    margin:0;
+    padding:0;
+}
+body{
+    width:100%;
+    margin:0 auto;
+    font-size: 16px;
+}
+.clearfloat::after{
+    content: " ";
+    display: block;
+    clear: both;
+}
+.clearfloat{
+    zoom:1;
+}
+
+
+.imgtitle{
+	width: 23%;
+}
+.mainpc{
+	width: 1200px;
+	margin: 0 auto;
+	position: relative;
+	text-align: center;
+}
+.mainpc .backimg{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+
+.mainpc .pcprogress{
+    position: relative;
+    z-index: 10;
+    padding-top: 40%;
+    margin-bottom: 5%;
+}
+.pcprogress .imgtitle{
+
+}
+.pcprogress .imgscon{
+	width: 86%;
+    margin: 0 auto;
+    padding-left: 15.4%;
+}
+.imgscon img{
+	float: left;
+    width: 17%;
+    margin-left: -4.8%;
+    cursor: pointer;
+}
+.pcprogress p{
+	width: 65%;
+    height: 160px;
+    margin: 0 auto;
+    border: 10px solid rgb(170,138,93);
+    padding: 40px;
+    line-height: 23px;
+    border-radius: 5px;
+    text-align: left;
+    color: rgb(255,247,235);
+    white-space: pre-wrap;
+}
+
+.mainpc .pcpurpose{
+	position: relative;
+    z-index: 10;
+    margin-bottom: 15px;
+}
+.pcpurpose .imgtitle{
+	margin-bottom: 3%;
+}
+.pcpurpose .pcon{
+	text-align: center;
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 30px;
+}
+.pcon img{
+    float: left;
+    height: 225px;
+}
+.pcon .purposep{
+	float: left;
+    width: 30.6%;
+    font-size: 0.8rem;
+    padding: 1% 1% 1% 1.2%;
+    height: 160px;
+}
+.purposep h4{
+    color: rgb(224,197,131);
+    font-size: 1.1rem;
+    margin: 3%;
+}
+.purposep p{
+	color: rgb(255,247,235);
+    text-align: left;
+    line-height: 1.2rem;
+}
+
+.pcpurpose .purposecon{
+	position: relative;
+}
+.purposecon img{
+	width: 25%;
+    padding-bottom: 50px;
+}
+.purposecon .forwhy{
+    color: white;
+    text-align: left;
+    position: absolute;
+}
+.purposecon .forwhy:nth-child(2){
+	left: 18%;
+    top: 17%;
+}
+.purposecon .forwhy:nth-child(3){
+    top: 6%;
+    left: 61%;
+}
+.purposecon .forwhy:nth-child(4){
+	top: 50%;
+    left: 56%;
+}
+.forwhy h3{
+	margin-bottom: 10px;
+    font-size: 1.5rem;
+}
+.forwhy p{
+	line-height: 1.5rem;
+}
+
+.mainpc .joinus{
+	position: relative;
+    z-index: 10;
+}
+.joinus .imgtitle{
+
+}
+.joinus .tixing{
+	color: rgb(255,247,235);
+    padding: 30px 0 20px;
+    font-size: 1.1rem;
+}
+.joinus .joinfrom{
+	width: 40%;
+    margin: 0 auto;
+    margin-bottom: 15px;
+}
+.joinus .joinfrom .el-form-item {
+    border: 1px solid rgb(208,166,105);
+    margin-bottom: 3%;
+}
+.joinus .joinfrom .el-form-item__label {
+    text-align: left;
+    font-size: 1.2rem;
+    line-height: 40px;
+    padding-left: 3%;
+    color: rgb(208,166,105);
+}
+.joinus .joinfrom .el-form-item.is-required:not(.is-no-asterisk)>.el-form-item__label:before{
+    content: '';
+}
+.joinus .joinfrom .el-input__inner{
+	border:none;
+	background-color: transparent;
+	color: white;
+	font-size: 1.2rem;
+}
+.joinus .joinfrom .el-input{
+	width: 97%;
+}
+.joinus .joinfrom .el-form-item__error{
+    display: none;
+}
+.joinus .joinfrom  .el-button--primary {
+    color: #fff;
+    background-color: rgb(208,166,105);
+    border-color: rgb(208,166,105);
+    width: 100%;
+}
+.joinus .phone{
+	color: rgb(255,247,235);
+	margin-bottom: 50px;
+}
+
+.joinus .pcmessage{
+
+}
+.joinus .msg{
+	color: rgb(255,247,235);
+    position: relative;
+    margin: 5px auto;
+    font-size: 0.8rem;
+}
+.msg .dot{
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    background-color: rgb(255,247,235);;
+    border-radius: 50%;
+    margin-right: 0.3%;
+    vertical-align: middle;
+    margin-top: -0.3%;
+}
