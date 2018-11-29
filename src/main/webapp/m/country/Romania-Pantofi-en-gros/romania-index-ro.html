@@ -398,9 +398,21 @@
             this.acquireCountry()
         },
         methods: {
-            getGift: function{
-                this.gtag_report_conversionGoogle();
+            getGift:function(){
                 this.hoodleShow = true;
+                this.gtag_report_conversionGoogle()
+            },
+            gtag_report_conversionGoogle:function(url) {
+                var callback = function () {
+                    if (typeof(url) != 'undefined') {
+                        window.location = url;
+                    }
+                };
+                gtag('event', 'conversion', {
+                    'send_to': 'AW-783435725/gYQ7CJq0upABEM2PyfUC',
+                    'event_callback': callback
+                });
+                return false;
             },
             hintShow: function () {
                 this.successfullyShow = false;
@@ -492,34 +504,6 @@
             }
         }
     })
-</script>
-<script>
-    function gtag_report_conversionGoogle(url) {
-        var callback = function () {
-            if (typeof(url) != 'undefined') {
-                window.location = url;
-            }
-        };
-        gtag('event', 'conversion', {
-            'send_to': 'AW-783435725/gYQ7CJq0upABEM2PyfUC',
-            'event_callback': callback
-        });
-        return false;
-    }
-</script>
-<script>
-    function gtag_report_conversion(url) {
-        var callback = function () {
-            if (typeof(url) != 'undefined') {
-                window.location = url;
-            }
-        };
-        gtag('event', 'conversion', {
-            'send_to': 'AW-783435725/2sU4CMb_io8BEM2PyfUC',
-            'event_callback': callback
-        });
-        return false;
-    }
 </script>
 </body>
 </html>

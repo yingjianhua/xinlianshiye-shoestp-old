@@ -52,7 +52,7 @@
             </ul>
         </div>
         <div class="image-bottom">
-            <a class="btn following" href="javascript:void(0);" @click="getGift">Get Secret
+            <a class="btn following" href="javascript:void(0);" @click="getGift;">Get Secret
                 Gift</a>
             <a class="btn btn-blur" href="https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373">Onlione Ordering Opening Soon</a>
         </div>
@@ -72,7 +72,7 @@
             </mu-carousel-item>
         </mu-carousel>
         <a class="producrt-button inline-block-h80 following"
-           hrefs="javascript:void(0);" @click="getGift">Get
+           hrefs="javascript:void(0);" @click="getGift;">Get
             Free Sample Now</a>
     </div>
 
@@ -103,7 +103,7 @@
                 <img src="imgs/rmnyb20.png" alt="">
                 <img src="imgs/rmnyb21.png" alt="">
             </div>
-            <a class="inline-block-h80 following" href="javascript:void(0);" @click="getGift">Request
+            <a class="inline-block-h80 following" href="javascript:void(0);" @click="getGift;">Request
                 Now</a>
         </div>
     </div>
@@ -191,7 +191,7 @@
                 <span class="graycircle"></span>
                 <p>Professional advice about customization</p>
             </div>
-            <a class="inline-block-h80 following" href="javascript:void(0);" @click="getGift">Reserve
+            <a class="inline-block-h80 following" href="javascript:void(0);" @click="getGift;">Reserve
                 Your
                 Seat</a>
         </div>
@@ -209,7 +209,7 @@
                 <img src="imgs/rmnyb5.png" alt="">
                 <img src="imgs/rmnyb6.png" alt="">
             </div>
-            <a class="inline-block-h80 following" href="javascript:void(0);" @click="getGift">Get
+            <a class="inline-block-h80 following" href="javascript:void(0);" @click="getGift;">Get
                 Free
                 Sample Now</a>
         </div>
@@ -385,9 +385,21 @@
             this.acquireCountry()
         },
         methods: {
-            getGift: function{
-                this.gtag_report_conversionGoogle();
+            getGift:function(){
                 this.hoodleShow = true;
+                this.gtag_report_conversionGoogle()
+            },
+            gtag_report_conversionGoogle:function(url) {
+                var callback = function () {
+                    if (typeof(url) != 'undefined') {
+                        window.location = url;
+                    }
+                };
+                gtag('event', 'conversion', {
+                    'send_to': 'AW-783435725/gYQ7CJq0upABEM2PyfUC',
+                    'event_callback': callback
+                });
+                return false;
             },
             hintShow:function () {
                 this.successfullyShow = false;
@@ -480,35 +492,5 @@
         }
     })
 </script>
-<script>
-    function gtag_report_conversionGoogle(url) {
-        var callback = function () {
-            if (typeof(url) != 'undefined') {
-                window.location = url;
-            }
-        };
-        gtag('event', 'conversion', {
-            'send_to': 'AW-783435725/gYQ7CJq0upABEM2PyfUC',
-            'event_callback': callback
-        });
-        return false;
-    }
-</script>
-<script>
-    function gtag_report_conversion(url) {
-        var callback = function () {
-            if (typeof(url) != 'undefined') {
-                window.location = url;
-            }
-        };
-        gtag('event', 'conversion', {
-            'send_to': 'AW-783435725/2sU4CMb_io8BEM2PyfUC',
-            'event_callback': callback
-        });
-        return false;
-    }
-
-</script>
-
 </body>
 </html>
