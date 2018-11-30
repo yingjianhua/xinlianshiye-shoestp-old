@@ -91,7 +91,8 @@ var lang_obj={
 		'telephone':'Vă rugăm să completați numărul de telefon!',
 		'fax':'Completați corect numărul de fax!',
 		'email':'Completați corect adresa de e-mail!',
-		'length':'Lungimea este incorectă! Trebuie să completați cifrele %num%.'
+		'length':'Lungimea este incorectă! Trebuie să completați cifrele %num%.',
+        'isemail':'Completați adresa de e-mail este incorectă sau nu există'
 	},
 	signIn:{
 		'title':'Conectați-vă',

@@ -72,7 +72,9 @@ var lang_obj={
 		'telephone':'¡Complete el número de teléfono! ',
 		'fax':'¡Complete el número de fax correctamente! ',
 		'email':'Por favor, complete la dirección de correo electrónico correctamente!',
-		'length':'¡La longitud es incorrecta! Debe completar los dígitos %num% . '
+		'length':'¡La longitud es incorrecta! Debe completar los dígitos %num% . ',
+        'isemail':'Por favor, rellene la dirección de correo electrónico es incorrecta o no existe'
+
 		},
 	signIn:{
 		'title':'Iniciar sesión',

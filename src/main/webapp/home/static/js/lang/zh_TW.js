@@ -77,7 +77,8 @@ var lang_obj={
 		'telephone':'請填寫電話號碼！',
 		'fax':'請正確填寫傳真號碼！',
 		'email':'請正確填寫電子郵箱地址！',
-		'length':'長度不正確！您需要填寫%num%數位。'
+		'length':'長度不正確！您需要填寫%num%數位。',
+        'isemail':'请填写电子邮箱不正确或者不存在 '
 	},
 	signIn:{
 		'title':'登錄',

@@ -77,7 +77,9 @@ var lang_obj={
 			'telephone':'Please fill in the telephone number!',
 			'fax':'Please fill in the fax number correctly!',
 			'email':'Please fill in the email address correctly!',
-			'length':'Incorrect length! You need to fill in %num% digits.'
+			'length':'Incorrect length! You need to fill in %num% digits.',
+            'isemail':' Please fill in the email address is incorrect or does not exist'
+
 		},
 		signIn:{
 			'title':'Sign In',

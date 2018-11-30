@@ -73,7 +73,8 @@ var lang_obj={
 		'telephone':'请填写电话号码！ ',
 		'fax':'请正确填写传真号码！ ',
 		'email':'请正确填写电子邮箱地址！ ',
-		'length':'长度不正确！您需要填写 %num% 数位。 '
+		'length':'长度不正确！您需要填写 %num% 数位。 ',
+		'isemail':'请填写电子邮箱不正确或者不存在 '
 	},
 	signIn:{
 		'title':'登录',

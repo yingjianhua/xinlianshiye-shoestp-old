@@ -292,6 +292,7 @@
 
 		 	}
 	         function getMessage(str){
+	             debugger;
 	         	var sourceStr = str;
 	         	if(str.indexOf("##") != -1){
 	         		str = str.split("##")[0];

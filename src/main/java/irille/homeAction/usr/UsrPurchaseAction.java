@@ -411,7 +411,7 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
             json.put("purchase", purchase.getPkey());
             writerOrExport(json);
         } catch (ArrayIndexOutOfBoundsException e) {
-            writeErr("format%email");
+            writeErr("format%isemail");
         }
     }
 
