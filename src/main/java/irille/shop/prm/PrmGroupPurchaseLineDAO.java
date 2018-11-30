@@ -116,7 +116,7 @@ public class PrmGroupPurchaseLineDAO {
                 setId((Integer) Y.get(PrmGroupPurchaseLine.T.PKEY.getFld().getCodeSqlField()));
                 setImg((String)Y.get(PdtProduct.T.PICTURE.getFld().getCodeSqlField()));
                 setName((String)Y.get(PdtProduct.T.NAME.getFld().getCodeSqlField()));
-                setIsFavorite(Likebest(purchaseid,(Integer) Y.get("PPKEY")));
+                setProductid((Integer) Y.get("PPKEY"));
             }}).collect(Collectors.toList());
             return  listman;
         });
@@ -132,6 +132,7 @@ public class PrmGroupPurchaseLineDAO {
         Integer[] ints = intSet.toArray(new Integer[intSet.size()]);
         List<shoesView> manglvshow=new ArrayList<>();
         for(int  m=0;m<ints.length;m++) {
+            manglv.get(ints[m]).setIsFavorite(Likebest(purchaseid, manglv.get(ints[m]).getProductid()));
             manglvshow.add(manglv.get(ints[m]));
         }
         return  manglvshow;
@@ -142,7 +143,7 @@ public class PrmGroupPurchaseLineDAO {
     *@anthor wilson zhang
     */
     public static Boolean Likebest(Integer purchaseid,Integer pkey){
-        if(purchaseid!=null){
+        if(purchaseid!=null&&purchaseid !=-1){
             SQL sql =new SQL(){{
                 SELECT(UsrFavorites.class).FROM(UsrFavorites.class)
                         .WHERE(UsrFavorites.T.PRODUCT,"=?",pkey);

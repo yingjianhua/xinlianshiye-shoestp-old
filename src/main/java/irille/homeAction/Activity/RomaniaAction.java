@@ -10,6 +10,10 @@ public class RomaniaAction extends HomeAction {
 
 
     public String execute() {
+        if(isMobile()){
+            setResult("../activity/Jsp/m/Romaniaindex/order-meeting-en.jsp");
+            return HomeAction.TRENDS;
+        }
         setResult("../activity/Jsp/Romania/Romaniaindex/order-meeting-en.jsp");
         return HomeAction.TRENDS;
     }

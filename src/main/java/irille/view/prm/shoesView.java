@@ -11,7 +11,7 @@ public class shoesView {
     private String name;
     private String img;
     private Boolean isFavorite;
-
+    private Integer productid;
     public void setImg(String img) {
         if (img != null && img.length() > 0) {
             String[] strings = img.split(",");
