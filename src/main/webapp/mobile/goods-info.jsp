@@ -94,7 +94,9 @@
             transform: rotate(-45deg);
             background: none;
         }
-
+        table{
+            width: 100% !important;
+        }
         .swiper-button-next {
             width: 20px;
             height: 20px;

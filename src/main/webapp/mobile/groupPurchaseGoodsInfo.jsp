@@ -68,6 +68,9 @@
           color:#999;
           text-decoration: line-through;
           }
+          table{
+              width: 100% !important;
+          }
         </style>
         <style>
             .shop_nav{ background:#fff;} .shop_nav ul{ height:2.5rem; overflow:hidden;}
