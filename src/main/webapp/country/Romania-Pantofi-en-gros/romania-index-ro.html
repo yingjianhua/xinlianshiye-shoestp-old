@@ -81,9 +81,9 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                 077190</p>
             <a class="btn pointer" style="color: #fff;" @click="getGift">Obțineți Cadouri Surpriză</a>
             <br>
-            <a class="btn btn-grey pointer"
-               @click="jumpStatistics('https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373')">Unele
-                Previzualizări Ale Produselor</a>
+            <!--<a class="btn btn-grey pointer"-->
+               <!--@click="jumpStatistics('https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373')">Unele-->
+                <!--Previzualizări Ale Produselor</a>-->
         </div>
     </div>
 
@@ -134,9 +134,9 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                 <img src="./images/phone.png" alt="" class="phone-pic">
             </div>
             <div class="tc mt20">
-                <a class="btn-normal-red" @click="jumpStatistics('https://www.shoestp.com/')">
-                    Răsfoiți Mall-ul
-                </a>
+                <!--<a class="btn-normal-red" @click="jumpStatistics('https://www.shoestp.com/')">-->
+                    <!--Răsfoiți Mall-ul-->
+                <!--</a>-->
             </div>
         </div>
     </div>
@@ -588,7 +588,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
         methods: {
             // 点击获取礼物 - 弹出form框
             getGift() {
-                this.gtag_report_conversionGoogle()
+                gtag_report_conversionGoogle()
                 this.isFormShow = true;
                 // 统计代码
             },

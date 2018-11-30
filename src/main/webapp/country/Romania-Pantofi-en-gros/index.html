@@ -75,9 +75,9 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                 077190</p>
             <!-- <a class="btn" style="color: #fff;" href="https://www.jsform.com/web/formview/5b87847b75a03c126de93706" target="_blank">Get Secret Gift</a> -->
             <div class="btn pointer" @click="getGift" style="color: #fff;">Get Secret Gift</div>
-            <a class="btn btn-grey pointer"
-               @click="jumpStatistics('https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373')">Some
-                Product Previews</a>
+            <!--<a class="btn btn-grey pointer"-->
+               <!--@click="jumpStatistics('https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373')">Some-->
+                <!--Product Previews</a>-->
         </div>
     </div>
 
@@ -128,9 +128,9 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                 <img src="./images/phone.png" alt="" class="phone-pic">
             </div>
             <div class="tc mt20">
-                <a @click="jumpStatistics('https://www.shoestp.com/')" class="btn-normal-red">
-                    Browse The Mall
-                </a>
+                <!--<a @click="jumpStatistics('https://www.shoestp.com/')" class="btn-normal-red">-->
+                    <!--Browse The Mall-->
+                <!--</a>-->
             </div>
         </div>
     </div>
@@ -574,7 +574,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
         methods: {
             // 点击获取礼物 - 弹出form框
             getGift() {
-                this.gtag_report_conversionGoogle()
+                gtag_report_conversionGoogle()
                 this.isFormShow = true;
                 // 统计代码
             },

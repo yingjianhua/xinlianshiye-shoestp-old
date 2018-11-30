@@ -76,8 +76,8 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
             </p>
             <p class="white-text text-content">环球龙红街店Drumul Garii 12布加勒斯特077190</p>
             <div class="btn pointer" style="color: #fff;" @click="getGift">获得神秘礼品</div>
-            <a class="btn btn-grey pointer"
-               @click='jumpStatistics("https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373")'>部份商品预览</a>
+            <!--<a class="btn btn-grey pointer"-->
+            <!--@click='jumpStatistics("https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373")'>部份商品预览</a>-->
         </div>
     </div>
 
@@ -126,9 +126,9 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                 <img src="./images/phone.png" alt="" class="phone-pic">
             </div>
             <div class="tc mt20">
-                <a @click="jumpStatistics('https://www.shoestp.com/')" target="_blank" class="btn-normal-red">
-                    浏览商城
-                </a>
+                <!--<a @click="jumpStatistics('https://www.shoestp.com/')" target="_blank" class="btn-normal-red">-->
+                <!--浏览商城-->
+                <!--</a>-->
             </div>
         </div>
     </div>
@@ -567,7 +567,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
         methods: {
             // 点击获取礼物 - 弹出form框
             getGift() {
-                this.gtag_report_conversionGoogle()
+                gtag_report_conversionGoogle()
                 this.isFormShow = true;
             },
             // 跳转统计
@@ -654,7 +654,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     gtag('js', new Date());
 
     gtag('config', 'AW-783435725');
-        gtag('config', 'UA-127715615-6')
+    gtag('config', 'UA-127715615-6')
 
 </script>
 
