@@ -94,7 +94,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                 <div class="h5">
                     Exhibition Hall Opens All Year Round
                     <br>
-                    Global Dragon Red Street Shop Drumul Garii 12 Bucharest 077190
+                    Magazinul Universal Dragonul Rosu Strada Drumul Garii 12，Bucuresti 077190
                 </div>
                 <img src="./images/flag.png" alt="" class="flag-pic">
             </div>
