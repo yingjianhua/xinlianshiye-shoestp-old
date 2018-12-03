@@ -89,11 +89,20 @@ public class OrderMeetingProduct extends BeanInt<OrderMeetingProduct> {
 	// ON:1,上架
 	// IRREGULARITIESDELETE:2,违规下架
 	// DELETE:3,删除
+	// OWN:4,自有
+	// PARTNER:5,合作商
   private Integer _moq;	// 原起订量  INT
   private BigDecimal _price;	// 原商品价格  DEC(14,4)
   private Integer _newmoq;	// 活动起订量  INT
   private BigDecimal _newprice;	// 活动价  DEC(14,4)
   private Integer _targetCount;	// 目标量  INT
+  private Byte _billingstatus;	// 供应商认证 <OrderMeetingProductStatus>  BYTE
+	// OFF:0,下架
+	// ON:1,上架
+	// IRREGULARITIESDELETE:2,违规下架
+	// DELETE:3,删除
+	// OWN:4,自有
+	// PARTNER:5,合作商
   private Date _updatedTime;	// 更新时间  TIME
   private Short _rowVersion;	// 版本  SHORT
 
@@ -109,6 +118,7 @@ public class OrderMeetingProduct extends BeanInt<OrderMeetingProduct> {
     _newmoq=0;	// 活动起订量  INT
     _newprice=ZERO;	// 活动价  DEC(14,4)
     _targetCount=0;	// 目标量  INT
+    _billingstatus=OrderMeetingProductStatus.DEFAULT.getLine().getKey();	// 供应商认证 <OrderMeetingProductStatus>  BYTE
     _updatedTime=Env.getTranBeginTime();	// 更新时间  TIME
     _rowVersion=0;	// 版本  SHORT
     return this;
@@ -213,6 +223,18 @@ public class OrderMeetingProduct extends BeanInt<OrderMeetingProduct> {
   }
   public void setTargetCount(Integer targetCount){
     _targetCount=targetCount;
+  }
+  public Byte getBillingstatus(){
+    return _billingstatus;
+  }
+  public void setBillingstatus(Byte billingstatus){
+    _billingstatus=billingstatus;
+  }
+  public OrderMeetingProductStatus gtBillingstatus(){
+    return (OrderMeetingProductStatus)(OrderMeetingProductStatus.OFF.getLine().get(_billingstatus));
+  }
+  public void stBillingstatus(OrderMeetingProductStatus billingstatus){
+    _billingstatus=billingstatus.getLine().getKey();
   }
   public Date getUpdatedTime(){
     return _updatedTime;
