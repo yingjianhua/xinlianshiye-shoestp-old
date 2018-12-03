@@ -15,6 +15,7 @@ import irille.pub.html.Nodes;
 import irille.pub.idu.IduIns;
 import irille.pub.svr.Env;
 import irille.pub.idu.IduUpd;
+import irille.pub.tb.IEnumOpt;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.pdt.PdtProductDAO;
 import irille.view.Manage.OdrMeeting.initiatedActivity.AllProductsView;
@@ -101,11 +102,12 @@ public class OdrMeetingProductDao {
                 view.setImage(String.valueOf(o.get(PdtProduct.T.PICTURE.getFld().getCodeSqlField())).split(",")[0]);
             }
             view.setProductName(String.valueOf(o.get(PdtProduct.T.NAME.getFld().getCodeSqlField())));
-            if (o.get(OrderMeeting.T.SUPPLIERID.getFld().getCodeSqlField()).equals(o.get("productSupplier"))) {
-                view.setMode("自有");
-            } else {
-                view.setMode("合作商");
-            }
+//            if (o.get(OrderMeeting.T.SUPPLIERID.getFld().getCodeSqlField()).equals(o.get("productSupplier"))) {
+//                view.setMode("自有");
+//            } else {
+//                view.setMode("合作商");
+//            }
+            view.setMode(((IEnumOpt)OrderMeetingProductStatus.OFF.getLine().get((Byte)o.get(OrderMeetingProduct.T.BILLINGSTATUS.getFld().getCodeSqlField()))).getLine().getName());
             view.setOriginalPurchasePrice(((BigDecimal) o.get(OrderMeetingProduct.T.PRICE.getFld().getCodeSqlField())).doubleValue());
             view.setOriginalOrderQuantity(Integer.parseInt(o.get(OrderMeetingProduct.T.MOQ.getFld().getCodeSqlField()).toString()));
             view.setOrderPrice(Integer.parseInt(o.get(OrderMeetingProduct.T.NEWMOQ.getFld().getCodeSqlField()).toString()));
@@ -222,9 +224,11 @@ public class OdrMeetingProductDao {
             SQL sql = new SQL() {
                 {
                     SELECT(OrderMeetingProduct.class)
+                            .SELECT(T.SUPPLIERID)
                             .FROM(OrderMeetingProduct.class).
                             WHERE(OrderMeetingProduct.T.PRODUCTID, "=?", allProductsView.getId()).
-                            WHERE(OrderMeetingProduct.T.ORDERMEETINGID, "=?", id);
+                            WHERE(OrderMeetingProduct.T.ORDERMEETINGID, "=?", id).
+                            LEFT_JOIN(OrderMeeting.class, T.PKEY, OrderMeetingProduct.T.ORDERMEETINGID);
                 }
             };
             OrderMeetingProduct o = Query.sql(sql).query(OrderMeetingProduct.class);
@@ -235,6 +239,11 @@ public class OdrMeetingProductDao {
                 o.setNewprice(allProductsView.getNewPrice());
                 o.setTargetCount(allProductsView.getAims());
                 o.setUpdatedTime(Env.getTranBeginTime());
+                if(Integer.valueOf(String.valueOf(o.getBillingstatus()))==pkey){
+                    o.setBillingstatus(OrderMeetingProductStatus.OWN.getLine().getKey());
+                }else{
+                    o.setBillingstatus(OrderMeetingProductStatus.PARTNER.getLine().getKey());
+                }
                 o.upd();
             } else {
                 o = new OrderMeetingProduct();
@@ -248,6 +257,11 @@ public class OdrMeetingProductDao {
                 o.setTargetCount(allProductsView.getAims());
                 o.setStatus(OrderMeetingProductStatus.ON.getLine().getKey());
                 o.setUpdatedTime(Env.getTranBeginTime());
+                if(Integer.valueOf(String.valueOf(o.getBillingstatus()))==pkey){
+                    o.setBillingstatus(OrderMeetingProductStatus.OWN.getLine().getKey());
+                }else{
+                    o.setBillingstatus(OrderMeetingProductStatus.PARTNER.getLine().getKey());
+                }
                 o.ins();
             }
         }
