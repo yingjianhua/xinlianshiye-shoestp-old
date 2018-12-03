@@ -111,7 +111,8 @@ var lang_obj={
 			'es':'Spanish',
 			'ru':'Russian',
 			'pt':'Portuguese',
-			'zh_tw':'Traditional Chinese'
+			'zh_tw':'Traditional Chinese',
+            'hu':'Hungary Leah'
 		},
 		manage:{
 			frame:{

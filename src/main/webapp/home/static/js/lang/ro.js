@@ -124,7 +124,8 @@ var lang_obj={
 		'es':'spaniolă',
 		'ru':'rusă',
 		'pt':'portugheză',
-		'zh_tw':'Chineză tradițională'
+		'zh_tw':'Chineză tradițională',
+		'hu':' ungaria.'
 	},
 	manage:{
 		frame:{
