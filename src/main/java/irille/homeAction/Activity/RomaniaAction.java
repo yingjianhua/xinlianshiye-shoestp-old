@@ -54,15 +54,17 @@ public class RomaniaAction extends HomeAction {
     public void inquiry() throws IOException {
         NewInquiry inq = new NewInquiry();
         Integer[] supplierId = {281, 298, 283, 318, 279, 295, 16, 291, 282, 13, 317, 23, 78, 301};
-        if(new HashSet<Integer>(Arrays.asList(supplierId)).contains(supId)){
+        if (!(new HashSet<Integer>(Arrays.asList(supplierId)).contains(supId))) {
+            writeErr(-1, "该供应商不是指定供应商");
+        } else if (!(email.matches("^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$"))) {
+            writeErr(0, "邮箱格式不正确");
+        } else {
             inq.setSupplierid(supId);
             inq.setName(name);
             inq.setEmail(email);
             inq.setDetail(detail);
             activityNewInqDao.setB(inq).commit();
             writeErr(1, null);
-        }else{
-            writeErr(-1,"该供应商不是指定供应商");
         }
     }
 }
