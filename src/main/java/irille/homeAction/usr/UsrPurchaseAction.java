@@ -2,6 +2,8 @@ package irille.homeAction.usr;
 
 import com.sun.mail.util.MailSSLSocketFactory;
 import irille.Service.Pdt.IPdtProductService;
+import irille.Service.Pdt.Imp.PdtproductPageselect;
+import irille.Service.Plt.PltService;
 import irille.Service.Usr.IUsrSupplierService;
 import irille.homeAction.HomeAction;
 import irille.homeAction.cnt.dto.CntAd_IndexCategoryView;
@@ -20,8 +22,6 @@ import irille.shop.cnt.CntAd.OAdLocation;
 import irille.shop.cnt.CntAdDAO;
 import irille.shop.odr.OdrOrder;
 import irille.shop.odr.OdrOrderDAO;
-import irille.Service.Pdt.Imp.PdtproductPageselect;
-import irille.shop.plt.PltCountryDAO;
 import irille.shop.usr.*;
 import irille.view.cnt.IndexAdView4Mobile;
 import irille.view.cnt.IndexAdView4PC;
@@ -61,11 +61,12 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
 
     @Inject
     private PdtproductPageselect pdtPageSelectt = new PdtproductPageselect();
-    private static final UsrSupplierDAO.pageSelect suppPageSelect = new UsrSupplierDAO.pageSelect();
+    @Inject
+    private PltService pltService;
+
+
     private static final CntAdDAO.pageSelect adPageSelect = new CntAdDAO.pageSelect();
     private static final UsrPurchaseDAO.pageselect purpageselect = new UsrPurchaseDAO.pageselect();
-    private static final OdrOrderDAO.Query odrQuery = new OdrOrderDAO.Query();
-    private static final UsrCartDAO.Query usrCatQuery = new UsrCartDAO.Query();
 
 
     @Inject
@@ -142,7 +143,7 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
             page.setLimit(2);
             purchaseIndexView.setHeadedBottomTopAds(adPageSelect.getAdsInfo(page, CntAd.OAdLocation.INDEX_RIGHT_BOTTOM, osignage));
         }
-         page.setStart(0);
+        page.setStart(0);
         page.setLimit(isMobile() ? 8 : 21);
         purchaseIndexView.setSupplier(usrSupplierService.getSupplierInfo(page));
         page.setLimit(6);
@@ -545,7 +546,7 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
      * @author yingjianhua
      */
     public String sign() throws JSONException {
-        countrys = PltCountryDAO.listView(curLanguage());
+        countrys = pltService.getCountryList(curLanguage(),null);
         setResult("/home/sign-up.jsp");
         return TRENDS;
     }

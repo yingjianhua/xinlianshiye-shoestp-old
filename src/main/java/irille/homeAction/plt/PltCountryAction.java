@@ -1,5 +1,6 @@
 package irille.homeAction.plt;
 
+import irille.Service.Plt.PltService;
 import irille.homeAction.HomeAction;
 import irille.homeAction.plt.inf.IPltCountryAction;
 import irille.pub.bean.BeanBase;
@@ -10,14 +11,13 @@ import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.sellerAction.SellerAction;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltCountry;
-import irille.shop.plt.PltCountryDAO;
 import irille.shop.plt.PltProvince;
 import lombok.Getter;
 import lombok.Setter;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -40,21 +40,22 @@ public class PltCountryAction extends HomeAction<PltCountry> implements IPltCoun
     @Setter
     private String lang;
 
+    @Getter
+    @Setter
+    private String filter;
+
+    @Inject
+    private PltService pltService;
+
     /**
      * 列表所有国家
      *
      * @author yingjianhua
      */
-    public void list() throws IOException, JSONException {
-        if (lang != null) {
-            FldLanguage.Language language = FldLanguage.Language.valueOf(lang);
-            if (language != null) {
-                write(PltCountryDAO.listView(language));
-                return;
-            }
-
-        }
-        write(PltCountryDAO.listView(null));
+    public void list() throws IOException {
+        FldLanguage.Language language = FldLanguage.Language.valueOf(lang);
+        if (language == null) language = curLanguage();
+        write(pltService.getCountryList(language, filter));
     }
 
     /**

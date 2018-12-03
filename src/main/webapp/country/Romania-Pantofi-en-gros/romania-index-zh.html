@@ -553,7 +553,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
         },
 
         mounted() {
-            axios.get('/home/plt_PltCountry_list?lang=zh_CN')
+            axios.get('/home/plt_PltCountry_list?lang=zh_CN&filter=romania')
                 .then((res) => {
                     if (res.data.ret == 1) {
                         this.countryList = res.data.result

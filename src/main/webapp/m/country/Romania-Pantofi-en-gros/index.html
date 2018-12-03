@@ -451,7 +451,7 @@
             acquireCountry: function () {
                 //获取国家列表
                 var self = this
-                axios.get('/home/plt_PltCountry_list?lang=en').then(function (res) {
+                axios.get('/home/plt_PltCountry_list?lang=en&filter=romania').then(function (res) {
                     console.log(res.data);
                     self.countrys = res.data.result
                 }).catch(function (err) {

@@ -13,14 +13,8 @@ import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.plt.Plt.ErrMsgs;
 import irille.shop.plt.PltCountry.T;
-import irille.view.plt.CountryView;
-import org.json.JSONException;
 
-import java.text.Collator;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 public class PltCountryDAO {
     private static final Log LOG = new Log(PltCountryDAO.class);
@@ -38,29 +32,6 @@ public class PltCountryDAO {
         return Query.sql(sql).queryList(PltCountry.class);
     }
 
-    /**
-     * @return
-     * @throws JSONException
-     * @author yingjianhua
-     */
-    public static List<CountryView> listView(Language lang) throws JSONException {
-        List<CountryView> views = new ArrayList<>();
-        for (PltCountry bean : Query.SELECT(PltCountry.class).queryList()) {
-            CountryView view = new CountryView();
-            view.setId(bean.getPkey());
-            view.setName(lang == null ? bean.getName() : bean.getName(lang));
-            view.setShortName(bean.getShortName());
-            view.setFlag(bean.getNationalFlag());
-            views.add(view);
-        }
-        Collections.sort(views, (o1, o2) -> {
-            Collator collator = Collator.getInstance(Locale.ENGLISH);
-            if (collator.compare(o1.getShortName(), o2.getShortName()) > 0)
-                return 1;
-            return -1;
-        });
-        return views;
-    }
 
     /**
      * 在运行plt的时候像数据库录入初始化数据
