@@ -4,6 +4,7 @@ import irille.Entity.OdrerMeetings.Enums.OrderMeetingProductStatus;
 import irille.Entity.OdrerMeetings.OrderMeeting;
 import irille.Entity.OdrerMeetings.OrderMeeting.T;
 import irille.Entity.OdrerMeetings.OrderMeetingAudit;
+import irille.Entity.OdrerMeetings.OrderMeetingOrder;
 import irille.Entity.OdrerMeetings.OrderMeetingProduct;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.BeanBase;
@@ -251,5 +252,15 @@ public class OdrMeetingProductDao {
                 o.ins();
             }
         }
+    }
+    /**
+    *@Description:  销售明细 查询明细列表
+    *@date 2018/12/3 15:25
+    *@anthor wilson zhang
+    */
+
+    public Page salesDetailslist(Integer start, Integer limit, Integer status, String pruductname){
+
+        return  new Page(null, start, limit, 0);
     }
 }
