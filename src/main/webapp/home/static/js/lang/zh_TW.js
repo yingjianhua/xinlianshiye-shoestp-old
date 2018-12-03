@@ -109,7 +109,8 @@ var lang_obj={
 		'es':'西班牙語',
 		'ru':'俄語',
 		'pt':'葡萄牙語',
-		'zh_tw':'繁體中文'
+		'zh_tw':'繁體中文',
+		'hu':'匈利亞'
 	},
 	manage:{
 		frame:{
