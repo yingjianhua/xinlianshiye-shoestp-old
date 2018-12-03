@@ -105,8 +105,9 @@
 										  					<h3 class="detail_h3"><count-to :start-val="old_today_register" :end-val="today_register" :duration="3000" class="card-panel-num"/><ren>人</ren></h3>
 										  				</el-col>
 										  				<el-col :xs="20" :sm="20" :lg="8" :xl="14" style="float: right;">
-										  					<span class="detail_span">较昨日: <i :class="{'rise':yesterday_all_register>0,descend:yesterday_all_register<0}"></i><br />
-										  						<count-to :start-val="Math.abs(old_yesterday_all_register)" :end-val="Math.abs(yesterday_all_register)" :duration="3000" class="card-panel-num"/>人
+										  					<span class="detail_span">昨日注册: <!-- <i :class="{'rise':yesterday_all_register>0,descend:yesterday_all_register<0}"></i> --><br />
+										  						<span class="card-panel-num">983</span>
+										  						<!-- <count-to :start-val="Math.abs(old_yesterday_all_register)" :end-val="Math.abs(yesterday_all_register)" :duration="3000" class="card-panel-num"/> -->
 										  					</span>
 										  				</el-col>
 										  			</el-row>
@@ -118,7 +119,9 @@
 										  					<h3 class="detail_h3"><count-to :start-val="old_today_browse" :end-val="today_browse" :duration="3000" class="card-panel-num"/><ren>人</ren></h3>
 										  				</el-col>
 										  				<el-col :xs="20" :sm="20" :lg="8" :xl="14" style="float: right;">
-										  					<span class="detail_span">较昨日: <i :class="{'rise':yesterday_browse>0,descend:yesterday_browse<0}"></i><br /><count-to :start-val="Math.abs(old_yesterday_browse)" :end-val="Math.abs(yesterday_browse)" :duration="3000" class="card-panel-num"/>人</span>
+										  					<span class="detail_span">昨日浏览: 
+										  					<span class="card-panel-num">367020</span>
+										  					<!-- <i :class="{'rise':yesterday_browse>0,descend:yesterday_browse<0}"></i><br /><count-to :start-val="Math.abs(old_yesterday_browse)" :end-val="Math.abs(yesterday_browse)" :duration="3000" class="card-panel-num"/> --></span>
 										  				</el-col>
 										  			</el-row>
 											</el-col>
@@ -129,14 +132,16 @@
 										  					<h3 class="detail_h3"><count-to :start-val="old_today_success" :end-val="today_success" :duration="3000" class="card-panel-num"/><yuan>元</yuan></h3>
 										  				</el-col>
 										  				<el-col :xs="20" :sm="20" :lg="8" :xl="14" style="float: right;">
-										  					<span class="detail_span">较昨日: <i  :class="{'rise':yesterday_all_money>0,descend:yesterday_all_money<0}"></i><br /><count-to :start-val="Math.abs(old_yesterday_all_money)" :end-val="Math.abs(yesterday_all_money)" :duration="3000" class="card-panel-num"/>人</span>
+										  					<span class="detail_span">昨日成交:
+										  					<span class="card-panel-num">2,185,600</span>
+										  					<!--  <i  :class="{'rise':yesterday_all_money>0,descend:yesterday_all_money<0}"></i><br /><count-to :start-val="Math.abs(old_yesterday_all_money)" :end-val="Math.abs(yesterday_all_money)" :duration="3000" class="card-panel-num"/> --></span>
 										  				</el-col>
 										  			</el-row>
 											</el-col>
 										</el-row>
 										  	<el-container>
 											  <el-main>
-												 <world :size="'1.2'" :id="dataMap.id" :height="283" :type="dataMap.type" :world-mapping="worldMap" :data="dataMap.data"  :data-color="dataMap.dataColor" :data-images="dataMap.dataImages"  ref="mapModel" ></world>
+												 <world style="position: relative;left: -186px;" :size="'1.5'" :id="dataMap.id" :width="1000" :height="300" :type="dataMap.type" :world-mapping="worldMap" :data="dataMap.data"  :data-color="dataMap.dataColor" :data-images="dataMap.dataImages"  ref="mapModel" ></world>
 												 <div style="text-align: center;margin-bottom: 25px;margin-top:7px">
 													<el-radio label="world" v-model="dataMap.type" @change="chooseThisMap">全部访客地域分布</el-radio>
 										  			<el-radio label="china" v-model="dataMap.type" @change="chooseThisMap">供应商地域分布</el-radio>
@@ -221,7 +226,7 @@
 						  			<p><count-to :start-val="old_today_success" :end-val="today_success" :duration="3000" class="card-panel-num"/>元</p>
 						  		</el-col>
 						  		<el-col :xs="20" :sm="20" :lg="8" :xl="7" class="today_rise">
-						  			<span>较昨日: <i :class="{'rise':yesterday_all_money>0,descend:yesterday_all_money<0}"></i><br /><count-to :start-val="Math.abs(old_yesterday_all_money)" :end-val="Math.abs(yesterday_all_money)" :duration="3000" class="card-panel-num"/>元</span>
+						  			<span><span style="display:block;">昨日成交:</span><span class="card-panel-num" style="display:block;">2,185,600</span><!--  <i :class="{'rise':yesterday_all_money>0,descend:yesterday_all_money<0}"></i><br /><count-to :start-val="Math.abs(old_yesterday_all_money)" :end-val="Math.abs(yesterday_all_money)" :duration="3000" class="card-panel-num"/> --></span>
 						  		</el-col>
 						  	</el-row>
 					  </legend>
@@ -237,9 +242,9 @@
 					  				<el-col :xs="20" :sm="20" :lg="8" :xl="7">
 					  					<h3 class="detail_h3" style="margin-left:0;"><count-to :start-val="customer_unit_price" :end-val="customer_unit_price" :duration="3000" class="card-panel-num"/><ren>元</ren></h3>
 					  				</el-col>
-					  				<el-col :xs="20" :sm="20" :lg="16" :xl="14" style="float: right;">
+					  				<!-- <el-col :xs="20" :sm="20" :lg="16" :xl="14" style="float: right;">
 					  					<span class="detail_span" style="margin-left: 18%;">较昨日: <i class="rise"></i><br /><count-to :start-val="658" :end-val="658" :duration="3000" class="card-panel-num"/>元</span>
-					  				</el-col>
+					  				</el-col> -->
 					  			</el-row>
 							</el-col>
 							<el-col :xs="24" :sm="24" :lg="5" class="nav_info_detail">
@@ -248,9 +253,9 @@
 					  				<el-col :xs="20" :sm="20" :lg="8" :xl="7">
 					  					<h3 class="detail_h3" style="margin-left:0;">1.01%</h3>
 					  				</el-col>
-					  				<el-col :xs="20" :sm="20" :lg="16" :xl="14" style="float: right;">
+					  				<!-- <el-col :xs="20" :sm="20" :lg="16" :xl="14" style="float: right;">
 					  					<span class="detail_span" style="margin-left: 18%;">较昨日: <i class="rise"></i><br />0.12%</span>
-					  				</el-col>
+					  				</el-col> -->
 					  			</el-row>
 							</el-col>
 <!--							<el-col :xs="24" :sm="24" :lg="5" class="nav_info_detail">
@@ -285,7 +290,7 @@
 								</div>
 							</el-col>
 							<el-col :xs="24" :sm="24" :lg="8" style="margin-top: 136px;">
-								<world style="position: relative;top: 0;left: -127px;" :id="'world2'" :height="400" :width="800" :size="'1.2'" :type="'world'" :world-mapping="worldMap"  :data-color="dataMap.dataColor" :data-images="dataMap.dataImages" :data="dataMap.data"></world>
+								<world style="position: relative;top: 0;left: -344px;" :id="'world2'" :height="400" :width="1500" :size="'1.2'" :type="'world'" :world-mapping="worldMap"  :data-color="dataMap.dataColor" :data-images="dataMap.dataImages" :data="dataMap.data"></world>
 							</el-col>
 							<el-col :xs="24" :sm="24" :lg="4" style="float: right;margin-right: 20px;margin-top:40px;" >
 								<div class="my-panel-title-wrap mini" style="background-size: 94%;background-position: left;">月订单排行(前十)</div>
@@ -323,11 +328,11 @@
 						  			<p><count-to :start-val="old_today_register" :end-val="today_register" :duration="3000" class="card-panel-num"/>人</p>
 						  		</el-col>
 						  		<el-col :xs="20" :sm="20" :lg="8" :xl="7" class="today_rise">
-						  			<span>较昨日: <i :class="{'rise':yesterday_all_register>0,descend:yesterday_all_register<0}"></i><br /><count-to :start-val="Math.abs(old_yesterday_all_register)" :end-val="Math.abs(yesterday_all_register)" :duration="3000" class="card-panel-num"/>人</span>
+						  			<span>昨日注册: <!-- <i :class="{'rise':yesterday_all_register>0,descend:yesterday_all_register<0}"></i><br /><count-to :start-val="Math.abs(old_yesterday_all_register)" :end-val="Math.abs(yesterday_all_register)" :duration="3000" class="card-panel-num"/> --><span class="card-panel-num">983</span></span>
 						  		</el-col>
 						  	</el-row>
 					  </legend>
-					  <order ref="register_detail" :id="'order3'" :width="'115px'" :scroll_num="scroll_num" :time="20*1000" :orders="register_list" style="width:340px;position: absolute;top: 260px;left:105px;"></order>
+					  <order ref="register_detail" :id="'order3'" :width="'115px'" :scroll_num="scroll_num" :time="20*1000" :orders="register_list" style="width:398px;position: absolute;top: 260px;left:105px;"></order>
 					  <!-- <order :id="'order4'" :orders="order_info" style="position: absolute;left:70%;top:260px;"></order> -->
 					  <el-row>
 								<el-col :xs="24" :sm="24" :lg="7" style="margin-top:40px;margin-left: 52px;">
@@ -373,7 +378,7 @@
 															<span style="display: inline-block;">
 																<count-to :start-val="old_purchase" :end-val="purchase" :duration="3000" class="card-panel-num"/>人
 															</span>
-															<i class="rise" style="position: absolute;right: 0;top: 4px;"></i>
+															<!-- <i class="rise" style="position: absolute;right: 0;top: 4px;"></i> -->
 														</span>
 													</p>
 												</el-col>
@@ -386,14 +391,14 @@
 															<span style="display: inline-block;">
 																<count-to :start-val="old_supplier" :end-val="supplier" :duration="3000" class="card-panel-num"/>人
 															</span>
-															<i class="rise" style="position: absolute;right: 0;top: 4px;"></i>
+															<!-- <i class="rise" style="position: absolute;right: 0;top: 4px;"></i> -->
 														</span>
 													</p>
 												</el-col>
 											</el-row>
 										</el-col>
 										<el-col :xs="24" :sm="24" :lg="24">
-											<world :id="'world3'" :height="400" :width="800" :size="'1.2'" :type="'world'" :world-mapping="worldMap"  :data-color="dataMap.dataColor" :data-images="dataMap.dataImages" :data="dataMap.data"></world>
+											<world style="position:relative;left:-344px;" :id="'world3'" :height="400" :width="1500" :size="'1.2'" :type="'world'" :world-mapping="worldMap"  :data-color="dataMap.dataColor" :data-images="dataMap.dataImages" :data="dataMap.data"></world>
 										</el-col>
 									</el-row>
 
@@ -469,7 +474,7 @@
 								<el-col :xs="24" :sm="24" :lg="7" style="margin-top:147px;">
 									<!-- <h2 class="nav4_title">实时询盘</h2> -->
 									<div style="margin-top:72px;">
-										<world style="top: 90px;left: -44px;" :id="'world4'" :height="400" :width="800" :size="'1.2'" :type="'world'" :world-mapping="worldMap"  :data-color="dataMap.dataColor" :data-images="dataMap.dataImages" :data="dataMap.data"></world>
+										<world style="top: 90px;left: -44px;" :id="'world4'" :height="400" :width="800" :size="'2.5'" :type="'world'" :world-mapping="worldMap"  :data-color="dataMap.dataColor" :data-images="dataMap.dataImages" :data="dataMap.data"></world>
 									</div>
 								</el-col>
 								<el-col :xs="24" :sm="24" :lg="5" style="margin-top:130px;float: right;margin-right:-35px;margin-bottom: 60px;">

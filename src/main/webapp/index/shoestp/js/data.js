@@ -244,7 +244,7 @@
 			                {name: '西班牙', value: 200},
 			                {name: '意大利', value: 300},
 			                {name: '罗马尼亚', value:400},
-			                {name: '匈牙利', value: 500}
+			                {name: '匈牙利', value: 100}
 			],
 			//世界地图右侧展示数据
 			countryData:[
