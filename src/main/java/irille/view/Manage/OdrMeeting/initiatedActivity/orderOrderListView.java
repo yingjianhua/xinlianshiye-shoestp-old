@@ -18,6 +18,7 @@ public class orderOrderListView implements BaseView {
     private String paymentTime;//付款时间
 //    private String commoditySource;//商品来源
     private String whetherSettlement;//是否结算
+    private String time;//下单时间
     private String classification;//是否(自有/合作商) 分类
     private String orderStatus;//订单状态
 }

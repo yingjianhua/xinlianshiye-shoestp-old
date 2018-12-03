@@ -120,12 +120,9 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
     @Setter
     @Getter
     private String inputContent;
-    @Setter
-    @Getter
-    private Integer supplierId;
 
     public void getOrderGoodsList() throws IOException {
-        write(odrMeetingProductManageService.getOrderGoodsList(getStart(), getLimit(), id, status, inputContent,supplierId));
+        write(odrMeetingProductManageService.getOrderGoodsList(getStart(), getLimit(), id, status, inputContent,getSupplier().getPkey()));
     }
 
     public void updateStatus() throws IOException {
@@ -212,5 +209,8 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
 
     public void getOmtOrderList() throws IOException {
         write(odrMeetingOrderManageService.getOmtOrderList(id,getStart(),getLimit(),classification,status,inputContent));
+    }
+    public void getOrderStatus() throws IOException {
+        write(odrMeetingOrderManageService.getOrderStatus());
     }
 }
