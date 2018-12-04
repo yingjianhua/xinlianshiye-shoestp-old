@@ -10,7 +10,6 @@ import lombok.Setter;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashSet;
 
 /**
  * 罗马尼亚活动页临时action
@@ -53,8 +52,7 @@ public class RomaniaAction extends HomeAction {
 
     public void inquiry() throws IOException {
         NewInquiry inq = new NewInquiry();
-        Integer[] supplierId = {281, 298, 283, 318, 279, 295, 16, 291, 282, 13, 317, 23, 78, 301};
-        if (!(new HashSet<Integer>(Arrays.asList(supplierId)).contains(supId))) {
+        if (!(Arrays.asList(281, 298, 283, 318, 279, 295, 16, 291, 282, 13, 317, 23, 78, 301).contains(supId))) {
             writeErr(-1, "该供应商不是指定供应商");
         } else if (!(email.matches("^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$"))) {
             writeErr(0, "邮箱格式不正确");
@@ -67,4 +65,9 @@ public class RomaniaAction extends HomeAction {
             writeErr(1, null);
         }
     }
+
+    public void test() {
+        activityService.generateData();
+    }
+
 }

@@ -1,0 +1,654 @@
+@charset "UTF-8";
+*{
+    margin: 0;
+    padding: 0;
+}
+a{
+    text-decoration: none;
+}
+@font-face {
+    font-family: 'Helvetica';
+    src: url("../fonts/Helvetica_Bold.ttf");
+}
+html{
+    font-family: 'Helvetica', serif;
+}
+
+:root{
+    --bili: 1rem;
+}
+
+
+.button{
+    display: inline-block;
+    font-size: calc(var(--bili) * 30);
+    padding: 0 calc(var(--bili) * 20);
+    line-height: calc(var(--bili) * 50);
+    margin-top: calc(var(--bili) * 30);
+    margin-bottom: calc(var(--bili) * 30);
+    border-radius: calc(var(--bili) * 10);
+    background-color: #e73147;
+    color: white;
+    border: none;
+}
+
+#main .banner_01{
+    width: 100%;
+    height: calc(var(--bili) * 855);
+    text-align: center;
+    background: url("../images/banner.png") top center no-repeat;
+    background-size: 100%;
+    padding-top: calc(var(--bili) * 188);
+    box-sizing: border-box;
+}
+#main .banner_01 .ban01-detail{
+    width: calc(var(--bili) * 720);
+    /*height: calc(var(--bili) * 450);*/
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: calc(var(--bili) * 5);
+}
+#main .banner_01 .ban01-detail img[name=logo]{
+    width: calc(var(--bili) * 200);
+    margin-top: calc(var(--bili) * 30);
+}
+#main .ban01-detail h2{
+    font-size: calc(var(--bili) * 42);
+    /*line-height: calc(var(--bili) * 50);*/
+    color: #333743;
+    margin-top: calc(var(--bili) * 30);
+}
+#main .ban01-detail p{
+    width: calc(var(--bili) * 550);
+    margin: 0 auto;
+    font-size: calc(var(--bili) * 20);
+    /*line-height: calc(var(--bili) * 30);*/
+    color: #585e61;
+    margin-top: calc(var(--bili) * 20);
+}
+#main .banner_02{
+    width: 100%;
+    margin-top: calc(var(--bili) * -80);
+}
+#main .banner_02 .ban02-content {
+    width: calc(var(--bili) * 1226);
+    /*height: calc(var(--bili) *174);*/
+    margin: 0 auto;
+    border: 5px solid #888e8f;
+    border-bottom-color: #d9e1e3;
+    border-right-color: #d9e1e3;
+    background-color: white;
+    padding: calc(var(--bili) * 40) 0;
+    box-sizing: border-box;
+}
+#main .banner_02 .detail{
+    display: inline-block;
+    width: calc(var(--bili) *500);
+    text-align: left;
+    margin-left: calc(var(--bili) * 80);
+}
+#main .banner_02 .detail img[name=detail-01]{
+    width: calc(var(--bili) * 60);
+    vertical-align: middle;
+}
+#main .banner_02 .detail img[name=detail-02]{
+    width: calc(var(--bili) * 93);
+    vertical-align: middle;
+}
+#main .banner_02 .detail .detail-text{
+    display: inline-block;
+    width: calc(var(--bili) * 380);
+    vertical-align: middle;
+    margin-left: calc(var(--bili) * 10);
+}
+#main .banner_02 .line{
+    display: inline-block;
+    vertical-align: middle;
+    height: calc(var(--bili) *44);
+    border-left: 1px solid #9ca2a5;
+}
+#main .banner_02 .detail .detail-text h2{
+    font-size: calc(var(--bili) * 20);
+}
+#main .banner_02 .detail .detail-text p{
+    font-size: calc(var(--bili) * 14);
+    /*line-height: calc(var(--bili) * 20);*/
+    color: #585e61;
+}
+#main .banner_03{
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: calc(var(--bili) * 40);
+}
+#main .banner_03 img[name=AboutUs]{
+    width: calc(var(--bili) * 224);
+    margin-bottom: calc(var(--bili) * 30);
+}
+#main .banner_03 p{
+    width: calc(var(--bili) * 1226);
+    margin: 0 auto;
+    text-align: left;
+    font-size: calc(var(--bili) * 20);
+    line-height: calc(var(--bili) * 30);
+}
+#main .banner_03 img[name=sports]{
+    width: calc(var(--bili) * 670);
+    display: block;
+    margin: calc(var(--bili) * 40) auto;
+}
+#main .banner_03 img[name=men],
+#main .banner_03 img[name=women]{
+    width: calc(var(--bili) * 384);
+    margin: calc(var(--bili) * 40);
+}
+#main .banner_03 img[name=mens]{
+    width: calc(var(--bili) * 232);
+    display: block;
+    margin: 0 auto;
+}
+#main .banner_03 img[name=womens]{
+    width: calc(var(--bili) * 216);
+    display: block;
+    margin: 0 auto;
+}
+#main .banner_03 p.Shoes{
+    text-align: center;
+    font-size: calc(var(--bili) * 20);
+    color: #585e61;
+    margin-top: calc(var(--bili) * 20);
+}
+#main .banner_04{
+    width: 100%;
+    height: calc(var(--bili) * 850);
+    background: url("../images/welecome-back.png") top center no-repeat;
+    background-size: 100%;
+    text-align: center;
+    margin-top: calc(var(--bili) * 20);
+    padding-top: calc(var(--bili) * 60);
+}
+#main .banner_04 img[name=welcome-01]{
+    width: calc(var(--bili) * 460);
+    display: block;
+    margin:  0 auto;
+}
+#main .banner_04 .ban04-img{
+    width: calc(var(--bili) * 450);
+    height: calc(var(--bili) * 100);
+    text-align: left;
+    display: inline-block;
+    padding-left: calc(var(--bili) * 50);
+    margin-top: calc(var(--bili) * 70);
+}
+#main .banner_04 .ban04-img img{
+    vertical-align: top;
+}
+#main .banner_04 .ban04-img img[name=welecome]{
+    height: calc(var(--bili) * 100);
+}
+#main .banner_04 .btn{
+    margin-top: calc(var(--bili) * 100);
+}
+#main .banner_05{
+    width: 100%;
+    margin-top: calc(var(--bili) * 20);
+    text-align: center;
+}
+#main .banner_05 img[name=getYour]{
+    width: calc(var(--bili) * 848);
+}
+
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+#main .banner_05 .content{
+    width: calc(var(--bili) * 1300);
+    margin: 0 auto;
+    margin-top: calc(var(--bili) * 40);
+}
+#main .banner_05 .content .content-left,
+#main .banner_05 .content .content-right{
+    width: 50%;
+    height: calc(var(--bili) * 2000);
+    vertical-align: top;
+    display: inline-block;
+    box-sizing: border-box;
+}
+@media screen and (max-width: 1200px){
+    #main .banner_05 .content .content-left,
+    #main .banner_05 .content .content-right{
+        height: calc(var(--bili) * 2100);
+    }
+}
+#main .banner_05 .content .content-left{
+    border-right: calc(var(--bili) * 5) solid #787878;
+}
+#main .banner_05 .content .content-right{
+    margin-left: -5px;
+    border-left: calc(var(--bili) * 5) solid #787878;
+}
+#main .banner_05 .content .content-left .con-detail{
+    width: 100%;
+    text-align: left;
+    margin-bottom: calc(var(--bili) * 50);
+}
+#main .banner_05 .content .con-detail .title::after{
+    content: '';
+    display: block;
+    clear: both;
+}
+#main .banner_05 .content .con-detail .title{
+    height: calc(var(--bili) * 52);
+}
+#main .banner_05 .content .con-detail .title img[name=con]{
+    width: calc(var(--bili) * 294);
+    margin-top: calc(var(--bili) * 10);
+}
+#main .banner_05 .content .con-detail .title img[name=man]{
+    width: calc(var(--bili) * 329);
+    margin-top: calc(var(--bili) * 10);
+}
+#main .banner_05 .content .con-detail .title img[name=left]{
+    float: right;
+    width: calc(var(--bili) * 52);
+}
+#main .banner_05 .content .con-detail p{
+    font-size: calc(var(--bili) * 18);
+    /*line-height: calc(var(--bili) * 24);*/
+    color: #585e61;
+    width: calc(var(--bili) * 520);
+    margin-bottom: calc(var(--bili) * 20);
+    margin-top: calc(var(--bili) * 20);
+}
+#main .banner_05 .content .con-detail .list .bot{
+    font-size: calc(var(--bili) * 40);
+    line-height: calc(var(--bili) * 30);
+    color: #585e61;
+    margin-right: calc(var(--bili) * 10);
+    vertical-align: top;
+}
+#main .banner_05 .content .con-detail .list p.list-p{
+    display: inline-block;
+    margin: 0;
+    width: calc(var(--bili) * 520);
+    font-size: calc(var(--bili) * 24);
+    line-height: calc(var(--bili) * 32);
+    vertical-align: top;
+    color: #000;
+}
+#main .banner_05 .content .con-detail img[name=message]{
+    width: calc(var(--bili) * 560);
+    margin-top: calc(var(--bili) * 40);
+}
+#main .banner_05 .content .con-detail .ban05-line{
+    border-bottom: calc(var(--bili) * 5) solid #787878;
+    width: calc(var(--bili) * 100);
+    display: inline-block;
+    margin-top: calc(var(--bili) * 40);
+}
+#main .banner_05 .content .con-detail img[name=message-man]{
+    width: calc(var(--bili) * 264);
+    vertical-align: top;
+    margin-top: calc(var(--bili) * 15);
+}
+#main .banner_05 .content .con-detail .image{
+    width: 42%;
+    margin-top: calc(var(--bili) * 40);
+    display: inline-block;
+}
+#main .banner_05 .content .con-detail img.con-img{
+    position: relative;
+    top: calc(var(--bili) * 180);
+}
+#main .banner_05 .content .content-right{
+    text-align: right;
+    vertical-align: top;
+}
+#main .banner_05 .content .content-right .con-detail{
+    margin-bottom: calc(var(--bili) * 40);
+}
+#main .banner_05 .content .content-right .con-detail p{
+    display: inline-block;
+}
+#main .banner_05 .content .content-right .con-detail img[name=message]{
+    margin: 0;
+    margin-bottom: calc(var(--bili) * 40);
+}
+#main .banner_05 .content .con-detail .title img[name=right]{
+    float: left;
+    width: calc(var(--bili) * 52);
+}
+#main .banner_05 .content .con-detail .title img[name=des]{
+    width: calc(var(--bili) * 143);
+    margin-top: calc(var(--bili) * 10);
+    margin-left: calc(var(--bili) * 40);
+}
+#main .banner_05 .content .content-right .con-detail .title{
+    text-align: left;
+}
+#main .banner_05 .content .content-right .con-detail p{
+    width: calc(var(--bili) * 560);
+    text-align: left;
+}
+#main .banner_05 .content .content-right .con-detail img[name=qua]{
+    width: calc(var(--bili) * 353);
+    margin-top: calc(var(--bili) * 10);
+    margin-left: calc(var(--bili) * 40);
+}
+#main .banner_05 .content .content-right .con-detail img[name=del]{
+    width: calc(var(--bili) * 188);
+    margin-top: calc(var(--bili) * 10);
+    margin-left: calc(var(--bili) * 40);
+}
+#main .banner_06{
+    width: 100%;
+    height: calc(var(--bili) * 720);
+    background: url("../images/JS-footer.png") top center no-repeat;
+    background-size: 100% 100%;
+    margin-top: calc(var(--bili) * 40);
+    text-align: center;
+    padding-top: calc(var(--bili) * 150);
+    box-sizing: border-box;
+}
+#main .banner_06 .content{
+    width: calc(var(--bili) * 720);
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: calc(var(--bili) * 5);
+    padding-top: calc(var(--bili) * 30);
+    box-sizing: border-box;
+}
+#main .banner_06 .content img[name=logo]{
+    width: calc(var(--bili) * 200);
+    margin-top: calc(var(--bili) * 30);
+}
+#main .content h2{
+    font-size: calc(var(--bili) * 42);
+    /*line-height: calc(var(--bili) * 50);*/
+    color: #333743;
+}
+#main .banner_06 .content p{
+    width: calc(var(--bili) * 550);
+    margin: 0 auto;
+    font-size: calc(var(--bili) * 20);
+    /*line-height: calc(var(--bili) * 30);*/
+    color: #585e61;
+    margin-top: calc(var(--bili) * 20);
+}
+#main .content p.contact{
+    display: inline-block;
+    width: auto;
+    margin: 0 calc(var(--bili) * 20) calc(var(--bili) * 20);
+}
+#main .content p.contact img[name=phone]{
+    vertical-align: middle;
+    width: calc(var(--bili) * 24);
+}
+#main .content p.contact img[name=email]{
+    vertical-align: middle;
+    width: calc(var(--bili) * 26);
+}
+
+
+.el-dialog{
+    width: 400px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.81);
+}
+.el-dialog__footer{
+    text-align: center;
+}
+
+#main{
+    width: 100%;
+    min-width: 980px;
+}
+@media screen and (max-width: 980px){
+    .button{
+        display: inline-block;
+        font-size: 15px;
+        padding: 0 10px;
+        line-height: 25px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+    }
+    #main .banner_01{
+        width: 100%;
+        height: 428px;
+        padding-top: 94px;
+    }
+    #main .banner_01 .ban01-detail{
+        width: 360px;
+        border-radius: 3px;
+    }
+    #main .banner_01 .ban01-detail img[name=logo]{
+        width: 100px;
+        margin-top: 15px;
+    }
+    #main .ban01-detail h2{
+        font-size: 21px;
+        margin-top: 15px;
+    }
+    #main .ban01-detail p{
+        width: 275px;
+        font-size: 10px;
+        margin-top: 10px;
+    }
+    #main .banner_02{
+        width: 100%;
+        margin-top: -40px;
+    }
+    #main .banner_02 .ban02-content {
+        width: 612px;
+        padding: 20px 0;
+    }
+    #main .banner_02 .detail{
+        width: 250px;
+        margin-left: 40px;
+    }
+    #main .banner_02 .detail img[name=detail-01]{
+        width: 30px;
+    }
+    #main .banner_02 .detail img[name=detail-02]{
+        width: 47px;
+    }
+    #main .banner_02 .detail .detail-text{
+        width: 190px;
+        margin-left: 5px;
+    }
+    #main .banner_02 .line{
+        height: 22px;
+    }
+    #main .banner_02 .detail .detail-text h2{
+        font-size: 10px;
+    }
+    #main .banner_02 .detail .detail-text p{
+        font-size: 7px;
+    }
+    #main .banner_03{
+        margin-top: 20px;
+    }
+    #main .banner_03 img[name=AboutUs]{
+        width: 112px;
+        margin-bottom: 15px;
+    }
+    #main .banner_03 p{
+        width: 623px;
+        font-size: 10px;
+        line-height: 15px;
+    }
+    #main .banner_03 img[name=sports]{
+        width: 335px;
+        margin: 20px auto;
+    }
+    #main .banner_03 img[name=men],
+    #main .banner_03 img[name=women]{
+        width: 192px;
+        margin: 20px;
+    }
+    #main .banner_03 img[name=mens]{
+        width: 116px;
+    }
+    #main .banner_03 img[name=womens]{
+        width: 108px;
+    }
+    #main .banner_03 p.Shoes{
+        font-size: 10px;
+        margin-top: 10px;
+    }
+    #main .banner_04{
+        height: 425px;
+        margin-top: 10px;
+        padding-top: 30px;
+    }
+    #main .banner_04 img[name=welcome-01]{
+        width: 230px;
+    }
+    #main .banner_04 .ban04-img{
+        width: 225px;
+        height: 50px;
+        padding-left: 25px;
+        margin-top: 35px;
+    }
+    #main .banner_04 .ban04-img img[name=welecome]{
+        height: 50px;
+    }
+    #main .banner_04 .btn{
+        margin-top: 50px;
+    }
+    #main .banner_05{
+        margin-top: 10px;
+    }
+    #main .banner_05 img[name=getYour]{
+        width: 373px;
+    }
+    #main .banner_05 .content{
+        width: 650px;
+        margin-top: 20px;
+    }
+    /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+    #main .banner_05 .content .content-left,
+    #main .banner_05 .content .content-right{
+        height: 1100px;
+    }
+    #main .banner_05 .content .content-left{
+        border-right: calc(var(--bili) * 5) solid #787878;
+    }
+    #main .banner_05 .content .content-right{
+        margin-left: -5px;
+        border-left: 3px solid #787878;
+    }
+    #main .banner_05 .content .content-left .con-detail{
+        margin-bottom: 25px;
+    }
+    #main .banner_05 .content .con-detail .title{
+        height: 26px;
+    }
+    #main .banner_05 .content .con-detail .title img[name=con]{
+        width: 147px;
+        margin-top: 5px;
+    }
+    #main .banner_05 .content .con-detail .title img[name=man]{
+        width: 165px;
+        margin-top: 5px;
+    }
+    #main .banner_05 .content .con-detail .title img[name=left]{
+        width: 26px;
+    }
+    #main .banner_05 .content .con-detail p{
+        font-size: 9px;
+        width: 260px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+    #main .banner_05 .content .con-detail .list .bot{
+        font-size: 20px;
+        line-height: 15px;
+        margin-right: 5px;
+    }
+    #main .banner_05 .content .con-detail .list p.list-p{
+        width: 260px;
+        font-size: 12px;
+        line-height: 16px;
+    }
+    #main .banner_05 .content .con-detail img[name=message]{
+        width: 280px;
+        margin-top: 20px;
+    }
+    #main .banner_05 .content .con-detail .ban05-line{
+        border-bottom: 3px solid #787878;
+        width: 50px;
+        display: inline-block;
+        margin-top: 20px;
+    }
+    #main .banner_05 .content .con-detail img[name=message-man]{
+        width: 132px;
+        margin-top: 8px;
+    }
+    #main .banner_05 .content .con-detail .image{
+        width: 42%;
+        margin-top: 20px;
+    }
+    #main .banner_05 .content .con-detail img.con-img{
+        top: 90px;
+    }
+    #main .banner_05 .content .content-right .con-detail{
+        margin-bottom: 20px;
+    }
+    #main .banner_05 .content .content-right .con-detail img[name=message]{
+        margin-bottom: 20px;
+    }
+    #main .banner_05 .content .con-detail .title img[name=right]{
+        width: 26px;
+    }
+    #main .banner_05 .content .con-detail .title img[name=des]{
+        width: 72px;
+        margin-top: 5px;
+        margin-left: 20px;
+    }
+    #main .banner_05 .content .content-right .con-detail p{
+        width: 280px;
+    }
+    #main .banner_05 .content .content-right .con-detail img[name=qua]{
+        width: 172px;
+        margin-top: 5px;
+        margin-left: 20px;
+    }
+    #main .banner_05 .content .content-right .con-detail img[name=del]{
+        width: 94px;
+        margin-top: 5px;
+        margin-left: 20px;
+    }
+    #main .banner_06{
+        width: 100%;
+        height: 360px;
+        margin-top: 20px;
+        padding-top: 75px;
+    }
+    #main .banner_06 .content{
+        width: 360px;
+        border-radius: 3px;
+        padding-top: 15px;
+    }
+    #main .banner_06 .content img[name=logo]{
+        width: 100px;
+        margin-top: 15px;
+    }
+    #main .content h2{
+        font-size: 21px;
+    }
+    #main .banner_06 .content p{
+        width: 275px;
+        font-size: 10px;
+        margin-top: 10px;
+    }
+    #main .content p.contact{
+        margin: 0 10px 10px;
+    }
+    #main .content p.contact img[name=phone]{
+        width: 12px;
+    }
+    #main .content p.contact img[name=email]{
+        width: 13px;
+    }
+
+}

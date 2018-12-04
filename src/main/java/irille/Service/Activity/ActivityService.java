@@ -2,6 +2,9 @@ package irille.Service.Activity;
 
 import com.google.inject.ImplementedBy;
 import irille.Service.Activity.Imp.ActivityServiceImp;
+import irille.view.Activity.PkCompetitionPageManageView;
+
+import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,4 +15,9 @@ import irille.Service.Activity.Imp.ActivityServiceImp;
 @ImplementedBy(ActivityServiceImp.class)
 public interface ActivityService {
     void addRomaniaInquiry(int sup, String name, String email, String detail);
+
+
+    PkCompetitionPageManageView getPkCompetitionData(Date startDate, Date endDate);
+
+    void generateData();
 }

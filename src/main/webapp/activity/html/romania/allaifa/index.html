@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <meta http-quiv="X-UA-Compatible" content="IE=edge,chrome=1">
+     <script src="./js/axios.js"></script>
+     <script src="./js/vue.js"></script>
+     <script src='./js/qs.js'></script>
+<!--      <script src='./pc-config.js'></script> -->
+     <title>ALLAIFA</title>
+     <link rel="stylesheet" href="css/pc-index.css">
+     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<body>
+     <div class="allaifa">
+          <div class="aifaheader clearfloat">
+               <img src="imgs/shoeslogo.png" alt="">
+               <span>永无止境的展览</span>
+               <div class="rightspan">
+                    <span>Email：marketing@shoestp.com   </span>
+                    <span>phone：+86 15060893090</span>
+               </div>
+          </div>
+          <div class="allaifabanner">
+               <img src="imgs/allaifabanner.png" alt="">
+               <div class="bannercon clearfloat" id="bannercon">
+                    <img src="imgs/allaifabanner2.png" alt="">
+                    <form>
+                         <h3>EXPLORE QUALITY SHOES</h3>
+                         <div class="formitem">
+                              <label for="Email">EMAIL*</label>
+                              <input type="text" ref="name" name="Email" v-model="userdata.Email">
+                         </div>
+                         <div class="formitem">
+                              <label for="Name">NAME*</label>
+                              <input type="text" name="Name" v-model="userdata.Name">
+                         </div>
+                         <div class="formitem">
+                              <label for="Detail">DETAIL*</label>
+                              <textarea name="Detail" id="" cols="30" rows="10" v-model="userdata.Detail"></textarea>
+                         </div>
+                         <span class="submit" @click="resetForm">INQUIRY US</span>
+                    </form>
+               </div>
+          </div>
+          <div class="allaifaabout">
+               <h2>ABOUT US</h2>
+               <p>Wenzhou AILAIFA Shoes Co.,Ltd is an export oriented manufacturer and exporter, established in 1990 with total investment of USD160,000.<br>Our company was located in Yangyi with building area of 17,000 square meters.<br>Now more than 500 staffs are devoting their service to the company,including nearly 80 technical specialists and managerial personnel. We have two lines of advanced shoes production systems, 400 sets of associated manufacturing equipments and full sets of advanced testing equipments. <br>The annual capacity reaches 150,000 pairs and annual output value amounted to 2,400,000 USD.</p>
+          </div>
+          <div class="allaifaimgs">
+               <h2>PRODUCT GALLERY</h2>
+               <div class="imgscon">
+                    <a  v-for="item,index in imgs" :href="item.src"><img :src="item.url" :alt="item.title"></a>
+               </div>
+          </div>
+          <div class="designoperation">
+               <h2>DESIGN OPERATION</h2>
+               <div class="designcon clearfloat" v-for="item,index in designmsg">
+                    <h3>{{item.h3}}</h3>
+                    <div class="design">
+                         <img :src="item.img1" :alt="item.title1">
+                         <h4>{{item.title1}}</h4>
+                         <p>{{item.text1}}</p>
+                    </div>
+                    <img class="centerimg" src="imgs/changeleft.png" alt="">
+                    <div class="design">
+                         <img :src="item.img2" :alt="item.title2">
+                         <h4>{{item.title2}}</h4>
+                         <p>{{item.text2}}</p>
+                    </div>
+               </div>
+          </div>
+          <div class="advantage clearfloat">
+               <h2>ADVANTAGE</h2>
+               <div class="advantageright">
+                    <div class="rightimg">
+                         <img src="imgs/allaifa16.png" alt="">
+                         <img src="imgs/allaifasmall.png" alt="">
+                    </div>      
+                    <p>The company is specialized in various of men’s glue leather shoes which have gained consumers’ favorites with its exquisite workmanship,steady quality and the sound service network. Our shoes are widely spreaded in Russia, Southeast Asia, Western and Eastern Europe countries and regions. We also has shops in Russia, Middle East, Western and Eastern Europe and wins high comments from consumers there.</p>
+                    <div class="rightimg">
+                         <img src="imgs/allaifa17.png" alt="">
+                         <img src="imgs/allaifasmall.png" alt="">
+                    </div>   
+               </div>
+               <!-- <img class="advantageimg" src="imgs/allaifacenter.png" alt=""> -->
+               <div class="advantageleft">
+                    <p>In recent years,our campany has actively absorbed new thoughts and new mechanism which improved and completed the management systems of production,operation,quality and human resource,etc.The company has strong strength in shoe designing&developing and production capacity in the good and scientific mangement atmosphere.</p>
+                    <div class="leftimg">
+                         <img src="imgs/allaifa18.png" alt="">
+                         <img src="imgs/allaifasmall.png" alt="">
+                    </div>   
+                    <p>Our company adopts humanized management system, and offers broad development platform for the talents with zero complaint of labor disputes. We takes the brand strategy, and upholds the principle of "Customers Formost, Quality First". Over the years, the random inspection carried by Provincial Quality Supervision Department were all qualified in our company. The Chairman of Ailaifa has been elected as Executive Vice President of  the Wenzhou Council for the Promotion of Private Enterprise Development and the Ailaifa valued the Advanced Manufacturing Unit in Lucheng District, Wenzhou City.</p>
+               </div>
+          </div>
+          <p class="advantagep">Ailaifa whole-heartedly welcome friends from all social circles to join Ailaifa,<br>and hope you become present parter and future win-winner!</p>
+          <div class="highlights clearfloat">
+               <h2>PRODUCT HIGHLIGHTS</h2>
+               <div class="lefthighlights">
+                    <p>Therer is exquisite appearance of the shoes, and the combenation of sewing and leather by shoes are novel.</p>
+                    <p>People could feel excellent quality among detail.</p>
+                    <p>We selcelt good PU material at our shoes.</p>
+               </div>
+               <img src="imgs/allaifa19.png" alt="">
+               <div class="righthighlights">
+                    <p>The shoes are not only fashionable but also fine texture.</p>
+                    <p>The advantage of injection shoes are that the outsole are comfortable and sliding.</p>
+                    <p>Fashion fine stitching embellishes the body.</p>
+               </div>
+          </div>
+          <div class="allaifafactory">
+               <h2>OUR FACTORY</h2>
+               <img src="imgs/allaifa20.png" alt="">
+               <img src="imgs/allaifa21.png" alt="">
+               <p>We have two lines of advanced shoes production systems,<br>400 sets of associated manufacturing equipments and full sets of advanced testing equipments.<br>The annual capacity reaches 1,500,000 pairsand annual output value<br>amounted to 24,000,000 USD.</p>
+          </div>
+          <div class="lastcon">
+               <h3>AILAIFA*</h3>
+               <p>Let us help you meet those needs！</p>
+               <span @click="scrollToTop()">INQUIRY US</span>
+          </div>
+          <div class="aifaheader aifafooter clearfloat">
+               <img src="imgs/shoeslogo.png" alt="">
+               <span>永无止境的展览</span>
+               <div class="rightspan">
+                    <span>Email：marketing@shoestp.com   </span>
+                    <span>phone：+86 15060893090</span>
+               </div>
+          </div>
+     </div>
+     <script>
+          new Vue({
+               el:'.allaifa',
+               data:{
+                    interval:0,
+
+                    userdata:{
+                         Name:'',
+                         Email:'',
+                         Detail:'',
+                         id:281
+                    },
+
+
+                    imgs:[
+                         {
+                              title:'1',
+                              url:'imgs/allaifa1.png',
+                              src:'https://www.shoestp.com/ailifa-wholesale-leather-sandals-and-slippers-for-men_p6589.html'
+                         },
+                         {
+                              title:'2',
+                              url:'imgs/allaifa2.png',
+                              src:'https://www.shoestp.com/ailaifa-casual-men-sandals-slippers-comfortable-men-sandals_p6579.html'
+                         },
+                         {
+                              title:'3',
+                              url:'imgs/allaifa3.png',
+                              src:'https://www.shoestp.com/ailaifa-fashion-design-soft-men-leather-sandals_p6596.html'
+                         },
+                         {
+                              title:'4',
+                              url:'imgs/allaifa4.png',
+                              src:'https://www.shoestp.com/ailaifa-anti-slip-men-flat-comfatable-beach-sandal_p6599.html'
+                         },
+                         {
+                              title:'5',
+                              url:'imgs/allaifa5.png',
+                              src:'https://www.shoestp.com/ailaifa-new-fashion-anti-slip-men-flat-shoes-summer-sandal_p6585.html'
+                         },
+                         {
+                              title:'6',
+                              url:'imgs/allaifa6.png',
+                              src:'https://www.shoestp.com/ailaifa-easy-wearing-and-soft-sole-mens-flat-casual-shoes-for-summer_p6595.html'
+                         },
+                         {
+                              title:'7',
+                              url:'imgs/allaifa7.png',
+                              src:'https://www.shoestp.com/ailaifa-classic-leather-shoes-formal-for-men_p6608.html'
+                         },
+                         {
+                              title:'8',
+                              url:'imgs/allaifa8.png',
+                              src:'https://www.shoestp.com/ailaifa-slip-on-men-pointed-toe-dress-shoes-leather-shoes_p6609.html'
+                         },
+                         {
+                              title:'9',
+                              url:'imgs/allaifa9.png',
+                              src:'https://www.shoestp.com/ailai-men\'s-black-formal-lace-up-stylish-shoes-on-tpr-sole_p6611.html'
+                         }
+                    ],
+                    designmsg:[
+                         {
+                              h3:'Shoe Room',
+                              img1:'imgs/allaifa10.png',
+                              img2:'imgs/allaifa11.png',
+                              title1:'What we make?',
+                              title2:'What we have?',
+                              text1:'We are a company specializing in the\nproduction of men\'s shoes.Offer shoes for\nmen for all occasions, including dress shoes,\ncasual shoes, sandals, etc.',
+                              text2:'We have own showroom and thousands\nof different men\'s shoes types. Our guests\ncould find their favourite shoes in here.'
+                         },
+                         {
+                              h3:'Design Desk',
+                              img1:'imgs/allaifa12.png',
+                              img2:'imgs/allaifa13.png',
+                              title1:'Our persistence',
+                              title2:'Our skills',
+                              text1:'We adhere to the principle of quality first\nand choose high quality PU as the material of\nshoes.',
+                              text2:'Our shoe designers work out more 100 new\nshoe styles per year ,  constantly innovating\nand always leading the fashion trend.'
+                         },
+                         {
+                              h3:'Customer Service',
+                              img1:'imgs/allaifa14.png',
+                              img2:'imgs/allaifa15.png',
+                              title1:'Our service',
+                              title2:'Our delivery',
+                              text1:'We provide different contact methods,\nincluding email, live chat, telephone, etc., and\nwe strive to provide services for customers in\nthe first time.',
+                              text2:'We can guarantee that you will get your\norders within 2 months.'
+                         }
+                    ]
+               },
+               mounted(){
+                    this.changeheight();
+                    window.onresize = this.changeheight;
+               },
+               methods:{
+                    changeheight:function() {
+                       var html=document.getElementsByTagName('html')[0];
+                       var width = document.documentElement.clientWidth;
+                       var fontSize;
+                       if (width < 1500) {
+                           fontSize = 16;
+                       }else{
+                           fontSize = 16 * width / 1500;
+                       }
+                       // fontSize = 16 * width / 1200;
+                       html.style.fontSize = fontSize + 'px'
+                       console.log(html.style.fontSize)
+                   },
+                   resetForm:function() {
+                         var regEmail = new RegExp('.+@[a-z0-9]+\.com$')
+                         var regTel = new RegExp('[0-9]{6,}')  
+                         if(!this.userdata.Email){
+                              this.$message({
+                                   message: 'E-mail can not be empty',
+                                   type: 'warning'
+                             })
+                             return false;
+                         }else if(!regEmail.test(this.userdata.Email)){
+                              this.$message({
+                                   message: 'E-mail format error',
+                                   type: 'warning'
+                             })
+                             return false;
+                         }
+                         if(!this.userdata.Name){
+                              this.$message({
+                                   message: 'Name can not be empty',
+                                   type: 'warning'
+                             })
+                             return false;
+                         }
+                         if(!this.userdata.Detail){
+                              this.$message({
+                                   message: 'Detail can not be empty',
+                                   type: 'warning'
+                             })
+                             return false;
+                         }
+                         var self = this;
+                         axios.post('/home/Activity_Romania_inquiry',
+                              Qs.stringify(
+                                   {
+                                        name: self.userdata.Name,
+                                        email:self.userdata.Email,
+                                        detail:self.userdata.Detail,
+                                        supId:self.userdata.id
+                                   }
+                              )
+                         ).then(function (res) {
+                              if (res.data.ret == 1) {
+                                   self.$message({
+                                        message: 'Submitted Successfully',
+                                        type: 'success'
+                                   })
+                                   setTimeout(function(){
+                                        for (var i in self.userdata) {
+                                             self.userdata[i]='';
+                                        }
+                                   },3000)
+                              }else{
+                                   self.$message({
+                                        message: 'Submitted Failed',
+                                        type: 'warning'
+                                   })
+                              }
+                         }).catch(function() {
+                              console.log(res)
+                         });
+                   },
+                    scrollToTop:function(){
+                         const start = window.pageYOffset;
+                         let i = 0;
+                         let backPosition = 0;
+                         this.interval = setInterval(() => {
+                         const next = Math.floor(this.easeInOutQuad(10 * i, start, -start, 500))
+                         if (next <= backPosition) {
+                                   window.scrollTo(0, backPosition)
+                                   clearInterval(this.interval)
+                                   this.$refs.name.focus();
+                              } else {
+                              window.scrollTo(0, next)
+                              }
+                              i++
+                         }, 16.7)
+
+                         // 姓名输入框 获取焦点
+                         
+                         },
+                         easeInOutQuad(t, b, c, d) {
+                         if ((t /= d / 2) < 1) return c / 2 * t * t + b
+                         return -c / 2 * (--t * (t - 2) - 1) + b
+                         },
+                    }
+          })
+     </script>
+</body>
+</html>

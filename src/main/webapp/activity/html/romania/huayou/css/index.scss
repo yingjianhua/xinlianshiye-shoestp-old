@@ -1,0 +1,819 @@
+@charset 'utf-8';
+@import 'reset';
+$h1: 56;
+$h2: 36;
+$h3: 28;
+$h4: 18;
+$h5: 14;
+
+// 公用标题
+.title-common{
+  font-size: $h1 + px;
+  color: $theme_color;
+}
+
+.w1200{
+  width: 1200px;
+  min-width: 1200px;
+  margin: 0 auto;
+  // overflow: hidden;
+}
+.banner-wrap{
+  min-width: 1200px;
+}
+.h1{
+  font-size: $h1 + px;
+}
+.h2{
+  font-size: $h2 + px;
+}
+.h3{
+  font-size: $h3 + px;
+}
+.h4{
+  font-size: $h4 + px;
+}
+.h5{
+  font-size: $h5 + px;
+}
+
+.template-hy{
+  .banner-top{
+    .w1200{
+      height: 106px;
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+    .logo{
+      height: 63px;
+    }
+  }
+
+  .banner_01{
+    padding-top: 81px;
+    background: url("../images/banner.png") no-repeat center / cover;
+    .w1200{
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+    .txt{
+      padding-top: 15px;
+    }
+  }
+  // 询盘表格
+  .inquiry-form{
+    min-width: 300px;
+    padding: 30px 28px 50px;
+    // opacity: 0.8;
+    border-radius: 10px;
+    // background-color: #d9d9d9;
+    background-color: rgba(217,217,217,0.8);
+    .form-title{
+      position: relative;
+      padding-bottom: 40px;
+      white-space: nowrap;
+      &:after{
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 3px;
+        background-color: #333;
+      }
+    }
+
+    .form-body{
+      padding-top: 12px;
+    }
+    .form-label{
+      padding-top: 12px;
+      padding-bottom: 2px;
+      font-weight: bold;
+    }
+    .my-input{
+      width: 100%;
+      height: 2.406rem;
+      line-height: 2.406rem;
+      padding: 0 0.5rem;
+    	background-color: #fff;
+    	border-radius: 0.156rem;
+      border: none;
+      background: #fff;
+    }
+    .my-textarea .el-textarea__inner{
+      width: 100%;
+      height: 5.594rem;
+      line-height: 1.8rem;
+      padding: 0 0.5rem;
+    	background-color: #fff;
+    	border-radius: 0.156rem;
+      border: none;
+      outline: none;
+      background: #fff;
+      &:focus{
+        outline: none;
+      }
+    }
+    .btn-inquiry{
+      width: 90%;
+    	height: 56px;
+    	line-height: 56px;
+      margin-top: 20px;
+      color: #fff;
+      font-size: ($h5 + 2) + px;
+      border-radius: 48px;
+      background-color: $theme_color;
+    }
+  }
+
+  // 公司简介
+  .banner_02{
+    .w1200{
+      padding: 120px 60px 100px;
+    }
+    .left-box{
+      // position: relative;
+      // top: -30px;
+      margin-right: 200px;
+      margin-left: 100px;
+      &:before{
+        opacity: 1;
+        background-color: #6283c2;
+      }
+      &:after{
+        opacity: 1;
+        background-color: #6283c2;
+      }
+    }
+    .right-box{
+      p{
+        margin-bottom: 12px;
+      }
+    }
+  }
+
+  // banner 3 - 握手
+  .banner_03{
+    width: 100%;
+    max-height: 390px;
+    object-fit: cover;
+  }
+
+  // 流水
+  .banner_04{
+    padding: 117px 0;
+    .title-common{
+      margin-bottom: 50px;
+    }
+    .content-wrap{
+
+    }
+    .item{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 33%;
+      padding-top: 20px;
+      padding-bottom: 6px;
+      background: url("../images/turnover-dollar.png") no-repeat center / contain;
+
+      .acount{
+        margin-bottom: 6px;
+        font-weight: bold;
+      }
+    }
+  }
+  // 流水 - 优势
+  .banner_04_2{
+    padding: 117px 0;
+    font-weight: bold;
+    .title-common{
+      margin-bottom: 50px;
+    }
+    .item{
+      display: flex;
+      align-items: center;
+      padding-right: 80px;
+      margin-bottom: 20px;
+      .icon-right{
+        position: relative;
+        top: -4px;
+      }
+      &:nth-child(2){
+        padding-right: 30px;
+      }
+    }
+    .shoes-advantage-pic{
+      width: 311px;
+      // height: 195px;
+      object-fit: contain
+    }
+  }
+
+  // 产品列表
+  .banner_05{
+    padding: 110px 0 100px;
+    background-color: #f2f2f2;
+    .title-common{
+      margin-bottom: 60px;
+    }
+    .content-wrap{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .item{
+      width: 25%;
+      text-align: center;
+      .product-pic{
+        width: 80%;
+      }
+    }
+  }
+
+  // 为什么选择我们
+  .banner_06{
+    padding-top: 120px;
+    padding-bottom: 110px;
+    .left-wrap{
+      width: 26%;
+      margin-right: 12.5%;
+    }
+    // 左侧4个icon
+    .left-box{
+      position: relative;
+      width: 100%;
+      padding-top: 100%;
+      .icon-list{
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .item{
+        width: 50%;
+        height: 50%;
+        background: #fff;
+        &:nth-child(4n),&:nth-child(4n+1){
+          background: #ededed;
+        }
+      }
+    }
+
+    .right-box{
+      .title-common{
+        margin-bottom: 52px;
+      }
+      .content-wrap{
+
+      }
+      .item{
+        position: relative;
+        padding-left: 20px;
+        margin-bottom: 6px;
+        &:after{
+          content:"";
+          position: absolute;
+          left: 0;
+          top: 7px;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background-color: #6283c2;
+        }
+      }
+    }
+  }
+
+  // 评论
+  .banner_07{
+    .title-common{
+      margin-bottom: 76px;
+    }
+    .content-wrap{
+      margin-bottom: 120px;
+    }
+    .item{
+      position: relative;
+      width: 21%;
+      .header-pic-wrap{
+        position: absolute;
+        width: 37.3%;
+        left: 0;
+        top: 0;
+        transform: translate(-40%, -40%);
+        .header-pic-box{
+          position: relative;
+          width: 100%;
+          padding-top: 100%;
+        }
+        .header-pic{
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+        }
+      }
+      .txt{
+        min-height: 260px;
+        line-height: 1.6;
+        padding: 60px 20px 40px;
+        text-align: center;
+        color: #6b7f90;
+        border-radius: 20px;
+        background-color: #f2f2f2;
+      }
+    }
+  }
+
+  // 公司地址
+  .banner_08{
+    margin-bottom: 137px;
+    .map-wrap{
+      width: 100%;
+      height: 640px;
+    }
+  }
+
+  // 底部
+  .bottom-bar{
+    padding: 60px 0;
+    background: url("../images/bottom-bg.png") no-repeat center / cover;
+
+    .left-box{
+      line-height: 1.5;
+      margin-right: 100px;
+      color: #fff;
+    }
+
+    .form-register{
+      position: relative;
+      top: -80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 326px;
+      padding: 0 100px;
+      border-radius: 20px;
+    	box-shadow: 0px 0px 43px 0px rgba(33, 59, 111, 0.15);
+      background-color: #ffffff;
+    }
+    .txt{
+      margin-bottom: 50px;
+    }
+    .btn-inquiry{
+      text-align: center;
+      padding: 10px 20px;
+      min-width: 300px;
+      color: #fff;
+      border-radius: 10px;
+    	box-shadow: 0px 0px 18px 0px rgba(255, 31, 31, 0.75);
+      background-color: #ff1f1f;
+    }
+  }
+}
+
+
+
+
+@media screen and (max-width: 1199px){
+  .template-hy{
+    $h1: 50;
+    $h2: 32;
+    $h3: 25;
+    $h4: 16;
+    $h5: 13;
+    .w1200{
+      width: 980px;
+      min-width: 980px;
+      margin: 0 auto;
+      // overflow: hidden;
+    }
+    .banner-wrap{
+      min-width: 980px;
+    }
+    // 公用标题
+    .title-common{
+      font-size: $h1 + px;
+      color: $theme_color;
+    }
+    .h1{
+      font-size: $h1 + px;
+    }
+    .h2{
+      font-size: $h2 + px;
+    }
+    .h3{
+      font-size: $h3 + px;
+    }
+    .h4{
+      font-size: $h4 + px;
+    }
+    .h5{
+      font-size: $h5 + px;
+    }
+    .banner-top{
+      .w1200{
+        height: 86px;
+      }
+      .logo{
+        height: 53px;
+      }
+    }
+    // 询盘表格
+    .inquiry-form{
+      min-width: 300px;
+      padding: 24px 20px 30px;
+      .form-title{
+        padding-bottom: 24px;
+      }
+
+      .form-body{
+        padding-top: 8px;
+      }
+      .form-label{
+        padding-top: 12px;
+        padding-bottom: 2px;
+        font-weight: bold;
+      }
+      .my-input{
+        width: 100%;
+        height: 2.206rem;
+        line-height: 2.206rem;
+        padding: 0 0.5rem;
+      	background-color: #fff;
+      	border-radius: 0.156rem;
+        border: none;
+        background: #fff;
+      }
+      .my-textarea .el-textarea__inner{
+        width: 100%;
+        height: 5rem;
+        line-height: 1.8rem;
+      }
+      .btn-inquiry{
+      	height: 46px;
+      	line-height: 46px;
+        margin-top: 20px;
+      }
+    }
+    // 公司简介
+    .banner_02{
+      .w1200{
+        padding: 80px 50px 70px;
+      }
+      .left-box{
+        margin-right: 100px;
+        margin-left: 80px;
+      }
+    }
+    // 流水
+    .banner_04{
+      padding: 80px 0;
+      .title-common{
+        margin-bottom: 40px;
+      }
+      .item{
+        padding-top: 20px;
+        padding-bottom: 6px;
+      }
+    }
+
+    // 流水 - 优势
+    .banner_04_2{
+      padding: 70px 0;
+      .title-common{
+        margin-bottom: 30px;
+      }
+      .item{
+        padding-right: 60px;
+        margin-bottom: 15px;
+        .icon-right{
+          position: relative;
+          top: -3px;
+          height: 36px;
+        }
+        &:nth-child(2){
+          padding-right: 20px;
+        }
+      }
+      .shoes-advantage-pic{
+        width: 250px;
+        // height: 195px;
+        object-fit: contain
+      }
+    }
+
+    // 产品列表
+    .banner_05{
+      padding: 80px 0 80px;
+      .title-common{
+        margin-bottom: 50px;
+      }
+    }
+
+    // 为什么选择我们
+    .banner_06{
+      padding-top: 80px;
+      padding-bottom: 100px;
+
+      .right-box{
+        .title-common{
+          margin-bottom: 36px;
+        }
+        .item{
+          position: relative;
+          padding-left: 16px;
+          margin-bottom: 6px;
+          &:after{
+            top: 6px;
+            width: 8px;
+            height: 8px;
+          }
+        }
+      }
+    }
+    // 评论
+    .banner_07{
+      .content-wrap{
+        margin-bottom: 100px;
+      }
+    }
+    // 公司地址
+    .banner_08{
+      margin-bottom: 117px;
+      .map-wrap{
+        height: 440px;
+      }
+    }
+    // 底部
+    .bottom-bar{
+      padding: 50px 0;
+
+      .left-box{
+        line-height: 1.5;
+        margin-right: 80px;
+        color: #fff;
+      }
+
+      .form-register{
+        top: -70px;
+        height: 280px;
+        padding: 0 60px;
+        border-radius: 20px;
+      }
+      .txt{
+        margin-bottom: 50px;
+      }
+      .btn-inquiry{
+        padding: 6px 10px;
+      }
+    }
+  }
+}
+
+
+@media screen and (max-width: 979px){
+  .template-hy{
+    .banner-top{
+      .w1200{
+        padding-left: 30px;
+      }
+    }
+  }
+}
+
+
+@media screen and (min-width: 1920px){
+  .template-hy{
+    $h1: 76;
+    $h2: 52;
+    $h3: 40;
+    $h4: 28;
+    $h5: 22;
+    .w1200{
+      width: 1920px;
+      min-width: 1920px;
+      margin: 0 auto;
+      // overflow: hidden;
+    }
+    .banner-wrap{
+      min-width: 1920px;
+    }
+    // 公用标题
+    .title-common{
+      font-size: $h1 + px;
+      color: $theme_color;
+    }
+    .h1{
+      font-size: $h1 + px;
+    }
+    .h2{
+      font-size: $h2 + px;
+    }
+    .h3{
+      font-size: $h3 + px;
+    }
+    .h4{
+      font-size: $h4 + px;
+    }
+    .h5{
+      font-size: $h5 + px;
+    }
+    .banner-top{
+      .w1200{
+        height: 126px;
+      }
+      .logo{
+        height: 73px;
+      }
+    }
+    // 询盘表格
+    .inquiry-form{
+      min-width: 400px;
+      padding: 44px 36px 60px;
+      .form-title{
+        padding-bottom: 54px;
+      }
+
+      .form-body{
+        padding-top: 16px;
+      }
+      .form-label{
+        padding-top: 16px;
+        padding-bottom: 4px;
+      }
+      .my-input{
+        width: 100%;
+        height: 2.206rem;
+        line-height: 2.206rem;
+        padding: 0 0.5rem;
+      	background-color: #fff;
+      	border-radius: 0.156rem;
+        border: none;
+        background: #fff;
+      }
+      .my-textarea .el-textarea__inner{
+        width: 100%;
+        height: 6rem;
+        line-height: 1.8rem;
+      }
+      .btn-inquiry{
+      	height: 66px;
+      	line-height: 66px;
+        margin-top: 30px;
+        font-size: ($h5 + 2) + px;
+      }
+    }
+    // 公司简介
+    .banner_02{
+      .w1200{
+        padding: 160px 80px 140px;
+      }
+      .left-box{
+        margin-right: 240px;
+        margin-left: 150px;
+      }
+      .right-box{
+        p{
+          margin-bottom: 24px;
+        }
+      }
+    }
+    // 流水
+    .banner_04{
+      padding: 150px 0;
+      .title-common{
+        margin-bottom: 70px;
+      }
+      .item{
+        padding-top: 30px;
+        padding-bottom: 12px;
+
+        .acount{
+          margin-bottom: 12px;
+        }
+      }
+    }
+    // 流水 - 优势
+    .banner_04_2{
+      padding: 150px 0;
+      .title-common{
+        margin-bottom: 70px;
+      }
+      .item{
+        padding-right: 100px;
+        margin-bottom: 40px;
+        .icon-right{
+          position: relative;
+          top: -6px;
+          height: 50px;
+        }
+        &:nth-child(2){
+          padding-right: 40px;
+        }
+      }
+      .shoes-advantage-pic{
+        width: 411px;
+        // height: 195px;
+        object-fit: contain
+      }
+    }
+
+    // 产品列表
+    .banner_05{
+      padding: 180px 0 150px;
+      .title-common{
+        margin-bottom: 130px;
+      }
+      .content-wrap{
+        max-width: 1500px;
+        margin: 0 auto;
+      }
+      .item{
+        width: 25%;
+        text-align: center;
+      }
+    }
+
+    // 为什么选择我们
+    .banner_06{
+      padding-top: 160px;
+      padding-bottom: 200px;
+
+      .right-box{
+        .title-common{
+          margin-bottom: 92px;
+        }
+        .item{
+          padding-left: 40px;
+          margin-bottom: 12px;
+          &:after{
+            content:"";
+            position: absolute;
+            left: 0;
+            top: 9px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: #6283c2;
+          }
+        }
+      }
+    }
+    // 评论
+    .banner_07{
+      .title-common{
+        margin-bottom: 186px;
+      }
+      .content-wrap{
+        margin-bottom: 180px;
+      }
+      .item .txt{
+        min-height: 400px;
+        line-height: 1.8;
+        padding: 80px 40px 50px;
+      }
+    }
+    // 公司地址
+    .banner_08{
+      margin-bottom: 250px;
+      .map-wrap{
+        height: 740px;
+      }
+    }
+    // 底部
+    .bottom-bar{
+      padding: 120px 0;
+
+      .left-box{
+        line-height: 1.5;
+        margin-right: 150px;
+        color: #fff;
+      }
+
+      .form-register{
+        top: -160px;
+        height: 480px;
+        padding: 0 100px;
+        border-radius: 30px;
+      }
+      .txt{
+        margin-bottom: 100px;
+      }
+      .btn-inquiry{
+        padding: 12px 40px;
+        min-width: 500px;
+      }
+    }
+  }
+}

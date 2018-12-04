@@ -26,6 +26,10 @@
         <filter-name>urlReWrite</filter-name>
         <url-pattern>/country/*</url-pattern>
     </filter-mapping>
+        <filter-mapping>
+        <filter-name>urlReWrite</filter-name>
+        <url-pattern>/activity/html/romania/*</url-pattern>
+    </filter-mapping>
     <filter>
         <filter-name>UrlRewriteFilter</filter-name>
         <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>

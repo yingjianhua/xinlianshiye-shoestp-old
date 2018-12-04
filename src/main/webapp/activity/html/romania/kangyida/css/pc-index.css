@@ -1,0 +1,477 @@
+@charset "UTF-8";
+* {
+    margin: 0;
+    padding: 0;
+}
+a {
+    text-decoration: none;
+}
+button {
+    border: none;
+}
+li {
+    list-style: none;
+}
+.clearfloat::after {
+    content: " ";
+    display: block;
+    clear: both;
+}
+.clearfloat {
+    zoom: 1;
+}
+body {
+    width: 100%;
+    margin: 0 auto;
+}
+.allaifa {
+    width: 100%;
+    /*min-width: 1200px;*/
+    /*width: 80%;
+    min-width: 1200px;*/
+}
+.allaifa .aifaheader {
+    /*width: 1200px;*/
+    width: 80%;
+    min-width: 1200px;
+    margin: 0 auto;
+    height: 130px;
+    line-height: 130px;
+}
+.aifaheader img {
+    /*position: relative;
+    top: 28%;*/
+    margin-top: 1%;
+    vertical-align: middle;
+}
+.aifaheader span {
+    opacity: 0.6;
+    font-size: 16px;
+    white-space: pre-wrap;
+}
+/*.aifaheader span:nth-child(3) {
+    margin-left: 24%;
+    margin-right: 2%;
+}*/
+
+.allaifa .aifaheader .rightspan {
+    float: right;
+}
+.allaifa .allaifabanner {
+    width: 100%;
+    position: relative;
+}
+.allaifabanner>img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.allaifabanner .bannercon {
+    position: relative;
+    z-index: 10;
+    /*width: 1200px;*/
+    width: 80%;
+    min-width: 1200px;
+    margin: 0 auto;
+}
+.allaifabanner .bannercon img:nth-child(1) {
+    width: 100%;
+}
+.allaifabanner .bannercon img:nth-child(2) {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.bannercon form {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 27%;
+    margin: 80px auto 120px;
+    text-align: center;
+    padding: 4% 3%;
+    background-color: rgba(142, 200, 204, 0.5);
+    border-radius: 0.9rem;
+}
+.bannercon .formitem {
+    margin-bottom: 0.5rem;
+}
+.bannercon .submit {
+    display: block;
+    background-color: rgb(33, 187, 255);
+    width: 90%;
+    margin: 0 auto;
+    height: 3rem;
+    line-height: 3rem;
+    border-radius: 0.5rem;
+    color: white;
+    font-size: 1.5rem;
+    border: none;
+    cursor: pointer;
+}
+.bannercon h3 {
+    width: 100%;
+    font-size: 1.5rem;
+    color: white;
+    margin-bottom: 1.8rem;
+}
+.formitem label {
+    display: inline-block;
+    width: 90%;
+    text-align: left;
+    font-size: 1.2rem;
+    color: white;
+}
+.formitem input, .formitem textarea {
+    width: 90%;
+    height: 2rem;
+    text-indent: 0.2rem;
+    border-radius: 0.5rem;
+    border: none;
+    font-size: 1rem;
+}
+.formitem textarea {
+    resize: none;
+    height: 5rem;
+}
+.allaifa .allaifaabout {
+    /*width: 1200px;*/
+    width: 80%;
+    min-width: 1200px;
+    margin: 0 auto;
+}
+.allaifa h2 {
+    text-align: center;
+    margin: 4.5rem auto 1.3rem;
+    font-size: 2.8rem;
+}
+.allaifaabout p {
+    font-size: 1.42rem;
+    line-height: 2.2rem;
+    color: rgb(51, 51, 51);
+}
+.allaifa .allaifaimgs {
+    /*width: 1200px;*/
+    width: 80%;
+    min-width: 1200px;
+    margin: 0 auto;
+    margin-bottom: 3rem;
+}
+.allaifaimgs h2 {
+    margin-bottom: 4rem;
+}
+.allaifaimgs .imgscon {
+    width: 90%;
+    margin: 0 auto;
+}
+.allaifaimgs .imgscon img {
+    width: 30%;
+    margin-left: 2.5%;
+    margin-bottom: 2.5%;
+}
+.allaifa .designoperation {
+    background-color: rgb(240, 240, 240);
+    padding-bottom: 4rem;
+}
+.allaifa .designoperation h2 {
+    margin: auto;
+    padding: 4.5rem 0 1.3rem;
+}
+.designoperation .designcon {
+    /*width: 1200px;*/
+    width: 80%;
+    min-width: 1200px;
+    margin: 0 auto;
+    background-color: white;
+    margin-top: 2rem;
+    text-align: center;
+    border-radius: 1.2rem;
+}
+.designoperation .designcon h3 {
+    padding: 2% 0 3%;
+    font-size: 1.9rem;
+    color: rgb(33, 187, 255);
+}
+.designoperation .designcon .centerimg {
+    float: left;
+    position: relative;
+    left: 6%;
+    top: 6rem;
+}
+.designoperation .designcon .design {
+    float: left;
+    width: 30%;
+    margin-bottom: 5%;
+    margin-left: 11.8%;
+}
+.designoperation .designcon .design img {
+    width: 100%;
+}
+.designoperation .designcon .design h4 {
+    font-size: 1.1rem;
+    opacity: 0.6;
+    padding: 0.7rem;
+}
+.designoperation .designcon .design p {
+    font-size: 0.8rem;
+    width: 94%;
+    margin: 0 auto;
+    white-space: pre-wrap;
+    opacity: 0.5;
+}
+.allaifa .advantage {
+    /*width: 1200px;*/
+    width: 80%;
+    min-width: 1200px;
+    margin: 0 auto;
+}
+.allaifa .advantage h2 {}
+.allaifa .advantagep {
+    width: 76%;
+    min-width: 1120px;
+    background-color: rgba(17, 41, 92, 0.4);
+    color: white;
+    text-align: center;
+    margin: 0 auto;
+    padding: 2%;
+    font-size: 1.5rem;
+    border-radius: 2rem;
+    margin-top: 5%;
+}
+.advantage .advantageright, .advantage .advantageleft {
+    float: left;
+    width: 41%;
+}
+.advantage .advantageright {
+    padding-right: 8.3%;
+    padding-top: 2%;
+    border-right: 0.5rem solid #dedfea;
+}
+.advantage .advantageright .rightimg {
+    width: 100%;
+    position: relative;
+    margin-right: 2rem;
+    float: left;
+}
+.advantage .advantageright .rightimg img:nth-child(1) {
+    width: 100%;
+}
+.advantage .advantageright .rightimg img:nth-child(2) {
+    position: absolute;
+    top: 15%;
+    right: -20.3%;
+}
+.advantage .advantageright p {
+    float: right;
+    width: 93%;
+    text-align: right;
+    padding: 9% 0;
+    font-size: 1.2rem;
+    line-height: 2rem;
+}
+.advantage .advantageimg {
+    float: left;
+    height: 80rem;
+}
+.advantage .advantageleft {
+    margin-left: 7.5%;
+    margin-top: 1.6%;
+}
+.advantage .advantageleft p {
+    width: 93%;
+    text-align: left;
+    font-size: 1.2rem;
+    line-height: 2rem;
+}
+.advantage .advantageleft .leftimg {
+    width: 100%;
+    position: relative;
+    margin: 2rem auto;
+}
+.advantage .advantageleft .leftimg img:nth-child(1) {
+    width: 100%;
+}
+.advantage .advantageleft .leftimg img:nth-child(2) {
+    position: absolute;
+    top: 32%;
+    left: -18.3%;
+    transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    -o-transform: rotateY(180deg);
+}
+.allaifa .highlights {
+    /*width: 1200px;*/
+    width: 80%;
+    min-width: 1200px;
+    margin: 0 auto;
+}
+.allaifa .highlights h2 {}
+.allaifa .highlights img {
+    float: left;
+    width: 44%;
+}
+.allaifa .highlights .lefthighlights, .allaifa .highlights .righthighlights {
+    float: left;
+    width: 24%;
+}
+.allaifa .highlights .lefthighlights {
+    margin-right: 4%;
+}
+.allaifa .highlights .righthighlights {
+    margin-left: 4%;
+}
+.allaifa .highlights .lefthighlights p {
+    text-align: right;
+    line-height: 1.5rem;
+    padding: 2.8rem 0;
+    font-size: 1.2rem;
+    height: 5rem;
+}
+.allaifa .highlights .righthighlights p {
+    text-align: left;
+    line-height: 1.5rem;
+    padding: 2.8rem 0;
+    font-size: 1.2rem;
+    height: 5rem;
+}
+.allaifa .allaifafactory {
+    width: 80%;
+    min-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    margin-bottom: 16rem;
+}
+.allaifa .allaifafactory h2 {}
+.allaifa .allaifafactory img {
+    margin-top: 1%;
+    margin-bottom: 1%;
+    width: 38%;
+}
+.allaifa .allaifafactory p {
+    font-size: 1.3rem;
+    line-height: 2rem;
+}
+.allaifa .lastcon {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    background-color: rgb(17, 41, 92);
+    color: white;
+    padding-bottom: 2rem;
+}
+.allaifa .lastcon h3 {
+    font-size: 1.6rem;
+    padding-top: 3rem;
+    font-weight: 400;
+}
+.allaifa .lastcon p {
+    font-size: 1.4rem;
+}
+.allaifa .lastcon span {
+    display: inline-block;
+    font-size: 2rem;
+    padding: 0.1rem 1.6rem;
+    height: 2.6rem;
+    line-height: 2.6rem;
+    background: white;
+    color: black;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    margin-top: 0.5%;
+}
+.allaifa .aifafooter {
+    height: 80px;
+    line-height: 80px;
+}
+.allaifa .aifafooter img {
+    top: 14%;
+    vertical-align: middle;
+}
+.allaifa .aifafooter span {
+    position: relative;
+    top: -34%;
+}
+
+#kangyida .advantagep {
+    background-color:rgba(197, 185, 149,0.6);
+}
+#kangyida .lastcon {
+    background-color: rgb(197, 185, 149);
+}
+#kangyida .lastcon p {
+    font-size: 1.4rem;
+    padding-top: 7rem;
+}
+#kangyida .bannercon form {
+    background-color: rgba(79, 66, 62, 0.6);
+}
+#kangyida .bannercon .submit{
+    background-color: rgb(197, 185, 149);
+}
+#kangyida .designoperation .designcon h3 {
+    color: rgb(197, 185, 149);
+}
+
+
+@media screen and (max-width: 1200px) {
+    html {
+        font-size: 14px;
+    }
+    .allaifa .aifaheader {
+        width: 980px;
+        min-width: 980px;
+        margin: 0 auto;
+        height: 130px;
+    }
+    .aifaheader span:nth-child(3) {
+        margin-left: 9%;
+        margin-right: 2%;
+    }
+    .allaifabanner .bannercon, .allaifa .allaifaabout, .allaifa .allaifaimgs, .designoperation .designcon, .allaifa .advantage, .allaifa .highlights, .allaifa .allaifafactory {
+        width: 980px;
+        min-width: 980px;
+    }
+    .bannercon form {
+        width: 30%;
+    }
+    .allaifa .allaifaabout {
+        width: 980px;
+        min-width: 980px;
+        margin: 0 auto;
+    }
+    .allaifaabout p {
+        font-size: 1.22rem;
+    }
+    .allaifa .advantagep {
+        width: 940px;
+        min-width: 940px;
+    }
+    .allaifa .aifafooter {
+        height: 80px;
+    }
+    .bannercon h3 {
+        font-size: 1.4rem;
+    }
+    .designoperation .designcon .design p {
+        font-size: 0.7rem;
+    }
+    .advantage .advantageleft p {
+        line-height: 1.65rem;
+    }
+    .allaifa .lastcon {
+        min-width: 980px;
+    }
+    .allaifa .allaifabanner {
+        min-width: 980px;
+    }
+    .allaifa .designoperation {
+        width: 100%;
+        min-width: 980px;
+    }
+    .allaifa .allaifafactory img {
+        width: 45%;
+    }
+}

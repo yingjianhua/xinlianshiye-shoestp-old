@@ -1,0 +1,350 @@
+@charset "UTF-8";
+body, html, ul, ol, li, span, a, div, dl, dd, dt, p, h1, h2, h3, h4, h5, h6, select, option {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box; }
+
+html, body {
+  width: 100%;
+  height: 100%; }
+
+body {
+  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif; }
+
+img, i, input {
+  vertical-align: middle; }
+
+ul {
+  list-style: none; }
+
+a, a:link, a:visited, a:hover, a:active {
+  display: inline-block;
+  color: inherit;
+  text-decoration: none; }
+
+img {
+  width: 100%; }
+
+.clearfix {
+  zoom: 1; }
+
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0; }
+
+[v-cloak] {
+  display: none; }
+
+.fl {
+  float: left; }
+
+.fr {
+  float: right; }
+
+.block {
+  display: block; }
+
+.tc {
+  text-align: center; }
+
+/* 两行省略号 */
+.ellipsis_2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; }
+
+.img-contain {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; }
+
+.flex {
+  display: flex;
+  align-items: center; }
+
+.flex-wrap {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap; }
+
+.por {
+  position: relative; }
+
+#app {
+  font-size: 16px; }
+  #app .top-container {
+    position: relative;
+    height: 26.88rem;
+    background: url(../images/banner1.jpg) no-repeat center/cover; }
+    #app .top-container .top-form {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%);
+      color: #ffffff;
+      margin-top: 2rem;
+      text-align: center;
+      width: 100%; }
+      #app .top-container .top-form form .bg-box {
+        width: 12.66rem;
+        height: 13.75rem;
+        background: rgba(151, 65, 16, 0.5);
+        border-radius: 0.31rem;
+        text-align: center;
+        margin: 0 auto; }
+        #app .top-container .top-form form .bg-box .title {
+          font-size: 0.88rem;
+          line-height: 2.5rem; }
+        #app .top-container .top-form form .bg-box .label {
+          font-size: 0.75rem;
+          position: relative;
+          display: inline-block;
+          line-height: 1.5rem; }
+          #app .top-container .top-form form .bg-box .label::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            right: -7px;
+            width: 0.19rem;
+            height: 0.19rem;
+            background-color: #ffffff;
+            border-radius: 50%; }
+        #app .top-container .top-form form .bg-box .input {
+          width: 7.91rem;
+          height: 1.4rem;
+          border-radius: 0.16rem;
+          border: none;
+          display: block;
+          margin: 0 auto;
+          -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+          padding-left: 0.3rem; }
+      #app .top-container .top-form form .inquiry-btn {
+        border: none;
+        width: 8.75rem;
+        height: 1.88rem;
+        background-color: #4a74d2;
+        border-radius: 0.16rem;
+        font-size: 0.94rem;
+        color: #ffffff;
+        margin-top: 0.94rem; }
+  #app .our-advantage {
+    padding: 0 4.6rem;
+    text-align: center; }
+    #app .our-advantage .our-advantage-list .our-advantage-item {
+      margin-bottom: 2.94rem; }
+      #app .our-advantage .our-advantage-list .our-advantage-item .our-advantage-img {
+        width: 6rem;
+        height: 6rem;
+        margin-bottom: 1rem; }
+      #app .our-advantage .our-advantage-list .our-advantage-item .title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 2.5rem; }
+      #app .our-advantage .our-advantage-list .our-advantage-item .content {
+        font-size: 1.06rem; }
+  #app .global-product-container {
+    padding: 0 0.9rem;
+    text-align: center; }
+    #app .global-product-container .title {
+      font-weight: bold;
+      margin-bottom: 3rem;
+      font-size: 1.72rem; }
+    #app .global-product-container .global-product-list {
+      padding: 0 1rem; }
+      #app .global-product-container .global-product-list .global-product-item {
+        margin-bottom: 3rem; }
+    #app .global-product-container .btn {
+      width: 11.38rem;
+      height: 2.25rem;
+      line-height: 2.25rem;
+      background-color: #4a74d2;
+      border-radius: 0.19rem;
+      font-size: 1.25rem;
+      color: #ffffff;
+      margin: 1.3rem auto; }
+  #app .custom-shoes {
+    text-align: center;
+    padding: 0 2rem; }
+    #app .custom-shoes .title {
+      font-weight: bold;
+      line-height: 3rem;
+      font-size: 1.72rem; }
+    #app .custom-shoes .custom-shoes-list .custom-shoes-item {
+      padding: 0 2.9rem;
+      margin-bottom: 2.5rem; }
+      #app .custom-shoes .custom-shoes-list .custom-shoes-item .title {
+        font-size: 1.75rem;
+        font-weight: bold;
+        color: #4a74d2;
+        line-height: 2rem;
+        margin: 1rem 0; }
+      #app .custom-shoes .custom-shoes-list .custom-shoes-item .content {
+        font-size: 1.13rem;
+        line-height: 1.6rem; }
+    #app .custom-shoes .btn {
+      width: 12.06rem;
+      height: 2.13rem;
+      line-height: 2.13rem;
+      background-color: #4a74d2;
+      border-radius: 0.19rem;
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #ffffff;
+      margin: 0 auto; }
+  #app .new-era {
+    margin: 1rem 0 1.6rem 0; }
+    #app .new-era .title {
+      font-size: 1.75rem;
+      font-weight: bold;
+      line-height: 4rem;
+      color: #000000;
+      text-align: center; }
+    #app .new-era .content {
+      padding: 0 1.4rem;
+      line-height: 1.5rem; }
+  #app .four-num {
+    color: #ffffff;
+    padding: 5rem 0;
+    background-color: #f2f2f2; }
+    #app .four-num .four-num-item {
+      width: 11.5rem;
+      height: 13rem;
+      border-radius: 3.48rem;
+      background-color: #4a74d2;
+      border: solid 0rem #ffffff;
+      position: relative;
+      margin: 0 auto 4.25rem auto; }
+      #app .four-num .four-num-item:last-child {
+        margin: 0 auto; }
+      #app .four-num .four-num-item > div {
+        position: absolute;
+        top: 10%;
+        left: 50%;
+        transform: translate(-50%);
+        text-align: center; }
+        #app .four-num .four-num-item > div .title {
+          font-size: 3.4rem;
+          font-weight: bold; }
+        #app .four-num .four-num-item > div .content {
+          font-size: 1.32rem; }
+      #app .four-num .four-num-item::after {
+        position: absolute;
+        top: 0.235rem;
+        left: 0.2rem;
+        content: '';
+        width: 11rem;
+        height: 12.5rem;
+        border-radius: 3.48rem;
+        border: solid 1px #ffffff; }
+  #app .great-container {
+    text-align: center; }
+    #app .great-container .title {
+      font-size: 1.75rem;
+      font-weight: bold;
+      line-height: 4rem;
+      margin-top: 3rem; }
+    #app .great-container .btn {
+      width: 10.72rem;
+      height: 2.63rem;
+      line-height: 2.63rem;
+      background-color: #4a74d2;
+      margin: 0 auto;
+      font-size: 1.44rem;
+      color: #ffffff; }
+    #app .great-container .title {
+      font-size: 1.75rem;
+      font-weight: bold;
+      line-height: 4rem;
+      margin-top: 3rem; }
+    #app .great-container .btn {
+      width: 10.72rem;
+      height: 2.63rem;
+      line-height: 2.63rem;
+      background-color: #4a74d2;
+      margin: 0 auto;
+      font-size: 1.44rem;
+      color: #ffffff; }
+    #app .great-container .great-list .great-item {
+      padding: 0 3.5rem;
+      -webkit-box-pack: flex-start;
+      -moz-justify-content: flex-start;
+      -webkit-justify-content: flex-start;
+      justify-content: flex-start;
+      margin-bottom: 2rem; }
+      #app .great-container .great-list .great-item .content {
+        font-size: 1.42rem;
+        text-align: left;
+        margin-left: 1rem; }
+  #app .order-detail {
+    text-align: center; }
+    #app .order-detail .title {
+      font-size: 2.13rem;
+      font-weight: bold;
+      margin: 3rem 0 2rem 0; }
+    #app .order-detail .order-detail-container {
+      background-color: #e6e6e6;
+      padding: 2.5rem 0; }
+      #app .order-detail .order-detail-container .order-detail-item {
+        padding: 0 3.7rem;
+        -webkit-box-pack: flex-start;
+        -moz-justify-content: flex-start;
+        -webkit-justify-content: flex-start;
+        justify-content: flex-start;
+        margin-bottom: 2rem; }
+        #app .order-detail .order-detail-container .order-detail-item:last-child {
+          margin-bottom: 0; }
+        #app .order-detail .order-detail-container .order-detail-item .content {
+          font-size: 1.38rem;
+          margin-left: 1rem;
+          text-align: left; }
+  #app .testimonials .title1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 2.5rem 0 2rem 0;
+    text-align: center; }
+  #app .testimonials .testimonials-list .testimonials-item {
+    padding: 0 2rem;
+    font-size: 0.69rem;
+    line-height: 1rem;
+    margin-bottom: 2.6rem; }
+    #app .testimonials .testimonials-list .testimonials-item > div {
+      margin-left: 1rem; }
+      #app .testimonials .testimonials-list .testimonials-item > div .title {
+        font-size: 0.94rem;
+        font-weight: bold;
+        color: #4a74d2;
+        line-height: 1.3rem; }
+  #app .bottom-container {
+    position: relative; }
+    #app .bottom-container .content-box {
+      width: 100%;
+      text-align: center;
+      padding: 0 4.5rem;
+      position: absolute;
+      top: 15%;
+      left: 50%;
+      transform: translate(-50%); }
+      #app .bottom-container .content-box .btn {
+        width: 8.97rem;
+        height: 2.56rem;
+        line-height: 2.56rem;
+        background-color: #4a74d2;
+        border-radius: 0.16rem;
+        color: #ffffff;
+        font-size: 1.25rem;
+        margin: 0 auto; }
+
+@media (device-height: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+  #app .bottom-container .content-box {
+    padding: 0 3.5rem;
+    position: absolute;
+    top: 0%; } }
+
+/*# sourceMappingURL=index.css.map */

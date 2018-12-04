@@ -1,0 +1,341 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0,
+maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta content="telephone=no" name="format-detection">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="renderer" content="webkit">
+	<meta  name="keywords" content="shoes purchasing, Men’s leather shoes, boy’s shoes, Men’s casual shoes,
+		Men’s Sneakers, Children sandals, Men’s shoes, Women’s shoes, Women’s high heels, Women’s sandals, shoe companies,
+		shoe suppliers, sneaker manufacturers, shoe factories, shoe manufacturing companies, sneaker manufacturer,
+		china footwear manufacturer, sport shoes manufacturer, footwear factory.">
+	<meta  name="discription" content="We will have a showroom in Romanian offline shoes purchasing. During this show,
+		you can experience hundreds of styles of shoes locally and get your choosing shoes with factory direct price.
+		Also, you can receive professional advice from customization. In this purchasing, nearly 500 different styles of Men’s shoes,
+		women’s shoes and kid’s shoes will be displayed. If you reserve your seat online, you will get a secret gift when you come.
+		Several free samples of shoes will also be supplied in this show. ">
+	<title>QIANBAIMENG</title>
+	<!-- <link rel="stylesheet" href="./css/reset.css" media="all"> -->
+	<link rel="stylesheet" href="./css/index.css" media="all">
+	<link rel="stylesheet" href="./css/muse-ui.css" media="all">
+	<link rel="stylesheet" href="./css/muse-ui-toast.all.css">
+	<link rel="stylesheet" href="https://cdn.bootcss.com/material-design-icons/3.0.1/iconfont/material-icons.css">
+	<script src="./js/jquery-1.7.2.min.js"></script>
+	<script src="./js/vue.js"></script>
+	<script src="./js/axios.min.js"></script>
+	<script src="./js/qs.js"></script>
+	<script src="./js/muse-ui.js"></script>
+	<script src="./js/muse-ui-toast.js"></script>
+
+</head>
+
+<body>
+	<div id="app" class="template-hy">
+		<div class="block" style="height: 0.75rem;"></div>
+		<div class="tc">
+			<img src="./images/logo.png" alt="logo" class="logo">
+		</div>
+
+		<div class="container">
+			<!-- 顶部banner -->
+			<div class="banner-wrap">
+				QIANBAIMENG SHOES -
+				Women Boots Store
+			</div>
+
+			<!-- 询盘表格 -->
+			<div class="container">
+				<form class="inquiry-form">
+					<h2 class="form-title tc">
+						Inquiry Information
+					</h2>
+
+					<div class="form-body">
+						<div class="form-label">Name *</div>
+						<div class="input-wrap">
+							<input ref="name" type="text" name="name" class="my-input" v-model.trim="form.name">
+						</div>
+						<div class="form-label">Email Address *</div>
+						<div class="input-wrap">
+							<input type="text" name="address"  class="my-input" v-model.trim="form.email">
+						</div>
+						<div class="form-label">Advisory *</div>
+						<div class="input-wrap">
+							<textarea name="" name="advisory"  class="my-textarea" v-model.trim="form.advisory"></textarea>
+						</div>
+
+						<input type="button" value="Inquiry Now" class="btn-inquiry" @click="submit">
+					</div>
+				</form>
+			</div>
+
+			<!-- 公司简介 -->
+			<div class="company-profile">
+				<h2 class="title-common">Company Profile</h2>
+				<div class="content-wrap">
+					<p>
+						Wenzhou Qianbaimeng Shoes Co., Ltd. was established in 2005, and the professional research and design team currently has more than 30 employees.
+					</p>
+					<p>
+						Combine new processes and materials with new trends in the latest and most fashionable products. With its distinctive fashion features and humanistic connotations, our products have won high praise and praise from customers over the years.
+					</p>
+					<p>
+						With the experience of our sales and quality control teams with practical service processes and standards, our products can easily meet the diverse chemical and physical testing needs of major markets.
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- banner 2 - 握手-->
+		<img src="./images/banner-2.png" alt="banner-2" class="banner_02">
+
+		<div class="container">
+			<!-- 流水 -->
+			<!-- <div class="turnover">
+				<h2 class="title-common">TURNOVER</h2>
+				<ul class="content-wrap">
+					<li class="item" v-for="item in turnover">
+						<div class="acount">{{item.acount}} USD</div>
+						<div class="time">{{item.time}}</div>
+					</li>
+				</ul>
+			</div> -->
+			<!-- 优势 -->
+			<div class="advantage">
+				<h2 class="title-common">ADVANTAGE</h2>
+				<div class="tc">
+					<img src="./images/advantage-right.png" alt="advantage's picture" class="advantage-right-pic">
+				</div>
+				<ul class="content-wrap">
+
+					<li class="item flexible" v-for="item in advantage">
+						<img src="./images/icon/icon-right.png" alt="icon-right" class="icon-right">
+						{{item.content}}
+					</li>
+				</ul>
+			</div>
+
+			<!-- 产品列表 -->
+			<div class="product-gallery">
+				<h2 class="title-common">PRODUCT GALLERY</h2>
+				<ul class="content-wrap">
+					<a class="item" :href="product.linkUrl" v-for="product in productGallery">
+						<img :src="product.url" alt="product" class="product-pic">
+					</a>
+				</ul>
+			</div>
+
+			<!-- 为什么选择我们 -->
+			<div class="choose-us-wrap">
+				<h2 class="title-common">WHY CHOOSE US</h2>
+				<ul class="content-wrap">
+					<li class="item flexible" v-for="item in chooseUsReason">
+						<img :src="item.iconUrl" alt="product" class="icon flex-no-shrink ">
+						<div v-html="item.content"></div>
+					</li>
+				</ul>
+			</div>
+
+			<!-- 为什么选择我们 -->
+			<div class="customer-feedback">
+				<h2 class="title-common">Customer Feedback</h2>
+				<ul class="content-wrap">
+					<li class="item flexible" v-for="item in customerFeedback">
+						<img :src="item.headerUrl" alt="header" class="header-pic flex-no-shrink">
+						<div v-html="item.content" class="txt"></div>
+					</li>
+				</ul>
+			</div>
+
+			<!-- 公司地址 -->
+			<div class="company-address">
+				<h2 class="title-common">Company Address</h2>
+				<div class="content-wrap">
+						<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4988.858609270015!2d120.67851510664163!3d27.851119888297113!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x344588e5cfdd6fdd%3A0x6259085e5d654ff8!2z5Y2D55m-5qKm6Z6L5Lia5pyJ6ZmQ5YWs5Y-4!5e0!3m2!1szh-CN!2ssg!4v1543633826735"
+						class="map-wrap" frameborder="0" style="border:0" allowfullscreen></iframe>
+				</div>
+			</div>
+
+			<!-- 询盘信息 -->
+			<div class="inquiry-information">
+				<h2 class="title-common">Inquiry Information</h2>
+				<div class="content-wrap">
+					you will get an attractive purchasing price.
+					<br>
+					you'll stand out!
+				</div>
+			</div>
+		</div>
+
+		<!-- 底部 -->
+		<div class="bottom-bar">
+			<img src="./images/bottom-bg.png" alt="header" class="bottom-bg">
+
+			<div class="register-form tc">
+				<div class="txt">Free Registration Member</div>
+				<input type="button" class="btn-inquiry" value="Inquiry Now" @click="scrollToTop">
+			</div>
+		</div>
+	</div>
+
+
+	<script>
+		const stpshop_config = {
+			"imageBaseUrl":"https://image.shoestp.com",
+			"lang": "ro" 	//"en" "ro" "zh_CN"
+		};
+
+		var app = new Vue({
+			el:'#app',
+			data:{
+				interval: 0, //滚动事件用
+				form:{
+					supId: 282
+				},
+				// 流水账
+				advantage:[
+					{content: "Good Reputation"},
+					{content: "Fashion Design"},
+					{content: "Good Quality"},
+					{content: "Fast transportation"},
+				],
+				// 产品列表
+				productGallery:[
+					{url:"./images/goods_01.png",linkUrl:"https://www.shoestp.com/qbm-women's-black-leather-lace-up-boots-on-tpr-sole-women-shoes_p6480.html"},
+					{url:"./images/goods_02.png",linkUrl:"https://www.shoestp.com/qbm-women's-black-leather-lace-up-boots-on-tpr-sole-women-shoes_p6480.html"},
+					{url:"./images/goods_03.png",linkUrl:"https://www.shoestp.com/qbm-high-quality-ladies-chunky-heel-ankle-boots-women-shoes_p6486.html"},
+					{url:"./images/goods_04.png",linkUrl:"https://www.shoestp.com/qbm-comfortable-ladies-ankle-boots-chunky-heel-outside-decorate-outside-zipper-casual-women-shoes_p6493.html"},
+				],
+				// 选择我们的理由
+				chooseUsReason:[
+					{iconUrl:"./images/icon/icon-choose_01.png",content:"We have a delivery room <br /> area 10000㎡."},
+					{iconUrl:"./images/icon/icon-choose_02.png",content:"Our delivery time is less than two months."},
+					{iconUrl:"./images/icon/icon-choose_03.png",content:"Now, it has more than <br /> 30 employees."},
+					{iconUrl:"./images/icon/icon-choose_04.png",content:"The monthly output exceeds <br /> 150,000 pairs."},
+				],
+				// 用户反馈
+				customerFeedback:[
+					{headerUrl:"./images/header_01.png",content:"The high quality and low price is the best and most realistic evaluation of this shoe. Cost-effective, very satisfied."},
+					{headerUrl:"./images/header_02.png",content:"I am very lucky to be able to find your company in so many manufacturers! Your shoes have made my company's business better. I can easily resell your shoes. I hope to continue to cooperate in the future!"},
+					{headerUrl:"./images/header_03.png",content:"They are completely beyond our expectations and do so in a positive and professional manner. I quote them to everyone in his network of friends and family. Guys, thank you again."},
+				],
+			},
+			mounted(){
+				// console.log("mounted")
+				// console.log(window.pageYOffset)
+			},
+			methods:{
+				scrollToTop(){
+					const start = window.pageYOffset;
+		      let i = 0;
+		      let backPosition = 0;
+					this.interval = setInterval(() => {
+		        const next = Math.floor(this.easeInOutQuad(10 * i, start, -start, 500))
+		        if (next <= backPosition) {
+		          window.scrollTo(0, backPosition)
+		          clearInterval(this.interval)
+		        } else {
+		          window.scrollTo(0, next)
+		        }
+		        i++
+		      }, 16.7)
+
+					// 姓名输入框 获取焦点
+					this.$refs.name.focus();
+				},
+				easeInOutQuad(t, b, c, d) {
+		      if ((t /= d / 2) < 1) return c / 2 * t * t + b
+		      return -c / 2 * (--t * (t - 2) - 1) + b
+		    },
+				image(v, params) {
+          if (!v) {
+              return ""
+          }
+          if (!params) {
+              params = ""
+          }
+          return stpshop_config.imageBaseUrl + v + params
+        },
+				// 判断询盘form中格式是否正确
+		    isInquiryFormatRight(){
+					// 姓名
+					if( !this.form.name ){
+					  this.$toast.error('Name cannot be empty');
+		        return false;
+		      }
+		      // 邮箱
+		      if( !this.form.email ){
+						this.$toast.error('Mailbox cannot be empty');
+		        return false;
+		      }else if( !(/^[0-9A-Za-z][\.-_0-9A-Za-z]*@[0-9A-Za-z]+(\.[0-9A-Za-z]+)+$/.test(this.form.email)) ){
+						this.$toast.error("Email's format is error");
+		        return false;
+		      }
+		      // 内容
+		      if( !this.form.advisory ){
+		        this.$toast.error('Inquiry info cannot be empty');
+		        return false;
+		      }
+					return true;
+				},
+				submit(){
+					if(!this.isInquiryFormatRight()) return;
+
+					axios.post('/home/Activity_Romania_inquiry', Qs.stringify({
+					  supId: this.form.supId,
+					  name: this.form.name,
+					  email: this.form.email,
+					  detail: this.form.advisory,
+					},{allowDots: true}))
+					.then((res)=>{
+						if(res.data.ret!=1){
+							this.$toast.error('Network error, please try again later');
+						}
+						this.$toast.success('Submitted successfully');
+						setTimeout(()=>{
+							window.scrollTo(0,0)
+							window.location.reload();
+						},2500)
+					})
+					.catch((err)=>{
+						this.$toast.error('Network error, please try again later');
+					})
+				}
+			},
+		})
+	</script>
+
+	<!-- 代码追踪 -->
+	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113892728-1"></script>
+	<script>
+	    window.dataLayer = window.dataLayer || [];
+
+	    function gtag() {
+	        dataLayer.push(arguments);
+	    }
+
+	    gtag('js', new Date());
+
+	    gtag('config', 'UA-113892728-1');
+	</script>
+
+
+	<script type="text/javascript">
+		var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+		(function(){
+			var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+			s1.async=true;
+			s1.src='https://embed.tawk.to/5b8fcb48f31d0f771d8476f6/default';
+			s1.charset='UTF-8';
+			s1.setAttribute('crossorigin','*');
+			s0.parentNode.insertBefore(s1,s0);
+		})();
+	</script> -->
+	<!--End of Tawk.to Script-->
+</body>
+
+</html>

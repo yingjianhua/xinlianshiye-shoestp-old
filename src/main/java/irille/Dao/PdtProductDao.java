@@ -74,6 +74,17 @@ public class PdtProductDao {
     }
 
 
+    public Integer getProductSupId(int pdtId) {
+        BeanQuery beanQuery = new BeanQuery();
+        PdtProduct result = (PdtProduct) beanQuery.SELECT(
+                PdtProduct.T.PKEY,
+                PdtProduct.T.SUPPLIER
+        ).FROM(PdtProduct.class).WHERE(PdtProduct.T.PKEY, "=?", pdtId).query(PdtProduct.class);
+        if (result != null)
+            return result.getSupplier();
+        return -1;
+    }
+
     /***
      *  商品列表页 热榜
      * div #what_hot

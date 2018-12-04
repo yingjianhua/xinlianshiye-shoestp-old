@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+	    content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+	<script src="./js/axios.js"></script>
+	<script src="./js/vue.js"></script>
+	<script src='./js/qs.js'></script>
+<!-- 	<script src='./pc-config.js'></script> -->
+	<title>MC-KAGNYIDA</title>
+	<link rel="stylesheet" href="css/mc-index.css">
+	<script src="./js/muse-ui-toast.js"></script>
+	<link rel="stylesheet" href="css/muse-ui-toast.all.css">
+	<link rel="stylesheet" href="https://cdn.bootcss.com/material-design-icons/3.0.1/iconfont/material-icons.css">
+</head>
+<body>
+	<div class="mc-allaifa" id="mc-kangyida">
+		<img class="mc-allaifabanner" src="imgs/mc-kangyidabanner.png" alt="">
+		<!-- <img class="mc-allaifahen" src="imgs/mc-kangyidahen.png" alt=""> -->
+		<form id="form">
+			 <h3 class="formh3">EXPLORE QUALITY SHOES</h3>
+             <div class="formitem">
+                  <label for="Email">EMAIL*</label><input ref="name" type="text" id="Email" name="Email" v-model="userdata.Email">
+             </div>
+             <div class="formitem">
+                  <label for="Name">NAME*</label><input type="text" id="Name" name="Name" v-model="userdata.Name">
+             </div>
+             <div class="formitem">
+                  <label for="INQUIRY">INQUIRY*</label><textarea name="INQUIRY" id="Detail" cols="30" rows="10" v-model="userdata.Detail"></textarea>
+             </div>
+             <span class="submit" @click="resetForm">INQUIRY US</span>
+        </form>
+        <h2>LEARN<br>ABOUT<br>OUR<br>COMPANY</h2>
+        <p>Wenzhou Kangyida Shoes Co., Ltd. Established in 2014, the professional research and design team currently has more than 10 employees.</p>
+        <p>Combine new processes and materials with new trends in the latest and most fashionable products. With its distinctive fashion features and humanistic connotations, our products have won high praise and praise from customers over the years.</p>
+        <p>With the experience of our sales and quality control teams with practical service processes and standards, our products can easily meet the diverse chemical and physical testing needs of major markets.</p>
+        <h2>PRODUCT<br>GALLERY</h2>
+        <a href="https://www.shoestp.com/kangyida-comfortable-cow-leather-men-shoes-soft-casual-daily-walking-shoes_p6523.html
+"><img src="imgs/mc-kangyida1.png" alt=""></a>
+        <a href="https://www.shoestp.com/kangyida-good-quality-popular-lace-up-men-shoes-brown-thick-stitching-casual-cow-leather-shoes_p6526.html
+"><img src="imgs/mc-kangyida2.png" alt=""></a>
+        <a href="https://www.shoestp.com/kangyida-comfortable-lace-up-cow-leather-men-shoes-soft-casual-daily-walking-shoes_p6524.html
+"><img src="imgs/mc-kangyida3.png" alt=""></a>
+        <a href="https://www.shoestp.com/kangyida-comfortable-lace-up-cow-leather-men-shoes-soft-casual-daily-walking-shoes_p6524.html
+"><img src="imgs/mc-kangyida4.png" alt=""></a>
+        <a href="https://www.shoestp.com/kangyida-new-lace-up-men-shoes-black-casual-and-sport-cow-leather-shoes_p6558.html
+"><img src="imgs/mc-kangyida5.png" alt=""></a>
+        <a href="https://www.shoestp.com/kangyida-comfortable-cow-leather-men-shoes-soft-casual-daily-walking-shoes_p6523.html
+"><img src="imgs/mc-kangyida6.png" alt=""></a>
+        <h2>DESIGN<br><span style="color:rgb(132,132,132)">OPERATION</span></h2>
+        <template v-for="item,index in designcon">
+        	<h3>{{item.h3}}</h3>
+        	<template v-for="item,index in item.con">
+        		<img :src="item.url" alt="">
+        		<h4>{{item.h4}}</h4>
+        		<p class="smallp">{{item.smallp}}</p>
+        	</template>
+        </template>
+        <template v-for="item,index in advantagecon">
+        	<img class="logoimg" :src="item.img1" alt="">
+        	<p v-for="item,index in  item.p" class="advantagep">{{item}}</p>
+        	<img :src="item.img2" alt="">
+        </template>
+        <p class="advantageoutp">We sincerely welcome everyone to<br>visit our company<br>and inspect our products.</p>
+        <h2>PRODUCT<br>HIGHLIGHTS</h2>
+        <div class="mc-highlight">
+        	<img src="imgs/mc-kangyida19.png" alt="">
+        	<div class="pcon">
+        		<p>Therer is exquisite appearance of the shoes, and the combenation of sewing and leather by shoes are novel.</p>
+        	</div>
+        	<div class="pcon specialp">
+        		<p>We selcelt good material at our shoes.</p>
+        	</div>
+        	<div class="pcon">
+        		<p>People could feel excellent quality among detail.</p>
+        	</div>
+        	<div class="pcon specialp">
+        		<p>The advantage of injection shoes are that the outsole are comfortable and sliding.</p>
+        	</div>
+        	<div class="pcon">
+        		<p>Fasion fine stitching embellishes the body.</p>
+        	</div>
+        </div>
+        <h2>OUR<br>FACTORY</h2>
+        <img src="imgs/mc-kangyida20.png" alt=""><img src="imgs/mc-kangyida21.png" alt="">
+        <p class="mc-factpryp">We have two lines of advanced shoes<br>production systems,<br>400 sets of associated manufacturing<br>equipments and full sets of advanced testing equipments.The annual capacity reaches 1,500,000 pairsand annual output value amounted to 24,000,000 USD.</p>
+		<div class="mc-lastcon">
+			<!-- <h3>AILAIFA*</h3> -->
+			<p>Let us help you meet those needs！</p>
+			<span @click="scrollToTop()">INQUIRY US</span>
+		</div>
+	</div>
+	<script>
+		new Vue({
+			el:'#mc-kangyida',
+			data:{
+
+				interval:0,
+				userdata:{
+                     Name:'',
+                     Email:'',
+                     Detail:'',
+                     id:291
+                },
+
+
+
+				designcon:[
+					{
+						h3:'Shoe Room',
+						con:[
+							{
+								h4:'What we make?',
+								url:'imgs/mc-kangyida7.png',
+								smallp:'We are a company speciblizing in the production of womens boots. Offer various men’s leather for all occasion. We are good at making bussiness leather shoes and casual leather shoes.'
+							},
+							{
+								h4:'What we have?',
+								url:'imgs/mc-kangyida8.png',
+								smallp:'We integrate new processes and good materials with new trends in the latest and most fashionable products.'
+							}
+						]
+					},
+					{
+						h3:'Design Desk',
+						con:[
+							{
+								h4:'Our persistence',
+								url:'imgs/mc-kangyida9.png',
+								smallp:'We adhere to the principle of quality first.According to different customer requirements, we use different materials to make leather shoes.'
+							},
+							{
+								h4:'Our skills',
+								url:'imgs/mc-kangyida10.png',
+								smallp:'The existing staff of more than 200, the company has2 production lines and has a staff of solidarity. Our products meet the needs of various chemical and physical testing in key markets.'
+							}
+						]
+					},
+					{
+						h3:'Customer Service',
+						con:[
+							{
+								h4:'Our service',
+								url:'imgs/mc-kangyida11.png',
+								smallp:'We provide different contact methods, including email, live chat, telephone, etc., and we strive to provide services for customers in the first time.'
+							},
+							{
+								h4:'Our delivery',
+								url:'imgs/mc-kangyida12.png',
+								smallp:'We can guarantee that you will get your orders within 2 months.'
+							}
+						]
+					}
+				],
+				advantagecon:[
+					{
+						img1:'imgs/mc-kangyida13.png',
+						img2:'imgs/mc-kangyida14.png',
+						p:[
+							'The company has strong strength in shoe designing developing and production capacity in the good and scientific management atmosphere.We work out 800 new shoe style per year.'
+						]
+					},
+					{
+						img1:'imgs/mc-kangyida15.png',
+						img2:'imgs/mc-kangyida16.png',
+						p:[
+							'The company is specialized in various of women’s boots which have gained consumers’ favorited. Our shoes are widely sold in Russia,  United States, Spain,Romania, and other countries and regions.'
+						]
+					},
+					{
+						img1:'imgs/mc-kangyida17.png',
+						img2:'imgs/mc-kangyida18.png',
+						p:[
+							'Our products have won high praise and praise from customers over the years. With the experience of our sales and quality control groups with professional and standards service processes , our products can easily meet the diverse chemical and physical testing needs of major markets.'
+						]
+					}
+				]
+			},
+			mounted(){
+				this.changeheight();
+				window.onresize = this.changeheight;
+			},
+			methods:{
+				changeheight:function() {
+			        var html=document.getElementsByTagName('html')[0];
+			        var width = document.documentElement.clientWidth;
+			        var fontSize;
+			        // if (width > 640) {
+			        //     fontSize = 100;
+			        // }else{
+			        //     fontSize = 100 * width / 640;
+			        // }
+			        fontSize = 100 * width / 640;
+			        html.style.fontSize = fontSize + 'px'
+			        console.log(html.style.fontSize)
+			    },
+			    resetForm:function() {
+                         var regEmail = new RegExp('.+@[a-z0-9]+\.com$')
+                         var regTel = new RegExp('[0-9]{6,}')  
+                         if(!this.userdata.Email){
+                             this.$toast.error('E-mail can not be empty');
+                             return false;
+                         }else if(!regEmail.test(this.userdata.Email)){
+                             this.$toast.error('E-mail format error');
+                             return false;
+                         }
+                         if(!this.userdata.Name){
+                             this.$toast.error('Name can not be empty');
+                             return false;
+                         }
+                         if(!this.userdata.Detail){
+                             this.$toast.error('Inquiry can not be empty');
+                             return false;
+                         }
+                         var self = this;
+                         axios.post('/home/Activity_Romania_inquiry',
+                              Qs.stringify(
+                                   {
+                                        name: self.userdata.Name,
+                                        email:self.userdata.Email,
+                                        detail:self.userdata.Detail,
+                                        supId:self.userdata.id
+                                   }
+                              )
+                         ).then(function (res) {
+                              if (res.data.ret == 1) {
+                                   self.$toast.success('Submitted Successfully');
+                                   setTimeout(function(){
+                                        for (var i in self.userdata) {
+                                             self.userdata[i]='';
+                                        }
+                                   },3000)
+                              }else{
+                                   self.$toast.error('Submitted Failed');
+                              }
+                         }).catch(function(error) {
+                              console.log(error)
+                         });
+                   },
+                   scrollToTop:function(){
+                         const start = window.pageYOffset;
+                         let i = 0;
+                         let backPosition = 400;
+                         this.interval = setInterval(() => {
+                         const next = Math.floor(this.easeInOutQuad(10 * i, start, -start, 500))
+                         if (next <= backPosition) {
+                              window.scrollTo(0, backPosition)
+                              clearInterval(this.interval)
+                              } else {
+                              window.scrollTo(0, next)
+                              }
+                              i++
+                         }, 16.7)
+
+                         // 姓名输入框 获取焦点
+                         this.$refs.name.focus();
+                         },
+                         easeInOutQuad(t, b, c, d) {
+                         if ((t /= d / 2) < 1) return c / 2 * t * t + b
+                         return -c / 2 * (--t * (t - 2) - 1) + b
+                         },
+                   }
+		})
+	</script>
+</body>
+</html>
