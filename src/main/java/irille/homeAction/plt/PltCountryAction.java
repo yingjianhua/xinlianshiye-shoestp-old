@@ -53,7 +53,10 @@ public class PltCountryAction extends HomeAction<PltCountry> implements IPltCoun
      * @author yingjianhua
      */
     public void list() throws IOException {
-        FldLanguage.Language language = FldLanguage.Language.valueOf(lang);
+        FldLanguage.Language language = null;
+        if (lang != null) {
+            language = FldLanguage.Language.valueOf(lang);
+        }
         if (language == null) language = curLanguage();
         write(pltService.getCountryList(language, filter));
     }

@@ -44,7 +44,7 @@ public class ActivityServiceImp implements ActivityService {
         PkCompetitionPageManageView pkCompetitionPageManageView = new PkCompetitionPageManageView();
         List<PkCompetitionData> list = pkCompetitionDataDao.getPkCompetitionData(startDate, endDate);
         for (PkCompetitionData pkCompetitionData : list) {
-            pkCompetitionData.
+//            pkCompetitionData.
         }
 //        pkCompetitionPageManageView.setPkCompetitionData(pkCompetitionDataDao);
         return null;
