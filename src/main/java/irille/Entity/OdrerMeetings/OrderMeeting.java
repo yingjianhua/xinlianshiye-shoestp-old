@@ -95,13 +95,13 @@ public class OrderMeeting extends BeanInt<OrderMeeting> {
 	// SUSPEND:7,暂停
 	// END:8,活动结束
 	// DELETE:9,活动已删除
-  private Integer _exhibition;	// 订购会-会场信息 <表主键:OrderMeetingExhibition>  INT
+  private Integer _exhibition;	// 订购会-会场信息 <表主键:OrderMeetingExhibition>  INT<null>
   private String _customExhibition;	// 字符200  STR(200)<null>
   private Integer _country;	// 国家管理 <表主键:PltCountry>  INT
   private String _logo;	// 字符100  STR(100)<null>
   private Date _startTime;	// 时间  TIME
   private Date _endTime;	// 时间  TIME
-  private String _mailaddress;	// JSON  JSONOBJECT
+  private String _mailaddress;	// JSON  JSONOBJECT<null>
   private String _mailafullddress;	// 字符200  STR(200)
   private String _postcode;	// 字符20  STR(20)
   private String _mailname;	// 字符20  STR(20)

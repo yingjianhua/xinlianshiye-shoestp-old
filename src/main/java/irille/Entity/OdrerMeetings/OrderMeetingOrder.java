@@ -1,5 +1,6 @@
 package irille.Entity.OdrerMeetings;
 
+import irille.core.sys.Sys;
 import irille.pub.bean.BeanInt;
 import irille.pub.svr.Env;
 import irille.pub.tb.Fld;
@@ -20,6 +21,8 @@ public class OrderMeetingOrder extends BeanInt<OrderMeetingOrder> {
     PKEY(TB.crtIntPkey()),
     ORDERMEETINGID(OrderMeeting.fldOutKey()),
     ORDERID(OdrOrder.fldOutKey()),
+    PAYMENTTIME(SYS.DATE__NULL,"付款时间"),
+    BILLINGSTATUS(TB.crt(Sys.OYn.DEFAULT)),//结算状态
     CREATED_TIME(SYS.CREATED_DATE_TIME),
     ROW_VERSION(SYS.ROW_VERSION),
     //>>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
@@ -73,6 +76,10 @@ public class OrderMeetingOrder extends BeanInt<OrderMeetingOrder> {
   private Integer _pkey;	// 编号  INT
   private Integer _ordermeetingid;	// 订购会信息 <表主键:OrderMeeting>  INT
   private Long _orderid;	// 订单管理 <表主键:OdrOrder>  LONG
+  private Date _paymenttime;	// 付款时间  DATE<null>
+  private Byte _billingstatus;	// 是否 <OYn>  BYTE
+	// YES:1,是
+	// NO:0,否
   private Date _createdTime;	// 建档时间  TIME
   private Short _rowVersion;	// 版本  SHORT
 
@@ -81,6 +88,8 @@ public class OrderMeetingOrder extends BeanInt<OrderMeetingOrder> {
 		super.init();
     _ordermeetingid=null;	// 订购会信息 <表主键:OrderMeeting>  INT
     _orderid=null;	// 订单管理 <表主键:OdrOrder>  LONG
+    _paymenttime=null;	// 付款时间  DATE
+    _billingstatus= Sys.OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
     _createdTime=Env.getTranBeginTime();	// 建档时间  TIME
     _rowVersion=0;	// 版本  SHORT
     return this;
@@ -126,6 +135,24 @@ public class OrderMeetingOrder extends BeanInt<OrderMeetingOrder> {
       setOrderid(null);
     else
       setOrderid(orderid.getPkey());
+  }
+  public Date getPaymenttime(){
+    return _paymenttime;
+  }
+  public void setPaymenttime(Date paymenttime){
+    _paymenttime=paymenttime;
+  }
+  public Byte getBillingstatus(){
+    return _billingstatus;
+  }
+  public void setBillingstatus(Byte billingstatus){
+    _billingstatus=billingstatus;
+  }
+  public Boolean gtBillingstatus(){
+    return byteToBoolean(_billingstatus);
+  }
+  public void stBillingstatus(Boolean billingstatus){
+    _billingstatus=booleanToByte(billingstatus);
   }
   public Date getCreatedTime(){
     return _createdTime;

@@ -104,7 +104,8 @@ var lang_obj={
 		'es':'espanhol',
 		'ru':'russo',
 		'pt':'Português',
-		'zh_tw':'Chinês Tradicional'
+		'zh_tw':'Chinês Tradicional',
+        'hu':'A LIA'
 	},
 	manage:{
 		frame:{

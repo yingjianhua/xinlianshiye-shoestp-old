@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import irille.Entity.OdrerMeetings.OrderMeeting;
 import irille.Service.Manage.OdrMeeting.IOdrMeetingManageService;
+import irille.Service.Manage.OdrMeeting.IOdrMeetingOrderManageService;
 import irille.Service.Manage.OdrMeeting.IOdrMeetingProductManageService;
 import irille.Service.Manage.OdrMeeting.IOdrMeettingExhibitionService;
 import irille.sellerAction.SellerAction;
@@ -29,6 +30,9 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
 
     @Inject
     private IOdrMeettingExhibitionService odrMeettingExhibitionService;
+
+    @Inject
+    private IOdrMeetingOrderManageService odrMeetingOrderManageService;
 
     @Override
     public void loadsupstate() throws Exception {
@@ -121,7 +125,7 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
     private Integer productId;
 
     public void getOrderGoodsList() throws IOException {
-        write(odrMeetingProductManageService.getOrderGoodsList(getStart(), getLimit(), id, status, inputContent, getSupplier().getPkey()));
+        write(odrMeetingProductManageService.getOrderGoodsList(getStart(), getLimit(), id, status, inputContent,getSupplier().getPkey()));
     }
 
     public void updateStatus() throws IOException {
@@ -136,6 +140,7 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
      */
     public void deletejoinOdr() {
         odrMeetingManageService.deletejoinOdr(id);
+        write();
     }
 
     /**
@@ -206,4 +211,14 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
         write(odrMeetingManageService.getMeetingSaleInfo(getStart(), getLimit(), getId(), getSupplier().getPkey()));
     }
 
+    @Getter
+    @Setter
+    private Integer classification;
+
+    public void getOmtOrderList() throws IOException {
+        write(odrMeetingOrderManageService.getOmtOrderList(id,getStart(),getLimit(),classification,status,inputContent));
+    }
+    public void getOrderStatus() throws IOException {
+        write(odrMeetingOrderManageService.getOrderStatus());
+    }
 }
