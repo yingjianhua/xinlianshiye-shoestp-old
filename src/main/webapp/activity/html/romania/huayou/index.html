@@ -195,7 +195,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 			<div class="company-address banner_08 banner-wrap">
 				<div class="content-wrap">
 						<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d988.7553058804849!2d120.6003251487112!3d27.97788225914822!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x8f41858afda2d582!2z5rip5bee5biC5Y2O5Y-L6Z6L5Lia5pyJ6ZmQ5YWs5Y-4!5e0!3m2!1szh-CN!2sus!4v1543496328527"
-						class="map-wrap" frameborder="0" style="border:0" allowfullscreen></iframe>
+						class="map-wrap" frameborder="0" style="border:0;background:#000;" allowfullscreen></iframe>
 				</div>
 			</div>
 
@@ -360,6 +360,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 					.then((res)=>{
 						if(res.data.ret!=1){
 							this.$message.error('Network error, please try again later');
+							return;
 						}
 						this.$message({
 		          message: 'Submitted successfully',

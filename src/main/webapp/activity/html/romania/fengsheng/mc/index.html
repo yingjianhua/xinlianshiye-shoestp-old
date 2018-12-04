@@ -21,7 +21,7 @@
 		<form id="form">
 			 <h3 class="formh3">EXPLORE QUALITY SHOES</h3>
              <div class="formitem">
-                  <label for="Email">EMAIL*</label><input type="text" id="Email" name="Email" v-model="userdata.Email">
+                  <label for="Email">EMAIL*</label><input ref="name" type="text" id="Email" name="Email" v-model="userdata.Email">
              </div>
              <div class="formitem">
                   <label for="Name">NAME*</label><input type="text" id="Name" name="Name" v-model="userdata.Name">
@@ -193,7 +193,7 @@
 			        console.log(html.style.fontSize)
 			    },
 			    resetForm:function() {
-                         var regEmail = new RegExp('.+@[a-z0-9]+\.com$')
+                         var regEmail = new RegExp('.+@[a-z0-9]+\.(com|cn|net)$')
                          var regTel = new RegExp('[0-9]{6,}')  
                          if(!this.userdata.Email){
                              this.$toast.error('E-mail can not be empty');
@@ -242,16 +242,17 @@
                          this.interval = setInterval(() => {
                          const next = Math.floor(this.easeInOutQuad(10 * i, start, -start, 500))
                          if (next <= backPosition) {
-                              window.scrollTo(0, backPosition)
-                              clearInterval(this.interval)
+                                  window.scrollTo(0, backPosition)
+                                  clearInterval(this.interval)
+                                  this.$refs.name.focus();
                               } else {
-                              window.scrollTo(0, next)
+                                  window.scrollTo(0, next)
                               }
                               i++
                          }, 16.7)
 
                          // 姓名输入框 获取焦点
-                         this.$refs.name.focus();
+                         
                          },
                          easeInOutQuad(t, b, c, d) {
                          if ((t /= d / 2) < 1) return c / 2 * t * t + b

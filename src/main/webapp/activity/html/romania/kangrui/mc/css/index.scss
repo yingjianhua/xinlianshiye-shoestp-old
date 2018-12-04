@@ -52,6 +52,7 @@ $default-color: #4a74d2;
           .input {
             width: 7.91rem;
             height: 1.4rem;
+            line-height: 1.4rem;
             border-radius: 0.16rem;
             border: none;
             display: block;
@@ -219,7 +220,7 @@ $default-color: #4a74d2;
       }
       &>div{
         position: absolute;
-        top: 20%;
+        top: 10%;
         left:50%;
         transform: translate(-50%);
         text-align: center;
@@ -233,8 +234,8 @@ $default-color: #4a74d2;
       }
       &::after {
         position: absolute;
-        top:0.235rem;
-        left: 0.2rem;
+        top:0.25rem;
+        left: 0.25rem;
         content: '';
         width: 11rem;
       height: 12.5rem;
@@ -274,6 +275,11 @@ $default-color: #4a74d2;
           font-size: 1.42rem;
           text-align: left;
           margin-left: 1rem;
+        }
+        img{
+          width: 3.63rem;
+          height: 3.16rem;
+          flex-shrink:0;
         }
       }
     }
@@ -360,4 +366,16 @@ $default-color: #4a74d2;
         }
     }
 
+}
+
+@media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){
+  #app{
+    .bottom-container{
+        .content-box{
+          padding:0 3.5rem;
+          position: absolute;
+          top: 0%;
+        }
+    }
+  }
 }

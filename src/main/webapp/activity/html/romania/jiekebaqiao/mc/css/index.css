@@ -118,6 +118,7 @@ img {
         #app .top-container .top-form form .bg-box .input {
           width: 7.91rem;
           height: 1.4rem;
+          line-height: 1.4rem;
           border-radius: 0.16rem;
           border: none;
           display: block;
@@ -236,8 +237,8 @@ img {
           font-size: 1.32rem; }
       #app .four-num .four-num-item::after {
         position: absolute;
-        top: 0.235rem;
-        left: 0.2rem;
+        top: 0.25rem;
+        left: 0.25rem;
         content: '';
         width: 11rem;
         height: 12.5rem;
@@ -282,6 +283,10 @@ img {
         font-size: 1.42rem;
         text-align: left;
         margin-left: 1rem; }
+      #app .great-container .great-list .great-item img {
+        width: 3.63rem;
+        height: 3.16rem;
+        flex-shrink: 0; }
   #app .order-detail {
     text-align: center; }
     #app .order-detail .title {

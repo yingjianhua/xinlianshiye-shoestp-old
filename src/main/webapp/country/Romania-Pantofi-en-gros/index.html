@@ -10,19 +10,18 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta content="telephone=no" name="format-detection">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="renderer" content="webkit">
-    <meta name="keywords" content="shoes purchasing, Men’s leather shoes, boy’s shoes, Men’s casual shoes,
-		Men’s Sneakers, Children sandals, Men’s shoes, Women’s shoes, Women’s high heels, Women’s sandals, shoe companies,
-		shoe suppliers, sneaker manufacturers, shoe factories, shoe manufacturing companies, sneaker manufacturer,
-		china footwear manufacturer, sport shoes manufacturer, footwear factory.">
-    <meta name="discription" content="We will have a showroom in Romanian offline shoes purchasing. During this show,
-		you can experience hundreds of styles of shoes locally and get your choosing shoes with factory direct price.
-		Also, you can receive professional advice from customization. In this purchasing, nearly 500 different styles of Men’s shoes,
-		women’s shoes and kid’s shoes will be displayed. If you reserve your seat online, you will get a secret gift when you come.
-		Several free samples of shoes will also be supplied in this show. ">
-    <title>Romanian Offline Shoes Purchasing</title>
+    <meta name="keywords" content="Pantofi de piele pentru bărbați, pantofi pentru bărbați, pantofi pentru bărbați, încălțăminte pentru bărbați, pantofi pentru bărbați,
+		sandale pentru copii, încălțăminte pentru bărbați, încălțăminte pentru femei, tocuri pentru femei, sandale doamnelor, firme de încălțăminte, furnizori de încălțăminte Companie,
+		producător de pantofi sport, producător chinez de încălțăminte, producător de pantofi sport, fabrică de încălțăminte">
+    <meta name="discription" content="Vom deschide o sală de expoziții pentru târgul românesc de achiziții de încălțăminte offline. În acest showroom,
+		puteți experimenta sute de stiluri de pantofi în zona locală și puteți cumpăra alegerea încălțămintei direct la prețul fabricii. În plus,
+		puteți obține sfaturi profesionale de la personalizare.În această achiziție, vor fi expuse aproape 500 de stiluri diferite de încălțăminte pentru bărbați,
+		femei și copii. Dacă rezervați un loc online, veți primi un dar misterios când veți ajunge. Mai multe pantofi gratuite vor fi disponibile la această expoziție.">
+    <title>Reuniunea de achiziție offline a încălțămintei din România</title>
     <link rel="stylesheet" href="./css/reset.css" media="all">
-    <link rel="stylesheet" href="./css/romaina-new.css">
+    <link rel="stylesheet" href="css/romaina-new.css">
     <link rel="stylesheet" href="./css/index.css" media="all">
+    <link rel="stylesheet" href="./css/index-ro.css" media="all">
     <link rel="stylesheet" href="./css/element-ui/element-ui.css">
     <script src="./js/jquery-1.7.2.min.js"></script>
     <script src="./js/vue.js"></script>
@@ -36,7 +35,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <dl class="change_lang">
     <dt class="flexible" style="padding: 10px 20px;">
         <img src="./images/two-bar.png" alt="" class="icon-two-bar">
-        <div class="flex-grow por">English</div>
+        <div class="flex-grow por">România</div>
         <a href="https://www.shoestp.com/" class="to-home bar-left">
             <img src="./images/icon-home.png" alt="" class="icon-home">
         </a>
@@ -65,19 +64,26 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
             </a>
         </div>
         <div class="header-text">
-            <p class="white-text text-title">ROMANIAN OFFLINE SHOES PURCHASING</h2>
-            <p class="yellow-text text-slogan">New Trends</p>
-            <p class="yellow-text text-slogan">New Trade</p>
-            <p class="yellow-text text-slogan">New Era</p>
+            <p class="white-text text-title">
+                ADUNARE DE APRECIERE
+                <br>
+                A MOSTRELOR DE PANTOFI
+                <br>
+                OFFLINE, ROMANIA
+            </p>
+            <p class="yellow-text text-slogan">Noua Tendință</p>
+            <p class="yellow-text text-slogan">Noul Comerț</p>
+            <p class="yellow-text text-slogan">Nouă Eră</p>
+
             <p class="yellow-text text-time">2018.12.4-2018.12.19</p>
-            <p class="yellow-text text-address">Exhibition Hall Opens All Year Round</p>
-            <p class="white-text text-content">Magazinul Universal Dragonul Roșu Strada Drumul Garii 12,București
+            <p class="yellow-text text-address">Pavilionul Românesc Este Deschis Pe Tot Parcursul Anului</p>
+            <p class="white-text text-content">Magazinul Universal Dragonul Roșu Strada <br> Drumul Garii 12,București
                 077190</p>
-            <!-- <a class="btn" style="color: #fff;" href="https://www.jsform.com/web/formview/5b87847b75a03c126de93706" target="_blank">Get Secret Gift</a> -->
-            <div class="btn pointer" @click="getGift" style="color: #fff;">Get Secret Gift</div>
+            <a class="btn pointer" style="color: #fff;" @click="getGift">Obțineți Cadouri Surpriză</a>
+            <br>
             <!--<a class="btn btn-grey pointer"-->
-               <!--@click="jumpStatistics('https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373')">Some-->
-                <!--Product Previews</a>-->
+               <!--@click="jumpStatistics('https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373')">Unele-->
+                <!--Previzualizări Ale Produselor</a>-->
         </div>
     </div>
 
@@ -85,8 +91,8 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
         <!--<div class="yellow_01"></div>-->
         <!--<div class="yellow_02">-->
             <!--<div class="block">-->
-                <!--<h2 class="white-text product-title">PRODUCT</h2>-->
-                <!--<p class="white-text product-title">DISPALY</p>-->
+                <!--<h2 class="white-text product-title">AFIȘAREA</h2>-->
+                <!--<p class="white-text product-title">PRODUSELOR</p>-->
                 <!--<el-carousel trigger="click" arrow="never">-->
                     <!--<el-carousel-item v-for="products in productCarousel">-->
                         <!--<div class="product-image" v-for="(item,index) in products"-->
@@ -99,9 +105,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                         <!--</div>-->
                     <!--</el-carousel-item>-->
                 <!--</el-carousel>-->
-                <!--<div class="btn btn-normal-red" @click="getGift">-->
-                    <!--Get Free Sample Now-->
-                <!--</div>-->
+                <!--<a class="btn btn-normal-red" @click="getGift">Obțineți Mostre Gratuite Acum</a>-->
             <!--</div>-->
         <!--</div>-->
     <!--</div>-->
@@ -110,15 +114,17 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <!-- 含手机的 banner 行 -->
     <div class="banner_03">
         <div class="w1200">
-            <h1 class="banner-title">Shoes Purchasing Online</h1>
-            <div class="banner-sub-title fs28 tc">Get your choosing shoes from our online shoes shop</div>
+            <h1 class="banner-title">Magazin Online De Pantofi</h1>
+            <div class="banner-sub-title fs28 tc">Vino la magazinul online pentru a cumpăra pantofii pe care îi vrei.
+            </div>
             <div class="flexible flex-between">
                 <ul class="ul-wrap fs42">
                     <li class="item">
-                        More than <span class="fs64 color-blue">500</span> shoe <br/> companies were selected
+                        Sunt peste <span class="fs64 color-blue">500</span> de furnizori <br/> de pantofi
                     </li>
                     <li class="item">
-                        <span class="fs64 color-yellow">500-800</span> pairs of premium shoes
+                        Sunt disponibile <span class="fs64 color-yellow">500-800</span> stiluri <br> și mostre de
+                        pantofi
                     </li>
                     <li class="item">
                         <span class="fs64 color-blue">24</span> hours customer service
@@ -128,8 +134,8 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                 <img src="./images/phone.png" alt="" class="phone-pic">
             </div>
             <div class="tc mt20">
-                <!--<a @click="jumpStatistics('https://www.shoestp.com/')" class="btn-normal-red">-->
-                    <!--Browse The Mall-->
+                <!--<a class="btn-normal-red" @click="jumpStatistics('https://www.shoestp.com/')">-->
+                    <!--Răsfoiți Mall-ul-->
                 <!--</a>-->
             </div>
         </div>
@@ -141,24 +147,26 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
             <img src="./images/logo.png" alt="" class="bg-logo">
             <div class="flexible flex-start flex-between">
                 <div class="pos-left">
-                    <h1 class="banner-title tl">About New Union</h1>
-                    <div class="banner-sub-title fs28 tl">Shoe industry chain e-commerce platform</div>
+                    <h1 class="banner-title tl">Despre Xinlian Industry</h1>
+                    <div class="banner-sub-title fs22 tl">O stație o platformă soluția pentru lanțul de încălțăminte
+                    </div>
                     <div class="flexible flex-between">
                         <img src="./images/company_01.jpg" class="company-pic-item" alt="company's img_01">
                         <img src="./images/company_02.jpg" class="company-pic-item" alt="company's img_02">
                     </div>
-                    <div @click="getGift" class="btn-normal-red">
-                        Request Now
-                    </div>
+                    <a class="btn-normal-red" @click="getGift">
+                        Obțineți Mostre Gratuite Acum
+                    </a>
                 </div>
 
                 <div class="pos-right">
-                    <div class="right-title fs38">Company Profile</div>
-                    <div class="fs20">Established in 2015, Wenzhou New Union Industrial Co., Ltd. is located in Wenzhou,
-                        which is famous for its “China Shoes Capital”. In Wenzhou, a city with a long history of
-                        footwear development, a number of outstanding shoe-making enterprises have been born. New Union
-                        Industrial has become the world's first shoe industry chain integration service platform through
-                        its unique “B2B2C” new business model.
+                    <div class="right-title fs30">Scurtă prezentare despre interprindere</div>
+                    <div class="fs20">Wenzhou Xinlian Industrial Co., Ltd. a fost înființată în anul 2015 și este situat
+                        în Wenzhou, care este cunoscut sub numele de "China Shoes Capital". Orașul Wenzhou, împreună cu
+                        lunga istorie a dezvoltării industriei de încălțăminte, au dat naștere unor furnizori excelenți
+                        de încălțăminte pentru comerțul exterior.Wenzhou Xinlian Industrial Co., Ltd a devenit prima
+                        soluție la nivel mondial pentru lanțul de încălțăminte datorită modelului său unic de afaceri
+                        B2B2C.
                     </div>
                     <div class="flexible flex-between">
                         <img src="./images/company_03.jpg" class="company-pic-item" alt="company's img_03">
@@ -173,9 +181,9 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <div class="banner_05">
         <div class="w1200">
             <h1 class="banner-title">
-                Get Your Project
+                Xinlian Industry Vă Va Ajuta Să
                 <br>
-                Started <span class="color-red">Faster</span> With New Union
+                Câștigați Cvantajul Și Să Vă Depășiți Colegii!
             </h1>
 
             <div class="bg por">
@@ -183,45 +191,48 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                     <div class="pos-left">
                         <div class="left-item">
                             <div class="flexible flex-between">
-                                <h2 class="blue-title fs36">CONSULTATION</h2>
+                                <h2 class="blue-title fs36">CONSULTAŢIE</h2>
                                 <div class="icon-wrap icon-chart">
                                     <img class="icon" src="./images/icon-chart.png" alt="icon-chart">
                                 </div>
                             </div>
 
                             <div class="sub-title fs22">
-                                Once we know your goals, we will set up a step-by-step production process together with
-                                you that ensures you get the best deal.
+                                Odată ce vă cunoaștem cerințele, vom colabora cu dvs. pentru a dezvolta un proces de
+                                producție pas cu pas pentru a vă asigura că beneficiați de cea mai bună experiență de
+                                servicii și de prețuri la produse.
                             </div>
                             <ul class="ul-wrap fs24">
                                 <li class="item">
-                                    24-hour hotline service;
+                                    Linia telefonică de asistență este disponibilă permanent, 24 de ore/zi.
                                 </li>
                                 <li class="item">
-                                    Professional advice about customization service to ensure you get the best shoes
+                                    Furnizați sfaturi profesionale pe baza nevoilor dvs. pentru a vă asigura că puteți
+                                    găsi pantofii pe care îi doriți cel mai mult.cele mai bune pantofi.
                                 </li>
                             </ul>
                         </div>
 
                         <div class="left-item">
                             <div class="flexible flex-between">
-                                <h2 class="blue-title fs36">MANUFACTURING</h2>
+                                <h2 class="blue-title fs36">PRODUCȚIA</h2>
                                 <div class="icon-wrap icon-menu">
                                     <img class="icon" src="./images/icon-menu.png" alt="icon-menu">
                                 </div>
                             </div>
 
                             <div class="sub-title fs22">
-                                Throughout the production process, managers in charge of cutting, stitching and lasting
-                                check the quality of shoes constantly. We are not satisfied unless every pair is
-                                perfect. 
+                                Ne străduim să perfecționăm fiecare pereche de pantofi. Șlefuirea, lustruirea și
+                                polizarea, fiecare proces are o persoană dedicată responsabilă pentru inspecția
+                                continuă.
                             </div>
                             <ul class="ul-wrap fs24">
                                 <li class="item">
-                                    Conduct chemical test according to your requirements;
+                                    Testarea produselor conform cerințelor, asigurarea calității
                                 </li>
                                 <li class="item">
-                                    Offer lower price to ensure the maximum profits for your bussiness.
+                                    Sub premisa asigurării calității, prețul de vânzare direct din fabrică vă va
+                                    maximiza profiturile.
                                 </li>
                             </ul>
                         </div>
@@ -233,21 +244,22 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                                 <div class="icon-wrap icon-safe">
                                     <img class="icon" src="./images/icon-safe.png" alt="icon-safe">
                                 </div>
-                                <h2 class="blue-title fs36">QUALITY CONTROL</h2>
+                                <h2 class="blue-title fs36">CONTROLUL CALITĂȚII</h2>
                             </div>
                             <div class="sub-title fs22">
-                                Shoes' quality is the soul for New Union, we have very strong design and manufacturing
-                                team, as well as having strict and effective quality control policy on each stage.
+                                Pentru Xinlian Industry, calitatea este sufletul, avem un sistem strict și eficient de
+                                control al calității.
                             </div>
                             <ul class="ul-wrap fs24">
                                 <li class="item">
-                                    Experienced quality inspector will ensure your shoes' quality;
+                                    Inspectori cu experiență fac verificări la toate nivelurile
                                 </li>
                                 <li class="item">
-                                    Strict quality control policy;
+                                    Sistem de control strict al calității
                                 </li>
                                 <li class="item">
-                                    Products meet the demands of various chemical and physical testing in main markets.
+                                    Se asigură că fiecare detaliu al fiecărei perechi de pantofi este asigurat prin
+                                    diferite teste chimice și fizice de pe piețele majore.
                                 </li>
                             </ul>
                         </div>
@@ -260,22 +272,23 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                                 <h2 class="blue-title fs36">DESIGN</h2>
                             </div>
                             <div class="sub-title fs22">
-                                We have experienced designers who can design more than 2，000 new shoe models every year.
-                                Our designers consider themselves footwear fashion artists.
+                                Mulți designeri cu experiență în design internațional, cu peste 2000 de actualizări în
+                                fiecare an, care vă vor ajuta să înțelegeți cele mai recente tendințe ale modei la nivel
+                                global.
                             </div>
                             <ul class="ul-wrap fs24">
                                 <li class="item">
-                                    Professional customization service to ensure you get awesome shoes ;
+                                    Serviciu profesional personalizat pentru a vă asigura că obțineți pantofi excelenți;
                                 </li>
                                 <li class="item">
-                                    experienced designers will give you more practical and distinguished suggestions;
+                                    Designerii experimentați vă vor oferi mai multe sfaturi practice și excelente.
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 <!-- <a href="https://www.shoestp.com/home/usr_UsrPurchase_sign" target="_blank" class="btn-normal-red">
-                    Register Now
+                    Înregistrați-vă Acum
                 </a> -->
             </div>
         </div>
@@ -284,7 +297,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <!-- 工厂实拍的 banner 行  -->
     <div class="banner_06">
         <div class="w1200">
-            <h1 class="banner-title">Suppliers' Factory Show</h1>
+            <h1 class="banner-title">Prezentarea Furnizorului De Partener</h1>
         </div>
         <div class="company-pics-wrap flexible flex-between">
             <img src="./images/work-shop_01.jpg" alt="work shop's show" class="pic-item">
@@ -293,9 +306,9 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
             <img src="./images/work-shop_04.jpg" alt="work shop's show" class="pic-item">
         </div>
         <div class="tc">
-            <div @click="getGift" class="btn-normal-red">
-                Get Free Sample Now
-            </div>
+            <a class="btn-normal-red" @click="getGift">
+                Obțineți Mostre Gratuite
+            </a>
         </div>
     </div>
 
@@ -305,20 +318,22 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
         <div class="w1200 flexible flex-end">
 
             <div class="right-content-wrap">
-                <div class="right-title fs50">Romanian Showroom</div>
+                <div class="right-title fs50">Pavilionul Românesc</div>
                 <ul class="ul-wrap fs32">
                     <li class="item">
-                        Experiencing hundreds of styles of shoes locally
+                        Puteți experimenta mai mult de 100 de pantofi de calitate la fața locului.
                     </li>
                     <li class="item">
-                        Factory direct with reliable platform
+                        Platformă verticală fiabilă pentru vânzări directe din fabrică
                     </li>
                     <li class="item">
-                        Professional advice about customization
+                        Consultanță profesională personalizată pentru servicii
                     </li>
                 </ul>
-                <div @click="getGift" class="btn-normal-red">
-                    Reserve Your Seat
+                <div>
+                    <a class="btn-normal-red" @click="getGift">
+                        Rezervați-vă Locurile
+                    </a>
                 </div>
             </div>
         </div>
@@ -334,46 +349,57 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <div class="banner_09 fs30">
         <div class="w1200">
             <h1 class="banner_09-title fs52">
-                ADDRESS / CONTACT
+                ADRESA ȘI DATE DE CONTACT ALE
                 <br>
-                FOR THE COMERCE FAIR
+                CAMEREI DE COMERȚ DIN ROMÂNIA
             </h1>
             <div class="flexible flex-between flex-start">
                 <ul class="pos-left">
                     <li class="item">
-                        <span class="title">Contact：</span>
+                        <span class="title">Persoana De Contact：</span>
                         <span>Romanesc</span>
                     </li>
                     <li class="item">
-                        <span class="title">Webite：</span>
+                        <span class="title">Webite:</span>
                         <span>https://www.shoestp.com/m/romania/</span>
                     </li>
+                    <li class="item" style="white-space:nowrap;padding-right: 35px;">
+                        <span class="title" style="letter-spacing: -1px;">Comenzi Telefonice Limba Romană:</span>
+                        <span>0762 898 898</span>
+                    </li>
                     <li class="item">
-                        <span class="title">Telephone：</span>
+                        <span class="title">English Service：</span>
                         <span>0762 900 529</span>
                     </li>
                     <li class="item">
-                        <span class="title">Whatsapp：</span>
+                        <span class="title">订购服务电话：</span>
+                        <span>0762 900 529</span>
+                    </li>
+                    <li class="item">
+                        <span class="title">WhatsApp：</span>
                         <span>+40 762 900 529</span>
                     </li>
                 </ul>
 
                 <ul class="pos-right">
                     <li class="item">
-                        <span class="title">Exhibition Address:</span>
+                        <span class="title">Adresa Pavilionului：</span>
                         <br>
                         <span>Universal Dragon Red Shop
 						<br>
 						Strada Drumul Garii 12, Bucharest
 						<br>
-						077190</span>
+            <span>
+              077190(primul etajul la partea dreapta.nr 3-4)
+            </span>
+          </span>
                     </li>
                 </ul>
             </div>
 
             <ul class="pos-bottom">
                 <li class="item flexible flex-start">
-                    <span class="title">E-mail：</span>
+                    <span class="title">Adresa E-mail：</span>
                     <span>544414672@qq.com (în limba română service)
 						<br>
 						marketing@shoestp.com (English service)</span>
@@ -386,35 +412,36 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
         <div class="w1200 flexible flex-between">
             <ul class="ul-wrap fs34">
                 <li class="item">
-                    More Choice of Shoes Styles
+                    Mai multe selecții de pantofi.
                 </li>
                 <li class="item">
-                    Local Touring Experience of Shoes Fashion Show
+                    Expoziție locală de pantofi la modă.
                 </li>
                 <li class="item">
-                    Factory Direct with Reliable Native Service
+                    Vânzare directă la prețul din fabrică, experiența serviciilor locale.
                 </li>
             </ul>
 
             <div class="form-box flexible flex-column flex-center">
                 <h2 class="form-title fs50">
-                    Your Business
+                    Nevoile Dvs. De
                     <br>
-                    Needs Are Unique?
+                    Afaceri Sunt Unice?
                 </h2>
 
                 <div class="form-content fs24">
-                    Let us help you meet those needs!
+                    Să vă ajutăm să satisfaceți aceste nevoi!
                     <br>
-                    Talk to us and get your free samples now.
+                    Contactați-ne pentru a obține imediat mostre gratuite.
                 </div>
 
-                <div @click="getGift" class="btn-normal-red">
-                    Reserve Your Seat
-                </div>
+                <a class="btn-normal-red" @click="getGift">
+                    Rezervați-vă Locurile
+                </a>
             </div>
         </div>
     </div>
+
 
     <!-- form弹框 -->
     <transition name="el-fade-in-linear">
@@ -424,47 +451,47 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                     <img src="./images/close-black.png" alt="button to close the form" class="btn-close"
                          @click="isFormShow = false">
                     <div class="form-title">
-                        2018 ROMANIAN
+                        2018 MOSTRELOR DE
                         <br>
-                        OFFLINE SHOES PURCHASING
+                        PANTOFI OFFLINE,ROMANIA
                     </div>
                     <el-form ref="form" :model="form" label-width="80px" label-position="top" size="small">
-                        <el-form-item label="Contact:" class="required-label">
-                            <el-input v-model="form.name" placeholder="Please input your name"></el-input>
+                        <el-form-item label="A lua legatura:" class="required-label">
+                            <el-input v-model="form.name" placeholder="lasă - ţi numele"></el-input>
                         </el-form-item>
 
-                        <el-form-item label="Country" class="required-label">
+                        <el-form-item label="Statul" class="required-label">
                             <el-select v-model="form.country">
-                                <el-option value="-1" label="Please select your country"></el-option>
+                                <el-option value="-1" label="Te rog alege ţara ta"></el-option>
                                 <el-option v-for="country in countryList" :key="country.id" :label="country.name"
                                            :value="country.id"></el-option>
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item label="Telephone:" class="required-label">
-                            <el-input v-model="form.tel" placeholder="Please input your telephone number."></el-input>
+                        <el-form-item label="Telefon:" class="required-label">
+                            <el-input v-model="form.tel"
+                                      placeholder="vă rog introduceţi numărul de telefon."></el-input>
                         </el-form-item>
 
                         <el-form-item label="Email:" class="required-label">
-                            <el-input v-model="form.email" placeholder="Please input your E-mail."></el-input>
+                            <el-input v-model="form.email" placeholder="te rog intră în cutia ta poştală"></el-input>
                         </el-form-item>
 
-                        <el-form-item label="Inquiry:">
+                        <el-form-item label="Anchetă:">
                             <el-input type="textarea" v-model="form.inquiry"
-                                      placeholder="Please input enquiry information."></el-input>
+                                      placeholder="vă rog să introduceţi informaţii"></el-input>
                         </el-form-item>
 
 
                         <div class="tc">
-                            <el-button type="danger form-button" @click="formSubmit">Submit</el-button>
+                            <el-button type="danger form-button" @click="formSubmit">A depune</el-button>
                         </div>
 
                         <div class="tips">
-                            Filling in and send the form, you will get a mysterious gift in the Romanian exhibition
-                            room!
-                            Or you can fill your needs in the remark column, our staff will contact you at the first
-                            time!
-                            Thank you for coming, we will provide the best service for you!
+                            Completați și trimiteți formularul, vă vom prezenta un cadou.misterios în sala de expoziții
+                            offline din România!Sau puteți completa nevoile dvs. în coloana de remarci, personalul
+                            nostru va lua legătura cu dvs. în prima dată!Vă mulțumim că ați venit, vă vom oferi cele mai
+                            bune servicii!
                         </div>
                     </el-form>
                 </div>
@@ -479,13 +506,13 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                     <div class="model-confirm-content flexible flex-center">
                         <img src="./images/right-red.png" alt="right" class="icon">
                         <div>
-                            Submit
+                            A depune
                             <br>
-                            Successfully！
+                            Cu succes!
                         </div>
                     </div>
                     <div class="model-confirm-footer" @click="isTipDialogShow = false">
-                        Determine
+                        A determina
                     </div>
                 </div>
             </transition>
@@ -494,6 +521,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 
 
 </div>
+
 <script>
     new Vue({
         el: '#app',
@@ -506,61 +534,58 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
             }, //form提交的内容
             productCarousel: [
                 [{
-                    // url:'https://www.shoestp.com/home/pdt_PdtProduct?cated=373',
                     url: 'https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373',
                     imageUrl: 'images/men1.png',
-                    title: 'Men\'s Leather Shoes',
-                    content: 'Simple But Fashionable'
+                    title: 'Pantofi Din Piele Maturi, Echilibrați',
+                    content: 'De Lux Și Cu Preț Scăzut Pentru Bărbați'
                 }, {
                     url: 'https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373',
                     imageUrl: 'images/men2.png',
-                    title: 'Men\'s Sneakers',
-                    content: 'Abrasion-resistant, Slip-resistant'
+                    title: 'Adidași Pentru Bărbați',
+                    content: 'Ușori & Sportivi'
                 }, {
                     url: 'https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373',
                     imageUrl: 'images/men3.png',
-                    title: 'Men\'s Casual Shoes',
-                    content: 'Free Flexible, Lightweight'
+                    title: 'Pantofi Casual Pentru Bărbați',
+                    content: 'Confortabili & Casual '
                 }],
                 [{
-                    // url:'https://www.shoestp.com/home/pdt_PdtProduct?cated=380',
                     url: 'https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=380',
                     imageUrl: 'images/women1.png',
-                    title: 'Women\'s High Heels',
-                    content: 'Stylish, Lightweight'
+                    title: 'Pantofi Cu Toc Pentru Damă',
+                    content: 'Maturi & Eleganți'
                 }, {
                     url: 'https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=380',
                     imageUrl: 'images/women2.png',
-                    title: 'Women\'s Sneakers',
-                    content: 'Abrasion-resistant, Slip-resistant'
+                    title: 'Adidași Pentru Damă',
+                    content: 'Tineri & Ușori & Sportivi'
                 }, {
                     url: 'https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=380',
                     imageUrl: 'images/women3.png',
-                    title: 'Women\'s Sandals',
-                    content: 'Dynamic, Comfortable'
+                    title: 'Sandale Pentru Damă',
+                    content: 'Modă & Confort'
                 }],
                 [{
-                    // url:'https://www.shoestp.com/home/pdt_PdtProduct?cated=387',
                     url: 'https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=387',
                     imageUrl: 'images/children1.png',
-                    title: 'Boys\' Shoes',
-                    content: 'Abrasion-resistant, Slip-resistant'
+                    title: 'Pantofi Pentru Băieței',
+                    content: 'Confortabili & Rezistenți'
                 }, {
                     url: 'https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=387',
                     imageUrl: 'images/children2.png',
-                    title: 'Girls\' Shoes',
-                    content: 'Flexible, Lightweight'
+                    title: 'Pantofi Pentru Fetițe',
+                    content: 'Sportivi & Confortabili'
                 }, {
                     url: 'https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=387',
                     imageUrl: 'images/children3.png',
-                    title: 'Children\'s Sandals',
-                    content: 'Dynamic,Comfortable'
+                    title: 'Sandale Pentru Copii',
+                    content: 'Relaxante & Confortabile'
                 }]
             ]
         },
 
         mounted() {
-            axios.get('/home/plt_PltCountry_list?lang=en&filter=romania')
+            axios.get('/home/plt_PltCountry_list?lang=ro&filter=romania')
                 .then((res) => {
                     if (res.data.ret == 1) {
                         this.countryList = res.data.result
@@ -582,25 +607,27 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
             jumpStatistics(url) {
                 // 统计代码
                 window.location = url;
+
             },
             formSubmit() {
+                console.log(this.form.name)
                 if (!this.form.name || this.form.name == "") {
-                    this.$message.error('Names must not be empty.');
+                    this.$message.error('Introduceți numele dvs.');
                     return;
                 } else if (!this.form.country || this.form.country == -1) {
-                    this.$message.error('Please choose your country');
+                    this.$message.error('Selectați țara dvs.');
                     return;
                 } else if (!this.form.tel || this.form.tel == "") {
-                    this.$message.error('Please input your telephone number.');
+                    this.$message.error('Introduceți numărul dvs. de telefon');
                     return;
                 } else if (!(/^\d{1,}$/.test(this.form.tel))) {
-                    this.$message.error('Wrong telephone number format');
+                    this.$message.error('Eroare de format de număr de telefon');
                     return;
                 } else if (!this.form.email || this.form.email == "") {
-                    this.$message.error('Please input your mailbox.');
+                    this.$message.error('Introduceți adresa dvs. de e-mail');
                     return;
                 } else if (!(/[\w]+(\.[\w]+)*@[\w]+(\.[\w])+/.test(this.form.email))) {
-                    this.$message.error('Error in mailbox format');
+                    this.$message.error('Format incorect de cutie poștală');
                     return;
                 }
                 axios.post('/home/ActivitySignIn_ActivitySignIn_signIn', Qs.stringify({
@@ -625,17 +652,6 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
         }
     })
 </script>
-
-<script>
-    // 切换语言
-    $('.change_lang').hover(function () {
-        $(this).find('dd').stop().slideDown(200);
-        $(this).find('.icon-arrow').addClass('rotate')
-    }, function () {
-        $(this).find('dd').stop().slideUp(200);
-        $(this).find('.icon-arrow').removeClass('rotate')
-    })
-</script>
 <script>
     function gtag_report_conversionGoogle(url) {
         var callback = function () {
@@ -649,6 +665,16 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
         });
         return false;
     }
+</script>
+<script>
+    // 切换语言
+    $('.change_lang').hover(function () {
+        $(this).find('dd').stop().slideDown(200);
+        $(this).find('.icon-arrow').addClass('rotate')
+    }, function () {
+        $(this).find('dd').stop().slideUp(200);
+        $(this).find('.icon-arrow').removeClass('rotate')
+    })
 </script>
 
 <!-- 代码追踪 -->
@@ -683,7 +709,7 @@ In your html page, add the snippet and call gtag_report_conversion when someone 
         return false;
     }
 </script>
-
+<!-- Global site tag (gtag.js) - Google Analytics -->
 
 <!--Start of Tawk.to Script-->
 <script type="text/javascript">

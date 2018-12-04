@@ -156,7 +156,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 				<h2 class="title-common">Company Address</h2>
 				<div class="content-wrap">
 						<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4988.858609270015!2d120.67851510664163!3d27.851119888297113!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x344588e5cfdd6fdd%3A0x6259085e5d654ff8!2z5Y2D55m-5qKm6Z6L5Lia5pyJ6ZmQ5YWs5Y-4!5e0!3m2!1szh-CN!2ssg!4v1543633826735"
-						class="map-wrap" frameborder="0" style="border:0" allowfullscreen></iframe>
+						class="map-wrap" frameborder="0" style="border:0;background:#000;" allowfullscreen></iframe>
 				</div>
 			</div>
 
@@ -238,14 +238,14 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 		        if (next <= backPosition) {
 		          window.scrollTo(0, backPosition)
 		          clearInterval(this.interval)
+
+							// 姓名输入框 获取焦点
+							this.$refs.name.focus();
 		        } else {
 		          window.scrollTo(0, next)
 		        }
 		        i++
 		      }, 16.7)
-
-					// 姓名输入框 获取焦点
-					this.$refs.name.focus();
 				},
 				easeInOutQuad(t, b, c, d) {
 		      if ((t /= d / 2) < 1) return c / 2 * t * t + b
@@ -294,6 +294,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 					.then((res)=>{
 						if(res.data.ret!=1){
 							this.$toast.error('Network error, please try again later');
+							return
 						}
 						this.$toast.success('Submitted successfully');
 						setTimeout(()=>{

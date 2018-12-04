@@ -23,9 +23,11 @@ public class urlRewrite implements Filter {
             request.getRequestDispatcher(request.getServletPath().replaceFirst("/country/", "/m/country/")).forward(request, response);
             return;
         }
-        if (request.getServletPath().startsWith("/activity/html/romania/") && isMobile(request)) {
+        if (request.getServletPath().startsWith("/activity/html/romania/") && isMobile(request) && request.getServletPath().indexOf("mc") == -1) {
             String path = request.getServletPath().substring("/activity/html/romania/".length(), request.getServletPath().indexOf("/", "/activity/html/romania/".length()));
-            request.getRequestDispatcher(request.getServletPath().replaceFirst(path, path + "/mc/")).forward(request, response);
+            System.out.println(request.getServletPath().replaceFirst(path, path + "/mc"));
+            response.sendRedirect(request.getServletPath().replaceFirst(path, path + "/mc"));
+//            request.getRequestDispatcher().forward(request, response);
             return;
         }
         filterChain.doFilter(servletRequest, servletResponse);
