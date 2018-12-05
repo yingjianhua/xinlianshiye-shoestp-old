@@ -1,6 +1,7 @@
 package irille.view.Activity;
 
 import irille.Entity.Pk.PkCompetitionData;
+import irille.view.BaseView;
 import lombok.Data;
 
 /**
@@ -11,7 +12,7 @@ import lombok.Data;
  * Time: 13:48
  */
 @Data
-public class PkCompetitionPageManageView {
+public class PkCompetitionPageManageView implements BaseView {
     private PkCompetitionData pkCompetitionData;
     private PkCompetitionGlobalDataView pkCompetitionGlobalDataView;
 }

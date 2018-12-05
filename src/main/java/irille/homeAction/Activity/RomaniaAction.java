@@ -2,7 +2,7 @@ package irille.homeAction.Activity;
 
 import irille.Dao.Old.ActivitySignIn.ActivityNewInqDao;
 import irille.Entity.newInq.NewInquiry;
-import irille.Service.Activity.ActivityService;
+import irille.Service.Activity.IActivityService;
 import irille.homeAction.HomeAction;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +10,7 @@ import lombok.Setter;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Date;
 
 /**
  * 罗马尼亚活动页临时action
@@ -19,7 +20,7 @@ public class RomaniaAction extends HomeAction {
 
 
     @Inject
-    private ActivityService activityService;
+    private IActivityService activityService;
 
     public String execute() {
         if (isMobile()) {
@@ -70,4 +71,7 @@ public class RomaniaAction extends HomeAction {
         activityService.generateData();
     }
 
+    public void test2() throws IOException {
+        write(activityService.getPkCompetitionData(new Date(1543635618), new Date(), 23));
+    }
 }

@@ -77,7 +77,6 @@ public class PkCompetitionData extends BeanInt<PkCompetitionData> {
     //>>>以下是自动产生的源代码行--源代码--请保留此行用于识别>>>
   //实例变量定义-----------------------------------------
   private Integer _pkey;	// 编号  INT
-  private String _name;	// 名称  STR(20)
   private Integer _supid;	// 供应商 <表主键:UsrSupplier>  INT
   private Integer _pe;	// 曝光量  INT
   private Integer _trafficvolume;	// 点击量  INT
@@ -88,12 +87,11 @@ public class PkCompetitionData extends BeanInt<PkCompetitionData> {
 	@Override
   public PkCompetitionData init(){
 		super.init();
-    _name=null;	// 名称  STR(20)
     _supid=null;	// 供应商 <表主键:UsrSupplier>  INT
     _pe=0;	// 曝光量  INT
     _trafficvolume=0;	// 点击量  INT
     _inquiry=0;	// 询盘量  INT
-    _createdtime= Env.getTranBeginTime();	// 生成时间  TIME
+    _createdtime=Env.getTranBeginTime();	// 生成时间  TIME
     _rowVersion=0;	// 版本  SHORT
     return this;
   }
@@ -104,12 +102,6 @@ public class PkCompetitionData extends BeanInt<PkCompetitionData> {
   }
   public void setPkey(Integer pkey){
     _pkey=pkey;
-  }
-  public String getName(){
-    return _name;
-  }
-  public void setName(String name){
-    _name=name;
   }
   public Integer getSupid(){
     return _supid;

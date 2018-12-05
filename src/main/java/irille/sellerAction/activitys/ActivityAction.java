@@ -1,13 +1,16 @@
 package irille.sellerAction.activitys;
 
 import irille.Entity.Activity.ActivityInfo;
+import irille.Service.Activity.IActivityService;
 import irille.Service.Manage.Activity.IActivitySignInInfoManageService;
-import irille.sellerAction.activitys.Inf.IActivityAction;
 import irille.sellerAction.SellerAction;
+import irille.sellerAction.activitys.Inf.IActivityAction;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.inject.Inject;
+import java.io.IOException;
+import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,6 +24,10 @@ public class ActivityAction extends SellerAction<ActivityInfo> implements IActiv
     private IActivitySignInInfoManageService activitySignInInfoManageService;
 
 
+    @Inject
+    private IActivityService activityService;
+
+
     @Getter
     @Setter
     private int country;
@@ -28,9 +35,15 @@ public class ActivityAction extends SellerAction<ActivityInfo> implements IActiv
     @Setter
     private String keyword;
 
+    @Getter
+    @Setter
+    private Date startDate;
+    @Getter
+    @Setter
+    private Date endDate;
+
     @Override
     public void list() throws Exception {
-        System.out.println("awdwad");
         write(activitySignInInfoManageService.getAllSignInInfo(getStart(), getLimit(), getCountry(), getKeyword()));
     }
 
@@ -42,6 +55,16 @@ public class ActivityAction extends SellerAction<ActivityInfo> implements IActiv
     @Override
     public void del() {
         activitySignInInfoManageService.del(Integer.valueOf(String.valueOf(getId())));
+    }
+
+
+    /**
+     * @Description: 获取Pk大赛数据
+     * @date 2018/12/5 14:55
+     * @author lijie@shoestp.cn
+     */
+    public void getPkData() throws IOException {
+        write(activityService.getPkCompetitionData(startDate, endDate, getSupplier().getPkey()));
     }
 
 }

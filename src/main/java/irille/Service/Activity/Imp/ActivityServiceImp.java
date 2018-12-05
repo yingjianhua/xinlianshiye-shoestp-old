@@ -6,14 +6,19 @@ import irille.Dao.Activity.Romania.PkCompetitionDataDao;
 import irille.Dao.Old.Activity.Romania.PkCompetitionDataDAO;
 import irille.Dao.PdtProductDao;
 import irille.Entity.Pk.PkCompetitionData;
-import irille.Service.Activity.ActivityService;
+import irille.Service.Activity.IActivityService;
 import irille.pub.GoogleAnalytics.GoogleAnalyticsUtils;
+import irille.pub.util.GetValue;
 import irille.view.Activity.GoogleAnalyticsView;
+import irille.view.Activity.PkCompetitionGlobalDataView;
 import irille.view.Activity.PkCompetitionPageManageView;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.security.GeneralSecurityException;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.*;
 
 /**
@@ -22,7 +27,7 @@ import java.util.*;
  * Date: 2018/12/1
  * Time: 14:09
  */
-public class ActivityServiceImp implements ActivityService {
+public class ActivityServiceImp implements IActivityService {
 
     @Inject
     private GoogleAnalyticsUtils googleAnalyticsUtils;
@@ -34,20 +39,27 @@ public class ActivityServiceImp implements ActivityService {
     @Inject
     private PkCompetitionDataDAO pkCompetitionDataDAO;
 
-    @Override
-    public void addRomaniaInquiry(int sup, String name, String email, String detail) {
-
-    }
 
     @Override
-    public PkCompetitionPageManageView getPkCompetitionData(Date startDate, Date endDate) {
+    public PkCompetitionPageManageView getPkCompetitionData(Date startDate, Date endDate, Integer supId) {
+        System.out.println(startDate);
+        System.out.println(endDate);
         PkCompetitionPageManageView pkCompetitionPageManageView = new PkCompetitionPageManageView();
-        List<PkCompetitionData> list = pkCompetitionDataDao.getPkCompetitionData(startDate, endDate);
-        for (PkCompetitionData pkCompetitionData : list) {
-//            pkCompetitionData.
-        }
-//        pkCompetitionPageManageView.setPkCompetitionData(pkCompetitionDataDao);
-        return null;
+        Map all = pkCompetitionDataDao.getSupPk(startDate, endDate, supId);
+        PkCompetitionData pkCompetitionData = new PkCompetitionData();
+        pkCompetitionData.setPe(GetValue.get(all, "pe", BigDecimal.class, BigDecimal.ZERO).intValue());
+        pkCompetitionData.setInquiry(GetValue.get(all, "inq", BigDecimal.class, BigDecimal.ZERO).intValue());
+        pkCompetitionData.setTrafficvolume(GetValue.get(all, "tr", BigDecimal.class, BigDecimal.ZERO).intValue());
+
+
+        PkCompetitionGlobalDataView globalDataView = new PkCompetitionGlobalDataView();
+        globalDataView.setTop5(pkCompetitionDataDao.getTop5(startDate, endDate));
+        globalDataView.setSum(pkCompetitionDataDao.getAllPe(startDate, endDate));
+
+
+        pkCompetitionPageManageView.setPkCompetitionData(pkCompetitionData);
+        pkCompetitionPageManageView.setPkCompetitionGlobalDataView(globalDataView);
+        return pkCompetitionPageManageView;
     }
 
     /**
@@ -57,8 +69,12 @@ public class ActivityServiceImp implements ActivityService {
      */
     @Override
     public void generateData() {
-        Date startDate = new Date();
-        Date endDate = new Date();
+        String startDateString = pkCompetitionDataDao.getLastDate();
+        LocalDate startDate = LocalDate.parse(startDateString);
+        LocalDate today = LocalDate.now();
+        if (today.compareTo(startDate) < 1) {
+            return;
+        }
         AnalyticsReporting service = null;
         try {
             System.setProperty("http.proxySet", "true");
@@ -70,7 +86,7 @@ public class ActivityServiceImp implements ActivityService {
             service = googleAnalyticsUtils.initializeAnalyticsReporting();
             // Create the DateRange object.
             DateRange dateRange = new DateRange();
-            dateRange.setStartDate("7DaysAgo");  //TODO
+            dateRange.setStartDate(startDateString);
             dateRange.setEndDate("today");  //TODO
             Metric sessions = new Metric()
                     .setExpression("ga:sessions")
@@ -136,11 +152,15 @@ public class ActivityServiceImp implements ActivityService {
                         googleAnalyticsView.setId(SupId);
                         googleAnalyticsView.setTrafficVolume(trafficvolume);
                         googleAnalyticsView.setPe(pe);
-                        googleAnalyticsView.setInquiry(pkCompetitionDataDao.getInquiry(startDate, endDate, SupId));
+                        googleAnalyticsView.setInquiry(
+                                pkCompetitionDataDao.getInquiry(Date.from(startDate.atStartOfDay().toInstant(ZoneOffset.UTC)), Date.from(today.atStartOfDay().toInstant(ZoneOffset.UTC)), SupId)
+                        );
                     } else {
                         googleAnalyticsView.setTrafficVolume(googleAnalyticsView.getTrafficVolume() + trafficvolume);
                         googleAnalyticsView.setPe(googleAnalyticsView.getPe() + pe);
-                        googleAnalyticsView.setInquiry(pkCompetitionDataDao.getInquiry(startDate, endDate, SupId));
+                        googleAnalyticsView.setInquiry(
+                                pkCompetitionDataDao.getInquiry(Date.from(startDate.atStartOfDay().toInstant(ZoneOffset.UTC)), Date.from(today.atStartOfDay().toInstant(ZoneOffset.UTC)), SupId)
+                        );
                     }
                     map.put(SupId, googleAnalyticsView);
                 }
@@ -190,7 +210,12 @@ public class ActivityServiceImp implements ActivityService {
             googleAnalyticsView.setId(Integer.valueOf(url.substring((url.lastIndexOf("_p") + 2), url.indexOf(".html"))));
             googleAnalyticsView.setType(4);
         }
+        if (url.indexOf("prm_PrmGroupPurchase_getGroupPdt") != -1) {
+            googleAnalyticsView.setId(Integer.valueOf(url.substring((url.indexOf("pkey=") + 5))));
+            googleAnalyticsView.setType(4);
+        }
         return googleAnalyticsView;
     }
+
 
 }

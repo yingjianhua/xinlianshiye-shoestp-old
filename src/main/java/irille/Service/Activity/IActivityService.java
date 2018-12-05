@@ -13,11 +13,9 @@ import java.util.Date;
  * Time: 14:08
  */
 @ImplementedBy(ActivityServiceImp.class)
-public interface ActivityService {
-    void addRomaniaInquiry(int sup, String name, String email, String detail);
+public interface IActivityService {
 
-
-    PkCompetitionPageManageView getPkCompetitionData(Date startDate, Date endDate);
+    PkCompetitionPageManageView getPkCompetitionData(Date startDate, Date endDate,Integer supId);
 
     void generateData();
 }

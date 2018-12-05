@@ -12,7 +12,5 @@ import lombok.Data;
 @Data
 public class PkCompetitionGlobalDataView implements BaseView {
     private int top5;
-    private int avg;
-    private int my;
-
+    private int sum;
 }
