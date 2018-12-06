@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 public class  easyodrView  implements BaseView {
     private  Integer id;// 主键
+    private  String odrnum;//订单号
     private Date time;//下单时间
     private Integer supplierid;//供应商ID
     private  String remarks;//备注

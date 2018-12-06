@@ -19,6 +19,7 @@ import irille.shop.usr.UsrPurchaseLine;
 import irille.view.EO.easyodrView;
 import irille.view.EO.eolineView;
 import irille.view.Page;
+import irille.view.odr.OrderSearchView;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
@@ -39,19 +40,25 @@ public class EasyOdrDao {
     *@date 2018/12/5 15:59
     *@anthor wilson zhang
     */
-    public Page sellerlist(Integer start, Integer limit,Date starttime,Date endtime,Integer supplierid ){
+    public Page sellerlist(Integer start, Integer limit, OrderSearchView osv, Integer supplierid ){
         if(null!=start){ start = 0; }
         if(null!=limit){ start = 0; }
         SQL sql= new SQL(){{
                      SELECT(T.PKEY,T.TIME,T.ORDER_NUM,T.ADDRESS,T.COUNYPD,T.NAME,T.PHONE,T.PURCHASE)
                     .FROM(EasyOdr.class);
-                     if(null !=starttime&& null !=endtime){
-                        WHERE(T.TIME,">?",starttime);
-                        WHERE(T.TIME,"<?",endtime);
+                     if(null !=osv) {
+                         System.out.println(osv.getBeginTime());
+                         if (null != osv.getBeginTime() && null != osv.getEndTime()) {
+                             WHERE(T.TIME, ">?", osv.getBeginTime());
+                             WHERE(T.TIME, "<?", osv.getEndTime());
+                         }
+                         if (null != osv.getNumber()) {
+                             WHERE(T.ORDER_NUM, "like '%"+osv.getNumber()+"%'");
+                         }
                      }
-                     if(null != supplierid){
-                         WHERE(T.SUPPLIER,"=?",supplierid);
-                     }
+                    if (null != supplierid) {
+                        WHERE(T.SUPPLIER, "=?", supplierid);
+                    }
         }};
         Integer count= Query.sql(sql).queryCount();
         List<easyodrView> eslist=  Query.sql(sql).queryMaps().stream().map(bean ->new easyodrView(){{
@@ -61,6 +68,7 @@ public class EasyOdrDao {
             setPhone((String)bean.get(T.PHONE.getFld().getCodeSqlField()));
             UsrPurchase up=BeanBase.load(UsrPurchase.class,(Integer)bean.get(T.PURCHASE.getFld().getCodeSqlField()));
             setEmail(up.getEmail());
+            setOdrnum((String)bean.get(T.ORDER_NUM.getFld().getCodeSqlField()));
             setAddress((String) bean.get(T.ADDRESS));
             setCount((Integer)bean.get(T.COUNYPD.getFld().getCodeSqlField()));
         }}).collect(Collectors.toList());
