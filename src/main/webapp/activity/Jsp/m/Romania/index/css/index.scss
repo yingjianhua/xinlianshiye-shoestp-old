@@ -2,10 +2,11 @@
 @import 'reset';
 
 // 下拉选默认样式改变
-.category-select-list .mu-popover{
+.mu-popover.transition-bottom{
   left: 0!important;
   width: 100%!important;
   min-width: 100%!important;
+  max-width: 100%!important;
   .mu-list{
     padding: 0;
     li{
@@ -53,7 +54,7 @@
     height: 1.6rem;
     line-height: 1.6rem;
 		font-weight: bold;
-    border: none; 
+    border: none;
     border-radius: 0.2rem;
     font-size: 0.625rem;
     color: white!important;
@@ -285,12 +286,7 @@
     font-size: 0.9rem;
     line-height: 1.8rem;
   }
-  // .mu-popover{
-  //   max-width: 78%;
-  //   left: 0 !important;
-  //   width: 100% !important;
-  //   min-width: 100% !important;
-  // }
+
   .mu-form-item .mu-input {
     border: 1px solid #CC5522;
     border-radius: 0.2rem;
