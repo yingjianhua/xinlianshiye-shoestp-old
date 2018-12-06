@@ -24,7 +24,7 @@ public class EasyOdrline extends BeanInt<EasyOdrline> {
         IAMGE(SYS.IMG_MULTI__1000,"商品图片"),
         PRODUCTNAME(SYS.MUILTI_LANGUAGE,"商品名称"),
         COLOR(SYS.MUILTI_LANGUAGE,"颜色"),
-        SIZE(SYS.STR__40_NULL,"尺码"),
+        SIZE(SYS.MUILTI_LANGUAGE,"尺码"),
         NUM(SYS.INT,"数量"),
         REMARKS(SYS.REM__200_NULL,"备注"),
         ROW_VERSION(SYS.ROW_VERSION),
@@ -73,7 +73,7 @@ public class EasyOdrline extends BeanInt<EasyOdrline> {
   private String _iamge;	// 商品图片  STR(1000)
   private String _productname;	// 商品名称  JSONOBJECT
   private String _color;	// 颜色  JSONOBJECT
-  private String _size;	// 尺码  STR(40)<null>
+  private String _size;	// 尺码  JSONOBJECT
   private Integer _num;	// 数量  INT
   private String _remarks;	// 备注  STR(200)<null>
   private Short _rowVersion;	// 版本  SHORT
@@ -86,7 +86,7 @@ public class EasyOdrline extends BeanInt<EasyOdrline> {
     _iamge=null;	// 商品图片  STR(1000)
     _productname=null;	// 商品名称  JSONOBJECT
     _color=null;	// 颜色  JSONOBJECT
-    _size=null;	// 尺码  STR(40)
+    _size=null;	// 尺码  JSONOBJECT
     _num=0;	// 数量  INT
     _remarks=null;	// 备注  STR(200)
     _rowVersion=0;	// 版本  SHORT
@@ -181,6 +181,18 @@ public class EasyOdrline extends BeanInt<EasyOdrline> {
   }
   public void setSize(String size){
     _size=size;
+  }
+  public JSONObject gtSize() throws JSONException {
+    return getSize()==null?new JSONObject():new JSONObject(getSize());
+  }
+  public void stSize(JSONObject size){
+    setSize(size==null?null:size.toString());
+  }
+  public String getSize(FldLanguage.Language l) throws JSONException {
+    return gtSize().has(l.name())?gtSize().getString(l.name()):"";
+  }
+  public void setSize(String size, FldLanguage.Language l) throws JSONException {
+    stSize(gtSize().put(l.name(), size));
   }
   public Integer getNum(){
     return _num;

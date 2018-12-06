@@ -1,6 +1,7 @@
 package irille.Dao.EO;
 
 import com.sun.org.apache.bcel.internal.generic.FREM;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import irille.Entity.EO.EasyOdr;
 import irille.Entity.EO.EasyOdr.T;
 import irille.Entity.EO.EasyOdrline;
@@ -12,6 +13,7 @@ import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduIns;
 import irille.pub.svr.Env;
 import irille.shop.pdt.PdtSpec;
+import irille.shop.usr.UsrCart;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrPurchaseLine;
 import irille.view.EO.easyodrView;
@@ -72,55 +74,70 @@ public class EasyOdrDao {
      * @date 2018/12/5 13:44
      * @anthor wilson zhang
      */
-    public void generate0rder(Integer getPurchaseLineid, Integer Purchaseid, Integer supplierid, List<eolineView> list) {
+    public void generate0rder(Integer getPurchaseLineid, Integer Purchaseid, List<easyodrView> list)  throws  Exception{
         UsrPurchaseLine address = null;
         try {
             address = BeanBase.load(UsrPurchaseLine.class, getPurchaseLineid);
         } catch (Exp e) {
             throw LOG.errTran("addressfrom%Please_Select_The_Shipping_Address", "请选择收货地址");
         }
-        try {
-            EasyOdr eo = new EasyOdr();
-            eo.setPurchase(Purchaseid);
-            eo.setSupplier(supplierid);
-            eo.setName(address.getName());
-            eo.setPhone(address.getPhonenumber());
-            JSONObject ja = new JSONObject();
-            ja.put("countryid", address.getCountry());
-            ja.put("regionid", address.getRegion());
-            ja.put("city", address.getCity());
-            ja.put("address", address.getAddress());
-            eo.setAddress(ja.toString());
-            eo.setTime(Env.getTranBeginTime());
-            eo.setCounypd(0);
-            //添加新订单
-            ins.setB(eo).commit();
-            //添加订单号
-            Integer odrnum= buildOrderNum( ins.getB());
-            Integer counti=null;
-            for (int i = 0; i < list.size(); i++) {
-                EasyOdrline eol=new EasyOdrline();
-                eol.setOrderId(odrnum);
-                eol.setSpec(list.get(i).getId());
-                PdtSpec ps=BeanBase.load(PdtSpec.class,list.get(i).getId());
-                eol.setIamge(ps.getPics());
-                eol.setProductname(ps.gtProduct().getName());
-                eol.setColor(ps.gtColor().getName());
-                eol.setSize(ps.gtSize().getName());
-                eol.setNum(list.get(i).getNum());
-                counti+=list.get(i).getNum();
-                eol.setRemarks(list.get(i).getRemarks());
-                lins.setB(eol).commit();
-            }
-            if(null !=counti){
-                ins.getB().setCounypd(counti);
-                ins.getB().upd();
-            }
-        } catch (Exception e) {
-            e.getMessage();
+
+        for (int j = 0; j <list.size() ; j++) {
+
+
+                    EasyOdr eo = new EasyOdr();
+                    eo.setPurchase(Purchaseid);
+                    eo.setName(address.getName());
+                    eo.setPhone(address.getPhonenumber());
+                    eo.setSupplier(list.get(j).getSupplierid());
+                    JSONObject ja = new JSONObject();
+                    ja.put("countryid", address.getCountry());
+                    ja.put("regionid", address.getRegion());
+                    ja.put("city", address.getCity());
+                    ja.put("address", address.getAddress());
+                    eo.setAddress(ja.toString());
+                    eo.setTime(Env.getTranBeginTime());
+                    eo.setCounypd(0);
+                    //添加新订单
+                    ins.setB(eo).commit();
+                    //添加订单号
+                    Integer odrnum= buildOrderNum( ins.getB());
+                    Integer counti=0;
+                    List<eolineView> elvlist= list.get(j).getList();
+                    for (int i = 0; i < elvlist.size(); i++) {
+                        EasyOdrline eol=new EasyOdrline();
+                        eol.setOrderId(odrnum);
+                        eol.setSpec(Integer.valueOf(elvlist.get(i).getId()));
+                        PdtSpec ps=BeanBase.load(PdtSpec.class,elvlist.get(i).getId());
+                        if(eo.getSupplier()==null){
+                            eo.setSupplier(ps.gtProduct().gtSupplier().getPkey());
+                        }
+                        eol.setIamge(ps.getPics());
+                        eol.setProductname(ps.gtProduct().getName());
+                        eol.setColor(ps.gtColor().getName());
+                        eol.setSize(ps.gtSize().getName());
+                        eol.setNum(Integer.valueOf(elvlist.get(i).getNum()));
+                        counti+=Integer.valueOf(elvlist.get(i).getNum());
+                        eol.setRemarks(list.get(j).getRemarks());
+                        try{
+                            eol.ins();
+                        }catch(Exception e){
+                            e.printStackTrace();
+                        }
+                        System.out.println(getPurchaseLineid);
+                        System.out.println(ps.getPkey());
+                        SQL sql=new SQL(){{
+                                    DELETE_FROM(UsrCart.class)
+                                    .WHERE(UsrCart.T.PURCHASE,"=?",Purchaseid)
+                                    .WHERE(UsrCart.T.SPEC,"=?",ps.getPkey());
+                        }};
+                        Query.sql(sql).executeUpdate();
+                    }
+                    if(null !=counti){
+                        ins.getB().setCounypd(counti);
+                        ins.getB().upd();
+                    }
         }
-
-
     }
     private Integer buildOrderNum(EasyOdr order) {
         //设置订单号

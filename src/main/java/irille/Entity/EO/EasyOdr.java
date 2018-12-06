@@ -18,7 +18,7 @@ public class EasyOdr extends BeanInt<EasyOdr> {
     public  enum T  implements IEnumFld {//@formatter:off
         PKEY(TB.crtIntPkey()),
         PURCHASE(UsrPurchase.fldOutKey().setName("用户").setNull()),
-        SUPPLIER(UsrSupplier.fldOutKey().setName("供应商")),
+        SUPPLIER(UsrSupplier.fldOutKey().setName("供应商").setNull()),
         ORDER_NUM(SYS.STR__100_NULL,"订单号"),
         TIME(SYS.DATE_TIME,"下单时间"),
         NAME(SYS.STR__20,"名字"),
@@ -68,7 +68,7 @@ public class EasyOdr extends BeanInt<EasyOdr> {
   //实例变量定义-----------------------------------------
   private Integer _pkey;	// 编号  INT
   private Integer _purchase;	// 用户 <表主键:UsrPurchase>  INT<null>
-  private Integer _supplier;	// 供应商 <表主键:UsrSupplier>  INT
+  private Integer _supplier;	// 供应商 <表主键:UsrSupplier>  INT<null>
   private String _orderNum;	// 订单号  STR(100)<null>
   private Date _time;	// 下单时间  TIME
   private String _name;	// 名字  STR(20)
