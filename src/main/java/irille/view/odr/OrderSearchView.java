@@ -1,8 +1,10 @@
 package irille.view.odr;
 
-import java.util.Date;
+import irille.view.BaseView;
+import lombok.Data;
 
-public class OrderSearchView {
+import java.util.Date;
+public class OrderSearchView  implements BaseView {
 	
 	private String email;
 	private String number;

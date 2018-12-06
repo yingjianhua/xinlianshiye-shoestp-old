@@ -146,12 +146,12 @@
             </div>
             <a href="/home/usr_UsrFavorites_myfavorite" class="fl"><s:text name="Global.My_Favorites"/></a>
         </div>
-        <%--            <div class="fr top_cart top_cart0">
+                    <div class="fr top_cart top_cart0">
                         <div class="fl img">
                             <i class="cart_count">${env.login==null?0:env.login.cartCount}</i>
                         </div>
                         <a href="/home/usr_UsrCart_cartshopping" class="fl cart_inner"><s:text name="Global.Shopping_Cart" /></a>
-                    </div>--%>
+                    </div>
     </div>
 </div>
 <c:if test="${empty supView.imList || fn:length(supView.imList) == 0}">

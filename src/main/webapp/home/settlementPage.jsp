@@ -487,12 +487,13 @@
                                     <!-- 商品列表 之前是table -->
                                         <!-- 单个商品列表 -->
                                         <div class="cart-list">
+											<c:set value="0" var="numbers"/>
                                         	<c:forEach items="${map.suppliers}" var="supplier" varStatus="index">
                                         		<!-- 国家采购点 -->
 	                                            <div class="cart-purchasing-station flex-center">
 	                                                    <div class="checkbox w_one tc"><s:text name="Shop"/>:</div>
 	                                                	${supplier.name}
-	                                                	<input class="supplier" type="hidden" name="odrView[${index.index}].supplier" value="${supplier.id}"/>
+	                                                	<input class="supplier" type="hidden" name="list[${index.index}].supplierid" value="${supplier.id}"/>
 	                                            </div>
 	                                            <div class="cart-container">
 	                                                <!-- 表头 -->
@@ -544,6 +545,7 @@
 			                                                    </div>
 			                                                  </div>
 			                                                  <div class="cart-list-item-detail-info-wrap">
+																  <c:set value="0" var="specNums"/>
 		                                                    	<c:forEach items="${map.colors}" var="color">
 		                                                    		<c:if test="${color.proId == product.id}">
 					                                                    <div class="cart-list-item-detail-info-item flex-start">
@@ -561,10 +563,14 @@
 								                                                        <div class="spec-or-color"><s:text name="Global.Colour"/>:${color.color}</div>
 								                                                        <!-- 同颜色下 不同型号的商品 item-list -->
 								                                                        <div class="color-goods-list">
-								                                                        	<c:forEach items="${map.specs}" var="spec">
+
+								                                                        	<c:forEach items="${map.specs}" var="spec" varStatus="specIndex">
 								                                                        		<c:if test="${spec.colorId == color.id && spec.productId == product.id}">
+																									<%--<input type="hidden" value="${supplier.id}" name="list2[${numbers}].supplierId"/>--%>
+																									<input type="hidden" value="${spec.id}" name="list[${index.index}].list[${specNums}].id"/>
 									                                                        		<div class="color-goods-item flex-center">
 											                                                            <!-- 商品规格 -->
+
 											                                                            <div class="goods-spec">
 											                                                              <s:text name="Global.Size"/>: ${spec.size}
 											                                                            </div>
@@ -574,6 +580,7 @@
 											                                                            </div>
 											                                                            <!-- 商品数量 -->
 											                                                            <div class="goods-num flex-center w_four">
+																											<input type="hidden" value="${spec.qty}" name="list[${index.index}].list[${specNums}].num"/>
 											                                                              ${spec.qty}
 											                                                            </div>
 											                                                            <!-- 单个商品总价 -->
@@ -581,6 +588,8 @@
 											                                                              ${env.currency.symbols} <fmt:formatNumber type="number" maxFractionDigits="2" value="${spec.qty * spec.price}" /></p>
 											                                                            </div>
 											                                                        </div>
+																									<c:set value="${numbers+1}" var="numbers"/>
+																									<c:set value="${specNums+1}" var="specNums"/>
 								                                                        		</c:if>
 								                                                        	</c:forEach>
 								                                                        </div>
@@ -608,7 +617,7 @@
 	                                                    <%--  Remark：
 	                                                     <span>Material description or special requirements</span> --%>
 	                                                     <span style="float: left;"><s:text name="Global.Remarks"/>:</span>
-														    <textarea name="odrView[${index.index}].remarks" id="supRemark_${supplier.id}" data="${supplier.id}" type="text" placeholder="<s:text name='Global.Remarks'/>" style="padding:0 10px;width: 27em;height: 5em;float: left;margin-left: 13px;"></textarea>
+														    <textarea name="list[${index.index}].remarks" id="supRemark_${supplier.id}" data="${supplier.id}" type="text" placeholder="<s:text name='Global.Remarks'/>" style="padding:0 10px;width: 27em;height: 5em;float: left;margin-left: 13px;"></textarea>
 														<div style="clear:both;"></div>
 	                                                 </div>
 	                                                  <!-- 留言 end -->
@@ -622,7 +631,7 @@
 
 	                                                 <div style="clear:both;"></div>
                                                  </div>
-	                                                 <div class="cartBox" id="paymentObj">
+	                                             <%--    <div class="cartBox" id="paymentObj">
 									                    <h2><s:text name="Global.Payment_Method"/></h2>
 									                    <div class="contents payment">
 									                        <h3><s:text name="Global.Please_Select_Mode_Of_Payment"/>:</h3>
@@ -642,9 +651,9 @@
 									                        </select>
 									                        <div class="blank12"></div>
 									                    </div>
-									                    </div>
+									                    </div>--%>
 									                    <!-- 快递公司选择BEGIN -->
-										                <div class="cartBox" id="express">
+										<%--                <div class="cartBox" id="express">
 										                    <h2><s:text name="Global.Delivery_Method"/></h2>
 										                    <div class="contents payment">
 										                        <h3 style="font-size: 14px;font-weight: bold;line-height: 30px;display: block;"><s:text name="Global.Delivery_Method"/>:</h3>
@@ -663,10 +672,10 @@
 										                        </select>
 										                        <div class="blank6"></div>
 										                    </div>
-										                </div>
+										                </div>--%>
 										                <!-- 快递公司选择END -->
 
-                                              			<div>
+                                              <%--			<div>
 											                <div class="NoteBox" style="float: left;margin-top: 0;">
 											                    <h2 style="float: left;display: block;height: 38px;font: 400 16px/38px georgia;color: #990000;zoom: 1;text-indent: 12px;margin: 0 13px 0 0;"><s:text name="Order_Note_Content"/></h2>
 											                    <div class="notes">
@@ -687,16 +696,17 @@
 															    </tbody>
 															</table>
 															<div style="clear:both;"></div>
-														</div>
+														</div>--%>
                                                  <!-- 单个采购点总价格 end -->
                                             </div>
+
                                         	</c:forEach>
 
                                         </div>
                 <div class="CartAmountSum">
-                    <table id="subTotal" cellpadding="0" cellspacing="0" border="0" width="100%">
+<%--                    <table id="subTotal" cellpadding="0" cellspacing="0" border="0" width="100%">
                         <!-- Grand Total -->
-                        <tfoot>
+                       <tfoot>
                             <tr id="cartAmount" style="display: table-row;">
                                 <th width="100%"><s:text name="Global.Total_Price"/>:
                                     <em>${env.currency.symbols}</em>
@@ -718,7 +728,7 @@
                                 </td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table>--%>
                     <fieldset id="submitCart" class="clearfix" style="display: block;">
                             <button type="button" id="orderSubmit" class="fr litb-btn placeOrderBtn"><s:text name="Place_Your_Order"/></button>
                         <p class="clearfix"><s:text name="Global.Every_Order_You_Place_With_Us_Is_Safe_And_Reliable"/></p>
@@ -786,40 +796,40 @@ $(".toSetBillAddress").on("click",function(){
 })
 
 $("#orderSubmit").on("click",function(){
-	var supplier = $(".supplier");
-	for(var i=0;i<supplier.length;i++){
-		var supId = $(supplier[i]).val();
-		var payMethod = $("select[id=payMethod_"+supId+"]").val();
-		var express = $("select[id=express_"+supId+"]").val();
-		 if(payMethod == -1){
-			layer.msg("<s:text name='Global.Please_Select_Mode_Of_Payment'/>",{icon:2,time:3000});
-			return;
-		}
-		if(express == -1){
-			layer.msg("<s:text name='Global.Please_Select_Your_Shipping_Method'/>",{icon:2,time:3000});
-			return;
-		}
-	}
+	<%--var supplier = $(".supplier");--%>
+	<%--for(var i=0;i<supplier.length;i++){--%>
+		<%--var supId = $(supplier[i]).val();--%>
+		<%--var payMethod = $("select[id=payMethod_"+supId+"]").val();--%>
+		<%--var express = $("select[id=express_"+supId+"]").val();--%>
+		 <%--if(payMethod == -1){--%>
+			<%--layer.msg("<s:text name='Global.Please_Select_Mode_Of_Payment'/>",{icon:2,time:3000});--%>
+			<%--return;--%>
+		<%--}--%>
+		<%--if(express == -1){--%>
+			<%--layer.msg("<s:text name='Global.Please_Select_Your_Shipping_Method'/>",{icon:2,time:3000});--%>
+			<%--return;--%>
+		<%--}--%>
+	<%--}--%>
 	var address = $("#PlaceOrderFrom input[name=purchaseLine]").val();
 	if(address == undefined || address == ""){
 		layer.msg(lang_obj.addressfrom.Please_Select_The_Shipping_Address,{icon:2,time:2000});
 		return;
 	}
 	$.ajax({
-		url:'/home/odr_OdrOrder_generateOrder',
+		url:'/home/eo_EasyOdr_generateOrder',
 		type:'post',
 		data:$("#PlaceOrderFrom").serialize(),
 		dataType:'json',
 		success:function(data){
 			if(data.ret == 1){
 				var orderNumbers = data.orderNumbers;
-				layer.msg(lang_obj.addressfrom.Submit_Order_Successfully,{icon:1,time:2000},function(){
+	/*			layer.msg(lang_obj.addressfrom.Submit_Order_Successfully,{icon:1,time:2000},function(){
 					if(orderNumbers.indexOf(",") != -1){
 						window.location.href = "/home/odr_OdrOrder_orders";
 					}else{
 						window.location.href = "/home/odr_OdrOrder_payOrder?orderNumber="+orderNumbers;
 					}
-				})
+				})*/
 			}else{
 				layer.msg(getMessage(data.msg));
 			}
