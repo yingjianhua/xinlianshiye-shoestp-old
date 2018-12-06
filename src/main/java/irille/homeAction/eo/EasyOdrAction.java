@@ -1,14 +1,14 @@
 package irille.homeAction.eo;
 
 import com.google.inject.Inject;
-import irille.Entity.EO.EasyOdr;
+import irille.shop.easy.EasyOdr;
 import irille.Service.Eo.EasyOdrService;
 import irille.homeAction.HomeAction;
 import irille.view.EO.easyodrView;
 import irille.view.EO.eolineView;
 import lombok.Getter;
 import lombok.Setter;
-import java.io.IOException;
+
 import java.util.List;
 @Getter
 @Setter

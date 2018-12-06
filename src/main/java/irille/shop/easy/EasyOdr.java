@@ -1,4 +1,4 @@
-package irille.Entity.EO;
+package irille.shop.easy;
 
 import irille.pub.bean.BeanInt;
 import irille.pub.svr.Env;

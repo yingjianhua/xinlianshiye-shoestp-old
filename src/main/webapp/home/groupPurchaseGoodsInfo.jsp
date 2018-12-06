@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!-- saved from url=(0104)https://www.shoestp.com/se-black-women-new-style-ankle-boots-with-buckle-fashion-casual-boots_p6108.html -->
@@ -44,7 +44,7 @@
 			<link href="./static/css/module_4.css" rel="stylesheet" type="text/css">
 			<div id="location"><s:text name="Global.Your_Location"/>:
 				<a href="/home/usr_UsrSupplier_gtSupIndex?pkey=${supView.pkey}"><s:text name="Global.Home"/></a> &gt;
-				
+
 				<c:forEach begin="1" end="${fn:length(pdtCatList)}" varStatus="index">
 					<c:if test="${!index.last}">
 						<a href="">${pdtCatList[fn:length(pdtCatList) - index.index].name}</a> &gt;
@@ -91,7 +91,7 @@
 															  		</c:forEach>
 											  	</ul>
 											</c:forEach>
-										
+
 									</div>
 									<a href="javascript:void(0);" hidefocus="true" class="btn top prev"></a>
 									<a href="javascript:void(0);" hidefocus="true" class="btn bottom next"></a>
@@ -133,11 +133,11 @@
 									<c:if test="${groupPurchase.status == 4}">
 										<s:text name="theEventIsOver"/>
 									</c:if>
-									
-									
-									
-									
-									
+
+
+
+
+
 								</div>
 								<div style="font-size: 20px;font-weight: bold;">
 									<span id="days"></span>
@@ -169,7 +169,7 @@
 									<span class="attr_sure_choice">Please select the information you want</span>
 									<span class="attr_sure_close">X</span>
 								</div>
-							
+
 								<li class="attr_show" name="Color">
 									<h5><s:text name="Global.Colour"/>:</h5>
 									<c:forEach items="${colorShow}" var="color">
@@ -186,7 +186,7 @@
 												${color.key.name}
 											</a>
 										</c:if>
-										</span>										
+										</span>
 									</c:forEach>
 								</li>
 							<%--	<li style="font-size: 12px;">
@@ -201,8 +201,8 @@
 													<c:set var="tally" value="-1"></c:set>
 													<c:forEach items="${colorToSpec}" var="specs">
 														<c:forEach items="${specs.value}" var="spec">
-															<c:set var="tally" value="${tally+1}" />  
-															
+															<c:set var="tally" value="${tally+1}" />
+
 															<li binding="${specs.key.pkey}" style="display:none;" class="spec">
 																<input type="hidden" value="${supplier.pkey}" name="specList[${tally}].supplier"/>
 																<input type="hidden" value="${spec.id}" name="specList[${tally}].spec"/>
@@ -218,7 +218,7 @@
 														</c:forEach>
 													</c:forEach>
 												</ul>
-											
+
 										</div>
 										<div style="cursor: pointer" class="click_list">
 												<i class="arrow_down_black"></i>
@@ -226,9 +226,9 @@
 							</div>
 							<!-- 展开尺寸表 和 闭合尺寸表 -->
 							<script>
-									
+
 								</script>
-						
+
 									<!-- <div class="widget prod_info_moq">
 											<label for="moq">MOQ: 2000</label>
 										</div>
@@ -245,9 +245,9 @@
 									<input type="hidden" value="${product.pkey}" id="productId"/>
 									<input type="button" value="<s:text name='inq'/>"  style="display:inline-block; background:#333;" class="add_btn buynow"
 									    id="add_to_inquiry">
-									 
-						<%--			<input type="button" onclick="toAddCart(this)" data="${product.pkey}" value="<s:text name='Global.Add_To_Cart'/>" class="add_btn addtocart AddtoCartBgColor" id="addtocart" style="display: inline-block;">
-									<a onclick="addThisToFavorites(${product.pkey})" id="addFavorite" class="<c:if test="${favorite == null || favorite == ''}">fav_new_btn</c:if><c:if test="${favorite != null}">fav_ed_btn</c:if>" >${product.favoriteCount}</a>--%>
+
+							<input type="button" onclick="toAddCart(this)" data="${product.pkey}" value="<s:text name='Global.Add_To_Cart'/>" class="add_btn addtocart AddtoCartBgColor" id="addtocart" style="display: inline-block;">
+									<a onclick="addThisToFavorites(${product.pkey})" id="addFavorite" class="<c:if test="${favorite == null || favorite == ''}">fav_new_btn</c:if><c:if test="${favorite != null}">fav_ed_btn</c:if>" >${product.favoriteCount}</a>
 									<!-- <div style="position:absolute; top:-8px; right:-93px;">
 										<a href="javascript:void(0);">
 											<img src="./static/images/ico/norton.png">
@@ -264,7 +264,7 @@
 					</div>
 				</div>
 				<div class="clearfix">
-				
+
 					<!-- 商品推荐 -->
 <%--					<div class="maylike_new">
 						<h3 class="b_title"><s:text name="Global.You_May_Like"/></h3>
@@ -290,7 +290,7 @@
 									</dd>
 								</dl>
 							</c:forEach>
-						
+
 						</div>
 					</div>--%>
 					<div class="prod_desc_left fl" style="width:100%;">
@@ -308,8 +308,8 @@
 							</ul>
 							<div class="pd_content editor_txt">
 								<div class="desc">
-								
-								
+
+
 									<!-- 商品属性 -->
 									<div class="item_specifics">
 										<div class="title"><s:text name="Global.Product_Specifications"/></div>
@@ -321,20 +321,20 @@
 														${attr.value.name}</span>
 												</div>
 											</c:forEach>
-										
+
 										</div>
 									</div>
 									<div class="clean"></div>
-									
-									
+
+
 									<!-- 商品详情 -->
-									
+
 									${product.description}
 								</div>
-								
-								
+
+
 								<!-- <div class="desc hide">&nbsp;&nbsp;
-								
+
 									供应商基本信息
 									<strong>Company basic information:</strong>
 									<table border="1" cellpadding="0" cellspacing="0" style="width: 100%;">
@@ -471,7 +471,7 @@
 						</div>
 						<div class="average_rating">
 							<h6><s:text name="Global.Average_Evaluation"/>:</h6>
-							<p>	
+							<p>
 								<c:set value="${product.defaultReviewRating}" var="review"/>
 								<c:choose>
 									<c:when test="${review==0}">
@@ -506,7 +506,7 @@
 													</s:text>
 								<!-- <a class="SignInButton">click here</a> to login</div> -->
 							<div class="blank12"></div>
-	
+
 							<div id="turn_page"></div>
 							<div class="blank12"></div>
 						</div>
@@ -519,15 +519,15 @@
 		</div>
 		</div>
 		<%@ include file="/home/template/new-foot.jsp" %>
-		
+
 
 		<script type="text/javascript" src="./static/js/module.js"></script>
 		<script type="text/javascript" src="./static/js/review.js"></script>
 		<script type="text/javascript" src="./static/js/lightbox.min.js"></script>
 		<%-- <script type="text/javascript" src="./static/js/addthis_widget.js"></script> --%>
-		
+
 	</body>
-	
+
 	<script tyle="text/javascript">
 		var time = '${groupPurchase.endTime}';
 		var startTime = '${groupPurchase.startTime}';
@@ -541,20 +541,20 @@
 　　　　　　　　　　event: 'scroll',
 　　　　　　　　　　failure_limit: 5　　　　　　　　
 			});
-			
-			var img = $(".list li:first .thumbnail img").attr("data-original");	
-			$(".list li:first").addClass("current");	
+
+			var img = $(".list li:first .thumbnail img").attr("data-original");
+			$(".list li:first").addClass("current");
 			$(".big_pic").attr("href",img);
 			$(".big_pic").find(".normal").attr("src",img);
 			//$(".imgView:first").click();
 			$(".imgView:first").addClass("selected");
 			var bingData = $(".imgView:first").attr("binding");
 			$("li[binding="+bingData+"]").show();
-			
+
 			var endTime = new Date(time);
 			var startTime2 = new Date(startTime);
 			var nowTime = new Date();
-			//时间戳相减除以1000 = 秒    
+			//时间戳相减除以1000 = 秒
 			var differenceTime;
 			if(actState == 1){
 				differenceTime = startTime2 - nowTime;
@@ -589,9 +589,9 @@
 				});
 				}
 			)
-			
+
 		}
-		
+
 		function countDown(day,hour,minute,second){
 			setInterval(function(){
 				second--;
@@ -613,7 +613,7 @@
 				$("#time").text(getZero(hour)+":"+getZero(minute)+":"+getZero(second));
 			},1000);
 		}
-		
+
 		function getZero(str){
 			if(str.toString().length == 1){
 				return "0" + str;
@@ -621,14 +621,14 @@
 				return str;
 			}
 		}
-	
+
 		$(".thumbnail").on("click",function(){
 			var img = $(this).children("img").attr("src");
 			$(".big_pic").attr("href",img);
 			$(".big_pic").children("img").attr("src",img);
 			$(".detail_img").attr("src",img);
 		})
-		
+
 		$(".imgView").on("click",function(){
 			var binding = $(this).attr("binding");
 			$(".spec").hide();
@@ -643,10 +643,10 @@
 			$("ul[binding="+binding+"]").show();
 			var img = $(this).find("img").attr("data-original");
 			$(".normal").attr("src",img);
-			
+
 		})
-		
-		
+
+
 		$(".reduce").on("click",function(){
 			var countInput = $(this).siblings("input");
 			var count = $(this).siblings("input").val();
@@ -657,22 +657,22 @@
 			}
 			$(countInput).val(count);
 		})
-		
-		
+
+
 		$(".add").on("click",function(){
 			var countInput = $(this).siblings("input");
 			var count = $(this).siblings("input").val();
 			count++;
 			$(countInput).val(count);
 		})
-		
+
 		$(".total").on("keyup",function(){
 			var price = $(this).parent().siblings("span[name$=amt]").text();
 			var count = $(this).val();
 			var totalAmt = Number(price).toFixed(2) * parseInt(Number(count));
 			$(this).parent().siblings("input[name$=amtTotal]").val(totalAmt);
 		});
-		
+
 		function toAddCart(btn){
 			if(state == 1){
 				layer.msg("<s:text name='product.sold_time_e'/>",{icon:2,time:1500});
@@ -686,7 +686,7 @@
 					break;
 				}
 			}
-			var pdtParam ; 
+			var pdtParam ;
 			if(flag){
 				pdtParam = $("#goods_form").serialize()
 			}else{
@@ -708,9 +708,9 @@
 						layer.msg(getMessage(data.msg),{time:3000});
 					}
 				}
-			})   
+			})
 		}
-		
+
 		function addThisToFavorites(data){
 	  		$.ajax({
 	  			url:'/home/usr_UsrFavorites_addFavorite',
@@ -719,7 +719,7 @@
 	  			dataType:'json',
 	  			success:function(data){
 	  				if(data.success == true || data.ret == 1){
-	  					
+
 	  					var count = $("#addFavorite").text();
 	  					if(count < data.number){
 	  						$("#addFavorite").addClass("fav_ed_btn");
@@ -737,8 +737,8 @@
 	  			}
 	  		})
 	  	}
-		
-		
-		
+
+
+
 	</script>
 </html>

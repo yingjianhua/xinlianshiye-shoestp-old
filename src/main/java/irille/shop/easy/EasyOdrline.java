@@ -1,19 +1,13 @@
-package irille.Entity.EO;
+package irille.shop.easy;
 
 import irille.pub.bean.BeanInt;
-import irille.pub.svr.Env;
 import irille.pub.tb.Fld;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
-import irille.pub.tb.Tb.Index;
 import irille.shop.pdt.PdtSpec;
-import irille.shop.usr.UsrPurchase;
-import irille.shop.usr.UsrSupplier;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Date;
 
 public class EasyOdrline extends BeanInt<EasyOdrline> {
     public static final Tb<?> TB =  new Tb(EasyOdrline.class,"简单订单管理详情").setAutoIncrement().addActIUDL();

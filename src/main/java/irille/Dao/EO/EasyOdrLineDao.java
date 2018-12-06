@@ -2,7 +2,7 @@ package irille.Dao.EO;
 
 
 
-import irille.Entity.EO.EasyOdrline;
+import irille.shop.easy.EasyOdrline;
 import irille.pub.idu.IduIns;
 
 public class EasyOdrLineDao {

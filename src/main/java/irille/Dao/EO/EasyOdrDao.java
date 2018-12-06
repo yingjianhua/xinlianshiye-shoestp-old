@@ -1,10 +1,8 @@
 package irille.Dao.EO;
 
-import com.sun.org.apache.bcel.internal.generic.FREM;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
-import irille.Entity.EO.EasyOdr;
-import irille.Entity.EO.EasyOdr.T;
-import irille.Entity.EO.EasyOdrline;
+import irille.shop.easy.EasyOdr;
+import irille.shop.easy.EasyOdr.T;
+import irille.shop.easy.EasyOdrline;
 import irille.pub.Exp;
 import irille.pub.LogMessage;
 import irille.pub.bean.BeanBase;
