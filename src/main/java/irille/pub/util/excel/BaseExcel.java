@@ -203,6 +203,16 @@ public class BaseExcel {
         return null;
     }
 
+
+    public Row addRow(Sheet sheet, Integer rowIndex) {
+        Row row = null;
+        if (sheet.getRow(rowIndex) != null) {
+            sheet.shiftRows(rowIndex, sheet.getRow(rowIndex).getRowNum() + 1, 1, true, false);
+        }
+        row = sheet.createRow(rowIndex);
+        return row;
+    }
+
     private void witerCellData(CellData cellData) {
         Row row = getRow(cellData.getRow());
         Cell cell = getCell(row, cellData.getCol());
@@ -292,7 +302,7 @@ public class BaseExcel {
 
 
     public Map<String, PictureData> getPic() {
-        Map<String, PictureData> sheetIndexPicMap = new HashMap ();
+        Map<String, PictureData> sheetIndexPicMap = new HashMap();
         if (workbook instanceof XSSFWorkbook) {
             for (POIXMLDocumentPart dr : ((XSSFSheet) activeSheet).getRelations()) {
                 if (dr instanceof XSSFDrawing) {
@@ -331,7 +341,7 @@ public class BaseExcel {
     }
 
     public void saveTo(String filePath) {
-        saveTo(new File(filePath + suffix));
+        saveTo(new File(filePath + "." + suffix));
     }
 
     public void saveTo(File file) {

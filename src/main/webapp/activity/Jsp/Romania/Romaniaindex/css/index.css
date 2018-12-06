@@ -324,6 +324,7 @@ a, a:link, a:visited, a:hover, a:active {
 
 .banner_01 {
   color: #fff;
+  min-height: 500px;
   background: #4d61ac url("../images/banner_01_bg.png") no-repeat center/cover; }
   .banner_01 .txt-box {
     padding: 120px 0 240px; }
@@ -335,12 +336,27 @@ a, a:link, a:visited, a:hover, a:active {
     margin-bottom: 65px; }
   .banner_01 .h5 {
     line-height: 1.5;
+    margin-top: 10px;
     opacity: 0.9; }
   .banner_01 .flag-pic {
     position: absolute;
     left: -153px;
     top: 68px;
     z-index: 5; }
+
+.banner_01.banner_01_ro {
+  background-image: url("../images/banner_01_bg_ro.png"); }
+  .banner_01.banner_01_ro .h3 {
+    margin-top: 20px;
+    margin-bottom: 30px; }
+
+.banner_01.banner_01_zh {
+  background-image: url("../images/banner_01_bg_zh.png"); }
+  .banner_01.banner_01_zh .h3 {
+    margin-top: -5px;
+    margin-bottom: 15px; }
+  .banner_01.banner_01_zh .btn-blue-yellow {
+    color: #ffd400; }
 
 .banner_02 {
   margin-top: -190px; }

@@ -10,7 +10,6 @@ import lombok.Setter;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Date;
 
 /**
  * 罗马尼亚活动页临时action
@@ -24,7 +23,8 @@ public class RomaniaAction extends HomeAction {
 
     public String execute() {
         if (isMobile()) {
-            setResult("../activity/Jsp/m/Romaniaindex/order-meeting-en.jsp");
+
+            setResult("../activity/Jsp/m/Romania/index/order-meeting-en.jsp");
             return HomeAction.TRENDS;
         }
         setResult("../activity/Jsp/Romania/Romaniaindex/order-meeting-en.jsp");
@@ -71,7 +71,4 @@ public class RomaniaAction extends HomeAction {
         activityService.generateData();
     }
 
-    public void test2() throws IOException {
-        write(activityService.getPkCompetitionData(new Date(1543635618), new Date(), 23));
-    }
 }

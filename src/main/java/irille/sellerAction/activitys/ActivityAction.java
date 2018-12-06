@@ -1,6 +1,11 @@
 package irille.sellerAction.activitys;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import irille.Dao.Old.Activity.Romania.SupGoogleViewDelDAO;
+import irille.Dao.Old.Activity.Romania.SupGoogleViewInsDAO;
+import irille.Dao.Old.Activity.Romania.SupGoogleViewUpdDAO;
 import irille.Entity.Activity.ActivityInfo;
+import irille.Entity.Activity.SupGoogleView;
 import irille.Service.Activity.IActivityService;
 import irille.Service.Manage.Activity.IActivitySignInInfoManageService;
 import irille.sellerAction.SellerAction;
@@ -11,6 +16,8 @@ import lombok.Setter;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -25,7 +32,18 @@ public class ActivityAction extends SellerAction<ActivityInfo> implements IActiv
 
 
     @Inject
+    private ObjectMapper objectMapper;
+    @Inject
     private IActivityService activityService;
+
+    @Inject
+    private SupGoogleViewInsDAO supGoogleViewDAO;
+
+    @Inject
+    private SupGoogleViewDelDAO supGoogleViewDelDAO;
+
+    @Inject
+    private SupGoogleViewUpdDAO supGoogleViewUpdDAO;
 
 
     @Getter
@@ -67,4 +85,28 @@ public class ActivityAction extends SellerAction<ActivityInfo> implements IActiv
         write(activityService.getPkCompetitionData(startDate, endDate, getSupplier().getPkey()));
     }
 
+
+    public void saveGoogleViewId() throws IOException {
+        Map map = objectMapper.readValue(getJsonBody(), HashMap.class);
+        SupGoogleView supGoogleView = null;
+        try {
+            supGoogleView = SupGoogleView.loadUniqueSup_id(false, getSupplier().getPkey());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (supGoogleView == null) {
+            supGoogleView = new SupGoogleView();
+            supGoogleView.setViewid(String.valueOf(map.get("data")));
+            supGoogleView.setSupid(getSupplier().getPkey());
+            supGoogleViewDAO.setB(supGoogleView).commit();
+        } else {
+            supGoogleView.setViewid(String.valueOf(map.get("data")));
+            if (supGoogleView.getViewid().length() < 1) {
+                supGoogleViewDelDAO.setB(supGoogleView).commit();
+            } else {
+                supGoogleViewUpdDAO.setB(supGoogleView).commit();
+            }
+        }
+        writeErr(1, null);
+    }
 }

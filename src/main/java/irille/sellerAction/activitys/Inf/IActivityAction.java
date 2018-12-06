@@ -16,4 +16,9 @@ import java.io.IOException;
 public interface IActivityAction extends ISellerAction {
     @RequestMapping(alias = "获取Pk大赛数据", sort = 1)
     void getPkData() throws IOException;
+
+    @RequestMapping(alias = "保存GoogleView", sort = 2)
+    void saveGoogleViewId() throws IOException;
+
+
 }

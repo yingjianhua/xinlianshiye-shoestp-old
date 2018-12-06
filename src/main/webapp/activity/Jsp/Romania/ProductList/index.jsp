@@ -24,6 +24,20 @@
     <script src="/activity/Jsp/Romania/ProductList/js/axios.min.js"></script>
     <script src="/activity/Jsp/Romania/ProductList/js/qs.js"></script>
     <style>
+
+        .formBtn {
+            background-color: #be1a39;
+            color: #ffffff;
+            position: absolute;
+            right: 7%;
+            bottom: 15%;
+            cursor: pointer;
+            font-size: 20px;
+            padding: 0 10px;
+            line-height: 35px;
+            border-radius: 5px;
+        }
+
         .el-tree-node__content {
             height: 63px;
             border-bottom: 1px solid #e8e8e8;
@@ -71,6 +85,12 @@
         }
 
         @media screen and (max-width: 1200px) and (min-width: 980px) {
+            .formBtn {
+                right: 6%;
+                font-size: 18px;
+                line-height: 30px;
+            }
+
             .el-tree-node__label {
                 font-size: 12px;
             }
@@ -95,6 +115,12 @@
         }
 
         @media screen and (max-width: 980px) {
+            .formBtn {
+                right: 6%;
+                font-size: 16px;
+                line-height: 26px;
+            }
+
             .el-tree-node__content > .el-tree-node__expand-icon {
                 padding: 0;
                 font-size: 20px;
@@ -117,6 +143,132 @@
                 padding-left: 20px;
             }
         }
+
+        .modal-wrap {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 999;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-wrap .modal-inner-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            width: 380px;
+            padding: 30px 30px 20px;
+            border-radius: 6px;
+            background: #eee;
+        }
+
+        .modal-wrap .btn-close {
+            position: absolute;
+            right: 0;
+            top: 0;
+            -webkit-transform: translate3d(50%, -50%, 0);
+            transform: translate3d(50%, -50%, 0);
+            width: 34px;
+            cursor: pointer;
+        }
+
+        .modal-wrap .form-title {
+            line-height: 26px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .modal-wrap .el-form-item--small.el-form-item {
+            margin-bottom: 0;
+        }
+
+        .modal-wrap .el-select {
+            width: 100%;
+        }
+
+        .modal-wrap .el-form-item--small .el-form-item__label {
+            line-height: 30px;
+            padding-top: 10px;
+            padding-bottom: 0;
+            color: #525252;
+            font-size: 18px;
+        }
+
+        .modal-wrap .required-label .el-form-item__label:after {
+            content: '*';
+            position: relative;
+            top: 4px;
+            color: #f56c6c;
+            margin-left: 4px;
+        }
+
+        .modal-wrap .el-input__inner, .modal-wrap .el-input__inner:hover, .modal-wrap .el-select:hover .el-input__inner, .modal-wrap .el-textarea__inner, .modal-wrap .el-textarea__inner:hover {
+            border: 1px solid #f19149;
+        }
+
+        .modal-wrap .el-button.form-button {
+            line-height: 44px;
+            padding: 0 60px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            background-color: #e73147;
+            border-color: #e73147;
+            border-radius: 10px;
+            font-size: 20px;
+        }
+
+        .modal-wrap .tips {
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .modal-wrap .model-confirm {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index: 9;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            min-width: 300px;
+            overflow: hidden;
+            border-radius: 6px;
+            color: #b4b4b4;
+            background: #fff;
+        }
+
+        .modal-wrap .model-confirm .close-wrap {
+            padding: 10px 10px 0 0;
+            text-align: right;
+            cursor: pointer;
+        }
+
+        .modal-wrap .model-confirm .model-confirm-content {
+            padding: 15px 40px 40px;
+            font-size: 20px;
+        }
+
+        .modal-wrap .model-confirm .model-confirm-content .icon {
+            width: 60px;
+            height: 60px;
+            margin-right: 12px;
+            border-radius: 50%;
+        }
+
+        .modal-wrap .model-confirm .model-confirm-footer {
+            height: 50px;
+            line-height: 50px;
+            font-size: 24px;
+            text-align: center;
+            cursor: pointer;
+            color: #fff;
+            background: #51ca98;
+        }
+
     </style>
     <link href="/home/static/css/global.css" rel="stylesheet" type="text/css">
     <link href="/home/static/css/global(1).css" rel="stylesheet" type="text/css">
@@ -138,8 +290,19 @@
 <jsp:include page="../../../../home/template/web-top.jsp"></jsp:include>
 
 <div id="app">
-    <div style="background: #090816;text-align: center;">
-        <img class="maxW minW" src="/activity/Jsp/Romania/ProductList/images/top-bg.jpg" alt="">
+    <div style="text-align: center;margin: 0 auto;position: relative" class="maxW">
+        <img class="minW" :src="_banner" :alt="_alt">
+        <div class="formBtn" @click="getGift">
+            <template v-if="lang == 'ro'">
+                Obțineți Mostre Gratuite Acum
+            </template>
+            <template v-else-if="lang == 'zh_CN'">
+                立即获得免费样品
+            </template>
+            <template v-else>
+                Request Now
+            </template>
+        </div>
     </div>
     <div style="background: #ffffff;text-align: center;">
         <!-- 内容容器 -->
@@ -180,12 +343,208 @@
             </div>
         </div>
     </div>
+
+
+    <!-- form弹框 -->
+    <transition name="el-fade-in-linear" v-cloak>
+        <div class="modal-wrap" v-show="isFormShow || isTipDialogShow" @mousewheel.prevent>
+            <transition name="el-fade-in-linear">
+                <div class="modal-inner-box" v-show="isFormShow">
+                    <img src="/activity/Jsp/Romania/ProductList/images/close-black.png" alt="button to close the form"
+                         class="btn-close"
+                         @click="isFormShow = false">
+                    <div class="form-title" v-if="lang == 'ro'">
+                        2018 MOSTRELOR DE
+                        <br>
+                        PANTOFI OFFLINE,ROMANIA
+                    </div>
+                    <div class="form-title" v-else-if="lang == 'zh_CN'">
+                        2018年
+                        <br>
+                        罗马尼亚线下鞋类采购会
+                    </div>
+                    <div class="form-title" v-else>
+                        2018 ROMANIAN
+                        <br>
+                        OFFLINE SHOES PURCHASING
+                    </div>
+                    <el-form ref="form" :model="form" label-width="80px" label-position="top" size="small">
+                        <el-form-item label="A lua legatura:" class="required-label" v-if="lang == 'ro'">
+                            <el-input v-model="form.name" placeholder="lasă - ţi numele"></el-input>
+                        </el-form-item>
+                        <el-form-item label="联系人:" class="required-label" v-else-if="lang == 'zh_CN'">
+                            <el-input v-model="form.name" placeholder="名字"></el-input>
+                        </el-form-item>
+                        <el-form-item label="Contact:" class="required-label" v-else>
+                            <el-input v-model="form.name" placeholder="Please input your name"></el-input>
+                        </el-form-item>
+
+
+                        <el-form-item label="Statul" class="required-label" v-if="lang == 'ro'">
+                            <el-select v-model="form.country">
+                                <el-option value="-1" label="Te rog alege ţara ta"></el-option>
+                                <el-option v-for="country in countryList" :key="country.id" :label="country.name"
+                                           :value="country.id"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="国家" class="required-label" v-else-if="lang == 'zh_CN'">
+                            <el-select v-model="form.country">
+                                <el-option value="-1" label="请选择您所在的国家"></el-option>
+                                <el-option v-for="country in countryList" :key="country.id" :label="country.name"
+                                           :value="country.id"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="Country" class="required-label" v-else>
+                            <el-select v-model="form.country">
+                                <el-option value="-1" label="Please select your country"></el-option>
+                                <el-option v-for="country in countryList" :key="country.id" :label="country.name"
+                                           :value="country.id"></el-option>
+                            </el-select>
+                        </el-form-item>
+
+
+                        <el-form-item label="Telefon:" class="required-label" v-if="lang == 'ro'">
+                            <el-input v-model="form.tel"
+                                      placeholder="vă rog introduceţi numărul de telefon."></el-input>
+                        </el-form-item>
+                        <el-form-item label="电话:" class="required-label" v-else-if="lang == 'zh_CN'">
+                            <el-input v-model="form.tel" placeholder="请输入您的电话号码"></el-input>
+                        </el-form-item>
+                        <el-form-item label="Telephone:" class="required-label" v-else>
+                            <el-input v-model="form.tel" placeholder="Please input your telephone number."></el-input>
+                        </el-form-item>
+
+
+                        <el-form-item label="Email:" class="required-label" v-if="lang == 'ro'">
+                            <el-input v-model="form.email" placeholder="te rog intră în cutia ta poştală"></el-input>
+                        </el-form-item>
+                        <el-form-item label="电子邮件:" class="required-label" v-else-if="lang == 'zh_CN'">
+                            <el-input v-model="form.email" placeholder="请输入您的邮箱"></el-input>
+                        </el-form-item>
+                        <el-form-item label="Email:" class="required-label" v-else>
+                            <el-input v-model="form.email" placeholder="Please input your E-mail."></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="Anchetă:" v-if="lang == 'ro'">
+                            <el-input type="textarea" v-model="form.inquiry"
+                                      placeholder="vă rog să introduceţi informaţii"></el-input>
+                        </el-form-item>
+                        <el-form-item label="需求:" v-else-if="lang == 'zh_CN'">
+                            <el-input type="textarea" v-model="form.inquiry" placeholder="请输入您的需求信息"></el-input>
+                        </el-form-item>
+                        <el-form-item label="Inquiry:" v-else>
+                            <el-input type="textarea" v-model="form.inquiry"
+                                      placeholder="Please input enquiry information."></el-input>
+                        </el-form-item>
+
+
+                        <div class="tc">
+                            <el-button type="danger form-button" @click="formSubmit">
+                                <template v-if="lang == 'ro'">A depune</template>
+                                <template v-else-if="lang == 'zh_CN'">提交</template>
+                                <template v-else>Submit</template>
+                            </el-button>
+                        </div>
+
+                        <div class="tips" v-if="lang == 'ro'">
+                            Spuneți-ne ce vreți, vă vom răspunde cât mai curând posibil!
+                        </div>
+                        <div class="tips" v-else-if="lang == 'zh_CN'">
+                            填写并发送表格，您将在
+                            <br>
+                            罗马尼亚展览室获得一份神秘的礼物！
+                            <br>
+                            或者您可以在备注栏填写您的需求，
+                            <br>
+                            我们的工作人员将在第一时间与您联系！
+                            <br>
+                            感谢您的光临，我们将为您
+                            <br>
+                            提供最好的服务！
+                        </div>
+                        <div class="tips" v-else>
+                            Tell us what you want,
+                            <br/>we'll reply you as soon as possible!
+                        </div>
+                    </el-form>
+                </div>
+            </transition>
+
+            <!-- 提示弹窗 -->
+            <transition name="el-zoom-in-center">
+                <div class="model-confirm" v-show="isTipDialogShow">
+                    <div class="close-wrap">
+                        <img src="/activity/Jsp/Romania/ProductList/images/close-red.png" alt="close" class="close"
+                             @click="isTipDialogShow=false"
+                             style="width:auto">
+                    </div>
+                    <div class="model-confirm-content flex"
+                         style="-webkit-box-pack: center;-ms-flex-pack: center;justify-content: center;">
+                        <img src="/activity/Jsp/Romania/ProductList/images/right-red.png" alt="right" class="icon">
+                        <div>
+                            <template v-if="lang == 'ro'">A depune<br>Cu succes！</template>
+                            <template v-else-if="lang == 'zh_CN'">提交成功</template>
+                            <template v-else>Submit <br>Successfully！</template>
+                        </div>
+                    </div>
+                    <div class="model-confirm-footer" @click="isTipDialogShow = false">
+                        <template v-if="lang == 'ro'">A determina</template>
+                        <template v-else-if="lang == 'zh_CN'">确定</template>
+                        <template v-else>Determine</template>
+                    </div>
+                </div>
+            </transition>
+        </div>
+    </transition>
+
 </div>
 <style>
     #web_top .top_mem {
         line-height: 25px;
     }
 </style>
+
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'AW-783435725');
+    gtag('config', 'UA-127715615-6')
+
+</script>
+<script>
+    function gtag_report_conversion(url) {
+        var callback = function () {
+            if (typeof(url) != 'undefined') {
+                window.location = url;
+            }
+        };
+        gtag('event', 'conversion', {
+            'send_to': 'AW-783435725/2sU4CMb_io8BEM2PyfUC',
+            'event_callback': callback
+        });
+        return false;
+    }
+</script>
+<script>
+    function gtag_report_conversionGoogle(url) {
+        var callback = function () {
+            if (typeof(url) != 'undefined') {
+                window.location = url;
+            }
+        };
+        gtag('event', 'conversion', {
+            'send_to': 'AW-783435725/gYQ7CJq0upABEM2PyfUC',
+            'event_callback': callback
+        });
+        return false;
+    }
+</script>
 <script>
     function carWindow(data, msg) {
         $('#addtocart_button').attr('disabled', false);
@@ -218,7 +577,8 @@
         global_obj.div_mask();
 
     }
-$('html').on('click', '#choose_close, #div_mask, #exback_button', function () {
+
+    $('html').on('click', '#choose_close, #div_mask, #exback_button', function () {
         if ($('#shipping_cost_choose').length) {
             $('#shipping_cost_choose').remove();
             global_obj.div_mask(1);
@@ -240,8 +600,117 @@ $('html').on('click', '#choose_close, #div_mask, #exback_button', function () {
             goodsList: [], // 商品列表
             categoryList: [], // 分类列表
             productId: null, //获取到的询盘id
+            bannerType: 1, // 显示对应广告图  1男士 2女士 3儿童
+            lang: stpshop_config.lang, // 给对应语言赋值
+            bannerImage: {
+                "en": {
+                    "1": "/activity/Jsp/Romania/ProductList/images/enMenBanner.jpg",
+                    "2": "/activity/Jsp/Romania/ProductList/images/enWomenBanner.png",
+                    "3": "/activity/Jsp/Romania/ProductList/images/enChildrenBanner.png"
+                }, "ro": {
+                    "1": "/activity/Jsp/Romania/ProductList/images/roMenBanner.png",
+                    "2": "/activity/Jsp/Romania/ProductList/images/roWomenBanner.png",
+                    "3": "/activity/Jsp/Romania/ProductList/images/roChildrenBanner.png"
+                }, "zh_CN": {
+                    "1": "/activity/Jsp/Romania/ProductList/images/zhMenBanner.png",
+                    "2": "/activity/Jsp/Romania/ProductList/images/zhWomenBanner.png",
+                    "3": "/activity/Jsp/Romania/ProductList/images/zhChildrenBanner.png"
+                }
+            }, bannerAlt: {
+                "en": "ROMANIAN OFFLINE SHOES PURCHASING",
+                "ro": "ADUNARE DE APRECIERE A MOSTRELORDE PANTOFI OFFLINE,ROMANIA",
+                "zh_CN": "罗马尼亚线下订购会"
+            }, isFormShow: false, //是否显示弹窗
+            isTipDialogShow: false, //是否显示提示弹窗
+            countryList: [], //国家列表
+            form: {
+                country: "-1"
+            }, //form提交的内容
         },
         methods: {
+// 点击获取样品 - 弹出form框
+            getGift() {
+                gtag_report_conversionGoogle()
+                this.isFormShow = true;
+            },
+
+            formSubmit() {
+                if (!this.form.name || this.form.name == "") {
+                    if (this.lang == 'ro') {
+                        this.$message.error('Introduceți numele dvs.');
+                    } else if (this.lang == 'zh_CN') {
+                        this.$message.error('姓名不可为空，请重新填写');
+                    } else {
+                        this.$message.error('Names must not be empty.');
+                    }
+                    return;
+                } else if (!this.form.country || this.form.country == -1) {
+                    if (this.lang == 'ro') {
+                        this.$message.error('Selectați țara dvs.');
+                    } else if (this.lang == 'zh_CN') {
+                        this.$message.error('暂未选择国家，请选择');
+                    } else {
+                        this.$message.error('Please choose your country');
+                    }
+                    return;
+                } else if (!this.form.tel || this.form.tel == "") {
+                    if (this.lang == 'ro') {
+                        this.$message.error('Introduceți numărul dvs. de telefon');
+                    } else if (this.lang == 'zh_CN') {
+                        this.$message.error('电话号码不可为空，请重新填写');
+                    } else {
+                        this.$message.error('Please input your telephone number.');
+                    }
+                    return;
+                } else if (!(/^\d{1,}$/.test(this.form.tel))) {
+                    if (this.lang == 'ro') {
+                        this.$message.error('Eroare de format de număr de telefon');
+                    } else if (this.lang == 'zh_CN') {
+                        this.$message.error('电话号码格式错误，请重新填写');
+                    } else {
+                        this.$message.error('Wrong telephone number format');
+                    }
+                    return;
+                } else if (!this.form.email || this.form.email == "") {
+                    if (this.lang == 'ro') {
+                        this.$message.error('Introduceți adresa dvs. de e-mail');
+                    } else if (this.lang == 'zh_CN') {
+                        this.$message.error('邮箱不可为空，请重新填写');
+                    } else {
+                        this.$message.error('Please input your mailbox.');
+                    }
+                    return;
+                } else if (!(/[\w]+(\.[\w]+)*@[\w]+(\.[\w])+/.test(this.form.email))) {
+                    if (this.lang == 'ro') {
+                        this.$message.error('Format incorect de cutie poștală');
+                    } else if (this.lang == 'zh_CN') {
+                        this.$message.error('邮箱格式错误，请重新填写');
+                    } else {
+                        this.$message.error('Error in mailbox format');
+                    }
+                    return;
+                }
+                axios.post('/home/ActivitySignIn_ActivitySignIn_signIn', Qs.stringify({
+                    name: this.form.name,
+                    country: this.form.country,
+                    tel: this.form.tel,
+                    email: this.form.email,
+                    inquiry: this.form.inquiry
+                }, {
+                    allowDots: true
+                }))
+                    .then((res) => {
+                        gtag_report_conversion()
+                        if (res.data.ret == 1) {
+                            this.form = {};
+                            this.isFormShow = false;
+                            this.isTipDialogShow = true;
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            },
             getClassifyList(page, limit, category) { // 获取左边分类
                 axios.get('/home/pdt_PdtProduct_gtProductsIndexCategoriesListAjax', {
                     params: {
@@ -317,6 +786,15 @@ $('html').on('click', '#choose_close, #div_mask, #exback_button', function () {
                 this.cated = e.id
                 this.page = 1;
                 this.getGoodsList(this.page, this.limit, this.cated);
+                // if (stpshop_config.lang === "en" || stpshop_config.lang == 'ro' || stpshop_config.lang === 'zh_CN') {
+                if (e.id == 373 || e.id == 374 || e.id == 375 || e.id == 377 || e.id == 527) {
+                    this.bannerType = 1;
+                } else if (e.id == 380 || e.id == 381 || e.id == 383 || e.id == 492) {
+                    this.bannerType = 2;
+                } else if (e.id == 387 || e.id == 391 || e.id == 516) {
+                    this.bannerType = 3;
+                }
+                // }
             },
             // 分页方法
             handleSizeChange(val) {
@@ -347,6 +825,15 @@ $('html').on('click', '#choose_close, #div_mask, #exback_button', function () {
         mounted() {
             this.getGoodsList(this.page, this.limit, this.cated);
             this.getClassifyList(1, 5);
+            axios.get('/home/plt_PltCountry_list?filter=romania') // 获取国家信息
+                .then((res) => {
+                    if (res.data.ret == 1) {
+                        this.countryList = res.data.result
+                    }
+                })
+                .catch(function (err) {
+                    console.log("err");
+                });
         },
         computed: {
             categoryListComputed() {
@@ -397,7 +884,31 @@ $('html').on('click', '#choose_close, #div_mask, #exback_button', function () {
                 })
                 return categoryListComputed
             },
-        }
+            _banner: function () {
+                switch (this.lang) {
+                    case "zh_CN": {
+                        return this.bannerImage["zh_CN"][this.bannerType]
+                    }
+                    case "ro": {
+                        return this.bannerImage["ro"][this.bannerType]
+                    }
+                    default :
+                        return this.bannerImage["en"][this.bannerType]
+                }
+            }, _alt: function () {
+                switch (this.lang) {
+                    case "zh_CN": {
+                        return this.bannerAlt["zh_CN"]
+                    }
+                    case "ro": {
+                        return this.bannerAlt["ro"]
+                    }
+                    default :
+                        return this.bannerAlt["en"]
+                }
+            }
+        },
+
     })
 </script>
 </body>

@@ -1,10 +1,14 @@
 package irille.Entity.newInq;
 
+import irille.core.sys.Sys;
 import irille.pub.bean.BeanInt;
+import irille.pub.svr.Env;
 import irille.pub.tb.Fld;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
 import irille.shop.usr.UsrSupplier;
+
+import java.util.Date;
 
 
 public class NewInquiry extends BeanInt<NewInquiry> {
@@ -13,9 +17,10 @@ public class NewInquiry extends BeanInt<NewInquiry> {
     public enum T implements IEnumFld {
         PKEY(TB.crtIntPkey()),
         SUPPLIERID(UsrSupplier.fldOutKey()),//供应商id
-        NAME(SYS.STR__100,"名字"),
-        EMAIL(SYS.STR__100,"邮箱"),
-        DETAIL(SYS.STR__500,"详情"),;
+        NAME(SYS.STR__100, "名字"),
+        EMAIL(SYS.STR__100, "邮箱"),
+        DETAIL(SYS.STR__500, "详情"),
+        CREATE_TIME(Sys.T.DATE_TIME, "创建时间");
         //>>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
         //<<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
 
@@ -48,6 +53,7 @@ public class NewInquiry extends BeanInt<NewInquiry> {
             return _fld;
         }
     }
+
     static { //在此可以加一些对FLD进行特殊设定的代码
         T.PKEY.getFld().getTb().lockAllFlds();//加锁所有字段,不可以修改
     }
@@ -69,6 +75,7 @@ public class NewInquiry extends BeanInt<NewInquiry> {
   private String _name;	// 名字  STR(100)
   private String _email;	// 邮箱  STR(100)
   private String _detail;	// 详情  STR(500)
+  private Date _createTime;	// 创建时间  TIME
 
 	@Override
   public NewInquiry init(){
@@ -77,6 +84,7 @@ public class NewInquiry extends BeanInt<NewInquiry> {
     _name=null;	// 名字  STR(100)
     _email=null;	// 邮箱  STR(100)
     _detail=null;	// 详情  STR(500)
+    _createTime= Env.getTranBeginTime();	// 创建时间  TIME
     return this;
   }
 
@@ -122,7 +130,13 @@ public class NewInquiry extends BeanInt<NewInquiry> {
   public void setDetail(String detail){
     _detail=detail;
   }
+  public Date getCreateTime(){
+    return _createTime;
+  }
+  public void setCreateTime(Date createTime){
+    _createTime=createTime;
+  }
 
     //<<<以上是自动产生的源代码行--源代码--请保留此行用于识别<<<
     // @formatter:off
-    }
+}

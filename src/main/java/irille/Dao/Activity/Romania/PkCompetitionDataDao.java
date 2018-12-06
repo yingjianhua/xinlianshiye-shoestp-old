@@ -1,6 +1,8 @@
 package irille.Dao.Activity.Romania;
 
+import irille.Entity.Activity.SupGoogleView;
 import irille.Entity.Pk.PkCompetitionData;
+import irille.Entity.newInq.NewInquiry;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
@@ -52,11 +54,23 @@ public class PkCompetitionDataDao {
         ).FROM(UsrConsult.class).LEFT_JOIN(
                 PdtProduct.class, PdtProduct.T.PKEY, UsrConsult.T.PKEY
         )
-                .WHERE(PdtProduct.T.SUPPLIER, "=?", supid)
-                .WHERE(UsrConsult.T.CREATE_TIME, ">=?", startDate)
-                .WHERE(UsrConsult.T.CREATE_TIME, "<?", endDate)
-        ;
-        return query.queryCount();
+                .WHERE(PdtProduct.T.SUPPLIER, "=?", supid);
+        if (startDate != null)
+            query.WHERE(UsrConsult.T.CREATE_TIME, ">=?", startDate);
+        if (endDate != null)
+            query.WHERE(UsrConsult.T.CREATE_TIME, "<?", endDate);
+        int oldInq = query.queryCount();
+        query = new BeanQuery();
+        query.SELECT(
+                NewInquiry.T.PKEY
+        ).FROM(NewInquiry.class).WHERE(
+                NewInquiry.T.SUPPLIERID, "=?", supid
+        );
+        if (startDate != null)
+            query.WHERE(NewInquiry.T.CREATE_TIME, ">=?", startDate);
+        if (endDate != null)
+            query.WHERE(NewInquiry.T.CREATE_TIME, "<?", endDate);
+        return query.queryCount() + oldInq;
     }
 
     /**
@@ -88,10 +102,11 @@ public class PkCompetitionDataDao {
         query.SELECT(
                 "sum(pe) as pe,sum(trafficvolume) as tr,sum(inquiry) as inq"
         ).FROM(PkCompetitionData.class)
-                .WHERE(PkCompetitionData.T.SUPID, "=?", supId)
-                .WHERE(PkCompetitionData.T.CREATEDTIME, ">=?", startDate)
-                .WHERE(PkCompetitionData.T.CREATEDTIME, "<?", endDate)
-        ;
+                .WHERE(PkCompetitionData.T.SUPID, "=?", supId);
+        if (startDate != null)
+            query.WHERE(PkCompetitionData.T.CREATEDTIME, ">=?", startDate);
+        if (endDate != null)
+            query.WHERE(PkCompetitionData.T.CREATEDTIME, "<?", endDate);
 
         return Query.sql(query).queryMap();
     }
@@ -119,7 +134,33 @@ public class PkCompetitionDataDao {
     public Integer getAllPe(Date startDate, Date endDate) {
         SQL sql = new SQL();
         sql.SELECT("sum(pe) as pe").FROM(PkCompetitionData.class).ORDER_BY(PkCompetitionData.T.PE, "desc");
+        Object result = Query.sql(sql).queryMap().get("pe");
+        if (result == null) {
+            return 0;
+        }
         return Integer.valueOf(String.valueOf(Query.sql(sql).queryMap().get("pe")));
+    }
+
+    public List<Map<String, Object>> getSupTraceCode() {
+        BeanQuery query = new BeanQuery();
+        query.SELECT(
+                SupGoogleView.T.VIEWID, "viewId"
+        ).SELECT(SupGoogleView.T.SUPID, "supId")
+                .FROM(SupGoogleView.class);
+
+        return query.queryMaps();
+    }
+
+    public String getGoogleViewId(Integer supId) {
+        BeanQuery query = new BeanQuery();
+        query.SELECT(
+                SupGoogleView.T.VIEWID
+        ).FROM(SupGoogleView.class).WHERE(SupGoogleView.T.SUPID, "=?", supId);
+        Object googleView = query.query(SupGoogleView.class);
+        if (googleView != null) {
+            return ((SupGoogleView) googleView).getViewid();
+        }
+        return "";
     }
 
 }

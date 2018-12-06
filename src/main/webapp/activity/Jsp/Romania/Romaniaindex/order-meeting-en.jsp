@@ -68,6 +68,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                     <br>
                     Magazinul Universal Dragonul Rosu Strada Drumul Garii 12，Bucuresti 077190
                 </div>
+                <a class="btn-red h5" href="javascript:void(0);" @click="getGift">Obțineți Mostre Gratuite Acum</a>
             </div>
         </div>
     </template>
@@ -81,6 +82,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                 <div class="h5">
                     环球龙红街店Drumul Garii 12布加勒斯特077190
                 </div>
+                <a class="btn-red h5" href="javascript:void(0);" @click="getGift">立即获得免费样品</a>
             </div>
         </div>
     </template>
@@ -96,6 +98,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                     <br>
                     Magazinul Universal Dragonul Rosu Strada Drumul Garii 12，Bucuresti 077190
                 </div>
+                <a class="btn-red h5" href="javascript:void(0);" @click="getGift">Get Free Sample Now</a>
                 <img src="./images/flag.png" alt="" class="flag-pic">
             </div>
         </div>
@@ -335,92 +338,230 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
             </div>
         </div>
     </div>
+
+    <!-- form弹框 -->
+    <transition name="el-fade-in-linear" v-cloak>
+        <div class="modal-wrap" v-show="isFormShow || isTipDialogShow" @mousewheel.prevent>
+            <transition name="el-fade-in-linear">
+                <div class="modal-inner-box" v-show="isFormShow">
+                    <img src="./images/close-black.png" alt="button to close the form" class="btn-close"
+                         @click="isFormShow = false">
+                    <div class="form-title" v-html="text_content.form_title">
+                        <!-- 2018年
+                        <br>
+                        罗马尼亚线下鞋类采购会 -->
+                    </div>
+                    <el-form ref="form" :model="form" label-width="80px" label-position="top" size="small">
+                        <el-form-item :label="text_content.name" class="required-label">
+                            <el-input v-model="form.name" placeholder=""></el-input>
+                        </el-form-item>
+
+                        <el-form-item :label="text_content.country" class="required-label">
+                            <el-select v-model="form.country">
+                                <el-option value="-1" :label="text_content.pleaseSelectCountry"></el-option>
+                                <el-option v-for="country in countryList" :key="country.id" :label="country.name"
+                                           :value="country.id"></el-option>
+                            </el-select>
+                        </el-form-item>
+
+                        <el-form-item :label="text_content.phone" class="required-label">
+                            <el-input v-model="form.tel" placeholder=""></el-input>
+                        </el-form-item>
+
+                        <el-form-item :label="text_content.email" class="required-label">
+                            <el-input v-model="form.email" placeholder=""></el-input>
+                        </el-form-item>
+
+                        <el-form-item :label="text_content.inquiry">
+                            <el-input type="textarea" v-model="form.inquiry" placeholder=""></el-input>
+                        </el-form-item>
+
+
+                        <div class="tc">
+                            <el-button type="danger form-button" @click="formSubmit">
+															{{text_content.submit}}
+															<!-- 提交 -->
+														</el-button>
+                        </div>
+
+                        <div class="tips">
+                            <!-- 告诉我们您的需求，我们会尽快回复您! -->
+														{{text_content.form_title}}
+                        </div>
+                    </el-form>
+                </div>
+            </transition>
+
+            <!-- 提示弹窗 -->
+            <transition name="el-zoom-in-center">
+                <div class="model-confirm" v-show="isTipDialogShow">
+                    <div class="close-wrap">
+                        <img src="./images/close-red.png" alt="close" class="close" @click="isTipDialogShow=false">
+                    </div>
+                    <div class="model-confirm-content flexible flex-center">
+                        <img src="./images/right-red.png" alt="right" class="icon">
+                        <div>
+                            {{text_content.success_tip}}
+                        </div>
+                    </div>
+                    <div class="model-confirm-footer" @click="isTipDialogShow = false">
+                        {{text_content.confirm}}
+                    </div>
+                </div>
+            </transition>
+        </div>
+    </transition>
 </div>
 
 <script>
     const img_confing = stpshop_config
 
-    text_content = {
-        "menShoes": "MEN'S SHOES",
-        "womenShoes": "WOMEN'S SHOES",
-        "childrenShoes": "CHILDREN'S SHOES",
-        "viewMore": "VIEW MORE",
-        "recommendedProducts": "Recommended Products", //轮播header
-        "precedente": "precedente",
-        "successivo": "successivo",
-        "inquiry": "INQUIRY",
-    }
+    text_content={
+			"menShoes": "MEN'S SHOES",
+			"womenShoes": "WOMEN'S SHOES",
+			"childrenShoes": "CHILDREN'S SHOES",
+			"viewMore": "VIEW MORE",
+			"recommendedProducts": "Recommended Products", //轮播header
+			"precedente": "precedente",
+			"successivo": "successivo",
+			"inquiry": "INQUIRY",
+
+			form_title: "2018 ROMANIAN<br>OFFLINE SHOES PURCHASING",
+			form_bottom_text:"Tell us what you want, we'll reply you as soon as possible!",
+			name: "Contact:",
+			phone: "phone:",
+			email: "E-mail:",
+			country: "Country:",
+			inquiry: "inquiry:",
+			submit: "Submit",
+			success_tip: "Submitted successfully",
+			confirm: "Confirm",
+			pleaseSelectCountry: "Please select your country",
+
+			rule_name_empty: "Name cannot be empty, please re-fill",
+			rule_country_empty: "Please select a country",
+			rule_phone_empty: "Phone number cannot be empty, please re-fill",
+			rule_phone_format: "The phone number is in the wrong format, please re-fill",
+			rule_email_empty: "Email cannot be empty, please re-fill",
+			rule_email_format: "The mailbox format is incorrect, please re-fill",
+		}
 
     new Vue({
         el: '#app',
         data: {
+            isFormShow: false, //是否显示弹窗
+            isTipDialogShow: false, //是否显示提示弹窗
+    				form: {
+                country: "-1"
+            }, //form提交的内容
+    				countryList: [], //国家列表
+
+
             img_confing: img_confing,
             text_content: text_content,
             text_content_en: text_content,
             text_content_zh: {
-                "menShoes": "男鞋",
-                "womenShoes": "女鞋",
-                "childrenShoes": "童鞋",
-                "viewMore": "查看更多",
-                "recommendedProducts": "产品推荐", //轮播header
-                "precedente": "上一个",
-                "successivo": "下一个",
-                "inquiry": "询盘",
-            },
+    					"menShoes": "男鞋",
+    					"womenShoes": "女鞋",
+    					"childrenShoes": "童鞋",
+    					"viewMore": "查看更多",
+    					"recommendedProducts": "产品推荐", //轮播header
+    					"precedente": "上一个",
+    					"successivo": "下一个",
+    					"inquiry": "询盘",
+
+    					form_title: "2018年 <br>罗马尼亚线下鞋类采购会",
+    					form_bottom_text: "告诉我们您的需求，我们会尽快回复您!",
+    					name: "联系人:",
+    					phone: "电话:",
+    					email: "电子邮件:",
+    					country: "国家:",
+    					inquiry: "需求:",
+    					submit: "提交",
+    					success_tip: "提交成功",
+    					confirm: "确定",
+    					pleaseSelectCountry: "请选择您所在的国家",
+
+    					rule_name_empty: "姓名不可为空，请重新填写",
+    					rule_country_empty: "请选择国家",
+    					rule_phone_empty: "电话号码不可为空，请重新填写",
+    					rule_phone_format: "电话号码格式错误，请重新填写",
+    					rule_email_empty: "邮箱不可为空，请重新填写",
+    					rule_email_format: "邮箱格式错误，请重新填写",
+    				},
             text_content_ro: {
-                "menShoes": "Pantofi pentru bărbați",
-                "womenShoes": "Pantofi pentru femei",
-                "childrenShoes": "Pantofi pentru copii",
-                "viewMore": "Vezi mai mult",
-                "recommendedProducts": "Pantofi recomandați", //轮播header
-                "precedente": "anterior",
-                "successivo": "următorul",
-                "inquiry": "Anchetă",
-            },
+    					"menShoes": "Pantofi pentru bărbați",
+    					"womenShoes": "Pantofi pentru femei",
+    					"childrenShoes": "Pantofi pentru copii",
+    					"viewMore": "Vezi mai mult",
+    					"recommendedProducts": "Pantofi recomandați", //轮播header
+    					"precedente": "anterior",
+    					"successivo": "următorul",
+    					"inquiry": "Anchetă",
+    					form_title: "2018 ADUNARE DE APRECIERE<br>A MOSTRELOR DE PANTOFI OFFLINE, ROMANIA",
+    					form_bottom_text: "Spuneți-ne ce vreți, vă vom răspunde cât mai curând posibil!",
+    					name: "Contact:",
+    					phone: "telefon:",
+    					email: "E-mail:",
+    					country: "țară:",
+    					inquiry: "Ancheta:",
+    					submit: "prezenta",
+    					success_tip: "Trimise cu succes",
+    					confirm: "Confirma",
+    					pleaseSelectCountry: "Selectați țara dvs.",
+
+    					rule_name_empty: "Numele nu poate fi gol, vă rugăm să re-umpleți",
+    					rule_country_empty: "Selectați țara",
+    					rule_phone_empty: "Numărul de telefon nu poate fi gol, reîncărcați",
+    					rule_phone_format: "Numărul de telefon este în format greșit, reîncărcați",
+    					rule_email_empty: "E-mailul nu poate fi gol, vă rugăm să re-completați",
+    					rule_email_format: "Formatul căsuței poștale este incorect, reîncărcați",
+    				},
             manShoesList: [],
             womanShoesList: [],
             childrenShoesList: [],
             carouselList: [
                 {
-                    url: "/activity/Jsp/Romania/Romaniaindex/images/carousel/carousel_01.png",
-                    hoverUrl: "/activity/Jsp/Romania/Romaniaindex/images/carousel/carousel_01_on.png",
+                    url: "/activity/Jsp/Romania/Romaniaindex/images/carousel_01.png",
+                    hoverUrl: "/activity/Jsp/Romania/Romaniaindex/images/carousel_01_on.png",
                     link: "https://www.shoestp.com/word-buckle-sandals-female-summer-2018-new-thick-with-open-toe-simple-wild-korean-version-of-the-fairy-rome-with-women's-shoes-_p8741.html"
                 },
                 {
-                    url: "/activity/Jsp/Romania/Romaniaindex/images/carousel/carousel_02.png",
-                    hoverUrl: "/activity/Jsp/Romania/Romaniaindex/images/carousel/carousel_02_on.png",
+                    url: "/activity/Jsp/Romania/Romaniaindex/images/carousel_02.png",
+                    hoverUrl: "/activity/Jsp/Romania/Romaniaindex/images/carousel_02_on.png",
                     link: "https://www.shoestp.com/2018-winter-new-men's-casual-men's-shoes-brock-shoes-british-trend-shoes-korean-version-of-the-tide-shoes-wild-_p8733.html"
                 },
                 {
-                    url: "/activity/Jsp/Romania/Romaniaindex/images/carousel/carousel_03.png",
-                    hoverUrl: "/activity/Jsp/Romania/Romaniaindex/images/carousel/carousel_03_on.png",
+                    url: "/activity/Jsp/Romania/Romaniaindex/images/carousel_03.png",
+                    hoverUrl: "/activity/Jsp/Romania/Romaniaindex/images/carousel_03_on.png",
                     link: "https://www.shoestp.com/high-heels-female-autumn-2018-new-rivet-pointed-12-stiletto-single-shoes-wild-baotou-roman-sandals-summer-_p8747.html"
                 },
                 {
-                    url: "/activity/Jsp/Romania/Romaniaindex/images/carousel/carousel_04.png",
-                    hoverUrl: "/activity/Jsp/Romania/Romaniaindex/images/carousel/carousel_04_on.png",
+                    url: "/activity/Jsp/Romania/Romaniaindex/images/carousel_04.png",
+                    hoverUrl: "/activity/Jsp/Romania/Romaniaindex/images/carousel_04_on.png",
                     link: "https://www.shoestp.com/old-shoes-female-korean-version-of-ulzzang-harajuku-wild-ins-sneakers-flame-2018-new-net-red-women's-shoes-summer_p8742.html"
-                },
-                {
-                    url: "/activity/Jsp/Romania/Romaniaindex/images/carousel/carousel_05.png",
-                    hoverUrl: "/activity/Jsp/Romania/Romaniaindex/images/carousel/carousel_05_on.png",
-                    link: "https://www.shoestp.com/boys-shoes-2018-autumn-children's-shoes-new-children's-fashion-small-white-shoes-plus-velvet-big-children-breathable-casual-shoes-_p8736.html"
-                },
-                {
-                    url: "/activity/Jsp/Romania/Romaniaindex/images/carousel/carousel_06.png",
-                    hoverUrl: "/activity/Jsp/Romania/Romaniaindex/images/carousel/carousel_06_on.png",
-                    link: "https://www.shoestp.com/girls-roman-sandals-2018-new-summer-children-soft-bottom-fashion-little-princess-shoes-girls-flowers-primary-school-shoes-_p8738.html"
-                },
-                {
-                    url: "/activity/Jsp/Romania/Romaniaindex/images/carousel/carousel_07.png",
-                    hoverUrl: "/activity/Jsp/Romania/Romaniaindex/images/carousel/carousel_07_on.png",
-                    link: "https://www.shoestp.com/european-and-american-style-sexy-nightclubs-thin-women's-shoes-stiletto-high-heeled-shallow-mouth-pointed-side-hollow-sequined-single-shoes_p8721.html"
-                },
-                {
-                    url: "/activity/Jsp/Romania/Romaniaindex/images/carousel/carousel_08.png",
-                    hoverUrl: "/activity/Jsp/Romania/Romaniaindex/images/carousel/carousel_08_on.png",
-                    link: "https://www.shoestp.com/sandals-female-summer-flat-2018-new-korean-version-of-the-wild-roman-shoes-flat-with-non-slip-holiday-seaside-beach-shoes-women's-shoes-_p8744.html"
-                },
+                }
+                // ,
+                // {
+                //     url: "/activity/Jsp/Romania/Romaniaindex/images/carousel_05.png",
+                //     hoverUrl: "/activity/Jsp/Romania/Romaniaindex/images/carousel_05_on.png",
+                //     link: "https://www.shoestp.com/boys-shoes-2018-autumn-children's-shoes-new-children's-fashion-small-white-shoes-plus-velvet-big-children-breathable-casual-shoes-_p8736.html"
+                // },
+                // {
+                //     url: "/activity/Jsp/Romania/Romaniaindex/images/carousel_06.png",
+                //     hoverUrl: "/activity/Jsp/Romania/Romaniaindex/images/carousel_06_on.png",
+                //     link: "https://www.shoestp.com/girls-roman-sandals-2018-new-summer-children-soft-bottom-fashion-little-princess-shoes-girls-flowers-primary-school-shoes-_p8738.html"
+                // },
+                // {
+                //     url: "/activity/Jsp/Romania/Romaniaindex/images/carousel_07.png",
+                //     hoverUrl: "/activity/Jsp/Romania/Romaniaindex/images/carousel_07_on.png",
+                //     link: "https://www.shoestp.com/european-and-american-style-sexy-nightclubs-thin-women's-shoes-stiletto-high-heeled-shallow-mouth-pointed-side-hollow-sequined-single-shoes_p8721.html"
+                // },
+                // {
+                //     url: "/activity/Jsp/Romania/Romaniaindex/images/carousel_08.png",
+                //     hoverUrl: "/activity/Jsp/Romania/Romaniaindex/images/carousel_08_on.png",
+                //     link: "https://www.shoestp.com/sandals-female-summer-flat-2018-new-korean-version-of-the-wild-roman-shoes-flat-with-non-slip-holiday-seaside-beach-shoes-women's-shoes-_p8744.html"
+                // },
             ]
         },
         mounted() {
@@ -435,6 +576,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
             }
             this.initCarousel();
             this.getThreeShoesCateList();
+            this.getCountryList();
         },
         methods: {
             image(v, params) {
@@ -470,6 +612,61 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                     // },
                 })
             },
+            getCountryList(){
+              axios.get('/home/plt_PltCountry_list?lang='+img_confing.lang+'&filter=romania')
+    	        .then((res) => {
+    	            if (res.data.ret == 1) {
+    	                this.countryList = res.data.result
+    	            }
+    	        })
+    	        .catch(function (err) {
+    	            console.log("err");
+    	        });
+            },
+            // 点击获取礼物 - 弹出form框
+            getGift() {
+                // gtag_report_conversionGoogle()
+                this.isFormShow = true;
+            },
+            formSubmit() {
+                if (!this.form.name || this.form.name == "") {
+                    this.$message.error(this.text_content.rule_name_empty);
+                    return;
+                } else if (!this.form.country || this.form.country == -1) {
+                    this.$message.error(this.text_content.rule_country_empty);
+                    return;
+                } else if (!this.form.tel || this.form.tel == "") {
+                    this.$message.error(this.text_content.rule_phone_empty);
+                    return;
+                } else if (!(/^\d{1,}$/.test(this.form.tel))) {
+                    this.$message.error(this.text_content.rule_phone_format);
+                    return;
+                } else if (!this.form.email || this.form.email == "") {
+                    this.$message.error(this.text_content.rule_email_empty);
+                    return;
+                } else if (!(/[\w]+(\.[\w]+)*@[\w]+(\.[\w])+/.test(this.form.email))) {
+                    this.$message.error(this.text_content.rule_email_format);
+                    return;
+                }
+                axios.post('/home/ActivitySignIn_ActivitySignIn_signIn', Qs.stringify({
+                    name: this.form.name,
+                    country: this.form.country,
+                    tel: this.form.tel,
+                    email: this.form.email,
+                    inquiry: this.form.inquiry
+                }, {allowDots: true}))
+                    .then((res) => {
+                        // gtag_report_conversion()
+                        if (res.data.ret == 1) {
+                            this.form = {};
+                            this.isFormShow = false;
+                            this.isTipDialogShow = true;
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            },
             // 获取男、女、童鞋子列表
             getThreeShoesCateList() {
                 axios.get('/home/prm_PrmGroupPurchase_groupshoplist?lang=en')
@@ -492,7 +689,6 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
             },
             // 收藏
             collect(goodsId, whichShoesList, shoesIndex) {
-                debugger
                 if (!isLogin) {
                     user_obj.set_form_sign_in('', window.location.href, 1);
                     return

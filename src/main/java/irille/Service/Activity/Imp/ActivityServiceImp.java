@@ -40,23 +40,21 @@ public class ActivityServiceImp implements IActivityService {
     private PkCompetitionDataDAO pkCompetitionDataDAO;
 
 
+    private AnalyticsReporting service = null;
+
     @Override
     public PkCompetitionPageManageView getPkCompetitionData(Date startDate, Date endDate, Integer supId) {
-        System.out.println(startDate);
-        System.out.println(endDate);
         PkCompetitionPageManageView pkCompetitionPageManageView = new PkCompetitionPageManageView();
         Map all = pkCompetitionDataDao.getSupPk(startDate, endDate, supId);
         PkCompetitionData pkCompetitionData = new PkCompetitionData();
         pkCompetitionData.setPe(GetValue.get(all, "pe", BigDecimal.class, BigDecimal.ZERO).intValue());
         pkCompetitionData.setInquiry(GetValue.get(all, "inq", BigDecimal.class, BigDecimal.ZERO).intValue());
         pkCompetitionData.setTrafficvolume(GetValue.get(all, "tr", BigDecimal.class, BigDecimal.ZERO).intValue());
-
-
         PkCompetitionGlobalDataView globalDataView = new PkCompetitionGlobalDataView();
         globalDataView.setTop5(pkCompetitionDataDao.getTop5(startDate, endDate));
         globalDataView.setSum(pkCompetitionDataDao.getAllPe(startDate, endDate));
 
-
+        pkCompetitionPageManageView.setGoogleViewId(pkCompetitionDataDao.getGoogleViewId(supId));
         pkCompetitionPageManageView.setPkCompetitionData(pkCompetitionData);
         pkCompetitionPageManageView.setPkCompetitionGlobalDataView(globalDataView);
         return pkCompetitionPageManageView;
@@ -69,22 +67,24 @@ public class ActivityServiceImp implements IActivityService {
      */
     @Override
     public void generateData() {
+        //获取数据库里最后拉去数据的的日期
         String startDateString = pkCompetitionDataDao.getLastDate();
         LocalDate startDate = LocalDate.parse(startDateString);
         LocalDate today = LocalDate.now();
         if (today.compareTo(startDate) < 1) {
             return;
         }
-        AnalyticsReporting service = null;
         try {
+            //本地测试用开启代理
             System.setProperty("http.proxySet", "true");
             System.setProperty("http.proxyHost", "127.0.0.1");
             System.setProperty("http.proxyPort", String.valueOf(1080));
-// 针对https也开启代理
             System.setProperty("https.proxyHost", "127.0.0.1");
             System.setProperty("https.proxyPort", String.valueOf(1080));
-            service = googleAnalyticsUtils.initializeAnalyticsReporting();
-            // Create the DateRange object.
+            //初始化
+            if (service == null) {
+                service = googleAnalyticsUtils.initializeAnalyticsReporting();
+            }
             DateRange dateRange = new DateRange();
             dateRange.setStartDate(startDateString);
             dateRange.setEndDate("today");  //TODO
@@ -94,6 +94,8 @@ public class ActivityServiceImp implements IActivityService {
             Dimension adMatchedQuery = new Dimension().setName("ga:adMatchedQuery");
             Dimension path = new Dimension().setName("ga:pagePath");
             Dimension keyword = new Dimension().setName("ga:keyword");
+//            ga:impressions  总展示次数
+            //185165418总站的统计代码
             ReportRequest request = new ReportRequest()
                     .setViewId("185165418")
                     .setDateRanges(Arrays.asList(dateRange))
@@ -105,10 +107,10 @@ public class ActivityServiceImp implements IActivityService {
             GetReportsRequest getReport = new GetReportsRequest()
                     .setReportRequests(requests);
             GetReportsResponse response = service.reports().batchGet(getReport).execute();
-            Map<Integer, GoogleAnalyticsView> map = new HashMap();
+            Map<Integer, GoogleAnalyticsView> map = getPe();
             for (Report report : response.getReports()) {
                 ColumnHeader header = report.getColumnHeader();
-                List<String> dimensionHeaders = header.getDimensions();
+//                List<String> dimensionHeaders = header.getDimensions();
                 List<MetricHeaderEntry> metricHeaders = header.getMetricHeader().getMetricHeaderEntries();
                 List<ReportRow> rows = report.getData().getRows();
                 if (rows == null) {
@@ -165,7 +167,6 @@ public class ActivityServiceImp implements IActivityService {
                     map.put(SupId, googleAnalyticsView);
                 }
             }
-            System.out.println(map);
             map.forEach((integer, googleAnalyticsView) -> {
                 PkCompetitionData pkCompetitionData = new PkCompetitionData();
                 pkCompetitionData.setSupid(googleAnalyticsView.getId());
@@ -217,5 +218,65 @@ public class ActivityServiceImp implements IActivityService {
         return googleAnalyticsView;
     }
 
+    public Map getPe() {
+        List<Map<String, Object>> list = pkCompetitionDataDao.getSupTraceCode();
+        Map<Integer, GoogleAnalyticsView> result = new HashMap();
+        list.forEach(stringObjectMap -> {
+            String viewId = GetValue.get(stringObjectMap, "viewId", String.class, "");
+            int supId = GetValue.get(stringObjectMap, "supId", Integer.class, -1);
+            GoogleAnalyticsView googleAnalyticsView = new GoogleAnalyticsView();
+
+            String startDateString = pkCompetitionDataDao.getLastDate();
+            LocalDate startDate = LocalDate.parse(startDateString);
+            LocalDate today = LocalDate.now();
+            if (today.compareTo(startDate) < 1) {
+                return;
+            }
+            try {
+                DateRange dateRange = new DateRange();
+                dateRange.setStartDate(startDateString);
+                dateRange.setEndDate("today");  //TODO
+                Metric sessions = new Metric()
+                        .setExpression("ga:impressions");
+                ReportRequest request = new ReportRequest()
+                        .setViewId(viewId)
+                        .setDateRanges(Arrays.asList(dateRange))
+                        .setMetrics(Arrays.asList(sessions));
+
+                ArrayList<ReportRequest> requests = new ArrayList();
+                requests.add(request);
+                GetReportsRequest getReport = new GetReportsRequest()
+                        .setReportRequests(requests);
+                GetReportsResponse response = service.reports().batchGet(getReport).execute();
+                for (Report report : response.getReports()) {
+                    ColumnHeader header = report.getColumnHeader();
+                    List<MetricHeaderEntry> metricHeaders = header.getMetricHeader().getMetricHeaderEntries();
+                    List<ReportRow> rows = report.getData().getRows();
+                    if (rows == null) {
+                        System.out.println("No data found");
+                        return;
+                    }
+                    for (ReportRow row : rows) {
+                        List<DateRangeValues> metrics = row.getMetrics();
+                        for (int j = 0; j < metrics.size(); j++) {
+                            DateRangeValues values = metrics.get(j);
+                            for (int k = 0; k < values.getValues().size() && k < metricHeaders.size(); k++) {
+                                googleAnalyticsView.setPe(Integer.valueOf(values.getValues().get(k)));
+                                googleAnalyticsView.setInquiry(0);
+                                googleAnalyticsView.setTrafficVolume(0);
+                                googleAnalyticsView.setId(supId);
+                            }
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            result.put(supId, googleAnalyticsView);
+
+        });
+
+        return result;
+    }
 
 }

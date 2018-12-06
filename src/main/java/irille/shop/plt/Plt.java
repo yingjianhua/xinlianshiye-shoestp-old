@@ -1,6 +1,8 @@
 package irille.shop.plt;
 
 import irille.Entity.Activity.ActivityInfo;
+import irille.Entity.Activity.SupGoogleView;
+import irille.Entity.newInq.NewInquiry;
 import irille.core.prv.PrvRoleAct;
 import irille.core.sys.SysModule;
 import irille.pub.Log;
@@ -45,6 +47,8 @@ public class Plt extends PackageBase {
         addTb(40, PltFreightSeller.class);
         addTb(41, PltFreightSellerLine.class);
         addTb(43, ActivityInfo.class);
+        addTb(44, SupGoogleView.class);
+        addTb(45, NewInquiry.class);
     }
 
     @Override

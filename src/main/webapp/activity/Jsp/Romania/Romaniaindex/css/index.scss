@@ -165,7 +165,9 @@ $fs_h6: 20;
 
 .banner_01{
   color: #fff;
+  min-height: 500px;
   // height: 938px;
+  background: #4d61ac url("../images/banner_01_bg.png") no-repeat center / cover;
   .txt-box{
     padding: 120px 0 240px;
   }
@@ -179,6 +181,7 @@ $fs_h6: 20;
   }
   .h5{
     line-height: 1.5;
+    margin-top: 10px;
     opacity: 0.9;
   }
   .flag-pic{
@@ -187,7 +190,23 @@ $fs_h6: 20;
     top: 68px;
     z-index: 5;
   }
-  background: #4d61ac url("../images/banner_01_bg.png") no-repeat center / cover;
+}
+.banner_01.banner_01_ro{
+  .h3{
+    margin-top: 20px;
+    margin-bottom: 30px;
+  }
+  background-image: url("../images/banner_01_bg_ro.png");
+}
+.banner_01.banner_01_zh{
+  .h3 {
+    margin-top: -5px;
+    margin-bottom: 15px;
+  }
+  .btn-blue-yellow{
+    color: #ffd400;
+  }
+  background-image: url("../images/banner_01_bg_zh.png");
 }
 
 // 4张分类 banner
@@ -491,8 +510,8 @@ $fs_h6: 20;
       }
     }
   }
-
-  .w1200{
+  // 后者为顶部公用部分的兼容
+  .w1200, #web_top .w_1200 .wide{
     width: 800px;
     min-width: 800px;
   }
@@ -681,8 +700,8 @@ $fs_h6: 20;
       }
     }
   }
-
-  .w1200{
+  // 后者为顶部公用部分的兼容
+  .w1200, #web_top .w_1200 .wide{
     width: 980px;
     min-width: 980px;
   }
@@ -848,8 +867,8 @@ $fs_h6: 20;
       }
     }
   }
-
-  .w1200{
+  // 后者为顶部公用部分的兼容
+  .w1200, #web_top .w_1200 .wide{
     width: 1600px;
     min-width: 1600px;
   }
