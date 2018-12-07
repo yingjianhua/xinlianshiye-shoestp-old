@@ -23,10 +23,12 @@ import irille.shop.usr.UsrSupplier;
 import irille.view.Manage.OdrMeeting.OdrMeetingLaunchlistView;
 import irille.view.Manage.OdrMeeting.OdrMeetingOtherlistView;
 import irille.view.Manage.OdrMeeting.OdrMeetingParticipatelistView;
+import irille.view.Manage.OdrMeeting.initiatedActivity.OrderInformationView;
 import irille.view.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -416,5 +418,45 @@ public class OdrMeetingDao {
         }
     }
 
+    /**
+     * @Description: 获取订购会信息
+     * @anthor zjl
+     */
+    public OrderInformationView getorderInformation(Integer id) {
+        SQL sql = new SQL() {
+            {
+                SELECT(OrderMeeting.T.NAME,"orderingTitle")
+                        .SELECT(OrderMeetingExhibition.T.NAME,"exhibition")
+                        .SELECT(PltCountry.T.NAME,"country")
+                        .SELECT(OrderMeeting.T.LOGO,
+                                OrderMeeting.T.START_TIME,
+                                OrderMeeting.T.END_TIME,
+                                OrderMeeting.T.MAILADDRESS,
+                                OrderMeeting.T.MAILAFULLDDRESS,
+                                OrderMeeting.T.MAILNAME,
+                                OrderMeeting.T.MAILTEL,
+                                OrderMeeting.T.POSTCODE).
+                        FROM(OrderMeeting.class).
+//                        LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, OrderMeeting.T.SUPPLIERID).
+        LEFT_JOIN(OrderMeetingExhibition.class, OrderMeetingExhibition.T.PKEY, OrderMeeting.T.EXHIBITION).
+                        LEFT_JOIN(PltCountry.class, PltCountry.T.PKEY, OrderMeeting.T.COUNTRY).WHERE(OrderMeeting.T.PKEY
+                        ,"=?",id);
+            }
+        };
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Map<String, Object> map = Query.sql(sql).queryMap();
+        OrderInformationView view = new OrderInformationView();
+        view.setOrderingTitle((String) map.get("orderingTitle"));
+        view.setExhibition((String) map.get("exhibition"));
+        view.setCountry((String) map.get("country"));
+        view.setCoverImage((String) map.get(OrderMeeting.T.LOGO.getFld().getCodeSqlField()));
+        view.setOrderStartTime(formatter.format(map.get(OrderMeeting.T.START_TIME.getFld().getCodeSqlField())));
+        view.setOrderEndTime(formatter.format(map.get(OrderMeeting.T.END_TIME.getFld().getCodeSqlField())));
+        view.setAddress((String)map.get(OrderMeeting.T.MAILAFULLDDRESS.getFld().getCodeSqlField()));
+        view.setReceiver((String)map.get(OrderMeeting.T.MAILNAME.getFld().getCodeSqlField()));
+        view.setContactNumber((String)map.get(OrderMeeting.T.MAILTEL.getFld().getCodeSqlField()));
+        view.setZip((String)map.get(OrderMeeting.T.POSTCODE.getFld().getCodeSqlField()));
+        return view;
+    }
 
 }

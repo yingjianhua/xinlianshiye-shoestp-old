@@ -9,6 +9,7 @@ import irille.Service.Manage.OdrMeeting.IOdrMeetingManageService;
 import irille.Service.Manage.OdrMeeting.IOdrMeetingOrderManageService;
 import irille.Service.Manage.OdrMeeting.IOdrMeetingProductManageService;
 import irille.Service.Manage.OdrMeeting.IOdrMeettingExhibitionService;
+import irille.homeAction.HomeAction;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.omt.inf.IOdrMeetingAction;
 import irille.view.Manage.OdrMeeting.initiatedActivity.AllProductsView;
@@ -19,6 +20,7 @@ import lombok.Setter;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdrMeetingAction {
@@ -125,7 +127,7 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
     private Integer productId;
 
     public void getOrderGoodsList() throws IOException {
-        write(odrMeetingProductManageService.getOrderGoodsList(getStart(), getLimit(), id, status, inputContent,getSupplier().getPkey()));
+        write(odrMeetingProductManageService.getOrderGoodsList(getStart(), getLimit(), id, status, inputContent, getSupplier().getPkey()));
     }
 
     public void updateStatus() throws IOException {
@@ -138,7 +140,7 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
      * @date 2018/11/22 11:14
      * @anthor wilson zhang
      */
-    public void deletejoinOdr() {
+    public void deletejoinOdr() throws IOException{
         odrMeetingManageService.deletejoinOdr(id);
         write();
     }
@@ -216,9 +218,16 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
     private Integer classification;
 
     public void getOmtOrderList() throws IOException {
-        write(odrMeetingOrderManageService.getOmtOrderList(id,getStart(),getLimit(),classification,status,inputContent));
+        write(odrMeetingOrderManageService.getOmtOrderList(id, getStart(), getLimit(), classification, status, inputContent));
     }
+
     public void getOrderStatus() throws IOException {
         write(odrMeetingOrderManageService.getOrderStatus());
+    }
+    @Getter
+    @Setter
+    private String input;
+    public void getSalesDetails() throws IOException {
+        write(odrMeetingOrderManageService.getSalesDetails(getStart(),getLimit(),id,input,status, HomeAction.curLanguage(),getSupplier().getPkey()));
     }
 }

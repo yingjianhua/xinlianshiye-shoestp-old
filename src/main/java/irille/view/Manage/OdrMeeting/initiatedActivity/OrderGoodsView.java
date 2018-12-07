@@ -11,7 +11,7 @@ public class OrderGoodsView implements BaseView {
     private String image;//产品图片
     @JsonSerialize(using= I18NFieldSerializer.class)
     private String productName;//产品名称
-    private String mode;//自有/合作商
+    private Byte mode;//自有/合作商
     private Double originalPurchasePrice;//原采购价
     private Integer originalOrderQuantity;//原起订量
     private Integer orderPrice;//订购价

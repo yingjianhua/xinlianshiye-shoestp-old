@@ -2,11 +2,11 @@ package irille.Service.Manage.OdrMeeting;
 
 import com.google.inject.ImplementedBy;
 import irille.Service.Manage.OdrMeeting.Imp.OdrMeetingOrderManageServiceImp;
+import irille.pub.tb.FldLanguage;
 import irille.view.Manage.OdrMeeting.initiatedActivity.orderOrderStatusListView;
 import irille.view.Page;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 订购会-订单相关接口 Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/14 Time: 14:00
@@ -28,5 +28,12 @@ public interface IOdrMeetingOrderManageService {
      */
     Page getOmtOrderList(Integer omtId, Integer start, Integer limit, Integer classification, Integer orderStatus, String input);
 
+    /**
+     * @Description: 获取订单状态列表
+     * @date 2018/12/6 9:37
+     * @author zjl
+     */
     List<orderOrderStatusListView> getOrderStatus();
+
+    Page getSalesDetails(Integer start, Integer limit, Integer id, String input, Integer status, FldLanguage.Language lang,Integer supplierId);
 }

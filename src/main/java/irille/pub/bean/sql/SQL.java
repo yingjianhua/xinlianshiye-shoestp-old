@@ -74,6 +74,10 @@ public class SQL {
         return mybatisSQL.FROM(beanClass);
     }
 
+    public <T extends BeanMain<?, ?>> SQL FROM(Class<T> beanClass,String alias) {
+        return mybatisSQL.FROM(beanClass);
+    }
+
     public <T extends BeanMain<?, ?>> SQL LEFT_JOIN(Class<T> beanClass, IEnumFld fld1, IEnumFld fld2) {
         return mybatisSQL.LEFT_OUTER_JOIN(beanClass, fld1, fld2);
     }

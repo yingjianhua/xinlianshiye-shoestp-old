@@ -257,8 +257,8 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
 
     @Override
     public OrderInformationView getorderInformation(Integer id) {
-        return null;
-//        return odrMeetingDao.getorderInformation(id);
+//        return null;
+        return odrMeetingDao.getorderInformation(id);
     }
 
     @Override//添加发布订购会
