@@ -47,7 +47,6 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
           type="text/css">
 
 
-
     <script type="text/javascript"
             src="/home/static/themes/default/mobile/js/jquery-min.js"></script>
     <script type="text/javascript"
@@ -219,7 +218,6 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
             countrys: [],
             stpshop_config: stpshop_config,
             open: [false, false, false], 		//3个二级分类列表 - 是否显示
-            isLogin: true,
             page: 1,
             limit: 12,
             category: -1, //选中的分类??
@@ -414,8 +412,9 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 
             // 点击询盘
             inquiry(productId) {
-                if (!this.isLogin) {
-                    this.$toast.error('这里需要进行登录弹窗操作');
+                if (!isLogin) {
+                    this.$toast.error(lang_obj.goods_info.Pleaselogin);
+                    window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=" + window.location.href
                     return
                 }
                 axios.get('/home/pdt_PdtConsultPdtList_add', {
@@ -441,9 +440,9 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 
             // 点击收藏
             collect(goodsId, goodsIndex) {
-                console.log("收藏", goodsId)
-                if (!this.isLogin) {
-                    this.$toast.error('这里需要进行登录弹窗操作');
+                if (!isLogin) {
+                    this.$toast.error(lang_obj.goods_info.Pleaselogin);
+                    window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=" + window.location.href
                     return
                 }
                 axios.post('/home/usr_UsrFavorites_addFavorite', Qs.stringify({
