@@ -118,6 +118,7 @@ ul{
 .triangle{
   display: inline-block;
   height: 0;
+  vertical-align: middle;
   transition: all 0.2s;
   border: 0.1875rem solid transparent;
   border-top: 0.24rem solid #2e469e;

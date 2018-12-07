@@ -147,6 +147,7 @@ ul {
 .triangle {
   display: inline-block;
   height: 0;
+  vertical-align: middle;
   -webkit-transition: all 0.2s;
   transition: all 0.2s;
   border: 0.1875rem solid transparent;
@@ -196,7 +197,6 @@ ul {
   .order-meeting-page .btn-red {
     display: inline-block;
     padding: 0 0.4rem;
-    height: 1.6rem;
     line-height: 1.6rem;
     font-weight: bold;
     border: none;
@@ -318,6 +318,7 @@ ul {
       border-radius: 1rem;
       background: url("../images/btn-bg.png") no-repeat center/cover; }
       .order-meeting-page .goods-list .btn-contact .icon-letter {
+        vertical-align: middle;
         position: relative;
         top: -0.05rem;
         width: 0.906rem;
@@ -338,6 +339,8 @@ ul {
       width: 80%; }
   .order-meeting-page .hoodle_modle {
     position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
@@ -434,8 +437,10 @@ ul {
     border-radius: 20px;
     font-weight: 700; }
   .order-meeting-page .hoodle .hf-input .hf-text {
-    font-size: 0.5rem;
+    font-size: 0.75rem;
     text-align: center;
     margin-bottom: 0 auto 1rem; }
+  .order-meeting-page .mu-button-wrapper {
+    color: #fff; }
 
 /*# sourceMappingURL=index.css.map */

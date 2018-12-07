@@ -394,13 +394,17 @@ a{
     padding: 0 20px;
     height: 80px;
     line-height: 80px;
+    vertical-align: middle;
+    white-space: nowrap;
+    overflow: hidden;
 		font-weight: bold;
     border: none;
     border-radius: 10px;
     font-size: 30px;
     color: white;
     margin-top: 20px;
-    background: #0154a2;
+    /* background: #0154a2; */
+    background: #e43527;
 }
 #romania .romania-poster .image-bottom button:nth-of-type(1),#romania .romania-poster .image-bottom a:nth-of-type(1),#romania .romania-poster .image-bottom a:nth-of-type(2){
     background-color: #e43527;
@@ -838,10 +842,12 @@ a{
     font-size: 35px;
 }
 .mu-list-dense .mu-item{
-    height: 50px;
+    /* height: 50px; */
+    height: 4.6rem;
 }
 .mu-list-dense .mu-item-title{
-    font-size: 30px;
+    /* font-size: 30px; */
+    font-size: 2rem;
 }
 .mu-form-item .mu-button{
     margin: 0 auto;
