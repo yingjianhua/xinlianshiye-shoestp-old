@@ -344,7 +344,8 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
         <div class="modal-wrap" v-show="isFormShow || isTipDialogShow" @mousewheel.prevent>
             <transition name="el-fade-in-linear">
                 <div class="modal-inner-box" v-show="isFormShow">
-                    <img src="./images/close-black.png" alt="button to close the form" class="btn-close"
+                    <img src="/activity/Jsp/Romania/Romaniaindex/images/close-black.png" alt="button to close the form"
+                         class="btn-close"
                          @click="isFormShow = false">
                     <div class="form-title" v-html="text_content.form_title">
                         <!-- 2018年
@@ -379,14 +380,13 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 
                         <div class="tc">
                             <el-button type="danger form-button" @click="formSubmit">
-															{{text_content.submit}}
-															<!-- 提交 -->
-														</el-button>
+                                {{text_content.submit}}
+                                <!-- 提交 -->
+                            </el-button>
                         </div>
 
-                        <div class="tips">
+                        <div class="tips" v-html="text_content.form_title">
                             <!-- 告诉我们您的需求，我们会尽快回复您! -->
-														{{text_content.form_title}}
                         </div>
                     </el-form>
                 </div>
@@ -396,10 +396,11 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
             <transition name="el-zoom-in-center">
                 <div class="model-confirm" v-show="isTipDialogShow">
                     <div class="close-wrap">
-                        <img src="./images/close-red.png" alt="close" class="close" @click="isTipDialogShow=false">
+                        <img src="/activity/Jsp/Romania/Romaniaindex/images/close-red.png" alt="close" class="close"
+                             @click="isTipDialogShow=false">
                     </div>
                     <div class="model-confirm-content flexible flex-center">
-                        <img src="./images/right-red.png" alt="right" class="icon">
+                        <img src="/activity/Jsp/Romania/Romaniaindex/images/right-red.png" alt="right" class="icon">
                         <div>
                             {{text_content.success_tip}}
                         </div>
@@ -416,107 +417,107 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <script>
     const img_confing = stpshop_config
 
-    text_content={
-			"menShoes": "MEN'S SHOES",
-			"womenShoes": "WOMEN'S SHOES",
-			"childrenShoes": "CHILDREN'S SHOES",
-			"viewMore": "VIEW MORE",
-			"recommendedProducts": "Recommended Products", //轮播header
-			"precedente": "precedente",
-			"successivo": "successivo",
-			"inquiry": "INQUIRY",
+    text_content = {
+        "menShoes": "MEN'S SHOES",
+        "womenShoes": "WOMEN'S SHOES",
+        "childrenShoes": "CHILDREN'S SHOES",
+        "viewMore": "VIEW MORE",
+        "recommendedProducts": "Recommended Products", //轮播header
+        "precedente": "precedente",
+        "successivo": "successivo",
+        "inquiry": "INQUIRY",
 
-			form_title: "2018 ROMANIAN<br>OFFLINE SHOES PURCHASING",
-			form_bottom_text:"Tell us what you want, we'll reply you as soon as possible!",
-			name: "Contact:",
-			phone: "phone:",
-			email: "E-mail:",
-			country: "Country:",
-			inquiry: "inquiry:",
-			submit: "Submit",
-			success_tip: "Submitted successfully",
-			confirm: "Confirm",
-			pleaseSelectCountry: "Please select your country",
+        form_title: "2018 ROMANIAN<br>OFFLINE SHOES PURCHASING",
+        form_bottom_text: "Tell us what you want, we'll reply you as soon as possible!",
+        name: "Contact:",
+        phone: "phone:",
+        email: "E-mail:",
+        country: "Country:",
+        inquiry: "inquiry:",
+        submit: "Submit",
+        success_tip: "Submitted successfully",
+        confirm: "Confirm",
+        pleaseSelectCountry: "Please select your country",
 
-			rule_name_empty: "Name cannot be empty, please re-fill",
-			rule_country_empty: "Please select a country",
-			rule_phone_empty: "Phone number cannot be empty, please re-fill",
-			rule_phone_format: "The phone number is in the wrong format, please re-fill",
-			rule_email_empty: "Email cannot be empty, please re-fill",
-			rule_email_format: "The mailbox format is incorrect, please re-fill",
-		}
+        rule_name_empty: "Name cannot be empty, please re-fill",
+        rule_country_empty: "Please select a country",
+        rule_phone_empty: "Phone number cannot be empty, please re-fill",
+        rule_phone_format: "The phone number is in the wrong format, please re-fill",
+        rule_email_empty: "Email cannot be empty, please re-fill",
+        rule_email_format: "The mailbox format is incorrect, please re-fill",
+    }
 
     new Vue({
         el: '#app',
         data: {
             isFormShow: false, //是否显示弹窗
             isTipDialogShow: false, //是否显示提示弹窗
-    				form: {
+            form: {
                 country: "-1"
             }, //form提交的内容
-    				countryList: [], //国家列表
+            countryList: [], //国家列表
 
 
             img_confing: img_confing,
             text_content: text_content,
             text_content_en: text_content,
             text_content_zh: {
-    					"menShoes": "男鞋",
-    					"womenShoes": "女鞋",
-    					"childrenShoes": "童鞋",
-    					"viewMore": "查看更多",
-    					"recommendedProducts": "产品推荐", //轮播header
-    					"precedente": "上一个",
-    					"successivo": "下一个",
-    					"inquiry": "询盘",
+                "menShoes": "男鞋",
+                "womenShoes": "女鞋",
+                "childrenShoes": "童鞋",
+                "viewMore": "查看更多",
+                "recommendedProducts": "产品推荐", //轮播header
+                "precedente": "上一个",
+                "successivo": "下一个",
+                "inquiry": "询盘",
 
-    					form_title: "2018年 <br>罗马尼亚线下鞋类采购会",
-    					form_bottom_text: "告诉我们您的需求，我们会尽快回复您!",
-    					name: "联系人:",
-    					phone: "电话:",
-    					email: "电子邮件:",
-    					country: "国家:",
-    					inquiry: "需求:",
-    					submit: "提交",
-    					success_tip: "提交成功",
-    					confirm: "确定",
-    					pleaseSelectCountry: "请选择您所在的国家",
+                form_title: "2018年 <br>罗马尼亚线下鞋类采购会",
+                form_bottom_text: "告诉我们您的需求，我们会尽快回复您!",
+                name: "联系人:",
+                phone: "电话:",
+                email: "电子邮件:",
+                country: "国家:",
+                inquiry: "需求:",
+                submit: "提交",
+                success_tip: "提交成功",
+                confirm: "确定",
+                pleaseSelectCountry: "请选择您所在的国家",
 
-    					rule_name_empty: "姓名不可为空，请重新填写",
-    					rule_country_empty: "请选择国家",
-    					rule_phone_empty: "电话号码不可为空，请重新填写",
-    					rule_phone_format: "电话号码格式错误，请重新填写",
-    					rule_email_empty: "邮箱不可为空，请重新填写",
-    					rule_email_format: "邮箱格式错误，请重新填写",
-    				},
+                rule_name_empty: "姓名不可为空，请重新填写",
+                rule_country_empty: "请选择国家",
+                rule_phone_empty: "电话号码不可为空，请重新填写",
+                rule_phone_format: "电话号码格式错误，请重新填写",
+                rule_email_empty: "邮箱不可为空，请重新填写",
+                rule_email_format: "邮箱格式错误，请重新填写",
+            },
             text_content_ro: {
-    					"menShoes": "Pantofi pentru bărbați",
-    					"womenShoes": "Pantofi pentru femei",
-    					"childrenShoes": "Pantofi pentru copii",
-    					"viewMore": "Vezi mai mult",
-    					"recommendedProducts": "Pantofi recomandați", //轮播header
-    					"precedente": "anterior",
-    					"successivo": "următorul",
-    					"inquiry": "Anchetă",
-    					form_title: "2018 ADUNARE DE APRECIERE<br>A MOSTRELOR DE PANTOFI OFFLINE, ROMANIA",
-    					form_bottom_text: "Spuneți-ne ce vreți, vă vom răspunde cât mai curând posibil!",
-    					name: "Contact:",
-    					phone: "telefon:",
-    					email: "E-mail:",
-    					country: "țară:",
-    					inquiry: "Ancheta:",
-    					submit: "prezenta",
-    					success_tip: "Trimise cu succes",
-    					confirm: "Confirma",
-    					pleaseSelectCountry: "Selectați țara dvs.",
+                "menShoes": "Pantofi pentru bărbați",
+                "womenShoes": "Pantofi pentru femei",
+                "childrenShoes": "Pantofi pentru copii",
+                "viewMore": "Vezi mai mult",
+                "recommendedProducts": "Pantofi recomandați", //轮播header
+                "precedente": "anterior",
+                "successivo": "următorul",
+                "inquiry": "Anchetă",
+                form_title: "2018 ADUNARE DE APRECIERE<br>A MOSTRELOR DE PANTOFI OFFLINE, ROMANIA",
+                form_bottom_text: "Spuneți-ne ce vreți, vă vom răspunde cât mai curând posibil!",
+                name: "Contact:",
+                phone: "telefon:",
+                email: "E-mail:",
+                country: "țară:",
+                inquiry: "Ancheta:",
+                submit: "prezenta",
+                success_tip: "Trimise cu succes",
+                confirm: "Confirma",
+                pleaseSelectCountry: "Selectați țara dvs.",
 
-    					rule_name_empty: "Numele nu poate fi gol, vă rugăm să re-umpleți",
-    					rule_country_empty: "Selectați țara",
-    					rule_phone_empty: "Numărul de telefon nu poate fi gol, reîncărcați",
-    					rule_phone_format: "Numărul de telefon este în format greșit, reîncărcați",
-    					rule_email_empty: "E-mailul nu poate fi gol, vă rugăm să re-completați",
-    					rule_email_format: "Formatul căsuței poștale este incorect, reîncărcați",
-    				},
+                rule_name_empty: "Numele nu poate fi gol, vă rugăm să re-umpleți",
+                rule_country_empty: "Selectați țara",
+                rule_phone_empty: "Numărul de telefon nu poate fi gol, reîncărcați",
+                rule_phone_format: "Numărul de telefon este în format greșit, reîncărcați",
+                rule_email_empty: "E-mailul nu poate fi gol, vă rugăm să re-completați",
+                rule_email_format: "Formatul căsuței poștale este incorect, reîncărcați",
+            },
             manShoesList: [],
             womanShoesList: [],
             childrenShoesList: [],
@@ -612,16 +613,16 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                     // },
                 })
             },
-            getCountryList(){
-              axios.get('/home/plt_PltCountry_list?lang='+img_confing.lang+'&filter=romania')
-    	        .then((res) => {
-    	            if (res.data.ret == 1) {
-    	                this.countryList = res.data.result
-    	            }
-    	        })
-    	        .catch(function (err) {
-    	            console.log("err");
-    	        });
+            getCountryList() {
+                axios.get('/home/plt_PltCountry_list?lang=' + img_confing.lang + '&filter=romania')
+                    .then((res) => {
+                        if (res.data.ret == 1) {
+                            this.countryList = res.data.result
+                        }
+                    })
+                    .catch(function (err) {
+                        console.log("err");
+                    });
             },
             // 点击获取礼物 - 弹出form框
             getGift() {

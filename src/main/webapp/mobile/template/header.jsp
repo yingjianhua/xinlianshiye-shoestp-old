@@ -12,7 +12,6 @@
     }
 
     gtag('js', new Date());
-
     gtag('config', 'AW-783435725');
     gtag('config', 'UA-127715615-6')
 
@@ -39,6 +38,7 @@
         return new Date(systemTime + (timezoneOffset * 60 * 1000 + stpshop_config.timezoneOffset));
     }
     var ueeshop_config = stpshop_config;
+    var isLogin = ${env.login!=null};
 
 
 </script>
