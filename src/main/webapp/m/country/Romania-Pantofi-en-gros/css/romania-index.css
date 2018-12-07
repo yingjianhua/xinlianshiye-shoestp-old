@@ -393,6 +393,11 @@ a{
     display: inline-block;
     padding: 0 20px;
     height: 80px;
+    max-width: 90%;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+
     line-height: 80px;
     vertical-align: middle;
     white-space: nowrap;
@@ -857,8 +862,13 @@ a{
     border-radius: 10px;
     font-size: 50px;
 }
+.mu-item-title {
+    height: 3rem;
+    line-height: 3rem;
+}
 .mu-form-item-help{
-    font-size: 25px;
+  bottom: -10px;
+  font-size: 25px;
 }
 .mu-text-field-input,
 .mu-select-input{
