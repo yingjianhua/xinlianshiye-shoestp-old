@@ -2,6 +2,7 @@ package irille.shop.plt;
 
 import irille.Entity.Activity.ActivityInfo;
 import irille.Entity.Activity.SupGoogleView;
+import irille.Entity.Pk.PkCompetitionData;
 import irille.Entity.newInq.NewInquiry;
 import irille.core.prv.PrvRoleAct;
 import irille.core.sys.SysModule;
@@ -49,6 +50,7 @@ public class Plt extends PackageBase {
         addTb(43, ActivityInfo.class);
         addTb(44, SupGoogleView.class);
         addTb(45, NewInquiry.class);
+        addTb(46, PkCompetitionData.class);
 
     }
 
