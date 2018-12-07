@@ -331,6 +331,7 @@ public class PdtProductDao {
         List<Map> list = q.limit(start * limit, limit).queryMaps();
         Page page = new Page(list.stream().map(o -> {
             o.put("category", translateUtil.getLanguage(o.get("category"), PltConfigDAO.supplierLanguage(supplierId)));
+            o.put("rewrite", SEOUtils.getPdtProductTitle(Integer.valueOf(String.valueOf(o.get("pkey"))), String.valueOf(o.get("name"))));
             o.put("name", translateUtil.getLanguage(o.get("name"), PltConfigDAO.supplierLanguage(supplierId)));
             o.put("categoryDiy", translateUtil.getLanguage(o.get("categoryDiy"), PltConfigDAO.supplierLanguage(supplierId)));
             o.put("update_time", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(o.get("update_time")));
