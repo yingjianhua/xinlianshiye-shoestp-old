@@ -3,14 +3,16 @@ package irille.pub.util.excel;
 import irille.pub.util.excel.Entity.AbsRichTextString;
 import irille.pub.util.excel.Entity.CellData;
 import irille.pub.util.excel.Entity.ExcelSettings;
+import irille.pub.util.excel.Entity.ToZipOutputStream;
 import irille.pub.util.excel.Other.DateCellStyle;
 import irille.pub.util.excel.Units.ExcelUnits;
+import lombok.Getter;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.poi.POIXMLDocumentPart;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
@@ -20,13 +22,17 @@ import org.openxmlformats.schemas.drawingml.x2006.spreadsheetDrawing.CTMarker;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.charset.Charset;
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class BaseExcel {
     private Workbook workbook;
     private Sheet activeSheet;
     private String filePath;
+    @Getter
     private String suffix = "xlsx";
     private int activeSheetId;
 
@@ -234,6 +240,43 @@ public class BaseExcel {
         cell.setCellStyle(style);
     }
 
+    /**
+     * @Description: 设置边框..默认黑色
+     * @date 2018/12/7 16:14
+     * @author lijie@shoestp.cn
+     */
+    public void setCellBorderStyle(int x, int y) {
+        CellStyle style = workbook.createCellStyle();
+        Row row = getRow(y);
+        Cell cell = row.getCell(x);
+        if (cell == null) {
+            cell = row.createCell(x);
+        }
+        style.setBorderBottom(CellStyle.BORDER_THIN);
+        style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        style.setBorderLeft(CellStyle.BORDER_THIN);
+        style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        style.setBorderRight(CellStyle.BORDER_THIN);
+        style.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        style.setBorderTop(CellStyle.BORDER_THIN);
+        style.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        cell.setCellStyle(style);
+    }
+
+    /**
+     * @Description: 设置边框..默认黑色
+     * @date 2018/12/7 16:14
+     * @author lijie@shoestp.cn
+     */
+    public void setCellBorderStyle(int x, int y, int x1, int y2) {
+        for (int i = x; i < x1; i++) {
+            for (int i1 = y; i1 < y2; i1++) {
+                setCellBorderStyle(i, i1);
+            }
+        }
+
+    }
+
 
     public Row addRow(Sheet sheet, Integer rowIndex) {
         Row row = null;
@@ -423,27 +466,31 @@ public class BaseExcel {
      * @author lijie@shoestp.cn
      */
     public void addPic(int i, int i1, int i2, int i3, String s) {
-        HttpClient httpclient = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet(String.valueOf(s));
-        httpGet
-                .setHeader(
-                        "User-Agent",
-                        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.79 Safari/537.1");
-        httpGet
-                .setHeader("Accept",
-                        "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-        BufferedImage bufferedImage = null;
         try {
-            HttpResponse resp = httpclient.execute(httpGet);
-            if (HttpStatus.SC_OK == resp.getStatusLine().getStatusCode()) {
-                HttpEntity entity = resp.getEntity();
-                bufferedImage = ImageIO.read(entity.getContent());
+            CloseableHttpClient httpclient = HttpClients.createDefault();
+            HttpGet httpGet = new HttpGet(String.valueOf(s));
+            httpGet
+                    .setHeader(
+                            "User-Agent",
+                            "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.79 Safari/537.1");
+            httpGet
+                    .setHeader("Accept",
+                            "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+            BufferedImage bufferedImage = null;
+            CloseableHttpResponse resp = null;
+            resp = httpclient.execute(httpGet);
+            if (HttpStatus.SC_OK != resp.getStatusLine().getStatusCode()) {
+                return;
             }
-            String filesuffix = s.substring(s.lastIndexOf(".") + 1);
-            org.apache.commons.io.output.ByteArrayOutputStream byteArrayOut = new org.apache.commons.io.output.ByteArrayOutputStream();
+            HttpEntity entity = resp.getEntity();
+            bufferedImage = ImageIO.read(entity.getContent());
+            String filesuffix = ExcelUnits.getSuffix(s);
+            ByteArrayOutputStream byteArrayOut = new ByteArrayOutputStream();
+            resp.close();
             ImageIO.write(bufferedImage, filesuffix, byteArrayOut);
             Drawing patriarch = activeSheet.createDrawingPatriarch();
             ClientAnchor anchor = null;
+
             if (workbook instanceof XSSFWorkbook) {
                 anchor = new XSSFClientAnchor(0, 0, 255, 255, (short) i, i1, (short) i2, i3);
             } else {
@@ -468,10 +515,27 @@ public class BaseExcel {
             }
             if (filetype == -1) return;
             patriarch.createPicture(anchor, workbook.addPicture(byteArrayOut.toByteArray(), filetype));
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            httpclient.getConnectionManager().shutdown();
         }
+    }
+
+
+    public static ByteArrayOutputStream toZipOutputStream(List<ToZipOutputStream> zipOutputStreamList) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try (
+                ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream, Charset.forName("utf-8"));
+        ) {
+            for (ToZipOutputStream toZipOutputStream : zipOutputStreamList) {
+                zipOutputStream.putNextEntry(new ZipEntry("/" + toZipOutputStream.getName() + "." + toZipOutputStream.getSuffix()));
+                zipOutputStream.write(toZipOutputStream.getOutputStream().toByteArray());
+            }
+            zipOutputStream.finish();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return byteArrayOutputStream;
     }
 }
