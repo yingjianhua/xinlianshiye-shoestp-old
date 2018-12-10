@@ -278,6 +278,7 @@ public class OdrMeetingProductDao {
     public Page salesDetailslist(Integer start, Integer limit, Integer id, String input, Integer status, FldLanguage.Language lang, Integer supplierId) {
         SQL subSql = new SQL() {{
             SELECT(PdtProduct.T.PICTURE, "image")
+                    .SELECT(PdtProduct.T.PKEY,"pkey")
                     .SELECT(PdtProduct.T.NAME, "name")
                     .SELECT(OrderMeetingProduct.T.NEWPRICE, "orderPrice")
                     .SELECT(OrderMeetingProduct.T.STATUS, "status")
@@ -325,6 +326,7 @@ public class OdrMeetingProductDao {
         SQL sql = new SQL() {
             {
                 SELECT(PdtProduct.T.PICTURE, "image")
+                        .SELECT(PdtProduct.T.PKEY,"pkey")
                         .SELECT(PdtProduct.T.NAME, "name")
                         .SELECT(OrderMeetingProduct.T.NEWPRICE, "orderPrice")
                         .SELECT(OrderMeetingProduct.T.STATUS, "status")
@@ -369,6 +371,7 @@ public class OdrMeetingProductDao {
             Map<String, ColorView> map = new HashMap<>();
             ColorView colorView = new ColorView();
             SizeView sizeView = new SizeView();
+            view.setPkey(Integer.valueOf(String.valueOf(o.get("pkey"))));
             if (o.get("image") != null) {
                 view.setImage(String.valueOf(o.get("image")).split(",")[0]);
             }
@@ -393,30 +396,41 @@ public class OdrMeetingProductDao {
             sizeView.setSize(translateUtil.getLanguage(o.get("sizeName"), lang));
             if (o.get("orderPrice") != null) {
                 sizeView.setNormOrderPrice(BigDecimal.valueOf(Double.valueOf(String.valueOf(o.get("orderPrice")))));
-            } else {
-                sizeView.setNormOrderPrice(new BigDecimal(0));
             }
             if (o.get("normQuantity") != null) {
                 sizeView.setNormQuantity(Integer.valueOf(Double.valueOf(String.valueOf(o.get("normQuantity"))).intValue()));
-            } else {
-                sizeView.setNormQuantity(0);
+//            } else {
+//                sizeView.setNormQuantity(0);
             }
             if (o.get("person") != null) {
                 sizeView.setPurchaseNumber(Integer.valueOf(String.valueOf(o.get("person"))));
-            } else {
-                sizeView.setPurchaseNumber(0);
+//            } else {
+//                sizeView.setPurchaseNumber(0);
             }
             if (o.get("normQuantity") != null) {
                 sizeView.setNormTotalAmount(BigDecimal.valueOf(Double.valueOf(String.valueOf(o.get("normTotalAmount")))));
-            } else {
-                sizeView.setNormTotalAmount(new BigDecimal(0));
+//            } else {
+//                sizeView.setNormTotalAmount(new BigDecimal(0));
             }
-            colorView.setSize(sizeView);
-            map.put("color", colorView);
-            view.setSpecification(map);
 
-            return view;
+            if (colorView.getColor() == null && colorView.getImage() == null && colorView.getSize() == null) {
+                return null;
+            } else {
+                colorView.setSize(sizeView);
+                map.put("color", colorView);
+                view.setSpecification(map);
+                return view;
+            }
         }).collect(Collectors.toList());
-        return new Page(listView, start, limit, count);
+        for (OdrSalesDetailsView odrSalesDetailsView : listView) {
+            if(odrSalesDetailsView==null){
+                return null;
+            }
+        }
+        if (listView != null) {
+            return new Page(listView, start, limit, count);
+        } else {
+            return null;
+        }
     }
 }

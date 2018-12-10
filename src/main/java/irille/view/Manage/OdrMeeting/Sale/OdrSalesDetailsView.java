@@ -10,6 +10,7 @@ import java.util.Map;
 
 @Data
 public class OdrSalesDetailsView implements BaseView {
+    private Integer pkey;//产品id用于查看订单
     private String image;//图片
     @JsonSerialize(using = I18NFieldSerializer.class)
     private String name;//产品名称
