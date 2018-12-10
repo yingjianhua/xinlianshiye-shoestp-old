@@ -456,7 +456,7 @@ public class OdrOrderDAO {
         return asViewWithDetail(q.queryList(), start, limit, q.queryCount(), lang);
     }
 
-    public static Page<OrderView> lists(Integer start, Integer limit, Integer billingStatus, Integer productId, Language lang) {
+    public static Page<OrderView> lists(Integer start, Integer limit, OrderSearchView search, Integer billingStatus, Integer productId, Language lang) {
         SQL sql = new SQL() {
             {
                 SELECT(T.CURRENCY)
@@ -474,15 +474,40 @@ public class OdrOrderDAO {
                         .WHERE(T.TYPE, "=?", 1)
                         .WHERE(PdtProduct.T.PKEY, "=?", productId)
                         .WHERE(OrderMeetingProduct.T.BILLINGSTATUS, "=?", billingStatus);
+                if (search != null) {
+                    if (search.getEmail() != null) {
+                        LEFT_JOIN(UsrPurchase.class, T.PURCHASE, UsrPurchase.T.PKEY);
+                        WHERE(UsrPurchase.T.EMAIL, "like ?", "%" + search.getEmail() + "%");
+                    }
+                    if (search.getNumber() != null) {
+                        WHERE(T.ORDER_NUM, "like ?", "%" + search.getNumber() + "%");
+                    }
+                    if (search.getBeginTime() != null) {
+                        WHERE(T.TIME, ">?", search.getBeginTime());
+                    }
+                    if (search.getEndTime() != null) {
+                        WHERE(T.TIME, "<?", search.getEndTime());
+                    }
+                    if (search.getPayType() != null) {
+                        WHERE(T.PAY_TYPE, "=?", search.getPayType());
+                    }
+                    if (search.getStatus() != null) {
+                        WHERE(T.STATE, "=?", search.getStatus());
+                    }
+                    if (search.getTypes() != null) {
+                        WHERE(T.TYPE, "=?", search.getTypes());
+                    }
+                }
             }
         };
         Integer count = irille.pub.bean.Query.sql(sql).queryCount();
         List<OrderView> views = irille.pub.bean.Query.sql(sql).queryMaps().stream().map(o -> {
             OrderView view = new OrderView();
-            PltErate plt = BeanBase.load(PltErate.class,String.valueOf(o.get(T.CURRENCY.getFld().getCodeSqlField())));
-            PltErate currency = BeanBase.load(PltErate.class,String.valueOf(o.get(T.CURRENCY.getFld().getCodeSqlField())));;
+            PltErate plt = BeanBase.load(PltErate.class, String.valueOf(o.get(T.CURRENCY.getFld().getCodeSqlField())));
+            PltErate currency = BeanBase.load(PltErate.class, String.valueOf(o.get(T.CURRENCY.getFld().getCodeSqlField())));
+            ;
             view.setNumber(String.valueOf(o.get(T.ORDER_NUM.getFld().getCodeSqlField())));
-            view.setDate((Date)(o.get(T.TIME.getFld().getCodeSqlField())));
+            view.setDate((Date) (o.get(T.TIME.getFld().getCodeSqlField())));
             view.setStatus(Byte.valueOf(String.valueOf(o.get(T.STATE.getFld().getCodeSqlField()))));
             view.setTotal(BigDecimal.valueOf(Double.valueOf(String.valueOf(o.get(T.PRICE_TOTAL.getFld().getCodeSqlField())))));
             List<OdrOrderLine> odrLineList = OdrOrderLineDAO.listByOrder(Long.valueOf(String.valueOf(o.get(T.PKEY.getFld().getCodeSqlField()))));

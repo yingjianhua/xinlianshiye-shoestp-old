@@ -172,7 +172,7 @@ public class OdrOrderAction extends SellerAction<OdrOrder> implements IOdrOrderA
     }
 
     public void lists() throws IOException {
-        write(OdrOrderDAO.lists(getStart(), getLimit(), billingStatus, productId, PltConfigDAO.supplierLanguage(getSupplier())));
+        write(OdrOrderDAO.lists(getStart(), getLimit(),search, billingStatus, productId, PltConfigDAO.supplierLanguage(getSupplier())));
     }
 
     /**
