@@ -10,7 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class EasyOdrline extends BeanInt<EasyOdrline> {
-    public static final Tb<?> TB =  new Tb(EasyOdrline.class,"简单订单管理详情").setAutoIncrement().addActIUDL();
+    public static final Tb<?> TB =  new Tb(EasyOdrline.class,"简单订单管理详情").setAutoIncrement();
     public  enum T  implements IEnumFld {//@formatter:off
         PKEY(TB.crtIntPkey()),
         ORDER_ID(EasyOdr.fldOutKey().setName("简单订单")),

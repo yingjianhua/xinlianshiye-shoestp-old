@@ -17,11 +17,11 @@ public class EasyOdr extends BeanInt<EasyOdr> {
     public static final Tb<?> TB =  new Tb(EasyOdr.class,"简单订单管理").setAutoIncrement().addActIUDL();
     public  enum T  implements IEnumFld {//@formatter:off
         PKEY(TB.crtIntPkey()),
-        PURCHASE(UsrPurchase.fldOutKey().setName("用户").setNull()),
-        SUPPLIER(UsrSupplier.fldOutKey().setName("供应商").setNull()),
+        PURCHASE(UsrPurchase.fldOutKey()),
+        SUPPLIER(UsrSupplier.fldOutKey()),
         ORDER_NUM(SYS.STR__100_NULL,"订单号"),
         TIME(SYS.DATE_TIME,"下单时间"),
-        NAME(SYS.STR__20,"名字"),
+        NAME(SYS.STR__20,"联系人名字"),
         PHONE(SYS.STR__100,"电话号码"),
         ADDRESS(SYS.JSON,"收货地址"),
         COUNYPD(SYS.INT,"商品总数量"),

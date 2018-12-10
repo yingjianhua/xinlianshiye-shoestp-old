@@ -19,10 +19,6 @@ public class EEasyOdrOrder extends EasyOdr {
         VFlds[] searchVflds = new VFlds[]{new VFlds(T.ORDER_NUM)};
         EMCrtComp ext = new EMCrtComp(TB, vflds, mflds, searchVflds,
                 new VFlds[]{new VFlds(EasyOdrline.T.ORDER_ID)});
-        VFlds vfl = ext.getVfldsForm();
-        vfl.del(T.ORDER_NUM);//删除订单号
-        vfl.del(T.TIME);//订单时间
-        vfl.del(T.COUNYPD);//订单总价
         ext.newExts().init();
         return ext;
     }
