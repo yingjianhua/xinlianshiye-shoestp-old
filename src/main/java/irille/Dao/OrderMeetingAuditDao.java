@@ -6,6 +6,7 @@ import irille.Entity.OdrerMeetings.OrderMeetingAudit;
 import irille.Entity.OdrerMeetings.OrderMeetingProduct;
 import irille.pub.Log;
 import irille.pub.PropertyUtils;
+import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduIns;
@@ -82,6 +83,8 @@ public class OrderMeetingAuditDao {
             WHERE(OrderMeetingAudit.T.ODRMEETING, "= ? ", omtid);
             WHERE(OrderMeetingAudit.T.STATUS, " <>?", OrderMeetingAuditStatus.DELETE.getLine().getKey());
         }};
+
+
         Integer count = Query.sql(sql).queryCount();
         Query.sql(sql).limit(start, limit);
         List<OdrAuditsupplierView> oal = Query.sql(sql).queryMaps().stream().map(o -> {
@@ -104,6 +107,8 @@ public class OrderMeetingAuditDao {
             omv.setShopnum(Query.sql(sql1).queryCount());
             return omv;
         }).collect(Collectors.toList());
+
+
         return new Page(oal, start, limit, count);
     }
 }

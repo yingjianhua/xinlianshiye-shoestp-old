@@ -84,17 +84,17 @@ public class OdrMeetingDao {
             }
             if (onstate != null) {
                 WHERE(OrderMeeting.T.STATUS, " =?", onstate);
-            } else {
-                WHERE(OrderMeeting.T.STATUS, " <>?", OrderMeetingStatus.DELETE.getLine().getKey());
             }
+                WHERE(OrderMeeting.T.STATUS, " <>?", OrderMeetingStatus.DELETE.getLine().getKey());
+
             if (getSupplier != null) {
                 WHERE(OrderMeeting.T.SUPPLIERID, " =?", getSupplier);
             }
             if (supstate != null) {
                 WHERE(OrderMeetingAuditRelease.T.STATUS, " =?", supstate);
-            } else {
-                WHERE(OrderMeetingAuditRelease.T.STATUS, " <>?", OrderMeetingAuditStatus.DELETE.getLine().getKey());
             }
+                WHERE(OrderMeetingAuditRelease.T.STATUS, " <>?", OrderMeetingAuditStatus.DELETE.getLine().getKey());
+
             ORDER_BY(OrderMeeting.T.UPDATED_TIME, "desc");
         }};
         Integer count = Query.sql(sql).queryCount();
