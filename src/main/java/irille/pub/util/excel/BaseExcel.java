@@ -529,7 +529,7 @@ public class BaseExcel {
                 ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream, Charset.forName("utf-8"));
         ) {
             for (ToZipOutputStream toZipOutputStream : zipOutputStreamList) {
-                zipOutputStream.putNextEntry(new ZipEntry("/" + toZipOutputStream.getName() + "." + toZipOutputStream.getSuffix()));
+                zipOutputStream.putNextEntry(new ZipEntry(toZipOutputStream.getName() + "." + toZipOutputStream.getSuffix()));
                 zipOutputStream.write(toZipOutputStream.getOutputStream().toByteArray());
             }
             zipOutputStream.finish();
