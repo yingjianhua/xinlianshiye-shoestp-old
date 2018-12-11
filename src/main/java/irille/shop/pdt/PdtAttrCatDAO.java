@@ -19,19 +19,19 @@ public class PdtAttrCatDAO {
     public static final Log LOG = new Log(PdtAttrCatDAO.class);
     
     public static class Ins extends IduIns<Ins,PdtAttrCat>{
-    	@Override
-    	public void before() {
-    		super.before();
-    		getB().setDeleted(OYn.NO.getLine().getKey());
-    		getB().setCreateBy(getUser().getPkey());
-    		getB().setCreateTime(Env.getSystemTime());
-    	}
-    	
-    	@Override
-    	public void valid() {
-    		super.valid();
-    		ValidForm.validEmpty(getB().getName(),PdtAttrCat.T.NAME);
-    	}
+            @Override
+            public void before() {
+                super.before();
+                getB().setDeleted(OYn.NO.getLine().getKey());
+                getB().setCreateBy(getUser().getPkey());
+                getB().setCreateTime(Env.getSystemTime());
+            }
+
+            @Override
+            public void valid() {
+                super.valid();
+                ValidForm.validEmpty(getB().getName(),PdtAttrCat.T.NAME);
+            }
     }
     
     public static class Upd extends IduUpd<Upd,PdtAttrCat>{

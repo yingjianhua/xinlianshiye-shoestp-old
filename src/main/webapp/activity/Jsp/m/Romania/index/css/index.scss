@@ -2,10 +2,11 @@
 @import 'reset';
 
 // 下拉选默认样式改变
-.category-select-list .mu-popover{
+.mu-popover.transition-bottom{
   left: 0!important;
   width: 100%!important;
   min-width: 100%!important;
+  max-width: 100%!important;
   .mu-list{
     padding: 0;
     li{
@@ -50,10 +51,10 @@
   .btn-red{
     display: inline-block;
     padding: 0 0.4rem;
-    height: 1.6rem;
+    // height: 1.6rem;
     line-height: 1.6rem;
 		font-weight: bold;
-    border: none; 
+    border: none;
     border-radius: 0.2rem;
     font-size: 0.625rem;
     color: white!important;
@@ -194,6 +195,7 @@
       background: url("../images/btn-bg.png") no-repeat center / cover;
 
       .icon-letter{
+        vertical-align: middle;
         position: relative;
         top: -0.05rem;
         width: 0.906rem;
@@ -223,6 +225,8 @@
   }
   .hoodle_modle{
       position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.7);
@@ -285,12 +289,7 @@
     font-size: 0.9rem;
     line-height: 1.8rem;
   }
-  // .mu-popover{
-  //   max-width: 78%;
-  //   left: 0 !important;
-  //   width: 100% !important;
-  //   min-width: 100% !important;
-  // }
+
   .mu-form-item .mu-input {
     border: 1px solid #CC5522;
     border-radius: 0.2rem;
@@ -343,8 +342,11 @@
   }
   .hoodle .hf-input .hf-text{
 
-      font-size: 0.5rem;
+      font-size: 0.75rem;
       text-align: center;
       margin-bottom: 0 auto 1rem;
+  }
+  .mu-button-wrapper{
+    color: #fff;
   }
 }

@@ -442,8 +442,8 @@
               '<div class="procurement-button">' +
               '<span class="bga8" onclick="addThisToFavorite(' + val.productId
               + ')" style=font-size:11px>' + lang_obj.mobile.Collection + '</span>' +
-          /*    '<span class="bgdb" onclick="addThisToCart(' + val.productId + ');">'
-              + lang_obj.mobile.Add_To_Shopping_Cart + '</span>' +*/
+              '<span class="bgdb" onclick="addThisToCart(' + val.productId + ');">'
+              + lang_obj.mobile.Add_To_Shopping_Cart + '</span>' +
               '</div>' +
               '</div>';
         });

@@ -17,7 +17,7 @@ import java.util.Date;
  * Time: 11:21
  */
 public class SupGoogleView extends BeanInt<SupGoogleView> {
-    public static final Tb TB = new Tb(SupGoogleView.class, "商家谷歌数据视图").setAutoIncrement();
+    public static final Tb TB = new Tb(SupGoogleView.class, "商家谷歌数据视图保存").setAutoIncrement();
 
     public enum T implements IEnumFld {
         PKEY(TB.crtIntPkey()),

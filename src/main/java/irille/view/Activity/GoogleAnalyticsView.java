@@ -13,8 +13,8 @@ import lombok.Data;
 public class GoogleAnalyticsView {
     private Integer id;
     private Integer type;
-    private Integer inquiry;
-    private Integer trafficVolume;
-    private Integer pe;
+    private int inquiry;
+    private int trafficVolume;
+    private int pe;
 
 }

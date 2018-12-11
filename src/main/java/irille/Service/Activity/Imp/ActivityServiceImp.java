@@ -264,7 +264,6 @@ public class ActivityServiceImp implements IActivityService {
                                 googleAnalyticsView.setPe(Integer.valueOf(values.getValues().get(k)));
                                 googleAnalyticsView.setInquiry(0);
                                 googleAnalyticsView.setTrafficVolume(0);
-                                googleAnalyticsView.setId(supId);
                             }
                         }
                     }
@@ -272,6 +271,7 @@ public class ActivityServiceImp implements IActivityService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            googleAnalyticsView.setId(supId);
             result.put(supId, googleAnalyticsView);
 
         });

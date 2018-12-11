@@ -24,6 +24,14 @@ public class PltCountryDAO {
         return PltCountry.chkUniqueShort_name(false, name);
     }
 
+    public PltCountry loadById(int id) {
+        return PltCountry.chk(PltCountry.class, id);
+    }
+
+    public PltProvince loadProvinceById(int id) {
+        return PltProvince.chk(PltProvince.class, id);
+    }
+
     public static List<PltCountry> list(Language lang) {
         SQL sql = new I18NSQL(lang) {{
             SELECT(T.PKEY, T.NAME, T.SHORT_NAME);
