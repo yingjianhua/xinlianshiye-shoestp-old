@@ -4,7 +4,7 @@ import irille.pub.bean.BeanMain;
 import irille.pub.util.GenericsUtils;
 import org.apache.struts2.ServletActionContext;
 
-import java.io.IOException;
+import java.io.*;
 
 public abstract class BeanAction<T extends BeanMain> extends BaseAction {
 
@@ -48,6 +48,30 @@ public abstract class BeanAction<T extends BeanMain> extends BaseAction {
             return new String(buffer, "utf-8");
         }
         return null;
+    }
+
+
+    protected void sendOutPuiStreanm(ByteArrayOutputStream byteArrayOutputStream, String downloadFileName) {
+        ServletActionContext.getResponse().setHeader("Content-disposition", "filename=" + downloadFileName);
+        ServletActionContext.getResponse().setContentType("text/plain");
+        ByteArrayInputStream inputStream = null;
+        try {
+            inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+            ServletActionContext.getResponse().setHeader("Content-Length", String.valueOf(inputStream.available()));
+            OutputStream outputStream = new BufferedOutputStream(ServletActionContext.getResponse().getOutputStream());
+            byte[] bytes = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(bytes, 0, 1024)) != -1) {
+                outputStream.write(bytes, 0, bytesRead);
+            }
+            outputStream.flush();
+            outputStream.close();
+            inputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
