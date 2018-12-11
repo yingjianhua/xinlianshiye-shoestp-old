@@ -1,8 +1,5 @@
 package irille.Dao.EO;
 
-import irille.shop.easy.EasyOdr;
-import irille.shop.easy.EasyOdr.T;
-import irille.shop.easy.EasyOdrline;
 import irille.pub.Exp;
 import irille.pub.LogMessage;
 import irille.pub.bean.BeanBase;
@@ -10,6 +7,10 @@ import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduIns;
 import irille.pub.svr.Env;
+import irille.pub.util.excel.BaseExcel;
+import irille.shop.easy.EasyOdr;
+import irille.shop.easy.EasyOdr.T;
+import irille.shop.easy.EasyOdrline;
 import irille.shop.pdt.PdtSpec;
 import irille.shop.usr.UsrCart;
 import irille.shop.usr.UsrPurchase;
@@ -21,6 +22,7 @@ import irille.view.odr.OrderSearchView;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
+import java.io.ByteArrayOutputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,6 +34,133 @@ public class EasyOdrDao {
 
     @Inject
     private  EasyOdrLineDao.Ins lins;
+    @Inject
+    private  EasyOdrLineDao easyOdrLineDao;
+    /**
+    *@Description:  导出新订单详情表格
+    *@date 2018/12/7 13:57
+    *@anthor wilson zhang
+    */
+    public ByteArrayOutputStream oneexport(Integer  eastOdrId, String path) throws  Exception {
+        System.out.println(eastOdrId);
+        easyodrView easyodrView= getload(eastOdrId);
+        easyodrView.setList(easyOdrLineDao.getListOdrLine(eastOdrId));
+        BaseExcel baseExcel = new BaseExcel(this.getClass().getResource("/shoestpnew.xlsx").getPath());
+       Workbook  wb= baseExcel.getWorkbook();
+        CellStyle cellStyle = wb.createCellStyle();
+        cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        cellStyle.setVerticalAlignment(HSSFCellStyle.ALIGN_CENTER);
+        CreationHelper creationHelper = wb.getCreationHelper();
+        cellStyle.setDataFormat(creationHelper.createDataFormat().getFormat("yyyy/mm/dd hh:mm:ss"));
+
+        CellStyle cellStyle1 = wb.createCellStyle();
+        cellStyle1.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        cellStyle1.setVerticalAlignment(HSSFCellStyle.ALIGN_CENTER);
+        cellStyle1.setBorderBottom(CellStyle.BORDER_THIN);
+        cellStyle1.setBorderLeft(CellStyle.BORDER_THIN);
+        cellStyle1.setBorderRight(CellStyle.BORDER_THIN);
+        cellStyle1.setBorderTop(CellStyle.BORDER_THIN);
+        Sheet sheet= wb.getSheetAt(0);
+        sheet.getRow(4).getCell(2).setCellValue(easyodrView.getCompany());
+         Cell cell= sheet.getRow(5).getCell(2) ;
+         cell.setCellValue(easyodrView.getTime());
+         cell.setCellStyle(cellStyle);
+        Cell cell1=sheet.getRow(5).getCell(4);
+        cell1.setCellValue(easyodrView.getName());
+        cell1.setCellStyle(cellStyle1);
+        Cell cell2=sheet.getRow(5).getCell(6);
+        cell2.setCellValue(easyodrView.getPhone());
+        cell2.setCellStyle(cellStyle1);
+        Cell cell3=sheet.getRow(6).getCell(2);
+        cell3.setCellValue(easyodrView.getEmail());
+        cell3.setCellStyle(cellStyle1);
+        Cell cell4=sheet.getRow(6).getCell(4);
+        cell4.setCellValue(easyodrView.getAddress());
+        cell4.setCellStyle(cellStyle1);
+        int start=9;
+        int end=10;
+        List<eolineView> eolist=easyodrView.getList();
+        for (int i = 0; i <eolist.size() ; i++) {
+            if(eolist.get(i).getImage().indexOf(",") != -1){ baseExcel.addPic(1, start, 2, end, "https://image.shoestp.com"+eolist.get(i).getImage().split(",")[0]);
+            }else{ baseExcel.addPic(1, start, 2, end, "https://image.shoestp.com"+eolist.get(i).getImage()); }
+            Cell cellname=sheet.getRow(start).getCell(2);
+            cellname.setCellValue(eolist.get(i).getProductname());
+            cellname.setCellStyle(cellStyle1);
+            Cell cellcolor=sheet.getRow(start).getCell(3);
+            cellcolor.setCellValue(eolist.get(i).getColor());
+            cellcolor.setCellStyle(cellStyle1);
+            Cell cellsize=sheet.getRow(start).getCell(4);
+            cellsize.setCellValue(eolist.get(i).getSize());
+            cellsize.setCellStyle(cellStyle1);
+            Cell cellnum=sheet.getRow(start).getCell(5);
+            cellnum.setCellValue(eolist.get(i).getNum());
+            cellnum.setCellStyle(cellStyle1);
+            Cell cellremak=sheet.getRow(start).getCell(6);
+            if(eolist.get(i).getRemarks()!=null){
+                cellremak.setCellValue(eolist.get(i).getRemarks());
+            }
+            cellremak.setCellStyle(cellStyle1);
+            start+=1;
+            end+=1;
+        }
+        Cell cellcount= baseExcel.addRow(baseExcel.getActiveSheets(),start).createCell(1);
+        cellcount.setCellValue("合计："+easyodrView.getCount());
+        cellcount.setCellStyle(cellStyle1);
+        return  baseExcel.saveToOutputStream();
+    }
+        /**
+        *@Description: 导出多张新订单详情表格
+        *@date 2018/12/10 16:42
+        *@anthor wilson zhang
+        */
+        public ByteArrayOutputStream  manyexport(String eastOdrIds,String path){
+            List list= null;
+            try {
+                list = new ArrayList();
+                for (String s : eastOdrIds.split(",")) {
+                    ToZipOutputStream toZipOutputStream=new ToZipOutputStream();
+                    toZipOutputStream.setName("鞋贸港下单表格"+(new Date()).toString()+"最新修改");
+                    toZipOutputStream.setSuffix("xlsx");
+                    toZipOutputStream.setOutputStream(oneexport(Integer.valueOf(s),path));
+                list.add(toZipOutputStream);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return   BaseExcel.toZipOutputStream(list);
+        }
+
+    /**
+    *@Description:  根据新订单 id获取 新订单easyodrView DTO
+    *@date 2018/12/7 15:00
+    *@anthor wilson zhang
+    */
+    public  easyodrView getload(Integer  eastOdrId) throws  Exception{
+        easyodrView ev=new easyodrView();
+        SQL sql=new SQL(){{
+            SELECT(T.ORDER_NUM,T.ADDRESS,T.COUNYPD,T.NAME,T.TIME,T.PHONE,T.PURCHASE);
+            FROM(EasyOdr.class);
+            WHERE(T.PKEY,"=?",eastOdrId);
+        }};
+        Map<String,Object> os= Query.sql(sql).queryMap();
+        UsrPurchase up= BeanBase.load(UsrPurchase.class,(Integer)os.get(T.PURCHASE.getFld().getCodeSqlField()));
+        ev.setOdrnum((String) os.get(T.ORDER_NUM.getFld().getCodeSqlField()));
+        ev.setCompany(up.getCompany());
+        ev.setTime((Date) os.get(T.TIME.getFld().getCodeSqlField()));
+        ev.setName( (String) os.get(T.NAME.getFld().getCodeSqlField()));
+        ev.setPhone((String)os.get(T.PHONE.getFld().getCodeSqlField()));
+        ev.setEmail(up.getEmail());
+        JSONObject js=new JSONObject((String)os.get(T.ADDRESS.getFld().getCodeSqlField()));
+        String address="";
+        address += BeanBase.load(PltCountry.class,(Integer)js.get("countryid")).getName(FldLanguage.Language.zh_CN)+",";
+        address += BeanBase.load(PltProvince.class,(Integer)js.get("regionid")).getName(FldLanguage.Language.zh_CN)+",";
+        address +=(String) js.get("city")+","+(String)js.get("address");
+        ev.setAddress(address);
+        ev.setCount((Integer)os.get(T.COUNYPD.getFld().getCodeSqlField()));
+        return ev;
+    }
+
+
     /**
     *@Description: 商家端显示订购会商品列表
      * @parameter :  1.开始查询条数 2.查询几条 3.产品名称 4.开始时间 5.商家id
@@ -73,6 +202,20 @@ public class EasyOdrDao {
 
         return  new Page(eslist,start,limit,count);
     }
+    public String allOdr(Integer supplier ){
+        String  list="";
+         SQL sql=new SQL(){{
+            SELECT("GROUP_CONCAT("+T.PKEY+")");
+            FROM(EasyOdr.class);
+            if(supplier!=null){
+                WHERE(T.SUPPLIER,"=?",supplier);
+            }
+         }};
+        list=  Query.sql(sql).queryObject(String.class);
+
+        return list;
+    }
+
 
 
     /**
@@ -89,8 +232,6 @@ public class EasyOdrDao {
         }
 
         for (int j = 0; j <list.size() ; j++) {
-
-
                     EasyOdr eo = new EasyOdr();
                     eo.setPurchase(Purchaseid);
                     eo.setName(address.getName());
