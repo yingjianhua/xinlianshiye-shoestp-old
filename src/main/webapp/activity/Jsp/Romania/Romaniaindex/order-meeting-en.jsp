@@ -64,9 +64,15 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                     ROMANIA
                 </div>
                 <div class="h5">
-                    Exhibition Hall Opens All Year Round
+                    <!-- Exhibition Hall Opens All Year Round -->
+                    Pavilionul Românesc Este Deschis Pe Tot Parcursul Anului
                     <br>
-                    Magazinul Universal Dragonul Rosu Strada Drumul Garii 12，Bucuresti 077190
+                    <!-- Magazinul Universal Dragonul Rosu Strada Drumul Garii 12，Bucuresti 077190 -->
+                    Magazinul Universal Dragonul Roșu Strada Drumul Garii 12,București 077190
+                    <br>
+                    (primul etajul la partea dreapta.nr 3-4)
+                    <br>
+                    Magazin online de încălțăminte cu prețuri de fabrica
                 </div>
                 <a class="btn-red h5" href="javascript:void(0);" @click="getGift">Obțineți Mostre Gratuite Acum</a>
             </div>
@@ -76,7 +82,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <template v-else-if="img_confing.lang=='zh_CN'">
         <div class="banner_01 banner-wrap banner_01_zh">
             <div class="w1200 txt-box por">
-                <div class="h4">2018.12.1-2018.12.19</div>
+                <div class="h4">2018.12.4-2018.12.19</div>
                 <div class="h3">罗马尼亚线下鞋样品鉴会</div>
                 <div class="h4 btn-blue-yellow">罗马尼当地展厅全年开放</div>
                 <div class="h5">
@@ -90,7 +96,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <template v-else>
         <div class="banner_01 banner-wrap">
             <div class="w1200 tc txt-box por">
-                <div class="h4">2018.12.1-2018.12.19</div>
+                <div class="h4">2018.12.4-2018.12.19</div>
                 <div class="h1">ROMANIAN</div>
                 <div class="h3">OFFLINE SHOES PURCHASING</div>
                 <div class="h5">
