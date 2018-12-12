@@ -1,4 +1,4 @@
-package irille.Entity.newInq;
+package irille.Entity.NewInquiry;
 
 import irille.core.sys.Sys;
 import irille.pub.bean.BeanInt;

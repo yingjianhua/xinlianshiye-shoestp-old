@@ -2,7 +2,7 @@ package irille.Dao.Activity.Romania;
 
 import irille.Entity.Activity.SupGoogleView;
 import irille.Entity.Pk.PkCompetitionData;
-import irille.Entity.newInq.NewInquiry;
+import irille.Entity.NewInquiry.NewInquiry;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;

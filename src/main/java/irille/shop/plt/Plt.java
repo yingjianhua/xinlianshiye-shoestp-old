@@ -3,7 +3,7 @@ package irille.shop.plt;
 import irille.Entity.Activity.ActivityInfo;
 import irille.Entity.Activity.SupGoogleView;
 import irille.Entity.Pk.PkCompetitionData;
-import irille.Entity.newInq.NewInquiry;
+import irille.Entity.NewInquiry.NewInquiry;
 import irille.core.prv.PrvRoleAct;
 import irille.core.sys.SysModule;
 import irille.pub.Log;

@@ -1,7 +1,7 @@
 package irille.sellerAction.inq;
 
-import irille.Dao.newInqDao;
-import irille.Entity.newInq.NewInquiry;
+import irille.Dao.NewInqDao;
+import irille.Entity.NewInquiry.NewInquiry;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.inq.inf.INewInqAction;
 
@@ -18,6 +18,6 @@ public class NewInqAction extends SellerAction<NewInquiry> implements INewInqAct
 
     @Override
     public void getList() throws Exception {
-        write(new newInqDao().getList(getStart(), getLimit(), name, getSupplier().getPkey()));
+        write(new NewInqDao().getList(getStart(), getLimit(), name, getSupplier().getPkey()));
     }
 }
