@@ -49,7 +49,7 @@ public class Plt extends PackageBase {
         addTb(41, PltFreightSellerLine.class);
         addTb(43, ActivityInfo.class);
         addTb(44, SupGoogleView.class);
-        addTb(45, NewInquiry.class);
+        addTb(47, NewInquiry.class);
         addTb(46, PkCompetitionData.class);
 
     }
