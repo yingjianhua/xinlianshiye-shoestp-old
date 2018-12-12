@@ -328,7 +328,6 @@
                                     <img :src="item.ismyfavorite?'/activity/Jsp/Romania/ProductList/images/icon-like-on.png':'/activity/Jsp/Romania/ProductList/images/icon-like-off.png'"
                                          alt="" style="width:25px;height:21px;margin-right:8px;"
                                          :data-id="item.id" @click="addCollection(item.productId,index)">
-                                    <img src="./images/iocn-search.png" alt="" style="width:22px;height:22px;">
                                 </div>
                             </div>
                         </div>

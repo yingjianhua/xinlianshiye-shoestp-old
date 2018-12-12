@@ -225,7 +225,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                                :href="'https://www.shoestp.com/country/Romania-Pantofi-en-gros/romania-index-ro.html?shoesId='+shoes.id">
                                 <img src="/activity/Jsp/Romania/Romaniaindex/images/icon/icon-letter.png"
                                      alt="icon-letter" class="icon-letter pointer">
-                                <span class="tips fs_22">{{text_content.inquiry}}</span>
+                                <span class="tips fs_22">{{text_content._inquiry}}</span>
                             </a>
                             <img src="/activity/Jsp/Romania/Romaniaindex/images/icon/icon-heart_off.png"
                                  alt="icon-heart" class="icon-heart pointer"
@@ -274,7 +274,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                                :href="'https://www.shoestp.com/country/Romania-Pantofi-en-gros/romania-index-ro.html?shoesId='+shoes.id">
                                 <img src="/activity/Jsp/Romania/Romaniaindex/images/icon/icon-letter.png"
                                      alt="icon-letter" class="icon-letter pointer">
-                                <span class="tips fs_22">{{text_content.inquiry}}</span>
+                                <span class="tips fs_22">{{text_content._inquiry}}</span>
                             </a>
                             <img src="/activity/Jsp/Romania/Romaniaindex/images/icon/icon-heart_off.png"
                                  alt="icon-heart" class="icon-heart pointer"
@@ -324,7 +324,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                                :href="'https://www.shoestp.com/country/Romania-Pantofi-en-gros/romania-index-ro.html?shoesId='+shoes.id">
                                 <img src="/activity/Jsp/Romania/Romaniaindex/images/icon/icon-letter.png"
                                      alt="icon-letter" class="icon-letter pointer">
-                                <span class="tips fs_22">{{text_content.inquiry}}</span>
+                                <span class="tips fs_22">{{text_content._inquiry}}</span>
                             </a>
                             <img src="/activity/Jsp/Romania/Romaniaindex/images/icon/icon-heart_off.png"
                                  alt="icon-heart" class="icon-heart pointer"
@@ -425,7 +425,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
         "recommendedProducts": "Recommended Products", //轮播header
         "precedente": "precedente",
         "successivo": "successivo",
-        "inquiry": "INQUIRY",
+        "_inquiry": "INQUIRY",
 
         form_title: "2018 ROMANIAN<br>OFFLINE SHOES PURCHASING",
         form_bottom_text: "Tell us what you want, we'll reply you as soon as possible!",
@@ -469,7 +469,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                 "recommendedProducts": "产品推荐", //轮播header
                 "precedente": "上一个",
                 "successivo": "下一个",
-                "inquiry": "询盘",
+                "_inquiry": "询盘",
 
                 form_title: "2018年 <br>罗马尼亚线下鞋类采购会",
                 form_bottom_text: "告诉我们您的需求，我们会尽快回复您!",
@@ -477,7 +477,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                 phone: "电话:",
                 email: "电子邮件:",
                 country: "国家:",
-                inquiry: "需求:",
+                inquiry: "询盘:",
                 submit: "提交",
                 success_tip: "提交成功",
                 confirm: "确定",
@@ -498,7 +498,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                 "recommendedProducts": "Pantofi recomandați", //轮播header
                 "precedente": "anterior",
                 "successivo": "următorul",
-                "inquiry": "Anchetă",
+                "_inquiry": "Anchetă",
                 form_title: "2018 ADUNARE DE APRECIERE<br>A MOSTRELOR DE PANTOFI OFFLINE, ROMANIA",
                 form_bottom_text: "Spuneți-ne ce vreți, vă vom răspunde cât mai curând posibil!",
                 name: "Contact:",
