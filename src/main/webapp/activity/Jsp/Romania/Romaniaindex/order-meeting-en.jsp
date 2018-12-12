@@ -64,6 +64,8 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                     ROMANIA
                 </div>
                 <div class="h5">
+                    Magazin online de încălțăminte cu prețuri de fabrica
+                    <br>
                     <!-- Exhibition Hall Opens All Year Round -->
                     Pavilionul Românesc Este Deschis Pe Tot Parcursul Anului
                     <br>
@@ -71,8 +73,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                     Magazinul Universal Dragonul Roșu Strada Drumul Garii 12,București 077190
                     <br>
                     (primul etajul la partea dreapta.nr 3-4)
-                    <br>
-                    Magazin online de încălțăminte cu prețuri de fabrica
+
                 </div>
                 <a class="btn-red h5" href="javascript:void(0);" @click="getGift">Obțineți Mostre Gratuite Acum</a>
             </div>
