@@ -63,8 +63,6 @@ public class PrmGroupPurchaseLineDAO extends IduOther<PrmGroupPurchaseLineDAO, P
                     }
                     List result = new ArrayList();
                     for (String s : pdtCatDao.getAllChild(lang, 373).split(",")) {
-                        System.out.println(s);
-                        System.out.println(filter.contains(s));
                         if (!filter.contains(s)) {
                             result.add(s);
                         }
