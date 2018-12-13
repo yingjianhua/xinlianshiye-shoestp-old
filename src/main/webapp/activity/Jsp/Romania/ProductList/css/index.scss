@@ -51,10 +51,12 @@
             width: 100%;
 
             .goods-name {
-              line-height: 47px;
+              line-height: 44px;
               overflow: hidden;
               white-space: nowrap;
               text-overflow: ellipsis;
+              font-size: 14.85px;
+              text-align: left;
             }
           }
 
@@ -64,7 +66,7 @@
             line-height: 28px;
             border-radius: 28px;
             background-color: #2f479f;
-            font-size: 17px;
+            font-size: 16.71px;
             color: #ffffff;
             cursor: pointer;
           }

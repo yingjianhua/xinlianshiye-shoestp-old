@@ -89,7 +89,14 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 
         <!-- 顶部banner -->
 
-        <div class="banner">
+        <div class="banner banner_ro_wrap" v-if="stpshop_config.lang=='ro'">
+            <div class="banner_title_03" v-html="multiLanguage.banner_title_02"></div>
+            <div class="banner_title_04" v-html="multiLanguage.banner_title_04"></div>
+            <div class="banner_title_05" v-html="multiLanguage.banner_title_09"></div>
+            <div class="banner_title_05" v-html="multiLanguage.banner_title_05"></div>
+            <a class="btn-red" href="javascript:void(0);" @click="getGift" v-html="multiLanguage.get_gift"></a>
+        </div>
+        <div class="banner" v-else>
             <div class="banner_title_01">
                 2018.12.4-2018.12.19
             </div>
@@ -100,7 +107,6 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
             <a class="btn-red" href="javascript:void(0);" @click="getGift" v-html="multiLanguage.get_gift"></a>
         </div>
         <!-- 顶部banner - end -->
-
         <!-- 鞋款分类选择 -->
         <div class="category-select-placeholder">
             <ul class="category-select-list flexible flex-around" ref="navBar" :class="{isfixed: isNavBarFixed}">
@@ -552,10 +558,13 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
             multiLanguage() {
                 if (stpshop_config.lang == "ro") {
                     return {
-                        banner_title_02: "ADUNARE DE APRECIERE",
-                        banner_title_03: "A MOSTRELOR DE PANTOFI OFFLINE, ROMANIA",
-                        banner_title_04: "Exhibition Hall Opens All Year Round",
-                        banner_title_05: "Magazinul Universal Dragonul Rosu Strada Drumul Garii 12，Bucuresti 077190",
+                        banner_title_02: "ADUNARE DE APRECIERE A <br>MOSTRELOR DE PANTOFI <br> OFFLINE, ROMANIA",
+                        // banner_title_03: "",
+                        // banner_title_04: "Exhibition Hall Opens All Year Round",
+                        banner_title_04: "Pavilionul Românesc Este Deschis Pe Tot Parcursul Anului",
+                        // banner_title_05: "Magazinul Universal Dragonul Rosu Strada Drumul Garii 12，Bucuresti 077190",
+                        banner_title_05: "Magazinul Universal Dragonul Roșu <br> Strada Drumul Garii 12,București 077190 <br> (primul etajul la partea dreapta.nr 3-4)",
+                        banner_title_09: "Magazin online de încălțăminte <br> cu prețuri de fabrica",
                         get_gift: "Obțineți Mostre Gratuite Acum",
                         form_title: "2018 ADUNARE DE APRECIERE<br>A MOSTRELOR DE PANTOFI OFFLINE, ROMANIA",
                         form_bottom_text: "Spuneți-ne ce vreți, vă vom răspunde cât mai curând posibil!",

@@ -1,6 +1,6 @@
 package irille.Dao;
 
-import irille.Entity.newInq.NewInquiry;
+import irille.Entity.NewInquiry.NewInquiry;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
 import irille.shop.usr.UsrSupplier;
@@ -10,7 +10,7 @@ import irille.view.newInq.newInqView;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class newInqDao {
+public class NewInqDao {
     public Page getList(Integer start, Integer limit, String name, Integer supplierId) {
         System.out.println(name);
         SQL sql = new SQL() {

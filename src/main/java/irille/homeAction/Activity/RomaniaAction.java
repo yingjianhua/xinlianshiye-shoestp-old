@@ -1,7 +1,7 @@
 package irille.homeAction.Activity;
 
 import irille.Dao.Old.ActivitySignIn.ActivityNewInqDao;
-import irille.Entity.newInq.NewInquiry;
+import irille.Entity.NewInquiry.NewInquiry;
 import irille.Service.Activity.IActivityService;
 import irille.homeAction.HomeAction;
 import lombok.Getter;
@@ -23,7 +23,6 @@ public class RomaniaAction extends HomeAction {
 
     public String execute() {
         if (isMobile()) {
-
             setResult("../activity/Jsp/m/Romania/index/order-meeting-en.jsp");
             return HomeAction.TRENDS;
         }

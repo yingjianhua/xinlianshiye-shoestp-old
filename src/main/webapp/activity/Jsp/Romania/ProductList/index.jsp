@@ -309,7 +309,7 @@
         <div class="container-box maxW minW">
             <!-- 左边分类选择 -->
             <div class="classify-list">
-                <div style="line-height:70px;text-align: left;">Rufine by</div>
+                <div style="line-height:70px;text-align: left;" @click="getAllCatGoodsList">{{_title}}</div>
                 <el-tree :data="categoryListComputed" :props="defaultProps" @node-click="handleNodeClick"
                          highlight-current="true"></el-tree>
             </div>
@@ -319,7 +319,7 @@
                     <template v-for="(item,index) in goodsList.items">
                         <div class="goods-item">
                             <a :href="'/home/prm_PrmGroupPurchase_getGroupPdt?pkey='+item.id" target="_blank">
-                                <img :src="item.image" :alt="item.name" style="width:270px;height:270px">
+                                <img :src="item.image+'?x-oss-process=image/resize,m_fixed,h_270,w_270'" :alt="item.name" style="width:270px;height:270px">
                                 <div class="goods-name">{{item.name}}</div>
                             </a>
                             <div class="flex" style="justify-content: space-between;">
@@ -328,7 +328,6 @@
                                     <img :src="item.ismyfavorite?'/activity/Jsp/Romania/ProductList/images/icon-like-on.png':'/activity/Jsp/Romania/ProductList/images/icon-like-off.png'"
                                          alt="" style="width:25px;height:21px;margin-right:8px;"
                                          :data-id="item.id" @click="addCollection(item.productId,index)">
-                                    <img src="./images/iocn-search.png" alt="" style="width:22px;height:22px;">
                                 </div>
                             </div>
                         </div>
@@ -546,6 +545,38 @@
     }
 </script>
 <script>
+    function getParams(name, defaultValue) {
+        var url = window.location.href;
+        var l = url.lastIndexOf(name)
+        if (l != -1) {
+            var ll = url.indexOf("&");
+            if (ll == -1 || l > ll) {
+                ll = url.length
+            }
+            url = url.substring(l, ll);
+            var result = url.split("=")
+            if (result.length == 2) {
+                switch (typeof defaultValue) {
+                    case "number":
+                        return parseInt(result[1]);
+                    case "boolean":
+                        return Boolean(result[1])
+                    default:
+                        return result[1];
+                }
+            }
+        } else {
+            if (defaultValue == 'NONE') {
+                return null;
+            }
+            if (defaultValue == null) {
+                return -1;
+            }
+            return defaultValue
+        }
+        return -1;
+    }
+
     function carWindow(data, msg) {
         $('#addtocart_button').attr('disabled', false);
         var excheckout_html = '<div id="shipping_cost_choose">';
@@ -747,6 +778,9 @@
                         this.$message.error(error);
                     });
             },
+            getAllCatGoodsList() {
+                this.getGoodsList(this.page, this.limit, -1)
+            },
             inquiry(id) { // 点击 询盘
                 console.log(id)
                 if (!isLogin) {
@@ -823,6 +857,7 @@
             }
         },
         mounted() {
+            this.cated = getParams("category", 373)
             this.getGoodsList(this.page, this.limit, this.cated);
             this.getClassifyList(1, 5);
             axios.get('/home/plt_PltCountry_list?filter=romania') // 获取国家信息
@@ -836,6 +871,21 @@
                 });
         },
         computed: {
+            _title() {
+                switch (stpshop_config.lang) {
+
+                    case "ro":
+                        return "Toate Categoriile"
+                    case "en":
+                        return "All Categories"
+                    case "zh_CN":
+                        return "全部分类"
+                    default:
+                        return "Rufine by"
+
+                }
+
+            },
             categoryListComputed() {
                 let categoryListComputed = [];
                 if (!this.categoryList[0]) return;
@@ -867,6 +917,7 @@
                                     })
                                 }
                             })
+
                         }
                     })
 
@@ -882,6 +933,21 @@
                     // 	})
                     // }
                 })
+                var label = {
+                    "en": "Other",
+                    "ro": "Alte",
+                    "zh_CN": "其他"
+                }
+                label = label[stpshop_config.lang]
+                if (!label) {
+                    label = "Other"
+                }
+                for (var x in categoryListComputed) {
+                    categoryListComputed[x].children.push({
+                        label: label,
+                        id: -2 + x * -1
+                    })
+                }
                 return categoryListComputed
             },
             _banner: function () {

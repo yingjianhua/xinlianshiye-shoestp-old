@@ -1,6 +1,6 @@
 package irille.Dao.Old.ActivitySignIn;
 
-import irille.Entity.newInq.NewInquiry;
+import irille.Entity.NewInquiry.NewInquiry;
 import irille.pub.idu.IduIns;
 import irille.pub.svr.Env;
 

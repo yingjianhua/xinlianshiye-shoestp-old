@@ -421,11 +421,17 @@ public class PrmGroupPurchaseAction extends HomeAction<PrmGroupPurchase> {
         return catList;
     }
 
-
+    @Getter
+    @Setter
     private List<UsrCart> specList;
+    @Getter
+    @Setter
     private Integer groupLinePkey;
-
+    @Getter
+    @Setter
     private Integer id;
+    @Getter
+    @Setter
     private String supLoginName;
     private ConfirmOrderView confirmView = new ConfirmOrderView();
 
@@ -537,22 +543,6 @@ public class PrmGroupPurchaseAction extends HomeAction<PrmGroupPurchase> {
     }
 
 
-    public String getSupLoginName() {
-        return supLoginName;
-    }
-
-    public void setSupLoginName(String supLoginName) {
-        this.supLoginName = supLoginName;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public ConfirmOrderView getConfirmView() {
         return confirmView;
     }
@@ -577,13 +567,6 @@ public class PrmGroupPurchaseAction extends HomeAction<PrmGroupPurchase> {
         this.presentPurchase = presentPurchase;
     }
 
-    public List<UsrCart> getSpecList() {
-        return specList;
-    }
-
-    public void setSpecList(List<UsrCart> specList) {
-        this.specList = specList;
-    }
 
     public List<irille.homeAction.usr.dto.PdtView> getRecommendationPdt() {
         return recommendationPdt;
@@ -687,6 +670,9 @@ public class PrmGroupPurchaseAction extends HomeAction<PrmGroupPurchase> {
     @Inject
     private ObjectMapper objectMapper;
 
+    @Inject
+    private PrmGroupPurchaseLineDAO prmGroupPurchaseLineDAO;
+
     public void getActProduct() throws IOException {
         setStart(getPage() <= 1 ? 0 : (getPage() - 1) * getLimit());
         Integer id;
@@ -695,7 +681,7 @@ public class PrmGroupPurchaseAction extends HomeAction<PrmGroupPurchase> {
         } else {
             id = getPurchase().getPkey();
         }
-        Map views = PrmGroupPurchaseLineDAO.Select.getActInfo(curLanguage(), getStart(), getLimit(), Integer.valueOf(getCategory()), Integer.valueOf(getSort()), getType(), getId(), id);
+        Map views = prmGroupPurchaseLineDAO.getActInfo(curLanguage(), getStart(), getLimit(), Integer.valueOf(getCategory()), Integer.valueOf(getSort()), getType(), getId(), id);
         views.put("page", getPage());
         write(objectMapper.writeValueAsString(views));
     }
@@ -712,6 +698,6 @@ public class PrmGroupPurchaseAction extends HomeAction<PrmGroupPurchase> {
             if (language != null)
                 setCurLanguage(language);
         }
-        write(PrmGroupPurchaseLineDAO.getgroupshoplist(id));
+        write(prmGroupPurchaseLineDAO.getgroupshoplist(id));
     }
 }

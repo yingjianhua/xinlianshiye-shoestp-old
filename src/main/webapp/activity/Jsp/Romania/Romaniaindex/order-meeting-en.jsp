@@ -64,9 +64,16 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                     ROMANIA
                 </div>
                 <div class="h5">
-                    Exhibition Hall Opens All Year Round
+                    Magazin online de încălțăminte cu prețuri de fabrica
                     <br>
-                    Magazinul Universal Dragonul Rosu Strada Drumul Garii 12，Bucuresti 077190
+                    <!-- Exhibition Hall Opens All Year Round -->
+                    Pavilionul Românesc Este Deschis Pe Tot Parcursul Anului
+                    <br>
+                    <!-- Magazinul Universal Dragonul Rosu Strada Drumul Garii 12，Bucuresti 077190 -->
+                    Magazinul Universal Dragonul Roșu Strada Drumul Garii 12,București 077190
+                    <br>
+                    (primul etajul la partea dreapta.nr 3-4)
+
                 </div>
                 <a class="btn-red h5" href="javascript:void(0);" @click="getGift">Obțineți Mostre Gratuite Acum</a>
             </div>
@@ -76,7 +83,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <template v-else-if="img_confing.lang=='zh_CN'">
         <div class="banner_01 banner-wrap banner_01_zh">
             <div class="w1200 txt-box por">
-                <div class="h4">2018.12.1-2018.12.19</div>
+                <div class="h4">2018.12.4-2018.12.19</div>
                 <div class="h3">罗马尼亚线下鞋样品鉴会</div>
                 <div class="h4 btn-blue-yellow">罗马尼当地展厅全年开放</div>
                 <div class="h5">
@@ -90,7 +97,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <template v-else>
         <div class="banner_01 banner-wrap">
             <div class="w1200 tc txt-box por">
-                <div class="h4">2018.12.1-2018.12.19</div>
+                <div class="h4">2018.12.4-2018.12.19</div>
                 <div class="h1">ROMANIAN</div>
                 <div class="h3">OFFLINE SHOES PURCHASING</div>
                 <div class="h5">
@@ -225,7 +232,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                                :href="'https://www.shoestp.com/country/Romania-Pantofi-en-gros/romania-index-ro.html?shoesId='+shoes.id">
                                 <img src="/activity/Jsp/Romania/Romaniaindex/images/icon/icon-letter.png"
                                      alt="icon-letter" class="icon-letter pointer">
-                                <span class="tips fs_22">{{text_content.inquiry}}</span>
+                                <span class="tips fs_22">{{text_content._inquiry}}</span>
                             </a>
                             <img src="/activity/Jsp/Romania/Romaniaindex/images/icon/icon-heart_off.png"
                                  alt="icon-heart" class="icon-heart pointer"
@@ -274,7 +281,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                                :href="'https://www.shoestp.com/country/Romania-Pantofi-en-gros/romania-index-ro.html?shoesId='+shoes.id">
                                 <img src="/activity/Jsp/Romania/Romaniaindex/images/icon/icon-letter.png"
                                      alt="icon-letter" class="icon-letter pointer">
-                                <span class="tips fs_22">{{text_content.inquiry}}</span>
+                                <span class="tips fs_22">{{text_content._inquiry}}</span>
                             </a>
                             <img src="/activity/Jsp/Romania/Romaniaindex/images/icon/icon-heart_off.png"
                                  alt="icon-heart" class="icon-heart pointer"
@@ -324,7 +331,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                                :href="'https://www.shoestp.com/country/Romania-Pantofi-en-gros/romania-index-ro.html?shoesId='+shoes.id">
                                 <img src="/activity/Jsp/Romania/Romaniaindex/images/icon/icon-letter.png"
                                      alt="icon-letter" class="icon-letter pointer">
-                                <span class="tips fs_22">{{text_content.inquiry}}</span>
+                                <span class="tips fs_22">{{text_content._inquiry}}</span>
                             </a>
                             <img src="/activity/Jsp/Romania/Romaniaindex/images/icon/icon-heart_off.png"
                                  alt="icon-heart" class="icon-heart pointer"
@@ -425,7 +432,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
         "recommendedProducts": "Recommended Products", //轮播header
         "precedente": "precedente",
         "successivo": "successivo",
-        "inquiry": "INQUIRY",
+        "_inquiry": "INQUIRY",
 
         form_title: "2018 ROMANIAN<br>OFFLINE SHOES PURCHASING",
         form_bottom_text: "Tell us what you want, we'll reply you as soon as possible!",
@@ -469,7 +476,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                 "recommendedProducts": "产品推荐", //轮播header
                 "precedente": "上一个",
                 "successivo": "下一个",
-                "inquiry": "询盘",
+                "_inquiry": "询盘",
 
                 form_title: "2018年 <br>罗马尼亚线下鞋类采购会",
                 form_bottom_text: "告诉我们您的需求，我们会尽快回复您!",
@@ -477,7 +484,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                 phone: "电话:",
                 email: "电子邮件:",
                 country: "国家:",
-                inquiry: "需求:",
+                inquiry: "询盘:",
                 submit: "提交",
                 success_tip: "提交成功",
                 confirm: "确定",
@@ -498,7 +505,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                 "recommendedProducts": "Pantofi recomandați", //轮播header
                 "precedente": "anterior",
                 "successivo": "următorul",
-                "inquiry": "Anchetă",
+                "_inquiry": "Anchetă",
                 form_title: "2018 ADUNARE DE APRECIERE<br>A MOSTRELOR DE PANTOFI OFFLINE, ROMANIA",
                 form_bottom_text: "Spuneți-ne ce vreți, vă vom răspunde cât mai curând posibil!",
                 name: "Contact:",

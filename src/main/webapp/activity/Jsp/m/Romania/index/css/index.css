@@ -214,6 +214,7 @@ ul {
     .order-meeting-page .banner .banner_title_01 {
       font-size: 0.625rem; }
     .order-meeting-page .banner .banner_title_02 {
+      white-space: nowrap;
       color: #043d81;
       font-weight: bold;
       font-size: 1.2937rem;
@@ -233,6 +234,29 @@ ul {
       margin-top: 0.2rem;
       line-height: 0.988rem;
       font-size: 0.5rem; }
+    .order-meeting-page .banner.banner_ro_wrap {
+      background: url("../images/banner.jpg") no-repeat -80px/cover; }
+      .order-meeting-page .banner.banner_ro_wrap .banner_title_03 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        line-height: 1.3;
+        font-family: "MicrosoftYaHei-Bold"; }
+      .order-meeting-page .banner.banner_ro_wrap .banner_title_04 {
+        position: relative;
+        left: -0.8rem;
+        display: inline-block;
+        line-height: 1.2;
+        padding: 0.2rem 0.8rem;
+        margin-top: 0.2rem;
+        margin-bottom: 0.4rem;
+        font-size: 0.9rem;
+        border-radius: 0.6rem;
+        background-color: #ffc501; }
+      .order-meeting-page .banner.banner_ro_wrap .banner_title_05 {
+        top: 0;
+        margin-bottom: 0.4rem;
+        line-height: 1.2;
+        font-size: 0.9rem; }
   .order-meeting-page .category-select-placeholder {
     height: 2.75rem;
     background: transparent; }
@@ -442,5 +466,13 @@ ul {
     margin-bottom: 0 auto 1rem; }
   .order-meeting-page .mu-button-wrapper {
     color: #fff; }
+
+@media (device-height: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+  /* 兼容iphone5 */
+  .order-meeting-page .banner {
+    padding: 1rem 1.5rem; }
+
+  .order-meeting-page .banner.banner_ro_wrap {
+    padding: 1rem 1.2rem; } }
 
 /*# sourceMappingURL=index.css.map */

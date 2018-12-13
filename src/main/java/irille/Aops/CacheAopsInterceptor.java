@@ -11,6 +11,7 @@ import org.aopalliance.intercept.MethodInvocation;
  * Time: 10:06
  */
 public class CacheAopsInterceptor implements MethodInterceptor {
+
     @Override
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
         StringBuffer buffer = new StringBuffer();
@@ -19,7 +20,7 @@ public class CacheAopsInterceptor implements MethodInterceptor {
                 buffer.append(argument);
         }
         if (buffer.length() > 0) {
-            buffer.insert(0, String.valueOf((methodInvocation.getThis().toString() + methodInvocation.getMethod().getName()).hashCode())).append("_");
+            buffer.insert(0, String.valueOf((methodInvocation.getClass().toString() + methodInvocation.getMethod().getName()))).append("_");
         }
         Object result = CacheUtils.cache.get(buffer.toString(), o -> {
             try {
