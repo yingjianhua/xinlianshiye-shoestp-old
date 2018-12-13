@@ -1,0 +1,283 @@
+@charset "UTF-8";
+*{
+    margin: 0;
+    padding: 0;
+}
+@font-face {
+    font-family: 'Helvetica';
+    src: url("../fonts/Helvetica_Bold.ttf");
+}
+html{
+    font-family: 'Helvetica', serif;
+}
+a{
+    text-decoration: none;
+}
+
+/*根元素选择器*/
+:root{
+    --bili:0.027rem;
+}
+
+
+#yilizhou .header{
+    width: 100%;
+    position: relative;
+}
+#yilizhou .header img[name=background]{
+    width: 100%;
+}
+#yilizhou .header .writer{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+#yilizhou .header .writer .writer-content{
+    width: calc(var(--bili) * 500);
+    /*height: calc(var(--bili) * 300);*/
+    background-color: rgba(255, 255, 255, 0.75);
+    border-radius: calc(var(--bili) * 5);
+    margin: 0 auto;
+    margin-top: calc(var(--bili) * 100);
+    text-align: center;
+}
+#yilizhou .header .writer .writer-content img[name=yilizhou]{
+    width: calc(var(--bili) * 142);
+    margin-top: calc(var(--bili) * 26);
+}
+#yilizhou .header .writer .writer-content .wc-h2{
+    font-size: calc(var(--bili) * 30);
+    line-height: calc(var(--bili) * 36);
+    color: #333743;
+}
+#yilizhou .header .writer .writer-content .wc-p{
+    font-size: calc(var(--bili) * 24);
+    line-height: calc(var(--bili) * 26);
+    padding: 0 calc(var(--bili) * 20);
+    color: #585e61;
+}
+.button{
+    display: inline-block;
+    font-size: calc(var(--bili) * 30);
+    padding: 0 calc(var(--bili) * 20);
+    line-height: calc(var(--bili) * 60);
+    margin-top: calc(var(--bili) * 20);
+    margin-bottom: calc(var(--bili) * 20);
+    border-radius: calc(var(--bili) * 10);
+    background-color: #e73147;
+    color: white;
+    border: none;
+}
+#yilizhou .banner_01{
+    width: 100%;
+    padding: calc(var(--bili) *40);
+    box-sizing: border-box;
+    border-bottom: 1px solid #bac0c3;
+}
+#yilizhou .banner_01 .detail{
+    width: 100%;
+    margin-bottom: calc(var(--bili) * 20);
+    padding-top: calc(var(--bili) * 20);
+}
+#yilizhou .banner_01 .detail-img{
+    width: calc(var(--bili) * 156);
+    height: calc(var(--bili) * 128);
+    text-align: center;
+    display: inline-block;
+}
+#yilizhou .banner_01 .detail-img img[name=detail-01]{
+    height: 100%;
+}
+#yilizhou .banner_01 .detail-img img[name=detail-02]{
+    width: 100%;
+}
+#yilizhou .banner_01 .detail-text{
+    display: inline-block;
+    width: calc(var(--bili) * 480);
+    vertical-align: top;
+    margin-left: calc(var(--bili) * 20);
+}
+#yilizhou .banner_01 .detail-text h2{
+    font-size: calc(var(--bili) * 26);
+}
+#yilizhou .banner_01 .detail-text p{
+    font-size: calc(var(--bili) * 24);
+    color: #585e61;
+}
+#yilizhou .banner_02{
+    width: 100%;
+    text-align: center;
+    padding: calc(var(--bili) *40);
+    box-sizing: border-box;
+}
+#yilizhou .banner_02 img[name=AboutUs]{
+    width: calc(var(--bili) * 200);
+    margin-bottom: calc(var(--bili) * 20);
+}
+#yilizhou .banner_02 p{
+    text-align: left;
+    font-size: calc(var(--bili) * 24);
+    line-height: calc(var(--bili) * 36);
+    margin-bottom: calc(var(--bili) * 10);
+}
+#yilizhou .banner_02 img[name=sports]{
+    width: calc(var(--bili) * 698);
+    margin-top: calc(var(--bili) * 80);
+    margin-bottom: calc(var(--bili) * 20);
+}
+#yilizhou .banner_02 img[name=men],
+#yilizhou .banner_02 img[name=women]{
+    width: calc(var(--bili) * 588);
+    margin-bottom: calc(var(--bili) * 20);
+}
+#yilizhou .banner_02 img[name=mens]{
+    width: calc(var(--bili) * 415);
+}
+#yilizhou .banner_02 img[name=womens]{
+    width: calc(var(--bili) * 387);
+}
+#yilizhou .banner_02 p.Shoes{
+    text-align: center;
+    font-size: calc(var(--bili) * 24);
+    color: #585e61;
+    margin-bottom: calc(var(--bili) * 20);
+}
+#yilizhou .banner_03{
+    width: 100%;
+    height: calc(var(--bili) * 1128);
+    background: url("../images/welcome_back.png") center no-repeat;
+    background-size: 100% 100%;
+    text-align: center;
+    padding-top: calc(var(--bili) *60);
+}
+#yilizhou .banner_03 img{
+    display: block;
+    margin: 0 auto;
+    margin-bottom: calc(var(--bili) * 40);
+}
+#yilizhou .banner_04{
+    width: 100%;
+    padding: calc(var(--bili) *40) calc(var(--bili) *20);
+    text-align: center;
+    box-sizing: border-box;
+}
+#yilizhou .banner_04 .message{
+    text-align: left;
+    vertical-align: top;
+    margin-top: calc(var(--bili) * 40);
+}
+#yilizhou .banner_04 .content{
+    display: inline-block;
+    width: calc(var(--bili) * 600);
+    vertical-align: top;
+    padding-left: calc(var(--bili) * 20);
+}
+#yilizhou .banner_04 .content img[name=content-title]{
+    height: calc(var(--bili) * 30);
+    margin-top: calc(var(--bili) * 10);
+}
+#yilizhou .banner_04 .content p{
+    font-size: calc(var(--bili) * 24);
+    line-height: calc(var(--bili) * 30);
+    color: #585e61;
+    margin: calc(var(--bili) * 30) 0;
+}
+#yilizhou .banner_04 .list .bot{
+    font-size: calc(var(--bili) * 40);
+    line-height: calc(var(--bili) * 40);
+    color: #585e61;
+    margin-right: calc(var(--bili) * 10);
+    vertical-align: top;
+}
+#yilizhou .banner_04 .list .list-p{
+    display: inline-block;
+    margin: 0;
+    width: calc(var(--bili) * 550);
+    font-size: calc(var(--bili) * 26);
+    line-height: calc(var(--bili) * 40);
+    vertical-align: top;
+}
+#yilizhou .banner_04 .list .list-p span{
+    display: block;
+    color: #000;
+}
+#yilizhou .banner_04 .content img[name=message]{
+    width: calc(var(--bili) * 588);
+    margin-top: calc(var(--bili) * 36);
+}
+#yilizhou .banner_04 .content img[name=message_04]{
+    width: calc(var(--bili) * 280);
+    margin-top: calc(var(--bili) * 20);
+    margin-right: calc(var(--bili) * 26);;
+}
+#yilizhou .banner_04 .content img[name=message_05]{
+    width: calc(var(--bili) * 280);
+    margin-top: calc(var(--bili) * 20);
+}
+#yilizhou .banner_05{
+    width: 100%;
+    height: calc(var(--bili) * 500);
+    background: url("../images/footer-back.png") center no-repeat;
+    background-size: 100% 100%;
+    padding-top: calc(var(--bili) * 70);
+    box-sizing: border-box;
+}
+#yilizhou .banner_05 .content{
+    width: calc(var(--bili) * 500);
+    height: calc(var(--bili) * 360);
+    text-align: center;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: calc(var(--bili) * 10);
+    padding-top: calc(var(--bili) * 20);
+}
+#yilizhou .banner_05 .content h2{
+    font-size: calc(var(--bili) * 30);
+    line-height: calc(var(--bili) * 36);
+}
+#yilizhou .banner_05 .content p{
+    font-size: calc(var(--bili) * 24);
+    line-height: calc(var(--bili) * 26);
+    margin-top: calc(var(--bili) * 20);
+    color: #585e61;
+}
+#yilizhou .banner_05 .content p.contact{
+    margin: calc(var(--bili) * 10);
+}
+#yilizhou .banner_05 .content p img{
+    vertical-align: middle;
+    margin-right: calc(var(--bili) * 10);
+    width: calc(var(--bili) * 28);
+}
+.mu-demo-form {
+    width: 100%;
+    max-width: 460px;
+}
+
+.el-dialog{
+    width: calc(var(--bili) * 600);
+    border-radius: calc(var(--bili) * 20);
+    background-color: rgba(255, 255, 255, 0.81);
+}
+.el-dialog__footer{
+    text-align: center;
+}
+.el-dialog__title {
+    line-height: calc(var(--bili) * 24);
+    font-size: calc(var(--bili) * 18);
+    font-weight: 700;
+}
+.el-form-item__label{
+    font-size: calc(var(--bili) * 18);
+    line-height: calc(var(--bili) * 40);
+}
+.el-dialog__body {
+    padding: calc(var(--bili) * 30) calc(var(--bili) * 20);
+    color: #606266;
+    font-size: calc(var(--bili) * 14);
+}
+.el-message.el-message--success{
+    min-width: 200px;
+}
