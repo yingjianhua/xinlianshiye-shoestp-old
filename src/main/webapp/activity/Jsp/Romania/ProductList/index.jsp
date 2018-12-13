@@ -309,7 +309,7 @@
         <div class="container-box maxW minW">
             <!-- 左边分类选择 -->
             <div class="classify-list">
-                <div style="line-height:70px;text-align: left;">Rufine by</div>
+                <div style="line-height:70px;text-align: left;" @click="getAllCatGoodsList">{{_title}}</div>
                 <el-tree :data="categoryListComputed" :props="defaultProps" @node-click="handleNodeClick"
                          highlight-current="true"></el-tree>
             </div>
@@ -746,6 +746,9 @@
                         this.$message.error(error);
                     });
             },
+            getAllCatGoodsList() {
+                this.getGoodsList(this.page, this.limit, -1)
+            },
             inquiry(id) { // 点击 询盘
                 console.log(id)
                 if (!isLogin) {
@@ -835,6 +838,21 @@
                 });
         },
         computed: {
+            _title() {
+                switch (stpshop_config.lang) {
+
+                    case "ro":
+                        return "Toate Categoriile"
+                    case "en":
+                        return "All Categories"
+                    case "zh_CN":
+                        return "全部分类"
+                    default:
+                        return "Rufine by"
+
+                }
+
+            },
             categoryListComputed() {
                 let categoryListComputed = [];
                 if (!this.categoryList[0]) return;
@@ -866,6 +884,7 @@
                                     })
                                 }
                             })
+
                         }
                     })
 
@@ -881,6 +900,21 @@
                     // 	})
                     // }
                 })
+                var label = {
+                    "en": "Other",
+                    "ro": "Alte",
+                    "zh_CN": "其他"
+                }
+                label = label[stpshop_config.lang]
+                if (!label) {
+                    label = "Other"
+                }
+                for (var x in categoryListComputed) {
+                    categoryListComputed[x].children.push({
+                        label: label,
+                        id: -2 + x * -1
+                    })
+                }
                 return categoryListComputed
             },
             _banner: function () {

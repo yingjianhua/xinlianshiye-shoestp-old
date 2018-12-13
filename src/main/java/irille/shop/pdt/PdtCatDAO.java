@@ -5,13 +5,11 @@ import irille.pub.Log;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.query.SqlQuery;
-import irille.pub.bean.sql.I18NSQL;
 import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduIns;
 import irille.pub.idu.IduOther;
 import irille.pub.idu.IduUpd;
 import irille.pub.svr.Env;
-import irille.pub.tb.FldLanguage;
 import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.pub.validate.ValidForm;
@@ -26,47 +24,6 @@ import java.util.Map;
 public class PdtCatDAO {
     public static final Log LOG = new Log(PdtCatDAO.class);
 
-    public static class Sellect extends IduOther<Sellect, PdtCat> {
-        private static String pkeys = "";
-
-        /**
-         * 通过id查询所有子分类id
-         */
-        public static String getAllChild(FldLanguage.Language lang, Integer id) {
-            List<PdtCat> allCatBySup = getAllCat(lang);
-            pkeys = String.valueOf(id);
-            getChildPkeys(allCatBySup, id);
-            return pkeys;
-        }
-
-        /**
-         * 递归查询子分类id
-         */
-        public static void getChildPkeys(List<PdtCat> categories, Integer id) {
-            for (PdtCat cat : categories) {
-                if (cat.getCategoryUp() == null) {
-                    continue;
-                }
-                if (cat.getCategoryUp().equals(id)) {
-                    pkeys += "," + String.valueOf(cat.getPkey());
-                    getChildPkeys(categories, cat.getPkey());
-                } else {
-                    continue;
-                }
-            }
-        }
-
-        /**
-         * 查询所有分类
-         */
-        public static List<PdtCat> getAllCat(FldLanguage.Language lang) {
-            SQL sql = new I18NSQL(lang) {{
-                SELECT(PdtCat.class)
-                        .FROM(PdtCat.class);
-            }};
-            return irille.pub.bean.Query.sql(sql).queryList(PdtCat.class);
-        }
-    }
 
     /**
      * 获取一级产品分类
