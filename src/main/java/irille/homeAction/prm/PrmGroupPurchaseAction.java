@@ -348,6 +348,7 @@ public class PrmGroupPurchaseAction extends HomeAction<PrmGroupPurchase> {
             String[] attrArr = attrStr.split(SYMBOL);
 
             for (int i = 0; i < attrArr.length; i++) {
+                if (Integer.parseInt(attrArr[i]) < 1) continue;
                 PdtAttrLine attrLine = BeanBase.get(PdtAttrLine.class, attrArr[i]);
                 translateUtil.getAutoTranslate(attrLine, HomeAction.curLanguage());
                 PdtAttr attr = attrLine.gtMain();
