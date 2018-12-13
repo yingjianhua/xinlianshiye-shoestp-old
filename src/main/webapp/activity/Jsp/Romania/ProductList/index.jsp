@@ -319,7 +319,7 @@
                     <template v-for="(item,index) in goodsList.items">
                         <div class="goods-item">
                             <a :href="'/home/prm_PrmGroupPurchase_getGroupPdt?pkey='+item.id" target="_blank">
-                                <img :src="item.image" :alt="item.name" style="width:270px;height:270px">
+                                <img :src="item.image+'?x-oss-process=image/resize,m_fixed,h_270,w_270'" :alt="item.name" style="width:270px;height:270px">
                                 <div class="goods-name">{{item.name}}</div>
                             </a>
                             <div class="flex" style="justify-content: space-between;">
@@ -545,6 +545,38 @@
     }
 </script>
 <script>
+    function getParams(name, defaultValue) {
+        var url = window.location.href;
+        var l = url.lastIndexOf(name)
+        if (l != -1) {
+            var ll = url.indexOf("&");
+            if (ll == -1 || l > ll) {
+                ll = url.length
+            }
+            url = url.substring(l, ll);
+            var result = url.split("=")
+            if (result.length == 2) {
+                switch (typeof defaultValue) {
+                    case "number":
+                        return parseInt(result[1]);
+                    case "boolean":
+                        return Boolean(result[1])
+                    default:
+                        return result[1];
+                }
+            }
+        } else {
+            if (defaultValue == 'NONE') {
+                return null;
+            }
+            if (defaultValue == null) {
+                return -1;
+            }
+            return defaultValue
+        }
+        return -1;
+    }
+
     function carWindow(data, msg) {
         $('#addtocart_button').attr('disabled', false);
         var excheckout_html = '<div id="shipping_cost_choose">';
@@ -825,6 +857,7 @@
             }
         },
         mounted() {
+            this.cated = getParams("category", 373)
             this.getGoodsList(this.page, this.limit, this.cated);
             this.getClassifyList(1, 5);
             axios.get('/home/plt_PltCountry_list?filter=romania') // 获取国家信息
