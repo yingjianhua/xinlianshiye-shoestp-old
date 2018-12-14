@@ -26,16 +26,29 @@ public class OrderServiceImp implements IOrderService {
             case 977: {
                 groupProductInfoView.setPurCount(12);
                 groupProductInfoView.setBought_count(600);
+                groupProductInfoView.setCount(500);
+
             }
             break;
             case 870: {
                 groupProductInfoView.setPurCount(9);
                 groupProductInfoView.setBought_count(870);
+                groupProductInfoView.setCount(300);
+
             }
             break;
             case 1145: {
                 groupProductInfoView.setPurCount(3);
                 groupProductInfoView.setBought_count(50);
+                groupProductInfoView.setCount(500);
+
+            }
+            break;
+            case 883: {
+                groupProductInfoView.setPurCount(6);
+                groupProductInfoView.setBought_count(300);
+                groupProductInfoView.setCount(500);
+
             }
             break;
             default: {
@@ -46,9 +59,10 @@ public class OrderServiceImp implements IOrderService {
                     groupProductInfoView.setBought_count(prmGroupPurchaseLine.getBoughtCount().intValue());
                 }
                 groupProductInfoView.setPurCount(odrOrderDao.getEasyOrderCount(sourcePdtId));
+                groupProductInfoView.setCount(prmGroupPurchaseLine.getCount().intValue());
+
             }
         }
-        groupProductInfoView.setCount(prmGroupPurchaseLine.getCount().intValue());
         return groupProductInfoView;
     }
 }

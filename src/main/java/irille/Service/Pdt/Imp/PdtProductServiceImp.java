@@ -14,7 +14,6 @@ import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtProduct;
 import irille.view.pdt.PdtProductBaseInfoView;
 import irille.view.pdt.PdtProductCatView;
-import org.json.JSONException;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -118,11 +117,7 @@ public class PdtProductServiceImp implements IPdtProductService {
             PdtProduct pdtProduct = resultSet.get(integer.intValue());
             PdtProductBaseInfoView pdtProductBaseInfoView = new PdtProductBaseInfoView();
             pdtProductBaseInfoView.setId(pdtProduct.getPkey());
-            try {
-                pdtProductBaseInfoView.setName(pdtProduct.getName(HomeAction.curLanguage()));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            pdtProductBaseInfoView.setName(translateUtil.getLanguage(pdtProduct.getName(), HomeAction.curLanguage()));
             pdtProductBaseInfoView.setPrice(pdtProduct.getCurPrice());
             pdtProductBaseInfoView.setImage(pdtProduct.getPicture());
             pdtProductBaseInfoView.setRewrite(SEOUtils.getPdtProductTitle(pdtProduct.getPkey(), pdtProduct.getName()));

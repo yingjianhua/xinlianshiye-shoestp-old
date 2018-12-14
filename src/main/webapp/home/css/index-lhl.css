@@ -1,0 +1,59 @@
+.hexagon{width: 90px;height: 154px;background-color: white;position: relative;}
+
+.hexagon::before{content:"";width: 0;height: 0;position:absolute;left:-45px;top:0;border-right:45px solid white;border-top:77px solid transparent;border-bottom:77px solid transparent;}
+
+.hexagon::after{content:"";width: 0;height: 0;position:absolute;right:-45px;top:0;border-left:45px solid white;border-top:77px solid transparent;border-bottom:77px solid transparent;}
+
+.hexagon:hover{
+  transform:scale(1.1);
+}
+.hexagon:nth-of-type(1){
+  position: absolute;
+  top: 124px;
+  left: 45px;
+}
+.hexagon:nth-of-type(2){
+  position: absolute;
+  top: 282px;
+  left: 45px;
+}
+.hexagon:nth-of-type(3){
+  position: absolute;
+  top: 42px;
+  left: 186px;
+}
+.hexagon:nth-of-type(4){
+  position: absolute;
+  top: 202px;
+  left: 186px;
+}
+.hexagon:nth-of-type(5){
+  position: absolute;
+  top: 124px;
+  left: 326px;
+}
+.hexagon:nth-of-type(6){
+  position: absolute;
+  top: 284px;
+  left: 326px;
+}
+.hexagon:nth-of-type(7){
+  position: absolute;
+  top: 206px;
+  left: 466px;
+}
+.hexagon:nth-of-type(8){
+  position: absolute;
+  top: 366px;
+  left: 466px;
+}
+.hexagon:nth-of-type(9){
+  position: absolute;
+  top: 126px;
+  left: 606px;
+}
+.hexagon:nth-of-type(10){
+  position: absolute;
+  top: 286px;
+  left: 606px;
+}

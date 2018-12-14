@@ -200,9 +200,9 @@
 
                                 </li>
                                 <li>
-                                    已有${saleInfo.purCount}位采购商
+                                    ${saleInfo.purCount}   Buyers
                                     <br/>
-                                    采购了${saleInfo.bought_count}双
+                                    Purchased  ${saleInfo.bought_count}  pairs
                                     <style>
                                         .p-bar {
                                             width: 150px;
@@ -229,11 +229,13 @@
                                              class="p-bar-purple"></div>
                                     </div>
 
-                                    已经完成了${saleInfo.count}双的目标的 <fmt:formatNumber type="number"
-                                                                                  value="${(saleInfo.bought_count /saleInfo.count)*100}"
-                                                                                  maxFractionDigits="1"/>%;
+
+                                    <fmt:formatNumber type="number"
+                                                      value="${(saleInfo.bought_count /saleInfo.count)*100}"
+                                                      maxFractionDigits="1"/>% of the ${saleInfo.count} pairs have been
+                                    completed;
                                     <br>
-                                    还可以继续采购
+                                    Can continue to purchase
                                 </li>
                                 <li>
                                     <%--//倒计时--%>
