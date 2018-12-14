@@ -355,6 +355,7 @@ public class PdtProductDao {
                 FROM(PdtProduct.class);
             }};
         }
+        productRules(sql);
         return irille.pub.bean.Query.sql(sql).queryList(PdtProduct.class);
     }
 
@@ -406,7 +407,22 @@ public class PdtProductDao {
      * @author lijie@shoestp.cn
      */
     private BeanQuery productRules(BeanQuery query) {
-//        PdtProduct.ProductsIndexOrderByType
+        return query.WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON)
+                .WHERE(PdtProduct.T.IS_VERIFY, "=?", YES)
+                .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON)
+                .WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.GENERAL)
+                .WHERE(UsrSupplier.T.STATUS, "=?", Usr.OStatus.APPR)
+                .LEFT_JOIN(UsrSupplier.class, PdtProduct.T.SUPPLIER, UsrSupplier.T.PKEY);
+
+    }
+
+    /**
+     * @Description: 商品显示统一逻辑
+     * 修改的时候,PdtProduct.ProductsIndexOrderByType  一起修改
+     * @date 2018/11/8 9:57
+     * @author lijie@shoestp.cn
+     */
+    private SQL productRules(SQL query) {
         return query.WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON)
                 .WHERE(PdtProduct.T.IS_VERIFY, "=?", YES)
                 .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON)
