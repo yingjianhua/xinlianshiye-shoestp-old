@@ -280,8 +280,8 @@
                     <div class="xmg-myfcaozuonav">
                         <input type="checkbox" name="ckAll" value="全选/反选" onclick="checkAll()" id="all"/>
                         <a href="javascript:;" id="empty"><s:text name="Emptying"/></a>
-                        <a href="javascript:;" onclick="addToCart()" id="addToCart" style="background:#db0000;"><s:text
-                                name="my-inquiry-publish.View_Inquiry"/></a>
+                        <a href="javascript:;" id="addToCart" style="background:#db0000;"><s:text
+                                name="addToCartTo"/></a>
                     </div>
                 </c:if>
                 <%--    <div class="xmg-myfcaozuonav">
@@ -436,26 +436,6 @@
             })
             layer.close(index);
         });
-    }
-
-    function addToCart() {
-        var pkeys = chooseChecked();
-        var result = pkeys.split(",");
-        for (var i = 0; i < result.length; i++) {
-            $.ajax({
-                url: '/home/pdt_PdtConsultPdtList_add',
-                type: 'post',
-                data: {"product": result[i]},
-                dataType: 'json',
-                success: function (data) {
-                    if (data.success == true) {
-                        layer.msg('<s:text name="my-inquiry-publish.View_Inquiry"/>', {icon: 1});
-                    } else {
-                        layer.msg(getMessage(data.msg), {icon: 2, time: 2000});
-                    }
-                }
-            })
-        }
     }
 
     function restore(id) {

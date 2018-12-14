@@ -7,7 +7,6 @@ import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
-import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumFld;
 import irille.pub.util.FormaterSql.FormaterSql;
@@ -340,13 +339,22 @@ public class PdtProductDao {
         return page;
     }
 
-    public List<PdtProduct> getYouMayLike(IduPage iduPage, int cat) {
-        String pkeys = getYouMayLikeProd(cat);
-        SQL sql = new SQL() {{
-            SELECT(PdtProduct.T.PKEY, PdtProduct.T.NAME, PdtProduct.T.CUR_PRICE, PdtProduct.T.PICTURE);
-            FROM(PdtProduct.class);
-            WHERE(PdtProduct.T.PKEY, " in(" + pkeys + ") ");
-        }};
+    @Caches
+    public List<PdtProduct> getYouMayLike(int cat) {
+        SQL sql = null;
+        if (cat > 0) {
+            String pkeys = getYouMayLikeProd(cat);
+            sql = new SQL() {{
+                SELECT(PdtProduct.T.PKEY, PdtProduct.T.NAME, PdtProduct.T.CUR_PRICE, PdtProduct.T.PICTURE);
+                FROM(PdtProduct.class);
+                WHERE(PdtProduct.T.PKEY, " in(" + pkeys + ") ");
+            }};
+        } else {
+            sql = new SQL() {{
+                SELECT(PdtProduct.T.PKEY, PdtProduct.T.NAME, PdtProduct.T.CUR_PRICE, PdtProduct.T.PICTURE);
+                FROM(PdtProduct.class);
+            }};
+        }
         return irille.pub.bean.Query.sql(sql).queryList(PdtProduct.class);
     }
 

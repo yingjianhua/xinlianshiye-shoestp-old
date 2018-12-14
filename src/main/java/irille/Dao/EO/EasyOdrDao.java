@@ -1,6 +1,5 @@
 package irille.Dao.EO;
 
-import irille.pub.Exp;
 import irille.pub.LogMessage;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
@@ -12,14 +11,11 @@ import irille.pub.util.excel.BaseExcel;
 import irille.pub.util.excel.Entity.ToZipOutputStream;
 import irille.shop.easy.EasyOdr;
 import irille.shop.easy.EasyOdr.T;
-import irille.shop.easy.EasyOdrline;
-import irille.shop.pdt.PdtSpec;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltProvince;
 import irille.shop.usr.UsrCart;
 import irille.shop.usr.UsrPurchase;
-import irille.shop.usr.UsrPurchaseLine;
 import irille.view.Easy.EasyodrView;
 import irille.view.Easy.EolineView;
 import irille.view.Page;
@@ -52,7 +48,7 @@ public class EasyOdrDao {
     public ByteArrayOutputStream oneexport(Integer eastOdrId, Integer supId) throws Exception {
         EasyodrView easyodrView = getload(eastOdrId);
         easyodrView.setList(easyOdrLineDao.getListOdrLine(eastOdrId, PltConfigDAO.supplierLanguage(supId)));
-        BaseExcel baseExcel = new BaseExcel(this.getClass().getResource("/shoestpnew.xlsx").getPath());
+        BaseExcel baseExcel = new BaseExcel(this.getClass().getResource("/Bin/鞋贸港下单表格20181205最新修改.xlsx").getPath());
         Workbook wb = baseExcel.getWorkbook();
         CellStyle cellStyle = wb.createCellStyle();
         cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
@@ -235,76 +231,14 @@ public class EasyOdrDao {
     }
 
 
-    /**
-     * @Description: 购物车生成订单
-     * @date 2018/12/5 13:44
-     * @anthor wilson zhang
-     */
-    public void generate0rder(Integer getPurchaseLineid, Integer Purchaseid, List<EasyodrView> list) throws Exception {
-        UsrPurchaseLine address = null;
-        try {
-            address = BeanBase.load(UsrPurchaseLine.class, getPurchaseLineid);
-        } catch (Exp e) {
-            throw LOG.errTran("addressfrom%Please_Select_The_Shipping_Address", "请选择收货地址");
-        }
 
-        for (int j = 0; j < list.size(); j++) {
-            EasyOdr eo = new EasyOdr();
-            eo.setPurchase(Purchaseid);
-            eo.setName(address.getName());
-            eo.setPhone(address.getPhonenumber());
-            eo.setSupplier(list.get(j).getSupplierid());
-            JSONObject ja = new JSONObject();
-            ja.put("countryid", address.getCountry());
-            ja.put("regionid", address.getRegion());
-            ja.put("city", address.getCity());
-            ja.put("address", address.getAddress());
-            eo.setAddress(ja.toString());
-            eo.setTime(Env.getTranBeginTime());
-            eo.setCounypd(0);
-            //添加新订单
-            ins.setB(eo).commit();
-            //添加订单号
-            Integer odrnum = buildOrderNum(ins.getB());
-            Integer counti = 0;
-            List<EolineView> elvlist = list.get(j).getList();
-            for (int i = 0; i < elvlist.size(); i++) {
-                EasyOdrline eol = new EasyOdrline();
-                eol.setOrderId(odrnum);
-                eol.setSpec(Integer.valueOf(elvlist.get(i).getId()));
-                PdtSpec ps = BeanBase.load(PdtSpec.class, elvlist.get(i).getId());
-                if (eo.getSupplier() == null) {
-                    eo.setSupplier(ps.gtProduct().gtSupplier().getPkey());
-                }
-                eol.setIamge(ps.getPics());
-                eol.setProductname(ps.gtProduct().getName());
-                eol.setColor(ps.gtColor().getName());
-                eol.setSize(ps.gtSize().getName());
-                eol.setNum(Integer.valueOf(elvlist.get(i).getNum()));
-                counti += Integer.valueOf(elvlist.get(i).getNum());
-                eol.setRemarks(list.get(j).getRemarks());
-                try {
-                    eol.ins();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                System.out.println(getPurchaseLineid);
-                System.out.println(ps.getPkey());
-                SQL sql = new SQL() {{
-                    DELETE_FROM(UsrCart.class)
-                            .WHERE(UsrCart.T.PURCHASE, "=?", Purchaseid)
-                            .WHERE(UsrCart.T.SPEC, "=?", ps.getPkey());
-                }};
-                Query.sql(sql).executeUpdate();
-            }
-            if (null != counti) {
-                ins.getB().setCounypd(counti);
-                ins.getB().upd();
-            }
-        }
+
+    public EasyOdr addNewOrder(EasyOdr easyOdr) {
+        ins.setB(easyOdr).commit();
+        return ins.getB();
     }
 
-    private Integer buildOrderNum(EasyOdr order) {
+    public Integer buildOrderNum(EasyOdr order) {
         //设置订单号
         String timeStamp = Env.getSystemTime().getTime() + "";
         String pkey = String.valueOf(order.getPkey());
@@ -312,6 +246,20 @@ public class EasyOdrDao {
         order.setOrderNum(orderid);
         order.upd();
         return order.getPkey();
+    }
+
+    public void updateCountry(Integer count) {
+        ins.getB().setCounypd(count);
+        ins.getB().upd();
+    }
+
+    public void removaCat(Integer purchaseid, Integer pdtSpecId) {
+        SQL sql = new SQL() {{
+            DELETE_FROM(UsrCart.class)
+                    .WHERE(UsrCart.T.PURCHASE, "=?", purchaseid)
+                    .WHERE(UsrCart.T.SPEC, "=?", pdtSpecId);
+        }};
+        Query.sql(sql).executeUpdate();
     }
 
     /**

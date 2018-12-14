@@ -14,8 +14,10 @@ import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtProduct;
 import irille.view.pdt.PdtProductBaseInfoView;
 import irille.view.pdt.PdtProductCatView;
+import org.json.JSONException;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -26,6 +28,7 @@ import java.util.stream.Collectors;
  * Date: 2018/11/7
  * Time: 14:54
  */
+
 public class PdtProductServiceImp implements IPdtProductService {
 
     @Inject
@@ -84,7 +87,7 @@ public class PdtProductServiceImp implements IPdtProductService {
 
     @Override
     public List<PdtProductBaseInfoView> getYouMayLike(IduPage iduPage, int cat) {
-        List<PdtProduct> result = pdtProductDao.getYouMayLike(iduPage, cat);
+        List<PdtProduct> result = pdtProductDao.getYouMayLike(cat);
         return result.stream().map(bean -> new PdtProductBaseInfoView() {{
             setRewrite(SEOUtils.getPdtProductTitle(bean.getPkey(), bean.getName()));
             translateUtil.getAutoTranslate(bean, HomeAction.curLanguage());
@@ -93,6 +96,39 @@ public class PdtProductServiceImp implements IPdtProductService {
             setImage(bean.getPicture());
             setName(bean.getName());
         }}).collect(Collectors.toList());
+    }
+
+    /**
+     * @Description: 随机数
+     * @date 2018/12/14 18:22
+     * @author lijie@shoestp.cn
+     */
+    @Override
+    public List<PdtProductBaseInfoView> getRandomPdt(Integer limit, int cat) {
+        List<PdtProduct> resultSet = pdtProductDao.getYouMayLike(cat);
+        List<PdtProductBaseInfoView> result = new ArrayList<>();
+        if (limit == null || limit < 1) {
+            limit = 12;
+        }
+        while (true) {
+            if (result.size() > limit) {
+                break;
+            }
+            Double integer = Math.random() * resultSet.size();
+            PdtProduct pdtProduct = resultSet.get(integer.intValue());
+            PdtProductBaseInfoView pdtProductBaseInfoView = new PdtProductBaseInfoView();
+            pdtProductBaseInfoView.setId(pdtProduct.getPkey());
+            try {
+                pdtProductBaseInfoView.setName(pdtProduct.getName(HomeAction.curLanguage()));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            pdtProductBaseInfoView.setPrice(pdtProduct.getCurPrice());
+            pdtProductBaseInfoView.setImage(pdtProduct.getPicture());
+            pdtProductBaseInfoView.setRewrite(SEOUtils.getPdtProductTitle(pdtProduct.getPkey(), pdtProduct.getName()));
+            result.add(pdtProductBaseInfoView);
+        }
+        return result;
     }
 
     @Caches

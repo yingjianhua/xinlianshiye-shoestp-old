@@ -1,16 +1,15 @@
 package irille.view.usr;
 
-import java.util.Date;
-import java.util.List;
-
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 import irille.homeAction.usr.dto.PdtView;
 import irille.pub.bean.BeanBase;
 import irille.pub.i18n.I18NFieldSerializer;
 import irille.shop.usr.UsrSupIm;
 import irille.shop.usr.UsrSupplier;
 import irille.view.BaseView;
+
+import java.util.Date;
+import java.util.List;
 
 public class SupplierView implements BaseView{
 
@@ -157,7 +156,7 @@ public class SupplierView implements BaseView{
 	private String tongjiPwd; // 第三方统计密码 STR(40)<null>
 	private Date updateTime; // 更新时间 TIME
 	private Short rowVersion; // 版本 SHORT
-	
+
 	//================<2018-9-29 && new>==================
 		private boolean prmAuthrity;//联合采购权限
 		private int authAge;//认证年限
@@ -168,8 +167,8 @@ public class SupplierView implements BaseView{
 		private Byte contactPageOn;	// 联系页个性装修开关 <OYn>  BYTE
 		private List<PdtView> productList; //新品展示
 		private List<UsrSupIm> imList;//线上聊天工具
-		
-		
+
+
 		public List<UsrSupIm> getImList() {
 			return imList;
 		}
@@ -225,7 +224,7 @@ public class SupplierView implements BaseView{
 			this.prmAuthrity = prmAuthrity;
 		}
 		//================<2018-9-29 && end>==================
-	
+
 	public Integer getPkey() {
 		return pkey;
 	}
@@ -742,5 +741,105 @@ public class SupplierView implements BaseView{
 	public void setRowVersion(Short rowVersion) {
 		this.rowVersion = rowVersion;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "SupplierView{" +
+				"pkey=" + pkey +
+				", role=" + role +
+				", loginName='" + loginName + '\'' +
+				", password='" + password + '\'' +
+				", status=" + status +
+				", apprBy=" + apprBy +
+				", apprTime=" + apprTime +
+				", name='" + name + '\'' +
+				", registeredCapital='" + registeredCapital + '\'' +
+				", category=" + category +
+				", isAuth=" + isAuth +
+				", sort=" + sort +
+				", seoTitleEn='" + seoTitleEn + '\'' +
+				", seoContentEn='" + seoContentEn + '\'' +
+				", authTime=" + authTime +
+				", showName='" + showName + '\'' +
+				", entity='" + entity + '\'' +
+				", companyType='" + companyType + '\'' +
+				", companyNature='" + companyNature + '\'' +
+				", creditCode='" + creditCode + '\'' +
+				", companyEstablishTime=" + companyEstablishTime +
+				", operationTerm='" + operationTerm + '\'' +
+				", mainSalesArea='" + mainSalesArea + '\'' +
+				", mainProd='" + mainProd + '\'' +
+				", prodPattern='" + prodPattern + '\'' +
+				", companyAddr='" + companyAddr + '\'' +
+				", des='" + des + '\'' +
+				", email='" + email + '\'' +
+				", businessLicenseBeginTime='" + businessLicenseBeginTime + '\'' +
+				", businessLicenseEndTime='" + businessLicenseEndTime + '\'' +
+				", businessLicenseIsSecular=" + businessLicenseIsSecular +
+				", telephone='" + telephone + '\'' +
+				", fax='" + fax + '\'' +
+				", qq='" + qq + '\'' +
+				", certPhoto='" + certPhoto + '\'' +
+				", idCardFrontPhoto='" + idCardFrontPhoto + '\'' +
+				", idCardBackPhoto='" + idCardBackPhoto + '\'' +
+				", coopCertPhoto='" + coopCertPhoto + '\'' +
+				", taxpayerType='" + taxpayerType + '\'' +
+				", idCard='" + idCard + '\'' +
+				", operateIdCard='" + operateIdCard + '\'' +
+				", contacts='" + contacts + '\'' +
+				", phone='" + phone + '\'' +
+				", settlementBank='" + settlementBank + '\'' +
+				", bankAccount='" + bankAccount + '\'' +
+				", bankBranch='" + bankBranch + '\'' +
+				", bankCountry=" + bankCountry +
+				", bankProvince=" + bankProvince +
+				", contactsIdCardFrontPhoto='" + contactsIdCardFrontPhoto + '\'' +
+				", contactsIdCardBackPhoto='" + contactsIdCardBackPhoto + '\'' +
+				", businessTyp='" + businessTyp + '\'' +
+				", location='" + location + '\'' +
+				", production='" + production + '\'' +
+				", developer='" + developer + '\'' +
+				", totalEmployees='" + totalEmployees + '\'' +
+				", annualSales='" + annualSales + '\'' +
+				", top3Markets='" + top3Markets + '\'' +
+				", materials='" + materials + '\'' +
+				", headPic='" + headPic + '\'' +
+				", department='" + department + '\'' +
+				", jobTitle='" + jobTitle + '\'' +
+				", website='" + website + '\'' +
+				", country=" + country +
+				", province=" + province +
+				", city='" + city + '\'' +
+				", isPro=" + isPro +
+				", logo='" + logo + '\'' +
+				", signBackgd='" + signBackgd + '\'' +
+				", adPhoto='" + adPhoto + '\'' +
+				", adPhotoMobile='" + adPhotoMobile + '\'' +
+				", adPhotoLink='" + adPhotoLink + '\'' +
+				", companyPhoto='" + companyPhoto + '\'' +
+				", companyPhotoLink='" + companyPhotoLink + '\'' +
+				", homePageDiy='" + homePageDiy + '\'' +
+				", productPageDiy='" + productPageDiy + '\'' +
+				", contactPageDiy='" + contactPageDiy + '\'' +
+				", homePageDiyMobile='" + homePageDiyMobile + '\'' +
+				", productPageDiyMobile='" + productPageDiyMobile + '\'' +
+				", contactPageDiyMobile='" + contactPageDiyMobile + '\'' +
+				", traceCode='" + traceCode + '\'' +
+				", webSizeTitle='" + webSizeTitle + '\'' +
+				", webSite='" + webSite + '\'' +
+				", tongjiUrl='" + tongjiUrl + '\'' +
+				", tongjiPwd='" + tongjiPwd + '\'' +
+				", updateTime=" + updateTime +
+				", rowVersion=" + rowVersion +
+				", prmAuthrity=" + prmAuthrity +
+				", authAge=" + authAge +
+				", countryName='" + countryName + '\'' +
+				", provinceName='" + provinceName + '\'' +
+				", homePageOn=" + homePageOn +
+				", productPageOn=" + productPageOn +
+				", contactPageOn=" + contactPageOn +
+				", productList=" + productList +
+				", imList=" + imList +
+				'}';
+	}
 }

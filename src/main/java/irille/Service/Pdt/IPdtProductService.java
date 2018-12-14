@@ -43,6 +43,8 @@ public interface IPdtProductService {
 
     List<PdtProductBaseInfoView> getYouMayLike(IduPage iduPage, int cat);
 
+    List<PdtProductBaseInfoView> getRandomPdt(Integer limit, int cat);
+
 
     /**
      * @Description: 商品页  侧边栏 商品分类

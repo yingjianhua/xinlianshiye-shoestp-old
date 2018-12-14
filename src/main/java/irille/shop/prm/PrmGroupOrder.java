@@ -15,15 +15,15 @@ import java.util.Date;
  * @author liyichao
  *
  */
-public class PrmGroupOrder extends BeanInt<PrmGroupOrder>{
+public class   PrmGroupOrder extends BeanInt<PrmGroupOrder>{
 	public static final Tb TB = new Tb(PrmGroupOrder.class,"团购订单").setAutoIncrement().addActIUDL();
-	
+
 	public enum T implements IEnumFld{
 		PKEY(TB.crtIntPkey()),
-		ORDER_NUM(SYS.STR__100_NULL,"订单号"), 
+		ORDER_NUM(SYS.STR__100_NULL,"订单号"),
 		PURCHASE(UsrPurchase.fldOutKey()), //采购商
 		ACTIVITY(PrmGroupPurchase.fldOutKey()),		 //订单相应联合采购
-		COUNT(SYS.INT,"订购数量"),		 
+		COUNT(SYS.INT,"订购数量"),
 		AMT_TOTAL(SYS.PRICE,"订购总价"),
 		CURRENCY(PltErate.fldOutKey("currency", "货币")),
 		CREATED_TIME(SYS.CREATED_DATE_TIME),
@@ -33,18 +33,18 @@ public class PrmGroupOrder extends BeanInt<PrmGroupOrder>{
 		;
 		//>>>以下是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别>>>
 		//<<<以上是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别<<<
-		
+
 		private Fld _fld;
-		private T(Class clazz,String name,boolean... isnull) 
+		private T(Class clazz,String name,boolean... isnull)
 			{_fld=TB.addOutKey(clazz,this,name,isnull);	}
-		private T(IEnumFld fld,boolean... isnull) { this(fld,null,isnull); } 
+		private T(IEnumFld fld,boolean... isnull) { this(fld,null,isnull); }
 		private T(IEnumFld fld, String name,boolean... null1) {
 			_fld=TB.add(fld,this,name,null1);}
 		private T(IEnumFld fld, String name,int strLen) {
 			_fld=TB.add(fld,this,name,strLen);}
 		private T(Fld fld) {_fld=TB.add(fld,this); }
 		public Fld getFld(){return _fld;}
-		
+
 	}
 	static { //在此可以加一些对FLD进行特殊设定的代码
 		T.PKEY.getFld().getTb().lockAllFlds();//加锁所有字段,不可以修改

@@ -5,6 +5,7 @@ import irille.pub.LogMessage;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.query.BeanQuery;
+import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduIns;
 import irille.pub.idu.IduOther;
 import irille.pub.util.TranslateLanguage.translateUtil;
@@ -434,7 +435,14 @@ public class UsrCartDAO {
      * 订单生成后删除购物车
      */
     public static void delCart(Integer spec) {
-        UsrCart cart = UsrCart.chkUniqueSpec_purchase(false, spec, HomeAction.getPurchase().getPkey());
-        cart.del();
+//        UsrCart cart = UsrCart.chkUniqueSpec_purchase(false, spec, HomeAction.getPurchase().getPkey());
+        SQL sql = new SQL();
+        sql.DELETE_FROM(UsrCart.class)
+                .WHERE(
+                        T.PURCHASE, "=?", HomeAction.getPurchase().getPkey()
+                ).WHERE(
+                T.SPEC, "=?", spec
+        );
+        irille.pub.bean.Query.sql(sql).executeUpdate();
     }
 }

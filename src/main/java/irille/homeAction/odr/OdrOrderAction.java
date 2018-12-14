@@ -2,6 +2,7 @@ package irille.homeAction.odr;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import irille.Dao.Old.Odr.GenerateOrder;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
 import irille.homeAction.odr.inf.IOdrOrderAction;
@@ -25,6 +26,7 @@ import irille.view.plt.CurrencyView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
@@ -196,300 +198,8 @@ public class OdrOrderAction extends HomeAction<OdrOrder> implements IOdrOrderAct
         buildOrder.commit();
         String ordersNum = buildOrder.getOrderNum();
         json.put("order", ordersNum);
-//		JSONObject json = new JSONObject();
-//		if(carts == null || "".equals(carts)) {
-//			json.put("data", "-2");
-//			System.out.println("未找到该商品");
-//			writerOrExport(json);
-//			return;
-//		}
-//		// 获取用户id
-//		// Integer pkey = getPurchase().getPkey();
-//		//获取用户地址
-//		UsrPurchase usrPurchase = UsrPurchase.load(UsrPurchase.class, getPurchase().getPkey());
-//		List<UsrPurchaseLine> purchaseListLine = BeanBase.list(UsrPurchaseLine.class, UsrPurchaseLine.T.PURCHASE + " = "
-//				+ usrPurchase.getPkey() + " and " + UsrPurchaseLine.T.ISDEFAULT + " = " + 1, false);
-//		if(purchaseListLine == null || purchaseListLine.size() <= 0) {
-//			json.put("data", "-3");
-//			write(json.toString());
-//			return;
-//		}
-//		UsrPurchaseLine usrPurchaseListLine = purchaseListLine.get(0);
-//		String[] cartArray = carts.split(",");
-//		int supplier = 0;
-//		List<OdrOrderLine> orderLineList = new ArrayList<>();
-//		List<OdrOrderLine> orderLineListPRM = new ArrayList<>();
-//		//获取购物车中所有联合采购产品所对应的数量
-//		Map<Integer,Integer> mapPRM = new HashMap<>();
-//		UsrCart cart = new UsrCart();
-//		for(int i=0;i<cartArray.length;i++) {
-//			UsrCart loadCart = UsrCart.load(UsrCart.class,Integer.parseInt(cartArray[i]));
-//			if(i == 0) {
-//				mapPRM.put(loadCart.gtSpec().gtProduct().getPkey(), loadCart.getQty());
-//				cart = loadCart;
-//			}else {
-//				for (Map.Entry<Integer, Integer> entry : mapPRM.entrySet()) {
-//				   if(loadCart.gtSpec().gtProduct().getPkey() == entry.getKey()) {
-//					   entry.setValue(entry.getValue() + loadCart.getQty());
-//				   }else {
-//					   mapPRM.put(loadCart.gtSpec().gtProduct().getPkey(), loadCart.getQty());
-//				   }
-//				}
-//			}
-//		}
-//		for(int i=0;i<cartArray.length;i++) {
-//			UsrCart loadCart = UsrCart.load(UsrCart.class,Integer.parseInt(cartArray[i]));
-//			//验证购物车
-//			if(loadCart == null) {
-//				json.put("data", "-2");
-//				System.out.println("未找到该商品");
-//				writerOrExport(json);
-//				return;
-//			}
-//			PdtSpec gtSpec = loadCart.gtSpec();
-//			//验证商品是否为同一商家
-//			if(i == 0) {
-//				supplier = gtSpec.gtProduct().gtSupplier().getPkey();
-//			}else {
-//				if(supplier != gtSpec.gtProduct().gtSupplier().getPkey()) {
-//					json.put("data", "-1");
-//					writerOrExport(json);
-//					return;
-//				}
-//			}
-//			if(loadCart.getCartType() == Odr.OdrType.STATETWO.getLine().getKey()) {
-//				//普通采购
-//				OdrOrderLine orderLine = new OdrOrderLine();
-//				orderLine.setQty(loadCart.getQty());
-//				orderLine.setSpec(loadCart.getSpec());
-//				orderLineList.add(orderLine);
-//				loadCart.del();
-//			}else {
-//				//联合采购
-//				OdrOrderLine orderLinePRM = new OdrOrderLine();
-//				orderLinePRM.setQty(loadCart.getQty());
-//				orderLinePRM.setSpec(loadCart.getSpec());
-//				//修改联合采购商品表数据
-//				List<PrmGroupPurchaseLine> prmGroupLineList =  BeanBase.list(PrmGroupPurchaseLine.class,PrmGroupPurchaseLine.T.PRODUCT + " = " +
-//						gtSpec.gtProduct().getPkey(), false);
-//				PrmGroupPurchaseLine prmGroupLine = prmGroupLineList.get(0);
-//				PrmGroupPurchase prmGroupPurchase = prmGroupLine.gtMain();
-//				Date d = new Date();
-//				//验证该产品是否开启活动
-//				if(d.getTime() > prmGroupPurchase.getStartTime().getTime() && d.getTime() < prmGroupPurchase.getEndTime().getTime()
-//						&& prmGroupPurchase.getStatus() == (byte)2) {
-//					for (Map.Entry<Integer, Integer> entry : mapPRM.entrySet()) {
-//						System.out.println(prmGroupLine.getProduct());
-//						System.out.println(entry.getKey());
-//						if(prmGroupLine.getProduct() == entry.getKey()) {
-//							System.out.println(prmGroupLine.getCount());
-//							System.out.println(entry.getValue());
-//							if(prmGroupLine.getCount() <= entry.getValue()) {
-//								prmGroupLine.setBoughtCount(prmGroupLine.getBoughtCount() + loadCart.getQty());
-//								prmGroupLine.setPersonCount(prmGroupLine.getPersonCount() + 1);
-//								BigDecimal num = new BigDecimal(loadCart.getQty());
-//					            BigDecimal price = prmGroupLine.getAmt();
-//					            BigDecimal count = num.multiply(price);
-//					            orderLinePRM.setSubtotal(count);
-//					            orderLinePRM.setRelatedGroup(loadCart.getRelatedGroup());
-//					            prmGroupLine.upd();
-//							}else {
-//								json.put("data", "-4");
-//								writerOrExport(json);
-//								return;
-//							}
-//						}
-//					}
-//				}else {
-//					json.put("data", "-5");
-//					writerOrExport(json);
-//					return;
-//				}
-//				orderLineListPRM.add(orderLinePRM);
-//				loadCart.del();
-//			}
-//		}
-//		String orderNum = "";
-//		OdrHistory his = new OdrHistory();
-//		//生成普通订单
-//		if(orderLineList != null && orderLineList.size() != 0) {
-//			OdrOrderDAO.Ins ins = new OdrOrderDAO.Ins();
-//			OdrOrder order = new OdrOrder();
-//			order.setTime(Env.getSystemTime());
-//			order.setState((byte) 0);
-//			order.setType(Odr.OdrType.STATETWO.getLine().getKey());
-//			order.setFreightPrice(new BigDecimal("0"));
-//			order.setInsurancePrice(new BigDecimal("0"));
-//			order.setCurrency(usrPurchase.getCurrency());
-//			order.setName(usrPurchase.getName());
-//			order.setPostalcode(usrPurchaseListLine.getEmailcode());
-//			order.setPhone(usrPurchaseListLine.getPhonenumber());
-//			///////////////////////////////////////////////////
-//			order.setPurchase(2);
-//			order.setDelivery(delivery);
-//			order.setAddress(address);
-//			order.setPayType((byte) payType.intValue());
-//			ins.setB(order);
-//			ins.setLines(orderLineList);
-//			ins.commit();
-//			order = ins.getB();
-//			his.setOdrorder(order.getPkey());
-//			his.setSupplier(cart.getSupplier());
-//			his.setTime(new Date());
-//			his.setState((byte)0);
-//			hisIns.setB(his);
-//			hisIns.commit();
-//			orderNum += order.getOrderNum();
-//		}
-//		//生成联合采购订单
-//		if(orderLineListPRM != null && orderLineListPRM.size() != 0) {
-//			OdrOrderDAO.InsPRM insPRM = new OdrOrderDAO.InsPRM();
-//			OdrOrder orderPRM = new OdrOrder();
-//			orderPRM.setTime(Env.getSystemTime());
-//			orderPRM.setState((byte) 0);
-//			orderPRM.setType(Odr.OdrType.STATEONE.getLine().getKey());
-//			orderPRM.setFreightPrice(new BigDecimal("0"));
-//			orderPRM.setInsurancePrice(new BigDecimal("0"));
-//			orderPRM.setCurrency(usrPurchase.getCurrency());
-//			orderPRM.setName(usrPurchase.getName());
-//			orderPRM.setPostalcode(usrPurchaseListLine.getEmailcode());
-//			orderPRM.setPhone(usrPurchaseListLine.getPhonenumber());
-//			///////////////////////////////////////////////////
-//			orderPRM.setPurchase(2);
-//			orderPRM.setDelivery(delivery);
-//			orderPRM.setAddress(address);
-//			orderPRM.setPayType((byte) payType.intValue());
-//			insPRM.setB(orderPRM);
-//			insPRM.setLines(orderLineListPRM);
-//			insPRM.commit();
-//			orderPRM = insPRM.getB();
-//			his = new OdrHistory();
-//			his.setOdrorder(orderPRM.getPkey());
-//			his.setSupplier(cart.getSupplier());
-//			his.setTime(new Date());
-//			his.setState((byte)0);
-//			hisIns.setB(his);
-//			hisIns.commit();
-//			if(orderNum != null && !"".equals(orderNum)) {
-//				orderNum += "," + orderPRM.getOrderNum();
-//			}else {
-//				orderNum +=  orderPRM.getOrderNum();
-//			}
-//		}
-//		json.put("data", "1");
-//		json.put("number", orderNum);
-//		System.out.println("成功");
         writerOrExport(json);
     }
-
-    /**
-     * xiayan app
-     * 用户提交订单
-     * json 1:成功 -1:商品不为同一供应商 -2 :未找到商品  -3:未设置默认地址
-     */
-//	@Override
-//	public void appAddOrder() throws Exception {
-//		System.out.println(111);
-//
-//		// 获取用户id
-//		// Integer pkey = getPurchase().getPkey();
-//		JSONObject json = new JSONObject();
-//		//获取用户地址
-//		List<UsrPurchase> purchaseList = BeanBase.list(UsrPurchase.class, UsrPurchase.T.PKEY + " = " + 2, false);
-//		UsrPurchase usrPurchase = purchaseList.get(0);
-//		List<UsrPurchaseLine> purchaseListLine = BeanBase.list(UsrPurchaseLine.class, UsrPurchaseLine.T.PURCHASE + " = "
-//				+ usrPurchase.getPkey() + " and " + UsrPurchaseLine.T.ISDEFAULT + " = " + 1, false);
-//		if(purchaseListLine == null || purchaseListLine.size() <= 0) {
-//			json.put("data", "-3");
-//			write(json.toString());
-//			return;
-//		}
-//		UsrPurchaseLine usrPurchaseListLine = purchaseListLine.get(0);
-//
-//
-//		// 查询购物车中的商品
-//		// 是否为同一家店
-//		String[] strSpecList = strSpec.split(",");
-//		List<PdtSpec> pdtSpecList = new ArrayList<>();
-//		for (int i = 0; i < strSpecList.length; i++) {
-//			List<PdtSpec> specList = BeanBase.list(PdtSpec.class, PdtSpec.T.PKEY + " = " + strSpecList[i], false);
-//			PdtSpec spec = specList.get(0);
-//			pdtSpecList.add(spec);
-//		}
-//		if (pdtSpecList.size() != 1) {
-//			Integer productPkey = pdtSpecList.get(0).getProduct();
-//			for (int i = 0; i < pdtSpecList.size(); i++) {
-//				if (productPkey != pdtSpecList.get(i).getProduct()) {
-//					json.put("data", "-1");
-//					writerOrExport(json);
-//					return;
-//				}
-//			}
-//		}
-//		List<UsrCart> listCart = UsrCartquery.listByPurchase(2);
-//		// 用户选中的商品
-//		List<UsrCart> pitchOnCart = new ArrayList<>();
-//		for (int i = 0; i < strSpecList.length; i++) {
-//			for (int j = 0; j < listCart.size(); j++) {
-//				System.out.println(listCart.get(j).getSpec());
-//				if (listCart.get(j).getSpec().toString().equals(strSpecList[i])) {
-//					UsrCart cart = listCart.get(j);
-//					pitchOnCart.add(cart);
-//					// break;
-//				}
-//			}
-//		}
-//		if (pitchOnCart == null || pitchOnCart.size() == 0) {
-//			json.put("data", "-2");
-//			System.out.println("选择商品为空");
-//			writerOrExport(json);
-//			return;
-//		}
-//		OdrOrderDAO.Ins ins = new OdrOrderDAO.Ins();
-//		OdrOrder o = new OdrOrder();
-//		System.out.println(Env.getSystemTime());
-//		o.setTime(Env.getSystemTime());
-//		o.setState((byte) 0);
-//		if(listCart.get(0).getCartType() == Usr.OJoinType.GENERAL.getLine().getKey()) {
-//			o.setType((byte) 1);
-//		}else {
-//			o.setType((byte) 0);
-//		}
-//		o.setFreightPrice(new BigDecimal("0"));
-//		o.setInsurancePrice(new BigDecimal("0"));
-//		o.setCurrency(usrPurchase.getCurrency());
-//		o.setName(usrPurchase.getName());
-//		o.setPostalcode(usrPurchaseListLine.getEmailcode());
-//		o.setPhone(usrPurchaseListLine.getPhonenumber());
-//		///////////////////////////////////////////////////
-//		o.setPurchase(2);
-//		o.setDelivery(delivery);
-//		o.setAddress(address);
-//		o.setPayType((byte) payType.intValue());
-//		ins.setB(o);
-//		List<OdrOrderLine> orderLinelist = new ArrayList<OdrOrderLine>();
-//		for (int i = 0; i < pitchOnCart.size(); i++) {
-//			OdrOrderLine odrLine = new OdrOrderLine();
-//			odrLine.setSpec(pitchOnCart.get(i).getSpec());
-//			odrLine.setQty(pitchOnCart.get(i).getQty().intValue());
-//			orderLinelist.add(odrLine);
-//			pitchOnCart.get(i).del();
-//		}
-//		ins.setLines(orderLinelist);
-//		ins.commit();
-//		o = ins.getB();
-//		json.put("data", "1");
-//		OdrHistory his = new OdrHistory();
-//		his.setOdrorder(o.getPkey());
-//		his.setSupplier(pitchOnCart.get(0).getSupplier());
-//		his.setTime(new Date());
-//		his.setState((byte)0);
-//		hisIns.setB(his);
-//		hisIns.commit();
-//		json.put("number", o.getOrderNum());
-//		System.out.println("成功");
-//		writerOrExport(json);
-//	}
 
 
     private String payContent;
@@ -568,21 +278,6 @@ public class OdrOrderAction extends HomeAction<OdrOrder> implements IOdrOrderAct
         writerOrExport(json);
     }
 
-//    /**
-//     * <strong>删除订单</strong>
-//     * <p>
-//     * <ul>
-//     * <li>只有订单状态为 待付款\已完成\已取消 的订单可以删除</li>
-//     * <li>删除操作是将订单状态设置为已删除,并不删除数据</li>
-//     * </ul>
-//	 * @author yingjianhua
-//	 * @see irille.shop.odr.OdrOrderDAO#delete(String, Integer)
-//	 */
-//    @NeedLogin
-//	public void delete() throws Exception {
-//		OdrOrderDAO.delete(orderNumber, getPurchase().getPkey());
-//		write();
-//	}
 
     public String getState() {
         return state;
@@ -884,6 +579,9 @@ public class OdrOrderAction extends HomeAction<OdrOrder> implements IOdrOrderAct
      * createdBy liyichao
      */
 
+    @Inject
+    private GenerateOrder generateOrder;
+
     public void generateOrder() throws Exception {
         UsrPurchaseLine address = null;
         try {
@@ -891,7 +589,11 @@ public class OdrOrderAction extends HomeAction<OdrOrder> implements IOdrOrderAct
         } catch (Exp e) {
             throw LOG.errTran("addressfrom%Please_Select_The_Shipping_Address", "请选择收货地址");
         }
-        OdrOrderDAO.GenerateOrder generateOrder = new OdrOrderDAO.GenerateOrder(getJsonCarts(), address, curCurrency().getPkey(), getOdrView(), getEnterType());
+        generateOrder.setJsonCarts(getJsonCarts());
+        generateOrder.setAddress(address);
+        generateOrder.setCurrency(curCurrency().getPkey());
+        generateOrder.setOdrViews(getOdrView());
+        generateOrder.setEnterType(getEnterType());
         JSONObject json = new JSONObject();
         generateOrder.commit();
         CONFIRM_ORDER_MAP.remove(getPurchase().getPkey());
