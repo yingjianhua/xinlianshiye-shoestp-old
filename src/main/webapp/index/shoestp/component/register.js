@@ -8,8 +8,39 @@
 		        },
 			}
 		}, */
-		props:["x_axis","browse_data","visit_data","field","width","id"],
-	  template: '<div :id="id" :style="{width:width+\'px\'}" style="height:100%;background-color:#fff;"></div>',
+		props:{
+			min:{
+				type:Number,
+				default:0,
+			},
+			max:{
+				type:Number,
+				default:20000,
+			},
+			interval:{
+				type:Number,
+				default:4000,
+			},
+			x_axis:{
+				type:Array,
+			},
+			browse_data:{
+				type:Array,
+			},
+			visit_data:{
+				type:Array,
+			},
+			field:{
+				type:Array,
+			},
+			id:{
+				type:String,
+			},
+			width:{
+				type:Number,
+			}
+		},
+	  template: '<div :id="id" :style="{width:width+\'px\'}" style="height:100%;"></div>',
 	  mounted(){
 		  this.renderOperationalData();
 	  },
@@ -94,8 +125,8 @@
 	    		            type: 'value',
 	    		            name: '',
 	    		            min: 0,
-	    		            max: 20000,
-	    		            interval: 4000,
+	    		            max: self.max,
+	    		            interval: self.interval,
 	    		            axisLine:{
 	    		            	lineStyle:{
 	    		            		type:'solid',
