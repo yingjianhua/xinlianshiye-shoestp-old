@@ -1,6 +1,6 @@
 	Vue.component('pie', {
 	  props:["browse_data","browse_name","field","title"],
-	  template: '<div id="pie" style="height:100%;width:100%;background-color:#fff;"></div>',
+	  template: '<div id="pie" style="height:100%;width:100%;"></div>',
 	  mounted(){
 		  this.renderOperationalData();
 	  },

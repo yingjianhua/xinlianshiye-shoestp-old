@@ -140,7 +140,7 @@
 											</el-col>
 										</el-row>
 										  	<el-container>
-											  <el-main>
+											  <el-main style="overflow-x: hidden;">
 												 <world style="position: relative;left: -186px;" :size="'1.5'" :id="dataMap.id" :width="1000" :height="300" :type="dataMap.type" :world-mapping="worldMap" :data="dataMap.data"  :data-color="dataMap.dataColor" :data-images="dataMap.dataImages"  ref="mapModel" ></world>
 												 <div style="text-align: center;margin-bottom: 25px;margin-top:7px">
 													<el-radio label="world" v-model="dataMap.type" @change="chooseThisMap">全部访客地域分布</el-radio>
@@ -286,7 +286,7 @@
 							<el-col :xs="24" :sm="24" :lg="8" style="margin-top:333px;padding-left:60px;">
 								<div class="my-panel-title-wrap mini" style="width:520px;background-position: left;">资金数据</div>
 								<div style="width:540px;height:198px;">
-									<register :id="'operationData2'" :x_axis="register_data.x_axis" :browse_data="register_data.browse_data" :field="register_data.field"></register>
+									<register :max="10000000" :interval="2000000" style="z-index: 999;" :id="'operationData2'" :x_axis="register_data.x_axis" :browse_data="register_data.browse_data" :field="register_data.field"></register>
 								</div>
 							</el-col>
 							<el-col :xs="24" :sm="24" :lg="8" style="margin-top: 136px;">
@@ -340,7 +340,7 @@
 										<el-col :xs="24" :sm="24" :lg="24">
 											<div class="my-panel-title-wrap mini" style="background-size: 106%;background-position: left;">注册数据</div>
 											<div style="width:540px;height:198px;">
-												<register :id="'operationData3'" :x_axis="register_data2.x_axis" :browse_data="register_data2.browse_data" :field="register_data2.field"></register>
+												<register style="z-index:999" :id="'operationData3'" :x_axis="register_data2.x_axis" :browse_data="register_data2.browse_data" :field="register_data2.field"></register>
 											</div>
 										</el-col>
 									</el-row>
@@ -594,7 +594,7 @@
 		        orderDetail:_nav1.order_sort,	//订单排行
 		        register_data:{					//注册信息
 		        	x_axis:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
-		        	browse_data:_nav1.register_data,
+		        	browse_data:_nav1.volume_data,
 		        	field:['成交额']
 		        },
 		        register_data2:{					//注册信息
