@@ -466,5 +466,14 @@ var lang_obj={
 		supplier:{
 			products:'製品',
 			productsStyle:'処理方法'
-		}
+		},usrpurchase:{
+        have:'既に',
+        usrpurchase:'買い手',
+        Procured:'購入した',
+        complete:'既に完了しました',
+        Dualobjective:'ダブルターゲット',
+        baifenhao:'%',
+        continued:'購入を続けることができます'
+
+    }
 };

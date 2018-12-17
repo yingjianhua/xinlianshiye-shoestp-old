@@ -464,13 +464,18 @@ var lang_obj={
 		account_name:'銀行賬戶',
 		depos_it_bank_subbranch:'開戶銀行支行名稱',
 		bank_account:'開戶銀行支行所在地',
-		
-		
-		
-		
 	},
 	supplier:{
 		products:'產品',
 		productsStyle:'加工方式'
-	}
+	},usrpurchase:{
+        have:'已有',
+        usrpurchase:'比特採購商',
+        Procured:'採購了',
+        complete:'已經完成了',
+        Dualobjective:'雙的目標的',
+        baifenhao:'%',
+        continued:'還可以繼續採購'
+
+    }
 };

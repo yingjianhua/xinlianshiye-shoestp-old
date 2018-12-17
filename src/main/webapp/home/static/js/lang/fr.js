@@ -465,5 +465,14 @@ var lang_obj={
 	supplier:{
 		products:'Produit',
 		productsStyle:'Méthode de traitement'
-	}
+	},usrpurchase:{
+        have:'Déjà',
+        usrpurchase:'Acheteur',
+        Procured:'L\'achat.',
+        complete:'C\'est fini.',
+        Dualobjective:'Double cible',
+        baifenhao:'%',
+        continued:'On peut continuer à acheter.'
+
+    }
 };

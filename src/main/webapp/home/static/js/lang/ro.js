@@ -499,6 +499,15 @@ var lang_obj={
 	supplier:{
 		products:'produs',
 		productsStyle:'Metoda de procesare'
-	}
+	},usrpurchase:{
+        have:'are',
+        usrpurchase:'Cumpărători bit',
+        Procured:'achiziţionat',
+        complete:'A fost deja finalizată',
+        Dualobjective:'Obiectiv dublu',
+        baifenhao:'%',
+        continued:'Pot continua să cumpere'
+
+    }
 	
 };

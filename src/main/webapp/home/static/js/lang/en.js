@@ -468,7 +468,19 @@ var lang_obj={
 		supplier:{
 			products:'product',
 			productsStyle:'Processing methods'
-		}
+		},usrpurchase:{
+        have: 'Already existing',
+        usrpurchase:'\n' +
+            '\n' +
+            '位采购商\n' +
+            'Bit buyer',
+        Procured:'Procured',
+        complete:'It\'s done',
+        Dualobjective:'Dual-objective',
+        baifenhao:'%',
+        continued:'Purchases can be continued'
+
+    }
 		
 		
 		
