@@ -306,7 +306,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
      * @author lijie@shoestp.cn
      */
     public void getRandomPdt() throws IOException {
-        write(pdtProduct.getRandomPdt(getLimit(), getCated()));
+        write(pdtProduct.getRandomPdt(getLimit(), getCated(), getPurchase()));
     }
 
     private Integer id;

@@ -92,28 +92,26 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
         </div>
     </div>
 
-    <!--<div class="banner_02">-->
-    <!--<div class="yellow_01"></div>-->
-    <!--<div class="yellow_02">-->
-    <!--<div class="block">-->
-    <!--<h2 class="white-text product-title">AFIȘAREA</h2>-->
-    <!--<p class="white-text product-title">PRODUSELOR</p>-->
-    <!--<el-carousel trigger="click" arrow="never">-->
-    <!--<el-carousel-item v-for="products in productCarousel">-->
-    <!--<div class="product-image" v-for="(item,index) in products"-->
-    <!--:class="{'margin_around' : index == 1}">-->
-    <!--<a :href="item.url" target="_blank">-->
-    <!--<img :src="item.imageUrl" alt="goods">-->
-    <!--<p class="pi-title">{{ item.title }}</p>-->
-    <!--<p class="pi-content">{{ item.content }}</p>-->
-    <!--</a>-->
-    <!--</div>-->
-    <!--</el-carousel-item>-->
-    <!--</el-carousel>-->
-    <!--<a class="btn btn-normal-red" @click="getGift">Obțineți Mostre Gratuite Acum</a>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
+    <div class="banner_02">
+        <div class="yellow_01"></div>
+        <div class="yellow_02">
+            <div class="block">
+                <h2 class="white-text product-title">AFIȘAREA</h2>
+                <p class="white-text product-title">PRODUSELOR</p>
+                <el-carousel trigger="click" arrow="never">
+                    <el-carousel-item v-for="products in productCarousel">
+                        <div class="product-image" v-for="(item,index) in products"
+                             :class="{'margin_around' : index == 1}">
+                                <img :src="item.imageUrl" alt="goods">
+                                <p class="pi-title">{{ item.title }}</p>
+                                <p class="pi-content">{{ item.content }}</p>
+                        </div>
+                    </el-carousel-item>
+                </el-carousel>
+                <a class="btn btn-normal-red" @click="getGift">Obțineți Mostre Gratuite Acum</a>
+            </div>
+        </div>
+    </div>
 
 
     <!-- 含手机的 banner 行 -->

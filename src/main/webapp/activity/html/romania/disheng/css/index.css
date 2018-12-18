@@ -2,7 +2,8 @@
 body, html, ul, ol, li, span, a, div, dl, dd, dt, p, h1, h2, h3, h4, h5, h6, select, option {
   padding: 0px;
   margin: 0px;
-  box-sizing: border-box; }
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box; }
 
 html, body {
   width: 100%;
@@ -62,16 +63,26 @@ img {
 .img-contain {
   width: 100%;
   height: 100%;
-  object-fit: contain; }
+  -o-object-fit: contain;
+     object-fit: contain; }
 
 .flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center; }
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
 
 .flex-wrap {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  flex-wrap: wrap; }
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap; }
 
 .por {
   position: relative; }
@@ -92,10 +103,11 @@ img {
     position: absolute;
     top: 15%;
     left: 50%;
-    transform: translate(-50%); }
+    -webkit-transform: translate(-50%);
+            transform: translate(-50%); }
     .top-banner-box .top-container .top-container-left {
       position: absolute;
-      top: 100px; }
+      top: 0; }
     .top-banner-box .top-container .top-container-right {
       width: 30%;
       height: 583px;
@@ -199,16 +211,17 @@ img {
     .container-one .custom-shoes .custom-shoes-list .custom-shoes-bottom {
       margin-bottom: 10%; }
     .container-one .custom-shoes .custom-shoes-list .custom-shoes-img1 {
-      width: 41%;
+      width: 26%;
       position: absolute;
       top: 15%;
-      left: 50%;
-      transform: translate(-50%); }
+      left: 49%;
+      -webkit-transform: translate(-50%);
+              transform: translate(-50%); }
     .container-one .custom-shoes .custom-shoes-list .custom-shoes-item {
       -webkit-box-pack: flex-start;
       -moz-justify-content: flex-start;
-      -webkit-justify-content: flex-start;
-      justify-content: flex-start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
       width: 32%; }
       .container-one .custom-shoes .custom-shoes-list .custom-shoes-item .custom-shoes-img2 {
         width: 125px; }
@@ -241,8 +254,8 @@ img {
   margin: 78px auto 120px auto;
   -webkit-box-pack: space-between;
   -moz-justify-content: space-between;
-  -webkit-justify-content: space-between;
-  justify-content: space-between; }
+  -ms-flex-pack: justify;
+      justify-content: space-between; }
   .new-era .new-era-img {
     width: 507px; }
   .new-era .new-era-content {
@@ -284,7 +297,8 @@ img {
       position: absolute;
       top: 6%;
       left: 50%;
-      transform: translate(-50%); }
+      -webkit-transform: translate(-50%);
+              transform: translate(-50%); }
       .four-num .four-num-list .four-num-item .four-num-font .title {
         font-size: 75px;
         font-weight: bold;
@@ -325,35 +339,56 @@ img {
       position: absolute;
       bottom: 0;
       right: 0;
-      width: 555px;
-      height: 322px;
+      width: 547px;
       z-index: -1; }
-  .container-two .order-detail .order-detail-list {
-    width: 85%;
-    height: 417px;
-    background-color: #e6e6e6;
-    transform: skew(-12deg);
-    position: relative; }
-    .container-two .order-detail .order-detail-list .order-detail-font {
-      height: 100%;
-      transform: skew(12deg); }
-      .container-two .order-detail .order-detail-list .order-detail-font .order-detail-item {
-        margin-left: 10%;
-        width: 40%; }
-        .container-two .order-detail .order-detail-list .order-detail-font .order-detail-item img {
-          width: 74px;
-          height: 69px;
-          margin-right: 2%; }
-        .container-two .order-detail .order-detail-list .order-detail-font .order-detail-item .title {
-          font-weight: bold; }
-    .container-two .order-detail .order-detail-list::after {
-      content: "Order Detail";
-      position: absolute;
-      top: 40%;
-      left: 0%;
-      transform: translate(-50%);
-      font-size: 56px;
-      font-weight: bold; }
+  .container-two .advantage .title1 {
+    font-size: 54px;
+    font-weight: bold;
+    text-align: center;
+    margin: 70px 0 50px 0; }
+  .container-two .advantage .advantage-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between; }
+    .container-two .advantage .advantage-container .advantage-line {
+      width: 10px;
+      height: 1292px;
+      background-color: #e9e9e9;
+      position: relative; }
+      .container-two .advantage .advantage-container .advantage-line .line {
+        width: 34px;
+        height: 48px;
+        background-color: #eed9a8;
+        border-radius: 10px 0 0 10px;
+        opacity: 0.8;
+        position: absolute; }
+      .container-two .advantage .advantage-container .advantage-line .advantage-line1 {
+        top: 79px;
+        left: -34px; }
+      .container-two .advantage .advantage-container .advantage-line .advantage-line2 {
+        top: 500px;
+        border-radius: 0 10px 10px 0;
+        left: 10px; }
+      .container-two .advantage .advantage-container .advantage-line .advantage-line3 {
+        bottom: 173px;
+        left: -34px; }
+    .container-two .advantage .advantage-container .advantage-left {
+      width: 500px; }
+    .container-two .advantage .advantage-container .advantage-right {
+      width: 500px; }
+    .container-two .advantage .advantage-container .advantage-font {
+      font-size: 24px;
+      line-height: 35px;
+      letter-spacing: 0px;
+      color: #666666;
+      margin: 20px 0  120px 0; }
+    .container-two .advantage .advantage-container img {
+      width: 500px;
+      border-radius: 14px;
+      margin: 20px 0  120px 0; }
   .container-two .testimonials .title1 {
     font-size: 54px;
     font-weight: bold;
@@ -375,6 +410,10 @@ img {
       width: 15.2%;
       margin: 1% 0; }
 
+.map-container .map {
+  width: 100%;
+  height: 400px; }
+
 .bottom-container {
   margin: 0 auto; }
   .bottom-container .bottom-bg {
@@ -386,7 +425,8 @@ img {
       position: absolute;
       top: 20%;
       left: 50%;
-      transform: translate(-50%); }
+      -webkit-transform: translate(-50%);
+              transform: translate(-50%); }
       .bottom-container .bottom-bg .bottom-font .title {
         font-size: 50px;
         font-weight: bold;
@@ -458,7 +498,7 @@ img {
       .container-one .custom-shoes .custom-shoes-list .custom-shoes-bottom {
         margin-bottom: 6%; }
       .container-one .custom-shoes .custom-shoes-list .custom-shoes-img1 {
-        width: 38%;
+        width: 26%;
         top: 27%; }
       .container-one .custom-shoes .custom-shoes-list .custom-shoes-item .custom-shoes-img2 {
         width: 120px; }
@@ -519,17 +559,15 @@ img {
           width: 95%;
           font-size: 28px; }
       .container-two .great-container .great-img1 {
-        width: 500px;
-        height: 294px; }
-    .container-two .order-detail .order-detail-list {
-      height: 347px; }
-      .container-two .order-detail .order-detail-list .order-detail-font .order-detail-item {
-        margin-left: 8%; }
-        .container-two .order-detail .order-detail-list .order-detail-font .order-detail-item img {
-          width: 65px;
-          height: 60px; }
-      .container-two .order-detail .order-detail-list::after {
-        font-size: 50px; }
+        width: 470px; }
+    .container-two .advantage .advantage-container .advantage-line {
+      height: 1190px; }
+    .container-two .advantage .advantage-container .advantage-left {
+      width: 400px; }
+    .container-two .advantage .advantage-container .advantage-right {
+      width: 400px; }
+    .container-two .advantage .advantage-container img {
+      width: 400px; }
     .container-two .testimonials .title1 {
       font-size: 52px;
       margin: 60px 0 30px 0; }
@@ -537,6 +575,10 @@ img {
       font-size: 26px; }
     .container-two .testimonials .testimonials-item > div .content {
       font-size: 18px; }
+
+  .map-container .map {
+    width: 100%;
+    height: 350px; }
 
   .bottom-container {
     width: 1179px; }
@@ -607,19 +649,19 @@ img {
       .container-one .custom-shoes .custom-shoes-list .custom-shoes-bottom {
         margin-bottom: 5%; }
       .container-one .custom-shoes .custom-shoes-list .custom-shoes-img1 {
-        width: 33%;
+        width: 20%;
         top: 34%;
-        left: 45%; }
+        left: 47%; }
       .container-one .custom-shoes .custom-shoes-list .custom-shoes-item {
         width: 42%; }
         .container-one .custom-shoes .custom-shoes-list .custom-shoes-item .custom-shoes-img2 {
           width: 115px; }
         .container-one .custom-shoes .custom-shoes-list .custom-shoes-item .custom-shoes-img3 {
-          width: 210px; }
+          width: 120px; }
         .container-one .custom-shoes .custom-shoes-list .custom-shoes-item .custom-shoes-img4 {
           width: 130px; }
         .container-one .custom-shoes .custom-shoes-list .custom-shoes-item .custom-shoes-img5 {
-          width: 166px; }
+          width: 140px; }
         .container-one .custom-shoes .custom-shoes-list .custom-shoes-item > div .title {
           font-size: 22px; }
         .container-one .custom-shoes .custom-shoes-list .custom-shoes-item > div .content {
@@ -674,17 +716,16 @@ img {
           font-size: 26px;
           line-height: 65px; }
       .container-two .great-container .great-img1 {
-        width: 400px;
-        height: 264px; }
-    .container-two .order-detail .order-detail-list {
-      height: 300px; }
-      .container-two .order-detail .order-detail-list .order-detail-font .order-detail-item {
-        margin-left: 8%; }
-        .container-two .order-detail .order-detail-list .order-detail-font .order-detail-item img {
-          width: 60px;
-          height: 56px; }
-      .container-two .order-detail .order-detail-list::after {
-        font-size: 44px; }
+        width: 400px; }
+    .container-two .advantage .advantage-container .advantage-line {
+      height: 1190px; }
+    .container-two .advantage .advantage-container .advantage-left {
+      width: 340px; }
+    .container-two .advantage .advantage-container .advantage-right {
+      width: 340px; }
+    .container-two .advantage .advantage-container img {
+      width: 340px;
+      margin: 20px 0 110px 0 !important; }
     .container-two .testimonials .title1 {
       font-size: 52px;
       margin: 60px 0 30px 0; }
@@ -693,6 +734,10 @@ img {
       line-height: 46px; }
     .container-two .testimonials .testimonials-item > div .content {
       font-size: 16px; }
+
+  .map-container .map {
+    width: 100%;
+    height: 300px; }
 
   .bottom-container {
     margin: 0 auto;
@@ -705,7 +750,8 @@ img {
         position: absolute;
         top: 20%;
         left: 50%;
-        transform: translate(-50%); }
+        -webkit-transform: translate(-50%);
+                transform: translate(-50%); }
         .bottom-container .bottom-bg .bottom-font .title {
           font-size: 46px;
           line-height: 46px; }

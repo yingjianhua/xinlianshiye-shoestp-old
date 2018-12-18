@@ -10,6 +10,7 @@ public abstract class BeanAction<T extends BeanMain> extends BaseAction {
 
     private static final long serialVersionUID = -3099350026313996838L;
 
+
     @SuppressWarnings("unchecked")
     public BeanAction() {
         beanClass = (Class<T>) GenericsUtils.getSuperClassGenricType(getClass());
@@ -48,6 +49,10 @@ public abstract class BeanAction<T extends BeanMain> extends BaseAction {
             return new String(buffer, "utf-8");
         }
         return null;
+    }
+
+    public String getParams(String name) {
+        return ServletActionContext.getRequest().getParameter(name);
     }
 
 

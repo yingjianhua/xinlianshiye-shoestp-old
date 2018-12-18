@@ -5,6 +5,8 @@ import irille.pub.i18n.I18NFieldSerializer;
 import irille.view.BaseView;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 /**
  * 首页新品
  * Created by IntelliJ IDEA.
@@ -14,12 +16,12 @@ import lombok.Data;
  */
 @Data
 public class NewPdtInfo implements BaseView {
-    private long id;
+    private Long id;
     @JsonSerialize(using = I18NFieldSerializer.class)
     private String title;
-    private String iamge;
-    private double price;
-    private int min_Order;
+    private String image;
+    private BigDecimal price;
+    private int min_order;
     private boolean isFavorite;
     private String rewrite;
 }

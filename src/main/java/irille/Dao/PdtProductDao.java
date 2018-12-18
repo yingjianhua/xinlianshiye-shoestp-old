@@ -93,7 +93,7 @@ public class PdtProductDao {
         ;
         query
                 .SELECT(PdtProduct.T.PKEY, "id")
-                .SELECT(PdtProduct.T.NAME)
+                .SELECT(PdtProduct.T.NAME, PdtProduct.T.MIN_OQ)
                 .SELECT(PdtProduct.T.PICTURE, "image")
                 .SELECT(PdtProduct.T.CUR_PRICE, "price")
                 .SELECT(childrenQuery, "ismyfavorite")
@@ -373,23 +373,40 @@ public class PdtProductDao {
     }
 
     @Caches
-    public List<PdtProduct> getYouMayLike(int cat) {
-        SQL sql = null;
+    public List getYouMayLike(int cat, Integer pubPkey) {
+        SQL sql = new SQL();
+        if (pubPkey != null) {
+            SQL childrenQuery = new SQL();
+            childrenQuery
+                    .SELECT(UsrFavorites.T.PKEY)
+                    .FROM(UsrFavorites.class)
+                    .WHERE(UsrFavorites.T.PURCHASE, "=?", pubPkey)
+                    .WHERE(UsrFavorites.T.PRODUCT, "=", PdtProduct.T.PKEY)
+            ;
+            sql.SELECT(
+                    childrenQuery, "isFavorite"
+            );
+        }
+        sql.
+                SELECT(
+                        PdtProduct.T.PKEY,
+                        PdtProduct.T.NAME,
+                        PdtProduct.T.CUR_PRICE,
+                        PdtProduct.T.PICTURE,
+                        PdtProduct.T.MIN_OQ
+                )
+                .FROM(PdtProduct.class);
         if (cat > 0) {
             String pkeys = getYouMayLikeProd(cat);
-            sql = new SQL() {{
-                SELECT(PdtProduct.T.PKEY, PdtProduct.T.NAME, PdtProduct.T.CUR_PRICE, PdtProduct.T.PICTURE);
-                FROM(PdtProduct.class);
-                WHERE(PdtProduct.T.PKEY, " in(" + pkeys + ") ");
-            }};
-        } else {
-            sql = new SQL() {{
-                SELECT(PdtProduct.T.PKEY, PdtProduct.T.NAME, PdtProduct.T.CUR_PRICE, PdtProduct.T.PICTURE);
-                FROM(PdtProduct.class);
-            }};
+            sql.
+                    WHERE(PdtProduct.T.PKEY, " in(" + pkeys + ") ");
         }
         productRules(sql);
+        if (pubPkey != null) {
+            return irille.pub.bean.Query.sql(sql).queryMaps();
+        }
         return irille.pub.bean.Query.sql(sql).queryList(PdtProduct.class);
+
     }
 
     /**

@@ -270,28 +270,19 @@ img {
         font-size: 1.42rem;
         text-align: left;
         margin-left: 1rem; }
-  #app .order-detail {
-    text-align: center; }
-    #app .order-detail .title {
-      font-size: 2.13rem;
+  #app .advantage {
+    background-color: #f2f2f2;
+    font-size: 0.73rem;
+    padding: 0.66rem 0  2.66rem 0; }
+    #app .advantage .title1 {
+      font-size: 1.5rem;
       font-weight: bold;
-      margin: 3rem 0 2rem 0; }
-    #app .order-detail .order-detail-container {
-      background-color: #e6e6e6;
-      padding: 2.5rem 0; }
-      #app .order-detail .order-detail-container .order-detail-item {
-        padding: 0 3.7rem;
-        -webkit-box-pack: flex-start;
-        -moz-justify-content: flex-start;
-        -webkit-justify-content: flex-start;
-        justify-content: flex-start;
-        margin-bottom: 2rem; }
-        #app .order-detail .order-detail-container .order-detail-item:last-child {
-          margin-bottom: 0; }
-        #app .order-detail .order-detail-container .order-detail-item .content {
-          font-size: 1.38rem;
-          margin-left: 1rem;
-          text-align: left; }
+      margin: 2.5rem 0 1rem 0;
+      text-align: center; }
+    #app .advantage .advantage-font {
+      padding: 0 0.94rem;
+      color: #666666;
+      margin: 1.5rem 0; }
   #app .testimonials .title1 {
     font-size: 1.5rem;
     font-weight: bold;
@@ -314,9 +305,9 @@ img {
     #app .bottom-container .content-box {
       width: 100%;
       text-align: center;
-      padding: 0 4.5rem;
+      padding: 0 3rem;
       position: absolute;
-      top: 15%;
+      top: 5%;
       left: 50%;
       transform: translate(-50%); }
       #app .bottom-container .content-box .btn {
@@ -328,11 +319,23 @@ img {
         color: #ffffff;
         font-size: 1.25rem;
         margin: 0 auto; }
+    #app .bottom-container .erweima {
+      width: 6rem;
+      height: 6rem;
+      position: absolute;
+      bottom: 1rem;
+      left: 50%;
+      transform: translate(-50%); }
+  #app .map-container .map {
+    width: 100%;
+    height: 15rem; }
 
 @media (device-height: 568px) and (-webkit-min-device-pixel-ratio: 2) {
   #app .bottom-container .content-box {
-    padding: 0 3.5rem;
+    padding: 0 1.5rem;
     position: absolute;
-    top: 0%; } }
+    top: 0%; }
+  #app .bottom-container .erweima {
+    bottom: 0; } }
 
 /*# sourceMappingURL=index.css.map */

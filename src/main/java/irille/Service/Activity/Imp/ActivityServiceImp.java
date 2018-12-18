@@ -20,6 +20,8 @@ import java.security.GeneralSecurityException;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by IntelliJ IDEA.
@@ -108,6 +110,7 @@ public class ActivityServiceImp implements IActivityService {
                     .setReportRequests(requests);
             GetReportsResponse response = service.reports().batchGet(getReport).execute();
             Map<Integer, GoogleAnalyticsView> map = getPe();
+            getInq(map, startDate, today);
             for (Report report : response.getReports()) {
                 ColumnHeader header = report.getColumnHeader();
 //                List<String> dimensionHeaders = header.getDimensions();
@@ -124,7 +127,6 @@ public class ActivityServiceImp implements IActivityService {
                     if (view.getId() == null) {
                         continue;
                     }
-                    List<Integer> supplierId = Arrays.asList(281, 298, 283, 318, 279, 295, 16, 291, 282, 13, 317, 23, 78, 301);
                     int SupId = -1;
                     if (view.getType() == 4) {
                         SupId = pdtProductDao.getProductSupId(view.getId());
@@ -132,7 +134,7 @@ public class ActivityServiceImp implements IActivityService {
                         SupId = view.getId();
                     }
 
-                    if (!supplierId.contains(SupId)) {
+                    if (map.get(SupId) == null) {
                         continue;
                     }
                     String keyword2 = dimensions.get(1);
@@ -154,15 +156,9 @@ public class ActivityServiceImp implements IActivityService {
                         googleAnalyticsView.setId(SupId);
                         googleAnalyticsView.setTrafficVolume(trafficvolume);
                         googleAnalyticsView.setPe(pe);
-                        googleAnalyticsView.setInquiry(
-                                pkCompetitionDataDao.getInquiry(Date.from(startDate.atStartOfDay().toInstant(ZoneOffset.UTC)), Date.from(today.atStartOfDay().toInstant(ZoneOffset.UTC)), SupId)
-                        );
                     } else {
                         googleAnalyticsView.setTrafficVolume(googleAnalyticsView.getTrafficVolume() + trafficvolume);
                         googleAnalyticsView.setPe(googleAnalyticsView.getPe() + pe);
-                        googleAnalyticsView.setInquiry(
-                                pkCompetitionDataDao.getInquiry(Date.from(startDate.atStartOfDay().toInstant(ZoneOffset.UTC)), Date.from(today.atStartOfDay().toInstant(ZoneOffset.UTC)), SupId)
-                        );
                     }
                     map.put(SupId, googleAnalyticsView);
                 }
@@ -185,12 +181,34 @@ public class ActivityServiceImp implements IActivityService {
     }
 
     /**
+     * @Description: 获取所有INQ
+     * @date 2018/12/18 11:25
+     * @author lijie@shoestp.cn
+     */
+    private void getInq(Map<Integer, GoogleAnalyticsView> map, LocalDate startDate, LocalDate today) {
+        Integer[] integers = {281, 298, 283, 318, 279, 295, 16, 291, 282, 13, 317, 23, 78, 301,165};
+        for (Integer integer : integers) {
+            GoogleAnalyticsView googleAnalyticsView = map.get(integer);
+            if (googleAnalyticsView == null) {
+                googleAnalyticsView = new GoogleAnalyticsView();
+            }
+            googleAnalyticsView.setId(integer);
+            googleAnalyticsView.setInquiry(
+                    pkCompetitionDataDao.getInquiry(Date.from(startDate.atStartOfDay().toInstant(ZoneOffset.UTC)), Date.from(today.atStartOfDay().toInstant(ZoneOffset.UTC)), integer)
+            );
+            map.put(integer, googleAnalyticsView);
+        }
+
+    }
+
+    /**
      * @Description: 获取URL数据
      * @date 2018/12/3 14:54
      * @author lijie@shoestp.cn
      */
     private GoogleAnalyticsView getId(String url) {
         GoogleAnalyticsView googleAnalyticsView = new GoogleAnalyticsView();
+
         if (url.indexOf("usr_UsrSupplier_gtSupIndex?pkey=") != -1) {
             googleAnalyticsView.setId(Integer.valueOf(url.substring((url.indexOf("pkey=") + 5))));
             googleAnalyticsView.setType(0);
@@ -214,6 +232,70 @@ public class ActivityServiceImp implements IActivityService {
         if (url.indexOf("prm_PrmGroupPurchase_getGroupPdt") != -1) {
             googleAnalyticsView.setId(Integer.valueOf(url.substring((url.indexOf("pkey=") + 5))));
             googleAnalyticsView.setType(4);
+        }
+        Pattern pattern = Pattern.compile("/activity/html/romania/(\\w)[^/]+");
+        Matcher matcher = pattern.matcher(url);
+        if (matcher.find()) {
+            System.out.println(matcher.group(1));
+            googleAnalyticsView.setType(0);
+            switch (matcher.group(1)) {
+                case "yilizhou": {
+                    googleAnalyticsView.setId(23);
+                }
+                break;
+                case "zhanhao": {
+                    googleAnalyticsView.setId(301);
+                }
+                break;
+                case "xinjiyuan": {
+                    googleAnalyticsView.setId(317);
+                }
+                break;
+                case "qianbaimeng": {
+                    googleAnalyticsView.setId(282);
+                }
+                break;
+                case "kangyida": {
+                    googleAnalyticsView.setId(291);
+                }
+                break;
+                case "kangrui": {
+                    googleAnalyticsView.setId(16);
+                }
+                break;
+                case "juna": {
+                    googleAnalyticsView.setId(295);
+                }
+                break;
+                case "jiekebaqiao": {
+                    googleAnalyticsView.setId(78);
+                }
+                break;
+                case "jiansha": {
+                    googleAnalyticsView.setId(279);
+                }
+                break;
+                case "huayou": {
+                    googleAnalyticsView.setId(13);
+                }
+                break;
+                case "fengsheng": {
+                    googleAnalyticsView.setId(283);
+                }
+                break;
+                case "disheng": {
+                    googleAnalyticsView.setId(298);
+                }
+                break;
+                case "baoluopate": {
+                    googleAnalyticsView.setId(292);
+                }
+                break;
+                case "allaifa": {
+                    googleAnalyticsView.setId(281);
+                }
+                break;
+            }
         }
         return googleAnalyticsView;
     }
