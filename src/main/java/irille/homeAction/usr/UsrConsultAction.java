@@ -3,7 +3,7 @@ package irille.homeAction.usr;
 import irille.homeAction.HomeAction;
 import irille.homeAction.usr.inf.IUsrConsultAction;
 import irille.pub.Str;
-import irille.pub.svr.ItpCheckPurchaseLogin.NeedLogin;
+import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.shop.usr.UsrConsult;
 import irille.shop.usr.UsrConsultDAO;
 import irille.view.usr.ConsultView;
@@ -17,15 +17,15 @@ import org.json.JSONException;
  *
  */
 public class UsrConsultAction extends HomeAction<UsrConsult> implements IUsrConsultAction {
-	
+
 	private static final long serialVersionUID = -7870388632292655187L;
-	
+
 	private ConsultView v;
 	private String vCode;
 	private static final String vcode_err = "Verification code error.";
 	private static final String timeout_err = "timeout.";
 	private static final String not_exists_err = "this inquiry is not exists";
-	
+
 	/**
 	 * 公共询盘列表页面
 	 * @return
@@ -36,7 +36,7 @@ public class UsrConsultAction extends HomeAction<UsrConsult> implements IUsrCons
 		setResult("/home/public-inquiry-list.jsp");
 		return TRENDS;
 	}
-	
+
 	/**
 	 * 发布询盘页面(需要登录)
 	 * @return
@@ -48,7 +48,7 @@ public class UsrConsultAction extends HomeAction<UsrConsult> implements IUsrCons
 		setResult("/home/my-inquiry-publish.jsp");
 		return TRENDS;
 	}
-	
+
 	/**
 	 * 我的询盘列表页面(需要登录)
 	 * @return
@@ -60,7 +60,7 @@ public class UsrConsultAction extends HomeAction<UsrConsult> implements IUsrCons
 		setResult("/home/my-inquiry-list.jsp");
 		return TRENDS;
 	}
-	
+
 	/**
 	 * 询盘详情页(需要登录)
 	 * @return
@@ -72,10 +72,10 @@ public class UsrConsultAction extends HomeAction<UsrConsult> implements IUsrCons
 		setResult("/home/my-inquiry-view.jsp");
 		return TRENDS;
 	}
-	
+
 //------------------------------------------------------------------------以上是页面请求GET--------------------------------------------
 //------------------------------------------------------------------------往下是数据请求POST-------------------------------------------
-	
+
 	/**
 	 * 采购商发布询盘
 	 * @throws Exception
@@ -94,12 +94,12 @@ public class UsrConsultAction extends HomeAction<UsrConsult> implements IUsrCons
         	write();
         }
 	}
-	
+
 	/**
 	 * 列表公共询盘数据
-	 * @throws IOException 
+	 * @throws IOException
 	 * @throws JSONException
-	 * @author yingjianhua 
+	 * @author yingjianhua
 	 */
 	@Override
 	public void pagePublic() throws IOException, JSONException {
@@ -107,16 +107,16 @@ public class UsrConsultAction extends HomeAction<UsrConsult> implements IUsrCons
 	}
 	/**
 	 * 列表我的询盘(分页)
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	@NeedLogin
 	public void pagePrivate() throws IOException {
 		write(UsrConsultDAO.pagePrivate(getStart(), getLimit(), getPurchase().getPkey()));
 	}
-	
+
 	/**
 	 * 查看询盘
-	 * @throws Exception 
+	 * @throws Exception
 	 * @author yingjianhua
 	 */
 	@Override
@@ -127,7 +127,7 @@ public class UsrConsultAction extends HomeAction<UsrConsult> implements IUsrCons
 		else
 			write(view);
 	}
-	
+
 	/**
 	 * 删除询盘
 	 * @throws Exception
@@ -142,9 +142,9 @@ public class UsrConsultAction extends HomeAction<UsrConsult> implements IUsrCons
 			write();
 		}
 	}
-	
+
 	private String ids;
-	
+
 	/**
 	 * 批量删除询盘
 	 * @throws Exception
@@ -162,10 +162,10 @@ public class UsrConsultAction extends HomeAction<UsrConsult> implements IUsrCons
 		}
 		write();
 	}
-	
+
 //------------------------------------------------------------------------以上是数据请求POST--------------------------------------------
 //------------------------------------------------------------------------往下是get,set方法--------------------------------------------
-	
+
 	public ConsultView getV() {
 		return v;
 	}
@@ -184,5 +184,5 @@ public class UsrConsultAction extends HomeAction<UsrConsult> implements IUsrCons
 	public void setIds(String ids) {
 		this.ids = ids;
 	}
-	
+
 }

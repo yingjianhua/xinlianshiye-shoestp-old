@@ -25,7 +25,7 @@ import irille.pub.idu.IduUnapprove;
 import irille.pub.idu.IduUpd;
 import irille.pub.inf.IExtName;
 import irille.pub.svr.Env;
-import irille.pub.svr.ItpSessionmsg;
+import irille.Filter.svr.ItpSessionmsg;
 import irille.pub.tb.Fld;
 import irille.pub.tb.FldEnumByte;
 import irille.pub.tb.FldLanguage.Language;
@@ -121,9 +121,9 @@ public abstract class HomeAction<THIS extends BeanMain<?, ?>> extends BeanAction
 	public static final String RTRENDS = "rtrends";
 	public static final String ERR404 = "404";
 	private String jumpUrl = null; //登录跳转
-	
+
 	private EnvView env = null;
-	
+
 	public Tb tb() {
 		if (_bean != null)
 			return (Tb) _bean.gtTB();
@@ -267,7 +267,7 @@ public abstract class HomeAction<THIS extends BeanMain<?, ?>> extends BeanAction
 	 */
 	public static String getUploadPath(boolean real) {
 		String path = ServletActionContext.getServletContext().getInitParameter("uploadPath");
-		if(Str.isEmpty(path)) 
+		if(Str.isEmpty(path))
 			path = "uploads";
 		if(path.indexOf(":")>0)
 			return path;
@@ -294,11 +294,11 @@ public abstract class HomeAction<THIS extends BeanMain<?, ?>> extends BeanAction
 	public Serializable getPkey() {
 		return _pkey;
 	}
-	
+
 	/**
 	 * 配合longPkey选择器使用
-	 * @throws JSONException 
-	 * @throws IOException 
+	 * @throws JSONException
+	 * @throws IOException
 	 * */
 	public void getLongPkey() throws JSONException, IOException {
 		HttpServletResponse response = ServletActionContext.getResponse();
@@ -328,7 +328,7 @@ public abstract class HomeAction<THIS extends BeanMain<?, ?>> extends BeanAction
 	public void setPkeys(String pkeys) {
 		_pkeys = pkeys;
 	}
-	
+
 	public short getRowVersion() {
 		return _rowVersion;
 	}
@@ -336,19 +336,19 @@ public abstract class HomeAction<THIS extends BeanMain<?, ?>> extends BeanAction
 	public void setRowVersion(short rowVersion) {
 		_rowVersion = rowVersion;
 	}
-	
+
 	public String getRowVersions() {
 		return _rowVersions;
 	}
-	
+
 	public void setRowVersions(String rowVersions) {
 		_rowVersions = rowVersions;
 	}
-	
+
 	public String getResult() {
 		return _result;
 	}
-	
+
 	/**
 	 * 自动转换,规则如下</p>
 	 * 系统判断是手机端访问的</p>
@@ -359,7 +359,7 @@ public abstract class HomeAction<THIS extends BeanMain<?, ?>> extends BeanAction
 	 * index.jsp => /mobile/index.jsp</p>
 	 * /mobile/index.jsp => /home/index.jsp</p>
 	 * /home/index.jsp => /home/index.jsp</p>
-	 *	
+	 *
 	 * @param result
 	 */
 	public void setResult(String result) {
@@ -486,7 +486,7 @@ public abstract class HomeAction<THIS extends BeanMain<?, ?>> extends BeanAction
 				diy = ja.getJSONObject(i).getString(QUERY_VALUE);
 		}
 		if (flds == null && Str.isEmpty(diy)) {
-			if (tb().chk("enabled")) 
+			if (tb().chk("enabled"))
 				return crtQueryAll() + " AND enabled = 1" + orderBy();
 			return crtQueryAll() + orderBy();
 		}
@@ -505,7 +505,7 @@ public abstract class HomeAction<THIS extends BeanMain<?, ?>> extends BeanAction
 			where += " AND " + diy;
 		if (Str.isEmpty(sql) == false)
 			where += " AND (" + sql + ")";
-		if (tb().chk("enabled")) 
+		if (tb().chk("enabled"))
 			where += " AND enabled = 1";
 		return where + orderBy();
 	}
@@ -842,7 +842,7 @@ public abstract class HomeAction<THIS extends BeanMain<?, ?>> extends BeanAction
 
 	/**
 	 * 通用的XLS导出入口
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public void exportGrid() throws Exception {
@@ -1090,7 +1090,7 @@ public abstract class HomeAction<THIS extends BeanMain<?, ?>> extends BeanAction
 			return 1;
 		}
 	}
-	
+
 	/**
 	 * 搜索和高级搜索外表非关联字段搜索
 	 * @param ja 前台传来的JSON
@@ -1134,7 +1134,7 @@ public abstract class HomeAction<THIS extends BeanMain<?, ?>> extends BeanAction
 	}
 
 	private EnvConfig envConfig;
-	
+
 	public void initEnv() throws JSONException {
 		String lang = curLanguage().name();
 		String currency = curCurrency().getCurName();
@@ -1142,7 +1142,7 @@ public abstract class HomeAction<THIS extends BeanMain<?, ?>> extends BeanAction
 		String currency_rate = curCurrency().getRate().toString();
 		String userId = getPurchase()==null?"":getPurchase().getPkey()+"";
 		envConfig = EnvConfig.build(AppConfig.domain, lang, currency, currency_symbols, currency_rate, userId);
-	
+
     	UsrPurchase purchase = getPurchase();
         PurchaseView login = null;
         if (purchase != null) {
@@ -1155,11 +1155,11 @@ public abstract class HomeAction<THIS extends BeanMain<?, ?>> extends BeanAction
         String curLanguage = curLanguage().name();
         List<CurrencyView> currencys = PltErateDAO.listCurrencyView();
         setEnv(EnvView.build(
-        		login, 
-        		PltConfigDAO.listLanguageView(), 
-        		currencys, 
+        		login,
+        		PltConfigDAO.listLanguageView(),
+        		currencys,
         		curLanguage,
-        		CurrencyView.build(curCurrency()), 
+        		CurrencyView.build(curCurrency()),
         		ProductCatView.build(PdtCatDAO.Query.listTopCat(), curLanguage())
         		));
     }
@@ -1172,10 +1172,10 @@ public abstract class HomeAction<THIS extends BeanMain<?, ?>> extends BeanAction
         return (String) ssn.getAttribute(RandomImageServlet.RANDOM_LOGIN_KEY);
     }
 
-//---------------------------------------------上传文件功能--------------------------------------	
+//---------------------------------------------上传文件功能--------------------------------------
   	private String fileFileName = "";
   	private File file;
-  	
+
   	public void upload() throws IOException {
   		if(getPurchase() == null) {
   			writeTimeout();
@@ -1183,7 +1183,7 @@ public abstract class HomeAction<THIS extends BeanMain<?, ?>> extends BeanAction
   			write(ImageUpload.upload(beanClazz(), fileFileName, file));
   		}
   	}
-  	
+
   	public String getFileFileName() {
   		return fileFileName;
   	}
@@ -1200,7 +1200,7 @@ public abstract class HomeAction<THIS extends BeanMain<?, ?>> extends BeanAction
   		this.file = file;
   	}
 //---------------------------------------------上传文件功能--------------------------------------
-  	
+
   	public static final void setUser(UserView user) {
   		ItpSessionmsg.getSessionmsg().setUser(user);
   	}
@@ -1251,5 +1251,5 @@ public abstract class HomeAction<THIS extends BeanMain<?, ?>> extends BeanAction
 	public final void setJumpUrl(String jumpUrl) {
 		this.jumpUrl = jumpUrl;
 	}
-	
+
 }

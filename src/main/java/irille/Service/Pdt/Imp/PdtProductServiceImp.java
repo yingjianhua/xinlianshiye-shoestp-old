@@ -12,6 +12,7 @@ import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtProduct;
+import irille.shop.usr.UsrPurchase;
 import irille.view.pdt.PdtProductBaseInfoView;
 import irille.view.pdt.PdtProductCatView;
 
@@ -130,6 +131,35 @@ public class PdtProductServiceImp implements IPdtProductService {
     @Override
     public List<PdtProductCatView> getProductsIndexCategories(int start, int limit, FldLanguage.Language language) {
         return pdtProductDao.getCatChildNodesByCatId(0, language);
+    }
+
+    @Override
+    public List getNewProducts(IduPage page, UsrPurchase pkey, FldLanguage.Language language) {
+        int start = page.getStart();
+        int limit = page.getLimit() == 0 ? 10 : page.getLimit();
+        List<Map<String, Object>> result;
+        if (pkey == null)
+            result = pdtProductDao.getNewProductsAndFavoritesInfoList(start, limit, null);
+        else
+            result = pdtProductDao.getNewProductsAndFavoritesInfoList(start, limit, pkey.getPkey());
+        for (Map<String, Object> stringObjectMap : result) {
+            stringObjectMap.put("rewrite",
+                    SEOUtils.getPdtProductTitle(Integer.parseInt(String.valueOf(stringObjectMap.get("id"))),
+                            String.valueOf(stringObjectMap.get("name"))
+                    )
+            );
+            String[] string = String.valueOf(stringObjectMap.get("image")).split(",");
+            if (string != null && string.length > 0) {
+                stringObjectMap.put("image", string[0]);
+            }
+            stringObjectMap.put("name", translateUtil.getLanguage(stringObjectMap.get("name"), language));
+            if (stringObjectMap.get("ismyfavorite") != null && !stringObjectMap.get("ismyfavorite").toString().equalsIgnoreCase("false")) {
+                stringObjectMap.put("ismyfavorite", true);
+            } else {
+                stringObjectMap.put("ismyfavorite", false);
+            }
+        }
+        return result;
     }
 
 

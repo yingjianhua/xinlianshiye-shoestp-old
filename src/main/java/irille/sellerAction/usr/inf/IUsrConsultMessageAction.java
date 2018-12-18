@@ -1,7 +1,7 @@
 package irille.sellerAction.usr.inf;
 
-import irille.pub.svr.Controller;
-import irille.pub.svr.RequestMapping;
+import irille.Filter.svr.Controller;
+import irille.Filter.svr.RequestMapping;
 import irille.sellerAction.ISellerAction;
 
 import java.io.IOException;
@@ -13,13 +13,13 @@ public interface IUsrConsultMessageAction extends ISellerAction {
 
 	/**
 	 * 发送消息给供应商
-	 * @throws JSONException 
-	 * @throws IOException 
+	 * @throws JSONException
+	 * @throws IOException
 	 * @author yingjianhua
 	 */
 	@RequestMapping(alias="留言", sort=1)
 	public void send2Purchase() throws IOException, JSONException;
-	
+
     /**
      * 上传图片
      *

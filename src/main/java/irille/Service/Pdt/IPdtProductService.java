@@ -4,6 +4,7 @@ import com.google.inject.ImplementedBy;
 import irille.Service.Pdt.Imp.PdtProductServiceImp;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage;
+import irille.shop.usr.UsrPurchase;
 import irille.view.pdt.PdtProductBaseInfoView;
 import irille.view.pdt.PdtProductCatView;
 
@@ -52,4 +53,12 @@ public interface IPdtProductService {
      * @author lijie@shoestp.cn
      */
     List<PdtProductCatView> getProductsIndexCategories(int start, int limit, FldLanguage.Language language);
+
+    /**
+     * @Description:
+     * @date 2018/12/17 9:53
+     * @author lijie@shoestp.cn
+     */
+    List getNewProducts(IduPage page, UsrPurchase pkey, FldLanguage.Language language);
+
 }

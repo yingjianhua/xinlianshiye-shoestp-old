@@ -1,6 +1,6 @@
 package irille.homeAction.pdt.inf;
 
-import irille.pub.svr.ItpCheckPurchaseLogin.NeedLogin;
+import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 
 import java.io.IOException;
 

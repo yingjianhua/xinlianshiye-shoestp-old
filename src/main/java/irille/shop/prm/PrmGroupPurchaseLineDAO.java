@@ -175,7 +175,8 @@ public class PrmGroupPurchaseLineDAO extends IduOther<PrmGroupPurchaseLineDAO, P
                         .SELECT(PdtProduct.T.NAME, PdtProduct.T.PICTURE)
                         .FROM(PrmGroupPurchaseLine.class);
                 LEFT_JOIN(PdtProduct.class, PdtProduct.T.PKEY, PrmGroupPurchaseLine.T.PRODUCT);
-                WHERE(PdtProduct.T.CATEGORY, " in (" + pkeys + ") ");
+                WHERE(PdtProduct.T.CATEGORY, " in (" + pkeys + ") ")
+                        .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON);
             }};
             List<shoesView> listman = Query.sql(mansql).queryMaps().stream().map(Y -> new shoesView() {{
                 setId((Integer) Y.get(PrmGroupPurchaseLine.T.PKEY.getFld().getCodeSqlField()));

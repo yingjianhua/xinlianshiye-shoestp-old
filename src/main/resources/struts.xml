@@ -10,10 +10,10 @@
 	<package name="home" namespace="/home" extends="struts-default">
 		<interceptors>
 			<!-- 拦截器配置 -->
-			<interceptor name="ItpExceptionHandler" class="irille.pub.svr.ItpExceptionHandler" />
-			<interceptor name="ItpDbTransaction" class="irille.pub.svr.ItpDbTransaction" />
-			<interceptor name="ItpSessionmsg" class="irille.pub.svr.ItpSessionmsg" />
-			<interceptor name="ItpCheckPurchaseLogin" class="irille.pub.svr.ItpCheckPurchaseLogin" />
+			<interceptor name="ItpExceptionHandler" class="irille.Filter.svr.ItpExceptionHandler" />
+			<interceptor name="ItpDbTransaction" class="irille.Filter.svr.ItpDbTransaction" />
+			<interceptor name="ItpSessionmsg" class="irille.Filter.svr.ItpSessionmsg" />
+			<interceptor name="ItpCheckPurchaseLogin" class="irille.Filter.svr.ItpCheckPurchaseLogin" />
 			<interceptor name="ItpFileUpload" class="irille.pub.svr.ItpFileUpload"/>
 
 			<!-- 拦截器栈配置,拦截栈可以包含拦截器栈 -->
@@ -46,10 +46,10 @@
 	<package name="supplier" namespace="/seller" extends="struts-default">
 		<interceptors>
 			<!-- 拦截器配置 -->
-			<interceptor name="ItpExceptionHandler" class="irille.pub.svr.ItpExceptionHandler" />
-			<interceptor name="ItpDbTransaction" class="irille.pub.svr.ItpDbTransaction" />
-			<interceptor name="ItpSessionmsg" class="irille.pub.svr.ItpSessionmsg" />
-			<interceptor name="ItpCheckSupplierLogin" class="irille.pub.svr.ItpCheckSupplierLogin" />
+			<interceptor name="ItpExceptionHandler" class="irille.Filter.svr.ItpExceptionHandler" />
+			<interceptor name="ItpDbTransaction" class="irille.Filter.svr.ItpDbTransaction" />
+			<interceptor name="ItpSessionmsg" class="irille.Filter.svr.ItpSessionmsg" />
+			<interceptor name="ItpCheckSupplierLogin" class="irille.Filter.svr.ItpCheckSupplierLogin" />
 			<interceptor name="ItpFileUpload" class="irille.pub.svr.ItpFileUpload"/>
 
 			<!-- 拦截器栈配置,拦截栈可以包含拦截器栈 -->
@@ -143,8 +143,8 @@
 
 	<package name="temporary" namespace="/temporary" extends="struts-default">
 		<interceptors>
-			<interceptor name="ItpDbTransaction" class="irille.pub.svr.ItpDbTransaction" />
-			<interceptor name="ItpExceptionHandler" class="irille.pub.svr.ItpExceptionHandler" />
+			<interceptor name="ItpDbTransaction" class="irille.Filter.svr.ItpDbTransaction" />
+			<interceptor name="ItpExceptionHandler" class="irille.Filter.svr.ItpExceptionHandler" />
 			<!-- 拦截器栈配置,拦截栈可以包含拦截器栈 -->
 			<!-- <interceptor-stack name="irilleStack">
 				<interceptor-ref name="ItpDb" />

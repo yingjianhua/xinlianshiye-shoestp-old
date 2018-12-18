@@ -15,7 +15,7 @@ import irille.homeAction.usr.dto.ColorView;
 import irille.pub.Exp;
 import irille.pub.LogMessage;
 import irille.pub.bean.BeanBase;
-import irille.pub.svr.ItpCheckPurchaseLogin.NeedLogin;
+import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.odr.Odr.PayType;
 import irille.shop.pdt.*;

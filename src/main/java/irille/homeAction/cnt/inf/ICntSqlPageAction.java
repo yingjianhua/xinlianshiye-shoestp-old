@@ -1,6 +1,6 @@
 	package irille.homeAction.cnt.inf;
 
-import irille.pub.svr.Controller;
+import irille.Filter.svr.Controller;
 import irille.sellerAction.ISellerAction;
 
 @Controller(module="单页管理", name="单页")

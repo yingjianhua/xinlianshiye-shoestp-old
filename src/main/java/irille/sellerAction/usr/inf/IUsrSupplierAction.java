@@ -1,7 +1,7 @@
 package irille.sellerAction.usr.inf;
 
-import irille.pub.svr.Controller;
-import irille.pub.svr.RequestMapping;
+import irille.Filter.svr.Controller;
+import irille.Filter.svr.RequestMapping;
 import irille.sellerAction.ISellerAction;
 
 import java.io.IOException;
@@ -128,7 +128,7 @@ public interface IUsrSupplierAction extends ISellerAction {
 
     @RequestMapping(alias = "商家退出(NEW)", sort = 45)
     void logout() throws Exception;
-    
+
     @RequestMapping(alias = "获取店铺装修信息(NEW)", sort = 46)
     void getShopSetting() throws Exception;
     @RequestMapping(alias = "更新店铺装修信息(NEW)", sort = 47)

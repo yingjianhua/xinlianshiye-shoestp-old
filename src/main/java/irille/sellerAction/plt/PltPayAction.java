@@ -1,6 +1,6 @@
 package irille.sellerAction.plt;
 
-import irille.pub.svr.ItpCheckPurchaseLogin;
+import irille.Filter.svr.ItpCheckPurchaseLogin;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.plt.inf.IPltPayAction;
 import irille.shop.plt.PltPay;

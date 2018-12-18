@@ -18,6 +18,7 @@ import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.usr.Usr;
+import irille.shop.usr.UsrFavorites;
 import irille.shop.usr.UsrProductCategory;
 import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
@@ -70,6 +71,38 @@ public class PdtProductDao {
             }
         }
         return query.queryMaps();
+    }
+
+    /***
+     * 首页新品  Version 2 版本 带收藏信息
+     *
+     * @author lijie@shoestp.cn
+     * @param
+     * @return List
+     * @date 2018/7/23 14:38
+     */
+    @Caches
+    public List getNewProductsAndFavoritesInfoList(int start, int limit, Integer pubPkey) {
+        SQL query = new SQL();
+        SQL childrenQuery = new SQL();
+        childrenQuery
+                .SELECT(UsrFavorites.T.PKEY)
+                .FROM(UsrFavorites.class)
+                .WHERE(UsrFavorites.T.PURCHASE, "=?", pubPkey)
+                .WHERE(UsrFavorites.T.PRODUCT, "=", PdtProduct.T.PKEY)
+        ;
+        query
+                .SELECT(PdtProduct.T.PKEY, "id")
+                .SELECT(PdtProduct.T.NAME)
+                .SELECT(PdtProduct.T.PICTURE, "image")
+                .SELECT(PdtProduct.T.CUR_PRICE, "price")
+                .SELECT(childrenQuery, "ismyfavorite")
+                .FROM(PdtProduct.class)
+                .LIMIT(start, limit)
+        ;
+        productRules(query);
+        newProduct(query);
+        return Query.sql(query).queryMaps();
     }
 
 
@@ -439,6 +472,18 @@ public class PdtProductDao {
      */
     private BeanQuery newProduct(BeanQuery query) {
         return newProduct(query, true);
+    }
+
+    private SQL newProduct(SQL query) {
+        return newProduct(query, true);
+    }
+
+    private SQL newProduct(SQL query, boolean type) {
+        return query
+                .ORDER_BY(PdtProduct.T.PKEY, type ? "desc" : "asc")
+                .ORDER_BY(PdtProduct.T.MY_ORDER, type ? "asc" : "desc")
+                .ORDER_BY(PdtProduct.T.UPDATE_TIME, type ? "desc" : "asc")
+                ;
     }
 
     private BeanQuery newProduct(BeanQuery query, boolean type) {

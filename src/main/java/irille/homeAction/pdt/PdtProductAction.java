@@ -14,7 +14,7 @@ import irille.pub.bean.BeanBase;
 import irille.pub.i18n.I18NUtil;
 import irille.pub.idu.Idu;
 import irille.pub.idu.IduPage;
-import irille.pub.svr.ItpCheckPurchaseLogin.NeedLogin;
+import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.odr.OdrOrderDAO;
 import irille.shop.pdt.*;
@@ -226,12 +226,21 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
      * @return
      * @date 2018/7/24 15:49
      */
+    @Getter
+    @Setter
+    private Integer v;
+
     public void gtNewProducts() throws Exception {
         IduPage iduPage = new IduPage();
         iduPage.setLimit(getLimit());
         iduPage.setStart(getPage());
         iduPage.setWhere(String.valueOf(getCated()));
-        write(objectMapper.writeValueAsString(pdtpageSelect.getNewProducts(iduPage)));
+        if (v != null && v == 2) {
+            write(pdtProduct.getNewProducts(iduPage, getPurchase(), HomeAction.curLanguage()));
+        } else {
+            //TODO 老接口 要重构
+            write(objectMapper.writeValueAsString(pdtpageSelect.getNewProducts(iduPage)));
+        }
     }
 
 

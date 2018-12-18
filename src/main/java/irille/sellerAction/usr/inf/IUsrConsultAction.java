@@ -1,7 +1,7 @@
 package irille.sellerAction.usr.inf;
 
-import irille.pub.svr.Controller;
-import irille.pub.svr.RequestMapping;
+import irille.Filter.svr.Controller;
+import irille.Filter.svr.RequestMapping;
 import irille.sellerAction.ISellerAction;
 
 import java.io.IOException;
@@ -19,18 +19,18 @@ public interface IUsrConsultAction extends ISellerAction {
 	 */
 	@RequestMapping(alias="列表", sort=1)
 	public void page() throws IOException, JSONException;
-	
+
 	/**
 	 * 显示询盘的详细信息
-	 * @throws IOException 
+	 * @throws IOException
 	 * @author yingjianhua
 	 */
 	@RequestMapping(alias="详情&聊天记录", sort=2)
 	public void detail() throws IOException, JSONException;
-	
+
 	/**
 	 * 抢单报价
-	 * @throws IOException 
+	 * @throws IOException
 	 * @author yingjianhua
 	 */
 	@RequestMapping(alias="抢单", sort=3)

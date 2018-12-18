@@ -1,10 +1,5 @@
 package irille.shop.usr;
 
-import java.util.Date;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import irille.core.sys.Sys.OYn;
 import irille.core.sys.SysUser;
 import irille.pub.bean.BeanInt;
@@ -15,10 +10,14 @@ import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
 import irille.pub.tb.Tb.Index;
-import irille.shop.usr.Usr.OIsAuth;
-import irille.shop.usr.Usr.OStatus;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltProvince;
+import irille.shop.usr.Usr.OIsAuth;
+import irille.shop.usr.Usr.OStatus;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Date;
 
 /**
  * 供应商
@@ -90,7 +89,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName{
 		BANK_PROVINCE(PltProvince.fldOutKey()),//"开户行省份"
 		CONTACTS_ID_CARD_FRONT_PHOTO(SYS.STR__200_NULL,"运营负责人身份证正面"),
 		CONTACTS_ID_CARD_BACK_PHOTO(SYS.STR__200_NULL,"运营负责人身份证反面"),
-		
+
 		/**
 		 * 前台页面资料
 		 */
@@ -109,9 +108,10 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName{
 		COUNTRY(PltCountry.fldOutKey()),//Country/Region 	国家
 		PROVINCE(PltProvince.fldOutKey()),//Province/state 	省份
 		CITY(SYS.MUILTI_LANGUAGE_NULL,"City"),//City 多国语言
+
 		Is_Pro(SYS.NY, "供应商首页产品展示"),//供应商首页产品展
-		LOGO(SYS.URL__NULL, "logo"),//logo 150*150像素 
-		SIGN_BACKGD(SYS.URL__NULL, "店招背景"),//店招背景 1920x150像素 
+		LOGO(SYS.URL__NULL, "logo"),//logo 150*150像素
+		SIGN_BACKGD(SYS.URL__NULL, "店招背景"),//店招背景 1920x150像素
 		AD_PHOTO(SYS.MUILTI_LANGUAGE_NULL, "广告图"),//广告图 图片大小建议: 1200*550像素
 		AD_PHOTO_MOBILE(SYS.STR__1000_NULL,"移动端广告图"),//移动端广告图 图片大小建议: 640*340像素
 		AD_PHOTO_LINK(SYS.MUILTI_LANGUAGE_NULL, "广告连接"),//广告连接 外链必须使用完整域名，即包含http://或https://，例： https://www.google.com。内链不需加域名，例: /products/
@@ -119,7 +119,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName{
 		COMPANY_PHOTO_LINK(SYS.MUILTI_LANGUAGE_NULL, "企业图片连接"),//企业图片连接 外链必须使用完整域名，即包含http://或https://，例： https://www.google.com。内链不需加域名，例: /products/
 
 		/**
-		 * 个性装修 
+		 * 个性装修
 		选择模板
 		*/
 		HOME_PAGE_DIY(SYS.MUILTI_LANGUAGE_NULL, "首页个性装修"),//首页个性装修  多国语言
@@ -145,7 +145,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName{
 		TONGJI_URL(SYS.URL__NULL, "第三方统计地址"),//第三方统计 地址
 		TONGJI_PWD(SYS.PASSWORD__NULL, "第三方统计密码"),//第三方统计 密码
 		UPDATE_TIME(SYS.UPDATED_DATE_TIME),//最后编辑时间
-		
+
 		ROW_VERSION(SYS.ROW_VERSION),
 		//>>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
 		//<<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
@@ -155,9 +155,9 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName{
 		// 索引
 		public static final Index IDX_LOGIN_NAME = TB.addIndex("login_name",true,T.LOGIN_NAME);
 		private Fld _fld;
-		private T(Class clazz,String name,boolean... isnull) 
+		private T(Class clazz,String name,boolean... isnull)
 			{_fld=TB.addOutKey(clazz,this,name,isnull);	}
-		private T(IEnumFld fld,boolean... isnull) { this(fld,null,isnull); } 
+		private T(IEnumFld fld,boolean... isnull) { this(fld,null,isnull); }
 		private T(IEnumFld fld, String name,boolean... null1) {
 			_fld=TB.add(fld,this,name,null1);}
 		private T(IEnumFld fld, String name,int strLen) {
