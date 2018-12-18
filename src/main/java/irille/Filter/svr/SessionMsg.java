@@ -1,4 +1,4 @@
-package irille.pub.svr;
+package irille.Filter.svr;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import irille.pub.tb.FldLanguage.Language;

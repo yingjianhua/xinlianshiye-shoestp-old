@@ -1,4 +1,4 @@
-package irille.filter;
+package irille.Filter;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package irille.pub.svr;
+package irille.Filter.svr;
 
 import irille.action.ActionBase;
 import irille.shop.usr.Usr.OStatus;
@@ -20,21 +20,21 @@ public class ItpCheckSupplierLogin extends AbstractInterceptor {
 	private static final long serialVersionUID = -4537735137491364389L;
 
 	private String autoLogin = "";
-	
+
 	private static final String[] ignore_list = {"usr_UsrSupplier_login", "usr_UsrSupplier_logon", "sys_SysAccessory_uploadImage"};
-	
+
 	public String intercept(ActionInvocation actionInvocation) throws Exception {
 
 		final String actionName = actionInvocation.getProxy().getActionName();
 
 		UsrSupplier supplier = ItpSessionmsg.getSessionmsg().getSupplier();
-		
+
 		if(supplier == null && !"".equals(autoLogin)) {
 			UserView user = UsrUserDAO.findByLoginName(autoLogin);
 			ItpSessionmsg.getSessionmsg().setUser(user);
 			supplier = user.getSupplier();
 		}
-		
+
 		if(ServletActionContext.getRequest().getMethod().equals("GET")&&actionName.equals("")) {
 			if(supplier != null && supplier.gtStatus() == OStatus.APPR) {
 				return "index";
@@ -42,21 +42,21 @@ public class ItpCheckSupplierLogin extends AbstractInterceptor {
 				return "login";
 			}
 		}
-		
+
 		if(ignoreAction(actionName)) {
 			return actionInvocation.invoke();
-		} 
-		
+		}
+
 		if(supplier == null || supplier.gtStatus() == OStatus.INIT) {
 			ServletActionContext.getResponse().setHeader("sessionstatus", "timeout");
 			return ActionBase.LOGIN;
 		}
-		
+
 //		if(actionName.equals("pageIndex")) {
 //			System.out.println("redirect:index");
 //			return "index";
 //		}
-		
+
 		if(!UsrSupplierRoleDAO.ALL_ACT.contains(actionName)) {
 			//非法请求
 			HttpServletResponse response = ServletActionContext.getResponse();
@@ -73,8 +73,8 @@ public class ItpCheckSupplierLogin extends AbstractInterceptor {
 		}
 		return actionInvocation.invoke();
 	}
-		
-	
+
+
 	private boolean ignoreAction(String actionname) {
 		for(String ignore:ignore_list) {
 			if(ignore.equals(actionname)) {

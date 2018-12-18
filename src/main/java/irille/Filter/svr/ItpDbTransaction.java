@@ -1,17 +1,19 @@
-package irille.pub.svr;
+package irille.Filter.svr;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+import irille.pub.svr.DbPool;
+import irille.pub.svr.Env;
 
 public class ItpDbTransaction extends AbstractInterceptor {
 
 	private static final long serialVersionUID = 1L;
 
 	public String intercept(ActionInvocation actionInvocation) throws Exception {
-		
+
 		String rtn = null;
 		String path = actionInvocation.getProxy().getActionName();
-		
+
 		try {
 			Env.INST.initTran(null, null);
 			rtn = actionInvocation.invoke();
@@ -25,7 +27,7 @@ public class ItpDbTransaction extends AbstractInterceptor {
 			Env.INST.removeTran();
 			DbPool.getInstance().getConn().commit(); //提交对日志的更新
 			DbPool.getInstance().removeConn();
-			
+
 		}
 		return rtn;
 	}
