@@ -1,6 +1,7 @@
 package irille.sellerAction.usr;
 
 import irille.Service.Manage.Usr.IUsrSupplierManageService;
+import irille.homeAction.HomeAction;
 import irille.pub.Exp;
 import irille.pub.Str;
 import irille.pub.bean.BeanBase;
@@ -12,6 +13,8 @@ import irille.pub.tb.FldLanguage.Language;
 import irille.pub.verify.RandomImageServlet;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.usr.inf.IUsrSupplierAction;
+import irille.sellerAction.view.SupinfoView;
+import irille.shop.plt.PltConfig;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltProvince;
@@ -432,6 +435,14 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     json.put("showname", showname);
     writerOrExport(json);
   }
+  /**
+  *@Description: 店铺信息
+  *@date 2018/12/18 9:34
+  *@anthor wilson zhang
+  */
+  public void getsupinfo() throws  Exception {
+    write(UsrSupplierDAO.getsupinfo(getSupplier().getPkey(), PltConfigDAO.supplierLanguage(getSupplier().getPkey())));
+  }
 
   /**
    * 更新供应商信息
@@ -524,4 +535,33 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     usrSupplierManageService.updShopSetting(getSupplier().getPkey(), getView());
     write();
   }
+  /**
+  *@Description:   修改  店铺信息
+  *@date 2018/12/19 14:40
+  *@anthor wilson zhang
+  */
+  @Getter
+  @Setter
+  SupinfoView results;
+  public void updShopbase() throws  Exception{
+    UsrSupplier us=new UsrSupplier();
+    us.setPkey(results.getId());
+    us.setCompanyNature(results.getCompany_nature());
+    us.setCompanyType(results.getCompany_Type());
+    us.setCategory(results.getType());
+    us.setQq(results.getQQ());
+    us.setFax(results.getFAX());
+    us.setOperationTerm(results.getOperation_term());
+    us.setMainSalesArea(results.getMain_sale_area());
+    us.setProdPattern(results.getProd_patiern());
+    us.setDes(results.getDes());
+    us.setMainProd(results.getMain_prod());
+    us.setCreditCode(results.getCredit_code());
+    us.setTaxpayerType(results.getTaxpayer_Type());
+    UsrSupplierDAO.updShopbase  ud=new UsrSupplierDAO.updShopbase();
+    ud.setB(us);
+    ud.commit();
+    write();
+  }
+
 }

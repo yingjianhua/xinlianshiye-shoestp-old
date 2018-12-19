@@ -135,5 +135,9 @@ public interface IUsrSupplierAction extends ISellerAction {
     void updShopSetting() throws Exception;
     @RequestMapping(alias = "修改店铺装修", sort = 48)
     void Updsuppliersetting() throws Exception;
+    @RequestMapping(alias = "2.1商家账户信息(公司基本信息)", sort = 49)
+    void  getsupinfo() throws Exception;
+    @RequestMapping(alias = "2.1商家修改账户信息(公司基本信息)", sort = 50)
+    void  updShopbase() throws Exception;
 
 }

@@ -12,4 +12,7 @@ public class UsrSupplierCategoryAction extends SellerAction<UsrSupplierCategory>
 	public void listTop() throws IOException{
 		write(UsrSupplierCategoryDAO.listView());
 	}
+	public void loadlist() throws IOException {
+		write(UsrSupplierCategoryDAO.listViews());
+	}
 }
