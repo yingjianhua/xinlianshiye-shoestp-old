@@ -106,7 +106,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                     Magazinul Universal Dragonul Rosu Strada Drumul Garii 12，Bucuresti 077190
                 </div>
                 <a class="btn-red h5" href="javascript:void(0);" @click="getGift">Get Free Sample Now</a>
-                <img src="./images/flag.png" alt="" class="flag-pic">
+                <img src="/activity/Jsp/Romania/Romaniaindex/images/flag.png" alt="" class="flag-pic">
             </div>
         </div>
     </template>

@@ -1,12 +1,14 @@
 @charset 'utf-8';
 @import 'reset';
 
-.w1200{
+// 后者为原来网站的样式
+.w1200, #web_top .wide{
   width: 1200px;
   min-width: 1200px;
   margin: 0 auto;
   // overflow: hidden;
 }
+
 .banner-wrap{
   min-width: 1200px;
 }
@@ -515,7 +517,7 @@ $fs_h6: 20;
     }
   }
   // 后者为顶部公用部分的兼容
-  .w1200, #web_top .w_1200 .wide{
+  .w1200, #web_top .wide{
     width: 800px;
     min-width: 800px;
   }
@@ -707,7 +709,7 @@ $fs_h6: 20;
     }
   }
   // 后者为顶部公用部分的兼容
-  .w1200, #web_top .w_1200 .wide{
+  .w1200, #web_top .wide{
     width: 980px;
     min-width: 980px;
   }
@@ -876,7 +878,7 @@ $fs_h6: 20;
     }
   }
   // 后者为顶部公用部分的兼容
-  .w1200, #web_top .w_1200 .wide{
+  .w1200, #web_top .wide{
     width: 1600px;
     min-width: 1600px;
   }

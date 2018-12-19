@@ -205,37 +205,33 @@
 
                     </div>
                 </div>
-
-
-                <%--                <div class="xmgT4 info_price clearfloat">
-                                    <p><s:text name="Global.Proposed_Price"/>:</p>
-                                    <div class="xmgLeft">
-                                        <dl>
-                                            <dt>
-                                                <a href="javascript:;">USD
-                                                    <div class="arrow">
-                                                        <em></em>
-                                                        <i></i>
-                                                    </div>
-                                                </a>
-                                            </dt>
-                                            <dd>
-                                                <ul>
-                                                    <c:forEach items="${env.currencys}" var="c">
-                                                        <li>
-                                                            <a href="javascript:;" data="${c.id }"
-                                                               @click="changecCys(${c.id })">${c.shortName }</a>
-                                                        </li>
-                                                    </c:forEach>
-
-                                                </ul>
-                                            </dd>
-                                        </dl>
-                                        <strong id="cur_price" class="price">{{goodsInfo.currency_symbol}}{{goodsInfo.price}}</strong>
+                <div class="xmgT4 info_price clearfloat">
+                    <p><s:text name="Global.Proposed_Price"/>:</p>
+                    <div class="xmgLeft">
+                        <dl>
+                            <dt>
+                                <a href="javascript:;">USD
+                                    <div class="arrow">
+                                        <em></em>
+                                        <i></i>
                                     </div>
-                                </div>--%>
+                                </a>
+                            </dt>
+                            <dd>
+                                <ul>
+                                    <c:forEach items="${env.currencys}" var="c">
+                                        <li>
+                                            <a href="javascript:;" data="${c.id }"
+                                               @click="changecCys(${c.id })">${c.shortName }</a>
+                                        </li>
+                                    </c:forEach>
 
-
+                                </ul>
+                            </dd>
+                        </dl>
+                        <strong id="cur_price" class="price">{{goodsInfo.currency_symbol}}{{goodsInfo.price}}</strong>
+                    </div>
+                </div>
                 <div class="xmgForm" name="xmgForm" id="goodsForm">
                     <ul>
                         <li class="attr_show" name="Color">
@@ -255,7 +251,7 @@
                         </li>
                     </ul>
 
-                    <%--<div class="xmgP">MOQ: {{goodsInfo.min_oq}}</div>--%>
+                    <div class="xmgP">MOQ: {{goodsInfo.min_oq}}</div>
 
 
                     <div class="xmgSeleSize">
@@ -272,16 +268,16 @@
                             <ul>
                                 <li v-for="(v,index) in _specList" :specid="v.id">
                                     <span>{{v.size}}</span>
-                                    <%--           <span>{{v.price}}</span>--%>
-                                    <%--<div class="column">--%>
-                                    <%--<a href="javascript:void(0);"--%>
-                                    <%--:class="(_spceCat(v.id)-1<0)?'disable sub':'sub'"--%>
-                                    <%--@click="subSpec(v.id)">-</a>--%>
-                                    <%--<input type="text" class="buy" v-model="status.cat[v.id]"--%>
-                                    <%--onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'>--%>
-                                    <%--<a href="javascript:void(0);" class="add"--%>
-                                    <%--@click="addSpec(v.id)">+</a>--%>
-                                    <%--</div>--%>
+                                    <span>{{v.price}}</span>
+                                    <div class="column">
+                                        <a href="javascript:void(0);"
+                                           :class="(_spceCat(v.id)-1<0)?'disable sub':'sub'"
+                                           @click="subSpec(v.id)">-</a>
+                                        <input type="text" class="buy" v-model="status.cat[v.id]"
+                                               onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'>
+                                        <a href="javascript:void(0);" class="add"
+                                           @click="addSpec(v.id)">+</a>
+                                    </div>
                                 </li>
                             </ul>
 
@@ -294,12 +290,11 @@
 
                     <div class="xmgActions">
                         <input type="button" value="<s:text name="inquiry"/>" class="addRFQ" @click="addRFQ">
-                        <%--                 <input type="button" value="<s:text name='Global.Add_To_Cart'/>"
-                                                class="addtoCart"
-                                                @click="addtoCart">
-                                         <input type="button" value="<s:text name='Global.Buy_Now'/>" class="buyNow"
-                                                @click="buy">--%>
-
+                        <input type="button" value="<s:text name='Global.Add_To_Cart'/>"
+                               class="addtoCart"
+                               @click="addtoCart">
+                        <input type="button" value="<s:text name='Global.Buy_Now'/>" class="buyNow"
+                               @click="buy">
                         <a href="javascript:;" :class="goodsInfo.favorite?'fav_ed_btn':''"
                            @click="addfav">
                             <span>  &nbsp;</span>
@@ -367,115 +362,114 @@
         </div>
 
         <!--产品评分-->
-        <%--<div id="review_box">--%>
-        <%--<div class="widget prod_write_review">--%>
-        <%--<div class="review_title">--%>
-        <%--<span><s:text name="Global.Product_Evaluation"/></span>--%>
-        <%--</div>--%>
-        <%--<div class="average_rating">--%>
-        <%--<h6><s:text name="Global.Average_Evaluation"/>:</h6>--%>
-        <%--<p>--%>
-        <%--<span :class="'star star_b'+goodsInfo.satisfaction"></span>--%>
-        <%--<strong>{{goodsInfo.satisfaction}}</strong>--%>
-        <%--<a class="review_nums" href="#">--%>
-        <%--<s:text name="goods-info.Comments">--%>
-        <%--<s:param>--%>
-        <%--{{goodsInfo.commentTotal}}--%>
-        <%--</s:param>--%>
-        <%--</s:text>--%>
-        <%--</a>--%>
-        <%--</p>--%>
-        <%--<a class="review_nums"--%>
-        <%--:href="'/home/pdt_PdtProduct_writeComment?id='+goodsInfo.pdtId"></a>--%>
-        <%--<div>--%>
-        <%--<a class="review_nums" href="#"></a>--%>
-        <%--<a :href="'/home/pdt_PdtProduct_writeComment?id='+goodsInfo.pdtId"--%>
-        <%--class="write_review_btn"--%>
-        <%--rel="nofollow"><s:text name="Global.Write_Evaluation"/></a>--%>
-        <%--</div>--%>
-        <%--</div>--%>
-        <%--&lt;%&ndash;评论详情&ndash;%&gt;--%>
-        <%--<div class="widget pro`d_recent_review"--%>
-        <%--v-if="isLogin && goodsInfo.comment&& goodsInfo.comment.length>0">--%>
-        <%--<h6><s:text name="products.recentReview"/></h6>--%>
-        <%--<div class="widget review_item" v-for="(d,index) in goodsInfo.comment">--%>
-        <%--<ul class="user fl">--%>
-        <%--<li><span :class="'star star_s'+d.product_satisfaction"></span></li>--%>
-        <%--<li><span class="by_text"><s:text--%>
-        <%--name="by"/></span><span>{{d.name}}</span></li>--%>
-        <%--<li><i class="icon_level"><img--%>
-        <%--:src="image(d.usrMemberLevelIco)"></i><strong--%>
-        <%--class="level_text FontColor">{{d.usrMemberLevelName}}</strong>--%>
-        <%--</li>--%>
-        <%--<li><span class="time">{{d.commenttime}}</span></li>--%>
-        <%--</ul>--%>
-        <%--<div class="like fr">--%>
-        <%--<div class="vote">--%>
-        <%--<p><s:text name="products.helpful"/></p>--%>
-        <%--<div class="likeWrapper">--%>
-        <%--<a href="javascript:void(0)" class="like" @click="vote(d.id,1)"><span--%>
-        <%--class="icon_agree">({{d.useful_number}})</span></a>--%>
-        <%--<span class="gap">|</span>--%>
-        <%--<a href="javascript:void(0)" class="unlike"--%>
-        <%--@click="vote(d.id,0)"><span--%>
-        <%--class="icon_oppose">({{d.unuseful_number}})</span></a>--%>
-        <%--</div>--%>
-        <%--</div>--%>
-        <%--<a :href="'https://api.addthis.com/oexchange/0.8/forward/facebook/offer?url='+encodeURIComponent(window.location.href)+'&t='+goodsInfo.pdtName"--%>
-        <%--class="fb_share" target="_blank">--%>
-        <%--<em class="icon_facebook_mini"></em><s:text--%>
-        <%--name="products.shareFB"/>--%>
-        <%--</a>--%>
-        <%--</div>--%>
-        <%--<div class="main">--%>
-        <%--<div class="content">good</div>--%>
-        <%--<div class="pic_list">--%>
-        <%--<div class="clear"></div>--%>
-        <%--</div>--%>
-        <%--<div class="reply">--%>
-        <%--<div class="edit"><a href="javascript:;" class="reply_btn"--%>
-        <%--@click="changeShow(d.id)"><s:text--%>
-        <%--name="reply"/></a></div>--%>
-        <%--<div class="w_review_replys" v-show="_isShowReply(d.id)">--%>
-        <%--<span class="arrow"></span>--%>
-        <%--<div class="review_reply">--%>
-        <%--<p>{{d.reply}}</p>--%>
-        <%--<p class="writer"><span class="light_gray"><s:text--%>
-        <%--name="By"/></span> <cite--%>
-        <%--class="replier">{{goodsInfo.supName}}</cite>--%>
-        <%--</p>--%>
-        <%--</div>--%>
-        <%--</div>--%>
-        <%--&lt;%&ndash;<div class="write_reply hide">&ndash;%&gt;--%>
-        <%--&lt;%&ndash;<div class="textarea_holder"><textarea class="default" name="ReviewComment">Add your reply here...</textarea>&ndash;%&gt;--%>
-        <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-        <%--&lt;%&ndash;<p class="error"></p>&ndash;%&gt;--%>
-        <%--&lt;%&ndash;<button class="btn textbtn">Reply</button>&ndash;%&gt;--%>
-        <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-        <%--</div>--%>
-        <%--</div>--%>
-        <%--</div>--%>
+        <div id="review_box">
+            <div class="widget prod_write_review">
+                <div class="review_title">
+                    <span><s:text name="Global.Product_Evaluation"/></span>
+                </div>
+                <div class="average_rating">
+                    <h6><s:text name="Global.Average_Evaluation"/>:</h6>
+                    <p>
+                        <span :class="'star star_b'+goodsInfo.satisfaction"></span>
+                        <strong>{{goodsInfo.satisfaction}}</strong>
+                        <a class="review_nums" href="#">
+                            <s:text name="goods-info.Comments">
+                                <s:param>
+                                    {{goodsInfo.commentTotal}}
+                                </s:param>
+                            </s:text>
+                        </a>
+                    </p>
+                    <a class="review_nums"
+                       :href="'/home/pdt_PdtProduct_writeComment?id='+goodsInfo.pdtId"></a>
+                    <div>
+                        <a class="review_nums" href="#"></a>
+                        <a :href="'/home/pdt_PdtProduct_writeComment?id='+goodsInfo.pdtId"
+                           class="write_review_btn"
+                           rel="nofollow"><s:text name="Global.Write_Evaluation"/></a>
+                    </div>
+                </div>
+                <%--评论详情--%>
+                <div class="widget pro`d_recent_review"
+                     v-if="isLogin && goodsInfo.comment&& goodsInfo.comment.length>0">
+                    <h6><s:text name="products.recentReview"/></h6>
+                    <div class="widget review_item" v-for="(d,index) in goodsInfo.comment">
+                        <ul class="user fl">
+                            <li><span :class="'star star_s'+d.product_satisfaction"></span></li>
+                            <li><span class="by_text"><s:text
+                                    name="by"/></span><span>{{d.name}}</span></li>
+                            <li><i class="icon_level"><img
+                                    :src="image(d.usrMemberLevelIco)"></i><strong
+                                    class="level_text FontColor">{{d.usrMemberLevelName}}</strong>
+                            </li>
+                            <li><span class="time">{{d.commenttime}}</span></li>
+                        </ul>
+                        <div class="like fr">
+                            <div class="vote">
+                                <p><s:text name="products.helpful"/></p>
+                                <div class="likeWrapper">
+                                    <a href="javascript:void(0)" class="like" @click="vote(d.id,1)"><span
+                                            class="icon_agree">({{d.useful_number}})</span></a>
+                                    <span class="gap">|</span>
+                                    <a href="javascript:void(0)" class="unlike"
+                                       @click="vote(d.id,0)"><span
+                                            class="icon_oppose">({{d.unuseful_number}})</span></a>
+                                </div>
+                            </div>
+                            <a :href="'https://api.addthis.com/oexchange/0.8/forward/facebook/offer?url='+encodeURIComponent(window.location.href)+'&t='+goodsInfo.pdtName"
+                               class="fb_share" target="_blank">
+                                <em class="icon_facebook_mini"></em><s:text
+                                    name="products.shareFB"/>
+                            </a>
+                        </div>
+                        <div class="main">
+                            <div class="content">good</div>
+                            <div class="pic_list">
+                                <div class="clear"></div>
+                            </div>
+                            <div class="reply">
+                                <div class="edit"><a href="javascript:;" class="reply_btn"
+                                                     @click="changeShow(d.id)"><s:text
+                                        name="reply"/></a></div>
+                                <div class="w_review_replys" v-show="_isShowReply(d.id)">
+                                    <span class="arrow"></span>
+                                    <div class="review_reply">
+                                        <p>{{d.reply}}</p>
+                                        <p class="writer"><span class="light_gray"><s:text
+                                                name="By"/></span> <cite
+                                                class="replier">{{goodsInfo.supName}}</cite>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="write_reply hide">
+                                    <div class="textarea_holder"><textarea class="default" name="ReviewComment">Add your reply here...</textarea>
+                                    </div>
+                                    <p class="error"></p>
+                                    <button class="btn textbtn">Reply</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <%--查看所有评论--%>
+                <div class="prod_review_view"
+                     v-if="isLogin && goodsInfo.comment&& goodsInfo.comment.length>0">
+                    <div class="blank12"></div>
+                    <a class="customer_btn clearfix"
+                       :href="'/home/pdt_PdtProduct_viewComments?id='+goodsInfo.pdtId">
+                        {{lang_obj.mobile.all_reviews}}</a>
+                    <div class="blank12"></div>
+                </div>
+                <div class="prod_review_view" v-if="!isLogin">
+                    <div class="review_sign"><s:text name="groupPurchaseGoodsInfo.After_Login"/>
+                    </div>
+                    <div class="blank12"></div>
 
-        <%--</div>--%>
-        <%--&lt;%&ndash;查看所有评论&ndash;%&gt;--%>
-        <%--<div class="prod_review_view"--%>
-        <%--v-if="isLogin && goodsInfo.comment&& goodsInfo.comment.length>0">--%>
-        <%--<div class="blank12"></div>--%>
-        <%--<a class="customer_btn clearfix"--%>
-        <%--:href="'/home/pdt_PdtProduct_viewComments?id='+goodsInfo.pdtId">--%>
-        <%--{{lang_obj.mobile.all_reviews}}</a>--%>
-        <%--<div class="blank12"></div>--%>
-        <%--</div>--%>
-        <%--<div class="prod_review_view" v-if="!isLogin">--%>
-        <%--<div class="review_sign"><s:text name="groupPurchaseGoodsInfo.After_Login"/>--%>
-        <%--</div>--%>
-        <%--<div class="blank12"></div>--%>
-
-        <%--<div id="turn_page"></div>--%>
-        <%--<div class="blank12"></div>--%>
-        <%--</div>--%>
-        <%--</div>--%>
-        <%--</div>--%>
+                    <div id="turn_page"></div>
+                    <div class="blank12"></div>
+                </div>
+            </div>
+        </div>
         <div style="padding: 15px"></div>
     </div>
 
@@ -655,7 +649,7 @@
     }
 </script>
 <script>
-        var isLogin = ${env.login!=null};
+    var isLogin = ${env.login!=null};
 
     var app = new Vue({
         el: "#app",

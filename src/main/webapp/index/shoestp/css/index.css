@@ -668,10 +668,11 @@ color: #ffffff;
 .prod_detail{
 	background: linear-gradient(18deg, rgb(39,52,102), rgb(21,29,64));
     background-blend-mode: normal, normal;
-    border: solid 1px #303f79;
+    /*border: solid 1px #303f79;*/
     opacity: 0.96;
    width: 72%;
     padding-left: 19px;
+    padding-bottom:20px;
 }
 
 .nav4_title{

@@ -68,9 +68,6 @@
           color:#999;
           text-decoration: line-through;
           }
-          table{
-              width: 100% !important;
-          }
         </style>
         <style>
             .shop_nav{ background:#fff;} .shop_nav ul{ height:2.5rem; overflow:hidden;}
@@ -228,12 +225,12 @@
                                 <s:text name="price" />:
                             </div>
                             <div class="fl">
-                <%--                <div class="price cur_price">
+                                <div class="price cur_price">
                                     <span>
                                         ${env.currency.shortName } ${env.currency.symbols}
                                     </span>
                                     ${product.curPrice}
-                                </div>--%>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -256,15 +253,15 @@
                     				<span id="days"></span>DAYS <span id="time"></span>
                     			</div>
                     		</div>
-                    		<%--<div class="xmg-r">
+                    		<div class="xmg-r">
                     			<div class="xmg-t">${env.currency.symbols}${product.curPrice}</div>
                     					<c:forEach items="${colorToSpec}" var="colorSpec">
                                     		<c:forEach items="${colorSpec.value}" var="spec">
                                     			<div class="xmg-t" color="${colorSpec.key.pkey}" size="${spec.sizeId}" style="display:none;">${env.currency.symbols}${spec.price}</div>
                                     		</c:forEach>
                                     	</c:forEach>
-                    			&lt;%&ndash; <div class="xmg-b"> ${env.currency.shortName }  ${env.currency.symbols}${product.curPrice}</div> &ndash;%&gt;
-                    		</div>--%>
+                    			<%-- <div class="xmg-b"> ${env.currency.shortName }  ${env.currency.symbols}${product.curPrice}</div> --%>
+                    		</div>
 
                     </div>
 
@@ -328,7 +325,7 @@
                             	<fmt:formatNumber type="number" maxFractionDigits="0" value="${product.minOq}" />
                             </div> --%>
                         </div>
-                       <%-- <div class="clean rows prod_info_qty" data="{&quot;min&quot;:${product.minOq},&quot;max&quot;:${product.maxOq}}">
+                        <div class="clean rows prod_info_qty" data="{&quot;min&quot;:${product.minOq},&quot;max&quot;:${product.maxOq}}">
                             <div class="title">
                                 <!-- QTY -->
                                 <s:text name="order_line.qty" />:
@@ -347,10 +344,10 @@
                                			<b>
                                  				<fmt:formatNumber type="number" maxFractionDigits="0" value="${product.minOq}" /> <s:text name="groupPurchaseGoodsInfo.Minimum_Order_Quantity"/>
                                			</b>
-                               			
-                                    	&lt;%&ndash; <c:forEach items="${colorToSpec}" var="colorSpec">
+
+                                    	<%-- <c:forEach items="${colorToSpec}" var="colorSpec">
                                     		<c:forEach items="${colorSpec.value}" var="spec">
-                                    			
+
                                     				<b color="${colorSpec.key.pkey}" size="${spec.sizeId}" style="display:none;">
                                     				<c:if test="${spec.storeCount < product.stock}">
                                     					<span>Sole Out</span>
@@ -362,8 +359,8 @@
                                     				</c:if>
 			                                    	</b>
                                     		</c:forEach>
-                                    	</c:forEach> &ndash;%&gt;
-                                   	
+                                    	</c:forEach> --%>
+
                                 </div>
                             </div>
                             <a href="javascript:;" class="add_favorite fl" style="line-height:2.1875rem; height:2.1875rem; font-size:1rem; color:#666; margin-left:6%;"
@@ -374,13 +371,13 @@
                             <a href="javascript:void(0);" class="fl" style="height:2.18rem; margin-left:2%;">
                                 <img src="/home/static/themes/default/mobile/images/norton.png" style="max-height:100%;">
                             </a>
-                        </div>--%>
+                        </div>
                     </div>
                     <div class="widget prod_info_actions clean">
-                  <%--      <div class="btn_add" style="width:100%;">
+                        <div class="btn_add" style="width:100%;">
                             <input type="button" value="<s:text name="addToCartTo" />" data="${product.pkey}" class="btn_global add_btn addtocart AddtoCartBgColor"
                             id="addtocart">
-                        </div>--%>
+                        </div>
                         <div class="blank15">
                         </div>
                         <a id="addInquiry" target="_blank" class="btn_global add_btn BuyNowBgColor inquiry_btn"
@@ -653,7 +650,7 @@
             <p>
                 <!-- Subtotal -->
                 <s:text name="cart.subtotal"/>:
-                
+
                 <span class="tips_cart_total">
                 </span>
             </p>
@@ -686,7 +683,7 @@
 			}else if(actState == 1){
 				differenceTime = startTime2 - nowTime;
 			}
-			
+
 			var day = Math.floor(differenceTime/86400000);
 			var hour = Math.floor(differenceTime%86400000/3600000);
 			var minute = Math.floor(differenceTime%86400000%3600000/60000);
@@ -694,7 +691,7 @@
 			countDown(day,hour,minute,second);
 			$("div[name=Color] .txt span:first").click();
 		}
-		
+
 		function chooseThisSize(colorId,sizeId){
 			$("div[color="+colorId+"][size="+sizeId+"]").show();
 			$("div[color="+colorId+"][size="+sizeId+"]").siblings(".xmg-t").hide();
@@ -755,7 +752,7 @@
 			    }
 			})
 		})
-		
+
 		 $(".add").on("click",function(){
        		var count = $(this).siblings(".qty").children("input[name=Qty]").val();
        		count++;

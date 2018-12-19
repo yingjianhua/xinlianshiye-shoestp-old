@@ -131,46 +131,28 @@
             </div>
             <div class="detail_right fr">
                 <!-- 联合采购活动倒计时 S-->
-                <div class="countDown_activities">
-                    <div class="activities_left">
-                        <div class="activities-icon">
-                            <img src="./static/images/ico/procurement_countDown.png" alt="">
-                        </div>
-                        <div style="font-size: 15px;font-weight: bold;margin: 4px 9px;">
-                            <c:if test="${groupPurchase.status == 1}">
-                                <s:text name="shoppingjl_start"/>
-                            </c:if>
-                            <c:if test="${groupPurchase.status == 2}">
-                                <s:text name="shoppingjl_end"/>
-                            </c:if>
-                            <c:if test="${groupPurchase.status == 3}">
-                                <s:text name="shoppingjl_end"/>
-                            </c:if>
-                            <c:if test="${groupPurchase.status == 4}">
-                                <s:text name="theEventIsOver"/>
-                            </c:if>
-
-
-                        </div>
-                        <div style="font-size: 20px;font-weight: bold;">
-                            <span id="days"></span>
-                            <i>
-                                <s:text name="groupPurchaseGoodsInfo.Only_Left_Day">
-                                    <s:param><span></span></s:param>
-                                </s:text>
-                            </i>
-                            <span id="time"></span>
-                        </div>
-                    </div>
-                    <%--		<div class="activities_right" style="margin-bottom: 20px;">
-                                <div>
-                                    ${env.currency.symbols}${product.curPrice}
-                                </div>
-                                &lt;%&ndash; <del>
-                                    ${env.currency.symbols}${sourceProduct.curPrice}
-                                </del> &ndash;%&gt;
-                            </div>--%>
+                <style>
+                    .pdtTitle {
+                        font-size: 18px;
+                        font-weight: bold;
+                        padding-top: 10px;
+                        color: #333;
+                        padding-bottom: 15px;
+                        margin-bottom: 10px;
+                        border-bottom: 1px #e0e0e0 solid;
+                    }
+                </style>
+                <div class="pdtTitle">
+                    ${product.name}
                 </div>
+                <%--		<div class="activities_right" style="margin-bottom: 20px;">
+                            <div>
+                                ${env.currency.symbols}${product.curPrice}
+                            </div>
+                            &lt;%&ndash; <del>
+                                ${env.currency.symbols}${sourceProduct.curPrice}
+                            </del> &ndash;%&gt;
+                        </div>--%>
                 <!-- 商品编号 -->
                 <div class="activities_goods_num">
                     <s:text name="Global.Product_Number"/>: <span>${product.code}</span>
@@ -182,6 +164,135 @@
                             <span class="attr_sure_choice">Please select the information you want</span>
                             <span class="attr_sure_close">X</span>
                         </div>
+                        <style>
+                            .showPic {
+                                font-size: 42px;
+                                font-weight: bold;
+                            }
+
+                            .showPicDiv {
+                                padding: 20px;
+                            }
+
+                            .showPicDiv span {
+                                padding-right: 15px;
+                            }
+
+                            .countdownDiv {
+                                float: right;
+                            }
+
+                            .countdownDiv .suplierName {
+                                font-size: 14px;
+                                font-weight: bold;
+                            }
+
+                            .countdownDiv .suplierAddr {
+                                font-size: 12px;
+
+                            }
+                        </style>
+                        <div class="countdownDiv">
+                            <ul>
+                                <li>
+                                    <div class="suplierName">${supView.showName}</div>
+                                    <div class="suplierAddr">${supView.companyAddr}</div>
+
+                                </li>
+                                <li>
+                                    ${saleInfo.purCount}   Buyers
+                                    <br/>
+                                    Purchased  ${saleInfo.bought_count}  pairs
+                                    <style>
+                                        .p-bar {
+                                            width: 150px;
+                                            height: 8px;
+                                            margin-top: 10px;
+                                            background: #e6e6e6;
+                                            overflow: hidden;
+                                            -moz-border-radius: 4px;
+                                            -webkit-border-radius: 4px;
+                                            border-radius: 4px;
+                                        }
+
+                                        .p-bar-purple {
+                                            background: #0050a8;
+                                        }
+
+                                        .p-bar .p-bar-purple {
+                                            height: 8px;
+                                            background-position: 0 -8;
+                                        }
+                                    </style>
+                                    <div class="p-bar">
+                                        <div style="width: ${((saleInfo.bought_count /saleInfo.count)*100)>100?100:(saleInfo.bought_count /saleInfo.count)*100}%;"
+                                             class="p-bar-purple"></div>
+                                    </div>
+
+
+                                    <fmt:formatNumber type="number"
+                                                      value="${(saleInfo.bought_count /saleInfo.count)*100}"
+                                                      maxFractionDigits="1"/>% of the ${saleInfo.count} pairs have been
+                                    completed;
+                                    <br>
+                                    Can continue to purchase
+                                </li>
+                                <li>
+                                    <%--//倒计时--%>
+                                    <div>
+                                        <c:if test="${groupPurchase.status == 1}">
+                                            <s:text name="shoppingjl_start"/>
+                                        </c:if>
+                                        <c:if test="${groupPurchase.status == 2}">
+                                            <s:text name="shoppingjl_end"/>
+                                        </c:if>
+                                        <c:if test="${groupPurchase.status == 3}">
+                                            <s:text name="shoppingjl_end"/>
+                                        </c:if>
+                                        <c:if test="${groupPurchase.status == 4}">
+                                            <s:text name="theEventIsOver"/>
+                                        </c:if>
+                                    </div>
+                                    <style>
+                                        .countdown {
+                                            font-size: 14px;
+                                            font-weight: bold;
+                                            color: #525252;
+                                        }
+
+                                        .countdown img {
+                                            width: 15px;
+                                        }
+
+                                        .countdown span {
+                                            color: #2061AE;
+                                        }
+                                    </style>
+                                    <div class="countdown">
+                                        <img src="/home/static/images/ico/time.gif"/>
+                                        <span id="days"></span>
+                                        <i>
+                                            <s:text name="groupPurchaseGoodsInfo.Only_Left_Day">
+                                                <s:param><span style="padding-left: 5px"></span></s:param>
+                                            </s:text>
+                                        </i>
+                                        <span id="time"></span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="showPicDiv">
+                            <span class="showPic">
+                                ${env.currency.symbols}${price}/Untis
+                            </span>
+                            <span style="border-left: 1px solid #cccccc;"></span>
+                            <span>
+                                <fmt:formatNumber type="number" maxFractionDigits="0"
+                                                  value="${product.minOq}"/> <s:text
+                                    name="groupPurchaseGoodsInfo.Minimum_Order_Quantity"/>
+                            </span>
+                        </div>
+
 
                         <li class="attr_show" name="Color">
                             <h5><s:text name="Global.Colour"/>:</h5>
@@ -205,11 +316,8 @@
 										</span>
                             </c:forEach>
                         </li>
-                        <%--	<li style="font-size: 12px;">
-                                <span style="font-weight: bold;">MOQ:</span>
-                                <span style="margin-left: 11px;font-size: 14px;">${product.minOq}</span>
-                            </li>--%>
                     </ul>
+
                     <div class="size-main quantity_box" data="">
                         <div class="attr_show size-list">
                             <h5><s:text name="Global.Size"/>:</h5>
@@ -225,9 +333,6 @@
                                             <input type="hidden" value="${spec.id}" name="specList[${tally}].spec"/>
                                             <span>${spec.size}</span>
                                             <span name="specList[${tally}].amt">${env.currency.symbols}${spec.price}</span>
-                                            <span><fmt:formatNumber type="number" maxFractionDigits="0"
-                                                                    value="${product.minOq}"/> <s:text
-                                                    name="groupPurchaseGoodsInfo.Minimum_Order_Quantity"/></span>
                                             <div class="column">
                                                 <a href="javascript:;" class="reduce">-</a>
                                                 <!-- disable 输入框中数量为1时添加样式disable -->

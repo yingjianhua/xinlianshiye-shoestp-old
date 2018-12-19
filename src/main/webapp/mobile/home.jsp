@@ -429,7 +429,7 @@
                         </a>
                     </div>
                     <div class="price">
-                            <%--${d.price}--%>
+                            ${d.price}
                     </div>
                 </div>
             </c:forEach>

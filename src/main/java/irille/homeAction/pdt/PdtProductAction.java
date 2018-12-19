@@ -291,6 +291,15 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
         write(pdtProduct.getYouMayLike(page, getCated()));
     }
 
+    /**
+     * @Description: 完全随机商品
+     * @date 2018/12/14 19:16
+     * @author lijie@shoestp.cn
+     */
+    public void getRandomPdt() throws IOException {
+        write(pdtProduct.getRandomPdt(getLimit(), getCated()));
+    }
+
     private Integer id;
 
     /**

@@ -44,7 +44,7 @@
                 </div> -->
                 <div class="divide_8px">
                 </div>
-<%--                <div class="user_count clean ui_border_tb">
+                <div class="user_count clean ui_border_tb">
                     <a href="/home/usr_UsrCart_cartshopping" class="box cart">
                         <div class="num">
                              ${num}
@@ -61,7 +61,7 @@
                             <s:text name="all_order" />
                         </div>
                     </a>
-                </div>--%>
+                </div>
                 <div class="user_data clean">
                         <!-- <div class="name FontBgColor">
                             <strong>
@@ -72,14 +72,14 @@
                         <s:if test="usrPurchase.address == ''">
                            <div class="address">
                            	${purchaseLine.address}
-                            </div>   
+                            </div>
                         </s:if>
                         <s:if test="usrPurchase.address != ''">
                            <div class="address">
                            	${usrPurchase.address}
-                            </div>   
+                            </div>
                         </s:if>
-                         
+
                         </div>
                     </div>
                 <div class="divide_8px">
@@ -96,7 +96,7 @@
                     </div>
                 </div>
                 <aside class="user_menu ui_border_b">
-<%--                    <a href="/home/odr_OdrOrder_orders" class="orders">
+                    <a href="/home/odr_OdrOrder_orders" class="orders">
                         <span class="ui_border_b">
                             <strong>
                                 <s:text name="my_orders" />
@@ -106,7 +106,7 @@
                                 </i>
                             </em>
                         </span>
-                    </a>--%>
+                    </a>
                     <a href="/home/usr_UsrFavorites_myfavorite" class="favorite">
                         <span class="ui_border_b">
                             <strong>

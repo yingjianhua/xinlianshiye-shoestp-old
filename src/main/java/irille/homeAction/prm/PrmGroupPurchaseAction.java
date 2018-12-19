@@ -1,6 +1,7 @@
 package irille.homeAction.prm;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import irille.Service.Odr.IOrderService;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
 import irille.homeAction.plt.dto.PltPayView;
@@ -23,6 +24,7 @@ import irille.shop.plt.PltProvince;
 import irille.shop.prm.*;
 import irille.shop.usr.*;
 import irille.view.prm.ConfirmOrderView;
+import irille.view.prm.GroupProductInfoView;
 import irille.view.usr.SupplierView;
 import lombok.Getter;
 import lombok.Setter;
@@ -275,26 +277,33 @@ public class PrmGroupPurchaseAction extends HomeAction<PrmGroupPurchase> {
     private List<irille.homeAction.usr.dto.PdtView> recommendationPdt = new ArrayList<irille.homeAction.usr.dto.PdtView>();
     private UsrPurchase presentPurchase;
     private UsrFavorites favorite;
+    @Getter
+    @Setter
     private PdtProduct sourceProduct;
 
-    public PdtProduct getSourceProduct() {
-        return sourceProduct;
-    }
+    @Inject
+    private IOrderService orderService;
 
-    public void setSourceProduct(PdtProduct sourceProduct) {
-        this.sourceProduct = sourceProduct;
-    }
+    /**
+     * @Description: 商品销售信息(达成度
+     * @date 2018/12/14 16:13
+     * @author lijie@shoestp.cn
+     */
+    @Getter
+    private GroupProductInfoView saleInfo;
 
     private List<UsrSupIm> imList;
+    @Getter
+    @Setter
     private SupplierView supView;
 
-    public SupplierView getSupView() {
-        return supView;
-    }
-
-    public void setSupView(SupplierView supView) {
-        this.supView = supView;
-    }
+    /**
+     * @Description: 临时用  页面显示价格
+     * @date 2018/12/14 19:16
+     * @author lijie@shoestp.cn
+     */
+    @Getter
+    private double price;
 
     /**
      * 获取联合采购商品详情
@@ -323,6 +332,7 @@ public class PrmGroupPurchaseAction extends HomeAction<PrmGroupPurchase> {
         if (getPurchase() != null) {
             favorite = UsrFavorites.chkUniquePurchase_product(false, getPurchase().getPkey(), product.getPkey());
         }
+        price = product.getCurPrice().doubleValue();
         sourceProduct = product.gtSourceProduct();
         translateUtil.getAutoTranslate(sourceProduct, HomeAction.curLanguage());
         product.setDefaultReviewRating(new BigDecimal(Math.ceil(product.getDefaultReviewRating().doubleValue())));
@@ -405,7 +415,7 @@ public class PrmGroupPurchaseAction extends HomeAction<PrmGroupPurchase> {
                 writeFailure("Product Data Error");
             }
         }
-
+        saleInfo = orderService.getPrmSaleInfo(product.getPkey(), Integer.valueOf(String.valueOf(getPkey())));
         setResult("/home/groupPurchaseGoodsInfo.jsp");
         return HomeAction.TRENDS;
     }

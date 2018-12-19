@@ -26,6 +26,7 @@ public class EasyOdrAction extends HomeAction<EasyOdr> {
     private List<EolineView> list2;
 
     public void generateOrder() throws Exception {
+//        新的订单
         easyOdrService.generateOrder(purchaseLine, getPurchase().getPkey(), list);
         write();
     }
