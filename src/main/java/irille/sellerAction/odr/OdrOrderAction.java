@@ -18,17 +18,14 @@ import irille.shop.odr.OdrOrderDAO;
 import irille.shop.odr.OdrOrderLine;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltFreightSeller;
-import irille.shop.plt.PltPay;
 import irille.shop.plt.PltPayDAO;
 import irille.shop.usr.UsrPurchase;
 import irille.view.Page;
 import irille.view.odr.OrderSearchView;
 import irille.view.odr.OrderView;
-import irille.view.plt.PayTypeView;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import lombok.Getter;

@@ -20,7 +20,6 @@ import lombok.Setter;
 
 import javax.inject.Inject;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.util.List;
 
 public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdrMeetingAction {
@@ -127,7 +126,7 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
     private Integer productId;
 
     public void getOrderGoodsList() throws IOException {
-        write(odrMeetingProductManageService.getOrderGoodsList(getStart(), getLimit(), id, status, inputContent, getSupplier().getPkey()));
+        write(odrMeetingProductManageService.getOrderGoodsList(getStart(), getLimit(), id, status, inputContent, getSupplier().getPkey(), supplierId));
     }
 
     public void updateStatus() throws IOException {
@@ -140,7 +139,7 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
      * @date 2018/11/22 11:14
      * @anthor wilson zhang
      */
-    public void deletejoinOdr() throws IOException{
+    public void deletejoinOdr() throws IOException {
         odrMeetingManageService.deletejoinOdr(id);
         write();
     }
@@ -172,7 +171,7 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
     }
 
     public void getAddedProducts() throws IOException {
-        write(odrMeetingProductManageService.getAddedProducts(id));
+        write(odrMeetingProductManageService.getAddedProducts(id, getSupplier().getPkey()));
     }
 
     @Setter
@@ -198,9 +197,8 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
 
     public void addProducts() throws IOException {
         JsonParser jsonParser = new JsonFactory().createParser(products);
-        List<AllProductsView> productsViewList = new ObjectMapper().readValue(
-                jsonParser, new TypeReference<List<AllProductsView>>() {
-                });
+        List<AllProductsView> productsViewList = new ObjectMapper().readValue(jsonParser, new TypeReference<List<AllProductsView>>() {
+        });
         odrMeetingProductManageService.addProducts(id, getSupplier().getPkey(), productsViewList);
         write();
     }
@@ -216,18 +214,56 @@ public class OdrMeetingAction extends SellerAction<OrderMeeting> implements IOdr
     @Getter
     @Setter
     private Integer classification;
-
+    @Getter
+    @Setter
+    private Integer supplierId;
+    @Getter
+    @Setter
+    private Integer orderStatus;
     public void getOmtOrderList() throws IOException {
-        write(odrMeetingOrderManageService.getOmtOrderList(id, getStart(), getLimit(), classification, status, inputContent));
+        write(odrMeetingOrderManageService.getOmtOrderList(id, productId, supplierId,getSupplier().getPkey(), getStart(), getLimit(), classification, status, orderStatus, inputContent));
     }
 
     public void getOrderStatus() throws IOException {
         write(odrMeetingOrderManageService.getOrderStatus());
     }
+
     @Getter
     @Setter
     private String input;
+
+
     public void getSalesDetails() throws IOException {
-        write(odrMeetingOrderManageService.getSalesDetails(getStart(),getLimit(),id,input,status, HomeAction.curLanguage(),getSupplier().getPkey()));
+        write(odrMeetingOrderManageService.getSalesDetails(getStart(), getLimit(), id, input, status, productId, getSupplier().getPkey()));
+    }
+
+    public void updSendStatus() throws IOException {
+        odrMeetingOrderManageService.updSendStatus(id);
+        write();
+    }
+
+    public void updLoadSupStatus() throws IOException {
+        odrMeetingManageService.updLoadSupStatus(id, status);
+        write();
+    }
+
+    public void isAuthStatus() throws Exception {
+        writerOrExport(odrMeetingManageService.isAuthStatus());
+    }
+
+    @Getter
+    @Setter
+    private String orderNumber;
+    @Getter
+    @Setter
+    private String remarks;
+
+    public void updAudit() throws IOException {
+        odrMeetingManageService.updAudit(id, getSupplier().getPkey(), orderNumber, remarks);
+        write();
+    }
+
+    public void getLogistics() throws IOException {
+        write(odrMeetingManageService.getLogistics(id, getSupplier().getPkey()));
     }
 }

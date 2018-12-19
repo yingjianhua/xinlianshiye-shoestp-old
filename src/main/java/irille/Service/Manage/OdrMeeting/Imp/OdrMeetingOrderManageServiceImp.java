@@ -2,6 +2,7 @@ package irille.Service.Manage.OdrMeeting.Imp;
 
 import irille.Dao.OdrMeetingProductDao;
 import irille.Dao.Old.OdrMeeting.OrderMeetingOrderDao;
+import irille.Entity.OdrerMeetings.OrderMeetingOrder;
 import irille.Service.Manage.OdrMeeting.IOdrMeetingOrderManageService;
 import irille.pub.tb.FldLanguage;
 import irille.view.Manage.OdrMeeting.initiatedActivity.orderOrderStatusListView;
@@ -22,8 +23,8 @@ public class OdrMeetingOrderManageServiceImp implements IOdrMeetingOrderManageSe
     }
 
     @Override
-    public Page getOmtOrderList(Integer omtId, Integer start, Integer limit, Integer classification, Integer orderStatus, String input) {
-        return orderMeetingOrderDao.getOmtOrderList(omtId, start, limit, classification, orderStatus, input);
+    public Page getOmtOrderList(Integer omtId,Integer productId,Integer supplierId,Integer supplier, Integer start, Integer limit, Integer classification, Integer status,Integer orderStatus, String input) {
+        return orderMeetingOrderDao.getOmtOrderList(omtId,productId,supplierId,supplier, start, limit, classification, status,orderStatus, input);
     }
 
     @Override
@@ -32,8 +33,13 @@ public class OdrMeetingOrderManageServiceImp implements IOdrMeetingOrderManageSe
     }
 
     @Override
-    public Page getSalesDetails(Integer start, Integer limit, Integer id, String input, Integer status, FldLanguage.Language lang, Integer supplierId) {
-        return odrMeetingProductDao.salesDetailslist(start, limit, id, input, status, lang, supplierId);
+    public Page getSalesDetails(Integer start, Integer limit, Integer id, String input, Integer status,Integer productId, Integer supplierId) {
+        return odrMeetingProductDao.salesDetailslist(start, limit, id, input, status,productId, supplierId);
+    }
+
+    @Override
+    public void updSendStatus(Integer id) {
+        orderMeetingOrderDao.updSendStatus(id);
     }
 
 }

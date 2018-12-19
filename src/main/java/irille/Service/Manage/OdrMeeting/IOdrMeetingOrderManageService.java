@@ -1,6 +1,7 @@
 package irille.Service.Manage.OdrMeeting;
 
 import com.google.inject.ImplementedBy;
+import irille.Entity.OdrerMeetings.OrderMeetingOrder;
 import irille.Service.Manage.OdrMeeting.Imp.OdrMeetingOrderManageServiceImp;
 import irille.pub.tb.FldLanguage;
 import irille.view.Manage.OdrMeeting.initiatedActivity.orderOrderStatusListView;
@@ -26,7 +27,7 @@ public interface IOdrMeetingOrderManageService {
      * @date 2018/11/29 19:18
      * @author zjl
      */
-    Page getOmtOrderList(Integer omtId, Integer start, Integer limit, Integer classification, Integer orderStatus, String input);
+    Page getOmtOrderList(Integer omtId,Integer productId,Integer supplierId,Integer supplier, Integer start, Integer limit, Integer classification, Integer status,Integer orderStatus, String input);
 
     /**
      * @Description: 获取订单状态列表
@@ -34,6 +35,12 @@ public interface IOdrMeetingOrderManageService {
      * @author zjl
      */
     List<orderOrderStatusListView> getOrderStatus();
+    Page getSalesDetails(Integer start, Integer limit, Integer id, String input, Integer status,Integer productId,Integer supplierId);
 
-    Page getSalesDetails(Integer start, Integer limit, Integer id, String input, Integer status, FldLanguage.Language lang,Integer supplierId);
+    /**
+     * @Description: 修改是否发送订单状态
+     * @date 2018/12/11 11:51
+     * @author zjl
+     */
+    void updSendStatus(Integer id);
 }

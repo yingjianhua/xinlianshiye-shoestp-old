@@ -9,9 +9,16 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import irille.Entity.OdrerMeetings.Enums.OrderMeetingStatus;
+import irille.Entity.OdrerMeetings.OrderMeeting;
+import irille.Entity.OdrerMeetings.OrderMeetingOrder;
 import irille.Entity.OdrerMeetings.OrderMeetingProduct;
+import irille.core.sys.Sys;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
+import irille.pub.html.Nodes;
+import irille.shop.plt.*;
+import irille.view.Manage.OdrMeeting.OdrMeetingOrderView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,12 +57,6 @@ import irille.shop.pdt.PdtColor;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.pdt.PdtSpec;
 import irille.shop.pdt.PdtSpecDAO;
-import irille.shop.plt.PltErate;
-import irille.shop.plt.PltErateDAO;
-import irille.shop.plt.PltFreightSeller;
-import irille.shop.plt.PltFreightSellerDAO;
-import irille.shop.plt.PltPay;
-import irille.shop.plt.PltPayDAO;
 import irille.shop.prm.Prm;
 import irille.shop.prm.PrmGroupPurchaseLine;
 import irille.shop.usr.Usr;
@@ -75,8 +76,6 @@ import irille.view.plt.FreightSellerlistView;
 import irille.view.plt.PayTypeView;
 import irille.view.usr.AddressView;
 import irille.view.usr.SupplierView;
-
-import javax.xml.crypto.Data;
 
 public class OdrOrderDAO {
 
@@ -369,9 +368,32 @@ public class OdrOrderDAO {
         return new Page<>(views, start, limit, totalCount);
     }
 
-    private static Page<OrderView> asViewWithDetail(List<OdrOrder> list, Integer start, Integer limit, Integer totalCount, Language lang) throws JSONException {
+    private static Page<OrderView> asViewWithDetail(List<OdrOrder> list, List<OdrOrder> list2, Integer start, Integer limit, Integer totalCount, Language lang) throws JSONException {
         List<OrderView> views = new ArrayList<>();
         for (OdrOrder order : list) {
+            List<OdrOrderLine> odrLineList = OdrOrderLineDAO.listByOrder(order.getPkey());
+            OrderView view = new OrderView();
+            PltErate currency = order.gtCurrency();
+
+            view.setDate(order.getTime());
+            view.setNumber(order.getOrderNum());
+            view.setStatus(order.getState());
+            view.setTotal(order.getPriceTotal(), currency, true, false);
+
+            List<OrderLineView> lines = new ArrayList<>();
+            BigDecimal subtotal = BigDecimal.ZERO;
+            Integer itemsCount = 0;
+            for (OdrOrderLine line : odrLineList) {
+                lines.add(OrderLineView.build(line, lang, currency));
+                subtotal = subtotal.add(line.getSubtotal());
+                itemsCount += line.getQty();
+            }
+            view.setLines(lines);
+            view.setItemsCount(itemsCount);
+            view.setCurrency(currency.getCurName());
+            views.add(view);
+        }
+        for (OdrOrder order : list2) {
             List<OdrOrderLine> odrLineList = OdrOrderLineDAO.listByOrder(order.getPkey());
             OrderView view = new OrderView();
             PltErate currency = order.gtCurrency();
@@ -410,8 +432,14 @@ public class OdrOrderDAO {
         BeanQuery<OdrOrder> q = irille.pub.bean.Query.SELECT(OdrOrder.class);
         q.WHERE(T.PURCHASE, "=?", purchase);
         q.WHERE(T.STATE, "!=?", Odr.OdrState.DELETED.getLine().getKey());
+        BeanQuery<OdrOrder> q2 = irille.pub.bean.Query.SELECT(OdrOrder.class);
+        q2.WHERE(T.PURCHASE, "=?", purchase);
+        q2.WHERE(T.STATE, "!=?", Odr.OdrState.DELETED.getLine().getKey());
+        q2.LEFT_JOIN(OrderMeetingOrder.class, OrderMeetingOrder.T.ORDERID, T.PKEY);
+        q2.WHERE(OrderMeetingOrder.T.WHETHER_TO_SEND, "=?", Sys.OYn.NO.getLine().getKey());
         q.limit(start, limit);
-        return asViewWithDetail(q.queryList(), start, limit, q.queryCount(), lang);
+        q2.limit(start, limit);
+        return asViewWithDetail(q.queryList(), q2.queryList(), start, limit, q.queryCount() + q2.queryCount(), lang);
     }
 
     /**
@@ -424,36 +452,117 @@ public class OdrOrderDAO {
      * @author yingjianhua
      */
     public static Page<OrderView> pageBySupplierWithDetail(Integer supplier, OrderSearchView search, Integer start, Integer limit, Language lang) throws JsonParseException, JsonMappingException, JSONException, IOException {
-        BeanQuery<OdrOrder> q = irille.pub.bean.Query.SELECT(OdrOrder.class);
-        q.WHERE(T.SUPPLIER, "=?", supplier);
-        //	q.WHERE(T.STATE, "!=?", Odr.OdrState.DELETED.getLine().getKey());
-        if (search != null) {
-            if (search.getEmail() != null) {
-                q.LEFT_JOIN(UsrPurchase.class, T.PURCHASE, UsrPurchase.T.PKEY);
-                q.WHERE(UsrPurchase.T.EMAIL, "like ?", "%" + search.getEmail() + "%");
+        SQL sql = new SQL() {
+            {
+                SELECT(OdrOrder.class)
+                        .FROM(OdrOrder.class)
+                        .WHERE(T.SUPPLIER, "=?", supplier)
+                        .WHERE(T.TYPE, "=?", Odr.OdrType.DEFAULT.getLine().getKey());
+                if (search != null) {
+                    if (search.getEmail() != null) {
+                        LEFT_JOIN(UsrPurchase.class, T.PURCHASE, UsrPurchase.T.PKEY);
+                        WHERE(UsrPurchase.T.EMAIL, "like ?", "%" + search.getEmail() + "%");
+                    }
+                    if (search.getNumber() != null) {
+                        WHERE(T.ORDER_NUM, "like ?", "%" + search.getNumber() + "%");
+                    }
+                    if (search.getBeginTime() != null) {
+                        WHERE(T.TIME, ">?", search.getBeginTime());
+                    }
+                    if (search.getEndTime() != null) {
+                        WHERE(T.TIME, "<?", search.getEndTime());
+                    }
+                    if (search.getPayType() != null) {
+                        WHERE(T.PAY_TYPE, "=?", search.getPayType());
+                    }
+                    if (search.getStatus() != null) {
+                        WHERE(T.STATE, "=?", search.getStatus());
+                    }
+                    if (search.getTypes() != null) {
+                        WHERE(T.TYPE, "=?", search.getTypes());
+                    }
+                }
             }
-            if (search.getNumber() != null) {
-                q.WHERE(T.ORDER_NUM, "like ?", "%" + search.getNumber() + "%");
+        };
+        SQL omt = new SQL() {
+            {
+                SELECT(OrderMeeting.class)
+                        .FROM(OrderMeeting.class)
+                        .WHERE(OrderMeeting.T.SUPPLIERID, "=?", supplier);
             }
-            if (search.getBeginTime() != null) {
-                q.WHERE(T.TIME, ">?", search.getBeginTime());
+        };
+        SQL omtSql = new SQL() {
+            {
+                SELECT(OdrOrder.class)
+                        .FROM(OdrOrder.class)
+                        .LEFT_JOIN(OrderMeetingOrder.class, OrderMeetingOrder.T.ORDERID, T.PKEY)
+                        .WHERE(T.SUPPLIER, "=?", supplier)
+                        .WHERE(T.TYPE, "=?", Odr.OdrType.STATEONE.getLine().getKey());
+                if (irille.pub.bean.Query.sql(omt).queryMaps().size() <= 0) {
+                    LEFT_JOIN(OrderMeeting.class, OrderMeeting.T.PKEY, OrderMeetingOrder.T.ORDERMEETINGID);
+                    WHERE(OrderMeeting.T.STATUS, "=?", OrderMeetingStatus.END.getLine().getKey());
+                    WHERE(OrderMeetingOrder.T.WHETHER_TO_SEND, "=?", Sys.OYn.YES.getLine().getKey());
+                }
+                if (search != null) {
+                    if (search.getEmail() != null) {
+                        LEFT_JOIN(UsrPurchase.class, T.PURCHASE, UsrPurchase.T.PKEY);
+                        WHERE(UsrPurchase.T.EMAIL, "like ?", "%" + search.getEmail() + "%");
+                    }
+                    if (search.getNumber() != null) {
+                        WHERE(T.ORDER_NUM, "like ?", "%" + search.getNumber() + "%");
+                    }
+                    if (search.getBeginTime() != null) {
+                        WHERE(T.TIME, ">?", search.getBeginTime());
+                    }
+                    if (search.getEndTime() != null) {
+                        WHERE(T.TIME, "<?", search.getEndTime());
+                    }
+                    if (search.getPayType() != null) {
+                        WHERE(T.PAY_TYPE, "=?", search.getPayType());
+                    }
+                    if (search.getStatus() != null) {
+                        WHERE(T.STATE, "=?", search.getStatus());
+                    }
+                    if (search.getTypes() != null) {
+                        WHERE(T.TYPE, "=?", search.getTypes());
+                    }
+                }
             }
-            if (search.getEndTime() != null) {
-                q.WHERE(T.TIME, "<?", search.getEndTime());
-            }
-            if (search.getPayType() != null) {
-                q.WHERE(T.PAY_TYPE, "=?", search.getPayType());
-            }
-            if (search.getStatus() != null) {
-                q.WHERE(T.STATE, "=?", search.getStatus());
-            }
-            if (search.getTypes() != null) {
-                q.WHERE(T.TYPE, "=?", search.getTypes());
-            }
-        }
-        q.limit(start, limit);
-        q.ORDER_BY(T.TIME, " DESC ");
-        return asViewWithDetail(q.queryList(), start, limit, q.queryCount(), lang);
+        };
+        Integer count = irille.pub.bean.Query.sql(sql).queryCount() + irille.pub.bean.Query.sql(omtSql).queryCount();
+//        BeanQuery<OdrOrder> q = irille.pub.bean.Query.SELECT(OdrOrder.class);
+//        q.WHERE(T.SUPPLIER, "=?", supplier);
+//        //	q.WHERE(T.STATE, "!=?", Odr.OdrState.DELETED.getLine().getKey());
+//        if (search != null) {
+//            if (search.getEmail() != null) {
+//                q.LEFT_JOIN(UsrPurchase.class, T.PURCHASE, UsrPurchase.T.PKEY);
+//                q.WHERE(UsrPurchase.T.EMAIL, "like ?", "%" + search.getEmail() + "%");
+//            }
+//            if (search.getNumber() != null) {
+//                q.WHERE(T.ORDER_NUM, "like ?", "%" + search.getNumber() + "%");
+//            }
+//            if (search.getBeginTime() != null) {
+//                q.WHERE(T.TIME, ">?", search.getBeginTime());
+//            }
+//            if (search.getEndTime() != null) {
+//                q.WHERE(T.TIME, "<?", search.getEndTime());
+//            }
+//            if (search.getPayType() != null) {
+//                q.WHERE(T.PAY_TYPE, "=?", search.getPayType());
+//            }
+//            if (search.getStatus() != null) {
+//                q.WHERE(T.STATE, "=?", search.getStatus());
+//
+//            }
+//            if (search.getTypes() != null) {
+//                q.WHERE(T.TYPE, "=?", search.getTypes());
+//            }
+//        }
+//        q.limit(start, limit);
+//        q.ORDER_BY(T.TIME, " DESC ");
+//        return asViewWithDetail(q.queryList(), start, limit, q.queryCount(), lang);
+        return asViewWithDetail(irille.pub.bean.Query.sql(sql).queryList(OdrOrder.class),
+                irille.pub.bean.Query.sql(omtSql).queryList(OdrOrder.class), start, limit, count, lang);
     }
 
     public static Page<OrderView> lists(Integer start, Integer limit, OrderSearchView search, Integer billingStatus, Integer productId, Language lang) {
@@ -465,15 +574,14 @@ public class OdrOrderDAO {
                         .SELECT(T.STATE)
                         .SELECT(T.PRICE_TOTAL)
                         .SELECT(T.PKEY)
-
                         .FROM(OdrOrderLine.class)
                         .LEFT_JOIN(OdrOrder.class, T.PKEY, OdrOrderLine.T.MAIN)
                         .LEFT_JOIN(PdtSpec.class, PdtSpec.T.PKEY, OdrOrderLine.T.SPEC)
                         .LEFT_JOIN(PdtProduct.class, PdtProduct.T.PKEY, PdtSpec.T.PRODUCT)
-                        .LEFT_JOIN(OrderMeetingProduct.class, OrderMeetingProduct.T.PRODUCTID, PdtProduct.T.PKEY)
-                        .WHERE(T.TYPE, "=?", 1)
+                        .LEFT_JOIN(OrderMeetingOrder.class, OrderMeetingOrder.T.ORDERID, OdrOrder.T.PKEY)
+                        .WHERE(T.TYPE, "=?", Odr.OdrType.STATEONE.getLine().getKey())
                         .WHERE(PdtProduct.T.PKEY, "=?", productId)
-                        .WHERE(OrderMeetingProduct.T.BILLINGSTATUS, "=?", billingStatus);
+                        .WHERE(OrderMeetingOrder.T.BILLINGSTATUS, "=?", billingStatus);
                 if (search != null) {
                     if (search.getEmail() != null) {
                         LEFT_JOIN(UsrPurchase.class, T.PURCHASE, UsrPurchase.T.PKEY);
@@ -940,7 +1048,7 @@ public class OdrOrderDAO {
      */
 //    public static void delete(String number, Integer purchase) {
 //    	OdrOrder bean = loadByOrderNumPurchase(number, purchase);
-//    	if(bean == null)
+//    	if(bean == null);
 //    		throw LOG.err("not exists", "订单编号为[{0}]且采购商pkey为[{1}]的订单不存在", number, purchase);
 ////    	WAIT(0,"待付款"),WAITCONFIRM(1,"等待确认付款"),ERROR(2,"付款错误"),WAITDELIVER(3,"等待发货"),DELIVER(4,"已发货"),COMPLETE(5,"完成订单"),CANCEL(6,"已取消订单"),DELETED(7, "已删除");
 //    	switch (bean.gtState()) {
@@ -1837,6 +1945,135 @@ public class OdrOrderDAO {
         }
         OdrOrder orderHasOrderNum = buildOrderNum(order.ins());
         return orderHasOrderNum;
+    }
 
+    public static class intOrder extends IduOther<intOrder, OdrOrder> {
+        private String jsonCarts;
+        private UsrPurchaseLine address;
+        private Integer currency;
+        private List<OdrView> odrViews;
+        private Integer enterType;
+        private String orderNumber = "";
+        private UsrPurchaseLine billAddress;
+        /**
+         * <<<<<<<以下Map的key为 supplier##type >>>>>>
+         **/
+        private Map<String, Map<PdtSpec, Integer>> orderInfo = new HashMap<String, Map<PdtSpec, Integer>>();
+
+        public intOrder(String jsonCarts, UsrPurchaseLine purchaseLine, Integer currency, List<OdrView> odrViews, Integer enterType) {
+            this.jsonCarts = jsonCarts;
+            this.address = purchaseLine;
+            this.currency = currency;
+            this.odrViews = odrViews;
+            this.enterType = enterType;
+        }
+
+        public void before() {
+            try {
+                billAddress = UsrPurchaseLineDAO.listByPurchaseAddrsstype(HomeAction.getPurchase().getPkey(), Usr.OAddress.BILLED).get(0);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                throw LOG.errTran("addressfrom%Please_Select_The_Billing_Address", "请先设置帐单邮寄地址");
+            }
+            try {
+                JSONObject json = new JSONObject(jsonCarts);
+                Iterator infoIte = json.keys();
+                while (infoIte.hasNext()) {
+                    Integer specId = Integer.valueOf((String) infoIte.next());
+                    Integer qty = json.getInt(String.valueOf(specId));
+                    PdtSpec spec = BeanBase.load(PdtSpec.class, specId);
+                    PdtProduct product = spec.gtProduct();
+                    UsrSupplier supplier = product.gtSupplier();
+                    String key = supplier.getPkey() + "##" + product.getProductType();
+                    if (Integer.valueOf(product.getProductType()).equals(Pdt.OProductType.GENERAL.getLine().getKey())) {
+                        PdtSpecDAO.judgeCount(spec, translateUtil.getAutoTranslate(product, HomeAction.curLanguage()), qty);
+                    }
+                    if (orderInfo.get(key) == null) {
+                        Map<PdtSpec, Integer> orderLineInfo = new HashMap<PdtSpec, Integer>();
+                        orderLineInfo.put(spec, qty);
+                        orderInfo.put(key, orderLineInfo);
+                    } else {
+                        orderInfo.get(key).put(spec, qty);
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void run() {
+            for (String key : orderInfo.keySet()) {
+                Integer supplier = Integer.valueOf(key.split("##")[0]);
+                Integer type = Integer.valueOf(key.split("##")[1]);
+                Map<PdtSpec, Integer> orderDetail = orderInfo.get(key);
+                List<OdrOrderLine> orderLineList = new ArrayList<OdrOrderLine>();
+                BigDecimal subtotalPrice = BigDecimal.ZERO;
+                for (PdtSpec spec : orderDetail.keySet()) {
+                    OdrOrderLine orderLine = OdrOrderLineDAO.buildOrderLine(spec, orderDetail.get(spec));
+                    orderLineList.add(orderLine);
+                    Integer qty = orderDetail.get(spec);
+                    subtotalPrice = subtotalPrice.add(new BigDecimal(qty).multiply(spec.getPrice()).setScale(4, BigDecimal.ROUND_HALF_UP));
+                    PdtSpecDAO.reduceStock(spec, qty);
+                    if (enterType.equals(1)) {
+                        UsrCartDAO.delCart(spec.getPkey());
+                    }
+                }
+                OdrOrder order = null;
+                for (OdrView view : odrViews) {
+                    if (view.getSupplier().equals(supplier)) {
+                        order = getOrder(view, billAddress, address, currency, type, subtotalPrice);
+                        break;
+                    }
+                }
+                order.setState(OdrState.COMPLETE.getLine().getKey());
+                Idu.insLine(order, orderLineList, OdrOrderLine.T.MAIN.getFld());
+                String operator = "(" + UsrPurchase.TB.getName() + ")";
+                UsrPurchase purchase = order.gtPurchase();
+                if (purchase.getName() == null) {
+                    operator += purchase.getLoginName();
+                } else {
+                    operator += purchase.getName();
+                }
+                OdrHistoryDAO.add(order.getPkey(), order.gtState().getLine().getName(), operator, order.gtState());
+
+                if (orderNumber.equals("")) {
+                    orderNumber += order.getOrderNum();
+                } else {
+                    orderNumber += "," + order.getOrderNum();
+                }
+                SQL sql = new SQL() {
+                    {
+                        SELECT(OrderMeetingProduct.T.ORDERMEETINGID)
+                                .FROM(OdrOrderLine.class)
+                                .LEFT_JOIN(PdtSpec.class, PdtSpec.T.PKEY, OdrOrderLine.T.SPEC)
+                                .LEFT_JOIN(OrderMeetingProduct.class, OrderMeetingProduct.T.PRODUCTID, PdtSpec.T.PRODUCT)
+                                .WHERE(OrderMeetingProduct.T.PRODUCTID, "=", PdtSpec.T.PRODUCT);
+                    }
+                };
+                sql.WHERE(OdrOrderLine.T.MAIN, "=?", order.getPkey());
+                Map<String, Object> map = irille.pub.bean.Query.sql(sql).queryMap();
+                if (map.size() > 0) {
+                    OrderMeetingOrder orderMeetingOrder = new OrderMeetingOrder();
+                    orderMeetingOrder.setOrderid(order.getPkey());
+                    orderMeetingOrder.setOrdermeetingid(Integer.valueOf(String.valueOf(irille.pub.bean.Query.sql(sql).queryMap().get(OrderMeetingProduct.T.ORDERMEETINGID.getFld().getCodeSqlField()))));
+                    orderMeetingOrder.setBillingstatus(Sys.OYn.YES.getLine().getKey());
+                    orderMeetingOrder.setWhetherToSend(Sys.OYn.NO.getLine().getKey());
+                    orderMeetingOrder.setPaymenttime(null);
+                    orderMeetingOrder.setBuyers(order.getPurchase());
+                    orderMeetingOrder.setPartner(order.getSupplier());
+                    orderMeetingOrder.setCreatedTime(Env.getSystemTime());
+                    orderMeetingOrder.ins();
+                    order.setType(Odr.OdrType.STATEONE.getLine().getKey());
+                    order.upd();
+                }
+            }
+        }
+
+        public String getOrderNumber() {
+            return orderNumber;
+        }
+
+        public void setOrderNumber(String orderNumber) {
+            this.orderNumber = orderNumber;
+        }
     }
 }

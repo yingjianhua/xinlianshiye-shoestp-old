@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 public class OrderGoodsView implements BaseView {
-    private Integer id;
+    private Integer id;//产品pkey
     private String image;//产品图片
     @JsonSerialize(using= I18NFieldSerializer.class)
     private String productName;//产品名称

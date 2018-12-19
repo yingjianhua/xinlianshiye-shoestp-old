@@ -13,6 +13,8 @@ import irille.Entity.OdrerMeetings.OrderMeetingAuditRelease;
 import irille.Service.Manage.OdrMeeting.IOdrMeetingManageService;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.pub.util.getValue;
+import irille.shop.usr.Usr;
+import irille.view.Manage.OdrMeeting.OdrMeetingAuditLogisticsView;
 import irille.view.Manage.OdrMeeting.OdrMeetingInfoView;
 import irille.view.Manage.OdrMeeting.Sale.OdrMeetingSaleInfoView;
 import irille.view.Manage.OdrMeeting.Sale.OdrMeetingSpecSaleInfoView;
@@ -155,6 +157,27 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
         return json;
     }
 
+    public JSONObject isAuthStatus() throws Exception {
+        JSONObject json = new JSONObject();
+        JSONArray ja = new JSONArray();
+        for (Usr.OIsAuth o : Usr.OIsAuth.values()) {
+            if (o.getLine().getKey() == 2) {
+                continue;
+            }
+            JSONObject lineJsona = new JSONObject();
+            lineJsona.put("name", o.getLine().getName());
+            lineJsona.put("id", o.getLine().getKey());
+            ja.put(lineJsona);
+        }
+        json.put("STORE_ROOT", ja);
+        return json;
+    }
+
+    @Override
+    public void updAudit(Integer omtId, Integer supplierId, String orderNumber, String remarks) {
+        orderMeetingAuditDao.updAudit(omtId, supplierId, orderNumber, remarks);
+    }
+
     @Override
     public JSONObject loadstate() throws Exception {
         JSONObject json = new JSONObject();
@@ -282,7 +305,6 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
         omt.setMailtel(lmv.getContactNumber());
         itt.setB(omt);
         itt.commit();
-        System.out.println(itt.getB().getPkey() + ">>>>>>>>>");
         OrderMeetingAuditReleaseDao.insertOdr omar = new OrderMeetingAuditReleaseDao.insertOdr();
         OrderMeetingAuditRelease omare = new OrderMeetingAuditRelease();
         omare.setOdrmeeting(itt.getB().getPkey());
@@ -291,6 +313,15 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
 
     @Override
     public Page cooperationsupplier(Integer start, Integer limit, Integer status, String name, Integer omtid) {
-        return orderMeetingAuditDao.cooperationsupplier(start,limit,status,name,omtid);
+        return orderMeetingAuditDao.cooperationsupplier(start, limit, status, name, omtid);
+    }
+
+    @Override
+    public void updLoadSupStatus(Integer id, Integer status) {
+        orderMeetingAuditDao.updLoadSupStatus(id, status);
+    }
+
+    public OdrMeetingAuditLogisticsView getLogistics(Integer omtId, Integer supplierId) {
+        return orderMeetingAuditDao.getLogistics(omtId, supplierId);
     }
 }

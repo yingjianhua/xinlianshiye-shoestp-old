@@ -7,6 +7,9 @@ import irille.pub.tb.Fld;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
 import irille.shop.odr.OdrOrder;
+import irille.shop.usr.UsrPurchase;
+import irille.shop.usr.UsrSupplier;
+
 import java.util.Date;
 
 /**
@@ -19,12 +22,15 @@ public class OrderMeetingOrder extends BeanInt<OrderMeetingOrder> {
 
   public enum T implements IEnumFld {
     PKEY(TB.crtIntPkey()),
-    ORDERMEETINGID(OrderMeeting.fldOutKey()),
-    ORDERID(OdrOrder.fldOutKey()),
+    ORDERMEETINGID(OrderMeeting.fldOutKey()),//订购会id
+    ORDERID(OdrOrder.fldOutKey()),//订单id
     PAYMENTTIME(SYS.DATE__NULL,"付款时间"),
     BILLINGSTATUS(TB.crt(Sys.OYn.DEFAULT)),//结算状态
-    CREATED_TIME(SYS.CREATED_DATE_TIME),
-    ROW_VERSION(SYS.ROW_VERSION),
+    WHETHER_TO_SEND(TB.crt(Sys.OYn.NO)),//是否发送
+    BUYERS(UsrPurchase.fldOutKey()),//采购商
+    PARTNER(UsrSupplier.fldOutKey()),//合作商
+    CREATED_TIME(SYS.CREATED_DATE_TIME),//更新时间
+    ROW_VERSION(SYS.ROW_VERSION),//版本
     //>>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
     //<<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
     ;
@@ -80,6 +86,11 @@ public class OrderMeetingOrder extends BeanInt<OrderMeetingOrder> {
   private Byte _billingstatus;	// 是否 <OYn>  BYTE
 	// YES:1,是
 	// NO:0,否
+  private Byte _whetherToSend;	// 是否 <OYn>  BYTE
+	// YES:1,是
+	// NO:0,否
+  private Integer _buyers;	// 采购商 <表主键:UsrPurchase>  INT
+  private Integer _partner;	// 供应商 <表主键:UsrSupplier>  INT
   private Date _createdTime;	// 建档时间  TIME
   private Short _rowVersion;	// 版本  SHORT
 
@@ -90,6 +101,9 @@ public class OrderMeetingOrder extends BeanInt<OrderMeetingOrder> {
     _orderid=null;	// 订单管理 <表主键:OdrOrder>  LONG
     _paymenttime=null;	// 付款时间  DATE
     _billingstatus= Sys.OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
+    _whetherToSend= Sys.OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
+    _buyers=null;	// 采购商 <表主键:UsrPurchase>  INT
+    _partner=null;	// 供应商 <表主键:UsrSupplier>  INT
     _createdTime=Env.getTranBeginTime();	// 建档时间  TIME
     _rowVersion=0;	// 版本  SHORT
     return this;
@@ -153,6 +167,52 @@ public class OrderMeetingOrder extends BeanInt<OrderMeetingOrder> {
   }
   public void stBillingstatus(Boolean billingstatus){
     _billingstatus=booleanToByte(billingstatus);
+  }
+  public Byte getWhetherToSend(){
+    return _whetherToSend;
+  }
+  public void setWhetherToSend(Byte whetherToSend){
+    _whetherToSend=whetherToSend;
+  }
+  public Boolean gtWhetherToSend(){
+    return byteToBoolean(_whetherToSend);
+  }
+  public void stWhetherToSend(Boolean whetherToSend){
+    _whetherToSend=booleanToByte(whetherToSend);
+  }
+  public Integer getBuyers(){
+    return _buyers;
+  }
+  public void setBuyers(Integer buyers){
+    _buyers=buyers;
+  }
+  public UsrPurchase gtBuyers(){
+    if(getBuyers()==null)
+      return null;
+    return (UsrPurchase)get(UsrPurchase.class,getBuyers());
+  }
+  public void stBuyers(UsrPurchase buyers){
+    if(buyers==null)
+      setBuyers(null);
+    else
+      setBuyers(buyers.getPkey());
+  }
+  public Integer getPartner(){
+    return _partner;
+  }
+  public void setPartner(Integer partner){
+    _partner=partner;
+  }
+  public UsrSupplier gtPartner(){
+    if(getPartner()==null)
+      return null;
+    return (UsrSupplier)get(UsrSupplier.class,getPartner());
+  }
+  public void stPartner(UsrSupplier partner){
+    if(partner==null)
+      setPartner(null);
+    else
+      setPartner(partner.getPkey());
   }
   public Date getCreatedTime(){
     return _createdTime;

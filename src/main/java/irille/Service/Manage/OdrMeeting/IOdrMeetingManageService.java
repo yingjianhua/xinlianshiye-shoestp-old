@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.inject.ImplementedBy;
 import irille.Entity.OdrerMeetings.OrderMeeting;
 import irille.Service.Manage.OdrMeeting.Imp.OdrMeetingManageServiceImp;
+import irille.view.Manage.OdrMeeting.OdrMeetingAuditLogisticsView;
 import irille.view.Manage.OdrMeeting.OdrMeetingInfoView;
 import irille.view.Manage.OdrMeeting.initiatedActivity.LaunchlistMeettingView;
 import irille.view.Manage.OdrMeeting.initiatedActivity.OrderInformationView;
@@ -144,5 +145,36 @@ public interface IOdrMeetingManageService {
     */
 
     void insOdrmeetting(LaunchlistMeettingView lmv);
+
+    /**
+     *@Description: 获取合作商列表
+     * 2018/12/12 14:15
+     *@anthor zjl
+     */
     Page cooperationsupplier(Integer start, Integer limit,Integer status ,String name,Integer omtid);
+    /**
+     *@Description: 审核合作商(修改状态)
+     * 2018/12/12 14:25
+     *@anthor zjl
+     */
+    void updLoadSupStatus(Integer id,Integer status);
+    /**
+     * @Description: 获取合作商是否认证状态
+     * @date 2018/12/12 14:46
+     * @anthor zjl
+     */
+    JSONObject isAuthStatus() throws Exception;
+    /**
+     * @Description: 合作商发送样品(更新信息)
+     * @date 2018/12/13 10:56
+     * @anthor zjl
+     */
+    void updAudit(Integer omtId,Integer supplierId,String orderNumber,String remarks);
+
+    /**
+     * @Description: 获取合作商样品发送物流信息
+     * @date 2018/12/14 9:51
+     * @anthor zjl
+     */
+    OdrMeetingAuditLogisticsView getLogistics(Integer omtId, Integer supplierId);
 }

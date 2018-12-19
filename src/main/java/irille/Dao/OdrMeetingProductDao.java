@@ -5,6 +5,7 @@ import irille.Entity.OdrerMeetings.OrderMeeting;
 import irille.Entity.OdrerMeetings.OrderMeeting.T;
 import irille.Entity.OdrerMeetings.OrderMeetingOrder;
 import irille.Entity.OdrerMeetings.OrderMeetingProduct;
+import irille.core.sys.Sys;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
@@ -12,7 +13,9 @@ import irille.pub.bean.sql.SQL;
 import irille.pub.svr.Env;
 import irille.pub.tb.FldLanguage;
 import irille.pub.util.TranslateLanguage.translateUtil;
+import irille.shop.odr.Odr;
 import irille.shop.odr.OdrOrder;
+import irille.shop.odr.OdrOrderDAO;
 import irille.shop.odr.OdrOrderLine;
 import irille.shop.pdt.*;
 import irille.view.Manage.OdrMeeting.Sale.ColorView;
@@ -23,10 +26,8 @@ import irille.view.Manage.OdrMeeting.initiatedActivity.OrderGoodsView;
 import irille.view.Page;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -53,53 +54,107 @@ public class OdrMeetingProductDao {
         return query.queryCount() > 0;
     }
 
-    public Page getOrderGoodsList(Integer start, Integer limit, Integer id, Integer status, String inputContent, Integer supplierId) {
+    public Page getOrderGoodsList(Integer start, Integer limit, Integer id, Integer status, String inputContent, Integer supplierId, Integer supplier) {
+        SQL mop = new SQL() {
+            {
+                SELECT(OrderMeetingProduct.class)
+                        .FROM(OrderMeetingProduct.class)
+                        .WHERE(OrderMeetingProduct.T.ORDERMEETINGID, "=?", id)
+                        .WHERE(T.SUPPLIERID, "=?", supplierId)
+                        .LEFT_JOIN(OrderMeeting.class, T.PKEY, OrderMeetingProduct.T.ORDERMEETINGID);
+            }
+        };
         if (start == null) {
             start = 0;
         }
         if (limit == null) {
             limit = 10;
         }
-        SQL sql = new SQL() {
-            {
-                SELECT(OrderMeetingProduct.T.PKEY, PdtProduct.T.NAME, PdtProduct.T.PICTURE)
-                        .SELECT(OrderMeetingProduct.T.SUPPLIERID, "productSupplier")
-                        .SELECT(OrderMeeting.T.SUPPLIERID,
-                                OrderMeetingProduct.T.PRICE,
-                                OrderMeetingProduct.T.MOQ,
-                                OrderMeetingProduct.T.NEWMOQ,
-                                OrderMeetingProduct.T.NEWPRICE,
-                                OrderMeetingProduct.T.TARGET_COUNT,
-                                OrderMeetingProduct.T.STATUS,
-                                OrderMeetingProduct.T.BILLINGSTATUS)
-                        .FROM(OrderMeetingProduct.class)
-                        .LEFT_JOIN(PdtProduct.class, PdtProduct.T.PKEY, OrderMeetingProduct.T.PRODUCTID)
-                        .LEFT_JOIN(OrderMeeting.class, T.PKEY, OrderMeetingProduct.T.ORDERMEETINGID)
-                        .WHERE(OrderMeeting.T.PKEY, "=?", id)
-                        .WHERE(OrderMeetingProduct.T.STATUS, "<>?", OrderMeetingProductStatus.IRREGULARITIESDELETE.getLine().getKey())
-                        .WHERE(OrderMeetingProduct.T.STATUS, "<>?", OrderMeetingProductStatus.DELETE.getLine().getKey());
-                if (supplierId != null) {
-                    WHERE(OrderMeetingProduct.T.SUPPLIERID, "=?", supplierId);
-                }
-                if (inputContent != null) {
-                    WHERE(PdtProduct.T.NAME, "like'%" + inputContent + "%'");
-                }
-                switch (status) {
-                    case 1: {
-                        WHERE(OrderMeeting.T.SUPPLIERID, "=", OrderMeetingProduct.T.SUPPLIERID);
-                        break;
+        SQL sql;
+        if (Query.sql(mop).query(OrderMeetingProduct.class) != null) {
+            sql = new SQL() {
+                {
+                    SELECT(OrderMeetingProduct.T.PRODUCTID,
+                            PdtProduct.T.PICTURE,
+                            PdtProduct.T.NAME,
+                            OrderMeetingProduct.T.BILLINGSTATUS,
+                            OrderMeetingProduct.T.PRICE,
+                            OrderMeetingProduct.T.MOQ,
+                            OrderMeetingProduct.T.NEWPRICE,
+                            OrderMeetingProduct.T.NEWMOQ,
+                            OrderMeetingProduct.T.TARGET_COUNT,
+                            OrderMeetingProduct.T.STATUS)
+                            .FROM(OrderMeetingProduct.class)
+                            .LEFT_JOIN(PdtProduct.class, PdtProduct.T.PKEY, OrderMeetingProduct.T.PRODUCTID)
+                            .LEFT_JOIN(OrderMeeting.class, T.PKEY, OrderMeetingProduct.T.ORDERMEETINGID)
+                            .WHERE(OrderMeeting.T.PKEY, "=?", id)
+                            .WHERE(OrderMeetingProduct.T.STATUS, "<>?", OrderMeetingProductStatus.IRREGULARITIESDELETE.getLine().getKey())
+                            .WHERE(OrderMeetingProduct.T.STATUS, "<>?", OrderMeetingProductStatus.DELETE.getLine().getKey());
+                    if (supplier != null) {
+                        WHERE(OrderMeetingProduct.T.SUPPLIERID, "=?", supplier);
                     }
-                    case 2: {
-                        WHERE(OrderMeeting.T.SUPPLIERID, "<>", OrderMeetingProduct.T.SUPPLIERID);
-                        break;
+                    if (inputContent != null) {
+                        WHERE(PdtProduct.T.NAME, "like'%" + inputContent + "%'");
+                    }
+                    if (status != null) {
+                        switch (status) {
+                            case 1: {
+                                WHERE(OrderMeeting.T.SUPPLIERID, "=", OrderMeetingProduct.T.SUPPLIERID);
+                                break;
+                            }
+                            case 2: {
+                                WHERE(OrderMeeting.T.SUPPLIERID, "<>", OrderMeetingProduct.T.SUPPLIERID);
+                                break;
+                            }
+                        }
                     }
                 }
-            }
-        };
+            };
+        } else {
+            sql = new SQL() {
+                {
+                    SELECT(OrderMeetingProduct.T.PRODUCTID,
+                            PdtProduct.T.PICTURE,
+                            PdtProduct.T.NAME,
+                            OrderMeetingProduct.T.BILLINGSTATUS,
+                            OrderMeetingProduct.T.PRICE,
+                            OrderMeetingProduct.T.MOQ,
+                            OrderMeetingProduct.T.NEWPRICE,
+                            OrderMeetingProduct.T.NEWMOQ,
+                            OrderMeetingProduct.T.TARGET_COUNT,
+                            OrderMeetingProduct.T.STATUS)
+                            .FROM(OrderMeetingProduct.class)
+                            .LEFT_JOIN(PdtProduct.class, PdtProduct.T.PKEY, OrderMeetingProduct.T.PRODUCTID)
+                            .LEFT_JOIN(OrderMeeting.class, T.PKEY, OrderMeetingProduct.T.ORDERMEETINGID)
+                            .WHERE(OrderMeeting.T.PKEY, "=?", id)
+                            .WHERE(OrderMeetingProduct.T.STATUS, "<>?", OrderMeetingProductStatus.IRREGULARITIESDELETE.getLine().getKey())
+                            .WHERE(OrderMeetingProduct.T.STATUS, "<>?", OrderMeetingProductStatus.DELETE.getLine().getKey());
+                    if (supplierId != null) {
+                        WHERE(OrderMeetingProduct.T.SUPPLIERID, "=?", supplierId);
+                    }
+                    if (inputContent != null) {
+                        WHERE(PdtProduct.T.NAME, "like'%" + inputContent + "%'");
+                    }
+                    if (status != null) {
+                        switch (status) {
+                            case 1: {
+                                WHERE(OrderMeeting.T.SUPPLIERID, "=", OrderMeetingProduct.T.SUPPLIERID);
+                                break;
+                            }
+                            case 2: {
+                                WHERE(OrderMeeting.T.SUPPLIERID, "<>", OrderMeetingProduct.T.SUPPLIERID);
+                                break;
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
         Integer count = Query.sql(sql).queryCount();
         List<OrderGoodsView> viewList = Query.sql(sql).limit(start, limit).queryMaps().stream().map(o -> {
             OrderGoodsView view = new OrderGoodsView();
-            view.setId((Integer) o.get(OrderMeetingProduct.T.PKEY.getFld().getCodeSqlField()));
+            view.setId(Integer.valueOf(String.valueOf(o.get(OrderMeetingProduct.T.PRODUCTID.getFld().getCodeSqlField()))));
             if (o.get(PdtProduct.T.PICTURE.getFld().getCodeSqlField()) != null || o.get(PdtProduct.T.PICTURE.getFld().getCodeSqlField()) != "") {
                 view.setImage(String.valueOf(o.get(PdtProduct.T.PICTURE.getFld().getCodeSqlField())).split(",")[0]);
             }
@@ -122,7 +177,14 @@ public class OdrMeetingProductDao {
     }
 
     public void updateStatus(Integer id) {
-        OrderMeetingProduct order = BeanBase.load(OrderMeetingProduct.class, id);
+        SQL sql = new SQL(){
+            {
+                SELECT(OrderMeetingProduct.class)
+                        .FROM(OrderMeetingProduct.class)
+                        .WHERE(OrderMeetingProduct.T.PRODUCTID,"=?",id);
+            }
+        };
+        OrderMeetingProduct order = Query.sql(sql).query(OrderMeetingProduct.class);
         if (order.getStatus() == 0) {
             order.setStatus(OrderMeetingProductStatus.ON.getLine().getKey());
         } else {
@@ -133,7 +195,14 @@ public class OdrMeetingProductDao {
     }
 
     public void removePorduct(Integer id) {
-        OrderMeetingProduct mo = BeanBase.load(OrderMeetingProduct.class, id);
+        SQL sql = new SQL(){
+            {
+                SELECT(OrderMeetingProduct.class)
+                        .FROM(OrderMeetingProduct.class)
+                        .WHERE(OrderMeetingProduct.T.PRODUCTID,"=?",id);
+            }
+        };
+        OrderMeetingProduct mo = Query.sql(sql).query(OrderMeetingProduct.class);
         mo.setStatus(OrderMeetingProductStatus.DELETE.getLine().getKey());
         mo.setUpdatedTime(Env.getTranBeginTime());
         mo.upd();
@@ -198,8 +267,12 @@ public class OdrMeetingProductDao {
         return listView;
     }
 
-    public List getAddedProducts(Integer id) {
-        List<OrderMeetingProduct> list = BeanBase.list(OrderMeetingProduct.class, OrderMeetingProduct.T.ORDERMEETINGID + "=" + id, false);
+    public List getAddedProducts(Integer id, Integer supplierId) {
+        List<OrderMeetingProduct> list = BeanBase.list(OrderMeetingProduct.class,
+                OrderMeetingProduct.T.ORDERMEETINGID + "=" + id
+                        + " AND " + OrderMeetingProduct.T.STATUS + "<>" + OrderMeetingProductStatus.DELETE.getLine().getKey()
+                        + " AND " + OrderMeetingProduct.T.SUPPLIERID + "=" + supplierId,
+                false);
         List view = new ArrayList();
         for (OrderMeetingProduct orderMeetingProduct : list) {
             view.add(orderMeetingProduct.getProductid());
@@ -222,49 +295,84 @@ public class OdrMeetingProductDao {
     }
 
     public void addProducts(Integer id, Integer pkey, List<AllProductsView> list) {
-        for (AllProductsView allProductsView : list) {
+//        SQL mop = new SQL() {
+//            {
+//                SELECT(OrderMeetingProduct.class)
+//                        .FROM(OrderMeetingProduct.class)
+//                        .WHERE(OrderMeetingProduct.T.ORDERMEETINGID, "=?", id)
+//                        .WHERE(T.SUPPLIERID, "=?", pkey)
+//                        .LEFT_JOIN(OrderMeeting.class, T.PKEY, OrderMeetingProduct.T.ORDERMEETINGID);
+//            }
+//        };
+        SQL mop = new SQL() {
+            {
+                SELECT(OrderMeeting.class)
+                        .FROM(OrderMeeting.class)
+                        .WHERE(T.PKEY, "=?", id)
+                        .WHERE(T.SUPPLIERID, "=?", pkey);
+            }
+        };
+        if (list.size() > 0) {
+            for (AllProductsView allProductsView : list) {
+                SQL sql = new SQL() {
+                    {
+                        SELECT(OrderMeetingProduct.class)
+                                .SELECT(T.SUPPLIERID)
+                                .FROM(OrderMeetingProduct.class).
+                                WHERE(OrderMeetingProduct.T.PRODUCTID, "=?", allProductsView.getId()).
+                                WHERE(OrderMeetingProduct.T.ORDERMEETINGID, "=?", id).
+                                LEFT_JOIN(OrderMeeting.class, T.PKEY, OrderMeetingProduct.T.ORDERMEETINGID);
+                    }
+                };
+                OrderMeetingProduct o = Query.sql(sql).query(OrderMeetingProduct.class);
+                if (o != null) {
+                    o.setMoq(allProductsView.getOldMoq());
+                    o.setPrice(allProductsView.getOldPrice());
+                    o.setNewmoq(allProductsView.getMoq());
+                    o.setNewprice(allProductsView.getNewPrice());
+                    o.setTargetCount(allProductsView.getAims());
+                    o.setStatus(OrderMeetingProductStatus.ON.getLine().getKey());
+                    o.setUpdatedTime(Env.getTranBeginTime());
+                    if (Query.sql(mop).query(OrderMeetingProduct.class) != null) {
+                        o.setBillingstatus(OrderMeetingProductStatus.OWN.getLine().getKey());
+                    } else {
+                        o.setBillingstatus(OrderMeetingProductStatus.PARTNER.getLine().getKey());
+                    }
+                    o.upd();
+                } else {
+                    o = new OrderMeetingProduct();
+                    o.setOrdermeetingid(id);
+                    o.setSupplierid(pkey);
+                    o.setProductid(allProductsView.getId());
+                    o.setMoq(allProductsView.getOldMoq());
+                    o.setPrice(allProductsView.getOldPrice());
+                    o.setNewmoq(allProductsView.getMoq());
+                    o.setNewprice(allProductsView.getNewPrice());
+                    o.setTargetCount(allProductsView.getAims());
+                    o.setStatus(OrderMeetingProductStatus.ON.getLine().getKey());
+                    o.setUpdatedTime(Env.getTranBeginTime());
+                    if (Query.sql(mop).queryMaps().size()>0) {
+                        o.setBillingstatus(OrderMeetingProductStatus.OWN.getLine().getKey());
+                    } else {
+                        o.setBillingstatus(OrderMeetingProductStatus.PARTNER.getLine().getKey());
+                    }
+                    o.ins();
+                }
+            }
+        } else {
             SQL sql = new SQL() {
                 {
                     SELECT(OrderMeetingProduct.class)
-                            .SELECT(T.SUPPLIERID)
-                            .FROM(OrderMeetingProduct.class).
-                            WHERE(OrderMeetingProduct.T.PRODUCTID, "=?", allProductsView.getId()).
-                            WHERE(OrderMeetingProduct.T.ORDERMEETINGID, "=?", id).
-                            LEFT_JOIN(OrderMeeting.class, T.PKEY, OrderMeetingProduct.T.ORDERMEETINGID);
+                            .FROM(OrderMeetingProduct.class)
+                            .WHERE(OrderMeetingProduct.T.STATUS, "<>?", OrderMeetingProductStatus.DELETE.getLine().getKey())
+                            .WHERE(OrderMeetingProduct.T.SUPPLIERID, "=?", pkey)
+                            .WHERE(OrderMeetingProduct.T.ORDERMEETINGID, "=?", id);
                 }
             };
-            OrderMeetingProduct o = Query.sql(sql).query(OrderMeetingProduct.class);
-            if (o != null) {
-                o.setMoq(allProductsView.getOldMoq());
-                o.setPrice(allProductsView.getOldPrice());
-                o.setNewmoq(allProductsView.getMoq());
-                o.setNewprice(allProductsView.getNewPrice());
-                o.setTargetCount(allProductsView.getAims());
-                o.setUpdatedTime(Env.getTranBeginTime());
-                if (Integer.valueOf(String.valueOf(o.getBillingstatus())) == pkey) {
-                    o.setBillingstatus(OrderMeetingProductStatus.OWN.getLine().getKey());
-                } else {
-                    o.setBillingstatus(OrderMeetingProductStatus.PARTNER.getLine().getKey());
-                }
-                o.upd();
-            } else {
-                o = new OrderMeetingProduct();
-                o.setOrdermeetingid(id);
-                o.setSupplierid(pkey);
-                o.setProductid(allProductsView.getId());
-                o.setMoq(allProductsView.getOldMoq());
-                o.setPrice(allProductsView.getOldPrice());
-                o.setNewmoq(allProductsView.getMoq());
-                o.setNewprice(allProductsView.getNewPrice());
-                o.setTargetCount(allProductsView.getAims());
-                o.setStatus(OrderMeetingProductStatus.ON.getLine().getKey());
-                o.setUpdatedTime(Env.getTranBeginTime());
-                if (Integer.valueOf(String.valueOf(o.getBillingstatus())) == pkey) {
-                    o.setBillingstatus(OrderMeetingProductStatus.OWN.getLine().getKey());
-                } else {
-                    o.setBillingstatus(OrderMeetingProductStatus.PARTNER.getLine().getKey());
-                }
-                o.ins();
+            List<OrderMeetingProduct> listomp = Query.sql(sql).queryList(OrderMeetingProduct.class);
+            for (OrderMeetingProduct orderMeetingProduct : listomp) {
+                orderMeetingProduct.setStatus(OrderMeetingProductStatus.DELETE.getLine().getKey());
+                orderMeetingProduct.upd();
             }
         }
     }
@@ -274,163 +382,171 @@ public class OdrMeetingProductDao {
      * @date 2018/12/3 15:25
      * @anthor wilson zhang
      */
+    private boolean isOmt(Integer omtId,Integer supplier){
+        StringBuilder sb = new StringBuilder();
+        SQL sql = new SQL();
+        sb.append("SELECT *\n" +
+                "FROM order_meeting orderMeeting\n" +
+                "WHERE orderMeeting.pkey = "+omtId+" \n" +
+                "AND orderMeeting.supplierid = "+supplier+"");
+        sql.SELECT(sb.toString());
+        if(Query.sql(sql).queryCount()>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public Page salesDetailslist(Integer start, Integer limit, Integer id, String input, Integer status, Integer productId, Integer supplierId) {
+        SQL sql = new SQL();
+        StringBuilder sb = new StringBuilder();
+        sb.append("MeetingProduct.price AS price,\n" +
+                "\tMeetingProduct.STATUS AS STATUS,\n" +
+                "\tMeetingProduct.billingstatus AS billingstatus,\n" +
+                "\tProduct.picture AS picture,\n" +
+                "\tProduct.NAME AS NAME,\n" +
+                "\tProduct.pkey AS productPkey,\n" +
+                "\torderMeeting.`status` AS omtStatus,\n" +
+                "\ttotalQty.qty,\n" +
+                "\t(\n" +
+                "SELECT\n" +
+                "\tcount( * ) \n" +
+                "FROM\n" +
+                "\todr_order_line OrderLine\n" +
+                "\tLEFT JOIN odr_order OdrOrder ON OdrOrder.pkey = OrderLine.main\n" +
+                "\tLEFT JOIN pdt_spec PdtSpec ON PdtSpec.pkey = OrderLine.spec \n" +
+                "WHERE\n" +
+                "\tPdtSpec.product = productPkey \n" +
+                "GROUP BY\n" +
+                "\tOdrOrder.purchase \n" +
+                "\t) AS person,\n" +
+                "\ttotalAmt.amt \n" +
+                "FROM\n" +
+                "\torder_meeting_product MeetingProduct\n" +
+                "\tLEFT JOIN pdt_product Product ON Product.pkey = MeetingProduct.productid\n" +
+                "\tLEFT JOIN order_meeting orderMeeting ON MeetingProduct.ordermeetingid\n" +
+                "\tLEFT JOIN (\n" +
+                "SELECT\n" +
+                "\tPdtSpec.product AS productid,\n" +
+                "\tsum( OrderLine.qty ) AS qty \n" +
+                "FROM\n" +
+                "\todr_order_line OrderLine\n" +
+                "\tLEFT JOIN pdt_spec PdtSpec ON PdtSpec.pkey = OrderLine.spec \n" +
+                "GROUP BY\n" +
+                "\tPdtSpec.product \n" +
+                "\t) totalQty ON totalQty.productid = Product.pkey\n" +
+                "\tLEFT JOIN (\n" +
+                "SELECT\n" +
+                "\tPdtSpec.product AS productid,\n" +
+                "\tsum( OrderLine.subtotal ) AS amt \n" +
+                "FROM\n" +
+                "\todr_order_line OrderLine\n" +
+                "\tLEFT JOIN pdt_spec PdtSpec ON PdtSpec.pkey = OrderLine.spec \n" +
+                "GROUP BY\n" +
+                "\tPdtSpec.product \n" +
+                "\t) totalAmt ON totalAmt.productid = Product.pkey \n" +
+                "WHERE\n" +
+                "\tMeetingProduct.ordermeetingid = "+id+ "\n" +
+                "\tAND totalQty.qty is not null");
+        if (productId != null) {
+            sb.append(" AND MeetingProduct.productid=" + productId + "");
+        }
+        if(input!=null){
+            sb.append(" AND Product.NAME like '%"+input+"%'");
+        }
+        if (status != null) {
+            sb.append(" AND MeetingProduct.billingstatus=" + status + "");
+        }
+        if(!isOmt(id,supplierId)){
+            sb.append(" AND MeetingProduct.supplierid="+supplierId+"");
 
-    public Page salesDetailslist(Integer start, Integer limit, Integer id, String input, Integer status, FldLanguage.Language lang, Integer supplierId) {
-        SQL subSql = new SQL() {{
-            SELECT(PdtProduct.T.PICTURE, "image")
-                    .SELECT(PdtProduct.T.PKEY,"pkey")
-                    .SELECT(PdtProduct.T.NAME, "name")
-                    .SELECT(OrderMeetingProduct.T.NEWPRICE, "orderPrice")
-                    .SELECT(OrderMeetingProduct.T.STATUS, "status")
-                    .SELECT(T.STATUS, "activeStatus")
-                    .SELECT(OrderMeetingProduct.T.BILLINGSTATUS, "billingStatus")
-                    .SELECT(PdtColor.T.NAME, "colorName")
-                    .SELECT(PdtSize.T.NAME, "sizeName")
-                    .SELECT(PdtSpec.T.PICS, "normImage")
-                    .SELECT("SUM(" + OdrOrderLine.T.QTY + ") as normQuantity")
-                    .SELECT("SUM(" + OdrOrder.T.PRICE_TOTAL + ") as normTotalAmount")
-                    .SELECT(OdrOrderLine.T.SPEC, "specId")
-                    .FROM(OrderMeeting.class)
-                    .LEFT_JOIN(OrderMeetingProduct.class, OrderMeetingProduct.T.ORDERMEETINGID, T.PKEY)
-                    .LEFT_JOIN(PdtProduct.class, PdtProduct.T.PKEY, OrderMeetingProduct.T.PRODUCTID)
-                    .LEFT_JOIN(OrderMeetingOrder.class, OrderMeetingOrder.T.ORDERMEETINGID, T.PKEY)
-                    .LEFT_JOIN(OdrOrder.class, OdrOrder.T.PKEY, OrderMeetingOrder.T.ORDERID)
-                    .LEFT_JOIN(OdrOrderLine.class, OdrOrderLine.T.MAIN, OdrOrder.T.PKEY)
-                    .LEFT_JOIN(PdtSpec.class, PdtSpec.T.PKEY, OdrOrderLine.T.SPEC)
-                    .LEFT_JOIN(PdtColor.class, PdtColor.T.PKEY, PdtSpec.T.COLOR)
-                    .LEFT_JOIN(PdtSize.class, PdtSize.T.PKEY, PdtSpec.T.SIZE)
-                    .WHERE(T.PKEY, "=?", id)
-                    .WHERE(OdrOrder.T.TYPE, "=1")
-                    .WHERE(OdrOrder.T.STATE, "=5");
-            if (status != null) {
-                WHERE(OrderMeetingProduct.T.BILLINGSTATUS, "=?", status);
-            }
-            if (input != null) {
-                WHERE(PdtProduct.T.NAME, "like '%" + input + "%'");
-            }
+        }
 
-        }};
-        SQL sql1 = new SQL() {
+        sql.SELECT(sb.toString());
+
+        SQL productSpec = new SQL() {
             {
-                SELECT("COUNT(" + OdrOrder.T.PURCHASE.getFld().getCodeSqlField() + ")")
+                SELECT("SUM(" + OdrOrderLine.T.QTY + ")", "qty")//数量
+                        .SELECT("SUM(" + OdrOrderLine.T.SUBTOTAL + ")", "subTotal")//总金额
+                        .SELECT(OdrOrderLine.T.MAIN, "orderPkey")//订单pkey
+                        .SELECT(PdtColor.T.PKEY, "colorPkey")//颜色pkey
+                        .SELECT(PdtColor.T.NAME, "colorName")//颜色名称
+                        .SELECT(PdtSize.T.NAME, "sizeName")//尺寸名称
+                        .SELECT(PdtSpec.T.PRODUCT, "productId")
+                        .SELECT(PdtSpec.T.PICS);//颜色图片
+                SQL sql = new SQL() {
+                    {
+                        SELECT("COUNT(*)")
+                                .FROM(OrderMeetingOrder.class)
+                                .WHERE(OrderMeetingOrder.T.ORDERID, "=?", "orderPkey")
+                                .GROUP_BY(OrderMeetingOrder.T.BUYERS);
+                    }
+                };
+                SELECT(sql, "person")
                         .FROM(OdrOrderLine.class)
-                        .LEFT_JOIN(OdrOrder.class, OdrOrder.T.PKEY, OdrOrderLine.T.MAIN)
-                        .LEFT_JOIN(OrderMeetingOrder.class, OrderMeetingOrder.T.ORDERID, OdrOrder.T.PKEY)
-                        .WHERE(OrderMeetingOrder.T.ORDERMEETINGID, "= " + id)
-                        .WHERE(OdrOrder.T.TYPE, "=1")
-                        .WHERE(OdrOrder.T.STATE, "=5")
-                        .GROUP_BY(OdrOrderLine.T.SPEC)
-                        .HAVING(OdrOrderLine.class.getSimpleName() + "." + OdrOrderLine.T.SPEC.getFld().getCodeSqlField() + " = specId");//, "person"
-            }
-        };
-        SQL sql = new SQL() {
-            {
-                SELECT(PdtProduct.T.PICTURE, "image")
-                        .SELECT(PdtProduct.T.PKEY,"pkey")
-                        .SELECT(PdtProduct.T.NAME, "name")
-                        .SELECT(OrderMeetingProduct.T.NEWPRICE, "orderPrice")
-                        .SELECT(OrderMeetingProduct.T.STATUS, "status")
-                        .SELECT(T.STATUS, "activeStatus")
-                        .SELECT(OrderMeetingProduct.T.BILLINGSTATUS, "billingStatus")
-                        .SELECT(PdtColor.T.NAME, "colorName")
-                        .SELECT(PdtSize.T.NAME, "sizeName")
-                        .SELECT("SUM(" + OdrOrderLine.T.QTY + ") as normQuantity")
-                        .SELECT("SUM(" + OdrOrder.T.PRICE_TOTAL + ") as normTotalAmount")
-                        .SELECT(OdrOrderLine.T.SPEC, "specId")
-                        .SELECT(PdtSpec.T.PICS, "normImage")
-                        .SELECT(sql1, "person")
-                        .FROM(OrderMeeting.class)
-                        .LEFT_JOIN(OrderMeetingProduct.class, OrderMeetingProduct.T.ORDERMEETINGID, T.PKEY)
-                        .LEFT_JOIN(PdtProduct.class, PdtProduct.T.PKEY, OrderMeetingProduct.T.PRODUCTID)
-                        .LEFT_JOIN(OrderMeetingOrder.class, OrderMeetingOrder.T.ORDERMEETINGID, T.PKEY)
-                        .LEFT_JOIN(OdrOrder.class, OdrOrder.T.PKEY, OrderMeetingOrder.T.ORDERID)
-                        .LEFT_JOIN(OdrOrderLine.class, OdrOrderLine.T.MAIN, OdrOrder.T.PKEY)
+                        .LEFT_JOIN(OrderMeetingOrder.class, OrderMeetingOrder.T.ORDERID, OdrOrderLine.T.MAIN)
                         .LEFT_JOIN(PdtSpec.class, PdtSpec.T.PKEY, OdrOrderLine.T.SPEC)
                         .LEFT_JOIN(PdtColor.class, PdtColor.T.PKEY, PdtSpec.T.COLOR)
                         .LEFT_JOIN(PdtSize.class, PdtSize.T.PKEY, PdtSpec.T.SIZE)
-                        .WHERE(T.PKEY, "=?", id)
-                        .WHERE(OdrOrder.T.TYPE, "=1")
-                        .WHERE(OdrOrder.T.STATE, "=5");
-                if (status != null) {
-                    WHERE(OrderMeetingProduct.T.BILLINGSTATUS, "=?", status);
-                    if (status == 5) {
-                        WHERE(T.SUPPLIERID, "<>?", supplierId);
-                    } else {
-                        WHERE(T.SUPPLIERID, "=?", supplierId);
-                    }
-
-                }
-                if (input != null) {
-                    WHERE(PdtProduct.T.NAME, "like%" + input + "%");
-                }
+                        .WHERE(OrderMeetingOrder.T.ORDERMEETINGID, "=?", id)
+                        .WHERE(OrderMeetingOrder.T.BILLINGSTATUS, "=?", Sys.OYn.YES.getLine().getKey())
+                        .GROUP_BY(OdrOrderLine.T.SPEC);
             }
         };
-        Integer count = Query.sql(subSql).queryCount();
-        List<OdrSalesDetailsView> listView = Query.sql(sql).queryMaps().stream().map(o -> {
-            OdrSalesDetailsView view = new OdrSalesDetailsView();
-            Map<String, ColorView> map = new HashMap<>();
-            ColorView colorView = new ColorView();
-            SizeView sizeView = new SizeView();
-            view.setPkey(Integer.valueOf(String.valueOf(o.get("pkey"))));
-            if (o.get("image") != null) {
-                view.setImage(String.valueOf(o.get("image")).split(",")[0]);
+        Integer country = Query.sql(sql).queryMaps().size();
+        List<OdrSalesDetailsView> listSalDetils = Query.sql(sql).queryMaps().stream().map(o -> {
+            OdrSalesDetailsView salesDetails = new OdrSalesDetailsView();//产品
+            salesDetails.setQty(Integer.valueOf(String.valueOf(o.get("qty"))));//数量
+            salesDetails.setPersons(Integer.valueOf(String.valueOf(o.get("person"))));//人数
+            salesDetails.setSubTotal(BigDecimal.valueOf(Double.valueOf(String.valueOf(o.get("amt")))));//总金额
+            salesDetails.setPkey(Integer.valueOf(String.valueOf(o.get("productPkey"))));//产品pkey
+            salesDetails.setProductName(String.valueOf(o.get("NAME")));//产品名称
+            if (o.get("picture") != null) {
+                salesDetails.setProductImage(String.valueOf(o.get("picture")).split(",")[0]);//产品图片
             }
-            view.setName(String.valueOf(o.get("name")));
-            if (o.get("orderPrice") != null) {
-                view.setOrderPrice(BigDecimal.valueOf(Double.valueOf(String.valueOf(o.get("orderPrice")))));
-            }
-            if (o.get("status") != null) {
-                view.setStatus(Byte.valueOf(String.valueOf(o.get("status"))));
-            }
-            if (o.get("activeStatus") != null) {
-                view.setActiveStatus(Byte.valueOf(String.valueOf(o.get("activeStatus"))));
-            }
-            if (o.get("billingStatus") != null) {
-                view.setBillingStatus(Byte.valueOf(String.valueOf(o.get("billingStatus"))));
-            }
+            salesDetails.setBillingStatus(Integer.valueOf(String.valueOf(o.get("billingstatus"))));//自有/合作商状态
+            salesDetails.setMeetingPrice(BigDecimal.valueOf(Double.valueOf(String.valueOf(o.get("price")))));//订购会价
+            salesDetails.setStatus(Integer.valueOf(String.valueOf(o.get("STATUS"))));//上下架状态
+            salesDetails.setActiveSatatus(Integer.valueOf(String.valueOf(o.get("omtStatus"))));//活动状态
 
-            colorView.setColor(translateUtil.getLanguage(o.get("colorName"), lang));
-            if (o.get("normImage") != null) {
-                colorView.setImage(String.valueOf(o.get("normImage")).split(",")[0]);
-            }
-            sizeView.setSize(translateUtil.getLanguage(o.get("sizeName"), lang));
-            if (o.get("orderPrice") != null) {
-                sizeView.setNormOrderPrice(BigDecimal.valueOf(Double.valueOf(String.valueOf(o.get("orderPrice")))));
-            }
-            if (o.get("normQuantity") != null) {
-                sizeView.setNormQuantity(Integer.valueOf(Double.valueOf(String.valueOf(o.get("normQuantity"))).intValue()));
-//            } else {
-//                sizeView.setNormQuantity(0);
-            }
-            if (o.get("person") != null) {
-                sizeView.setPurchaseNumber(Integer.valueOf(String.valueOf(o.get("person"))));
-//            } else {
-//                sizeView.setPurchaseNumber(0);
-            }
-            if (o.get("normQuantity") != null) {
-                sizeView.setNormTotalAmount(BigDecimal.valueOf(Double.valueOf(String.valueOf(o.get("normTotalAmount")))));
-//            } else {
-//                sizeView.setNormTotalAmount(new BigDecimal(0));
-            }
+            List<ColorView> colorList = Query.sql(productSpec).queryMaps().stream().filter(new Predicate<Map<String, Object>>() {
+                @Override
+                public boolean test(Map<String, Object> stringObjectMap) {
+                    if (Integer.valueOf(String.valueOf(stringObjectMap.get("productId"))).equals(Integer.valueOf(String.valueOf(o.get("productPkey"))))) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }).map(p -> {
+                ColorView color = new ColorView();
+                color.setColor(String.valueOf(p.get("colorName")));
+                if (p.get(PdtSpec.T.PICS.getFld().getCodeSqlField()) != null) {
+                    color.setImage(String.valueOf(p.get(PdtSpec.T.PICS.getFld().getCodeSqlField())).split(",")[0]);//产品图片
+                }
+                color.setProductId(Integer.valueOf(String.valueOf(p.get("productId"))));
+                List<SizeView> sizeList = Query.sql(productSpec).queryMaps().stream().filter(new Predicate<Map<String, Object>>() {
+                    @Override
+                    public boolean test(Map<String, Object> stringObjectMap) {
+                        if (Integer.valueOf(String.valueOf(stringObjectMap.get("productId"))).intValue() == Integer.valueOf(String.valueOf(o.get("productPkey"))).intValue()) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                }).map(s -> {
+                    SizeView size = new SizeView();
+                    size.setSizeName(String.valueOf(s.get("sizeName")));
+                    size.setSpecQuantity(Integer.valueOf(String.valueOf(s.get("qty"))));
+                    size.setSubToat(BigDecimal.valueOf(Double.valueOf(String.valueOf(s.get("subTotal")))));
+                    return size;
 
-            if (colorView.getColor() == null && colorView.getImage() == null && colorView.getSize() == null) {
-                return null;
-            } else {
-                colorView.setSize(sizeView);
-                map.put("color", colorView);
-                view.setSpecification(map);
-                return view;
-            }
+                }).collect(Collectors.toList());
+                color.setSize(sizeList);
+                return color;
+            }).collect(Collectors.toList());
+            salesDetails.setColor(colorList);
+            return salesDetails;
         }).collect(Collectors.toList());
-        for (OdrSalesDetailsView odrSalesDetailsView : listView) {
-            if(odrSalesDetailsView==null){
-                return null;
-            }
-        }
-        if (listView != null) {
-            return new Page(listView, start, limit, count);
-        } else {
-            return null;
-        }
+        return new Page(listSalDetils, start, limit, country);
     }
 }

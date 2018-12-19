@@ -85,7 +85,7 @@ public class OdrMeetingDao {
             if (onstate != null) {
                 WHERE(OrderMeeting.T.STATUS, " =?", onstate);
             }
-                WHERE(OrderMeeting.T.STATUS, " <>?", OrderMeetingStatus.DELETE.getLine().getKey());
+            WHERE(OrderMeeting.T.STATUS, " <>?", OrderMeetingStatus.DELETE.getLine().getKey());
 
             if (getSupplier != null) {
                 WHERE(OrderMeeting.T.SUPPLIERID, " =?", getSupplier);
@@ -93,7 +93,7 @@ public class OdrMeetingDao {
             if (supstate != null) {
                 WHERE(OrderMeetingAuditRelease.T.STATUS, " =?", supstate);
             }
-                WHERE(OrderMeetingAuditRelease.T.STATUS, " <>?", OrderMeetingAuditStatus.DELETE.getLine().getKey());
+            WHERE(OrderMeetingAuditRelease.T.STATUS, " <>?", OrderMeetingAuditStatus.DELETE.getLine().getKey());
 
             ORDER_BY(OrderMeeting.T.UPDATED_TIME, "desc");
         }};
@@ -425,38 +425,40 @@ public class OdrMeetingDao {
     public OrderInformationView getorderInformation(Integer id) {
         SQL sql = new SQL() {
             {
-                SELECT(OrderMeeting.T.NAME,"orderingTitle")
-                        .SELECT(OrderMeetingExhibition.T.NAME,"exhibition")
-                        .SELECT(PltCountry.T.NAME,"country")
-                        .SELECT(OrderMeeting.T.LOGO,
+                SELECT(OrderMeeting.T.NAME, "orderingTitle")
+                        .SELECT(OrderMeetingExhibition.T.NAME, "exhibition")
+                        .SELECT(PltCountry.T.NAME, "country")
+                        .SELECT(OrderMeeting.T.PKEY,
+                                OrderMeeting.T.LOGO,
                                 OrderMeeting.T.START_TIME,
                                 OrderMeeting.T.END_TIME,
                                 OrderMeeting.T.MAILADDRESS,
                                 OrderMeeting.T.MAILAFULLDDRESS,
                                 OrderMeeting.T.MAILNAME,
                                 OrderMeeting.T.MAILTEL,
-                                OrderMeeting.T.POSTCODE).
-                        FROM(OrderMeeting.class).
+                                OrderMeeting.T.POSTCODE)
+                        .FROM(OrderMeeting.class)
+                        .LEFT_JOIN(OrderMeetingExhibition.class, OrderMeetingExhibition.T.PKEY, OrderMeeting.T.EXHIBITION)
+                        .LEFT_JOIN(PltCountry.class, PltCountry.T.PKEY, OrderMeeting.T.COUNTRY)
+                        .WHERE(OrderMeeting.T.PKEY, "=?", id);
 //                        LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, OrderMeeting.T.SUPPLIERID).
-        LEFT_JOIN(OrderMeetingExhibition.class, OrderMeetingExhibition.T.PKEY, OrderMeeting.T.EXHIBITION).
-                        LEFT_JOIN(PltCountry.class, PltCountry.T.PKEY, OrderMeeting.T.COUNTRY).WHERE(OrderMeeting.T.PKEY
-                        ,"=?",id);
+
             }
         };
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Map<String, Object> map = Query.sql(sql).queryMap();
         OrderInformationView view = new OrderInformationView();
+        view.setId(Integer.valueOf(String.valueOf(map.get(OrderMeeting.T.PKEY.getFld().getCodeSqlField()))));
         view.setOrderingTitle((String) map.get("orderingTitle"));
         view.setExhibition((String) map.get("exhibition"));
         view.setCountry((String) map.get("country"));
         view.setCoverImage((String) map.get(OrderMeeting.T.LOGO.getFld().getCodeSqlField()));
         view.setOrderStartTime(formatter.format(map.get(OrderMeeting.T.START_TIME.getFld().getCodeSqlField())));
         view.setOrderEndTime(formatter.format(map.get(OrderMeeting.T.END_TIME.getFld().getCodeSqlField())));
-        view.setAddress((String)map.get(OrderMeeting.T.MAILAFULLDDRESS.getFld().getCodeSqlField()));
-        view.setReceiver((String)map.get(OrderMeeting.T.MAILNAME.getFld().getCodeSqlField()));
-        view.setContactNumber((String)map.get(OrderMeeting.T.MAILTEL.getFld().getCodeSqlField()));
-        view.setZip((String)map.get(OrderMeeting.T.POSTCODE.getFld().getCodeSqlField()));
+        view.setAddress((String) map.get(OrderMeeting.T.MAILAFULLDDRESS.getFld().getCodeSqlField()));
+        view.setReceiver((String) map.get(OrderMeeting.T.MAILNAME.getFld().getCodeSqlField()));
+        view.setContactNumber((String) map.get(OrderMeeting.T.MAILTEL.getFld().getCodeSqlField()));
+        view.setZip((String) map.get(OrderMeeting.T.POSTCODE.getFld().getCodeSqlField()));
         return view;
     }
-
 }

@@ -9,6 +9,7 @@ import lombok.Data;
  */
 @Data
 public class OdrAuditsupplierView {
+    private Integer auditId;//参加订购会pkey
     private Integer id;//参加订购会pkey
     private String companyname;//公司名称
     private String name;//联系人

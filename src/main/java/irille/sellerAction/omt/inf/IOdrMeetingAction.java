@@ -3,7 +3,6 @@ package irille.sellerAction.omt.inf;
 import irille.pub.svr.Controller;
 import irille.pub.svr.RequestMapping;
 import irille.sellerAction.ISellerAction;
-import irille.view.Page;
 
 @Controller(module = "用户管理", name = "联合订单")
 public interface IOdrMeetingAction extends ISellerAction {
@@ -76,9 +75,24 @@ public interface IOdrMeetingAction extends ISellerAction {
     @RequestMapping(alias = "获取订购会订单列表", sort = 23)
     public void getOmtOrderList() throws Exception;
 
-    @RequestMapping(alias = "获取订单状态列表", sort = 23)
+    @RequestMapping(alias = "获取订单状态列表", sort = 24)
     public void getOrderStatus() throws Exception;
 
-    @RequestMapping(alias = "获取销售明细", sort = 24)
+    @RequestMapping(alias = "获取销售明细", sort = 25)
     public void getSalesDetails() throws Exception;
+
+    @RequestMapping(alias = "修改订单是否发送给合作商状态", sort = 26)
+    public void updSendStatus() throws Exception;
+
+    @RequestMapping(alias = "审核合作商(修改状态)", sort = 27)
+    public void updLoadSupStatus() throws Exception;
+
+    @RequestMapping(alias = "获取合作商是否认证状态", sort = 28)
+    public void isAuthStatus() throws Exception;
+
+    @RequestMapping(alias = "合作商发送样品(更新信息)", sort = 29)
+    public void updAudit() throws Exception;
+
+    @RequestMapping(alias = "获取合作商样品发送物流信息", sort = 30)
+    public void getLogistics() throws Exception;
 }

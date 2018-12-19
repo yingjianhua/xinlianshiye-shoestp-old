@@ -2,6 +2,7 @@ package irille.Dao;
 
 import irille.Entity.OdrerMeetings.Enums.OrderMeetingAuditStatus;
 import irille.Entity.OdrerMeetings.Enums.OrderMeetingProductStatus;
+import irille.Entity.OdrerMeetings.OrderMeeting;
 import irille.Entity.OdrerMeetings.OrderMeetingAudit;
 import irille.Entity.OdrerMeetings.OrderMeetingProduct;
 import irille.pub.Log;
@@ -14,6 +15,7 @@ import irille.pub.idu.IduUpd;
 import irille.pub.svr.Env;
 import irille.shop.usr.UsrSupplier;
 import irille.view.Manage.OdrMeeting.OdrAuditsupplierView;
+import irille.view.Manage.OdrMeeting.OdrMeetingAuditLogisticsView;
 import irille.view.Page;
 
 import java.util.List;
@@ -67,11 +69,23 @@ public class OrderMeetingAuditDao {
         if (limit == null) {
             limit = 10;
         }
+        SQL sum = new SQL();
+        StringBuilder sb = new StringBuilder();
+        sb.append("SUM(1)\n" +
+                "\tFROM order_meeting_product orderMeetingProduct\n" +
+                "\tWHERE orderMeetingProduct.STATUS <> 4\n" +
+                "\tAND orderMeetingProduct.supplierid <> (SELECT orderMeeting.supplierid AS supplier\n" +
+                "FROM order_meeting orderMeeting\n" +
+                "WHERE orderMeeting.pkey = " + omtid + ")\n" +
+                "\tGROUP BY orderMeetingProduct.supplierid");
+        sum.SELECT(sb.toString());
+
         SQL sql = new SQL() {{
             SELECT(OrderMeetingAudit.T.PKEY, "omatid").SELECT(OrderMeetingAudit.T.STATUS, OrderMeetingAudit.T.SAMPLEADDRESS)
                     .SELECT(UsrSupplier.T.PKEY, "supplierid")
                     .SELECT(UsrSupplier.T.NAME, UsrSupplier.T.CONTACTS, UsrSupplier.T.EMAIL,
                             UsrSupplier.T.IS_AUTH, UsrSupplier.T.CERT_PHOTO);
+            SELECT(sum, "sum");
             FROM(OrderMeetingAudit.class);
             LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, OrderMeetingAudit.T.SUPPLIERID);
             if (name != null) {
@@ -85,30 +99,82 @@ public class OrderMeetingAuditDao {
         }};
 
 
-        Integer count = Query.sql(sql).queryCount();
+        Integer count = Query.sql(sql).queryMaps().size();
         Query.sql(sql).limit(start, limit);
         List<OdrAuditsupplierView> oal = Query.sql(sql).queryMaps().stream().map(o -> {
             OdrAuditsupplierView omv = new OdrAuditsupplierView();
+            omv.setAuditId(Integer.valueOf(String.valueOf(o.get("omatid"))));
             omv.setId((Integer) o.get("supplierid"));
             omv.setCompanyname((String) o.get(UsrSupplier.T.NAME.getFld().getCodeSqlField()));
             omv.setName((String) o.get(UsrSupplier.T.CONTACTS.getFld().getCodeSqlField()));
             omv.setEmail((String) o.get(UsrSupplier.T.EMAIL.getFld().getCodeSqlField()));
             omv.setIsauth(Integer.valueOf(String.valueOf(o.get(UsrSupplier.T.IS_AUTH.getFld().getCodeSqlField()))));
-            if(o.get(UsrSupplier.T.CERT_PHOTO.getFld().getCodeSqlField())!=null){
-                omv.setImage(String.valueOf(o.get(UsrSupplier.T.CERT_PHOTO.getFld().getCodeSqlField().split(",")[0]) ));
+            if (o.get(UsrSupplier.T.CERT_PHOTO.getFld().getCodeSqlField()) != null) {
+                omv.setImage(String.valueOf(o.get(UsrSupplier.T.CERT_PHOTO.getFld().getCodeSqlField().split(",")[0])));
             }
             omv.setStatus(Integer.parseInt(String.valueOf(o.get(OrderMeetingAudit.T.STATUS.getFld().getCodeSqlField()))));
             omv.setAddress((String) o.get(OrderMeetingAudit.T.SAMPLEADDRESS.getFld().getCodeSqlField()));
-            SQL sql1 = new SQL() {{
-                SELECT(OrderMeetingProduct.T.PKEY).FROM(OrderMeetingProduct.class).WHERE(OrderMeetingProduct.T.ORDERMEETINGID, " =?", omtid)
-                        .WHERE(OrderMeetingProduct.T.STATUS, " =?", OrderMeetingProductStatus.ON)
-                        .WHERE(OrderMeetingProduct.T.SUPPLIERID, " =?", (Integer) o.get(UsrSupplier.T.PKEY));
-            }};
-            omv.setShopnum(Query.sql(sql1).queryCount());
+            if (o.get("sum") != null) {
+                omv.setShopnum(Integer.valueOf(String.valueOf(o.get("sum"))));
+            }else{
+                omv.setShopnum(0);
+            }
             return omv;
         }).collect(Collectors.toList());
 
 
         return new Page(oal, start, limit, count);
+    }
+
+    public static void updLoadSupStatus(Integer id, Integer status) {
+        OrderMeetingAudit oma = BeanBase.load(OrderMeetingAudit.class, id);
+        oma.setStatus(status.byteValue());
+        oma.setCreatedTime(Env.getTranBeginTime());
+        oma.upd();
+    }
+
+    public static void updAudit(Integer omtId, Integer supplierId, String orderNumber, String remarks) {
+        SQL sql = new SQL() {
+            {
+                SELECT(OrderMeetingAudit.class)
+                        .FROM(OrderMeetingAudit.class)
+                        .WHERE(OrderMeetingAudit.T.ODRMEETING, "=?", omtId)
+                        .WHERE(OrderMeetingAudit.T.SUPPLIERID, "=?", supplierId);
+            }
+        };
+        OrderMeetingAudit oma = Query.sql(sql).query(OrderMeetingAudit.class);
+        if (orderNumber != null) {
+            oma.setSampleaddress(orderNumber);
+        }
+        if (remarks != null) {
+            oma.setMessage(remarks);
+        }
+        oma.upd();
+    }
+
+    public static OdrMeetingAuditLogisticsView getLogistics(Integer omtId, Integer supplierId) {
+        OdrMeetingAuditLogisticsView view = new OdrMeetingAuditLogisticsView();
+        SQL mop = new SQL() {
+            {
+                SELECT(OrderMeeting.class)
+                        .FROM(OrderMeeting.class)
+                        .WHERE(OrderMeeting.T.SUPPLIERID, "=?", supplierId)
+                        .WHERE(OrderMeeting.T.PKEY, "=?", omtId);
+            }
+        };
+        if (Query.sql(mop).query(OrderMeeting.class) == null) {
+            SQL sql = new SQL() {
+                {
+                    SELECT(OrderMeetingAudit.class)
+                            .FROM(OrderMeetingAudit.class)
+                            .WHERE(OrderMeetingAudit.T.SUPPLIERID, "=?", supplierId)
+                            .WHERE(OrderMeetingAudit.T.ODRMEETING, "=?", omtId);
+                }
+            };
+            OrderMeetingAudit oma = Query.sql(sql).query(OrderMeetingAudit.class);
+            view.setRemarks(oma.getMessage());
+            view.setTrackingNumber(oma.getSampleaddress());
+        }
+        return view;
     }
 }
