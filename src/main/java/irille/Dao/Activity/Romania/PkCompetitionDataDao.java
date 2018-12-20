@@ -118,7 +118,17 @@ public class PkCompetitionDataDao {
      */
     public Integer getTop5(Date startDate, Date endDate) {
         SQL sql = new SQL();
-        sql.SELECT("pe").FROM(PkCompetitionData.class).ORDER_BY(PkCompetitionData.T.PE, "desc").LIMIT(0, 5);
+        sql
+                .SELECT("pe")
+                .FROM(PkCompetitionData.class)
+                .ORDER_BY(PkCompetitionData.T.PE, "desc")
+                .LIMIT(0, 5);
+        if (startDate != null) {
+            sql.WHERE(PkCompetitionData.T.CREATEDTIME, ">?", startDate);
+        }
+        if (endDate != null) {
+            sql.WHERE(PkCompetitionData.T.CREATEDTIME, "<=?", endDate);
+        }
         int result = 0;
         for (Map<String, Object> queryMap : Query.sql(sql).queryMaps()) {
             result += Integer.valueOf(String.valueOf(queryMap.get("pe")));
@@ -134,10 +144,17 @@ public class PkCompetitionDataDao {
     public Integer getAllPe(Date startDate, Date endDate) {
         SQL sql = new SQL();
         sql.SELECT("sum(pe) as pe").FROM(PkCompetitionData.class).ORDER_BY(PkCompetitionData.T.PE, "desc");
+        if (startDate != null) {
+            sql.WHERE(PkCompetitionData.T.CREATEDTIME, ">?", startDate);
+        }
+        if (endDate != null) {
+            sql.WHERE(PkCompetitionData.T.CREATEDTIME, "<=?", endDate);
+        }
         Object result = Query.sql(sql).queryMap().get("pe");
         if (result == null) {
             return 0;
         }
+
         return Integer.valueOf(String.valueOf(Query.sql(sql).queryMap().get("pe")));
     }
 
