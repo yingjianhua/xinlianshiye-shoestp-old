@@ -92,9 +92,9 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                     <el-carousel-item v-for="products in productCarousel">
                         <div class="product-image" v-for="(item,index) in products"
                              :class="{'margin_around' : index == 1}">
-                                <img :src="item.imageUrl" alt="goods">
-                                <p class="pi-title">{{ item.title }}</p>
-                                <p class="pi-content">{{ item.content }}</p>
+                            <img :src="item.imageUrl" alt="goods">
+                            <p class="pi-title">{{ item.title }}</p>
+                            <p class="pi-content">{{ item.content }}</p>
                         </div>
                     </el-carousel-item>
                 </el-carousel>
@@ -432,9 +432,12 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                     <img src="./images/close-black.png" alt="button to close the form" class="btn-close"
                          @click="isFormShow = false">
                     <div class="form-title">
-                        2018 ROMANIAN
+                      2019 Romanian
                         <br>
-                        OFFLINE SHOES PURCHASING
+                    Shoes Wholesale Exhibition
+                    </div>
+                    <div class="tips" style="padding-top: 5px">
+                     Submit now, you will get a free ticket and secret gift at once！
                     </div>
                     <el-form ref="form" :model="form" label-width="80px" label-position="top" size="small">
                         <el-form-item label="Contact:" class="required-label">
@@ -467,9 +470,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                             <el-button type="danger form-button" @click="formSubmit">Submit</el-button>
                         </div>
 
-                        <div class="tips">
-                            Tell us what you want, we'll reply you as soon as possible!
-                        </div>
+
                     </el-form>
                 </div>
             </transition>

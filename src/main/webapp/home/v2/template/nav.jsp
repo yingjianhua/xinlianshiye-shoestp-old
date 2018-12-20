@@ -25,8 +25,9 @@
                 </el-submenu>
                 <el-submenu index="3" class="no-arrow">
                     <template slot="title">Trade Show</template>
-                    <el-menu-item index="3-1"><a
-                            href="/country/Romania-Pantofi-en-gros/romania-index-en.html">Romania</a></el-menu-item>
+                    <el-menu-item index="3-1">Trade Show1</el-menu-item>
+                    <el-menu-item index="3-2">Trade Show2</el-menu-item>
+                    <el-menu-item index="3-3">Trade Show3</el-menu-item>
                 </el-submenu>
                 <el-submenu index="4" class="no-arrow">
                     <template slot="title">Group Funding</template>
@@ -43,18 +44,15 @@
                     </a>
                 </el-menu-item>
                 <!-- 顶部右侧 - 询盘 -->
-                <el-menu-item index="7" class="fr">
-                    <a href="/home/usr_UsrConsult_listView" target="_blank">RFQ</a>
-                </el-menu-item>
+                <el-menu-item index="7" class="fr"><a href="" target="_blank">RFQ</a></el-menu-item>
                 <!-- 顶部右侧 - 注册 -->
                 <el-submenu index="6" class="fr">
                     <template slot="title">Register</template>
-                    <el-menu-item index="6-1"><a href="/home/usr_UsrPurchase_sign">Buyer</a></el-menu-item>
-                    <el-menu-item index="6-2"><a href="/home/usr_UsrSupplier_supplierEntry">Supplier</a></el-menu-item>
+                    <el-menu-item index="6-1">Buyer</el-menu-item>
+                    <el-menu-item index="6-2">Supplier</el-menu-item>
                 </el-submenu>
                 <!-- 顶部右侧 - 登录 -->
-                <el-menu-item index="5" class="fr"><a href="/home/usr_UsrPurchase_sign" target="_blank">Login</a>
-                </el-menu-item>
+                <el-menu-item index="5" class="fr"><a href="" target="_blank">Login</a></el-menu-item>
             </el-menu>
         </div>
     </div>
@@ -64,24 +62,16 @@
         <div class="wide new-top-search">
             <!-- 左侧 - logo -->
             <div class="logo-box">
-                <a href="/">
-                    <img src="/home/v2/static/images/nav/logo.png" alt="logo">
-                </a>
-
+                <a href="/"><img src="/home/v2/static/images/nav/logo.png" alt="logo"></a>
             </div>
 
             <!-- 搜索条 -->
             <div class="top-input-bar">
-
                 <!-- 类型 下拉选择 -->
                 <%--<div class="cotegory-select-box">--%>
                 <%--<el-select v-model="topSearchBarCategory" placeholder="请选择"--%>
                 <%--popper-class="top-search-bar-cotegory-select-dropdown">--%>
-                <%--<el-option--%>
-                <%--v-for="item in 6"--%>
-                <%--:key="item"--%>
-                <%--:label="item"--%>
-                <%--:value="item">--%>
+                <%--<el-option v-for="item in 6" :key="item" :label="item" :value="item">--%>
                 <%--</el-option>--%>
                 <%--</el-select>--%>
                 <%--</div>--%>
@@ -91,7 +81,7 @@
                     <input type="text" @keyup.enter="searchClick" v-model="search.keyword">
                 </div>
                 <!-- 搜索按钮 -->
-                <div class="btn-search" @click="searchClick">
+                <div class="btn-search">
                     <i class="el-icon-search"></i>
                 </div>
             </div>
@@ -101,67 +91,73 @@
             </a>
             <!-- 多语言下拉选择 -->
             <div class="language-select">
-                <img src="./images/icon-global.png" alt="">
+                <img src="/v2/static/images/nav/icon-global.png" alt="">
                 <br>
-                {{language}} <i class="el-icon-arrow-down el-icon--right"></i>
-                <el-select v-model="language" placeholder=""
-                           class="top-language-select-input"
-                           popper-class="top-language-select-box"
-                           @change="changeLang"
-                >
-                    <el-option
-                            v-for="language in languageList"
-                            :key="language.languageName"
-                            :label="name"
-                            :value="shortName">
+                {{_language}} <i class="el-icon-arrow-down el-icon--right"></i>
+                <el-select v-model="language" placeholder="请选择" class="top-language-select-input"
+                           popper-class="top-language-select-box">
+                    <el-option v-for="language in languageList" :key="language.shortName"
+                               :label="language.displayName"
+                               :value="language.shortName">
                     </el-option>
                 </el-select>
             </div>
         </div>
     </div>
 </div>
-
+<script type="text/javascript" src="/home/static/js/lang/en.js"></script>
 <script>
+    var sysConfig = null
+    var messages = {
+        en: lang_obj
+    }
+
+    // Create VueI18n instance with options
+    var i18n = new VueI18n({
+        locale: 'en', // set locale
+        messages, // set locale messages
+    })
+    // Create a Vue instance with `i18n` option
+
     var nav = new Vue({
-        el: "#nav",
+        el: "#nav", i18n,
         data() {
             return {
                 activeTopNavIndex: 1, //默认选中的web-top澳航栏
                 topSearchBarCategory: "2", //搜索 分类前的下拉选
-                language: <s:iterator value="env.languages" var="language">
-                    <s:if test="shortName==env.curLanguage">
-                    <s:if test='#language.shortName=="zh_TW"'>"繁体中文"</s:if>
-                <s:elseif test='#language.shortName=="de"'>"Deutsch"</s:elseif>
-                    <s:elseif test='#language.shortName=="en"'>"English"</s:elseif>
-                <s:elseif test='#language.shortName=="es"'>"Español"</s:elseif>
-                    <s:elseif test='#language.shortName=="fr"'>"Français"</s:elseif>
-                <s:elseif test='#language.shortName=="ja"'>"日本語"</s:elseif>
-                    <s:elseif test='#language.shortName=="pt"'>"Português"</s:elseif>
-                <s:elseif test='#language.shortName=="ro"'>"românesc"</s:elseif>
-                    <s:elseif test='#language.shortName=="ru"'>"русский"</s:elseif>
-                <s:elseif test='#language.shortName=="zh_CN"'>"简体中文"</s:elseif>
-                    <s:elseif test='#language.shortName=="hu"'>"magyar"</s:elseif>
-                </s:if>
-                </s:iterator>, //当前选中的语种
-                languageList: [
-                    <c:forEach items="${env.languages}" var="language">
-                        <c:if test='language.shortName=="zh_TW"'>{name: "繁体中文", value: "zh"}, </c:if>
-                        <c:if test='l anguage.shortName=="de"'>{name: "Deutsch", value: "de"}, </c:if>
-                        <c:if test='language.shortName=="en"'>{name: "English", value: "en"}, </c:if>
-                        <c:if test='language.shortName=="es"'>{name: "Español", value: "es"} </c:if>
-                        <c:if test='language.shortName=="fr"'>{name: "Français", value: "fr"}, </c:if>
-                        <c:if test='language.shortName=="ja"'>{name: "日本語", value: "ja"}, </c:if>
-                        <c:if test='language.shortName=="pt"'>{name: "Português", value: "pt"}, </c:if>
-                        <c:if test='language.shortName=="ro"'>{name: "românesc", value: "ro"}, </c:if>
-                        <c:if test='language.shortName=="ru"'>{name: "русский", value: "ru"}, </c:if>
-                        <c:if test='language.shortName=="zh_CN"'>{name: "简体中文", value: "zh_CN"}, </c:if>
-                    <c:if test='language.shortName=="hu"'> {name: "magyar", value: "hu"}, </c:if>
-                    </c:forEach>
-                ],
+                language: "en",
+                languageList: [],
                 search: {
                     keyword: ""
                 }
             }
+        }, computed: {
+            _language: function () {
+                for (var key in this.$data.languageList) {
+                    if (this.$data.languageList[key]["shortName"] == this.$data.language) {
+                        console.log(this.$data.languageList[key]["displayName"])
+                        return this.$data.languageList[key]["displayName"]
+                    }
+                }
+                return "-1"
+            }
+        }, mounted() {
+            var self = this
+            axios({
+                url: "/home/plt_PltConfig_getSysConfig"
+            }).then(function (res) {
+                if (res.data.ret && res.data.ret == 1) {
+                    sysConfig = res.data.result
+                    self.$data.languageList = res.data.result.languages
+                    // Vue.set(self, "language", res.data.result.current_language)
+                    // Vue.set(self, "languageList", res.data.result.languages)
+                } else {
+                    console.error("ERR::FLAG")
+                }
+            }).catch(function (err) {
+                console.error(err)
+                console.error("ERR::FLAG")
+            })
         },
         methods: {
             searchClick() {
@@ -171,34 +167,29 @@
                 console.log(key, keyPath);
             },
             changeLang() {
-
-                user_obj.sign_in_init();
-                $("#web_top .language.lang a").on("click", function () {
-                    $.ajax({
-                        url: "/home/plt_PltConfig_changeLanguage",
-                        type: "GET",
-                        dataType: "json",
-                        data: "request_locale=" + $(this).attr("lang"),
-                        success: function (data) {
-                            if (data.ret == 1)
-                                location.reload();
-                        }
-                    })
+                axios({
+                    url: "/home/plt_PltConfig_changeLanguage",
+                    method: "get",
+                    params: {
+                        request_locale: this.$data.language
+                    }
+                }).then(function (res) {
+                    if (res.data.ret && res.data.ret == 1) {
+                        location.reload();
+                    } else {
+                        console.error("ERR::FLAG")
+                    }
                 })
 
-            });
-
-    console.log(this.language)
-    },
-    handleLanguageSelect(e)
-    {
-        console.log("click")
-        console.log(e.target.dataset.language)
-        console.log(e.currentTarget)
-        if (e.target && e.target.dataset && e.target.dataset.language) {
-            this.language = e.target.dataset.language;
+            },
+            handleLanguageSelect(e) {
+                console.log("click")
+                console.log(e.target.dataset.language)
+                console.log(e.currentTarget)
+                if (e.target && e.target.dataset && e.target.dataset.language) {
+                    this.language = e.target.dataset.language;
+                }
+            }
         }
-    }
-    }
     })
 </script>

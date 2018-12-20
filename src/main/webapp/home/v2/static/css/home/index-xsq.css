@@ -73,6 +73,9 @@
   font-size: 22px;
 	background-color: #2435a1;
 }
+#xsq .goods-category-item .descript-box .btn-see-all:hover{
+	background-color: #35c;
+}
 
 /* 3个轮播中 右侧-产品 */
 #xsq .goods-category-item .right-goods-out-wrap{
@@ -143,6 +146,9 @@
   font-family: ArialMT;
   color: #000;
 }
+#xsq .goods-category-item .right-goods-wrap .hover-text-wrap .goods-name2:hover{
+  color: #666;
+}
 #xsq .goods-category-item .right-goods-wrap .hover-show .goods-name2{
   height: 64px;
   line-height: 22px;
@@ -196,6 +202,9 @@
   width: 20px;
   height: 20px;
   background: url("../images/icon-favorite-off.png") no-repeat center ;
+}
+#xsq .goods-category-item .hover-show .btn-collect .icon-collect.on{
+  background: url("../images/icon-favorite-on.png") no-repeat center ;
 }
 
 /* 鼠标移入后不显示之前的name */

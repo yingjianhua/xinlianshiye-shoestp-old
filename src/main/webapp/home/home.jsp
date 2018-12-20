@@ -476,7 +476,7 @@
                             <img :src="image(item.image,'?x-oss-process=image/resize,m_fixed,h_162,w_177')" alt="" style="width: 177px;height: 162px;">
                             <div class="goods-info">
                                 <div>
-                                    {{item.name}}
+                                    {{item.title}}
                                 </div>
                             </div>
                         </a>

@@ -51,9 +51,28 @@
   width: 300px;
   height: 534px;
   color:#fff;
-  padding:34px 26px 0 40px;
+  /* padding:34px 26px 0 40px; */
+  padding:46px 20px;
+}
+#lty .hotCouny .com .left .left-title{
+  font-family: Arial-BoldMT;
+	font-size: 40px;
+	font-weight: bold;
+  text-align: center;
+	line-height: 1.2;
+	color: #d32e43;
+}
+#lty .hotCouny .com .left .left-title_2{
+  font-family: Arial-BoldMT;
+	font-size: 34px;
+	font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
+	color: #000000;
+  margin-bottom: 30px;
 }
 #lty .hotCouny .com .left dl dd{
+  margin-left: 17px;
   margin-bottom:22px;
   font-size:20px;
 }
@@ -78,7 +97,8 @@
   background-image: -moz-linear-gradient( 90deg, rgb(255,150,0) 0%, rgb(255,204,0) 100%);
   background-image: -webkit-linear-gradient( 90deg, rgb(255,150,0) 0%, rgb(255,204,0) 100%);
   background-image: -ms-linear-gradient( 90deg, rgb(255,150,0) 0%, rgb(255,204,0) 100%);
-  box-shadow: 0px 5px 16px 0px rgba(106, 153, 236, 0.75);
+  /* box-shadow: 0px 5px 16px 0px rgba(106, 153, 236, 0.75); */
+  /* box-shadow: 2px 4px 16px 0px rgba(106, 153, 236, 0.75); */
   width: 190px;
   height: 54px;
   text-align: center;
@@ -99,6 +119,9 @@
   -webkit-transition:all .4s;-moz-transition:all .4s;-o-transition:all .4s;transition:all .4s;
   /* border: 2px solid #2435a1; */
   background-image: linear-gradient(0deg, #cdcdcd 0%, #ffffff 100%);
+}
+#lty .hotCouny .com ul li:hover{
+  box-shadow: 2px 4px 16px 0px rgba(106, 153, 236, 0.75);
 }
 #lty .hotCouny .com ul li .pic1{
   float:left;

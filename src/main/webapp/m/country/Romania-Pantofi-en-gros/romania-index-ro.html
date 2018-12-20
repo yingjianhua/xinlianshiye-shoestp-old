@@ -31,6 +31,15 @@
     gtag('config', 'AW-783435725');
     gtag('config', 'UA-127715615-6');
 </script>
+<style>
+    #romania .romania-poster {
+        width: 980px;
+        height: 1260px !important;;
+        background: url(./imgs/romaniaPoster-01.png) center no-repeat;
+        background-size: cover !important;
+        position: relative;
+    }
+</style>
 <body>
 <div id="romania" @click="contrast">
     <div class="romania-poster">
@@ -274,8 +283,12 @@
             <span class="close-btn" @click="close">+</span>
             <div class="hf-border">
                 <h2 class="hf-title">
-                    2018 MOSTRELOR DE <br>PANTOFI OFFLINE,ROMANIA
+                    2019 Expoziție
+                    <br> cu ridicata de pantofi români
                 </h2>
+                <div class="hf-input">
+                    <p class="hf-text">Trimiteți acum, veți primi imediat un bilet gratuit și un cadou secret!</p>
+                </div>
                 <mu-container>
                     <mu-form ref="form" :model="hoodleForm" class="mu-demo-form">
                         <mu-form-item label="A lue legature:" help-text="" prop="name" :rules="nameRules">
@@ -302,9 +315,6 @@
                         </mu-form-item>
                     </mu-form>
                 </mu-container>
-                <div class="hf-input">
-                    <p class="hf-text">Spuneți-ne ce vreți, vă vom răspunde cât mai curând posibil!</p>
-                </div>
             </div>
         </div>
     </div>

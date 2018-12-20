@@ -359,6 +359,9 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                         <br>
                         罗马尼亚线下鞋类采购会 -->
                     </div>
+                    <div class="tips" v-html="text_content.form_bottom_text" style="padding: 5px">
+                        <!-- 告诉我们您的需求，我们会尽快回复您! -->
+                    </div>
                     <el-form ref="form" :model="form" label-width="80px" label-position="top" size="small">
                         <el-form-item :label="text_content.name" class="required-label">
                             <el-input v-model="form.name" placeholder=""></el-input>
@@ -392,9 +395,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                             </el-button>
                         </div>
 
-                        <div class="tips" v-html="text_content.form_title">
-                            <!-- 告诉我们您的需求，我们会尽快回复您! -->
-                        </div>
+
                     </el-form>
                 </div>
             </transition>
@@ -434,8 +435,8 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
         "successivo": "successivo",
         "_inquiry": "INQUIRY",
 
-        form_title: "2018 ROMANIAN<br>OFFLINE SHOES PURCHASING",
-        form_bottom_text: "Tell us what you want, we'll reply you as soon as possible!",
+        form_title: "2019 Romanian<br>Shoes Wholesale Exhibition",
+        form_bottom_text: "Submit now, you will get a free ticket and secret gift at once！",
         name: "Contact:",
         phone: "phone:",
         email: "E-mail:",
@@ -478,8 +479,8 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                 "successivo": "下一个",
                 "_inquiry": "询盘",
 
-                form_title: "2018年 <br>罗马尼亚线下鞋类采购会",
-                form_bottom_text: "告诉我们您的需求，我们会尽快回复您!",
+                form_title: "2019年 <br>罗马尼亚鞋类批发展览会",
+                form_bottom_text: "现在提交，您将马上获得一张免费的入场券和一个神秘礼品！",
                 name: "联系人:",
                 phone: "电话:",
                 email: "电子邮件:",
@@ -506,8 +507,8 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                 "precedente": "anterior",
                 "successivo": "următorul",
                 "_inquiry": "Anchetă",
-                form_title: "2018 ADUNARE DE APRECIERE<br>A MOSTRELOR DE PANTOFI OFFLINE, ROMANIA",
-                form_bottom_text: "Spuneți-ne ce vreți, vă vom răspunde cât mai curând posibil!",
+                form_title: "2019 Expoziție<br>cu ridicata de pantofi români",
+                form_bottom_text: "Trimiteți acum, veți primi imediat un bilet gratuit și un cadou secret!",
                 name: "Contact:",
                 phone: "telefon:",
                 email: "E-mail:",

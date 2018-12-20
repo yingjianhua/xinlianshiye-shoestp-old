@@ -425,9 +425,12 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                     <img src="./images/close-black.png" alt="button to close the form" class="btn-close"
                          @click="isFormShow = false">
                     <div class="form-title">
-                        2018年
+                        2019年
                         <br>
-                        罗马尼亚线下鞋类采购会
+                        罗马尼亚鞋类批发展览会
+                    </div>
+                    <div class="tips" style="padding: 5px">
+                        现在提交，您将马上获得一张免费的入场券和一个神秘礼品！
                     </div>
                     <el-form ref="form" :model="form" label-width="80px" label-position="top" size="small">
                         <el-form-item label="联系人:" class="required-label">
@@ -459,9 +462,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
                             <el-button type="danger form-button" @click="formSubmit">提交</el-button>
                         </div>
 
-                        <div class="tips">
-                            告诉我们您的需求，我们会尽快回复您!
-                        </div>
+
                     </el-form>
                 </div>
             </transition>
