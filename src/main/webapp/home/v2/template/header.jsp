@@ -16,6 +16,7 @@
     <script src='/home/v2/static/js/base/element-ui.js'></script>
     <script src='/home/v2/static/js/base/axios.min.js'></script>
     <link rel="stylesheet" href="/home/v2/static/css/base/element-ui/element-ui.css"/>
+    <link rel="stylesheet" href="/home/v2/static/css/base/foot.css"/>
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
     <script>
         window.dataLayer = window.dataLayer || [];

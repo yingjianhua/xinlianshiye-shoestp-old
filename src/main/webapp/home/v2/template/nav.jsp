@@ -1,3 +1,4 @@
+<%@ page import="java.util.Map" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -13,46 +14,47 @@
                      @select="handleTopNavSelect">
                 <el-submenu index="1" class="no-arrow new-top-nav-item">
                     <template slot="title">OEM{{activeTopNavIndex}}</template>
-                    <el-menu-item index="1-1">OEM1</el-menu-item>
-                    <el-menu-item index="1-2">OEM2</el-menu-item>
-                    <el-menu-item index="1-3">OEM3</el-menu-item>
+                    <el-menu-item index="1-1">{{$t("Man")}}</el-menu-item>
+                    <el-menu-item index="1-2">{{$t("WoMan")}}</el-menu-item>
+                    <el-menu-item index="1-3">{{$t("Children")}}</el-menu-item>
                 </el-submenu>
                 <el-submenu index="2" class="no-arrow">
                     <template slot="title">WholeSale</template>
-                    <el-menu-item index="2-1">WholeSale1</el-menu-item>
-                    <el-menu-item index="2-2">WholeSale2</el-menu-item>
-                    <el-menu-item index="2-3">WholeSale3</el-menu-item>
+                    <el-menu-item index="2-1">{{$t("Man")}}</el-menu-item>
+                    <el-menu-item index="2-2">{{$t("WoMan")}}</el-menu-item>
+                    <el-menu-item index="2-3">{{$t("Children")}}</el-menu-item>
                 </el-submenu>
                 <el-submenu index="3" class="no-arrow">
                     <template slot="title">Trade Show</template>
-                    <el-menu-item index="3-1">Trade Show1</el-menu-item>
-                    <el-menu-item index="3-2">Trade Show2</el-menu-item>
-                    <el-menu-item index="3-3">Trade Show3</el-menu-item>
+                    <el-menu-item index="3-1"><a
+                            href="/country/Romania-Pantofi-en-gros/romania-index-ro.html">Romania</a></el-menu-item>
                 </el-submenu>
                 <el-submenu index="4" class="no-arrow">
                     <template slot="title">Group Funding</template>
-                    <el-menu-item index="4-1">Group Funding1</el-menu-item>
-                    <el-menu-item index="4-2">Group Funding2</el-menu-item>
-                    <el-menu-item index="4-3">Group Funding3</el-menu-item>
+                    <el-menu-item index="4-1"><a href="/home/Activity_Romania">Romania</a></el-menu-item>
                 </el-submenu>
 
                 <!-- 顶部右侧 - 收藏 -->
                 <el-menu-item index="8" class="fr mr0">
-                    <a href="" target="_blank">
+                    <a href="/home/usr_UsrFavorites_myfavorite" target="_blank">
                         <img src="/home/v2/static/images/nav/icon-heart.png" alt="icon-heart"
                              style="position: relative;top: -2px;">
                     </a>
                 </el-menu-item>
                 <!-- 顶部右侧 - 询盘 -->
-                <el-menu-item index="7" class="fr"><a href="" target="_blank">RFQ</a></el-menu-item>
+                <el-menu-item index="7" class="fr"><a href="/home/usr_UsrConsult_listView" target="_blank">RFQ</a>
+                </el-menu-item>
                 <!-- 顶部右侧 - 注册 -->
                 <el-submenu index="6" class="fr">
                     <template slot="title">Register</template>
-                    <el-menu-item index="6-1">Buyer</el-menu-item>
-                    <el-menu-item index="6-2">Supplier</el-menu-item>
+                    <el-menu-item index="6-1"><a href="/home/usr_UsrPurchase_sign" target="_blank">Buyer</a>
+                    </el-menu-item>
+                    <el-menu-item index="6-2"><a href="/home/usr_UsrSupplier_supplierEntry">{{$t("Supplier")}}</a>
+                    </el-menu-item>
                 </el-submenu>
                 <!-- 顶部右侧 - 登录 -->
-                <el-menu-item index="5" class="fr"><a href="" target="_blank">Login</a></el-menu-item>
+                <el-menu-item index="5" class="fr"><a href="/home/usr_UsrPurchase_sign" target="_blank">Login</a>
+                </el-menu-item>
             </el-menu>
         </div>
     </div>
@@ -90,12 +92,14 @@
                 Get Quotations
             </a>
             <!-- 多语言下拉选择 -->
-            <div class="language-select">
-                <img src="/v2/static/images/nav/icon-global.png" alt="">
+            <div class="language-select" v-if="languageList.length>0">
+                <img src="/home/v2/static/images/nav/icon-global.png" alt="">
                 <br>
                 {{_language}} <i class="el-icon-arrow-down el-icon--right"></i>
                 <el-select v-model="language" placeholder="请选择" class="top-language-select-input"
-                           popper-class="top-language-select-box">
+                           popper-class="top-language-select-box"
+                           @change="changeLang"
+                >
                     <el-option v-for="language in languageList" :key="language.shortName"
                                :label="language.displayName"
                                :value="language.shortName">
@@ -105,20 +109,20 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="/home/static/js/lang/en.js"></script>
 <script>
     var sysConfig = null
     var messages = {
-        en: lang_obj
+        shoestp: null
     }
-
-    // Create VueI18n instance with options
     var i18n = new VueI18n({
-        locale: 'en', // set locale
+        locale: 'shoestp', // set locale
         messages, // set locale messages
     })
-    // Create a Vue instance with `i18n` option
-
+    axios({
+        url: "/home/v2/static/lang/${envConfig.lang}.json"
+    }).then(function (res) {
+        messages.shoestp = res.data
+    })
     var nav = new Vue({
         el: "#nav", i18n,
         data() {
@@ -148,9 +152,8 @@
             }).then(function (res) {
                 if (res.data.ret && res.data.ret == 1) {
                     sysConfig = res.data.result
-                    self.$data.languageList = res.data.result.languages
-                    // Vue.set(self, "language", res.data.result.current_language)
-                    // Vue.set(self, "languageList", res.data.result.languages)
+                    Vue.set(self, "language", res.data.result.current_language)
+                    Vue.set(self, "languageList", res.data.result.languages)
                 } else {
                     console.error("ERR::FLAG")
                 }
@@ -167,6 +170,7 @@
                 console.log(key, keyPath);
             },
             changeLang() {
+                var self = this
                 axios({
                     url: "/home/plt_PltConfig_changeLanguage",
                     method: "get",
@@ -175,7 +179,16 @@
                     }
                 }).then(function (res) {
                     if (res.data.ret && res.data.ret == 1) {
-                        location.reload();
+                        // location.reload();
+                        axios({
+                            url: "/home/v2/static/lang/" + self.$data.language + ".json"
+                        }).then(res => {
+                            messages["shoestp"] = res.data
+                        }).catch(function (err) {
+                            console.log(err)
+                            console.error("ERR::FLAG")
+
+                        })
                     } else {
                         console.error("ERR::FLAG")
                     }

@@ -16,7 +16,8 @@ public class SEOUtils {
                 JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();
                 return getPdtProductTitle(pkey, jsonObject.get("en").getAsString());
             } else {
-                json = json.replace(" ", "-").replace("\\","").replace("/","").toLowerCase();
+                json.trim();
+                json = json.replace(" ", "-").replace("\\", "").replace("/", "").toLowerCase();
                 double pk = Math.log10(pkey) + 1;
                 StringBuffer stringBuffer = new StringBuffer();
                 for (int i = 0; i < Math.min((150 - pk), json.length()); i++) {
@@ -47,7 +48,7 @@ public class SEOUtils {
             if (stringBuffer.length() > 0) {
                 stringBuffer.append(" ");
             }
-         stringBuffer.append(Character.toUpperCase(string.charAt(0)));
+            stringBuffer.append(Character.toUpperCase(string.charAt(0)));
             stringBuffer.append(string.substring(1, string.length()));
 
         }
