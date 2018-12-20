@@ -456,7 +456,7 @@
             </div>
             <a href="/home/usr_UsrConsult_listView">
                 <div class="top10-01"
-                     style="display: inline-block;width: 762px;height: 377px;background: url('images/top10-02.png') center no-repeat;background-size: 100% 100%;padding-left: 40px;padding-top: 25px;vertical-align: top">
+                     style="display: inline-block;width: 762px;height: 377px;background: url('/home/v2/static/images/home/top10-02.png') center no-repeat;background-size: 100% 100%;padding-left: 40px;padding-top: 25px;vertical-align: top">
                     <p style="font-size: 18px;color: #c3c3c3;line-height: 50px">SHOES</p>
                     <p style="font-size: 24px;color: #ffffff;line-height: 25px;width: 250px">AN EASY WAY TO SEND BUYING
                         REQUESTS TO SUPPLIERS & GET QUOTES QUICKLY.</p>
@@ -497,19 +497,19 @@
                 </div>
                 <div class="clearfix list">
                     <div class="fl">
-                        <img src="./images/icon-gouwuche.png" alt="">
+                        <img src="/home/v2/static/images/home/icon-gouwuche.png" alt="">
                         <div>Speedy <br>
                             Checkout
                         </div>
                     </div>
                     <div class="fl">
-                        <img src="./images/icon-wuliu.png" alt="">
+                        <img src="/home/v2/static/images/home/icon-wuliu.png" alt="">
                         <div>Price Includes <br>
                             Shipping
                         </div>
                     </div>
                     <div class="fl">
-                        <img src="./images/icon-zhiliang.png" alt="">
+                        <img src="/home/v2/static/images/home/icon-zhiliang.png" alt="">
                         <div> Secure <br>
                             Transactions
                         </div>
@@ -540,7 +540,8 @@
                                 </a>
                                 <div class="btn-list flexSb">
                                     <div class="inquiry-btn btn" @click="inquiry(item.id)"><img
-                                            src="/home/v2/static/images/base/icon-inquiry.png" alt="" style="width:13px;height:11px;">
+                                            src="/home/v2/static/images/base/icon-inquiry.png" alt=""
+                                            style="width:13px;height:11px;">
                                         Inquiry
                                     </div>
                                     <div class="favorite-btn btn" :favorite-type="2"
@@ -587,7 +588,8 @@
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=977"
                                    target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods1.jpg" alt="" style="width:269.5px;height:271px;">
+                                    <img src="/home/v2/static/images/home/temp/goods1.jpg" alt=""
+                                         style="width:269.5px;height:271px;">
                                 </a>
                                 <div class="goods-detail">
                                     <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=977"
@@ -623,7 +625,8 @@
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=870"
                                    target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods2.jpg" alt="" style="width:269.5px;height:271px;">
+                                    <img src="/home/v2/static/images/home/temp/goods2.jpg" alt=""
+                                         style="width:269.5px;height:271px;">
                                 </a>
                                 <div class="goods-detail">
                                     <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=870"
@@ -658,7 +661,7 @@
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1145"
                                    target="_blank">
-                                    <img src="./images/goods3.jpg" alt="" style="width:269.5px;height:271px;">
+                                    <img src="/home/v2/static/images/home/temp/goods3.jpg" alt="" style="width:269.5px;height:271px;">
                                 </a>
                                 <div class="goods-detail">
                                     <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1145"
@@ -684,7 +687,7 @@
                                         <el-progress :percentage="10" color="#35ca97" :show-text="false"></el-progress>
                                     </div>
                                     <div class="goods-time">
-                                        <img src="./images/icon-time.png" alt="">
+                                        <img src="/home/v2/static/images/home/icon-time.png" alt="">
                                         <span style="color:#808080;font-size: 14px;">1 days left</span>
                                     </div>
                                 </div>
@@ -694,7 +697,8 @@
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=883"
                                    target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods4.jpg" alt="" style="width:269.5px;height:271px;">
+                                    <img src="/home/v2/static/images/home/temp/goods4.jpg" alt=""
+                                         style="width:269.5px;height:271px;">
                                 </a>
                                 <div class="goods-detail">
                                     <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=883"
@@ -729,7 +733,8 @@
                             <div class="crowdfunding-item">
                                 <a href="https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=845"
                                    target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods5.jpg" alt="" style="width:269.5px;height:271px;">
+                                    <img src="/home/v2/static/images/home/temp/goods5.jpg" alt=""
+                                         style="width:269.5px;height:271px;">
                                 </a>
                                 <div class="goods-detail">
                                     <a href="https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=845"
@@ -764,7 +769,8 @@
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1073"
                                    target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods6.jpg" alt="" style="width:269.5px;height:271px;">
+                                    <img src="/home/v2/static/images/home/temp/goods6.jpg" alt=""
+                                         style="width:269.5px;height:271px;">
                                 </a>
                                 <div class="goods-detail">
                                     <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1073"
@@ -801,7 +807,8 @@
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1143"
                                    target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods7.jpg" alt="" style="width:269.5px;height:271px;">
+                                    <img src="/home/v2/static/images/home/temp/goods7.jpg" alt=""
+                                         style="width:269.5px;height:271px;">
                                 </a>
                                 <div class="goods-detail">
                                     <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1143"
@@ -837,7 +844,8 @@
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1026"
                                    target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods8.jpg" alt="" style="width:269.5px;height:271px;">
+                                    <img src="/home/v2/static/images/home/temp/goods8.jpg" alt=""
+                                         style="width:269.5px;height:271px;">
                                 </a>
                                 <div class="goods-detail">
                                     <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1026"
@@ -872,7 +880,8 @@
                             <div class="crowdfunding-item">
                                 <a href="https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1094"
                                    target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods9.jpg" alt="" style="width:269.5px;height:271px;">
+                                    <img src="/home/v2/static/images/home/temp/goods9.jpg" alt=""
+                                         style="width:269.5px;height:271px;">
                                 </a>
                                 <div class="goods-detail">
                                     <a href="https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1094"
@@ -907,7 +916,8 @@
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1133"
                                    target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods10.jpg" alt="" style="width:269.5px;height:271px;">
+                                    <img src="/home/v2/static/images/home/temp/goods10.jpg" alt=""
+                                         style="width:269.5px;height:271px;">
                                 </a>
                                 <div class="goods-detail">
                                     <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1133"
@@ -944,7 +954,8 @@
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=822"
                                    target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods12.jpg" alt="" style="width:269.5px;height:271px;">
+                                    <img src="/home/v2/static/images/home/temp/goods12.jpg" alt=""
+                                         style="width:269.5px;height:271px;">
                                 </a>
                                 <div class="goods-detail">
                                     <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=822"
@@ -979,7 +990,8 @@
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1054"
                                    target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods11.jpg" alt="" style="width:269.5px;height:271px;">
+                                    <img src="/home/v2/static/images/home/temp/goods11.jpg" alt=""
+                                         style="width:269.5px;height:271px;">
                                 </a>
                                 <div class="goods-detail">
                                     <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1054"
@@ -1026,9 +1038,7 @@
 </div>
 <jsp:include page="v2/template/foot.jsp"></jsp:include>
 <script>
-    const isLogin = true;
-
-    new Vue({
+    var app=new Vue({
         el: "#mix", i18n,
         data() {
             return {
@@ -1238,7 +1248,6 @@
                     });
             },
             inquiry(id) { // 点击 询盘
-                console.log(id)
                 if (!isLogin) {
                     user_obj.set_form_sign_in('', window.location.href, 1);
                     return
@@ -1249,8 +1258,8 @@
                     }))
                         .then((data) => {
                             if (data.data) {
-                                if (data.data.ret && data.data.ret === 1) {
-                                    carWindow(data.data, lang_obj.global.inqadd)
+                                if (data.data.ret && data.data.ret != 1) {
+                                    console.error("ERR::FLAG")
                                 }
                             }
                             // this.productId = res.data.result.id
@@ -1266,6 +1275,7 @@
                         })
                         .catch((error) => {
                             this.$message.error(error);
+                            console.error("ERR::FLAG")
                         });
                 }
             },

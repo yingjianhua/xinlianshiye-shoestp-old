@@ -15,15 +15,15 @@
                 <div class="logos">
 
                     <a href="http://www.facebook.com/share.php?src=bm&v=4&u=https%3A%2F%2Fwww.shoestp.com%2Fhome%2Fusr_UsrPurchase&t=facebook"><img
-                            src="images/ljxlogo1.png" alt=""></a>
+                            src="/home/v2/static/images/foot/ljxlogo1.png" alt=""></a>
                     <a href="https://twitter.com/intent/tweet?status=twitter:+https%3A%2F%2Fwww.shoestp.com%2Fhome%2Fusr_UsrPurchase"><img
-                            src="images/ljxlogo2.png" alt=""></a>
+                            src="/home/v2/static/images/foot/ljxlogo2.png" alt=""></a>
                     <a href="https://www.baidu.com/link?url=U7A1o2bi8aWiIxRt-ojE-oGQL6-OE9SPkWyhfUBtayRPB4d2lKrLs21wYbw_m0Qx&wd=&eqid=ad5b5a8400044197000000045c138692"><img
-                            src="images/ljxlogo3.png" alt=""></a>
+                            src="/home/v2/static/images/foot/ljxlogo3.png" alt=""></a>
                     <a href="http://www.linkedin.com/cws/share?url=https%3A%2F%2Fwww.shoestp.com%2Fhome%2Fusr_UsrPurchase&title=linkedin"><img
-                            src="images/ljxlogo4.png" alt=""></a>
-                    <a href="javascript: void(0);"><img src="images/ljxlogo5.png" alt=""></a>
-                    <a href="javascript: void(0);"><img src="images/ljxlogo6.png" alt=""></a>
+                            src="/home/v2/static/images/foot/ljxlogo4.png" alt=""></a>
+                    <a href="javascript: void(0);"><img src="/home/v2/static/images/foot/ljxlogo5.png" alt=""></a>
+                    <a href="javascript: void(0);"><img src="/home/v2/static/images/foot/ljxlogo6.png" alt=""></a>
                 </div>
             </div>
         </div>
