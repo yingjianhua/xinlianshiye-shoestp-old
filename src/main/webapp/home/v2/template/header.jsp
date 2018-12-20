@@ -10,7 +10,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="keywords" content="">
     <meta name="description" content="">
-    <title></title>
+    <title>An Online B2B market——-Shoestp.com,gathering 300 professional shoes manufacture companies</title>
     <script src='/home/v2/static/js/base/vue.min.js'></script>
     <script src='/home/v2/static/js/base/vue-i18n.js'></script>
     <script src='/home/v2/static/js/base/element-ui.js'></script>
@@ -20,9 +20,11 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
+
         function gtag() {
             dataLayer.push(arguments);
         }
+
         gtag('js', new Date());
         gtag('config', 'AW-783435725');
         gtag('config', 'UA-127715615-6')
