@@ -7,7 +7,7 @@ import irille.pub.tb.FldLanguage;
 import irille.shop.usr.UsrPurchase;
 import irille.view.pdt.PdtProductBaseInfoView;
 import irille.view.pdt.PdtProductCatView;
-import irille.view.v2.Pdt.NewPdtInfo;
+import irille.view.v2.Pdt.PdtNewPdtInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -45,7 +45,7 @@ public interface IPdtProductService {
 
     List<PdtProductBaseInfoView> getYouMayLike(IduPage iduPage, int cat);
 
-    List<NewPdtInfo> getRandomPdt(Integer limit, int cat, UsrPurchase purchase);
+    List<PdtNewPdtInfo> getRandomPdt(Integer limit, int cat, UsrPurchase purchase);
 
 
     /**
@@ -60,6 +60,6 @@ public interface IPdtProductService {
      * @date 2018/12/17 9:53
      * @author lijie@shoestp.cn
      */
-    List<NewPdtInfo> getNewProducts(IduPage page, UsrPurchase pkey, FldLanguage.Language language);
+    List<PdtNewPdtInfo> getNewProducts(IduPage page, UsrPurchase pkey, FldLanguage.Language language);
 
 }

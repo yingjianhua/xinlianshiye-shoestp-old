@@ -233,7 +233,7 @@ public class ActivityServiceImp implements IActivityService {
             googleAnalyticsView.setId(Integer.valueOf(url.substring((url.indexOf("pkey=") + 5))));
             googleAnalyticsView.setType(4);
         }
-        Pattern pattern = Pattern.compile("/activity/html/romania/(\\w)[^/]+");
+        Pattern pattern = Pattern.compile("/activity/html/romania/(\\w+)[^/]?");
         Matcher matcher = pattern.matcher(url);
         if (matcher.find()) {
             System.out.println(matcher.group(1));
@@ -336,7 +336,7 @@ public class ActivityServiceImp implements IActivityService {
                     List<ReportRow> rows = report.getData().getRows();
                     if (rows == null) {
                         System.out.println("No data found");
-                        return;
+                        continue;
                     }
                     for (ReportRow row : rows) {
                         List<DateRangeValues> metrics = row.getMetrics();

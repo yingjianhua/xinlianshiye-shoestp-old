@@ -4,7 +4,10 @@ import irille.Aops.Caches;
 import irille.Dao.PltCountryDao;
 import irille.Service.Plt.PltService;
 import irille.pub.tb.FldLanguage;
+import irille.shop.plt.PltConfigDAO;
 import irille.view.plt.CountryView;
+import irille.view.plt.LanguageView;
+import irille.view.v2.Plt.PltSysLangInfoView;
 import org.json.JSONException;
 
 import javax.inject.Inject;
@@ -79,7 +82,7 @@ public class PltServiceImp implements PltService {
                                 7, 126, 218, 39, 149, 226
                         };
                         for (int i : filter) {
-                            if (i==countryView.getId()){
+                            if (i == countryView.getId()) {
                                 return true;
                             }
                         }
@@ -88,5 +91,48 @@ public class PltServiceImp implements PltService {
                 }
             }
         return result;
+    }
+
+    @Override
+    @Caches
+    public List<PltSysLangInfoView> getLangList() {
+        List lang = new ArrayList();
+        for (LanguageView languageView : PltConfigDAO.listLanguageView()) {
+            if (!languageView.getIsEnabled()) continue;
+            PltSysLangInfoView sysLangInfoView = new PltSysLangInfoView();
+            sysLangInfoView.setShortName(languageView.getShortName());
+            sysLangInfoView.setDisplayName(getLangDisplayName(languageView.getShortName()));
+            lang.add(sysLangInfoView);
+        }
+        return lang;
+    }
+
+    private String getLangDisplayName(String key) {
+        switch (key) {
+            case "en":
+                return "English";
+            case "ja":
+                return "日本語";
+            case "de":
+                return "Deutsch";
+            case "fr":
+                return "Français";
+            case "es":
+                return "Español";
+            case "ru":
+                return "русский";
+            case "pt":
+                return "Português";
+            case "zh_CN":
+                return "简体中文";
+            case "zh_TW":
+                return "繁体中文";
+            case "hu":
+                return "magyar";
+            case "ro":
+                return "românesc";
+            default:
+                return null;
+        }
     }
 }

@@ -7,6 +7,7 @@ import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduOther;
 import irille.pub.tb.FldLanguage;
 import irille.pub.util.CacheUtils;
+import irille.pub.util.GetValue;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtProduct;
@@ -14,8 +15,10 @@ import irille.shop.usr.UsrFavorites;
 import irille.view.prm.GproductListView;
 import irille.view.prm.GroupProductView;
 import irille.view.prm.shoesView;
+import irille.view.v2.Prm.PrmPdtInfo;
 
 import javax.inject.Inject;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -168,6 +171,65 @@ public class PrmGroupPurchaseLineDAO extends IduOther<PrmGroupPurchaseLineDAO, P
         return glv;
     }
 
+
+    public GproductListView getgroupshoplist2(Integer purchaseid) {
+        GproductListView glv = new GproductListView();
+        String manpkeys = pdtCatDao.getAllChild(FldLanguage.Language.en, 373);
+        String womanpkeys = pdtCatDao.getAllChild(FldLanguage.Language.en, 380);
+        String children = pdtCatDao.getAllChild(FldLanguage.Language.en, 387);
+        glv.setManshoes(loadshoesView2(purchaseid, manpkeys, "mancache"));
+        glv.setWomanshoes(loadshoesView2(purchaseid, womanpkeys, "wumancache"));
+        glv.setChildrenshoes(loadshoesView2(purchaseid, children, "childrencache"));
+        return glv;
+    }
+
+    public List<PrmPdtInfo> loadshoesView2(Integer purchaseid, String pkeys, String keycache) {
+        List<PrmPdtInfo> manglv = (List<PrmPdtInfo>) CacheUtils.groupshopcache.get(keycache + "2", o -> {
+            SQL mansql = new SQL();
+            mansql
+                    .SELECT(PrmGroupPurchaseLine.T.PKEY)
+                    .SELECT(PdtProduct.T.PKEY, "PPKEY")
+                    .SELECT(
+                            PdtProduct.T.NAME,
+                            PdtProduct.T.PICTURE,
+                            PdtProduct.T.MIN_OQ,
+                            PdtProduct.T.CUR_PRICE
+                    )
+                    .FROM(PrmGroupPurchaseLine.class)
+                    .LEFT_JOIN(PdtProduct.class, PdtProduct.T.PKEY, PrmGroupPurchaseLine.T.PRODUCT)
+                    .LEFT_JOIN(PrmGroupPurchase.class, PrmGroupPurchase.T.PKEY, PrmGroupPurchaseLine.T.MAIN)
+                    .WHERE(PdtProduct.T.CATEGORY, " in (" + pkeys + ") ")
+                    .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON);
+//                    .WHERE(PrmGroupPurchase.T.END_TIME, ">?", new Date())
+            ;
+            List<PrmPdtInfo> listman = Query.sql(mansql).queryMaps().stream().map(Y -> new PrmPdtInfo() {{
+                setId((Integer) Y.get(PrmGroupPurchaseLine.T.PKEY.getFld().getCodeSqlField()));
+                setImg((String) Y.get(PdtProduct.T.PICTURE.getFld().getCodeSqlField()));
+                setTitle((String) Y.get(PdtProduct.T.NAME.getFld().getCodeSqlField()));
+                setProductid((Integer) Y.get("PPKEY"));
+                setPrice(GetValue.get(Y, "cur_price", BigDecimal.class, BigDecimal.ZERO));
+                setMin_order(GetValue.get(Y, "min_oq", Integer.class, 0));
+            }}).collect(Collectors.toList());
+            return listman;
+        });
+        Set<Integer> intSet = new HashSet<>();
+        Integer i = 10;
+        if (manglv.size() != 0) {
+            while (intSet.size() < 6 && i > 0) {
+                i--;
+                intSet.add(new Random().nextInt(manglv.size()));
+            }
+        }
+
+        Integer[] ints = intSet.toArray(new Integer[intSet.size()]);
+        List<PrmPdtInfo> manglvshow = new ArrayList<>();
+        for (int m = 0; m < ints.length; m++) {
+            manglv.get(ints[m]).setFavorite(Likebest(purchaseid, manglv.get(ints[m]).getProductid()));
+            manglvshow.add(manglv.get(ints[m]));
+        }
+        return manglvshow;
+    }
+
     public List<shoesView> loadshoesView(Integer purchaseid, String pkeys, String keycache) {
         List<shoesView> manglv = (List<shoesView>) CacheUtils.groupshopcache.get(keycache, o -> {
             SQL mansql = new SQL() {{
@@ -177,8 +239,8 @@ public class PrmGroupPurchaseLineDAO extends IduOther<PrmGroupPurchaseLineDAO, P
                         .LEFT_JOIN(PdtProduct.class, PdtProduct.T.PKEY, PrmGroupPurchaseLine.T.PRODUCT)
                         .LEFT_JOIN(PrmGroupPurchase.class, PrmGroupPurchase.T.PKEY, PrmGroupPurchaseLine.T.MAIN)
                         .WHERE(PdtProduct.T.CATEGORY, " in (" + pkeys + ") ")
-                        .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON)
-                        .WHERE(PrmGroupPurchase.T.END_TIME, ">?", new Date())
+                        .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON);
+//                        .WHERE(PrmGroupPurchase.T.END_TIME, ">?", new Date())
                 ;
             }};
             List<shoesView> listman = Query.sql(mansql).queryMaps().stream().map(Y -> new shoesView() {{

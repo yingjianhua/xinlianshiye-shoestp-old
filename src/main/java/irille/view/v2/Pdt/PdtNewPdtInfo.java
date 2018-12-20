@@ -15,7 +15,7 @@ import java.math.BigDecimal;
  * Time: 16:11
  */
 @Data
-public class NewPdtInfo implements BaseView {
+public class PdtNewPdtInfo implements BaseView {
     private Long id;
     @JsonSerialize(using = I18NFieldSerializer.class)
     private String title;

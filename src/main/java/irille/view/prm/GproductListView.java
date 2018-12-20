@@ -1,6 +1,5 @@
 package irille.view.prm;
 
-import irille.pub.html.Nodes;
 import irille.view.BaseView;
 import lombok.Data;
 import lombok.Getter;
@@ -13,12 +12,12 @@ import java.util.List;
 public class GproductListView implements BaseView {
     @Setter
     @Getter
-    private List<shoesView> manshoes;
+    private List manshoes;
     @Setter
     @Getter
-    private List<shoesView> womanshoes;
+    private List womanshoes;
     @Setter
     @Getter
-    private List<shoesView> childrenshoes;
+    private List childrenshoes;
 
 }

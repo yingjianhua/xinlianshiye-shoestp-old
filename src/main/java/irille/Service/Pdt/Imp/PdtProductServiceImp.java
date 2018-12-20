@@ -16,7 +16,7 @@ import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrPurchase;
 import irille.view.pdt.PdtProductBaseInfoView;
 import irille.view.pdt.PdtProductCatView;
-import irille.view.v2.Pdt.NewPdtInfo;
+import irille.view.v2.Pdt.PdtNewPdtInfo;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
@@ -107,14 +107,14 @@ public class PdtProductServiceImp implements IPdtProductService {
      * @author lijie@shoestp.cn
      */
     @Override
-    public List<NewPdtInfo> getRandomPdt(Integer limit, int cat, UsrPurchase purchase) {
+    public List<PdtNewPdtInfo> getRandomPdt(Integer limit, int cat, UsrPurchase purchase) {
         List resultSet;
         if (purchase != null) {
             resultSet = pdtProductDao.getYouMayLike(cat, purchase.getPkey());
         } else {
             resultSet = pdtProductDao.getYouMayLike(cat, null);
         }
-        List<NewPdtInfo> result = new ArrayList<>();
+        List<PdtNewPdtInfo> result = new ArrayList<>();
         if (limit == null || limit < 1) {
             limit = 12;
         }
@@ -124,7 +124,7 @@ public class PdtProductServiceImp implements IPdtProductService {
             }
             Double integer = Math.random() * resultSet.size();
             Object object = resultSet.get(integer.intValue());
-            NewPdtInfo newPdtInfo = new NewPdtInfo();
+            PdtNewPdtInfo newPdtInfo = new PdtNewPdtInfo();
             if (object instanceof PdtProduct) {
                 PdtProduct pdtProduct = (PdtProduct) resultSet.get(integer.intValue());
                 newPdtInfo.setId(pdtProduct.getPkey().longValue());
@@ -166,7 +166,7 @@ public class PdtProductServiceImp implements IPdtProductService {
     }
 
     @Override
-    public List<NewPdtInfo> getNewProducts(IduPage page, UsrPurchase pkey, FldLanguage.Language language) {
+    public List<PdtNewPdtInfo> getNewProducts(IduPage page, UsrPurchase pkey, FldLanguage.Language language) {
         int start = page.getStart();
         int limit = page.getLimit() == 0 ? 10 : page.getLimit();
         List<Map<String, Object>> result;
@@ -174,9 +174,9 @@ public class PdtProductServiceImp implements IPdtProductService {
             result = pdtProductDao.getNewProductsAndFavoritesInfoList(start, limit, null);
         else
             result = pdtProductDao.getNewProductsAndFavoritesInfoList(start, limit, pkey.getPkey());
-        List<NewPdtInfo> list = new ArrayList();
+        List<PdtNewPdtInfo> list = new ArrayList();
         for (Map<String, Object> stringObjectMap : result) {
-            NewPdtInfo pdtInfo = new NewPdtInfo();
+            PdtNewPdtInfo pdtInfo = new PdtNewPdtInfo();
             pdtInfo.setRewrite(SEOUtils.getPdtProductTitle(Integer.parseInt(String.valueOf(stringObjectMap.get("id"))),
                     String.valueOf(stringObjectMap.get("name"))
                     )
