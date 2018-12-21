@@ -12,18 +12,19 @@
     <div id="ljx_top">
         <div class="ljx">
             <div class="top-bg-container">
-                <el-carousel height="202px" arrow="always" :interval="6000" indicator-position="outside">
+                <el-carousel height="225px" arrow="always" :interval="6000" indicator-position="outside">
                     <el-carousel-item>
                         <a href="/country/Romania-Pantofi-en-gros/romania-index-ro.html"
-                           target="_blank"><img src="/home/v2/static/images/home/ljxbanner1.jpg" alt=""></a>
+                           target="_blank"><img src="/home/v2/static/images/home/ljxbanner1.jpg" class="carousel-pic"
+                                                alt=""></a>
                     </el-carousel-item>
                     <el-carousel-item>
                         <a href="/home/pdt_PdtProduct" target="_blank"><img
-                                src="/home/v2/static/images/home/ljxbanner2.jpg" alt=""></a>
+                                src="/home/v2/static/images/home/ljxbanner2.jpg" class="carousel-pic" alt=""></a>
                     </el-carousel-item>
                     <el-carousel-item>
                         <a href="/home/usr_UsrConsult_publicListView" target="_blank"><img
-                                src="/home/v2/static/images/home/ljxbanner3.jpg" alt=""></a>
+                                src="/home/v2/static/images/home/ljxbanner3.jpg" class="carousel-pic" alt=""></a>
                     </el-carousel-item>
                 </el-carousel>
             </div>
@@ -36,9 +37,9 @@
                     <div class="ljxhidden" style="padding-top: 68px;">
                         <!-- <h4>His</h4> -->
                         <ul>
-                            <li>Men's leather shoes</li>
-                            <li>Men's sneakers</li>
-                            <li>Men's sneakers</li>
+                            <li>Mens' leather shoes</li>
+                            <li>Mens' sneakers</li>
+                            <li>Mens' sneakers</li>
                         </ul>
                         <a href="/home/pdt_PdtProduct?cated=373"><span>Learn More</span></a>
                     </div>
@@ -51,9 +52,9 @@
                     <div class="ljxhidden" style="padding-top: 68px;">
                         <!-- <h4>Her</h4> -->
                         <ul>
-                            <li>Women's high heels</li>
-                            <li>Women's sneakers</li>
-                            <li>Women's sandals</li>
+                            <li>Womens' high heels</li>
+                            <li>Womens' sneakers</li>
+                            <li>Womens' sandals</li>
                         </ul>
                         <a href="/home/pdt_PdtProduct?cated=380"><span>Learn More</span></a>
                     </div>
@@ -66,9 +67,9 @@
                     <div class="ljxhidden" style="padding-top: 68px;">
                         <!-- <h4>Kids</h4> -->
                         <ul>
-                            <li>Boy's shoes</li>
-                            <li>Girl's shoes</li>
-                            <li>Children's sandals</li>
+                            <li>Boys' shoes</li>
+                            <li>Girls' shoes</li>
+                            <li>Childrens' sandals</li>
                         </ul>
                         <a href="/home/pdt_PdtProduct?cated=387"><span>Learn More</span></a>
                     </div>
@@ -85,7 +86,7 @@
                 <div class="goods-category-item stop-swiping">
                     <div class="flex-left-right">
                         <div class="descript-box">
-                            <div class="big-title">O2O SHOW ROOM</div>
+                            <div class="big-title">O2O Show Room</div>
                             <div class="content-text">
                                 From our exhibitors,
                                 <br>
@@ -278,7 +279,7 @@
     <!-- 林铁原 -->
     <div id="lty">
         <div class="hotCouny">
-            <h2 style="font-size: 40px;height: 100px;line-height: 126px;font-weight: 500;border-bottom: 1px solid #ccc;margin-bottom: 20px;">
+            <h2 style="font-size: 40px;height: 110px;line-height: 140px;font-weight: 500;border-bottom: 1px solid #ccc;margin-bottom: 20px;">
                 Trade Shows </h2>
             <ul class="top">
                 <!-- <li class="on"><img src="images/couny1.jpg" alt="" />Romania<i></i></li> -->
@@ -290,7 +291,7 @@
             <div class="com">
                 <div class="left fl">
                     <div class="left-title">
-                        500-800 pairs of
+                        500-800<br/>pairs of
                     </div>
                     <div class="left-title_2">
                         premium shoes
@@ -345,7 +346,7 @@
                             <p>
                                 Who Should
                                 <br>
-                                Visit
+                                Exhibit
                             </p>
                         </div>
                     </li>
@@ -358,7 +359,7 @@
     <div id="xc">
         <!-- New Products -->
         <div class="new-products-container">
-            <div class="title">New Products</div>
+            <div class="title" style="margin-top: 21px;">New Products</div>
             <div class="tip clearfix">
                 <span class="tip-title fl">Free Alerts on newly added products! </span>
                 <input type="email" v-model="form.email" class="tip-input fl" placeholder="Example:jsun@company.com"/>
@@ -366,14 +367,12 @@
                 <div class="tip-btn fl" @click="subscribe">Subscribe</div>
             </div>
             <!-- Swiper -->
-            <div style=" width:1280px;height:388px;position:relative;left:-40px;" class="new-swiper">
-                <div class="swiper-container swiper-no-swiping" id="new-products-swiper" style="width:1200px;">
+            <div style=" width:1240px;height:388px;position:relative;left:0;" class="new-swiper">
+                <div class="swiper-container swiper-no-swiping" id="new-products-swiper" style="width:1240px;">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide" v-cloak @mouseover="productsOver($event,index)"
-                             @mouseout="productsOut($event,index)"
-                             v-for="(item, index) in newProductsList" :key="index">
+                        <div class="swiper-slide" v-cloak v-for="(item, index) in newProductsList" :key="index">
                             <a :href="'/'+item.rewrite" target="_blank">
-                                <img :src="image(item.image)" alt="" style="width:277px;height:217px;">
+                                <img :src="image(item.image)" alt=""  style="width:100%;height:217px;object-fit: contain;">
                             </a>
                             <div class="goods-info">
                                 <a :href="'/'+item.rewrite" target="_blank">
@@ -434,10 +433,11 @@
 
     <!-- 林华力 -->
     <div id="home">
-        <div class="top10" style="width: 1200px;margin: 0 auto;">
+        <div class="top10" style="width: 1240px;margin: 0 auto;">
             <h2 style="font-size: 40px;height: 100px;line-height: 126px;font-weight: 500;border-bottom: 1px solid #c4c4c4">
                 Top10 Reliable Suppliers</h2>
-            <p style="font-size: 18px;color: #929292;line-height: 50px">Free Alerts on newly added products! </p>
+            <p style="font-size: 18px;color: #000;line-height: 50px;height: 40px;">Free Alerts on newly added
+                products! </p>
             <div class="top10-03" style="width: 100%;position: relative">
                 <img src="/home/v2/static/images/home/top10-01-1.png" alt="">
                 <!-- 六边形logo定位 -->
@@ -454,9 +454,13 @@
                 </div>
 
             </div>
+            <h2 style="font-size: 40px;height: 80px;line-height: 90px;font-weight: 500;border-bottom: 1px solid #c4c4c4">
+                Request
+                For Quotation</h2>
+            <p style="font-size: 18px;color: #000;height: 60px;line-height: 50px">Customization Service</p>
             <a href="/home/usr_UsrConsult_listView">
                 <div class="top10-01"
-                     style="display: inline-block;width: 762px;height: 377px;background: url('/home/v2/static/images/home/top10-02.png') center no-repeat;background-size: 100% 100%;padding-left: 40px;padding-top: 25px;vertical-align: top">
+                     style="display: inline-block;width: 787px;height: 377px;background: url('/home/v2/static/images/home/top10-02.png') center no-repeat;background-size: cover;padding-left: 40px;padding-top: 25px;vertical-align: top">
                     <p style="font-size: 18px;color: #c3c3c3;line-height: 50px">SHOES</p>
                     <p style="font-size: 24px;color: #ffffff;line-height: 25px;width: 250px">AN EASY WAY TO SEND BUYING
                         REQUESTS TO SUPPLIERS & GET QUOTES QUICKLY.</p>
@@ -467,7 +471,8 @@
                     </ul>
                 </div>
                 <div class="top10-02"
-                     style="display: inline-block;width: 420px;height: 377px;border: 7px solid #c4c4c4;vertical-align: top;margin-left: 12px;padding: 20px">
+                     style="display: inline-block;width: 435px;height: 377px;border: 7px solid #c4c4c4;vertical-align: top;margin-left: 17px;padding: 20px">
+
                     <h2 style="font-size: 40px;line-height: 50px;">One Request, Multiple Quotes</h2>
                     <form action="">
                         <input type="text" placeholder="what are you looking for..."
@@ -477,7 +482,7 @@
                         <span style="display:inline-block;width: 39%;height: 44px;border: 1px solid #c4c4c4;margin: 10px 0;text-indent: 10px;margin-left:-5px;font-size: 16px;line-height: 42px;color: #a1a1a1;">Bag/Bags</span>
                         <p style="font-size: 16px;line-height: 42px;color: #a1a1a1;">Select template type :</p>
                         <a href="javascript:void(0);"
-                           style="display: inline-block;width: 80%;height: 40px;font-size: 18px;line-height: 40px;color: #c2c2c2;background-color: #10389c;text-align: center;border-radius: 10px">Request
+                           style="display: inline-block;width: 80%;height: 40px;font-size: 18px;line-height: 40px;color: #fff;background-color: #10389c;text-align: center;border-radius: 10px">Request
                             For Quotation</a>
                     </form>
                 </div>
@@ -489,8 +494,8 @@
     <div id="xc">
         <!-- BRAND ZONE  -->
         <div class="brand-zone-container">
-            <div class="title">BRAND ZONE</div>
-            <div style="margin:40px 0;" class="brand-zone-title">
+            <div class="title" style="margin-top: 20px;">Brand Zone</div>
+            <div style="margin:34px 0 20px 0;" class="brand-zone-title">
                 <div class="name">
                     <div>Buy Fashion Shoes Instantly</div>
                     <a href="/home/pdt_PdtProduct" target="_blank">Order Now</a>
@@ -516,14 +521,14 @@
                     </div>
                 </div>
             </div>
-            <div style=" width:1280px;height:271px;position:relative;left:-40px;">
-                <div class="swiper-container swiper-no-swiping" id="brand-zone-swiper" style="width:1200px;">
+            <div style=" width:1240px;height:271px;position:relative;left:0;">
+                <div class="swiper-container swiper-no-swiping" id="brand-zone-swiper" style="width:1240px;">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide" v-cloak @mouseover="productsOver($event,index)"
-                             @mouseout="productsOut($event,index)"
+                        <div class="swiper-slide" v-cloak
                              v-for="(item,index) in RandomPdtList" :key="index">
                             <a :href="'/'+item.rewrite" target="_blank">
-                                <img :src="image(item.image)" alt="" style="width: 173px;height: 162px;">
+                                <img :src="image(item.image)" alt=""
+                                     style="width: 100%;height: 162px;object-fit: contain;">
                                 <div class="goods-info">
                                     <div>
                                         {{item.title}}
@@ -571,10 +576,10 @@
             </div>
         </div>
         <!-- CROWDFUNDING -->
-        <div class="crowdfunding-container">
+        <div class="crowdfunding-container" style="margin-bottom:15px;">
             <div class="clearfix" style="border-bottom: 1px solid #cccccc;">
-                <div class="title fl" style="border:none">CROWDFUNDING</div>
-                <div class="tip clearfix fl" style="margin:28px 0 0 15px;">
+                <div class="title fl" style="border:none;line-height: normal;margin-bottom:25px;">Crowdfunding</div>
+                <div class="tip clearfix fl" style="margin:12px 0 0 15px;">
                     <ul class="tip-list clearfix">
                         <li class="fl">Lower price in small number</li>
                         <li class="fl" style="margin-left:40px;">Fashion Design will be published</li>
@@ -584,7 +589,7 @@
             <div style=" width:1280px;height:462px;position:relative;left:-40px;margin-top:35px;">
                 <div class="swiper-container swiper-no-swiping" id="crowdfunding-swiper" style="width:1200px;">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide" @mouseover="productsOver($event)" @mouseout="productsOut($event)">
+                        <div class="swiper-slide">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=977"
                                    target="_blank">
@@ -621,7 +626,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide" @mouseover="productsOver($event)" @mouseout="productsOut($event)">
+                        <div class="swiper-slide">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=870"
                                    target="_blank">
@@ -657,11 +662,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide" @mouseover="productsOver($event)" @mouseout="productsOut($event)">
+                        <div class="swiper-slide">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1145"
                                    target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods3.jpg" alt="" style="width:269.5px;height:271px;">
+                                    <img src="/home/v2/static/images/home/temp/goods3.jpg" alt=""
+                                         style="width:269.5px;height:271px;">
                                 </a>
                                 <div class="goods-detail">
                                     <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1145"
@@ -693,7 +699,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide" @mouseover="productsOver($event)" @mouseout="productsOut($event)">
+                        <div class="swiper-slide">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=883"
                                    target="_blank">
@@ -729,7 +735,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide" @mouseover="productsOver($event)" @mouseout="productsOut($event)">
+                        <div class="swiper-slide">
                             <div class="crowdfunding-item">
                                 <a href="https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=845"
                                    target="_blank">
@@ -765,7 +771,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide" @mouseover="productsOver($event)" @mouseout="productsOut($event)">
+                        <div class="swiper-slide">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1073"
                                    target="_blank">
@@ -803,7 +809,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide" @mouseover="productsOver($event)" @mouseout="productsOut($event)">
+                        <div class="swiper-slide">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1143"
                                    target="_blank">
@@ -840,7 +846,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide" @mouseover="productsOver($event)" @mouseout="productsOut($event)">
+                        <div class="swiper-slide">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1026"
                                    target="_blank">
@@ -876,7 +882,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide" @mouseover="productsOver($event)" @mouseout="productsOut($event)">
+                        <div class="swiper-slide">
                             <div class="crowdfunding-item">
                                 <a href="https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1094"
                                    target="_blank">
@@ -912,7 +918,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide" @mouseover="productsOver($event)" @mouseout="productsOut($event)">
+                        <div class="swiper-slide">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1133"
                                    target="_blank">
@@ -950,7 +956,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide" @mouseover="productsOver($event)" @mouseout="productsOut($event)">
+                        <div class="swiper-slide">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=822"
                                    target="_blank">
@@ -986,7 +992,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide" @mouseover="productsOver($event)" @mouseout="productsOut($event)">
+                        <div class="swiper-slide">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1054"
                                    target="_blank">
@@ -1038,7 +1044,7 @@
 </div>
 <jsp:include page="v2/template/foot.jsp"></jsp:include>
 <script>
-    var app=new Vue({
+    var app = new Vue({
         el: "#mix", i18n,
         data() {
             return {
@@ -1212,12 +1218,6 @@
                         console.log(error);
                     });
             },
-            productsOver(event, index) { // 移入商品蓝框
-                event.currentTarget.className = "swiper-slide products-active"
-            },
-            productsOut(event, index) { // 移出商品蓝框
-                event.currentTarget.className = "swiper-slide"
-            },
             getRandomPdt() { //获取随机商品
                 let _self = this;
                 axios.get('/home/pdt_PdtProduct_getRandomPdt?v=2&page=1&limit=17')
@@ -1249,7 +1249,12 @@
             },
             inquiry(id) { // 点击 询盘
                 if (!isLogin) {
-                    user_obj.set_form_sign_in('', window.location.href, 1);
+                    this.$alert('Please login to operate', 'Please login to operate', {
+                        confirmButtonText: 'Ok',
+                        callback: action => {
+                            window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/"
+                        }
+                    });
                     return
                 } else {
                     // console.log("已登录")
@@ -1286,7 +1291,13 @@
                 if (!isLogin) {
                     // user_obj.set_form_sign_in('', window.location.href, 1);
                     // return
-                    user_obj.set_form_sign_in('', window.location.href, 1);
+                    this.$alert('Please login to operate', 'Please login to operate', {
+                        confirmButtonText: 'Ok',
+                        callback: action => {
+                            window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/"
+                        }
+                    });
+
                 } else {
                     axios.post('/home/usr_UsrFavorites_addFavorite', Qs.stringify({ //请求参数
                         pdtPkey: id,

@@ -1,8 +1,11 @@
 @charset "UTF-8";
 /* 鞋款分类wrap */
+html, body {
+  background-color: #f9f9f9; }
+
 .w_1200 .wide {
-  width: 1200px;
-  min-width: 1200px;
+  width: 1240px;
+  min-width: 1240px;
   margin: 0 auto; }
 
 #xsq .btn-blue {
@@ -42,7 +45,7 @@
   background: url("/home/v2/static/images/home/man-banner.jpg") no-repeat center/cover; }
 
 #xsq .goods-category-wrap .goods-category-item {
-  padding: 56px 24px;
+  padding: 28px 44px 38px;
   /* background: url("/home/v2/static/images/home/man-banner.jpg") no-repeat center / cover; */ }
 
 #xsq .goods-category-wrap .goods-category-item .flex-left-right {
@@ -81,7 +84,7 @@
   /* justify-content: space-between; */ }
 
 #xsq .goods-category-item .right-goods-out-wrap .slide-title {
-  padding-top: 3px;
+  padding-top: 12px;
   height: 80px;
   font-size: 30px;
   font-family: ArialMT;
@@ -240,19 +243,19 @@
 #xsq .goods-category-nav-wrap .goods-category-nav-item.active:after {
   opacity: 1; }
 
-.ljx .logocon {
-  width: 1200px;
-  margin: 0 auto; }
-
 .ljx .top-bg-container {
   width: 100%;
-  height: 253px;
+  height: 276px;
   padding-top: 10px;
   background-color: #e2e4e1; }
 
 .ljx .el-carousel {
-  width: 1200px;
+  width: 1240px;
   margin: 0 auto; }
+
+.ljx .el-carousel .carousel-pic {
+  width: 1240px;
+  object-fit: cover; }
 
 .ljx .el-carousel__arrow {
   display: none; }
@@ -276,17 +279,20 @@
   bottom: 5%; }
 
 .ljx .ljxcon-1 {
-  width: 1200px;
+  width: 1240px;
   display: flex;
   justify-content: space-between;
-  margin: 40px auto 25px; }
+  margin: 40px auto; }
 
 .ljx .ljxcon-1 .ljxcon {
+  width: 393px;
+  height: 237px;
   overflow: hidden;
   position: relative; }
 
 .ljx .ljxcon-1 .ljxcon .ljxshow {
-  position: relative; }
+  position: relative;
+  height: 100%; }
 
 .ljx .ljxcon-1 .ljxcon .ljxshow span {
   position: absolute;
@@ -318,14 +324,14 @@
 
 .ljx .ljxcon-1 .ljxcon .ljxshow img {
   width: 100%;
-  height: 230px;
+  height: 100%;
   object-fit: cover; }
 
 .ljx .ljxcon-1 .ljxcon .ljxhidden {
   position: absolute;
   top: 100%;
-  width: 380px;
-  height: 230px;
+  width: 100%;
+  height: 100%;
   background-color: rgba(255, 255, 255, 0.8);
   opacity: 0;
   transition: all 0.5s ease;
@@ -449,47 +455,47 @@
 
 /* 六角形定位 */
 .hexagon-list-wrap .hexagon-wrap:nth-child(1) {
-  left: 603px;
-  top: 126px; }
+  left: 604px;
+  top: 124px; }
 
 .hexagon-list-wrap .hexagon-wrap:nth-child(2) {
-  left: 465px;
-  top: 365px; }
+  left: 464px;
+  top: 363px; }
 
 .hexagon-list-wrap .hexagon-wrap:nth-child(3) {
-  left: 465px;
-  top: 205px; }
+  left: 464px;
+  top: 203px; }
 
 .hexagon-list-wrap .hexagon-wrap:nth-child(4) {
-  left: 324px;
-  top: 283px; }
-
-.hexagon-list-wrap .hexagon-wrap:nth-child(5) {
-  left: 326px;
-  top: 123px; }
-
-.hexagon-list-wrap .hexagon-wrap:nth-child(6) {
-  left: 186px;
-  top: 202px; }
-
-.hexagon-list-wrap .hexagon-wrap:nth-child(7) {
-  left: 187px;
-  top: 43px; }
-
-.hexagon-list-wrap .hexagon-wrap:nth-child(8) {
-  left: 45px;
+  left: 323px;
   top: 281px; }
 
-.hexagon-list-wrap .hexagon-wrap:nth-child(9) {
-  left: 47px;
+.hexagon-list-wrap .hexagon-wrap:nth-child(5) {
+  left: 325px;
   top: 121px; }
 
+.hexagon-list-wrap .hexagon-wrap:nth-child(6) {
+  left: 185px;
+  top: 200px; }
+
+.hexagon-list-wrap .hexagon-wrap:nth-child(7) {
+  left: 186px;
+  top: 41px; }
+
+.hexagon-list-wrap .hexagon-wrap:nth-child(8) {
+  left: 44px;
+  top: 279px; }
+
+.hexagon-list-wrap .hexagon-wrap:nth-child(9) {
+  left: 46px;
+  top: 119px; }
+
 .hexagon-list-wrap .hexagon-wrap:nth-child(10) {
-  left: 603px;
-  top: 286px; }
+  left: 604px;
+  top: 284px; }
 
 #lty .hotCouny {
-  width: 1200px;
+  width: 1240px;
   margin: 0 auto; }
 
 #lty .hotCouny .top {
@@ -500,7 +506,7 @@
 #lty .hotCouny .top li {
   position: relative;
   float: left;
-  width: 300px;
+  width: 310px;
   border: 1px solid #e6e6e6;
   text-align: center;
   height: 75px;
@@ -592,14 +598,14 @@
   line-height: 54px; }
 
 #lty .hotCouny .com ul {
-  width: 860px;
+  width: 907px;
   height: 534px;
   padding-top: 38px;
   /*background:#eee;*/ }
 
 #lty .hotCouny .com ul li {
   float: left;
-  width: 392px;
+  width: 418px;
   height: 220px;
   margin: 0 34px 20px 0;
   cursor: pointer;
@@ -644,11 +650,8 @@
 #lty .hotCouny .com ul li .pic2 {
   margin: 70px 0 10px 0; }
 
-html, body {
-  background-color: #f9f9f9; }
-
 #xc {
-  width: 1200px;
+  width: 1240px;
   margin: 0 auto; }
 
 #xc .blueFontColor {
@@ -668,7 +671,7 @@ html, body {
   margin: 12px 0 30px 0; }
 
 #xc .tip .tip-title {
-  color: #929292;
+  color: #000;
   margin-right: 20px; }
 
 #xc .tip .tip-input {
@@ -689,10 +692,11 @@ html, body {
   cursor: pointer; }
 
 #xc .brand-zone-container .brand-zone-title {
-  background: url(/home/v2/static/images/home/bg1.jpg) no-repeat 100% 100%;
-  width: 1200px;
-  height: 128px;
-  position: relative; }
+  background: url(/home/v2/static/images/home/bg1.jpg) no-repeat center/cover;
+  width: 1240px;
+  height: 132px;
+  position: relative;
+  background-size: cover; }
 
 #xc .brand-zone-container .brand-zone-title .name {
   font-size: 37px;
@@ -806,7 +810,11 @@ html, body {
 
 #xc #new-products-swiper .swiper-wrapper .swiper-slide {
   border: 2px solid #ffffff;
-  overflow: hidden; }
+  overflow: hidden;
+  background-color: #ffffff; }
+
+#xc #new-products-swiper .swiper-wrapper .swiper-slide:hover, #xc #brand-zone-swiper .swiper-slide:hover, #xc .crowdfunding-container #crowdfunding-swiper .swiper-slide:hover {
+  border: 2px solid #2435a1 !important; }
 
 #xc #brand-zone-swiper .swiper-slide {
   padding: 7px;
@@ -829,7 +837,7 @@ html, body {
 
 #xc .crowdfunding-container .tip .tip-list {
   list-style: disc;
-  color: #b7b7b7; }
+  color: #000; }
 
 #xc .crowdfunding-container .tip .tip-list li {
   margin-left: 20px; }
@@ -851,11 +859,11 @@ html, body {
 #xc .crowdfunding-container .crowdfunding-item .goods-time {
   margin-top: 10px; }
 
+#xc .crowdfunding-container .crowdfunding-item a:hover .goods-title div {
+  text-decoration: underline !important; }
+
 #xc .el-progress-bar__outer {
   background-color: #c7f0e2; }
-
-#xc a:hover {
-  text-decoration: underline; }
 
 #xc .products-active {
   border: 2px solid #2435a1 !important; }

@@ -271,6 +271,132 @@ public class PdtProductDao {
 
     }
 
+    public Map getProductListV2(PdtProductView pdtProductView) {
+        BeanQuery query = new BeanQuery();
+        query.SELECT(
+                PdtProduct.T.PKEY,
+                PdtProduct.T.NAME,
+                PdtProduct.T.PICTURE,
+                PdtProduct.T.CUR_PRICE,
+                PdtProduct.T.Favorite_Count
+        ).FROM(PdtProduct.class)
+                .limit(pdtProductView.getPage().getStart(), pdtProductView.getPage().getLimit());
+        query.ORDER_BY(UsrSupplier.T.IS_AUTH, "desc");
+        productRules(query);
+        if (pdtProductView.getCategory() > -1) {
+            List list = getCatsNodeByCatId(pdtProductView.getCategory());
+            if (list != null)
+                query.WHERE(PdtProduct.T.CATEGORY, "in(" + String.join(",", list) + ")");
+        }
+        //TODO
+        /**
+         * @Description: 暂时折中方案, 性能差
+         * @author lijie@shoestp.cn
+         * @date 2018/8/23 14:42
+         */
+        if (pdtProductView.getSpec() != null) {
+            for (String string : pdtProductView.getSpec().split(",")) {
+                if (string.length() > 1) {
+                    query.WHERE("find_in_set( ?, norm_attr )", string);
+                }
+            }
+        }
+        /**
+         * 根据供应商名称查询
+         * @author lijie@shoestp.cn
+         * @Description:
+         * @date 2018/8/3 9:26
+         */
+        if (pdtProductView.getSupplierId() > -1) {
+            query.WHERE(PdtProduct.T.SUPPLIER, "=?", pdtProductView.getSupplierId());
+        }
+        if (pdtProductView.getKeyword() != null && pdtProductView.getKeyword().length() > 0) {
+//            query.LEFT_JOIN(UsrSupplier.class, PdtProduct.T.SUPPLIER, UsrSupplier.T.PKEY);
+            try {
+                query.WHERE(UsrSupplier.T.NAME, "like ?", "%" + URLDecoder.decode(pdtProductView.getKeyword(), "utf-8").replace(" ", "") + "%");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        /**
+         * @Description: 根据李逸超要求添加 PRODUCT_TYPE字段判断
+         * @author lijie@shoestp.cn
+         * @date 2018/8/20 11:08
+         */
+        if (pdtProductView.getProductType() != null) {
+            query.WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", pdtProductView.getProductType());
+        }
+
+        if (pdtProductView.getOnlyFld() != null) {
+            switch (pdtProductView.getOnlyFld()) {
+                case Hot: {
+                    query.WHERE(PdtProduct.T.IS_HOT, "=?", Sys.OYn.YES);
+                }
+                break;
+                case New: {
+                    newProduct(query);
+                }
+                break;
+            }
+        }
+        //缺少权重计算，待优化  策略模式
+        if (pdtProductView.getFlds() != null) {
+            for (String fld : pdtProductView.getFlds()) {
+                try {
+                    PdtProduct.ProductsIndexOrderByType orderByType = PdtProduct.ProductsIndexOrderByType.valueOf(URLDecoder.decode(fld, "utf-8").replace(" ", ""));
+                    if (orderByType != null) {
+                        if (pdtProductView.isOrder()) {
+                            if (orderByType == PdtProduct.ProductsIndexOrderByType.New) {
+                                newProduct(query, true);
+                            } else {
+                                for (IEnumFld iEnumFld : orderByType.getFld()) {
+                                    query.ORDER_BY(iEnumFld, "desc");
+                                }
+                            }
+                        } else {
+                            if (orderByType == PdtProduct.ProductsIndexOrderByType.New) {
+                                newProduct(query, false);
+                            } else {
+                                for (IEnumFld iEnumFld : orderByType.getFld()) {
+                                    query.ORDER_BY(iEnumFld, "asc");
+                                }
+                            }
+                        }
+                        String pageWhere = pdtProductView.getPage().getWhere();
+                        if (pageWhere != null) {
+                            Pattern pattern = Pattern.compile("([0-9]{0,})-([0-9]{0,})");
+                            Matcher matcher = pattern.matcher(pageWhere);
+                            if (matcher.matches()) {
+                                if (matcher.group(1).length() > 0) {
+                                    query.WHERE(PdtProduct.T.CUR_PRICE, ">?", matcher.group(1));
+                                }
+                                if (matcher.group(2).length() > 0) {
+                                    query.WHERE(PdtProduct.T.CUR_PRICE, "<?", matcher.group(2));
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        Map result = new HashMap();
+        List<Map> list = query.queryMaps();
+        list = list.stream().map(o -> {
+            o.put("rewrite", SEOUtils.getPdtProductTitle(Integer.parseInt(String.valueOf(o.get("pkey"))), String.valueOf(o.get("name"))));
+            return o;
+        }).collect(toList());
+        result.put("items", SetBeans.setList(list, PdtProductBaseInfoView.class));
+        result.put("total", query.queryCount());
+        if (pdtProductView.getCategory() > -1) {
+            result.put("breadcrumbnav", getBreadcrumbNav(pdtProductView.getCategory()));
+        }
+        return result;
+
+    }
+
+
     /**
      * @Description: 面包屑导航
      * @author lijie@shoestp.cn

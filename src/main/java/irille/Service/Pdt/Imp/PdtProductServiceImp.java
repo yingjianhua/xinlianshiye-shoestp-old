@@ -200,6 +200,41 @@ public class PdtProductServiceImp implements IPdtProductService {
         return list;
     }
 
+    //TODO 变成DTO返回
+    @Override
+    public Map getProductListByCategoryV2(IduPage iduPage, String[] orderfld, boolean order, int cated, String spec, String onlyFld, String keyword, Integer type) {
+        PdtProductView pdtProductView = new PdtProductView();
+        pdtProductView
+                .setPage(iduPage)
+                .setFlds(orderfld)
+                .setOrder(order)
+                .setCategory(cated)
+                .setSpec(spec)
+                .setKeyword(keyword)
+        ;
+        pdtProductView.setProductType(Pdt.OProductType.GENERAL);
+        if (onlyFld != null) {
+            try {
+                pdtProductView.setOnlyFld(PdtProductView.onlyFld.valueOf(onlyFld));
+            } catch (Exception e) {
+
+            }
+        }
+        /**
+         * @Description: 现在转变分页逻辑 不再是 页面数
+         * @date 2018/11/8 17:51
+         * @author lijie@shoestp.cn
+         */
+        if (iduPage.getStart() > 0) {
+            iduPage.setStart(iduPage.getStart() - 1);
+        }
+        iduPage.setStart(iduPage.getStart() * iduPage.getLimit());
+        if (type == 1) {
+            return pdtProductDao.getProductListV2(pdtProductView);
+        }
+        return pdtProductDao.getProductList(pdtProductView);
+    }
+
 
     private List fromPdtProductBaseInfoView(List<Map> result) {
         return result.stream().map(o -> {

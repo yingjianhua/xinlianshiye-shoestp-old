@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,24 +31,6 @@
         gtag('config', 'AW-783435725');
         gtag('config', 'UA-127715615-6')
     </script>
-    <%--<script>--%>
-    <%--var stpshop_config = {--%>
-    <%--"domain": "${envConfig.domain}",--%>
-    <%--"lang": "${envConfig.lang}",--%>
-    <%--"currency": "${envConfig.currency}",--%>
-    <%--"currency_symbols": "${envConfig.currencySymbols}",--%>
-    <%--"currency_rate": "${envConfig.currencyRate}",--%>
-    <%--"userId": "${envConfig.userId}",--%>
-    <%--"systemTime":${envConfig.systemTime},--%>
-    <%--"timeDifference": new Date().getTime() -${envConfig.systemTime},--%>
-    <%--"timezoneOffset":${envConfig.timezoneOffset},//服务器时间和UTC时间的时间差(分钟)--%>
-    <%--"imageBaseUrl": "${envConfig.imageBaseUrl}"--%>
-    <%--};--%>
-    <%--var timezoneOffset = new Date().getTimezoneOffset();--%>
-    <%--Date.toLocale = function (systemTime) {--%>
-    <%--if (typeof(systemTime) == "string")--%>
-    <%--systemTime = parseInt(systemTime)--%>
-    <%--return new Date(systemTime + (timezoneOffset * 60 * 1000 + stpshop_config.timezoneOffset));--%>
-    <%--}--%>
-    <%--var isLogin = ${env.login!=null};--%>
-    <%--</script>--%>
+    <script>
+        var isLogin = ${env.login!=null};
+    </script>

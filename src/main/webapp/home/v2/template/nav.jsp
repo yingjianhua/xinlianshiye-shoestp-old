@@ -13,16 +13,22 @@
             <el-menu :default-active="activeTopNavIndex" class="el-menu-demo" mode="horizontal"
                      @select="handleTopNavSelect">
                 <el-submenu index="1" class="no-arrow new-top-nav-item">
-                    <template slot="title">OEM{{activeTopNavIndex}}</template>
-                    <el-menu-item index="1-1">{{$t("Man")}}</el-menu-item>
-                    <el-menu-item index="1-2">{{$t("WoMan")}}</el-menu-item>
-                    <el-menu-item index="1-3">{{$t("Children")}}</el-menu-item>
+                    <template slot="title">OEM</template>
+                    <el-menu-item index="1-1"><a href="/home/pdt_PdtProduct?cated=373">{{$t("Man's")}}</a>
+                    </el-menu-item>
+                    <el-menu-item index="1-2"><a href="/home/pdt_PdtProduct?cated=380">{{$t("WoMan's")}}</a>
+                    </el-menu-item>
+                    <el-menu-item index="1-3"><a href="/home/pdt_PdtProduct?cated=387">{{$t("Children")}}</a>
+                    </el-menu-item>
                 </el-submenu>
                 <el-submenu index="2" class="no-arrow">
                     <template slot="title">WholeSale</template>
-                    <el-menu-item index="2-1">{{$t("Man")}}</el-menu-item>
-                    <el-menu-item index="2-2">{{$t("WoMan")}}</el-menu-item>
-                    <el-menu-item index="2-3">{{$t("Children")}}</el-menu-item>
+                    <el-menu-item index="2-1"><a href="/home/pdt_PdtProduct?cated=373">{{$t("Man's")}}</a>
+                    </el-menu-item>
+                    <el-menu-item index="2-2"><a href="/home/pdt_PdtProduct?cated=380">{{$t("WoMan's")}}</a>
+                    </el-menu-item>
+                    <el-menu-item index="2-3"><a href="/home/pdt_PdtProduct?cated=387">{{$t("Children")}}</a>
+                    </el-menu-item>
                 </el-submenu>
                 <el-submenu index="3" class="no-arrow">
                     <template slot="title">Trade Show</template>
@@ -30,8 +36,13 @@
                             href="/country/Romania-Pantofi-en-gros/romania-index-ro.html">Romania</a></el-menu-item>
                 </el-submenu>
                 <el-submenu index="4" class="no-arrow">
-                    <template slot="title">Group Funding</template>
-                    <el-menu-item index="4-1"><a href="/home/Activity_Romania">Romania</a></el-menu-item>
+                    <template slot="title">Crowdfunding</template>
+                    <el-menu-item index="4-1"><a href="/home/Activity_Romania_classifyactivity?category=373">Men's </a>
+                    </el-menu-item>
+                    <el-menu-item index="4-2"><a href="/home/Activity_Romania_classifyactivity?category=380">Women's</a>
+                    </el-menu-item>
+                    <el-menu-item index="4-3"><a
+                            href="/home/Activity_Romania_classifyactivity?category=387">Children</a></el-menu-item>
                 </el-submenu>
 
                 <!-- 顶部右侧 - 收藏 -->
@@ -70,47 +81,54 @@
             <!-- 搜索条 -->
             <div class="top-input-bar">
                 <!-- 类型 下拉选择 -->
-                <%--<div class="cotegory-select-box">--%>
-                <%--<el-select v-model="topSearchBarCategory" placeholder="请选择"--%>
-                <%--popper-class="top-search-bar-cotegory-select-dropdown">--%>
-                <%--<el-option v-for="item in 6" :key="item" :label="item" :value="item">--%>
-                <%--</el-option>--%>
-                <%--</el-select>--%>
-                <%--</div>--%>
+                <div class="cotegory-select-box">
+                    <el-select v-model="topSearchBarCategory" placeholder="请选择"
+                               popper-class="top-search-bar-cotegory-select-dropdown">
+                        <el-option v-for="item in search.typeList" :key="item.value" :label="item.label"
+                                   :value="item.value">
+                        </el-option>
+                    </el-select>
+                </div>
 
                 <!-- 输入框 -->
                 <div class="input-box">
                     <input type="text" @keyup.enter="searchClick" v-model="search.keyword">
                 </div>
                 <!-- 搜索按钮 -->
-                <div class="btn-search">
+                <div class="btn-search" @click="searchClick">
                     <i class="el-icon-search"></i>
                 </div>
             </div>
 
-            <a class="btn-get-quotations">
+            <a class="btn-get-quotations" href="/home/usr_UsrConsult_listView">
                 Get Quotations
             </a>
             <!-- 多语言下拉选择 -->
-            <div class="language-select" v-if="languageList.length>0">
-                <img src="/home/v2/static/images/nav/icon-global.png" alt="">
-                <br>
-                {{_language}} <i class="el-icon-arrow-down el-icon--right"></i>
-                <el-select v-model="language" placeholder="请选择" class="top-language-select-input"
-                           popper-class="top-language-select-box"
-                           @change="changeLang"
-                >
-                    <el-option v-for="language in languageList" :key="language.shortName"
-                               :label="language.displayName"
-                               :value="language.shortName">
-                    </el-option>
-                </el-select>
-            </div>
+            <%--<div class="language-select" v-if="languageList.length>0">--%>
+                <%--<img src="/home/v2/static/images/nav/icon-global.png" alt="">--%>
+                <%--<br>--%>
+                <%--{{_language}} <i class="el-icon-arrow-down el-icon--right"></i>--%>
+                <%--<el-select v-model="language" placeholder="请选择" class="top-language-select-input"--%>
+                           <%--popper-class="top-language-select-box"--%>
+                           <%--@change="changeLang"--%>
+                <%-->--%>
+                    <%--<el-option v-for="language in languageList" :key="language.shortName"--%>
+                               <%--:label="language.displayName"--%>
+                               <%--:value="language.shortName">--%>
+                    <%--</el-option>--%>
+                <%--</el-select>--%>
+            <%--</div>--%>
         </div>
     </div>
 </div>
+<script src="/home/v2/static/lang/element/en.js"></script>
 <script>
-    var sysConfig = null
+    ELEMENT.locale(ELEMENT.lang.en)
+    var sysConfig = {
+        baseImageUrl: "https://image.shoestp.com",
+        currency_symbol: "$",
+        current_language: "en",
+    }
     var messages = {
         shoestp: null
     }
@@ -128,11 +146,21 @@
         data() {
             return {
                 activeTopNavIndex: 1, //默认选中的web-top澳航栏
-                topSearchBarCategory: "2", //搜索 分类前的下拉选
+                topSearchBarCategory: 0, //搜索 分类前的下拉选
                 language: "en",
                 languageList: [],
                 search: {
-                    keyword: ""
+                    keyword: "",
+                    typeList: [
+                        {
+                            label: "Product",
+                            value: 0
+                        },
+                        {
+                            label: "Suppiler",
+                            value: 1
+                        }
+                    ]
                 }
             }
         }, computed: {
@@ -164,7 +192,7 @@
         },
         methods: {
             searchClick() {
-                window.location.href = "/home/pdt_PdtProduct?Keyword=" + this.search.keyword
+                window.location.href = "/home/pdt_PdtProduct?Keyword=" + this.search.keyword + "&v=2&searchtype=" + this.topSearchBarCategory
             },
             handleTopNavSelect(key, keyPath) {
                 console.log(key, keyPath);
@@ -206,3 +234,4 @@
         }
     })
 </script>
+<div style="height: 114px;"></div>

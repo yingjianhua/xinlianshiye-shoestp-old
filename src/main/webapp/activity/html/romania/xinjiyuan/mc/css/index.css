@@ -268,10 +268,6 @@ img {
         font-size: 1.42rem;
         text-align: left;
         margin-left: 1rem; }
-      #app .great-container .great-list .great-item img {
-        width: 3.63rem;
-        height: 3.16rem;
-        flex-shrink: 0; }
   #app .order-detail {
     text-align: center; }
     #app .order-detail .title {
