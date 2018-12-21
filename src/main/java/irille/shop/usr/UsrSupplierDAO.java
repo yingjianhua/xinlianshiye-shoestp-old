@@ -2,7 +2,7 @@ package irille.shop.usr;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.xml.internal.ws.api.ha.StickyFeature;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import irille.core.sys.Sys;
 import irille.homeAction.usr.dto.Page_supplierProductView;
 import irille.homeAction.usr.dto.SupplierListView;
@@ -10,7 +10,6 @@ import irille.pub.DateTools;
 import irille.pub.LogMessage;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.BeanBase;
-import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
 import irille.pub.idu.*;
 import irille.pub.svr.DbPool;
@@ -23,6 +22,7 @@ import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.pub.validate.ValidForm;
 import irille.pub.validate.ValidRegex;
 import irille.sellerAction.view.SupinfoView;
+import irille.sellerAction.view.operateinfoView;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.pdt.PdtProductDAO;
@@ -1000,7 +1000,11 @@ public class UsrSupplierDAO {
         sv.setType((Integer)map.get(T.CATEGORY.getFld().getCodeSqlField()));
         return  sv;
     }
-
+    /**
+     *@Description:   新商家2.1 商家 店铺信息-修改账户信息（公司信息）
+     *@date 2018/12/18 9:38
+     *@anthor wilson zhang
+     */
     public static class updShopbase extends IduUpd<UpdBase, UsrSupplier> {
         @Override
         public void before() {
@@ -1008,5 +1012,72 @@ public class UsrSupplierDAO {
             PropertyUtils.copyProperties(model, getB(),T.COMPANY_NATURE,T.COMPANY_TYPE,T.CATEGORY,T.QQ,T.FAX,T.OPERATION_TERM,T.MAIN_SALES_AREA,T.PROD_PATTERN,T.DES,T.MAIN_PROD,T.CREDIT_CODE,T.TAXPAYER_TYPE);
             setB(model);
         }
+
     }
+
+    /**
+     *@Description:   新商家2.1 商家 店铺信息-修改运营信息
+     *@date 2018/12/18 9:38
+     *@anthor wilson zhang
+     */
+    public static class updoperatebase extends IduUpd<UpdBase, UsrSupplier> {
+        @Override
+        public void before() {
+            UsrSupplier model = BeanBase.load(UsrSupplier.class, getB().getPkey());
+            PropertyUtils.copyProperties(model, getB(),T.WEBSITE,T.PRODUCTION,T.DEVELOPER,T.TOTAL_EMPLOYEES,T.ANNUAL_SALES,T.TOP_3_MARKETS,
+                    T.WEB_SIZE_TITLE,T.CITY,T.HEAD_PIC,T.CONTACTS,T.PHONE
+            );
+            setB(model);
+        }
+
+    }
+/**
+ *@Description:   新商家2.1 商家 运营信息
+ *@date 2018/12/18 9:38
+ *@anthor wilson zhang
+ */
+
+public static operateinfoView getoperateinfo(Integer supperid ,Language language) throws  Exception{
+    operateinfoView ov=new operateinfoView();
+    try {
+        SQL sql=new SQL(){{
+           SELECT(T.WEB_SIZE_TITLE,T.PRODUCTION,T.DEVELOPER,T.TOTAL_EMPLOYEES,T.ANNUAL_SALES,
+                   T.WEBSITE,T.COUNTRY,T.PROVINCE,T.CITY,T.HEAD_PIC,T.CONTACTS,T.PHONE,
+                   T.DEPARTMENT,T.JOB_TITLE,T.BANK_ACCOUNT,
+                   T.SETTLEMENT_BANK,T.BANK_BRANCH,T.BANK_COUNTRY,T.BANK_PROVINCE,T.OPERATE_ID_CARD,
+                   T.CONTACTS_ID_CARD_FRONT_PHOTO,T.CONTACTS_ID_CARD_BACK_PHOTO);
+           SELECT(UsrSupplier.class.getSimpleName()+"."+T.TOP_3_MARKETS.getFld().getCodeSqlField());
+           FROM(UsrSupplier.class);
+           WHERE(T.PKEY,"=?",supperid);
+        }};
+        Map<String, Object> map = irille.pub.bean.Query.sql(sql).queryMap();
+        ov.setWebsizetitle((String)map.get(T.WEB_SIZE_TITLE.getFld().getCodeSqlField()));
+        ov.setProduction((String)map.get(T.PRODUCTION.getFld().getCodeSqlField()));
+        ov.setTotalProduction((String)map.get(T.DEVELOPER.getFld().getCodeSqlField()));
+        ov.setNumberEmployees((String)map.get(T.TOTAL_EMPLOYEES.getFld().getCodeSqlField()));
+        ov.setAnnualSalesFigure((String)map.get(T.ANNUAL_SALES.getFld().getCodeSqlField()));
+        ov.setTOP3MARKETS((String)map.get("top3_markets"));
+        ov.setWebsite((String)map.get(T.WEBSITE.getFld().getCodeSqlField()));
+        ov.setCountry(  BeanBase.load(PltCountry.class,(Integer)map.get(T.COUNTRY.getFld().getCodeSqlField())).getName());
+        ov.setProvince(  BeanBase.load(PltProvince.class,(Integer)map.get(T.PROVINCE.getFld().getCodeSqlField())).getName());
+        ov.setCity((String)map.get(T.CITY.getFld().getCodeSqlField()));
+        ov.setHeadpic((String)map.get(T.HEAD_PIC.getFld().getCodeSqlField()));
+        ov.setContacts((String)map.get(T.CONTACTS.getFld().getCodeSqlField()));
+        ov.setPhone((String)map.get(T.PHONE.getFld().getCodeSqlField()));
+        ov.setDepartment((String)map.get(T.DEPARTMENT.getFld().getCodeSqlField()));
+        ov.setJobTitle((String)map.get(T.JOB_TITLE.getFld().getCodeSqlField()));
+        ov.setSettlementbank((String)map.get(T.SETTLEMENT_BANK.getFld().getCodeSqlField()));
+        ov.setBankaccount((String)map.get(T.BANK_ACCOUNT.getFld().getCodeSqlField()));
+        ov.setBankbranch((String)map.get(T.BANK_BRANCH.getFld().getCodeSqlField()));
+        ov.setBankcountry(BeanBase.load(PltCountry.class,(Integer)map.get(T.BANK_COUNTRY.getFld().getCodeSqlField())).getName());
+        ov.setBankprovince(BeanBase.load(PltProvince.class,(Integer)map.get(T.BANK_PROVINCE.getFld().getCodeSqlField())).getName());
+        ov.setOperateidcard((String)map.get(T.OPERATE_ID_CARD.getFld().getCodeSqlField()));
+        ov.setContactsidcardfront((String)map.get(T.CONTACTS_ID_CARD_FRONT_PHOTO.getFld().getCodeSqlField()));
+        ov.setContactsidcardback((String)map.get(T.CONTACTS_ID_CARD_BACK_PHOTO.getFld().getCodeSqlField()));
+        ov.setCurlang(language.toString());
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return  ov;
+}
 }
