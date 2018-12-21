@@ -608,5 +608,12 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
         write();
     }
 
-
+    /**
+    *@Description:   2.1 认证信息
+    *@date 2018/12/21 16:16
+    *@anthor wilson zhang
+    */
+        public void auth() throws  Exception{
+            write(UsrSupplierDAO.auth(getSupplier().getPkey()));
+        }
 }

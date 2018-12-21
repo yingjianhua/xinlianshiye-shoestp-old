@@ -21,6 +21,7 @@ import irille.pub.util.SEOUtils;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.pub.validate.ValidForm;
 import irille.pub.validate.ValidRegex;
+import irille.sellerAction.view.AuthenticationView;
 import irille.sellerAction.view.SupinfoView;
 import irille.sellerAction.view.operateinfoView;
 import irille.shop.pdt.Pdt;
@@ -37,11 +38,15 @@ import irille.view.usr.SupplierView;
 import irille.view.usr.shopSettingView;
 import org.json.JSONException;
 import org.json.JSONObject;
+import sun.plugin2.util.SystemUtil;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -87,8 +92,8 @@ public class UsrSupplierDAO {
     }
 
     public static void main(String[] args) throws Exception {
-        SupplierView view = findById4AccountSet(8);
-        System.out.println(new ObjectMapper().writeValueAsString(view.getJobTitle()));
+//        SupplierView view = findById4AccountSet(8);
+//        System.out.println(new ObjectMapper().writeValueAsString(view.getJobTitle()));
         //initAllSupplierPassword();
         //initAllSupplierFreight();
 //    	initAdminPurchasePassword();
@@ -1080,4 +1085,28 @@ public static operateinfoView getoperateinfo(Integer supperid ,Language language
     }
     return  ov;
 }
+
+    // 2.1 商家端获取认证信息
+    public static AuthenticationView auth(Integer supid ){
+        SQL sql=new SQL(){{
+            SELECT(T.IS_AUTH,T.AUTH_TIME);
+            FROM(UsrSupplier.class);
+            WHERE(T.PKEY,"=?",supid);
+        }};
+        Map<String, Object> map = irille.pub.bean.Query.sql(sql).queryMap();
+        AuthenticationView av=new AuthenticationView();
+        if((byte)map.get(T.IS_AUTH.getFld().getCodeSqlField())==1){
+            av.setIsauth(true);
+            Date date=(Date)map.get(T.AUTH_TIME.getFld().getCodeSqlField());
+            LocalDate date1=LocalDate.now();
+            Instant instant = date.toInstant();
+            ZoneId zoneId = ZoneId.systemDefault();
+            LocalDate localDate = instant.atZone(zoneId).toLocalDate();
+            av.setTime(localDate.toString());
+            av.setAge(date1.getYear()-localDate.getYear());
+        }else{
+            av.setIsauth(false);
+        }
+        return av;
+    }
 }

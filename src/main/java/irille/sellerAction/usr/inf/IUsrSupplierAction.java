@@ -143,5 +143,7 @@ public interface IUsrSupplierAction extends ISellerAction {
     void  getoperateinfo() throws Exception;
     @RequestMapping(alias = "2.1商家修改运营信息", sort = 52)
     void  updoperateinfo() throws Exception;
+    @RequestMapping(alias = "2.1认证信息", sort = 53)
+    void  auth() throws Exception;
 
 }
