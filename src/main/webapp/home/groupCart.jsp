@@ -264,7 +264,7 @@
           </div>
         </div>
         <div class="pop-frame-footer">
-          <div class="btn-red btn-confirm" onclick="addSpec(this)" id="addSpec"><s:text name="Global.Determine"/></div>
+          <div class="btn-red btn-confirm" onclick="addSpec(this)" id="addSpec"><s:text name="Global.Submit"/></div>
           <div class="btn-red btn-cancel"><s:text name="Global.Cancel"/></div>
         </div>
       </div>
