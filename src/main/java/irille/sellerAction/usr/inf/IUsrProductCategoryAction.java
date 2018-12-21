@@ -24,6 +24,9 @@ public interface IUsrProductCategoryAction extends ISellerAction {
     @RequestMapping(alias = "获取商品分类(NEW)")
     void getProductCats() throws Exception;
 
+    @RequestMapping(alias = "获取店铺信息(产品页信息)")
+    void getProductSEOs() throws Exception;
+
 //	@RequestMapping(alias="批量删除")
 //	public void batchDelete() throws Exception;
 }

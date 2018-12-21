@@ -169,5 +169,8 @@ public class UsrProductCategoryAction extends SellerAction<UsrProductCategory> i
         write(usrSupplierCatService.getProductCatList(getStart(), getLimit(), getSupplier().getPkey()));
     }
 
+    public void getProductSEOs() throws IOException {
+        write(usrSupplierCatService.getProductSEOs(getStart(),getLimit(),getSupplier().getPkey(),PltConfigDAO.supplierLanguage(getSupplier().getPkey())));
+    }
 
 }

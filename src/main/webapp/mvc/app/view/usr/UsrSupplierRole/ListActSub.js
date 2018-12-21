@@ -22,7 +22,7 @@ Ext.define('mvc.view.usr.UsrSupplierRole.ListActSub',{
 			});
 		}
 		if (cmpActs.length>11)
-			defaultH = 75;
+			defaultH = 150;
 		this.items = [{
 			xtype : 'panel',
 			height : defaultH,

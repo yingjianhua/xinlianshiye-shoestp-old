@@ -1,6 +1,8 @@
 package irille.Dao;
 
 import irille.pub.bean.query.BeanQuery;
+import irille.pub.tb.FldLanguage;
+import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrProductCategory;
 
 import java.util.List;
@@ -28,6 +30,18 @@ public class PdtProductCatDao {
                 UsrProductCategory.T.ENABLED
         ).FROM(UsrProductCategory.class)
                 .WHERE(UsrProductCategory.T.SUPPLIER, "=?", i);
+        return query.queryMaps();
+    }
+
+    public List<Map> getProductSEOs(Integer supplier){
+        BeanQuery query = new BeanQuery();
+        query.SELECT(PdtProduct.T.PKEY,
+                PdtProduct.T.NAME,
+                PdtProduct.T.SEO_TITLE,
+                PdtProduct.T.SEO_KEYWORD,
+                PdtProduct.T.SEO_DESCRIPTION)
+                .FROM(PdtProduct.class)
+                .WHERE(PdtProduct.T.SUPPLIER,"=?",supplier);
         return query.queryMaps();
     }
 }

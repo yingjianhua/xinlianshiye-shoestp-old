@@ -85,9 +85,9 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
         MY_ORDER(SYS.SORT__SHORT, "排序优先级"), //排序优先级
 
         //标题与标签
-        SEO_TITLE_EN(SYS.STR__200_NULL, "标题"), //标题
-        SEO_KEYWORD_EN(SYS.STR__200_NULL, "关键词"), //关键词
-        SEO_DESCRIPTION_EN(SYS.STR__200_NULL, "简述"), //简述
+        SEO_TITLE(SYS.MUILTI_LANGUAGE, "标题"), //标题
+        SEO_KEYWORD(SYS.MUILTI_LANGUAGE, "关键词"), //关键词
+        SEO_DESCRIPTION(SYS.MUILTI_LANGUAGE, "简述"), //简述
         //物流运费
         IS_FREE_SHIPPING(SYS.YN, "免运费"), //免运费
         WEIGHT(SYS.AMT, "重量"), //重量
