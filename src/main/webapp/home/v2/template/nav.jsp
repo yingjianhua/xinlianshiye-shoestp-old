@@ -13,25 +13,25 @@
             <el-menu :default-active="activeTopNavIndex" class="el-menu-demo" mode="horizontal"
                      @select="handleTopNavSelect">
                 <el-submenu index="1" class="no-arrow new-top-nav-item">
-                    <template slot="title">OEM{{activeTopNavIndex}}</template>
+                    <template slot="title"><s:text name="OEM"/>{{activeTopNavIndex}}</template>
                     <el-menu-item index="1-1">{{$t("Man")}}</el-menu-item>
                     <el-menu-item index="1-2">{{$t("WoMan")}}</el-menu-item>
                     <el-menu-item index="1-3">{{$t("Children")}}</el-menu-item>
                 </el-submenu>
                 <el-submenu index="2" class="no-arrow">
-                    <template slot="title">WholeSale</template>
+                    <template slot="title"><s:text name="WholeSale"/></template>
                     <el-menu-item index="2-1">{{$t("Man")}}</el-menu-item>
                     <el-menu-item index="2-2">{{$t("WoMan")}}</el-menu-item>
                     <el-menu-item index="2-3">{{$t("Children")}}</el-menu-item>
                 </el-submenu>
                 <el-submenu index="3" class="no-arrow">
-                    <template slot="title">Trade Show</template>
+                    <template slot="title"><s:text name="Trade_Show"/></template>
                     <el-menu-item index="3-1"><a
-                            href="/country/Romania-Pantofi-en-gros/romania-index-ro.html">Romania</a></el-menu-item>
+                            href="/country/Romania-Pantofi-en-gros/romania-index-ro.html"><s:text name="Romania"/></a></el-menu-item>
                 </el-submenu>
                 <el-submenu index="4" class="no-arrow">
-                    <template slot="title">Group Funding</template>
-                    <el-menu-item index="4-1"><a href="/home/Activity_Romania">Romania</a></el-menu-item>
+                    <template slot="title"><s:text name="CROWDFUNDING"/></template>
+                    <el-menu-item index="4-1"><a href="/home/Activity_Romania"><s:text name="Romania"/></a></el-menu-item>
                 </el-submenu>
 
                 <!-- 顶部右侧 - 收藏 -->
@@ -42,18 +42,18 @@
                     </a>
                 </el-menu-item>
                 <!-- 顶部右侧 - 询盘 -->
-                <el-menu-item index="7" class="fr"><a href="/home/usr_UsrConsult_listView" target="_blank">RFQ</a>
+                <el-menu-item index="7" class="fr"><a href="/home/usr_UsrConsult_listView" target="_blank"><s:text name="inq"/></a>
                 </el-menu-item>
                 <!-- 顶部右侧 - 注册 -->
                 <el-submenu index="6" class="fr">
-                    <template slot="title">Register</template>
-                    <el-menu-item index="6-1"><a href="/home/usr_UsrPurchase_sign" target="_blank">Buyer</a>
+                    <template slot="title"><s:text name="Register"/></template>
+                    <el-menu-item index="6-1"><a href="/home/usr_UsrPurchase_sign" target="_blank"><s:text name="Buyer"/></a>
                     </el-menu-item>
                     <el-menu-item index="6-2"><a href="/home/usr_UsrSupplier_supplierEntry">{{$t("Supplier")}}</a>
                     </el-menu-item>
                 </el-submenu>
                 <!-- 顶部右侧 - 登录 -->
-                <el-menu-item index="5" class="fr"><a href="/home/usr_UsrPurchase_sign" target="_blank">Login</a>
+                <el-menu-item index="5" class="fr"><a href="/home/usr_UsrPurchase_sign" target="_blank"><s:text name="Login"/></a>
                 </el-menu-item>
             </el-menu>
         </div>
@@ -89,7 +89,7 @@
             </div>
 
             <a class="btn-get-quotations">
-                Get Quotations
+                <s:text name="Get_Quotations"/>
             </a>
             <!-- 多语言下拉选择 -->
             <div class="language-select" v-if="languageList.length>0">
