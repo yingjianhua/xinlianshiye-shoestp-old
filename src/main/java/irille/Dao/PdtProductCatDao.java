@@ -36,12 +36,21 @@ public class PdtProductCatDao {
     public List<Map> getProductSEOs(Integer supplier){
         BeanQuery query = new BeanQuery();
         query.SELECT(PdtProduct.T.PKEY,
-                PdtProduct.T.NAME,
                 PdtProduct.T.SEO_TITLE,
                 PdtProduct.T.SEO_KEYWORD,
                 PdtProduct.T.SEO_DESCRIPTION)
                 .FROM(PdtProduct.class)
                 .WHERE(PdtProduct.T.SUPPLIER,"=?",supplier);
         return query.queryMaps();
+    }
+
+    public Object getSEO(Integer product){
+        BeanQuery query = new BeanQuery();
+        query.SELECT(PdtProduct.T.SEO_TITLE,
+                PdtProduct.T.SEO_KEYWORD,
+                PdtProduct.T.SEO_DESCRIPTION)
+                .FROM(PdtProduct.class)
+                .WHERE(PdtProduct.T.PKEY,"=?",product);
+        return query.query();
     }
 }

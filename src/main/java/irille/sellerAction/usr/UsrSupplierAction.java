@@ -22,6 +22,7 @@ import irille.shop.usr.UsrUserDAO;
 import irille.view.usr.AccountSettingsView;
 import irille.view.usr.UserView;
 import irille.view.usr.UsrshopSettingView;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
@@ -29,6 +30,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.struts2.ServletActionContext;
@@ -38,29 +40,29 @@ import org.json.JSONObject;
 
 public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsrSupplierAction {
 
-  @Getter
-  @Setter
-  private String logo;
-  @Getter
-  @Setter
-  private String newPwd;
-  @Getter
-  @Setter
-  private String oldPwd;
+    @Getter
+    @Setter
+    private String logo;
+    @Getter
+    @Setter
+    private String newPwd;
+    @Getter
+    @Setter
+    private String oldPwd;
 
-  public void updBase() throws Exception {
-    UsrSupplierDAO.UpdBase upd = new UsrSupplierDAO.UpdBase();
-    upd.setB(getBean());
-    upd.commit();
-    writeSuccess(upd.getB());
-  }
+    public void updBase() throws Exception {
+        UsrSupplierDAO.UpdBase upd = new UsrSupplierDAO.UpdBase();
+        upd.setB(getBean());
+        upd.commit();
+        writeSuccess(upd.getB());
+    }
 
-  public void updPage() throws Exception {
-    UsrSupplierDAO.UpdPage upd = new UsrSupplierDAO.UpdPage();
-    upd.setB(getBean());
-    upd.commit();
-    writeSuccess(upd.getB());
-  }
+    public void updPage() throws Exception {
+        UsrSupplierDAO.UpdPage upd = new UsrSupplierDAO.UpdPage();
+        upd.setB(getBean());
+        upd.commit();
+        writeSuccess(upd.getB());
+    }
 
   public void updDiy() throws Exception {
     UsrSupplierDAO.UpdDiy upd = new UsrSupplierDAO.UpdDiy();
@@ -101,18 +103,18 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     String verifyCode = verifyCode();
     System.out.println("verifyCode:" + verifyCode);
 
-    if (Str.isEmpty(verifyCode) || Str.isEmpty(vCode) || !verifyCode.equals(vCode)) {
-      writeErr("验证码错误");
-      return;
-    }
-    UserView user;
-    try {
-      user = UsrUserDAO.supplierSignIn(email, password);
-      setUser(user);
-      write();
-    } catch (Exp e) {
-      writeErr(e.getLastMessage());
-    }
+        if (Str.isEmpty(verifyCode) || Str.isEmpty(vCode) || !verifyCode.equals(vCode)) {
+            writeErr("验证码错误");
+            return;
+        }
+        UserView user;
+        try {
+            user = UsrUserDAO.supplierSignIn(email, password);
+            setUser(user);
+            write();
+        } catch (Exp e) {
+            writeErr(e.getLastMessage());
+        }
 
 //    	UsrSupplier supplier=new UsrSupplier();
 //        try {

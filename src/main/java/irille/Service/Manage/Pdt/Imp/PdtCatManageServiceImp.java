@@ -3,6 +3,8 @@ package irille.Service.Manage.Pdt.Imp;
 import com.google.api.client.json.Json;
 import irille.Dao.PdtProductCatDao;
 import irille.Service.Manage.Pdt.IPdtCatManageService;
+import irille.pub.Obj;
+import irille.pub.bean.BeanBase;
 import irille.pub.tb.FldLanguage;
 import irille.sellerAction.view.ProductSEOsView;
 import irille.shop.pdt.Pdt;
@@ -43,7 +45,6 @@ public class PdtCatManageServiceImp implements IPdtCatManageService {
             JSONObject json;
             ProductSEOsView view = new ProductSEOsView();
             view.setProductId(Integer.valueOf(String.valueOf(o.get(PdtProduct.T.PKEY.getFld().getCodeSqlField()))));
-            view.setProductName(String.valueOf(o.get(PdtProduct.T.NAME.getFld().getCodeSqlField())));
             try {
                 if(String.valueOf(o.get(PdtProduct.T.SEO_TITLE.getFld().getCodeSqlField()))!=null){
                     json = new JSONObject(String.valueOf(o.get(PdtProduct.T.SEO_TITLE.getFld().getCodeSqlField())));
@@ -76,5 +77,25 @@ public class PdtCatManageServiceImp implements IPdtCatManageService {
         }).collect(Collectors.toList());
         Integer count = pdtProductCatDao.getProductSEOs(supplier).size();
         return new Page(list, statr, limit, count);
+    }
+
+    @Override
+    public ProductSEOsView getSEO(Integer product) {
+        PdtProduct obj = (PdtProduct) pdtProductCatDao.getSEO(product);
+        ProductSEOsView view = new ProductSEOsView();
+        view.setProductId(product);
+        view.setSeo_title(obj.getSeoTitle());
+        view.setSeo_keyword(obj.getSeoKeyword());
+        view.setSeo_description(obj.getSeoDescription());
+        return view;
+    }
+
+    @Override
+    public void updSEO(ProductSEOsView view) {
+        PdtProduct pp = BeanBase.load(PdtProduct.class,view.getProductId());
+        pp.setSeoTitle(view.getSeo_title());
+        pp.setSeoKeyword(view.getSeo_keyword());
+        pp.setSeoDescription(view.getSeo_description());
+        pp.upd();
     }
 }
