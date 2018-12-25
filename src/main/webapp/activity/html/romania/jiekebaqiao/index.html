@@ -2,511 +2,544 @@
 <html>
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0,maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  <meta content="telephone=no" name="format-detection" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="keywords" content="杰克巴乔" />
-  <meta name="description" content="杰克巴乔" />
-  <title>杰克巴乔</title>
-  <link rel="stylesheet" href="css/index.css" />
-  <script src="./js/vue.min.js"></script>
-  <!-- 引入样式 -->
-  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css" />
-  <!-- 引入组件库 -->
-  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-  <script src="./js/axios.min.js"></script>
-  <script src="./js/qs.js"></script>
-  <style></style>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0,maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="keywords" content="杰克巴乔"/>
+    <meta name="description" content="杰克巴乔"/>
+    <title>杰克巴乔</title>
+    <link rel="stylesheet" href="css/index.css"/>
+    <script src="./js/vue.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"/>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="./js/axios.min.js"></script>
+    <script src="./js/qs.js"></script>
+    <style></style>
 </head>
 
 <body>
-  <div id="app">
+<div id="app">
     <!-- 顶部 -->
     <div style="background: linear-gradient(to right, #ffffff , #ffffff);text-align: center;">
-      <div class="maxW minW top-banner-box">
-        <!-- <img src="./images/banner1.jpg" alt=""> -->
-        <div class="top-container clearfix">
-          <div class="top-container-left fl" style="color:#ffffff;text-align: left;">
-            <div style="font-size:60px;font-weight: bold;">Jackbaggio <br>
-              Safety Shoes</div>
-            <div style="font-size:30px;">This is what men came for</div>
-          </div>
-          <div class="top-container-right fr">
-            <div class="title">Inquiry Information</div>
-            <el-form status-icon :rules="rules" ref="form" :model="form" hide-required-asterisk="false">
-              <el-form-item label="Name" prop="name">
-                <el-input v-model="form.name" placeholder="Please input your name" ref="name"></el-input>
-              </el-form-item>
-              <el-form-item label="Email Address" prop="email">
-                <el-input v-model="form.email" placeholder="Please input your E-mail."></el-input>
-              </el-form-item>
-              <el-form-item label="Advisory" prop="detail">
-                <el-input type="textarea" v-model="form.detail" placeholder="Please input enquiry information."></el-input>
-              </el-form-item>
-              <el-form-item>
-                <el-button @click="submit('form')">Inquiry</el-button>
-              </el-form-item>
-            </el-form>
-          </div>
+        <div class="maxW minW top-banner-box">
+            <!-- <img src="./images/banner1.jpg" alt=""> -->
+            <div class="top-container clearfix">
+                <div class="top-container-left fl" style="color:#ffffff;text-align: left;">
+                    <div style="font-size:60px;font-weight: bold;">Jackbaggio <br>
+                        Safety Shoes
+                    </div>
+                    <div style="font-size:30px;">This is what men came for</div>
+                </div>
+                <div class="top-container-right fr">
+                    <div class="title">Inquiry Information</div>
+                    <el-form status-icon :rules="rules" ref="form" :model="form" hide-required-asterisk="false">
+                        <el-form-item label="Name" prop="name">
+                            <el-input v-model="form.name" placeholder="Please input your name" ref="name"></el-input>
+                        </el-form-item>
+                        <el-form-item label="Email Address" prop="email">
+                            <el-input v-model="form.email" placeholder="Please input your E-mail."></el-input>
+                        </el-form-item>
+                        <el-form-item label="Advisory" prop="detail">
+                            <el-input type="textarea" v-model="form.detail"
+                                      placeholder="Please input enquiry information."></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button @click="submit('form')">Inquiry</el-button>
+                        </el-form-item>
+                    </el-form>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
     <!-- Our Advantage & The Global Trade In Shoes & Custom Shoes -->
     <div class="container-one">
-      <div class="our-advantage">
-        <div class="title">Our Advantage</div>
-        <div class="our-advantage-list clearfix">
-          <div class="our-advantage-item fl">
-            <div>
-              <img src="./images/our-advantage1.png" alt="" class="our-advantage-img1" />
+        <div class="our-advantage">
+            <div class="title">Our Advantage</div>
+            <div class="our-advantage-list clearfix">
+                <div class="our-advantage-item fl">
+                    <div>
+                        <img src="./images/our-advantage1.png" alt="" class="our-advantage-img1"/>
+                    </div>
+                    <div class="item-title">Reasonable Price</div>
+                    <div class="item-content">
+                        Offer lower prices to ensure the maximum profit for your
+                        business.
+                    </div>
+                </div>
+                <div class="our-advantage-item fl">
+                    <div>
+                        <img src="./images/our-advantage2.png" alt="" class="our-advantage-img2"/>
+                    </div>
+                    <div class="item-title">Fast Service</div>
+                    <div class="item-content">
+                        We know that you have the choice here, we hope that the best
+                        choice is the easiest, any request, we will reply and serve you
+                        within 24 hours.
+                    </div>
+                </div>
+                <div class="our-advantage-item fl">
+                    <div>
+                        <img src="./images/our-advantage3.png" alt="" class="our-advantage-img3"/>
+                    </div>
+                    <div class="item-title">Customer Support</div>
+                    <div class="item-content">
+                        We have professional design teams in North Korea, Europe and
+                        China. We can issue more than 1000 shoes every year;
+                    </div>
+                </div>
+                <div class="our-advantage-item fl">
+                    <div>
+                        <img src="./images/our-advantage4.jpg" alt="" class="our-advantage-img4"/>
+                    </div>
+                    <div class="item-title">CUSTOMIZATION</div>
+                    <div class="item-content">
+                        We can manufacture OEM for you, we are monthly Can produce more
+                        than 100,000 pairs of shoes;
+                    </div>
+                </div>
             </div>
-            <div class="item-title">Reasonable Price</div>
-            <div class="item-content">
-              Offer lower prices to ensure the maximum profit for your
-              business.
-            </div>
-          </div>
-          <div class="our-advantage-item fl">
-            <div>
-              <img src="./images/our-advantage2.png" alt="" class="our-advantage-img2" />
-            </div>
-            <div class="item-title">Fast Service</div>
-            <div class="item-content">
-              We know that you have the choice here, we hope that the best
-              choice is the easiest, any request, we will reply and serve you
-              within 24 hours.
-            </div>
-          </div>
-          <div class="our-advantage-item fl">
-            <div>
-              <img src="./images/our-advantage3.png" alt="" class="our-advantage-img3" />
-            </div>
-            <div class="item-title">Customer Support</div>
-            <div class="item-content">
-              We have professional design teams in North Korea, Europe and
-              China. We can issue more than 1000 shoes every year;
-            </div>
-          </div>
-          <div class="our-advantage-item fl">
-            <div>
-              <img src="./images/our-advantage4.jpg" alt="" class="our-advantage-img4" />
-            </div>
-            <div class="item-title">CUSTOMIZATION</div>
-            <div class="item-content">
-              We can manufacture OEM for you, we are monthly Can produce more
-              than 100,000 pairs of shoes;
-            </div>
-          </div>
         </div>
-      </div>
-      <!-- Sports & Casual, The Global Trade In Shoes -->
-      <div class="global-product-container">
-        <div class="title">
-          Men's shoes, <br />
-          The Global Trade In Shoes
-        </div>
-        <div class="global-product-list clearfix">
-          <a class="global-product-item fl" href="https://www.shoestp.com/kpu-lightweight-brand-name-summer-safety-shoes-low-price-steel-toe-safety-men-shoes-work-shoes_p1787.html" target="_blank">
-            <!-- <a href="" target="_blank"> -->
-            <img src="./images/goods1.jpg" alt="" />
-            <!-- </a> -->
-          </a>
-          <a class="global-product-item fl" href="https://www.shoestp.com/new-fashion-safety-shoes-men-low-price-brand-industrial-safety-shoes-leather-work-shoes_p1828.html" target="_blank">
-            <!-- <a href="" target="_blank"> -->
-            <img src="./images/goods2.jpg" alt="" />
-            <!-- </a> -->
-          </a>
-          <a class="global-product-item fl" href="https://www.shoestp.com/groundwork-multifunctional-black-green-anti-slip-lightweight-safety-shoes-&-boots_p1865.html" target="_blank">
-            <!-- <a href="" target="_blank"> -->
-            <img src="./images/goods3.jpg" alt="" />
-            <!-- </a> -->
-          </a>
-          <a class="global-product-item fl" href="https://www.shoestp.com/high-quality-leather-safety-shoes-s1p-men-work-boot-with-steel-toe-low-price_p1797.html" target="_blank">
-            <!-- <a href="" target="_blank"> -->
-            <img src="./images/goods4.jpg" alt="" />
-            <!-- </a> -->
-          </a>
-          <a class="global-product-item fl" href="https://www.shoestp.com/s1p-men-safety-shoes-men-work-boot-with-steel-toe-protective_p1869.html" target="_blank">
-            <!-- <a href="" target="_blank"> -->
-            <img src="./images/goods5.jpg" alt="" />
-            <!-- </a> -->
-          </a>
-          <a class="global-product-item fl" href="https://www.shoestp.com/cheapest-mining-industrial-safety-shoe-anti-lsip-function-middle-safety-boot_p1849.html" target="_blank">
-            <!-- <a href="" target="_blank"> -->
-            <img src="./images/goods6.jpg" alt="" />
-            <!-- </a> -->
-          </a>
+        <!-- Sports & Casual, The Global Trade In Shoes -->
+        <div class="global-product-container">
+            <div class="title">
+                Men's shoes, <br/>
+                The Global Trade In Shoes
+            </div>
+            <div class="global-product-list clearfix">
+                <a class="global-product-item fl"
+                   href="https://www.shoestp.com/kpu-lightweight-brand-name-summer-safety-shoes-low-price-steel-toe-safety-men-shoes-work-shoes_p1787.html"
+                   target="_blank">
+                    <!-- <a href="" target="_blank"> -->
+                    <img src="./images/goods1.jpg" alt=""/>
+                    <!-- </a> -->
+                </a>
+                <a class="global-product-item fl"
+                   href="https://www.shoestp.com/new-fashion-safety-shoes-men-low-price-brand-industrial-safety-shoes-leather-work-shoes_p1828.html"
+                   target="_blank">
+                    <!-- <a href="" target="_blank"> -->
+                    <img src="./images/goods2.jpg" alt=""/>
+                    <!-- </a> -->
+                </a>
+                <a class="global-product-item fl"
+                   href="https://www.shoestp.com/groundwork-multifunctional-black-green-anti-slip-lightweight-safety-shoes-&-boots_p1865.html"
+                   target="_blank">
+                    <!-- <a href="" target="_blank"> -->
+                    <img src="./images/goods3.jpg" alt=""/>
+                    <!-- </a> -->
+                </a>
+                <a class="global-product-item fl"
+                   href="https://www.shoestp.com/high-quality-leather-safety-shoes-s1p-men-work-boot-with-steel-toe-low-price_p1797.html"
+                   target="_blank">
+                    <!-- <a href="" target="_blank"> -->
+                    <img src="./images/goods4.jpg" alt=""/>
+                    <!-- </a> -->
+                </a>
+                <a class="global-product-item fl"
+                   href="https://www.shoestp.com/s1p-men-safety-shoes-men-work-boot-with-steel-toe-protective_p1869.html"
+                   target="_blank">
+                    <!-- <a href="" target="_blank"> -->
+                    <img src="./images/goods5.jpg" alt=""/>
+                    <!-- </a> -->
+                </a>
+                <a class="global-product-item fl"
+                   href="https://www.shoestp.com/cheapest-mining-industrial-safety-shoe-anti-lsip-function-middle-safety-boot_p1849.html"
+                   target="_blank">
+                    <!-- <a href="" target="_blank"> -->
+                    <img src="./images/goods6.jpg" alt=""/>
+                    <!-- </a> -->
+                </a>
 
-        </div>
-        <div style="font-size: 32px;font-weight: bold;">Product Show</div>
-        <div style="font-size: 20px;line-height: 55px;color: #585e61;">
-          Simple but fashionable, Lightweight, Abrasion-resistant,
-          Slip-resistant, Free flexible.
-        </div>
-        <div class="btn" @click="scrollToTop" style="cursor:pointer;">Inquiry Now</div>
-      </div>
-      <!-- Custom Shoes -->
-      <div class="custom-shoes" style="text-align:center">
-        <div class="title">Custom Shoes</div>
-        <div style="text-align:center;">
-          You can customize your shoes to suit your brand. <br />
-          Please follow the steps below:
-        </div>
-        <div class="custom-shoes-list">
-          <img class="custom-shoes-img1" src="./images/custom-shoes1.jpg" alt="" style="z-index:-1" />
-          <div class="flex custom-shoes-bottom" style="-webkit-justify-content: space-between;justify-content: space-between;">
-            <div class="custom-shoes-item flex">
-              <img class="custom-shoes-img2" src="./images/custom-shoes2.png" alt="" />
-              <div style="margin-left:24px;">
-                <div class="title">Contact Us</div>
-                <div class="content">
-                  Submit the form above to leave your basic information. Our
-                  professional staff will contact you within 24 hours.
-                </div>
-              </div>
             </div>
-            <div class="custom-shoes-item flex">
-              <div>
-                <div class="title">Pick Template</div>
-                <div class="content">
-                  We need you to pick your favorite look from our existing
-                  shoe templates.
-                </div>
-              </div>
-              <img class="custom-shoes-img3" src="./images/custom-shoes3.jpg" alt="" />
+            <div style="font-size: 32px;font-weight: bold;">Product Show</div>
+            <div style="font-size: 20px;line-height: 55px;color: #585e61;">
+                Simple but fashionable, Lightweight, Abrasion-resistant,
+                Slip-resistant, Free flexible.
             </div>
-          </div>
-          <div class="flex" style=" -webkit-justify-content: space-between;justify-content: space-between;">
-            <div class="custom-shoes-item flex">
-              <img class="custom-shoes-img4" src="./images/custom-shoes4.png" alt="" />
-              <div style="margin-left:24px;">
-                <div class="title">Collecting Details</div>
-                <div class="content">
-                  Provide us with details of your brand image and other
-                  information. We will develop a preview plan for you.
-                </div>
-              </div>
-            </div>
-            <div class="custom-shoes-item flex">
-              <div>
-                <div class="title">Check It Again</div>
-                <div class="content">
-                  Double check the final preview we showed you and we started
-                  mass production.
-                </div>
-              </div>
-              <img class="custom-shoes-img5" src="./images/custom-shoes5.png" alt="" />
-            </div>
-          </div>
+            <div class="btn" @click="scrollToTop" style="cursor:pointer;">Inquiry Now</div>
         </div>
-        <div class="btn" @click="scrollToTop" style="cursor:pointer;">Request Now</div>
-      </div>
+        <!-- Custom Shoes -->
+        <div class="custom-shoes" style="text-align:center">
+            <div class="title">Custom Shoes</div>
+            <div style="text-align:center;">
+                You can customize your shoes to suit your brand. <br/>
+                Please follow the steps below:
+            </div>
+            <div class="custom-shoes-list">
+                <img class="custom-shoes-img1" src="./images/custom-shoes1.jpg" alt="" style="z-index:-1"/>
+                <div class="flex custom-shoes-bottom"
+                     style="-webkit-justify-content: space-between;justify-content: space-between;">
+                    <div class="custom-shoes-item flex">
+                        <img class="custom-shoes-img2" src="./images/custom-shoes2.png" alt=""/>
+                        <div style="margin-left:24px;">
+                            <div class="title">Contact Us</div>
+                            <div class="content">
+                                Submit the form above to leave your basic information. Our
+                                professional staff will contact you within 24 hours.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="custom-shoes-item flex">
+                        <div>
+                            <div class="title">Pick Template</div>
+                            <div class="content">
+                                We need you to pick your favorite look from our existing
+                                shoe templates.
+                            </div>
+                        </div>
+                        <img class="custom-shoes-img3" src="./images/custom-shoes3.jpg" alt=""/>
+                    </div>
+                </div>
+                <div class="flex" style=" -webkit-justify-content: space-between;justify-content: space-between;">
+                    <div class="custom-shoes-item flex">
+                        <img class="custom-shoes-img4" src="./images/custom-shoes4.png" alt=""/>
+                        <div style="margin-left:24px;">
+                            <div class="title">Collecting Details</div>
+                            <div class="content">
+                                Provide us with details of your brand image and other
+                                information. We will develop a preview plan for you.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="custom-shoes-item flex">
+                        <div>
+                            <div class="title">Check It Again</div>
+                            <div class="content">
+                                Double check the final preview we showed you and we started
+                                mass production.
+                            </div>
+                        </div>
+                        <img class="custom-shoes-img5" src="./images/custom-shoes5.png" alt=""/>
+                    </div>
+                </div>
+            </div>
+            <div class="btn" @click="scrollToTop" style="cursor:pointer;">Request Now</div>
+        </div>
     </div>
     <!-- banner -->
     <div style=" background: linear-gradient(to right, #ffffff , #ffffff); text-align:center;">
-      <img class="maxW minW" src="./images/banner2.jpg" alt="" />
+        <img class="maxW minW" src="./images/banner2.jpg" alt=""/>
     </div>
     <!-- about-us -->
     <div class="new-era flex">
-      <div class="new-era-img"><img src="./images/about-us.jpg" alt="" /></div>
-      <div class="new-era-content">
-        <div class="title">About us</div>
-        <div class="content">
-          Founded in 2006, Zhejiang Jiebaqiao Shoes Co., Ltd., formerly known as Rui'an Zelin Footwear Co., Ltd., is
-          located in Wenzhou, one of the most economically active cities in China. It is a professional manufacturer of
-          high quality safety shoes, protective shoes and work shoes. A series of modern integrated enterprises
-          integrating development, production and sales.
-          Zhejiang Jieba Bacho Shoes Co., Ltd. adheres to the production philosophy of “advocating science and
-          technology, people-oriented, pursuing excellence” and the management tenet of “quality first, customer
-          first”. In the future development, the company will continue to develop new business as always. The field and
-          space, with the corporate spirit of "unity, hard work, pragmatism and innovation" as a guide, make positive
-          contributions to the development of social economy.
+        <div class="new-era-img"><img src="./images/about-us.jpg" alt=""/></div>
+        <div class="new-era-content">
+            <div class="title">About us</div>
+            <div class="content">
+                Founded in 2006, Zhejiang Jiebaqiao Shoes Co., Ltd., formerly known as Rui'an Zelin Footwear Co., Ltd.,
+                is
+                located in Wenzhou, one of the most economically active cities in China. It is a professional
+                manufacturer of
+                high quality safety shoes, protective shoes and work shoes. A series of modern integrated enterprises
+                integrating development, production and sales.
+                Zhejiang Jieba Bacho Shoes Co., Ltd. adheres to the production philosophy of “advocating science and
+                technology, people-oriented, pursuing excellence” and the management tenet of “quality first, customer
+                first”. In the future development, the company will continue to develop new business as always. The
+                field and
+                space, with the corporate spirit of "unity, hard work, pragmatism and innovation" as a guide, make
+                positive
+                contributions to the development of social economy.
+            </div>
         </div>
-      </div>
     </div>
     <!-- 4个数据 -->
     <div class="four-num" style=" background-color: #f2f2f2; text-align:center;">
-      <div class="maxW minW four-num-list clearfix">
-        <div class="four-num-item">
-          <div class="four-num-font">
-            <div class="title">50</div>
-            <div class="content" style="width:166px;">
-              number of<br />
-              new shoe <br>
-              styles
+        <div class="maxW minW four-num-list clearfix">
+            <div class="four-num-item">
+                <div class="four-num-font">
+                    <div class="title">50</div>
+                    <div class="content" style="width:166px;">
+                        number of<br/>
+                        new shoe <br>
+                        styles
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-        <div class="four-num-item">
-          <div class="four-num-font">
-            <div class="title">8K</div>
-            <div class="content">
-              <span>㎡</span> <br />
-              facility
+            <div class="four-num-item">
+                <div class="four-num-font">
+                    <div class="title">8K</div>
+                    <div class="content">
+                        <span>㎡</span> <br/>
+                        facility
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-        <div class="four-num-item">
-          <div class="four-num-font">
-            <div class="title">200</div>
-            <div class="content">
-              Employee
+            <div class="four-num-item">
+                <div class="four-num-font">
+                    <div class="title">200</div>
+                    <div class="content">
+                        Employee
+                    </div>
+                </div>
             </div>
-          </div>
+            <div class="four-num-item">
+                <div class="four-num-font">
+                    <div class="title">10W</div>
+                    <div class="content">Monthly</div>
+                    <div class="content">production</div>
+                </div>
+            </div>
         </div>
-        <div class="four-num-item">
-          <div class="four-num-font">
-            <div class="title">10W</div>
-            <div class="content">Monthly</div>
-            <div class="content">production</div>
-          </div>
-        </div>
-      </div>
     </div>
     <!-- container-two -->
     <div class="container-two">
-      <!-- great -->
-      <div class="great-container clearfix">
-        <div class="great-list fl flex-wrap">
-          <div class="great-item flex">
-            <img src="./images/great2.jpg" alt="" />
-            <div>Fashion Design</div>
-          </div>
-          <div class="great-item flex">
-            <img src="./images/great2.jpg" alt="" />
-            <div>Professional Custom Models</div>
-          </div>
-          <div class="great-item flex">
-            <img src="./images/great2.jpg" alt="" />
-            <div>QC</div>
-          </div>
-          <div class="great-item flex">
-            <img src="./images/great2.jpg" alt="" />
-            <div>Professional Customer Service</div>
-          </div>
-          <div class="great-item flex">
-            <img src="./images/great2.jpg" alt="" />
-            <div>About Manufacturing</div>
-          </div>
-          <div class="great-item flex">
-            <img src="./images/great2.jpg" alt="" />
-            <div>Factory Direct Sales</div>
-          </div>
-          <div class="great-item flex">
-            <img src="./images/great2.jpg" alt="" />
-            <div>Service Experience</div>
-          </div>
+        <!-- great -->
+        <div class="great-container clearfix">
+            <div class="great-list fl flex-wrap">
+                <div class="great-item flex">
+                    <img src="./images/great2.jpg" alt=""/>
+                    <div>Fashion Design</div>
+                </div>
+                <div class="great-item flex">
+                    <img src="./images/great2.jpg" alt=""/>
+                    <div>Professional Custom Models</div>
+                </div>
+                <div class="great-item flex">
+                    <img src="./images/great2.jpg" alt=""/>
+                    <div>QC</div>
+                </div>
+                <div class="great-item flex">
+                    <img src="./images/great2.jpg" alt=""/>
+                    <div>Professional Customer Service</div>
+                </div>
+                <div class="great-item flex">
+                    <img src="./images/great2.jpg" alt=""/>
+                    <div>About Manufacturing</div>
+                </div>
+                <div class="great-item flex">
+                    <img src="./images/great2.jpg" alt=""/>
+                    <div>Factory Direct Sales</div>
+                </div>
+                <div class="great-item flex">
+                    <img src="./images/great2.jpg" alt=""/>
+                    <div>Service Experience</div>
+                </div>
+            </div>
+            <div class="great-font fr">
+                <div class="title">What is so great</div>
+                <div class="btn">shoes</div>
+            </div>
+            <img class="great-img1" src="./images/great1.jpg" alt=""/>
         </div>
-        <div class="great-font fr">
-          <div class="title">What is so great</div>
-          <div class="btn">shoes</div>
+        <!-- Order Detail -->
+        <div class="order-detail clearfix">
+            <div class="order-detail-list fr">
+                <div class="order-detail-font flex-wrap">
+                    <div class="order-detail-item flex">
+                        <img src="./images/love.png" alt=""/>
+                        <div><span class="title">MOQ: </span>50pcs</div>
+                    </div>
+                    <div class="order-detail-item flex">
+                        <img src="./images/love.png" alt=""/>
+                        <div><span class="title">Delivery time: </span>60 days</div>
+                    </div>
+                    <div class="order-detail-item flex">
+                        <img src="./images/love.png" alt=""/>
+                        <div>
+                            <span class="title">Monthly production: </span>100,000
+                        </div>
+                    </div>
+                    <div class="order-detail-item flex">
+                        <img src="./images/love.png" alt=""/>
+                        <div>
+                            <span class="title">Price: </span>lowest factory direct price
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <img class="great-img1" src="./images/great1.jpg" alt="" />
-      </div>
-      <!-- Order Detail -->
-      <div class="order-detail clearfix">
-        <div class="order-detail-list fr">
-          <div class="order-detail-font flex-wrap">
-            <div class="order-detail-item flex">
-              <img src="./images/love.png" alt="" />
-              <div><span class="title">MOQ: </span>50pcs</div>
+        <!-- Testimonials -->
+        <div class="testimonials">
+            <div class="title1">Testimonials</div>
+            <div class="testimonials-item flex">
+                <img src="./images/testimonials-img1.png" alt=""/>
+                <div>
+                    <div class="title">MICHAEL RUFFLE</div>
+                    <div class="content">
+                        I was really lucky when I found your company online. Your
+                        products are doing very well in my business and I can easily
+                        resell them in my country. I will definitely call you again!
+                    </div>
+                    <img src="./images/testimonials-img11.jpg" alt=""/>
+                </div>
             </div>
-            <div class="order-detail-item flex">
-              <img src="./images/love.png" alt="" />
-              <div><span class="title">Delivery time: </span>60 days</div>
+            <div class="testimonials-item flex">
+                <img src="./images/testimonials-img2.png" alt=""/>
+                <div>
+                    <div class="title">JOLLY MILLS</div>
+                    <div class="content">
+                        They are truly committed to providing our customers with the
+                        highest quality and most reliable service.
+                    </div>
+                    <img src="./images/testimonials-img22.jpg" alt=""/>
+                </div>
             </div>
-            <div class="order-detail-item flex">
-              <img src="./images/love.png" alt="" />
-              <div>
-                <span class="title">Monthly production: </span>100,000
-              </div>
+            <div class="testimonials-item flex">
+                <img src="./images/testimonials-img3.png" alt=""/>
+                <div>
+                    <div class="title">WESLEY DANSON</div>
+                    <div class="content">
+                        They are completely beyond our expectations and do so in a
+                        positive and professional manner. I quote them to everyone in
+                        his network of friends and family. Guys, thank you again.
+                    </div>
+                    <img src="./images/testimonials-img33.jpg" alt=""/>
+                </div>
             </div>
-            <div class="order-detail-item flex">
-              <img src="./images/love.png" alt="" />
-              <div>
-                <span class="title">Price: </span>lowest factory direct price
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
-      <!-- Testimonials -->
-      <div class="testimonials">
-        <div class="title1">Testimonials</div>
-        <div class="testimonials-item flex">
-          <img src="./images/testimonials-img1.png" alt="" />
-          <div>
-            <div class="title">MICHAEL RUFFLE</div>
-            <div class="content">
-              I was really lucky when I found your company online. Your
-              products are doing very well in my business and I can easily
-              resell them in my country. I will definitely call you again!
-            </div>
-            <img src="./images/testimonials-img11.jpg" alt="" />
-          </div>
-        </div>
-        <div class="testimonials-item flex">
-          <img src="./images/testimonials-img2.png" alt="" />
-          <div>
-            <div class="title">JOLLY MILLS</div>
-            <div class="content">
-              They are truly committed to providing our customers with the
-              highest quality and most reliable service.
-            </div>
-            <img src="./images/testimonials-img22.jpg" alt="" />
-          </div>
-        </div>
-        <div class="testimonials-item flex">
-          <img src="./images/testimonials-img3.png" alt="" />
-          <div>
-            <div class="title">WESLEY DANSON</div>
-            <div class="content">
-              They are completely beyond our expectations and do so in a
-              positive and professional manner. I quote them to everyone in
-              his network of friends and family. Guys, thank you again.
-            </div>
-            <img src="./images/testimonials-img33.jpg" alt="" />
-          </div>
-        </div>
-      </div>
     </div>
     <!-- 底部 -->
     <div class="bottom-container maxW minW">
-      <div class="bottom-bg">
-        <div class="bottom-font">
-          <div class="title">
-            Your Business <br />
-            Needs Are Unique?
-          </div>
-          <div class="content">
-            Let us help you meet those needs! <br />
-            Please contact us and enter the enquiry immediately.
-          </div>
-          <div class="btn" @click="scrollToTop" style="cursor:pointer;">Contact Us</div>
+        <div class="bottom-bg">
+            <div class="bottom-font">
+                <div class="title">
+                    Your Business <br/>
+                    Needs Are Unique?
+                </div>
+                <div class="content">
+                    Let us help you meet those needs! <br/>
+                    Please contact us and enter the enquiry immediately.
+                </div>
+                <div class="btn" @click="scrollToTop" style="cursor:pointer;">Contact Us</div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
 
-  <script>
+<script>
     new Vue({
-      el: "#app",
-      data: {
-        form: {
-          name: "",
-          email: "",
-          detail: ""
-        },
-        interval:0,
-        rules: {
-          name: [
-            {
-              required: true,
-              message: "Names must not be empty.",
-              trigger: "blur"
+        el: "#app",
+        data: {
+            form: {
+                name: "",
+                email: "",
+                detail: ""
             },
-          ],
-          email: [
-            {
-              required: true,
-              message: "Please input your mailbox.",
-              trigger: "blur"
-            },
-            {
-              validator: function(rule, value, callback) {
-                if (!(/[\w]+(\.[\w]+)*@[\w]+(\.[\w])+/.test(value))) {
-                  callback(new Error("Error in mailbox format."));
-                } else {
-                  callback();
-                }
-              },
-              trigger: "blur"
-            }
-          ],
-          detail:[
-            {
-              required: true,
-              message: "Please enter your content",
-              trigger: "blur"
-            }
-          ]
-        }
-
-      },
-      methods: {
-        submit(formName) {
-              this.$refs[formName].validate((valid) => {
-            if (valid) {
-                  axios.post('/home/Activity_Romania_inquiry',Qs.stringify({
-                    supId:78,
-                    name:this.form.name,
-                    email:this.form.email,
-                    detail:this.form.detail,
-                  }))
-                  .then( (res) => {
-                    console.log(res)
-                    if(res.data.ret == 1){
-                    this.$message({
-                      message: 'Submit successfully',
-                      type: 'success',
-                      duration:2000,
-                      onClose:function(){
-                        window.location.reload();
-                      }
-                    });
-
+            interval: 0,
+            rules: {
+                name: [
+                    {
+                        required: true,
+                        message: "Names must not be empty.",
+                        trigger: "blur"
+                    },
+                ],
+                email: [
+                    {
+                        required: true,
+                        message: "Please input your mailbox.",
+                        trigger: "blur"
+                    },
+                    {
+                        validator: function (rule, value, callback) {
+                            if (!(/[\w]+(\.[\w]+)*@[\w]+(\.[\w])+/.test(value))) {
+                                callback(new Error("Error in mailbox format."));
+                            } else {
+                                callback();
+                            }
+                        },
+                        trigger: "blur"
                     }
-                  })
-                  .catch(function (error) {
-                    this.$message.error(error);
-                  });
-            } else {
-              console.log('error submit!!');
-              if(!this.form.name){
-                this.$message.error('Names must not be empty.');
-              }else if(!this.form.email){
-                this.$message.error("Please input your mailbox.");
-              }
-              else if (!(/[\w]+(\.[\w]+)*@[\w]+(\.[\w])+/.test(this.form.email))) {
-                  this.$message.error("Error in mailbox format.");
-                }
-                else if(!this.form.detail){
-                  this.$message.error('Please enter your content');
-                }
-              return false;
+                ],
+                detail: [
+                    {
+                        required: true,
+                        message: "Please enter your content",
+                        trigger: "blur"
+                    }
+                ]
             }
-          });
-        },
-        scrollToTop(){
-					const start = window.pageYOffset;
-		      let i = 0;
-		      let backPosition = 0;
-					this.interval = setInterval(() => {
-		        const next = Math.floor(this.easeInOutQuad(10 * i, start, -start, 500))
-		        if (next <= backPosition) {
-		          window.scrollTo(0, backPosition)
-		          clearInterval(this.interval)
 
-              // 姓名输入框 获取焦点
-              this.$refs.name.focus();
-		        } else {
-		          window.scrollTo(0, next)
-		        }
-		        i++
-		      }, 16.7)
-				},
-				easeInOutQuad(t, b, c, d) {
-		      if ((t /= d / 2) < 1) return c / 2 * t * t + b
-		      return -c / 2 * (--t * (t - 2) - 1) + b
-		    },
-      },
-      mounted() {},
-      computed: {}
+        },
+        methods: {
+            submit(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        axios.post('/home/Activity_Romania_inquiry', Qs.stringify({
+                            supId: 78,
+                            name: this.form.name,
+                            email: this.form.email,
+                            detail: this.form.detail,
+                        }))
+                            .then((res) => {
+                                console.log(res)
+                                if (res.data.ret == 1) {
+                                    this.$message({
+                                        message: 'Submit successfully',
+                                        type: 'success',
+                                        duration: 2000,
+                                        onClose: function () {
+                                            window.location.reload();
+                                        }
+                                    });
+
+                                }
+                            })
+                            .catch(function (error) {
+                                this.$message.error(error);
+                            });
+                    } else {
+                        console.log('error submit!!');
+                        if (!this.form.name) {
+                            this.$message.error('Names must not be empty.');
+                        } else if (!this.form.email) {
+                            this.$message.error("Please input your mailbox.");
+                        }
+                        else if (!(/[\w]+(\.[\w]+)*@[\w]+(\.[\w])+/.test(this.form.email))) {
+                            this.$message.error("Error in mailbox format.");
+                        }
+                        else if (!this.form.detail) {
+                            this.$message.error('Please enter your content');
+                        }
+                        return false;
+                    }
+                });
+            },
+            scrollToTop() {
+                const start = window.pageYOffset;
+                let i = 0;
+                let backPosition = 0;
+                this.interval = setInterval(() => {
+                    const next = Math.floor(this.easeInOutQuad(10 * i, start, -start, 500))
+                    if (next <= backPosition) {
+                        window.scrollTo(0, backPosition)
+                        clearInterval(this.interval)
+
+                        // 姓名输入框 获取焦点
+                        this.$refs.name.focus();
+                    } else {
+                        window.scrollTo(0, next)
+                    }
+                    i++
+                }, 16.7)
+            },
+            easeInOutQuad(t, b, c, d) {
+                if ((t /= d / 2) < 1) return c / 2 * t * t + b
+                return -c / 2 * (--t * (t - 2) - 1) + b
+            },
+        },
+        mounted() {
+        },
+        computed: {}
     });
-  </script>
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'AW-783435725');
+    gtag('config', 'UA-127715615-6');
+</script>
 </body>
 
 </html>

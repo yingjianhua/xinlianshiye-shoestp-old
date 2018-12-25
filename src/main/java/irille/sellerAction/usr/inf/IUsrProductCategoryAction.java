@@ -1,7 +1,7 @@
 package irille.sellerAction.usr.inf;
 
-import irille.pub.svr.Controller;
-import irille.pub.svr.RequestMapping;
+import irille.Filter.svr.Controller;
+import irille.Filter.svr.RequestMapping;
 import irille.sellerAction.ISellerAction;
 import org.json.JSONException;
 

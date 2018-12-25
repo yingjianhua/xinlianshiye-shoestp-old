@@ -9,7 +9,7 @@ import irille.homeAction.usr.dto.Page_supplierView;
 import irille.homeAction.usr.dto.ProductView;
 import irille.pub.bean.BeanBase;
 import irille.pub.idu.IduPage;
-import irille.pub.svr.ItpCheckPurchaseLogin.NeedLogin;
+import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.shop.pdt.PdtCatDAO;
 import irille.shop.plt.PltProvince;
 import irille.shop.prm.PrmGroupPurchase;

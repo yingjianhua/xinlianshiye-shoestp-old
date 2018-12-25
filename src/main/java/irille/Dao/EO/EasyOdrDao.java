@@ -216,7 +216,7 @@ public class EasyOdrDao {
         return new Page(eslist, start, limit, count);
     }
 
-    public String allOdr(Integer supplier) {
+    public String allOdr(Integer supplier, Date begin, Date end) {
         String list = "";
         SQL sql = new SQL() {{
             SELECT("GROUP_CONCAT(" + T.PKEY + ")");
@@ -224,13 +224,16 @@ public class EasyOdrDao {
             if (supplier != null) {
                 WHERE(T.SUPPLIER, "=?", supplier);
             }
+            if (begin != null) {
+                WHERE(T.TIME, ">=?", begin);
+            }
+            if (end != null) {
+                WHERE(T.TIME, "<?", end);
+            }
         }};
         list = Query.sql(sql).queryObject(String.class);
-
         return list;
     }
-
-
 
 
     public EasyOdr addNewOrder(EasyOdr easyOdr) {

@@ -2,7 +2,7 @@ package irille.homeAction.usr;
 
 import irille.homeAction.HomeAction;
 import irille.pub.idu.IduPage;
-import irille.pub.svr.ItpCheckPurchaseLogin;
+import irille.Filter.svr.ItpCheckPurchaseLogin;
 import irille.shop.usr.UsrMessages;
 import irille.shop.usr.UsrMessagesDAO;
 

@@ -108,6 +108,8 @@ $default-color:  #fabf1d;
 
         &:last-child {
           margin-right: 0;
+          position: relative;
+          top: -35px;
         }
 
         .item-title {
@@ -134,8 +136,8 @@ $default-color:  #fabf1d;
         }
 
         .our-advantage-img4 {
-          width: 227px;
-          height: 150px;
+          width: 180px;
+          // height: 150px;
         }
       }
     }
@@ -384,8 +386,8 @@ $default-color:  #fabf1d;
       position: absolute;
       bottom: 0;
       right: 0;
-      width: 555px;
-      height: 322px;
+      width: 471px;
+      height: 356px;
       z-index: -1;
     }
   }
@@ -586,8 +588,8 @@ $default-color:  #fabf1d;
             height: 130px;
           }
           .our-advantage-img4 {
-            width: 208px;
-            height: 130px;
+            width: 160px;
+            // height: 130px;
           }
         }
       }
@@ -717,8 +719,8 @@ $default-color:  #fabf1d;
         }
       }
       .great-img1 {
-        width: 500px;
-        height: 294px;
+        width: 386px;
+        height: 270px;
       }
     }
     .order-detail {
@@ -840,8 +842,8 @@ $default-color:  #fabf1d;
             height: 110px;
           }
           .our-advantage-img4 {
-            width: 176px;
-            height: 110px;
+            width: 140px;
+            // height: 110px;
           }
         }
       }
@@ -969,8 +971,8 @@ $default-color:  #fabf1d;
         }
       }
       .great-img1 {
-        width: 400px;
-        height: 264px;
+        width: 354px;
+        height: 254px;
       }
     }
     .order-detail {

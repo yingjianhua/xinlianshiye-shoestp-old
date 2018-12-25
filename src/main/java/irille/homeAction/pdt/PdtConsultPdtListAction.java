@@ -2,7 +2,7 @@ package irille.homeAction.pdt;
 
 import irille.homeAction.HomeAction;
 import irille.homeAction.pdt.inf.IPdtConsultPdtListAction;
-import irille.pub.svr.ItpCheckPurchaseLogin.NeedLogin;
+import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.shop.pdt.PdtConsultPdtList;
 import irille.shop.pdt.PdtConsultPdtListDAO;
 import irille.view.pdt.ConsultProductView;
@@ -10,7 +10,7 @@ import irille.view.pdt.ConsultProductView;
 import java.io.IOException;
 
 public class PdtConsultPdtListAction extends HomeAction<PdtConsultPdtList> implements IPdtConsultPdtListAction {
-	
+
     private static final long serialVersionUID = -3155157653498079851L;
 
     private Integer product;
@@ -33,13 +33,13 @@ public class PdtConsultPdtListAction extends HomeAction<PdtConsultPdtList> imple
      *
      * @author yingjianhua
      */
-    
+
     /**
      * 询盘产品列表的过滤条件
      * 可以为空
      */
     private Integer supplierId;
-    
+
     @NeedLogin
     public void list() throws Exception {
         write(PdtConsultPdtListDAO.listViewByPurchase(getPurchase().getPkey(), supplierId, curLanguage()));
@@ -111,5 +111,5 @@ public class PdtConsultPdtListAction extends HomeAction<PdtConsultPdtList> imple
 	public void setSupplierId(Integer supplierId) {
 		this.supplierId = supplierId==-1?null:supplierId;
 	}
-    
+
 }

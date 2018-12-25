@@ -21,7 +21,7 @@ import irille.pub.idu.IduUnapprove;
 import irille.pub.idu.IduUpd;
 import irille.pub.inf.IExtName;
 import irille.pub.svr.Env;
-import irille.pub.svr.ItpSessionmsg;
+import irille.Filter.svr.ItpSessionmsg;
 import irille.pub.tb.Fld;
 import irille.pub.tb.FldEnumByte;
 import irille.pub.tb.FldLanguage;
@@ -103,7 +103,7 @@ public abstract class SellerAction<THIS extends BeanMain> extends BeanAction<THI
 	//public static final String LOGIN = "supplier_login";
 	public static final String TRENDS = "trends";
 	public static final String RTRENDS = "rtrends";
-	
+
 	public Tb tb() {
 		if (_bean != null)
 			return (Tb) _bean.gtTB();
@@ -223,7 +223,7 @@ public abstract class SellerAction<THIS extends BeanMain> extends BeanAction<THI
 	 */
 	public static String getUploadPath(boolean real) {
 		String path = ServletActionContext.getServletContext().getInitParameter("uploadPath");
-		if(Str.isEmpty(path)) 
+		if(Str.isEmpty(path))
 			path = "uploads";
 		if(path.indexOf(":")>0)
 			return path;
@@ -250,11 +250,11 @@ public abstract class SellerAction<THIS extends BeanMain> extends BeanAction<THI
 	public Serializable getPkey() {
 		return _pkey;
 	}
-	
+
 	/**
 	 * 配合longPkey选择器使用
-	 * @throws JSONException 
-	 * @throws IOException 
+	 * @throws JSONException
+	 * @throws IOException
 	 * */
 	public void getLongPkey() throws JSONException, IOException {
 		HttpServletResponse response = ServletActionContext.getResponse();
@@ -284,7 +284,7 @@ public abstract class SellerAction<THIS extends BeanMain> extends BeanAction<THI
 	public void setPkeys(String pkeys) {
 		_pkeys = pkeys;
 	}
-	
+
 	public short getRowVersion() {
 		return _rowVersion;
 	}
@@ -292,15 +292,15 @@ public abstract class SellerAction<THIS extends BeanMain> extends BeanAction<THI
 	public void setRowVersion(short rowVersion) {
 		_rowVersion = rowVersion;
 	}
-	
+
 	public String getRowVersions() {
 		return _rowVersions;
 	}
-	
+
 	public void setRowVersions(String rowVersions) {
 		_rowVersions = rowVersions;
 	}
-	
+
 	public String getResult() {
 		return _result;
 	}
@@ -438,7 +438,7 @@ public abstract class SellerAction<THIS extends BeanMain> extends BeanAction<THI
 				diy = ja.getJSONObject(i).getString(QUERY_VALUE);
 		}
 		if (flds == null && Str.isEmpty(diy)) {
-			if (tb().chk("enabled")) 
+			if (tb().chk("enabled"))
 				return crtQueryAll() + " AND enabled = 1" + orderBy();
 			return crtQueryAll() + orderBy();
 		}
@@ -457,7 +457,7 @@ public abstract class SellerAction<THIS extends BeanMain> extends BeanAction<THI
 			where += " AND " + diy;
 		if (Str.isEmpty(sql) == false)
 			where += " AND (" + sql + ")";
-		if (tb().chk("enabled")) 
+		if (tb().chk("enabled"))
 			where += " AND enabled = 1";
 		return where + orderBy();
 	}
@@ -605,7 +605,7 @@ public abstract class SellerAction<THIS extends BeanMain> extends BeanAction<THI
 	 * @param _bean 实体
 	 * @param pref 字段前缀
 	 * @return
-	 * @throws JSONException 
+	 * @throws JSONException
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws JSONException {
@@ -794,7 +794,7 @@ public abstract class SellerAction<THIS extends BeanMain> extends BeanAction<THI
 
 	/**
 	 * 通用的XLS导出入口
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public void exportGrid() throws Exception {
@@ -1042,7 +1042,7 @@ public abstract class SellerAction<THIS extends BeanMain> extends BeanAction<THI
 			return 1;
 		}
 	}
-	
+
 	/**
 	 * 搜索和高级搜索外表非关联字段搜索
 	 * @param ja 前台传来的JSON
@@ -1084,10 +1084,10 @@ public abstract class SellerAction<THIS extends BeanMain> extends BeanAction<THI
 			sql = " AND " + outkeyfld.getCodeSqlField() + " IN (" + subSql + ")";
 		return sql;
 	}
-//---------------------------------------------上传文件功能--------------------------------------	
+//---------------------------------------------上传文件功能--------------------------------------
 	private String fileFileName = "";
 	private File file;
-	
+
 	public void upload() throws IOException {
 		if(getSupplier() == null) {
 			writeTimeout();
@@ -1095,7 +1095,7 @@ public abstract class SellerAction<THIS extends BeanMain> extends BeanAction<THI
 			write(ImageUpload.upload(beanClazz(), fileFileName, file));
 		}
 	}
-	
+
 	public String getFileFileName() {
 		return fileFileName;
 	}
@@ -1112,7 +1112,7 @@ public abstract class SellerAction<THIS extends BeanMain> extends BeanAction<THI
 		this.file = file;
 	}
 //---------------------------------------------上传文件功能--------------------------------------
-	
+
   	public static final void setUser(UserView user) {
   		ItpSessionmsg.getSessionmsg().setUser(user);
   	}
@@ -1125,5 +1125,5 @@ public abstract class SellerAction<THIS extends BeanMain> extends BeanAction<THI
   	public static final  UsrSupplier getSupplier() {
   		return ItpSessionmsg.getSessionmsg().getSupplier();
   	}
-	
+
 }

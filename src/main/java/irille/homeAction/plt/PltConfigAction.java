@@ -1,13 +1,17 @@
 package irille.homeAction.plt;
 
+import irille.Service.Plt.PltService;
 import irille.homeAction.HomeAction;
 import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.CacheUtils;
 import irille.shop.plt.PltConfig;
 import irille.shop.plt.PltConfig.Variable;
 import irille.shop.plt.PltErateDAO;
+import irille.view.v2.Plt.PltSysConfigView;
+import irille.view.v2.Plt.PltUserInfo;
 import org.json.JSONException;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.util.Locale;
 
@@ -17,6 +21,9 @@ public class PltConfigAction extends HomeAction<PltConfig> {
     private static final String WW_TRANS_I18N_LOCALE = "WW_TRANS_I18N_LOCALE";
 
     private Integer currency;
+    @Inject
+    private PltService pltService;
+
 
     /**
      * 切换网站展示语言
@@ -42,6 +49,21 @@ public class PltConfigAction extends HomeAction<PltConfig> {
     public void changeCurrency() throws IOException, JSONException {
         curCurrency(PltErateDAO.find(currency));
         write();
+    }
+
+    public void getSysConfig() throws IOException {
+        PltSysConfigView sysConfigView = new PltSysConfigView();
+        sysConfigView.setLanguages(pltService.getLangList());
+        sysConfigView.setCurrent_language(HomeAction.curLanguage());
+        sysConfigView.setCurrency_symbol(HomeAction.curCurrency().getSymbol());
+        sysConfigView.setBaseImageUrl("https://image.shoestp.com");
+        if (getPurchase() != null) {
+            PltUserInfo userInfo = new PltUserInfo();
+            userInfo.setId(getPurchase().getPkey());
+            userInfo.setName(getPurchase().getLoginName());
+            sysConfigView.setUser(userInfo);
+        }
+        write(sysConfigView);
     }
 
     public Integer getCurrency() {

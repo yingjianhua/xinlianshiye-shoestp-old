@@ -4,6 +4,7 @@ import com.google.inject.ImplementedBy;
 import irille.Service.Plt.Imp.PltServiceImp;
 import irille.pub.tb.FldLanguage;
 import irille.view.plt.CountryView;
+import irille.view.v2.Plt.PltSysLangInfoView;
 
 import java.util.List;
 
@@ -16,5 +17,8 @@ import java.util.List;
 @ImplementedBy(PltServiceImp.class)
 public interface PltService {
     List<CountryView> getCountryList(FldLanguage.Language language);
+
     List<CountryView> getCountryList(FldLanguage.Language language, String filterKeyWord);
+
+    List<PltSysLangInfoView> getLangList();
 }

@@ -1,7 +1,6 @@
 package irille.shop.plt;
 
 import irille.core.sys.ConfPackage;
-import irille.exp.exp.Exp;
 import irille.shop.cnt.Cnt;
 import irille.shop.easy.Easy;
 import irille.shop.lg.Lg;
@@ -25,7 +24,6 @@ public class Plt_ConfPackage extends ConfPackage {
         add(Odr.class, 1300);
         add(Cnt.class, 1400);
         add(Lg.class, 1700);
-        add(Exp.class, 8200);
         add(Pub.class, 8400);
         add(Prm.class, 8600);
         add(Easy.class, 8700);

@@ -7,7 +7,7 @@ import irille.pub.bean.Bean;
 import irille.pub.bean.BeanBase;
 import irille.pub.i18n.I18NUtil;
 import irille.pub.idu.Idu;
-import irille.pub.svr.ItpCheckPurchaseLogin.NeedLogin;
+import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltProvince;
@@ -26,7 +26,7 @@ import org.json.JSONObject;
 public class UsrPurchaseLineAction extends HomeAction<UsrPurchaseLine> {
 
 	public static UsrPurchaseLineDAO.InsLine line = new UsrPurchaseLineDAO.InsLine();
-	
+
 	private List<PltCountry> _countries;
 	private List<PltProvince> _provinces;
 	private List<AddressView> shippingAddr;
@@ -35,7 +35,7 @@ public class UsrPurchaseLineAction extends HomeAction<UsrPurchaseLine> {
 	private Integer date;
 	private Integer beanaddress;
 	private Integer data;
-	
+
 	public Integer getData() {
 		return data;
 	}
@@ -75,7 +75,7 @@ public class UsrPurchaseLineAction extends HomeAction<UsrPurchaseLine> {
 	public void setBillAddr(List<AddressView> billAddr) {
 		this.billAddr = billAddr;
 	}
-	
+
 	public Integer getCountryId() {
 		return _countryId;
 	}
@@ -95,7 +95,7 @@ public class UsrPurchaseLineAction extends HomeAction<UsrPurchaseLine> {
 	public List<PltCountry> getCountries() {
 		return _countries;
 	}
-	
+
 	public void setCountries(List<PltCountry> countries) {
 		this._countries = countries;
 	}
@@ -108,10 +108,10 @@ public class UsrPurchaseLineAction extends HomeAction<UsrPurchaseLine> {
 
 		writeSuccess(getBean());
 	}
-	
+
 	public void inss( ) throws Exception{
 		UsrPurchaseLineDAO.Inss Dao = new UsrPurchaseLineDAO.Inss();
-		
+
 		System.out.println(getBean().getRegion());
 		Dao.setB(getBean());
 		Dao.commit();
@@ -126,7 +126,7 @@ public class UsrPurchaseLineAction extends HomeAction<UsrPurchaseLine> {
 		Dao.commit();
 		writeSuccess(getBean());
 	}
-	
+
 	public void inquire() throws JSONException, Exception {
 		List<UsrPurchaseLine> list = UsrPurchaseLine.list(UsrPurchaseLine.class,UsrPurchaseLine.T.PKEY + " = " + getPkey(),false);
 		JSONObject json = new JSONObject();
@@ -135,20 +135,20 @@ public class UsrPurchaseLineAction extends HomeAction<UsrPurchaseLine> {
 			json.put("co", crtJsonByBean(usr.gtCountry()));
 			json.put("pv", crtJsonByBean(usr.gtRegion()));
 		}
-		
-		
+
+
 		List<PltProvince> list2 = Idu.getLines(PltProvince.T.MAIN, list.get(0).getCountry());
 		json.put("lis", new JSONArray(list2,false));
 		write(json.toString());
 		return;
 	}
-	
+
 
 	/**
 	 * 设置默认地址
 	 *@author zw
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void setdefault() throws Exception {
 		UsrPurchaseLineDAO.updisdefault Dao = new UsrPurchaseLineDAO.updisdefault();
@@ -171,7 +171,7 @@ public class UsrPurchaseLineAction extends HomeAction<UsrPurchaseLine> {
 		del.commit();
 		writeSuccess(getBean());
 	}
-	
+
 	/**
 	 * 返回到地址管理页面
 	 *
@@ -189,7 +189,7 @@ public class UsrPurchaseLineAction extends HomeAction<UsrPurchaseLine> {
 		}else{
 			data=0;
 		}
-		
+
 		if(billAddr==null || billAddr.size()<=0){
 			date=1;
 		}else{
@@ -198,7 +198,7 @@ public class UsrPurchaseLineAction extends HomeAction<UsrPurchaseLine> {
 		setResult("/home/address.jsp");
 		return TRENDS;
 	}
-	
+
 	List<PltProvince> list2;
 	@NeedLogin
 	public String addressform() {
@@ -207,13 +207,13 @@ public class UsrPurchaseLineAction extends HomeAction<UsrPurchaseLine> {
 		setBillAddr(AddressView.buildByPurchaseLine(BeanBase.list(UsrPurchaseLine.class, T.PURCHASE.getFld().getCodeSqlField() + " =? AND " + T.ADDRSSTYPE.getFld().getCodeSqlField() + "=?" , false,getPurchase().getPkey(), Usr.OAddress.BILLED.getLine().getKey())));
 		setCountries(translateUtil.getAutoTranslateList(PltCountry.list(PltCountry.class, "1=1", false), HomeAction.curLanguage()));
 		List<UsrPurchaseLine> list1 = null;
-		setProvinces(translateUtil.getAutoTranslateList(Idu.getLines(PltProvince.T.MAIN, getCountries().get(0).getPkey()), HomeAction.curLanguage()));	
+		setProvinces(translateUtil.getAutoTranslateList(Idu.getLines(PltProvince.T.MAIN, getCountries().get(0).getPkey()), HomeAction.curLanguage()));
 		if(shippingAddr==null || shippingAddr.size()<=0){
 			data=1;
 		}else{
 			data=0;
 		}
-		
+
 		if(billAddr==null || billAddr.size()<=0){
 			date=1;
 		}else{
@@ -222,7 +222,7 @@ public class UsrPurchaseLineAction extends HomeAction<UsrPurchaseLine> {
 		setResult("/home/addressform.jsp");
 		return TRENDS;
 	}
-	
+
 	/*
 	 * 赋予初始值
 	 */
@@ -249,7 +249,7 @@ public class UsrPurchaseLineAction extends HomeAction<UsrPurchaseLine> {
 //		writerOrExport(json);
 		writeSuccess(json);
 	}
-	
+
 
 	  /**
      * 增加收货地址 chenlili
@@ -277,22 +277,22 @@ public class UsrPurchaseLineAction extends HomeAction<UsrPurchaseLine> {
 			}
 		}
 	}
-	
+
 	public void getAddInfo() throws Exception{
 		UsrPurchaseLine usr= Bean.load(UsrPurchaseLine.class,getBean().getPkey());
 		AddressView address = AddressView.buildByPurchaseLine(usr);
 		JSONObject json = new JSONObject(address);
 		writerOrExport(json);
 	}
-	
-	
+
+
 	/**
 	 * 获取地址信息地址chenlili
-	 * @throws Exception 
-	 * @throws JSONException 
+	 * @throws Exception
+	 * @throws JSONException
 	 */
 //public void getAddInfo() throws JSONException, Exception {
-//	 
+//
 //	 UsrPurchaseLine usr= Bean.load(UsrPurchaseLine.class,getBean().getPkey());
 //	 String country=usr.gtCountry().getName();
 //	 String add=usr.getAddress();
@@ -319,7 +319,7 @@ public class UsrPurchaseLineAction extends HomeAction<UsrPurchaseLine> {
 	/**
 	 * 更新收货地址
 	 * @author GS
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private String province;
 	public String getProvince() {
@@ -329,7 +329,7 @@ public class UsrPurchaseLineAction extends HomeAction<UsrPurchaseLine> {
 		this.province = province;
 	}
 	private String addressType;
-	
+
 	public String getAddressType() {
 		return addressType;
 	}
@@ -344,17 +344,17 @@ public class UsrPurchaseLineAction extends HomeAction<UsrPurchaseLine> {
 	 * @throws Exception
 	 */
 	public void UpdAddress() throws Exception{
-	UsrPurchaseLineDAO.updAdress usrPurchaseLineDAO=new UsrPurchaseLineDAO.updAdress();	
+	UsrPurchaseLineDAO.updAdress usrPurchaseLineDAO=new UsrPurchaseLineDAO.updAdress();
 	JSONObject json = new JSONObject();
 	usrPurchaseLineDAO.setProvince(province);
 	usrPurchaseLineDAO.setB(getBean());
 	usrPurchaseLineDAO.commit();
 	if(usrPurchaseLineDAO.getQueryProResult().equals("success")){
-		json.put("ret", 1);	
+		json.put("ret", 1);
 		System.out.println(usrPurchaseLineDAO.getQueryProResult());
 		json.put("msg", usrPurchaseLineDAO.getQueryProResult());
 	}else{
-		json.put("ret", 0);	
+		json.put("ret", 0);
 		json.put("msg", I18NUtil.getBundle("Failure"));
 	}
 	writeSuccess(json);
@@ -365,7 +365,7 @@ public class UsrPurchaseLineAction extends HomeAction<UsrPurchaseLine> {
 	 * @throws Exception
 	 */
 	public void AddToAddress() throws Exception{
-		UsrPurchaseLineDAO.InsAddress usrPurchaseLineDAO=new UsrPurchaseLineDAO.InsAddress();	
+		UsrPurchaseLineDAO.InsAddress usrPurchaseLineDAO=new UsrPurchaseLineDAO.InsAddress();
 		usrPurchaseLineDAO.setProvince(province);
 		usrPurchaseLineDAO.setAddressType(addressType);
 		usrPurchaseLineDAO.setB(getBean());
@@ -376,7 +376,7 @@ public class UsrPurchaseLineAction extends HomeAction<UsrPurchaseLine> {
 			writeErr(e.getLastMessage());
 		}
 	}
-	
+
 	private String jsonCarts;
 
 	public String getJsonCarts() {
@@ -386,6 +386,6 @@ public class UsrPurchaseLineAction extends HomeAction<UsrPurchaseLine> {
 	public void setJsonCarts(String jsonCarts) {
 		this.jsonCarts = jsonCarts;
 	}
-	
-	
+
+
 	}

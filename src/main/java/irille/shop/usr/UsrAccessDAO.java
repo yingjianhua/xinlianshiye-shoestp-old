@@ -5,8 +5,8 @@ import irille.pub.bean.Bean;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.idu.IduOther;
-import irille.pub.svr.Controller;
-import irille.pub.svr.RequestMapping;
+import irille.Filter.svr.Controller;
+import irille.Filter.svr.RequestMapping;
 import irille.sellerAction.ISellerAction;
 import irille.shop.usr.UsrAccess.T;
 
@@ -20,28 +20,28 @@ import java.util.Map;
 import java.util.Set;
 
 public class UsrAccessDAO {
-	
+
 	public static final Log LOG = new Log(UsrAccessDAO.class);
-	
+
 	public static void main(String[] args) {
 		//InsInit.findController();
 	}
-	
+
 	public static final List<UsrAccess> ACCESS;
 	public static final Map<String, List<UsrAccess>> MODULE_ACCESS;
 	public static final Map<String, Map<String, List<UsrAccess>>> CONTROLLER_ACCESS;
-	
+
 	static {
 		ACCESS = BeanBase.list(UsrAccess.class, null, false);
 		ACCESS.sort((a1, a2)->a1.getSort().compareTo(a2.getSort()));
 		CONTROLLER_ACCESS = mapByController();
 		MODULE_ACCESS = mapByModule();
 	}
-	
+
 	public static List<String> listModuleName() {
 		return Query.SELECT(T.MODULE).FROM(UsrAccess.class).GROUP_BY(T.MODULE).queryList(String.class);
 	}
-	
+
 	private static Map<String, Map<String, List<UsrAccess>>> mapByController() {
 		Map<String, Map<String, List<UsrAccess>>> result = new HashMap<String, Map<String, List<UsrAccess>>>();
 		for(UsrAccess line:ACCESS) {
@@ -55,7 +55,7 @@ public class UsrAccessDAO {
 		}
 		return result;
 	}
-	
+
 	private static Map<String, List<UsrAccess>> mapByModule() {
 		Map<String, List<UsrAccess>> result = new HashMap<String, List<UsrAccess>>();
 		for(UsrAccess line:ACCESS) {
@@ -68,7 +68,7 @@ public class UsrAccessDAO {
 	}
 
 	public static class InsInit extends IduOther<InsInit, UsrAccess> {
-		
+
 		private static Set<Class> Controllers;
 
 		@Override
@@ -93,7 +93,7 @@ public class UsrAccessDAO {
 				String module = className.split("\\.")[2];
 				//用户管理
 				String moduleName = ((Controller)clazz.getAnnotation(Controller.class)).module();
-				
+
 				System.out.println(controller);
 				String method;
 				String alias;
@@ -106,7 +106,7 @@ public class UsrAccessDAO {
 						sort = rm.sort();
 						act = module+"_"+controller+"_"+method;
 						System.out.println(act+" "+moduleName+"_"+ controllerName+"_"+alias);
-						
+
 						UsrAccess access = UsrAccess.chk(UsrAccess.class, act);
 						sql += ",'"+act+"'";
 						if(access == null) {
@@ -129,10 +129,10 @@ public class UsrAccessDAO {
 				if(sql.length()>0) {
 					Bean.executeUpdate("delete from "+UsrAccess.TB.getCodeSqlTb()+" where "+UsrAccess.T.PKEY.getFld().getCodeSqlField()+" not in ("+sql.substring(1)+")");
 				}
-				
+
 			}
 		}
-		
+
  		private static Set<Class> loadController(Set<Class> controllers) {
 			File rootFile = new File(UsrAccessDAO.class.getResource("/").getFile());
 			loadController(rootFile, rootFile.getPath() + File.separator, controllers);
@@ -171,7 +171,7 @@ public class UsrAccessDAO {
 		public static void setControllers(Set<Class> controllers) {
 			Controllers = controllers;
 		}
-		
+
 	}
 
 }

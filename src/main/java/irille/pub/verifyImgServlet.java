@@ -57,7 +57,8 @@ public class verifyImgServlet extends HttpServlet {
             int height = 18;
             BufferedImage bi = new BufferedImage(width, height, 1);
             Graphics2D g = (Graphics2D) bi.getGraphics();
-            g.setColor(getColor(background, Color.WHITE));
+//            g.setComposite((AlphaComposite.getInstance(AlphaComposite.SRC_OVER)));
+            g.setColor(getColor(background, Color.white));
             g.fillRect(0, 0, width, height);
             Font mFont = new Font("Tahoma", 3, 16);
             g.setFont(mFont);
@@ -65,7 +66,7 @@ public class verifyImgServlet extends HttpServlet {
             g.drawString(num, 2, 15);
             if (gif) {
                 AnimatedGifEncoder e = new AnimatedGifEncoder();
-                e.setTransparent(Color.WHITE);
+//                e.setTransparent(Color.WHITE);
                 e.start(out);
                 e.setDelay(0);
                 e.addFrame(bi);

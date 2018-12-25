@@ -10,7 +10,7 @@ import irille.homeAction.usr.dto.OdrView;
 import irille.pub.Exp;
 import irille.pub.LogMessage;
 import irille.pub.bean.BeanBase;
-import irille.pub.svr.ItpCheckPurchaseLogin.NeedLogin;
+import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.shop.odr.OdrHistoryDAO;
 import irille.shop.odr.OdrOrder;
 import irille.shop.odr.OdrOrderDAO;

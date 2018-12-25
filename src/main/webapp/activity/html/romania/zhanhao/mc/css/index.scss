@@ -22,7 +22,7 @@ $default-color: #ed2922;
         .bg-box {
           width: 12.66rem;
           height: 13.75rem;
-          background: rgba(151, 65, 16, 0.5);
+          background: rgba(101, 101, 101, 0.62);
           border-radius: 0.31rem;
           text-align: center;
           margin: 0 auto;
@@ -262,21 +262,7 @@ $default-color: #ed2922;
       font-size: 1.44rem;
       color:#ffffff;
     }
-    .title{
-      font-size: 1.75rem;
-      font-weight: bold;
-      line-height: 4rem;
-      margin-top:3rem
-    }
-    .btn{
-      width: 10.72rem;
-      height: 2.63rem;
-      line-height:2.63rem;
-      background-color: $default-color;
-      margin:0 auto;
-      font-size: 1.44rem;
-      color:#ffffff;
-    }
+ 
     .great-list{
 
       .great-item{
@@ -291,11 +277,11 @@ $default-color: #ed2922;
           text-align: left;
           margin-left: 1rem;
         }
-        img{
-          width: 3.63rem;
-          height: 3.16rem;
-          flex-shrink:0;
-        }
+        // img{
+        //   width: 3.63rem;
+        //   height: 3.16rem;
+        //   flex-shrink:0;
+        // }
       }
     }
   }
@@ -363,9 +349,9 @@ $default-color: #ed2922;
         .content-box{
           width: 100%;
           text-align: center;
-          padding:0 4.5rem;
+          padding:0 2.5rem;
             position: absolute;
-            top: 15%;
+            top: 10%;
             left: 50%;
             transform: translate(-50%);
             .btn{
@@ -387,9 +373,9 @@ $default-color: #ed2922;
   #app{
     .bottom-container{
         .content-box{
-          padding:0 3.5rem;
+          padding:0 1.5rem;
           position: absolute;
-          top: 0%;
+          top: 1%;
         }
     }
   }

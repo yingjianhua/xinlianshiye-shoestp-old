@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 public class NewInqDao {
     public Page getList(Integer start, Integer limit, String name, Integer supplierId) {
-        System.out.println(name);
         SQL sql = new SQL() {
             {
                 SELECT(NewInquiry.class)

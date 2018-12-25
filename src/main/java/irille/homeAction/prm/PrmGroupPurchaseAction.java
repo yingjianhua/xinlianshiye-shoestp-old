@@ -697,6 +697,10 @@ public class PrmGroupPurchaseAction extends HomeAction<PrmGroupPurchase> {
         write(objectMapper.writeValueAsString(views));
     }
 
+    @Getter
+    @Setter
+    private int v;
+
     public void groupshoplist() throws IOException {
         Integer id;
         if (getPurchase() == null) {
@@ -709,6 +713,10 @@ public class PrmGroupPurchaseAction extends HomeAction<PrmGroupPurchase> {
             if (language != null)
                 setCurLanguage(language);
         }
-        write(prmGroupPurchaseLineDAO.getgroupshoplist(id));
+        if (v == 2) {
+            write(prmGroupPurchaseLineDAO.getgroupshoplist2(id));
+        } else {
+            write(prmGroupPurchaseLineDAO.getgroupshoplist(id));
+        }
     }
 }

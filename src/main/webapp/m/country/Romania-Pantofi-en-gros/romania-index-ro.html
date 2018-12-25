@@ -31,6 +31,15 @@
     gtag('config', 'AW-783435725');
     gtag('config', 'UA-127715615-6');
 </script>
+<style>
+    #romania .romania-poster {
+        width: 980px;
+        height: 1260px !important;;
+        background: url(./imgs/romaniaPoster-01.png) center no-repeat;
+        background-size: cover !important;
+        position: relative;
+    }
+</style>
 <body>
 <div id="romania" @click="contrast">
     <div class="romania-poster">
@@ -65,24 +74,22 @@
             <!--online va începe imediat</a>-->
         </div>
     </div>
-    <!--<div class="producrt">-->
-    <!--<h2 class="pro-text">AFIșAREA</h2>-->
-    <!--<p class="pro-text">PRODUSELOR</p>-->
-    <!--<mu-carousel hide-controls>-->
-    <!--<mu-carousel-item v-for="item in carouselProducrt">-->
-    <!--<div class="detail">-->
-    <!--<a :href="item.url">-->
-    <!--<img :src="item.imageUrl">-->
-    <!--<h4>{{ item.contentTitle }}</h4>-->
-    <!--<p>{{ item.content }}</p>-->
-    <!--</a>-->
-    <!--</div>-->
-    <!--</mu-carousel-item>-->
-    <!--</mu-carousel>-->
-    <!--<a class="producrt-button inline-block-h80 following"-->
-    <!--href="javascript:void(0);" @click="getGift">Obțineți-->
-    <!--Mostre Gratuite Acum</a>-->
-    <!--</div>-->
+    <div class="producrt">
+        <h2 class="pro-text">AFIșAREA</h2>
+        <p class="pro-text">PRODUSELOR</p>
+        <mu-carousel hide-controls>
+            <mu-carousel-item v-for="item in carouselProducrt">
+                <div class="detail">
+                    <img :src="item.imageUrl">
+                    <h4>{{ item.contentTitle }}</h4>
+                    <p>{{ item.content }}</p>
+                </div>
+            </mu-carousel-item>
+        </mu-carousel>
+        <a class="producrt-button inline-block-h80 following"
+           href="javascript:void(0);" @click="getGift">Obțineți
+            Mostre Gratuite Acum</a>
+    </div>
 
     <div class="rmnybottomsev">
         <div class="rmnybsevcon">
@@ -276,8 +283,12 @@
             <span class="close-btn" @click="close">+</span>
             <div class="hf-border">
                 <h2 class="hf-title">
-                    2018 MOSTRELOR DE <br>PANTOFI OFFLINE,ROMANIA
+                    2019 Expoziție
+                    <br> cu ridicata de pantofi români
                 </h2>
+                <div class="hf-input">
+                    <p class="hf-text">Trimiteți acum, veți primi imediat un bilet gratuit și un cadou secret!</p>
+                </div>
                 <mu-container>
                     <mu-form ref="form" :model="hoodleForm" class="mu-demo-form">
                         <mu-form-item label="A lue legature:" help-text="" prop="name" :rules="nameRules">
@@ -304,9 +315,6 @@
                         </mu-form-item>
                     </mu-form>
                 </mu-container>
-                <div class="hf-input">
-                    <p class="hf-text">Spuneți-ne ce vreți, vă vom răspunde cât mai curând posibil!</p>
-                </div>
             </div>
         </div>
     </div>

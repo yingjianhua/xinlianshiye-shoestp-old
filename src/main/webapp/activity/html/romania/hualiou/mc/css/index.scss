@@ -262,21 +262,7 @@ $default-color:  #fabf1d;
       font-size: 1.44rem;
       color:#ffffff;
     }
-    .title{
-      font-size: 1.75rem;
-      font-weight: bold;
-      line-height: 4rem;
-      margin-top:3rem
-    }
-    .btn{
-      width: 10.72rem;
-      height: 2.63rem;
-      line-height:2.63rem;
-      background-color: $default-color;
-      margin:0 auto;
-      font-size: 1.44rem;
-      color:#ffffff;
-    }
+    
     .great-list{
 
       .great-item{
@@ -291,11 +277,11 @@ $default-color:  #fabf1d;
           text-align: left;
           margin-left: 1rem;
         }
-        img{
-          width: 3.63rem;
-          height: 3.16rem;
-          flex-shrink:0;
-        }
+        // img{
+        //   width: 3.63rem;
+        //   height: 3.16rem;
+        //   flex-shrink:0;
+        // }
       }
     }
   }

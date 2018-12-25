@@ -63,7 +63,12 @@ public class EasyOdrAction extends SellerAction<EasyOdr> implements IEasyOdrActi
 
     //导出当前供应商的全部订单表格
     public void manyexport() {
-        String list = easyOdrDao.allOdr(getSupplier().getPkey());
+        String list = null;
+        if (search != null) {
+            list = easyOdrDao.allOdr(getSupplier().getPkey(), search.getBeginTime(), search.getEndTime());
+        } else {
+            list = easyOdrDao.allOdr(getSupplier().getPkey(), null, null);
+        }
         sendOutPuiStreanm(easyOdrDao.manyexport(list, getSupplier().getPkey()), new Date() + ".zip");
     }
 }

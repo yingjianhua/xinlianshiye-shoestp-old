@@ -4,8 +4,10 @@ import com.google.inject.ImplementedBy;
 import irille.Service.Pdt.Imp.PdtProductServiceImp;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage;
+import irille.shop.usr.UsrPurchase;
 import irille.view.pdt.PdtProductBaseInfoView;
 import irille.view.pdt.PdtProductCatView;
+import irille.view.v2.Pdt.PdtNewPdtInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -43,7 +45,7 @@ public interface IPdtProductService {
 
     List<PdtProductBaseInfoView> getYouMayLike(IduPage iduPage, int cat);
 
-    List<PdtProductBaseInfoView> getRandomPdt(Integer limit, int cat);
+    List<PdtNewPdtInfo> getRandomPdt(Integer limit, int cat, UsrPurchase purchase);
 
 
     /**
@@ -52,4 +54,13 @@ public interface IPdtProductService {
      * @author lijie@shoestp.cn
      */
     List<PdtProductCatView> getProductsIndexCategories(int start, int limit, FldLanguage.Language language);
+
+    /**
+     * @Description:
+     * @date 2018/12/17 9:53
+     * @author lijie@shoestp.cn
+     */
+    List<PdtNewPdtInfo> getNewProducts(IduPage page, UsrPurchase pkey, FldLanguage.Language language);
+
+    Map getProductListByCategoryV2(IduPage iduPage, String[] orderfld, boolean order, int cated, String spec, String onlyFld, String keyword, Integer type);
 }

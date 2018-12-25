@@ -14,7 +14,7 @@ import irille.pub.bean.BeanBase;
 import irille.pub.i18n.I18NUtil;
 import irille.pub.idu.Idu;
 import irille.pub.idu.IduPage;
-import irille.pub.svr.ItpCheckPurchaseLogin.NeedLogin;
+import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.odr.OdrOrderDAO;
 import irille.shop.pdt.*;
@@ -40,14 +40,13 @@ import java.util.Map;
 
 public class PdtProductAction extends HomeAction<PdtProduct> {
 
-    private static final PdtProductDAO.Query Pdtquery = new PdtProductDAO.Query();
-
 
     @Inject
     private PdtproductPageselect pdtpageSelect = new PdtproductPageselect();
     private static final OdrOrderDAO.Query Odrderquery = new OdrOrderDAO.Query();
     private static final PdtCommentDAO.pageSelect commentPageSelect = new PdtCommentDAO.pageSelect();
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    @Inject
+    private ObjectMapper objectMapper;
 
     @Inject
     private IPdtProductService pdtProduct;
@@ -179,6 +178,11 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
         this._keyword = keyword;
     }
 
+
+    @Getter
+    @Setter
+    private int searchtype;
+
     /***
      * 获取商品列表
      * @author lijie@shoestp.cn
@@ -191,7 +195,12 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
         iduPage.setLimit(getLimit());
         iduPage.setStart(getPage());
         iduPage.setWhere(getWhere());
-        write(objectMapper.writeValueAsString(pdtProduct.getProductListByCategory(iduPage, getOrderfld(), isOrder(), getCated(), getSpec(), getOnlyFld(), getKeyword(), getType())));
+//        新版API
+        if (v == 2) {
+            write(objectMapper.writeValueAsString(pdtProduct.getProductListByCategoryV2(iduPage, getOrderfld(), isOrder(), getCated(), getSpec(), getOnlyFld(), getKeyword(), getSearchtype())));
+        } else {
+            write(objectMapper.writeValueAsString(pdtProduct.getProductListByCategory(iduPage, getOrderfld(), isOrder(), getCated(), getSpec(), getOnlyFld(), getKeyword(), getType())));
+        }
     }
 
     /***
@@ -226,12 +235,21 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
      * @return
      * @date 2018/7/24 15:49
      */
+    @Getter
+    @Setter
+    private Integer v;
+
     public void gtNewProducts() throws Exception {
         IduPage iduPage = new IduPage();
         iduPage.setLimit(getLimit());
         iduPage.setStart(getPage());
         iduPage.setWhere(String.valueOf(getCated()));
-        write(objectMapper.writeValueAsString(pdtpageSelect.getNewProducts(iduPage)));
+        if (v != null && v == 2) {
+            write(pdtProduct.getNewProducts(iduPage, getPurchase(), HomeAction.curLanguage()));
+        } else {
+            //TODO 老接口 要重构
+            write(objectMapper.writeValueAsString(pdtpageSelect.getNewProducts(iduPage)));
+        }
     }
 
 
@@ -297,7 +315,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
      * @author lijie@shoestp.cn
      */
     public void getRandomPdt() throws IOException {
-        write(pdtProduct.getRandomPdt(getLimit(), getCated()));
+        write(pdtProduct.getRandomPdt(getLimit(), getCated(), getPurchase()));
     }
 
     private Integer id;
@@ -574,16 +592,12 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
         }
     }
 
+    @Setter
+    @Getter
     private String sort;
+    @Setter
+    @Getter
     private Integer type;
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
 
     /**
      * 获取店铺内产品分页(手机)
@@ -613,15 +627,6 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
         JSONObject json = new JSONObject();
         json.put(STORE_ROOT, ja);
         writerOrExport(json);
-    }
-
-
-    public String getSort() {
-        return sort;
-    }
-
-    public void setSort(String sort) {
-        this.sort = sort;
     }
 
     public Integer getId() {

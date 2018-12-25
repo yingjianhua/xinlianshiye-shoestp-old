@@ -4,7 +4,7 @@ import irille.homeAction.HomeAction;
 import irille.homeAction.pdt.inf.IPdtCatAction;
 import irille.pub.Str;
 import irille.pub.idu.IduPage;
-import irille.pub.svr.ItpCheckPurchaseLogin.NeedLogin;
+import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtCatDAO;
@@ -31,7 +31,7 @@ public class PdtCatAction extends HomeAction<PdtCat> implements IPdtCatAction{
 	}
 	/**
 	 * 查询产品一级类目
-	 * 
+	 *
 	 * @throws Exception
 	 * @author guosong
 	 */
@@ -61,17 +61,17 @@ public class PdtCatAction extends HomeAction<PdtCat> implements IPdtCatAction{
 
 	/**
 	 * 分类详情页面
-	 * 
+	 *
 	 * @throws Exception
 	 * @author
 	 */
 	private List<PdtCat> list;
-	
+
 	private Map<PdtCat, List<PdtCat>> catMap = new HashMap<>();
-	
+
 
 	public String details() throws Exception {
-		
+
 		list = PdtCatDAO.Query.listTopCat();
 		for(PdtCat top:list) {
 			catMap.put(top, PdtCatDAO.Query.listSub(top.getPkey()));
@@ -85,7 +85,7 @@ public class PdtCatAction extends HomeAction<PdtCat> implements IPdtCatAction{
 				map.put("list1", list2.get(a));
 			}
 		}
-		
+
 		*/
 		setResult("/home/catalog.jsp");
 		return HomeAction.TRENDS;

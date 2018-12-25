@@ -191,7 +191,7 @@
         var url = window.location.href;
         var l = url.lastIndexOf(name)
         if (l != -1) {
-            var ll = url.indexOf("&");
+            var ll = url.indexOf("&",l);
             if (ll == -1 || l > ll) {
                 ll = url.length
             }
@@ -239,7 +239,9 @@
                 cated: cated,
                 where: _where,
                 keyword: _keyword,
-                spec: _spec
+                spec: _spec,
+                searchtype: getParms("searchtype", 0),
+                v: getParms("v", 1)
             }, dataType: "json", success: function (result) {
                 if (result) {
                     $("#prod_list").html("");

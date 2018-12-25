@@ -27,8 +27,9 @@ public class Usr_Install extends InstallBase {
 		m.proc(UsrSupplierRole.TB, 80, role);
 		m.proc(UsrConsult.TB, 90, null);
 		m.proc(UsrMessages.TB, 100, null);
+		m.proc(UsrSubscribe.TB, 110, null);
 	}
-	
+
 	@Override
 	public void installAfter() {
 		super.installAfter();

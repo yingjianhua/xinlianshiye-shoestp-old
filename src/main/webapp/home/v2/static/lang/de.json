@@ -1,0 +1,18 @@
+{
+  "Name cannot": "Name darf nicht leer sein",
+  "The_amount_cannot": "Der Betrag darf nicht leer sein",
+  "orders": {
+    "status": {
+      "0": "Ausstehende Zahlung",
+      "1": "Warten auf Bestätigung der Zahlung",
+      "2": "Zahlungsfehler",
+      "3": "Warten auf Lieferung",
+      "4": "Hat versendet",
+      "5": "Vervollständige die Bestellung",
+      "6": "Auftrag storniert",
+      "7": "Gelöscht",
+      "choose_payment": "Zahlungsmethode wählen",
+      "order_total": "Gesamtbestellung"
+    }
+  }
+}
