@@ -207,9 +207,9 @@
                 if ("${sessionScope["SESSION_MSG"].isSupplier()}") {
                     $(".title_3").parent().append("<div class='item'><a href='/home/usr_UsrSupplier_supplierEntry' target='_blank'>" + lang_obj.addressfrom.Merchants_Settled + "</a></div>");
                 } else {
-                    $(".title_3").parent().append("<div class='item'><a href='/seller/admin/index/login.html' target='_blank'>" + lang_obj.addressfrom.Merchant_Side + "</a></div>");
+                    $(".title_3").parent().append("<div class='item'><a href='/newseller/' target='_blank'>" + lang_obj.addressfrom.Merchant_Side + "</a></div>");
                 }
-                $(".title_3").parent().append("<div class='item'><a href='/seller/admin/index/login.html' target='_blank'>店铺管理</a></div>")
+                $(".title_3").parent().append("<div class='item'><a href='/newseller/' target='_blank'>店铺管理</a></div>")
             }
         }
     })

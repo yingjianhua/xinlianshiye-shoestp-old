@@ -10,9 +10,11 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta content="telephone=no" name="format-detection">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="keywords" content="">
-    <meta name="description" content="">
-    <title>An Online B2B market——-Shoestp.com,gathering 300 professional shoes manufacture companies</title>
+    <meta name="keywords"
+          content="shoestp, shoes wholesale, shoe manufacturer, shoe supplier, shoe trade, shoes online, shoe O2O">
+    <meta name="description"
+          content="Shoestp offers popular shoes for individuals and wholesalers online and offline，offer a wide range of footwear and multilingual customer service.，work closely with hundreds of footwear manufacturers. ">
+    <title>Online and Offline B2B Shoes Trading Platform—Shoestp.com Shoes Wholesale O2O New Mode</title>
     <script src='/home/v2/static/js/base/vue.min.js'></script>
     <script src='/home/v2/static/js/base/vue-i18n.js'></script>
     <script src='/home/v2/static/js/base/element-ui.js'></script>

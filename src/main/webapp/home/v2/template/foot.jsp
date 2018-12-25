@@ -22,8 +22,7 @@
                             src="/home/v2/static/images/foot/ljxlogo3.png" alt=""></a>
                     <a href="http://www.linkedin.com/cws/share?url=https%3A%2F%2Fwww.shoestp.com%2Fhome%2Fusr_UsrPurchase&title=linkedin"><img
                             src="/home/v2/static/images/foot/ljxlogo4.png" alt=""></a>
-                    <a href="javascript: void(0);"><img src="/home/v2/static/images/foot/ljxlogo5.png" alt=""></a>
-                    <a href="javascript: void(0);"><img src="/home/v2/static/images/foot/ljxlogo6.png" alt=""></a>
+                    <a href="http://www.youtube.com"><img src="/home/v2/static/images/foot/ljxlogo6.png" alt=""></a>
                 </div>
             </div>
         </div>

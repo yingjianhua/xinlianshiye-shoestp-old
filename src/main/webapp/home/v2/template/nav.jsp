@@ -14,18 +14,18 @@
                      @select="handleTopNavSelect">
                 <el-submenu index="1" class="no-arrow new-top-nav-item">
                     <template slot="title">OEM</template>
-                    <el-menu-item index="1-1"><a href="/home/pdt_PdtProduct?cated=373">{{$t("Man's")}}</a>
+                    <el-menu-item index="1-1"><a href="/home/pdt_PdtProduct?cated=373">{{$t("Men")}}</a>
                     </el-menu-item>
-                    <el-menu-item index="1-2"><a href="/home/pdt_PdtProduct?cated=380">{{$t("WoMan's")}}</a>
+                    <el-menu-item index="1-2"><a href="/home/pdt_PdtProduct?cated=380">{{$t("WoMen")}}</a>
                     </el-menu-item>
                     <el-menu-item index="1-3"><a href="/home/pdt_PdtProduct?cated=387">{{$t("Children")}}</a>
                     </el-menu-item>
                 </el-submenu>
                 <el-submenu index="2" class="no-arrow">
                     <template slot="title">WholeSale</template>
-                    <el-menu-item index="2-1"><a href="/home/pdt_PdtProduct?cated=373">{{$t("Man's")}}</a>
+                    <el-menu-item index="2-1"><a href="/home/pdt_PdtProduct?cated=373">{{$t("Men")}}</a>
                     </el-menu-item>
-                    <el-menu-item index="2-2"><a href="/home/pdt_PdtProduct?cated=380">{{$t("WoMan's")}}</a>
+                    <el-menu-item index="2-2"><a href="/home/pdt_PdtProduct?cated=380">{{$t("WoMen")}}</a>
                     </el-menu-item>
                     <el-menu-item index="2-3"><a href="/home/pdt_PdtProduct?cated=387">{{$t("Children")}}</a>
                     </el-menu-item>

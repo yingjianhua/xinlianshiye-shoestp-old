@@ -37,11 +37,11 @@
                     <div class="ljxhidden" style="padding-top: 68px;">
                         <!-- <h4>His</h4> -->
                         <ul>
-                            <li>Mens' leather shoes</li>
-                            <li>Mens' sneakers</li>
-                            <li>Mens' sneakers</li>
+                            <li>Men's leather shoes</li>
+                            <li>Men's casual shoes</li>
+                            <li>Men's' sneakers</li>
                         </ul>
-                        <a href="/home/pdt_PdtProduct?cated=373"><span>Learn More</span></a>
+                        <a href="/home/pdt_PdtProduct?cated=373" target="_blank"><span>Learn More</span></a>
                     </div>
                 </div>
                 <div class="ljxcon">
@@ -52,11 +52,11 @@
                     <div class="ljxhidden" style="padding-top: 68px;">
                         <!-- <h4>Her</h4> -->
                         <ul>
-                            <li>Womens' high heels</li>
-                            <li>Womens' sneakers</li>
-                            <li>Womens' sandals</li>
+                            <li>Women's high heels</li>
+                            <li>Women's sneakers</li>
+                            <li>Women's sandals</li>
                         </ul>
-                        <a href="/home/pdt_PdtProduct?cated=380"><span>Learn More</span></a>
+                        <a href="/home/pdt_PdtProduct?cated=380" target="_blank"><span>Learn More</span></a>
                     </div>
                 </div>
                 <div class="ljxcon">
@@ -71,7 +71,7 @@
                             <li>Girls' shoes</li>
                             <li>Childrens' sandals</li>
                         </ul>
-                        <a href="/home/pdt_PdtProduct?cated=387"><span>Learn More</span></a>
+                        <a href="/home/pdt_PdtProduct?cated=387" target="_blank"><span>Learn More</span></a>
                     </div>
                 </div>
             </div>
@@ -372,7 +372,8 @@
                     <div class="swiper-wrapper">
                         <div class="swiper-slide" v-cloak v-for="(item, index) in newProductsList" :key="index">
                             <a :href="'/'+item.rewrite" target="_blank">
-                                <img :src="image(item.image)" alt=""  style="width:100%;height:217px;object-fit: contain;">
+                                <img :src="image(item.image)" alt=""
+                                     style="width:100%;height:217px;object-fit: contain;">
                             </a>
                             <div class="goods-info">
                                 <a :href="'/'+item.rewrite" target="_blank">
@@ -458,7 +459,7 @@
                 Request
                 For Quotation</h2>
             <p style="font-size: 18px;color: #000;height: 60px;line-height: 50px">Customization Service</p>
-            <a href="/home/usr_UsrConsult_listView">
+            <a href="/home/usr_UsrConsult_publishView">
                 <div class="top10-01"
                      style="display: inline-block;width: 787px;height: 377px;background: url('/home/v2/static/images/home/top10-02.png') center no-repeat;background-size: cover;padding-left: 40px;padding-top: 25px;vertical-align: top">
                     <p style="font-size: 18px;color: #c3c3c3;line-height: 50px">SHOES</p>

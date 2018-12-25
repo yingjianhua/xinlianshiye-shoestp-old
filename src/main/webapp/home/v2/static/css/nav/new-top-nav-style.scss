@@ -1,51 +1,58 @@
 /* ---------------- 顶部导航栏 ---------------- */
-#new-top-nav{
+#new-top-nav {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 999;
   border-bottom: 1px solid #ccc;
-  background: #fff;
+  background: #f9f9f9;
 }
-/* #new-top-nav, #new-top-nav .el-menu--horizontal{
-  background: #fff;
-} */
+
+#new-top-nav .el-menu--horizontal {
+  background: #f9f9f9;
+}
+
 .el-menu--horizontal {
-    border-bottom-width: 0!important;
+  border-bottom-width: 0 !important;
 }
+
 /* 减小默认高度 */
-#new-top-nav .el-menu--horizontal>.el-menu-item,
-#new-top-nav .el-menu--horizontal>.el-submenu .el-submenu__title  {
-    height: 32px;
-    line-height: 32px;
-    font-size: 14px;
-    color: #000;
+#new-top-nav .el-menu--horizontal > .el-menu-item,
+#new-top-nav .el-menu--horizontal > .el-submenu .el-submenu__title {
+  height: 32px;
+  line-height: 32px;
+  font-size: 14px;
+  color: #000;
 }
+
 /* 布局 - 文字左对齐 - 左侧不留白*/
-#new-top-nav .el-menu--horizontal>.el-menu-item,
-#new-top-nav .el-submenu__title{
-    padding: 0;
-    margin-right: 32px;
+#new-top-nav .el-menu--horizontal > .el-menu-item,
+#new-top-nav .el-submenu__title {
+  padding: 0;
+  margin-right: 32px;
 }
-#new-top-nav .el-menu--horizontal>.el-menu-item:first-child{
-    margin-left: 0
+
+#new-top-nav .el-menu--horizontal > .el-menu-item:first-child {
+  margin-left: 0
 }
-#new-top-nav .el-menu--horizontal>.el-menu-item.mr0{
-    margin-right: 0
+
+#new-top-nav .el-menu--horizontal > .el-menu-item.mr0 {
+  margin-right: 0
 }
-.el-menu--horizontal>.el-menu-item.fr,
-.el-menu--horizontal>.el-submenu.fr{
+
+.el-menu--horizontal > .el-menu-item.fr,
+.el-menu--horizontal > .el-submenu.fr {
   float: right;
 }
+
 /* 下拉项取消箭头显示 */
-#new-top-nav .no-arrow .el-submenu__icon-arrow{
+#new-top-nav .no-arrow .el-submenu__icon-arrow {
   display: none;
 }
 
-
 /* top-nav弹出的子类 样式 */
-.el-menu--horizontal .el-menu--popup-bottom-start{
+.el-menu--horizontal .el-menu--popup-bottom-start {
   position: relative;
   top: -2px;
   margin-top: 0;
@@ -58,125 +65,141 @@
 
 /* 下拉框item样式 */
 .el-menu--horizontal .el-menu .el-menu-item,
-.el-menu--horizontal .el-menu .el-submenu__title{
+.el-menu--horizontal .el-menu .el-submenu__title {
   position: relative;
   border-bottom: 1px solid #ccc;
   background-color: #fff;
 }
-.el-menu--horizontal .el-menu .el-menu-item{
+
+.el-menu--horizontal .el-menu .el-menu-item {
   color: #000;
 }
 
 /* hover时改变颜色 */
-#new-top-nav .el-menu--horizontal>.el-menu-item:hover,
-#new-top-nav .el-menu--horizontal>.el-submenu:hover .el-submenu__title  {
-    color: #273bb6;
+#new-top-nav .el-menu--horizontal > .el-menu-item:hover,
+#new-top-nav .el-menu--horizontal > .el-submenu:hover .el-submenu__title {
+  color: #273bb6;
 }
+
 /* 下拉框hover时改变颜色 */
 .el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
 .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
-    outline: 0;
-    color: #273bb6;
-    background-color: #f0f0f0;
+  outline: 0;
+  color: #273bb6;
+  background-color: #f0f0f0;
 }
 
-.el-menu--horizontal .el-menu--popup{
+.el-menu--horizontal .el-menu--popup {
   min-width: 130px;
   max-width: 220px;
 }
-/* ---------------- 顶部导航栏 - end ---------------- */
 
+/* ---------------- 顶部导航栏 - end ---------------- */
 
 /* ---------------- 顶部搜索栏 ---------------- */
 /* 顶部搜索栏 */
-#new-top-search{
+#new-top-search {
   position: fixed;
   top: 33px;
   left: 0;
   width: 100%;
   z-index: 999;
-  background: #fff;
   box-shadow: 0 1px 3px 0 rgba(102, 102, 102, 0.39);
+  background: #f9f9f9;
 }
-#new-top-search .new-top-search{
+
+#new-top-search .new-top-search {
   display: flex;
   align-items: center;
   padding: 20px 0;
 }
+
 /* logo */
-#new-top-search .logo-box{
+#new-top-search .logo-box {
   margin-right: 100px;
 }
+
 /* 搜索栏那一个大红框 */
-#new-top-search .top-input-bar{
+#new-top-search .top-input-bar {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 629px;
-	height: 39px;
+  height: 39px;
   border: 2px solid #273bb6;
   background: #fff;
 }
+
 /* 搜索栏左侧下拉选项 */
-#new-top-search .top-input-bar .cotegory-select-box .el-input__inner{
+#new-top-search .top-input-bar .cotegory-select-box .el-input__inner {
   width: 100px;
   height: 34px;
   padding-left: 12px;
   border-radius: 0;
   border-width: 0;
 }
-#new-top-search .top-input-bar .cotegory-select-box .el-input__icon{
+
+#new-top-search .top-input-bar .cotegory-select-box .el-input__icon {
   line-height: 34px;
 }
+
 /* #new-top-search .top-input-bar .cotegory-select-box .el-dropdown{
   padding-left: 14px;
   font-size: 16px;
 	color: #000;
 }*/
 
-.top-search-bar-cotegory-select-dropdown{
-    padding: 0;
-    margin: 0;
-    border: 2px solid #273bb6;
-    border-top-width: 0;
-    border-left-width: 0;
-    border-radius: 0;
-    box-shadow: 6px 2px 4px 0 rgba(0,0,0,.1);
+.top-search-bar-cotegory-select-dropdown {
+  padding: 0;
+  margin: 0;
+  border: 2px solid #273bb6;
+  border-top-width: 0;
+  border-left-width: 0;
+  border-radius: 0;
+  box-shadow: 6px 2px 4px 0 rgba(0, 0, 0, .1);
 }
+
 /* 下拉后显示的左侧border / left为js生成 - 迂回策略 */
-.top-search-bar-cotegory-select-dropdown:before{
-    content: "";
-    position: absolute;
-    left: -2px;
-    top: 0;
-    width: 2px;
-    height: 100%;
-    background: #273bb6;
+.top-search-bar-cotegory-select-dropdown:before {
+  content: "";
+  position: absolute;
+  left: -2px;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: #273bb6;
 }
+
 .top-search-bar-cotegory-select-dropdown[x-placement^=bottom] {
-    margin-top: 1px;
+  margin-top: 1px;
 }
+
 /* 取消消箭头显示 */
-.top-search-bar-cotegory-select-dropdown[x-placement^=bottom] .popper__arrow{
-    display: none;
+.top-search-bar-cotegory-select-dropdown[x-placement^=bottom] .popper__arrow {
+  display: none;
 }
-.top-search-bar-cotegory-select-dropdown .el-select-dropdown__item{
-    padding: 0 12px;
+
+.top-search-bar-cotegory-select-dropdown .el-select-dropdown__item {
+  padding: 0 12px;
 }
-.top-search-bar-cotegory-select-dropdown .el-select-dropdown__item:hover{
-    color: #273bb6;
-    font-weight: bold;
+
+.top-search-bar-cotegory-select-dropdown .el-select-dropdown__item:hover {
+  color: #273bb6;
+  font-weight: bold;
 }
-#new-top-search .top-input-bar .input-box{
+
+#new-top-search .top-input-bar .input-box {
   flex-grow: 1;
   padding: 0 6px 0 16px;
 }
-#new-top-search .top-input-bar .input-box input{
+
+#new-top-search .top-input-bar .input-box input {
   height: 32px;
   width: 100%;
 }
+
 /* 搜索按钮 */
-#new-top-search .top-input-bar .btn-search{
+#new-top-search .top-input-bar .btn-search {
   width: 50px;
   height: 100%;
   line-height: 1.4;
@@ -186,139 +209,33 @@
   text-align: center;
   background: #273bb6;
 }
+
 /* 询盘按钮 */
-#new-top-search .btn-get-quotations{
-	height: 33px;
-	line-height: 30px;
+#new-top-search .btn-get-quotations {
+  height: 33px;
+  line-height: 30px;
   padding: 0 15px;
   margin: 0 20px;
   white-space: nowrap;
   font-family: ArialMT;
-	font-size: 16px;
-	color: #273bb6;
-	border: solid 1px #273bb6;
+  font-size: 16px;
+  color: #273bb6;
+  border: solid 1px #273bb6;
 }
-#new-top-search .language-select{
+
+#new-top-search .language-select {
   position: relative;
   min-width: 80px;
-	text-align: center;
+  text-align: center;
   white-space: nowrap;
 }
-#new-top-search .language-select .top-language-select-input{
+
+#new-top-search .language-select .top-language-select-input {
   position: absolute;
   left: 0;
   bottom: 0;
   opacity: 0;
-	width: 100px;
+  width: 100px;
 }
 
 /* ---------------- 顶部搜索栏 - end ---------------- */
-
-
-
-/* ---------------- 林嘉祥 -底部 ---------------- */
-.ljx .footer-1{
-  width: 100%;
-  min-width: 1240px;
-  background-color: #d9d9d9;
-  color: #000;
-}
-.ljx .footer-1>div{
-  width: 1240px;
-  margin: 0 auto;
-  display: flex;
-}
-.ljx .footer-1 h3{
-  font-size: 36px;
-  text-indent: 15px;
-  padding: 50px 0 15px;
-}
-.ljx .footer-1 .right{
-  flex-basis: 75%;
-  margin-bottom: 60px;
-}
-.ljx .footer-1 .right p{
-  font-size: 22px;
-  text-indent: 15px;
-  padding-bottom: 20px;
-}
-.ljx .footer-1 .right input{
-  margin-left: 15px;
-  text-indent: 15px;
-  font-size: 20px;
-  width: 41%;
-  height: 58px;
-}
-.ljx .footer-1 .right span{
-  display: inline-block;
-  height: 60px;
-  width: 14%;
-  font-size: 20px;
-  text-align: center;
-  line-height: 60px;
-  background-color: rgb(30,56,122);
-  vertical-align: middle;
-  cursor: pointer;
-  color: #fff;
-}
-.ljx .footer-1 .left{
-  flex-basis: 25%;
-}
-.ljx .footer-1 .left .logos{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: end;
-}
-.ljx .footer-1 .left .logos img{
-  height: 60px;
-  margin: 0 20px 10px 0;
-}
-.ljx .footer-2{
-  width: 100%;
-  min-width: 1240px;
-  background-color: #fff;
-  color: #000;
-}
-.ljx .footer-2>div{ 
-  width: 1240px;
-  margin: 0 auto;
-  display: flex;
-}
-.ljx .footer-2 .licon{
-  flex: 1;
-  padding: 0px 80px 0px;
-  margin: 50px 0 65px;
-  /* border-right: 1px solid rgb(85,105,128); */
-}
-.ljx .footer-2 .licon:nth-child(1){
-  padding: 0px 80px 0px 0;
-}
-.ljx .footer-2 .licon:nth-child(4){
-  padding: 0px 0px 0px 80px;
-  border-right: none;
-}
-.ljx .footer-2 .licon .lititle{
-  font-weight: bold;
-  white-space: nowrap;
-  font-size: 20px;
-  padding: 10px 0 20px;
-}
-.ljx .footer-2 .licon .libody{
-  font-size: 13px;
-  padding: 5px 0;
-}
-.ljx .footer-3{
-  width: 100%;
-  min-width: 1240px;
-  background-color: rgb(0,30,105);
-  color: white;
-}
-.ljx .footer-3 h3{
-  width: 1240px;
-  margin: 0 auto;
-  text-align: right;
-  padding: 25px 10px;
-  font-size: 14px;
-  font-weight: normal;
-}
-/* ---------------- 林嘉祥 -底部 - end ---------------- */
