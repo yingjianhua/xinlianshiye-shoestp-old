@@ -1,6 +1,8 @@
 package irille.homeAction.pdt.dto;
 
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import irille.pub.i18n.I18NFieldSerializer;
 import irille.view.BaseView;
 
 import java.math.BigDecimal;
@@ -75,9 +77,11 @@ public class ProductInfoView implements BaseView {
 
     private boolean isFavorite;
 
-
+    @JsonSerialize(using = I18NFieldSerializer.class)
     private String seoTitle;
+    @JsonSerialize(using = I18NFieldSerializer.class)
     private String seoKeywords;
+    @JsonSerialize(using = I18NFieldSerializer.class)
     private String seoDescription;
     private String rewrite;
 

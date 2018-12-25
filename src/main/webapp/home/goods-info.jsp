@@ -3,8 +3,11 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<title>Shoestp</title>
+
 <head>
+    <title content="${seoView.title}" ></title>
+    <meta name="keyword" content="${seoView.keyWord}"/>
+    <meta name="description" content="${seoView.description}"/>
     <script type="text/javascript" src="./static/js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript"
             src="/static/js/plugins/goodsInfo/jquery.SuperSlide.2.1.1.js"></script>
