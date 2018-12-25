@@ -112,11 +112,11 @@ public class PkCompetitionDataDao {
     }
 
     /**
-     * @Description: 获取前5的数据统计
+     * @Description: 获取前5曝光量的数据统计
      * @date 2018/12/5 13:59
      * @author lijie@shoestp.cn
      */
-    public Integer getTop5(Date startDate, Date endDate) {
+    public Integer getPeTop5Count(Date startDate, Date endDate) {
         SQL sql = new SQL();
         sql
                 .SELECT("pe")
@@ -137,13 +137,34 @@ public class PkCompetitionDataDao {
     }
 
     /**
-     * @Description: 获取前5的数据统计
+     * @Description: 获取前5的数据总和
      * @date 2018/12/5 13:59
      * @author lijie@shoestp.cn
      */
-    public Integer getAllPe(Date startDate, Date endDate) {
+    public Integer getInqTop5Count(Date startDate, Date endDate) {
         SQL sql = new SQL();
-        sql.SELECT("sum(pe) as pe").FROM(PkCompetitionData.class).ORDER_BY(PkCompetitionData.T.PE, "desc");
+        sql
+                .SELECT("sum(inquiry) as count")
+                .FROM(PkCompetitionData.class)
+                .ORDER_BY(PkCompetitionData.T.PE, "desc")
+                .LIMIT(0, 5);
+        if (startDate != null) {
+            sql.WHERE(PkCompetitionData.T.CREATEDTIME, ">?", startDate);
+        }
+        if (endDate != null) {
+            sql.WHERE(PkCompetitionData.T.CREATEDTIME, "<=?", endDate);
+        }
+        return Integer.valueOf(String.valueOf(Query.sql(sql).queryMap().get("count")));
+    }
+
+    /**
+     * @Description: 获取所有的曝光量
+     * @date 2018/12/5 13:59
+     * @author lijie@shoestp.cn
+     */
+    public Map getAllPe(Date startDate, Date endDate) {
+        SQL sql = new SQL();
+        sql.SELECT("sum(pe) as pe,(select count(1) as `count` from (select 1 from pk_competition_data group by supid) temp) as count").FROM(PkCompetitionData.class).ORDER_BY(PkCompetitionData.T.PE, "desc");
         if (startDate != null) {
             sql.WHERE(PkCompetitionData.T.CREATEDTIME, ">?", startDate);
         }
@@ -152,11 +173,29 @@ public class PkCompetitionDataDao {
         }
         Object result = Query.sql(sql).queryMap().get("pe");
         if (result == null) {
-            return 0;
+            return null;
         }
 
-        return Integer.valueOf(String.valueOf(Query.sql(sql).queryMap().get("pe")));
+        return Query.sql(sql).queryMap();
     }
+
+    /**
+     * @Description: 获取所有的询盘
+     * @date 2018/12/5 13:59
+     * @author lijie@shoestp.cn
+     */
+    public Map getInqCount(Date startDate, Date endDate) {
+        SQL sql = new SQL();
+        sql.SELECT("sum(inquiry) as inquiry,(select count(1) as `count` from (select 1 from pk_competition_data group by supid) temp) as count").FROM(PkCompetitionData.class).ORDER_BY(PkCompetitionData.T.PE, "desc");
+        if (startDate != null) {
+            sql.WHERE(PkCompetitionData.T.CREATEDTIME, ">?", startDate);
+        }
+        if (endDate != null) {
+            sql.WHERE(PkCompetitionData.T.CREATEDTIME, "<=?", endDate);
+        }
+        return Query.sql(sql).queryMap();
+    }
+
 
     public List<Map<String, Object>> getSupTraceCode() {
         BeanQuery query = new BeanQuery();
@@ -180,4 +219,31 @@ public class PkCompetitionDataDao {
         return "";
     }
 
+    public int getTrafficvolumeTop5Count(Date startDate, Date endDate) {
+        SQL sql = new SQL();
+        sql
+                .SELECT("sum(trafficvolume) as count")
+                .FROM(PkCompetitionData.class)
+                .ORDER_BY(PkCompetitionData.T.PE, "desc")
+                .LIMIT(0, 5);
+        if (startDate != null) {
+            sql.WHERE(PkCompetitionData.T.CREATEDTIME, ">?", startDate);
+        }
+        if (endDate != null) {
+            sql.WHERE(PkCompetitionData.T.CREATEDTIME, "<=?", endDate);
+        }
+        return Integer.valueOf(String.valueOf(Query.sql(sql).queryMap().get("count")));
+    }
+
+    public Map getTrafficvolumeCount(Date startDate, Date endDate) {
+        SQL sql = new SQL();
+        sql.SELECT("sum(trafficvolume) as trafficvolume,(select count(1) as `count` from (select 1 from pk_competition_data group by supid) temp) as count").FROM(PkCompetitionData.class).ORDER_BY(PkCompetitionData.T.PE, "desc");
+        if (startDate != null) {
+            sql.WHERE(PkCompetitionData.T.CREATEDTIME, ">?", startDate);
+        }
+        if (endDate != null) {
+            sql.WHERE(PkCompetitionData.T.CREATEDTIME, "<=?", endDate);
+        }
+        return Query.sql(sql).queryMap();
+    }
 }

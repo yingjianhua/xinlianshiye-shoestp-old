@@ -15,7 +15,7 @@ import java.util.Date;
 @ImplementedBy(ActivityServiceImp.class)
 public interface IActivityService {
 
-    PkCompetitionPageManageView getPkCompetitionData(Date startDate, Date endDate,Integer supId);
+    PkCompetitionPageManageView getPkCompetitionData(Date startDate, Date endDate,Integer supId,String type);
 
     void generateData();
 }

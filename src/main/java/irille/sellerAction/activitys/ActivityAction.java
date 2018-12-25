@@ -82,7 +82,8 @@ public class ActivityAction extends SellerAction<ActivityInfo> implements IActiv
      * @author lijie@shoestp.cn
      */
     public void getPkData() throws IOException {
-        write(activityService.getPkCompetitionData(startDate, endDate, getSupplier().getPkey()));
+
+        write(activityService.getPkCompetitionData(startDate, endDate, getSupplier().getPkey(), getParams("type")));
     }
 
 

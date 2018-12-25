@@ -15,5 +15,5 @@ import lombok.Data;
 public class PkCompetitionPageManageView implements BaseView {
     private PkCompetitionData pkCompetitionData;
     private PkCompetitionGlobalDataView pkCompetitionGlobalDataView;
-    private String googleViewId;
+    private String googleViewId = null;
 }

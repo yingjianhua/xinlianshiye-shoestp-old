@@ -45,20 +45,57 @@ public class ActivityServiceImp implements IActivityService {
     private AnalyticsReporting service = null;
 
     @Override
-    public PkCompetitionPageManageView getPkCompetitionData(Date startDate, Date endDate, Integer supId) {
+    public PkCompetitionPageManageView getPkCompetitionData(Date startDate, Date endDate, Integer supId, String type) {
         PkCompetitionPageManageView pkCompetitionPageManageView = new PkCompetitionPageManageView();
+        if (type == null) type = "";
+        PkCompetitionGlobalDataView globalDataView = new PkCompetitionGlobalDataView();
+
+        switch (type) {
+            case "trafficvolume": {
+                globalDataView.setTop5(pkCompetitionDataDao.getTrafficvolumeTop5Count(startDate, endDate));
+                Map map = pkCompetitionDataDao.getTrafficvolumeCount(startDate, endDate);
+                if (map == null) {
+                    globalDataView.setSum(0);
+                } else {
+                    Integer pe = Integer.valueOf(String.valueOf(map.get("trafficvolume")));
+                    Integer count = Integer.valueOf(String.valueOf(map.get("count")));
+                    globalDataView.setSum(pe / count);
+                }
+            }
+            break;
+            case "inquiry": {
+                globalDataView.setTop5(pkCompetitionDataDao.getInqTop5Count(startDate, endDate));
+                Map map = pkCompetitionDataDao.getInqCount(startDate, endDate);
+                if (map == null) {
+                    globalDataView.setSum(0);
+                } else {
+                    Integer pe = Integer.valueOf(String.valueOf(map.get("inquiry")));
+                    Integer count = Integer.valueOf(String.valueOf(map.get("count")));
+                    globalDataView.setSum(pe / count);
+                }
+            }
+            break;
+            default: {
+                globalDataView.setTop5(pkCompetitionDataDao.getPeTop5Count(startDate, endDate));
+                Map map = pkCompetitionDataDao.getAllPe(startDate, endDate);
+                if (map == null) {
+                    globalDataView.setSum(0);
+                } else {
+                    Integer pe = Integer.valueOf(String.valueOf(map.get("pe")));
+                    Integer count = Integer.valueOf(String.valueOf(map.get("count")));
+                    globalDataView.setSum(pe / count);
+                }
+            }
+        }
         Map all = pkCompetitionDataDao.getSupPk(startDate, endDate, supId);
         PkCompetitionData pkCompetitionData = new PkCompetitionData();
         pkCompetitionData.setPe(GetValue.get(all, "pe", BigDecimal.class, BigDecimal.ZERO).intValue());
         pkCompetitionData.setInquiry(GetValue.get(all, "inq", BigDecimal.class, BigDecimal.ZERO).intValue());
         pkCompetitionData.setTrafficvolume(GetValue.get(all, "tr", BigDecimal.class, BigDecimal.ZERO).intValue());
-        PkCompetitionGlobalDataView globalDataView = new PkCompetitionGlobalDataView();
-        globalDataView.setTop5(pkCompetitionDataDao.getTop5(startDate, endDate));
-        globalDataView.setSum(pkCompetitionDataDao.getAllPe(startDate, endDate));
 
+        pkCompetitionPageManageView.setPkCompetitionGlobalDataView(globalDataView);
         pkCompetitionPageManageView.setGoogleViewId(pkCompetitionDataDao.getGoogleViewId(supId));
         pkCompetitionPageManageView.setPkCompetitionData(pkCompetitionData);
-        pkCompetitionPageManageView.setPkCompetitionGlobalDataView(globalDataView);
         return pkCompetitionPageManageView;
     }
 
@@ -186,7 +223,7 @@ public class ActivityServiceImp implements IActivityService {
      * @author lijie@shoestp.cn
      */
     private void getInq(Map<Integer, GoogleAnalyticsView> map, LocalDate startDate, LocalDate today) {
-        Integer[] integers = {281, 298, 283, 318, 279, 295, 16, 291, 282, 13, 317, 23, 78, 301,165};
+        Integer[] integers = {281, 298, 283, 318, 279, 295, 16, 291, 282, 13, 317, 23, 78, 301, 165, 292};
         for (Integer integer : integers) {
             GoogleAnalyticsView googleAnalyticsView = map.get(integer);
             if (googleAnalyticsView == null) {
