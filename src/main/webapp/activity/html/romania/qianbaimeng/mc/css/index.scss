@@ -244,13 +244,15 @@
   // 底部
   .bottom-bar{
     position: relative;
-    .bottom-bg{
-      width: 100%;
-    }
+    padding-top: 8rem;
+    background: #4d73bc url("../images/bottom-bg.png") no-repeat top / contain;
+    // .bottom-bg{
+    //   width: 100%;
+    // }
 
     .register-form{
       position: absolute;
-      bottom: 1.2rem;
+      top: -1.4rem;
       left: 50%;
       transform: translateX(-50%);
       // width: 70%;
@@ -281,6 +283,15 @@
         background-color: #ff1f1f;
       }
     }
+
+    // 新添的联系方式
+    .contact-way{
+      padding-bottom: 1rem;
+      text-align: center;
+      font-size: 0.713rem;
+      line-height: 1.4;
+      color: #fff;
+    }
   }
 }
 
@@ -308,6 +319,8 @@
     }
 
     .bottom-bar{
+      padding-top: 7rem;
+
       .register-form {
         height: 7.594rem;
         border-radius: 0.469rem;
