@@ -473,7 +473,16 @@ var lang_obj={
 	supplier:{
 		products:'产品',
 		productsStyle:'加工方式'
-	}
+	},usrpurchase:{
+        have:'已有',
+        usrpurchase:'位采购商',
+        Procured:'采购了',
+        complete:'已经完成了',
+        Dualobjective:'双的目标的',
+		baifenhao:'%',
+        continued:'还可以继续采购'
+
+    }
 	
 	
 };

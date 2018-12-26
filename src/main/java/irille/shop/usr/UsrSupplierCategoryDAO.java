@@ -40,6 +40,23 @@ public class UsrSupplierCategoryDAO {
 					.collect(Collectors.toList());
 		
 	}
+	/**
+	 * 列表供应商分类
+	 * @author liyichao
+	 */
+	public static List<irille.sellerAction.view.SupplierCategoryView> listViews() {
+		return Query
+				.SELECT(T.PKEY,T.SHOW_NAME)
+				.FROM(UsrSupplierCategory.class)
+				.queryList()
+				.stream()
+				.map(bean->new irille.sellerAction.view.SupplierCategoryView() {{
+					setId(bean.getPkey());
+					setShowname(bean.getShowName());
+				}})
+				.collect(Collectors.toList());
+
+	}
 	
 	/**
 	 * 列表供应商分类

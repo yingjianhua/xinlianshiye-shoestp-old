@@ -390,4 +390,13 @@ var lang_obj={
         bank_account:'A bank fióktelepe elhelyezkedése',
     },	supplier:{		products:'termék',
         productsStyle:'Feldolgozási módszer'
+    },usrpurchase:{
+        have:'Has',
+        usrpurchase:'bit vevők',
+        Procured:'vásárolt',
+        complete:'Már elkészült',
+        Dualobjective:'Dupla cél',
+        baifenhao:'%',
+        continued:'Továbbra is vásárolhat'
+
     }		};

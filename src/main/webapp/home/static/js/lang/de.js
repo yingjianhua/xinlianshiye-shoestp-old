@@ -463,5 +463,15 @@ var lang_obj = {
 	supplier:{
 		products:'Produkt',
 		productsStyle:'Verarbeitungsmethode'
+	},usrpurchase:{
+			have:'',
+			usrpurchase:'',
+        Procured:'',
+        complete:'',
+        Dualobjective:'',
+        baifenhao:'%',
+        continued:'Auch kaufen.'
+
 	}
+
 };

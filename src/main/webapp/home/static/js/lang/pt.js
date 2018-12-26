@@ -466,5 +466,14 @@ var lang_obj={
 	supplier:{
 		products:'Produto',
 		productsStyle:'Método de processamento'
-	}
+	},usrpurchase:{
+        have:'Já',
+        usrpurchase:'Comprador',
+        Procured:'Comprado',
+        complete:'Já concluído',
+        Dualobjective:'Alvo duplo',
+        baifenhao:'%',
+        continued:'Pode continuar a comprar'
+
+    }
 };

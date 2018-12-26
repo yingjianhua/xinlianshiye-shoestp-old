@@ -462,5 +462,14 @@ var lang_obj={
 	supplier:{
 		products:'продукт',
 		productsStyle:'Способ обработки'
-	}
+	},usrpurchase:{
+        have:'имеет',
+        usrpurchase:'Покупатели Bit',
+        Procured:'купленный',
+        complete:'Уже завершено',
+        Dualobjective:'Двойная цель',
+        baifenhao:'%',
+        continued:'Можно продолжать покупку'
+
+    }
 };
