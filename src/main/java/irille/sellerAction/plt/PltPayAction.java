@@ -1,6 +1,6 @@
 package irille.sellerAction.plt;
 
-import irille.Filter.svr.ItpCheckPurchaseLogin;
+import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.plt.inf.IPltPayAction;
 import irille.shop.plt.PltPay;
@@ -39,7 +39,7 @@ public class PltPayAction extends SellerAction<PltPay> implements IPltPayAction 
         this.paySetting = paySetting;
     }
 
-    @ItpCheckPurchaseLogin.NeedLogin
+    @NeedLogin
     public void savePaySetting() throws IOException, JSONException {
         JSONArray jsonArray = null;
         jsonArray = new JSONArray(paySetting);
@@ -125,7 +125,7 @@ public class PltPayAction extends SellerAction<PltPay> implements IPltPayAction 
      * @date 2018/10/30 10:00
      * @author lijie@shoestp.cn
      */
-    @ItpCheckPurchaseLogin.NeedLogin
+    @NeedLogin
     public void getPaySettings() throws Exception {
         write(pageSelect.getPaySettingBySupplierId(getSupplier().getPkey(), getV()));
     }

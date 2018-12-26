@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="/struts-tags" prefix="s" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
@@ -96,6 +97,7 @@
 
 <div id="main" class="wide">
     <div id="lib_user" class="clearfix">
+        <s:if test="env.login!=null">
         <div id="lib_user_crumb" class="widget">
             <ul class="crumb_box clearfix">
                 <li class="home">
@@ -117,8 +119,8 @@
                 </li>
             </ul>
         </div>
-
-        <%@ include file="template/account/lib-user-menu.jsp" %>
+           <%@ include file="template/account/lib-user-menu.jsp" %>
+       </s:if>
 
         <div id="lib_user_main">
             <h1 class="lib_user_title"><s:text name="my-inquiry-publish.View_Inquiry"/></h1>
@@ -440,7 +442,6 @@
             // elementui 上传功能 *2 - 上传成功操作
             handlePictureCardPreview(file) {
                 if (file.ret != 1) return;
-
                 // 添加图片后，在前面显示 img
                 this.imgsToUpload.push(file.result.url);
 
@@ -530,73 +531,81 @@
                     this.flag = false;
                     return;
                 }
-                // 拼接多图 地址
-                // this.submitObj.v.image =   this.imgsToUpload.join(",");
-                var goodsIndex = $(".pop-frame-select-goods .goods-item.selected").data("goodsIndex"); //获取选中的商品所在list的下标
-                // 提交时，如果勾选了商品，则上传的图片第一张为该商品图，后面4张为上传的图片
-                if ($(".pop-frame-select-goods .goods-item.selected").length > 0) {
-                    if (this.imgsToUpload.length > 4) {
-                        this.submitObj.v.image = this.goodsList[goodsIndex].imgs.split(',')[0] + ","
-                            + this.imgsToUpload.slice(0, 4).join(",");
-                    } else if (this.imgsToUpload.length == 0) {
-                        this.submitObj.v.image = this.goodsList[goodsIndex].imgs.split(',')[0]
+                    // 拼接多图 地址
+                    // this.submitObj.v.image =   this.imgsToUpload.join(",");
+                    var goodsIndex = $(".pop-frame-select-goods .goods-item.selected").data("goodsIndex"); //获取选中的商品所在list的下标
+                    // 提交时，如果勾选了商品，则上传的图片第一张为该商品图，后面4张为上传的图片
+                    if ($(".pop-frame-select-goods .goods-item.selected").length > 0) {
+                        if (this.imgsToUpload.length > 4) {
+                            this.submitObj.v.image = this.goodsList[goodsIndex].imgs.split(',')[0] + ","
+                                + this.imgsToUpload.slice(0, 4).join(",");
+                        } else if (this.imgsToUpload.length == 0) {
+                            this.submitObj.v.image = this.goodsList[goodsIndex].imgs.split(',')[0]
+                        } else {
+                            this.submitObj.v.image = this.goodsList[goodsIndex].imgs.split(',')[0] + ","
+                                + this.imgsToUpload.join(",");
+                        }
                     } else {
-                        this.submitObj.v.image = this.goodsList[goodsIndex].imgs.split(',')[0] + ","
-                            + this.imgsToUpload.join(",");
+                        this.submitObj.v.image = this.imgsToUpload.join(",");
                     }
-                } else {
-                    this.submitObj.v.image = this.imgsToUpload.join(",");
-                }
+                    // 如果没有选择goods，or没有上传图片
+                    if (this.submitObj.v.image.length == 0) {
+                        this.flag = false;
+                        if(${env.login==null}){
+                            this.$message({
+                                showClose: true,
+                                message: '<s:text name='Pleaselogin'/>',
+                                type: 'warning'
+                            });
 
-                // 如果没有选择goods，or没有上传图片
-                if (this.submitObj.v.image.length == 0) {
-                    this.flag = false;
-                    this.$message.error('<s:text name="my-inquiry-publish.Some_Pictures"/>');
-                    return
-                }
+                            sessionStorage["submitObj"]=JSON.stringify(this.submitObj.v);
+                            window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
+                        }
+                        this.$message.error('<s:text name="my-inquiry-publish.Some_Pictures"/>');
+                        return
+                    }
+                    if (this.rq_mark) {
+                        this.rq_mark = false;
 
-                if (this.rq_mark) {
-                    this.rq_mark = false;
-
-                    axios.post('/home/usr_UsrConsult_publish',
-                        Qs.stringify(this.submitObj, {allowDots: true}))
-                        .then((res) => {
+                        axios.post('/home/usr_UsrConsult_publish',
+                            Qs.stringify(this.submitObj, {allowDots: true}))
+                            .then((res) => {
                             this.rq_mark = true;
 
-                            // 提交成功时
-                            if (res.data.ret == 1) {
-                                // 提示信息
-                                this.$message({
-                                    showClose: true,
-                                    message: '<s:text name='my-inquiry-publish.Successfully_Released'/>',
-                                    type: 'success'
-                                });
-                                setTimeout(function () {
-                                    gtag_report_conversion()
-                                    window.location.href = '/home/usr_UsrConsult_listView';
-                                }, 2000)
-                                // 未登录时
-                            } else if (res.data.ret == -1) {
-                                if (this.param_product_id != -1) {
-                                    window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView?product_id='
-                                        + this.param_product_id;
-                                } else {
-                                    window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
-                                }
-                                // 提交失败时
+                        // 提交成功时
+                        if (res.data.ret == 1) {
+                            // 提示信息
+                            this.$message({
+                                showClose: true,
+                                message: '<s:text name='my-inquiry-publish.Successfully_Released'/>',
+                                type: 'success'
+                            });
+                            setTimeout(function () {
+                                gtag_report_conversion()
+                                window.location.href = '/home/usr_UsrConsult_listView';
+                            }, 2000)
+                            // 未登录时
+                        } else if (res.data.ret == -1) {
+                            if (this.param_product_id != -1) {
+                                window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView?product_id='
+                                    + this.param_product_id;
                             } else {
-                                this.flag = false;
-                                this.$alert(res.data.msg, {
-                                    confirmButtonText: '<s:text name="my-inquiry-publish.Ok"/>'
-                                });
-                                $("#imgVcode").attr("src", "/servlet/verify.img?r=" + Math.random())
+                                window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
                             }
-
-                        })
-                        .catch((err) => {
+                            // 提交失败时
+                        } else {
                             this.flag = false;
-                            this.rq_mark = true;
-                        })
+                            this.$alert(res.data.msg, {
+                                confirmButtonText: '<s:text name="my-inquiry-publish.Ok"/>'
+                            });
+                            $("#imgVcode").attr("src", "/servlet/verify.img?r=" + Math.random())
+                        }
+
+                    })
+                    .catch((err) => {
+                            this.flag = false;
+                        this.rq_mark = true;
+                    })
                 }
             },
 
@@ -611,7 +620,6 @@
                 notnull.each((index, element) => {
                     if ($(element).val() == '' || $(element).val() == "undefined") {
                         $(element).addClass('null').focus();
-
                         status = 1;
                         // 提示信息
                         this.$message.error('<s:text name="Global.Please_Complete_The_Form"/>');
@@ -628,7 +636,6 @@
                     // 提示信息
                     this.$message.error('<s:text name="Global.Please_Complete_The_Form"/>');
                 }
-
                 var Email = $('#email', inquiry_form);
                 if (/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/.test(
                     Email.val()) == false) {
@@ -644,7 +651,6 @@
                     // 提示信息
                     this.$message.error('<s:text name="my-inquiry-publish.Correct_Quantity"/>');
                 }
-
                 if (status) {
                     return false;
                 }
@@ -653,6 +659,9 @@
 
         },
         mounted() {
+            if(sessionStorage.getItem("submitObj")){
+                this.submitObj.v=JSON.parse(sessionStorage.getItem("submitObj"))
+            }
             // 获取国家列表
             axios.post('/home/plt_PltCountry_list')
                 .then((res) => {
@@ -661,41 +670,44 @@
                 .catch((err) => {
                     console.log("get countryList err");
                 });
-
-            // 获取商品列表
-            this.submitObj.v.supplierId = getQueryString("supplierId") ? getQueryString("supplierId")
-                : -1;
-            axios.get('/home/pdt_PdtConsultPdtList_list',
-                {params: {supplierId: this.submitObj.v.supplierId}})
-                .then((res) => {
+            //判断登录后访问
+            if(${env.login!=null}){
+                // 获取商品列表
+                this.submitObj.v.supplierId = getQueryString("supplierId") ? getQueryString("supplierId")
+                    : -1;
+                axios.get('/home/pdt_PdtConsultPdtList_list',
+                    {params: {supplierId: this.submitObj.v.supplierId}})
+                    .then((res) => {
                     console.log("res", res)
-                    if (res.data.ret == 1) {
-                        this.goodsList = res.data.result;
+                if (res.data.ret == 1) {
+                    this.goodsList = res.data.result;
 
-                        // 如果是在商品页 添加了inquiry商品后 直接点进来的，则默认勾选该商品
-                        if (getQueryString("product_id")) {
-                            this.param_product_id = getQueryString("product_id");
-                            $.each(res.data.result, (index, value) => {
-                                if (value.id == this.param_product_id) {
-                                    $("#use-title").prop("checked", true);
-                                    this.selectGoodsIndex = index;
-                                    this.submitObj.v.product = value.productId;
-                                    this.submitObj.v.title = value.name;
-                                }
-                            })
+                    // 如果是在商品页 添加了inquiry商品后 直接点进来的，则默认勾选该商品
+                    if (getQueryString("product_id")) {
+                        this.param_product_id = getQueryString("product_id");
+                        $.each(res.data.result, (index, value) => {
+                            if (value.id == this.param_product_id) {
+                            $("#use-title").prop("checked", true);
+                            this.selectGoodsIndex = index;
+                            this.submitObj.v.product = value.productId;
+                            this.submitObj.v.title = value.name;
                         }
-                    } else if (res.data.ret == -1) {
-                        if (this.param_product_id != -1) {
-                            window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView?product_id='
-                                + this.param_product_id;
-                        } else {
-                            window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
-                        }
+                    })
                     }
-                })
-                .catch((err) => {
+                } else if (res.data.ret == -1) {
+                    if (this.param_product_id != -1) {
+                        window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView?product_id='
+                            + this.param_product_id;
+                    } else {
+                        window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
+                    }
+                }
+            })
+            .catch((err) => {
                     console.log("get goodsList err");
-                });
+            });
+            }
+
 
             // 点击选择商品title
             $(".btn-select-pdt").click(function () {
@@ -704,7 +716,7 @@
                 if (vm.selectGoodsIndex != -1) {
                     $(".pop-frame-select-goods .goods-item").eq(vm.selectGoodsIndex).addClass("selected");
                 }
-                $("#use-title").prop("checked", "checked");//liyichao
+                $("#use-title").prop("checked", "checked");
                 $(".modal,.pop-frame-select-goods").fadeIn();
             })
             // 取消弹框 and 模态框

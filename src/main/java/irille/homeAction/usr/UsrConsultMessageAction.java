@@ -1,8 +1,8 @@
 package irille.homeAction.usr;
 
+import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.homeAction.HomeAction;
 import irille.homeAction.usr.inf.IUsrConsultMessageAction;
-import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.shop.usr.UsrConsultMessage;
 import irille.shop.usr.UsrConsultMessageDAO;
 

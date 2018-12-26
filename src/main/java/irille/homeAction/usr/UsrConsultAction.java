@@ -1,9 +1,9 @@
 package irille.homeAction.usr;
 
+import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.homeAction.HomeAction;
 import irille.homeAction.usr.inf.IUsrConsultAction;
 import irille.pub.Str;
-import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.shop.usr.UsrConsult;
 import irille.shop.usr.UsrConsultDAO;
 import irille.view.usr.ConsultView;
@@ -43,7 +43,6 @@ public class UsrConsultAction extends HomeAction<UsrConsult> implements IUsrCons
 	 * @author yingjianhua
 	 */
 	@Override
-	@NeedLogin
 	public String publishView() {
 		setResult("/home/my-inquiry-publish.jsp");
 		return TRENDS;
