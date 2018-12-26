@@ -1,10 +1,10 @@
 package irille.sellerAction.usr.inf;
 
-import java.io.IOException;
-
-import irille.pub.svr.Controller;
-import irille.pub.svr.RequestMapping;
+import irille.Filter.svr.Controller;
+import irille.Filter.svr.RequestMapping;
 import irille.sellerAction.ISellerAction;
+
+import java.io.IOException;
 
 @Controller(module="用户管理",name="供应商分类")
 public interface IUsrSupplierCategoryAction extends ISellerAction{
