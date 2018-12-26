@@ -38,7 +38,6 @@ import irille.view.usr.SupplierView;
 import irille.view.usr.shopSettingView;
 import org.json.JSONException;
 import org.json.JSONObject;
-import sun.plugin2.util.SystemUtil;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
