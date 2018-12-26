@@ -14,15 +14,15 @@
                      @select="handleTopNavSelect">
                 <el-submenu index="1" class="no-arrow new-top-nav-item">
                     <template slot="title"><s:text name="OEM"/>{{activeTopNavIndex}}</template>
-                    <el-menu-item index="1-1">{{$t("Man")}}</el-menu-item>
-                    <el-menu-item index="1-2">{{$t("WoMan")}}</el-menu-item>
-                    <el-menu-item index="1-3">{{$t("Children")}}</el-menu-item>
+                    <el-menu-item index="1-1"><s:text name="Man"/></el-menu-item>
+                    <el-menu-item index="1-2"><s:text name="WoMan"/></el-menu-item>
+                    <el-menu-item index="1-3"><s:text name="Children"/></el-menu-item>
                 </el-submenu>
                 <el-submenu index="2" class="no-arrow">
                     <template slot="title"><s:text name="WholeSale"/></template>
-                    <el-menu-item index="2-1">{{$t("Man")}}</el-menu-item>
-                    <el-menu-item index="2-2">{{$t("WoMan")}}</el-menu-item>
-                    <el-menu-item index="2-3">{{$t("Children")}}</el-menu-item>
+                    <el-menu-item index="2-1"><s:text name="Man"/></el-menu-item>
+                    <el-menu-item index="2-2"><s:text name="WoMan"/></el-menu-item>
+                    <el-menu-item index="2-3"><s:text name="Children"/></el-menu-item>
                 </el-submenu>
                 <el-submenu index="3" class="no-arrow">
                     <template slot="title"><s:text name="Trade_Show"/></template>
