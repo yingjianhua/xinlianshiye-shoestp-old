@@ -12,36 +12,36 @@
     <div id="ljx_top">
         <div class="ljx">
             <div class="top-bg-container">
-                <el-carousel height="225px" arrow="always" :interval="6000" indicator-position="outside">
+                <el-carousel height="202px" arrow="always" :interval="6000" indicator-position="outside">
                     <el-carousel-item>
                         <a href="/country/Romania-Pantofi-en-gros/romania-index-ro.html"
-                           target="_blank"><img src="/home/v2/static/images/home/ljxbanner1.jpg" class="carousel-pic"
-                                                alt=""></a>
+                           target="_blank"><img src="/home/v2/static/images/home/ljxbanner1.jpg" alt=""></a>
                     </el-carousel-item>
                     <el-carousel-item>
                         <a href="/home/pdt_PdtProduct" target="_blank"><img
-                                src="/home/v2/static/images/home/ljxbanner2.jpg" class="carousel-pic" alt=""></a>
+                                src="/home/v2/static/images/home/ljxbanner2.jpg" alt=""></a>
                     </el-carousel-item>
                     <el-carousel-item>
                         <a href="/home/usr_UsrConsult_publicListView" target="_blank"><img
-                                src="/home/v2/static/images/home/ljxbanner3.jpg" class="carousel-pic" alt=""></a>
+                                src="/home/v2/static/images/home/ljxbanner3.jpg" alt=""></a>
                     </el-carousel-item>
                 </el-carousel>
             </div>
             <div class="ljxcon-1">
                 <div class="ljxcon">
                     <div class="ljxshow">
-                        <span>His</span>
+                      <span><s:text name="His"/></span>
                         <img src="/home/v2/static/images/home/his.png" alt="">
                     </div>
                     <div class="ljxhidden" style="padding-top: 68px;">
                         <!-- <h4>His</h4> -->
                         <ul>
-                            <li>Men's leather shoes</li>
-                            <li>Men's casual shoes</li>
-                            <li>Men's' sneakers</li>
+                                <li><s:text name="Men_s_leather_shoes"/></li>
+                        <li><s:text name="Men_s_sneakers"/></li>
+                        <li><s:text name="Men_s_sandals"/></li>
                         </ul>
-                        <a href="/home/pdt_PdtProduct?cated=373" target="_blank"><span>Learn More</span></a>
+                             <a href="/home/pdt_PdtProduct?cated=373" target="_blank"><span><s:text name="Learn_More"/></span></a>
+
                     </div>
                 </div>
                 <div class="ljxcon">
@@ -52,12 +52,12 @@
                     <div class="ljxhidden" style="padding-top: 68px;">
                         <!-- <h4>Her</h4> -->
                         <ul>
-                            <li>Women's high heels</li>
-                            <li>Women's sneakers</li>
-                            <li>Women's sandals</li>
+                             <li><s:text name="Women_s_high_heels"/></li>
+                        <li><s:text name="Women_s_sneakers"/></li>
+                        <li><s:text name="Women_s_sandals"/></li>
                         </ul>
-                        <a href="/home/pdt_PdtProduct?cated=380" target="_blank"><span>Learn More</span></a>
-                    </div>
+                       <a href="/home/pdt_PdtProduct?cated=380" target="_blank"><span><s:text name="Learn_More"/></span></a>
+                           </div>
                 </div>
                 <div class="ljxcon">
                     <div class="ljxshow">
@@ -67,11 +67,11 @@
                     <div class="ljxhidden" style="padding-top: 68px;">
                         <!-- <h4>Kids</h4> -->
                         <ul>
-                            <li>Boys' shoes</li>
-                            <li>Girls' shoes</li>
-                            <li>Childrens' sandals</li>
+                            <li>Boy's shoes</li>
+                            <li>Girl's shoes</li>
+                            <li>Children's sandals</li>
                         </ul>
-                        <a href="/home/pdt_PdtProduct?cated=387" target="_blank"><span>Learn More</span></a>
+                           <a href="/home/pdt_PdtProduct?cated=387" target="_blank"><span><s:text name="Learn_More"/></span></a>
                     </div>
                 </div>
             </div>
@@ -86,14 +86,15 @@
                 <div class="goods-category-item stop-swiping">
                     <div class="flex-left-right">
                         <div class="descript-box">
-                            <div class="big-title">O2O Show Room</div>
+                            <div class="big-title"><s:text name="SHOW_ROOM"/></div>
                             <div class="content-text">
-                                From our exhibitors,
+                               <s:text name="From_our_exhibitors"/>,
                                 <br>
-                                selected by analysts
+                                 <s:text name="From_our_exhibitors"/>,
                             </div>
-                            <a href="/home/Activity_Romania" target="_blank" class="btn-see-all">See
-                                All </a>
+                            <a href="/home/Activity_Romania" target="_blank" class="btn-see-all">
+                                <s:text name="See_All"/>
+                            </a>
                         </div>
 
                         <div class="right-goods-out-wrap swiper-container swiper-category-list">
@@ -123,23 +124,23 @@
                                                         </div>
                                                     </a>
                                                     <div class="price" v-if="goods.price > 0">
-                                                        Price: {{sysConfig.currency_symbol}}{{goods.price}}
+                                                           <s:text name="Price"/>: {{sysConfig.currency_symbol}}{{goods.price}}
                                                     </div>
                                                     <div class="tips" v-if="goods.min_order > 0">Min.order:
-                                                        {{goods.min_order}} pairs
+                                                        {{goods.min_order}} <s:text name="pairs"/>
                                                     </div>
                                                 </div>
 
                                                 <div class="btn-group">
                                                     <div class="btn-inquiry btn-blue" @click="inquiry(goods.id)">
                                                         <div class="icon icon-inquiry"></div>
-                                                        Inquiry
+                                                          <s:text name="Inquiry"/>
                                                     </div>
                                                     <div class="btn-collect btn-gray" favorite-type="man"
                                                          @click="addCollection($event,goods.productid,index)">
                                                         <div class="icon icon-collect"
                                                              :class="{on:goods.favorite}"></div>
-                                                        Save
+                                                             <s:text name="Save"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -170,23 +171,23 @@
                                                         </div>
                                                     </a>
                                                     <div class="price" v-if="goods.price > 0">
-                                                        Price:{{sysConfig.currency_symbol}} {{goods.price}}
+                                                         <s:text name="Price"/>:{{sysConfig.currency_symbol}} {{goods.price}}
                                                     </div>
                                                     <div class="tips" v-if="goods.min_order > 0">Min.order:
-                                                        {{goods.min_order}} pairs
+                                                        {{goods.min_order}}  <s:text name="pairs"/>
                                                     </div>
                                                 </div>
 
                                                 <div class="btn-group">
                                                     <div class="btn-inquiry btn-blue" @click="inquiry(goods.id)">
                                                         <div class="icon icon-inquiry"></div>
-                                                        Inquiry
+                                                            <s:text name="Inquiry"/>
                                                     </div>
                                                     <div class="btn-collect btn-gray" favorite-type="woman"
                                                          @click="addCollection($event,goods.productid,index)">
                                                         <div class="icon icon-collect"
                                                              :class="{on:goods.favorite}"></div>
-                                                        Save
+                                                            <s:text name="Save"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -217,23 +218,23 @@
                                                         </div>
                                                     </a>
                                                     <div class="price" v-if="goods.price > 0">
-                                                        Price:{{sysConfig.currency_symbol}} {{goods.price}}
+                                                         <s:text name="Price"/>:{{sysConfig.currency_symbol}} {{goods.price}}
                                                     </div>
                                                     <div class="tips" v-if="goods.min_order > 0">Min.order:
-                                                        {{goods.min_order}} pairs
+                                                        {{goods.min_order}} <s:text name="pairs"/>
                                                     </div>
                                                 </div>
 
                                                 <div class="btn-group">
                                                     <div class="btn-inquiry btn-blue" @click="inquiry(goods.id)">
                                                         <div class="icon icon-inquiry"></div>
-                                                        Inquiry
+                                                                  <s:text name="Inquiry"/>
                                                     </div>
                                                     <div class="btn-collect btn-gray" favorite-type="children"
                                                          @click="addCollection($event,goods.productid,index)">
                                                         <div class="icon icon-collect"
                                                              :class="{on:goods.favorite}"></div>
-                                                        Save
+                                                            <s:text name="Save"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -253,7 +254,7 @@
                     @click="clickToSelectedCategory(1)">
                     <img src="/home/v2/static/images/home/icon-man-shoes_off.png" alt="" class="icon icon-off icon-man">
                     <img src="/home/v2/static/images/home/icon-man-shoes_on.png" alt="" class="icon icon-on icon-man">
-                    <span>His</span>
+                    <span><s:text name="His"/></span>
                 </li>
                 <li class="goods-category-nav-item" :class="{active: selectedCategory==2}"
                     @click="clickToSelectedCategory(2)">
@@ -261,7 +262,7 @@
                          class="icon icon-off icon-woman">
                     <img src="/home/v2/static/images/home/icon-woman-shoes_on.png" alt=""
                          class="icon icon-on icon-wpman">
-                    <span>Her</span>
+                    <span><s:text name="Her"/></span>
                 </li>
                 <li class="goods-category-nav-item" :class="{active: selectedCategory==3}"
                     @click="clickToSelectedCategory(3)">
@@ -269,7 +270,7 @@
                          class="icon icon-off icon-child">
                     <img src="/home/v2/static/images/home/icon-child-shoes_on.png" alt=""
                          class="icon icon-on icon-child">
-                    <span>Kids</span>
+                    <span><s:text name="Kids"/></span>
                 </li>
             </ul>
 
@@ -279,31 +280,31 @@
     <!-- 林铁原 -->
     <div id="lty">
         <div class="hotCouny">
-            <h2 style="font-size: 40px;height: 110px;line-height: 140px;font-weight: 500;border-bottom: 1px solid #ccc;margin-bottom: 20px;">
+            <h2 style="font-size: 40px;height: 100px;line-height: 126px;font-weight: 500;border-bottom: 1px solid #ccc;margin-bottom: 20px;">
                 Trade Shows </h2>
             <ul class="top">
                 <!-- <li class="on"><img src="images/couny1.jpg" alt="" />Romania<i></i></li> -->
-                <li><img src="/home/v2/static/images/home/couny1.jpg" alt=""/>Romania<i></i></li>
-                <li><img src="/home/v2/static/images/home/couny2.jpg" alt=""/>Brazil<i></i></li>
-                <li><img src="/home/v2/static/images/home/couny3.jpg" alt=""/>Russia<i></i></li>
-                <li><img src="/home/v2/static/images/home/couny4.jpg" alt=""/>Italy<i></i></li>
+                 <li><img src="/home/v2/static/images/home/couny1.jpg" alt=""/><s:text name="Romania"/><i></i></li>
+            <li><img src="/home/v2/static/images/home/couny2.jpg" alt=""/><s:text name="Brazil"/><i></i></li>
+            <li><img src="/home/v2/static/images/home/couny3.jpg" alt=""/><s:text name="Russia"/><i></i></li>
+            <li><img src="/home/v2/static/images/home/couny4.jpg" alt=""/><s:text name="Italy"/><i></i></li>
             </ul>
             <div class="com">
                 <div class="left fl">
                     <div class="left-title">
-                        500-800<br/>pairs of
+                       <s:text name="pairs_of"/>
                     </div>
                     <div class="left-title_2">
-                        premium shoes
+                <s:text name="premium_shoes"/>
                     </div>
                     <dl>
                         <!-- <dd>500-800 pairs of premium shoes</dd> -->
-                        <dd><i></i>More than 500 shoe companies were selected</dd>
-                        <!-- <dd><i></i>500-800 pairs of premium shoes</dd> -->
-                        <dd><i></i>24 hours customer service</dd>
-                    </dl>
+                         <dd><i></i><s:text name="More_than_shoe_companies_were_selected"/></dd>
+                    <!-- <dd><i></i>500-800 pairs of premium shoes</dd> -->
+                    <dd><i></i><s:text name="hours_customer_service"/></dd>
+            </dl>
                     <a class="btn" href="/country/Romania-Pantofi-en-gros/romania-index-ro.html"
-                       style="display: block;"><p>Register Now</p></a>
+                       style="display: block;"><p><s:text name="Register_Now"/></p></a>
                 </div>
                 <ul class="fr">
                     <li>
@@ -312,7 +313,7 @@
                         </div>
                         <div class="fr tite">
                             <img src="/home/v2/static/images/home/counyicon2.png" alt="" class="pic2"/>
-                            <p>About Show</p>
+                            <p><s:text name="About_Show"/></p>
                         </div>
                     </li>
                     <li>
@@ -322,9 +323,9 @@
                         <div class="fr tite">
                             <img src="/home/v2/static/images/home/counyicon1.png" alt="" class="pic2"/>
                             <p>
-                                Who Should
-                                <br>
-                                Visit
+                               <s:text name="Who_Should"/>
+                            <br>
+                            <s:text name="Visit"/>
                             </p>
                         </div>
                     </li>
@@ -334,7 +335,7 @@
                         </div>
                         <div class="fr tite">
                             <img src="/home/v2/static/images/home/counyicon3.png" alt="" class="pic2"/>
-                            <p>Exhibitor List </p>
+                            <p><s:text name="Exhibitor_List"/></p>
                         </div>
                     </li>
                     <li>
@@ -343,11 +344,11 @@
                         </div>
                         <div class="fr tite">
                             <img src="/home/v2/static/images/home/counyicon1.png" alt="" class="pic2"/>
-                            <p>
-                                Who Should
-                                <br>
-                                Exhibit
-                            </p>
+                           <p>
+                            <s:text name="Who_Should"/>
+                            <br>
+                            <s:text name="Visit"/>
+                        </p>
                         </div>
                     </li>
                 </ul>
@@ -359,7 +360,7 @@
     <div id="xc">
         <!-- New Products -->
         <div class="new-products-container">
-            <div class="title" style="margin-top: 21px;">New Products</div>
+            <div class="title">New Products</div>
             <div class="tip clearfix">
                 <span class="tip-title fl">Free Alerts on newly added products! </span>
                 <input type="email" v-model="form.email" class="tip-input fl" placeholder="Example:jsun@company.com"/>
@@ -367,13 +368,14 @@
                 <div class="tip-btn fl" @click="subscribe">Subscribe</div>
             </div>
             <!-- Swiper -->
-            <div style=" width:1240px;height:388px;position:relative;left:0;" class="new-swiper">
-                <div class="swiper-container swiper-no-swiping" id="new-products-swiper" style="width:1240px;">
+            <div style=" width:1280px;height:388px;position:relative;left:-40px;" class="new-swiper">
+                <div class="swiper-container swiper-no-swiping" id="new-products-swiper" style="width:1200px;">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide" v-cloak v-for="(item, index) in newProductsList" :key="index">
+                        <div class="swiper-slide" v-cloak @mouseover="productsOver($event,index)"
+                             @mouseout="productsOut($event,index)"
+                             v-for="(item, index) in newProductsList" :key="index">
                             <a :href="'/'+item.rewrite" target="_blank">
-                                <img :src="image(item.image)" alt=""
-                                     style="width:100%;height:217px;object-fit: contain;">
+                                <img :src="image(item.image)" alt="" style="width:277px;height:217px;">
                             </a>
                             <div class="goods-info">
                                 <a :href="'/'+item.rewrite" target="_blank">
@@ -382,10 +384,10 @@
                                     </div>
                                     <div>
                                         <div style="color: #2435a1;">
-                                            Price:{{sysConfig.currency_symbol}}{{item.price}}
-                                        </div>
-                                        <div>
-                                            Min.Order:{{item.min_order}} pairs
+                                      <s:text name="user.price"/>:{{sysConfig.currency_symbol}}{{item.price}}
+    </div>
+    <div>
+    <s:text name="Min_order"/>:{{item.min_order}} <s:text name="pairs"/>
                                         </div>
                                     </div>
                                 </a>
@@ -400,7 +402,7 @@
                                 <div class="btn-list clearfix">
                                     <div class="inquiry-btn fl btn" @click="inquiry(item.id)"><img
                                             src="/home/v2/static/images/base/icon-inquiry.png" alt="">
-                                        Inquiry
+                                           <s:text name="Inquiry"/>
                                     </div>
                                     <div class="favorite-btn fr btn" favorite-type="1"
                                          @click="addCollection($event,item.id,index)">
@@ -410,7 +412,7 @@
                                         </template>
                                         <template v-else>
                                             <img src="/home/v2/static/images/base/icon-favorite-off.png" alt=""
-                                                 style="width:19px;height:16px;"> Save
+                                                 style="width:19px;height:16px;"> <s:text name="Save"/>
                                         </template>
                                     </div>
                                 </div>
@@ -426,19 +428,17 @@
             </div>
             <div class="clearfix">
                 <a href="/home/pdt_PdtProduct?orderfld=New" target="_blank"
-                   class="blueFontColor fr">See
-                    All Products ></a>
+                   class="blueFontColor fr"><s:text name="See_All_Products"/></a>
             </div>
         </div>
     </div>
 
     <!-- 林华力 -->
     <div id="home">
-        <div class="top10" style="width: 1240px;margin: 0 auto;">
+        <div class="top10" style="width: 1200px;margin: 0 auto;">
             <h2 style="font-size: 40px;height: 100px;line-height: 126px;font-weight: 500;border-bottom: 1px solid #c4c4c4">
-                Top10 Reliable Suppliers</h2>
-            <p style="font-size: 18px;color: #000;line-height: 50px;height: 40px;">Free Alerts on newly added
-                products! </p>
+                <s:text name="Top_Reliable_Suppliers"/></h2>
+            <p style="font-size: 18px;color: #929292;line-height: 50px"><s:text name="Free_Alerts_on_newly_added_products"/> </p>
             <div class="top10-03" style="width: 100%;position: relative">
                 <img src="/home/v2/static/images/home/top10-01-1.png" alt="">
                 <!-- 六边形logo定位 -->
@@ -455,36 +455,38 @@
                 </div>
 
             </div>
-            <h2 style="font-size: 40px;height: 80px;line-height: 90px;font-weight: 500;border-bottom: 1px solid #c4c4c4">
-                Request
-                For Quotation</h2>
-            <p style="font-size: 18px;color: #000;height: 60px;line-height: 50px">Customization Service</p>
-            <a href="javascript:void(0);">
+            <a href="/home/usr_UsrConsult_listView">
                 <div class="top10-01"
-                     style="display: inline-block;width: 787px;height: 377px;background: url('/home/v2/static/images/home/top10-02.png') center no-repeat;background-size: cover;padding-left: 40px;padding-top: 25px;vertical-align: top">
+                     style="display: inline-block;width: 762px;height: 377px;background: url('images/top10-02.png') center no-repeat;background-size: 100% 100%;padding-left: 40px;padding-top: 25px;vertical-align: top">
                     <p style="font-size: 18px;color: #c3c3c3;line-height: 50px">SHOES</p>
-                    <p style="font-size: 24px;color: #ffffff;line-height: 25px;width: 250px">AN EASY WAY TO SEND BUYING
-                        REQUESTS TO SUPPLIERS & GET QUOTES QUICKLY.</p>
+                    <p style="font-size: 24px;color: #ffffff;line-height: 25px;width: 250px">
+                        <s:text name="AN_EASY_WAY_TO_SEND_BUYING_REQUESTS_TO_SUPPLIERS_GET_QUOTES_QUICKLY"/>
+                    </p>
                     <ul style="margin-top: 40px">
-                        <li style="font-size: 14px;color: white"><span>● </span>Get quotes for your custom request</li>
-                        <li style="font-size: 14px;color: white"><span>● </span>Lte the right suppliers find you</li>
-                        <li style="font-size: 14px;color: white"><span>● </span>Close deals with one click</li>
+                <li style="font-size: 14px;color: white"><span>● </span><s:text name="Get_quotes_for_your_custom_request"/></li>
+    <li style="font-size: 14px;color: white"><span>● </span><s:text name="Lte_the_right_suppliers_find_you"/></li>
+    <li style="font-size: 14px;color: white"><span>● </span><s:text name="Close_deals_with_one_click"/></li>
                     </ul>
                 </div>
                 <div class="top10-02"
-                     style="display: inline-block;width: 435px;height: 377px;border: 7px solid #c4c4c4;vertical-align: top;margin-left: 17px;padding: 20px">
-
-                    <h2 style="font-size: 40px;line-height: 50px;">One Request, Multiple Quotes</h2>
+                     style="display: inline-block;width: 420px;height: 377px;border: 7px solid #c4c4c4;vertical-align: top;margin-left: 12px;padding: 20px">
+                    <h2 style="font-size: 40px;line-height: 50px;"><s:text name="One_Request_Multiple_Quotes"/></h2>
                     <form action="">
-                        <input type="text" placeholder="what are you looking for..."
+                        <input type="text" placeholder="<s:text name='What_are_you_looking_for'/>"
                                style="width: 100%;height: 40px;border: 1px solid #c4c4c4;margin: 10px 0;text-indent: 10px">
-                        <input type="text" placeholder="Quantity"
+                        <input type="text" placeholder="<s:text name='Quantity'/>"
                                style="width: 60%;height: 40px;border: 1px solid #c4c4c4;margin: 10px 0;text-indent: 10px;vertical-align: top">
-                        <span style="display:inline-block;width: 39%;height: 44px;border: 1px solid #c4c4c4;margin: 10px 0;text-indent: 10px;margin-left:-5px;font-size: 16px;line-height: 42px;color: #a1a1a1;">Bag/Bags</span>
-                        <p style="font-size: 16px;line-height: 42px;color: #a1a1a1;">Select template type :</p>
-                        <a href="/home/usr_UsrConsult_publishView"
-                           style="display: inline-block;width: 80%;height: 40px;font-size: 18px;line-height: 40px;color: #fff;background-color: #10389c;text-align: center;border-radius: 10px">Request
-                            For Quotation</a>
+                        <span style="display:inline-block;width: 39%;height: 44px;border: 1px solid #c4c4c4;margin: 10px 0;text-indent: 10px;margin-left:-5px;font-size: 16px;line-height: 42px;color: #a1a1a1;">
+                          <s:text name='Bag_Bags'/>
+                        </span>
+                        <p style="font-size: 16px;line-height: 42px;color: #a1a1a1;">
+                            <s:text name='Select_template_type'/>
+                        </p>
+                        <a href="javascript:void(0);"
+                           style="display: inline-block;width: 80%;height: 40px;font-size: 18px;line-height: 40px;color: #c2c2c2;background-color: #10389c;text-align: center;border-radius: 10px">
+                       <s:text
+            name='Request_For_Quotation'/>
+                        </a>
                     </form>
                 </div>
             </a>
@@ -495,41 +497,41 @@
     <div id="xc">
         <!-- BRAND ZONE  -->
         <div class="brand-zone-container">
-            <div class="title" style="margin-top: 20px;">Brand Zone</div>
-            <div style="margin:34px 0 20px 0;" class="brand-zone-title">
+            <div class="title"><s:text name='BRAND_ZONE'/></div>
+            <div style="margin:40px 0;" class="brand-zone-title">
                 <div class="name">
-                    <div>Buy Fashion Shoes Instantly</div>
-                    <a href="/home/pdt_PdtProduct" target="_blank">Order Now</a>
+                    <div><s:text name='Buy_Fashion_Shoes_Instantly'/></div>
+                    <a href="/home/pdt_PdtProduct" target="_blank"><s:text name='Order_Now'/></a>
                 </div>
                 <div class="clearfix list">
                     <div class="fl">
-                        <img src="/home/v2/static/images/home/icon-gouwuche.png" alt="">
-                        <div>Speedy <br>
-                            Checkout
+                        <img src="./images/icon-gouwuche.png" alt="">
+                        <div><s:text name='Speedy'/> <br>
+                            <s:text name='Checkout'/>
                         </div>
                     </div>
                     <div class="fl">
-                        <img src="/home/v2/static/images/home/icon-wuliu.png" alt="">
-                        <div>Price Includes <br>
-                            Shipping
+                        <img src="./images/icon-wuliu.png" alt="">
+                        <div><s:text name='Price_Includes'/> <br>
+                            <s:text name="Shipping"/>
                         </div>
                     </div>
                     <div class="fl">
-                        <img src="/home/v2/static/images/home/icon-zhiliang.png" alt="">
-                        <div> Secure <br>
-                            Transactions
+                        <img src="./images/icon-zhiliang.png" alt="">
+                        <div> <s:text name="Secure"/> <br>
+                            <s:text name="Transactions"/>
                         </div>
                     </div>
                 </div>
             </div>
-            <div style=" width:1240px;height:271px;position:relative;left:0;">
-                <div class="swiper-container swiper-no-swiping" id="brand-zone-swiper" style="width:1240px;">
+            <div style=" width:1280px;height:271px;position:relative;left:-40px;">
+                <div class="swiper-container swiper-no-swiping" id="brand-zone-swiper" style="width:1200px;">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide" v-cloak
+                        <div class="swiper-slide" v-cloak @mouseover="productsOver($event,index)"
+                             @mouseout="productsOut($event,index)"
                              v-for="(item,index) in RandomPdtList" :key="index">
                             <a :href="'/'+item.rewrite" target="_blank">
-                                <img :src="image(item.image)" alt=""
-                                     style="width: 100%;height: 162px;object-fit: contain;">
+                                <img :src="image(item.image)" alt="" style="width: 173px;height: 162px;">
                                 <div class="goods-info">
                                     <div>
                                         {{item.title}}
@@ -540,15 +542,14 @@
                                 <a :href="'/'+item.rewrite" target="_blank">
                                     <div class="brand-slide-show-name ellipsis_2">{{item.title}}</div>
                                     <div class="brand-price">
-                                        <div>Price:{{sysConfig.currency_symbol}}{{item.price}}</div>
-                                        <div>Min.Order:{{item.min_order}} pairs</div>
+                                        <div><s:text name="Price"/>:{{sysConfig.currency_symbol}}{{item.price}}</div>
+                                        <div><s:text name="Min_order"/>:{{item.min_order}} pairs</div>
                                     </div>
                                 </a>
                                 <div class="btn-list flexSb">
                                     <div class="inquiry-btn btn" @click="inquiry(item.id)"><img
-                                            src="/home/v2/static/images/base/icon-inquiry.png" alt=""
-                                            style="width:13px;height:11px;">
-                                        Inquiry
+                                            src="/home/v2/static/images/base/icon-inquiry.png" alt="" style="width:13px;height:11px;">
+                                         <s:text name="Inquiry"/>
                                     </div>
                                     <div class="favorite-btn btn" :favorite-type="2"
                                          @click="addCollection($event,item.id,index)">
@@ -558,7 +559,7 @@
                                         </template>
                                         <template v-else>
                                             <img src="/home/v2/static/images/base/icon-favorite-off.png" alt=""
-                                                 style="width:15px;height:14px;"> Save
+                                                 style="width:15px;height:14px;">  <s:text name="Save"/>
                                         </template>
                                     </div>
                                 </div>
@@ -572,30 +573,30 @@
             </div>
 
             <div class="clearfix">
-                <a href="/home/pdt_PdtProduct" target="_blank" class="blueFontColor fr">See All
-                    Products ></a>
+                <a href="/home/pdt_PdtProduct" target="_blank" class="blueFontColor fr">
+                 <s:text name="See_All_Products"/>
+                </a>
             </div>
         </div>
         <!-- CROWDFUNDING -->
-        <div class="crowdfunding-container" style="margin-bottom:15px;">
+        <div class="crowdfunding-container">
             <div class="clearfix" style="border-bottom: 1px solid #cccccc;">
-                <div class="title fl" style="border:none;line-height: normal;margin-bottom:25px;">Crowdfunding</div>
-                <div class="tip clearfix fl" style="margin:12px 0 0 15px;">
+                <div class="title fl" style="border:none"><s:text name="CROWDFUNDING"/></div>
+                <div class="tip clearfix fl" style="margin:28px 0 0 15px;">
                     <ul class="tip-list clearfix">
-                        <li class="fl">Lower price in small number</li>
-                        <li class="fl" style="margin-left:40px;">Fashion Design will be published</li>
+                        <li class="fl"><s:text name="Lower_price_in_small_number"/></li>
+                        <li class="fl" style="margin-left:40px;"><s:text name="Fashion_Design_will_be_published"/></li>
                     </ul>
                 </div>
             </div>
             <div style=" width:1280px;height:462px;position:relative;left:-40px;margin-top:35px;">
                 <div class="swiper-container swiper-no-swiping" id="crowdfunding-swiper" style="width:1200px;">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
+                        <div class="swiper-slide" @mouseover="productsOver($event)" @mouseout="productsOut($event)">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=977"
                                    target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods1.jpg" alt=""
-                                         style="width:269.5px;height:271px;">
+                                    <img src="/home/v2/static/images/home/temp/goods1.jpg" alt="" style="width:269.5px;height:271px;">
                                 </a>
                                 <div class="goods-detail">
                                     <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=977"
@@ -627,12 +628,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide">
+                        <div class="swiper-slide" @mouseover="productsOver($event)" @mouseout="productsOut($event)">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=870"
                                    target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods2.jpg" alt=""
-                                         style="width:269.5px;height:271px;">
+                                    <img src="/home/v2/static/images/home/temp/goods2.jpg" alt="" style="width:269.5px;height:271px;">
                                 </a>
                                 <div class="goods-detail">
                                     <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=870"
@@ -663,12 +663,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide">
+                        <div class="swiper-slide" @mouseover="productsOver($event)" @mouseout="productsOut($event)">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1145"
                                    target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods3.jpg" alt=""
-                                         style="width:269.5px;height:271px;">
+                                    <img src="./images/goods3.jpg" alt="" style="width:269.5px;height:271px;">
                                 </a>
                                 <div class="goods-detail">
                                     <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1145"
@@ -694,18 +693,17 @@
                                         <el-progress :percentage="10" color="#35ca97" :show-text="false"></el-progress>
                                     </div>
                                     <div class="goods-time">
-                                        <img src="/home/v2/static/images/home/icon-time.png" alt="">
+                                        <img src="./images/icon-time.png" alt="">
                                         <span style="color:#808080;font-size: 14px;">1 days left</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide">
+                        <div class="swiper-slide" @mouseover="productsOver($event)" @mouseout="productsOut($event)">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=883"
                                    target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods4.jpg" alt=""
-                                         style="width:269.5px;height:271px;">
+                                    <img src="/home/v2/static/images/home/temp/goods4.jpg" alt="" style="width:269.5px;height:271px;">
                                 </a>
                                 <div class="goods-detail">
                                     <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=883"
@@ -736,12 +734,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide">
+                        <div class="swiper-slide" @mouseover="productsOver($event)" @mouseout="productsOut($event)">
                             <div class="crowdfunding-item">
                                 <a href="https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=845"
                                    target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods5.jpg" alt=""
-                                         style="width:269.5px;height:271px;">
+                                    <img src="/home/v2/static/images/home/temp/goods5.jpg" alt="" style="width:269.5px;height:271px;">
                                 </a>
                                 <div class="goods-detail">
                                     <a href="https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=845"
@@ -772,12 +769,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide">
+                        <div class="swiper-slide" @mouseover="productsOver($event)" @mouseout="productsOut($event)">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1073"
                                    target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods6.jpg" alt=""
-                                         style="width:269.5px;height:271px;">
+                                    <img src="/home/v2/static/images/home/temp/goods6.jpg" alt="" style="width:269.5px;height:271px;">
                                 </a>
                                 <div class="goods-detail">
                                     <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1073"
@@ -810,12 +806,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide">
+                        <div class="swiper-slide" @mouseover="productsOver($event)" @mouseout="productsOut($event)">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1143"
                                    target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods7.jpg" alt=""
-                                         style="width:269.5px;height:271px;">
+                                    <img src="/home/v2/static/images/home/temp/goods7.jpg" alt="" style="width:269.5px;height:271px;">
                                 </a>
                                 <div class="goods-detail">
                                     <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1143"
@@ -847,12 +842,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide">
+                        <div class="swiper-slide" @mouseover="productsOver($event)" @mouseout="productsOut($event)">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1026"
                                    target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods8.jpg" alt=""
-                                         style="width:269.5px;height:271px;">
+                                    <img src="/home/v2/static/images/home/temp/goods8.jpg" alt="" style="width:269.5px;height:271px;">
                                 </a>
                                 <div class="goods-detail">
                                     <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1026"
@@ -883,12 +877,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide">
+                        <div class="swiper-slide" @mouseover="productsOver($event)" @mouseout="productsOut($event)">
                             <div class="crowdfunding-item">
                                 <a href="https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1094"
                                    target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods9.jpg" alt=""
-                                         style="width:269.5px;height:271px;">
+                                    <img src="/home/v2/static/images/home/temp/goods9.jpg" alt="" style="width:269.5px;height:271px;">
                                 </a>
                                 <div class="goods-detail">
                                     <a href="https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1094"
@@ -919,12 +912,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide">
+                        <div class="swiper-slide" @mouseover="productsOver($event)" @mouseout="productsOut($event)">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1133"
                                    target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods10.jpg" alt=""
-                                         style="width:269.5px;height:271px;">
+                                    <img src="/home/v2/static/images/home/temp/goods10.jpg" alt="" style="width:269.5px;height:271px;">
                                 </a>
                                 <div class="goods-detail">
                                     <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1133"
@@ -957,12 +949,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide">
+                        <div class="swiper-slide" @mouseover="productsOver($event)" @mouseout="productsOut($event)">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=822"
                                    target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods12.jpg" alt=""
-                                         style="width:269.5px;height:271px;">
+                                    <img src="/home/v2/static/images/home/temp/goods12.jpg" alt="" style="width:269.5px;height:271px;">
                                 </a>
                                 <div class="goods-detail">
                                     <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=822"
@@ -993,12 +984,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide">
+                        <div class="swiper-slide" @mouseover="productsOver($event)" @mouseout="productsOut($event)">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1054"
                                    target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods11.jpg" alt=""
-                                         style="width:269.5px;height:271px;">
+                                    <img src="/home/v2/static/images/home/temp/goods11.jpg" alt="" style="width:269.5px;height:271px;">
                                 </a>
                                 <div class="goods-detail">
                                     <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1054"
@@ -1037,15 +1027,16 @@
             </div>
             <div class="clearfix">
                 <a href="/home/Activity_Romania_classifyactivity" target="_blank"
-                   class="blueFontColor fr">See
-                    All Products ></a>
+                   class="blueFontColor fr"><s:text name="See_All_Products"/></a>
             </div>
         </div>
     </div>
 </div>
 <jsp:include page="v2/template/foot.jsp"></jsp:include>
 <script>
-    var app = new Vue({
+    const isLogin = true;
+
+    new Vue({
         el: "#mix", i18n,
         data() {
             return {
@@ -1219,6 +1210,12 @@
                         console.log(error);
                     });
             },
+            productsOver(event, index) { // 移入商品蓝框
+                event.currentTarget.className = "swiper-slide products-active"
+            },
+            productsOut(event, index) { // 移出商品蓝框
+                event.currentTarget.className = "swiper-slide"
+            },
             getRandomPdt() { //获取随机商品
                 let _self = this;
                 axios.get('/home/pdt_PdtProduct_getRandomPdt?v=2&page=1&limit=17')
@@ -1249,13 +1246,9 @@
                     });
             },
             inquiry(id) { // 点击 询盘
+                console.log(id)
                 if (!isLogin) {
-                    this.$alert('Please login to operate', 'Please login to operate', {
-                        confirmButtonText: 'Ok',
-                        callback: action => {
-                            window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/"
-                        }
-                    });
+                    user_obj.set_form_sign_in('', window.location.href, 1);
                     return
                 } else {
                     // console.log("已登录")
@@ -1264,8 +1257,8 @@
                     }))
                         .then((data) => {
                             if (data.data) {
-                                if (data.data.ret && data.data.ret != 1) {
-                                    console.error("ERR::FLAG")
+                                if (data.data.ret && data.data.ret === 1) {
+                                    carWindow(data.data, lang_obj.global.inqadd)
                                 }
                             }
                             // this.productId = res.data.result.id
@@ -1281,7 +1274,6 @@
                         })
                         .catch((error) => {
                             this.$message.error(error);
-                            console.error("ERR::FLAG")
                         });
                 }
             },
@@ -1292,13 +1284,7 @@
                 if (!isLogin) {
                     // user_obj.set_form_sign_in('', window.location.href, 1);
                     // return
-                    this.$alert('Please login to operate', 'Please login to operate', {
-                        confirmButtonText: 'Ok',
-                        callback: action => {
-                            window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/"
-                        }
-                    });
-
+                    user_obj.set_form_sign_in('', window.location.href, 1);
                 } else {
                     axios.post('/home/usr_UsrFavorites_addFavorite', Qs.stringify({ //请求参数
                         pdtPkey: id,

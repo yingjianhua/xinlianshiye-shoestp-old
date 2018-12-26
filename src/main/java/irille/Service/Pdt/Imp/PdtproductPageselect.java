@@ -414,11 +414,14 @@ public class PdtproductPageselect {
             page.setStart(1);
             page.setLimit(10);
             productInfoView.setComment(pageSelect.getCommentListByProId(page, pdtProduct.getPkey()));
-            productInfoView.setSeoKeywords(SEOUtils.firstUpperCase(productInfoView.getPdtName()));
-            List list1 = (List) productInfoView.getBreadcrumbNav().stream().map(o -> {
-                return ((HashMap) o).get(PdtCat.T.NAME.getFld().getCode());
-            }).collect(Collectors.toList());
-            productInfoView.setSeoDescription(SEOUtils.firstUpperCase(productInfoView.getPdtName()) + "," + String.join(",", list1));
+            productInfoView.setSeoTitle(pdtProduct.getSeoTitle());
+            productInfoView.setSeoKeywords(pdtProduct.getSeoKeyword());
+            productInfoView.setSeoDescription(pdtProduct.getSeoDescription());
+//            productInfoView.setSeoKeywords(SEOUtils.firstUpperCase(productInfoView.getPdtName()));
+//            List list1 = (List) productInfoView.getBreadcrumbNav().stream().map(o -> {
+//                return ((HashMap) o).get(PdtCat.T.NAME.getFld().getCode());
+//            }).collect(Collectors.toList());
+//            productInfoView.setSeoDescription(SEOUtils.firstUpperCase(productInfoView.getPdtName()) + "," + String.join(",", list1));
             return productInfoView;
         }
         return null;

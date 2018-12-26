@@ -85,9 +85,9 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
         MY_ORDER(SYS.SORT__SHORT, "排序优先级"), //排序优先级
 
         //标题与标签
-        SEO_TITLE(SYS.MUILTI_LANGUAGE, "标题"), //标题
-        SEO_KEYWORD(SYS.MUILTI_LANGUAGE, "关键词"), //关键词
-        SEO_DESCRIPTION(SYS.MUILTI_LANGUAGE, "简述"), //简述
+        SEO_TITLE(SYS.STR__200_NULL, "标题"), //标题
+        SEO_KEYWORD(SYS.STR__200_NULL, "关键词"), //关键词
+        SEO_DESCRIPTION(SYS.STR__200_NULL, "简述"), //简述
         //物流运费
         IS_FREE_SHIPPING(SYS.YN, "免运费"), //免运费
         WEIGHT(SYS.AMT, "重量"), //重量
@@ -238,9 +238,9 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
 	// YES:1,是
 	// NO:0,否
   private Short _myOrder;	// 排序优先级  SHORT
-  private String _seoTitle;	// 标题  JSONOBJECT
-  private String _seoKeyword;	// 关键词  JSONOBJECT
-  private String _seoDescription;	// 简述  JSONOBJECT
+  private String _seoTitle;	// 标题  STR(200)<null>
+  private String _seoKeyword;	// 关键词  STR(200)<null>
+  private String _seoDescription;	// 简述  STR(200)<null>
   private Byte _isFreeShipping;	// 免运费 <OYn>  BYTE
 	// YES:1,是
 	// NO:0,否
@@ -310,9 +310,9 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
     _isHot=OYn.DEFAULT.getLine().getKey();	// 热卖 <OYn>  BYTE
     _isbestdeals=OYn.DEFAULT.getLine().getKey();	// 畅销 <OYn>  BYTE
     _myOrder=0;	// 排序优先级  SHORT
-    _seoTitle=null;	// 标题  JSONOBJECT
-    _seoKeyword=null;	// 关键词  JSONOBJECT
-    _seoDescription=null;	// 简述  JSONOBJECT
+    _seoTitle=null;	// 标题  STR(200)
+    _seoKeyword=null;	// 关键词  STR(200)
+    _seoDescription=null;	// 简述  STR(200)
     _isFreeShipping=OYn.DEFAULT.getLine().getKey();	// 免运费 <OYn>  BYTE
     _weight=ZERO;	// 重量  DEC(16,2)
     _length=ZERO;	// 长  DEC(16,2)
@@ -719,53 +719,17 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
   public void setSeoTitle(String seoTitle){
     _seoTitle=seoTitle;
   }
-  public JSONObject gtSeoTitle() throws JSONException {
-    return getSeoTitle()==null?new JSONObject():new JSONObject(getSeoTitle());
-  }
-  public void stSeoTitle(JSONObject seoTitle){
-    setSeoTitle(seoTitle==null?null:seoTitle.toString());
-  }
-  public String getSeoTitle(FldLanguage.Language l) throws JSONException {
-    return gtSeoTitle().has(l.name())?gtSeoTitle().getString(l.name()):"";
-  }
-  public void setSeoTitle(String seoTitle, FldLanguage.Language l) throws JSONException {
-    stSeoTitle(gtSeoTitle().put(l.name(), seoTitle));
-  }
   public String getSeoKeyword(){
     return _seoKeyword;
   }
   public void setSeoKeyword(String seoKeyword){
     _seoKeyword=seoKeyword;
   }
-  public JSONObject gtSeoKeyword() throws JSONException {
-    return getSeoKeyword()==null?new JSONObject():new JSONObject(getSeoKeyword());
-  }
-  public void stSeoKeyword(JSONObject seoKeyword){
-    setSeoKeyword(seoKeyword==null?null:seoKeyword.toString());
-  }
-  public String getSeoKeyword(FldLanguage.Language l) throws JSONException {
-    return gtSeoKeyword().has(l.name())?gtSeoKeyword().getString(l.name()):"";
-  }
-  public void setSeoKeyword(String seoKeyword, FldLanguage.Language l) throws JSONException {
-    stSeoKeyword(gtSeoKeyword().put(l.name(), seoKeyword));
-  }
   public String getSeoDescription(){
     return _seoDescription;
   }
   public void setSeoDescription(String seoDescription){
     _seoDescription=seoDescription;
-  }
-  public JSONObject gtSeoDescription() throws JSONException {
-    return getSeoDescription()==null?new JSONObject():new JSONObject(getSeoDescription());
-  }
-  public void stSeoDescription(JSONObject seoDescription){
-    setSeoDescription(seoDescription==null?null:seoDescription.toString());
-  }
-  public String getSeoDescription(FldLanguage.Language l) throws JSONException {
-    return gtSeoDescription().has(l.name())?gtSeoDescription().getString(l.name()):"";
-  }
-  public void setSeoDescription(String seoDescription, FldLanguage.Language l) throws JSONException {
-    stSeoDescription(gtSeoDescription().put(l.name(), seoDescription));
   }
   public Byte getIsFreeShipping(){
     return _isFreeShipping;

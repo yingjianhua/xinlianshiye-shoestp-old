@@ -9,6 +9,7 @@ import irille.Service.Pdt.Imp.PdtproductPageselect;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
 import irille.homeAction.pdt.dto.ProductInfoView;
+import irille.homeAction.pdt.dto.SEOView;
 import irille.pub.Str;
 import irille.pub.bean.BeanBase;
 import irille.pub.i18n.I18NUtil;
@@ -263,6 +264,15 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
         this.supView = supView;
     }
 
+    public SEOView getSeoView() {
+        return seoView;
+    }
+
+    public void setSeoView(SEOView seoView) {
+        this.seoView = seoView;
+    }
+
+    private SEOView seoView;
     /**
      * @Description: 商品详情页 Jsp
      * @author lijie@shoestp.cn
@@ -280,6 +290,11 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
                 throw LOG.err("not exists", "产品id[{0}]不存在", getId());
             }
             setGoodsInfo(objectMapper.writeValueAsString(infoView));
+            SEOView view = new SEOView();
+            view.setTitle(new JSONObject(infoView.getSeoTitle()).get(curLanguage().toString()).toString());
+            view.setKeyWord(new JSONObject(infoView.getSeoKeywords()).get(curLanguage().toString()).toString());
+            view.setDescription(new JSONObject(infoView.getSeoDescription()).get(curLanguage().toString()).toString());
+            setSeoView(view);
         }
         setResult("goods-info.jsp");
         return HomeAction.TRENDS;
