@@ -458,7 +458,7 @@
                 Request
                 For Quotation</h2>
             <p style="font-size: 18px;color: #000;height: 60px;line-height: 50px">Customization Service</p>
-            <a href="/home/usr_UsrConsult_listView">
+            <a href="javascript:void(0);">
                 <div class="top10-01"
                      style="display: inline-block;width: 787px;height: 377px;background: url('/home/v2/static/images/home/top10-02.png') center no-repeat;background-size: cover;padding-left: 40px;padding-top: 25px;vertical-align: top">
                     <p style="font-size: 18px;color: #c3c3c3;line-height: 50px">SHOES</p>
@@ -481,7 +481,7 @@
                                style="width: 60%;height: 40px;border: 1px solid #c4c4c4;margin: 10px 0;text-indent: 10px;vertical-align: top">
                         <span style="display:inline-block;width: 39%;height: 44px;border: 1px solid #c4c4c4;margin: 10px 0;text-indent: 10px;margin-left:-5px;font-size: 16px;line-height: 42px;color: #a1a1a1;">Bag/Bags</span>
                         <p style="font-size: 16px;line-height: 42px;color: #a1a1a1;">Select template type :</p>
-                        <a href="javascript:void(0);"
+                        <a href="/home/usr_UsrConsult_publishView"
                            style="display: inline-block;width: 80%;height: 40px;font-size: 18px;line-height: 40px;color: #fff;background-color: #10389c;text-align: center;border-radius: 10px">Request
                             For Quotation</a>
                     </form>

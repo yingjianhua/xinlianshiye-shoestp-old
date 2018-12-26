@@ -461,7 +461,7 @@
     }
 
     $(document).ready(function () {
-        $("#filter div.prod_sort a").bind("click", function () {
+        $("#Filter div.prod_sort a").bind("click", function () {
             if (_orderfld === $(this).attr("action")) {
                 _order = !_order
             } else {
