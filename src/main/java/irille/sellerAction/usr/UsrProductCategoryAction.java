@@ -8,9 +8,12 @@ import irille.pub.idu.IduPage;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.usr.dto.UsrProductCategoryView;
 import irille.sellerAction.usr.inf.IUsrProductCategoryAction;
+import irille.sellerAction.view.ProductSEOsView;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.usr.UsrProductCategory;
 import irille.shop.usr.UsrProductCategoryDAO;
+import lombok.Getter;
+import lombok.Setter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -169,5 +172,20 @@ public class UsrProductCategoryAction extends SellerAction<UsrProductCategory> i
         write(usrSupplierCatService.getProductCatList(getStart(), getLimit(), getSupplier().getPkey()));
     }
 
-
+    public void getProductSEOs() throws IOException {
+        write(usrSupplierCatService.getProductSEOs(getStart(), getLimit(), getSupplier().getPkey(), PltConfigDAO.supplierLanguage(getSupplier().getPkey())));
+    }
+    @Getter
+    @Setter
+    private Integer productId;
+    public void getSEO() throws IOException {
+        write(usrSupplierCatService.getSEO(productId));
+    }
+    @Getter
+    @Setter
+    private ProductSEOsView view;
+    public void updSEO() throws IOException {
+        usrSupplierCatService.updSEO(view);
+        write();
+    }
 }
