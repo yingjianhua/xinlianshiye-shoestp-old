@@ -1,7 +1,9 @@
 package irille.homeAction;
 
+import irille.Filter.svr.ItpSessionmsg;
 import irille.action.BeanAction;
 import irille.core.sys.SysTable;
+import irille.Filter.svr.ItpSessionmsg;
 import irille.gl.gs.GsGoods;
 import irille.homeAction.pdt.dto.ProductCatView;
 import irille.homeAction.usr.dto.EnvView;
@@ -25,7 +27,6 @@ import irille.pub.idu.IduUnapprove;
 import irille.pub.idu.IduUpd;
 import irille.pub.inf.IExtName;
 import irille.pub.svr.Env;
-import irille.Filter.svr.ItpSessionmsg;
 import irille.pub.tb.Fld;
 import irille.pub.tb.FldEnumByte;
 import irille.pub.tb.FldLanguage.Language;
@@ -853,7 +854,7 @@ public abstract class HomeAction<THIS extends BeanMain<?, ?>> extends BeanAction
 			list();
 		// 根据前台EXT获取需要导出的列
 		JSONArray ja2 = new JSONArray(getExpFields());
-		ArrayList<ExportColumn> cols = new ArrayList<HomeAction.ExportColumn>();
+		ArrayList<ExportColumn> cols = new ArrayList<ExportColumn>();
 		int rownum = 1; //表头有几行
 		for (int i = 0; i < ja2.length(); i++) {
 			ExportColumn col = new ExportColumn(ja2.getJSONObject(i));

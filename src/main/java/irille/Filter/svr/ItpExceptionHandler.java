@@ -46,7 +46,7 @@ public class ItpExceptionHandler extends AbstractInterceptor {
 				HomeAction<?> action = (HomeAction<?>)invocation.getAction();
 				if(method.getReturnType().equals(String.class)) {
 					HttpSession session = ServletActionContext.getRequest().getSession();
-					SessionMsg sessionmsg = (SessionMsg)session.getAttribute(SessionMsg.session_key);
+					irille.Filter.svr.SessionMsg sessionmsg = (irille.Filter.svr.SessionMsg)session.getAttribute(irille.Filter.svr.SessionMsg.session_key);
 					if(sessionmsg.getIsMobile())
 						action.setResult("/mobile/404.jsp", false);
 					else
@@ -68,7 +68,7 @@ public class ItpExceptionHandler extends AbstractInterceptor {
 //			System.err.println("后台处理【"+getJumpUrl(ServletActionContext.getRequest())+"】共消耗【"+(date2-date1)+"】毫秒");
 			try {
 				HttpSession session = ServletActionContext.getRequest().getSession();
-				SessionMsg sessionmsg = (SessionMsg)session.getAttribute(SessionMsg.session_key);
+				irille.Filter.svr.SessionMsg sessionmsg = (irille.Filter.svr.SessionMsg)session.getAttribute(irille.Filter.svr.SessionMsg.session_key);
 				if(sessionmsg!=null)
 					LgAccessDAO.add(sessionmsg.getUser(), ServletActionContext.getRequest(), date2-date1, isSuccess, e2);
 				AppConfig.db_connection_commit();
