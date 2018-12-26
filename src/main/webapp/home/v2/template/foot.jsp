@@ -44,7 +44,7 @@
 </div> -->
 <script>
     var footer = new Vue({
-        el: "#footer", i18n,
+        el: "#footer",
         data() {
             return {
                 list: [],
@@ -97,6 +97,4 @@
             }
         }
     })
-
-
 </script>
