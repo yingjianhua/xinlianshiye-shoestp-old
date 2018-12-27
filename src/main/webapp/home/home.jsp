@@ -415,8 +415,7 @@
                 <div class="swiper-container swiper-no-swiping" id="new-products-swiper"
                      style="width:1200px;">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide" v-cloak @mouseover="productsOver($event,index)"
-                             @mouseout="productsOut($event,index)"
+                        <div class="swiper-slide" v-cloak
                              v-for="(item, index) in newProductsList" :key="index">
                             <a :href="'/'+item.rewrite" target="_blank">
                                 <img :src="image(item.image)" alt=""
@@ -579,8 +578,7 @@
                 <div class="swiper-container swiper-no-swiping" id="brand-zone-swiper"
                      style="width:1200px;">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide" v-cloak @mouseover="productsOver($event,index)"
-                             @mouseout="productsOut($event,index)"
+                        <div class="swiper-slide" v-cloak
                              v-for="(item,index) in RandomPdtList" :key="index">
                             <a :href="'/'+item.rewrite" target="_blank">
                                 <img :src="image(item.image)" alt=""
@@ -653,8 +651,7 @@
                 <div class="swiper-container swiper-no-swiping" id="crowdfunding-swiper"
                      style="width:1200px;">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide" @mouseover="productsOver($event)"
-                             @mouseout="productsOut($event)">
+                        <div class="swiper-slide">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=977"
                                    target="_blank">
@@ -692,8 +689,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide" @mouseover="productsOver($event)"
-                             @mouseout="productsOut($event)">
+                        <div class="swiper-slide">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=870"
                                    target="_blank">
@@ -731,8 +727,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide" @mouseover="productsOver($event)"
-                             @mouseout="productsOut($event)">
+                        <div class="swiper-slide">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1145"
                                    target="_blank">
@@ -770,8 +765,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide" @mouseover="productsOver($event)"
-                             @mouseout="productsOut($event)">
+                        <div class="swiper-slide">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=883"
                                    target="_blank">
@@ -809,8 +803,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide" @mouseover="productsOver($event)"
-                             @mouseout="productsOut($event)">
+                        <div class="swiper-slide">
                             <div class="crowdfunding-item">
                                 <a href="https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=845"
                                    target="_blank">
@@ -848,8 +841,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide" @mouseover="productsOver($event)"
-                             @mouseout="productsOut($event)">
+                        <div class="swiper-slide">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1073"
                                    target="_blank">
@@ -887,8 +879,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide" @mouseover="productsOver($event)"
-                             @mouseout="productsOut($event)">
+                        <div class="swiper-slide">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1143"
                                    target="_blank">
@@ -926,8 +917,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide" @mouseover="productsOver($event)"
-                             @mouseout="productsOut($event)">
+                        <div class="swiper-slide">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1026"
                                    target="_blank">
@@ -965,8 +955,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide" @mouseover="productsOver($event)"
-                             @mouseout="productsOut($event)">
+                        <div class="swiper-slide">
                             <div class="crowdfunding-item">
                                 <a href="https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1094"
                                    target="_blank">
@@ -1004,8 +993,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide" @mouseover="productsOver($event)"
-                             @mouseout="productsOut($event)">
+                        <div class="swiper-slide">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1133"
                                    target="_blank">
@@ -1043,8 +1031,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide" @mouseover="productsOver($event)"
-                             @mouseout="productsOut($event)">
+                        <div class="swiper-slide">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=822"
                                    target="_blank">
@@ -1082,8 +1069,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide" @mouseover="productsOver($event)"
-                             @mouseout="productsOut($event)">
+                        <div class="swiper-slide">
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1054"
                                    target="_blank">
@@ -1310,12 +1296,6 @@
           console.log(error);
         });
       },
-      productsOver(event, index) { // 移入商品蓝框
-        event.currentTarget.className = "swiper-slide products-active"
-      },
-      productsOut(event, index) { // 移出商品蓝框
-        event.currentTarget.className = "swiper-slide"
-      },
       getRandomPdt() { //获取随机商品
         let _self = this;
         axios.get('/home/pdt_PdtProduct_getRandomPdt?v=2&page=1&limit=17')
@@ -1346,9 +1326,13 @@
         });
       },
       inquiry(id) { // 点击 询盘
-        console.log(id)
         if (!isLogin) {
-          user_obj.set_form_sign_in('', window.location.href, 1);
+          this.$alert('Please login to operate', 'Please login to operate', {
+            confirmButtonText: 'Ok',
+            callback: action => {
+              window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/"
+            }
+          });
           return
         } else {
           // console.log("已登录")
@@ -1357,20 +1341,13 @@
           }))
           .then((data) => {
             if (data.data) {
-              if (data.data.ret && data.data.ret === 1) {
-                carWindow(data.data, lang_obj.global.inqadd)
+              if (data.data.ret && data.data.ret != 1) {
+                console.error("ERR::FLAG")
+              } else {
+                window.location.href = "/home/usr_UsrConsult_publishView?product_id="
+                    + data.data.result.id
               }
             }
-            // this.productId = res.data.result.id
-            // this.$confirm('成功添加到您的询盘！', { // 是否跳转到询盘页面
-            // confirmButtonText: '现在询价',
-            // cancelButtonText: '继续逛逛',
-            // type: 'success'
-            // }).then(() => {
-            // window.location.href = "/home/usr_UsrConsult_publishView?product_id=" + this.productId
-            // }).catch((error) => {
-            // // this.$message.error(error);
-            // });
           })
           .catch((error) => {
             this.$message.error(error);
@@ -1384,7 +1361,13 @@
         if (!isLogin) {
           // user_obj.set_form_sign_in('', window.location.href, 1);
           // return
-          user_obj.set_form_sign_in('', window.location.href, 1);
+          this.$alert('Please login to operate', 'Please login to operate', {
+            confirmButtonText: 'Ok',
+            callback: action => {
+              window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/"
+            }
+          });
+
         } else {
           axios.post('/home/usr_UsrFavorites_addFavorite', Qs.stringify({ //请求参数
             pdtPkey: id,
