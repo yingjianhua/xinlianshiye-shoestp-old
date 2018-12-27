@@ -506,9 +506,9 @@
                 </div>
 
             </div>
-            <a href="/home/usr_UsrConsult_listView">
+            <a href="javascript:void(0)">
                 <div class="top10-01"
-                     style="display: inline-block;width: 762px;height: 377px;background: url('images/top10-02.png') center no-repeat;background-size: 100% 100%;padding-left: 40px;padding-top: 25px;vertical-align: top">
+                     style="display: inline-block;width: 762px;height: 377px;background: url('/home/v2/static/images/home/top10-02.png') center no-repeat;background-size: 100% 100%;padding-left: 40px;padding-top: 25px;vertical-align: top">
                     <p style="font-size: 18px;color: #c3c3c3;line-height: 50px"><s:text
                             name="SHOES"/></p>
                     <p style="font-size: 24px;color: #ffffff;line-height: 25px;width: 250px"><s:text
@@ -535,7 +535,7 @@
                                 name='Bag_Bags'/></span>
                         <p style="font-size: 16px;line-height: 42px;color: #a1a1a1;"><s:text
                                 name='Select_template_type'/></p>
-                        <a href="javascript:void(0);"
+                        <a href="/home/usr_UsrConsult_publishView"
                            style="display: inline-block;width: 80%;height: 40px;font-size: 18px;line-height: 40px;color: #c2c2c2;background-color: #10389c;text-align: center;border-radius: 10px"><s:text
                                 name='Request_For_Quotation'/></a>
                     </form>
@@ -556,19 +556,19 @@
                 </div>
                 <div class="clearfix list">
                     <div class="fl">
-                        <img src="./images/icon-gouwuche.png" alt="">
+                        <img src="/home/v2/static/images/home/icon-gouwuche.png" alt="">
                         <div><s:text name='Speedy'/> <br>
                             <s:text name='Checkout'/>
                         </div>
                     </div>
                     <div class="fl">
-                        <img src="./images/icon-wuliu.png" alt="">
+                        <img src="/home/v2/static/images/home/icon-wuliu.png" alt="">
                         <div><s:text name='Price_Includes'/> <br>
                             <s:text name="Shipping"/>
                         </div>
                     </div>
                     <div class="fl">
-                        <img src="./images/icon-zhiliang.png" alt="">
+                        <img src="/home/v2/static/images/home/icon-zhiliang.png" alt="">
                         <div><s:text name="Secure"/> <br>
                             <s:text name="Transactions"/>
                         </div>
@@ -736,7 +736,7 @@
                             <div class="crowdfunding-item">
                                 <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1145"
                                    target="_blank">
-                                    <img src="./images/goods3.jpg" alt=""
+                                    <img src="/home/v2/static/images/home/temp/goods3.jpg" alt=""
                                          style="width:269.5px;height:271px;">
                                 </a>
                                 <div class="goods-detail">
@@ -763,7 +763,7 @@
                                                      :show-text="false"></el-progress>
                                     </div>
                                     <div class="goods-time">
-                                        <img src="./images/icon-time.png" alt="">
+                                        <img src="/home/v2/static/images/home/icon-time.png" alt="">
                                         <span style="color:#808080;font-size: 14px;"><s:text
                                                 name="Remaining"/>1 <s:text name="days"/></span>
                                     </div>
