@@ -856,6 +856,7 @@ html, body {
 
 #xc #new-products-swiper .goods-info a > div:first-child {
   line-height: 24px;
+  height: 48px;
 }
 
 #xc #new-products-swiper .goods-info a > div:nth-child(2) {
