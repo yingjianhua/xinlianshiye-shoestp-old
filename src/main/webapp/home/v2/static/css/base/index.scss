@@ -907,10 +907,12 @@ html, body {
 
 #xc .swiper-button-prev, #xc .swiper-container-rtl .swiper-button-next {
   background-image: url(/home/v2/static/images/base/swiper-left-btn.jpg);
+  left: -25px;
 }
 
 #xc .swiper-button-next, #xc .swiper-container-rtl .swiper-button-prev {
   background-image: url(/home/v2/static/images/base/swiper-right-btn.jpg);
+  right: -25px;
 }
 
 #xc #new-products-swiper .goods-info div {
@@ -1152,7 +1154,6 @@ html, body {
   padding-top: 12px;
   font-size: 16px;
 }
-
 #xc .brand-slide-show .brand-price {
   margin-top: 20px;
 }

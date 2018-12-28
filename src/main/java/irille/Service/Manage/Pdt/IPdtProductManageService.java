@@ -6,7 +6,9 @@ import irille.pub.tb.FldLanguage;
 import irille.view.Page;
 import irille.view.pdt.PdtProductCatView;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,4 +21,7 @@ public interface IPdtProductManageService {
     Page getProductList(String name,String number,Integer supplierId,int cat,int start,int limit);
 
     List<PdtProductCatView> getCatChildNodesByCatId(int i, FldLanguage.Language supplierLanguage);
+
+
+    Integer saveProduct(String data,Integer supId) throws IOException, ExecutionException;
 }

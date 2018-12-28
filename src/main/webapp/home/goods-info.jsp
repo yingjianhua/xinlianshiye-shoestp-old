@@ -5,9 +5,15 @@
 
 
 <head>
-    <title content="${seoView.title}" ></title>
-    <meta name="keyword" content="${seoView.keyWord}"/>
-    <meta name="description" content="${seoView.description}"/>
+    <title>
+        ${seoView.title}
+    </title>
+    <c:if test="${seoView.keyWord!=null}">
+        <meta name="keyword" content="${seoView.keyWord}"/>
+    </c:if>
+    <c:if test="${seoView.description!=null}">
+        <meta name="description" content="${seoView.description}"/>
+    </c:if>
     <script type="text/javascript" src="./static/js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript"
             src="/static/js/plugins/goodsInfo/jquery.SuperSlide.2.1.1.js"></script>
@@ -292,7 +298,8 @@
 
 
                     <div class="xmgActions">
-                        <input type="button" value="<s:text name="inquiry"/>" class="addRFQ" @click="addRFQ">
+                        <input type="button" value="<s:text name="inquiry"/>" class="addRFQ"
+                               @click="addRFQ">
                         <input type="button" value="<s:text name='Global.Add_To_Cart'/>"
                                class="addtoCart"
                                @click="addtoCart">
@@ -445,7 +452,8 @@
                                     </div>
                                 </div>
                                 <div class="write_reply hide">
-                                    <div class="textarea_holder"><textarea class="default" name="ReviewComment">Add your reply here...</textarea>
+                                    <div class="textarea_holder"><textarea class="default"
+                                                                           name="ReviewComment">Add your reply here...</textarea>
                                     </div>
                                     <p class="error"></p>
                                     <button class="btn textbtn">Reply</button>
@@ -479,605 +487,604 @@
 </div>
 <script>
 
-    function carWindow(data, msg) {
-        $('#addtocart_button').attr('disabled', false);
-        var excheckout_html = '<div id="shipping_cost_choose">';
-        excheckout_html += '<div class="box_bg"></div><a class="noCtrTrack" id="choose_close">×</a>';
-        excheckout_html += '<div id="choose_content">';
-        excheckout_html += '<div class="cart_view">' +
-            '<p>' + msg + '</p>' +
-            '</div>';
-        excheckout_html += '<p class="footRegion">';
-        if (msg.indexOf(lang_obj.global.inqadd) != -1) {
-            excheckout_html += '<a href="javascript:;" class="btn btn-success" id="exback_button">'
-                + lang_obj.global.continues + '</a><a href="/home/usr_UsrConsult_publishView?product_id='
-                + data.result.id + '" class="btn btn-success" id="excheckout_button">'
-                + lang_obj.global.inquery + '</a>';
-        } else {
-            excheckout_html += '<a href="javascript:;" class="btn btn-success" id="exback_button">'
-                + lang_obj.cart.return_shopping
-                + '</a><a href="/home/usr_UsrCart_cartshopping" class="btn btn-success" id="excheckout_button">'
-                + lang_obj.cart.proceed_checkout + '</a>';
-        }
-
-        excheckout_html += '</p>';
-        excheckout_html += '</div>';
-        excheckout_html += '</div>';
-
-        $('#shipping_cost_choose').length && $('#shipping_cost_choose').remove();
-        $('body').prepend(excheckout_html);
-        $('#shipping_cost_choose').css({left: $(window).width() / 2 - 220});
-        global_obj.div_mask();
-
+  function carWindow(data, msg) {
+    $('#addtocart_button').attr('disabled', false);
+    var excheckout_html = '<div id="shipping_cost_choose">';
+    excheckout_html += '<div class="box_bg"></div><a class="noCtrTrack" id="choose_close">×</a>';
+    excheckout_html += '<div id="choose_content">';
+    excheckout_html += '<div class="cart_view">' +
+        '<p>' + msg + '</p>' +
+        '</div>';
+    excheckout_html += '<p class="footRegion">';
+    if (msg.indexOf(lang_obj.global.inqadd) != -1) {
+      excheckout_html += '<a href="javascript:;" class="btn btn-success" id="exback_button">'
+          + lang_obj.global.continues + '</a><a href="/home/usr_UsrConsult_publishView?product_id='
+          + data.result.id + '" class="btn btn-success" id="excheckout_button">'
+          + lang_obj.global.inquery + '</a>';
+    } else {
+      excheckout_html += '<a href="javascript:;" class="btn btn-success" id="exback_button">'
+          + lang_obj.cart.return_shopping
+          + '</a><a href="/home/usr_UsrCart_cartshopping" class="btn btn-success" id="excheckout_button">'
+          + lang_obj.cart.proceed_checkout + '</a>';
     }
 
-    $('html').on('click', '#choose_close, #div_mask, #exback_button', function () {
-        if ($('#shipping_cost_choose').length) {
-            $('#shipping_cost_choose').remove();
-            global_obj.div_mask(1);
-            $('#shipping_cost_button').removeAttr('disabled');
-        }
-    });
-    $.fn.extend({
-        //添加购物车抛物线插件
-        fly: function (t, callback) {
-            var e = this,
-                t = $.extend(
-                    {autoPlay: !0, vertex_Rtop: 20, speed: 1.2, start: {}, end: {}, onEnd: $.noop}, t),
-                f = $(e),
-                obj = {
-                    init: function (t) {
-                        obj.setOptions(t);
-                        !!t.autoPlay && obj.move(t);
-                    },
-                    setOptions: function (t) {
-                        var c = t,
-                            s = c.start,
-                            d = c.end;
-                        f.css({
-                            "border-top-left-radius": "50%",
-                            "border-top-right-radius": "50%",
-                            "border-bottom-right-radius": "50%",
-                            "border-bottom-left-radius": "50%",
-                            "width": 50,
-                            "height": 50,
-                            "background-image": "url(/home/static/images/ico/icon_Shopping-Cart.png)",
-                            "background-size": "100%",
-                            "background-repeat": "no-repeat",
-                            "margin-top": 0,
-                            "margin-left": 0,
-                            "position": "absolute",
-                            "z-index": "1000000"
-                        }).appendTo("body"),
-                        null != d.width && null != d.height && $.extend(!0, s,
-                            {width: f.width(), height: f.height()});
+    excheckout_html += '</p>';
+    excheckout_html += '</div>';
+    excheckout_html += '</div>';
 
-                        var h = Math.min(s.top, d.top) - Math.abs(s.left - d.left) / 3;
-                        h < c.vertex_Rtop && (h = Math.min(c.vertex_Rtop, Math.min(s.top, d.top)));
+    $('#shipping_cost_choose').length && $('#shipping_cost_choose').remove();
+    $('body').prepend(excheckout_html);
+    $('#shipping_cost_choose').css({left: $(window).width() / 2 - 220});
+    global_obj.div_mask();
 
-                        var i = Math.sqrt(Math.pow(s.top - d.top, 2) + Math.pow(s.left - d.left, 2)),
-                            j = Math.ceil(Math.min(Math.max(Math.log(i) / .05 - 75, 30), 100) / c.speed),
-                            k = s.top == h ? 0 : -Math.sqrt((d.top - h) / (s.top - h)),
-                            l = (k * s.left - d.left) / (k - 1),
-                            m = d.left == l ? 0 : (d.top - h) / Math.pow(d.left - l, 2);
+  }
 
-                        $.extend(!0, c, {count: -1, steps: j, vertex_left: l, vertex_top: h, curvature: m});
-                    },
-                    move: function (t) {
-                        var s = t.start,
-                            len = t.count,
-                            step = t.steps,
-                            d = t.end,
-                            h = s.left + (d.left - s.left) * len / step,
-                            i = 0 == t.curvature ? s.top + (d.top - s.top) * len / step : t.curvature
-                                * Math.pow(h - t.vertex_left, 2) + t.vertex_top;
-                        if (null != d.width && null != d.height) {
-                            var j = step / 2,
-                                k = d.width - (d.width - s.width) * Math.cos(
-                                    j > len ? 0 : (len - j) / (step - j) * Math.PI / 2),
-                                l = d.height - (d.height - s.height) * Math.cos(
-                                    j > len ? 0 : (len - j) / (step - j) * Math.PI / 2);
-                            f.css({width: k + "px", height: l + "px", "font-size": Math.min(k, l) + "px"});
-                        }
+  $('html').on('click', '#choose_close, #div_mask, #exback_button', function () {
+    if ($('#shipping_cost_choose').length) {
+      $('#shipping_cost_choose').remove();
+      global_obj.div_mask(1);
+      $('#shipping_cost_button').removeAttr('disabled');
+    }
+  });
+  $.fn.extend({
+    //添加购物车抛物线插件
+    fly: function (t, callback) {
+      var e = this,
+          t = $.extend(
+              {autoPlay: !0, vertex_Rtop: 20, speed: 1.2, start: {}, end: {}, onEnd: $.noop}, t),
+          f = $(e),
+          obj = {
+            init: function (t) {
+              obj.setOptions(t);
+              !!t.autoPlay && obj.move(t);
+            },
+            setOptions: function (t) {
+              var c = t,
+                  s = c.start,
+                  d = c.end;
+              f.css({
+                "border-top-left-radius": "50%",
+                "border-top-right-radius": "50%",
+                "border-bottom-right-radius": "50%",
+                "border-bottom-left-radius": "50%",
+                "width": 50,
+                "height": 50,
+                "background-image": "url(/home/static/images/ico/icon_Shopping-Cart.png)",
+                "background-size": "100%",
+                "background-repeat": "no-repeat",
+                "margin-top": 0,
+                "margin-left": 0,
+                "position": "absolute",
+                "z-index": "1000000"
+              }).appendTo("body"),
+              null != d.width && null != d.height && $.extend(!0, s,
+                  {width: f.width(), height: f.height()});
 
-                        if (len == -1) {
-                            f.css({left: h + "px", top: i + "px"});
-                            t.count++;
-                            obj.move(t);
-                        } else {
-                            f.animate({left: h + "px", top: i + "px"}, 5, function () {
-                                t.count++;
-                                //$('.search_r').html($.toJSON(t));
-                                if (len < step) {
-                                    obj.move(t);
-                                } else {
-                                    t = '';
-                                    obj.destory();
-                                }
-                            });
-                        }
-                    },
-                    destory: function () {
-                        f.remove();
-                        callback();
-                    }
-                }
-            obj.init(t);
-        }
-    });
+              var h = Math.min(s.top, d.top) - Math.abs(s.left - d.left) / 3;
+              h < c.vertex_Rtop && (h = Math.min(c.vertex_Rtop, Math.min(s.top, d.top)));
 
-    function cartFly(data, msg) {
-        var _self = $("input.addtoCart")
-        var offset = $('.cart_inner').offset(),
-            btnLeft = $(_self).offset().left + $(_self).outerWidth(true) / 3,
-            btnTop = $(_self).offset().top - $(_self).outerHeight(true) - 30,
-            flyer = $('<div class="addtocart_flyer"></div>');
-        flyer.fly({
-            start: {left: btnLeft, top: btnTop, width: 50, height: 50},
-            end: {left: offset.left + 30, top: offset.top, width: 20, height: 20}
-        }, function () {
-            $('#addtocart_button').attr('disabled', false);
-            // $('.top_cart .cart_count').text('购物车的总数量');//购物车的总数量
+              var i = Math.sqrt(Math.pow(s.top - d.top, 2) + Math.pow(s.left - d.left, 2)),
+                  j = Math.ceil(Math.min(Math.max(Math.log(i) / .05 - 75, 30), 100) / c.speed),
+                  k = s.top == h ? 0 : -Math.sqrt((d.top - h) / (s.top - h)),
+                  l = (k * s.left - d.left) / (k - 1),
+                  m = d.left == l ? 0 : (d.top - h) / Math.pow(d.left - l, 2);
 
-            var excheckout_html = '<div id="shipping_cost_choose">';
-            excheckout_html += '<div class="box_bg"></div><a class="noCtrTrack" id="choose_close">×</a>';
-            excheckout_html += '<div id="choose_content">';
-            excheckout_html += '<div class="cart_view">' +
-                '<p>' + msg + '</p>' +
-                // ((lang_obj.cart.additem_1).replace('%num%', '购物车的总数量')) + '<b class="FontColor">' + ueeshop_config.currency_symbols + '加入购物车的商品的价格' + '</b>' +
-                '</div>';
-            excheckout_html += '<p class="footRegion">';
-            if (msg.indexOf(lang_obj.global.inqadd) != -1) {
-                excheckout_html += '<a href="javascript:;" class="btn btn-success" id="exback_button">'
-                    + lang_obj.global.continues
-                    + '</a><a href="/home/usr_UsrConsult_publishView?product_id=' + data.result.id
-                    + '" class="btn btn-success" id="excheckout_button">' + lang_obj.global.inquery
-                    + '</a>';
-            } else {
-                excheckout_html += '<a href="javascript:;" class="btn btn-success" id="exback_button">'
-                    + lang_obj.cart.return_shopping
-                    + '</a><a href="/home/usr_UsrCart_cartshopping" class="btn btn-success" id="excheckout_button">'
-                    + lang_obj.cart.proceed_checkout + '</a>';
+              $.extend(!0, c, {count: -1, steps: j, vertex_left: l, vertex_top: h, curvature: m});
+            },
+            move: function (t) {
+              var s = t.start,
+                  len = t.count,
+                  step = t.steps,
+                  d = t.end,
+                  h = s.left + (d.left - s.left) * len / step,
+                  i = 0 == t.curvature ? s.top + (d.top - s.top) * len / step : t.curvature
+                      * Math.pow(h - t.vertex_left, 2) + t.vertex_top;
+              if (null != d.width && null != d.height) {
+                var j = step / 2,
+                    k = d.width - (d.width - s.width) * Math.cos(
+                        j > len ? 0 : (len - j) / (step - j) * Math.PI / 2),
+                    l = d.height - (d.height - s.height) * Math.cos(
+                        j > len ? 0 : (len - j) / (step - j) * Math.PI / 2);
+                f.css({width: k + "px", height: l + "px", "font-size": Math.min(k, l) + "px"});
+              }
+
+              if (len == -1) {
+                f.css({left: h + "px", top: i + "px"});
+                t.count++;
+                obj.move(t);
+              } else {
+                f.animate({left: h + "px", top: i + "px"}, 5, function () {
+                  t.count++;
+                  //$('.search_r').html($.toJSON(t));
+                  if (len < step) {
+                    obj.move(t);
+                  } else {
+                    t = '';
+                    obj.destory();
+                  }
+                });
+              }
+            },
+            destory: function () {
+              f.remove();
+              callback();
             }
-
-            excheckout_html += '</p>';
-            excheckout_html += '</div>';
-            excheckout_html += '</div>';
-
-            $('#shipping_cost_choose').length && $('#shipping_cost_choose').remove();
-            $('body').prepend(excheckout_html);
-            $('#shipping_cost_choose').css({left: $(window).width() / 2 - 220});
-            global_obj.div_mask();
-        });
+          }
+      obj.init(t);
     }
+  });
+
+  function cartFly(data, msg) {
+    var _self = $("input.addtoCart")
+    var offset = $('.cart_inner').offset(),
+        btnLeft = $(_self).offset().left + $(_self).outerWidth(true) / 3,
+        btnTop = $(_self).offset().top - $(_self).outerHeight(true) - 30,
+        flyer = $('<div class="addtocart_flyer"></div>');
+    flyer.fly({
+      start: {left: btnLeft, top: btnTop, width: 50, height: 50},
+      end: {left: offset.left + 30, top: offset.top, width: 20, height: 20}
+    }, function () {
+      $('#addtocart_button').attr('disabled', false);
+      // $('.top_cart .cart_count').text('购物车的总数量');//购物车的总数量
+
+      var excheckout_html = '<div id="shipping_cost_choose">';
+      excheckout_html += '<div class="box_bg"></div><a class="noCtrTrack" id="choose_close">×</a>';
+      excheckout_html += '<div id="choose_content">';
+      excheckout_html += '<div class="cart_view">' +
+          '<p>' + msg + '</p>' +
+          // ((lang_obj.cart.additem_1).replace('%num%', '购物车的总数量')) + '<b class="FontColor">' + ueeshop_config.currency_symbols + '加入购物车的商品的价格' + '</b>' +
+          '</div>';
+      excheckout_html += '<p class="footRegion">';
+      if (msg.indexOf(lang_obj.global.inqadd) != -1) {
+        excheckout_html += '<a href="javascript:;" class="btn btn-success" id="exback_button">'
+            + lang_obj.global.continues
+            + '</a><a href="/home/usr_UsrConsult_publishView?product_id=' + data.result.id
+            + '" class="btn btn-success" id="excheckout_button">' + lang_obj.global.inquery
+            + '</a>';
+      } else {
+        excheckout_html += '<a href="javascript:;" class="btn btn-success" id="exback_button">'
+            + lang_obj.cart.return_shopping
+            + '</a><a href="/home/usr_UsrCart_cartshopping" class="btn btn-success" id="excheckout_button">'
+            + lang_obj.cart.proceed_checkout + '</a>';
+      }
+
+      excheckout_html += '</p>';
+      excheckout_html += '</div>';
+      excheckout_html += '</div>';
+
+      $('#shipping_cost_choose').length && $('#shipping_cost_choose').remove();
+      $('body').prepend(excheckout_html);
+      $('#shipping_cost_choose').css({left: $(window).width() / 2 - 220});
+      global_obj.div_mask();
+    });
+  }
 </script>
 <script>
-    var isLogin = ${env.login!=null};
+  var isLogin = ${env.login!=null};
 
-    var app = new Vue({
-        el: "#app",
-        data: {
-            goodsInfo:${goodsInfo},
-            selectSpec: 0,
-            status: {
-                cat: {}
-            },
-            isShowReply: {},
-            temp: {
-                catlength: 0
-            }
-        }, mounted() {
-            document.title = this.goodsInfo.pdtName
-            for (var key in this.goodsInfo.spec) {
-                for (var value in this.goodsInfo.spec[key]) {
-                    this.$set(this.status.cat, this.goodsInfo.spec[key][value].id, 0)
-                }
-            }
-            for (var key in this.goodsInfo.comment) {
-                this.$set(this.isShowReply, this.goodsInfo.comment[key].id, false)
-            }
-        }, methods: {
-            image(v, params) {
-                if (!v) {
-                    return ""
-                }
-                if (!params) {
-                    params = ""
-                }
-                return stpshop_config.imageBaseUrl + v + params
-            },
-            addfav() {
-                if (!isLogin) {
-                    user_obj.set_form_sign_in('', window.location.href, 1);
-                    return
-                }
-                var self = this
-                axios({
-                    url: "/home/usr_UsrFavorites_addFavorite",
-                    data: Qs.stringify({
-                        pdtPkey: self.goodsInfo.pdtId
-                    }), method: "post"
-                }).then(function (data) {
-                    if (data.data) {
-                        if (data.data.ret && data.data.ret == 1) {
-                            self.goodsInfo.favorite = data.data.type !== 1
-                            self.goodsInfo.favorite_count = data.data.number
-                        }
-                    }
-                })
-            },
-            addRFQ() {
-                if (!isLogin) {
-                    user_obj.set_form_sign_in('', window.location.href, 1);
-                    return
-                }
-                axios({
-                    url: "/home/pdt_PdtConsultPdtList_add",
-                    method: "post",
-                    data: Qs.stringify({
-                        product: this.goodsInfo.pdtId
-                    })
-                }).then(function (data) {
-                    if (data.data) {
-                        if (data.data.ret && data.data.ret === 1) {
-                            carWindow(data.data, lang_obj.global.inqadd)
-                        }
-                    }
-                })
-            },
-            buy() {
-                if (!isLogin) {
-                    user_obj.set_form_sign_in('', window.location.href, 1);
-                    return
-                }
-                if (this.temp.catlength > 0) {
-                    axios({
-                        url: "/home/usr_UsrCart_judgeBuyNow",
-                        method: "post",
-                        data: Qs.stringify({
-                            jsonCarts: this._jsonCarts,
-                            enterType: 0,
-                            pid: this.goodsInfo.pdtId
-                        })
-                    }).then(function (data) {
-                        switch (data.data.ret) {
-                            case 1: {
-                                document.getElementById("buynow").submit()
-                            }
-                                break;
-                            case 0: {
-                                layer.msg(getMessage(data.data.msg), {icon: 2, time: 2000});
-                            }
-                        }
-                    })
-                } else {
-                    layer.msg(lang_obj.user.address_tips.Please_add_item, {icon: 2});
-                }
-            },
-            changeShow(id) {
-                // console.log(this.isShowReply)
-                this.isShowReply[id] = !this.isShowReply[id]
-                this._isShowReply(id)
-                // this.$set(this.isShowReply, id, !this.isShowReply[id])
-            },
-            addtoCart() {
-                if (!isLogin) {
-                    user_obj.set_form_sign_in('', window.location.href, 1);
-                    return
-                }
-                var temp = {}
-                var i = 0
-                for (var key in this.status.cat) {
-                    if (this.status.cat[key] && this.status.cat[key] !== 0) {
-                        temp["specList[" + i + "].spec"] = key
-                        temp["specList[" + i + "].qty"] = this.status.cat[key]
-                        i++
-                    }
-                }
-                if (i > 0) {
-                    axios({
-                        url: "/home/usr_UsrCart_boughtPro",
-                        method: "Post",
-                        data: Qs.stringify(temp)
-                    }).then(function (data) {
-                        if (data.data.success) {
-                            //TODO
-                            $("div.fr.top_cart.top_cart0 i").text(
-                                data.data.newQty + parseInt($("div.fr.top_cart.top_cart0 i").text()))
-                            cartFly(data.data, lang_obj.cart.additem_0)
-                        }
-                    })
-                } else {
-                    layer.msg(lang_obj.user.address_tips.Please_add_item, {icon: 2});
-                }
-            },
-            _spceCat(id) {
-                if (this.status.cat[id])
-                    return this.status.cat[id];
-                return 0;
-            },
-            addSpec(id) {
-                var i = this.status.cat[id];
-                if (i) {
-                    i = i * 1
-                } else {
-                    i = 0;
-                }
-                i++
-                this.$set(this.status.cat, id, i)
-            },
-            subSpec(id) {
-                var i = this.status.cat[id];
-                if (i) {
-                    i = i * 1
-                } else {
-                    i = 0;
-                }
-                if (i - 1 < 0) {
-                    return
-                }
-                i--
-                this.$set(this.status.cat, id, i)
-            }, _isShowReply(id) {
-                return this.isShowReply[id]
-            }, changecCys(v) {
-                axios({
-                    url: "/home/plt_PltConfig_changeCurrency",
-                    method: "post",
-                    data: Qs.stringify({
-                        currency: v
-                    })
-                }).then(function () {
-                    window.top.location.reload();
-                })
-            }, vote(id, type) {
-                if (sessionStorage)
-                    if (sessionStorage['vote.' + id + '_' + type] == 1) return
-                var self = this
-                axios({
-                    url: "/home/pdt_PdtProduct_vote",
-                    method: "post",
-                    data: Qs.stringify({
-                        type: type,
-                        id: id
-                    })
-                }).then(function (data) {
-                    if (data.data.ret && data.data.ret === 1) {
-                        for (var key in self.goodsInfo.comment) {
-                            if (self.goodsInfo.comment[key].id === id) {
-                                if (type == 1) {
-                                    self.goodsInfo.comment[key].useful_number++
-                                } else {
-                                    self.goodsInfo.comment[key].unuseful_number++
-                                }
-                            }
-                        }
-                    }
-                    if (sessionStorage)
-                        sessionStorage['vote.' + id + '_' + type] = 1
-                })
-            }, shareThis(type) {
-                var image = back_url = encode_url = "";
-                url = window.location.href;
-                if (url.indexOf("#") > 0) {
-                    url = url.substring(0, url.indexOf("#"));
-                }
-                image = this.goodsInfo.pdtImg[0]
-                var e_url = encodeURIComponent(url);
-                var title = encodeURIComponent(this.goodsInfo.pdtName);
-                switch (type) {
-                    case "delicious":
-                        back_url = "https://delicious.com/post?title=" + title + "&url=" + e_url;
-                        break;
-                    case "digg":
-                        back_url = "http://digg.com/submit?phase=2&url=" + e_url + "&title=" + title
-                            + "&bodytext=&topic=tech_deals";
-                        break;
-                    case "reddit":
-                        back_url = "http://reddit.com/submit?url=" + e_url + "&title=" + title;
-                        break;
-                    case "furl":
-                        back_url = "http://www.furl.net/savedialog.jsp?t=" + title + "&u=" + e_url;
-                        break;
-                    case "rawsugar":
-                        back_url = "http://www.rawsugar.com/home/extensiontagit/?turl=" + e_url + "&tttl="
-                            + title;
-                        break;
-                    case "stumbleupon":
-                        back_url = "http://www.stumbleupon.com/submit?url=" + e_url + "&title=" + title;
-                        break;
-                    case "blogmarks":
-                        break;
-                    case "facebook":
-                        back_url = "http://www.facebook.com/share.php?src=bm&v=4&u=" + e_url + "&t=" + title;
-                        break;
-                    case "technorati":
-                        back_url = "http://technorati.com/faves?sub=favthis&add=" + e_url;
-                        break;
-                    case "spurl":
-                        back_url = "http://www.spurl.net/spurl.php?v=3&title=" + title + "&url=" + e_url;
-                        break;
-                    case "simpy":
-                        back_url = "http://www.simpy.com/simpy/LinkAdd.do?title=" + title + "&href=" + e_url;
-                        break;
-                    case "ask":
-                        break;
-                    case "google":
-                        back_url = "http://www.google.com/bookmarks/mark?op=edit&output=popup&bkmk=" + e_url
-                            + "&title=" + title;
-                        break;
-                    case "netscape":
-                        back_url = "http://www.netscape.com/submit/?U=" + e_url + "&T=" + title + "&C=";
-                        break;
-                    case "slashdot":
-                        back_url = "http://slashdot.org/bookmark.pl?url=" + url + "&title=" + title;
-                        break;
-                    case "backflip":
-                        back_url = "http://www.backflip.com/add_page_pop.ihtml?title=" + title + "&url="
-                            + e_url;
-                        break;
-                    case "bluedot":
-                        back_url = "http://bluedot.us/Authoring.aspx?u=" + e_url + "&t=" + title;
-                        break;
-                    case "kaboodle":
-                        back_url = "http://www.kaboodle.com/za/selectpage?p_pop=false&pa=url&u=" + e_url;
-                        break;
-                    case "squidoo":
-                        back_url = "http://www.squidoo.com/lensmaster/bookmark?" + e_url;
-                        break;
-                    case "twitter":
-                        back_url = "https://twitter.com/intent/tweet?status=" + title + ":+" + e_url;
-                        break;
-                    case "pinterest":
-                        back_url = "http://pinterest.com/pin/create/button/?url=" + e_url + "&media=" + image
-                            + "&description=" + title;
-                        break;
-                    case "vk":
-                        back_url = "http://vk.com/share.php?url=" + url;
-                        break;
-                    case "bluedot":
-                        back_url = "http://blinkbits.com/bookmarklets/save.php?v=1&source_url=" + e_url
-                            + "&title=" + title;
-                        break;
-                    case "blinkList":
-                        back_url = "http://blinkbits.com/bookmarklets/save.php?v=1&source_url=" + e_url
-                            + "&title=" + title;
-                        break;
-                    case "linkedin":
-                        back_url = "http://www.linkedin.com/cws/share?url=" + e_url + "&title=" + title;
-                        break;
-                    case "googleplus":
-                        back_url = "https://plus.google.com/share?url=" + e_url;
-                        break;
-                }
-                window.open(back_url, "bookmarkWindow");
-            }
-        }, computed: {
-            _logo() {
-                if (!this.goodsInfo.logo) return ""
-                return this.image(this.goodsInfo.logo, "?x-oss-process=image/resize,m_pad,h_130,w_165");
-            },
-            _jsonCarts() {
-                var temp = {}
-                var i = 0
-                for (var key in this.status.cat) {
-                    if (this.status.cat[key] && this.status.cat[key] !== 0) {
-                        temp[key] = this.status.cat[key]
-                        i++
-                    }
-                }
-                this.temp.catlength = i;
-                return JSON.stringify(temp)
-            },
-
-            _specList() {
-                var i = 0
-                var temp;
-                var s = this.selectSpec > 0 ? this.selectSpec : 0;
-                for (var key in this.goodsInfo.spec) {
-                    if (i === s) {
-                        temp = key
-                        break
-                    }
-                    i++
-                }
-                return this.goodsInfo.spec[temp];
-            },
-            _pdtPic() {
-                if (this.selectSpec > 0) {
-                    if (this._specList && this._specList.length > 0)
-                        if (this._specList[0].img && this._specList[0].img.length > 0) {
-                            return this.image(this._specList[0].img)
-                        }
-                }
-                if (this.goodsInfo.pdtImg && this.goodsInfo.pdtImg.length > 0)
-                    if (this.goodsInfo.pdtImg[0].length > 0)
-                        return this.image(this.goodsInfo.pdtImg[0])
-                console.log("图片没有图片")
-                return ""
-            }
+  var app = new Vue({
+    el: "#app",
+    data: {
+      goodsInfo:${goodsInfo},
+      selectSpec: 0,
+      status: {
+        cat: {}
+      },
+      isShowReply: {},
+      temp: {
+        catlength: 0
+      }
+    }, mounted() {
+      for (var key in this.goodsInfo.spec) {
+        for (var value in this.goodsInfo.spec[key]) {
+          this.$set(this.status.cat, this.goodsInfo.spec[key][value].id, 0)
         }
-    })
-    //		选择规格下拉
-    $("#goodsInfo .xmgSeleBOX .xmgR .xmgSeleSize .click_list").click(function () {
-        var that = $("#goodsInfo .xmgSeleBOX .xmgR .xmgSeleSize .xmgSsBOX");
-        if (that.hasClass("heightAuto")) {
-            that.removeClass("heightAuto");
+      }
+      for (var key in this.goodsInfo.comment) {
+        this.$set(this.isShowReply, this.goodsInfo.comment[key].id, false)
+      }
+    }, methods: {
+      image(v, params) {
+        if (!v) {
+          return ""
+        }
+        if (!params) {
+          params = ""
+        }
+        return stpshop_config.imageBaseUrl + v + params
+      },
+      addfav() {
+        if (!isLogin) {
+          user_obj.set_form_sign_in('', window.location.href, 1);
+          return
+        }
+        var self = this
+        axios({
+          url: "/home/usr_UsrFavorites_addFavorite",
+          data: Qs.stringify({
+            pdtPkey: self.goodsInfo.pdtId
+          }), method: "post"
+        }).then(function (data) {
+          if (data.data) {
+            if (data.data.ret && data.data.ret == 1) {
+              self.goodsInfo.favorite = data.data.type !== 1
+              self.goodsInfo.favorite_count = data.data.number
+            }
+          }
+        })
+      },
+      addRFQ() {
+        if (!isLogin) {
+          user_obj.set_form_sign_in('', window.location.href, 1);
+          return
+        }
+        axios({
+          url: "/home/pdt_PdtConsultPdtList_add",
+          method: "post",
+          data: Qs.stringify({
+            product: this.goodsInfo.pdtId
+          })
+        }).then(function (data) {
+          if (data.data) {
+            if (data.data.ret && data.data.ret === 1) {
+              carWindow(data.data, lang_obj.global.inqadd)
+            }
+          }
+        })
+      },
+      buy() {
+        if (!isLogin) {
+          user_obj.set_form_sign_in('', window.location.href, 1);
+          return
+        }
+        if (this.temp.catlength > 0) {
+          axios({
+            url: "/home/usr_UsrCart_judgeBuyNow",
+            method: "post",
+            data: Qs.stringify({
+              jsonCarts: this._jsonCarts,
+              enterType: 0,
+              pid: this.goodsInfo.pdtId
+            })
+          }).then(function (data) {
+            switch (data.data.ret) {
+              case 1: {
+                document.getElementById("buynow").submit()
+              }
+                break;
+              case 0: {
+                layer.msg(getMessage(data.data.msg), {icon: 2, time: 2000});
+              }
+            }
+          })
         } else {
-            that.addClass("heightAuto");
+          layer.msg(lang_obj.user.address_tips.Please_add_item, {icon: 2});
         }
-    })
-    //		选择颜色
-    $(".seleColor").click(function () {
-        $(".seleColor").removeClass("selected ");
-        $(this).addClass("selected ")
-    })
-    //		选择要浏览的图
-    $(".picScroll-top .bd ul li").hover(function () {
-        $(".picScroll-top .bd ul li").removeClass("select");
-        $(this).addClass("select")
-//			alert($(this).find("img").attr("src"))
-        var thissrc = $(this).find("img").attr("originImage");
-        $("#small-box").find("img").removeAttr('src').attr("src",
-            thissrc + "?x-oss-process=image/resize,m_pad,h_500,w_500");
-        $("#big-box").find("img").removeAttr('src').attr("src", thissrc);
-    })
-
-    //		轮播
-    jQuery(".picScroll-top").slide({mainCell: ".bd ul", autoPage: true, effect: "left", vis: 5});
-
-    //		放大镜
-    window.onload = function () {
-        var objBox = document.getElementById("picBoxs");
-        var objSmallBox = document.getElementById("small-box");
-        var objMark = document.getElementById("mark");
-        var objFloatBox = document.getElementById("float-box");
-        var objBigBox = document.getElementById("big-box");
-        var objBigBoxImage = objBigBox.getElementsByTagName("img")[0];
-
-        objMark.onmouseover = function () {
-            objFloatBox.style.display = "block"
-            objBigBox.style.display = "block"
+      },
+      changeShow(id) {
+        // console.log(this.isShowReply)
+        this.isShowReply[id] = !this.isShowReply[id]
+        this._isShowReply(id)
+        // this.$set(this.isShowReply, id, !this.isShowReply[id])
+      },
+      addtoCart() {
+        if (!isLogin) {
+          user_obj.set_form_sign_in('', window.location.href, 1);
+          return
         }
-
-        objMark.onmouseout = function () {
-            objFloatBox.style.display = "none"
-            objBigBox.style.display = "none"
+        var temp = {}
+        var i = 0
+        for (var key in this.status.cat) {
+          if (this.status.cat[key] && this.status.cat[key] !== 0) {
+            temp["specList[" + i + "].spec"] = key
+            temp["specList[" + i + "].qty"] = this.status.cat[key]
+            i++
+          }
         }
-
-        objMark.onmousemove = function (ev) {
-            var _event = ev || window.event;  //兼容多个浏览器的event参数模式
-            var left = _event.clientX - objBox.offsetLeft - objSmallBox.offsetLeft
-                - objFloatBox.offsetWidth / 2 + document.body.scrollLeft;
-            var top = _event.clientY - objBox.offsetTop - objSmallBox.offsetTop - objFloatBox.offsetHeight
-                / 2 + document.body.scrollTop;
-            //设置边界处理，防止移出小图片
-            if (left < 0) {
-                left = 0;
-            } else if (left > (objMark.offsetWidth - objFloatBox.offsetWidth)) {
-                left = objMark.offsetWidth - objFloatBox.offsetWidth;
+        if (i > 0) {
+          axios({
+            url: "/home/usr_UsrCart_boughtPro",
+            method: "Post",
+            data: Qs.stringify(temp)
+          }).then(function (data) {
+            if (data.data.success) {
+              //TODO
+              $("div.fr.top_cart.top_cart0 i").text(
+                  data.data.newQty + parseInt($("div.fr.top_cart.top_cart0 i").text()))
+              cartFly(data.data, lang_obj.cart.additem_0)
             }
-            if (top < 0) {
-                top = 0;
-            } else if (top > (objMark.offsetHeight - objFloatBox.offsetHeight)) {
-                top = objMark.offsetHeight - objFloatBox.offsetHeight;
-
-            }
-
-            objFloatBox.style.left = left + "px";   //oSmall.offsetLeft的值是相对什么而言
-            objFloatBox.style.top = top + "px";
-
-            //求其比值
-            var percentX = left / (objMark.offsetWidth - objFloatBox.offsetWidth);
-            var percentY = top / (objMark.offsetHeight - objFloatBox.offsetHeight);
-
-            //方向相反，小图片鼠标移动方向与大图片相反，故而是负值
-            objBigBoxImage.style.left = -percentX * (objBigBoxImage.offsetWidth - objBigBox.offsetWidth)
-                + "px";
-            objBigBoxImage.style.top = -percentY * (objBigBoxImage.offsetHeight - objBigBox.offsetHeight)
-                + "px";
+          })
+        } else {
+          layer.msg(lang_obj.user.address_tips.Please_add_item, {icon: 2});
         }
+      },
+      _spceCat(id) {
+        if (this.status.cat[id])
+          return this.status.cat[id];
+        return 0;
+      },
+      addSpec(id) {
+        var i = this.status.cat[id];
+        if (i) {
+          i = i * 1
+        } else {
+          i = 0;
+        }
+        i++
+        this.$set(this.status.cat, id, i)
+      },
+      subSpec(id) {
+        var i = this.status.cat[id];
+        if (i) {
+          i = i * 1
+        } else {
+          i = 0;
+        }
+        if (i - 1 < 0) {
+          return
+        }
+        i--
+        this.$set(this.status.cat, id, i)
+      }, _isShowReply(id) {
+        return this.isShowReply[id]
+      }, changecCys(v) {
+        axios({
+          url: "/home/plt_PltConfig_changeCurrency",
+          method: "post",
+          data: Qs.stringify({
+            currency: v
+          })
+        }).then(function () {
+          window.top.location.reload();
+        })
+      }, vote(id, type) {
+        if (sessionStorage)
+          if (sessionStorage['vote.' + id + '_' + type] == 1) return
+        var self = this
+        axios({
+          url: "/home/pdt_PdtProduct_vote",
+          method: "post",
+          data: Qs.stringify({
+            type: type,
+            id: id
+          })
+        }).then(function (data) {
+          if (data.data.ret && data.data.ret === 1) {
+            for (var key in self.goodsInfo.comment) {
+              if (self.goodsInfo.comment[key].id === id) {
+                if (type == 1) {
+                  self.goodsInfo.comment[key].useful_number++
+                } else {
+                  self.goodsInfo.comment[key].unuseful_number++
+                }
+              }
+            }
+          }
+          if (sessionStorage)
+            sessionStorage['vote.' + id + '_' + type] = 1
+        })
+      }, shareThis(type) {
+        var image = back_url = encode_url = "";
+        url = window.location.href;
+        if (url.indexOf("#") > 0) {
+          url = url.substring(0, url.indexOf("#"));
+        }
+        image = this.goodsInfo.pdtImg[0]
+        var e_url = encodeURIComponent(url);
+        var title = encodeURIComponent(this.goodsInfo.pdtName);
+        switch (type) {
+          case "delicious":
+            back_url = "https://delicious.com/post?title=" + title + "&url=" + e_url;
+            break;
+          case "digg":
+            back_url = "http://digg.com/submit?phase=2&url=" + e_url + "&title=" + title
+                + "&bodytext=&topic=tech_deals";
+            break;
+          case "reddit":
+            back_url = "http://reddit.com/submit?url=" + e_url + "&title=" + title;
+            break;
+          case "furl":
+            back_url = "http://www.furl.net/savedialog.jsp?t=" + title + "&u=" + e_url;
+            break;
+          case "rawsugar":
+            back_url = "http://www.rawsugar.com/home/extensiontagit/?turl=" + e_url + "&tttl="
+                + title;
+            break;
+          case "stumbleupon":
+            back_url = "http://www.stumbleupon.com/submit?url=" + e_url + "&title=" + title;
+            break;
+          case "blogmarks":
+            break;
+          case "facebook":
+            back_url = "http://www.facebook.com/share.php?src=bm&v=4&u=" + e_url + "&t=" + title;
+            break;
+          case "technorati":
+            back_url = "http://technorati.com/faves?sub=favthis&add=" + e_url;
+            break;
+          case "spurl":
+            back_url = "http://www.spurl.net/spurl.php?v=3&title=" + title + "&url=" + e_url;
+            break;
+          case "simpy":
+            back_url = "http://www.simpy.com/simpy/LinkAdd.do?title=" + title + "&href=" + e_url;
+            break;
+          case "ask":
+            break;
+          case "google":
+            back_url = "http://www.google.com/bookmarks/mark?op=edit&output=popup&bkmk=" + e_url
+                + "&title=" + title;
+            break;
+          case "netscape":
+            back_url = "http://www.netscape.com/submit/?U=" + e_url + "&T=" + title + "&C=";
+            break;
+          case "slashdot":
+            back_url = "http://slashdot.org/bookmark.pl?url=" + url + "&title=" + title;
+            break;
+          case "backflip":
+            back_url = "http://www.backflip.com/add_page_pop.ihtml?title=" + title + "&url="
+                + e_url;
+            break;
+          case "bluedot":
+            back_url = "http://bluedot.us/Authoring.aspx?u=" + e_url + "&t=" + title;
+            break;
+          case "kaboodle":
+            back_url = "http://www.kaboodle.com/za/selectpage?p_pop=false&pa=url&u=" + e_url;
+            break;
+          case "squidoo":
+            back_url = "http://www.squidoo.com/lensmaster/bookmark?" + e_url;
+            break;
+          case "twitter":
+            back_url = "https://twitter.com/intent/tweet?status=" + title + ":+" + e_url;
+            break;
+          case "pinterest":
+            back_url = "http://pinterest.com/pin/create/button/?url=" + e_url + "&media=" + image
+                + "&description=" + title;
+            break;
+          case "vk":
+            back_url = "http://vk.com/share.php?url=" + url;
+            break;
+          case "bluedot":
+            back_url = "http://blinkbits.com/bookmarklets/save.php?v=1&source_url=" + e_url
+                + "&title=" + title;
+            break;
+          case "blinkList":
+            back_url = "http://blinkbits.com/bookmarklets/save.php?v=1&source_url=" + e_url
+                + "&title=" + title;
+            break;
+          case "linkedin":
+            back_url = "http://www.linkedin.com/cws/share?url=" + e_url + "&title=" + title;
+            break;
+          case "googleplus":
+            back_url = "https://plus.google.com/share?url=" + e_url;
+            break;
+        }
+        window.open(back_url, "bookmarkWindow");
+      }
+    }, computed: {
+      _logo() {
+        if (!this.goodsInfo.logo) return ""
+        return this.image(this.goodsInfo.logo, "?x-oss-process=image/resize,m_pad,h_130,w_165");
+      },
+      _jsonCarts() {
+        var temp = {}
+        var i = 0
+        for (var key in this.status.cat) {
+          if (this.status.cat[key] && this.status.cat[key] !== 0) {
+            temp[key] = this.status.cat[key]
+            i++
+          }
+        }
+        this.temp.catlength = i;
+        return JSON.stringify(temp)
+      },
+
+      _specList() {
+        var i = 0
+        var temp;
+        var s = this.selectSpec > 0 ? this.selectSpec : 0;
+        for (var key in this.goodsInfo.spec) {
+          if (i === s) {
+            temp = key
+            break
+          }
+          i++
+        }
+        return this.goodsInfo.spec[temp];
+      },
+      _pdtPic() {
+        if (this.selectSpec > 0) {
+          if (this._specList && this._specList.length > 0)
+            if (this._specList[0].img && this._specList[0].img.length > 0) {
+              return this.image(this._specList[0].img)
+            }
+        }
+        if (this.goodsInfo.pdtImg && this.goodsInfo.pdtImg.length > 0)
+          if (this.goodsInfo.pdtImg[0].length > 0)
+            return this.image(this.goodsInfo.pdtImg[0])
+        console.log("图片没有图片")
+        return ""
+      }
     }
+  })
+  //		选择规格下拉
+  $("#goodsInfo .xmgSeleBOX .xmgR .xmgSeleSize .click_list").click(function () {
+    var that = $("#goodsInfo .xmgSeleBOX .xmgR .xmgSeleSize .xmgSsBOX");
+    if (that.hasClass("heightAuto")) {
+      that.removeClass("heightAuto");
+    } else {
+      that.addClass("heightAuto");
+    }
+  })
+  //		选择颜色
+  $(".seleColor").click(function () {
+    $(".seleColor").removeClass("selected ");
+    $(this).addClass("selected ")
+  })
+  //		选择要浏览的图
+  $(".picScroll-top .bd ul li").hover(function () {
+    $(".picScroll-top .bd ul li").removeClass("select");
+    $(this).addClass("select")
+//			alert($(this).find("img").attr("src"))
+    var thissrc = $(this).find("img").attr("originImage");
+    $("#small-box").find("img").removeAttr('src').attr("src",
+        thissrc + "?x-oss-process=image/resize,m_pad,h_500,w_500");
+    $("#big-box").find("img").removeAttr('src').attr("src", thissrc);
+  })
+
+  //		轮播
+  jQuery(".picScroll-top").slide({mainCell: ".bd ul", autoPage: true, effect: "left", vis: 5});
+
+  //		放大镜
+  window.onload = function () {
+    var objBox = document.getElementById("picBoxs");
+    var objSmallBox = document.getElementById("small-box");
+    var objMark = document.getElementById("mark");
+    var objFloatBox = document.getElementById("float-box");
+    var objBigBox = document.getElementById("big-box");
+    var objBigBoxImage = objBigBox.getElementsByTagName("img")[0];
+
+    objMark.onmouseover = function () {
+      objFloatBox.style.display = "block"
+      objBigBox.style.display = "block"
+    }
+
+    objMark.onmouseout = function () {
+      objFloatBox.style.display = "none"
+      objBigBox.style.display = "none"
+    }
+
+    objMark.onmousemove = function (ev) {
+      var _event = ev || window.event;  //兼容多个浏览器的event参数模式
+      var left = _event.clientX - objBox.offsetLeft - objSmallBox.offsetLeft
+          - objFloatBox.offsetWidth / 2 + document.body.scrollLeft;
+      var top = _event.clientY - objBox.offsetTop - objSmallBox.offsetTop - objFloatBox.offsetHeight
+          / 2 + document.body.scrollTop;
+      //设置边界处理，防止移出小图片
+      if (left < 0) {
+        left = 0;
+      } else if (left > (objMark.offsetWidth - objFloatBox.offsetWidth)) {
+        left = objMark.offsetWidth - objFloatBox.offsetWidth;
+      }
+      if (top < 0) {
+        top = 0;
+      } else if (top > (objMark.offsetHeight - objFloatBox.offsetHeight)) {
+        top = objMark.offsetHeight - objFloatBox.offsetHeight;
+
+      }
+
+      objFloatBox.style.left = left + "px";   //oSmall.offsetLeft的值是相对什么而言
+      objFloatBox.style.top = top + "px";
+
+      //求其比值
+      var percentX = left / (objMark.offsetWidth - objFloatBox.offsetWidth);
+      var percentY = top / (objMark.offsetHeight - objFloatBox.offsetHeight);
+
+      //方向相反，小图片鼠标移动方向与大图片相反，故而是负值
+      objBigBoxImage.style.left = -percentX * (objBigBoxImage.offsetWidth - objBigBox.offsetWidth)
+          + "px";
+      objBigBoxImage.style.top = -percentY * (objBigBoxImage.offsetHeight - objBigBox.offsetHeight)
+          + "px";
+    }
+  }
 
 
 </script>

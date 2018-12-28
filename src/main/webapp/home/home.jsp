@@ -122,7 +122,7 @@
                                             v-if="index < 4">
                                             <a :href="'/home/prm_PrmGroupPurchase_getGroupPdt?pkey='+goods.id"
                                                target="_blank">
-                                                <img :src="image(goods.image)" alt="man's shoes"
+                                                <img :src="image(goods.image,'?x-oss-process=image/resize,m_pad,h_180,w_180')" alt="man's shoes"
                                                      class="goods-pic">
                                                 <div class="goods-name">
                                                     <div class="ellipsis_2">
@@ -175,7 +175,7 @@
                                             v-if="index < 4">
                                             <a :href="'/home/prm_PrmGroupPurchase_getGroupPdt?pkey='+goods.id"
                                                target="_blank">
-                                                <img :src="image(goods.image)" alt="woman's shoes"
+                                                <img :src="image(goods.image,'?x-oss-process=image/resize,m_pad,h_180,w_180')" alt="woman's shoes"
                                                      class="goods-pic">
                                                 <div class="goods-name ">
                                                     <div class="ellipsis_2">
@@ -228,7 +228,7 @@
                                             v-if="index < 4">
                                             <a :href="'/home/prm_PrmGroupPurchase_getGroupPdt?pkey='+goods.id"
                                                target="_blank">
-                                                <img :src="image(goods.image)"
+                                                <img :src="image(goods.image,'?x-oss-process=image/resize,m_pad,h_180,w_180')"
                                                      alt="children's shoes" class="goods-pic">
                                                 <div class="goods-name ">
                                                     <div class="ellipsis_2">
@@ -410,16 +410,15 @@
                 <div class="tip-btn fl" @click="subscribe"><s:text name="Subscribe"/></div>
             </div>
             <!-- Swiper -->
-            <div style=" width:1280px;height:388px;position:relative;left:-40px;"
-                 class="new-swiper">
+            <div style=" width:1240px;height:388px;position:relative;left:0;" class="new-swiper">
                 <div class="swiper-container swiper-no-swiping" id="new-products-swiper"
-                     style="width:1200px;">
+                     style="width:1240px;">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide" v-cloak
                              v-for="(item, index) in newProductsList" :key="index">
                             <a :href="'/'+item.rewrite" target="_blank">
-                                <img :src="image(item.image)" alt=""
-                                     style="width:277px;height:217px;">
+                                <img :src="image(item.image,'?x-oss-process=image/resize,m_pad,h_280,w_280')" alt=""
+                                     style="width: 100%; height: 217px; object-fit: contain;">
                             </a>
                             <div class="goods-info">
                                 <a :href="'/'+item.rewrite" target="_blank">
@@ -484,7 +483,7 @@
 
     <!-- 林华力 -->
     <div id="home">
-        <div class="top10" style="width: 1200px;margin: 0 auto;">
+        <div class="top10" style="width: 1240px;margin: 0 auto;">
             <h2 style="font-size: 40px;height: 100px;line-height: 126px;font-weight: 500;border-bottom: 1px solid #c4c4c4">
                 <s:text name="Top_Reliable_Suppliers"/></h2>
             <p style="font-size: 18px;color: #929292;line-height: 50px"><s:text
@@ -522,11 +521,12 @@
                     </ul>
                 </div>
                 <div class="top10-02"
-                     style="display: inline-block;width: 420px;height: 377px;border: 7px solid #c4c4c4;vertical-align: top;margin-left: 12px;padding: 20px">
+                     style="display: inline-block;width: 435px;height: 377px;border: 7px solid #c4c4c4;vertical-align: top;margin-left: 17px;padding: 20px">
                     <h2 style="font-size: 40px;line-height: 50px;"><s:text
                             name="One_Request_Multiple_Quotes"/></h2>
                     <form action="">
-                        <input type="text" placeholder="<s:text name='What_are_you_looking_for'/>"
+                        <input type="text"
+                               placeholder="<s:text name='What_are_you_looking_for'/>"
                                style="width: 100%;height: 40px;border: 1px solid #c4c4c4;margin: 10px 0;text-indent: 10px">
                         <input type="text" placeholder="<s:text name='Quantity'/>"
                                style="width: 60%;height: 40px;border: 1px solid #c4c4c4;margin: 10px 0;text-indent: 10px;vertical-align: top">
@@ -574,14 +574,14 @@
                     </div>
                 </div>
             </div>
-            <div style=" width:1280px;height:271px;position:relative;left:-40px;">
+            <div style=" width:1240px;height:271px;position:relative;left:0;">
                 <div class="swiper-container swiper-no-swiping" id="brand-zone-swiper"
-                     style="width:1200px;">
+                     style="width:1240px;">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide" v-cloak
                              v-for="(item,index) in RandomPdtList" :key="index">
                             <a :href="'/'+item.rewrite" target="_blank">
-                                <img :src="image(item.image)" alt=""
+                                <img :src="image(item.image,'?x-oss-process=image/resize,m_pad,h_180,w_180')" alt=""
                                      style="width: 173px;height: 162px;">
                                 <div class="goods-info">
                                     <div>
@@ -647,9 +647,9 @@
                     </ul>
                 </div>
             </div>
-            <div style=" width:1280px;height:462px;position:relative;left:-40px;margin-top:35px;">
+            <div style=" width:1240px;height:462px;position:relative;left:0;margin-top:35px;">
                 <div class="swiper-container swiper-no-swiping" id="crowdfunding-swiper"
-                     style="width:1200px;">
+                     style="width:1240px;">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
                             <div class="crowdfunding-item">

@@ -12,19 +12,14 @@ public class sqlSEO {
 
   public static void main(String[] args) throws JSONException, SQLException {
     PdtProduct p = new PdtProduct();
-    SQL sql = new SQL() {
-      {
-        SELECT(PdtProduct.T.NAME, PdtProduct.T.PKEY)
-            .FROM(PdtProduct.class);
-      }
-    };
+    SQL sql = new SQL();
+    sql.SELECT(PdtProduct.T.NAME, PdtProduct.T.PKEY)
+        .FROM(PdtProduct.class);
     StringBuffer sb = new StringBuffer();
-    StringBuffer allSql = new StringBuffer();
     List<PdtProduct> prods = Query.sql(sql).queryList(PdtProduct.class);
     System.out.println("===START===");
     for (int i = 0; i < prods.size(); i++) {
       PdtProduct o = prods.get(i);
-
       for (FldLanguage.Language value : FldLanguage.Language.values()) {
         if (o.getName(value).indexOf("'") != -1) {
           String name = o.getName(value).replaceAll("'", "\\\\\\\'");
