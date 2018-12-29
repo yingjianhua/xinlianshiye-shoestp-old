@@ -85,11 +85,13 @@
                     <%-- <ul style="width: 12705px; position: relative; overflow: hidden; padding: 0px; margin: 0px; left: -7623px;"> --%>
                 <ul>
                     <c:set var="adPhotoLink" value="''"/>
-                    <c:forTokens items="${supView.adPhoto}" delims="," var="photo" varStatus="index">
+                    <c:forTokens items="${supView.adPhoto}" delims="," var="photo"
+                                 varStatus="index">
                         <li class="por">
 
                             <c:if test="${not empty supView.adPhotoLink}">
-                                <c:forTokens items="${supView.adPhotoLink}" delims="," var="adPhoto" varStatus="index2">
+                                <c:forTokens items="${supView.adPhotoLink}" delims="," var="adPhoto"
+                                             varStatus="index2">
                                     <c:if test="${index.index == index2.index}">
                                         <c:set var="adPhotoLink" value="${adPhoto}"/>
                                     </c:if>
@@ -127,16 +129,20 @@
                             <ul></ul>
                         </div>
                         <div class="slide-pic-group">
-                            <div class="tempWrap" style="overflow:hidden; position:relative; width:780px">
+                            <div class="tempWrap"
+                                 style="overflow:hidden; position:relative; width:780px">
                                 <ul style="width: 4680px; position: relative; overflow: hidden; padding: 0px; margin: 0px; left: -2340px;">
                                     <c:set var="companyPhotoLink" value="''"/>
-                                    <c:forTokens items="${supView.companyPhoto}" delims="," var="photo"
+                                    <c:forTokens items="${supView.companyPhoto}" delims=","
+                                                 var="photo"
                                                  varStatus="index">
                                         <c:if test="${not empty supView.companyPhotoLink}">
-                                            <c:forTokens items="${supView.companyPhotoLink}" delims=","
+                                            <c:forTokens items="${supView.companyPhotoLink}"
+                                                         delims=","
                                                          var="companyLink" varStatus="index2">
                                                 <c:if test="${index.index == index2.index}">
-                                                    <c:set var="companyPhotoLink" value="${companyLink}"/>
+                                                    <c:set var="companyPhotoLink"
+                                                           value="${companyLink}"/>
                                                 </c:if>
                                             </c:forTokens>
                                         </c:if>
@@ -160,10 +166,13 @@
                                 ${fn:toLowerCase(supView.showName)} </div>
                         <div class="summary-text">
                             <p><s:text name="LimitedLiabilityCompany"/></p><!-- 企业类型 -->
-                            <p><s:text name="supplier.mainsalesarea"/>: ${supView.mainSalesArea} </p>
-                            <p><s:text name="supplier.companytype"/>: ${supView.companyType}</p><!-- MATERIALS -->
+                            <p><s:text
+                                    name="supplier.mainsalesarea"/>: ${supView.mainSalesArea} </p>
+                            <p><s:text name="supplier.companytype"/>: ${supView.companyType}</p>
+                            <!-- MATERIALS -->
                         </div>
-                        <a class="btn btn-mist" href="/home/usr_UsrSupplier_gtSupInfo?pkey=${supView.pkey}">
+                        <a class="btn btn-mist"
+                           href="/home/usr_UsrSupplier_gtSupInfo?pkey=${supView.pkey}">
                             <s:text name="read_more"/> </a>
                     </div>
                 </div>
@@ -171,10 +180,8 @@
         </div>
     </div>
 </c:if>
-
 <c:if test="${supView.isPro==1}">
     <div class="clean">
-
         <div class="wide">
             <div class="enterprise-info-wrap">
                 <h3 class="enterprise-info-title">
@@ -187,16 +194,16 @@
                         </a>
                     </div>
                 </h3>
-
-
                 <!-- 商品展示 -->
                 <div class="goods-wrap">
                     <c:forEach items="${supView.productList}" var="pro" varStatus="index">
-                        <div class="goods-box">
+                        <div class="goods-box" style="width: 284px;">
                             <div class="goods-item">
                                 <div class="goods-pic pic_box">
-                                    <a href="/${pro.rewrite}" title="${pro.pdt.name}" target="_blank">
-                                        <c:forTokens items="${pro.pdt.picture}" var="pic" delims="," end="0">
+                                    <a href="/${pro.rewrite}" title="${pro.pdt.name}"
+                                       target="_blank">
+                                        <c:forTokens items="${pro.pdt.picture}" var="pic" delims=","
+                                                     end="0">
                                             <img src="${envConfig.imageBaseUrl}${pic}?x-oss-process=image/resize,m_pad,h_256,w_256">
                                         </c:forTokens>
                                     </a>
@@ -207,12 +214,12 @@
                                        target="_blank">${pro.pdt.name}</a>
                                 </h5>
                                 <div class="goods-price">
-                                        <%--${env.currency.symbols}${pro.pdt.curPrice}--%>
+                                        ${env.currency.symbols}${pro.pdt.curPrice}
                                 </div>
-                                <%--<div class="btn btn-enter">--%>
-                                    <%--<a href="/${pro.rewrite}" class="btn btn-enter" target="_blank"><s:text--%>
-                                            <%--name="show_now"/></a>--%>
-                                <%--</div>--%>
+                                <div class="btn btn-enter">
+                                    <a href="/${pro.rewrite}" class="btn btn-enter" target="_blank"><s:text
+                                            name="show_now"/></a>
+                                </div>
                             </div>
                         </div>
                     </c:forEach>
@@ -226,24 +233,24 @@
 ${supView.traceCode}
 
 <script type="text/javascript">
-    $(function () {
-        // 启用轮播1
-        jQuery(".slideBox").slide({
-            mainCell: ".slide-pic-group ul",
-            autoPlay: true,
-            interTime: 5000,
-            effect: "leftLoop"
-        });
-        // 启用轮播2
-        jQuery(".slideBoxM").slide({
-            mainCell: ".slide-pic-group ul",
-            titCell: ".slide-nav li",
-            trigger: "click",
-            autoPlay: true,
-            interTime: 5000,
-            effect: "leftLoop"
-        });
-    })
+  $(function () {
+    // 启用轮播1
+    jQuery(".slideBox").slide({
+      mainCell: ".slide-pic-group ul",
+      autoPlay: true,
+      interTime: 5000,
+      effect: "leftLoop"
+    });
+    // 启用轮播2
+    jQuery(".slideBoxM").slide({
+      mainCell: ".slide-pic-group ul",
+      titCell: ".slide-nav li",
+      trigger: "click",
+      autoPlay: true,
+      interTime: 5000,
+      effect: "leftLoop"
+    });
+  })
 </script>
 
 <div align="center">

@@ -200,8 +200,9 @@ $default-color: #ff4747;
       .custom-shoes-img1 {
         width: 35%;
         position: absolute;
-        top: 21%;
-        left: 50%;
+        top: 28%;
+        left: 49%;
+        z-index: -1;
         transform: translate(-50%);
       }
 
@@ -384,8 +385,8 @@ $default-color: #ff4747;
       position: absolute;
       bottom: 0;
       right: 0;
-      width: 485px;
-      height: 258px;
+      width: 430px;
+      // height: 258px;
       z-index: -1;
     }
   }
@@ -717,8 +718,8 @@ $default-color: #ff4747;
         }
       }
       .great-img1 {
-        width: 460px;
-        height: 244px;
+        width: 350px;
+        // height: 244px;
       }
     }
     .order-detail {
@@ -969,8 +970,8 @@ $default-color: #ff4747;
         }
       }
       .great-img1 {
-        width: 389px;
-        height: 206px;
+        width: 270px;
+        // height: 206px;
       }
     }
     .order-detail {
