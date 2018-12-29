@@ -41,8 +41,7 @@ body {
 .aifaheader img {
     /*position: relative;
     top: 28%;*/
-    /* margin-top: 1%; */
-    height: 100%;
+    margin-top: 1%;
     vertical-align: middle;
 }
 .aifaheader span {
