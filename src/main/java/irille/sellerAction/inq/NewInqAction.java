@@ -8,12 +8,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.inject.Inject;
+import java.io.IOException;
 
 public class NewInqAction extends SellerAction<NewInquiry> implements INewInqAction {
 
     @Getter
     @Setter
     private String name;
+    @Getter
+    @Setter
+    private Integer id;
 
     @Inject
     private NewInqDao newInqDao;
@@ -22,5 +26,10 @@ public class NewInqAction extends SellerAction<NewInquiry> implements INewInqAct
     @Override
     public void getList() throws Exception {
         write(newInqDao.getList(getStart(), getLimit(), name, getSupplier().getPkey()));
+    }
+
+    public void remove() throws IOException {
+        newInqDao.remove(id);
+        write();
     }
 }
