@@ -9,15 +9,16 @@ import java.util.Map;
 /**
  * Created by IntelliJ IDEA.
  * User: lijie@shoestp.cn
- * Date: 2018/12/5
- * Time: 13:53
+ * Date: 2018/11/22
+ * Time: 19:05
  */
-public class GetValue {
+public class GetValue1 {
+
     private static ITypeSafe typeSafe = new DefaultTypeSafe();
 
-    public static <T> T get(Map map, String key, Class<T> tClass, T defaultValue) {
+    public static <T> T get(Map map, String key, Class<T> tClass,T defaultValue) {
         Object o = map.get(key);
-        if (o == null)
+        if (o==null)
             return defaultValue;
         if (tClass.isAssignableFrom(o.getClass())) {
             return (T) map.get(key);

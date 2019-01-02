@@ -7,7 +7,7 @@ import irille.homeAction.HomeAction;
 import irille.homeAction.pdt.dto.PdtProductView;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage;
-import irille.pub.util.GetValue;
+import irille.pub.util.GetValue1;
 import irille.pub.util.SEOUtils;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.pub.util.TranslateLanguage.translateUtil;
@@ -142,16 +142,16 @@ public class PdtProductServiceImp implements IPdtProductService {
             } else {
                 Map<String, Object> pdtProduct = (Map<String, Object>) resultSet.get(integer.intValue());
                 newPdtInfo.setId(Long.valueOf(String.valueOf(pdtProduct.get("pkey"))));
-                newPdtInfo.setTitle(GetValue.get(pdtProduct, "name", String.class, ""));
-                newPdtInfo.setPrice(GetValue.get(pdtProduct, "cur_price", BigDecimal.class, BigDecimal.ZERO));
+                newPdtInfo.setTitle(GetValue1.get(pdtProduct, "name", String.class, ""));
+                newPdtInfo.setPrice(GetValue1.get(pdtProduct, "cur_price", BigDecimal.class, BigDecimal.ZERO));
 
-                String[] strings = GetValue.get(pdtProduct, "picture", String.class, "").split(",");
+                String[] strings = GetValue1.get(pdtProduct, "picture", String.class, "").split(",");
                 if (strings != null && strings.length > 0) {
                     newPdtInfo.setImage(strings[0]);
                 } else {
-                    newPdtInfo.setImage(GetValue.get(pdtProduct, "picture", String.class, ""));
+                    newPdtInfo.setImage(GetValue1.get(pdtProduct, "picture", String.class, ""));
                 }
-                newPdtInfo.setMin_order(GetValue.get(pdtProduct, "min_oq", Integer.class, 0));
+                newPdtInfo.setMin_order(GetValue1.get(pdtProduct, "min_oq", Integer.class, 0));
                 newPdtInfo.setRewrite(SEOUtils.getPdtProductTitle(newPdtInfo.getId().intValue(), newPdtInfo.getTitle()));
             }
             result.add(newPdtInfo);
@@ -182,13 +182,13 @@ public class PdtProductServiceImp implements IPdtProductService {
                     )
             );
             pdtInfo.setId(Long.valueOf(String.valueOf(stringObjectMap.get("id"))));
-            pdtInfo.setTitle(GetValue.get(stringObjectMap, "name", String.class, ""));
+            pdtInfo.setTitle(GetValue1.get(stringObjectMap, "name", String.class, ""));
             String[] string = String.valueOf(stringObjectMap.get("image")).split(",");
             if (string != null && string.length > 0) {
                 pdtInfo.setImage(string[0]);
             }
-            pdtInfo.setPrice(GetValue.get(stringObjectMap, "price", BigDecimal.class, BigDecimal.ZERO));
-            pdtInfo.setMin_order(GetValue.get(stringObjectMap, "min_oq", Integer.class, 0));
+            pdtInfo.setPrice(GetValue1.get(stringObjectMap, "price", BigDecimal.class, BigDecimal.ZERO));
+            pdtInfo.setMin_order(GetValue1.get(stringObjectMap, "min_oq", Integer.class, 0));
             if (stringObjectMap.get("ismyfavorite") != null && !stringObjectMap.get("ismyfavorite").toString().equalsIgnoreCase("false")) {
                 pdtInfo.setFavorite(true);
 
