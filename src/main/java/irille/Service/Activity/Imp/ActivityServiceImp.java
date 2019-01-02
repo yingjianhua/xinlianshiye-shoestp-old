@@ -8,7 +8,7 @@ import irille.Dao.PdtProductDao;
 import irille.Entity.Pk.PkCompetitionData;
 import irille.Service.Activity.IActivityService;
 import irille.pub.GoogleAnalytics.GoogleAnalyticsUtils;
-import irille.pub.util.GetValue1;
+import irille.pub.util.GetValue;
 import irille.view.Activity.GoogleAnalyticsView;
 import irille.view.Activity.PkCompetitionGlobalDataView;
 import irille.view.Activity.PkCompetitionPageManageView;
@@ -84,11 +84,11 @@ public class ActivityServiceImp implements IActivityService {
     }
     Map all = pkCompetitionDataDao.getSupPk(startDate, endDate, supId);
     PkCompetitionData pkCompetitionData = new PkCompetitionData();
-    pkCompetitionData.setPe(GetValue1.get(all, "pe", BigDecimal.class, BigDecimal.ZERO).intValue());
+    pkCompetitionData.setPe(GetValue.get(all, "pe", BigDecimal.class, BigDecimal.ZERO).intValue());
     pkCompetitionData.setInquiry(
-        GetValue1.get(all, "inq", BigDecimal.class, BigDecimal.ZERO).intValue());
+        GetValue.get(all, "inq", BigDecimal.class, BigDecimal.ZERO).intValue());
     pkCompetitionData.setTrafficvolume(
-        GetValue1.get(all, "tr", BigDecimal.class, BigDecimal.ZERO).intValue());
+        GetValue.get(all, "tr", BigDecimal.class, BigDecimal.ZERO).intValue());
 
     pkCompetitionPageManageView.setPkCompetitionGlobalDataView(globalDataView);
     pkCompetitionPageManageView.setGoogleViewId(pkCompetitionDataDao.getGoogleViewId(supId));
@@ -360,8 +360,8 @@ public class ActivityServiceImp implements IActivityService {
     Map<Integer, GoogleAnalyticsView> result = new HashMap();
     list.forEach(
         stringObjectMap -> {
-          String viewId = GetValue1.get(stringObjectMap, "viewId", String.class, "");
-          int supId = GetValue1.get(stringObjectMap, "supId", Integer.class, -1);
+          String viewId = GetValue.get(stringObjectMap, "viewId", String.class, "");
+          int supId = GetValue.get(stringObjectMap, "supId", Integer.class, -1);
           GoogleAnalyticsView googleAnalyticsView = new GoogleAnalyticsView();
 
           String startDateString = pkCompetitionDataDao.getLastDate();

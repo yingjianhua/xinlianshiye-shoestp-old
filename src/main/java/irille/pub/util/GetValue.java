@@ -7,7 +7,7 @@ import irille.pub.util.SetBeans.SetBean.TypeSafe.ITypeSafe;
 import java.util.Map;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/22 Time: 19:05 */
-public class GetValue1 {
+public class GetValue {
 
   private static ITypeSafe typeSafe = new DefaultTypeSafe();
 

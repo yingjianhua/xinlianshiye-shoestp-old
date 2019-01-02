@@ -11,7 +11,7 @@ import irille.Entity.OdrerMeetings.OrderMeeting;
 import irille.Entity.OdrerMeetings.OrderMeetingAudit;
 import irille.Entity.OdrerMeetings.OrderMeetingAuditRelease;
 import irille.Service.Manage.OdrMeeting.IOdrMeetingManageService;
-import irille.pub.util.GetValue1;
+import irille.pub.util.GetValue;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.shop.usr.Usr;
 import irille.view.Manage.OdrMeeting.OdrMeetingAuditLogisticsView;
@@ -203,15 +203,15 @@ public class OdrMeetingManageServiceImp implements IOdrMeetingManageService {
       Map map = (Map) o;
       OdrMeetingSaleInfoView saleInfoView = new OdrMeetingSaleInfoView();
       saleInfoView.setId(Integer.valueOf(String.valueOf(map.get("pkey"))));
-      saleInfoView.setNewPrice(GetValue1.get(map, "newPrice", BigDecimal.class, BigDecimal.ZERO));
+      saleInfoView.setNewPrice(GetValue.get(map, "newPrice", BigDecimal.class, BigDecimal.ZERO));
       saleInfoView.setPrice_total(
-          GetValue1.get(map, "price_total", BigDecimal.class, BigDecimal.ZERO));
-      saleInfoView.setPdtId(GetValue1.get(map, "pdtId", Integer.class, -1));
-      saleInfoView.setPdtImage(GetValue1.get(map, "pdtImage", String.class, ""));
-      saleInfoView.setQty(GetValue1.get(map, "qty", BigDecimal.class, BigDecimal.ZERO));
+          GetValue.get(map, "price_total", BigDecimal.class, BigDecimal.ZERO));
+      saleInfoView.setPdtId(GetValue.get(map, "pdtId", Integer.class, -1));
+      saleInfoView.setPdtImage(GetValue.get(map, "pdtImage", String.class, ""));
+      saleInfoView.setQty(GetValue.get(map, "qty", BigDecimal.class, BigDecimal.ZERO));
       saleInfoView.setType(map.get("pdtSup") == map.get("OmtSup"));
-      saleInfoView.setPdtName(GetValue1.get(map, "pdtName", String.class, "No Data"));
-      saleInfoView.setStatus(GetValue1.get(map, "status", Byte.class, (byte) 0) == 1);
+      saleInfoView.setPdtName(GetValue.get(map, "pdtName", String.class, "No Data"));
+      saleInfoView.setStatus(GetValue.get(map, "status", Byte.class, (byte) 0) == 1);
       List<Map<String, Object>> map1 =
           odrMeetingDao.getMeetingSpecSaleInfo(odrMeeting, saleInfoView.getPdtId());
       List items = new ArrayList();

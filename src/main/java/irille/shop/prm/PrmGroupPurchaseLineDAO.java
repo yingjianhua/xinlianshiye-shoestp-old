@@ -7,7 +7,7 @@ import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduOther;
 import irille.pub.tb.FldLanguage;
 import irille.pub.util.CacheUtils;
-import irille.pub.util.GetValue1;
+import irille.pub.util.GetValue;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtProduct;
@@ -256,9 +256,9 @@ public class PrmGroupPurchaseLineDAO
                                               Y.get(PdtProduct.T.NAME.getFld().getCodeSqlField()));
                                       setProductid((Integer) Y.get("PPKEY"));
                                       setPrice(
-                                          GetValue1.get(
+                                          GetValue.get(
                                               Y, "cur_price", BigDecimal.class, BigDecimal.ZERO));
-                                      setMin_order(GetValue1.get(Y, "min_oq", Integer.class, 0));
+                                      setMin_order(GetValue.get(Y, "min_oq", Integer.class, 0));
                                     }
                                   })
                           .collect(Collectors.toList());
