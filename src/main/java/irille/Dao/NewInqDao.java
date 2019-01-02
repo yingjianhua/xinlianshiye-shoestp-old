@@ -27,12 +27,22 @@ public class NewInqDao {
         Integer count = Query.sql(sql).queryCount();
         List<newInqView> viewList = Query.sql(sql).queryMaps().stream().map(o -> {
             newInqView view = new newInqView();
-            view.setSupplierName(String.valueOf(o.get(UsrSupplier.T.NAME.getFld().getCodeSqlField())));
+            view.setInqPkey(Integer.valueOf(String.valueOf(o.get(NewInquiry.T.PKEY.getFld().getCodeSqlField()))));
+            view.setSupplierName(String.valueOf(o.get("supId")));
             view.setName(String.valueOf(o.get(NewInquiry.T.NAME.getFld().getCodeSqlField())));
             view.setEmail(String.valueOf(o.get(NewInquiry.T.EMAIL.getFld().getCodeSqlField())));
             view.setDetail(String.valueOf(o.get(NewInquiry.T.DETAIL.getFld().getCodeSqlField())));
             return view;
         }).collect(Collectors.toList());
         return new Page(viewList, start, limit, count);
+    }
+    public void remove(Integer id){
+        SQL sql = new SQL(){
+            {
+                DELETE_FROM(NewInquiry.class)
+                        .WHERE(NewInquiry.T.PKEY,"=?",id);
+            }
+        };
+        Query.sql(sql).executeUpdate();
     }
 }
