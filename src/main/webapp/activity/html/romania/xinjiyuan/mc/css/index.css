@@ -83,6 +83,7 @@ img {
     height: 26.88rem;
     background: url(../images/banner1.jpg) no-repeat center/cover; }
     #app .top-container .top-form {
+      width: 100%;
       position: absolute;
       top: 0;
       left: 50%;
@@ -95,7 +96,8 @@ img {
         height: 13.75rem;
         background: rgba(151, 65, 16, 0.5);
         border-radius: 0.31rem;
-        text-align: center; }
+        text-align: center;
+        margin: 0 auto; }
         #app .top-container .top-form form .bg-box .title {
           font-size: 0.88rem;
           line-height: 2.5rem; }
