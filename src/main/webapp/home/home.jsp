@@ -746,7 +746,7 @@
                                         </div>
                                         <div class="goods-title">
                                             <div class="ellipsis_2">
-                                                <s:text name="Students_wild_winter_hip_hop_Gaobang_men_s_shoes_high"/>
+                                                <s:text name="Students_wild_winter_hip_hop_Gaobang_men_s_shoes_high_top_shoes_men_s_Korean_version_of_the_tide_shoes"/>
                                             </div>
                                         </div>
                                     </a>
