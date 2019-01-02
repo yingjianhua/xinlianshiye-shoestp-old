@@ -34,7 +34,7 @@
 <div id="app">
 
     <!--头部-->
-    <div class="xmgHead">
+    <div class="xmgHead wide-wrap">
         <div class="w1200">
             <div class="xmgImg fl" v-if="_logo.length>0">
                 <a :href="'/home/usr_UsrSupplier_gtSupIndex?pkey='+goodsInfo.supId">

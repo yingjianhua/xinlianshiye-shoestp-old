@@ -7,7 +7,7 @@
 <body class="new-style-page w_1200">
 <!-- 顶部nav栏 -->
 <div id="nav">
-    <div id="new-top-nav">
+    <div id="new-top-nav" class="wide-wrap">
         <div class="wide">
             <!-- 顶部左侧 - 4个下拉选 -->
             <el-menu :default-active="activeTopNavIndex" class="el-menu-demo" mode="horizontal"
@@ -114,7 +114,7 @@
     </div>
 
     <!-- 顶部搜索栏 -->
-    <div id="new-top-search">
+    <div id="new-top-search" class="wide-wrap">
         <div class="wide new-top-search">
             <!-- 左侧 - logo -->
             <div class="logo-box">
@@ -165,6 +165,7 @@
 </div>
 <script src="/home/v2/static/lang/element/en.js"></script>
 <script>
+
   ELEMENT.locale(ELEMENT.lang.en)
   var sysConfig = {
     baseImageUrl: "https://image.shoestp.com",
@@ -257,5 +258,10 @@
       }
     }
   })
+  window.onscroll = function () {
+    var sl = -Math.max(document.body.scrollLeft, document.documentElement.scrollLeft);
+    document.getElementById('new-top-nav').style.left = sl + 'px';
+    document.getElementById('new-top-search').style.left = sl + 'px';
+  }
 </script>
 <div style="height: 114px;"></div>

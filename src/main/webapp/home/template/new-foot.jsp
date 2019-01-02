@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<div id="new_foot" style="width:100%">
+<div id="new_foot" style="width:100%" class="wide-wrap">
     <div class="wide" style="width:1200px;">
         <div class="foot_letter fr">
             <div class="t"><s:text name="new-foot.Subscribe_To_Our_Newsletter"/></div>

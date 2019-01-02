@@ -39,7 +39,7 @@
 
 </script>
 <div id="web_top">
-    <div class="wide clean">
+    <div class="wide clean" class="wide-wrap">
         <div class="top_lang fl">
             <dl>
                 <dt class="">

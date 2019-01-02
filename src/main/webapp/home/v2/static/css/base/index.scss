@@ -9,6 +9,12 @@ html, body {
   margin: 0 auto;
 }
 
+.w_1200 .wide-wrap {
+  width: 100%;
+  min-width: 1240px;
+  margin: 0 auto;
+}
+
 #xsq .btn-blue {
   background-color: #2435a1;
 }
@@ -1155,6 +1161,7 @@ html, body {
   padding-top: 12px;
   font-size: 16px;
 }
+
 #xc .brand-slide-show .brand-price {
   margin-top: 20px;
 }

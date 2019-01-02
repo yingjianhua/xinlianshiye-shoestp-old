@@ -122,7 +122,8 @@
                                             v-if="index < 4">
                                             <a :href="'/home/prm_PrmGroupPurchase_getGroupPdt?pkey='+goods.id"
                                                target="_blank">
-                                                <img :src="image(goods.image,'?x-oss-process=image/resize,m_pad,h_180,w_180')" alt="man's shoes"
+                                                <img :src="image(goods.image,'?x-oss-process=image/resize,m_pad,h_180,w_180')"
+                                                     alt="man's shoes"
                                                      class="goods-pic">
                                                 <div class="goods-name">
                                                     <div class="ellipsis_2">
@@ -175,7 +176,8 @@
                                             v-if="index < 4">
                                             <a :href="'/home/prm_PrmGroupPurchase_getGroupPdt?pkey='+goods.id"
                                                target="_blank">
-                                                <img :src="image(goods.image,'?x-oss-process=image/resize,m_pad,h_180,w_180')" alt="woman's shoes"
+                                                <img :src="image(goods.image,'?x-oss-process=image/resize,m_pad,h_180,w_180')"
+                                                     alt="woman's shoes"
                                                      class="goods-pic">
                                                 <div class="goods-name ">
                                                     <div class="ellipsis_2">
@@ -417,7 +419,8 @@
                         <div class="swiper-slide" v-cloak
                              v-for="(item, index) in newProductsList" :key="index">
                             <a :href="'/'+item.rewrite" target="_blank">
-                                <img :src="image(item.image,'?x-oss-process=image/resize,m_pad,h_280,w_280')" alt=""
+                                <img :src="image(item.image,'?x-oss-process=image/resize,m_pad,h_280,w_280')"
+                                     alt=""
                                      style="width: 100%; height: 217px; object-fit: contain;">
                             </a>
                             <div class="goods-info">
@@ -581,8 +584,9 @@
                         <div class="swiper-slide" v-cloak
                              v-for="(item,index) in RandomPdtList" :key="index">
                             <a :href="'/'+item.rewrite" target="_blank">
-                                <img :src="image(item.image,'?x-oss-process=image/resize,m_pad,h_180,w_180')" alt=""
-                                     style="width: 173px;height: 162px;">
+                                <img :src="image(item.image,'?x-oss-process=image/resize,m_pad,h_180,w_180')"
+                                     alt=""
+                                     style="width: 100%;height: 162px;object-fit: contain;">
                                 <div class="goods-info">
                                     <div>
                                         {{item.title}}
@@ -1284,7 +1288,7 @@
                         newProductsSwiper.slideTo(index * 4 + 1);
                       }
                     })
-              }, 50)
+              }, 200)
 
             })
           } else {
