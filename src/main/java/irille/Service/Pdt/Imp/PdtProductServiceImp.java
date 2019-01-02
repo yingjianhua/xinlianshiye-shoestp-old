@@ -25,230 +25,258 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * Created by IntelliJ IDEA.
- * User: lijie@shoestp.cn
- * Date: 2018/11/7
- * Time: 14:54
- */
-
+/** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/7 Time: 14:54 */
 public class PdtProductServiceImp implements IPdtProductService {
 
-    @Inject
-    PdtProductDao pdtProductDao;
+  @Inject PdtProductDao pdtProductDao;
 
-    @Override
-    public List<PdtProductBaseInfoView> getNewProductsListByIndex(IduPage iduPage) {
-        List<Map> result = pdtProductDao.getNewProductsList(iduPage.getStart(), iduPage.getLimit(), iduPage.getWhere());
-        return SetBeans.setList(fromPdtProductBaseInfoView(result), PdtProductBaseInfoView.class);
+  @Override
+  public List<PdtProductBaseInfoView> getNewProductsListByIndex(IduPage iduPage) {
+    List<Map> result =
+        pdtProductDao.getNewProductsList(
+            iduPage.getStart(), iduPage.getLimit(), iduPage.getWhere());
+    return SetBeans.setList(fromPdtProductBaseInfoView(result), PdtProductBaseInfoView.class);
+  }
+
+  @Override
+  public List<PdtProductBaseInfoView> getProductsIndexHot(IduPage iduPage) {
+    List<Map> result = pdtProductDao.getProductsIndexHot(iduPage.getStart(), iduPage.getLimit());
+    return SetBeans.setList(fromPdtProductBaseInfoView(result), PdtProductBaseInfoView.class);
+  }
+
+  @Override
+  public Map getProductListByCategory(
+      IduPage page,
+      String[] flds,
+      boolean order,
+      int category,
+      String spec,
+      String onlyFld,
+      String keyword,
+      Integer type) {
+    PdtProductView pdtProductView = new PdtProductView();
+    pdtProductView
+        .setPage(page)
+        .setFlds(flds)
+        .setOrder(order)
+        .setCategory(category)
+        .setSpec(spec)
+        .setKeyword(keyword);
+    if (type == null) type = 0;
+    switch (type) {
+      case 0:
+        pdtProductView.setProductType(Pdt.OProductType.GENERAL);
+        break;
+      case 1:
+        pdtProductView.setProductType(Pdt.OProductType.GROUP);
+        break;
     }
+    if (onlyFld != null) {
+      try {
+        pdtProductView.setOnlyFld(PdtProductView.onlyFld.valueOf(onlyFld));
+      } catch (Exception e) {
 
-    @Override
-    public List<PdtProductBaseInfoView> getProductsIndexHot(IduPage iduPage) {
-        List<Map> result = pdtProductDao.getProductsIndexHot(iduPage.getStart(), iduPage.getLimit());
-        return SetBeans.setList(fromPdtProductBaseInfoView(result), PdtProductBaseInfoView.class);
+      }
     }
-
-    @Override
-    public Map getProductListByCategory(IduPage page, String[] flds, boolean order, int category, String spec, String onlyFld, String keyword, Integer type) {
-        PdtProductView pdtProductView = new PdtProductView();
-        pdtProductView
-                .setPage(page)
-                .setFlds(flds)
-                .setOrder(order)
-                .setCategory(category)
-                .setSpec(spec)
-                .setKeyword(keyword)
-        ;
-        if (type == null) type = 0;
-        switch (type) {
-            case 0:
-                pdtProductView.setProductType(Pdt.OProductType.GENERAL);
-                break;
-            case 1:
-                pdtProductView.setProductType(Pdt.OProductType.GROUP);
-                break;
-        }
-        if (onlyFld != null) {
-            try {
-                pdtProductView.setOnlyFld(PdtProductView.onlyFld.valueOf(onlyFld));
-            } catch (Exception e) {
-
-            }
-        }
-        /**
-         * @Description: 现在转变分页逻辑 不再是 页面数
-         * @date 2018/11/8 17:51
-         * @author lijie@shoestp.cn
-         */
-        if (page.getStart() > 0) {
-            page.setStart(page.getStart() - 1);
-        }
-        page.setStart(page.getStart() * page.getLimit());
-        return pdtProductDao.getProductList(pdtProductView);
-    }
-
-    @Override
-    public List<PdtProductBaseInfoView> getYouMayLike(IduPage iduPage, int cat) {
-        List<PdtProduct> result = pdtProductDao.getYouMayLike(cat, null);
-        return result.stream().map(bean -> new PdtProductBaseInfoView() {{
-            setRewrite(SEOUtils.getPdtProductTitle(bean.getPkey(), bean.getName()));
-            translateUtil.getAutoTranslate(bean, HomeAction.curLanguage());
-            setId(bean.getPkey());
-            setPrice(bean.getCurPrice());
-            setImage(bean.getPicture());
-            setName(bean.getName());
-        }}).collect(Collectors.toList());
-    }
-
     /**
-     * @Description: 随机数
-     * @date 2018/12/14 18:22
+     * @Description: 现在转变分页逻辑 不再是 页面数
+     *
+     * @date 2018/11/8 17:51
      * @author lijie@shoestp.cn
      */
-    @Override
-    public List<PdtNewPdtInfo> getRandomPdt(Integer limit, int cat, UsrPurchase purchase) {
-        List resultSet;
-        if (purchase != null) {
-            resultSet = pdtProductDao.getYouMayLike(cat, purchase.getPkey());
+    if (page.getStart() > 0) {
+      page.setStart(page.getStart() - 1);
+    }
+    page.setStart(page.getStart() * page.getLimit());
+    return pdtProductDao.getProductList(pdtProductView);
+  }
+
+  @Override
+  public List<PdtProductBaseInfoView> getYouMayLike(IduPage iduPage, int cat) {
+    List<PdtProduct> result = pdtProductDao.getYouMayLike(cat, null);
+    return result
+        .stream()
+        .map(
+            bean ->
+                new PdtProductBaseInfoView() {
+                  {
+                    setRewrite(SEOUtils.getPdtProductTitle(bean.getPkey(), bean.getName()));
+                    translateUtil.getAutoTranslate(bean, HomeAction.curLanguage());
+                    setId(bean.getPkey());
+                    setPrice(bean.getCurPrice());
+                    setImage(bean.getPicture());
+                    setName(bean.getName());
+                  }
+                })
+        .collect(Collectors.toList());
+  }
+
+  /**
+   * @Description: 随机数
+   *
+   * @date 2018/12/14 18:22
+   * @author lijie@shoestp.cn
+   */
+  @Override
+  public List<PdtNewPdtInfo> getRandomPdt(Integer limit, int cat, UsrPurchase purchase) {
+    List resultSet;
+    if (purchase != null) {
+      resultSet = pdtProductDao.getYouMayLike(cat, purchase.getPkey());
+    } else {
+      resultSet = pdtProductDao.getYouMayLike(cat, null);
+    }
+    List<PdtNewPdtInfo> result = new ArrayList<>();
+    if (limit == null || limit < 1) {
+      limit = 12;
+    }
+    while (true) {
+      if (result.size() > limit) {
+        break;
+      }
+      Double integer = Math.random() * resultSet.size();
+      Object object = resultSet.get(integer.intValue());
+      PdtNewPdtInfo newPdtInfo = new PdtNewPdtInfo();
+      if (object instanceof PdtProduct) {
+        PdtProduct pdtProduct = (PdtProduct) resultSet.get(integer.intValue());
+        newPdtInfo.setId(pdtProduct.getPkey().longValue());
+        newPdtInfo.setTitle(pdtProduct.getName());
+        newPdtInfo.setPrice(pdtProduct.getCurPrice());
+        String[] strings = pdtProduct.getPicture().split(",");
+        if (strings != null && strings.length > 0) {
+          newPdtInfo.setImage(strings[0]);
         } else {
-            resultSet = pdtProductDao.getYouMayLike(cat, null);
+          newPdtInfo.setImage(pdtProduct.getPicture());
         }
-        List<PdtNewPdtInfo> result = new ArrayList<>();
-        if (limit == null || limit < 1) {
-            limit = 12;
-        }
-        while (true) {
-            if (result.size() > limit) {
-                break;
-            }
-            Double integer = Math.random() * resultSet.size();
-            Object object = resultSet.get(integer.intValue());
-            PdtNewPdtInfo newPdtInfo = new PdtNewPdtInfo();
-            if (object instanceof PdtProduct) {
-                PdtProduct pdtProduct = (PdtProduct) resultSet.get(integer.intValue());
-                newPdtInfo.setId(pdtProduct.getPkey().longValue());
-                newPdtInfo.setTitle(pdtProduct.getName());
-                newPdtInfo.setPrice(pdtProduct.getCurPrice());
-                String[] strings = pdtProduct.getPicture().split(",");
-                if (strings != null && strings.length > 0) {
-                    newPdtInfo.setImage(strings[0]);
-                } else {
-                    newPdtInfo.setImage(pdtProduct.getPicture());
-                }
-                newPdtInfo.setMin_order(pdtProduct.getMinOq());
-                newPdtInfo.setRewrite(SEOUtils.getPdtProductTitle(pdtProduct.getPkey(), pdtProduct.getName()));
+        newPdtInfo.setMin_order(pdtProduct.getMinOq());
+        newPdtInfo.setRewrite(
+            SEOUtils.getPdtProductTitle(pdtProduct.getPkey(), pdtProduct.getName()));
 
-            } else {
-                Map<String, Object> pdtProduct = (Map<String, Object>) resultSet.get(integer.intValue());
-                newPdtInfo.setId(Long.valueOf(String.valueOf(pdtProduct.get("pkey"))));
-                newPdtInfo.setTitle(GetValue1.get(pdtProduct, "name", String.class, ""));
-                newPdtInfo.setPrice(GetValue1.get(pdtProduct, "cur_price", BigDecimal.class, BigDecimal.ZERO));
+      } else {
+        Map<String, Object> pdtProduct = (Map<String, Object>) resultSet.get(integer.intValue());
+        newPdtInfo.setId(Long.valueOf(String.valueOf(pdtProduct.get("pkey"))));
+        newPdtInfo.setTitle(GetValue1.get(pdtProduct, "name", String.class, ""));
+        newPdtInfo.setPrice(
+            GetValue1.get(pdtProduct, "cur_price", BigDecimal.class, BigDecimal.ZERO));
 
-                String[] strings = GetValue1.get(pdtProduct, "picture", String.class, "").split(",");
-                if (strings != null && strings.length > 0) {
-                    newPdtInfo.setImage(strings[0]);
-                } else {
-                    newPdtInfo.setImage(GetValue1.get(pdtProduct, "picture", String.class, ""));
-                }
-                newPdtInfo.setMin_order(GetValue1.get(pdtProduct, "min_oq", Integer.class, 0));
-                newPdtInfo.setRewrite(SEOUtils.getPdtProductTitle(newPdtInfo.getId().intValue(), newPdtInfo.getTitle()));
-            }
-            result.add(newPdtInfo);
+        String[] strings = GetValue1.get(pdtProduct, "picture", String.class, "").split(",");
+        if (strings != null && strings.length > 0) {
+          newPdtInfo.setImage(strings[0]);
+        } else {
+          newPdtInfo.setImage(GetValue1.get(pdtProduct, "picture", String.class, ""));
         }
-        return result;
+        newPdtInfo.setMin_order(GetValue1.get(pdtProduct, "min_oq", Integer.class, 0));
+        newPdtInfo.setRewrite(
+            SEOUtils.getPdtProductTitle(newPdtInfo.getId().intValue(), newPdtInfo.getTitle()));
+      }
+      result.add(newPdtInfo);
     }
+    return result;
+  }
 
-    @Caches
-    @Override
-    public List<PdtProductCatView> getProductsIndexCategories(int start, int limit, FldLanguage.Language language) {
-        return pdtProductDao.getCatChildNodesByCatId(0, language);
+  @Caches
+  @Override
+  public List<PdtProductCatView> getProductsIndexCategories(
+      int start, int limit, FldLanguage.Language language) {
+    return pdtProductDao.getCatChildNodesByCatId(0, language);
+  }
+
+  @Override
+  public List<PdtNewPdtInfo> getNewProducts(
+      IduPage page, UsrPurchase pkey, FldLanguage.Language language) {
+    int start = page.getStart();
+    int limit = page.getLimit() == 0 ? 10 : page.getLimit();
+    List<Map<String, Object>> result;
+    if (pkey == null) result = pdtProductDao.getNewProductsAndFavoritesInfoList(start, limit, null);
+    else result = pdtProductDao.getNewProductsAndFavoritesInfoList(start, limit, pkey.getPkey());
+    List<PdtNewPdtInfo> list = new ArrayList();
+    for (Map<String, Object> stringObjectMap : result) {
+      PdtNewPdtInfo pdtInfo = new PdtNewPdtInfo();
+      pdtInfo.setRewrite(
+          SEOUtils.getPdtProductTitle(
+              Integer.parseInt(String.valueOf(stringObjectMap.get("id"))),
+              String.valueOf(stringObjectMap.get("name"))));
+      pdtInfo.setId(Long.valueOf(String.valueOf(stringObjectMap.get("id"))));
+      pdtInfo.setTitle(GetValue1.get(stringObjectMap, "name", String.class, ""));
+      String[] string = String.valueOf(stringObjectMap.get("image")).split(",");
+      if (string != null && string.length > 0) {
+        pdtInfo.setImage(string[0]);
+      }
+      pdtInfo.setPrice(GetValue1.get(stringObjectMap, "price", BigDecimal.class, BigDecimal.ZERO));
+      pdtInfo.setMin_order(GetValue1.get(stringObjectMap, "min_oq", Integer.class, 0));
+      if (stringObjectMap.get("ismyfavorite") != null
+          && !stringObjectMap.get("ismyfavorite").toString().equalsIgnoreCase("false")) {
+        pdtInfo.setFavorite(true);
+
+      } else {
+        pdtInfo.setFavorite(false);
+      }
+      list.add(pdtInfo);
     }
+    return list;
+  }
 
-    @Override
-    public List<PdtNewPdtInfo> getNewProducts(IduPage page, UsrPurchase pkey, FldLanguage.Language language) {
-        int start = page.getStart();
-        int limit = page.getLimit() == 0 ? 10 : page.getLimit();
-        List<Map<String, Object>> result;
-        if (pkey == null)
-            result = pdtProductDao.getNewProductsAndFavoritesInfoList(start, limit, null);
-        else
-            result = pdtProductDao.getNewProductsAndFavoritesInfoList(start, limit, pkey.getPkey());
-        List<PdtNewPdtInfo> list = new ArrayList();
-        for (Map<String, Object> stringObjectMap : result) {
-            PdtNewPdtInfo pdtInfo = new PdtNewPdtInfo();
-            pdtInfo.setRewrite(SEOUtils.getPdtProductTitle(Integer.parseInt(String.valueOf(stringObjectMap.get("id"))),
-                    String.valueOf(stringObjectMap.get("name"))
-                    )
-            );
-            pdtInfo.setId(Long.valueOf(String.valueOf(stringObjectMap.get("id"))));
-            pdtInfo.setTitle(GetValue1.get(stringObjectMap, "name", String.class, ""));
-            String[] string = String.valueOf(stringObjectMap.get("image")).split(",");
-            if (string != null && string.length > 0) {
-                pdtInfo.setImage(string[0]);
-            }
-            pdtInfo.setPrice(GetValue1.get(stringObjectMap, "price", BigDecimal.class, BigDecimal.ZERO));
-            pdtInfo.setMin_order(GetValue1.get(stringObjectMap, "min_oq", Integer.class, 0));
-            if (stringObjectMap.get("ismyfavorite") != null && !stringObjectMap.get("ismyfavorite").toString().equalsIgnoreCase("false")) {
-                pdtInfo.setFavorite(true);
+  // TODO 变成DTO返回
+  @Override
+  public Map getProductListByCategoryV2(
+      IduPage iduPage,
+      String[] orderfld,
+      boolean order,
+      int cated,
+      String spec,
+      String onlyFld,
+      String keyword,
+      Integer type) {
+    PdtProductView pdtProductView = new PdtProductView();
+    pdtProductView
+        .setPage(iduPage)
+        .setFlds(orderfld)
+        .setOrder(order)
+        .setCategory(cated)
+        .setSpec(spec)
+        .setKeyword(keyword);
+    pdtProductView.setProductType(Pdt.OProductType.GENERAL);
+    if (onlyFld != null) {
+      try {
+        pdtProductView.setOnlyFld(PdtProductView.onlyFld.valueOf(onlyFld));
+      } catch (Exception e) {
 
-            } else {
-                pdtInfo.setFavorite(false);
-            }
-            list.add(pdtInfo);
-        }
-        return list;
+      }
     }
-
-    //TODO 变成DTO返回
-    @Override
-    public Map getProductListByCategoryV2(IduPage iduPage, String[] orderfld, boolean order, int cated, String spec, String onlyFld, String keyword, Integer type) {
-        PdtProductView pdtProductView = new PdtProductView();
-        pdtProductView
-                .setPage(iduPage)
-                .setFlds(orderfld)
-                .setOrder(order)
-                .setCategory(cated)
-                .setSpec(spec)
-                .setKeyword(keyword)
-        ;
-        pdtProductView.setProductType(Pdt.OProductType.GENERAL);
-        if (onlyFld != null) {
-            try {
-                pdtProductView.setOnlyFld(PdtProductView.onlyFld.valueOf(onlyFld));
-            } catch (Exception e) {
-
-            }
-        }
-        /**
-         * @Description: 现在转变分页逻辑 不再是 页面数
-         * @date 2018/11/8 17:51
-         * @author lijie@shoestp.cn
-         */
-        if (iduPage.getStart() > 0) {
-            iduPage.setStart(iduPage.getStart() - 1);
-        }
-        iduPage.setStart(iduPage.getStart() * iduPage.getLimit());
-        if (type == 1) {
-            return pdtProductDao.getProductListV2(pdtProductView);
-        }
-        return pdtProductDao.getProductList(pdtProductView);
+    /**
+     * @Description: 现在转变分页逻辑 不再是 页面数
+     *
+     * @date 2018/11/8 17:51
+     * @author lijie@shoestp.cn
+     */
+    if (iduPage.getStart() > 0) {
+      iduPage.setStart(iduPage.getStart() - 1);
     }
+    iduPage.setStart(iduPage.getStart() * iduPage.getLimit());
+    if (type == 1) {
+      return pdtProductDao.getProductListV2(pdtProductView);
+    }
+    return pdtProductDao.getProductList(pdtProductView);
+  }
 
-
-    private List fromPdtProductBaseInfoView(List<Map> result) {
-        return result.stream().map(o -> {
-            String name = String.valueOf(o.get("name"));
-            if (name != null && name.length() > 0) {
+  private List fromPdtProductBaseInfoView(List<Map> result) {
+    return result
+        .stream()
+        .map(
+            o -> {
+              String name = String.valueOf(o.get("name"));
+              if (name != null && name.length() > 0) {
                 try {
-                    o.put("rewrite", SEOUtils.getPdtProductTitle(Integer.parseInt(String.valueOf(o.get("pkey"))), name));
-                    o.put("name", translateUtil.getLanguage(name, HomeAction.curLanguage()));
+                  o.put(
+                      "rewrite",
+                      SEOUtils.getPdtProductTitle(
+                          Integer.parseInt(String.valueOf(o.get("pkey"))), name));
+                  o.put("name", translateUtil.getLanguage(name, HomeAction.curLanguage()));
                 } catch (Exception e) {
-                    e.getStackTrace();
+                  e.getStackTrace();
                 }
-            }
-            return o;
-        }).collect(Collectors.toList());
-    }
-
+              }
+              return o;
+            })
+        .collect(Collectors.toList());
+  }
 }
