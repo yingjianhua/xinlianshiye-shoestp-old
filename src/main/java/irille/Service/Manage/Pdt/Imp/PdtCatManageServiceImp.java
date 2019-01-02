@@ -1,19 +1,9 @@
 package irille.Service.Manage.Pdt.Imp;
 
-import com.google.api.client.json.Json;
 import irille.Dao.PdtProductCatDao;
 import irille.Service.Manage.Pdt.IPdtCatManageService;
-import irille.pub.Obj;
-import irille.pub.bean.BeanBase;
-import irille.pub.tb.FldLanguage;
-import irille.sellerAction.view.ProductSEOsView;
-import irille.shop.pdt.Pdt;
-import irille.shop.pdt.PdtProduct;
 import irille.view.Page;
 import irille.view.usr.Manage.PdtCatsView;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.start2do.SetBean.SetBeans;
 
 import javax.inject.Inject;
@@ -35,9 +25,7 @@ public class PdtCatManageServiceImp implements IPdtCatManageService {
         List<PdtCatsView> list = pdtProductCatDao.getPdtCatBySupplierId(supplierId).stream().map(map -> {
             PdtCatsView pdtCatsView = new PdtCatsView();
             return SetBeans.set(map, PdtCatsView.class);
-        }).collect(Collectors.toList());
-        return null;
-    }
+            }
 
     @Override
     public Page getProductSEOs(Integer statr, Integer limit, Integer supplier, FldLanguage.Language language) {

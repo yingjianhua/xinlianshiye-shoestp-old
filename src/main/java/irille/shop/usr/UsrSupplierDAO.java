@@ -10,11 +10,7 @@ import irille.pub.LogMessage;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.sql.SQL;
-import irille.pub.idu.Idu;
-import irille.pub.idu.IduIns;
-import irille.pub.idu.IduOther;
-import irille.pub.idu.IduPage;
-import irille.pub.idu.IduUpd;
+import irille.pub.idu.*;
 import irille.pub.svr.DbPool;
 import irille.pub.svr.Env;
 import irille.pub.tb.FldLanguage;
@@ -24,41 +20,26 @@ import irille.pub.util.SEOUtils;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.pub.validate.ValidForm;
 import irille.pub.validate.ValidRegex;
-import irille.sellerAction.view.AuthenticationView;
-import irille.sellerAction.view.SupinfoView;
-import irille.sellerAction.view.operateinfoView;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.pdt.PdtProductDAO;
 import irille.shop.pdt.PdtSpec;
-import irille.shop.plt.PltCountry;
-import irille.shop.plt.PltFreight;
-import irille.shop.plt.PltFreightLine;
-import irille.shop.plt.PltFreightSeller;
-import irille.shop.plt.PltFreightSellerDAO;
-import irille.shop.plt.PltFreightSellerLine;
-import irille.shop.plt.PltPay;
+import irille.shop.plt.*;
 import irille.shop.plt.PltPay.OPay_Mode;
-import irille.shop.plt.PltProvince;
 import irille.shop.prm.PrmGroupPurchase;
 import irille.shop.usr.Usr.OStatus;
 import irille.shop.usr.UsrSupplier.T;
 import irille.view.usr.AccountSettingsView;
 import irille.view.usr.SupplierView;
 import irille.view.usr.shopSettingView;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.json.JSONException;
@@ -105,125 +86,102 @@ public class UsrSupplierDAO {
     return view;
   }
 
-  public static void main(String[] args) throws Exception {
-//        SupplierView view = findById4AccountSet(8);
-//        System.out.println(new ObjectMapper().writeValueAsString(view.getJobTitle()));
-    //initAllSupplierPassword();
-    //initAllSupplierFreight();
-//    	initAdminPurchasePassword();
-//    	initAllSupplierPayType();
-//        initAllSupplierShowName();
-//        DbPool.getInstance().releaseAll();
-  }
 
-  /**
-   * @author yingjianhua
-   */
-  public static class Query extends IduOther<Query, PdtSpec> {
 
-    public List<UsrSupplier> listByProduct(List<PdtProduct> products) {
-      if (products.size() == 0) {
-        return new ArrayList<>();
-      }
-      StringBuilder b = new StringBuilder();
-      for (int i = 0; i < products.size(); i++) {
-        if (i != 0) {
-          b.append(",");
+    /**
+     * @author yingjianhua
+     */
+    public static class Query extends IduOther<Query, PdtSpec> {
+        public List<UsrSupplier> listByProduct(List<PdtProduct> products) {
+            if (products.size() == 0) return new ArrayList<>();
+            StringBuilder b = new StringBuilder();
+            for (int i = 0; i < products.size(); i++) {
+                if (i != 0) b.append(",");
+                b.append(products.get(i).getSupplier());
+            }
+            String where = UsrSupplier.T.PKEY.getFld().getCodeSqlField() + " in (" + b.toString() + ")";
+            return BeanBase.list(UsrSupplier.class, where, false);
         }
-        b.append(products.get(i).getSupplier());
-      }
-      String where = UsrSupplier.T.PKEY.getFld().getCodeSqlField() + " in (" + b.toString() + ")";
-      return BeanBase.list(UsrSupplier.class, where, false);
-    }
-  }
-
-  public static class Ins extends IduIns<Ins, UsrSupplier> {
-
-    public String _mm;
-    public String _mmcheck;
-
-    @Override
-    public void before() {
-      super.before();
-      validatePw(_mm, _mmcheck);
-      getB().stIsPro(true);
-      getB().setUpdateTime(Env.getTranBeginTime());
     }
 
-    @Override
-    public void after() {
-      super.after();
-      getB().setPassword(inCode(getB().getPkey() + _mm));
-      getB().upd();
-    }
-  }
+    public static class Ins extends IduIns<Ins, UsrSupplier> {
+        public String _mm;
+        public String _mmcheck;
 
-  /***
-   *  前端供应商列表页面查询类
-   * @author lijie@shoestp.cn
-   * @date 2018/7/19 15:51
-   */
-  public static class pageSelect extends IduOther<pageSelect, UsrSupplier> {
-
-    private final boolean Debug = false;
-
-    public Map SupplierList(IduPage page, int cat, FldLanguage.Language lang) {
-      //获取商品总数及条数
-      SQL productSQL = new SQL() {{
-        SELECT("count(*)");
-        FROM(PdtProduct.class);
-        WHERE(PdtProduct.T.IS_VERIFY, " = " + Sys.OYn.YES.getLine().getKey());
-        WHERE(PdtProduct.T.PRODUCT_TYPE, " = " + Pdt.OProductType.GENERAL.getLine().getKey());
-        GROUP_BY(PdtProduct.T.SUPPLIER);
-        HAVING(PdtProduct.T.SUPPLIER.getFld().getCodeSqlField() + " = " + UsrSupplier.class
-            .getSimpleName() + "." + UsrSupplier.T.PKEY.getFld().getCodeSqlField());
-      }};
-      //获取供应商
-      SQL sql = new SQL() {{
-        SELECT(UsrSupplier.T.PKEY, UsrSupplier.T.LOGO, UsrSupplier.T.NAME,
-            UsrSupplier.T.PROD_PATTERN);
-        SELECT("(" + productSQL.toString() + ") as prodCount ");
-        FROM(UsrSupplier.class);
-        if (cat > 0) {
-          WHERE(UsrSupplier.T.CATEGORY, " = " + cat);
+        @Override
+        public void before() {
+            super.before();
+            validatePw(_mm, _mmcheck);
+            getB().stIsPro(true);
+            getB().setUpdateTime(Env.getTranBeginTime());
         }
-        WHERE(T.STATUS, " = ?", OStatus.APPR);
-        ORDER_BY(T.SORT, "asc");
-        ORDER_BY(T.UPDATE_TIME, "desc");
-      }};
-      Map map = new HashMap();
-      map.put("total", irille.pub.bean.Query.sql(sql).queryMaps().size());
-      sql.LIMIT(page.getStart(), page.getLimit());
 
-      List<SupplierListView> views = irille.pub.bean.Query.sql(sql).queryMaps().stream()
-          .map(bean -> new SupplierListView() {{
-            setPkey((Integer) bean.get(T.PKEY.getFld().getCodeSqlField()));
-            setLogo((String) bean.get(T.LOGO.getFld().getCodeSqlField()));
-            setName((String) bean.get(T.NAME.getFld().getCodeSqlField()));
-            System.out.println(bean);
-            setProdpattern((String) bean.get(T.PROD_PATTERN.getFld().getCodeSqlField()));
-            setProDuctCount(Long.valueOf(
-                (bean.get("prodCount") == null ? 0 : bean.get("prodCount")).toString()));
-            SQL prodSQL = new SQL() {{
-              SELECT(PdtProduct.T.PKEY, PdtProduct.T.PICTURE, PdtProduct.T.NAME);
-              FROM(PdtProduct.class);
-              WHERE(PdtProduct.T.IS_VERIFY, "=?", Sys.OYn.YES);
-              WHERE(PdtProduct.T.SUPPLIER, "=?", getPkey());
-              WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.GENERAL);
-              ORDER_BY(PdtProduct.T.IS_NEW, " DESC ");
-              LIMIT(0, 3);
+        @Override
+        public void after() {
+            super.after();
+            getB().setPassword(inCode(getB().getPkey() + _mm));
+            getB().upd();
+        }
+    }
+
+    /***
+     *  前端供应商列表页面查询类
+     * @author lijie@shoestp.cn
+     * @date 2018/7/19 15:51
+     */
+    public static class pageSelect extends IduOther<pageSelect, UsrSupplier> {
+        private final boolean Debug = false;
+
+        public Map SupplierList(IduPage page, int cat, FldLanguage.Language lang) {
+            //获取商品总数及条数
+            SQL productSQL = new SQL() {{
+                SELECT("count(*)");
+                FROM(PdtProduct.class);
+                WHERE(PdtProduct.T.IS_VERIFY, " = " + Sys.OYn.YES.getLine().getKey());
+                WHERE(PdtProduct.T.PRODUCT_TYPE, " = " + Pdt.OProductType.GENERAL.getLine().getKey());
+                GROUP_BY(PdtProduct.T.SUPPLIER);
+                HAVING(PdtProduct.T.SUPPLIER.getFld().getCodeSqlField() + " = " + UsrSupplier.class.getSimpleName() + "." + UsrSupplier.T.PKEY.getFld().getCodeSqlField());
             }};
-            setProDuctDtos(irille.pub.bean.Query.sql(prodSQL).queryList(PdtProduct.class).stream()
-                .map(prod -> new Page_supplierProductView() {{
-                  translateUtil.getAutoTranslate(prod, lang);
-                  setPkey(prod.getPkey());
-                  String pic = prod.getPicture() == null ? ""
-                      : (prod.getPicture().split(",").length > 0 ? prod.getPicture().split(",")[0]
-                          : prod.getPicture());
-                  setPicture(pic);
-                  setRewrite(SEOUtils.getPdtProductTitle((int) getPkey(), getName()));
+            //获取供应商
+            SQL sql = new SQL() {{
+                SELECT(UsrSupplier.T.PKEY, UsrSupplier.T.LOGO, UsrSupplier.T.NAME, UsrSupplier.T.PROD_PATTERN);
+                SELECT("(" + productSQL.toString() + ") as prodCount ");
+                FROM(UsrSupplier.class);
+                if (cat > 0)
+                    WHERE(UsrSupplier.T.CATEGORY, " = " + cat);
+                WHERE(T.STATUS, " = ?", OStatus.APPR);
+                ORDER_BY(T.SORT, "asc");
+                ORDER_BY(T.UPDATE_TIME, "desc");
+            }};
+            Map map = new HashMap();
+            map.put("total", irille.pub.bean.Query.sql(sql).queryMaps().size());
+            sql.LIMIT(page.getStart(), page.getLimit());
+
+
+            List<SupplierListView> views = irille.pub.bean.Query.sql(sql).queryMaps().stream().map(bean -> new SupplierListView() {{
+                setPkey((Integer) bean.get(T.PKEY.getFld().getCodeSqlField()));
+                setLogo((String) bean.get(T.LOGO.getFld().getCodeSqlField()));
+                setName((String) bean.get(T.NAME.getFld().getCodeSqlField()));
+                System.out.println(bean);
+                setProdpattern((String) bean.get(T.PROD_PATTERN.getFld().getCodeSqlField()));
+                setProDuctCount(Long.valueOf((bean.get("prodCount") == null ? 0 : bean.get("prodCount")).toString()));
+                SQL prodSQL = new SQL() {{
+                    SELECT(PdtProduct.T.PKEY, PdtProduct.T.PICTURE, PdtProduct.T.NAME);
+                    FROM(PdtProduct.class);
+                    WHERE(PdtProduct.T.IS_VERIFY, "=?", Sys.OYn.YES);
+                    WHERE(PdtProduct.T.SUPPLIER, "=?", getPkey());
+                    WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.GENERAL);
+                    ORDER_BY(PdtProduct.T.IS_NEW, " DESC ");
+                    LIMIT(0, 3);
+                }};
+                setProDuctDtos(irille.pub.bean.Query.sql(prodSQL).queryList(PdtProduct.class).stream().map(prod -> new Page_supplierProductView() {{
+                    translateUtil.getAutoTranslate(prod, lang);
+                    setPkey(prod.getPkey());
+                    String pic = prod.getPicture() == null ? "" : (prod.getPicture().split(",").length > 0 ? prod.getPicture().split(",")[0] : prod.getPicture());
+                    setPicture(pic);
+                    setRewrite(SEOUtils.getPdtProductTitle((int) getPkey(), getName()));
                 }}).collect(Collectors.toList()));
-          }}).collect(Collectors.toList());
+            }}).collect(Collectors.toList());
 
       map.put("items", views);
       return map;

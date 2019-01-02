@@ -1,13 +1,16 @@
 package irille.Config;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
-import irille.Aops.Caches;
 import irille.Aops.CacheAopsInterceptor;
+import irille.Aops.Caches;
 import org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter;
 
 import javax.inject.Singleton;
@@ -22,6 +25,9 @@ public class GuiceConfig extends GuiceServletContextListener {
 
     @Override
     protected Injector getInjector() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return Guice.createInjector(
                 new Struts2GuicePluginModule(),
                 new ServletModule() {
@@ -29,6 +35,7 @@ public class GuiceConfig extends GuiceServletContextListener {
                     protected void configureServlets() {
                         // Struts 2 setup
                         binder().bindInterceptor(Matchers.any(), Matchers.annotatedWith(Caches.class), new CacheAopsInterceptor());
+                        bind(ObjectMapper.class).toInstance(mapper);
                         bind(StrutsPrepareAndExecuteFilter.class).in(Singleton.class);
                         filter("/*").through(StrutsPrepareAndExecuteFilter.class);
                     }

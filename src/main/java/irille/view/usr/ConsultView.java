@@ -1,11 +1,13 @@
 package irille.view.usr;
 
+import irille.pub.i18n.I18NFieldSerializer;
 import irille.view.BaseView;
 
 import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 public class ConsultView implements BaseView {
 	private Integer id;
@@ -16,6 +18,7 @@ public class ConsultView implements BaseView {
 	private String name;
 	private String email;
 	private Integer country;
+	@JsonSerialize(using=I18NFieldSerializer.class)
 	private String countryName;
 	private String countryFlag;
 	private String content;
@@ -27,7 +30,28 @@ public class ConsultView implements BaseView {
 	@JsonFormat(pattern="yyyy.MM.dd", timezone="GMT+8")
 	private Date createTime;
 	private List<ConsultRelationView> relations;//询盘关联供应商,包含留言记录
+	private String purchaseimage;//采购商头像
+	private String supplierimage;//供应商头像
+	private String supplieremail;//供应商邮箱
 	
+	public String getSupplieremail() {
+		return supplieremail;
+	}
+	public void setSupplieremail(String supplieremail) {
+		this.supplieremail = supplieremail;
+	}
+	public String getPurchaseimage() {
+		return purchaseimage;
+	}
+	public void setPurchaseimage(String purchaseimage) {
+		this.purchaseimage = purchaseimage;
+	}
+	public String getSupplierimage() {
+		return supplierimage;
+	}
+	public void setSupplierimage(String supplierimage) {
+		this.supplierimage = supplierimage;
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -136,5 +160,5 @@ public class ConsultView implements BaseView {
 	public void setRelations(List<ConsultRelationView> relations) {
 		this.relations = relations;
 	}
-	
+
 }

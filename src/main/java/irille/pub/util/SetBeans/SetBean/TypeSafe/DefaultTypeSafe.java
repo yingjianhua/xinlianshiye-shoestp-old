@@ -31,6 +31,8 @@ public class DefaultTypeSafe implements ITypeSafe {
         addConvertFactorys(new DateToStringConvert());
         addConvertFactorys(new SqlDateToStringConvert());
         addConvertFactorys(new LongToIntegerConvert());
+        addConvertFactorys(new BigDecimalToDoubleConvert());
+        addConvertFactorys(new BigDecimalToIntegerConvert());
     }
 
     @Override

@@ -185,7 +185,8 @@ public class UsrConsultRelationDAO {
 		
 		UsrConsult bean = relation.gtConsult();
 		PltCountry country = bean.gtCountry();
-		
+		UsrPurchase puscha=  bean.gtPurchase();
+		UsrSupplier usp=relation.gtSupplier();
 		ConsultView view = new ConsultView();
 		view.setQuantity(bean.getQuantity());
 		if(bean.getProduct()!=null) {
@@ -199,10 +200,12 @@ public class UsrConsultRelationDAO {
 		view.setCreateTime(bean.getCreateTime());
 		view.setContent(bean.getContent());
 		view.setRelations(new ArrayList<>());
-		
+		view.setEmail(puscha.getEmail());
+		view.setPurchaseimage(puscha.getIcon());
+		view.setSupplierimage(usp.getHeadPic());
+		view.setSupplieremail(usp.getEmail());
 		ConsultRelationView rv = new ConsultRelationView();
 		rv.setId(relation.getPkey());
-		//rv.setHaveNewMsg(relation.gtHaveNewMsg());
 		rv.setMsgs(new ArrayList<>());
 		
 		for(UsrConsultMessage m:UsrConsultMessageDAO.listByRelation(relation.getPkey())) {
