@@ -38,6 +38,12 @@
             </properties>
         </profile>
         <profile>
+            <id>docker</id>
+            <properties>
+                <environment>docker</environment>
+            </properties>
+        </profile>
+        <profile>
             <id>prod</id>
             <properties>
                 <environment>prod</environment>
