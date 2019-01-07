@@ -1,6 +1,7 @@
 package irille.shop.plt;
 
 
+import irille.platform.plt.View.CountryView;
 import irille.pub.Log;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.BeanBase;
@@ -15,6 +16,7 @@ import irille.shop.plt.Plt.ErrMsgs;
 import irille.shop.plt.PltCountry.T;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PltCountryDAO {
     private static final Log LOG = new Log(PltCountryDAO.class);
@@ -107,7 +109,7 @@ public class PltCountryDAO {
         public void valid() {
             super.valid();
             if (PltCountry.chkUniqueShort_name(true, getB().getShortName()) != null)
-                throw LOG.err(ErrMsgs.uniqueErr, PltCountry.T.NAME.getFld().getName());
+                throw LOG.err(ErrMsgs.uniqueErr, T.NAME.getFld().getName());
 
         }
     }
@@ -116,7 +118,7 @@ public class PltCountryDAO {
         @Override
         public void before() {
             PltCountry dbBean = loadThisBeanAndLock();
-            PropertyUtils.copyPropertiesWithout(dbBean, getB(), PltCountry.T.PKEY, PltCountry.T.ENABLED, PltCountry.T.HOT, PltCountry.T.CREATED_BY, PltCountry.T.CREATED_TIME);
+            PropertyUtils.copyPropertiesWithout(dbBean, getB(), T.PKEY, T.ENABLED, T.HOT, T.CREATED_BY, T.CREATED_TIME);
             translateUtil.autoTranslateByManageLanguage(dbBean, true);
             setB(dbBean);
             String wheresql = PltProvince.T.MAIN.getFld().getCodeSqlField() + "=?";
@@ -182,7 +184,6 @@ public class PltCountryDAO {
             getB().stHot(!getB().gtHot()); //判断是否选中
             getB().upd();
         }
-
         @Override
         public void after() {
             addCountry = null;
@@ -190,5 +191,38 @@ public class PltCountryDAO {
         }
     }
 
-
+    public static class enable extends IduOther<enable, PltCountry> {
+        @Override
+        public void run() {
+            super.run();
+            getB().stHot(!getB().gtEnabled()); //判断是否选中
+            getB().upd();
+        }
+    }
+    //获取国家列表  参数 国家名称
+    public static List<CountryView> list(String Countryname, Integer start, Integer limit) throws Exception {
+        if (null != start) {
+            start = 0;
+        }
+        if (null != limit) {
+            start = 0;
+        }
+        SQL sql=new SQL(){{
+            SELECT(PltCountry.class).FROM(PltCountry.class);
+            if(null !=Countryname){
+                WHERE(T.NAME,"like '%"+Countryname+"%'");
+            }
+        }};
+        List<CountryView> list= Query.sql(sql).limit(start,limit) .queryMaps().stream().map(bean ->new CountryView(){{
+            setId((Integer) bean.get(T.PKEY.getFld().getCodeSqlField()));
+            setName((String)bean.get(T.NAME.getFld().getCodeSqlField()));
+            setShortName((String)bean.get(T.SHORT_NAME.getFld().getCodeSqlField()));
+            setZone((String)bean.get(T.ZONE.getFld().getCodeSqlField()));
+            setCurrency(BeanBase.load(PltErate.class,(Integer)bean.get(T.CURRENCY.getFld().getCodeSqlField())).getSymbol());
+            setFlag((String)bean.get(T.NATIONAL_FLAG.getFld().getCodeSqlField()));
+            setIsenable((Integer) bean.get(T.ENABLED.getFld().getCodeSqlField())==1?true:false);
+            setIshot((Integer)bean.get(T.HOT.getFld().getCodeSqlField())==1?true:false);
+        }}).collect(Collectors.toList());
+        return  list;
+    }
 }

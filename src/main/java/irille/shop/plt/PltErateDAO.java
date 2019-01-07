@@ -1,8 +1,11 @@
 package irille.shop.plt;
 
+import irille.platform.plt.View.PltErateView;
 import irille.pub.Log;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.BeanBase;
+import irille.pub.bean.Query;
+import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduIns;
 import irille.pub.idu.IduOther;
 import irille.pub.idu.IduUpd;
@@ -16,6 +19,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class PltErateDAO {
     public static final Log LOG = new Log(PltErateDAO.class);
@@ -165,8 +169,8 @@ public class PltErateDAO {
 
         @Override
         public void valid() {
-            FormValid().validNotEmpty(PltErate.T.SYMBOL, PltErate.T.CUR_NAME);
-            numberValid().validBigDecimalPositive(PltErate.T.RATE, PltErate.T.NOWRATE);
+            FormValid().validNotEmpty(T.SYMBOL, T.CUR_NAME);
+            numberValid().validBigDecimalPositive(T.RATE, T.NOWRATE);
             super.valid();
         }
     }
@@ -176,7 +180,7 @@ public class PltErateDAO {
         public void before() {
             super.before();
             PltErate model = loadThisBeanAndLock();
-            PropertyUtils.copyPropertiesWithout(model, getB(), PltErate.T.PKEY, PltErate.T.ENABLED, T.SITE_CUR, T.SUP_CUR, T.CREATED_BY);
+            PropertyUtils.copyPropertiesWithout(model, getB(), T.PKEY, T.ENABLED, T.SITE_CUR, T.SUP_CUR, T.CREATED_BY);
             model.setCreatedTime(Env.getTranBeginTime());
             setB(model);
             getB().setNowrate(getB().getRate().divide(Query.supDefCurrency().getRate(), 4, RoundingMode.HALF_UP));
@@ -184,8 +188,8 @@ public class PltErateDAO {
 
         @Override
         public void valid() {
-            FormValid().validNotEmpty(PltErate.T.SYMBOL, PltErate.T.CUR_NAME);
-            numberValid().validBigDecimalPositive(PltErate.T.RATE, PltErate.T.NOWRATE);
+            FormValid().validNotEmpty(T.SYMBOL, T.CUR_NAME);
+            numberValid().validBigDecimalPositive(T.RATE, T.NOWRATE);
             super.valid();
         }
     }
@@ -249,5 +253,34 @@ public class PltErateDAO {
             Query.clearBuffer();
         }
     }
+    //汇率 列表
+    public static  List<PltErateView> list(){
+        SQL sql=new SQL(){{
+           SELECT(PltErate.class).FROM(PltErate.class);
+        }};
+        irille.pub.bean.Query.sql(sql).queryMaps().stream().map(bean -> new PltErateView(){{
+            setId((Integer) bean.get(T.PKEY.getFld().getCodeSqlField()));
+            setLogo((String) bean.get(T.LOGO.getFld().getCodeSqlField()));
+            setCurname((String) bean.get(T.CUR_NAME.getFld().getCodeSqlField()));
+            setSymbol((String) bean.get(T.SYMBOL.getFld().getCodeSqlField()));
+            setEnabled((Integer) bean.get(T.ENABLED.getFld().getCodeSqlField())==1?true:false);
+            setSitecur((Integer) bean.get(T.SITE_CUR.getFld().getCodeSqlField())==1?true:false);
+            setRate((BigDecimal) bean.get(T.RATE.getFld().getCodeSqlField()));
+            setSupcur((Integer) bean.get(T.SUP_CUR.getFld().getCodeSqlField())==1?true:false);
+            setNowrate((BigDecimal) bean.get(T.NOWRATE.getFld().getCodeSqlField()));
+        }}).collect(Collectors.toList());
+        return null;
+    }
 
+
+    public static class enabled extends IduOther<Bcdefcur, PltErate> {
+        @Override
+        public void run() {
+            super.run();
+            getB().setEnabled(getB().getEnabled());
+            getB().upd();
+        }
+
+
+    }
 }
