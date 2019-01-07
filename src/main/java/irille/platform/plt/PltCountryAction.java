@@ -1,11 +1,12 @@
 package irille.platform.plt;
 
 import irille.action.ActionBase;
+import irille.action.MgtAction;
 import irille.shop.plt.*;
 import lombok.Getter;
 import lombok.Setter;
 
-public class PltCountryAction  extends ActionBase<PltCountry> {
+public class PltCountryAction  extends MgtAction<PltCountry> {
     @Override
     public Class beanClazz() {
         return PltCountry.class;

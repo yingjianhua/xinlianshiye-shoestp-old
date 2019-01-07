@@ -1,7 +1,10 @@
 package irille.Dao;
 
+import irille.pub.PropertyUtils;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
+import irille.pub.idu.IduUpd;
+import irille.shop.odr.OdrOrder;
 import irille.shop.plt.PltConfig;
 
 import java.util.HashMap;
@@ -22,5 +25,14 @@ public class PltConfigDao {
         }
         maps.put(pltConfig.getPkey(),map);
         return maps;
+    }
+    public static class updlang extends IduUpd<updlang, PltConfig> {
+        @Override
+        public void before() {
+            PltConfig dbbean =PltConfig.chkUniqueVariable(true, getB().getVariable());
+            PropertyUtils.copyProperties(dbbean,getB(), PltConfig.T.VALUE);
+            setB(dbbean);
+
+        }
     }
 }

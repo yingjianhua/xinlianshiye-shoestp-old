@@ -1,6 +1,7 @@
 package irille.platform.plt;
 
 import irille.action.ActionBase;
+import irille.action.MgtAction;
 import irille.shop.plt.PltErate;
 import irille.shop.plt.PltErateDAO;
 
@@ -9,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PltErateAction  extends ActionBase<PltErate> {
+public class PltErateAction  extends MgtAction<PltErate> {
     @Override
     public Class beanClazz() {
         return PltErate.class;
