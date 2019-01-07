@@ -84,6 +84,44 @@
 		<action name="*_*_*" class="irille.sellerAction.{1}.{2}Action" method="{3}">
 		</action>
 	</package>
+	<package name="platform" namespace="/platform" extends="struts-default">
+		<interceptors>
+			<!-- 拦截器配置 -->
+			<interceptor name="ItpExceptionHandler" class="irille.Filter.svr.ItpExceptionHandler" />
+			<interceptor name="ItpDbTransaction" class="irille.Filter.svr.ItpDbTransaction" />
+			<interceptor name="ItpSessionmsg" class="irille.Filter.svr.ItpSessionmsg" />
+			<interceptor name="ItpCheckSupplierLogin" class="irille.Filter.svr.ItpCheckSupplierLogin" />
+			<interceptor name="ItpFileUpload" class="irille.pub.svr.ItpFileUpload"/>
+
+			<!-- 拦截器栈配置,拦截栈可以包含拦截器栈 -->
+			<interceptor-stack name="irilleStack">
+				<interceptor-ref name="ItpExceptionHandler" />
+				<interceptor-ref name="ItpDbTransaction" />
+				<interceptor-ref name="ItpFileUpload">
+					<param name="maximumSize">4194304</param>
+				</interceptor-ref>
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+
+		<!-- 将自定义拦截器设置为默认拦截器-->
+		<default-interceptor-ref name="irilleStack"></default-interceptor-ref>
+
+		<default-action-ref name="pageIndex"></default-action-ref>
+		<global-results>
+			<result name="index" type="redirect">/seller/admin/index/index.html</result>
+			<result name="login">/seller/admin/index/login.html</result>
+			<result name="trends">${result}</result>
+			<result name="rtrends" type="redirect">${result}</result>
+			<result name="tact" type="chain">${result}</result>
+		</global-results>
+		<action name="pageIndex">
+			<result name="index" type="redirect">/platform/index.html</result>
+		</action>
+		<action name="sys_SysAccessory_uploadImage" class="irille.action.sys.SysAccessoryAction" method="uploadImage" />
+		<action name="*_*_*" class="irille.platform.{1}.{2}Action" method="{3}">
+		</action>
+	</package>
 	<package name="irilleMng" namespace="/" extends="struts-default">
 		<interceptors>
 			<!-- 拦截器配置 -->
@@ -129,6 +167,10 @@
 		<action name="manage">
 			<interceptor-ref name="defaultStack"></interceptor-ref>
 			<result type="redirect">/domain.jsp</result>
+		</action>
+		<action name="platform">
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<result type="redirect">/platform/</result>
 		</action>
 		<action name="*_*_*" class="irille.action.{1}.{2}Action" method="{3}">
 		</action>
