@@ -78,9 +78,7 @@ public class basesysUserAction extends SysUserAction {
 
 //            setSarg1(e.getLastMessage());
         }
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         write();
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     }
 
     @Override
