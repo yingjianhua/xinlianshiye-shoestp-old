@@ -10,7 +10,7 @@ import irille.pub.idu.IduIns;
 import irille.pub.svr.Env;
 import irille.shop.plt.PltCountry;
 import irille.shop.usr.UsrSupplier;
-import irille.platform.omt.view.ApplicationsView;
+import irille.platform.omt.View.ApplicationsView;
 import irille.view.Page;
 
 import java.util.List;

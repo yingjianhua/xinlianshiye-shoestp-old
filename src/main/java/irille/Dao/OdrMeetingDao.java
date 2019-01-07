@@ -3,7 +3,7 @@ package irille.Dao;
 import irille.Entity.OdrerMeetings.Enums.OrderMeetingAuditStatus;
 import irille.Entity.OdrerMeetings.Enums.OrderMeetingStatus;
 import irille.Entity.OdrerMeetings.*;
-import irille.platform.omt.view.OmtDetailsView;
+import irille.platform.omt.View.OmtDetailsView;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.Bean;
 import irille.pub.bean.BeanBase;

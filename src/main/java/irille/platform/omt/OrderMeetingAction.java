@@ -5,7 +5,7 @@ import irille.Dao.OrderMeetingAuditReleaseDao;
 import irille.Entity.OdrerMeetings.Enums.OrderMeetingAuditStatus;
 import irille.Entity.OdrerMeetings.OrderMeeting;
 import irille.action.MgtAction;
-import irille.platform.omt.view.OmtDetailsView;
+import irille.platform.omt.View.OmtDetailsView;
 import irille.view.Page;
 import lombok.Getter;
 import lombok.Setter;
