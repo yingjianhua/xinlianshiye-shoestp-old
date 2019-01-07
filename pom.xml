@@ -1,196 +1,196 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.irille</groupId>
-  <artifactId>shoestp</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
+    <groupId>com.irille</groupId>
+    <artifactId>shoestp</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
 
-  <name>shoestp Maven Webapp</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+    <name>shoestp Maven Webapp</name>
+    <!-- FIXME change it to the project's website -->
+    <url>http://www.example.com</url>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-  </properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
 
-  <profiles>
-    <profile>
-      <id>dev</id><!--执行打包命令时将使用此处的id进行定位 -->
-      <properties>
-        <environment>dev</environment>
-        <!--此处为对应的环境放置配置文件的目录，上一步创建的为dev,这里设置为dev。下面两个目录配置参照此处 -->
-      </properties>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-    </profile>
-    <profile>
-      <id>test</id>
-      <properties>
-        <environment>test</environment>
-      </properties>
-    </profile>
-    <profile>
-      <id>prod</id>
-      <properties>
-        <environment>prod</environment>
-      </properties>
-      <!--<activation>-->
-      <!--<activeByDefault>true</activeByDefault>&lt;!&ndash;此处将dev设置为默认环境 &ndash;&gt;-->
-      <!--</activation>-->
-    </profile>
-  </profiles>
+    <profiles>
+        <profile>
+            <id>dev</id><!--执行打包命令时将使用此处的id进行定位 -->
+            <properties>
+                <environment>dev</environment>
+                <!--此处为对应的环境放置配置文件的目录，上一步创建的为dev,这里设置为dev。下面两个目录配置参照此处 -->
+            </properties>
+            <!--<activation>-->
+            <!--<activeByDefault>true</activeByDefault>-->
+            <!--</activation>-->
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <environment>test</environment>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <environment>prod</environment>
+            </properties>
+            <!--<activation>-->
+            <!--<activeByDefault>true</activeByDefault>&lt;!&ndash;此处将dev设置为默认环境 &ndash;&gt;-->
+            <!--</activation>-->
+        </profile>
+    </profiles>
 
-  <dependencies>
-    <dependency>
-      <groupId>com.irille</groupId>
-      <artifactId>irille-base-plat</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/org.tuckey/urlrewritefilter -->
-    <dependency>
-      <groupId>org.tuckey</groupId>
-      <artifactId>urlrewritefilter</artifactId>
-      <version>4.0.3</version>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/com.sun.mail/javax.mail -->
-    <dependency>
-      <groupId>com.sun.mail</groupId>
-      <artifactId>javax.mail</artifactId>
-      <version>1.6.1</version>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/com.aliyun.oss/aliyun-sdk-oss -->
-    <dependency>
-      <groupId>com.aliyun.oss</groupId>
-      <artifactId>aliyun-sdk-oss</artifactId>
-      <version>2.8.3</version>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/com.google.cloud/google-cloud-translate -->
-    <dependency>
-      <groupId>com.google.cloud</groupId>
-      <artifactId>google-cloud-translate</artifactId>
-      <version>1.39.0</version>
-    </dependency>
+    <dependencies>
+        <dependency>
+            <groupId>com.irille</groupId>
+            <artifactId>irille-base-plat</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.tuckey/urlrewritefilter -->
+        <dependency>
+            <groupId>org.tuckey</groupId>
+            <artifactId>urlrewritefilter</artifactId>
+            <version>4.0.3</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.sun.mail/javax.mail -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.aliyun.oss/aliyun-sdk-oss -->
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+            <version>2.8.3</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.cloud/google-cloud-translate -->
+        <dependency>
+            <groupId>com.google.cloud</groupId>
+            <artifactId>google-cloud-translate</artifactId>
+            <version>1.39.0</version>
+        </dependency>
 
-    <!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-servlet-api -->
-    <dependency>
-      <groupId>org.apache.tomcat</groupId>
-      <artifactId>tomcat-servlet-api</artifactId>
-      <version>8.5.32</version>
-      <scope>provided</scope>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>1.18.2</version>
-      <scope>provided</scope>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>jstl</artifactId>
-      <version>1.2</version>
-      <scope>runtime</scope>
-    </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-servlet-api -->
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-servlet-api</artifactId>
+            <version>8.5.32</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+            <scope>runtime</scope>
+        </dependency>
 
-    <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
-    <dependency>
-      <groupId>org.jsoup</groupId>
-      <artifactId>jsoup</artifactId>
-      <version>1.11.3</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.inject</groupId>
-      <artifactId>guice</artifactId>
-      <version>4.2.2</version>
-    </dependency>
-    <dependency>
-      <groupId>com.google.inject.extensions</groupId>
-      <artifactId>guice-struts2</artifactId>
-      <version>4.2.2</version>
-    </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.11.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>4.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject.extensions</groupId>
+            <artifactId>guice-struts2</artifactId>
+            <version>4.2.2</version>
+        </dependency>
 
-    <dependency>
-      <groupId>org.start2do</groupId>
-      <artifactId>setBean</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
-    <!--谷歌统计依赖-->
-    <dependency>
-      <groupId>com.google.apis</groupId>
-      <artifactId>google-api-services-analyticsreporting</artifactId>
-      <version>v4-rev128-1.25.0</version>
-    </dependency>
+        <dependency>
+            <groupId>org.start2do</groupId>
+            <artifactId>setBean</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!--谷歌统计依赖-->
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-analyticsreporting</artifactId>
+            <version>v4-rev128-1.25.0</version>
+        </dependency>
 
-  </dependencies>
+    </dependencies>
 
 
-  <build>
-    <finalName>shoestp</finalName>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <excludes>
-          <exclude>environment/**</exclude>
-        </excludes>
-      </resource>
-      <resource>
-        <directory>src/main/resources/environment/${environment}</directory>
-      </resource>
-    </resources>
-    <!-- <plugins> <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>aspectj-maven-plugin</artifactId>
-        <version>1.11</version> <configuration> <forceAjcCompile>true</forceAjcCompile>
-        <sources/> <complianceLevel>1.8</complianceLevel> <weaveDirectories> <weaveDirectory>${project.build.directory}/classes</weaveDirectory>
-        </weaveDirectories> </configuration> <executions> <execution> <phase>process-classes</phase>
-        <goals> <goal>compile</goal> <goal>test-compile</goal> </goals> </execution>
-        </executions> </plugin> </plugins> -->
-    <pluginManagement><!-- lock down plugins versions to avoid using Maven
+    <build>
+        <finalName>shoestp</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>environment/**</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources/environment/${environment}</directory>
+            </resource>
+        </resources>
+        <!-- <plugins> <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>aspectj-maven-plugin</artifactId>
+            <version>1.11</version> <configuration> <forceAjcCompile>true</forceAjcCompile>
+            <sources/> <complianceLevel>1.8</complianceLevel> <weaveDirectories> <weaveDirectory>${project.build.directory}/classes</weaveDirectory>
+            </weaveDirectories> </configuration> <executions> <execution> <phase>process-classes</phase>
+            <goals> <goal>compile</goal> <goal>test-compile</goal> </goals> </execution>
+            </executions> </plugin> </plugins> -->
+        <pluginManagement><!-- lock down plugins versions to avoid using Maven
 				defaults (may be moved to parent pom) -->
-      <plugins>
+            <plugins>
 
-        <plugin>
-          <artifactId>maven-clean-plugin</artifactId>
-          <version>3.0.0</version>
-        </plugin>
-        <!-- see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_war_packaging -->
-        <plugin>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>3.0.2</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.7.0</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.20.1</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-war-plugin</artifactId>
-          <version>3.2.0</version>
-          <configuration>
-            <warSourceExcludes>layuiAdmin/**,print/**,exp/**</warSourceExcludes>
-            <packagingExcludes>WEB-INF/classes/sql/**</packagingExcludes>
-          </configuration>
-        </plugin>
-        <plugin>
-          <artifactId>maven-install-plugin</artifactId>
-          <version>2.5.2</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-deploy-plugin</artifactId>
-          <version>2.8.2</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
+                <plugin>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>3.0.0</version>
+                </plugin>
+                <!-- see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_war_packaging -->
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.0.2</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.7.0</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.20.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>3.2.0</version>
+                    <configuration>
+                        <warSourceExcludes>layuiAdmin/**,print/**,exp/**</warSourceExcludes>
+                        <packagingExcludes>WEB-INF/classes/sql/**</packagingExcludes>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.5.2</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.2</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 </project>
