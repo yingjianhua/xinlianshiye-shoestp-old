@@ -1,7 +1,10 @@
 package irille.platform.omt.View;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import irille.view.BaseView;
 import lombok.Data;
+
+import java.util.Date;
 
 @Data
 public class OmtDetailsView implements BaseView {
@@ -10,8 +13,10 @@ public class OmtDetailsView implements BaseView {
     private String exhibition;//展厅
     private String country;//所在国家
     private String logo;//封面图片
-    private String startTime;//开始时间
-    private String endTime;//结束时间
+    @JsonFormat(pattern="yyyy/MM/dd HH:mm", timezone="GMT+8")
+    private Date startTime;//开始时间
+    @JsonFormat(pattern="yyyy/MM/dd HH:mm", timezone="GMT+8")
+    private Date endTime;//结束时间
     /**------------------------------------*/
     private String address;//地址
     private String receiver;//收货人

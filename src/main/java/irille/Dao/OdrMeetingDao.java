@@ -35,6 +35,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static irille.pub.bean.Query.SELECT;
+
 /**
  * Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/14 Time: 13:37
  */
@@ -462,41 +464,56 @@ public class OdrMeetingDao {
         view.setZip((String) map.get(OrderMeeting.T.POSTCODE.getFld().getCodeSqlField()));
         return view;
     }
-    public OmtDetailsView getDetails(Integer id){
+
+    public OmtDetailsView getDetails(Integer id) {
         SQL sql = new SQL();
-        sql.SELECT(OrderMeeting.T.PKEY);//订购会id
-        sql.SELECT(OrderMeeting.T.NAME);//订购会标题
-        sql.SELECT(OrderMeetingExhibition.T.NAME);//展厅
-        sql.SELECT(PltCountry.T.NAME);//所在国家
-        sql.SELECT(OrderMeeting.T.LOGO);//封面图片
-        sql.SELECT(OrderMeeting.T.START_TIME);//开始时间
-        sql.SELECT(OrderMeeting.T.END_TIME);//结束时间
-        sql.SELECT(OrderMeeting.T.MAILADDRESS);//地址
-        sql.SELECT(OrderMeeting.T.MAILNAME);//收货人
-        sql.SELECT(OrderMeeting.T.MAILTEL);//联系电话
-        sql.SELECT(OrderMeeting.T.POSTCODE);//邮编
-        sql.SELECT(OrderMeetingAuditRelease.T.STATUS);//审核状态
-        sql.SELECT(OrderMeetingAuditRelease.T.MESSAGE);//审核备注
+        sql.SELECT(OrderMeeting.T.PKEY,"pkey");//订购会id
+        sql.SELECT(OrderMeeting.T.NAME,"title");//订购会标题
+        sql.SELECT(OrderMeetingExhibition.T.NAME,"exhibition");//展厅
+        sql.SELECT(PltCountry.T.NAME,"country");//所在国家
+        sql.SELECT(OrderMeeting.T.LOGO,"logo");//封面图片
+        sql.SELECT(OrderMeeting.T.START_TIME,"startTime");//开始时间
+        sql.SELECT(OrderMeeting.T.END_TIME,"endTime");//结束时间
+        sql.SELECT(OrderMeeting.T.MAILADDRESS,"address");//地址
+        sql.SELECT(OrderMeeting.T.MAILNAME,"receiver");//收货人
+        sql.SELECT(OrderMeeting.T.MAILTEL,"contactNumber");//联系电话
+        sql.SELECT(OrderMeeting.T.POSTCODE,"zipCode");//邮编
+        sql.SELECT(OrderMeetingAuditRelease.T.STATUS,"auditResults");//审核状态
+        sql.SELECT(OrderMeetingAuditRelease.T.MESSAGE,"auditNote");//审核备注
         sql.FROM(OrderMeeting.class);
-        sql.LEFT_JOIN(OrderMeetingExhibition.class,OrderMeetingExhibition.T.PKEY,OrderMeeting.T.EXHIBITION);
-        sql.LEFT_JOIN(PltCountry.class,PltCountry.T.PKEY,OrderMeeting.T.COUNTRY);
-        sql.LEFT_JOIN(OrderMeetingAuditRelease.class,OrderMeetingAuditRelease.T.ODRMEETING,OrderMeeting.T.PKEY);
-        sql.WHERE(OrderMeeting.T.PKEY,"=?",id);
-        Map<String,Object> map = Query.sql(sql).queryMap();
+        sql.LEFT_JOIN(OrderMeetingExhibition.class, OrderMeetingExhibition.T.PKEY, OrderMeeting.T.EXHIBITION);
+        sql.LEFT_JOIN(PltCountry.class, PltCountry.T.PKEY, OrderMeeting.T.COUNTRY);
+        sql.LEFT_JOIN(OrderMeetingAuditRelease.class, OrderMeetingAuditRelease.T.ODRMEETING, OrderMeeting.T.PKEY);
+        sql.WHERE(OrderMeeting.T.PKEY, "=?", id);
+        Map<String, Object> map = Query.sql(sql).queryMap();
         OmtDetailsView view = new OmtDetailsView();
-        view.setPkey(Integer.valueOf(String.valueOf(map.get(OrderMeeting.T.PKEY.getFld().getCodeSqlField()))));//订购会id
-        view.setTiltle(String.valueOf(map.get(OrderMeeting.T.NAME.getFld().getCodeSqlField())));//订购会标题
-        view.setExhibition(String.valueOf(map.get(OrderMeetingExhibition.T.NAME.getFld().getCodeSqlField())));//展厅
-        view.setCountry(String.valueOf(map.get(PltCountry.T.NAME.getFld().getCodeSqlField())));//所在国家
-        view.setLogo(String.valueOf(map.get(OrderMeeting.T.LOGO.getFld().getCodeSqlField())));//封面图片
-        view.setStartTime(String.valueOf(map.get(OrderMeeting.T.START_TIME.getFld().getCodeSqlField())));//开始时间
-        view.setEndTime(String.valueOf(map.get(OrderMeeting.T.END_TIME.getFld().getCodeSqlField())));//结束时间
-        view.setAddress(String.valueOf(map.get(OrderMeeting.T.MAILADDRESS.getFld().getCodeSqlField())));//地址
-        view.setReceiver(String.valueOf(map.get(OrderMeeting.T.MAILNAME.getFld().getCodeSqlField())));//收货人
-        view.setContactNumber(String.valueOf(map.get(OrderMeeting.T.MAILTEL.getFld().getCodeSqlField())));//联系电话
-        view.setZipCode(String.valueOf(map.get(OrderMeeting.T.POSTCODE.getFld().getCodeSqlField())));//邮编
-        view.setAuditResults(Byte.valueOf(String.valueOf(map.get(OrderMeetingAuditRelease.T.STATUS.getFld().getCodeSqlField()))));//审核状态
-        view.setAuditNote(String.valueOf(map.get(OrderMeetingAuditRelease.T.MESSAGE.getFld().getCodeSqlField())));//审核备注
+        view.setPkey(Integer.valueOf(String.valueOf(map.get("pkey"))));//订购会id
+        view.setTiltle(String.valueOf(map.get("title")));//订购会标题
+        view.setExhibition(String.valueOf(map.get("exhibition")));//展厅
+        view.setCountry(String.valueOf(map.get("country")));//所在国家
+        view.setLogo(String.valueOf(map.get("logo")));//封面图片
+        view.setStartTime((Date)map.get("startTime"));
+        view.setEndTime((Date)map.get("endTime"));
+        view.setAddress(String.valueOf(map.get("address")));//地址
+        view.setReceiver(String.valueOf(map.get("receiver")));//收货人
+        view.setContactNumber(String.valueOf(map.get("contactNumber")));//联系电话
+        view.setZipCode(String.valueOf(map.get("zipCode")));//邮编
+        view.setAuditResults(Byte.valueOf(String.valueOf(map.get("auditResults"))));//审核状态
+        view.setAuditNote(String.valueOf(map.get("auditNote")));//审核备注
         return view;
+    }
+
+    public void updStatus(Integer id, Integer status, String remarks) {
+        SQL sql = new SQL(){
+            {
+                SELECT(OrderMeetingAuditRelease.class)
+                        .FROM(OrderMeetingAuditRelease.class)
+                        .WHERE(OrderMeetingAuditRelease.T.ODRMEETING, "=?", id);
+            }
+        };
+        OrderMeetingAuditRelease orderMeetingAuditRelease = Query.sql(sql).query(OrderMeetingAuditRelease.class);
+        orderMeetingAuditRelease.setStatus(status.byteValue());
+        orderMeetingAuditRelease.setMessage(remarks);
+        orderMeetingAuditRelease.upd();
     }
 }

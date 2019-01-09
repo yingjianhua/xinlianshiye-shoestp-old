@@ -36,13 +36,14 @@ public class OrderMeetingAuditReleaseDao {
      * *@date 2019/1/3 10:13
      * *@anthor zjl
      */
-    public Page getApplications(Integer start,Integer limit,String omtName, Integer status) {
+    public Page getApplications(Integer start, Integer limit, String omtName, Integer status) {
+        OrderMeetingAuditRelease.TB.getCode();
         SQL sql = new SQL();
-        sql.SELECT(OrderMeetingAuditRelease.T.PKEY);//审核pkey
-        sql.SELECT(OrderMeeting.T.PKEY);//omtpkey
-        sql.SELECT(UsrSupplier.T.NAME);//公司名称
-        sql.SELECT(PltCountry.T.NAME);//所在国家
-        sql.SELECT(OrderMeetingExhibition.T.NAME);//订购会展厅
+        sql.SELECT(OrderMeetingAuditRelease.T.PKEY,"pkey");//审核pkey
+        sql.SELECT(OrderMeeting.T.PKEY,"omtpkey");//omtpkey
+        sql.SELECT(UsrSupplier.T.NAME,"company");//公司名称
+        sql.SELECT(PltCountry.T.NAME,"country");//所在国家
+        sql.SELECT(OrderMeetingExhibition.T.NAME,"omeName");//订购会展厅
         sql.SELECT(UsrSupplier.T.CONTACTS);//联系人
         sql.SELECT(UsrSupplier.T.EMAIL);//联系方式(邮箱)
         sql.SELECT(UsrSupplier.T.IS_AUTH);//是否认证
@@ -62,11 +63,11 @@ public class OrderMeetingAuditReleaseDao {
         Integer count = Query.sql(sql).queryCount();
         List<ApplicationsView> list = Query.sql(sql).queryMaps().stream().map(o -> {
             ApplicationsView view = new ApplicationsView();
-            view.setPkey(Integer.valueOf(String.valueOf(o.get(OrderMeetingAuditRelease.T.PKEY.getFld().getCodeSqlField()))));
-            view.setOmtpkey(Integer.valueOf(String.valueOf(o.get(OrderMeeting.T.PKEY.getFld().getCodeSqlField()))));
-            view.setCompanyName(String.valueOf(o.get(UsrSupplier.T.NAME.getFld().getCodeSqlField())));
-            view.setCountry(String.valueOf(o.get(PltCountry.T.NAME.getFld().getCodeSqlField())));
-            view.setOmtShowroom(String.valueOf(o.get(OrderMeetingExhibition.T.NAME.getFld().getCodeSqlField())));
+            view.setPkey(Integer.valueOf(String.valueOf(o.get("pkey"))));
+            view.setOmtpkey(Integer.valueOf(String.valueOf(o.get("omtpkey"))));
+            view.setCompanyName(String.valueOf(o.get("company")));
+            view.setCountry(String.valueOf(o.get("country")));
+            view.setOmtShowroom(String.valueOf(o.get("omeName")));
             view.setContact(String.valueOf(o.get(UsrSupplier.T.CONTACTS.getFld().getCodeSqlField())));
             view.setContactInformation(String.valueOf(o.get(UsrSupplier.T.EMAIL.getFld().getCodeSqlField())));
             view.setWhetherCertification(Byte.valueOf(String.valueOf(o.get(UsrSupplier.T.IS_AUTH.getFld().getCodeSqlField()))));
@@ -74,6 +75,6 @@ public class OrderMeetingAuditReleaseDao {
             view.setStatus(Byte.valueOf(String.valueOf(o.get(OrderMeetingAuditRelease.T.STATUS.getFld().getCodeSqlField()))));
             return view;
         }).collect(Collectors.toList());
-        return new Page(list,start,limit,count);
+        return new Page(list, start, limit, count);
     }
 }

@@ -5,15 +5,14 @@ import irille.Dao.OrderMeetingAuditReleaseDao;
 import irille.Entity.OdrerMeetings.Enums.OrderMeetingAuditStatus;
 import irille.Entity.OdrerMeetings.OrderMeeting;
 import irille.action.MgtAction;
-import irille.platform.omt.View.OmtDetailsView;
-import irille.view.Page;
+import irille.platform.omt.View.StatusView;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.inject.Inject;
-import java.util.HashMap;
-import java.util.Map;
-
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderMeetingAction extends MgtAction<OrderMeeting> {
     @Getter
@@ -25,6 +24,9 @@ public class OrderMeetingAction extends MgtAction<OrderMeeting> {
     @Getter
     @Setter
     private Integer id;
+    @Getter
+    @Setter
+    private String remarks;
 
     @Override
     public Class beanClazz() {
@@ -37,12 +39,28 @@ public class OrderMeetingAction extends MgtAction<OrderMeeting> {
     private OrderMeetingAuditReleaseDao orderMeetingAuditReleaseDao;
 
     /**
+     * @Description: (平台)获取审核状态
+     * *@date 2019/1/8 15:44
+     * *@anthor zjl
+     */
+    public void getStatus() throws IOException {
+        List<StatusView> list = new ArrayList<>();
+        for (OrderMeetingAuditStatus value : OrderMeetingAuditStatus.values()) {
+            StatusView view = new StatusView();
+            view.setId(value.getLine().getKey());
+            view.setName(value.getLine().getName());
+            list.add(view);
+        }
+        write(list);
+    }
+
+    /**
      * @Description: (平台)获取发布订购会审核列表
      * *@date 2019/1/3 10:13
      * *@anthor zjl
      */
-    public Page getApplications() {
-        return orderMeetingAuditReleaseDao.getApplications(getStart(), getLimit(), omtName, status);
+    public void getApplications() throws IOException {
+        write(orderMeetingAuditReleaseDao.getApplications(getStart(), getLimit(), omtName, status));
     }
 
     /**
@@ -50,19 +68,17 @@ public class OrderMeetingAction extends MgtAction<OrderMeeting> {
      * *@date 2019/1/3 10:58
      * *@anthor zjl
      */
-    public OmtDetailsView getDetails() {
-        return odrMeetingDao.getDetails(id);
+    public void getDetails() throws IOException {
+        write(odrMeetingDao.getDetails(id));
     }
+
     /**
-     * @Description: (平台)获取审核状态列表
-     * *@date 2019/1/3 14:05
+     * @Description: (平台)修改状态+备注
+     * *@date 2019/1/9 14:33
      * *@anthor zjl
      */
-    public Map<Byte,String> getStatusList(){
-        Map<Byte,String> map = new HashMap<>();
-        for (OrderMeetingAuditStatus value : OrderMeetingAuditStatus.values()) {
-            map.put(value.getLine().getKey(),value.getLine().getName());
-        }
-        return map;
+    public void updStatus() throws IOException {
+        odrMeetingDao.updStatus(id,status,remarks);
+        write();
     }
 }

@@ -3,7 +3,9 @@ package irille.platform.plt;
 import irille.Dao.PltConfigDao;
 import irille.action.MgtAction;
 import irille.action.usr.UsrAccessAction;
+import irille.platform.plt.View.LanguageView;
 import irille.pub.bean.Bean;
+import irille.pub.tb.FldLanguage;
 import irille.shop.plt.PltConfig;
 import irille.shop.usr.UsrSupplierRoleDAO;
 import lombok.Getter;
@@ -55,6 +57,23 @@ public class PltConfigAction extends MgtAction<PltConfig> {
         this._type = _type;
     }
 
+    /**
+     * 获取所有语言
+     * Date 2019/01/08 10:03
+     * zjl
+     */
+    public void getLanguages() throws IOException {
+        write(pltConfigDao.getLanguages());
+    }
+
+    /**
+     * 获取默认语言
+     * Date 2019/01/08 11:43
+     * zjl
+     */
+    public void getCurrentLanguage() throws IOException {
+        write(pltConfigDao.getCurrentLanguage());
+    }
 
     /**
      * (平台)获取基础设置-语言设置
