@@ -71,16 +71,11 @@ public class basesysUserAction extends SysUserAction {
                     .getRemoteAddr(), getOs(agent), getBrowser(agent));
             LoginUserMsg umsg = new LoginUserMsg(lg);
             this.session.put(LOGIN, umsg);
-            //Env.INST.initTran(umsg, "basesys_basesysUser_baselogin");
+            write();
         } catch (Exp e) {
-            throw e;
-//            writeErr(e.getLastMessage());
-
-//            setSarg1(e.getLastMessage());
+           writeErr(e.getLastMessage());
         }
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-        write();
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
     }
 
     @Override

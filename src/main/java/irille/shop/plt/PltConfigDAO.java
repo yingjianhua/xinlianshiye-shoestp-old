@@ -2,13 +2,19 @@ package irille.shop.plt;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import irille.homeAction.HomeAction;
+import irille.pub.bean.Query;
+import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduDel;
 import irille.pub.idu.IduIns;
 import irille.pub.idu.IduOther;
 import irille.pub.idu.IduUpd;
 import irille.pub.tb.FldLanguage.Language;
+import irille.sellerAction.SellerAction;
 import irille.shop.plt.PltConfig.Variable;
+import irille.shop.usr.UsrProductCategoryDAO;
 import irille.shop.usr.UsrSupplier;
 import irille.view.plt.LanguageView;
 
@@ -33,7 +39,18 @@ public class PltConfigDAO {
 		}
 		return views;
 	}
-	
+
+	//平台语言设置查询
+	public static List<LanguageView> listview() {
+		SQL sql =new SQL(){{
+			SELECT(PltConfig.class).FROM(PltConfig.class);
+		}};
+		List<LanguageView> views=Query.sql(sql).queryMaps().stream().map(bean->new LanguageView(){{
+			setShortName((String)bean.get(PltConfig.T.VARIABLE.getFld().getCodeSqlField()));
+			setDisplayName((String)bean.get(PltConfig.T.VALUE.getFld().getCodeSqlField()));
+		}}).collect(Collectors.toList());
+		return views;
+	}
 	public static Language manageLanguage() {
 		return Language.valueOf(PltConfig.getVariable(Variable.MangeLanguage));
 	}

@@ -1,6 +1,8 @@
 package irille.view.plt;
 
-public class LanguageView {
+import irille.view.BaseView;
+
+public class LanguageView implements BaseView {
 	private String shortName;
 	private String displayName;
 	private boolean isEnabled;

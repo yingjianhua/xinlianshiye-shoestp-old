@@ -1,17 +1,18 @@
 package irille.Dao;
 
-import irille.platform.plt.View.LanguageView;
-import irille.pub.bean.BeanBase;
+import irille.pub.PropertyUtils;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
-import irille.pub.tb.FldLanguage;
+import irille.pub.idu.IduUpd;
 import irille.shop.plt.PltConfig;
-import javafx.print.PageLayout;
+
+import java.util.HashMap;
+import java.util.Map;
+import irille.platform.plt.View.LanguageView;
+import irille.pub.tb.FldLanguage;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static irille.shop.plt.PltConfig.Variable.LanguageDefault;
 
@@ -55,5 +56,14 @@ public class PltConfigDao {
             view.setDisplayName(FldLanguage.Language.valueOf(pltConfig.getValue()).displayName());
         }
         return view;
+    }
+    public static class updlang extends IduUpd<updlang, PltConfig> {
+        @Override
+        public void before() {
+            PltConfig dbbean =PltConfig.chkUniqueVariable(true, getB().getVariable());
+            PropertyUtils.copyProperties(dbbean,getB(), PltConfig.T.VALUE);
+            setB(dbbean);
+
+        }
     }
 }

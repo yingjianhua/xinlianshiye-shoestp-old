@@ -6,11 +6,14 @@ import irille.action.usr.UsrAccessAction;
 import irille.platform.plt.View.LanguageView;
 import irille.pub.bean.Bean;
 import irille.pub.tb.FldLanguage;
+import irille.pub.bean.BeanBase;
 import irille.shop.plt.PltConfig;
+import irille.shop.plt.PltConfigDAO;
 import irille.shop.usr.UsrSupplierRoleDAO;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.struts2.ServletActionContext;
+import org.json.JSONArray;
 import org.json.JSONException;
 
 import javax.inject.Inject;
@@ -55,6 +58,33 @@ public class PltConfigAction extends MgtAction<PltConfig> {
 
     public void setType(String _type) {
         this._type = _type;
+    }
+    //
+    //获取语言
+    public void enabledLanguage() throws IOException, JSONException {
+        JSONArray array = new JSONArray(PltConfigDAO.listLanguageView(), false);
+        HttpServletResponse response = ServletActionContext.getResponse();
+        response.getWriter().print(array.toString());
+    }
+    //获取数据所设置的语言列表
+    public void listview() throws  IOException{
+        write(PltConfigDAO.listview());
+    }
+    @Setter
+    @Getter
+    private  String variable;
+    @Setter
+    @Getter
+    private  String value;
+    // 修改语言设置 参数 1  对应的 variable  参数2 对应的 value
+    public  void updlang() throws  IOException {
+        PltConfig pltConfig = new PltConfig();
+        pltConfig.setVariable(variable);
+        pltConfig.setValue(value);
+        PltConfigDao.updlang pu=new PltConfigDao.updlang();
+        pu.setB(pltConfig);
+        pu.commit();
+        write();
     }
 
     /**
