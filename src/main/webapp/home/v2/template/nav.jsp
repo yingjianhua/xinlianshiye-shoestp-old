@@ -82,33 +82,60 @@
                 <!-- 顶部右侧 - 收藏 -->
                 <el-menu-item index="8" class="fr mr0">
                     <a href="/home/usr_UsrFavorites_myfavorite" target="_blank">
-                        <img src="/home/v2/static/images/nav/icon-heart.png" alt="icon-heart"
-                             style="position: relative;top: -2px;">
+                        <img src="/home/v2/static/images/nav/icon-heart.png" alt="icon-heart" style="position: relative;top: -2px;">
+                        <i class="fav_count imgnumber">${env.login==null?0:env.login.favoriteCount }</i>
+                    </a>
+                </el-menu-item>
+                <!-- 顶部右侧 - 购物车 -->
+                <el-menu-item index="9" class="fr">
+                    <a href="/home/usr_UsrCart_cartshopping" target="_blank">
+                        <img src="/home/v2/static/images/nav/icon_Shopping-Cart.png" alt="icon_Shopping-Cart" style="position: relative;top: -2px;">
+                        <i class="cart_count imgnumber">${env.login==null?0:env.login.cartCount}</i>
                     </a>
                 </el-menu-item>
                 <!-- 顶部右侧 - 询盘 -->
-                <el-menu-item index="7" class="fr"><a href="/home/usr_UsrConsult_listView"
-                                                      target="_blank"><s:text name="RFQ"/></a>
+                <el-menu-item index="7" class="fr">
+                    <a href="/home/usr_UsrConsult_listView" target="_blank">
+                        <s:text name="RFQ"/>
+                        <i class="inq_count imgnumber">${env.login==null?0:env.login.inquiryCount }</i>
+                    </a>
                 </el-menu-item>
+
                 <!-- 顶部右侧 - 注册 -->
                 <el-submenu index="6" class="fr">
                     <template slot="title"><s:text name="Register"/></template>
-                    <el-menu-item index="6-1"><a href="/home/usr_UsrPurchase_sign" target="_blank">
-                        <s:text name="Buyer"/>
-                    </a>
+                    <el-menu-item index="6-1">
+                        <a href="/home/usr_UsrPurchase_sign" target="_blank">
+                            <s:text name="Buyer"/>
+                        </a>
                     </el-menu-item>
-                    <el-menu-item index="6-2"><a href="/home/usr_UsrSupplier_supplierEntry">
-                        <s:text name="Supplier"/>
-
-                    </a>
+                    <el-menu-item index="6-2">
+                        <a href="/home/usr_UsrSupplier_supplierEntry">
+                            <s:text name="Supplier"/>
+                        </a>
                     </el-menu-item>
                 </el-submenu>
                 <!-- 顶部右侧 - 登录 -->
-                <el-menu-item index="5" class="fr"><a href="/home/usr_UsrPurchase_sign"
-                                                      target="_blank">
-                    <s:text name="Login"></s:text>
-                </a>
-                </el-menu-item>
+                <el-submenu index="5" class="fr no-arrow">
+                    <s:if test="env.login==null">
+                        <template slot="title">
+                            <a href="/home/usr_UsrPurchase_sign" target="_blank">
+                                <s:text name="Login"></s:text>
+                            </a>
+                        </template>
+                    </s:if>
+                    <s:else>
+                        <%--<a href="/home/usr_UsrPurchase_userIndex">${env.login.loginName}</a>--%>
+                        <template slot="title">
+                            <a href="/home/usr_UsrPurchase_userIndex">${env.login.loginName}</a>
+                        </template>
+                        <el-menu-item index="5-1">
+                            <a rel="nofollow" href="/home/usr_UsrPurchase_signOut">
+                                <s:text name="sign_out" />
+                            </a>
+                        </el-menu-item>
+                    </s:else>
+                </el-submenu>
             </el-menu>
         </div>
     </div>
@@ -195,6 +222,7 @@
               value: 1
             }
           ]
+<<<<<<< HEAD
         }
       }
     }, computed: {
@@ -256,6 +284,69 @@
           this.language = e.target.dataset.language;
         }
       }
+=======
+        }
+      }
+    }, computed: {
+      _language: function () {
+        for (var key in this.$data.languageList) {
+          if (this.$data.languageList[key]["shortName"] == this.$data.language) {
+            return this.$data.languageList[key]["displayName"]
+          }
+        }
+        return "-1"
+      }
+    }, mounted() {
+      var self = this
+      axios({
+        url: "/home/plt_PltConfig_getSysConfig"
+      }).then(function (res) {
+        if (res.data.ret && res.data.ret == 1) {
+          sysConfig = res.data.result
+          Vue.set(self, "language", res.data.result.current_language)
+          Vue.set(self, "languageList", res.data.result.languages)
+        } else {
+          console.error("ERR::FLAG")
+        }
+      }).catch(function (err) {
+        console.error(err)
+        console.error("ERR::FLAG")
+      })
+    },
+    methods: {
+      searchClick() {
+        window.location.href = "/home/pdt_PdtProduct?Keyword=" + this.search.keyword
+            + "&v=2&searchtype=" + this.topSearchBarCategory
+      },
+      handleTopNavSelect(key, keyPath) {
+        console.log(key, keyPath);
+      },
+      changeLang() {
+        var self = this
+        axios({
+          url: "/home/plt_PltConfig_changeLanguage",
+          method: "get",
+          params: {
+            request_locale: this.$data.language
+          }
+        }).then(function (res) {
+          if (res.data.ret && res.data.ret == 1) {
+            location.reload();
+          } else {
+            console.error("ERR::FLAG")
+          }
+        })
+
+      },
+      handleLanguageSelect(e) {
+        console.log("click")
+        console.log(e.target.dataset.language)
+        console.log(e.currentTarget)
+        if (e.target && e.target.dataset && e.target.dataset.language) {
+          this.language = e.target.dataset.language;
+        }
+      }
+>>>>>>> dd435b4... Merge remote-tracking branch 'origin/整合' into 整合
     }
   })
   window.onscroll = function () {
@@ -264,4 +355,21 @@
     document.getElementById('new-top-search').style.left = sl + 'px';
   }
 </script>
-<div style="height: 114px;"></div>
+<div style="height: 114px;">
+</div>
+
+<style scope>
+    .el-menu-item .imgnumber {
+        height: 12px;
+        min-width: 12px;
+        background: #ff3c3c;
+        border-radius: 8px;
+        right: -6px;
+        top: 4px;
+        line-height: 13px;
+        text-align: center;
+        color: #fff;
+        position: absolute;
+    }
+
+</style>
