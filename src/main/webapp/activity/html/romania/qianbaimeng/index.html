@@ -141,9 +141,12 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 			<div class="w1200">
 				<h2 class="title-common tc">PRODUCT <span class="c333">GALLERY</span></h2>
 				<ul class="content-wrap">
-					<a class="item" :href="product.linkUrl" target="_blank" v-for="product in productList">
+					<span class="item" href="javascript:void(0)" target="_blank" v-for="product in productList">
 						<img :src="product.url" alt="product" class="product-pic">
-					</a>
+					</span>
+					<!-- <a class="item" :href="product.linkUrl" target="_blank" v-for="product in productList">
+						<img :src="product.url" alt="product" class="product-pic">
+					</a> -->
 				</ul>
 			</div>
 		</div>
@@ -364,6 +367,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 					  detail: this.form.advisory,
 					},{allowDots: true}))
 					.then((res)=>{
+						gtag_report_conversion();
 						if(res.data.ret!=1){
 							this.$message.error('Network error, please try again later');
 							return
@@ -385,38 +389,37 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 		})
 	</script>
 
-	<!-- 轮播 -->
-	<script>
+<!-- 代码追踪 -->
+<!-- Global site tag (gtag.js) - Google Ads: 775253130 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-775253130"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  </script>
+  gtag('config', 'AW-775253130');
+	gtag('config', 'UA-131117317-2');
 
-	<!-- 代码追踪 -->
-	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113892728-1"></script>
-	<script>
-	    window.dataLayer = window.dataLayer || [];
+	function gtag_report_conversion(url) {
+	  gtag('event', 'conversion', {
+	      'send_to': 'AW-775253130/vTIsCLWOzZIBEIrZ1fEC'
+	  });
+	  return false;
+	}
+</script>
 
-	    function gtag() {
-	        dataLayer.push(arguments);
-	    }
-
-	    gtag('js', new Date());
-
-	    gtag('config', 'UA-113892728-1');
-	</script>
-
-
-	<script type="text/javascript">
-		var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-		(function(){
-			var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-			s1.async=true;
-			s1.src='https://embed.tawk.to/5b8fcb48f31d0f771d8476f6/default';
-			s1.charset='UTF-8';
-			s1.setAttribute('crossorigin','*');
-			s0.parentNode.insertBefore(s1,s0);
-		})();
-	</script> -->
-	<!--End of Tawk.to Script-->
+<script type="text/javascript">
+	var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+	(function(){
+		var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+		s1.async=true;
+		s1.src='https://embed.tawk.to/5b8fcb48f31d0f771d8476f6/default';
+		s1.charset='UTF-8';
+		s1.setAttribute('crossorigin','*');
+		s0.parentNode.insertBefore(s1,s0);
+	})();
+</script>
+<!--End of Tawk.to Script-->
 </body>
 
 </html>

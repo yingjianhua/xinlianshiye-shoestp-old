@@ -90,26 +90,30 @@
 			<div class="title">Sports & Casual,<br>
 				The Global Trade In Shoes</div>
 			<div class="global-product-list">
-				<a class="global-product-item" href="https://www.shoestp.com/2019-new-fashion-men-casual-shoes-personalized-men-canvas-shoes-wholesale_p8837.html">
-					<!-- <a href=""> -->
+				<a class="global-product-item" href="javascript:void(0)">
 						<img src="./images/goods1.jpg" alt="">
-					<!-- </a> -->
+				</a>
+				<a class="global-product-item" href="javascript:void(0)">
+						<img src="./images/goods2.jpg" alt="">
+				</a>
+				<a class="global-product-item" href="javascript:void(0)">
+						<img src="./images/goods3.jpg" alt="">
+				</a>
+				<a class="global-product-item" href="javascript:void(0)">
+						<img src="./images/goods4.jpg" alt="">
+				</a>
+				<!-- <a class="global-product-item" href="https://www.shoestp.com/2019-new-fashion-men-casual-shoes-personalized-men-canvas-shoes-wholesale_p8837.html">
+						<img src="./images/goods1.jpg" alt="">
 				</a>
 				<a class="global-product-item" href="https://www.shoestp.com/2019-new-fashion-men-casual--leisure-shoes-personalized-men-canvas-shoes-wholesale_p8844.html">
-					<!-- <a href=""> -->
 						<img src="./images/goods2.jpg" alt="">
-					<!-- </a> -->
 				</a>
 				<a class="global-product-item" href="https://www.shoestp.com/new-design-factory-wholesale-students-custom-casual-man-fashion-_p9075.html">
-					<!-- <a href=""> -->
 						<img src="./images/goods3.jpg" alt="">
-					<!-- </a> -->
 				</a>
 				<a class="global-product-item" href="https://www.shoestp.com/-fashion-lace-up-shoes-leather-athletic-men's-shoes-wholesale-casual-men-sport-shoes-for-man_p9074.html">
-					<!-- <a href=""> -->
 						<img src="./images/goods4.jpg" alt="">
-					<!-- </a> -->
-				</a>
+				</a> -->
 			</div>
 			<div>
 				<div style="font-size:1.25rem;font-weight:bold;line-height:2rem;">Product Show</div>
@@ -370,6 +374,7 @@ isInquiryFormatRight(){
 					},{allowDots: true}))
 					.then((res)=>{
             console.log(res)
+						gtag_report_conversion();
 						if(res.data.ret!=1){
 							this.$toast.error('Network error, please try again later');
 						}
@@ -415,6 +420,38 @@ isInquiryFormatRight(){
 			}
 		})
 	</script>
+
+	<!-- 代码追踪 -->
+	<!-- Global site tag (gtag.js) - Google Ads: 775270855 -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=AW-775270855"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'AW-775270855');
+	  gtag('config', 'UA-131117317-8');
+
+	  function gtag_report_conversion(url) {
+	    gtag('event', 'conversion', {
+	        'send_to': 'AW-775270855/jPj4CL6OzZIBEMfj1vEC'
+	    });
+	    return false;
+	  }
+	</script>
+
+<script type="text/javascript">
+	var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+	(function(){
+		var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+		s1.async=true;
+		s1.src='https://embed.tawk.to/5b8fcb48f31d0f771d8476f6/default';
+		s1.charset='UTF-8';
+		s1.setAttribute('crossorigin','*');
+		s0.parentNode.insertBefore(s1,s0);
+	})();
+</script>
+<!--End of Tawk.to Script-->
 </body>
 
 </html>
