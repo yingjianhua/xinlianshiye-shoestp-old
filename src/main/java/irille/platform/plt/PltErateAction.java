@@ -1,10 +1,22 @@
 package irille.platform.plt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import irille.action.ActionBase;
 import irille.action.MgtAction;
+import irille.core.sys.Sys;
+import irille.pub.svr.LoginUserMsg;
+import irille.pub.util.upload.ImageUpload;
 import irille.shop.plt.PltErate;
 import irille.shop.plt.PltErateDAO;
+import irille.view.plt.ImageView;
+import lombok.Getter;
+import lombok.Setter;
+import org.json.JSONObject;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -47,21 +59,55 @@ public class PltErateAction  extends MgtAction<PltErate> {
         bf.commit();
         write();
     }
-    //修改货币
-    public void Upd() throws IOException {
-        PltErateDAO.Upd bf=new PltErateDAO.Upd();
+    //修改货币对象
+    public void updprate() throws IOException {
+        PltErateDAO.Upderate bf=new PltErateDAO.Upderate();
         bf.setB(getBean());
         bf.commit();
         write();
     }
+
+
     //插入货币
-    public void  inspltErate(){
+    public void  inspltErate() throws  IOException{
         PltErateDAO.InsInit ins = new PltErateDAO.InsInit();
         List<PltErate> list = new ArrayList<>();
         PltErate pe= getBean();
+        pe.setSiteCur(Sys.OYn.NO.getLine().getKey());
+        pe.setSupCur(Sys.OYn.NO.getLine().getKey());
+        pe.setNowrate(pe.getRate().divide(PltErateDAO.getrate(), 4, BigDecimal.ROUND_UP));
+        LoginUserMsg lu=(LoginUserMsg)this.session.get(LOGIN);
         list.add(PltErateDAO.InsInit.build(pe.getLogo(), pe.getCurName(), pe.getSymbol(), pe.getEnabled()==1?true:false,
-                pe.getSiteCur()==1?true:false,pe.getRate(), pe.getSupCur()==1?true:false,pe.getNowrate()));
+                pe.getSiteCur()==1?true:false,pe.getRate(), pe.getSupCur()==1?true:false,pe.getNowrate(),lu.get_user().getPkey()));
         ins.setList(list);
         ins.commit();
+        write();
+    }
+
+    @Getter
+    @Setter
+    private String fileFileName = "";
+    @Getter
+    @Setter
+    private File file;
+    public void upload() throws Exception {
+        if(getLoginSys() == null) {
+            JSONObject json = new JSONObject();
+            json.put("success", false);
+            json.put("msg", "登录超时,请重新登录");
+            writerOrExport(json);
+        } else {
+            BufferedImage bufferedImage = ImageIO.read(new FileInputStream(file.getAbsolutePath()));
+            int width = bufferedImage.getWidth();
+            int height = bufferedImage.getHeight();
+            if(width != 42 && height != 30)
+                throw LOG.err("wrongSize","仅限上传42*30PX的图片!");
+            ImageView view = ImageUpload.upload(beanClazz(), fileFileName, file);
+            JSONObject json = new JSONObject();
+            json.put("ret", 1);
+            json.put("result", new JSONObject(new ObjectMapper().writeValueAsString(view)));
+            json.put("success", true);
+            writerOrExport(json);
+        }
     }
 }
