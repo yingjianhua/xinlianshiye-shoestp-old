@@ -58,7 +58,16 @@
             features and humanistic connotation, our products have won high reputation and favorable comment from
             customers over the years.</p>
         <img src="images/Sports&Casual.png" name="sports"/>
-        <a href="https://www.shoestp.com/new-men's-shoes-casual-men's-lazy-leather-shoes-leather-sets-of-feet-plus-velvet-warm-single-shoes-round-head-shoes_p8989.html">
+        <a href="javascript:void(0)">
+            <img src="images/men-01.png" name="men" alt=""/>
+        </a>
+        <a href="javascript:void(0)">
+            <img src="images/men-02.png" name="men" alt=""/>
+        </a>
+        <a href="javascript:void(0)">
+            <img src="images/men-03.png" name="men" alt=""/>
+        </a>
+        <!-- <a href="https://www.shoestp.com/new-men's-shoes-casual-men's-lazy-leather-shoes-leather-sets-of-feet-plus-velvet-warm-single-shoes-round-head-shoes_p8989.html">
             <img src="images/men-01.png" name="men" alt=""/>
         </a>
         <a href="https://www.shoestp.com/business-dress-casual-shoes-autumn-and-winter-paint-leather-british-men's-shoes-breathable-hollow-strap-shoes-men's-wedding-shoes_p8990.html">
@@ -66,10 +75,19 @@
         </a>
         <a href="https://www.shoestp.com/new-men's-shoes-casual-men's-lazy-leather-shoes-leather-sets-of-feet-plus-velvet-warm-single-shoes-round-head-shoes_p8991.html">
             <img src="images/men-03.png" name="men" alt=""/>
-        </a>
+        </a> -->
         <img src="images/Men'sShoes.png" name="mens"/>
         <p class="Shoes">simple but fashionable, top grade, abrasion-resistant, slip-resistant, flexible</p>
-        <a href="https://www.shoestp.com/new-men's-shoes-casual-men's-lazy-leather-shoes-leather-sets-of-feet-plus-velvet-warm-single-shoes-round-head-shoes_p9012.html">
+        <a href="javascript:void(0)">
+            <img src="images/women-01.png" name="women" alt=""/>
+        </a>
+        <a href="javascript:void(0)">
+            <img src="images/women-02.png" name="women" alt=""/>
+        </a>
+        <a href="javascript:void(0)">
+            <img src="images/women-03.png" name="women" alt=""/>
+        </a>
+        <!-- <a href="https://www.shoestp.com/new-men's-shoes-casual-men's-lazy-leather-shoes-leather-sets-of-feet-plus-velvet-warm-single-shoes-round-head-shoes_p9012.html">
             <img src="images/women-01.png" name="women" alt=""/>
         </a>
         <a href="https://www.shoestp.com/new-men's-shoes-casual-men's-lazy-leather-shoes-leather-sets-of-feet-plus-velvet-warm-single-shoes-round-head-shoes_p9014.html">
@@ -77,7 +95,7 @@
         </a>
         <a href="https://www.shoestp.com/new-men's-shoes-casual-men's-lazy-leather-shoes-leather-sets-of-feet-plus-velvet-warm-single-shoes-round-head-shoes_p9013.html">
             <img src="images/women-03.png" name="women" alt=""/>
-        </a>
+        </a> -->
         <img src="images/Women'sShoes.png" name="womens"/>
         <p class="Shoes">Dynamic and comfortable, stylish, abrasion-resistant, slip-resistant</p>
         <a href="javascript:void(0);" class="button" @click="inquiryNow">Inquiry Now</a>
@@ -300,6 +318,7 @@
                                 detail: self.ruleForm.detail
                             })
                         ).then((res) => {
+                            gtag_report_conversion();
                             if (res.data.ret == 1) {
                                 self.$message({
                                     message: 'submit successfully!',
@@ -320,17 +339,36 @@
         }
     })
 </script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
+<!-- 代码追踪 -->
+<!-- Global site tag (gtag.js) - Google Ads: 775251182 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-775251182"></script>
 <script>
-    window.dataLayer = window.dataLayer || [];
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-    function gtag() {
-        dataLayer.push(arguments);
-    }
+  gtag('config', 'AW-775251182');
+  gtag('config', 'UA-131117317-5');
 
-    gtag('js', new Date());
-    gtag('config', 'AW-783435725');
-    gtag('config', 'UA-127715615-6');
+  function gtag_report_conversion(url) {
+    gtag('event', 'conversion', {
+        'send_to': 'AW-775251182/-S9_CP6KupIBEO7J1fEC'
+    });
+    return false;
+  }
 </script>
+
+<script type="text/javascript">
+	var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+	(function(){
+		var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+		s1.async=true;
+		s1.src='https://embed.tawk.to/5b8fcb48f31d0f771d8476f6/default';
+		s1.charset='UTF-8';
+		s1.setAttribute('crossorigin','*');
+		s0.parentNode.insertBefore(s1,s0);
+	})();
+</script>
+<!--End of Tawk.to Script-->
 </body>
 </html>

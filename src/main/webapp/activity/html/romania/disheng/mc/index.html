@@ -100,29 +100,37 @@
         </div>
         <div class="global-product-list">
             <a class="global-product-item"
-               href="https://www.shoestp.com/2019-fashion-sneaker-factory-custom-high-quality-woman-sport-shoes-manufacturer_p8811.html">
-                <!-- <a href=""> -->
+               href="javascript:void(0)">
                 <img src="./images/goods1.jpg" alt="">
-                <!-- </a> -->
+            </a>
+            <a class="global-product-item"
+               href="javascript:void(0)">
+                <img src="./images/goods2.jpg" alt="">
+            </a>
+            <a class="global-product-item"
+               href="javascript:void(0)">
+                <img src="./images/goods3.jpg" alt="">
+            </a>
+            <a class="global-product-item"
+               href="javascript:void(0)">
+                <img src="./images/goods4.jpg" alt="">
+            </a>
+            <!-- <a class="global-product-item"
+               href="https://www.shoestp.com/2019-fashion-sneaker-factory-custom-high-quality-woman-sport-shoes-manufacturer_p8811.html">
+                <img src="./images/goods1.jpg" alt="">
             </a>
             <a class="global-product-item"
                href="https://www.shoestp.com/2019-women-casual-shoes-fashion-sneaker-factory-custom-high-quality-woman-sport-shoes-manufacturer_p8814.html">
-                <!-- <a href=""> -->
                 <img src="./images/goods2.jpg" alt="">
-                <!-- </a> -->
             </a>
             <a class="global-product-item"
                href="https://www.shoestp.com/2019-women-casual-shoes-classic-design-flat-leisure-comfort-women-casual-shoes_p8818.html">
-                <!-- <a href=""> -->
                 <img src="./images/goods3.jpg" alt="">
-                <!-- </a> -->
             </a>
             <a class="global-product-item"
                href="https://www.shoestp.com/2019-women-casual-shoes-latest-spring-hole-shoes-casual-lazy-flat-shoes_p8821.html">
-                <!-- <a href=""> -->
                 <img src="./images/goods4.jpg" alt="">
-                <!-- </a> -->
-            </a>
+            </a> -->
         </div>
         <div>
             <div style="font-size:1.25rem;font-weight:bold;line-height:2rem;">Product Show</div>
@@ -412,7 +420,7 @@
                         )
                     )
                     .then(res => {
-                        console.log(res);
+                        gtag_report_conversion();
                         if (res.data.ret != 1) {
                             this.$toast.error("Network error, please try again later");
                         }
@@ -454,18 +462,38 @@
         computed: {}
     });
 </script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
+
+<!-- 代码追踪 -->
+<!-- Global site tag (gtag.js) - Google Ads: 775270897 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-775270897"></script>
 <script>
-    window.dataLayer = window.dataLayer || [];
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-    function gtag() {
-        dataLayer.push(arguments);
-    }
+  gtag('config', 'AW-775270897');
+  gtag('config', 'UA-131117317-10');
 
-    gtag('js', new Date());
-    gtag('config', 'AW-783435725');
-    gtag('config', 'UA-127715615-6');
+  function gtag_report_conversion(url) {
+    gtag('event', 'conversion', {
+        'send_to': 'AW-775270897/OE2fCJGLzZIBEPHj1vEC'
+    });
+    return false;
+  }
 </script>
+
+<script type="text/javascript">
+	var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+	(function(){
+		var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+		s1.async=true;
+		s1.src='https://embed.tawk.to/5b8fcb48f31d0f771d8476f6/default';
+		s1.charset='UTF-8';
+		s1.setAttribute('crossorigin','*');
+		s0.parentNode.insertBefore(s1,s0);
+	})();
+</script>
+<!--End of Tawk.to Script-->
 </body>
 
 </html>

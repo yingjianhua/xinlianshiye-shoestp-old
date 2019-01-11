@@ -41,7 +41,13 @@
         advanced<br>productiontechnology,the establishment of a strict scientific modern standard management
         systemfication. </p>
     <h2>PRODUCT<br>GALLERY</h2>
-    <a href="https://www.shoestp.com/fengsheng-fashion-suede-leather-with-elastic-women-chelsea-ankle-boot_p6758.html
+    <a href="javascript:void(0)"><img src="imgs/mc-fengsheng1.png" alt=""></a>
+    <a href="javascript:void(0)"><img src="imgs/mc-fengsheng2.png" alt=""></a>
+    <a href="javascript:void(0)"><img src="imgs/mc-fengsheng3.png" alt=""></a>
+    <a href="javascript:void(0)"><img src="imgs/mc-fengsheng4.png" alt=""></a>
+    <a href="javascript:void(0)"><img src="imgs/mc-fengsheng5.png" alt=""></a>
+    <a href="javascript:void(0)"><img src="imgs/mc-fengsheng6.png" alt=""></a>
+    <!-- <a href="https://www.shoestp.com/fengsheng-fashion-suede-leather-with-elastic-women-chelsea-ankle-boot_p6758.html
 "><img src="imgs/mc-fengsheng1.png" alt=""></a>
     <a href="https://www.shoestp.com/fengsheng-pink-ladies-chunky-heels-ankle-boots-with-rivet-decoration_p6760.html
 "><img src="imgs/mc-fengsheng2.png" alt=""></a>
@@ -52,7 +58,7 @@
     <a href="https://www.shoestp.com/fengsheng-elegant-women-shoes-buckle-new-models-boots_p6769.html
 "><img src="imgs/mc-fengsheng5.png" alt=""></a>
     <a href="https://www.shoestp.com/fengsheng-durable-comfortable-brown-rubber-outsole-half-knee-high-boots_p6771.html
-"><img src="imgs/mc-fengsheng6.png" alt=""></a>
+"><img src="imgs/mc-fengsheng6.png" alt=""></a> -->
     <h2>DESIGN<br><span style="color:rgb(132,132,132);">OPERATION</span></h2>
     <template v-for="item,index in designcon">
         <h3>{{item.h3}}</h3>
@@ -230,6 +236,7 @@
                         }
                     )
                 ).then(function (res) {
+                    gtag_report_conversion();
                     if (res.data.ret == 1) {
                         self.$toast.success('Submitted Successfully');
                         setTimeout(function () {
@@ -270,17 +277,37 @@
         }
     })
 </script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
+
+<!-- 代码追踪 -->
+<!-- Global site tag (gtag.js) - Google Ads: 775392846 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-775392846"></script>
 <script>
-    window.dataLayer = window.dataLayer || [];
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-    function gtag() {
-        dataLayer.push(arguments);
-    }
+  gtag('config', 'AW-775392846');
+  gtag('config', 'UA-131117317-6');
 
-    gtag('js', new Date());
-    gtag('config', 'AW-783435725');
-    gtag('config', 'UA-127715615-6');
+  function gtag_report_conversion(url) {
+    gtag('event', 'conversion', {
+        'send_to': 'AW-775392846/hl8bCOqXupIBEM6c3vEC'
+    });
+    return false;
+  }
 </script>
+
+<script type="text/javascript">
+	var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+	(function(){
+		var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+		s1.async=true;
+		s1.src='https://embed.tawk.to/5b8fcb48f31d0f771d8476f6/default';
+		s1.charset='UTF-8';
+		s1.setAttribute('crossorigin','*');
+		s0.parentNode.insertBefore(s1,s0);
+	})();
+</script>
+<!--End of Tawk.to Script-->
 </body>
 </html>

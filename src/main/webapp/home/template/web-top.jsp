@@ -1,4 +1,3 @@
-<%@ page import="java.util.Map" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -64,36 +63,38 @@
                         <s:text name="Romania"/>
                     </a></el-menu-item>
                 </el-submenu>
-                <el-submenu index="4" class="no-arrow">
-                    <template slot="title">
-                        <s:text name="CROWDFUNDING"/>
-                    </template>
-                    <el-menu-item index="4-1">
-                        <a href="/home/Activity_Romania_classifyactivity?category=373">
-                            Men's
-                        </a>
-                    </el-menu-item>
-                    <el-menu-item index="4-2">
-                        <a href="/home/Activity_Romania_classifyactivity?category=380">
-                            Women's
-                        </a>
-                    </el-menu-item>
-                    <el-menu-item index="4-3"><a
-                            href="/home/Activity_Romania_classifyactivity?category=387">Children</a>
-                    </el-menu-item>
-                </el-submenu>
+                <%--<el-submenu index="4" class="no-arrow">--%>
+                <%--<template slot="title">--%>
+                <%--<s:text name="CROWDFUNDING"/>--%>
+                <%--</template>--%>
+                <%--<el-menu-item index="4-1">--%>
+                <%--<a href="/home/Activity_Romania_classifyactivity?category=373">--%>
+                <%--Men's--%>
+                <%--</a>--%>
+                <%--</el-menu-item>--%>
+                <%--<el-menu-item index="4-2">--%>
+                <%--<a href="/home/Activity_Romania_classifyactivity?category=380">--%>
+                <%--Women's--%>
+                <%--</a>--%>
+                <%--</el-menu-item>--%>
+                <%--<el-menu-item index="4-3"><a--%>
+                <%--href="/home/Activity_Romania_classifyactivity?category=387">Children</a>--%>
+                <%--</el-menu-item>--%>
+                <%--</el-submenu>--%>
 
                 <!-- 顶部右侧 - 收藏 -->
                 <el-menu-item index="8" class="fr mr0">
                     <a href="/home/usr_UsrFavorites_myfavorite" target="_blank">
-                        <img src="/home/v2/static/images/nav/icon-heart.png" alt="icon-heart" style="position: relative;top: -2px;">
+                        <img src="/home/v2/static/images/nav/icon-heart.png" alt="icon-heart"
+                             style="position: relative;top: -2px;">
                         <i class="fav_count imgnumber">${env.login==null?0:env.login.favoriteCount }</i>
                     </a>
                 </el-menu-item>
                 <!-- 顶部右侧 - 购物车 -->
                 <el-menu-item index="9" class="fr">
                     <a href="/home/usr_UsrCart_cartshopping" target="_blank">
-                        <img src="/home/v2/static/images/nav/icon_Shopping-Cart.png" alt="icon_Shopping-Cart" style="position: relative;top: -2px;">
+                        <img src="/home/v2/static/images/nav/icon_Shopping-Cart.png" alt="icon_Shopping-Cart"
+                             style="position: relative;top: -2px;">
                         <i class="cart_count imgnumber">${env.login==null?0:env.login.cartCount}</i>
                     </a>
                 </el-menu-item>
@@ -136,7 +137,7 @@
                         </template>
                         <el-menu-item index="5-1">
                             <a rel="nofollow" href="/home/usr_UsrPurchase_signOut">
-                                <s:text name="sign_out" />
+                                <s:text name="sign_out"/>
                             </a>
                         </el-menu-item>
                     </s:else>
@@ -148,33 +149,33 @@
 <script src="/home/v2/static/lang/element/en.js"></script>
 <script>
 
-  ELEMENT.locale(ELEMENT.lang.en)
-  var sysConfig = {
-    baseImageUrl: "https://image.shoestp.com",
-    currency_symbol: "$",
-    current_language: "en",
-  }
-  var messages = {
-    shoestp: null
-  }
-  var nav = new Vue({
-    el: "#nav",
-    data() {
-      return {
-        activeTopNavIndex: '1', //默认选中的web-top澳航栏
-      }
-    },
-    methods: {
-      handleTopNavSelect(key, keyPath) {
-        console.log(key, keyPath);
-      },
+    ELEMENT.locale(ELEMENT.lang.en)
+    var sysConfig = {
+        baseImageUrl: "https://image.shoestp.com",
+        currency_symbol: "$",
+        current_language: "en",
     }
-  })
-  window.onscroll = function () {
-    var sl = -Math.max(document.body.scrollLeft, document.documentElement.scrollLeft);
-    document.getElementById('new-top-nav').style.left = sl + 'px';
-    document.getElementById('new-top-search').style.left = sl + 'px';
-  }
+    var messages = {
+        shoestp: null
+    }
+    var nav = new Vue({
+        el: "#nav",
+        data() {
+            return {
+                activeTopNavIndex: '1', //默认选中的web-top澳航栏
+            }
+        },
+        methods: {
+            handleTopNavSelect(key, keyPath) {
+                console.log(key, keyPath);
+            },
+        }
+    })
+    window.onscroll = function () {
+        var sl = -Math.max(document.body.scrollLeft, document.documentElement.scrollLeft);
+        document.getElementById('new-top-nav').style.left = sl + 'px';
+        document.getElementById('new-top-search').style.left = sl + 'px';
+    }
 </script>
 
 <style scope>
