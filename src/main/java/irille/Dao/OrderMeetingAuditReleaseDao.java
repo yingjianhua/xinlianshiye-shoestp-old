@@ -61,7 +61,7 @@ public class OrderMeetingAuditReleaseDao {
             sql.WHERE(OrderMeetingAuditRelease.T.STATUS, "=?", status);
         }
         Integer count = Query.sql(sql).queryCount();
-        List<ApplicationsView> list = Query.sql(sql).queryMaps().stream().map(o -> {
+        List<ApplicationsView> list = Query.sql(sql.LIMIT(start,limit)).queryMaps().stream().map(o -> {
             ApplicationsView view = new ApplicationsView();
             view.setPkey(Integer.valueOf(String.valueOf(o.get("pkey"))));
             view.setOmtpkey(Integer.valueOf(String.valueOf(o.get("omtpkey"))));
