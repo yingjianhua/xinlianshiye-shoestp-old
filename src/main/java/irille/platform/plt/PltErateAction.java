@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import irille.action.ActionBase;
 import irille.action.MgtAction;
 import irille.core.sys.Sys;
+import irille.pub.bean.BeanBase;
 import irille.pub.svr.LoginUserMsg;
 import irille.pub.util.upload.ImageUpload;
 import irille.shop.plt.PltErate;
@@ -14,6 +15,7 @@ import lombok.Setter;
 import org.json.JSONObject;
 
 import javax.imageio.ImageIO;
+import javax.inject.Inject;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PltErateAction  extends MgtAction<PltErate> {
+    @Inject
+    private PltErateDAO pltErateDAO;
     @Override
     public Class beanClazz() {
         return PltErate.class;
@@ -109,5 +113,13 @@ public class PltErateAction  extends MgtAction<PltErate> {
             json.put("success", true);
             writerOrExport(json);
         }
+    }
+    /**
+     * 获取已开启的所有货币
+     * @Date 2019/01/11 16:21
+     * @author zjl
+     */
+    public void getCurrencyList() throws IOException {
+        write(pltErateDAO.getCurrencyList());
     }
 }
