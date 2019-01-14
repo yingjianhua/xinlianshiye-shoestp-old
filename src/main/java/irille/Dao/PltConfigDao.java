@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static irille.shop.plt.PltConfig.Variable.LanguageDefault;
+import static irille.shop.plt.PltConfig.Variable.MangeLanguage;
 
 public class PltConfigDao {
     public Map<Integer, Map<String, String>> getLanguageList() {
@@ -48,7 +49,7 @@ public class PltConfigDao {
         SQL sql = new SQL();
         sql.SELECT(PltConfig.class);
         sql.FROM(PltConfig.class);
-        sql.WHERE(PltConfig.T.VARIABLE, "=?", LanguageDefault.toString());
+        sql.WHERE(PltConfig.T.VARIABLE, "=?", MangeLanguage.toString());
         PltConfig pltConfig = Query.sql(sql).query(PltConfig.class);
         LanguageView view = new LanguageView();
         if (pltConfig.getValue() != null) {
