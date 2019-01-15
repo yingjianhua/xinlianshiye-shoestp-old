@@ -37,6 +37,12 @@ public class OrderMeetingAuditReleaseDao {
      * *@anthor zjl
      */
     public Page getApplications(Integer start, Integer limit, String omtName, Integer status) {
+        if (null == start) {
+            start = 0;
+        }
+        if (null == limit) {
+            limit = 10;
+        }
         OrderMeetingAuditRelease.TB.getCode();
         SQL sql = new SQL();
         sql.SELECT(OrderMeetingAuditRelease.T.PKEY,"pkey");//审核pkey

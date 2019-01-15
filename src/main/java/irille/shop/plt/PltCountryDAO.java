@@ -218,6 +218,12 @@ public class PltCountryDAO {
 
     //获取国家列表  参数 国家名称
     public static Page list(String Countryname, Integer start, Integer limit) {
+        if (null == start) {
+            start = 0;
+        }
+        if (null == limit) {
+            limit = 10;
+        }
         SQL sql = new SQL() {{
             SELECT(PltCountry.class)
                     .SELECT(PltErate.T.SYMBOL)
