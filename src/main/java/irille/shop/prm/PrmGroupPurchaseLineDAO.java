@@ -33,7 +33,7 @@ public class PrmGroupPurchaseLineDAO
    * 需搜索字段:/PrmGroupPurchaseLine.T.COUNT,PrmGroupPurchaseLine.T.PKEY,PdtProduct.T.CUR_PRICE,PdtProduct.T.PICTURE/PdtProduct.T.NAME/原始产品curprice/PdtProduct.T.DEFAULT_REVIEW_RATING
    * 查询条件 :/产品上架/活动pkey/产品分类/分页
    *
-   * @param lang 语言
+   * @param lang
    * @param start 分页查询起始位置
    * @param limit 每页记录数
    * @param category 产品分类
