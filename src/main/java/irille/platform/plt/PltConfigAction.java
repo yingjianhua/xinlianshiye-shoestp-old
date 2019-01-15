@@ -24,7 +24,7 @@ import java.util.Map;
 public class PltConfigAction extends MgtAction<PltConfig> {
     @Override
     public Class beanClazz() {
-        return null;
+        return PltConfig.class;
     }
 
     @Inject
@@ -97,7 +97,7 @@ public class PltConfigAction extends MgtAction<PltConfig> {
     }
 
     /**
-     * 获取默认语言
+     * 平台 获取默认语言
      * Date 2019/01/08 11:43
      * zjl
      */
