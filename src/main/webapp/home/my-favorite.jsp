@@ -500,6 +500,22 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <%--<s:text name="my-favorite.Added_Successfully"/>', {icon: 1});--%>
     				}
     			}else{

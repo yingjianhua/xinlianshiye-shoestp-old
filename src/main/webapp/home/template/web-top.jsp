@@ -92,6 +92,7 @@
 <script type="text/javascript" src="/home/static/js/global(1).js"></script>
 <script type="text/javascript" src="/home/static/js/user.js"></script>
 <script type="text/javascript" src="/home/static/js/moment-with-locales.min.js"></script>
+<script src='/home/v2/static/js/base/axios.min.js'></script>
 
 
 <link rel="stylesheet" href="/home/v2/static/css/nav/new-top-nav-style.css"/>
@@ -302,55 +303,6 @@
         </div>
     </div>
 
-    <!-- 顶部搜索栏 -->
-    <div id="new-top-search" class="wide-wrap">
-        <div class="wide new-top-search">
-            <!-- 左侧 - logo -->
-            <div class="logo-box">
-                <a href="/"><img src="/home/v2/static/images/nav/logo.png" alt="logo"></a>
-            </div>
-
-            <!-- 搜索条 -->
-            <div class="top-input-bar">
-                <!-- 类型 下拉选择 -->
-                <div class="cotegory-select-box">
-                    <el-select v-model="topSearchBarCategory"
-                               placeholder="<s:text name="plesaeSelect"/>"
-                               popper-class="top-search-bar-cotegory-select-dropdown">
-                        <el-option v-for="item in search.typeList" :key="item.value"
-                                   :label="item.label"
-                                   :value="item.value">
-                        </el-option>
-                    </el-select>
-                </div>
-                <div class="input-box">
-                    <input type="text" @keyup.enter="searchClick" v-model="search.keyword">
-                </div>
-                <div class="btn-search" @click="searchClick">
-                    <i class="el-icon-search"></i>
-                </div>
-            </div>
-
-            <a class="btn-get-quotations" href="/home/usr_UsrConsult_listView">
-                <s:text name="Get_Quotations"/>
-            </a>
-            <div class="language-select" v-if="languageList.length>0">
-                <img src="/home/v2/static/images/nav/icon-global.png" alt="">
-                <br>
-                {{_language}} <i class="el-icon-arrow-down el-icon--right"></i>
-                <el-select v-model="language" placeholder="<s:text name="plesaeSelect"/>"
-                           class="top-language-select-input"
-                           popper-class="top-language-select-box"
-                           @change="changeLang"
-                >
-                    <el-option v-for="language in languageList" :key="language.shortName"
-                               :label="language.displayName"
-                               :value="language.shortName">
-                    </el-option>
-                </el-select>
-            </div>
-        </div>
-    </div>
 </div>
 
 <script>
