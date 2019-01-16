@@ -204,7 +204,7 @@
                 <c:if test="${fn:length(favoritesViews) > 0}">
                     <c:forEach items="${favoritesViews}" var="favorite">
                         <dl class="pro_item fl">
-                            <input type="checkbox" name="ckOne" onclick="checkOne()" data="${favorite.id}"/>
+                            <input type="checkbox" name="ckOne" onclick="checkOne()" data="${favorite.pdtPkey}"/>
                             <dt>
                                 <a class="pic_box"
                                    href="<c:if test='${favorite.groupLine == 0}'>/home/pdt_PdtProduct_gtProductsInfo?id=${favorite.pdtPkey }</c:if><c:if test='${favorite.groupLine != 0}'>/home/prm_PrmGroupPurchase_getGroupPdt?pkey=${favorite.groupLine}</c:if>"
@@ -225,7 +225,7 @@
                             <dd class="pro_view">
                                 <a class="pro_btn" onclick="recycleThis(${favorite.id})"><s:text
                                         name="cart.remove"/></a>
-                                <a class="pro_btn pro_btn2" onclick="addcart(${favorite.id})"><s:text
+                                <a class="pro_btn pro_btn2" onclick="addcart(${favorite.pdtPkey})"><s:text
                                         name="my-inquiry-publish.View_Inquiry"/></a>
                             </dd>
                         </dl>
@@ -438,6 +438,19 @@
                                   layer.msg(data.errCount+"个产品还未发布规格", function(){});
                             }else{
                                   layer.msg('
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
