@@ -15,7 +15,7 @@
 
 
 <link rel="stylesheet" href="/home/v2/static/css/nav/new-top-nav-style.css"/>
-<script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+<link rel="stylesheet" href="/home/v2/static/js/base/vue.min.js"/>
 <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script type="text/javascript">
