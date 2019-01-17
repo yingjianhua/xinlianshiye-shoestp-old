@@ -31,7 +31,7 @@
     <link href="./static/css/style_new.css" rel="stylesheet" type="text/css">
     <!-- 轮播插件 -->
     <script type="text/javascript" src="./static/js/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" src="./static/js/jquery.SuperSlide.2.1.1.js"></script>
+    <script type="text/javascript" src="./static/js/jquery.SuperSlide.js"></script>
     <link rel="stylesheet" href="./static/css/layer.css" type="text/css">
     <script src="./static/js/layer.js" type="text/javascript"></script>
 </head>

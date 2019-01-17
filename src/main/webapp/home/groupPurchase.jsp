@@ -32,7 +32,7 @@
     <link href="./static/css/style_new.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="./static/js/jquery-1.7.2.min.js"></script>
     <!-- 轮播插件 -->
-    <script type="text/javascript" src="./static/js/jquery.SuperSlide.2.1.1.js"></script>
+    <script type="text/javascript" src="./static/js/jquery.SuperSlide.js"></script>
     <link rel="stylesheet" href="./static/css/layer.css" type="text/css">
     <script src="./static/js/layer.js" type="text/javascript"></script>
     <script type="text/javascript" src="./static/js/main.js"></script>
@@ -208,229 +208,229 @@
 
 
     <script type="text/javascript">
-      var pkey;
-      var page = 1;
-      var category = -1;
-      var sort = -1;
-      var type = 1;
-      var allPage = 0;
-      var _self = this;
+        var pkey;
+        var page = 1;
+        var category = -1;
+        var sort = -1;
+        var type = 1;
+        var allPage = 0;
+        var _self = this;
 
-      window.onload = function () {
-        var opting = $("#activityList option[state=2]");
-        if (opting.length == 0) {
-          opting = $("#activityList [value]:eq(0)");
+        window.onload = function () {
+            var opting = $("#activityList option[state=2]");
+            if (opting.length == 0) {
+                opting = $("#activityList [value]:eq(0)");
+            }
+            category = getParam("cat", -1)
+            getActInfo(opting)
         }
-        category = getParam("cat", -1)
-        getActInfo(opting)
-      }
 
-      function chooseThisTime(time) {
-        if ($("#activityList option:eq(0)").attr("state") == undefined) {
-          layer.msg('<s:text name="groupPurchase.No_Activity"/>', {icon: 2});
-          return;
+        function chooseThisTime(time) {
+            if ($("#activityList option:eq(0)").attr("state") == undefined) {
+                layer.msg('<s:text name="groupPurchase.No_Activity"/>', {icon: 2});
+                return;
+            }
+            var opting;
+            switch (time) {
+                case 1:
+                    opting = $("#activityList option[state=2]");
+                    break;
+                case 2:
+                    opting = $("#activityList option[value=" + _self.pkey + "]").prev();
+                    break;
+                case 3:
+                    opting = $("#activityList option[value=" + _self.pkey + "]").next();
+                    break;
+            }
+            if (opting.length == 0) {
+                layer.msg('<s:text name="groupPurchase.No_Activity"/>', {icon: 2});
+                return;
+            }
+            getActInfo(opting)
         }
-        var opting;
-        switch (time) {
-          case 1:
-            opting = $("#activityList option[state=2]");
-            break;
-          case 2:
-            opting = $("#activityList option[value=" + _self.pkey + "]").prev();
-            break;
-          case 3:
-            opting = $("#activityList option[value=" + _self.pkey + "]").next();
-            break;
-        }
-        if (opting.length == 0) {
-          layer.msg('<s:text name="groupPurchase.No_Activity"/>', {icon: 2});
-          return;
-        }
-        getActInfo(opting)
-      }
 
-      function getActInfo(opt) {
-        $(opt).attr("selected", "selected")
-        var data = JSON.parse($(opt).attr("data"));
-        $("#actTitle").html("(" + data.title + ")");
-        switch (Number(data.state)) {
-          case 1:
-            $("#actState").html('<s:text name="About_To_Begin"/>');
-            break;
-          case 2:
-            $("#actState").html('<s:text name="groupPurchase.Processing"/>');
-            break;
-          case 3:
-            $("#actState").html('<s:text name="Coming_To_An_End"/>');
-            break;
-          case 4:
-            $("#actState").html('<s:text name="Ended"/>');
-            break;
-        }
-        _self.pkey = Number(data.pkey)
-        getData();
-      }
-
-      $("#activityList").on("change", function () {
-        _self.pkey = $(this).val();
-        var options = $(this).children();
-        for (var i = 0; i < options.length; i++) {
-          var data = JSON.parse($(options[i]).attr("data"));
-          if (data.pkey == _self.pkey) {
+        function getActInfo(opt) {
+            $(opt).attr("selected", "selected")
+            var data = JSON.parse($(opt).attr("data"));
             $("#actTitle").html("(" + data.title + ")");
             switch (Number(data.state)) {
-              case 1:
-                $("#actState").html('<s:text name="About_To_Begin"/>');
-                break;
-              case 2:
-                $("#actState").html('<s:text name="groupPurchase.Processing"/>');
-                break;
-              case 3:
-                $("#actState").html('<s:text name="Coming_To_An_End"/>');
-                break;
-              case 4:
-                $("#actState").html('<s:text name="Ended"/>');
-                break;
+                case 1:
+                    $("#actState").html('<s:text name="About_To_Begin"/>');
+                    break;
+                case 2:
+                    $("#actState").html('<s:text name="groupPurchase.Processing"/>');
+                    break;
+                case 3:
+                    $("#actState").html('<s:text name="Coming_To_An_End"/>');
+                    break;
+                case 4:
+                    $("#actState").html('<s:text name="Ended"/>');
+                    break;
             }
-          }
+            _self.pkey = Number(data.pkey)
+            getData();
         }
-        getData();
-      })
 
-      function chooseThisCat(cat) {
-        var span = $(".classify span");
-        for (var i = 0; i < span.length; i++) {
-          var data = $(span[i]).attr("data");
-          if (data == cat) {
-            $(span).removeClass("classifyActive");
-            $(span[i]).addClass("classifyActive");
-          }
-        }
-        _self.category = cat;
-        _self.page = 1;
-        getData();
-      }
-
-      function chooseThisSort(sort) {
-        switch (_self.type) {
-          case 1:
-            _self.type = 0;
-            break;
-          case 0:
-            _self.type = 1;
-            break;
-        }
-        _self.sort = sort;
-        getData();
-      }
-
-      function chooseThisPage(page) {
-        _self.page = page;
-        getData();
-      }
-
-      function getData() {
-        var param = {
-          "id": _self.pkey,
-          "page": _self.page,
-          "limit": 8,
-          "category": _self.category,
-          "sort": _self.sort,
-          "type": _self.type
-        };
-        $.ajax({
-          url: '/home/prm_PrmGroupPurchase_getActProduct',
-          type: 'post',
-          data: param,
-          dataType: 'JSON',
-          success: function (data) {
-            if (data.items.length == 0) {
-              $("#noGoods").show();
-              $(".procurement-goodsList").hide();
-              return;
-            } else {
-              $("#noGoods").hide();
-              $(".procurement-goodsList").show();
+        $("#activityList").on("change", function () {
+            _self.pkey = $(this).val();
+            var options = $(this).children();
+            for (var i = 0; i < options.length; i++) {
+                var data = JSON.parse($(options[i]).attr("data"));
+                if (data.pkey == _self.pkey) {
+                    $("#actTitle").html("(" + data.title + ")");
+                    switch (Number(data.state)) {
+                        case 1:
+                            $("#actState").html('<s:text name="About_To_Begin"/>');
+                            break;
+                        case 2:
+                            $("#actState").html('<s:text name="groupPurchase.Processing"/>');
+                            break;
+                        case 3:
+                            $("#actState").html('<s:text name="Coming_To_An_End"/>');
+                            break;
+                        case 4:
+                            $("#actState").html('<s:text name="Ended"/>');
+                            break;
+                    }
+                }
             }
-            renderProduct(data.items);
-            renderPage(data.page, data.pageAll);
-            _self.allPage = data.pageAll;
-          }
+            getData();
         })
-      }
 
-      function renderPage(nowPage, allPage) {
-        var frontFlag = false;
-        var backFlag = false;
-        var pageShow = '<li class="page-first" onclick="lastPage()">' +
-            '<a class="page_button">' +
-            '<em class="icon_page_prev"></em>' +
-            '</a>' +
-            '</li>';
-        for (var i = 1; i <= allPage; i++) {
-          if (nowPage == i) {
-            pageShow += '<li><font class="page_item_current" onclick="chooseThisPage(' + i + ')">'
-                + i + '</font></li>';
-          } else if (i > 1 && i < nowPage - 2) {
-            if (frontFlag == true) continue;
-            pageShow += '<li><a>...</a></li>';
-            frontFlag = true;
-          } else if (i > nowPage + 2 && i < allPage) {
-            if (backFlag == true) continue;
-            pageShow += '<li><a>...</a></li>';
-            backFlag = true;
-          } else {
-            pageShow += '<li><a onclick="chooseThisPage(' + i + ')">' + i + '</a></li>';
-          }
-
+        function chooseThisCat(cat) {
+            var span = $(".classify span");
+            for (var i = 0; i < span.length; i++) {
+                var data = $(span[i]).attr("data");
+                if (data == cat) {
+                    $(span).removeClass("classifyActive");
+                    $(span[i]).addClass("classifyActive");
+                }
+            }
+            _self.category = cat;
+            _self.page = 1;
+            getData();
         }
-        pageShow += '<li class="page_last" onclick="nextPage()">' +
-            '<a class="page_button">' +
-            '<em class="icon_page_next"></em>' +
-            '</a>' +
-            '</li>';
 
-        $("#turn_page").html(pageShow);
-      }
-
-      function nextPage() {
-        this.page = ++this.page;
-        if (this.page > this.allPage) {
-          this.page = --this.page;
-          layer.msg(lang_obj.mobile.The_last_page);
-          return;
+        function chooseThisSort(sort) {
+            switch (_self.type) {
+                case 1:
+                    _self.type = 0;
+                    break;
+                case 0:
+                    _self.type = 1;
+                    break;
+            }
+            _self.sort = sort;
+            getData();
         }
-        getData();
-      }
 
-      function lastPage() {
-        this.page = --this.page;
-        if (page <= 0) {
-          this.page = ++this.page;
-          layer.msg(lang_obj.mobile.First_page);
-          return;
+        function chooseThisPage(page) {
+            _self.page = page;
+            getData();
         }
-        getData();
-      }
 
-      function renderProduct(items) {
-        $(".procurement-item").remove();
-        var div = '';
-        $.each(items, function (i, val) {
-          div = div + '<div class="procurement-item">' +
-              '<a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=' + val.id
-              + '" target="_blank">' +
-              '<div class="procurement-img" style="height:auto;">' +
-              '<img src="' + getProPic(val.image) + '"/>' +
-              '</div>' +
-              '<div class="procurement-info">' +
-              val.name +
-              '</div>' +
-              '</a>' +
-        /*      ' <div class="procurement-price">' +
-             // '<div class="line1">' +
-            //  '<span>MOQ:' + val.count + '</span>' +
-              //'<span class="fr">${env.currency.symbols} '+val.sourcePrice+'</span>'+
+        function getData() {
+            var param = {
+                "id": _self.pkey,
+                "page": _self.page,
+                "limit": 8,
+                "category": _self.category,
+                "sort": _self.sort,
+                "type": _self.type
+            };
+            $.ajax({
+                url: '/home/prm_PrmGroupPurchase_getActProduct',
+                type: 'post',
+                data: param,
+                dataType: 'JSON',
+                success: function (data) {
+                    if (data.items.length == 0) {
+                        $("#noGoods").show();
+                        $(".procurement-goodsList").hide();
+                        return;
+                    } else {
+                        $("#noGoods").hide();
+                        $(".procurement-goodsList").show();
+                    }
+                    renderProduct(data.items);
+                    renderPage(data.page, data.pageAll);
+                    _self.allPage = data.pageAll;
+                }
+            })
+        }
+
+        function renderPage(nowPage, allPage) {
+            var frontFlag = false;
+            var backFlag = false;
+            var pageShow = '<li class="page-first" onclick="lastPage()">' +
+                '<a class="page_button">' +
+                '<em class="icon_page_prev"></em>' +
+                '</a>' +
+                '</li>';
+            for (var i = 1; i <= allPage; i++) {
+                if (nowPage == i) {
+                    pageShow += '<li><font class="page_item_current" onclick="chooseThisPage(' + i + ')">'
+                        + i + '</font></li>';
+                } else if (i > 1 && i < nowPage - 2) {
+                    if (frontFlag == true) continue;
+                    pageShow += '<li><a>...</a></li>';
+                    frontFlag = true;
+                } else if (i > nowPage + 2 && i < allPage) {
+                    if (backFlag == true) continue;
+                    pageShow += '<li><a>...</a></li>';
+                    backFlag = true;
+                } else {
+                    pageShow += '<li><a onclick="chooseThisPage(' + i + ')">' + i + '</a></li>';
+                }
+
+            }
+            pageShow += '<li class="page_last" onclick="nextPage()">' +
+                '<a class="page_button">' +
+                '<em class="icon_page_next"></em>' +
+                '</a>' +
+                '</li>';
+
+            $("#turn_page").html(pageShow);
+        }
+
+        function nextPage() {
+            this.page = ++this.page;
+            if (this.page > this.allPage) {
+                this.page = --this.page;
+                layer.msg(lang_obj.mobile.The_last_page);
+                return;
+            }
+            getData();
+        }
+
+        function lastPage() {
+            this.page = --this.page;
+            if (page <= 0) {
+                this.page = ++this.page;
+                layer.msg(lang_obj.mobile.First_page);
+                return;
+            }
+            getData();
+        }
+
+        function renderProduct(items) {
+            $(".procurement-item").remove();
+            var div = '';
+            $.each(items, function (i, val) {
+                div = div + '<div class="procurement-item">' +
+                    '<a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=' + val.id
+                    + '" target="_blank">' +
+                    '<div class="procurement-img" style="height:auto;">' +
+                    '<img src="' + getProPic(val.image) + '"/>' +
+                    '</div>' +
+                    '<div class="procurement-info">' +
+                    val.name +
+                    '</div>' +
+                    '</a>' +
+                    /*      ' <div class="procurement-price">' +
+                         // '<div class="line1">' +
+                        //  '<span>MOQ:' + val.count + '</span>' +
+                          //'<span class="fr">${env.currency.symbols} '+val.sourcePrice+'</span>'+
              // '</div>' +
               '<div class="line2">' +
               '<span class="star ' + judgeReview(val.reviewRating) + '"></span>(<span>'
@@ -439,157 +439,157 @@
               + val.curPrice + '</span>' +
               '</div>' +
               '</div>' +*/
-              '<div class="procurement-button">' +
-              '<span class="bga8" onclick="addThisToFavorite(' + val.productId
-              + ')" style=font-size:11px>' + lang_obj.mobile.Collection + '</span>' +
-              '<span class="bgdb" onclick="addThisToCart(' + val.productId + ');">'
-              + lang_obj.mobile.Add_To_Shopping_Cart + '</span>' +
-              '</div>' +
-              '</div>';
-        });
-        $("#proList").prepend(div);
-      }
+                    '<div class="procurement-button">' +
+                    '<span class="bga8" onclick="addThisToFavorite(' + val.productId
+                    + ')" style=font-size:11px>' + lang_obj.mobile.Collection + '</span>' +
+                    '<span class="bgdb" onclick="addThisToCart(' + val.productId + ');">'
+                    + lang_obj.mobile.Add_To_Shopping_Cart + '</span>' +
+                    '</div>' +
+                    '</div>';
+            });
+            $("#proList").prepend(div);
+        }
 
-      /*评分判断*/
-      function judgeReview(score) {
-        score = Math.ceil(score);
-        if (score == 0) {
-          return "star_b0";
+        /*评分判断*/
+        function judgeReview(score) {
+            score = Math.ceil(score);
+            if (score == 0) {
+                return "star_b0";
+            }
+            if (score == 1) {
+                return "star_b1";
+            }
+            if (score == 2) {
+                return "star_b2";
+            }
+            if (score == 3) {
+                return "star_b3";
+            }
+            if (score == 4) {
+                return "star_b4";
+            }
+            if (score == 5) {
+                return "star_b5";
+            }
         }
-        if (score == 1) {
-          return "star_b1";
-        }
-        if (score == 2) {
-          return "star_b2";
-        }
-        if (score == 3) {
-          return "star_b3";
-        }
-        if (score == 4) {
-          return "star_b4";
-        }
-        if (score == 5) {
-          return "star_b5";
-        }
-      }
 
-      /*获取产品图片*/
-      function getProPic(str) {
-        if (str == '') {
-          return '/home/static/images/noImage.png';
-        } else {
-          if (str.indexOf(",") != -1) {
-            return '${envConfig.imageBaseUrl}' + str.split(",")[0];
-          } else {
-            return '${envConfig.imageBaseUrl}' + str;
-          }
-        }
-      }
-
-      //活动状态
-      function toGetStatus(state) {
-        var status = '';
-        switch (state) {
-          case 0:
-            status = "未开始";
-            break;
-          case 1:
-            status = "即将开始";
-            break;
-          case 2:
-            status = "进行中";
-            break;
-          case 3:
-            status = "即将结束";
-            break;
-          case 4:
-            status = "已结束";
-            break;
-
-        }
-        return status;
-      }
-
-      function addThisToCart(data) {
-        var i = parseInt($(".cart_count").text())
-        $.ajax({
-          url: '/home/usr_UsrCart_boughtPro',
-          type: 'post',
-          data: {"pdtPkey": data},
-          dataType: 'json',
-          success: function (data) {
-            if (data.success == true) {
-              layer.msg(lang_obj.goods_info.Added_successfully, {icon: 1});
-              if (data.catPkeys != "" && data.catPkeys != null) {
-                $(".cart_count").text(i + 1)
-              }
-            } else if (data.ret == -1) {
-              $(".SignInButton").click();
+        /*获取产品图片*/
+        function getProPic(str) {
+            if (str == '') {
+                return '/home/static/images/noImage.png';
             } else {
-              layer.msg(data.msg, function () {
-              });
+                if (str.indexOf(",") != -1) {
+                    return '${envConfig.imageBaseUrl}' + str.split(",")[0];
+                } else {
+                    return '${envConfig.imageBaseUrl}' + str;
+                }
             }
-          }
-        })
-      }
+        }
 
-      function addThisToFavorite(data) {
-        var i = parseInt($(".fav_count").text())
+        //活动状态
+        function toGetStatus(state) {
+            var status = '';
+            switch (state) {
+                case 0:
+                    status = "未开始";
+                    break;
+                case 1:
+                    status = "即将开始";
+                    break;
+                case 2:
+                    status = "进行中";
+                    break;
+                case 3:
+                    status = "即将结束";
+                    break;
+                case 4:
+                    status = "已结束";
+                    break;
 
-        $.ajax({
-          url: '/home/usr_UsrFavorites_addFavorite',
-          type: 'post',
-          data: {"pdtPkey": data, "addType": 1},
-          dataType: 'json',
-          success: function (data) {
-            if (data.ret == -1) {
-              $(".SignInButton").click();
-              return;
             }
-            if (data.type == 0) {
-              layer.msg(lang_obj.mobile.Collection1, {icon: 1});
-              $(".fav_count").text(i + 1)
-            } else if (data.type == 1) {
-              layer.msg(lang_obj.mobile.Collection2, {icon: 1});
-              $(".fav_count").text(i - 1)
+            return status;
+        }
+
+        function addThisToCart(data) {
+            var i = parseInt($(".cart_count").text())
+            $.ajax({
+                url: '/home/usr_UsrCart_boughtPro',
+                type: 'post',
+                data: {"pdtPkey": data},
+                dataType: 'json',
+                success: function (data) {
+                    if (data.success == true) {
+                        layer.msg(lang_obj.goods_info.Added_successfully, {icon: 1});
+                        if (data.catPkeys != "" && data.catPkeys != null) {
+                            $(".cart_count").text(i + 1)
+                        }
+                    } else if (data.ret == -1) {
+                        $(".SignInButton").click();
+                    } else {
+                        layer.msg(data.msg, function () {
+                        });
+                    }
+                }
+            })
+        }
+
+        function addThisToFavorite(data) {
+            var i = parseInt($(".fav_count").text())
+
+            $.ajax({
+                url: '/home/usr_UsrFavorites_addFavorite',
+                type: 'post',
+                data: {"pdtPkey": data, "addType": 1},
+                dataType: 'json',
+                success: function (data) {
+                    if (data.ret == -1) {
+                        $(".SignInButton").click();
+                        return;
+                    }
+                    if (data.type == 0) {
+                        layer.msg(lang_obj.mobile.Collection1, {icon: 1});
+                        $(".fav_count").text(i + 1)
+                    } else if (data.type == 1) {
+                        layer.msg(lang_obj.mobile.Collection2, {icon: 1});
+                        $(".fav_count").text(i - 1)
+                    } else {
+                        layer.msg(lang_obj.mobile.Collection3, {icon: 2});
+                    }
+                }
+            })
+        }
+
+        function gup(name) {
+            var regexS = "[\\?&]" + name + "=([^&#]*)";  //匹配name参数对
+            var regex = new RegExp(regexS);
+            var results = regex.exec(window.location.href);//过滤超链接
+            if (results == null) {
+                return "";
             } else {
-              layer.msg(lang_obj.mobile.Collection3, {icon: 2});
+                return results[1];
             }
-          }
-        })
-      }
-
-      function gup(name) {
-        var regexS = "[\\?&]" + name + "=([^&#]*)";  //匹配name参数对
-        var regex = new RegExp(regexS);
-        var results = regex.exec(window.location.href);//过滤超链接
-        if (results == null) {
-          return "";
-        } else {
-          return results[1];
         }
-      }
 
-      function mark() {
-        var id = gup('category')
-        if (id == null || id == "") {
-          $("#0").addClass("classifyActive");
-        } else {
-          $("#" + id + "").addClass('classifyActive')
+        function mark() {
+            var id = gup('category')
+            if (id == null || id == "") {
+                $("#0").addClass("classifyActive");
+            } else {
+                $("#" + id + "").addClass('classifyActive')
+            }
         }
-      }
 
-      function getParam(str) {
-        var url = window.location.href;
-        var param = {};
-        var paramStr = url.substring(url.indexOf("?") + 1);
-        var paramArr = paramStr.split("&");
-        for (var i = 0; i < paramArr.length; i++) {
-          var params = paramArr[i].split("=");
-          param[params[0]] = params[1];
+        function getParam(str) {
+            var url = window.location.href;
+            var param = {};
+            var paramStr = url.substring(url.indexOf("?") + 1);
+            var paramArr = paramStr.split("&");
+            for (var i = 0; i < paramArr.length; i++) {
+                var params = paramArr[i].split("=");
+                param[params[0]] = params[1];
+            }
+            return param[str];
         }
-        return param[str];
-      }
     </script>
     ${supView.traceCode}
 </body>
