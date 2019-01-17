@@ -118,7 +118,7 @@ public class Plt extends PackageBase {
     public enum ErrMsgs implements IMsg {// 信息定义的类名必须为Msgs, 以便系统能检索
         // @formatter:off
         uniqueErr("记录【{0}】已存在，不可操作！"), lowPriceErr("【{0}】不能低于【{1}】"), notNull(
-                "【{0}】不能为空"),
+                "【{0}】不能为空"),last("最后一条【{0}】不可删除")
         ;
         private String _msg;
 
