@@ -204,7 +204,7 @@
                 <c:if test="${fn:length(favoritesViews) > 0}">
                     <c:forEach items="${favoritesViews}" var="favorite">
                         <dl class="pro_item fl">
-                            <input type="checkbox" name="ckOne" onclick="checkOne()" data="${favorite.id}"/>
+                            <input type="checkbox" name="ckOne" onclick="checkOne()" data="${favorite.pdtPkey}"/>
                             <dt>
                                 <a class="pic_box"
                                    href="<c:if test='${favorite.groupLine == 0}'>/home/pdt_PdtProduct_gtProductsInfo?id=${favorite.pdtPkey }</c:if><c:if test='${favorite.groupLine != 0}'>/home/prm_PrmGroupPurchase_getGroupPdt?pkey=${favorite.groupLine}</c:if>"
@@ -225,7 +225,7 @@
                             <dd class="pro_view">
                                 <a class="pro_btn" onclick="recycleThis(${favorite.id})"><s:text
                                         name="cart.remove"/></a>
-                                <a class="pro_btn pro_btn2" onclick="addcart(${favorite.id})"><s:text
+                                <a class="pro_btn pro_btn2" onclick="addcart(${favorite.pdtPkey})"><s:text
                                         name="my-inquiry-publish.View_Inquiry"/></a>
                             </dd>
                         </dl>
@@ -423,22 +423,161 @@
     $("#addToCart").on("click", function () {
         var pkeys = chooseChecked();
 
-        var result=pkeys.split(",");
-        for(var i=0;i<result.length;i++){
+        var result = pkeys.split(",");
+        for (var i = 0; i < result.length; i++) {
             addcart(result[i])
         }
-            /*    	$.ajax({
-                        url:'/home/usr_UsrFavorites_addSinglePdt',
-                        type:'post',
-                        data:{"favoritesPkeys":pkeys},
-                        dataType:'json',
-                        success:function(data){
-                            if(data.success == true){
-                                if(data.errCount > 0){
-                                      layer.msg(data.errCount+"个产品还未发布规格", function(){});
-                                }else{
-                                      layer.msg('
-     <%--<s:text name="my-favorite.Added_Successfully"/>', {icon: 1});--%>
+        /*    	$.ajax({
+                    url:'/home/usr_UsrFavorites_addSinglePdt',
+                    type:'post',
+                    data:{"favoritesPkeys":pkeys},
+                    dataType:'json',
+                    success:function(data){
+                        if(data.success == true){
+                            if(data.errCount > 0){
+                                  layer.msg(data.errCount+"个产品还未发布规格", function(){});
+                            }else{
+                                  layer.msg('
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <%--<s:text name="my-favorite.Added_Successfully"/>', {icon: 1});--%>
     				}
     			}else{
             layer.msg(data.msg, function(){});
@@ -480,7 +619,7 @@
             data: {"product": id},
             dataType: 'json',
             success: function (data) {
-                if (data.success == true) {
+                if (data.ret && data.ret == 1) {
                     layer.msg('<s:text name="my-inquiry-publish.View_Inquiry"/>', {icon: 1});
                 } else {
                     layer.msg(getMessage(data.msg), {icon: 2, time: 2000});

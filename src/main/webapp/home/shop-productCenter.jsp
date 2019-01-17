@@ -31,7 +31,7 @@
     <link href="./static/css/style_new.css" rel="stylesheet" type="text/css">
     <!-- 轮播插件 -->
     <script type="text/javascript" src="./static/js/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" src="./static/js/jquery.SuperSlide.2.1.1.js"></script>
+    <script type="text/javascript" src="./static/js/jquery.SuperSlide.js"></script>
     <link rel="stylesheet" href="./static/css/layer.css" type="text/css">
     <script src="./static/js/layer.js" type="text/javascript"></script>
 </head>
@@ -153,211 +153,211 @@
 <div align="center">
 </div>
 <script type="text/javascript">
-  var pkey = '${supView.pkey}';
-  var page = 1;
-  var cated = -1;
-  var rankingBasis = -1;
-  var type = 1;
-  var allPage = 0;
-  window.onload = function () {
-    getData();
-  }
+    var pkey = '${supView.pkey}';
+    var page = 1;
+    var cated = -1;
+    var rankingBasis = -1;
+    var type = 1;
+    var allPage = 0;
+    window.onload = function () {
+        getData();
+    }
 
-  function getData() {
-    var param = {
-      "pkey": pkey,
-      "page": page,
-      "limit": 8,
-      "cated": cated,
-      "rankingBasis": rankingBasis,
-      "basis": type
-    };
-    var self = this;
-    $.ajax({
-      url: '/home/pdt_PdtProduct_getProductBySup',
-      type: 'post',
-      data: param,
-      dataType: 'JSON',
-      success: function (data) {
-        if (data.items.length == 0) {
-          $("#products").html('');
-          $("#turn_page").html("");
-          $("#noGoods").show();
-        } else {
-          $("#noGoods").hide();
-          renderProduct(data.items);
-          renderPage(data.page, data.pageAll);
-          self.allPage = data.pageAll;
+    function getData() {
+        var param = {
+            "pkey": pkey,
+            "page": page,
+            "limit": 8,
+            "cated": cated,
+            "rankingBasis": rankingBasis,
+            "basis": type
+        };
+        var self = this;
+        $.ajax({
+            url: '/home/pdt_PdtProduct_getProductBySup',
+            type: 'post',
+            data: param,
+            dataType: 'JSON',
+            success: function (data) {
+                if (data.items.length == 0) {
+                    $("#products").html('');
+                    $("#turn_page").html("");
+                    $("#noGoods").show();
+                } else {
+                    $("#noGoods").hide();
+                    renderProduct(data.items);
+                    renderPage(data.page, data.pageAll);
+                    self.allPage = data.pageAll;
+                }
+            }
+        })
+    }
+
+    function chooseThisPage(page) {
+        this.page = page;
+        getData();
+    }
+
+    function chooseThisCat(cat, catName) {
+        this.cated = cat;
+        $("#category").text(catName);
+        this.page = 1;
+        getData();
+    }
+
+    function chooseThisSort(sort) {
+        switch (type) {
+            case 1:
+                type = 0;
+                break;
+            case 0:
+                type = 1;
+                break;
         }
-      }
-    })
-  }
-
-  function chooseThisPage(page) {
-    this.page = page;
-    getData();
-  }
-
-  function chooseThisCat(cat, catName) {
-    this.cated = cat;
-    $("#category").text(catName);
-    this.page = 1;
-    getData();
-  }
-
-  function chooseThisSort(sort) {
-    switch (type) {
-      case 1:
-        type = 0;
-        break;
-      case 0:
-        type = 1;
-        break;
+        this.rankingBasis = sort;
+        var sortName = '<s:text name="most_popular"/>';
+        switch (sort) {
+            case 1:
+                sortName = '<s:text name="sales"/>';
+                break;
+            case 2:
+                sortName = '<s:text name="fav"/>';
+                break;
+            case 3:
+                sortName = '<s:text name="new"/>';
+                break;
+            case 4:
+                sortName = '<s:text name="price"/>';
+                break;
+            default:
+                sortName = '<s:text name="most_popular"/>';
+        }
+        $("#sort").text(sortName)
+        getData();
     }
-    this.rankingBasis = sort;
-    var sortName = '<s:text name="most_popular"/>';
-    switch (sort) {
-      case 1:
-        sortName = '<s:text name="sales"/>';
-        break;
-      case 2:
-        sortName = '<s:text name="fav"/>';
-        break;
-      case 3:
-        sortName = '<s:text name="new"/>';
-        break;
-      case 4:
-        sortName = '<s:text name="price"/>';
-        break;
-      default:
-        sortName = '<s:text name="most_popular"/>';
-    }
-    $("#sort").text(sortName)
-    getData();
-  }
 
-  function renderPage(nowPage, allPage) {
-    var frontFlag = false;
-    var backFlag = false;
-    var pageShow = '<li onclick="lastPage();" >' +
-        '<a class="page_button" style="cursor:pointer;">&nbsp;' +
-        '<em class="icon_page_prev" style="display: block;margin-top: -23px;margin-left:1px;"></em>'
-        +
-        '</a>' +
-        '</li>';
-    for (var i = 1; i <= allPage; i++) {
-      if (nowPage == i) {
-        pageShow += '<li class="page_number">' +
-            '<font class="page_item_current">' + i + '</font>' +
+    function renderPage(nowPage, allPage) {
+        var frontFlag = false;
+        var backFlag = false;
+        var pageShow = '<li onclick="lastPage();" >' +
+            '<a class="page_button" style="cursor:pointer;">&nbsp;' +
+            '<em class="icon_page_prev" style="display: block;margin-top: -23px;margin-left:1px;"></em>'
+            +
+            '</a>' +
             '</li>';
-      } else if (i > 1 && i < nowPage - 2) {
-        if (frontFlag == true) continue;
-        pageShow += '<li class="page_number">' +
-            '<font class="page_item">...</font>' +
+        for (var i = 1; i <= allPage; i++) {
+            if (nowPage == i) {
+                pageShow += '<li class="page_number">' +
+                    '<font class="page_item_current">' + i + '</font>' +
+                    '</li>';
+            } else if (i > 1 && i < nowPage - 2) {
+                if (frontFlag == true) continue;
+                pageShow += '<li class="page_number">' +
+                    '<font class="page_item">...</font>' +
+                    '</li>';
+                frontFlag = true;
+            } else if (i > nowPage + 2 && i < allPage) {
+                if (backFlag == true) continue;
+                pageShow += '<li class="page_number">' +
+                    '<font class="page_item">...</font>' +
+                    '</li>';
+                backFlag = true;
+            } else {
+                pageShow += '<li class="page_number">' +
+                    '<a onclick="chooseThisPage(' + i + ')" class="page_item">' + i + '</a>' +
+                    '</li>';
+            }
+
+        }
+        pageShow += '<li class="page_last" onclick="nextPage();" >' +
+            '<a class="page_button" style="cursor:pointer;">&nbsp;' +
+            '<em class="icon_page_next" style="display: block;margin-top: -23px;margin-left:1px;"></em>'
+            +
+            '</a>' +
             '</li>';
-        frontFlag = true;
-      } else if (i > nowPage + 2 && i < allPage) {
-        if (backFlag == true) continue;
-        pageShow += '<li class="page_number">' +
-            '<font class="page_item">...</font>' +
-            '</li>';
-        backFlag = true;
-      } else {
-        pageShow += '<li class="page_number">' +
-            '<a onclick="chooseThisPage(' + i + ')" class="page_item">' + i + '</a>' +
-            '</li>';
-      }
 
+        $("#turn_page").html(pageShow);
     }
-    pageShow += '<li class="page_last" onclick="nextPage();" >' +
-        '<a class="page_button" style="cursor:pointer;">&nbsp;' +
-        '<em class="icon_page_next" style="display: block;margin-top: -23px;margin-left:1px;"></em>'
-        +
-        '</a>' +
-        '</li>';
 
-    $("#turn_page").html(pageShow);
-  }
-
-  function renderProduct(items) {
-    $("#products").html('');
-    $.each(items, function (i, val) {
-      var div = '<div class="goods-box">' +
-          '<div class="goods-item">' +
-          '<div class="goods-pic pic_box">' +
-          '<a href="/' + val.rewrite + '" title="' + val.pdt.name + '"' +
-          'target="_blank">' +
-          '<img src="' + getFirstPic(val.pdt.picture) + '" >' +
-          '</a>' +
-          '<span></span>' +
-          '</div>' +
-          '<h5 class="goods-title">' +
-          '<a href="/' + val.rewrite + '" title="' + val.pdt.name + '"' +
-          'target="_blank">' + val.pdt.name + '</a>' +
-          '</h5>' +
-          '<div class="goods-price">' +
-          '${env.currency.symbols}' + val.pdt.curPrice + '</div>' +
-          '<div class="btn btn-enter">' +
-          '<a href="/' + val.rewrite
-          + '" class="btn btn-enter" target="_blank"><s:text name="show_now"/></a>' +
-          '</div>' +
-          '</div>' +
-          '</div>';
-      $("#products").append(div);
-    })
-  }
-
-  function getFirstPic(str) {
-    if (str == '') {
-      return '/home/static/images/noImage.png';
-    } else {
-      if (str.indexOf(",") != -1) {
-        return '${envConfig.imageBaseUrl}' + str.split(",")[0]
-            + '?x-oss-process=image/resize,m_pad,h_256,w_256';
-      } else {
-        return '${envConfig.imageBaseUrl}' + str + '?x-oss-process=image/resize,m_pad,h_256,w_256';
-      }
+    function renderProduct(items) {
+        $("#products").html('');
+        $.each(items, function (i, val) {
+            var div = '<div class="goods-box" style="width: 284px">' +
+                '<div class="goods-item">' +
+                '<div class="goods-pic pic_box">' +
+                '<a href="/' + val.rewrite + '" title="' + val.pdt.name + '"' +
+                'target="_blank">' +
+                '<img src="' + getFirstPic(val.pdt.picture) + '" >' +
+                '</a>' +
+                '<span></span>' +
+                '</div>' +
+                '<h5 class="goods-title">' +
+                '<a href="/' + val.rewrite + '" title="' + val.pdt.name + '"' +
+                'target="_blank">' + val.pdt.name + '</a>' +
+                '</h5>' +
+                '<div class="goods-price">' +
+                '${env.currency.symbols}' + val.pdt.curPrice + '</div>' +
+                '<div class="btn btn-enter">' +
+                '<a href="/' + val.rewrite
+                + '" class="btn btn-enter" target="_blank"><s:text name="show_now"/></a>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+            $("#products").append(div);
+        })
     }
-  }
 
-  function nextPage() {
-    this.page = ++this.page;
-    if (this.page > this.allPage) {
-      this.page = --this.page;
-      layer.msg(lang_obj.mobile.The_last_page);
-      return;
+    function getFirstPic(str) {
+        if (str == '') {
+            return '/home/static/images/noImage.png';
+        } else {
+            if (str.indexOf(",") != -1) {
+                return '${envConfig.imageBaseUrl}' + str.split(",")[0]
+                    + '?x-oss-process=image/resize,m_pad,h_256,w_256';
+            } else {
+                return '${envConfig.imageBaseUrl}' + str + '?x-oss-process=image/resize,m_pad,h_256,w_256';
+            }
+        }
     }
-    getData();
-  }
 
-  function lastPage() {
-    this.page = --this.page;
-    if (page <= 0) {
-      this.page = ++this.page;
-      layer.msg(lang_obj.mobile.First_page);
-      return;
+    function nextPage() {
+        this.page = ++this.page;
+        if (this.page > this.allPage) {
+            this.page = --this.page;
+            layer.msg(lang_obj.mobile.The_last_page);
+            return;
+        }
+        getData();
     }
-    getData();
-  }
+
+    function lastPage() {
+        this.page = --this.page;
+        if (page <= 0) {
+            this.page = ++this.page;
+            layer.msg(lang_obj.mobile.First_page);
+            return;
+        }
+        getData();
+    }
 </script>
 <script type="text/javascript">
-  // 点击选择下拉框按钮，显示下拉内容
-  $(".tool-group .tool-drop-down-btn").click(function () {
-    $(".tool-group .tool-drop-down-content").fadeOut();
-    $(".tool-group .tool-drop-down-btn").removeClass("active");
-    $(this).toggleClass("active")
-    .siblings(".tool-drop-down-content").fadeToggle();
-  });
-  // 获得点击事件
-  $(document).click(function (e) {
-    //console.log(6)
-    var target = $(e.target);
-    // 如果点击的是 选择下拉框中，则不干什么；如果点击的是其余地方，则将显示出来的下拉内容隐藏掉
-    if (target.closest(".tool-drop-down-wrap").length !== 0) return;
-    $(".tool-group .tool-drop-down-content").fadeOut();
-    $(".tool-group .tool-drop-down-btn").removeClass("active");
-    // e.stopPropagation();
-  });
+    // 点击选择下拉框按钮，显示下拉内容
+    $(".tool-group .tool-drop-down-btn").click(function () {
+        $(".tool-group .tool-drop-down-content").fadeOut();
+        $(".tool-group .tool-drop-down-btn").removeClass("active");
+        $(this).toggleClass("active")
+            .siblings(".tool-drop-down-content").fadeToggle();
+    });
+    // 获得点击事件
+    $(document).click(function (e) {
+        //console.log(6)
+        var target = $(e.target);
+        // 如果点击的是 选择下拉框中，则不干什么；如果点击的是其余地方，则将显示出来的下拉内容隐藏掉
+        if (target.closest(".tool-drop-down-wrap").length !== 0) return;
+        $(".tool-group .tool-drop-down-content").fadeOut();
+        $(".tool-group .tool-drop-down-btn").removeClass("active");
+        // e.stopPropagation();
+    });
 </script>
 
 ${supView.traceCode}

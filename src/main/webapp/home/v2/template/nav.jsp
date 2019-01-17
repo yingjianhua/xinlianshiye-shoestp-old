@@ -83,31 +83,62 @@
                     <a href="/home/usr_UsrFavorites_myfavorite" target="_blank">
                         <img src="/home/v2/static/images/nav/icon-heart.png" alt="icon-heart"
                              style="position: relative;top: -2px;">
+                        <i class="fav_count imgnumber">
+                            {{_favorite_count}}
+                        </i>
+                    </a>
+                </el-menu-item>
+                <!-- 顶部右侧 - 购物车 -->
+                <el-menu-item index="9" class="fr">
+                    <a href="/home/usr_UsrCart_cartshopping" target="_blank">
+                        <img src="/home/v2/static/images/nav/icon_Shopping-Cart.png" alt="icon_Shopping-Cart"
+                             style="position: relative;top: -2px;">
+                        <i class="cart_count imgnumber">
+                            {{_shopping_cart_count}}
+                        </i>
                     </a>
                 </el-menu-item>
                 <!-- 顶部右侧 - 询盘 -->
-                <el-menu-item index="7" class="fr"><a href="/home/usr_UsrConsult_listView"
-                                                      target="_blank"><s:text name="RFQ"/></a>
+                <el-menu-item index="7" class="fr">
+                    <a href="/home/usr_UsrConsult_listView" target="_blank">
+                        <s:text name="RFQ"/>
+                        <i class="inq_count imgnumber">
+                            {{_inquiry_count}}
+                        </i>
+                    </a>
                 </el-menu-item>
+
                 <!-- 顶部右侧 - 注册 -->
                 <el-submenu index="6" class="fr">
                     <template slot="title"><s:text name="Register"/></template>
-                    <el-menu-item index="6-1"><a href="/home/usr_UsrPurchase_sign" target="_blank">
-                        <s:text name="Buyer"/>
-                    </a>
+                    <el-menu-item index="6-1">
+                        <a href="/home/usr_UsrPurchase_sign" target="_blank">
+                            <s:text name="Buyer"/>
+                        </a>
                     </el-menu-item>
-                    <el-menu-item index="6-2"><a href="/home/usr_UsrSupplier_supplierEntry">
-                        <s:text name="Supplier"/>
-
-                    </a>
+                    <el-menu-item index="6-2">
+                        <a href="/home/usr_UsrSupplier_supplierEntry">
+                            <s:text name="Supplier"/>
+                        </a>
                     </el-menu-item>
                 </el-submenu>
+
                 <!-- 顶部右侧 - 登录 -->
-                <el-menu-item index="5" class="fr"><a href="/home/usr_UsrPurchase_sign"
-                                                      target="_blank">
-                    <s:text name="Login"></s:text>
-                </a>
-                </el-menu-item>
+                <el-submenu index="5" class="fr no-arrow">
+                    <template slot="title" v-if="!sysConfig.user">
+                        <a href="/home/usr_UsrPurchase_sign" target="_blank">
+                            <s:text name="Login"></s:text>
+                        </a>
+                    </template>
+                    <template slot="title" v-if="sysConfig.user">
+                        <a href="/home/usr_UsrPurchase_userIndex">{{sysConfig.user.name}}</a>
+                    </template>
+                    <el-menu-item index="5-1" v-if="sysConfig.user">
+                        <a rel="nofollow" href="/home/usr_UsrPurchase_signOut">
+                            <s:text name="sign_out"/>
+                        </a>
+                    </el-menu-item>
+                </el-submenu>
             </el-menu>
         </div>
     </div>
@@ -182,6 +213,11 @@
                 topSearchBarCategory: 0, //搜索 分类前的下拉选
                 language: "en",
                 languageList: [],
+                sysConfig: {
+                    baseImageUrl: "https://image.shoestp.com",
+                    currency_symbol: "$",
+                    current_language: "en",
+                },
                 search: {
                     keyword: "",
                     typeList: [
@@ -204,7 +240,26 @@
                     }
                 }
                 return "-1"
+            },
+            _favorite_count: function () {
+                if (this.sysConfig.user) {
+                    return this.sysConfig.user.favorite_count
+                }
+                return 0
+            },
+            _inquiry_count: function () {
+                if (this.sysConfig.user) {
+                    return this.sysConfig.user.inquiry_count
+                }
+                return 0
+            },
+            _shopping_cart_count: function () {
+                if (this.sysConfig.user) {
+                    return this.sysConfig.user.shopping_cart_count
+                }
+                return 0
             }
+
         }, mounted() {
             var self = this
             axios({
@@ -213,6 +268,7 @@
                 if (res.data.ret && res.data.ret == 1) {
                     sysConfig = res.data.result
                     Vue.set(self, "language", res.data.result.current_language)
+                    Vue.set(self, "sysConfig", res.data.result)
                     Vue.set(self, "languageList", res.data.result.languages)
                 } else {
                     console.error("ERR::FLAG")
@@ -263,4 +319,21 @@
         document.getElementById('new-top-search').style.left = sl + 'px';
     }
 </script>
-<div style="height: 114px;"></div>
+<div style="height: 114px;">
+</div>
+
+<style scope>
+    .el-menu-item .imgnumber {
+        height: 12px;
+        min-width: 12px;
+        background: #ff3c3c;
+        border-radius: 8px;
+        right: -6px;
+        top: 4px;
+        line-height: 13px;
+        text-align: center;
+        color: #fff;
+        position: absolute;
+    }
+
+</style>

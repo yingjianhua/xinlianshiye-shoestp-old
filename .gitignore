@@ -17,3 +17,4 @@ shoestp.iml
 src/main/webapp/newseller/
 ${logDir}/shoestp.log
 pom.xml
+src/main/resources/environment

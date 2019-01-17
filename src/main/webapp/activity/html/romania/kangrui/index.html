@@ -112,48 +112,66 @@
                 The Global Trade In Shoes
             </div>
             <div class="global-product-list clearfix">
-                <a class="global-product-item fl"
+                <span class="global-product-item fl"
+                   href="javascript:void(0)"
+                   target="_blank">
+                    <img src="./images/goods1.jpg" alt=""/>
+                </span>
+                <span class="global-product-item fl"
+                   href="javascript:void(0)"
+                   target="_blank">
+                    <img src="./images/goods2.jpg" alt=""/>
+                </span>
+                <span class="global-product-item fl"
+                   href="javascript:void(0)"
+                   target="_blank">
+                    <img src="./images/goods3.jpg" alt=""/>
+                </span>
+                <span class="global-product-item fl"
+                   href="javascript:void(0)"
+                   target="_blank">
+                    <img src="./images/goods4.jpg" alt=""/>
+                </span>
+                <span class="global-product-item fl"
+                   href="javascript:void(0)"
+                   target="_blank">
+                    <img src="./images/goods5.jpg" alt=""/>
+                </span>
+                <span class="global-product-item fl"
+                   href="javascript:void(0)"
+                   target="_blank">
+                    <img src="./images/goods6.jpg" alt=""/>
+                </span>
+                <!-- <a class="global-product-item fl"
                    href="https://www.shoestp.com/kangrui-men-comfortable-leather-leisure-shoes-and-driver-shoes_p6821.html"
                    target="_blank">
-                    <!-- <a href="" target="_blank"> -->
                     <img src="./images/goods1.jpg" alt=""/>
-                    <!-- </a> -->
                 </a>
                 <a class="global-product-item fl"
                    href="https://www.shoestp.com/kangrui-men-comfotable-round-toe-casual-slip-on--loafer_p6823.html"
                    target="_blank">
-                    <!-- <a href="" target="_blank"> -->
                     <img src="./images/goods2.jpg" alt=""/>
-                    <!-- </a> -->
                 </a>
                 <a class="global-product-item fl"
                    href="https://www.shoestp.com/kangrui-men-comfotable-round-toe-casual-slip-on--loafer_p6823.html"
                    target="_blank">
-                    <!-- <a href="" target="_blank"> -->
                     <img src="./images/goods3.jpg" alt=""/>
-                    <!-- </a> -->
                 </a>
                 <a class="global-product-item fl"
                    href="https://www.shoestp.com/kangrui-antislip-men-comfotable-casual-lace-up-shoes_p6824.html"
                    target="_blank">
-                    <!-- <a href="" target="_blank"> -->
                     <img src="./images/goods4.jpg" alt=""/>
-                    <!-- </a> -->
                 </a>
                 <a class="global-product-item fl"
                    href="https://www.shoestp.com/kangrui-casual-antislip-men-lace-up-loafer-shoes_p6825.html"
                    target="_blank">
-                    <!-- <a href="" target="_blank"> -->
                     <img src="./images/goods5.jpg" alt=""/>
-                    <!-- </a> -->
                 </a>
                 <a class="global-product-item fl"
                    href="https://www.shoestp.com/kangrui--comfortable-slip-on-men-leather-loafer-shoes_p6833.html"
                    target="_blank">
-                    <!-- <a href="" target="_blank"> -->
                     <img src="./images/goods6.jpg" alt=""/>
-                    <!-- </a> -->
-                </a>
+                </a> -->
             </div>
             <div style="font-size: 32px;font-weight: bold;">Product Show</div>
             <div style="font-size: 20px;line-height: 55px;color: #585e61;">
@@ -468,6 +486,7 @@
                         }))
                             .then((res) => {
                                 console.log(res)
+                                gtag_report_conversion();
                                 if (res.data.ret == 1) {
                                     this.$message({
                                         message: 'Submit successfully',
@@ -528,18 +547,37 @@
         computed: {}
     });
 </script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
+<!-- 代码追踪 -->
+<!-- Global site tag (gtag.js) - Google Ads: 775270891 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-775270891"></script>
 <script>
-    window.dataLayer = window.dataLayer || [];
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-    function gtag() {
-        dataLayer.push(arguments);
-    }
+  gtag('config', 'AW-775270891');
+  gtag('config', 'UA-131117317-9');
 
-    gtag('js', new Date());
-    gtag('config', 'AW-783435725');
-    gtag('config', 'UA-127715615-6');
+  function gtag_report_conversion(url) {
+    gtag('event', 'conversion', {
+        'send_to': 'AW-775270891/0MYPCIWPupIBEOvj1vEC'
+    });
+    return false;
+  }
 </script>
+
+<script type="text/javascript">
+	var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+	(function(){
+		var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+		s1.async=true;
+		s1.src='https://embed.tawk.to/5b8fcb48f31d0f771d8476f6/default';
+		s1.charset='UTF-8';
+		s1.setAttribute('crossorigin','*');
+		s0.parentNode.insertBefore(s1,s0);
+	})();
+</script>
+<!--End of Tawk.to Script-->
 </body>
 
 </html>

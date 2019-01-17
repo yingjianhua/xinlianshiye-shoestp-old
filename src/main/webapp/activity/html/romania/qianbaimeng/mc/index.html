@@ -123,9 +123,12 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 			<div class="product-gallery">
 				<h2 class="title-common">PRODUCT GALLERY</h2>
 				<ul class="content-wrap">
-					<a class="item" :href="product.linkUrl" v-for="product in productGallery">
+					<a class="item" href="javascript:void(0)" v-for="product in productGallery">
 						<img :src="product.url" alt="product" class="product-pic">
 					</a>
+					<!-- <a class="item" :href="product.linkUrl" v-for="product in productGallery">
+						<img :src="product.url" alt="product" class="product-pic">
+					</a> -->
 				</ul>
 			</div>
 
@@ -300,6 +303,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 					  detail: this.form.advisory,
 					},{allowDots: true}))
 					.then((res)=>{
+						gtag_report_conversion();
 						if(res.data.ret!=1){
 							this.$toast.error('Network error, please try again later');
 							return
@@ -318,20 +322,24 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 		})
 	</script>
 
-	<!-- 代码追踪 -->
-	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113892728-1"></script>
-	<script>
-	    window.dataLayer = window.dataLayer || [];
+<!-- 代码追踪 -->
+<!-- Global site tag (gtag.js) - Google Ads: 775253130 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-775253130"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-	    function gtag() {
-	        dataLayer.push(arguments);
-	    }
+  gtag('config', 'AW-775253130');
+	gtag('config', 'UA-131117317-2');
 
-	    gtag('js', new Date());
-
-	    gtag('config', 'UA-113892728-1');
-	</script>
-
+	function gtag_report_conversion(url) {
+	  gtag('event', 'conversion', {
+	      'send_to': 'AW-775253130/vTIsCLWOzZIBEIrZ1fEC'
+	  });
+	  return false;
+	}
+</script>
 
 	<script type="text/javascript">
 		var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
@@ -343,7 +351,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 			s1.setAttribute('crossorigin','*');
 			s0.parentNode.insertBefore(s1,s0);
 		})();
-	</script> -->
+	</script>
 	<!--End of Tawk.to Script-->
 </body>
 

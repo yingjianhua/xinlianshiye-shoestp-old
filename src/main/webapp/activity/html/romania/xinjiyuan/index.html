@@ -148,36 +148,42 @@
             The Global Trade In Shoes
           </div>
           <div class="global-product-list clearfix">
-            <a class="global-product-item fl" href="https://www.shoestp.com/men-leopard-design-china-wholesale-new-model-canvas-shoes_p9078.html" target="_blank">
-              <!-- <a href="" target="_blank"> -->
+            <span class="global-product-item fl" href="javascript:void(0)" target="_blank">
               <img src="./images/goods1.jpg" alt="" />
-              <!-- </a> -->
+            </span>
+            <span class="global-product-item fl" href="javascript:void(0)" target="_blank">
+              <img src="./images/goods2.jpg" alt="" />
+            </span>
+            <span class="global-product-item fl" href="javascript:void(0)" target="_blank">
+              <img src="./images/goods3.jpg" alt="" />
+            </span>
+            <span class="global-product-item fl" href="javascript:void(0)" target="_blank">
+              <img src="./images/goods4.jpg" alt="" />
+            </span>
+            <span class="global-product-item fl" href="javascript:void(0)" target="_blank">
+              <img src="./images/goods5.jpg" alt="" />
+            </span>
+            <span class="global-product-item fl" href="javascript:void(0)" target="_blank">
+              <img src="./images/goods6.jpg" alt="" />
+            </span>
+            <!-- <a class="global-product-item fl" href="https://www.shoestp.com/men-leopard-design-china-wholesale-new-model-canvas-shoes_p9078.html" target="_blank">
+              <img src="./images/goods1.jpg" alt="" />
             </a>
             <a class="global-product-item fl" href="https://www.shoestp.com/2019-new-fashion-men-casual-shoes-personalized-men-canvas-shoes-wholesale_p8837.html" target="_blank">
-              <!-- <a href="" target="_blank"> -->
               <img src="./images/goods2.jpg" alt="" />
-              <!-- </a> -->
             </a>
             <a class="global-product-item fl" href="https://www.shoestp.com/2019-new-fashion-men-casual--leisure-shoes-personalized-men-canvas-shoes-wholesale_p8844.html" target="_blank">
-              <!-- <a href="" target="_blank"> -->
               <img src="./images/goods3.jpg" alt="" />
-              <!-- </a> -->
             </a>
             <a class="global-product-item fl" href="https://www.shoestp.com/2019-new-fashion-men-casual--leisure-shoes-personalized-men-canvas-shoes-wholesale_p8845.html" target="_blank">
-              <!-- <a href="" target="_blank"> -->
               <img src="./images/goods4.jpg" alt="" />
-              <!-- </a> -->
             </a>
             <a class="global-product-item fl" href="https://www.shoestp.com/2018-new-model-factory-sale-low-price-canvas-men-sneaker_p9070.html" target="_blank">
-              <!-- <a href="" target="_blank"> -->
               <img src="./images/goods5.jpg" alt="" />
-              <!-- </a> -->
             </a>
             <a class="global-product-item fl" href="https://www.shoestp.com/ubber-casual-canvas-men-sneakers-white-running-shoes_p9080.html" target="_blank">
-              <!-- <a href="" target="_blank"> -->
               <img src="./images/goods6.jpg" alt="" />
-              <!-- </a> -->
-            </a>
+            </a> -->
           </div>
           <div style="font-size: 32px;font-weight: bold;">Product Show</div>
           <div style="font-size: 20px;line-height: 55px;color: #585e61;">
@@ -518,6 +524,7 @@
                     }))
                     .then( (res) => {
                       console.log(res)
+                      gtag_report_conversion();
                       if(res.data.ret == 1){
                       this.$message({
                         message: 'Submit successfully',
@@ -577,5 +584,37 @@
         computed: {}
       });
     </script>
+
+<!-- 代码追踪 -->
+<!-- Global site tag (gtag.js) - Google Ads: 775270855 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-775270855"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-775270855');
+  gtag('config', 'UA-131117317-8');
+
+  function gtag_report_conversion(url) {
+    gtag('event', 'conversion', {
+        'send_to': 'AW-775270855/jPj4CL6OzZIBEMfj1vEC'
+    });
+    return false;
+  }
+</script>
+
+<script type="text/javascript">
+	var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+	(function(){
+		var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+		s1.async=true;
+		s1.src='https://embed.tawk.to/5b8fcb48f31d0f771d8476f6/default';
+		s1.charset='UTF-8';
+		s1.setAttribute('crossorigin','*');
+		s0.parentNode.insertBefore(s1,s0);
+	})();
+</script>
+<!--End of Tawk.to Script-->
   </body>
 </html>

@@ -1,11 +1,10 @@
 package irille.view.usr;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import irille.view.BaseView;
 
 import java.util.Date;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class ConsultView implements BaseView {
     private Integer id;
