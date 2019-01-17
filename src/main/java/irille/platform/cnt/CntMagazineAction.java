@@ -1,15 +1,18 @@
 package irille.platform.cnt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import irille.action.ActionBase;
-import irille.pub.bean.BeanBase;
 import irille.pub.svr.LoginUserMsg;
+import irille.pub.util.upload.ImageUpload;
 import irille.shop.cnt.CntMagazine;
 import irille.shop.cnt.CntMagazineDAO;
+import irille.view.plt.ImageView;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.json.JSONObject;
 
-import javax.inject.Inject;
+import java.io.File;
 import java.io.IOException;
 
 @Data
@@ -34,6 +37,12 @@ public class CntMagazineAction extends ActionBase<CntMagazine> {
     @Setter
     private Integer id;//杂志pkey
 
+    @Getter
+    @Setter
+    private String fileFileName = "";
+    @Getter
+    @Setter
+    private File file;
     public void list() throws IOException {
         write(CntMagazineDAO.listCM(name, getStart(), getLimit()));
     }
@@ -87,5 +96,26 @@ public class CntMagazineAction extends ActionBase<CntMagazine> {
         upd.setB(getBean());
         upd.commit();
         write();
+    }
+    /**
+     * 上传图片
+     *
+     * @Date 219/1/14 15:13
+     * @author zjl
+     */
+    public void upload() throws Exception {
+        if (getLoginSys() == null) {
+            JSONObject json = new JSONObject();
+            json.put("success", false);
+            json.put("msg", "登录超时,请重新登录");
+            writerOrExport(json);
+        } else {
+            ImageView view = ImageUpload.upload(beanClazz(), fileFileName, file);
+            JSONObject json = new JSONObject();
+            json.put("ret", 1);
+            json.put("result", new JSONObject(new ObjectMapper().writeValueAsString(view)));
+            json.put("success", true);
+            writerOrExport(json);
+        }
     }
 }

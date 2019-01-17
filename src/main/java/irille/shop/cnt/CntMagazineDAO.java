@@ -81,7 +81,7 @@ public class CntMagazineDAO {
             start = 0;
         }
         if (null == limit) {
-            limit = 5;
+            limit = 10;
         }
         SQL sql = new SQL() {{
             SELECT(CntMagazine.class).FROM(CntMagazine.class);
