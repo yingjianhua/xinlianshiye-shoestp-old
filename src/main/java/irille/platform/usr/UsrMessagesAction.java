@@ -1,7 +1,6 @@
 package irille.platform.usr;
 
 import irille.action.MgtAction;
-import irille.pub.svr.LoginUserMsg;
 import irille.shop.usr.UsrMessages;
 import irille.shop.usr.UsrMessagesDAO;
 import lombok.Getter;

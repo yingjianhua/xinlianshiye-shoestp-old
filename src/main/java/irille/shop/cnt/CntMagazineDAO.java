@@ -86,7 +86,7 @@ public class CntMagazineDAO {
         SQL sql = new SQL() {{
             SELECT(CntMagazine.class).FROM(CntMagazine.class);
             if (name != null) {
-                WHERE(CntMagazine.T.NAME, "=?", name);
+                WHERE(CntMagazine.T.NAME, "like ?", "%" + name + "%");
             }
         }};
         Integer count = Query.sql(sql).queryCount();

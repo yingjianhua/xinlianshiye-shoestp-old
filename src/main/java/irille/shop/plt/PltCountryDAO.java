@@ -217,7 +217,7 @@ public class PltCountryDAO {
     }
 
     //获取国家列表  参数 国家名称
-    public static Page list(String Countryname, Integer start, Integer limit) {
+    public static Page list(String countryName,String shortName,String zone, Integer start, Integer limit) {
         if (null == start) {
             start = 0;
         }
@@ -229,8 +229,14 @@ public class PltCountryDAO {
                     .SELECT(PltErate.T.SYMBOL)
                     .FROM(PltCountry.class)
                     .LEFT_JOIN(PltErate.class, PltErate.T.PKEY, PltCountry.T.CURRENCY);
-            if (null != Countryname) {
-                WHERE(T.NAME, "like '%" + Countryname + "%'");
+            if (null != countryName) {
+                WHERE(T.NAME, "like '%" + countryName + "%'");
+            }
+            if (null != shortName) {
+                WHERE(T.SHORT_NAME, "like '%" + shortName + "%'");
+            }
+            if (null != zone) {
+                WHERE(T.ZONE, "like '%" + zone + "%'");
             }
         }};
         Integer count = Query.sql(sql).queryCount();
