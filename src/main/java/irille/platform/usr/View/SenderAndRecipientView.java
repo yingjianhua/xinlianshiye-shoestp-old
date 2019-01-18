@@ -7,6 +7,6 @@ import java.util.List;
 
 @Data
 public class SenderAndRecipientView implements BaseView {
-    List<SenderView> senders;
-    List<RecipientView> recipients;
+    List<SenderView> senders;//收件人列表
+    List<RecipientView> recipients;//发件人列表
 }

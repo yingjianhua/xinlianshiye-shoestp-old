@@ -55,14 +55,20 @@ public class PltCountryAction extends MgtAction<PltCountry> {
 
     @Getter
     @Setter
-    private String Countryname;
+    private String countryName;
+    @Getter
+    @Setter
+    private String shortName;
+    @Getter
+    @Setter
+    private String zone;
     @Getter
     @Setter
     private CountryView countryView;
 
     //获取国家列表  参数 国家名称
     public void List() throws Exception {
-        write(PltCountryDAO.list(Countryname, getStart(), getLimit()));
+        write(PltCountryDAO.list(countryName,shortName,zone,getStart(), getLimit()));
     }
 
     /**
