@@ -26,10 +26,10 @@ public class UsrSubscribeDAO {
      * ———————————————————分割线(新平台)—————————————————————————
      */
     public static Page getSubscribeList(Integer start, Integer limit, String email) {
-        if(start == null){
+        if (start == null) {
             start = 0;
         }
-        if(limit == null){
+        if (limit == null) {
             limit = 10;
         }
         SQL sql = new SQL() {{
@@ -39,24 +39,27 @@ public class UsrSubscribeDAO {
             }
         }};
         Integer count = Query.sql(sql).queryCount();
-        List<UsrSubscribeView> list = Query.sql(sql.LIMIT(start,limit)).queryMaps().stream().map(o -> new UsrSubscribeView(){{
-            setId((Integer)o.get(UsrSubscribe.T.PKEY.getFld().getCodeSqlField()));
-            setEmail((String)o.get(UsrSubscribe.T.EMAIL.getFld().getCodeSqlField()));
+        List<UsrSubscribeView> list = Query.sql(sql.LIMIT(start, limit)).queryMaps().stream().map(o -> new UsrSubscribeView() {{
+            setId((Integer) o.get(UsrSubscribe.T.PKEY.getFld().getCodeSqlField()));
+            setEmail((String) o.get(UsrSubscribe.T.EMAIL.getFld().getCodeSqlField()));
         }}).collect(Collectors.toList());
-        return new Page(list,start,limit,count);
+        return new Page(list, start, limit, count);
     }
-    public static class deletes extends IduDel<deletes,UsrSubscribe>{
+
+    public static class deletes extends IduDel<deletes, UsrSubscribe> {
         @Override
         public void before() {
             super.before();
         }
     }
-    public static void ins(String email){
+
+    public static void ins(String email) {
         UsrSubscribe usrSubscribe = new UsrSubscribe();
         usrSubscribe.setEmail(email);
         usrSubscribe.ins();
     }
-    public static class upd extends IduOther<upd,UsrSubscribe>{
+
+    public static class upd extends IduOther<upd, UsrSubscribe> {
         @Override
         public void before() {
         }
