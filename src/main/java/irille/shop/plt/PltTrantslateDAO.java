@@ -81,7 +81,6 @@ public class PltTrantslateDAO {
                }
            }
         }};
-        System.out.println(sql);
         Integer count= Query.sql(sql).queryCount();
          List<Plttrantslate> list=Query.sql(sql.LIMIT(start,limit)).queryMaps().stream().map(bean ->new Plttrantslate(){{
              setId((Integer) bean.get(PltTrantslate.T.PKEY.getFld().getCodeSqlField()));

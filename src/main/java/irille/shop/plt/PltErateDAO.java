@@ -362,12 +362,25 @@ PltErateDAO {
             setB(model);
             getB().setNowrate(getB().getRate().divide(Query.supDefCurrency().getRate(), 4, RoundingMode.HALF_UP));
             getB().upd();
-            if (model.gtSiteCur() == true) {
-                throw LOG.err("", "网站默认货币为启用状态不可以停用该汇率！");
-            }
-            if (model.gtSupCur() == true) {
-                throw LOG.err("", "网站默认货币为启用状态不可以停用该汇率");
-            }
+
+           if(model.gtEnabled()==false){
+               int cur = 0;
+               int bcde = 0;
+               for (PltErate line : PltErate.list(PltErate.class, null, false)) {
+                   if (line.gtSiteCur()) {
+                       cur += 1;
+                   }
+                   if (line.gtSupCur()) {
+                       bcde += 1;
+                   }
+               }
+               if (cur == 0) {
+                   throw LOG.err("", "网站默认货币为启用状态不可以停用该汇率");
+               }
+               if (bcde == 0) {
+                   throw LOG.err("", "商家默认货币为启用状态不可以停用该汇率");
+               }
+           }
         }
 
         @Override

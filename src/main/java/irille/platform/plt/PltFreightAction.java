@@ -138,7 +138,7 @@ public class PltFreightAction extends MgtAction<PltFreight> {
     *@date 2019/1/16 16:52
     *@anthor wilson zhang
     */
-    public void del() throws Exception{
+    public void delcompany() throws Exception{
         LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
         pltFreightDAO.delFreight(id,lu.get_user().getPkey());
         write();
