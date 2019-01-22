@@ -69,14 +69,6 @@ public class I18NSQL extends SQL{
   }
   
   
-  public static void main(String[] args) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-	  
-	  
-	  Tb tb = (Tb)PltConfig.class.getDeclaredField("TB").get(null);
-	  System.out.println(tb);
-	  for(Fld fld:tb.getFlds()) {
-		  System.out.println(fld);
-	  }
-  }
+
   
 }
