@@ -2,8 +2,8 @@ package irille.platform.pdt;
 
 import irille.action.ActionBase;
 import irille.pub.svr.LoginUserMsg;
-import irille.shop.pdt.PdtColor;
-import irille.shop.pdt.PdtColorDAO;
+import irille.shop.pdt.PdtSize;
+import irille.shop.pdt.PdtSizeDAO;
 import lombok.Data;
 
 import java.io.IOException;
@@ -11,35 +11,36 @@ import java.io.IOException;
 
 /**
  * @Author: lingjian
- * @Date: Created in 2019/1/17 15:01
+ * @Date: Created in 2019/1/21 13:59
  * @Version 1.0
  */
 @Data
-public class PdtColorAction extends ActionBase<PdtColor> {
+public class PdtSizeAction extends ActionBase<PdtSize> {
 
     @Override
     public Class beanClazz() {
-        return PdtColor.class;
+        return PdtSize.class;
     }
-    public PdtColor getBean() { return _bean; }
-    public void setBean(PdtColor bean) {
+    public PdtSize getBean() { return _bean; }
+    public void setBean(PdtSize bean) {
         this._bean = bean;
     }
 
-    private String name; //搜索的产品颜色名称
+    private String name; //搜索的产品尺寸名称
+    private String productCategory; //搜索的产品尺寸类目
 
     /**
-     * 查询产品颜色列表+搜索
+     * 查询产品尺寸列表+搜索
      * @author lingjian
      * @date 2019/1/22 13:36
      * @throws Exception
      */
     public void list() throws Exception {
-        write(PdtColorDAO.listview(name, getStart(), getLimit()));
+        write(PdtSizeDAO.listSize(name,productCategory,getStart(), getLimit()));
     }
 
     /**
-     * 新增产品颜色
+     * 新增产品尺寸
      * @author lingjian
      * @date 2019/1/22 13:36
      * @throws IOException
@@ -47,7 +48,7 @@ public class PdtColorAction extends ActionBase<PdtColor> {
     public void ins() throws IOException {
         LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
         getBean().setCreateBy(lu.get_user().getPkey());
-        PdtColorDAO.InsColor dl = new PdtColorDAO.InsColor();
+        PdtSizeDAO.InsSize dl = new PdtSizeDAO.InsSize();
         dl.setB(getBean());
         dl.commit();
         write();
@@ -62,7 +63,8 @@ public class PdtColorAction extends ActionBase<PdtColor> {
     public void upd() throws IOException {
         LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
         getBean().setCreateBy(lu.get_user().getPkey());
-        PdtColorDAO.UpdColor upd = new PdtColorDAO.UpdColor();
+        PdtSizeDAO.UpdSize upd = new PdtSizeDAO.UpdSize();
+        System.out.println("sssssss");
         upd.setB(getBean());
         upd.commit();
         write();
@@ -75,7 +77,7 @@ public class PdtColorAction extends ActionBase<PdtColor> {
      * @throws IOException
      */
     public void delete() throws IOException {
-        PdtColorDAO.DelColor remove = new PdtColorDAO.DelColor();
+        PdtSizeDAO.DelSize remove = new PdtSizeDAO.DelSize();
         remove.setBKey(getBean().getPkey());
         remove.commit();
         write();

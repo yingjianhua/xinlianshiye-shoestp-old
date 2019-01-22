@@ -1,33 +1,15 @@
 package irille.shop.pdt;
 
-import java.io.Serializable;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import irille.core.sys.SysUser;
-import irille.platform.cnt.View.CntSqlPagelistView;
-import irille.platform.pdt.View.PdtColorView;
-import irille.pub.bean.sql.SQL;
-import irille.shop.cnt.CntMagazine;
-import irille.shop.cnt.CntMagazineDAO;
-import irille.shop.cnt.CntSglPage;
-import irille.view.Page;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.google.api.client.repackaged.org.apache.commons.codec.binary.StringUtils;
-
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
+import irille.core.sys.SysUser;
+import irille.platform.pdt.View.PdtColorView;
 import irille.pub.Log;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.Bean;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
+import irille.pub.bean.sql.SQL;
 import irille.pub.bean.statistics.Table;
 import irille.pub.idu.IduIns;
 import irille.pub.idu.IduOther;
@@ -38,9 +20,16 @@ import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.pub.validate.ValidForm;
 import irille.sellerAction.SellerAction;
-import irille.shop.pdt.PdtCatDAO.Upd;
 import irille.shop.pdt.PdtColor.T;
 import irille.shop.plt.PltConfigDAO;
+import irille.view.Page;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class PdtColorDAO {
     public static final Log LOG = new Log(PdtColorDAO.class);
@@ -53,7 +42,8 @@ public class PdtColorDAO {
 
     /**
      * 查询产品颜色列表
-     *
+     * @author lingjian
+     * @date 2019/1/22 13:37
      * @param start
      * @param limit
      * @return
@@ -75,7 +65,6 @@ public class PdtColorDAO {
         List<PdtColorView> list = Query.sql(sql.LIMIT(start, limit)).queryMaps().stream().map(bean -> new PdtColorView() {{
             setId((Integer) bean.get(T.PKEY.getFld().getCodeSqlField()));
             setName((String) bean.get(T.NAME.getFld().getCodeSqlField()));
-            System.out.println(bean.get(T.CREATE_BY.getFld().getCodeSqlField()));
             setCreatedby(BeanBase.load(SysUser.class, Integer.valueOf(String.valueOf(bean.get(T.CREATE_BY.getFld().getCodeSqlField())))).getLoginName());
             setCreatedtime((Date) bean.get(T.CREATE_TIME.getFld().getCodeSqlField()));
         }}).collect(Collectors.toList());
@@ -84,6 +73,8 @@ public class PdtColorDAO {
 
     /**
      * 新增产品颜色
+     * @author lingjian
+     * @date 2019/1/22 13:38
      */
     public static class InsColor extends IduIns<PdtColorDAO.Ins, PdtColor> {
         @Override
@@ -97,6 +88,8 @@ public class PdtColorDAO {
 
     /**
      * 修改产品颜色
+     * @author lingjian
+     * @date 2019/1/22 13:38
      */
     public static class UpdColor extends IduUpd<PdtColorDAO.Upd, PdtColor> {
         @Override
@@ -112,8 +105,10 @@ public class PdtColorDAO {
 
     /**
      * 删除产品颜色
+     * @author lingjian
+     * @date 2019/1/22 13:38
      */
-    public static class DelColor extends IduUpd<PdtColorDAO.Upd, PdtColor> {
+    public static class DelColor extends IduUpd<PdtColorDAO.Del, PdtColor> {
         @Override
         public void before() {
             super.before();
