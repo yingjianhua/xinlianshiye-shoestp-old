@@ -2,6 +2,7 @@ package irille.platform.usr;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import irille.action.ActionBase;
+import irille.action.MgtAction;
 import irille.pub.util.upload.ImageUpload;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplierDAO;
@@ -13,7 +14,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 
-public class UsrSupplierAction extends ActionBase<UsrSupplier> {
+public class UsrSupplierAction extends MgtAction<UsrSupplier> {
     @Override
     public Class beanClazz() {
         return UsrSupplier.class;
@@ -75,6 +76,7 @@ public class UsrSupplierAction extends ActionBase<UsrSupplier> {
         upd.commit();
         write();
     }
+
     /**
      * @Description: 获取供应商基本信息
      * *@date 2019/1/21 14:20
@@ -83,6 +85,7 @@ public class UsrSupplierAction extends ActionBase<UsrSupplier> {
     public void getBasicInformation() throws IOException {
         write(UsrSupplierDAO.getBasicInformation(supplier));
     }
+
     /**
      * @Description: 更新供应商基本信息
      * *@date 2019/1/21 14:20
@@ -94,6 +97,7 @@ public class UsrSupplierAction extends ActionBase<UsrSupplier> {
         upd.commit();
         write();
     }
+
     /**
      * @Description: 获取供应商页面资料
      * *@date 2019/1/21 14:20
@@ -102,6 +106,7 @@ public class UsrSupplierAction extends ActionBase<UsrSupplier> {
     public void getPageInformation() throws IOException {
         write(UsrSupplierDAO.getPageInformation(supplier));
     }
+
     /**
      * @Description: 更新供应商页面资料
      * *@date 2019/1/21 14:58
@@ -122,6 +127,7 @@ public class UsrSupplierAction extends ActionBase<UsrSupplier> {
     public void getPersonalityDecoration() throws IOException {
         write(UsrSupplierDAO.getPersonalityDecoration(supplier));
     }
+
     /**
      * @Description: 更新供应商个性装修
      * *@date 2019/1/21 15:05
@@ -142,6 +148,7 @@ public class UsrSupplierAction extends ActionBase<UsrSupplier> {
     public void getmarketingSettings() throws IOException {
         write(UsrSupplierDAO.getmarketingSettings(supplier));
     }
+
     /**
      * @Description: 更新供应商营销设置
      * *@date 2019/1/21 15:05
