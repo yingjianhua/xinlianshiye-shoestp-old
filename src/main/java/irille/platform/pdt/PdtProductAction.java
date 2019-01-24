@@ -11,6 +11,8 @@ import irille.pub.util.AppConfig;
 import irille.shop.pdt.PdtAttrLine;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.pdt.PdtProductDAO;
+import lombok.Getter;
+import lombok.Setter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -101,8 +103,12 @@ public class PdtProductAction extends MgtAction<PdtProduct> implements IPdtProdu
 		this.verify = verify;
 	}
     //搜索字段
+	@Setter
+	@Getter
     private String fldvalue;
     //搜索字段内容
+	@Setter
+	@Getter
     private String condition;
 
     /**
@@ -111,7 +117,7 @@ public class PdtProductAction extends MgtAction<PdtProduct> implements IPdtProdu
      * @date 2019/1/24 14:30
      * @throws Exception
      */
-    public void list() throws Exception {
+    public void listselectpurchse() throws Exception {
         write(PdtProductDAO.listproduct(fldvalue,condition,getStart(), getLimit()));
     }
 }

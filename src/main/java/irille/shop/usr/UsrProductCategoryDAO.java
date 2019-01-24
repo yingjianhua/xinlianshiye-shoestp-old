@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OEnabled;
-import irille.platform.pdt.view.PdtAttrCatView;
+import irille.platform.pdt.View.PdtAttrCatView;
 import irille.platform.pdt.view.UsrProductCategoryView.UsrProductCategoryView;
 import irille.pub.Log;
 import irille.pub.PropertyUtils;

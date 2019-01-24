@@ -29,7 +29,7 @@ public class UsrPurchaseAction  extends MgtAction<UsrPurchase> {
     @Setter
     @Getter
     private List<MconditionsView> mv;
-    public  void list() throws IOException {
+    public  void listMd() throws IOException {
         write(UsrPurchaseDAO.listUsrPurchaseListViews(mv,getStart(),getLimit()));
     }
     // 平台性别列表
@@ -45,9 +45,13 @@ public class UsrPurchaseAction  extends MgtAction<UsrPurchase> {
         json.put("STORE_ROOT", ja);
         writerOrExport(json);
     }
+    @Setter
+    @Getter
     //搜索字段
     private String fldvalue;
     //搜索字段内容
+    @Setter
+    @Getter
     private String condition;
 
     /**
