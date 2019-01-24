@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import irille.core.sys.Sys;
 import irille.homeAction.usr.dto.Page_supplierProductView;
 import irille.homeAction.usr.dto.SupplierListView;
+import irille.platform.usr.View.UsrSUPSelectView;
 import irille.pub.DateTools;
 import irille.pub.LogMessage;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.BeanBase;
+import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
 import irille.pub.idu.*;
 import irille.pub.svr.DbPool;
@@ -32,6 +34,7 @@ import irille.shop.plt.PltPay.OPay_Mode;
 import irille.shop.prm.PrmGroupPurchase;
 import irille.shop.usr.Usr.OStatus;
 import irille.shop.usr.UsrSupplier.T;
+import irille.view.Page;
 import irille.view.usr.AccountSettingsView;
 import irille.view.usr.SupplierView;
 import irille.view.usr.shopSettingView;
@@ -52,6 +55,42 @@ import java.util.stream.Stream;
 public class UsrSupplierDAO {
 
   public static final LogMessage LOG = new LogMessage(UsrSupplierDAO.class);
+  /**
+   *@Description:   供应商选中器列表平台
+   *@date 2019/1/23 19:27
+   *@anthor wilson zhang
+   */
+  public static Page listsupselect(String fldvalue, String condition, Integer start, Integer limit){
+    SQL sql=new SQL(){{
+      SELECT(T.PKEY,T.NAME,T.ROLE,T.LOGIN_NAME,T.CATEGORY,T.ENTITY,T.COMPANY_TYPE,T.COMPANY_NATURE);
+      FROM(UsrSupplier.class);
+      if(fldvalue !=null){
+        if(fldvalue.equalsIgnoreCase("name")){
+          WHERE(T.NAME,"like '%"+condition+"%'");
+        }
+        if(fldvalue.equalsIgnoreCase("loginName")){
+          WHERE(T.LOGIN_NAME,"like '%"+condition+"%'");
+        }
+        if(fldvalue.equalsIgnoreCase("entity")){
+          WHERE(T.ENTITY,"like '%"+condition+"%'");
+        }
+      }
+    }};
+     Integer count= irille.pub.bean.Query.sql(sql).queryCount();
+     List<UsrSUPSelectView> list= irille.pub.bean.Query.sql(sql.LIMIT(start,limit)).queryMaps().stream().map(bean->new UsrSUPSelectView(){{
+       setPkey((Integer)bean.get(T.PKEY.getFld().getCodeSqlField()));
+       setName((String) bean.get(T.NAME.getFld().getCodeSqlField()));
+       setRole(BeanBase.load(UsrSupplierRole.class,(Integer) bean.get(T.ROLE.getFld().getCodeSqlField())).getName());
+       setLoginname((String) bean.get(T.LOGIN_NAME.getFld().getCodeSqlField()));
+       setCategory(BeanBase.load(UsrSupplierCategory.class,(Integer) bean.get(T.CATEGORY.getFld().getCodeSqlField())).getName());
+       setEntity((String) bean.get(T.ENTITY.getFld().getCodeSqlField()));
+       setCompanytype((String) bean.get(T.COMPANY_TYPE.getFld().getCodeSqlField()));
+       setCompanyNature((String) bean.get(T.COMPANY_NATURE.getFld().getCodeSqlField()));
+     }}).collect(Collectors.toList());
+   return  new Page(list,start,limit,count);
+  }
+
+
 
   public static SupplierView getSupplierInfo(Integer pkey) {
     UsrSupplier bean = UsrSupplier.load(UsrSupplier.class, pkey);
