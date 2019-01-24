@@ -705,7 +705,7 @@ public class PrmGroupPurchaseDAO {
         SQL sql = new SQL() {{
             SELECT(PrmGroupPurchase.class).FROM(PrmGroupPurchase.class);
             if (title != null) {
-                WHERE(PrmGroupPurchase.T.TITLE, "like ?", "%" + title + "%");
+                WHERE(PrmGroupPurchase.T.TITLE, "like '%" + title + "%'");
             }
             if (status != null) {
                 WHERE(PrmGroupPurchase.T.STATUS, "=?", status);
