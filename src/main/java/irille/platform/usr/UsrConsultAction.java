@@ -28,6 +28,7 @@ public class UsrConsultAction extends ActionBase<UsrConsult> {
     private String name;
     private String title;
     private String content;
+    private String purchase;
 
     /**
      * 查询询盘列表
@@ -36,7 +37,7 @@ public class UsrConsultAction extends ActionBase<UsrConsult> {
      * @throws Exception
      */
     public void list() throws Exception {
-        write(UsrConsultDAO.listview(name,title,content,getStart(), getLimit()));
+        write(UsrConsultDAO.listview(name,title,content,purchase,getStart(), getLimit()));
     }
 
     /**
