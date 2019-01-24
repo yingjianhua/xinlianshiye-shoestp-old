@@ -1,6 +1,8 @@
 package irille.shop.pdt;
 
 import irille.core.sys.Sys.OYn;
+import irille.core.sys.SysUser;
+import irille.platform.pdt.view.pdtCatView.PdtCatView;
 import irille.pub.Log;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.BeanBase;
@@ -14,16 +16,77 @@ import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.pub.validate.ValidForm;
 import irille.shop.pdt.PdtCat.T;
+import irille.view.Page;
 import irille.view.pdt.CategoryView;
 import org.json.JSONException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class PdtCatDAO {
     public static final Log LOG = new Log(PdtCatDAO.class);
 
+    /**
+     * 获取产品类目
+     */
+    public static Page listPdtCat(Integer start, Integer limit, Integer enabled, String name, Integer subjectionCat) {
+        List<PdtCat> listCat = irille.pub.bean.Query.SELECT(PdtCat.class).queryList();
+        HashMap map = new HashMap();
+        for (PdtCat line : listCat) {
+            map.put(line.getPkey(), line.getName());
+        }
+        SQL sql = new SQL();
+        sql.SELECT(PdtCat.class).FROM(PdtCat.class);
+        if (enabled != null) {
+            sql.WHERE(T.ENABLED, "=?", enabled);
+        }
+        if (name != null) {
+            sql.WHERE(T.NAME, "like ?", "%" + name + "%");
+        }
+        if (subjectionCat != null) {
+            sql.WHERE(T.CATEGORY_UP, "=?", subjectionCat);
+        }
+        Integer count = irille.pub.bean.Query.sql(sql).queryCount();
+        List<PdtCatView> list = irille.pub.bean.Query.sql(sql.LIMIT(start, limit)).queryMaps().stream().map(bean -> new PdtCatView() {{
+            setId((Integer) bean.get(T.PKEY.getFld().getCodeSqlField()));
+            setName((String) bean.get(T.NAME.getFld().getCodeSqlField()));
+            Integer id = (Integer) bean.get(T.CATEGORY_UP.getFld().getCodeSqlField());
+            if (id != null) {
+                setSubjectionCat((String) map.get(id));
+            }
+            setCategoryId((Integer) bean.get(T.CATEGORY_UP.getFld().getCodeSqlField()));
+            setEnabled(Integer.valueOf(String.valueOf(bean.get(T.ENABLED.getFld().getCodeSqlField()))) == 1 ? true : false);
+            setCreateTime((Date) bean.get(T.CREATE_TIME.getFld().getCodeSqlField()));
+            setCreateBy(BeanBase.load(SysUser.class, Integer.valueOf(String.valueOf(bean.get(T.CREATE_BY.getFld().getCodeSqlField())))).getLoginName());
+            setSeoDescription((String) bean.get(T.SEO_DESCRIPTION_EN.getFld().getCodeSqlField()));
+            setSeoKeyword((String) bean.get(T.SEO_KEYWORD_EN.getFld().getCodeSqlField()));
+            setSeoName((String) bean.get(T.SEO_TITLE_EN.getFld().getCodeSqlField()));
+
+        }}).collect(Collectors.toList());
+        return new Page(list, start, limit, count);
+    }
+
+    /**
+     * 是否启用
+     */
+    public static class enable extends IduOther<enable, PdtCat> {
+        @Override
+        public void before() {
+        }
+
+        @Override
+        public void valid() {
+        }
+
+        @Override
+        public void run() {
+            getB().stEnabled(!getB().gtEnabled()); //判断是否选中
+            PdtCat dbBean = loadThisBeanAndLock();
+            PropertyUtils.copyProperties(dbBean, getB(), T.ENABLED);
+            dbBean.upd();
+            super.run();
+        }
+    }
 
     /**
      * 获取一级产品分类
@@ -45,7 +108,7 @@ public class PdtCatDAO {
 
     public static class Query extends IduOther<Query, PdtCat> {
         public static List<PdtCat> listSub(Integer pkey) {
-            return BeanBase.list(PdtCat.class, PdtCat.T.CATEGORY_UP.getFld().getCodeSqlField() + " = ? AND " + PdtCat.T.DELETED.getFld().getCodeSqlField() + " = ?", false, pkey, OYn.NO.getLine().getKey());
+            return BeanBase.list(PdtCat.class, T.CATEGORY_UP.getFld().getCodeSqlField() + " = ? AND " + T.DELETED.getFld().getCodeSqlField() + " = ?", false, pkey, OYn.NO.getLine().getKey());
         }
 
         /**
@@ -54,7 +117,7 @@ public class PdtCatDAO {
          * @return
          */
         public static List<PdtCat> listTopCat() {
-            return BeanBase.list(PdtCat.class, PdtCat.T.CATEGORY_UP.getFld().getCodeSqlField() + " is NULL  AND " + PdtCat.T.DELETED.getFld().getCodeSqlField() + " = " + OYn.NO.getLine().getKey(), false);
+            return BeanBase.list(PdtCat.class, T.CATEGORY_UP.getFld().getCodeSqlField() + " is NULL  AND " + T.DELETED.getFld().getCodeSqlField() + " = " + OYn.NO.getLine().getKey(), false);
         }
 
 
@@ -108,7 +171,7 @@ public class PdtCatDAO {
         @Override
         public void before() {
             PdtCat dbBean = loadThisBeanAndLock();
-            PropertyUtils.copyPropertiesWithout(dbBean, getB(), PdtCat.T.PKEY, PdtCat.T.CREATE_BY, PdtCat.T.CREATE_TIME, PdtCat.T.DELETED);
+            PropertyUtils.copyPropertiesWithout(dbBean, getB(), T.PKEY, T.CREATE_BY, T.CREATE_TIME, T.DELETED);
             setB(translateUtil.autoTranslate(dbBean));
             super.before();
 
@@ -124,6 +187,17 @@ public class PdtCatDAO {
             getB().setCreateBy(getUser().getPkey());
             getB().setCreateTime(Env.getSystemTime());
             setB(translateUtil.autoTranslate(getB()));
+        }
+    }
+
+    public static class De extends IduUpd<Upd, PdtCat> {
+        @Override
+        public void before() {
+            //super.before();
+            getB().setDeleted(OYn.YES.getLine().getKey());
+            PdtCat dbBean = loadThisBeanAndLock();
+            PropertyUtils.copyProperties(dbBean, getB(), T.DELETED);
+            setB(dbBean);
         }
     }
 
@@ -151,5 +225,32 @@ public class PdtCatDAO {
                 throw LOG.err("hasChild", "存在下级分类,不可删除");
             }
         }
+    }
+
+    //修改
+    public static void updPdtCat(String name, Integer enabled, Integer subjectionCat, String seoDescription, String seoKeyword, String seoName, Integer id) {
+        PdtCat pdtCat = BeanBase.load(PdtCat.class, id);
+        pdtCat.setName(name);
+        pdtCat.setEnabled((byte) enabled.intValue());
+        pdtCat.setCategoryUp(subjectionCat);
+        pdtCat.setSeoDescriptionEn(seoDescription);
+        pdtCat.setSeoKeywordEn(seoKeyword);
+        pdtCat.setSeoTitleEn(seoName);
+        pdtCat.upd();
+    }
+
+    //添加
+    public static void addPdtCat(String name, Integer enabled, Integer subjectionCat, String seoDescription, String seoKeyword, String seoName, Integer createBy) throws Exception {
+        PdtCat pdtCat = new PdtCat();
+        pdtCat.setCategoryUp(subjectionCat);
+        pdtCat.setSeoTitleEn(seoName);
+        pdtCat.setSeoKeywordEn(seoKeyword);
+        pdtCat.setSeoDescriptionEn(seoDescription);
+        pdtCat.setEnabled((byte) enabled.intValue());
+        pdtCat.setName(name);
+        pdtCat.setCreateBy(createBy);
+        pdtCat.setDeleted(OYn.NO.getLine().getKey());
+        pdtCat.setCreateTime(Env.getSystemTime());
+        pdtCat.ins();
     }
 }
