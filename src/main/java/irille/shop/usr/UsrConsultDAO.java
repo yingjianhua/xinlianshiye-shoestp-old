@@ -1,16 +1,21 @@
 package irille.shop.usr;
 
 import irille.core.sys.Sys;
+import irille.platform.usr.View.UsrConsultView;
 import irille.pub.Log;
 import irille.pub.Str;
+import irille.pub.bean.Bean;
+import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
+import irille.pub.idu.IduDel;
 import irille.pub.idu.IduIns;
 import irille.pub.svr.Env;
 import irille.pub.tb.FldLanguage.Language;
 import irille.pub.validate.ValidForm;
 import irille.pub.validate.ValidRegex;
+import irille.shop.pdt.PdtColor;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.plt.PltCountry;
 import irille.shop.usr.UsrConsult.T;
@@ -20,12 +25,77 @@ import irille.view.usr.ConsultView;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UsrConsultDAO {
     public static final Log LOG = new Log(UsrConsultDAO.class);
     //最大询盘抢单剩余次数
     public static final int max_count = 5;
+
+    /**
+     * 查询询盘列表
+     * @author lingjian
+     * @date 2019/1/23 14:00
+     * @param start
+     * @param limit
+     * @return
+     */
+    public static Page listview(String name,String title,String content,Integer start, Integer limit) {
+        if (null == start) {
+            start = 0;
+        }
+        if (null == limit) {
+            limit = 5;
+        }
+        SQL sql = new SQL() {{
+            SELECT(UsrConsult.class).FROM(UsrConsult.class);
+            if(null != name){
+                WHERE(T.NAME, "like ?", "%" + name + "%");
+            }
+            if(null != title){
+                WHERE(T.TITLE, "like ?", "%" + title + "%");
+            }
+            if(null != content){
+                WHERE(T.CONTENT, "like ?", "%" + content + "%");
+            }
+        }};
+        Integer count = Query.sql(sql).queryCount();
+        List<UsrConsultView> list = Query.sql(sql.LIMIT(start, limit)).queryMaps().stream().map(bean -> new UsrConsultView() {{
+            setId((Integer) bean.get(T.PKEY.getFld().getCodeSqlField()));
+            setTitle((String) bean.get(T.TITLE.getFld().getCodeSqlField()));
+            setImage((String) bean.get(T.IMAGE.getFld().getCodeSqlField()));
+            String country = Bean.load(PltCountry.class,(Integer) bean.get(T.COUNTRY.getFld().getCodeSqlField())).getName();
+            if(null != country) {
+                setCountry(country);
+            }
+            Integer product = (Integer) bean.get(T.PRODUCT.getFld().getCodeSqlField());
+            if(null != product){
+                setProduct(BeanBase.load(PdtProduct.class,product).getName());
+            }
+            setHaveNewMsg((Byte) bean.get(T.HAVE_NEW_MSG.getFld().getCodeSqlField()));
+            setContent((String) bean.get(T.CONTENT.getFld().getCodeSqlField()));
+            setIsPublic((Byte) bean.get(T.IS_PUBLIC.getFld().getCodeSqlField()));
+            setCount((Integer) bean.get(T.COUNT.getFld().getCodeSqlField()));
+            setQuantity((Integer) bean.get(T.QUANTITY.getFld().getCodeSqlField()));
+            String purchaseName = Bean.load(UsrPurchase.class,(Integer) bean.get(T.PURCHASE.getFld().getCodeSqlField())).getName();
+            if(null != purchaseName){
+                setPurchase(purchaseName);
+            }
+            setName((String) bean.get(T.NAME.getFld().getCodeSqlField()));
+            setEmail((String) bean.get(T.EMAIL.getFld().getCodeSqlField()));
+            setCreatedTime((Date) bean.get(PdtColor.T.CREATE_TIME.getFld().getCodeSqlField()));
+        }}).collect(Collectors.toList());
+        return new Page(list, start, limit, count);
+    }
+
+    public static class remove extends IduDel<UsrConsultDAO.remove, UsrConsult> {
+        @Override
+        public void before() {
+            super.before();
+        }
+    }
 
     /**
      * 统计该采购商当前发布了几个询盘

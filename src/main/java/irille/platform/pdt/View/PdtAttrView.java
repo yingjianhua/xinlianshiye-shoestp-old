@@ -17,7 +17,7 @@ public class PdtAttrView implements BaseView {
 //    @JsonSerialize(using = I18NFieldSerializer.class)
     private String name; //名称
 //    @JsonSerialize(using = I18NFieldSerializer.class)
-    private Integer CATEGORY; //产品类目
+    private String CATEGORY; //产品类目
     private String createdBy;//建档员
     @JsonFormat(pattern="yyyy/MM/dd HH:mm", timezone="GMT+8")
     private Date createdTime;//建档时间
