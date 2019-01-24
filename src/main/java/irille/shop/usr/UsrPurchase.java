@@ -33,6 +33,7 @@ public class UsrPurchase extends BeanInt<UsrPurchase> implements IExtName{
 		PASSWORD(SYS.PASSWORD__NULL),
 		CURRENCY(PltErate.fldOutKey("currency", "默认货币")), //弃用字段
 		REG_IP(SYS.IP__NULL,"注册IP"),
+
 		TELPHONE(SYS.PHOTO__NULL,"手机号码"),
 		COMPANY(SYS.STR__100_NULL,"公司名称"),
 		ADDRESS(SYS.STR__200_NULL,"地址"),

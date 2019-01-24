@@ -28,6 +28,7 @@ public class UsrConsultAction extends ActionBase<UsrConsult> {
     private String name;
     private String title;
     private String content;
+    private String product;
     private String purchase;
 
     /**
@@ -37,7 +38,7 @@ public class UsrConsultAction extends ActionBase<UsrConsult> {
      * @throws Exception
      */
     public void list() throws Exception {
-        write(UsrConsultDAO.listview(name,title,content,purchase,getStart(), getLimit()));
+        write(UsrConsultDAO.listview(name,title,content,product,purchase,getStart(), getLimit()));
     }
 
     /**

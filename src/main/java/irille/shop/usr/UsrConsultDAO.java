@@ -42,7 +42,7 @@ public class UsrConsultDAO {
      * @param limit
      * @return
      */
-    public static Page listview(String name,String title,String content,Integer start, Integer limit) {
+    public static Page listview(String name,String title,String content,String product,String purchase,Integer start, Integer limit) {
         if (null == start) {
             start = 0;
         }
@@ -59,6 +59,11 @@ public class UsrConsultDAO {
             }
             if(null != content){
                 WHERE(T.CONTENT, "like ?", "%" + content + "%");
+            }
+            if(null != purchase){
+                WHERE(T.PURCHASE, "=?", purchase);
+            }if(null != product){
+                WHERE(T.PRODUCT, "=?", product);
             }
         }};
         Integer count = Query.sql(sql).queryCount();

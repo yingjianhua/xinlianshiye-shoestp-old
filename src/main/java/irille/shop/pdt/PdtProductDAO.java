@@ -5,8 +5,10 @@ import com.google.gson.JsonParser;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
 import irille.homeAction.usr.dto.PdtView;
+import irille.platform.pdt.View.PdtProductView;
 import irille.pub.Log;
 import irille.pub.PropertyUtils;
+import irille.pub.bean.Bean;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduIns;
@@ -24,6 +26,8 @@ import irille.shop.pdt.PdtProduct.T;
 import irille.shop.usr.UsrCart;
 import irille.shop.usr.UsrCartDAO;
 import irille.shop.usr.UsrProductCategoryDAO;
+import irille.shop.usr.UsrSupplier;
+import irille.view.Page;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -36,6 +40,43 @@ import java.util.stream.Collectors;
 public class PdtProductDAO {
 
   public static final Log LOG = new Log(PdtProductDAO.class);
+
+  /**
+   *@Description:   查询产品列表
+   *@date 2019/1/23 19:27
+   *@anthor lingjian
+   */
+  public static Page listproduct(String fldvalue, String condition, Integer start, Integer limit){
+    SQL sql=new SQL(){{
+      SELECT(PdtProduct.class).FROM(PdtProduct.class);
+      if(fldvalue !=null){
+        if(fldvalue.equalsIgnoreCase("name")){
+          WHERE(PdtProduct.T.NAME,"like '%"+condition+"%'");
+        }
+        if(fldvalue.equalsIgnoreCase("sku")){
+          WHERE(T.SKU,"like '%"+condition+"%'");
+        }
+        if(fldvalue.equalsIgnoreCase("code")){
+          WHERE(T.CODE,"like '%"+condition+"%'");
+        }
+        if(fldvalue.equalsIgnoreCase("supplier")){
+          WHERE(T.SUPPLIER,"=?"+condition);
+        }
+      }
+    }};
+    Integer count= irille.pub.bean.Query.sql(sql).queryCount();
+    List<PdtProductView> list= irille.pub.bean.Query.sql(sql.LIMIT(start,limit)).queryMaps().stream().map(bean->new PdtProductView(){{
+      setPkey((Integer)bean.get(PdtProduct.T.PKEY.getFld().getCodeSqlField()));
+      setName((String) bean.get(PdtProduct.T.NAME.getFld().getCodeSqlField()));
+      setPicture((String) bean.get(T.PICTURE.getFld().getCodeSqlField()));
+      setCode((String) bean.get(T.CODE.getFld().getCodeSqlField()));
+      setSku((String) bean.get(T.SKU.getFld().getCodeSqlField()));
+      setCategory(Bean.load(PdtCat.class,(Integer)bean.get(T.CATEGORY.getFld().getCodeSqlField())).getName());
+      setSupplier(Bean.load(UsrSupplier.class,(Integer)bean.get(T.SUPPLIER.getFld().getCodeSqlField())).getName());
+    }}).collect(Collectors.toList());
+    return  new Page(list,start,limit,count);
+  }
+
 
   public static class QueryDetail extends IduOther<Query, PdtProduct> {
 
