@@ -8,7 +8,7 @@ import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
 import irille.core.sys.SysEm;
 import irille.platform.omt.View.ApplicationsView;
-import irille.platform.pdt.view.PdtAttrCatView;
+import irille.platform.pdt.View.PdtAttrCatView;
 import irille.pub.Log;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.Query;

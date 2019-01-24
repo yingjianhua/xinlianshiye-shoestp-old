@@ -12,6 +12,7 @@ import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.TranslateLanguage.TranslateBean;
 import irille.view.Page;
 
+import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +24,15 @@ import java.util.stream.Collectors;
  * Time: 13:26
  */
 public class PltTrantslateDAO {
+
+    public static void main(String[] args) {
+        Class<?> bean = PltTrantslate.class;
+        Field[] Fields = bean.getDeclaredFields();
+        for (Field field : Fields) {
+            field.setAccessible( true );
+            System.out.println(field.getName().substring(1));
+        }
+    }
     public static class Select extends IduOther<Select, PltTrantslate> {
         public TranslateBean getTransLatesByHashCode(String sourceText, String  targetLanguage) {
             FormaterSql sql = FormaterSql.build();
@@ -64,19 +74,21 @@ public class PltTrantslateDAO {
            if(null!=tc){
                for (TrantslateConditionView tv:tc){
                    if(tv.getMode().equalsIgnoreCase(PltTrantslate.T.HASHCODE.toString())){
-                       WHERE(PltTrantslate.T.HASHCODE, "like '%"+tv.getContent()+"%'");
+                       WHERE(PltTrantslate.T.HASHCODE,  tv.getCondition()+" '%"+tv.getContent()+"%'");
                    }
                    if(tv.getMode().equalsIgnoreCase(PltTrantslate.T.SOURCE_TEXT.toString())){
-                       WHERE(PltTrantslate.T.SOURCE_TEXT, "like '%"+tv.getContent()+"%'");
+                       WHERE(PltTrantslate.T.SOURCE_TEXT, tv.getCondition()+" '%"+tv.getContent()+"%'");
                    }
                    if(tv.getMode().equalsIgnoreCase(PltTrantslate.T.TARGET.toString())){
-                               WHERE(PltTrantslate.T.TARGET, "like '%"+tv.getContent()+"%'");
+                               WHERE(PltTrantslate.T.TARGET, tv.getCondition()+" '%"+tv.getContent()+"%'");
                    }
                    if(tv.getMode().equalsIgnoreCase(PltTrantslate.T.TARGET_TEXT.toString())){
-                       WHERE(PltTrantslate.T.TARGET_TEXT, "like '%"+tv.getContent()+"%'");
+                       WHERE(PltTrantslate.T.TARGET_TEXT, tv.getCondition()+" '%"+tv.getContent()+"%'");
                    }
                    if(tv.getMode().equalsIgnoreCase(PltTrantslate.T.CREATED_TIME.toString())){
-                               WHERE(PltTrantslate.T.CREATED_TIME, tv.getCondition()+" ?", new Date(Long.parseLong(tv.getContent())));
+
+
+                       WHERE(PltTrantslate.T.CREATED_TIME, tv.getCondition()+" ?", new Date(Long.parseLong(tv.getContent())));
                    }
                }
            }

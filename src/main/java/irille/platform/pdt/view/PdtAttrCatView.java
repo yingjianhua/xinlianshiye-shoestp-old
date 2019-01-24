@@ -1,4 +1,4 @@
-package irille.platform.pdt.view;
+package irille.platform.pdt.View;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import irille.view.BaseView;

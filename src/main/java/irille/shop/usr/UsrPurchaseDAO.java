@@ -2,25 +2,34 @@ package irille.shop.usr;
 
 import irille.core.sys.Sys.OSex;
 import irille.homeAction.HomeAction;
+import irille.platform.usr.View.UsrPurchaseListView;
 import irille.pub.DateTools;
 import irille.pub.Log;
 import irille.pub.LogMessage;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.BeanBase;
+import irille.pub.bean.Query;
+import irille.pub.bean.sql.MconditionsView;
+import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduDel;
 import irille.pub.idu.IduIns;
 import irille.pub.idu.IduOther;
 import irille.pub.idu.IduUpdLines;
 import irille.pub.util.FormaterSql.FormaterSql;
+import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.pub.validate.ValidRegex;
+import irille.shop.plt.PltCountry;
+import irille.shop.plt.PltErate;
 import irille.shop.plt.PltErateDAO;
+import irille.view.Page;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class UsrPurchaseDAO {
     public static final LogMessage LOG = new LogMessage(UsrPurchase.class);
@@ -34,9 +43,9 @@ public class UsrPurchaseDAO {
             return null;
         }
     }
-    public static void main(String[] args) {
-		System.out.println(DateTools.getDigest("1123456"));
-	}
+//    public static void main(String[] args) {
+//		System.out.println(DateTools.getDigest("1123456"));
+//	}
 
     /**
      * 采购商注册
@@ -379,5 +388,47 @@ public class UsrPurchaseDAO {
     	}
     }
 
-
+    /**
+    *@Description:   2.1平台端采购商列表(会员)
+    *@date 2019/1/21 11:16
+    *@anthor wilson zhang
+    */
+    public static Page listUsrPurchaseListViews(List<MconditionsView> listmv, Integer start, Integer limit){
+        if (null == start ) {
+            start = 0;
+        }
+        if (null == limit||0==limit) {
+            limit = 15;
+        }
+        SQL sql=new SQL(){{
+            SELECT(UsrPurchase.T.PKEY,"id");
+            SELECT(UsrPurchase.T.NAME,"name");
+            SELECT(UsrPurchase.T.SURNAME,"surname");
+            SELECT(UsrPurchase.T.SEX,"sex");
+            SELECT(UsrPurchase.T.ICON,"icon");
+            SELECT(UsrPurchase.T.EMAIL,"email");
+            SELECT(UsrPurchase.T.REG_TIME,"regTime");
+            SELECT(UsrPurchase.T.LOGIN_NAME,"loginName");
+            SELECT(UsrPurchase.T.REG_IP,"regIp");
+            SELECT(UsrPurchase.T.TELPHONE,"telphone");
+            SELECT(UsrPurchase.T.COMPANY,"company");
+            SELECT(UsrPurchase.T.ADDRESS,"address");
+            SELECT(UsrPurchase.T.LAST_LOGIN_TIME,"lastLoginTime");
+            SELECT(UsrPurchase.T.FACEBOOK_USER_ID,"facebookuserid");
+            SELECT(UsrPurchase.T.GOOGLE_USER_ID,"googleuserid");
+            SELECT(UsrMemberLevel.T.NAME,"usrmemberlevel")
+                   .SELECT(PltCountry.T.NAME,"country").SELECT(PltErate.T.CUR_NAME,"currency").FROM(UsrPurchase.class);
+           LEFT_JOIN(PltCountry.class,PltCountry.T.PKEY,UsrPurchase.T.COUNTRY)
+                   .LEFT_JOIN(UsrMemberLevel.class,UsrMemberLevel.T.PKEY,UsrPurchase.T.MEMBER_LEVEL)
+                   .LEFT_JOIN(PltErate.class,PltErate.T.PKEY,UsrPurchase.T.CURRENCY);
+           if(null!=listmv){
+               Mconditions(listmv,UsrPurchase.class);
+           }
+    }};
+        Integer count= irille.pub.bean.Query.sql(sql).queryCount();
+        List<UsrPurchaseListView> list = irille.pub.bean.Query.sql(sql.LIMIT(start,limit)).queryMaps().stream().map(o->{
+            return SetBeans.set(o, UsrPurchaseListView.class);
+        }).collect(Collectors.toList());
+        return new Page(list,start,limit,count);
+    }
 }
