@@ -27,7 +27,20 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
     public void setBean(UsrSupplier bean) {
         this._bean = bean;
     }
-
+    /**
+     *@Description:  供应商选中器列表平台
+     *@date 2019/1/23 19:20
+     *@anthor wilson zhang
+     */
+    @Getter
+    @Setter
+    private  String fldvalue;
+    @Getter
+    @Setter
+    private  String condition;
+    public void ListUsrSup()throws Exception {
+        write(	UsrSupplierDAO.listsupselect(fldvalue,condition,getStart(),getLimit()));
+    }
     @Getter
     @Setter
     private Integer supplier;
