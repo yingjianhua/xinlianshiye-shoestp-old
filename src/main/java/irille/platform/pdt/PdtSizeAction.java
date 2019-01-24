@@ -28,6 +28,7 @@ public class PdtSizeAction extends ActionBase<PdtSize> {
 
     private String name; //搜索的产品尺寸名称
     private String productCategory; //搜索的产品尺寸类目
+    private Integer id;
 
     /**
      * 查询产品尺寸列表+搜索
@@ -55,7 +56,7 @@ public class PdtSizeAction extends ActionBase<PdtSize> {
     }
 
     /**
-     * 修改产品颜色
+     * 修改产品尺寸
      * @author lingjian
      * @date 2019/1/22 13:36
      * @throws IOException
@@ -64,14 +65,13 @@ public class PdtSizeAction extends ActionBase<PdtSize> {
         LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
         getBean().setCreateBy(lu.get_user().getPkey());
         PdtSizeDAO.UpdSize upd = new PdtSizeDAO.UpdSize();
-        System.out.println("sssssss");
         upd.setB(getBean());
         upd.commit();
         write();
     }
 
     /**
-     * 删除产品颜色
+     * 删除产品尺寸
      * @author lingjian
      * @date 2019/1/22 13:38
      * @throws IOException

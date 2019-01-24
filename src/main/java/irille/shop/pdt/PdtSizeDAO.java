@@ -60,15 +60,16 @@ public class PdtSizeDAO {
 		List<PdtSizeView> list = Query.sql(sql.LIMIT(start, limit)).queryMaps().stream().map(bean -> new PdtSizeView() {{
 			setId((Integer) bean.get(T.PKEY.getFld().getCodeSqlField()));
 			setName((String) bean.get(T.NAME.getFld().getCodeSqlField()));
-//			+ "##" + BeanBase.load(PdtCat.class,(Integer) bean.get(T.PRODUCT_CATEGORY.getFld().getCodeSqlField())).getName();
+
 			Integer s = (Integer) bean.get(T.PRODUCT_CATEGORY.getFld().getCodeSqlField());
-			setProductCategory(s!=null? s:null);
+			if(null != s){
+				setProductCategory(BeanBase.load(PdtCat.class,s).getName());
+			}
 			setCreatedBy(BeanBase.load(SysUser.class, Integer.valueOf(String.valueOf(bean.get(T.CREATE_BY.getFld().getCodeSqlField())))).getLoginName());
 			setCreatedTime((Date) bean.get(T.CREATE_TIME.getFld().getCodeSqlField()));
 		}}).collect(Collectors.toList());
 		return new Page(list, start, limit, count);
 	}
-
 	/**
 	 * 新增产品尺寸
 	 * @author lingjian

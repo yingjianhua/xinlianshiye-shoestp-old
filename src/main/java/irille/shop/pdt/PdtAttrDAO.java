@@ -6,6 +6,7 @@ import irille.core.sys.SysUser;
 import irille.platform.pdt.View.PdtAttrView;
 import irille.pub.Log;
 import irille.pub.PropertyUtils;
+import irille.pub.bean.Bean;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
@@ -56,7 +57,7 @@ public class PdtAttrDAO {
         List<PdtAttrView> list = Query.sql(sql.LIMIT(start, limit)).queryMaps().stream().map(bean -> new PdtAttrView() {{
             setId((Integer) bean.get(PdtAttr.T.PKEY.getFld().getCodeSqlField()));
             setName((String) bean.get(PdtAttr.T.NAME.getFld().getCodeSqlField()));
-            setCATEGORY((Integer) bean.get(T.CATEGORY.getFld().getCodeSqlField()));
+            setCATEGORY(Bean.load(PdtAttrCat.class,(Integer) bean.get(T.CATEGORY.getFld().getCodeSqlField())).getName());
             setCreatedBy(BeanBase.load(SysUser.class, Integer.valueOf(String.valueOf(bean.get(PdtAttr.T.CREATE_BY.getFld().getCodeSqlField())))).getLoginName());
             setCreatedTime((Date) bean.get(PdtAttr.T.CREATE_TIME.getFld().getCodeSqlField()));
         }}).collect(Collectors.toList());

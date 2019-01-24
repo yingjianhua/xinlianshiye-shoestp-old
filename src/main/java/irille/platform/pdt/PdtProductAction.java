@@ -31,7 +31,7 @@ public class PdtProductAction extends MgtAction<PdtProduct> implements IPdtProdu
 	public Class beanClazz() {
 		return PdtProduct.class;
 	}
-	
+
 	private Boolean verify;
 
 	@Override
@@ -85,13 +85,13 @@ public class PdtProductAction extends MgtAction<PdtProduct> implements IPdtProdu
 	@Override
 	public void onSale(boolean onSale, int pkey) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void publish() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public Boolean getVerify() {
@@ -100,4 +100,18 @@ public class PdtProductAction extends MgtAction<PdtProduct> implements IPdtProdu
 	public void setVerify(Boolean verify) {
 		this.verify = verify;
 	}
+    //搜索字段
+    private String fldvalue;
+    //搜索字段内容
+    private String condition;
+
+    /**
+     * 查询采购商列表
+     * @author lingjian
+     * @date 2019/1/24 14:30
+     * @throws Exception
+     */
+    public void list() throws Exception {
+        write(PdtProductDAO.listproduct(fldvalue,condition,getStart(), getLimit()));
+    }
 }
