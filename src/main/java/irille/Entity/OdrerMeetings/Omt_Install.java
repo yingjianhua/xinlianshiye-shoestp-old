@@ -12,6 +12,7 @@ public class Omt_Install extends InstallBase {
         m.proc(OrderMeetingExhibition.TB, 20, null);
         m.proc(OrderMeeting.TB, 30, null);
         m.proc(OrderMeetingAudit.TB, 40, null);
+        m.proc(OrderMeetingOrder.TB, 50, null);
     }
 }
 
