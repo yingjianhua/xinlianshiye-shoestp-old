@@ -1,5 +1,6 @@
 package irille.platform.pdt;
 
+<<<<<<< Updated upstream
 import com.fasterxml.jackson.core.JsonProcessingException;
 import irille.action.MgtAction;
 import irille.action.pdt.inf.IPdtProductAction;
@@ -109,6 +110,34 @@ public class PdtProductAction extends MgtAction<PdtProduct> implements IPdtProdu
     //搜索字段内容
 	@Setter
 	@Getter
+=======
+import irille.action.ActionBase;
+import irille.shop.pdt.PdtProduct;
+import irille.shop.pdt.PdtProductDAO;
+import lombok.Data;
+
+
+/**
+ * @author lingjian
+ * @date 2019/1/24 14:29
+ * @Version 1.0
+ */
+@Data
+public class PdtProductAction extends ActionBase<PdtProduct> {
+
+    @Override
+    public Class beanClazz() {
+        return PdtProduct.class;
+    }
+    public PdtProduct getBean() { return _bean; }
+    public void setBean(PdtProduct bean) {
+        this._bean = bean;
+    }
+
+    //搜索字段
+    private String fldvalue;
+    //搜索字段内容
+>>>>>>> Stashed changes
     private String condition;
 
     /**
@@ -117,7 +146,14 @@ public class PdtProductAction extends MgtAction<PdtProduct> implements IPdtProdu
      * @date 2019/1/24 14:30
      * @throws Exception
      */
+<<<<<<< Updated upstream
     public void listselectpurchse() throws Exception {
         write(PdtProductDAO.listproduct(fldvalue,condition,getStart(), getLimit()));
     }
 }
+=======
+    public void list() throws Exception {
+        write(PdtProductDAO.listproduct(fldvalue,condition,getStart(), getLimit()));
+    }
+}
+>>>>>>> Stashed changes
