@@ -1,7 +1,5 @@
 package irille.platform.pdt;
 
-<<<<<<< Updated upstream
-import com.fasterxml.jackson.core.JsonProcessingException;
 import irille.action.MgtAction;
 import irille.action.pdt.inf.IPdtProductAction;
 import irille.pub.Str;
@@ -12,8 +10,6 @@ import irille.pub.util.AppConfig;
 import irille.shop.pdt.PdtAttrLine;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.pdt.PdtProductDAO;
-import lombok.Getter;
-import lombok.Setter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -22,18 +18,6 @@ import java.util.stream.Collectors;
 
 public class PdtProductAction extends MgtAction<PdtProduct> implements IPdtProductAction {
 
-	public PdtProduct getBean() {
-		return _bean;
-	}
-
-	public void setBean(PdtProduct bean) {
-		this._bean = bean;
-	}
-
-	@Override
-	public Class beanClazz() {
-		return PdtProduct.class;
-	}
 
 	private Boolean verify;
 
@@ -103,27 +87,9 @@ public class PdtProductAction extends MgtAction<PdtProduct> implements IPdtProdu
 	public void setVerify(Boolean verify) {
 		this.verify = verify;
 	}
-    //搜索字段
-	@Setter
-	@Getter
-    private String fldvalue;
-    //搜索字段内容
-	@Setter
-	@Getter
-=======
-import irille.action.ActionBase;
-import irille.shop.pdt.PdtProduct;
-import irille.shop.pdt.PdtProductDAO;
-import lombok.Data;
 
 
-/**
- * @author lingjian
- * @date 2019/1/24 14:29
- * @Version 1.0
- */
-@Data
-public class PdtProductAction extends ActionBase<PdtProduct> {
+
 
     @Override
     public Class beanClazz() {
@@ -137,7 +103,6 @@ public class PdtProductAction extends ActionBase<PdtProduct> {
     //搜索字段
     private String fldvalue;
     //搜索字段内容
->>>>>>> Stashed changes
     private String condition;
 
     /**
@@ -146,14 +111,7 @@ public class PdtProductAction extends ActionBase<PdtProduct> {
      * @date 2019/1/24 14:30
      * @throws Exception
      */
-<<<<<<< Updated upstream
     public void listselectpurchse() throws Exception {
         write(PdtProductDAO.listproduct(fldvalue,condition,getStart(), getLimit()));
     }
 }
-=======
-    public void list() throws Exception {
-        write(PdtProductDAO.listproduct(fldvalue,condition,getStart(), getLimit()));
-    }
-}
->>>>>>> Stashed changes
