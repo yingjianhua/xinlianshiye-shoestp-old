@@ -10,6 +10,8 @@ import irille.pub.util.AppConfig;
 import irille.shop.pdt.PdtAttrLine;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.pdt.PdtProductDAO;
+import lombok.Getter;
+import lombok.Setter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -17,10 +19,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PdtProductAction extends MgtAction<PdtProduct> implements IPdtProductAction {
-
-
+	@Override
+	public Class beanClazz() {
+		return PdtProduct.class;
+	}
+	public PdtProduct getBean() { return _bean; }
+	public void setBean(PdtProduct bean) {
+		this._bean = bean;
+	}
+	@Getter
+	@Setter
 	private Boolean verify;
-
 	@Override
 	public void verify() throws Exception {
 		PdtProduct bean = PdtProductDAO.verify(verify, (Integer)getPkey());
@@ -80,29 +89,13 @@ public class PdtProductAction extends MgtAction<PdtProduct> implements IPdtProdu
 		// TODO Auto-generated method stub
 
 	}
-
-	public Boolean getVerify() {
-		return verify;
-	}
-	public void setVerify(Boolean verify) {
-		this.verify = verify;
-	}
-
-
-
-
-    @Override
-    public Class beanClazz() {
-        return PdtProduct.class;
-    }
-    public PdtProduct getBean() { return _bean; }
-    public void setBean(PdtProduct bean) {
-        this._bean = bean;
-    }
-
     //搜索字段
+	@Getter
+	@Setter
     private String fldvalue;
     //搜索字段内容
+	@Getter
+	@Setter
     private String condition;
 
     /**

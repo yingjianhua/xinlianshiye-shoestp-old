@@ -6,6 +6,9 @@ import irille.shop.usr.UsrSupplierDAO;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.File;
+import java.io.IOException;
+
 public class UsrSupplierAction extends MgtAction<UsrSupplier> {
 	public UsrSupplier getBean() {
 		return _bean;
@@ -34,6 +37,33 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
 	public void ListUsrSup()throws Exception {
 		write(	UsrSupplierDAO.listsupselect(fldvalue,condition,getStart(),getLimit()));
 	}
+    @Getter
+    @Setter
+    private Integer supplier;
+    @Getter
+    @Setter
+    private String name;
+    @Getter
+    @Setter
+    private Integer category;
+    @Getter
+    @Setter
+    private Integer status;
+    @Getter
+    @Setter
+    private String fileFileName = "";
+    @Getter
+    @Setter
+    private File file;
+
+    /**
+     * @Description: 获取供应商列表
+     * *@date 2019/1/21 09:05
+     * *@anthor zjl
+     */
+    public void getSuppliers() throws IOException {
+        write(UsrSupplierDAO.getSuppliers(getStart(), getLimit(), name, category, status));
+    }
 
 	public void updBase() throws Exception {
 		UsrSupplierDAO.UpdBase upd = new UsrSupplierDAO.UpdBase();
