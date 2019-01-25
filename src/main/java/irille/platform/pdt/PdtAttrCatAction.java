@@ -40,7 +40,7 @@ public class PdtAttrCatAction extends ActionBase<PdtAttrCat> {
      *
      * @throws IOException
      */
-    public void list() throws IOException {
+    public void pdtAttrCatlist() throws IOException {
         write(pdtAttrCatDAO.getAttrCat(getStart(), getLimit(), name));
     }
 
