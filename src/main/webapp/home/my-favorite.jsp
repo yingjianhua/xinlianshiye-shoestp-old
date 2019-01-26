@@ -427,102 +427,23 @@
         for (var i = 0; i < result.length; i++) {
             addcart(result[i])
         }
-        /*    	$.ajax({
-                    url:'/home/usr_UsrFavorites_addSinglePdt',
-                    type:'post',
-                    data:{"favoritesPkeys":pkeys},
-                    dataType:'json',
-                    success:function(data){
-                        if(data.success == true){
-                            if(data.errCount > 0){
-                                  layer.msg(data.errCount+"个产品还未发布规格", function(){});
-                            }else{
-                                  layer.msg('
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <%--<s:text name="my-favorite.Added_Successfully"/>', {icon: 1});--%>
-    				}
-    			}else{
-            layer.msg(data.msg, function(){});
-    			}
-    		}
-    	})*/
+        <%--$.ajax({--%>
+        <%--url:'/home/usr_UsrFavorites_addSinglePdt',--%>
+        <%--type:'post',--%>
+        <%--data:{"favoritesPkeys":pkeys},--%>
+        <%--dataType:'json',--%>
+        <%--success:function(data){--%>
+        <%--if(data.success == true){--%>
+        <%--if(data.errCount > 0){--%>
+        <%--layer.msg(data.errCount+"个产品还未发布规格", function(){});--%>
+        <%--}else{--%>
+        <%--layer.msg('&lt;%&ndash;<s:text name="my-favorite.Added_Successfully"/>', {icon: 1});&ndash;%&gt;--%>
+        <%--}--%>
+        <%--}else{--%>
+        <%--layer.msg(data.msg, function(){});--%>
+        <%--}--%>
+        <%--}--%>
+        <%--})--%>
     })
 
     function recycleThis(id) {

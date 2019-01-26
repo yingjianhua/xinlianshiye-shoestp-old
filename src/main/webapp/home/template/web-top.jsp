@@ -1,89 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ page pageEncoding="UTF-8" %>
+<%@ taglib uri="/struts-tags" prefix="s" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<link rel="stylesheet" href="/home/v2/static/css/nav/new-top-nav-style.css"/>
-<!--引入vue-->
-<script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
-</head>
-<body class="new-style-page w_1200">
-<!-- 顶部nav栏 -->
-<div id="nav">
-    <div id="new-top-nav" class="wide-wrap">
-        <div class="wide">
-            <!-- 顶部左侧 - 4个下拉选 -->
-            <el-menu :default-active="activeTopNavIndex" class="el-menu-demo" mode="horizontal"
-                     @select="handleTopNavSelect">
-                <el-submenu index="1" class="no-arrow new-top-nav-item">
-                    <template slot="title">
-                        <s:text name="OEM"/>
-                    </template>
-                    <el-menu-item index="1-1">
-                        <a href="/home/pdt_PdtProduct?cated=373">
-                            <s:text name="Men"/>
-                        </a>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<<<<<<< HEAD
-                    </el-menu-item>
-                    <el-menu-item index="1-2">
-                        <a href="/home/pdt_PdtProduct?cated=380">
-                            <s:text name="WoMen"/>
-                        </a>
-                    </el-menu-item>
-                    <el-menu-item index="1-3">
-                        <a href="/home/pdt_PdtProduct?cated=387">
-                            <s:text name="Children"/>
-                        </a>
-                    </el-menu-item>
-                </el-submenu>
-                <el-submenu index="2" class="no-arrow">
-                    <template slot="title">WholeSale</template>
-                    <el-menu-item index="2-1">
-                        <a href="/home/pdt_PdtProduct?cated=373">
-                            <s:text name="Men"/>
-                        </a>
-                    </el-menu-item>
-                    <el-menu-item index="2-2">
-                        <a href="/home/pdt_PdtProduct?cated=380">
-                            <s:text name="WoMen"/>
-                        </a>
-                    </el-menu-item>
-                    <el-menu-item index="2-3">
-                        <a href="/home/pdt_PdtProduct?cated=387">
-                            <s:text name="Children"/>
-                        </a>
-                    </el-menu-item>
-                </el-submenu>
-                <el-submenu index="3" class="no-arrow">
-                    <template slot="title">
-                        <s:text name="Trade_Show"/>
-                    </template>
-                    <el-menu-item index="3-1"><a
-                            href="/country/Romania-Pantofi-en-gros/romania-index-ro.html">
-                        <s:text name="Romania"/>
-                    </a></el-menu-item>
-                </el-submenu>
-                <%--<el-submenu index="4" class="no-arrow">--%>
-                <%--<template slot="title">--%>
-                <%--<s:text name="CROWDFUNDING"/>--%>
-                <%--</template>--%>
-                <%--<el-menu-item index="4-1">--%>
-                <%--<a href="/home/Activity_Romania_classifyactivity?category=373">--%>
-                <%--Men's--%>
-                <%--</a>--%>
-                <%--</el-menu-item>--%>
-                <%--<el-menu-item index="4-2">--%>
-                <%--<a href="/home/Activity_Romania_classifyactivity?category=380">--%>
-                <%--Women's--%>
-                <%--</a>--%>
-                <%--</el-menu-item>--%>
-                <%--<el-menu-item index="4-3"><a--%>
-                <%--href="/home/Activity_Romania_classifyactivity?category=387">Children</a>--%>
-                <%--</el-menu-item>--%>
-                <%--</el-submenu>--%>
-
-=======
 <script type="text/javascript" src="/home/static/js/layer.js"></script>
 <link rel="stylesheet" href="/home/static/css/layer.css" type="text/css">
 <script type="text/javascript" src="/home/static/js/en.js"></script>
@@ -93,11 +12,14 @@
 <script type="text/javascript" src="/home/static/js/user.js"></script>
 <script type="text/javascript" src="/home/static/js/moment-with-locales.min.js"></script>
 <script src='/home/v2/static/js/base/axios.min.js'></script>
+<script src="https://js.fundebug.cn/fundebug.1.5.1.min.js"
+        apikey="afbc9f957e7689049c3282fe7696d30e7cb260e0ce11c148c0cf9e31d4e802f5"></script>
 
 
 <link rel="stylesheet" href="/home/v2/static/css/nav/new-top-nav-style.css"/>
 <link rel="stylesheet" href="/home/v2/static/js/base/vue.min.js"/>
 <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<script src="/home/v2/static/js/base/vue.min.js"></script>
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script type="text/javascript">
     $(window).resize(function () {
@@ -199,12 +121,16 @@
                 <%--</el-menu-item>--%>
                 <%--</el-submenu>--%>
 
+<<<<<<< HEAD
 >>>>>>> e84938d... 头部样式推送测试
+=======
+>>>>>>> origin/整合
                 <!-- 顶部右侧 - 收藏 -->
                 <el-menu-item index="8" class="fr mr0">
                     <a href="/home/usr_UsrFavorites_myfavorite" target="_blank">
                         <img src="/home/v2/static/images/nav/icon-heart.png" alt="icon-heart"
                              style="position: relative;top: -2px;">
+<<<<<<< HEAD
 <<<<<<< HEAD
                         <i class="fav_count imgnumber">${env.login==null?0:env.login.favoriteCount }</i>
 =======
@@ -212,6 +138,11 @@
                             {{_favorite_count}}
                         </i>
 >>>>>>> e84938d... 头部样式推送测试
+=======
+                        <i class="fav_count imgnumber">
+                            {{_favorite_count}}
+                        </i>
+>>>>>>> origin/整合
                     </a>
                 </el-menu-item>
                 <!-- 顶部右侧 - 购物车 -->
@@ -220,12 +151,18 @@
                         <img src="/home/v2/static/images/nav/icon_Shopping-Cart.png" alt="icon_Shopping-Cart"
                              style="position: relative;top: -2px;">
 <<<<<<< HEAD
+<<<<<<< HEAD
                         <i class="cart_count imgnumber">${env.login==null?0:env.login.cartCount}</i>
 =======
                         <i class="cart_count imgnumber">
                             {{_shopping_cart_count}}
                         </i>
 >>>>>>> e84938d... 头部样式推送测试
+=======
+                        <i class="cart_count imgnumber">
+                            {{_shopping_cart_count}}
+                        </i>
+>>>>>>> origin/整合
                     </a>
                 </el-menu-item>
                 <!-- 顶部右侧 - 询盘 -->
@@ -233,12 +170,18 @@
                     <a href="/home/usr_UsrConsult_listView" target="_blank">
                         <s:text name="RFQ"/>
 <<<<<<< HEAD
+<<<<<<< HEAD
                         <i class="inq_count imgnumber">${env.login==null?0:env.login.inquiryCount }</i>
 =======
                         <i class="inq_count imgnumber">
                             {{_inquiry_count}}
                         </i>
 >>>>>>> e84938d... 头部样式推送测试
+=======
+                        <i class="inq_count imgnumber">
+                            {{_inquiry_count}}
+                        </i>
+>>>>>>> origin/整合
                     </a>
                 </el-menu-item>
 
@@ -259,6 +202,7 @@
 
                 <!-- 顶部右侧 - 登录 -->
                 <el-submenu index="5" class="fr no-arrow">
+<<<<<<< HEAD
 <<<<<<< HEAD
                     <s:if test="env.login==null">
                         <template slot="title">
@@ -285,6 +229,8 @@
 </div>
 <script src="/home/v2/static/lang/element/en.js"></script>
 =======
+=======
+>>>>>>> origin/整合
                     <template slot="title" v-if="!sysConfig.user">
                         <a href="/home/usr_UsrPurchase_sign" target="_blank">
                             <s:text name="Login"></s:text>
@@ -490,36 +436,35 @@
         </c:if>
     </c:forEach>
 </c:if>
->>>>>>> e84938d... 头部样式推送测试
 <script>
 
-    ELEMENT.locale(ELEMENT.lang.en)
-    var sysConfig = {
-        baseImageUrl: "https://image.shoestp.com",
-        currency_symbol: "$",
-        current_language: "en",
-    }
-    var messages = {
-        shoestp: null
-    }
-    var nav = new Vue({
-        el: "#nav",
-        data() {
-            return {
-                activeTopNavIndex: '1', //默认选中的web-top澳航栏
-            }
-        },
-        methods: {
-            handleTopNavSelect(key, keyPath) {
-                console.log(key, keyPath);
-            },
+    function getMessage(str) {
+        var sourceStr = str;
+        if (str.indexOf("##") != -1) {
+            str = str.split("##")[0];
         }
-    })
-    window.onscroll = function () {
-        var sl = -Math.max(document.body.scrollLeft, document.documentElement.scrollLeft);
-        document.getElementById('new-top-nav').style.left = sl + 'px';
-        document.getElementById('new-top-search').style.left = sl + 'px';
+        var key = str.split("%")[0];
+        var value = str.split("%")[1];
+        var message = lang_obj[key][value];
+
+        if (sourceStr.indexOf("##") != -1) {
+            var arr = sourceStr.split("##");
+            var arrs = new Array();
+            for (var i = 1; i < arr.length; i++) {
+                arrs[i - 1] = arr[i];
+            }
+            message = message.format(...arrs);
+        }
+        return message;
     }
+
+    String.prototype.format = function () {
+        if (arguments.length == 0)
+            return this;
+        for (var s = this, i = 0; i < arguments.length; i++)
+            s = s.replace(new RegExp("\\{" + i + "\\}", "g"), arguments[i]);
+        return s;
+    };
 </script>
 
 <style scope>

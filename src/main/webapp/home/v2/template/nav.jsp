@@ -122,6 +122,7 @@
                         </a>
                     </el-menu-item>
                 </el-submenu>
+
                 <!-- 顶部右侧 - 登录 -->
                 <el-submenu index="5" class="fr no-arrow">
                     <template slot="title" v-if="!sysConfig.user">
@@ -258,124 +259,6 @@
                 }
                 return 0
             }
-<<<<<<< HEAD
-          ]
-<<<<<<< HEAD
-        }
-      }
-    }, computed: {
-      _language: function () {
-        for (var key in this.$data.languageList) {
-          if (this.$data.languageList[key]["shortName"] == this.$data.language) {
-            return this.$data.languageList[key]["displayName"]
-          }
-        }
-        return "-1"
-      }
-    }, mounted() {
-      var self = this
-      axios({
-        url: "/home/plt_PltConfig_getSysConfig"
-      }).then(function (res) {
-        if (res.data.ret && res.data.ret == 1) {
-          sysConfig = res.data.result
-          Vue.set(self, "language", res.data.result.current_language)
-          Vue.set(self, "languageList", res.data.result.languages)
-        } else {
-          console.error("ERR::FLAG")
-        }
-      }).catch(function (err) {
-        console.error(err)
-        console.error("ERR::FLAG")
-      })
-    },
-    methods: {
-      searchClick() {
-        window.location.href = "/home/pdt_PdtProduct?Keyword=" + this.search.keyword
-            + "&v=2&searchtype=" + this.topSearchBarCategory
-      },
-      handleTopNavSelect(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      changeLang() {
-        var self = this
-        axios({
-          url: "/home/plt_PltConfig_changeLanguage",
-          method: "get",
-          params: {
-            request_locale: this.$data.language
-          }
-        }).then(function (res) {
-          if (res.data.ret && res.data.ret == 1) {
-            location.reload();
-          } else {
-            console.error("ERR::FLAG")
-          }
-        })
-
-      },
-      handleLanguageSelect(e) {
-        console.log("click")
-        console.log(e.target.dataset.language)
-        console.log(e.currentTarget)
-        if (e.target && e.target.dataset && e.target.dataset.language) {
-          this.language = e.target.dataset.language;
-        }
-      }
-=======
-        }
-      }
-    }, computed: {
-      _language: function () {
-        for (var key in this.$data.languageList) {
-          if (this.$data.languageList[key]["shortName"] == this.$data.language) {
-            return this.$data.languageList[key]["displayName"]
-          }
-        }
-        return "-1"
-      }
-    }, mounted() {
-      var self = this
-      axios({
-        url: "/home/plt_PltConfig_getSysConfig"
-      }).then(function (res) {
-        if (res.data.ret && res.data.ret == 1) {
-          sysConfig = res.data.result
-          Vue.set(self, "language", res.data.result.current_language)
-          Vue.set(self, "languageList", res.data.result.languages)
-        } else {
-          console.error("ERR::FLAG")
-        }
-      }).catch(function (err) {
-        console.error(err)
-        console.error("ERR::FLAG")
-      })
-    },
-    methods: {
-      searchClick() {
-        window.location.href = "/home/pdt_PdtProduct?Keyword=" + this.search.keyword
-            + "&v=2&searchtype=" + this.topSearchBarCategory
-      },
-      handleTopNavSelect(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      changeLang() {
-        var self = this
-        axios({
-          url: "/home/plt_PltConfig_changeLanguage",
-          method: "get",
-          params: {
-            request_locale: this.$data.language
-          }
-        }).then(function (res) {
-          if (res.data.ret && res.data.ret == 1) {
-            location.reload();
-          } else {
-            console.error("ERR::FLAG")
-          }
-        })
-=======
->>>>>>> 66f14ed... 修正头部栏风格
 
         }, mounted() {
             var self = this
@@ -429,16 +312,11 @@
                 }
             }
         }
-<<<<<<< HEAD
-      }
->>>>>>> dd435b4... Merge remote-tracking branch 'origin/整合' into 整合
-=======
     })
     window.onscroll = function () {
         var sl = -Math.max(document.body.scrollLeft, document.documentElement.scrollLeft);
         document.getElementById('new-top-nav').style.left = sl + 'px';
         document.getElementById('new-top-search').style.left = sl + 'px';
->>>>>>> 66f14ed... 修正头部栏风格
     }
 </script>
 <div style="height: 114px;">
