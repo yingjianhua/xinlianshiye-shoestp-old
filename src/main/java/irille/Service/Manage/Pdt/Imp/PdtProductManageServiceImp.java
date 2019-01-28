@@ -242,7 +242,7 @@ public class PdtProductManageServiceImp implements IPdtProductManageService {
             }
             setPrice((BigDecimal) o.get(PdtProduct.T.CUR_PRICE.getFld().getCodeSqlField()));
             setTime((Date) o.get(PdtProduct.T.SOLD_TIME_E.getFld().getCodeSqlField()));
-            setStatus(Integer.valueOf(String.valueOf(o.get(PdtProduct.T.STATE.getFld().getCodeSqlField()))));
+            setStatus(Integer.valueOf(String.valueOf(o.get(PdtProduct.T.IS_VERIFY.getFld().getCodeSqlField()))));
         }}).collect(Collectors.toList());
         return new Page(list, start, limit, count);
     }
