@@ -2,8 +2,12 @@ package irille.shop.plt;
 
 import irille.Entity.Activity.ActivityInfo;
 import irille.Entity.Activity.SupGoogleView;
-import irille.Entity.Pk.PkCompetitionData;
 import irille.Entity.NewInquiry.NewInquiry;
+import irille.Entity.O2O.O2O_Activity;
+import irille.Entity.O2O.O2O_JoinInfo;
+import irille.Entity.O2O.O2O_PrivateExpoPdt;
+import irille.Entity.O2O.O2O_Product;
+import irille.Entity.Pk.PkCompetitionData;
 import irille.core.prv.PrvRoleAct;
 import irille.core.sys.SysModule;
 import irille.pub.Log;
@@ -49,8 +53,12 @@ public class Plt extends PackageBase {
         addTb(41, PltFreightSellerLine.class);
         addTb(43, ActivityInfo.class);
         addTb(44, SupGoogleView.class);
-        addTb(47, NewInquiry.class);
         addTb(46, PkCompetitionData.class);
+        addTb(47, NewInquiry.class);
+        addTb(48, O2O_Activity.class);
+        addTb(49, O2O_Product.class);
+        addTb(50, O2O_PrivateExpoPdt.class);
+        addTb(51, O2O_JoinInfo.class);
 
     }
 
@@ -118,8 +126,7 @@ public class Plt extends PackageBase {
     public enum ErrMsgs implements IMsg {// 信息定义的类名必须为Msgs, 以便系统能检索
         // @formatter:off
         uniqueErr("记录【{0}】已存在，不可操作！"), lowPriceErr("【{0}】不能低于【{1}】"), notNull(
-                "【{0}】不能为空"),last("最后一条【{0}】不可删除")
-        ;
+                "【{0}】不能为空"), last("最后一条【{0}】不可删除");
         private String _msg;
 
         private ErrMsgs(String msg) {

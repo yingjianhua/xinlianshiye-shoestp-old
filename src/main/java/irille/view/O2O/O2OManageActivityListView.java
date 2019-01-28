@@ -1,5 +1,6 @@
-package irille.view.Manage.O2O;
+package irille.view.O2O;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import irille.view.BaseView;
 import lombok.Data;
 
@@ -15,8 +16,10 @@ import java.util.Date;
 public class O2OManageActivityListView implements BaseView {
     private Integer id;
     private String title;
-    private String catName;
+    private int catId;
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private Date start_date;
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private Date end_date;
     private Integer countryId;
     private String status;

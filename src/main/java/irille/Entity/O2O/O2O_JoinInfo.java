@@ -4,7 +4,7 @@ import irille.pub.bean.BeanInt;
 import irille.pub.tb.Fld;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
-import irille.shop.pdt.PdtProduct;
+import irille.shop.usr.UsrSupplier;
 
 /**
  * Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/13 Time: 16:18
@@ -19,6 +19,7 @@ public class O2O_JoinInfo extends BeanInt<O2O_JoinInfo> {
         NAME(SYS.STR__100_NULL, "负责人信息"),
         Tel(SYS.STR__100_NULL, "电话"),
         ACTIVITY_ID(O2O_Activity.fldOutKey()),
+        SUPPLIER_ID(UsrSupplier.fldOutKey()),
         ROW_VERSION(SYS.ROW_VERSION),
         //>>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
         //<<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
@@ -55,7 +56,7 @@ public class O2O_JoinInfo extends BeanInt<O2O_JoinInfo> {
     }
 
     static { //在此可以加一些对FLD进行特殊设定的代码
-        O2O_JoinInfo.T.PKEY.getFld().getTb().lockAllFlds();//加锁所有字段,不可以修改
+        T.PKEY.getFld().getTb().lockAllFlds();//加锁所有字段,不可以修改
     }
 
     public static Fld fldOutKey() {
@@ -72,6 +73,7 @@ public class O2O_JoinInfo extends BeanInt<O2O_JoinInfo> {
   private String _name;	// 负责人信息  STR(100)<null>
   private String _tel;	// 电话  STR(100)<null>
   private Integer _activityId;	// O2O活动信息 <表主键:O2O_Activity>  INT
+  private Integer _supplierId;	// 供应商 <表主键:UsrSupplier>  INT
   private Short _rowVersion;	// 版本  SHORT
 
 	@Override
@@ -80,6 +82,7 @@ public class O2O_JoinInfo extends BeanInt<O2O_JoinInfo> {
     _name=null;	// 负责人信息  STR(100)
     _tel=null;	// 电话  STR(100)
     _activityId=null;	// O2O活动信息 <表主键:O2O_Activity>  INT
+    _supplierId=null;	// 供应商 <表主键:UsrSupplier>  INT
     _rowVersion=0;	// 版本  SHORT
     return this;
   }
@@ -119,6 +122,23 @@ public class O2O_JoinInfo extends BeanInt<O2O_JoinInfo> {
       setActivityId(null);
     else
       setActivityId(activityId.getPkey());
+  }
+  public Integer getSupplierId(){
+    return _supplierId;
+  }
+  public void setSupplierId(Integer supplierId){
+    _supplierId=supplierId;
+  }
+  public UsrSupplier gtSupplierId(){
+    if(getSupplierId()==null)
+      return null;
+    return (UsrSupplier)get(UsrSupplier.class,getSupplierId());
+  }
+  public void stSupplierId(UsrSupplier supplierId){
+    if(supplierId==null)
+      setSupplierId(null);
+    else
+      setSupplierId(supplierId.getPkey());
   }
   public Short getRowVersion(){
     return _rowVersion;
