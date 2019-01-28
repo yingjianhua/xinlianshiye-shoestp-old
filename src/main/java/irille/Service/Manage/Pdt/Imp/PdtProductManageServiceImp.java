@@ -4,11 +4,15 @@ import static irille.pub.util.AppConfig.objectMapper;
 
 import com.google.gson.JsonObject;
 import irille.Dao.PdtProductDao;
+import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
+import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Service.Manage.Pdt.IPdtProductManageService;
 import irille.core.sys.Sys;
+import irille.pub.Log;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
+import irille.pub.svr.Env;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.CacheUtils;
@@ -35,6 +39,7 @@ import javax.inject.Inject;
  * Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/7 Time: 15:55
  */
 public class PdtProductManageServiceImp implements IPdtProductManageService {
+    private final Log LOG = new Log(PdtProductManageServiceImp.class);
 
     @Inject
     PdtProductDao pdtProductDao;
@@ -196,6 +201,33 @@ public class PdtProductManageServiceImp implements IPdtProductManageService {
             pdtUpdate.setB(pdtProduct);
             pdtUpdate.setLines(list);
             pdtUpdate.commit();
+        }
+        Integer pdtId = null;
+        if (pdtSave.getB() != null) {
+            pdtId = pdtSave.getB().getPkey();
+        }
+        if (pdtUpdate.getB() != null) {
+            pdtId = pdtUpdate.getB().getPkey();
+        }
+        if (pdtProductSaveView.getRadio() != 0) {
+            O2O_PrivateExpoPdt o2o_privateExpoPdt = O2O_PrivateExpoPdt.chkUniquePdt_Id(false, pdtId);
+            if (o2o_privateExpoPdt == null) {
+                if (pdtProduct.getState() != Pdt.OState.DELETE.getLine().getKey() && pdtProduct.getState() != Pdt.OState.MERCHANTDEL.getLine().getKey()) {
+                    O2O_PrivateExpoPdt privateExpoPdt = new O2O_PrivateExpoPdt();
+                    privateExpoPdt.setPdtId(pdtId);
+                    privateExpoPdt.setPrice(pdtProduct.getCurPrice());
+                    privateExpoPdt.setMinOq(pdtProduct.getMinOq());
+                    privateExpoPdt.setStatus(O2O_PrivateExpoPdtStatus.OFF.getLine().getKey());
+                    privateExpoPdt.setVerifyStatus(O2O_PrivateExpoPdtStatus._DEFAULT.getLine().getKey());
+                    privateExpoPdt.setCreateTime(Env.getTranBeginTime());
+                    privateExpoPdt.ins();
+                } else {
+                    throw LOG.err("err", "已删除商品不能成为私人展厅商品");
+                }
+            }
+        } else {
+            O2O_PrivateExpoPdt privateExpoPdt = O2O_PrivateExpoPdt.loadUniquePdt_Id(false, pdtId);
+            privateExpoPdt.del();
         }
         return 1;
     }

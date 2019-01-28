@@ -511,6 +511,7 @@ public class PdtProductDao {
                 o.put("O2OSort", "私人展会");
                 o.put("status", privateExpoPdt.getStatus());
             } else {
+                o.put("O2OSort", "普通商品");
                 o.put("status", "正常");
             }
             o.put("category", translateUtil.getLanguage(o.get("category"), PltConfigDAO.supplierLanguage(supplierId)));

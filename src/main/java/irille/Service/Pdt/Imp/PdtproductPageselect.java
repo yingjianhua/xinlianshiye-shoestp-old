@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import irille.Dao.PdtProductDao;
+import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Service.Pdt.IPdtProductService;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
@@ -14,6 +15,8 @@ import irille.homeAction.pdt.dto.ProductInfoView;
 import irille.homeAction.pdt.dto.SpecView;
 import irille.pub.Exp;
 import irille.pub.bean.BeanBase;
+import irille.pub.bean.Query;
+import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduPage;
 import irille.pub.util.AppConfig;
 import irille.pub.util.FormaterSql.FormaterSql;
@@ -486,7 +489,6 @@ public class PdtproductPageselect {
             saveView.setPrice(pdtSpec.getPrice().doubleValue() == -1 ? null : pdtSpec.getPrice().doubleValue());
             saveView.setStock(pdtSpec.getStoreCount() > 0 ? pdtSpec.getStoreCount() : null);
             saveView.setWeight(pdtSpec.getWeight().intValue() == -1 ? null : pdtSpec.getWeight().intValue());
-            saveView.setPrice(pdtSpec.getPrice().doubleValue() == -1 ? null : pdtSpec.getPrice().doubleValue());
 //                saveView.setStock(pdtSpec.getStoreCount() > 0 ? pdtSpec.getStoreCount() : 0);
 //                saveView.setWeight(pdtSpec.getWeight().intValue());
             saveView.setColor(pdtSpec.getColor());
@@ -568,6 +570,14 @@ public class PdtproductPageselect {
             }
             return Integer.valueOf(s);
         }).collect(Collectors.toSet()));
+        SQL sql = new SQL() {{
+            SELECT(O2O_PrivateExpoPdt.class).FROM(O2O_PrivateExpoPdt.class).WHERE(O2O_PrivateExpoPdt.T.PDT_ID, "=?", pdtProduct.getPkey());
+        }};
+        view.setRadio(0);
+        O2O_PrivateExpoPdt privateExpoPdt = Query.sql(sql).query(O2O_PrivateExpoPdt.class);
+        if (privateExpoPdt != null) {
+            view.setRadio(1);
+        }
         view.setWarnStock(pdtProduct.getWarnStock().intValue());
         view.setState(pdtProduct.getState() == Sys.OYn.YES.getLine().getKey() ? true : false);
         view.setSoldInStatus(pdtProduct.gtSoldInTime());
