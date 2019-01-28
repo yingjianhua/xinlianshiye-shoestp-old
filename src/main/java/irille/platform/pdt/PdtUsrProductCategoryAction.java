@@ -43,7 +43,7 @@ public class PdtUsrProductCategoryAction extends ActionBase<UsrProductCategory> 
      * *@anthor kouhanyang
      * @throws java.io.IOException
      */
-    public void list() throws IOException {
+    public void getUsrProductCategory() throws IOException {
         write(UsrProductCategoryDAO.getUsrProductCategory(getStart(), getLimit(), name, category, supplier, enabled, seoKeyword));
     }
 

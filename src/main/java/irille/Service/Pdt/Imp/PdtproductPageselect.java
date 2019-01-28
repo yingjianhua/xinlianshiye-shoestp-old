@@ -530,7 +530,12 @@ public class PdtproductPageselect {
             return -1;
         }).collect(Collectors.toList()));
         view.setProductCat(pdtProduct.getCategory());
-        view.setSupplierCat(pdtProduct.getCategoryDiy());
+        if (pdtProduct.gtCategoryDiy() != null && pdtProduct.gtCategoryDiy().gtEnabled()) {
+            view.setSupplierCat(pdtProduct.getCategoryDiy());
+        } else {
+            view.setSupplierCat(-1);
+        }
+
         String[] strings = pdtProduct.getCode().split("-");
         if (strings.length > 1) {
             view.setNumber_left(strings[0]);

@@ -14,14 +14,14 @@
 </head>
 <body>
      <div class="allaifa" id="kangyida">
-          <div class="aifaheader clearfloat">
+          <!-- <div class="aifaheader clearfloat">
                <img src="imgs/shoeslogo.png" alt="">
                <span>永无止境的展览</span>
                <div class="rightspan">
                     <span>Email：marketing@shoestp.com   </span>
                     <span>phone：+86 15060893090</span>
                </div>
-          </div>
+          </div> -->
           <div class="allaifabanner">
                <img src="imgs/kangyidabanner.png" alt="">
                <div class="bannercon clearfloat" id="bannercon">
@@ -51,7 +51,8 @@
           <div class="allaifaimgs">
                <h2>PRODUCT GALLERY</h2>
                <div class="imgscon">
-                    <a  v-for="item,index in imgs" :href="item.src"><img :src="item.url" :alt="item.title"></a>
+                    <span  v-for="item,index in imgs" href="javascript:void(0)"><img :src="item.url" :alt="item.title"></span>
+                    <!-- <a  v-for="item,index in imgs" :href="item.src"><img :src="item.url" :alt="item.title"></a> -->
                </div>
           </div>
           <div class="designoperation">
@@ -120,14 +121,14 @@
                <p>Let us help you meet those needs！</p>
                <span @click="scrollToTop()">INQUIRY US</span>
           </div>
-          <div class="aifaheader aifafooter clearfloat">
+          <!-- <div class="aifaheader aifafooter clearfloat">
                <img src="imgs/shoeslogo.png" alt="">
                <span>永无止境的展览</span>
                <div class="rightspan">
                     <span>Email：marketing@shoestp.com   </span>
                     <span>phone：+86 15060893090</span>
                </div>
-          </div>
+          </div> -->
      </div>
      <script>
           new Vue({
@@ -310,6 +311,7 @@
                                    }
                               )
                          ).then(function (res) {
+                              gtag_report_conversion();
                               if (res.data.ret == 1) {
                                    self.$message({
                                         message: 'Submitted Successfully',
@@ -356,5 +358,37 @@
                     }
           })
      </script>
+
+     <!-- 代码追踪 -->
+     <!-- Global site tag (gtag.js) - Google Ads: 775270705 -->
+     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-775270705"></script>
+     <script>
+       window.dataLayer = window.dataLayer || [];
+       function gtag(){dataLayer.push(arguments);}
+       gtag('js', new Date());
+
+       gtag('config', 'AW-775270705');
+       gtag('config', 'UA-131117317-11');
+
+       function gtag_report_conversion(url) {
+        gtag('event', 'conversion', {
+            'send_to': 'AW-775270705/gumBCKrfzJIBELHi1vEC'
+        });
+        return false;
+      }
+     </script>
+
+<script type="text/javascript">
+	var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+	(function(){
+		var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+		s1.async=true;
+		s1.src='https://embed.tawk.to/5b8fcb48f31d0f771d8476f6/default';
+		s1.charset='UTF-8';
+		s1.setAttribute('crossorigin','*');
+		s0.parentNode.insertBefore(s1,s0);
+	})();
+</script>
+<!--End of Tawk.to Script-->
 </body>
 </html>

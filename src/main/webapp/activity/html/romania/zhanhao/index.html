@@ -20,7 +20,7 @@
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script src="./js/axios.min.js"></script>
     <script src="./js/qs.js"></script>
-    <style></style>
+    <script src="/activity/html/romania/js/lodash.js"></script>
 </head>
 
 <body>
@@ -34,7 +34,7 @@
                     <div style="font-size:60px;font-weight: bold;">Uniquely designed <br>
                         shoe brand
                     </div>
-                    <div style="font-size:30px;">Zhanghao casual shoes.</div>
+                    <div style="font-size:30px;">Zhanhao casual shoes.</div>
                 </div>
                 <div class="top-container-right fr">
                     <div class="title">Inquiry Information</div>
@@ -50,6 +50,7 @@
                                       placeholder="Please input enquiry information."></el-input>
                         </el-form-item>
                         <el-form-item>
+
                             <el-button @click="submit('form')">Inquiry</el-button>
                         </el-form-item>
                     </el-form>
@@ -112,27 +113,36 @@
                 The Global Trade In Shoes
             </div>
             <div class="global-product-list clearfix">
-                <a class="global-product-item fl"
+                <span class="global-product-item fl"
+                      href="javascript:void(0)"
+                      target="_blank">
+                    <img src="./images/goods1.jpg" alt=""/>
+                </span>
+                <span class="global-product-item fl"
+                      href="javascript:void(0)"
+                      target="_blank">
+                    <img src="./images/goods2.jpg" alt=""/>
+                </span>
+                <span class="global-product-item fl"
+                      href="javascript:void(0)"
+                      target="_blank">
+                    <img src="./images/goods3.jpg" alt=""/>
+                </span>
+                <!-- <a class="global-product-item fl"
                    href="https://www.shoestp.com/zhanhao-women's-sneaker-casual-lace-up-shoes-with-rabbit-ear_p6780.html"
                    target="_blank">
-                    <!-- <a href="" target="_blank"> -->
                     <img src="./images/goods1.jpg" alt=""/>
-                    <!-- </a> -->
                 </a>
                 <a class="global-product-item fl"
                    href="https://www.shoestp.com/zhanhao-women's-shoes-casual-lace-up-plaid-cloth-shoes_p6781.html"
                    target="_blank">
-                    <!-- <a href="" target="_blank"> -->
                     <img src="./images/goods2.jpg" alt=""/>
-                    <!-- </a> -->
                 </a>
                 <a class="global-product-item fl"
                    href="https://www.shoestp.com/zhanhao-women's-casual-shoes-pure-color-canvas-shoes_p6782.html"
                    target="_blank">
-                    <!-- <a href="" target="_blank"> -->
                     <img src="./images/goods3.jpg" alt=""/>
-                    <!-- </a> -->
-                </a>
+                </a> -->
             </div>
             <div style="font-size: 32px;font-weight: bold;">Product Show</div>
             <div style="font-size: 20px;line-height: 55px;color: #585e61;">
@@ -439,49 +449,51 @@
 
         },
         methods: {
-            submit(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        axios.post('/home/Activity_Romania_inquiry', Qs.stringify({
-                            supId: 301,
-                            name: this.form.name,
-                            email: this.form.email,
-                            detail: this.form.detail,
-                        }))
-                            .then((res) => {
-                                console.log(res)
-                                if (res.data.ret == 1) {
-                                    this.$message({
-                                        message: 'Submit successfully',
-                                        type: 'success',
-                                        duration: 2000,
-                                        onClose: function () {
-                                            window.location.reload();
-                                        }
-                                    });
+            submit: _.throttle(function (formName) {
+                    this.$refs[formName].validate((valid) => {
+                        if (valid) {
+                            axios.post('/home/Activity_Romania_inquiry', Qs.stringify({
+                                supId: 301,
+                                name: this.form.name,
+                                email: this.form.email,
+                                detail: this.form.detail,
+                            }))
+                                .then((res) => {
+                                    console.log(res)
+                                    gtag_report_conversion();
+                                    if (res.data.ret == 1) {
+                                        this.$message({
+                                            message: 'Submit successfully',
+                                            type: 'success',
+                                            duration: 2000,
+                                            onClose: function () {
+                                                window.location.reload();
+                                            }
+                                        });
 
-                                }
-                            })
-                            .catch(function (error) {
-                                this.$message.error(error);
-                            });
-                    } else {
-                        console.log('error submit!!');
-                        if (!this.form.name) {
-                            this.$message.error('Names must not be empty.');
-                        } else if (!this.form.email) {
-                            this.$message.error("Please input your mailbox.");
+                                    }
+                                })
+                                .catch(function (error) {
+                                    this.$message.error(error);
+                                });
+                        } else {
+                            console.log('error submit!!');
+                            if (!this.form.name) {
+                                this.$message.error('Names must not be empty.');
+                            } else if (!this.form.email) {
+                                this.$message.error("Please input your mailbox.");
+                            }
+                            else if (!(/[\w]+(\.[\w]+)*@[\w]+(\.[\w])+/.test(this.form.email))) {
+                                this.$message.error("Error in mailbox format.");
+                            }
+                            else if (!this.form.detail) {
+                                this.$message.error('Please enter your content');
+                            }
+                            return false;
                         }
-                        else if (!(/[\w]+(\.[\w]+)*@[\w]+(\.[\w])+/.test(this.form.email))) {
-                            this.$message.error("Error in mailbox format.");
-                        }
-                        else if (!this.form.detail) {
-                            this.$message.error('Please enter your content');
-                        }
-                        return false;
-                    }
-                });
-            },
+                    });
+                }, 5000
+            ),
             scrollToTop() {
                 const start = window.pageYOffset;
                 let i = 0;
@@ -499,27 +511,58 @@
                     }
                     i++
                 }, 16.7)
-            },
+            }
+            ,
             easeInOutQuad(t, b, c, d) {
                 if ((t /= d / 2) < 1) return c / 2 * t * t + b
                 return -c / 2 * (--t * (t - 2) - 1) + b
-            },
+            }
+            ,
         },
         mounted() {
-        },
+        }
+        ,
         computed: {}
-    });
+    })
+    ;
 </script>
-</body>
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
+
+<!-- 代码追踪 -->
+<!-- Global site tag (gtag.js) - Google Ads: 774821366 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-774821366"></script>
 <script>
     window.dataLayer = window.dataLayer || [];
+
     function gtag() {
         dataLayer.push(arguments);
     }
+
     gtag('js', new Date());
-    gtag('config', 'AW-783435725');
-    gtag('config', 'UA-127715615-6');
+
+    gtag('config', 'AW-774821366');
+    gtag('config', 'UA-131117317-3');
+
+    function gtag_report_conversion(url) {
+        gtag('event', 'conversion', {
+            'send_to': 'AW-774821366/xaG6CPS-xpIBEParu_EC'
+        });
+        return false;
+    }
 </script>
+
+<script type="text/javascript">
+    var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+    (function () {
+        var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+        s1.async = true;
+        s1.src = 'https://embed.tawk.to/5b8fcb48f31d0f771d8476f6/default';
+        s1.charset = 'UTF-8';
+        s1.setAttribute('crossorigin', '*');
+        s0.parentNode.insertBefore(s1, s0);
+    })();
+</script>
+<!--End of Tawk.to Script-->
+</body>
+
 
 </html>

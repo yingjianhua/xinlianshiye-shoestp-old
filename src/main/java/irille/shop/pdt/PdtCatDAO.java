@@ -37,6 +37,7 @@ public class PdtCatDAO {
         }
         SQL sql = new SQL();
         sql.SELECT(PdtCat.class).FROM(PdtCat.class);
+        sql.WHERE(PdtCat.T.DELETED, "=?", 0);
         if (enabled != null) {
             sql.WHERE(T.ENABLED, "=?", enabled);
         }

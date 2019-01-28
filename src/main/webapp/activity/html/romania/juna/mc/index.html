@@ -49,7 +49,16 @@
         <img src="images/AboutUs.png" name="AboutUs"/>
         <p>Founded in 2008, Wenzhou Juna Shoes Co., Ltd. specializes in the development and production of European-style women's shoes. The company has 40 professional research and design teams. The company has many people in Europe to grasp the latest and most fashionable new product trends. Process and materials integrated with each other. With its distinctive fashion characteristics, humanistic connotation and excellent product quality, the company has won high praise and praise from customers for many years.</p>
         <img src="images/Sports&Casual.png" name="sports"/>
-        <a href="https://www.shoestp.com/juna-black-leather-low-heel-with-side-zipper-women-ankle-boots_p6859.html">
+        <a href="javascript:void(0)">
+            <img src="images/men-01.png" name="men" alt=""/>
+        </a>
+        <a href="javascript:void(0)">
+            <img src="images/men-02.png" name="men" alt=""/>
+        </a>
+        <a href="javascript:void(0)">
+            <img src="images/men-03.png" name="men" alt=""/>
+        </a>
+        <!-- <a href="https://www.shoestp.com/juna-black-leather-low-heel-with-side-zipper-women-ankle-boots_p6859.html">
             <img src="images/men-01.png" name="men" alt=""/>
         </a>
         <a href="https://www.shoestp.com/juna-ladies-suede-ankle-boot-lace-up-low-heel-boots_p6880.html">
@@ -57,10 +66,19 @@
         </a>
         <a href="https://www.shoestp.com/juna-leather-ankle-boots-women--shoes-with-lace-up-zippper_p6887.html">
             <img src="images/men-03.png" name="men" alt=""/>
-        </a>
+        </a> -->
         <img src="images/Men'sShoes.png" name="mens"/>
         <p class="Shoes">Simple but fashionable, Lightweight, Abrasion-resistant, Slip-resistant, Free flexible.</p>
-        <a href="https://www.shoestp.com/juna--ladies-comfortable-flat-slip-on-shoes-with-rivet-decoration_p6854.html">
+        <a href="javascript:void(0)">
+            <img src="images/women-01.png" name="women" alt=""/>
+        </a>
+        <a href="javascript:void(0)">
+            <img src="images/women-02.png" name="women" alt=""/>
+        </a>
+        <a href="javascript:void(0)">
+            <img src="images/women-03.png" name="women" alt=""/>
+        </a>
+        <!-- <a href="https://www.shoestp.com/juna--ladies-comfortable-flat-slip-on-shoes-with-rivet-decoration_p6854.html">
             <img src="images/women-01.png" name="women" alt=""/>
         </a>
         <a href="https://www.shoestp.com/juna-gilrls-fur-single-shoes-fashion-flat-slip-on-shoes_p6864.html">
@@ -68,7 +86,7 @@
         </a>
         <a href="https://www.shoestp.com/juna-ladies-dress-shoes-chunky-heel-single-shoes_p6876.html">
             <img src="images/women-03.png" name="women" alt=""/>
-        </a>
+        </a> -->
         <img src="images/Women'sShoes.png" name="womens"/>
         <p class="Shoes">Dynamic and comfortable, Stylish, Lightweight, Abrasion-resistant, Slip-resistant.</p>
         <a href="javascript:void(0);" class="button" @click="inquiryNow">Inquiry Now</a>
@@ -280,6 +298,7 @@
                                 detail: self.ruleForm.detail
                             })
                         ).then((res) => {
+                            gtag_report_conversion();
                             if (res.data.ret == 1) {
                                 self.$message({
                                     message: 'submit successfully!',
@@ -300,6 +319,38 @@
         }
     })
 </script>
+
+<!-- 代码追踪 -->
+<!-- Global site tag (gtag.js) - Google Ads: 774839119 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-774839119"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-774839119');
+  gtag('config', 'UA-131117317-1');
+
+  function gtag_report_conversion(url) {
+    gtag('event', 'conversion', {
+        'send_to': 'AW-774839119/UFtsCMuWupIBEM-2vPEC'
+    });
+    return false;
+  }
+</script>
+
+<script type="text/javascript">
+	var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+	(function(){
+		var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+		s1.async=true;
+		s1.src='https://embed.tawk.to/5b8fcb48f31d0f771d8476f6/default';
+		s1.charset='UTF-8';
+		s1.setAttribute('crossorigin','*');
+		s0.parentNode.insertBefore(s1,s0);
+	})();
+</script>
+<!--End of Tawk.to Script-->
 
 </body>
 </html>
