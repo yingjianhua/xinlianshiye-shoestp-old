@@ -579,14 +579,18 @@ public class PdtProductDAO {
 
   public static class DelDetails extends IduOther<DelDetails, PdtProduct> {
 
-    public void before() {
-      getB().setState(Pdt.OState.DELETE.getLine().getKey());
-    }
-
     public void run() {
-      getB().upd();
+      PdtProduct product = BeanBase.load(PdtProduct.class,getB().getPkey());
+      product.setState(OState.DELETE.getLine().getKey());
+      product.upd();
     }
-
+  }
+  public static class Reduction extends IduOther<Reduction, PdtProduct> {
+    public void run() {
+      PdtProduct product = BeanBase.load(PdtProduct.class,getB().getPkey());
+      product.setState(OState.ON.getLine().getKey());
+      product.upd();
+    }
   }
 
   /**
@@ -695,8 +699,10 @@ public class PdtProductDAO {
             setPdt(bean);
             setRewrite(bean.getPkey(), name);
           }}).collect(Collectors.toList());
-
     }
+  }
+  public static void getWarehouse(){
+
   }
 
 }

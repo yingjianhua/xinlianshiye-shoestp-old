@@ -67,5 +67,11 @@ public interface IPdtProductAction extends ISellerAction {
 
     @RequestMapping(alias = "获取复制商品信息")
     void copyProduct();
+    @RequestMapping(alias = "获取仓库列表")
+    void getWarehouse() throws IOException;
+    @RequestMapping(alias = "获取商品分类")
+    void getProductCates() throws IOException;
+    @RequestMapping(alias = "还原")
+    void reduction() throws IOException, Exception;
 
 }
