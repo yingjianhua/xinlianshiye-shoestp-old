@@ -185,12 +185,8 @@
                     <version>3.2.0</version>
                     <configuration>
                         <warSourceExcludes>layuiAdmin/**,print/**,exp/**</warSourceExcludes>
-<<<<<<< HEAD
                         <packagingExcludes>WEB-INF/classes/sql/**,WEB-INF/lib/rebel**.xml
                         </packagingExcludes>
-=======
-                        <packagingExcludes>WEB-INF/classes/sql/**</packagingExcludes>
->>>>>>> origin/整合
                     </configuration>
                 </plugin>
                 <plugin>
