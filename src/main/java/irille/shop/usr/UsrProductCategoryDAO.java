@@ -1,14 +1,8 @@
 package irille.shop.usr;
 
-import java.io.Serializable;
-import java.sql.SQLException;
-import java.util.*;
-import java.util.stream.Collectors;
-
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OEnabled;
-import irille.platform.pdt.View.PdtAttrCatView;
-import irille.platform.pdt.view.UsrProductCategoryView.UsrProductCategoryView;
+import irille.platform.pdt.View.UsrProductCategoryView.UsrProductCategoryView;
 import irille.pub.Log;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.BeanBase;
@@ -30,6 +24,14 @@ import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrProductCategory.T;
 import irille.view.Page;
+
+import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class UsrProductCategoryDAO {
     public static final Log LOG = new Log(UsrProductCategoryDAO.class);
@@ -284,20 +286,20 @@ public class UsrProductCategoryDAO {
 //		public void before() {
 //			catList = BeanBase.list(UsrProductCategory.class,UsrProductCategory.T.PKEY.getFld().getCodeSqlField() + " in(" + pkeys + ")",false);
 //		}
-//		
+//
 //		public void valid() {
 //			for(UsrProductCategory cat : catList){
-//				List<UsrProductCategory> childrenCat = BeanBase.list(UsrProductCategory.class,UsrProductCategory.T.CATEGORY_UP.getFld().getCodeSqlField() + " = ? ",false,cat.getPkey()); 
+//				List<UsrProductCategory> childrenCat = BeanBase.list(UsrProductCategory.class,UsrProductCategory.T.CATEGORY_UP.getFld().getCodeSqlField() + " = ? ",false,cat.getPkey());
 //				if(childrenCat != null && childrenCat.size() > 0){
 //					throw LOG.err(Usr.ErrMsgs.hasChild);
 //				}
 //			}
 //		}
-//		
+//
 //		public void run() {
 //			Idu.delLine(catList);
 //		}
-//		
+//
 //	}
 
     public static class Sellect extends IduOther<Sellect, UsrProductCategory> {
