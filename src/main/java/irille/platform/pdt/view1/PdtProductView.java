@@ -1,4 +1,4 @@
-package irille.platform.pdt.View;
+package irille.platform.pdt.view1;
 
 import irille.view.BaseView;
 import lombok.Data;
