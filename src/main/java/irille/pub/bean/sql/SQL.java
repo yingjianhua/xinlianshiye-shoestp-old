@@ -118,9 +118,9 @@ public class SQL {
         return mybatisSQL.getSelf();
     }
 
-    public <T extends BeanMain<?, ?>> SQL WHERE(boolean b, String conditions, Serializable... params) {
+    public <T extends BeanMain<?, ?>> SQL WHERE(boolean b, IEnumFld fld, String conditions, Serializable... params) {
         if (b) {
-            mybatisSQL.WHERE(conditions);
+            mybatisSQL.WHERE(fld, conditions);
             for (Serializable param : params) {
                 if (param instanceof IEnumOpt) {
                     IEnumOpt opt = (IEnumOpt) param;
