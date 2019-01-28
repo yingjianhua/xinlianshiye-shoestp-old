@@ -213,7 +213,7 @@ public class PdtProductManageServiceImp implements IPdtProductManageService {
                     .FROM(PdtProduct.class)
                     .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierm);
             if (type != null) {
-                WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.DELETE.getLine().getKey());
+                WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.MERCHANTDEL.getLine().getKey());
             } else {
                 WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.OFF.getLine().getKey());
             }

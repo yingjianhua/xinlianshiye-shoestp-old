@@ -73,5 +73,7 @@ public interface IPdtProductAction extends ISellerAction {
     void getProductCates() throws IOException;
     @RequestMapping(alias = "还原")
     void reduction() throws IOException, Exception;
+    @RequestMapping(alias = "商家删除")
+    void remove() throws IOException, Exception;
 
 }

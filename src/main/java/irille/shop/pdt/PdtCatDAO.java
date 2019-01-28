@@ -2,7 +2,7 @@ package irille.shop.pdt;
 
 import irille.core.sys.Sys.OYn;
 import irille.core.sys.SysUser;
-import irille.platform.pdt.view.pdtCatView.PdtCatView;
+import irille.platform.pdt.View.pdtCatView.PdtCatView;
 import irille.pub.Log;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.BeanBase;

@@ -431,4 +431,17 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
         json.put("success", true);
         writerOrExport(json);
     }
+    /**
+     * @Description: 删除
+     * *@date 2019/1/28 14:53
+     * *@anthor zjl
+     */
+    public void remove() throws Exception {
+        JSONObject json = new JSONObject();
+        PdtProductDAO.Remove del = new PdtProductDAO.Remove();
+        del.setBKey(getPkey());
+        del.commit();
+        json.put("success", true);
+        writerOrExport(json);
+    }
 }
