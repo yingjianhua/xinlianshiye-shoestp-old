@@ -1,6 +1,5 @@
 package irille.pub.bean.sql;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.BeanMain;
 import irille.pub.tb.IEnumFld;
@@ -8,8 +7,6 @@ import irille.pub.tb.IEnumOpt;
 import irille.shop.plt.PltTrantslate;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -121,17 +118,32 @@ public class SQL {
         return mybatisSQL.getSelf();
     }
 
+    public <T extends BeanMain<?, ?>> SQL WHERE(boolean b, String conditions, Serializable... params) {
+        if (b) {
+            mybatisSQL.WHERE(conditions);
+            for (Serializable param : params) {
+                if (param instanceof IEnumOpt) {
+                    IEnumOpt opt = (IEnumOpt) param;
+                    mybatisSQL.PARAM(opt.getLine().getKey());
+                } else {
+                    mybatisSQL.PARAM(param);
+                }
+            }
+        }
+        return mybatisSQL.getSelf();
+    }
+
     public static void main(String[] args) {
         PltTrantslate.TB.getCode();
         Class beanClass = PltTrantslate.class;
-        if(BeanMain.class.isAssignableFrom(beanClass)) {
-            for(Class c:beanClass.getDeclaredClasses()) {
-                if(c.getSimpleName().equals("T")) {
+        if (BeanMain.class.isAssignableFrom(beanClass)) {
+            for (Class c : beanClass.getDeclaredClasses()) {
+                if (c.getSimpleName().equals("T")) {
                     Object[] aa = c.getEnumConstants();
-                    for(Object a: aa) {
-                        Enum b = (Enum)a;
-                        if(b.name().equals("")) {
-                            IEnumFld d = (IEnumFld)a;
+                    for (Object a : aa) {
+                        Enum b = (Enum) a;
+                        if (b.name().equals("")) {
+                            IEnumFld d = (IEnumFld) a;
                             d.getFld().getCode();
                         }
                         System.out.println(b.name());
@@ -142,60 +154,61 @@ public class SQL {
             }
         }
     }
+
     //多条件赛选 参数1 返回的dto 参数2 对应的实体类
-    public <T extends BeanMain<?, ?>> SQL  Mconditions(List<MconditionsView> list,Class<T> beanClass ){
+    public <T extends BeanMain<?, ?>> SQL Mconditions(List<MconditionsView> list, Class<T> beanClass) {
         //存放实体类字段名称
-        Object[] ObEnums=null;
+        Object[] ObEnums = null;
         //循环实体类中字段
         Class bean = beanClass;
-        if(BeanMain.class.isAssignableFrom(bean)) {
-            for(Class classmethod:bean.getDeclaredClasses()) {
-                if(classmethod.getSimpleName().equals("T")) {
+        if (BeanMain.class.isAssignableFrom(bean)) {
+            for (Class classmethod : bean.getDeclaredClasses()) {
+                if (classmethod.getSimpleName().equals("T")) {
                     ObEnums = classmethod.getEnumConstants();
                 }
             }
         }
 
-        for(MconditionsView  mv:list){
-            for(Object field: ObEnums) {
+        for (MconditionsView mv : list) {
+            for (Object field : ObEnums) {
                 System.out.println(field);
-                Enum fieldZ=(Enum)field;
-               if( fieldZ.name().equalsIgnoreCase(mv.getMode())){
-                   IEnumFld fld=(IEnumFld)field;
-                   if(mv.getIsdate()==0){
-                       if(mv.getCondition()==1){
-                           WHERE(fld," >? ",mv.getContent());
-                       }
-                       if(mv.getCondition()==2){
-                           WHERE(fld," <? ",mv.getContent());
-                       }
-                       if(mv.getCondition()==3){
-                           WHERE(fld," <>? ",mv.getContent());
-                       }
-                       if(mv.getCondition()==4){
-                           WHERE(fld," =? ",mv.getContent());
-                       }
-                       if(mv.getCondition()==5){
-                           WHERE(fld," like '%"+mv.getContent()+"%' ");
-                       }
-                       if(mv.getCondition()==6){
-                           WHERE(fld," not like '%"+mv.getContent()+"%' ");
-                       }
-                   }else{
-                       if(mv.getCondition()==1){
-                           WHERE(fld," >? ",new Date(Long.parseLong(mv.getContent())));
-                       }
-                       if(mv.getCondition()==2){
-                           WHERE(fld," <? ",new Date(Long.parseLong(mv.getContent())));
-                       }
-                       if(mv.getCondition()==3){
-                           WHERE(fld," <>? ",new Date(Long.parseLong(mv.getContent())));
-                       }
-                       if(mv.getCondition()==4){
-                           WHERE(fld," =? ",new Date(Long.parseLong(mv.getContent())));
-                       }
-                   }
-               }
+                Enum fieldZ = (Enum) field;
+                if (fieldZ.name().equalsIgnoreCase(mv.getMode())) {
+                    IEnumFld fld = (IEnumFld) field;
+                    if (mv.getIsdate() == 0) {
+                        if (mv.getCondition() == 1) {
+                            WHERE(fld, " >? ", mv.getContent());
+                        }
+                        if (mv.getCondition() == 2) {
+                            WHERE(fld, " <? ", mv.getContent());
+                        }
+                        if (mv.getCondition() == 3) {
+                            WHERE(fld, " <>? ", mv.getContent());
+                        }
+                        if (mv.getCondition() == 4) {
+                            WHERE(fld, " =? ", mv.getContent());
+                        }
+                        if (mv.getCondition() == 5) {
+                            WHERE(fld, " like '%" + mv.getContent() + "%' ");
+                        }
+                        if (mv.getCondition() == 6) {
+                            WHERE(fld, " not like '%" + mv.getContent() + "%' ");
+                        }
+                    } else {
+                        if (mv.getCondition() == 1) {
+                            WHERE(fld, " >? ", new Date(Long.parseLong(mv.getContent())));
+                        }
+                        if (mv.getCondition() == 2) {
+                            WHERE(fld, " <? ", new Date(Long.parseLong(mv.getContent())));
+                        }
+                        if (mv.getCondition() == 3) {
+                            WHERE(fld, " <>? ", new Date(Long.parseLong(mv.getContent())));
+                        }
+                        if (mv.getCondition() == 4) {
+                            WHERE(fld, " =? ", new Date(Long.parseLong(mv.getContent())));
+                        }
+                    }
+                }
             }
         }
         return mybatisSQL.getSelf();
@@ -259,6 +272,7 @@ public class SQL {
     public String toString() {
         return mybatisSQL.toString();
     }
+
 
     class MybatisSQL extends AbstractSQL<SQL> {
 
