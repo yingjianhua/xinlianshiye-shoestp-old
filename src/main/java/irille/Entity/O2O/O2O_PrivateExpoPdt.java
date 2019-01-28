@@ -7,13 +7,10 @@ import irille.pub.tb.Fld;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
 import irille.shop.pdt.PdtProduct;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
-/**
- * Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/13 Time: 16:18 O2O产品
- */
+/** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/13 Time: 16:18 O2O产品 */
 public class O2O_PrivateExpoPdt extends BeanInt<O2O_PrivateExpoPdt> {
 
     public static final Tb TB =
@@ -76,140 +73,117 @@ public class O2O_PrivateExpoPdt extends BeanInt<O2O_PrivateExpoPdt> {
 
     // >>>以下是自动产生的源代码行--源代码--请保留此行用于识别>>>
     //实例变量定义-----------------------------------------
-    private Integer _pkey;    // 编号  INT
-    private Integer _pdtId;    // 产品 <表主键:PdtProduct>  INT
-    private BigDecimal _price;    // 金额  DEC(16,2)
-    private Integer _minOq;    // INT  INT
-    private Byte _status;    // O2O商品状态 <O2O_PrivateExpoPdtStatus>  BYTE
+    private Integer _pkey;	// 编号  INT
+    private Integer _pdtId;	// 产品 <表主键:PdtProduct>  INT
+    private BigDecimal _price;	// 金额  DEC(16,2)
+    private Integer _minOq;	// INT  INT
+    private Byte _status;	// O2O商品状态 <O2O_PrivateExpoPdtStatus>  BYTE
     // _DEFAULT:0,未审核
     // OFF:1,下架
     // ON:2,上架
     // PASS:3,审核通过
     // Failed:4,审核失败
-    private Byte _verifyStatus;    // O2O商品状态 <O2O_PrivateExpoPdtStatus>  BYTE
+    private Byte _verifyStatus;	// O2O商品状态 <O2O_PrivateExpoPdtStatus>  BYTE
     // _DEFAULT:0,未审核
     // OFF:1,下架
     // ON:2,上架
     // PASS:3,审核通过
     // Failed:4,审核失败
-    private String _message;    // 字符100  STR(100)<null>
-    private Date _createTime;    // 更新时间  TIME
-    private Short _rowVersion;    // 版本  SHORT
+    private String _message;	// 字符100  STR(100)<null>
+    private Date _createTime;	// 更新时间  TIME
+    private Short _rowVersion;	// 版本  SHORT
 
     @Override
-    public O2O_PrivateExpoPdt init() {
+    public O2O_PrivateExpoPdt init(){
         super.init();
-        _pdtId = null;    // 产品 <表主键:PdtProduct>  INT
-        _price = ZERO;    // 金额  DEC(16,2)
-        _minOq = 0;    // INT  INT
-        _status = O2O_PrivateExpoPdtStatus.DEFAULT.getLine().getKey();    // O2O商品状态 <O2O_PrivateExpoPdtStatus>  BYTE
-        _verifyStatus = O2O_PrivateExpoPdtStatus.DEFAULT.getLine().getKey();    // O2O商品状态 <O2O_PrivateExpoPdtStatus>  BYTE
-        _message = null;    // 字符100  STR(100)
-        _createTime = Env.getTranBeginTime();    // 更新时间  TIME
-        _rowVersion = 0;    // 版本  SHORT
+        _pdtId=null;	// 产品 <表主键:PdtProduct>  INT
+        _price=ZERO;	// 金额  DEC(16,2)
+        _minOq=0;	// INT  INT
+        _status=O2O_PrivateExpoPdtStatus.DEFAULT.getLine().getKey();	// O2O商品状态 <O2O_PrivateExpoPdtStatus>  BYTE
+        _verifyStatus=O2O_PrivateExpoPdtStatus.DEFAULT.getLine().getKey();	// O2O商品状态 <O2O_PrivateExpoPdtStatus>  BYTE
+        _message=null;	// 字符100  STR(100)
+        _createTime=Env.getTranBeginTime();	// 更新时间  TIME
+        _rowVersion=0;	// 版本  SHORT
         return this;
     }
 
     //方法----------------------------------------------
-    public Integer getPkey() {
+    public Integer getPkey(){
         return _pkey;
     }
-
-    public void setPkey(Integer pkey) {
-        _pkey = pkey;
+    public void setPkey(Integer pkey){
+        _pkey=pkey;
     }
-
-    public Integer getPdtId() {
+    public Integer getPdtId(){
         return _pdtId;
     }
-
-    public void setPdtId(Integer pdtId) {
-        _pdtId = pdtId;
+    public void setPdtId(Integer pdtId){
+        _pdtId=pdtId;
     }
-
-    public PdtProduct gtPdtId() {
-        if (getPdtId() == null)
+    public PdtProduct gtPdtId(){
+        if(getPdtId()==null)
             return null;
-        return (PdtProduct) get(PdtProduct.class, getPdtId());
+        return (PdtProduct)get(PdtProduct.class,getPdtId());
     }
-
-    public void stPdtId(PdtProduct pdtId) {
-        if (pdtId == null)
+    public void stPdtId(PdtProduct pdtId){
+        if(pdtId==null)
             setPdtId(null);
         else
             setPdtId(pdtId.getPkey());
     }
-
-    public BigDecimal getPrice() {
+    public BigDecimal getPrice(){
         return _price;
     }
-
-    public void setPrice(BigDecimal price) {
-        _price = price;
+    public void setPrice(BigDecimal price){
+        _price=price;
     }
-
-    public Integer getMinOq() {
+    public Integer getMinOq(){
         return _minOq;
     }
-
-    public void setMinOq(Integer minOq) {
-        _minOq = minOq;
+    public void setMinOq(Integer minOq){
+        _minOq=minOq;
     }
-
-    public Byte getStatus() {
+    public Byte getStatus(){
         return _status;
     }
-
-    public void setStatus(Byte status) {
-        _status = status;
+    public void setStatus(Byte status){
+        _status=status;
     }
-
-    public O2O_PrivateExpoPdtStatus gtStatus() {
-        return (O2O_PrivateExpoPdtStatus) (O2O_PrivateExpoPdtStatus._DEFAULT.getLine().get(_status));
+    public O2O_PrivateExpoPdtStatus gtStatus(){
+        return (O2O_PrivateExpoPdtStatus)(O2O_PrivateExpoPdtStatus._DEFAULT.getLine().get(_status));
     }
-
-    public void stStatus(O2O_PrivateExpoPdtStatus status) {
-        _status = status.getLine().getKey();
+    public void stStatus(O2O_PrivateExpoPdtStatus status){
+        _status=status.getLine().getKey();
     }
-
-    public Byte getVerifyStatus() {
+    public Byte getVerifyStatus(){
         return _verifyStatus;
     }
-
-    public void setVerifyStatus(Byte verifyStatus) {
-        _verifyStatus = verifyStatus;
+    public void setVerifyStatus(Byte verifyStatus){
+        _verifyStatus=verifyStatus;
     }
-
-    public O2O_PrivateExpoPdtStatus gtVerifyStatus() {
-        return (O2O_PrivateExpoPdtStatus) (O2O_PrivateExpoPdtStatus._DEFAULT.getLine().get(_verifyStatus));
+    public O2O_PrivateExpoPdtStatus gtVerifyStatus(){
+        return (O2O_PrivateExpoPdtStatus)(O2O_PrivateExpoPdtStatus._DEFAULT.getLine().get(_verifyStatus));
     }
-
-    public void stVerifyStatus(O2O_PrivateExpoPdtStatus verifyStatus) {
-        _verifyStatus = verifyStatus.getLine().getKey();
+    public void stVerifyStatus(O2O_PrivateExpoPdtStatus verifyStatus){
+        _verifyStatus=verifyStatus.getLine().getKey();
     }
-
-    public String getMessage() {
+    public String getMessage(){
         return _message;
     }
-
-    public void setMessage(String message) {
-        _message = message;
+    public void setMessage(String message){
+        _message=message;
     }
-
-    public Date getCreateTime() {
+    public Date getCreateTime(){
         return _createTime;
     }
-
-    public void setCreateTime(Date createTime) {
-        _createTime = createTime;
+    public void setCreateTime(Date createTime){
+        _createTime=createTime;
     }
-
-    public Short getRowVersion() {
+    public Short getRowVersion(){
         return _rowVersion;
     }
-
-    public void setRowVersion(Short rowVersion) {
-        _rowVersion = rowVersion;
+    public void setRowVersion(Short rowVersion){
+        _rowVersion=rowVersion;
     }
 
     // <<<以上是自动产生的源代码行--源代码--请保留此行用于识别<<<

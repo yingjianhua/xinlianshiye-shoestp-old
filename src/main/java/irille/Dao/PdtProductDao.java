@@ -4,6 +4,8 @@ import static irille.core.sys.Sys.OYn.YES;
 import static java.util.stream.Collectors.toList;
 
 import irille.Aops.Caches;
+import irille.Entity.O2O.O2O_PrivateExpoPdt;
+import irille.Entity.O2O.O2O_Product;
 import irille.core.sys.Sys;
 import irille.homeAction.pdt.dto.PdtProductView;
 import irille.pub.bean.BeanBase;
@@ -27,6 +29,7 @@ import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
 import irille.view.pdt.PdtProductBaseInfoView;
 import irille.view.pdt.PdtProductCatView;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
@@ -493,6 +496,23 @@ public class PdtProductDao {
         q.limit(start * limit, limit).queryMaps();
         List<Map> list = q.limit(start * limit, limit).queryMaps();
         Page page = new Page(list.stream().map(o -> {
+            SQL o2oProduct = new SQL() {{
+                SELECT(O2O_Product.class).FROM(O2O_Product.class).WHERE(O2O_Product.T.PRODUCT_ID, "=?", (Integer) o.get("pkey"));
+            }};
+            SQL o2oPrivateexpopdt = new SQL() {{
+                SELECT(O2O_PrivateExpoPdt.class).FROM(O2O_PrivateExpoPdt.class).WHERE(O2O_PrivateExpoPdt.T.PDT_ID, "=?", (Integer) o.get("pkey"));
+            }};
+            O2O_Product product = Query.sql(o2oProduct).query(O2O_Product.class);
+            O2O_PrivateExpoPdt privateExpoPdt = Query.sql(o2oPrivateexpopdt).query(O2O_PrivateExpoPdt.class);
+            if (product != null) {
+                o.put("O2OSort", "O2O");
+                o.put("status", product.getStatus());
+            } else if (privateExpoPdt != null) {
+                o.put("O2OSort", "私人展会");
+                o.put("status", privateExpoPdt.getStatus());
+            } else {
+                o.put("status", "正常");
+            }
             o.put("category", translateUtil.getLanguage(o.get("category"), PltConfigDAO.supplierLanguage(supplierId)));
             o.put("rewrite", SEOUtils.getPdtProductTitle(Integer.valueOf(String.valueOf(o.get("pkey"))), String.valueOf(o.get("name"))));
             o.put("name", translateUtil.getLanguage(o.get("name"), PltConfigDAO.supplierLanguage(supplierId)));
