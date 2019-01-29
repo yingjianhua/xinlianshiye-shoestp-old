@@ -671,4 +671,10 @@ public class PdtProductDao {
         }).collect(Collectors.toList());
         return result;
     }
+
+    public List<PdtProduct> findAllByPkeys(String pkeys){
+        SQL sql = new SQL();
+        sql.SELECT(PdtProduct.class).WHERE(PdtProduct.T.PKEY," IN ("+pkeys+") ");
+        return Query.sql(sql).queryList(PdtProduct.class);
+    }
 }

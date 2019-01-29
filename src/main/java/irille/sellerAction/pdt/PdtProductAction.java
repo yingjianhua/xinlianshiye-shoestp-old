@@ -208,8 +208,8 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
     JSONObject json = new JSONObject();
     List<PdtProduct> pdtList = BeanBase.list(PdtProduct.class,
         PdtProduct.T.SUPPLIER.getFld().getCodeSqlField() + " = " + SellerAction.getSupplier()
-            .getPkey() + " AND " + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField() + " <> "
-            + Pdt.OProductType.GROUP.getLine().getKey() + " AND " + PdtProduct.T.STATE.getFld()
+            .getPkey() + " AND " + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField() + " = "
+            + Pdt.OProductType.GENERAL.getLine().getKey() + " AND " + PdtProduct.T.STATE.getFld()
             .getCodeSqlField() + " = " + Pdt.OState.ON.getLine().getKey() + " AND "
             + PdtProduct.T.IS_VERIFY.getFld().getCodeSqlField() + " = " + Sys.OYn.YES.getLine()
             .getKey(), false);
@@ -381,6 +381,7 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
     // TODO Auto-generated method stub
     return null;
   }
+
 
 
 }

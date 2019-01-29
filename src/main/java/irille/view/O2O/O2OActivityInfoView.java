@@ -1,5 +1,6 @@
 package irille.view.O2O;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import irille.view.BaseView;
 import lombok.Data;
 
@@ -17,11 +18,15 @@ public class O2OActivityInfoView implements BaseView {
     private int id;
     private String title;
     private int countryId;
+    private String country;
     private String address;
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private Date startDate;
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private Date endDate;
     private String status;
     private int cat;
+    private String category;
     private String rules;
     private String tel;
     private String name; //负责人

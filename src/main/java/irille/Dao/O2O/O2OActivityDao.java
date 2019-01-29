@@ -9,7 +9,7 @@ import irille.pub.bean.Query;
  */
 public class O2OActivityDao {
 
-    public O2O_Activity getActivityInfoById(Long id) {
+    public O2O_Activity getActivityInfoById(Integer id) {
         return Query.SELECT(O2O_Activity.class).WHERE(T.PKEY, "=?", id).query();
     }
 }

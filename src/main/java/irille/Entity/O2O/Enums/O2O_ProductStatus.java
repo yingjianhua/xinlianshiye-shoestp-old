@@ -9,6 +9,7 @@ import irille.pub.tb.IEnumOpt;
 public enum O2O_ProductStatus implements IEnumOpt {
     _DEFAULT(0, "未审核"),
     OFF(1, "下架"),
+    WAITOFF(5,"等待确认下架"),
     ON(2, "上架"),
     PASS(3, "审核通过"),
     Failed(4, "审核失败"),
