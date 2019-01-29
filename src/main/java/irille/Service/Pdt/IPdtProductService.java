@@ -2,6 +2,7 @@ package irille.Service.Pdt;
 
 import com.google.inject.ImplementedBy;
 import irille.Service.Pdt.Imp.PdtProductServiceImp;
+import irille.homeAction.pdt.dto.PdtExhibitionView;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage;
 import irille.shop.usr.UsrPurchase;
@@ -63,4 +64,6 @@ public interface IPdtProductService {
     List<PdtNewPdtInfo> getNewProducts(IduPage page, UsrPurchase pkey, FldLanguage.Language language);
 
     Map getProductListByCategoryV2(IduPage iduPage, String[] orderfld, boolean order, int cated, String spec, String onlyFld, String keyword, Integer type);
+    
+    public List<PdtExhibitionView> findExhibitionGoods(IduPage page); 
 }

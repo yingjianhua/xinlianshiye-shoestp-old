@@ -691,4 +691,35 @@ public class PdtProductDao {
         }).collect(Collectors.toList());
         return result;
     }
+    /***
+     * 展会商品信息
+     *
+     * @author GS
+     * @param
+     * @return List
+     * @date 2018/7/23 14:38
+     */
+    @Caches
+    public List<PdtProduct> getExhibitionProductsList(int start, int limit, String where) {
+        BeanQuery query = new BeanQuery();
+        query.SELECT(
+                PdtProduct.T.PKEY,
+                PdtProduct.T.NAME,
+                PdtProduct.T.PICTURE,
+                PdtProduct.T.CUR_PRICE,
+                PdtProduct.T.PICTURE,
+                PdtProduct.T.MIN_OQ
+        )
+                .FROM(PdtProduct.class)
+                .limit(start, limit)
+        ;
+        if (where != null) {
+            if (where != null && where.length() > 0) {
+                query.WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", where);
+                query.ORDER_BY(PdtProduct.T.SOLD_TIME_B, "desc");
+            }
+        }
+        return query.queryList();
+    }
+    
 }

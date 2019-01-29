@@ -201,7 +201,9 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
       write(objectMapper.writeValueAsString(pdtProduct
           .getProductListByCategoryV2(iduPage, getOrderfld(), isOrder(), getCated(), getSpec(),
               getOnlyFld(), getKeyword(), getSearchtype())));
-    } else {
+    }else if(v==3){
+    	 write(objectMapper.writeValueAsString(pdtProduct.findExhibitionGoods(iduPage)));
+    }else {
       write(objectMapper.writeValueAsString(pdtProduct
           .getProductListByCategory(iduPage, getOrderfld(), isOrder(), getCated(), getSpec(),
               getOnlyFld(), getKeyword(), getType())));
