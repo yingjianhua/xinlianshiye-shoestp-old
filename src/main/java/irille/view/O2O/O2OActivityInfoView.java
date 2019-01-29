@@ -25,7 +25,6 @@ public class O2OActivityInfoView implements BaseView {
     @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private Date endDate;
     private String status;
-    private int cat;
     private String category;
     private String rules;
     private String tel;

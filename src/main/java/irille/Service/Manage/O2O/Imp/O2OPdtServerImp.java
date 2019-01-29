@@ -158,8 +158,7 @@ public class O2OPdtServerImp implements IO2OPdtServer {
         view.setStartDate(activity.getStartDate());
         view.setEndDate(activity.getEndDate());
         view.setStatus(activity.gtStatus().getLine().getName());
-        view.setCat(activity.getActivityCat());
-        view.setCategory(activity.gtActivityCat().getName());
+        view.setCategory(null == activity.getName()?"全类目通用":activity.getName());
         view.setRules(activity.getRules());
         if(null != joinInfo){
             view.setTel(joinInfo.getTel());
