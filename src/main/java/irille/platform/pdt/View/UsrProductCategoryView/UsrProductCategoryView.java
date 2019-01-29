@@ -1,4 +1,4 @@
-package irille.platform.pdt.view.UsrProductCategoryView;
+package irille.platform.pdt.View.UsrProductCategoryView;
 
 import irille.view.BaseView;
 import lombok.Data;

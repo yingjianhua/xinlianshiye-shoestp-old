@@ -1,6 +1,8 @@
-package irille.Entity.O2O;
+package irille.Entity.RFQ_Messages;
 
 import irille.Entity.O2O.Enums.O2O_ActivityStatus;
+import irille.Entity.RFQ_Messages.Enums.RFQ_MessageStatus;
+import irille.Entity.RFQ_Messages.Enums.RFQ_MessageType;
 import irille.pub.bean.BeanInt;
 import irille.pub.svr.Env;
 import irille.pub.tb.Fld;
@@ -8,6 +10,8 @@ import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
 import irille.shop.pdt.PdtCat;
+import irille.shop.usr.UsrPurchase;
+import irille.shop.usr.UsrSupplier;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,20 +20,19 @@ import java.util.Date;
 /**
  * Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/13 Time: 16:18
  */
-public class O2O_Activity extends BeanInt<O2O_Activity> {
+public class RFQ_Messages extends BeanInt<RFQ_Messages> {
 
-    public static final Tb TB = new Tb(O2O_Activity.class, "O2O活动信息").setAutoIncrement().addActIUDL();
+    public static final Tb TB = new Tb(RFQ_Messages.class, "RFQ_站内信").setAutoIncrement().addActIUDL();
 
     public enum T implements IEnumFld {
         PKEY(TB.crtIntPkey()),
-        NAME(SYS.STR__100_NULL, "活动名称"),
-        STATUS(TB.crt(O2O_ActivityStatus.DEFAULT)),
-        ACTIVITY_CAT(PdtCat.fldOutKey().setNull()), // 当这个值为null的时候,及通用
-        RULES(SYS.MUILTI_LANGUAGE, "规则描述"),
-        ADDRESS(SYS.JSON), // 地址信息  {countyId 保存国家外键  info 集体信息例如:温州市瓯海区     x  经度,y 纬度}
-        START_DATE(SYS.DATE_TIME),
-        END_DATE(SYS.DATE_TIME),
-        UPDATED_TIME(SYS.UPDATED_DATE_TIME),
+        TYPE(TB.crt(RFQ_MessageType.DEFAULT)),
+        STATUS(TB.crt(RFQ_MessageStatus.DEFAULT)),
+        SUPPLIER_ID(UsrSupplier.fldOutKey()),
+        PURCHASE(UsrPurchase.fldOutKey()),
+        GROUPID(RFQ_MessageGroup.fldOutKey().setNull()),
+        CREATE_TIME(SYS.CREATED_DATE_TIME),
+        READ_TIME(SYS.UPDATED_DATE_TIME),
         ROW_VERSION(SYS.ROW_VERSION),
         // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
         // <<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
@@ -93,7 +96,7 @@ public class O2O_Activity extends BeanInt<O2O_Activity> {
     private Short _rowVersion;    // 版本  SHORT
 
     @Override
-    public O2O_Activity init() {
+    public RFQ_Messages init() {
         super.init();
         _name = null;    // 活动名称  STR(100)
         _status = O2O_ActivityStatus.DEFAULT.getLine().getKey();    // 活动状态 <O2O_ActivityStatus>  BYTE

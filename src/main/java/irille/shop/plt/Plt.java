@@ -8,6 +8,9 @@ import irille.Entity.O2O.O2O_JoinInfo;
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Entity.O2O.O2O_Product;
 import irille.Entity.Pk.PkCompetitionData;
+import irille.Entity.RFQ_Messages.RFQ_MessageBody;
+import irille.Entity.RFQ_Messages.RFQ_MessageGroup;
+import irille.Entity.RFQ_Messages.RFQ_Messages;
 import irille.core.prv.PrvRoleAct;
 import irille.core.sys.SysModule;
 import irille.pub.Log;
@@ -59,7 +62,9 @@ public class Plt extends PackageBase {
         addTb(49, O2O_Product.class);
         addTb(50, O2O_PrivateExpoPdt.class);
         addTb(51, O2O_JoinInfo.class);
-
+        addTb(52, RFQ_MessageBody.class);
+        addTb(53, RFQ_Messages.class);
+        addTb(54, RFQ_MessageGroup.class);
     }
 
     @Override

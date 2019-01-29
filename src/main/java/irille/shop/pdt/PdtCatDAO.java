@@ -2,7 +2,7 @@ package irille.shop.pdt;
 
 import irille.core.sys.Sys.OYn;
 import irille.core.sys.SysUser;
-import irille.platform.pdt.view.pdtCatView.PdtCatView;
+import irille.platform.pdt.View.pdtCatView.PdtCatView;
 import irille.pub.Log;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.BeanBase;
@@ -253,5 +253,13 @@ public class PdtCatDAO {
         pdtCat.setDeleted(OYn.NO.getLine().getKey());
         pdtCat.setCreateTime(Env.getSystemTime());
         pdtCat.ins();
+    }
+    
+    /**
+     * -获取所有分类
+     */
+    public static List<PdtCat> listAll(){
+    	  List<PdtCat> listCat = irille.pub.bean.Query.SELECT(PdtCat.class).WHERE(T.DELETED, " = ?", OYn.NO).queryList();
+    	  return listCat;
     }
 }
