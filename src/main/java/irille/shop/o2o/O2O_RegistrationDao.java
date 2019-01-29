@@ -1,5 +1,6 @@
 package irille.shop.o2o;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -115,21 +116,33 @@ public class O2O_RegistrationDao {
 	
 	public static Map<String,Object> getData(){
 		Map<String,Object> map = new HashMap<>();
-		Map<Integer,Object> sex = new HashMap<>();
-		Map<Integer,Object> marketing = new HashMap<>();
-		Map<Integer,Object> buyerType = new HashMap<>();
-		Map<Integer,Object> exhibitionCountry = new HashMap<>();
+		List<Map<String,Object>> sex = new ArrayList<>();
+		List<Map<String,Object>> marketing = new ArrayList<>();
+		List<Map<String,Object>> buyerType = new ArrayList<>();
+		List<Map<String,Object>> exhibitionCountry = new ArrayList<>();
 		for(O2O_Sex item:O2O_Sex.values()) {
-			sex.put((int)item.getLine().getKey(),item.toString());
+			Map<String,Object> sexline = new HashMap<>();
+			sexline.put("id", (int)item.getLine().getKey());
+			sexline.put("name",item.toString());
+			sex.add(sexline);
 		}
 		for(O2O_Marketing item:O2O_Marketing.values()) {
-			marketing.put((int)item.getLine().getKey(),item.toString());
+			Map<String,Object> marketingline = new HashMap<>();
+			marketingline.put("id", (int)item.getLine().getKey());
+			marketingline.put("name",item.toString());
+			marketing.add(marketingline);
 		}
 		for(O2O_BuyerType item:O2O_BuyerType.values()) {
-			buyerType.put((int)item.getLine().getKey(),item.toString());
+			Map<String,Object> buyerTypeline = new HashMap<>();
+			buyerTypeline.put("id", (int)item.getLine().getKey());
+			buyerTypeline.put("name",item.toString());
+			buyerType.add(buyerTypeline);
 		}
 		for(O2O_ExhibitionCountry item:O2O_ExhibitionCountry.values()) {
-			exhibitionCountry.put((int)item.getLine().getKey(),item.toString());
+			Map<String,Object> exhibitionCountryline = new HashMap<>();
+			exhibitionCountryline.put("id", (int)item.getLine().getKey());
+			exhibitionCountryline.put("name",item.toString());
+			exhibitionCountry.add(exhibitionCountryline);
 		}
 		map.put("sex", sex);
 		map.put("marketing", marketing);
