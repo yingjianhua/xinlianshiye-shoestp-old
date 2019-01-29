@@ -1,6 +1,7 @@
 package irille.Dao;
 
 import irille.Aops.Caches;
+import irille.pub.bean.Query;
 import irille.pub.bean.sql.I18NSQL;
 import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduOther;
@@ -56,5 +57,9 @@ public class PdtCatDao extends IduOther<PdtCatDao, PdtCat> {
                     .FROM(PdtCat.class);
         }};
         return irille.pub.bean.Query.sql(sql).queryList(PdtCat.class);
+    }
+    
+    public PdtCat findById(Integer id) {
+    	return Query.SELECT(PdtCat.class).WHERE(PdtCat.T.PKEY, "=", id).query();
     }
 }

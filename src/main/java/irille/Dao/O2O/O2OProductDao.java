@@ -19,12 +19,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 /**
  * Created by IntelliJ IDEA. User: Lijie<HelloBox@outlook.com> Date: 2019/1/26 Time: 12:50
  */
 public class O2OProductDao {
     @Caches
-    public List getPrivateExpoPdtList(int start, int limit) {
+    public List<?> getPrivateExpoPdtList(int start, int limit) {
         SQL sql = new SQL();
         sql.SELECT(
                 PdtProduct.T.PKEY,
@@ -148,6 +150,17 @@ public class O2OProductDao {
                 .WHERE(PdtProduct.T.PRODUCT_TYPE,"=?",Pdt.OProductType.GENERAL.getLine().getKey());
         return Query.sql(sql).queryMaps();
 
+    }
+    
+    /**
+     * 统计活动下有多少参加的商品
+     * 
+     * @param activityId 活动的Id 不能为空
+     * @return 参加活动的商品的数量
+     * @author Jianhua Ying
+     */
+    public Integer countByActivity(@Nonnull Integer activityId) {
+    	return Query.SELECT(O2O_Product.class).WHERE(O2O_Product.T.ACTIVITY_ID, "=", activityId).queryCount();
     }
 
 }
