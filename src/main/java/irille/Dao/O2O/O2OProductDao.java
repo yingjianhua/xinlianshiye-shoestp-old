@@ -1,19 +1,21 @@
 package irille.Dao.O2O;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+
 import irille.Aops.Caches;
-import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.Entity.O2O.O2O_Activity;
 import irille.Entity.O2O.O2O_Activity.T;
 import irille.Entity.O2O.O2O_JoinInfo;
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Entity.O2O.O2O_Product;
+import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
 import irille.shop.pdt.PdtProduct;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA. User: Lijie<HelloBox@outlook.com> Date: 2019/1/26 Time: 12:50
@@ -92,5 +94,15 @@ public class O2OProductDao {
                 .WHERE(O2O_JoinInfo.T.SUPPLIER_ID, "=?", pkey)
                 .LIMIT(start, limit);
         return Query.sql(sql).queryMaps();
+    }
+    /**
+     * 统计活动下有多少参加的商品
+     * 
+     * @param activityId 活动的Id 不能为空
+     * @return 参加活动的商品的数量
+     * @author Jianhua Ying
+     */
+    public Integer countByActivity(@Nonnull Integer activityId) {
+    	return Query.SELECT(O2O_Product.class).WHERE(O2O_Product.T.ACTIVITY_ID, "=", activityId).queryCount();
     }
 }

@@ -18,8 +18,8 @@ public class O2O_JoinInfo extends BeanInt<O2O_JoinInfo> {
         PKEY(TB.crtIntPkey()),
         NAME(SYS.STR__100_NULL, "负责人信息"),
         Tel(SYS.STR__100_NULL, "电话"),
-        ACTIVITY_ID(O2O_Activity.fldOutKey()),
-        SUPPLIER_ID(UsrSupplier.fldOutKey()),
+        ACTIVITY_ID(O2O_Activity.fldOutKey()),//O2O活动
+        SUPPLIER_ID(UsrSupplier.fldOutKey()),//供应商
         ROW_VERSION(SYS.ROW_VERSION),
         //>>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
         //<<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<

@@ -1,6 +1,13 @@
 package irille.Entity.O2O;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
+import irille.core.sys.Sys;
 import irille.pub.bean.BeanInt;
 import irille.pub.svr.Env;
 import irille.pub.tb.Fld;
@@ -8,43 +15,40 @@ import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
 import irille.shop.pdt.PdtProduct;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/13 Time: 16:18 O2O产品
  */
 public class O2O_Product extends BeanInt<O2O_Product> {
 
-    public static final Tb TB = new Tb(O2O_Product.class, "O2O商品信息").setAutoIncrement().addActIUDL();
+	private static final long serialVersionUID = 1L;
+	
+	public static final Tb<?> TB = new Tb<>(O2O_Product.class, "O2O商品信息").setAutoIncrement().addActIUDL();
 
     public enum T implements IEnumFld {
-        PKEY(TB.crtIntPkey()),
-        STATUS(TB.crt(O2O_ProductStatus.DEFAULT)),
-        VERIFY_STATUS(TB.crt(O2O_ProductStatus.DEFAULT)),
-        RULES(SYS.MUILTI_LANGUAGE, "规则描述"),
-        PRICE(SYS.AMT),
-        MIN_OQ(SYS.INT),
-        PRODUCT_ID(PdtProduct.fldOutKey()),
-        JOIN_INFO_ID(O2O_JoinInfo.fldOutKey()),
-        MESSAGE(SYS.STR__100_NULL, "信息"),
-        UPPER_DATE(SYS.DATE_TIME),
-        LOWER_DATE(SYS.DATE_TIME),
-        REMARK(SYS.STR__100_NULL, "备注"),
-        UPDATED_TIME(SYS.UPDATED_DATE_TIME),
-        ROW_VERSION(SYS.ROW_VERSION),
+        PKEY(Tb.crtIntPkey()),
+        STATUS(Tb.crt(O2O_ProductStatus.DEFAULT)),//上下架状态 上架和下架
+        VERIFY_STATUS(Tb.crt(O2O_ProductStatus.DEFAULT)),//审核状态: 未审核, 审核通过, 审核失败
+        PRICE(Sys.T.AMT),//活动价格
+        MIN_OQ(Sys.T.INT),//最小采购量
+        PRODUCT_ID(PdtProduct.fldOutKey()),//关联产品
+        JOIN_INFO_ID(O2O_JoinInfo.fldOutKey()),//负责人信息
+        ACTIVITY_ID(O2O_Activity.fldOutKey()),//活动信息,
+        MESSAGE(Sys.T.STR__100_NULL, "信息"),//审核结果描述
+        UPPER_DATE(Sys.T.DATE_TIME),//上架时间
+        LOWER_DATE(Sys.T.DATE_TIME),//下架时间
+        REMARK(Sys.T.STR__100_NULL, "备注"),//备注
+        UPDATED_TIME(Sys.T.UPDATED_DATE_TIME),//更新时间
+        ROW_VERSION(Sys.T.ROW_VERSION),
         // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
         // <<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
         ;
         // >>>以下是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别>>>
         // <<<以上是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别<<<
 
-        private Fld _fld;
+        private Fld<?> _fld;
 
-        private T(Class clazz, String name, boolean... isnull) {
+        private T(Class<?> clazz, String name, boolean... isnull) {
             _fld = TB.addOutKey(clazz, this, name, isnull);
         }
 
@@ -60,11 +64,11 @@ public class O2O_Product extends BeanInt<O2O_Product> {
             _fld = TB.add(fld, this, name, strLen);
         }
 
-        private T(Fld fld) {
+        private T(Fld<?> fld) {
             _fld = TB.add(fld, this);
         }
 
-        public Fld getFld() {
+        public Fld<?> getFld() {
             return _fld;
         }
     }
@@ -73,11 +77,11 @@ public class O2O_Product extends BeanInt<O2O_Product> {
         T.PKEY.getFld().getTb().lockAllFlds(); // 加锁所有字段,不可以修改
     }
 
-    public static Fld fldOutKey() {
+    public static Fld<?> fldOutKey() {
         return fldOutKey(TB.getCodeNoPackage(), TB.getShortName());
     }
 
-    public static Fld fldOutKey(String code, String name) {
+    public static Fld<?> fldOutKey(String code, String name) {
         return Tb.crtOutKey(TB, code, name);
     }
 
