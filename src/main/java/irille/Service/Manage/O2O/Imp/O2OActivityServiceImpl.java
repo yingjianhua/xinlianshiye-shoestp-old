@@ -1,10 +1,7 @@
 package irille.Service.Manage.O2O.Imp;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -95,6 +92,7 @@ public class O2OActivityServiceImpl implements O2OActivityService {
 	public O2OActivityView deploy(O2OActivityView view) {
 		O2O_Activity bean = new O2O_Activity();
 		valid(view);
+		//TODO 地址信息需要转换成包含经纬度的json格式保存到数据库
 		bean.setName(view.getName());
 		bean.setActivityCat(view.getActivityCat());
 		bean.ins();
@@ -143,6 +141,11 @@ public class O2OActivityServiceImpl implements O2OActivityService {
 			//清除时分秒
 			LocalDate startDate = view.getStartDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 			view.setStartDate(java.sql.Date.valueOf(startDate));
+		}
+		
+		//活动国家/地区
+		if(view.getAddress() == null || view.getAddress().trim().equals("")) {
+			throw new WebMessageException(ReturnCode.valid_notnull, "请填写活动国家/地区");
 		}
 		
 		//活动截止时间
