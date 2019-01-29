@@ -570,12 +570,8 @@ public class PdtproductPageselect {
             }
             return Integer.valueOf(s);
         }).collect(Collectors.toSet()));
-        SQL sql = new SQL() {{
-            SELECT(O2O_PrivateExpoPdt.class).FROM(O2O_PrivateExpoPdt.class).WHERE(O2O_PrivateExpoPdt.T.PDT_ID, "=?", pdtProduct.getPkey());
-        }};
         view.setRadio(0);
-        O2O_PrivateExpoPdt privateExpoPdt = Query.sql(sql).query(O2O_PrivateExpoPdt.class);
-        if (privateExpoPdt != null) {
+        if (pdtProduct.getProductType() == Pdt.OProductType.PrivateExpo.getLine().getKey()) {
             view.setRadio(1);
         }
         view.setWarnStock(pdtProduct.getWarnStock().intValue());

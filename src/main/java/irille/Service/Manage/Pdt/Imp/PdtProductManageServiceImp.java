@@ -52,8 +52,8 @@ public class PdtProductManageServiceImp implements IPdtProductManageService {
 
     @Override
     public Page getProductList(String name, String number, Integer supplierId, int cat, int start,
-                               int limit) {
-        return pdtProductDao.getProductListManage(name, number, supplierId, cat, start, limit);
+                               int limit, Integer search) {
+        return pdtProductDao.getProductListManage(name, number, supplierId, cat, start, limit, search);
     }
 
     @Override
@@ -113,7 +113,6 @@ public class PdtProductManageServiceImp implements IPdtProductManageService {
             pdtProduct.setSoldTimeB(pdtProductSaveView.getSoldInTime().get(0));
             pdtProduct.setSoldTimeE(pdtProductSaveView.getSoldInTime().get(1));
         }
-        pdtProduct.setProductType((byte) 0);
         pdtProduct.setIsNew((byte) 1);
         pdtProduct.setIsIndex((byte) 1);
         pdtProduct.setIsHot((byte) 1);
@@ -193,6 +192,11 @@ public class PdtProductManageServiceImp implements IPdtProductManageService {
         pdtProduct.setSeoDescription(seoDescription.toString());
         pdtProduct.setSeoKeyword(seoKeyword.toString());
         pdtProduct.setStock(countStock);
+        if (pdtProductSaveView.getRadio() != 0) {
+            pdtProduct.setProductType(Pdt.OProductType.PrivateExpo.getLine().getKey());
+        } else {
+            pdtProduct.setProductType((byte) 0);
+        }
         if (pdtProduct.getPkey() < 0) {
             pdtSave.setB(pdtProduct);
             pdtSave.setLines(list);
