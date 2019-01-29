@@ -593,7 +593,7 @@ public class PdtProductDAO {
     public static class Reduction extends IduOther<Reduction, PdtProduct> {
         public void run() {
             PdtProduct product = BeanBase.load(PdtProduct.class, getB().getPkey());
-            product.setState(OState.ON.getLine().getKey());
+            product.setState(OState.OFF.getLine().getKey());
             product.upd();
         }
     }

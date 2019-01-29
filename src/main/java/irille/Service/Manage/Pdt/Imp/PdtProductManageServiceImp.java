@@ -206,32 +206,39 @@ public class PdtProductManageServiceImp implements IPdtProductManageService {
             pdtUpdate.setLines(list);
             pdtUpdate.commit();
         }
-        Integer pdtId = null;
+        PdtProduct pdt = null;
         if (pdtSave.getB() != null) {
-            pdtId = pdtSave.getB().getPkey();
+            pdt = pdtSave.getB();
         }
         if (pdtUpdate.getB() != null) {
-            pdtId = pdtUpdate.getB().getPkey();
+            pdt = pdtUpdate.getB();
         }
-        if (pdtProductSaveView.getRadio() != 0) {
-            O2O_PrivateExpoPdt o2o_privateExpoPdt = O2O_PrivateExpoPdt.chkUniquePdt_Id(false, pdtId);
-            if (o2o_privateExpoPdt == null) {
-                if (pdtProduct.getState() != Pdt.OState.DELETE.getLine().getKey() && pdtProduct.getState() != Pdt.OState.MERCHANTDEL.getLine().getKey()) {
-                    O2O_PrivateExpoPdt privateExpoPdt = new O2O_PrivateExpoPdt();
-                    privateExpoPdt.setPdtId(pdtId);
-                    privateExpoPdt.setPrice(pdtProduct.getCurPrice());
-                    privateExpoPdt.setMinOq(pdtProduct.getMinOq());
-                    privateExpoPdt.setStatus(O2O_PrivateExpoPdtStatus.OFF.getLine().getKey());
-                    privateExpoPdt.setVerifyStatus(O2O_PrivateExpoPdtStatus._DEFAULT.getLine().getKey());
-                    privateExpoPdt.setCreateTime(Env.getTranBeginTime());
-                    privateExpoPdt.ins();
-                } else {
-                    throw LOG.err("err", "已删除商品不能成为私人展厅商品");
-                }
+        if (pdt.getProductType() == Pdt.OProductType.PrivateExpo.getLine().getKey()) {
+            O2O_PrivateExpoPdt o2o_privateExpoPdt = O2O_PrivateExpoPdt.chkUniquePdt_Id(false, pdt.getPkey());
+            if (o2o_privateExpoPdt != null) {
+                o2o_privateExpoPdt.setPdtId(pdt.getPkey());
+                o2o_privateExpoPdt.setPrice(pdt.getCurPrice());
+                o2o_privateExpoPdt.setMinOq(pdt.getMinOq());
+                o2o_privateExpoPdt.setStatus(O2O_PrivateExpoPdtStatus.ON.getLine().getKey());
+                o2o_privateExpoPdt.setVerifyStatus(O2O_PrivateExpoPdtStatus._DEFAULT.getLine().getKey());
+                o2o_privateExpoPdt.setCreateTime(Env.getTranBeginTime());
+                o2o_privateExpoPdt.upd();
+            } else {
+                O2O_PrivateExpoPdt privateExpoPdt = new O2O_PrivateExpoPdt();
+                privateExpoPdt.setPdtId(pdt.getPkey());
+                privateExpoPdt.setPrice(pdt.getCurPrice());
+                privateExpoPdt.setMinOq(pdt.getMinOq());
+                privateExpoPdt.setStatus(O2O_PrivateExpoPdtStatus.ON.getLine().getKey());
+                privateExpoPdt.setVerifyStatus(O2O_PrivateExpoPdtStatus._DEFAULT.getLine().getKey());
+                privateExpoPdt.setCreateTime(Env.getTranBeginTime());
+                privateExpoPdt.ins();
             }
-        } else {
-            O2O_PrivateExpoPdt privateExpoPdt = O2O_PrivateExpoPdt.loadUniquePdt_Id(false, pdtId);
-            privateExpoPdt.del();
+        }
+        if(pdtProductSaveView.getRadio() == 0){
+            O2O_PrivateExpoPdt o2o_privateExpoPdt = O2O_PrivateExpoPdt.chkUniquePdt_Id(false, pdt.getPkey());
+            if(o2o_privateExpoPdt!=null){
+                o2o_privateExpoPdt.del();
+            }
         }
         return 1;
     }
