@@ -2,15 +2,17 @@ package irille.shop.plt;
 
 import irille.Entity.Activity.ActivityInfo;
 import irille.Entity.Activity.SupGoogleView;
+import irille.Entity.Contact.Contact;
+import irille.Entity.Contact.ContactGroup;
 import irille.Entity.NewInquiry.NewInquiry;
 import irille.Entity.O2O.O2O_Activity;
 import irille.Entity.O2O.O2O_JoinInfo;
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Entity.O2O.O2O_Product;
 import irille.Entity.Pk.PkCompetitionData;
-import irille.Entity.RFQ_Messages.RFQ_MessageBody;
-import irille.Entity.RFQ_Messages.RFQ_MessageGroup;
-import irille.Entity.RFQ_Messages.RFQ_Messages;
+import irille.Entity.RFQ.RFQConsult;
+import irille.Entity.RFQ.RFQConsultMessage;
+import irille.Entity.RFQ.RFQConsultRelation;
 import irille.core.prv.PrvRoleAct;
 import irille.core.sys.SysModule;
 import irille.pub.Log;
@@ -62,9 +64,11 @@ public class Plt extends PackageBase {
         addTb(49, O2O_Product.class);
         addTb(50, O2O_PrivateExpoPdt.class);
         addTb(51, O2O_JoinInfo.class);
-        addTb(52, RFQ_MessageBody.class);
-        addTb(53, RFQ_Messages.class);
-        addTb(54, RFQ_MessageGroup.class);
+        addTb(52, RFQConsult.class);
+        addTb(53, RFQConsultMessage.class);
+        addTb(54, RFQConsultRelation.class);
+        addTb(55, Contact.class);
+        addTb(56, ContactGroup.class);
     }
 
     @Override
