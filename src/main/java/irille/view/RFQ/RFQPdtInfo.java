@@ -1,4 +1,4 @@
-package irille.view.Rfq;
+package irille.view.RFQ;
 
 import irille.view.BaseView;
 import lombok.Data;
@@ -10,7 +10,7 @@ import lombok.Data;
  * Time: 11:39
  */
 @Data
-public class RfqPdtInfo implements BaseView {
+public class RFQPdtInfo implements BaseView {
     private int id;//产品的Id
     private String supName;
     private String title;

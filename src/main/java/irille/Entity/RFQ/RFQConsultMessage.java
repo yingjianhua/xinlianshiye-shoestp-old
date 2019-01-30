@@ -6,6 +6,8 @@ import irille.pub.bean.BeanInt;
 import irille.pub.tb.Fld;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Date;
 
@@ -61,7 +63,11 @@ public class RFQConsultMessage extends BeanInt<RFQConsultMessage> {
     //>>>以下是自动产生的源代码行--源代码--请保留此行用于识别>>>
     //实例变量定义-----------------------------------------
     private Integer _pkey;    // 编号  INT
-    private String _content;    // 内容  TEXT(200)<null>
+    private String _content;    // 内容  JSONOBJECT
+    private Byte _type;    // 消息体类型 <RFQConsultMessageType>  BYTE
+    // TEXT:1,文本信息
+    // IMAGE:2,图片信息
+    // Quote:3,报价信息
     private Date _sendTime;    // 留言时间  TIME
     private Integer _relation;    // 询盘关联 <表主键:RFQConsultRelation>  INT
     private Byte _p2S;    // 是采购商留言 <OYn>  BYTE
@@ -75,7 +81,8 @@ public class RFQConsultMessage extends BeanInt<RFQConsultMessage> {
     @Override
     public RFQConsultMessage init() {
         super.init();
-        _content = null;    // 内容  TEXT(200)
+        _content = null;    // 内容  JSONOBJECT
+        _type = RFQConsultMessageType.DEFAULT.getLine().getKey();    // 消息体类型 <RFQConsultMessageType>  BYTE
         _sendTime = null;    // 留言时间  TIME
         _relation = null;    // 询盘关联 <表主键:RFQConsultRelation>  INT
         _p2S = OYn.DEFAULT.getLine().getKey();    // 是采购商留言 <OYn>  BYTE
@@ -99,6 +106,30 @@ public class RFQConsultMessage extends BeanInt<RFQConsultMessage> {
 
     public void setContent(String content) {
         _content = content;
+    }
+
+    public JSONObject gtContent() throws JSONException {
+        return getContent() == null ? new JSONObject() : new JSONObject(getContent());
+    }
+
+    public void stContent(JSONObject content) {
+        setContent(content == null ? null : content.toString());
+    }
+
+    public Byte getType() {
+        return _type;
+    }
+
+    public void setType(Byte type) {
+        _type = type;
+    }
+
+    public RFQConsultMessageType gtType() {
+        return (RFQConsultMessageType) (RFQConsultMessageType.TEXT.getLine().get(_type));
+    }
+
+    public void stType(RFQConsultMessageType type) {
+        _type = type.getLine().getKey();
     }
 
     public Date getSendTime() {

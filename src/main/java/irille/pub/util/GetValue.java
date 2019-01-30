@@ -28,4 +28,18 @@ public class GetValue {
     public static <T> T get(Map map, IEnumFld key, Class<T> tClass, T defaultValue) {
         return get(map, key.getFld().getCodeSqlField(), tClass, defaultValue);
     }
+
+    public static String getFirstImage(String images) {
+        if (images == null) return "";
+        String[] strings = images.split(",");
+        if (strings.length < 1) return images;
+        return strings[0];
+    }
+
+    public static String getStringIndex(String images, String split, int i) {
+        if (images == null) return "";
+        String[] strings = images.split(split);
+        if (strings.length < i) return images;
+        return strings[i];
+    }
 }
