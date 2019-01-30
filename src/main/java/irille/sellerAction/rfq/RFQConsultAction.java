@@ -12,8 +12,8 @@ import javax.inject.Inject;
  */
 public class RFQConsultAction extends SellerAction {
 
-    @Inject
-    private
-
-    public
+//    @Inject
+//    private
+//
+//    public
 }
