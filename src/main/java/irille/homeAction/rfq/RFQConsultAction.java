@@ -3,7 +3,7 @@ package irille.homeAction.rfq;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import irille.Filter.svr.ItpCheckPurchaseLogin;
 import irille.Service.Pdt.IPdtProductService;
-import irille.Service.Rfq.IRFQConsultService;
+import irille.Service.RFQ.IRFQConsultService;
 import irille.homeAction.HomeAction;
 import irille.view.Rfq.PutInquiryView;
 import irille.view.Rfq.PutRFQConsultView;
