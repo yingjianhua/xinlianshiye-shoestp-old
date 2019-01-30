@@ -7,14 +7,13 @@ import irille.pub.tb.IEnumOpt;
  * by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/13 Time: 16:18
  */
 public enum RFQConsultMessageType implements IEnumOpt {
-    TOBEGIN(1,
-            "即将开始"),
-    ACTIVITY(2, "活动中"),
-    END(3, "活动结束"),
+    TEXT(1, "文本信息"),
+    IMAGE(2, "图片信息"),
+    Quote(3, "报价信息"),
     ;
 
-    public static final String NAME = "活动状态";
-    public static final RFQConsultMessageType DEFAULT = TOBEGIN;
+    public static final String NAME = "消息体类型";
+    public static final RFQConsultMessageType DEFAULT = TEXT;
     private EnumLine _line;
 
     private RFQConsultMessageType(int key, String name) {

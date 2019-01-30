@@ -62,68 +62,79 @@ public class Contact extends BeanInt<Contact> {
 
     // @formatter:on
     // >>>以下是自动产生的源代码行--源代码--请保留此行用于识别>>>
-  //实例变量定义-----------------------------------------
-  private Integer _pkey;	// 编号  INT
-  private Integer _supperId;	// 供应商 <表主键:UsrSupplier>  INT
-  private Integer _purchaseId;	// 采购商 <表主键:UsrPurchase>  INT
-  private Short _rowVersion;	// 版本  SHORT
+    //实例变量定义-----------------------------------------
+    private Integer _pkey;    // 编号  INT
+    private Integer _supperId;    // 供应商 <表主键:UsrSupplier>  INT
+    private Integer _purchaseId;    // 采购商 <表主键:UsrPurchase>  INT
+    private Short _rowVersion;    // 版本  SHORT
 
-	@Override
-  public Contact init(){
-		super.init();
-    _supperId=null;	// 供应商 <表主键:UsrSupplier>  INT
-    _purchaseId=null;	// 采购商 <表主键:UsrPurchase>  INT
-    _rowVersion=0;	// 版本  SHORT
-    return this;
-  }
+    @Override
+    public Contact init() {
+        super.init();
+        _supperId = null;    // 供应商 <表主键:UsrSupplier>  INT
+        _purchaseId = null;    // 采购商 <表主键:UsrPurchase>  INT
+        _rowVersion = 0;    // 版本  SHORT
+        return this;
+    }
 
-  //方法----------------------------------------------
-  public Integer getPkey(){
-    return _pkey;
-  }
-  public void setPkey(Integer pkey){
-    _pkey=pkey;
-  }
-  public Integer getSupperId(){
-    return _supperId;
-  }
-  public void setSupperId(Integer supperId){
-    _supperId=supperId;
-  }
-  public UsrSupplier gtSupperId(){
-    if(getSupperId()==null)
-      return null;
-    return (UsrSupplier)get(UsrSupplier.class,getSupperId());
-  }
-  public void stSupperId(UsrSupplier supperId){
-    if(supperId==null)
-      setSupperId(null);
-    else
-      setSupperId(supperId.getPkey());
-  }
-  public Integer getPurchaseId(){
-    return _purchaseId;
-  }
-  public void setPurchaseId(Integer purchaseId){
-    _purchaseId=purchaseId;
-  }
-  public UsrPurchase gtPurchaseId(){
-    if(getPurchaseId()==null)
-      return null;
-    return (UsrPurchase)get(UsrPurchase.class,getPurchaseId());
-  }
-  public void stPurchaseId(UsrPurchase purchaseId){
-    if(purchaseId==null)
-      setPurchaseId(null);
-    else
-      setPurchaseId(purchaseId.getPkey());
-  }
-  public Short getRowVersion(){
-    return _rowVersion;
-  }
-  public void setRowVersion(Short rowVersion){
-    _rowVersion=rowVersion;
-  }
+    //方法----------------------------------------------
+    public Integer getPkey() {
+        return _pkey;
+    }
+
+    public void setPkey(Integer pkey) {
+        _pkey = pkey;
+    }
+
+    public Integer getSupperId() {
+        return _supperId;
+    }
+
+    public void setSupperId(Integer supperId) {
+        _supperId = supperId;
+    }
+
+    public UsrSupplier gtSupperId() {
+        if (getSupperId() == null)
+            return null;
+        return (UsrSupplier) get(UsrSupplier.class, getSupperId());
+    }
+
+    public void stSupperId(UsrSupplier supperId) {
+        if (supperId == null)
+            setSupperId(null);
+        else
+            setSupperId(supperId.getPkey());
+    }
+
+    public Integer getPurchaseId() {
+        return _purchaseId;
+    }
+
+    public void setPurchaseId(Integer purchaseId) {
+        _purchaseId = purchaseId;
+    }
+
+    public UsrPurchase gtPurchaseId() {
+        if (getPurchaseId() == null)
+            return null;
+        return (UsrPurchase) get(UsrPurchase.class, getPurchaseId());
+    }
+
+    public void stPurchaseId(UsrPurchase purchaseId) {
+        if (purchaseId == null)
+            setPurchaseId(null);
+        else
+            setPurchaseId(purchaseId.getPkey());
+    }
+
+    public Short getRowVersion() {
+        return _rowVersion;
+    }
+
+    public void setRowVersion(Short rowVersion) {
+        _rowVersion = rowVersion;
+    }
 
     // <<<以上是自动产生的源代码行--源代码--请保留此行用于识别<<<
 

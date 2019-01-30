@@ -7,14 +7,12 @@ import irille.pub.tb.IEnumOpt;
  * by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/13 Time: 16:18
  */
 public enum RFQConsultPayType implements IEnumOpt {
-    TOBEGIN(1,
-            "即将开始"),
-    ACTIVITY(2, "活动中"),
-    END(3, "活动结束"),
-    ;
+    TT(1, "TT支付"),
+    //    CASH_PAYMENT(2, "现金支付"),
+    OFFINE_PAY(2, "线下支付");
 
-    public static final String NAME = "活动状态";
-    public static final RFQConsultPayType DEFAULT = TOBEGIN;
+    public static final String NAME = "支付方式";
+    public static final RFQConsultPayType DEFAULT = TT;
     private EnumLine _line;
 
     private RFQConsultPayType(int key, String name) {

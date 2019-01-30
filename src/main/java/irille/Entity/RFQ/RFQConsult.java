@@ -107,34 +107,28 @@ public class RFQConsult extends BeanInt<RFQConsult> {
   private String _content;	// 内容  STR(200)<null>
   private Integer _leftCount;	// 剩余抢单次数  INT
   private Integer _quantity;	// 商品数量  INT
-  private Byte _unit;	// 活动状态 <RFQConsultUnit>  BYTE
-	// TOBEGIN:1,即将开始
-	// ACTIVITY:2,活动中
-	// END:3,活动结束
+  private Byte _unit;	// 货物单位 <RFQConsultUnit>  BYTE
+	// PAIR:1,双
   private Integer _purchaseId;	// 采购商 <表主键:UsrPurchase>  INT
   private Integer _supplierId;	// 供应商 <表主键:UsrSupplier>  INT
-  private Byte _type;	// 活动状态 <RFQConsultStatus>  BYTE
-	// TOBEGIN:1,即将开始
-	// ACTIVITY:2,活动中
-	// END:3,活动结束
-  private Byte _status;	// 活动状态 <RFQConsultType>  BYTE
-	// TOBEGIN:1,即将开始
-	// ACTIVITY:2,活动中
-	// END:3,活动结束
-  private Byte _verifyStatus;	// 活动状态 <RFQConsultVerifyStatus>  BYTE
-	// TOBEGIN:1,即将开始
-	// ACTIVITY:2,活动中
-	// END:3,活动结束
+  private Byte _type;	// RFQ状态 <RFQConsultStatus>  BYTE
+	// OFF:1,关闭
+	// ON:2,开启
+  private Byte _status;	// 询盘类型 <RFQConsultType>  BYTE
+	// RFQ:1,FRQ询盘
+	// INQUIRY:2,询盘
+	// Private_INQUIRY:3,私人展会询盘
+  private Byte _verifyStatus;	// 审核状态 <RFQConsultVerifyStatus>  BYTE
+	// UNAUDITED:1,未审核
+	// FAIL:2,未通过
+	// PASS:3,通过
   private Date _validDate;	// 有效期至  TIME
   private String _price;	// 价格(价格区间)  STR(20)<null>
-  private Byte _payType;	// 活动状态 <RFQConsultPayType>  BYTE
-	// TOBEGIN:1,即将开始
-	// ACTIVITY:2,活动中
-	// END:3,活动结束
-  private Byte _shippingType;	// 活动状态 <RFQConsultShipping_Type>  BYTE
-	// TOBEGIN:1,即将开始
-	// ACTIVITY:2,活动中
-	// END:3,活动结束
+  private Byte _payType;	// 支付方式 <RFQConsultPayType>  BYTE
+	// TT:1,TT支付
+	// OFFINE_PAY:2,线下支付
+  private Byte _shippingType;	// 配送方式 <RFQConsultShipping_Type>  BYTE
+	// OCEAN_SHIPPING:1,海运
   private Integer _currency;	// 费率设置 <表主键:PltErate>  INT
   private String _destination;	// 字符200  STR(200)<null>
   private Integer _total;	// 总抢单数  INT
@@ -154,16 +148,16 @@ public class RFQConsult extends BeanInt<RFQConsult> {
     _content=null;	// 内容  STR(200)
     _leftCount=0;	// 剩余抢单次数  INT
     _quantity=0;	// 商品数量  INT
-    _unit=RFQConsultUnit.DEFAULT.getLine().getKey();	// 活动状态 <RFQConsultUnit>  BYTE
+    _unit=RFQConsultUnit.DEFAULT.getLine().getKey();	// 货物单位 <RFQConsultUnit>  BYTE
     _purchaseId=null;	// 采购商 <表主键:UsrPurchase>  INT
     _supplierId=null;	// 供应商 <表主键:UsrSupplier>  INT
-    _type=RFQConsultStatus.DEFAULT.getLine().getKey();	// 活动状态 <RFQConsultStatus>  BYTE
-    _status=RFQConsultType.DEFAULT.getLine().getKey();	// 活动状态 <RFQConsultType>  BYTE
-    _verifyStatus=RFQConsultVerifyStatus.DEFAULT.getLine().getKey();	// 活动状态 <RFQConsultVerifyStatus>  BYTE
+    _type=RFQConsultStatus.DEFAULT.getLine().getKey();	// RFQ状态 <RFQConsultStatus>  BYTE
+    _status=RFQConsultType.DEFAULT.getLine().getKey();	// 询盘类型 <RFQConsultType>  BYTE
+    _verifyStatus=RFQConsultVerifyStatus.DEFAULT.getLine().getKey();	// 审核状态 <RFQConsultVerifyStatus>  BYTE
     _validDate=Env.getTranBeginTime();	// 有效期至  TIME
     _price=null;	// 价格(价格区间)  STR(20)
-    _payType=RFQConsultPayType.DEFAULT.getLine().getKey();	// 活动状态 <RFQConsultPayType>  BYTE
-    _shippingType=RFQConsultShipping_Type.DEFAULT.getLine().getKey();	// 活动状态 <RFQConsultShipping_Type>  BYTE
+    _payType=RFQConsultPayType.DEFAULT.getLine().getKey();	// 支付方式 <RFQConsultPayType>  BYTE
+    _shippingType=RFQConsultShipping_Type.DEFAULT.getLine().getKey();	// 配送方式 <RFQConsultShipping_Type>  BYTE
     _currency=null;	// 费率设置 <表主键:PltErate>  INT
     _destination=null;	// 字符200  STR(200)
     _total=0;	// 总抢单数  INT
@@ -264,7 +258,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
     _unit=unit;
   }
   public RFQConsultUnit gtUnit(){
-    return (RFQConsultUnit)(RFQConsultUnit.TOBEGIN.getLine().get(_unit));
+    return (RFQConsultUnit)(RFQConsultUnit.PAIR.getLine().get(_unit));
   }
   public void stUnit(RFQConsultUnit unit){
     _unit=unit.getLine().getKey();
@@ -310,7 +304,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
     _type=type;
   }
   public RFQConsultStatus gtType(){
-    return (RFQConsultStatus)(RFQConsultStatus.TOBEGIN.getLine().get(_type));
+    return (RFQConsultStatus)(RFQConsultStatus.OFF.getLine().get(_type));
   }
   public void stType(RFQConsultStatus type){
     _type=type.getLine().getKey();
@@ -322,7 +316,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
     _status=status;
   }
   public RFQConsultType gtStatus(){
-    return (RFQConsultType)(RFQConsultType.TOBEGIN.getLine().get(_status));
+    return (RFQConsultType)(RFQConsultType.RFQ.getLine().get(_status));
   }
   public void stStatus(RFQConsultType status){
     _status=status.getLine().getKey();
@@ -334,7 +328,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
     _verifyStatus=verifyStatus;
   }
   public RFQConsultVerifyStatus gtVerifyStatus(){
-    return (RFQConsultVerifyStatus)(RFQConsultVerifyStatus.TOBEGIN.getLine().get(_verifyStatus));
+    return (RFQConsultVerifyStatus)(RFQConsultVerifyStatus.UNAUDITED.getLine().get(_verifyStatus));
   }
   public void stVerifyStatus(RFQConsultVerifyStatus verifyStatus){
     _verifyStatus=verifyStatus.getLine().getKey();
@@ -358,7 +352,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
     _payType=payType;
   }
   public RFQConsultPayType gtPayType(){
-    return (RFQConsultPayType)(RFQConsultPayType.TOBEGIN.getLine().get(_payType));
+    return (RFQConsultPayType)(RFQConsultPayType.TT.getLine().get(_payType));
   }
   public void stPayType(RFQConsultPayType payType){
     _payType=payType.getLine().getKey();
@@ -370,7 +364,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
     _shippingType=shippingType;
   }
   public RFQConsultShipping_Type gtShippingType(){
-    return (RFQConsultShipping_Type)(RFQConsultShipping_Type.TOBEGIN.getLine().get(_shippingType));
+    return (RFQConsultShipping_Type)(RFQConsultShipping_Type.OCEAN_SHIPPING.getLine().get(_shippingType));
   }
   public void stShippingType(RFQConsultShipping_Type shippingType){
     _shippingType=shippingType.getLine().getKey();
