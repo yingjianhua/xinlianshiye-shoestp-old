@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutionException;
  */
 @ImplementedBy(PdtProductManageServiceImp.class)
 public interface IPdtProductManageService {
-    Page getProductList(String name, String number, Integer supplierId, int cat, int start, int limit);
+    Page getProductList(String name, String number, Integer supplierId, int cat, int start, int limit,Integer search);
 
     List<PdtProductCatView> getCatChildNodesByCatId(int i, FldLanguage.Language supplierLanguage);
 

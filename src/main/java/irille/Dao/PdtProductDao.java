@@ -1,6 +1,7 @@
 package irille.Dao;
 
 import irille.Aops.Caches;
+import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Entity.O2O.O2O_Product;
 import irille.core.sys.Sys;
@@ -466,9 +467,9 @@ public class PdtProductDao {
         return result;
     }
 
-    public Page getProductListManage(String name, String number, Integer supplierId, int cat, int start, int limit) {
+    public Page getProductListManage(String name, String number, Integer supplierId, int cat, int start, int limit, Integer search) {
         BeanQuery q = Query
-                .SELECT(PdtProduct.T.PKEY, PdtProduct.T.NAME, PdtProduct.T.CODE, PdtProduct.T.CUR_PRICE, PdtProduct.T.PICTURE, PdtProduct.T.UPDATE_TIME)
+                .SELECT(PdtProduct.T.PKEY, PdtProduct.T.NAME, PdtProduct.T.CODE, PdtProduct.T.CUR_PRICE, PdtProduct.T.PICTURE, PdtProduct.T.PRODUCT_TYPE, PdtProduct.T.UPDATE_TIME)
                 .SELECT(PdtCat.T.NAME, "category")
                 .SELECT(UsrProductCategory.T.NAME, "categoryDiy")
                 .FROM(PdtProduct.class)
@@ -478,7 +479,24 @@ public class PdtProductDao {
                 .WHERE(number != null && number.length() > 0, PdtProduct.T.CODE, "like ?", "%" + number + "%")
                 .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierId)
                 .WHERE(PdtProduct.T.PRODUCT_TYPE, " <> ?", Pdt.OProductType.GROUP.getLine().getKey())
-                .WHERE(PdtProduct.T.STATE, "<>2").ORDER_BY(PdtProduct.T.UPDATE_TIME, "desc");
+                .WHERE(PdtProduct.T.STATE, "<>2")
+                .WHERE(PdtProduct.T.STATE, "<>?", Pdt.OState.MERCHANTDEL.getLine().getKey())
+                .WHERE(PdtProduct.T.STATE, "<>?", Pdt.OState.OFF.getLine().getKey())
+                .ORDER_BY(PdtProduct.T.UPDATE_TIME, "desc");
+
+        if (search != null) {
+            switch (search) {
+                case 2:
+                    q.WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.PrivateExpo.getLine().getKey());
+                    break;
+                case 3:
+                    q.WHERE(PdtProduct.T.IS_VERIFY, "=?", Sys.OYn.YES.getLine().getKey());
+                    break;
+                case 4:
+                    q.WHERE(PdtProduct.T.IS_VERIFY, "=?", Sys.OYn.NO.getLine().getKey());
+                    break;
+            }
+        }
         if (cat > 0) {
             List list = (List) getCatsNodeByCatId(cat).stream().map(o -> {
                 return String.valueOf(o);
@@ -490,22 +508,36 @@ public class PdtProductDao {
         q.limit(start * limit, limit).queryMaps();
         List<Map> list = q.limit(start * limit, limit).queryMaps();
         Page page = new Page(list.stream().map(o -> {
-            SQL o2oProduct = new SQL() {{
-                SELECT(O2O_Product.class).FROM(O2O_Product.class).WHERE(O2O_Product.T.PRODUCT_ID, "=?", (Integer) o.get("pkey"));
-            }};
-            SQL o2oPrivateexpopdt = new SQL() {{
-                SELECT(O2O_PrivateExpoPdt.class).FROM(O2O_PrivateExpoPdt.class).WHERE(O2O_PrivateExpoPdt.T.PDT_ID, "=?", (Integer) o.get("pkey"));
-            }};
-            O2O_Product product = Query.sql(o2oProduct).query(O2O_Product.class);
-            O2O_PrivateExpoPdt privateExpoPdt = Query.sql(o2oPrivateexpopdt).query(O2O_PrivateExpoPdt.class);
-            if (product != null) {
-                o.put("O2OSort", "O2O");
-                o.put("status", product.getStatus());
-            } else if (privateExpoPdt != null) {
-                o.put("O2OSort", "私人展会");
-                o.put("status", privateExpoPdt.getStatus());
+            for (Pdt.OProductType value : Pdt.OProductType.values()) {
+                if (value.getLine().getKey() == (Byte) o.get(PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField())) {
+                    o.put("O2OSort", value.getLine().getName());
+                }
+            }
+            if ((Byte) o.get(PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()) == Pdt.OProductType.PrivateExpo.getLine().getKey()) {
+                O2O_PrivateExpoPdt privateExpoPdt = O2O_PrivateExpoPdt.loadUniquePdt_Id(false, (Integer) o.get(PdtProduct.T.PKEY.getFld().getCodeSqlField()));
+                for (O2O_PrivateExpoPdtStatus value : O2O_PrivateExpoPdtStatus.values()) {
+                    if (value.getLine().getKey() == privateExpoPdt.getVerifyStatus()) {
+                        o.put("status", value.getLine().getName());
+                    }
+                }
+            } else if ((Byte) o.get(PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()) == Pdt.OProductType.O2O.getLine().getKey()) {
+                SQL sql = new SQL() {{
+                    SELECT(O2O_Product.class).FROM(O2O_Product.class).WHERE(O2O_Product.T.PRODUCT_ID, "=?", (Integer) o.get(PdtProduct.T.PKEY.getFld().getCodeSqlField()));
+                }};
+                List<O2O_Product> o2oList = Query.sql(sql).queryList(O2O_Product.class);
+                if (o2oList.size() > 0 && o2oList.size() != 1) {
+                    for (O2O_Product product : o2oList) {
+                        o.put("status", product.getVerifyStatus());
+                    }
+                } else {
+                    o.put("status", "");
+                }
             } else {
-                o.put("status", "正常");
+                if (o.get(PdtProduct.T.IS_VERIFY) == Sys.OYn.YES) {
+                    o.put("status", "正常");
+                } else {
+                    o.put("status", "审核未通过");
+                }
             }
             o.put("category", translateUtil.getLanguage(o.get("category"), PltConfigDAO.supplierLanguage(supplierId)));
             o.put("rewrite", SEOUtils.getPdtProductTitle(Integer.valueOf(String.valueOf(o.get("pkey"))), String.valueOf(o.get("name"))));
