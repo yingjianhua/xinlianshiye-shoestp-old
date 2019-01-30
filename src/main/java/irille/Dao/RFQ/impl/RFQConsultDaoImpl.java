@@ -96,7 +96,8 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
 				RFQConsult.T.LEFT_COUNT,//询盘剩余抢单次数
 				RFQConsult.T.VALID_DATE,//询盘过期时间
 				RFQConsult.T.STATUS,//询盘状态
-				RFQConsult.T.VERIFY_STATUS//询盘审核状态
+				RFQConsult.T.VERIFY_STATUS,//询盘审核状态
+				RFQConsult.T.CREATE_TIME//发布时间
 				)
 		.SELECT(UsrSupplier.T.PKEY, "supplierPkey")//询盘供应商主键
 		.SELECT(UsrSupplier.T.NAME, "supplierName")//询盘供应商名称
@@ -161,6 +162,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
 		view.setValidDate((Date)map.get(RFQConsult.T.VALID_DATE.getFld().getCodeSqlField()));
 		view.setStatus((Byte)map.get(RFQConsult.T.STATUS.getFld().getCodeSqlField()));
 		view.setVerifyStatus((Byte)map.get(RFQConsult.T.VERIFY_STATUS.getFld().getCodeSqlField()));
+		view.setCreateTime((Date)map.get(RFQConsult.T.CREATE_TIME.getFld().getCodeSqlField()));
 		return view;
 	}
 	
