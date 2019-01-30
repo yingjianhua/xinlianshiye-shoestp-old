@@ -16,7 +16,7 @@ public enum O2O_ExhibitionCountry implements IEnumOpt{
 	poland(6,"波兰"),
 	other(7,"其他");
 	
-	public static final String NAME = "买家类型";
+	public static final String NAME = "展会国家";
     public static final O2O_ExhibitionCountry DEFAULT = other;
     private EnumLine _line;
 

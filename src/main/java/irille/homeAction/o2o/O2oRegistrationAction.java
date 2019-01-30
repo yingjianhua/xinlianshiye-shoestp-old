@@ -4,47 +4,52 @@ import java.io.IOException;
 
 import irille.Entity.O2O.O2oRegistration;
 import irille.homeAction.HomeAction;
+import irille.platform.o2o.View.O2o_RegistrationView;
 import irille.pub.LogMessage;
 import irille.shop.o2o.O2O_RegistrationDao;
 import irille.shop.usr.UsrSupplierDAO;
+import lombok.Data;
 
+@Data
 public class O2oRegistrationAction extends HomeAction<O2oRegistration>{
 	
 	public static final LogMessage LOG = new LogMessage(O2oRegistrationAction.class);
 	
+	private O2o_RegistrationView view;
+	
+	
 	public void apply() throws IOException {
-		O2oRegistration bean = getBean();
 		boolean b = true;
-		if(bean == null) {
+		if(view == null) {
 			b = false;
 			writeErr("报名失败,请填写完整!");
 			return;
 		}
-		if(bean.getFullName() == null || bean.getFullName().trim().equals(""))
+		if(view.getFullName() == null || view.getFullName().trim().equals(""))
 			b = false;
-		if(bean.getGender() == null)
+		if(view.getGender() == null)
 			b = false;
-		if(bean.getCountry() == null)
+		if(view.getCountry() == null)
 			b = false;
-		if(bean.getEmail() == null || bean.getEmail().trim().equals(""))
+		if(view.getEmail() == null || view.getEmail().trim().equals(""))
 			b = false;
-		if(bean.getTelphone() == null || bean.getTelphone().trim().equals(""))
+		if(view.getTelphone() == null || view.getTelphone().trim().equals(""))
 			b = false;
-		if(bean.getFootwear() == null || bean.getFootwear().trim().equals(""))
+		if(view.getFootwear() == null || view.getFootwear().trim().equals(""))
 			b = false;
-		if(bean.getMarketing() == null)
+		if(view.getMarketing() == null || view.getMarketing().trim().equals(""))
 			b = false;
-		if(bean.getBuyerType() == null)
+		if(view.getBuyertype() == null)
 			b = false;
-		if(bean.getExhibitionCountry() == null)
+		if(view.getExhibitionCountry() == null || view.getExhibitionCountry().trim().equals("") )
 			b = false;
-		if(bean.getActivityId() == null)
+		if(view.getActivityId() == null)
 			b = false;
 		if(!b) {
 			writeErr("报名失败,请填写完整!");
 			return;
 		}
-		O2O_RegistrationDao.ins(bean);
+		O2O_RegistrationDao.ins(view);
 		write();
 	}
 }
