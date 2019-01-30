@@ -24,7 +24,7 @@ public class RFQConsultView implements BaseView {
 	// PAIR:1,双
 	private PurchaseView purchase; // 采购商 <表主键:UsrPurchase> INT
 	private SupplierView supplier; // 供应商 <表主键:UsrSupplier> INT
-	private Byte type; // RFQ状态 <RFQConsultStatus> BYTE
+	private String type; // RFQ状态 <RFQConsultStatus> BYTE
 	// OFF:1,关闭
 	// ON:2,开启
 	private Byte status; // 询盘类型 <RFQConsultType> BYTE
