@@ -14,7 +14,7 @@ import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrPurchase;
-import irille.view.Rfq.RfqPdtInfo;
+import irille.view.RFQ.RFQPdtInfo;
 import irille.view.pdt.PdtProductBaseInfoView;
 import irille.view.pdt.PdtProductCatView;
 import irille.view.v2.Pdt.PdtNewPdtInfo;
@@ -262,9 +262,9 @@ public class PdtProductServiceImp implements IPdtProductService {
     }
 
     @Override
-    public RfqPdtInfo getInquiryPdtInfo(Integer id) {
+    public RFQPdtInfo getInquiryPdtInfo(Integer id) {
         Map<String, Object> map = pdtProductDao.getInquiryPdtInfo(id);
-        RfqPdtInfo rfqPdtInfo = new RfqPdtInfo();
+        RFQPdtInfo rfqPdtInfo = new RFQPdtInfo();
         rfqPdtInfo.setId(GetValue.get(map, PdtProduct.T.PKEY, Integer.class, 0));
         rfqPdtInfo.setTitle(GetValue.get(map, PdtProduct.T.NAME, String.class, null));
         rfqPdtInfo.setSupName(GetValue.get(map, "supName", String.class, null));

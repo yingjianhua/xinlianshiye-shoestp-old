@@ -5,9 +5,9 @@ import irille.Filter.svr.ItpCheckPurchaseLogin;
 import irille.Service.Pdt.IPdtProductService;
 import irille.Service.RFQ.IRFQConsultService;
 import irille.homeAction.HomeAction;
-import irille.view.Rfq.PutInquiryView;
-import irille.view.Rfq.PutRFQConsultView;
-import irille.view.Rfq.RfqPdtInfo;
+import irille.view.RFQ.PutInquiryView;
+import irille.view.RFQ.PutRFQConsultView;
+import irille.view.RFQ.RFQPdtInfo;
 import lombok.Setter;
 
 import javax.inject.Inject;
@@ -58,7 +58,7 @@ public class RFQConsultAction extends HomeAction {
     }
 
     public void loadPdtInfo() throws IOException {
-        RfqPdtInfo rfqPdtInfo = iPdtProductService.getInquiryPdtInfo(id);
+        RFQPdtInfo rfqPdtInfo = iPdtProductService.getInquiryPdtInfo(id);
         if (type == 1 && id != null && id > 0) {
 
         }
@@ -72,7 +72,7 @@ public class RFQConsultAction extends HomeAction {
      */
     @ItpCheckPurchaseLogin.NeedLogin
     public void putPrivateInquiry() throws IOException {
-        irfqConsultService.putPrivateInquiry(objectMapper.readValue(data, PutRFQConsultView.class), getPurchase());
+        irfqConsultService.putPrivateInquiry(objectMapper.readValue(data, PutInquiryView.class), getPurchase());
         write();
     }
 }

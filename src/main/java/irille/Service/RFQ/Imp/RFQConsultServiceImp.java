@@ -5,8 +5,8 @@ import irille.Entity.RFQ.Enums.*;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Service.RFQ.IRFQConsultService;
 import irille.shop.usr.UsrPurchase;
-import irille.view.Rfq.PutInquiryView;
-import irille.view.Rfq.PutRFQConsultView;
+import irille.view.RFQ.PutInquiryView;
+import irille.view.RFQ.PutRFQConsultView;
 
 import javax.inject.Inject;
 import java.time.LocalDate;
@@ -72,6 +72,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         RFQConsult rfqConsult = new RFQConsult();
         rfqConsult.setTitle(inquiryView.getTitle());
         rfqConsult.setImage(inquiryView.getImages());
+        rfqConsult.setProduct(inquiryView.getPdtId());
         rfqConsult.stHaveNewMsg(true);
         rfqConsult.setContent(inquiryView.getDescriotion());
         rfqConsult.setLeftCount(0);
@@ -101,11 +102,14 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         rfqConsultDAO.commit();
     }
 
+
     @Override
-    public void putPrivateInquiry(PutRFQConsultView inquiryView, UsrPurchase purchase) {
+    public void putPrivateInquiry(PutInquiryView inquiryView, UsrPurchase purchase) {
         RFQConsult rfqConsult = new RFQConsult();
         rfqConsult.setTitle(inquiryView.getTitle());
         rfqConsult.setImage(inquiryView.getImages());
+        rfqConsult.setProduct(inquiryView.getPdtId());
+
         rfqConsult.stHaveNewMsg(true);
         rfqConsult.setContent(inquiryView.getDescriotion());
         rfqConsult.setLeftCount(0);
