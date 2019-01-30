@@ -13,6 +13,7 @@ import irille.Entity.O2O.Enums.O2O_ExhibitionCountry;
 import irille.Entity.O2O.Enums.O2O_Marketing;
 import irille.Entity.O2O.Enums.O2O_Sex;
 import irille.platform.o2o.View.O2o_RegistrationView;
+import irille.pub.LogMessage;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
 import irille.shop.pdt.PdtCat;
@@ -20,9 +21,12 @@ import irille.shop.pdt.PdtCatDAO;
 import irille.view.Page;
 
 public class O2O_RegistrationDao {
+	
+	public static final LogMessage LOG = new LogMessage(O2O_RegistrationDao.class);
 
 	public static Page list(Integer gender,Integer marketing,Integer buyerType,Integer exhibitionCountry,Integer start,Integer limit) {
 		SQL sql = new SQL();
+		O2oRegistration test = new O2oRegistration();
 		sql.SELECT(O2oRegistration.class);
 		if(gender != null) {
 			if(gender == 1) 
@@ -30,12 +34,14 @@ public class O2O_RegistrationDao {
 			else 
 				sql.WHERE(O2oRegistration.T.GENDER," =? " ,O2O_Sex.women.getLine().getKey());
 		}
-		if(marketing != null) 
-			sql.WHERE(O2oRegistration.T.MARKETING, " =? ",marketing);
+		if(marketing != null) {
+			sql.WHERE("( O2oRegistration.marketing = "+ marketing +" OR O2oRegistration.marketing LIKE '%," + marketing + "' OR O2oRegistration.marketing LIKE '%," + marketing + ",%' OR O2oRegistration.marketing LIKE '" + marketing + ",%'  )");
+		}
 		if(buyerType != null)
 			sql.WHERE(O2oRegistration.T.BUYER_TYPE, " =? ",buyerType);
-		if(exhibitionCountry != null)
-			sql.WHERE(O2oRegistration.T.EXHIBITION_COUNTRY, " =? ",exhibitionCountry);
+		if(exhibitionCountry != null) {
+			sql.WHERE("( O2oRegistration.exhibition_country = "+ exhibitionCountry +" OR O2oRegistration.exhibition_country LIKE '%," + exhibitionCountry + "' OR O2oRegistration.exhibition_country LIKE '%," + exhibitionCountry + ",%' OR O2oRegistration.exhibition_country LIKE '" + exhibitionCountry + ",%'  )");
+		}
 		sql.FROM(O2oRegistration.class);
 		Integer count = Query.sql(sql).queryCount();			
 		List<PdtCat> listAll = PdtCatDAO.listAll();
@@ -49,7 +55,7 @@ public class O2O_RegistrationDao {
 			setTelphone(bean.getTelphone());
 			String[] split = bean.getFootwear().split(",");
 			StringBuffer buff = new StringBuffer("");
-			if(split.length > 0) {
+			if(split != null && split.length > 0) {
 				for(String str:split) {
 					Integer i = Integer.parseInt(str);
 					for(PdtCat item:listAll) {
@@ -63,15 +69,57 @@ public class O2O_RegistrationDao {
 			}
 			setFootwear(buff.toString());
 			setActivityName(bean.gtActivityId().getName());
-			setMarketing(O2O_Marketing.values()[bean.getMarketing()].toString());
+			String[] marketing = bean.getMarketing().split(",");
+			StringBuffer marketingBuff = new StringBuffer("");
+			if(marketing != null && marketing.length > 0) {
+				for(String item:marketing) {
+					for(O2O_Marketing en:O2O_Marketing.values()) {
+						if(Integer.parseInt(item) == en.getLine().getKey()) {
+							marketingBuff.append(en.getLine().getName());
+							marketingBuff.append(",");
+						}
+					}
+				}
+				if(marketingBuff.lastIndexOf(",")+1 == marketingBuff.length()) {
+					marketingBuff.delete(marketingBuff.length()-1, marketingBuff.length());
+				}
+			}
+			setMarketing(marketingBuff.toString());
 			setBuyertype(O2O_BuyerType.values()[bean.getBuyerType()].toString());
-			setExhibitionCountry(O2O_ExhibitionCountry.values()[bean.getExhibitionCountry()].toString());
+			String[] exhibitionCountry = bean.getExhibitionCountry().split(",");
+			StringBuffer exhibitionCountryBuff = new StringBuffer("");
+			if(exhibitionCountry != null && exhibitionCountry.length > 0) {
+				for(String item:exhibitionCountry) {
+					for(O2O_ExhibitionCountry ex:O2O_ExhibitionCountry.values()) {
+						if(Integer.parseInt(item) == ex.getLine().getKey()) {
+							exhibitionCountryBuff.append(ex.getLine().getName());
+							exhibitionCountryBuff.append(",");
+						}
+					}
+				}
+				if(exhibitionCountryBuff.lastIndexOf(",")+1 == exhibitionCountryBuff.length()) {
+					exhibitionCountryBuff.delete(exhibitionCountryBuff.length()-1, exhibitionCountryBuff.length());
+				}
+			}
+			setExhibitionCountry(exhibitionCountryBuff.toString());
 			setRemarks(bean.getRemarks());
 		}}).collect(Collectors.toList());
 		return new Page(listView, start, limit, count);
 	}
-	
-	public static void ins(O2oRegistration bean) {
+
+	public static void ins(O2o_RegistrationView view) {
+		O2oRegistration bean = new O2oRegistration();
+		bean.setActivityId(view.getActivityId());
+		bean.setFullName(view.getFullName());
+		bean.setGender((byte)Integer.parseInt(view.getGender()));
+		bean.setCountry(Integer.parseInt(view.getCountry()));
+		bean.setEmail(view.getEmail());
+		bean.setTelphone(view.getTelphone());
+		bean.setFootwear(view.getFootwear());
+		bean.setMarketing(view.getMarketing());
+		bean.setBuyerType((byte)Integer.parseInt(view.getBuyertype()));
+		bean.setExhibitionCountry(view.getExhibitionCountry());
+		bean.setRemarks(view.getRemarks());
 		bean.setCreateTime(new Date());
 		bean.ins();
 	}
@@ -92,7 +140,7 @@ public class O2O_RegistrationDao {
 			setTelphone(bean.getTelphone());
 			String[] split = bean.getFootwear().split(",");
 			StringBuffer buff = new StringBuffer("");
-			if(split.length > 0) {
+			if(split != null && split.length > 0) {
 				for(String str:split) {
 					Integer i = Integer.parseInt(str);
 					for(PdtCat item:listAll) {
@@ -106,9 +154,39 @@ public class O2O_RegistrationDao {
 			}
 			setFootwear(buff.toString());
 			setActivityName(bean.gtActivityId().getName());
-			setMarketing(O2O_Marketing.values()[bean.getMarketing()].toString());
+			String[] marketing = bean.getMarketing().split(",");
+			StringBuffer marketingBuff = new StringBuffer("");
+			if(marketing != null && marketing.length > 0) {
+				for(String item:marketing) {
+					for(O2O_Marketing en:O2O_Marketing.values()) {
+						if(Integer.parseInt(item) == en.getLine().getKey()) {
+							marketingBuff.append(en.getLine().getName());
+							marketingBuff.append(",");
+						}
+					}
+				}
+				if(marketingBuff.lastIndexOf(",")+1 == marketingBuff.length()) {
+					marketingBuff.delete(marketingBuff.length()-1, marketingBuff.length());
+				}
+			}
+			setMarketing(marketingBuff.toString());
 			setBuyertype(O2O_BuyerType.values()[bean.getBuyerType()].toString());
-			setExhibitionCountry(O2O_ExhibitionCountry.values()[bean.getExhibitionCountry()].toString());
+			String[] exhibitionCountry = bean.getExhibitionCountry().split(",");
+			StringBuffer exhibitionCountryBuff = new StringBuffer("");
+			if(exhibitionCountry != null && exhibitionCountry.length > 0) {
+				for(String item:exhibitionCountry) {
+					for(O2O_ExhibitionCountry ex:O2O_ExhibitionCountry.values()) {
+						if(Integer.parseInt(item) == ex.getLine().getKey()) {
+							exhibitionCountryBuff.append(ex.getLine().getName());
+							exhibitionCountryBuff.append(",");
+						}
+					}
+				}
+				if(exhibitionCountryBuff.lastIndexOf(",")+1 == exhibitionCountryBuff.length()) {
+					exhibitionCountryBuff.delete(exhibitionCountryBuff.length()-1, exhibitionCountryBuff.length());
+				}
+			}
+			setExhibitionCountry(exhibitionCountryBuff.toString());
 			setRemarks(bean.getRemarks());
 		}};
 		return o2oView;

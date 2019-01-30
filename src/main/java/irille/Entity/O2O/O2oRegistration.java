@@ -28,9 +28,9 @@ public class O2oRegistration extends BeanInt<O2oRegistration>{
 		TELPHONE(SYS.PHOTO__NULL,"手机号码"),
 		FOOTWEAR(SYS.STR__100, "鞋分类"),
 		ACTIVITY_ID(O2O_Activity.fldOutKey()), //展会活动id
-		MARKETING(TB.crt(O2O_Marketing.DEFAULT)), //主要销售市场
+		MARKETING(SYS.STR__100,"主销售市场"), //主要销售市场
 		BUYER_TYPE(TB.crt(O2O_BuyerType.DEFAULT)),// 买家类型
-		EXHIBITION_COUNTRY(TB.crt(O2O_ExhibitionCountry.DEFAULT)), //展会国家
+		EXHIBITION_COUNTRY(SYS.STR__100,"展会国家"), //展会国家
 		CREATE_TIME(SYS.CREATED_DATE_TIME,"报名时间"),
 		REMARKS(SYS.STR__500_NULL, "备注"),
         ROW_VERSION(SYS.ROW_VERSION),
@@ -90,33 +90,13 @@ public class O2oRegistration extends BeanInt<O2oRegistration>{
   private String _telphone;	// 手机号码  STR(200)<null>
   private String _footwear;	// 鞋分类  STR(100)
   private Integer _activityId;	// O2O活动信息 <表主键:O2O_Activity>  INT
-  private Byte _marketing;	// 销售市场 <O2O_Marketing>  BYTE
-	// north_ameriva:1,北美洲
-	// south_ameriva:2,南美洲
-	// east_asia:3,东亚
-	// central_asia:4,中亚
-	// south_asia:5,南亚
-	// north_asia:6,北亚
-	// south_africa:7,南非
-	// eastem_europe:8,东欧
-	// westem_europe:9,西欧
-	// northem_europe:10,北欧
-	// central_europe:11,中欧
-	// austealia:12,澳洲
-	// other:13,其他
+  private String _marketing;	// 主销售市场  STR(100)
   private Byte _buyerType;	// 买家类型 <O2O_BuyerType>  BYTE
 	// dealer:1,经销商
 	// distributor:2,分销商
 	// wholesaler:3,批发商
 	// other:4,其他
-  private Byte _exhibitionCountry;	// 买家类型 <O2O_ExhibitionCountry>  BYTE
-	// hungary:1,匈牙利
-	// italy:2,意大利
-	// france:3,法国
-	// russia:4,俄罗斯
-	// romania:5,罗马尼亚
-	// poland:6,波兰
-	// other:7,其他
+  private String _exhibitionCountry;	// 展会国家  STR(100)
   private Date _createTime;	// 报名时间  TIME
   private String _remarks;	// 备注  STR(500)<null>
   private Short _rowVersion;	// 版本  SHORT
@@ -131,9 +111,9 @@ public class O2oRegistration extends BeanInt<O2oRegistration>{
     _telphone=null;	// 手机号码  STR(200)
     _footwear=null;	// 鞋分类  STR(100)
     _activityId=null;	// O2O活动信息 <表主键:O2O_Activity>  INT
-    _marketing=O2O_Marketing.DEFAULT.getLine().getKey();	// 销售市场 <O2O_Marketing>  BYTE
+    _marketing=null;	// 主销售市场  STR(100)
     _buyerType=O2O_BuyerType.DEFAULT.getLine().getKey();	// 买家类型 <O2O_BuyerType>  BYTE
-    _exhibitionCountry=O2O_ExhibitionCountry.DEFAULT.getLine().getKey();	// 买家类型 <O2O_ExhibitionCountry>  BYTE
+    _exhibitionCountry=null;	// 展会国家  STR(100)
     _createTime=Env.getTranBeginTime();	// 报名时间  TIME
     _remarks=null;	// 备注  STR(500)
     _rowVersion=0;	// 版本  SHORT
@@ -217,17 +197,11 @@ public class O2oRegistration extends BeanInt<O2oRegistration>{
     else
       setActivityId(activityId.getPkey());
   }
-  public Byte getMarketing(){
+  public String getMarketing(){
     return _marketing;
   }
-  public void setMarketing(Byte marketing){
+  public void setMarketing(String marketing){
     _marketing=marketing;
-  }
-  public O2O_Marketing gtMarketing(){
-    return (O2O_Marketing)(O2O_Marketing.other.getLine().get(_marketing));
-  }
-  public void stMarketing(O2O_Marketing marketing){
-    _marketing=marketing.getLine().getKey();
   }
   public Byte getBuyerType(){
     return _buyerType;
@@ -241,17 +215,11 @@ public class O2oRegistration extends BeanInt<O2oRegistration>{
   public void stBuyerType(O2O_BuyerType buyerType){
     _buyerType=buyerType.getLine().getKey();
   }
-  public Byte getExhibitionCountry(){
+  public String getExhibitionCountry(){
     return _exhibitionCountry;
   }
-  public void setExhibitionCountry(Byte exhibitionCountry){
+  public void setExhibitionCountry(String exhibitionCountry){
     _exhibitionCountry=exhibitionCountry;
-  }
-  public O2O_ExhibitionCountry gtExhibitionCountry(){
-    return (O2O_ExhibitionCountry)(O2O_ExhibitionCountry.other.getLine().get(_exhibitionCountry));
-  }
-  public void stExhibitionCountry(O2O_ExhibitionCountry exhibitionCountry){
-    _exhibitionCountry=exhibitionCountry.getLine().getKey();
   }
   public Date getCreateTime(){
     return _createTime;

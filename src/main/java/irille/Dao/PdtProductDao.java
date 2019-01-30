@@ -1,8 +1,5 @@
 package irille.Dao;
 
-import static irille.core.sys.Sys.OYn.YES;
-import static java.util.stream.Collectors.toList;
-
 import irille.Aops.Caches;
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Entity.O2O.O2O_Product;
@@ -33,16 +30,13 @@ import irille.view.pdt.PdtProductCatView;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import static irille.core.sys.Sys.OYn.YES;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -692,9 +686,27 @@ public class PdtProductDao {
         return result;
     }
 
-    public List<PdtProduct> findAllByPkeys(String pkeys){
+    public List<PdtProduct> findAllByPkeys(String pkeys) {
         SQL sql = new SQL();
-        sql.SELECT(PdtProduct.class).WHERE(PdtProduct.T.PKEY," IN ("+pkeys+") ");
+        sql.SELECT(PdtProduct.class).WHERE(PdtProduct.T.PKEY, " IN (" + pkeys + ") ");
         return Query.sql(sql).queryList(PdtProduct.class);
+    }
+
+    public Map getInquiryPdtInfo(Integer id) {
+        SQL sql = new SQL();
+        sql.SELECT(
+                PdtProduct.T.PKEY,
+                PdtProduct.T.PICTURE,
+                PdtProduct.T.NAME,
+                UsrSupplier.T.ROLE
+        ).SELECT(
+                UsrSupplier.T.NAME, "supName"
+        ).LEFT_JOIN(
+                UsrSupplier.class, UsrSupplier.T.PKEY, PdtProduct.T.SUPPLIER
+        ).WHERE(
+                PdtProduct.T.PKEY, "=?", id
+        )
+        ;
+        return Query.sql(sql).queryMap();
     }
 }

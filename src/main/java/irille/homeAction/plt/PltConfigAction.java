@@ -69,6 +69,7 @@ public class PltConfigAction extends HomeAction<PltConfig> {
             userInfo.setShopping_cart_count(UsrCartDAO.Query.countByPurchase(getPurchase().getPkey()));
             sysConfigView.setUser(userInfo);
         }
+        sysConfigView.setCurrencyList(PltErateDAO.list());
         write(sysConfigView);
     }
 
