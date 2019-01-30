@@ -20,7 +20,7 @@ public class RFQConsultAction extends ActionBase<RFQConsult> implements IRFQCons
 	@Inject
 	private RFQConsultService rFQConsultService;
 
-	private RFQConsultView consult;
+	private RFQConsultView consult = new RFQConsultView();
 
 	@Override
 	public Class<RFQConsult> beanClazz() {

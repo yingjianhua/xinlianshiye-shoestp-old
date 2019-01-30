@@ -1,9 +1,11 @@
 package irille.Dao.RFQ.impl;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.Test;
 
@@ -32,7 +34,6 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
 	@Override
 	public Page<RFQConsultView> findAllView(Integer start, Integer limit, RFQConsultView condition) {
 		BeanQuery<RFQConsult> query = createQuery();
-		
 		//询盘名称
 		query.WHERE(condition.getTitle() != null, RFQConsult.T.TITLE, "like ?", "%"+condition.getTitle()+"%");
 		//采购商名称
@@ -48,10 +49,12 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
 		if(condition.getCountry() != null && condition.getCountry().getName() != null)
 			query.WHERE(PltCountry.T.NAME, "like ?", "%"+condition.getCountry().getName()+"%");
 		//询盘类型
-		query.WHERE(condition.getType() != null, RFQConsult.T.TYPE, "= ?", condition.getType())
+		if(condition.getType() != null) {
+			query.WHERE(condition.getType() != null, RFQConsult.T.TYPE, "in ("+Stream.of(condition.getType().split(",")).map(i->"?").collect(Collectors.joining(","))+")", Stream.of(condition.getType().split(",")).map(Byte::new).toArray(Serializable[]::new));
+		}
 		//询盘的审核状态
-		.WHERE(condition.getVerifyStatus() != null, RFQConsult.T.VERIFY_STATUS, "= ?", condition.getVerifyStatus());
-		
+		query.WHERE(condition.getVerifyStatus() != null, RFQConsult.T.VERIFY_STATUS, "= ?", condition.getVerifyStatus());
+		query.limit(start, limit);
 		return new Page<>(toView(query.queryMaps()), start, limit, query.queryCount());
 	}
 	
@@ -120,7 +123,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
 		RFQConsultView view = new RFQConsultView();
 		view.setPkey((Integer)map.get(RFQConsult.T.PKEY.getFld().getCodeSqlField()));
 		view.setTitle((String)map.get(RFQConsult.T.TITLE.getFld().getCodeSqlField()));
-		view.setType((Byte)map.get(RFQConsult.T.TYPE.getFld().getCodeSqlField()));
+		view.setType(""+map.get(RFQConsult.T.TYPE.getFld().getCodeSqlField()));
 		if(map.containsKey("supplierPkey")) {
 			view.setSupplier(new SupplierView() {{
 				setPkey((Integer)map.get("supplierPkey"));
@@ -188,7 +191,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
 		PdtCat.TB.getCode();
 		
 		System.out.println("==========================================================");
-		testFindAll("n", "有限公司", "chen", "童鞋", "中国", (byte)1, (byte)2);
+		testFindAll("n", "有限公司", "chen", "童鞋", "中国", "1", (byte)2);
 		System.out.println("==========================================================");
 		testFindById(1);
 		System.out.println("==========================================================");
@@ -201,7 +204,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
 	/**
 	 * @author Jianhua Ying
 	 */
-	private void testFindAll(String title, String supplierName, String purchaseName, String productName, String countryName, Byte type, Byte verifyStatus) {
+	private void testFindAll(String title, String supplierName, String purchaseName, String productName, String countryName, String type, Byte verifyStatus) {
 		RFQConsultView condition = new RFQConsultView();
 		condition.setTitle(title);
 		condition.setPurchase(new PurchaseView() {{
