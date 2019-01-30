@@ -8,8 +8,7 @@ import irille.pub.tb.IEnumOpt;
  */
 public enum RFQConsultVerifyStatus implements IEnumOpt {
     UNAUDITED(1, "未审核"),
-    FAIL(2,
-            "未通过"),
+    FAIL(2, "未通过"),
     PASS(3, "通过"),
     ;
 

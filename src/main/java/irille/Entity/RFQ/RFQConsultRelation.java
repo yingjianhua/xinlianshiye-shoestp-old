@@ -1,5 +1,6 @@
 package irille.Entity.RFQ;
 
+import irille.core.sys.Sys;
 import irille.pub.bean.BeanInt;
 import irille.pub.tb.Fld;
 import irille.pub.tb.IEnumFld;
@@ -16,6 +17,7 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
         CONSULT(RFQConsult.fldOutKey("consult", "询盘")), //
         SUPPLIER_ID(UsrSupplier.fldOutKey().setName("供应商")),
         PURCHASE_ID(UsrPurchase.fldOutKey().setName("采购商")),
+        FAVORITE(SYS.YN, "是否添加FLAG"),
         ROW_VERSION(SYS.ROW_VERSION),
         // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
         // <<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
@@ -68,6 +70,9 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
     private Integer _consult;    // 询盘 <表主键:RFQConsult>  INT
     private Integer _supplierId;    // 供应商 <表主键:UsrSupplier>  INT
     private Integer _purchaseId;    // 采购商 <表主键:UsrPurchase>  INT
+    private Byte _favorite;    // 是否添加FLAG <OYn>  BYTE
+    // YES:1,是
+    // NO:0,否
     private Short _rowVersion;    // 版本  SHORT
 
     @Override
@@ -76,6 +81,7 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
         _consult = null;    // 询盘 <表主键:RFQConsult>  INT
         _supplierId = null;    // 供应商 <表主键:UsrSupplier>  INT
         _purchaseId = null;    // 采购商 <表主键:UsrPurchase>  INT
+        _favorite = Sys.OYn.DEFAULT.getLine().getKey();    // 是否添加FLAG <OYn>  BYTE
         _rowVersion = 0;    // 版本  SHORT
         return this;
     }
@@ -150,6 +156,22 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
             setPurchaseId(null);
         else
             setPurchaseId(purchaseId.getPkey());
+    }
+
+    public Byte getFavorite() {
+        return _favorite;
+    }
+
+    public void setFavorite(Byte favorite) {
+        _favorite = favorite;
+    }
+
+    public Boolean gtFavorite() {
+        return byteToBoolean(_favorite);
+    }
+
+    public void stFavorite(Boolean favorite) {
+        _favorite = booleanToByte(favorite);
     }
 
     public Short getRowVersion() {
