@@ -21,4 +21,5 @@ public class O2o_RegistrationView implements BaseView{
 	private String buyertype; //买家类型
 	private String exhibitionCountry; //展会国家
 	private String remarks; //备注
+	private Integer activityId; //展会id
 }
