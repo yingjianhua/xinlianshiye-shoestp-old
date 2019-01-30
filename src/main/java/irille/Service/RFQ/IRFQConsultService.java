@@ -1,7 +1,7 @@
-package irille.Service.Rfq;
+package irille.Service.RFQ;
 
 import com.google.inject.ImplementedBy;
-import irille.Service.Rfq.Imp.RFQConsultServiceImp;
+import irille.Service.RFQ.Imp.RFQConsultServiceImp;
 import irille.shop.usr.UsrPurchase;
 import irille.view.Rfq.PutInquiryView;
 import irille.view.Rfq.PutRFQConsultView;

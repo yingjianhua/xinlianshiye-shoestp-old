@@ -1,9 +1,9 @@
-package irille.Service.Rfq.Imp;
+package irille.Service.RFQ.Imp;
 
 import irille.Dao.Old.RFQ.RFQConsultDAO;
 import irille.Entity.RFQ.Enums.*;
 import irille.Entity.RFQ.RFQConsult;
-import irille.Service.Rfq.IRFQConsultService;
+import irille.Service.RFQ.IRFQConsultService;
 import irille.shop.usr.UsrPurchase;
 import irille.view.Rfq.PutInquiryView;
 import irille.view.Rfq.PutRFQConsultView;
