@@ -2,6 +2,7 @@ package irille.Dao.RFQ.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.junit.Test;
@@ -29,9 +30,59 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
 	 * @author Jianhua Ying
 	 */
 	@Override
-	public Page<RFQConsultView> findAll(Integer start, Integer limit, RFQConsultView condition) {
-		BeanQuery<RFQConsult> query = 
-		Query
+	public Page<RFQConsultView> findAllView(Integer start, Integer limit, RFQConsultView condition) {
+		BeanQuery<RFQConsult> query = createQuery();
+		
+		//询盘名称
+		query.WHERE(condition.getTitle() != null, RFQConsult.T.TITLE, "like ?", "%"+condition.getTitle()+"%");
+		//采购商名称
+		if(condition.getPurchase()!=null&&condition.getPurchase().getName()!=null)
+			query.WHERE(UsrPurchase.T.NAME, "like ?", "%"+condition.getPurchase().getName()+"%");
+		//供应商名称
+		if(condition.getSupplier() != null && condition.getSupplier().getName() != null)
+			query.WHERE(UsrSupplier.T.NAME, "like ?", "%"+condition.getSupplier().getName()+"%");
+		//产品名称
+		if(condition.getProduct() != null && condition.getProduct().getName() != null)
+			query.WHERE(PdtProduct.T.NAME, "like ?", "%"+condition.getProduct().getName()+"%");
+		//国家
+		if(condition.getCountry() != null && condition.getCountry().getName() != null)
+			query.WHERE(PltCountry.T.NAME, "like ?", "%"+condition.getCountry().getName()+"%");
+		//询盘类型
+		query.WHERE(condition.getType() != null, RFQConsult.T.TYPE, "= ?", condition.getType())
+		//询盘的审核状态
+		.WHERE(condition.getVerifyStatus() != null, RFQConsult.T.VERIFY_STATUS, "= ?", condition.getVerifyStatus());
+		
+		return new Page<>(toView(query.queryMaps()), start, limit, query.queryCount());
+	}
+	
+	/**
+	 * @author Jianhua Ying
+	 */
+	@Override
+	public RFQConsultView findViewById(Integer id) {
+		BeanQuery<RFQConsult> query = createQuery();
+		//查询额外的字段
+		query.SELECT(RFQConsult.T.CREATE_TIME,
+				RFQConsult.T.PRICE,
+				RFQConsult.T.SHIPPING_TYPE,
+				RFQConsult.T.PAY_TYPE,
+				RFQConsult.T.EXTRA_DESCRIPTION,
+				RFQConsult.T.IMAGE);
+		Map<String, Object> map = query.queryMap();
+		RFQConsultView view = toView(map);
+		//添加额外的字段
+		view.setCreateTime((Date)map.get(RFQConsult.T.CREATE_TIME.getFld().getCodeSqlField()));
+		view.setPrice((String)map.get(RFQConsult.T.PRICE.getFld().getCodeSqlField()));
+		view.setShippingType((Byte)map.get(RFQConsult.T.SHIPPING_TYPE.getFld().getCodeSqlField()));
+		view.setPayType((Byte)map.get(RFQConsult.T.PAY_TYPE.getFld().getCodeSqlField()));
+		view.setExtraDescription((String)map.get(RFQConsult.T.EXTRA_DESCRIPTION.getFld().getCodeSqlField()));
+		view.setImage((String)map.get(RFQConsult.T.IMAGE.getFld().getCodeSqlField()));
+		
+		return view;
+	}
+	
+	private BeanQuery<RFQConsult> createQuery() {
+		return Query
 		.SELECT(
 				RFQConsult.T.PKEY,//主键
 				RFQConsult.T.TITLE,//询盘标题
@@ -62,73 +113,60 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
 		.LEFT_JOIN(UsrSupplierRole.class, UsrSupplier.T.ROLE, UsrSupplierRole.T.PKEY)
 		.LEFT_JOIN(PltCountry.class, RFQConsult.T.COUNTRY, PltCountry.T.PKEY)
 		.LEFT_JOIN(PdtProduct.class, RFQConsult.T.PRODUCT, PdtProduct.T.PKEY)
-		.LEFT_JOIN(PdtCat.class, PdtProduct.T.CATEGORY, PdtCat.T.PKEY)
-		
-		//询盘名称
-		.WHERE(condition.getTitle() != null, RFQConsult.T.TITLE, "like ?", "%"+condition.getTitle()+"%");
-		//采购商名称
-		if(condition.getPurchase()!=null&&condition.getPurchase().getName()!=null)
-			query.WHERE(UsrPurchase.T.NAME, "like ?", "%"+condition.getPurchase().getName()+"%");
-		//供应商名称
-		if(condition.getSupplier() != null && condition.getSupplier().getName() != null)
-			query.WHERE(UsrSupplier.T.NAME, "like ?", "%"+condition.getSupplier().getName()+"%");
-		//产品名称
-		if(condition.getProduct() != null && condition.getProduct().getName() != null)
-			query.WHERE(PdtProduct.T.NAME, "like ?", "%"+condition.getProduct().getName()+"%");
-		//国家
-		if(condition.getCountry() != null && condition.getCountry().getName() != null)
-			query.WHERE(PltCountry.T.NAME, "like ?", "%"+condition.getCountry().getName()+"%");
-		//询盘类型
-		query.WHERE(condition.getType() != null, RFQConsult.T.TYPE, "= ?", condition.getType())
-		//询盘的审核状态
-		.WHERE(condition.getVerifyStatus() != null, RFQConsult.T.VERIFY_STATUS, "= ?", condition.getVerifyStatus());
-		
-		List<RFQConsultView> result = query.queryMaps().stream().map(map->{
-			RFQConsultView view = new RFQConsultView();
-			view.setPkey((Integer)map.get(RFQConsult.T.PKEY.getFld().getCodeSqlField()));
-			view.setTitle((String)map.get(RFQConsult.T.TITLE.getFld().getCodeSqlField()));
-			view.setType((Byte)map.get(RFQConsult.T.TYPE.getFld().getCodeSqlField()));
-			if(map.containsKey("supplierPkey")) {
-				view.setSupplier(new SupplierView() {{
-					setPkey((Integer)map.get("supplierPkey"));
-					setName((String)map.get("supplierName"));
-					if(map.containsKey("supplierRoleName")) {
-						setRoleName((String)map.get("supplierRoleName"));
-					}
-				}});
-			}
-			if(map.containsKey("productPkey")) {
-				view.setProduct(new ProductView() {{
-					setPkey((Integer)map.get("productPkey"));
-					setName((String)map.get("productName"));
-					if(map.containsKey("productCatName")) {
-						setCatName((String)map.get("productCatName"));
-					}
-				}});
-			}
-			if(map.containsKey("purchasePkey")) {
-				view.setPurchase(new PurchaseView() {{
-					setPkey((Integer)map.get("purchasePkey"));
-					setName((String)map.get("purchaseName"));
-				}});
-			}
-			if(map.containsKey("countryPkey")) {
-				view.setCountry(new CountryView() {{
-					setPkey((Integer)map.get("countryPkey"));
-					setName((String)map.get("countryName"));
-				}});
-			}
-			view.setQuantity((Integer)map.get(RFQConsult.T.QUANTITY.getFld().getCodeSqlField()));
-			view.setUnit((Byte)map.get(RFQConsult.T.UNIT.getFld().getCodeSqlField()));
-			view.setTotal((Integer)map.get(RFQConsult.T.TOTAL.getFld().getCodeSqlField()));
-			view.setLeftCount((Integer)map.get(RFQConsult.T.LEFT_COUNT.getFld().getCodeSqlField()));
-			view.setValidDate((Date)map.get(RFQConsult.T.VALID_DATE.getFld().getCodeSqlField()));
-			view.setStatus((Byte)map.get(RFQConsult.T.STATUS.getFld().getCodeSqlField()));
-			view.setVerifyStatus((Byte)map.get(RFQConsult.T.VERIFY_STATUS.getFld().getCodeSqlField()));
-			return view;
-		}).collect(Collectors.toList());
-		return new Page<>(result, start, limit, query.queryCount());
+		.LEFT_JOIN(PdtCat.class, PdtProduct.T.CATEGORY, PdtCat.T.PKEY);
 	}
+	
+	private RFQConsultView toView(Map<String, Object> map) {
+		RFQConsultView view = new RFQConsultView();
+		view.setPkey((Integer)map.get(RFQConsult.T.PKEY.getFld().getCodeSqlField()));
+		view.setTitle((String)map.get(RFQConsult.T.TITLE.getFld().getCodeSqlField()));
+		view.setType((Byte)map.get(RFQConsult.T.TYPE.getFld().getCodeSqlField()));
+		if(map.containsKey("supplierPkey")) {
+			view.setSupplier(new SupplierView() {{
+				setPkey((Integer)map.get("supplierPkey"));
+				setName((String)map.get("supplierName"));
+				if(map.containsKey("supplierRoleName")) {
+					setRoleName((String)map.get("supplierRoleName"));
+				}
+			}});
+		}
+		if(map.containsKey("productPkey")) {
+			view.setProduct(new ProductView() {{
+				setPkey((Integer)map.get("productPkey"));
+				setName((String)map.get("productName"));
+				if(map.containsKey("productCatName")) {
+					setCatName((String)map.get("productCatName"));
+				}
+			}});
+		}
+		if(map.containsKey("purchasePkey")) {
+			view.setPurchase(new PurchaseView() {{
+				setPkey((Integer)map.get("purchasePkey"));
+				setName((String)map.get("purchaseName"));
+			}});
+		}
+		if(map.containsKey("countryPkey")) {
+			view.setCountry(new CountryView() {{
+				setPkey((Integer)map.get("countryPkey"));
+				setName((String)map.get("countryName"));
+			}});
+		}
+		view.setQuantity((Integer)map.get(RFQConsult.T.QUANTITY.getFld().getCodeSqlField()));
+		view.setUnit((Byte)map.get(RFQConsult.T.UNIT.getFld().getCodeSqlField()));
+		view.setTotal((Integer)map.get(RFQConsult.T.TOTAL.getFld().getCodeSqlField()));
+		view.setLeftCount((Integer)map.get(RFQConsult.T.LEFT_COUNT.getFld().getCodeSqlField()));
+		view.setValidDate((Date)map.get(RFQConsult.T.VALID_DATE.getFld().getCodeSqlField()));
+		view.setStatus((Byte)map.get(RFQConsult.T.STATUS.getFld().getCodeSqlField()));
+		view.setVerifyStatus((Byte)map.get(RFQConsult.T.VERIFY_STATUS.getFld().getCodeSqlField()));
+		return view;
+	}
+	
+	private List<RFQConsultView> toView(List<Map<String, Object>> result) {
+		return result.stream().map(map->{
+			return toView(map);
+		}).collect(Collectors.toList());
+	}
+
 	/**
 	 * @author Jianhua Ying
 	 */
@@ -149,7 +187,15 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
 		PdtProduct.TB.getCode();
 		PdtCat.TB.getCode();
 		
+		System.out.println("==========================================================");
 		testFindAll("n", "有限公司", "chen", "童鞋", "中国", (byte)1, (byte)2);
+		System.out.println("==========================================================");
+		testFindById(1);
+		System.out.println("==========================================================");
+	}
+	
+	private void testFindById(Integer id) {
+		System.out.println(findViewById(id));;
 	}
 	
 	/**
@@ -174,7 +220,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
 		condition.setType(type);
 		condition.setVerifyStatus(verifyStatus);
 		
-		Page<RFQConsultView> page = findAll(0, 10, condition);
+		Page<RFQConsultView> page = findAllView(0, 10, condition);
 		System.out.println("total: "+ page.getTotalCount());
 		page.getItems().forEach(view->{
 			System.out.println(view);

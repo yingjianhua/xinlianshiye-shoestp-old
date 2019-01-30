@@ -34,8 +34,7 @@ public class RFQConsultAction extends ActionBase<RFQConsult> implements IRFQCons
 
 	@Override
 	public void detail() throws IOException {
-		// TODO Auto-generated method stub
-		
+		write(rFQConsultService.detail(consult));
 	}
 
 }

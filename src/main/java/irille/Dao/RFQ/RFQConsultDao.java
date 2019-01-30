@@ -1,8 +1,12 @@
 package irille.Dao.RFQ;
 
+import com.google.inject.ImplementedBy;
+
+import irille.Dao.RFQ.impl.RFQConsultDaoImpl;
 import irille.platform.rfq.view.RFQConsultView;
 import irille.view.Page;
 
+@ImplementedBy(RFQConsultDaoImpl.class)
 public interface RFQConsultDao {
 
 	/**
@@ -23,5 +27,14 @@ public interface RFQConsultDao {
 	 * @return 分页结果
 	 * @author Jianhua Ying
 	 */
-	Page<RFQConsultView> findAll(Integer start, Integer limit, RFQConsultView condition);
+	Page<RFQConsultView> findAllView(Integer start, Integer limit, RFQConsultView condition);
+
+	/**
+	 * 根据id查询询盘信息
+	 * 
+	 * @param id 询盘主键
+	 * @return 查询结果
+	 * @author Jianhua Ying
+	 */
+	RFQConsultView findViewById(Integer id);
 }
