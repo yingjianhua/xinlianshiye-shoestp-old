@@ -4,11 +4,15 @@ import static irille.pub.util.AppConfig.objectMapper;
 
 import com.google.gson.JsonObject;
 import irille.Dao.PdtProductDao;
+import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
+import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Service.Manage.Pdt.IPdtProductManageService;
 import irille.core.sys.Sys;
+import irille.pub.Log;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
+import irille.pub.svr.Env;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.CacheUtils;
@@ -35,6 +39,7 @@ import javax.inject.Inject;
  * Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/7 Time: 15:55
  */
 public class PdtProductManageServiceImp implements IPdtProductManageService {
+    private final Log LOG = new Log(PdtProductManageServiceImp.class);
 
     @Inject
     PdtProductDao pdtProductDao;
@@ -47,8 +52,8 @@ public class PdtProductManageServiceImp implements IPdtProductManageService {
 
     @Override
     public Page getProductList(String name, String number, Integer supplierId, int cat, int start,
-                               int limit) {
-        return pdtProductDao.getProductListManage(name, number, supplierId, cat, start, limit);
+                               int limit, Integer search) {
+        return pdtProductDao.getProductListManage(name, number, supplierId, cat, start, limit, search);
     }
 
     @Override
@@ -108,7 +113,6 @@ public class PdtProductManageServiceImp implements IPdtProductManageService {
             pdtProduct.setSoldTimeB(pdtProductSaveView.getSoldInTime().get(0));
             pdtProduct.setSoldTimeE(pdtProductSaveView.getSoldInTime().get(1));
         }
-        pdtProduct.setProductType((byte) 0);
         pdtProduct.setIsNew((byte) 1);
         pdtProduct.setIsIndex((byte) 1);
         pdtProduct.setIsHot((byte) 1);
@@ -188,6 +192,11 @@ public class PdtProductManageServiceImp implements IPdtProductManageService {
         pdtProduct.setSeoDescription(seoDescription.toString());
         pdtProduct.setSeoKeyword(seoKeyword.toString());
         pdtProduct.setStock(countStock);
+        if (pdtProductSaveView.getRadio() != 0) {
+            pdtProduct.setProductType(Pdt.OProductType.PrivateExpo.getLine().getKey());
+        } else {
+            pdtProduct.setProductType((byte) 0);
+        }
         if (pdtProduct.getPkey() < 0) {
             pdtSave.setB(pdtProduct);
             pdtSave.setLines(list);
@@ -196,6 +205,40 @@ public class PdtProductManageServiceImp implements IPdtProductManageService {
             pdtUpdate.setB(pdtProduct);
             pdtUpdate.setLines(list);
             pdtUpdate.commit();
+        }
+        PdtProduct pdt = null;
+        if (pdtSave.getB() != null) {
+            pdt = pdtSave.getB();
+        }
+        if (pdtUpdate.getB() != null) {
+            pdt = pdtUpdate.getB();
+        }
+        if (pdt.getProductType() == Pdt.OProductType.PrivateExpo.getLine().getKey()) {
+            O2O_PrivateExpoPdt o2o_privateExpoPdt = O2O_PrivateExpoPdt.chkUniquePdt_Id(false, pdt.getPkey());
+            if (o2o_privateExpoPdt != null) {
+                o2o_privateExpoPdt.setPdtId(pdt.getPkey());
+                o2o_privateExpoPdt.setPrice(pdt.getCurPrice());
+                o2o_privateExpoPdt.setMinOq(pdt.getMinOq());
+                o2o_privateExpoPdt.setStatus(O2O_PrivateExpoPdtStatus.ON.getLine().getKey());
+                o2o_privateExpoPdt.setVerifyStatus(O2O_PrivateExpoPdtStatus._DEFAULT.getLine().getKey());
+                o2o_privateExpoPdt.setCreateTime(Env.getTranBeginTime());
+                o2o_privateExpoPdt.upd();
+            } else {
+                O2O_PrivateExpoPdt privateExpoPdt = new O2O_PrivateExpoPdt();
+                privateExpoPdt.setPdtId(pdt.getPkey());
+                privateExpoPdt.setPrice(pdt.getCurPrice());
+                privateExpoPdt.setMinOq(pdt.getMinOq());
+                privateExpoPdt.setStatus(O2O_PrivateExpoPdtStatus.ON.getLine().getKey());
+                privateExpoPdt.setVerifyStatus(O2O_PrivateExpoPdtStatus._DEFAULT.getLine().getKey());
+                privateExpoPdt.setCreateTime(Env.getTranBeginTime());
+                privateExpoPdt.ins();
+            }
+        }
+        if(pdtProductSaveView.getRadio() == 0){
+            O2O_PrivateExpoPdt o2o_privateExpoPdt = O2O_PrivateExpoPdt.chkUniquePdt_Id(false, pdt.getPkey());
+            if(o2o_privateExpoPdt!=null){
+                o2o_privateExpoPdt.del();
+            }
         }
         return 1;
     }

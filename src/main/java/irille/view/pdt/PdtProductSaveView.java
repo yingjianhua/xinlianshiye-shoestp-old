@@ -49,6 +49,15 @@ public class PdtProductSaveView implements BaseView {
     private boolean freeShipping;
     private Map description;
     private int from = -1;
+    private Integer radio;
+
+    public Integer getRadio() {
+        return radio;
+    }
+
+    public void setRadio(Integer radio) {
+        this.radio = radio;
+    }
 
     public Map getPdtName() {
         return pdtName;

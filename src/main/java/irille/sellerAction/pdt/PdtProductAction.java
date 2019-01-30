@@ -191,6 +191,16 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
         this.name = name;
     }
 
+    public Integer getSearch() {
+        return search;
+    }
+
+    public void setSearch(Integer search) {
+        this.search = search;
+    }
+
+    private Integer search;
+
     /**
      * 根据登陆id查询产品
      */
@@ -200,7 +210,7 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
         } else {
             write(pdtProductManage
                     .getProductList(getName(), getNumber(), getSupplier().getPkey(), getCat(), getStart(),
-                            getLimit()));
+                            getLimit(),getSearch()));
         }
     }
 
@@ -407,7 +417,7 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
      * *@anthor zjl
      */
     public void getWarehouse() throws IOException {
-        write(pdtProductManage.getWarehouse(getSupplier().getPkey(), productName, productNum, status, getStart(), getLimit(),type));
+        write(pdtProductManage.getWarehouse(getSupplier().getPkey(), productName, productNum, status, getStart(), getLimit(), type));
     }
 
     /**
@@ -418,6 +428,7 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
     public void getProductCates() throws IOException {
         ServletActionContext.getResponse().getWriter().print(pdtProductManage.getProductCates());
     }
+
     /**
      * @Description: 还原
      * *@date 2019/1/28 14:53
@@ -431,6 +442,7 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
         json.put("success", true);
         writerOrExport(json);
     }
+
     /**
      * @Description: 删除
      * *@date 2019/1/28 14:53
@@ -439,6 +451,20 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
     public void remove() throws Exception {
         JSONObject json = new JSONObject();
         PdtProductDAO.Remove del = new PdtProductDAO.Remove();
+        del.setBKey(getPkey());
+        del.commit();
+        json.put("success", true);
+        writerOrExport(json);
+    }
+
+    /**
+     * @Description: 删除
+     * *@date 2019/1/28 14:53
+     * *@anthor zjl
+     */
+    public void obtaineds() throws Exception {
+        JSONObject json = new JSONObject();
+        PdtProductDAO.Obtained del = new PdtProductDAO.Obtained();
         del.setBKey(getPkey());
         del.commit();
         json.put("success", true);
