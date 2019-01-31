@@ -34,4 +34,14 @@ public interface RFQConsultService {
 	 * @author Jianhua Ying
 	 */
 	void approve(RFQConsultView view, Boolean verify);
+	
+	/**
+	 * <h1>删除询盘</h1>
+	 * 
+	 * <p>
+	 * 询盘只能在状态为已完成和已关闭的状态下删除, 目前由于聊天内容和询盘耦合在一起, 所以删除询盘只做标记删除, 删除后的询盘不能再继续被抢单, 已经被抢单的询盘不影响聊天以及其它功能;
+	 * @param view 询盘
+	 * @author Jianhua Ying
+	 */
+	void delete(RFQConsultView view);
 }

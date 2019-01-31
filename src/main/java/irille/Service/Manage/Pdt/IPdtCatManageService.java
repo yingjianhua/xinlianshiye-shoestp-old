@@ -5,6 +5,9 @@ import irille.Service.Manage.Pdt.Imp.PdtCatManageServiceImp;
 import irille.pub.tb.FldLanguage;
 import irille.sellerAction.view.ProductSEOsView;
 import irille.view.Page;
+import irille.view.pdt.CategoryView;
+
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/8 Time: 11:18
@@ -34,4 +37,10 @@ public interface IPdtCatManageService {
      * zjl
      */
     void updSEO(ProductSEOsView view);
+
+
+    /**
+     * 获取所有一级分类
+     */
+    List<CategoryView> pList();
 }

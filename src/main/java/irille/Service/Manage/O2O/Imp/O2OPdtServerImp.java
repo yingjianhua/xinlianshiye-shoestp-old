@@ -9,6 +9,8 @@ import irille.Dao.Old.O2O.O2O_ActivityInsDAO;
 import irille.Dao.Old.O2O.O2O_JoinInfoInsDAO;
 import irille.Dao.Old.O2O.O2O_PrivateExpoPdtInsDAO;
 import irille.Dao.Old.O2O.O2O_ProductInsDAO;
+import irille.Dao.PdtCatDao;
+import irille.Dao.PdtProductDao;
 import irille.Entity.O2O.Enums.O2O_ActivityStatus;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_Activity;
@@ -16,8 +18,12 @@ import irille.Entity.O2O.O2O_JoinInfo;
 import irille.Entity.O2O.O2O_Product;
 import irille.Service.Manage.O2O.IO2OPdtServer;
 import irille.pub.Log;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
+import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumOpt;
 import irille.pub.util.GetValue;
+import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltCountryDAO;
@@ -28,14 +34,13 @@ import irille.view.O2O.O2OManageActivityListView;
 import irille.view.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by IntelliJ IDEA. User: Lijie<HelloBox@outlook.com> Date: 2019/1/26 Time: 15:59
@@ -58,6 +63,12 @@ public class O2OPdtServerImp implements IO2OPdtServer {
     @Inject
     private O2OJoinInfoDao o2OJoinInfoDao;
 
+    @Inject
+    private PdtCatDao pdtCatDao;
+
+    @Inject
+    private PdtProductDao pdtProductDao;
+
     @Override
     public Page getO2OActivityList(UsrSupplier supplier, Integer start, Integer limit, Date startDate, Date endDate, String keyword,Integer status, int supId, Integer countryId) {
         List<O2OManageActivityListView> result = new ArrayList<>();
@@ -71,29 +82,11 @@ public class O2OPdtServerImp implements IO2OPdtServer {
                     GetValue.get(stringObjectMap, O2O_Activity.T.PKEY, Integer.class, -1));
             o2OManageActivityListView.setTitle(
                     GetValue.get(stringObjectMap, O2O_Activity.T.NAME, String.class, "NULL"));
-            o2OManageActivityListView.setCatId(
-                    GetValue.get(stringObjectMap, O2O_Activity.T.ACTIVITY_CAT, Integer.class, -1));
             o2OManageActivityListView.setStart_date(
                     GetValue.get(stringObjectMap, O2O_Activity.T.START_DATE, Date.class, null));
             o2OManageActivityListView.setEnd_date(
                     GetValue.get(stringObjectMap, O2O_Activity.T.END_DATE, Date.class, null));
-            // 获取国家
-            JsonParser jsonParser = new JsonParser();
-            JsonObject jsonObject =
-                    jsonParser
-                            .parse(
-                                    String.valueOf(
-                                            stringObjectMap.get(O2O_Activity.T.ADDRESS.getFld().getCodeSqlField())))
-                            .getAsJsonObject();
-            Integer countryPkey = jsonObject.get("countryId").getAsInt();
-            o2OManageActivityListView.setCountryId(countryPkey);
-            PltCountryDAO countryDAO = new PltCountryDAO();
-            try{
-                o2OManageActivityListView.setCountry(countryDAO.loadById(countryPkey).getName(PltConfigDAO.supplierLanguage(supplier)));
-            }catch (JSONException e){
-                e.printStackTrace();
-            }
-
+            o2OManageActivityListView.setAddress(GetValue.get(stringObjectMap,"mapName",String.class,""));
             // 获取状态
             o2OManageActivityListView.setStatus(
                     ((IEnumOpt) O2O_ActivityStatus.DEFAULT
@@ -114,14 +107,7 @@ public class O2OPdtServerImp implements IO2OPdtServer {
     @Override
     public Page getO2OActivityInfo(Integer start, Integer limit, Integer id, Integer pkey) {
         O2O_Activity o2O_activity = o2OActivityDao.getActivityInfoById(id);
-        try {
-            o2O_activity.gtAddress().get("info");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        System.out.println(o2O_activity);
         List pdtresult = o2OProductDao.getO2OActivityPdtList(start, limit, id, pkey);
-        System.out.println(pdtresult);
         return null;
     }
 
@@ -134,31 +120,16 @@ public class O2OPdtServerImp implements IO2OPdtServer {
             products = o2OProductDao.findAllByJoinInfoId(joinInfo.getPkey());
         }
 
-
+        Map<Integer, String> cat_pkey_name_map = new HashMap<>();
         O2OActivityInfoView view = new O2OActivityInfoView();
         view.setId(activity.getPkey());
         view.setTitle(activity.getName());
-        // 获取国家
-        JsonParser jsonParser = new JsonParser();
-        JsonObject jsonObject =
-                jsonParser
-                        .parse(
-                                String.valueOf(
-                                        activity.getAddress()))
-                        .getAsJsonObject();
-        Integer countryPkey = jsonObject.get("countryId").getAsInt();
-        view.setCountryId(countryPkey);
-        PltCountryDAO countryDAO = new PltCountryDAO();
-        try{
-            view.setCountry(countryDAO.loadById(countryPkey).getName(PltConfigDAO.supplierLanguage(supplier)));
-        }catch (JSONException e){
-            e.printStackTrace();
-        }
-        view.setAddress(jsonObject.get("info").getAsString());
+        view.setAddress(activity.gtAddress().getName());
         view.setStartDate(activity.getStartDate());
         view.setEndDate(activity.getEndDate());
         view.setStatus(activity.gtStatus().getLine().getName());
-        view.setCategory(null == activity.getName()?"全类目通用":activity.getName());
+        List<Map<String,Object>> activityCat = activitCat_pkey2Name(activity.getActivityCat(), cat_pkey_name_map);
+        view.setCategories(activityCat);
         view.setRules(activity.getRules());
         if(null != joinInfo){
             view.setTel(joinInfo.getTel());
@@ -176,12 +147,83 @@ public class O2OPdtServerImp implements IO2OPdtServer {
                 v.setRemark(GetValue.get(bean, O2O_Product.T.REMARK, String.class, null));
                 v.setStatus(GetValue.get(bean, O2O_Product.T.STATUS, Byte.class, (byte) 0));
                 v.setAppr(GetValue.get(bean,O2O_Product.T.VERIFY_STATUS,Byte.class,(byte)0));
+                v.setMessage(GetValue.get(bean, O2O_Product.T.MESSAGE, String.class, null));
                 return v;
             }).collect(Collectors.toList()));
         }else{
             view.setItems(new ArrayList<>());
         }
         return view;
+    }
+
+    /**
+     * 把以逗号分隔的产品分类pkey,转换成以分类名称分隔的字符串
+     *
+     * @param activityCat 以逗号分隔的分类的pkey
+     * @param cat_pkey_name_map pkey和分类名称键值对, 若不存在相应数据 则从数据库中查询后 放入map
+     * @return 以逗号分隔的分类名称
+     * @author Jianhua Ying
+     */
+    private List<Map<String,Object>> activitCat_pkey2Name(String activityCat, Map<Integer, String> cat_pkey_name_map) {
+        List<Map<String,Object>> array = new ArrayList<Map<String,Object>>();
+
+        if(activityCat == null || activityCat.trim().equals("")) {
+            Map<String,Object> map = new HashMap<String,Object>();
+            for(FldLanguage.Language language : FldLanguage.Language.values()){
+                map.put(language.name(),"通用");
+            }
+            array.add(map);
+            return array;
+        } else {
+            Stream.of(activityCat.split(",")).forEach(spkey->{
+                Integer pkey = Integer.parseInt(spkey);
+                Map<String,Object> map = new HashMap<String,Object>();
+                if(cat_pkey_name_map != null && cat_pkey_name_map.containsKey(pkey)) {
+                    JSONObject json = null;
+                    try{
+                        json = new JSONObject(cat_pkey_name_map.get(pkey));
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                    if(null != json){
+                        Iterator<String> ite = json.keys();
+                        while (ite.hasNext()){
+                            String key = ite.next();
+                            try{
+                                map.put(key,json.get(key));
+                            }catch (JSONException e){
+                                e.printStackTrace();
+                            }
+                        }
+                        array.add(map);
+                    }
+
+                } else {
+                    PdtCat cat = pdtCatDao.findById(pkey);
+                    if(cat_pkey_name_map != null)
+                        cat_pkey_name_map.put(pkey, cat.getName());
+                    JSONObject json = null;
+                    try{
+                        json = new JSONObject(cat.getName());
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                    if(null != json){
+                        Iterator<String> ite = json.keys();
+                        while (ite.hasNext()){
+                            String key = ite.next();
+                            try{
+                                map.put(key,json.get(key));
+                            }catch (JSONException e){
+                                e.printStackTrace();
+                            }
+                        }
+                        array.add(map);
+                    }
+                }
+            });
+            return array;
+        }
     }
 
     @Override
@@ -199,8 +241,36 @@ public class O2OPdtServerImp implements IO2OPdtServer {
     }
 
     @Override
-    public List<O2OActivityPdtInfoView> listAllGeneral(UsrSupplier supplier) {
-        return o2OProductDao.findAllGeneralByIsVerifyAndStateAndSupplier(supplier).stream().map(bean->{
+    public void appr(Integer pkey, String reason,O2O_ProductStatus status) {
+        O2O_Product product = o2OProductDao.findByPkey(pkey);
+        product.setVerifyStatus(status.getLine().getKey());
+        if(status.equals(O2O_ProductStatus.Failed)){
+            if (null == reason && "".equals(reason.trim())){
+                throw new WebMessageException(ReturnCode.failure,"请输入拒绝理由");
+            }
+
+        }
+    }
+
+    @Override
+    public List<O2OActivityPdtInfoView> listAllGeneral(UsrSupplier supplier,Integer activity) {
+        //TODO
+        O2O_Activity activityEntity = o2OActivityDao.getActivityInfoById(activity);
+        if(null == activityEntity)
+            throw LOG.err("noActivity","活动不存在");
+        List<Integer> listAll = new ArrayList<>();
+        if(null != activityEntity.getActivityCat()){
+            List<Integer> cats = Arrays.asList(activityEntity.getActivityCat().split(",")).stream().map(str->{
+                return Integer.valueOf(str);
+            }).collect(Collectors.toList());
+
+            cats.forEach(cat->{
+                listAll.addAll(pdtProductDao.getCatsNodeByCatId(cat));
+            });
+        }
+
+
+        return o2OProductDao.findAllGeneralByIsVerifyAndStateAndSupplier(supplier,listAll).stream().map(bean->{
             O2OActivityPdtInfoView view = new O2OActivityPdtInfoView();
             view.setId(GetValue.get(bean,PdtProduct.T.PKEY,Integer.class,null));
             view.setCode(GetValue.get(bean,PdtProduct.T.CODE,String.class,""));

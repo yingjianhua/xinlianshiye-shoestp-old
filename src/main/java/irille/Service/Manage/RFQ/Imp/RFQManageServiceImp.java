@@ -134,4 +134,11 @@ public class RFQManageServiceImp implements IRFQManageService {
         rfqConsultMessageDAO.commit();
         return 1;
     }
+
+	@Override
+	public void page(Integer start, Integer limit, String keyword, Integer groupId, Boolean flagId, Byte type,
+			Boolean haveNewMsg, Boolean isDeleted, Date startDate, Date endDate) {
+		// TODO Auto-generated method stub 未完成
+		
+	}
 }

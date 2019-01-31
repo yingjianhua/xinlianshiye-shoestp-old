@@ -1,10 +1,14 @@
 package irille.view.O2O;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import irille.Entity.O2O.O2O_Activity;
 import irille.view.BaseView;
 import lombok.Data;
+import org.json.JSONArray;
 
 @Data
 public class O2OActivityView implements BaseView {
@@ -15,21 +19,28 @@ public class O2OActivityView implements BaseView {
     // TOBEGIN:1,即将开始
     // ACTIVITY:2,活动中
     // END:3,活动结束
+    private Integer addr;
+    private String latitude;//纬度
+    private String longitude;//经度
     private String activityCat;    // 产品类目 <表主键:PdtCat>  INT<null>
+    private List<Map<String,Object>> catList;
     private String rules;    // 规则描述  JSONOBJECT
     private String address;    // JSON  JSONOBJECT
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date startDate;    // 日期时间  TIME
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date endDate;    // 日期时间  TIME
     private Date updatedTime;    // 更新时间  TIME
     private Short rowVersion;    // 版本  SHORT
     
     public static O2OActivityView toView(O2O_Activity bean) {
     	O2OActivityView view = new O2OActivityView();
+    	view.setPkey(bean.getPkey());
 		view.setName(bean.getName());
 		view.setActivityCat(bean.getActivityCat());
 		view.setStartDate(bean.getStartDate());
 		view.setEndDate(bean.getEndDate());
-		view.setAddress(bean.getAddress());
+		view.setAddress(bean.gtAddress().getName());
 		view.setStatus(bean.getStatus());
 		return view;
     }

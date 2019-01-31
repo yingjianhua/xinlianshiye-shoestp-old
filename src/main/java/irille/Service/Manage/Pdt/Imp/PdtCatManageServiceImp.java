@@ -7,6 +7,7 @@ import irille.pub.tb.FldLanguage;
 import irille.sellerAction.view.ProductSEOsView;
 import irille.shop.pdt.PdtProduct;
 import irille.view.Page;
+import irille.view.pdt.CategoryView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -114,4 +115,14 @@ public class PdtCatManageServiceImp implements IPdtCatManageService {
     pp.setSeoDescription(view.getSeo_description());
     pp.upd();
   }
+
+    @Override
+    public List<CategoryView> pList() {
+      return pdtProductCatDao.pList().stream().map(cat->{
+        CategoryView view = new CategoryView();
+        view.setId(cat.getPkey());
+        view.setName(cat.getName());
+        return view;
+      }).collect(Collectors.toList());
+    }
 }

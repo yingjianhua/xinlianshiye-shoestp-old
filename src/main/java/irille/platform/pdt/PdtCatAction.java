@@ -1,5 +1,6 @@
 package irille.platform.pdt;
 
+import irille.Service.Manage.Pdt.IPdtCatManageService;
 import irille.action.ActionBase;
 import irille.pub.svr.LoginUserMsg;
 import irille.shop.pdt.PdtCat;
@@ -53,6 +54,9 @@ public class PdtCatAction extends ActionBase<PdtCat> {
     @Inject
     private PdtCatDAO pdtCatDAO;
 
+    @Inject
+    private IPdtCatManageService iPdtCatManageService;
+
 
     /**
      * @Description: 查询所有分类
@@ -102,5 +106,12 @@ public class PdtCatAction extends ActionBase<PdtCat> {
     public void upd() throws IOException {
         PdtCatDAO.updPdtCat(name, enabled, subjectionCat, seoDescription, seoKeyword, seoName, id);
         write();
+    }
+
+    /**
+     * 获取所有一级分类
+     */
+    public void pList() throws IOException {
+        write(iPdtCatManageService.pList());
     }
 }

@@ -1,6 +1,11 @@
 package irille.Dao;
 
+import irille.core.sys.Sys;
+import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
+import irille.pub.bean.sql.SQL;
+import irille.shop.pdt.Pdt;
+import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrProductCategory;
 
@@ -70,4 +75,13 @@ public class PdtProductCatDao {
         .WHERE(UsrProductCategory.T.SUPPLIER, "=?", i);
     return query.queryCount();
   }
+
+    /**
+     * 获取所有一级分类
+     */
+    public List<PdtCat> pList(){
+        SQL sql = new SQL();
+        sql.SELECT(PdtCat.class).FROM(PdtCat.class).WHERE(PdtCat.T.DELETED,"=?", Sys.OYn.NO.getLine().getKey()).WHERE(PdtCat.T.CATEGORY_UP," IS NULL ");
+        return Query.sql(sql).queryList(PdtCat.class);
+    }
 }

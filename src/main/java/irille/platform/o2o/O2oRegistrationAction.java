@@ -46,5 +46,6 @@ public class O2oRegistrationAction extends ActionBase<O2oRegistration>{
 		result.setMsg(null); 
 		result.setResult(O2O_RegistrationDao.getData());
 		response.getWriter().print(oMapper.writeValueAsString(result));
+
 	}
 }

@@ -1,19 +1,20 @@
 package irille.Dao.O2O;
 
 import irille.Aops.Caches;
+import irille.Entity.O2O.*;
 import irille.Entity.O2O.Enums.O2O_ActivityStatus;
 import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
-import irille.Entity.O2O.O2O_Activity;
 import irille.Entity.O2O.O2O_Activity.T;
-import irille.Entity.O2O.O2O_JoinInfo;
-import irille.Entity.O2O.O2O_PrivateExpoPdt;
-import irille.Entity.O2O.O2O_Product;
 import irille.core.sys.Sys;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
 import irille.shop.pdt.Pdt;
+import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrSupplier;
+import irille.shop.usr.UsrSupplierRole;
+import irille.view.O2O.PdtSearchView;
+import irille.view.Page;
 
 import java.util.Date;
 import java.util.List;
@@ -52,10 +53,10 @@ public class O2OProductDao {
                 O2O_Activity.T.ACTIVITY_CAT,
                 O2O_Activity.T.START_DATE,
                 O2O_Activity.T.END_DATE,
-                O2O_Activity.T.ADDRESS,
                 O2O_Activity.T.STATUS
-        )
+        ).SELECT(O2O_Map.T.NAME,"mapName")
                 .FROM(O2O_Activity.class)
+                .LEFT_JOIN(O2O_Map.class,O2O_Map.T.PKEY, T.ADDRESS)
                 .WHERE(startDate != null, O2O_Activity.T.START_DATE, ">?", startDate)
                 .WHERE(endDate != null, T.END_DATE, "<?", endDate)
                 .WHERE(keyWord != null && keyWord.length() > 0, T.NAME, "like ?", keyWord)
@@ -121,6 +122,7 @@ public class O2OProductDao {
                 O2O_Product.T.PRICE,
                 O2O_Product.T.MIN_OQ,
                 O2O_Product.T.STATUS,
+                O2O_Product.T.MESSAGE,
                 O2O_Product.T.VERIFY_STATUS,
                 O2O_Product.T.REMARK)
                 .FROM(O2O_Product.class)
@@ -133,7 +135,15 @@ public class O2OProductDao {
         return Query.SELECT(O2O_Product.class).WHERE(O2O_Product.T.PKEY,"=?",pkey).query();
     }
 
-    public List<Map<String,Object>> findAllGeneralByIsVerifyAndStateAndSupplier(UsrSupplier supplier){
+    public List<Map<String,Object>> findAllGeneralByIsVerifyAndStateAndSupplier(UsrSupplier supplier,List<Integer> cats){
+        String pkeys = "";
+        for(int i=0;i<cats.size();i++){
+            if(i != cats.size()-1){
+                pkeys += cats.get(i) + ",";
+            }else{
+                pkeys += cats.get(i);
+            }
+        }
         SQL sql = new SQL();
         sql.SELECT(PdtProduct.T.PKEY,
                     PdtProduct.T.CODE,
@@ -144,6 +154,7 @@ public class O2OProductDao {
                 .SELECT(UsrSupplier.T.NAME,"supName")
                 .FROM(PdtProduct.class)
                 .LEFT_JOIN(UsrSupplier.class,UsrSupplier.T.PKEY,PdtProduct.T.SUPPLIER)
+                .WHERE(!pkeys.equals(""),PdtProduct.T.CATEGORY," in("+pkeys+")")
                 .WHERE(PdtProduct.T.SUPPLIER,"=?",supplier.getPkey())
                 .WHERE(PdtProduct.T.IS_VERIFY,"=?", Sys.OYn.YES.getLine().getKey())
                 .WHERE(PdtProduct.T.STATE,"=?",Pdt.OState.ON.getLine().getKey())
@@ -160,7 +171,67 @@ public class O2OProductDao {
      * @author Jianhua Ying
      */
     public Integer countByActivity(@Nonnull Integer activityId) {
-    	return Query.SELECT(O2O_Product.class).WHERE(O2O_Product.T.ACTIVITY_ID, "=", activityId).queryCount();
+    	return Query.SELECT(O2O_Product.class).WHERE(O2O_Product.T.ACTIVITY_ID, "=?", activityId).queryCount();
+    }
+
+
+    public List<Map<String,Object>> enrollList(PdtSearchView search,Integer start,Integer limit){
+        if(null == search){
+            search = new PdtSearchView();
+        }
+        SQL sql = new SQL();
+        sql.SELECT(T.NAME,
+                O2O_Product.T.MIN_OQ,
+                O2O_Product.T.PRICE,
+                O2O_JoinInfo.T.Tel,
+                O2O_Product.T.VERIFY_STATUS,
+                O2O_Product.T.PKEY)
+                .SELECT(O2O_Map.T.NAME,"mapName")
+                .SELECT(PdtProduct.T.NAME,"pdtName")
+                .SELECT(PdtCat.T.NAME,"catName")
+                .SELECT(UsrSupplier.T.NAME,"supName")
+                .SELECT(UsrSupplierRole.T.NAME,"roleName")
+                .SELECT(O2O_JoinInfo.T.NAME,"joinInfo")
+                .FROM(O2O_Product.class)
+                .LEFT_JOIN(O2O_JoinInfo.class,O2O_JoinInfo.T.PKEY,O2O_Product.T.JOIN_INFO_ID)
+                .LEFT_JOIN(O2O_Activity.class, T.PKEY,O2O_Product.T.ACTIVITY_ID)
+                .LEFT_JOIN(O2O_Map.class,O2O_Map.T.PKEY, T.ADDRESS)
+                .LEFT_JOIN(PdtProduct.class,PdtProduct.T.PKEY,O2O_Product.T.PRODUCT_ID)
+                .LEFT_JOIN(PdtCat.class,PdtCat.T.PKEY,PdtProduct.T.CATEGORY)
+                .LEFT_JOIN(UsrSupplier.class,UsrSupplier.T.PKEY,O2O_JoinInfo.T.SUPPLIER)
+                .LEFT_JOIN(UsrSupplierRole.class,UsrSupplierRole.T.PKEY,UsrSupplier.T.ROLE);
+            sql.WHERE(null != search.getActId(),O2O_Activity.T.PKEY,"= ?",search.getActId());
+            sql.WHERE(null != search.getActivity(), T.NAME,"like ?","%"+search.getActivity()+"%");
+            sql.WHERE(null != search.getCategory(),PdtCat.T.NAME,"like ?","%"+search.getCategory()+"%");
+            sql.WHERE(null != search.getSupplier(),UsrSupplier.T.NAME,"like ? ","%"+search.getSupplier()+"%");
+            sql.WHERE(null != search.getRole(),UsrSupplierRole.T.NAME,"like ?","%"+search.getRole()+"%");
+            sql.WHERE(null != search.getArea(),O2O_Map.T.NAME,"like ?","%"+search.getArea()+"%");
+            sql.WHERE(null != search.getStatus(),O2O_Product.T.VERIFY_STATUS,"=?",search.getStatus());
+            sql.ORDER_BY(O2O_Product.T.UPDATED_TIME,"DESC").LIMIT(start,limit);
+        return Query.sql(sql).queryMaps();
+    }
+
+    public Integer countEnroll(PdtSearchView search){
+        if(null == search){
+            search = new PdtSearchView();
+        }
+        SQL sql = new SQL();
+        sql.SELECT(O2O_Product.class).FROM(O2O_Product.class)
+            .LEFT_JOIN(O2O_JoinInfo.class,O2O_JoinInfo.T.PKEY,O2O_Product.T.JOIN_INFO_ID)
+            .LEFT_JOIN(O2O_Activity.class, T.PKEY,O2O_JoinInfo.T.ACTIVITY)
+            .LEFT_JOIN(O2O_Map.class,O2O_Map.T.PKEY,O2O_JoinInfo.T.ACTIVITY)
+            .LEFT_JOIN(PdtProduct.class,PdtProduct.T.PKEY,O2O_Product.T.PRODUCT_ID)
+            .LEFT_JOIN(PdtCat.class,PdtCat.T.PKEY,PdtProduct.T.CATEGORY)
+            .LEFT_JOIN(UsrSupplier.class,UsrSupplier.T.PKEY,O2O_JoinInfo.T.SUPPLIER)
+            .LEFT_JOIN(UsrSupplierRole.class,UsrSupplierRole.T.PKEY,UsrSupplier.T.ROLE)
+            .WHERE(null != search.getActId(),O2O_Product.T.PKEY,"=?",search.getActId())
+            .WHERE(null != search.getActivity(), T.NAME,"like ?","%"+search.getActivity()+"%")
+            .WHERE(null != search.getCategory(),PdtCat.T.NAME,"like ?","%"+search.getCategory()+"%")
+            .WHERE(null != search.getSupplier(),UsrSupplier.T.NAME,"like ? ","%"+search.getSupplier()+"%")
+            .WHERE(null != search.getRole(),UsrSupplierRole.T.NAME,"like ?","%"+search.getRole()+"%")
+            .WHERE(null != search.getArea(),O2O_Map.T.NAME,"like ?","%"+search.getArea()+"%")
+            .WHERE(null != search.getStatus(),O2O_Product.T.VERIFY_STATUS,"=?",search.getStatus());
+        return Query.sql(sql).queryCount();
     }
 
 }

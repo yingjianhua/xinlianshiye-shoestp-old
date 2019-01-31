@@ -1,5 +1,10 @@
 package irille.Service.Manage.O2O;
 
+import com.google.inject.ImplementedBy;
+import irille.Entity.O2O.Enums.O2O_ProductStatus;
+import irille.Service.Manage.O2O.Imp.O2OActivityServiceImpl;
+import irille.view.O2O.O2OProductView;
+import irille.view.O2O.PdtSearchView;
 import irille.view.Page;
 import irille.view.O2O.O2OActivityView;
 
@@ -9,6 +14,7 @@ import irille.view.O2O.O2OActivityView;
  * @author Jianhua Ying
  *
  */
+@ImplementedBy(O2OActivityServiceImpl.class)
 public interface O2OActivityService {
 
 	/**
@@ -27,17 +33,28 @@ public interface O2OActivityService {
 	 * <p>取消活动
 	 * 
 	 */
-	void cancel(O2OActivityView view);
+	void cancel(Integer pkey);
 	
 	/**
 	 * <p>发布活动
 	 * 
 	 */
-	O2OActivityView deploy(O2OActivityView view);
-	
+	void deploy(O2OActivityView view);
+
 	/**
-	 * <p>编辑活动
-	 * 
+	 * 报名列表
 	 */
-	O2OActivityView edit(O2OActivityView view);
+	Page<O2OProductView> enrollList(PdtSearchView search, Integer start, Integer limit);
+
+	/**
+	 * 审核
+	 */
+	void appr(Integer id, String reason, O2O_ProductStatus status);
+
+	/**
+	 * 处理上下架
+	 */
+	void lowerAndUpper(Integer id,String reason,O2O_ProductStatus status);
+
+	O2OActivityView load(Integer pkey);
 }

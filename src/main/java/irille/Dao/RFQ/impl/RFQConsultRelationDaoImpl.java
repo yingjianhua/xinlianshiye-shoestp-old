@@ -1,7 +1,9 @@
 package irille.Dao.RFQ.impl;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.Test;
 
@@ -66,5 +68,22 @@ public class RFQConsultRelationDaoImpl implements RFQConsultRelationDao {
 		list.forEach(view->{
 			System.out.println(view);
 		});
+	}
+
+	@Override
+	public List<RFQConsultRelation> findAllByConsult_PkeySupplier_Pkey(String consultPkeys, Integer supplierPkey) {
+		return Query.SELECT(RFQConsultRelation.class)
+				.WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supplierPkey)
+				.WHERE(RFQConsultRelation.T.PKEY, "in (" + Stream.of(consultPkeys.split(",")).map(i -> "?").collect(Collectors.joining(",")) + ")", Stream.of(consultPkeys.split(",")).map(Integer::new).toArray(Serializable[]::new))
+				.queryList();
+	}
+
+	@Override
+	public void save(RFQConsultRelation bean) {
+		if(bean.getPkey() == null) {
+			bean.ins();
+		} else {
+			bean.upd();
+		}
 	}
 }

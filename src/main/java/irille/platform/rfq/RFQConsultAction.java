@@ -45,4 +45,10 @@ public class RFQConsultAction extends ActionBase<RFQConsult> implements IRFQCons
 		write();
 	}
 
+	@Override
+	public void delete() throws IOException {
+		rFQConsultService.delete(consult);
+		write();
+	}
+
 }

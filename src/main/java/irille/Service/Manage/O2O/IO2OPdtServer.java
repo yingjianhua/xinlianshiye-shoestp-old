@@ -30,7 +30,9 @@ public interface IO2OPdtServer {
 
     O2OActivityInfoView load(UsrSupplier supplier,Integer pkey);
 
-    List<O2OActivityPdtInfoView> listAllGeneral(UsrSupplier supplier);
+    List<O2OActivityPdtInfoView> listAllGeneral(UsrSupplier supplier,Integer activity);
 
     void lowerAndUpper(Integer pkey, String reason, O2O_ProductStatus status);
+
+    void appr(Integer pkey,String reason,O2O_ProductStatus status);
 }

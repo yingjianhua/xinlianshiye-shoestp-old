@@ -21,6 +21,7 @@ public class O2O_Map extends BeanInt<O2O_Map> {
         NAME(Sys.T.MUILTI_LANGUAGE,"地址"),
         LONGITUDE(Sys.T.STR__40_NULL,"经度"),
         LATITUDE(Sys.T.STR__40_NULL,"纬度"),
+        IS_DELETE(Tb.crt(Sys.OYn.DEFAULT)),
         ROW_VERSION(Sys.T.ROW_VERSION),
         // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
         // <<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
@@ -72,6 +73,9 @@ public class O2O_Map extends BeanInt<O2O_Map> {
   private String _name;	// 地址  JSONOBJECT
   private String _longitude;	// 经度  STR(40)<null>
   private String _latitude;	// 纬度  STR(40)<null>
+  private Byte _isDelete;	// 是否 <OYn>  BYTE
+	// YES:1,是
+	// NO:0,否
   private Short _rowVersion;	// 版本  SHORT
 
 	@Override
@@ -80,6 +84,7 @@ public class O2O_Map extends BeanInt<O2O_Map> {
     _name=null;	// 地址  JSONOBJECT
     _longitude=null;	// 经度  STR(40)
     _latitude=null;	// 纬度  STR(40)
+    _isDelete= Sys.OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
     _rowVersion=0;	// 版本  SHORT
     return this;
   }
@@ -120,6 +125,18 @@ public class O2O_Map extends BeanInt<O2O_Map> {
   }
   public void setLatitude(String latitude){
     _latitude=latitude;
+  }
+  public Byte getIsDelete(){
+    return _isDelete;
+  }
+  public void setIsDelete(Byte isDelete){
+    _isDelete=isDelete;
+  }
+  public Boolean gtIsDelete(){
+    return byteToBoolean(_isDelete);
+  }
+  public void stIsDelete(Boolean isDelete){
+    _isDelete=booleanToByte(isDelete);
   }
   public Short getRowVersion(){
     return _rowVersion;

@@ -5,7 +5,6 @@ import irille.pub.bean.BeanInt;
 import irille.pub.tb.Fld;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
-import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 
 public class RFQConsultGroupRelation extends BeanInt<RFQConsultGroupRelation> {
@@ -17,7 +16,8 @@ public class RFQConsultGroupRelation extends BeanInt<RFQConsultGroupRelation> {
     public enum T implements IEnumFld {// @formatter:off
         PKEY(Tb.crtIntPkey()),
         CONSULT(RFQConsult.fldOutKey("consult", "询盘")),
-        GROUP(RFQConsultGroup.fldOutKey().setName("询盘分组")),
+        CONSULT_GROUP(RFQConsultGroup.fldOutKey().setName("询盘分组")),
+        SUPPLIER(UsrSupplier.fldOutKey().setName("供应商")),//供应商 跟询盘分组里的供应商字段相同, 属于冗余字段
         ROW_VERSION(Sys.T.ROW_VERSION),
         // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
         // <<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
@@ -65,122 +65,87 @@ public class RFQConsultGroupRelation extends BeanInt<RFQConsultGroupRelation> {
 
     // @formatter:on
     // >>>以下是自动产生的源代码行--源代码--请保留此行用于识别>>>
-    //实例变量定义-----------------------------------------
-    private Integer _pkey;    // 编号  INT
-    private Integer _consult;    // 询盘 <表主键:RFQConsult>  INT
-    private Integer _supplierId;    // 供应商 <表主键:UsrSupplier>  INT
-    private Integer _purchaseId;    // 采购商 <表主键:UsrPurchase>  INT
-    private Byte _favorite;    // 是否添加FLAG <OYn>  BYTE
-    // YES:1,是
-    // NO:0,否
-    private Short _rowVersion;    // 版本  SHORT
+  //实例变量定义-----------------------------------------
+  private Integer _pkey;	// 编号  INT
+  private Integer _consult;	// 询盘 <表主键:RFQConsult>  INT
+  private Integer _consultGroup;	// 询盘分组 <表主键:RFQConsultGroup>  INT
+  private Integer _supplier;	// 供应商 <表主键:UsrSupplier>  INT
+  private Short _rowVersion;	// 版本  SHORT
 
-    @Override
-    public RFQConsultGroupRelation init() {
-        super.init();
-        _consult = null;    // 询盘 <表主键:RFQConsult>  INT
-        _supplierId = null;    // 供应商 <表主键:UsrSupplier>  INT
-        _purchaseId = null;    // 采购商 <表主键:UsrPurchase>  INT
-        _favorite = Sys.OYn.DEFAULT.getLine().getKey();    // 是否添加FLAG <OYn>  BYTE
-        _rowVersion = 0;    // 版本  SHORT
-        return this;
-    }
+	@Override
+  public RFQConsultGroupRelation init(){
+		super.init();
+    _consult=null;	// 询盘 <表主键:RFQConsult>  INT
+    _consultGroup=null;	// 询盘分组 <表主键:RFQConsultGroup>  INT
+    _supplier=null;	// 供应商 <表主键:UsrSupplier>  INT
+    _rowVersion=0;	// 版本  SHORT
+    return this;
+  }
 
-    //方法----------------------------------------------
-    public Integer getPkey() {
-        return _pkey;
-    }
-
-    public void setPkey(Integer pkey) {
-        _pkey = pkey;
-    }
-
-    public Integer getConsult() {
-        return _consult;
-    }
-
-    public void setConsult(Integer consult) {
-        _consult = consult;
-    }
-
-    public RFQConsult gtConsult() {
-        if (getConsult() == null)
-            return null;
-        return (RFQConsult) get(RFQConsult.class, getConsult());
-    }
-
-    public void stConsult(RFQConsult consult) {
-        if (consult == null)
-            setConsult(null);
-        else
-            setConsult(consult.getPkey());
-    }
-
-    public Integer getSupplierId() {
-        return _supplierId;
-    }
-
-    public void setSupplierId(Integer supplierId) {
-        _supplierId = supplierId;
-    }
-
-    public UsrSupplier gtSupplierId() {
-        if (getSupplierId() == null)
-            return null;
-        return (UsrSupplier) get(UsrSupplier.class, getSupplierId());
-    }
-
-    public void stSupplierId(UsrSupplier supplierId) {
-        if (supplierId == null)
-            setSupplierId(null);
-        else
-            setSupplierId(supplierId.getPkey());
-    }
-
-    public Integer getPurchaseId() {
-        return _purchaseId;
-    }
-
-    public void setPurchaseId(Integer purchaseId) {
-        _purchaseId = purchaseId;
-    }
-
-    public UsrPurchase gtPurchaseId() {
-        if (getPurchaseId() == null)
-            return null;
-        return (UsrPurchase) get(UsrPurchase.class, getPurchaseId());
-    }
-
-    public void stPurchaseId(UsrPurchase purchaseId) {
-        if (purchaseId == null)
-            setPurchaseId(null);
-        else
-            setPurchaseId(purchaseId.getPkey());
-    }
-
-    public Byte getFavorite() {
-        return _favorite;
-    }
-
-    public void setFavorite(Byte favorite) {
-        _favorite = favorite;
-    }
-
-    public Boolean gtFavorite() {
-        return byteToBoolean(_favorite);
-    }
-
-    public void stFavorite(Boolean favorite) {
-        _favorite = booleanToByte(favorite);
-    }
-
-    public Short getRowVersion() {
-        return _rowVersion;
-    }
-
-    public void setRowVersion(Short rowVersion) {
-        _rowVersion = rowVersion;
-    }
+  //方法----------------------------------------------
+  public Integer getPkey(){
+    return _pkey;
+  }
+  public void setPkey(Integer pkey){
+    _pkey=pkey;
+  }
+  public Integer getConsult(){
+    return _consult;
+  }
+  public void setConsult(Integer consult){
+    _consult=consult;
+  }
+  public RFQConsult gtConsult(){
+    if(getConsult()==null)
+      return null;
+    return (RFQConsult)get(RFQConsult.class,getConsult());
+  }
+  public void stConsult(RFQConsult consult){
+    if(consult==null)
+      setConsult(null);
+    else
+      setConsult(consult.getPkey());
+  }
+  public Integer getConsultGroup(){
+    return _consultGroup;
+  }
+  public void setConsultGroup(Integer consultGroup){
+    _consultGroup=consultGroup;
+  }
+  public RFQConsultGroup gtConsultGroup(){
+    if(getConsultGroup()==null)
+      return null;
+    return (RFQConsultGroup)get(RFQConsultGroup.class,getConsultGroup());
+  }
+  public void stConsultGroup(RFQConsultGroup consultGroup){
+    if(consultGroup==null)
+      setConsultGroup(null);
+    else
+      setConsultGroup(consultGroup.getPkey());
+  }
+  public Integer getSupplier(){
+    return _supplier;
+  }
+  public void setSupplier(Integer supplier){
+    _supplier=supplier;
+  }
+  public UsrSupplier gtSupplier(){
+    if(getSupplier()==null)
+      return null;
+    return (UsrSupplier)get(UsrSupplier.class,getSupplier());
+  }
+  public void stSupplier(UsrSupplier supplier){
+    if(supplier==null)
+      setSupplier(null);
+    else
+      setSupplier(supplier.getPkey());
+  }
+  public Short getRowVersion(){
+    return _rowVersion;
+  }
+  public void setRowVersion(Short rowVersion){
+    _rowVersion=rowVersion;
+  }
 
     // <<<以上是自动产生的源代码行--源代码--请保留此行用于识别<<<
 

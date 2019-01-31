@@ -6,6 +6,7 @@ import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.platform.rfq.view.*;
+import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
@@ -34,8 +35,10 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
     @Override
     public Page<RFQConsultView> findAllView(Integer start, Integer limit, RFQConsultView condition) {
         BeanQuery<RFQConsult> query = createQuery();
+        //询盘是否被标记为已删除
+        query.WHERE(condition.getIsDeleted() != null, RFQConsult.T.IS_DELETED, "=?", BeanBase.booleanToByte(condition.getIsDeleted()))
         //询盘名称
-        query.WHERE(condition.getTitle() != null, RFQConsult.T.TITLE, "like ?", "%" + condition.getTitle() + "%");
+        .WHERE(condition.getTitle() != null, RFQConsult.T.TITLE, "like ?", "%" + condition.getTitle() + "%");
         //采购商名称
         if (condition.getPurchase() != null && condition.getPurchase().getName() != null)
             query.WHERE(UsrPurchase.T.NAME, "like ?", "%" + condition.getPurchase().getName() + "%");
