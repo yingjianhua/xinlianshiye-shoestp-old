@@ -9,7 +9,8 @@ import irille.pub.tb.IEnumOpt;
 public enum RFQConsultMessageType implements IEnumOpt {
     TEXT(1, "文本信息"),
     IMAGE(2, "图片信息"),
-    Quote(3, "报价信息"),
+    URL(3, "链接类型"),
+    ALERT_URL(4, "有消息提示的_链接类型"),
     ;
 
     public static final String NAME = "消息体类型";

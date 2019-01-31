@@ -7,11 +7,11 @@ import irille.pub.tb.IEnumOpt;
  * by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/13 Time: 16:18
  */
 public enum RFQConsultShipping_Type implements IEnumOpt {
-    OCEAN_SHIPPING(1, "海运"),
+    FOB(1, "FOB"),
     ;
 
     public static final String NAME = "配送方式";
-    public static final RFQConsultShipping_Type DEFAULT = OCEAN_SHIPPING;
+    public static final RFQConsultShipping_Type DEFAULT = FOB;
     private EnumLine _line;
 
     private RFQConsultShipping_Type(int key, String name) {

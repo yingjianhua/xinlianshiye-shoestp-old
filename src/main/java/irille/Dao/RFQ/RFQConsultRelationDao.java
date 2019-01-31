@@ -10,6 +10,8 @@ import irille.platform.rfq.view.RFQConsultRelationView;
 
 @ImplementedBy(RFQConsultRelationDaoImpl.class)
 public interface RFQConsultRelationDao {
+	
+	Integer countByConsult_PkeySupplier_Pkey(Integer consultPkey, Integer supplierPkey);
 
 	List<RFQConsultRelationView> findAllViewByConsultId(Integer id);
 	

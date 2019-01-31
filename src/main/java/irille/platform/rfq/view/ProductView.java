@@ -1,8 +1,5 @@
 package irille.platform.rfq.view;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 import lombok.Data;
 
 @Data

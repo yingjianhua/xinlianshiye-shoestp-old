@@ -1,31 +1,27 @@
 package irille.Entity.RFQ;
 
-import irille.core.sys.Sys;
 import irille.pub.bean.BeanInt;
 import irille.pub.tb.Fld;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
-import irille.shop.usr.UsrSupplier;
 
-public class RFQConsultGroup extends BeanInt<RFQConsultGroup> {
-
-	private static final long serialVersionUID = 7424722974611181778L;
-
-	public static final Tb<?> TB = new Tb<>(RFQConsultGroup.class, "询盘分组").setAutoIncrement();
+public class RFQGroupRelation extends BeanInt<RFQGroupRelation> {
+    public static final Tb TB = new Tb(RFQGroupRelation.class, "RFQ关联表")
+            .setAutoIncrement();
 
     public enum T implements IEnumFld {// @formatter:off
-        PKEY(Tb.crtIntPkey()),
-        NAME(Sys.T.STR__20_NULL), //
-        SUPPLIER(UsrSupplier.fldOutKey().setName("供应商")),
-        ROW_VERSION(Sys.T.ROW_VERSION),
+        PKEY(TB.crtIntPkey()),
+        CONSULT(RFQConsult.fldOutKey()),
+        GROUPID(RFQConsultGroup.fldOutKey()),
+        ROW_VERSION(SYS.ROW_VERSION),
         // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
         // <<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
         ;
         // >>>以下是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别>>>
         // <<<以上是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别<<<
-        private Fld<?> _fld;
+        private Fld _fld;
 
-        private T(Class<?> clazz, String name, boolean... isnull) {
+        private T(Class clazz, String name, boolean... isnull) {
             _fld = TB.addOutKey(clazz, this, name, isnull);
         }
 
@@ -41,11 +37,11 @@ public class RFQConsultGroup extends BeanInt<RFQConsultGroup> {
             _fld = TB.add(fld, this, name, strLen);
         }
 
-        private T(Fld<?> fld) {
+        private T(Fld fld) {
             _fld = TB.add(fld, this);
         }
 
-        public Fld<?> getFld() {
+        public Fld getFld() {
             return _fld;
         }
     }
@@ -54,11 +50,11 @@ public class RFQConsultGroup extends BeanInt<RFQConsultGroup> {
         T.PKEY.getFld().getTb().lockAllFlds();// 加锁所有字段,不可以修改
     }
 
-    public static Fld<?> fldOutKey() {
+    public static Fld fldOutKey() {
         return fldOutKey(TB.getCodeNoPackage(), TB.getShortName());
     }
 
-    public static Fld<?> fldOutKey(String code, String name) {
+    public static Fld fldOutKey(String code, String name) {
         return Tb.crtOutKey(TB, code, name).setType(null);
     }
 
@@ -66,15 +62,15 @@ public class RFQConsultGroup extends BeanInt<RFQConsultGroup> {
     // >>>以下是自动产生的源代码行--源代码--请保留此行用于识别>>>
   //实例变量定义-----------------------------------------
   private Integer _pkey;	// 编号  INT
-  private String _name;	// 字符20  STR(20)<null>
-  private Integer _supplier;	// 供应商 <表主键:UsrSupplier>  INT
+  private Integer _consult;	// 新询盘 <表主键:RFQConsult>  INT
+  private Integer _groupid;	// RFQ分组 <表主键:RFQConsultGroup>  INT
   private Short _rowVersion;	// 版本  SHORT
 
 	@Override
-  public RFQConsultGroup init(){
+  public RFQGroupRelation init(){
 		super.init();
-    _name=null;	// 字符20  STR(20)
-    _supplier=null;	// 供应商 <表主键:UsrSupplier>  INT
+    _consult=null;	// 新询盘 <表主键:RFQConsult>  INT
+    _groupid=null;	// RFQ分组 <表主键:RFQConsultGroup>  INT
     _rowVersion=0;	// 版本  SHORT
     return this;
   }
@@ -86,28 +82,39 @@ public class RFQConsultGroup extends BeanInt<RFQConsultGroup> {
   public void setPkey(Integer pkey){
     _pkey=pkey;
   }
-  public String getName(){
-    return _name;
+  public Integer getConsult(){
+    return _consult;
   }
-  public void setName(String name){
-    _name=name;
+  public void setConsult(Integer consult){
+    _consult=consult;
   }
-  public Integer getSupplier(){
-    return _supplier;
-  }
-  public void setSupplier(Integer supplier){
-    _supplier=supplier;
-  }
-  public UsrSupplier gtSupplier(){
-    if(getSupplier()==null)
+  public RFQConsult gtConsult(){
+    if(getConsult()==null)
       return null;
-    return (UsrSupplier)get(UsrSupplier.class,getSupplier());
+    return (RFQConsult)get(RFQConsult.class,getConsult());
   }
-  public void stSupplier(UsrSupplier supplier){
-    if(supplier==null)
-      setSupplier(null);
+  public void stConsult(RFQConsult consult){
+    if(consult==null)
+      setConsult(null);
     else
-      setSupplier(supplier.getPkey());
+      setConsult(consult.getPkey());
+  }
+  public Integer getGroupid(){
+    return _groupid;
+  }
+  public void setGroupid(Integer groupid){
+    _groupid=groupid;
+  }
+  public RFQConsultGroup gtGroupid(){
+    if(getGroupid()==null)
+      return null;
+    return (RFQConsultGroup)get(RFQConsultGroup.class,getGroupid());
+  }
+  public void stGroupid(RFQConsultGroup groupid){
+    if(groupid==null)
+      setGroupid(null);
+    else
+      setGroupid(groupid.getPkey());
   }
   public Short getRowVersion(){
     return _rowVersion;

@@ -7,6 +7,7 @@ import irille.Entity.RFQ.RFQConsultRelation;
 import irille.platform.rfq.view.RFQConsultView;
 import irille.view.Page;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -41,9 +42,9 @@ public interface RFQConsultDao {
      * @author Jianhua Ying
      */
     RFQConsultView findViewById(Integer id);
-    
+
     RFQConsult findById(Integer pkey);
-    
+
     void save(RFQConsult bean);
 
     List<Map<String, Object>> getRFQList(int start, int limit, String keyword, int supId);
@@ -52,5 +53,19 @@ public interface RFQConsultDao {
 
     List<Map<String, Object>> getRFQofferList(int id);
 
+
+    //查询符合条件返回一个空的Relation对象
     RFQConsultRelation getRFQRelation(int rfqId, Integer pkey);
+
+    Map<String, Object> getMyPdtInfo(Integer id, Integer pkey);
+
+    int getRFQListCount(int start, int limit, String keyword, Integer supId);
+
+    List getPdtList(Integer start, Integer limit, String keyword, Integer pkey);
+
+    int getPdtListCount(Integer start, Integer limit, String keyword, Integer pkey);
+
+    List<Map<String,Object>> getMyRFQQuoteList(Integer start, Integer limit, Date date, String keyword, boolean flag, Integer status, Integer country,int supId);
+
+    Map<String,Object> getMyRFQQuoteInfo(Integer id, Integer pkey);
 }
