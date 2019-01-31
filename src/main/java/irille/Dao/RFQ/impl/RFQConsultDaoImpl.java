@@ -284,7 +284,9 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
     }
 
     public RFQConsult getRFQInfo(int id) {
-        return Query.SELECT(RFQConsult.class).WHERE(RFQConsult.T.PKEY, "=?", id).query();
+        SQL sql = new SQL();
+        sql.SELECT(RFQConsult.class).FROM(RFQConsult.class).WHERE(RFQConsult.T.PKEY, "=?", id);
+        return Query.sql(sql).query(RFQConsult.class);
     }
 
     public List<Map<String, Object>> getRFQofferList(int id) {
@@ -292,7 +294,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         sql.SELECT(
                 UsrSupplier.T.CITY,
                 RFQConsultRelation.T.TITLE,
-                RFQConsultMessage.T.SEND_TIME
+                RFQConsultRelation.T.CREATE_DATE
         ).FROM(RFQConsultRelation.class).WHERE(
                 RFQConsultRelation.T.CONSULT, "=?", id
         )
@@ -379,14 +381,13 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 RFQConsult.T.QUANTITY,
                 RFQConsult.T.CONTENT,
                 RFQConsult.T.CREATE_TIME,
-                RFQConsultRelation.T.CREATE_DATE,
                 RFQConsultRelation.T.HAD_READ,
                 RFQConsultRelation.T.QUANTITY,
-                RFQConsultRelation.T.TITLE,
                 RFQConsultRelation.T.DESTINATION
-        ).SELECT(
-                RFQConsultMessage.T.CONTENT, "quoteContent"
-        ).FROM(RFQConsult.class)
+        ).SELECT(RFQConsultRelation.T.TITLE, "myTitle").SELECT(
+                RFQConsultRelation.T.CREATE_DATE, "myCreate_time"
+        )
+                .FROM(RFQConsult.class)
                 .LEFT_JOIN(
                         RFQConsultRelation.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY
                 )
@@ -408,15 +409,14 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 RFQConsult.T.PAY_TYPE,
                 RFQConsult.T.PRICE,
                 RFQConsult.T.SHIPPING_TYPE,
-                RFQConsult.T.VALID_DATE
+                RFQConsult.T.VALID_DATE,
+                RFQConsultRelation.T.SAMPLE,
+                RFQConsultRelation.T.COMPANYDESCRIBE,
+                RFQConsultRelation.T.THROWAWAY
         )
-                .SELECT(RFQConsultMessage.T.CONTENT, "quoteContent")
                 .FROM(RFQConsult.class)
                 .LEFT_JOIN(
                         RFQConsultRelation.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY
-                )
-                .LEFT_JOIN(
-                        RFQConsultMessage.class, RFQConsultRelation.T.PKEY, RFQConsultMessage.T.RELATION
                 )
                 .WHERE(
                         RFQConsultRelation.T.SUPPLIER_ID, "=?", pkey

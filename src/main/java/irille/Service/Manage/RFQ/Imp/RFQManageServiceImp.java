@@ -115,6 +115,8 @@ public class RFQManageServiceImp implements IRFQManageService {
     @Override
     public int putRFQQuoteInfo(RFQConsultQuoteInfo quoteInfo, Integer pkey) {
         RFQConsult consult = rfqConsultDao.getRFQInfo(quoteInfo.getRfqId());
+        if (consult == null)
+            return 0;
         RFQConsultRelation rfqConsultRelation = rfqConsultDao.getRFQRelation(quoteInfo.getRfqId(), pkey);
         if (rfqConsultRelation == null) {
             return 0;
@@ -138,6 +140,7 @@ public class RFQManageServiceImp implements IRFQManageService {
         rfqConsultRelation.stSample(quoteInfo.isSample());
         rfqConsultRelation.setCompanydescribe(quoteInfo.getCompanyDescribe());
         rfqConsultRelation.setThrowaway(quoteInfo.getThrowaway());
+        rfqConsultRelation.stHadRead(false);
         rfqConsultRelationDAO.setB(rfqConsultRelation);
         rfqConsultRelationDAO.commit();
         return 1;
@@ -175,9 +178,9 @@ public class RFQManageServiceImp implements IRFQManageService {
             body.setDescriotion(GetValue.get(map, RFQConsult.T.CONTENT, String.class, null));
             body.setTitle(GetValue.get(map, RFQConsult.T.TITLE, String.class, null));
             body.setQuantity(GetValue.get(map, RFQConsultRelation.T.QUANTITY, Integer.class, null));
-            body.setQuoteTitle(GetValue.get(map, RFQConsultRelation.T.TITLE, String.class, null));
+            body.setQuoteTitle(GetValue.get(map, "myTitle", String.class, null));
             body.setQuoteDescriotion(GetValue.get(map, RFQConsultRelation.T.DESTINATION, String.class, null));
-            body.setQuoteRFQCreate_date(GetValue.get(map, RFQConsultRelation.T.CREATE_DATE, Date.class, null));
+            body.setQuoteRFQCreate_date(GetValue.get(map, "myCreate_time", Date.class, null));
             if (GetValue.get(map, RFQConsultRelation.T.HAD_READ, Byte.class, (byte) -1) == 0)
                 body.setStatus(1);
             else {
@@ -210,10 +213,9 @@ public class RFQManageServiceImp implements IRFQManageService {
         rfqMyuoteInfo.setMax_price(Integer.valueOf(GetValue.getStringIndex(GetValue.get(map, RFQConsult.T.PRICE, String.class, null), "-", 1)));
         rfqMyuoteInfo.setValid_date(GetValue.get(map, RFQConsult.T.VALID_DATE, Date.class, null));
         rfqMyuoteInfo.setPay_type(GetValue.get(map, RFQConsult.T.PAY_TYPE, Byte.class, (byte) 0));
-        RFQConsultQuoteInfo quoteInfo = objectMapper.readValue(GetValue.get(map, "quoteContent", String.class, null), RFQConsultQuoteInfo.class);
-        rfqMyuoteInfo.setSample(quoteInfo.isSample());
-        rfqMyuoteInfo.setCompanyDescribe(quoteInfo.getCompanyDescribe());
-        rfqMyuoteInfo.setThrowaway(quoteInfo.getThrowaway());
+        rfqMyuoteInfo.setSample(GetValue.get(map, RFQConsultRelation.T.SAMPLE, Byte.class, (byte) 0) == 1);
+        rfqMyuoteInfo.setCompanyDescribe(GetValue.get(map, RFQConsultRelation.T.COMPANYDESCRIBE, String.class, null));
+        rfqMyuoteInfo.setThrowaway(GetValue.get(map, RFQConsultRelation.T.THROWAWAY, String.class, null));
         return rfqMyuoteInfo;
     }
 }
