@@ -57,7 +57,7 @@ public class RFQConsultAction extends HomeAction {
         write();
     }
 
-    public void loadPdtInfo() throws IOException {
+    public void getPdtInfo() throws IOException {
         RFQPdtInfo rfqPdtInfo = iPdtProductService.getInquiryPdtInfo(id);
         if (type == 1 && id != null && id > 0) {
 

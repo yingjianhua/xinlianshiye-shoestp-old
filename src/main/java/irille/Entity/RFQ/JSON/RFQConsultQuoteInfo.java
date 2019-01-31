@@ -13,7 +13,7 @@ import java.util.Date;
 @Data
 public class RFQConsultQuoteInfo {
     private int rfqId;  //询盘的ID
-    private int title;   //商品名称
+    private String  title;   //商品名称
     private String descriotion;   //商品详细描述
     private String images;  //商品图片 多图
     private int quantity;  //数量

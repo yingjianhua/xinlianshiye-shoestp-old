@@ -26,7 +26,6 @@ public class RFQConsult extends BeanInt<RFQConsult> {
         IMAGE(Sys.T.IMG_MULTI__2000_NULL),
         COUNTRY(PltCountry.fldOutKey()),
         PRODUCT(PdtProduct.fldOutKey().setNull()), //产品ID
-        HAVE_NEW_MSG(Sys.T.YN, "有新消息"),//是否有新消息 1:有,0:没有
         CONTENT(Sys.T.STR__200_NULL, "内容"),
         LEFT_COUNT(Sys.T.INT_PLUS_OR_ZERO, "剩余抢单次数"), //初始化次数为5
         QUANTITY(Sys.T.INT, "商品数量"),
@@ -128,7 +127,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
   private String _price;	// 价格(价格区间)  STR(20)<null>
   private Byte _payType;	// 支付方式 <RFQConsultPayType>  BYTE<null>
 	// TT:1,TT支付
-	// OFFINE_PAY:2,线下支付
+	// OFFLINE_PAY:2,线下支付
   private Byte _shippingType;	// 配送方式 <RFQConsultShipping_Type>  BYTE<null>
 	// OCEAN_SHIPPING:1,海运
   private Integer _currency;	// 费率设置 <表主键:PltErate>  INT<null>
@@ -149,7 +148,6 @@ public class RFQConsult extends BeanInt<RFQConsult> {
     _image=null;	// 图片  STR(2000)
     _country=null;	// 国家管理 <表主键:PltCountry>  INT
     _product=null;	// 产品 <表主键:PdtProduct>  INT
-    _haveNewMsg=OYn.DEFAULT.getLine().getKey();	// 有新消息 <OYn>  BYTE
     _content=null;	// 内容  STR(200)
     _leftCount=0;	// 剩余抢单次数  INT
     _quantity=0;	// 商品数量  INT
@@ -226,18 +224,6 @@ public class RFQConsult extends BeanInt<RFQConsult> {
       setProduct(null);
     else
       setProduct(product.getPkey());
-  }
-  public Byte getHaveNewMsg(){
-    return _haveNewMsg;
-  }
-  public void setHaveNewMsg(Byte haveNewMsg){
-    _haveNewMsg=haveNewMsg;
-  }
-  public Boolean gtHaveNewMsg(){
-    return byteToBoolean(_haveNewMsg);
-  }
-  public void stHaveNewMsg(Boolean haveNewMsg){
-    _haveNewMsg=booleanToByte(haveNewMsg);
   }
   public String getContent(){
     return _content;

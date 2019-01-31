@@ -17,6 +17,7 @@ import org.json.JSONException;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class PltConfigAction extends HomeAction<PltConfig> {
 
@@ -69,7 +70,9 @@ public class PltConfigAction extends HomeAction<PltConfig> {
             userInfo.setShopping_cart_count(UsrCartDAO.Query.countByPurchase(getPurchase().getPkey()));
             sysConfigView.setUser(userInfo);
         }
-        sysConfigView.setCurrencyList(PltErateDAO.list());
+        sysConfigView.setCurrencyList(PltErateDAO.list().stream().filter(pltErateView -> {
+            return pltErateView.getEnabled();
+        }).collect(Collectors.toList()));
         write(sysConfigView);
     }
 
