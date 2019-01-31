@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.google.inject.Inject;
 
 import irille.Entity.RFQ.RFQConsultMessage;
+import irille.Entity.RFQ.Enums.RFQConsultMessageType;
 import irille.Service.Manage.RFQ.RFQConsultMessageService;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.rfq.inf.IRFQConsultMessageAction;
@@ -19,10 +20,26 @@ public class RFQConsultMessageAction extends SellerAction<RFQConsultMessage> imp
 	
 	@Inject
 	private RFQConsultMessageService rFQConsultMessageService;
-
+	
+	/**
+	 * 消息类型 @see RFQConsultMessageType
+	 */
+	private Byte type;
+	private String content;
+	private String imageUrl;
+	private Integer productId;
+	
 	@Override
 	public void send() throws IOException {
-		// TODO Auto-generated method stub
+		if(RFQConsultMessageType.TEXT.getLine().getKey() == type) {
+			rFQConsultMessageService.sendTextMessage(getSupplier(), consultId, content);
+		} else if(RFQConsultMessageType.IMAGE.getLine().getKey() == type) {
+			rFQConsultMessageService.sendImageMessage(getSupplier(), consultId, imageUrl);
+		} else if(RFQConsultMessageType.TEXT.getLine().getKey() == type) {
+			rFQConsultMessageService.sendPrivateExpoPdt(getSupplier(), consultId, productId);
+		} else {
+			
+		}
 
 	}
 	

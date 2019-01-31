@@ -10,7 +10,8 @@ import lombok.Data;
  * Time: 20:41
  */
 @Data
-public class RFQConsultImageMessage implements BaseView, ConsultMessage {
-	private String alt;//图片描述信息
-    private String imageUrl;//图片地址
+public class RFQConsultUrlMessage implements BaseView, ConsultMessage {
+	
+	private String showMsg;//显示内容
+    private String url;//链接地址
 }

@@ -1,5 +1,6 @@
 package irille.Entity.RFQ.JSON;
 
+import irille.view.BaseView;
 import lombok.Data;
 
 /**
@@ -9,6 +10,6 @@ import lombok.Data;
  * Time: 20:41
  */
 @Data
-public class RFQConsultTextMessage {
+public class RFQConsultTextMessage implements BaseView, ConsultMessage  {
     private String content;
 }
