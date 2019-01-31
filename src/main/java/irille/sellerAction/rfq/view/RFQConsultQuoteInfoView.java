@@ -1,4 +1,4 @@
-package irille.Entity.RFQ.JSON;
+package irille.sellerAction.rfq.view;
 
 import lombok.Data;
 
@@ -11,7 +11,7 @@ import java.util.Date;
  * Time: 20:41
  */
 @Data
-public class RFQConsultQuoteInfo {
+public class RFQConsultQuoteInfoView {
     private int rfqId;  //询盘的ID
     private String  title;   //商品名称
     private String descriotion;   //商品详细描述

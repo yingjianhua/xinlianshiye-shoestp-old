@@ -1,27 +1,37 @@
 package irille.Service.Manage.RFQ.Imp;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import irille.Dao.Old.RFQ.RFQConsultMessageDAO;
 import irille.Dao.Old.RFQ.RFQConsultRelationDAO;
 import irille.Dao.RFQ.RFQConsultDao;
-import irille.Entity.RFQ.Enums.RFQConsultPayType;
-import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
-import irille.Entity.RFQ.JSON.RFQConsultQuoteInfo;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
+import irille.Entity.RFQ.Enums.RFQConsultPayType;
+import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
 import irille.Service.Manage.RFQ.IRFQManageService;
 import irille.action.dataimport.util.DateUtil;
 import irille.pub.tb.FldLanguage;
 import irille.pub.util.GetValue;
 import irille.pub.util.TranslateLanguage.translateUtil;
+import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
 import irille.shop.pdt.PdtProduct;
-import irille.view.Manage.RFQ.*;
 import irille.view.Page;
-
-import javax.inject.Inject;
-import java.io.IOException;
-import java.util.*;
+import irille.view.Manage.RFQ.RFQListBodyInfoView;
+import irille.view.Manage.RFQ.RFQManageInfoView;
+import irille.view.Manage.RFQ.RFQManageMyQuoteListBody;
+import irille.view.Manage.RFQ.RFQMyuoteInfo;
+import irille.view.Manage.RFQ.RFQPdtInfo;
 
 /**
  * Created by IntelliJ IDEA.
@@ -113,7 +123,7 @@ public class RFQManageServiceImp implements IRFQManageService {
     }
 
     @Override
-    public int putRFQQuoteInfo(RFQConsultQuoteInfo quoteInfo, Integer pkey) {
+    public int putRFQQuoteInfo(RFQConsultQuoteInfoView quoteInfo, Integer pkey) {
         RFQConsult consult = rfqConsultDao.getRFQInfo(quoteInfo.getRfqId());
         if (consult == null)
             return 0;

@@ -1,15 +1,16 @@
 package irille.Service.Manage.RFQ;
 
+import java.io.IOException;
+import java.util.Date;
+
 import com.google.inject.ImplementedBy;
-import irille.Entity.RFQ.JSON.RFQConsultQuoteInfo;
+
 import irille.Service.Manage.RFQ.Imp.RFQManageServiceImp;
+import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
+import irille.view.Page;
 import irille.view.Manage.RFQ.RFQManageInfoView;
 import irille.view.Manage.RFQ.RFQMyuoteInfo;
 import irille.view.Manage.RFQ.RFQPdtInfo;
-import irille.view.Page;
-
-import java.io.IOException;
-import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -26,7 +27,7 @@ public interface IRFQManageService {
 
     RFQManageInfoView getRFQInfo(int id, int supId);
 
-    int putRFQQuoteInfo(RFQConsultQuoteInfo quoteInfo, Integer pkey);
+    int putRFQQuoteInfo(RFQConsultQuoteInfoView quoteInfo, Integer pkey);
 
     RFQPdtInfo getPdtInfo(Integer id, Integer pkey);
 
