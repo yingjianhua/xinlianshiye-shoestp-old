@@ -1,5 +1,7 @@
 package irille.Dao.RFQ.impl;
 
+import java.util.List;
+
 import irille.Dao.RFQ.RFQConsultGroupDao;
 import irille.Entity.RFQ.RFQConsultGroup;
 import irille.pub.bean.Query;
@@ -34,6 +36,11 @@ public class RFQConsultGroupDaoImpl implements RFQConsultGroupDao {
 	@Override
 	public void delete(Integer pkey) {
 		Query.SELECT(RFQConsultGroup.class, pkey).del();
+	}
+
+	@Override
+	public List<RFQConsultGroup> findAllBySupplier_Pkey(Integer supplierPkey) {
+		return Query.SELECT(RFQConsultGroup.class).WHERE(RFQConsultGroup.T.SUPPLIER, "=?", supplierPkey).queryList();
 	}
 
 }

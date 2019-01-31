@@ -1,5 +1,8 @@
 package irille.Service.Manage.RFQ.Imp;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.google.inject.Inject;
 
 import irille.Dao.RFQ.RFQConsultGroupDao;
@@ -79,6 +82,14 @@ public class RFQConsultGroupServiceImpl implements RFQConsultGroupService {
 		}
 		rFQConsultGroupRelationDao.deleteByGroup_pkey(group.getPkey());
 		rFQConsultGroupDao.delete(group.getPkey());
+	}
+
+	@Override
+	public List<RFQConsultGroupView> list(UsrSupplier supplier) {
+		List<RFQConsultGroup> list = rFQConsultGroupDao.findAllBySupplier_Pkey(supplier.getPkey());
+		return list.stream().map(bean->{
+			return RFQConsultGroupView.Builder.toView(bean);
+		}).collect(Collectors.toList());
 	}
 
 }

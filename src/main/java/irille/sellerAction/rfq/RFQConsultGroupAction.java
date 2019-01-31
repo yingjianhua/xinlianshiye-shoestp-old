@@ -38,5 +38,10 @@ public class RFQConsultGroupAction extends SellerAction<RFQConsultGroup> impleme
 		rFQConsultGroupService.delete(getSupplier(), group);
 		write();
 	}
+	
+	@Override
+	public void list() throws IOException {
+		write(rFQConsultGroupService.list(getSupplier()));
+	}
 
 }
