@@ -36,5 +36,13 @@ public class RFQConsultAction extends ActionBase<RFQConsult> implements IRFQCons
 	public void detail() throws IOException {
 		write(rFQConsultService.detail(consult));
 	}
+	
+	private Boolean verify;
+
+	@Override
+	public void approve() throws IOException {
+		rFQConsultService.approve(consult, verify);
+		write();
+	}
 
 }

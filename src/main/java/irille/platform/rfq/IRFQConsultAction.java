@@ -33,4 +33,13 @@ public interface IRFQConsultAction {
 	 * @author Jianhua Ying
 	 */
 	void detail() throws IOException ;
+	
+	/**
+	 * 审核
+	 * 
+	 * <p>审核通过和审核失败
+	 * 
+	 * @throws IOException
+	 */
+	void approve() throws IOException ;
 }

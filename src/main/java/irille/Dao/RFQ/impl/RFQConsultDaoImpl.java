@@ -166,6 +166,20 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         return view;
     }
 
+	@Override
+	public RFQConsult findById(Integer pkey) {
+		return Query.SELECT(RFQConsult.class, pkey);
+	}
+
+	@Override
+	public void save(RFQConsult bean) {
+		if(bean.getPkey() == null) {
+			bean.ins();
+		} else {
+			bean.upd();
+		}
+	}
+	
     private List<RFQConsultView> toView(List<Map<String, Object>> result) {
         return result.stream().map(map -> {
             return toView(map);
@@ -300,4 +314,5 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         result = new RFQConsultRelation();
         return result;
     }
+
 }
