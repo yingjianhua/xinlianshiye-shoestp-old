@@ -86,4 +86,9 @@ public class RFQConsultRelationDaoImpl implements RFQConsultRelationDao {
 			bean.upd();
 		}
 	}
+
+	@Override
+	public Integer countByConsult_PkeySupplier_Pkey(Integer consultPkey, Integer supplierPkey) {
+		return Query.SELECT(RFQConsultRelation.class).WHERE(RFQConsultRelation.T.CONSULT, "=?", consultPkey).WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supplierPkey).queryCount();
+	}
 }
