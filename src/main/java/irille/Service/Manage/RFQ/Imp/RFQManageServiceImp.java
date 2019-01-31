@@ -1,11 +1,11 @@
 package irille.Service.Manage.RFQ.Imp;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import irille.Dao.Old.RFQ.RFQConsultMessageDAO;
 import irille.Dao.Old.RFQ.RFQConsultRelationDAO;
 import irille.Dao.RFQ.RFQConsultDao;
-import irille.Entity.RFQ.Enums.RFQConsultMessageType;
+import irille.Entity.RFQ.Enums.RFQConsultPayType;
+import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
 import irille.Entity.RFQ.JSON.RFQConsultQuoteInfo;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultMessage;
@@ -16,10 +16,7 @@ import irille.pub.tb.FldLanguage;
 import irille.pub.util.GetValue;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.PdtProduct;
-import irille.view.Manage.RFQ.RFQListBodyInfoView;
-import irille.view.Manage.RFQ.RFQManageInfoView;
-import irille.view.Manage.RFQ.RFQManageMyQuoteListBody;
-import irille.view.Manage.RFQ.RFQPdtInfo;
+import irille.view.Manage.RFQ.*;
 import irille.view.Page;
 
 import javax.inject.Inject;
@@ -117,30 +114,32 @@ public class RFQManageServiceImp implements IRFQManageService {
 
     @Override
     public int putRFQQuoteInfo(RFQConsultQuoteInfo quoteInfo, Integer pkey) {
-        RFQConsultMessage message = new RFQConsultMessage();
-        message.stType(RFQConsultMessageType.Quote);
-        message.stP2S(false);
-        message.stHadRead(false);
-        try {
-            message.setContent(objectMapper.writeValueAsString(quoteInfo));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
         RFQConsult consult = rfqConsultDao.getRFQInfo(quoteInfo.getRfqId());
         RFQConsultRelation rfqConsultRelation = rfqConsultDao.getRFQRelation(quoteInfo.getRfqId(), pkey);
         if (rfqConsultRelation == null) {
             return 0;
         }
-        rfqConsultRelation.setConsult(quoteInfo.getRfqId());
-        rfqConsultRelation.setSupplierId(pkey);
         rfqConsultRelation.setConsult(consult.getPkey());
+        rfqConsultRelation.setSupplierId(pkey);
         rfqConsultRelation.setPurchaseId(consult.getPurchaseId());
+        rfqConsultRelation.stInRecycleBin(false);
         rfqConsultRelation.stFavorite(false);
-        rfqConsultRelationDAO.setB(rfqConsultRelation).commit();
-        RFQConsultRelation rfqConsultRelation1 = rfqConsultRelationDAO.getB();
-        message.setRelation(rfqConsultRelation1.getPkey());
-        rfqConsultMessageDAO.setB(message);
-        rfqConsultMessageDAO.commit();
+        rfqConsultRelation.setCurrency(quoteInfo.getCurrency());
+        rfqConsultRelation.setTitle(quoteInfo.getTitle());
+        rfqConsultRelation.setDestination(quoteInfo.getDescriotion());
+        rfqConsultRelation.setImage(quoteInfo.getImages());
+        rfqConsultRelation.setQuantity(quoteInfo.getQuantity());
+        rfqConsultRelation.setMinprice(quoteInfo.getMin_price());
+        rfqConsultRelation.setMaxprice(quoteInfo.getMax_price());
+        rfqConsultRelation.setCurrency(quoteInfo.getCurrency());
+        rfqConsultRelation.setValidDate(quoteInfo.getValidity());
+        rfqConsultRelation.stPaytype((RFQConsultPayType) RFQConsultPayType.DEFAULT.getLine().get(quoteInfo.getPayType()));
+        rfqConsultRelation.stTransittype((RFQConsultShipping_Type) RFQConsultShipping_Type.FOB.getLine().get(quoteInfo.getTransitType()));
+        rfqConsultRelation.stSample(quoteInfo.isSample());
+        rfqConsultRelation.setCompanydescribe(quoteInfo.getCompanyDescribe());
+        rfqConsultRelation.setThrowaway(quoteInfo.getThrowaway());
+        rfqConsultRelationDAO.setB(rfqConsultRelation);
+        rfqConsultRelationDAO.commit();
         return 1;
     }
 
@@ -174,14 +173,12 @@ public class RFQManageServiceImp implements IRFQManageService {
             body.setId(GetValue.get(map, RFQConsult.T.PKEY, Integer.class, 0));
             body.setRfqCreate_date(GetValue.get(map, RFQConsult.T.CREATE_TIME, Date.class, null));
             body.setDescriotion(GetValue.get(map, RFQConsult.T.CONTENT, String.class, null));
-            String s = GetValue.get(map, "quoteContent", String.class, null);
-            RFQConsultQuoteInfo quoteInfo = objectMapper.readValue(s, RFQConsultQuoteInfo.class);
             body.setTitle(GetValue.get(map, RFQConsult.T.TITLE, String.class, null));
-            body.setQuantity(quoteInfo.getQuantity());
-            body.setQuoteTitle(quoteInfo.getTitle());
-            body.setQuoteDescriotion(quoteInfo.getDescriotion());
-            body.setQuoteRFQCreate_date(GetValue.get(map, RFQConsultMessage.T.SEND_TIME, Date.class, null));
-            if (GetValue.get(map, RFQConsultMessage.T.HAD_READ, Byte.class, (byte) -1) == 0)
+            body.setQuantity(GetValue.get(map, RFQConsultRelation.T.QUANTITY, Integer.class, null));
+            body.setQuoteTitle(GetValue.get(map, RFQConsultRelation.T.TITLE, String.class, null));
+            body.setQuoteDescriotion(GetValue.get(map, RFQConsultRelation.T.DESTINATION, String.class, null));
+            body.setQuoteRFQCreate_date(GetValue.get(map, RFQConsultRelation.T.CREATE_DATE, Date.class, null));
+            if (GetValue.get(map, RFQConsultRelation.T.HAD_READ, Byte.class, (byte) -1) == 0)
                 body.setStatus(1);
             else {
                 body.setStatus(2);
@@ -191,10 +188,32 @@ public class RFQManageServiceImp implements IRFQManageService {
         return new Page(result, start, limit, 10);
     }
 
-	@Override
-	public void page(Integer start, Integer limit, String keyword, Integer groupId, Boolean flagId, Byte type,
-			Boolean haveNewMsg, Boolean isDeleted, Date startDate, Date endDate) {
-		// TODO Auto-generated method stub 未完成
+    @Override
+    public void page(Integer start, Integer limit, String keyword, Integer groupId, Boolean flagId, Byte type,
+                     Boolean haveNewMsg, Boolean isDeleted, Date startDate, Date endDate) {
+        // TODO Auto-generated method stub 未完成
 
-	}
+    }
+
+    @Override
+    public RFQMyuoteInfo getMyRFQQuoteInfo(Integer id, Integer pkey) throws IOException {
+        Map map = rfqConsultDao.getMyRFQQuoteInfo(id, pkey);
+        RFQMyuoteInfo rfqMyuoteInfo = new RFQMyuoteInfo();
+        rfqMyuoteInfo.setId(GetValue.get(map, RFQConsultMessage.T.PKEY, Integer.class, -1));
+        rfqMyuoteInfo.setTitle(GetValue.get(map, RFQConsult.T.TITLE, String.class, null));
+        rfqMyuoteInfo.setDescriotion(GetValue.get(map, RFQConsult.T.CONTENT, String.class, null));
+        rfqMyuoteInfo.setImages(GetValue.get(map, RFQConsult.T.IMAGE, String.class, null));
+        rfqMyuoteInfo.setQuantity(GetValue.get(map, RFQConsult.T.QUANTITY, Integer.class, 0));
+        rfqMyuoteInfo.setCurrency(GetValue.get(map, RFQConsult.T.CURRENCY, Integer.class, 0));
+        rfqMyuoteInfo.setShipping_type(GetValue.get(map, RFQConsult.T.SHIPPING_TYPE, Byte.class, (byte) 0));
+        rfqMyuoteInfo.setMin_price(Integer.valueOf(GetValue.getStringIndex(GetValue.get(map, RFQConsult.T.PRICE, String.class, null), "-", 0)));
+        rfqMyuoteInfo.setMax_price(Integer.valueOf(GetValue.getStringIndex(GetValue.get(map, RFQConsult.T.PRICE, String.class, null), "-", 1)));
+        rfqMyuoteInfo.setValid_date(GetValue.get(map, RFQConsult.T.VALID_DATE, Date.class, null));
+        rfqMyuoteInfo.setPay_type(GetValue.get(map, RFQConsult.T.PAY_TYPE, Byte.class, (byte) 0));
+        RFQConsultQuoteInfo quoteInfo = objectMapper.readValue(GetValue.get(map, "quoteContent", String.class, null), RFQConsultQuoteInfo.class);
+        rfqMyuoteInfo.setSample(quoteInfo.isSample());
+        rfqMyuoteInfo.setCompanyDescribe(quoteInfo.getCompanyDescribe());
+        rfqMyuoteInfo.setThrowaway(quoteInfo.getThrowaway());
+        return rfqMyuoteInfo;
+    }
 }

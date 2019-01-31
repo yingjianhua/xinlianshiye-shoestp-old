@@ -2,6 +2,7 @@ package irille.Dao.Old.RFQ;
 
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.pub.idu.IduIns;
+import irille.pub.svr.Env;
 
 /**
  * Created by IntelliJ IDEA.
@@ -13,6 +14,7 @@ public class RFQConsultRelationDAO extends IduIns<RFQConsultRelationDAO, RFQCons
 
     @Override
     public void before() {
+        getB().setCreateDate(Env.getSystemTime());
         super.before();
     }
 }

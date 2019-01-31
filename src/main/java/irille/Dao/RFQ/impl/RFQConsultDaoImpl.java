@@ -1,7 +1,6 @@
 package irille.Dao.RFQ.impl;
 
 import irille.Dao.RFQ.RFQConsultDao;
-import irille.Entity.RFQ.Enums.RFQConsultMessageType;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
@@ -37,8 +36,8 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         BeanQuery<RFQConsult> query = createQuery();
         //询盘是否被标记为已删除
         query.WHERE(condition.getIsDeleted() != null, RFQConsult.T.IS_DELETED, "=?", BeanBase.booleanToByte(condition.getIsDeleted()))
-        //询盘名称
-        .WHERE(condition.getTitle() != null, RFQConsult.T.TITLE, "like ?", "%" + condition.getTitle() + "%");
+                //询盘名称
+                .WHERE(condition.getTitle() != null, RFQConsult.T.TITLE, "like ?", "%" + condition.getTitle() + "%");
         //采购商名称
         if (condition.getPurchase() != null && condition.getPurchase().getName() != null)
             query.WHERE(UsrPurchase.T.NAME, "like ?", "%" + condition.getPurchase().getName() + "%");
@@ -292,18 +291,13 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         SQL sql = new SQL();
         sql.SELECT(
                 UsrSupplier.T.CITY,
+                RFQConsultRelation.T.TITLE,
                 RFQConsultMessage.T.SEND_TIME
         ).FROM(RFQConsultRelation.class).WHERE(
                 RFQConsultRelation.T.CONSULT, "=?", id
         )
                 .LEFT_JOIN(
                         UsrSupplier.class, UsrSupplier.T.PKEY, RFQConsultRelation.T.SUPPLIER_ID
-                )
-                .LEFT_JOIN(
-                        RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.CONSULT
-                )
-                .WHERE(
-                        RFQConsultMessage.T.TYPE, "=?", RFQConsultMessageType.Quote
                 );
         return Query.sql(sql).queryMaps();
     }
@@ -385,19 +379,52 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 RFQConsult.T.QUANTITY,
                 RFQConsult.T.CONTENT,
                 RFQConsult.T.CREATE_TIME,
-                RFQConsultMessage.T.SEND_TIME,
-                RFQConsultMessage.T.HAD_READ
+                RFQConsultRelation.T.CREATE_DATE,
+                RFQConsultRelation.T.HAD_READ,
+                RFQConsultRelation.T.QUANTITY,
+                RFQConsultRelation.T.TITLE,
+                RFQConsultRelation.T.DESTINATION
         ).SELECT(
-                RFQConsultMessage.T.CONTENT,"quoteContent"
+                RFQConsultMessage.T.CONTENT, "quoteContent"
         ).FROM(RFQConsult.class)
                 .LEFT_JOIN(
                         RFQConsultRelation.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY
-                ).LEFT_JOIN(
-                RFQConsultMessage.class, RFQConsultRelation.T.PKEY, RFQConsultMessage.T.RELATION
-        )
+                )
                 .WHERE(
                         RFQConsultRelation.T.SUPPLIER_ID, "=?", supId
                 );
         return Query.sql(sql).queryMaps();
+    }
+
+    @Override
+    public Map<String, Object> getMyRFQQuoteInfo(Integer id, Integer pkey) {
+        SQL sql = new SQL();
+        sql.SELECT(
+                RFQConsultMessage.T.PKEY,
+                RFQConsult.T.TITLE,
+                RFQConsult.T.CONTENT,
+                RFQConsult.T.IMAGE,
+                RFQConsult.T.QUANTITY,
+                RFQConsult.T.PAY_TYPE,
+                RFQConsult.T.PRICE,
+                RFQConsult.T.SHIPPING_TYPE,
+                RFQConsult.T.VALID_DATE
+        )
+                .SELECT(RFQConsultMessage.T.CONTENT, "quoteContent")
+                .FROM(RFQConsult.class)
+                .LEFT_JOIN(
+                        RFQConsultRelation.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY
+                )
+                .LEFT_JOIN(
+                        RFQConsultMessage.class, RFQConsultRelation.T.PKEY, RFQConsultMessage.T.RELATION
+                )
+                .WHERE(
+                        RFQConsultRelation.T.SUPPLIER_ID, "=?", pkey
+                )
+                .WHERE(
+                        RFQConsultRelation.T.CONSULT, "=?", id
+                );
+
+        return Query.sql(sql).queryMap();
     }
 }

@@ -53,6 +53,8 @@ public interface RFQConsultDao {
 
     List<Map<String, Object>> getRFQofferList(int id);
 
+
+    //查询符合条件返回一个空的Relation对象
     RFQConsultRelation getRFQRelation(int rfqId, Integer pkey);
 
     Map<String, Object> getMyPdtInfo(Integer id, Integer pkey);
@@ -64,4 +66,6 @@ public interface RFQConsultDao {
     int getPdtListCount(Integer start, Integer limit, String keyword, Integer pkey);
 
     List<Map<String,Object>> getMyRFQQuoteList(Integer start, Integer limit, Date date, String keyword, boolean flag, Integer status, Integer country,int supId);
+
+    Map<String,Object> getMyRFQQuoteInfo(Integer id, Integer pkey);
 }

@@ -4,6 +4,7 @@ import com.google.inject.ImplementedBy;
 import irille.Entity.RFQ.JSON.RFQConsultQuoteInfo;
 import irille.Service.Manage.RFQ.Imp.RFQManageServiceImp;
 import irille.view.Manage.RFQ.RFQManageInfoView;
+import irille.view.Manage.RFQ.RFQMyuoteInfo;
 import irille.view.Manage.RFQ.RFQPdtInfo;
 import irille.view.Page;
 
@@ -33,7 +34,7 @@ public interface IRFQManageService {
 
     Page getMyRFQQuoteList(Integer start, Integer limit, Date date, String keyword, boolean flag, Integer status, Integer country, int supid) throws IOException;
 
-//    RFQMyuoteInfo getMyRFQQuoteInfo(Integer id, Integer pkey);
+    RFQMyuoteInfo getMyRFQQuoteInfo(Integer id, Integer pkey) throws IOException;
 
     /**
      * 分页查询询盘列表
@@ -51,4 +52,5 @@ public interface IRFQManageService {
      * @author Jianhua Ying
      */
     void page(Integer start, Integer limit, String keyword, Integer groupId, Boolean flagId, Byte type, Boolean haveNewMsg, Boolean isDeleted, Date startDate, Date endDate);
+
 }

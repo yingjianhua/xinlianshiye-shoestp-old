@@ -54,10 +54,11 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         );
         rfqConsult.setPrice(rfqConsultView.getMin_price() + "-" + rfqConsultView.getMax_price());
         rfqConsult.stPayType((RFQConsultPayType) RFQConsultPayType.DEFAULT.getLine().get(rfqConsultView.getPay_type()));
-        rfqConsult.stShippingType(RFQConsultShipping_Type.OCEAN_SHIPPING);
+        rfqConsult.stShippingType(RFQConsultShipping_Type.FOB);
         rfqConsult.setCurrency(rfqConsultView.getCurrency());
         rfqConsult.setDestination(rfqConsultView.getDestination());
         rfqConsult.setTotal(10);
+        rfqConsult.stIsDeleted(false);
         rfqConsult.setChangeCount((short) 0);
         rfqConsult.setCountry(usrPurchase.getCountry());
 //        rfqConsult.setCountry(1);

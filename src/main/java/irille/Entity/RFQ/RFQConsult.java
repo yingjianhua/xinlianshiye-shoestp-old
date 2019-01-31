@@ -100,9 +100,6 @@ public class RFQConsult extends BeanInt<RFQConsult> {
   private String _image;	// 图片  STR(2000)<null>
   private Integer _country;	// 国家管理 <表主键:PltCountry>  INT
   private Integer _product;	// 产品 <表主键:PdtProduct>  INT<null>
-  private Byte _haveNewMsg;	// 有新消息 <OYn>  BYTE
-	// YES:1,是
-	// NO:0,否
   private String _content;	// 内容  STR(200)<null>
   private Integer _leftCount;	// 剩余抢单次数  INT
   private Integer _quantity;	// 商品数量  INT
@@ -129,7 +126,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
 	// TT:1,TT支付
 	// OFFLINE_PAY:2,线下支付
   private Byte _shippingType;	// 配送方式 <RFQConsultShipping_Type>  BYTE<null>
-	// OCEAN_SHIPPING:1,海运
+	// FOB:1,FOB
   private Integer _currency;	// 费率设置 <表主键:PltErate>  INT<null>
   private String _destination;	// 目的地  STR(200)<null>
   private Integer _total;	// 总抢单数  INT
@@ -356,7 +353,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
     _shippingType=shippingType;
   }
   public RFQConsultShipping_Type gtShippingType(){
-    return (RFQConsultShipping_Type)(RFQConsultShipping_Type.OCEAN_SHIPPING.getLine().get(_shippingType));
+    return (RFQConsultShipping_Type)(RFQConsultShipping_Type.FOB.getLine().get(_shippingType));
   }
   public void stShippingType(RFQConsultShipping_Type shippingType){
     _shippingType=shippingType.getLine().getKey();
