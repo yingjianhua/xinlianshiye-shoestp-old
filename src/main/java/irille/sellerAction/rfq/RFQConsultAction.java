@@ -25,7 +25,7 @@ import lombok.Setter;
 public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQConsultAction {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Inject
     private IRFQManageService irfqManageService;
     @Inject
@@ -35,17 +35,14 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
     private ObjectMapper objectMapper;
 
 
-    @Setter
     private Integer start;
-    @Setter
     private Integer limit;
-    @Setter
     private String keyword;
-    @Setter
+    private Date date;
+    private boolean flag;
+    private Integer status;
+    private Integer country;
     private Integer id;
-
-
-    @Setter
     private String data;
 
     public void getRFQList() throws IOException {
@@ -63,7 +60,30 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
         irfqManageService.putRFQQuoteInfo(quoteInfo, getSupplier().getPkey());
         write();
     }
-    
+
+    public void getPdtInfo() throws IOException {
+        write(irfqManageService.getPdtInfo(id, getSupplier().getPkey()));
+    }
+
+    public void getPdtList() throws IOException {
+        if (start == null) start = 0;
+        if (limit == null) limit = 5;
+        write(irfqManageService.getPdtList(start, limit, keyword, getSupplier().getPkey()));
+    }
+
+    @Override
+    public void getMyRFQQuoteList() throws IOException {
+        if (start == null) start = 0;
+        if (limit == null) limit = 5;
+        write(irfqManageService.getMyRFQQuoteList(start, limit, date, keyword, flag, status, country, getSupplier().getPkey()));
+    }
+
+    public void getMyRFQQuoteInfo() throws IOException {
+        if (start == null) start = 0;
+        if (limit == null) limit = 5;
+//        write(irfqManageService.getMyRFQQuoteInfo(id, getSupplier().getPkey()));
+    }
+
     private Integer groupId;
     private Boolean flagId;
     private Byte type;
@@ -71,16 +91,16 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
     private Boolean isDeleted;
     private Date startDate;
     private Date endDate;
-    
+
     private String ids;
-    
+
     /**
      * 分页查询询盘信息
      * 查询条件
      * 询盘类型
      * 询盘标题
      * 询盘采购商名称
-     * 
+     *
      * @author Jianhua Ying
      */
     @Override
@@ -106,5 +126,5 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
 		rFQConsultService.moveToGroup(getSupplier(), ids, groupId);
 		write();
 	}
-    
+
 }

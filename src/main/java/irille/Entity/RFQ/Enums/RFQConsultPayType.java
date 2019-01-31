@@ -9,7 +9,7 @@ import irille.pub.tb.IEnumOpt;
 public enum RFQConsultPayType implements IEnumOpt {
     TT(1, "TT支付"),
     //    CASH_PAYMENT(2, "现金支付"),
-    OFFINE_PAY(2, "线下支付");
+    OFFLINE_PAY(2, "线下支付");
 
     public static final String NAME = "支付方式";
     public static final RFQConsultPayType DEFAULT = TT;

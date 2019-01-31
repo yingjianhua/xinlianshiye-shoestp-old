@@ -169,20 +169,20 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         return view;
     }
 
-	@Override
-	public RFQConsult findById(Integer pkey) {
-		return Query.SELECT(RFQConsult.class, pkey);
-	}
+    @Override
+    public RFQConsult findById(Integer pkey) {
+        return Query.SELECT(RFQConsult.class, pkey);
+    }
 
-	@Override
-	public void save(RFQConsult bean) {
-		if(bean.getPkey() == null) {
-			bean.ins();
-		} else {
-			bean.upd();
-		}
-	}
-	
+    @Override
+    public void save(RFQConsult bean) {
+        if (bean.getPkey() == null) {
+            bean.ins();
+        } else {
+            bean.upd();
+        }
+    }
+
     private List<RFQConsultView> toView(List<Map<String, Object>> result) {
         return result.stream().map(map -> {
             return toView(map);
@@ -271,6 +271,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 RFQConsult.T.CREATE_TIME,
                 RFQConsult.T.QUANTITY,
                 RFQConsult.T.LEFT_COUNT,
+                RFQConsult.T.TOTAL,
                 RFQConsultRelation.T.FAVORITE
         ).SELECT(
                 sql1, "inquiry"
@@ -318,4 +319,85 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         return result;
     }
 
+    @Override
+    public Map<String, Object> getMyPdtInfo(Integer id, Integer pkey) {
+        return Query.SELECT(
+                PdtProduct.T.PKEY,
+                PdtProduct.T.NAME,
+                PdtProduct.T.PICTURE
+        ).queryMap();
+    }
+
+    @Override
+    public int getRFQListCount(int start, int limit, String keyword, Integer supId) {
+        SQL sql = new SQL();
+        sql.SELECT(
+                RFQConsult.T.PKEY,
+                RFQConsult.T.TITLE,
+                RFQConsult.T.COUNTRY,
+                RFQConsult.T.CREATE_TIME,
+                RFQConsult.T.QUANTITY,
+                RFQConsult.T.LEFT_COUNT,
+                RFQConsultRelation.T.FAVORITE
+        ).FROM(RFQConsult.class)
+                .LEFT_JOIN(RFQConsultRelation.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY)
+                .LIMIT(start, limit)
+                .WHERE(keyword != null && keyword.length() > 0, RFQConsult.T.TITLE, "like ?", keyword)
+                .WHERE(RFQConsult.T.VALID_DATE, ">?", LocalDateTime.now())
+        ;
+        return Query.sql(sql).queryCount();
+    }
+
+    @Override
+    public List getPdtList(Integer start, Integer limit, String keyword, Integer pkey) {
+        SQL sql = new SQL();
+        sql.SELECT(
+                PdtProduct.T.PKEY,
+                PdtProduct.T.NAME,
+                PdtProduct.T.PICTURE
+        ).FROM(PdtProduct.class)
+                .WHERE(PdtProduct.T.SUPPLIER, "=?", pkey)
+                .WHERE(keyword != null && keyword.length() > 0, PdtProduct.T.NAME, "like ?", keyword)
+                .LIMIT(start, limit);
+        return Query.sql(sql).queryMaps();
+    }
+
+    @Override
+    public int getPdtListCount(Integer start, Integer limit, String keyword, Integer pkey) {
+        SQL sql = new SQL();
+        sql.SELECT(
+                PdtProduct.T.PKEY,
+                PdtProduct.T.NAME,
+                PdtProduct.T.PICTURE
+        ).FROM(PdtProduct.class)
+                .WHERE(PdtProduct.T.SUPPLIER, "=?", pkey)
+                .WHERE(keyword != null && keyword.length() > 0, PdtProduct.T.NAME, "like ?", keyword)
+                .LIMIT(start, limit);
+        return Query.sql(sql).queryCount();
+    }
+
+    @Override
+    public List<Map<String, Object>> getMyRFQQuoteList(Integer start, Integer limit, Date date, String keyword, boolean flag, Integer status, Integer country, int supId) {
+        SQL sql = new SQL();
+        sql.SELECT(
+                RFQConsult.T.PKEY,
+                RFQConsult.T.TITLE,
+                RFQConsult.T.QUANTITY,
+                RFQConsult.T.CONTENT,
+                RFQConsult.T.CREATE_TIME,
+                RFQConsultMessage.T.SEND_TIME,
+                RFQConsultMessage.T.HAD_READ
+        ).SELECT(
+                RFQConsultMessage.T.CONTENT,"quoteContent"
+        ).FROM(RFQConsult.class)
+                .LEFT_JOIN(
+                        RFQConsultRelation.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY
+                ).LEFT_JOIN(
+                RFQConsultMessage.class, RFQConsultRelation.T.PKEY, RFQConsultMessage.T.RELATION
+        )
+                .WHERE(
+                        RFQConsultRelation.T.SUPPLIER_ID, "=?", supId
+                );
+        return Query.sql(sql).queryMaps();
+    }
 }
