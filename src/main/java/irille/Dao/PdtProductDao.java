@@ -46,6 +46,10 @@ import static java.util.stream.Collectors.toList;
  * Time: 14:47
  */
 public class PdtProductDao {
+	
+	public PdtProduct findByPkey(Integer productPkey) {
+		return Query.SELECT(PdtProduct.class, productPkey);
+	}
     /***
      * 首页新品
      *

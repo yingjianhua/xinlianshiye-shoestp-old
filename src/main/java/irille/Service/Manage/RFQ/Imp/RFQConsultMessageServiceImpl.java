@@ -27,6 +27,8 @@ import irille.pub.exception.WebMessageException;
 import irille.sellerAction.rfq.view.RFQConsultMessageContactView;
 import irille.sellerAction.rfq.view.RFQConsultMessageView;
 import irille.sellerAction.rfq.view.RFQConsultMessagesView;
+import irille.shop.pdt.Pdt.OProductType;
+import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 
@@ -85,7 +87,15 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 
 	@Override
 	public RFQConsultMessageView sendPrivateExpoPdt(UsrSupplier supplier, Integer consultPkey, Integer productPkey) {
+		PdtProduct product = pdtProductDao.findByPkey(productPkey);
+		if(product.getSupplier() != supplier.getPkey()) {
+			throw new WebMessageException(ReturnCode.service_gone, "商品错误");
+		}
+		if(!product.gtProductType().equals(OProductType.PrivateExpo)) {
+			throw new WebMessageException(ReturnCode.service_gone, "不是私人展厅商品");
+		}
 		RFQConsultAlertUrlMessage message = new RFQConsultAlertUrlMessage();
+		message.setProductId(productPkey);
 		message.setAlertMsg("该链接被打开后72小时内有效，72小时后该链接失效，买家将无法查看该产品");
 		message.setShowMsg("产品链接");
 		message.setUrl("");//TODO 链接现在尚未确定  确定后补上 带上询盘聊天消息的uuid做为参数
