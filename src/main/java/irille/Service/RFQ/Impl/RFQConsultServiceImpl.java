@@ -74,4 +74,24 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 		rFQConsultDao.save(consult);
 	}
 
+	@Override
+	public void delete(RFQConsultView view) {
+		RFQConsult consult = null;
+		if(view.getPkey() == null || (consult = rFQConsultDao.findById(view.getPkey())) == null) {
+			throw new WebMessageException(ReturnCode.valid_notnull, "请选择询盘");
+		}
+		if(!consult.gtType().equals(RFQConsultType.RFQ)) {
+			//不是RFQ询盘不能删除
+			throw new WebMessageException(ReturnCode.service_state_error, "类型错误");
+		}
+		if(consult.gtStatus() != RFQConsultStatus.close && consult.gtStatus() != RFQConsultStatus.complete) {
+			//只能删除状态为已关闭和已完成的RFQ询盘
+			throw new WebMessageException(ReturnCode.service_state_error, "状态错误");
+		}
+		if(!consult.gtIsDeleted()) {
+			consult.stIsDeleted(true);
+			rFQConsultDao.save(consult);
+		}
+	}
+
 }

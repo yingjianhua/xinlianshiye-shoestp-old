@@ -42,4 +42,11 @@ public interface IRFQConsultAction {
 	 * @throws IOException
 	 */
 	void approve() throws IOException ;
+	
+	/**
+	 * 删除询盘
+	 * 
+	 * @throws IOException
+	 */
+	void delete() throws IOException ;
 }
