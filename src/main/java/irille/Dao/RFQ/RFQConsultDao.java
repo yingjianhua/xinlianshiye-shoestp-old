@@ -41,7 +41,10 @@ public interface RFQConsultDao {
      * @author Jianhua Ying
      */
     RFQConsultView findViewById(Integer id);
-
+    
+    RFQConsult findById(Integer pkey);
+    
+    void save(RFQConsult bean);
 
     List<Map<String, Object>> getRFQList(int start, int limit, String keyword, int supId);
 
