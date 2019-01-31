@@ -768,7 +768,7 @@ public class PdtProductDao {
     	sql.SELECT(PdtProduct.T.PKEY,"pdtPkey");
     	sql.SELECT(PdtProduct.T.NAME,"pdtName");
     	//sql.SELECT(PdtProduct.T.CATEGORY,"pdtCate");
-    	sql.SELECT(PdtProduct.T.CUR_PRICE,PdtProduct.T.MIN_OQ,PdtProduct.T.CATEGORY,PdtProduct.T.NORM_ATTR,PdtProduct.T.PRODUCT_TYPE);
+    	sql.SELECT(PdtProduct.T.CUR_PRICE,PdtProduct.T.MIN_OQ,PdtProduct.T.CATEGORY,PdtProduct.T.NORM_ATTR,PdtProduct.T.PRODUCT_TYPE,PdtProduct.T.PICTURE);
     	sql.SELECT(UsrSupplier.T.PKEY,"supPkey");
     	sql.SELECT(UsrSupplier.T.SHOW_NAME,"supName");
     	sql.SELECT(UsrSupplier.T.STATUS,UsrSupplier.T.AUTH_TIME);
@@ -843,6 +843,7 @@ public class PdtProductDao {
     		setPdtName(map.get("pdtName").toString());
     		setPrice(new BigDecimal(map.get(PdtProduct.T.CUR_PRICE.getFld().getCodeSqlField()).toString()));
     		setMinOrder(Integer.parseInt(map.get(PdtProduct.T.MIN_OQ.getFld().getCodeSqlField()).toString()));
+    		setPicture(map.get(PdtProduct.T.PICTURE.getFld().getCodeSqlField()).toString());
     		String pdtCatName = map.get("pdtCatName").toString();
     		Integer gender = 0;
     		if(pdtCatName.indexOf("男") != -1) {

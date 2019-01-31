@@ -23,6 +23,7 @@ public class PdtSearchView  implements BaseView{
 	private String sole; // 鞋底材料
 	private String closed; //闭合方式
 	private String upper; //表面材料
+	private String picture; //产品图片
 	@JsonSerialize(using=I18NFieldSerializer.class)
 	private String originCountry;  //原产:国家
 	@JsonSerialize(using=I18NFieldSerializer.class)
