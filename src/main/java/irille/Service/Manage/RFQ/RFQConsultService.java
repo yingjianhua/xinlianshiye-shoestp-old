@@ -1,7 +1,11 @@
 package irille.Service.Manage.RFQ;
 
+import com.google.inject.ImplementedBy;
+
+import irille.Service.Manage.RFQ.Imp.RFQConsultServiceImpl;
 import irille.shop.usr.UsrSupplier;
 
+@ImplementedBy(RFQConsultServiceImpl.class)
 public interface RFQConsultService {
 
 	/**
