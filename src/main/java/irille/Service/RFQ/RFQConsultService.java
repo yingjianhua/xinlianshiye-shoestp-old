@@ -25,4 +25,13 @@ public interface RFQConsultService {
 	 * @author Jianhua Ying
 	 */
 	RFQConsultView detail(RFQConsultView condition);
+	
+	/**
+	 * 审核询盘
+	 * 
+	 * @param view 询盘
+	 * @param verify true: 审核通过, false: 审核失败
+	 * @author Jianhua Ying
+	 */
+	void approve(RFQConsultView view, Boolean verify);
 }

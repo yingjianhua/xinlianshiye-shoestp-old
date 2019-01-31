@@ -116,8 +116,10 @@ public class RFQConsult extends BeanInt<RFQConsult> {
 	// INQUIRY:2,询盘
 	// Private_INQUIRY:3,私人展会询盘
   private Byte _status;	// RFQ状态 <RFQConsultStatus>  BYTE
-	// OFF:1,关闭
-	// ON:2,开启
+	// ready:1,待发布
+	// runing:2,进行中
+	// complete:3,已完成
+	// close:4,已关闭
   private Byte _verifyStatus;	// 审核状态 <RFQConsultVerifyStatus>  BYTE
 	// UNAUDITED:1,未审核
 	// FAIL:2,未通过
@@ -316,7 +318,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
     _status=status;
   }
   public RFQConsultStatus gtStatus(){
-    return (RFQConsultStatus)(RFQConsultStatus.OFF.getLine().get(_status));
+    return (RFQConsultStatus)(RFQConsultStatus.ready.getLine().get(_status));
   }
   public void stStatus(RFQConsultStatus status){
     _status=status.getLine().getKey();
