@@ -60,6 +60,6 @@ public class PdtCatDao extends IduOther<PdtCatDao, PdtCat> {
     }
     
     public PdtCat findById(Integer id) {
-    	return Query.SELECT(PdtCat.class).WHERE(PdtCat.T.PKEY, "=", id).query();
+    	return Query.SELECT(PdtCat.class).WHERE(PdtCat.T.PKEY, "=?", id).query();
     }
 }

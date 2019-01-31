@@ -21,15 +21,17 @@ public class O2OActivityDao {
 	}
 
 	public Page<O2OActivityView> pageView(Integer start, Integer limit, O2OActivityView condition) {
+		if(null == condition)
+			condition = new O2OActivityView();
 		BeanQuery<O2O_Activity> query = Query.SELECT(O2O_Activity.class)
 				// 起始时间
-				.WHERE(condition.getStartDate() != null, O2O_Activity.T.START_DATE, "=", condition.getStartDate())
+				.WHERE(condition.getStartDate() != null, O2O_Activity.T.START_DATE, ">=?", condition.getStartDate())
 				// 截止时间
-				.WHERE(condition.getEndDate() != null, O2O_Activity.T.END_DATE, "=", condition.getEndDate())
+				.WHERE(condition.getEndDate() != null, O2O_Activity.T.END_DATE, "<=?", condition.getEndDate())
 				// 活动名称
-				.WHERE(condition.getName() != null && !"".equals(condition.getName().trim()), O2O_Activity.T.NAME, "like", "%" + condition.getName() + "%")
+				.WHERE(condition.getName() != null && !"".equals(condition.getName().trim()), O2O_Activity.T.NAME, "like ?", "%" + condition.getName() + "%")
 				// 活动状态
-				.WHERE(condition.getStatus() != null, O2O_Activity.T.STATUS, "=", condition.getStatus());
+				.WHERE(condition.getStatus() != null, O2O_Activity.T.STATUS, "=?", condition.getStatus());
 
 		List<O2OActivityView> result = query.queryList().stream().map(bean -> {
 			return O2OActivityView.toView(bean);
@@ -41,5 +43,7 @@ public class O2OActivityDao {
 	public O2O_Activity findById(Integer id) {
 		return Query.SELECT(O2O_Activity.class, id);
 	}
+
+
 
 }

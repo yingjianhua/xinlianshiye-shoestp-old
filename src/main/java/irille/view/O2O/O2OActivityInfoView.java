@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -29,5 +30,6 @@ public class O2OActivityInfoView implements BaseView {
     private String rules;
     private String tel;
     private String name; //负责人
+    private List<Map<String,Object>> categories;
     private List<O2OActivityPdtInfoView> items;
 }

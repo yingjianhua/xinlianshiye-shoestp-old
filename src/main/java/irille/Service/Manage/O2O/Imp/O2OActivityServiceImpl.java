@@ -1,9 +1,14 @@
 package irille.Service.Manage.O2O.Imp;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.ZonedDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -12,14 +17,33 @@ import com.google.inject.Inject;
 import irille.Dao.PdtCatDao;
 import irille.Dao.O2O.O2OActivityDao;
 import irille.Dao.O2O.O2OProductDao;
+import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_Activity;
 import irille.Entity.O2O.Enums.O2O_ActivityStatus;
+import irille.Entity.O2O.O2O_JoinInfo;
+import irille.Entity.O2O.O2O_Map;
+import irille.Entity.O2O.O2O_Product;
 import irille.Service.Manage.O2O.O2OActivityService;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
+import irille.pub.tb.FldLanguage;
+import irille.pub.util.EmailUtils;
+import irille.pub.util.GetValue;
+import irille.pub.util.TranslateLanguage.translateUtil;
+import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtCat;
+import irille.shop.pdt.PdtProduct;
+import irille.shop.plt.PltConfig;
+import irille.shop.plt.PltConfigDAO;
+import irille.shop.usr.UsrSupplier;
+import irille.view.O2O.O2OProductView;
+import irille.view.O2O.PdtSearchView;
 import irille.view.Page;
 import irille.view.O2O.O2OActivityView;
+import irille.view.se.sendEmail;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class O2OActivityServiceImpl implements O2OActivityService {
 
@@ -35,10 +59,11 @@ public class O2OActivityServiceImpl implements O2OActivityService {
 		Page<O2OActivityView> page = o2OActivityDao.pageView(start, limit, condition);
 		
 		Map<Integer, String> cat_pkey_name_map = new HashMap<>();
-		page.getItems().stream().forEach(view->{
-			String activityCat = activitCat_pkey2Name(view.getActivityCat(), cat_pkey_name_map);
-			view.setActivityCat(activityCat);
+		page.getItems().forEach(view->{
+			List<Map<String,Object>> activityCat = activitCat_pkey2Name(view.getActivityCat(), cat_pkey_name_map);
+			view.setCatList(activityCat);
 		});
+
 		return page;
 	}
 	/**
@@ -49,62 +74,117 @@ public class O2OActivityServiceImpl implements O2OActivityService {
 	 * @return 以逗号分隔的分类名称
 	 * @author Jianhua Ying
 	 */
-	private String activitCat_pkey2Name(String activityCat, Map<Integer, String> cat_pkey_name_map) {
-		
+	private List<Map<String,Object>> activitCat_pkey2Name(String activityCat, Map<Integer, String> cat_pkey_name_map) {
+		List<Map<String,Object>> array = new ArrayList<Map<String,Object>>();
+
 		if(activityCat == null || activityCat.trim().equals("")) {
-			return "{\"zh_CN\":\"通用\"}";
+			Map<String,Object> map = new HashMap<String,Object>();
+			for(FldLanguage.Language language : FldLanguage.Language.values()){
+				map.put(language.name(),"通用");
+			}
+			array.add(map);
+			return array;
 		} else {
-			activityCat = Stream.of(activityCat.split(",")).map(spkey->{
+			Stream.of(activityCat.split(",")).forEach(spkey->{
 				Integer pkey = Integer.parseInt(spkey);
+				Map<String,Object> map = new HashMap<String,Object>();
 				if(cat_pkey_name_map != null && cat_pkey_name_map.containsKey(pkey)) {
-					return cat_pkey_name_map.get(pkey);
+					JSONObject json = null;
+					try{
+						json = new JSONObject(cat_pkey_name_map.get(pkey));
+					}catch (JSONException e){
+						e.printStackTrace();
+					}
+					if(null != json){
+						Iterator<String> ite = json.keys();
+						while (ite.hasNext()){
+							String key = ite.next();
+							try{
+								map.put(key,json.get(key));
+							}catch (JSONException e){
+								e.printStackTrace();
+							}
+						}
+						array.add(map);
+					}
+
 				} else {
 					PdtCat cat = pdtCatDao.findById(pkey);
 					if(cat_pkey_name_map != null)
 						cat_pkey_name_map.put(pkey, cat.getName());
-					return cat.getName();
+					JSONObject json = null;
+					try{
+						json = new JSONObject(cat.getName());
+					}catch (JSONException e){
+						e.printStackTrace();
+					}
+					if(null != json){
+						Iterator<String> ite = json.keys();
+						while (ite.hasNext()){
+							String key = ite.next();
+							try{
+								map.put(key,json.get(key));
+							}catch (JSONException e){
+								e.printStackTrace();
+							}
+						}
+						array.add(map);
+					}
 				}
-			}).collect(Collectors.joining(","));
-			return activityCat;
+			});
+			return array;
 		}
 	}
 
 	@Override
-	public void cancel(O2OActivityView view) {
-		if(view == null || view.getPkey() == null) {
+	public void cancel(Integer pkey) {
+		if(pkey == null) {
 			throw new WebMessageException(ReturnCode.valid_notnull, "请选中活动");
 		}
-		O2O_Activity bean = o2OActivityDao.findById(view.getPkey());
+		O2O_Activity bean = o2OActivityDao.findById(pkey);
 		if(bean == null) {
 			throw new WebMessageException(ReturnCode.service_gone, "活动不存在");
 		}
 		if(!bean.gtStatus().equals(O2O_ActivityStatus.TOBEGIN)) {
 			throw new WebMessageException(ReturnCode.service_state_error, "活动已经开始或者已经完成,不能关闭");
 		}
-		if(o2OProductDao.countByActivity(view.getPkey()) > 0) {
+		if(o2OProductDao.countByActivity(pkey) > 0) {
 			throw new WebMessageException(ReturnCode.service_unknow, "已有商品报名参加活动,不能关闭");
 		}
 		bean.stStatus(O2O_ActivityStatus.END);
 		bean.upd();
 	}
 
+	/**
+	 * 发布活动
+	 */
 	@Override
-	public O2OActivityView deploy(O2OActivityView view) {
-		O2O_Activity bean = new O2O_Activity();
+	public void deploy(O2OActivityView view) {
 		valid(view);
-		//TODO 地址信息需要转换成包含经纬度的json格式保存到数据库
-		bean.setName(view.getName());
-		bean.setActivityCat(view.getActivityCat());
-		bean.ins();
-		view = O2OActivityView.toView(bean);
-		view.setActivityCat(activitCat_pkey2Name(bean.getActivityCat(), null));
-		return view;
-	}
+		O2O_Activity activity = null;
+		if(null != view.getPkey()){
+			activity = o2OActivityDao.findById(view.getPkey());
+			if(activity.getStatus().equals(O2O_ActivityStatus.ACTIVITY.getLine().getKey()))
+				throw new WebMessageException(ReturnCode.failure,"无法编辑进行中的活动");
+		}else{
+			activity = new O2O_Activity();
+			activity.setStatus(O2O_ActivityStatus.TOBEGIN.getLine().getKey());
 
-	@Override
-	public O2OActivityView edit(O2OActivityView view) {
-		// TODO Auto-generated method stub
-		return null;
+
+		}
+		activity.setName(view.getName());
+		activity.setAddress(view.getAddr());
+		activity.setActivityCat(view.getActivityCat());
+		activity.setRules(view.getRules());
+		activity.setStartDate(view.getStartDate());
+		activity.setEndDate(view.getEndDate());
+		activity.setUpdatedTime(new Date());
+		if(null != view.getPkey()){
+			activity.upd();
+		}else{
+			activity.ins();
+		}
+
 	}
 
 	/**
@@ -144,7 +224,7 @@ public class O2OActivityServiceImpl implements O2OActivityService {
 		}
 		
 		//活动国家/地区
-		if(view.getAddress() == null || view.getAddress().trim().equals("")) {
+		if(view.getAddr() == null) {
 			throw new WebMessageException(ReturnCode.valid_notnull, "请填写活动国家/地区");
 		}
 		
@@ -153,8 +233,13 @@ public class O2OActivityServiceImpl implements O2OActivityService {
 			throw new WebMessageException(ReturnCode.valid_notnull, "请填写截止时间");
 		} else {
 			//清除时分秒
-			LocalDate endDate  = view.getStartDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().plusDays(1);
-			view.setEndDate(java.sql.Date.valueOf(endDate));
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			try{
+				view.setEndDate(sdf.parse(sdf.format(view.getEndDate())));
+			}catch (ParseException e){
+				e.printStackTrace();
+			}
+
 		}
 		//活动规则
 		if(view.getRules() == null || view.getRules().trim().equals("")) {
@@ -163,5 +248,105 @@ public class O2OActivityServiceImpl implements O2OActivityService {
 		if(view.getRules().length() > 800) {
 			//暂时不限定字数
 		}
+	}
+
+	/**
+	 * 查看报名列表
+	 */
+	public Page<O2OProductView> enrollList(PdtSearchView search, Integer start, Integer limit){
+		List<O2OProductView> items = o2OProductDao.enrollList(search,start,limit).stream().map(map->{
+			O2OProductView item = new O2OProductView();
+			item.setPkey(GetValue.get(map, O2O_Product.T.PKEY,Integer.class,null));
+			item.setStatus(GetValue.get(map,O2O_Product.T.VERIFY_STATUS,Byte.class,(byte)0));
+			item.setActAddress(GetValue.get(map,"mapName",String.class,null));
+			item.setActName(GetValue.get(map,O2O_Activity.T.NAME,String.class,null));
+			item.setProductName(GetValue.get(map,"pdtName",String.class,null));
+			item.setProductCat(GetValue.get(map,"catName",String.class,null));
+			item.setPrice(GetValue.get(map,O2O_Product.T.PRICE, BigDecimal.class,BigDecimal.ZERO));
+			item.setMinOq(GetValue.get(map,O2O_Product.T.MIN_OQ,Integer.class,null));
+			item.setSupplierName(GetValue.get(map,"supName",String.class,null));
+			item.setSupplierLevel(GetValue.get(map,"roleName",String.class,null));
+			item.setContact(GetValue.get(map,"joinInfo",String.class,null));
+			item.setMobile(GetValue.get(map,O2O_JoinInfo.T.Tel,String.class,null));
+			return item;
+		}).collect(Collectors.toList());
+		return new Page<O2OProductView>(items,start,limit,o2OProductDao.countEnroll(search));
+	}
+
+	/**
+	 * 审核报名
+	 */
+	public void appr(Integer id, String reason, O2O_ProductStatus status){
+		O2O_Product o2OProduct = o2OProductDao.findByPkey(id);
+		if(null == o2OProduct)
+			throw new WebMessageException(ReturnCode.failure,"商品不存在");
+		o2OProduct.setVerifyStatus(status.getLine().getKey());
+		sendEmail email = new sendEmail();
+		UsrSupplier supplier = o2OProduct.gtJoinInfoId().gtSupplier();
+		email.setReceiver(supplier.getEmail());
+		if(status.equals(O2O_ProductStatus.Failed)){
+			if(null == reason)
+				throw new WebMessageException(ReturnCode.failure,"请输入拒绝理由");
+			o2OProduct.setMessage(reason);
+			email.setSubject("【鞋贸港】O2O商品审核拒绝");
+			email.setContent("您申请的商品已被审核拒绝，拒绝理由：" + reason);
+		}else{
+			PdtProduct pdt = o2OProduct.gtProductId();
+			pdt.setProductType(Pdt.OProductType.O2O.getLine().getKey());
+			pdt.upd();
+			email.setSubject("【鞋贸港】O2O商品审核通过");
+			email.setContent("您申请商品编号为【"+pdt.getCode()+"】的商品已通过审核");
+		}
+		o2OProduct.upd();
+		try{
+			EmailUtils.sendMail(email);
+		}catch (IOException e){
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 处理上下架
+	 */
+	public void lowerAndUpper(Integer id,String reason,O2O_ProductStatus status){
+		O2O_Product o2OProduct = o2OProductDao.findByPkey(id);
+		sendEmail email = new sendEmail();
+		UsrSupplier supplier = o2OProduct.gtJoinInfoId().gtSupplier();
+		email.setReceiver(supplier.getEmail());
+		if(null == o2OProduct)
+			throw new WebMessageException(ReturnCode.failure,"商品不存在");
+		o2OProduct.setStatus(status.getLine().getKey());
+		PdtProduct pdt = o2OProduct.gtProductId();
+		if(status.equals(O2O_ProductStatus.OFF)){
+			if (null == reason){
+				throw new WebMessageException(ReturnCode.failure,"拒绝理由不能为空");
+			}
+			o2OProduct.setMessage(reason);
+			email.setSubject("【鞋贸港】O2O商品下架失败");
+			email.setContent("您申请商品编号为【"+pdt.getCode()+"】的商品拒绝下架，拒绝理由："+reason);
+		}else{
+			email.setSubject("【鞋贸港】O2O商品下架成功");
+			email.setContent("您申请商品编号为【"+pdt.getCode()+"】的商品下架成功");
+		}
+		o2OProduct.upd();
+		try{
+			EmailUtils.sendMail(email);
+		}catch (IOException e){
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public O2OActivityView load(Integer pkey) {
+		O2O_Activity activity = o2OActivityDao.getActivityInfoById(pkey);
+		O2OActivityView view = new O2OActivityView();
+		view.setPkey(activity.getPkey());
+		view.setName(activity.getName());
+		view.setActivityCat(activity.getActivityCat());
+		view.setStartDate(activity.getStartDate());
+		view.setEndDate(activity.getEndDate());
+		view.setAddr(activity.getAddress());
+		view.setRules(activity.getRules());
+		return view;
 	}
 }

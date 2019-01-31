@@ -20,4 +20,6 @@ public class O2OProductView implements BaseView {
     private String supplierLevel;
     private String contact;
     private String mobile;
+
+
 }

@@ -100,7 +100,7 @@ public class O2oActivityAction extends SellerAction<O2O_Activity> implements IO2
 
     @Override
     public void listAllGeneral() throws IOException {
-        write(o2oPdtServer.listAllGeneral(getSupplier()));
+        write(o2oPdtServer.listAllGeneral(getSupplier(),id));
     }
 
 
