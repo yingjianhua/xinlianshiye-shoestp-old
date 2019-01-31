@@ -18,20 +18,24 @@ import irille.Entity.O2O.O2O_JoinInfo;
 import irille.Entity.O2O.O2O_Product;
 import irille.Service.Manage.O2O.IO2OPdtServer;
 import irille.pub.Log;
+import irille.pub.bean.sql.SQL;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumOpt;
 import irille.pub.util.GetValue;
+import irille.pub.util.SEOUtils;
 import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltCountryDAO;
+import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.view.O2O.O2OActivityInfoView;
 import irille.view.O2O.O2OActivityPdtInfoView;
 import irille.view.O2O.O2OManageActivityListView;
 import irille.view.Page;
+import irille.view.v2.Pdt.PdtNewPdtInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,6 +72,27 @@ public class O2OPdtServerImp implements IO2OPdtServer {
 
     @Inject
     private PdtProductDao pdtProductDao;
+
+    /**
+     *  获取O2O商品数据
+     */
+    public List<PdtNewPdtInfo> O2OList(UsrPurchase purchase, Integer start, Integer limit){
+        List<PdtNewPdtInfo> items = o2OProductDao.o2oList(purchase,start,limit).stream().map(pdt->{
+            PdtNewPdtInfo item = new PdtNewPdtInfo();
+            item.setFavorite(null == GetValue.get(pdt,"ismyfavorite",Boolean.class,null)?false:GetValue.get(pdt,"ismyfavorite",Boolean.class,null));
+            item.setImage(GetValue.getFirstImage(GetValue.get(pdt,PdtProduct.T.PICTURE,String.class,null)));
+            Long pdtPkey = Long.valueOf(String.valueOf(GetValue.get(pdt,PdtProduct.T.PKEY,Integer.class,-1)));
+            item.setId(pdtPkey);
+            item.setMin_order(GetValue.get(pdt,O2O_Product.T.MIN_OQ,Integer.class,-1));
+            item.setPrice(GetValue.get(pdt,O2O_Product.T.PRICE,BigDecimal.class,BigDecimal.ZERO));
+            String name = GetValue.get(pdt,PdtProduct.T.NAME,String.class,"");
+            item.setTitle(name);
+            item.setRewrite(SEOUtils.getPdtProductTitle(Integer.valueOf(String.valueOf(pdtPkey)) ,name));
+            return item;
+        }).collect(Collectors.toList());
+
+        return items;
+    }
 
     @Override
     public Page getO2OActivityList(UsrSupplier supplier, Integer start, Integer limit, Date startDate, Date endDate, String keyword,Integer status, int supId, Integer countryId) {
@@ -282,4 +307,7 @@ public class O2OPdtServerImp implements IO2OPdtServer {
             return view;
         }).collect(Collectors.toList());
     }
+
+
+
 }

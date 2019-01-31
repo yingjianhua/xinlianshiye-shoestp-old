@@ -1,6 +1,8 @@
 package irille.Dao.O2O;
 
+import irille.Entity.O2O.O2O_Activity;
 import irille.Entity.O2O.O2O_Map;
+import irille.Entity.O2O.O2O_Product;
 import irille.core.sys.Sys;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;

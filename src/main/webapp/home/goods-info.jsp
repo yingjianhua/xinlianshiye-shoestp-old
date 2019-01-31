@@ -17,6 +17,8 @@
     <script type="text/javascript" src="./static/js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript"
             src="/static/js/plugins/goodsInfo/jquery.SuperSlide.2.1.1.js"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyCPbc3yNYQgVc56qbUuAY_Yap-uDMkDkvc"></script>
+    <script type="text/javascript" src="./static/markerwithlabel.js"></script>
     <link href="./static/css/goodsInfoNew.css" rel="stylesheet" type="text/css">
     <link href="./static/css/style.css" rel="stylesheet" type="text/css">
     <link href="./static/css/global.css" rel="stylesheet" type="text/css">
@@ -346,6 +348,16 @@
 
         <!--产品详情-->
         <div class="prodDescLeft" style="width:100%;">
+            <s:if test="map != null">
+                <!-- ===============O2O INFO START=============== -->
+                <div id="loading" class="loading">
+                    <img src="./static/images/loading.gif">
+                </div>
+                <div id="o2oMap" style="width:100%;height:400px;margin:20px 0;">
+
+                </div>
+                <!-- ===============O2O INFO END=============== -->
+            </s:if>
             <div class="prodDescription">
                 <ul class="pdTitle">
                     <li class="current">
@@ -354,6 +366,10 @@
                 </ul>
                 <div class="pdContent editorTxt">
                     <div class="desc">
+
+
+
+
                         <div class="itemSpecifics clearfloat">
                             <div class="title"><s:text name="Global.Product_Specifications"/></div>
                             <div class="clean">
@@ -664,6 +680,12 @@
     var app = new Vue({
         el: "#app",
         data: {
+            <s:if test="map != null">
+                map: null,
+                marker: null,
+                latLng: { lat: ${map.latitude}, lng: ${map.longitude} },
+                address:'${map.name}',
+            </s:if>
             goodsInfo:${goodsInfo},
             selectSpec: 0,
             isLogin:${env.login!=null},
@@ -675,6 +697,25 @@
                 catlength: 0
             }
         }, mounted() {
+            <s:if test="map != null">
+                var self = this
+                // 创建地图实例，zoom是缩放比例
+                this.map = new google.maps.Map(document.getElementById('o2oMap'), {
+                    center: self.latLng,
+                    zoom: 12
+                })
+                this.marker = new google.maps.Marker({
+                    position: self.latLng
+                })
+                this.marker.setMap(self.map)
+                var infowindow = new google.maps.InfoWindow({content: self.address});
+                infowindow.open(self.map, self.marker);
+
+            this.map.addListener('tilesloaded', function() {
+                $("#loading").css("display","none");
+            })
+
+            </s:if>
             for (var key in this.goodsInfo.spec) {
                 for (var value in this.goodsInfo.spec[key]) {
                     this.$set(this.status.cat, this.goodsInfo.spec[key][value].id, 0)
@@ -1088,6 +1129,14 @@
 
 
 </script>
+<style>
+    .loading{
+        text-align: center;
+        position: relative;
+        z-index: 999;
+        top: 250px;
+    }
+</style>
 <c:if test="${not empty supView.traceCode && fn:length(supView.traceCode)>0}">
     ${supView.traceCode}
 </c:if>

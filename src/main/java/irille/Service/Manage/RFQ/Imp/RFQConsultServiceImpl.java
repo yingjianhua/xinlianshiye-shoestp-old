@@ -47,26 +47,26 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 
 	@Override
 	public void moveToRecycled(UsrSupplier supplier, String consultPkeys, Boolean isToRecycled) {
-		List<RFQConsultRelation> list = rFQConsultRelationDao.findByConsult_PkeySupplier_Pkey(consultPkeys, supplier.getPkey());
-		if(isToRecycled) {
-			//移动到回收站
-			list.forEach(bean->{
-				if(!bean.gtInRecycleBin()) {
-					//尚未在回收站的
-					bean.stInRecycleBin(true);
-					rFQConsultRelationDao.save(bean);
-				}
-			});
-		} else {
-			//从回收站恢复
-			list.forEach(bean->{
-				if(bean.gtInRecycleBin()) {
-					//已经在回收站的
-					bean.stInRecycleBin(false);
-					rFQConsultRelationDao.save(bean);
-				}
-			});
-		}
+//		List<RFQConsultRelation> list = rFQConsultRelationDao.findByConsult_PkeySupplier_Pkey(consultPkeys, supplier.getPkey());
+//		if(isToRecycled) {
+//			//移动到回收站
+//			list.forEach(bean->{
+//				if(!bean.gtInRecycleBin()) {
+//					//尚未在回收站的
+//					bean.stInRecycleBin(true);
+//					rFQConsultRelationDao.save(bean);
+//				}
+//			});
+//		} else {
+//			//从回收站恢复
+//			list.forEach(bean->{
+//				if(bean.gtInRecycleBin()) {
+//					//已经在回收站的
+//					bean.stInRecycleBin(false);
+//					rFQConsultRelationDao.save(bean);
+//				}
+//			});
+//		}
 	}
 
 }

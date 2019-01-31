@@ -4,6 +4,7 @@ import irille.Aops.Caches;
 import irille.Entity.O2O.*;
 import irille.Entity.O2O.Enums.O2O_ActivityStatus;
 import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
+import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_Activity.T;
 import irille.core.sys.Sys;
 import irille.pub.bean.Query;
@@ -11,6 +12,8 @@ import irille.pub.bean.sql.SQL;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
+import irille.shop.usr.UsrFavorites;
+import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplierRole;
 import irille.view.O2O.PdtSearchView;
@@ -43,6 +46,34 @@ public class O2OProductDao {
                 .WHERE(O2O_PrivateExpoPdt.T.VERIFY_STATUS, "=?", O2O_PrivateExpoPdtStatus.PASS);
         return Query.sql(sql).queryMaps();
     }
+
+    @Caches
+    public List<Map<String,Object>> o2oList(UsrPurchase purchase, Integer start, Integer limit){
+        SQL sql = new SQL();
+        SQL childrenQuery = new SQL();
+        if(null != purchase)
+            childrenQuery
+                .SELECT(UsrFavorites.T.PKEY)
+                .FROM(UsrFavorites.class)
+                .WHERE(UsrFavorites.T.PURCHASE, "=?", purchase.getPkey())
+                .WHERE(UsrFavorites.T.PRODUCT, "=", PdtProduct.T.PKEY)
+        ;
+        sql.SELECT(PdtProduct.T.PKEY,
+                    PdtProduct.T.NAME,
+                    PdtProduct.T.PICTURE,
+                    O2O_Product.T.PRICE,
+                    O2O_Product.T.MIN_OQ);
+        if(null != purchase)
+            sql.SELECT(childrenQuery,"ismyfavorite");
+            sql.FROM(O2O_Product.class)
+                .LEFT_JOIN(PdtProduct.class,PdtProduct.T.PKEY,O2O_Product.T.PRODUCT_ID)
+                    .LEFT_JOIN(O2O_Activity.class, T.PKEY,O2O_Product.T.ACTIVITY_ID)
+                    .WHERE(T.STATUS,"=?",O2O_ActivityStatus.ACTIVITY)
+                .WHERE(O2O_Product.T.VERIFY_STATUS,"=?", O2O_ProductStatus.PASS.getLine().getKey())
+                .WHERE(O2O_Product.T.STATUS,"=?",O2O_ProductStatus.ON.getLine().getKey());
+        sql.LIMIT(start,limit);
+        return Query.sql(sql).queryMaps();
+}
 
     public List<Map<String, Object>> getO2OActivityList(
             int start, int limit, Date startDate, Date endDate, String keyWord,Integer status, int supId, Integer countryId) {
@@ -186,6 +217,7 @@ public class O2OProductDao {
                 O2O_JoinInfo.T.Tel,
                 O2O_Product.T.VERIFY_STATUS,
                 O2O_Product.T.PKEY)
+                .SELECT(PdtProduct.T.PKEY,"pdtPkey")
                 .SELECT(O2O_Map.T.NAME,"mapName")
                 .SELECT(PdtProduct.T.NAME,"pdtName")
                 .SELECT(PdtCat.T.NAME,"catName")
@@ -232,6 +264,24 @@ public class O2OProductDao {
             .WHERE(null != search.getArea(),O2O_Map.T.NAME,"like ?","%"+search.getArea()+"%")
             .WHERE(null != search.getStatus(),O2O_Product.T.VERIFY_STATUS,"=?",search.getStatus());
         return Query.sql(sql).queryCount();
+    }
+
+
+    public O2O_Product findEarliestActByPdt_Pkey(Integer pdtId){
+        SQL sql = new SQL();
+        sql.SELECT(O2O_Product.class).FROM(O2O_Product.class)
+                .LEFT_JOIN(O2O_Activity.class, T.PKEY,O2O_Product.T.ACTIVITY_ID)
+                .WHERE(O2O_Product.T.PRODUCT_ID,"=?",pdtId);
+        sql.WHERE(O2O_Product.T.VERIFY_STATUS,"=?",O2O_ProductStatus.PASS);
+        sql.WHERE(O2O_Product.T.STATUS,"=?",O2O_ProductStatus.ON);
+        sql.WHERE(T.STATUS,"<>?",O2O_ActivityStatus.TOBEGIN);
+        sql.ORDER_BY(O2O_Product.T.UPDATED_TIME," ASC ");
+        List<O2O_Product> o2oPdts = Query.sql(sql).queryList(O2O_Product.class);
+        if(o2oPdts.size()>0){
+            return o2oPdts.get(0);
+        }else{
+            return null;
+        }
     }
 
 }

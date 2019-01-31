@@ -38,7 +38,11 @@ public class EmailUtils {
             smtpport = prop.getProperty("mail.smtp.port");
             from = prop.getProperty("mail.sender");
             password = prop.getProperty("mail.smtp.password");
-            to = prop.getProperty("to");
+            if(null == mailVo.getReceiver()){
+                to = prop.getProperty("to");
+            }else{
+                to = mailVo.getReceiver();
+            }
             subject = mailVo.getSubject();
             messageText = mailVo.getContent();
             int sendFlag = sendMessage(smtpHost, smtpport, from, password, to, subject, messageText);

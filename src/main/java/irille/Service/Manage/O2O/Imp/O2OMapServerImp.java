@@ -1,12 +1,16 @@
 package irille.Service.Manage.O2O.Imp;
 
 import irille.Dao.O2O.O2OMapDao;
+import irille.Dao.O2O.O2OProductDao;
+import irille.Entity.O2O.O2O_Activity;
 import irille.Entity.O2O.O2O_Map;
+import irille.Entity.O2O.O2O_Product;
 import irille.Service.Manage.O2O.IO2OMapServer;
 import irille.core.sys.Sys;
 import irille.pub.bean.BeanBase;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
+import irille.pub.tb.FldLanguage;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.pub.util.sendHttpsUtils;
 import irille.view.O2O.O2OMapView;
@@ -33,6 +37,9 @@ public class O2OMapServerImp implements IO2OMapServer {
     @Inject
     private O2OMapDao o2OMapDao;
 
+    @Inject
+    private O2OProductDao o2OProductDao;
+
     public JSONObject load(String address){
         if(null == address){
             throw new WebMessageException(ReturnCode.failure,"请输入地址");
@@ -50,6 +57,18 @@ public class O2OMapServerImp implements IO2OMapServer {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public O2OMapView findByEarliestPdt_PkeyAnd(FldLanguage.Language language,Integer pdt) {
+        O2O_Product o2oPdt = o2OProductDao.findEarliestActByPdt_Pkey(pdt);
+        O2OMapView view = null;
+        if(null != o2oPdt){
+            O2O_Activity activity = o2oPdt.gtActivityId();
+            O2O_Map map = activity.gtAddress();
+            view = O2OMapView.toView(language,map);
+        }
+        return view;
     }
 
     public List<O2OMapView> list(){

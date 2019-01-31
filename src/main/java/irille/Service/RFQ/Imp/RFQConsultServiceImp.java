@@ -40,7 +40,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
 
         rfqConsult.stType(RFQConsultType.RFQ);
         //TODO 合并后枚举类更新
-        rfqConsult.stStatus(RFQConsultStatus.ON);
+//        rfqConsult.stStatus(RFQConsultStatus.ON);
         rfqConsult.stVerifyStatus(RFQConsultVerifyStatus.UNAUDITED);
         rfqConsult.setValidDate(
                 Date.from(
@@ -82,7 +82,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
 //        rfqConsult.setPurchaseId(1);
         rfqConsult.setTotal(0);
         rfqConsult.stType(RFQConsultType.INQUIRY);
-        rfqConsult.stStatus(RFQConsultStatus.ON);
+//        rfqConsult.stStatus(RFQConsultStatus.ON);
         rfqConsult.stVerifyStatus(RFQConsultVerifyStatus.PASS);
         rfqConsult.setValidDate(
                 Date.from(
@@ -119,7 +119,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         rfqConsult.setPurchaseId(1);
         rfqConsult.setTotal(0);
         rfqConsult.stType(RFQConsultType.Private_INQUIRY);
-        rfqConsult.stStatus(RFQConsultStatus.ON);
+//        rfqConsult.stStatus(RFQConsultStatus.ON);
         rfqConsult.stVerifyStatus(RFQConsultVerifyStatus.PASS);
         rfqConsult.setValidDate(
                 Date.from(

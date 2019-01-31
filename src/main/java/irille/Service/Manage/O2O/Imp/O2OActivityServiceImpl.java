@@ -29,6 +29,7 @@ import irille.pub.exception.WebMessageException;
 import irille.pub.tb.FldLanguage;
 import irille.pub.util.EmailUtils;
 import irille.pub.util.GetValue;
+import irille.pub.util.SEOUtils;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtCat;
@@ -41,6 +42,7 @@ import irille.view.O2O.PdtSearchView;
 import irille.view.Page;
 import irille.view.O2O.O2OActivityView;
 import irille.view.se.sendEmail;
+import org.apache.tools.ant.taskdefs.Get;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -168,9 +170,14 @@ public class O2OActivityServiceImpl implements O2OActivityService {
 				throw new WebMessageException(ReturnCode.failure,"无法编辑进行中的活动");
 		}else{
 			activity = new O2O_Activity();
-			activity.setStatus(O2O_ActivityStatus.TOBEGIN.getLine().getKey());
-
-
+			Date now = new Date();
+			if(now.after(view.getStartDate()) && now.before(view.getEndDate())){
+                activity.setStatus(O2O_ActivityStatus.ACTIVITY.getLine().getKey());
+            }else if(now.before(view.getStartDate())){
+                activity.setStatus(O2O_ActivityStatus.TOBEGIN.getLine().getKey());
+            }else if(now.after(view.getEndDate())){
+                activity.setStatus(O2O_ActivityStatus.END.getLine().getKey());
+            }
 		}
 		activity.setName(view.getName());
 		activity.setAddress(view.getAddr());
@@ -241,6 +248,9 @@ public class O2OActivityServiceImpl implements O2OActivityService {
 			}
 
 		}
+		if(view.getStartDate().after(view.getEndDate())){
+		    throw new WebMessageException(ReturnCode.failure,"起始时间不能晚于结束时间");
+        }
 		//活动规则
 		if(view.getRules() == null || view.getRules().trim().equals("")) {
 			throw new WebMessageException(ReturnCode.valid_notblank, "请填写活动规则");
@@ -260,7 +270,8 @@ public class O2OActivityServiceImpl implements O2OActivityService {
 			item.setStatus(GetValue.get(map,O2O_Product.T.VERIFY_STATUS,Byte.class,(byte)0));
 			item.setActAddress(GetValue.get(map,"mapName",String.class,null));
 			item.setActName(GetValue.get(map,O2O_Activity.T.NAME,String.class,null));
-			item.setProductName(GetValue.get(map,"pdtName",String.class,null));
+			String pdtName = GetValue.get(map,"pdtName",String.class,null);
+			item.setProductName(pdtName);
 			item.setProductCat(GetValue.get(map,"catName",String.class,null));
 			item.setPrice(GetValue.get(map,O2O_Product.T.PRICE, BigDecimal.class,BigDecimal.ZERO));
 			item.setMinOq(GetValue.get(map,O2O_Product.T.MIN_OQ,Integer.class,null));
@@ -268,6 +279,8 @@ public class O2OActivityServiceImpl implements O2OActivityService {
 			item.setSupplierLevel(GetValue.get(map,"roleName",String.class,null));
 			item.setContact(GetValue.get(map,"joinInfo",String.class,null));
 			item.setMobile(GetValue.get(map,O2O_JoinInfo.T.Tel,String.class,null));
+            Integer pdtPkey = GetValue.get(map,"pdtPkey",Integer.class,-1);
+            item.setRewriter(SEOUtils.getPdtProductTitle(pdtPkey,pdtName));
 			return item;
 		}).collect(Collectors.toList());
 		return new Page<O2OProductView>(items,start,limit,o2OProductDao.countEnroll(search));

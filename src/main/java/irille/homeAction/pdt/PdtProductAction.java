@@ -21,6 +21,7 @@ import irille.shop.odr.OdrOrderDAO;
 import irille.shop.pdt.*;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplierDAO;
+import irille.view.O2O.O2OMapView;
 import irille.view.Page;
 import irille.view.ResultView;
 import irille.view.pdt.CommentView;
@@ -290,6 +291,8 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
       if (infoView == null) {
         throw LOG.err("not exists", "产品id[{0}]不存在", getId());
       }
+      if(null != infoView.getMap())
+        setMap(infoView.getMap());
       seoView = new SEOView();
       seoView.setTitle(
           translateUtil.getLanguage(infoView.getSeoTitle(), HomeAction.curLanguage())
@@ -305,6 +308,13 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
     setResult("goods-info.jsp");
     return HomeAction.TRENDS;
   }
+
+  /**===============O2O INFO START===============**/
+  @Getter
+  @Setter
+  private O2OMapView map;
+
+  /**===============O2O INFO END===============**/
 
   /**
    * @Description: 商品详情页 ajax 返回json

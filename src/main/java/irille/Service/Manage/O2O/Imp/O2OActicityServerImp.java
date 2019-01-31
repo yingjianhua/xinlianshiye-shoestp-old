@@ -55,7 +55,7 @@ public class O2OActicityServerImp implements IO2OActicityServer{
         }else{
             joinInfo.upd();
         }
-        List<Integer> listAll = new ArrayList<>();
+        List<String> listAll = new ArrayList<>();
         if(null != activityEntity.getActivityCat()){
           List<Integer> cats = Arrays.asList(activityEntity.getActivityCat().split(",")).stream().map(str->{
               return Integer.valueOf(str);
@@ -68,7 +68,7 @@ public class O2OActicityServerImp implements IO2OActicityServer{
         List<O2O_Product> o2oPdts = new ArrayList<O2O_Product>();
         for(PdtProduct pdt:pdtProductDao.findAllByPkeys(pdts)){
             if(listAll.size() > 0){
-                if(listAll.indexOf(pdt.getCategory()) == -1){
+                if(listAll.indexOf(String.valueOf(pdt.getCategory())) == -1){
                     throw new WebMessageException(ReturnCode.failure,"商品分类错误");
                 }
             }
