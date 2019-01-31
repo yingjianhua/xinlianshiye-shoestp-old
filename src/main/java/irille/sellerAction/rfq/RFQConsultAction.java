@@ -75,7 +75,8 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
     public void getMyRFQQuoteList() throws IOException {
         if (start == null) start = 0;
         if (limit == null) limit = 5;
-        write(irfqManageService.getMyRFQQuoteList(start, limit, date, keyword, flag, status, country, getSupplier().getPkey()));
+
+        write(irfqManageService.getMyRFQQuoteList(start, limit, type,date, keyword, flag, status, country, getSupplier().getPkey()));
     }
 
     public void getMyRFQQuoteInfo() throws IOException {

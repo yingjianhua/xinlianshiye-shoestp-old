@@ -8,6 +8,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import irille.Dao.PdtProductDao;
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
+import irille.Entity.O2O.O2O_Product;
+import irille.Service.Manage.O2O.IO2OMapServer;
+import irille.Service.Manage.O2O.IO2OPdtServer;
 import irille.Service.Pdt.IPdtProductService;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
@@ -29,6 +32,7 @@ import irille.shop.plt.PltErate;
 import irille.shop.plt.PltErateDAO;
 import irille.shop.usr.UsrFavorites;
 import irille.shop.usr.UsrSupplier;
+import irille.view.O2O.O2OMapView;
 import irille.view.pdt.PdtProductSaveView;
 import irille.view.pdt.PdtProductSpecSaveView;
 import irille.view.pdt.PdtYouMayLikeView;
@@ -301,6 +305,11 @@ public class PdtproductPageselect {
         if (!list.isEmpty()) {
             PdtProduct pdtProduct = list.get(0);
             ProductInfoView productInfoView = new ProductInfoView();
+            /**===============O2O INFO START===============**/
+            O2OMapView mapAddress = initO2O(pdtProduct);
+            if(null != mapAddress)
+                productInfoView.setMap(mapAddress);
+            /**===============O2O INFO END===============**/
             UsrSupplier supplier = pdtProduct.gtSupplier();
             productInfoView.setSupId(supplier.getPkey());
             productInfoView.setSupName(SEOUtils.firstUpperCase(translateUtil.getLanguage(supplier.getShowName(), HomeAction.curLanguage())));
@@ -429,6 +438,19 @@ public class PdtproductPageselect {
         }
         return null;
     }
+
+    /**===============O2O INFO START===============**/
+    @Inject
+    private IO2OMapServer io2OMapServer;
+
+    public O2OMapView initO2O(PdtProduct product){
+        if(product.getProductType().equals(Pdt.OProductType.O2O.getLine().getKey())){
+            return io2OMapServer.findByEarliestPdt_PkeyAnd(HomeAction.curLanguage(),product.getPkey());
+        }
+        return null;
+    }
+    /**===============O2O INFO END===============**/
+
 
     public int getAuthTime(UsrSupplier supplier) {
         int time1 = 0;

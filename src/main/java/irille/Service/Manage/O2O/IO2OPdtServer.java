@@ -4,10 +4,13 @@ import com.google.inject.ImplementedBy;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_Product;
 import irille.Service.Manage.O2O.Imp.O2OPdtServerImp;
+import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.view.O2O.O2OActivityInfoView;
 import irille.view.O2O.O2OActivityPdtInfoView;
+import irille.view.O2O.O2OMapView;
 import irille.view.Page;
+import irille.view.v2.Pdt.PdtNewPdtInfo;
 
 import java.util.Date;
 import java.util.List;
@@ -35,4 +38,7 @@ public interface IO2OPdtServer {
     void lowerAndUpper(Integer pkey, String reason, O2O_ProductStatus status);
 
     void appr(Integer pkey,String reason,O2O_ProductStatus status);
+
+    List<PdtNewPdtInfo> O2OList(UsrPurchase purchase, Integer start, Integer limit);
+
 }

@@ -2,7 +2,6 @@ package irille.Dao.RFQ.impl;
 
 import irille.Dao.RFQ.RFQConsultDao;
 import irille.Entity.RFQ.RFQConsult;
-import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.platform.rfq.view.*;
 import irille.pub.bean.BeanBase;
@@ -373,7 +372,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
     }
 
     @Override
-    public List<Map<String, Object>> getMyRFQQuoteList(Integer start, Integer limit, Date date, String keyword, boolean flag, Integer status, Integer country, int supId) {
+    public List<Map<String, Object>> getMyRFQQuoteList(Integer start, Integer limit, Byte type, Date date, String keyword, boolean flag, Integer status, Integer country, int supId) {
         SQL sql = new SQL();
         sql.SELECT(
                 RFQConsult.T.PKEY,
@@ -401,7 +400,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
     public Map<String, Object> getMyRFQQuoteInfo(Integer id, Integer pkey) {
         SQL sql = new SQL();
         sql.SELECT(
-                RFQConsultMessage.T.PKEY,
+                RFQConsultRelation.T.PKEY,
                 RFQConsult.T.TITLE,
                 RFQConsult.T.CONTENT,
                 RFQConsult.T.IMAGE,

@@ -112,7 +112,7 @@ public class RFQManageServiceImp implements IRFQManageService {
             Map map1 = new HashMap();
             map1.put("company", "********");
             map1.put("address", translateUtil.getLanguage(map.get("city"), FldLanguage.Language.zh_CN));
-            map1.put("date", DateUtil.format(GetValue.get(map, RFQConsultMessage.T.SEND_TIME, Date.class, null)));
+            map1.put("date", DateUtil.format(GetValue.get(map, RFQConsultRelation.T.CREATE_DATE, Date.class, null)));
             infoView.getQuotation_record().add(map1);
         }
         RFQConsultRelation rfqConsultRelation = rfqConsultDao.getRFQRelation(id, supId);
@@ -178,8 +178,8 @@ public class RFQManageServiceImp implements IRFQManageService {
     }
 
     @Override
-    public Page getMyRFQQuoteList(Integer start, Integer limit, Date date, String keyword, boolean flag, Integer status, Integer country, int Supid) throws IOException {
-        List<Map<String, Object>> list = rfqConsultDao.getMyRFQQuoteList(start, limit, date, keyword, flag, status, country, Supid);
+    public Page getMyRFQQuoteList(Integer start, Integer limit, Byte type, Date date, String keyword, boolean flag, Integer status, Integer country, int Supid) throws IOException {
+        List<Map<String, Object>> list = rfqConsultDao.getMyRFQQuoteList(start, limit,type, date, keyword, flag, status, country, Supid);
         List<RFQManageMyQuoteListBody> result = new ArrayList<>();
         for (Map<String, Object> map : list) {
             RFQManageMyQuoteListBody body = new RFQManageMyQuoteListBody();

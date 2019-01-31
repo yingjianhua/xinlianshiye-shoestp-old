@@ -33,7 +33,7 @@ public interface IRFQManageService {
 
     Page getPdtList(Integer start, Integer limit, String keyword, Integer pkey);
 
-    Page getMyRFQQuoteList(Integer start, Integer limit, Date date, String keyword, boolean flag, Integer status, Integer country, int supid) throws IOException;
+    Page getMyRFQQuoteList(Integer start, Integer limit, Byte type, Date date, String keyword, boolean flag, Integer status, Integer country, int supid) throws IOException;
 
     RFQMyuoteInfo getMyRFQQuoteInfo(Integer id, Integer pkey) throws IOException;
 
