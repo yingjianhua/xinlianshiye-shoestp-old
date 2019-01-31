@@ -1,5 +1,8 @@
 package irille.Dao;
 
+import static irille.core.sys.Sys.OYn.YES;
+import static java.util.stream.Collectors.toList;
+
 import irille.Aops.Caches;
 import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
@@ -31,7 +34,13 @@ import irille.view.pdt.PdtProductCatView;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -720,7 +729,7 @@ public class PdtProductDao {
 
     public List<PdtProduct> findAllByPkeys(String pkeys) {
         SQL sql = new SQL();
-        sql.SELECT(PdtProduct.class).WHERE(PdtProduct.T.PKEY, " IN (" + pkeys + ") ");
+        sql.SELECT(PdtProduct.class).FROM(PdtProduct.class).WHERE(PdtProduct.T.PKEY," IN ("+pkeys+") ");
         return Query.sql(sql).queryList(PdtProduct.class);
     }
 

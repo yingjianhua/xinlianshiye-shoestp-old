@@ -21,7 +21,7 @@ public class O2OManageActivityListView implements BaseView {
     private Date start_date;
     @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private Date end_date;
-    private String country;
+    private String address;
     private Integer countryId;
     private String status;
 

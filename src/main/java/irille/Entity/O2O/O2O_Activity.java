@@ -29,7 +29,7 @@ public class O2O_Activity extends BeanInt<O2O_Activity> {
         STATUS(Tb.crt(O2O_ActivityStatus.DEFAULT)),
         ACTIVITY_CAT(Sys.T.STR__200_NULL), // 当这个值为null的时候,及通用, 关联到productCat表的pkey字段 多选时用英文逗号分隔
         RULES(Sys.T.MUILTI_LANGUAGE, "规则描述"),
-        ADDRESS(Sys.T.JSON), // 地址信息  {countyId 保存国家外键  info 集体信息例如:温州市瓯海区     x  经度,y 纬度}
+        ADDRESS(O2O_Map.fldOutKey()), // 地址
         START_DATE(Sys.T.DATE_TIME),
         END_DATE(Sys.T.DATE_TIME),
         UPDATED_TIME(Sys.T.UPDATED_DATE_TIME),
@@ -89,7 +89,7 @@ public class O2O_Activity extends BeanInt<O2O_Activity> {
 	// END:3,活动结束
   private String _activityCat;	// 字符200  STR(200)<null>
   private String _rules;	// 规则描述  JSONOBJECT
-  private String _address;	// JSON  JSONOBJECT
+  private Integer _address;	// o2o地图 <表主键:O2O_Map>  INT
   private Date _startDate;	// 日期时间  TIME
   private Date _endDate;	// 日期时间  TIME
   private Date _updatedTime;	// 更新时间  TIME
@@ -102,7 +102,7 @@ public class O2O_Activity extends BeanInt<O2O_Activity> {
     _status=O2O_ActivityStatus.DEFAULT.getLine().getKey();	// 活动状态 <O2O_ActivityStatus>  BYTE
     _activityCat=null;	// 字符200  STR(200)
     _rules=null;	// 规则描述  JSONOBJECT
-    _address=null;	// JSON  JSONOBJECT
+    _address=null;	// o2o地图 <表主键:O2O_Map>  INT
     _startDate=Env.getTranBeginTime();	// 日期时间  TIME
     _endDate=Env.getTranBeginTime();	// 日期时间  TIME
     _updatedTime=Env.getTranBeginTime();	// 更新时间  TIME
@@ -159,17 +159,22 @@ public class O2O_Activity extends BeanInt<O2O_Activity> {
   public void setRules(String rules, FldLanguage.Language l) throws JSONException {
     stRules(gtRules().put(l.name(), rules));
   }
-  public String getAddress(){
+  public Integer getAddress(){
     return _address;
   }
-  public void setAddress(String address){
+  public void setAddress(Integer address){
     _address=address;
   }
-  public JSONObject gtAddress() throws JSONException {
-    return getAddress()==null?new JSONObject():new JSONObject(getAddress());
+  public O2O_Map gtAddress(){
+    if(getAddress()==null)
+      return null;
+    return (O2O_Map)get(O2O_Map.class,getAddress());
   }
-  public void stAddress(JSONObject address){
-    setAddress(address==null?null:address.toString());
+  public void stAddress(O2O_Map address){
+    if(address==null)
+      setAddress(null);
+    else
+      setAddress(address.getPkey());
   }
   public Date getStartDate(){
     return _startDate;
