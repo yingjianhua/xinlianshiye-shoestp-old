@@ -5,11 +5,14 @@ import irille.Service.Pdt.Imp.PdtProductServiceImp;
 import irille.homeAction.pdt.dto.PdtExhibitionView;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage;
+import irille.pub.tb.FldLanguage.Language;
 import irille.shop.usr.UsrPurchase;
+import irille.view.Page;
 import irille.view.pdt.PdtProductBaseInfoView;
 import irille.view.pdt.PdtProductCatView;
 import irille.view.v2.Pdt.PdtNewPdtInfo;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -66,4 +69,11 @@ public interface IPdtProductService {
     Map getProductListByCategoryV2(IduPage iduPage, String[] orderfld, boolean order, int cated, String spec, String onlyFld, String keyword, Integer type);
     
     public List<PdtExhibitionView> findExhibitionGoods(IduPage page); 
+    
+    /**
+	 * xy
+	 * -pc商城端新搜索商品功能
+	 * @return
+	 */
+    public Page searchPdt(UsrPurchase purchase,Language curLanguage, Integer lose,String pName,Integer cate,Integer level,String export,Integer mOrder,BigDecimal min,BigDecimal max,Integer start,Integer limit);
 }

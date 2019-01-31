@@ -128,7 +128,8 @@ public class Pdt extends PackageBase {
         GENERAL(0, "普通产品"),
         GROUP(1, "联合采购产品"),
         GATHER(2, "采集商品"),
-        PrivateExpo(3, "私人展会商品");
+        PrivateExpo(3, "私人展会商品"),
+        O2O(4, "O2O商品");
         public static final String NAME = "产品种类";
         public static final OProductType DEFAULT = GENERAL;
         private EnumLine _line;

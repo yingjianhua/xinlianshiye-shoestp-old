@@ -130,4 +130,19 @@ public class PdtAttrLineDAO {
 			bean.upd();
 		}
 	}
+	
+	/**
+	 * xy
+	 * @param mainPkey 父id
+	 * @return
+	 */
+	public static List<PdtAttrLine> getListByMain(Integer...params){
+		SQL sql = new SQL();
+		sql.SELECT(PdtAttrLine.T.PKEY,PdtAttrLine.T.NAME,PdtAttrLine.T.MAIN);
+		sql.FROM(PdtAttrLine.class);
+		for(Integer item:params) {
+			sql.orWhere(PdtAttrLine.T.MAIN, " =? ",item);
+		}
+		return Query.sql(sql).queryList(PdtAttrLine.class);
+	}
 }

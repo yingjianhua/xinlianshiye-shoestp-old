@@ -6,7 +6,9 @@ import static java.util.stream.Collectors.toList;
 import irille.Aops.Caches;
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Entity.O2O.O2O_Product;
+import irille.action.dataimport.util.StringUtil;
 import irille.core.sys.Sys;
+import irille.core.sys.Sys.OYn;
 import irille.homeAction.pdt.dto.PdtProductView;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
@@ -14,26 +16,37 @@ import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumFld;
+import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.SEOUtils;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.Pdt;
+import irille.shop.pdt.PdtAttrLine;
+import irille.shop.pdt.PdtAttrLineDAO;
 import irille.shop.pdt.PdtCat;
+import irille.shop.pdt.PdtCatDAO;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.plt.PltConfigDAO;
+import irille.shop.plt.PltCountry;
+import irille.shop.plt.PltProvince;
 import irille.shop.usr.Usr;
 import irille.shop.usr.UsrFavorites;
+import irille.shop.usr.UsrFavoritesDAO;
 import irille.shop.usr.UsrProductCategory;
+import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
 import irille.view.pdt.PdtProductBaseInfoView;
 import irille.view.pdt.PdtProductCatView;
+import irille.view.pdt.PdtSearchView;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -43,6 +56,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import org.json.JSONException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -721,5 +736,187 @@ public class PdtProductDao {
         }
         return query.queryList();
     }
+    
+    
+    private static final Integer men = 373; //PdtCat男鞋顶级分类pkey
+    private static final Integer women = 380; //PdtCat女鞋顶级分类pkey
+    private static final int inner = 137; //PdtAttr内部材料pkey
+    private static final int season = 136; //PdtAttr适合季节pkey
+    private static final int sole = 138; //PdtAttr鞋底材质pkey
+    private static final int upper = 139; //PdtAttr鞋面材料pkey
+    private static final int colsed = 152; //PdtAttr闭合方式pkey
+   
+    /**
+     * @author xy
+     * v == 3搜索
+     * -新PC商城端搜索功能
+     * @param purchase 当前用户
+     * @param curLanguage 当前语言
+     * @param lose 1:需要按分类搜索     其他数字:不按分类搜索
+     * @param pName 搜索字符
+     * @param cate 产品分类
+     * @param level 供应商等级
+     * @param export 出口国家
+     * @param mOrder 起订量
+     * @param min 最小价格
+     * @param max 最大价格
+     * @param start 开始条数
+     * @param limit 显示条数
+     */
+    public static Page searchPdtByQuery(UsrPurchase purchase,Language curLanguage, Integer lose,String pName,Integer cate,Integer level,String export,Integer mOrder,BigDecimal min,BigDecimal max,Integer start,Integer limit) {
+    	SQL sql = new SQL();
+    	sql.SELECT(PdtProduct.T.PKEY,"pdtPkey");
+    	sql.SELECT(PdtProduct.T.NAME,"pdtName");
+    	//sql.SELECT(PdtProduct.T.CATEGORY,"pdtCate");
+    	sql.SELECT(PdtProduct.T.CUR_PRICE,PdtProduct.T.MIN_OQ,PdtProduct.T.CATEGORY,PdtProduct.T.NORM_ATTR,PdtProduct.T.PRODUCT_TYPE);
+    	sql.SELECT(UsrSupplier.T.PKEY,"supPkey");
+    	sql.SELECT(UsrSupplier.T.SHOW_NAME,"supName");
+    	sql.SELECT(UsrSupplier.T.STATUS,UsrSupplier.T.AUTH_TIME);
+    	sql.SELECT(PltCountry.T.NAME,"pltCountry");
+    	sql.SELECT(PltProvince.T.NAME,"pltProvince");
+    	sql.SELECT(PdtCat.T.PKEY,"pdtCatPkey");
+    	sql.SELECT(PdtCat.T.NAME,"pdtCatName");
+    	sql.SELECT(PdtCat.T.CATEGORY_UP,"pdtCatUp");
+    	sql.FROM(PdtProduct.class);
+    	sql.LEFT_JOIN(UsrSupplier.class,PdtProduct.T.SUPPLIER,UsrSupplier.T.PKEY);
+    	sql.LEFT_JOIN(PltCountry.class,UsrSupplier.T.COUNTRY,PltCountry.T.PKEY);
+    	sql.LEFT_JOIN(PltProvince.class,UsrSupplier.T.PROVINCE,PltProvince.T.PKEY);
+    	sql.LEFT_JOIN(PdtCat.class,PdtProduct.T.CATEGORY,PdtCat.T.PKEY);
+    	sql.WHERE(PdtProduct.T.IS_VERIFY, " =? ",OYn.YES.getLine().getKey());
+    	sql.WHERE(PdtProduct.T.STATE, " =? ",Pdt.OState.ON.getLine().getKey());
+    	/*sql.WHERE(PdtProduct.T.PRODUCT_TYPE, " =? ",Pdt.OProductType.GENERAL.getLine().getKey())
+    		.orWhere(PdtProduct.T.PRODUCT_TYPE, " =? ", Pdt.OProductType.O2O.getLine().getKey());*/
+    	sql.WHERE(" ( PdtProduct.product_type =" +Pdt.OProductType.GENERAL.getLine().getKey()+ " OR PdtProduct.product_type =" + Pdt.OProductType.O2O.getLine().getKey() + " ) ");
+    	if(lose == 1)
+	    	if(cate != null) {
+	    		sql.WHERE(PdtProduct.T.CATEGORY," =? ",cate);	
+	    		start = 0;
+	    		limit = 10;
+	    	}
+		if (StringUtil.hasValue(pName))
+			sql.WHERE(" upper(JSON_EXTRACT(PdtProduct.name,'$." + curLanguage.name() + "'))  like upper('%" + pName
+					+ "%') ");
+		if (level != null)
+			sql.WHERE(UsrSupplier.T.ROLE, " =? ", level);
+		if (StringUtil.hasValue(export)) {
+			sql.WHERE(" ( upper(JSON_EXTRACT(UsrSupplier.main_sales_area,'$." + curLanguage.name()
+					+ "'))  like upper('%" + export + "%') or UsrSupplier.main_sales_area like '%不限%' ) ");
+			/* .orWhere(UsrSupplier.T.MAIN_SALES_AREA," like ? ","%不限%"); */
+		}
+		if (mOrder != null)
+			sql.WHERE(PdtProduct.T.MIN_OQ, " >=? ", mOrder);
+		if (min != null && max != null) {
+			if (min.compareTo(max) == -1) {
+				sql.WHERE(PdtProduct.T.CUR_PRICE, " >=? ", min);
+				sql.WHERE(PdtProduct.T.CUR_PRICE, " <=? ", max);
+			} else if (min.compareTo(max) == 0) {
+				sql.WHERE(PdtProduct.T.CUR_PRICE, " =? ", min);
+			}
+		}
+    	sql.ORDER_BY(PdtProduct.T.MY_ORDER, "desc");
+    	List<Integer> menList = PdtCatDAO.getListByGender(men); //男鞋分类
+    	List<Integer> womenList = PdtCatDAO.getListByGender(women);  //女鞋分类
+    	List<PdtAttrLine> attrList = PdtAttrLineDAO.getListByMain(inner,season,sole,upper,colsed);
+    	List<PdtAttrLine> innerList = new ArrayList<>();
+    	List<PdtAttrLine> seasonList = new ArrayList<>();
+    	List<PdtAttrLine> soleList = new ArrayList<>();
+    	List<PdtAttrLine> upperList = new ArrayList<>();
+    	List<PdtAttrLine> colsedList = new ArrayList<>();
+    	for(PdtAttrLine attrItem:attrList) {
+    		if(attrItem.getMain() == inner)
+    			innerList.add(attrItem);
+    		else if(attrItem.getMain() == season)
+    			seasonList.add(attrItem);	
+    		else if(attrItem.getMain() == sole)
+    			soleList.add(attrItem);
+    		else if(attrItem.getMain() == upper)
+    			upperList.add(attrItem);
+    		else if(attrItem.getMain() == colsed)
+    			colsedList.add(attrItem);
+    	}
+    	List<Integer> userFavoritePdt = UsrFavoritesDAO.getUserFavorite(purchase);
+    	Integer count = irille.pub.bean.Query.sql(sql).queryCount();
+    	List<Map<String, Object>> queryMaps = irille.pub.bean.Query.sql(sql.LIMIT(start, limit)).queryMaps();
+    	List<PdtSearchView> pdtListViwe = queryMaps.stream().map(map -> new PdtSearchView(){{
+    		Integer pdtPkey = Integer.parseInt(map.get("pdtPkey").toString());
+    		setPdtId(pdtPkey);
+    		setPdtName(map.get("pdtName").toString());
+    		setPrice(new BigDecimal(map.get(PdtProduct.T.CUR_PRICE.getFld().getCodeSqlField()).toString()));
+    		setMinOrder(Integer.parseInt(map.get(PdtProduct.T.MIN_OQ.getFld().getCodeSqlField()).toString()));
+    		String pdtCatName = map.get("pdtCatName").toString();
+    		Integer gender = 0;
+    		if(pdtCatName.indexOf("男") != -1) {
+    			gender = 1;
+    		}else if(pdtCatName.indexOf("女") != -1) {
+    			gender = 2;
+    		}
+    		if(gender == 0) {
+    			Integer pdtCatPkey = Integer.parseInt(map.get("pdtCatPkey").toString());
+    			Integer pdtCatUp = Integer.parseInt(map.get("pdtCatUp")==null?"0":map.get("pdtCatUp").toString());
+    			if(menList.contains(pdtCatUp) || menList.contains(pdtCatPkey) || pdtCatPkey == men) 
+    				gender = 1;
+    			else if(womenList.contains(pdtCatUp) || womenList.contains(pdtCatPkey) || pdtCatPkey == women)
+    				gender = 2;
+    			else
+    				gender = 3;
+    		}
+    		Object attr = map.get(PdtProduct.T.NORM_ATTR.getFld().getCodeSqlField());
+    		String[] attrSplit = {};
+    		if(attr == null) 
+    			attrSplit = null;
+    		else 
+    			attrSplit = attr.toString().split(",");
+    		setInner(getAttr(innerList,attrSplit,curLanguage));
+    		setSeason(getAttr(seasonList,attrSplit,curLanguage));
+    		setSole(getAttr(soleList,attrSplit,curLanguage));
+    		setClosed(getAttr(colsedList,attrSplit,curLanguage));
+    		setUpper(getAttr(upperList,attrSplit,curLanguage));
+    		setOriginCountry(map.get("pltCountry").toString());
+    		setOriginProvince(map.get("pltProvince").toString());
+    		if(purchase != null)
+    			setEshrine(userFavoritePdt.contains(pdtPkey));
+    		setPdtType(Integer.parseInt(map.get(PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()).toString()));
+    		setSupId(Integer.parseInt(map.get("supPkey").toString()));
+    		setSupName(map.get("supName").toString());
+    		Date authDate = (Date) map.get(UsrSupplier.T.AUTH_TIME.getFld().getCodeSqlField());
+    		SimpleDateFormat sim = new SimpleDateFormat("yyyy");
+    		if(authDate == null)
+    			authDate = new Date();
+    		String authFormat = sim.format(authDate);
+    		String dateFormat = sim.format(new Date());
+    		Integer enter = Integer.parseInt(authFormat)-Integer.parseInt(dateFormat);
+    		setEnter(enter<=0?1:enter+1);
+    	}}).collect(Collectors.toList());
+    	return new Page(pdtListViwe,start,limit,count);
+    }
+    
+    public static String getAttr(List<PdtAttrLine> pdtAttr,String[] attrSplit,Language curLanguage) {
+    	if(pdtAttr == null || attrSplit == null)
+    		return "";
+    	if(pdtAttr.isEmpty() || attrSplit.length == 0)
+    		return "";
+    	StringBuffer buff= new StringBuffer("");
+    	for(int i = 0;i<attrSplit.length;i++) {
+    		if(!attrSplit[i].trim().equals(""))
+	    		for(PdtAttrLine item:pdtAttr) {
+	    			if(Integer.parseInt(attrSplit[i]) == item.getPkey()) {
+	    				try {
+							buff.append(item.getName(curLanguage));
+							buff.append(" ");
+						} catch (JSONException e) {
+							buff.append("");
+							e.printStackTrace();
+						}	
+	    			}
+	    		}
+    	}
+    	return buff.toString();
+    }
+    
+    public static void main(String[] args) {
+    	int parseInt = Integer.parseInt(null);
+    	System.out.println(parseInt);
+	}
+    
     
 }

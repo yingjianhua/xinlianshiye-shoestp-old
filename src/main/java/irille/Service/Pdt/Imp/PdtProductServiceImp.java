@@ -10,6 +10,7 @@ import irille.homeAction.pdt.dto.PdtExhibitionView;
 import irille.homeAction.pdt.dto.PdtProductView;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage;
+import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.GetValue;
 import irille.pub.util.SEOUtils;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
@@ -19,6 +20,7 @@ import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplierDAO;
+import irille.view.Page;
 import irille.view.pdt.PdtProductBaseInfoView;
 import irille.view.pdt.PdtProductCatView;
 import irille.view.v2.Pdt.PdtNewPdtInfo;
@@ -274,5 +276,15 @@ public class PdtProductServiceImp implements IPdtProductService {
 					return view;
 				}).collect(Collectors.toList());
 		return exhibitionGoods;
+	}
+	
+	/**
+	 * xy
+	 * -pc商城端新搜索商品功能
+	 * @return
+	 */
+	@Override
+	public Page searchPdt(UsrPurchase purchase,Language curLanguage, Integer lose,String pName,Integer cate,Integer level,String export,Integer mOrder,BigDecimal min,BigDecimal max,Integer start,Integer limit) {
+		return pdtProductDao.searchPdtByQuery(purchase, curLanguage, lose, pName, cate, level, export, mOrder, min, max, start, limit);
 	}
 }
