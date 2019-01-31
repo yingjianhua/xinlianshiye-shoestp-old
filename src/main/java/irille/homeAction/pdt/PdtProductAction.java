@@ -211,6 +211,12 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
   @Getter
   @Setter
   private Integer lose;
+  @Getter
+  @Setter
+  private Integer IsO2o;
+  @Getter
+  @Setter
+  private String o2oAddress;
   
   /***
    * 获取商品列表
@@ -237,7 +243,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
     		setStart(0);
     	if(getLimit() == 0 || getLimit()<0)
     		setLimit(10);
-    	write(pdtProduct.searchPdt(purchase, curLanguage, lose, pName, cate, level, export, mOrder, min, max, getStart(), getLimit()));
+    	write(pdtProduct.searchPdt(purchase, curLanguage, lose, pName, cate, level, export, mOrder, min, max,IsO2o,o2oAddress, getStart(), getLimit()));
     	//Gs
     	 //write(objectMapper.writeValueAsString(pdtProduct.findExhibitionGoods(iduPage)));
     }else {

@@ -88,11 +88,11 @@ public class O2OPdtServerImp implements IO2OPdtServer {
     @Override
     public Page getO2OActivityInfo(Integer start, Integer limit, Long id, Integer pkey) {
         O2O_Activity o2O_activity = o2OActivityDao.getActivityInfoById(id);
-        try {
+        /*try {
             o2O_activity.gtAddress().get("info");
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
         System.out.println(o2O_activity);
         List pdtresult = o2OProductDao.getO2OActivityPdtList(start, limit, id, pkey);
         System.out.println(pdtresult);

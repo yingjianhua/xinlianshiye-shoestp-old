@@ -284,7 +284,7 @@ public class PdtProductServiceImp implements IPdtProductService {
 	 * @return
 	 */
 	@Override
-	public Page searchPdt(UsrPurchase purchase,Language curLanguage, Integer lose,String pName,Integer cate,Integer level,String export,Integer mOrder,BigDecimal min,BigDecimal max,Integer start,Integer limit) {
-		return pdtProductDao.searchPdtByQuery(purchase, curLanguage, lose, pName, cate, level, export, mOrder, min, max, start, limit);
+	public Page searchPdt(UsrPurchase purchase,Language curLanguage, Integer lose,String pName,Integer cate,Integer level,String export,Integer mOrder,BigDecimal min,BigDecimal max,Integer IsO2o,String o2oAddress,Integer start,Integer limit) {
+		return pdtProductDao.searchPdtByQuery(purchase, curLanguage, lose, pName, cate, level, export, mOrder, min, max, IsO2o,o2oAddress,start, limit);
 	}
 }
