@@ -2,6 +2,7 @@ package irille.sellerAction.rfq.view;
 
 import java.util.Date;
 
+import irille.Entity.RFQ.RFQConsultMessage;
 import irille.view.BaseView;
 import lombok.Data;
 
@@ -21,4 +22,18 @@ public class RFQConsultMessageView implements BaseView {
     private Boolean hadRead;    // 是否 <OYn>  BYTE
     // YES:1,是
     // NO:0,否
+    
+    public static class Builder {
+    	
+    	public static RFQConsultMessageView toView(RFQConsultMessage bean) {
+    		RFQConsultMessageView view = new RFQConsultMessageView();
+    		view.setPkey(bean.getPkey());
+    		view.setContent(bean.getContent());
+    		view.setType(bean.getType());
+    		view.setSendTime(bean.getSendTime());
+    		view.setP2S(bean.gtP2S());
+    		view.setHadRead(bean.gtHadRead());
+			return view;
+    	}
+    }
 }

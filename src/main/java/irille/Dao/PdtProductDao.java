@@ -1,8 +1,5 @@
 package irille.Dao;
 
-import static irille.core.sys.Sys.OYn.YES;
-import static java.util.stream.Collectors.toList;
-
 import irille.Aops.Caches;
 import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
@@ -34,13 +31,7 @@ import irille.view.pdt.PdtProductCatView;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -55,6 +46,10 @@ import static java.util.stream.Collectors.toList;
  * Time: 14:47
  */
 public class PdtProductDao {
+	
+	public PdtProduct findByPkey(Integer productPkey) {
+		return Query.SELECT(PdtProduct.class, productPkey);
+	}
     /***
      * 首页新品
      *
@@ -478,7 +473,7 @@ public class PdtProductDao {
 
     public Page getProductListManage(String name, String number, Integer supplierId, int cat, int start, int limit, Integer search) {
         BeanQuery q = Query
-                .SELECT(PdtProduct.T.PKEY, PdtProduct.T.NAME, PdtProduct.T.CODE, PdtProduct.T.CUR_PRICE, PdtProduct.T.PICTURE, PdtProduct.T.PRODUCT_TYPE, PdtProduct.T.UPDATE_TIME)
+                .SELECT(PdtProduct.T.PKEY, PdtProduct.T.NAME, PdtProduct.T.CODE, PdtProduct.T.CUR_PRICE, PdtProduct.T.PICTURE, PdtProduct.T.PRODUCT_TYPE, PdtProduct.T.UPDATE_TIME,PdtProduct.T.IS_VERIFY)
                 .SELECT(PdtCat.T.NAME, "category")
                 .SELECT(UsrProductCategory.T.NAME, "categoryDiy")
                 .FROM(PdtProduct.class)
@@ -542,7 +537,7 @@ public class PdtProductDao {
                     o.put("status", "");
                 }
             } else {
-                if (o.get(PdtProduct.T.IS_VERIFY) == Sys.OYn.YES) {
+                if ((byte) o.get(PdtProduct.T.IS_VERIFY.getFld().getCodeSqlField()) == Sys.OYn.YES.getLine().getKey()) {
                     o.put("status", "正常");
                 } else {
                     o.put("status", "审核未通过");
@@ -729,7 +724,7 @@ public class PdtProductDao {
 
     public List<PdtProduct> findAllByPkeys(String pkeys) {
         SQL sql = new SQL();
-        sql.SELECT(PdtProduct.class).FROM(PdtProduct.class).WHERE(PdtProduct.T.PKEY," IN ("+pkeys+") ");
+        sql.SELECT(PdtProduct.class).FROM(PdtProduct.class).WHERE(PdtProduct.T.PKEY, " IN (" + pkeys + ") ");
         return Query.sql(sql).queryList(PdtProduct.class);
     }
 
