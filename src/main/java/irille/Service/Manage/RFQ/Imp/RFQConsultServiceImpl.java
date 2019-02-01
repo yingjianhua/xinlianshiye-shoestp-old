@@ -111,7 +111,10 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 		.SELECT(RFQConsultMessage.T.HAD_READ, "messageHadRead")
 		.SELECT(PltCountry.T.PKEY, "countryPkey")
 		.SELECT(PltCountry.T.NAME, "countryName")
+		.SELECT(PltCountry.T.NATIONAL_FLAG, "countryFlag")
+		.SELECT(UsrPurchase.T.PKEY, "purchasePkey")
 		.SELECT(UsrPurchase.T.NAME, "purchaseName")
+		.SELECT(PdtProduct.T.PKEY, "productPkey")
 		.SELECT(PdtProduct.T.PICTURE, "productImages")
 		.SELECT(PdtProduct.T.NAME, "productName")
 		.FROM(RFQConsultRelation.class)
@@ -180,17 +183,20 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 				setImage((String)map.get(RFQConsult.T.IMAGE.getFld().getCodeSqlField()));
 				if(map.containsKey("productName"))
 					setProduct(new ProductView() {{
+						setPkey((Integer)map.get("productPkey"));
 						setName((String)map.get("productName"));
 						setImage((String)map.get("productImages"));
 					}});
 				if(map.containsKey("purchaseName"))
 					setPurchase(new PurchaseView() {{
+						setPkey((Integer)map.get("purchasePkey"));
 						setName((String)map.get("purchaseName"));
 					}});
 				if(map.containsKey("countryPkey"))
 					setCountry(new CountryView() {{
 						setPkey((Integer)map.get("countryPkey"));
 						setName((String)map.get("countryName"));
+						setNationalFlag((String)map.get("countryFlag"));
 					}});
 			}});
 			return view;
