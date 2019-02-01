@@ -37,7 +37,7 @@
     <Loggers>
         <!-- 定义根logger，根logger是必须的，这里我把根logger定义为异步的，也可为定义为普通的同步的，但是注意在同步根logger和异步根logger中只能存在一个，不能两个都配置 -->
         <asyncRoot level="info">
-            <AppenderRef ref="consoleAppender"/>
+            <AppenderRef ref="rollingRandomAccessFileAppender"/>
         </asyncRoot>
         <!-- 普通的根logger，注意，跟上面的异步跟root同时只能存在一个 -->
         <!-- <Root level="trace"> <AppenderRef ref="consoleAppender" /> </Root> -->
@@ -45,8 +45,8 @@
         <!-- additivity表示是否附加,logger有继承关系,并且所有的logger的父类时rootLogger,当additivity为true时,子类的日志输出为添加到父类的输出中 -->
         <!-- 实际使用就是,当logger有appenderRef时,additivity设置为false,logger没有指定appenderRef,将additivity设置为true -->
         <!-- <asyncLogger name="irille" level="debug" additivity="true"/> -->
-        <asyncLogger name="irille" level="info" additivity="false" includeLocation="true">
-            <AppenderRef ref="consoleAppender"/>
+        <asyncLogger name="irille" level="debug" additivity="false" includeLocation="true">
+            <AppenderRef ref="rollingRandomAccessFileAppender"/>
         </asyncLogger>
     </Loggers>
 </Configuration>
