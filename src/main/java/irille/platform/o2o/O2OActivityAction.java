@@ -26,6 +26,7 @@ public class O2OActivityAction extends ActionBase<O2O_Activity> implements IO2OA
     private O2OActivityView activity;
 
     @Setter
+    @Getter
     private PdtSearchView search;
     @Setter
     private String reason;
@@ -82,7 +83,15 @@ public class O2OActivityAction extends ActionBase<O2O_Activity> implements IO2OA
      * 确认下架
      */
     public void lower() throws IOException, JSONException {
-        o2OActivityService.lowerAndUpper(id,reason,O2O_ProductStatus.OFF);
+        o2OActivityService.lowerAndUpper(id,null,O2O_ProductStatus.OFF);
+        writeSuccess();
+    }
+
+    /**
+     * 拒绝下架
+     */
+    public void upper() throws IOException, JSONException {
+        o2OActivityService.lowerAndUpper(id,reason,O2O_ProductStatus.ON);
         writeSuccess();
     }
 

@@ -65,7 +65,8 @@ public class O2OActicityServerImp implements IO2OActicityServer{
               listAll.addAll(pdtProductDao.getCatsNodeByCatId(cat));
           });
         }
-        List<O2O_Product> o2oPdts = new ArrayList<O2O_Product>();
+        List<O2O_Product> insO2oPdts = new ArrayList<O2O_Product>();
+        List<O2O_Product> updO2oPdts = new ArrayList<O2O_Product>();
         for(PdtProduct pdt:pdtProductDao.findAllByPkeys(pdts)){
             if(listAll.size() > 0){
                 if(listAll.indexOf(String.valueOf(pdt.getCategory())) == -1){
@@ -73,9 +74,13 @@ public class O2OActicityServerImp implements IO2OActicityServer{
                 }
             }
             O2O_Product o2oPdt = O2O_Product.chkUniqueProduct_id_join_info_id(false,pdt.getPkey(),joinInfo.getPkey());
-            if(o2oPdt != null)
-                continue;
-            o2oPdt = new O2O_Product();
+            if(o2oPdt != null){
+                if(!o2oPdt.getVerifyStatus().equals(O2O_ProductStatus.Failed)){
+                    continue;
+                }
+            }else{
+                o2oPdt = new O2O_Product();
+            }
             o2oPdt.setStatus(O2O_ProductStatus.ON.getLine().getKey());
             o2oPdt.setActivityId(activityEntity.getPkey());
             o2oPdt.setVerifyStatus(O2O_ProductStatus._DEFAULT.getLine().getKey());
@@ -83,9 +88,18 @@ public class O2OActicityServerImp implements IO2OActicityServer{
             o2oPdt.setMinOq(pdt.getMinOq());
             o2oPdt.setProductId(pdt.getPkey());
             o2oPdt.setUpdatedTime(new Date());
-            o2oPdts.add(o2oPdt);
+            if(null == o2oPdt.getPkey()){
+                insO2oPdts.add(o2oPdt);
+            }else{
+                updO2oPdts.add(o2oPdt);
+            }
         }
-        Idu.insLine(joinInfo,o2oPdts,O2O_Product.T.JOIN_INFO_ID.getFld());
+        if(insO2oPdts.size()>0){
+            Idu.insLine(joinInfo,insO2oPdts,O2O_Product.T.JOIN_INFO_ID.getFld());
+        }
+        if(updO2oPdts.size()>0) {
+            Idu.updLine(joinInfo, updO2oPdts, O2O_Product.T.JOIN_INFO_ID.getFld());
+        }
     }
 
 

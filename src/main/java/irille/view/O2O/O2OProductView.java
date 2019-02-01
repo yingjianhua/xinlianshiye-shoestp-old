@@ -9,7 +9,8 @@ import lombok.Data;
 public class O2OProductView implements BaseView {
 
     private Integer pkey;
-    private Byte status;
+    private Byte status;//审核状态
+    private Byte state;//上下架状态
     private String actName;
     private String actAddress;
     private String productName;
@@ -21,5 +22,7 @@ public class O2OProductView implements BaseView {
     private String contact;
     private String mobile;
     private String rewriter;
+
+    private String message;//申请下架理由
 
 }
