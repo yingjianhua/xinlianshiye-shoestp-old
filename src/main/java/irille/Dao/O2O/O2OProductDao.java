@@ -68,7 +68,10 @@ public class O2OProductDao {
             sql.FROM(O2O_Product.class)
                 .LEFT_JOIN(PdtProduct.class,PdtProduct.T.PKEY,O2O_Product.T.PRODUCT_ID)
                     .LEFT_JOIN(O2O_Activity.class, T.PKEY,O2O_Product.T.ACTIVITY_ID)
-                    .WHERE(T.STATUS,"=?",O2O_ActivityStatus.ACTIVITY)
+                    //TODO  活动状态为根据时间进行变化，目前先根据时间进行状态选取
+                    .WHERE(T.START_DATE,"<?",new Date())
+                    .WHERE(T.END_DATE,">?",new Date())
+//                    .WHERE(T.STATUS,"=?",O2O_ActivityStatus.ACTIVITY)
                 .WHERE(O2O_Product.T.VERIFY_STATUS,"=?", O2O_ProductStatus.PASS.getLine().getKey())
                 .WHERE(O2O_Product.T.STATUS,"=?",O2O_ProductStatus.ON.getLine().getKey());
         sql.LIMIT(start,limit);
@@ -91,9 +94,25 @@ public class O2OProductDao {
                 .WHERE(startDate != null, O2O_Activity.T.START_DATE, ">?", startDate)
                 .WHERE(endDate != null, T.END_DATE, "<?", endDate)
                 .WHERE(keyWord != null && keyWord.length() > 0, T.NAME, "like ?", keyWord)
-                .WHERE(status != null,T.STATUS,"=?",status)
-                .WHERE(T.STATUS,"<>?", O2O_ActivityStatus.TOBEGIN.getLine().getKey())
-                .LIMIT(start, limit);
+                .WHERE(T.STATUS,"<>?", O2O_ActivityStatus.TOBEGIN.getLine().getKey());
+//                .WHERE(status != null,T.STATUS,"=?",status)
+        //TODO  活动状态为根据时间进行变化，目前先根据时间进行状态选取
+        Date now = new Date();
+        if(null != status){
+            if(status.equals(O2O_ActivityStatus.TOBEGIN.getLine().getKey())){
+                //未开始
+                sql.WHERE(T.START_DATE,">?",now);
+            }else if(status.equals(O2O_ActivityStatus.ACTIVITY.getLine().getKey())){
+                //活动中
+                sql.WHERE(T.START_DATE,"<?",now);
+                sql.WHERE(T.END_DATE,">?",now);
+            }else if(status.equals(O2O_ActivityStatus.END.getLine().getKey())){
+                //结束
+                sql.WHERE(T.END_DATE,"<?",now);
+            }
+        }
+
+        sql.LIMIT(start, limit);
         if (supId > 0) {
             sql.WHERE(O2O_JoinInfo.T.SUPPLIER, "=?", supId);
             sql.LEFT_JOIN(O2O_JoinInfo.class, O2O_JoinInfo.T.ACTIVITY, T.PKEY);
@@ -112,8 +131,23 @@ public class O2OProductDao {
                 .FROM(O2O_Activity.class)
                 .WHERE(startDate != null, O2O_Activity.T.START_DATE, ">?", startDate)
                 .WHERE(endDate != null, T.END_DATE, "<?", endDate)
-                .WHERE(keyWord != null && keyWord.length() > 0, T.NAME, "like ?", keyWord)
-                .WHERE(status != null,T.STATUS,"=?",status);
+                .WHERE(keyWord != null && keyWord.length() > 0, T.NAME, "like ?", keyWord);
+        // 活动状态//TODO  活动状态为根据时间进行变化，目前先根据时间进行状态选取
+        Date now = new Date();
+        if(null != status){
+            if(status.equals(O2O_ActivityStatus.TOBEGIN.getLine().getKey())){
+                //未开始
+                sql.WHERE(T.START_DATE,">?",now);
+            }else if(status.equals(O2O_ActivityStatus.ACTIVITY.getLine().getKey())){
+                //活动中
+                sql.WHERE(T.START_DATE,"<?",now);
+                sql.WHERE(T.END_DATE,">?",now);
+            }else if(status.equals(O2O_ActivityStatus.END.getLine().getKey())){
+                //结束
+                sql.WHERE(T.END_DATE,"<?",now);
+            }
+        }
+//                .WHERE(status != null,T.STATUS,"=?",status);
         if (supId > 0) {
             sql.WHERE(O2O_JoinInfo.T.SUPPLIER, "=?", supId);
             sql.LEFT_JOIN(O2O_JoinInfo.class, O2O_JoinInfo.T.ACTIVITY, T.PKEY);
@@ -274,7 +308,11 @@ public class O2OProductDao {
                 .WHERE(O2O_Product.T.PRODUCT_ID,"=?",pdtId);
         sql.WHERE(O2O_Product.T.VERIFY_STATUS,"=?",O2O_ProductStatus.PASS);
         sql.WHERE(O2O_Product.T.STATUS,"=?",O2O_ProductStatus.ON);
-        sql.WHERE(T.STATUS,"<>?",O2O_ActivityStatus.TOBEGIN);
+        //TODO  活动状态为根据时间进行变化，目前先根据时间进行状态选取
+        Date now = new Date();
+        sql.WHERE(T.START_DATE,"<?",now);
+        sql.WHERE(T.END_DATE,">?",now);
+//        sql.WHERE(T.STATUS,"<>?",O2O_ActivityStatus.TOBEGIN);
         sql.ORDER_BY(O2O_Product.T.UPDATED_TIME," ASC ");
         List<O2O_Product> o2oPdts = Query.sql(sql).queryList(O2O_Product.class);
         if(o2oPdts.size()>0){
