@@ -12,6 +12,7 @@ import irille.Dao.RFQ.RFQConsultRelationDao;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultGroup;
 import irille.Entity.RFQ.RFQConsultGroupRelation;
+import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Service.Manage.RFQ.RFQConsultService;
 import irille.pub.bean.BeanBase;
@@ -99,7 +100,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 			query.LEFT_JOIN(RFQConsultGroupRelation.class, RFQConsult.T.PKEY, RFQConsultGroupRelation.T.CONSULT);
 			query.WHERE(RFQConsultGroupRelation.T.CONSULT_GROUP, "=?", groupId);
 		}
-		
+//		RFQConsultMessage.class;
 		query.limit(start, limit);
 		// TODO Auto-generated method stub
 		query.queryList();

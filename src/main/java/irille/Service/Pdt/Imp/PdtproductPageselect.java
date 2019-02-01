@@ -305,11 +305,6 @@ public class PdtproductPageselect {
         if (!list.isEmpty()) {
             PdtProduct pdtProduct = list.get(0);
             ProductInfoView productInfoView = new ProductInfoView();
-            /**===============O2O INFO START===============**/
-            O2OMapView mapAddress = initO2O(pdtProduct);
-            if(null != mapAddress)
-                productInfoView.setMap(mapAddress);
-            /**===============O2O INFO END===============**/
             UsrSupplier supplier = pdtProduct.gtSupplier();
             productInfoView.setSupId(supplier.getPkey());
             productInfoView.setSupName(SEOUtils.firstUpperCase(translateUtil.getLanguage(supplier.getShowName(), HomeAction.curLanguage())));
@@ -337,6 +332,14 @@ public class PdtproductPageselect {
             productInfoView.setPdtImg(pdtProduct.getPicture());
             productInfoView.setFavorite_count(pdtProduct.getFavoriteCount());
             productInfoView.setFavorite(isFavorite(purId, id));
+            /**===============O2O INFO START===============**/
+            ProductInfoView o2oPdt = initO2O(pdtProduct);
+            if(null != o2oPdt){
+                productInfoView.setMap(o2oPdt.getMap());
+                productInfoView.setPrice(PltErateDAO.Query.getTargetPrice(o2oPdt.getPrice(), curCurrency.getNowrate()).setScale(2, RoundingMode.HALF_UP));
+                productInfoView.setMin_oq(o2oPdt.getMin_oq());
+            }
+            /**===============O2O INFO END===============**/
             IduPage page = new IduPage();
             page.setStart(1);
             page.setLimit(5);
@@ -443,7 +446,7 @@ public class PdtproductPageselect {
     @Inject
     private IO2OMapServer io2OMapServer;
 
-    public O2OMapView initO2O(PdtProduct product){
+    public ProductInfoView initO2O(PdtProduct product){
         if(product.getProductType().equals(Pdt.OProductType.O2O.getLine().getKey())){
             return io2OMapServer.findByEarliestPdt_PkeyAnd(HomeAction.curLanguage(),product.getPkey());
         }

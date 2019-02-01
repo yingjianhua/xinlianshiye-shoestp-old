@@ -2,6 +2,7 @@ package irille.Service.Manage.O2O;
 
 import com.google.inject.ImplementedBy;
 import irille.Service.Manage.O2O.Imp.O2OMapServerImp;
+import irille.homeAction.pdt.dto.ProductInfoView;
 import irille.pub.tb.FldLanguage;
 import irille.view.O2O.O2OMapView;
 import org.json.JSONObject;
@@ -17,5 +18,5 @@ public interface IO2OMapServer {
 
     JSONObject load(String address);
 
-    O2OMapView findByEarliestPdt_PkeyAnd(FldLanguage.Language language, Integer pdt);
+    ProductInfoView findByEarliestPdt_PkeyAnd(FldLanguage.Language language, Integer pdt);
 }

@@ -7,6 +7,7 @@ import irille.Entity.O2O.O2O_Map;
 import irille.Entity.O2O.O2O_Product;
 import irille.Service.Manage.O2O.IO2OMapServer;
 import irille.core.sys.Sys;
+import irille.homeAction.pdt.dto.ProductInfoView;
 import irille.pub.bean.BeanBase;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
@@ -60,13 +61,17 @@ public class O2OMapServerImp implements IO2OMapServer {
     }
 
     @Override
-    public O2OMapView findByEarliestPdt_PkeyAnd(FldLanguage.Language language,Integer pdt) {
+    public ProductInfoView findByEarliestPdt_PkeyAnd(FldLanguage.Language language, Integer pdt) {
         O2O_Product o2oPdt = o2OProductDao.findEarliestActByPdt_Pkey(pdt);
-        O2OMapView view = null;
+        ProductInfoView view = null;
         if(null != o2oPdt){
+            view = new ProductInfoView();
             O2O_Activity activity = o2oPdt.gtActivityId();
             O2O_Map map = activity.gtAddress();
-            view = O2OMapView.toView(language,map);
+            O2OMapView mapView = O2OMapView.toView(language,map);
+            view.setMap(mapView);
+            view.setMin_oq(o2oPdt.getMinOq());
+            view.setPrice(o2oPdt.getPrice());
         }
         return view;
     }

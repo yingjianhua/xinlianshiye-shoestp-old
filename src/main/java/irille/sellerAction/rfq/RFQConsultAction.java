@@ -1,12 +1,6 @@
 package irille.sellerAction.rfq;
 
-import java.io.IOException;
-import java.util.Date;
-
-import javax.inject.Inject;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import irille.Entity.RFQ.RFQConsult;
 import irille.Service.Manage.RFQ.IRFQManageService;
 import irille.Service.Manage.RFQ.RFQConsultService;
@@ -14,6 +8,10 @@ import irille.sellerAction.SellerAction;
 import irille.sellerAction.rfq.inf.IRFQConsultAction;
 import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
 import lombok.Setter;
+
+import javax.inject.Inject;
+import java.io.IOException;
+import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -75,7 +73,6 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
     public void getMyRFQQuoteList() throws IOException {
         if (start == null) start = 0;
         if (limit == null) limit = 5;
-
         write(irfqManageService.getMyRFQQuoteList(start, limit, type,date, keyword, flag, status, country, getSupplier().getPkey()));
     }
 
@@ -84,6 +81,8 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
         if (limit == null) limit = 5;
         write(irfqManageService.getMyRFQQuoteInfo(id, getSupplier().getPkey()));
     }
+
+
 
     private Integer groupId;
     private Boolean isFavorite;

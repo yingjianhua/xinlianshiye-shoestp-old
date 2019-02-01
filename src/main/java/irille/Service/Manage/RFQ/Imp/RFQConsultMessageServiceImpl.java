@@ -117,7 +117,7 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 		bean.stType(RFQConsultMessageType.TEXT);
 		bean.setSendTime(new Date());
 		bean.setRelation(null);
-		bean.stP2S(false);
+		bean.stP2s(false);
 		bean.stHadRead(false);
 		return bean;
 	}

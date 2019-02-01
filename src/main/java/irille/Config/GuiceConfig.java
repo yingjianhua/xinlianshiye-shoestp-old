@@ -1,6 +1,7 @@
 package irille.Config;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Guice;
@@ -27,6 +28,7 @@ public class GuiceConfig extends GuiceServletContextListener {
     protected Injector getInjector() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        mapper.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true);
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return Guice.createInjector(
                 new Struts2GuicePluginModule(),
