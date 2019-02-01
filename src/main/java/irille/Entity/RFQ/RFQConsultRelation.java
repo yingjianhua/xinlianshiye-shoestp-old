@@ -29,7 +29,7 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
         PURCHASE_ID(UsrPurchase.fldOutKey().setName("采购商")),
         IN_RECYCLE_BIN(Sys.T.YN, "是否在回收站"),//是否在回收站, true: 在回收站, false: 不在回收站
         FAVORITE(Sys.T.YN, "是否添加FLAG"),
-        TITLE(Sys.T.STR__20_NULL),
+        TITLE(Sys.T.STR__200_NULL),
         DESTINATION(Sys.T.STR__20_NULL, "描述"),
         Image(Sys.T.STR__200_NULL, "图片(多图)"),
         QUANTITY(Sys.T.INT, "数量"),
