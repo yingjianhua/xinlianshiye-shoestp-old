@@ -731,9 +731,13 @@ public class PdtProductDao {
                 PdtProduct.T.PKEY,
                 PdtProduct.T.PICTURE,
                 PdtProduct.T.NAME,
-                UsrSupplier.T.ROLE
+                PdtProduct.T.MIN_OQ,
+                UsrSupplier.T.ROLE,
+                UsrSupplier.T.LOGO
         ).SELECT(
                 UsrSupplier.T.NAME, "supName"
+        ).FROM(
+                PdtProduct.class
         ).LEFT_JOIN(
                 UsrSupplier.class, UsrSupplier.T.PKEY, PdtProduct.T.SUPPLIER
         ).WHERE(

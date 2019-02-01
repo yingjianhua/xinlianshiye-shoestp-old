@@ -16,10 +16,11 @@ import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrPurchase;
-import irille.view.Page;
+import irille.shop.usr.UsrSupplier;
 import irille.view.RFQ.RFQPdtInfo;
 import irille.view.pdt.PdtProductBaseInfoView;
 import irille.view.pdt.PdtProductCatView;
+import irille.view.pub.PageSearch;
 import irille.view.v2.Pdt.PdtNewPdtInfo;
 
 import javax.inject.Inject;
@@ -268,16 +269,18 @@ public class PdtProductServiceImp implements IPdtProductService {
     public RFQPdtInfo getInquiryPdtInfo(Integer id) {
         Map<String, Object> map = pdtProductDao.getInquiryPdtInfo(id);
         RFQPdtInfo rfqPdtInfo = new RFQPdtInfo();
-        rfqPdtInfo.setId(GetValue.get(map, PdtProduct.T.PKEY, Integer.class, 0));
-        rfqPdtInfo.setTitle(GetValue.get(map, PdtProduct.T.NAME, String.class, null));
+        rfqPdtInfo.setId(GetValue.get(map, PdtProduct.T.PKEY, Integer.class, -1));
+        rfqPdtInfo.setTitle(translateUtil.getLanguage(GetValue.get(map, PdtProduct.T.NAME, String.class, null), HomeAction.curLanguage()));
         rfqPdtInfo.setSupName(GetValue.get(map, "supName", String.class, null));
+        rfqPdtInfo.setSupLogo(GetValue.get(map, UsrSupplier.T.LOGO, String.class, null));
+        rfqPdtInfo.setMin_oq(GetValue.get(map, PdtProduct.T.MIN_OQ, Integer.class, 0));
         String[] images = GetValue.get(map, PdtProduct.T.PICTURE, String.class, "").split(",");
         if (images.length > 0) {
             rfqPdtInfo.setImage(images[0]);
         } else {
             rfqPdtInfo.setImage(GetValue.get(map, PdtProduct.T.PICTURE, String.class, ""));
         }
-        rfqPdtInfo.setSuplevel(GetValue.get(map, "supName", String.class, null));
+        rfqPdtInfo.setSuplevel(String.valueOf(GetValue.get(map, UsrSupplier.T.ROLE, Integer.class, -1)));
         return rfqPdtInfo;
     }
 
@@ -339,7 +342,10 @@ public class PdtProductServiceImp implements IPdtProductService {
      * @return
      */
     @Override
-    public Page searchPdt(UsrPurchase purchase, FldLanguage.Language curLanguage, Integer lose, String pName, Integer cate, Integer level, String export, Integer mOrder, BigDecimal min, BigDecimal max, Integer IsO2o, String o2oAddress, Integer start, Integer limit) {
-        return pdtProductDao.searchPdtByQuery(purchase, curLanguage, lose, pName, cate, level, export, mOrder, min, max, IsO2o, o2oAddress, start, limit);
+    public PageSearch searchPdt(UsrPurchase purchase, FldLanguage.Language curLanguage, Integer lose, String pName, Integer cate, Integer level, String export, Integer mOrder, BigDecimal min, BigDecimal max, Integer IsO2o, String o2oAddress, Integer start, Integer limit) {
+        PageSearch pageSearch = new PageSearch(pdtProductDao.searchPdtByQuery(purchase, curLanguage, lose, pName, cate, level, export, mOrder, min, max, IsO2o, o2oAddress, start, limit));
+        if (cate != null && cate > 0)
+            pageSearch.setBreadcrumbnav(pdtProductDao.getBreadcrumbNav(cate));
+        return pageSearch;
     }
 }

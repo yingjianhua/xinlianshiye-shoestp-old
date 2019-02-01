@@ -21,7 +21,7 @@
         <!-- 定义一个文件appender，如果需要，可以以这个为原型粘贴复制修改再定义适合自己的，该appender的详细解释会在教程接下来的部分给出 -->
         <RollingRandomAccessFile name="rollingRandomAccessFileAppender" fileName="${logDir}/shoestp.log"
                                  filePattern="${logDir}/shoestp-${genericFilePattern}.log.zip" append="true">
-            <PatternLayout pattern="${genericPattern4File}"/>
+            <PatternLayout pattern="${genericPattern4File}"   charset="UTF-8" />
             <!-- 日志分卷规则 -->
             <Policies>
                 <!-- TimeBasedTriggeringPolicy 表示日志按照时间间隔分卷, interval表示时间间隔的长度,单位按照filePattern中分卷名中的最小时间单位自行推导,如%d{yyyy-MM-dd}最小时间单位是天, interval="1"表示每一天分一个卷 -->

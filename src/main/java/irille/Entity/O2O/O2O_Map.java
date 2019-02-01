@@ -1,19 +1,18 @@
 package irille.Entity.O2O;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import irille.core.sys.Sys;
 import irille.pub.bean.BeanInt;
 import irille.pub.tb.Fld;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class O2O_Map extends BeanInt<O2O_Map> {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	public static final Tb<?> TB = new Tb<>(O2O_Map.class,"o2o地图").setAutoIncrement().addActIUDL();
 
     public enum T implements IEnumFld{
