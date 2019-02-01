@@ -87,7 +87,7 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
     private Integer groupId;
     private Boolean isFavorite;
     private Byte type;
-    private Byte readType;
+    private Byte readStatus;
     private Boolean isDeleted;
     private Date startDate;
     private Date endDate;
@@ -106,7 +106,7 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
      */
     @Override
     public void list() throws IOException {
-    	rFQConsultService.page(getSupplier(), start, limit, keyword, groupId, isFavorite, type, readType, isDeleted, startDate, endDate, orderType);
+    	rFQConsultService.page(getSupplier(), start, limit, keyword, groupId, isFavorite, type, readStatus, isDeleted, startDate, endDate, orderType);
     }
 
 	@Override
