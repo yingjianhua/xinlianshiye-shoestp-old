@@ -42,7 +42,7 @@ public class RFQConsultAction extends HomeAction {
      */
     @ItpCheckPurchaseLogin.NeedLogin
     public void putRFQInquiry() throws IOException {
-        irfqConsultService.putRFQInquiry(objectMapper.readValue(data, PutRFQConsultView.class), getPurchase());
+        irfqConsultService.putRFQInquiry(objectMapper.readValue(getJsonBody(), PutRFQConsultView.class), getPurchase());
         write();
     }
 
@@ -53,7 +53,7 @@ public class RFQConsultAction extends HomeAction {
      */
     @ItpCheckPurchaseLogin.NeedLogin
     public void putInquiry() throws IOException {
-        irfqConsultService.putInquiry(objectMapper.readValue(data, PutInquiryView.class), getPurchase());
+        irfqConsultService.putInquiry(objectMapper.readValue(getJsonBody(), PutInquiryView.class), getPurchase());
         write();
     }
 
@@ -72,7 +72,7 @@ public class RFQConsultAction extends HomeAction {
      */
     @ItpCheckPurchaseLogin.NeedLogin
     public void putPrivateInquiry() throws IOException {
-        irfqConsultService.putPrivateInquiry(objectMapper.readValue(data, PutInquiryView.class), getPurchase());
+        irfqConsultService.putPrivateInquiry(objectMapper.readValue(getJsonBody(), PutInquiryView.class), getPurchase());
         write();
     }
 }

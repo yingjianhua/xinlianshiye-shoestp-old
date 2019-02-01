@@ -51,6 +51,11 @@ public interface RFQConsultDao {
 
     RFQConsult getRFQInfo(int id);
 
+    /**
+     * @Description: 查询已经报价列表 
+     * @date 2019/2/1 9:49
+     * @author lijie@shoestp.cn
+     */
     List<Map<String, Object>> getRFQofferList(int id);
 
 
