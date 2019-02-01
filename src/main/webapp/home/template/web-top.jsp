@@ -304,11 +304,6 @@
             }
         }
     })
-    window.onscroll = function () {
-        var sl = -Math.max(document.body.scrollLeft, document.documentElement.scrollLeft);
-        document.getElementById('new-top-nav').style.left = sl + 'px';
-        document.getElementById('new-top-search').style.left = sl + 'px';
-    }
 </script>
 <script type="text/javascript">
     $(document).ready(function () {
