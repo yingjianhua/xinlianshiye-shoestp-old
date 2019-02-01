@@ -22,6 +22,8 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 
     @Override
     public Page<RFQConsultView> page(Integer start, Integer limit, RFQConsultView condition) {
+    	//标记为已删除的询盘不在平台端显示
+		condition.setIsDeleted(false);
         return rFQConsultDao.findAllView(start, limit, condition);
     }
 
