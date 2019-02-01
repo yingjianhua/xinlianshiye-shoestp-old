@@ -358,7 +358,7 @@
     position: relative;
     top: 240px;
     z-index: 999;display: block;
-">请登录后查看地图</a>
+">Please Login</a>
                     <img src="./static/images/mosaic.png" style="
     width: 1200px;
     height: 420px;

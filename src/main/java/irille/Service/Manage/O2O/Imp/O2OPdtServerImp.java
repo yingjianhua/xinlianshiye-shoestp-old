@@ -97,22 +97,31 @@ public class O2OPdtServerImp implements IO2OPdtServer {
         for (Map<String, Object> stringObjectMap :
                 o2OProductDao.getO2OActivityList(
                         start, limit, startDate, endDate, keyword, status, supId, countryId)) {
+            Date sDate = GetValue.get(stringObjectMap, O2O_Activity.T.START_DATE, Date.class, null);
+            Date eDate = GetValue.get(stringObjectMap, O2O_Activity.T.END_DATE, Date.class, null);
             O2OManageActivityListView o2OManageActivityListView = new O2OManageActivityListView();
             o2OManageActivityListView.setId(
                     GetValue.get(stringObjectMap, O2O_Activity.T.PKEY, Integer.class, -1));
             o2OManageActivityListView.setTitle(
                     GetValue.get(stringObjectMap, O2O_Activity.T.NAME, String.class, "NULL"));
-            o2OManageActivityListView.setStart_date(
-                    GetValue.get(stringObjectMap, O2O_Activity.T.START_DATE, Date.class, null));
-            o2OManageActivityListView.setEnd_date(
-                    GetValue.get(stringObjectMap, O2O_Activity.T.END_DATE, Date.class, null));
+            o2OManageActivityListView.setStart_date(sDate);
+            o2OManageActivityListView.setEnd_date(eDate);
             o2OManageActivityListView.setAddress(GetValue.get(stringObjectMap, "mapName", String.class, ""));
             // 获取状态
-            o2OManageActivityListView.setStatus(
-                    ((IEnumOpt) O2O_ActivityStatus.DEFAULT
-                            .getLine()
-                            .get(GetValue.get(stringObjectMap, O2O_Activity.T.STATUS, Byte.class, (byte) 0))).getLine().getName()
-            );
+//            o2OManageActivityListView.setStatus(
+//                    ((IEnumOpt) O2O_ActivityStatus.DEFAULT
+//                            .getLine()
+//                            .get(GetValue.get(stringObjectMap, O2O_Activity.T.STATUS, Byte.class, (byte) 0))).getLine().getName()
+//            );
+            //TODO  活动状态为根据时间进行变化，目前先根据时间进行状态选取
+            Date now = new Date();
+            if(sDate.after(now)){
+                o2OManageActivityListView.setStatus(String.valueOf(O2O_ActivityStatus.TOBEGIN.getLine().getKey()));
+            }else if(sDate.before(now) && eDate.after(now)){
+                o2OManageActivityListView.setStatus(String.valueOf(O2O_ActivityStatus.ACTIVITY.getLine().getKey()));
+            }else if(eDate.before(now)){
+                o2OManageActivityListView.setStatus(String.valueOf(O2O_ActivityStatus.END.getLine().getKey()));
+            }
             result.add(o2OManageActivityListView);
         }
         return new Page(
