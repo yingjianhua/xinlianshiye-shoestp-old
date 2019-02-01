@@ -134,4 +134,9 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
 		write();
 	}
 
+	@Override
+	public void offerInfo() throws IOException {
+		write(rFQConsultService.relationInfo(getSupplier(), id));
+	}
+
 }

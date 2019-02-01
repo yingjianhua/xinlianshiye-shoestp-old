@@ -6,6 +6,7 @@ import com.google.inject.ImplementedBy;
 
 import irille.Service.Manage.RFQ.Imp.RFQConsultServiceImpl;
 import irille.platform.rfq.view.RFQConsultRelationView;
+import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
 import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
 
@@ -43,6 +44,15 @@ public interface RFQConsultService {
 	 * @author Jianhua Ying
 	 */
 	void stamp(UsrSupplier supplier, String consultPkeys, Boolean doStamp);
+	
+	/**
+	 * 报价详情
+	 * 
+	 * @param supplier 供应商
+	 * @param consultPkey 询盘主键
+	 * @author Jianhua Ying
+	 */
+	RFQConsultQuoteInfoView relationInfo(UsrSupplier supplier, Integer consultPkey);
 	
     /**
      * 分页查询询盘列表

@@ -73,5 +73,11 @@ public interface IRFQConsultAction extends ISellerAction, IEnableable {
      */
     @RequestMapping(alias = "标记询盘", sort = 11)
 	void stamp() throws IOException;
+    
+    /**
+     * 报价详情
+     * @throws IOException
+     */
+    void offerInfo() throws IOException;
 
 }

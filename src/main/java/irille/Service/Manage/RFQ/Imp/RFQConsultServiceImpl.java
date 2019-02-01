@@ -28,6 +28,7 @@ import irille.pub.bean.sql.SQL;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.sellerAction.rfq.view.RFQConsultMessageView;
+import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.plt.PltCountry;
 import irille.shop.usr.UsrPurchase;
@@ -105,6 +106,15 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 				}
 			}
 		});
+	}
+
+	@Override
+	public RFQConsultQuoteInfoView relationInfo(UsrSupplier supplier, Integer consultPkey) {
+		RFQConsultRelation relation = rFQConsultRelationDao.findByConsult_PkeySupplier_Pkey(consultPkey, supplier.getPkey());
+		if(relation == null) {
+			throw new WebMessageException(ReturnCode.service_gone, "请重新选择询盘");
+		}
+		return RFQConsultQuoteInfoView.Builder.toView(relation);
 	}
 
     @Override
