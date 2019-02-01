@@ -15,10 +15,12 @@ import irille.pub.bean.BeanBase;
 import irille.pub.i18n.I18NUtil;
 import irille.pub.idu.Idu;
 import irille.pub.idu.IduPage;
+import irille.pub.tb.FldLanguage.Language;
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.odr.OdrOrderDAO;
 import irille.shop.pdt.*;
+import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplierDAO;
 import irille.view.O2O.O2OMapView;
@@ -28,6 +30,7 @@ import irille.view.pdt.CommentView;
 import irille.view.pdt.PdtCommentSatisFactionView;
 import irille.view.pdt.PdtCommentViewPageView;
 import irille.view.usr.SupplierView;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.json.JSONArray;
@@ -35,6 +38,7 @@ import org.json.JSONObject;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -184,7 +188,37 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
   @Getter
   @Setter
   private int searchtype;
-
+  @Getter
+  @Setter
+  private String pName;
+  @Getter
+  @Setter
+  private Integer cate;
+  @Getter
+  @Setter
+  private Integer level;
+  @Getter
+  @Setter
+  private String export;
+  @Getter
+  @Setter
+  private Integer mOrder;
+  @Getter
+  @Setter
+  private BigDecimal min;
+  @Getter
+  @Setter
+  private BigDecimal max;
+  @Getter
+  @Setter
+  private Integer lose;
+  @Getter
+  @Setter
+  private Integer IsO2o;
+  @Getter
+  @Setter
+  private String o2oAddress;
+  
   /***
    * 获取商品列表
    * @author lijie@shoestp.cn
@@ -202,7 +236,18 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
       write(objectMapper.writeValueAsString(pdtProduct
           .getProductListByCategoryV2(iduPage, getOrderfld(), isOrder(), getCated(), getSpec(),
               getOnlyFld(), getKeyword(), getSearchtype())));
-    } else {
+    }else if(v==3){
+    	//xy
+    	Language curLanguage = curLanguage();
+    	UsrPurchase purchase = getPurchase();
+    	if(getStart()<0)
+    		setStart(0);
+    	if(getLimit() == 0 || getLimit()<0)
+    		setLimit(10);
+    	write(pdtProduct.searchPdt(purchase, curLanguage, lose, pName, cate, level, export, mOrder, min, max,IsO2o,o2oAddress, getStart(), getLimit()));
+    	//Gs
+    	 //write(objectMapper.writeValueAsString(pdtProduct.findExhibitionGoods(iduPage)));
+    }else {
       write(objectMapper.writeValueAsString(pdtProduct
           .getProductListByCategory(iduPage, getOrderfld(), isOrder(), getCated(), getSpec(),
               getOnlyFld(), getKeyword(), getType())));
