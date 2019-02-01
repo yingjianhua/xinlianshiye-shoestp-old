@@ -150,7 +150,7 @@ public class RFQManageServiceImp implements IRFQManageService {
         rfqConsultRelation.stSample(quoteInfo.isSample());
         rfqConsultRelation.setCompanydescribe(quoteInfo.getCompanyDescribe());
         rfqConsultRelation.setThrowaway(quoteInfo.getThrowaway());
-        rfqConsultRelation.stHadRead(false);
+        rfqConsultRelation.stHadReadPurchase(false);
         rfqConsultRelationDAO.setB(rfqConsultRelation);
         rfqConsultRelationDAO.commit();
         return 1;
@@ -191,7 +191,7 @@ public class RFQManageServiceImp implements IRFQManageService {
             body.setQuoteTitle(GetValue.get(map, "myTitle", String.class, null));
             body.setQuoteDescriotion(GetValue.get(map, RFQConsultRelation.T.DESTINATION, String.class, null));
             body.setQuoteRFQCreate_date(GetValue.get(map, "myCreate_time", Date.class, null));
-            if (GetValue.get(map, RFQConsultRelation.T.HAD_READ, Byte.class, (byte) -1) == 0)
+            if (GetValue.get(map, RFQConsultRelation.T.HAD_READ_PURCHASE, Byte.class, (byte) -1) == 0)
                 body.setStatus(1);
             else {
                 body.setStatus(2);
@@ -199,13 +199,6 @@ public class RFQManageServiceImp implements IRFQManageService {
             result.add(body);
         }
         return new Page(result, start, limit, 10);
-    }
-
-    @Override
-    public void page(Integer start, Integer limit, String keyword, Integer groupId, Boolean flagId, Byte type,
-                     Boolean haveNewMsg, Boolean isDeleted, Date startDate, Date endDate) {
-        // TODO Auto-generated method stub 未完成
-
     }
 
     @Override
