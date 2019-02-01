@@ -472,7 +472,7 @@ public class PdtProductDao {
         return result;
     }
 
-    public Page getProductListManage(String name, String number, Integer supplierId, int cat, int start, int limit,Integer search) {
+    public Page getProductListManage(String name, String number, Integer supplierId, int cat, int start, int limit, Integer search) {
         BeanQuery q = Query
                 .SELECT(PdtProduct.T.PKEY, PdtProduct.T.NAME, PdtProduct.T.CODE, PdtProduct.T.CUR_PRICE, PdtProduct.T.PICTURE, PdtProduct.T.UPDATE_TIME)
                 .SELECT(PdtCat.T.NAME, "category")
@@ -485,7 +485,7 @@ public class PdtProductDao {
                 .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierId)
                 .WHERE(PdtProduct.T.PRODUCT_TYPE, " <> ?", Pdt.OProductType.GROUP.getLine().getKey())
                 .WHERE(PdtProduct.T.STATE, "<>2").ORDER_BY(PdtProduct.T.UPDATE_TIME, "desc");
-         if (search != null) {
+        if (search != null) {
             switch (search) {
                 case 2:
                     q.WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.PrivateExpo.getLine().getKey());
@@ -806,7 +806,7 @@ public class PdtProductDao {
             , String export, Integer mOrder, BigDecimal min, BigDecimal max, Integer IsO2o, String o2oAddress, Integer start, Integer limit) {
         List<O2O_Product> o2oProduct = null;
         Set<Integer> o2oPdtPkey = new HashSet<>();
-        if (IsO2o == 1) {
+        if (IsO2o != null && IsO2o == 1) {
             SQL o2oActivitySql = new SQL();
             o2oActivitySql.SELECT(O2O_Activity.T.PKEY);
             o2oActivitySql.FROM(O2O_Activity.class);
@@ -916,7 +916,7 @@ public class PdtProductDao {
                 sql.WHERE(PdtProduct.T.CUR_PRICE, " =? ", min);
             }
         }
-        if (IsO2o == 1) {
+        if (IsO2o != null && IsO2o == 1) {
             if (!o2oPdtPkey.isEmpty()) {
                 StringBuffer buff = new StringBuffer("");
                 int i = 0;
