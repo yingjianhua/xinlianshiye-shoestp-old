@@ -13,6 +13,7 @@ import irille.pub.idu.IduOther;
 import irille.pub.idu.IduUpd;
 import irille.pub.svr.Env;
 import irille.pub.tb.FldLanguage.Language;
+import irille.pub.util.GetValue;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.pub.validate.ValidForm;
 import irille.shop.pdt.PdtCat.T;

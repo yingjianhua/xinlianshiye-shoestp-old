@@ -4,6 +4,8 @@ import irille.Aops.Caches;
 import irille.Dao.PdtProductDao;
 import irille.Service.Pdt.IPdtProductService;
 import irille.homeAction.HomeAction;
+import irille.homeAction.pdt.dto.ExhibitionSupplierView;
+import irille.homeAction.pdt.dto.PdtExhibitionView;
 import irille.homeAction.pdt.dto.PdtProductView;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage;
@@ -15,6 +17,7 @@ import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrPurchase;
 import irille.view.Page;
+import irille.view.RFQ.RFQPdtInfo;
 import irille.view.pdt.PdtProductBaseInfoView;
 import irille.view.pdt.PdtProductCatView;
 import irille.view.v2.Pdt.PdtNewPdtInfo;
@@ -299,56 +302,44 @@ public class PdtProductServiceImp implements IPdtProductService {
                         })
                 .collect(Collectors.toList());
     }
-    private List fromPdtProductBaseInfoView(List<Map> result) {
-		return result.stream().map(o -> {
-			String name = String.valueOf(o.get("name"));
-			if (name != null && name.length() > 0) {
-				try {
-					o.put("rewrite",
-							SEOUtils.getPdtProductTitle(Integer.parseInt(String.valueOf(o.get("pkey"))), name));
-					o.put("name", translateUtil.getLanguage(name, HomeAction.curLanguage()));
-				} catch (Exception e) {
-					e.getStackTrace();
-				}
-			}
-			return o;
-		}).collect(Collectors.toList());
-	}
-	/**
-	 * 获取私人展会商品信息
-	 * @param page
-	 * @return
-	 */
-	public List<PdtExhibitionView> findExhibitionGoods(IduPage page) {
-		int start = page.getStart();
-		int limit = page.getLimit() == 0 ? 10 : page.getLimit();
-		String  where=" 3";
-		List<PdtExhibitionView> exhibitionGoods = pdtProductDao.getExhibitionProductsList(start, limit, where).stream()
-				.map(goods -> {
-					PdtExhibitionView view = new PdtExhibitionView();
-					ExhibitionSupplierView supplierView = new ExhibitionSupplierView();
-					view.setId(goods.getPkey());
-					view.setImg(goods.getPicture());
-					view.setPrice(goods.getCurPrice());
-					view.setStartQuantity(goods.getMinOq());
-					view.setTitle(goods.getName());
-					supplierView.setId(goods.gtSupplier().getPkey());
-					supplierView.setName(goods.gtSupplier().getName());
-					supplierView.setIsCertificate(goods.gtSupplier().getIsAuth());
-					supplierView.setRegion(goods.gtSupplier().getCompanyAddr());
-					view.setSupplier(supplierView);
-					return view;
-				}).collect(Collectors.toList());
-		return exhibitionGoods;
-	}
 
-	/**
-	 * xy
-	 * -pc商城端新搜索商品功能
-	 * @return
-	 */
-	@Override
-	public Page searchPdt(UsrPurchase purchase, Language curLanguage, Integer lose, String pName, Integer cate, Integer level, String export, Integer mOrder, BigDecimal min, BigDecimal max, Integer IsO2o, String o2oAddress, Integer start, Integer limit) {
-		return pdtProductDao.searchPdtByQuery(purchase, curLanguage, lose, pName, cate, level, export, mOrder, min, max, IsO2o,o2oAddress,start, limit);
-	}
+    /**
+     * 获取私人展会商品信息
+     *
+     * @param page
+     * @return
+     */
+    public List<PdtExhibitionView> findExhibitionGoods(IduPage page) {
+        int start = page.getStart();
+        int limit = page.getLimit() == 0 ? 10 : page.getLimit();
+        String where = " 3";
+        List<PdtExhibitionView> exhibitionGoods = pdtProductDao.getExhibitionProductsList(start, limit, where).stream()
+                .map(goods -> {
+                    PdtExhibitionView view = new PdtExhibitionView();
+                    ExhibitionSupplierView supplierView = new ExhibitionSupplierView();
+                    view.setId(goods.getPkey());
+                    view.setImg(goods.getPicture());
+                    view.setPrice(goods.getCurPrice());
+                    view.setStartQuantity(goods.getMinOq());
+                    view.setTitle(goods.getName());
+                    supplierView.setId(goods.gtSupplier().getPkey());
+                    supplierView.setName(goods.gtSupplier().getName());
+                    supplierView.setIsCertificate(goods.gtSupplier().getIsAuth());
+                    supplierView.setRegion(goods.gtSupplier().getCompanyAddr());
+                    view.setSupplier(supplierView);
+                    return view;
+                }).collect(Collectors.toList());
+        return exhibitionGoods;
+    }
+
+    /**
+     * xy
+     * -pc商城端新搜索商品功能
+     *
+     * @return
+     */
+    @Override
+    public Page searchPdt(UsrPurchase purchase, FldLanguage.Language curLanguage, Integer lose, String pName, Integer cate, Integer level, String export, Integer mOrder, BigDecimal min, BigDecimal max, Integer IsO2o, String o2oAddress, Integer start, Integer limit) {
+        return pdtProductDao.searchPdtByQuery(purchase, curLanguage, lose, pName, cate, level, export, mOrder, min, max, IsO2o, o2oAddress, start, limit);
+    }
 }
