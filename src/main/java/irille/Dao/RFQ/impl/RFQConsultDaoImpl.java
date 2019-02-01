@@ -37,9 +37,11 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
     public Page<RFQConsultView> findAllView(Integer start, Integer limit, RFQConsultView condition) {
         BeanQuery<RFQConsult> query = createQuery();
         //询盘是否被标记为已删除
-        query.WHERE(condition.getIsDeleted() != null, RFQConsult.T.IS_DELETED, "=?", BeanBase.booleanToByte(condition.getIsDeleted()))
-                //询盘名称
-                .WHERE(condition.getTitle() != null, RFQConsult.T.TITLE, "like ?", "%" + condition.getTitle() + "%");
+        if(condition.getIsDeleted() != null) {
+        	query.WHERE(RFQConsult.T.IS_DELETED, "=?", BeanBase.booleanToByte(condition.getIsDeleted()));
+        }
+        //询盘名称
+        query.WHERE(condition.getTitle() != null, RFQConsult.T.TITLE, "like ?", "%" + condition.getTitle() + "%");
         //采购商名称
         if (condition.getPurchase() != null && condition.getPurchase().getName() != null)
             query.WHERE(UsrPurchase.T.NAME, "like ?", "%" + condition.getPurchase().getName() + "%");
