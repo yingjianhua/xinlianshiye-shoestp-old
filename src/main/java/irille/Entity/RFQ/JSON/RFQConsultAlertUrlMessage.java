@@ -1,5 +1,7 @@
 package irille.Entity.RFQ.JSON;
 
+import java.util.Date;
+
 import irille.view.BaseView;
 import lombok.Data;
 
@@ -12,6 +14,7 @@ import lombok.Data;
 @Data
 public class RFQConsultAlertUrlMessage implements BaseView, ConsultMessage {
 	
+	private Date validDate;//过期时间
 	private Integer productId;//商品主键
 	private String alertMsg;//提示框内容
 	private String showMsg;//显示内容

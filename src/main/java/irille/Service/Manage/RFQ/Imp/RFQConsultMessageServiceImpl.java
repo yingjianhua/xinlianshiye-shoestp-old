@@ -1,5 +1,8 @@
 package irille.Service.Manage.RFQ.Imp;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -95,6 +98,8 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 			throw new WebMessageException(ReturnCode.service_gone, "不是私人展厅商品");
 		}
 		RFQConsultAlertUrlMessage message = new RFQConsultAlertUrlMessage();
+		//三天(72小时)后过期
+		message.setValidDate(Date.from(LocalDateTime.now().plusDays(3).atZone(ZoneId.systemDefault()).toInstant()));
 		message.setProductId(productPkey);
 		message.setAlertMsg("该链接被打开后72小时内有效，72小时后该链接失效，买家将无法查看该产品");
 		message.setShowMsg("产品链接");
