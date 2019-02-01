@@ -17,9 +17,9 @@ import java.util.List;
 public class RFQManageInfoView implements BaseView {
     private int id;
     private String title;
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
     private Date create_date;
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
     private Date valid_date;
     private int left_count;
     private boolean inquiry;
