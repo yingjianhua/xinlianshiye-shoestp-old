@@ -3,6 +3,7 @@ package irille.sellerAction.o2o;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_Activity;
 import irille.Service.Manage.O2O.IO2OActicityServer;
+import irille.Service.Manage.O2O.IO2OMapServer;
 import irille.Service.Manage.O2O.IO2OPdtServer;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.o2o.inf.IO2oActivityAction;
@@ -26,6 +27,9 @@ public class O2oActivityAction extends SellerAction<O2O_Activity> implements IO2
 
     @Inject
     private IO2OActicityServer o2oActicityServer;
+
+    @Inject
+    private IO2OMapServer io2OMapServer;
 
     @Setter
     private Date startDate;
@@ -101,6 +105,10 @@ public class O2oActivityAction extends SellerAction<O2O_Activity> implements IO2
     @Override
     public void listAllGeneral() throws IOException {
         write(o2oPdtServer.listAllGeneral(getSupplier(),id));
+    }
+    @Override
+    public void mapList() throws IOException {
+        write(io2OMapServer.list());
     }
 
 

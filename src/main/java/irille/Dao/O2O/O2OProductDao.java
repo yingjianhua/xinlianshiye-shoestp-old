@@ -93,11 +93,13 @@ public class O2OProductDao {
                 .LEFT_JOIN(O2O_Map.class,O2O_Map.T.PKEY, T.ADDRESS)
                 .WHERE(startDate != null, O2O_Activity.T.START_DATE, ">?", startDate)
                 .WHERE(endDate != null, T.END_DATE, "<?", endDate)
-                .WHERE(keyWord != null && keyWord.length() > 0, T.NAME, "like ?", keyWord)
-                .WHERE(T.STATUS,"<>?", O2O_ActivityStatus.TOBEGIN.getLine().getKey());
+                .WHERE(keyWord != null && keyWord.length() > 0, T.NAME, "like ?", keyWord);
+//                .WHERE(T.STATUS,"<>?", O2O_ActivityStatus.TOBEGIN.getLine().getKey());
 //                .WHERE(status != null,T.STATUS,"=?",status)
+
         //TODO  活动状态为根据时间进行变化，目前先根据时间进行状态选取
         Date now = new Date();
+        sql.WHERE(T.START_DATE," <= ?",now);
         if(null != status){
             if(status.equals(O2O_ActivityStatus.TOBEGIN.getLine().getKey())){
                 //未开始
@@ -118,7 +120,7 @@ public class O2OProductDao {
             sql.LEFT_JOIN(O2O_JoinInfo.class, O2O_JoinInfo.T.ACTIVITY, T.PKEY);
         }
         if (countryId != null && countryId > 0) {
-            sql.WHERE("address->'$.countryId'=?", countryId);
+            sql.WHERE(T.ADDRESS," =? ", countryId);
         }
         sql.ORDER_BY(T.UPDATED_TIME," DESC ");
         return Query.sql(sql).queryMaps();
@@ -134,6 +136,7 @@ public class O2OProductDao {
                 .WHERE(keyWord != null && keyWord.length() > 0, T.NAME, "like ?", keyWord);
         // 活动状态//TODO  活动状态为根据时间进行变化，目前先根据时间进行状态选取
         Date now = new Date();
+        sql.WHERE(T.START_DATE," <= ?",now);
         if(null != status){
             if(status.equals(O2O_ActivityStatus.TOBEGIN.getLine().getKey())){
                 //未开始
@@ -153,7 +156,7 @@ public class O2OProductDao {
             sql.LEFT_JOIN(O2O_JoinInfo.class, O2O_JoinInfo.T.ACTIVITY, T.PKEY);
         }
         if (countryId != null && countryId > 0) {
-            sql.WHERE("address->'$.countryId'=?", countryId);
+            sql.WHERE(T.ADDRESS," =? ", countryId);
         }
         return Query.sql(sql).queryCount();
     }

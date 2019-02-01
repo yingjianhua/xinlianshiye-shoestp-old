@@ -23,4 +23,7 @@ public interface IO2oActivityAction extends ISellerAction {
 
     @RequestMapping(alias = "申请下架", sort = 30)
     void lower() throws IOException, JSONException;
+
+    @RequestMapping(alias = "获取活动地址列表", sort = 999)
+    void mapList() throws IOException;
 }
