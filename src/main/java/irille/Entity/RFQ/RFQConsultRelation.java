@@ -16,16 +16,19 @@ import irille.shop.usr.UsrSupplier;
 import java.util.Date;
 
 public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
-    public static final Tb TB = new Tb(RFQConsultRelation.class, "询盘关联表")
+	
+	private static final long serialVersionUID = 2353321755373329372L;
+	
+	public static final Tb<?> TB = new Tb<>(RFQConsultRelation.class, "询盘关联表")
             .setAutoIncrement();
 
     public enum T implements IEnumFld {// @formatter:off
-        PKEY(TB.crtIntPkey()),
+        PKEY(Tb.crtIntPkey()),
         CONSULT(RFQConsult.fldOutKey("consult", "询盘")), //
         SUPPLIER_ID(UsrSupplier.fldOutKey().setName("供应商")),
         PURCHASE_ID(UsrPurchase.fldOutKey().setName("采购商")),
         IN_RECYCLE_BIN(Sys.T.YN, "是否在回收站"),//是否在回收站, true: 在回收站, false: 不在回收站
-        FAVORITE(SYS.YN, "是否添加FLAG"),
+        FAVORITE(Sys.T.YN, "是否添加FLAG"),
         TITLE(Sys.T.STR__20_NULL),
         DESTINATION(Sys.T.STR__20_NULL, "描述"),
         Image(Sys.T.STR__200_NULL, "图片(多图)"),
@@ -40,17 +43,18 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
         COMPANYDESCRIBE(Sys.T.STR__2000_NULL),
         THROWAWAY(Sys.T.STR__2000_NULL),
         CREATE_DATE(Sys.T.CREATED_DATE_TIME),
-        HAD_READ(Sys.T.YN,"是否已读"),
-        ROW_VERSION(SYS.ROW_VERSION),
+        HAD_READ_PURCHASE(Sys.T.YN),//采购商是否已经读取消息
+        HAD_READ_SUPPLIER(Sys.T.YN),//供应商是否已经读取消息
+        ROW_VERSION(Sys.T.ROW_VERSION),
             // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
             // <<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
         ;
 
         // >>>以下是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别>>>
         // <<<以上是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别<<<
-        private Fld _fld;
+        private Fld<?> _fld;
 
-        private T(Class clazz, String name, boolean... isnull) {
+        private T(Class<?> clazz, String name, boolean... isnull) {
             _fld = TB.addOutKey(clazz, this, name, isnull);
         }
 
@@ -66,11 +70,11 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
             _fld = TB.add(fld, this, name, strLen);
         }
 
-        private T(Fld fld) {
+        private T(Fld<?> fld) {
             _fld = TB.add(fld, this);
         }
 
-        public Fld getFld() {
+        public Fld<?> getFld() {
             return _fld;
         }
         }
@@ -79,11 +83,11 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
         T.PKEY.getFld().getTb().lockAllFlds();// 加锁所有字段,不可以修改
     }
 
-    public static Fld fldOutKey() {
+    public static Fld<?> fldOutKey() {
         return fldOutKey(TB.getCodeNoPackage(), TB.getShortName());
     }
 
-    public static Fld fldOutKey(String code, String name) {
+    public static Fld<?> fldOutKey(String code, String name) {
         return Tb.crtOutKey(TB, code, name).setType(null);
     }
 
@@ -119,7 +123,10 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
   private String _companydescribe;	// 字符2000  STR(2000)<null>
   private String _throwaway;	// 字符2000  STR(2000)<null>
   private Date _createDate;	// 建档时间  TIME
-  private Byte _hadRead;	// 是否已读 <OYn>  BYTE
+  private Byte _hadReadPurchase;	// 是否 <OYn>  BYTE
+	// YES:1,是
+	// NO:0,否
+  private Byte _hadReadSupplier;	// 是否 <OYn>  BYTE
 	// YES:1,是
 	// NO:0,否
   private Short _rowVersion;	// 版本  SHORT
@@ -146,7 +153,8 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
     _companydescribe=null;	// 字符2000  STR(2000)
     _throwaway=null;	// 字符2000  STR(2000)
     _createDate=Env.getTranBeginTime();	// 建档时间  TIME
-    _hadRead=OYn.DEFAULT.getLine().getKey();	// 是否已读 <OYn>  BYTE
+    _hadReadPurchase=OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
+    _hadReadSupplier=OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
     _rowVersion=0;	// 版本  SHORT
     return this;
   }
@@ -346,17 +354,29 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
   public void setCreateDate(Date createDate){
     _createDate=createDate;
   }
-  public Byte getHadRead(){
-    return _hadRead;
+  public Byte getHadReadPurchase(){
+    return _hadReadPurchase;
   }
-  public void setHadRead(Byte hadRead){
-    _hadRead=hadRead;
+  public void setHadReadPurchase(Byte hadReadPurchase){
+    _hadReadPurchase=hadReadPurchase;
   }
-  public Boolean gtHadRead(){
-    return byteToBoolean(_hadRead);
+  public Boolean gtHadReadPurchase(){
+    return byteToBoolean(_hadReadPurchase);
   }
-  public void stHadRead(Boolean hadRead){
-    _hadRead=booleanToByte(hadRead);
+  public void stHadReadPurchase(Boolean hadReadPurchase){
+    _hadReadPurchase=booleanToByte(hadReadPurchase);
+  }
+  public Byte getHadReadSupplier(){
+    return _hadReadSupplier;
+  }
+  public void setHadReadSupplier(Byte hadReadSupplier){
+    _hadReadSupplier=hadReadSupplier;
+  }
+  public Boolean gtHadReadSupplier(){
+    return byteToBoolean(_hadReadSupplier);
+  }
+  public void stHadReadSupplier(Boolean hadReadSupplier){
+    _hadReadSupplier=booleanToByte(hadReadSupplier);
   }
   public Short getRowVersion(){
     return _rowVersion;
