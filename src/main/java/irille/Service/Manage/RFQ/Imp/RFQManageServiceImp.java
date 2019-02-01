@@ -1,24 +1,14 @@
 package irille.Service.Manage.RFQ.Imp;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.inject.Inject;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import irille.Dao.Old.RFQ.RFQConsultMessageDAO;
 import irille.Dao.Old.RFQ.RFQConsultRelationDAO;
 import irille.Dao.RFQ.RFQConsultDao;
+import irille.Entity.RFQ.Enums.RFQConsultPayType;
+import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
-import irille.Entity.RFQ.Enums.RFQConsultPayType;
-import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
 import irille.Service.Manage.RFQ.IRFQManageService;
 import irille.action.dataimport.util.DateUtil;
 import irille.pub.tb.FldLanguage;
@@ -26,12 +16,12 @@ import irille.pub.util.GetValue;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
 import irille.shop.pdt.PdtProduct;
+import irille.view.Manage.RFQ.*;
 import irille.view.Page;
-import irille.view.Manage.RFQ.RFQListBodyInfoView;
-import irille.view.Manage.RFQ.RFQManageInfoView;
-import irille.view.Manage.RFQ.RFQManageMyQuoteListBody;
-import irille.view.Manage.RFQ.RFQMyuoteInfo;
-import irille.view.Manage.RFQ.RFQPdtInfo;
+
+import javax.inject.Inject;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -179,7 +169,8 @@ public class RFQManageServiceImp implements IRFQManageService {
 
     @Override
     public Page getMyRFQQuoteList(Integer start, Integer limit, Byte type, Date date, String keyword, boolean flag, Integer status, Integer country, int Supid) throws IOException {
-        List<Map<String, Object>> list = rfqConsultDao.getMyRFQQuoteList(start, limit,type, date, keyword, flag, status, country, Supid);
+        List<Map<String, Object>> list = null;
+        list = rfqConsultDao.getMyRFQQuoteList(start, limit, type, date, keyword, flag, status, country, Supid);
         List<RFQManageMyQuoteListBody> result = new ArrayList<>();
         for (Map<String, Object> map : list) {
             RFQManageMyQuoteListBody body = new RFQManageMyQuoteListBody();

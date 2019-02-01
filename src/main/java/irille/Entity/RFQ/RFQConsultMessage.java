@@ -1,10 +1,5 @@
 package irille.Entity.RFQ;
 
-import java.util.Date;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import irille.Entity.RFQ.Enums.RFQConsultMessageType;
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
@@ -12,6 +7,10 @@ import irille.pub.bean.BeanInt;
 import irille.pub.tb.Fld;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Date;
 
 public class RFQConsultMessage extends BeanInt<RFQConsultMessage> {
     public static final Tb TB = new Tb(RFQConsultMessage.class, "询盘留言").setAutoIncrement().addActIUDL();
@@ -23,7 +22,7 @@ public class RFQConsultMessage extends BeanInt<RFQConsultMessage> {
         TYPE(Tb.crt(RFQConsultMessageType.DEFAULT)),//消息类型
         SEND_TIME(SYS.TIME, "留言时间"), //留言时间
         RELATION(RFQConsultRelation.fldOutKey("relation", "询盘关联")),
-        P_2_S(SYS.YN, "是采购商留言"),//true:采购商给供应商留言，false:供应商给采购商留言
+        P2S(SYS.YN, "是采购商留言"),//true:采购商给供应商留言，false:供应商给采购商留言
         HAD_READ(SYS.YN),//是否已读
         ROW_VERSION(SYS.ROW_VERSION),
         //>>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
@@ -75,7 +74,7 @@ public class RFQConsultMessage extends BeanInt<RFQConsultMessage> {
 	// ALERT_URL:4,有消息提示的_链接类型
   private Date _sendTime;	// 留言时间  TIME
   private Integer _relation;	// 询盘关联 <表主键:RFQConsultRelation>  INT
-  private Byte _p2S;	// 是采购商留言 <OYn>  BYTE
+  private Byte _p2s;	// 是采购商留言 <OYn>  BYTE
 	// YES:1,是
 	// NO:0,否
   private Byte _hadRead;	// 是否 <OYn>  BYTE
@@ -91,7 +90,7 @@ public class RFQConsultMessage extends BeanInt<RFQConsultMessage> {
     _type=RFQConsultMessageType.DEFAULT.getLine().getKey();	// 消息体类型 <RFQConsultMessageType>  BYTE
     _sendTime=null;	// 留言时间  TIME
     _relation=null;	// 询盘关联 <表主键:RFQConsultRelation>  INT
-    _p2S=OYn.DEFAULT.getLine().getKey();	// 是采购商留言 <OYn>  BYTE
+    _p2s=OYn.DEFAULT.getLine().getKey();	// 是采购商留言 <OYn>  BYTE
     _hadRead=OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
     _rowVersion=0;	// 版本  SHORT
     return this;
@@ -157,17 +156,17 @@ public class RFQConsultMessage extends BeanInt<RFQConsultMessage> {
     else
       setRelation(relation.getPkey());
   }
-  public Byte getP2S(){
-    return _p2S;
+  public Byte getP2s(){
+    return _p2s;
   }
-  public void setP2S(Byte p2S){
-    _p2S=p2S;
+  public void setP2s(Byte p2s){
+    _p2s=p2s;
   }
-  public Boolean gtP2S(){
-    return byteToBoolean(_p2S);
+  public Boolean gtP2s(){
+    return byteToBoolean(_p2s);
   }
-  public void stP2S(Boolean p2S){
-    _p2S=booleanToByte(p2S);
+  public void stP2s(Boolean p2s){
+    _p2s=booleanToByte(p2s);
   }
   public Byte getHadRead(){
     return _hadRead;
