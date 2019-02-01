@@ -249,7 +249,9 @@ public class O2OProductDao {
                 O2O_Product.T.MIN_OQ,
                 O2O_Product.T.PRICE,
                 O2O_JoinInfo.T.Tel,
+                O2O_Product.T.STATUS,
                 O2O_Product.T.VERIFY_STATUS,
+                O2O_Product.T.REMARK,
                 O2O_Product.T.PKEY)
                 .SELECT(PdtProduct.T.PKEY,"pdtPkey")
                 .SELECT(O2O_Map.T.NAME,"mapName")
@@ -273,6 +275,7 @@ public class O2OProductDao {
             sql.WHERE(null != search.getRole(),UsrSupplierRole.T.NAME,"like ?","%"+search.getRole()+"%");
             sql.WHERE(null != search.getArea(),O2O_Map.T.NAME,"like ?","%"+search.getArea()+"%");
             sql.WHERE(null != search.getStatus(),O2O_Product.T.VERIFY_STATUS,"=?",search.getStatus());
+            sql.WHERE(null != search.getState(),O2O_Product.T.STATUS,"=?",search.getState());
             sql.ORDER_BY(O2O_Product.T.UPDATED_TIME,"DESC").LIMIT(start,limit);
         return Query.sql(sql).queryMaps();
     }

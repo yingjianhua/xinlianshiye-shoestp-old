@@ -265,6 +265,11 @@ public class O2OPdtServerImp implements IO2OPdtServer {
         o2O_product.upd();
     }
 
+
+    public void lowerAndUpperByManager(Integer pkey,String reason,O2O_ProductStatus status){
+
+    }
+
     @Override
     public void appr(Integer pkey, String reason,O2O_ProductStatus status) {
         O2O_Product product = o2OProductDao.findByPkey(pkey);

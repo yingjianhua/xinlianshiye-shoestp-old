@@ -281,6 +281,9 @@ public class O2OActivityServiceImpl implements O2OActivityService {
 			item.setMobile(GetValue.get(map,O2O_JoinInfo.T.Tel,String.class,null));
             Integer pdtPkey = GetValue.get(map,"pdtPkey",Integer.class,-1);
             item.setRewriter(SEOUtils.getPdtProductTitle(pdtPkey,pdtName));
+
+			item.setState(GetValue.get(map,O2O_Product.T.STATUS,Byte.class,null));
+			item.setMessage(GetValue.get(map,O2O_Product.T.REMARK,String.class,null));
 			return item;
 		}).collect(Collectors.toList());
 		return new Page<O2OProductView>(items,start,limit,o2OProductDao.countEnroll(search));
@@ -330,7 +333,7 @@ public class O2OActivityServiceImpl implements O2OActivityService {
 			throw new WebMessageException(ReturnCode.failure,"商品不存在");
 		o2OProduct.setStatus(status.getLine().getKey());
 		PdtProduct pdt = o2OProduct.gtProductId();
-		if(status.equals(O2O_ProductStatus.OFF)){
+		if(!status.equals(O2O_ProductStatus.OFF)){
 			if (null == reason){
 				throw new WebMessageException(ReturnCode.failure,"拒绝理由不能为空");
 			}
