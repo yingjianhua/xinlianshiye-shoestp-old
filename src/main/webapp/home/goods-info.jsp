@@ -348,14 +348,35 @@
 
         <!--产品详情-->
         <div class="prodDescLeft" style="width:100%;">
-            <s:if test="map != null">
-                <!-- ===============O2O INFO START=============== -->
-                <div id="loading" class="loading">
-                    <img src="./static/images/loading.gif">
-                </div>
-                <div id="o2oMap" style="width:100%;height:400px;margin:20px 0;">
 
+                <!-- ===============O2O INFO START=============== -->
+            <s:if test="map != null">
+                <s:if test="env.login == null">
+                <div style="">
+                    <a href="/home/usr_UsrPurchase_sign" style="
+    text-align:  center;
+    position: relative;
+    top: 240px;
+    z-index: 999;display: block;
+">请登录后查看地图</a>
+                    <img src="./static/images/mosaic.png" style="
+    width: 1200px;
+    height: 420px;
+    opacity:  0.5;
+    position: relative;
+    z-index: 998;
+    margin: 20px 0;
+"/>
                 </div>
+                </s:if>
+                <s:if test="env.login != null">
+                    <div id="loading" class="loading">
+                        <img src="./static/images/loading.gif">
+                    </div>
+                    <div id="o2oMap" style="width:100%;height:400px;margin:20px 0;">
+
+                    </div>
+                </s:if>
                 <!-- ===============O2O INFO END=============== -->
             </s:if>
             <div class="prodDescription">
@@ -680,7 +701,7 @@
     var app = new Vue({
         el: "#app",
         data: {
-            <s:if test="map != null">
+            <s:if test="map != null && env.login != null">
                 map: null,
                 marker: null,
                 latLng: { lat: ${map.latitude}, lng: ${map.longitude} },
@@ -697,7 +718,7 @@
                 catlength: 0
             }
         }, mounted() {
-            <s:if test="map != null">
+            <s:if test="map != null && env.login != null">
                 var self = this
                 // 创建地图实例，zoom是缩放比例
                 this.map = new google.maps.Map(document.getElementById('o2oMap'), {
