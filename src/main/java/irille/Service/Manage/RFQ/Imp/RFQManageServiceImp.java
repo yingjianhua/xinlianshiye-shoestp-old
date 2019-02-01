@@ -3,6 +3,7 @@ package irille.Service.Manage.RFQ.Imp;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import irille.Dao.Old.RFQ.RFQConsultMessageDAO;
 import irille.Dao.Old.RFQ.RFQConsultRelationDAO;
+import irille.Dao.Old.RFQ.RFQConsultUpdDAO;
 import irille.Dao.RFQ.RFQConsultDao;
 import irille.Entity.RFQ.Enums.RFQConsultPayType;
 import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
@@ -39,6 +40,8 @@ public class RFQManageServiceImp implements IRFQManageService {
     @Inject
     RFQConsultRelationDAO rfqConsultRelationDAO;
 
+    @Inject
+    RFQConsultUpdDAO rfqConsultUpdDAO;
 
     @Inject
     private ObjectMapper objectMapper;
@@ -140,9 +143,14 @@ public class RFQManageServiceImp implements IRFQManageService {
         rfqConsultRelation.stSample(quoteInfo.isSample());
         rfqConsultRelation.setCompanydescribe(quoteInfo.getCompanyDescribe());
         rfqConsultRelation.setThrowaway(quoteInfo.getThrowaway());
-        rfqConsultRelation.stHadRead(false);
+        rfqConsultRelation.stHadReadPurchase(false);
+        rfqConsultRelation.stHadReadSupplier(true);
         rfqConsultRelationDAO.setB(rfqConsultRelation);
         rfqConsultRelationDAO.commit();
+        if (consult.getLeftCount() < consult.getTotal()) {
+            consult.setLeftCount(consult.getLeftCount() + 1);
+            rfqConsultUpdDAO.setB(consult).commit();
+        }
         return 1;
     }
 
@@ -182,7 +190,7 @@ public class RFQManageServiceImp implements IRFQManageService {
             body.setQuoteTitle(GetValue.get(map, "myTitle", String.class, null));
             body.setQuoteDescriotion(GetValue.get(map, RFQConsultRelation.T.DESTINATION, String.class, null));
             body.setQuoteRFQCreate_date(GetValue.get(map, "myCreate_time", Date.class, null));
-            if (GetValue.get(map, RFQConsultRelation.T.HAD_READ, Byte.class, (byte) -1) == 0)
+            if (GetValue.get(map, RFQConsultRelation.T.HAD_READ_PURCHASE, Byte.class, (byte) -1) == 0)
                 body.setStatus(1);
             else {
                 body.setStatus(2);
@@ -190,13 +198,6 @@ public class RFQManageServiceImp implements IRFQManageService {
             result.add(body);
         }
         return new Page(result, start, limit, 10);
-    }
-
-    @Override
-    public void page(Integer start, Integer limit, String keyword, Integer groupId, Boolean flagId, Byte type,
-                     Boolean haveNewMsg, Boolean isDeleted, Date startDate, Date endDate) {
-        // TODO Auto-generated method stub 未完成
-
     }
 
     @Override

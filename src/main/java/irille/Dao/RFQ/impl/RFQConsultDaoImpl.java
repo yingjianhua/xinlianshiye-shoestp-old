@@ -272,6 +272,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 RFQConsult.T.CREATE_TIME,
                 RFQConsult.T.QUANTITY,
                 RFQConsult.T.LEFT_COUNT,
+                RFQConsult.T.IMAGE,
                 RFQConsult.T.TOTAL,
                 RFQConsultRelation.T.FAVORITE
         ).SELECT(
@@ -389,7 +390,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 RFQConsult.T.QUANTITY,
                 RFQConsult.T.CONTENT,
                 RFQConsult.T.CREATE_TIME,
-                RFQConsultRelation.T.HAD_READ,
+                RFQConsultRelation.T.HAD_READ_PURCHASE,
                 RFQConsultRelation.T.QUANTITY,
                 RFQConsultRelation.T.DESTINATION
         ).SELECT(RFQConsultRelation.T.TITLE, "myTitle").SELECT(
@@ -406,10 +407,10 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         ;
         switch (type) {
             case 2:
-                sql.WHERE(RFQConsultRelation.T.HAD_READ, "=?", Sys.OYn.NO);
+                sql.WHERE(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", Sys.OYn.NO);
                 break;
             case 3:
-                sql.WHERE(RFQConsultRelation.T.HAD_READ, "=?", Sys.OYn.YES);
+                sql.WHERE(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", Sys.OYn.YES);
                 break;
             case 4:
                 sql.LEFT_JOIN(
