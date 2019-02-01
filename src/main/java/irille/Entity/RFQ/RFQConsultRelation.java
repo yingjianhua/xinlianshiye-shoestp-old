@@ -30,8 +30,8 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
         IN_RECYCLE_BIN(Sys.T.YN, "是否在回收站"),//是否在回收站, true: 在回收站, false: 不在回收站
         FAVORITE(Sys.T.YN, "是否添加FLAG"),
         TITLE(Sys.T.STR__200_NULL),
-        DESTINATION(Sys.T.STR__20_NULL, "描述"),
-        Image(Sys.T.STR__200_NULL, "图片(多图)"),
+        DESCRIPTION(Sys.T.STR__2000_NULL, "描述"),
+        IMAGE(Sys.T.STR__200_NULL, "图片(多图)"),
         QUANTITY(Sys.T.INT, "数量"),
         MINPRICE(Sys.T.INT, "价格区间"),
         MAXPRICE(Sys.T.INT, "价格区间"),
@@ -104,8 +104,8 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
   private Byte _favorite;	// 是否添加FLAG <OYn>  BYTE
 	// YES:1,是
 	// NO:0,否
-  private String _title;	// 字符20  STR(20)<null>
-  private String _destination;	// 描述  STR(20)<null>
+  private String _title;	// 字符200  STR(200)<null>
+  private String _description;	// 描述  STR(2000)<null>
   private String _image;	// 图片(多图)  STR(200)<null>
   private Integer _quantity;	// 数量  INT
   private Integer _minprice;	// 价格区间  INT
@@ -139,8 +139,8 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
     _purchaseId=null;	// 采购商 <表主键:UsrPurchase>  INT
     _inRecycleBin=OYn.DEFAULT.getLine().getKey();	// 是否在回收站 <OYn>  BYTE
     _favorite=OYn.DEFAULT.getLine().getKey();	// 是否添加FLAG <OYn>  BYTE
-    _title=null;	// 字符20  STR(20)
-    _destination=null;	// 描述  STR(20)
+    _title=null;	// 字符200  STR(200)
+    _description=null;	// 描述  STR(2000)
     _image=null;	// 图片(多图)  STR(200)
     _quantity=0;	// 数量  INT
     _minprice=0;	// 价格区间  INT
@@ -247,11 +247,11 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
   public void setTitle(String title){
     _title=title;
   }
-  public String getDestination(){
-    return _destination;
+  public String getDescription(){
+    return _description;
   }
-  public void setDestination(String destination){
-    _destination=destination;
+  public void setDescription(String description){
+    _description=description;
   }
   public String getImage(){
     return _image;
