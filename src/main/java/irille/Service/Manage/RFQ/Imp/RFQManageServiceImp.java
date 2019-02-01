@@ -3,6 +3,7 @@ package irille.Service.Manage.RFQ.Imp;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import irille.Dao.Old.RFQ.RFQConsultMessageDAO;
 import irille.Dao.Old.RFQ.RFQConsultRelationDAO;
+import irille.Dao.Old.RFQ.RFQConsultUpdDAO;
 import irille.Dao.RFQ.RFQConsultDao;
 import irille.Entity.RFQ.Enums.RFQConsultPayType;
 import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
@@ -39,6 +40,8 @@ public class RFQManageServiceImp implements IRFQManageService {
     @Inject
     RFQConsultRelationDAO rfqConsultRelationDAO;
 
+    @Inject
+    RFQConsultUpdDAO rfqConsultUpdDAO;
 
     @Inject
     private ObjectMapper objectMapper;
@@ -141,8 +144,13 @@ public class RFQManageServiceImp implements IRFQManageService {
         rfqConsultRelation.setCompanydescribe(quoteInfo.getCompanyDescribe());
         rfqConsultRelation.setThrowaway(quoteInfo.getThrowaway());
         rfqConsultRelation.stHadReadPurchase(false);
+        rfqConsultRelation.stHadReadSupplier(true);
         rfqConsultRelationDAO.setB(rfqConsultRelation);
         rfqConsultRelationDAO.commit();
+        if (consult.getLeftCount() < consult.getTotal()) {
+            consult.setLeftCount(consult.getLeftCount() + 1);
+            rfqConsultUpdDAO.setB(consult).commit();
+        }
         return 1;
     }
 

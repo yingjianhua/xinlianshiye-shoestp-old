@@ -13,6 +13,7 @@ import irille.pub.idu.IduOther;
 import irille.pub.idu.IduUpd;
 import irille.pub.svr.Env;
 import irille.pub.tb.FldLanguage.Language;
+import irille.pub.util.GetValue;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.pub.validate.ValidForm;
 import irille.shop.pdt.PdtCat.T;
@@ -254,12 +255,27 @@ public class PdtCatDAO {
         pdtCat.setCreateTime(Env.getSystemTime());
         pdtCat.ins();
     }
-    
+
     /**
      * -获取所有分类
      */
     public static List<PdtCat> listAll(){
     	  List<PdtCat> listCat = irille.pub.bean.Query.SELECT(PdtCat.class).WHERE(T.DELETED, " = ?", OYn.NO).queryList();
     	  return listCat;
+    }
+
+    /**
+     * xy
+     * 查询男鞋或女鞋的子分类
+     * @param gender
+     * @return
+     */
+    public static List<Integer> getListByGender(Integer gender) {
+    	SQL sql = new SQL();
+    	sql.SELECT(PdtCat.T.PKEY).FROM(PdtCat.class).WHERE(PdtCat.T.CATEGORY_UP, " =? ",gender);
+    	List<Integer> list = irille.pub.bean.Query.sql(sql).queryMaps().stream().map(bean->{
+    		return GetValue.get(bean, PdtCat.T.PKEY, Integer.class, null);
+    	}).collect(Collectors.toList());
+    	return list;
     }
 }

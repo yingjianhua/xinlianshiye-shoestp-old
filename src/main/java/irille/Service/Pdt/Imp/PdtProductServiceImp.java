@@ -4,6 +4,8 @@ import irille.Aops.Caches;
 import irille.Dao.PdtProductDao;
 import irille.Service.Pdt.IPdtProductService;
 import irille.homeAction.HomeAction;
+import irille.homeAction.pdt.dto.ExhibitionSupplierView;
+import irille.homeAction.pdt.dto.PdtExhibitionView;
 import irille.homeAction.pdt.dto.PdtProductView;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage;
@@ -14,9 +16,11 @@ import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrPurchase;
+import irille.shop.usr.UsrSupplier;
 import irille.view.RFQ.RFQPdtInfo;
 import irille.view.pdt.PdtProductBaseInfoView;
 import irille.view.pdt.PdtProductCatView;
+import irille.view.pub.PageSearch;
 import irille.view.v2.Pdt.PdtNewPdtInfo;
 
 import javax.inject.Inject;
@@ -265,16 +269,18 @@ public class PdtProductServiceImp implements IPdtProductService {
     public RFQPdtInfo getInquiryPdtInfo(Integer id) {
         Map<String, Object> map = pdtProductDao.getInquiryPdtInfo(id);
         RFQPdtInfo rfqPdtInfo = new RFQPdtInfo();
-        rfqPdtInfo.setId(GetValue.get(map, PdtProduct.T.PKEY, Integer.class, 0));
-        rfqPdtInfo.setTitle(GetValue.get(map, PdtProduct.T.NAME, String.class, null));
+        rfqPdtInfo.setId(GetValue.get(map, PdtProduct.T.PKEY, Integer.class, -1));
+        rfqPdtInfo.setTitle(translateUtil.getLanguage(GetValue.get(map, PdtProduct.T.NAME, String.class, null), HomeAction.curLanguage()));
         rfqPdtInfo.setSupName(GetValue.get(map, "supName", String.class, null));
+        rfqPdtInfo.setSupLogo(GetValue.get(map, UsrSupplier.T.LOGO, String.class, null));
+        rfqPdtInfo.setMin_oq(GetValue.get(map, PdtProduct.T.MIN_OQ, Integer.class, 0));
         String[] images = GetValue.get(map, PdtProduct.T.PICTURE, String.class, "").split(",");
         if (images.length > 0) {
             rfqPdtInfo.setImage(images[0]);
         } else {
             rfqPdtInfo.setImage(GetValue.get(map, PdtProduct.T.PICTURE, String.class, ""));
         }
-        rfqPdtInfo.setSuplevel(GetValue.get(map, "supName", String.class, null));
+        rfqPdtInfo.setSuplevel(String.valueOf(GetValue.get(map, UsrSupplier.T.ROLE, Integer.class, -1)));
         return rfqPdtInfo;
     }
 
@@ -298,5 +304,48 @@ public class PdtProductServiceImp implements IPdtProductService {
                             return o;
                         })
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * 获取私人展会商品信息
+     *
+     * @param page
+     * @return
+     */
+    public List<PdtExhibitionView> findExhibitionGoods(IduPage page) {
+        int start = page.getStart();
+        int limit = page.getLimit() == 0 ? 10 : page.getLimit();
+        String where = " 3";
+        List<PdtExhibitionView> exhibitionGoods = pdtProductDao.getExhibitionProductsList(start, limit, where).stream()
+                .map(goods -> {
+                    PdtExhibitionView view = new PdtExhibitionView();
+                    ExhibitionSupplierView supplierView = new ExhibitionSupplierView();
+                    view.setId(goods.getPkey());
+                    view.setImg(goods.getPicture());
+                    view.setPrice(goods.getCurPrice());
+                    view.setStartQuantity(goods.getMinOq());
+                    view.setTitle(goods.getName());
+                    supplierView.setId(goods.gtSupplier().getPkey());
+                    supplierView.setName(goods.gtSupplier().getName());
+                    supplierView.setIsCertificate(goods.gtSupplier().getIsAuth());
+                    supplierView.setRegion(goods.gtSupplier().getCompanyAddr());
+                    view.setSupplier(supplierView);
+                    return view;
+                }).collect(Collectors.toList());
+        return exhibitionGoods;
+    }
+
+    /**
+     * xy
+     * -pc商城端新搜索商品功能
+     *
+     * @return
+     */
+    @Override
+    public PageSearch searchPdt(UsrPurchase purchase, FldLanguage.Language curLanguage, Integer lose, String pName, Integer cate, Integer level, String export, Integer mOrder, BigDecimal min, BigDecimal max, Integer IsO2o, String o2oAddress, Integer start, Integer limit) {
+        PageSearch pageSearch = new PageSearch(pdtProductDao.searchPdtByQuery(purchase, curLanguage, lose, pName, cate, level, export, mOrder, min, max, IsO2o, o2oAddress, start, limit));
+        if (cate != null && cate > 0)
+            pageSearch.setBreadcrumbnav(pdtProductDao.getBreadcrumbNav(cate));
+        return pageSearch;
     }
 }
