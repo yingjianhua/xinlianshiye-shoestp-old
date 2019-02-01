@@ -39,14 +39,15 @@ public interface RFQConsultService {
      * @param limit      每页记录数
      * @param keyword    搜索关键字, 关联到发件人或标题内容
      * @param groupId    供应商的文件分组
-     * @param flagId     是否被供应商标记
-     * @param type       询盘类型 1: RFQ询盘, 2: 普通询盘, 3: 私人展会询盘
-     * @param haveNewMsg 是否有新消息
+     * @param isFavorite	  是否被供应商标记 true: 被标记, false: 未被标记, null: 所有
+     * @param type       询盘类型 1: RFQ询盘, 2: 普通询盘, 3: 私人展会询盘, null: 所有
+     * @param readStatus 消息阅读状态 1: 商家已发送,买家未读 2: 商家已发送,买家已读, 3:买家已发送, 商家未读, 4:买家已发送,商家已读, null:所有
      * @param isDeleted  是否已删除
      * @param startDate  开始时间
      * @param endDate    结束时间
      * @author Jianhua Ying
      */
-    void page(Integer start, Integer limit, String keyword, Integer groupId, Boolean flagId, Byte type, Boolean haveNewMsg, Boolean isDeleted, Date startDate, Date endDate);
+	void page(UsrSupplier supplier, Integer start, Integer limit, String keyword, Integer groupId, Boolean isFavorite,
+			Byte type, Byte readStatus, Boolean isDeleted, Date startDate, Date endDate);
 
 }

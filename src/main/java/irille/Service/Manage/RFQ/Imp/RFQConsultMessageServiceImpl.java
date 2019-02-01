@@ -1,6 +1,5 @@
 package irille.Service.Manage.RFQ.Imp;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -16,7 +15,6 @@ import irille.Dao.PdtProductDao;
 import irille.Dao.RFQ.RFQConsultDao;
 import irille.Dao.RFQ.RFQConsultMessageDao;
 import irille.Dao.RFQ.RFQConsultRelationDao;
-import irille.Entity.O2O.O2O_Product;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.Enums.RFQConsultMessageType;
