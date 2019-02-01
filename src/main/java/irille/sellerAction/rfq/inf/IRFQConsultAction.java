@@ -49,6 +49,7 @@ public interface IRFQConsultAction extends ISellerAction, IEnableable {
      * @throws IOException
      * @author Jianhua Ying
      */
+    @RequestMapping(alias = "RFQ移动到回收站", sort = 8)
     void moveToRecycled() throws IOException;
 
     /**
@@ -56,6 +57,7 @@ public interface IRFQConsultAction extends ISellerAction, IEnableable {
      *
      * @throws IOException
      */
+    @RequestMapping(alias = "RFQ从回收站恢复", sort = 9)
     void recovery() throws IOException;
 
     /**
@@ -63,6 +65,7 @@ public interface IRFQConsultAction extends ISellerAction, IEnableable {
      *
      * @throws IOException
      */
+    @RequestMapping(alias = "移动询盘到指定分组", sort = 10)
     void moveToGroup() throws IOException;
 
 }

@@ -2,7 +2,9 @@ package irille.Dao.RFQ.impl;
 
 import irille.Dao.RFQ.RFQConsultDao;
 import irille.Entity.RFQ.RFQConsult;
+import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
+import irille.core.sys.Sys;
 import irille.platform.rfq.view.*;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
@@ -372,7 +374,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
     }
 
     @Override
-    public List<Map<String, Object>> getMyRFQQuoteList(Integer start, Integer limit, Byte type, Date date, String keyword, boolean flag, Integer status, Integer country, int supId) {
+    public List<Map<String, Object>> getMyRFQQuoteList(Integer start, Integer limit, byte type, Date date, String keyword, boolean flag, Integer status, Integer country, int supId) {
         SQL sql = new SQL();
         sql.SELECT(
                 RFQConsult.T.PKEY,
@@ -392,7 +394,24 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 )
                 .WHERE(
                         RFQConsultRelation.T.SUPPLIER_ID, "=?", supId
+                )
+                .WHERE(RFQConsultRelation.T.IN_RECYCLE_BIN, "=?", Sys.OYn.NO)
+        ;
+        switch (type) {
+            case 2:
+                sql.WHERE(RFQConsultRelation.T.HAD_READ, "=?", Sys.OYn.NO);
+                break;
+            case 3:
+                sql.WHERE(RFQConsultRelation.T.HAD_READ, "=?", Sys.OYn.YES);
+                break;
+            case 4:
+                sql.LEFT_JOIN(
+                        RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY
+                ).WHERE(
+                        RFQConsultMessage.T.P2S, "=?", Sys.OYn.YES
                 );
+                break;
+        }
         return Query.sql(sql).queryMaps();
     }
 

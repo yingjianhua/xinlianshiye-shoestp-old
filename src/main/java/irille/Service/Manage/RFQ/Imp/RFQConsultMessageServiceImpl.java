@@ -1,29 +1,19 @@
 package irille.Service.Manage.RFQ.Imp;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
-
 import irille.Dao.PdtProductDao;
 import irille.Dao.RFQ.RFQConsultDao;
 import irille.Dao.RFQ.RFQConsultMessageDao;
 import irille.Dao.RFQ.RFQConsultRelationDao;
-import irille.Entity.O2O.O2O_Product;
-import irille.Entity.RFQ.RFQConsult;
-import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.Enums.RFQConsultMessageType;
 import irille.Entity.RFQ.JSON.ConsultMessage;
 import irille.Entity.RFQ.JSON.RFQConsultAlertUrlMessage;
 import irille.Entity.RFQ.JSON.RFQConsultImageMessage;
 import irille.Entity.RFQ.JSON.RFQConsultTextMessage;
+import irille.Entity.RFQ.RFQConsult;
+import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Service.Manage.RFQ.RFQConsultMessageService;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
@@ -35,8 +25,15 @@ import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
-	
+
 	@Inject
 	private RFQConsultMessageDao rFQConsultMessageDao;
 	@Inject
@@ -65,15 +62,15 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 			}
 			return view;
 		}).collect(Collectors.toList());
-		
+
 		RFQConsultMessageContactView myself = new RFQConsultMessageContactView();
 		myself.setName(supplier.getName());
 		RFQConsultMessageContactView another = new RFQConsultMessageContactView();
 		another.setName(purchase.getName());
-		
+
 		return new RFQConsultMessagesView(msgs, myself, another);
 	}
-	
+
 	@Override
 	public RFQConsultMessageView sendTextMessage(UsrSupplier supplier, Integer consultPkey, String content) {
 		RFQConsultMessage bean = createMessage(new RFQConsultTextMessage() {{ setContent(content); }});
@@ -119,7 +116,7 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 		bean.stType(RFQConsultMessageType.TEXT);
 		bean.setSendTime(new Date());
 		bean.setRelation(null);
-		bean.stP2S(false);
+		bean.stP2s(false);
 		bean.stHadRead(false);
 		return bean;
 	}

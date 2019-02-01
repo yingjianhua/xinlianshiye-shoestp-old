@@ -65,7 +65,9 @@ public interface RFQConsultDao {
 
     int getPdtListCount(Integer start, Integer limit, String keyword, Integer pkey);
 
-    List<Map<String,Object>> getMyRFQQuoteList(Integer start, Integer limit, Byte type, Date date, String keyword, boolean flag, Integer status, Integer country, int supId);
+    List<Map<String,Object>> getMyRFQQuoteList(Integer start, Integer limit,byte type,  Date date, String keyword, boolean flag, Integer status, Integer country, int supId);
 
     Map<String,Object> getMyRFQQuoteInfo(Integer id, Integer pkey);
+
+
 }
