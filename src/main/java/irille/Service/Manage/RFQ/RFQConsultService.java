@@ -5,7 +5,9 @@ import java.util.Date;
 import com.google.inject.ImplementedBy;
 
 import irille.Service.Manage.RFQ.Imp.RFQConsultServiceImpl;
+import irille.platform.rfq.view.RFQConsultRelationView;
 import irille.shop.usr.UsrSupplier;
+import irille.view.Page;
 
 @ImplementedBy(RFQConsultServiceImpl.class)
 public interface RFQConsultService {
@@ -45,9 +47,12 @@ public interface RFQConsultService {
      * @param isDeleted  是否已删除
      * @param startDate  开始时间
      * @param endDate    结束时间
+     * @param orderType    排序方式 1:按更新时间从新到旧, 2:按更新时间从旧到新, 3:按创建时间从新到旧, 4: 按创建时间从旧到新
      * @author Jianhua Ying
+     * @return 
      */
-	void page(UsrSupplier supplier, Integer start, Integer limit, String keyword, Integer groupId, Boolean isFavorite,
-			Byte type, Byte readStatus, Boolean isDeleted, Date startDate, Date endDate);
+	Page<RFQConsultRelationView> page(UsrSupplier supplier, Integer start, Integer limit, String keyword,
+			Integer groupId, Boolean isFavorite, Byte type, Byte readStatus, Boolean isDeleted, Date startDate,
+			Date endDate, Byte orderType);
 
 }

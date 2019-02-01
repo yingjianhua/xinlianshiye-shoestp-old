@@ -1,14 +1,14 @@
 package irille.pub.bean.sql;
 
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.BeanMain;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.IEnumOpt;
 import irille.shop.plt.PltTrantslate;
-
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -61,23 +61,29 @@ public class SQL {
 
     public SQL SELECT(SQL sql, String alias) {
         if (sql == null) return this;
-        for (Serializable param : sql.PARAMS()) {
-            if (param instanceof IEnumOpt) {
-                IEnumOpt opt = (IEnumOpt) param;
-                mybatisSQL.PARAM(opt.getLine().getKey());
-            } else {
-                mybatisSQL.PARAM(param);
-            }
-        }
+        mybatisSQL.params(sql.PARAMS());
         return mybatisSQL.SELECT("(" + sql.toString() + ") as " + alias);
     }
 
     public <T extends BeanMain<?, ?>> SQL FROM(Class<T> beanClass) {
         return mybatisSQL.FROM(beanClass);
     }
+    
+    public <T extends BeanMain<?, ?>> SQL FROM(SQL sql, String alias) {
+    	mybatisSQL.FROM(sql, alias);
+    	return mybatisSQL.params(sql.PARAMS());
+    }
+    public <T extends BeanMain<?, ?>> SQL FROM(SQL sql, Class<T> beanAlias) {
+    	mybatisSQL.FROM(sql, beanAlias);
+    	return mybatisSQL.params(sql.PARAMS());
+    }
 
     public <T extends BeanMain<?, ?>> SQL LEFT_JOIN(Class<T> beanClass, IEnumFld fld1, IEnumFld fld2) {
         return mybatisSQL.LEFT_OUTER_JOIN(beanClass, fld1, fld2);
+    }
+    
+    public <T extends BeanMain<?, ?>> SQL LEFT_JOIN(SQL sql, Class<T> beanAlias, IEnumFld fld1, IEnumFld fld2) {
+    	return mybatisSQL.LEFT_OUTER_JOIN(sql, beanAlias, fld1, fld2);
     }
 
     public <T extends BeanMain<?, ?>> SQL LEFT_JOIN(String join) {
@@ -94,41 +100,20 @@ public class SQL {
 
     public <T extends BeanMain<?, ?>> SQL WHERE(IEnumFld fld, String conditions, Serializable... params) {
         mybatisSQL.WHERE(fld, conditions);
-        for (Serializable param : params) {
-            if (param instanceof IEnumOpt) {
-                IEnumOpt opt = (IEnumOpt) param;
-                mybatisSQL.PARAM(opt.getLine().getKey());
-            } else {
-                mybatisSQL.PARAM(param);
-            }
-        }
+        mybatisSQL.params(params);
         return mybatisSQL.getSelf();
     }
 
     public <T extends BeanMain<?, ?>> SQL WHERE(String conditions, Serializable... params) {
         mybatisSQL.WHERE(conditions);
-        for (Serializable param : params) {
-            if (param instanceof IEnumOpt) {
-                IEnumOpt opt = (IEnumOpt) param;
-                mybatisSQL.PARAM(opt.getLine().getKey());
-            } else {
-                mybatisSQL.PARAM(param);
-            }
-        }
+        mybatisSQL.params(params);
         return mybatisSQL.getSelf();
     }
 
     public <T extends BeanMain<?, ?>> SQL WHERE(boolean b, IEnumFld fld, String conditions, Serializable... params) {
         if (b) {
             mybatisSQL.WHERE(fld, conditions);
-            for (Serializable param : params) {
-                if (param instanceof IEnumOpt) {
-                    IEnumOpt opt = (IEnumOpt) param;
-                    mybatisSQL.PARAM(opt.getLine().getKey());
-                } else {
-                    mybatisSQL.PARAM(param);
-                }
-            }
+            mybatisSQL.params(params);
         }
         return mybatisSQL.getSelf();
     }
@@ -308,9 +293,20 @@ public class SQL {
         public <T extends BeanMain<?, ?>> SQL FROM(Class<T> beanClass) {
             return super.FROM(tableNameWithAlias(beanClass));
         }
+        
+        public <T extends BeanMain<?, ?>> SQL FROM(SQL sql, Class<T> beanAlias) {
+        	return super.FROM("(" + sql + ") as "+alias(beanAlias));
+        }
+        public <T extends BeanMain<?, ?>> SQL FROM(SQL sql, String alias) {
+        	return super.FROM("(" + sql + ") as " + alias);
+        }
 
         public <T extends BeanMain<?, ?>> SQL LEFT_OUTER_JOIN(Class<T> beanClass, IEnumFld fld1, IEnumFld fld2) {
             return super.LEFT_OUTER_JOIN(tableNameWithAlias(beanClass) + " ON " + columnLabelWithAlias(fld1) + "=" + columnLabelWithAlias(fld2));
+        }
+        
+        public <T extends BeanMain<?, ?>> SQL LEFT_OUTER_JOIN(SQL sql, Class<T> beanAlias, IEnumFld fld1, IEnumFld fld2) {
+        	return super.LEFT_OUTER_JOIN("(" + sql + ") " + alias(beanAlias) + " ON " + columnLabelWithAlias(fld1) + "=" + columnLabelWithAlias(fld2));
         }
 
         public <T extends BeanMain<?, ?>> SQL WHERE(IEnumFld fld, String conditions, IEnumFld fld2) {
@@ -356,6 +352,30 @@ public class SQL {
         public <T extends BeanMain<?, ?>> SQL LOCK(boolean lock) {
             this.lock = lock;
             return getSelf();
+        }
+        
+        public <T extends BeanMain<?, ?>> SQL params(List<Serializable> params) {
+        	for (Serializable param : params) {
+                if (param instanceof IEnumOpt) {
+                    IEnumOpt opt = (IEnumOpt) param;
+                    this.PARAM(opt.getLine().getKey());
+                } else {
+                    this.PARAM(param);
+                }
+            }
+        	return getSelf();
+        }
+        
+        public <T extends BeanMain<?, ?>> SQL params(Serializable... params) {
+        	for (Serializable param : params) {
+        		if (param instanceof IEnumOpt) {
+        			IEnumOpt opt = (IEnumOpt) param;
+        			this.PARAM(opt.getLine().getKey());
+        		} else {
+        			this.PARAM(param);
+        		}
+        	}
+        	return getSelf();
         }
 
         @Override

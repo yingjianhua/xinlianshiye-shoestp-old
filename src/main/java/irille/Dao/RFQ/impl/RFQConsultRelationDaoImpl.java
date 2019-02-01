@@ -21,7 +21,7 @@ public class RFQConsultRelationDaoImpl implements RFQConsultRelationDao {
 	public List<RFQConsultRelationView> findAllViewByConsultId(Integer id) {
 		BeanQuery<RFQConsultRelation> query = Query.SELECT(
 				RFQConsultRelation.T.PKEY,
-				RFQConsultRelation.T.CONSULT,
+//				RFQConsultRelation.T.CONSULT,
 				RFQConsultRelation.T.SUPPLIER_ID,
 				RFQConsultRelation.T.PURCHASE_ID,
 				RFQConsultRelation.T.FAVORITE,
@@ -36,7 +36,7 @@ public class RFQConsultRelationDaoImpl implements RFQConsultRelationDao {
 		return query.queryMaps().stream().map(map->{
 			RFQConsultRelationView view = new RFQConsultRelationView();
 			view.setPkey((Integer)map.get(RFQConsultRelation.T.PKEY.getFld().getCodeSqlField()));
-			view.setConsult((Integer)map.get(RFQConsultRelation.T.CONSULT.getFld().getCodeSqlField()));
+//			view.setConsult((Integer)map.get(RFQConsultRelation.T.CONSULT.getFld().getCodeSqlField()));
 			if(map.containsKey("supplierPkey")) {
 				view.setSupplier(new SupplierView() {{
 					setPkey((Integer)map.get("supplierPkey"));
@@ -44,7 +44,7 @@ public class RFQConsultRelationDaoImpl implements RFQConsultRelationDao {
 				}});
 			}
 			view.setPurchaseId((Integer)map.get(RFQConsultRelation.T.PURCHASE_ID.getFld().getCodeSqlField()));
-			view.setFavorite((Byte)map.get(RFQConsultRelation.T.FAVORITE.getFld().getCodeSqlField()));
+//			view.setFavorite((Byte)map.get(RFQConsultRelation.T.FAVORITE.getFld().getCodeSqlField()));
 			view.setRowVersion((Short)map.get(RFQConsultRelation.T.ROW_VERSION.getFld().getCodeSqlField()));
 			return view;
 		}).collect(Collectors.toList());
