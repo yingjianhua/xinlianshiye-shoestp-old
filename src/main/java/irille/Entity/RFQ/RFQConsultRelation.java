@@ -104,7 +104,7 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
   private Byte _favorite;	// 是否添加FLAG <OYn>  BYTE
 	// YES:1,是
 	// NO:0,否
-  private String _title;	// 字符20  STR(20)<null>
+  private String _title;	// 字符200  STR(200)<null>
   private String _destination;	// 描述  STR(20)<null>
   private String _image;	// 图片(多图)  STR(200)<null>
   private Integer _quantity;	// 数量  INT
@@ -139,7 +139,7 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
     _purchaseId=null;	// 采购商 <表主键:UsrPurchase>  INT
     _inRecycleBin=OYn.DEFAULT.getLine().getKey();	// 是否在回收站 <OYn>  BYTE
     _favorite=OYn.DEFAULT.getLine().getKey();	// 是否添加FLAG <OYn>  BYTE
-    _title=null;	// 字符20  STR(20)
+    _title=null;	// 字符200  STR(200)
     _destination=null;	// 描述  STR(20)
     _image=null;	// 图片(多图)  STR(200)
     _quantity=0;	// 数量  INT

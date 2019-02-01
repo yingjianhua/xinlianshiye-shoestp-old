@@ -3,6 +3,7 @@ package irille.platform.rfq.view;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import irille.view.BaseView;
 import lombok.Data;
 
@@ -24,17 +25,18 @@ public class RFQConsultView implements BaseView {
 	// PAIR:1,双
 	private PurchaseView purchase; // 采购商 <表主键:UsrPurchase> INT
 	private SupplierView supplier; // 供应商 <表主键:UsrSupplier> INT
-	private String type; // RFQ状态 <RFQConsultStatus> BYTE
-	// OFF:1,关闭
-	// ON:2,开启
-	private Byte status; // 询盘类型 <RFQConsultType> BYTE
+	private String type; // 询盘类型 <RFQConsultType> BYTE
 	// RFQ:1,FRQ询盘
 	// INQUIRY:2,询盘
 	// PrivateINQUIRY:3,私人展会询盘
+	private Byte status; // RFQ状态 <RFQConsultStatus> BYTE
+	// OFF:1,关闭
+	// ON:2,开启
 	private Byte verifyStatus; // 审核状态 <RFQConsultVerifyStatus> BYTE
 	// UNAUDITED:1,未审核
 	// FAIL:2,未通过
 	// PASS:3,通过
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private Date validDate; // 有效期至 TIME
 	private String price; // 价格(价格区间) STR(20)<null>
 	private Byte payType; // 支付方式 <RFQConsultPayType> BYTE
@@ -47,6 +49,7 @@ public class RFQConsultView implements BaseView {
 	private Integer total; // 总抢单数 INT
 	private Short changeCount; // 修改总数 SHORT
 	private String extraDescription; // 修改总数 STR(2000)<null>
+	@JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
 	private Date createTime; // 创建时间 TIME
 	private Short rowVersion; // 版本 SHORT
 	private Boolean isDeleted;	// 是否已删除 <OYn>  BYTE

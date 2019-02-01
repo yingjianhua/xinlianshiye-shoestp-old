@@ -109,7 +109,9 @@ public class RFQManageServiceImp implements IRFQManageService {
             infoView.getQuotation_record().add(map1);
         }
         RFQConsultRelation rfqConsultRelation = rfqConsultDao.getRFQRelation(id, supId);
-        if (rfqConsultRelation != null) {
+        if(rfqConsult.getValidDate().before(new Date())){
+            infoView.setStatus(-1);
+        }else if (rfqConsultRelation == null||rfqConsult.getLeftCount()>=rfqConsult.getTotal()) {
             infoView.setStatus(1);
         }
         return infoView;
