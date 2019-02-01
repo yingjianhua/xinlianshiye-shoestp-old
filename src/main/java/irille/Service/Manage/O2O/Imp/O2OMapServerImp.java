@@ -12,23 +12,20 @@ import irille.pub.bean.BeanBase;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.pub.tb.FldLanguage;
+import irille.pub.util.AppConfig;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.pub.util.sendHttpsUtils;
 import irille.view.O2O.O2OMapView;
+import org.apache.http.HttpHost;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
-import org.json.JSONArray;
-import org.json.JSONException;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLSession;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.*;
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,20 +38,28 @@ public class O2OMapServerImp implements IO2OMapServer {
     @Inject
     private O2OProductDao o2OProductDao;
 
-    public JSONObject load(String address){
-        if(null == address){
-            throw new WebMessageException(ReturnCode.failure,"请输入地址");
+    public JSONObject load(String address) {
+        if (null == address) {
+            throw new WebMessageException(ReturnCode.failure, "请输入地址");
         }
-        try{
+        try {
             URIBuilder builder = new URIBuilder(google_map_url);
-            String param = URLDecoder.decode(address,"UTF-8");
-            builder.addParameter("input",param);
-            builder.addParameter("inputtype","textquery");
-            builder.addParameter("fields","formatted_address,name,rating,geometry");
-            builder.addParameter("key",key);
-            String result = sendHttpsUtils.get(builder.build().toString(),"127.0.0.1",1080);
+            String param = URLDecoder.decode(address, "UTF-8");
+            builder.addParameter("input", param);
+            builder.addParameter("inputtype", "textquery");
+            builder.addParameter("fields", "formatted_address,name,rating,geometry");
+            builder.addParameter("key", key);
+            HttpGet httpGet = new HttpGet(builder.build());
+            HttpClient httpClient = null;
+            if (AppConfig.dev) {
+                HttpHost proxy = new HttpHost("127.0.0.1", 1080, "http");
+                httpClient = HttpClients.custom().setProxy(proxy).build();
+            } else {
+                httpClient = HttpClients.createDefault();
+            }
+            String result = EntityUtils.toString(httpClient.execute(httpGet).getEntity(), "UTF-8");
             return new JSONObject(result);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -64,11 +69,11 @@ public class O2OMapServerImp implements IO2OMapServer {
     public ProductInfoView findByEarliestPdt_PkeyAnd(FldLanguage.Language language, Integer pdt) {
         O2O_Product o2oPdt = o2OProductDao.findEarliestActByPdt_Pkey(pdt);
         ProductInfoView view = null;
-        if(null != o2oPdt){
+        if (null != o2oPdt) {
             view = new ProductInfoView();
             O2O_Activity activity = o2oPdt.gtActivityId();
             O2O_Map map = activity.gtAddress();
-            O2OMapView mapView = O2OMapView.toView(language,map);
+            O2OMapView mapView = O2OMapView.toView(language, map);
             view.setMap(mapView);
             view.setMin_oq(o2oPdt.getMinOq());
             view.setPrice(o2oPdt.getPrice());
@@ -76,8 +81,8 @@ public class O2OMapServerImp implements IO2OMapServer {
         return view;
     }
 
-    public List<O2OMapView> list(){
-        return o2OMapDao.list().stream().map(map->{
+    public List<O2OMapView> list() {
+        return o2OMapDao.list().stream().map(map -> {
             O2OMapView view = new O2OMapView();
             view.setId(map.getPkey());
             view.setLatitude(map.getLatitude());
@@ -87,7 +92,7 @@ public class O2OMapServerImp implements IO2OMapServer {
         }).collect(Collectors.toList());
     }
 
-    public void ins(O2OMapView view){
+    public void ins(O2OMapView view) {
         O2O_Map map = new O2O_Map();
         map.setName(view.getName());
         map.setLongitude(view.getLongitude());
@@ -100,21 +105,21 @@ public class O2OMapServerImp implements IO2OMapServer {
     public static void main(String[] args) throws Exception {
         String url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json";
         URIBuilder builder = new URIBuilder(url);
-        builder.addParameter("input","wenzhou Museum");
-        builder.addParameter("inputtype","textquery");
-        builder.addParameter("fields","formatted_address,name,rating,geometry");
-        builder.addParameter("key","AIzaSyCPbc3yNYQgVc56qbUuAY_Yap-uDMkDkvc");
-        String result = sendHttpsUtils.get(builder.build().toString(),"127.0.0.1",1080);
+        builder.addParameter("input", "wenzhou Museum");
+        builder.addParameter("inputtype", "textquery");
+        builder.addParameter("fields", "formatted_address,name,rating,geometry");
+        builder.addParameter("key", "AIzaSyCPbc3yNYQgVc56qbUuAY_Yap-uDMkDkvc");
+        String result = sendHttpsUtils.get(builder.build().toString(), "127.0.0.1", 1080);
         JSONObject json = new JSONObject(result);
         System.out.println(json);
     }
 
-    public void del(Integer id){
+    public void del(Integer id) {
         if (null == id)
-            throw new WebMessageException(ReturnCode.failure,"请选择地址");
-        O2O_Map map = BeanBase.chk(O2O_Map.class,id);
-        if(null == map)
-            throw new WebMessageException(ReturnCode.failure,"地址不存在");
+            throw new WebMessageException(ReturnCode.failure, "请选择地址");
+        O2O_Map map = BeanBase.chk(O2O_Map.class, id);
+        if (null == map)
+            throw new WebMessageException(ReturnCode.failure, "地址不存在");
         map.setIsDelete(Sys.OYn.YES.getLine().getKey());
         map.upd();
     }
