@@ -3,7 +3,9 @@ package irille.Service.RFQ;
 import com.google.inject.ImplementedBy;
 
 import irille.Service.RFQ.Impl.RFQConsultServiceImpl;
+import irille.platform.rfq.view.RFQConsultRelationView;
 import irille.platform.rfq.view.RFQConsultView;
+import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
 import irille.view.Page;
 
 @ImplementedBy(RFQConsultServiceImpl.class)
@@ -44,4 +46,13 @@ public interface RFQConsultService {
 	 * @author Jianhua Ying
 	 */
 	void delete(RFQConsultView view);
+	
+	/**
+	 * 商家询盘报价信息
+	 * 
+	 * @param view 询盘关联表, 需要包含主键
+	 * @return 报价信息
+	 * @author Jianhua Ying
+	 */
+	RFQConsultQuoteInfoView relationInfo(RFQConsultRelationView view);
 }

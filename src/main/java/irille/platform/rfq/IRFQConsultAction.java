@@ -49,4 +49,12 @@ public interface IRFQConsultAction {
 	 * @throws IOException
 	 */
 	void delete() throws IOException ;
+	
+	/**
+	 * 商家报价信息
+	 * 
+	 * @throws IOException
+	 * @author Jianhua Ying
+	 */
+	void offerInfo() throws IOException ;
 }

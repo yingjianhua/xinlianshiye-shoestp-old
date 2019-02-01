@@ -11,6 +11,8 @@ import irille.platform.rfq.view.RFQConsultRelationView;
 @ImplementedBy(RFQConsultRelationDaoImpl.class)
 public interface RFQConsultRelationDao {
 	
+	RFQConsultRelation findByPkey(Integer relationPkey);
+	
 	RFQConsultRelation findByConsult_PkeySupplier_Pkey(Integer consultPkey, Integer supplierPkey);
 	
 	Integer countByConsult_PkeySupplier_Pkey(Integer consultPkey, Integer supplierPkey);

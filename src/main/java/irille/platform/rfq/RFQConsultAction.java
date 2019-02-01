@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Service.RFQ.RFQConsultService;
 import irille.action.ActionBase;
+import irille.platform.rfq.view.RFQConsultRelationView;
 import irille.platform.rfq.view.RFQConsultView;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +21,7 @@ public class RFQConsultAction extends ActionBase<RFQConsult> implements IRFQCons
   @Inject private RFQConsultService rFQConsultService;
 
   private RFQConsultView consult = new RFQConsultView();
+  private RFQConsultRelationView relation = new RFQConsultRelationView();
 
   @Override
   public Class<RFQConsult> beanClazz() {
@@ -49,4 +51,9 @@ public class RFQConsultAction extends ActionBase<RFQConsult> implements IRFQCons
     rFQConsultService.delete(consult);
     write();
   }
+
+	@Override
+	public void offerInfo() throws IOException {
+		write(rFQConsultService.relationInfo(relation));
+	}
 }

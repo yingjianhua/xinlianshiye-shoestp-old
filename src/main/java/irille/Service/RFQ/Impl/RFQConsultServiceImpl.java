@@ -7,10 +7,13 @@ import irille.Entity.RFQ.Enums.RFQConsultStatus;
 import irille.Entity.RFQ.Enums.RFQConsultType;
 import irille.Entity.RFQ.Enums.RFQConsultVerifyStatus;
 import irille.Entity.RFQ.RFQConsult;
+import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Service.RFQ.RFQConsultService;
+import irille.platform.rfq.view.RFQConsultRelationView;
 import irille.platform.rfq.view.RFQConsultView;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
+import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
 import irille.view.Page;
 
 public class RFQConsultServiceImpl implements RFQConsultService {
@@ -94,5 +97,17 @@ public class RFQConsultServiceImpl implements RFQConsultService {
             rFQConsultDao.save(consult);
         }
     }
+
+	@Override
+	public RFQConsultQuoteInfoView relationInfo(RFQConsultRelationView view) {
+		if(view.getPkey() == null) {
+			throw new WebMessageException(ReturnCode.valid_notnull, "请选择商家");
+		}
+		RFQConsultRelation relation = rFQConsultRelationDao.findByPkey(view.getPkey());
+		if(relation == null) {
+			throw new WebMessageException(ReturnCode.valid_notnull, "请选择商家");
+		}
+		return RFQConsultQuoteInfoView.Builder.toView(relation);
+	}
 
 }
