@@ -154,6 +154,7 @@ public class PdtProductDao {
         query.SELECT(
                 PdtProduct.T.PKEY,
                 PdtProduct.T.NAME,
+                PdtProduct.T.MIN_OQ,
                 PdtProduct.T.PICTURE,
                 PdtProduct.T.CUR_PRICE,
                 PdtProduct.T.Favorite_Count
@@ -286,6 +287,8 @@ public class PdtProductDao {
                 PdtProduct.T.NAME,
                 PdtProduct.T.PICTURE,
                 PdtProduct.T.CUR_PRICE,
+                PdtProduct.T.MIN_OQ,
+
                 PdtProduct.T.Favorite_Count
         ).FROM(PdtProduct.class)
                 .limit(pdtProductView.getPage().getStart(), pdtProductView.getPage().getLimit());
