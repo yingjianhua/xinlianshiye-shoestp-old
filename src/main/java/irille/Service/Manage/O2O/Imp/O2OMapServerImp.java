@@ -16,9 +16,7 @@ import irille.pub.util.AppConfig;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.pub.util.sendHttpsUtils;
 import irille.view.O2O.O2OMapView;
-import org.apache.http.HttpHost;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClients;
@@ -52,13 +50,12 @@ public class O2OMapServerImp implements IO2OMapServer {
             builder.addParameter("key", key);
             HttpGet httpGet = new HttpGet(builder.build());
             HttpClient httpClient = HttpClients.createDefault();
+            String result = null;
             if (AppConfig.dev) {
-                HttpHost https = new HttpHost("127.0.0.1", 1080, "https");
-                HttpHost http = new HttpHost("127.0.0.1", 1080, "http");
-                RequestConfig config = RequestConfig.custom().setProxy(http).setProxy(https).build();
-                httpGet.setConfig(config);
+                result = sendHttpsUtils.get(builder.build().toString(), "127.0.0.1", 1080);
+            } else {
+                result = EntityUtils.toString(httpClient.execute(httpGet).getEntity(), "UTF-8");
             }
-            String result = EntityUtils.toString(httpClient.execute(httpGet).getEntity(), "UTF-8");
             return new JSONObject(result);
         } catch (Exception e) {
             e.printStackTrace();

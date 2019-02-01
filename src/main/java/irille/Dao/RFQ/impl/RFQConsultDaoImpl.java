@@ -272,6 +272,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 RFQConsult.T.CREATE_TIME,
                 RFQConsult.T.QUANTITY,
                 RFQConsult.T.LEFT_COUNT,
+                RFQConsult.T.IMAGE,
                 RFQConsult.T.TOTAL,
                 RFQConsultRelation.T.FAVORITE
         ).SELECT(

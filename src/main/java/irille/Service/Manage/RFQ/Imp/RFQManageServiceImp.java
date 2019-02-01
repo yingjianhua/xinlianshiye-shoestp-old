@@ -144,6 +144,7 @@ public class RFQManageServiceImp implements IRFQManageService {
         rfqConsultRelation.setCompanydescribe(quoteInfo.getCompanyDescribe());
         rfqConsultRelation.setThrowaway(quoteInfo.getThrowaway());
         rfqConsultRelation.stHadReadPurchase(false);
+        rfqConsultRelation.stHadReadSupplier(true);
         rfqConsultRelationDAO.setB(rfqConsultRelation);
         rfqConsultRelationDAO.commit();
         if (consult.getLeftCount() < consult.getTotal()) {
