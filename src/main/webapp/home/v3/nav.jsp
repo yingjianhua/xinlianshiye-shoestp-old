@@ -1,52 +1,10 @@
-<%@ page pageEncoding="UTF-8" %>
-<%@ taglib uri="/struts-tags" prefix="s" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
-<script type="text/javascript" src="/home/static/js/layer.js"></script>
-<link rel="stylesheet" href="/home/static/css/layer.css" type="text/css">
-<script type="text/javascript" src="/home/static/js/en.js"></script>
-<script type="text/javascript" src="/home/static/js/lang/${env.curLanguage }.js"></script>
-<script type="text/javascript" src="/home/static/js/global.js"></script>
-<script type="text/javascript" src="/home/static/js/global(1).js"></script>
-<script type="text/javascript" src="/home/static/js/user.js"></script>
-<script type="text/javascript" src="/home/static/js/moment-with-locales.min.js"></script>
-<script src='/home/v2/static/js/base/axios.min.js'></script>
-<script src="https://js.fundebug.cn/fundebug.1.5.1.min.js"
-        apikey="afbc9f957e7689049c3282fe7696d30e7cb260e0ce11c148c0cf9e31d4e802f5"></script>
-
-
 <link rel="stylesheet" href="/home/v2/static/css/nav/new-top-nav-style.css"/>
-<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-<script src="/home/v2/static/js/base/vue.min.js"></script>
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
-<script type="text/javascript">
-    $(window).resize(function () {
-        $(window).webDisplay(2);
-    });
-    $(window).webDisplay(2);
-    var stpshop_config = {
-        "domain": "${envConfig.domain}",
-        "lang": "${envConfig.lang}",
-        "currency": "${envConfig.currency}",
-        "currency_symbols": "${envConfig.currencySymbols}",
-        "currency_rate": "${envConfig.currencyRate}",
-        "userId": "${envConfig.userId}",
-        "systemTime":${envConfig.systemTime},
-        "timeDifference": new Date().getTime() -${envConfig.systemTime},
-        "timezoneOffset":${envConfig.timezoneOffset},//服务器时间和UTC时间的时间差(分钟)
-        "imageBaseUrl": "${envConfig.imageBaseUrl}"
-    };
-    var timezoneOffset = new Date().getTimezoneOffset();
-    Date.toLocale = function (systemTime) {
-        if (typeof(systemTime) == "string")
-            systemTime = parseInt(systemTime)
-        return new Date(systemTime + (timezoneOffset * 60 * 1000 + stpshop_config.timezoneOffset));
-    }
-    var ueeshop_config = stpshop_config;
-    var isLogin = ${env.login!=null};
-
-</script>
+</head>
+<body class="new-style-page w_1200">
+<!-- 顶部nav栏 -->
 <div id="nav">
     <div id="new-top-nav" class="wide-wrap">
         <div class="wide">
@@ -184,10 +142,11 @@
             </el-menu>
         </div>
     </div>
-
 </div>
-
+<script src="/home/v2/static/lang/element/en.js"></script>
 <script>
+
+    ELEMENT.locale(ELEMENT.lang.en)
     var sysConfig = {
         baseImageUrl: "https://image.shoestp.com",
         currency_symbol: "$",
@@ -305,95 +264,5 @@
         }
     })
 </script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        moment.locale('${env.curLanguage}');
-        user_obj.sign_in_init();
-    });
-</script>
-
-<style scope>
-    .el-menu-item .imgnumber {
-        height: 12px;
-        min-width: 12px;
-        background: #ff3c3c;
-        border-radius: 8px;
-        right: -6px;
-        top: 4px;
-        line-height: 13px;
-        text-align: center;
-        color: #fff;
-        position: absolute;
-    }
-
-</style>
-<c:if test="${empty supView.imList || fn:length(supView.imList) == 0}">
-    <!--Start of Tawk.to Script-->
-    <script type="text/javascript">
-        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
-        (function () {
-            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
-            s1.async = true;
-            s1.src = 'https://embed.tawk.to/5b8fcb48f31d0f771d8476f6/default';
-            s1.charset = 'UTF-8';
-            s1.setAttribute('crossorigin', '*');
-            s0.parentNode.insertBefore(s1, s0);
-        })();
-    </script>
-    <!--End of Tawk.to Script-->
-</c:if>
-<c:if test="${not empty supView.imList && fn:length(supView.imList) > 0}">
-    <c:set var="flag" value="true"/>
-    <c:forEach items="${supView.imList}" var="im" varStatus="state">
-        <c:if test="${flag == true}">
-            <c:if test="${im.type == 1 || im.type == 2 }">
-                ${im.demo}
-                <c:set var="flag" value="false"/>
-            </c:if>
-            <c:if test="${im.type == 0}">
-                <script type="text/javascript">
-                    var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
-                    (function () {
-                        var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
-                        s1.async = true;
-                        s1.src = 'https://embed.tawk.to/5b8fcb48f31d0f771d8476f6/default';
-                        s1.charset = 'UTF-8';
-                        s1.setAttribute('crossorigin', '*');
-                        s0.parentNode.insertBefore(s1, s0);
-                    })();
-                </script>
-                <c:set var="flag" value="false"/>
-            </c:if>
-        </c:if>
-    </c:forEach>
-</c:if>
-<script>
-
-    function getMessage(str) {
-        var sourceStr = str;
-        if (str.indexOf("##") != -1) {
-            str = str.split("##")[0];
-        }
-        var key = str.split("%")[0];
-        var value = str.split("%")[1];
-        var message = lang_obj[key][value];
-
-        if (sourceStr.indexOf("##") != -1) {
-            var arr = sourceStr.split("##");
-            var arrs = new Array();
-            for (var i = 1; i < arr.length; i++) {
-                arrs[i - 1] = arr[i];
-            }
-            message = message.format(...arrs);
-        }
-        return message;
-    }
-
-    String.prototype.format = function () {
-        if (arguments.length == 0)
-            return this;
-        for (var s = this, i = 0; i < arguments.length; i++)
-            s = s.replace(new RegExp("\\{" + i + "\\}", "g"), arguments[i]);
-        return s;
-    };
-</script>
+<div style="height: 25px;">
+</div>
