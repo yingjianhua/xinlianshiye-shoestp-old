@@ -970,7 +970,7 @@ public class PdtProductDao {
             Integer pdtPkey = Integer.parseInt(map.get("pdtPkey").toString());
             setPdtId(pdtPkey);
             setPdtName(map.get("pdtName").toString());
-            if (IsO2o == 1) {
+            if (IsO2o != null && IsO2o == 1) {
                 for (O2O_Product o2opdt : copy) {
                     if (pdtPkey == o2opdt.getProductId()) {
                         System.out.println(o2opdt.getPrice());
