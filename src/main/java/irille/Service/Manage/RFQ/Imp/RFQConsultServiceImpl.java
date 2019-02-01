@@ -86,6 +86,26 @@ public class RFQConsultServiceImpl implements RFQConsultService {
             });
         }
     }
+    
+	@Override
+	public void stamp(UsrSupplier supplier, String consultPkeys, Boolean doStamp) {
+		List<RFQConsultRelation> list = rFQConsultRelationDao.findAllByConsult_PkeySupplier_Pkey(consultPkeys, supplier.getPkey());
+		list.forEach(relation->{
+			if(doStamp) {
+				//标记询盘
+				if(!relation.gtFavorite()) {
+					relation.stFavorite(true);
+					rFQConsultRelationDao.save(relation);
+				}
+			} else {
+				//取消标记
+				if(relation.gtFavorite()) {
+					relation.stFavorite(false);
+					rFQConsultRelationDao.save(relation);
+				}
+			}
+		});
+	}
 
 	@Override
 	public Page<RFQConsultRelationView> page(UsrSupplier supplier, Integer start, Integer limit, String keyword, Integer groupId, Boolean isFavorite, Byte type,
@@ -227,4 +247,5 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 		long l2 = System.currentTimeMillis();
 		System.out.println(l2-l1);
 	}
+
 }

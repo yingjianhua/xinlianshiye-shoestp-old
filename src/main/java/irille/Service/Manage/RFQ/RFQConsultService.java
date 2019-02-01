@@ -34,6 +34,16 @@ public interface RFQConsultService {
 	 */
 	void moveToRecycled(UsrSupplier supplier, String consultPkeys, Boolean isToRecycled);
 	
+	/**
+	 * 标记询盘或者取消标记
+	 * 
+	 * @param supplier 供应商
+	 * @param consultPkeys 询盘的主键 多主键通过英文逗号分隔
+	 * @param doStamp 操作 true: 标记询盘, false: 取消标记
+	 * @author Jianhua Ying
+	 */
+	void stamp(UsrSupplier supplier, String consultPkeys, Boolean doStamp);
+	
     /**
      * 分页查询询盘列表
      *
