@@ -67,5 +67,11 @@ public interface IRFQConsultAction extends ISellerAction, IEnableable {
      */
     @RequestMapping(alias = "移动询盘到指定分组", sort = 10)
     void moveToGroup() throws IOException;
+    /**
+     *标记询盘
+     * @throws IOException
+     */
+    @RequestMapping(alias = "标记询盘", sort = 11)
+	void stamp() throws IOException;
 
 }

@@ -92,6 +92,7 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
     private Date startDate;
     private Date endDate;
     private Byte orderType;
+    private Boolean doStamp;
 
     private String ids;
 
@@ -124,6 +125,12 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
 	@Override
 	public void moveToGroup() throws IOException {
 		rFQConsultService.moveToGroup(getSupplier(), ids, groupId);
+		write();
+	}
+
+	@Override
+	public void stamp() throws IOException {
+		rFQConsultService.stamp(getSupplier(), ids, doStamp);
 		write();
 	}
 

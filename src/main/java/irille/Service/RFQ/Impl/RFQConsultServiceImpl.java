@@ -22,7 +22,8 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 
     @Override
     public Page<RFQConsultView> page(Integer start, Integer limit, RFQConsultView condition) {
-        condition.setIsDeleted(false);
+    	//标记为已删除的询盘不在平台端显示
+		condition.setIsDeleted(false);
         return rFQConsultDao.findAllView(start, limit, condition);
     }
 
@@ -54,9 +55,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
             //不是RFQ询盘不需要进行审核
             throw new WebMessageException(ReturnCode.service_state_error, "类型错误");
         }
-
-        System.out.println(consult.getStatus());
-        System.out.println(consult.getVerifyStatus());
+        //必须要询盘状态为待发布,审核状态为未审核
         if (consult.gtStatus().equals(RFQConsultStatus.ready) && consult.gtVerifyStatus().equals(RFQConsultVerifyStatus.UNAUDITED)) {
             if (verify) {
                 //审核通过
