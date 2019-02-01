@@ -17,6 +17,7 @@ import irille.Dao.RFQ.RFQConsultMessageDao;
 import irille.Dao.RFQ.RFQConsultRelationDao;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultMessage;
+import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Entity.RFQ.Enums.RFQConsultMessageType;
 import irille.Entity.RFQ.JSON.ConsultMessage;
 import irille.Entity.RFQ.JSON.RFQConsultAlertUrlMessage;
@@ -72,18 +73,37 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 		return new RFQConsultMessagesView(msgs, myself, another);
 	}
 	
-	@Override
-	public RFQConsultMessageView sendTextMessage(UsrSupplier supplier, Integer consultPkey, String content) {
-		RFQConsultMessage bean = createMessage(new RFQConsultTextMessage() {{ setContent(content); }});
+	private RFQConsultMessageView sendMessage(UsrSupplier supplier, Integer consultPkey, ConsultMessage message) {
+		RFQConsultRelation relation = rFQConsultRelationDao.findByConsult_PkeySupplier_Pkey(consultPkey, supplier.getPkey());
+		//商家发送消息后 设置采购商消息未读取
+		if(relation.gtHadReadPurchase()) {
+			relation.stHadReadPurchase(false);
+			rFQConsultRelationDao.save(relation);
+		}
+		RFQConsultMessage bean = new RFQConsultMessage();
+		bean.setUuid(UUID.randomUUID().toString().replaceAll("-", ""));
+		try {
+			bean.setContent(om.writeValueAsString(message));
+		} catch (JsonProcessingException e) {
+			throw new WebMessageException(ReturnCode.third_unknow, "消息发送失败");
+		}
+		bean.stType(RFQConsultMessageType.TEXT);
+		bean.setSendTime(new Date());
+		bean.stRelation(relation);
+		bean.stP2s(false);
+		bean.stHadRead(false);
 		rFQConsultMessageDao.save(bean);
 		return RFQConsultMessageView.Builder.toView(bean);
+	}
+	
+	@Override
+	public RFQConsultMessageView sendTextMessage(UsrSupplier supplier, Integer consultPkey, String content) {
+		return sendMessage(supplier, consultPkey, new RFQConsultTextMessage() {{ setContent(content); }});
 	}
 
 	@Override
 	public RFQConsultMessageView sendImageMessage(UsrSupplier supplier, Integer consultPkey, String imageUrl) {
-		RFQConsultMessage bean = createMessage(new RFQConsultImageMessage() {{ setImageUrl(imageUrl); }});
-		rFQConsultMessageDao.save(bean);
-		return RFQConsultMessageView.Builder.toView(bean);
+		return sendMessage(supplier, consultPkey, new RFQConsultImageMessage() {{ setImageUrl(imageUrl); }});
 	}
 
 	@Override
@@ -102,24 +122,7 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 		message.setAlertMsg("该链接被打开后72小时内有效，72小时后该链接失效，买家将无法查看该产品");
 		message.setShowMsg("产品链接");
 		message.setUrl("");//TODO 链接现在尚未确定  确定后补上 带上询盘聊天消息的uuid做为参数
-		RFQConsultMessage bean = createMessage(message);
-		rFQConsultMessageDao.save(bean);
-		return RFQConsultMessageView.Builder.toView(bean);
-	}
-	private RFQConsultMessage createMessage(ConsultMessage message) {
-		RFQConsultMessage bean = new RFQConsultMessage();
-		bean.setUuid(UUID.randomUUID().toString().replaceAll("-", ""));
-		try {
-			bean.setContent(om.writeValueAsString(message));
-		} catch (JsonProcessingException e) {
-			throw new WebMessageException(ReturnCode.third_unknow, "消息发送失败");
-		}
-		bean.stType(RFQConsultMessageType.TEXT);
-		bean.setSendTime(new Date());
-		bean.setRelation(null);
-		bean.stP2s(false);
-		bean.stHadRead(false);
-		return bean;
+		return sendMessage(supplier, consultPkey, message);
 	}
 
 }
