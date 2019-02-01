@@ -15,40 +15,38 @@ import lombok.Setter;
 @Setter
 public class RFQConsultAction extends ActionBase<RFQConsult> implements IRFQConsultAction {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@Inject
-	private RFQConsultService rFQConsultService;
+  @Inject private RFQConsultService rFQConsultService;
 
-	private RFQConsultView consult = new RFQConsultView();
+  private RFQConsultView consult = new RFQConsultView();
 
-	@Override
-	public Class<RFQConsult> beanClazz() {
-		return RFQConsult.class;
-	}
+  @Override
+  public Class<RFQConsult> beanClazz() {
+    return RFQConsult.class;
+  }
 
-	@Override
-	public void list() throws IOException {
-		write(rFQConsultService.page(getStart(), getLimit(), consult));
-	}
+  @Override
+  public void list() throws IOException {
+    write(rFQConsultService.page(getStart(), getLimit(), consult));
+  }
 
-	@Override
-	public void detail() throws IOException {
-		write(rFQConsultService.detail(consult));
-	}
-	
-	private Boolean verify;
+  @Override
+  public void detail() throws IOException {
+    write(rFQConsultService.detail(consult));
+  }
 
-	@Override
-	public void approve() throws IOException {
-		rFQConsultService.approve(consult, verify);
-		write();
-	}
+  private Boolean verify;
 
-	@Override
-	public void delete() throws IOException {
-		rFQConsultService.delete(consult);
-		write();
-	}
+  @Override
+  public void approve() throws IOException {
+    rFQConsultService.approve(consult, verify);
+    write();
+  }
 
+  @Override
+  public void delete() throws IOException {
+    rFQConsultService.delete(consult);
+    write();
+  }
 }

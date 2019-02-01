@@ -64,11 +64,11 @@ public class Plt extends PackageBase {
         addTb(49, O2O_Product.class);
         addTb(50, O2O_PrivateExpoPdt.class);
         addTb(51, O2O_JoinInfo.class);
-        addTb(52, RFQConsult.class);
-        addTb(53, RFQConsultMessage.class);
-        addTb(54, RFQConsultRelation.class);
-        addTb(55, Contact.class);
-        addTb(56, ContactGroup.class);
+        addTb(60, RFQConsult.class);
+        addTb(61, RFQConsultMessage.class);
+        addTb(62, RFQConsultRelation.class);
+        addTb(63, Contact.class);
+        addTb(64, ContactGroup.class);
     }
 
     @Override

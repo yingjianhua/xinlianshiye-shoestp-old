@@ -76,7 +76,8 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 RFQConsult.T.SHIPPING_TYPE,
                 RFQConsult.T.PAY_TYPE,
                 RFQConsult.T.EXTRA_DESCRIPTION,
-                RFQConsult.T.IMAGE);
+                RFQConsult.T.IMAGE)
+        .WHERE(RFQConsult.T.PKEY,"=?" ,id);
         Map<String, Object> map = query.queryMap();
         RFQConsultView view = toView(map);
         //添加额外的字段
@@ -98,6 +99,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                         RFQConsult.T.TYPE,//询盘类型
                         RFQConsult.T.QUANTITY,//采购数量
                         RFQConsult.T.UNIT,//询盘单位 如 双
+                        RFQConsult.T.CONTENT,
                         RFQConsult.T.TOTAL,//询盘抢单总次数
                         RFQConsult.T.LEFT_COUNT,//询盘剩余抢单次数
                         RFQConsult.T.VALID_DATE,//询盘过期时间
@@ -131,6 +133,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         view.setPkey((Integer) map.get(RFQConsult.T.PKEY.getFld().getCodeSqlField()));
         view.setTitle((String) map.get(RFQConsult.T.TITLE.getFld().getCodeSqlField()));
         view.setType("" + map.get(RFQConsult.T.TYPE.getFld().getCodeSqlField()));
+        view.setContent((String)map.get(RFQConsult.T.CONTENT.getFld().getCodeSqlField()));
         if (map.containsKey("supplierPkey")) {
             view.setSupplier(new SupplierView() {{
                 setPkey((Integer) map.get("supplierPkey"));

@@ -472,7 +472,7 @@
 
                             // this.submitObj.v.image =   this.imgsToUpload.join(",");
                             var submitObj = Object.assign({}, this.form);
-                            submitObj.image = this.imgsToUpload.join(",");
+                            submitObj.images = this.imgsToUpload.join(",");
                             submitObj.min_price = this.form.min_price || 0;
                             submitObj.max_price = this.form.max_price || 0;
                             var submitData = JSON.stringify(submitObj);
