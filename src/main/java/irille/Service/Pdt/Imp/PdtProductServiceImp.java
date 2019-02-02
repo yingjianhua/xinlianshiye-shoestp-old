@@ -273,6 +273,7 @@ public class PdtProductServiceImp implements IPdtProductService {
         rfqPdtInfo.setTitle(translateUtil.getLanguage(GetValue.get(map, PdtProduct.T.NAME, String.class, null), HomeAction.curLanguage()));
         rfqPdtInfo.setSupName(GetValue.get(map, "supName", String.class, null));
         rfqPdtInfo.setSupLogo(GetValue.get(map, UsrSupplier.T.LOGO, String.class, null));
+        rfqPdtInfo.setType(GetValue.get(map, PdtProduct.T.PRODUCT_TYPE, Byte.class, (byte) -1));
         rfqPdtInfo.setMin_oq(GetValue.get(map, PdtProduct.T.MIN_OQ, Integer.class, 0));
         String[] images = GetValue.get(map, PdtProduct.T.PICTURE, String.class, "").split(",");
         if (images.length > 0) {
@@ -342,8 +343,9 @@ public class PdtProductServiceImp implements IPdtProductService {
      * @return
      */
     @Override
-    public PageSearch searchPdt(UsrPurchase purchase, FldLanguage.Language curLanguage, Integer lose, String pName, Integer cate, Integer level, String export, Integer mOrder, BigDecimal min, BigDecimal max, Integer IsO2o, String o2oAddress, Integer start, Integer limit) {
-        PageSearch pageSearch = new PageSearch(pdtProductDao.searchPdtByQuery(purchase, curLanguage, lose, pName, cate, level, export, mOrder, min, max, IsO2o, o2oAddress, start, limit));
+    public PageSearch searchPdt(String[] orderfld,UsrPurchase purchase, FldLanguage.Language curLanguage, Integer lose, String pName, Integer cate, Integer level, String export, Integer mOrder, BigDecimal min, BigDecimal max, Integer IsO2o, String o2oAddress, Integer start, Integer limit) {
+
+        PageSearch pageSearch = new PageSearch(pdtProductDao.searchPdtByQuery(orderfld,purchase, curLanguage, lose, pName, cate, level, export, mOrder, min, max, IsO2o, o2oAddress, start, limit));
         if (cate != null && cate > 0)
             pageSearch.setBreadcrumbnav(pdtProductDao.getBreadcrumbNav(cate));
         return pageSearch;

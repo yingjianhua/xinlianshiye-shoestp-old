@@ -106,7 +106,8 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
 
     private boolean _order;
     private String _price;
-    private String[] _orderfld;
+    @Setter
+    private String[] orderfld;
     private int _cated = -1;
     private String _where;
     private String _spec;
@@ -157,13 +158,6 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
         this._price = price;
     }
 
-    public String[] getOrderfld() {
-        return _orderfld;
-    }
-
-    public void setOrderfld(String[] orderfld) {
-        this._orderfld = orderfld;
-    }
 
     public int getCated() {
         return _cated;
@@ -233,7 +227,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
 //        新版API
         if (v == 2) {
             write(objectMapper.writeValueAsString(pdtProduct
-                    .getProductListByCategoryV2(iduPage, getOrderfld(), isOrder(), getCated(), getSpec(),
+                    .getProductListByCategoryV2(iduPage, orderfld, isOrder(), getCated(), getSpec(),
                             getOnlyFld(), getKeyword(), getSearchtype())));
         } else if (v == 3) {
             Language curLanguage = curLanguage();
@@ -242,10 +236,10 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
                 setStart(0);
             if (getLimit() == 0 || getLimit() < 0)
                 setLimit(10);
-            write(pdtProduct.searchPdt(purchase, curLanguage, lose, pName, cate, level, export, mOrder, min, max, IsO2o, o2oAddress, getStart(), getLimit()));
+            write(pdtProduct.searchPdt(orderfld,purchase, curLanguage, lose, pName, cate, level, export, mOrder, min, max, IsO2o, o2oAddress, getStart(), getLimit()));
         } else {
             write(objectMapper.writeValueAsString(pdtProduct
-                    .getProductListByCategory(iduPage, getOrderfld(), isOrder(), getCated(), getSpec(),
+                    .getProductListByCategory(iduPage, orderfld, isOrder(), getCated(), getSpec(),
                             getOnlyFld(), getKeyword(), getType())));
         }
     }

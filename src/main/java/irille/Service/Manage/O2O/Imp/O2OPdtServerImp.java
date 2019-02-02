@@ -19,7 +19,6 @@ import irille.pub.Log;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.pub.tb.FldLanguage;
-import irille.pub.tb.IEnumOpt;
 import irille.pub.util.GetValue;
 import irille.pub.util.SEOUtils;
 import irille.shop.pdt.PdtCat;
@@ -86,6 +85,25 @@ public class O2OPdtServerImp implements IO2OPdtServer {
             return item;
         }).collect(Collectors.toList());
 
+        return items;
+    }
+
+    @Override
+    public List<PdtNewPdtInfo> O2OPrivateList(UsrPurchase purchase, int start, int limit) {
+        List<PdtNewPdtInfo> items = o2OProductDao.getPrivateExpoPdtList( start, limit).stream().map(pdt -> {
+            PdtNewPdtInfo item = new PdtNewPdtInfo();
+            item.setFavorite(null == GetValue.get(pdt, "ismyfavorite", Boolean.class, null) ? false : GetValue.get(pdt, "ismyfavorite", Boolean.class, null));
+            item.setImage(GetValue.getFirstImage(GetValue.get(pdt, PdtProduct.T.PICTURE, String.class, null)));
+            Long pdtPkey = Long.valueOf(String.valueOf(GetValue.get(pdt, PdtProduct.T.PKEY, Integer.class, -1)));
+            item.setId(pdtPkey);
+            item.setMin_order(GetValue.get(pdt, O2O_Product.T.MIN_OQ, Integer.class, -1));
+            item.setPrice(GetValue.get(pdt, O2O_Product.T.PRICE, BigDecimal.class, BigDecimal.ZERO));
+            String name = GetValue.get(pdt, PdtProduct.T.NAME, String.class, "");
+            item.setTitle(name);
+            item.setRewrite(SEOUtils.getPdtProductTitle(Integer.valueOf(String.valueOf(pdtPkey)), name));
+            return item;
+        }).collect(Collectors.toList());
+//
         return items;
     }
 

@@ -79,6 +79,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         rfqConsult.stUnit(RFQConsultUnit.PAIR);
         rfqConsult.setPurchaseId(purchase.getPkey());
 //        rfqConsult.setPurchaseId(1);
+        rfqConsult.stIsDeleted(false);
         rfqConsult.setTotal(0);
         rfqConsult.stType(RFQConsultType.INQUIRY);
         rfqConsult.stStatus(RFQConsultStatus.runing);
@@ -114,6 +115,8 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         rfqConsult.stUnit(RFQConsultUnit.PAIR);
 //        rfqConsult.setPurchaseId(purchase.getPkey());
         rfqConsult.setPurchaseId(1);
+        rfqConsult.stIsDeleted(false);
+
         rfqConsult.setTotal(0);
         rfqConsult.stType(RFQConsultType.Private_INQUIRY);
         rfqConsult.stStatus(RFQConsultStatus.runing);

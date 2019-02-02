@@ -1,10 +1,10 @@
 package irille.Dao.O2O;
 
 import irille.Aops.Caches;
-import irille.Entity.O2O.*;
 import irille.Entity.O2O.Enums.O2O_ActivityStatus;
 import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
+import irille.Entity.O2O.*;
 import irille.Entity.O2O.O2O_Activity.T;
 import irille.core.sys.Sys;
 import irille.pub.bean.Query;
@@ -17,20 +17,17 @@ import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplierRole;
 import irille.view.O2O.PdtSearchView;
-import irille.view.Page;
 
+import javax.annotation.Nonnull;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Nonnull;
 
 /**
  * Created by IntelliJ IDEA. User: Lijie<HelloBox@outlook.com> Date: 2019/1/26 Time: 12:50
  */
 public class O2OProductDao {
-    @Caches
-    public List<?> getPrivateExpoPdtList(int start, int limit) {
+    public List<Map<String,Object>> getPrivateExpoPdtList(int start, int limit) {
         SQL sql = new SQL();
         sql.SELECT(
                 PdtProduct.T.PKEY,
@@ -41,6 +38,7 @@ public class O2OProductDao {
                 O2O_PrivateExpoPdt.T.STATUS,
                 O2O_PrivateExpoPdt.T.VERIFY_STATUS,
                 O2O_PrivateExpoPdt.T.MESSAGE)
+                .FROM(O2O_PrivateExpoPdt.class)
                 .LEFT_JOIN(PdtProduct.class, O2O_PrivateExpoPdt.T.PDT_ID, PdtProduct.T.PKEY)
                 .WHERE(O2O_PrivateExpoPdt.T.STATUS, "=?", O2O_PrivateExpoPdtStatus.ON)
                 .WHERE(O2O_PrivateExpoPdt.T.VERIFY_STATUS, "=?", O2O_PrivateExpoPdtStatus.PASS);
@@ -230,10 +228,10 @@ public class O2OProductDao {
         return Query.sql(sql).queryMaps();
 
     }
-    
+
     /**
      * 统计活动下有多少参加的商品
-     * 
+     *
      * @param activityId 活动的Id 不能为空
      * @return 参加活动的商品的数量
      * @author Jianhua Ying

@@ -18,4 +18,5 @@ public class RFQPdtInfo implements BaseView {
     private String suplevel;
     private String supLogo;
     private int min_oq;
+    private byte type;
 }

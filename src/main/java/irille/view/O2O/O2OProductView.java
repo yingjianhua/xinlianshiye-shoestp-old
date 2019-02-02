@@ -1,9 +1,9 @@
 package irille.view.O2O;
 
-import java.math.BigDecimal;
-
 import irille.view.BaseView;
 import lombok.Data;
+
+import java.math.BigDecimal;
 
 @Data
 public class O2OProductView implements BaseView {
@@ -16,6 +16,7 @@ public class O2OProductView implements BaseView {
     private String productName;
     private String productCat;
     private BigDecimal price;
+    private BigDecimal mkt_price; //私有展会展品特有
     private Integer minOq;
     private String supplierName;
     private String supplierLevel;

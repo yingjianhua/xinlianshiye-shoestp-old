@@ -32,7 +32,7 @@ public class RFQConsultRelationDaoImpl implements RFQConsultRelationDao {
 		.FROM(RFQConsultRelation.class)
 		.LEFT_JOIN(UsrSupplier.class, RFQConsultRelation.T.SUPPLIER_ID, UsrSupplier.T.PKEY)
 		.WHERE(RFQConsultRelation.T.CONSULT, "=?", id);
-		
+
 		return query.queryMaps().stream().map(map->{
 			RFQConsultRelationView view = new RFQConsultRelationView();
 			view.setPkey((Integer)map.get(RFQConsultRelation.T.PKEY.getFld().getCodeSqlField()));
@@ -49,16 +49,16 @@ public class RFQConsultRelationDaoImpl implements RFQConsultRelationDao {
 			return view;
 		}).collect(Collectors.toList());
 	}
-	
+
 	public static void main(String[] args) {
 		new RFQConsultRelationDaoImpl().testDirector();
 	}
-	
+
 	@Test
 	private void testDirector() {
 		UsrSupplier.TB.getCode();
 		RFQConsultRelation.TB.getCode();
-		
+
 		testFindAllViewByConsultId(1);
 	}
 

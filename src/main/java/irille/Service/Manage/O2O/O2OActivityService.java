@@ -10,7 +10,7 @@ import irille.view.O2O.O2OActivityView;
 
 /**
  * O2O活动业务层
- * 
+ *
  * @author Jianhua Ying
  *
  */
@@ -25,19 +25,19 @@ public interface O2OActivityService {
 	 * <li>截止时间
 	 * <li>活动名称
 	 * <li>活动状态
-	 * 
+	 *
 	 */
 	Page<O2OActivityView> list(Integer start, Integer limit, O2OActivityView condition);
-	
+
 	/**
 	 * <p>取消活动
-	 * 
+	 *
 	 */
 	void cancel(Integer pkey);
-	
+
 	/**
 	 * <p>发布活动
-	 * 
+	 *
 	 */
 	void deploy(O2OActivityView view);
 
@@ -57,4 +57,6 @@ public interface O2OActivityService {
 	void lowerAndUpper(Integer id,String reason,O2O_ProductStatus status);
 
 	O2OActivityView load(Integer pkey);
+
+	Page priveteList(int start, int limit);
 }
