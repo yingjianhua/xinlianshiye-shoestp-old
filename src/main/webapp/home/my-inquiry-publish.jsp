@@ -231,7 +231,7 @@
                                             </el-form-item>
                                             <!-- 目的地 -->
                                             <el-form-item label-width="0">
-                                                <el-input v-model="form.destination"></el-input>
+                                                <el-input v-model="form.destination" placeholder="destination port"></el-input>
                                             </el-form-item>
                                             <!-- 支付方式 -->
                                             <el-form-item label-width="0">
@@ -366,8 +366,8 @@
                         },
                         {
                             min: 1,
-                            max: 50,
-                            message: 'Content cannot exceed 50 characters',
+                            max: 500,
+                            message: 'Content cannot exceed 500 characters',
                             trigger: 'blur'
                         }
                     ],

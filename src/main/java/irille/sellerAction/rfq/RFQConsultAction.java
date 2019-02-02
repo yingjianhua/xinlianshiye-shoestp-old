@@ -107,7 +107,7 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
      */
     @Override
     public void list() throws IOException {
-    	rFQConsultService.page(getSupplier(), start, limit, keyword, groupId, isFavorite, type, readStatus, isDeleted, startDate, endDate, orderType);
+    	write(rFQConsultService.page(getSupplier(), start, limit, keyword, groupId, isFavorite, type, readStatus, isDeleted, startDate, endDate, orderType));
     }
 
 	@Override
