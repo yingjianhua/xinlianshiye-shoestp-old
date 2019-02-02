@@ -72,7 +72,7 @@
                 </c:if>
             </div>
             <a class="xmgBtn fr"
-               :href="'/home/usr_UsrConsult_publishView?supplierId='+goodsInfo.supId"
+               :href="'/home/usr_UsrConsult_productPublishView?supplierId='+goodsInfo.supId"
                target="_blank"></a>
         </div>
     </div>

@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" href="/home/v2/static/css/nav/new-top-nav-style.css"/>
 </head>
-<body class="new-style-page w_1200">
+<body class="new-style-page w_1200 svsMain">
 <!-- 顶部nav栏 -->
 <div id="nav" >
     <div id="new-top-nav" class="wide-wrap">
@@ -11,54 +11,54 @@
             <!-- 顶部左侧 - 4个下拉选 -->
             <el-menu :default-active="activeTopNavIndex" class="el-menu-demo" mode="horizontal"
                      @select="handleTopNavSelect">
-                <el-submenu index="1" class="no-arrow new-top-nav-item">
-                    <template slot="title">
-                        <s:text name="OEM"/>
-                    </template>
-                    <el-menu-item index="1-1">
-                        <a href="/home/pdt_PdtProduct?cated=373">
-                            <s:text name="Men"/>
-                        </a>
+                <%--<el-submenu index="1" class="no-arrow new-top-nav-item">--%>
+                    <%--<template slot="title">--%>
+                        <%--<s:text name="OEM"/>--%>
+                    <%--</template>--%>
+                    <%--<el-menu-item index="1-1">--%>
+                        <%--<a href="/home/pdt_PdtProduct?cated=373">--%>
+                            <%--<s:text name="Men"/>--%>
+                        <%--</a>--%>
 
-                    </el-menu-item>
-                    <el-menu-item index="1-2">
-                        <a href="/home/pdt_PdtProduct?cated=380">
-                            <s:text name="WoMen"/>
-                        </a>
-                    </el-menu-item>
-                    <el-menu-item index="1-3">
-                        <a href="/home/pdt_PdtProduct?cated=387">
-                            <s:text name="Children"/>
-                        </a>
-                    </el-menu-item>
-                </el-submenu>
-                <el-submenu index="2" class="no-arrow">
-                    <template slot="title">WholeSale</template>
-                    <el-menu-item index="2-1">
-                        <a href="/home/pdt_PdtProduct?cated=373">
-                            <s:text name="Men"/>
-                        </a>
-                    </el-menu-item>
-                    <el-menu-item index="2-2">
-                        <a href="/home/pdt_PdtProduct?cated=380">
-                            <s:text name="WoMen"/>
-                        </a>
-                    </el-menu-item>
-                    <el-menu-item index="2-3">
-                        <a href="/home/pdt_PdtProduct?cated=387">
-                            <s:text name="Children"/>
-                        </a>
-                    </el-menu-item>
-                </el-submenu>
-                <el-submenu index="3" class="no-arrow">
-                    <template slot="title">
-                        <s:text name="Trade_Show"/>
-                    </template>
-                    <el-menu-item index="3-1"><a
-                            href="/country/Romania-Pantofi-en-gros/romania-index-ro.html">
-                        <s:text name="Romania"/>
-                    </a></el-menu-item>
-                </el-submenu>
+                    <%--</el-menu-item>--%>
+                    <%--<el-menu-item index="1-2">--%>
+                        <%--<a href="/home/pdt_PdtProduct?cated=380">--%>
+                            <%--<s:text name="WoMen"/>--%>
+                        <%--</a>--%>
+                    <%--</el-menu-item>--%>
+                    <%--<el-menu-item index="1-3">--%>
+                        <%--<a href="/home/pdt_PdtProduct?cated=387">--%>
+                            <%--<s:text name="Children"/>--%>
+                        <%--</a>--%>
+                    <%--</el-menu-item>--%>
+                <%--</el-submenu>--%>
+                <%--<el-submenu index="2" class="no-arrow">--%>
+                    <%--<template slot="title">WholeSale</template>--%>
+                    <%--<el-menu-item index="2-1">--%>
+                        <%--<a href="/home/pdt_PdtProduct?cated=373">--%>
+                            <%--<s:text name="Men"/>--%>
+                        <%--</a>--%>
+                    <%--</el-menu-item>--%>
+                    <%--<el-menu-item index="2-2">--%>
+                        <%--<a href="/home/pdt_PdtProduct?cated=380">--%>
+                            <%--<s:text name="WoMen"/>--%>
+                        <%--</a>--%>
+                    <%--</el-menu-item>--%>
+                    <%--<el-menu-item index="2-3">--%>
+                        <%--<a href="/home/pdt_PdtProduct?cated=387">--%>
+                            <%--<s:text name="Children"/>--%>
+                        <%--</a>--%>
+                    <%--</el-menu-item>--%>
+                <%--</el-submenu>--%>
+                <%--<el-submenu index="3" class="no-arrow">--%>
+                    <%--<template slot="title">--%>
+                        <%--<s:text name="Trade_Show"/>--%>
+                    <%--</template>--%>
+                    <%--<el-menu-item index="3-1"><a--%>
+                            <%--href="/country/Romania-Pantofi-en-gros/romania-index-ro.html">--%>
+                        <%--<s:text name="Romania"/>--%>
+                    <%--</a></el-menu-item>--%>
+                <%--</el-submenu>--%>
                 <%--<el-submenu index="4" class="no-arrow">--%>
                 <%--<template slot="title">--%>
                 <%--<s:text name="CROWDFUNDING"/>--%>

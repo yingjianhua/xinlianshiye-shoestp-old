@@ -95,7 +95,7 @@ function carWindow(data, _self, msg){
            '</div>';
        excheckout_html += '<p class="footRegion">';
        if (msg.indexOf( lang_obj.global.inqadd ) != -1) {
-           excheckout_html += '<a href="javascript:;" class="btn btn-success" id="exback_button">' + lang_obj.global.continues + '</a><a href="/home/usr_UsrConsult_publishView?product_id=' + data.result.id + '" class="btn btn-success" id="excheckout_button">' + lang_obj.global.inquery + '</a>';
+           excheckout_html += '<a href="javascript:;" class="btn btn-success" id="exback_button">' + lang_obj.global.continues + '</a><a href="/home/usr_UsrConsult_productPublishView?product_id=' + data.result.id + '" class="btn btn-success" id="excheckout_button">' + lang_obj.global.inquery + '</a>';
        } else {
            excheckout_html += '<a href="javascript:;" class="btn btn-success" id="exback_button">' + lang_obj.cart.return_shopping + '</a><a href="/home/usr_UsrCart_cartshopping" class="btn btn-success" id="excheckout_button">' + lang_obj.cart.proceed_checkout + '</a>';
        }

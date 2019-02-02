@@ -404,7 +404,7 @@
                 GetQueryString(name) {
                     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
                     var r = window.location.search.substr(1).match(reg);
-                    if (r != null) return unescape(r[2]);
+                    if (r != null) return unescape(decodeURIComponent(r[2]));
                     return null;
                 },
                 // elementui 上传功能 *2 - 删除操作
@@ -480,7 +480,7 @@
                             // 如果没有上传图片
                             // if (this.imgsToUpload.length == 0) {
                             //     this.flag = false;
-                            //     if(${env.login==null}){
+                            <%--//     if(${env.login==null}){--%>
                             //         this.$message({
                             //             showClose: true,
                             //             message: 'Pleaselogin',
@@ -553,7 +553,7 @@
                     this.form.title = this.GetQueryString("title");
                 }
                 if (this.GetQueryString("quantity")) {
-                    this.form.quantity = this.GetQueryString("quantity");
+                    this.form.quantity = Number(this.GetQueryString("quantity"));
                 }
                 // 全局获取货币单位
                 // this.currencyList = [];
