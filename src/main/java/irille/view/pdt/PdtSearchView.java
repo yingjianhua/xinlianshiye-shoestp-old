@@ -1,12 +1,11 @@
 package irille.view.pdt;
 
-import java.math.BigDecimal;
-
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 import irille.pub.i18n.I18NFieldSerializer;
 import irille.view.BaseView;
 import lombok.Data;
+
+import java.math.BigDecimal;
 
 @Data
 public class PdtSearchView  implements BaseView{
@@ -17,9 +16,10 @@ public class PdtSearchView  implements BaseView{
 	private String pdtName; //产品名称
 	private BigDecimal price; //价格
 	private Integer minOrder; //起订量
-	private Integer gender; //鞋用户 1:男 2:女 3:通用 
+	private Integer gender; //鞋用户 1:男 2:女 3:通用
 	private String inner; //内部材料
 	private String season; //适合的季节
+	private String rewrite; //适合的季节
 	private String sole; // 鞋底材料
 	private String closed; //闭合方式
 	private String upper; //表面材料

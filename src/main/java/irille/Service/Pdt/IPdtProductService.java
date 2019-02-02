@@ -75,7 +75,7 @@ public interface IPdtProductService {
 	 * -pc商城端新搜索商品功能
 	 * @return
 	 */
-    PageSearch searchPdt(UsrPurchase purchase, FldLanguage.Language curLanguage, Integer lose, String pName, Integer cate, Integer level, String export, Integer mOrder, BigDecimal min, BigDecimal max, Integer IsO2o, String o2oAddress, Integer start, Integer limit);
+    PageSearch searchPdt(String[] orderfld, UsrPurchase purchase, FldLanguage.Language curLanguage, Integer lose, String pName, Integer cate, Integer level, String export, Integer mOrder, BigDecimal min, BigDecimal max, Integer IsO2o, String o2oAddress, Integer start, Integer limit);
 
     RFQPdtInfo getInquiryPdtInfo(Integer id);
 }

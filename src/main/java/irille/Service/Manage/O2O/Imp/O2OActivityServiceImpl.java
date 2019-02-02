@@ -1,27 +1,14 @@
 package irille.Service.Manage.O2O.Imp;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import com.google.inject.Inject;
-
-import irille.Dao.PdtCatDao;
 import irille.Dao.O2O.O2OActivityDao;
 import irille.Dao.O2O.O2OProductDao;
+import irille.Dao.PdtCatDao;
+import irille.Entity.O2O.Enums.O2O_ActivityStatus;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_Activity;
-import irille.Entity.O2O.Enums.O2O_ActivityStatus;
 import irille.Entity.O2O.O2O_JoinInfo;
-import irille.Entity.O2O.O2O_Map;
+import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Entity.O2O.O2O_Product;
 import irille.Service.Manage.O2O.O2OActivityService;
 import irille.pub.exception.ReturnCode;
@@ -30,22 +17,27 @@ import irille.pub.tb.FldLanguage;
 import irille.pub.util.EmailUtils;
 import irille.pub.util.GetValue;
 import irille.pub.util.SEOUtils;
-import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
-import irille.shop.plt.PltConfig;
-import irille.shop.plt.PltConfigDAO;
 import irille.shop.usr.UsrSupplier;
+import irille.view.O2O.O2OActivityView;
 import irille.view.O2O.O2OProductView;
 import irille.view.O2O.PdtSearchView;
 import irille.view.Page;
-import irille.view.O2O.O2OActivityView;
 import irille.view.se.sendEmail;
-import org.apache.tools.ant.taskdefs.Get;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class O2OActivityServiceImpl implements O2OActivityService {
 
@@ -55,11 +47,11 @@ public class O2OActivityServiceImpl implements O2OActivityService {
 	private O2OProductDao o2OProductDao;
 	@Inject
 	private PdtCatDao pdtCatDao;
-	
+
 	@Override
 	public Page<O2OActivityView> list(Integer start, Integer limit, O2OActivityView condition) {
 		Page<O2OActivityView> page = o2OActivityDao.pageView(start, limit, condition);
-		
+
 		Map<Integer, String> cat_pkey_name_map = new HashMap<>();
 		page.getItems().forEach(view->{
 			List<Map<String,Object>> activityCat = activitCat_pkey2Name(view.getActivityCat(), cat_pkey_name_map);
@@ -70,7 +62,7 @@ public class O2OActivityServiceImpl implements O2OActivityService {
 	}
 	/**
 	 * 把以逗号分隔的产品分类pkey,转换成以分类名称分隔的字符串
-	 * 
+	 *
 	 * @param activityCat 以逗号分隔的分类的pkey
 	 * @param cat_pkey_name_map pkey和分类名称键值对, 若不存在相应数据 则从数据库中查询后 放入map
 	 * @return 以逗号分隔的分类名称
@@ -196,7 +188,7 @@ public class O2OActivityServiceImpl implements O2OActivityService {
 
 	/**
 	 * 活动新增和编辑时进行字段的校验
-	 * 
+	 *
 	 * @param view 页面传值
 	 * @author Jianhua Ying
 	 */
@@ -208,7 +200,7 @@ public class O2OActivityServiceImpl implements O2OActivityService {
 		if(view.getName().length() > 20) {
 			throw new WebMessageException(ReturnCode.valid_toolong, "活动名称不能超过20个字符");
 		}
-		
+
 		//活动分类
 		if(view.getActivityCat() == null || view.getActivityCat().trim().equals("")) {
 			view.setActivityCat(null);
@@ -220,7 +212,7 @@ public class O2OActivityServiceImpl implements O2OActivityService {
 				return String.valueOf(pkey);
 			}).collect(Collectors.joining(",")));
 		}
-		
+
 		//活动起始时间
 		if(view.getStartDate() == null) {
 			throw new WebMessageException(ReturnCode.valid_notnull, "请填写起始时间");
@@ -229,12 +221,12 @@ public class O2OActivityServiceImpl implements O2OActivityService {
 			LocalDate startDate = view.getStartDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 			view.setStartDate(java.sql.Date.valueOf(startDate));
 		}
-		
+
 		//活动国家/地区
 		if(view.getAddr() == null) {
 			throw new WebMessageException(ReturnCode.valid_notnull, "请填写活动国家/地区");
 		}
-		
+
 		//活动截止时间
 		if(view.getEndDate() == null) {
 			throw new WebMessageException(ReturnCode.valid_notnull, "请填写截止时间");
@@ -365,4 +357,32 @@ public class O2OActivityServiceImpl implements O2OActivityService {
 		view.setRules(activity.getRules());
 		return view;
 	}
+
+
+	/**
+	 * @Description: 私人展会商品列表
+	 * @date 2019/2/1 23:10
+	 * @author lijie@shoestp.cn
+	 */
+	 @Override
+    public Page priveteList(int start, int limit) {
+        List<Map<String, Object>> maps = o2OActivityDao.privetePdtList(start, limit);
+        List<O2OProductView> result = new ArrayList<>();
+        for (Map<String, Object> map : maps) {
+            O2OProductView o2OProductView = new O2OProductView();
+            o2OProductView.setPkey(GetValue.get(map, PdtProduct.T.PKEY, Integer.class, -1));
+            o2OProductView.setStatus(GetValue.get(map, O2O_PrivateExpoPdt.T.VERIFY_STATUS, Byte.class, (byte) 0));
+            o2OProductView.setState(GetValue.get(map, O2O_PrivateExpoPdt.T.STATUS, Byte.class, (byte) 0));
+            o2OProductView.setProductName(GetValue.get(map, PdtProduct.T.NAME, String.class, ""));
+            o2OProductView.setProductCat(GetValue.get(map, PdtCat.T.NAME, String.class, ""));
+            o2OProductView.setPrice(GetValue.get(map, PdtProduct.T.CUR_PRICE, BigDecimal.class, BigDecimal.ZERO));
+            o2OProductView.setMkt_price(GetValue.get(map, PdtProduct.T.MKT_PRICE, BigDecimal.class, BigDecimal.ZERO));
+            o2OProductView.setMinOq(GetValue.get(map, PdtProduct.T.MIN_OQ, Integer.class, 0));
+            o2OProductView.setSupplierName(GetValue.get(map, "supName", String.class, null));
+            o2OProductView.setSupplierLevel(GetValue.get(map, "roleName", String.class, null));
+            o2OProductView.setRewriter(SEOUtils.getPdtProductTitle(o2OProductView.getPkey(), o2OProductView.getProductName()));
+            result.add(o2OProductView);
+        }
+        return new Page(result, start, limit, o2OActivityDao.privetePdtListCount());
+    }
 }

@@ -1,6 +1,7 @@
 package irille.Dao.RFQ.impl;
 
 import irille.Dao.RFQ.RFQConsultDao;
+import irille.Entity.RFQ.Enums.RFQConsultType;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
@@ -283,6 +284,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         ).SELECT(
                 sql1, "inquiry"
         ).FROM(RFQConsult.class)
+                .WHERE(RFQConsult.T.TYPE,"=?", RFQConsultType.RFQ)
                 .LEFT_JOIN(RFQConsultRelation.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY)
                 .LIMIT(start, limit)
                 .WHERE(keyword != null && keyword.length() > 0, RFQConsult.T.TITLE, "like ?", keyword)
@@ -397,7 +399,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 RFQConsult.T.CREATE_TIME,
                 RFQConsultRelation.T.HAD_READ_PURCHASE,
                 RFQConsultRelation.T.QUANTITY,
-                RFQConsultRelation.T.DESTINATION
+                RFQConsultRelation.T.DESCRIPTION
         ).SELECT(RFQConsultRelation.T.TITLE, "myTitle").SELECT(
                 RFQConsultRelation.T.CREATE_DATE, "myCreate_time"
         )

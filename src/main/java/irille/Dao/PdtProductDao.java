@@ -477,7 +477,7 @@ public class PdtProductDao {
 
     public Page getProductListManage(String name, String number, Integer supplierId, int cat, int start, int limit, Integer search) {
         BeanQuery q = Query
-                .SELECT(PdtProduct.T.PKEY, PdtProduct.T.NAME, PdtProduct.T.CODE, PdtProduct.T.CUR_PRICE, PdtProduct.T.PICTURE, PdtProduct.T.UPDATE_TIME)
+                .SELECT(PdtProduct.T.PKEY, PdtProduct.T.NAME, PdtProduct.T.CODE, PdtProduct.T.CUR_PRICE, PdtProduct.T.PICTURE, PdtProduct.T.PRODUCT_TYPE, PdtProduct.T.UPDATE_TIME,PdtProduct.T.IS_VERIFY)
                 .SELECT(PdtCat.T.NAME, "category")
                 .SELECT(UsrProductCategory.T.NAME, "categoryDiy")
                 .FROM(PdtProduct.class)
@@ -487,7 +487,11 @@ public class PdtProductDao {
                 .WHERE(number != null && number.length() > 0, PdtProduct.T.CODE, "like ?", "%" + number + "%")
                 .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierId)
                 .WHERE(PdtProduct.T.PRODUCT_TYPE, " <> ?", Pdt.OProductType.GROUP.getLine().getKey())
-                .WHERE(PdtProduct.T.STATE, "<>2").ORDER_BY(PdtProduct.T.UPDATE_TIME, "desc");
+                .WHERE(PdtProduct.T.STATE, "<>2")
+                .WHERE(PdtProduct.T.STATE, "<>?", Pdt.OState.MERCHANTDEL.getLine().getKey())
+                .WHERE(PdtProduct.T.STATE, "<>?", Pdt.OState.OFF.getLine().getKey())
+                .ORDER_BY(PdtProduct.T.UPDATE_TIME, "desc");
+
         if (search != null) {
             switch (search) {
                 case 2:
@@ -733,6 +737,7 @@ public class PdtProductDao {
         sql.SELECT(
                 PdtProduct.T.PKEY,
                 PdtProduct.T.PICTURE,
+                PdtProduct.T.PRODUCT_TYPE,
                 PdtProduct.T.NAME,
                 PdtProduct.T.MIN_OQ,
                 UsrSupplier.T.ROLE,
@@ -791,6 +796,7 @@ public class PdtProductDao {
     private static final int colsed = 152; //PdtAttr闭合方式pkey
 
     /**
+     * @param orderfld
      * @param purchase    当前用户
      * @param curLanguage 当前语言
      * @param lose        1:需要按分类搜索     其他数字:不按分类搜索
@@ -809,7 +815,7 @@ public class PdtProductDao {
      * v == 3搜索
      * -新PC商城端搜索功能
      */
-    public static Page searchPdtByQuery(UsrPurchase purchase, FldLanguage.Language curLanguage, Integer lose, String pName, Integer cate, Integer level
+    public static Page searchPdtByQuery(String[] orderfld, UsrPurchase purchase, FldLanguage.Language curLanguage, Integer lose, String pName, Integer cate, Integer level
             , String export, Integer mOrder, BigDecimal min, BigDecimal max, Integer IsO2o, String o2oAddress, Integer start, Integer limit) {
         List<O2O_Product> o2oProduct = null;
         Set<Integer> o2oPdtPkey = new HashSet<>();
@@ -830,6 +836,7 @@ public class PdtProductDao {
             if (activityList.isEmpty()) {
                 return new Page(new ArrayList<>(), start, limit, 0);
             }
+
             SQL o2oPdtSql = new SQL();
             o2oPdtSql.SELECT(O2O_Product.T.PRODUCT_ID, O2O_Product.T.PRICE, O2O_Product.T.MIN_OQ, O2O_Product.T.UPDATED_TIME);
             o2oPdtSql.FROM(O2O_Product.class);
@@ -878,6 +885,18 @@ public class PdtProductDao {
     	/*sql.WHERE(PdtProduct.T.PRODUCT_TYPE, " =? ",Pdt.OProductType.GENERAL.getLine().getKey())
     		.orWhere(PdtProduct.T.PRODUCT_TYPE, " =? ", Pdt.OProductType.O2O.getLine().getKey());*/
         sql.WHERE(" ( PdtProduct.product_type =" + Pdt.OProductType.GENERAL.getLine().getKey() + " OR PdtProduct.product_type =" + Pdt.OProductType.O2O.getLine().getKey() + " ) ");
+        if (orderfld != null && orderfld.length > 0) {
+            switch (orderfld[0]) {
+                case "MostPopular": {
+                    sql.WHERE(PdtProduct.T.IS_HOT, "=?", Sys.OYn.YES);
+                }
+                break;
+                case "Sales": {
+                    sql.ORDER_BY(PdtProduct.T.SALES, "Desc");
+                }
+                break;
+            }
+        }
         if (lose != null && lose == 1)
             if (cate != null) {
                 sql.WHERE(PdtProduct.T.CATEGORY, " =? ", cate);
@@ -986,7 +1005,8 @@ public class PdtProductDao {
                 setPrice(new BigDecimal(map.get(PdtProduct.T.CUR_PRICE.getFld().getCodeSqlField()).toString()));
                 setMinOrder(Integer.parseInt(map.get(PdtProduct.T.MIN_OQ.getFld().getCodeSqlField()).toString()));
             }
-            setPicture(map.get(PdtProduct.T.PICTURE.getFld().getCodeSqlField()).toString());
+//            setPicture(map.get(PdtProduct.T.PICTURE.getFld().getCodeSqlField()).toString());
+            setPicture(GetValue.getFirstImage(GetValue.get(map, PdtProduct.T.PICTURE, String.class, "")));
             String pdtCatName = map.get("pdtCatName").toString();
             Integer gender = 0;
             if (pdtCatName.indexOf("男") != -1) {
@@ -1015,6 +1035,7 @@ public class PdtProductDao {
             setSeason(getAttr(seasonList, attrSplit, curLanguage));
             setSole(getAttr(soleList, attrSplit, curLanguage));
             setClosed(getAttr(colsedList, attrSplit, curLanguage));
+            setRewrite(SEOUtils.getPdtProductTitle(getPdtId(), getPdtName()));
             setUpper(getAttr(upperList, attrSplit, curLanguage));
             setOriginCountry(map.get("pltCountry").toString());
             setOriginProvince(map.get("pltProvince").toString());

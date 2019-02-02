@@ -5,9 +5,9 @@
 </head>
 <body class="new-style-page w_1200">
 <!-- 顶部nav栏 -->
-<div id="nav">
+<div id="nav" >
     <div id="new-top-nav" class="wide-wrap">
-        <div class="wide">
+        <div class="wide" style="width: 1240px;min-width: 1240px;margin: 0 auto">
             <!-- 顶部左侧 - 4个下拉选 -->
             <el-menu :default-active="activeTopNavIndex" class="el-menu-demo" mode="horizontal"
                      @select="handleTopNavSelect">
@@ -78,36 +78,45 @@
                 <%--</el-menu-item>--%>
                 <%--</el-submenu>--%>
 
-                <!-- 顶部右侧 - 收藏 -->
-                <el-menu-item index="8" class="fr mr0">
-                    <a href="/home/usr_UsrFavorites_myfavorite" target="_blank">
-                        <img src="/home/v2/static/images/nav/icon-heart.png" alt="icon-heart"
-                             style="position: relative;top: -2px;">
-                        <i class="fav_count imgnumber">
-                            {{_favorite_count}}
-                        </i>
-                    </a>
-                </el-menu-item>
-                <!-- 顶部右侧 - 购物车 -->
-                <el-menu-item index="9" class="fr">
-                    <a href="/home/usr_UsrCart_cartshopping" target="_blank">
-                        <img src="/home/v2/static/images/nav/icon_Shopping-Cart.png" alt="icon_Shopping-Cart"
-                             style="position: relative;top: -2px;">
-                        <i class="cart_count imgnumber">
-                            {{_shopping_cart_count}}
-                        </i>
-                    </a>
-                </el-menu-item>
-                <!-- 顶部右侧 - 询盘 -->
-                <el-menu-item index="7" class="fr">
-                    <a href="/home/usr_UsrConsult_listView" target="_blank">
-                        <s:text name="RFQ"/>
-                        <i class="inq_count imgnumber">
-                            {{_inquiry_count}}
-                        </i>
-                    </a>
-                </el-menu-item>
-
+                <%--<!-- 顶部右侧 - 收藏 -->--%>
+                <%--<el-menu-item index="8" class="fr mr0">--%>
+                    <%--<a href="/home/usr_UsrFavorites_myfavorite" target="_blank">--%>
+                        <%--<img src="/home/v2/static/images/nav/icon-heart.png" alt="icon-heart"--%>
+                             <%--style="position: relative;top: -2px;">--%>
+                        <%--<i class="fav_count imgnumber">--%>
+                            <%--{{_favorite_count}}--%>
+                        <%--</i>--%>
+                    <%--</a>--%>
+                <%--</el-menu-item>--%>
+                <%--<!-- 顶部右侧 - 购物车 -->--%>
+                <%--<el-menu-item index="9" class="fr">--%>
+                    <%--<a href="/home/usr_UsrCart_cartshopping" target="_blank">--%>
+                        <%--<img src="/home/v2/static/images/nav/icon_Shopping-Cart.png" alt="icon_Shopping-Cart"--%>
+                             <%--style="position: relative;top: -2px;">--%>
+                        <%--<i class="cart_count imgnumber">--%>
+                            <%--{{_shopping_cart_count}}--%>
+                        <%--</i>--%>
+                    <%--</a>--%>
+                <%--</el-menu-item>--%>
+                <%--<!-- 顶部右侧 - 询盘 -->--%>
+                <%--<el-menu-item index="7" class="fr">--%>
+                    <%--<a href="/home/usr_UsrConsult_listView" target="_blank">--%>
+                        <%--<s:text name="RFQ"/>--%>
+                        <%--<i class="inq_count imgnumber">--%>
+                            <%--{{_inquiry_count}}--%>
+                        <%--</i>--%>
+                    <%--</a>--%>
+                <%--</el-menu-item>--%>
+  <el-submenu index="9" class="fr no-arrow"  v-if="languageList.length>0">
+                    <template slot="title" >
+                        Language
+                    </template>
+                        <el-menu-item index="9-1" v-for="language in languageList">
+                        <a rel="nofollow" :href="'/home/plt_PltConfig_changeLanguage'+language.shortName">
+                            {{language.displayName}}
+                        </a>
+                    </el-menu-item>
+                </el-submenu>
                 <!-- 顶部右侧 - 注册 -->
                 <el-submenu index="6" class="fr">
                     <template slot="title"><s:text name="Register"/></template>
@@ -139,6 +148,9 @@
                         </a>
                     </el-menu-item>
                 </el-submenu>
+
+                <%----%>
+
             </el-menu>
         </div>
     </div>
@@ -266,3 +278,4 @@
 </script>
 <div style="height: 25px;">
 </div>
+

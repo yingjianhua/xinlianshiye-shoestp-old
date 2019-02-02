@@ -92,9 +92,9 @@
                 </div>
                 <span>Select template type:</span>
                 <ul class="clearfix h6">
-                    <li><a href="">Request price</a></li>
-                    <li><a href="">Request a sample</a></li>
-                    <li class="nomr"><a href="">Request quotation details</a></li>
+                    <li><a href="/home/usr_UsrConsult_publishView">Request price</a></li>
+                    <li><a href="/home/usr_UsrConsult_publishView">Request a sample</a></li>
+                    <li class="nomr"><a href="/home/usr_UsrConsult_publishView">Request quotation details</a></li>
                 </ul>
 
                 <a :href="'/home/usr_UsrConsult_publishView?title='+RFQ_title+'&quantity='+RFQ_quantity"
@@ -119,7 +119,7 @@
                                     <br>
                                     selected by analysts
                                 </div>
-                                <a href="https://www.shoestp.com/home/Activity_Romania" target="_blank"
+                                <a href="/html/o2o/introduceO2O.html" target="_blank"
                                    class="btn-see-all">Learn More</a>
                             </div>
 
@@ -279,26 +279,26 @@
                     <div class="product-item">
                         <div class="product-img">
                             <a :href="'/'+item.rewrite" target="_blank">
-                                <img :src="image(item.image)" alt="">
+                                <img :src="image(item.picture)" alt="">
                             </a>
                         </div>
                         <div class="product-content">
                             <div class="product-info ellipsis_2">
                                 <a :href="'/'+item.rewrite" target="_blank">
-                                    {{item.name}}
+                                    {{item.pdtName}}
                                 </a>
                             </div>
                             <div class="product-price">
                                 <span style="color: #232323;">US</span>
-                                <span style="color: #e54544;">${{item.price}}</span>
+                                <span style="color: #e54544;">{{sysConfig.currency_symbol}}{{item.price}}</span>
                             </div>
                             <div class="product-pairs">
-                                Min.Order: {{item.min_op}} pairs
+                                Min.Order: {{item.minOrder}} pairs
                             </div>
                         </div>
                         <div class="inquiry-btn">
                             <!-- <a href="/home/usr_UsrConsult_publishView?product_id= + item.id" > -->
-                            <a :href="'/home/usr_UsrConsult_publishView?product_id='+item.id" target="_blank">
+                            <a :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" target="_blank">
                                 Inquiry
                             </a>
                         </div>
@@ -320,25 +320,25 @@
                     <div class="product-item">
                         <div class="product-img">
                             <a :href="'/'+item.rewrite" target="_blank">
-                                <img :src="image(item.image)" alt="">
+                                <img :src="image(item.picture)" alt="">
                             </a>
                         </div>
                         <div class="product-content">
                             <div class="product-info ellipsis_2">
                                 <a :href="'/'+item.rewrite" target="_blank">
-                                    {{item.name}}
+                                    {{item.pdtName}}
                                 </a>
                             </div>
                             <div class="product-price">
                                 <span style="color: #232323;">US</span>
-                                <span style="color: #e54544;">${{item.price}}</span>
+                                <span style="color: #e54544;">{{sysConfig.currency_symbol}}{{item.price}}</span>
                             </div>
                             <div class="product-pairs">
-                                Min.Order: {{item.min_op}} pairs
+                                Min.Order: {{item.minOrder}} pairs
                             </div>
                         </div>
                         <div class="inquiry-btn">
-                            <a :href="'/home/usr_UsrConsult_publishView?product_id='+item.id" target="_blank">
+                            <a :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" target="_blank">
                                 Inquiry
                             </a>
                         </div>
@@ -351,7 +351,7 @@
     <div id="lhl_index">
         <!--News-->
         <div class="index_News">
-            <p class="sub_title">Don't Miss <a href="javascript:void(0);" class="fr sub_title_more">More ></a></p>
+            <p class="sub_title">Don't Miss <a href="javascript:void(0);" class="fr sub_title_more" style="display: none">More ></a></p>
             <div class="news_content">
                 <div class="news_detail por" v-for="item,index in newsList">
                     <a :href="item.url">
@@ -437,19 +437,19 @@
 				],
 				// 林华立数据
 				newsList: [{
-					url: '../exhibition/ExpoRivaSchuh.html',
+					url: '/html/exhibition/ExpoRivaSchuh.html',
 					image: '/home/v3/static/images/zh_img.png',
 					title: 'Expo Riva Schuh',
 					time: 'Jan 12-15, 2019',
 					location: 'Italy'
 				}, {
-					url: '../exhibition/exhibitionLasVegas.html',
+					url: '/html/exhibition/exhibitionLasVegas.html',
 					image: '/home/v3/static/images/zh_img2.png',
 					title: 'FOOTWEAR SOURCING AT MAGIC',
 					time: 'February 4-7, 2019',
 					location: 'Las Vegas'
 				}, {
-					url: '../exhibition/guangjiaohui.html',
+					url: '/html/exhibition/guangjiaohui.html',
 					image: '/home/v3/static/images/zh_img3.png',
 					title: 'China Import and Export Fair',
 					time: 'Apr.15-May.5, 2019',
@@ -599,7 +599,7 @@
 					if (!params) {
 						params = ""
 					}
-					return "https://image.shoestp.com" + v + params
+					return sysConfig.baseImageUrl + v + params
 				},
 				getMostPopular() {
 					var self = this;
@@ -610,13 +610,13 @@
 								page: 1,
 								limit: 5,
 								cated: -1,
-								v: 1,
+								v: 3,
 							}
 						})
 						.then(function (res) {
 							console.log("getMostPopular");
 							console.log(res);
-							self.MostPopular = res.data.items;
+							self.MostPopular = res.data.result.items;
 							console.log(self.MostPopular)
 						})
 						.catch(function (error) {
@@ -632,12 +632,12 @@
 								page: 1,
 								limit: 5,
 								cated: -1,
-								v: 1,
+								v: 3,
 							}
 						})
 						.then(function (res) {
 							console.log(res);
-							self.HotSale = res.data.items;
+							self.HotSale = res.data.result.items;
 						})
 						.catch(function (error) {
 							console.log(error);
