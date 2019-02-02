@@ -88,6 +88,7 @@ public class RFQManageServiceImp implements IRFQManageService {
         infoView.setValid_date(rfqConsult.getValidDate());
         infoView.setLeft_count(rfqConsult.getTotal() - rfqConsult.getLeftCount());
         infoView.setImage(rfqConsult.getImage());
+        infoView.setPurchaseName(rfqConsult.gtPurchaseId().getName());
         infoView.setMin_price(Integer.valueOf(GetValue.getStringIndex(rfqConsult.getPrice(), "-", 0)));
         infoView.setMax_price(Integer.valueOf(GetValue.getStringIndex(rfqConsult.getPrice(), "-", 1)));
         infoView.setCountryId(rfqConsult.getCountry());

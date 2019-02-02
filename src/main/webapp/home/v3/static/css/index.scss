@@ -91,7 +91,7 @@ scroll-behavior: smooth}
       background: url(/home/v3/static/images/rent_bg.png) 100% 100% no-repeat;
       background-size: cover;}
     #xc .section2 .product-list .sec-item {
-      background: url(/home/v3/static/imagesimages/rec_bg.png) 100% 100% no-repeat;
+      background: url(/home/v3/static/images/rec_bg.png) 100% 100% no-repeat;
       background-size: cover;}
     #xc .section2 .product-list .default-item {
       width: 203.3px;
@@ -555,10 +555,10 @@ a {
   top: 6px;
   width: 20px;
   height: 20px;
-  background: url("/home/v3/static/imagesimages/icon-favorite-off.png") no-repeat center; }
+  background: url("/home/v3/static/images/icon-favorite-off.png") no-repeat center; }
 
 #xsq .goods-category-item .hover-show .btn-collect .icon-collect.on {
-  background: url("/home/v3/static/imagesimages/icon-favorite-on.png") no-repeat center; }
+  background: url("/home/v3/static/images/icon-favorite-on.png") no-repeat center; }
 
 /* 鼠标移入后不显示之前的name */
 /* 男鞋、女、童的nav wrap */
@@ -910,13 +910,14 @@ a {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    flex-grow: 1;
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
-    margin-right: 30px; }
+    margin-right: 50px; }
     #o2otop .o2otopcon .topsearch .el-select {
       width: 110px; }
       #o2otop .o2otopcon .topsearch .el-select .el-icon-arrow-up::before {
@@ -948,6 +949,7 @@ a {
     #o2otop .o2otopcon .topsearch > input {
       width: 530px;
       height: 40px;
+      flex-grow: 1;
       border: 2px solid #10389c;
       border-left: none;
       text-indent: 10px;

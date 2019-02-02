@@ -121,7 +121,7 @@
                                     <br>
                                     selected by analysts
                                 </div>
-                                <a href="/html/o2o/introduceO2O.html" target="_blank"
+                                <a href="/html/o2o/introduceO2O.jsp" target="_blank"
                                    class="btn-see-all">Learn More</a>
                             </div>
 

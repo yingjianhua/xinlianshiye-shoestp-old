@@ -1,21 +1,11 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <meta http-quiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <script src="./js/vue.js"></script>
-    <script src="./js/axios.js"></script>
-    <script src="./js/qs.js"></script>
-    <script src="./js/config.js"></script>
-    <link rel="stylesheet" href="css/index.css">
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<jsp:include page="/home/v2/template/header.jsp"></jsp:include>
+ <link rel="stylesheet" href="css/index.css">
     <!-- 引入样式 -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-    <!-- 引入组件库 -->
-    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-    <title>O2O</title>
-</head>
-<body>
+    <script src="./js/config.js"></script>
+<jsp:include page="/home/v3/nav.jsp"></jsp:include>
+
 <div id="lhl-highClass">
     <o2o-top :show="1"></o2o-top>
     <!---->
@@ -90,7 +80,7 @@
                     <img :src="baseimgurl + item.image+'?x-oss-process=image/resize,w_154,h_154/blur,r_5,s_20'" alt="">
                     <div class="sample-item-text">
                         <p class="sample-text show-line">{{item.title}}</p>
-                        <p class="sample-state">US  <span class="text-red">${{item.price}}</span>
+                        <p class="sample-state">US  <span class="text-red">{{sysConfig.currency_symbol}} {{item.price}}</span>
                         <p class="sample-text">Min.Order:{{item.min_order}} pairs</p>
                     </div>
                     <div class="sample-item-model">

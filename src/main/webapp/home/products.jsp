@@ -5,7 +5,16 @@
 
 <body>
 <jsp:include page="v3/nav.jsp"></jsp:include>
+<div id="new_navs">
+		<index-top></index-top>
+</div>
 
+<script src="/home/v3/static/js/index-top.js">
+
+</script>
+<script>	 new Vue({
+            el: "#new_navs"
+        })</script>
 <div id="productList" class="clearfix w1240">
 	<!--分级导航-->
 	<div class="topNav">

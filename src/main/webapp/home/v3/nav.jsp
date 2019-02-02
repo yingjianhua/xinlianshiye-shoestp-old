@@ -99,55 +99,55 @@
                     <%--</a>--%>
                 <%--</el-menu-item>--%>
                 <%--<!-- 顶部右侧 - 询盘 -->--%>
-                <%--<el-menu-item index="7" class="fr">--%>
-                    <%--<a href="/home/usr_UsrConsult_listView" target="_blank">--%>
-                        <%--<s:text name="RFQ"/>--%>
-                        <%--<i class="inq_count imgnumber">--%>
-                            <%--{{_inquiry_count}}--%>
-                        <%--</i>--%>
-                    <%--</a>--%>
-                <%--</el-menu-item>--%>
-  <el-submenu index="9" class="fr no-arrow"  v-if="languageList.length>0">
+
+  <el-submenu index="8" class="fr no-arrow"  v-if="languageList.length>0">
                     <template slot="title" >
                         Language
                     </template>
-                        <el-menu-item index="9-1" v-for="language in languageList">
+                        <el-menu-item index="7-1" v-for="language in languageList">
                         <a rel="nofollow" :href="'/home/plt_PltConfig_changeLanguage'+language.shortName">
                             {{language.displayName}}
                         </a>
+                        </el-submenu>
+
                     </el-menu-item>
-                </el-submenu>
-                <!-- 顶部右侧 - 注册 -->
-                <el-submenu index="6" class="fr">
-                    <template slot="title"><s:text name="Register"/></template>
-                    <el-menu-item index="6-1">
-                        <a href="/home/usr_UsrPurchase_sign" target="_blank">
-                            <s:text name="Buyer"/>
-                        </a>
-                    </el-menu-item>
-                    <el-menu-item index="6-2">
-                        <a href="/home/usr_UsrSupplier_supplierEntry">
-                            <s:text name="Supplier"/>
-                        </a>
-                    </el-menu-item>
-                </el-submenu>
+                             <el-menu-item index="7" class="fr">
+                            <a href="/home/usr_UsrConsult_listView" target="_blank">
+                                <s:text name="RFQ"/>
+                            </a>
+                        </el-menu-item>
+
+                <%--<!-- 顶部右侧 - 注册 -->--%>
+                <%--<el-submenu index="6" class="fr">--%>
+                    <%--<template slot="title"><s:text name="Register"/></template>--%>
+                    <%--<el-menu-item index="6-1">--%>
+                        <%--<a href="/home/usr_UsrPurchase_sign" target="_blank">--%>
+                            <%--<s:text name="Buyer"/>--%>
+                        <%--</a>--%>
+                    <%--</el-menu-item>--%>
+                    <%--<el-menu-item index="6-2">--%>
+                        <%--<a href="/home/usr_UsrSupplier_supplierEntry">--%>
+                            <%--<s:text name="Supplier"/>--%>
+                        <%--</a>--%>
+                    <%--</el-menu-item>--%>
+                <%--</el-submenu>--%>
 
                 <!-- 顶部右侧 - 登录 -->
-                <el-submenu index="5" class="fr no-arrow">
-                    <template slot="title" v-if="!sysConfig.user">
-                        <a href="/home/usr_UsrPurchase_sign" target="_blank">
-                            <s:text name="Login"></s:text>
-                        </a>
-                    </template>
-                    <template slot="title" v-if="sysConfig.user">
-                        <a href="/home/usr_UsrPurchase_userIndex">{{sysConfig.user.name}}</a>
-                    </template>
-                    <el-menu-item index="5-1" v-if="sysConfig.user">
-                        <a rel="nofollow" href="/home/usr_UsrPurchase_signOut">
-                            <s:text name="sign_out"/>
-                        </a>
-                    </el-menu-item>
-                </el-submenu>
+                <%--<el-submenu index="5" class="fr no-arrow">--%>
+                    <%--<template slot="title" v-if="!sysConfig.user">--%>
+                        <%--<a href="/home/usr_UsrPurchase_sign" target="_blank">--%>
+                            <%--<s:text name="Login"></s:text>--%>
+                        <%--</a>--%>
+                    <%--</template>--%>
+                    <%--<template slot="title" v-if="sysConfig.user">--%>
+                        <%--<a href="/home/usr_UsrPurchase_userIndex">{{sysConfig.user.name}}</a>--%>
+                    <%--</template>--%>
+                    <%--<el-menu-item index="5-1" v-if="sysConfig.user">--%>
+                        <%--<a rel="nofollow" href="/home/usr_UsrPurchase_signOut">--%>
+                            <%--<s:text name="sign_out"/>--%>
+                        <%--</a>--%>
+                    <%--</el-menu-item>--%>
+                <%--</el-submenu>--%>
 
                 <%----%>
 

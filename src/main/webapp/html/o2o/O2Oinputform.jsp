@@ -1,30 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, minimum-scale=1.0,maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta content="teletelphone=no" name="format-detection">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="keywords" content="">
-    <meta name="description" content="">
-    <title>O2O</title>
-
-    <script src='./js/vue.min.js'></script>
-    <script src='./js/element-ui.js'></script>
-    <script src='./js/axios.js'></script>
-    <script src='./js/qs.js'></script>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<jsp:include page="/home/v2/template/header.jsp"></jsp:include>
+   <link rel="stylesheet" href="css/reset.css"/>
     <script src="./js/jquery-1.7.2.min.js"></script>
-    <link rel="stylesheet" href="css/reset.css"/>
-
     <!-- index为以上几个合并后的压缩文件 - 加前缀 -->
     <link rel="stylesheet" href="./css/element-ui/element-ui.css"/>
     <link rel="stylesheet" href="./css/index.css"/>
-</head>
-<body class="w_1200">
-<div id="o2oinputform">
+<jsp:include page="/home/v3/nav.jsp"></jsp:include>
+
+<div id="o2oinputform" style="background: #F5F5F5">
     <o2o-top :show="1"></o2o-top>
 
     <form action="" class="o2o-form" id="form">
@@ -180,7 +163,6 @@
 <script src="components/O2O-top.js"></script>
 <script src="components/O2O-bottom.js"></script>
 <script>
-    const isLogin = true;
     new Vue({
         el: "#o2oinputform",
         data() {

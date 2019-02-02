@@ -1015,13 +1015,17 @@ a {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  /*-webkit-box-flex: 1;*/
+      /*-ms-flex-positive: 1;*/
+          /*flex-grow: 1;*/
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  margin-right: 30px; }
+  margin-right: 30px;
+}
 
 #o2otop .o2otopcon .topsearch .el-select {
   width: 110px; }
@@ -1061,6 +1065,9 @@ a {
 #o2otop .o2otopcon .topsearch > input {
   width: 530px;
   height: 40px;
+  /*-webkit-box-flex: 1;*/
+      /*-ms-flex-positive: 1;*/
+          /*flex-grow: 1;*/
   border: 2px solid #10389c;
   border-left: none;
   text-indent: 10px;
