@@ -7,7 +7,9 @@ import irille.pub.tb.IEnumOpt;
  * by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/13 Time: 16:18
  */
 public enum RFQConsultUnit implements IEnumOpt {
-    PAIR(1, "双"),
+    PAIR(1, "Pairs"),
+    Twenty_Foot_Container(2, "Twenty-Foot Container"),
+    Forty_Foot_Container(3, "Forty-Foot Container"),
     ;
 
     public static final String NAME = "货物单位";

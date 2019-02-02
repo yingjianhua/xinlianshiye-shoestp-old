@@ -1,16 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <meta http-quiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <script src="./js/axios.js"></script>
-    <script src="./js/vue.js"></script>
-    <script src="./js/qs.js"></script>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<jsp:include page="/home/v2/template/header.jsp"></jsp:include>
     <script src="./js/config.js"></script>
     <link rel="stylesheet" href="css/index.css">
-    <title>O2O</title>
-</head>
-<body>
+<jsp:include page="/home/v3/nav.jsp"></jsp:include>
+
 <div id="linIntroduceO2O">
     <o2o-top></o2o-top>
     <div class="bannercon">
@@ -74,8 +67,8 @@
     </div>
     <div class="introduceMakitCon">
         <h3>Marketing Channel</h3>
-        <a href="O2Oinputform.html"><span class="buttonr">New Design</span></a>
-        <a href="highClassO2O.html"><span class="buttonl">Bargain District</span></a>
+        <a href="O2Oinputform.jsp"><span class="buttonr">New Design</span></a>
+        <a href="highClassO2O.jsp"><span class="buttonl">Bargain District</span></a>
     </div>
     <o2o-bottom></o2o-bottom>
 </div>

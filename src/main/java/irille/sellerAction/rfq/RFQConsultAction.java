@@ -107,9 +107,14 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
      */
     @Override
     public void list() throws IOException {
-    	rFQConsultService.page(getSupplier(), start, limit, keyword, groupId, isFavorite, type, readStatus, isDeleted, startDate, endDate, orderType);
+    	write(rFQConsultService.page(getSupplier(), start, limit, keyword, groupId, isFavorite, type, readStatus, isDeleted, startDate, endDate, orderType));
     }
-
+    
+    @Override
+    public void count() throws IOException {
+    	write(rFQConsultService.count(getSupplier(), isDeleted));
+    }
+    
 	@Override
 	public void moveToRecycled() throws IOException {
 		rFQConsultService.moveToRecycled(getSupplier(), ids, true);

@@ -920,3 +920,9 @@ li {
 
 /*# sourceMappingURL=index.css.map */
 
+#o2otop .o2otopcon .smallspan:hover{
+    color: rgb(159, 175, 215);
+}
+#o2otop .o2otopcon .smallactive{
+    color: #10389c;
+}

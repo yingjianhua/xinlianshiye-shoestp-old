@@ -264,7 +264,7 @@
                 </div>
             </div>
             <div class="im fl">
-                <a href="/home/usr_UsrConsult_publishView">
+                <a href="/usr_UsrConsult_productPublishView">
                     <img alt="RFQ" src="/mobile/static/images/dbf04e16c0.png">
                 </a>
                 <div class="name">

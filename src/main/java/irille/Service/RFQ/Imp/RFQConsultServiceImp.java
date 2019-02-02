@@ -68,7 +68,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     }
 
     @Override
-    public void putInquiry(PutInquiryView inquiryView, UsrPurchase purchase) {
+    public void putInquiry(PutInquiryView inquiryView, UsrPurchase purchase, int countryId) {
         RFQConsult rfqConsult = new RFQConsult();
         rfqConsult.setTitle(inquiryView.getTitle());
         rfqConsult.setImage(inquiryView.getImages());
@@ -78,6 +78,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         rfqConsult.setQuantity(inquiryView.getQuantity());
         rfqConsult.stUnit(RFQConsultUnit.PAIR);
         rfqConsult.setPurchaseId(purchase.getPkey());
+
 //        rfqConsult.setPurchaseId(1);
         rfqConsult.stIsDeleted(false);
         rfqConsult.setTotal(0);
@@ -97,7 +98,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         );
         rfqConsult.setChangeCount((short) 0);
         rfqConsult.setCountry(purchase.getCountry());
-//        rfqConsult.setCountry(1);
+        rfqConsult.setCountry(countryId);
         rfqConsultDAO.setB(rfqConsult);
         rfqConsultDAO.commit();
     }
