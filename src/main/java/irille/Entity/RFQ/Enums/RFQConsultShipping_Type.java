@@ -8,6 +8,10 @@ import irille.pub.tb.IEnumOpt;
  */
 public enum RFQConsultShipping_Type implements IEnumOpt {
     FOB(1, "FOB"),
+    LC(2, "L/C"),
+    DP(3, "D/P"),
+    WesternUnion(4, "Western Union"),
+    MoneyGram(5, "Money Gram"),
     ;
 
     public static final String NAME = "配送方式";
