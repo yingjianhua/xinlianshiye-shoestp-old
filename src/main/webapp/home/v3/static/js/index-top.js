@@ -29,7 +29,7 @@ Vue.component('index-top',{
                     <p>My Shosetp</p>
                 </div>
             </a>
-            <a class="o2otoplikes" href="/usr_UsrFavorites_myfavorite">
+            <a class="o2otoplikes" href="/home/usr_UsrFavorites_myfavorite">
                 <img src="/home/v3/static/images/o2otopfavoroite.png" alt="">
                 <div class="o2otoplikenum">
                     <div style="height: 20px;">
