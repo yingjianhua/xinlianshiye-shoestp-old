@@ -23,11 +23,12 @@ public class PdtAttrLineDAO {
 
     /**
      * 查询产品属性
-     * @author lingjian
-     * @date 2019/1/23 9:16
+     *
      * @param start
      * @param limit
      * @return
+     * @author lingjian
+     * @date 2019/1/23 9:16
      */
     public static Page listAttrLine(String main, Integer start, Integer limit) {
         if (null == start) {
@@ -38,15 +39,19 @@ public class PdtAttrLineDAO {
         }
         SQL sql = new SQL() {{
             SELECT(PdtAttrLine.class).FROM(PdtAttrLine.class).WHERE(PdtAttrLine.T.DELETED, "=0");
-            if(main != null){
+            if (main != null) {
                 WHERE(T.MAIN, "=?", main);
             }
         }};
-        Integer count= Query.sql(sql).queryCount();
+        Integer count = Query.sql(sql).queryCount();
         List<PdtAttrLineView> list = Query.sql(sql.LIMIT(start, limit)).queryMaps().stream().map(bean -> new PdtAttrLineView() {{
             setId((Integer) bean.get(PdtAttr.T.PKEY.getFld().getCodeSqlField()));
             setName((String) bean.get(PdtAttr.T.NAME.getFld().getCodeSqlField()));
-            setCreatedBy(BeanBase.load(SysUser.class, Integer.valueOf(String.valueOf(bean.get(PdtAttr.T.CREATE_BY.getFld().getCodeSqlField())))).getLoginName());
+//            setCreatedBy(BeanBase.load(SysUser.class, Integer.valueOf(String.valueOf(bean.get(PdtAttr.T.CREATE_BY.getFld().getCodeSqlField())))).getLoginName());
+            Integer c = (Integer) bean.get(PdtSize.T.CREATE_BY.getFld().getCodeSqlField());
+            if (null != c) {
+                setCreatedBy(BeanBase.load(SysUser.class, c).getLoginName());
+            }
             setCreatedTime((Date) bean.get(PdtAttr.T.CREATE_TIME.getFld().getCodeSqlField()));
         }}).collect(Collectors.toList());
         return new Page(list, start, limit, count);
@@ -54,6 +59,7 @@ public class PdtAttrLineDAO {
 
     /**
      * 新增产品属性
+     *
      * @author lingjian
      * @date 2019/1/23 9:16
      */
@@ -69,6 +75,7 @@ public class PdtAttrLineDAO {
 
     /**
      * 修改产品属性
+     *
      * @author lingjian
      * @date 2019/1/23 9:16
      */
@@ -86,6 +93,7 @@ public class PdtAttrLineDAO {
 
     /**
      * 删除产品属性
+     *
      * @author lingjian
      * @date 2019/1/23 9:16
      */
@@ -100,49 +108,50 @@ public class PdtAttrLineDAO {
         }
     }
 
-	public static void updByMain(List<PdtAttrLine> list, Integer mainPkey) {
-		String wheresql = T.MAIN + "=? and "+T.DELETED+"=?";
-		List<PdtAttrLine> listOld = BeanBase.list(PdtAttrLine.class, wheresql, false, mainPkey, OYn.NO.getLine().getKey()); // 数据库旧数据
-		boolean insFlag;
-		for (PdtAttrLine formBean : (List<PdtAttrLine>) list) {
-			formBean.setMain(mainPkey);
-			insFlag = true; // 默认新增标志
-			for (PdtAttrLine bean : listOld) {
-				if (bean.equals(formBean)) {
-					insFlag = false; // 修改标志
-					PropertyUtils.copyWithoutCollection(bean, formBean);
-					Idu.validFromOut(bean);
-					bean.upd();
-					break;
-				}
-			}
-			if (insFlag) {
-				formBean.setRowVersion((short) 0);
-				Idu.validFromOut(formBean);
-				formBean.ins();
-			}
-		}
-		// 删除不存的数据
-		for (PdtAttrLine bean : listOld) {
-			if (list.contains(bean))
-				continue;
-			bean.stDeleted(true);
-			bean.upd();
-		}
-	}
-	
-	/**
-	 * xy
-	 * @param mainPkey 父id
-	 * @return
-	 */
-	public static List<PdtAttrLine> getListByMain(Integer...params){
-		SQL sql = new SQL();
-		sql.SELECT(PdtAttrLine.T.PKEY,PdtAttrLine.T.NAME,PdtAttrLine.T.MAIN);
-		sql.FROM(PdtAttrLine.class);
-		for(Integer item:params) {
-			sql.orWhere(PdtAttrLine.T.MAIN, " =? ",item);
-		}
-		return Query.sql(sql).queryList(PdtAttrLine.class);
-	}
+    public static void updByMain(List<PdtAttrLine> list, Integer mainPkey) {
+        String wheresql = T.MAIN + "=? and " + T.DELETED + "=?";
+        List<PdtAttrLine> listOld = BeanBase.list(PdtAttrLine.class, wheresql, false, mainPkey, OYn.NO.getLine().getKey()); // 数据库旧数据
+        boolean insFlag;
+        for (PdtAttrLine formBean : (List<PdtAttrLine>) list) {
+            formBean.setMain(mainPkey);
+            insFlag = true; // 默认新增标志
+            for (PdtAttrLine bean : listOld) {
+                if (bean.equals(formBean)) {
+                    insFlag = false; // 修改标志
+                    PropertyUtils.copyWithoutCollection(bean, formBean);
+                    Idu.validFromOut(bean);
+                    bean.upd();
+                    break;
+                }
+            }
+            if (insFlag) {
+                formBean.setRowVersion((short) 0);
+                Idu.validFromOut(formBean);
+                formBean.ins();
+            }
+        }
+        // 删除不存的数据
+        for (PdtAttrLine bean : listOld) {
+            if (list.contains(bean))
+                continue;
+            bean.stDeleted(true);
+            bean.upd();
+        }
+    }
+
+    /**
+     * xy
+     *
+     * @param mainPkey 父id
+     * @return
+     */
+    public static List<PdtAttrLine> getListByMain(Integer... params) {
+        SQL sql = new SQL();
+        sql.SELECT(PdtAttrLine.T.PKEY, PdtAttrLine.T.NAME, PdtAttrLine.T.MAIN);
+        sql.FROM(PdtAttrLine.class);
+        for (Integer item : params) {
+            sql.orWhere(PdtAttrLine.T.MAIN, " =? ", item);
+        }
+        return Query.sql(sql).queryList(PdtAttrLine.class);
+    }
 }

@@ -42,11 +42,12 @@ public class PdtColorDAO {
 
     /**
      * 查询产品颜色列表
-     * @author lingjian
-     * @date 2019/1/22 13:37
+     *
      * @param start
      * @param limit
      * @return
+     * @author lingjian
+     * @date 2019/1/22 13:37
      */
     public static Page listview(String name, Integer start, Integer limit) {
         if (null == start) {
@@ -65,7 +66,11 @@ public class PdtColorDAO {
         List<PdtColorView> list = Query.sql(sql.LIMIT(start, limit)).queryMaps().stream().map(bean -> new PdtColorView() {{
             setId((Integer) bean.get(T.PKEY.getFld().getCodeSqlField()));
             setName((String) bean.get(T.NAME.getFld().getCodeSqlField()));
-            setCreatedby(BeanBase.load(SysUser.class, Integer.valueOf(String.valueOf(bean.get(T.CREATE_BY.getFld().getCodeSqlField())))).getLoginName());
+//            setCreatedby(BeanBase.load(SysUser.class, Integer.valueOf(String.valueOf(bean.get(T.CREATE_BY.getFld().getCodeSqlField())))).getLoginName());
+            Integer c = (Integer) bean.get(PdtSize.T.CREATE_BY.getFld().getCodeSqlField());
+            if (null != c) {
+                setCreatedby(BeanBase.load(SysUser.class, c).getLoginName());
+            }
             setCreatedtime((Date) bean.get(T.CREATE_TIME.getFld().getCodeSqlField()));
         }}).collect(Collectors.toList());
         return new Page(list, start, limit, count);
@@ -73,6 +78,7 @@ public class PdtColorDAO {
 
     /**
      * 新增产品颜色
+     *
      * @author lingjian
      * @date 2019/1/22 13:38
      */
@@ -88,6 +94,7 @@ public class PdtColorDAO {
 
     /**
      * 修改产品颜色
+     *
      * @author lingjian
      * @date 2019/1/22 13:38
      */
@@ -105,6 +112,7 @@ public class PdtColorDAO {
 
     /**
      * 删除产品颜色
+     *
      * @author lingjian
      * @date 2019/1/22 13:38
      */
