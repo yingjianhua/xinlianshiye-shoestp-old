@@ -6,14 +6,12 @@ import irille.Service.Manage.O2O.O2OActivityService;
 import irille.action.ActionBase;
 import irille.view.O2O.O2OActivityView;
 import irille.view.O2O.PdtSearchView;
-import lombok.Getter;
 import lombok.Setter;
 import org.json.JSONException;
 
 import javax.inject.Inject;
 import java.io.IOException;
 
-@Getter
 @Setter
 public class O2OActivityAction extends ActionBase<O2O_Activity> implements IO2OActivityAction {
 
@@ -24,14 +22,14 @@ public class O2OActivityAction extends ActionBase<O2O_Activity> implements IO2OA
 
     private O2OActivityView activity;
 
-    @Setter
-    @Getter
     private PdtSearchView search;
-    @Setter
     private String reason;
-
-    @Setter
     private Integer id;
+    private String keyword;
+    private Integer status;
+    private Integer verify_status;
+    private String catName;
+
 
     @Override
     public Class<O2O_Activity> beanClazz() {
@@ -45,8 +43,9 @@ public class O2OActivityAction extends ActionBase<O2O_Activity> implements IO2OA
 
     @Override
     public void privetePdtlist() throws IOException {
-        if(getLimit()==0)setLimit(20);
-        write(o2OActivityService.priveteList(getStart(), getLimit()));
+        if (getLimit() == 0) setLimit(20);
+        if (getStart() < 0) setStart(0);
+        write(o2OActivityService.priveteList(getStart(), getLimit(), status, verify_status, catName, keyword));
     }
 
     @Override
