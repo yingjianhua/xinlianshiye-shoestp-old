@@ -4,7 +4,7 @@ import irille.pub.bean.BeanInt;
 import irille.pub.tb.Fld;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
-import irille.shop.pdt.PdtProduct;
+import irille.shop.usr.UsrSupplier;
 
 /**
  * Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/13 Time: 16:18
@@ -18,13 +18,15 @@ public class O2O_JoinInfo extends BeanInt<O2O_JoinInfo> {
         PKEY(TB.crtIntPkey()),
         NAME(SYS.STR__100_NULL, "负责人信息"),
         Tel(SYS.STR__100_NULL, "电话"),
-        ACTIVITY_ID(O2O_Activity.fldOutKey()),
+        ACTIVITY(O2O_Activity.fldOutKey()),//O2O活动
+        SUPPLIER(UsrSupplier.fldOutKey()),//供应商
         ROW_VERSION(SYS.ROW_VERSION),
         //>>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
         //<<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
         ;
         //>>>以下是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别>>>
         //<<<以上是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别<<<
+        public static final Tb.Index IDX_ACTIVITY_SUPPLIER = TB.addIndex("activity_supplier",true,T.ACTIVITY,T.SUPPLIER);
 
         private Fld _fld;
 
@@ -55,7 +57,7 @@ public class O2O_JoinInfo extends BeanInt<O2O_JoinInfo> {
     }
 
     static { //在此可以加一些对FLD进行特殊设定的代码
-        O2O_JoinInfo.T.PKEY.getFld().getTb().lockAllFlds();//加锁所有字段,不可以修改
+        T.PKEY.getFld().getTb().lockAllFlds();//加锁所有字段,不可以修改
     }
 
     public static Fld fldOutKey() {
@@ -71,7 +73,8 @@ public class O2O_JoinInfo extends BeanInt<O2O_JoinInfo> {
   private Integer _pkey;	// 编号  INT
   private String _name;	// 负责人信息  STR(100)<null>
   private String _tel;	// 电话  STR(100)<null>
-  private Integer _activityId;	// O2O活动信息 <表主键:O2O_Activity>  INT
+  private Integer _activity;	// O2O活动信息 <表主键:O2O_Activity>  INT
+  private Integer _supplier;	// 供应商 <表主键:UsrSupplier>  INT
   private Short _rowVersion;	// 版本  SHORT
 
 	@Override
@@ -79,12 +82,19 @@ public class O2O_JoinInfo extends BeanInt<O2O_JoinInfo> {
 		super.init();
     _name=null;	// 负责人信息  STR(100)
     _tel=null;	// 电话  STR(100)
-    _activityId=null;	// O2O活动信息 <表主键:O2O_Activity>  INT
+    _activity=null;	// O2O活动信息 <表主键:O2O_Activity>  INT
+    _supplier=null;	// 供应商 <表主键:UsrSupplier>  INT
     _rowVersion=0;	// 版本  SHORT
     return this;
   }
 
   //方法----------------------------------------------
+  public static O2O_JoinInfo loadUniqueActivity_supplier(boolean lockFlag,Integer activity,Integer supplier) {
+    return (O2O_JoinInfo)loadUnique(T.IDX_ACTIVITY_SUPPLIER,lockFlag,activity,supplier);
+  }
+  public static O2O_JoinInfo chkUniqueActivity_supplier(boolean lockFlag,Integer activity,Integer supplier) {
+    return (O2O_JoinInfo)chkUnique(T.IDX_ACTIVITY_SUPPLIER,lockFlag,activity,supplier);
+  }
   public Integer getPkey(){
     return _pkey;
   }
@@ -103,22 +113,39 @@ public class O2O_JoinInfo extends BeanInt<O2O_JoinInfo> {
   public void setTel(String tel){
     _tel=tel;
   }
-  public Integer getActivityId(){
-    return _activityId;
+  public Integer getActivity(){
+    return _activity;
   }
-  public void setActivityId(Integer activityId){
-    _activityId=activityId;
+  public void setActivity(Integer activity){
+    _activity=activity;
   }
-  public O2O_Activity gtActivityId(){
-    if(getActivityId()==null)
+  public O2O_Activity gtActivity(){
+    if(getActivity()==null)
       return null;
-    return (O2O_Activity)get(O2O_Activity.class,getActivityId());
+    return (O2O_Activity)get(O2O_Activity.class,getActivity());
   }
-  public void stActivityId(O2O_Activity activityId){
-    if(activityId==null)
-      setActivityId(null);
+  public void stActivity(O2O_Activity activity){
+    if(activity==null)
+      setActivity(null);
     else
-      setActivityId(activityId.getPkey());
+      setActivity(activity.getPkey());
+  }
+  public Integer getSupplier(){
+    return _supplier;
+  }
+  public void setSupplier(Integer supplier){
+    _supplier=supplier;
+  }
+  public UsrSupplier gtSupplier(){
+    if(getSupplier()==null)
+      return null;
+    return (UsrSupplier)get(UsrSupplier.class,getSupplier());
+  }
+  public void stSupplier(UsrSupplier supplier){
+    if(supplier==null)
+      setSupplier(null);
+    else
+      setSupplier(supplier.getPkey());
   }
   public Short getRowVersion(){
     return _rowVersion;

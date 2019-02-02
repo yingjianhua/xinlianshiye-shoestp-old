@@ -1,15 +1,18 @@
 package irille.shop.usr;
 
 import irille.core.sys.Sys;
+import irille.core.sys.Sys.OYn;
 import irille.homeAction.HomeAction;
 import irille.pub.Log;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
+import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduIns;
 import irille.pub.idu.IduOther;
 import irille.pub.svr.Env;
+import irille.pub.util.GetValue;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.pdt.PdtProductDAO;
 import irille.shop.usr.UsrFavorites.T;
@@ -18,6 +21,7 @@ import irille.view.usr.FavoriteView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UsrFavoritesDAO {
     private static final Log LOG = new Log(UsrFavorites.class);
@@ -256,5 +260,23 @@ public class UsrFavoritesDAO {
         }
     }
 
+    /**
+     * xy
+     * 获取用户的收藏的商品pkey
+     * @param purchase 用户id
+     * @return
+     */
+    public static List<Integer> getUserFavorite(UsrPurchase purchase){
+    	if(purchase == null )
+    		return null;
+    	SQL sql = new SQL();
+    	sql.SELECT(UsrFavorites.T.PRODUCT);
+    	sql.FROM(UsrFavorites.class);
+    	sql.WHERE(UsrFavorites.T.PURCHASE, " =? ",purchase.getPkey());
+    	sql.WHERE(UsrFavorites.T.SHOW_STATE," =? ",OYn.YES.YES);
+    	return Query.sql(sql).queryMaps().stream().map(bean -> {
+    		return GetValue.get(bean, UsrFavorites.T.PRODUCT, Integer.class, null);
+    	}).collect(Collectors.toList());
+    }
 
 }

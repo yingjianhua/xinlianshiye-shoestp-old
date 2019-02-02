@@ -17,7 +17,6 @@
 
 
 <link rel="stylesheet" href="/home/v2/static/css/nav/new-top-nav-style.css"/>
-<link rel="stylesheet" href="/home/v2/static/js/base/vue.min.js"/>
 <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 <script src="/home/v2/static/js/base/vue.min.js"></script>
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
@@ -121,28 +120,14 @@
                 <%--</el-menu-item>--%>
                 <%--</el-submenu>--%>
 
-<<<<<<< HEAD
->>>>>>> e84938d... 头部样式推送测试
-=======
->>>>>>> origin/整合
                 <!-- 顶部右侧 - 收藏 -->
                 <el-menu-item index="8" class="fr mr0">
                     <a href="/home/usr_UsrFavorites_myfavorite" target="_blank">
                         <img src="/home/v2/static/images/nav/icon-heart.png" alt="icon-heart"
                              style="position: relative;top: -2px;">
-<<<<<<< HEAD
-<<<<<<< HEAD
-                        <i class="fav_count imgnumber">${env.login==null?0:env.login.favoriteCount }</i>
-=======
                         <i class="fav_count imgnumber">
                             {{_favorite_count}}
                         </i>
->>>>>>> e84938d... 头部样式推送测试
-=======
-                        <i class="fav_count imgnumber">
-                            {{_favorite_count}}
-                        </i>
->>>>>>> origin/整合
                     </a>
                 </el-menu-item>
                 <!-- 顶部右侧 - 购物车 -->
@@ -150,38 +135,18 @@
                     <a href="/home/usr_UsrCart_cartshopping" target="_blank">
                         <img src="/home/v2/static/images/nav/icon_Shopping-Cart.png" alt="icon_Shopping-Cart"
                              style="position: relative;top: -2px;">
-<<<<<<< HEAD
-<<<<<<< HEAD
-                        <i class="cart_count imgnumber">${env.login==null?0:env.login.cartCount}</i>
-=======
                         <i class="cart_count imgnumber">
                             {{_shopping_cart_count}}
                         </i>
->>>>>>> e84938d... 头部样式推送测试
-=======
-                        <i class="cart_count imgnumber">
-                            {{_shopping_cart_count}}
-                        </i>
->>>>>>> origin/整合
                     </a>
                 </el-menu-item>
                 <!-- 顶部右侧 - 询盘 -->
                 <el-menu-item index="7" class="fr">
                     <a href="/home/usr_UsrConsult_listView" target="_blank">
                         <s:text name="RFQ"/>
-<<<<<<< HEAD
-<<<<<<< HEAD
-                        <i class="inq_count imgnumber">${env.login==null?0:env.login.inquiryCount }</i>
-=======
                         <i class="inq_count imgnumber">
                             {{_inquiry_count}}
                         </i>
->>>>>>> e84938d... 头部样式推送测试
-=======
-                        <i class="inq_count imgnumber">
-                            {{_inquiry_count}}
-                        </i>
->>>>>>> origin/整合
                     </a>
                 </el-menu-item>
 
@@ -202,35 +167,6 @@
 
                 <!-- 顶部右侧 - 登录 -->
                 <el-submenu index="5" class="fr no-arrow">
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    <s:if test="env.login==null">
-                        <template slot="title">
-                            <a href="/home/usr_UsrPurchase_sign" target="_blank">
-                                <s:text name="Login"></s:text>
-                            </a>
-                        </template>
-                    </s:if>
-                    <s:else>
-                        <%--<a href="/home/usr_UsrPurchase_userIndex">${env.login.loginName}</a>--%>
-                        <template slot="title">
-                            <a href="/home/usr_UsrPurchase_userIndex">${env.login.loginName}</a>
-                        </template>
-                        <el-menu-item index="5-1">
-                            <a rel="nofollow" href="/home/usr_UsrPurchase_signOut">
-                                <s:text name="sign_out"/>
-                            </a>
-                        </el-menu-item>
-                    </s:else>
-                </el-submenu>
-            </el-menu>
-        </div>
-    </div>
-</div>
-<script src="/home/v2/static/lang/element/en.js"></script>
-=======
-=======
->>>>>>> origin/整合
                     <template slot="title" v-if="!sysConfig.user">
                         <a href="/home/usr_UsrPurchase_sign" target="_blank">
                             <s:text name="Login"></s:text>
@@ -368,11 +304,6 @@
             }
         }
     })
-    window.onscroll = function () {
-        var sl = -Math.max(document.body.scrollLeft, document.documentElement.scrollLeft);
-        document.getElementById('new-top-nav').style.left = sl + 'px';
-        document.getElementById('new-top-search').style.left = sl + 'px';
-    }
 </script>
 <script type="text/javascript">
     $(document).ready(function () {
@@ -466,19 +397,3 @@
         return s;
     };
 </script>
-
-<style scope>
-    .el-menu-item .imgnumber {
-        height: 12px;
-        min-width: 12px;
-        background: #ff3c3c;
-        border-radius: 8px;
-        right: -6px;
-        top: 4px;
-        line-height: 13px;
-        text-align: center;
-        color: #fff;
-        position: absolute;
-    }
-
-</style>

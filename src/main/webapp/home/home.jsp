@@ -1,1403 +1,726 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<jsp:include page="v2/template/header.jsp"/>
-<link rel="stylesheet" href="/home/v2/static/css/base/reset.css"/>
-<link rel="stylesheet" href="/home/v2/static/css/base/index.css"/>
-<script src='/home/v2/static/js/base/qs.js'></script>
-<script src='/home/v2/static/js/base/jquery-1.7.2.min.js'></script>
-<script src='/home/v2/static/js/base/swiper.min.js'></script>
-<link rel="stylesheet" href="/home/v2/static/css/base/swiper.min.css"/>
-<jsp:include page="v2/template/nav.jsp"/>
-<div id="mix">
-    <!-- 林嘉祥 - 顶部 -->
-    <div id="ljx_top">
-        <div class="ljx">
-            <div class="top-bg-container">
-                <el-carousel height="225px" arrow="always" :interval="6000"
-                             indicator-position="outside">
-                    <el-carousel-item>
-                        <a href="/country/Romania-Pantofi-en-gros/romania-index-ro.html"
-                           target="_blank"><img src="/home/v2/static/images/home/ljxbanner1.jpg"
-                                                class="carousel-pic"
-                                                alt=""></a>
-                    </el-carousel-item>
-                    <el-carousel-item>
-                        <a href="/home/pdt_PdtProduct" target="_blank"><img
-                                src="/home/v2/static/images/home/ljxbanner2.jpg"
-                                class="carousel-pic" alt=""></a>
-                    </el-carousel-item>
-                    <el-carousel-item>
-                        <a href="/home/usr_UsrConsult_publicListView" target="_blank"><img
-                                src="/home/v2/static/images/home/ljxbanner3.jpg"
-                                class="carousel-pic" alt=""></a>
-                    </el-carousel-item>
-                </el-carousel>
-            </div>
-            <div class="ljxcon-1">
-                <div class="ljxcon">
-                    <div class="ljxshow">
-                        <span>
-                            <s:text name="His"/>
-                        </span>
-                        <img src="/home/v2/static/images/home/his.png" alt="">
-                    </div>
-                    <div class="ljxhidden" style="padding-top: 68px;">
-                        <!-- <h4>His</h4> -->
-                        <ul>
-                            <li><s:text name="Men_s_leather_shoes"/></li>
-                            <li>
-                                <s:text name="Men_s_sneakers"/>
-                            </li>
-                            <li><s:text name="Men_s_sandals"/></li>
-                        </ul>
-                        <a href="/home/pdt_PdtProduct?cated=373"
-                           target="_blank"><span><s:text name="Learn_More"/></span></a>
-                    </div>
-                </div>
-                <div class="ljxcon">
-                    <div class="ljxshow">
-    <span>
-    <s:text name="Her"/>
-    </span>
-                        <img src="/home/v2/static/images/home/her.png" alt="">
-                    </div>
-                    <div class="ljxhidden" style="padding-top: 68px;">
-                        <!-- <h4>Her</h4> -->
-                        <ul>
-                            <li><s:text name="Women_s_high_heels"/></li>
-                            <li><s:text name="Women_s_sneakers"/></li>
-                            <li><s:text name="Women_s_sandals"/></li>
-                        </ul>
-                        <a href="/home/pdt_PdtProduct?cated=380"
-                           target="_blank"><span><s:text name="Learn_More"/></span></a>
-                    </div>
-                </div>
-                <div class="ljxcon">
-                    <div class="ljxshow">
-                        <span>Kids</span>
-                        <img src="/home/v2/static/images/home/kids.png" alt="">
-                    </div>
-                    <div class="ljxhidden" style="padding-top: 68px;">
-                        <!-- <h4>Kids</h4> -->
-                        <ul>
-                            <li><s:text name="Boy_s_shoes"/></li>
-                            <li><s:text name="Girl_s_shoes"/></li>
-                            <li><s:text name="Children_s_sandals"/></li>
-                        </ul>
-                        <a href="/home/pdt_PdtProduct?cated=387"
-                           target="_blank"><span><s:text name="Learn_More"/></span></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+<jsp:include page="v3/header.jsp"/>
+<body>
+<jsp:include page="v3/nav.jsp"></jsp:include>
+<script src="/home/v3/static/js/swiper.min.js"></script>
+<main id="shoesTp">
+    <index-top></index-top>
+    <div class="indexbannercon">
+        <el-carousel indicator-position="outside" height="224px" arrow="never">
+            <el-carousel-item>
+                <a href="/country/Romania-Pantofi-en-gros/romania-index-ro.html" target="_blank"><img
+                        src="/home/v3/static/images/ljxbanner1.jpg" alt=""></a>
+            </el-carousel-item>
+            <el-carousel-item>
+                <a href="/home/pdt_PdtProduct" target="_blank"><img src="/home/v3/static/images/ljxbanner2.jpg"
+                                                                                           alt=""></a>
+            </el-carousel-item>
+            <el-carousel-item>
+                <a href="/home/usr_UsrConsult_publicListView" target="_blank"><img
+                        src="/home/v3/static/images/ljxbanner3.jpg" alt=""></a>
+            </el-carousel-item>
+        </el-carousel>
     </div>
-
-    <!-- 徐世奇 -->
-    <div id="xsq">
-        <div class="wide">
-            <!-- 鞋款分类wrap -->
-            <div class="goods-category-wrap">
-                <div class="goods-category-item stop-swiping">
-                    <div class="flex-left-right">
-                        <div class="descript-box">
-                            <div class="big-title"><s:text name="SHOW_ROOM"/></div>
-                            <div class="content-text">
-                                <s:text name="From_our_exhibitors"/>,
-                                <br>
-                                <s:text name="Selected_by_analysts"/>
-                            </div>
-                            <a href="/home/Activity_Romania" target="_blank"
-                               class="btn-see-all"><s:text
-                                    name="See_All"/></a>
-                        </div>
-
-                        <div class="right-goods-out-wrap swiper-container swiper-category-list">
-                            <div class="slide-title">
-                                {{_o2o_slide_title}}
-                            </div>
-                            <div class="swiper-wrapper">
-                                <div class="swiper-slide">
-                                    <ul class="right-goods-wrap">
-                                        <li class="item" v-for="(goods, index) in manShoesList"
-                                            v-if="index < 4">
-                                            <a :href="'/home/prm_PrmGroupPurchase_getGroupPdt?pkey='+goods.id"
-                                               target="_blank">
-                                                <img :src="image(goods.image,'?x-oss-process=image/resize,m_pad,h_180,w_180')"
-                                                     alt="man's shoes"
-                                                     class="goods-pic">
-                                                <div class="goods-name">
-                                                    <div class="ellipsis_2">
-                                                        {{goods.title}}
-                                                    </div>
-                                                </div>
-                                            </a>
-
-                                            <div class="hover-show">
-                                                <div class="hover-text-wrap">
-                                                    <a :href="'/home/prm_PrmGroupPurchase_getGroupPdt?pkey='+goods.id"
-                                                       target="_blank">
-                                                        <div class="goods-name2 ellipsis_3">
-                                                            {{goods.title}}
-                                                        </div>
-                                                    </a>
-                                                    <div class="price" v-if="goods.price > 0">
-                                                        <s:text name="Price"/>:
-                                                        {{sysConfig.currency_symbol}}{{goods.price}}
-                                                    </div>
-                                                    <div class="tips" v-if="goods.min_order > 0">
-                                                        <s:text name="Min_order"/>:
-                                                        {{goods.min_order}}<s:text name="pairs"/>
-                                                    </div>
-                                                </div>
-
-                                                <div class="btn-group">
-                                                    <div class="btn-inquiry btn-blue"
-                                                         @click="inquiry(goods.id)">
-                                                        <div class="icon icon-inquiry"></div>
-                                                        <s:text name="Inquiry"/>
-                                                    </div>
-                                                    <div class="btn-collect btn-gray"
-                                                         favorite-type="man"
-                                                         @click="addCollection($event,goods.productid,index)">
-                                                        <div class="icon icon-collect"
-                                                             :class="{on:goods.favorite}"></div>
-                                                        <s:text name="Save"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <div class="swiper-slide">
-                                    <!-- <div class="slide-title">Women's shoes</div> -->
-                                    <ul class="right-goods-wrap">
-                                        <li class="item" v-for="(goods, index) in womanShoesList"
-                                            v-if="index < 4">
-                                            <a :href="'/home/prm_PrmGroupPurchase_getGroupPdt?pkey='+goods.id"
-                                               target="_blank">
-                                                <img :src="image(goods.image,'?x-oss-process=image/resize,m_pad,h_180,w_180')"
-                                                     alt="woman's shoes"
-                                                     class="goods-pic">
-                                                <div class="goods-name ">
-                                                    <div class="ellipsis_2">
-                                                        {{goods.title}}
-                                                    </div>
-                                                </div>
-                                            </a>
-
-                                            <div class="hover-show">
-                                                <div class="hover-text-wrap">
-                                                    <a :href="'/home/prm_PrmGroupPurchase_getGroupPdt?pkey='+goods.id"
-                                                       target="_blank">
-                                                        <div class="goods-name2 ellipsis_3">
-                                                            {{goods.title}}
-                                                        </div>
-                                                    </a>
-                                                    <div class="price" v-if="goods.price > 0">
-                                                        <s:text name="Price"/>:{{sysConfig.currency_symbol}}
-                                                        {{goods.price}}
-                                                    </div>
-                                                    <div class="tips" v-if="goods.min_order > 0">
-                                                        <s:text name="Min_order"/>:
-                                                        {{goods.min_order}} <s:text name="pairs"/>
-                                                    </div>
-                                                </div>
-
-                                                <div class="btn-group">
-                                                    <div class="btn-inquiry btn-blue"
-                                                         @click="inquiry(goods.id)">
-                                                        <div class="icon icon-inquiry"></div>
-                                                        <s:text name="Inquiry"/>
-                                                    </div>
-                                                    <div class="btn-collect btn-gray"
-                                                         favorite-type="woman"
-                                                         @click="addCollection($event,goods.productid,index)">
-                                                        <div class="icon icon-collect"
-                                                             :class="{on:goods.favorite}"></div>
-                                                        <s:text name="Save"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <div class="swiper-slide">
-                                    <!-- <div class="slide-title">Children's shoes</div> -->
-                                    <ul class="right-goods-wrap ">
-                                        <li class="item" v-for="(goods, index) in childrenShoesList"
-                                            v-if="index < 4">
-                                            <a :href="'/home/prm_PrmGroupPurchase_getGroupPdt?pkey='+goods.id"
-                                               target="_blank">
-                                                <img :src="image(goods.image,'?x-oss-process=image/resize,m_pad,h_180,w_180')"
-                                                     alt="children's shoes" class="goods-pic">
-                                                <div class="goods-name ">
-                                                    <div class="ellipsis_2">
-                                                        {{goods.title}}
-                                                    </div>
-                                                </div>
-                                            </a>
-
-                                            <div class="hover-show">
-                                                <div class="hover-text-wrap">
-                                                    <a :href="'/home/prm_PrmGroupPurchase_getGroupPdt?pkey='+goods.id"
-                                                       target="_blank">
-                                                        <div class="goods-name2 ellipsis_3">
-                                                            {{goods.title}}
-                                                        </div>
-                                                    </a>
-                                                    <div class="price" v-if="goods.price > 0">
-                                                        <s:text name="Price"/>:{{sysConfig.currency_symbol}}
-                                                        {{goods.price}}
-                                                    </div>
-                                                    <div class="tips" v-if="goods.min_order > 0">
-                                                        <s:text name="Min_order"/>:
-                                                        {{goods.min_order}} <s:text name="pairs"/>
-                                                    </div>
-                                                </div>
-
-                                                <div class="btn-group">
-                                                    <div class="btn-inquiry btn-blue"
-                                                         @click="inquiry(goods.id)">
-                                                        <div class="icon icon-inquiry"></div>
-                                                        <s:text name="Inquiry"/>
-                                                    </div>
-                                                    <div class="btn-collect btn-gray"
-                                                         favorite-type="children"
-                                                         @click="addCollection($event,goods.productid,index)">
-                                                        <div class="icon icon-collect"
-                                                             :class="{on:goods.favorite}"></div>
-                                                        <s:text name="Save"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 男鞋、女、童的nav wrap -->
-            <ul class="goods-category-nav-wrap">
-                <li class="goods-category-nav-item" :class="{active: selectedCategory==1}"
-                    @click="clickToSelectedCategory(1)">
-                    <img src="/home/v2/static/images/home/icon-man-shoes_off.png" alt=""
-                         class="icon icon-off icon-man">
-                    <img src="/home/v2/static/images/home/icon-man-shoes_on.png" alt=""
-                         class="icon icon-on icon-man">
-                    <span><s:text name="His"/></span>
-                </li>
-                <li class="goods-category-nav-item" :class="{active: selectedCategory==2}"
-                    @click="clickToSelectedCategory(2)">
-                    <img src="/home/v2/static/images/home/icon-woman-shoes_off.png" alt=""
-                         class="icon icon-off icon-woman">
-                    <img src="/home/v2/static/images/home/icon-woman-shoes_on.png" alt=""
-                         class="icon icon-on icon-wpman">
-                    <span><s:text name="Her"/></span>
-                </li>
-                <li class="goods-category-nav-item" :class="{active: selectedCategory==3}"
-                    @click="clickToSelectedCategory(3)">
-                    <img src="/home/v2/static/images/home/icon-child-shoes_off.png" alt=""
-                         class="icon icon-off icon-child">
-                    <img src="/home/v2/static/images/home/icon-child-shoes_on.png" alt=""
-                         class="icon icon-on icon-child">
-                    <span><s:text name="Kids"/></span>
-                </li>
-            </ul>
-
-        </div>
-    </div>
-
-    <!-- 林铁原 -->
+    <!-- 林铁垣 -->
     <div id="lty">
-        <div class="hotCouny">
-            <h2 style="font-size: 40px;height: 100px;line-height: 126px;font-weight: 500;border-bottom: 1px solid #ccc;margin-bottom: 20px;">
-                <s:text name="Trade_Shows"/></h2>
-            <ul class="top">
-                <!-- <li class="on"><img src="images/couny1.jpg" alt="" />Romania<i></i></li> -->
-                <li><img src="/home/v2/static/images/home/couny1.jpg" alt=""/><s:text
-                        name="Romania"/><i></i></li>
-                <li><img src="/home/v2/static/images/home/couny2.jpg" alt=""/><s:text
-                        name="Brazil"/><i></i></li>
-                <li><img src="/home/v2/static/images/home/couny3.jpg" alt=""/><s:text
-                        name="Russia"/><i></i></li>
-                <li><img src="/home/v2/static/images/home/couny4.jpg" alt=""/><s:text name="Italy"/><i></i>
-                </li>
-            </ul>
-            <div class="com">
-                <div class="left fl">
-                    <div class="left-title"><s:text name="pairs_of"/>
-                    </div>
-                    <div class="left-title_2"><s:text name="premium_shoes"/>
-                    </div>
-                    <dl>
-                        <!-- <dd>500-800 pairs of premium shoes</dd> -->
-                        <dd><i></i><s:text name="More_than_shoe_companies_were_selected"/></dd>
-                        <!-- <dd><i></i>500-800 pairs of premium shoes</dd> -->
-                        <dd><i></i><s:text name="hours_customer_service"/></dd>
-                    </dl>
-                    <a class="btn" href="/country/Romania-Pantofi-en-gros/romania-index-ro.html"
-                       style="display: block;"><p><s:text name="Register_Now"/></p></a>
+        <div class="sanduan w1240 clearfix">
+            <div class="box">
+                <h1>Categories</h1>
+
+                <div class="boxList" v-for="(item,index) in classLists" for-key="index">
+                    <a class="h2" href="">
+                        <img class="leftNav-icon1" src="/home/v3/static/images/icon_nx.png" alt="{{item.label}}" v-if="index==0"/>
+                        <img class="leftNav-icon1" src="/home/v3/static/images/icon_nvx.png" alt="{{item.label}}" v-if="index==1"/>
+                        <img class="leftNav-icon1" src="/home/v3/static/images/icon_ntx.png" alt="{{item.label}}" v-if="index==2"/>
+                        {{item.label}}
+                        <i class="el-icon-arrow-right fr"></i>
+                    </a>
+                    <ul class="clearfix">
+                        <li v-for="(item2,indextwo) in item.children" for-key="indextwo">
+                            <a href="">{{item2.label}}</a>
+                        </li>
+                    </ul>
                 </div>
-                <ul class="fr">
-                    <li>
-                        <div class="pic1">
-                            <img src="/home/v2/static/images/home/counyCom0.jpg" alt=""/>
+
+            </div>
+
+            <div class="box">
+                <h1>SVS Certification System</h1>
+                <div style="font-size: 13px;">SVS Certification System will make buyers find their<br/> target Supplier
+                    more
+                    faster, accurate and time-saving<br/> than other way.
+                </div>
+                <div class="h3">
+                    <img src="/home/v3/static/images/icion_svs_1d.png" alt=""/>
+                    <img src="/home/v3/static/images/icion_svs_2d.png" alt=""/>
+                    <img src="/home/v3/static/images/icion_svs_3d.png" alt=""/>
+                </div>
+                <div class="h4">
+                    <ul>
+                        <li><img class="fl" src="/home/v3/static/images/icon_svs01.png"/>Genuine Manufacturer</li>
+                        <li><img class="fl" src="/home/v3/static/images/icon_svs03.png"/>Production Capacity</li>
+                        <li><img class="fl" src="/home/v3/static/images/icon_svs05.png"/>Product Quality</li>
+                        <li><img class="fl" src="/home/v3/static/images/icon_svs07.png"/>International business capacity</li>
+                    </ul>
+                    <ul>
+                        <li><img class="fl" src="/home/v3/static/images/icon_svs02.png" style="    margin: 0 6px 0 -2px;"/>R&D
+                            capacity
+                        </li>
+                        <li><img class="fl" src="/home/v3/static/images/icon_svs04.png"/>Major Client</li>
+                        <li><img class="fl" src="/home/v3/static/images/icon_svs06.png"/>Exhibition</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="box nomr">
+                <h1>RFQ</h1>
+                <div class="fs14">Customization Service</div>
+                <div class="h5">
+                    <div class="boxListInput01">
+                        <input type="text" v-model="RFQ_title" placeholder="what are you looking for"/>
+                    </div>
+                    <div class="boxListInput01">
+                        <input class="w180" v-model="RFQ_quantity" type="text" placeholder="Quantity"/>
+                        <div class="boxListSelect">
+                            {{chooes}} <i class="el-icon-arrow-down fr"></i>
+                            <ul>
+                                <li :data-name="'Bag'" @click="chooesbtn">Pairs</li>
+                            </ul>
                         </div>
-                        <div class="fr tite">
-                            <img src="/home/v2/static/images/home/counyicon2.png" alt=""
-                                 class="pic2"/>
-                            <p><s:text name="About_Show"/></p>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="pic1">
-                            <img src="/home/v2/static/images/home/counyCom1.jpg" alt=""/>
-                        </div>
-                        <div class="fr tite">
-                            <img src="/home/v2/static/images/home/counyicon1.png" alt=""
-                                 class="pic2"/>
-                            <p>
-                                <s:text name="Who_Should"/>
-                                <br>
-                                <s:text name="Visit"/>
-                            </p>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="pic1">
-                            <img src="/home/v2/static/images/home/counyCom2.jpg" alt=""/>
-                        </div>
-                        <div class="fr tite">
-                            <img src="/home/v2/static/images/home/counyicon3.png" alt=""
-                                 class="pic2"/>
-                            <p><s:text name="Exhibitor_List"/></p>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="pic1">
-                            <img src="/home/v2/static/images/home/counyCom3.jpg" alt=""/>
-                        </div>
-                        <div class="fr tite">
-                            <img src="/home/v2/static/images/home/counyicon1.png" alt=""
-                                 class="pic2"/>
-                            <p>
-                                <s:text name="Who_Should"/>
-                                <br>
-                                <s:text name="Visit"/>
-                            </p>
-                        </div>
-                    </li>
+                    </div>
+                </div>
+                <span>Select template type:</span>
+                <ul class="clearfix h6">
+                    <li><a href="/home/usr_UsrConsult_publishView">Request price</a></li>
+                    <li><a href="/home/usr_UsrConsult_publishView">Request a sample</a></li>
+                    <li class="nomr"><a href="/home/usr_UsrConsult_publishView">Request quotation details</a></li>
                 </ul>
+
+                <a :href="'/home/usr_UsrConsult_publishView?title='+RFQ_title+'&quantity='+RFQ_quantity"
+                   class="boxListBtn01" target="_blank">Request For Quotation</a>
             </div>
+
         </div>
+
     </div>
-
-    <!-- 夏超 -->
-    <div id="xc">
-        <!-- New Products -->
-        <div class="new-products-container">
-            <div class="title"><s:text name="New_Products"/></div>
-            <div class="tip clearfix">
-                <span class="tip-title fl"><s:text
-                        name="Free_Alerts_on_newly_added_products"/></span>
-                <input type="email" v-model="form.email" class="tip-input fl"
-                       placeholder="<s:text name='Example'/>:jsun@company.com"/>
-                <!-- {{bean.email}} -->
-                <div class="tip-btn fl" @click="subscribe"><s:text name="Subscribe"/></div>
-            </div>
-            <!-- Swiper -->
-            <div style=" width:1240px;height:388px;position:relative;left:0;" class="new-swiper">
-                <div class="swiper-container swiper-no-swiping" id="new-products-swiper"
-                     style="width:1240px;">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide" v-cloak
-                             v-for="(item, index) in newProductsList" :key="index">
-                            <a :href="'/'+item.rewrite" target="_blank">
-                                <img :src="image(item.image,'?x-oss-process=image/resize,m_pad,h_280,w_280')"
-                                     alt=""
-                                     style="width: 100%; height: 217px; object-fit: contain;">
-                            </a>
-                            <div class="goods-info">
-                                <a :href="'/'+item.rewrite" target="_blank">
-                                    <div>
-                                        {{item.title}}
-                                    </div>
-                                    <div>
-                                        <div style="color: #2435a1;">
-                                            <s:text name="user.price"/>:{{sysConfig.currency_symbol}}{{item.price}}
-                                        </div>
-                                        <div>
-                                            <s:text name="Min_order"/>:{{item.min_order}} <s:text
-                                                name="pairs"/>
-                                        </div>
-                                    </div>
-                                </a>
+    <!-- 徐世奇 -->
+    <div id="mix" class="w_1240">
+        <div id="xsq">
+            <div class="wide">
+                <!-- 展厅显示 -->
+                <div class="goods-category-wrap">
+                    <div class="goods-category-item stop-swiping">
+                        <div class="flex-left-right">
+                            <div class="descript-box">
+                                <div class="big-title">O2O Show Room</div>
+                                <div class="content-text">
+                                    From our exhibitors,
+                                    <br>
+                                    selected by analysts
+                                </div>
+                                <a href="/html/o2o/introduceO2O.html" target="_blank"
+                                   class="btn-see-all">Learn More</a>
                             </div>
-                            <div class="new-slide-show transformY">
-                                <a :href="'/'+item.rewrite" target="_blank">
-                                    <div class="new-slide-show-name">
-                                        {{item.title}}
 
-                                    </div>
-                                </a>
-                                <div class="btn-list clearfix">
-                                    <div class="inquiry-btn fl btn" @click="inquiry(item.id)"><img
-                                            src="/home/v2/static/images/base/icon-inquiry.png"
-                                            alt="">
-                                        <s:text name="Inquiry"/>
-                                    </div>
-                                    <div class="favorite-btn fr btn" favorite-type="1"
-                                         @click="addCollection($event,item.id,index)">
-                                        <template v-if="item.favorite">
-                                            <img src="/home/v2/static/images/base/icon-favorite-on.png"
-                                                 alt=""
-                                                 style="width:18px;height:16px;"> Saveed
-                                        </template>
-                                        <template v-else>
-                                            <img src="/home/v2/static/images/base/icon-favorite-off.png"
-                                                 alt=""
-                                                 style="width:19px;height:16px;"><s:text
-                                                name="Save"/>
-                                        </template>
-                                    </div>
+                            <div class="right-goods-out-wrap swiper-container swiper-category-list">
+                                <div class="slide-title">
+                                    <a class="fr more">More ></a>
+                                    Romanian Show Room
                                 </div>
 
+                                <!-- 展厅的具体商品 - 轮播数据 -->
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide" v-for="showRoomItem in showRoomGoodsList">
+                                        <ul class="right-goods-wrap">
+                                            <li class="item" v-for="(goods, index) in showRoomItem" v-if="index < 4">
+                                                <a :href="goods.rewrite" target="_blank">
+                                                    <img :src="image(goods.image)" :alt="goods.title" class="goods-pic">
+                                                    <div class="goods-info-wrap">
+                                                        <div class="goods-name">
+                                                            <div class="ellipsis_2">
+                                                                {{goods.title}}
+                                                            </div>
+                                                        </div>
+                                                        <div class="goods-price">
+                                                            US <span>{{sysConfig.currency_symbol}}  {{goods.price}}  </span>
+                                                        </div>
+                                                        <div class="min-order">
+                                                            Min.Order:{{goods.min_order}} pairs
+                                                        </div>
+                                                    </div>
+                                                </a>
+
+                                                <div class="hover-show">
+                                                    <div class="btn-group">
+                                                        <div class="btn-inquiry btn-blue" @click="inquiry(goods.id)">
+                                                            <!-- <div class="icon icon-inquiry"></div> -->
+                                                            Inquiry
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- 展厅的具体商品 - 轮播数据 - end -->
                             </div>
                         </div>
+
+
+                        <!-- 轮播 - 缩略图 -->
+                        <div class="por">
+                            <div class="swiper-button-next swiper-button-white"></div>
+                            <div class="swiper-button-prev swiper-button-white"></div>
+                            <div class="swiper-container swiper-container-thumbs gallery-thumbs">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide" v-for="showRoom in showRoomPicList">
+                                        <img :src="showRoom.imgUrl" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-                    <!-- @mouseover="pageOver($event)" -->
-                    <div class="swiper-pagination" id="newPage"></div>
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
                 </div>
-            </div>
-            <div class="clearfix">
-                <a href="/home/pdt_PdtProduct?orderfld=New" target="_blank"
-                   class="blueFontColor fr"><s:text name="See_All_Products"/></a>
+                <!-- 展厅显示 - end -->
+
+                <!-- 询盘列表 -->
+                <div class="RFQ-list-wrap">
+                    <h3 class="RFQ-title">
+                        RFQ List
+                        <a class="fr more">More ></a>
+                    </h3>
+
+                    <ul class="RFQ-list">
+                        <li class="RFQ-item" v-for="item in RFQList">
+                            <img :src="item.country_logo" alt="" class="flag" :title="item.country">
+                            <div class="summary">
+                                <div class="ellipsis_1 descript" :title="item.title">{{item.title}}</div>
+                                <div class="time">{{item.create_date}}</div>
+                            </div>
+                            <div class="order">
+                                order: <span>{{item.quantity}}Pairs</span>
+                            </div>
+                            <div class="btn-quote">
+                                Read More
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <!-- 询盘列表 - end -->
             </div>
         </div>
     </div>
-
+    <!-- 夏超 -->
+    <section id="xc" class="w_1240">
+        <!-- 第一段 -->
+        <div class="section1">
+            <div class="title clearfix">
+                <div class="fl clearfix">
+                    <span class="fl">Crowd Funding</span>
+                    <ul class="fl clearfix">
+                        <li>Lower price in small number</li>
+                        <li>Fashion Design will be published</li>
+                    </ul>
+                </div>
+                <a target="_blank" href="https://www.shoestp.com/home/Activity_Romania_classifyactivity" class="fr">More
+                    ></a>
+            </div>
+            <div class="product-list clearfix">
+                <template v-for="(item, index) in CrowdFundingList" :key="index">
+                    <div class="product-item">
+                        <div class="product-img">
+                            <a :href="item.url" target="_blank">
+                                <img :src="item.imgUrl" alt="">
+                            </a>
+                        </div>
+                        <div class="product-content">
+                            <div class="product-info ellipsis_2">
+                                <a :href="item.url" target="_blank">
+                                    {{item.title}}
+                                </a>
+                            </div>
+                            <div style="margin-top:20px;">
+                                <div class="clearfix" style="color: #232323;">
+                                    <span style="color: #e54544;" class="font-bold">{{item.salesVolume}}</span>
+                                    <span class="font-bold" style="color: #b0b0b0;">sales volume</span>
+                                    <span class="fr font-bold" style=" font-size: 14px;">{{item.percentage}}%</span>
+                                </div>
+                                <el-progress style="margin:10px 0" :percentage="item.percentage" color="#1a4091"
+                                             :show-text="false"></el-progress>
+                                <div>
+                                    <img style="width:14px;" src="/home/v3/static/images/icon_sj.png" alt="">
+                                    <span style=" font-size: 12px;color: #b0b0b0;">Remaining {{item.endTime}} days</span>
+                                </div>
+                            </div>
+                            <!-- <div class="like-btn">
+                                <img src="/home/v3/static/images/icon_like.png" alt="" style="width:21px;">
+                            </div> -->
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+        <!-- 第二段 -->
+        <div class="section2 clearfix">
+            <!-- 左边 -->
+            <div class="product-list clearfix">
+                <div class="default-item fir-item">
+                    <h3>Recently Viewed</h3>
+                    <p style="opacity: 0.5;margin-top: 15px;line-height: 20px;">
+                        The goods you’ve <br>
+                        serched at last time
+                    </p>
+                    <a href="/home/pdt_PdtProduct?orderfld=MostPopular" class="see-all fir-see-all" target="_blank">See
+                        All</a>
+                </div>
+                <template v-for="(item, index) in MostPopular" :key="index">
+                    <div class="product-item">
+                        <div class="product-img">
+                            <a :href="'/'+item.rewrite" target="_blank">
+                                <img :src="image(item.picture)" alt="">
+                            </a>
+                        </div>
+                        <div class="product-content">
+                            <div class="product-info ellipsis_2">
+                                <a :href="'/'+item.rewrite" target="_blank">
+                                    {{item.pdtName}}
+                                </a>
+                            </div>
+                            <div class="product-price">
+                                <span style="color: #232323;">US</span>
+                                <span style="color: #e54544;">{{sysConfig.currency_symbol}}{{item.price}}</span>
+                            </div>
+                            <div class="product-pairs">
+                                Min.Order: {{item.minOrder}} pairs
+                            </div>
+                        </div>
+                        <div class="inquiry-btn">
+                            <!-- <a href="/home/usr_UsrConsult_publishView?product_id= + item.id" > -->
+                            <a :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" target="_blank">
+                                Inquiry
+                            </a>
+                        </div>
+                    </div>
+                </template>
+            </div>
+            <!-- 右边 -->
+            <div class="product-list clearfix">
+                <div class="default-item sec-item">
+                    <h3>Recommendation</h3>
+                    <p style="margin-top: 15px;line-height: 20px;">
+                        The similar goods you <br>
+                        may like
+                    </p>
+                    <a href="/home/pdt_PdtProduct?orderfld=Sales" class="see-all sec-see-all" target="_blank">See
+                        All</a>
+                </div>
+                <template v-for="(item, index) in HotSale" :key="index">
+                    <div class="product-item">
+                        <div class="product-img">
+                            <a :href="'/'+item.rewrite" target="_blank">
+                                <img :src="image(item.picture)" alt="">
+                            </a>
+                        </div>
+                        <div class="product-content">
+                            <div class="product-info ellipsis_2">
+                                <a :href="'/'+item.rewrite" target="_blank">
+                                    {{item.pdtName}}
+                                </a>
+                            </div>
+                            <div class="product-price">
+                                <span style="color: #232323;">US</span>
+                                <span style="color: #e54544;">{{sysConfig.currency_symbol}}{{item.price}}</span>
+                            </div>
+                            <div class="product-pairs">
+                                Min.Order: {{item.minOrder}} pairs
+                            </div>
+                        </div>
+                        <div class="inquiry-btn">
+                            <a :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" target="_blank">
+                                Inquiry
+                            </a>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </section>
     <!-- 林华力 -->
-    <div id="home">
-        <div class="top10" style="width: 1240px;margin: 0 auto;">
-            <h2 style="font-size: 40px;height: 100px;line-height: 126px;font-weight: 500;border-bottom: 1px solid #c4c4c4">
-                <s:text name="Top_Reliable_Suppliers"/></h2>
-            <p style="font-size: 18px;color: #929292;line-height: 50px"><s:text
-                    name="Free_Alerts_on_newly_added_products"/></p>
-            <div class="top10-03" style="width: 100%;position: relative">
-                <img src="/home/v2/static/images/home/top10-01-1.png" alt="">
-                <!-- 六边形logo定位 -->
-                <div class="hexagon-list-wrap">
-                    <a class="hexagon-wrap"
-                       :href="'/home/usr_UsrSupplier_gtSupIndex?pkey=' + company.pkey"
-                       target="_blank"
-                       v-for="company in companys">
-                        <div class="hexagon-center hexagon-common"></div>
-                        <div class="hexagon-left hexagon-common"></div>
-                        <div class="hexagon-right hexagon-common"></div>
-                        <img :src="company.imgUrl" alt="logo" class="hexagon-inner">
+    <div id="lhl_index">
+        <!--News-->
+        <div class="index_News">
+            <p class="sub_title">Don't Miss <a href="javascript:void(0);" class="fr sub_title_more" style="display: none">More ></a></p>
+            <div class="news_content">
+                <div class="news_detail por" v-for="item,index in newsList">
+                    <a :href="item.url">
+                        <img :src="item.image" name="News_img" alt="">
+                        <div class="news_laste" v-if="index != 2">
+                            <span class="news_laste_text">Laste</span>
+                        </div>
+                        <h4 class="detail_title">{{item.title}}</h4>
+                        <div class="detail_info">
+                            <img src="/home/v3/static/images/icon_sj.png" name="news_icon" alt="">
+                            <span class="detail-text">{{item.time}}</span>
+                            <img src="/home/v3/static/images/icon_wz.png" name="news_icon" alt="">
+                            <span class="detail-text">{{item.location}}</span>
+                        </div>
                     </a>
                 </div>
-
             </div>
-            <a href="javascript:void(0)">
-                <div class="top10-01"
-                     style="display: inline-block;width: 762px;height: 377px;background: url('/home/v2/static/images/home/top10-02.png') center no-repeat;background-size: 100% 100%;padding-left: 40px;padding-top: 25px;vertical-align: top">
-                    <p style="font-size: 18px;color: #c3c3c3;line-height: 50px"><s:text
-                            name="SHOES"/></p>
-                    <p style="font-size: 24px;color: #ffffff;line-height: 25px;width: 250px"><s:text
-                            name="AN_EASY_WAY_TO_SEND_BUYING_REQUESTS_TO_SUPPLIERS_GET_QUOTES_QUICKLY"/></p>
-                    <ul style="margin-top: 40px">
-                        <li style="font-size: 14px;color: white"><span>● </span><s:text
-                                name="Get_quotes_for_your_custom_request"/></li>
-                        <li style="font-size: 14px;color: white"><span>● </span><s:text
-                                name="Lte_the_right_suppliers_find_you"/></li>
-                        <li style="font-size: 14px;color: white"><span>● </span><s:text
-                                name="Close_deals_with_one_click"/></li>
-                    </ul>
-                </div>
-                <div class="top10-02"
-                     style="display: inline-block;width: 435px;height: 377px;border: 7px solid #c4c4c4;vertical-align: top;margin-left: 17px;padding: 20px">
-                    <h2 style="font-size: 40px;line-height: 50px;"><s:text
-                            name="One_Request_Multiple_Quotes"/></h2>
-                    <form action="">
-                        <input type="text"
-                               placeholder="<s:text name='What_are_you_looking_for'/>"
-                               style="width: 100%;height: 40px;border: 1px solid #c4c4c4;margin: 10px 0;text-indent: 10px">
-                        <input type="text" placeholder="<s:text name='Quantity'/>"
-                               style="width: 60%;height: 40px;border: 1px solid #c4c4c4;margin: 10px 0;text-indent: 10px;vertical-align: top">
-                        <span style="display:inline-block;width: 39%;height: 44px;border: 1px solid #c4c4c4;margin: 10px 0;text-indent: 10px;margin-left:-5px;font-size: 16px;line-height: 42px;color: #a1a1a1;"><s:text
-                                name='Bag_Bags'/></span>
-                        <p style="font-size: 16px;line-height: 42px;color: #a1a1a1;"><s:text
-                                name='Select_template_type'/></p>
-                        <a href="/home/usr_UsrConsult_publishView"
-                           style="display: inline-block;width: 80%;height: 40px;font-size: 18px;line-height: 40px;color: #c2c2c2;background-color: #10389c;text-align: center;border-radius: 10px"><s:text
-                                name='Request_For_Quotation'/></a>
-                    </form>
-                </div>
-            </a>
         </div>
+        <!--Our Strength-->
+        <div class="index_strength">
+            <h2 class="strength_title">Our Strength</h2>
+            <div class="strength_content" v-for="item in strength">
+                <div class="str_icon">
+                    <img :src="item.icon" name="icon_our" alt="">
+                </div>
+                <h4 class="str_title">{{item.title}}</h4>
+                <div class="str_text" v-for="por in item.info">
+                    <img src="/home/v3/static/images/icon_right_red.png" name="icon_right_red" alt="">
+                    <P class="str_text_p">{{por}}</P>
+                </div>
+            </div>
+        </div>
+
     </div>
-
-    <!-- 夏超 -->
-    <div id="xc">
-        <!-- BRAND ZONE -->
-        <div class="brand-zone-container">
-            <div class="title"><s:text name='BRAND_ZONE'/></div>
-            <div style="margin:40px 0;" class="brand-zone-title">
-                <div class="name">
-                    <div><s:text name='Buy_Fashion_Shoes_Instantly'/></div>
-                    <a href="/home/pdt_PdtProduct" target="_blank"><s:text name='Order_Now'/></a>
-                </div>
-                <div class="clearfix list">
-                    <div class="fl">
-                        <img src="/home/v2/static/images/home/icon-gouwuche.png" alt="">
-                        <div><s:text name='Speedy'/> <br>
-                            <s:text name='Checkout'/>
-                        </div>
-                    </div>
-                    <div class="fl">
-                        <img src="/home/v2/static/images/home/icon-wuliu.png" alt="">
-                        <div><s:text name='Price_Includes'/> <br>
-                            <s:text name="Shipping"/>
-                        </div>
-                    </div>
-                    <div class="fl">
-                        <img src="/home/v2/static/images/home/icon-zhiliang.png" alt="">
-                        <div><s:text name="Secure"/> <br>
-                            <s:text name="Transactions"/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div style=" width:1240px;height:271px;position:relative;left:0;">
-                <div class="swiper-container swiper-no-swiping" id="brand-zone-swiper"
-                     style="width:1240px;">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide" v-cloak
-                             v-for="(item,index) in RandomPdtList" :key="index">
-                            <a :href="'/'+item.rewrite" target="_blank">
-                                <img :src="image(item.image,'?x-oss-process=image/resize,m_pad,h_180,w_180')"
-                                     alt=""
-                                     style="width: 100%;height: 162px;object-fit: contain;">
-                                <div class="goods-info">
-                                    <div>
-                                        {{item.title}}
-                                    </div>
-                                </div>
-                            </a>
-                            <div class="brand-slide-show transformY flexSb">
-                                <a :href="'/'+item.rewrite" target="_blank">
-                                    <div class="brand-slide-show-name ellipsis_2">{{item.title}}
-                                    </div>
-                                    <div class="brand-price">
-                                        <div><s:text name="Price"/>:{{sysConfig.currency_symbol}}{{item.price}}</div>
-                                        <div><s:text name="Min_order"/>:{{item.min_order}} <s:text
-                                                name="pairs"/></div>
-                                    </div>
-                                </a>
-                                <div class="btn-list flexSb">
-                                    <div class="inquiry-btn btn" @click="inquiry(item.id)"><img
-                                            src="/home/v2/static/images/base/icon-inquiry.png"
-                                            alt=""
-                                            style="width:13px;height:11px;">
-                                        <s:text name="Inquiry"/>
-                                    </div>
-                                    <div class="favorite-btn btn" :favorite-type="2"
-                                         @click="addCollection($event,item.id,index)">
-                                        <template v-if="item.favorite">
-                                            <img src="/home/v2/static/images/base/icon-favorite-on.png"
-                                                 alt=""
-                                                 style="width:15px;height:14px;"> Saveed
-                                        </template>
-                                        <template v-else>
-                                            <img src="/home/v2/static/images/base/icon-favorite-off.png"
-                                                 alt=""
-                                                 style="width:15px;height:14px;"> <s:text
-                                                name="Save"/>
-                                        </template>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <div class="swiper-pagination"></div> -->
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
-                </div>
-            </div>
-
-            <div class="clearfix">
-                <a href="/home/pdt_PdtProduct" target="_blank" class="blueFontColor fr"><s:text
-                        name="See_All_Products"/></a>
-            </div>
-        </div>
-        <!-- CROWDFUNDING -->
-        <div class="crowdfunding-container">
-            <div class="clearfix" style="border-bottom: 1px solid #cccccc;">
-                <div class="title fl" style="border:none"><s:text name="CROWDFUNDING"/></div>
-                <div class="tip clearfix fl" style="margin:28px 0 0 15px;">
-                    <ul class="tip-list clearfix">
-                        <li class="fl"><s:text name="Lower_price_in_small_number"/></li>
-                        <li class="fl" style="margin-left:40px;"><s:text
-                                name="Fashion_Design_will_be_published"/></li>
-                    </ul>
-                </div>
-            </div>
-            <div style=" width:1240px;height:462px;position:relative;left:0;margin-top:35px;">
-                <div class="swiper-container swiper-no-swiping" id="crowdfunding-swiper"
-                     style="width:1240px;">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <div class="crowdfunding-item">
-                                <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=977"
-                                   target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods1.jpg" alt=""
-                                         style="width:269.5px;height:271px;">
-                                </a>
-                                <div class="goods-detail">
-                                    <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=977"
-                                       target="_blank">
-                                        <div class="goods-name">
-                                            <s:text name="FUNDING"/>
-                                        </div>
-                                        <div class="goods-title">
-                                            <div class="ellipsis_2">
-                                                <s:text name="Leather_shoes_male_Korean_version_of_the_trend_of_leather_shoes_men_s_casual_shoes_autumn_men_s_shoes_tide"/>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <div class="goods-price clearfix">
-                                        <div class="fl" style="line-height:26px;">
-                                            <span style="color: #2a2a2a;font-weight: bold;font-size: 18px;">600</span>
-                                            <span><s:text name="Sales_volume"/></span>
-                                        </div>
-                                        <div class="fr">120%</div>
-                                    </div>
-                                    <div>
-                                        <el-progress :percentage="120" color="#35ca97"
-                                                     :show-text="false"></el-progress>
-                                    </div>
-                                    <div class="goods-time">
-                                        <img src="/home/v2/static/images/home/icon-time.png" alt="">
-                                        <span style="color:#808080;font-size: 14px;"><s:text
-                                                name="Remaining"/>1 <s:text name="days"/></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="crowdfunding-item">
-                                <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=870"
-                                   target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods2.jpg" alt=""
-                                         style="width:269.5px;height:271px;">
-                                </a>
-                                <div class="goods-detail">
-                                    <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=870"
-                                       target="_blank">
-                                        <div class="goods-name">
-                                            <s:text name="FUNDING"/>
-                                        </div>
-                                        <div class="goods-title">
-                                            <div class="ellipsis_2">
-                                                <s:text name="Dingtai_Boots_Nice_High_Heel_Shoes_Womens_Winter_Boots"/>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <div class="goods-price clearfix">
-                                        <div class="fl" style="line-height:26px;">
-                                            <span style="color: #2a2a2a;font-weight: bold;font-size: 18px;">420</span>
-                                            <span><s:text name="Sales_volume"/></span>
-                                        </div>
-                                        <div class="fr">140%</div>
-                                    </div>
-                                    <div>
-                                        <el-progress :percentage="140" color="#35ca97"
-                                                     :show-text="false"></el-progress>
-                                    </div>
-                                    <div class="goods-time">
-                                        <img src="/home/v2/static/images/home/icon-time.png" alt="">
-                                        <span style="color:#808080;font-size: 14px;"><s:text
-                                                name="Remaining"/>1 <s:text name="days"/></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="crowdfunding-item">
-                                <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1145"
-                                   target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods3.jpg" alt=""
-                                         style="width:269.5px;height:271px;">
-                                </a>
-                                <div class="goods-detail">
-                                    <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1145"
-                                       target="_blank">
-                                        <div class="goods-name">
-                                            <s:text name="FUNDING"/>
-                                        </div>
-                                        <div class="goods-title">
-                                            <div class="ellipsis_2">
-                                                <s:text name="Students_wild_winter_hip_hop_Gaobang_men_s_shoes_high_top_shoes_men_s_Korean_version_of_the_tide_shoes"/>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <div class="goods-price clearfix">
-                                        <div class="fl" style="line-height:26px;">
-                                            <span style="color: #2a2a2a;font-weight: bold;font-size: 18px;">50</span>
-                                            <span><s:text name="Sales_volume"/></span>
-                                        </div>
-                                        <div class="fr">10%</div>
-                                    </div>
-                                    <div>
-                                        <el-progress :percentage="10" color="#35ca97"
-                                                     :show-text="false"></el-progress>
-                                    </div>
-                                    <div class="goods-time">
-                                        <img src="/home/v2/static/images/home/icon-time.png" alt="">
-                                        <span style="color:#808080;font-size: 14px;"><s:text
-                                                name="Remaining"/>1 <s:text name="days"/></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="crowdfunding-item">
-                                <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=883"
-                                   target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods4.jpg" alt=""
-                                         style="width:269.5px;height:271px;">
-                                </a>
-                                <div class="goods-detail">
-                                    <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=883"
-                                       target="_blank">
-                                        <div class="goods-name">
-                                            <s:text name="FUNDING"/>
-                                        </div>
-                                        <div class="goods-title">
-                                            <div class="ellipsis_2">
-                                                <s:text name="Romania_Wholesale_Shoes_comfortable_casual_canvas_shoes"/>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <div class="goods-price clearfix">
-                                        <div class="fl" style="line-height:26px;">
-                                            <span style="color: #2a2a2a;font-weight: bold;font-size: 18px;">300</span>
-                                            <span><s:text name="Sales_volume"/></span>
-                                        </div>
-                                        <div class="fr">60%</div>
-                                    </div>
-                                    <div>
-                                        <el-progress :percentage="60" color="#35ca97"
-                                                     :show-text="false"></el-progress>
-                                    </div>
-                                    <div class="goods-time">
-                                        <img src="/home/v2/static/images/home/icon-time.png" alt="">
-                                        <span style="color:#808080;font-size: 14px;"><s:text
-                                                name="Remaining"/>1 <s:text name="days"/></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="crowdfunding-item">
-                                <a href="https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=845"
-                                   target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods5.jpg" alt=""
-                                         style="width:269.5px;height:271px;">
-                                </a>
-                                <div class="goods-detail">
-                                    <a href="https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=845"
-                                       target="_blank">
-                                        <div class="goods-name">
-                                            <s:text name="FUNDING"/>
-                                        </div>
-                                        <div class="goods-title">
-                                            <div class="ellipsis_2">
-                                                <s:text name="Wholesale_Summer_New_Design_Beaches_sandals_Men_s_sandals"/>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <div class="goods-price clearfix">
-                                        <div class="fl" style="line-height:26px;">
-                                            <span style="color: #2a2a2a;font-weight: bold;font-size: 18px;">500</span>
-                                            <span><s:text name="Sales_volume"/></span>
-                                        </div>
-                                        <div class="fr">83%</div>
-                                    </div>
-                                    <div>
-                                        <el-progress :percentage="83" color="#35ca97"
-                                                     :show-text="false"></el-progress>
-                                    </div>
-                                    <div class="goods-time">
-                                        <img src="/home/v2/static/images/home/icon-time.png" alt="">
-                                        <span style="color:#808080;font-size: 14px;">1 <s:text
-                                                name="Days_left"/></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="crowdfunding-item">
-                                <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1073"
-                                   target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods6.jpg" alt=""
-                                         style="width:269.5px;height:271px;">
-                                </a>
-                                <div class="goods-detail">
-                                    <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1073"
-                                       target="_blank">
-                                        <div class="goods-name">
-                                            <s:text name="FUNDING"/>
-                                        </div>
-                                        <div class="goods-title">
-                                            <div class="ellipsis_2">
-                                                <s:text name="Ins_tide_shoes_men_s_winter_old_shoes_Korean_version_of_ulzzang_new_color_matching_white_shoes_street_shooting_men_s_shoes_leather_shoes"/>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <div class="goods-price clearfix">
-                                        <div class="fl" style="line-height:26px;">
-                                            <span style="color: #2a2a2a;font-weight: bold;font-size: 18px;">300</span>
-                                            <span><s:text name="Sales_volume"/></span>
-                                        </div>
-                                        <div class="fr">60%</div>
-                                    </div>
-                                    <div>
-                                        <el-progress :percentage="83" color="#35ca97"
-                                                     :show-text="false"></el-progress>
-                                    </div>
-                                    <div class="goods-time">
-                                        <img src="/home/v2/static/images/home/icon-time.png" alt="">
-                                        <span style="color:#808080;font-size: 14px;">1 <s:text
-                                                name="Days_left"/></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="crowdfunding-item">
-                                <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1143"
-                                   target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods7.jpg" alt=""
-                                         style="width:269.5px;height:271px;">
-                                </a>
-                                <div class="goods-detail">
-                                    <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1143"
-                                       target="_blank">
-                                        <div class="goods-name">
-                                            <s:text name="FUNDING"/>
-                                        </div>
-                                        <div class="goods-title">
-                                            <div class="ellipsis_2">
-                                                <s:text name="High_heels_female_autumn_new_rivet_pointed_stiletto_single_shoes_wild_Baotou_Roman_sandals_summer"/>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <div class="goods-price clearfix">
-                                        <div class="fl" style="line-height:26px;">
-                                            <span style="color: #2a2a2a;font-weight: bold;font-size: 18px;">650</span>
-                                            <span><s:text name="Sales_volume"/></span>
-                                        </div>
-                                        <div class="fr">81%</div>
-                                    </div>
-                                    <div>
-                                        <el-progress :percentage="83" color="#35ca97"
-                                                     :show-text="false"></el-progress>
-                                    </div>
-                                    <div class="goods-time">
-                                        <img src="/home/v2/static/images/home/icon-time.png" alt="">
-                                        <span style="color:#808080;font-size: 14px;">1 <s:text
-                                                name="Days_left"/></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="crowdfunding-item">
-                                <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1026"
-                                   target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods8.jpg" alt=""
-                                         style="width:269.5px;height:271px;">
-                                </a>
-                                <div class="goods-detail">
-                                    <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1026"
-                                       target="_blank">
-                                        <div class="goods-name">
-                                            <s:text name="FUNDING"/>
-                                        </div>
-                                        <div class="goods-title">
-                                            <div class="ellipsis_2">
-                                                <s:text name="New_Style_Ballet_Shoes_Wholesale_Women_Shoes_Leather_Flat_Shoes"/>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <div class="goods-price clearfix">
-                                        <div class="fl" style="line-height:26px;">
-                                            <span style="color: #2a2a2a;font-weight: bold;font-size: 18px;">200</span>
-                                            <span><s:text name="Sales_volume"/></span>
-                                        </div>
-                                        <div class="fr">40%</div>
-                                    </div>
-                                    <div>
-                                        <el-progress :percentage="83" color="#35ca97"
-                                                     :show-text="false"></el-progress>
-                                    </div>
-                                    <div class="goods-time">
-                                        <img src="/home/v2/static/images/home/icon-time.png" alt="">
-                                        <span style="color:#808080;font-size: 14px;">1 <s:text
-                                                name="Days_left"/></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="crowdfunding-item">
-                                <a href="https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1094"
-                                   target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods9.jpg" alt=""
-                                         style="width:269.5px;height:271px;">
-                                </a>
-                                <div class="goods-detail">
-                                    <a href="https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1094"
-                                       target="_blank">
-                                        <div class="goods-name">
-                                            <s:text name="FUNDING"/>
-                                        </div>
-                                        <div class="goods-title">
-                                            <div class="ellipsis_2">
-                                                <s:text name="summer_soft_composite_bottom_bow_toe_sandals_Velcro"/>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <div class="goods-price clearfix">
-                                        <div class="fl" style="line-height:26px;">
-                                            <span style="color: #2a2a2a;font-weight: bold;font-size: 18px;">600</span>
-                                            <span><s:text name="Sales_volume"/></span>
-                                        </div>
-                                        <div class="fr">75%</div>
-                                    </div>
-                                    <div>
-                                        <el-progress :percentage="83" color="#35ca97"
-                                                     :show-text="false"></el-progress>
-                                    </div>
-                                    <div class="goods-time">
-                                        <img src="/home/v2/static/images/home/icon-time.png" alt="">
-                                        <span style="color:#808080;font-size: 14px;">1 <s:text
-                                                name="Days_left"/></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="crowdfunding-item">
-                                <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1133"
-                                   target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods10.jpg" alt=""
-                                         style="width:269.5px;height:271px;">
-                                </a>
-                                <div class="goods-detail">
-                                    <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1133"
-                                       target="_blank">
-                                        <div class="goods-name">
-                                            <s:text name="FUNDING"/>
-                                        </div>
-                                        <div class="goods-title">
-                                            <div class="ellipsis_2">
-                                                <s:text name="new_round_head_British_wind_small_shoes_low_heel_tassel_fashion_shoes_patent_leather_wild_children_s_shoes"/>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <div class="goods-price clearfix">
-                                        <div class="fl" style="line-height:26px;">
-                                            <span style="color: #2a2a2a;font-weight: bold;font-size: 18px;">400</span>
-                                            <span><s:text name="Sales_volume"/></span>
-                                        </div>
-                                        <div class="fr">66%</div>
-                                    </div>
-                                    <div>
-                                        <el-progress :percentage="83" color="#35ca97"
-                                                     :show-text="false"></el-progress>
-                                    </div>
-                                    <div class="goods-time">
-                                        <img src="/home/v2/static/images/home/icon-time.png" alt="">
-                                        <span style="color:#808080;font-size: 14px;">1 <s:text
-                                                name="Days_left"/></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="crowdfunding-item">
-                                <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=822"
-                                   target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods12.jpg" alt=""
-                                         style="width:269.5px;height:271px;">
-                                </a>
-                                <div class="goods-detail">
-                                    <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=822"
-                                       target="_blank">
-                                        <div class="goods-name">
-                                            <s:text name="FUNDING"/>
-                                        </div>
-                                        <div class="goods-title">
-                                            <div class="ellipsis_2">
-                                                <s:text name="Women_Slippers_Shoes_Summer_Female_Fashion_Shoes_beach_Shoes_Slippers"/>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <div class="goods-price clearfix">
-                                        <div class="fl" style="line-height:26px;">
-                                            <span style="color: #2a2a2a;font-weight: bold;font-size: 18px;">550</span>
-                                            <span><s:text name="Sales_volume"/></span>
-                                        </div>
-                                        <div class="fr">110%</div>
-                                    </div>
-                                    <div>
-                                        <el-progress :percentage="83" color="#35ca97"
-                                                     :show-text="false"></el-progress>
-                                    </div>
-                                    <div class="goods-time">
-                                        <img src="/home/v2/static/images/home/icon-time.png" alt="">
-                                        <span style="color:#808080;font-size: 14px;">1 <s:text
-                                                name="Days_left"/></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="crowdfunding-item">
-                                <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1054"
-                                   target="_blank">
-                                    <img src="/home/v2/static/images/home/temp/goods11.jpg" alt=""
-                                         style="width:269.5px;height:271px;">
-                                </a>
-                                <div class="goods-detail">
-                                    <a href="/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1054"
-                                       target="_blank">
-                                        <div class="goods-name">
-                                            <s:text name="FUNDING"/>
-                                        </div>
-                                        <div class="goods-title">
-                                            <div class="ellipsis_2">
-                                                <s:text name="Classic_Fashion_Cheap_Flat_Shoes_Men_Casual"/>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <div class="goods-price clearfix">
-                                        <div class="fl" style="line-height:26px;">
-                                            <span style="color: #2a2a2a;font-weight: bold;font-size: 18px;">550</span>
-                                            <span><s:text name="Sales_volume"/></span>
-                                        </div>
-                                        <div class="fr">69%</div>
-                                    </div>
-                                    <div>
-                                        <el-progress :percentage="83" color="#35ca97"
-                                                     :show-text="false"></el-progress>
-                                    </div>
-                                    <div class="goods-time">
-                                        <img src="/home/v2/static/images/home/icon-time.png" alt="">
-                                        <span style="color:#808080;font-size: 14px;">1 <s:text
-                                                name="Days_left"/></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <div class="swiper-pagination"></div> -->
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
-                </div>
-            </div>
-            <div class="clearfix">
-                <a href="/home/Activity_Romania_classifyactivity" target="_blank"
-                   class="blueFontColor fr"><s:text name="See_All_Products"/></a>
-            </div>
-        </div>
-    </div>
-</div>
-<jsp:include page="v2/template/foot.jsp"></jsp:include>
+    <index-bottom></index-bottom>
+</main>
+<script src="/home/v3/static/js/index-top.js"></script>
+<script src="/home/v3/static/js/index-bottom.js"></script>
 <script>
-  new Vue({
-    el: "#mix",
-    data() {
-      return {
-        manShoesList: [],
-        womanShoesList: [],
-        childrenShoesList: [],
-        selectedCategory: 1, //选中的男、女、童分类
-        goodsCategorySwiper: null, //轮播命名变量 - 自定义切换 使用
-        form: { //提交 订阅 功能用
-          email: ""
-        },
-        newProductsList: [], //新品
-        RandomPdtList: [], // 随机商品
-        companys: [
-          {pkey: 281, imgUrl: "/home/v2/static/images/home/company-logo_01.png"},
-          {pkey: 30, imgUrl: "/home/v2/static/images/home/company-logo_02.png"},
-          {pkey: 298, imgUrl: "/home/v2/static/images/home/company-logo_03.png"},
-          {pkey: 283, imgUrl: "/home/v2/static/images/home/company-logo_04.png"},
-          {pkey: 12, imgUrl: "/home/v2/static/images/home/company-logo_05.png"},
-          {pkey: 16, imgUrl: "/home/v2/static/images/home/company-logo_06.png"},
-          {pkey: 282, imgUrl: "/home/v2/static/images/home/company-logo_07.png"},
-          {pkey: 317, imgUrl: "/home/v2/static/images/home/company-logo_08.png"},
-          {pkey: 295, imgUrl: "/home/v2/static/images/home/company-logo_09.png"},
-          {pkey: 23, imgUrl: "/home/v2/static/images/home/company-logo_10.png"},
+   	new Vue({
+			el: "#shoesTp",
+			data: {
+				CrowdFundingList: [{
+						url: "https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=977",
+						imgUrl: "/home/v3/static/images/goods1.jpg",
+						title: "Leather shoes male Korean version of the trend of leather shoes men's casual shoes autumn men's shoes tide",
+						salesVolume: "600",
+						percentage: "120",
+						endTime: "1"
+					},
+					{
+						url: "https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=870",
+						imgUrl: "/home/v3/static/images/goods2.jpg",
+						title: "Dingtai Boots Nice High Heel Shoes Womens Winter Boots",
+						salesVolume: "420",
+						percentage: "140",
+						endTime: "1"
+					},
+					{
+						url: "https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1145",
+						imgUrl: "/home/v3/static/images/goods3.jpg",
+						title: "Students wild winter hip hop Gaobang men's shoes high-top shoes men's Korean version of the tide shoes",
+						salesVolume: "50",
+						percentage: "10",
+						endTime: "1"
+					},
+					{
+						url: "https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=883",
+						imgUrl: "/home/v3/static/images/goods4.jpg",
+						title: "Romania Wholesale Shoes comfortable casual canvas shoes",
+						salesVolume: "300",
+						percentage: "60",
+						endTime: "1"
+					},
+					// {url:"https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=845",imgUrl:"/home/v3/static/images/goods5.jpg",title:"Wholesale Summer New Design Beaches sandals Men's sandals",salesVolume:"500",percentage:"83",endTime:"1"},
+					// {url:"https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1073",imgUrl:"/home/v3/static/images/goods6.jpg",title:"Ins tide shoes men's winter old shoes Korean version of ulzzang new color matching white shoes street shooting men's shoes leather shoes",salesVolume:"300",percentage:"60",endTime:"1"},
+					// {url:"https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1143",imgUrl:"/home/v3/static/images/goods7.jpg",title:"High heels female autumn 2018 new rivet pointed 12 stiletto single shoes wild Baotou Roman sandals summer",salesVolume:"650",percentage:"81",endTime:"1"},
+					// {url:"https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1026",imgUrl:"/home/v3/static/images/goods8.jpg",title:"New Style Ballet Shoes Wholesale Women Shoes Leather Flat Shoes",salesVolume:"200",percentage:"40",endTime:"1"},
+					// {url:"https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1094",imgUrl:"/home/v3/static/images/goods9.jpg",title:"2019 summer soft composite bottom bow toe sandals Velcro",salesVolume:"600",percentage:"75",endTime:"1"},
+					// {url:"https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1133",imgUrl:"/home/v3/static/images/goods10.jpg",title:"2018 new round head British wind small shoes low heel tassel fashion shoes patent leather wild children's shoes",salesVolume:"400",percentage:"66",endTime:"1"},
+					// {url:"https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=822",imgUrl:"/home/v3/static/images/goods11.jpg",title:"Women Slippers Shoes Summer Female Fashion Shoes beach Shoes Slippers",salesVolume:"550",percentage:"110",endTime:"1"},
+					// {url:"https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1054",imgUrl:"/home/v3/static/images/goods12.jpg",title:"Classic Fashion Cheap Flat Shoes Men Casual",salesVolume:"550",percentage:"69",endTime:"1"},
+				],
+				// 林华立数据
+				newsList: [{
+					url: '/html/exhibition/ExpoRivaSchuh.html',
+					image: '/home/v3/static/images/zh_img.png',
+					title: 'Expo Riva Schuh',
+					time: 'Jan 12-15, 2019',
+					location: 'Italy'
+				}, {
+					url: '/html/exhibition/exhibitionLasVegas.html',
+					image: '/home/v3/static/images/zh_img2.png',
+					title: 'FOOTWEAR SOURCING AT MAGIC',
+					time: 'February 4-7, 2019',
+					location: 'Las Vegas'
+				}, {
+					url: '/html/exhibition/guangjiaohui.html',
+					image: '/home/v3/static/images/zh_img3.png',
+					title: 'China Import and Export Fair',
+					time: 'Apr.15-May.5, 2019',
+					location: 'Guangzhou'
+				}],
+				strength: [{
+					icon: '/home/v3/static/images/icon_our1.png',
+					title: 'Variety of suppliers at here',
+					info: ['Different type of shoes', 'Different price level', 'Different function shoes']
+				}, {
+					icon: '/home/v3/static/images/icon_our2.png',
+					title: 'The lowest price in the whole network',
+					info: ['We provide O2O-low price area to buyers', 'We pick quality shoes with price as lower as possible']
+				}, {
+					icon: '/home/v3/static/images/icon_our3.png',
+					title: 'SVS Suppliers Standard',
+					info: ['Including factors that buyers are much concerned about',
+						'Showing the performance of manufacturers objectively '
+					]
+				}, {
+					icon: '/home/v3/static/images/icon_our4.png',
+					title: 'Offer many bussiness events',
+					info: ['We could agent the three biggest exhibition;', 'We provide O2O progrom;',
+						'We have choiceness of suppliers for promting excellent manufacture'
+					]
+				}],
+				MostPopular: [], //左边数据
+				HotSale: [], //右边数据
+				// 林铁垣
+				RFQ_title: "",
+				RFQ_quantity: null,
+				chooes: "Pairs",
+				classLists: [],
+				// 徐世奇
+				showRoomGoodsList: [], // 获取展会 详情列表信息
+					showRoomPicList: [ //展会轮播 缩略图片列表
+						{
+							imgUrl: "/home/v3/static/images/show-room_01.jpg",
+						},
+						{
+							imgUrl: "/home/v3/static/images/show-room_02.jpg",
+						},
+						{
+							imgUrl: "/home/v3/static/images/show-room_03.jpg",
+						},
+						{
+							imgUrl: "/home/v3/static/images/show-room_04.jpg",
+						},
+						{
+							imgUrl: "/home/v3/static/images/show-room_05.jpg",
+						},
+						{
+							imgUrl: "/home/v3/static/images/show-room_06.jpg",
+						},
+						{
+							imgUrl: "/home/v3/static/images/show-room_07.jpg",
+						},
+						{
+							imgUrl: "/home/v3/static/images/show-room_08.jpg",
+						},
+						{
+							imgUrl: "/home/v3/static/images/show-room_09.jpg",
+						},
+						{
+							imgUrl: "/home/v3/static/images/show-room_10.jpg",
+						},
+						{
+							imgUrl: "/home/v3/static/images/show-room_11.png",
+						},
+						{
+							imgUrl: "/home/v3/static/images/show-room_12.jpg",
+						},
+						{
+							imgUrl: "/home/v3/static/images/show-room_13.jpg",
+						},
+						{
+							imgUrl: "/home/v3/static/images/show-room_14.jpg",
+						},
+						{
+							imgUrl: "/home/v3/static/images/show-room_15.jpg",
+						},
+					],
 
-        ]
-      }
-    },
-    computed: {
-      _o2o_slide_title: function () {
-        switch (this.$data.selectedCategory) {
-          case 1:
-            return "<s:text name='Men_s_Shoes'/>";
-          case 2:
-            return "<s:text name='Women_s_Shoes'/>";
-          case 3:
-            return "<s:text name='Children_s_Shoes'/>"
-        }
+					RFQList: [ //询盘列表
+						{
+							id: 1,
+							country: "Egypt",
+							country_logo: "/home/v3/static/images/flag-egypt.png",
+							title: "Do you have some sandals styles? pls kindly send me the photos.",
+							quantity: 600,
+							create_date: "03-02-2019",
+						},
+						{
+							id: 2,
+							country: "Netherlands",
+							country_logo: "/home/v3/static/images/flag-netherlands.png",
+							title: "I'm looking for some new Autumn-Winter styles,do you have？",
+							quantity: 1200,
+							create_date: "03-02-2019",
+						},
+						{
+							id: 3,
+							country: "Brazil",
+							country_logo: "/home/v3/static/images/flag-brazil.jpg",
+							title: "Do you have some sandals styles? pls kindly send me the photos.",
+							quantity: 500,
+							create_date: "03-02-2019",
+						},
+						{
+							id: 4,
+							country: "Singapore",
+							country_logo: "/home/v3/static/images/flag-singapore.jpg",
+							title: "We are looking for very cheap shoes styles, do you have?",
+							quantity: 1500,
+							create_date: "03-02-2019",
+						},
+						{
+							id: 5,
+							country: "Philippines",
+							country_logo: "/home/v3/static/images/flag-philippines.jpg",
+							title: "I want some kids boots, for girl.",
+							quantity: 800,
+							create_date: "03-02-2019",
+						},
+						{
+							id: 6,
+							country: "South Africa",
+							country_logo: "/home/v3/static/images/flag-south-africa.png",
+							title: "If my order is big, will your price become cheap? Price on your website is too high.",
+							quantity: 2000,
+							create_date: "03-02-2019",
+						},
+					],
+			},
+			mounted() {
+				this.getMostPopular();
+				this.getHotSale();
+				this.classList();
+				// 获取展会列表信息
+				this.getShowRoomGoodsList();
+			},
+			methods: {
+				image(v, params) {
+					if (!v) {
+						return ""
+					}
+					if (!params) {
+						params = ""
+					}
+					return sysConfig.baseImageUrl + v + params
+				},
+				getMostPopular() {
+					var self = this;
+					axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax', {
+							params: {
+								orderfld: "MostPopular",
+								order: true,
+								page: 1,
+								limit: 5,
+								cated: -1,
+								v: 3,
+							}
+						})
+						.then(function (res) {
+							console.log("getMostPopular");
+							console.log(res);
+							self.MostPopular = res.data.result.items;
+							console.log(self.MostPopular)
+						})
+						.catch(function (error) {
+							console.log(error);
+						});
+				},
+				getHotSale() {
+					var self = this;
+					axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax', {
+							params: {
+								orderfld: "Sales",
+								order: true,
+								page: 1,
+								limit: 5,
+								cated: -1,
+								v: 3,
+							}
+						})
+						.then(function (res) {
+							console.log(res);
+							self.HotSale = res.data.result.items;
+						})
+						.catch(function (error) {
+							console.log(error);
+						});
+				},
+				// 林铁垣
+				classList(e) { // 获取左边分类
+					axios.get('/home/pdt_PdtProduct_gtProductsIndexCategoriesListAjax', {
+							params: {
+								page: 1,
+								limit: 5
+							}
+						})
+						.then((res) => {
+							this.classLists = res.data.result
+						})
+						.catch((error) => {
+							console.log("err")
+							//                      this.$message.error(error);
+						});
+				},
+				chooesbtn(e) {
+					this.chooes = e.currentTarget.dataset.name
+				},
+				// 徐世奇
+					// 获取展会鞋子列表
+					getShowRoomGoodsList() {
+					// axios.get('/home/pdt_PdtProduct_getRandomPdt', {
+					axios.get('/home/o2o_O2oRegistration_o2oList', {
+							params: {
+								start: 0,
+								limit: 16 * 4
+							}
+						})
+						.then((res) => {
+							console.log("鞋子列表suc");
+							console.log(res);
+							if (res.data.ret != 1) {
+								this.$message.error(res.data.msg);
+								return
+							};
+							var shoesList = res.data.result;
+							var showRoomGoodsList = [];
+							// 将展会信息分组-循环显示 - 为了轮播
+							for (var i = 0; i < 15; i++) {
+								showRoomGoodsList.push(shoesList.splice(0, 4))
+							}
+							this.showRoomGoodsList = showRoomGoodsList;
 
-      }
-    },
-    mounted() {
-      this.getThreeShoesCateList();
-      this.goodsCategorySwiper = new Swiper('#xsq .swiper-category-list', {
-        loop: true,
-        noSwiping: true,
-        noSwipingClass: 'stop-swiping',
-      });
-      this.gtNewProducts();
-      this.getRandomPdt();
-      var crowdfundingSwiper = new Swiper('#crowdfunding-swiper', {
-        slidesPerView: 4,
-        spaceBetween: 35,
-        slidesPerGroup: 4,
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-      });
-    },
-    methods: {
-      image(v, params) {
-        if (!v) {
-          return ""
-        }
-        if (!params) {
-          params = ""
-        }
-        return "https://image.shoestp.com" + v + params
-      },
-      clickToSelectedCategory(index) {
-        console.log("index")
-        console.log(index)
-        this.selectedCategory = index;
+							this.$nextTick(() => {
+								this.galleryThumbs = new Swiper('#xsq .gallery-thumbs', {
+									spaceBetween: 10,
+									slidesPerView: 7,
+									loop: true,
+									freeMode: true,
+									// loopedSlides: 1, //looped slides should be the same
+									watchSlidesVisibility: true,
+									watchSlidesProgress: true,
+								});
 
-        this.goodsCategorySwiper.slideTo(index)
-      },
-      // 获取男、女、童鞋子列表
-      getThreeShoesCateList() {
-        axios.get('/home/prm_PrmGroupPurchase_groupshoplist?v=2')
-        .then((res) => {
-          console.log("鞋子列表suc");
-          console.log(res);
-          if (res.data.ret != 1) {
-            // this.$alert('Product acquisition failed, please check the network')
-            this.$message.error(res.data.msg);
-            return
-          }
-          ;
-          this.manShoesList = res.data.result.manshoes;
-          this.womanShoesList = res.data.result.womanshoes;
-          this.childrenShoesList = res.data.result.childrenshoes;
-        })
-        .catch((error) => {
-          console.log("fail");
-          console.log(error);
-        });
-      },
-      // 订购
-      subscribe() {
-        console.log("subscribe")
 
-        if (!this.form.email || this.form.email == "") {
-          this.$message.error("Email cannot be empty, please re-fill");
-          return;
-        } else if (!(/[\w]+(\.[\w]+)*@[\w]+(\.[\w])+/.test(this.form.email))) {
-          this.$message.error("The mailbox format is incorrect, please re-fill");
-          return;
-        }
-        axios.post('/home/usr_UsrSubscribe_ins', Qs.stringify({
-          "bean.email": this.form.email,
-        }, {allowDots: true}))
-        .then((res) => {
-          console.log(res)
-          // gtag_report_conversion()
-          // if (res.data.ret == 1) {
-          if (res.data.success) {
-            this.form = {};
-            this.$message.success("Submitted successfully");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      },
+								this.goodsCategorySwiper = new Swiper('#xsq .swiper-category-list', {
+									spaceBetween: 10,
+									speed: 1000,
+									loop: true,
+									// loopedSlides: 1, //looped slides should be the same
+									navigation: {
+										nextEl: '.swiper-button-next',
+										prevEl: '.swiper-button-prev',
+									},
+									thumbs: {
+										swiper: this.galleryThumbs,
+									},
+								});
+							})
 
-      gtNewProducts() { // 获取最新商品
-        let _self = this;
-        axios.post('/home/pdt_PdtProduct_gtNewProducts', Qs.stringify({ //请求参数
-          page: 1,
-          limit: 12,
-          v: 2,
-        }))
-        .then(function (res) {
-          console.log(res)
-          if (res.data.ret == 1) {
-            _self.newProductsList = res.data.result;
-            _self.$nextTick(() => {
-              setTimeout(() => {
-                var newProductsSwiper = new Swiper('#new-products-swiper', {
-                  slidesPerView: 4,
-                  spaceBetween: 25,
-                  slidesPerGroup: 4,
-                  pagination: {
-                    el: '.swiper-pagination',
-                  },
-                  navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                  },
-                });
-
-                $('#new-products-swiper .swiper-pagination').on('mouseenter',
-                    '.swiper-pagination-bullet', function () {
-                      var index = parseInt($(this).index());
-                      if (index == 0) {
-                        newProductsSwiper.slideTo(index * 4);
-                      } else {
-                        newProductsSwiper.slideTo(index * 4 + 1);
-                      }
-                    })
-              }, 200)
-
-            })
-          } else {
-            console.error("WARRING::INVALIDVALUE")
-          }
-        })
-        .catch(function (error) {
-          console.error("ERR::FLAG")
-          console.log(error);
-        });
-      },
-      getRandomPdt() { //获取随机商品
-        let _self = this;
-        axios.get('/home/pdt_PdtProduct_getRandomPdt?v=2&page=1&limit=17')
-        .then(function (res) {
-          console.log(res)
-          if (res.data.ret == 1) {
-            _self.RandomPdtList = res.data.result;
-            _self.$nextTick(() => {
-              var brandZoneSwiper = new Swiper('#brand-zone-swiper', {
-                slidesPerView: 6,
-                spaceBetween: 12,
-                slidesPerGroup: 6,
-                pagination: {
-                  el: '.swiper-pagination',
-                },
-                navigation: {
-                  nextEl: '.swiper-button-next',
-                  prevEl: '.swiper-button-prev',
-                },
-              });
-            })
-          } else {
-            console.error("WARRING::INVALIDVALUE")
-          }
-        })
-        .catch(function (error) {
-          console.error("ERR::FLAG")
-        });
-      },
-      inquiry(id) { // 点击 询盘
-        if (!isLogin) {
-          this.$alert('Please login to operate', 'Please login to operate', {
-            confirmButtonText: 'Ok',
-            callback: action => {
-              window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/"
-            }
-          });
-          return
-        } else {
-          // console.log("已登录")
-          axios.post('/home/pdt_PdtConsultPdtList_add', Qs.stringify({ //请求参数
-            product: id,
-          }))
-          .then((data) => {
-            if (data.data) {
-              if (data.data.ret && data.data.ret != 1) {
-                console.error("ERR::FLAG")
-              } else {
-                window.location.href = "/home/usr_UsrConsult_publishView?product_id="
-                    + data.data.result.id
-              }
-            }
-          })
-          .catch((error) => {
-            this.$message.error(error);
-          });
-        }
-      },
-      addCollection(event, id, index) { // 新商品添加收藏
-        let favoriteType = event.currentTarget.getAttribute('favorite-type');
-        console.log("addCollection")
-        console.log(favoriteType)
-        if (!isLogin) {
-          // user_obj.set_form_sign_in('', window.location.href, 1);
-          // return
-          this.$alert('Please login to operate', 'Please login to operate', {
-            confirmButtonText: 'Ok',
-            callback: action => {
-              window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/"
-            }
-          });
-
-        } else {
-          axios.post('/home/usr_UsrFavorites_addFavorite', Qs.stringify({ //请求参数
-            pdtPkey: id,
-          }))
-          .then((res) => {
-            if (res.data.ret == 1) {
-              if (favoriteType == 1) {
-                this.newProductsList[index].favorite = !this.newProductsList[index].favorite
-              } else if (favoriteType == 2) {
-                this.RandomPdtList[index].favorite = !this.RandomPdtList[index].favorite
-              } else if (favoriteType == "man") {
-                this.manShoesList[index].favorite = !this.manShoesList[index].favorite
-              } else if (favoriteType == "woman") {
-                this.womanShoesList[index].favorite = !this.womanShoesList[index].favorite
-              } else if (favoriteType == "children") {
-                this.childrenShoesList[index].favorite = !this.childrenShoesList[index].favorite
-              }
-            }
-          })
-          .catch((error) => {
-            this.$message.error(error);
-          });
-        }
-      },
-    }
-  })
+						})
+						.catch((error) => {
+							console.log(error);
+						});
+				},
+			}
+		})
 
 
 </script>

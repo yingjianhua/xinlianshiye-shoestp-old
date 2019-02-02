@@ -92,7 +92,7 @@ public class Pdt extends PackageBase {
      * 销售状态
      */
     public enum OState implements IEnumOpt {
-        ON(1, "上架"), OFF(0, "下架"), DELETE(2, "删除");
+        ON(1, "上架"), OFF(0, "下架"), DELETE(2, "删除"),MERCHANTDEL(3,"商家删除");
         public static final String NAME = "销售状态";
         public static final OState DEFAULT = ON;
         private EnumLine _line;
@@ -128,7 +128,8 @@ public class Pdt extends PackageBase {
         GENERAL(0, "普通产品"),
         GROUP(1, "联合采购产品"),
         GATHER(2, "采集商品"),
-        PrivateExpo(3, "私人展会商品");
+        PrivateExpo(3, "私人展会商品"),
+        O2O(4, "O2O商品"),;
         public static final String NAME = "产品种类";
         public static final OProductType DEFAULT = GENERAL;
         private EnumLine _line;
