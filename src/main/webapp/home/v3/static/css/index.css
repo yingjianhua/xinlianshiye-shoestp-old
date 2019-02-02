@@ -41,6 +41,7 @@ body {
   color: #10389c; }
 
 #xc .section1 .product-list .product-item {
+  position: relative;
   width: 295px;
   height: 410px;
   padding-top: 15px;
@@ -50,11 +51,24 @@ body {
   margin-right: 20px;
   border: 2px solid #fff; }
 
+#xc .section1 .product-list .product-item:before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  z-index: 1;
+  border: solid 1px #ddd; }
+
 #xc .section1 .product-list .product-item:last-child {
   margin-right: 0; }
 
 #xc .section1 .product-list .product-item:hover {
   border: 2px solid #1a4091; }
+
+#xc .section1 .product-list .product-item:hover:before {
+  z-index: -1; }
 
 #xc .section1 .product-list .product-item .product-img {
   width: 260px;
@@ -605,10 +619,10 @@ a {
   top: 6px;
   width: 20px;
   height: 20px;
-  background: url("../images/icon-favorite-off.png") no-repeat center; }
+  background: url("/home/v3/static/images/icon-favorite-off.png") no-repeat center; }
 
 #xsq .goods-category-item .hover-show .btn-collect .icon-collect.on {
-  background: url("../images/icon-favorite-on.png") no-repeat center; }
+  background: url("/home/v3/static/images/icon-favorite-on.png") no-repeat center; }
 
 /* 鼠标移入后不显示之前的name */
 /* 男鞋、女、童的nav wrap */
@@ -738,6 +752,7 @@ a {
 
 #xsq .RFQ-list-wrap {
   padding: 40px 50px;
+  border: solid 1px #ddd;
   background: #fff; }
 
 #xsq .RFQ-list-wrap .RFQ-title {

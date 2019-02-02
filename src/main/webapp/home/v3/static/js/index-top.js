@@ -14,13 +14,13 @@ Vue.component('index-top',{
                  <input type="text" v-model="input">
                  <div class="searchbotton" @click="submit"><img src="/home/v3/static/images/indexiconserch.png" alt=""></div>
             </div>
-            <div class="o2otoplikes" v-if="user">
-                <img src="/home/v3/static/images/indextopren.png" alt="">
-                <div class="o2otoplikenum">
-                    <p>{{user.shopping_cart_count}}</p>
-                    <p>My Shosetp</p>
-                </div>
-            </div>
+            <!--<div class="o2otoplikes" v-if="user">-->
+                <!--<img src="/home/v3/static/images/indextopren.png" alt="">-->
+                <!--<div class="o2otoplikenum">-->
+                    <!--<p>{{user.shopping_cart_count}}</p>-->
+                    <!--<p>My Shosetp</p>-->
+                <!--</div>-->
+            <!--</div>-->
             <div class="o2otoplikes">
                 <img src="/home/v3/static/images/o2otopfavoroite.png" alt="">
                 <div class="o2otoplikenum">
