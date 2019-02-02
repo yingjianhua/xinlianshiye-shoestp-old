@@ -11,6 +11,7 @@ import java.util.Date;
 public class O2OProductView implements BaseView {
 
     private Integer pkey;
+    private Integer id;
     private Byte status;//审核状态
     private Byte state;//上下架状态
     private String actName;

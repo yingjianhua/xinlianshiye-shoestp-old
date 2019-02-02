@@ -1,5 +1,6 @@
 package irille.platform.o2o;
 
+import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_Activity;
 import irille.Service.Manage.O2O.O2OActivityService;
@@ -75,6 +76,13 @@ public class O2OActivityAction extends ActionBase<O2O_Activity> implements IO2OA
         o2OActivityService.appr(id, null, O2O_ProductStatus.PASS);
         writeSuccess();
     }
+    /**
+     * 私人展厅审核产品通过
+     */
+    public void privatefindAppr() throws IOException, JSONException {
+        o2OActivityService.privatefindAppr(id, null, O2O_PrivateExpoPdtStatus.PASS);
+        writeSuccess();
+    }
 
     /**
      * 审核拒绝
@@ -83,12 +91,26 @@ public class O2OActivityAction extends ActionBase<O2O_Activity> implements IO2OA
         o2OActivityService.appr(id, reason, O2O_ProductStatus.Failed);
         writeSuccess();
     }
+    /**
+     * 私人展厅审核产品审核拒绝
+     */
+    public void privatefindRefuse() throws IOException, JSONException {
+        o2OActivityService.privatefindAppr(id, reason, O2O_PrivateExpoPdtStatus.Failed);
+        writeSuccess();
+    }
 
     /**
      * 确认下架
      */
     public void lower() throws IOException, JSONException {
         o2OActivityService.lowerAndUpper(id, null, O2O_ProductStatus.OFF);
+        writeSuccess();
+    }
+    /**
+     * 私人订购会商品确认下架
+     */
+    public void privateLower() throws IOException, JSONException {
+        o2OActivityService.privateLowerAndUpper(id, reason, O2O_PrivateExpoPdtStatus.OFF);
         writeSuccess();
     }
 
