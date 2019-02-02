@@ -109,7 +109,7 @@
                 src="http://www.google.cn/maps/embed?pb=!1m18!1m12!1m3!1d145836.0008093548!2d-115.12423013907598!3d36.12882713541526!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c8c46640af22e7%3A0xa93a4afe2fe7b046!2sLas+Vegas+Convention+Center!5e0!3m2!1szh-CN!2scn!4v1548672922122"
                 width="1040" height="474" frameborder="0" style="border:0" allowfullscreen></iframe>
         </div>
-        <h2>LAS VEGAS AND MANDALAY BAY CONVENTION CENTERS<br>LAS VEGAS<br> USA</h2>
+        <h2  style="font-size: 22px;margin-top: 54px;">LAS VEGAS AND MANDALAY BAY CONVENTION CENTERS<br>LAS VEGAS<br> USA</h2>
     </div>
 </div>
 <script>

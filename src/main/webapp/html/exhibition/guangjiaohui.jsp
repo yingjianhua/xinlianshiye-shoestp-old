@@ -108,7 +108,7 @@
         <div class="item">
             <div class="font">
                 <span>Entry Fees</span>
-                <p>Free* <br>
+                <p>Free <br>
                     For Industry <br>
                     Professionals</p>
             </div>
@@ -132,7 +132,7 @@
         <div class="item">
             <div class="font">
                 <span>Frequency</span>
-                <p>Annual<br><br><br></p>
+                <p>Once of year<br><br><br></p>
             </div>
         </div>
     </section>
@@ -143,7 +143,7 @@
                     width="100%" height="100%" frameborder="0" style="border:0" allowfullscreen></iframe>
         </div>
         <div class="content">
-            <h3> China Import and Export Fair(Canton Fair Complex)</h3>
+            <h3 style="font-size: 22px;margin-top: 54px;"> China Import and Export Fair(Canton Fair Complex)</h3>
             382 Yuejiang Middle Rd Haizhu Qu Guangzhou Shi Guangdong Sheng 510310
             <br>
             China

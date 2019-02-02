@@ -133,7 +133,7 @@
                             </p>
                             <p style="font-size:14px;color: #666;">
                                 The more specific your information, the more accurately we can match your request to
-                                the right supplier.
+                                the target supplier.
                             </p>
                         </div>
                         <el-form size="small" label-width="160px" ref="form" :rules="rules" :model="form" id="inquiry_form">
@@ -149,7 +149,7 @@
                             </div>
                             <div class="form_main">
                                 <el-form-item label-width="0" prop="descriotion">
-                                    <el-input type="textarea" :autosize="{ minRows: 14, maxRows: 14}" placeholder="my-inquiry-publish.Demand"
+                                    <el-input type="textarea" :autosize="{ minRows: 14, maxRows: 14}" placeholder="Please let us know your requirements as detail as possible. You may include: color, size, material, gradw/standard, etc."
                                         v-model="form.descriotion">
                                     </el-input>
                                 </el-form-item>
@@ -216,7 +216,7 @@
                             </div>
 
                             <el-collapse>
-                                <el-collapse-item title="Please Select A Category:" name="1">
+                                <el-collapse-item title="Fitter suppliers and set trading terms to get better quotes." name="1">
                                     <el-card class="box-card">
                                         <div slot="header" class="clearfix" style="font-size: 14px;">
                                             Requirements for Trading Terms
@@ -231,7 +231,7 @@
                                             </el-form-item>
                                             <!-- 目的地 -->
                                             <el-form-item label-width="0">
-                                                <el-input v-model="form.destination" placeholder="destination port"></el-input>
+                                                <el-input v-model="form.destination" placeholder="Destination Port"></el-input>
                                             </el-form-item>
                                             <!-- 支付方式 -->
                                             <el-form-item label-width="0">
@@ -265,7 +265,7 @@
                         <div class="main_rightT">
                             <h3 class="header-title2" style="margin-top:0">Intro to our suppliers and our RFQ system:</h3>
                             We've got hundreds of suppliers in the Shoestp,and all of them are selected excellent
-                            original entrusted manufacturer. As long as we receive your request, we will search the
+                            original entrusted manufacturers. As long as we receive your request, we will search the
                             suitable supplier and reply to you in the first time.
                         </div>
                         <div class="main_rightB">

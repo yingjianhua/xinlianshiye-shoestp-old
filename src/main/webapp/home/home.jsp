@@ -48,9 +48,10 @@
             <div class="box">
                 <a href="/html/SVS/svs.jsp">
                 <h1>SVS Certification System</h1>
-                <div style="font-size: 13px;">SVS Certification System will make buyers find their<br/> target Supplier
+                <div style="font-size: 13px;"><%--SVS Certification System will make buyers find their<br/> target Supplier
                     more
-                    faster, accurate and time-saving<br/> than other way.
+                    faster, accurate and time-saving<br/> than other way.--%>
+                    The buyers could find their target supplier more faster, accurate and time-saving by SVS Certification System.
                 </div>
                 <div class="h3">
                     <img src="/home/v3/static/images/icion_svs_1d.png" alt=""/>
@@ -73,6 +74,7 @@
                     </ul>
                 </div>
                 </a>
+                <a href="/html/SVS/svs.jsp" class="btn-see-all svs_learn_more">Learn More</a>
             </div>
 
             <div class="box nomr">
@@ -80,7 +82,7 @@
                 <div class="fs14">Customization Service</div>
                 <div class="h5">
                     <div class="boxListInput01">
-                        <input type="text" v-model="RFQ_title" placeholder="what are you looking for"/>
+                        <input type="text" v-model="RFQ_title" placeholder="What are you looking for"/>
                     </div>
                     <div class="boxListInput01">
                         <input class="w180" v-model="RFQ_quantity" type="text" placeholder="Quantity"/>
@@ -726,5 +728,18 @@
 
 
 </script>
+<style>
+    .svs_learn_more{
+        display: block !important;
+        background-color: rgb(26,64,145);
+        font-size: 18px;
+        padding: 8px;
+        border-radius: 2px;
+        text-align: center;
+        color: #ffffff !important;
+        width: 131px;
+        margin: 44px auto;
+    }
+</style>
 </body>
 </html>

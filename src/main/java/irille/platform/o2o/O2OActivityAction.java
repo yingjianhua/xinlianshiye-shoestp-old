@@ -6,6 +6,7 @@ import irille.Service.Manage.O2O.O2OActivityService;
 import irille.action.ActionBase;
 import irille.view.O2O.O2OActivityView;
 import irille.view.O2O.PdtSearchView;
+import lombok.Getter;
 import lombok.Setter;
 import org.json.JSONException;
 
@@ -20,6 +21,7 @@ public class O2OActivityAction extends ActionBase<O2O_Activity> implements IO2OA
     @Inject
     private O2OActivityService o2OActivityService;
 
+    @Getter
     private O2OActivityView activity;
 
     private PdtSearchView search;

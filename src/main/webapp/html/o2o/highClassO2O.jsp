@@ -16,8 +16,8 @@
     <div class="wrap">
         <div class="main-operate">
             <div class="main-operate-title">
-                <h2 class="title-h2">How To Operation</h2>
-                <p class="title-span">Could Better Know The Quality Of A Shoes</p>
+                <h2 class="title-h2">How To Operate</h2>
+                <p class="title-span">Customer could better know the qualitu of a shoe</p>
                 <p class="title-wire"></p>
             </div>
             <div class="main-operate-content">
@@ -45,7 +45,7 @@
                         </li>
                     </ul>
                     <p class="content-text content-text01">If a guest sees the favorite style at the exhibition, he (or
-                        she) can get the contact information of the corresponding factory directly and make. </p>
+                        she) can get the contact information of the corresponding factory directly. </p>
                 </div>
                 <div class="operate-image">
                     <el-carousel trigger="click" height="361px" :autoplay="false" arrow="never" indicator-position="none" ref="carousel">
@@ -96,7 +96,7 @@
         <p class="main-sign-text">Please fill out the registration form in our O2O webpage and send the registration
             form to the official email address of Shoestp.com. We will send you an invitation card one month before the
             start of the new product show.</p>
-        <a href="javascript:void(0);" class="button">On line</a>
+        <a href="O2Oinputform.jsp" class="button">On line</a>
     </div>
     <!--Time and location-->
     <div class="wrap main-location">
@@ -109,7 +109,7 @@
         <div class="location-content">
             <div class="location-content-tier">
                 <div class="location-introduce">
-                    <h2 class="introduce-h2">Time and lacation</h2>
+                    <h2 class="introduce-h2">Time and Location</h2>
                     <p class="introduce-text">Could Better Know The Quality Of A Shoes</p>
                     <p class="introduce-wire"></p>
                     <p class="introduce-text">We will publish the location and time of the new product show meeting at

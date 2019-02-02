@@ -137,7 +137,7 @@
 						</div>
 					</a>
 					<div class="common-boxspan fr">
-						<a class="h1" :href="'/home/usr_UsrSupplier_gtSupIndex?pkey='+item.supId" target="_blank"><div class="year">{{item.enter}}YRS</div>{{item.supName}}</a>
+						<a class="h1" :href="'/home/usr_UsrSupplier_gtSupIndex?pkey='+item.supId" target="_blank"><%--<div class="year">{{item.enter}}YRS</div>--%>{{item.supName}}</a>
 						<div>
 							<img class="mr6 icon01" src="/home/v3/static/images/ico/icon_cert.png" alt="Certificate" />
 							Certificate
