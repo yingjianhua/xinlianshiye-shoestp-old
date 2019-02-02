@@ -149,7 +149,7 @@
                             </div>
                             <div class="form_main">
                                 <el-form-item label-width="0" prop="descriotion">
-                                    <el-input type="textarea" :autosize="{ minRows: 14, maxRows: 14}" placeholder="my-inquiry-publish.Demand"
+                                    <el-input type="textarea" :autosize="{ minRows: 14, maxRows: 14}" placeholder="Please let suppliers know your detailes requirements. You may include:color,size,material,grade/standard,etc"
                                         v-model="form.descriotion">
                                     </el-input>
                                 </el-form-item>
@@ -189,7 +189,7 @@
                                 <el-form-item label="Price：">
                                     <el-col :span="7">
                                         <el-form-item prop="min_price">
-                                            <el-input v-model.number="form.min_price"></el-input>
+                                            <el-input v-model.number="form.min_price" placeholder="Min"></el-input>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :span="1">
@@ -197,7 +197,7 @@
                                     </el-col>
                                     <el-col :span="7">
                                         <el-form-item prop="max_price">
-                                            <el-input v-model.number="form.max_price"></el-input>
+                                            <el-input v-model.number="form.max_price"  placeholder="Max"></el-input>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :span="6" :offset="1">
@@ -231,7 +231,7 @@
                                             </el-form-item>
                                             <!-- 目的地 -->
                                             <el-form-item label-width="0">
-                                                <el-input v-model="form.destination"></el-input>
+                                                <el-input v-model="form.destination" placeholder="Destination Port"></el-input>
                                             </el-form-item>
                                             <!-- 支付方式 -->
                                             <el-form-item label-width="0">
@@ -366,8 +366,8 @@
                         },
                         {
                             min: 1,
-                            max: 50,
-                            message: 'Content cannot exceed 50 characters',
+                            max: 500,
+                            message: 'Content cannot exceed 500 characters',
                             trigger: 'blur'
                         }
                     ],
@@ -511,7 +511,20 @@
                                             });
                                             setTimeout(function () {
                                                 gtag_report_conversion()
-                                                sessionStorage['Temp_publish_form']=null
+                                                sessionStorage['Temp_publish_form']= { // 需要上传给后台的对象
+                                                    title: "",
+                                                    image: "",
+                                                    descriotion: "",
+                                                    quantity: "",
+                                                    unit: 1, //单位 - 双
+                                                    min_price: null,
+                                                    max_price: null,
+                                                    currency: 1, //货币单位
+                                                    valid_date: null,
+                                                    shipping_type: 1, //运送方式
+                                                    destination: "", //目的地
+                                                    pay_type: 1, //支付方式
+                                                }
                                                 window.location.href =
                                                     '/home/usr_UsrConsult_listView';
                                             }, 2000)

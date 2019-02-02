@@ -16,7 +16,7 @@ import irille.view.RFQ.PutRFQConsultView;
 public interface IRFQConsultService {
     void putRFQInquiry(PutRFQConsultView rfqConsultView, UsrPurchase usrPurchase);
 
-    void putInquiry(PutInquiryView readValue, UsrPurchase purchase);
+    void putInquiry(PutInquiryView readValue, UsrPurchase purchase,int countryId);
 
     void putPrivateInquiry(PutInquiryView readValue, UsrPurchase purchase);
 }

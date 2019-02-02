@@ -93,7 +93,8 @@ public class RFQManageServiceImp implements IRFQManageService {
         infoView.setMax_price(Integer.valueOf(GetValue.getStringIndex(rfqConsult.getPrice(), "-", 1)));
         infoView.setCountryId(rfqConsult.getCountry());
         infoView.setQuantity(rfqConsult.getQuantity());
-        infoView.setDescriotion(rfqConsult.getDestination());
+        infoView.setDestination(rfqConsult.getDestination()); //目的地
+        infoView.setDescriotion(rfqConsult.getContent()); //询盘内容
         if (rfqConsult.getPayType() != null)
             infoView.setPay_type(rfqConsult.gtPayType().getLine().getName());
         if (rfqConsult.getShippingType() != null)
