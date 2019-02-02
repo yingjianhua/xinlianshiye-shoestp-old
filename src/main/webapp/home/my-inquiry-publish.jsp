@@ -189,7 +189,7 @@
                                 <el-form-item label="Price：">
                                     <el-col :span="7">
                                         <el-form-item prop="min_price">
-                                            <el-input v-model.number="form.min_price" placeholder="Min"></el-input>
+                                            <el-input v-model.number="form.min_price"></el-input>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :span="1">
@@ -197,7 +197,7 @@
                                     </el-col>
                                     <el-col :span="7">
                                         <el-form-item prop="max_price">
-                                            <el-input v-model.number="form.max_price"  placeholder="Max"></el-input>
+                                            <el-input v-model.number="form.max_price"></el-input>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :span="6" :offset="1">
