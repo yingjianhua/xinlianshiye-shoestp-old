@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" href="/home/v2/static/css/nav/new-top-nav-style.css"/>
 </head>
-<body class="new-style-page w_1200">
+<body class="new-style-page w_1200 svsMain">
 <!-- 顶部nav栏 -->
 <div id="nav" >
     <div id="new-top-nav" class="wide-wrap">
@@ -11,54 +11,54 @@
             <!-- 顶部左侧 - 4个下拉选 -->
             <el-menu :default-active="activeTopNavIndex" class="el-menu-demo" mode="horizontal"
                      @select="handleTopNavSelect">
-                <el-submenu index="1" class="no-arrow new-top-nav-item">
-                    <template slot="title">
-                        <s:text name="OEM"/>
-                    </template>
-                    <el-menu-item index="1-1">
-                        <a href="/home/pdt_PdtProduct?cated=373">
-                            <s:text name="Men"/>
-                        </a>
+                <%--<el-submenu index="1" class="no-arrow new-top-nav-item">--%>
+                    <%--<template slot="title">--%>
+                        <%--<s:text name="OEM"/>--%>
+                    <%--</template>--%>
+                    <%--<el-menu-item index="1-1">--%>
+                        <%--<a href="/home/pdt_PdtProduct?cated=373">--%>
+                            <%--<s:text name="Men"/>--%>
+                        <%--</a>--%>
 
-                    </el-menu-item>
-                    <el-menu-item index="1-2">
-                        <a href="/home/pdt_PdtProduct?cated=380">
-                            <s:text name="WoMen"/>
-                        </a>
-                    </el-menu-item>
-                    <el-menu-item index="1-3">
-                        <a href="/home/pdt_PdtProduct?cated=387">
-                            <s:text name="Children"/>
-                        </a>
-                    </el-menu-item>
-                </el-submenu>
-                <el-submenu index="2" class="no-arrow">
-                    <template slot="title">WholeSale</template>
-                    <el-menu-item index="2-1">
-                        <a href="/home/pdt_PdtProduct?cated=373">
-                            <s:text name="Men"/>
-                        </a>
-                    </el-menu-item>
-                    <el-menu-item index="2-2">
-                        <a href="/home/pdt_PdtProduct?cated=380">
-                            <s:text name="WoMen"/>
-                        </a>
-                    </el-menu-item>
-                    <el-menu-item index="2-3">
-                        <a href="/home/pdt_PdtProduct?cated=387">
-                            <s:text name="Children"/>
-                        </a>
-                    </el-menu-item>
-                </el-submenu>
-                <el-submenu index="3" class="no-arrow">
-                    <template slot="title">
-                        <s:text name="Trade_Show"/>
-                    </template>
-                    <el-menu-item index="3-1"><a
-                            href="/country/Romania-Pantofi-en-gros/romania-index-ro.html">
-                        <s:text name="Romania"/>
-                    </a></el-menu-item>
-                </el-submenu>
+                    <%--</el-menu-item>--%>
+                    <%--<el-menu-item index="1-2">--%>
+                        <%--<a href="/home/pdt_PdtProduct?cated=380">--%>
+                            <%--<s:text name="WoMen"/>--%>
+                        <%--</a>--%>
+                    <%--</el-menu-item>--%>
+                    <%--<el-menu-item index="1-3">--%>
+                        <%--<a href="/home/pdt_PdtProduct?cated=387">--%>
+                            <%--<s:text name="Children"/>--%>
+                        <%--</a>--%>
+                    <%--</el-menu-item>--%>
+                <%--</el-submenu>--%>
+                <%--<el-submenu index="2" class="no-arrow">--%>
+                    <%--<template slot="title">WholeSale</template>--%>
+                    <%--<el-menu-item index="2-1">--%>
+                        <%--<a href="/home/pdt_PdtProduct?cated=373">--%>
+                            <%--<s:text name="Men"/>--%>
+                        <%--</a>--%>
+                    <%--</el-menu-item>--%>
+                    <%--<el-menu-item index="2-2">--%>
+                        <%--<a href="/home/pdt_PdtProduct?cated=380">--%>
+                            <%--<s:text name="WoMen"/>--%>
+                        <%--</a>--%>
+                    <%--</el-menu-item>--%>
+                    <%--<el-menu-item index="2-3">--%>
+                        <%--<a href="/home/pdt_PdtProduct?cated=387">--%>
+                            <%--<s:text name="Children"/>--%>
+                        <%--</a>--%>
+                    <%--</el-menu-item>--%>
+                <%--</el-submenu>--%>
+                <%--<el-submenu index="3" class="no-arrow">--%>
+                    <%--<template slot="title">--%>
+                        <%--<s:text name="Trade_Show"/>--%>
+                    <%--</template>--%>
+                    <%--<el-menu-item index="3-1"><a--%>
+                            <%--href="/country/Romania-Pantofi-en-gros/romania-index-ro.html">--%>
+                        <%--<s:text name="Romania"/>--%>
+                    <%--</a></el-menu-item>--%>
+                <%--</el-submenu>--%>
                 <%--<el-submenu index="4" class="no-arrow">--%>
                 <%--<template slot="title">--%>
                 <%--<s:text name="CROWDFUNDING"/>--%>
@@ -99,55 +99,55 @@
                     <%--</a>--%>
                 <%--</el-menu-item>--%>
                 <%--<!-- 顶部右侧 - 询盘 -->--%>
-                <%--<el-menu-item index="7" class="fr">--%>
-                    <%--<a href="/home/usr_UsrConsult_listView" target="_blank">--%>
-                        <%--<s:text name="RFQ"/>--%>
-                        <%--<i class="inq_count imgnumber">--%>
-                            <%--{{_inquiry_count}}--%>
-                        <%--</i>--%>
-                    <%--</a>--%>
-                <%--</el-menu-item>--%>
-  <el-submenu index="9" class="fr no-arrow"  v-if="languageList.length>0">
+
+  <el-submenu index="8" class="fr no-arrow"  v-if="languageList.length>0">
                     <template slot="title" >
                         Language
                     </template>
-                        <el-menu-item index="9-1" v-for="language in languageList">
+                        <el-menu-item index="7-1" v-for="language in languageList">
                         <a rel="nofollow" :href="'/home/plt_PltConfig_changeLanguage'+language.shortName">
                             {{language.displayName}}
                         </a>
+                        </el-submenu>
+
                     </el-menu-item>
-                </el-submenu>
-                <!-- 顶部右侧 - 注册 -->
-                <el-submenu index="6" class="fr">
-                    <template slot="title"><s:text name="Register"/></template>
-                    <el-menu-item index="6-1">
-                        <a href="/home/usr_UsrPurchase_sign" target="_blank">
-                            <s:text name="Buyer"/>
-                        </a>
-                    </el-menu-item>
-                    <el-menu-item index="6-2">
-                        <a href="/home/usr_UsrSupplier_supplierEntry">
-                            <s:text name="Supplier"/>
-                        </a>
-                    </el-menu-item>
-                </el-submenu>
+                             <el-menu-item index="7" class="fr">
+                            <a href="/home/usr_UsrConsult_listView" target="_blank">
+                                <s:text name="RFQ"/>
+                            </a>
+                        </el-menu-item>
+
+                <%--<!-- 顶部右侧 - 注册 -->--%>
+                <%--<el-submenu index="6" class="fr">--%>
+                    <%--<template slot="title"><s:text name="Register"/></template>--%>
+                    <%--<el-menu-item index="6-1">--%>
+                        <%--<a href="/home/usr_UsrPurchase_sign" target="_blank">--%>
+                            <%--<s:text name="Buyer"/>--%>
+                        <%--</a>--%>
+                    <%--</el-menu-item>--%>
+                    <%--<el-menu-item index="6-2">--%>
+                        <%--<a href="/home/usr_UsrSupplier_supplierEntry">--%>
+                            <%--<s:text name="Supplier"/>--%>
+                        <%--</a>--%>
+                    <%--</el-menu-item>--%>
+                <%--</el-submenu>--%>
 
                 <!-- 顶部右侧 - 登录 -->
-                <el-submenu index="5" class="fr no-arrow">
-                    <template slot="title" v-if="!sysConfig.user">
-                        <a href="/home/usr_UsrPurchase_sign" target="_blank">
-                            <s:text name="Login"></s:text>
-                        </a>
-                    </template>
-                    <template slot="title" v-if="sysConfig.user">
-                        <a href="/home/usr_UsrPurchase_userIndex">{{sysConfig.user.name}}</a>
-                    </template>
-                    <el-menu-item index="5-1" v-if="sysConfig.user">
-                        <a rel="nofollow" href="/home/usr_UsrPurchase_signOut">
-                            <s:text name="sign_out"/>
-                        </a>
-                    </el-menu-item>
-                </el-submenu>
+                <%--<el-submenu index="5" class="fr no-arrow">--%>
+                    <%--<template slot="title" v-if="!sysConfig.user">--%>
+                        <%--<a href="/home/usr_UsrPurchase_sign" target="_blank">--%>
+                            <%--<s:text name="Login"></s:text>--%>
+                        <%--</a>--%>
+                    <%--</template>--%>
+                    <%--<template slot="title" v-if="sysConfig.user">--%>
+                        <%--<a href="/home/usr_UsrPurchase_userIndex">{{sysConfig.user.name}}</a>--%>
+                    <%--</template>--%>
+                    <%--<el-menu-item index="5-1" v-if="sysConfig.user">--%>
+                        <%--<a rel="nofollow" href="/home/usr_UsrPurchase_signOut">--%>
+                            <%--<s:text name="sign_out"/>--%>
+                        <%--</a>--%>
+                    <%--</el-menu-item>--%>
+                <%--</el-submenu>--%>
 
                 <%----%>
 

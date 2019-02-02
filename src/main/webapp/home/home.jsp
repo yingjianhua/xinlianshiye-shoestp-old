@@ -46,6 +46,7 @@
             </div>
 
             <div class="box">
+                <a href="/html/SVS/svs.jsp">
                 <h1>SVS Certification System</h1>
                 <div style="font-size: 13px;">SVS Certification System will make buyers find their<br/> target Supplier
                     more
@@ -71,6 +72,7 @@
                         <li><img class="fl" src="/home/v3/static/images/icon_svs06.png"/>Exhibition</li>
                     </ul>
                 </div>
+                </a>
             </div>
 
             <div class="box nomr">
@@ -97,7 +99,7 @@
                     <li class="nomr"><a href="/home/usr_UsrConsult_publishView">Request quotation details</a></li>
                 </ul>
 
-                <a :href="'/home/usr_UsrConsult_publishView?title='+RFQ_title+'&quantity='+RFQ_quantity"
+                <a :href="'/home/usr_UsrConsult_publishView?title='+encodeURIComponent(RFQ_title)+'&quantity='+RFQ_quantity"
                    class="boxListBtn01" target="_blank">Request For Quotation</a>
             </div>
 
@@ -119,7 +121,7 @@
                                     <br>
                                     selected by analysts
                                 </div>
-                                <a href="/html/o2o/introduceO2O.html" target="_blank"
+                                <a href="/html/o2o/introduceO2O.jsp" target="_blank"
                                    class="btn-see-all">Learn More</a>
                             </div>
 

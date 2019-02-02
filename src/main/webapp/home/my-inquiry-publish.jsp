@@ -149,7 +149,7 @@
                             </div>
                             <div class="form_main">
                                 <el-form-item label-width="0" prop="descriotion">
-                                    <el-input type="textarea" :autosize="{ minRows: 14, maxRows: 14}" placeholder="my-inquiry-publish.Demand"
+                                    <el-input type="textarea" :autosize="{ minRows: 14, maxRows: 14}" placeholder="Please let suppliers know your detailes requirements. You may include:color,size,material,grade/standard,etc"
                                         v-model="form.descriotion">
                                     </el-input>
                                 </el-form-item>
@@ -231,7 +231,7 @@
                                             </el-form-item>
                                             <!-- 目的地 -->
                                             <el-form-item label-width="0">
-                                                <el-input v-model="form.destination"></el-input>
+                                                <el-input v-model="form.destination" placeholder="Destination Port"></el-input>
                                             </el-form-item>
                                             <!-- 支付方式 -->
                                             <el-form-item label-width="0">
@@ -366,8 +366,8 @@
                         },
                         {
                             min: 1,
-                            max: 50,
-                            message: 'Content cannot exceed 50 characters',
+                            max: 500,
+                            message: 'Content cannot exceed 500 characters',
                             trigger: 'blur'
                         }
                     ],
@@ -404,7 +404,7 @@
                 GetQueryString(name) {
                     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
                     var r = window.location.search.substr(1).match(reg);
-                    if (r != null) return unescape(r[2]);
+                    if (r != null) return unescape(decodeURIComponent(r[2]));
                     return null;
                 },
                 // elementui 上传功能 *2 - 删除操作
@@ -480,7 +480,7 @@
                             // 如果没有上传图片
                             // if (this.imgsToUpload.length == 0) {
                             //     this.flag = false;
-                            //     if(${env.login==null}){
+                            <%--//     if(${env.login==null}){--%>
                             //         this.$message({
                             //             showClose: true,
                             //             message: 'Pleaselogin',
@@ -511,7 +511,20 @@
                                             });
                                             setTimeout(function () {
                                                 gtag_report_conversion()
-                                                sessionStorage['Temp_publish_form']=null
+                                                sessionStorage['Temp_publish_form']= { // 需要上传给后台的对象
+                                                    title: "",
+                                                    image: "",
+                                                    descriotion: "",
+                                                    quantity: "",
+                                                    unit: 1, //单位 - 双
+                                                    min_price: null,
+                                                    max_price: null,
+                                                    currency: 1, //货币单位
+                                                    valid_date: null,
+                                                    shipping_type: 1, //运送方式
+                                                    destination: "", //目的地
+                                                    pay_type: 1, //支付方式
+                                                }
                                                 window.location.href =
                                                     '/home/usr_UsrConsult_listView';
                                             }, 2000)
@@ -553,7 +566,7 @@
                     this.form.title = this.GetQueryString("title");
                 }
                 if (this.GetQueryString("quantity")) {
-                    this.form.quantity = this.GetQueryString("quantity");
+                    this.form.quantity = Number(this.GetQueryString("quantity"));
                 }
                 // 全局获取货币单位
                 // this.currencyList = [];

@@ -14,20 +14,31 @@ Vue.component('index-top',{
                  <input type="text" v-model="input">
                  <div class="searchbotton" @click="submit"><img src="/home/v3/static/images/indexiconserch.png" alt=""></div>
             </div>
-            <div class="o2otoplikes" v-if="user">
+            <a class="o2otoplikes"
+              :href="sysConfig.user?'/home/usr_UsrPurchase_userIndex':'/home/usr_UsrPurchase_sign'">
                 <img src="/home/v3/static/images/indextopren.png" alt="">
                 <div class="o2otoplikenum">
-                    <p>{{user.shopping_cart_count}}</p>
+                    <div style="height: 20px;">
+                      <p v-if="sysConfig.user && sysConfig.user.inquiry_count">
+                        {{sysConfig.user.inquiry_count}}
+                      </p>
+                       <p v-if="!sysConfig.user">
+                       0
+                      </p>
+                    </div>
                     <p>My Shosetp</p>
                 </div>
-            </div>
-            <div class="o2otoplikes" v-if="user">
+            </a>
+            <a class="o2otoplikes" href="/home/usr_UsrFavorites_myfavorite">
                 <img src="/home/v3/static/images/o2otopfavoroite.png" alt="">
                 <div class="o2otoplikenum">
-                    <p>{{user.favorite_count}}</p>
+                    <div style="height: 20px;">
+                      <p v-if="sysConfig.user">{{sysConfig.user.favorite_count }}</p>
+                      <p v-if="!sysConfig.user"> 0</p>
+                    </div>
                     <p>Favorites</p>
                 </div>
-            </div>
+            </a>
         </div>
  </div>`,
     props:{

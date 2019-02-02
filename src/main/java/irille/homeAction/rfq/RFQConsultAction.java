@@ -3,12 +3,17 @@ package irille.homeAction.rfq;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import irille.Filter.svr.ItpCheckPurchaseLogin;
 import irille.Service.Pdt.IPdtProductService;
+import irille.Service.Plt.PltService;
 import irille.Service.RFQ.IRFQConsultService;
 import irille.homeAction.HomeAction;
+import irille.pub.tb.FldLanguage;
+import irille.pub.util.ipUtils.City;
 import irille.view.RFQ.PutInquiryView;
 import irille.view.RFQ.PutRFQConsultView;
 import irille.view.RFQ.RFQPdtInfo;
+import irille.view.plt.CountryView;
 import lombok.Setter;
+import org.apache.struts2.ServletActionContext;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -35,6 +40,10 @@ public class RFQConsultAction extends HomeAction {
     @Setter
     private int type;
 
+
+    @Inject
+    private PltService pltService;
+
     /**
      * @Description: RFQ询盘
      * @date 2019/1/30 11:10
@@ -53,7 +62,17 @@ public class RFQConsultAction extends HomeAction {
      */
     @ItpCheckPurchaseLogin.NeedLogin
     public void putInquiry() throws IOException {
-        irfqConsultService.putInquiry(objectMapper.readValue(getJsonBody(), PutInquiryView.class), getPurchase());
+        PutInquiryView view = objectMapper.readValue(getJsonBody(), PutInquiryView.class);
+        String[] country = City.find(ServletActionContext.getRequest().getRemoteAddr());
+        int countryId=-1;
+        if (country != null && country.length > 0) {
+            for (CountryView countryView : pltService.getCountryList(FldLanguage.Language.zh_CN)) {
+                if (countryView.getName().indexOf(country[0]) != -1) {
+                    countryId=countryView.getId();
+                }
+            }
+        }
+        irfqConsultService.putInquiry(view, getPurchase(),countryId);
         write();
     }
 
