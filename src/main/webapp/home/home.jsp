@@ -90,6 +90,8 @@
                             {{chooes}} <i class="el-icon-arrow-down fr"></i>
                             <ul>
                                 <li :data-name="'Bag'" @click="chooesbtn">Pairs</li>
+                                <li :data-name="'Bag'" @click="chooesbtn">Forty-Foot Container</li>
+                                <li :data-name="'Bag'" @click="chooesbtn">Twenty-Foot Container</li>
                             </ul>
                         </div>
                     </div>

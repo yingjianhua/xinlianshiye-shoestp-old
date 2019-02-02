@@ -7,6 +7,7 @@ import com.google.inject.ImplementedBy;
 import irille.Service.Manage.RFQ.Imp.RFQConsultServiceImpl;
 import irille.platform.rfq.view.RFQConsultRelationView;
 import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
+import irille.sellerAction.rfq.view.RFQConsultRelationCountView;
 import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
 
@@ -74,5 +75,16 @@ public interface RFQConsultService {
 	Page<RFQConsultRelationView> page(UsrSupplier supplier, Integer start, Integer limit, String keyword,
 			Integer groupId, Boolean isFavorite, Byte type, Byte readStatus, Boolean isDeleted, Date startDate,
 			Date endDate, Byte orderType);
+	
+	/**
+	 * 统计询价单数量
+	 * 
+	 * @param supplier 供应商
+	 * @param isDeleted 是否已删除, true: 统计回收站中的询价单数量, false: 统计不在回收站中的询价单数量, 默认为false
+	 * @return 统计结果
+	 * @author Jianhua Ying
+	 * 
+	 */
+	RFQConsultRelationCountView count(UsrSupplier supplier, Boolean isDeleted);
 
 }
