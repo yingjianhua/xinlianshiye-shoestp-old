@@ -1,16 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <meta http-quiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <script src="./js/axios.js"></script>
-    <script src="./js/vue.js"></script>
-    <script src="./js/qs.js"></script>
-    <script src="./js/config.js"></script>
-    <link rel="stylesheet" href="css/index.css">
-    <title>鞋贸港</title>
-</head>
-<body>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<jsp:include page="/home/v2/template/header.jsp"></jsp:include>
+<script src="./js/config.js"></script>
+<link rel="stylesheet" href="css/index.css">
+<style>
+    .wide {
+        width: 1240px;
+        margin: 0 auto;
+    }
+</style>
+
+<jsp:include page="/home/v2/template/nav.jsp"></jsp:include>
 <div id="linExhibitionLasVages">
     <div class="lasvagesbannercon">
         <img class='lasvagesbanner' src="images/bannerlasvages.png" alt="">
@@ -127,5 +126,7 @@
         }
     })
 </script>
+<jsp:include page="/home/v2/template/foot.jsp"></jsp:include>
+
 </body>
 </html>

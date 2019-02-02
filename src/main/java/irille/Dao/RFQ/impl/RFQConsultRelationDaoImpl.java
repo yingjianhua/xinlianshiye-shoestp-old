@@ -1,12 +1,5 @@
 package irille.Dao.RFQ.impl;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import org.junit.Test;
-
 import irille.Dao.RFQ.RFQConsultRelationDao;
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.platform.rfq.view.RFQConsultRelationView;
@@ -14,6 +7,12 @@ import irille.platform.rfq.view.SupplierView;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.shop.usr.UsrSupplier;
+import org.junit.Test;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class RFQConsultRelationDaoImpl implements RFQConsultRelationDao {
 

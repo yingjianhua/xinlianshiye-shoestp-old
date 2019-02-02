@@ -15,6 +15,8 @@ public class O2OProductView implements BaseView {
     private String actAddress;
     private String productName;
     private String productCat;
+    private String image;
+    private String sku;
     private BigDecimal price;
     private BigDecimal mkt_price; //私有展会展品特有
     private Integer minOq;
@@ -23,6 +25,8 @@ public class O2OProductView implements BaseView {
     private String contact;
     private String mobile;
     private String rewriter;
+    private Integer stock;   //私人展会
+    private String supCat;   //私人展会
 
     private String message;//申请下架理由
 

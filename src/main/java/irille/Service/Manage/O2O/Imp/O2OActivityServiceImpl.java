@@ -365,8 +365,8 @@ public class O2OActivityServiceImpl implements O2OActivityService {
 	 * @author lijie@shoestp.cn
 	 */
 	 @Override
-    public Page priveteList(int start, int limit) {
-        List<Map<String, Object>> maps = o2OActivityDao.privetePdtList(start, limit);
+    public Page priveteList(int start, int limit, Integer status, Integer verify_status, String cat, String supName) {
+        List<Map<String, Object>> maps = o2OActivityDao.privetePdtList(start,limit,status,verify_status,cat,supName);
         List<O2OProductView> result = new ArrayList<>();
         for (Map<String, Object> map : maps) {
             O2OProductView o2OProductView = new O2OProductView();
@@ -374,13 +374,16 @@ public class O2OActivityServiceImpl implements O2OActivityService {
             o2OProductView.setStatus(GetValue.get(map, O2O_PrivateExpoPdt.T.VERIFY_STATUS, Byte.class, (byte) 0));
             o2OProductView.setState(GetValue.get(map, O2O_PrivateExpoPdt.T.STATUS, Byte.class, (byte) 0));
             o2OProductView.setProductName(GetValue.get(map, PdtProduct.T.NAME, String.class, ""));
-            o2OProductView.setProductCat(GetValue.get(map, PdtCat.T.NAME, String.class, ""));
             o2OProductView.setPrice(GetValue.get(map, PdtProduct.T.CUR_PRICE, BigDecimal.class, BigDecimal.ZERO));
             o2OProductView.setMkt_price(GetValue.get(map, PdtProduct.T.MKT_PRICE, BigDecimal.class, BigDecimal.ZERO));
-            o2OProductView.setMinOq(GetValue.get(map, PdtProduct.T.MIN_OQ, Integer.class, 0));
-            o2OProductView.setSupplierName(GetValue.get(map, "supName", String.class, null));
-            o2OProductView.setSupplierLevel(GetValue.get(map, "roleName", String.class, null));
+            o2OProductView.setMinOq(GetValue.get(map, PdtProduct.T.MIN_OQ, Integer.class, -1));
             o2OProductView.setRewriter(SEOUtils.getPdtProductTitle(o2OProductView.getPkey(), o2OProductView.getProductName()));
+            o2OProductView.setImage(GetValue.getFirstImage(GetValue.get(map, PdtProduct.T.PICTURE, String.class, null)));
+            o2OProductView.setSku(GetValue.getFirstImage(GetValue.get(map, PdtProduct.T.SKU, String.class, null)));
+            o2OProductView.setStock(GetValue.get(map, PdtProduct.T.STOCK, Integer.class, null));
+            o2OProductView.setSupplierName(GetValue.get(map, "supName", String.class, null));
+            o2OProductView.setProductCat(GetValue.get(map, "catName", String.class, ""));
+            o2OProductView.setSupCat(GetValue.get(map, "SuppdtCat", String.class, null));
             result.add(o2OProductView);
         }
         return new Page(result, start, limit, o2OActivityDao.privetePdtListCount());
