@@ -8,8 +8,11 @@ import irille.pub.tb.IEnumOpt;
  */
 public enum RFQConsultPayType implements IEnumOpt {
     TT(1, "TT支付"),
-    //    CASH_PAYMENT(2, "现金支付"),
-    OFFLINE_PAY(2, "线下支付");
+    LC(2, "L/C"),
+    DP(3, "D/P"),
+    WesternUnion(4, "Western Union"),
+    MoneyGram(5, "Money Gram")
+    ;
 
     public static final String NAME = "支付方式";
     public static final RFQConsultPayType DEFAULT = TT;

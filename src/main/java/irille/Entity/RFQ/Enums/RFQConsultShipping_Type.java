@@ -8,6 +8,9 @@ import irille.pub.tb.IEnumOpt;
  */
 public enum RFQConsultShipping_Type implements IEnumOpt {
     FOB(1, "FOB"),
+    CIF(2, "CIF"),
+    CNF(3, "CNF"),
+    CRF(4, "CRF"),
     ;
 
     public static final String NAME = "配送方式";
