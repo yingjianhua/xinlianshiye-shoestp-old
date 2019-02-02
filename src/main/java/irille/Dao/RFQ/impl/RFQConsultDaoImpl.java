@@ -397,7 +397,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 RFQConsult.T.CREATE_TIME,
                 RFQConsultRelation.T.HAD_READ_PURCHASE,
                 RFQConsultRelation.T.QUANTITY,
-                RFQConsultRelation.T.DESTINATION
+                RFQConsultRelation.T.DESCRIPTION
         ).SELECT(RFQConsultRelation.T.TITLE, "myTitle").SELECT(
                 RFQConsultRelation.T.CREATE_DATE, "myCreate_time"
         )

@@ -30,4 +30,7 @@ public interface IRFQConsultAction extends ISellerAction, IEnableable {
 
     @RequestMapping(alias = "获取我的RFQ报价详情", sort = 7)
     void getMyRFQQuoteInfo() throws IOException;
+
+    @RequestMapping(alias = "上传图片", sort = 7)
+    public void upload() throws IOException;
 }

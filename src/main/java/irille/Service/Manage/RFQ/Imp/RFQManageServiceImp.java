@@ -133,7 +133,7 @@ public class RFQManageServiceImp implements IRFQManageService {
         rfqConsultRelation.stFavorite(false);
         rfqConsultRelation.setCurrency(quoteInfo.getCurrency());
         rfqConsultRelation.setTitle(quoteInfo.getTitle());
-        rfqConsultRelation.setDestination(quoteInfo.getDescriotion());
+        rfqConsultRelation.setDescription(quoteInfo.getDescriotion());
         rfqConsultRelation.setImage(quoteInfo.getImages());
         rfqConsultRelation.setQuantity(quoteInfo.getQuantity());
         rfqConsultRelation.setMinprice(quoteInfo.getMin_price());
@@ -190,7 +190,7 @@ public class RFQManageServiceImp implements IRFQManageService {
             body.setTitle(GetValue.get(map, RFQConsult.T.TITLE, String.class, null));
             body.setQuantity(GetValue.get(map, RFQConsultRelation.T.QUANTITY, Integer.class, null));
             body.setQuoteTitle(GetValue.get(map, "myTitle", String.class, null));
-            body.setQuoteDescriotion(GetValue.get(map, RFQConsultRelation.T.DESTINATION, String.class, null));
+            body.setQuoteDescriotion(GetValue.get(map, RFQConsultRelation.T.DESCRIPTION, String.class, null));
             body.setQuoteRFQCreate_date(GetValue.get(map, "myCreate_time", Date.class, null));
             if (GetValue.get(map, RFQConsultRelation.T.HAD_READ_PURCHASE, Byte.class, (byte) -1) == 0)
                 body.setStatus(1);
