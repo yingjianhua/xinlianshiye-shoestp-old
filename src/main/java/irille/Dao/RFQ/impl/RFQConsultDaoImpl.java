@@ -356,6 +356,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 .LIMIT(start, limit)
                 .WHERE(keyword != null && keyword.length() > 0, RFQConsult.T.TITLE, "like ?", keyword)
                 .WHERE(RFQConsult.T.VALID_DATE, ">?", LocalDateTime.now())
+                .WHERE(RFQConsult.T.VERIFY_STATUS,"=?", RFQConsultVerifyStatus.PASS.getLine().getKey())
         ;
         return Query.sql(sql).queryCount();
     }
