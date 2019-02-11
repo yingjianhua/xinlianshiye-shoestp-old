@@ -181,7 +181,8 @@
 							{{item.originCountry}} ( {{item.originProvince}} )
 						</div>
 
-						<a class="btn" href="javascript:;" @click="addRFQ" :data-id = "item.pdtId">Contact Supplier</a>
+						<!-- <a class="btn" href="javascript:;" @click="addRFQ" :data-id = "item.pdtId">Contact Supplier</a> -->
+						<a class="btn" target="_blank" :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" :data-id = "item.pdtId">Contact Supplier</a>
 					</div>
 				</div>
 				<!--产品 end-->
