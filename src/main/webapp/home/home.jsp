@@ -443,19 +443,19 @@
 				],
 				// 林华立数据
 				newsList: [{
-					url: '/html/exhibition/ExpoRivaSchuh.jsp',
+					url: '/home/rfq_RFQConsult_exhibitionshow',
 					image: '/home/v3/static/images/zh_img.png',
 					title: 'Expo Riva Schuh',
 					time: 'Jan 12-15, 2019',
 					location: 'Italy'
 				}, {
-					url: '/home/rfq_RFQConsult_exhibitionshow',
+					url: '/home/rfq_RFQConsult_ExpoRivaSchuhshow',
 					image: '/home/v3/static/images/zh_img2.png',
 					title: 'FOOTWEAR SOURCING AT MAGIC',
 					time: 'February 4-7, 2019',
 					location: 'Las Vegas'
 				}, {
-					url: '/html/exhibition/guangjiaohui.jsp',
+					url: '/home/rfq_RFQConsult_guangjiaohuishow',
 					image: '/home/v3/static/images/zh_img3.png',
 					title: 'China Import and Export Fair',
 					time: 'Apr.15-May.5, 2019',

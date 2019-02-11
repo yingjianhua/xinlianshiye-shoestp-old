@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <jsp:include page="/home/v2/template/header.jsp"></jsp:include>
-<script src="./js/config.js"></script>
-<script src="./js/tagcloud.js"></script>
-<link rel="stylesheet" href="css/reset.css"/>
-<link rel="stylesheet" href="css/index.css">
+<script src="/html/exhibition/js/config.js"></script>
+<script src="/html/exhibition/js/tagcloud.js"></script>
+<link rel="stylesheet" href="/html/exhibition/css/reset.css"/>
+<link rel="stylesheet" href="/html/exhibition/css/index.css">
 <style>
     .wide {
         width: 1240px;
@@ -15,7 +15,7 @@
 <jsp:include page="/home/v2/template/nav.jsp"></jsp:include>
 <main id="gjhApp">
     <header>
-        <img src="./images/bannerbg.jpg" alt="">
+        <img src="/html/exhibition/images/bannerbg.jpg" alt="">
     </header>
     <section class="section1">
         <h1>Introduction of China Import and Export Fair</h1>
@@ -63,14 +63,14 @@
             <h3>International Pavilion</h3>
         </div>
         <div class="fl">
-            <img src="./images/section2.png" alt="">
+            <img src="/html/exhibition/images/section2.png" alt="">
         </div>
     </section>
     <section class="section3 w_1240">
         <div class="title">
-            <img src="./images/countdown.png" alt="" style="margin-left:0;">
+            <img src="/html/exhibition/images/countdown.png" alt="" style="margin-left:0;">
             <span>From the 125th Canton Fair Countdown</span>
-            <img src="./images/80.png" alt="">
+            <img src="/html/exhibition/images/80.png" alt="">
             <span>Days</span>
         </div>
         <table cellspacing="0">

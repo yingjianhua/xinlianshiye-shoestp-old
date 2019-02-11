@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <jsp:include page="/home/v2/template/header.jsp"></jsp:include>
-<script src="./js/config.js"></script>
-<link rel="stylesheet" href="css/index.css">
+<script src="/html/exhibition/js/config.js"></script>
+<link rel="stylesheet" href="/html/exhibition/css/index.css">
 <style>
     .wide {
         width: 1240px;
@@ -18,7 +18,7 @@
             <p class="banner-title-time">12-15 / Jan / 2019</p>
             <p class="banner-title-address">Riva del Garda Fiere,<br>Riva del Garda,Italy</p>
         </div>
-        <img src="images/ERS-banner.png" alt="" name="ERS-banner">
+        <img src="/html/exhibition/images/ERS-banner.png" alt="" name="ERS-banner">
     </div>
     <!--About-->
     <div class="garda-about">
@@ -77,13 +77,13 @@
             A different way of experiencing business, which encourages meetings, as well as combining business and
             leisure.
         </p>
-        <img src="images/ERS-Gardabags.png" alt="" name="ERS-Gardabags">
+        <img src="/html/exhibition/images/ERS-Gardabags.png" alt="" name="ERS-Gardabags">
     </div>
     <!--Information-->
     <div class="garda-detail">
         <div class="garda-detail_edition garda_center">
-            <img src="images/ERS-edition.png" alt="" name="ERS-edition">
-            <img src="images/ERS-shoesList.png" alt="" name="ERS-shoesList">
+            <img src="/html/exhibition/images/ERS-edition.png" alt="" name="ERS-edition">
+            <img src="/html/exhibition/images/ERS-shoesList.png" alt="" name="ERS-shoesList">
         </div>
         <!--Basic Information-->
         <div class="garda-detail_basic garda_center">
@@ -153,14 +153,14 @@
         <!--Selected Suppliers List-->
         <div class="garda-suppliers garda_center">
             <h2 class="garda_h2">Selected Suppliers List</h2>
-            <img src="images/ERS-suppliers01.png" alt="" name="ERS-suppliers">
-            <img src="images/ERS-suppliers02.png" alt="" name="ERS-suppliers">
-            <img src="images/ERS-suppliers03.png" alt="" name="ERS-suppliers">
+            <img src="/html/exhibition/images/ERS-suppliers01.png" alt="" name="ERS-suppliers">
+            <img src="/html/exhibition/images/ERS-suppliers02.png" alt="" name="ERS-suppliers">
+            <img src="/html/exhibition/images/ERS-suppliers03.png" alt="" name="ERS-suppliers">
             <div class="garda-suppliersList">
-                <img src="images/ERS-suppliersList01.png" alt="" name="ERS-suppliersList">
-                <img src="images/ERS-suppliersList02.png" alt="" name="ERS-suppliersList">
-                <img src="images/ERS-suppliersList03.png" alt="" name="ERS-suppliersList">
-                <img src="images/ERS-suppliersList04.png" alt="" name="ERS-suppliersList">
+                <img src="/html/exhibition/images/ERS-suppliersList01.png" alt="" name="ERS-suppliersList">
+                <img src="/html/exhibition/images/ERS-suppliersList02.png" alt="" name="ERS-suppliersList">
+                <img src="/html/exhibition/images/ERS-suppliersList03.png" alt="" name="ERS-suppliersList">
+                <img src="/html/exhibition/images/ERS-suppliersList04.png" alt="" name="ERS-suppliersList">
             </div>
         </div>
         <!--Buyers' Lounge-->
@@ -176,7 +176,7 @@
                     relax, develop contacts and network.
                 </p>
             </div>
-            <img src="images/ERS-ourbooth.png" alt="" name="ERS-ourbooth">
+            <img src="/html/exhibition/images/ERS-ourbooth.png" alt="" name="ERS-ourbooth">
         </div>
         <!--Venue Map & Directions-->
         <div class="garda-map garda_center">
@@ -196,23 +196,23 @@
         data: {
             information: [
                 {
-                    image: 'images/ERS-Information01.png',
-                    icon: 'images/ERS-Info-icon01.png',
+                    image: '/html/exhibition/images/ERS-Information01.png',
+                    icon: '/html/exhibition/images/ERS-Info-icon01.png',
                     title: 'Timings',
                     content: ['9:00 AM - 6:00 PM\n(Jan 12 - Jan 14) (General)', '9:00 AM - 4:00 PM\n(Jan 15) (General)']
                 }, {
-                    image: 'images/ERS-Information02.png',
-                    icon: 'images/ERS-Info-icon02.png',
+                    image: '/html/exhibition/images/ERS-Information02.png',
+                    icon: '/html/exhibition/images/ERS-Info-icon02.png',
                     title: 'Entry Fees',
                     content: ['Free* \nFor Industry Professionals']
                 }, {
-                    image: 'images/ERS-Information03.png',
-                    icon: 'images/ERS-Info-icon03.png',
+                    image: '/html/exhibition/images/ERS-Information03.png',
+                    icon: '/html/exhibition/images/ERS-Info-icon03.png',
                     title: 'Participants',
                     content: ['13000 Visitors', '1455 Exhibitors']
                 }, {
-                    image: 'images/ERS-Information04.png',
-                    icon: 'images/ERS-Info-icon04.png',
+                    image: '/html/exhibition/images/ERS-Information04.png',
+                    icon: '/html/exhibition/images/ERS-Info-icon04.png',
                     title: 'Frequency',
                     content: ['Twice A Year']
                 },
