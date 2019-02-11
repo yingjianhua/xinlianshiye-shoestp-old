@@ -109,12 +109,13 @@
                   transform: translateY(-20px); }
   .svsMain .advantage {
     width: 100%;
-    text-align: center; }
+    text-align: center; 
+    background-color: #fff;}
     .svsMain .advantage h1 {
       font-family: Arial-BoldMT;
       font-size: 40px;
       color: #2f4597;
-      margin: 70px 0 40px 0; }
+      padding: 70px 0 40px 0; }
     .svsMain .advantage .advantage-item {
       width: 490px;
       font-size: 21px;

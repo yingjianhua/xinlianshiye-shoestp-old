@@ -10,14 +10,14 @@
           <div class="">
             <nav class="w_1200 clearfix">
                 <div class="clearfix logo fl">
-                  <img class="fl" src="./images/top-logo.png" alt="">
+                  <a href="https://www.shoestp.com/" target="_blank"><img class="fl" src="./images/top-logo.png" alt=""></a>
                   <div class="fl font">SVS Certification System</div>
                 </div>
                 <div class="fr nav-item">
-                    <a href="javascript:void(0)">Supplier</a>
-                    <a href="javascript:void(0)">Feature</a>
-                    <a href="javascript:void(0)">Advantage</a>
-                    <a href="javascript:void(0)">Benefits</a>
+                    <a href="javascript:void(0)" @click="myanimate('supplier')">Supplier</a>
+                    <a href="javascript:void(0)" @click="myanimate('svsApp')">Feature</a>
+                    <a href="javascript:void(0)" @click="myanimate('advantage')">Advantage</a>
+                    <a href="javascript:void(0)" @click="myanimate('benefits')">Benefits</a>
                 </div>
             </nav>
             <div class="w_1200 top-font slideInLeft ripple">
@@ -55,7 +55,7 @@
               </div>
           </div>
         </section>
-        <section class="advantage">
+        <section class="advantage" id="advantage">
             <div class="w_1200">
                 <h1>SVS Advantage</h1>
                 <div class="flexSb">
@@ -75,7 +75,7 @@
                 </div>
             </div>
         </section>
-        <section class="benefits">
+        <section class="benefits" id="benefits">
             <div class="w_1370 flexSb">
                 <div class="font ripple" :class="scrollTop2?'slideInDown':''">
                     <h1>The Benefits of SVS</h1>
@@ -88,7 +88,7 @@
                 </div>
             </div>
         </section>
-        <section class="supplier">
+        <section class="supplier" id="supplier">
           <div class="supplier-font">
             <h1 class="ripple" :class="scrollTop3?'slideInLeft':''">What is SVS supplier？</h1>
             <p class="ripple" :class="scrollTop3?'slideInLeft':''">Our SVS suppliers that have been verified by relevant personnel and approved by the platform.</p>
@@ -151,8 +151,13 @@
             this.scrollTop3 = true;
           }
         },
+        myanimate:function (id) {
+                    document.getElementById(id).scrollIntoView(true);
+                }
+
 			}
 		})
+        
   </script>
   <script>
       /*3D标签云*/
