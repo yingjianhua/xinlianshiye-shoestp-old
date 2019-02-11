@@ -110,7 +110,6 @@
             <div class="location-content-tier">
                 <div class="location-introduce">
                     <h2 class="introduce-h2">Time and Location</h2>
-                    <p class="introduce-text">Could Better Know The Quality Of A Shoes</p>
                     <p class="introduce-wire"></p>
                     <p class="introduce-text">We will publish the location and time of the new product show meeting at
                         the Shoestp.com three months in advance. The show will generally last for 7 days.</p>

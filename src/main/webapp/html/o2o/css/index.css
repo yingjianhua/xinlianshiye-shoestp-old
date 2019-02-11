@@ -702,12 +702,14 @@ li {
     background-color: white;
     border-radius: 5px;
     z-index: 100;
+    text-align: right;
 }
 
 #lhl-highClass .introduce-h2 {
     font-size: 36px;
     margin-top: 72px;
     color: #565656;
+    padding-right: 11%;
 }
 
 #lhl-highClass .introduce-text {
@@ -722,6 +724,7 @@ li {
     margin: 20px auto 35px;
     width: 120px;
     border: 1px solid #dddddd;
+    margin-left: 67%;
 }
 
 /* 鞋款分类wrap */
