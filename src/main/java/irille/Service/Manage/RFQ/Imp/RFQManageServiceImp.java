@@ -19,6 +19,7 @@ import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.plt.PltErate;
+import irille.shop.usr.UsrPurchase;
 import irille.view.Manage.RFQ.*;
 import irille.view.Page;
 
@@ -121,7 +122,6 @@ public class RFQManageServiceImp implements IRFQManageService {
         }else if (rfqConsultRelation == null||rfqConsult.getLeftCount()>=rfqConsult.getTotal()) {
             infoView.setStatus(1);
         }
-        System.out.println(infoView);
         return infoView;
     }
 
@@ -200,10 +200,17 @@ public class RFQManageServiceImp implements IRFQManageService {
             body.setQuoteTitle(GetValue.get(map, "myTitle", String.class, null));
             body.setQuoteDescriotion(GetValue.get(map, RFQConsultRelation.T.DESCRIPTION, String.class, null));
             body.setQuoteRFQCreate_date(GetValue.get(map, "myCreate_time", Date.class, null));
-            if (GetValue.get(map, RFQConsultRelation.T.HAD_READ_PURCHASE, Byte.class, (byte) -1) == 0)
-                body.setStatus(1);
-            else {
-                body.setStatus(2);
+            UsrPurchase up= BeanBase.load(UsrPurchase.class,GetValue.get(map, RFQConsultRelation.T.PURCHASE_ID, Date.class, null));
+            body.setPurchaseName(up.getName());
+            body.setPurchaseCountryIMG(up.gtCountry().getNationalFlag());
+            if(GetValue.get(map, RFQConsultRelation.T.HAD_READ_SUPPLIER, Byte.class, (byte) -1) == 0){
+                body.setStatus(3);
+            }else{
+                if (GetValue.get(map, RFQConsultRelation.T.HAD_READ_PURCHASE, Byte.class, (byte) -1) == 0)
+                    body.setStatus(1);
+                else {
+                    body.setStatus(2);
+                }
             }
             result.add(body);
         }

@@ -24,5 +24,7 @@ public class RFQManageMyQuoteListBody {
     private Date quoteRFQCreate_date;
     private String quoteDescriotion;
     private int status;
+    private String  PurchaseName;//采购商名称
+    private String  PurchaseCountryIMG;//采购商注册时选择的国家
 
 }
