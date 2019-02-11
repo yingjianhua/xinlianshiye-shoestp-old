@@ -35,7 +35,7 @@ public class RFQManageInfoView implements BaseView {
     private Integer currency;
     private String destination;//目的地
     private List quotation_record;
-
+    private String currencyname;//货币名称
     //-1 close 1报价  0可以报价
     private int status;
 }

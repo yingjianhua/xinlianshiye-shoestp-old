@@ -403,8 +403,10 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 RFQConsult.T.CONTENT,
                 RFQConsult.T.CREATE_TIME,
                 RFQConsultRelation.T.HAD_READ_PURCHASE,
+                RFQConsultRelation.T.HAD_READ_SUPPLIER,
                 RFQConsultRelation.T.QUANTITY,
-                RFQConsultRelation.T.DESCRIPTION
+                RFQConsultRelation.T.DESCRIPTION,
+                RFQConsultRelation.T.PURCHASE_ID
         ).SELECT(RFQConsultRelation.T.TITLE, "myTitle").SELECT(
                 RFQConsultRelation.T.CREATE_DATE, "myCreate_time"
         )
