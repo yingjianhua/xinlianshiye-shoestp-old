@@ -258,144 +258,148 @@
         }
     </style>
 </head>
+<jsp:include page="v3/header.jsp"/>
+<jsp:include page="v3/nav.jsp"/>
 <%@ include file="/home/template/web-top.jsp" %>
-<%@ include file="/home/template/new-header.jsp" %>
 <body class="lang_en w_1200">
 
 <!-- 内容 start -->
 <!-- 商家-头部 -->
 <!-- 大轮播 图 top -->
 <div class="top-big-goodsList-pic">
-    <img style="width: 100%;margin-bottom: 45px;min-width: 1200px;"
-         src="https://image.shoestp.com/static/themes/t050/images/purchase-center/romania/big-pic-goodsList-01.jpg"
-         alt="">
-    <!-- <a class='top-pic-goods-01' href="https://image.shoestp.com/2018-new-men-fashion-business-shoes_p5612.html" target="_blank"></a>
-    <a class='top-pic-goods-02' href="https://image.shoestp.com/womens-fashionable-boots-spring-and-autumn-back-zipper-pointed-simple-stiletto-short-boots_p5609.html"
-        target="_blank"></a>
-    <a class='top-pic-goods-03' href="https://image.shoestp.com/fashion-tassel-decorated-pointed-toe-8cm-chunky-heel-ankle-high-women-boots_p5605.html"
-        target="_blank"></a>
-    <a class='top-pic-goods-04' href="https://image.shoestp.com/winter-warm-youth-kids-ankle-boots-boys-lace-up-black-boots_p5637.html"
-        target="_blank"></a>
-    <a class='top-pic-goods-05' href="https://image.shoestp.com/mens-round-head-breathable-business-shoes-dress-shoes-clark-style_p5651.html"
-        target="_blank"></a>
-    <a class='top-pic-goods-06' href="https://image.shoestp.com/fashionable-and-comfortable-kids-winter-booties-boys-pu-navy-ankle-boots_p5633.html"
-        target="_blank"></a>
-    <a class='top-pic-goods-07' href="https://image.shoestp.com/new-fashion-design-soft-rubber-sole-leather-men-dress-shoes_p5606.html"
-        target="_blank"></a>
-    <a class='top-pic-goods-08' href="https://image.shoestp.com/2018-winter-season-fashion-kids-cheap-boots-boys-custom-warm-boots-for-sale_p5610.html"
-        target="_blank"></a>
-    <a class='top-pic-goods-09' href="https://image.shoestp.com/womens-pu-ankle-boots-chunky-metal-heel-side-opening-western-style-all-seasons-boots_p5614.html"
-        target="_blank"></a>
-    <a class='top-pic-goods-10' href="https://image.shoestp.com/reliable-quality-luxury-brands-designer-genuine-leather-dress-shoe_p5615.html"
-        target="_blank"></a>
-    <a class='top-pic-goods-11' href="https://image.shoestp.com/cool-design-girls-pu-leather-lace-up-boots-winter-season-girls-silver-ankle-boots-with-rivets_p5607.html"
-        target="_blank"></a>
-    <a class='top-pic-goods-12' href="https://image.shoestp.com/womens-ankle-boots-simple-metal-buckle-side-zipper-british-style-spring-and-autumn-fahionable-chunky-heel-short-boots_p5613.html"
-        target="_blank"></a> -->
-</div>
+    <index-top></index-top>
+    <div class="wide">
+        <img style="width: 100%;margin-bottom: 45px;min-width: 1200px;"
+             src="https://image.shoestp.com/static/themes/t050/images/purchase-center/romania/big-pic-goodsList-01.jpg"
+             alt="">
+        <!-- <a class='top-pic-goods-01' href="https://image.shoestp.com/2018-new-men-fashion-business-shoes_p5612.html" target="_blank"></a>
+        <a class='top-pic-goods-02' href="https://image.shoestp.com/womens-fashionable-boots-spring-and-autumn-back-zipper-pointed-simple-stiletto-short-boots_p5609.html"
+            target="_blank"></a>
+        <a class='top-pic-goods-03' href="https://image.shoestp.com/fashion-tassel-decorated-pointed-toe-8cm-chunky-heel-ankle-high-women-boots_p5605.html"
+            target="_blank"></a>
+        <a class='top-pic-goods-04' href="https://image.shoestp.com/winter-warm-youth-kids-ankle-boots-boys-lace-up-black-boots_p5637.html"
+            target="_blank"></a>
+        <a class='top-pic-goods-05' href="https://image.shoestp.com/mens-round-head-breathable-business-shoes-dress-shoes-clark-style_p5651.html"
+            target="_blank"></a>
+        <a class='top-pic-goods-06' href="https://image.shoestp.com/fashionable-and-comfortable-kids-winter-booties-boys-pu-navy-ankle-boots_p5633.html"
+            target="_blank"></a>
+        <a class='top-pic-goods-07' href="https://image.shoestp.com/new-fashion-design-soft-rubber-sole-leather-men-dress-shoes_p5606.html"
+            target="_blank"></a>
+        <a class='top-pic-goods-08' href="https://image.shoestp.com/2018-winter-season-fashion-kids-cheap-boots-boys-custom-warm-boots-for-sale_p5610.html"
+            target="_blank"></a>
+        <a class='top-pic-goods-09' href="https://image.shoestp.com/womens-pu-ankle-boots-chunky-metal-heel-side-opening-western-style-all-seasons-boots_p5614.html"
+            target="_blank"></a>
+        <a class='top-pic-goods-10' href="https://image.shoestp.com/reliable-quality-luxury-brands-designer-genuine-leather-dress-shoe_p5615.html"
+            target="_blank"></a>
+        <a class='top-pic-goods-11' href="https://image.shoestp.com/cool-design-girls-pu-leather-lace-up-boots-winter-season-girls-silver-ankle-boots-with-rivets_p5607.html"
+            target="_blank"></a>
+        <a class='top-pic-goods-12' href="https://image.shoestp.com/womens-ankle-boots-simple-metal-buckle-side-zipper-british-style-spring-and-autumn-fahionable-chunky-heel-short-boots_p5613.html"
+            target="_blank"></a> -->
+    </div>
 
-<div class="wide clearfix">
-    <ul class="category-group fr">
-        <li class="category-item"
-            style="background: url(https://image.shoestp.com/static/themes/t050/images/purchase-center/xyl-lllbanner1.jpg) no-repeat 0 0;">
-            <div class="fr">
-                <span>Férfi cipő terület</span>
-                <a href="#" target="_blank">SHOP NOW</a>
-            </div>
-        </li>
-        <li class="category-item"
-            style="background: url(https://image.shoestp.com/static/themes/t050/images/purchase-center/xyl-lllbanner2.jpg) no-repeat 0 0;">
-            <div class="fr">
-                <span>Női cipő</span>
-                <a href="#" target="_blank">SHOP NOW</a>
-            </div>
-        </li>
-        <li class="category-item"
-            style="background: url(https://image.shoestp.com/static/themes/t050/images/purchase-center/xyl-lllbanner3.jpg) no-repeat 0 0;">
-            <div class="fr">
-                <span>Gyermek cipő terület</span>
-                <a href="#" target="_blank">SHOP NOW</a>
-            </div>
-        </li>
-    </ul>
+    <div class="wide clearfix">
+        <ul class="category-group fr">
+            <li class="category-item"
+                style="background: url(https://image.shoestp.com/static/themes/t050/images/purchase-center/xyl-lllbanner1.jpg) no-repeat 0 0;">
+                <div class="fr">
+                    <span>Férfi cipő terület</span>
+                    <a href="#" target="_blank">SHOP NOW</a>
+                </div>
+            </li>
+            <li class="category-item"
+                style="background: url(https://image.shoestp.com/static/themes/t050/images/purchase-center/xyl-lllbanner2.jpg) no-repeat 0 0;">
+                <div class="fr">
+                    <span>Női cipő</span>
+                    <a href="#" target="_blank">SHOP NOW</a>
+                </div>
+            </li>
+            <li class="category-item"
+                style="background: url(https://image.shoestp.com/static/themes/t050/images/purchase-center/xyl-lllbanner3.jpg) no-repeat 0 0;">
+                <div class="fr">
+                    <span>Gyermek cipő terület</span>
+                    <a href="#" target="_blank">SHOP NOW</a>
+                </div>
+            </li>
+        </ul>
 
-    <div class="carousel-wrap">
-        <div>
+        <div class="carousel-wrap">
             <div>
                 <div>
-                    <ul>
-                        <li>
-                            <img src="https://image.shoestp.com/static/themes/t050/images/purchase-center/romania/banner.jpg">
-                        </li>
-                    </ul>
+                    <div>
+                        <ul>
+                            <li>
+                                <img src="https://image.shoestp.com/static/themes/t050/images/purchase-center/romania/banner.jpg">
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
 
-</div>
+    <div class="wide">
+        <img class="pic-1300"
+             src="https://image.shoestp.com/static/themes/t050/images/purchase-center/romania/big-pic-goodsList-02.jpg"
+             alt="" border="0" usemap="#Map">
+        <map name="Map">
+            <area shape="rect" coords="51,141,327,270" href="#"
+                  target="_blank">
+            <area shape="rect" coords="358,154,633,270" href=""
+                  target="_blank">
+            <area shape="rect" coords="662,143,947,268" href=""
+                  target="_blank">
+            <area shape="rect" coords="970,143,1262,269" href=""
+                  target="_blank">
+            <area shape="rect" coords="49,325,328,440" href=""
+                  target="_blank">
+            <area shape="rect" coords="357,324,642,441" href=""
+                  target="_blank">
+            <area shape="rect" coords="665,324,951,441" href=""
+                  target="_blank">
+            <area shape="rect" coords="972,323,1261,439" href=""
+                  target="_blank">
+            <area shape="rect" coords="38,491,337,615" href=""
+                  target="_blank">
+            <area shape="rect" coords="352,489,640,614" href=""
+                  target="_blank">
+            <area shape="rect" coords="667,491,947,613" href=""
+                  target="_blank">
+            <area shape="rect" coords="970,492,1254,617" href=""
+                  target="_blank">
+            <area shape="rect" coords="49,705,1250,833" href="" target="_blank">
+            >
+        </map>
 
-<div class="wide">
-    <img class="pic-1300"
-         src="https://image.shoestp.com/static/themes/t050/images/purchase-center/romania/big-pic-goodsList-02.jpg"
-         alt="" border="0" usemap="#Map">
-    <map name="Map">
-        <area shape="rect" coords="51,141,327,270" href="#"
-              target="_blank">
-        <area shape="rect" coords="358,154,633,270" href=""
-              target="_blank">
-        <area shape="rect" coords="662,143,947,268" href=""
-              target="_blank">
-        <area shape="rect" coords="970,143,1262,269" href=""
-              target="_blank">
-        <area shape="rect" coords="49,325,328,440" href=""
-              target="_blank">
-        <area shape="rect" coords="357,324,642,441" href=""
-              target="_blank">
-        <area shape="rect" coords="665,324,951,441" href=""
-              target="_blank">
-        <area shape="rect" coords="972,323,1261,439" href=""
-              target="_blank">
-        <area shape="rect" coords="38,491,337,615" href=""
-              target="_blank">
-        <area shape="rect" coords="352,489,640,614" href=""
-              target="_blank">
-        <area shape="rect" coords="667,491,947,613" href=""
-              target="_blank">
-        <area shape="rect" coords="970,492,1254,617" href=""
-              target="_blank">
-        <area shape="rect" coords="49,705,1250,833" href="" target="_blank">
-        >
-    </map>
-
-    <img class="pic-1300"
-         src="https://image.shoestp.com/static/themes/t050/images/purchase-center/romania/big-pic-goodsList-03.jpg"
-         alt="" border="0" usemap="#Map2">
-    <map name="Map2">
-        <area shape="rect" coords="40,122,334,253" href=""
-              target="_blank">
-        <area shape="rect" coords="352,119,645,252" href=""
-              target="_blank">
-        <area shape="rect" coords="664,116,950,252" href=""
-              target="_blank">
-        <area shape="rect" coords="965,112,1260,251" href=""
-              target="_blank">
-        <area shape="rect" coords="40,263,333,426" href="" target="_blank">
-        <area shape="rect" coords="352,268,643,424" href=""
-              target="_blank">
-        <area shape="rect" coords="659,267,950,422" href=""
-              target="_blank">
-        <area shape="rect" coords="968,268,1260,425" href=""
-              target="_blank">
-        <area shape="rect" coords="40,449,330,597" href=""
-              target="_blank">
-        <area shape="rect" coords="356,452,641,597" href=""
-              target="_blank">
-        <area shape="rect" coords="660,451,952,595" href=""
-              target="_blank">
-        <area shape="rect" coords="973,451,1256,599" href=""
-              target="_blank">
-    </map>
+        <img class="pic-1300"
+             src="https://image.shoestp.com/static/themes/t050/images/purchase-center/romania/big-pic-goodsList-03.jpg"
+             alt="" border="0" usemap="#Map2">
+        <map name="Map2">
+            <area shape="rect" coords="40,122,334,253" href=""
+                  target="_blank">
+            <area shape="rect" coords="352,119,645,252" href=""
+                  target="_blank">
+            <area shape="rect" coords="664,116,950,252" href=""
+                  target="_blank">
+            <area shape="rect" coords="965,112,1260,251" href=""
+                  target="_blank">
+            <area shape="rect" coords="40,263,333,426" href="" target="_blank">
+            <area shape="rect" coords="352,268,643,424" href=""
+                  target="_blank">
+            <area shape="rect" coords="659,267,950,422" href=""
+                  target="_blank">
+            <area shape="rect" coords="968,268,1260,425" href=""
+                  target="_blank">
+            <area shape="rect" coords="40,449,330,597" href=""
+                  target="_blank">
+            <area shape="rect" coords="356,452,641,597" href=""
+                  target="_blank">
+            <area shape="rect" coords="660,451,952,595" href=""
+                  target="_blank">
+            <area shape="rect" coords="973,451,1256,599" href=""
+                  target="_blank">
+        </map>
+    </div>
 </div>
 
 <!-- 内容 end -->
@@ -405,5 +409,11 @@
 <script type="text/javascript" src="./static/js/tracking.js"></script>
 <script type="text/javascript" src="./static/js/js.js"></script>
 <script type="text/javascript" src="./static/js/conversion_async.js"></script>
+<script src="/home/v3/static/js/index-top.js"></script>
+<script>
+    new Vue({
+        el: "#top-big-goodsList-pic"
+    })
+</script>
 </body>
 </html>

@@ -426,7 +426,7 @@
 					},
 					{
 						url: "https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=883",
-						imgUrl: "/home/v3/static/images/goods4.jpg",
+						imgUrl: "/home/v3/static/images/goods5.jpg",
 						title: "Romania Wholesale Shoes comfortable casual canvas shoes",
 						salesVolume: "300",
 						percentage: "60",

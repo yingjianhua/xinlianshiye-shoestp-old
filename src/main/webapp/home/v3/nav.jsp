@@ -5,7 +5,7 @@
 </head>
 <body class="new-style-page w_1200 svsMain">
 <!-- 顶部nav栏 -->
-<div id="nav" >
+<div id="nav" style="height: auto;">
     <div id="new-top-nav" class="wide-wrap">
         <div class="wide" style="width: 1240px;min-width: 1240px;margin: 0 auto">
             <!-- 顶部左侧 - 4个下拉选 -->
