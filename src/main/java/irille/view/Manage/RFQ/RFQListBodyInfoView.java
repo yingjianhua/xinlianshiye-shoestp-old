@@ -24,4 +24,8 @@ public class RFQListBodyInfoView implements BaseView {
     private int countryId;
     private int quantity;
     private boolean favorite;
+
+
+    private String content;
+    private Byte unit;
 }

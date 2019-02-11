@@ -29,6 +29,7 @@ import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.sellerAction.rfq.view.RFQConsultMessageView;
 import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
+import irille.sellerAction.rfq.view.RFQConsultRelationCountView;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.plt.PltCountry;
 import irille.shop.usr.UsrPurchase;
@@ -115,6 +116,26 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 			throw new WebMessageException(ReturnCode.service_gone, "请重新选择询盘");
 		}
 		return RFQConsultQuoteInfoView.Builder.toView(relation);
+	}
+	
+	@Override
+	public RFQConsultRelationCountView count(UsrSupplier supplier, Boolean isDeleted) {
+		Integer isDeletedCount = null;
+		Integer notDeletedCount = null;
+		if(isDeleted == null || isDeleted) {
+			isDeletedCount = Query.SELECT(RFQConsultRelation.class).WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supplier.getPkey()).WHERE(RFQConsultRelation.T.IN_RECYCLE_BIN, "=?", BeanBase.booleanToByte(true)).queryCount();
+		}
+		if(isDeleted == null || !isDeleted) {
+			notDeletedCount = Query.SELECT(RFQConsultRelation.class).WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supplier.getPkey()).WHERE(RFQConsultRelation.T.IN_RECYCLE_BIN, "=?", BeanBase.booleanToByte(false)).queryCount();
+		}
+		RFQConsultRelationCountView view = new RFQConsultRelationCountView();
+		view.setIsDeleted(isDeletedCount);
+		view.setNotDeleted(notDeletedCount);
+		return view;
+	}
+	
+	private void testCount() {
+		System.out.println(count(new UsrSupplier() {{setPkey(1);}}, null));;
 	}
 
     @Override
@@ -252,7 +273,8 @@ public class RFQConsultServiceImpl implements RFQConsultService {
         RFQConsultGroupRelation.TB.getCode();
         PltCountry.TB.getCode();
 
-        testPage();
+//        testPage();
+        testCount();
     }
 
     public void testPage() {

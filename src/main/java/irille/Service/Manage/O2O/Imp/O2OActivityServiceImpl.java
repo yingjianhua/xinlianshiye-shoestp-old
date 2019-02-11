@@ -5,6 +5,7 @@ import irille.Dao.O2O.O2OActivityDao;
 import irille.Dao.O2O.O2OProductDao;
 import irille.Dao.PdtCatDao;
 import irille.Entity.O2O.Enums.O2O_ActivityStatus;
+import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_Activity;
 import irille.Entity.O2O.O2O_JoinInfo;
@@ -315,6 +316,36 @@ public class O2OActivityServiceImpl implements O2OActivityService {
     }
 
     /**
+     * 私人展厅审核产品
+     */
+    public void privatefindAppr(Integer id, String reason, O2O_PrivateExpoPdtStatus status) {
+        O2O_PrivateExpoPdt o2O_privateExpoPdt = o2OProductDao.privatefindByPkey(id);
+        if (null == o2O_privateExpoPdt)
+            throw new WebMessageException(ReturnCode.failure, "商品不存在");
+        o2O_privateExpoPdt.setVerifyStatus(status.getLine().getKey());
+        sendEmail email = new sendEmail();
+        if (status.equals(O2O_ProductStatus.Failed)) {
+            if (null == reason)
+                throw new WebMessageException(ReturnCode.failure, "请输入拒绝理由");
+            o2O_privateExpoPdt.setMessage(reason);
+            email.setSubject("【鞋贸港】私人展厅商品审核拒绝");
+            email.setContent("您申请的商品已被审核拒绝，拒绝理由：" + reason);
+        } else {
+            PdtProduct pdt = o2O_privateExpoPdt.gtPdtId();
+            pdt.setProductType(Pdt.OProductType.PrivateExpo.getLine().getKey());
+            pdt.upd();
+            email.setSubject("【鞋贸港】私人展厅商品审核通过");
+            email.setContent("您申请商品编号为【" + pdt.getCode() + "】的商品已通过审核");
+        }
+        o2O_privateExpoPdt.upd();
+        try {
+            EmailUtils.sendMail(email);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * 处理上下架
      */
     public void lowerAndUpper(Integer id, String reason, O2O_ProductStatus status) {
@@ -330,11 +361,41 @@ public class O2OActivityServiceImpl implements O2OActivityService {
             if (null == reason) {
                 throw new WebMessageException(ReturnCode.failure, "拒绝理由不能为空");
             }
-            o2OProduct.setMessage(reason);
+            o2OProduct.setMessage("拒绝申请下架，拒绝理由：" + reason);
             email.setSubject("【鞋贸港】O2O商品下架失败");
             email.setContent("您申请商品编号为【" + pdt.getCode() + "】的商品拒绝下架，拒绝理由：" + reason);
         } else {
+            o2OProduct.setMessage("下架成功");
             email.setSubject("【鞋贸港】O2O商品下架成功");
+            email.setContent("您申请商品编号为【" + pdt.getCode() + "】的商品下架成功");
+        }
+        o2OProduct.upd();
+        try {
+            EmailUtils.sendMail(email);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 私人订购会商品处理上下架
+     */
+    public void privateLowerAndUpper(Integer id, String reason, O2O_PrivateExpoPdtStatus status) {
+        O2O_PrivateExpoPdt o2OProduct = o2OProductDao.privatefindByPkey(id);
+        sendEmail email = new sendEmail();
+        if (null == o2OProduct)
+            throw new WebMessageException(ReturnCode.failure, "商品不存在");
+        o2OProduct.setStatus(status.getLine().getKey());
+        PdtProduct pdt = o2OProduct.gtPdtId();
+        if (!status.equals(O2O_PrivateExpoPdtStatus.OFF)) {
+            if (null == reason) {
+                throw new WebMessageException(ReturnCode.failure, "拒绝理由不能为空");
+            }
+            o2OProduct.setMessage(reason);
+            email.setSubject("【鞋贸港】私人订购会商品下架失败");
+            email.setContent("您申请商品编号为【" + pdt.getCode() + "】的商品拒绝下架，拒绝理由：" + reason);
+        } else {
+            email.setSubject("【鞋贸港】私人订购会商品下架成功");
             email.setContent("您申请商品编号为【" + pdt.getCode() + "】的商品下架成功");
         }
         o2OProduct.upd();
@@ -371,6 +432,7 @@ public class O2OActivityServiceImpl implements O2OActivityService {
         List<O2OProductView> result = new ArrayList<>();
         for (Map<String, Object> map : maps) {
             O2OProductView o2OProductView = new O2OProductView();
+            o2OProductView.setId(GetValue.get(map, O2O_PrivateExpoPdt.T.PKEY, Integer.class, -1));
             o2OProductView.setPkey(GetValue.get(map, PdtProduct.T.PKEY, Integer.class, -1));
             o2OProductView.setStatus(GetValue.get(map, O2O_PrivateExpoPdt.T.VERIFY_STATUS, Byte.class, (byte) 0));
             o2OProductView.setState(GetValue.get(map, O2O_PrivateExpoPdt.T.STATUS, Byte.class, (byte) 0));

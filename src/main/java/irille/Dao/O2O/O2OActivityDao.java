@@ -80,6 +80,7 @@ public class O2OActivityDao {
                 PdtProduct.T.STOCK,
                 PdtProduct.T.MIN_OQ,
                 PdtProduct.T.UPDATE_TIME,
+                O2O_PrivateExpoPdt.T.PKEY,
                 O2O_PrivateExpoPdt.T.STATUS,
                 O2O_PrivateExpoPdt.T.VERIFY_STATUS
 

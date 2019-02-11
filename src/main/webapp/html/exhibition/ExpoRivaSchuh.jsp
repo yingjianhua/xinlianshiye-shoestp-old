@@ -130,7 +130,7 @@
                             <div class="point"></div>
                             <div class="timemsg">
                                 <span class="month">10-13 Jun</span>
-                                <h4 class="year">2011</h4>
+                                <h4 class="year">2017</h4>
                             </div>
                         </div>
                     </div>
@@ -185,7 +185,7 @@
                 <iframe src="http://www.google.cn/maps/embed?pb=!1m18!1m12!1m3!1d2776.6443163117033!2d10.838571916360769!3d45.898426379108294!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x478216c3cc7855f9%3A0x501438a33f51bd82!2sRiva+del+Garda+Fiere!5e0!3m2!1szh-CN!2scn!4v1548678441090"
                         width="1240" height="564" frameborder="0" style="border:0" allowfullscreen></iframe>
             </div>
-            <h4 class="garda-map_text">Riva del Garda Fiere Via Baltera, 38066 Riva del Garda TN, Italy</h4>
+            <h4 class="garda-map_text" style="font-size: 22px;margin-top: 54px;">Riva del Garda Fiere Via Baltera, 38066 Riva del Garda TN, Italy</h4>
         </div>
     </div>
 </div>

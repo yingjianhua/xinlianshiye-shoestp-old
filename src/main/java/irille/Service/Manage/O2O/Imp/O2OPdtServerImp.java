@@ -283,13 +283,9 @@ public class O2OPdtServerImp implements IO2OPdtServer {
             throw LOG.err("noEntity", "o2o商品不存在");
         }
         o2O_product.setRemark(reason);
+        o2O_product.setMessage("处理中");
         o2O_product.setStatus(O2O_ProductStatus.WAITOFF.getLine().getKey());
         o2O_product.upd();
-    }
-
-
-    public void lowerAndUpperByManager(Integer pkey,String reason,O2O_ProductStatus status){
-
     }
 
     @Override

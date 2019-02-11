@@ -278,6 +278,8 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 RFQConsult.T.COUNTRY,
                 RFQConsult.T.CREATE_TIME,
                 RFQConsult.T.QUANTITY,
+                RFQConsult.T.CONTENT,
+                RFQConsult.T.UNIT,
                 RFQConsult.T.LEFT_COUNT,
                 RFQConsult.T.IMAGE,
                 RFQConsult.T.TOTAL,

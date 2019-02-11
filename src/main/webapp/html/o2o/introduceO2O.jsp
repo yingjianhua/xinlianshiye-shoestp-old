@@ -16,7 +16,7 @@
         <div class="introduce">
             <h3>{{introducemsg[0].title}}</h3>
             <div class="linhen"></div>
-            <h5>Could Better Know The Quality Of A Shoes</h5>
+            <h5>Customer could better know the qualitu of a shoe.</h5>
             <div class="introducebody">
                 <img class="ripple" :class="top >= srcolltop[0].value ? 'slideInRight' : ''"
                      :src="introducemsg[0].img" alt="">
@@ -32,7 +32,7 @@
         <div class="introduce">
             <h3>{{introducemsg[1].title}}</h3>
             <div class="linhen"></div>
-            <h5>Could Better Know The Quality Of A Shoes</h5>
+            <h5>Customer could better know the qualitu of a shoe.</h5>
             <div class="introducebody">
                 <img class="ripple"  :class=" top >= srcolltop[1].value ? ' slideInLeft' : '' "
                      :src="introducemsg[1].img" alt="">
@@ -48,7 +48,7 @@
         <div class="introduce">
             <h3>{{introducemsg[2].title}}</h3>
             <div class="linhen"></div>
-            <h5>Could Better Know The Quality Of A Shoes</h5>
+            <h5>Customer could better know the qualitu of a shoe</h5>
             <div class="introducebody">
                 <img class="ripple"  :class="top >= srcolltop[2].value? 'slideInRight' : ''"
                      :src="introducemsg[2].img" alt="">
@@ -67,8 +67,8 @@
     </div>
     <div class="introduceMakitCon">
         <h3>Marketing Channel</h3>
-        <a href="O2Oinputform.jsp"><span class="buttonr">New Design</span></a>
-        <a href="highClassO2O.jsp"><span class="buttonl">Bargain District</span></a>
+        <a href="highClassO2O.jsp"><span class="buttonr">New Design</span></a>
+        <a href="O2Oinputform.jsp"><span class="buttonl">Bargain District</span></a>
     </div>
     <o2o-bottom></o2o-bottom>
 </div>
@@ -84,17 +84,17 @@
                 {
                     title: 'Why do customer needs O2O',
                     img: 'images/introduce1.png',
-                    msg: 'If a company plan to do both e-commerce and physical (“brick-and-mortar”) stores, then the O2O marketing strategy should is be considering to use. Capitalizes on both presences to drive increased sales. This can work in both directions, but online to offline allows you to reach an arguably broader audience of prospective new customers. E-commerce sales continue to rise year-on-year, while mobile accounts for an increasing of online sales too.  For selling shoes, it is important to make customers touch the real shoes sample, so that the customer could better know the quality of a shoes.'
+                    msg: 'If a company plan to do both e-commerce and physical (“brick-and-mortar”) stores, then the O2O marketing strategy should is be considering to use. Capitalizes on both presences to drive increased sales. This can work in both directions, but online to offline allows you to reach an arguably broader audience of prospective new customers. E-commerce sales continue to rise year-on-year, while mobile accounts for an increasing of online sales too.  For selling shoes, it is important to make customers touch the real shoes sample, so that the Customer could better know the qualitu of a shoe.'
                 },
                 {
                     title: 'What kinds of O2O are we?',
                     img: 'images/introduce2.png',
-                    msg: 'Shoestp.com is the only e-commerce trading platform for footwear in China. Our main trading mode is B2B. Nowadays, most O2O models coordinate with the online retail business but don\'t forget that B2B also needs O2O to match development. For the shoe industries, almost all wholesalers still need to go to the local factory and check the samples, or they need the factory to send samples to them. This traditional model will greatly increase the selection time, which would lead to the best business opportunity for wholesalers to miss. Therefore, we launched O2O for B2B to save the time for wholesalers going abroad to look for samples or waiting for samples delivery, making them more convenient and faster.'
+                    msg: 'Shoestp.com is the only e-commerce trading platform for footwear in China. Our main trading mode is B2B. Nowadays, most O2O models coordinate with the online retail business but don\'t forget that B2B also needs O2O to match development. For the shoe industries, almost all wholesalers still need to go to the local factory and check the samples, or they need the factory to send samples to them. This tradtional model will greatly increase the selection time, which would lead to buyers miss great bussiness opportuity. Therefore, we launched O2O for B2B to save the time for wholesalers going abroad to look for samples or waiting for samples delivery, making them more convenient and faster.'
                 },
                 {
                     title: 'Where is the O2O market of us',
                     img: 'images/introduce3.png',
-                    msg: 'For the different grade and price of footwear, we will promote new design O2O and bargain district O2O. The high-class O2O is focused on the latest design by  original design manufacturer in China. We collect their shoes directly and displayed them in offline stores, so that wholesalers can see the latest designs without leaving their regions. The low-cost O2O area is targeted at developing country markets such as Africa, parts of India, Latin America, etc. In order to facilitate customers to search online shoes and offline to check the real thing at same time, so that they know more about the products they buy.'
+                    msg: 'For the different grade and price of footwear, we will promote new design O2O and bargain district O2O. The new design O2O is focused on the latest design by  original design manufacturers in China. We collect their shoes directly and displayed them in offline stores, so that wholesalers could touch the latest designs without leaving their regions. The bargain district O2O area is targeted at developing country markets such as Africa, parts of India, Latin America, etc. In order to facilitate customers to search online shoes and offline to check the real thing at same time, so that they know more about the products they buy.'
                 }
             ],
 

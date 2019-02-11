@@ -61,6 +61,8 @@ public class RFQManageServiceImp implements IRFQManageService {
             rfqListBodyInfoView.setQuantity(GetValue.get(map, RFQConsult.T.QUANTITY, Integer.class, 0));
             rfqListBodyInfoView.setLeft_count(GetValue.get(map, RFQConsult.T.TOTAL, Integer.class, 0) - GetValue.get(map, RFQConsult.T.LEFT_COUNT, Integer.class, 0));
             rfqListBodyInfoView.setImage(GetValue.getFirstImage(GetValue.get(map, RFQConsult.T.IMAGE, String.class, "")));
+            rfqListBodyInfoView.setContent(GetValue.get(map,RFQConsult.T.CONTENT,String.class,""));
+            rfqListBodyInfoView.setUnit(GetValue.get(map,RFQConsult.T.UNIT,Byte.class,null));
             byte b = GetValue.get(map, RFQConsultRelation.T.FAVORITE, Byte.class, (byte) 0);
             if (b == 0) {
                 rfqListBodyInfoView.setFavorite(false);
