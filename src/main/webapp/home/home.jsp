@@ -428,7 +428,7 @@
 					},
 					{
 						url:"https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1054",
-            imgUrl:"./images/goods11.jpg",
+            imgUrl:"/home/v3/static/images/goods11.jpg",
             title:"Classic Fashion Cheap Flat Shoes Men Casual",
             salesVolume:"550",
             percentage:"69",
