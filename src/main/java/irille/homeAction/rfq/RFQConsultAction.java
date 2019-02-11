@@ -94,4 +94,12 @@ public class RFQConsultAction extends HomeAction {
         irfqConsultService.putPrivateInquiry(objectMapper.readValue(getJsonBody(), PutInquiryView.class), getPurchase());
         write();
     }
+    /**
+     * @Description: 展会介绍页
+     * @author winson Zhang
+     */
+    public String exhibitionshow() {
+        setResult("/html/exhibition/exhibitionLasVegas.jsp", false);
+        return TRENDS;
+    }
 }
