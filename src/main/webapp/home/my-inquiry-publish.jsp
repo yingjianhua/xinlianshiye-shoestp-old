@@ -370,7 +370,77 @@
                 sitecur: true,
                 supcur: true,
                 symbol: "$",
-            }],
+            }, {
+                    curname: "GBP",
+                    enabled: false,
+                    id: 3,
+            }, {
+                curname: "EUR",
+                enabled: false,
+                id: 2,
+            }
+                , {
+                    curname: "AUD",
+                    enabled: false,
+                    id: 5,
+                }
+                , {
+                    curname: "CAD",
+                    enabled: false,
+                    id: 4,
+                }
+                , {
+                    curname: "CHF",
+                    enabled: false,
+                    id: 6,
+                }
+                , {
+                    curname: "JPY",
+                    enabled: false,
+                    id: 8,
+                }
+                , {
+                    curname: "HKD",
+                    enabled: false,
+                    id: 7,
+                }
+                , {
+                    curname: "BRL",
+                    enabled: false,
+                    id: 10,
+                }, {
+                    curname: "RUB",
+                    enabled: false,
+                    id: 9,
+                }, {
+                    curname: "CLP",
+                    enabled: false,
+                    id: 11,
+                }, {
+                    curname: "NOK",
+                    enabled: false,
+                    id: 12,
+                }, {
+                    curname: "DKK",
+                    enabled: false,
+                    id: 13,
+                }, {
+                    curname: "SEK",
+                    enabled: false,
+                    id: 14,
+                }, {
+                    curname: "KRW",
+                    enabled: false,
+                    id: 15,
+                }, {
+                    curname: "ILS",
+                    enabled: false,
+                    id: 16,
+                }, {
+                    curname: "MXN",
+                    enabled: false,
+                    id: 17,
+                }],
 
             rules: {
                 title: [{

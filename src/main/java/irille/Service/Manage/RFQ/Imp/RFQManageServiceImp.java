@@ -12,11 +12,13 @@ import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Service.Manage.RFQ.IRFQManageService;
 import irille.action.dataimport.util.DateUtil;
+import irille.pub.bean.BeanBase;
 import irille.pub.tb.FldLanguage;
 import irille.pub.util.GetValue;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
 import irille.shop.pdt.PdtProduct;
+import irille.shop.plt.PltErate;
 import irille.view.Manage.RFQ.*;
 import irille.view.Page;
 
@@ -97,6 +99,7 @@ public class RFQManageServiceImp implements IRFQManageService {
         infoView.setQuantity(rfqConsult.getQuantity());
         infoView.setDestination(rfqConsult.getDestination()); //目的地
         infoView.setDescriotion(rfqConsult.getContent()); //询盘内容
+        infoView.setCurrencyname(BeanBase.load(PltErate.class,rfqConsult.getCurrency()).getCurName());
         if (rfqConsult.getPayType() != null)
             infoView.setPay_type(rfqConsult.gtPayType().getLine().getName());
         if (rfqConsult.getShippingType() != null)
@@ -118,6 +121,7 @@ public class RFQManageServiceImp implements IRFQManageService {
         }else if (rfqConsultRelation == null||rfqConsult.getLeftCount()>=rfqConsult.getTotal()) {
             infoView.setStatus(1);
         }
+        System.out.println(infoView);
         return infoView;
     }
 

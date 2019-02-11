@@ -14,13 +14,13 @@ import java.util.Date;
 @Data
 public class RFQManageMyQuoteListBody {
     private int id;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date rfqCreate_date;
     private String descriotion;
     private String title;
     private int quantity;
     private String quoteTitle;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date quoteRFQCreate_date;
     private String quoteDescriotion;
     private int status;
