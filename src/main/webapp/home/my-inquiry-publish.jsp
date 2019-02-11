@@ -284,12 +284,12 @@
                         </div>
                         <div class="main_rightB">
                             <h3 class="header-title2">Contact Us</h3>
-                            <p>TEL：+86-577-85887585</p>
-                            <p>Fax：+86-577-89711316</p>
+                            <p>TEL：+86-577-85887589</p>
+                            <%--<p>Fax：+86-577-89711316</p>--%>
                             <p>Mail：marketing@shoestp.com</p>
                             <p style="margin-top: 6px;font-size: 12px;color: #777;line-height: 1.4;">Thank you for your
                                 interest in our website Any further suggestions are sincere Welcome from
-                                xiuchuan@shoestp.cn</p>
+                                marketing@shoestp.com</p>
                         </div>
                     </div>
 
