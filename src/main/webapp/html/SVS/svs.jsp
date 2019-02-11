@@ -10,12 +10,12 @@
           <div class="">
             <nav class="w_1200 clearfix">
                 <div class="clearfix logo fl">
-                  <a href="https://www.shoestp.com/" target="_blank"><img class="fl" src="./images/top-logo.png" alt=""></a>
+                  <a href="https://www.shoestp.com/" class="fl" target="_blank"><img class="fl" src="./images/top-logo.png" alt=""></a>
                   <div class="fl font">SVS Certification System</div>
                 </div>
                 <div class="fr nav-item">
                     <a href="javascript:void(0)" @click="myanimate('supplier')">Supplier</a>
-                    <a href="javascript:void(0)" @click="myanimate('svsApp')">Feature</a>
+                    <a href="javascript:void(0)">Feature</a>
                     <a href="javascript:void(0)" @click="myanimate('advantage')">Advantage</a>
                     <a href="javascript:void(0)" @click="myanimate('benefits')">Benefits</a>
                 </div>
@@ -24,7 +24,7 @@
                 <h1>SVS Certification System</h1>
                 <p>SVS is a Certification System for the factory and the SVS based on key aspect from factories <br>
                     which are shoes buyers’s most care for. SVS Certification System is taking into account <br>
-                    aspects such as genuine manufacturer, production capacity, quality control, <br>
+                    aspects such as genuine manufacturer, production capacity, product control, <br>
                    research & development capability, International business capacity <br>
                    and major cooperation client by factories in the past, etc.</p>
             </div>
@@ -34,22 +34,18 @@
           <div class="w_1200 clearfix">
               <div class="service-box">
                   <div class="service-item ripple">
-                      <h2 class="ripple slideInUp">Send Professionals</h2>
-                      <p class="ripple slideInUp">the Shoestp as a third party will send
-                          professionals to conduct on-site audits</p>
+                      <h2 class="ripple slideInUp">On-Site Audits</h2>
+                      <p class="ripple slideInUp">the Shoestp as a third party will send professionals to conduct on-site audits</p>
                           <img class="ripple slideInUp" src="./images/label1.png" alt="">
                   </div>
                   <div class="service-item ripple">
                       <h2 class="ripple slideInUp">Classify Factories</h2>
-                      <p class="ripple slideInUp">Second, according to the factory strength,
-                          Shoestp will classify factories.</p>
+                      <p class="ripple slideInUp">According to the factory strength, Shoestp will classify factories.</p>
                           <img class="ripple slideInUp" src="./images/label2.png" alt="">
                   </div>
                   <div class="service-item ripple">
-                      <h2 class="ripple slideInUp">Classification of Suppliers</h2>
-                      <p class="ripple slideInUp">Third, a more detailed classification of suppliers
-                          from the three dimensions of R&D, Output,
-                          and Scale.</p>
+                      <h2 class="ripple slideInUp">ROS</h2>
+                      <p class="ripple slideInUp">A more detailed classification of suppliers from the three dimensions of R&D, Output, and Scale.</p>
                           <img class="ripple slideInUp" src="./images/label3.png" alt="" style=" margin-top: 20px;">
                   </div>
               </div>
@@ -60,16 +56,14 @@
                 <h1>SVS Advantage</h1>
                 <div class="flexSb">
                   <div class="advantage-item ripple" :class="scrollTop1?'slideInRight':''">
-                    <p>First,  SVS includes factors that buyers are much
-                        concerned about when selecting suppliers</p>
+                    <p>SVS includes factors that buyers are much concerned about when selecting suppliers</p>
                     <img src="./images/advantage1.png" alt="">
                   </div>
                   <div class="shadow-line">
                     <img src=".//images/shadow-line.png" alt="">
                   </div>
                   <div class="advantage-item ripple" :class="scrollTop1?'slideInLeft':''">
-                      <p>First,  SVS includes factors that buyers are much
-                          concerned about when selecting suppliers</p>
+                      <p>SVS shows the performance of manufacturers objectively in all aspects</p>
                       <img src="./images/advantage2.png" alt="">
                     </div>
                 </div>
@@ -97,8 +91,11 @@
                 fastly and accurately. We creat SVS is for make buyers to get better buying experence.</p>
           </div>
           <div class="supplier-btn ripple" :class="scrollTop3?'bounce':''">
-              Joining suppliers
+                Selceted SVS Suppliers
               <img src="./images/right-arrow.png" alt="">
+          </div>
+          <div style="color:#1989fa;text-align:center;margin:20px 0;font-size:18px;">
+                We recommend the 50 quality suppliers for you
           </div>
         </section>
         <section class="tagcloud">
