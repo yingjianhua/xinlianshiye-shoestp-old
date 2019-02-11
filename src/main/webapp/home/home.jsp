@@ -159,10 +159,12 @@
 
                                                 <div class="hover-show">
                                                     <div class="btn-group">
-                                                        <div class="btn-inquiry btn-blue" @click="inquiry(goods.id)">
-                                                            <!-- <div class="icon icon-inquiry"></div> -->
-                                                            Inquiry
-                                                        </div>
+                                                        <a class="btn-inquiry btn-blue" :href="'/home/usr_UsrConsult_productPublishView?product_id='+goods.id" target="_blank">
+                              Inquiry
+                            </a>
+                            <!-- <div class="btn-inquiry btn-blue" @click="inquiry(goods.id)">
+                              Inquiry
+                            </div> -->
                                                     </div>
                                                 </div>
                                             </li>
@@ -426,7 +428,7 @@
 					},
 					{
 						url:"https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1054",
-            imgUrl:"./images/goods12.jpg",
+            imgUrl:"./images/goods11.jpg",
             title:"Classic Fashion Cheap Flat Shoes Men Casual",
             salesVolume:"550",
             percentage:"69",
@@ -443,19 +445,19 @@
 				],
 				// 林华立数据
 				newsList: [{
-					url: '/html/exhibition/ExpoRivaSchuh.jsp',
+					url: '/home/rfq_RFQConsult_exhibitionshow',
 					image: '/home/v3/static/images/zh_img.png',
 					title: 'Expo Riva Schuh',
 					time: 'Jan 12-15, 2019',
 					location: 'Italy'
 				}, {
-					url: '/html/exhibition/exhibitionLasVegas.jsp',
+					url: '/home/rfq_RFQConsult_ExpoRivaSchuhshow',
 					image: '/home/v3/static/images/zh_img2.png',
 					title: 'FOOTWEAR SOURCING AT MAGIC',
 					time: 'February 4-7, 2019',
 					location: 'Las Vegas'
 				}, {
-					url: '/html/exhibition/guangjiaohui.jsp',
+					url: '/home/rfq_RFQConsult_guangjiaohuishow',
 					image: '/home/v3/static/images/zh_img3.png',
 					title: 'China Import and Export Fair',
 					time: 'Apr.15-May.5, 2019',

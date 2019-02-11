@@ -747,8 +747,15 @@ a {
       #xsq .RFQ-list-wrap .RFQ-item .btn-quote:hover {
         color: #fff;
         background-color: #1a4091; }
-#o2otop{
-  background: #fff;
+#o2otop {
+  position: fixed;
+  top: 33px;
+  left: 0;
+  z-index: 999;
+  width: 100%;
+  background: #fff; }
+.o2otop-placeholder{
+  height: 98px;
 }
 .indexbannercon {
   width: 100%;
@@ -901,7 +908,7 @@ a {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center; }
-  #o2otop .o2otopcon > img {
+  #o2otop .o2otopcon .logo {
     padding-right: 68px; }
   #o2otop .o2otopcon .topsearch {
     width: 700px;
@@ -927,23 +934,23 @@ a {
         border-radius: unset;
         -webkit-box-sizing: border-box;
                 box-sizing: border-box;
-        font-family: Arial-BoldMT;
+        font-family: inherit;
         font-size: 16px;
         color: #10389c; }
         #o2otop .o2otopcon .topsearch .el-select .el-input__inner::-webkit-input-placeholder {
-          font-family: Arial-BoldMT;
+          font-family: inherit;
           font-size: 16px;
           color: #10389c; }
         #o2otop .o2otopcon .topsearch .el-select .el-input__inner:-ms-input-placeholder {
-          font-family: Arial-BoldMT;
+          font-family: inherit;
           font-size: 16px;
           color: #10389c; }
         #o2otop .o2otopcon .topsearch .el-select .el-input__inner::-ms-input-placeholder {
-          font-family: Arial-BoldMT;
+          font-family: inherit;
           font-size: 16px;
           color: #10389c; }
         #o2otop .o2otopcon .topsearch .el-select .el-input__inner::placeholder {
-          font-family: Arial-BoldMT;
+          font-family: inherit;
           font-size: 16px;
           color: #10389c; }
     #o2otop .o2otopcon .topsearch > input {
@@ -1004,6 +1011,7 @@ a {
       font-size: 13px;
       margin-bottom: 4px; }
     #o2otop .o2otopcon .o2otoplikes .o2otoplikenum p:nth-child(2) {
+      white-space: nowrap;
       font-size: 14px;
       color: #7f7f7f; }
 

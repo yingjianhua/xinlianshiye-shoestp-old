@@ -30,8 +30,11 @@
 <body class="lang_en w_1200">
 
 	<%@ include file="/home/template/web-top.jsp" %>
-    <%@ include file="/home/template/new-header.jsp" %>
-    <div id="main" class="wide">
+    <div id="main">
+        <index-top></index-top>
+        <div class="wide">
+
+        </div>
         <script type="text/javascript">
             $(document).ready(function () {
                 cart_obj.complete_init()
@@ -194,6 +197,12 @@
     <script type="text/javascript" async="" src="./static/js/tracking.js"></script>
     <script type="text/javascript" async="" src="./static/js/analytics.js"></script>
     <script async="" src="./static/js/gtm.js"></script>
+    <script>
+        new Vue({
+            el:"#main"
+        })
+    </script>
+    <script src="/home/v3/static/js/index-top.js"></script>
 </body>
 
 </html>

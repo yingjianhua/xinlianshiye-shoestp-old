@@ -42,213 +42,216 @@
 }
 </style>
 </head>
-
+<jsp:include page="v3/header.jsp"/>
+<jsp:include page="v3/nav.jsp"/>
 <body class="lang_en w_1200">
     <%@ include file="/home/template/web-top.jsp" %>
-    <%@ include file="/home/template/new-header.jsp" %>
 <!-- .new_header -->
-<div id="main" class="wide">
-<div id="lib_user" class="clearfix">
-	<div id="lib_user_crumb" class="widget">
-		<ul class="crumb_box clearfix">
-			<li class="home"><a href="/" title="Home"><s:text name="Global.Home"/><i></i></a></li>
-			<li class="crumb1"><a href="/home/usr_UsrPurchase_userIndex" title="My Account"><s:text name="Global.My_Account"/><i></i></a></li>
-			<li class="crumb2 root"><a href="/home/usr_UsrPurchase_usrSetting" title="Account Settings"><s:text name="Global.Account_Settings"/><i></i></a></li>
-		</ul>
-	</div>
-	<%@ include file="/home/template/account/lib-user-menu.jsp" %>
-	<div id="lib_user_main">
-		<link href="/home/static/css/daterangepicker.css" rel="stylesheet" type="text/css">
-		<h1 class="lib_user_title"><s:text name="Global.Account_Settings"/></h1>
-		<div id="lib_user_setting">
-			<h3><%-- <s:text name="vip0"/> --%></h3>
-			<form id="frm_profile">
-				<table width="100%" cellpadding="0" cellspacing="0" border="0">
-				<tbody>
-				<tr>
-					<th width="172" nowrap="nowrap">
-						<s:text name="account_setting.Gender"/>:
-					</th>
-					 <td>
-						<select name="bean.sex" notnull="">
-								<option value="0" disabled selected style="display: none;"  ><s:text name="Global.Please_Choose"/></option>
-								<option <c:if test="${usrPurchase.sex == 1}">selected="selected"</c:if> value="1"><s:text name="account_setting.Men"/></option>
-								<option <c:if test="${usrPurchase.sex == 2}">selected="selected"</c:if> value="2"><s:text name="account_setting.Ms"/></option>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<th nowrap="nowrap">
-						<span class="fc_red">*</span><s:text name="Global.First_Name"/>:
-					</th>
-					<td>
-						<input name="bean.name" id="name" class="form_input" type="text" size="40" maxlength="40" value="${usrPurchase.name}" notnull="">
-					</td>
-				</tr>
-				<tr>
-					<th nowrap="nowrap">
-						<span class="fc_red">*</span><s:text name="Global.Surname"/>:
-					</th>
-					<td>
-						<input name="bean.surname" id="surname" class="form_input" type="text" size="40" maxlength="40" value="${usrPurchase.surname}" notnull="">
-					</td>
-				</tr>
-				<tr>
-					<th nowrap="nowrap">
-						<span class="fc_red">*</span><s:text name="Global.Phone"/>:
-					</th>
-					<td>
-						<input type="text" name="bean.telphone" id="telphone" value="${usrPurchase.telphone}" size="30" maxlength="20" class="form_input amount" notnull="">
-					</td>
-				</tr>
-				<tr>
-					<th nowrap="nowrap">
-						<span class="fc_red">*</span><s:text name="Global.Company"/>:
-					</th>
-					<td>
-						<input type="text" name="bean.company" id="company" value="${usrPurchase.company}" size="30" maxlength="50" class="form_input" notnull="">
-					</td>
-				</tr>
-				<tr>
-					<th nowrap="nowrap">
-						<s:text name="Global.Address"/>:
-					</th>
-					<td>
-						<input type="text" name="bean.address" value="${usrPurchase.address}" size="30" maxlength="50" class="form_input">
-					</td>
-				</tr>
-				<tr>
-					<th nowrap="nowrap">
-						&nbsp;
-					</th>
-					<td>
-
-					</td>
-				</tr>
-				<tr>
-					<th nowrap="nowrap">
-						&nbsp;
-					</th>
-					<td>
-						<span class="fz_14px fc_red"><%-- <s:text name="vip1"/> --%></span>
-					</td>
-				</tr>
-				</tbody>
-				</table>
-
-			</form>
-
-			<button type="submit" class="textbtn" id="improvePersonalInformation"><s:text name="Global.Save"/></button>
-			<span class="span"></span>
-			<input type="hidden" name="do_action" value="user.mod_profile">
-			<div class="line">
+<div id="main">
+	<index-top></index-top>
+	<div class="wide">
+		<div id="lib_user" class="clearfix">
+			<div id="lib_user_crumb" class="widget">
+				<ul class="crumb_box clearfix">
+					<li class="home"><a href="/" title="Home"><s:text name="Global.Home"/><i></i></a></li>
+					<li class="crumb1"><a href="/home/usr_UsrPurchase_userIndex" title="My Account"><s:text name="Global.My_Account"/><i></i></a></li>
+					<li class="crumb2 root"><a href="/home/usr_UsrPurchase_usrSetting" title="Account Settings"><s:text name="Global.Account_Settings"/><i></i></a></li>
+				</ul>
 			</div>
-			<h3><s:text name="account_setting.Change_Email_Address"/></h3>
-			<form id="frm_email">
-				<table width="100%" cellpadding="0" cellspacing="0" border="0">
-				<tbody>
-				<tr>
-					<th nowrap="nowrap">
-						<span class="fc_red">*</span><s:text name="account_setting.Existing_Password"/>:
-					</th>
-					<td>
-						<input name="bean.pkey"  value="${usrPurchase.pkey}" class="form_input" type="hidden" size="40" notnull="">
-						<input name="pwd" id="pwd" class="form_input" type="password" size="40" notnull="">
-					</td>
-				</tr>
-				<tr>
-					<th nowrap="nowrap">
-						<span class="fc_red">*</span><s:text name="account_setting.New_Email_Address"/>:
-					</th>
-					<td>
-						<input name="newEmail" id="email" value="${usrPurchase.email}" class="form_input" type="text" size="40" maxlength="100" format="Email" notnull="">
-					</td>
-				</tr>
-				<tr>
-					<th nowrap="nowrap">
-						&nbsp;
-					</th>
-					<td>
+			<%@ include file="/home/template/account/lib-user-menu.jsp" %>
+			<div id="lib_user_main">
+				<link href="/home/static/css/daterangepicker.css" rel="stylesheet" type="text/css">
+				<h1 class="lib_user_title"><s:text name="Global.Account_Settings"/></h1>
+				<div id="lib_user_setting">
+					<h3><%-- <s:text name="vip0"/> --%></h3>
+					<form id="frm_profile">
+						<table width="100%" cellpadding="0" cellspacing="0" border="0">
+							<tbody>
+							<tr>
+								<th width="172" nowrap="nowrap">
+									<s:text name="account_setting.Gender"/>:
+								</th>
+								<td>
+									<select name="bean.sex" notnull="">
+										<option value="0" disabled selected style="display: none;"  ><s:text name="Global.Please_Choose"/></option>
+										<option <c:if test="${usrPurchase.sex == 1}">selected="selected"</c:if> value="1"><s:text name="account_setting.Men"/></option>
+										<option <c:if test="${usrPurchase.sex == 2}">selected="selected"</c:if> value="2"><s:text name="account_setting.Ms"/></option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th nowrap="nowrap">
+									<span class="fc_red">*</span><s:text name="Global.First_Name"/>:
+								</th>
+								<td>
+									<input name="bean.name" id="name" class="form_input" type="text" size="40" maxlength="40" value="${usrPurchase.name}" notnull="">
+								</td>
+							</tr>
+							<tr>
+								<th nowrap="nowrap">
+									<span class="fc_red">*</span><s:text name="Global.Surname"/>:
+								</th>
+								<td>
+									<input name="bean.surname" id="surname" class="form_input" type="text" size="40" maxlength="40" value="${usrPurchase.surname}" notnull="">
+								</td>
+							</tr>
+							<tr>
+								<th nowrap="nowrap">
+									<span class="fc_red">*</span><s:text name="Global.Phone"/>:
+								</th>
+								<td>
+									<input type="text" name="bean.telphone" id="telphone" value="${usrPurchase.telphone}" size="30" maxlength="20" class="form_input amount" notnull="">
+								</td>
+							</tr>
+							<tr>
+								<th nowrap="nowrap">
+									<span class="fc_red">*</span><s:text name="Global.Company"/>:
+								</th>
+								<td>
+									<input type="text" name="bean.company" id="company" value="${usrPurchase.company}" size="30" maxlength="50" class="form_input" notnull="">
+								</td>
+							</tr>
+							<tr>
+								<th nowrap="nowrap">
+									<s:text name="Global.Address"/>:
+								</th>
+								<td>
+									<input type="text" name="bean.address" value="${usrPurchase.address}" size="30" maxlength="50" class="form_input">
+								</td>
+							</tr>
+							<tr>
+								<th nowrap="nowrap">
+									&nbsp;
+								</th>
+								<td>
 
-					</td>
-				</tr>
-				</tbody>
-				</table>
+								</td>
+							</tr>
+							<tr>
+								<th nowrap="nowrap">
+									&nbsp;
+								</th>
+								<td>
+									<span class="fz_14px fc_red"><%-- <s:text name="vip1"/> --%></span>
+								</td>
+							</tr>
+							</tbody>
+						</table>
 
-			</form>
-			<button type="submit" class="textbtn" id="ChangeYourEmailAddress"><s:text name="Global.Save"/></button>
-			<input type="hidden" name="do_action" value="user.mod_email">
-			<div class="line">
-			</div>
-			<h3><s:text name="account_setting.Change_Password"/></h3>
-			<form id="frm_password">
-				<table width="100%" cellpadding="0" cellspacing="0" border="0">
-				<tbody>
-				<tr>
-					<th nowrap="nowrap">
-						<span class="fc_red">*</span><s:text name="account_setting.Existing_Password"/>:
-					</th>
-					<td>
-					    <input name="bean.pkey" value="${usrPurchase.pkey}"    class="form_input" type="hidden" size="40" notnull="">
-						<input name="oldPwd" id="oldPwd" class="form_input" type="password" size="40" notnull="">
-					</td>
-				</tr>
-				<tr>
-					<th nowrap="nowrap">
-						<span class="fc_red">*</span><s:text name="Global.New_Password"/>:
-					</th>
-					<td>
-						<input name="newPwd" id="newPwd" class="form_input" type="password" size="40" notnull="">
-					</td>
-				</tr>
-				<tr>
-					<th nowrap="nowrap">
-						<span class="fc_red">*</span><s:text name="Global.Confirm_Password"/>:
-					</th>
-					<td>
-						<input name="NewPassword2" id="newPwd2" class="form_input" type="password" size="40" notnull="">
-					</td>
-				</tr>
-				<tr>
-					<th nowrap="nowrap">
-						&nbsp;
-					</th>
-					<td>
+					</form>
 
-					</td>
-				</tr>
-				</tbody>
-				</table>
-			</form>
-			<button type="submit" class="textbtn" id="ChangeYourPassword"><s:text name="Global.Save"/> </button>
-			<input type="hidden" name="do_action" value="user.mod_password">
-			<div class="clear">
+					<button type="submit" class="textbtn" id="improvePersonalInformation"><s:text name="Global.Save"/></button>
+					<span class="span"></span>
+					<input type="hidden" name="do_action" value="user.mod_profile">
+					<div class="line">
+					</div>
+					<h3><s:text name="account_setting.Change_Email_Address"/></h3>
+					<form id="frm_email">
+						<table width="100%" cellpadding="0" cellspacing="0" border="0">
+							<tbody>
+							<tr>
+								<th nowrap="nowrap">
+									<span class="fc_red">*</span><s:text name="account_setting.Existing_Password"/>:
+								</th>
+								<td>
+									<input name="bean.pkey"  value="${usrPurchase.pkey}" class="form_input" type="hidden" size="40" notnull="">
+									<input name="pwd" id="pwd" class="form_input" type="password" size="40" notnull="">
+								</td>
+							</tr>
+							<tr>
+								<th nowrap="nowrap">
+									<span class="fc_red">*</span><s:text name="account_setting.New_Email_Address"/>:
+								</th>
+								<td>
+									<input name="newEmail" id="email" value="${usrPurchase.email}" class="form_input" type="text" size="40" maxlength="100" format="Email" notnull="">
+								</td>
+							</tr>
+							<tr>
+								<th nowrap="nowrap">
+									&nbsp;
+								</th>
+								<td>
+
+								</td>
+							</tr>
+							</tbody>
+						</table>
+
+					</form>
+					<button type="submit" class="textbtn" id="ChangeYourEmailAddress"><s:text name="Global.Save"/></button>
+					<input type="hidden" name="do_action" value="user.mod_email">
+					<div class="line">
+					</div>
+					<h3><s:text name="account_setting.Change_Password"/></h3>
+					<form id="frm_password">
+						<table width="100%" cellpadding="0" cellspacing="0" border="0">
+							<tbody>
+							<tr>
+								<th nowrap="nowrap">
+									<span class="fc_red">*</span><s:text name="account_setting.Existing_Password"/>:
+								</th>
+								<td>
+									<input name="bean.pkey" value="${usrPurchase.pkey}"    class="form_input" type="hidden" size="40" notnull="">
+									<input name="oldPwd" id="oldPwd" class="form_input" type="password" size="40" notnull="">
+								</td>
+							</tr>
+							<tr>
+								<th nowrap="nowrap">
+									<span class="fc_red">*</span><s:text name="Global.New_Password"/>:
+								</th>
+								<td>
+									<input name="newPwd" id="newPwd" class="form_input" type="password" size="40" notnull="">
+								</td>
+							</tr>
+							<tr>
+								<th nowrap="nowrap">
+									<span class="fc_red">*</span><s:text name="Global.Confirm_Password"/>:
+								</th>
+								<td>
+									<input name="NewPassword2" id="newPwd2" class="form_input" type="password" size="40" notnull="">
+								</td>
+							</tr>
+							<tr>
+								<th nowrap="nowrap">
+									&nbsp;
+								</th>
+								<td>
+
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</form>
+					<button type="submit" class="textbtn" id="ChangeYourPassword"><s:text name="Global.Save"/> </button>
+					<input type="hidden" name="do_action" value="user.mod_password">
+					<div class="clear">
+					</div>
+				</div>
+				<script type="text/javascript">
+                    var frm_profile = $('#frm_profile');
+                    frm_profile.find('button:submit').click(function(){
+                        if(global_obj.check_form(frm_profile.find('*[notnull]'))){return false;};
+                    });
+                    var frm_email = $('#frm_email');
+                    frm_email.find('button:submit').click(function(){
+                        if(global_obj.check_form(frm_email.find('*[notnull]'), frm_email.find('*[format]'))){return false;};
+                    });
+                    var frm_password = $('#frm_password');
+                    frm_password.find('button:submit').click(function(){
+                        if(global_obj.check_form(frm_password.find('*[notnull]'))){return false;};
+                    });
+                    (function(){
+                        $('form#frm_profile input[name=Birthday]').daterangepicker({
+                            showDropdowns:true,
+                            singleDatePicker:true,
+                            timePicker:false,
+                            format:'MM/DD/YYYY'
+                        });
+                    });
+				</script>
 			</div>
 		</div>
-		<script type="text/javascript">
-	var frm_profile = $('#frm_profile');
-	frm_profile.find('button:submit').click(function(){
-		if(global_obj.check_form(frm_profile.find('*[notnull]'))){return false;};
-	});
-	var frm_email = $('#frm_email');
-	frm_email.find('button:submit').click(function(){
-		if(global_obj.check_form(frm_email.find('*[notnull]'), frm_email.find('*[format]'))){return false;};
-	});
-	var frm_password = $('#frm_password');
-	frm_password.find('button:submit').click(function(){
-		if(global_obj.check_form(frm_password.find('*[notnull]'))){return false;};
-	});
-	(function(){
-		$('form#frm_profile input[name=Birthday]').daterangepicker({
-			showDropdowns:true,
-			singleDatePicker:true,
-			timePicker:false,
-			format:'MM/DD/YYYY'
-		});
-	});
-		</script>
 	</div>
-</div>
 </div>
 ﻿
     <%@ include file="/home/template/new-foot.jsp" %>
@@ -398,5 +401,11 @@ $.ajax({
 		}
 	})
 </script>
+<script>
+    new Vue({
+        el:"#main"
+    })
+</script>
+<script src="/home/v3/static/js/index-top.js"></script>
 
 </html>

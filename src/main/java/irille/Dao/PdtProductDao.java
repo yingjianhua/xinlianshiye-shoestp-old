@@ -491,7 +491,6 @@ public class PdtProductDao {
                 .WHERE(PdtProduct.T.STATE, "<>?", Pdt.OState.MERCHANTDEL.getLine().getKey())
                 .WHERE(PdtProduct.T.STATE, "<>?", Pdt.OState.OFF.getLine().getKey())
                 .ORDER_BY(PdtProduct.T.UPDATE_TIME, "desc");
-
         if (search != null) {
             switch (search) {
                 case 2:

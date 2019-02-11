@@ -1,7 +1,8 @@
 Vue.component('index-top',{
-    template:`<div id="o2otop">
+    template:`<div><div class="o2otop-placeholder"></div><div id="o2otop">
         <div class="o2otopcon">
-            <img src="/home/v3/static/images/o2otoplogo.png" alt="">
+            <!--<img src="/home/v3/static/images/o2otoplogo.png" alt="">-->
+            <a href="/home/usr_UsrPurchase" target="view_window"><img src="/home/v3/static/images/o2otoplogo.png" class="logo" alt="logo"></a>
             <div class="topsearch">
                 <el-select   v-model="select" placeholder="Product" @change="selected">
                     <el-option
@@ -11,7 +12,7 @@ Vue.component('index-top',{
                       :value="item.value">
                     </el-option>
                  </el-select>
-                 <input type="text" v-model="input">
+                 <input type="text" v-model="input" style="height: 100%;padding: 0;">
                  <div class="searchbotton" @click="submit"><img src="/home/v3/static/images/indexiconserch.png" alt=""></div>
             </div>
             <a class="o2otoplikes"
@@ -22,9 +23,9 @@ Vue.component('index-top',{
                       <p v-if="sysConfig.user && sysConfig.user.inquiry_count">
                         {{sysConfig.user.inquiry_count}}
                       </p>
-                       <p v-if="!sysConfig.user">
-                       0
-                      </p>
+                       <!--<p v-if="!sysConfig.user">-->
+                       <!--0-->
+                      <!--</p>-->
                     </div>
                     <p>My Shosetp</p>
                 </div>
@@ -40,7 +41,7 @@ Vue.component('index-top',{
                 </div>
             </a>
         </div>
- </div>`,
+ </div></div>`,
     props:{
 
     },

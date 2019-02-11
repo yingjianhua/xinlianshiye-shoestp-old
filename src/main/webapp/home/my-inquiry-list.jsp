@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
@@ -13,10 +13,12 @@
     </script>
     <script type="text/javascript" async="" src="/home/static/js/analytics.js">
     </script>
-<!--     <script type="text/javascript" async="" src="/home/static/js/tracking.js"> -->
-<!--     </script> -->
-    <meta name="keywords" content="fashion wholesale soes,cheap wholesale shoes,wholesale shoes,shoes customization,shoes trade,shoes,Manufacturers,shoestp">
-    <meta name="description" content="foreign trade experts online service! ShoeSTP provides you with customization and wholesale for all kinds of high-quality shoes from 300 professional foreign trade shoes companies!">
+    <!--     <script type="text/javascript" async="" src="/home/static/js/tracking.js"> -->
+    <!--     </script> -->
+    <meta name="keywords"
+          content="fashion wholesale soes,cheap wholesale shoes,wholesale shoes,shoes customization,shoes trade,shoes,Manufacturers,shoestp">
+    <meta name="description"
+          content="foreign trade experts online service! ShoeSTP provides you with customization and wholesale for all kinds of high-quality shoes from 300 professional foreign trade shoes companies!">
     <title>
         An Online B2B market--Shoestp.com,gathering 300 professional shoes manufacture companies
     </title>
@@ -48,72 +50,79 @@
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 
     <style type="text/css">
-        table img{
-          object-fit: contain;
+        table img {
+            object-fit: contain;
         }
+
         /* 分页居中 */
-        .el-pagination{
-          text-align: center;
+        .el-pagination {
+            text-align: center;
         }
-        .el-pagination.is-background .el-pager li:not(.disabled).active{
-          background-color: #333;
+
+        .el-pagination.is-background .el-pager li:not(.disabled).active {
+            background-color: #333;
         }
-        .myinquirylist-bottomnav{
-        	height:60px;
-        	border-top:1px solid #eee;
+
+        .myinquirylist-bottomnav {
+            height: 60px;
+            border-top: 1px solid #eee;
         }
-        .myinquirylist-bottomnav a{
-        	float: right;
-        	width:114px;
-        	height:40px;
-        	margin:10px;
-        	line-height:40px;
-        	text-align: center;
-        	color:#fff;
-        	background:#ddd;
-        	border-radius:6px;
-        	font-size: 16px;
+
+        .myinquirylist-bottomnav a {
+            float: right;
+            width: 114px;
+            height: 40px;
+            margin: 10px;
+            line-height: 40px;
+            text-align: center;
+            color: #fff;
+            background: #ddd;
+            border-radius: 6px;
+            font-size: 16px;
         }
-        .myinquirylist-bottomnav2 a{
-        	background:#043d81!important;
+
+        .myinquirylist-bottomnav2 a {
+            background: #043d81 !important;
         }
-        #lib_user_inquiry{
-        	min-height:400px;
+
+        #lib_user_inquiry {
+            min-height: 400px;
         }
-        #lib_user_inquiry #turn_page{
-        	margin:20px 0 50px 0;
+
+        #lib_user_inquiry #turn_page {
+            margin: 20px 0 50px 0;
         }
+
         /* 新消息的标签位置 */
-        #lib_user_inquiry table .inquiry-message .new-inquiry-message{
-        	top: -12px;
-    		left: 16px;
+        #lib_user_inquiry table .inquiry-message .new-inquiry-message {
+            top: -12px;
+            left: 16px;
         }
+
         /* 询盘标题 - 文字截取显示 */
-        .inquiry-title a{
-          overflow: hidden;
-          text-overflow: ellipsis;
-          display: -webkit-box;
-          -webkit-line-clamp: 4;
-          -webkit-box-orient: vertical;
+        .inquiry-title a {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
         }
+
         /* 询盘商 - select不能无限长度 */
-        .supplier-select{
-          min-width: 150px;
-          max-width: 200px;
+        .supplier-select {
+            min-width: 150px;
+            max-width: 200px;
         }
     </style>
     <link href="/home/static/css/row_4.css" rel="stylesheet" type="text/css">
 </head>
-
+<jsp:include page="v3/header.jsp"/>
+<jsp:include page="v3/nav.jsp"/>
 <body class="lang_en w_1200">
-    <%@ include file="/home/template/web-top.jsp" %>
-    <%@ include file="/home/template/new-header.jsp" %>
-
-
-
-
-
-    <div id="main" class="wide">
+<%@ include file="/home/template/web-top.jsp" %>
+<div id="main">
+    <index-top></index-top>
+    <div class="wide">
         <div id="lib_user" class="clearfix">
             <div id="lib_user_crumb" class="widget">
                 <ul class="crumb_box clearfix">
@@ -128,7 +137,8 @@
                         </a>
                     </li>
                     <li class="crumb2 root">
-                        <a href="/home/usr_UsrConsult_listView" title="My Inquiry/RFQ"><s:text name="my-inquiry-publish.View_Inquiry"/>
+                        <a href="/home/usr_UsrConsult_listView" title="My Inquiry/RFQ"><s:text
+                                name="my-inquiry-publish.View_Inquiry"/>
                             <i></i>
                         </a>
                     </li>
@@ -138,27 +148,27 @@
             <%@ include file="template/account/lib-user-menu.jsp" %>
 
 
-			<div id="myinquirylist">
+            <div id="myinquirylist">
 
-            <div id="lib_user_main">
-                <div class="lib_user_inquiry_title flex-spbe">
-                    <span><s:text name="my-inquiry-list.Query_List"/></span>
-                    <div class="release_inquiry_btn flex-spbe fr">
-                    	<a href="/home/usr_UsrConsult_publishView">
-                        	<i class="release_inquiry"></i>
-                        	<s:text name="my-inquiry-list.Publish_Query"/>
-                        </a>
+                <div id="lib_user_main">
+                    <div class="lib_user_inquiry_title flex-spbe">
+                        <span><s:text name="my-inquiry-list.Query_List"/></span>
+                        <div class="release_inquiry_btn flex-spbe fr">
+                            <a href="/home/usr_UsrConsult_publishView">
+                                <i class="release_inquiry"></i>
+                                <s:text name="my-inquiry-list.Publish_Query"/>
+                            </a>
+                        </div>
                     </div>
-                </div>
-                <div id="lib_user_inquiry">
-                    <div class="blank20"></div>
-                    <!-- <div id="turn_page"></div> -->
-                    <table>
-                           <thead>
+                    <div id="lib_user_inquiry">
+                        <div class="blank20"></div>
+                        <!-- <div id="turn_page"></div> -->
+                        <table>
+                            <thead>
                             <tr>
                                 <th>
-                                  <input id="quan" type="checkbox" @click="checkedAll"
-                                    v-if="inquirylist.items && inquirylist.items.length">
+                                    <input id="quan" type="checkbox" @click="checkedAll"
+                                           v-if="inquirylist.items && inquirylist.items.length">
                                 </th>
                                 <th class="table-title"><s:text name="my-inquiry-list.Title"/></th>
                                 <th class=""><s:text name="my-inquiry-list.Picture"/></th>
@@ -168,267 +178,278 @@
                                 <th><s:text name="my-inquiry-list.Communication"/></th>
                                 <th><s:text name="Global.Operating"/></th>
                             </tr>
-                           </thead>
+                            </thead>
 
 
-                           		<tbody>
-                           	<template v-if="inquirylist.items && inquirylist.items.length">
-		                            <tr v-for='inquirylistdd in inquirylist.items'>
-		                                <td><input type="checkbox" class="yigegexuan" :value="inquirylistdd.id" v-model="checkedNames"></td>
-		                                <td class="inquiry-title"><a :href="'/home/usr_UsrConsult_detailView?inquiry_id='+inquirylistdd.id">
-		                                    {{inquirylistdd.title}}
-		                                </a></td>
-		                                <td>
-		                                   <a :href="'/home/usr_UsrConsult_detailView?inquiry_id='+inquirylistdd.id">
-		                                    <img :src="'${envConfig.imageBaseUrl}'+inquirylistdd.image.split(',')[0]" alt="">
-		                                   </a>
-		                                </td>
-		                                <td>{{inquirylistdd.createTime}}</td>
-		                                <td>
-<!--                                       <select name="" class="supplier-select" v-if="inquirylistdd.relations && inquirylistdd.relations.length"> -->
-<!-- 		                                    <option value="111"  v-for='inquirylistcc in inquirylistdd.relations'>{{inquirylistcc.supplierName}}</option> -->
-<!-- 		                                  </select> -->
-		                                  <p v-if="inquirylistdd.relations && inquirylistdd.relations.length">
-		                                  		{{inquirylistdd.relations[0].supplierName}}
-		                                  		</p>
-                                      <p v-else>no supplier</p>
-                                  </td>
-		                                <td>{{inquirylistdd.quantity}}</td>
-		                                <td>
+                            <tbody>
+                            <template v-if="inquirylist.items && inquirylist.items.length">
+                                <tr v-for='inquirylistdd in inquirylist.items'>
+                                    <td><input type="checkbox" class="yigegexuan" :value="inquirylistdd.id"
+                                               v-model="checkedNames"></td>
+                                    <td class="inquiry-title"><a
+                                            :href="'/home/usr_UsrConsult_detailView?inquiry_id='+inquirylistdd.id">
+                                        {{inquirylistdd.title}}
+                                    </a></td>
+                                    <td>
+                                        <a :href="'/home/usr_UsrConsult_detailView?inquiry_id='+inquirylistdd.id">
+                                            <img :src="'${envConfig.imageBaseUrl}'+inquirylistdd.image.split(',')[0]"
+                                                 alt="">
+                                        </a>
+                                    </td>
+                                    <td>{{inquirylistdd.createTime}}</td>
+                                    <td>
+                                        <!--                                       <select name="" class="supplier-select" v-if="inquirylistdd.relations && inquirylistdd.relations.length"> -->
+                                        <!-- 		                                    <option value="111"  v-for='inquirylistcc in inquirylistdd.relations'>{{inquirylistcc.supplierName}}</option> -->
+                                        <!-- 		                                  </select> -->
+                                        <p v-if="inquirylistdd.relations && inquirylistdd.relations.length">
+                                            {{inquirylistdd.relations[0].supplierName}}
+                                        </p>
+                                        <p v-else>no supplier</p>
+                                    </td>
+                                    <td>{{inquirylistdd.quantity}}</td>
+                                    <td>
                                         <a v-if="inquirylistdd.relations && inquirylistdd.relations.length"
                                            :href="'/home/usr_UsrConsultMessage_dialogView?inquiry_id='+inquirylistdd.id">
-                                          <div class="inquiry-message">
-                                            <i class="new-inquiry-message" v-show="inquirylistdd.haveNewMsg"></i>
-                                          </div>
+                                            <div class="inquiry-message">
+                                                <i class="new-inquiry-message" v-show="inquirylistdd.haveNewMsg"></i>
+                                            </div>
                                         </a>
                                         <p v-else>no consult</p>
-		                                </td>
-		                                <td class="flex-spbe">
-		                                    <a :href="'/home/usr_UsrConsult_detailView?inquiry_id='+inquirylistdd.id">
-		                                        <div class="inquiry-view"></div>
-		                                    </a>
-		                                    <a href="#">
-		                                        <div class="inquiry-delete" :data-ddid="inquirylistdd.id" @click="clickdele"></div>
-		                                    </a>
-		                                </td>
-		                            </tr>
-	                            </template>
+                                    </td>
+                                    <td class="flex-spbe">
+                                        <a :href="'/home/usr_UsrConsult_detailView?inquiry_id='+inquirylistdd.id">
+                                            <div class="inquiry-view"></div>
+                                        </a>
+                                        <a href="#">
+                                            <div class="inquiry-delete" :data-ddid="inquirylistdd.id"
+                                                 @click="clickdele"></div>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </template>
 
-                           	</tbody>
+                            </tbody>
 
-                    		</table>
+                        </table>
 
-							<template v-if="!inquirylist.items || !inquirylist.items.length">
-								<p style="padding:167px 0;text-align: center;font-size:30px;font-weight: bold;color: #999;"><s:text name="mobile.no_data"/></p>
-							</template>
+                        <template v-if="!inquirylist.items || !inquirylist.items.length">
+                            <p style="padding:167px 0;text-align: center;font-size:30px;font-weight: bold;color: #999;">
+                                <s:text name="mobile.no_data"/></p>
+                        </template>
 
 
+                        <div class="myinquirylist-bottomnav"
+                             :class="[checkedNames.length>0 ? 'myinquirylist-bottomnav2':'']">
+                            <a href="javascript:;" @click="clickdeleall"><s:text name="my-favorite.Empty"/></a>
+                        </div>
 
-                    <div class="myinquirylist-bottomnav" :class="[checkedNames.length>0 ? 'myinquirylist-bottomnav2':'']" >
-                    	<a href="javascript:;" @click="clickdeleall"><s:text name="my-favorite.Empty"/></a>
+                        <!-- åé¡µ -->
+                        <%-- <div id="turn_page" v-if="inquirylist.items && inquirylist.items.length">
+                            <ul>
+                                <li  v-if="inquirylist.currentPage !=1" :data-yeshu="inquirylist.currentPage-1" @click="dianjifenye">
+                                    <a class="page_button">
+                                        <em class="icon_page_prev"></em> Previous</a>
+                                </li>
+                                <li  v-if="inquirylist.currentPage ==1">
+                                    <a class="page_button">
+                                        <em class="icon_page_prev"></em> Previous</a>
+                                </li>
+                                <li v-if="inquirylist.currentPage>=6" :data-yeshu="1" @click="dianjifenye">
+                                    <a class="page_item" >1</a>
+                                </li>
+                                <li v-if="inquirylist.currentPage>=6">
+                                    <font class="page_item">...</font>
+                                </li>
+                                <li  v-if="inquirylist.currentPage-3 >0" :data-yeshu="inquirylist.currentPage-3" @click="dianjifenye">
+                                    <a class="page_item">{{inquirylist.currentPage-3}}</a>
+                                </li>
+                                <li  v-if="inquirylist.currentPage-2 >0" :data-yeshu="inquirylist.currentPage-2" @click="dianjifenye">
+                                    <a class="page_item">{{inquirylist.currentPage-2}}</a>
+                                </li>
+                                <li  v-if="inquirylist.currentPage-1 >0" :data-yeshu="inquirylist.currentPage-1" @click="dianjifenye">
+                                    <a class="page_item">{{inquirylist.currentPage-1}}</a>
+                                </li>
+                                <li>
+                                    <font class="page_item_current">{{inquirylist.currentPage}}</font>
+                                </li>
+                                <li :data-yeshu="inquirylist.currentPage+1" @click="dianjifenye">
+                                    <a class="page_item">{{inquirylist.currentPage+1}}</a>
+                                </li>
+                                <li :data-yeshu="inquirylist.currentPage+2" @click="dianjifenye">
+                                    <a class="page_item">{{inquirylist.currentPage+2}}</a>
+                                </li>
+                                <li v-if="inquirylist.currentPage < 4" :data-yeshu="inquirylist.currentPage+3" @click="dianjifenye">
+                                    <a class="page_item">{{inquirylist.currentPage+3}}</a>
+                                </li>
+                                <li v-if="inquirylist.currentPage < 4" :data-yeshu="inquirylist.currentPage+4" @click="dianjifenye">
+                                    <a class="page_item">{{inquirylist.currentPage+4}}</a>
+                                </li>
+                                <li v-if="inquirylist.currentPage < 4" :data-yeshu="inquirylist.currentPage+5" @click="dianjifenye">
+                                    <a class="page_item">{{inquirylist.currentPage+5}}</a>
+                                </li>
+                                <li>
+                                    <font class="page_item">...</font>
+                                </li>
+                                <li :data-yeshu="inquirylist.totalPage" @click="dianjifenye">
+                                    <a class="page_item">{{inquirylist.totalPage}}</a>
+                                </li>
+                                <li class="page_last" :data-yeshu="inquirylist.currentPage+1" @click="dianjifenye" v-if="inquirylist.currentPage!=inquirylist.totalPage">
+                                    <a class="page_button">Next
+                                        <em class="icon_page_next"></em>
+                                    </a>
+                                </li>
+                                <li class="page_last" v-if="inquirylist.currentPage==inquirylist.totalPage">
+                                    <a class="page_button">Next
+                                        <em class="icon_page_next"></em>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div> --%>
+
+                        <el-pagination
+                                background
+                                layout="prev, pager, next"
+                                @current-change="jumpPage"
+                                :page-count="pageTotalCount">
+                        </el-pagination>
+
+
                     </div>
 
-                     <!-- åé¡µ -->
-                <%-- <div id="turn_page" v-if="inquirylist.items && inquirylist.items.length">
-                    <ul>
-                        <li  v-if="inquirylist.currentPage !=1" :data-yeshu="inquirylist.currentPage-1" @click="dianjifenye">
-                            <a class="page_button">
-                                <em class="icon_page_prev"></em> Previous</a>
-                        </li>
-                        <li  v-if="inquirylist.currentPage ==1">
-                            <a class="page_button">
-                                <em class="icon_page_prev"></em> Previous</a>
-                        </li>
-                        <li v-if="inquirylist.currentPage>=6" :data-yeshu="1" @click="dianjifenye">
-                            <a class="page_item" >1</a>
-                        </li>
-                        <li v-if="inquirylist.currentPage>=6">
-                            <font class="page_item">...</font>
-                        </li>
-                        <li  v-if="inquirylist.currentPage-3 >0" :data-yeshu="inquirylist.currentPage-3" @click="dianjifenye">
-                            <a class="page_item">{{inquirylist.currentPage-3}}</a>
-                        </li>
-                        <li  v-if="inquirylist.currentPage-2 >0" :data-yeshu="inquirylist.currentPage-2" @click="dianjifenye">
-                            <a class="page_item">{{inquirylist.currentPage-2}}</a>
-                        </li>
-                        <li  v-if="inquirylist.currentPage-1 >0" :data-yeshu="inquirylist.currentPage-1" @click="dianjifenye">
-                            <a class="page_item">{{inquirylist.currentPage-1}}</a>
-                        </li>
-                        <li>
-                            <font class="page_item_current">{{inquirylist.currentPage}}</font>
-                        </li>
-                        <li :data-yeshu="inquirylist.currentPage+1" @click="dianjifenye">
-                            <a class="page_item">{{inquirylist.currentPage+1}}</a>
-                        </li>
-                        <li :data-yeshu="inquirylist.currentPage+2" @click="dianjifenye">
-                            <a class="page_item">{{inquirylist.currentPage+2}}</a>
-                        </li>
-                        <li v-if="inquirylist.currentPage < 4" :data-yeshu="inquirylist.currentPage+3" @click="dianjifenye">
-                            <a class="page_item">{{inquirylist.currentPage+3}}</a>
-                        </li>
-                        <li v-if="inquirylist.currentPage < 4" :data-yeshu="inquirylist.currentPage+4" @click="dianjifenye">
-                            <a class="page_item">{{inquirylist.currentPage+4}}</a>
-                        </li>
-                        <li v-if="inquirylist.currentPage < 4" :data-yeshu="inquirylist.currentPage+5" @click="dianjifenye">
-                            <a class="page_item">{{inquirylist.currentPage+5}}</a>
-                        </li>
-                        <li>
-                            <font class="page_item">...</font>
-                        </li>
-                        <li :data-yeshu="inquirylist.totalPage" @click="dianjifenye">
-                            <a class="page_item">{{inquirylist.totalPage}}</a>
-                        </li>
-                        <li class="page_last" :data-yeshu="inquirylist.currentPage+1" @click="dianjifenye" v-if="inquirylist.currentPage!=inquirylist.totalPage">
-                            <a class="page_button">Next
-                                <em class="icon_page_next"></em>
-                            </a>
-                        </li>
-                        <li class="page_last" v-if="inquirylist.currentPage==inquirylist.totalPage">
-                            <a class="page_button">Next
-                                <em class="icon_page_next"></em>
-                            </a>
-                        </li>
-                    </ul>
-                </div> --%>
-
-                <el-pagination
-                  background
-                  layout="prev, pager, next"
-                  @current-change="jumpPage"
-                  :page-count="pageTotalCount">
-                </el-pagination>
-
-
                 </div>
-
             </div>
         </div>
     </div>
 
 
-
-    </div>
+</div>
 <%@ include file="/home/template/new-foot.jsp" %>
-    <div id="hj_top" style="opacity: 0;">
-        <img src="/home/static/images/hj_top.png">
-    </div>
+<div id="hj_top" style="opacity: 0;">
+    <img src="/home/static/images/hj_top.png">
+</div>
+<script src="/home/v3/static/js/index-top.js"></script>
+<script type="text/javascript">
+    var myinquirylist = new Vue({
+        el: '#main',
+        data: {
+            myinquirylistbottomnav: 0,
+            checkedNames: [],
+            // start: 0,
+            inquirylist: [],
+            limit: 8,  //分页 - 每页个数
+            pageTotalCount: 1, //总页数
+            currentPage: 1 //当前页数
 
-    <script type="text/javascript">
-var myinquirylist = new Vue({
-  el: '#myinquirylist',
-  data: {
-  	myinquirylistbottomnav:0,
-  	checkedNames:[],
-  		// start: 0,
-		inquirylist:[],
-    limit: 8,  //分页 - 每页个数
-    pageTotalCount: 1, //总页数
-    currentPage: 1 //当前页数
-
-  },
-  watch: { // 监视双向绑定的数据数组
-                checkedNames: {
-                    handler(){ // 数据数组有变化将触发此函数
-                        if(this.checkedNames.length == this.inquirylist.items.length){
-                            // document.querySelector('#quan').checked = true;
-                            $("#quan").prop("checked",true);
-                        }else {
-                            // document.querySelector('#quan').checked = false;
-                            $("#quan").prop("checked",false);
-                        }
-                    },
-                    deep: true // 深度监视
-                }
+        },
+        watch: { // 监视双向绑定的数据数组
+            checkedNames: {
+                handler() { // 数据数组有变化将触发此函数
+                    if (this.checkedNames.length == this.inquirylist.items.length) {
+                        // document.querySelector('#quan').checked = true;
+                        $("#quan").prop("checked", true);
+                    } else {
+                        // document.querySelector('#quan').checked = false;
+                        $("#quan").prop("checked", false);
+                    }
+                },
+                deep: true // 深度监视
+            }
+        },
+        mounted() {
+            this.inquirylistload();
+        },
+        methods: {
+            jumpPage(e) {
+                this.currentPage = e;
+                this.inquirylistload();
             },
-  mounted(){
-  		this.inquirylistload();
-	  },
-  methods:{
-    jumpPage(e){
-        this.currentPage = e;
-        this.inquirylistload();
-    },
-  	inquirylistload:function(){
-  		axios.post('/home/usr_UsrConsult_pagePrivate',Qs.stringify({
-    		start:(this.currentPage-1)*this.limit,
-    		limit:this.limit
-		}, {allowDots: true}))
-		.then((res)=>{
-        console.log("res")
-        console.log(res)
-            this.checkedNames=[];
-            this.inquirylist = res.data.result;
-            this.pageTotalCount = res.data.result.totalPage
-            if(res.data.ret== -1 ){
-            	window.location.href='/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_detailView?inquiry_id='+this.inquiry_id;
-            }
-		})
-		.catch((res)=>{
-
-		});
-  	},
-  	// dianjifenye:function(e){
-  	// 	this.start= ($(e.currentTarget).data("yeshu") -1)*this.limit
-		// this.inquirylistload();
-  	// },
-
-  	 checkedAll: function(e) {
-		  	 	var checkObj = document.querySelectorAll('.yigegexuan'); // 获取所有checkbox项
-                    if(e.target.checked){ // 判定全选checkbox的勾选状态
-                        for(var i=0;i<checkObj.length;i++){
-                            if(!checkObj[i].checked){ // 将未勾选的checkbox选项push到绑定数组中
-                                this.checkedNames.push(checkObj[i].value*1);
-                            }
+            inquirylistload: function () {
+                axios.post('/home/usr_UsrConsult_pagePrivate', Qs.stringify({
+                    start: (this.currentPage - 1) * this.limit,
+                    limit: this.limit
+                }, {allowDots: true}))
+                    .then((res) => {
+                        console.log("res")
+                        console.log(res)
+                        this.checkedNames = [];
+                        this.inquirylist = res.data.result;
+                        this.pageTotalCount = res.data.result.totalPage
+                        if (res.data.ret == -1) {
+                            window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_detailView?inquiry_id=' + this.inquiry_id;
                         }
-		  	 	}else{
-		  	 		this.checkedNames=[]
-		  	 	}
+                    })
+                    .catch((res) => {
 
-	},
-			clickdele:function(e){
-        var currentTargetId = $(e.currentTarget).data("ddid");
-        layer.confirm('<s:text name="my-inquiry-list.Delete_Inquiry"/>', {icon: 7, title:'<s:text name="Global.Tips"/>'}, (index)=>{
-          //do something
-          axios.post('/home/usr_UsrConsult_delete',Qs.stringify({
-            id: currentTargetId*1
-          }, {allowDots: true}))
-          .then((res)=>{
-            if(res.data.ret== 1 ){
-              layer.msg('<s:text name="Global.Successfully_Deleted"/>', {icon: 1,time: 1000});
-              setTimeout(()=>{
-                this.inquirylistload();
-              },1000)
-            }
-          })
-          .catch((res)=>{
-          });
+                    });
+            },
+            // dianjifenye:function(e){
+            // 	this.start= ($(e.currentTarget).data("yeshu") -1)*this.limit
+            // this.inquirylistload();
+            // },
 
-          layer.close(index);
-        });
-			 },
+            checkedAll: function (e) {
+                var checkObj = document.querySelectorAll('.yigegexuan'); // 获取所有checkbox项
+                if (e.target.checked) { // 判定全选checkbox的勾选状态
+                    for (var i = 0; i < checkObj.length; i++) {
+                        if (!checkObj[i].checked) { // 将未勾选的checkbox选项push到绑定数组中
+                            this.checkedNames.push(checkObj[i].value * 1);
+                        }
+                    }
+                } else {
+                    this.checkedNames = []
+                }
 
-			 clickdeleall:function(e){
-         if( this.checkedNames.length==0 ) return;
-         layer.confirm('<s:text name="my-inquiry-list.Delete_All_Queries"/>', {icon: 7, title:'<s:text name="Global.Tips"/>'}, (index)=>{
-          axios.post('/home/usr_UsrConsult_deletes',Qs.stringify({
-            ids:this.checkedNames.join(",")
-          }, {allowDots: true}))
-          .then((res)=>{
-            if(res.data.ret== 1 ){
-              layer.msg('<s:text name="Global.Successfully_Deleted"/>', {icon: 1,time: 1000});
-              setTimeout(()=>{
-                this.inquirylistload();
-              },1000)
-            }
-          })
-          .catch((res)=>{
-          });
+            },
+            clickdele: function (e) {
+                var currentTargetId = $(e.currentTarget).data("ddid");
+                layer.confirm('<s:text name="my-inquiry-list.Delete_Inquiry"/>', {
+                    icon: 7,
+                    title: '<s:text name="Global.Tips"/>'
+                }, (index) => {
+                    //do something
+                    axios.post('/home/usr_UsrConsult_delete', Qs.stringify({
+                        id: currentTargetId * 1
+                    }, {allowDots: true}))
+                        .then((res) => {
+                            if (res.data.ret == 1) {
+                                layer.msg('<s:text name="Global.Successfully_Deleted"/>', {icon: 1, time: 1000});
+                                setTimeout(() => {
+                                    this.inquirylistload();
+                                }, 1000)
+                            }
+                        })
+                        .catch((res) => {
+                        });
 
-          layer.close(index);
-        });
-			 },
-  }
-})
+                    layer.close(index);
+                });
+            },
+
+            clickdeleall: function (e) {
+                if (this.checkedNames.length == 0) return;
+                layer.confirm('<s:text name="my-inquiry-list.Delete_All_Queries"/>', {
+                    icon: 7,
+                    title: '<s:text name="Global.Tips"/>'
+                }, (index) => {
+                    axios.post('/home/usr_UsrConsult_deletes', Qs.stringify({
+                        ids: this.checkedNames.join(",")
+                    }, {allowDots: true}))
+                        .then((res) => {
+                            if (res.data.ret == 1) {
+                                layer.msg('<s:text name="Global.Successfully_Deleted"/>', {icon: 1, time: 1000});
+                                setTimeout(() => {
+                                    this.inquirylistload();
+                                }, 1000)
+                            }
+                        })
+                        .catch((res) => {
+                        });
+
+                    layer.close(index);
+                });
+            },
+        }
+    })
 
 </script>
 

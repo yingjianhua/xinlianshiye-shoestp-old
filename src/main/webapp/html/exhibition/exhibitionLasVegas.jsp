@@ -1,18 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<jsp:include page="/home/v2/template/header.jsp"></jsp:include>
-<script src="./js/config.js"></script>
-<link rel="stylesheet" href="css/index.css">
+<jsp:include page="/home/v3/header.jsp"></jsp:include>
+<script src="/html/exhibition/js/config.js"></script>
+<link rel="stylesheet" href="/html/exhibition/css/index.css">
 <style>
     .wide {
         width: 1240px;
         margin: 0 auto;
     }
 </style>
-
-<jsp:include page="/home/v2/template/nav.jsp"></jsp:include>
+<jsp:include page="/home/v3/nav.jsp"></jsp:include>
 <div id="linExhibitionLasVages">
+    <div id="app">
+        <index-top></index-top>
+    </div>
     <div class="lasvagesbannercon">
-        <img class='lasvagesbanner' src="images/bannerlasvages.png" alt="">
+        <img class='lasvagesbanner' src="/html/exhibition/images/bannerlasvages.png" alt="">
     </div>
     <div class="lasvagesdetailconout">
         <div class="lasvagesdetailcon">
@@ -22,7 +24,7 @@
             </div>
             <div class="lasvagesdetail">
                 <video controls autoplay loop>
-                    <source src="images/video.MP4"/>
+                    <source src="/html/exhibition/images/video.MP4"/>
                 </video>
                 <div class="detailcon">
                     <h3>FOOTWEAR SOURCING AT MAGIC</h3>
@@ -39,7 +41,7 @@
             <div class="lasvagescon">
                 <div class="lasvagescon1">
                     <div class="top">
-                        <img src="images/lasvagescon1.png" alt="">
+                        <img src="/html/exhibition/images/lasvagescon1.png" alt="">
                         <h4>SHOW HOURS</h4>
                     </div>
                     <p>MONDAY, FEBRUARY 4<br>
@@ -62,7 +64,7 @@
                 </div>
                 <div class="lasvagescon1">
                     <div class="top">
-                        <img src="images/lasvagescon2.png" alt="">
+                        <img src="/html/exhibition/images/lasvagescon2.png" alt="">
                         <h4>ATTENDEE<br>REGISTRATION HOURS</h4>
                     </div>
                     <p>SUNDAY, FEBRUARY 3<br>
@@ -98,11 +100,11 @@
                 <h2>GALLERY</h2>
                 <div class="hen"></div>
             </div>
-            <img class="img1" src="images/lasvagesimgs1.png" alt="">
+            <img class="img1" src="/html/exhibition/images/lasvagesimgs1.png" alt="">
         </div>
     </div>
     <div class="lasvagesimgscon">
-        <img src="images/lasvagesimgs2.png" alt="">
+        <img src="/html/exhibition/images/lasvagesimgs2.png" alt="">
         <h2>Venue Map & Directions</h2>
         <div class="map">
             <iframe
@@ -126,7 +128,13 @@
         }
     })
 </script>
-<jsp:include page="/home/v2/template/foot.jsp"></jsp:include>
-
+<%--<jsp:include page="/home/v2/template/foot.jsp"></jsp:include>--%>
+<%@ include file="/home/v2/template/foot.jsp" %>
+<script src="/home/v3/static/js/index-top.js"></script>
+<script>
+    new Vue({
+        el:"#app"
+    })
+</script>
 </body>
 </html>

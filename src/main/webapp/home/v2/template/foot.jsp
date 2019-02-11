@@ -7,7 +7,7 @@
             <div class="right">
                 <h3><s:text name="Subscribe_Now"/></h3>
                 <!-- <p>Receive The Latest Offers and Promotions Free your Email  Subscribe</p> -->
-                <p><s:text name="Receive_The_Latest_Offers_and_Promotions_Free"/> </p>
+                <%--<p><s:text name="Receive_The_Latest_Offers_and_Promotions_Free"/> </p>--%>
                 <input type="text" v-model="form.email" placeholder="<s:text name="Your_Email"/>"><span
                     @click="subscribe"><s:text name="Subscribe"/></span>
             </div>
