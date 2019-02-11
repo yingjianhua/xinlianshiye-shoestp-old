@@ -89,40 +89,38 @@
 
     <%--统计代码--%>
 </head>
-
-<body class="lang_en w_1200">
-
-<%@ include file="/home/template/web-top.jsp" %>
-
-<%@ include file="/home/template/new-header.jsp" %>
-
-<div id="main" class="wide">
-    <div id="lib_user" class="clearfix">
-        <s:if test="env.login!=null">
-            <div id="lib_user_crumb" class="widget">
-                <ul class="crumb_box clearfix">
-                    <li class="home">
-                        <a href="/home/usr_UsrPurchase" title="Home">
-                            <s:text name="Global.Home"/>
-                            <i></i>
-                        </a>
-                    </li>
-                    <li class="crumb1">
-                        <a href="/home/usr_UsrPurchase_userIndex" title="My Account">
-                            <s:text name="Global.My_Account"/>
-                            <i></i>
-                        </a>
-                    </li>
-                    <li class="crumb2 root">
-                        <a href="/home/usr_UsrConsult_publishView" title="My Inquiry/RFQ">
-                            <s:text name="my-inquiry-publish.View_Inquiry"/>
-                            <i></i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <%@ include file="template/account/lib-user-menu.jsp" %>
-        </s:if>
+<jsp:include page="v3/header.jsp"/>
+<jsp:include page="v3/nav.jsp"/>
+<body class="lang_en w_1200" style="background: #fff;">
+<div id="main">
+    <index-top></index-top>
+    <div class="wide">
+        <div id="lib_user" class="clearfix">
+            <s:if test="env.login!=null">
+                <div id="lib_user_crumb" class="widget">
+                    <ul class="crumb_box clearfix">
+                        <li class="home">
+                            <a href="/home/usr_UsrPurchase" title="Home">
+                                <s:text name="Global.Home"/>
+                                <i></i>
+                            </a>
+                        </li>
+                        <li class="crumb1">
+                            <a href="/home/usr_UsrPurchase_userIndex" title="My Account">
+                                <s:text name="Global.My_Account"/>
+                                <i></i>
+                            </a>
+                        </li>
+                        <li class="crumb2 root">
+                            <a href="/home/usr_UsrConsult_publishView" title="My Inquiry/RFQ">
+                                <s:text name="my-inquiry-publish.View_Inquiry"/>
+                                <i></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <%@ include file="template/account/lib-user-menu.jsp" %>
+            </s:if>
 
             <div id="lib_user_main">
                 <div id="lib_user_msg" class="clearfix">
@@ -152,76 +150,76 @@
                             <div class="form_main">
                                 <el-form-item label-width="0" prop="descriotion">
                                     <el-input type="textarea" :autosize="{ minRows: 14, maxRows: 14}" placeholder="Please let us know your requirements as detail as possible. You may include: color, size, material, gradw/standard, etc."
-                                        v-model="form.descriotion">
+                                              v-model="form.descriotion">
                                     </el-input>
                                 </el-form-item>
                             </div>
 
-                        <div class="form_main marginBottom">
-                            <!--  添加 勾选商品后的图片显示 -->
-                            <div class="chooseImgWrap clearfix">
-                                <div class="chooseImg fl">
-                                    <el-upload action="/home/usr_UsrConsult_upload" list-type="picture-card"
-                                               :on-success="handlePictureCardPreview" :limit="5"
-                                               :before-upload="beforeUpload"
-                                               :on-remove="handleRemove">
-                                        <img src="./static/images/upImg.png"
-                                             style="width: 100%;height: 100%;object-fit: contain;">
-                                    </el-upload>
+                            <div class="form_main marginBottom">
+                                <!--  添加 勾选商品后的图片显示 -->
+                                <div class="chooseImgWrap clearfix">
+                                    <div class="chooseImg fl">
+                                        <el-upload action="/home/usr_UsrConsult_upload" list-type="picture-card"
+                                                   :on-success="handlePictureCardPreview" :limit="5"
+                                                   :before-upload="beforeUpload"
+                                                   :on-remove="handleRemove">
+                                            <img src="./static/images/upImg.png"
+                                                 style="width: 100%;height: 100%;object-fit: contain;">
+                                        </el-upload>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="inquiry-goods-info">
-                            <el-form-item label="Purchase Quantity：" required>
-                                <el-col :span="15">
-                                    <el-form-item label-width="0" prop="quantity">
-                                        <el-input v-model.number="form.quantity"></el-input>
-                                    </el-form-item>
-                                </el-col>
+                            <div class="inquiry-goods-info">
+                                <el-form-item label="Purchase Quantity：" required>
+                                    <el-col :span="15">
+                                        <el-form-item label-width="0" prop="quantity">
+                                            <el-input v-model.number="form.quantity"></el-input>
+                                        </el-form-item>
+                                    </el-col>
 
-                                <el-col class="input-unit" :span="6" :offset="1">
-                                    <!-- Pairs -->
-                                    <el-select placeholder="" v-model="form.unit">
-                                        <el-option label="Pairs" :value="1"></el-option>
-                                        <el-option label="Forty-Foot Container" :value="2"></el-option>
-                                        <el-option label="Twenty-Foot Container" :value="3"></el-option>
-                                        <!-- <el-option label="Forty-Foot Container" :value="2"></el-option>
-                              <el-option label="Twenty-Foot Container" :value="3"></el-option> -->
-                                    </el-select>
-                                </el-col>
-                            </el-form-item>
+                                    <el-col class="input-unit" :span="6" :offset="1">
+                                        <!-- Pairs -->
+                                        <el-select placeholder="" v-model="form.unit">
+                                            <el-option label="Pairs" :value="1"></el-option>
+                                            <el-option label="Forty-Foot Container" :value="2"></el-option>
+                                            <el-option label="Twenty-Foot Container" :value="3"></el-option>
+                                            <!-- <el-option label="Forty-Foot Container" :value="2"></el-option>
+                                  <el-option label="Twenty-Foot Container" :value="3"></el-option> -->
+                                        </el-select>
+                                    </el-col>
+                                </el-form-item>
 
-                            <el-form-item label="Price：">
-                                <el-col :span="7">
-                                    <el-form-item prop="min_price">
-                                        <el-input v-model.number="form.min_price"></el-input>
-                                    </el-form-item>
-                                </el-col>
-                                <el-col :span="1">
-                                    <div class="tc">-</div>
-                                </el-col>
-                                <el-col :span="7">
-                                    <el-form-item prop="max_price">
-                                        <el-input v-model.number="form.max_price"></el-input>
-                                    </el-form-item>
-                                </el-col>
-                                <el-col :span="6" :offset="1">
-                                    <el-select placeholder="" v-model="form.currency">
-                                        <el-option v-for="item in currencyList" :label="item.curname"
-                                                   :value="item.id"></el-option>
-                                    </el-select>
-                                </el-col>
-                            </el-form-item>
+                                <el-form-item label="Price：">
+                                    <el-col :span="7">
+                                        <el-form-item prop="min_price">
+                                            <el-input v-model.number="form.min_price"></el-input>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="1">
+                                        <div class="tc">-</div>
+                                    </el-col>
+                                    <el-col :span="7">
+                                        <el-form-item prop="max_price">
+                                            <el-input v-model.number="form.max_price"></el-input>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="6" :offset="1">
+                                        <el-select placeholder="" v-model="form.currency">
+                                            <el-option v-for="item in currencyList" :label="item.curname"
+                                                       :value="item.id"></el-option>
+                                        </el-select>
+                                    </el-col>
+                                </el-form-item>
 
-                            <el-form-item label="Valid to：" hidden>
-                                <el-col :span="11">
-                                    <el-date-picker type="date" readonly placeholder="Selection date"
-                                                    v-model="form.valid_date"
-                                                    style="width: 100%;"></el-date-picker>
-                                </el-col>
-                            </el-form-item>
-                        </div>
+                                <el-form-item label="Valid to：" hidden>
+                                    <el-col :span="11">
+                                        <el-date-picker type="date" readonly placeholder="Selection date"
+                                                        v-model="form.valid_date"
+                                                        style="width: 100%;"></el-date-picker>
+                                    </el-col>
+                                </el-form-item>
+                            </div>
 
                             <el-collapse>
                                 <el-collapse-item title="Fitter suppliers and set trading terms to get better quotes." name="1">
@@ -265,16 +263,16 @@
                     </div>
 
 
-                <div class="main_right">
-                    <header>
-                        <div style="margin-right: 6px;">
-                            <img src="./static/images/RFQ.png" alt="">
-                        </div>
-                        <div>
-                            <h2 class="header-title2 noWrap">Request a Quote</h2>
-                            <p style="font-size:14px;color: #666;">One Request Multiple Quotes</p>
-                        </div>
-                    </header>
+                    <div class="main_right">
+                        <header>
+                            <div style="margin-right: 6px;">
+                                <img src="./static/images/RFQ.png" alt="">
+                            </div>
+                            <div>
+                                <h2 class="header-title2 noWrap">Request a Quote</h2>
+                                <p style="font-size:14px;color: #666;">One Request Multiple Quotes</p>
+                            </div>
+                        </header>
 
                         <div class="main_rightT">
                             <h3 class="header-title2" style="margin-top:0">Intro to our suppliers and our RFQ system:</h3>
@@ -293,6 +291,7 @@
                         </div>
                     </div>
 
+                </div>
             </div>
         </div>
     </div>
@@ -318,7 +317,7 @@
         return false;
     }
 </script>
-
+<script src="/home/v3/static/js/index-top.js"></script>
 <script type="text/javascript">
     // 最高价格 - 不鞥低于最低价
     const validateMaxPrice = (rule, value, callback) => {
@@ -337,7 +336,7 @@
     };
 
     var vm = new Vue({
-        el: "#lib_user_main",
+        el: "#main",
         data: {
             imgsToUpload: [] // 需要upload的img - 显示在页面上
             ,

@@ -28,6 +28,8 @@
     <script type="text/javascript" src="./static/js/layer.js"></script>
     <link rel="stylesheet" href="./static/css/layer.css" type="text/css">
 </head>
+<jsp:include page="v3/header.jsp"/>
+<jsp:include page="v3/nav.jsp"/>
 <style>
     .el-icon-document {
         height: auto !important;
@@ -140,340 +142,350 @@
 
 <body class="lang_en w_1200">
 <%@ include file="/home/template/web-top.jsp" %>
-<%@ include file="/home/template/new-header.jsp" %>
 <div id="app">
-    <div class="w1200">
-        <div id="lib_user" class="clearfix">
-            <div id="lib_user_crumb" class="widget">
-                <ul class="crumb_box clearfix">
-                    <li class="home"><a href="/" title="Home"><s:text name="home"/><i></i></a></li>
-                    <li class="crumb2 root"><a href="/home/usr_UsrSupplier_supplierEntry" title="supplier entry"><s:text
-                            name="ApplyShop"/><i></i></a></li>
+    <index-top></index-top>
+    <div class="wide">
+        <div class="w1200">
+            <div id="lib_user" class="clearfix">
+                <div id="lib_user_crumb" class="widget">
+                    <ul class="crumb_box clearfix">
+                        <li class="home"><a href="/" title="Home"><s:text name="home"/><i></i></a></li>
+                        <li class="crumb2 root"><a href="/home/usr_UsrSupplier_supplierEntry"
+                                                   title="supplier entry"><s:text
+                                name="ApplyShop"/><i></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="tc">
+            <div v-show="step==0" class="xmg-storeapplication000" style="display: none;">
+                <h2><s:text name="Jurisdiction"/><a @click='toStep1'>&nbsp<s:text name="ApplyShop"/></a>！</h2>
+            </div>
+        </div>
+        <div v-show="step==1" class="w880 xmg-storeapplication111" style="display: none;">
+            <%-- <div class="xmg-top" style="background:url(./static/images/xmg-storeapplication111.jpg) no-repeat 0 0;"></div> --%>
+            <div class="step">
+                <div class="step-content active">
+                    1. <s:text name="step-content1"/>
+                </div>
+                <div class="step-content">
+                    2. <s:text name="step-content2"/>
+                </div>
+                <div class="step-content">
+                    3. <s:text name="step-content3"/>
+                </div>
+                <div class="step-content">
+                    4. <s:text name="step-content4"/>
+                </div>
+            </div>
+            <div class="xmg-common">
+                <div class="xmg-t"><h4><s:text name="FillCompanyInformation"/></h4></div>
+                <h5><s:text name="CompanyInformation"/></h5>
+                <ul style="border-top:0;">
+                    <li class="clearfloat">
+                        <p><i>*</i> <s:text name="purchase.company"/>：</p><input v-model="bean.name">
+                    </li>
+                    <li class="clearfloat">
+                        <p><s:text name="supplier.companytype"/>：</p><input v-model="bean.companyType" class=""
+                                                                            placeholder="<s:text name='supplier.placeholder.company'/>">
+                    </li>
+                    <li class="clearfloat">
+                        <p><s:text name="supplier.companynature"/>：</p><input v-model="bean.companyNature" class=""
+                                                                              placeholder="<s:text name="supplier.placeholder.nature"/>">
+                    </li>
+                    <li class="clearfloat">
+                        <p>
+                            <i>*</i> <s:text name="supplier.category"/>：
+                        </p>
+                        <select v-model='bean.category' class="w110">
+                            <option style="display:none;" disabled selected value="-1"><s:text
+                                    name="CategorySelect"/></option>
+                            <option v-for="category in categorys" :key="category.id" :value="category.id">
+                                {{category.name}}
+                            </option>
+                        </select>
+                    </li>
+                    <li class="clearfloat">
+                        <p><s:text name="CompanyOfficialWebsiteAddress"/>：</p><input v-model="bean.website">
+                    </li>
+                    <li class="clearfloat">
+                        <p><i>*</i> <s:text name="CompanyAddress"/>：</p>
+                        <select v-model="bean.country" class="w110">
+                            <option style="display:none;" disabled selected value="-1"><s:text
+                                    name="CountrySelect"/></option>
+                            <option v-for="(country,id) in countrys" :key="id" :value="id">{{country.name}}</option>
+                        </select>
+                        <select v-model="bean.province" class="w110">
+                            <option style="display:none;" disabled selected value="-1"><s:text
+                                    name="ProvinceSelect"/></option>
+                            <template v-if="bean.country!=-1">
+                                <option v-for="(province,id) in countrys[bean.country].provinces" :key="id" :value="id">
+                                    {{province.name}}
+                                </option>
+                            </template>
+                        </select>
+                    </li>
+                    <li class="clearfloat">
+                        <p>
+                            <i>*</i><s:text name="supplier.city"/>：
+                        </p>
+                        <input v-model="bean.city" style="width: 136px"/>
+                    </li>
+                    <li class="clearfloat">
+                        <p><i>*</i> <s:text name="CompanyDetailedAddress"/>：</p><input v-model="bean.companyAddr"
+                                                                                       class="w362"/>
+                    </li>
+                    <li class="clearfloat">
+                        <p><s:text name="Telephone"/>：</p><input v-model="bean.telephone"/>
+                    </li>
+                    <li class="clearfloat">
+                        <p><i>*</i> <s:text name="consult.email"/>：</p><input v-model="bean.email">
+                    </li>
+                    <li class="clearfloat">
+                        <p><s:text name="Fax"/>：</p><input v-model="bean.fax">
+                    </li>
+                </ul>
+
+                <ul>
+                    <li class="clearfloat">
+                        <p><i>*</i> <s:text name="supplier.registeredcapital"/>：</p><input
+                            v-model="bean.registeredCapital"><span><s:text
+                            name="supplier-entry.Ten_Thousand_Yuan"/></span>
+                    </li>
+                    <li class="clearfloat">
+                        <p><i>*</i> <s:text name="supplier-entry.Unified_Social_Credit_Code"/>：</p><input
+                            v-model="bean.creditCode"><span style="width:44.5%;display:inline-block;float:left;"><s:text
+                            name="PleaseCreditCode"/></span>
+                    </li>
+                    <li class="clearfloat">
+                        <p><i>*</i> <s:text name="LegalRepresentative"/>：</p><input v-model="bean.entity">
+                    </li>
+                    <li class="clearfloat">
+                        <p><i>*</i> <s:text name="ValidityPeriodOfBusinessLicense"/>：</p>
+                        <input v-model="bean.businessLicenseBeginTime" class="w130" placeholder="2018/01/01"><b>-</b>
+                        <input v-model="bean.businessLicenseEndTime" class="w130" placeholder="2018/01/01">
+                        <span><input style="position: relative;top:2px;" type="checkbox"
+                                     v-model="bean.businessLicenseIsSecular"> <s:text name="Long_term"/></span>
+                    </li>
+                    <li class="clearfloat">
+                        <p><s:text name="supplier.taxpayertype"/>：</p><input v-model="bean.taxpayerType" class=""
+                                                                             placeholder="<s:text name='supplier.placeholder.Taxpayer'/>">
+                    </li>
                 </ul>
             </div>
-        </div>
-    </div>
-    <div class="tc">
-        <div v-show="step==0" class="xmg-storeapplication000" style="display: none;">
-            <h2><s:text name="Jurisdiction"/><a @click='toStep1'>&nbsp<s:text name="ApplyShop"/></a>！</h2>
-        </div>
-    </div>
-    <div v-show="step==1" class="w880 xmg-storeapplication111" style="display: none;">
-        <%-- <div class="xmg-top" style="background:url(./static/images/xmg-storeapplication111.jpg) no-repeat 0 0;"></div> --%>
-        <div class="step">
-            <div class="step-content active">
-                1. <s:text name="step-content1"/>
-            </div>
-            <div class="step-content">
-                2. <s:text name="step-content2"/>
-            </div>
-            <div class="step-content">
-                3. <s:text name="step-content3"/>
-            </div>
-            <div class="step-content">
-                4. <s:text name="step-content4"/>
-            </div>
-        </div>
-        <div class="xmg-common">
-            <div class="xmg-t"><h4><s:text name="FillCompanyInformation"/></h4></div>
-            <h5><s:text name="CompanyInformation"/></h5>
-            <ul style="border-top:0;">
-                <li class="clearfloat">
-                    <p><i>*</i> <s:text name="purchase.company"/>：</p><input v-model="bean.name">
-                </li>
-                <li class="clearfloat">
-                    <p><s:text name="supplier.companytype"/>：</p><input v-model="bean.companyType" class=""
-                                                                        placeholder="<s:text name='supplier.placeholder.company'/>">
-                </li>
-                <li class="clearfloat">
-                    <p><s:text name="supplier.companynature"/>：</p><input v-model="bean.companyNature" class=""
-                                                                          placeholder="<s:text name="supplier.placeholder.nature"/>">
-                </li>
-                <li class="clearfloat">
-                    <p>
-                        <i>*</i> <s:text name="supplier.category"/>：
-                    </p>
-                    <select v-model='bean.category' class="w110">
-                        <option style="display:none;" disabled selected value="-1"><s:text
-                                name="CategorySelect"/></option>
-                        <option v-for="category in categorys" :key="category.id" :value="category.id">
-                            {{category.name}}
-                        </option>
-                    </select>
-                </li>
-                <li class="clearfloat">
-                    <p><s:text name="CompanyOfficialWebsiteAddress"/>：</p><input v-model="bean.website">
-                </li>
-                <li class="clearfloat">
-                    <p><i>*</i> <s:text name="CompanyAddress"/>：</p>
-                    <select v-model="bean.country" class="w110">
-                        <option style="display:none;" disabled selected value="-1"><s:text
-                                name="CountrySelect"/></option>
-                        <option v-for="(country,id) in countrys" :key="id" :value="id">{{country.name}}</option>
-                    </select>
-                    <select v-model="bean.province" class="w110">
-                        <option style="display:none;" disabled selected value="-1"><s:text
-                                name="ProvinceSelect"/></option>
-                        <template v-if="bean.country!=-1">
-                            <option v-for="(province,id) in countrys[bean.country].provinces" :key="id" :value="id">
-                                {{province.name}}
-                            </option>
-                        </template>
-                    </select>
-                </li>
-                <li class="clearfloat">
-                    <p>
-                        <i>*</i><s:text name="supplier.city"/>：
-                    </p>
-                    <input v-model="bean.city" style="width: 136px"/>
-                </li>
-                <li class="clearfloat">
-                    <p><i>*</i> <s:text name="CompanyDetailedAddress"/>：</p><input v-model="bean.companyAddr"
-                                                                                   class="w362"/>
-                </li>
-                <li class="clearfloat">
-                    <p><s:text name="Telephone"/>：</p><input v-model="bean.telephone"/>
-                </li>
-                <li class="clearfloat">
-                    <p><i>*</i> <s:text name="consult.email"/>：</p><input v-model="bean.email">
-                </li>
-                <li class="clearfloat">
-                    <p><s:text name="Fax"/>：</p><input v-model="bean.fax">
-                </li>
-            </ul>
-
-            <ul>
-                <li class="clearfloat">
-                    <p><i>*</i> <s:text name="supplier.registeredcapital"/>：</p><input v-model="bean.registeredCapital"><span><s:text
-                        name="supplier-entry.Ten_Thousand_Yuan"/></span>
-                </li>
-                <li class="clearfloat">
-                    <p><i>*</i> <s:text name="supplier-entry.Unified_Social_Credit_Code"/>：</p><input
-                        v-model="bean.creditCode"><span style="width:44.5%;display:inline-block;float:left;"><s:text
-                        name="PleaseCreditCode"/></span>
-                </li>
-                <li class="clearfloat">
-                    <p><i>*</i> <s:text name="LegalRepresentative"/>：</p><input v-model="bean.entity">
-                </li>
-                <li class="clearfloat">
-                    <p><i>*</i> <s:text name="ValidityPeriodOfBusinessLicense"/>：</p>
-                    <input v-model="bean.businessLicenseBeginTime" class="w130" placeholder="2018/01/01"><b>-</b>
-                    <input v-model="bean.businessLicenseEndTime" class="w130" placeholder="2018/01/01">
-                    <span><input style="position: relative;top:2px;" type="checkbox"
-                                 v-model="bean.businessLicenseIsSecular"> <s:text name="Long_term"/></span>
-                </li>
-                <li class="clearfloat">
-                    <p><s:text name="supplier.taxpayertype"/>：</p><input v-model="bean.taxpayerType" class=""
-                                                                         placeholder="<s:text name='supplier.placeholder.Taxpayer'/>">
-                </li>
-            </ul>
-        </div>
-        <div class="xmg-bottom tc">
-            <a @click="toStep2"><s:text name="supplier-entry.Next1"/></a>
-        </div>
-    </div>
-    <div v-show="step==2" class="w880 xmg-storeapplication111" style="display: none;">
-        <%-- <div class="xmg-top" style="background:url(./static/images/xmg-storeapplication222.jpg) no-repeat 0 0;"></div> --%>
-        <div class="step">
-            <div class="step-content">
-                1. <s:text name="step-content1"/>
-            </div>
-            <div class="step-content active">
-                2. <s:text name="step-content2"/>
-            </div>
-            <div class="step-content">
-                3. <s:text name="step-content3"/>
-            </div>
-            <div class="step-content">
-                4. <s:text name="step-content4"/>
-            </div>
-        </div>
-        <div class="xmg-common">
-            <div class="xmg-t"><h4><s:text name="FillInOperationInformation"/></h4></div>
-
-            <h5><s:text name="OperationInformation"/></h5>
-            <ul style="border-top:0;">
-
-                <li class="clearfloat">
-                    <p><i>*</i> <s:text name="supplier.contacts"/>：</p><input v-model="bean.contacts">
-                </li>
-                <li class="clearfloat">
-                    <p><i>*</i> <s:text name="Global.Telephone_Number"/>：</p><input v-model="bean.phone">
-                </li>
-                <li class="clearfloat">
-                    <p><i>*</i> <s:text name="Settlement_Account"/>：</p><input v-model="bean.settlementBank">
-                </li>
-                <li class="clearfloat">
-                    <p><i>*</i> <s:text name="Bank_Account"/>：</p><input v-model="bean.bankAccount">
-                </li>
-                <li class="clearfloat">
-                    <p><i>*</i> <s:text name="Bank_Branch_Name"/>：</p><input v-model="bean.bankBranch">
-                </li>
-                <li class="clearfloat">
-                    <p><i>*</i> <s:text name="Bank_Branch_Branch_Location"/>：</p>
-                    <select v-model="bean.bankCountry" class="w110">
-                        <option style="display:none;" disabled selected value="-1"><s:text
-                                name="countryOfBank"/></option>
-                        <option v-for="(country,id) in countrys" :key="id" :value="id">{{country.name}}</option>
-                    </select>
-                    <select v-model="bean.bankProvince" class="w110">
-                        <option style="display:none;" disabled selected value="-1"><s:text
-                                name="provinceOfBank"/></option>
-                        <template v-if="bean.bankCountry!=-1">
-                            <option v-for="(province,id) in countrys[bean.bankCountry].provinces" :key="id" :value="id">
-                                {{province.name}}
-                            </option>
-                        </template>
-                    </select>
-                </li>
-            </ul>
-
-        </div>
-        <div class="xmg-bottom tc">
-            <a @click="step=1" class="previous"><s:text name="Step"/></a>
-            <a @click="toStep3" class="next"><s:text name="nextCompanyQualification"/></a>
-        </div>
-    </div>
-    <div v-show="step==3" class="w880 xmg-storeapplication333" style="display: none;">
-        <%-- <div class="xmg-top" style="background:url(./static/images/xmg-storeapplication333.jpg) no-repeat 0 0;"></div> --%>
-        <div class="step">
-            <div class="step-content">
-                1. <s:text name="step-content1"/>
-            </div>
-            <div class="step-content">
-                2. <s:text name="step-content2"/>
-            </div>
-            <div class="step-content active">
-                3. <s:text name="step-content3"/>
-            </div>
-            <div class="step-content">
-                4. <s:text name="step-content4"/>
-            </div>
-        </div>
-        <div class="xmg-common">
-            <div class="xmg-t"><h4><s:text name="UploadQualificationPhotos"/></h4></div>
-
-            <h5><s:text name="AptitudeUpload"/></h5>
-            <ul style="border-top:0;">
-                <h3><i class="dengpao"></i><s:text name="AptitudeUpload0"/></h3>
-                <h3><i class="dengpao"></i><s:text name="AptitudeUpload1"/></h3>
-                <h2><s:text name="BasicQualifications"/></h2>
-                <li class="clearfloat">
-                    <p>
-                        <i>*</i><s:text name="EnterpriseVoucher"/><a href="javascript:void(0)"><s:text
-                            name="LookAtTheModel"/></a>
-                        <el-upload accept="image/jpeg,image/gif,image/png" :before-upload="onBeforeUpload"
-                                   action="/home/usr_UsrSupplier_upload" :on-success="uploadCertPhoto"
-                                   :on-remove="removeCertPhoto" :limit="1">
-                            <el-button v-show="typeof(certPhoto.name)=='undefined'" size="small" type="primary"><s:text
-                                    name="ClickUpload"/></el-button>
-                        </el-upload>
-                    </p>
-                </li>
-                <li class="clearfloat">
-                    <p>
-                        <i>*</i><s:text name="IDCardPhoto0"/><a href="javascript:void(0)"><s:text
-                            name="LookAtTheModel"/></a>
-                        <s:text name="IDCard"/>：<input v-model="bean.idCard"/>
-                    </p>
-                    <p>
-                        <i>*</i><s:text name="supplier.idcardfrontphoto"/>：
-
-                        <el-upload accept="image/jpeg,image/gif,image/png" :before-upload="onBeforeUpload"
-                                   action="/home/usr_UsrSupplier_upload" :on-success="uploadIdCardFrontPhoto"
-                                   :on-remove="removeIdCardFrontPhoto" :limit="1">
-                            <el-button v-show="typeof(idCardFrontPhoto.name)=='undefined'" size="small" type="primary">
-                                <s:text name="ClickUpload"/></el-button>
-                        </el-upload>
-                    </p>
-                    <p>
-                        <i>*</i> <s:text name="supplier.idcardbackphoto"/>：
-                        <el-upload action="/home/usr_UsrSupplier_upload" :before-upload="onBeforeUpload"
-                                   :on-success="uploadIdCardBackPhoto" :on-remove="removeIdCardBackPhoto" :limit="1">
-                            <el-button v-show="typeof(idCardBackPhoto.name)=='undefined'" size="small" type="primary">
-                                <s:text name="ClickUpload"/></el-button>
-                        </el-upload>
-                    </p>
-                </li>
-                <li class="clearfloat">
-                    <p>
-                        <s:text name="IDCardPhoto1"/><a href="javascript:void(0)"><s:text name="LookAtTheModel"/></a>
-                        <s:text name="IDCard"/>：<input v-model="bean.operateIdCard"/>
-                    </p>
-                    <p>
-                        <s:text name="supplier.idcardfrontphoto"/>：
-                        <el-upload action="/home/usr_UsrSupplier_upload" :before-upload="onBeforeUpload"
-                                   :on-success="uploadContactsIdCardFrontPhoto"
-                                   :on-remove="removeContactsIdCardFrontPhoto" :limit="1">
-                            <el-button v-show="typeof(contactsIdCardFrontPhoto.name)=='undefined'" size="small"
-                                       type="primary"><s:text name="ClickUpload"/></el-button>
-                        </el-upload>
-                    </p>
-                    <p>
-                        <s:text name="supplier.idcardbackphoto"/>：
-                        <el-upload action="/home/usr_UsrSupplier_upload" :before-upload="onBeforeUpload"
-                                   :on-success="uploadContactsIdCardBackPhoto"
-                                   :on-remove="removeContactsIdCardBackPhoto" :limit="1">
-                            <el-button v-show="typeof(contactsIdCardBackPhoto.name)=='undefined'" size="small"
-                                       type="primary"><s:text name="ClickUpload"/></el-button>
-                        </el-upload>
-                    </p>
-
-                </li>
-
-            </ul>
-
-        </div>
-        <div class="xmg-bottom tc">
-            <a @click="step=2" class="previous"><s:text name="Step"/></a>
-            <a @click="submit" class="next"><s:text name="PreservationInformation"/></a>
-        </div>
-    </div>
-    <div>
-    </div>
-
-    <!-- 提心入驻申请已提交 -->
-    <div v-show="submitsuccess" class="xmg-tc" style="display: none;">
-        <div class="xmg-tcbg"></div>
-        <div class="xmg-tcbox">
-            <div @click="step=4;submitsuccess=false;" class="xmg-tcclose">×</div>
-            <p><i class="dagou"></i><s:text name="Submission"/></p>
             <div class="xmg-bottom tc">
-                <a @click="step=4;submitsuccess=false;"><s:text name="cpop_t4"/></a>
+                <a @click="toStep2"><s:text name="supplier-entry.Next1"/></a>
             </div>
         </div>
-    </div>
+        <div v-show="step==2" class="w880 xmg-storeapplication111" style="display: none;">
+            <%-- <div class="xmg-top" style="background:url(./static/images/xmg-storeapplication222.jpg) no-repeat 0 0;"></div> --%>
+            <div class="step">
+                <div class="step-content">
+                    1. <s:text name="step-content1"/>
+                </div>
+                <div class="step-content active">
+                    2. <s:text name="step-content2"/>
+                </div>
+                <div class="step-content">
+                    3. <s:text name="step-content3"/>
+                </div>
+                <div class="step-content">
+                    4. <s:text name="step-content4"/>
+                </div>
+            </div>
+            <div class="xmg-common">
+                <div class="xmg-t"><h4><s:text name="FillInOperationInformation"/></h4></div>
 
-    <div v-show="step==4" class="w880 xmg-storeapplication111" style="display: none;">
-        <%-- <div class="xmg-top" style="background:url(./static/images/xmg-storeapplication444.jpg) no-repeat 0 0;"></div> --%>
-        <div class="step">
-            <div class="step-content">
-                1. <s:text name="step-content1"/>
+                <h5><s:text name="OperationInformation"/></h5>
+                <ul style="border-top:0;">
+
+                    <li class="clearfloat">
+                        <p><i>*</i> <s:text name="supplier.contacts"/>：</p><input v-model="bean.contacts">
+                    </li>
+                    <li class="clearfloat">
+                        <p><i>*</i> <s:text name="Global.Telephone_Number"/>：</p><input v-model="bean.phone">
+                    </li>
+                    <li class="clearfloat">
+                        <p><i>*</i> <s:text name="Settlement_Account"/>：</p><input v-model="bean.settlementBank">
+                    </li>
+                    <li class="clearfloat">
+                        <p><i>*</i> <s:text name="Bank_Account"/>：</p><input v-model="bean.bankAccount">
+                    </li>
+                    <li class="clearfloat">
+                        <p><i>*</i> <s:text name="Bank_Branch_Name"/>：</p><input v-model="bean.bankBranch">
+                    </li>
+                    <li class="clearfloat">
+                        <p><i>*</i> <s:text name="Bank_Branch_Branch_Location"/>：</p>
+                        <select v-model="bean.bankCountry" class="w110">
+                            <option style="display:none;" disabled selected value="-1"><s:text
+                                    name="countryOfBank"/></option>
+                            <option v-for="(country,id) in countrys" :key="id" :value="id">{{country.name}}</option>
+                        </select>
+                        <select v-model="bean.bankProvince" class="w110">
+                            <option style="display:none;" disabled selected value="-1"><s:text
+                                    name="provinceOfBank"/></option>
+                            <template v-if="bean.bankCountry!=-1">
+                                <option v-for="(province,id) in countrys[bean.bankCountry].provinces" :key="id"
+                                        :value="id">
+                                    {{province.name}}
+                                </option>
+                            </template>
+                        </select>
+                    </li>
+                </ul>
+
             </div>
-            <div class="step-content">
-                2. <s:text name="step-content2"/>
-            </div>
-            <div class="step-content">
-                3. <s:text name="step-content3"/>
-            </div>
-            <div class="step-content active">
-                4. <s:text name="step-content4"/>
+            <div class="xmg-bottom tc">
+                <a @click="step=1" class="previous"><s:text name="Step"/></a>
+                <a @click="toStep3" class="next"><s:text name="nextCompanyQualification"/></a>
             </div>
         </div>
-        <div class="xmg-common">
-            <div class="xmg-t"><h4><s:text name="QualificationExamination"/></h4></div>
+        <div v-show="step==3" class="w880 xmg-storeapplication333" style="display: none;">
+            <%-- <div class="xmg-top" style="background:url(./static/images/xmg-storeapplication333.jpg) no-repeat 0 0;"></div> --%>
+            <div class="step">
+                <div class="step-content">
+                    1. <s:text name="step-content1"/>
+                </div>
+                <div class="step-content">
+                    2. <s:text name="step-content2"/>
+                </div>
+                <div class="step-content active">
+                    3. <s:text name="step-content3"/>
+                </div>
+                <div class="step-content">
+                    4. <s:text name="step-content4"/>
+                </div>
+            </div>
+            <div class="xmg-common">
+                <div class="xmg-t"><h4><s:text name="UploadQualificationPhotos"/></h4></div>
 
-            <ul style="border-top:0;">
+                <h5><s:text name="AptitudeUpload"/></h5>
+                <ul style="border-top:0;">
+                    <h3><i class="dengpao"></i><s:text name="AptitudeUpload0"/></h3>
+                    <h3><i class="dengpao"></i><s:text name="AptitudeUpload1"/></h3>
+                    <h2><s:text name="BasicQualifications"/></h2>
+                    <li class="clearfloat">
+                        <p>
+                            <i>*</i><s:text name="EnterpriseVoucher"/><a href="javascript:void(0)"><s:text
+                                name="LookAtTheModel"/></a>
+                            <el-upload accept="image/jpeg,image/gif,image/png" :before-upload="onBeforeUpload"
+                                       action="/home/usr_UsrSupplier_upload" :on-success="uploadCertPhoto"
+                                       :on-remove="removeCertPhoto" :limit="1">
+                                <el-button v-show="typeof(certPhoto.name)=='undefined'" size="small" type="primary">
+                                    <s:text
+                                            name="ClickUpload"/></el-button>
+                            </el-upload>
+                        </p>
+                    </li>
+                    <li class="clearfloat">
+                        <p>
+                            <i>*</i><s:text name="IDCardPhoto0"/><a href="javascript:void(0)"><s:text
+                                name="LookAtTheModel"/></a>
+                            <s:text name="IDCard"/>：<input v-model="bean.idCard"/>
+                        </p>
+                        <p>
+                            <i>*</i><s:text name="supplier.idcardfrontphoto"/>：
 
-                <li class="clearfloat">
-                    <h2><s:text name="UnderReview"/></h2>
-                    <h3><s:text name="questions"/>：0577-85887575</h3>
-                </li>
-            </ul>
+                            <el-upload accept="image/jpeg,image/gif,image/png" :before-upload="onBeforeUpload"
+                                       action="/home/usr_UsrSupplier_upload" :on-success="uploadIdCardFrontPhoto"
+                                       :on-remove="removeIdCardFrontPhoto" :limit="1">
+                                <el-button v-show="typeof(idCardFrontPhoto.name)=='undefined'" size="small"
+                                           type="primary">
+                                    <s:text name="ClickUpload"/></el-button>
+                            </el-upload>
+                        </p>
+                        <p>
+                            <i>*</i> <s:text name="supplier.idcardbackphoto"/>：
+                            <el-upload action="/home/usr_UsrSupplier_upload" :before-upload="onBeforeUpload"
+                                       :on-success="uploadIdCardBackPhoto" :on-remove="removeIdCardBackPhoto"
+                                       :limit="1">
+                                <el-button v-show="typeof(idCardBackPhoto.name)=='undefined'" size="small"
+                                           type="primary">
+                                    <s:text name="ClickUpload"/></el-button>
+                            </el-upload>
+                        </p>
+                    </li>
+                    <li class="clearfloat">
+                        <p>
+                            <s:text name="IDCardPhoto1"/><a href="javascript:void(0)"><s:text
+                                name="LookAtTheModel"/></a>
+                            <s:text name="IDCard"/>：<input v-model="bean.operateIdCard"/>
+                        </p>
+                        <p>
+                            <s:text name="supplier.idcardfrontphoto"/>：
+                            <el-upload action="/home/usr_UsrSupplier_upload" :before-upload="onBeforeUpload"
+                                       :on-success="uploadContactsIdCardFrontPhoto"
+                                       :on-remove="removeContactsIdCardFrontPhoto" :limit="1">
+                                <el-button v-show="typeof(contactsIdCardFrontPhoto.name)=='undefined'" size="small"
+                                           type="primary"><s:text name="ClickUpload"/></el-button>
+                            </el-upload>
+                        </p>
+                        <p>
+                            <s:text name="supplier.idcardbackphoto"/>：
+                            <el-upload action="/home/usr_UsrSupplier_upload" :before-upload="onBeforeUpload"
+                                       :on-success="uploadContactsIdCardBackPhoto"
+                                       :on-remove="removeContactsIdCardBackPhoto" :limit="1">
+                                <el-button v-show="typeof(contactsIdCardBackPhoto.name)=='undefined'" size="small"
+                                           type="primary"><s:text name="ClickUpload"/></el-button>
+                            </el-upload>
+                        </p>
 
+                    </li>
+
+                </ul>
+
+            </div>
+            <div class="xmg-bottom tc">
+                <a @click="step=2" class="previous"><s:text name="Step"/></a>
+                <a @click="submit" class="next"><s:text name="PreservationInformation"/></a>
+            </div>
         </div>
-        <div class="xmg-bottom tc">
-            <a @click="goBack"><s:text name="goBack"/></a>
+        <div>
+        </div>
+
+        <!-- 提心入驻申请已提交 -->
+        <div v-show="submitsuccess" class="xmg-tc" style="display: none;">
+            <div class="xmg-tcbg"></div>
+            <div class="xmg-tcbox">
+                <div @click="step=4;submitsuccess=false;" class="xmg-tcclose">×</div>
+                <p><i class="dagou"></i><s:text name="Submission"/></p>
+                <div class="xmg-bottom tc">
+                    <a @click="step=4;submitsuccess=false;"><s:text name="cpop_t4"/></a>
+                </div>
+            </div>
+        </div>
+
+        <div v-show="step==4" class="w880 xmg-storeapplication111" style="display: none;">
+            <%-- <div class="xmg-top" style="background:url(./static/images/xmg-storeapplication444.jpg) no-repeat 0 0;"></div> --%>
+            <div class="step">
+                <div class="step-content">
+                    1. <s:text name="step-content1"/>
+                </div>
+                <div class="step-content">
+                    2. <s:text name="step-content2"/>
+                </div>
+                <div class="step-content">
+                    3. <s:text name="step-content3"/>
+                </div>
+                <div class="step-content active">
+                    4. <s:text name="step-content4"/>
+                </div>
+            </div>
+            <div class="xmg-common">
+                <div class="xmg-t"><h4><s:text name="QualificationExamination"/></h4></div>
+
+                <ul style="border-top:0;">
+
+                    <li class="clearfloat">
+                        <h2><s:text name="UnderReview"/></h2>
+                        <h3><s:text name="questions"/>：0577-85887575</h3>
+                    </li>
+                </ul>
+
+            </div>
+            <div class="xmg-bottom tc">
+                <a @click="goBack"><s:text name="goBack"/></a>
+            </div>
         </div>
     </div>
 </div>
