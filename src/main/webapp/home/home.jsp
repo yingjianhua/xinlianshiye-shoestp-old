@@ -29,7 +29,7 @@
                 <h1>Categories</h1>
 
                 <div class="boxList" v-for="(item,index) in classLists" for-key="index">
-                    <a class="h2" href="">
+                    <a class="h2" :href="'/home/pdt_PdtProduct?cated='+item.value" target="_blank">
                         <img class="leftNav-icon1" src="/home/v3/static/images/icon_nx.png" alt="{{item.label}}" v-if="index==0"/>
                         <img class="leftNav-icon1" src="/home/v3/static/images/icon_nvx.png" alt="{{item.label}}" v-if="index==1"/>
                         <img class="leftNav-icon1" src="/home/v3/static/images/icon_ntx.png" alt="{{item.label}}" v-if="index==2"/>
@@ -38,7 +38,7 @@
                     </a>
                     <ul class="clearfix">
                         <li v-for="(item2,indextwo) in item.children" for-key="indextwo">
-                            <a href="">{{item2.label}}</a>
+                            <a :href="'/home/pdt_PdtProduct?cated='+item2.value" target="_blank">{{item2.label}}</a>
                         </li>
                     </ul>
                 </div>
@@ -46,7 +46,7 @@
             </div>
 
             <div class="box">
-                <a href="/html/SVS/svs.jsp">
+                <a href="/html/SVS/svs.jsp" target="_blank">
                 <h1>SVS Certification System</h1>
                 <div style="font-size: 13px;"><%--SVS Certification System will make buyers find their<br/> target Supplier
                     more
@@ -63,11 +63,11 @@
                         <li><img class="fl" src="/home/v3/static/images/icon_svs01.png"/>Genuine Manufacturer</li>
                         <li><img class="fl" src="/home/v3/static/images/icon_svs03.png"/>Production Capacity</li>
                         <li><img class="fl" src="/home/v3/static/images/icon_svs05.png"/>Product Quality</li>
-                        <li><img class="fl" src="/home/v3/static/images/icon_svs07.png"/>International business capacity</li>
+                        <li><img class="fl" src="/home/v3/static/images/icon_svs07.png"/>International Business Capacity</li>
                     </ul>
                     <ul>
                         <li><img class="fl" src="/home/v3/static/images/icon_svs02.png" style="    margin: 0 6px 0 -2px;"/>R&D
-                            capacity
+                            Capacity
                         </li>
                         <li><img class="fl" src="/home/v3/static/images/icon_svs04.png"/>Major Client</li>
                         <li><img class="fl" src="/home/v3/static/images/icon_svs06.png"/>Exhibition</li>
@@ -360,7 +360,7 @@
             <p class="sub_title">Don't Miss <a href="javascript:void(0);" class="fr sub_title_more" style="display: none">More ></a></p>
             <div class="news_content">
                 <div class="news_detail por" v-for="item,index in newsList">
-                    <a :href="item.url">
+                    <a :href="item.url" target="_blank">
                         <img :src="item.image" name="News_img" alt="">
                         <div class="news_laste" v-if="index != 2">
                             <span class="news_laste_text">Laste</span>
@@ -425,12 +425,12 @@
 						endTime: "1"
 					},
 					{
-						url: "https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=883",
-						imgUrl: "/home/v3/static/images/goods4.jpg",
-						title: "Romania Wholesale Shoes comfortable casual canvas shoes",
-						salesVolume: "300",
-						percentage: "60",
-						endTime: "1"
+						url:"https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1054",
+            imgUrl:"./images/goods12.jpg",
+            title:"Classic Fashion Cheap Flat Shoes Men Casual",
+            salesVolume:"550",
+            percentage:"69",
+            endTime:"1"
 					},
 					// {url:"https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=845",imgUrl:"/home/v3/static/images/goods5.jpg",title:"Wholesale Summer New Design Beaches sandals Men's sandals",salesVolume:"500",percentage:"83",endTime:"1"},
 					// {url:"https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1073",imgUrl:"/home/v3/static/images/goods6.jpg",title:"Ins tide shoes men's winter old shoes Korean version of ulzzang new color matching white shoes street shooting men's shoes leather shoes",salesVolume:"300",percentage:"60",endTime:"1"},
