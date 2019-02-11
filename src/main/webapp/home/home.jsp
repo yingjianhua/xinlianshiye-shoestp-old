@@ -449,7 +449,7 @@
 					time: 'Jan 12-15, 2019',
 					location: 'Italy'
 				}, {
-					url: '/html/exhibition/exhibitionLasVegas.jsp',
+					url: '/home/rfq_RFQConsult_exhibitionshow',
 					image: '/home/v3/static/images/zh_img2.png',
 					title: 'FOOTWEAR SOURCING AT MAGIC',
 					time: 'February 4-7, 2019',
