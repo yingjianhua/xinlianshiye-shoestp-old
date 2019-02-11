@@ -109,6 +109,7 @@
                   transform: translateY(-20px); }
   .svsMain .advantage {
     width: 100%;
+    background-color: #fff;
     text-align: center; }
     .svsMain .advantage h1 {
       font-family: Arial-BoldMT;
