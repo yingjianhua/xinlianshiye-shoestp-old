@@ -1,7 +1,7 @@
 Vue.component('o2o-top', {
     template: `<div id="o2otop">
         <div class="o2otopcon">
-            <a href="/"><img src="images/o2otoplogo.png" alt=""></a>
+            <a href="/" target="_blank"><img src="images/o2otoplogo.png" alt=""></a>
             <a href=""><span class="bigspan">O2O Show Room</span></a>
             <a href=""><span class="smallspan"  :class="show == 1? 'smallactive' : ''" >New Design</span></a>
             <a href=""><span class="smallspan">Bargain District</span></a>
