@@ -216,8 +216,8 @@
     <index-bottom></index-bottom>
 </div>
 
-
-<script src="/home/v3/static/js/index-bottom.js"></script>
+<script src="/html/o2o/components/O2O-top.js"></script>
+<script src="/html/o2o/components/O2O-bottom.js"></script>
 
 <script>
 	  function getParams(name, defaultValue) {
