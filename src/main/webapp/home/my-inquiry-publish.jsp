@@ -164,7 +164,7 @@
                                                    :before-upload="beforeUpload"
                                                    :on-remove="handleRemove">
                                             <img src="./static/images/upImg.png"
-                                                 style="width: 100%;height: 100%;object-fit: contain;">
+                                                 style="width: 100%;height: 100%;object-fit: contain;vertical-align: baseline;">
                                         </el-upload>
                                     </div>
                                 </div>
@@ -648,8 +648,10 @@
             if (this.GetQueryString("title")) {
                 this.form.title = this.GetQueryString("title");
             }
-            if (this.GetQueryString("quantity")) {
-                this.form.quantity = Number(this.GetQueryString("quantity"));
+            if( this.GetQueryString("quantity") ){
+                var quantity = Number(this.GetQueryString("quantity"));
+                if( isNaN(quantity) ) return;
+                this.form.quantity = quantity;
             }
             // 全局获取货币单位
             // this.currencyList = [];
