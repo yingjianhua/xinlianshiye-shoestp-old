@@ -16,7 +16,7 @@
         <div class="introduce">
             <h3>{{introducemsg[0].title}}</h3>
             <div class="linhen"></div>
-            <h5>Customer could better know the qualitu of a shoe.</h5>
+            <h5>Customer could better know the Quality of a shoe.</h5>
             <div class="introducebody">
                 <img class="ripple" :class="top >= srcolltop[0].value ? 'slideInRight' : ''"
                      :src="introducemsg[0].img" alt="">
@@ -32,7 +32,7 @@
         <div class="introduce">
             <h3>{{introducemsg[1].title}}</h3>
             <div class="linhen"></div>
-            <h5>Customer could better know the qualitu of a shoe.</h5>
+            <h5>Customer could better know the Quality of a shoe.</h5>
             <div class="introducebody">
                 <img class="ripple"  :class=" top >= srcolltop[1].value ? ' slideInLeft' : '' "
                      :src="introducemsg[1].img" alt="">
@@ -48,7 +48,7 @@
         <div class="introduce">
             <h3>{{introducemsg[2].title}}</h3>
             <div class="linhen"></div>
-            <h5>Customer could better know the qualitu of a shoe</h5>
+            <h5>Customer could better know the Quality of a shoe</h5>
             <div class="introducebody">
                 <img class="ripple"  :class="top >= srcolltop[2].value? 'slideInRight' : ''"
                      :src="introducemsg[2].img" alt="">
@@ -68,7 +68,7 @@
     <div class="introduceMakitCon">
         <h3>Marketing Channel</h3>
         <a href="highClassO2O.jsp"><span class="buttonr">New Design</span></a>
-        <a href="O2Oinputform.jsp"><span class="buttonl">Bargain District</span></a>
+        <a href="O2Oinputform.jsp"><span class="buttonr">Bargain District</span></a>
     </div>
     <o2o-bottom></o2o-bottom>
 </div>
