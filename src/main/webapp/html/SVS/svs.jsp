@@ -99,7 +99,7 @@
           </div>
         </section>
         <section class="tagcloud">
-            <div v-for="item in tagcloud"><p>{{item.content}}</p><p>-----来自{{item.name}}</p></div>
+            <div v-for="item in tagcloud"><p>{{item.content}}</p><p>-----from {{item.name}}</p></div>
         </section>
         <o2o-bottom></o2o-bottom>
   </main>
