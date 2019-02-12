@@ -41,7 +41,7 @@ public interface O2OActivityService {
     /**
      * 报名列表
      */
-    Page<O2OProductView> enrollList(PdtSearchView search, Integer start, Integer limit);
+    Page<O2OProductView> enrollList(PdtSearchView search, Integer start, Integer limit,Integer type);
 
     /**
      * 审核

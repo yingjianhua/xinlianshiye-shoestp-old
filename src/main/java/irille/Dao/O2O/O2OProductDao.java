@@ -7,6 +7,7 @@ import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.*;
 import irille.Entity.O2O.O2O_Activity.T;
 import irille.core.sys.Sys;
+import irille.core.sys.SysEm;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
 import irille.shop.pdt.Pdt;
@@ -71,7 +72,8 @@ public class O2OProductDao {
                 .WHERE(T.END_DATE, ">?", new Date())
 //                    .WHERE(T.STATUS,"=?",O2O_ActivityStatus.ACTIVITY)
                 .WHERE(O2O_Product.T.VERIFY_STATUS, "=?", O2O_ProductStatus.PASS.getLine().getKey())
-                .WHERE(O2O_Product.T.STATUS, "=?", O2O_ProductStatus.ON.getLine().getKey());
+                .WHERE( "(" + O2O_Product.class.getSimpleName() + "." + O2O_Product.T.STATUS.getFld().getCodeSqlField() + "=? OR "+O2O_Product.class.getSimpleName() + "." + O2O_Product.T.STATUS.getFld().getCodeSqlField()+" =? )", O2O_ProductStatus.ON,O2O_ProductStatus.Failed);
+//                .WHERE(O2O_Product.T.STATUS, "=?", O2O_ProductStatus.ON.getLine().getKey());
         sql.LIMIT(start, limit);
         return Query.sql(sql).queryMaps();
     }
@@ -205,7 +207,7 @@ public class O2OProductDao {
         return Query.SELECT(O2O_PrivateExpoPdt.class).WHERE(O2O_PrivateExpoPdt.T.PKEY, "=?", pkey).query();
     }
 
-    public List<Map<String, Object>> findAllGeneralByIsVerifyAndStateAndSupplier(UsrSupplier supplier, List<Integer> cats) {
+    public List<Map<String, Object>> findAllGeneralByIsVerifyAndStateAndSupplier(UsrSupplier supplier,Integer activity, List<Integer> cats) {
         String pkeys = "";
         for (int i = 0; i < cats.size(); i++) {
             if (i != cats.size() - 1) {
@@ -219,19 +221,25 @@ public class O2OProductDao {
                 PdtProduct.T.CODE,
                 PdtProduct.T.MIN_OQ,
                 PdtProduct.T.CUR_PRICE,
+                PdtProduct.T.PRODUCT_TYPE,
                 PdtProduct.T.PICTURE)
                 .SELECT(PdtProduct.T.NAME, "pdtName")
                 .SELECT(UsrSupplier.T.NAME, "supName")
                 .FROM(PdtProduct.class)
                 .LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, PdtProduct.T.SUPPLIER)
+                .LEFT_JOIN(O2O_Product.class, O2O_Product.T.PRODUCT_ID, PdtProduct.T.PKEY)
                 .WHERE(!pkeys.equals(""), PdtProduct.T.CATEGORY, " in(" + pkeys + ")")
                 .WHERE(PdtProduct.T.SUPPLIER, "=?", supplier.getPkey())
                 .WHERE(PdtProduct.T.IS_VERIFY, "=?", Sys.OYn.YES.getLine().getKey())
                 .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON.getLine().getKey())
-                .WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.GENERAL.getLine().getKey());
+//                .WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.GENERAL.getLine().getKey())
+                .WHERE("("+PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()+"=? OR " + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()+"=? )", Pdt.OProductType.GENERAL.getLine().getKey(),Pdt.OProductType.O2O.getLine().getKey())
+                .WHERE("("+ O2O_Product.class.getSimpleName() +"."+O2O_Product.T.ACTIVITY_ID.getFld().getCodeSqlField() + "<> ? and " + O2O_Product.class.getSimpleName() +"." + O2O_Product.T.STATUS.getFld().getCodeSqlField() + "<>? OR "+ O2O_Product.class.getSimpleName() +"." + O2O_Product.T.PKEY.getFld().getCodeSqlField() + " IS NULL )", activity,O2O_ProductStatus.WAITOFF.getLine().getKey());
+        System.err.println(sql.toString());
         return Query.sql(sql).queryMaps();
 
     }
+    
 
     /**
      * 统计活动下有多少参加的商品
@@ -245,7 +253,7 @@ public class O2OProductDao {
     }
 
 
-    public List<Map<String, Object>> enrollList(PdtSearchView search, Integer start, Integer limit) {
+    public List<Map<String, Object>> enrollList(PdtSearchView search, Integer start, Integer limit,Integer type) {
         if (null == search) {
             search = new PdtSearchView();
         }
@@ -281,11 +289,12 @@ public class O2OProductDao {
         sql.WHERE(null != search.getArea(), O2O_Map.T.NAME, "like ?", "%" + search.getArea() + "%");
         sql.WHERE(null != search.getStatus(), O2O_Product.T.VERIFY_STATUS, "=?", search.getStatus());
         sql.WHERE(null != search.getState(), O2O_Product.T.STATUS, "=?", search.getState());
+        sql.WHERE(type.equals(1), O2O_Product.T.STATUS, "<>?", O2O_ProductStatus.ON.getLine().getKey());
         sql.ORDER_BY(O2O_Product.T.UPDATED_TIME, "DESC").LIMIT(start, limit);
         return Query.sql(sql).queryMaps();
     }
 
-    public Integer countEnroll(PdtSearchView search) {
+    public Integer countEnroll(PdtSearchView search,Integer type) {
         if (null == search) {
             search = new PdtSearchView();
         }
@@ -304,7 +313,9 @@ public class O2OProductDao {
                 .WHERE(null != search.getSupplier(), UsrSupplier.T.NAME, "like ? ", "%" + search.getSupplier() + "%")
                 .WHERE(null != search.getRole(), UsrSupplierRole.T.NAME, "like ?", "%" + search.getRole() + "%")
                 .WHERE(null != search.getArea(), O2O_Map.T.NAME, "like ?", "%" + search.getArea() + "%")
-                .WHERE(null != search.getStatus(), O2O_Product.T.VERIFY_STATUS, "=?", search.getStatus());
+                .WHERE(null != search.getStatus(), O2O_Product.T.VERIFY_STATUS, "=?", search.getStatus())
+                .WHERE(null != search.getState(), O2O_Product.T.STATUS, "=?", search.getState())
+                .WHERE(type.equals(1), O2O_Product.T.STATUS, "<>?", O2O_ProductStatus.ON.getLine().getKey());;
         return Query.sql(sql).queryCount();
     }
 
@@ -315,7 +326,7 @@ public class O2OProductDao {
                 .LEFT_JOIN(O2O_Activity.class, T.PKEY, O2O_Product.T.ACTIVITY_ID)
                 .WHERE(O2O_Product.T.PRODUCT_ID, "=?", pdtId);
         sql.WHERE(O2O_Product.T.VERIFY_STATUS, "=?", O2O_ProductStatus.PASS);
-        sql.WHERE(O2O_Product.T.STATUS, "=?", O2O_ProductStatus.ON);
+        sql.WHERE( "(" + O2O_Product.class.getSimpleName() + "." + O2O_Product.T.STATUS.getFld().getCodeSqlField() + "=? OR "+O2O_Product.class.getSimpleName() + "." + O2O_Product.T.STATUS.getFld().getCodeSqlField()+" =? )", O2O_ProductStatus.ON,O2O_ProductStatus.Failed);
         //TODO  活动状态为根据时间进行变化，目前先根据时间进行状态选取
         Date now = new Date();
         sql.WHERE(T.START_DATE, "<?", now);

@@ -21,6 +21,7 @@ import irille.pub.exception.WebMessageException;
 import irille.pub.tb.FldLanguage;
 import irille.pub.util.GetValue;
 import irille.pub.util.SEOUtils;
+import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrPurchase;
@@ -302,7 +303,6 @@ public class O2OPdtServerImp implements IO2OPdtServer {
 
     @Override
     public List<O2OActivityPdtInfoView> listAllGeneral(UsrSupplier supplier, Integer activity) {
-        //TODO
         O2O_Activity activityEntity = o2OActivityDao.getActivityInfoById(activity);
         if (null == activityEntity)
             throw LOG.err("noActivity", "活动不存在");
@@ -318,7 +318,7 @@ public class O2OPdtServerImp implements IO2OPdtServer {
         }
 
 
-        return o2OProductDao.findAllGeneralByIsVerifyAndStateAndSupplier(supplier, listAll).stream().map(bean -> {
+        return o2OProductDao.findAllGeneralByIsVerifyAndStateAndSupplier(supplier,activity, listAll).stream().map(bean -> {
             O2OActivityPdtInfoView view = new O2OActivityPdtInfoView();
             view.setId(GetValue.get(bean, PdtProduct.T.PKEY, Integer.class, null));
             view.setCode(GetValue.get(bean, PdtProduct.T.CODE, String.class, ""));
@@ -327,6 +327,12 @@ public class O2OPdtServerImp implements IO2OPdtServer {
             view.setPrice(GetValue.get(bean, PdtProduct.T.CUR_PRICE, BigDecimal.class, BigDecimal.ZERO));
             view.setPicture(GetValue.get(bean, PdtProduct.T.PICTURE, String.class, ""));
             view.setSupplier(GetValue.get(bean, "supName", String.class, ""));
+            Byte o2oPkey = GetValue.get(bean, PdtProduct.T.PRODUCT_TYPE, Byte.class, null);
+            if(o2oPkey.equals(Pdt.OProductType.O2O.getLine().getKey())){
+            	view.setIsO2o((byte)1);
+            }else{
+            	view.setIsO2o((byte)0);
+            }
             return view;
         }).collect(Collectors.toList());
     }
