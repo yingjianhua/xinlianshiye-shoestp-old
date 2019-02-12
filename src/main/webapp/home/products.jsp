@@ -21,7 +21,7 @@
 		<div class="h1"><a href="/">Home</a><i class="el-icon-arrow-right"></i></div>
 		<blcok v-if="breadcrumbnav && breadcrumbnav.length>0">
 		<div class="h1" v-for="(item,index) in breadcrumbnav" for-key="index">
-			<a :href="'/home/pdt_PdtProduct?cated='+item.pkey" :class="breadcrumbnav.length-1==index?'now':''">{{item.name}}</a>
+			<a @click="categorySearch" :data-cated="item.pkey" href="javascript:;" :class="breadcrumbnav.length-1==index?'now':''">{{item.name}}</a>
 			<i class="el-icon-arrow-right" v-show="breadcrumbnav.length-1!=index"></i>
 		</div>
 		</blcok>
@@ -116,10 +116,10 @@
 							<img src="/home/v3/static/images/ico/likesele.png" v-show="item.eshrine"/>
 						</div>
 						<div class="block">
-						    <el-carousel :arrow="item.picture.split(',').length > 1 ? 'hover':'never'"  height="197px" indicator-position="none" :autoplay="false">
+						    <el-carousel :arrow="item.picture.split(',').length > 1 ? 'hover':'never'" height="197px" indicator-position="none" :autoplay="false">
 						      <el-carousel-item v-for="item2 in item.picture.split(',')" :key="item">
-						        <div class="h3">
-								    <a :href="'/'+item.rewrite" target="_blank"><img :src="'https://image.shoestp.com/'+item2"/></a>
+						        <div class="h3" @mouseenter="bigPicBoxopen" @mouseleave="bigPicBoxclose" :data-pic = "item2">
+								    <a :href="'/'+item.rewrite" target="_blank"><img class="fl" :src="'https://image.shoestp.com/'+item2"/></a>
 								</div>
 						      </el-carousel-item>
 						    </el-carousel>
@@ -205,9 +205,13 @@
 			 </div>
 
 		</div>
+		<!--页面右部列表  end-->
+		
+		<div class="bigPicBox" v-show="bigPicBox">
+			<img :src="'https://image.shoestp.com/'+bigPicBoxpic" alt="" />
+		</div>
 
 	</div>
-	<!--页面右部列表  end-->
 
 <div id="foot">
     <index-bottom></index-bottom>
@@ -265,6 +269,7 @@
         	lessthan:'',
         	min:'',
         	max:'',
+        	lose:'',
         	currentPage:1,
         	allpage:'',
         	noData:false,
@@ -272,7 +277,9 @@
         	breadcrumbnav:[],
         	page:0,
 			limit:8,
-            classLists:[]
+            classLists:[],
+            bigPicBox:false,
+            bigPicBoxpic:'',
         },
         methods: {
 			// 读取链接带参
@@ -303,7 +310,7 @@
                     	console.log("err")
                     });
             },
-            // 获取左边分类
+            // 获取产品列表
             productList(e) {
                 axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax?v=3', {
                     params: {
@@ -317,7 +324,8 @@
 						level:this.selelv,
 						export:this.selecount,
 						o2oAddress:this.selestore,
-						orderfld:getParams("orderfld","MostPopular")
+						orderfld:getParams("orderfld","MostPopular"),
+						lose:this.lose,
                     }
                 })
                     .then((res) => {
@@ -462,8 +470,9 @@
               this.productList();
             }
           },
-					// 点击左侧分类时跳转
+		// 点击左侧分类时跳转
           categorySearch(e){
+          	this.lose =1
             this.cated = e.currentTarget.dataset.cated;
             this.page= 0;
             this.productList();
@@ -489,10 +498,23 @@
 		        })
 		      },
 
+		//	  打开放大图片窗口
+		  bigPicBoxopen(e){
+            this.bigPicBoxpic = e.currentTarget.dataset.pic;
+            this.bigPicBox = true
+          },
+        //	  关闭放大图片窗口 
+          bigPicBoxclose(e){
+            this.bigPicBox = false
+          },
+
         },
         mounted() {
         	this.pName = this.GetQueryString("Keyword")
         	this.cated = this.GetQueryString("cated")
+			if(this.GetQueryString("cated").length>0){
+				this.lose=1
+			}
 			this.classList();
 			this.productList();
 
