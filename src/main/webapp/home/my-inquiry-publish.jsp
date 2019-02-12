@@ -589,7 +589,7 @@
                                         // 提示信息
                                         this.$message({
                                             showClose: true,
-                                            message: 'my-inquiry-publish.Successfully_Released',
+                                            message: '<s:text name="my-inquiry-publish.Successfully_Released"/>',
                                             type: 'success'
                                         });
                                         setTimeout(function () {
@@ -621,7 +621,7 @@
                                         console.log('提交失败else');
                                         this.flag = false;
                                         this.$alert(res.data.msg, {
-                                            confirmButtonText: 'my-inquiry-publish.Ok'
+                                            confirmButtonText: '<s:text name="my-inquiry-publish.Ok"/>'
                                         });
                                     }
 
