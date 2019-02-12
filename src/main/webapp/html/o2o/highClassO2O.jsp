@@ -93,10 +93,9 @@
     <!--How To Sign Up-->
     <div class="wrap main-sign">
         <h2 class="main-sign-h2">How To Sign Up</h2>
-        <p class="main-sign-text">Please fill out the registration form in our O2O webpage and send the registration
-            form to the official email address of Shoestp.com. We will send you an invitation card one month before the
-            start of the new product show.</p>
-        <a href="O2Oinputform.jsp" class="button">On line</a>
+        <p class="main-sign-text">
+            Please fill out the online registration form in our O2O webpage after you've registered or login Shoestp.com. We will send you an invitation card one month before the start of the new product show.</p>
+        <a href="O2Oinputform.jsp" class="button">Online</a>
     </div>
     <!--Time and location-->
     <div class="wrap main-location">
