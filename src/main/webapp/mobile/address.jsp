@@ -121,7 +121,8 @@
 			</ul>
 			<nav></nav>
 			<section class="font_col border_col copyright">
-				Copyright © 2016-2017 温州新联实业股份有限公司. All Rights Reserved. 浙ICP备16034166号-1 浙公网安备 33030402000493号
+				Copyright © 2016-2017 温州新联实业股份有限公司. All Rights Reserved.
+				<%--浙ICP备16034166号-1 浙公网安备 33030402000493号--%>
 			</section>
 		</footer>
 		<div style="height:3rem;"></div>

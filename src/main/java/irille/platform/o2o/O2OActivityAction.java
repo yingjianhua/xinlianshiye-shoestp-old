@@ -65,10 +65,21 @@ public class O2OActivityAction extends ActionBase<O2O_Activity> implements IO2OA
         o2OActivityService.deploy(activity);
         writeSuccess();
     }
-
+    
+    /**
+     * 获取报名列表
+     */
     @Override
     public void enrollList() throws IOException {
-        write(o2OActivityService.enrollList(search, getStart(), getLimit()));
+        write(o2OActivityService.enrollList(search, getStart(), getLimit(),0));
+    }
+    
+    /**
+     * 获取申请上下架列表
+     * @throws IOException 
+     */
+    public void upperLowerList() throws IOException{
+    	write(o2OActivityService.enrollList(search, getStart(), getLimit(),1));
     }
 
     /**
@@ -105,7 +116,7 @@ public class O2OActivityAction extends ActionBase<O2O_Activity> implements IO2OA
      * 确认下架
      */
     public void lower() throws IOException, JSONException {
-        o2OActivityService.lowerAndUpper(id, null, O2O_ProductStatus.OFF);
+        o2OActivityService.lowerAndUpper(id, null, O2O_ProductStatus.PASS);
         writeSuccess();
     }
     /**
@@ -120,7 +131,7 @@ public class O2OActivityAction extends ActionBase<O2O_Activity> implements IO2OA
      * 拒绝下架
      */
     public void upper() throws IOException, JSONException {
-        o2OActivityService.lowerAndUpper(id, reason, O2O_ProductStatus.ON);
+        o2OActivityService.lowerAndUpper(id, reason, O2O_ProductStatus.Failed);
         writeSuccess();
     }
 

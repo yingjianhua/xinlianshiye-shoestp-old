@@ -22,7 +22,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
 
     public enum T implements IEnumFld {//@formatter:off
         PKEY(Tb.crtIntPkey()),
-        TITLE(Sys.T.STR__200, "标题"),//一般为产品名字
+        TITLE(Sys.T.STR__500, "标题"),//一般为产品名字
         IMAGE(Sys.T.IMG_MULTI__2000_NULL),
         COUNTRY(PltCountry.fldOutKey()),
         PRODUCT(PdtProduct.fldOutKey().setNull()), //产品ID
