@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<jsp:include page="/home/v2/template/header.jsp"></jsp:include>
+<jsp:include page="/home/v3/header.jsp"></jsp:include>
 <script src="/html/exhibition/js/config.js"></script>
 <link rel="stylesheet" href="/html/exhibition/css/index.css">
 <style>
@@ -8,9 +8,11 @@
         margin: 0 auto;
     }
 </style>
-
-<jsp:include page="/home/v2/template/nav.jsp"></jsp:include>
+<jsp:include page="/home/v3/nav.jsp"></jsp:include>
 <div id="linExhibitionLasVages">
+    <div id="app">
+        <index-top></index-top>
+    </div>
     <div class="lasvagesbannercon">
         <img class='lasvagesbanner' src="/html/exhibition/images/bannerlasvages.png" alt="">
     </div>
@@ -128,5 +130,11 @@
 </script>
 <%--<jsp:include page="/home/v2/template/foot.jsp"></jsp:include>--%>
 <%@ include file="/home/v2/template/foot.jsp" %>
+<script src="/home/v3/static/js/index-top.js"></script>
+<script>
+    new Vue({
+        el:"#app"
+    })
+</script>
 </body>
 </html>
