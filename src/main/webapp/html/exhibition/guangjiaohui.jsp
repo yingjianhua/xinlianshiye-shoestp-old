@@ -13,7 +13,7 @@
 
 
 <jsp:include page="/home/v3/nav.jsp"></jsp:include>
-<main id="gjhApp">
+<main id="gjhApp" class="gjhMain">
     <div id="app">
         <index-top></index-top>
     </div>
