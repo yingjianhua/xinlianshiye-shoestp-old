@@ -512,9 +512,9 @@
         mounted() {
         	this.pName = this.GetQueryString("Keyword")
         	this.cated = this.GetQueryString("cated")
-			if(this.GetQueryString("cated").length>0){
-				this.lose=1
-			}
+			// if(this.GetQueryString("cated").length>0){
+			// 	this.lose=1
+			// }
 			this.classList();
 			this.productList();
 
