@@ -336,7 +336,7 @@
 						level:this.selelv,
 						export:this.selecount,
 						o2oAddress:this.selestore,
-						orderfld:getParams("orderfld","MostPopular"),
+						orderfld:getParams("orderfld","NONE"),
 						lose:this.lose,
 						IsO2o:1,
                     }
