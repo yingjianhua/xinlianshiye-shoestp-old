@@ -257,8 +257,8 @@ public class O2OActivityServiceImpl implements O2OActivityService {
     /**
      * 查看报名列表
      */
-    public Page<O2OProductView> enrollList(PdtSearchView search, Integer start, Integer limit) {
-        List<O2OProductView> items = o2OProductDao.enrollList(search, start, limit).stream().map(map -> {
+    public Page<O2OProductView> enrollList(PdtSearchView search, Integer start, Integer limit,Integer type) {
+        List<O2OProductView> items = o2OProductDao.enrollList(search, start, limit,type).stream().map(map -> {
             O2OProductView item = new O2OProductView();
             item.setPkey(GetValue.get(map, O2O_Product.T.PKEY, Integer.class, null));
             item.setStatus(GetValue.get(map, O2O_Product.T.VERIFY_STATUS, Byte.class, (byte) 0));
@@ -280,7 +280,7 @@ public class O2OActivityServiceImpl implements O2OActivityService {
             item.setMessage(GetValue.get(map, O2O_Product.T.REMARK, String.class, null));
             return item;
         }).collect(Collectors.toList());
-        return new Page<O2OProductView>(items, start, limit, o2OProductDao.countEnroll(search));
+        return new Page<O2OProductView>(items, start, limit, o2OProductDao.countEnroll(search,type));
     }
 
     /**
@@ -357,14 +357,15 @@ public class O2OActivityServiceImpl implements O2OActivityService {
             throw new WebMessageException(ReturnCode.failure, "商品不存在");
         o2OProduct.setStatus(status.getLine().getKey());
         PdtProduct pdt = o2OProduct.gtProductId();
-        if (!status.equals(O2O_ProductStatus.OFF)) {
+        if (status.equals(O2O_ProductStatus.Failed)) {
             if (null == reason) {
                 throw new WebMessageException(ReturnCode.failure, "拒绝理由不能为空");
             }
             o2OProduct.setMessage("拒绝申请下架，拒绝理由：" + reason);
             email.setSubject("【鞋贸港】O2O商品下架失败");
             email.setContent("您申请商品编号为【" + pdt.getCode() + "】的商品拒绝下架，拒绝理由：" + reason);
-        } else {
+            
+        } else if(status.equals(O2O_ProductStatus.PASS)){
             o2OProduct.setMessage("下架成功");
             email.setSubject("【鞋贸港】O2O商品下架成功");
             email.setContent("您申请商品编号为【" + pdt.getCode() + "】的商品下架成功");

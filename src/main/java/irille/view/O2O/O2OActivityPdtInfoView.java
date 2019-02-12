@@ -26,4 +26,5 @@ public class O2OActivityPdtInfoView implements BaseView {
     private String remark;
     private String supplier;
     private String message;
+    private byte isO2o;
 }
