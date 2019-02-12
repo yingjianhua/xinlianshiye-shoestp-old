@@ -160,7 +160,7 @@
 <body class="lang_en w_1200">
 
 <%@ include file="/home/template/web-top.jsp" %>
-
+<%--<%@ include file="/home/template/new-header.jsp" %>--%>
 <div id="main">
     <index-top></index-top>
     <div class="wide">
@@ -658,13 +658,14 @@
         $("#se" + id + "").addClass('bo');
     }
 </script>
-<!-- End of LiveChat code -->
+
+<script src="/home/v3/static/js/index-top.js"></script>
 <script>
     new Vue({
-        el:"#main"
+        el: "#main"
     })
 </script>
-<script src="/home/v3/static/js/index-top.js"></script>
+<!-- End of LiveChat code -->
 
 </body>
 
