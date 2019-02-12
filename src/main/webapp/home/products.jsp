@@ -388,7 +388,8 @@
 											}
 									})
 									.then((res) => {
-										this.productLists[index].eshrine = !this.productLists[index].eshrine;
+										this.$set(this.productLists[index],"eshrine",!this.productLists[index].eshrine)
+										/* this.productLists[index].eshrine = !this.productLists[index].eshrine; */
 									})
 									.catch((error) => {
 
