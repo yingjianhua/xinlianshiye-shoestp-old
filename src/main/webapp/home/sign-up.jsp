@@ -239,7 +239,8 @@
                 </dd>
             </dl>
             <div class="row">
-                <button class="signbtn signup form_button_bg" type="button" id="regButton"><s:text
+                <input type="checkbox" id="isdisenabild"/>
+                <button class="signbtn signup form_button_bg" type="button" id="regButton" style="background-color: #6b7f90" disabled><s:text
                         name="createAccount"/></button>
             </div>
         </form>
@@ -309,6 +310,18 @@
     }
 </script>
 <script type="text/javascript">
+
+    $("#isdisenabild").on("click", function () {
+        var booleans= document.getElementById("isdisenabild")
+        if(booleans.checked){
+            $("#regButton").attr("disabled",false);
+            $("#regButton").css("background-color","#005AB0")
+
+        }else{
+            $("#regButton").attr("disabled",true);
+            $("#regButton").css("background-color","#6b7f90")
+        }
+    })
     $("#verify").on("click", function () {
         refreshVerify();
     })
