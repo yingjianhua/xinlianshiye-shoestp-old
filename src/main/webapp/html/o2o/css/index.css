@@ -722,6 +722,7 @@ li {
 }
 
 #lhl-highClass .introduce-text {
+	text-align: left;
     width: 436px;
     margin: 0 auto;
     font-size: 14px;
