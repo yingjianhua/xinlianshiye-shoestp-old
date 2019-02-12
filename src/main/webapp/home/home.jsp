@@ -243,7 +243,7 @@
         <div class="section1">
             <div class="title clearfix">
                 <div class="fl clearfix">
-                    <span class="fl">Crowd Funding</span>
+                    <span class="fl">CrowdFunding</span>
                     <ul class="fl clearfix">
                         <li>Lower price in small number</li>
                         <li>Fashion Design will be published</li>
