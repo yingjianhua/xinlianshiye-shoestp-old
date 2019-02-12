@@ -21,7 +21,7 @@
 		<div class="h1"><a href="/">Home</a><i class="el-icon-arrow-right"></i></div>
 		<blcok v-if="breadcrumbnav && breadcrumbnav.length>0">
 		<div class="h1" v-for="(item,index) in breadcrumbnav" for-key="index">
-			<a :href="'/home/pdt_PdtProduct?cated='+item.pkey" :class="breadcrumbnav.length-1==index?'now':''">{{item.name}}</a>
+			<a @click="categorySearch" :data-cated="item.pkey" href="javascript:;" :class="breadcrumbnav.length-1==index?'now':''">{{item.name}}</a>
 			<i class="el-icon-arrow-right" v-show="breadcrumbnav.length-1!=index"></i>
 		</div>
 		</blcok>
@@ -33,17 +33,22 @@
 	<div class="leftNav fl">
 		<h1>Related categories</h1>
 		<div class="leftNav-box" v-for="(item,index) in classLists" for-key="index">
-			<p class="b">
-				<img class="leftNav-icon1" src="/home/v3/static/images/ico/icon_nx.png" alt="{{item.label}}" v-if="index==0"/>
-				<img class="leftNav-icon1" src="/home/v3/static/images/ico/icon_nvx.png" alt="{{item.label}}" v-if="index==1"/>
-				<img class="leftNav-icon1" src="/home/v3/static/images/ico/icon_tx.png" alt="{{item.label}}" v-if="index==2"/>
-				{{item.label}}
+			<p class="b" :class="[item.value==cated?'active':'']"
+					@click="categorySearch" :data-cated="item.value">
+					<img class="leftNav-icon1" src="/home/v3/static/images/ico/icon_nx.png" alt="{{item.label}}" v-if="index==0"/>
+					<img class="leftNav-icon1" src="/home/v3/static/images/ico/icon_nvx.png" alt="{{item.label}}" v-if="index==1"/>
+					<img class="leftNav-icon1" src="/home/v3/static/images/ico/icon_tx.png" alt="{{item.label}}" v-if="index==2"/>
+					{{item.label}}
 			</p>
 			<div class="h2" v-for="(item2,indextwo) in item.children" for-key="indextwo">
-				<p @click="xiala" :data-index="index" :data-indextwo="indextwo">{{item2.label}}<img class="pl-icon2" :class="[item2.xiala==2?'':'pl-icon22']" src="/home/v3/static/images/icon_down.png" alt="" /></p>
+				<p :class="[item2.value==cated?'active':'']"><span @click="categorySearch" :data-cated="item2.value">{{item2.label}}</span><img class="pl-icon2" :class="[item2.xiala==2?'':'pl-icon22']" src="/home/v3/static/images/icon_down.png" alt=""  @click="xiala" :data-index="index" :data-indextwo="indextwo"/></p>
 				<el-collapse-transition>
 					<ul v-show="item2.xiala==2">
-						<li v-for="item3 in item2.children"><a :href="'/home/pdt_PdtProduct?cated='+item3.value">{{item3.label}}</a></li>
+						<li v-for="item3 in item2.children" :class="[item3.value==cated?'active':'']"
+              @click="categorySearch" :data-cated="item3.value">
+              <!-- <a :href="'home/pdt_PdtProduct?cated='+item3.value">{{item3.label}}</a> -->
+              {{item3.label}}
+            </li>
 					</ul>
 			    </el-collapse-transition>
 			</div>
@@ -71,7 +76,7 @@
 				</ul>
 			</div>
 
-			<div class="top-box">
+			<%-- <div class="top-box">
 				<p>Export Countries<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt="" /></p><div class="i1"></div>
 				<ul>
 					<li v-for="(item,index) in 16" :key="index" :data-selecount="index+1" @click="seleCount">
@@ -87,7 +92,7 @@
 						<div class="s" :class="[selestore==index+1?'sele':'']"></div>Safety Shoes{{index}}
 					</li>
 				</ul>
-			</div>
+			</div> --%>
 
 			<div class="top-box2" style="margin-left: 20px;">Min Order :
 				<input class="w63" type="text" @blur="lessthan222" @keyup.enter="lessthan222" v-model="lessthan" placeholder="less than"  onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/>
@@ -97,6 +102,8 @@
 				<input type="text" @blur="min222" @keyup.enter="min222" v-model="min" placeholder="min."  onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/> -
 				<input type="text" @blur="min222" @keyup.enter="min222" v-model="max" placeholder="max."  onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/>
 			</div>
+
+			<div class="btn-search" @click="search">search</div>
 		</div>
 
 
@@ -105,14 +112,13 @@
 				<div class="common-box ripple slideInRight" v-for="(item,index) in productLists" :key="index" :style="{'animation-delay': index/10 + 's'}">
 					<div class="common-boxslide">
 						<div class="likebai" @click="shoucang" :data-num = "index" :data-id = "item.pdtId">
-							<img src="/home/v3/static/images/ico/likebai.png" v-show="!item.eshrine"/>
-							<img src="/home/v3/static/images/ico/likesele.png" v-show="item.eshrine"/>
+							<img :src="item.eshrine ?'/home/v3/static/images/ico/likesele.png' : '/home/v3/static/images/ico/likebai.png'"/>
 						</div>
 						<div class="block">
-						    <el-carousel height="197px" indicator-position="none" :autoplay="false">
+						    <el-carousel :arrow="item.picture.split(',').length > 1 ? 'hover':'never'" height="197px" indicator-position="none" :autoplay="false">
 						      <el-carousel-item v-for="item2 in item.picture.split(',')" :key="item">
-						        <div class="h3">
-								    <a :href="'/'+item.rewrite" target="_blank"><img :src="'https://image.shoestp.com/'+item2"/></a>
+						        <div class="h3" @mouseenter="bigPicBoxopen" @mouseleave="bigPicBoxclose" :data-pic = "item2">
+								    <a :href="'/'+item.rewrite" target="_blank"><img class="fl" :src="'https://image.shoestp.com/'+item2"/></a>
 								</div>
 						      </el-carousel-item>
 						    </el-carousel>
@@ -129,10 +135,21 @@
 								<div class="h3">Min.Order: {{item.minOrder}} pairs</div>
 							</div>
 							<div class="fr" style="width: 196px;">
-								<div class=""><div class="h3">Gender:</div> {{item.gender==1?'Man':''}}{{item.gender==2?'Lady':''}}{{item.gender==3?'Currency':''}}</div>
-								<div class=""><div class="h3">Insole Material:</div> {{item.sole?item.sole:'No data'}}</div>
-								<div class=""><div class="h3">Outsole Material:</div> {{item.upper?item.upper:'No data'}}</div>
-								<div class=""><div class="h3">Place of Origin:</div> {{item.originProvince}},{{item.originCountry}} </div>
+								<div class="">
+                  <div class="h3">Inner Material:</div> {{item.inner?item.inner:'No data'}}
+                </div>
+								<div class="">
+                  <div class="h3">Sole Material:</div> {{item.sole?item.sole:'No data'}}
+                </div>
+								<div class="">
+                  <div class="h3">Upper Material:</div> {{item.upper?item.upper:'No data'}}
+                </div>
+								<div class="">
+                  <div class="h3">Appropriate Season:</div> {{item.season?item.season:'No data'}}
+                </div>
+								<div class="">
+                  <div class="h3">Closed Way:</div> {{item.closed?item.closed:'No data'}}
+                </div>
 							</div>
 						</div>
 					</a>
@@ -163,7 +180,8 @@
 							{{item.originCountry}} ( {{item.originProvince}} )
 						</div>
 
-						<a class="btn" href="javascript:;" @click="addRFQ" :data-id = "item.pdtId">Contact Supplier</a>
+						<!-- <a class="btn" href="javascript:;" @click="addRFQ" :data-id = "item.pdtId">Contact Supplier</a> -->
+						<a class="btn" target="_blank" :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" :data-id = "item.pdtId">Contact Supplier</a>
 					</div>
 				</div>
 				<!--产品 end-->
@@ -186,9 +204,13 @@
 			 </div>
 
 		</div>
+		<!--页面右部列表  end-->
+		
+		<div class="bigPicBox" v-show="bigPicBox">
+			<img :src="'https://image.shoestp.com/'+bigPicBoxpic" alt="" />
+		</div>
 
 	</div>
-	<!--页面右部列表  end-->
 
 <div id="foot">
     <index-bottom></index-bottom>
@@ -246,6 +268,7 @@
         	lessthan:'',
         	min:'',
         	max:'',
+        	lose:'',
         	currentPage:1,
         	allpage:'',
         	noData:false,
@@ -253,7 +276,9 @@
         	breadcrumbnav:[],
         	page:0,
 			limit:8,
-            classLists:[]
+            classLists:[],
+            bigPicBox:false,
+            bigPicBoxpic:'',
         },
         methods: {
 			// 读取链接带参
@@ -284,7 +309,7 @@
                     	console.log("err")
                     });
             },
-            // 获取左边分类
+            // 获取产品列表
             productList(e) {
                 axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax?v=3', {
                     params: {
@@ -298,7 +323,8 @@
 						level:this.selelv,
 						export:this.selecount,
 						o2oAddress:this.selestore,
-						orderfld:getParams("orderfld","MostPopular")
+						orderfld:getParams("orderfld","MostPopular"),
+						lose:this.lose,
                     }
                 })
                     .then((res) => {
@@ -328,35 +354,54 @@
             },
              // 添加收藏呵取消收藏
             shoucang:function(e){
-                var index = e.currentTarget.dataset.num;
-                if(this.productLists[index].eshrine==false){
-                	axios.get('/home/usr_UsrFavorites_addFavorite', {
-	                    params: {
-	                    	pdtPkey:e.currentTarget.dataset.id
-	                    }
-	                })
-                    .then((res) => {
-                    	if(ret!=-1){
-                    		this.$set(this.productLists[index],"eshrine",true)
-                    	}
-                    })
-                    .catch((error) => {
+            	var index = e.currentTarget.dataset.num;
+                // if(this.productLists[index].eshrine==false){
+                // 	axios.get('/home/usr_UsrFavorites_addFavorite', {
+	              //       params: {
+	              //       	pdtPkey:e.currentTarget.dataset.id
+	              //       }
+	              //   })
+                //     .then((res) => {
+                //     	if(ret!=-1){
+                //     		this.$set(this.productLists[index],"eshrine",true)
+                //     	}
+                //     })
+                //     .catch((error) => {
+								//
+                //     });
+								//
+                // }else{
+                // 	axios.get('/home/usr_UsrFavorites_addFavorite', {
+	              //       params: {
+	              //       	pdtPkey:e.currentTarget.dataset.id
+	              //       }
+	              //   })
+                //     .then((res) => {
+                //     	this.$set(this.productLists[index],"eshrine",false)
+                //     })
+                //     .catch((error) => {
+								//
+                //     });
+                // }
+								if (!isLogin) {
+									 // user_obj.set_form_sign_in('', window.location.href, 1);
+									 // return
+									 user_obj.set_form_sign_in('', window.location.href, 1);
+							 } else {
 
-                    });
+									axios.get('/home/usr_UsrFavorites_addFavorite', {
+											params: {
+												pdtPkey:e.currentTarget.dataset.id
+											}
+									})
+									.then((res) => {
+										this.$set(this.productLists[index],"eshrine",!this.productLists[index].eshrine)
+										/* this.productLists[index].eshrine = !this.productLists[index].eshrine; */
+									})
+									.catch((error) => {
 
-                }else{
-                	axios.get('/home/usr_UsrFavorites_addFavorite', {
-	                    params: {
-	                    	pdtPkey:e.currentTarget.dataset.id
-	                    }
-	                })
-                    .then((res) => {
-                    	this.$set(this.productLists[index],"eshrine",false)
-                    })
-                    .catch((error) => {
-
-                    });
-                }
+									});
+							}
       		},
 
 			//   页数加载
@@ -369,22 +414,22 @@
 
       		//   最小购买量失去焦点时触发
       		lessthan222:function(){
-      			if(this.lessthan!=''){
-      				this.productList();
-      			}
+      			// if(this.lessthan!=''){
+      			// 	this.productList();
+      			// }
       		},
       		//   最小金额最大金额 失去焦点时触发
       		min222:function(){
-      			if(this.min>=0 && this.max>0){
-      				if(this.max>this.min){
-      					this.productList();
-      				}else{
-      					this.$message({
-				          message: 'Max must be greater than Min',
-				          type: 'warning'
-				        });
-      				}
-      			}
+      			// if(this.min>=0 && this.max>0){
+      			// 	if(this.max>this.min){
+      			// 		this.productList();
+      			// 	}else{
+      			// 		this.$message({
+				    //       message: 'Max must be greater than Min',
+				    //       type: 'warning'
+				    //     });
+      			// 	}
+      			// }
       		},
       		//   商家等级筛选
       		seleLevel:function(e){
@@ -413,6 +458,24 @@
       			}
       			this.productList();
       		},
+					// 点击后才实现搜索
+          search(){
+            if(this.min>=0 && this.max>0 && this.max<this.min){
+              this.$message({
+                message: 'Max must be greater than Min',
+                type: 'warning'
+              });
+            }else{
+              this.productList();
+            }
+          },
+		// 点击左侧分类时跳转
+          categorySearch(e){
+          	this.lose =1
+            this.cated = e.currentTarget.dataset.cated;
+            this.page= 0;
+            this.productList();
+          },
       		//   添加到询盘
       		 addRFQ(e) {
 		        if (!isLogin) {
@@ -434,10 +497,23 @@
 		        })
 		      },
 
+		//	  打开放大图片窗口
+		  bigPicBoxopen(e){
+            this.bigPicBoxpic = e.currentTarget.dataset.pic;
+            this.bigPicBox = true
+          },
+        //	  关闭放大图片窗口 
+          bigPicBoxclose(e){
+            this.bigPicBox = false
+          },
+
         },
         mounted() {
         	this.pName = this.GetQueryString("Keyword")
         	this.cated = this.GetQueryString("cated")
+			if(this.GetQueryString("cated").length>0){
+				this.lose=1
+			}
 			this.classList();
 			this.productList();
 
