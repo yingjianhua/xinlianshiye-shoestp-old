@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <script src="./js/config.js"></script>
     <style>
-    	#o2otop .o2otopcon .smallspan:first-of-type{
+    	#o2otop .o2otopcon  a:nth-of-type(3) .smallspan{
 		    color: white;
 		    background: linear-gradient(to right, rgb(113, 139, 223), rgb(159, 87, 254));
 		    display: inline-block;

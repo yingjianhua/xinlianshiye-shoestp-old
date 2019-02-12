@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="./css/element-ui/element-ui.css"/>
     <link rel="stylesheet" href="./css/index.css"/>
     <style>
-    	#o2otop .o2otopcon .smallspan:first-of-type{
+    	#o2otop .o2otopcon  a:nth-of-type(3) .smallspan{
 		    color: white;
 		    background: linear-gradient(to right, rgb(113, 139, 223), rgb(159, 87, 254));
 		    display: inline-block;
@@ -179,8 +179,7 @@
             </span>
     </el-dialog>
 </div>
-<script src="components/O2O-top.js"></script>
-<script src="components/O2O-bottom.js"></script>
+
 <script>
     new Vue({
         el: "#o2oinputform",
@@ -454,5 +453,8 @@
         }
     })
 </script>
+<script src="components/O2O-top.js"></script>
+<script src="components/O2O-bottom.js"></script>
+
 </body>
 </html>

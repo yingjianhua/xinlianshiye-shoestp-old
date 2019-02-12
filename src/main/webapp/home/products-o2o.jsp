@@ -3,7 +3,7 @@
 <jsp:include page="v3/header.jsp"/>
 <link rel="stylesheet" href="/home/v3/static/css/productList.css">
 <style>
-    	#o2otop .o2otopcon .smallspan:last-of-type{
+    	#o2otop .o2otopcon  a:nth-of-type(4) .smallspan{
 		    color: white;
 		    background: linear-gradient(to right, rgb(113, 139, 223), rgb(159, 87, 254));
 		    display: inline-block;
