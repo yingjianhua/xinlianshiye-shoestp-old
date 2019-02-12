@@ -156,17 +156,34 @@
                                                         </div>
                                                     </div>
                                                 </a>
+                                                <!-- <div class="hover-show">
+													<div class="btn-group">
+														<a class="btn-inquiry btn-blue" :href="'/home/usr_UsrConsult_productPublishView?product_id='+goods.id" target="_blank">
+															Inquiry
+														</a>
+													</div>
+												</div> -->
+												<div class="hover-show">
+													<div class="hover-text-wrap">
+														<a :href="goods.rewrite" target="_blank" class="goods-name">
+															<div class="ellipsis_2">
+																{{goods.title}}
+															</div>
+														</a>
+														<div class="goods-price">
+															US <span>${{goods.price}}</span>
+														</div>
+														<div class="min-order">
+															Min.Order:{{goods.min_order || 0}} pairs
+														</div>
+													</div>
 
-                                                <div class="hover-show">
-                                                    <div class="btn-group">
-                                                        <a class="btn-inquiry btn-blue" :href="'/home/usr_UsrConsult_productPublishView?product_id='+goods.id" target="_blank">
-                              Inquiry
-                            </a>
-                            <!-- <div class="btn-inquiry btn-blue" @click="inquiry(goods.id)">
-                              Inquiry
-                            </div> -->
-                                                    </div>
-                                                </div>
+													<div class="btn-group">
+														<a class="btn-inquiry btn-blue":href="'/home/usr_UsrConsult_productPublishView?product_id='+goods.id" target="_blank">
+															Inquiry
+														</a>
+													</div>
+												</div>
                                             </li>
                                         </ul>
                                     </div>
@@ -305,11 +322,20 @@
                             </div>
                         </div>
                         <div class="inquiry-btn">
-                            <!-- <a href="/home/usr_UsrConsult_publishView?product_id= + item.id" > -->
-                            <a :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" target="_blank">
-                                Inquiry
-                            </a>
-                        </div>
+							<a :href="'/'+item.rewrite" target="_blank" style="color:#666;text-align: left;">
+								<div class="ellipsis_2" style="font-size:12px;line-height: 20px;">{{item.name}}</div>
+								<div style="font-size:18px;margin-top:10px;">
+									<span style="color: #232323;">US</span>
+									<span style="color: #e54544;">${{item.price}}</span>
+								</div>
+								<div style="font-size:12px;">
+									Min.Order: {{item.minOrder}} pairs
+								</div>
+							</a>
+							<a class="inquiry-a" :href="'/home/usr_UsrConsult_publishView?product_id='+item.id" target="_blank">
+								Inquiry
+							</a>
+						</div>
                     </div>
                 </template>
             </div>
@@ -346,10 +372,20 @@
                             </div>
                         </div>
                         <div class="inquiry-btn">
-                            <a :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" target="_blank">
-                                Inquiry
-                            </a>
-                        </div>
+							<a :href="'/'+item.rewrite" target="_blank" style="color:#666;text-align: left;">
+								<div class="ellipsis_2" style="font-size:12px;line-height: 20px;">{{item.name}}</div>
+								<div style="font-size:18px;margin-top:10px;">
+									<span style="color: #232323;">US</span>
+									<span style="color: #e54544;">${{item.price}}</span>
+								</div>
+								<div style="font-size:12px;">
+									Min.Order: {{item.minOrder}} pairs
+								</div>
+							</a>
+							<a class="inquiry-a" :href="'/home/usr_UsrConsult_publishView?product_id='+item.id" target="_blank">
+								Inquiry
+							</a>
+						</div>
                     </div>
                 </template>
             </div>
