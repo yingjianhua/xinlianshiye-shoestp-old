@@ -112,8 +112,7 @@
 				<div class="common-box ripple slideInRight" v-for="(item,index) in productLists" :key="index" :style="{'animation-delay': index/10 + 's'}">
 					<div class="common-boxslide">
 						<div class="likebai" @click="shoucang" :data-num = "index" :data-id = "item.pdtId">
-							<img src="/home/v3/static/images/ico/likebai.png" v-show="!item.eshrine"/>
-							<img src="/home/v3/static/images/ico/likesele.png" v-show="item.eshrine"/>
+							<img :src="item.eshrine ?'/home/v3/static/images/ico/likesele.png' : '/home/v3/static/images/ico/likebai.png'"/>
 						</div>
 						<div class="block">
 						    <el-carousel :arrow="item.picture.split(',').length > 1 ? 'hover':'never'" height="197px" indicator-position="none" :autoplay="false">
@@ -355,7 +354,7 @@
             },
              // 添加收藏呵取消收藏
             shoucang:function(e){
-                // var index = e.currentTarget.dataset.num;
+            	var index = e.currentTarget.dataset.num;
                 // if(this.productLists[index].eshrine==false){
                 // 	axios.get('/home/usr_UsrFavorites_addFavorite', {
 	              //       params: {
