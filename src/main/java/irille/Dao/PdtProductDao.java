@@ -32,6 +32,7 @@ import irille.view.pdt.PdtProductCatView;
 import irille.view.pdt.PdtSearchView;
 import org.json.JSONException;
 
+import javax.inject.Inject;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLDecoder;
@@ -51,6 +52,8 @@ import static java.util.stream.Collectors.toList;
  * Time: 14:47
  */
 public class PdtProductDao {
+    @Inject
+    private PdtProductDao pdtProductDao;
     /***
      * 首页新品
      *
@@ -814,7 +817,7 @@ public class PdtProductDao {
      * v == 3搜索
      * -新PC商城端搜索功能
      */
-    public static Page searchPdtByQuery(String[] orderfld, UsrPurchase purchase, FldLanguage.Language curLanguage, Integer lose, String pName, Integer cate, Integer level
+    public Page searchPdtByQuery(String[] orderfld, UsrPurchase purchase, FldLanguage.Language curLanguage, Integer lose, String pName, Integer cate, Integer level
             , String export, Integer mOrder, BigDecimal min, BigDecimal max, Integer IsO2o, String o2oAddress, Integer start, Integer limit) {
         List<O2O_Product> o2oProduct = null;
         Set<Integer> o2oPdtPkey = new HashSet<>();
@@ -898,7 +901,16 @@ public class PdtProductDao {
         }
         if (lose != null && lose == 1)
             if (cate != null) {
-                sql.WHERE(PdtProduct.T.CATEGORY, " =? ", cate);
+                List<Integer> cPkeys = pdtProductDao.getCatsNodeByCatId(cate);
+                String pkeys = "";
+                for (int i = 0; i < cPkeys.size(); i++) {
+                    if (i != cPkeys.size() - 1) {
+                        pkeys += cPkeys.get(i) + ",";
+                    } else {
+                        pkeys += cPkeys.get(i);
+                    }
+                }
+                sql.WHERE(PdtProduct.T.CATEGORY, " in("+pkeys+") ");
                 start = 0;
                 limit = 10;
             }
