@@ -294,6 +294,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 .WHERE(RFQConsult.T.VALID_DATE, ">?", LocalDateTime.now())
                 .WHERE(RFQConsult.T.VERIFY_STATUS,"=?", RFQConsultVerifyStatus.PASS.getLine().getKey())
         ;
+        sql.ORDER_BY(RFQConsult.T.CREATE_TIME, " DESC ");
         return Query.sql(sql).queryMaps();
     }
 
