@@ -401,11 +401,11 @@ $.ajax({
 		}
 	})
 </script>
+<script src="/home/v3/static/js/index-top.js"></script>
 <script>
     new Vue({
         el:"#main"
     })
 </script>
-<script src="/home/v3/static/js/index-top.js"></script>
 
 </html>
