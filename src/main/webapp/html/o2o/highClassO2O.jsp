@@ -4,6 +4,21 @@
     <!-- 引入样式 -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <script src="./js/config.js"></script>
+    <style>
+    	#o2otop .o2otopcon .smallspan:first-of-type{
+		    color: white;
+		    background: linear-gradient(to right, rgb(113, 139, 223), rgb(159, 87, 254));
+		    display: inline-block;
+		    width: 207px;
+		    height: 54px;
+		    line-height: 54px;
+		    font-size: 22px;
+		    border-radius: 27px;
+		    cursor: pointer;
+		    text-align: center;
+		}
+    </style>
+    
 <jsp:include page="/home/v3/nav.jsp"></jsp:include>
 
 <div id="lhl-highClass">
