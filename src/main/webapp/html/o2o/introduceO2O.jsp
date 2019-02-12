@@ -68,7 +68,7 @@
     <div class="introduceMakitCon">
         <h3>Marketing Channel</h3>
         <a href="highClassO2O.jsp"><span class="buttonr">New Design</span></a>
-        <a href="O2Oinputform.jsp"><span class="buttonr">Bargain District</span></a>
+        <a href=""><span class="buttonr">Bargain District</span></a>
     </div>
     <o2o-bottom></o2o-bottom>
 </div>
