@@ -2,7 +2,9 @@ package irille.shop.pdt;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
+import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Entity.O2O.O2O_Product;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
@@ -197,6 +199,7 @@ public class PdtProductDAO {
             });
             PropertyUtils.copyProperties(dbBean, getB(),
                     T.NAME, //名字
+                    T.IS_VERIFY,//审核状态
                     T.CATEGORY, //产品类目
                     T.CATEGORY_DIY, //店铺-产品类目
                     T.CODE, //编号
@@ -540,6 +543,7 @@ public class PdtProductDAO {
 
             PropertyUtils.copyProperties(dbBean, getB(),
                     T.NAME, //名字
+                    T.IS_VERIFY,//产品审核
                     T.CATEGORY, //产品类目
                     T.CATEGORY_DIY, //店铺-产品类目
                     T.CODE, //编号
@@ -607,7 +611,14 @@ public class PdtProductDAO {
         public void run() {
             PdtProduct product = BeanBase.load(PdtProduct.class, getB().getPkey());
             product.setState(OState.MERCHANTDEL.getLine().getKey());
+            product.setIsVerify(Sys.OYn.NO.getLine().getKey());
             product.upd();
+            if (product.getProductType() == Pdt.OProductType.PrivateExpo.getLine().getKey()) {
+                O2O_PrivateExpoPdt o2o_privateExpoPdt = O2O_PrivateExpoPdt.chkUniquePdt_Id(false, product.getPkey());
+                o2o_privateExpoPdt.setVerifyStatus(O2O_PrivateExpoPdtStatus._DEFAULT.getLine().getKey());
+                o2o_privateExpoPdt.setStatus(O2O_PrivateExpoPdtStatus.OFF.getLine().getKey());
+                o2o_privateExpoPdt.upd();
+            }
         }
     }
 
@@ -615,8 +626,15 @@ public class PdtProductDAO {
         public void run() {
             PdtProduct product = BeanBase.load(PdtProduct.class, getB().getPkey());
             product.setState(OState.OFF.getLine().getKey());
+            product.setIsVerify(Sys.OYn.NO.getLine().getKey());
             product.setSoldTimeE(Env.getTranBeginTime());
             product.upd();
+            if (product.getProductType() == Pdt.OProductType.PrivateExpo.getLine().getKey()) {
+                O2O_PrivateExpoPdt o2o_privateExpoPdt = O2O_PrivateExpoPdt.chkUniquePdt_Id(false, product.getPkey());
+                o2o_privateExpoPdt.setVerifyStatus(O2O_PrivateExpoPdtStatus._DEFAULT.getLine().getKey());
+                o2o_privateExpoPdt.setStatus(O2O_PrivateExpoPdtStatus.OFF.getLine().getKey());
+                o2o_privateExpoPdt.upd();
+            }
         }
     }
 
@@ -833,10 +851,10 @@ public class PdtProductDAO {
 
     /**
      * @param id
-     * @param status 1:审核通过,2:审核失败
+     * @param status  1:审核通过,2:审核失败
      * @param message
      */
-    public static void review(Integer id, Byte status,String message) {
+    public static void review(Integer id, Byte status, String message) {
         SQL pdt = new SQL() {
             {
                 SELECT(PdtProduct.class)
@@ -855,27 +873,28 @@ public class PdtProductDAO {
                         .WHERE(O2O_Product.T.PRODUCT_ID, "=?", id);
             }};
             O2O_Product o2oPdt = irille.pub.bean.Query.sql(o2o).query(O2O_Product.class);
-            if(status ==0){
+            if (status == 0) {
                 o2oPdt.setMessage(message);
                 o2oPdt.stVerifyStatus(O2O_ProductStatus.Failed);
-            }else{
+            } else {
                 o2oPdt.stVerifyStatus(O2O_ProductStatus.PASS);
             }
             o2oPdt.upd();
         } else {
             pp.setIsVerify(status);
-            if(status ==0){
+            if (status == 0) {
                 pp.setTab3(message);
             }
             pp.upd();
         }
     }
+
     /**
      * @param id
-     * @param status 0:下架,1:上架
+     * @param status  0:下架,1:上架
      * @param message
      */
-    public static void lower(Integer id, Byte status,String message) {
+    public static void lower(Integer id, Byte status, String message) {
         SQL pdt = new SQL() {
             {
                 SELECT(PdtProduct.class)
@@ -894,16 +913,16 @@ public class PdtProductDAO {
                         .WHERE(O2O_Product.T.PRODUCT_ID, "=?", id);
             }};
             O2O_Product o2oPdt = irille.pub.bean.Query.sql(o2o).query(O2O_Product.class);
-            if(status ==0){
+            if (status == 0) {
                 o2oPdt.setMessage(message);
                 o2oPdt.stStatus(O2O_ProductStatus.OFF);
-            }else{
+            } else {
                 o2oPdt.stStatus(O2O_ProductStatus.ON);
             }
             o2oPdt.upd();
         } else {
             pp.setState(status);
-            if(status ==0){
+            if (status == 0) {
                 pp.setTab3(message);
             }
             pp.upd();
