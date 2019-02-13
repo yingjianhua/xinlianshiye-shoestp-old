@@ -213,7 +213,7 @@
 
 
                 <!-- 带搜索功能的下拉框 -->
-                <select id="select">
+                <select name="bean.country"  id="select">
                     <c:forEach items="${countrys}" var="country">
                         <c:if test="${country.isDefault == true}">
                             <option value="${country.id}" selected="selected">${country.name}</option>
@@ -249,8 +249,7 @@
             </dl>
             <div class="row">
 
-                <button class="signbtn signup form_button_bg" type="button" id="regButton"
-                        style="background-color: #6b7f90" disabled><s:text
+                <button class="signbtn signup form_button_bg" type="button" id="regButton" style="background-color: #DDDDDD;border-color: #DDDDDD " disabled><s:text
                         name="createAccount"/></button>
             </div>
         </form>
@@ -305,7 +304,6 @@
     gtag('config', 'AW-783435725');
     gtag('config', 'UA-127715615-6')
 </script>
-
 <script>
     function gtag_report_conversion(url) {
         var callback = function () {
