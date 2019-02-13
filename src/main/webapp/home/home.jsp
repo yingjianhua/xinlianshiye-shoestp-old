@@ -171,7 +171,7 @@
 															</div>
 														</a>
 														<div class="goods-price">
-															US <span>${{goods.price}}</span>
+															US <span>{{sysConfig.currency_symbol}} {{goods.price}}</span>
 														</div>
 														<div class="min-order">
 															Min.Order:{{goods.min_order || 0}} pairs
