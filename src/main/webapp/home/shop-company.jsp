@@ -37,7 +37,7 @@
 
 
 <%@ include file="/home/template/web-top.jsp" %>
-<%@ include file="/home/template/shop-header.jsp" %>
+
 
 
 <div id="main">
@@ -45,6 +45,7 @@
     <div class="clean">
     </div>
     <index-top></index-top>
+    <%@ include file="/home/template/shop-header.jsp" %>
     <div class="wide">
         <!-- 商家-信息1 -->
         <div class="enterprise-info-wrap">

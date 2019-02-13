@@ -88,10 +88,10 @@ scroll-behavior: smooth}
           #xc .section2 .product-list:last-child {
             margin-right: 0; }
           #xc .section2 .product-list .fir-item {
-            background: url(../images/rent_bg.png) 100% 100% no-repeat;
+            background: url(/home/v3/static/images/rent_bg.png) 100% 100% no-repeat;
             background-size: cover;}
           #xc .section2 .product-list .sec-item {
-            background: url(../images/rec_bg.png) 100% 100% no-repeat;
+            background: url(/home/v3/static/images/rec_bg.png) 100% 100% no-repeat;
             background-size: cover;}
           #xc .section2 .product-list .default-item {
             width: 203.3px;
@@ -578,10 +578,10 @@ a {
   top: 6px;
   width: 20px;
   height: 20px;
-  background: url("../images/icon-favorite-off.png") no-repeat center; }
+  background: url("/home/v3/static/images/icon-favorite-off.png") no-repeat center; }
 
 #xsq .goods-category-item .hover-show .btn-collect .icon-collect.on {
-  background: url("../images/icon-favorite-on.png") no-repeat center; }
+  background: url("/home/v3/static/images/icon-favorite-on.png") no-repeat center; }
 
 /* 鼠标移入后不显示之前的name */
 /* 男鞋、女、童的nav wrap */
@@ -762,7 +762,7 @@ a {
       width: 128px;
       line-height: 28px;
       text-align: center;
-      cursor: not-allowed;
+      cursor: default;
       color: #232323;
       border-radius: 3px;
       border: solid 1px #dde1eb;
@@ -770,8 +770,16 @@ a {
       #xsq .RFQ-list-wrap .RFQ-item .btn-quote:hover {
         color: #fff;
         background-color: #1a4091; }
-#o2otop{
-  background: #fff;
+#o2otop {
+  position: fixed;
+  top: 33px;
+  left: 0;
+  z-index: 999;
+  width: 100%;
+  box-shadow: 0 2px 4px #333;
+  background: #fff; }
+.o2otop-placeholder{
+  height: 98px;
 }
 .indexbannercon {
   width: 100%;
@@ -924,7 +932,7 @@ a {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center; }
-  #o2otop .o2otopcon  .logo {
+  #o2otop .o2otopcon .logo {
     padding-right: 68px; }
   #o2otop .o2otopcon .topsearch {
     width: 700px;
@@ -951,23 +959,23 @@ a {
         border-radius: unset;
         -webkit-box-sizing: border-box;
                 box-sizing: border-box;
-        font-family: Arial-BoldMT;
+        font-family: inherit;
         font-size: 16px;
         color: #10389c; }
         #o2otop .o2otopcon .topsearch .el-select .el-input__inner::-webkit-input-placeholder {
-          font-family: Arial-BoldMT;
+          font-family: inherit;
           font-size: 16px;
           color: #10389c; }
         #o2otop .o2otopcon .topsearch .el-select .el-input__inner:-ms-input-placeholder {
-          font-family: Arial-BoldMT;
+          font-family: inherit;
           font-size: 16px;
           color: #10389c; }
         #o2otop .o2otopcon .topsearch .el-select .el-input__inner::-ms-input-placeholder {
-          font-family: Arial-BoldMT;
+          font-family: inherit;
           font-size: 16px;
           color: #10389c; }
         #o2otop .o2otopcon .topsearch .el-select .el-input__inner::placeholder {
-          font-family: Arial-BoldMT;
+          font-family: inherit;
           font-size: 16px;
           color: #10389c; }
     #o2otop .o2otopcon .topsearch > input {
@@ -1046,12 +1054,14 @@ a {
 
 .sanduan a {
   color: #7f7f7f; }
+.sanduan a:hover {
+  color: #10389c; }
 
 .sanduan .box {
   margin-top: 30px;
   float: left;
   width: 400px;
-  height: 460px;
+  height: 400px;
   border: #ddd 1px solid;
   background: #fff;
   margin-right: 20px;
@@ -1080,6 +1090,9 @@ a {
   color: #232323;
   margin-bottom: 10px;
   text-decoration: none; }
+.sanduan .box .h2:hover{
+  color: #10389c;
+}
 
 .sanduan .box .h2 img {
   float: left;

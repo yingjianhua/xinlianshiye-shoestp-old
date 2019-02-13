@@ -74,7 +74,7 @@
                     </ul>
                 </div>
                 </a>
-                <a href="/html/SVS/svs.jsp" class="btn-see-all svs_learn_more">Learn More</a>
+                <%--<a href="/html/SVS/svs.jsp" class="btn-see-all svs_learn_more">Learn More</a>--%>
             </div>
 
             <div class="box nomr">
@@ -131,7 +131,7 @@
 
                             <div class="right-goods-out-wrap swiper-container swiper-category-list">
                                 <div class="slide-title">
-                                    <a class="fr more">More ></a>
+                                    <a class="fr more" target="_blank" href="/home/pdt_PdtProduct_o2oList">More ></a>
                                     Romanian Show Room
                                 </div>
 
@@ -214,7 +214,7 @@
                 <div class="RFQ-list-wrap">
                     <h3 class="RFQ-title">
                         RFQ List
-                        <a class="fr more">More ></a>
+                        <%--<a class="fr more">More ></a>--%>
                     </h3>
 
                     <ul class="RFQ-list">
@@ -243,14 +243,14 @@
         <div class="section1">
             <div class="title clearfix">
                 <div class="fl clearfix">
-                    <span class="fl">CrowdFunding</span>
+                    <span class="fl">Crowdfunding</span>
                     <ul class="fl clearfix">
                         <li>Lower price in small number</li>
                         <li>Fashion Design will be published</li>
                     </ul>
                 </div>
-                <a target="_blank" href="https://www.shoestp.com/home/Activity_Romania_classifyactivity" class="fr">More
-                    ></a>
+                <%--<a target="_blank" href="https://www.shoestp.com/home/Activity_Romania_classifyactivity" class="fr">More--%>
+                    <%--></a>--%>
             </div>
             <div class="product-list clearfix">
                 <template v-for="(item, index) in CrowdFundingList" :key="index">
@@ -304,7 +304,7 @@
                     <div class="product-item">
                         <div class="product-img">
                             <a :href="'/'+item.rewrite" target="_blank">
-                                <img :src="image(item.picture)" alt="">
+                                <img :src="image(item.picture.split(',')[0])" alt="">
                             </a>
                         </div>
                         <div class="product-content">
@@ -354,7 +354,7 @@
                     <div class="product-item">
                         <div class="product-img">
                             <a :href="'/'+item.rewrite" target="_blank">
-                                <img :src="image(item.picture)" alt="">
+                                <img :src="image(item.picture.split(',')[0])" alt="">
                             </a>
                         </div>
                         <div class="product-content">
