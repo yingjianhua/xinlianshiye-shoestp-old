@@ -20,12 +20,15 @@
     <link rel="stylesheet" href="./static/css/animate.min.css">
     <link rel="stylesheet" href="./static/css/swiper.min.css" type="text/css">
     <link rel="stylesheet" href="./static/css/color.css" type="text/css">
+    <link rel="stylesheet" href="./static/css/combo.select.css">
+
     <script type="text/javascript" src="./static/js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="./static/js/user.js"></script>
     <script type="text/javascript" src="./static/js/global.js"></script>
     <script type="text/javascript" src="./static/js/global(1).js"></script>
     <script type="text/javascript" src="./static/js/lang/${env.curLanguage }.js"></script>
     <script type="text/javascript" src="./static/js/layer.js"></script>
+    <script type="text/javascript" src="./static/js/jquery.combo.select.js"></script>
     <link rel="stylesheet" href="./static/css/layer.css" type="text/css">
     <script type="text/javascript">
         $(document).ready(function () {
@@ -206,9 +209,11 @@
             <div class="row">
                 <span class="fc_red">*</span>
                 <label for="Country"><s:text name="Global.Country"/>
-
                 </label>
-                <select name="bean.country" id="country">
+
+
+                <!-- 带搜索功能的下拉框 -->
+                <select name="bean.country"  id="select">
                     <c:forEach items="${countrys}" var="country">
                         <c:if test="${country.isDefault == true}">
                             <option value="${country.id}" selected="selected">${country.name}</option>
@@ -232,7 +237,9 @@
                      style="vertical-align:top;width:53px;height:28px;line-height:21px;" id="verify"/></div>
             <dl class="intro">
 
-                <dt><input type="checkbox" id="isdisenabild" style="float: left;margin-top: 2px;margin-right: 5px;"/><s:text name="sign-up.Said_That_I_Agree"/></dt>
+                <dt><input type="checkbox" id="isdisenabild"
+                           style="float: left;margin-top: 2px;margin-right: 5px;"/><s:text
+                        name="sign-up.Said_That_I_Agree"/></dt>
                 <dd></dd>
                 <dd><s:text name="sign-up.May_Receive"/></dd>
                 <dd><s:text name="sign-up.Promotional_Email"/></dd>
@@ -300,7 +307,7 @@
 <script>
     function gtag_report_conversion(url) {
         var callback = function () {
-            if (typeof(url) != 'undefined') {
+            if (typeof (url) != 'undefined') {
                 window.location = url;
             }
         };
@@ -432,6 +439,7 @@
             return false;
         }
     }
+    $("#select").comboSelect();
 </script>
 
 </body>
