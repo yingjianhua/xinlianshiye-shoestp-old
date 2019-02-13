@@ -163,7 +163,7 @@
 														</a>
 													</div>
 												</div> -->
-												<div class="hover-show">
+												<div class="hover-show"  @click="hide($event,goods.rewrite)">
 													<div class="hover-text-wrap">
 														<a :href="goods.rewrite" target="_blank" class="goods-name">
 															<div class="ellipsis_2">
@@ -637,6 +637,12 @@
 				this.getShowRoomGoodsList();
 			},
 			methods: {
+			    hide(e,d){
+                    if (e.path[0]&&e.path[0].outerText=='Inquiry'){
+                    }else{
+                        window.location.href=d
+                    }
+                  },
 				image(v, params) {
 					if (!v) {
 						return ""
@@ -644,6 +650,10 @@
 					if (!params) {
 						params = ""
 					}
+					var t=v.split(",");
+					if (t&&t.length>0){
+					    return sysConfig.baseImageUrl + t[0] + params
+                    }
 					return sysConfig.baseImageUrl + v + params
 				},
 				getMostPopular() {
