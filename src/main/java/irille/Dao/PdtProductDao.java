@@ -30,6 +30,7 @@ import irille.view.Page;
 import irille.view.pdt.PdtProductBaseInfoView;
 import irille.view.pdt.PdtProductCatView;
 import irille.view.pdt.PdtSearchView;
+import org.apache.logging.log4j.util.Strings;
 import org.json.JSONException;
 
 import javax.inject.Inject;
@@ -54,6 +55,7 @@ import static java.util.stream.Collectors.toList;
 public class PdtProductDao {
     @Inject
     private PdtProductDao pdtProductDao;
+
     /***
      * 首页新品
      *
@@ -480,7 +482,7 @@ public class PdtProductDao {
 
     public Page getProductListManage(String name, String number, Integer supplierId, int cat, int start, int limit, Integer search) {
         BeanQuery q = Query
-                .SELECT(PdtProduct.T.PKEY, PdtProduct.T.NAME, PdtProduct.T.CODE, PdtProduct.T.CUR_PRICE, PdtProduct.T.PICTURE, PdtProduct.T.PRODUCT_TYPE, PdtProduct.T.UPDATE_TIME,PdtProduct.T.IS_VERIFY)
+                .SELECT(PdtProduct.T.PKEY, PdtProduct.T.NAME, PdtProduct.T.CODE, PdtProduct.T.CUR_PRICE, PdtProduct.T.PICTURE, PdtProduct.T.PRODUCT_TYPE, PdtProduct.T.UPDATE_TIME, PdtProduct.T.IS_VERIFY)
                 .SELECT(PdtCat.T.NAME, "category")
                 .SELECT(UsrProductCategory.T.NAME, "categoryDiy")
                 .FROM(PdtProduct.class)
@@ -910,7 +912,7 @@ public class PdtProductDao {
                         pkeys += cPkeys.get(i);
                     }
                 }
-                sql.WHERE(PdtProduct.T.CATEGORY, " in("+pkeys+") ");
+                sql.WHERE(PdtProduct.T.CATEGORY, " in(" + pkeys + ") ");
                 start = 0;
                 limit = 10;
             }
@@ -1019,7 +1021,20 @@ public class PdtProductDao {
                 setMinOrder(Integer.parseInt(map.get(PdtProduct.T.MIN_OQ.getFld().getCodeSqlField()).toString()));
             }
 //            setPicture(map.get(PdtProduct.T.PICTURE.getFld().getCodeSqlField()).toString());
-            setPicture(GetValue.getFirstImage(GetValue.get(map, PdtProduct.T.PICTURE, String.class, "")));
+            Integer pkey1 = GetValue.get(map, "pdtPkey", Integer.class, null);
+            List<PdtSpec> specs = BeanBase.list(PdtSpec.class, PdtSpec.T.PRODUCT + "=" + pkey1, false);
+            List<String> stringList = new ArrayList<>();
+            for (PdtSpec spec : specs) {
+                String s = GetValue.getFirstImage(spec.getPics());
+                if (s.length() > 0)
+                    stringList.add(GetValue.getFirstImage(spec.getPics()));
+            }
+            if(stringList.size()>0){
+                setPicture(Strings.join(stringList, ','));
+            }else{
+                setPicture(GetValue.get(map, PdtProduct.T.PICTURE, String.class, ""));
+            }
+
             String pdtCatName = map.get("pdtCatName").toString();
             Integer gender = 0;
             if (pdtCatName.indexOf("男") != -1) {
@@ -1097,5 +1112,10 @@ public class PdtProductDao {
         return Query.SELECT(PdtProduct.class, productPkey);
     }
 
-
+    public static void main(String[] args) {
+        String ss = "66>>>>6744444";
+        System.out.println(ss.length());
+        System.out.println(ss.length() - 1);
+        System.out.println(ss.substring(11, 13));
+    }
 }
