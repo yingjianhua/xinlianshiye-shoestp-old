@@ -163,7 +163,7 @@
 														</a>
 													</div>
 												</div> -->
-												<div class="hover-show"  @click="hide($event,goods.rewrite)">
+												<div class="hover-show"  @click="hide($event,goods.rewrite)" style="cursor: pointer;">
 													<div class="hover-text-wrap">
 														<a :href="goods.rewrite" target="_blank" class="goods-name">
 															<div class="ellipsis_2">
@@ -321,7 +321,7 @@
                                 Min.Order: {{item.minOrder}} pairs
                             </div>
                         </div>
-                        <div class="inquiry-btn">
+                        <div class="inquiry-btn"  @click="hide($event,item.rewrite)" style="cursor: pointer;">
 							<a :href="'/'+item.rewrite" target="_blank" style="color:#666;text-align: left;">
 								<div class="ellipsis_2" style="font-size:12px;line-height: 20px;">{{item.name}}</div>
 								<div style="font-size:18px;margin-top:10px;">
@@ -371,7 +371,7 @@
                                 Min.Order: {{item.minOrder}} pairs
                             </div>
                         </div>
-                        <div class="inquiry-btn">
+                        <div class="inquiry-btn"  @click="hide($event,item.rewrite)" style="cursor: pointer;">
 							<a :href="'/'+item.rewrite" target="_blank" style="color:#666;text-align: left;">
 								<div class="ellipsis_2" style="font-size:12px;line-height: 20px;">{{item.name}}</div>
 								<div style="font-size:18px;margin-top:10px;">
