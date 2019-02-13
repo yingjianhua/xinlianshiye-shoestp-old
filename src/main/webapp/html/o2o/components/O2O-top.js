@@ -4,7 +4,7 @@ Vue.component('o2o-top', {
             <a href="/" target="_blank"><img src="images/o2otoplogo.png" alt=""></a>
             <a href=""><span class="bigspan">O2O Show Room</span></a>
             <a href="highClassO2O.jsp"><span class="smallspan newDesign"  :class="show == 1? 'smallactive' : ''" >New Design</span></a>
-            <a href=""><span class="smallspan newDesign">Bargain District</span></a>
+            <a href="/home/pdt_PdtProduct_o2oList"><span class="smallspan newDesign">Bargain District</span></a>
         </div>
  </div>`,
     props: {

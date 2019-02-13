@@ -481,7 +481,8 @@
 				],
 				// 林华立数据
 				newsList: [{
-					url: '/home/rfq_RFQConsult_ExpoRivaSchuhshow',
+					url: '/home/rfq_RFQConsult_ExpoRivaSchuhshow' +
+                        '',
 					image: '/home/v3/static/images/zh_img.png',
 					title: 'Expo Riva Schuh',
 					time: 'Jan 12-15, 2019',

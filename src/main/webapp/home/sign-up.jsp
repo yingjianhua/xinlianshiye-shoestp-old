@@ -221,6 +221,7 @@
             </div>
             <div class="clear"></div>
             <div class="row">
+
                 <span class="fc_red">*</span>
                 <label for="Security Code"><s:text name="Global.Verification_Code"/>
 
@@ -230,7 +231,8 @@
                 <img src="<%=request.getContextPath()%>/servlet/verify.img"
                      style="vertical-align:top;width:53px;height:28px;line-height:21px;" id="verify"/></div>
             <dl class="intro">
-                <dt><s:text name="sign-up.Said_That_I_Agree"/></dt>
+
+                <dt><input type="checkbox" id="isdisenabild" style="float: left;margin-top: 2px;margin-right: 5px;"/><s:text name="sign-up.Said_That_I_Agree"/></dt>
                 <dd></dd>
                 <dd><s:text name="sign-up.May_Receive"/></dd>
                 <dd><s:text name="sign-up.Promotional_Email"/></dd>
@@ -239,7 +241,8 @@
                 </dd>
             </dl>
             <div class="row">
-                <button class="signbtn signup form_button_bg" type="button" id="regButton"><s:text
+
+                <button class="signbtn signup form_button_bg" type="button" id="regButton" style="background-color: #6b7f90" disabled><s:text
                         name="createAccount"/></button>
             </div>
         </form>
@@ -310,6 +313,18 @@
     }
 </script>
 <script type="text/javascript">
+
+    $("#isdisenabild").on("click", function () {
+        var booleans= document.getElementById("isdisenabild")
+        if(booleans.checked){
+            $("#regButton").attr("disabled",false);
+            $("#regButton").css("background-color","#005AB0")
+
+        }else{
+            $("#regButton").attr("disabled",true);
+            $("#regButton").css("background-color","#6b7f90")
+        }
+    })
     $("#verify").on("click", function () {
         refreshVerify();
     })

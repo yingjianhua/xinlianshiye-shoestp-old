@@ -5,6 +5,22 @@
     <!-- index为以上几个合并后的压缩文件 - 加前缀 -->
     <link rel="stylesheet" href="./css/element-ui/element-ui.css"/>
     <link rel="stylesheet" href="./css/index.css"/>
+    <style>
+    	#o2otop .o2otopcon  a:nth-of-type(3) .smallspan{
+		    color: white;
+		    background: linear-gradient(to right, rgb(113, 139, 223), rgb(159, 87, 254));
+		    display: inline-block;
+		    width: 207px;
+		    height: 54px;
+		    line-height: 54px;
+		    font-size: 22px;
+		    border-radius: 27px;
+		    cursor: pointer;
+		    text-align: center;
+		}
+    </style>
+    
+    
 <jsp:include page="/home/v3/nav.jsp"></jsp:include>
 
 <div id="o2oinputform" style="background: #F5F5F5">
@@ -163,8 +179,7 @@
             </span>
     </el-dialog>
 </div>
-<script src="components/O2O-top.js"></script>
-<script src="components/O2O-bottom.js"></script>
+
 <script>
     new Vue({
         el: "#o2oinputform",
@@ -438,5 +453,8 @@
         }
     })
 </script>
+<script src="components/O2O-top.js"></script>
+<script src="components/O2O-bottom.js"></script>
+
 </body>
 </html>

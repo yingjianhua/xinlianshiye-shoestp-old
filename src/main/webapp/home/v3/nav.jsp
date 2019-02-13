@@ -105,7 +105,7 @@
                         Language
                     </template>
                         <el-menu-item index="7-1" v-for="language in languageList">
-                        <a rel="nofollow" :href="'/home/plt_PltConfig_changeLanguage'+language.shortName">
+                        <a rel="nofollow" @click="changeLang(language.shortName)">
                             {{language.displayName}}
                         </a>
                         </el-submenu>
@@ -248,13 +248,13 @@
             handleTopNavSelect(key, keyPath) {
                 console.log(key, keyPath);
             },
-            changeLang() {
+            changeLang(lang) {
                 var self = this
                 axios({
                     url: "/home/plt_PltConfig_changeLanguage",
                     method: "get",
                     params: {
-                        request_locale: this.$data.language
+                        request_locale: lang
                     }
                 }).then(function (res) {
                     if (res.data.ret && res.data.ret == 1) {
