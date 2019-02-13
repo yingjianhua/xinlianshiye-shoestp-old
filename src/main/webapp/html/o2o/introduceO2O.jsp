@@ -16,7 +16,7 @@
         <div class="introduce">
             <h3>{{introducemsg[0].title}}</h3>
             <div class="linhen"></div>
-            <h5>Customer could better know the qualitu of a shoe.</h5>
+            <h5>Customer could better know the quality of a shoe.</h5>
             <div class="introducebody">
                 <img class="ripple" :class="top >= srcolltop[0].value ? 'slideInRight' : ''"
                      :src="introducemsg[0].img" alt="">
@@ -32,7 +32,7 @@
         <div class="introduce">
             <h3>{{introducemsg[1].title}}</h3>
             <div class="linhen"></div>
-            <h5>Customer could better know the qualitu of a shoe.</h5>
+            <h5>Customer could better know the quality of a shoe.</h5>
             <div class="introducebody">
                 <img class="ripple"  :class=" top >= srcolltop[1].value ? ' slideInLeft' : '' "
                      :src="introducemsg[1].img" alt="">
@@ -48,7 +48,7 @@
         <div class="introduce">
             <h3>{{introducemsg[2].title}}</h3>
             <div class="linhen"></div>
-            <h5>Customer could better know the qualitu of a shoe</h5>
+            <h5>Customer could better know the quality of a shoe</h5>
             <div class="introducebody">
                 <img class="ripple"  :class="top >= srcolltop[2].value? 'slideInRight' : ''"
                      :src="introducemsg[2].img" alt="">
@@ -68,7 +68,7 @@
     <div class="introduceMakitCon">
         <h3>Marketing Channel</h3>
         <a href="highClassO2O.jsp"><span class="buttonr">New Design</span></a>
-        <a href="O2Oinputform.jsp"><span class="buttonl">Bargain District</span></a>
+        <a href="/home/pdt_PdtProduct_o2oList"><span class="buttonr">Bargain District</span></a>
     </div>
     <o2o-bottom></o2o-bottom>
 </div>
@@ -84,7 +84,7 @@
                 {
                     title: 'Why do customer needs O2O',
                     img: 'images/introduce1.png',
-                    msg: 'If a company plan to do both e-commerce and physical (“brick-and-mortar”) stores, then the O2O marketing strategy should is be considering to use. Capitalizes on both presences to drive increased sales. This can work in both directions, but online to offline allows you to reach an arguably broader audience of prospective new customers. E-commerce sales continue to rise year-on-year, while mobile accounts for an increasing of online sales too.  For selling shoes, it is important to make customers touch the real shoes sample, so that the Customer could better know the qualitu of a shoe.'
+                    msg: 'If a company plan to do both e-commerce and physical (“brick-and-mortar”) stores, then the O2O marketing strategy should is be considering to use. Capitalizes on both presences to drive increased sales. This can work in both directions, but online to offline allows you to reach an arguably broader audience of prospective new customers. E-commerce sales continue to rise year-on-year, while mobile accounts for an increasing of online sales too.  For selling shoes, it is important to make customers touch the real shoes sample, so that the Customer could better know the quality of a shoe.'
                 },
                 {
                     title: 'What kinds of O2O are we?',

@@ -37,7 +37,6 @@
 <jsp:include page="v3/nav.jsp"/>
 <body class="lang_en w_1200">
 <%@ include file="/home/template/web-top.jsp" %>
-<%@ include file="/home/template/shop-header.jsp" %>
 <!-- 以下div为防止底部公用部分超出1200px后隐藏 -->
 <c:if test="${supView.contactPageOn==1}">
     <div>${supView.contactPageDiy}</div>
@@ -45,6 +44,7 @@
 <c:if test="${supView.contactPageOn!=1}">
 <div id="main">
     <index-top></index-top>
+        <%@ include file="/home/template/shop-header.jsp" %>
         <c:set var="symbolNoLogin" value="********"/>
     <div class="wide">
         <!-- 联系-信息1 -->

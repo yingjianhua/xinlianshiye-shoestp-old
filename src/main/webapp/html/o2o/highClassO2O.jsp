@@ -1,9 +1,24 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <jsp:include page="/home/v2/template/header.jsp"></jsp:include>
- <link rel="stylesheet" href="css/index.css">
-    <!-- 引入样式 -->
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-    <script src="./js/config.js"></script>
+<link rel="stylesheet" href="css/index.css">
+<!-- 引入样式 -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<script src="./js/config.js"></script>
+<style>
+    #o2otop .o2otopcon a:nth-of-type(3) .smallspan {
+        color: white;
+        background: linear-gradient(to right, rgb(113, 139, 223), rgb(159, 87, 254));
+        display: inline-block;
+        width: 207px;
+        height: 54px;
+        line-height: 54px;
+        font-size: 22px;
+        border-radius: 27px;
+        cursor: pointer;
+        text-align: center;
+    }
+</style>
+
 <jsp:include page="/home/v3/nav.jsp"></jsp:include>
 
 <div id="lhl-highClass">
@@ -48,18 +63,19 @@
                         she) can get the contact information of the corresponding factory directly. </p>
                 </div>
                 <div class="operate-image">
-                    <el-carousel trigger="click" height="361px" :autoplay="false" arrow="never" indicator-position="none" ref="carousel">
+                    <el-carousel trigger="click" height="361px" :autoplay="false" arrow="never"
+                                 indicator-position="none" ref="carousel">
                         <el-carousel-item>
                             <img src="images/operate_img01.png" alt="">
                         </el-carousel-item>
                         <el-carousel-item>
-                            <img src="images/operate_img01.png" alt="">
+                            <img src="images/operate_img02.png" alt="">
                         </el-carousel-item>
                         <el-carousel-item>
-                            <img src="images/operate_img01.png" alt="">
+                            <img src="images/operate_img03.png" alt="">
                         </el-carousel-item>
                         <el-carousel-item>
-                            <img src="images/operate_img01.png" alt="">
+                            <img src="images/operate_img04.png" alt="">
                         </el-carousel-item>
                     </el-carousel>
                 </div>
@@ -80,7 +96,8 @@
                     <img :src="baseimgurl + item.image+'?x-oss-process=image/resize,w_154,h_154/blur,r_5,s_20'" alt="">
                     <div class="sample-item-text">
                         <p class="sample-text show-line">{{item.title}}</p>
-                        <p class="sample-state">US  <span class="text-red">{{sysConfig.currency_symbol}} {{item.price}}</span>
+                        <p class="sample-state">US <span
+                                class="text-red">{{sysConfig.currency_symbol}} {{item.price}}</span>
                         <p class="sample-text">Min.Order:{{item.min_order}} pairs</p>
                     </div>
                     <div class="sample-item-model">
@@ -93,24 +110,23 @@
     <!--How To Sign Up-->
     <div class="wrap main-sign">
         <h2 class="main-sign-h2">How To Sign Up</h2>
-        <p class="main-sign-text">Please fill out the registration form in our O2O webpage and send the registration
-            form to the official email address of Shoestp.com. We will send you an invitation card one month before the
-            start of the new product show.</p>
-        <a href="O2Oinputform.jsp" class="button">On line</a>
+        <p class="main-sign-text">
+            Please fill out the online registration form in our O2O webpage after you've registered or login
+            Shoestp.com. We will send you an invitation card one month before the start of the new product show.</p>
+        <a href="O2Oinputform.jsp" class="button">Online</a>
     </div>
     <!--Time and location-->
     <div class="wrap main-location">
         <!--谷歌地图-->
         <iframe
-            src="http://www.google.cn/maps/embed?pb=!1m18!1m12!1m3!1d5860766.60791944!2d18.330279800725073!3d44.07126408586853!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40b1f9ac606033e3%3A0x7d391e85ce7a445b!2z57qi6b6Z5Lit5Zu95aSn5biC5Zy6!5e0!3m2!1szh-CN!2scn!4v1548317126897"
-            width="100%" height="540" frameborder="0" style="border:0;position: relative;z-index:99;"
-            allowfullscreen></iframe>
+                src="http://www.google.cn/maps/embed?pb=!1m18!1m12!1m3!1d5860766.60791944!2d18.330279800725073!3d44.07126408586853!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40b1f9ac606033e3%3A0x7d391e85ce7a445b!2z57qi6b6Z5Lit5Zu95aSn5biC5Zy6!5e0!3m2!1szh-CN!2scn!4v1548317126897"
+                width="100%" height="540" frameborder="0" style="border:0;position: relative;z-index:99;"
+                allowfullscreen></iframe>
         <!---->
         <div class="location-content">
             <div class="location-content-tier">
                 <div class="location-introduce">
                     <h2 class="introduce-h2">Time and Location</h2>
-                    <p class="introduce-text">Could Better Know The Quality Of A Shoes</p>
                     <p class="introduce-wire"></p>
                     <p class="introduce-text">We will publish the location and time of the new product show meeting at
                         the Shoestp.com three months in advance. The show will generally last for 7 days.</p>
@@ -126,7 +142,7 @@
     new Vue({
         el: '#lhl-highClass',
         data: {
-            baseimgurl:'https://image.shoestp.com',
+            baseimgurl: 'https://image.shoestp.com',
             overLi: 1,
             sampleDetail: [
                 {
@@ -193,24 +209,24 @@
         methods: {
             enterOperate(num) {
                 this.overLi = num;
-                this.$refs.carousel.setActiveItem(num-1);
+                this.$refs.carousel.setActiveItem(num - 1);
             },
-            getporduct:function () {
+            getporduct: function () {
                 let self = this;
                 axios.get('/home/o2o_O2oRegistration_o2oPrivateList', {
                     params: {
-                        start:0,
-                        limit:7
+                        start: 0,
+                        limit: 7
                     }
                 }).then(function (res) {
                     let data = res.data.result;
-                    if(res.data.ret == 1){
-                        self.$set(self,'sampleDetail',data)
+                    if (res.data.ret == 1) {
+                        self.$set(self, 'sampleDetail', data)
                     }
                 })
             },
-            gotoinquery:function (id) {
-                window.location = '/home/usr_UsrConsult_productPublishView?product_id=' +  id;
+            gotoinquery: function (id) {
+                window.location = '/home/usr_UsrConsult_productPublishView?product_id=' + id;
             }
         }
     })

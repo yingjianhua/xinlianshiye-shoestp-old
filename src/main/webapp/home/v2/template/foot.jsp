@@ -12,7 +12,7 @@
                     @click="subscribe"><s:text name="Subscribe"/></span>
             </div>
             <div class="left">
-                <h3 style="text-indent: 2px;"><s:text name="Follow_Us"/></h3>
+                <h3 style="text-indent: 2px;white-space: nowrap;"><s:text name="Follow_Us"/></h3>
                 <div class="logos">
 
                     <a href="http://www.facebook.com/share.php?src=bm&v=4&u=https%3A%2F%2Fwww.shoestp.com%2Fhome%2Fusr_UsrPurchase&t=facebook"><img
