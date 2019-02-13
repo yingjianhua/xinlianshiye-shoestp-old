@@ -877,6 +877,7 @@ public class PdtProductDao {
         SQL sql = new SQL();
         sql.SELECT(PdtProduct.T.PKEY, "pdtPkey");
         sql.SELECT(PdtProduct.T.NAME, "pdtName");
+        sql.SELECT(PdtProduct.T.PRODUCT_TYPE);
         //sql.SELECT(PdtProduct.T.CATEGORY,"pdtCate");
         sql.SELECT(PdtProduct.T.CUR_PRICE, PdtProduct.T.MIN_OQ, PdtProduct.T.CATEGORY, PdtProduct.T.NORM_ATTR, PdtProduct.T.PRODUCT_TYPE, PdtProduct.T.PICTURE);
         sql.SELECT(UsrSupplier.T.PKEY, "supPkey");
@@ -921,8 +922,8 @@ public class PdtProductDao {
                     }
                 }
                 sql.WHERE(PdtProduct.T.CATEGORY, " in(" + pkeys + ") ");
-                start = 0;
-                limit = 10;
+//                start = 0;
+//                limit = 10;
             }
         if (StringUtil.hasValue(pName))
             sql.WHERE(" upper(JSON_EXTRACT(PdtProduct.name,'$." + curLanguage.name() + "'))  like upper('%" + pName
