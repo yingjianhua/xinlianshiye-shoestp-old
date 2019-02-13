@@ -1,5 +1,10 @@
 package irille.Entity.RFQ;
 
+import java.util.Date;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import irille.Entity.RFQ.Enums.RFQConsultPayType;
 import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
 import irille.core.sys.Sys;
@@ -7,13 +12,12 @@ import irille.core.sys.Sys.OYn;
 import irille.pub.bean.BeanInt;
 import irille.pub.svr.Env;
 import irille.pub.tb.Fld;
+import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
 import irille.shop.plt.PltErate;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
-
-import java.util.Date;
 
 public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
 	
@@ -31,7 +35,7 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
         FAVORITE(Sys.T.YN, "是否添加FLAG"),
         TITLE(Sys.T.STR__200_NULL),
         DESCRIPTION(Sys.T.STR__2000_NULL, "描述"),
-        IMAGE(Sys.T.STR__200_NULL, "图片(多图)"),
+        IMAGE(Sys.T.JSON, "图片(多图)"),
         QUANTITY(Sys.T.INT, "数量"),
         MINPRICE(Sys.T.INT, "价格区间"),
         MAXPRICE(Sys.T.INT, "价格区间"),
@@ -41,7 +45,7 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
         TRANSITTYPE(Tb.crt(RFQConsultShipping_Type.DEFAULT)),
         SAMPLE(Sys.T.YN),
         COMPANYDESCRIBE(Sys.T.STR__2000_NULL),
-        THROWAWAY(Sys.T.STR__2000_NULL),
+        THROWAWAY(Sys.T.JSON),
         CREATE_DATE(Sys.T.CREATED_DATE_TIME),
         HAD_READ_PURCHASE(Sys.T.YN),//采购商是否已经读取消息
         HAD_READ_SUPPLIER(Sys.T.YN),//供应商是否已经读取消息
@@ -106,7 +110,7 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
 	// NO:0,否
   private String _title;	// 字符200  STR(200)<null>
   private String _description;	// 描述  STR(2000)<null>
-  private String _image;	// 图片(多图)  STR(200)<null>
+  private String _image;	// 图片(多图)  JSONOBJECT
   private Integer _quantity;	// 数量  INT
   private Integer _minprice;	// 价格区间  INT
   private Integer _maxprice;	// 价格区间  INT
@@ -114,14 +118,20 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
   private Date _validDate;	// 日期时间  TIME<null>
   private Byte _paytype;	// 支付方式 <RFQConsultPayType>  BYTE
 	// TT:1,TT支付
-	// OFFLINE_PAY:2,线下支付
+	// LC:2,L/C
+	// DP:3,D/P
+	// WesternUnion:4,Western Union
+	// MoneyGram:5,Money Gram
   private Byte _transittype;	// 配送方式 <RFQConsultShipping_Type>  BYTE
 	// FOB:1,FOB
+	// CIF:2,CIF
+	// CNF:3,CNF
+	// CRF:4,CRF
   private Byte _sample;	// 是否 <OYn>  BYTE
 	// YES:1,是
 	// NO:0,否
   private String _companydescribe;	// 字符2000  STR(2000)<null>
-  private String _throwaway;	// 字符2000  STR(2000)<null>
+  private String _throwaway;	// JSON  JSONOBJECT
   private Date _createDate;	// 建档时间  TIME
   private Byte _hadReadPurchase;	// 是否 <OYn>  BYTE
 	// YES:1,是
@@ -141,7 +151,7 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
     _favorite=OYn.DEFAULT.getLine().getKey();	// 是否添加FLAG <OYn>  BYTE
     _title=null;	// 字符200  STR(200)
     _description=null;	// 描述  STR(2000)
-    _image=null;	// 图片(多图)  STR(200)
+    _image=null;	// 图片(多图)  JSONOBJECT
     _quantity=0;	// 数量  INT
     _minprice=0;	// 价格区间  INT
     _maxprice=0;	// 价格区间  INT
@@ -151,7 +161,7 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
     _transittype=RFQConsultShipping_Type.DEFAULT.getLine().getKey();	// 配送方式 <RFQConsultShipping_Type>  BYTE
     _sample=OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
     _companydescribe=null;	// 字符2000  STR(2000)
-    _throwaway=null;	// 字符2000  STR(2000)
+    _throwaway=null;	// JSON  JSONOBJECT
     _createDate=Env.getTranBeginTime();	// 建档时间  TIME
     _hadReadPurchase=OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
     _hadReadSupplier=OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
@@ -259,6 +269,12 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
   public void setImage(String image){
     _image=image;
   }
+  public JSONObject gtImage() throws JSONException {
+    return getImage()==null?new JSONObject():new JSONObject(getImage());
+  }
+  public void stImage(JSONObject image){
+    setImage(image==null?null:image.toString());
+  }
   public Integer getQuantity(){
     return _quantity;
   }
@@ -347,6 +363,12 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
   }
   public void setThrowaway(String throwaway){
     _throwaway=throwaway;
+  }
+  public JSONObject gtThrowaway() throws JSONException {
+    return getThrowaway()==null?new JSONObject():new JSONObject(getThrowaway());
+  }
+  public void stThrowaway(JSONObject throwaway){
+    setThrowaway(throwaway==null?null:throwaway.toString());
   }
   public Date getCreateDate(){
     return _createDate;
