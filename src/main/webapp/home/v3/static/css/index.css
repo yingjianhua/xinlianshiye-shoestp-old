@@ -109,11 +109,11 @@ body {
   margin-right: 0; }
 
 #xc .section2 .product-list .fir-item {
-  background: url(/home/v3/static/images/rent_bg.png) 100% 100% no-repeat;
+  background: url(../images/rent_bg.png) 100% 100% no-repeat;
   background-size: cover; }
 
 #xc .section2 .product-list .sec-item {
-  background: url(/home/v3/static/images/rec_bg.png) 100% 100% no-repeat;
+  background: url(../images/rec_bg.png) 100% 100% no-repeat;
   background-size: cover; }
 
 #xc .section2 .product-list .default-item {
@@ -122,7 +122,6 @@ body {
   position: relative;
   padding: 30px 20px;
   color: #fff;
-  border: 1px solid #dddddd;
   float: left; }
 
 #xc .section2 .product-list .default-item .fir-see-all {
@@ -184,20 +183,22 @@ body {
 
 #xc .section2 .product-list .product-item .inquiry-btn {
   position: absolute;
-  width: 170px;
-  height: 35px;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
   line-height: 35px;
   text-align: center;
-  background-color: #1a4091;
+  background-color: rgba(255, 255, 255, 0.5);
   border-radius: 3px;
-  bottom: 21px;
-  left: 16.65px;
-  -webkit-transform: translateY(100px);
-  transform: translateY(100px);
-  -webkit-transition: 0.3s -webkit-transform linear;
-  transition: 0.3s -webkit-transform linear;
-  transition: 0.3s transform linear;
-  transition: 0.3s transform linear, 0.3s -webkit-transform linear; }
+  bottom: 0;
+  left: 0;
+  border: 2px solid #1a4091;
+  -webkit-transform: translateY(400px);
+  transform: translateY(400px);
+  -webkit-transition: 0.5s -webkit-transform linear;
+  transition: 0.5s -webkit-transform linear;
+  transition: 0.5s transform linear;
+  transition: 0.5s transform linear, 0.5s -webkit-transform linear; }
 
 #xc .section2 .product-list .product-item .inquiry-btn a {
   display: inline-block;
@@ -205,8 +206,17 @@ body {
   font-size: 18px;
   color: #fff; }
 
-#xc .section2 .product-list .product-item .inquiry-btn:hover {
-  background-color: #35c; }
+#xc .section2 .product-list .product-item .inquiry-btn a.inquiry-a {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  -webkit-transform: translate(-50%);
+          transform: translate(-50%);
+  width: 163.3px;
+  background-color: #1a4091; }
+
+#xc .section2 .product-list .product-item .inquiry-btn a.inquiry-a:hover {
+  background: #35c; }
 
 #xc .section2 .product-list .product-item:hover .product-content {
   opacity: 0.6; }
@@ -433,11 +443,12 @@ a {
   left: 0;
   opacity: 0;
   width: 100%;
-  height: 97px;
+  height: 100%;
   /* transition: all 0.4s; */
   -webkit-transition: all 0.5s ease;
   transition: all 0.5s ease;
-  background: rgba(255, 255, 255, 0.54); }
+  background: rgba(255, 255, 255, 0.64);
+  border: 2px solid #2435a1; }
 
 /* #xsq .wide{
   width: 1200px;
@@ -538,6 +549,9 @@ a {
 
 #xsq .goods-category-item .right-goods-wrap .goods-info-wrap {
   padding: 4px 20px 6px;
+  -webkit-transition: all 0.4s;
+  transition: all 0.4s;
+  opacity: 1;
   color: #b0b0b0;
   font-size: 12px; }
 
@@ -563,25 +577,33 @@ a {
   white-space: nowrap; }
 
 /* 鼠标移入后的显示 */
+#xsq .goods-category-item .right-goods-wrap .item:hover .goods-info-wrap {
+  opacity: 0; }
+
 #xsq .goods-category-item .right-goods-wrap .item:hover .hover-show {
-  top: 166px;
+  top: 0;
   opacity: 1; }
 
 #xsq .goods-category-item .right-goods-wrap .hover-text-wrap {
-  padding: 8px 10px;
+  padding: 12px 15px;
   font-size: 14px;
-  font-family: ArialMT;
   color: #000; }
 
-#xsq .goods-category-item .right-goods-wrap .hover-text-wrap .goods-name2:hover {
-  color: #666; }
+#xsq .goods-category-item .right-goods-wrap .hover-text-wrap .goods-name:hover {
+  color: #10389c; }
 
-#xsq .goods-category-item .right-goods-wrap .hover-show .goods-name2 {
-  height: 64px;
+#xsq .goods-category-item .right-goods-wrap .hover-show .goods-name {
+  display: inline-block;
+  height: 44px;
   line-height: 22px;
-  margin-bottom: 24px;
-  font-family: MicrosoftYaHei;
-  font-size: 16px; }
+  margin-bottom: 12px;
+  color: #666;
+  cursor: pointer;
+  font-size: 12px; }
+
+#xsq .goods-category-item .right-goods-wrap .hover-show .min-order {
+  color: #666;
+  font-size: 12px; }
 
 #xsq .goods-category-item .right-goods-wrap .hover-show .btn-group {
   position: absolute;
@@ -619,10 +641,10 @@ a {
   top: 6px;
   width: 20px;
   height: 20px;
-  background: url("/home/v3/static/images/icon-favorite-off.png") no-repeat center; }
+  background: url("../images/icon-favorite-off.png") no-repeat center; }
 
 #xsq .goods-category-item .hover-show .btn-collect .icon-collect.on {
-  background: url("/home/v3/static/images/icon-favorite-on.png") no-repeat center; }
+  background: url("../images/icon-favorite-on.png") no-repeat center; }
 
 /* 鼠标移入后不显示之前的name */
 /* 男鞋、女、童的nav wrap */
@@ -824,15 +846,7 @@ a {
   background-color: #1a4091; }
 
 #o2otop {
-  position: fixed;
-  top: 33px;
-  left: 0;
-  z-index: 999;
-  width: 100%;
   background: #fff; }
-
-.o2otop-placeholder {
-  height: 98px; }
 
 .indexbannercon {
   width: 100%;
@@ -1013,7 +1027,7 @@ a {
   -ms-flex-align: center;
   align-items: center; }
 
-#o2otop .o2otopcon .logo {
+#o2otop .o2otopcon  .logo {
   padding-right: 68px; }
 
 #o2otop .o2otopcon .topsearch {
@@ -1026,6 +1040,8 @@ a {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
+  -ms-flex-negative: 1;
+      flex-shrink: 1;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
@@ -1045,27 +1061,27 @@ a {
   border-radius: unset;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  font-family: inherit;
+  font-family: Arial-BoldMT;
   font-size: 16px;
   color: #10389c; }
 
 #o2otop .o2otopcon .topsearch .el-select .el-input__inner::-webkit-input-placeholder {
-  font-family: inherit;
+  font-family: Arial-BoldMT;
   font-size: 16px;
   color: #10389c; }
 
 #o2otop .o2otopcon .topsearch .el-select .el-input__inner:-ms-input-placeholder {
-  font-family: inherit;
+  font-family: Arial-BoldMT;
   font-size: 16px;
   color: #10389c; }
 
 #o2otop .o2otopcon .topsearch .el-select .el-input__inner::-ms-input-placeholder {
-  font-family: inherit;
+  font-family: Arial-BoldMT;
   font-size: 16px;
   color: #10389c; }
 
 #o2otop .o2otopcon .topsearch .el-select .el-input__inner::placeholder {
-  font-family: inherit;
+  font-family: Arial-BoldMT;
   font-size: 16px;
   color: #10389c; }
 
@@ -1135,8 +1151,8 @@ a {
   margin-bottom: 4px; }
 
 #o2otop .o2otopcon .o2otoplikes .o2otoplikenum p:nth-child(2) {
-  font-size: 14px;
   white-space: nowrap;
+  font-size: 14px;
   color: #7f7f7f; }
 
 #xc .el-progress-bar__outer {
