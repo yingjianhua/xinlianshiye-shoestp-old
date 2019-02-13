@@ -336,8 +336,11 @@
 	                    }
 	                })
                     .then((res) => {
-                    	if(ret!=-1){
+                    	console.log(res)
+                    	if(res.data.ret!=-1){
                     		this.$set(this.productLists[index],"eshrine",true)
+                    	}else{
+                    		window.location = '/home/usr_UsrPurchase_sign';
                     	}
                     })
                     .catch((error) => {
