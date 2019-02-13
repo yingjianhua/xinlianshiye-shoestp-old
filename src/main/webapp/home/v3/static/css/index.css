@@ -1099,7 +1099,7 @@ a {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
-  border: 2px solid #10389c;
+  /*border: 1px solid #10389c;*/
   border-left: none;
   text-indent: 10px;
   font-family: Arial-BoldMT;

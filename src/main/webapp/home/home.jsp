@@ -640,7 +640,7 @@
 			    hide(e,d){
                     if (e.path[0]&&e.path[0].outerText=='Inquiry'){
                     }else{
-                        window.location.href=d
+                        window.location.href='/'+d
                     }
                   },
 				image(v, params) {
