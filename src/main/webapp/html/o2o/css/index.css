@@ -217,7 +217,16 @@ li {
 }
 
 #linIntroduceO2O .introduceMakitCon span:hover {
-    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.15);
+    color: white;
+    background: linear-gradient(to right, rgb(113, 139, 223), rgb(159, 87, 254));
+    display: inline-block;
+    width: 207px;
+    height: 54px;
+    line-height: 54px;
+    font-size: 22px;
+    border-radius: 27px;
+    cursor: pointer;
+    text-align: center;
 }
 
 #linIntroduceO2O .introduceMakitCon .buttonr {
@@ -655,7 +664,7 @@ li {
     width: 1050px;
     font-size: 16px;
     line-height: 30px;
-    color: #71779a;
+    color: #ddd;
     margin: 0 auto;
     margin-top: 45px;
 }
@@ -702,15 +711,18 @@ li {
     background-color: white;
     border-radius: 5px;
     z-index: 100;
+    text-align: right;
 }
 
 #lhl-highClass .introduce-h2 {
     font-size: 36px;
     margin-top: 72px;
     color: #565656;
+    padding-right: 11%;
 }
 
 #lhl-highClass .introduce-text {
+	text-align: left;
     width: 436px;
     margin: 0 auto;
     font-size: 14px;
@@ -722,6 +734,7 @@ li {
     margin: 20px auto 35px;
     width: 120px;
     border: 1px solid #dddddd;
+    margin-left: 67%;
 }
 
 /* 鞋款分类wrap */
@@ -745,7 +758,6 @@ li {
     margin: 40px auto;
     padding: 50px 60px 53px;
     color: #232323;
-    font-family: ArialMT;
     font-size: 14px;
     border-radius: 3px;
     border: solid 1px #ddd;
@@ -939,7 +951,16 @@ li {
 }
 
 #o2otop .o2otopcon .smallspan:hover{
-    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.15);
+    color: white;
+    background: linear-gradient(to right, rgb(113, 139, 223), rgb(159, 87, 254));
+    display: inline-block;
+    width: 207px;
+    height: 54px;
+    line-height: 54px;
+    font-size: 22px;
+    border-radius: 27px;
+    cursor: pointer;
+    text-align: center;
 }
 
 #o2otop .o2otopcon .district{

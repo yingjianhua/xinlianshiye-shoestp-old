@@ -2,7 +2,20 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <jsp:include page="v3/header.jsp"/>
 <link rel="stylesheet" href="/home/v3/static/css/productList.css">
-
+<style>
+    	#o2otop .o2otopcon  a:nth-of-type(4) .smallspan{
+		    color: white;
+		    background: linear-gradient(to right, rgb(113, 139, 223), rgb(159, 87, 254));
+		    display: inline-block;
+		    width: 207px;
+		    height: 54px;
+		    line-height: 54px;
+		    font-size: 22px;
+		    border-radius: 27px;
+		    cursor: pointer;
+		    text-align: center;
+		}
+    </style>
 <body>
 <jsp:include page="v3/nav.jsp"></jsp:include>
 <div id="new_navs">
@@ -216,8 +229,8 @@
     <index-bottom></index-bottom>
 </div>
 
-
-<script src="/home/v3/static/js/index-bottom.js"></script>
+<script src="/html/o2o/components/O2O-top.js"></script>
+<script src="/html/o2o/components/O2O-bottom.js"></script>
 
 <script>
 	  function getParams(name, defaultValue) {
@@ -325,6 +338,7 @@
 						o2oAddress:this.selestore,
 						orderfld:getParams("orderfld","NONE"),
 						lose:this.lose,
+						IsO2o:1,
                     }
                 })
                     .then((res) => {

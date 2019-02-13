@@ -659,13 +659,11 @@
     }
 </script>
 <!-- End of LiveChat code -->
+<script src="/home/v3/static/js/index-top.js"></script>
 <script>
     new Vue({
         el:"#main"
     })
 </script>
-<script src="/home/v3/static/js/index-top.js"></script>
-
 </body>
-
 </html>

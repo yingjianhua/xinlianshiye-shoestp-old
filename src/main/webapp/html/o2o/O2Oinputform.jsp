@@ -5,6 +5,22 @@
     <!-- index为以上几个合并后的压缩文件 - 加前缀 -->
     <link rel="stylesheet" href="./css/element-ui/element-ui.css"/>
     <link rel="stylesheet" href="./css/index.css"/>
+    <style>
+    	#o2otop .o2otopcon  a:nth-of-type(3) .smallspan{
+		    color: white;
+		    background: linear-gradient(to right, rgb(113, 139, 223), rgb(159, 87, 254));
+		    display: inline-block;
+		    width: 207px;
+		    height: 54px;
+		    line-height: 54px;
+		    font-size: 22px;
+		    border-radius: 27px;
+		    cursor: pointer;
+		    text-align: center;
+		}
+    </style>
+    
+    
 <jsp:include page="/home/v3/nav.jsp"></jsp:include>
 
 <div id="o2oinputform" style="background: #F5F5F5">
@@ -17,7 +33,7 @@
                 Registration Form
             </div>
         </h3>
-
+        <h3 class="form-title" style="font-family:Arial; font-size: 16px;margin-bottom: 15px;font-weight: bold">Basic Information</h3>
         <div class="form-body">
             <!-- 第一行 -->
             <el-row :gutter="20">
@@ -37,9 +53,9 @@
                     </el-select>
                 </el-col>
                 <el-col :span="8">
-                    <el-select v-model="form.country" placeholder="Country" size="medium">
+                    <el-select v-model="form.country" placeholder="Country" size="medium" :filter-method="filterCountry" filterable>
                         <el-option
-                            v-for="item in contoryoptions"
+                            v-for="item in contoryfilteroptions"
                             :key="item.id"
                             :label="item.name"
                             :value="item.id">
@@ -55,7 +71,10 @@
                 <el-col :span="8">
                     <el-input v-model="form.email" placeholder="Email" size="medium"></el-input>
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="2"  style="padding-right:unset">
+                    <el-input v-model="form.countryCode" placeholder="Code" size="medium"></el-input>
+                </el-col>
+                <el-col :span="6">
                     <el-input v-model="form.telphone" placeholder="Phone Number" size="medium"></el-input>
                 </el-col>
             </el-row>
@@ -160,8 +179,7 @@
             </span>
     </el-dialog>
 </div>
-<script src="components/O2O-top.js"></script>
-<script src="components/O2O-bottom.js"></script>
+
 <script>
     new Vue({
         el: "#o2oinputform",
@@ -173,6 +191,7 @@
                     gender: "",
                     country: "",
                     email: "",
+                    countryCode:"",
                     telphone:"",
                     Collections: [],
 
@@ -188,8 +207,8 @@
 
                 sexoptions: [
                     {
-                    value: 1,
-                    label: "Men",
+                        value: 1,
+                        label: "Men",
                     },
                     {
                         value: 2,
@@ -210,6 +229,7 @@
                         label: "Child",
                     }
                 ],
+                contoryfilteroptions:[],
                 marketingoptions: [
                     {
                         value: 1,
@@ -331,14 +351,11 @@
                 var self = this
                 axios.get('/home/plt_PltCountry_list').then(function (res) {
                     self.$set(self, 'contoryoptions', res.data.result)
+                    self.$set(self, 'contoryfilteroptions', res.data.result)
                 })
             },
             getCategoriesList: function () {
                 var self = this;
-                // 接口不通时的数据测试测试
-                // var data = this.testdata.result;
-                // this.$set(this, 'checkboxdata', data)
-                // console.log(this.checkboxdata)
                 axios.get('/home/pdt_PdtProduct_gtProductsIndexCategoriesListAjax'
                 ).then(function (res) {
                     if (res.data.ret == 1) {
@@ -358,6 +375,7 @@
             regTest:function(name,value){
                 let regEmail = /.+@[a-z0-9\.]+\.(com|cn|net)$/;
                 let regTel = /[0-9]{6,}/;
+                let regCode = /[0-9]+/;
                 if(!value || value.length == 0){
                     this.showerrmesssage( name+' can not be empty');
                     return false;
@@ -367,60 +385,76 @@
                 }else if( name == 'telphone' && !regTel.test(value) ){
                     this.showerrmesssage( name+' format error');
                     return false;
+                }else if( name == 'countryCode' && !regCode.test(value) ){
+                    this.showerrmesssage( name+' format error');
+                    return false;
                 }else {
                     return true;
                 }
             },
+            filterCountry:function(val){
+                var reg =new RegExp("^" + val,"i")
+                if (!val){
+                   this.$set(this,'contoryfilteroptions',this.contoryoptions)
+                }else{
+                    let option = [];
+                    let k = 0;
+                    for (let i  in this.contoryoptions){
+                        if (reg.test(this.contoryoptions[i].name)){
+                            option[k] = this.contoryoptions[i];
+                            k++;
+                        }
+                    }
+                    this.$set(this,'contoryfilteroptions',option)
+                }
+            },
             submit: function () {
-                    // console.log(id)
-                    // if (!isLogin) {
-                    //     user_obj.set_form_sign_in('', window.location.href, 1);
-                    //     return
-                    // } else {
-                        for(let i in this.form){
-                            if(!this.regTest(i,this.form[i])){
-                                return false;
-                            }
-                        }
-                        console.log('form表单数据',this.form)
-                        let data={};
-                        for(let i in this.form){
-                            data[i]=this.form[i]
-                            if(Object.prototype.toString.call(data[i])  === '[object Array]'){
-                                data[i]=data[i].join(',')
-                            }
-                        }
-                        data.activityId = this.getquery('activityId',1);
-                        console.log('data中的数据',data)
-                        let self= this;
-                        axios.post('/home/o2o_O2oRegistration_apply',
-                            Qs.stringify({
-                                'view.fullName': data.fullName,
-                                'view.gender': data.gender,
-                                'view.country': data.country,
-                                'view.email': data.email,
-                                'view.telphone':data.telphone,
-                                'view.footwear': data.Collections,
-                                'view.marketing': data.marketing,
-                                'view.buyertype': data.buyerType,
-                                'view.exhibitionCountry': data.exhibitionCountry,
-                                'view.remarks': data.remarks,
-                                'view.activityId': data.activityId
-                            })
-                        ).then(function (res) {
-                            if(res.data.ret == 1){
-                                self.showerrmesssage('Submit success');
-                                setTimeout(function () {
-                                    window.location.reload();
-                                },3000)
-                            }else{
-                                self.showerrmesssage(res.data.msg)
-                            }
-                        })
-                    // }
+                for(let i in this.form){
+                    if(!this.regTest(i,this.form[i])){
+                        return false;
+                    }
+                }
+                console.log('form表单数据',this.form)
+                let data={};
+                for(let i in this.form){
+                    data[i]=this.form[i]
+                    if(Object.prototype.toString.call(data[i])  === '[object Array]'){
+                        data[i]=data[i].join(',')
+                    }
+                }
+                data.activityId = this.getquery('activityId',1);
+                console.log('data中的数据',data)
+                let self= this;
+                axios.post('/home/o2o_O2oRegistration_apply',
+                    Qs.stringify({
+                        'view.fullName': data.fullName,
+                        'view.gender': data.gender,
+                        'view.country': data.country,
+                        'view.email': data.email,
+                        'view.telphone':"00" + data.countryCode + "+" + data.telphone,
+                        'view.footwear': data.Collections,
+                        'view.marketing': data.marketing,
+                        'view.buyertype': data.buyerType,
+                        'view.exhibitionCountry': data.exhibitionCountry,
+                        'view.remarks': data.remarks,
+                        'view.activityId': data.activityId
+                    })
+                ).then(function (res) {
+                    if(res.data.ret == 1){
+                        self.showerrmesssage('Submit success');
+                        setTimeout(function () {
+                            window.location.reload();
+                        },3000)
+                    }else{
+                        self.showerrmesssage(res.data.msg)
+                    }
+                })
             }
         }
     })
 </script>
+<script src="components/O2O-top.js"></script>
+<script src="components/O2O-bottom.js"></script>
+
 </body>
 </html>

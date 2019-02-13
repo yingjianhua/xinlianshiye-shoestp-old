@@ -103,6 +103,17 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
         setResult("/home/products.jsp");
         return HomeAction.TRENDS;
     }
+    
+    /***
+     * 转发页面到产品列表
+     * O2O商品列表页
+     * @param
+     * @return
+     */
+    public String o2oList() throws Exception {
+        setResult("/home/products-o2o.jsp");
+        return HomeAction.TRENDS;
+    }
 
     private boolean _order;
     private String _price;
