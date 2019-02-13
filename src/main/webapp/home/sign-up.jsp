@@ -242,7 +242,7 @@
             </dl>
             <div class="row">
 
-                <button class="signbtn signup form_button_bg" type="button" id="regButton" style="background-color: #DDDDDD" disabled><s:text
+                <button class="signbtn signup form_button_bg" type="button" id="regButton" style="background-color: #DDDDDD;border-color: #DDDDDD " disabled><s:text
                         name="createAccount"/></button>
             </div>
         </form>
@@ -318,9 +318,12 @@
         if(booleans.checked){
             $("#regButton").attr("disabled",false);
             $("#regButton").css("background-color","#005AB0")
+            $("#regButton").css(" border-color","#005AB0")
+
 
         }else{
             $("#regButton").attr("disabled",true);
+            $("#regButton").css(" border-color","#DDDDDD")
             $("#regButton").css("background-color","#DDDDDD")
         }
     })
