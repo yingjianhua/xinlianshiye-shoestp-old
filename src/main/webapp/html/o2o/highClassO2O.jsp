@@ -53,13 +53,13 @@
                             <img src="images/operate_img01.png" alt="">
                         </el-carousel-item>
                         <el-carousel-item>
-                            <img src="images/operate_img01.png" alt="">
+                            <img src="images/operate_img02.png" alt="">
                         </el-carousel-item>
                         <el-carousel-item>
-                            <img src="images/operate_img01.png" alt="">
+                            <img src="images/operate_img03.png" alt="">
                         </el-carousel-item>
                         <el-carousel-item>
-                            <img src="images/operate_img01.png" alt="">
+                            <img src="images/operate_img04.png" alt="">
                         </el-carousel-item>
                     </el-carousel>
                 </div>
