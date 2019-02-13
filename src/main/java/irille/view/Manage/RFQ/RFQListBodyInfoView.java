@@ -16,7 +16,7 @@ import java.util.Date;
 public class RFQListBodyInfoView implements BaseView {
     private int id;
     private String title;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm",timezone="GMT+8")
     private Date create_date;
     private int left_count;
     private boolean inquiry;
