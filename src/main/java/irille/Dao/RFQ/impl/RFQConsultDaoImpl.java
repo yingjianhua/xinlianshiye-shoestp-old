@@ -446,6 +446,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 RFQConsult.T.TITLE,
                 RFQConsult.T.CONTENT,
                 RFQConsult.T.IMAGE,
+                RFQConsult.T.CURRENCY,
                 RFQConsult.T.QUANTITY,
                 RFQConsult.T.PAY_TYPE,
                 RFQConsult.T.PRICE,
