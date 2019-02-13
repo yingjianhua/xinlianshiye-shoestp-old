@@ -149,7 +149,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="goods-price">
-                                                            US <span>{{sysConfig.currency_symbol}}  {{goods.price}}  </span>
+                                                            US <span>{{sysConfig.currency_symbol}} {{goods.price}}  </span>
                                                         </div>
                                                         <div class="min-order">
                                                             Min.Order:{{goods.min_order}} pairs
@@ -171,7 +171,7 @@
 															</div>
 														</a>
 														<div class="goods-price">
-															US <span>{{sysConfig.currency_symbol}} {{goods.price}}</span>
+															US <span>{{sysConfig.currency_symbol}}{{goods.price}}</span>
 														</div>
 														<div class="min-order">
 															Min.Order:{{goods.min_order || 0}} pairs
@@ -326,7 +326,7 @@
 								<div class="ellipsis_2" style="font-size:12px;line-height: 20px;">{{item.name}}</div>
 								<div style="font-size:18px;margin-top:10px;">
 									<span style="color: #232323;">US</span>
-									<span style="color: #e54544;">${{item.price}}</span>
+									<span style="color: #e54544;">{{sysConfig.currency_symbol}}{{item.price}}</span>
 								</div>
 								<div style="font-size:12px;">
 									Min.Order: {{item.minOrder}} pairs
@@ -376,7 +376,7 @@
 								<div class="ellipsis_2" style="font-size:12px;line-height: 20px;">{{item.name}}</div>
 								<div style="font-size:18px;margin-top:10px;">
 									<span style="color: #232323;">US</span>
-									<span style="color: #e54544;">${{item.price}}</span>
+									<span style="color: #e54544;">{{sysConfig.currency_symbol}}{{item.price}}</span>
 								</div>
 								<div style="font-size:12px;">
 									Min.Order: {{item.minOrder}} pairs
