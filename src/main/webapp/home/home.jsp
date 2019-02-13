@@ -304,7 +304,7 @@
                     <div class="product-item">
                         <div class="product-img">
                             <a :href="'/'+item.rewrite" target="_blank">
-                                <img :src="image(item.picture.split(',')[0])" alt="">
+                                <img :src="image(item.picture)" alt="">
                             </a>
                         </div>
                         <div class="product-content">
@@ -354,7 +354,7 @@
                     <div class="product-item">
                         <div class="product-img">
                             <a :href="'/'+item.rewrite" target="_blank">
-                                <img :src="image(item.picture.split(',')[0])" alt="">
+                                <img :src="image(item.picture)" alt="">
                             </a>
                         </div>
                         <div class="product-content">
