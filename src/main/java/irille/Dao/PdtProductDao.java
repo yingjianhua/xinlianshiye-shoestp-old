@@ -30,6 +30,7 @@ import irille.view.Page;
 import irille.view.pdt.PdtProductBaseInfoView;
 import irille.view.pdt.PdtProductCatView;
 import irille.view.pdt.PdtSearchView;
+import org.apache.logging.log4j.util.Strings;
 import org.json.JSONException;
 
 import javax.inject.Inject;
@@ -54,6 +55,7 @@ import static java.util.stream.Collectors.toList;
 public class PdtProductDao {
     @Inject
     private PdtProductDao pdtProductDao;
+
     /***
      * 首页新品
      *
@@ -480,17 +482,20 @@ public class PdtProductDao {
 
     public Page getProductListManage(String name, String number, Integer supplierId, int cat, int start, int limit, Integer search) {
         BeanQuery q = Query
-                .SELECT(PdtProduct.T.PKEY, PdtProduct.T.NAME, PdtProduct.T.CODE, PdtProduct.T.CUR_PRICE, PdtProduct.T.PICTURE, PdtProduct.T.PRODUCT_TYPE, PdtProduct.T.UPDATE_TIME,PdtProduct.T.IS_VERIFY)
+                .SELECT(PdtProduct.T.PKEY, PdtProduct.T.NAME, PdtProduct.T.CODE, PdtProduct.T.CUR_PRICE, PdtProduct.T.PICTURE, PdtProduct.T.PRODUCT_TYPE, PdtProduct.T.UPDATE_TIME, PdtProduct.T.IS_VERIFY)
                 .SELECT(PdtCat.T.NAME, "category")
                 .SELECT(UsrProductCategory.T.NAME, "categoryDiy")
                 .FROM(PdtProduct.class)
                 .LEFT_JOIN(PdtCat.class, PdtProduct.T.CATEGORY, PdtCat.T.PKEY)
                 .LEFT_JOIN(UsrProductCategory.class, PdtProduct.T.CATEGORY_DIY, UsrProductCategory.T.PKEY)
+                .LEFT_JOIN(O2O_PrivateExpoPdt.class, O2O_PrivateExpoPdt.T.PDT_ID, PdtProduct.T.PKEY)
+                .LEFT_JOIN(O2O_Product.class, O2O_Product.T.PRODUCT_ID, PdtProduct.T.PKEY)
                 .WHERE(name != null && name.length() > 0, PdtProduct.T.NAME, "like ?", "%" + name + "%")
                 .WHERE(number != null && number.length() > 0, PdtProduct.T.CODE, "like ?", "%" + number + "%")
                 .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierId)
                 .WHERE(PdtProduct.T.PRODUCT_TYPE, " <> ?", Pdt.OProductType.GROUP.getLine().getKey())
-                .WHERE(PdtProduct.T.STATE, "<>2")
+                .WHERE(PdtProduct.T.PRODUCT_TYPE, " <> ?", Pdt.OProductType.GATHER.getLine().getKey())
+                .WHERE(PdtProduct.T.STATE, "<>?", Pdt.OState.DELETE.getLine().getKey())
                 .WHERE(PdtProduct.T.STATE, "<>?", Pdt.OState.MERCHANTDEL.getLine().getKey())
                 .WHERE(PdtProduct.T.STATE, "<>?", Pdt.OState.OFF.getLine().getKey())
                 .ORDER_BY(PdtProduct.T.UPDATE_TIME, "desc");
@@ -500,10 +505,15 @@ public class PdtProductDao {
                     q.WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.PrivateExpo.getLine().getKey());
                     break;
                 case 3:
-                    q.WHERE(PdtProduct.T.IS_VERIFY, "=?", Sys.OYn.YES.getLine().getKey());
+                    q.WHERE("(" + O2O_PrivateExpoPdt.class.getSimpleName() + "." + O2O_PrivateExpoPdt.T.VERIFY_STATUS.getFld().getCodeSqlField() +
+                                    "=? OR " + O2O_Product.class.getSimpleName() + "." + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField() + " =?)"
+                            , O2O_PrivateExpoPdtStatus.PASS.getLine().getKey(), O2O_ProductStatus.PASS.getLine().getKey());
                     break;
                 case 4:
-                    q.WHERE(PdtProduct.T.IS_VERIFY, "=?", Sys.OYn.NO.getLine().getKey());
+                    q.WHERE("(" + O2O_PrivateExpoPdt.class.getSimpleName() + "." + O2O_PrivateExpoPdt.T.VERIFY_STATUS.getFld().getCodeSqlField() +
+                                    "=? OR " + O2O_Product.class.getSimpleName() + "." + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField() +
+                                    " =?)"
+                            , O2O_PrivateExpoPdtStatus.Failed.getLine().getKey(), O2O_ProductStatus.Failed.getLine().getKey());
                     break;
             }
         }
@@ -910,7 +920,7 @@ public class PdtProductDao {
                         pkeys += cPkeys.get(i);
                     }
                 }
-                sql.WHERE(PdtProduct.T.CATEGORY, " in("+pkeys+") ");
+                sql.WHERE(PdtProduct.T.CATEGORY, " in(" + pkeys + ") ");
                 start = 0;
                 limit = 10;
             }
@@ -1007,7 +1017,9 @@ public class PdtProductDao {
                 for (O2O_Product o2opdt : copy) {
                     if (pdtPkey == o2opdt.getProductId()) {
                         System.out.println(o2opdt.getPrice());
-                        setPrice(o2opdt.getPrice());
+                        //目前o2o产品的价格字段没有用起来 ,所以暂时还是取普通产品表的价格字段
+                        setPrice(new BigDecimal(map.get(PdtProduct.T.CUR_PRICE.getFld().getCodeSqlField()).toString()));
+//                        setPrice(o2opdt.getPrice());
                         setMinOrder(o2opdt.getMinOq());
                         break;
                     }
@@ -1017,7 +1029,20 @@ public class PdtProductDao {
                 setMinOrder(Integer.parseInt(map.get(PdtProduct.T.MIN_OQ.getFld().getCodeSqlField()).toString()));
             }
 //            setPicture(map.get(PdtProduct.T.PICTURE.getFld().getCodeSqlField()).toString());
-            setPicture(GetValue.getFirstImage(GetValue.get(map, PdtProduct.T.PICTURE, String.class, "")));
+            Integer pkey1 = GetValue.get(map, "pdtPkey", Integer.class, null);
+            List<PdtSpec> specs = BeanBase.list(PdtSpec.class, PdtSpec.T.PRODUCT + "=" + pkey1, false);
+            List<String> stringList = new ArrayList<>();
+            for (PdtSpec spec : specs) {
+                String s = GetValue.getFirstImage(spec.getPics());
+                if (s.length() > 0)
+                    stringList.add(GetValue.getFirstImage(spec.getPics()));
+            }
+            if(stringList.size()>0){
+                setPicture(Strings.join(stringList, ','));
+            }else{
+                setPicture(GetValue.get(map, PdtProduct.T.PICTURE, String.class, ""));
+            }
+
             String pdtCatName = map.get("pdtCatName").toString();
             Integer gender = 0;
             if (pdtCatName.indexOf("男") != -1) {
@@ -1095,5 +1120,10 @@ public class PdtProductDao {
         return Query.SELECT(PdtProduct.class, productPkey);
     }
 
-
+    public static void main(String[] args) {
+        String ss = "66>>>>6744444";
+        System.out.println(ss.length());
+        System.out.println(ss.length() - 1);
+        System.out.println(ss.substring(11, 13));
+    }
 }

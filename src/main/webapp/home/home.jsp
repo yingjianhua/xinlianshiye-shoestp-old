@@ -74,7 +74,7 @@
                     </ul>
                 </div>
                 </a>
-                <a href="/html/SVS/svs.jsp" class="btn-see-all svs_learn_more">Learn More</a>
+                <%--<a href="/html/SVS/svs.jsp" class="btn-see-all svs_learn_more">Learn More</a>--%>
             </div>
 
             <div class="box nomr">
@@ -131,7 +131,7 @@
 
                             <div class="right-goods-out-wrap swiper-container swiper-category-list">
                                 <div class="slide-title">
-                                    <a class="fr more">More ></a>
+                                    <a class="fr more" target="_blank" href="/home/pdt_PdtProduct_o2oList">More ></a>
                                     Romanian Show Room
                                 </div>
 
@@ -149,7 +149,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="goods-price">
-                                                            US <span>{{sysConfig.currency_symbol}}  {{goods.price}}  </span>
+                                                            US <span>{{sysConfig.currency_symbol}} {{goods.price}}  </span>
                                                         </div>
                                                         <div class="min-order">
                                                             Min.Order:{{goods.min_order}} pairs
@@ -163,7 +163,7 @@
 														</a>
 													</div>
 												</div> -->
-												<div class="hover-show">
+												<div class="hover-show"  @click="hide($event,goods.rewrite)">
 													<div class="hover-text-wrap">
 														<a :href="goods.rewrite" target="_blank" class="goods-name">
 															<div class="ellipsis_2">
@@ -171,7 +171,7 @@
 															</div>
 														</a>
 														<div class="goods-price">
-															US <span>${{goods.price}}</span>
+															US <span>{{sysConfig.currency_symbol}}{{goods.price}}</span>
 														</div>
 														<div class="min-order">
 															Min.Order:{{goods.min_order || 0}} pairs
@@ -214,7 +214,7 @@
                 <div class="RFQ-list-wrap">
                     <h3 class="RFQ-title">
                         RFQ List
-                        <a class="fr more">More ></a>
+                        <%--<a class="fr more">More ></a>--%>
                     </h3>
 
                     <ul class="RFQ-list">
@@ -243,14 +243,14 @@
         <div class="section1">
             <div class="title clearfix">
                 <div class="fl clearfix">
-                    <span class="fl">CrowdFunding</span>
+                    <span class="fl">Crowdfunding</span>
                     <ul class="fl clearfix">
                         <li>Lower price in small number</li>
                         <li>Fashion Design will be published</li>
                     </ul>
                 </div>
-                <a target="_blank" href="https://www.shoestp.com/home/Activity_Romania_classifyactivity" class="fr">More
-                    ></a>
+                <%--<a target="_blank" href="https://www.shoestp.com/home/Activity_Romania_classifyactivity" class="fr">More--%>
+                    <%--></a>--%>
             </div>
             <div class="product-list clearfix">
                 <template v-for="(item, index) in CrowdFundingList" :key="index">
@@ -326,7 +326,7 @@
 								<div class="ellipsis_2" style="font-size:12px;line-height: 20px;">{{item.name}}</div>
 								<div style="font-size:18px;margin-top:10px;">
 									<span style="color: #232323;">US</span>
-									<span style="color: #e54544;">${{item.price}}</span>
+									<span style="color: #e54544;">{{sysConfig.currency_symbol}}{{item.price}}</span>
 								</div>
 								<div style="font-size:12px;">
 									Min.Order: {{item.minOrder}} pairs
@@ -376,7 +376,7 @@
 								<div class="ellipsis_2" style="font-size:12px;line-height: 20px;">{{item.name}}</div>
 								<div style="font-size:18px;margin-top:10px;">
 									<span style="color: #232323;">US</span>
-									<span style="color: #e54544;">${{item.price}}</span>
+									<span style="color: #e54544;">{{sysConfig.currency_symbol}}{{item.price}}</span>
 								</div>
 								<div style="font-size:12px;">
 									Min.Order: {{item.minOrder}} pairs
@@ -637,6 +637,12 @@
 				this.getShowRoomGoodsList();
 			},
 			methods: {
+			    hide(e,d){
+                    if (e.path[0]&&e.path[0].outerText=='Inquiry'){
+                    }else{
+                        window.location.href=d
+                    }
+                  },
 				image(v, params) {
 					if (!v) {
 						return ""
@@ -644,6 +650,10 @@
 					if (!params) {
 						params = ""
 					}
+					var t=v.split(",");
+					if (t&&t.length>0){
+					    return sysConfig.baseImageUrl + t[0] + params
+                    }
 					return sysConfig.baseImageUrl + v + params
 				},
 				getMostPopular() {
