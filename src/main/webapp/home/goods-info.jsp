@@ -31,7 +31,7 @@
     <script type="text/javascript" src="/home/static/js/qs.js"></script>
     <script type="text/javascript" src="/home/static/js/axios.min.js"></script>
 
-  <script src='/home/v2/static/js/base/element-ui.js'></script>
+    <script src='/home/v2/static/js/base/element-ui.js'></script>
     <script src="https://cdn.bootcss.com/babel-polyfill/7.2.5/polyfill.min.js"></script>
     <link rel="stylesheet" href="/home/v2/static/css/base/element-ui/element-ui.css"/>
     <link rel="stylesheet" href="/home/v2/static/css/base/foot.css"/>
@@ -741,6 +741,11 @@
             $('#shipping_cost_button').removeAttr('disabled');
         }
     });
+    $('html').on('click', '#signin_close', function () {
+        $('#signin_module').remove();
+        global_obj.div_mask(1);
+
+    })
     $.fn.extend({
         //添加购物车抛物线插件
         fly: function (t, callback) {
