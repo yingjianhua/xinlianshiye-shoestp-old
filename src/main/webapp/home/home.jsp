@@ -435,347 +435,315 @@
 <script src="/home/v3/static/js/index-top.js"></script>
 <script src="/home/v3/static/js/index-bottom.js"></script>
 <script>
-   	new Vue({
-			el: "#shoesTp",
-			data: {
-				CrowdFundingList: [{
-						url: "https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=977",
-						imgUrl: "/home/v3/static/images/goods1.jpg",
-						title: "Leather shoes male Korean version of the trend of leather shoes men's casual shoes autumn men's shoes tide",
-						salesVolume: "600",
-						percentage: "120",
-						endTime: "1"
-					},
-					{
-						url: "https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=870",
-						imgUrl: "/home/v3/static/images/goods2.jpg",
-						title: "Dingtai Boots Nice High Heel Shoes Womens Winter Boots",
-						salesVolume: "420",
-						percentage: "140",
-						endTime: "1"
-					},
-					{
-						url: "https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1145",
-						imgUrl: "/home/v3/static/images/goods3.jpg",
-						title: "Students wild winter hip hop Gaobang men's shoes high-top shoes men's Korean version of the tide shoes",
-						salesVolume: "50",
-						percentage: "10",
-						endTime: "1"
-					},
-					{
-						url:"https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1054",
-            imgUrl:"/home/v3/static/images/goods11.jpg",
-            title:"Classic Fashion Cheap Flat Shoes Men Casual",
-            salesVolume:"550",
-            percentage:"69",
-            endTime:"1"
-					},
-					// {url:"https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=845",imgUrl:"/home/v3/static/images/goods5.jpg",title:"Wholesale Summer New Design Beaches sandals Men's sandals",salesVolume:"500",percentage:"83",endTime:"1"},
-					// {url:"https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1073",imgUrl:"/home/v3/static/images/goods6.jpg",title:"Ins tide shoes men's winter old shoes Korean version of ulzzang new color matching white shoes street shooting men's shoes leather shoes",salesVolume:"300",percentage:"60",endTime:"1"},
-					// {url:"https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1143",imgUrl:"/home/v3/static/images/goods7.jpg",title:"High heels female autumn 2018 new rivet pointed 12 stiletto single shoes wild Baotou Roman sandals summer",salesVolume:"650",percentage:"81",endTime:"1"},
-					// {url:"https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1026",imgUrl:"/home/v3/static/images/goods8.jpg",title:"New Style Ballet Shoes Wholesale Women Shoes Leather Flat Shoes",salesVolume:"200",percentage:"40",endTime:"1"},
-					// {url:"https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1094",imgUrl:"/home/v3/static/images/goods9.jpg",title:"2019 summer soft composite bottom bow toe sandals Velcro",salesVolume:"600",percentage:"75",endTime:"1"},
-					// {url:"https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1133",imgUrl:"/home/v3/static/images/goods10.jpg",title:"2018 new round head British wind small shoes low heel tassel fashion shoes patent leather wild children's shoes",salesVolume:"400",percentage:"66",endTime:"1"},
-					// {url:"https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=822",imgUrl:"/home/v3/static/images/goods11.jpg",title:"Women Slippers Shoes Summer Female Fashion Shoes beach Shoes Slippers",salesVolume:"550",percentage:"110",endTime:"1"},
-					// {url:"https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1054",imgUrl:"/home/v3/static/images/goods12.jpg",title:"Classic Fashion Cheap Flat Shoes Men Casual",salesVolume:"550",percentage:"69",endTime:"1"},
-				],
-				// 林华立数据
-				newsList: [{
-					url: '/home/rfq_RFQConsult_ExpoRivaSchuhshow' +
-                        '',
-					image: '/home/v3/static/images/zh_img.png',
-					title: 'Expo Riva Schuh',
-					time: 'Jan 12-15, 2019',
-					location: 'Italy'
-				}, {
-					url: '/home/rfq_RFQConsult_exhibitionshow',
-					image: '/home/v3/static/images/zh_img2.png',
-					title: 'FOOTWEAR SOURCING AT MAGIC',
-					time: 'February 4-7, 2019',
-					location: 'Las Vegas'
-				}, {
-					url: '/home/rfq_RFQConsult_guangjiaohuishow',
-					image: '/home/v3/static/images/zh_img3.png',
-					title: 'China Import and Export Fair',
-					time: 'Apr.15-May.5, 2019',
-					location: 'Guangzhou'
-				}],
-				strength: [{
-					icon: '/home/v3/static/images/icon_our1.png',
-					title: 'Variety of suppliers at here',
-					info: ['Different type of shoes', 'Different price level', 'Different function shoes']
-				}, {
-					icon: '/home/v3/static/images/icon_our2.png',
-					title: 'The lowest price in the whole network',
-					info: ['We provide O2O-low price area to buyers', 'We pick quality shoes with price as lower as possible']
-				}, {
-					icon: '/home/v3/static/images/icon_our3.png',
-					title: 'SVS Suppliers Standard',
-					info: ['Including factors that buyers are much concerned about',
-						'Showing the performance of manufacturers objectively '
-					]
-				}, {
-					icon: '/home/v3/static/images/icon_our4.png',
-					title: 'Offer many bussiness events',
-					info: ['We could agent the three biggest exhibition;', 'We provide O2O progrom;',
-						'We have choiceness of suppliers for promting excellent manufacture'
-					]
-				}],
-				MostPopular: [], //左边数据
-				HotSale: [], //右边数据
-				// 林铁垣
-				RFQ_title: "",
-				RFQ_quantity: null,
-				chooes: "Pairs",
-				classLists: [],
-				// 徐世奇
-				showRoomGoodsList: [], // 获取展会 详情列表信息
-					showRoomPicList: [ //展会轮播 缩略图片列表
-						{
-							imgUrl: "/home/v3/static/images/show-room_01.jpg",
-						},
-						{
-							imgUrl: "/home/v3/static/images/show-room_02.jpg",
-						},
-						{
-							imgUrl: "/home/v3/static/images/show-room_03.jpg",
-						},
-						{
-							imgUrl: "/home/v3/static/images/show-room_04.jpg",
-						},
-						{
-							imgUrl: "/home/v3/static/images/show-room_05.jpg",
-						},
-						{
-							imgUrl: "/home/v3/static/images/show-room_06.jpg",
-						},
-						{
-							imgUrl: "/home/v3/static/images/show-room_07.jpg",
-						},
-						{
-							imgUrl: "/home/v3/static/images/show-room_08.jpg",
-						},
-						{
-							imgUrl: "/home/v3/static/images/show-room_09.jpg",
-						},
-						{
-							imgUrl: "/home/v3/static/images/show-room_10.jpg",
-						},
-						{
-							imgUrl: "/home/v3/static/images/show-room_11.png",
-						},
-						{
-							imgUrl: "/home/v3/static/images/show-room_12.jpg",
-						},
-						{
-							imgUrl: "/home/v3/static/images/show-room_13.jpg",
-						},
-						{
-							imgUrl: "/home/v3/static/images/show-room_14.jpg",
-						},
-						{
-							imgUrl: "/home/v3/static/images/show-room_15.jpg",
-						},
-					],
 
-					RFQList: [ //询盘列表
-						{
-							id: 1,
-							country: "Egypt",
-							country_logo: "/home/v3/static/images/flag-egypt.png",
-							title: "Do you have some sandals styles? pls kindly send me the photos.",
-							quantity: 600,
-							create_date: "03-02-2019",
-						},
-						{
-							id: 2,
-							country: "Netherlands",
-							country_logo: "/home/v3/static/images/flag-netherlands.png",
-							title: "I'm looking for some new Autumn-Winter styles,do you have？",
-							quantity: 1200,
-							create_date: "03-02-2019",
-						},
-						{
-							id: 3,
-							country: "Brazil",
-							country_logo: "/home/v3/static/images/flag-brazil.jpg",
-							title: "Do you have some sandals styles? pls kindly send me the photos.",
-							quantity: 500,
-							create_date: "03-02-2019",
-						},
-						{
-							id: 4,
-							country: "Singapore",
-							country_logo: "/home/v3/static/images/flag-singapore.jpg",
-							title: "We are looking for very cheap shoes styles, do you have?",
-							quantity: 1500,
-							create_date: "03-02-2019",
-						},
-						{
-							id: 5,
-							country: "Philippines",
-							country_logo: "/home/v3/static/images/flag-philippines.jpg",
-							title: "I want some kids boots, for girl.",
-							quantity: 800,
-							create_date: "03-02-2019",
-						},
-						{
-							id: 6,
-							country: "South Africa",
-							country_logo: "/home/v3/static/images/flag-south-africa.png",
-							title: "If my order is big, will your price become cheap? Price on your website is too high.",
-							quantity: 2000,
-							create_date: "03-02-2019",
-						},
-					],
-			},
-			mounted() {
-				this.getMostPopular();
-				this.getHotSale();
-				this.classList();
-				// 获取展会列表信息
-				this.getShowRoomGoodsList();
-			},
-			methods: {
-			    hide(e,d){
-                    if (e.path[0]&&e.path[0].outerText=='Inquiry'){
-                    }else{
-                        window.location.href='/'+d
-                    }
-                  },
-				image(v, params) {
-					if (!v) {
-						return ""
-					}
-					if (!params) {
-						params = ""
-					}
-					var t=v.split(",");
-					if (t&&t.length>0){
-					    return sysConfig.baseImageUrl + t[0] + params
-                    }
-					return sysConfig.baseImageUrl + v + params
-				},
-				getMostPopular() {
-					var self = this;
-					axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax', {
-							params: {
-								orderfld: "MostPopular",
-								order: true,
-								page: 1,
-								limit: 5,
-								cated: -1,
-								v: 3,
-							}
-						})
-						.then(function (res) {
-							console.log("getMostPopular");
-							console.log(res);
-							self.MostPopular = res.data.result.items;
-							console.log(self.MostPopular)
-						})
-						.catch(function (error) {
-							console.log(error);
-						});
-				},
-				getHotSale() {
-					var self = this;
-					axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax', {
-							params: {
-								orderfld: "Sales",
-								order: true,
-								page: 1,
-								limit: 5,
-								cated: -1,
-								v: 3,
-							}
-						})
-						.then(function (res) {
-							console.log(res);
-							self.HotSale = res.data.result.items;
-						})
-						.catch(function (error) {
-							console.log(error);
-						});
-				},
-				// 林铁垣
-				classList(e) { // 获取左边分类
-					axios.get('/home/pdt_PdtProduct_gtProductsIndexCategoriesListAjax', {
-							params: {
-								page: 1,
-								limit: 5
-							}
-						})
-						.then((res) => {
-							this.classLists = res.data.result
-						})
-						.catch((error) => {
-							console.log("err")
-							//                      this.$message.error(error);
-						});
-				},
-				chooesbtn(e) {
-					this.chooes = e.currentTarget.dataset.name
-				},
-				// 徐世奇
-					// 获取展会鞋子列表
-					getShowRoomGoodsList() {
-					// axios.get('/home/pdt_PdtProduct_getRandomPdt', {
-					axios.get('/home/o2o_O2oRegistration_o2oList', {
-							params: {
-								start: 0,
-								limit: 16 * 4
-							}
-						})
-						.then((res) => {
-							console.log("鞋子列表suc");
-							console.log(res);
-							if (res.data.ret != 1) {
-								this.$message.error(res.data.msg);
-								return
-							};
-							var shoesList = res.data.result;
-							var showRoomGoodsList = [];
-							// 将展会信息分组-循环显示 - 为了轮播
-							for (var i = 0; i < 15; i++) {
-								showRoomGoodsList.push(shoesList.splice(0, 4))
-							}
-							this.showRoomGoodsList = showRoomGoodsList;
+new Vue({
+  el: "#shoesTp",
+  data: {
+    CrowdFundingList: [{
+      url: "https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=977",
+      imgUrl: "/home/v3/static/images/goods1.jpg",
+      title: "Leather shoes male Korean version of the trend of leather shoes men's casual shoes autumn men's shoes tide",
+      salesVolume: "600",
+      percentage: "120",
+      endTime: "1"
+    }, {
+      url: "https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=870",
+      imgUrl: "/home/v3/static/images/goods2.jpg",
+      title: "Dingtai Boots Nice High Heel Shoes Womens Winter Boots",
+      salesVolume: "420",
+      percentage: "140",
+      endTime: "1"
+    }, {
+      url: "https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1145",
+      imgUrl: "/home/v3/static/images/goods3.jpg",
+      title: "Students wild winter hip hop Gaobang men's shoes high-top shoes men's Korean version of the tide shoes",
+      salesVolume: "50",
+      percentage: "10",
+      endTime: "1"
+    }, {
+      url: "https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1054",
+      imgUrl: "/home/v3/static/images/goods11.jpg",
+      title: "Classic Fashion Cheap Flat Shoes Men Casual",
+      salesVolume: "550",
+      percentage: "69",
+      endTime: "1"
+    }],
+    // 林华立数据
+    newsList: [{
+      url: '/home/rfq_RFQConsult_ExpoRivaSchuhshow' + '',
+      image: '/home/v3/static/images/zh_img.png',
+      title: 'Expo Riva Schuh',
+      time: 'Jan 12-15, 2019',
+      location: 'Italy'
+    }, {
+      url: '/home/rfq_RFQConsult_exhibitionshow',
+      image: '/home/v3/static/images/zh_img2.png',
+      title: 'FOOTWEAR SOURCING AT MAGIC',
+      time: 'February 4-7, 2019',
+      location: 'Las Vegas'
+    }, {
+      url: '/home/rfq_RFQConsult_guangjiaohuishow',
+      image: '/home/v3/static/images/zh_img3.png',
+      title: 'China Import and Export Fair',
+      time: 'Apr.15-May.5, 2019',
+      location: 'Guangzhou'
+    }],
+    strength: [{
+      icon: '/home/v3/static/images/icon_our1.png',
+      title: 'Variety of suppliers at here',
+      info: ['Different type of shoes', 'Different price level', 'Different function shoes']
+    }, {
+      icon: '/home/v3/static/images/icon_our2.png',
+      title: 'The lowest price in the whole network',
+      info: ['We provide O2O-low price area to buyers', 'We pick quality shoes with price as lower as possible']
+    }, {
+      icon: '/home/v3/static/images/icon_our3.png',
+      title: 'SVS Suppliers Standard',
+      info: ['Including factors that buyers are much concerned about', 'Showing the performance of manufacturers objectively ']
+    }, {
+      icon: '/home/v3/static/images/icon_our4.png',
+      title: 'Offer many bussiness events',
+      info: ['We could agent the three biggest exhibition;', 'We provide O2O progrom;', 'We have choiceness of suppliers for promting excellent manufacture']
+    }],
+    MostPopular: [],
+    //左边数据
+    HotSale: [],
+    //右边数据
+    // 林铁垣
+    RFQ_title: "",
+    RFQ_quantity: null,
+    chooes: "Pairs",
+    classLists: [],
+    // 徐世奇
+    showRoomGoodsList: [],
+    // 获取展会 详情列表信息
+    showRoomPicList: [//展会轮播 缩略图片列表
+    {
+      imgUrl: "/home/v3/static/images/show-room_01.jpg"
+    }, {
+      imgUrl: "/home/v3/static/images/show-room_02.jpg"
+    }, {
+      imgUrl: "/home/v3/static/images/show-room_03.jpg"
+    }, {
+      imgUrl: "/home/v3/static/images/show-room_04.jpg"
+    }, {
+      imgUrl: "/home/v3/static/images/show-room_05.jpg"
+    }, {
+      imgUrl: "/home/v3/static/images/show-room_06.jpg"
+    }, {
+      imgUrl: "/home/v3/static/images/show-room_07.jpg"
+    }, {
+      imgUrl: "/home/v3/static/images/show-room_08.jpg"
+    }, {
+      imgUrl: "/home/v3/static/images/show-room_09.jpg"
+    }, {
+      imgUrl: "/home/v3/static/images/show-room_10.jpg"
+    }, {
+      imgUrl: "/home/v3/static/images/show-room_11.png"
+    }, {
+      imgUrl: "/home/v3/static/images/show-room_12.jpg"
+    }, {
+      imgUrl: "/home/v3/static/images/show-room_13.jpg"
+    }, {
+      imgUrl: "/home/v3/static/images/show-room_14.jpg"
+    }, {
+      imgUrl: "/home/v3/static/images/show-room_15.jpg"
+    }],
+    RFQList: [//询盘列表
+    {
+      id: 1,
+      country: "Egypt",
+      country_logo: "/home/v3/static/images/flag-egypt.png",
+      title: "Do you have some sandals styles? pls kindly send me the photos.",
+      quantity: 600,
+      create_date: "03-02-2019"
+    }, {
+      id: 2,
+      country: "Netherlands",
+      country_logo: "/home/v3/static/images/flag-netherlands.png",
+      title: "I'm looking for some new Autumn-Winter styles,do you have？",
+      quantity: 1200,
+      create_date: "03-02-2019"
+    }, {
+      id: 3,
+      country: "Brazil",
+      country_logo: "/home/v3/static/images/flag-brazil.jpg",
+      title: "Do you have some sandals styles? pls kindly send me the photos.",
+      quantity: 500,
+      create_date: "03-02-2019"
+    }, {
+      id: 4,
+      country: "Singapore",
+      country_logo: "/home/v3/static/images/flag-singapore.jpg",
+      title: "We are looking for very cheap shoes styles, do you have?",
+      quantity: 1500,
+      create_date: "03-02-2019"
+    }, {
+      id: 5,
+      country: "Philippines",
+      country_logo: "/home/v3/static/images/flag-philippines.jpg",
+      title: "I want some kids boots, for girl.",
+      quantity: 800,
+      create_date: "03-02-2019"
+    }, {
+      id: 6,
+      country: "South Africa",
+      country_logo: "/home/v3/static/images/flag-south-africa.png",
+      title: "If my order is big, will your price become cheap? Price on your website is too high.",
+      quantity: 2000,
+      create_date: "03-02-2019"
+    }]
+  },
+  mounted: function mounted() {
+    this.getMostPopular();
+    this.getHotSale();
+    this.classList(); // 获取展会列表信息
 
-							this.$nextTick(() => {
-								this.galleryThumbs = new Swiper('#xsq .gallery-thumbs', {
-									spaceBetween: 10,
-									slidesPerView: 7,
-									loop: true,
-									freeMode: true,
-									// loopedSlides: 1, //looped slides should be the same
-									watchSlidesVisibility: true,
-									watchSlidesProgress: true,
-								});
+    this.getShowRoomGoodsList();
+  },
+  methods: {
+    hide: function hide(e, d) {
+      if (e.target && e.target._prevClass && e.target._prevClass != 'btn-inquiry btn-blue') {
+        window.location.href = '/' + d;
+      } else if (e.path && !e.path[0] && e.path[0].outerText != 'Inquiry') {
+        window.location.href = '/' + d;
+      }
+    },
+    image: function image(v, params) {
+      if (!v) {
+        return "";
+      }
 
+      if (!params) {
+        params = "";
+      }
 
-								this.goodsCategorySwiper = new Swiper('#xsq .swiper-category-list', {
-									spaceBetween: 10,
-									speed: 1000,
-									loop: true,
-									// loopedSlides: 1, //looped slides should be the same
-									navigation: {
-										nextEl: '.swiper-button-next',
-										prevEl: '.swiper-button-prev',
-									},
-									thumbs: {
-										swiper: this.galleryThumbs,
-									},
-								});
-							})
+      var t = v.split(",");
 
-						})
-						.catch((error) => {
-							console.log(error);
-						});
-				},
-			}
-		})
+      if (t && t.length > 0) {
+        return sysConfig.baseImageUrl + t[0] + params;
+      }
+
+      return sysConfig.baseImageUrl + v + params;
+    },
+    getMostPopular: function getMostPopular() {
+      var self = this;
+      axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax', {
+        params: {
+          orderfld: "MostPopular",
+          order: true,
+          page: 1,
+          limit: 5,
+          cated: -1,
+          v: 3
+        }
+      }).then(function (res) {
+        console.log("getMostPopular");
+        console.log(res);
+        self.MostPopular = res.data.result.items;
+        console.log(self.MostPopular);
+      }).catch(function (error) {
+        console.log(error);
+      });
+    },
+    getHotSale: function getHotSale() {
+      var self = this;
+      axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax', {
+        params: {
+          orderfld: "Sales",
+          order: true,
+          page: 1,
+          limit: 5,
+          cated: -1,
+          v: 3
+        }
+      }).then(function (res) {
+        console.log(res);
+        self.HotSale = res.data.result.items;
+      }).catch(function (error) {
+        console.log(error);
+      });
+    },
+    // 林铁垣
+    classList: function classList(e) {
+      var _this = this;
+
+      // 获取左边分类
+      axios.get('/home/pdt_PdtProduct_gtProductsIndexCategoriesListAjax', {
+        params: {
+          page: 1,
+          limit: 5
+        }
+      }).then(function (res) {
+        _this.classLists = res.data.result;
+      }).catch(function (error) {
+        console.log("err"); //                      this.$message.error(error);
+      });
+    },
+    chooesbtn: function chooesbtn(e) {
+      this.chooes = e.currentTarget.dataset.name;
+    },
+    // 徐世奇
+    // 获取展会鞋子列表
+    getShowRoomGoodsList: function getShowRoomGoodsList() {
+      var _this2 = this;
+
+      // axios.get('/home/pdt_PdtProduct_getRandomPdt', {
+      axios.get('/home/o2o_O2oRegistration_o2oList', {
+        params: {
+          start: 0,
+          limit: 16 * 4
+        }
+      }).then(function (res) {
+        console.log("鞋子列表suc");
+        console.log(res);
+
+        if (res.data.ret != 1) {
+          _this2.$message.error(res.data.msg);
+
+          return;
+        }
+
+        ;
+        var shoesList = res.data.result;
+        var showRoomGoodsList = []; // 将展会信息分组-循环显示 - 为了轮播
+
+        for (var i = 0; i < 15; i++) {
+          showRoomGoodsList.push(shoesList.splice(0, 4));
+        }
+
+        _this2.showRoomGoodsList = showRoomGoodsList;
+
+        _this2.$nextTick(function () {
+          _this2.galleryThumbs = new Swiper('#xsq .gallery-thumbs', {
+            spaceBetween: 10,
+            slidesPerView: 7,
+            loop: true,
+            freeMode: true,
+            // loopedSlides: 1, //looped slides should be the same
+            watchSlidesVisibility: true,
+            watchSlidesProgress: true
+          });
+          _this2.goodsCategorySwiper = new Swiper('#xsq .swiper-category-list', {
+            spaceBetween: 10,
+            speed: 1000,
+            loop: true,
+            // loopedSlides: 1, //looped slides should be the same
+            navigation: {
+              nextEl: '.swiper-button-next',
+              prevEl: '.swiper-button-prev'
+            },
+            thumbs: {
+              swiper: _this2.galleryThumbs
+            }
+          });
+        });
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
+  }
+});
 
 
 </script>
