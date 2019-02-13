@@ -163,7 +163,7 @@
 														</a>
 													</div>
 												</div> -->
-												<div class="hover-show">
+												<div class="hover-show"  @click="hide($event,goods.rewrite)" style="cursor: pointer;">
 													<div class="hover-text-wrap">
 														<a :href="goods.rewrite" target="_blank" class="goods-name">
 															<div class="ellipsis_2">
@@ -304,7 +304,7 @@
                     <div class="product-item">
                         <div class="product-img">
                             <a :href="'/'+item.rewrite" target="_blank">
-                                <img :src="image(item.picture.split(',')[0])" alt="">
+                                <img :src="image(item.picture)" alt="">
                             </a>
                         </div>
                         <div class="product-content">
@@ -321,7 +321,7 @@
                                 Min.Order: {{item.minOrder}} pairs
                             </div>
                         </div>
-                        <div class="inquiry-btn">
+                        <div class="inquiry-btn"  @click="hide($event,item.rewrite)" style="cursor: pointer;">
 							<a :href="'/'+item.rewrite" target="_blank" style="color:#666;text-align: left;">
 								<div class="ellipsis_2" style="font-size:12px;line-height: 20px;">{{item.name}}</div>
 								<div style="font-size:18px;margin-top:10px;">
@@ -354,7 +354,7 @@
                     <div class="product-item">
                         <div class="product-img">
                             <a :href="'/'+item.rewrite" target="_blank">
-                                <img :src="image(item.picture.split(',')[0])" alt="">
+                                <img :src="image(item.picture)" alt="">
                             </a>
                         </div>
                         <div class="product-content">
@@ -371,7 +371,7 @@
                                 Min.Order: {{item.minOrder}} pairs
                             </div>
                         </div>
-                        <div class="inquiry-btn">
+                        <div class="inquiry-btn"  @click="hide($event,item.rewrite)" style="cursor: pointer;">
 							<a :href="'/'+item.rewrite" target="_blank" style="color:#666;text-align: left;">
 								<div class="ellipsis_2" style="font-size:12px;line-height: 20px;">{{item.name}}</div>
 								<div style="font-size:18px;margin-top:10px;">
@@ -637,6 +637,12 @@
 				this.getShowRoomGoodsList();
 			},
 			methods: {
+			    hide(e,d){
+                    if (e.path[0]&&e.path[0].outerText=='Inquiry'){
+                    }else{
+                        window.location.href=d
+                    }
+                  },
 				image(v, params) {
 					if (!v) {
 						return ""
@@ -644,6 +650,10 @@
 					if (!params) {
 						params = ""
 					}
+					var t=v.split(",");
+					if (t&&t.length>0){
+					    return sysConfig.baseImageUrl + t[0] + params
+                    }
 					return sysConfig.baseImageUrl + v + params
 				},
 				getMostPopular() {
