@@ -70,8 +70,6 @@ public class PdtProductManageServiceImp implements IPdtProductManageService {
         pdtProduct.setSupplier(supId);
         pdtProduct.setPkey(pdtProductSaveView.getId());
         pdtProduct.setName(objectMapper.writeValueAsString(pdtProductSaveView.getPdtName()));
-        //审核通过
-        pdtProduct.stIsVerify(true);
         //产品分类
         pdtProduct.setCategory(pdtProductSaveView.getProductCat());
         //店铺分类
@@ -104,7 +102,15 @@ public class PdtProductManageServiceImp implements IPdtProductManageService {
                 .collect(Collectors.joining(",")));
         pdtProduct.setSizeAttr(pdtProductSaveView.getSpecSize().stream().map(String::valueOf)
                 .collect(Collectors.joining(",")));
-        pdtProduct.stState(pdtProductSaveView.isState() ? Pdt.OState.ON : Pdt.OState.OFF);
+//        pdtProduct.stState(pdtProductSaveView.isState() ? Pdt.OState.ON : Pdt.OState.OFF);
+        if (pdtProductSaveView.getWarehouse() == 0) {
+            pdtProduct.setState(Pdt.OState.OFF.getLine().getKey());
+            pdtProduct.setIsVerify(Sys.OYn.NO.getLine().getKey());
+        } else {
+            //审核通过
+            pdtProduct.setState(Pdt.OState.ON.getLine().getKey());
+            pdtProduct.setIsVerify(Sys.OYn.YES.getLine().getKey());
+        }
         pdtProduct.stSoldInTime(pdtProductSaveView.isSoldInStatus());
         if (pdtProductSaveView.isSoldInStatus()) {
             if (pdtProductSaveView.getSoldInTime() == null) {
@@ -219,7 +225,11 @@ public class PdtProductManageServiceImp implements IPdtProductManageService {
                 o2o_privateExpoPdt.setPdtId(pdt.getPkey());
                 o2o_privateExpoPdt.setPrice(pdt.getCurPrice());
                 o2o_privateExpoPdt.setMinOq(pdt.getMinOq());
-                o2o_privateExpoPdt.setStatus(O2O_PrivateExpoPdtStatus.ON.getLine().getKey());
+                if (pdtProductSaveView.getWarehouse() == 0) {
+                    o2o_privateExpoPdt.setStatus(O2O_PrivateExpoPdtStatus.OFF.getLine().getKey());
+                } else {
+                    o2o_privateExpoPdt.setStatus(O2O_PrivateExpoPdtStatus.ON.getLine().getKey());
+                }
                 o2o_privateExpoPdt.setVerifyStatus(O2O_PrivateExpoPdtStatus._DEFAULT.getLine().getKey());
                 o2o_privateExpoPdt.setCreateTime(Env.getTranBeginTime());
                 o2o_privateExpoPdt.upd();
@@ -228,15 +238,19 @@ public class PdtProductManageServiceImp implements IPdtProductManageService {
                 privateExpoPdt.setPdtId(pdt.getPkey());
                 privateExpoPdt.setPrice(pdt.getCurPrice());
                 privateExpoPdt.setMinOq(pdt.getMinOq());
-                privateExpoPdt.setStatus(O2O_PrivateExpoPdtStatus.ON.getLine().getKey());
+                if (pdtProductSaveView.getWarehouse() == 0) {
+                    privateExpoPdt.setStatus(O2O_PrivateExpoPdtStatus.OFF.getLine().getKey());
+                } else {
+                    privateExpoPdt.setStatus(O2O_PrivateExpoPdtStatus.ON.getLine().getKey());
+                }
                 privateExpoPdt.setVerifyStatus(O2O_PrivateExpoPdtStatus._DEFAULT.getLine().getKey());
                 privateExpoPdt.setCreateTime(Env.getTranBeginTime());
                 privateExpoPdt.ins();
             }
         }
-        if(pdtProductSaveView.getRadio() == 0){
+        if (pdtProductSaveView.getRadio() == 0) {
             O2O_PrivateExpoPdt o2o_privateExpoPdt = O2O_PrivateExpoPdt.chkUniquePdt_Id(false, pdt.getPkey());
-            if(o2o_privateExpoPdt!=null){
+            if (o2o_privateExpoPdt != null) {
                 o2o_privateExpoPdt.del();
             }
         }
