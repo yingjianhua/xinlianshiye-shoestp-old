@@ -1,8 +1,12 @@
 package irille.shop.plt;
 
+import irille.core.sys.Sys;
+import irille.platform.plt.View.CurrencysView;
+import irille.platform.plt.View.PltErateView;
 import irille.pub.Log;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.BeanBase;
+import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduIns;
 import irille.pub.idu.IduOther;
 import irille.pub.idu.IduUpd;
@@ -16,14 +20,18 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-public class PltErateDAO {
+public class
+
+
+PltErateDAO {
     public static final Log LOG = new Log(PltErateDAO.class);
 
     public static class InsInit extends IduOther<InsInit, PltErate> {
         private List<PltErate> list;
 
-        public static PltErate build(String logo, String curName, String symbol, Boolean enabled, Boolean siteCur, BigDecimal rate, Boolean supCur, BigDecimal nowrate) {
+        public static PltErate build(String logo, String curName, String symbol, Boolean enabled, Boolean siteCur, BigDecimal rate, Boolean supCur, BigDecimal nowrate, Integer userpkey) {
             PltErate e = new PltErate();
             e.setLogo(logo);
             e.setCurName(curName);
@@ -33,7 +41,7 @@ public class PltErateDAO {
             e.setRate(rate);
             e.stSupCur(supCur);
             e.setNowrate(nowrate);
-            e.setCreatedBy(getUser().getPkey());
+            e.setCreatedBy(userpkey);
             e.setCreatedTime(Env.getTranBeginTime());
             e.setRowVersion((short) 0);
             return e;
@@ -165,8 +173,8 @@ public class PltErateDAO {
 
         @Override
         public void valid() {
-            FormValid().validNotEmpty(PltErate.T.SYMBOL, PltErate.T.CUR_NAME);
-            numberValid().validBigDecimalPositive(PltErate.T.RATE, PltErate.T.NOWRATE);
+            FormValid().validNotEmpty(T.SYMBOL, T.CUR_NAME);
+            numberValid().validBigDecimalPositive(T.RATE, T.NOWRATE);
             super.valid();
         }
     }
@@ -176,7 +184,7 @@ public class PltErateDAO {
         public void before() {
             super.before();
             PltErate model = loadThisBeanAndLock();
-            PropertyUtils.copyPropertiesWithout(model, getB(), PltErate.T.PKEY, PltErate.T.ENABLED, T.SITE_CUR, T.SUP_CUR, T.CREATED_BY);
+            PropertyUtils.copyPropertiesWithout(model, getB(), T.PKEY, T.ENABLED, T.SITE_CUR, T.SUP_CUR, T.CREATED_BY);
             model.setCreatedTime(Env.getTranBeginTime());
             setB(model);
             getB().setNowrate(getB().getRate().divide(Query.supDefCurrency().getRate(), 4, RoundingMode.HALF_UP));
@@ -184,8 +192,8 @@ public class PltErateDAO {
 
         @Override
         public void valid() {
-            FormValid().validNotEmpty(PltErate.T.SYMBOL, PltErate.T.CUR_NAME);
-            numberValid().validBigDecimalPositive(PltErate.T.RATE, PltErate.T.NOWRATE);
+            FormValid().validNotEmpty(T.SYMBOL, T.CUR_NAME);
+            numberValid().validBigDecimalPositive(T.RATE, T.NOWRATE);
             super.valid();
         }
     }
@@ -199,7 +207,7 @@ public class PltErateDAO {
         @Override
         public void run() {
             super.run();
-            PltErate bean = getB();
+            PltErate bean = loadThisBeanAndLock();
             bean.stEnabled(true);
             bean.stSiteCur(true);
             bean.upd();
@@ -217,6 +225,14 @@ public class PltErateDAO {
             super.after();
             Query.clearBuffer();
         }
+
+        @Override
+        public void before() {
+        }
+
+        @Override
+        public void valid() {
+        }
     }
 
     /**
@@ -228,7 +244,7 @@ public class PltErateDAO {
         @Override
         public void run() {
             super.run();
-            PltErate bean = getB();
+            PltErate bean = loadThisBeanAndLock();
             bean.stEnabled(true);
             bean.stSupCur(true);
             bean.setNowrate(BigDecimal.ONE);
@@ -244,10 +260,145 @@ public class PltErateDAO {
         }
 
         @Override
+        public void before() {
+        }
+
+        @Override
+        public void valid() {
+        }
+
+        @Override
         public void after() {
             super.after();
             Query.clearBuffer();
         }
     }
 
+    //汇率 列表
+    public static List<PltErateView> list() {
+        SQL sql = new SQL() {{
+            SELECT(PltErate.class).FROM(PltErate.class);
+        }};
+        List<PltErateView> list = irille.pub.bean.Query.sql(sql).queryMaps().stream().map(bean -> new PltErateView() {{
+            setId((Integer) bean.get(T.PKEY.getFld().getCodeSqlField()));
+            setLogo((String) bean.get(T.LOGO.getFld().getCodeSqlField()));
+            setCurname((String) bean.get(T.CUR_NAME.getFld().getCodeSqlField()));
+            setSymbol((String) bean.get(T.SYMBOL.getFld().getCodeSqlField()));
+            System.out.println();
+            setEnabled(Integer.valueOf(bean.get(T.ENABLED.getFld().getCodeSqlField()).toString()) == 1 ? true : false);
+            setSitecur(Integer.valueOf(bean.get(T.SITE_CUR.getFld().getCodeSqlField()).toString()) == 1 ? true : false);
+            setRate((BigDecimal) bean.get(T.RATE.getFld().getCodeSqlField()));
+            setSupcur(Integer.valueOf(bean.get(T.SUP_CUR.getFld().getCodeSqlField()).toString()) == 1 ? true : false);
+            setNowrate((BigDecimal) bean.get(T.NOWRATE.getFld().getCodeSqlField()));
+        }}).collect(Collectors.toList());
+        return list;
+    }
+
+
+    public static class enabled extends IduOther<enabled, PltErate> {
+        @Override
+        public void run() {
+            getB().setEnabled(getB().getEnabled());
+            PltErate pe = loadThisBeanAndLock();
+            if (getB().gtEnabled() == false) {
+                getB().stSiteCur(false);
+                getB().stSupCur(false);
+                PropertyUtils.copyProperties(pe, getB(), T.ENABLED, T.SUP_CUR, T.SITE_CUR);
+            } else {
+                PropertyUtils.copyProperties(pe, getB(), T.ENABLED);
+            }
+            pe.upd();
+            int enablie = 0;
+            int cur = 0;
+            int bcde = 0;
+            for (PltErate line : PltErate.list(PltErate.class, null, false)) {
+                if (line.gtEnabled()) {
+                    enablie += 1;
+                }
+                if (line.gtSiteCur()) {
+                    cur += 1;
+                }
+                if (line.gtSupCur()) {
+                    bcde += 1;
+                }
+            }
+            if (enablie == 0) {
+                throw LOG.err("", "至少要有一个启用的汇率货币");
+            }
+            if (cur == 0) {
+                throw LOG.err("", "至少要有一个启用的网站默认货币");
+            }
+            if (bcde == 0) {
+                throw LOG.err("", "至少要有一个启用的商家默认货币");
+            }
+            super.run();
+        }
+
+        @Override
+        public void before() {
+        }
+
+        @Override
+        public void valid() {
+        }
+
+    }
+
+    //获取当前网站默认货币的美元兑换汇率
+    public static BigDecimal getrate() {
+        SQL sql = new SQL() {{
+            SELECT(T.RATE).FROM(PltErate.class).WHERE(T.SITE_CUR, "=?", Sys.OYn.YES.getLine().getKey());
+        }};
+
+        return irille.pub.bean.Query.sql(sql).query(PltErate.class).getRate();
+    }
+
+    public static class Upderate extends IduUpd<Upderate, PltErate> {
+        @Override
+        public void before() {
+            PltErate model = loadThisBeanAndLock();
+            PropertyUtils.copyProperties(model, getB(), T.LOGO, T.CUR_NAME, T.SYMBOL, T.RATE, T.ENABLED);
+            model.setCreatedTime(Env.getTranBeginTime());
+            setB(model);
+            getB().setNowrate(getB().getRate().divide(Query.supDefCurrency().getRate(), 4, RoundingMode.HALF_UP));
+            getB().upd();
+
+           if(model.gtEnabled()==false){
+               int cur = 0;
+               int bcde = 0;
+               for (PltErate line : PltErate.list(PltErate.class, null, false)) {
+                   if (line.gtSiteCur()) {
+                       cur += 1;
+                   }
+                   if (line.gtSupCur()) {
+                       bcde += 1;
+                   }
+               }
+               if (cur == 0) {
+                   throw LOG.err("", "网站默认货币为启用状态不可以停用该汇率");
+               }
+               if (bcde == 0) {
+                   throw LOG.err("", "商家默认货币为启用状态不可以停用该汇率");
+               }
+           }
+        }
+
+        @Override
+        public void valid() {
+        }
+    }
+
+
+    public List<CurrencysView> getCurrencyList() {
+        List<CurrencysView> list = new ArrayList<>();
+        List<PltErate> pltErate = BeanBase.list(PltErate.class, T.ENABLED + "=?" ,false,Sys.OEnabled.TRUE.getLine().getKey());
+        for (PltErate erate : pltErate) {
+            CurrencysView view = new CurrencysView();
+            view.setId(erate.getPkey());
+            view.setSymbol(erate.getSymbol());
+            view.setSiteCur(erate.getSiteCur());
+            list.add(view);
+        }
+        return list;
+    }
 }

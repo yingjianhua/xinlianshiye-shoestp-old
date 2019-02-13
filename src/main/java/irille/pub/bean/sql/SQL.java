@@ -1,12 +1,14 @@
 package irille.pub.bean.sql;
 
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.BeanMain;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.IEnumOpt;
-
-import java.io.Serializable;
-import java.util.List;
+import irille.shop.plt.PltTrantslate;
 
 
 /**
@@ -59,23 +61,29 @@ public class SQL {
 
     public SQL SELECT(SQL sql, String alias) {
         if (sql == null) return this;
-        for (Serializable param : sql.PARAMS()) {
-            if (param instanceof IEnumOpt) {
-                IEnumOpt opt = (IEnumOpt) param;
-                mybatisSQL.PARAM(opt.getLine().getKey());
-            } else {
-                mybatisSQL.PARAM(param);
-            }
-        }
+        mybatisSQL.params(sql.PARAMS());
         return mybatisSQL.SELECT("(" + sql.toString() + ") as " + alias);
     }
 
     public <T extends BeanMain<?, ?>> SQL FROM(Class<T> beanClass) {
         return mybatisSQL.FROM(beanClass);
     }
+    
+    public <T extends BeanMain<?, ?>> SQL FROM(SQL sql, String alias) {
+    	mybatisSQL.FROM(sql, alias);
+    	return mybatisSQL.params(sql.PARAMS());
+    }
+    public <T extends BeanMain<?, ?>> SQL FROM(SQL sql, Class<T> beanAlias) {
+    	mybatisSQL.FROM(sql, beanAlias);
+    	return mybatisSQL.params(sql.PARAMS());
+    }
 
     public <T extends BeanMain<?, ?>> SQL LEFT_JOIN(Class<T> beanClass, IEnumFld fld1, IEnumFld fld2) {
         return mybatisSQL.LEFT_OUTER_JOIN(beanClass, fld1, fld2);
+    }
+    
+    public <T extends BeanMain<?, ?>> SQL LEFT_JOIN(SQL sql, Class<T> beanAlias, IEnumFld fld1, IEnumFld fld2) {
+    	return mybatisSQL.LEFT_OUTER_JOIN(sql, beanAlias, fld1, fld2);
     }
 
     public <T extends BeanMain<?, ?>> SQL LEFT_JOIN(String join) {
@@ -92,25 +100,100 @@ public class SQL {
 
     public <T extends BeanMain<?, ?>> SQL WHERE(IEnumFld fld, String conditions, Serializable... params) {
         mybatisSQL.WHERE(fld, conditions);
-        for (Serializable param : params) {
-            if (param instanceof IEnumOpt) {
-                IEnumOpt opt = (IEnumOpt) param;
-                mybatisSQL.PARAM(opt.getLine().getKey());
-            } else {
-                mybatisSQL.PARAM(param);
-            }
-        }
+        mybatisSQL.params(params);
         return mybatisSQL.getSelf();
     }
 
     public <T extends BeanMain<?, ?>> SQL WHERE(String conditions, Serializable... params) {
         mybatisSQL.WHERE(conditions);
-        for (Serializable param : params) {
-            if (param instanceof IEnumOpt) {
-                IEnumOpt opt = (IEnumOpt) param;
-                mybatisSQL.PARAM(opt.getLine().getKey());
-            } else {
-                mybatisSQL.PARAM(param);
+        mybatisSQL.params(params);
+        return mybatisSQL.getSelf();
+    }
+
+    public <T extends BeanMain<?, ?>> SQL WHERE(boolean b, IEnumFld fld, String conditions, Serializable... params) {
+        if (b) {
+            mybatisSQL.WHERE(fld, conditions);
+            mybatisSQL.params(params);
+        }
+        return mybatisSQL.getSelf();
+    }
+
+    public static void main(String[] args) {
+        PltTrantslate.TB.getCode();
+        Class beanClass = PltTrantslate.class;
+        if (BeanMain.class.isAssignableFrom(beanClass)) {
+            for (Class c : beanClass.getDeclaredClasses()) {
+                if (c.getSimpleName().equals("T")) {
+                    Object[] aa = c.getEnumConstants();
+                    for (Object a : aa) {
+                        Enum b = (Enum) a;
+                        if (b.name().equals("")) {
+                            IEnumFld d = (IEnumFld) a;
+                            d.getFld().getCode();
+                        }
+                        System.out.println(b.name());
+
+                        System.out.println(a.getClass());
+                    }
+                }
+            }
+        }
+    }
+
+    //多条件赛选 参数1 返回的dto 参数2 对应的实体类
+    public <T extends BeanMain<?, ?>> SQL Mconditions(List<MconditionsView> list, Class<T> beanClass) {
+        //存放实体类字段名称
+        Object[] ObEnums = null;
+        //循环实体类中字段
+        Class bean = beanClass;
+        if (BeanMain.class.isAssignableFrom(bean)) {
+            for (Class classmethod : bean.getDeclaredClasses()) {
+                if (classmethod.getSimpleName().equals("T")) {
+                    ObEnums = classmethod.getEnumConstants();
+                }
+            }
+        }
+
+        for (MconditionsView mv : list) {
+            for (Object field : ObEnums) {
+                System.out.println(field);
+                Enum fieldZ = (Enum) field;
+                if (fieldZ.name().equalsIgnoreCase(mv.getMode())) {
+                    IEnumFld fld = (IEnumFld) field;
+                    if (mv.getIsdate() == 0) {
+                        if (mv.getCondition() == 1) {
+                            WHERE(fld, " >? ", mv.getContent());
+                        }
+                        if (mv.getCondition() == 2) {
+                            WHERE(fld, " <? ", mv.getContent());
+                        }
+                        if (mv.getCondition() == 3) {
+                            WHERE(fld, " <>? ", mv.getContent());
+                        }
+                        if (mv.getCondition() == 4) {
+                            WHERE(fld, " =? ", mv.getContent());
+                        }
+                        if (mv.getCondition() == 5) {
+                            WHERE(fld, " like '%" + mv.getContent() + "%' ");
+                        }
+                        if (mv.getCondition() == 6) {
+                            WHERE(fld, " not like '%" + mv.getContent() + "%' ");
+                        }
+                    } else {
+                        if (mv.getCondition() == 1) {
+                            WHERE(fld, " >? ", new Date(Long.parseLong(mv.getContent())));
+                        }
+                        if (mv.getCondition() == 2) {
+                            WHERE(fld, " <? ", new Date(Long.parseLong(mv.getContent())));
+                        }
+                        if (mv.getCondition() == 3) {
+                            WHERE(fld, " <>? ", new Date(Long.parseLong(mv.getContent())));
+                        }
+                        if (mv.getCondition() == 4) {
+                            WHERE(fld, " =? ", new Date(Long.parseLong(mv.getContent())));
+                        }
+                    }
+                }
             }
         }
         return mybatisSQL.getSelf();
@@ -175,6 +258,7 @@ public class SQL {
         return mybatisSQL.toString();
     }
 
+
     class MybatisSQL extends AbstractSQL<SQL> {
 
         private int start = 0;
@@ -209,9 +293,20 @@ public class SQL {
         public <T extends BeanMain<?, ?>> SQL FROM(Class<T> beanClass) {
             return super.FROM(tableNameWithAlias(beanClass));
         }
+        
+        public <T extends BeanMain<?, ?>> SQL FROM(SQL sql, Class<T> beanAlias) {
+        	return super.FROM("(" + sql + ") as "+alias(beanAlias));
+        }
+        public <T extends BeanMain<?, ?>> SQL FROM(SQL sql, String alias) {
+        	return super.FROM("(" + sql + ") as " + alias);
+        }
 
         public <T extends BeanMain<?, ?>> SQL LEFT_OUTER_JOIN(Class<T> beanClass, IEnumFld fld1, IEnumFld fld2) {
             return super.LEFT_OUTER_JOIN(tableNameWithAlias(beanClass) + " ON " + columnLabelWithAlias(fld1) + "=" + columnLabelWithAlias(fld2));
+        }
+        
+        public <T extends BeanMain<?, ?>> SQL LEFT_OUTER_JOIN(SQL sql, Class<T> beanAlias, IEnumFld fld1, IEnumFld fld2) {
+        	return super.LEFT_OUTER_JOIN("(" + sql + ") " + alias(beanAlias) + " ON " + columnLabelWithAlias(fld1) + "=" + columnLabelWithAlias(fld2));
         }
 
         public <T extends BeanMain<?, ?>> SQL WHERE(IEnumFld fld, String conditions, IEnumFld fld2) {
@@ -257,6 +352,30 @@ public class SQL {
         public <T extends BeanMain<?, ?>> SQL LOCK(boolean lock) {
             this.lock = lock;
             return getSelf();
+        }
+        
+        public <T extends BeanMain<?, ?>> SQL params(List<Serializable> params) {
+        	for (Serializable param : params) {
+                if (param instanceof IEnumOpt) {
+                    IEnumOpt opt = (IEnumOpt) param;
+                    this.PARAM(opt.getLine().getKey());
+                } else {
+                    this.PARAM(param);
+                }
+            }
+        	return getSelf();
+        }
+        
+        public <T extends BeanMain<?, ?>> SQL params(Serializable... params) {
+        	for (Serializable param : params) {
+        		if (param instanceof IEnumOpt) {
+        			IEnumOpt opt = (IEnumOpt) param;
+        			this.PARAM(opt.getLine().getKey());
+        		} else {
+        			this.PARAM(param);
+        		}
+        	}
+        	return getSelf();
         }
 
         @Override

@@ -25,7 +25,7 @@ public class Usr_Install extends InstallBase {
 		m.proc(UsrPurchase.TB, 60, purchaser);
 		SysMenu role = m.procParent("权限管理", "usr", 70, null);
 		m.proc(UsrSupplierRole.TB, 80, role);
-		m.proc(UsrConsult.TB, 90, null);
+		//m.proc(UsrConsult.TB, 90, null);
 		m.proc(UsrMessages.TB, 100, null);
 		m.proc(UsrSubscribe.TB, 110, null);
 	}

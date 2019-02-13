@@ -183,28 +183,28 @@ public class UsrConsultRelationDAO {
 		relation.upd();
 		UsrConsult bean = relation.gtConsult();
 		PltCountry country = bean.gtCountry();
-
-
+		UsrPurchase puscha=  bean.gtPurchase();
+		UsrSupplier usp=relation.gtSupplier();
 		ConsultView view = new ConsultView();
 		view.setQuantity(bean.getQuantity());
 		if(bean.getProduct()!=null) {
 			view.setProduct(bean.getProduct());
 			view.setProductNum(bean.gtProduct().getCode());
 		}
-
 		view.setTitle(bean.getTitle());
 		view.setImage(bean.getImage());
 		view.setCountryName(country.getName(lang));
 		view.setName(bean.getName());
 		view.setCreateTime(bean.getCreateTime());
-		view.setEmail(bean.gtPurchase().getEmail());
 		view.setSupplierName(relation.gtSupplier().getName());//公司名称
 		view.setContent(bean.getContent());
 		view.setRelations(new ArrayList<>());
-
+		view.setEmail(puscha.getEmail());
+		view.setPurchaseimage(puscha.getIcon());
+		view.setSupplierimage(usp.getHeadPic());
+		view.setSupplieremail(usp.getEmail());
 		ConsultRelationView rv = new ConsultRelationView();
 		rv.setId(relation.getPkey());
-		//rv.setHaveNewMsg(relation.gtHaveNewMsg());
 		rv.setMsgs(new ArrayList<>());
 
 		for(UsrConsultMessage m:UsrConsultMessageDAO.listByRelation(relation.getPkey())) {

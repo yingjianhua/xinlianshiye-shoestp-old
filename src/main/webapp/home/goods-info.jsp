@@ -17,6 +17,8 @@
     <script type="text/javascript" src="./static/js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript"
             src="/static/js/plugins/goodsInfo/jquery.SuperSlide.2.1.1.js"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyCPbc3yNYQgVc56qbUuAY_Yap-uDMkDkvc"></script>
+    <script type="text/javascript" src="./static/markerwithlabel.js"></script>
     <link href="./static/css/goodsInfoNew.css" rel="stylesheet" type="text/css">
     <link href="./static/css/style.css" rel="stylesheet" type="text/css">
     <link href="./static/css/global.css" rel="stylesheet" type="text/css">
@@ -28,11 +30,12 @@
     <script type="text/javascript" src="/home/static/js/qs.js"></script>
     <script type="text/javascript" src="/home/static/js/axios.min.js"></script>
 </head>
+<jsp:include page="v3/header.jsp"/>
+<jsp:include page="v3/nav.jsp"/>
 <body id="goodsInfo" class="lang_en w_1200">
 <jsp:include page="template/web-top.jsp"></jsp:include>
-<jsp:include page="template/new-header.jsp"></jsp:include>
 <div id="app">
-
+    <index-top></index-top>
     <!--头部-->
     <div class="xmgHead wide-wrap">
         <div class="w1200">
@@ -70,7 +73,7 @@
                 </c:if>
             </div>
             <a class="xmgBtn fr"
-               :href="'/home/usr_UsrConsult_publishView?supplierId='+goodsInfo.supId"
+               :href="'/home/usr_UsrConsult_productPublishView?supplierId='+goodsInfo.supId"
                target="_blank"></a>
         </div>
     </div>
@@ -110,6 +113,7 @@
                 :class="(index===goodsInfo.breadcrumbNav.length-1)?'xmgLast':''">
                 <a :href="'/home/pdt_PdtProduct?cated='+v.pkey">{{v.name}}</a>
             </li>
+            <li style="clear: both;"></li>
         </ul>
     </div>
 
@@ -346,6 +350,37 @@
 
         <!--产品详情-->
         <div class="prodDescLeft" style="width:100%;">
+
+                <!-- ===============O2O INFO START=============== -->
+            <s:if test="map != null">
+                <s:if test="env.login == null">
+                <div style="">
+                    <a href="/home/usr_UsrPurchase_sign" style="
+    text-align:  center;
+    position: relative;
+    top: 240px;
+    z-index: 999;display: block;
+">Please Login</a>
+                    <img src="./static/images/mosaic.png" style="
+    width: 1200px;
+    height: 420px;
+    opacity:  0.5;
+    position: relative;
+    z-index: 998;
+    margin: 20px 0;
+"/>
+                </div>
+                </s:if>
+                <s:if test="env.login != null">
+                    <div id="loading" class="loading">
+                        <img src="./static/images/loading.gif">
+                    </div>
+                    <div id="o2oMap" style="width:100%;height:400px;margin:20px 0;">
+
+                    </div>
+                </s:if>
+                <!-- ===============O2O INFO END=============== -->
+            </s:if>
             <div class="prodDescription">
                 <ul class="pdTitle">
                     <li class="current">
@@ -664,6 +699,12 @@
     var app = new Vue({
         el: "#app",
         data: {
+            <s:if test="map != null && env.login != null">
+                map: null,
+                marker: null,
+                latLng: { lat: ${map.latitude}, lng: ${map.longitude} },
+                address:'${map.name}',
+            </s:if>
             goodsInfo:${goodsInfo},
             selectSpec: 0,
             isLogin:${env.login!=null},
@@ -675,6 +716,25 @@
                 catlength: 0
             }
         }, mounted() {
+            <s:if test="map != null && env.login != null">
+                var self = this
+                // 创建地图实例，zoom是缩放比例
+                this.map = new google.maps.Map(document.getElementById('o2oMap'), {
+                    center: self.latLng,
+                    zoom: 12
+                })
+                this.marker = new google.maps.Marker({
+                    position: self.latLng
+                })
+                this.marker.setMap(self.map)
+                var infowindow = new google.maps.InfoWindow({content: self.address});
+                infowindow.open(self.map, self.marker);
+
+            this.map.addListener('tilesloaded', function() {
+                $("#loading").css("display","none");
+            })
+
+            </s:if>
             for (var key in this.goodsInfo.spec) {
                 for (var value in this.goodsInfo.spec[key]) {
                     this.$set(this.status.cat, this.goodsInfo.spec[key][value].id, 0)
@@ -718,19 +778,20 @@
                     user_obj.set_form_sign_in('', window.location.href, 1);
                     return
                 }
-                axios({
-                    url: "/home/pdt_PdtConsultPdtList_add",
-                    method: "post",
-                    data: Qs.stringify({
-                        product: this.goodsInfo.pdtId
-                    })
-                }).then(function (data) {
-                    if (data.data) {
-                        if (data.data.ret && data.data.ret === 1) {
-                            carWindow(data.data, lang_obj.global.inqadd)
-                        }
-                    }
-                })
+                window.location = '/home/usr_UsrConsult_productPublishView?product_id='+this.goodsInfo.pdtId
+                // axios({
+                //     url: "/home/pdt_PdtConsultPdtList_add",
+                //     method: "post",
+                //     data: Qs.stringify({
+                //         product: this.goodsInfo.pdtId
+                //     })
+                // }).then(function (data) {
+                //     if (data.data) {
+                //         if (data.data.ret && data.data.ret === 1) {
+                //             carWindow(data.data, lang_obj.global.inqadd)
+                //         }
+                //     }
+                // })
             },
             buy() {
                 if (!isLogin) {
@@ -1088,6 +1149,20 @@
 
 
 </script>
+<script src="/home/v3/static/js/index-top.js"></script>
+<script>
+    new Vue({
+        el:"#app"
+    })
+</script>
+<style>
+    .loading{
+        text-align: center;
+        position: relative;
+        z-index: 999;
+        top: 250px;
+    }
+</style>
 <c:if test="${not empty supView.traceCode && fn:length(supView.traceCode)>0}">
     ${supView.traceCode}
 </c:if>

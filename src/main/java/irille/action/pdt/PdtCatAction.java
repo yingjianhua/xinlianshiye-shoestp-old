@@ -7,21 +7,17 @@ import irille.pub.bean.BeanLong;
 import irille.pub.bean.BeanStr;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.Tb;
-import irille.pub.util.TranslateLanguage.translateUtil;
-import irille.shop.pdt.PdtAttr;
-import irille.shop.pdt.PdtAttrCatDAO;
 import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtCatDAO;
 import irille.shop.plt.PltConfigDAO;
+import org.apache.struts2.ServletActionContext;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
-import org.apache.struts2.ServletActionContext;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 public class PdtCatAction extends MgtAction<PdtCat> {
 	public PdtCat getBean() {
@@ -86,6 +82,7 @@ public class PdtCatAction extends MgtAction<PdtCat> {
 			if(line.getCategoryUp() == null)
 				map1.put(line.getPkey(), "├"+line.getName(PltConfigDAO.manageLanguage()));
 		}
+
 		for(PdtCat line:list) {
 			if(line.getCategoryUp()!=null&&map1.containsKey(line.getCategoryUp()))
 				map2.put(line.getPkey(), "｜├"+line.getName(PltConfigDAO.manageLanguage()));

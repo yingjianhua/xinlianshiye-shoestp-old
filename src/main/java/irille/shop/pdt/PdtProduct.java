@@ -119,6 +119,7 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
         ;
         //>>>以下是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别>>>
         //<<<以上是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别<<<
+        public static final Tb.Index IDX_SUPPLIER_SKU = TB.addIndex("supplier_sku", false, T.SUPPLIER, T.SKU);
         private Fld _fld;
 
         private T(Class clazz, String name, boolean... isnull) {

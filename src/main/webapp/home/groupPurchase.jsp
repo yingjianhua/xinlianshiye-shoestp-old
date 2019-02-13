@@ -43,170 +43,172 @@
         }
     </style>
 </head>
-
+<jsp:include page="v3/header.jsp"/>
+<jsp:include page="v3/nav.jsp"/>
 <body class="lang_en w_1200">
 <%@ include file="/home/template/web-top.jsp" %>
-<%@ include file="/home/template/new-header.jsp" %>
 <%@ include file="/home/template/shop-header.jsp" %>
 
 
 <!-- 以下div为防止底部公用部分超出1200px后隐藏 -->
 <div>
-    <div class="procurement-head">
-        <div class="wide clearfloat">
-            <!-- 头部 -->
-            <div class="procurement-head-left">
-                <ul class="clearfloat">
-                    <li><s:text name="Global.Joint_Procurement"/></li>
-                    <c:if test="${not empty unionList && fn:length(unionList) > 0}">
-                        <li class="fca8" id="actTitle">(<%-- ${prm.title} --%>)</li>
-                        <li style="color: #11d702;" id="actState"></li>
-                    </c:if>
-                    <!-- 正在进行 -->
-                    <%-- <c:choose>
-                       <c:when test="${prm.status == 1}">
-                           <li style="color: #11d702;"><s:text name="About_To_Begin"/></li>
-                       </c:when>
-                       <c:when test="${prm.status == 2}">
-                           <li style="color: #11d702;"><s:text name="groupPurchase.Processing"/></li>
-                       </c:when>
-                       <c:when test="${prm.status == 3}">
-                           <li style="color: #11d702;"><s:text name="Coming_To_An_End"/></li>
-                       </c:when>
-                       <c:when test="${prm.status == 4}">
-                           <li style="color: #11d702;"><s:text name="Ended"/></li>
-                       </c:when>
-                   </c:choose> --%>
-                    <!--  <li style="color: #11d702;">Underway</li> -->
-                    <!-- 即将开始 -->
-                    <!-- <li style="color: #db7700;;">Begin in a minute</li> -->
-                    <!-- 已经结束 -->
-                    <!-- <li style="color: #db7700;">It's already over</li> -->
-                </ul>
+    <index-top></index-top>
+    <div class="wide">
+        <div class="procurement-head">
+            <div class="wide clearfloat">
+                <!-- 头部 -->
+                <div class="procurement-head-left">
+                    <ul class="clearfloat">
+                        <li><s:text name="Global.Joint_Procurement"/></li>
+                        <c:if test="${not empty unionList && fn:length(unionList) > 0}">
+                            <li class="fca8" id="actTitle">(<%-- ${prm.title} --%>)</li>
+                            <li style="color: #11d702;" id="actState"></li>
+                        </c:if>
+                        <!-- 正在进行 -->
+                        <%-- <c:choose>
+                           <c:when test="${prm.status == 1}">
+                               <li style="color: #11d702;"><s:text name="About_To_Begin"/></li>
+                           </c:when>
+                           <c:when test="${prm.status == 2}">
+                               <li style="color: #11d702;"><s:text name="groupPurchase.Processing"/></li>
+                           </c:when>
+                           <c:when test="${prm.status == 3}">
+                               <li style="color: #11d702;"><s:text name="Coming_To_An_End"/></li>
+                           </c:when>
+                           <c:when test="${prm.status == 4}">
+                               <li style="color: #11d702;"><s:text name="Ended"/></li>
+                           </c:when>
+                       </c:choose> --%>
+                        <!--  <li style="color: #11d702;">Underway</li> -->
+                        <!-- 即将开始 -->
+                        <!-- <li style="color: #db7700;;">Begin in a minute</li> -->
+                        <!-- 已经结束 -->
+                        <!-- <li style="color: #db7700;">It's already over</li> -->
+                    </ul>
+                </div>
+                <div class="procurement-head-right">
+                    <span class="fca8"><s:text name="groupPurchase.Activity_Selection"/></span>
+                    <select name="" id="activityList">
+                        <c:if test="${not empty unionList && fn:length(unionList) > 0}">
+                            <c:forEach items="${unionList}" var="union">
+                                <%-- <c:if test="${union.pkey == prm.pkey}">
+                                      <option value="${union.pkey}" selected="selected">${union.title}</option>
+                                  </c:if>
+                                <c:if test="${union.pkey != prm.pkey}"> --%>
+                                <option value="${union.pkey}" state="${union.status}"
+                                        data='{"title":"${union.title}","state":"${union.status}","pkey":"${union.pkey}"}'>${union.title}</option>
+                                <%-- </c:if> --%>
+                            </c:forEach>
+                        </c:if>
+                        <c:if test="${empty unionList || fn:length(unionList) < 0}">
+                            <option><s:text name="groupPurchase.No_Activity"/></option>
+                        </c:if>
+                    </select>
+                    <ul>
+                        <li><a onclick="chooseThisTime(1)"><s:text name="groupPurchase.Processing"/></a>
+                        </li>
+                        <li><a onclick="chooseThisTime(2)"><s:text name="groupPurchase.Latest"/></a>
+                        </li>
+                        <li><a onclick="chooseThisTime(3)"><s:text name="groupPurchase.Other"/></a></li>
+                        <!--  class="fca8" -->
+                    </ul>
+                </div>
             </div>
-            <div class="procurement-head-right">
-                <span class="fca8"><s:text name="groupPurchase.Activity_Selection"/></span>
-                <select name="" id="activityList">
-                    <c:if test="${not empty unionList && fn:length(unionList) > 0}">
-                        <c:forEach items="${unionList}" var="union">
-                            <%-- <c:if test="${union.pkey == prm.pkey}">
-                                  <option value="${union.pkey}" selected="selected">${union.title}</option>
-                              </c:if>
-                            <c:if test="${union.pkey != prm.pkey}"> --%>
-                            <option value="${union.pkey}" state="${union.status}"
-                                    data='{"title":"${union.title}","state":"${union.status}","pkey":"${union.pkey}"}'>${union.title}</option>
-                            <%-- </c:if> --%>
-                        </c:forEach>
-                    </c:if>
-                    <c:if test="${empty unionList || fn:length(unionList) < 0}">
-                        <option><s:text name="groupPurchase.No_Activity"/></option>
-                    </c:if>
-                </select>
-                <ul>
-                    <li><a onclick="chooseThisTime(1)"><s:text name="groupPurchase.Processing"/></a>
-                    </li>
-                    <li><a onclick="chooseThisTime(2)"><s:text name="groupPurchase.Latest"/></a>
-                    </li>
-                    <li><a onclick="chooseThisTime(3)"><s:text name="groupPurchase.Other"/></a></li>
-                    <!--  class="fca8" -->
-                </ul>
-            </div>
+            <!-- 头部 - end -->
         </div>
-        <!-- 头部 - end -->
-    </div>
-    <c:if test="${not empty unionList && fn:length(unionList) > 0}">
-    <!-- 分类 排序 begin -->
-    <div class="procurement-classify">
-        <div class="wide">
-            <div class="classify">
-                <span onclick='chooseThisCat(-1)' data="-1"><s:text name="All_Categories"/></span>
-                <c:forEach items="${catList}" var="cat">
+        <c:if test="${not empty unionList && fn:length(unionList) > 0}">
+            <!-- 分类 排序 begin -->
+            <div class="procurement-classify">
+                <div class="wide">
+                    <div class="classify">
+                        <span onclick='chooseThisCat(-1)' data="-1"><s:text name="All_Categories"/></span>
+                        <c:forEach items="${catList}" var="cat">
                     <span style="margin:16px 15px 0 0" onclick='chooseThisCat(${cat.id})'
                           data="${cat.id}">${cat.name}</span>
-                </c:forEach>
+                        </c:forEach>
+                    </div>
+                    <div class="paixu">
+                        <a onclick="chooseThisSort(1)">
+                            <em><s:text name="Global.Price"/></em>
+                            <!-- 默认排序 -->
+                            <i class="sort_icon_arrow"></i>
+                            <!-- 升序 -->
+                            <!-- <i class="sort_icon_arrow_up"></i> -->
+                            <!-- 降序 -->
+                            <!-- <i class="sort_icon_arrow_down"></i> -->
+                        </a>
+                        <a onclick="chooseThisSort(2)">
+                            <em><s:text name="Customer_Evaluation"/> </em>
+                            <!-- 默认排序 -->
+                            <i class="sort_icon_arrow"></i>
+                            <!-- 升序 -->
+                            <!-- <i class="sort_icon_arrow_up"></i> -->
+                            <!-- 降序 -->
+                            <!-- <i class="sort_icon_arrow_down"></i> -->
+                        </a>
+                        <a onclick="chooseThisSort(3)">
+                            <em><s:text name="products.Most_Popular"/></em>
+                            <!-- 默认排序 -->
+                            <i class="sort_icon_arrow"></i>
+                            <!-- 升序 -->
+                            <!-- <i class="sort_icon_arrow_up"></i> -->
+                            <!-- 降序 -->
+                            <!-- <i class="sort_icon_arrow_down"></i> -->
+                        </a>
+                    </div>
+                </div>
             </div>
-            <div class="paixu">
-                <a onclick="chooseThisSort(1)">
-                    <em><s:text name="Global.Price"/></em>
-                    <!-- 默认排序 -->
-                    <i class="sort_icon_arrow"></i>
-                    <!-- 升序 -->
-                    <!-- <i class="sort_icon_arrow_up"></i> -->
-                    <!-- 降序 -->
-                    <!-- <i class="sort_icon_arrow_down"></i> -->
-                </a>
-                <a onclick="chooseThisSort(2)">
-                    <em><s:text name="Customer_Evaluation"/> </em>
-                    <!-- 默认排序 -->
-                    <i class="sort_icon_arrow"></i>
-                    <!-- 升序 -->
-                    <!-- <i class="sort_icon_arrow_up"></i> -->
-                    <!-- 降序 -->
-                    <!-- <i class="sort_icon_arrow_down"></i> -->
-                </a>
-                <a onclick="chooseThisSort(3)">
-                    <em><s:text name="products.Most_Popular"/></em>
-                    <!-- 默认排序 -->
-                    <i class="sort_icon_arrow"></i>
-                    <!-- 升序 -->
-                    <!-- <i class="sort_icon_arrow_up"></i> -->
-                    <!-- 降序 -->
-                    <!-- <i class="sort_icon_arrow_down"></i> -->
-                </a>
+            <!-- 没有商品时显示 -->
+            <div style="border-top: 1px dotted #ccc;text-align: center;display:none;" id="noGoods">
+                <p style="padding: 215px 0;text-align: center;display:  inline-block;">
+                    <em style="width: 20px;height: 1px;background-color: #000;display: block;float: left;margin-top: 8px;margin-right: 20px;"></em>
+                    <s:text name="beselected"/>
+                    <em style="width: 20px;height: 1px;background-color: #000;display: block;float: right;margin-top: 8px;margin-left: 20px;"></em>
+                </p>
             </div>
-        </div>
+            <!-- 分类 排序 end -->
+
+            <!-- 商品列表 begin -->
+            <div class="procurement-goodsList">
+                <div class="wide clearfloat" id="proList">
+
+
+                    <div class="blank20"></div>
+                    <!-- 分页 -->
+                        <%-- <div id="procurement_page">
+                          <li class="page-first">
+                            <font class="page_noclick">
+                              <em class="icon_page_prev"></em>
+                            </font>
+                          </li>
+                          <li class="page_last">
+                            <a class="page_button">
+                              <em class="icon_page_next"></em>
+                            </a>
+                            </li>
+                        </div> --%>
+                    <ul id="turn_page" style="margin-bottom: 28px;">
+
+
+                    </ul>
+                </div>
+            </div>
+        </c:if>
+        <c:if test="${empty unionList || fn:length(unionList) <= 0}">
+            <!-- 没有活动时显示 -->
+            <div style="border-top: 1px dotted #ccc;text-align: center;" id="noActivity">
+                <p style="padding: 215px 0;text-align: center;display:  inline-block;">
+                    <em style="width: 20px;height: 1px;background-color: #000;display: block;float: left;margin-top: 8px;margin-right: 20px;"></em>
+                    <s:text name="groupPurchase.No_Activity"/>
+                    <em style="width: 20px;height: 1px;background-color: #000;display: block;float: right;margin-top: 8px;margin-left: 20px;"></em>
+                </p>
+            </div>
+        </c:if>
+        <!-- 商品列表 end -->
+
+        <%@ include file="/home/template/new-foot.jsp" %>
+
     </div>
-    <!-- 没有商品时显示 -->
-    <div style="border-top: 1px dotted #ccc;text-align: center;display:none;" id="noGoods">
-        <p style="padding: 215px 0;text-align: center;display:  inline-block;">
-            <em style="width: 20px;height: 1px;background-color: #000;display: block;float: left;margin-top: 8px;margin-right: 20px;"></em>
-            <s:text name="beselected"/>
-            <em style="width: 20px;height: 1px;background-color: #000;display: block;float: right;margin-top: 8px;margin-left: 20px;"></em>
-        </p>
-    </div>
-    <!-- 分类 排序 end -->
-
-    <!-- 商品列表 begin -->
-    <div class="procurement-goodsList">
-        <div class="wide clearfloat" id="proList">
-
-
-            <div class="blank20"></div>
-            <!-- 分页 -->
-                <%-- <div id="procurement_page">
-                  <li class="page-first">
-                    <font class="page_noclick">
-                      <em class="icon_page_prev"></em>
-                    </font>
-                  </li>
-                  <li class="page_last">
-                    <a class="page_button">
-                      <em class="icon_page_next"></em>
-                    </a>
-                    </li>
-                </div> --%>
-            <ul id="turn_page" style="margin-bottom: 28px;">
-
-
-            </ul>
-        </div>
-    </div>
-    </c:if>
-    <c:if test="${empty unionList || fn:length(unionList) <= 0}">
-    <!-- 没有活动时显示 -->
-    <div style="border-top: 1px dotted #ccc;text-align: center;" id="noActivity">
-        <p style="padding: 215px 0;text-align: center;display:  inline-block;">
-            <em style="width: 20px;height: 1px;background-color: #000;display: block;float: left;margin-top: 8px;margin-right: 20px;"></em>
-            <s:text name="groupPurchase.No_Activity"/>
-            <em style="width: 20px;height: 1px;background-color: #000;display: block;float: right;margin-top: 8px;margin-left: 20px;"></em>
-        </p>
-    </div>
-    </c:if>
-    <!-- 商品列表 end -->
-
-    <%@ include file="/home/template/new-foot.jsp" %>
-
-
     <script type="text/javascript">
         var pkey;
         var page = 1;
@@ -592,6 +594,12 @@
         }
     </script>
     ${supView.traceCode}
+    <script>
+        new Vue({
+            el:"#main"
+        })
+    </script>
+    <script src="/home/v3/static/js/index-top.js"></script>
 </body>
 
 </html>

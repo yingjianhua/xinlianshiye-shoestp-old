@@ -21,6 +21,8 @@
     <script type="text/javascript" src="./static/js/layer.js"></script>
     <link rel="stylesheet" href="./static/css/layer.css" type="text/css">
 </head>
+<jsp:include page="v3/header.jsp"/>
+<jsp:include page="v3/nav.jsp"/>
 <body class="lang_en w_1200">
     <style type="text/css">
         .fl tbody tr{
@@ -37,8 +39,9 @@
         }
     </style>
 	<%@ include file="/home/template/web-top.jsp" %>
-    <%@ include file="/home/template/new-header.jsp" %>
-    <div id="main" class="wide">
+    <div id="main">
+        <index-top></index-top>
+        <div class="wide">
         <div id="lib_user" class="clearfix">
             <div id="lib_user_crumb" class="widget">
                 <ul class="crumb_box clearfix">
@@ -314,9 +317,16 @@
                     </div>
                 </div>
             </div>
+            </div>
                 	<!--endprint-->
         </div>
     </div>
     <%@ include file="/home/template/new-foot.jsp" %>
+    <script src="/home/v3/static/js/index-top.js"></script>
+    <script>
+        new Vue({
+            el:"#main"
+        })
+    </script>
 </body>
 </html>

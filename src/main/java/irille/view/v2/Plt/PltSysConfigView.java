@@ -19,4 +19,5 @@ public class PltSysConfigView implements BaseView {
     private String currency_symbol;
     private String baseImageUrl;
     private PltUserInfo user;
+    private List currencyList;
 }

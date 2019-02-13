@@ -6,6 +6,7 @@ import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,7 @@ public class ItpExceptionHandler extends AbstractInterceptor {
 		try {
 			return invocation.invoke();
 		} catch (Exception e) {
+			System.out.println(">>>>>>>>捕获到异常<<<<<<<");
 			isSuccess = false;
 			e2 = e;
 			//如果是Exp类型的异常,都是通过LOG.err方式抛出来的,异常已经打印过了,不需要重复打印
@@ -59,6 +61,11 @@ public class ItpExceptionHandler extends AbstractInterceptor {
 			} else if(invocation.getAction() instanceof SellerAction) {
 				if(method.getReturnType().equals(void.class)){
 					String msg = e instanceof Exp?((Exp)e).getLastMessage():e.getMessage();
+					BaseAction.writeErr(msg);
+				}
+			} else {
+				if(method.getReturnType().equals(void.class)) {
+					String msg = e instanceof Exp ? ((Exp) e).getLastMessage() : e.getMessage();
 					BaseAction.writeErr(msg);
 				}
 			}

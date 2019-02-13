@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
@@ -71,9 +73,13 @@ public abstract class AbstractQuery {
 	 */
 	protected Integer countRecord() {
 		String sql = getSql();
-		int s = sql.indexOf(" LIMIT");
-		if(s!=-1)
-			sql = sql.substring(0, s);
+		Matcher matcher = Pattern.compile("^(.*)(LIMIT \\s*((\\d)\\s*,)?\\s*(\\d)\\s*)$").matcher(sql);
+		if(matcher.find()) {
+			sql = matcher.group(1);
+		}
+//		int s = sql.indexOf(" (LIMIT (\\d|\\s)?,(\\d|\\s))$");
+//		if(s!=-1)
+//			sql = sql.substring(0, s);
 		sql = sql.replaceFirst("(select|SELECT)\\s+.*?\\s+(FROM|from)", "SELECT COUNT(1) FROM");
 		return query(rs->ResultMapper.asObject(rs, Integer.class), needDebug(), sql, getParams());
 	}

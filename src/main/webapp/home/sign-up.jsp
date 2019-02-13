@@ -20,12 +20,15 @@
     <link rel="stylesheet" href="./static/css/animate.min.css">
     <link rel="stylesheet" href="./static/css/swiper.min.css" type="text/css">
     <link rel="stylesheet" href="./static/css/color.css" type="text/css">
+    <link rel="stylesheet" href="./static/css/combo.select.css">
+
     <script type="text/javascript" src="./static/js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="./static/js/user.js"></script>
     <script type="text/javascript" src="./static/js/global.js"></script>
     <script type="text/javascript" src="./static/js/global(1).js"></script>
     <script type="text/javascript" src="./static/js/lang/${env.curLanguage }.js"></script>
     <script type="text/javascript" src="./static/js/layer.js"></script>
+    <script type="text/javascript" src="./static/js/jquery.combo.select.js"></script>
     <link rel="stylesheet" href="./static/css/layer.css" type="text/css">
     <script type="text/javascript">
         $(document).ready(function () {
@@ -206,9 +209,11 @@
             <div class="row">
                 <span class="fc_red">*</span>
                 <label for="Country"><s:text name="Global.Country"/>
-
                 </label>
-                <select name="bean.country" id="country">
+
+
+                <!-- 带搜索功能的下拉框 -->
+                <select name="bean.country"  id="select">
                     <c:forEach items="${countrys}" var="country">
                         <c:if test="${country.isDefault == true}">
                             <option value="${country.id}" selected="selected">${country.name}</option>
@@ -221,6 +226,7 @@
             </div>
             <div class="clear"></div>
             <div class="row">
+
                 <span class="fc_red">*</span>
                 <label for="Security Code"><s:text name="Global.Verification_Code"/>
 
@@ -230,7 +236,10 @@
                 <img src="<%=request.getContextPath()%>/servlet/verify.img"
                      style="vertical-align:top;width:53px;height:28px;line-height:21px;" id="verify"/></div>
             <dl class="intro">
-                <dt><s:text name="sign-up.Said_That_I_Agree"/></dt>
+
+                <dt><input type="checkbox" id="isdisenabild"
+                           style="float: left;margin-top: 2px;margin-right: 5px;"/><s:text
+                        name="sign-up.Said_That_I_Agree"/></dt>
                 <dd></dd>
                 <dd><s:text name="sign-up.May_Receive"/></dd>
                 <dd><s:text name="sign-up.Promotional_Email"/></dd>
@@ -239,7 +248,8 @@
                 </dd>
             </dl>
             <div class="row">
-                <button class="signbtn signup form_button_bg" type="button" id="regButton"><s:text
+
+                <button class="signbtn signup form_button_bg" type="button" id="regButton" style="background-color: #DDDDDD;border-color: #DDDDDD " disabled><s:text
                         name="createAccount"/></button>
             </div>
         </form>
@@ -274,8 +284,10 @@
         <div class="blank20"></div>
     </div>
     <div class="footer">
-        <div class="copyright">Copyright © 2016-2017 温州新联实业股份有限公司. All Rights Reserved. 浙ICP备16034166号-1 浙公网安备
-            33030402000493号 &nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="copyright">Copyright © 2016-2017 温州新联实业股份有限公司. All Rights Reserved.
+            <%--浙ICP备16034166号-1 浙公网安备--%>
+            <%--33030402000493号--%>
+            &nbsp;&nbsp;&nbsp;&nbsp;
         </div>
     </div>
 </div>
@@ -295,7 +307,7 @@
 <script>
     function gtag_report_conversion(url) {
         var callback = function () {
-            if (typeof(url) != 'undefined') {
+            if (typeof (url) != 'undefined') {
                 window.location = url;
             }
         };
@@ -307,6 +319,21 @@
     }
 </script>
 <script type="text/javascript">
+
+    $("#isdisenabild").on("click", function () {
+        var booleans= document.getElementById("isdisenabild")
+        if(booleans.checked){
+            $("#regButton").attr("disabled",false);
+            $("#regButton").css("background-color","#005AB0")
+            $("#regButton").css(" border-color","#005AB0")
+
+
+        }else{
+            $("#regButton").attr("disabled",true);
+            $("#regButton").css(" border-color","#DDDDDD")
+            $("#regButton").css("background-color","#DDDDDD")
+        }
+    })
     $("#verify").on("click", function () {
         refreshVerify();
     })
@@ -412,6 +439,7 @@
             return false;
         }
     }
+    $("#select").comboSelect();
 </script>
 
 </body>

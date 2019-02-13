@@ -68,14 +68,15 @@
         }
     </style>
 </head>
-
+<jsp:include page="v3/header.jsp"/>
+<jsp:include page="v3/nav.jsp"/>
 <body class="lang_en w_1200">
 
     <%@ include file="/home/template/web-top.jsp" %>
 
-    <%@ include file="/home/template/new-header.jsp" %>
-
-    <div id="main" class="wide">
+    <div id="main">
+        <index-top></index-top>
+        <div class="wide">
         <div id="lib_user" class="clearfix">
             <div id="lib_user_crumb" class="widget">
                 <ul class="crumb_box clearfix">
@@ -154,7 +155,7 @@
                         </div>
                     </div>
                 </div>
-
+                </div>
             </div>
         </div>
     </div>
@@ -167,7 +168,7 @@
 
     <script type="text/javascript">
       var vm = new Vue({
-        el:"#lib_user_main",
+        el:"#main",
         data:{
           inqueryInfo:{   //è¯¢çä¿¡æ¯
             // image: "./static/images/loading.gif"
@@ -212,6 +213,7 @@
         }
       })
     </script>
+    <script src="/home/v3/static/js/index-top.js"></script>
 </body>
 
 </html>

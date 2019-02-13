@@ -18,8 +18,8 @@ public class CntAd extends BeanLong<CntAd> implements ISeq {
 
     public enum T implements IEnumFld {
         PKEY(TB.crtLongPkey()),
-        SIGNAGE(Tb.crt(OSIGNAGE.DEFAULT)),
-        AD_POSITION(Tb.crt(OAdLocation.DEFAULT)),
+        SIGNAGE(Tb.crt(OSIGNAGE.DEFAULT)), //系统标识
+        AD_POSITION(Tb.crt(OAdLocation.DEFAULT)), //展示位置
         CATEGORY(PdtCat.fldOutKey().setNull()),  //仅当广告位置为 板块广告的时候有效
         HEIGHT(SYS.INT, "高"),
         WIDTH(SYS.INT, "宽"),

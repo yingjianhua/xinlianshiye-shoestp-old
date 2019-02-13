@@ -4,11 +4,21 @@ package irille.homeAction.pdt.dto;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import irille.pub.i18n.I18NFieldSerializer;
 import irille.view.BaseView;
+import irille.view.O2O.O2OMapView;
 
 import java.math.BigDecimal;
 import java.util.*;
 
 public class ProductInfoView implements BaseView {
+    /**===============O2O INFO START===============**/
+    private O2OMapView map;
+    public O2OMapView getMap() {
+        return map;
+    }
+    public void setMap(O2OMapView map) {
+        this.map = map;
+    }
+    /**===============O2O INFO END===============**/
     //商家Id
     private long supId;
     //

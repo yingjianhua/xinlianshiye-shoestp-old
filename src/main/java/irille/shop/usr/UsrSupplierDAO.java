@@ -5,16 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import irille.core.sys.Sys;
 import irille.homeAction.usr.dto.Page_supplierProductView;
 import irille.homeAction.usr.dto.SupplierListView;
+import irille.platform.usr.View.UsrSUPSelectView;
+import irille.platform.usr.View.UsrSupplierView.*;
 import irille.pub.DateTools;
 import irille.pub.LogMessage;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.sql.SQL;
-import irille.pub.idu.Idu;
-import irille.pub.idu.IduIns;
-import irille.pub.idu.IduOther;
-import irille.pub.idu.IduPage;
-import irille.pub.idu.IduUpd;
+import irille.pub.idu.*;
 import irille.pub.svr.DbPool;
 import irille.pub.svr.Env;
 import irille.pub.tb.FldLanguage;
@@ -31,21 +29,18 @@ import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.pdt.PdtProductDAO;
 import irille.shop.pdt.PdtSpec;
-import irille.shop.plt.PltCountry;
-import irille.shop.plt.PltFreight;
-import irille.shop.plt.PltFreightLine;
-import irille.shop.plt.PltFreightSeller;
-import irille.shop.plt.PltFreightSellerDAO;
-import irille.shop.plt.PltFreightSellerLine;
-import irille.shop.plt.PltPay;
+import irille.shop.plt.*;
 import irille.shop.plt.PltPay.OPay_Mode;
-import irille.shop.plt.PltProvince;
 import irille.shop.prm.PrmGroupPurchase;
 import irille.shop.usr.Usr.OStatus;
 import irille.shop.usr.UsrSupplier.T;
+import irille.view.Page;
 import irille.view.usr.AccountSettingsView;
 import irille.view.usr.SupplierView;
 import irille.view.usr.shopSettingView;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -53,20 +48,49 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class UsrSupplierDAO {
 
   public static final LogMessage LOG = new LogMessage(UsrSupplierDAO.class);
+  /**
+   *@Description:   供应商选中器列表平台
+   *@date 2019/1/23 19:27
+   *@anthor wilson zhang
+   */
+  public static Page listsupselect(String fldvalue, String condition, Integer start, Integer limit){
+    SQL sql=new SQL(){{
+      SELECT(T.PKEY,T.NAME,T.ROLE,T.LOGIN_NAME,T.CATEGORY,T.ENTITY,T.COMPANY_TYPE,T.COMPANY_NATURE);
+      FROM(UsrSupplier.class);
+      if(fldvalue !=null){
+        if(fldvalue.equalsIgnoreCase("name")){
+          WHERE(T.NAME,"like '%"+condition+"%'");
+        }
+        if(fldvalue.equalsIgnoreCase("loginName")){
+          WHERE(T.LOGIN_NAME,"like '%"+condition+"%'");
+        }
+        if(fldvalue.equalsIgnoreCase("entity")){
+          WHERE(T.ENTITY,"like '%"+condition+"%'");
+        }
+      }
+    }};
+     Integer count= irille.pub.bean.Query.sql(sql).queryCount();
+     List<UsrSUPSelectView> list= irille.pub.bean.Query.sql(sql.LIMIT(start,limit)).queryMaps().stream().map(bean->new UsrSUPSelectView(){{
+       setPkey((Integer)bean.get(T.PKEY.getFld().getCodeSqlField()));
+       setName((String) bean.get(T.NAME.getFld().getCodeSqlField()));
+       setRole(BeanBase.load(UsrSupplierRole.class,(Integer) bean.get(T.ROLE.getFld().getCodeSqlField())).getName());
+       setLoginname((String) bean.get(T.LOGIN_NAME.getFld().getCodeSqlField()));
+       setCategory(BeanBase.load(UsrSupplierCategory.class,(Integer) bean.get(T.CATEGORY.getFld().getCodeSqlField())).getName());
+       setEntity((String) bean.get(T.ENTITY.getFld().getCodeSqlField()));
+       setCompanytype((String) bean.get(T.COMPANY_TYPE.getFld().getCodeSqlField()));
+       setCompanyNature((String) bean.get(T.COMPANY_NATURE.getFld().getCodeSqlField()));
+     }}).collect(Collectors.toList());
+   return  new Page(list,start,limit,count);
+  }
+
+
 
   public static SupplierView getSupplierInfo(Integer pkey) {
     UsrSupplier bean = UsrSupplier.load(UsrSupplier.class, pkey);
@@ -105,31 +129,13 @@ public class UsrSupplierDAO {
     return view;
   }
 
-  public static void main(String[] args) throws Exception {
-//        SupplierView view = findById4AccountSet(8);
-//        System.out.println(new ObjectMapper().writeValueAsString(view.getJobTitle()));
-    //initAllSupplierPassword();
-    //initAllSupplierFreight();
-//    	initAdminPurchasePassword();
-//    	initAllSupplierPayType();
-//        initAllSupplierShowName();
-//        DbPool.getInstance().releaseAll();
-  }
-
-  /**
-   * @author yingjianhua
-   */
+  /** @author yingjianhua */
   public static class Query extends IduOther<Query, PdtSpec> {
-
     public List<UsrSupplier> listByProduct(List<PdtProduct> products) {
-      if (products.size() == 0) {
-        return new ArrayList<>();
-      }
+      if (products.size() == 0) return new ArrayList<>();
       StringBuilder b = new StringBuilder();
       for (int i = 0; i < products.size(); i++) {
-        if (i != 0) {
-          b.append(",");
-        }
+        if (i != 0) b.append(",");
         b.append(products.get(i).getSupplier());
       }
       String where = UsrSupplier.T.PKEY.getFld().getCodeSqlField() + " in (" + b.toString() + ")";
@@ -138,7 +144,6 @@ public class UsrSupplierDAO {
   }
 
   public static class Ins extends IduIns<Ins, UsrSupplier> {
-
     public String _mm;
     public String _mmcheck;
 
@@ -158,80 +163,119 @@ public class UsrSupplierDAO {
     }
   }
 
-  /***
-   *  前端供应商列表页面查询类
+  /**
+   * * 前端供应商列表页面查询类
+   *
    * @author lijie@shoestp.cn
    * @date 2018/7/19 15:51
    */
   public static class pageSelect extends IduOther<pageSelect, UsrSupplier> {
-
     private final boolean Debug = false;
 
     public Map SupplierList(IduPage page, int cat, FldLanguage.Language lang) {
-      //获取商品总数及条数
-      SQL productSQL = new SQL() {{
-        SELECT("count(*)");
-        FROM(PdtProduct.class);
-        WHERE(PdtProduct.T.IS_VERIFY, " = " + Sys.OYn.YES.getLine().getKey());
-        WHERE(PdtProduct.T.PRODUCT_TYPE, " = " + Pdt.OProductType.GENERAL.getLine().getKey());
-        GROUP_BY(PdtProduct.T.SUPPLIER);
-        HAVING(PdtProduct.T.SUPPLIER.getFld().getCodeSqlField() + " = " + UsrSupplier.class
-            .getSimpleName() + "." + UsrSupplier.T.PKEY.getFld().getCodeSqlField());
-      }};
-      //获取供应商
-      SQL sql = new SQL() {{
-        SELECT(UsrSupplier.T.PKEY, UsrSupplier.T.LOGO, UsrSupplier.T.NAME,
-            UsrSupplier.T.PROD_PATTERN);
-        SELECT("(" + productSQL.toString() + ") as prodCount ");
-        FROM(UsrSupplier.class);
-        if (cat > 0) {
-          WHERE(UsrSupplier.T.CATEGORY, " = " + cat);
-        }
-        WHERE(T.STATUS, " = ?", OStatus.APPR);
-        ORDER_BY(T.SORT, "asc");
-        ORDER_BY(T.UPDATE_TIME, "desc");
-      }};
+      // 获取商品总数及条数
+      SQL productSQL =
+          new SQL() {
+            {
+              SELECT("count(*)");
+              FROM(PdtProduct.class);
+              WHERE(PdtProduct.T.IS_VERIFY, " = " + Sys.OYn.YES.getLine().getKey());
+              WHERE(PdtProduct.T.PRODUCT_TYPE, " = " + Pdt.OProductType.GENERAL.getLine().getKey());
+              GROUP_BY(PdtProduct.T.SUPPLIER);
+              HAVING(
+                  PdtProduct.T.SUPPLIER.getFld().getCodeSqlField()
+                      + " = "
+                      + UsrSupplier.class.getSimpleName()
+                      + "."
+                      + UsrSupplier.T.PKEY.getFld().getCodeSqlField());
+            }
+          };
+      // 获取供应商
+      SQL sql =
+          new SQL() {
+            {
+              SELECT(
+                  UsrSupplier.T.PKEY,
+                  UsrSupplier.T.LOGO,
+                  UsrSupplier.T.NAME,
+                  UsrSupplier.T.PROD_PATTERN);
+              SELECT("(" + productSQL.toString() + ") as prodCount ");
+              FROM(UsrSupplier.class);
+              if (cat > 0) WHERE(UsrSupplier.T.CATEGORY, " = " + cat);
+              WHERE(T.STATUS, " = ?", OStatus.APPR);
+              ORDER_BY(T.SORT, "asc");
+              ORDER_BY(T.UPDATE_TIME, "desc");
+            }
+          };
       Map map = new HashMap();
       map.put("total", irille.pub.bean.Query.sql(sql).queryMaps().size());
       sql.LIMIT(page.getStart(), page.getLimit());
 
-      List<SupplierListView> views = irille.pub.bean.Query.sql(sql).queryMaps().stream()
-          .map(bean -> new SupplierListView() {{
-            setPkey((Integer) bean.get(T.PKEY.getFld().getCodeSqlField()));
-            setLogo((String) bean.get(T.LOGO.getFld().getCodeSqlField()));
-            setName((String) bean.get(T.NAME.getFld().getCodeSqlField()));
-            System.out.println(bean);
-            setProdpattern((String) bean.get(T.PROD_PATTERN.getFld().getCodeSqlField()));
-            setProDuctCount(Long.valueOf(
-                (bean.get("prodCount") == null ? 0 : bean.get("prodCount")).toString()));
-            SQL prodSQL = new SQL() {{
-              SELECT(PdtProduct.T.PKEY, PdtProduct.T.PICTURE, PdtProduct.T.NAME);
-              FROM(PdtProduct.class);
-              WHERE(PdtProduct.T.IS_VERIFY, "=?", Sys.OYn.YES);
-              WHERE(PdtProduct.T.SUPPLIER, "=?", getPkey());
-              WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.GENERAL);
-              ORDER_BY(PdtProduct.T.IS_NEW, " DESC ");
-              LIMIT(0, 3);
-            }};
-            setProDuctDtos(irille.pub.bean.Query.sql(prodSQL).queryList(PdtProduct.class).stream()
-                .map(prod -> new Page_supplierProductView() {{
-                  translateUtil.getAutoTranslate(prod, lang);
-                  setPkey(prod.getPkey());
-                  String pic = prod.getPicture() == null ? ""
-                      : (prod.getPicture().split(",").length > 0 ? prod.getPicture().split(",")[0]
-                          : prod.getPicture());
-                  setPicture(pic);
-                  setRewrite(SEOUtils.getPdtProductTitle((int) getPkey(), getName()));
-                }}).collect(Collectors.toList()));
-          }}).collect(Collectors.toList());
+      List<SupplierListView> views =
+          irille.pub.bean.Query.sql(sql)
+              .queryMaps()
+              .stream()
+              .map(
+                  bean ->
+                      new SupplierListView() {
+                        {
+                          setPkey((Integer) bean.get(T.PKEY.getFld().getCodeSqlField()));
+                          setLogo((String) bean.get(T.LOGO.getFld().getCodeSqlField()));
+                          setName((String) bean.get(T.NAME.getFld().getCodeSqlField()));
+                          System.out.println(bean);
+                          setProdpattern(
+                              (String) bean.get(T.PROD_PATTERN.getFld().getCodeSqlField()));
+                          setProDuctCount(
+                              Long.valueOf(
+                                  (bean.get("prodCount") == null ? 0 : bean.get("prodCount"))
+                                      .toString()));
+                          SQL prodSQL =
+                              new SQL() {
+                                {
+                                  SELECT(
+                                      PdtProduct.T.PKEY, PdtProduct.T.PICTURE, PdtProduct.T.NAME);
+                                  FROM(PdtProduct.class);
+                                  WHERE(PdtProduct.T.IS_VERIFY, "=?", Sys.OYn.YES);
+                                  WHERE(PdtProduct.T.SUPPLIER, "=?", getPkey());
+                                  WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.GENERAL);
+                                  ORDER_BY(PdtProduct.T.IS_NEW, " DESC ");
+                                  LIMIT(0, 3);
+                                }
+                              };
+                          setProDuctDtos(
+                              irille.pub.bean.Query.sql(prodSQL)
+                                  .queryList(PdtProduct.class)
+                                  .stream()
+                                  .map(
+                                      prod ->
+                                          new Page_supplierProductView() {
+                                            {
+                                              translateUtil.getAutoTranslate(prod, lang);
+                                              setPkey(prod.getPkey());
+                                              String pic =
+                                                  prod.getPicture() == null
+                                                      ? ""
+                                                      : (prod.getPicture().split(",").length > 0
+                                                          ? prod.getPicture().split(",")[0]
+                                                          : prod.getPicture());
+                                              setPicture(pic);
+                                              setRewrite(
+                                                  SEOUtils.getPdtProductTitle(
+                                                      (int) getPkey(), getName()));
+                                            }
+                                          })
+                                  .collect(Collectors.toList()));
+                        }
+                      })
+              .collect(Collectors.toList());
 
       map.put("items", views);
       return map;
     }
 
-
-    /***
-     * 获取分类
+    /**
+     * * 获取分类
+     *
      * @author lijie@shoestp.cn
      * @param
      * @return
@@ -239,16 +283,13 @@ public class UsrSupplierDAO {
      */
     public List getCategory() {
       FormaterSql sql = FormaterSql.build(Debug);
-      sql.select(
-          UsrSupplierCategory.T.PKEY,
-          UsrSupplierCategory.T.SHOW_NAME
-      );
+      sql.select(UsrSupplierCategory.T.PKEY, UsrSupplierCategory.T.SHOW_NAME);
       return BeanBase.list(sql.buildSql());
     }
 
-
-    /***
-     * 获取供应商列表
+    /**
+     * * 获取供应商列表
+     *
      * @author lijie@shoestp.cn
      * @param
      * @return
@@ -257,15 +298,20 @@ public class UsrSupplierDAO {
     public String getSupplierList(IduPage page, int cated) throws JsonProcessingException {
       FormaterSql sql = FormaterSql.build();
       sql.select(
-          T.PKEY,
-          T.COMPANY_PHOTO,  //公司图片
-          T.COMPANY_PHOTO_LINK, //公司外链图片
-          T.NAME  //公司名称
-      ).asc(UsrSupplier.T.SORT).desc(T.UPDATE_TIME)
+              T.PKEY,
+              T.COMPANY_PHOTO, // 公司图片
+              T.COMPANY_PHOTO_LINK, // 公司外链图片
+              T.NAME // 公司名称
+              )
+          .asc(UsrSupplier.T.SORT)
+          .desc(T.UPDATE_TIME)
           .page(page.getStart(), page.getLimit());
-      sql.eqAutoAnd(T.CATEGORY, cated, number -> {
-        return number.intValue() > 0;
-      });
+      sql.eqAutoAnd(
+          T.CATEGORY,
+          cated,
+          number -> {
+            return number.intValue() > 0;
+          });
       Map result = new HashMap();
       result.put("total", sql.castLong(BeanBase.queryOneRow(sql.buildCountSql(), sql.getParms())));
       result.put("items", sql.castListMap(BeanBase.list(sql.buildSql(), sql.getParms())));
@@ -274,8 +320,8 @@ public class UsrSupplierDAO {
   }
 
   public static void validatePw(String mm, String mmcheck) {
-    //TODO 密码暂时不做复杂的限制
-    //String ptn = "^(?=.*\\d)(?=.*[a-zA-Z]).{6,}$";
+    // TODO 密码暂时不做复杂的限制
+    // String ptn = "^(?=.*\\d)(?=.*[a-zA-Z]).{6,}$";
     if (mm == null || mm.length() < 6) {
       throw LOG.err("err", "密码不能小于6位!");
     }
@@ -292,7 +338,9 @@ public class UsrSupplierDAO {
     public void before() {
       super.before();
       UsrSupplier dbBean = loadThisBeanAndLock();
-      PropertyUtils.copyProperties(dbBean, getB(),
+      PropertyUtils.copyProperties(
+          dbBean,
+          getB(),
           T.NAME,
           T.CATEGORY,
           T.IS_AUTH,
@@ -333,7 +381,9 @@ public class UsrSupplierDAO {
     public void before() {
       super.before();
       UsrSupplier dbBean = loadThisBeanAndLock();
-      PropertyUtils.copyProperties(dbBean, getB(),
+      PropertyUtils.copyProperties(
+          dbBean,
+          getB(),
           T.BUSINESS_TYP,
           T.LOCATION,
           T.PRODUCTION,
@@ -368,7 +418,9 @@ public class UsrSupplierDAO {
     public void before() {
       super.before();
       UsrSupplier dbBean = loadThisBeanAndLock();
-      PropertyUtils.copyProperties(dbBean, getB(),
+      PropertyUtils.copyProperties(
+          dbBean,
+          getB(),
           T.HOME_PAGE_DIY,
           T.PRODUCT_PAGE_DIY,
           T.CONTACT_PAGE_DIY,
@@ -386,7 +438,9 @@ public class UsrSupplierDAO {
     public void before() {
       super.before();
       UsrSupplier dbBean = loadThisBeanAndLock();
-      PropertyUtils.copyProperties(dbBean, getB(),
+      PropertyUtils.copyProperties(
+          dbBean,
+          getB(),
           T.TRACE_CODE,
           T.WEB_SIZE_TITLE,
           T.WEB_SITE,
@@ -427,7 +481,9 @@ public class UsrSupplierDAO {
       }
       setB(translateUtil.autoTranslate(getB(), true));
       UsrSupplier dbBean = loadThisBeanAndLock();
-      PropertyUtils.copyProperties(dbBean, getB(),
+      PropertyUtils.copyProperties(
+          dbBean,
+          getB(),
           T.BUSINESS_TYP,
           T.LOCATION,
           T.PRODUCTION,
@@ -518,27 +574,27 @@ public class UsrSupplierDAO {
     @Override
     public void before() {
       super.before();
-      proList = BeanBase
-          .list(PdtProduct.class, PdtProduct.T.SUPPLIER + " in (" + getB().getPkey() + ")", false);
+      proList =
+          BeanBase.list(
+              PdtProduct.class, PdtProduct.T.SUPPLIER + " in (" + getB().getPkey() + ")", false);
     }
   }
 
-
-    /*public static void main(String[] args) {
+  /*public static void main(String[] args) {
         int pkey = 1;
         String password = "123456";
         System.out.println(inCode(pkey + password));
     	//https://graph.facebook.com/debug_token?access_token=311019632992273%7C191eaf6470de890483ad21946911574c&input_token=EAAEa3uaZBIBEBAPcP3V5yTw3yb4Y6wBIxZCSQIpPaX0dd5ZCf0olpDxGFPE68EVzvXBsgoC910bkMXi6fQ8x95qDHnbB84XMovoWyZC9l5LtvEsU9obn74QjbNsdk6LwkIIpyRTC39Nmi351BuAXMwZCqYGaPa1xUp02TapLbvzin2QUgTx1KWM8lWtYp5KzlYSK1tFKKwRis64w36aBp
         try {
-		String result=HttpRequestUtil.sendGet("https://graph.facebook.com/debug_token?access_token=311019632992273%7C191eaf6470de890483ad21946911574c&input_token=EAAEa3uaZBIBEBAPcP3V5yTw3yb4Y6wBIxZCSQIpPaX0dd5ZCf0olpDxGFPE68EVzvXBsgoC910bkMXi6fQ8x95qDHnbB84XMovoWyZC9l5LtvEsU9obn74QjbNsdk6LwkIIpyRTC39Nmi351BuAXMwZCqYGaPa1xUp02TapLbvzin2QUgTx1KWM8lWtYp5KzlYSK1tFKKwRis64w36aBp" ,"access_token=311019632992273%7C191eaf6470de890483ad21946911574c&input_token=EAAEa3uaZBIBEBAPcP3V5yTw3yb4Y6wBIxZCSQIpPaX0dd5ZCf0olpDxGFPE68EVzvXBsgoC910bkMXi6fQ8x95qDHnbB84XMovoWyZC9l5LtvEsU9obn74QjbNsdk6LwkIIpyRTC39Nmi351BuAXMwZCqYGaPa1xUp02TapLbvzin2QUgTx1KWM8lWtYp5KzlYSK1tFKKwRis64w36aBp", true);
-		System.out.println(result);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+  String result=HttpRequestUtil.sendGet("https://graph.facebook.com/debug_token?access_token=311019632992273%7C191eaf6470de890483ad21946911574c&input_token=EAAEa3uaZBIBEBAPcP3V5yTw3yb4Y6wBIxZCSQIpPaX0dd5ZCf0olpDxGFPE68EVzvXBsgoC910bkMXi6fQ8x95qDHnbB84XMovoWyZC9l5LtvEsU9obn74QjbNsdk6LwkIIpyRTC39Nmi351BuAXMwZCqYGaPa1xUp02TapLbvzin2QUgTx1KWM8lWtYp5KzlYSK1tFKKwRis64w36aBp" ,"access_token=311019632992273%7C191eaf6470de890483ad21946911574c&input_token=EAAEa3uaZBIBEBAPcP3V5yTw3yb4Y6wBIxZCSQIpPaX0dd5ZCf0olpDxGFPE68EVzvXBsgoC910bkMXi6fQ8x95qDHnbB84XMovoWyZC9l5LtvEsU9obn74QjbNsdk6LwkIIpyRTC39Nmi351BuAXMwZCqYGaPa1xUp02TapLbvzin2QUgTx1KWM8lWtYp5KzlYSK1tFKKwRis64w36aBp", true);
+  System.out.println(result);
+  } catch (Exception e) {
+  	// TODO Auto-generated catch block
+  	e.printStackTrace();
+  }
     }*/
 
-  //将所有的供应商的密码初始化为123456
+  // 将所有的供应商的密码初始化为123456
   private static void initAllSupplierPassword() throws SQLException {
     List<UsrSupplier> list = irille.pub.bean.Query.SELECT(UsrSupplier.class).queryList();
     for (UsrSupplier bean : list) {
@@ -548,7 +604,7 @@ public class UsrSupplierDAO {
     DbPool.getInstance().getConn().commit();
   }
 
-  //给所有未设置运费模板的供应商初始化一条运费模板
+  // 给所有未设置运费模板的供应商初始化一条运费模板
   private static void initAllSupplierFreight() throws SQLException {
     PltFreight f = irille.pub.bean.Query.SELECT(PltFreight.class).limit(0, 1).query();
     PltFreightSeller s = new PltFreightSeller();
@@ -562,8 +618,11 @@ public class UsrSupplierDAO {
     s.setUseInterface(f.getUseInterface());
     s.setWeightMax(f.getWeightMax());
     s.setWeightMin(f.getWeightMin());
-    PltFreightLine l = irille.pub.bean.Query.SELECT(PltFreightLine.class)
-        .WHERE(PltFreightLine.T.MAIN, "=?", f.getPkey()).limit(0, 1).query();
+    PltFreightLine l =
+        irille.pub.bean.Query.SELECT(PltFreightLine.class)
+            .WHERE(PltFreightLine.T.MAIN, "=?", f.getPkey())
+            .limit(0, 1)
+            .query();
     PltFreightSellerLine sl = new PltFreightSellerLine();
     sl.setAggravatePrice(l.getAggravatePrice());
     sl.setAggravateSection(l.getAggravateSection());
@@ -577,8 +636,10 @@ public class UsrSupplierDAO {
     sl.setWeightSection(l.getWeightSection());
     List<UsrSupplier> list = irille.pub.bean.Query.SELECT(UsrSupplier.class).queryList();
     for (UsrSupplier bean : list) {
-      int c = irille.pub.bean.Query.SELECT(PltFreightSeller.class)
-          .WHERE(PltFreightSeller.T.SUPPLIER, "=?", bean.getPkey()).queryCount();
+      int c =
+          irille.pub.bean.Query.SELECT(PltFreightSeller.class)
+              .WHERE(PltFreightSeller.T.SUPPLIER, "=?", bean.getPkey())
+              .queryCount();
       if (c == 0) {
         s.setPkey(null);
         s.setSupplier(bean.getPkey());
@@ -591,7 +652,7 @@ public class UsrSupplierDAO {
     DbPool.getInstance().getConn().commit();
   }
 
-  //给所有的没有支付设置的供应商添加一个默认的支付设置
+  // 给所有的没有支付设置的供应商添加一个默认的支付设置
   public static void initAllSupplierPayType() throws JSONException, SQLException {
     PltPay p = new PltPay();
     JSONObject json = new JSONObject();
@@ -606,8 +667,10 @@ public class UsrSupplierDAO {
     p.setPaysetting(json.toString());
     List<UsrSupplier> list = irille.pub.bean.Query.SELECT(UsrSupplier.class).queryList();
     for (UsrSupplier bean : list) {
-      int c = irille.pub.bean.Query.SELECT(PltPay.class)
-          .WHERE(PltPay.T.SUPPLIER, "=?", bean.getPkey()).queryCount();
+      int c =
+          irille.pub.bean.Query.SELECT(PltPay.class)
+              .WHERE(PltPay.T.SUPPLIER, "=?", bean.getPkey())
+              .queryCount();
       if (c == 0) {
         p.setPkey(null);
         p.setSupplier(bean.getPkey());
@@ -618,14 +681,15 @@ public class UsrSupplierDAO {
     DbPool.getInstance().getConn().commit();
   }
 
-  //将admin@163.com的采购商的密码初始化为123456
+  // 将admin@163.com的采购商的密码初始化为123456
   public static void initAdminPurchasePassword() throws SQLException {
-    UsrPurchase purchase = irille.pub.bean.Query.SELECT(UsrPurchase.class)
-        .WHERE(UsrPurchase.T.LOGIN_NAME, "=?", "admin@163.com").query();
+    UsrPurchase purchase =
+        irille.pub.bean.Query.SELECT(UsrPurchase.class)
+            .WHERE(UsrPurchase.T.LOGIN_NAME, "=?", "admin@163.com")
+            .query();
     purchase.setPassword(DateTools.getDigest(purchase.getPkey() + "123456"));
     purchase.upd();
     DbPool.getInstance().getConn().commit();
-
   }
 
   public static void initAllSupplierShowName() throws SQLException {
@@ -633,13 +697,15 @@ public class UsrSupplierDAO {
     for (UsrSupplier bean : list) {
       String name = bean.getShowName();
       JSONObject showname = new JSONObject();
-      Stream.of(Language.values()).forEach(lang -> {
-        try {
-          showname.put(lang.name(), name);
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      });
+      Stream.of(Language.values())
+          .forEach(
+              lang -> {
+                try {
+                  showname.put(lang.name(), name);
+                } catch (Exception e) {
+                  e.printStackTrace();
+                }
+              });
       ;
       bean.stShowName(showname);
       bean.upd();
@@ -657,9 +723,7 @@ public class UsrSupplierDAO {
     return false;
   }
 
-  /**
-   * 供应商入驻后的默认排序
-   */
+  /** 供应商入驻后的默认排序 */
   private static final Integer default_sort = 999;
 
   /**
@@ -684,15 +748,13 @@ public class UsrSupplierDAO {
     bean.setUpdateTime(Env.getTranBeginTime());
     bean.setSort(default_sort);
     bean.ins();
-    //审核通过才将运费模板复制给供应商
-    //PltFreightSellerAction pltFreightSellerAction = new PltFreightSellerAction();
-    //pltFreightSellerAction.insfreight();
+    // 审核通过才将运费模板复制给供应商
+    // PltFreightSellerAction pltFreightSellerAction = new PltFreightSellerAction();
+    // pltFreightSellerAction.insfreight();
     return bean;
   }
 
-  /**
-   * 商家申请入驻信息校验
-   */
+  /** 商家申请入驻信息校验 */
   private static UsrSupplier valid4Apply(UsrSupplier bean, UsrPurchase purchase) {
 
     if (UsrSupplier.chkUniqueLogin_name(false, purchase.getLoginName()) != null) {
@@ -702,9 +764,17 @@ public class UsrSupplierDAO {
     ValidForm vf = new ValidForm(bean);
     ValidRegex vr = new ValidRegex(bean);
 
-    vf.validNotEmpty(T.NAME, T.CATEGORY, T.COUNTRY, T.PROVINCE, T.CITY, T.COMPANY_ADDR, T.EMAIL,
-        T.CREDIT_CODE, T.ENTITY);
-    //不是长期的营业执照需要填写营业执照有效期
+    vf.validNotEmpty(
+        T.NAME,
+        T.CATEGORY,
+        T.COUNTRY,
+        T.PROVINCE,
+        T.CITY,
+        T.COMPANY_ADDR,
+        T.EMAIL,
+        T.CREDIT_CODE,
+        T.ENTITY);
+    // 不是长期的营业执照需要填写营业执照有效期
     if (!bean.gtBusinessLicenseIsSecular()) {
       vf.validNotEmpty(T.BUSINESS_LICENSE_BEGIN_TIME, T.BUSINESS_LICENSE_END_TIME);
     }
@@ -738,11 +808,11 @@ public class UsrSupplierDAO {
     supplier.stStatus(OStatus.APPR);
     supplier.upd();
 
-    //初始化商家的运费设置,根据平台端的运费模板
+    // 初始化商家的运费设置,根据平台端的运费模板
     PltFreightSellerDAO.init(pkey, false);
 
-    //初始化商家的支付设置,没有明确支付设置的信息 没办法初始化,TODO
-    //PltPayDAO.init(supplier);
+    // 初始化商家的支付设置,没有明确支付设置的信息 没办法初始化,TODO
+    // PltPayDAO.init(supplier);
 
     return supplier;
   }
@@ -761,7 +831,6 @@ public class UsrSupplierDAO {
     return supplier;
   }
 
-
   /**
    * 更新供应商信息
    *
@@ -769,46 +838,46 @@ public class UsrSupplierDAO {
    */
   public static UsrSupplier updInfo(UsrSupplier supplier) {
     UsrSupplier model = BeanBase.load(UsrSupplier.class, supplier.getPkey());
-    PropertyUtils.copyProperties(model, supplier,
-        T.COMPANY_NATURE,//企业性质 多国语言
-        T.COMPANY_TYPE,//企业类型 多国语言
-        T.CATEGORY,//供应商分类
-        T.WEB_SITE,//网址
-        T.FAX,//传真
-        T.OPERATION_TERM,//业务期限
-        T.MAIN_SALES_AREA,//主销售区 多国语言
-        T.MAIN_PROD,//主要产品 多国语言
-        T.PROD_PATTERN,//生产模式 多国语言
-        T.DES,//备注
-        T.CREDIT_CODE,//信用代码
-        T.QQ,//QQ
-        T.TAXPAYER_TYPE,//纳税人类型
-        T.HEAD_PIC,//头像
-        T.CONTACTS,//联系人
-        T.DEPARTMENT,//Department 多国语言
-        T.JOB_TITLE,//Job_Title 多国语言
-        T.PHONE,//手机 必填重要！新的询盘会通知到这里！
-        T.SETTLEMENT_BANK,//结算开户行
-        T.BANK_ACCOUNT,//银行账号
-        T.BANK_BRANCH,//银行开户行
-        T.BANK_COUNTRY,//,"开户行国家"
-        T.BANK_PROVINCE,//"开户行省份"
-
-        T.SHOW_NAME,// 网站显示名称
-        T.SEO_TITLE,//客人能通过这些字搜索到店铺，多个关键字用空格分开
-        T.SEO_CONTENT,// 客人能通过这些字描述决定进不进店，多个描述字用空格分开
-        T.COOP_CERT_PHOTO,//合作凭证
-
-        T.TRACE_CODE,//跟踪代码
-        T.WEB_SIZE_TITLE,//自定义链接名称
-        T.TONGJI_URL,//第三方统计 地址
-        T.TONGJI_PWD//第三方统计 密码
-    );
+    PropertyUtils.copyProperties(
+        model,
+        supplier,
+        T.COMPANY_NATURE, // 企业性质 多国语言
+        T.COMPANY_TYPE, // 企业类型 多国语言
+        T.CATEGORY, // 供应商分类
+        T.WEB_SITE, // 网址
+        T.FAX, // 传真
+        T.OPERATION_TERM, // 业务期限
+        T.MAIN_SALES_AREA, // 主销售区 多国语言
+        T.MAIN_PROD, // 主要产品 多国语言
+        T.PROD_PATTERN, // 生产模式 多国语言
+        T.DES, // 备注
+        T.CREDIT_CODE, // 信用代码
+        T.QQ, // QQ
+        T.TAXPAYER_TYPE, // 纳税人类型
+        T.HEAD_PIC, // 头像
+        T.CONTACTS, // 联系人
+        T.DEPARTMENT, // Department 多国语言
+        T.JOB_TITLE, // Job_Title 多国语言
+        T.PHONE, // 手机 必填重要！新的询盘会通知到这里！
+        T.SETTLEMENT_BANK, // 结算开户行
+        T.BANK_ACCOUNT, // 银行账号
+        T.BANK_BRANCH, // 银行开户行
+        T.BANK_COUNTRY, // ,"开户行国家"
+        T.BANK_PROVINCE, // "开户行省份"
+        T.SHOW_NAME, // 网站显示名称
+        T.SEO_TITLE, // 客人能通过这些字搜索到店铺，多个关键字用空格分开
+        T.SEO_CONTENT, // 客人能通过这些字描述决定进不进店，多个描述字用空格分开
+        T.COOP_CERT_PHOTO, // 合作凭证
+        T.TRACE_CODE, // 跟踪代码
+        T.WEB_SIZE_TITLE, // 自定义链接名称
+        T.TONGJI_URL, // 第三方统计 地址
+        T.TONGJI_PWD // 第三方统计 密码
+        );
     translateUtil.autoTranslate(model, true).upd();
     return model;
   }
 
-  //================<2018-9-29 && new>==================
+  // ================<2018-9-29 && new>==================
 
   /**
    * 客户端,获取商家页面信息
@@ -817,88 +886,87 @@ public class UsrSupplierDAO {
    */
   public static class Select extends IduOther<Select, UsrSupplier> {
 
-    /**
-     * 根据pkey获取商家信息 id => 供应商id type = 1 获取商家首页信息 type = 2 获取商家产品页信息 type = 3&4 获取商家公司页或者联系页信息
-     */
-    public static SupplierView getSupView(FldLanguage.Language language, Serializable id,
-        Integer type) {
-      UsrSupplier supplier = translateUtil
-          .getAutoTranslate(BeanBase.load(UsrSupplier.class, id), language);
+    /** 根据pkey获取商家信息 id => 供应商id type = 1 获取商家首页信息 type = 2 获取商家产品页信息 type = 3&4 获取商家公司页或者联系页信息 */
+    public static SupplierView getSupView(
+        FldLanguage.Language language, Serializable id, Integer type) {
+      UsrSupplier supplier =
+          translateUtil.getAutoTranslate(BeanBase.load(UsrSupplier.class, id), language);
       SupplierView view = new SupplierView();
-      PltCountry country = translateUtil
-          .getAutoTranslate(BeanBase.load(PltCountry.class, supplier.getCountry()), language);
-      PltProvince province = translateUtil
-          .getAutoTranslate(BeanBase.load(PltProvince.class, supplier.getProvince()), language);
-      //公司信息
+      PltCountry country =
+          translateUtil.getAutoTranslate(
+              BeanBase.load(PltCountry.class, supplier.getCountry()), language);
+      PltProvince province =
+          translateUtil.getAutoTranslate(
+              BeanBase.load(PltProvince.class, supplier.getProvince()), language);
+      // 公司信息
       view.setPkey(supplier.getPkey());
-      view.setLogo(supplier.getLogo());//公司logo
-      view.setShowName(supplier.getShowName());//公司网站显示名称
-      view.setAuthAge(getAuthTime(supplier));//公司认证年限
-      view.setCompanyType(supplier.getCompanyType());//企业类型
-      view.setCompanyNature(supplier.getCompanyNature());//企业性质
-      //页面设置
-      view.setIsAuth(supplier.getIsAuth());//公司是否通过认证
-      view.setPrmAuthrity(judgeAuthorityByRole(supplier.gtRole()));//公司是否存在联合采购权限
-      view.setImList(UsrSupImDAO.getEnabledImSetting(supplier.getPkey()));//店铺内聊天插件
-      view.setTraceCode(supplier.getTraceCode());// 跟踪代码 STR(100)<null>
-      view.setWebSizeTitle(supplier.getWebSizeTitle());// 跟踪代码 STR(100)<null>
+      view.setLogo(supplier.getLogo()); // 公司logo
+      view.setShowName(supplier.getShowName()); // 公司网站显示名称
+      view.setAuthAge(getAuthTime(supplier)); // 公司认证年限
+      view.setCompanyType(supplier.getCompanyType()); // 企业类型
+      view.setCompanyNature(supplier.getCompanyNature()); // 企业性质
+      // 页面设置
+      view.setIsAuth(supplier.getIsAuth()); // 公司是否通过认证
+      view.setPrmAuthrity(judgeAuthorityByRole(supplier.gtRole())); // 公司是否存在联合采购权限
+      view.setImList(UsrSupImDAO.getEnabledImSetting(supplier.getPkey())); // 店铺内聊天插件
+      view.setTraceCode(supplier.getTraceCode()); // 跟踪代码 STR(100)<null>
+      view.setWebSizeTitle(supplier.getWebSizeTitle()); // 跟踪代码 STR(100)<null>
       switch (type) {
-        case 1://首页
-          view.setHomePageOn(supplier.getHomePageOn());//公司是否启用首页个性化装修
-          view.setHomePageDiy(supplier.getHomePageDiy());//公司首页个性装修
-          view.setIsPro(supplier.getIsPro());//是否展示首页产品
-          view.setMainSalesArea(supplier.getMainSalesArea());//主要销售区
-          view.setAdPhoto(supplier.getAdPhoto());//首页大轮播图
-          view.setAdPhotoLink(supplier.getAdPhotoLink());//首页大轮播图链接
-          view.setCompanyPhoto(supplier.getCompanyPhoto());//企业图片
-          view.setCompanyPhotoLink(supplier.getCompanyPhotoLink());//企业图片链接
+        case 1: // 首页
+          view.setHomePageOn(supplier.getHomePageOn()); // 公司是否启用首页个性化装修
+          view.setHomePageDiy(supplier.getHomePageDiy()); // 公司首页个性装修
+          view.setIsPro(supplier.getIsPro()); // 是否展示首页产品
+          view.setMainSalesArea(supplier.getMainSalesArea()); // 主要销售区
+          view.setAdPhoto(supplier.getAdPhoto()); // 首页大轮播图
+          view.setAdPhotoLink(supplier.getAdPhotoLink()); // 首页大轮播图链接
+          view.setCompanyPhoto(supplier.getCompanyPhoto()); // 企业图片
+          view.setCompanyPhotoLink(supplier.getCompanyPhotoLink()); // 企业图片链接
           view.setAdPhotoMobile(supplier.getAdPhotoMobile());
           if (supplier.getIsPro().equals(Sys.OYn.YES.getLine().getKey())) {
             view.setProductList(PdtProductDAO.Select.getIndexProduct(view.getPkey(), language));
           }
           break;
-        case 2://产品中心
-          view.setProductPageOn(supplier.getProductPageOn());//公司是否启用产品页个性化装修
-          view.setProductPageDiy(supplier.getProductPageDiy());//产品页个性化装修
+        case 2: // 产品中心
+          view.setProductPageOn(supplier.getProductPageOn()); // 公司是否启用产品页个性化装修
+          view.setProductPageDiy(supplier.getProductPageDiy()); // 产品页个性化装修
           break;
-        case 3://公司信息或者联系我们
-          view.setName(supplier.getName());//公司名称
-          view.setCountryName(country.getName());//公司所在地国家
-          view.setCity(supplier.getCity());//公司所在地城市
-          view.setProvinceName(province.getName());//公司所在地省份
-          view.setCreditCode(supplier.getCreditCode());//企业信用代码
-          view.setFax(supplier.getFax());//传真
-          view.setCompanyEstablishTime(supplier.getCompanyEstablishTime());//公司成立时间
-          view.setBusinessTyp(supplier.getBusinessTyp());//公司商业模式
-          view.setTop3Markets(supplier.getTop3Markets());//前三市场
-          view.setCompanyAddr(supplier.getCompanyAddr());//公司地址
-          view.setMainProd(supplier.getMainProd());//公司主要产品
-          view.setProdPattern(supplier.getProdPattern());//公司生产模式
-          view.setTelephone(supplier.getTelephone());//公司电话
-          view.setPhone(supplier.getPhone());//联系人电话
-          view.setRegisteredCapital(supplier.getRegisteredCapital());//注册资金
-          view.setEntity(supplier.getEntity());//企业法人
-          view.setWebSizeTitle(supplier.getWebSizeTitle());//企业网站标题
-          view.setWebsite(supplier.getWebsite());//企业网站
-          view.setDeveloper(supplier.getDeveloper());//开发者编号
-          view.setTotalEmployees(supplier.getTotalEmployees());//员工总数
-          view.setAnnualSales(supplier.getAnnualSales());//年销售额
-          view.setMaterials(supplier.getMaterials());//公司所选材料
-          view.setAuthTime(supplier.getAuthTime());//公司认证时间
-          view.setLocation(supplier.getLocation());//公司位置
-          //运营信息
-          view.setHeadPic(supplier.getHeadPic());//公司联系人头像
-          view.setContacts(supplier.getContacts());//联系人名称
-          view.setDepartment(supplier.getDepartment());//联系人部门
-          view.setJobTitle(supplier.getJobTitle());//联系人职位
-          //页面设置
-          view.setContactPageOn(supplier.getContactPageOn());//是否启用联系页个性化装修
-          view.setContactPageDiy(supplier.getContactPageDiy());//联系页个性化装修
+        case 3: // 公司信息或者联系我们
+          view.setName(supplier.getName()); // 公司名称
+          view.setCountryName(country.getName()); // 公司所在地国家
+          view.setCity(supplier.getCity()); // 公司所在地城市
+          view.setProvinceName(province.getName()); // 公司所在地省份
+          view.setCreditCode(supplier.getCreditCode()); // 企业信用代码
+          view.setFax(supplier.getFax()); // 传真
+          view.setCompanyEstablishTime(supplier.getCompanyEstablishTime()); // 公司成立时间
+          view.setBusinessTyp(supplier.getBusinessTyp()); // 公司商业模式
+          view.setTop3Markets(supplier.getTop3Markets()); // 前三市场
+          view.setCompanyAddr(supplier.getCompanyAddr()); // 公司地址
+          view.setMainProd(supplier.getMainProd()); // 公司主要产品
+          view.setProdPattern(supplier.getProdPattern()); // 公司生产模式
+          view.setTelephone(supplier.getTelephone()); // 公司电话
+          view.setPhone(supplier.getPhone()); // 联系人电话
+          view.setRegisteredCapital(supplier.getRegisteredCapital()); // 注册资金
+          view.setEntity(supplier.getEntity()); // 企业法人
+          view.setWebSizeTitle(supplier.getWebSizeTitle()); // 企业网站标题
+          view.setWebsite(supplier.getWebsite()); // 企业网站
+          view.setDeveloper(supplier.getDeveloper()); // 开发者编号
+          view.setTotalEmployees(supplier.getTotalEmployees()); // 员工总数
+          view.setAnnualSales(supplier.getAnnualSales()); // 年销售额
+          view.setMaterials(supplier.getMaterials()); // 公司所选材料
+          view.setAuthTime(supplier.getAuthTime()); // 公司认证时间
+          view.setLocation(supplier.getLocation()); // 公司位置
+          // 运营信息
+          view.setHeadPic(supplier.getHeadPic()); // 公司联系人头像
+          view.setContacts(supplier.getContacts()); // 联系人名称
+          view.setDepartment(supplier.getDepartment()); // 联系人部门
+          view.setJobTitle(supplier.getJobTitle()); // 联系人职位
+          // 页面设置
+          view.setContactPageOn(supplier.getContactPageOn()); // 是否启用联系页个性化装修
+          view.setContactPageDiy(supplier.getContactPageDiy()); // 联系页个性化装修
           break;
       }
       return view;
     }
-
   }
 
   /**
@@ -935,7 +1003,7 @@ public class UsrSupplierDAO {
     return time1;
   }
 
-  //================<2018-9-29 && end>==================
+  // ================<2018-9-29 && end>==================
 
   /**
    * 加载获取商家端店铺装修
@@ -975,49 +1043,83 @@ public class UsrSupplierDAO {
     return ssv;
   }
 
-  /**
-   * 修改装修店铺 商家 @author  wilson zhang
-   */
+  /** 修改装修店铺 商家 @author wilson zhang */
   public static class setting extends IduUpd<setting, UsrSupplier> {
 
     @Override
     public void before() {
       UsrSupplier dbBean = loadThisBeanAndLock();
-      PropertyUtils
-          .copyProperties(dbBean, getB(), T.LOGO, T.SIGN_BACKGD, T.AD_PHOTO, T.AD_PHOTO_LINK,
-              T.COMPANY_PHOTO, T.COMPANY_PHOTO_LINK, T.HOME_PAGE_DIY, T.HOME_PAGE_ON,
-              T.COMPANY_INTRODUCTION_PAGE_CUSTOM_DECORATION, T.BOTTOM_HOME_PRODUCTS_ON,
-              T.HOME_POSTER_ON, T.HOME_BUSINESS_BIG_POSTER_ON, T.Is_Pro,
-              T.COMPANY_INTRODUCTION_PAGE_CUSTOM_DECORATION_ON);
+      PropertyUtils.copyProperties(
+          dbBean,
+          getB(),
+          T.LOGO,
+          T.SIGN_BACKGD,
+          T.AD_PHOTO,
+          T.AD_PHOTO_LINK,
+          T.COMPANY_PHOTO,
+          T.COMPANY_PHOTO_LINK,
+          T.HOME_PAGE_DIY,
+          T.HOME_PAGE_ON,
+          T.COMPANY_INTRODUCTION_PAGE_CUSTOM_DECORATION,
+          T.BOTTOM_HOME_PRODUCTS_ON,
+          T.HOME_POSTER_ON,
+          T.HOME_BUSINESS_BIG_POSTER_ON,
+          T.Is_Pro,
+          T.COMPANY_INTRODUCTION_PAGE_CUSTOM_DECORATION_ON);
       setB(dbBean);
       super.before();
     }
-
   }
 
   /**
    * @Description: 新商家2.1 商家 店铺信息-账户信息（公司信息）
+   *
    * @date 2018/12/18 9:38
    * @anthor wilson zhang
    */
   public static SupinfoView getsupinfo(Integer supplierId, Language language) {
     SupinfoView sv = new SupinfoView();
     sv.setCurlang(language.toString());
-    SQL sql = new SQL() {{
-      SELECT(T.PKEY, T.QQ, T.FAX, T.TELEPHONE,
-          T.EMAIL, T.REGISTERED_CAPITAL, T.COMPANY_ESTABLISH_TIME,
-          T.OPERATION_TERM, T.DES, T.CREDIT_CODE, T.ENTITY, T.BUSINESS_LICENSE_BEGIN_TIME,
-          T.BUSINESS_LICENSE_END_TIME,
-          T.BUSINESS_LICENSE_IS_SECULAR, T.TAXPAYER_TYPE, T.ID_CARD, T.ID_CARD_FRONT_PHOTO,
-          T.ID_CARD_BACK_PHOTO, T.COUNTRY, T.PROVINCE,
-          T.COMPANY_ADDR, T.COMPANY_TYPE, T.COMPANY_NATURE, T.MAIN_SALES_AREA, T.PROD_PATTERN,
-          T.PROD_PATTERN, T.COMPANY_TYPE, T.MAIN_PROD, T.CATEGORY, T.ID_CARD_FRONT_PHOTO,
-          T.ID_CARD_BACK_PHOTO
-      );
-      SELECT(T.NAME, "COMPANYNAME");
-      FROM(UsrSupplier.class);
-      WHERE(T.PKEY, "=?", supplierId);
-    }};
+    SQL sql =
+        new SQL() {
+          {
+            SELECT(
+                T.PKEY,
+                T.QQ,
+                T.FAX,
+                T.TELEPHONE,
+                T.EMAIL,
+                T.REGISTERED_CAPITAL,
+                T.COMPANY_ESTABLISH_TIME,
+                T.OPERATION_TERM,
+                T.DES,
+                T.CREDIT_CODE,
+                T.ENTITY,
+                T.BUSINESS_LICENSE_BEGIN_TIME,
+                T.BUSINESS_LICENSE_END_TIME,
+                T.BUSINESS_LICENSE_IS_SECULAR,
+                T.TAXPAYER_TYPE,
+                T.ID_CARD,
+                T.ID_CARD_FRONT_PHOTO,
+                T.ID_CARD_BACK_PHOTO,
+                T.COUNTRY,
+                T.PROVINCE,
+                T.COMPANY_ADDR,
+                T.COMPANY_TYPE,
+                T.COMPANY_NATURE,
+                T.MAIN_SALES_AREA,
+                T.PROD_PATTERN,
+                T.PROD_PATTERN,
+                T.COMPANY_TYPE,
+                T.MAIN_PROD,
+                T.CATEGORY,
+                T.ID_CARD_FRONT_PHOTO,
+                T.ID_CARD_BACK_PHOTO);
+            SELECT(T.NAME, "COMPANYNAME");
+            FROM(UsrSupplier.class);
+            WHERE(T.PKEY, "=?", supplierId);
+          }
+        };
     Map<String, Object> map = irille.pub.bean.Query.sql(sql).queryMap();
     sv.setId((Integer) map.get(T.PKEY.getFld().getCodeSqlField()));
     sv.setCompany((String) map.get("COMPANYNAME"));
@@ -1062,6 +1164,7 @@ public class UsrSupplierDAO {
 
   /**
    * @Description: 新商家2.1 商家 店铺信息-修改账户信息（公司信息）
+   *
    * @date 2018/12/18 9:38
    * @anthor wilson zhang
    */
@@ -1070,17 +1173,28 @@ public class UsrSupplierDAO {
     @Override
     public void before() {
       UsrSupplier model = BeanBase.load(UsrSupplier.class, getB().getPkey());
-      PropertyUtils
-          .copyProperties(model, getB(), T.COMPANY_NATURE, T.COMPANY_TYPE, T.CATEGORY, T.QQ, T.FAX,
-              T.OPERATION_TERM, T.MAIN_SALES_AREA, T.PROD_PATTERN, T.DES, T.MAIN_PROD,
-              T.CREDIT_CODE, T.TAXPAYER_TYPE);
+      PropertyUtils.copyProperties(
+          model,
+          getB(),
+          T.COMPANY_NATURE,
+          T.COMPANY_TYPE,
+          T.CATEGORY,
+          T.QQ,
+          T.FAX,
+          T.OPERATION_TERM,
+          T.MAIN_SALES_AREA,
+          T.PROD_PATTERN,
+          T.DES,
+          T.MAIN_PROD,
+          T.CREDIT_CODE,
+          T.TAXPAYER_TYPE);
       setB(model);
     }
-
   }
 
   /**
    * @Description: 新商家2.1 商家 店铺信息-修改运营信息
+   *
    * @date 2018/12/18 9:38
    * @anthor wilson zhang
    */
@@ -1089,37 +1203,68 @@ public class UsrSupplierDAO {
     @Override
     public void before() {
       UsrSupplier model = BeanBase.load(UsrSupplier.class, getB().getPkey());
-      PropertyUtils
-          .copyProperties(model, getB(), T.WEBSITE, T.PRODUCTION, T.DEVELOPER, T.TOTAL_EMPLOYEES,
-              T.ANNUAL_SALES, T.TOP_3_MARKETS,
-              T.WEB_SIZE_TITLE, T.CITY, T.HEAD_PIC, T.CONTACTS, T.PHONE
-          );
+      PropertyUtils.copyProperties(
+          model,
+          getB(),
+          T.WEBSITE,
+          T.PRODUCTION,
+          T.DEVELOPER,
+          T.TOTAL_EMPLOYEES,
+          T.ANNUAL_SALES,
+          T.TOP_3_MARKETS,
+          T.WEB_SIZE_TITLE,
+          T.CITY,
+          T.HEAD_PIC,
+          T.CONTACTS,
+          T.PHONE);
       setB(model);
     }
-
   }
 
   /**
    * @Description: 新商家2.1 商家 运营信息
+   *
    * @date 2018/12/18 9:38
    * @anthor wilson zhang
    */
-
   public static operateinfoView getoperateinfo(Integer supperid, Language language)
       throws Exception {
     operateinfoView ov = new operateinfoView();
     try {
-      SQL sql = new SQL() {{
-        SELECT(T.WEB_SIZE_TITLE, T.PRODUCTION, T.DEVELOPER, T.TOTAL_EMPLOYEES, T.ANNUAL_SALES,
-            T.WEBSITE, T.COUNTRY, T.PROVINCE, T.CITY, T.HEAD_PIC, T.CONTACTS, T.PHONE,
-            T.DEPARTMENT, T.JOB_TITLE, T.BANK_ACCOUNT,
-            T.SETTLEMENT_BANK, T.BANK_BRANCH, T.BANK_COUNTRY, T.BANK_PROVINCE, T.OPERATE_ID_CARD,
-            T.CONTACTS_ID_CARD_FRONT_PHOTO, T.CONTACTS_ID_CARD_BACK_PHOTO);
-        SELECT(
-            UsrSupplier.class.getSimpleName() + "." + T.TOP_3_MARKETS.getFld().getCodeSqlField());
-        FROM(UsrSupplier.class);
-        WHERE(T.PKEY, "=?", supperid);
-      }};
+      SQL sql =
+          new SQL() {
+            {
+              SELECT(
+                  T.WEB_SIZE_TITLE,
+                  T.PRODUCTION,
+                  T.DEVELOPER,
+                  T.TOTAL_EMPLOYEES,
+                  T.ANNUAL_SALES,
+                  T.WEBSITE,
+                  T.COUNTRY,
+                  T.PROVINCE,
+                  T.CITY,
+                  T.HEAD_PIC,
+                  T.CONTACTS,
+                  T.PHONE,
+                  T.DEPARTMENT,
+                  T.JOB_TITLE,
+                  T.BANK_ACCOUNT,
+                  T.SETTLEMENT_BANK,
+                  T.BANK_BRANCH,
+                  T.BANK_COUNTRY,
+                  T.BANK_PROVINCE,
+                  T.OPERATE_ID_CARD,
+                  T.CONTACTS_ID_CARD_FRONT_PHOTO,
+                  T.CONTACTS_ID_CARD_BACK_PHOTO);
+              SELECT(
+                  UsrSupplier.class.getSimpleName()
+                      + "."
+                      + T.TOP_3_MARKETS.getFld().getCodeSqlField());
+              FROM(UsrSupplier.class);
+              WHERE(T.PKEY, "=?", supperid);
+            }
+          };
       Map<String, Object> map = irille.pub.bean.Query.sql(sql).queryMap();
       ov.setWebsizetitle((String) map.get(T.WEB_SIZE_TITLE.getFld().getCodeSqlField()));
       ov.setProduction((String) map.get(T.PRODUCTION.getFld().getCodeSqlField()));
@@ -1143,12 +1288,14 @@ public class UsrSupplierDAO {
       ov.setSettlementbank((String) map.get(T.SETTLEMENT_BANK.getFld().getCodeSqlField()));
       ov.setBankaccount((String) map.get(T.BANK_ACCOUNT.getFld().getCodeSqlField()));
       ov.setBankbranch((String) map.get(T.BANK_BRANCH.getFld().getCodeSqlField()));
-      ov.setBankcountry(BeanBase
-          .load(PltCountry.class, (Integer) map.get(T.BANK_COUNTRY.getFld().getCodeSqlField()))
-          .getName());
-      ov.setBankprovince(BeanBase
-          .load(PltProvince.class, (Integer) map.get(T.BANK_PROVINCE.getFld().getCodeSqlField()))
-          .getName());
+      ov.setBankcountry(
+          BeanBase.load(
+                  PltCountry.class, (Integer) map.get(T.BANK_COUNTRY.getFld().getCodeSqlField()))
+              .getName());
+      ov.setBankprovince(
+          BeanBase.load(
+                  PltProvince.class, (Integer) map.get(T.BANK_PROVINCE.getFld().getCodeSqlField()))
+              .getName());
       ov.setOperateidcard((String) map.get(T.OPERATE_ID_CARD.getFld().getCodeSqlField()));
       ov.setContactsidcardfront(
           (String) map.get(T.CONTACTS_ID_CARD_FRONT_PHOTO.getFld().getCodeSqlField()));
@@ -1161,27 +1308,420 @@ public class UsrSupplierDAO {
     return ov;
   }
 
-  // 2.1 商家端获取认证信息
-  public static AuthenticationView auth(Integer supid) {
-    SQL sql = new SQL() {{
-      SELECT(T.IS_AUTH, T.AUTH_TIME);
-      FROM(UsrSupplier.class);
-      WHERE(T.PKEY, "=?", supid);
-    }};
-    Map<String, Object> map = irille.pub.bean.Query.sql(sql).queryMap();
-    AuthenticationView av = new AuthenticationView();
-    if ((byte) map.get(T.IS_AUTH.getFld().getCodeSqlField()) == 1) {
-      av.setIsauth(true);
-      Date date = (Date) map.get(T.AUTH_TIME.getFld().getCodeSqlField());
-      LocalDate date1 = LocalDate.now();
-      Instant instant = date.toInstant();
-      ZoneId zoneId = ZoneId.systemDefault();
-      LocalDate localDate = instant.atZone(zoneId).toLocalDate();
-      av.setTime(localDate.toString());
-      av.setAge(date1.getYear() - localDate.getYear());
-    } else {
-      av.setIsauth(false);
+    // 2.1 商家端获取认证信息
+    public static AuthenticationView auth(Integer supid) {
+        SQL sql =
+                new SQL() {
+                    {
+                        SELECT(T.IS_AUTH, T.AUTH_TIME);
+                        FROM(UsrSupplier.class);
+                        WHERE(T.PKEY, "=?", supid);
+                    }
+                };
+        Map<String, Object> map = irille.pub.bean.Query.sql(sql).queryMap();
+        AuthenticationView av = new AuthenticationView();
+        if ((byte) map.get(T.IS_AUTH.getFld().getCodeSqlField()) == 1) {
+            av.setIsauth(true);
+            Date date = (Date) map.get(T.AUTH_TIME.getFld().getCodeSqlField());
+            LocalDate date1 = LocalDate.now();
+            Instant instant = date.toInstant();
+            ZoneId zoneId = ZoneId.systemDefault();
+            LocalDate localDate = instant.atZone(zoneId).toLocalDate();
+            av.setTime(localDate.toString());
+            av.setAge(date1.getYear() - localDate.getYear());
+        } else {
+            av.setIsauth(false);
+        }
+        return av;
     }
-    return av;
-  }
+
+    /**
+     * ———————————————————分割线(新平台)—————————————————————————
+     */
+    public static Page getSuppliers(Integer start, Integer limit, String name, Integer category, Integer status) {
+        if (start == null) {
+            start = 0;
+        }
+        if (limit == null) {
+            limit = 15;
+        }
+        SQL sql = new SQL() {
+            {
+                SELECT(
+                        T.PKEY,
+                        T.NAME,
+                        T.STATUS,
+                        T.CATEGORY,
+                        T.IS_AUTH,
+                        T.WEB_SITE,
+                        T.SORT)
+                        .FROM(UsrSupplier.class);
+                if (name != null) {
+                    WHERE(T.NAME, "like '%" + name + "%'");
+                }
+                if (category != null) {
+                    WHERE(T.CATEGORY, "=?", category);
+                }
+                if (status != null) {
+                    WHERE(T.STATUS, "=?", status);
+                }
+            }
+        };
+        Integer count = irille.pub.bean.Query.sql(sql).queryCount();
+        List<SuppliersView> list = irille.pub.bean.Query.sql(sql.LIMIT(start, limit)).queryMaps().stream().map(o -> new SuppliersView() {{
+            setId((Integer) o.get(T.PKEY.getFld().getCodeSqlField()));
+            setName((String) o.get(T.NAME.getFld().getCodeSqlField()));
+            setStatus(Byte.valueOf(String.valueOf(o.get(T.STATUS.getFld().getCodeSqlField()))));
+            setCategory(BeanBase.load(UsrSupplierCategory.class, (Integer) o.get(T.CATEGORY.getFld().getCodeSqlField())).getName());
+            setAuth(Byte.valueOf(String.valueOf(o.get(T.IS_AUTH.getFld().getCodeSqlField()))));
+            setWebSite((String) o.get(T.WEB_SITE.getFld().getCodeSqlField()));
+            setSort((Integer) o.get(T.SORT.getFld().getCodeSqlField()));
+        }}).collect(Collectors.toList());
+        return new Page(list, start, limit, count);
+    }
+
+    public static ListView getStatus() {
+        SQL sql = new SQL() {{
+            SELECT(UsrSupplierCategory.T.PKEY, UsrSupplierCategory.T.NAME).FROM(UsrSupplierCategory.class);
+        }};
+        List<CategorysView> categorys = irille.pub.bean.Query.sql(sql).queryMaps().stream().map(o -> new CategorysView() {{
+            setId((Integer) o.get(UsrSupplierCategory.T.PKEY.getFld().getCodeSqlField()));
+            setName((String) o.get(UsrSupplierCategory.T.NAME.getFld().getCodeSqlField()));
+        }}).collect(Collectors.toList());
+        List<StatusView> status = new ArrayList<>();
+        for (OStatus value : OStatus.values()) {
+            StatusView view = new StatusView();
+            view.setId(value.getLine().getKey());
+            view.setName(value.getLine().getName());
+            status.add(view);
+        }
+        List<AuthView> auths = new ArrayList<>();
+        for (Usr.OIsAuth value : Usr.OIsAuth.values()) {
+            AuthView view = new AuthView();
+            view.setId(value.getLine().getKey());
+            view.setName(value.getLine().getName());
+            auths.add(view);
+        }
+        List<IsProsView> isPros = new ArrayList<>();
+        for (Sys.OYn value : Sys.OYn.values()) {
+            IsProsView view = new IsProsView();
+            view.setId(value.getLine().getKey());
+            view.setName(value.getLine().getName());
+            isPros.add(view);
+        }
+        SQL countrySql = new SQL() {
+            {
+                SELECT(PltCountry.T.PKEY, PltCountry.T.NAME).FROM(PltCountry.class);
+            }
+        };
+        List<CountryView> countrys = irille.pub.bean.Query.sql(countrySql).queryMaps().stream().map(o -> new CountryView() {{
+            setId((Integer) o.get(PltCountry.T.PKEY.getFld().getCodeSqlField()));
+            setName((String) o.get(PltCountry.T.NAME.getFld().getCodeSqlField()));
+        }}).collect(Collectors.toList());
+        ListView view = new ListView();
+        view.setCategorys(categorys);
+        view.setStatus(status);
+        view.setAuths(auths);
+        view.setIsPros(isPros);
+        view.setCountrys(countrys);
+        return view;
+    }
+
+    public static class UpdStatus extends IduOther<UpdStatus, UsrSupplier> {
+        @Override
+        public void before() {
+        }
+
+        @Override
+        public void valid() {
+        }
+
+        @Override
+        public void run() {
+            UsrSupplier dbBean = loadThisBeanAndLock();
+            PropertyUtils.copyProperties(dbBean, getB(), T.STATUS);
+            dbBean.upd();
+            super.run();
+        }
+    }
+
+    public static BasicInformationView getBasicInformation(Integer suppllierId) {
+        SQL sql = new SQL() {
+            {
+                SELECT(UsrSupplier.class).FROM(UsrSupplier.class).WHERE(T.PKEY, "=?", suppllierId);
+            }
+        };
+        UsrSupplier usrSupplier = irille.pub.bean.Query.sql(sql).query(UsrSupplier.class);
+        BasicInformationView view = new BasicInformationView();
+        view.setName(usrSupplier.getName());
+        view.setCategory(usrSupplier.getCategory());
+        view.setAuth(usrSupplier.getIsAuth());
+        view.setAuthTime(usrSupplier.getAuthTime());
+        view.setEntity(usrSupplier.getEntity());
+        view.setCreditCode(usrSupplier.getCreditCode());
+        view.setCompanyEstablishTime(usrSupplier.getCompanyEstablishTime());
+        view.setOperationTerm(usrSupplier.getOperationTerm());
+        view.setDes(usrSupplier.getDes());
+        view.setContacts(usrSupplier.getContacts());
+        view.setEmail(usrSupplier.getEmail());
+        view.setPhone(usrSupplier.getPhone());
+        view.setTelephone(usrSupplier.getTelephone());
+        view.setFax(usrSupplier.getFax());
+        view.setQq(usrSupplier.getQq());
+        view.setSeoTitle(usrSupplier.getSeoTitle());
+        view.setSeoContent(usrSupplier.getSeoContent());
+        view.setShowName(usrSupplier.getShowName());
+        view.setCompanyNature(usrSupplier.getCompanyNature());
+        view.setCompanyType(usrSupplier.getCompanyType());
+        view.setMainSalesArea(usrSupplier.getMainSalesArea());
+        view.setMainProd(usrSupplier.getMainProd());
+        view.setProdPattern(usrSupplier.getProdPattern());
+        view.setCompanyAddr(usrSupplier.getCompanyAddr());
+        if (usrSupplier.getCertPhoto() != null) {
+            view.setCertPhoto(usrSupplier.getCertPhoto());
+        } else {
+            view.setCertPhoto("");
+        }
+        if (usrSupplier.getIdCardFrontPhoto() != null) {
+            view.setIdCardFrontPhoto(usrSupplier.getIdCardFrontPhoto());
+        } else {
+            view.setIdCardFrontPhoto("");
+        }
+        if (usrSupplier.getIdCardBackPhoto() != null) {
+            view.setIdCardBackPhoto(usrSupplier.getIdCardBackPhoto());
+        } else {
+            view.setIdCardBackPhoto("");
+        }
+        if (usrSupplier.getCoopCertPhoto() != null) {
+            view.setCoopCertPhoto(usrSupplier.getCoopCertPhoto());
+        } else {
+            view.setCoopCertPhoto("");
+        }
+        view.setSort(usrSupplier.getSort());
+        return view;
+    }
+
+    public static class UpdBasicInformation extends IduOther<UpdBasicInformation, UsrSupplier> {
+        @Override
+        public void before() {
+        }
+
+        @Override
+        public void valid() {
+        }
+
+        @Override
+        public void run() {
+            UsrSupplier dbBean = loadThisBeanAndLock();
+            PropertyUtils.copyProperties(dbBean, getB(),
+                    T.NAME,
+                    T.CATEGORY,
+                    T.IS_AUTH,
+                    T.ENTITY,
+                    T.CREDIT_CODE,
+                    T.OPERATION_TERM,
+                    T.DES,
+                    T.CONTACTS,
+                    T.EMAIL,
+                    T.PHONE,
+                    T.TELEPHONE,
+                    T.FAX,
+                    T.QQ,
+                    T.SEO_TITLE,
+                    T.SEO_CONTENT,
+                    T.SHOW_NAME,
+                    T.COMPANY_NATURE,
+                    T.COMPANY_TYPE,
+                    T.MAIN_SALES_AREA,
+                    T.MAIN_PROD,
+                    T.PROD_PATTERN,
+                    T.COMPANY_ADDR,
+                    T.CERT_PHOTO,
+                    T.ID_CARD_FRONT_PHOTO,
+                    T.ID_CARD_BACK_PHOTO,
+                    T.COOP_CERT_PHOTO,
+                    T.SORT);
+            dbBean.upd();
+            super.run();
+        }
+    }
+
+    public static PageInformationView getPageInformation(Integer suppllierId) {
+        SQL sql = new SQL() {
+            {
+                SELECT(UsrSupplier.class).FROM(UsrSupplier.class).WHERE(T.PKEY, "=?", suppllierId);
+            }
+        };
+        UsrSupplier usrSupplier = irille.pub.bean.Query.sql(sql).query(UsrSupplier.class);
+        PageInformationView view = new PageInformationView();
+        view.setSignBackgd(usrSupplier.getSignBackgd());
+        view.setAdPhotoLink(usrSupplier.getAdPhotoLink());
+        view.setCountry(usrSupplier.getCountry());
+        view.setProvince(usrSupplier.getProvince());
+        view.setIsPro(usrSupplier.getIsPro());
+        view.setWebSite(usrSupplier.getWebSite());
+        view.setCompanyPhotoLink(usrSupplier.getCompanyPhotoLink());
+        view.setBusinessTyp(usrSupplier.getBusinessTyp());
+        view.setLocation(usrSupplier.getLocation());
+        view.setDeveloper(usrSupplier.getDeveloper());
+        view.setProduction(usrSupplier.getProduction());
+        view.setTotalEmployees(usrSupplier.getTotalEmployees());
+        view.setAnnualSales(usrSupplier.getAnnualSales());
+        view.setTopMarkets(usrSupplier.getTop3Markets());
+        view.setMaterials(usrSupplier.getMaterials());
+        view.setDepartment(usrSupplier.getDepartment());
+        view.setJobTitle(usrSupplier.getJobTitle());
+        view.setCity(usrSupplier.getCity());
+        if (usrSupplier.getAdPhoto() != null) {
+            view.setAdPhoto(usrSupplier.getAdPhoto());
+        } else {
+            view.setAdPhoto("");
+        }
+        if (usrSupplier.getAdPhotoMobile() != null) {
+            view.setAdPhotoMobile(usrSupplier.getAdPhotoMobile());
+        } else {
+            view.setAdPhotoMobile("");
+        }
+        if (usrSupplier.getCompanyPhoto() != null) {
+            view.setCompanyPhoto(usrSupplier.getCompanyPhoto());
+        } else {
+            view.setCompanyPhoto("");
+        }
+        if (usrSupplier.getHeadPic() != null) {
+            view.setHeadPic(usrSupplier.getHeadPic());
+        } else {
+            view.setHeadPic("");
+        }
+        if (usrSupplier.getLogo() != null) {
+            view.setLogo(usrSupplier.getLogo());
+        } else {
+            view.setLogo("");
+        }
+        return view;
+    }
+
+    public static class UpdPageInformation extends IduOther<UpdPageInformation, UsrSupplier> {
+        @Override
+        public void before() {
+        }
+
+        @Override
+        public void valid() {
+        }
+
+        @Override
+        public void run() {
+            UsrSupplier dbBean = loadThisBeanAndLock();
+            PropertyUtils.copyProperties(dbBean, getB(),
+                    T.SIGN_BACKGD,
+                    T.AD_PHOTO_LINK,
+                    T.COUNTRY,
+                    T.PROVINCE,
+                    T.Is_Pro,
+                    T.WEB_SITE,
+                    T.COMPANY_PHOTO_LINK,
+                    T.BUSINESS_TYP,
+                    T.LOCATION,
+                    T.DEVELOPER,
+                    T.PRODUCTION,
+                    T.TOTAL_EMPLOYEES,
+                    T.ANNUAL_SALES,
+                    T.TOP_3_MARKETS,
+                    T.MATERIALS,
+                    T.DEPARTMENT,
+                    T.JOB_TITLE,
+                    T.CITY,
+                    T.AD_PHOTO,
+                    T.AD_PHOTO_MOBILE,
+                    T.COMPANY_PHOTO,
+                    T.HEAD_PIC,
+                    T.LOGO);
+            dbBean.upd();
+            super.run();
+        }
+    }
+
+    public static PersonalityDecorationView getPersonalityDecoration(Integer suppllierId) {
+        SQL sql = new SQL() {
+            {
+                SELECT(UsrSupplier.class).FROM(UsrSupplier.class).WHERE(T.PKEY, "=?", suppllierId);
+            }
+        };
+        UsrSupplier usrSupplier = irille.pub.bean.Query.sql(sql).query(UsrSupplier.class);
+        PersonalityDecorationView view = new PersonalityDecorationView();
+        view.setHomePageDiy(usrSupplier.getHomePageDiy());
+        view.setProductPageDiy(usrSupplier.getProductPageDiy());
+        view.setContactPageDiy(usrSupplier.getContactPageDiy());
+        view.setHomePageDiyMobile(usrSupplier.getHomePageDiyMobile());
+        view.setProductPageDiyMobile(usrSupplier.getProductPageDiyMobile());
+        view.setContactPageDiyMobile(usrSupplier.getContactPageDiyMobile());
+        return view;
+    }
+
+    public static class UpdPersonalityDecoration extends IduOther<UpdPersonalityDecoration, UsrSupplier> {
+        @Override
+        public void before() {
+        }
+
+        @Override
+        public void valid() {
+        }
+
+        @Override
+        public void run() {
+            UsrSupplier dbBean = loadThisBeanAndLock();
+            PropertyUtils.copyProperties(dbBean, getB(),
+                    T.HOME_PAGE_DIY,
+                    T.PRODUCT_PAGE_DIY,
+                    T.CONTACT_PAGE_DIY,
+                    T.HOME_PAGE_DIY_MOBILE,
+                    T.PRODUCT_PAGE_DIY_MOBILE,
+                    T.CONTACT_PAGE_DIY_MOBILE);
+            dbBean.upd();
+            super.run();
+        }
+    }
+
+    public static MarketingSettingsView getmarketingSettings(Integer suppllierId) {
+        SQL sql = new SQL() {
+            {
+                SELECT(UsrSupplier.class).FROM(UsrSupplier.class).WHERE(T.PKEY, "=?", suppllierId);
+            }
+        };
+        UsrSupplier usrSupplier = irille.pub.bean.Query.sql(sql).query(UsrSupplier.class);
+        MarketingSettingsView view = new MarketingSettingsView();
+        view.setTraceCode(usrSupplier.getTraceCode());
+        view.setWebSizeTitle(usrSupplier.getWebSizeTitle());
+        view.setWebSite(usrSupplier.getWebSite());
+        view.setTongjiUrl(usrSupplier.getTongjiUrl());
+        view.setTongjiPwd(usrSupplier.getTongjiPwd());
+        view.setUpdateTime(usrSupplier.getUpdateTime());
+        return view;
+    }
+
+    public static class UpdMarketingSettings extends IduOther<UpdMarketingSettings, UsrSupplier> {
+        @Override
+        public void before() {
+        }
+
+        @Override
+        public void valid() {
+        }
+
+        @Override
+        public void run() {
+            getB().setUpdateTime(Env.getTranBeginTime());
+            UsrSupplier dbBean = loadThisBeanAndLock();
+            PropertyUtils.copyProperties(dbBean, getB(),
+                    T.TRACE_CODE,
+                    T.WEB_SIZE_TITLE,
+                    T.WEB_SITE,
+                    T.TONGJI_URL,
+                    T.TONGJI_PWD,
+                    T.UPDATE_TIME);
+            dbBean.upd();
+            super.run();
+        }
+    }
+    /**———————————————————分割线(新平台)END—————————————————————————*/
 }
