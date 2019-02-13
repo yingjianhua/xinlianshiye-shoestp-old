@@ -1007,7 +1007,9 @@ public class PdtProductDao {
                 for (O2O_Product o2opdt : copy) {
                     if (pdtPkey == o2opdt.getProductId()) {
                         System.out.println(o2opdt.getPrice());
-                        setPrice(o2opdt.getPrice());
+                        //目前o2o产品的价格字段没有用起来 ,所以暂时还是取普通产品表的价格字段
+                        setPrice(new BigDecimal(map.get(PdtProduct.T.CUR_PRICE.getFld().getCodeSqlField()).toString()));
+//                        setPrice(o2opdt.getPrice());
                         setMinOrder(o2opdt.getMinOq());
                         break;
                     }
