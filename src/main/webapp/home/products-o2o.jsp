@@ -3,6 +3,9 @@
 <jsp:include page="v3/header.jsp"/>
 <link rel="stylesheet" href="/home/v3/static/css/productList.css">
 <style>
+	#o2otop {
+		position: inherit;
+	}
     	#o2otop .o2otopcon  a:nth-of-type(4) .smallspan{
 		    color: white;
 		    background: linear-gradient(to right, rgb(113, 139, 223), rgb(159, 87, 254));
@@ -15,16 +18,23 @@
 		    cursor: pointer;
 		    text-align: center;
 		}
+	#o2obottom .o2obottomlinks ul{
+		color:#0c0e23;
+	}
     </style>
 <body>
 <jsp:include page="v3/nav.jsp"></jsp:include>
 <div id="new_navs">
-		<index-top></index-top>
+	<o2o-top></o2o-top>
 </div>
 
 <script src="/home/v3/static/js/index-top.js">
-
 </script>
+<script src="/html/o2o/js/config.js"></script>
+<link rel="stylesheet" href="/html/o2o/css/index.css">
+<script src="/home/components/O2O-top.js"></script>
+<script src="/home/components/O2O-bottom.js"></script>
+
 <script>	 new Vue({
             el: "#new_navs"
         })</script>
@@ -131,7 +141,7 @@
 						    <el-carousel :arrow="item.picture.split(',').length > 1 ? 'hover':'never'" height="197px" indicator-position="none" :autoplay="false">
 						      <el-carousel-item v-for="item2 in item.picture.split(',')" :key="item">
 						        <div class="h3" @mouseenter="bigPicBoxopen" @mouseleave="bigPicBoxclose" :data-pic = "item2">
-								    <a :href="'/'+item.rewrite" target="_blank"><img class="fl" :src="'https://image.shoestp.com/'+item2"/></a>
+								    <a :href="'/'+item.rewrite" target="_blank"><img class="fl" :src="imgUrlappend(item2)"/></a>
 								</div>
 						      </el-carousel-item>
 						    </el-carousel>
@@ -220,17 +230,16 @@
 		<!--页面右部列表  end-->
 		
 		<div class="bigPicBox" v-show="bigPicBox">
-			<img :src="'https://image.shoestp.com/'+bigPicBoxpic" alt="" />
+			<img :src="imgUrlappend(bigPicBoxpic)" alt="" />
 		</div>
 
 	</div>
 
 <div id="foot">
-    <index-bottom></index-bottom>
+	<o2o-bottom></o2o-bottom>
 </div>
 
-<script src="/html/o2o/components/O2O-top.js"></script>
-<script src="/html/o2o/components/O2O-bottom.js"></script>
+
 
 <script>
 	  function getParams(name, defaultValue) {
@@ -294,6 +303,12 @@
             bigPicBoxpic:'',
         },
         methods: {
+            imgUrlappend(row){
+                if(row!==null&row!==''){
+                    return 'https://image.shoestp.com/'+row
+				}
+				return null
+			},
 			// 读取链接带参
         	GetQueryString(name){
 			     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
@@ -309,7 +324,6 @@
                     }
                 })
                     .then((res) => {
-                    	console.log(res.data.result)
                         this.classLists = res.data.result
                         for (var i in this.classLists) {
 				            var children = this.classLists[i].children;
@@ -342,7 +356,6 @@
                     }
                 })
                     .then((res) => {
-                    	console.log(res.data.result)
                         this.productLists = res.data.result.items
                         this.allpage = res.data.result.totalCount
                         this.breadcrumbnav= res.data.result.breadcrumbnav
