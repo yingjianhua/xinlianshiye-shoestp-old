@@ -95,10 +95,10 @@
         }
     </style>
 </head>
-
+<jsp:include page="v3/header.jsp"/>
+<jsp:include page="v3/nav.jsp"/>
 <body class="lang_en w_1200">
 <jsp:include page="template/web-top.jsp"></jsp:include>
-<jsp:include page="template/new-header.jsp"></jsp:include>
 <!-- .new_header -->
 <div class="supbanner">
     <div class="item">
@@ -119,6 +119,7 @@
     </div>
 </div>
 <div id="sup_main">
+    <index-top></index-top>
     <div class="wide">
         <div class="new_suppx">
             <div id="suside_rm">
@@ -822,6 +823,12 @@
 <script type="text/javascript" src="./static/js/module.js"></script>
 <script type="text/javascript" src="./static/js/review.js"></script>
 <script type="text/javascript" src="./static/js/lightbox.min.js"></script>
+<script src="/home/v3/static/js/index-top.js"></script>
+<script>
+    new Vue({
+        el:"#sup_main"
+    })
+</script>
 <%-- <script type="text/javascript" src="./static/js/addthis_widget.js"></script> --%>
 
 </body>

@@ -30,11 +30,12 @@
     <script type="text/javascript" src="/home/static/js/qs.js"></script>
     <script type="text/javascript" src="/home/static/js/axios.min.js"></script>
 </head>
+<jsp:include page="v3/header.jsp"/>
+<jsp:include page="v3/nav.jsp"/>
 <body id="goodsInfo" class="lang_en w_1200">
 <jsp:include page="template/web-top.jsp"></jsp:include>
-<jsp:include page="template/new-header.jsp"></jsp:include>
 <div id="app">
-
+    <index-top></index-top>
     <!--头部-->
     <div class="xmgHead wide-wrap">
         <div class="w1200">
@@ -112,6 +113,7 @@
                 :class="(index===goodsInfo.breadcrumbNav.length-1)?'xmgLast':''">
                 <a :href="'/home/pdt_PdtProduct?cated='+v.pkey">{{v.name}}</a>
             </li>
+            <li style="clear: both;"></li>
         </ul>
     </div>
 
@@ -1146,6 +1148,12 @@
     }
 
 
+</script>
+<script src="/home/v3/static/js/index-top.js"></script>
+<script>
+    new Vue({
+        el:"#app"
+    })
 </script>
 <style>
     .loading{
