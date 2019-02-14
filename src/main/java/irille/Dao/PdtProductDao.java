@@ -1033,6 +1033,7 @@ public class PdtProductDao {
             Integer pkey1 = GetValue.get(map, "pdtPkey", Integer.class, null);
             List<PdtSpec> specs = BeanBase.list(PdtSpec.class, PdtSpec.T.PRODUCT + "=" + pkey1, false);
             List<String> stringList = new ArrayList<>();
+            stringList.add(GetValue.getFirstImage(GetValue.get(map, PdtProduct.T.PICTURE, String.class, "")));
             for (PdtSpec spec : specs) {
                 String s = GetValue.getFirstImage(spec.getPics());
                 if (s.length() > 0)
@@ -1082,7 +1083,7 @@ public class PdtProductDao {
             setSupId(Integer.parseInt(map.get("supPkey").toString()));
             if(map.get("supName")!=null)
             setSupName(map.get("supName").toString());
-            
+
             Date authDate = (Date) map.get(UsrSupplier.T.AUTH_TIME.getFld().getCodeSqlField());
             SimpleDateFormat sim = new SimpleDateFormat("yyyy");
             if (authDate == null)
