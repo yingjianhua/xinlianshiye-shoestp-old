@@ -15,6 +15,7 @@ import irille.Service.Manage.O2O.O2OActivityService;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.pub.tb.FldLanguage;
+import irille.pub.util.AppConfig;
 import irille.pub.util.EmailUtils;
 import irille.pub.util.GetValue;
 import irille.pub.util.SEOUtils;
@@ -324,7 +325,9 @@ public class O2OActivityServiceImpl implements O2OActivityService {
             throw new WebMessageException(ReturnCode.failure, "商品不存在");
         o2O_privateExpoPdt.setVerifyStatus(status.getLine().getKey());
         sendEmail email = new sendEmail();
-        email.setReceiver(o2O_privateExpoPdt.gtPdtId().gtSupplier().getEmail());
+        if(!AppConfig.dev){
+            email.setReceiver(o2O_privateExpoPdt.gtPdtId().gtSupplier().getEmail());
+        }
         if (status.getLine().getKey() == O2O_ProductStatus.Failed.getLine().getKey()) {
             if (null == reason)
                 throw new WebMessageException(ReturnCode.failure, "请输入拒绝理由");
@@ -389,7 +392,9 @@ public class O2OActivityServiceImpl implements O2OActivityService {
             throw new WebMessageException(ReturnCode.failure, "商品不存在");
         o2OProduct.setStatus(status.getLine().getKey());
         PdtProduct pdt = o2OProduct.gtPdtId();
-        email.setReceiver(pdt.gtSupplier().getEmail());
+        if(!AppConfig.dev){
+            email.setReceiver(pdt.gtSupplier().getEmail());
+        }
         if (!status.equals(O2O_PrivateExpoPdtStatus.OFF)) {
             if (null == reason) {
                 throw new WebMessageException(ReturnCode.failure, "拒绝理由不能为空");
