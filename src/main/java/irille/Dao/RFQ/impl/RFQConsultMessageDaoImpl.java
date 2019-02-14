@@ -7,6 +7,7 @@ import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
+import irille.pub.bean.sql.SQL;
 
 public class RFQConsultMessageDaoImpl implements RFQConsultMessageDao {
 
@@ -31,6 +32,20 @@ public class RFQConsultMessageDaoImpl implements RFQConsultMessageDao {
 		} else {
 			bean.upd();
 		}
+	}
+
+	@Override
+	public Integer countUnreadByRelation_PurchaseGroupByRelation(Integer purchasePkey) {
+		return Query.sql(new SQL() {{
+			SELECT("*");
+			FROM(new SQL() {{
+				SELECT("1").FROM(RFQConsultMessage.class);
+				LEFT_JOIN(RFQConsultRelation.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY);
+				WHERE(RFQConsultRelation.T.PURCHASE_ID, "=?", purchasePkey);
+				WHERE(RFQConsultMessage.T.HAD_READ, "=?", false);
+				GROUP_BY(RFQConsultMessage.T.RELATION);
+			}}, "a");
+		}}).queryCount();
 	}
 
 }
