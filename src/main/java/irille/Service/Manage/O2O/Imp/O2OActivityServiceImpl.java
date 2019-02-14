@@ -258,8 +258,8 @@ public class O2OActivityServiceImpl implements O2OActivityService {
     /**
      * 查看报名列表
      */
-    public Page<O2OProductView> enrollList(PdtSearchView search, Integer start, Integer limit,Integer type) {
-        List<O2OProductView> items = o2OProductDao.enrollList(search, start, limit,type).stream().map(map -> {
+    public Page<O2OProductView> enrollList(PdtSearchView search, Integer start, Integer limit, Integer type) {
+        List<O2OProductView> items = o2OProductDao.enrollList(search, start, limit, type).stream().map(map -> {
             O2OProductView item = new O2OProductView();
             item.setPkey(GetValue.get(map, O2O_Product.T.PKEY, Integer.class, null));
             item.setStatus(GetValue.get(map, O2O_Product.T.VERIFY_STATUS, Byte.class, (byte) 0));
@@ -281,7 +281,7 @@ public class O2OActivityServiceImpl implements O2OActivityService {
             item.setMessage(GetValue.get(map, O2O_Product.T.REMARK, String.class, null));
             return item;
         }).collect(Collectors.toList());
-        return new Page<O2OProductView>(items, start, limit, o2OProductDao.countEnroll(search,type));
+        return new Page<O2OProductView>(items, start, limit, o2OProductDao.countEnroll(search, type));
     }
 
     /**
@@ -293,9 +293,11 @@ public class O2OActivityServiceImpl implements O2OActivityService {
             throw new WebMessageException(ReturnCode.failure, "商品不存在");
         o2OProduct.setVerifyStatus(status.getLine().getKey());
         sendEmail email = new sendEmail();
-        UsrSupplier supplier = o2OProduct.gtJoinInfoId().gtSupplier();
-        email.setReceiver(supplier.getEmail());
-        if (status.getLine().getKey()==O2O_ProductStatus.Failed.getLine().getKey()) {
+        if (!AppConfig.dev) {
+            UsrSupplier supplier = o2OProduct.gtJoinInfoId().gtSupplier();
+            email.setReceiver(supplier.getEmail());
+        }
+        if (status == O2O_ProductStatus.Failed) {
             if (null == reason)
                 throw new WebMessageException(ReturnCode.failure, "请输入拒绝理由");
             o2OProduct.setMessage(reason);
@@ -303,7 +305,7 @@ public class O2OActivityServiceImpl implements O2OActivityService {
             email.setContent("您申请的商品已被审核拒绝，拒绝理由：" + reason);
         } else {
             PdtProduct pdt = o2OProduct.gtProductId();
-            pdt.setProductType(Pdt.OProductType.O2O.getLine().getKey());
+            pdt.stProductType(Pdt.OProductType.O2O);
             pdt.upd();
             email.setSubject("【鞋贸港】O2O商品审核通过");
             email.setContent("您申请商品编号为【" + pdt.getCode() + "】的商品已通过审核");
@@ -325,18 +327,20 @@ public class O2OActivityServiceImpl implements O2OActivityService {
             throw new WebMessageException(ReturnCode.failure, "商品不存在");
         o2O_privateExpoPdt.setVerifyStatus(status.getLine().getKey());
         sendEmail email = new sendEmail();
-        if(!AppConfig.dev){
+        if (!AppConfig.dev) {
             email.setReceiver(o2O_privateExpoPdt.gtPdtId().gtSupplier().getEmail());
         }
         if (status.getLine().getKey() == O2O_ProductStatus.Failed.getLine().getKey()) {
             if (null == reason)
                 throw new WebMessageException(ReturnCode.failure, "请输入拒绝理由");
             o2O_privateExpoPdt.setMessage(reason);
+            o2O_privateExpoPdt.stStatus(O2O_PrivateExpoPdtStatus.OFF);
             email.setSubject("【鞋贸港】私人展厅商品审核拒绝");
             email.setContent("您申请的商品已被审核拒绝，拒绝理由：" + reason);
         } else {
             PdtProduct pdt = o2O_privateExpoPdt.gtPdtId();
-            pdt.setProductType(Pdt.OProductType.PrivateExpo.getLine().getKey());
+            pdt.stProductType(Pdt.OProductType.PrivateExpo);
+            o2O_privateExpoPdt.stStatus(O2O_PrivateExpoPdtStatus.ON);
             pdt.upd();
             email.setSubject("【鞋贸港】私人展厅商品审核通过");
             email.setContent("您申请商品编号为【" + pdt.getCode() + "】的商品已通过审核");
@@ -356,12 +360,14 @@ public class O2OActivityServiceImpl implements O2OActivityService {
         O2O_Product o2OProduct = o2OProductDao.findByPkey(id);
         sendEmail email = new sendEmail();
         UsrSupplier supplier = o2OProduct.gtJoinInfoId().gtSupplier();
-        email.setReceiver(supplier.getEmail());
+        if (!AppConfig.dev) {
+            email.setReceiver(supplier.getEmail());
+        }
         if (null == o2OProduct)
             throw new WebMessageException(ReturnCode.failure, "商品不存在");
         o2OProduct.setStatus(status.getLine().getKey());
         PdtProduct pdt = o2OProduct.gtProductId();
-        if (status.getLine().getKey() == O2O_ProductStatus.Failed.getLine().getKey()) {
+        if (status == O2O_ProductStatus.Failed) {
             if (null == reason) {
                 throw new WebMessageException(ReturnCode.failure, "拒绝理由不能为空");
             }
@@ -392,7 +398,7 @@ public class O2OActivityServiceImpl implements O2OActivityService {
             throw new WebMessageException(ReturnCode.failure, "商品不存在");
         o2OProduct.setStatus(status.getLine().getKey());
         PdtProduct pdt = o2OProduct.gtPdtId();
-        if(!AppConfig.dev){
+        if (!AppConfig.dev) {
             email.setReceiver(pdt.gtSupplier().getEmail());
         }
         if (!status.equals(O2O_PrivateExpoPdtStatus.OFF)) {
