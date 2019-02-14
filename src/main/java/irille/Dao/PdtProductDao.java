@@ -1080,7 +1080,9 @@ public class PdtProductDao {
                 setEshrine(userFavoritePdt.contains(pdtPkey));
             setPdtType(Integer.parseInt(map.get(PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()).toString()));
             setSupId(Integer.parseInt(map.get("supPkey").toString()));
+            if(map.get("supName")!=null)
             setSupName(map.get("supName").toString());
+            
             Date authDate = (Date) map.get(UsrSupplier.T.AUTH_TIME.getFld().getCodeSqlField());
             SimpleDateFormat sim = new SimpleDateFormat("yyyy");
             if (authDate == null)

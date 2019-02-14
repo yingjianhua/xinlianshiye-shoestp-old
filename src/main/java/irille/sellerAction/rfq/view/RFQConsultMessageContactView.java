@@ -6,4 +6,5 @@ import lombok.Data;
 public class RFQConsultMessageContactView {
 
 	private String name;
+	private String avatar;
 }

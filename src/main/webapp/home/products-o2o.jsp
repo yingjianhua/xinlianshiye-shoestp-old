@@ -313,7 +313,7 @@
         	GetQueryString(name){
 			     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
 			     var r = window.location.search.substr(1).match(reg);
-			     if(r!=null)return  unescape(r[2]); return null;
+			     if(r!=null)return  unescape(decodeURIComponent(r[2])); return null;
 			},
 
 			classList(e) { // 获取左边分类
@@ -346,7 +346,7 @@
 						min:this.min,
 						max:this.max,
 						mOrder:this.lessthan,
-						pName:this.pName,
+						pName:unescape(decodeURIComponent(this.pName)),
 						level:this.selelv,
 						export:this.selecount,
 						o2oAddress:this.selestore,
