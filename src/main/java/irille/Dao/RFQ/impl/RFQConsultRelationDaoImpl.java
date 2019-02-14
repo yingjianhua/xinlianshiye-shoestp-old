@@ -96,7 +96,7 @@ public class RFQConsultRelationDaoImpl implements RFQConsultRelationDao {
 
 	@Override
 	public RFQConsultRelation findByConsult_PkeySupplier_Pkey(Integer consultPkey, Integer supplierPkey) {
-		return Query.SELECT(RFQConsultRelation.class).WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supplierPkey).WHERE(RFQConsultRelation.T.PKEY, "=?", consultPkey).query();
+		return Query.SELECT(RFQConsultRelation.class).WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supplierPkey).WHERE(RFQConsultRelation.T.CONSULT, "=?", consultPkey).query();
 	}
 
 	@Override

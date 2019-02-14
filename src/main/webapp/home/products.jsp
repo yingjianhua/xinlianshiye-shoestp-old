@@ -252,6 +252,7 @@
         	lessthan:'',
         	min:'',
         	max:'',
+            cate:-1,
         	lose:'',
         	currentPage:1,
         	allpage:'',
@@ -280,7 +281,6 @@
                     }
                 })
                     .then((res) => {
-                    	console.log(res.data.result)
                         this.classLists = res.data.result
                         for (var i in this.classLists) {
 				            var children = this.classLists[i].children;
@@ -295,24 +295,41 @@
             },
             // 获取产品列表
             productList(e) {
-                axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax?v=3', {
-                    params: {
-						start:this.page,
-						limit:this.limit,
-						cate:this.cated,
-						min:this.min,
-						max:this.max,
-						mOrder:this.lessthan,
-						pName:this.pName,
-						level:this.selelv,
-						export:this.selecount,
-						o2oAddress:this.selestore,
-						orderfld:getParams("orderfld","NONE"),
-						lose:this.lose,
+        	    var params={}
+                if(this.cated!=null||this.cated>0){
+                    this.lose =1
+                    params={
+                        start:this.page,
+                        limit:this.limit,
+                        cate:this.cated,
+                        min:this.min,
+                        max:this.max,
+                        mOrder:this.lessthan,
+                        pName:this.pName,
+                        level:this.selelv,
+                        export:this.selecount,
+                        o2oAddress:this.selestore,
+                        orderfld:getParams("orderfld","NONE"),
+                        lose:this.lose
                     }
+                }else{
+                    params={
+                        start:this.page,
+                        limit:this.limit,
+                        min:this.min,
+                        max:this.max,
+                        mOrder:this.lessthan,
+                        pName:this.pName,
+                        level:this.selelv,
+                        export:this.selecount,
+                        o2oAddress:this.selestore,
+                        orderfld:getParams("orderfld","NONE")
+                    }
+                }
+                axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax?v=3', {
+                    params:params
                 })
                     .then((res) => {
-                    	console.log(res.data.result)
                         this.productLists = res.data.result.items
                         this.allpage = res.data.result.totalCount
                         this.breadcrumbnav= res.data.result.breadcrumbnav
@@ -494,7 +511,7 @@
         },
         mounted() {
         	this.pName = this.GetQueryString("Keyword")
-        	this.cated = this.GetQueryString("cated")
+        	this.cated = getParams('cated',0)
 			// if(this.GetQueryString("cated").length>0){
 			// 	this.lose=1
 			// }
