@@ -1,18 +1,21 @@
 package irille.Dao.RFQ.impl;
 
-import irille.Dao.RFQ.RFQConsultRelationDao;
-import irille.Entity.RFQ.RFQConsultRelation;
-import irille.platform.rfq.view.RFQConsultRelationView;
-import irille.platform.rfq.view.SupplierView;
-import irille.pub.bean.Query;
-import irille.pub.bean.query.BeanQuery;
-import irille.shop.usr.UsrSupplier;
-import org.junit.Test;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.junit.Test;
+
+import irille.Dao.RFQ.RFQConsultRelationDao;
+import irille.Entity.RFQ.RFQConsultRelation;
+import irille.Entity.RFQ.RFQPurchaseContact;
+import irille.platform.rfq.view.RFQConsultRelationView;
+import irille.platform.rfq.view.SupplierView;
+import irille.pub.bean.Query;
+import irille.pub.bean.query.BeanQuery;
+import irille.pub.bean.sql.SQL;
+import irille.shop.usr.UsrSupplier;
 
 public class RFQConsultRelationDaoImpl implements RFQConsultRelationDao {
 
@@ -99,5 +102,24 @@ public class RFQConsultRelationDaoImpl implements RFQConsultRelationDao {
 	@Override
 	public RFQConsultRelation findByPkey(Integer relationPkey) {
 		return Query.SELECT(RFQConsultRelation.class, relationPkey);
+	}
+
+	@Override
+	public Integer countNewByPurchaseGroupBySupplier(Integer purchasePkey) {
+		return Query.sql(new SQL() {{
+			SELECT("1");
+			FROM(new SQL() {{
+				SELECT(RFQConsultRelation.T.SUPPLIER_ID);
+				FROM(RFQConsultRelation.class);
+				WHERE(RFQConsultRelation.T.PURCHASE_ID, "=?", purchasePkey);
+				WHERE(RFQConsultRelation.T.IS_NEW, "=?", true);
+				GROUP_BY(RFQConsultRelation.T.SUPPLIER_ID);
+				HAVING(RFQConsultRelation.T.SUPPLIER_ID, "not in ("+new SQL() {{
+					SELECT(RFQPurchaseContact.T.SUPPLIER);
+					FROM(RFQPurchaseContact.class);
+					WHERE(RFQPurchaseContact.T.PURCHASE, "=?");
+				}}+")", purchasePkey);
+			}}, "a");
+		}}).queryCount();
 	}
 }
