@@ -16,7 +16,7 @@ public class RFQConsultMessageView implements BaseView {
     // TEXT:1,文本信息
     // IMAGE:2,图片信息
     // Quote:3,报价信息
-    @JsonFormat(pattern="yyyy-MM-hh HH:mm:ss", timezone="GMT+8")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
     private Date sendTime;    // 留言时间  TIME
     private Integer relation;    // 询盘关联 <表主键:RFQConsultRelation>  INT
     private Boolean p2S;    // 是采购商留言 <OYn>  BYTE
