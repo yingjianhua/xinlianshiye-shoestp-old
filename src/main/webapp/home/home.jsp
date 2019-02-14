@@ -17,7 +17,7 @@
                                                                                            alt=""></a>
             </el-carousel-item>
             <el-carousel-item>
-                <a href="/home/usr_UsrConsult_publicListView" target="_blank"><img
+                <a href="/home/usr_UsrConsult_publishView" target="_blank"><img
                         src="/home/v3/static/images/ljxbanner3.jpg" alt=""></a>
             </el-carousel-item>
         </el-carousel>
