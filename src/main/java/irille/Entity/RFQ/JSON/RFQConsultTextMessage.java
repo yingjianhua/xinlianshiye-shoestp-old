@@ -16,7 +16,7 @@ public class RFQConsultTextMessage implements BaseView, ConsultMessage  {
     private String content;
 
 	@Override
-	public Byte getType() {
+	public Byte type() {
 		return RFQConsultMessageType.TEXT.getLine().getKey();
 	}
 }

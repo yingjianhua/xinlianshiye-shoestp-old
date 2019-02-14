@@ -497,16 +497,17 @@ a, a:link, a:visited, a:hover, a:active {
 	position:fixed;
 	width:448px;
 	height:448px;
+	line-height:445px;
 	background:#eee;
 	border:1px solid #ededed;
 	left:50%;
 	top:50%;
 	margin:-224px 0 0 -133px;
+	overflow:hidden;
 }
 #productList .bigPicBox img{
 	width:100%;
-	height:100%;
-	float:left;
+	display:inline-block;
 }
 #productList .btn-search{
       float: right;
