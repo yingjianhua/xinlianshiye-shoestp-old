@@ -142,7 +142,7 @@
                                         <ul class="right-goods-wrap">
                                             <li class="item" v-for="(goods, index) in showRoomItem" v-if="index < 4">
                                                 <a :href="goods.rewrite" target="_blank">
-                                                    <img :src="image(goods.image,'?x-oss-process=image/resize,m_pad,h_,w_500')" :alt="goods.title" class="goods-pic">
+                                                    <img :src="image(goods.image,'?x-oss-process=image/resize,m_pad,h_300,w_300')" :alt="goods.title" class="goods-pic">
                                                     <div class="goods-info-wrap">
                                                         <div class="goods-name">
                                                             <div class="ellipsis_2">
