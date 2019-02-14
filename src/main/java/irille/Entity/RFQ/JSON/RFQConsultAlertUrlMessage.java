@@ -2,6 +2,7 @@ package irille.Entity.RFQ.JSON;
 
 import java.util.Date;
 
+import irille.Entity.RFQ.Enums.RFQConsultMessageType;
 import irille.view.BaseView;
 import lombok.Data;
 
@@ -19,4 +20,8 @@ public class RFQConsultAlertUrlMessage implements BaseView, ConsultMessage {
 	private String alertMsg;//提示框内容
 	private String showMsg;//显示内容
     private String url;//链接地址
+	@Override
+	public Byte getType() {
+		return RFQConsultMessageType.ALERT_URL.getLine().getKey();
+	}
 }

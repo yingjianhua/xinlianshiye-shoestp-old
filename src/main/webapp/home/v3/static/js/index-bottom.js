@@ -17,8 +17,9 @@ Vue.component('index-bottom',{
             </ul>
         </div>
         <div class="o2obottomcopyright">
-            <p>Privacy Policy - Team and Conditions - <span>Refund Policy</span> -Regarding Payment - FAQ</p>        
+            <a href="/home/cnt_CntSglPageCategory_gosglpage?pkey=2"><p>Privacy Policy - Team and Conditions - <span>Refund Policy</span> -Regarding Payment - FAQ</p>        
             <p><img src="/home/v3/static/images/o2obottomzf.png" alt="">©1988-2019 xinlian.com ALL right reserved</p>
+            </a>
         </div>
         <a href="javascript:void(0)" @click="goto('o2otop')">
             <div class="o2ogototop">
@@ -34,36 +35,19 @@ Vue.component('index-bottom',{
             email:'',
             links:[
                 {
-                    title:'OEM',
-                    url:[
-                        {
-                            atitle:'Men',
-                            alink:''
-                        },
-                        {
-                            atitle:'Women',
-                            alink:''
-                        },
-                        {
-                            atitle:'Children',
-                            alink:''
-                        }
-                    ]
-                },
-                {
                     title:'WholeSale',
                     url:[
                         {
                             atitle:'Men',
-                            alink:''
+                            alink:'/home/pdt_PdtProduct?cated=373'
                         },
                         {
                             atitle:'Women',
-                            alink:''
+                            alink:'/home/pdt_PdtProduct?cated=380'
                         },
                         {
                             atitle:'Children',
-                            alink:''
+                            alink:'/home/pdt_PdtProduct?cated=387'
                         }
                     ]
                 },
@@ -72,7 +56,7 @@ Vue.component('index-bottom',{
                     url:[
                         {
                             atitle:'Romania',
-                            alink:''
+                            alink:'/country/Romania-Pantofi-en-gros/romania-index-ro.html'
                         }
                     ]
                 },
@@ -81,15 +65,15 @@ Vue.component('index-bottom',{
                     url:[
                         {
                             atitle:'About shoestp.com',
-                            alink:''
+                            alink:'/home/cnt_CntSglPageCategory_gosglpage?pkey=6'
                         },
                         {
                             atitle:'shoestp coopertation plan',
-                            alink:''
+                            alink:'/home/cnt_CntSglPageCategory_gosglpage?pkey=7'
                         },
                         {
                             atitle:'Contact US',
-                            alink:''
+                            alink:'/home/cnt_CntSglPageCategory_gosglpage?pkey=8'
                         }
                     ]
                 }

@@ -153,6 +153,7 @@ public class RFQManageServiceImp implements IRFQManageService {
         rfqConsultRelation.stSample(quoteInfo.isSample());
         rfqConsultRelation.setCompanydescribe(quoteInfo.getCompanyDescribe());
         rfqConsultRelation.setThrowaway(quoteInfo.getThrowaway());
+        rfqConsultRelation.stIsNew(true);
         rfqConsultRelation.stHadReadPurchase(false);
         rfqConsultRelation.stHadReadSupplier(true);
         rfqConsultRelationDAO.setB(rfqConsultRelation);

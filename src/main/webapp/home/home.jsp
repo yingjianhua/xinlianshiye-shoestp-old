@@ -18,7 +18,7 @@
                                                                                            alt=""></a>
             </el-carousel-item>
             <el-carousel-item>
-                <a href="/home/usr_UsrConsult_publicListView" target="_blank"><img
+                <a href="/home/usr_UsrConsult_publishView" target="_blank"><img
                         src="/home/v3/static/images/ljxbanner3.jpg" alt=""></a>
             </el-carousel-item>
         </el-carousel>
@@ -90,9 +90,9 @@
                         <div class="boxListSelect">
                             {{chooes}} <i class="el-icon-arrow-down fr"></i>
                             <ul>
-                                <li :data-name="'Bag'" @click="chooesbtn">Pairs</li>
-                                <li :data-name="'Bag'" @click="chooesbtn">Forty-Foot Container</li>
-                                <li :data-name="'Bag'" @click="chooesbtn">Twenty-Foot Container</li>
+                                <li :data-name="'Pairs'" @click="chooesbtn" :value="1">Pairs</li>
+                                <li :data-name="'Forty-Foot Container'" :value="2" @click="chooesbtn">Forty-Foot Container</li>
+                                <li :data-name="'Twenty-Foot Container'" :value="3" @click="chooesbtn">Twenty-Foot Container</li>
                             </ul>
                         </div>
                     </div>
@@ -104,7 +104,7 @@
                     <li class="nomr"><a href="/home/usr_UsrConsult_publishView">Request quotation details</a></li>
                 </ul>
 
-                <a :href="'/home/usr_UsrConsult_publishView?title='+encodeURIComponent(RFQ_title)+'&quantity='+RFQ_quantity"
+                <a :href="'/home/usr_UsrConsult_publishView?title='+encodeURIComponent(RFQ_title)+'&quantity='+RFQ_quantity+'&chooesValue='+chooesValue"
                    class="boxListBtn01" target="_blank">Request For Quotation</a>
             </div>
 
@@ -142,7 +142,7 @@
                                         <ul class="right-goods-wrap">
                                             <li class="item" v-for="(goods, index) in showRoomItem" v-if="index < 4">
                                                 <a :href="goods.rewrite" target="_blank">
-                                                    <img :src="image(goods.image)" :alt="goods.title" class="goods-pic">
+                                                    <img :src="image(goods.image,'?x-oss-process=image/resize,m_pad,h_300,w_300')" :alt="goods.title" class="goods-pic">
                                                     <div class="goods-info-wrap">
                                                         <div class="goods-name">
                                                             <div class="ellipsis_2">
@@ -305,7 +305,7 @@
                     <div class="product-item">
                         <div class="product-img">
                             <a :href="'/'+item.rewrite" target="_blank">
-                                <img :src="image(item.picture)" alt="">
+                                <img :src="image(item.picture,'?x-oss-process=image/resize,m_pad,h_500,w_500')" alt="">
                             </a>
                         </div>
                         <div class="product-content">
@@ -355,7 +355,7 @@
                     <div class="product-item">
                         <div class="product-img">
                             <a :href="'/'+item.rewrite" target="_blank">
-                                <img :src="image(item.picture)" alt="">
+                                <img :src="image(item.picture,'?x-oss-process=image/resize,m_pad,h_500,w_500')" alt="">
                             </a>
                         </div>
                         <div class="product-content">
@@ -514,6 +514,7 @@ new Vue({
     RFQ_title: "",
     RFQ_quantity: null,
     chooes: "Pairs",
+      chooesValue:1,
     classLists: [],
     // 徐世奇
     showRoomGoodsList: [],
@@ -683,6 +684,7 @@ new Vue({
     },
     chooesbtn: function chooesbtn(e) {
       this.chooes = e.currentTarget.dataset.name;
+      this.chooesValue = e.currentTarget.value;
     },
     // 徐世奇
     // 获取展会鞋子列表

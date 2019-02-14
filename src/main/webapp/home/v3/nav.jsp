@@ -170,8 +170,7 @@
     }
     var nav = new Vue({
         el: "#nav",
-        data() {
-            return {
+        data:{
                 activeTopNavIndex: 1, //默认选中的web-top澳航栏
                 topSearchBarCategory: 0, //搜索 分类前的下拉选
                 language: "en",
@@ -182,7 +181,7 @@
                     current_language: "en",
                 },
                 search: {
-                    keyword: "",
+                    keyword: '',
                     typeList: [
                         {
                             label: "Product",
@@ -193,7 +192,6 @@
                             value: 1
                         }
                     ]
-                }
             }
         }, computed: {
             _language: function () {
@@ -225,6 +223,7 @@
 
         }, mounted() {
             var self = this
+            Vue.set(this.search,'keyword',unescape(decodeURIComponent(getParams('Keyword',getParams('keyWord',getParams('keyword',''))))))
             axios({
                 url: "/home/plt_PltConfig_getSysConfig"
             }).then(function (res) {

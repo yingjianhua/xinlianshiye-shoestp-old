@@ -2,7 +2,14 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <jsp:include page="v3/header.jsp"/>
 <link rel="stylesheet" href="/home/v3/static/css/productList.css">
-
+    <link href="./static/css/style.css" rel="stylesheet" type="text/css">
+    <link href="./static/css/global.css" rel="stylesheet" type="text/css">
+    <link href="./static/css/user.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="./static/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="/home/static/js/user.js"></script>
+<script type="text/javascript" src="/home/static/js/lang/${env.curLanguage }.js"></script>
+<script type="text/javascript" src="/home/static/js/global.js"></script>
+<script type="text/javascript" src="/home/static/js/global(1).js"></script>
 <body>
 <jsp:include page="v3/nav.jsp"></jsp:include>
 <div id="new_navs">
@@ -14,7 +21,14 @@
 </script>
 <script>	 new Vue({
             el: "#new_navs"
-        })</script>
+        })
+
+ $('html').on('click', '#signin_close', function () {
+        $('#signin_module').remove();
+        global_obj.div_mask(1);
+
+    })
+</script>
 <div id="productList" class="clearfix w1240">
 	<!--分级导航-->
 	<div class="topNav">
@@ -220,37 +234,7 @@
 <script src="/home/v3/static/js/index-bottom.js"></script>
 
 <script>
-	  function getParams(name, defaultValue) {
-        var url = window.location.href;
-        var l = url.lastIndexOf(name)
-        if (l != -1) {
-            var ll = url.indexOf("&",l);
-            if (ll == -1 || l > ll) {
-                ll = url.length
-            }
-            url = url.substring(l, ll);
-            var result = url.split("=")
-            if (result.length == 2) {
-                switch (typeof defaultValue) {
-                    case "number":
-                        return parseInt(result[1]);
-                    case "boolean":
-                        return Boolean(result[1])
-                    default:
-                        return result[1];
-                }
-            }
-        } else {
-            if (defaultValue == 'NONE') {
-                return null;
-            }
-            if (defaultValue == null) {
-                return -1;
-            }
-            return defaultValue
-        }
-        return -1;
-    }
+
 
 
     new Vue(

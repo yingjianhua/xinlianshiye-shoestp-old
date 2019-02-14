@@ -12,7 +12,6 @@ import irille.core.sys.Sys.OYn;
 import irille.pub.bean.BeanInt;
 import irille.pub.svr.Env;
 import irille.pub.tb.Fld;
-import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
 import irille.shop.plt.PltErate;
@@ -28,7 +27,7 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
 
     public enum T implements IEnumFld {// @formatter:off
         PKEY(Tb.crtIntPkey()),
-        CONSULT(RFQConsult.fldOutKey("consult", "询盘")), //
+        CONSULT(RFQConsult.fldOutKey("consult", "询盘")), //询盘
         SUPPLIER_ID(UsrSupplier.fldOutKey().setName("供应商")),
         PURCHASE_ID(UsrPurchase.fldOutKey().setName("采购商")),
         IN_RECYCLE_BIN(Sys.T.YN, "是否在回收站"),//是否在回收站, true: 在回收站, false: 不在回收站
@@ -40,13 +39,14 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
         MINPRICE(Sys.T.INT, "价格区间"),
         MAXPRICE(Sys.T.INT, "价格区间"),
         CURRENCY(PltErate.fldOutKey()),
-        VALID_DATE(Sys.T.DATE_TIME__NULL),
+        VALID_DATE(Sys.T.DATE_TIME__NULL),//过期时间 RFQ询盘可以设置过期时间, 过期后RFQ列表中将不再出现 供应商也就不能报价
         PAYTYPE(Tb.crt(RFQConsultPayType.DEFAULT)),
         TRANSITTYPE(Tb.crt(RFQConsultShipping_Type.DEFAULT)),
-        SAMPLE(Sys.T.YN),
+        SAMPLE(Sys.T.YN),//是否有样品
         COMPANYDESCRIBE(Sys.T.STR__2000_NULL),
         THROWAWAY(Sys.T.JSON),
         CREATE_DATE(Sys.T.CREATED_DATE_TIME),
+        IS_NEW(Sys.T.YN),//是否为新关联, 初始为true, 供应商查看后为false
         HAD_READ_PURCHASE(Sys.T.YN),//采购商是否已经读取消息
         HAD_READ_SUPPLIER(Sys.T.YN),//供应商是否已经读取消息
         ROW_VERSION(Sys.T.ROW_VERSION),
@@ -133,6 +133,9 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
   private String _companydescribe;	// 字符2000  STR(2000)<null>
   private String _throwaway;	// JSON  JSONOBJECT
   private Date _createDate;	// 建档时间  TIME
+  private Byte _isNew;	// 是否 <OYn>  BYTE
+	// YES:1,是
+	// NO:0,否
   private Byte _hadReadPurchase;	// 是否 <OYn>  BYTE
 	// YES:1,是
 	// NO:0,否
@@ -163,6 +166,7 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
     _companydescribe=null;	// 字符2000  STR(2000)
     _throwaway=null;	// JSON  JSONOBJECT
     _createDate=Env.getTranBeginTime();	// 建档时间  TIME
+    _isNew=OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
     _hadReadPurchase=OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
     _hadReadSupplier=OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
     _rowVersion=0;	// 版本  SHORT
@@ -375,6 +379,18 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
   }
   public void setCreateDate(Date createDate){
     _createDate=createDate;
+  }
+  public Byte getIsNew(){
+    return _isNew;
+  }
+  public void setIsNew(Byte isNew){
+    _isNew=isNew;
+  }
+  public Boolean gtIsNew(){
+    return byteToBoolean(_isNew);
+  }
+  public void stIsNew(Boolean isNew){
+    _isNew=booleanToByte(isNew);
   }
   public Byte getHadReadPurchase(){
     return _hadReadPurchase;
