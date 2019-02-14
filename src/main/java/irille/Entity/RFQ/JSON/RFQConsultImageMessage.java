@@ -15,7 +15,7 @@ public class RFQConsultImageMessage implements BaseView, ConsultMessage {
 	private String alt;//图片描述信息
     private String imageUrl;//图片地址
 	@Override
-	public Byte getType() {
+	public Byte type() {
 		return RFQConsultMessageType.IMAGE.getLine().getKey();
 	}
 }

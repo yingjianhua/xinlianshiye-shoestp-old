@@ -18,7 +18,6 @@ import irille.Dao.RFQ.RFQConsultRelationDao;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
-import irille.Entity.RFQ.Enums.RFQConsultMessageType;
 import irille.Entity.RFQ.JSON.ConsultMessage;
 import irille.Entity.RFQ.JSON.RFQConsultAlertUrlMessage;
 import irille.Entity.RFQ.JSON.RFQConsultImageMessage;
@@ -89,7 +88,7 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 		} catch (JsonProcessingException e) {
 			throw new WebMessageException(ReturnCode.third_unknow, "消息发送失败");
 		}
-		bean.stType(RFQConsultMessageType.TEXT);
+		bean.setType(message.type());
 		bean.setSendTime(new Date());
 		bean.stRelation(relation);
 		bean.stP2s(false);
