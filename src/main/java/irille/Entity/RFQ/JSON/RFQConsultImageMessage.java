@@ -1,5 +1,6 @@
 package irille.Entity.RFQ.JSON;
 
+import irille.Entity.RFQ.Enums.RFQConsultMessageType;
 import irille.view.BaseView;
 import lombok.Data;
 
@@ -13,4 +14,8 @@ import lombok.Data;
 public class RFQConsultImageMessage implements BaseView, ConsultMessage {
 	private String alt;//图片描述信息
     private String imageUrl;//图片地址
+	@Override
+	public Byte getType() {
+		return RFQConsultMessageType.IMAGE.getLine().getKey();
+	}
 }

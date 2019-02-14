@@ -1,5 +1,6 @@
 package irille.Entity.RFQ.JSON;
 
+import irille.Entity.RFQ.Enums.RFQConsultMessageType;
 import irille.view.BaseView;
 import lombok.Data;
 
@@ -14,4 +15,8 @@ public class RFQConsultUrlMessage implements BaseView, ConsultMessage {
 	
 	private String showMsg;//显示内容
     private String url;//链接地址
+	@Override
+	public Byte getType() {
+		return RFQConsultMessageType.URL.getLine().getKey();
+	}
 }
