@@ -296,7 +296,6 @@
             // 获取产品列表
             productList(e) {
         	    var params={}
-        	    debugger
                 if(this.cated!=null||this.cated>0){
                     this.lose =1
                     params={
