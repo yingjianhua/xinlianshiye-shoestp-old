@@ -142,7 +142,7 @@
                                         <ul class="right-goods-wrap">
                                             <li class="item" v-for="(goods, index) in showRoomItem" v-if="index < 4">
                                                 <a :href="goods.rewrite" target="_blank">
-                                                    <img :src="image(goods.image)" :alt="goods.title" class="goods-pic">
+                                                    <img :src="image(goods.image,'?x-oss-process=image/resize,m_pad,h_,w_500')" :alt="goods.title" class="goods-pic">
                                                     <div class="goods-info-wrap">
                                                         <div class="goods-name">
                                                             <div class="ellipsis_2">
@@ -305,7 +305,7 @@
                     <div class="product-item">
                         <div class="product-img">
                             <a :href="'/'+item.rewrite" target="_blank">
-                                <img :src="image(item.picture)" alt="">
+                                <img :src="image(item.picture,'?x-oss-process=image/resize,m_pad,h_500,w_500')" alt="">
                             </a>
                         </div>
                         <div class="product-content">
@@ -355,7 +355,7 @@
                     <div class="product-item">
                         <div class="product-img">
                             <a :href="'/'+item.rewrite" target="_blank">
-                                <img :src="image(item.picture)" alt="">
+                                <img :src="image(item.picture,'?x-oss-process=image/resize,m_pad,h_500,w_500')" alt="">
                             </a>
                         </div>
                         <div class="product-content">
