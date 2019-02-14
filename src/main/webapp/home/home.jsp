@@ -332,7 +332,7 @@
 									Min.Order: {{item.minOrder}} pairs
 								</div>
 							</a>
-							<a class="inquiry-a" :href="'/home/usr_UsrConsult_publishView?product_id='+item.id" target="_blank">
+							<a class="inquiry-a" :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" target="_blank">
 								Inquiry
 							</a>
 						</div>
@@ -382,7 +382,7 @@
 									Min.Order: {{item.minOrder}} pairs
 								</div>
 							</a>
-							<a class="inquiry-a" :href="'/home/usr_UsrConsult_publishView?product_id='+item.id" target="_blank">
+							<a class="inquiry-a" :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" target="_blank">
 								Inquiry
 							</a>
 						</div>
@@ -401,7 +401,7 @@
                     <a :href="item.url" target="_blank">
                         <img :src="item.image" name="News_img" alt="">
                         <div class="news_laste" v-if="index != 2">
-                            <span class="news_laste_text">Laste</span>
+                            <span class="news_laste_text">Last</span>
                         </div>
                         <h4 class="detail_title">{{item.title}}</h4>
                         <div class="detail_info">
