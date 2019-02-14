@@ -81,7 +81,10 @@ public abstract class AbstractQuery {
 //		if(s!=-1)
 //			sql = sql.substring(0, s);
 		sql = sql.replaceFirst("(select|SELECT)\\s+.*?\\s+(FROM|from)", "SELECT COUNT(1) FROM");
-		return query(rs->ResultMapper.asObject(rs, Integer.class), needDebug(), sql, getParams());
+		Integer count = query(rs->ResultMapper.asObject(rs, Integer.class), needDebug(), sql, getParams());
+		if(count == null)
+			return 0;
+		return count;
 	}
 	
 	/**
