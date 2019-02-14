@@ -65,10 +65,10 @@
 <body class="lang_en w_1200">
 
 <%@ include file="/home/template/web-top.jsp" %>
-<%@ include file="/home/template/shop-header.jsp" %>
 
 <div id="main">
     <index-top></index-top>
+    <%@ include file="/home/template/shop-header.jsp" %>
     <div class="wide">
         <c:if test="${supView.homePageOn==1}">
             <div class="clean">
@@ -116,6 +116,8 @@
                     </c:if>
                 </div>
             </div>
+    </div>
+
             <!-- 公司介绍 - wrap -->
             <div class="bg-gray">
                 <div class="wide">
@@ -232,7 +234,7 @@
         </c:if>
         <%@ include file="/home/template/new-foot.jsp" %>
         ${supView.traceCode}
-    </div>
+
 </div>
 <script type="text/javascript">
     $(function () {

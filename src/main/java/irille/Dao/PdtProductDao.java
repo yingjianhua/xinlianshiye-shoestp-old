@@ -488,11 +488,14 @@ public class PdtProductDao {
                 .FROM(PdtProduct.class)
                 .LEFT_JOIN(PdtCat.class, PdtProduct.T.CATEGORY, PdtCat.T.PKEY)
                 .LEFT_JOIN(UsrProductCategory.class, PdtProduct.T.CATEGORY_DIY, UsrProductCategory.T.PKEY)
+                .LEFT_JOIN(O2O_PrivateExpoPdt.class, O2O_PrivateExpoPdt.T.PDT_ID, PdtProduct.T.PKEY)
+                .LEFT_JOIN(O2O_Product.class, O2O_Product.T.PRODUCT_ID, PdtProduct.T.PKEY)
                 .WHERE(name != null && name.length() > 0, PdtProduct.T.NAME, "like ?", "%" + name + "%")
                 .WHERE(number != null && number.length() > 0, PdtProduct.T.CODE, "like ?", "%" + number + "%")
                 .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierId)
                 .WHERE(PdtProduct.T.PRODUCT_TYPE, " <> ?", Pdt.OProductType.GROUP.getLine().getKey())
-                .WHERE(PdtProduct.T.STATE, "<>2")
+                .WHERE(PdtProduct.T.PRODUCT_TYPE, " <> ?", Pdt.OProductType.GATHER.getLine().getKey())
+                .WHERE(PdtProduct.T.STATE, "<>?", Pdt.OState.DELETE.getLine().getKey())
                 .WHERE(PdtProduct.T.STATE, "<>?", Pdt.OState.MERCHANTDEL.getLine().getKey())
                 .WHERE(PdtProduct.T.STATE, "<>?", Pdt.OState.OFF.getLine().getKey())
                 .ORDER_BY(PdtProduct.T.UPDATE_TIME, "desc");
@@ -502,10 +505,15 @@ public class PdtProductDao {
                     q.WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.PrivateExpo.getLine().getKey());
                     break;
                 case 3:
-                    q.WHERE(PdtProduct.T.IS_VERIFY, "=?", Sys.OYn.YES.getLine().getKey());
+                    q.WHERE("(" + O2O_PrivateExpoPdt.class.getSimpleName() + "." + O2O_PrivateExpoPdt.T.VERIFY_STATUS.getFld().getCodeSqlField() +
+                                    "=? OR " + O2O_Product.class.getSimpleName() + "." + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField() + " =?)"
+                            , O2O_PrivateExpoPdtStatus.PASS.getLine().getKey(), O2O_ProductStatus.PASS.getLine().getKey());
                     break;
                 case 4:
-                    q.WHERE(PdtProduct.T.IS_VERIFY, "=?", Sys.OYn.NO.getLine().getKey());
+                    q.WHERE("(" + O2O_PrivateExpoPdt.class.getSimpleName() + "." + O2O_PrivateExpoPdt.T.VERIFY_STATUS.getFld().getCodeSqlField() +
+                                    "=? OR " + O2O_Product.class.getSimpleName() + "." + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField() +
+                                    " =?)"
+                            , O2O_PrivateExpoPdtStatus.Failed.getLine().getKey(), O2O_ProductStatus.Failed.getLine().getKey());
                     break;
             }
         }
@@ -869,6 +877,7 @@ public class PdtProductDao {
         SQL sql = new SQL();
         sql.SELECT(PdtProduct.T.PKEY, "pdtPkey");
         sql.SELECT(PdtProduct.T.NAME, "pdtName");
+        sql.SELECT(PdtProduct.T.PRODUCT_TYPE);
         //sql.SELECT(PdtProduct.T.CATEGORY,"pdtCate");
         sql.SELECT(PdtProduct.T.CUR_PRICE, PdtProduct.T.MIN_OQ, PdtProduct.T.CATEGORY, PdtProduct.T.NORM_ATTR, PdtProduct.T.PRODUCT_TYPE, PdtProduct.T.PICTURE);
         sql.SELECT(UsrSupplier.T.PKEY, "supPkey");
@@ -913,8 +922,8 @@ public class PdtProductDao {
                     }
                 }
                 sql.WHERE(PdtProduct.T.CATEGORY, " in(" + pkeys + ") ");
-                start = 0;
-                limit = 10;
+//                start = 0;
+//                limit = 10;
             }
         if (StringUtil.hasValue(pName))
             sql.WHERE(" upper(JSON_EXTRACT(PdtProduct.name,'$." + curLanguage.name() + "'))  like upper('%" + pName

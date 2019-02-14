@@ -39,9 +39,9 @@
 <jsp:include page="v3/nav.jsp"/>
 <body class="lang_en w_1200">
 <%@ include file="/home/template/web-top.jsp" %>
-<%@ include file="/home/template/shop-header.jsp" %>
 <div id="main">
     <index-top></index-top>
+    <%@ include file="/home/template/shop-header.jsp" %>
     <c:if test="${supView.productPageOn==1}">
         <div class="clean">
             <c:if test="${supView.productPageDiy != null && supView.productPageDiy != ''}">
@@ -57,7 +57,8 @@
            </div> --%>
         <div class="wide">
             <div class="enterprise-info-wrap">
-                <h3 class="enterprise-info-title clean">
+                <h3 class="enterprise-info-title clearfix">
+                <%--<h3 class="enterprise-info-title clearfix" style="margin-bottom: 5px">--%>
                     <s:text name="hottestItems"/>
                     <div class="fr">
                         <ul class="tool-group">
@@ -125,6 +126,7 @@
                         </ul>
                     </div>
                 </h3>
+                <div  style="clear:both;"></div>
 
                 <!-- 商品展示 -->
                 <%--  <c:if test="${pageAll != 0}"> --%>
