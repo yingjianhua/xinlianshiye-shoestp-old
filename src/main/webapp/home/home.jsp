@@ -441,28 +441,28 @@ new Vue({
   el: "#shoesTp",
   data: {
     CrowdFundingList: [{
-      url: "https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=977",
+      url: "/home/prm_PrmGroupPurchase_getGroupPdt?pkey=977",
       imgUrl: "/home/v3/static/images/goods1.jpg",
       title: "Leather shoes male Korean version of the trend of leather shoes men's casual shoes autumn men's shoes tide",
       salesVolume: "600",
       percentage: "120",
       endTime: "1"
     }, {
-      url: "https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=870",
+      url: "/home/prm_PrmGroupPurchase_getGroupPdt?pkey=870",
       imgUrl: "/home/v3/static/images/goods2.jpg",
       title: "Dingtai Boots Nice High Heel Shoes Womens Winter Boots",
       salesVolume: "420",
       percentage: "140",
       endTime: "1"
     }, {
-      url: "https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1145",
+      url: "/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1145",
       imgUrl: "/home/v3/static/images/goods3.jpg",
       title: "Students wild winter hip hop Gaobang men's shoes high-top shoes men's Korean version of the tide shoes",
       salesVolume: "50",
       percentage: "10",
       endTime: "1"
     }, {
-      url: "https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1054",
+      url: "/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1054",
       imgUrl: "/home/v3/static/images/goods11.jpg",
       title: "Classic Fashion Cheap Flat Shoes Men Casual",
       salesVolume: "550",
