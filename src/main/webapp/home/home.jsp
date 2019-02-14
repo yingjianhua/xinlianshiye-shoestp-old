@@ -3,6 +3,7 @@
 <jsp:include page="v3/header.jsp"/>
 <body>
 <jsp:include page="v3/nav.jsp"></jsp:include>
+<script src="/home/static/js/qs.js"></script>
 <script src="/home/v3/static/js/swiper.min.js"></script>
 <main id="shoesTp">
     <index-top></index-top>
