@@ -12,7 +12,7 @@ import java.util.List;
 public interface IO2OMapServer {
     List<O2OMapView> list();
 
-    void ins(O2OMapView view);
+    O2OMapView ins(O2OMapView view);
 
     void del(Integer id);
 
