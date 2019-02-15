@@ -1,17 +1,25 @@
 package irille.Service.RFQ.Imp;
 
-import irille.Dao.Old.RFQ.RFQConsultDAO;
-import irille.Entity.RFQ.Enums.*;
-import irille.Entity.RFQ.RFQConsult;
-import irille.Service.RFQ.IRFQConsultService;
-import irille.shop.usr.UsrPurchase;
-import irille.view.RFQ.PutInquiryView;
-import irille.view.RFQ.PutRFQConsultView;
-
-import javax.inject.Inject;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+
+import javax.inject.Inject;
+
+import irille.Dao.Old.RFQ.RFQConsultDAO;
+import irille.Entity.RFQ.RFQConsult;
+import irille.Entity.RFQ.Enums.RFQConsultPayType;
+import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
+import irille.Entity.RFQ.Enums.RFQConsultStatus;
+import irille.Entity.RFQ.Enums.RFQConsultType;
+import irille.Entity.RFQ.Enums.RFQConsultUnit;
+import irille.Entity.RFQ.Enums.RFQConsultVerifyStatus;
+import irille.Service.RFQ.IRFQConsultService;
+import irille.homeAction.rfq.view.RFQConsultView;
+import irille.shop.usr.UsrPurchase;
+import irille.view.Page;
+import irille.view.RFQ.PutInquiryView;
+import irille.view.RFQ.PutRFQConsultView;
 
 /**
  * Created by IntelliJ IDEA.
@@ -139,5 +147,12 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         rfqConsultDAO.setB(rfqConsult);
         rfqConsultDAO.commit();
     }
+
+	@Override
+	public Page<RFQConsultView> pageMine(UsrPurchase purchase, Byte type, String keyword, Boolean unread, Integer start, Integer limit) {
+		RFQConsultView view = new RFQConsultView();
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

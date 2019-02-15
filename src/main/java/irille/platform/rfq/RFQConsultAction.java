@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
+import irille.Dao.RFQ.RFQConsultService;
 import irille.Entity.RFQ.RFQConsult;
-import irille.Service.RFQ.RFQConsultService;
 import irille.action.ActionBase;
 import irille.platform.rfq.view.RFQConsultRelationView;
 import irille.platform.rfq.view.RFQConsultView;
