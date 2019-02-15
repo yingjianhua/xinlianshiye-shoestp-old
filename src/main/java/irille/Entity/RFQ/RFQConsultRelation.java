@@ -1,10 +1,5 @@
 package irille.Entity.RFQ;
 
-import java.util.Date;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import irille.Entity.RFQ.Enums.RFQConsultPayType;
 import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
 import irille.core.sys.Sys;
@@ -17,11 +12,15 @@ import irille.pub.tb.Tb;
 import irille.shop.plt.PltErate;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Date;
 
 public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
-	
+
 	private static final long serialVersionUID = 2353321755373329372L;
-	
+
 	public static final Tb<?> TB = new Tb<>(RFQConsultRelation.class, "询盘关联表")
             .setAutoIncrement();
 
@@ -40,8 +39,8 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
         MAXPRICE(Sys.T.INT, "价格区间"),
         CURRENCY(PltErate.fldOutKey()),
         VALID_DATE(Sys.T.DATE_TIME__NULL),//过期时间 RFQ询盘可以设置过期时间, 过期后RFQ列表中将不再出现 供应商也就不能报价
-        PAYTYPE(Tb.crt(RFQConsultPayType.DEFAULT)),
-        TRANSITTYPE(Tb.crt(RFQConsultShipping_Type.DEFAULT)),
+        PAYTYPE(Tb.crt(RFQConsultPayType.DEFAULT)),  //支付方式
+        TRANSITTYPE(Tb.crt(RFQConsultShipping_Type.DEFAULT)), //运送方面是
         SAMPLE(Sys.T.YN),//是否有样品
         COMPANYDESCRIBE(Sys.T.STR__2000_NULL),
         THROWAWAY(Sys.T.JSON),
