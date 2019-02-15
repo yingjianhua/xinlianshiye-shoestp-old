@@ -378,6 +378,7 @@ public class O2OActivityServiceImpl implements O2OActivityService {
         } else if (status.equals(O2O_ProductStatus.PASS)) {
             o2OProduct.setMessage("下架成功");
             email.setSubject("【鞋贸港】O2O商品下架成功");
+            pdt.stProductType(Pdt.OProductType.GENERAL);
             email.setContent("您申请商品编号为【" + pdt.getCode() + "】的商品下架成功");
         }
         o2OProduct.upd();
