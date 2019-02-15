@@ -1,19 +1,19 @@
 Vue.component('index-bottom', {
     template: `<div id="o2obottom">
-<!--<div class="brand-list">-->
-          <!--<a class="brand-item" target="_blank" href="https://www.shoeslogo.com/">-->
-            <!--<img src="/home/v3/static/images/brand01.png" alt="" />-->
-          <!--</a>-->
-          <!--<a class="brand-item" target="_blank" href="http://www.shoesmat.com/">-->
-            <!--<img src="/home/v3/static/images/brand02.png" alt="" />-->
-          <!--</a>-->
-          <!--<a class="brand-item" target="_blank" href="http://www.shoesrd.com/">-->
-            <!--<img src="/home/v3/static/images/brand03.png" alt="" />-->
-          <!--</a>-->
-          <!--<a class="brand-item" target="_blank" href="http://www.wzsomt.com/">-->
-            <!--<img src="/home/v3/static/images/brand04.png" alt="" />-->
-          <!--</a>-->
-        <!--</div>-->
+<div class="brand-list">
+          <a class="brand-item" target="_blank" href="https://www.shoeslogo.com/">
+            <img src="/home/v3/static/images/brand01.png" alt="" />
+          </a>
+          <a class="brand-item" target="_blank" href="http://www.shoesmat.com/">
+            <img src="/home/v3/static/images/brand02.png" alt="" />
+          </a>
+          <a class="brand-item" target="_blank" href="http://www.shoesrd.com/">
+            <img src="/home/v3/static/images/brand03.png" alt="" />
+          </a>
+          <a class="brand-item" target="_blank" href="http://www.wzsomt.com/">
+            <img src="/home/v3/static/images/brand04.png" alt="" />
+          </a>
+        </div>
         <div class="emailform">
             <p>Trade Alert - Delivering the latest product trends and industry news straight to your inbox.</p>
             <div class="email">
