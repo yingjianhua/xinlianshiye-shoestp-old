@@ -1,4 +1,4 @@
-@charset "utf-8";
+#lhl-highClass .head-textImg@charset "utf-8";
 
 * {
     margin: 0;
@@ -424,8 +424,6 @@ li {
 }
 
 #lhl-highClass .head-textImg {
-    width: 588px;
-    height: 258px;
     margin-top: 178px;
 }
 
