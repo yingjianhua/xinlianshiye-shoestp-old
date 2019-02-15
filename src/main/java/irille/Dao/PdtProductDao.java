@@ -915,7 +915,7 @@ public class PdtProductDao {
             }
         }
         if (lose != null && lose == 1)
-            if (cate != null) {
+            if (cate != null &&cate>0) {
                 List<Integer> cPkeys = pdtProductDao.getCatsNodeByCatId(cate);
                 String pkeys = "";
                 for (int i = 0; i < cPkeys.size(); i++) {
