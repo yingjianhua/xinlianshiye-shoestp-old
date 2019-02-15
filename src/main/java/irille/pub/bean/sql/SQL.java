@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.BeanMain;
 import irille.pub.tb.IEnumFld;
@@ -138,6 +140,25 @@ public class SQL {
                 }
             }
         }
+    }
+    /**
+     * 产生in 语句
+     * @param num 问号数量
+     * @return
+     * <p>如参数为 2 则返回 in (?,?)
+     * <p>如参数为10 则返回 in (?,?,?,?,?,?,?,?,?,?)
+     */
+    public static String getInSql(Integer num) {
+		String[] s = new String[num];
+		for (int i = 0; i < num; i++) {
+			s[i] = "?";
+		}
+		return "in (" + StringUtils.join(s, ",") + ")";
+    }
+    
+    public static Serializable[] getInParams(List<Serializable> params) {
+    	params.size();
+    	return null;
     }
 
     //多条件赛选 参数1 返回的dto 参数2 对应的实体类

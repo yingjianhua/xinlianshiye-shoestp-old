@@ -445,7 +445,7 @@ public class PdtProductDao {
      * @author lijie@shoestp.cn
      * @date 2018/8/21 18:05
      */
-    public List getCatsNodeByCatId(int id) {
+    public List<Integer> getCatsNodeByCatId(int id) {
         if (id < 1) {
             return null;
         }
@@ -457,8 +457,8 @@ public class PdtProductDao {
         List<PdtCat> tList = query.queryList();
         List ttList = new ArrayList();
         l.addAll(tList);
-        List<String> result = new ArrayList();
-        result.add(String.valueOf(id));
+        List<Integer> result = new ArrayList();
+        result.add(id);
         do {
             ttList.clear();
             for (PdtCat objects : tList) {
@@ -474,7 +474,7 @@ public class PdtProductDao {
         } while (true);
         for (PdtCat o : l) {
             if (o.getPkey() > 0) {
-                result.add(String.valueOf(o.getPkey()));
+                result.add(o.getPkey());
             }
         }
         return result;
