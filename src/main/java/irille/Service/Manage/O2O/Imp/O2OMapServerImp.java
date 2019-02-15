@@ -90,7 +90,7 @@ public class O2OMapServerImp implements IO2OMapServer {
         }).collect(Collectors.toList());
     }
 
-    public void ins(O2OMapView view) {
+    public O2OMapView ins(O2OMapView view) {
         O2O_Map map = new O2O_Map();
         map.setName(view.getName());
         map.setLongitude(view.getLongitude());
@@ -98,6 +98,8 @@ public class O2OMapServerImp implements IO2OMapServer {
         map.setIsDelete(Sys.OYn.NO.getLine().getKey());
         translateUtil.autoTranslate(map);
         map.ins();
+        view.setId(map.getPkey());
+        return view;
     }
 
     public static void main(String[] args) throws Exception {
