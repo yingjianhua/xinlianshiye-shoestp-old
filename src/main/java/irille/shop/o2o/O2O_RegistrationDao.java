@@ -139,7 +139,7 @@ public class O2O_RegistrationDao {
 				for(String str:split) {
 					Integer i = Integer.parseInt(str);
 					for(PdtCat item:listAll) {
-						if(i == item.getPkey()) {
+						if(i.equals(item.getPkey())) {
 							buff.append(item.getName());
 							buff.append("&&&");
 							break;
