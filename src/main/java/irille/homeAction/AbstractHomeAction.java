@@ -36,6 +36,9 @@ public abstract class AbstractHomeAction extends BaseAction implements RequestAw
 	protected Map<String, Object> request;
 	protected Map<String, Object> session;
 	protected Map<String, Object> application;
+	
+	protected Integer start = 0;
+	protected Integer limit = 10;
 
 	/**
 	 * 获取文件上传路径的 项目相对路径

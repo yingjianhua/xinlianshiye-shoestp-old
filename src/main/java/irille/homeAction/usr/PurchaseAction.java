@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.google.inject.Inject;
 
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
+import irille.Service.Usr.UsrFavoriteService;
 import irille.Service.Usr.UsrPurchaseService;
 import irille.homeAction.AbstractHomeAction;
 import irille.pub.util.upload.ImageUpload;
@@ -20,8 +21,11 @@ public class PurchaseAction extends AbstractHomeAction implements IPurchaseActio
 	
 	@Inject
 	private UsrPurchaseService usrPurchaseService;
+	@Inject
+	private UsrFavoriteService usrFavoriteService;
 
 	@Override
+	@NeedLogin
 	public void profile() throws IOException {
 		write(usrPurchaseService.getProfile(getPurchase()));
 	}
@@ -29,6 +33,7 @@ public class PurchaseAction extends AbstractHomeAction implements IPurchaseActio
 	private String avatar;
 
 	@Override
+	@NeedLogin
 	public void editAvatar() throws IOException {
 		usrPurchaseService.editAvatar(getPurchase(), avatar);
 		write();
@@ -38,6 +43,14 @@ public class PurchaseAction extends AbstractHomeAction implements IPurchaseActio
 	@NeedLogin
 	public void upload() throws IOException {
 		write(ImageUpload.upload(UsrPurchase.class, getFileFileName(), getFile()));
+	}
+	
+    private Integer category;
+
+	@Override
+	@NeedLogin
+	public void favorite() throws IOException {
+		write(usrFavoriteService.page(getPurchase(), category, true,  start,  limit));
 	}
 
 }
