@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.BeanMain;
 import irille.pub.tb.IEnumFld;
@@ -139,6 +141,25 @@ public class SQL {
             }
         }
     }
+    /**
+     * 产生in 语句
+     * @param num 问号数量
+     * @return
+     * <p>如参数为 2 则返回 in (?,?)
+     * <p>如参数为10 则返回 in (?,?,?,?,?,?,?,?,?,?)
+     */
+    public static String getInSql(Integer num) {
+		String[] s = new String[num];
+		for (int i = 0; i < num; i++) {
+			s[i] = "?";
+		}
+		return "in (" + StringUtils.join(s, ",") + ")";
+    }
+    
+    public static Serializable[] getInParams(List<Serializable> params) {
+    	params.size();
+    	return null;
+    }
 
     //多条件赛选 参数1 返回的dto 参数2 对应的实体类
     public <T extends BeanMain<?, ?>> SQL Mconditions(List<MconditionsView> list, Class<T> beanClass) {
@@ -223,6 +244,12 @@ public class SQL {
         return mybatisSQL.GROUP_BY(fld);
     }
 
+    public <T extends BeanMain<?, ?>> SQL HAVING(IEnumFld fld, String condition, Serializable... params) {
+    	mybatisSQL.HAVING(fld, condition);
+        mybatisSQL.params(params);
+        return mybatisSQL.getSelf();
+    }
+    
     public <T extends BeanMain<?, ?>> SQL HAVING(String condition) {
         return mybatisSQL.HAVING(condition);
     }
@@ -321,6 +348,13 @@ public class SQL {
                 return super.WHERE(columnLabelWithAlias(fld) + " " + conditions);
             else
                 return super.WHERE(columnLabel(fld) + " " + conditions);
+        }
+        
+        public <T extends BeanMain<?, ?>> SQL HAVING(IEnumFld fld, String conditions) {
+        	if (isSelect())
+        		return super.HAVING(columnLabelWithAlias(fld) + " " + conditions);
+        	else
+        		return super.HAVING(columnLabel(fld) + " " + conditions);
         }
 
         public <T extends BeanMain<?, ?>> SQL ORDER_BY(IEnumFld fld, String type) {

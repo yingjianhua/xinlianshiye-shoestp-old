@@ -2,7 +2,14 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <jsp:include page="v3/header.jsp"/>
 <link rel="stylesheet" href="/home/v3/static/css/productList.css">
-
+    <link href="./static/css/style.css" rel="stylesheet" type="text/css">
+    <link href="./static/css/global.css" rel="stylesheet" type="text/css">
+    <link href="./static/css/user.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="./static/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="/home/static/js/user.js"></script>
+<script type="text/javascript" src="/home/static/js/lang/${env.curLanguage }.js"></script>
+<script type="text/javascript" src="/home/static/js/global.js"></script>
+<script type="text/javascript" src="/home/static/js/global(1).js"></script>
 <body>
 <jsp:include page="v3/nav.jsp"></jsp:include>
 <div id="new_navs">
@@ -14,7 +21,14 @@
 </script>
 <script>	 new Vue({
             el: "#new_navs"
-        })</script>
+        })
+
+ $('html').on('click', '#signin_close', function () {
+        $('#signin_module').remove();
+        global_obj.div_mask(1);
+
+    })
+</script>
 <div id="productList" class="clearfix w1240">
 	<!--分级导航-->
 	<div class="topNav">
@@ -118,7 +132,7 @@
 						    <el-carousel :arrow="item.picture.split(',').length > 1 ? 'hover':'never'" height="197px" indicator-position="none" :autoplay="false">
 						      <el-carousel-item v-for="item2 in item.picture.split(',')" :key="item">
 						        <div class="h3" @mouseenter="bigPicBoxopen" @mouseleave="bigPicBoxclose" :data-pic = "item2">
-								    <a :href="'/'+item.rewrite" target="_blank"><img class="fl" :src="'https://image.shoestp.com/'+item2"/></a>
+								    <a :href="'/'+item.rewrite" target="_blank"><img class="fl" :src="imgurl(item2)"/></a>
 								</div>
 						      </el-carousel-item>
 						    </el-carousel>
@@ -205,9 +219,9 @@
 
 		</div>
 		<!--页面右部列表  end-->
-		
+
 		<div class="bigPicBox" v-show="bigPicBox">
-			<img :src="'https://image.shoestp.com/'+bigPicBoxpic" alt="" />
+			<img :src="imgurl(bigPicBoxpic)" alt="" />
 		</div>
 
 	</div>
@@ -220,37 +234,7 @@
 <script src="/home/v3/static/js/index-bottom.js"></script>
 
 <script>
-	  function getParams(name, defaultValue) {
-        var url = window.location.href;
-        var l = url.lastIndexOf(name)
-        if (l != -1) {
-            var ll = url.indexOf("&",l);
-            if (ll == -1 || l > ll) {
-                ll = url.length
-            }
-            url = url.substring(l, ll);
-            var result = url.split("=")
-            if (result.length == 2) {
-                switch (typeof defaultValue) {
-                    case "number":
-                        return parseInt(result[1]);
-                    case "boolean":
-                        return Boolean(result[1])
-                    default:
-                        return result[1];
-                }
-            }
-        } else {
-            if (defaultValue == 'NONE') {
-                return null;
-            }
-            if (defaultValue == null) {
-                return -1;
-            }
-            return defaultValue
-        }
-        return -1;
-    }
+
 
 
     new Vue(
@@ -268,6 +252,7 @@
         	lessthan:'',
         	min:'',
         	max:'',
+            cated:-1,
         	lose:'',
         	currentPage:1,
         	allpage:'',
@@ -281,11 +266,17 @@
             bigPicBoxpic:'',
         },
         methods: {
+            imgurl(row){
+                if(row!=""){
+                   return 'https://image.shoestp.com/'+row
+				}
+                return null
+			},
 			// 读取链接带参
         	GetQueryString(name){
 			     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
 			     var r = window.location.search.substr(1).match(reg);
-			     if(r!=null)return  unescape(r[2]); return null;
+			     if(r!=null)return  unescape(decodeURIComponent(r[2])); return null;
 			},
 
 			classList(e) { // 获取左边分类
@@ -296,7 +287,6 @@
                     }
                 })
                     .then((res) => {
-                    	console.log(res.data.result)
                         this.classLists = res.data.result
                         for (var i in this.classLists) {
 				            var children = this.classLists[i].children;
@@ -311,24 +301,41 @@
             },
             // 获取产品列表
             productList(e) {
-                axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax?v=3', {
-                    params: {
-						start:this.page,
-						limit:this.limit,
-						cate:this.cated,
-						min:this.min,
-						max:this.max,
-						mOrder:this.lessthan,
-						pName:this.pName,
-						level:this.selelv,
-						export:this.selecount,
-						o2oAddress:this.selestore,
-						orderfld:getParams("orderfld","NONE"),
-						lose:this.lose,
+        	    var params={}
+                if(this.cated!=null||this.cated>0){
+                    this.lose =1
+                    params={
+                        start:this.page,
+                        limit:this.limit,
+                        cate:this.cated,
+                        min:this.min,
+                        max:this.max,
+                        mOrder:this.lessthan,
+                        pName:this.pName,
+                        level:this.selelv,
+                        export:this.selecount,
+                        o2oAddress:this.selestore,
+                        orderfld:getParams("orderfld","NONE"),
+                        lose:this.lose
                     }
+                }else{
+                    params={
+                        start:this.page,
+                        limit:this.limit,
+                        min:this.min,
+                        max:this.max,
+                        mOrder:this.lessthan,
+                        pName:this.pName,
+                        level:this.selelv,
+                        export:this.selecount,
+                        o2oAddress:this.selestore,
+                        orderfld:getParams("orderfld","NONE")
+                    }
+                }
+                axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax?v=3', {
+                    params:params
                 })
                     .then((res) => {
-                    	console.log(res.data.result)
                         this.productLists = res.data.result.items
                         this.allpage = res.data.result.totalCount
                         this.breadcrumbnav= res.data.result.breadcrumbnav
@@ -473,6 +480,7 @@
           categorySearch(e){
           	this.lose =1
             this.cated = e.currentTarget.dataset.cated;
+          	console.log(this.cated)
             this.page= 0;
             this.productList();
           },
@@ -502,7 +510,7 @@
             this.bigPicBoxpic = e.currentTarget.dataset.pic;
             this.bigPicBox = true
           },
-        //	  关闭放大图片窗口 
+        //	  关闭放大图片窗口
           bigPicBoxclose(e){
             this.bigPicBox = false
           },
@@ -510,7 +518,7 @@
         },
         mounted() {
         	this.pName = this.GetQueryString("Keyword")
-        	this.cated = this.GetQueryString("cated")
+        	this.cated = getParams('cated',0)
 			// if(this.GetQueryString("cated").length>0){
 			// 	this.lose=1
 			// }

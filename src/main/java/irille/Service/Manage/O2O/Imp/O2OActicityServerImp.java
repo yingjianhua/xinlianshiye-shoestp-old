@@ -62,7 +62,7 @@ public class O2OActicityServerImp implements IO2OActicityServer{
           }).collect(Collectors.toList());
 
           cats.forEach(cat->{
-              listAll.addAll(pdtProductDao.getCatsNodeByCatId(cat));
+              listAll.addAll(pdtProductDao.getCatsNodeByCatId(cat).stream().map(String::valueOf).collect(Collectors.toList()));
           });
         }
         List<O2O_Product> insO2oPdts = new ArrayList<O2O_Product>();

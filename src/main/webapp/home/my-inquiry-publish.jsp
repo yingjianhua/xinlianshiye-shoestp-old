@@ -653,6 +653,14 @@
                 if( isNaN(quantity) ) return;
                 this.form.quantity = quantity;
             }
+              if( this.GetQueryString("chooesValue") ){
+                var chooesValue = Number(this.GetQueryString("chooesValue"));
+                if( isNaN(chooesValue) ) return;
+                this.form.unit = chooesValue;
+            }
+
+
+
             // 全局获取货币单位
             // this.currencyList = [];
             // if(sysConfig){

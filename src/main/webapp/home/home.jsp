@@ -3,6 +3,7 @@
 <jsp:include page="v3/header.jsp"/>
 <body>
 <jsp:include page="v3/nav.jsp"></jsp:include>
+<script src="/home/static/js/qs.js"></script>
 <script src="/home/v3/static/js/swiper.min.js"></script>
 <main id="shoesTp">
     <index-top></index-top>
@@ -17,7 +18,7 @@
                                                                                            alt=""></a>
             </el-carousel-item>
             <el-carousel-item>
-                <a href="/home/usr_UsrConsult_publicListView" target="_blank"><img
+                <a href="/home/usr_UsrConsult_publishView" target="_blank"><img
                         src="/home/v3/static/images/ljxbanner3.jpg" alt=""></a>
             </el-carousel-item>
         </el-carousel>
@@ -89,9 +90,9 @@
                         <div class="boxListSelect">
                             {{chooes}} <i class="el-icon-arrow-down fr"></i>
                             <ul>
-                                <li :data-name="'Bag'" @click="chooesbtn">Pairs</li>
-                                <li :data-name="'Bag'" @click="chooesbtn">Forty-Foot Container</li>
-                                <li :data-name="'Bag'" @click="chooesbtn">Twenty-Foot Container</li>
+                                <li :data-name="'Pairs'" @click="chooesbtn" :value="1">Pairs</li>
+                                <li :data-name="'Forty-Foot Container'" :value="2" @click="chooesbtn">Forty-Foot Container</li>
+                                <li :data-name="'Twenty-Foot Container'" :value="3" @click="chooesbtn">Twenty-Foot Container</li>
                             </ul>
                         </div>
                     </div>
@@ -103,7 +104,7 @@
                     <li class="nomr"><a href="/home/usr_UsrConsult_publishView">Request quotation details</a></li>
                 </ul>
 
-                <a :href="'/home/usr_UsrConsult_publishView?title='+encodeURIComponent(RFQ_title)+'&quantity='+RFQ_quantity"
+                <a :href="'/home/usr_UsrConsult_publishView?title='+encodeURIComponent(RFQ_title)+'&quantity='+RFQ_quantity+'&chooesValue='+chooesValue"
                    class="boxListBtn01" target="_blank">Request For Quotation</a>
             </div>
 
@@ -141,7 +142,7 @@
                                         <ul class="right-goods-wrap">
                                             <li class="item" v-for="(goods, index) in showRoomItem" v-if="index < 4">
                                                 <a :href="goods.rewrite" target="_blank">
-                                                    <img :src="image(goods.image)" :alt="goods.title" class="goods-pic">
+                                                    <img :src="image(goods.image,'?x-oss-process=image/resize,m_pad,h_300,w_300')" :alt="goods.title" class="goods-pic">
                                                     <div class="goods-info-wrap">
                                                         <div class="goods-name">
                                                             <div class="ellipsis_2">
@@ -149,7 +150,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="goods-price">
-                                                            US <span>{{sysConfig.currency_symbol}} {{goods.price}}  </span>
+                                                            US <span>{{sysConfig.currency_symbol}}{{goods.price}}  </span>
                                                         </div>
                                                         <div class="min-order">
                                                             Min.Order:{{goods.min_order}} pairs
@@ -304,7 +305,7 @@
                     <div class="product-item">
                         <div class="product-img">
                             <a :href="'/'+item.rewrite" target="_blank">
-                                <img :src="image(item.picture)" alt="">
+                                <img :src="image(item.picture,'?x-oss-process=image/resize,m_pad,h_500,w_500')" alt="">
                             </a>
                         </div>
                         <div class="product-content">
@@ -323,7 +324,7 @@
                         </div>
                         <div class="inquiry-btn"  @click="hide($event,item.rewrite)" style="cursor: pointer;">
 							<a :href="'/'+item.rewrite" target="_blank" style="color:#666;text-align: left;">
-								<div class="ellipsis_2" style="font-size:12px;line-height: 20px;">{{item.name}}</div>
+								<div class="ellipsis_2" style="font-size:12px;line-height: 20px;">{{item.pdtName}}</div>
 								<div style="font-size:18px;margin-top:10px;">
 									<span style="color: #232323;">US</span>
 									<span style="color: #e54544;">{{sysConfig.currency_symbol}}{{item.price}}</span>
@@ -332,7 +333,7 @@
 									Min.Order: {{item.minOrder}} pairs
 								</div>
 							</a>
-							<a class="inquiry-a" :href="'/home/usr_UsrConsult_publishView?product_id='+item.id" target="_blank">
+							<a class="inquiry-a" :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" target="_blank">
 								Inquiry
 							</a>
 						</div>
@@ -354,7 +355,7 @@
                     <div class="product-item">
                         <div class="product-img">
                             <a :href="'/'+item.rewrite" target="_blank">
-                                <img :src="image(item.picture)" alt="">
+                                <img :src="image(item.picture,'?x-oss-process=image/resize,m_pad,h_500,w_500')" alt="">
                             </a>
                         </div>
                         <div class="product-content">
@@ -373,7 +374,7 @@
                         </div>
                         <div class="inquiry-btn"  @click="hide($event,item.rewrite)" style="cursor: pointer;">
 							<a :href="'/'+item.rewrite" target="_blank" style="color:#666;text-align: left;">
-								<div class="ellipsis_2" style="font-size:12px;line-height: 20px;">{{item.name}}</div>
+								<div class="ellipsis_2" style="font-size:12px;line-height: 20px;">{{item.pdtName}}</div>
 								<div style="font-size:18px;margin-top:10px;">
 									<span style="color: #232323;">US</span>
 									<span style="color: #e54544;">{{sysConfig.currency_symbol}}{{item.price}}</span>
@@ -382,7 +383,7 @@
 									Min.Order: {{item.minOrder}} pairs
 								</div>
 							</a>
-							<a class="inquiry-a" :href="'/home/usr_UsrConsult_publishView?product_id='+item.id" target="_blank">
+							<a class="inquiry-a" :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" target="_blank">
 								Inquiry
 							</a>
 						</div>
@@ -400,9 +401,9 @@
                 <div class="news_detail por" v-for="item,index in newsList">
                     <a :href="item.url" target="_blank">
                         <img :src="item.image" name="News_img" alt="">
-                        <div class="news_laste" v-if="index != 2">
-                            <span class="news_laste_text">Laste</span>
-                        </div>
+                        <%--<div class="news_laste" v-if="index != 2">--%>
+                            <%--<span class="news_laste_text">Last</span>--%>
+                        <%--</div>--%>
                         <h4 class="detail_title">{{item.title}}</h4>
                         <div class="detail_info">
                             <img src="/home/v3/static/images/icon_sj.png" name="news_icon" alt="">
@@ -440,28 +441,28 @@ new Vue({
   el: "#shoesTp",
   data: {
     CrowdFundingList: [{
-      url: "https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=977",
+      url: "/home/prm_PrmGroupPurchase_getGroupPdt?pkey=977",
       imgUrl: "/home/v3/static/images/goods1.jpg",
       title: "Leather shoes male Korean version of the trend of leather shoes men's casual shoes autumn men's shoes tide",
       salesVolume: "600",
       percentage: "120",
       endTime: "1"
     }, {
-      url: "https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=870",
+      url: "/home/prm_PrmGroupPurchase_getGroupPdt?pkey=870",
       imgUrl: "/home/v3/static/images/goods2.jpg",
       title: "Dingtai Boots Nice High Heel Shoes Womens Winter Boots",
       salesVolume: "420",
       percentage: "140",
       endTime: "1"
     }, {
-      url: "https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1145",
+      url: "/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1145",
       imgUrl: "/home/v3/static/images/goods3.jpg",
       title: "Students wild winter hip hop Gaobang men's shoes high-top shoes men's Korean version of the tide shoes",
       salesVolume: "50",
       percentage: "10",
       endTime: "1"
     }, {
-      url: "https://www.shoestp.com/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1054",
+      url: "/home/prm_PrmGroupPurchase_getGroupPdt?pkey=1054",
       imgUrl: "/home/v3/static/images/goods11.jpg",
       title: "Classic Fashion Cheap Flat Shoes Men Casual",
       salesVolume: "550",
@@ -513,6 +514,7 @@ new Vue({
     RFQ_title: "",
     RFQ_quantity: null,
     chooes: "Pairs",
+      chooesValue:1,
     classLists: [],
     // 徐世奇
     showRoomGoodsList: [],
@@ -682,6 +684,7 @@ new Vue({
     },
     chooesbtn: function chooesbtn(e) {
       this.chooes = e.currentTarget.dataset.name;
+      this.chooesValue = e.currentTarget.value;
     },
     // 徐世奇
     // 获取展会鞋子列表

@@ -9,6 +9,7 @@ import irille.Entity.RFQ.Enums.RFQConsultMessageType;
 import irille.Service.Manage.RFQ.RFQConsultMessageService;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.rfq.inf.IRFQConsultMessageAction;
+import irille.sellerAction.rfq.view.RFQConsultMessageView;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,23 +25,24 @@ public class RFQConsultMessageAction extends SellerAction<RFQConsultMessage> imp
 	/**
 	 * 消息类型 @see RFQConsultMessageType
 	 */
-	private Byte type;
+	private Byte type = RFQConsultMessageType.TEXT.getLine().getKey();
 	private String content;
 	private String imageUrl;
 	private Integer productId;
 	
 	@Override
 	public void send() throws IOException {
+		RFQConsultMessageView message = null;
 		if(RFQConsultMessageType.TEXT.getLine().getKey() == type) {
-			rFQConsultMessageService.sendTextMessage(getSupplier(), consultId, content);
+			message = rFQConsultMessageService.sendTextMessage(getSupplier(), consultId, content);
 		} else if(RFQConsultMessageType.IMAGE.getLine().getKey() == type) {
-			rFQConsultMessageService.sendImageMessage(getSupplier(), consultId, imageUrl);
-		} else if(RFQConsultMessageType.TEXT.getLine().getKey() == type) {
-			rFQConsultMessageService.sendPrivateExpoPdt(getSupplier(), consultId, productId);
+			message = rFQConsultMessageService.sendImageMessage(getSupplier(), consultId, imageUrl);
+		} else if(RFQConsultMessageType.URL.getLine().getKey() == type) {
+			message = rFQConsultMessageService.sendPrivateExpoPdt(getSupplier(), consultId, productId);
 		} else {
 			
 		}
-
+		write(message);
 	}
 	
 	private Integer consultId;

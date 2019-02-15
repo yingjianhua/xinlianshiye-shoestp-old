@@ -1,8 +1,8 @@
-package irille.Service.RFQ;
+package irille.Dao.RFQ;
 
 import com.google.inject.ImplementedBy;
 
-import irille.Service.RFQ.Impl.RFQConsultServiceImpl;
+import irille.Dao.RFQ.impl.RFQConsultServiceImpl;
 import irille.platform.rfq.view.RFQConsultRelationView;
 import irille.platform.rfq.view.RFQConsultView;
 import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
