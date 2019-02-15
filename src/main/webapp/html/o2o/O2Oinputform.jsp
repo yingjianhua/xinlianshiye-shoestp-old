@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <jsp:include page="/home/v2/template/header.jsp"></jsp:include>
+<script src="/home/static/js/qs.js"></script>
+
 <link rel="stylesheet" href="css/reset.css"/>
 <script src="./js/jquery-1.7.2.min.js"></script>
 <!-- index为以上几个合并后的压缩文件 - 加前缀 -->

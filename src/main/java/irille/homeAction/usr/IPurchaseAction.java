@@ -26,4 +26,10 @@ public interface IPurchaseAction {
 	 * @throws IOException 
 	 */
 	void upload() throws IOException;
+	
+	/**
+	 * 我的收藏列表
+	 * @throws IOException
+	 */
+	void favorite() throws IOException;
 }
