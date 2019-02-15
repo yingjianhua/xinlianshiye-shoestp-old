@@ -880,18 +880,33 @@ a {
   background-color: #e54544 !important; }
 
 #o2obottom {
+  padding-top: 10px;
   background-color: #424d65; }
-
+#o2obottom .brand-list{
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 45px;
+}
+#o2obottom .brand-list .brand-item{
+  min-width: 230px;
+}
+#o2obottom .share-links .icon{
+  margin-right: 6px;
+}
 #o2obottom .emailform {
   width: 1240px;
   margin: 0 auto;
   text-align: center;
   font-family: ArialMT; }
-
 #o2obottom .emailform p:nth-child(1) {
   font-size: 14px;
   color: white;
-  padding: 50px 0 15px; }
+  padding: 40px 0 15px; }
+
+
 
 #o2obottom .emailform p:nth-child(3) {
   font-size: 12px;
@@ -1242,7 +1257,7 @@ a {
 
 .sanduan .box .h3 img {
   display: inline-block;
-  padding: 0 38px;
+  padding: 0 34px;
   -webkit-transition: all .4s;
   transition: all .4s; }
 
