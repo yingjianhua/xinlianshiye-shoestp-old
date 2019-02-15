@@ -401,9 +401,9 @@
                 <div class="news_detail por" v-for="item,index in newsList">
                     <a :href="item.url" target="_blank">
                         <img :src="item.image" name="News_img" alt="">
-                        <div class="news_laste" v-if="index != 2">
-                            <span class="news_laste_text">Last</span>
-                        </div>
+                        <%--<div class="news_laste" v-if="index != 2">--%>
+                            <%--<span class="news_laste_text">Last</span>--%>
+                        <%--</div>--%>
                         <h4 class="detail_title">{{item.title}}</h4>
                         <div class="detail_info">
                             <img src="/home/v3/static/images/icon_sj.png" name="news_icon" alt="">
