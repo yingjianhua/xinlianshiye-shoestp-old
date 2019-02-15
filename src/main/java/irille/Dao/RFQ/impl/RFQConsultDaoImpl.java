@@ -443,18 +443,20 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         SQL sql = new SQL();
         sql.SELECT(
                 RFQConsultRelation.T.PKEY,
-                RFQConsult.T.TITLE,
-                RFQConsult.T.CONTENT,
-                RFQConsult.T.IMAGE,
-                RFQConsult.T.CURRENCY,
-                RFQConsult.T.QUANTITY,
-                RFQConsult.T.PAY_TYPE,
-                RFQConsult.T.PRICE,
-                RFQConsult.T.SHIPPING_TYPE,
-                RFQConsult.T.VALID_DATE,
+                RFQConsultRelation.T.TITLE,
+                RFQConsultRelation.T.DESCRIPTION,
+                RFQConsultRelation.T.IMAGE,
+                RFQConsultRelation.T.CURRENCY,
+                RFQConsultRelation.T.QUANTITY,
+                RFQConsultRelation.T.PAYTYPE,
+                RFQConsultRelation.T.IMAGE,
+                RFQConsultRelation.T.TRANSITTYPE,
+                RFQConsultRelation.T.VALID_DATE,
                 RFQConsultRelation.T.SAMPLE,
                 RFQConsultRelation.T.COMPANYDESCRIBE,
-                RFQConsultRelation.T.THROWAWAY
+                RFQConsultRelation.T.THROWAWAY,
+                RFQConsultRelation.T.MINPRICE,
+                RFQConsultRelation.T.MAXPRICE
         )
                 .FROM(RFQConsult.class)
                 .LEFT_JOIN(
