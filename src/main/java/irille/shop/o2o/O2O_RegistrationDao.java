@@ -1,17 +1,10 @@
 package irille.shop.o2o;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import irille.Entity.O2O.O2oRegistration;
 import irille.Entity.O2O.Enums.O2O_BuyerType;
 import irille.Entity.O2O.Enums.O2O_ExhibitionCountry;
 import irille.Entity.O2O.Enums.O2O_Marketing;
 import irille.Entity.O2O.Enums.O2O_Sex;
+import irille.Entity.O2O.O2oRegistration;
 import irille.platform.o2o.View.O2o_RegistrationView;
 import irille.pub.LogMessage;
 import irille.pub.bean.Query;
@@ -20,18 +13,20 @@ import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtCatDAO;
 import irille.view.Page;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
 public class O2O_RegistrationDao {
-	
+
 	public static final LogMessage LOG = new LogMessage(O2O_RegistrationDao.class);
 
-	public static Page list(Integer gender,Integer marketing,Integer buyerType,Integer exhibitionCountry,Integer start,Integer limit) {
+	public  Page list(Integer gender,Integer marketing,Integer buyerType,Integer exhibitionCountry,Integer start,Integer limit) {
 		SQL sql = new SQL();
-		O2oRegistration test = new O2oRegistration();
 		sql.SELECT(O2oRegistration.class);
 		if(gender != null) {
-			if(gender == 1) 
+			if(gender == 1)
 				sql.WHERE(O2oRegistration.T.GENDER," =? " ,O2O_Sex.men.getLine().getKey());
-			else 
+			else
 				sql.WHERE(O2oRegistration.T.GENDER," =? " ,O2O_Sex.women.getLine().getKey());
 		}
 		if(marketing != null) {
@@ -43,7 +38,7 @@ public class O2O_RegistrationDao {
 			sql.WHERE("( O2oRegistration.exhibition_country = "+ exhibitionCountry +" OR O2oRegistration.exhibition_country LIKE '%," + exhibitionCountry + "' OR O2oRegistration.exhibition_country LIKE '%," + exhibitionCountry + ",%' OR O2oRegistration.exhibition_country LIKE '" + exhibitionCountry + ",%'  )");
 		}
 		sql.FROM(O2oRegistration.class);
-		Integer count = Query.sql(sql).queryCount();			
+		Integer count = Query.sql(sql).queryCount();
 		List<PdtCat> listAll = PdtCatDAO.listAll();
 		List<O2oRegistration> queryList = Query.sql(sql.LIMIT(start, limit)).queryList(O2oRegistration.class);
 		List<O2o_RegistrationView> listView = queryList.stream().map(bean -> new O2o_RegistrationView() {{
@@ -59,7 +54,7 @@ public class O2O_RegistrationDao {
 				for(String str:split) {
 					Integer i = Integer.parseInt(str);
 					for(PdtCat item:listAll) {
-						if(i == item.getPkey()) {
+						if(i.equals(item.getPkey())) {
 							buff.append(item.getName());
 							buff.append("&&&");
 							break;
@@ -74,7 +69,7 @@ public class O2O_RegistrationDao {
 			if(marketing != null && marketing.length > 0) {
 				for(String item:marketing) {
 					for(O2O_Marketing en:O2O_Marketing.values()) {
-						if(Integer.parseInt(item) == en.getLine().getKey()) {
+						if( Integer.valueOf(en.getLine().getKey()).equals(Integer.parseInt(item))) {
 							marketingBuff.append(en.getLine().getName());
 							marketingBuff.append(",");
 						}
@@ -107,7 +102,7 @@ public class O2O_RegistrationDao {
 		return new Page(listView, start, limit, count);
 	}
 
-	public static void ins(O2o_RegistrationView view) {
+	public  void ins(O2o_RegistrationView view) {
 		O2oRegistration bean = new O2oRegistration();
 		bean.setActivityId(view.getActivityId());
 		bean.setFullName(view.getFullName());
@@ -123,8 +118,8 @@ public class O2O_RegistrationDao {
 		bean.setCreateTime(new Date());
 		bean.ins();
 	}
-	
-	public static O2o_RegistrationView info(Integer pkey) {
+
+	public  O2o_RegistrationView info(Integer pkey) {
 		List<PdtCat> listAll = PdtCatDAO.listAll();
 		SQL sql = new SQL();
 		sql.SELECT(O2oRegistration.class);
@@ -191,8 +186,8 @@ public class O2O_RegistrationDao {
 		}};
 		return o2oView;
 	}
-	
-	public static Map<String,Object> getData(){
+
+	public  Map<String,Object> getData(){
 		Map<String,Object> map = new HashMap<>();
 		List<Map<String,Object>> sex = new ArrayList<>();
 		List<Map<String,Object>> marketing = new ArrayList<>();
