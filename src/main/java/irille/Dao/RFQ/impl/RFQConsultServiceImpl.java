@@ -1,14 +1,14 @@
-package irille.Service.RFQ.Impl;
+package irille.Dao.RFQ.impl;
 
 import com.google.inject.Inject;
 import irille.Dao.RFQ.RFQConsultDao;
 import irille.Dao.RFQ.RFQConsultRelationDao;
+import irille.Dao.RFQ.RFQConsultService;
 import irille.Entity.RFQ.Enums.RFQConsultStatus;
 import irille.Entity.RFQ.Enums.RFQConsultType;
 import irille.Entity.RFQ.Enums.RFQConsultVerifyStatus;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultRelation;
-import irille.Service.RFQ.RFQConsultService;
 import irille.platform.rfq.view.RFQConsultRelationView;
 import irille.platform.rfq.view.RFQConsultView;
 import irille.pub.exception.ReturnCode;
