@@ -132,7 +132,7 @@
 						    <el-carousel :arrow="item.picture.split(',').length > 1 ? 'hover':'never'" height="197px" indicator-position="none" :autoplay="false">
 						      <el-carousel-item v-for="item2 in item.picture.split(',')" :key="item">
 						        <div class="h3" @mouseenter="bigPicBoxopen" @mouseleave="bigPicBoxclose" :data-pic = "item2">
-								    <a :href="'/'+item.rewrite" target="_blank"><img class="fl" :src="'https://image.shoestp.com/'+item2"/></a>
+								    <a :href="'/'+item.rewrite" target="_blank"><img class="fl" :src="imgurl(item2)"/></a>
 								</div>
 						      </el-carousel-item>
 						    </el-carousel>
@@ -221,7 +221,7 @@
 		<!--页面右部列表  end-->
 
 		<div class="bigPicBox" v-show="bigPicBox">
-			<img :src="'https://image.shoestp.com/'+bigPicBoxpic" alt="" />
+			<img :src="imgurl(bigPicBoxpic)" alt="" />
 		</div>
 
 	</div>
@@ -252,7 +252,7 @@
         	lessthan:'',
         	min:'',
         	max:'',
-            cate:-1,
+            cated:-1,
         	lose:'',
         	currentPage:1,
         	allpage:'',
@@ -266,6 +266,12 @@
             bigPicBoxpic:'',
         },
         methods: {
+            imgurl(row){
+                if(row!=""){
+                   return 'https://image.shoestp.com/'+row
+				}
+                return null
+			},
 			// 读取链接带参
         	GetQueryString(name){
 			     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
@@ -474,6 +480,7 @@
           categorySearch(e){
           	this.lose =1
             this.cated = e.currentTarget.dataset.cated;
+          	console.log(this.cated)
             this.page= 0;
             this.productList();
           },
