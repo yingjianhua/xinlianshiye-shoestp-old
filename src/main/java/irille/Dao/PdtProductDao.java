@@ -32,6 +32,8 @@ import irille.view.pdt.PdtProductCatView;
 import irille.view.pdt.PdtSearchView;
 import org.apache.logging.log4j.util.Strings;
 import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.io.UnsupportedEncodingException;
@@ -55,6 +57,7 @@ import static java.util.stream.Collectors.toList;
 public class PdtProductDao {
     @Inject
     private PdtProductDao pdtProductDao;
+     private static final Logger logger = LoggerFactory.getLogger(PdtProductDao.class);
 
     /***
      * 首页新品
@@ -551,6 +554,7 @@ public class PdtProductDao {
                     }
                 } else {
                     o.put("status", "");
+                    logger.error(String.format("存在脏数据,商品Id:%d", GetValue.get(o,PdtProduct.T.PKEY,Integer.class,-1)));
                 }
             } else {
                 if ((byte) o.get(PdtProduct.T.IS_VERIFY.getFld().getCodeSqlField()) == Sys.OYn.YES.getLine().getKey()) {
