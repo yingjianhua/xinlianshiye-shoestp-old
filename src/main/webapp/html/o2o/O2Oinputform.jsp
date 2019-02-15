@@ -213,11 +213,11 @@
                 sexoptions: [
                     {
                         value: 1,
-                        label: "Men",
+                        label: "male",
                     },
                     {
                         value: 2,
-                        label: "Women",
+                        label: "female",
                     }
                 ],
                 contoryoptions: [
