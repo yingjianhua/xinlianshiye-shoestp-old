@@ -16,7 +16,7 @@ public class RFQConsultUrlMessage implements BaseView, ConsultMessage {
 	private String showMsg;//显示内容
     private String url;//链接地址
 	@Override
-	public Byte getType() {
+	public Byte type() {
 		return RFQConsultMessageType.URL.getLine().getKey();
 	}
 }

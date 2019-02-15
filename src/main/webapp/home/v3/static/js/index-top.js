@@ -23,9 +23,9 @@ Vue.component('index-top',{
                       <p v-if="sysConfig.user && sysConfig.user.inquiry_count">
                         {{sysConfig.user.inquiry_count}}
                       </p>
-                       <!--<p v-if="!sysConfig.user">-->
-                       <!--0-->
-                      <!--</p>-->
+                       <p v-if="!sysConfig.user">
+                       0
+                      </p>
                     </div>
                     <p>My Shosetp</p>
                 </div>
@@ -59,7 +59,10 @@ Vue.component('index-top',{
                     label: 'Suppiler'
                 }
             ],
-            user:null
+            user:null,
+            sysConfig:{
+
+            }
         }
     },
     mounted(){
@@ -80,9 +83,9 @@ Vue.component('index-top',{
             var self =this
             axios.get('/home/plt_PltConfig_getSysConfig').then(function (res) {
                 if (res.data.ret == 1){
-                    console.log(res.data.ret)
                     if (res.data.result.user) {
                         self.$set(self,'user',res.data.result.user)
+                        self.$set(self,'sysConfig',res.data.result)
                     }
                 }
             })

@@ -223,6 +223,12 @@ public class SQL {
         return mybatisSQL.GROUP_BY(fld);
     }
 
+    public <T extends BeanMain<?, ?>> SQL HAVING(IEnumFld fld, String condition, Serializable... params) {
+    	mybatisSQL.HAVING(fld, condition);
+        mybatisSQL.params(params);
+        return mybatisSQL.getSelf();
+    }
+    
     public <T extends BeanMain<?, ?>> SQL HAVING(String condition) {
         return mybatisSQL.HAVING(condition);
     }
@@ -321,6 +327,13 @@ public class SQL {
                 return super.WHERE(columnLabelWithAlias(fld) + " " + conditions);
             else
                 return super.WHERE(columnLabel(fld) + " " + conditions);
+        }
+        
+        public <T extends BeanMain<?, ?>> SQL HAVING(IEnumFld fld, String conditions) {
+        	if (isSelect())
+        		return super.HAVING(columnLabelWithAlias(fld) + " " + conditions);
+        	else
+        		return super.HAVING(columnLabel(fld) + " " + conditions);
         }
 
         public <T extends BeanMain<?, ?>> SQL ORDER_BY(IEnumFld fld, String type) {

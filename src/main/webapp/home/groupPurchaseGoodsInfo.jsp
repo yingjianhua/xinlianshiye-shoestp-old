@@ -38,14 +38,77 @@
             background: url('./static/images/loading.gif') 50% no-repeat;
         }
     </style>
+    <link rel="stylesheet" href="/home/v2/static/css/nav/new-top-nav-style.css"/>
+    <%----%>
+    <script src='/home/v2/static/js/base/vue.min.js'></script>
+    <script src='/home/v2/static/js/base/element-ui.js'></script>
+    <script src='/home/v2/static/js/base/axios.min.js'></script>
+    <script src="https://cdn.bootcss.com/babel-polyfill/7.2.5/polyfill.min.js"></script>
+    <link rel="stylesheet" href="/home/v2/static/css/base/element-ui/element-ui.css"/>
+    <link rel="stylesheet" href="/home/v2/static/css/base/foot.css"/>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
+    <script src="https://js.fundebug.cn/fundebug.1.5.1.min.js"
+            apikey="afbc9f957e7689049c3282fe7696d30e7cb260e0ce11c148c0cf9e31d4e802f5"></script>
+    <link rel="stylesheet" href="/home/v3/static/css/element-ui/element-ui.css"/>
+    <%--<link rel="stylesheet" href="/home/v3/static/css/reset.css"/>--%>
+    <link rel="stylesheet" href="/home/v3/static/css/index.css">
+
+    <script>
+        var isLogin = ${env.login!=null};
+
+        function getParams(name, defaultValue) {
+            var url = window.location.href;
+            var l = url.lastIndexOf(name)
+            if (l != -1) {
+                var ll = url.indexOf("&", l);
+                if (ll == -1 || l > ll) {
+                    ll = url.length
+                }
+                url = url.substring(l, ll);
+                var result = url.split("=")
+                if (result.length == 2) {
+                    switch (typeof defaultValue) {
+                        case "number":
+                            return parseInt(result[1]);
+                        case "boolean":
+                            return Boolean(result[1])
+                        default:
+                            return result[1];
+                    }
+                }
+            } else {
+                if (defaultValue == 'NONE') {
+                    return null;
+                }
+                if (defaultValue == null) {
+                    return -1;
+                }
+                return defaultValue
+            }
+            return -1;
+        }
+    </script>
+
+<style type="text/css">
+  #o2otop .o2otopcon .topsearch > input {
+  width: 530px;
+  height: 40px;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  border: 1px solid #10389c;
+  border-left: none;
+  text-indent: 10px;
+  font-family: Arial-BoldMT;
+  font-size: 16px; }
+</style>
 </head>
-<jsp:include page="v3/header.jsp"/>
-<jsp:include page="v3/nav.jsp"/>
 <body class="lang_en w_1200">
+<%@ include file="/home/v3/nav-nobody.jsp" %>
 <%@ include file="/home/template/web-top.jsp" %>
 <%@ include file="/home/template/shop-header.jsp" %>
 <div id="main">
-    <index-top></index-top>
+
     <div class="wide">
         <link href="./static/css/module_4.css" rel="stylesheet" type="text/css">
         <div id="location"><s:text name="Global.Your_Location"/>:
@@ -879,10 +942,5 @@
 
 
 </script>
-<script>
-    new Vue({
-        el:"#main"
-    })
-</script>
-<script src="/home/v3/static/js/index-top.js"></script>
+
 </html>
