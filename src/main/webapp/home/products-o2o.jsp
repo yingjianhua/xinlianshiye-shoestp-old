@@ -136,9 +136,9 @@
             </div>
             <div class="i0"></div>
             <div class="top-box2">Price :
-                <input type="text" @blur="min222" @keyup.enter="min222" v-model="min" placeholder="min."
+                <input type="text" @blur="min222" @keyup.enter="min222" v-model.number="min" placeholder="min."
                        onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/> -
-                <input type="text" @blur="min222" @keyup.enter="min222" v-model="max" placeholder="max."
+                <input type="text" @blur="min222" @keyup.enter="min222" v-model.number="max" placeholder="max."
                        onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/>
             </div>
 
