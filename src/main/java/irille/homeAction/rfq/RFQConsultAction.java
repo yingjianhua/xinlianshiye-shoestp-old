@@ -24,7 +24,7 @@ import java.io.IOException;
  * Date: 2019/1/30
  * Time: 9:35
  */
-public class RFQConsultAction extends HomeAction {
+public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
 
     @Inject
     private ObjectMapper objectMapper;
@@ -118,4 +118,16 @@ public class RFQConsultAction extends HomeAction {
         setResult("/html/exhibition/guangjiaohui.jsp", false);
         return TRENDS;
     }
+    
+    private String keyword;
+    private Byte t;
+    private Boolean unread;
+    private Integer start = 0;
+    private Integer limit = 10;
+
+	@Override
+	public void pageMine() throws IOException {
+		write(irfqConsultService.pageMine(getPurchase(), t, keyword, unread, start, limit));
+	}
+    
 }

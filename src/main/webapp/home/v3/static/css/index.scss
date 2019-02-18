@@ -134,6 +134,7 @@ scroll-behavior: smooth}
             #xc .section2 .product-list .product-item .product-img {
               width: 164px;
               height: 164px;
+              line-height: 164px;
               margin: 0 auto; }
               #xc .section2 .product-list .product-item .product-img img {
                 -o-object-fit: contain;
@@ -982,7 +983,7 @@ a {
       width: 530px;
       height: 40px;
       flex-grow: 1;
-      border: 2px solid #10389c;
+      border: 1px solid #10389c;
       border-left: none;
       text-indent: 10px;
       font-family: Arial-BoldMT;
@@ -1119,7 +1120,7 @@ a {
 
 .sanduan .box .h3 img {
   display: inline-block;
-  padding: 0 38px;
+  padding: 0 34px;
   -webkit-transition: all .4s;
   transition: all .4s; }
 

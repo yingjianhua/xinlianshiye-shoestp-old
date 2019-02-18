@@ -19,7 +19,8 @@ public class O2oRegistrationAction extends HomeAction<O2oRegistration> {
   private O2o_RegistrationView view;
 
   @Inject private IO2OPdtServer io2OPdtServer;
-
+  @Inject
+  private O2O_RegistrationDao o2O_registrationDao;
   public void o2oList() throws IOException {
     write(io2OPdtServer.O2OList(getPurchase(), getStart(), getLimit()));
   }
@@ -50,7 +51,7 @@ public class O2oRegistrationAction extends HomeAction<O2oRegistration> {
       writeErr("报名失败,请填写完整!");
       return;
     }
-    O2O_RegistrationDao.ins(view);
+    o2O_registrationDao.ins(view);
     write();
   }
 }

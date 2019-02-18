@@ -8,7 +8,6 @@ import irille.Dao.RFQ.RFQConsultDao;
 import irille.Entity.RFQ.Enums.RFQConsultPayType;
 import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
 import irille.Entity.RFQ.RFQConsult;
-import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Service.Manage.RFQ.IRFQManageService;
 import irille.action.dataimport.util.DateUtil;
@@ -64,8 +63,8 @@ public class RFQManageServiceImp implements IRFQManageService {
             rfqListBodyInfoView.setQuantity(GetValue.get(map, RFQConsult.T.QUANTITY, Integer.class, 0));
             rfqListBodyInfoView.setLeft_count(GetValue.get(map, RFQConsult.T.TOTAL, Integer.class, 0) - GetValue.get(map, RFQConsult.T.LEFT_COUNT, Integer.class, 0));
             rfqListBodyInfoView.setImage(GetValue.getFirstImage(GetValue.get(map, RFQConsult.T.IMAGE, String.class, "")));
-            rfqListBodyInfoView.setContent(GetValue.get(map,RFQConsult.T.CONTENT,String.class,""));
-            rfqListBodyInfoView.setUnit(GetValue.get(map,RFQConsult.T.UNIT,Byte.class,null));
+            rfqListBodyInfoView.setContent(GetValue.get(map, RFQConsult.T.CONTENT, String.class, ""));
+            rfqListBodyInfoView.setUnit(GetValue.get(map, RFQConsult.T.UNIT, Byte.class, null));
             byte b = GetValue.get(map, RFQConsultRelation.T.FAVORITE, Byte.class, (byte) 0);
             if (b == 0) {
                 rfqListBodyInfoView.setFavorite(false);
@@ -100,7 +99,7 @@ public class RFQManageServiceImp implements IRFQManageService {
         infoView.setQuantity(rfqConsult.getQuantity());
         infoView.setDestination(rfqConsult.getDestination()); //目的地
         infoView.setDescriotion(rfqConsult.getContent()); //询盘内容
-        infoView.setCurrencyname(BeanBase.load(PltErate.class,rfqConsult.getCurrency()).getCurName());
+        infoView.setCurrencyname(BeanBase.load(PltErate.class, rfqConsult.getCurrency()).getCurName());
         if (rfqConsult.getPayType() != null)
             infoView.setPay_type(rfqConsult.gtPayType().getLine().getName());
         if (rfqConsult.getShippingType() != null)
@@ -117,9 +116,9 @@ public class RFQManageServiceImp implements IRFQManageService {
             infoView.getQuotation_record().add(map1);
         }
         RFQConsultRelation rfqConsultRelation = rfqConsultDao.getRFQRelation(id, supId);
-        if(rfqConsult.getValidDate().before(new Date())){
+        if (rfqConsult.getValidDate().before(new Date())) {
             infoView.setStatus(-1);
-        }else if (rfqConsultRelation == null||rfqConsult.getLeftCount()>=rfqConsult.getTotal()) {
+        } else if (rfqConsultRelation == null || rfqConsult.getLeftCount() >= rfqConsult.getTotal()) {
             infoView.setStatus(1);
         }
         return infoView;
@@ -153,6 +152,7 @@ public class RFQManageServiceImp implements IRFQManageService {
         rfqConsultRelation.stSample(quoteInfo.isSample());
         rfqConsultRelation.setCompanydescribe(quoteInfo.getCompanyDescribe());
         rfqConsultRelation.setThrowaway(quoteInfo.getThrowaway());
+        rfqConsultRelation.stIsNew(true);
         rfqConsultRelation.stHadReadPurchase(false);
         rfqConsultRelation.stHadReadSupplier(true);
         rfqConsultRelationDAO.setB(rfqConsultRelation);
@@ -200,12 +200,12 @@ public class RFQManageServiceImp implements IRFQManageService {
             body.setQuoteTitle(GetValue.get(map, "myTitle", String.class, null));
             body.setQuoteDescriotion(GetValue.get(map, RFQConsultRelation.T.DESCRIPTION, String.class, null));
             body.setQuoteRFQCreate_date(GetValue.get(map, "myCreate_time", Date.class, null));
-            UsrPurchase up= BeanBase.load(UsrPurchase.class,GetValue.get(map, RFQConsultRelation.T.PURCHASE_ID, Date.class, null));
+            UsrPurchase up = BeanBase.load(UsrPurchase.class, GetValue.get(map, RFQConsultRelation.T.PURCHASE_ID, Date.class, null));
             body.setPurchaseName(up.getName());
             body.setPurchaseCountryIMG(up.gtCountry().getNationalFlag());
-            if(GetValue.get(map, RFQConsultRelation.T.HAD_READ_SUPPLIER, Byte.class, (byte) -1) == 0){
+            if (GetValue.get(map, RFQConsultRelation.T.HAD_READ_SUPPLIER, Byte.class, (byte) -1) == 0) {
                 body.setStatus(3);
-            }else{
+            } else {
                 if (GetValue.get(map, RFQConsultRelation.T.HAD_READ_PURCHASE, Byte.class, (byte) -1) == 0)
                     body.setStatus(1);
                 else {
@@ -221,17 +221,17 @@ public class RFQManageServiceImp implements IRFQManageService {
     public RFQMyuoteInfo getMyRFQQuoteInfo(Integer id, Integer pkey) throws IOException {
         Map map = rfqConsultDao.getMyRFQQuoteInfo(id, pkey);
         RFQMyuoteInfo rfqMyuoteInfo = new RFQMyuoteInfo();
-        rfqMyuoteInfo.setId(GetValue.get(map, RFQConsultMessage.T.PKEY, Integer.class, -1));
-        rfqMyuoteInfo.setTitle(GetValue.get(map, RFQConsult.T.TITLE, String.class, null));
-        rfqMyuoteInfo.setDescriotion(GetValue.get(map, RFQConsult.T.CONTENT, String.class, null));
-        rfqMyuoteInfo.setImages(GetValue.get(map, RFQConsult.T.IMAGE, String.class, null));
-        rfqMyuoteInfo.setQuantity(GetValue.get(map, RFQConsult.T.QUANTITY, Integer.class, 0));
-        rfqMyuoteInfo.setCurrency(GetValue.get(map, RFQConsult.T.CURRENCY, Integer.class, 0));
-        rfqMyuoteInfo.setShipping_type(GetValue.get(map, RFQConsult.T.SHIPPING_TYPE, Byte.class, (byte) 0));
-        rfqMyuoteInfo.setMin_price(Integer.valueOf(GetValue.getStringIndex(GetValue.get(map, RFQConsult.T.PRICE, String.class, null), "-", 0)));
-        rfqMyuoteInfo.setMax_price(Integer.valueOf(GetValue.getStringIndex(GetValue.get(map, RFQConsult.T.PRICE, String.class, null), "-", 1)));
-        rfqMyuoteInfo.setValid_date(GetValue.get(map, RFQConsult.T.VALID_DATE, Date.class, null));
-        rfqMyuoteInfo.setPay_type(GetValue.get(map, RFQConsult.T.PAY_TYPE, Byte.class, (byte) 0));
+        rfqMyuoteInfo.setId(GetValue.get(map, RFQConsultRelation.T.PKEY, Integer.class, -1));
+        rfqMyuoteInfo.setTitle(GetValue.get(map, RFQConsultRelation.T.TITLE, String.class, null));
+        rfqMyuoteInfo.setDescriotion(GetValue.get(map, RFQConsultRelation.T.DESCRIPTION, String.class, null));
+        rfqMyuoteInfo.setImages(GetValue.get(map, RFQConsultRelation.T.IMAGE, String.class, null));
+        rfqMyuoteInfo.setQuantity(GetValue.get(map, RFQConsultRelation.T.QUANTITY, Integer.class, 0));
+        rfqMyuoteInfo.setCurrency(GetValue.get(map, RFQConsultRelation.T.CURRENCY, Integer.class, 0));
+        rfqMyuoteInfo.setShipping_type(GetValue.get(map, RFQConsultRelation.T.TRANSITTYPE, Byte.class, (byte) 0));
+        rfqMyuoteInfo.setMin_price(GetValue.get(map, RFQConsultRelation.T.MINPRICE, Integer.class, 0));
+        rfqMyuoteInfo.setMax_price(GetValue.get(map, RFQConsultRelation.T.MAXPRICE, Integer.class, 0));
+        rfqMyuoteInfo.setValid_date(GetValue.get(map, RFQConsultRelation.T.VALID_DATE, Date.class, null));
+        rfqMyuoteInfo.setPay_type(GetValue.get(map, RFQConsultRelation.T.PAYTYPE, Byte.class, (byte) 0));
         rfqMyuoteInfo.setSample(GetValue.get(map, RFQConsultRelation.T.SAMPLE, Byte.class, (byte) 0) == 1);
         rfqMyuoteInfo.setCompanyDescribe(GetValue.get(map, RFQConsultRelation.T.COMPANYDESCRIBE, String.class, null));
         rfqMyuoteInfo.setThrowaway(GetValue.get(map, RFQConsultRelation.T.THROWAWAY, String.class, null));

@@ -1,5 +1,19 @@
-Vue.component('index-bottom',{
-    template:`<div id="o2obottom">
+Vue.component('index-bottom', {
+    template: `<div id="o2obottom">
+<div class="brand-list">
+          <a class="brand-item" target="_blank" href="https://www.shoeslogo.com/">
+            <img src="/home/v3/static/images/brand01.png" alt="" />
+          </a>
+          <a class="brand-item" target="_blank" href="http://www.shoesmat.com/">
+            <img src="/home/v3/static/images/brand02.png" alt="" />
+          </a>
+          <a class="brand-item" target="_blank" href="http://www.shoesrd.com/">
+            <img src="/home/v3/static/images/brand03.png" alt="" />
+          </a>
+          <a class="brand-item" target="_blank" href="http://www.wzsomt.com/">
+            <img src="/home/v3/static/images/brand04.png" alt="" />
+          </a>
+        </div>
         <div class="emailform">
             <p>Trade Alert - Delivering the latest product trends and industry news straight to your inbox.</p>
             <div class="email">
@@ -15,10 +29,31 @@ Vue.component('index-bottom',{
                     <a :href="liitem.alink">{{liitem.atitle}}</a>
                 </li>
             </ul>
+            <ul class="share-links">
+                <li class="ultitle">Connect With Us</li>
+                <li class="ullink">
+                    <a href="http://www.facebook.com/share.php?src=bm&v=4&u=http%3A%2F%2Flocalhost%3A8080%2Fhome%2Fcnt_CntSglPageCategory_gosglpage%3Fpkey%3D8&t=facebook" target="_blank">
+                        <img class="icon" src="/home/v3/static/images/icon-facebook.png" alt="" />
+                    </a>
+                    <a href="https://twitter.com/intent/tweet?status=twitter:+http%3A%2F%2Flocalhost%3A8080%2Fhome%2Fcnt_CntSglPageCategory_gosglpage%3Fpkey%3D8" target="_blank">
+                        <img class="icon" src="/home/v3/static/images/icon-bird.png" alt="" />
+                    </a>
+                    <a href="javascript:void(0);" target="_blank">
+                        <img class="icon" src="/home/v3/static/images/icon-g.png" alt="" />
+                    </a>
+                    <a href="http://www.linkedin.com/cws/share?url=http%3A%2F%2Flocalhost%3A8080%2Fhome%2Fcnt_CntSglPageCategory_gosglpage%3Fpkey%3D8&title=linkedin" target="_blank">
+                        <img class="icon" src="/home/v3/static/images/icon-in.png" alt="" />
+                    </a>
+                    <a href="javascript:void(0);" target="_blank">
+                        <img class="icon" src="/home/v3/static/images/icon-tube.png" alt="" />
+                    </a>
+                </li>
+            </ul>
         </div>
         <div class="o2obottomcopyright">
-            <p>Privacy Policy - Team and Conditions - <span>Refund Policy</span> -Regarding Payment - FAQ</p>        
+            <a href="/home/cnt_CntSglPageCategory_gosglpage?pkey=2"><p>Privacy Policy - Team and Conditions - <span>Refund Policy</span> -Regarding Payment - FAQ</p>        
             <p><img src="/home/v3/static/images/o2obottomzf.png" alt="">©1988-2019 xinlian.com ALL right reserved</p>
+            </a>
         </div>
         <a href="javascript:void(0)" @click="goto('o2otop')">
             <div class="o2ogototop">
@@ -26,107 +61,91 @@ Vue.component('index-bottom',{
             </div>
         </a>
 </div> `,
-    props:{
-
-    },
-    data(){
-        return{
-            email:'',
-            links:[
+    props: {},
+    data() {
+        return {
+            email: '',
+            links: [
                 {
-                    title:'OEM',
-                    url:[
+                    title: 'WholeSale',
+                    url: [
                         {
-                            atitle:'Men',
-                            alink:''
+                            atitle: 'Men',
+                            alink: '/home/pdt_PdtProduct?cated=373'
                         },
                         {
-                            atitle:'Women',
-                            alink:''
+                            atitle: 'Women',
+                            alink: '/home/pdt_PdtProduct?cated=380'
                         },
                         {
-                            atitle:'Children',
-                            alink:''
+                            atitle: 'Children',
+                            alink: '/home/pdt_PdtProduct?cated=387'
                         }
                     ]
                 },
                 {
-                    title:'WholeSale',
-                    url:[
+                    title: 'Trade Shows',
+                    url: [
                         {
-                            atitle:'Men',
-                            alink:''
-                        },
-                        {
-                            atitle:'Women',
-                            alink:''
-                        },
-                        {
-                            atitle:'Children',
-                            alink:''
+                            atitle: 'Romania',
+                            alink: '/country/Romania-Pantofi-en-gros/romania-index-ro.html'
                         }
                     ]
                 },
                 {
-                    title:'Trade Shows',
-                    url:[
+                    title: 'About us',
+                    url: [
                         {
-                            atitle:'Romania',
-                            alink:''
-                        }
-                    ]
-                },
-                {
-                    title:'About us',
-                    url:[
-                        {
-                            atitle:'About shoestp.com',
-                            alink:''
+                            atitle: 'About shoestp.com',
+                            alink: '/home/cnt_CntSglPageCategory_gosglpage?pkey=6'
                         },
                         {
-                            atitle:'shoestp coopertation plan',
-                            alink:''
+                            atitle: 'shoestp coopertation plan',
+                            alink: '/home/cnt_CntSglPageCategory_gosglpage?pkey=7'
                         },
                         {
-                            atitle:'Contact US',
-                            alink:''
+                            atitle: 'Contact US',
+                            alink: '/home/cnt_CntSglPageCategory_gosglpage?pkey=8'
                         }
                     ]
                 }
             ]
         }
     },
-    methods:{
-        goto:function (id) {
+    methods: {
+        goto: function (id) {
             document.getElementById(id).scrollIntoView(true);
         },
-        submit:function () {
+        submit: function () {
             let regEmail = /.+@[a-z0-9\.]+\.(com|cn|net)$/;
             let self = this;
-            if(!this.email){
+            if (!this.email) {
                 this.$alert('email can not be empty', '', {
                     confirmButtonText: '确定',
-                    closeOnClickModal:true,
-                }).catch(() => {});
+                    closeOnClickModal: true,
+                }).catch(() => {
+                });
                 return false;
-            }else if(!regEmail.test(this.email)){
+            } else if (!regEmail.test(this.email)) {
                 this.$alert('email format error', '', {
                     confirmButtonText: '确定',
-                    closeOnClickModal:true,
-                }).catch(() => {});
+                    closeOnClickModal: true,
+                }).catch(() => {
+                });
                 return false;
             }
             axios.post('/home/usr_UsrSubscribe_ins',
                 Qs.stringify({
-                    'bean.email':this.email
+                    'bean.email': this.email
                 })
             ).then(function (res) {
                 console.log(res)
                 if (res.data.success) {
                     self.$alert('Added to Subscribe Successful', '', {
                         confirmButtonText: '确定',
-                        closeOnClickModal:true,
-                    }).catch(() => {});
+                        closeOnClickModal: true,
+                    }).catch(() => {
+                    });
                 }
             })
         }

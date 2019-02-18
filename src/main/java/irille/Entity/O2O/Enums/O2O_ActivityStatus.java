@@ -11,6 +11,7 @@ public enum O2O_ActivityStatus implements IEnumOpt {
             "即将开始"),
     ACTIVITY(2, "活动中"),
     END(3, "活动结束"),
+    CLOSE(4, "已关闭"),
     ;
 
     public static final String NAME = "活动状态";

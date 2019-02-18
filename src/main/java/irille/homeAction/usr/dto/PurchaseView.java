@@ -1,8 +1,15 @@
 package irille.homeAction.usr.dto;
 
 import irille.shop.usr.UsrPurchase;
+import irille.view.BaseView;
+import lombok.Data;
 
-public class PurchaseView {
+@Data
+public class PurchaseView implements BaseView {
+	private String nickname;
+	private String avatar;
+	private Integer unreadMessagersCount;//未读取发信人数量
+	private Integer requestsFromConnectionsCount;//新联系人数量
 	private String loginName; //登录名
 	private Integer favoriteCount; //收藏数
 	private Integer cartCount; //购物车数

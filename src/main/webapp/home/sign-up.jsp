@@ -213,7 +213,7 @@
 
 
                 <!-- 带搜索功能的下拉框 -->
-                <select id="select">
+                <select name="bean.country"  id="select">
                     <c:forEach items="${countrys}" var="country">
                         <c:if test="${country.isDefault == true}">
                             <option value="${country.id}" selected="selected">${country.name}</option>
@@ -223,19 +223,6 @@
                         </c:if>
                     </c:forEach>
                 </select>
-
-                <%--<select name="bean.country" id="country">--%>
-                <%--<c:forEach items="${countrys}" var="country">--%>
-                <%--<c:if test="${country.isDefault == true}">--%>
-                <%--<option value="${country.id}" selected="selected">${country.name}</option>--%>
-                <%--</c:if>--%>
-                <%--<c:if test="${country.isDefault == false}">--%>
-                <%--<option value="${country.id}">${country.name}</option>--%>
-                <%--</c:if>--%>
-                <%--</c:forEach>--%>
-                <%--</select>--%>
-
-
             </div>
             <div class="clear"></div>
             <div class="row">
@@ -262,8 +249,7 @@
             </dl>
             <div class="row">
 
-                <button class="signbtn signup form_button_bg" type="button" id="regButton"
-                        style="background-color: #6b7f90" disabled><s:text
+                <button class="signbtn signup form_button_bg" type="button" id="regButton" style="background-color: #DDDDDD;border-color: #DDDDDD " disabled><s:text
                         name="createAccount"/></button>
             </div>
         </form>
@@ -318,7 +304,6 @@
     gtag('config', 'AW-783435725');
     gtag('config', 'UA-127715615-6')
 </script>
-
 <script>
     function gtag_report_conversion(url) {
         var callback = function () {
@@ -336,14 +321,17 @@
 <script type="text/javascript">
 
     $("#isdisenabild").on("click", function () {
-        var booleans = document.getElementById("isdisenabild")
-        if (booleans.checked) {
-            $("#regButton").attr("disabled", false);
-            $("#regButton").css("background-color", "#005AB0")
+        var booleans= document.getElementById("isdisenabild")
+        if(booleans.checked){
+            $("#regButton").attr("disabled",false);
+            $("#regButton").css("background-color","#005AB0")
+            $("#regButton").css(" border-color","#005AB0")
 
-        } else {
-            $("#regButton").attr("disabled", true);
-            $("#regButton").css("background-color", "#6b7f90")
+
+        }else{
+            $("#regButton").attr("disabled",true);
+            $("#regButton").css(" border-color","#DDDDDD")
+            $("#regButton").css("background-color","#DDDDDD")
         }
     })
     $("#verify").on("click", function () {

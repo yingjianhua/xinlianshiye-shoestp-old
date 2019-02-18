@@ -32,6 +32,8 @@ import irille.view.pdt.PdtProductCatView;
 import irille.view.pdt.PdtSearchView;
 import org.apache.logging.log4j.util.Strings;
 import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.io.UnsupportedEncodingException;
@@ -55,6 +57,7 @@ import static java.util.stream.Collectors.toList;
 public class PdtProductDao {
     @Inject
     private PdtProductDao pdtProductDao;
+    private static final Logger logger = LoggerFactory.getLogger(PdtProductDao.class);
 
     /***
      * 首页新品
@@ -445,7 +448,7 @@ public class PdtProductDao {
      * @author lijie@shoestp.cn
      * @date 2018/8/21 18:05
      */
-    public List getCatsNodeByCatId(int id) {
+    public List<Integer> getCatsNodeByCatId(int id) {
         if (id < 1) {
             return null;
         }
@@ -457,8 +460,8 @@ public class PdtProductDao {
         List<PdtCat> tList = query.queryList();
         List ttList = new ArrayList();
         l.addAll(tList);
-        List<String> result = new ArrayList();
-        result.add(String.valueOf(id));
+        List<Integer> result = new ArrayList();
+        result.add(id);
         do {
             ttList.clear();
             for (PdtCat objects : tList) {
@@ -474,7 +477,7 @@ public class PdtProductDao {
         } while (true);
         for (PdtCat o : l) {
             if (o.getPkey() > 0) {
-                result.add(String.valueOf(o.getPkey()));
+                result.add(o.getPkey());
             }
         }
         return result;
@@ -551,6 +554,7 @@ public class PdtProductDao {
                     }
                 } else {
                     o.put("status", "");
+                    logger.error(String.format("存在脏数据,商品Id:%d", GetValue.get(o, PdtProduct.T.PKEY, Integer.class, -1)));
                 }
             } else {
                 if ((byte) o.get(PdtProduct.T.IS_VERIFY.getFld().getCodeSqlField()) == Sys.OYn.YES.getLine().getKey()) {
@@ -877,6 +881,7 @@ public class PdtProductDao {
         SQL sql = new SQL();
         sql.SELECT(PdtProduct.T.PKEY, "pdtPkey");
         sql.SELECT(PdtProduct.T.NAME, "pdtName");
+        sql.SELECT(PdtProduct.T.PRODUCT_TYPE);
         //sql.SELECT(PdtProduct.T.CATEGORY,"pdtCate");
         sql.SELECT(PdtProduct.T.CUR_PRICE, PdtProduct.T.MIN_OQ, PdtProduct.T.CATEGORY, PdtProduct.T.NORM_ATTR, PdtProduct.T.PRODUCT_TYPE, PdtProduct.T.PICTURE);
         sql.SELECT(UsrSupplier.T.PKEY, "supPkey");
@@ -910,7 +915,7 @@ public class PdtProductDao {
             }
         }
         if (lose != null && lose == 1)
-            if (cate != null) {
+            if (cate != null && cate > 0) {
                 List<Integer> cPkeys = pdtProductDao.getCatsNodeByCatId(cate);
                 String pkeys = "";
                 for (int i = 0; i < cPkeys.size(); i++) {
@@ -921,8 +926,8 @@ public class PdtProductDao {
                     }
                 }
                 sql.WHERE(PdtProduct.T.CATEGORY, " in(" + pkeys + ") ");
-                start = 0;
-                limit = 10;
+//                start = 0;
+//                limit = 10;
             }
         if (StringUtil.hasValue(pName))
             sql.WHERE(" upper(JSON_EXTRACT(PdtProduct.name,'$." + curLanguage.name() + "'))  like upper('%" + pName
@@ -1033,13 +1038,19 @@ public class PdtProductDao {
             List<PdtSpec> specs = BeanBase.list(PdtSpec.class, PdtSpec.T.PRODUCT + "=" + pkey1, false);
             List<String> stringList = new ArrayList<>();
             for (PdtSpec spec : specs) {
-                String s = GetValue.getFirstImage(spec.getPics());
-                if (s.length() > 0)
-                    stringList.add(GetValue.getFirstImage(spec.getPics()));
+                String[] s = spec.getPics().split(",");
+                if (s.length > 0) {
+                    for (String s1 : s) {
+                        if (s1.length() > 0) {
+                            stringList.add(s1);
+                        }
+                    }
+                }
             }
-            if(stringList.size()>0){
+            if (stringList.size() > 0) {
+                stringList.add(0,GetValue.getFirstImage(GetValue.get(map, PdtProduct.T.PICTURE, String.class, "")));
                 setPicture(Strings.join(stringList, ','));
-            }else{
+            } else {
                 setPicture(GetValue.get(map, PdtProduct.T.PICTURE, String.class, ""));
             }
 
@@ -1079,7 +1090,9 @@ public class PdtProductDao {
                 setEshrine(userFavoritePdt.contains(pdtPkey));
             setPdtType(Integer.parseInt(map.get(PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()).toString()));
             setSupId(Integer.parseInt(map.get("supPkey").toString()));
-            setSupName(map.get("supName").toString());
+            if (map.get("supName") != null)
+                setSupName(map.get("supName").toString());
+
             Date authDate = (Date) map.get(UsrSupplier.T.AUTH_TIME.getFld().getCodeSqlField());
             SimpleDateFormat sim = new SimpleDateFormat("yyyy");
             if (authDate == null)

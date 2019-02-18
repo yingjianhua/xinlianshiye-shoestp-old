@@ -48,4 +48,36 @@
     </script>
     <script>
         var isLogin = ${env.login!=null};
+
+        function getParams(name, defaultValue) {
+            var url = window.location.href;
+            var l = url.lastIndexOf(name)
+            if (l != -1) {
+                var ll = url.indexOf("&", l);
+                if (ll == -1 || l > ll) {
+                    ll = url.length
+                }
+                url = url.substring(l, ll);
+                var result = url.split("=")
+                if (result.length == 2) {
+                    switch (typeof defaultValue) {
+                        case "number":
+                            return parseInt(result[1]);
+                        case "boolean":
+                            return Boolean(result[1])
+                        default:
+                            return result[1];
+                    }
+                }
+            } else {
+                if (defaultValue == 'NONE') {
+                    return null;
+                }
+                if (defaultValue == null) {
+                    return -1;
+                }
+                return defaultValue
+            }
+            return -1;
+        }
     </script>
