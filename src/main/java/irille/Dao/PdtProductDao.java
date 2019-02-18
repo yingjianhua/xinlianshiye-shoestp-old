@@ -57,7 +57,7 @@ import static java.util.stream.Collectors.toList;
 public class PdtProductDao {
     @Inject
     private PdtProductDao pdtProductDao;
-     private static final Logger logger = LoggerFactory.getLogger(PdtProductDao.class);
+    private static final Logger logger = LoggerFactory.getLogger(PdtProductDao.class);
 
     /***
      * 首页新品
@@ -554,7 +554,7 @@ public class PdtProductDao {
                     }
                 } else {
                     o.put("status", "");
-                    logger.error(String.format("存在脏数据,商品Id:%d", GetValue.get(o,PdtProduct.T.PKEY,Integer.class,-1)));
+                    logger.error(String.format("存在脏数据,商品Id:%d", GetValue.get(o, PdtProduct.T.PKEY, Integer.class, -1)));
                 }
             } else {
                 if ((byte) o.get(PdtProduct.T.IS_VERIFY.getFld().getCodeSqlField()) == Sys.OYn.YES.getLine().getKey()) {
@@ -915,7 +915,7 @@ public class PdtProductDao {
             }
         }
         if (lose != null && lose == 1)
-            if (cate != null &&cate>0) {
+            if (cate != null && cate > 0) {
                 List<Integer> cPkeys = pdtProductDao.getCatsNodeByCatId(cate);
                 String pkeys = "";
                 for (int i = 0; i < cPkeys.size(); i++) {
@@ -1039,13 +1039,14 @@ public class PdtProductDao {
             List<String> stringList = new ArrayList<>();
             stringList.add(GetValue.getFirstImage(GetValue.get(map, PdtProduct.T.PICTURE, String.class, "")));
             for (PdtSpec spec : specs) {
-                String s = GetValue.getFirstImage(spec.getPics());
-                if (s.length() > 0)
-                    stringList.add(GetValue.getFirstImage(spec.getPics()));
+                String[] s = spec.getPics().split(",");
+                if (s.length > 0) {
+                    stringList.addAll(Arrays.asList(s));
+                }
             }
-            if(stringList.size()>0){
+            if (stringList.size() > 0) {
                 setPicture(Strings.join(stringList, ','));
-            }else{
+            } else {
                 setPicture(GetValue.get(map, PdtProduct.T.PICTURE, String.class, ""));
             }
 
@@ -1085,8 +1086,8 @@ public class PdtProductDao {
                 setEshrine(userFavoritePdt.contains(pdtPkey));
             setPdtType(Integer.parseInt(map.get(PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()).toString()));
             setSupId(Integer.parseInt(map.get("supPkey").toString()));
-            if(map.get("supName")!=null)
-            setSupName(map.get("supName").toString());
+            if (map.get("supName") != null)
+                setSupName(map.get("supName").toString());
 
             Date authDate = (Date) map.get(UsrSupplier.T.AUTH_TIME.getFld().getCodeSqlField());
             SimpleDateFormat sim = new SimpleDateFormat("yyyy");
