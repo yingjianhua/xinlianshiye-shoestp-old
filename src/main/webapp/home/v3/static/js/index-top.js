@@ -23,9 +23,9 @@ Vue.component('index-top',{
                       <p v-if="sysConfig.user && sysConfig.user.inquiry_count">
                         {{sysConfig.user.inquiry_count}}
                       </p>
-                       <p v-if="!sysConfig.user">
-                       0
-                      </p>
+                       <!--<p v-if="!sysConfig.user">-->
+                       <!--0-->
+                      <!--</p>-->
                     </div>
                     <p>My Shosetp</p>
                 </div>
