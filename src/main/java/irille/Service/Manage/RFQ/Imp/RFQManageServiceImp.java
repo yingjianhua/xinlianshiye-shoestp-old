@@ -155,6 +155,8 @@ public class RFQManageServiceImp implements IRFQManageService {
         rfqConsultRelation.stIsNew(true);
         rfqConsultRelation.stHadReadPurchase(false);
         rfqConsultRelation.stHadReadSupplier(true);
+        rfqConsultRelation.stIsDeletedPurchase(false);
+        rfqConsultRelation.stIsDeletedSupplier(false);
         rfqConsultRelationDAO.setB(rfqConsultRelation);
         rfqConsultRelationDAO.commit();
         if (consult.getLeftCount() < consult.getTotal()) {

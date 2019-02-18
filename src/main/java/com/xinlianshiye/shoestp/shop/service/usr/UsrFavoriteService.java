@@ -1,12 +1,11 @@
-package irille.Service.Usr;
-
-import java.util.List;
+package com.xinlianshiye.shoestp.shop.service.usr;
 
 import com.google.inject.ImplementedBy;
+import com.xinlianshiye.shoestp.shop.service.usr.impl.UsrFavoriteServiceImpl;
+import com.xinlianshiye.shoestp.shop.view.usr.FavoritesView;
 
-import irille.Service.Usr.Imp.UsrFavoriteServiceImpl;
-import irille.homeAction.usr.dto.FavoritesView;
 import irille.shop.usr.UsrPurchase;
+import irille.view.Page;
 
 @ImplementedBy(UsrFavoriteServiceImpl.class)
 public interface UsrFavoriteService {
@@ -22,5 +21,5 @@ public interface UsrFavoriteService {
 	 * @return
 	 * @author Jianhua Ying
 	 */
-	List<FavoritesView> page(UsrPurchase purchase, Integer categoryPkey, Boolean showState, Integer start, Integer limit);
+	Page<FavoritesView> page(UsrPurchase purchase, Integer categoryPkey, Boolean showState, Integer start, Integer limit);
 }

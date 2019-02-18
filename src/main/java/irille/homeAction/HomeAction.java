@@ -7,7 +7,6 @@ import irille.Filter.svr.ItpSessionmsg;
 import irille.gl.gs.GsGoods;
 import irille.homeAction.pdt.dto.ProductCatView;
 import irille.homeAction.usr.dto.EnvView;
-import irille.homeAction.usr.dto.PurchaseView;
 import irille.pub.ClassTools;
 import irille.pub.Log;
 import irille.pub.Str;
@@ -83,6 +82,8 @@ import org.apache.struts2.interceptor.SessionAware;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.xinlianshiye.shoestp.shop.view.usr.PurchaseView;
 
 public abstract class HomeAction<THIS extends BeanMain<?, ?>> extends BeanAction<THIS> implements RequestAware, SessionAware, ApplicationAware {
 	public static final Log LOG = new Log(HomeAction.class);
