@@ -1,8 +1,11 @@
 package com.xinlianshiye.shoestp.shop.service.rfq.impl;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.xinlianshiye.shoestp.shop.service.rfq.RFQPurchaseContactService;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQPurchaseContactGroupView;
 
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Entity.RFQ.RFQPurchaseContact;
@@ -115,6 +118,18 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
 		}
 		contact.setContactGroup(group.getPkey());
 		contact.upd();
+	}
+
+	@Override
+	public List<RFQPurchaseContactGroupView> listGroup(UsrPurchase purchase) {
+		List<RFQPurchaseContactGroup> list = Query.selectFrom(RFQPurchaseContactGroup.class).WHERE(RFQPurchaseContactGroup.T.PURCHASE, "=?", purchase.getPkey()).queryList();
+		List<RFQPurchaseContactGroupView> result = list.stream().map(map->{
+			RFQPurchaseContactGroupView view = new RFQPurchaseContactGroupView();
+			view.setPkey(map.getPkey());
+			view.setName(map.getName());
+			return view;
+		}).collect(Collectors.toList());
+		return result;
 	}
 
 }

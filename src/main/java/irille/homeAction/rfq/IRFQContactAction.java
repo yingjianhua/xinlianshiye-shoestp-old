@@ -45,4 +45,11 @@ public interface IRFQContactAction {
 	 * @author Jianhua Ying
 	 */
 	void editGroup() throws IOException;
+	
+	/**
+	 * 列表分组
+	 * @throws IOException
+	 * @author Jianhua Ying
+	 */
+	void listGroup() throws IOException;
 }

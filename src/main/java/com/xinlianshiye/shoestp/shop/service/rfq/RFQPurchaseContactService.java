@@ -1,7 +1,10 @@
 package com.xinlianshiye.shoestp.shop.service.rfq;
 
+import java.util.List;
+
 import com.google.inject.ImplementedBy;
 import com.xinlianshiye.shoestp.shop.service.rfq.impl.RFQPurchaseContactServiceImpl;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQPurchaseContactGroupView;
 
 import irille.shop.usr.UsrPurchase;
 
@@ -57,6 +60,13 @@ public interface RFQPurchaseContactService {
 	 * @author Jianhua Ying
 	 */
 	void moveToGroup(UsrPurchase purchase, Integer contactPkey, Integer groupPkey);
+	
+	/**
+	 * 列表分组
+	 * @param purchase 采购商
+	 * @author Jianhua Ying
+	 */
+	List<RFQPurchaseContactGroupView> listGroup(UsrPurchase purchase);
 	
 	//联系人列表
 }

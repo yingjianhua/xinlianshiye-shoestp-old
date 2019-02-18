@@ -34,32 +34,36 @@ public class RFQContactAction extends AbstractHomeAction implements IRFQContactA
 	}
 	
 	private Integer contactPkey;
+	private Integer groupPkey;
+	private String groupName;
 
 	@Override
 	public void moveToGroup() throws IOException {
-		// TODO Auto-generated method stub
-		
+		rFQPurchaseContactService.moveToGroup(getPurchase(), contactPkey, groupPkey);
+		write();
 	}
-
-	private String groupName;
-	private Integer groupPkey;
 	
 	@Override
 	public void addGroup() throws IOException {
-		// TODO Auto-generated method stub
-		
+		rFQPurchaseContactService.addGroup(getPurchase(), groupName);
+		write();
 	}
 
 	@Override
 	public void deleteGroup() throws IOException {
-		// TODO Auto-generated method stub
-		
+		rFQPurchaseContactService.deleteGroup(getPurchase(), groupPkey);
+		write();
 	}
 
 	@Override
 	public void editGroup() throws IOException {
-		// TODO Auto-generated method stub
-		
+		rFQPurchaseContactService.editGroup(getPurchase(), groupPkey, groupName);
+		write();
+	}
+
+	@Override
+	public void listGroup() throws IOException {
+		write(rFQPurchaseContactService.listGroup(getPurchase()));
 	}
 
 }
