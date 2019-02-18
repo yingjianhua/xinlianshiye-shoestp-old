@@ -1,6 +1,6 @@
 Vue.component('index-bottom', {
     template: `<div id="o2obottom">
-<div class="brand-list">
+<div class="brand-list" v-if="window.location.pathname === '/home/cnt_CntSglPageCategory_gosglpage'">
           <a class="brand-item" target="_blank" href="https://www.shoeslogo.com/">
             <img src="/home/v3/static/images/brand01.png" alt="" />
           </a>
@@ -106,6 +106,10 @@ Vue.component('index-bottom', {
                         {
                             atitle: 'Contact US',
                             alink: '/home/cnt_CntSglPageCategory_gosglpage?pkey=8'
+                        },
+                        {
+                            atitle: '店铺管理',
+                            alink: '/newseller/'
                         }
                     ]
                 }
