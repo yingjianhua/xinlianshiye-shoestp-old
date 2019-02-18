@@ -1036,19 +1036,21 @@ public class PdtProductDao {
 //            setPicture(map.get(PdtProduct.T.PICTURE.getFld().getCodeSqlField()).toString());
             Integer pkey1 = GetValue.get(map, "pdtPkey", Integer.class, null);
             List<PdtSpec> specs = BeanBase.list(PdtSpec.class, PdtSpec.T.PRODUCT + "=" + pkey1, false);
-            List<String> stringList = new ArrayList<>();
+            ArrayList<String> stringList = new ArrayList<>();
             for (PdtSpec spec : specs) {
                 String[] s = spec.getPics().split(",");
                 if (s.length > 0) {
                     for (String s1 : s) {
-                        if (s1.length() > 0) {
+                        if (s1.length() > 0 && !stringList.contains(s1)) {
                             stringList.add(s1);
                         }
                     }
                 }
             }
             if (stringList.size() > 0) {
-                stringList.add(0,GetValue.getFirstImage(GetValue.get(map, PdtProduct.T.PICTURE, String.class, "")));
+                String t = GetValue.getFirstImage(GetValue.get(map, PdtProduct.T.PICTURE, String.class, ""));
+                if (!seasonList.contains(t))
+                    stringList.add(0,t);
                 setPicture(Strings.join(stringList, ','));
             } else {
                 setPicture(GetValue.get(map, PdtProduct.T.PICTURE, String.class, ""));

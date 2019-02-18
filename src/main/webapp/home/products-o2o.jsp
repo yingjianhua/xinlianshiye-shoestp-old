@@ -122,8 +122,8 @@
 			</div>
 			<div class="i0"></div>
 			<div class="top-box2">Price :
-				<input type="text" @blur="min222" @keyup.enter="min222" v-model="min" placeholder="min."  onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/> -
-				<input type="text" @blur="min222" @keyup.enter="min222" v-model="max" placeholder="max."  onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/>
+				<input type="text" @blur="min222" @keyup.enter="min222" v-model.number="min" placeholder="min."  onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/> -
+				<input type="text" @blur="min222" @keyup.enter="min222" v-model.number="max" placeholder="max."  onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/>
 			</div>
 
 			<div class="btn-search" @click="search">search</div>
@@ -228,7 +228,7 @@
 
 		</div>
 		<!--页面右部列表  end-->
-		
+
 		<div class="bigPicBox" v-show="bigPicBox">
 			<img :src="imgUrlappend(bigPicBoxpic)" alt="" />
 		</div>
@@ -529,7 +529,7 @@
             this.bigPicBoxpic = e.currentTarget.dataset.pic;
             this.bigPicBox = true
           },
-        //	  关闭放大图片窗口 
+        //	  关闭放大图片窗口
           bigPicBoxclose(e){
             this.bigPicBox = false
           },
