@@ -26,6 +26,10 @@
     <script type="text/javascript" src="./static/js/global(1).js"></script>
     <script type="text/javascript" src="./static/js/lang/${env.curLanguage }.js"></script>
     <script type="text/javascript" src="./static/js/layer.js"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
     <link rel="stylesheet" href="./static/css/layer.css" type="text/css">
     <script type="text/javascript">
         $(document).ready(function () {
@@ -205,10 +209,9 @@
             </div>
             <div class="row">
                 <span class="fc_red">*</span>
-                <label for="Country"><s:text name="Global.Country"/>
+                <label for="Country"><s:text name="Global.Country"/></label>
 
-                </label>
-                <select name="bean.country" id="country">
+                <select class="js-example-basic-single" name="bean.country" id="country">
                     <c:forEach items="${countrys}" var="country">
                         <c:if test="${country.isDefault == true}">
                             <option value="${country.id}" selected="selected">${country.name}</option>
@@ -219,6 +222,7 @@
                     </c:forEach>
                 </select>
             </div>
+
             <div class="clear"></div>
             <div class="row">
                 <span class="fc_red">*</span>
@@ -307,6 +311,14 @@
     }
 </script>
 <script type="text/javascript">
+
+
+    $(document).ready(function() {
+        $('.js-example-basic-single').select2({
+            width:'resolve'
+        });
+    });
+
     $("#verify").on("click", function () {
         refreshVerify();
     })
