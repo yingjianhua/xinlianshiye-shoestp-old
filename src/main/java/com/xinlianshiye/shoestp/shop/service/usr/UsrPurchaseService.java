@@ -1,9 +1,9 @@
-package irille.Service.Usr;
+package com.xinlianshiye.shoestp.shop.service.usr;
 
 import com.google.inject.ImplementedBy;
+import com.xinlianshiye.shoestp.shop.service.usr.impl.UsrPurchaseServiceImpl;
+import com.xinlianshiye.shoestp.shop.view.usr.PurchaseView;
 
-import irille.Service.Usr.Imp.UsrPurchaseServiceImpl;
-import irille.homeAction.usr.dto.PurchaseView;
 import irille.shop.usr.UsrPurchase;
 
 @ImplementedBy(UsrPurchaseServiceImpl.class)

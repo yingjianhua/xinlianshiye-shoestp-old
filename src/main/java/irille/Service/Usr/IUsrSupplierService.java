@@ -1,9 +1,10 @@
 package irille.Service.Usr;
 
 import com.google.inject.ImplementedBy;
+import com.xinlianshiye.shoestp.shop.view.usr.FavoritesView;
+
 import irille.Service.Usr.Imp.UsrSupplierServiceImp;
 import irille.core.sys.Sys;
-import irille.homeAction.usr.dto.FavoritesView;
 import irille.homeAction.usr.dto.SupplierListView;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage;
