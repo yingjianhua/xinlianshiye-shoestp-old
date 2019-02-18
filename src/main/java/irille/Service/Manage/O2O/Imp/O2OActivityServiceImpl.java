@@ -148,7 +148,7 @@ public class O2OActivityServiceImpl implements O2OActivityService {
         if (o2OProductDao.countByActivity(pkey) > 0) {
             throw new WebMessageException(ReturnCode.service_unknow, "已有商品报名参加活动,不能关闭");
         }
-        bean.stStatus(O2O_ActivityStatus.END);
+        bean.stStatus(O2O_ActivityStatus.CLOSE);
         bean.upd();
     }
 
@@ -163,6 +163,8 @@ public class O2OActivityServiceImpl implements O2OActivityService {
             activity = o2OActivityDao.findById(view.getPkey());
             if (activity.getStatus().equals(O2O_ActivityStatus.ACTIVITY.getLine().getKey()))
                 throw new WebMessageException(ReturnCode.failure, "无法编辑进行中的活动");
+            if (activity.getStatus().equals(O2O_ActivityStatus.CLOSE.getLine().getKey()))
+                throw new WebMessageException(ReturnCode.failure, "无法编辑已关闭的活动");
         } else {
             activity = new O2O_Activity();
             Date now = new Date();

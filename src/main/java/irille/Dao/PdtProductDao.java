@@ -845,7 +845,12 @@ public class PdtProductDao {
                     o2oActivitySql.orWhere(O2O_Activity.T.ADDRESS, " =?", Integer.parseInt(item));
                 }
             }
-            o2oActivitySql.WHERE(O2O_Activity.T.STATUS, " =? ", O2O_ActivityStatus.ACTIVITY);
+//            o2oActivitySql.WHERE(O2O_Activity.T.STATUS, " =? ", O2O_ActivityStatus.ACTIVITY);
+            Date now = new Date();
+            o2oActivitySql.WHERE(O2O_Activity.T.START_DATE, "<?", now);
+            o2oActivitySql.WHERE(O2O_Activity.T.END_DATE, ">?", now);
+
+
             List<Integer> activityList = Query.sql(o2oActivitySql).queryMaps().stream().map(bean -> {
                 return GetValue.get(bean, O2O_Activity.T.PKEY, Integer.class, null);
             }).collect(Collectors.toList());
