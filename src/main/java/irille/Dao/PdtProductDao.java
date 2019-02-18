@@ -1037,14 +1037,18 @@ public class PdtProductDao {
             Integer pkey1 = GetValue.get(map, "pdtPkey", Integer.class, null);
             List<PdtSpec> specs = BeanBase.list(PdtSpec.class, PdtSpec.T.PRODUCT + "=" + pkey1, false);
             List<String> stringList = new ArrayList<>();
-            stringList.add(GetValue.getFirstImage(GetValue.get(map, PdtProduct.T.PICTURE, String.class, "")));
             for (PdtSpec spec : specs) {
                 String[] s = spec.getPics().split(",");
                 if (s.length > 0) {
-                    stringList.addAll(Arrays.asList(s));
+                    for (String s1 : s) {
+                        if (s1.length() > 0) {
+                            stringList.add(s1);
+                        }
+                    }
                 }
             }
             if (stringList.size() > 0) {
+                stringList.add(0,GetValue.getFirstImage(GetValue.get(map, PdtProduct.T.PICTURE, String.class, "")));
                 setPicture(Strings.join(stringList, ','));
             } else {
                 setPicture(GetValue.get(map, PdtProduct.T.PICTURE, String.class, ""));
