@@ -62,7 +62,7 @@ public class O2OActicityServerImp implements IO2OActicityServer{
           }).collect(Collectors.toList());
 
           cats.forEach(cat->{
-              listAll.addAll(pdtProductDao.getCatsNodeByCatId(cat));
+              listAll.addAll(pdtProductDao.getCatsNodeByCatId(cat).stream().map(String::valueOf).collect(Collectors.toList()));
           });
         }
         List<O2O_Product> insO2oPdts = new ArrayList<O2O_Product>();
@@ -80,10 +80,14 @@ public class O2OActicityServerImp implements IO2OActicityServer{
                 }
             }else{
                 o2oPdt = new O2O_Product();
+                if(pdt.getProductType().equals(Pdt.OProductType.O2O.getLine().getKey())){
+                	o2oPdt.setVerifyStatus(O2O_ProductStatus.PASS.getLine().getKey());
+                }else{
+                	o2oPdt.setVerifyStatus(O2O_ProductStatus._DEFAULT.getLine().getKey());
+                }
             }
             o2oPdt.setStatus(O2O_ProductStatus.ON.getLine().getKey());
             o2oPdt.setActivityId(activityEntity.getPkey());
-            o2oPdt.setVerifyStatus(O2O_ProductStatus._DEFAULT.getLine().getKey());
             o2oPdt.setPrice(pdt.getCurPrice());
             o2oPdt.setMinOq(pdt.getMinOq());
             o2oPdt.setProductId(pdt.getPkey());

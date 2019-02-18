@@ -3,12 +3,17 @@ package irille.homeAction.rfq;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import irille.Filter.svr.ItpCheckPurchaseLogin;
 import irille.Service.Pdt.IPdtProductService;
+import irille.Service.Plt.PltService;
 import irille.Service.RFQ.IRFQConsultService;
 import irille.homeAction.HomeAction;
+import irille.pub.tb.FldLanguage;
+import irille.pub.util.ipUtils.City;
 import irille.view.RFQ.PutInquiryView;
 import irille.view.RFQ.PutRFQConsultView;
 import irille.view.RFQ.RFQPdtInfo;
+import irille.view.plt.CountryView;
 import lombok.Setter;
+import org.apache.struts2.ServletActionContext;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -19,7 +24,7 @@ import java.io.IOException;
  * Date: 2019/1/30
  * Time: 9:35
  */
-public class RFQConsultAction extends HomeAction {
+public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
 
     @Inject
     private ObjectMapper objectMapper;
@@ -34,6 +39,10 @@ public class RFQConsultAction extends HomeAction {
     private Integer id;
     @Setter
     private int type;
+
+
+    @Inject
+    private PltService pltService;
 
     /**
      * @Description: RFQ询盘
@@ -53,7 +62,17 @@ public class RFQConsultAction extends HomeAction {
      */
     @ItpCheckPurchaseLogin.NeedLogin
     public void putInquiry() throws IOException {
-        irfqConsultService.putInquiry(objectMapper.readValue(getJsonBody(), PutInquiryView.class), getPurchase());
+        PutInquiryView view = objectMapper.readValue(getJsonBody(), PutInquiryView.class);
+        String[] country = City.find(ServletActionContext.getRequest().getRemoteAddr());
+        int countryId=-1;
+        if (country != null && country.length > 0) {
+            for (CountryView countryView : pltService.getCountryList(FldLanguage.Language.zh_CN)) {
+                if (countryView.getName().indexOf(country[0]) != -1) {
+                    countryId=countryView.getId();
+                }
+            }
+        }
+        irfqConsultService.putInquiry(view, getPurchase(),countryId);
         write();
     }
 
@@ -75,4 +94,40 @@ public class RFQConsultAction extends HomeAction {
         irfqConsultService.putPrivateInquiry(objectMapper.readValue(getJsonBody(), PutInquiryView.class), getPurchase());
         write();
     }
+    /**
+     * @Description: 展会介绍页1
+     * @author winson Zhang
+     */
+    public String exhibitionshow() {
+        setResult("/html/exhibition/exhibitionLasVegas.jsp", false);
+        return TRENDS;
+    }
+    /**
+     * @Description: 展会介绍页2
+     * @author winson Zhang
+     */
+    public String ExpoRivaSchuhshow() {
+        setResult("/html/exhibition/ExpoRivaSchuh.jsp", false);
+        return TRENDS;
+    }
+    /**
+     * @Description: 展会介绍页3
+     * @author winson Zhang
+     */
+    public String guangjiaohuishow() {
+        setResult("/html/exhibition/guangjiaohui.jsp", false);
+        return TRENDS;
+    }
+    
+    private String keyword;
+    private Byte t;
+    private Boolean unread;
+    private Integer start = 0;
+    private Integer limit = 10;
+
+	@Override
+	public void pageMine() throws IOException {
+		write(irfqConsultService.pageMine(getPurchase(), t, keyword, unread, start, limit));
+	}
+    
 }

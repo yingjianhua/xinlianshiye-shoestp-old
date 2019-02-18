@@ -1,5 +1,6 @@
 package irille.Entity.RFQ.JSON;
 
+import irille.Entity.RFQ.Enums.RFQConsultMessageType;
 import irille.view.BaseView;
 import lombok.Data;
 
@@ -11,5 +12,11 @@ import lombok.Data;
  */
 @Data
 public class RFQConsultTextMessage implements BaseView, ConsultMessage  {
+	
     private String content;
+
+	@Override
+	public Byte type() {
+		return RFQConsultMessageType.TEXT.getLine().getKey();
+	}
 }

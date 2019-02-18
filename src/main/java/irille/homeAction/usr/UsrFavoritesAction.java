@@ -188,6 +188,12 @@ public class UsrFavoritesAction extends HomeAction<UsrFavorites> {
         return HomeAction.TRENDS;
     }
 
+    /**
+     * @see PurchaseAction#favorite
+     * 功能迁移到
+     * @throws IOException
+     */
+    @Deprecated
     public void myfavoriteAjax() throws IOException {
         if (getPurchase() == null) {
             writeErr(-1, "未登录");

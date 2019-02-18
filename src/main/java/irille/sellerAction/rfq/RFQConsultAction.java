@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Service.Manage.RFQ.IRFQManageService;
 import irille.Service.Manage.RFQ.RFQConsultService;
+import irille.pub.util.upload.ImageUpload;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.rfq.inf.IRFQConsultAction;
 import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
@@ -107,9 +108,14 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
      */
     @Override
     public void list() throws IOException {
-    	rFQConsultService.page(getSupplier(), start, limit, keyword, groupId, isFavorite, type, readStatus, isDeleted, startDate, endDate, orderType);
+    	write(rFQConsultService.page(getSupplier(), start, limit, keyword, groupId, isFavorite, type, readStatus, isDeleted, startDate, endDate, orderType));
     }
-
+    
+    @Override
+    public void count() throws IOException {
+    	write(rFQConsultService.count(getSupplier(), isDeleted));
+    }
+    
 	@Override
 	public void moveToRecycled() throws IOException {
 		rFQConsultService.moveToRecycled(getSupplier(), ids, true);
@@ -138,5 +144,16 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
 	public void offerInfo() throws IOException {
 		write(rFQConsultService.relationInfo(getSupplier(), id));
 	}
+
+	@Override
+	public void upload() throws IOException {
+		if(getSupplier() == null) {
+			writeTimeout();
+		} else {
+			write(ImageUpload.upload2(beanClazz(), getFileFileName(), getFile()));
+		}
+	}
+	
+	
 
 }

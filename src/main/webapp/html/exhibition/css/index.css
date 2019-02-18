@@ -209,8 +209,7 @@ li{
 
 /*chao 广州*/
 .gjhMain {
-    font-family: Lato-Regular;
-    height: 100%; }
+    font-family: Lato-Regular;}
 .gjhMain a, .gjhMain a:link, .gjhMain a:visited, .gjhMain a:hover, .gjhMain a:active {
     display: inline-block;
     color: inherit;

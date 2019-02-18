@@ -2,6 +2,7 @@ package irille.Dao.RFQ.impl;
 
 import irille.Dao.RFQ.RFQConsultDao;
 import irille.Entity.RFQ.Enums.RFQConsultType;
+import irille.Entity.RFQ.Enums.RFQConsultVerifyStatus;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
@@ -277,6 +278,8 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 RFQConsult.T.COUNTRY,
                 RFQConsult.T.CREATE_TIME,
                 RFQConsult.T.QUANTITY,
+                RFQConsult.T.CONTENT,
+                RFQConsult.T.UNIT,
                 RFQConsult.T.LEFT_COUNT,
                 RFQConsult.T.IMAGE,
                 RFQConsult.T.TOTAL,
@@ -289,7 +292,9 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 .LIMIT(start, limit)
                 .WHERE(keyword != null && keyword.length() > 0, RFQConsult.T.TITLE, "like ?", keyword)
                 .WHERE(RFQConsult.T.VALID_DATE, ">?", LocalDateTime.now())
+                .WHERE(RFQConsult.T.VERIFY_STATUS,"=?", RFQConsultVerifyStatus.PASS.getLine().getKey())
         ;
+        sql.ORDER_BY(RFQConsult.T.CREATE_TIME, " DESC ");
         return Query.sql(sql).queryMaps();
     }
 
@@ -354,6 +359,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 .LIMIT(start, limit)
                 .WHERE(keyword != null && keyword.length() > 0, RFQConsult.T.TITLE, "like ?", keyword)
                 .WHERE(RFQConsult.T.VALID_DATE, ">?", LocalDateTime.now())
+                .WHERE(RFQConsult.T.VERIFY_STATUS,"=?", RFQConsultVerifyStatus.PASS.getLine().getKey())
         ;
         return Query.sql(sql).queryCount();
     }
@@ -398,8 +404,10 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 RFQConsult.T.CONTENT,
                 RFQConsult.T.CREATE_TIME,
                 RFQConsultRelation.T.HAD_READ_PURCHASE,
+                RFQConsultRelation.T.HAD_READ_SUPPLIER,
                 RFQConsultRelation.T.QUANTITY,
-                RFQConsultRelation.T.DESCRIPTION
+                RFQConsultRelation.T.DESCRIPTION,
+                RFQConsultRelation.T.PURCHASE_ID
         ).SELECT(RFQConsultRelation.T.TITLE, "myTitle").SELECT(
                 RFQConsultRelation.T.CREATE_DATE, "myCreate_time"
         )
@@ -435,17 +443,20 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         SQL sql = new SQL();
         sql.SELECT(
                 RFQConsultRelation.T.PKEY,
-                RFQConsult.T.TITLE,
-                RFQConsult.T.CONTENT,
-                RFQConsult.T.IMAGE,
-                RFQConsult.T.QUANTITY,
-                RFQConsult.T.PAY_TYPE,
-                RFQConsult.T.PRICE,
-                RFQConsult.T.SHIPPING_TYPE,
-                RFQConsult.T.VALID_DATE,
+                RFQConsultRelation.T.TITLE,
+                RFQConsultRelation.T.DESCRIPTION,
+                RFQConsultRelation.T.IMAGE,
+                RFQConsultRelation.T.CURRENCY,
+                RFQConsultRelation.T.QUANTITY,
+                RFQConsultRelation.T.PAYTYPE,
+                RFQConsultRelation.T.IMAGE,
+                RFQConsultRelation.T.TRANSITTYPE,
+                RFQConsultRelation.T.VALID_DATE,
                 RFQConsultRelation.T.SAMPLE,
                 RFQConsultRelation.T.COMPANYDESCRIBE,
-                RFQConsultRelation.T.THROWAWAY
+                RFQConsultRelation.T.THROWAWAY,
+                RFQConsultRelation.T.MINPRICE,
+                RFQConsultRelation.T.MAXPRICE
         )
                 .FROM(RFQConsult.class)
                 .LEFT_JOIN(

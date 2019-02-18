@@ -9,6 +9,7 @@ import irille.pub.bean.query.BeanQuery;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
+import irille.shop.usr.UsrProductCategory;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplierRole;
 import irille.view.O2O.O2OActivityView;
@@ -68,19 +69,24 @@ public class O2OActivityDao {
     }
 
 
-    public List<Map<String, Object>> privetePdtList(int start, int limit) {
+    public List<Map<String, Object>> privetePdtList(int start, int limit, Integer status, Integer verify_status, String cat, String supName) {
         BeanQuery query = Query.SELECT(
                 PdtProduct.T.PKEY,
                 PdtProduct.T.NAME,
                 PdtProduct.T.PICTURE,
-                PdtCat.T.NAME,
                 PdtProduct.T.CUR_PRICE,
                 PdtProduct.T.MKT_PRICE,
+                PdtProduct.T.SKU,
                 PdtProduct.T.STOCK,
+                PdtProduct.T.MIN_OQ,
                 PdtProduct.T.UPDATE_TIME,
+                O2O_PrivateExpoPdt.T.PKEY,
                 O2O_PrivateExpoPdt.T.STATUS,
                 O2O_PrivateExpoPdt.T.VERIFY_STATUS
-        ).SELECT(UsrSupplier.T.NAME, "supName").SELECT(UsrSupplierRole.T.NAME, "roleName")
+
+        ).SELECT(UsrSupplier.T.NAME, "supName")
+                .SELECT(UsrProductCategory.T.NAME, "SuppdtCat")
+                .SELECT(PdtCat.T.NAME, "catName")
                 .FROM(PdtProduct.class)
                 .LEFT_JOIN(
                         O2O_PrivateExpoPdt.class, O2O_PrivateExpoPdt.T.PDT_ID, PdtProduct.T.PKEY
@@ -89,7 +95,12 @@ public class O2OActivityDao {
                 ).LEFT_JOIN(
                         UsrSupplier.class, UsrSupplier.T.PKEY, PdtProduct.T.SUPPLIER
                 ).LEFT_JOIN(UsrSupplierRole.class, UsrSupplierRole.T.PKEY, UsrSupplier.T.ROLE)
+                .LEFT_JOIN(UsrProductCategory.class, UsrProductCategory.T.PKEY, PdtProduct.T.CATEGORY_DIY)
                 .WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.PrivateExpo)
+                .WHERE(supName != null, UsrSupplier.T.NAME, "like", supName)
+                .WHERE(status != null, O2O_PrivateExpoPdt.T.STATUS, "=?", status)
+                .WHERE(verify_status != null, O2O_PrivateExpoPdt.T.VERIFY_STATUS, "=?", verify_status)
+                .WHERE(cat != null, PdtCat.T.NAME, "like ?", "%" + cat + "%")
                 .limit(start, limit);
         return query.queryMaps();
     }

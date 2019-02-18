@@ -155,141 +155,146 @@
     </style>
     <link href="./static/css/row_4.css" rel="stylesheet" type="text/css">
 </head>
-
+<jsp:include page="v3/header.jsp"/>
+<jsp:include page="v3/nav.jsp"/>
 <body class="lang_en w_1200">
 
 <%@ include file="/home/template/web-top.jsp" %>
-<%@ include file="/home/template/new-header.jsp" %>
 
-<div id="main" class="wide">
-    <div id="lib_user" class="clearfix">
-        <div id="lib_user_crumb" class="widget">
-            <ul class="crumb_box clearfix">
-                <li class="home">
-                    <a href="/" title="Home"><s:text name="Global.Home"/>
-                        <i></i>
-                    </a>
-                </li>
-                <li class="crumb1">
-                    <a href="/home/usr_UsrPurchase_userIndex" title="My Account"><s:text name="Global.My_Account"/>
-                        <i></i>
-                    </a>
-                </li>
-                <li class="crumb2 root">
-                    <a href="/home/usr_UsrFavorites_myfavorite" title="My Favorite"><s:text name="Global.My_Favorites"/>
-                        <i></i>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <%@ include file="/home/template/account/lib-user-menu.jsp" %>
-        <div id="lib_user_main">
-            <div class="lib_user_title">
-                <h1><s:text name="Global.My_Favorites"/></h1>
-                <ul>
-                    <c:forEach items="${catList}" var="cat">
-                        <li>
-                            <a onclick="toThisCategory(${cat.pkey})" id="se${cat.pkey}">${cat.name}</</a>
-                        </li>
-                    </c:forEach>
-                    <li><a href="/home/usr_UsrFavorites_myRecycle"><s:text name="Global.Recycle_Bin"/></a></li>
+<div id="main">
+    <index-top></index-top>
+    <div class="wide">
+        <div id="lib_user" class="clearfix">
+            <div id="lib_user_crumb" class="widget">
+                <ul class="crumb_box clearfix">
+                    <li class="home">
+                        <a href="/" title="Home"><s:text name="Global.Home"/>
+                            <i></i>
+                        </a>
+                    </li>
+                    <li class="crumb1">
+                        <a href="/home/usr_UsrPurchase_userIndex" title="My Account"><s:text name="Global.My_Account"/>
+                            <i></i>
+                        </a>
+                    </li>
+                    <li class="crumb2 root">
+                        <a href="/home/usr_UsrFavorites_myfavorite" title="My Favorite"><s:text
+                                name="Global.My_Favorites"/>
+                            <i></i>
+                        </a>
+                    </li>
                 </ul>
-
             </div>
-            <div id="lib_user_favorite" class="index_pro_list clearfix">
-                <c:if test="${fn:length(favoritesViews) <= 0}">
-                    <s:text name="my-favorite.No_Items"/>
-                    <!-- <a href="">Let's go shopping now...</a> -->
-                </c:if>
-                <c:if test="${fn:length(favoritesViews) > 0}">
-                    <c:forEach items="${favoritesViews}" var="favorite">
-                        <dl class="pro_item fl">
-                            <input type="checkbox" name="ckOne" onclick="checkOne()" data="${favorite.pdtPkey}"/>
-                            <dt>
-                                <a class="pic_box"
-                                   href="<c:if test='${favorite.groupLine == 0}'>/home/pdt_PdtProduct_gtProductsInfo?id=${favorite.pdtPkey }</c:if><c:if test='${favorite.groupLine != 0}'>/home/prm_PrmGroupPurchase_getGroupPdt?pkey=${favorite.groupLine}</c:if>"
-                                   title="${favorite.name}" target="_blank">
-                                    <img src="${envConfig.imageBaseUrl}${favorite.img}">
-                                    <span></span>
-                                </a>
-                            </dt>
-                            <dd class="pro_name">
-                                <a href="/home/pdt_PdtProduct_gtProductsInfo?id=${favorite.pdtPkey }"
-                                   title="${favorite.name}" target="_blank">${favorite.name}</a>
-                            </dd>
-                            <dd class="pro_price">
-                                <em class="currency_data FontColor">$</em>
-                                <span class="price_data FontColor" data="${favorite.amt}">${favorite.amt}</span>
-                            </dd>
+            <%@ include file="/home/template/account/lib-user-menu.jsp" %>
+            <div id="lib_user_main">
+                <div class="lib_user_title">
+                    <h1><s:text name="Global.My_Favorites"/></h1>
+                    <ul>
+                        <c:forEach items="${catList}" var="cat">
+                            <li>
+                                <a onclick="toThisCategory(${cat.pkey})" id="se${cat.pkey}">${cat.name}</</a>
+                            </li>
+                        </c:forEach>
+                        <li><a href="/home/usr_UsrFavorites_myRecycle"><s:text name="Global.Recycle_Bin"/></a></li>
+                    </ul>
 
-                            <dd class="pro_view">
-                                <a class="pro_btn" onclick="recycleThis(${favorite.id})"><s:text
-                                        name="cart.remove"/></a>
-                                <a class="pro_btn pro_btn2" onclick="addcart(${favorite.pdtPkey})"><s:text
-                                        name="my-inquiry-publish.View_Inquiry"/></a>
-                            </dd>
-                        </dl>
-                    </c:forEach>
-                </c:if>
-                <div class="blank20"></div>
-                <c:if test="${fn:length(favoritesViews) > 0}">
-                    <div id="turn_page">
-                        <li id="front">
-                            <font class="page_noclick" style="<c:if test='${pageNumber != 1}'>cursor:pointer;</c:if>">
-                                <em class="icon_page_prev"></em><s:text name="Global.Previous_Page"/></font>
-                        </li>
-                        <c:choose>
-                            <c:when test="${pageCount <= 6}">
-                                <c:set var="begin" value="1"/>
-                                <c:set var="end" value="${pageCount}"/>
-                            </c:when>
-                            <c:otherwise>
-                                <c:set var="begin" value="${pageNumber - 1}"/>
-                                <c:set var="end" value="${pageNumber + 3}"/>
-                                <c:if test="${begin -1 <= 0}">
-                                    <c:set var="begin" value="1"/>
-                                    <c:set var="end" value="6"/>
-                                </c:if>
-                                <c:if test="${end > pageCount}">
-                                    <c:set var="begin" value="${pageCount - 5}"/>
-                                    <c:set var="end" value="${pageCount}"/>
-                                </c:if>
-                            </c:otherwise>
-                        </c:choose>
-                        <c:forEach var="i" begin="${begin}" end="${end}">
+                </div>
+                <div id="lib_user_favorite" class="index_pro_list clearfix">
+                    <c:if test="${fn:length(favoritesViews) <= 0}">
+                        <s:text name="my-favorite.No_Items"/>
+                        <!-- <a href="">Let's go shopping now...</a> -->
+                    </c:if>
+                    <c:if test="${fn:length(favoritesViews) > 0}">
+                        <c:forEach items="${favoritesViews}" var="favorite">
+                            <dl class="pro_item fl">
+                                <input type="checkbox" name="ckOne" onclick="checkOne()" data="${favorite.pdtPkey}"/>
+                                <dt>
+                                    <a class="pic_box"
+                                       href="<c:if test='${favorite.groupLine == 0}'>/home/pdt_PdtProduct_gtProductsInfo?id=${favorite.pdtPkey }</c:if><c:if test='${favorite.groupLine != 0}'>/home/prm_PrmGroupPurchase_getGroupPdt?pkey=${favorite.groupLine}</c:if>"
+                                       title="${favorite.name}" target="_blank">
+                                        <img src="${envConfig.imageBaseUrl}${favorite.img}">
+                                        <span></span>
+                                    </a>
+                                </dt>
+                                <dd class="pro_name">
+                                    <a href="/home/pdt_PdtProduct_gtProductsInfo?id=${favorite.pdtPkey }"
+                                       title="${favorite.name}" target="_blank">${favorite.name}</a>
+                                </dd>
+                                <dd class="pro_price">
+                                    <em class="currency_data FontColor">$</em>
+                                    <span class="price_data FontColor" data="${favorite.amt}">${favorite.amt}</span>
+                                </dd>
+
+                                <dd class="pro_view">
+                                    <a class="pro_btn" onclick="recycleThis(${favorite.id})"><s:text
+                                            name="cart.remove"/></a>
+                                    <a class="pro_btn pro_btn2" onclick="addcart(${favorite.pdtPkey})"><s:text
+                                            name="my-inquiry-publish.View_Inquiry"/></a>
+                                </dd>
+                            </dl>
+                        </c:forEach>
+                    </c:if>
+                    <div class="blank20"></div>
+                    <c:if test="${fn:length(favoritesViews) > 0}">
+                        <div id="turn_page">
+                            <li id="front">
+                                <font class="page_noclick"
+                                      style="<c:if test='${pageNumber != 1}'>cursor:pointer;</c:if>">
+                                    <em class="icon_page_prev"></em><s:text name="Global.Previous_Page"/></font>
+                            </li>
                             <c:choose>
-                                <c:when test="${i == pageNumber}">
-                                    <li>
-                                        <font class="page_item_current">${i}</font>
-                                    </li>
+                                <c:when test="${pageCount <= 6}">
+                                    <c:set var="begin" value="1"/>
+                                    <c:set var="end" value="${pageCount}"/>
                                 </c:when>
                                 <c:otherwise>
-                                    <li onclick="toThisPage(${i})">
-                                        <font>${i}</font>
-                                    </li>
+                                    <c:set var="begin" value="${pageNumber - 1}"/>
+                                    <c:set var="end" value="${pageNumber + 3}"/>
+                                    <c:if test="${begin -1 <= 0}">
+                                        <c:set var="begin" value="1"/>
+                                        <c:set var="end" value="6"/>
+                                    </c:if>
+                                    <c:if test="${end > pageCount}">
+                                        <c:set var="begin" value="${pageCount - 5}"/>
+                                        <c:set var="end" value="${pageCount}"/>
+                                    </c:if>
                                 </c:otherwise>
                             </c:choose>
-                        </c:forEach>
-                        <!-- <li>
-                            <font class="page_item_current">1</font>
-                        </li> -->
-                        <li id="back" class="page_last">
-                            <font class="page_noclick"
-                                  style="<c:if test='${pageNumber != pageCount}'>cursor:pointer;</c:if>"><s:text
-                                    name="Global.Next_Page"/>
-                                <em class="icon_page_next"></em>
-                            </font>
-                        </li>
+                            <c:forEach var="i" begin="${begin}" end="${end}">
+                                <c:choose>
+                                    <c:when test="${i == pageNumber}">
+                                        <li>
+                                            <font class="page_item_current">${i}</font>
+                                        </li>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <li onclick="toThisPage(${i})">
+                                            <font>${i}</font>
+                                        </li>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+                            <!-- <li>
+                                <font class="page_item_current">1</font>
+                            </li> -->
+                            <li id="back" class="page_last">
+                                <font class="page_noclick"
+                                      style="<c:if test='${pageNumber != pageCount}'>cursor:pointer;</c:if>"><s:text
+                                        name="Global.Next_Page"/>
+                                    <em class="icon_page_next"></em>
+                                </font>
+                            </li>
 
-                    </div>
-                    <div class="xmg-myfcaozuonav">
-                        <input type="checkbox" name="ckAll" value="全选/反选" onclick="checkAll()" id="all"/>
-                        <a href="javascript:;" id="empty"><s:text name="my-favorite.Empty"/></a>
-                        <a href="javascript:;" id="addToCart" style="background:#db0000;"><s:text
-                                name="my-inquiry-publish.View_Inquiry"/></a>
-                    </div>
-                </c:if>
-                <!-- 有商品时候 end -->
+                        </div>
+                        <div class="xmg-myfcaozuonav">
+                            <input type="checkbox" name="ckAll" value="全选/反选" onclick="checkAll()" id="all"/>
+                            <a href="javascript:;" id="empty"><s:text name="my-favorite.Empty"/></a>
+                            <a href="javascript:;" id="addToCart" style="background:#db0000;"><s:text
+                                    name="my-inquiry-publish.View_Inquiry"/></a>
+                        </div>
+                    </c:if>
+                    <!-- 有商品时候 end -->
+                </div>
             </div>
         </div>
     </div>
@@ -654,7 +659,11 @@
     }
 </script>
 <!-- End of LiveChat code -->
-
+<script src="/home/v3/static/js/index-top.js"></script>
+<script>
+    new Vue({
+        el:"#main"
+    })
+</script>
 </body>
-
 </html>

@@ -1,5 +1,24 @@
 package irille.Service.Manage.O2O.Imp;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javax.inject.Inject;
+
+import org.apache.commons.lang3.StringUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import irille.Dao.PdtCatDao;
+import irille.Dao.PdtProductDao;
 import irille.Dao.O2O.O2OActivityDao;
 import irille.Dao.O2O.O2OJoinInfoDao;
 import irille.Dao.O2O.O2OProductDao;
@@ -7,13 +26,11 @@ import irille.Dao.Old.O2O.O2O_ActivityInsDAO;
 import irille.Dao.Old.O2O.O2O_JoinInfoInsDAO;
 import irille.Dao.Old.O2O.O2O_PrivateExpoPdtInsDAO;
 import irille.Dao.Old.O2O.O2O_ProductInsDAO;
-import irille.Dao.PdtCatDao;
-import irille.Dao.PdtProductDao;
-import irille.Entity.O2O.Enums.O2O_ActivityStatus;
-import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_Activity;
 import irille.Entity.O2O.O2O_JoinInfo;
 import irille.Entity.O2O.O2O_Product;
+import irille.Entity.O2O.Enums.O2O_ActivityStatus;
+import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Service.Manage.O2O.IO2OPdtServer;
 import irille.pub.Log;
 import irille.pub.exception.ReturnCode;
@@ -21,24 +38,16 @@ import irille.pub.exception.WebMessageException;
 import irille.pub.tb.FldLanguage;
 import irille.pub.util.GetValue;
 import irille.pub.util.SEOUtils;
+import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
+import irille.view.Page;
 import irille.view.O2O.O2OActivityInfoView;
 import irille.view.O2O.O2OActivityPdtInfoView;
 import irille.view.O2O.O2OManageActivityListView;
-import irille.view.Page;
 import irille.view.v2.Pdt.PdtNewPdtInfo;
-import org.apache.commons.lang3.StringUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import javax.inject.Inject;
-import java.math.BigDecimal;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by IntelliJ IDEA. User: Lijie<HelloBox@outlook.com> Date: 2019/1/26 Time: 15:59
@@ -283,13 +292,9 @@ public class O2OPdtServerImp implements IO2OPdtServer {
             throw LOG.err("noEntity", "o2o商品不存在");
         }
         o2O_product.setRemark(reason);
+        o2O_product.setMessage("处理中");
         o2O_product.setStatus(O2O_ProductStatus.WAITOFF.getLine().getKey());
         o2O_product.upd();
-    }
-
-
-    public void lowerAndUpperByManager(Integer pkey,String reason,O2O_ProductStatus status){
-
     }
 
     @Override
@@ -306,7 +311,6 @@ public class O2OPdtServerImp implements IO2OPdtServer {
 
     @Override
     public List<O2OActivityPdtInfoView> listAllGeneral(UsrSupplier supplier, Integer activity) {
-        //TODO
         O2O_Activity activityEntity = o2OActivityDao.getActivityInfoById(activity);
         if (null == activityEntity)
             throw LOG.err("noActivity", "活动不存在");
@@ -322,7 +326,7 @@ public class O2OPdtServerImp implements IO2OPdtServer {
         }
 
 
-        return o2OProductDao.findAllGeneralByIsVerifyAndStateAndSupplier(supplier, listAll).stream().map(bean -> {
+        return o2OProductDao.findAllGeneralByIsVerifyAndStateAndSupplier(supplier,activity, listAll).stream().map(bean -> {
             O2OActivityPdtInfoView view = new O2OActivityPdtInfoView();
             view.setId(GetValue.get(bean, PdtProduct.T.PKEY, Integer.class, null));
             view.setCode(GetValue.get(bean, PdtProduct.T.CODE, String.class, ""));
@@ -331,6 +335,12 @@ public class O2OPdtServerImp implements IO2OPdtServer {
             view.setPrice(GetValue.get(bean, PdtProduct.T.CUR_PRICE, BigDecimal.class, BigDecimal.ZERO));
             view.setPicture(GetValue.get(bean, PdtProduct.T.PICTURE, String.class, ""));
             view.setSupplier(GetValue.get(bean, "supName", String.class, ""));
+            Byte o2oPkey = GetValue.get(bean, PdtProduct.T.PRODUCT_TYPE, Byte.class, null);
+            if(o2oPkey.equals(Pdt.OProductType.O2O.getLine().getKey())){
+            	view.setIsO2o((byte)1);
+            }else{
+            	view.setIsO2o((byte)0);
+            }
             return view;
         }).collect(Collectors.toList());
     }

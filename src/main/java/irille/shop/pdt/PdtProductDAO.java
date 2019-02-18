@@ -2,15 +2,25 @@ package irille.shop.pdt;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
+import irille.Entity.O2O.Enums.O2O_ProductStatus;
+import irille.Entity.O2O.O2O_PrivateExpoPdt;
+import irille.Entity.O2O.O2O_Product;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
 import irille.homeAction.usr.dto.PdtView;
 import irille.platform.pdt.View.PdtProductView;
+import irille.platform.pdt.View.productView.ProductsView;
+import irille.platform.pdt.View.productView.SeartchView;
 import irille.pub.Log;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.Bean;
 import irille.pub.bean.BeanBase;
+import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessage;
+import irille.pub.exception.WebMessageException;
 import irille.pub.idu.IduIns;
 import irille.pub.idu.IduOther;
 import irille.pub.idu.IduUpd;
@@ -31,10 +41,7 @@ import irille.view.Page;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PdtProductDAO {
@@ -192,6 +199,7 @@ public class PdtProductDAO {
             });
             PropertyUtils.copyProperties(dbBean, getB(),
                     T.NAME, //名字
+                    T.IS_VERIFY,//审核状态
                     T.CATEGORY, //产品类目
                     T.CATEGORY_DIY, //店铺-产品类目
                     T.CODE, //编号
@@ -535,6 +543,7 @@ public class PdtProductDAO {
 
             PropertyUtils.copyProperties(dbBean, getB(),
                     T.NAME, //名字
+                    T.IS_VERIFY,//产品审核
                     T.CATEGORY, //产品类目
                     T.CATEGORY_DIY, //店铺-产品类目
                     T.CODE, //编号
@@ -602,7 +611,14 @@ public class PdtProductDAO {
         public void run() {
             PdtProduct product = BeanBase.load(PdtProduct.class, getB().getPkey());
             product.setState(OState.MERCHANTDEL.getLine().getKey());
+            product.setIsVerify(Sys.OYn.NO.getLine().getKey());
             product.upd();
+            if (product.getProductType() == Pdt.OProductType.PrivateExpo.getLine().getKey()) {
+                O2O_PrivateExpoPdt o2o_privateExpoPdt = O2O_PrivateExpoPdt.chkUniquePdt_Id(false, product.getPkey());
+                o2o_privateExpoPdt.setVerifyStatus(O2O_PrivateExpoPdtStatus._DEFAULT.getLine().getKey());
+                o2o_privateExpoPdt.setStatus(O2O_PrivateExpoPdtStatus.OFF.getLine().getKey());
+                o2o_privateExpoPdt.upd();
+            }
         }
     }
 
@@ -610,8 +626,15 @@ public class PdtProductDAO {
         public void run() {
             PdtProduct product = BeanBase.load(PdtProduct.class, getB().getPkey());
             product.setState(OState.OFF.getLine().getKey());
+            product.setIsVerify(Sys.OYn.NO.getLine().getKey());
             product.setSoldTimeE(Env.getTranBeginTime());
             product.upd();
+            if (product.getProductType() == Pdt.OProductType.PrivateExpo.getLine().getKey()) {
+                O2O_PrivateExpoPdt o2o_privateExpoPdt = O2O_PrivateExpoPdt.chkUniquePdt_Id(false, product.getPkey());
+                o2o_privateExpoPdt.setVerifyStatus(O2O_PrivateExpoPdtStatus._DEFAULT.getLine().getKey());
+                o2o_privateExpoPdt.setStatus(O2O_PrivateExpoPdtStatus.OFF.getLine().getKey());
+                o2o_privateExpoPdt.upd();
+            }
         }
     }
 
@@ -726,6 +749,184 @@ public class PdtProductDAO {
 
     public static void getWarehouse() {
 
+    }
+
+    public static Page getProducts(Integer start, Integer limit, SeartchView seartch) {
+        if (start == null) {
+            start = 0;
+        }
+        if (limit == null) {
+            limit = 0;
+        }
+        SQL sql = new SQL() {
+            {
+                SELECT(T.PKEY, "pkey")
+                        .SELECT(T.PICTURE, "pdtImage")
+                        .SELECT(T.NAME, "pdtName")
+                        .SELECT(T.CODE, "pdtCode")
+                        .SELECT(PdtCat.T.NAME, "pdtCategory")
+                        .SELECT(T.MKT_PRICE, "mktPrice")
+                        .SELECT(T.CUR_PRICE, "curPrice")
+                        .SELECT(T.STOCK, "stock")
+                        .SELECT(T.MIN_OQ, "minOq")
+                        .SELECT(UsrSupplier.T.NAME, "supplierName")
+                        .SELECT(T.SOLD_TIME_B, "soldTimeB")
+                        .SELECT(T.IS_VERIFY, "isVerify")
+                        .SELECT(T.STATE, "state")
+                        .FROM(PdtProduct.class)
+                        .WHERE(PdtProduct.T.PRODUCT_TYPE, "<>?", Pdt.OProductType.GROUP)
+                        .WHERE(PdtProduct.T.PRODUCT_TYPE, "<>?", Pdt.OProductType.GATHER)
+                        .WHERE(PdtProduct.T.PRODUCT_TYPE, "<>?", Pdt.OProductType.PrivateExpo)
+                        .WHERE(T.STATE, "<>?", OState.DELETE)
+                        .WHERE(T.STATE, "<>?", OState.MERCHANTDEL);
+                if (seartch != null) {
+                    WHERE(seartch.getProductType() != null, T.PRODUCT_TYPE, "=?", seartch.getProductType())
+                            .WHERE(seartch.getShopName() != null, UsrSupplier.T.NAME, "like ?", "%" + seartch.getShopName() + "%")
+                            .WHERE(seartch.getProductClassification() != null, PdtCat.T.NAME, "like ?", "%" + seartch.getProductClassification() + "%")
+                            .WHERE(seartch.getProductStatus() != null, T.STATE, "=?", seartch.getProductStatus());
+                    if (seartch.getProductType() == Pdt.OProductType.GENERAL.getLine().getKey()) {
+                        WHERE(seartch.getVerify() != null, T.IS_VERIFY, "=?", seartch.getVerify());
+                    } else {
+                        WHERE(seartch.getVerify() != null, O2O_Product.T.VERIFY_STATUS, "=?", seartch.getVerify());
+                    }
+                }
+                LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, T.SUPPLIER)
+                        .LEFT_JOIN(PdtCat.class, PdtCat.T.PKEY, T.CATEGORY)
+                        .LEFT_JOIN(O2O_Product.class, O2O_Product.T.PRODUCT_ID, T.PKEY);
+            }
+        };
+        Integer count = irille.pub.bean.Query.sql(sql).queryCount();
+        List<ProductsView> list = irille.pub.bean.Query.sql(sql.LIMIT(start, limit)).queryMaps().stream().map(o -> new ProductsView() {{
+            SQL sql = new SQL() {
+                {
+                    SELECT(O2O_Product.class)
+                            .FROM(O2O_Product.class)
+                            .WHERE(O2O_Product.T.PRODUCT_ID, "=?", (Integer) o.get("pkey"))
+                            .WHERE(T.PRODUCT_TYPE, "=?", Pdt.OProductType.O2O)
+                            .LEFT_JOIN(PdtProduct.class, T.PKEY, O2O_Product.T.PRODUCT_ID);
+                }
+            };
+            O2O_Product o2OProduct = irille.pub.bean.Query.sql(sql).query(O2O_Product.class);
+            if (o2OProduct != null) {
+                setIsO2O("O2O商品");
+                switch (o2OProduct.getVerifyStatus()) {
+                    case 0:
+                        setIsVerify((byte) 0);
+                        break;
+                    case 3:
+                        setIsVerify((byte) 1);
+                        break;
+                    case 4:
+                        setIsVerify((byte) 2);
+                        break;
+                }
+                if (o2OProduct.getStatus() == 1) {
+                    setState((byte) 0);
+                } else if (o2OProduct.getStatus() == 2) {
+                    setState((byte) 1);
+                }
+            } else {
+                setIsO2O("普通商品");
+                if ((Byte) o.get("isVerify") == 1) {
+                    setIsVerify((byte) 1);
+                } else {
+                    setIsVerify((byte) 2);
+                }
+                setState((Byte) o.get("state"));
+            }
+            setPkey((Integer) o.get("pkey"));
+            setPdtImage((String) o.get("pdtImage"));
+            setPdtName((String) o.get("pdtName"));
+            setPdtCode((String) o.get("pdtCode"));
+            setPdtCategory((String) o.get("pdtCategory"));
+            setMktPrice((BigDecimal) o.get("mktPrice"));
+            setCurPrice((BigDecimal) o.get("curPrice"));
+            setStock((Integer) o.get("stock"));
+            setMinOq((Integer) o.get("minOq"));
+            setSupplierName((String) o.get("supplierName"));
+            setSoldTimeB((Date) o.get("soldTimeB"));
+        }}).collect(Collectors.toList());
+        return new Page(list, start, limit, count);
+    }
+
+    /**
+     * @param id
+     * @param status  1:审核通过,2:审核失败
+     * @param message
+     */
+    public static void review(Integer id, Byte status, String message) {
+        SQL pdt = new SQL() {
+            {
+                SELECT(PdtProduct.class)
+                        .FROM(PdtProduct.class)
+                        .WHERE(T.PKEY, "=?", id);
+            }
+        };
+        PdtProduct pp = irille.pub.bean.Query.sql(pdt).query(PdtProduct.class);
+        if (pp == null) {
+            throw new WebMessageException(ReturnCode.service_gone, "产品不存在");
+        }
+        if (pp.getProductType() == Pdt.OProductType.O2O.getLine().getKey()) {
+            SQL o2o = new SQL() {{
+                SELECT(O2O_Product.class)
+                        .FROM(O2O_Product.class)
+                        .WHERE(O2O_Product.T.PRODUCT_ID, "=?", id);
+            }};
+            O2O_Product o2oPdt = irille.pub.bean.Query.sql(o2o).query(O2O_Product.class);
+            if (status == 0) {
+                o2oPdt.setMessage(message);
+                o2oPdt.stVerifyStatus(O2O_ProductStatus.Failed);
+            } else {
+                o2oPdt.stVerifyStatus(O2O_ProductStatus.PASS);
+            }
+            o2oPdt.upd();
+        } else {
+            pp.setIsVerify(status);
+            if (status == 0) {
+                pp.setTab3(message);
+            }
+            pp.upd();
+        }
+    }
+
+    /**
+     * @param id
+     * @param status  0:下架,1:上架
+     * @param message
+     */
+    public static void lower(Integer id, Byte status, String message) {
+        SQL pdt = new SQL() {
+            {
+                SELECT(PdtProduct.class)
+                        .FROM(PdtProduct.class)
+                        .WHERE(T.PKEY, "=?", id);
+            }
+        };
+        PdtProduct pp = irille.pub.bean.Query.sql(pdt).query(PdtProduct.class);
+        if (pp == null) {
+            throw new WebMessageException(ReturnCode.service_gone, "产品不存在");
+        }
+        if (pp.getProductType() == Pdt.OProductType.O2O.getLine().getKey()) {
+            SQL o2o = new SQL() {{
+                SELECT(O2O_Product.class)
+                        .FROM(O2O_Product.class)
+                        .WHERE(O2O_Product.T.PRODUCT_ID, "=?", id);
+            }};
+            O2O_Product o2oPdt = irille.pub.bean.Query.sql(o2o).query(O2O_Product.class);
+            if (status == 0) {
+                o2oPdt.setMessage(message);
+                o2oPdt.stStatus(O2O_ProductStatus.OFF);
+            } else {
+                o2oPdt.stStatus(O2O_ProductStatus.ON);
+            }
+            o2oPdt.upd();
+        } else {
+            pp.setState(status);
+            if (status == 0) {
+                pp.setTab3(message);
+            }
+            pp.upd();
+        }
     }
 
 }

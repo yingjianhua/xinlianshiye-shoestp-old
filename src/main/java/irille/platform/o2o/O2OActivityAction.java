@@ -1,5 +1,6 @@
 package irille.platform.o2o;
 
+import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_Activity;
 import irille.Service.Manage.O2O.O2OActivityService;
@@ -13,7 +14,6 @@ import org.json.JSONException;
 import javax.inject.Inject;
 import java.io.IOException;
 
-@Getter
 @Setter
 public class O2OActivityAction extends ActionBase<O2O_Activity> implements IO2OActivityAction {
 
@@ -22,16 +22,17 @@ public class O2OActivityAction extends ActionBase<O2O_Activity> implements IO2OA
     @Inject
     private O2OActivityService o2OActivityService;
 
+    @Getter
     private O2OActivityView activity;
 
-    @Setter
-    @Getter
     private PdtSearchView search;
-    @Setter
     private String reason;
-
-    @Setter
     private Integer id;
+    private String keyword;
+    private Integer status;
+    private Integer verify_status;
+    private String catName;
+
 
     @Override
     public Class<O2O_Activity> beanClazz() {
@@ -45,8 +46,9 @@ public class O2OActivityAction extends ActionBase<O2O_Activity> implements IO2OA
 
     @Override
     public void privetePdtlist() throws IOException {
-        if(getLimit()==0)setLimit(20);
-        write(o2OActivityService.priveteList(getStart(), getLimit()));
+        if (getLimit() == 0) setLimit(20);
+        if (getStart() < 0) setStart(0);
+        write(o2OActivityService.priveteList(getStart(), getLimit(), status, verify_status, catName, keyword));
     }
 
     @Override
@@ -63,10 +65,21 @@ public class O2OActivityAction extends ActionBase<O2O_Activity> implements IO2OA
         o2OActivityService.deploy(activity);
         writeSuccess();
     }
-
+    
+    /**
+     * 获取报名列表
+     */
     @Override
     public void enrollList() throws IOException {
-        write(o2OActivityService.enrollList(search, getStart(), getLimit()));
+        write(o2OActivityService.enrollList(search, getStart(), getLimit(),0));
+    }
+    
+    /**
+     * 获取申请上下架列表
+     * @throws IOException 
+     */
+    public void upperLowerList() throws IOException{
+    	write(o2OActivityService.enrollList(search, getStart(), getLimit(),1));
     }
 
     /**
@@ -74,6 +87,13 @@ public class O2OActivityAction extends ActionBase<O2O_Activity> implements IO2OA
      */
     public void pass() throws IOException, JSONException {
         o2OActivityService.appr(id, null, O2O_ProductStatus.PASS);
+        writeSuccess();
+    }
+    /**
+     * 私人展厅审核产品通过
+     */
+    public void privatefindAppr() throws IOException, JSONException {
+        o2OActivityService.privatefindAppr(id, null, O2O_PrivateExpoPdtStatus.PASS);
         writeSuccess();
     }
 
@@ -84,12 +104,26 @@ public class O2OActivityAction extends ActionBase<O2O_Activity> implements IO2OA
         o2OActivityService.appr(id, reason, O2O_ProductStatus.Failed);
         writeSuccess();
     }
+    /**
+     * 私人展厅审核产品审核拒绝
+     */
+    public void privatefindRefuse() throws IOException, JSONException {
+        o2OActivityService.privatefindAppr(id, reason, O2O_PrivateExpoPdtStatus.Failed);
+        writeSuccess();
+    }
 
     /**
      * 确认下架
      */
     public void lower() throws IOException, JSONException {
-        o2OActivityService.lowerAndUpper(id, null, O2O_ProductStatus.OFF);
+        o2OActivityService.lowerAndUpper(id, null, O2O_ProductStatus.PASS);
+        writeSuccess();
+    }
+    /**
+     * 私人订购会商品确认下架
+     */
+    public void privateLower() throws IOException, JSONException {
+        o2OActivityService.privateLowerAndUpper(id, reason, O2O_PrivateExpoPdtStatus.OFF);
         writeSuccess();
     }
 
@@ -97,7 +131,7 @@ public class O2OActivityAction extends ActionBase<O2O_Activity> implements IO2OA
      * 拒绝下架
      */
     public void upper() throws IOException, JSONException {
-        o2OActivityService.lowerAndUpper(id, reason, O2O_ProductStatus.ON);
+        o2OActivityService.lowerAndUpper(id, reason, O2O_ProductStatus.Failed);
         writeSuccess();
     }
 

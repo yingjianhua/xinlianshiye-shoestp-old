@@ -31,11 +31,12 @@ public class PdtAttrDAO {
 
     /**
      * 查询产品属性
-     * @author lingjian
-     * @date 2019/1/22 16:06
+     *
      * @param start
      * @param limit
      * @return
+     * @author lingjian
+     * @date 2019/1/22 16:06
      */
     public static Page listAttr(String name, String category, Integer start, Integer limit) {
         if (null == start) {
@@ -46,26 +47,31 @@ public class PdtAttrDAO {
         }
         SQL sql = new SQL() {{
             SELECT(PdtAttr.class).FROM(PdtAttr.class).WHERE(PdtAttr.T.DELETED, "=0");
-            if(name != null){
+            if (name != null) {
                 WHERE(PdtAttr.T.NAME, "like ?", "%" + name + "%");
             }
-            if(category != null){
+            if (category != null) {
                 WHERE(T.CATEGORY, "=?", category);
             }
         }};
-        Integer count= Query.sql(sql).queryCount();
+        Integer count = Query.sql(sql).queryCount();
         List<PdtAttrView> list = Query.sql(sql.LIMIT(start, limit)).queryMaps().stream().map(bean -> new PdtAttrView() {{
             setId((Integer) bean.get(PdtAttr.T.PKEY.getFld().getCodeSqlField()));
             setName((String) bean.get(PdtAttr.T.NAME.getFld().getCodeSqlField()));
-            setCATEGORY(Bean.load(PdtAttrCat.class,(Integer) bean.get(T.CATEGORY.getFld().getCodeSqlField())).getName());
-            setCreatedBy(BeanBase.load(SysUser.class, Integer.valueOf(String.valueOf(bean.get(PdtAttr.T.CREATE_BY.getFld().getCodeSqlField())))).getLoginName());
+            setCATEGORY(Bean.load(PdtAttrCat.class, (Integer) bean.get(T.CATEGORY.getFld().getCodeSqlField())).getName());
             setCreatedTime((Date) bean.get(PdtAttr.T.CREATE_TIME.getFld().getCodeSqlField()));
+            Integer c = (Integer) bean.get(PdtSize.T.CREATE_BY.getFld().getCodeSqlField());
+            if (null != c) {
+                setCreatedBy(BeanBase.load(SysUser.class, c).getLoginName());
+            }
+
         }}).collect(Collectors.toList());
         return new Page(list, start, limit, count);
     }
 
     /**
      * 新增产品属性
+     *
      * @author lingjian
      * @date 2019/1/22 16:23
      */
@@ -81,6 +87,7 @@ public class PdtAttrDAO {
 
     /**
      * 修改产品属性
+     *
      * @author lingjian
      * @date 2019/1/22 16:23
      */
@@ -98,6 +105,7 @@ public class PdtAttrDAO {
 
     /**
      * 删除产品属性
+     *
      * @author lingjian
      * @date 2019/1/22 16:23
      */
@@ -127,7 +135,7 @@ public class PdtAttrDAO {
         public void after() {
             super.after();
             for (PdtAttrLine line : getLines()) {
-            	line.setDeleted(OYn.NO.getLine().getKey());
+                line.setDeleted(OYn.NO.getLine().getKey());
                 line.stCreateBy(getUser());
                 line.setCreateTime(Env.getTranBeginTime());
                 translateUtil.autoTranslate(line);
@@ -147,14 +155,14 @@ public class PdtAttrDAO {
         public List getAllAttr(FldLanguage.Language language) {
             List result = new ArrayList();
             //不做分类查询
-            String sql=PdtAttr.T.DELETED.getFld().getCodeSqlField()+" = "+ OYn.NO.getLine().getKey();
+            String sql = PdtAttr.T.DELETED.getFld().getCodeSqlField() + " = " + OYn.NO.getLine().getKey();
             PdtAttr.list(PdtAttr.class, sql, false).forEach(l -> {
                 PdtProductVueView attr = new PdtProductVueView();
                 translateUtil.getAutoTranslate(l, language);
                 attr.setId(l.getPkey());
                 attr.setName(l.getName());
                 List lineList = new ArrayList();
-                PdtAttrLine.list(PdtAttrLine.class, PdtAttrLine.T.MAIN + "=" + l.getPkey() + " AND "+PdtAttrLine.T.DELETED+" = "+OYn.NO.getLine().getKey(), false).forEach(ll -> {
+                PdtAttrLine.list(PdtAttrLine.class, PdtAttrLine.T.MAIN + "=" + l.getPkey() + " AND " + PdtAttrLine.T.DELETED + " = " + OYn.NO.getLine().getKey(), false).forEach(ll -> {
                     translateUtil.getAutoTranslate(ll, language);
                     PdtProductVueView line = new PdtProductVueView();
                     line.setId(ll.getPkey());
@@ -173,17 +181,17 @@ public class PdtAttrDAO {
         public void before() {
             super.before();
             try {
-				JSONObject json = new JSONObject(getB().getName());
-				String value = json.getString(PltConfigDAO.manageLanguage().name());
-				getB().setName(value);
-				PdtAttr dbBean = loadThisBeanAndLock();
-				dbBean.setDeleted(Sys.OYn.NO.getLine().getKey());
-	            PropertyUtils.copyProperties(dbBean, translateUtil.autoTranslate(getB()), T.NAME, T.CATEGORY);
-	            setB(dbBean);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-            
+                JSONObject json = new JSONObject(getB().getName());
+                String value = json.getString(PltConfigDAO.manageLanguage().name());
+                getB().setName(value);
+                PdtAttr dbBean = loadThisBeanAndLock();
+                dbBean.setDeleted(Sys.OYn.NO.getLine().getKey());
+                PropertyUtils.copyProperties(dbBean, translateUtil.autoTranslate(getB()), T.NAME, T.CATEGORY);
+                setB(dbBean);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
 
         @Override
@@ -197,11 +205,11 @@ public class PdtAttrDAO {
             super.after();
             for (PdtAttrLine line : getLines()) {
                 if (line.getPkey() == null) {
-                	line.setDeleted(Sys.OYn.NO.getLine().getKey());
+                    line.setDeleted(Sys.OYn.NO.getLine().getKey());
                     line.stCreateBy(getUser());
                     line.setCreateTime(Env.getTranBeginTime());
-                }else{
-                	line.setDeleted(Sys.OYn.NO.getLine().getKey());
+                } else {
+                    line.setDeleted(Sys.OYn.NO.getLine().getKey());
                 }
                 line = translateUtil.autoTranslateByManageLanguage(line, true);
             }
@@ -216,14 +224,14 @@ public class PdtAttrDAO {
         public void before() {
             super.before();
             getB().setDeleted(OYn.YES.getLine().getKey());
-			PdtAttr dbBean = loadThisBeanAndLock();
+            PdtAttr dbBean = loadThisBeanAndLock();
             PropertyUtils.copyProperties(dbBean, getB(), T.DELETED);
             setB(dbBean);
-            List<PdtAttrLine> list=getLines(PdtAttrLine.T.MAIN, getB().getPkey());
-            for (PdtAttrLine  pal: list) {
-            	pal.setDeleted(OYn.YES.getLine().getKey());
-            	pal.upd();
-			}
+            List<PdtAttrLine> list = getLines(PdtAttrLine.T.MAIN, getB().getPkey());
+            for (PdtAttrLine pal : list) {
+                pal.setDeleted(OYn.YES.getLine().getKey());
+                pal.upd();
+            }
         }
     }
 

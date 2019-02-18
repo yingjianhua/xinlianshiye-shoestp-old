@@ -17,6 +17,7 @@ import java.util.List;
 public class RFQManageInfoView implements BaseView {
     private int id;
     private String title;
+    private String purchaseName;
     @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
     private Date create_date;
     @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
@@ -34,7 +35,7 @@ public class RFQManageInfoView implements BaseView {
     private Integer currency;
     private String destination;//目的地
     private List quotation_record;
-
+    private String currencyname;//货币名称
     //-1 close 1报价  0可以报价
     private int status;
 }

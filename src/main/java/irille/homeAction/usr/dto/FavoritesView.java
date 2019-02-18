@@ -1,19 +1,21 @@
 package irille.homeAction.usr.dto;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONException;
+
 import irille.homeAction.HomeAction;
 import irille.pub.util.SetBeans.SetBean.Annotations.SetBean;
 import irille.shop.pdt.Pdt;
 import irille.shop.plt.PltErateDAO;
 import irille.shop.prm.PrmGroupPurchaseLine;
 import irille.shop.usr.UsrFavorites;
-import org.json.JSONException;
+import irille.view.BaseView;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.List;
-
-public class FavoritesView {
+public class FavoritesView implements BaseView {
     @SetBean(OriginalField = "picture")
     private String img;
     private String name;

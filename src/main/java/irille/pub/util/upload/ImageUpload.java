@@ -33,7 +33,19 @@ public class ImageUpload {
 		String suffix = suffix(filename);
 		String targetname = MD5Util.getMD5(file);
 		String url = OssUtil.upload(beanClass, targetname+suffix, file);
-		
+		ImageView view = new ImageView();
+		view.setName(targetname+suffix);
+		view.setOriginalName(filename);
+		view.setSize(file.length());
+		view.setState("SUCCESS");
+		view.setType(suffix.substring(1));
+		view.setUrl(url);
+		return view;
+	}
+	public static <T extends BeanMain<?, ?>> ImageView upload2(Class<T> beanClass, String filename, File file) {
+		String suffix = suffix(filename);
+		String targetname = MD5Util.getMD5(file);
+		String url = OssUtil.upload(beanClass, targetname+suffix, file);
 		ImageView view = new ImageView();
 		view.setName(targetname+suffix);
 		view.setOriginalName(filename);

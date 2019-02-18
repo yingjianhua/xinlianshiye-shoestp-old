@@ -37,8 +37,7 @@ public class O2OMapAction extends ActionBase<O2O_Map> implements IO2OMapAction {
     }
 
     public void ins() throws IOException, JSONException {
-        io2OMapServer.ins(view);
-        writeSuccess();
+        write(io2OMapServer.ins(view));
     }
 
     public void del() throws IOException, JSONException {
