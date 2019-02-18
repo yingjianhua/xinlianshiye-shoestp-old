@@ -8,6 +8,7 @@ import irille.pub.svr.Env;
 import irille.pub.tb.Fld;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
+import irille.shop.usr.UsrPurchase;
 
 public class RFQPurchaseContactGroup extends BeanInt<RFQPurchaseContactGroup> {
 	
@@ -18,7 +19,7 @@ public class RFQPurchaseContactGroup extends BeanInt<RFQPurchaseContactGroup> {
     public enum T implements IEnumFld {
         PKEY(Tb.crtIntPkey()),
         NAME(Sys.T.STR__100),//分组名称
-        CONTACT(RFQPurchaseContact.fldOutKey()),//联系人
+        PURCHASE(UsrPurchase.fldOutKey()),//采购商
         CREATED_TIME(Sys.T.CREATED_DATE),//建立时间
         ROW_VERSION(Sys.T.ROW_VERSION),
         // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
@@ -70,7 +71,7 @@ public class RFQPurchaseContactGroup extends BeanInt<RFQPurchaseContactGroup> {
   //实例变量定义-----------------------------------------
   private Integer _pkey;	// 编号  INT
   private String _name;	// 字符100  STR(100)
-  private Integer _contact;	// 采购商联系人 <表主键:RFQPurchaseContact>  INT
+  private Integer _purchase;	// 采购商 <表主键:UsrPurchase>  INT
   private Date _createdTime;	// 建档日期  DATE
   private Short _rowVersion;	// 版本  SHORT
 
@@ -78,7 +79,7 @@ public class RFQPurchaseContactGroup extends BeanInt<RFQPurchaseContactGroup> {
   public RFQPurchaseContactGroup init(){
 		super.init();
     _name=null;	// 字符100  STR(100)
-    _contact=null;	// 采购商联系人 <表主键:RFQPurchaseContact>  INT
+    _purchase=null;	// 采购商 <表主键:UsrPurchase>  INT
     _createdTime=Env.getWorkDate();	// 建档日期  DATE
     _rowVersion=0;	// 版本  SHORT
     return this;
@@ -97,22 +98,22 @@ public class RFQPurchaseContactGroup extends BeanInt<RFQPurchaseContactGroup> {
   public void setName(String name){
     _name=name;
   }
-  public Integer getContact(){
-    return _contact;
+  public Integer getPurchase(){
+    return _purchase;
   }
-  public void setContact(Integer contact){
-    _contact=contact;
+  public void setPurchase(Integer purchase){
+    _purchase=purchase;
   }
-  public RFQPurchaseContact gtContact(){
-    if(getContact()==null)
+  public UsrPurchase gtPurchase(){
+    if(getPurchase()==null)
       return null;
-    return (RFQPurchaseContact)get(RFQPurchaseContact.class,getContact());
+    return (UsrPurchase)get(UsrPurchase.class,getPurchase());
   }
-  public void stContact(RFQPurchaseContact contact){
-    if(contact==null)
-      setContact(null);
+  public void stPurchase(UsrPurchase purchase){
+    if(purchase==null)
+      setPurchase(null);
     else
-      setContact(contact.getPkey());
+      setPurchase(purchase.getPkey());
   }
   public Date getCreatedTime(){
     return _createdTime;

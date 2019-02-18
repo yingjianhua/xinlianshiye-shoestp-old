@@ -21,7 +21,7 @@ public class RFQPurchaseContact extends BeanInt<RFQPurchaseContact> {
         PKEY(Tb.crtIntPkey()),
         PURCHASE(UsrPurchase.fldOutKey()),//采购商
         SUPPLIER(UsrSupplier.fldOutKey()),//供应商
-        GROUP(RFQPurchaseContactGroup.fldOutKey()),//联系人分组
+        CONTACT_GROUP(RFQPurchaseContactGroup.fldOutKey()),//联系人分组
         CREATED_TIME(Sys.T.CREATED_DATE),//建立时间
         ROW_VERSION(Sys.T.ROW_VERSION),
         // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
@@ -74,7 +74,7 @@ public class RFQPurchaseContact extends BeanInt<RFQPurchaseContact> {
   private Integer _pkey;	// 编号  INT
   private Integer _purchase;	// 采购商 <表主键:UsrPurchase>  INT
   private Integer _supplier;	// 供应商 <表主键:UsrSupplier>  INT
-  private Integer _group;	// 采购商联系人分组 <表主键:RFQPurchaseContactGroup>  INT
+  private Integer _contactGroup;	// 采购商联系人分组 <表主键:RFQPurchaseContactGroup>  INT
   private Date _createdTime;	// 建档日期  DATE
   private Short _rowVersion;	// 版本  SHORT
 
@@ -83,7 +83,7 @@ public class RFQPurchaseContact extends BeanInt<RFQPurchaseContact> {
 		super.init();
     _purchase=null;	// 采购商 <表主键:UsrPurchase>  INT
     _supplier=null;	// 供应商 <表主键:UsrSupplier>  INT
-    _group=null;	// 采购商联系人分组 <表主键:RFQPurchaseContactGroup>  INT
+    _contactGroup=null;	// 采购商联系人分组 <表主键:RFQPurchaseContactGroup>  INT
     _createdTime=Env.getWorkDate();	// 建档日期  DATE
     _rowVersion=0;	// 版本  SHORT
     return this;
@@ -130,22 +130,22 @@ public class RFQPurchaseContact extends BeanInt<RFQPurchaseContact> {
     else
       setSupplier(supplier.getPkey());
   }
-  public Integer getGroup(){
-    return _group;
+  public Integer getContactGroup(){
+    return _contactGroup;
   }
-  public void setGroup(Integer group){
-    _group=group;
+  public void setContactGroup(Integer contactGroup){
+    _contactGroup=contactGroup;
   }
-  public RFQPurchaseContactGroup gtGroup(){
-    if(getGroup()==null)
+  public RFQPurchaseContactGroup gtContactGroup(){
+    if(getContactGroup()==null)
       return null;
-    return (RFQPurchaseContactGroup)get(RFQPurchaseContactGroup.class,getGroup());
+    return (RFQPurchaseContactGroup)get(RFQPurchaseContactGroup.class,getContactGroup());
   }
-  public void stGroup(RFQPurchaseContactGroup group){
-    if(group==null)
-      setGroup(null);
+  public void stContactGroup(RFQPurchaseContactGroup contactGroup){
+    if(contactGroup==null)
+      setContactGroup(null);
     else
-      setGroup(group.getPkey());
+      setContactGroup(contactGroup.getPkey());
   }
   public Date getCreatedTime(){
     return _createdTime;

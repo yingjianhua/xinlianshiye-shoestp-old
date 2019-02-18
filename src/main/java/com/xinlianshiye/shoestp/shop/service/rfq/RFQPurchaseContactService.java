@@ -24,5 +24,39 @@ public interface RFQPurchaseContactService {
 	 */
 	void delete(UsrPurchase purchase, Integer supplierPkey);
 	
+	/**
+	 * 添加分组
+	 * @param purchase 采购商
+	 * @param groupName 分组名字
+	 * @author Jianhua Ying
+	 */
+	void addGroup(UsrPurchase purchase, String groupName);
+	
+	/**
+	 * 删除分组
+	 * @param purchase 采购商
+	 * @param groupPkey 分组主键
+	 * @author Jianhua Ying
+	 */
+	void deleteGroup(UsrPurchase purchase, Integer groupPkey);
+	
+	/**
+	 * 编辑分组
+	 * @param purchase 采购商
+	 * @param groupPkey 分组主键
+	 * @param groupName 分组名字
+	 * @author Jianhua Ying
+	 */
+	void editGroup(UsrPurchase purchase, Integer groupPkey, String groupName);
+	
+	/**
+	 * 移动分组
+	 * @param purchase 采购商
+	 * @param contactPkey 联系人主键
+	 * @param groupPkey 分组主键
+	 * @author Jianhua Ying
+	 */
+	void moveToGroup(UsrPurchase purchase, Integer contactPkey, Integer groupPkey);
+	
 	//联系人列表
 }
