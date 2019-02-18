@@ -123,5 +123,17 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 		}).collect(Collectors.toList());
 		return result;
 	}
+
+	@Override
+	public void deleteQuotation(UsrPurchase purchase, Integer relationPkey) {
+		BeanQuery<RFQConsultRelation> query = Query.selectFrom(RFQConsultRelation.class);
+		query.WHERE(RFQConsultRelation.T.PURCHASE_ID, "=?", purchase.getPkey());
+		query.WHERE(RFQConsultRelation.T.PKEY, "=?", relationPkey);
+		RFQConsultRelation relation = query.query();
+		if(relation != null && !relation.gtIsDeletedPurchase()) {
+			relation.stIsDeletedPurchase(true);
+			relation.upd();
+		}
+	}
 	
 }

@@ -14,16 +14,9 @@ public interface IRFQConsultAction {
 	void pageMine() throws IOException ;
 	
 	/**
-	 * 在询盘关系的基础上建立联系人关系
-	 * @throws IOException
-	 * @author Jianhua Ying
+	 * 删除报价
+	 * @throws IOExcepton
 	 */
-	void addContact() throws IOException;
-	
-	/**
-	 * 删除联系人关系
-	 * @throws IOException
-	 * @author Jianhua Ying
-	 */
-	void deleteContact() throws IOException;
+	void deleteQuotation() throws IOException;
+
 }
