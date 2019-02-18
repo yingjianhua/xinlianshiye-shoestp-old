@@ -175,6 +175,9 @@ public class BeanQuery<T> extends AbstractQuery {
 	public Integer queryCount() {
 		return countRecord();
 	}
+	public boolean exists() {
+		return countRecord() > 0;
+	}
 	public int executeUpdate() {
 		return super.executeUpdate();
 	}

@@ -1,4 +1,4 @@
-package irille.homeAction.usr.dto;
+package com.xinlianshiye.shoestp.shop.view.usr;
 
 import irille.shop.usr.UsrPurchase;
 import irille.view.BaseView;

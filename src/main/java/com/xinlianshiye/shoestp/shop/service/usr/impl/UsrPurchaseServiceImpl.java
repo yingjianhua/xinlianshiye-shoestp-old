@@ -1,12 +1,12 @@
-package irille.Service.Usr.Imp;
+package com.xinlianshiye.shoestp.shop.service.usr.impl;
 
 import com.google.inject.Inject;
+import com.xinlianshiye.shoestp.shop.service.usr.UsrPurchaseService;
+import com.xinlianshiye.shoestp.shop.view.usr.PurchaseView;
 
 import irille.Dao.RFQ.RFQConsultMessageDao;
 import irille.Dao.RFQ.RFQConsultRelationDao;
 import irille.Dao.Usr.UsrPurchaseDao;
-import irille.Service.Usr.UsrPurchaseService;
-import irille.homeAction.usr.dto.PurchaseView;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.shop.usr.UsrPurchase;
