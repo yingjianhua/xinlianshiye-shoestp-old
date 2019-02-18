@@ -12,4 +12,18 @@ public interface IRFQConsultAction {
 	 * @author Jianhua Ying
 	 */
 	void pageMine() throws IOException ;
+	
+	/**
+	 * 在询盘关系的基础上建立联系人关系
+	 * @throws IOException
+	 * @author Jianhua Ying
+	 */
+	void addContact() throws IOException;
+	
+	/**
+	 * 删除联系人关系
+	 * @throws IOException
+	 * @author Jianhua Ying
+	 */
+	void deleteContact() throws IOException;
 }

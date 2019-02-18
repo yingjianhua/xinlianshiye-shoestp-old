@@ -8,6 +8,7 @@ import org.apache.struts2.ServletActionContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultService;
+import com.xinlianshiye.shoestp.shop.service.rfq.RFQPurchaseContactService;
 
 import irille.Filter.svr.ItpCheckPurchaseLogin;
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
@@ -37,6 +38,8 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
     private IRFQConsultService irfqConsultService;
     @Inject
     private RFQConsultService rFQConsultService;
+    @Inject
+    private RFQPurchaseContactService rFQPurchaseContactService;
     @Inject
     private IPdtProductService iPdtProductService;
 
@@ -136,6 +139,20 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
 	@NeedLogin
 	public void pageMine() throws IOException {
 		write(rFQConsultService.pageMine(getPurchase(), t, keyword, unread, start, limit));
+	}
+
+	private Integer supplierPkey;
+	
+	@Override
+	public void addContact() throws IOException {
+		rFQPurchaseContactService.add(getPurchase(), supplierPkey);
+		write();
+	}
+
+	@Override
+	public void deleteContact() throws IOException {
+		rFQPurchaseContactService.delete(getPurchase(), supplierPkey);
+		write();
 	}
     
 }
