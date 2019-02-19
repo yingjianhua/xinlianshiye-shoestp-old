@@ -66,4 +66,11 @@ public class RFQContactAction extends AbstractHomeAction implements IRFQContactA
 		write(rFQPurchaseContactService.listGroup(getPurchase()));
 	}
 
+	private String keyword;
+	
+	@Override
+	public void page() throws IOException {
+		write(rFQPurchaseContactService.page(getPurchase(), keyword, groupPkey, start, limit));
+	}
+
 }

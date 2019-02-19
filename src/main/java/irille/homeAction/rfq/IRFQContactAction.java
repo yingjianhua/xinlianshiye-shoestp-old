@@ -19,6 +19,13 @@ public interface IRFQContactAction {
 	void delete() throws IOException;
 	
 	/**
+	 * 列表联系人 包含联系人的询盘记录
+	 * @throws IOException
+	 * @author Jianhua Ying
+	 */
+	void page() throws IOException;
+	
+	/**
 	 * 移动分组
 	 * @throws IOException
 	 * @author Jianhua Ying

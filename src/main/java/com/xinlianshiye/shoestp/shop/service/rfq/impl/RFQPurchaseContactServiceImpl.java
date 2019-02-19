@@ -1,22 +1,110 @@
 package com.xinlianshiye.shoestp.shop.service.rfq.impl;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.xinlianshiye.shoestp.shop.service.rfq.RFQPurchaseContactService;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultRelationView;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQPurchaseContactGroupView;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQPurchaseContactView;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationView;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQSupplierView;
 
+import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Entity.RFQ.RFQPurchaseContact;
 import irille.Entity.RFQ.RFQPurchaseContactGroup;
+import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
+import irille.pub.util.GetValue;
 import irille.shop.usr.UsrPurchase;
+import irille.shop.usr.UsrSupplier;
+import irille.view.Page;
 
 public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService {
+
+	@Override
+	public Page<RFQPurchaseContactView> page(UsrPurchase purchase, String keyword, Integer groupPkey, Integer start, Integer limit) {
+		BeanQuery<?> query = Query.SELECT(RFQPurchaseContact.T.PKEY);
+		query.SELECT(RFQPurchaseContact.T.CREATED_TIME);
+		query.SELECT(UsrSupplier.T.PKEY, "supplierPkey");
+		query.SELECT(UsrSupplier.T.NAME);
+		//TODO svs 认证信息待完善 
+		query.SELECT(UsrSupplier.T.CONTACTS);
+		query.FROM(RFQPurchaseContact.class);
+		query.LEFT_JOIN(UsrSupplier.class, RFQPurchaseContact.T.SUPPLIER, UsrSupplier.T.PKEY);
+		query.LEFT_JOIN(RFQConsultRelation.class, RFQPurchaseContact.T.SUPPLIER, RFQConsultRelation.T.SUPPLIER_ID);
+		query.LEFT_JOIN(RFQConsult.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY);
+		query.WHERE(RFQPurchaseContact.T.PURCHASE, "=?", purchase.getPkey());
+		if(groupPkey != null)
+			query.WHERE(RFQPurchaseContact.T.CONTACT_GROUP, "=?", groupPkey);
+		if(keyword != null && !keyword.isEmpty()) {
+			query.AND();
+			query.WHERE(UsrSupplier.T.NAME, "like ?", "%"+keyword+"%");
+			query.or();
+			query.WHERE(RFQConsult.T.TITLE, "like ?", "%"+keyword+"%");
+		}
+		
+		query.GROUP_BY(RFQPurchaseContact.T.PKEY);
+		query.limit(start, limit);
+		List<RFQPurchaseContactView> result = query.queryMaps().stream().map(map -> {
+			RFQPurchaseContactView contact = new RFQPurchaseContactView();
+			contact.setPkey(GetValue.get(map, RFQPurchaseContact.T.PKEY, Integer.class, null));
+			contact.setCreatedDate(GetValue.get(map, RFQPurchaseContact.T.CREATED_TIME, Date.class, null));
+			RFQSupplierView supplier = new RFQSupplierView();
+			supplier.setPkey(GetValue.get(map, "supplierPkey", Integer.class, null));
+			supplier.setContacts(GetValue.get(map, UsrSupplier.T.CONTACTS, String.class, null));
+			supplier.setName(GetValue.get(map, UsrSupplier.T.NAME, String.class, ""));
+			contact.setSupplier(supplier);
+			contact.setRelation(listConsultRelation(purchase.getPkey(), supplier.getPkey(), supplier.getName().contains(keyword)?null:keyword));
+			return contact;
+		}).collect(Collectors.toList());
+		Integer totalCount = query.queryCount();
+		return new Page<>(result, start, limit, totalCount);
+	}
+	
+	/**
+	 * 查询采购商和供应商之间的询盘记录
+	 * @param purchasePkey 采购商主键
+	 * @param supplierPkey 供应商主键
+	 * @author Jianhua Ying
+	 */
+	public List<RFQConsultRelationView> listConsultRelation(Integer purchasePkey, Integer supplierPkey, String keyword) {
+		BeanQuery<?> query = Query.SELECT(RFQConsultRelation.T.PKEY);
+		query.SELECT(RFQConsultRelation.T.IS_NEW);
+		query.SELECT(RFQConsultRelation.T.CREATE_DATE);
+		query.SELECT(RFQConsult.T.PKEY);
+		query.SELECT(RFQConsult.T.TITLE);
+		query.SELECT(RFQConsult.T.IMAGE);
+		query.SELECT(RFQConsult.T.TYPE);
+		query.FROM(RFQConsultRelation.class);
+		query.LEFT_JOIN(RFQConsult.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY);
+		query.WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supplierPkey);
+		query.WHERE(RFQConsultRelation.T.PURCHASE_ID, "=?", purchasePkey);
+		query.WHERE(RFQConsultRelation.T.IS_DELETED_PURCHASE, "=?", false);
+		if(keyword != null)
+			query.WHERE(RFQConsult.T.TITLE, "like ?", "%"+keyword+"%");
+		List<RFQConsultRelationView> result = query.queryMaps().stream().map(map->{
+			RFQConsultRelationView relation = new RFQConsultRelationView();
+			RFQQuotationView quotation = new RFQQuotationView();
+			quotation.setIsNew(BeanBase.byteToBoolean(GetValue.get(map, RFQConsultRelation.T.IS_NEW, Byte.class, null)));
+			quotation.setCreateDate(GetValue.get(map, RFQConsultRelation.T.CREATE_DATE, Date.class, null));
+			relation.setQuotation(quotation);
+			RFQConsultView consult = new RFQConsultView();
+			consult.setTitle(GetValue.get(map, RFQConsult.T.TITLE, String.class, ""));
+			consult.setType(GetValue.get(map, RFQConsult.T.TYPE, Byte.class, null));
+			consult.setImages(Arrays.asList(GetValue.get(map, RFQConsult.T.IMAGE, String.class, "").split(",")));
+			relation.setConsult(consult);
+			return relation;
+		}).collect(Collectors.toList());
+		return result;
+	}
 
 	@Override
 	public void add(UsrPurchase purchase, Integer supplierPkey) {
