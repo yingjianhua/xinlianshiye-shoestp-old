@@ -1133,6 +1133,26 @@ public class PdtProductDao {
         return Query.SELECT(PdtProduct.class, productPkey);
     }
 
+    /*
+     *   查找供应商中心列表,供应商要展示的产品
+     *   条件:IS_VERIFY=  1    STATE = 1    PRODUCT_TYPE  = 0
+     * @Author HuangHaoBin
+     **/
+    public  List findBySupplier(Integer supplier){
+        BeanQuery query = new BeanQuery();
+        query.SELECT(
+                PdtProduct.T.PKEY,
+                PdtProduct.T.NAME,
+                PdtProduct.T.PICTURE
+        ).FROM(PdtProduct.class)
+                .WHERE(PdtProduct.T.IS_VERIFY  , "=?" ,Sys.OYn.YES )
+                .WHERE(PdtProduct.T.STATE , "=?" , Pdt.OState.ON)
+                .WHERE(PdtProduct.T.PRODUCT_TYPE, "=?" , Pdt.OProductType.GENERAL)
+                .WHERE(PdtProduct.T.SUPPLIER , "=?" , supplier)
+                .limit(0,4);
+        return query.queryMaps();
+    }
+
     public static void main(String[] args) {
         String ss = "66>>>>6744444";
         System.out.println(ss.length());
