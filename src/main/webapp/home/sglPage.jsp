@@ -23,6 +23,10 @@
         .bo {
             font-weight: bold;
         }
+
+        #o2otop .o2otopcon .topsearch > input {
+            border: 1px solid #10389c;
+        }
     </style>
 
 </head>

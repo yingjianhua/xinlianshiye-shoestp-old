@@ -13,26 +13,29 @@ import org.json.JSONObject;
 import java.util.Date;
 
 public class RFQConsultMessage extends BeanInt<RFQConsultMessage> {
-    public static final Tb TB = new Tb(RFQConsultMessage.class, "询盘留言").setAutoIncrement().addActIUDL();
+	
+	private static final long serialVersionUID = 2455737683431610037L;
+	
+	public static final Tb<?> TB = new Tb<>(RFQConsultMessage.class, "询盘留言").setAutoIncrement().addActIUDL();
 
     public enum T implements IEnumFld {//@formatter:off
-        PKEY(TB.crtIntPkey()),
+        PKEY(Tb.crtIntPkey()),
         UUID(Sys.T.STR__100, "uuid"),//uuid 唯一值
-        CONTENT(SYS.JSON, "内容"),//留言内容
+        CONTENT(Sys.T.JSON, "内容"),//留言内容
         TYPE(Tb.crt(RFQConsultMessageType.DEFAULT)),//消息类型
-        SEND_TIME(SYS.TIME, "留言时间"), //留言时间
+        SEND_TIME(Sys.T.TIME, "留言时间"), //留言时间
         RELATION(RFQConsultRelation.fldOutKey("relation", "询盘关联")),
-        P2S(SYS.YN, "是采购商留言"),//true:采购商给供应商留言，false:供应商给采购商留言
-        HAD_READ(SYS.YN),//是否已读
-        ROW_VERSION(SYS.ROW_VERSION),
+        P2S(Sys.T.YN, "是采购商留言"),//true:采购商给供应商留言，false:供应商给采购商留言
+        HAD_READ(Sys.T.YN),//是否已读
+        ROW_VERSION(Sys.T.ROW_VERSION),
         //>>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
         //<<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
         ;
         //>>>以下是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别>>>
         //<<<以上是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别<<<
-        private Fld _fld;
+        private Fld<?> _fld;
 
-        private T(Class clazz, String name, boolean... isnull) {
+        private T(Class<?> clazz, String name, boolean... isnull) {
             _fld = TB.addOutKey(clazz, this, name, isnull);
         }
 
@@ -48,11 +51,11 @@ public class RFQConsultMessage extends BeanInt<RFQConsultMessage> {
             _fld = TB.add(fld, this, name, strLen);
         }
 
-        private T(Fld fld) {
+        private T(Fld<?> fld) {
             _fld = TB.add(fld, this);
         }
 
-        public Fld getFld() {
+        public Fld<?> getFld() {
             return _fld;
         }
     }

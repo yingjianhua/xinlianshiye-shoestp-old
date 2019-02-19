@@ -12,4 +12,11 @@ public interface IRFQConsultAction {
 	 * @author Jianhua Ying
 	 */
 	void pageMine() throws IOException ;
+	
+	/**
+	 * 删除报价
+	 * @throws IOExcepton
+	 */
+	void deleteQuotation() throws IOException;
+
 }

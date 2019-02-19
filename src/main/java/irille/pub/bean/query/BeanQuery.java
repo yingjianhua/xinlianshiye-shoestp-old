@@ -92,6 +92,13 @@ public class BeanQuery<T> extends AbstractQuery {
 		sql.WHERE(fld, conditions, params);
 		return this;
 	}
+	/**
+	 * 两个条件放在一个小括号里
+	 */
+    public BeanQuery<T> orWhere(IEnumFld fld, String conditions, Serializable... params) {
+        sql.orWhere(fld, conditions, params);
+        return this;
+    }
 	public BeanQuery<T> WHERE(boolean test, IEnumFld fld, String conditions, Serializable... params) {
 		if(test)
 			sql.WHERE(fld, conditions, params);
@@ -101,10 +108,18 @@ public class BeanQuery<T> extends AbstractQuery {
 		sql.WHERE(conditions, params);
 		return this;
 	}
+
 	public BeanQuery<T> OR() {
 		sql.OR();
 		return this;
 	}
+	/**
+	 * 两个条件放在一个小括号里
+	 */
+    public BeanQuery<T> or() {
+    	sql.or();
+    	return this;
+    }
 	public BeanQuery<T> AND() {
 		sql.AND();
 		return this;

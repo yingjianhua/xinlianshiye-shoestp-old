@@ -6,7 +6,8 @@ import lombok.Data;
 @Data
 public class RFQSupplierView implements BaseView {
 
-	private Integer pkey;
-	private String name;
-	private RFQCountryView country;
+	private Integer pkey;//主键
+	private String name;//企业名字
+	private String contacts;//联系人名字
+	private RFQCountryView country;//国家
 }
