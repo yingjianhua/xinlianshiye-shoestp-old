@@ -103,7 +103,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
         setResult("/home/products.jsp");
         return HomeAction.TRENDS;
     }
-    
+
     /***
      * 转发页面到产品列表
      * O2O商品列表页
@@ -247,7 +247,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
                 setStart(0);
             if (getLimit() == 0 || getLimit() < 0)
                 setLimit(10);
-            write(pdtProduct.searchPdt(orderfld,purchase, curLanguage, lose, pName, cate, level, export, mOrder, min, max, IsO2o, o2oAddress, getStart(), getLimit()));
+            write(pdtProduct.searchPdt(orderfld, purchase, curLanguage, lose, pName, cate, level, export, mOrder, min, max, IsO2o, o2oAddress, getStart(), getLimit()));
         } else {
             write(objectMapper.writeValueAsString(pdtProduct
                     .getProductListByCategory(iduPage, orderfld, isOrder(), getCated(), getSpec(),
@@ -456,7 +456,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
                     List<PdtAttrLine> pdtAttrLineList = Idu
                             .getLines(PdtAttrLine.T.PKEY.getFld(), pdtAttrlinepk);
                     for (PdtAttrLine pdtAttrLine : pdtAttrLineList) {
-                        if (pdtAttr.getPkey() == pdtAttrLine.getMain()) {
+                        if (pdtAttr.getPkey().equals(pdtAttrLine.getMain())) {
                             attrLineJson = crtJsonByBean(pdtAttrLine);
                             attrLineJson.put(PdtAttrLine.T.NAME.getFld().getCode(), pdtAttrLine.getName());
                             attrLineJson.put(PdtAttrLine.T.PKEY.getFld().getCode(), pdtAttrLine.getPkey());

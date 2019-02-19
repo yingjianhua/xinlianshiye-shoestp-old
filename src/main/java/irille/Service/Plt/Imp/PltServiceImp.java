@@ -104,6 +104,7 @@ public class PltServiceImp implements PltService {
             sysLangInfoView.setDisplayName(getLangDisplayName(languageView.getShortName()));
             lang.add(sysLangInfoView);
         }
+
         return lang;
     }
 

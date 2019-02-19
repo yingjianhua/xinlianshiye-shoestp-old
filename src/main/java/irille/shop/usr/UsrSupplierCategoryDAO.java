@@ -1,10 +1,5 @@
 package irille.shop.usr;
 
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import irille.platform.usr.View.UsrSupplierCategoryActionView.UsrSupplierCategoryView;
 import irille.pub.Log;
 import irille.pub.PropertyUtils;
@@ -23,6 +18,11 @@ import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.usr.UsrSupplierCategory.T;
 import irille.view.Page;
 import irille.view.usr.SupplierCategoryView;
+
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class UsrSupplierCategoryDAO {
     public static final Log LOG = new Log(UsrSupplierCategoryDAO.class);
@@ -206,7 +206,7 @@ public class UsrSupplierCategoryDAO {
 
     private static void valids(UsrSupplierCategory b) {
         if (b.getCategoryUp() != null) {
-            if (b.getCategoryUp() == b.getPkey()) {
+            if (b.getCategoryUp().equals(b.getPkey())) {
                 throw LOG.err(Msgs.equalErr, b.getName());
             }
             UsrSupplierCategory usrSupplierCategory = BeanBase.load(UsrSupplierCategory.class, b.getCategoryUp());
