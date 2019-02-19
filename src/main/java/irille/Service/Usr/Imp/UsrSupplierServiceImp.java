@@ -4,7 +4,6 @@ import irille.Dao.PdtProductDao;
 import irille.Dao.UsrSupplierDao;
 import irille.Service.Usr.IUsrSupplierService;
 import irille.core.sys.Sys;
-import irille.homeAction.usr.dto.FavoritesView;
 import irille.homeAction.usr.dto.SupplierListView;
 import irille.pub.bean.BeanBase;
 import irille.pub.idu.IduPage;
@@ -26,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+
+import com.xinlianshiye.shoestp.shop.view.usr.FavoritesView;
 
 /**
  * Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/5 Time: 16:25

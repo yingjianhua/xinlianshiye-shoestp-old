@@ -1,7 +1,6 @@
 package irille.Dao;
 
 import irille.Aops.Caches;
-import irille.Entity.O2O.Enums.O2O_ActivityStatus;
 import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_Activity;
@@ -845,7 +844,12 @@ public class PdtProductDao {
                     o2oActivitySql.orWhere(O2O_Activity.T.ADDRESS, " =?", Integer.parseInt(item));
                 }
             }
-            o2oActivitySql.WHERE(O2O_Activity.T.STATUS, " =? ", O2O_ActivityStatus.ACTIVITY);
+//            o2oActivitySql.WHERE(O2O_Activity.T.STATUS, " =? ", O2O_ActivityStatus.ACTIVITY);
+            Date now = new Date();
+            o2oActivitySql.WHERE(O2O_Activity.T.START_DATE, "<?", now);
+            o2oActivitySql.WHERE(O2O_Activity.T.END_DATE, ">?", now);
+
+
             List<Integer> activityList = Query.sql(o2oActivitySql).queryMaps().stream().map(bean -> {
                 return GetValue.get(bean, O2O_Activity.T.PKEY, Integer.class, null);
             }).collect(Collectors.toList());
@@ -1020,7 +1024,7 @@ public class PdtProductDao {
             setPdtName(map.get("pdtName").toString());
             if (IsO2o != null && IsO2o == 1) {
                 for (O2O_Product o2opdt : copy) {
-                    if (pdtPkey == o2opdt.getProductId()) {
+                    if (pdtPkey.equals(o2opdt.getProductId())) {
                         System.out.println(o2opdt.getPrice());
                         //目前o2o产品的价格字段没有用起来 ,所以暂时还是取普通产品表的价格字段
                         setPrice(new BigDecimal(map.get(PdtProduct.T.CUR_PRICE.getFld().getCodeSqlField()).toString()));
@@ -1033,22 +1037,23 @@ public class PdtProductDao {
                 setPrice(new BigDecimal(map.get(PdtProduct.T.CUR_PRICE.getFld().getCodeSqlField()).toString()));
                 setMinOrder(Integer.parseInt(map.get(PdtProduct.T.MIN_OQ.getFld().getCodeSqlField()).toString()));
             }
-//            setPicture(map.get(PdtProduct.T.PICTURE.getFld().getCodeSqlField()).toString());
             Integer pkey1 = GetValue.get(map, "pdtPkey", Integer.class, null);
             List<PdtSpec> specs = BeanBase.list(PdtSpec.class, PdtSpec.T.PRODUCT + "=" + pkey1, false);
-            List<String> stringList = new ArrayList<>();
+            ArrayList<String> stringList = new ArrayList<>();
             for (PdtSpec spec : specs) {
                 String[] s = spec.getPics().split(",");
                 if (s.length > 0) {
                     for (String s1 : s) {
-                        if (s1.length() > 0) {
+                        if (s1.length() > 0 && !stringList.contains(s1)) {
                             stringList.add(s1);
                         }
                     }
                 }
             }
             if (stringList.size() > 0) {
-                stringList.add(0,GetValue.getFirstImage(GetValue.get(map, PdtProduct.T.PICTURE, String.class, "")));
+                String t = GetValue.getFirstImage(GetValue.get(map, PdtProduct.T.PICTURE, String.class, ""));
+                if (!seasonList.contains(t))
+                    stringList.add(0, t);
                 setPicture(Strings.join(stringList, ','));
             } else {
                 setPicture(GetValue.get(map, PdtProduct.T.PICTURE, String.class, ""));

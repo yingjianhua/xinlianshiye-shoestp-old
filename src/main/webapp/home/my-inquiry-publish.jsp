@@ -85,6 +85,9 @@
         .null {
             border: 1px solid red !important;
         }
+        #o2otop .o2otopcon .topsearch > input{
+            border: 1px solid #10389c;
+        }
     </style>
 
     <%--统计代码--%>

@@ -13,6 +13,7 @@ import irille.Entity.Pk.PkCompetitionData;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
+import irille.Entity.RFQ.RFQPurchaseContact;
 import irille.core.prv.PrvRoleAct;
 import irille.core.sys.SysModule;
 import irille.pub.Log;
@@ -69,6 +70,7 @@ public class Plt extends PackageBase {
         addTb(62, RFQConsultRelation.class);
         addTb(63, Contact.class);
         addTb(64, ContactGroup.class);
+        addTb(65, RFQPurchaseContact.class);
     }
 
     @Override

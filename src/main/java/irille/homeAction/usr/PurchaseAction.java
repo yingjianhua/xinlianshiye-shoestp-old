@@ -3,10 +3,10 @@ package irille.homeAction.usr;
 import java.io.IOException;
 
 import com.google.inject.Inject;
+import com.xinlianshiye.shoestp.shop.service.usr.UsrFavoriteService;
+import com.xinlianshiye.shoestp.shop.service.usr.UsrPurchaseService;
 
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
-import irille.Service.Usr.UsrFavoriteService;
-import irille.Service.Usr.UsrPurchaseService;
 import irille.homeAction.AbstractHomeAction;
 import irille.pub.util.upload.ImageUpload;
 import irille.shop.usr.UsrPurchase;

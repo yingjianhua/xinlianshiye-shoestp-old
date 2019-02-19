@@ -1,7 +1,16 @@
 package irille.homeAction.rfq;
 
+import java.io.IOException;
+
+import javax.inject.Inject;
+
+import org.apache.struts2.ServletActionContext;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultService;
+
 import irille.Filter.svr.ItpCheckPurchaseLogin;
+import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.Service.Pdt.IPdtProductService;
 import irille.Service.Plt.PltService;
 import irille.Service.RFQ.IRFQConsultService;
@@ -13,10 +22,6 @@ import irille.view.RFQ.PutRFQConsultView;
 import irille.view.RFQ.RFQPdtInfo;
 import irille.view.plt.CountryView;
 import lombok.Setter;
-import org.apache.struts2.ServletActionContext;
-
-import javax.inject.Inject;
-import java.io.IOException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -30,6 +35,8 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
     private ObjectMapper objectMapper;
     @Inject
     private IRFQConsultService irfqConsultService;
+    @Inject
+    private RFQConsultService rFQConsultService;
     @Inject
     private IPdtProductService iPdtProductService;
 
@@ -126,8 +133,9 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
     private Integer limit = 10;
 
 	@Override
+	@NeedLogin
 	public void pageMine() throws IOException {
-		write(irfqConsultService.pageMine(getPurchase(), t, keyword, unread, start, limit));
+		write(rFQConsultService.pageMine(getPurchase(), t, keyword, unread, start, limit));
 	}
     
 }

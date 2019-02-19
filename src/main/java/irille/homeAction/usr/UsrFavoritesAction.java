@@ -3,7 +3,6 @@ package irille.homeAction.usr;
 import irille.Service.Usr.IUsrSupplierService;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
-import irille.homeAction.usr.dto.FavoritesView;
 import irille.pub.Exp;
 import irille.pub.LogMessage;
 import irille.pub.bean.BeanBase;
@@ -18,6 +17,8 @@ import irille.shop.usr.UsrFavoritesDAO;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.xinlianshiye.shoestp.shop.view.usr.FavoritesView;
 
 import javax.inject.Inject;
 import java.io.IOException;

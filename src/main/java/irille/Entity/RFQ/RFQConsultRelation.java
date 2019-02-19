@@ -48,6 +48,8 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
         IS_NEW(Sys.T.YN),//是否为新关联, 初始为true, 供应商查看后为false
         HAD_READ_PURCHASE(Sys.T.YN),//采购商是否已经读取消息
         HAD_READ_SUPPLIER(Sys.T.YN),//供应商是否已经读取消息
+        IS_DELETED_PURCHASE(Sys.T.YN),//采购商已删除
+        IS_DELETED_SUPPLIER(Sys.T.YN),//供应商已删除
         ROW_VERSION(Sys.T.ROW_VERSION),
             // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
             // <<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
@@ -141,6 +143,12 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
   private Byte _hadReadSupplier;	// 是否 <OYn>  BYTE
 	// YES:1,是
 	// NO:0,否
+  private Byte _isDeletedPurchase;	// 是否 <OYn>  BYTE
+	// YES:1,是
+	// NO:0,否
+  private Byte _isDeletedSupplier;	// 是否 <OYn>  BYTE
+	// YES:1,是
+	// NO:0,否
   private Short _rowVersion;	// 版本  SHORT
 
 	@Override
@@ -168,6 +176,8 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
     _isNew=OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
     _hadReadPurchase=OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
     _hadReadSupplier=OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
+    _isDeletedPurchase=OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
+    _isDeletedSupplier=OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
     _rowVersion=0;	// 版本  SHORT
     return this;
   }
@@ -414,6 +424,30 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
   }
   public void stHadReadSupplier(Boolean hadReadSupplier){
     _hadReadSupplier=booleanToByte(hadReadSupplier);
+  }
+  public Byte getIsDeletedPurchase(){
+    return _isDeletedPurchase;
+  }
+  public void setIsDeletedPurchase(Byte isDeletedPurchase){
+    _isDeletedPurchase=isDeletedPurchase;
+  }
+  public Boolean gtIsDeletedPurchase(){
+    return byteToBoolean(_isDeletedPurchase);
+  }
+  public void stIsDeletedPurchase(Boolean isDeletedPurchase){
+    _isDeletedPurchase=booleanToByte(isDeletedPurchase);
+  }
+  public Byte getIsDeletedSupplier(){
+    return _isDeletedSupplier;
+  }
+  public void setIsDeletedSupplier(Byte isDeletedSupplier){
+    _isDeletedSupplier=isDeletedSupplier;
+  }
+  public Boolean gtIsDeletedSupplier(){
+    return byteToBoolean(_isDeletedSupplier);
+  }
+  public void stIsDeletedSupplier(Boolean isDeletedSupplier){
+    _isDeletedSupplier=booleanToByte(isDeletedSupplier);
   }
   public Short getRowVersion(){
     return _rowVersion;
