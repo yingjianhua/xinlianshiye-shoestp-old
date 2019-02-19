@@ -1,7 +1,6 @@
 package irille.Dao;
 
 import irille.Aops.Caches;
-import irille.Entity.O2O.Enums.O2O_ActivityStatus;
 import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_Activity;
@@ -1025,7 +1024,7 @@ public class PdtProductDao {
             setPdtName(map.get("pdtName").toString());
             if (IsO2o != null && IsO2o == 1) {
                 for (O2O_Product o2opdt : copy) {
-                    if (pdtPkey == o2opdt.getProductId()) {
+                    if (pdtPkey.equals(o2opdt.getProductId())) {
                         System.out.println(o2opdt.getPrice());
                         //目前o2o产品的价格字段没有用起来 ,所以暂时还是取普通产品表的价格字段
                         setPrice(new BigDecimal(map.get(PdtProduct.T.CUR_PRICE.getFld().getCodeSqlField()).toString()));
@@ -1038,7 +1037,6 @@ public class PdtProductDao {
                 setPrice(new BigDecimal(map.get(PdtProduct.T.CUR_PRICE.getFld().getCodeSqlField()).toString()));
                 setMinOrder(Integer.parseInt(map.get(PdtProduct.T.MIN_OQ.getFld().getCodeSqlField()).toString()));
             }
-//            setPicture(map.get(PdtProduct.T.PICTURE.getFld().getCodeSqlField()).toString());
             Integer pkey1 = GetValue.get(map, "pdtPkey", Integer.class, null);
             List<PdtSpec> specs = BeanBase.list(PdtSpec.class, PdtSpec.T.PRODUCT + "=" + pkey1, false);
             ArrayList<String> stringList = new ArrayList<>();
@@ -1055,7 +1053,7 @@ public class PdtProductDao {
             if (stringList.size() > 0) {
                 String t = GetValue.getFirstImage(GetValue.get(map, PdtProduct.T.PICTURE, String.class, ""));
                 if (!seasonList.contains(t))
-                    stringList.add(0,t);
+                    stringList.add(0, t);
                 setPicture(Strings.join(stringList, ','));
             } else {
                 setPicture(GetValue.get(map, PdtProduct.T.PICTURE, String.class, ""));

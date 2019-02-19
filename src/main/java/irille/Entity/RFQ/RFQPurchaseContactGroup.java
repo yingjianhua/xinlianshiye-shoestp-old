@@ -9,19 +9,17 @@ import irille.pub.tb.Fld;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
 import irille.shop.usr.UsrPurchase;
-import irille.shop.usr.UsrSupplier;
 
-public class RFQPurchaseContact extends BeanInt<RFQPurchaseContact> {
+public class RFQPurchaseContactGroup extends BeanInt<RFQPurchaseContactGroup> {
 	
-	private static final long serialVersionUID = -2877903411867369762L;
+	private static final long serialVersionUID = 2724809311094704042L;
 	
-	public static final Tb<?> TB = new Tb<>(RFQPurchaseContact.class, "采购商联系人").setAutoIncrement();
+	public static final Tb<?> TB = new Tb<>(RFQPurchaseContactGroup.class, "采购商联系人分组").setAutoIncrement();
 
     public enum T implements IEnumFld {
         PKEY(Tb.crtIntPkey()),
+        NAME(Sys.T.STR__100),//分组名称
         PURCHASE(UsrPurchase.fldOutKey()),//采购商
-        SUPPLIER(UsrSupplier.fldOutKey()),//供应商
-        CONTACT_GROUP(RFQPurchaseContactGroup.fldOutKey()),//联系人分组
         CREATED_TIME(Sys.T.CREATED_DATE),//建立时间
         ROW_VERSION(Sys.T.ROW_VERSION),
         // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
@@ -72,18 +70,16 @@ public class RFQPurchaseContact extends BeanInt<RFQPurchaseContact> {
     // >>>以下是自动产生的源代码行--源代码--请保留此行用于识别>>>
   //实例变量定义-----------------------------------------
   private Integer _pkey;	// 编号  INT
+  private String _name;	// 字符100  STR(100)
   private Integer _purchase;	// 采购商 <表主键:UsrPurchase>  INT
-  private Integer _supplier;	// 供应商 <表主键:UsrSupplier>  INT
-  private Integer _contactGroup;	// 采购商联系人分组 <表主键:RFQPurchaseContactGroup>  INT
   private Date _createdTime;	// 建档日期  DATE
   private Short _rowVersion;	// 版本  SHORT
 
 	@Override
-  public RFQPurchaseContact init(){
+  public RFQPurchaseContactGroup init(){
 		super.init();
+    _name=null;	// 字符100  STR(100)
     _purchase=null;	// 采购商 <表主键:UsrPurchase>  INT
-    _supplier=null;	// 供应商 <表主键:UsrSupplier>  INT
-    _contactGroup=null;	// 采购商联系人分组 <表主键:RFQPurchaseContactGroup>  INT
     _createdTime=Env.getWorkDate();	// 建档日期  DATE
     _rowVersion=0;	// 版本  SHORT
     return this;
@@ -95,6 +91,12 @@ public class RFQPurchaseContact extends BeanInt<RFQPurchaseContact> {
   }
   public void setPkey(Integer pkey){
     _pkey=pkey;
+  }
+  public String getName(){
+    return _name;
+  }
+  public void setName(String name){
+    _name=name;
   }
   public Integer getPurchase(){
     return _purchase;
@@ -112,40 +114,6 @@ public class RFQPurchaseContact extends BeanInt<RFQPurchaseContact> {
       setPurchase(null);
     else
       setPurchase(purchase.getPkey());
-  }
-  public Integer getSupplier(){
-    return _supplier;
-  }
-  public void setSupplier(Integer supplier){
-    _supplier=supplier;
-  }
-  public UsrSupplier gtSupplier(){
-    if(getSupplier()==null)
-      return null;
-    return (UsrSupplier)get(UsrSupplier.class,getSupplier());
-  }
-  public void stSupplier(UsrSupplier supplier){
-    if(supplier==null)
-      setSupplier(null);
-    else
-      setSupplier(supplier.getPkey());
-  }
-  public Integer getContactGroup(){
-    return _contactGroup;
-  }
-  public void setContactGroup(Integer contactGroup){
-    _contactGroup=contactGroup;
-  }
-  public RFQPurchaseContactGroup gtContactGroup(){
-    if(getContactGroup()==null)
-      return null;
-    return (RFQPurchaseContactGroup)get(RFQPurchaseContactGroup.class,getContactGroup());
-  }
-  public void stContactGroup(RFQPurchaseContactGroup contactGroup){
-    if(contactGroup==null)
-      setContactGroup(null);
-    else
-      setContactGroup(contactGroup.getPkey());
   }
   public Date getCreatedTime(){
     return _createdTime;

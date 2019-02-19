@@ -137,5 +137,12 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
 	public void pageMine() throws IOException {
 		write(rFQConsultService.pageMine(getPurchase(), t, keyword, unread, start, limit));
 	}
+	private Integer quotationPkey;
+	
+	@Override
+	public void deleteQuotation() throws IOException {
+		rFQConsultService.deleteQuotation(getPurchase(), quotationPkey);
+		write();
+	}
     
 }

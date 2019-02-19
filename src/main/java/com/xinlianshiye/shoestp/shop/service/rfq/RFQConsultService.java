@@ -33,4 +33,15 @@ public interface RFQConsultService {
      * @author Jianhua Ying
      */
 	List<RFQConsultRelationView> listRelation(Integer consultPkey);
+	
+	/**
+	 * 采购商删除询盘报价
+	 * <li>采购商将不能看到该报价以及该报价的相关内容,但是报价所占用的名额不会恢复
+	 * <li>供应商仍然能够该报价的信息, 但是在通过该报价向采购商发送消息时 将提示 该报价已被采购商删除, 供应商可以再次删除该报价(供应商删除报价会彻底删除报价,报价占用名额也会恢复)
+	 * 
+	 * @param purchase 采购商
+	 * @param relationPkey 报价主键
+	 * @author Jianhua Ying
+	 */
+	void deleteQuotation(UsrPurchase purchase, Integer relationPkey);
 }
