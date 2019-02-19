@@ -435,7 +435,53 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 );
                 break;
         }
+
+        sql.LIMIT(start,limit);
         return Query.sql(sql).queryMaps();
+    }
+    @Override
+    public Integer count(byte type, Date date, String keyword, boolean flag, Integer status, Integer country, int supId){
+        SQL sql = new SQL();
+        sql.SELECT(
+                RFQConsult.T.PKEY,
+                RFQConsult.T.TITLE,
+                RFQConsult.T.QUANTITY,
+                RFQConsult.T.CONTENT,
+                RFQConsult.T.CREATE_TIME,
+                RFQConsultRelation.T.HAD_READ_PURCHASE,
+                RFQConsultRelation.T.HAD_READ_SUPPLIER,
+                RFQConsultRelation.T.QUANTITY,
+                RFQConsultRelation.T.DESCRIPTION,
+                RFQConsultRelation.T.PURCHASE_ID
+        ).SELECT(RFQConsultRelation.T.TITLE, "myTitle").SELECT(
+                RFQConsultRelation.T.CREATE_DATE, "myCreate_time"
+        )
+                .FROM(RFQConsult.class)
+                .LEFT_JOIN(
+                        RFQConsultRelation.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY
+                )
+                .WHERE(
+                        RFQConsultRelation.T.SUPPLIER_ID, "=?", supId
+                )
+                .WHERE(RFQConsultRelation.T.IN_RECYCLE_BIN, "=?", Sys.OYn.NO)
+        ;
+        switch (type) {
+            case 2:
+                sql.WHERE(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", Sys.OYn.NO);
+                break;
+            case 3:
+                sql.WHERE(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", Sys.OYn.YES);
+                break;
+            case 4:
+                sql.LEFT_JOIN(
+                        RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY
+                ).WHERE(
+                        RFQConsultMessage.T.P2S, "=?", Sys.OYn.YES
+                );
+                break;
+        }
+
+        return Query.sql(sql).queryCount();
     }
 
     @Override

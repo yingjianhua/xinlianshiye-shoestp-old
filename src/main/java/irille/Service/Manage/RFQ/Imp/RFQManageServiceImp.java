@@ -216,7 +216,7 @@ public class RFQManageServiceImp implements IRFQManageService {
             }
             result.add(body);
         }
-        return new Page(result, start, limit, 10);
+        return new Page(result, start, limit, rfqConsultDao.count(type, date, keyword, flag, status, country, Supid));
     }
 
     @Override
