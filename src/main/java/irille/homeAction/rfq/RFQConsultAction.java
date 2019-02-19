@@ -31,6 +31,7 @@ import lombok.Setter;
  * Date: 2019/1/30
  * Time: 9:35
  */
+@Setter
 public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
 
 	private static final long serialVersionUID = 1L;

@@ -905,7 +905,7 @@ public class PdtProductDao {
         sql.WHERE(PdtProduct.T.STATE, " =? ", Pdt.OState.ON.getLine().getKey());
     	/*sql.WHERE(PdtProduct.T.PRODUCT_TYPE, " =? ",Pdt.OProductType.GENERAL.getLine().getKey())
     		.orWhere(PdtProduct.T.PRODUCT_TYPE, " =? ", Pdt.OProductType.O2O.getLine().getKey());*/
-        sql.WHERE(" ( PdtProduct.product_type =" + Pdt.OProductType.GENERAL.getLine().getKey() + " OR PdtProduct.product_type =" + Pdt.OProductType.O2O.getLine().getKey() + " ) ");
+        sql.WHERE(" ( PdtProduct.product_type =? OR PdtProduct.product_type =?)", Pdt.OProductType.GENERAL, Pdt.OProductType.O2O);
         if (orderfld != null && orderfld.length > 0) {
             switch (orderfld[0]) {
                 case "MostPopular": {
@@ -933,9 +933,11 @@ public class PdtProductDao {
 //                start = 0;
 //                limit = 10;
             }
-        if (StringUtil.hasValue(pName))
-            sql.WHERE(" upper(JSON_EXTRACT(PdtProduct.name,'$." + curLanguage.name() + "'))  like upper('%" + pName
-                    + "%') ");
+        if (StringUtil.hasValue(pName)) {
+            sql.WHERE(" upper(JSON_EXTRACT(PdtProduct.name,?))  like upper(?) ", "$." + curLanguage.name(), "%" + pName + "%");
+        }
+//        sql.WHERE(" upper(JSON_EXTRACT(PdtProduct.name,'$." + curLanguage.name() + "'))  like upper('%" + pName
+//                + "%') ");
         if (level != null)
             sql.WHERE(UsrSupplier.T.ROLE, " =? ", level);
         if (StringUtil.hasValue(export)) {
@@ -943,17 +945,14 @@ public class PdtProductDao {
             StringBuffer buff = new StringBuffer("");
             for (int i = 0; i < exSplit.length; i++) {
                 if (i == 0 && exSplit.length > 1) //length不为1时的第一个
-                    buff.append("( upper(JSON_EXTRACT(UsrSupplier.main_sales_area,'$." + curLanguage.name()
-                            + "'))  like upper('%" + exSplit[i] + "%')");
-                else if (exSplit.length == 1) {//只有一个
-                    sql.WHERE(" ( upper(JSON_EXTRACT(UsrSupplier.main_sales_area,'$." + curLanguage.name()
-                            + "'))  like upper('%" + exSplit[0] + "%') or UsrSupplier.main_sales_area like '%不限%' ) ");
+                {
+                    sql.WHERE("( upper(JSON_EXTRACT(UsrSupplier.main_sales_area,?))  like upper(?)", "$." + curLanguage.name(), "%" + exSplit[i] + "%");
+                } else if (exSplit.length == 1) {//只有一个
+                    sql.WHERE(" ( upper(JSON_EXTRACT(UsrSupplier.main_sales_area,?))  like upper(?) or UsrSupplier.main_sales_area like '%不限%' ) ", "$." + curLanguage.name(), "%" + exSplit[0] + "%");
                 } else if (i == exSplit.length - 1) {//最后一个
-                    buff.append(" or upper(JSON_EXTRACT(UsrSupplier.main_sales_area,'$." + curLanguage.name()
-                            + "'))  like upper('%" + exSplit[i] + "%') or UsrSupplier.main_sales_area like '%不限%' ) ");
+                    sql.WHERE(" or upper(JSON_EXTRACT(UsrSupplier.main_sales_area,?))  like upper(?) or UsrSupplier.main_sales_area like '%不限%' ) ", "$." + curLanguage.name(), "%" + exSplit[i] + "%");
                 } else {//中间的
-                    buff.append(" or upper(JSON_EXTRACT(UsrSupplier.main_sales_area,'$." + curLanguage.name()
-                            + "'))  like upper('%" + exSplit[i] + "%') ");
+                    sql.WHERE(" or upper(JSON_EXTRACT(UsrSupplier.main_sales_area,?))  like upper(?) ", "$." + curLanguage.name(), "%" + exSplit[i] + "%");
                 }
             }
             if (!buff.toString().equals(""))
@@ -1136,6 +1135,26 @@ public class PdtProductDao {
 
     public PdtProduct findByPkey(Integer productPkey) {
         return Query.SELECT(PdtProduct.class, productPkey);
+    }
+
+    /*
+     *   查找供应商中心列表,供应商要展示的产品
+     *   条件:IS_VERIFY=  1    STATE = 1    PRODUCT_TYPE  = 0
+     * @Author HuangHaoBin
+     **/
+    public List findBySupplier(Integer supplier) {
+        BeanQuery query = new BeanQuery();
+        query.SELECT(
+                PdtProduct.T.PKEY,
+                PdtProduct.T.NAME,
+                PdtProduct.T.PICTURE
+        ).FROM(PdtProduct.class)
+                .WHERE(PdtProduct.T.IS_VERIFY, "=?", Sys.OYn.YES)
+                .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON)
+                .WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.GENERAL)
+                .WHERE(PdtProduct.T.SUPPLIER, "=?", supplier)
+                .limit(0, 4);
+        return query.queryMaps();
     }
 
     public static void main(String[] args) {
