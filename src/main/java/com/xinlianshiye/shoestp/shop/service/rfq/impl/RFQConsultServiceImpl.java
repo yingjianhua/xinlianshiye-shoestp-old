@@ -1,15 +1,20 @@
 package com.xinlianshiye.shoestp.shop.service.rfq.impl;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.inject.Inject;
 import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultService;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultRelationView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQCountryView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQCurrencyView;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationThrowawayView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQSupplierView;
 
@@ -24,8 +29,13 @@ import irille.shop.plt.PltErate;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class RFQConsultServiceImpl implements RFQConsultService {
+	
+	@Inject
+	private ObjectMapper om;
 
 	@Override
 	public Page<RFQConsultView> pageMine(UsrPurchase purchase, Byte type, String keyword, Boolean unread, Integer start, Integer limit) {
@@ -123,6 +133,40 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 		}).collect(Collectors.toList());
 		return result;
 	}
+	
+	@Override
+	public RFQQuotationView getQuotation(UsrPurchase purchase, Integer relationPkey) {
+		BeanQuery<RFQConsultRelation> query = Query
+				.selectFrom(RFQConsultRelation.class)
+				.WHERE(RFQConsultRelation.T.PURCHASE_ID, "=?", purchase.getPkey())
+				.WHERE(RFQConsultRelation.T.PKEY, "=?", relationPkey);
+		RFQConsultRelation relation = query.query();
+		RFQQuotationView quotation = new RFQQuotationView();
+		quotation.setPkey(relation.getPkey());
+		quotation.setTitle(relation.getTitle());
+		quotation.setImages(Arrays.asList((relation.getImage()==null?"":relation.getImage()).split(",")));
+		quotation.setDescription(relation.getDescription());
+		quotation.setQuantity(relation.getQuantity());
+		quotation.setMinPrice(relation.getMinprice());
+		quotation.setMaxPrice(relation.getMaxprice());
+		PltErate erate = relation.gtCurrency();
+		RFQCurrencyView currency = new RFQCurrencyView();
+		currency.setPkey(erate.getPkey());
+		currency.setShortName(erate.getCurName());
+		quotation.setCurrency(currency);
+		quotation.setValidDate(relation.getValidDate());
+		quotation.setPaymentTerms(relation.gtPaytype().getLine().getName());
+		quotation.setShippingTerms(relation.gtTransittype().getLine().getName());
+		quotation.setSample(relation.gtSample());
+		quotation.setCompanyProfile(relation.getCompanydescribe());
+		quotation.setCreateDate(relation.getCreateDate());
+		try {
+			quotation.setThrowaways(om.readValue(relation.getThrowaway(), new TypeReference<List<RFQQuotationThrowawayView>>() {}));
+		} catch (IOException e) {
+			log.warn("RFQConsultRelation表主键为{}的记录 字段throwaway格式错误", relation.getPkey());
+		}
+		return quotation;
+	}
 
 	@Override
 	public void deleteQuotation(UsrPurchase purchase, Integer relationPkey) {
@@ -135,5 +179,4 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 			relation.upd();
 		}
 	}
-	
 }

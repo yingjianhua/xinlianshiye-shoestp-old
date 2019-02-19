@@ -16,7 +16,15 @@ public interface IRFQConsultAction {
 	/**
 	 * 删除报价
 	 * @throws IOExcepton
+	 * @author Jianhua Ying
 	 */
 	void deleteQuotation() throws IOException;
+	
+	/**
+	 * 报价详情
+	 * @throws IOException
+	 * @author Jianhua Ying
+	 */
+	void quotationDetail() throws IOException;
 
 }

@@ -31,7 +31,9 @@ import lombok.Setter;
  */
 public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
 
-    @Inject
+	private static final long serialVersionUID = 1L;
+	
+	@Inject
     private ObjectMapper objectMapper;
     @Inject
     private IRFQConsultService irfqConsultService;
@@ -143,6 +145,11 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
 	public void deleteQuotation() throws IOException {
 		rFQConsultService.deleteQuotation(getPurchase(), quotationPkey);
 		write();
+	}
+
+	@Override
+	public void quotationDetail() throws IOException {
+		write(rFQConsultService.getQuotation(getPurchase(), quotationPkey));
 	}
     
 }
