@@ -1,8 +1,13 @@
 package com.xinlianshiye.shoestp.shop.service.rfq.impl;
 
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.inject.Inject;
 import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultMessageService;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultMessageContactView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultMessageView;
@@ -10,6 +15,8 @@ import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultMessagesView;
 
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
+import irille.Entity.RFQ.JSON.ConsultMessage;
+import irille.Entity.RFQ.JSON.RFQConsultTextMessage;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.exception.ReturnCode;
@@ -18,6 +25,9 @@ import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 
 public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
+	
+	@Inject
+	private ObjectMapper om;
 
 	@Override
 	public RFQConsultMessagesView page(UsrPurchase purchase, Integer relationPkey, Integer start, Integer limit) {
@@ -57,9 +67,31 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 	}
 
 	@Override
-	public void send(UsrPurchase purchase, Integer relationPkey, String content) {
-		// TODO Auto-generated method stub
-		
+	public RFQConsultMessageView send(UsrPurchase purchase, Integer relationPkey, String content) {
+		return sendMessage(purchase, relationPkey, new RFQConsultTextMessage() {{ setContent(content); }});
+	}
+	
+	private RFQConsultMessageView sendMessage(UsrPurchase purchase, Integer relationPkey, ConsultMessage message) {
+		RFQConsultRelation relation = Query.selectFrom(RFQConsultRelation.class).WHERE(RFQConsultRelation.T.PURCHASE_ID, "=?", purchase.getPkey()).WHERE(RFQConsultRelation.T.PKEY, "=?", relationPkey).query();
+		//采购商发送消息后 设置供应商消息未读取
+		if(relation.gtHadReadSupplier()) {
+			relation.stHadReadSupplier(false);
+			relation.upd();
+		}
+		RFQConsultMessage bean = new RFQConsultMessage();
+		bean.setUuid(UUID.randomUUID().toString().replaceAll("-", ""));
+		try {
+			bean.setContent(om.writeValueAsString(message));
+		} catch (JsonProcessingException e) {
+			throw new WebMessageException(ReturnCode.third_unknow, "消息发送失败");
+		}
+		bean.setType(message.type());
+		bean.setSendTime(new Date());
+		bean.stRelation(relation);
+		bean.stP2s(true);
+		bean.stHadRead(false);
+		bean.ins();
+		return RFQConsultMessageView.Builder.toView(bean);
 	}
 
 }

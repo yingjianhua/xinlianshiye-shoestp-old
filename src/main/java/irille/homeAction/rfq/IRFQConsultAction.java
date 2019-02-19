@@ -17,10 +17,29 @@ public interface IRFQConsultAction {
 	 * 询盘详情
 	 * @throws IOException
 	 * @author Jianhua Ying
+	 */
+	void detail() throws IOException;
+	
+	/**
+	 * 编辑RFQ询盘
 	 * @throws IOException
 	 * @author Jianhua Ying
 	 */
-	void detail() throws IOException;
+	void edit() throws IOException;
+	
+	/**
+	 * 给询盘添加格外的信息
+	 * @throws IOException
+	 * @author Jianhua Ying
+	 */
+	void addInformation() throws IOException;
+	
+	/**
+	 * 关闭RFQ询盘
+	 * @throws IOException
+	 * @author Jianhua Ying
+	 */
+	void close() throws IOException;
 	
     /**
      * 询盘聊天消息查询
@@ -37,7 +56,7 @@ public interface IRFQConsultAction {
      * @throws IOException
      * @author Jianhua Ying
      */
-    void send() throws IOException;
+    void sendMessage() throws IOException;
 	
 	/**
 	 * 删除报价

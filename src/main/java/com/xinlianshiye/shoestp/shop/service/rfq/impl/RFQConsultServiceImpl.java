@@ -20,6 +20,8 @@ import com.xinlianshiye.shoestp.shop.view.rfq.RFQSupplierView;
 
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultRelation;
+import irille.Entity.RFQ.Enums.RFQConsultStatus;
+import irille.Entity.RFQ.Enums.RFQConsultType;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
@@ -31,6 +33,7 @@ import irille.shop.plt.PltErate;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
+import irille.view.RFQ.PutRFQConsultView;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -203,4 +206,52 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 		view.setImages(Arrays.asList((consult.getImage()==null?"":consult.getImage()).split(",")));
 		return view;
 	}
+
+	@Override
+	public void addMoreInformation(UsrPurchase purchase, Integer consultPkey, String information, Date validDate) {
+		RFQConsult consult = Query.selectFrom(RFQConsult.class).WHERE(RFQConsult.T.PKEY, "=?", consultPkey).WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey()).query();
+		if(consult == null) {
+			throw new WebMessageException(ReturnCode.service_gone, "数据不存在");
+		}
+		if(consult.gtType() != RFQConsultType.RFQ) {
+			//只有RFQ询盘能添加额外信息
+			throw new WebMessageException(ReturnCode.service_state_error, "数据错误");
+		}
+		if(consult.gtStatus() != RFQConsultStatus.ready && consult.gtStatus() != RFQConsultStatus.runing) {
+			//只有待发布和进行中能添加额外信息
+			throw new WebMessageException(ReturnCode.service_state_error, "状态错误");
+		}
+		if(consult.getChangeCount() >= 3) {
+			//最多修改三次
+			throw new WebMessageException(ReturnCode.service_state_error, "最多修改三次");
+		}
+		if(consult.getValidDate().before(new Date())) {
+			//已经过期
+			throw new WebMessageException(ReturnCode.service_state_error, "已过期");
+		}
+		if(Query.selectFrom(RFQConsultRelation.class).WHERE(RFQConsultRelation.T.CONSULT, "=?", consultPkey).exists()) {
+			//已经有报价 不能添加额外信息
+			throw new WebMessageException(ReturnCode.service_state_error, "已有报价");
+		}
+		if(validDate.before(new Date())) {
+			throw new WebMessageException(ReturnCode.valid_illegal, "有效时间不合法");
+		}
+		consult.setExtraDescription(information);
+		consult.setValidDate(validDate);
+		consult.upd();
+	}
+
+	@Override
+	public void close(UsrPurchase purchase, Integer consultPkey) {
+		RFQConsult consult = Query.selectFrom(RFQConsult.class).WHERE(RFQConsult.T.PKEY, "=?", consultPkey).WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey()).query();
+		if(consult == null) {
+			throw new WebMessageException(ReturnCode.service_gone, "数据不存在");
+		}
+		if(consult.gtStatus() == RFQConsultStatus.close) {
+			throw new WebMessageException(ReturnCode.service_state_error, "已关闭,不能进行操作");
+		}
+		consult.stStatus(RFQConsultStatus.close);
+		consult.upd();
+	}
+	
 }

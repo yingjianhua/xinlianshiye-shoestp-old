@@ -1,6 +1,7 @@
 package irille.homeAction.rfq;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -170,15 +171,39 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
 	@Override
 	@NeedLogin
 	public void pageMsgs() throws IOException {
-		rFQConsultMessageService.page(getPurchase(), relationPkey, start, limit);
+		write(rFQConsultMessageService.page(getPurchase(), relationPkey, start, limit));
+	}
+	
+	private String content;
+
+	@Override
+	@NeedLogin
+	public void sendMessage() throws IOException {
+		write(rFQConsultMessageService.send(getPurchase(), relationPkey, content));
+	}
+
+	private String information;
+	private Date validDate;
+	
+	@Override
+	@NeedLogin
+	public void addInformation() throws IOException {
+		rFQConsultService.addMoreInformation(getPurchase(), consultPkey, information, validDate);
 		write();
 	}
 
 	@Override
 	@NeedLogin
-	public void send() throws IOException {
-		// TODO Auto-generated method stub
-		
+	public void close() throws IOException {
+		rFQConsultService.close(getPurchase(), consultPkey);
+		write();
+	}
+
+	@Override
+	@NeedLogin
+	public void edit() throws IOException {
+		//TODO waiting for implemented
+		write();
 	}
     
 }

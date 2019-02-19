@@ -2,6 +2,7 @@ package com.xinlianshiye.shoestp.shop.service.rfq;
 
 import com.google.inject.ImplementedBy;
 import com.xinlianshiye.shoestp.shop.service.rfq.impl.RFQConsultMessageServiceImpl;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultMessageView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultMessagesView;
 
 import irille.shop.usr.UsrPurchase;
@@ -20,5 +21,13 @@ public interface RFQConsultMessageService {
 	 */
 	RFQConsultMessagesView page(UsrPurchase purchase, Integer relationPkey, Integer start, Integer limit);
 	
-	void send(UsrPurchase purchase, Integer relationPkey, String content);
+	/**
+	 * 采购商发送聊天消息
+	 * @param purchase 采购商
+	 * @param relationPkey 询盘关联主键
+	 * @param content 消息内容
+	 * @return
+	 * @author Jianhua Ying
+	 */
+	RFQConsultMessageView send(UsrPurchase purchase, Integer relationPkey, String content);
 }
