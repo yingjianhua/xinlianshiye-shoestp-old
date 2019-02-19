@@ -67,23 +67,14 @@ Vue.component('index-bottom', {
             email: '',
             links: [
                 {
-                    title: 'About us',
+                    title: 'Help',
                     url: [
                         {
-                            atitle: 'About shoestp.com',
-                            alink: '/home/cnt_CntSglPageCategory_gosglpage?pkey=6'
-                        },
-                        {
-                            atitle: 'shoestp coopertation plan',
-                            alink: '/home/cnt_CntSglPageCategory_gosglpage?pkey=7'
-                        },
-                        {
-                            atitle: 'Contact Us',
-                            alink: '/home/cnt_CntSglPageCategory_gosglpage?pkey=8'
-                        },
-                        {
-                            atitle: '店铺管理',
-                            alink: '/newseller/'
+                            atitle: 'Regarding Payment',
+                            alink: '/home/cnt_CntSglPageCategory_gosglpage?pkey=1'
+                        }, {
+                            atitle: 'FAQ',
+                            alink: '/home/cnt_CntSglPageCategory_gosglpage?pkey=2'
                         }
                     ]
                 },
@@ -110,16 +101,24 @@ Vue.component('index-bottom', {
                             alink: '/home/cnt_CntSglPageCategory_gosglpage?pkey=5'
                         }
                     ]
-                },
-                {
-                    title: 'Help',
+                }, {
+                    title: 'About us',
                     url: [
                         {
-                            atitle: 'Regarding Payment',
-                            alink: '/home/cnt_CntSglPageCategory_gosglpage?pkey=1'
-                        }, {
-                            atitle: 'FAQ',
-                            alink: '/home/cnt_CntSglPageCategory_gosglpage?pkey=2'
+                            atitle: 'About shoestp.com',
+                            alink: '/home/cnt_CntSglPageCategory_gosglpage?pkey=6'
+                        },
+                        {
+                            atitle: 'shoestp coopertation plan',
+                            alink: '/home/cnt_CntSglPageCategory_gosglpage?pkey=7'
+                        },
+                        {
+                            atitle: 'Contact Us',
+                            alink: '/home/cnt_CntSglPageCategory_gosglpage?pkey=8'
+                        },
+                        {
+                            atitle: '店铺管理',
+                            alink: '/newseller/'
                         }
                     ]
                 }
