@@ -28,11 +28,11 @@ public class RFQConsult extends BeanInt<RFQConsult> {
         PRODUCT(PdtProduct.fldOutKey().setNull()), //产品ID
         CONTENT(Sys.T.STR__200_NULL, "内容"),
         LEFT_COUNT(Sys.T.INT_PLUS_OR_ZERO, "剩余抢单次数"), //初始化次数为5
-        QUANTITY(Sys.T.INT, "商品数量"),
-        UNIT(Tb.crt(RFQConsultUnit.DEFAULT)),
+        QUANTITY(Sys.T.INT, "商品数量"),//商品数量
+        UNIT(Tb.crt(RFQConsultUnit.DEFAULT)),//商品数量单位
         PURCHASE_ID(UsrPurchase.fldOutKey().setName("采购商")),
         SUPPLIER_ID(UsrSupplier.fldOutKey().setNull().setName("供应商")),
-        TYPE(Tb.crt(RFQConsultType.DEFAULT)),
+        TYPE(Tb.crt(RFQConsultType.DEFAULT)),//询盘类型
         STATUS(Tb.crt(RFQConsultStatus.DEFAULT)),
         VERIFY_STATUS(Tb.crt(RFQConsultVerifyStatus.DEFAULT)),
         VALID_DATE(Sys.T.DATE_TIME, "有效期至"),
@@ -43,7 +43,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
         DESTINATION(Sys.T.STR__200_NULL, "目的地"),
         TOTAL(Sys.T.INT_PLUS_OR_ZERO, "总抢单数"),
         CHANGE_COUNT(Sys.T.SHORT, "修改总数"),
-        EXTRA_DESCRIPTION(Sys.T.STR__2000_NULL, "修改总数"),
+        EXTRA_DESCRIPTION(Sys.T.STR__2000_NULL, "额外信息"),//总共可以修改3次, 修改次数在change_count字段统计
         CREATE_TIME(Sys.T.DATE_TIME, "创建时间"),
         IS_DELETED(Sys.T.YN, "是否已删除"),//为了适应在删除询盘的情况, 只影响到询盘不能被抢单,而不影响已抢单询盘的聊天功能, 故增加此字段, 用于标记询盘是否已删除
         ROW_VERSION(Sys.T.ROW_VERSION),

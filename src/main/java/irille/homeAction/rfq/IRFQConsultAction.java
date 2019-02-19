@@ -14,9 +14,62 @@ public interface IRFQConsultAction {
 	void pageMine() throws IOException ;
 	
 	/**
+	 * 询盘详情
+	 * @throws IOException
+	 * @author Jianhua Ying
+	 */
+	void detail() throws IOException;
+	
+	/**
+	 * 编辑RFQ询盘
+	 * @throws IOException
+	 * @author Jianhua Ying
+	 */
+	void edit() throws IOException;
+	
+	/**
+	 * 给询盘添加格外的信息
+	 * @throws IOException
+	 * @author Jianhua Ying
+	 */
+	void addInformation() throws IOException;
+	
+	/**
+	 * 关闭RFQ询盘
+	 * @throws IOException
+	 * @author Jianhua Ying
+	 */
+	void close() throws IOException;
+	
+    /**
+     * 询盘聊天消息查询
+     * @throws IOException
+     * @author Jianhua Ying
+     */
+    void pageMsgs() throws IOException;
+
+    /**
+     * 发送消息
+     * 有文本消息
+     * 有图片消息
+     * 有产品链接(有时效)
+     * @throws IOException
+     * @author Jianhua Ying
+     */
+    void sendMessage() throws IOException;
+	
+	/**
 	 * 删除报价
 	 * @throws IOExcepton
+	 * @author Jianhua Ying
 	 */
 	void deleteQuotation() throws IOException;
+	
+	/**
+	 * 报价详情
+	 * @throws IOException
+	 * @author Jianhua Ying
+	 */
+	void quotationDetail() throws IOException;
 
 }

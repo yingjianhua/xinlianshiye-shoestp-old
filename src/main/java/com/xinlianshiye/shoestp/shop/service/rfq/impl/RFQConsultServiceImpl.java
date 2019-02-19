@@ -1,31 +1,46 @@
 package com.xinlianshiye.shoestp.shop.service.rfq.impl;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.inject.Inject;
 import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultService;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultRelationView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQCountryView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQCurrencyView;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationThrowawayView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQSupplierView;
 
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultRelation;
+import irille.Entity.RFQ.Enums.RFQConsultStatus;
+import irille.Entity.RFQ.Enums.RFQConsultType;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.util.GetValue;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltErate;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
+import irille.view.RFQ.PutRFQConsultView;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class RFQConsultServiceImpl implements RFQConsultService {
+	
+	@Inject
+	private ObjectMapper om;
 
 	@Override
 	public Page<RFQConsultView> pageMine(UsrPurchase purchase, Byte type, String keyword, Boolean unread, Integer start, Integer limit) {
@@ -123,6 +138,40 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 		}).collect(Collectors.toList());
 		return result;
 	}
+	
+	@Override
+	public RFQQuotationView getQuotation(UsrPurchase purchase, Integer relationPkey) {
+		BeanQuery<RFQConsultRelation> query = Query
+				.selectFrom(RFQConsultRelation.class)
+				.WHERE(RFQConsultRelation.T.PURCHASE_ID, "=?", purchase.getPkey())
+				.WHERE(RFQConsultRelation.T.PKEY, "=?", relationPkey);
+		RFQConsultRelation relation = query.query();
+		RFQQuotationView quotation = new RFQQuotationView();
+		quotation.setPkey(relation.getPkey());
+		quotation.setTitle(relation.getTitle());
+		quotation.setImages(Arrays.asList((relation.getImage()==null?"":relation.getImage()).split(",")));
+		quotation.setDescription(relation.getDescription());
+		quotation.setQuantity(relation.getQuantity());
+		quotation.setMinPrice(relation.getMinprice());
+		quotation.setMaxPrice(relation.getMaxprice());
+		PltErate erate = relation.gtCurrency();
+		RFQCurrencyView currency = new RFQCurrencyView();
+		currency.setPkey(erate.getPkey());
+		currency.setShortName(erate.getCurName());
+		quotation.setCurrency(currency);
+		quotation.setValidDate(relation.getValidDate());
+		quotation.setPaymentTerms(relation.gtPaytype().getLine().getName());
+		quotation.setShippingTerms(relation.gtTransittype().getLine().getName());
+		quotation.setSample(relation.gtSample());
+		quotation.setCompanyProfile(relation.getCompanydescribe());
+		quotation.setCreateDate(relation.getCreateDate());
+		try {
+			quotation.setThrowaways(om.readValue(relation.getThrowaway(), new TypeReference<List<RFQQuotationThrowawayView>>() {}));
+		} catch (IOException e) {
+			log.warn("RFQConsultRelation表主键为{}的记录 字段throwaway格式错误", relation.getPkey());
+		}
+		return quotation;
+	}
 
 	@Override
 	public void deleteQuotation(UsrPurchase purchase, Integer relationPkey) {
@@ -134,6 +183,75 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 			relation.stIsDeletedPurchase(true);
 			relation.upd();
 		}
+	}
+
+	@Override
+	public RFQConsultView getDetail(UsrPurchase purchase, Integer consultPkey) {
+		BeanQuery<RFQConsult> query = Query.selectFrom(RFQConsult.class);
+		query.WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey());
+		query.WHERE(RFQConsult.T.PKEY, "=?", consultPkey);
+		RFQConsult consult = query.query();
+		if(consult == null) {
+			throw new WebMessageException(ReturnCode.service_gone, "询盘不存在");
+		}
+		RFQConsultView view = new RFQConsultView();
+		view.setPkey(consult.getPkey());
+		view.setTitle(consult.getTitle());
+		view.setType(consult.getType());
+		view.setDetail(consult.getContent());
+		view.setQuantity(consult.getQuantity());
+		view.setPrice(consult.getPrice());
+		view.setUnit(consult.gtUnit().getLine().getName());
+		view.setType(consult.getType());
+		view.setImages(Arrays.asList((consult.getImage()==null?"":consult.getImage()).split(",")));
+		return view;
+	}
+
+	@Override
+	public void addMoreInformation(UsrPurchase purchase, Integer consultPkey, String information, Date validDate) {
+		RFQConsult consult = Query.selectFrom(RFQConsult.class).WHERE(RFQConsult.T.PKEY, "=?", consultPkey).WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey()).query();
+		if(consult == null) {
+			throw new WebMessageException(ReturnCode.service_gone, "数据不存在");
+		}
+		if(consult.gtType() != RFQConsultType.RFQ) {
+			//只有RFQ询盘能添加额外信息
+			throw new WebMessageException(ReturnCode.service_state_error, "数据错误");
+		}
+		if(consult.gtStatus() != RFQConsultStatus.ready && consult.gtStatus() != RFQConsultStatus.runing) {
+			//只有待发布和进行中能添加额外信息
+			throw new WebMessageException(ReturnCode.service_state_error, "状态错误");
+		}
+		if(consult.getChangeCount() >= 3) {
+			//最多修改三次
+			throw new WebMessageException(ReturnCode.service_state_error, "最多修改三次");
+		}
+		if(consult.getValidDate().before(new Date())) {
+			//已经过期
+			throw new WebMessageException(ReturnCode.service_state_error, "已过期");
+		}
+		if(Query.selectFrom(RFQConsultRelation.class).WHERE(RFQConsultRelation.T.CONSULT, "=?", consultPkey).exists()) {
+			//已经有报价 不能添加额外信息
+			throw new WebMessageException(ReturnCode.service_state_error, "已有报价");
+		}
+		if(validDate.before(new Date())) {
+			throw new WebMessageException(ReturnCode.valid_illegal, "有效时间不合法");
+		}
+		consult.setExtraDescription(information);
+		consult.setValidDate(validDate);
+		consult.upd();
+	}
+
+	@Override
+	public void close(UsrPurchase purchase, Integer consultPkey) {
+		RFQConsult consult = Query.selectFrom(RFQConsult.class).WHERE(RFQConsult.T.PKEY, "=?", consultPkey).WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey()).query();
+		if(consult == null) {
+			throw new WebMessageException(ReturnCode.service_gone, "数据不存在");
+		}
+		if(consult.gtStatus() == RFQConsultStatus.close) {
+			throw new WebMessageException(ReturnCode.service_state_error, "已关闭,不能进行操作");
+		}
+		consult.stStatus(RFQConsultStatus.close);
+		consult.upd();
 	}
 	
 }
