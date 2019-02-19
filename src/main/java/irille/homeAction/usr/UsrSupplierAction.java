@@ -457,15 +457,12 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
         writerOrExport(json);
     }
 
-    private  Page page;
-
     /*
      *   获取供应商中心列表
      * @Author HuangHaoBin
      **/
     public void listSuppliers() throws Exception {
-        page = usrSupplierService.listSupplier(getStart() , getLimit());
-        write(page);
+        write(usrSupplierService.listSupplier(getStart() , getLimit()));
     }
 
     public Integer getId() {
