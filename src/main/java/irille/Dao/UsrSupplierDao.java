@@ -2,6 +2,7 @@ package irille.Dao;
 
 import irille.Aops.Caches;
 import irille.core.sys.Sys;
+import irille.homeAction.Page;
 import irille.homeAction.usr.dto.Page_supplierProductView;
 import irille.homeAction.usr.dto.SupplierListView;
 import irille.pub.bean.BeanBase;
@@ -144,4 +145,25 @@ public class UsrSupplierDao {
     ;
     return query.queryMaps();
   }
+
+  /*
+   *   供应商中心供应商列表
+   * @Author HuangHaoBin
+   **/
+  public List listSuppliers(Integer start , Integer limit){
+    BeanQuery query = new BeanQuery();
+    query.SELECT(
+            UsrSupplier.T.PKEY,
+            UsrSupplier.T.SHOW_NAME,
+            UsrSupplier.T.IS_AUTH,
+            UsrSupplier.T.LOGO,
+            UsrSupplier.T.MAIN_SALES_AREA
+    ).FROM(UsrSupplier.class)
+            .ORDER_BY(UsrSupplier.T.SORT , "asc");
+            if(start != null && limit != null){
+              query.limit(start , limit);
+            }
+      return query.queryMaps();
+  }
+
 }
