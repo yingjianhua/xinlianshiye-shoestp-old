@@ -28,11 +28,11 @@ public class RFQConsult extends BeanInt<RFQConsult> {
         PRODUCT(PdtProduct.fldOutKey().setNull()), //产品ID
         CONTENT(Sys.T.STR__200_NULL, "内容"),
         LEFT_COUNT(Sys.T.INT_PLUS_OR_ZERO, "剩余抢单次数"), //初始化次数为5
-        QUANTITY(Sys.T.INT, "商品数量"),
-        UNIT(Tb.crt(RFQConsultUnit.DEFAULT)),
+        QUANTITY(Sys.T.INT, "商品数量"),//商品数量
+        UNIT(Tb.crt(RFQConsultUnit.DEFAULT)),//商品数量单位
         PURCHASE_ID(UsrPurchase.fldOutKey().setName("采购商")),
         SUPPLIER_ID(UsrSupplier.fldOutKey().setNull().setName("供应商")),
-        TYPE(Tb.crt(RFQConsultType.DEFAULT)),
+        TYPE(Tb.crt(RFQConsultType.DEFAULT)),//询盘类型
         STATUS(Tb.crt(RFQConsultStatus.DEFAULT)),
         VERIFY_STATUS(Tb.crt(RFQConsultVerifyStatus.DEFAULT)),
         VALID_DATE(Sys.T.DATE_TIME, "有效期至"),

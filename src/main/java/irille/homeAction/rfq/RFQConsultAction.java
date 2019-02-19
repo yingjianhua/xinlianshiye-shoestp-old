@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.apache.struts2.ServletActionContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultMessageService;
 import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultService;
 
 import irille.Filter.svr.ItpCheckPurchaseLogin;
@@ -39,6 +40,8 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
     private IRFQConsultService irfqConsultService;
     @Inject
     private RFQConsultService rFQConsultService;
+    @Inject
+    private RFQConsultMessageService rFQConsultMessageService;
     @Inject
     private IPdtProductService iPdtProductService;
 
@@ -142,14 +145,40 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
 	private Integer quotationPkey;
 	
 	@Override
+	@NeedLogin
 	public void deleteQuotation() throws IOException {
 		rFQConsultService.deleteQuotation(getPurchase(), quotationPkey);
 		write();
 	}
 
 	@Override
+	@NeedLogin
 	public void quotationDetail() throws IOException {
 		write(rFQConsultService.getQuotation(getPurchase(), quotationPkey));
+	}
+	
+	Integer consultPkey;
+
+	@Override
+	@NeedLogin
+	public void detail() throws IOException {
+		write(rFQConsultService.getDetail(getPurchase(), consultPkey));
+	}
+
+	private Integer relationPkey;
+	
+	@Override
+	@NeedLogin
+	public void pageMsgs() throws IOException {
+		rFQConsultMessageService.page(getPurchase(), relationPkey, start, limit);
+		write();
+	}
+
+	@Override
+	@NeedLogin
+	public void send() throws IOException {
+		// TODO Auto-generated method stub
+		
 	}
     
 }

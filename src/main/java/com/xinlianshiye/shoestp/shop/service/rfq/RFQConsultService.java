@@ -26,6 +26,15 @@ public interface RFQConsultService {
      * @author Jianhua Ying
      */
     Page<RFQConsultView> pageMine(UsrPurchase purchase, Byte type, String keyword, Boolean unread, Integer start, Integer limit);
+    
+    /**
+     * RFQ或询盘详情
+     * @param purchase 采购商
+     * @param consultPkey 询盘主键
+     * @return
+     * @author Jianhua Ying
+     */
+    RFQConsultView getDetail(UsrPurchase purchase, Integer consultPkey);
 
     /**
      * 查询RFQ的报价状况

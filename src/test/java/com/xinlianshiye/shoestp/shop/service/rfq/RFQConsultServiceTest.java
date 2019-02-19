@@ -1,5 +1,6 @@
 package com.xinlianshiye.shoestp.shop.service.rfq;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -23,6 +24,7 @@ public class RFQConsultServiceTest extends BaseTest {
 	private ObjectMapper om;
 	
 	@Test
+	@Ignore
 	public void testPageMine() throws JsonProcessingException {
 		RFQConsultRelation.TB.getCode();
 		RFQConsult.TB.getCode();
@@ -41,6 +43,7 @@ public class RFQConsultServiceTest extends BaseTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testGetQuotation() throws JsonProcessingException {
 		UsrPurchase purchase = new UsrPurchase();
 		purchase.setPkey(1261);
@@ -49,5 +52,18 @@ public class RFQConsultServiceTest extends BaseTest {
 		Integer relationPkey = 1;
 		RFQQuotationView quotation = service.getQuotation(purchase, relationPkey);
 		System.out.println(om.writeValueAsString(quotation));
+	}
+	
+	@Test
+//	@Ignore
+	public void testGetDetail() throws JsonProcessingException {
+		RFQConsult.TB.getCode();
+		UsrPurchase purchase = new UsrPurchase();
+		purchase.setPkey(1261);
+		purchase.setName("建化");
+		
+		Integer consultPkey = 7;
+		RFQConsultView consult = service.getDetail(purchase, consultPkey);
+		System.out.println(om.writeValueAsString(consult));
 	}
 }

@@ -23,6 +23,8 @@ import irille.Entity.RFQ.RFQConsultRelation;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.util.GetValue;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltErate;
@@ -178,5 +180,27 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 			relation.stIsDeletedPurchase(true);
 			relation.upd();
 		}
+	}
+
+	@Override
+	public RFQConsultView getDetail(UsrPurchase purchase, Integer consultPkey) {
+		BeanQuery<RFQConsult> query = Query.selectFrom(RFQConsult.class);
+		query.WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey());
+		query.WHERE(RFQConsult.T.PKEY, "=?", consultPkey);
+		RFQConsult consult = query.query();
+		if(consult == null) {
+			throw new WebMessageException(ReturnCode.service_gone, "询盘不存在");
+		}
+		RFQConsultView view = new RFQConsultView();
+		view.setPkey(consult.getPkey());
+		view.setTitle(consult.getTitle());
+		view.setType(consult.getType());
+		view.setDetail(consult.getContent());
+		view.setQuantity(consult.getQuantity());
+		view.setPrice(consult.getPrice());
+		view.setUnit(consult.gtUnit().getLine().getName());
+		view.setType(consult.getType());
+		view.setImages(Arrays.asList((consult.getImage()==null?"":consult.getImage()).split(",")));
+		return view;
 	}
 }
