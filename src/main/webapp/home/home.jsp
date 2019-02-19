@@ -61,17 +61,15 @@
                 </div>
                 <div class="h4">
                     <ul>
-                        <li><img class="fl" src="/home/v3/static/images/icon_svs01.png"/>Genuine Manufacturer</li>
-                        <li><img class="fl" src="/home/v3/static/images/icon_svs03.png"/>Production Capacity</li>
-                        <li><img class="fl" src="/home/v3/static/images/icon_svs05.png"/>Product Quality</li>
-                        <li><img class="fl" src="/home/v3/static/images/icon_svs07.png"/>International Business Capacity</li>
+                        <li><img class="fl" src="/home/v3/static/images/icon_svs01.png" />Actual Manufacturer</li>
+                        <li><img class="fl" src="/home/v3/static/images/icon_svs05.png" />Product Quality</li>
+                        <li><img class="fl" src="/home/v3/static/images/icon_svs07.png" />Trade Capacity</li>
+                        <li><img class="fl" src="/home/v3/static/images/icon_svs04.png" style="margin-right: 11px;"/>Major Client</li>
                     </ul>
                     <ul>
-                        <li><img class="fl" src="/home/v3/static/images/icon_svs02.png" style="    margin: 0 6px 0 -2px;"/>R&D
-                            Capacity
-                        </li>
-                        <li><img class="fl" src="/home/v3/static/images/icon_svs04.png"/>Major Client</li>
-                        <li><img class="fl" src="/home/v3/static/images/icon_svs06.png"/>Exhibition</li>
+                        <li><img class="fl" src="/home/v3/static/images/icon_svs03.png" />Production Capacity</li>
+                        <li><img class="fl" src="/home/v3/static/images/icon_svs02.png" />R&D Capacity</li>
+                        <li><img class="fl" src="/home/v3/static/images/icon_svs06.png" style="margin-left: 2px;"/>Trade Shows</li>
                     </ul>
                 </div>
                 </a>
