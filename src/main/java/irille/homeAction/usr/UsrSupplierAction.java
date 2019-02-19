@@ -16,6 +16,7 @@ import irille.shop.prm.PrmGroupPurchase;
 import irille.shop.prm.PrmGroupPurchaseDAO;
 import irille.shop.usr.Usr.OStatus;
 import irille.shop.usr.*;
+import irille.view.Page;
 import irille.view.pdt.CategoryView;
 import irille.view.usr.SupplierView;
 import irille.view.usr.UserView;
@@ -456,6 +457,17 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
         writerOrExport(json);
     }
 
+    private  Page page;
+
+    /*
+     *   获取供应商中心列表
+     * @Author HuangHaoBin
+     **/
+    public void listSuppliers() throws Exception {
+        page = usrSupplierService.listSupplier(getStart() , getLimit());
+        write(page);
+    }
+
     public Integer getId() {
         return id;
     }
@@ -487,5 +499,6 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
     public void setEntryStep(Byte entryStep) {
         this.entryStep = entryStep;
     }
+
 
 }

@@ -8,6 +8,8 @@ import irille.core.sys.Sys;
 import irille.homeAction.usr.dto.SupplierListView;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage;
+import irille.view.Page;
+
 import java.util.List;
 
 /**
@@ -48,4 +50,10 @@ public interface IUsrSupplierService {
    */
   List getSupplierInfo(IduPage page);
 
+
+  /*
+   *   供应商中心列表
+   * @Author HuangHaoBin
+   **/
+  Page listSupplier(Integer start, Integer limit);
 }
