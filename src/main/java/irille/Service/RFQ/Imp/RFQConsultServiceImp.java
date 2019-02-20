@@ -1,26 +1,21 @@
 package irille.Service.RFQ.Imp;
 
+import irille.Dao.Old.RFQ.RFQConsultDAO;
+import irille.Dao.Old.RFQ.RFQConsultUpdDAO;
+import irille.Entity.RFQ.Enums.*;
+import irille.Entity.RFQ.RFQConsult;
+import irille.Service.RFQ.IRFQConsultService;
+import irille.pub.bean.Query;
+import irille.pub.bean.sql.SQL;
+import irille.shop.usr.UsrPurchase;
+import irille.view.RFQ.PutInquiryView;
+import irille.view.v3.rfq.EditRFQConsultView;
+import irille.view.v3.rfq.PutRFQConsultView;
+
+import javax.inject.Inject;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
-
-import javax.inject.Inject;
-
-import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultView;
-
-import irille.Dao.Old.RFQ.RFQConsultDAO;
-import irille.Entity.RFQ.RFQConsult;
-import irille.Entity.RFQ.Enums.RFQConsultPayType;
-import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
-import irille.Entity.RFQ.Enums.RFQConsultStatus;
-import irille.Entity.RFQ.Enums.RFQConsultType;
-import irille.Entity.RFQ.Enums.RFQConsultUnit;
-import irille.Entity.RFQ.Enums.RFQConsultVerifyStatus;
-import irille.Service.RFQ.IRFQConsultService;
-import irille.shop.usr.UsrPurchase;
-import irille.view.Page;
-import irille.view.RFQ.PutInquiryView;
-import irille.view.RFQ.PutRFQConsultView;
 
 /**
  * Created by IntelliJ IDEA.
@@ -32,6 +27,8 @@ public class RFQConsultServiceImp implements IRFQConsultService {
 
     @Inject
     private RFQConsultDAO rfqConsultDAO;
+    @Inject
+    private RFQConsultUpdDAO rfqConsultUpdDAO;
 
     @Override
     public void putRFQInquiry(PutRFQConsultView rfqConsultView, UsrPurchase usrPurchase) {
@@ -41,11 +38,9 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         rfqConsult.setContent(rfqConsultView.getDescriotion());
         rfqConsult.setLeftCount(0);
         rfqConsult.setQuantity(rfqConsultView.getQuantity());
-        rfqConsult.stUnit(RFQConsultUnit.PAIR);
+        rfqConsult.stUnit((RFQConsultUnit) RFQConsultUnit.PAIR.getLine().get(rfqConsult.getUnit()));
 
         rfqConsult.setPurchaseId(usrPurchase.getPkey());
-//        rfqConsult.setPurchaseId(1);
-
         rfqConsult.stType(RFQConsultType.RFQ);
         //TODO 合并后枚举类更新
         rfqConsult.stStatus(RFQConsultStatus.ready);
@@ -66,11 +61,11 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         rfqConsult.stShippingType(RFQConsultShipping_Type.FOB);
         rfqConsult.setCurrency(rfqConsultView.getCurrency());
         rfqConsult.setDestination(rfqConsultView.getDestination());
+        rfqConsult.setProductRequest("{}");
         rfqConsult.setTotal(10);
         rfqConsult.stIsDeleted(false);
         rfqConsult.setChangeCount((short) 0);
         rfqConsult.setCountry(usrPurchase.getCountry());
-//        rfqConsult.setCountry(1);
         rfqConsultDAO.setB(rfqConsult);
         rfqConsultDAO.commit();
 
@@ -85,7 +80,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         rfqConsult.setContent(inquiryView.getDescriotion());
         rfqConsult.setLeftCount(0);
         rfqConsult.setQuantity(inquiryView.getQuantity());
-        rfqConsult.stUnit(RFQConsultUnit.PAIR);
+        rfqConsult.stUnit((RFQConsultUnit) RFQConsultUnit.PAIR.getLine().get(inquiryView.getUnitType()));
         rfqConsult.setPurchaseId(purchase.getPkey());
 
 //        rfqConsult.setPurchaseId(1);
@@ -108,6 +103,8 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         rfqConsult.setChangeCount((short) 0);
         rfqConsult.setCountry(purchase.getCountry());
         rfqConsult.setCountry(countryId);
+        rfqConsult.setProductRequest("{}");
+
         rfqConsultDAO.setB(rfqConsult);
         rfqConsultDAO.commit();
     }
@@ -122,11 +119,9 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         rfqConsult.setContent(inquiryView.getDescriotion());
         rfqConsult.setLeftCount(0);
         rfqConsult.setQuantity(inquiryView.getQuantity());
-        rfqConsult.stUnit(RFQConsultUnit.PAIR);
-//        rfqConsult.setPurchaseId(purchase.getPkey());
-        rfqConsult.setPurchaseId(1);
+        rfqConsult.stUnit((RFQConsultUnit) RFQConsultUnit.PAIR.getLine().get(inquiryView.getUnitType()));
+        rfqConsult.setPurchaseId(purchase.getPkey());
         rfqConsult.stIsDeleted(false);
-
         rfqConsult.setTotal(0);
         rfqConsult.stType(RFQConsultType.Private_INQUIRY);
         rfqConsult.stStatus(RFQConsultStatus.runing);
@@ -143,10 +138,35 @@ public class RFQConsultServiceImp implements IRFQConsultService {
                 )
         );
         rfqConsult.setChangeCount((short) 0);
-//        rfqConsult.setCountry(purchase.getCountry());
-        rfqConsult.setCountry(1);
+        rfqConsult.setCountry(purchase.getCountry());
+        rfqConsult.setProductRequest("{}");
         rfqConsultDAO.setB(rfqConsult);
         rfqConsultDAO.commit();
+    }
+
+    @Override
+    public int edItRFQInquiry(EditRFQConsultView inquiryView, UsrPurchase purchase) {
+        SQL sql = new SQL();
+        sql.SELECT(RFQConsult.class).FROM(RFQConsult.class)
+                .WHERE(RFQConsult.T.PKEY, "=?", inquiryView.getId())
+                .WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey());
+        RFQConsult rfqConsult = Query.sql(sql).query(RFQConsult.class);
+        if (rfqConsult != null && rfqConsult.gtStatus() == RFQConsultStatus.ready) {
+            rfqConsult.setImage(inquiryView.getImages());
+            rfqConsult.setContent(inquiryView.getDescriotion());
+            rfqConsult.setQuantity(inquiryView.getQuantity());
+            //TODO 这里单位应该是由前端传值
+            rfqConsult.stUnit((RFQConsultUnit) RFQConsultUnit.PAIR.getLine().get(inquiryView.getUnit()));
+            rfqConsult.setPrice(inquiryView.getMin_price() + "-" + inquiryView.getMax_price());
+            rfqConsult.stPayType((RFQConsultPayType) RFQConsultPayType.DEFAULT.getLine().get(inquiryView.getPay_type()));
+            rfqConsult.stShippingType(RFQConsultShipping_Type.FOB);
+            rfqConsult.setCurrency(inquiryView.getCurrency());
+            rfqConsult.setDestination(inquiryView.getDestination());
+            rfqConsult.setCountry(purchase.getCountry());
+            rfqConsultUpdDAO.setB(rfqConsult).commit();
+            return 1;
+        }
+        return -1;
     }
 
 }

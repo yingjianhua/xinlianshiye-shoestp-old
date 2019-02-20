@@ -1,16 +1,8 @@
 package irille.homeAction.rfq;
 
-import java.io.IOException;
-import java.util.Date;
-
-import javax.inject.Inject;
-
-import org.apache.struts2.ServletActionContext;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultMessageService;
 import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultService;
-
 import irille.Filter.svr.ItpCheckPurchaseLogin;
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.Service.Pdt.IPdtProductService;
@@ -20,10 +12,16 @@ import irille.homeAction.HomeAction;
 import irille.pub.tb.FldLanguage;
 import irille.pub.util.ipUtils.City;
 import irille.view.RFQ.PutInquiryView;
-import irille.view.RFQ.PutRFQConsultView;
 import irille.view.RFQ.RFQPdtInfo;
 import irille.view.plt.CountryView;
+import irille.view.v3.rfq.PutRFQConsultView;
+import irille.view.v3.rfq.EditRFQConsultView;
 import lombok.Setter;
+import org.apache.struts2.ServletActionContext;
+
+import javax.inject.Inject;
+import java.io.IOException;
+import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -34,9 +32,9 @@ import lombok.Setter;
 @Setter
 public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
 
-	private static final long serialVersionUID = 1L;
-	
-	@Inject
+    private static final long serialVersionUID = 1L;
+
+    @Inject
     private ObjectMapper objectMapper;
     @Inject
     private IRFQConsultService irfqConsultService;
@@ -78,15 +76,15 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
     public void putInquiry() throws IOException {
         PutInquiryView view = objectMapper.readValue(getJsonBody(), PutInquiryView.class);
         String[] country = City.find(ServletActionContext.getRequest().getRemoteAddr());
-        int countryId=-1;
+        int countryId = -1;
         if (country != null && country.length > 0) {
             for (CountryView countryView : pltService.getCountryList(FldLanguage.Language.zh_CN)) {
                 if (countryView.getName().indexOf(country[0]) != -1) {
-                    countryId=countryView.getId();
+                    countryId = countryView.getId();
                 }
             }
         }
-        irfqConsultService.putInquiry(view, getPurchase(),countryId);
+        irfqConsultService.putInquiry(view, getPurchase(), countryId);
         write();
     }
 
@@ -108,6 +106,7 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
         irfqConsultService.putPrivateInquiry(objectMapper.readValue(getJsonBody(), PutInquiryView.class), getPurchase());
         write();
     }
+
     /**
      * @Description: 展会介绍页1
      * @author winson Zhang
@@ -116,6 +115,7 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
         setResult("/html/exhibition/exhibitionLasVegas.jsp", false);
         return TRENDS;
     }
+
     /**
      * @Description: 展会介绍页2
      * @author winson Zhang
@@ -124,6 +124,7 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
         setResult("/html/exhibition/ExpoRivaSchuh.jsp", false);
         return TRENDS;
     }
+
     /**
      * @Description: 展会介绍页3
      * @author winson Zhang
@@ -132,7 +133,7 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
         setResult("/html/exhibition/guangjiaohui.jsp", false);
         return TRENDS;
     }
-    
+
     private String keyword;
     private Byte t;
     private Boolean unread;
@@ -203,8 +204,20 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
 	@Override
 	@NeedLogin
 	public void edit() throws IOException {
-		//TODO waiting for implemented
-		write();
+		 String json = getJsonBody();
+        EditRFQConsultView editRFQConsultView = objectMapper.readValue(json, EditRFQConsultView.class);
+        System.out.println(json);
+        System.out.println(editRFQConsultView);
+        if (editRFQConsultView.getId() != null && editRFQConsultView.getId() > 0) {
+            if (irfqConsultService.edItRFQInquiry(editRFQConsultView, getPurchase()) == 1) {
+                write();
+                return;
+            } else {
+                writeErr(-1, "该询盘不存在或者发生未知错误");
+                return;
+            }
+        }
+        writeErr(-1, "ID为空");
 	}
 
 	private String images;
