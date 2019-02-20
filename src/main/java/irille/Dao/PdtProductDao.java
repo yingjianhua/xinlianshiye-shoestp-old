@@ -858,7 +858,7 @@ public class PdtProductDao {
             SQL o2oPdtSql = new SQL();
             o2oPdtSql.SELECT(O2O_Product.T.PRODUCT_ID, O2O_Product.T.PRICE, O2O_Product.T.MIN_OQ, O2O_Product.T.UPDATED_TIME);
             o2oPdtSql.FROM(O2O_Product.class);
-            o2oPdtSql.WHERE("("+O2O_Product.T.STATUS + " = ?  OR " + O2O_Product.T.STATUS +  "= ? )",O2O_ProductStatus.ON.getLine().getKey(),O2O_ProductStatus.WAITOFF.getLine().getKey());
+            o2oPdtSql.WHERE("(" + O2O_Product.T.STATUS + " = ?  OR " + O2O_Product.T.STATUS + "= ? )", O2O_ProductStatus.ON.getLine().getKey(), O2O_ProductStatus.WAITOFF.getLine().getKey());
             o2oPdtSql.WHERE(O2O_Product.T.VERIFY_STATUS, " =? ", O2O_ProductStatus.PASS.getLine().getKey());
             StringBuffer buff = new StringBuffer("");
             for (int i = 0; i < activityList.size(); i++) {
@@ -901,9 +901,9 @@ public class PdtProductDao {
         sql.WHERE(PdtProduct.T.STATE, " =? ", Pdt.OState.ON.getLine().getKey());
     	/*sql.WHERE(PdtProduct.T.PRODUCT_TYPE, " =? ",Pdt.OProductType.GENERAL.getLine().getKey())
     		.orWhere(PdtProduct.T.PRODUCT_TYPE, " =? ", Pdt.OProductType.O2O.getLine().getKey());*/
-    	if(IsO2o != null && IsO2o.equals(1)){
-            sql.WHERE("PdtProduct.product_type =?",Pdt.OProductType.O2O);
-        }else{
+        if (IsO2o != null && IsO2o.equals(1)) {
+            sql.WHERE("PdtProduct.product_type =?", Pdt.OProductType.O2O);
+        } else {
             sql.WHERE(" ( PdtProduct.product_type =? OR PdtProduct.product_type =?)", Pdt.OProductType.GENERAL, Pdt.OProductType.O2O);
         }
         if (orderfld != null && orderfld.length > 0) {
@@ -979,8 +979,8 @@ public class PdtProductDao {
                 if (!buff.toString().equals("")) {
                     sql.WHERE(PdtProduct.T.PKEY, " in(" + buff.toString() + ") ");
                 }
-            }else{
-                sql.WHERE(PdtProduct.T.PKEY," in(-1) ");
+            } else {
+                sql.WHERE(PdtProduct.T.PKEY, " in(-1) ");
             }
         }
         sql.ORDER_BY(PdtProduct.T.MY_ORDER, "desc");
@@ -1082,12 +1082,17 @@ public class PdtProductDao {
             setClosed(getAttr(colsedList, attrSplit, curLanguage));
             setRewrite(SEOUtils.getPdtProductTitle(getPdtId(), getPdtName()));
             setUpper(getAttr(upperList, attrSplit, curLanguage));
-            setOriginCountry(map.get("pltCountry").toString());
-            setOriginProvince(map.get("pltProvince").toString());
+            ;
+            setOriginCountry(String.valueOf(map.get("pltCountry")));
+            setOriginProvince(String.valueOf(map.get("pltProvince")));
             if (purchase != null)
-            setEshrine(userFavoritePdt.contains(pdtPkey));
+                setEshrine(userFavoritePdt.contains(pdtPkey));
             setPdtType(Integer.parseInt(map.get(PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()).toString()));
-            setSupId(Integer.parseInt(map.get("supPkey").toString()));
+            try {
+                setSupId(Integer.parseInt(map.get("supPkey").toString()));
+            } catch (Exception e) {
+                logger.error(String.format("%d 该商品供应商不存在", getPdtId()));
+            }
             if (map.get("supName") != null)
                 setSupName(map.get("supName").toString());
 
@@ -1099,7 +1104,9 @@ public class PdtProductDao {
             String dateFormat = sim.format(new Date());
             Integer enter = Integer.parseInt(authFormat) - Integer.parseInt(dateFormat);
             setEnter(enter <= 0 ? 1 : enter + 1);
-        }}).collect(Collectors.toList());
+        }}).filter(pdtSearchView -> {
+            return pdtSearchView.getSupId() != null;
+        }).collect(Collectors.toList());
         return new Page(pdtListViwe, start, limit, count);
     }
 
