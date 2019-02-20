@@ -47,6 +47,22 @@ public interface IRFQConsultAction {
      * @author Jianhua Ying
      */
     void pageMsgs() throws IOException;
+    
+    /**
+     * 给询盘添加图片
+     * <p>上限五张 超出五张不能继续增加, 目前只有"供应商询盘"能在发布后继续添加图片
+     * @throws IOException
+     * @author Jianhua Ying
+     */
+    void addImage() throws IOException;
+    
+    /**
+     * 添加感兴趣的产品
+     * <p>仅"供应商询盘"能添加感兴趣产品, 上限50个
+     * @throws IOException
+     * @author Jianhua Ying
+     */
+    void addProductRequest() throws IOException;
 
     /**
      * 发送消息

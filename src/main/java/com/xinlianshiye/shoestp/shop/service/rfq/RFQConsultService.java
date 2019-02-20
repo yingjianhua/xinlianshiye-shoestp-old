@@ -47,6 +47,26 @@ public interface RFQConsultService {
      * @author Jianhua Ying
      */
     void addMoreInformation(UsrPurchase purchase, Integer consultPkey, String information, Date validDate);
+    
+    /**
+     * 给询盘添加图片
+     * <p>只有供应商询盘能在发布后继续添加图片, 上限五张
+     * @param purchase 采购商
+     * @param consultPkey 询盘主键
+     * @param images 图片链接 多图 通过逗号分隔
+     * @author Jianhua Ying
+     */
+    void addImage(UsrPurchase purchase, Integer consultPkey, String images);
+    
+    /**
+     * 给询盘添加感兴趣的产品
+     * <p>只有供应商询盘能添加感兴趣产品, 上限50个, 保存产品的主键,以即名称和图片作为冗余
+     * @param purchase 采购商
+     * @param consultPkey 询盘主键
+     * @param products 产品主键, 多产品通过逗号分隔
+     * @author Jianhua Ying
+     */
+    void addProductRequest(UsrPurchase purchase, Integer consultPkey, String products);
 
     /**
      * 关闭RFQ询盘
