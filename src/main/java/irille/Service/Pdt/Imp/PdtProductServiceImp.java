@@ -1,7 +1,9 @@
 package irille.Service.Pdt.Imp;
 
 import irille.Aops.Caches;
+import irille.Dao.O2O.O2OProductDao;
 import irille.Dao.PdtProductDao;
+import irille.Entity.O2O.O2O_Product;
 import irille.Service.Pdt.IPdtProductService;
 import irille.homeAction.HomeAction;
 import irille.homeAction.pdt.dto.ExhibitionSupplierView;
@@ -20,6 +22,7 @@ import irille.shop.usr.UsrSupplier;
 import irille.view.RFQ.RFQPdtInfo;
 import irille.view.pdt.PdtProductBaseInfoView;
 import irille.view.pdt.PdtProductCatView;
+import irille.view.pdt.PdtSearchView;
 import irille.view.pub.PageSearch;
 import irille.view.v2.Pdt.PdtNewPdtInfo;
 
@@ -28,6 +31,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -37,6 +41,9 @@ public class PdtProductServiceImp implements IPdtProductService {
 
     @Inject
     PdtProductDao pdtProductDao;
+
+    @Inject
+    O2OProductDao o2OProductDao;
 
     @Override
     public List<PdtProductBaseInfoView> getNewProductsListByIndex(IduPage iduPage) {
@@ -346,6 +353,22 @@ public class PdtProductServiceImp implements IPdtProductService {
     public PageSearch searchPdt(String[] orderfld,UsrPurchase purchase, FldLanguage.Language curLanguage, Integer lose, String pName, Integer cate, Integer level, String export, Integer mOrder, BigDecimal min, BigDecimal max, Integer IsO2o, String o2oAddress, Integer start, Integer limit) {
 
         PageSearch pageSearch = new PageSearch(pdtProductDao.searchPdtByQuery(orderfld,purchase, curLanguage, lose, pName, cate, level, export, mOrder, min, max, IsO2o, o2oAddress, start, limit));
+        List<PdtSearchView> data = pageSearch.getItems();
+        List<PdtSearchView> result = data.stream().filter(new Predicate<PdtSearchView>(){
+            @Override
+            public boolean test(PdtSearchView o) {
+                if(o.getPdtType().equals(Integer.valueOf(Pdt.OProductType.O2O.getLine().getKey()))){
+                    List<O2O_Product> o2os = o2OProductDao.findAllByProd_Pkey(o.getPdtId());
+                    if(o2os != null && o2os.size() >0){
+                        o.setPdtType(Integer.valueOf(Pdt.OProductType.O2O.getLine().getKey()));
+                    }else{
+                        o.setPdtType(Integer.valueOf(Pdt.OProductType.GENERAL.getLine().getKey()));
+                    }
+                }
+                return true;
+            }
+        }).collect(Collectors.toList());
+        pageSearch.setItems(result);
         if (cate != null && cate > 0)
             pageSearch.setBreadcrumbnav(pdtProductDao.getBreadcrumbNav(cate));
         return pageSearch;
