@@ -80,4 +80,7 @@
             }
             return -1;
         }
+        if (user_obj) {
+            user_obj.sign_in_init()
+        }
     </script>
