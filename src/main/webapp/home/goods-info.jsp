@@ -882,7 +882,7 @@
 <script src="/home/v3/static/js/index-top.js"></script>
 
 <script>
-
+        user_obj.sign_in_init();
     var app = new Vue({
         el: "#app",
         data: {

@@ -45,7 +45,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class RFQConsultServiceImpl implements RFQConsultService {
-	
+
 	@Inject
 	private ObjectMapper om;
 
@@ -67,7 +67,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 			.WHERE(UsrSupplier.T.NAME, "like ?", "%"+keyword+"%");
 		}
 		if(type != null) {
-			//询盘类型 
+			//询盘类型
 			query.WHERE(RFQConsult.T.TYPE, "=?", type);
 		}
 		if(unread != null) {
@@ -89,7 +89,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 		Integer totalCount = query.queryCount();
 		return new Page<>(result, start, limit, totalCount);
 	}
-	
+
 	@Override
 	public List<RFQConsultRelationView> listRelation(Integer consultPkey) {
 		BeanQuery<?> query = Query.SELECT(RFQConsultRelation.T.PKEY);
@@ -114,7 +114,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 		query.LEFT_JOIN(PltErate.class, RFQConsultRelation.T.CURRENCY, PltErate.T.PKEY);
 		query.WHERE(RFQConsultRelation.T.CONSULT, "=?", consultPkey);
 		query.WHERE(RFQConsultRelation.T.IS_DELETED_PURCHASE, "=?", false);
-		
+
 		List<RFQConsultRelationView> result = query.queryMaps().stream().map(map->{
 			RFQConsultRelationView relation = new RFQConsultRelationView();
 			RFQQuotationView quotation = new RFQQuotationView();
@@ -145,7 +145,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 		}).collect(Collectors.toList());
 		return result;
 	}
-	
+
 	@Override
 	public RFQQuotationView getQuotation(UsrPurchase purchase, Integer relationPkey) {
 		BeanQuery<RFQConsultRelation> query = Query
