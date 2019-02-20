@@ -38,7 +38,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         rfqConsult.setContent(rfqConsultView.getDescriotion());
         rfqConsult.setLeftCount(0);
         rfqConsult.setQuantity(rfqConsultView.getQuantity());
-        rfqConsult.stUnit(RFQConsultUnit.PAIR);
+        rfqConsult.stUnit((RFQConsultUnit) RFQConsultUnit.PAIR.getLine().get(rfqConsult.getUnit()));
 
         rfqConsult.setPurchaseId(usrPurchase.getPkey());
         rfqConsult.stType(RFQConsultType.RFQ);
@@ -80,7 +80,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         rfqConsult.setContent(inquiryView.getDescriotion());
         rfqConsult.setLeftCount(0);
         rfqConsult.setQuantity(inquiryView.getQuantity());
-        rfqConsult.stUnit(RFQConsultUnit.PAIR);
+        rfqConsult.stUnit((RFQConsultUnit) RFQConsultUnit.PAIR.getLine().get(inquiryView.getUnitType()));
         rfqConsult.setPurchaseId(purchase.getPkey());
 
 //        rfqConsult.setPurchaseId(1);
@@ -119,7 +119,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         rfqConsult.setContent(inquiryView.getDescriotion());
         rfqConsult.setLeftCount(0);
         rfqConsult.setQuantity(inquiryView.getQuantity());
-        rfqConsult.stUnit(RFQConsultUnit.PAIR);
+        rfqConsult.stUnit((RFQConsultUnit) RFQConsultUnit.PAIR.getLine().get(inquiryView.getUnitType()));
         rfqConsult.setPurchaseId(purchase.getPkey());
         rfqConsult.stIsDeleted(false);
         rfqConsult.setTotal(0);
