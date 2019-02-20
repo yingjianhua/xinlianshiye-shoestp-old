@@ -62,7 +62,7 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
 			supplier.setContacts(GetValue.get(map, UsrSupplier.T.CONTACTS, String.class, null));
 			supplier.setName(GetValue.get(map, UsrSupplier.T.NAME, String.class, ""));
 			contact.setSupplier(supplier);
-			contact.setRelation(listConsultRelation(purchase.getPkey(), supplier.getPkey(), supplier.getName().contains(keyword)?null:keyword));
+			contact.setRelation(listConsultRelation(purchase.getPkey(), supplier.getPkey(), (keyword == null || supplier.getName().contains(keyword))?null:keyword));
 			return contact;
 		}).collect(Collectors.toList());
 		Integer totalCount = query.queryCount();
