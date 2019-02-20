@@ -844,6 +844,7 @@ public class PdtProductDao {
                     o2oActivitySql.orWhere(O2O_Activity.T.ADDRESS, " =?", Integer.parseInt(item));
                 }
             }
+//            o2oActivitySql.WHERE(O2O_Activity.T.STATUS, " =? ", O2O_ActivityStatus.ACTIVITY);
             Date now = new Date();
             o2oActivitySql.WHERE(O2O_Activity.T.START_DATE, "<?", now);
             o2oActivitySql.WHERE(O2O_Activity.T.END_DATE, ">?", now);
@@ -855,10 +856,11 @@ public class PdtProductDao {
             if (activityList.isEmpty()) {
                 return new Page(new ArrayList<>(), start, limit, 0);
             }
+
             SQL o2oPdtSql = new SQL();
             o2oPdtSql.SELECT(O2O_Product.T.PRODUCT_ID, O2O_Product.T.PRICE, O2O_Product.T.MIN_OQ, O2O_Product.T.UPDATED_TIME);
             o2oPdtSql.FROM(O2O_Product.class);
-            o2oPdtSql.WHERE(O2O_Product.T.STATUS, " =? ", O2O_ProductStatus.ON.getLine().getKey());
+            o2oPdtSql.WHERE("("+O2O_Product.T.STATUS + " = ?  OR " + O2O_Product.T.STATUS +  "= ? )",O2O_ProductStatus.ON.getLine().getKey(),O2O_ProductStatus.WAITOFF.getLine().getKey());
             o2oPdtSql.WHERE(O2O_Product.T.VERIFY_STATUS, " =? ", O2O_ProductStatus.PASS.getLine().getKey());
             StringBuffer buff = new StringBuffer("");
             for (int i = 0; i < activityList.size(); i++) {
@@ -883,6 +885,8 @@ public class PdtProductDao {
         SQL sql = new SQL();
         sql.SELECT(PdtProduct.T.PKEY, "pdtPkey");
         sql.SELECT(PdtProduct.T.NAME, "pdtName");
+        sql.SELECT(PdtProduct.T.PRODUCT_TYPE);
+        //sql.SELECT(PdtProduct.T.CATEGORY,"pdtCate");
         sql.SELECT(PdtProduct.T.CUR_PRICE, PdtProduct.T.MIN_OQ, PdtProduct.T.CATEGORY, PdtProduct.T.NORM_ATTR, PdtProduct.T.PRODUCT_TYPE, PdtProduct.T.PICTURE);
         sql.SELECT(UsrSupplier.T.PKEY, "supPkey");
         sql.SELECT(UsrSupplier.T.SHOW_NAME, "supName");
@@ -897,9 +901,15 @@ public class PdtProductDao {
         sql.LEFT_JOIN(PltCountry.class, UsrSupplier.T.COUNTRY, PltCountry.T.PKEY);
         sql.LEFT_JOIN(PltProvince.class, UsrSupplier.T.PROVINCE, PltProvince.T.PKEY);
         sql.LEFT_JOIN(PdtCat.class, PdtProduct.T.CATEGORY, PdtCat.T.PKEY);
-        sql.WHERE(PdtProduct.T.IS_VERIFY, " =? ", Sys.OYn.YES);
-        sql.WHERE(PdtProduct.T.STATE, " =? ", Pdt.OState.ON);
-        sql.WHERE(" ( PdtProduct.product_type =? OR PdtProduct.product_type =?)", Pdt.OProductType.GENERAL, Pdt.OProductType.O2O);
+        sql.WHERE(PdtProduct.T.IS_VERIFY, " =? ", Sys.OYn.YES.getLine().getKey());
+        sql.WHERE(PdtProduct.T.STATE, " =? ", Pdt.OState.ON.getLine().getKey());
+    	/*sql.WHERE(PdtProduct.T.PRODUCT_TYPE, " =? ",Pdt.OProductType.GENERAL.getLine().getKey())
+    		.orWhere(PdtProduct.T.PRODUCT_TYPE, " =? ", Pdt.OProductType.O2O.getLine().getKey());*/
+    	if(IsO2o != null && IsO2o.equals(1)){
+            sql.WHERE("PdtProduct.product_type =?",Pdt.OProductType.O2O);
+        }else{
+            sql.WHERE(" ( PdtProduct.product_type =? OR PdtProduct.product_type =?)", Pdt.OProductType.GENERAL, Pdt.OProductType.O2O);
+        }
         if (orderfld != null && orderfld.length > 0) {
             switch (orderfld[0]) {
                 case "MostPopular": {
@@ -924,10 +934,14 @@ public class PdtProductDao {
                     }
                 }
                 sql.WHERE(PdtProduct.T.CATEGORY, " in(" + pkeys + ") ");
+//                start = 0;
+//                limit = 10;
             }
         if (StringUtil.hasValue(pName)) {
             sql.WHERE(" upper(JSON_EXTRACT(PdtProduct.name,?))  like upper(?) ", "$." + curLanguage.name(), "%" + pName + "%");
         }
+//        sql.WHERE(" upper(JSON_EXTRACT(PdtProduct.name,'$." + curLanguage.name() + "'))  like upper('%" + pName
+//                + "%') ");
         if (level != null)
             sql.WHERE(UsrSupplier.T.ROLE, " =? ", level);
         if (StringUtil.hasValue(export)) {
@@ -947,22 +961,26 @@ public class PdtProductDao {
             }
             if (!buff.toString().equals(""))
                 sql.WHERE(buff.toString());
+			/*sql.WHERE(" ( upper(JSON_EXTRACT(UsrSupplier.main_sales_area,'$." + curLanguage.name()
+					+ "'))  like upper('%" + export + "%') or UsrSupplier.main_sales_area like '%不限%' ) ");*/
+            /* .orWhere(UsrSupplier.T.MAIN_SALES_AREA," like ? ","%不限%"); */
         }
-        if (mOrder != null) {
+        if (mOrder != null)
             sql.WHERE(PdtProduct.T.MIN_OQ, " >=? ", mOrder);
-            sql.ORDER_BY(PdtProduct.T.MIN_OQ, "asc");
+        if (min != null && max != null) {
+            if (min.compareTo(max) == -1) {
+                sql.WHERE(PdtProduct.T.CUR_PRICE, " >=? ", min);
+                sql.WHERE(PdtProduct.T.CUR_PRICE, " <=? ", max);
+            } else if (min.compareTo(max) == 0) {
+                sql.WHERE(PdtProduct.T.CUR_PRICE, " =? ", min);
+            }
         }
-        if (min != null && min.compareTo(BigDecimal.ZERO) == 1) {
-            sql.WHERE(PdtProduct.T.CUR_PRICE, " >=? ", min);
-            sql.ORDER_BY(PdtProduct.T.CUR_PRICE, "asc");
-        }
-        sql.WHERE(max != null && max.compareTo(BigDecimal.ZERO) == 1, PdtProduct.T.CUR_PRICE, " <=? ", max);
-        if (IsO2o != null && IsO2o == 1) {
+        if (IsO2o != null && IsO2o.equals(1)) {
             if (!o2oPdtPkey.isEmpty()) {
                 StringBuffer buff = new StringBuffer("");
                 int i = 0;
                 for (Integer item : o2oPdtPkey) {
-                    if (i == o2oPdtPkey.size() - 1)
+                    if (o2oPdtPkey.size() - 1 == i)
                         buff.append(item);
                     else {
                         buff.append(item);
@@ -973,6 +991,8 @@ public class PdtProductDao {
                 if (!buff.toString().equals("")) {
                     sql.WHERE(PdtProduct.T.PKEY, " in(" + buff.toString() + ") ");
                 }
+            }else{
+                sql.WHERE(PdtProduct.T.PKEY," in(-1) ");
             }
         }
         sql.ORDER_BY(PdtProduct.T.MY_ORDER, "desc");
@@ -1077,7 +1097,7 @@ public class PdtProductDao {
             setOriginCountry(map.get("pltCountry").toString());
             setOriginProvince(map.get("pltProvince").toString());
             if (purchase != null)
-                setEshrine(userFavoritePdt.contains(pdtPkey));
+            setEshrine(userFavoritePdt.contains(pdtPkey));
             setPdtType(Integer.parseInt(map.get(PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()).toString()));
             setSupId(Integer.parseInt(map.get("supPkey").toString()));
             if (map.get("supName") != null)
