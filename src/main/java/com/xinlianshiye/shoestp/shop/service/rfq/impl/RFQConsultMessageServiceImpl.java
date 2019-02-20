@@ -38,6 +38,9 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 		if(relation == null) {
 			throw new WebMessageException(ReturnCode.service_gone, "数据不存在");
 		}
+		
+		relation.stHadReadPurchase(true);
+		relation.upd();
 
 		BeanQuery<RFQConsultMessage> query2 = Query.selectFrom(RFQConsultMessage.class);
 		query2.WHERE(RFQConsultMessage.T.RELATION, "=?", relationPkey);
