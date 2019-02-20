@@ -48,7 +48,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
         PAY_TYPE(Tb.crt(RFQConsultPayType.DEFAULT).setNull()), //支付方式
         SHIPPING_TYPE(Tb.crt(RFQConsultShipping_Type.DEFAULT).setNull()), //运送方式
         CURRENCY(PltErate.fldOutKey().setNull()),  //货币类型
-        EXTRA_REQUEST(Sys.T.STR__100),//额外请求, 店铺询盘专用字段, 是用逗号分隔的请求内容 格式如: price, inspection product, product specification
+        EXTRA_REQUEST(Sys.T.STR__100_NULL),//额外请求, 店铺询盘专用字段, 是用逗号分隔的请求内容 格式如: price, inspection product, product specification
         PRODUCT_REQUEST(Sys.T.JSON),//请求产品列表, 店铺询盘专用字段, 在店铺的基础上指定感兴趣的产品 格式如: [{"pkey":1, "name":"bb", "image":"aa"}, {"pkey":2, "name":"dd", "image":"cc"}]
         DESTINATION(Sys.T.STR__200_NULL, "目的地"),
         TOTAL(Sys.T.INT_PLUS_OR_ZERO, "总抢单数"),
