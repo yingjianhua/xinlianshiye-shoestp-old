@@ -1,7 +1,16 @@
 package irille.homeAction.rfq;
 
+import java.io.IOException;
+import java.util.Date;
+
+import javax.inject.Inject;
+
+import org.apache.struts2.ServletActionContext;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultMessageService;
 import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultService;
+
 import irille.Filter.svr.ItpCheckPurchaseLogin;
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.Service.Pdt.IPdtProductService;
@@ -15,10 +24,6 @@ import irille.view.RFQ.PutRFQConsultView;
 import irille.view.RFQ.RFQPdtInfo;
 import irille.view.plt.CountryView;
 import lombok.Setter;
-import org.apache.struts2.ServletActionContext;
-
-import javax.inject.Inject;
-import java.io.IOException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -29,12 +34,16 @@ import java.io.IOException;
 @Setter
 public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
 
-    @Inject
+	private static final long serialVersionUID = 1L;
+	
+	@Inject
     private ObjectMapper objectMapper;
     @Inject
     private IRFQConsultService irfqConsultService;
     @Inject
     private RFQConsultService rFQConsultService;
+    @Inject
+    private RFQConsultMessageService rFQConsultMessageService;
     @Inject
     private IPdtProductService iPdtProductService;
 
@@ -123,7 +132,7 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
         setResult("/html/exhibition/guangjiaohui.jsp", false);
         return TRENDS;
     }
-
+    
     private String keyword;
     private Byte t;
     private Boolean unread;
@@ -136,11 +145,66 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
 		write(rFQConsultService.pageMine(getPurchase(), t, keyword, unread, start, limit));
 	}
 	private Integer quotationPkey;
-
+	
 	@Override
+	@NeedLogin
 	public void deleteQuotation() throws IOException {
 		rFQConsultService.deleteQuotation(getPurchase(), quotationPkey);
 		write();
 	}
 
+	@Override
+	@NeedLogin
+	public void quotationDetail() throws IOException {
+		write(rFQConsultService.getQuotation(getPurchase(), quotationPkey));
+	}
+	
+	Integer consultPkey;
+
+	@Override
+	@NeedLogin
+	public void detail() throws IOException {
+		write(rFQConsultService.getDetail(getPurchase(), consultPkey));
+	}
+
+	private Integer relationPkey;
+	
+	@Override
+	@NeedLogin
+	public void pageMsgs() throws IOException {
+		write(rFQConsultMessageService.page(getPurchase(), relationPkey, start, limit));
+	}
+	
+	private String content;
+
+	@Override
+	@NeedLogin
+	public void sendMessage() throws IOException {
+		write(rFQConsultMessageService.send(getPurchase(), relationPkey, content));
+	}
+
+	private String information;
+	private Date validDate;
+	
+	@Override
+	@NeedLogin
+	public void addInformation() throws IOException {
+		rFQConsultService.addMoreInformation(getPurchase(), consultPkey, information, validDate);
+		write();
+	}
+
+	@Override
+	@NeedLogin
+	public void close() throws IOException {
+		rFQConsultService.close(getPurchase(), consultPkey);
+		write();
+	}
+
+	@Override
+	@NeedLogin
+	public void edit() throws IOException {
+		//TODO waiting for implemented
+		write();
+	}
+    
 }

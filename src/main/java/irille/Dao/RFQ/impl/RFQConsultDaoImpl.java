@@ -263,6 +263,15 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
      * @Description: 获取询盘列表
      * @date 2019/1/30 15:44
      * @author lijie@shoestp.cn
+     *
+     * 询盘状态必须为RFQ询盘
+     * 有效期必须大于当前时间
+     * 审核状态必须为已审核
+     * 询盘关联表的供应商id为当前供应商(不加会出现查询重复)
+     *
+     * 查询inquiry时必须满足：
+     * 询盘关联表的consult等于询盘表的pkey
+     * 并且是当前登录的供应商
      */
     public List<Map<String, Object>> getRFQList(int start, int limit, String keyword, int supId) {
         SQL sql = new SQL();
@@ -292,7 +301,8 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 .LIMIT(start, limit)
                 .WHERE(keyword != null && keyword.length() > 0, RFQConsult.T.TITLE, "like ?", keyword)
                 .WHERE(RFQConsult.T.VALID_DATE, ">?", LocalDateTime.now())
-                .WHERE(RFQConsult.T.VERIFY_STATUS,"=?", RFQConsultVerifyStatus.PASS.getLine().getKey())
+                .WHERE(RFQConsult.T.VERIFY_STATUS,"=?", RFQConsultVerifyStatus.PASS)
+                .WHERE(RFQConsultRelation.T.SUPPLIER_ID,"=?",supId)
         ;
         sql.ORDER_BY(RFQConsult.T.CREATE_TIME, " DESC ");
         return Query.sql(sql).queryMaps();
@@ -435,7 +445,53 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 );
                 break;
         }
+
+        sql.LIMIT(start,limit);
         return Query.sql(sql).queryMaps();
+    }
+    @Override
+    public Integer count(byte type, Date date, String keyword, boolean flag, Integer status, Integer country, int supId){
+        SQL sql = new SQL();
+        sql.SELECT(
+                RFQConsult.T.PKEY,
+                RFQConsult.T.TITLE,
+                RFQConsult.T.QUANTITY,
+                RFQConsult.T.CONTENT,
+                RFQConsult.T.CREATE_TIME,
+                RFQConsultRelation.T.HAD_READ_PURCHASE,
+                RFQConsultRelation.T.HAD_READ_SUPPLIER,
+                RFQConsultRelation.T.QUANTITY,
+                RFQConsultRelation.T.DESCRIPTION,
+                RFQConsultRelation.T.PURCHASE_ID
+        ).SELECT(RFQConsultRelation.T.TITLE, "myTitle").SELECT(
+                RFQConsultRelation.T.CREATE_DATE, "myCreate_time"
+        )
+                .FROM(RFQConsult.class)
+                .LEFT_JOIN(
+                        RFQConsultRelation.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY
+                )
+                .WHERE(
+                        RFQConsultRelation.T.SUPPLIER_ID, "=?", supId
+                )
+                .WHERE(RFQConsultRelation.T.IN_RECYCLE_BIN, "=?", Sys.OYn.NO)
+        ;
+        switch (type) {
+            case 2:
+                sql.WHERE(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", Sys.OYn.NO);
+                break;
+            case 3:
+                sql.WHERE(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", Sys.OYn.YES);
+                break;
+            case 4:
+                sql.LEFT_JOIN(
+                        RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY
+                ).WHERE(
+                        RFQConsultMessage.T.P2S, "=?", Sys.OYn.YES
+                );
+                break;
+        }
+
+        return Query.sql(sql).queryCount();
     }
 
     @Override

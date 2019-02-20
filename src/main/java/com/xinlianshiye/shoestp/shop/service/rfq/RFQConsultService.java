@@ -1,11 +1,13 @@
 package com.xinlianshiye.shoestp.shop.service.rfq;
 
+import java.util.Date;
 import java.util.List;
 
 import com.google.inject.ImplementedBy;
 import com.xinlianshiye.shoestp.shop.service.rfq.impl.RFQConsultServiceImpl;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultRelationView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultView;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationView;
 
 import irille.shop.usr.UsrPurchase;
 import irille.view.Page;
@@ -25,7 +27,35 @@ public interface RFQConsultService {
      * @author Jianhua Ying
      */
     Page<RFQConsultView> pageMine(UsrPurchase purchase, Byte type, String keyword, Boolean unread, Integer start, Integer limit);
+    
+    /**
+     * RFQ或询盘详情
+     * @param purchase 采购商
+     * @param consultPkey 询盘主键
+     * @return
+     * @author Jianhua Ying
+     */
+    RFQConsultView getDetail(UsrPurchase purchase, Integer consultPkey);
+    
+    /**
+     * 给RFQ询盘添加额外的信息,更新有效时间
+     * 
+     * @param purchase 采购商
+     * @param consultPkey 询盘主键
+     * @param information 额外信息
+     * @param validDate 有效期
+     * @author Jianhua Ying
+     */
+    void addMoreInformation(UsrPurchase purchase, Integer consultPkey, String information, Date validDate);
 
+    /**
+     * 关闭RFQ询盘
+     * <p>可以在任何状态下关闭询盘,关闭之后 询盘不能进行编辑 增加额外信息和报价 以即再次关闭.
+     * @param purchase 采购商
+     * @param consultPkey 询盘主键
+     * @author Jianhua Ying
+     */
+    void close(UsrPurchase purchase, Integer consultPkey);
     /**
      * 查询RFQ的报价状况
      * @param consultPkey 询盘主键
@@ -44,4 +74,12 @@ public interface RFQConsultService {
 	 * @author Jianhua Ying
 	 */
 	void deleteQuotation(UsrPurchase purchase, Integer relationPkey);
+	
+	/**
+	 * 报价信息
+	 * @param purchase 采购商
+	 * @param relationPkey 询盘报价主键
+	 * @author Jianhua Ying
+	 */
+	RFQQuotationView getQuotation(UsrPurchase purchase, Integer relationPkey);
 }
