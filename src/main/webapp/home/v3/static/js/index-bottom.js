@@ -79,10 +79,10 @@ Vue.component('index-bottom', {
                     ]
                 },
                 {
-                    title: 'Trade Shows',
+                    title: 'Trade Show',
                     url: [
                         {
-                            atitle: 'Romanian',
+                            atitle: 'Romania',
                             alink: '/country/Romania-Pantofi-en-gros/romania-index-ro.html'
                         }
                     ]
