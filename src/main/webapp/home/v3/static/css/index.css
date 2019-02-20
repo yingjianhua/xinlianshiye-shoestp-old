@@ -1229,6 +1229,10 @@ a {
     align-items: center;
 }
 
+#o2otop .o2otopcon .logo {
+    padding-right: 68px;
+}
+
 #o2otop .o2otopcon > img {
     padding-right: 68px;
 }
