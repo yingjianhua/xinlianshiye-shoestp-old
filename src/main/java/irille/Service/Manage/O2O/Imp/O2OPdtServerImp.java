@@ -82,7 +82,7 @@ public class O2OPdtServerImp implements IO2OPdtServer {
     public List<PdtNewPdtInfo> O2OList(UsrPurchase purchase, Integer start, Integer limit) {
         List<PdtNewPdtInfo> items = o2OProductDao.o2oList(purchase, start, limit).stream().map(pdt -> {
             PdtNewPdtInfo item = new PdtNewPdtInfo();
-            item.setFavorite(null == GetValue.get(pdt, "ismyfavorite", Boolean.class, null) ? false : GetValue.get(pdt, "ismyfavorite", Boolean.class, null));
+            item.setFavorite(null != GetValue.get(pdt, "ismyfavorite", Integer.class, null));
             item.setImage(GetValue.getFirstImage(GetValue.get(pdt, PdtProduct.T.PICTURE, String.class, null)));
             Long pdtPkey = Long.valueOf(String.valueOf(GetValue.get(pdt, PdtProduct.T.PKEY, Integer.class, -1)));
             item.setId(pdtPkey);
