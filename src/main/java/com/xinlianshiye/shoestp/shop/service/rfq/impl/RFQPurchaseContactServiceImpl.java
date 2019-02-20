@@ -35,6 +35,7 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
 		query.SELECT(RFQPurchaseContact.T.CREATED_TIME);
 		query.SELECT(UsrSupplier.T.PKEY, "supplierPkey");
 		query.SELECT(UsrSupplier.T.NAME);
+		query.SELECT(UsrSupplier.T.LOGO);
 		//TODO svs 认证信息待完善 
 		query.SELECT(UsrSupplier.T.CONTACTS);
 		query.FROM(RFQPurchaseContact.class);
@@ -61,6 +62,7 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
 			supplier.setPkey(GetValue.get(map, "supplierPkey", Integer.class, null));
 			supplier.setContacts(GetValue.get(map, UsrSupplier.T.CONTACTS, String.class, null));
 			supplier.setName(GetValue.get(map, UsrSupplier.T.NAME, String.class, ""));
+			supplier.setLogo(GetValue.get(map, UsrSupplier.T.LOGO, String.class, ""));
 			contact.setSupplier(supplier);
 			contact.setRelation(listConsultRelation(purchase.getPkey(), supplier.getPkey(), (keyword == null || supplier.getName().contains(keyword))?null:keyword));
 			return contact;
