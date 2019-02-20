@@ -206,5 +206,23 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
 		//TODO waiting for implemented
 		write();
 	}
+
+	private String images;
+	
+	@Override
+	@NeedLogin
+	public void addImage() throws IOException {
+		rFQConsultService.addImage(getPurchase(), consultPkey, images);
+		write();
+	}
+
+	private String products;
+	
+	@Override
+	@NeedLogin
+	public void addProductRequest() throws IOException {
+		rFQConsultService.addProductRequest(getPurchase(), consultPkey, products);
+		write();
+	}
     
 }

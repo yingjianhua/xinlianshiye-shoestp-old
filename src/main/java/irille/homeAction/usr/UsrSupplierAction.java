@@ -1,38 +1,52 @@
 package irille.homeAction.usr;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import irille.Service.Usr.IUsrSupplierService;
-import irille.homeAction.HomeAction;
-import irille.homeAction.usr.dto.Page_supplierView;
-import irille.homeAction.usr.dto.ProductView;
-import irille.pub.bean.BeanBase;
-import irille.pub.idu.IduPage;
-import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
-import irille.shop.pdt.PdtCatDAO;
-import irille.shop.plt.PltProvince;
-import irille.shop.prm.PrmGroupPurchase;
-import irille.shop.prm.PrmGroupPurchaseDAO;
-import irille.shop.usr.Usr.OStatus;
-import irille.shop.usr.*;
-import irille.view.Page;
-import irille.view.pdt.CategoryView;
-import irille.view.usr.SupplierView;
-import irille.view.usr.UserView;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import javax.inject.Inject;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class UsrSupplierAction extends HomeAction<UsrSupplier> {
-    private static final UsrSupplierDAO.pageSelect pageSelect = new UsrSupplierDAO.pageSelect();
+import javax.inject.Inject;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xinlianshiye.shoestp.shop.service.usr.UsrSupplierService;
+
+import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
+import irille.Service.Usr.IUsrSupplierService;
+import irille.homeAction.HomeAction;
+import irille.homeAction.usr.dto.Page_supplierView;
+import irille.homeAction.usr.dto.ProductView;
+import irille.pub.bean.BeanBase;
+import irille.pub.idu.IduPage;
+import irille.shop.pdt.PdtCatDAO;
+import irille.shop.plt.PltProvince;
+import irille.shop.prm.PrmGroupPurchase;
+import irille.shop.prm.PrmGroupPurchaseDAO;
+import irille.shop.usr.Usr.OStatus;
+import irille.shop.usr.UsrProductCategory;
+import irille.shop.usr.UsrProductCategoryDAO;
+import irille.shop.usr.UsrSupplier;
+import irille.shop.usr.UsrSupplierCategoryDAO;
+import irille.shop.usr.UsrSupplierDAO;
+import irille.view.pdt.CategoryView;
+import irille.view.usr.SupplierView;
+import irille.view.usr.UserView;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISupplierAction {
+	
+	private static final long serialVersionUID = 1L;
+	
+	private static final UsrSupplierDAO.pageSelect pageSelect = new UsrSupplierDAO.pageSelect();
     private Integer _length;
     private String category;
     private String sort;
@@ -41,31 +55,6 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
 
     @Inject
     IUsrSupplierService usrSupplierService;
-
-
-    public Integer getPageNumber() {
-        return pageNumber;
-    }
-
-    public void setPageNumber(Integer pageNumber) {
-        this.pageNumber = pageNumber;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getSort() {
-        return sort;
-    }
-
-    public void setSort(String sort) {
-        this.sort = sort;
-    }
 
     public Integer getLength() {
         return _length;
@@ -98,41 +87,9 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
     private double pageAll;
     private Integer type;
 
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public double getPageAll() {
-        return pageAll;
-    }
-
-    public void setPageAll(double pageAll) {
-        this.pageAll = pageAll;
-    }
-
     private String catName;
 
-    public String getCatName() {
-        return catName;
-    }
-
-    public void setCatName(String catName) {
-        this.catName = catName;
-    }
-
     private SupplierView supView;
-
-    public SupplierView getSupView() {
-        return supView;
-    }
-
-    public void setSupView(SupplierView supView) {
-        this.supView = supView;
-    }
 
     /**
      * 返回供应商产品页面|根据产品分类和页码搜索产品|根据Most Popular/Sales/Favorites/New/Price进行排序
@@ -182,32 +139,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
 
     private List<PrmGroupPurchase> unionList;
     private String groupState;
-
-    public String getGroupState() {
-        return groupState;
-    }
-
-    public void setGroupState(String groupState) {
-        this.groupState = groupState;
-    }
-
-    public List<PrmGroupPurchase> getUnionList() {
-        return unionList;
-    }
-
-    public void setUnionList(List<PrmGroupPurchase> unionList) {
-        this.unionList = unionList;
-    }
-
     private List<CategoryView> catList;
-
-    public List<CategoryView> getCatList() {
-        return catList;
-    }
-
-    public void setCatList(List<CategoryView> catList) {
-        this.catList = catList;
-    }
 
     /**
      * 返回联合采购页面
@@ -464,38 +396,16 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
     public void listSuppliers() throws Exception {
         write(usrSupplierService.listSupplier(getStart() , getLimit()));
     }
+    
+    @Inject
+    private UsrSupplierService usrSupplierService2;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public List<PltProvince> getPltProvince() {
-        return pltProvince;
-    }
-
-    public void setPltProvince(List<PltProvince> pltProvince) {
-        this.pltProvince = pltProvince;
-    }
-
-    public SupplierView getView() {
-        return view;
-    }
-
-    public void setView(SupplierView view) {
-        this.view = view;
-    }
-
-    public Byte getEntryStep() {
-        return entryStep;
-    }
-
-    public void setEntryStep(Byte entryStep) {
-        this.entryStep = entryStep;
-    }
-
+    private Integer supplierPkey;
+    
+	@Override
+	@NeedLogin
+	public void getDetail() throws IOException {
+		write(usrSupplierService2.detail(getPurchase(), supplierPkey));
+	}
 
 }

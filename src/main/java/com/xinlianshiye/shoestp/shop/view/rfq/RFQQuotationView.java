@@ -17,6 +17,7 @@ public class RFQQuotationView implements BaseView {
 	private String title; //标题
 	private String description; //描述
 	private Integer quantity;//数量
+	private String unit;//数量单位
 	private List<String> images; //图片 多图
 	private Integer minPrice; //最低价格
 	private Integer maxPrice; //最高价格
