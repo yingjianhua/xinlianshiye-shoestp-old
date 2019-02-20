@@ -16,10 +16,8 @@ import irille.pub.Log;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.Bean;
 import irille.pub.bean.BeanBase;
-import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
 import irille.pub.exception.ReturnCode;
-import irille.pub.exception.WebMessage;
 import irille.pub.exception.WebMessageException;
 import irille.pub.idu.IduIns;
 import irille.pub.idu.IduOther;
@@ -729,7 +727,8 @@ public class PdtProductDAO {
                         .WHERE(T.SUPPLIER, "=?", supplier)
 //                        .WHERE(T.IS_NEW, "=?", Sys.OYn.YES)
                         .WHERE(T.STATE, "=?", Pdt.OState.ON)
-                        .WHERE(T.IS_INDEX, "=?", Sys.OYn.YES)
+//                        TODO  商家目前不能设置首页商品所以展示去掉
+//                        .WHERE(T.IS_INDEX, "=?", Sys.OYn.YES)
                         .WHERE(T.IS_VERIFY, "=?", Sys.OYn.YES)
                         .WHERE(T.PRODUCT_TYPE, "=?", Pdt.OProductType.GENERAL)
                         .ORDER_BY(T.UPDATE_TIME, "DESC")
@@ -747,9 +746,6 @@ public class PdtProductDAO {
         }
     }
 
-    public static void getWarehouse() {
-
-    }
 
     public static Page getProducts(Integer start, Integer limit, SeartchView seartch) {
         if (start == null) {
