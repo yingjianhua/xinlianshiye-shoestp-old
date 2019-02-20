@@ -48,6 +48,7 @@
     </script>
     <script>
         var isLogin = ${env.login!=null};
+        var user_obj = null;
 
         function getParams(name, defaultValue) {
             var url = window.location.href;
@@ -79,5 +80,9 @@
                 return defaultValue
             }
             return -1;
+        }
+
+        if (user_obj) {
+            user_obj.sign_in_init()
         }
     </script>

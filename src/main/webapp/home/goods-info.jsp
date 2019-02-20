@@ -882,7 +882,7 @@
 <script src="/home/v3/static/js/index-top.js"></script>
 
 <script>
-
+        user_obj.sign_in_init();
     var app = new Vue({
         el: "#app",
         data: {
@@ -1239,7 +1239,7 @@
                 return this.goodsInfo.spec[temp];
             },
             _pdtPic() {
-                if (this.selectSpec > 0) {
+                if (this.selectSpec >= 0) {
                     if (this._specList && this._specList.length > 0)
                         if (this._specList[0].img && this._specList[0].img.length > 0) {
                             return this.image(this._specList[0].img)
