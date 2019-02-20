@@ -1,6 +1,16 @@
 package irille.Entity.RFQ;
 
-import irille.Entity.RFQ.Enums.*;
+import java.util.Date;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import irille.Entity.RFQ.Enums.RFQConsultPayType;
+import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
+import irille.Entity.RFQ.Enums.RFQConsultStatus;
+import irille.Entity.RFQ.Enums.RFQConsultType;
+import irille.Entity.RFQ.Enums.RFQConsultUnit;
+import irille.Entity.RFQ.Enums.RFQConsultVerifyStatus;
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
 import irille.pub.bean.BeanInt;
@@ -13,8 +23,6 @@ import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltErate;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
-
-import java.util.Date;
 
 public class RFQConsult extends BeanInt<RFQConsult> {
     private static final long serialVersionUID = 7524946206877858631L;
@@ -97,7 +105,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
     // >>>以下是自动产生的源代码行--源代码--请保留此行用于识别>>>
   //实例变量定义-----------------------------------------
   private Integer _pkey;	// 编号  INT
-  private String _title;	// 标题  STR(200)
+  private String _title;	// 标题  STR(500)
   private String _image;	// 图片  STR(2000)<null>
   private Integer _country;	// 国家管理 <表主键:PltCountry>  INT
   private Integer _product;	// 产品 <表主键:PdtProduct>  INT<null>
@@ -105,13 +113,16 @@ public class RFQConsult extends BeanInt<RFQConsult> {
   private Integer _leftCount;	// 剩余抢单次数  INT
   private Integer _quantity;	// 商品数量  INT
   private Byte _unit;	// 货物单位 <RFQConsultUnit>  BYTE
-	// PAIR:1,双
+	// PAIR:1,Pairs
+	// Twenty_Foot_Container:2,Twenty-Foot Container
+	// Forty_Foot_Container:3,Forty-Foot Container
   private Integer _purchaseId;	// 采购商 <表主键:UsrPurchase>  INT
   private Integer _supplierId;	// 供应商 <表主键:UsrSupplier>  INT<null>
   private Byte _type;	// 询盘类型 <RFQConsultType>  BYTE
 	// RFQ:1,FRQ询盘
 	// INQUIRY:2,询盘
 	// Private_INQUIRY:3,私人展会询盘
+	// supplier_INQUIRY:4,供应商询盘
   private Byte _status;	// RFQ状态 <RFQConsultStatus>  BYTE
 	// ready:1,待发布
 	// runing:2,进行中
@@ -125,14 +136,21 @@ public class RFQConsult extends BeanInt<RFQConsult> {
   private String _price;	// 价格(价格区间)  STR(20)<null>
   private Byte _payType;	// 支付方式 <RFQConsultPayType>  BYTE<null>
 	// TT:1,TT支付
-	// OFFLINE_PAY:2,线下支付
+	// LC:2,L/C
+	// DP:3,D/P
+	// WesternUnion:4,Western Union
+	// MoneyGram:5,Money Gram
   private Byte _shippingType;	// 配送方式 <RFQConsultShipping_Type>  BYTE<null>
 	// FOB:1,FOB
+	// CIF:2,CIF
+	// CNF:3,CNF
+	// CRF:4,CRF
   private Integer _currency;	// 费率设置 <表主键:PltErate>  INT<null>
+  private String _productRequest;	// JSON  JSONOBJECT
   private String _destination;	// 目的地  STR(200)<null>
   private Integer _total;	// 总抢单数  INT
   private Short _changeCount;	// 修改总数  SHORT
-  private String _extraDescription;	// 修改总数  STR(2000)<null>
+  private String _extraDescription;	// 额外信息  STR(2000)<null>
   private Date _createTime;	// 创建时间  TIME
   private Byte _isDeleted;	// 是否已删除 <OYn>  BYTE
 	// YES:1,是
@@ -142,7 +160,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
 	@Override
   public RFQConsult init(){
 		super.init();
-    _title=null;	// 标题  STR(200)
+    _title=null;	// 标题  STR(500)
     _image=null;	// 图片  STR(2000)
     _country=null;	// 国家管理 <表主键:PltCountry>  INT
     _product=null;	// 产品 <表主键:PdtProduct>  INT
@@ -160,10 +178,11 @@ public class RFQConsult extends BeanInt<RFQConsult> {
     _payType=RFQConsultPayType.DEFAULT.getLine().getKey();	// 支付方式 <RFQConsultPayType>  BYTE
     _shippingType=RFQConsultShipping_Type.DEFAULT.getLine().getKey();	// 配送方式 <RFQConsultShipping_Type>  BYTE
     _currency=null;	// 费率设置 <表主键:PltErate>  INT
+    _productRequest=null;	// JSON  JSONOBJECT
     _destination=null;	// 目的地  STR(200)
     _total=0;	// 总抢单数  INT
     _changeCount=0;	// 修改总数  SHORT
-    _extraDescription=null;	// 修改总数  STR(2000)
+    _extraDescription=null;	// 额外信息  STR(2000)
     _createTime=Env.getTranBeginTime();	// 创建时间  TIME
     _isDeleted=OYn.DEFAULT.getLine().getKey();	// 是否已删除 <OYn>  BYTE
     _rowVersion=0;	// 版本  SHORT
@@ -375,6 +394,18 @@ public class RFQConsult extends BeanInt<RFQConsult> {
       setCurrency(null);
     else
       setCurrency(currency.getPkey());
+  }
+  public String getProductRequest(){
+    return _productRequest;
+  }
+  public void setProductRequest(String productRequest){
+    _productRequest=productRequest;
+  }
+  public JSONObject gtProductRequest() throws JSONException {
+    return getProductRequest()==null?new JSONObject():new JSONObject(getProductRequest());
+  }
+  public void stProductRequest(JSONObject productRequest){
+    setProductRequest(productRequest==null?null:productRequest.toString());
   }
   public String getDestination(){
     return _destination;
