@@ -341,4 +341,13 @@ public class O2OProductDao {
         }
     }
 
+    public List<O2O_Product> findAllByProd_Pkey(Integer product){
+        SQL sql = new SQL();
+        sql.SELECT(O2O_Product.class).FROM(O2O_Product.class).WHERE(O2O_Product.T.PRODUCT_ID," =? ",product);
+        sql.WHERE("("+O2O_Product.T.STATUS + " = ?  OR " + O2O_Product.T.STATUS +  "= ? )",O2O_ProductStatus.ON.getLine().getKey(),O2O_ProductStatus.WAITOFF.getLine().getKey());
+        sql.WHERE(O2O_Product.T.VERIFY_STATUS, " =? ", O2O_ProductStatus.PASS.getLine().getKey());
+
+        return Query.sql(sql).queryList(O2O_Product.class);
+    }
+
 }

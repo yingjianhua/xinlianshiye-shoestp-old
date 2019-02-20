@@ -19,3 +19,4 @@ ${logDir}/shoestp.log
 pom.xml
 target
 src/main/resources/environment
+src/main/resources/environment/*
