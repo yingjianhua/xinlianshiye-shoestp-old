@@ -154,7 +154,7 @@ $('html').on('click', '#signin_close', function () {
                                 <div class="h3" @mouseenter="bigPicBoxopen" @mouseleave="bigPicBoxclose"
                                      :data-pic="item2">
                                     <a :href="'/'+item.rewrite" target="_blank"><img class="fl"
-                                                                                     :src="imgurl(item2)"/></a>
+                                                                                     :src="imgurl(item2,1)"/></a>
                                 </div>
                             </el-carousel-item>
                         </el-carousel>
@@ -301,9 +301,13 @@ $('html').on('click', '#signin_close', function () {
             bigPicBoxpic: '',
         },
         methods: {
-            imgurl(row) {
+            imgurl(row,resize) {
                 if (row != "") {
-                    return 'https://image.shoestp.com/' + row + '?x-oss-process=image/resize,m_fill,h_195,w_195'
+                    if (resize){
+                      return 'https://image.shoestp.com/' + row + '?x-oss-process=image/resize,m_fill,h_195,w_195'
+                    }else{
+                      return 'https://image.shoestp.com/' + row+ '?x-oss-process=image/resize,m_fill,h_500,w_500'
+                    }
                 }
                 return null
             },
