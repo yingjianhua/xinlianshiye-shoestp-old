@@ -38,7 +38,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         rfqConsult.setContent(rfqConsultView.getDescriotion());
         rfqConsult.setLeftCount(0);
         rfqConsult.setQuantity(rfqConsultView.getQuantity());
-        rfqConsult.stUnit((RFQConsultUnit) RFQConsultUnit.PAIR.getLine().get(rfqConsult.getUnit()));
+        rfqConsult.stUnit((RFQConsultUnit) RFQConsultUnit.PAIR.getLine().get(rfqConsultView.getUnit()));
 
         rfqConsult.setPurchaseId(usrPurchase.getPkey());
         rfqConsult.stType(RFQConsultType.RFQ);
