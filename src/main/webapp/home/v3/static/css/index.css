@@ -223,7 +223,7 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    padding: 20px;
+    /*padding: 20px;*/
     line-height: 35px;
     text-align: center;
     background-color: rgba(255, 255, 255, 0.5);
@@ -683,6 +683,8 @@ a {
 #xsq .goods-category-item .right-goods-wrap .item:hover .hover-show {
     top: 0;
     opacity: 1;
+}#xsq .goods-category-item .right-goods-wrap .item:hover .link-box {
+     height: 100%;
 }
 
 #xsq .goods-category-item .right-goods-wrap .hover-text-wrap {
@@ -712,16 +714,15 @@ a {
 
 #xsq .goods-category-item .right-goods-wrap .hover-show .btn-group {
     position: absolute;
-    bottom: 0;
-    left: 0;
+    bottom: 18px;
+    left: 15px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
-    width: 100%;
-    padding: 0 15px 18px;
+    width: 146px;
 }
 
 /* 按鈕樣式 */
