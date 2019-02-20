@@ -33,13 +33,14 @@ public class RFQConsult extends BeanInt<RFQConsult> {
         PURCHASE_ID(UsrPurchase.fldOutKey().setName("采购商")),
         SUPPLIER_ID(UsrSupplier.fldOutKey().setNull().setName("供应商")),
         TYPE(Tb.crt(RFQConsultType.DEFAULT)),//询盘类型
-        STATUS(Tb.crt(RFQConsultStatus.DEFAULT)),
-        VERIFY_STATUS(Tb.crt(RFQConsultVerifyStatus.DEFAULT)),
+        STATUS(Tb.crt(RFQConsultStatus.DEFAULT)),//发布状态
+        VERIFY_STATUS(Tb.crt(RFQConsultVerifyStatus.DEFAULT)),//审核状态
         VALID_DATE(Sys.T.DATE_TIME, "有效期至"),
         PRICE(Sys.T.STR__20_NULL, "价格(价格区间)"),
         PAY_TYPE(Tb.crt(RFQConsultPayType.DEFAULT).setNull()), //支付方式
         SHIPPING_TYPE(Tb.crt(RFQConsultShipping_Type.DEFAULT).setNull()), //运送方式
         CURRENCY(PltErate.fldOutKey().setNull()),  //货币类型
+        PRODUCT_REQUEST(Sys.T.JSON),//请求产品列表, 店铺询盘专用字段, 在店铺的基础上指定感兴趣的产品 格式如: [{"name":"bb", "image":"aa"}, {"name":"dd", "image":"cc"}]
         DESTINATION(Sys.T.STR__200_NULL, "目的地"),
         TOTAL(Sys.T.INT_PLUS_OR_ZERO, "总抢单数"),
         CHANGE_COUNT(Sys.T.SHORT, "修改总数"),
