@@ -48,7 +48,8 @@ public class RFQConsult extends BeanInt<RFQConsult> {
         PAY_TYPE(Tb.crt(RFQConsultPayType.DEFAULT).setNull()), //支付方式
         SHIPPING_TYPE(Tb.crt(RFQConsultShipping_Type.DEFAULT).setNull()), //运送方式
         CURRENCY(PltErate.fldOutKey().setNull()),  //货币类型
-        PRODUCT_REQUEST(Sys.T.JSON),//请求产品列表, 店铺询盘专用字段, 在店铺的基础上指定感兴趣的产品 格式如: [{"name":"bb", "image":"aa"}, {"name":"dd", "image":"cc"}]
+        EXTRA_REQUEST(Sys.T.STR__100),//额外请求, 店铺询盘专用字段, 是用逗号分隔的请求内容 格式如: price, inspection product, product specification
+        PRODUCT_REQUEST(Sys.T.JSON),//请求产品列表, 店铺询盘专用字段, 在店铺的基础上指定感兴趣的产品 格式如: [{"pkey":1, "name":"bb", "image":"aa"}, {"pkey":2, "name":"dd", "image":"cc"}]
         DESTINATION(Sys.T.STR__200_NULL, "目的地"),
         TOTAL(Sys.T.INT_PLUS_OR_ZERO, "总抢单数"),
         CHANGE_COUNT(Sys.T.SHORT, "修改总数"),
@@ -146,6 +147,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
 	// CNF:3,CNF
 	// CRF:4,CRF
   private Integer _currency;	// 费率设置 <表主键:PltErate>  INT<null>
+  private String _extraRequest;	// 字符100  STR(100)
   private String _productRequest;	// JSON  JSONOBJECT
   private String _destination;	// 目的地  STR(200)<null>
   private Integer _total;	// 总抢单数  INT
@@ -178,6 +180,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
     _payType=RFQConsultPayType.DEFAULT.getLine().getKey();	// 支付方式 <RFQConsultPayType>  BYTE
     _shippingType=RFQConsultShipping_Type.DEFAULT.getLine().getKey();	// 配送方式 <RFQConsultShipping_Type>  BYTE
     _currency=null;	// 费率设置 <表主键:PltErate>  INT
+    _extraRequest=null;	// 字符100  STR(100)
     _productRequest=null;	// JSON  JSONOBJECT
     _destination=null;	// 目的地  STR(200)
     _total=0;	// 总抢单数  INT
@@ -394,6 +397,12 @@ public class RFQConsult extends BeanInt<RFQConsult> {
       setCurrency(null);
     else
       setCurrency(currency.getPkey());
+  }
+  public String getExtraRequest(){
+    return _extraRequest;
+  }
+  public void setExtraRequest(String extraRequest){
+    _extraRequest=extraRequest;
   }
   public String getProductRequest(){
     return _productRequest;

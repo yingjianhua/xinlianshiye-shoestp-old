@@ -2,6 +2,7 @@ package irille.Entity.RFQ;
 
 import irille.Entity.RFQ.Enums.RFQConsultPayType;
 import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
+import irille.Entity.RFQ.Enums.RFQConsultUnit;
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
 import irille.pub.bean.BeanInt;
@@ -35,6 +36,7 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
         DESCRIPTION(Sys.T.STR__2000_NULL, "描述"),//产品描述
         IMAGE(Sys.T.JSON, "图片(多图)"),//产品图片
         QUANTITY(Sys.T.INT, "数量"),
+        UNIT(Tb.crt(RFQConsultUnit.DEFAULT)),//商品数量单位
         MINPRICE(Sys.T.INT, "价格区间"),
         MAXPRICE(Sys.T.INT, "价格区间"),
         CURRENCY(PltErate.fldOutKey()),
@@ -113,6 +115,10 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
   private String _description;	// 描述  STR(2000)<null>
   private String _image;	// 图片(多图)  JSONOBJECT
   private Integer _quantity;	// 数量  INT
+  private Byte _unit;	// 货物单位 <RFQConsultUnit>  BYTE
+	// PAIR:1,Pairs
+	// Twenty_Foot_Container:2,Twenty-Foot Container
+	// Forty_Foot_Container:3,Forty-Foot Container
   private Integer _minprice;	// 价格区间  INT
   private Integer _maxprice;	// 价格区间  INT
   private Integer _currency;	// 费率设置 <表主键:PltErate>  INT
@@ -163,6 +169,7 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
     _description=null;	// 描述  STR(2000)
     _image=null;	// 图片(多图)  JSONOBJECT
     _quantity=0;	// 数量  INT
+    _unit=RFQConsultUnit.DEFAULT.getLine().getKey();	// 货物单位 <RFQConsultUnit>  BYTE
     _minprice=0;	// 价格区间  INT
     _maxprice=0;	// 价格区间  INT
     _currency=null;	// 费率设置 <表主键:PltErate>  INT
@@ -293,6 +300,18 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
   }
   public void setQuantity(Integer quantity){
     _quantity=quantity;
+  }
+  public Byte getUnit(){
+    return _unit;
+  }
+  public void setUnit(Byte unit){
+    _unit=unit;
+  }
+  public RFQConsultUnit gtUnit(){
+    return (RFQConsultUnit)(RFQConsultUnit.PAIR.getLine().get(_unit));
+  }
+  public void stUnit(RFQConsultUnit unit){
+    _unit=unit.getLine().getKey();
   }
   public Integer getMinprice(){
     return _minprice;
