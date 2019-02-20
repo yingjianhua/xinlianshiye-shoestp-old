@@ -1,4 +1,4 @@
-package irille.view.RFQ;
+package irille.view.v3.rfq;
 
 import irille.view.BaseView;
 import lombok.Data;
