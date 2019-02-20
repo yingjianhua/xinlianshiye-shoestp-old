@@ -10,6 +10,8 @@ public enum RFQConsultType implements IEnumOpt {
     RFQ(1, "FRQ询盘"),
     INQUIRY(2, "询盘"),
     Private_INQUIRY(3, "私人展会询盘"),
+    supplier_INQUIRY(4, "供应商询盘"),
+    
     ;
 
     public static final String NAME = "询盘类型";
