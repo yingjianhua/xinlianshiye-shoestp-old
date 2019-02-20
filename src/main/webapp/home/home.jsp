@@ -176,29 +176,27 @@
 														</a>
 													</div>
 												</div> -->
-                                                <div class="hover-show" @click="hide($event,goods.rewrite)"
-                                                     style="cursor: pointer;">
-                                                    <div class="hover-text-wrap">
-                                                        <a :href="goods.rewrite" target="_blank" class="goods-name">
-                                                            <div class="ellipsis_2">
-                                                                {{goods.title}}
+                                                <div class="hover-show">
+                                                    <a :href="goods.rewrite" target="_blank" class="link-box">
+                                                        <div class="hover-text-wrap" >
+                                                                <div class="goods-name ellipsis_2">
+                                                                    {{goods.title}}
+                                                                </div>
+                                                             <div class="goods-price" >
+                                                                US <span>{{sysConfig.currency_symbol}}{{goods.price}}</span>
                                                             </div>
-                                                        </a>
-                                                        <div class="goods-price">
-                                                            US <span>{{sysConfig.currency_symbol}}{{goods.price}}</span>
+                                                            <div class="min-order">
+                                                                Min.Order:{{goods.min_order || 0}} pairs
+                                                            </div>
                                                         </div>
-                                                        <div class="min-order">
-                                                            Min.Order:{{goods.min_order || 0}} pairs
+                                                        <div class="btn-group">
+                                                            <a class="btn-inquiry btn-blue"
+                                                               :href="'/home/usr_UsrConsult_productPublishView?product_id='+goods.id"
+                                                               target="_blank" style="z-index: 999">
+                                                                Inquiry
+                                                            </a>
                                                         </div>
-                                                    </div>
-
-                                                    <div class="btn-group">
-                                                        <a class="btn-inquiry btn-blue"
-                                                           :href="'/home/usr_UsrConsult_productPublishView?product_id='+goods.id"
-                                                           target="_blank">
-                                                            Inquiry
-                                                        </a>
-                                                    </div>
+                                                    </a>
                                                 </div>
                                             </li>
                                         </ul>
@@ -337,8 +335,8 @@
                                 Min.Order: {{item.minOrder}} pairs
                             </div>
                         </div>
-                        <div class="inquiry-btn" @click="hide($event,item.rewrite)" style="cursor: pointer;">
-                            <a :href="'/'+item.rewrite" target="_blank" style="color:#666;text-align: left;">
+                        <div class="inquiry-btn">
+                            <a :href="'/'+item.rewrite" target="_blank" style="color:#666;text-align: left;padding: 20px;height: 100%;">
                                 <div class="ellipsis_2" style="font-size:12px;line-height: 20px;">{{item.pdtName}}</div>
                                 <div style="font-size:18px;margin-top:10px;">
                                     <span style="color: #232323;">US</span>
@@ -349,7 +347,7 @@
                                 </div>
                             </a>
                             <a class="inquiry-a"
-                               :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" target="_blank">
+                               :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" target="_blank" style="z-index: 999">
                                 Inquiry
                             </a>
                         </div>
@@ -388,8 +386,8 @@
                                 Min.Order: {{item.minOrder}} pairs
                             </div>
                         </div>
-                        <div class="inquiry-btn" @click="hide($event,item.rewrite)" style="cursor: pointer;">
-                            <a :href="'/'+item.rewrite" target="_blank" style="color:#666;text-align: left;">
+                        <div class="inquiry-btn">
+                            <a :href="'/'+item.rewrite" target="_blank" style="color:#666;text-align: left;padding: 20px;height: 100%;">
                                 <div class="ellipsis_2" style="font-size:12px;line-height: 20px;">{{item.pdtName}}</div>
                                 <div style="font-size:18px;margin-top:10px;">
                                     <span style="color: #232323;">US</span>
@@ -400,7 +398,7 @@
                                 </div>
                             </a>
                             <a class="inquiry-a"
-                               :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" target="_blank">
+                               :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" target="_blank" style="z-index: 999">
                                 Inquiry
                             </a>
                         </div>
@@ -582,13 +580,6 @@
             this.getShowRoomGoodsList();
         },
         methods: {
-            hide: function hide(e, d) {
-                if (e.target && e.target._prevClass && e.target._prevClass != 'btn-inquiry btn-blue') {
-                    window.location.href = '/' + d;
-                } else if (e.path && !e.path[0] && e.path[0].outerText != 'Inquiry') {
-                    window.location.href = '/' + d;
-                }
-            },
             image: function image(v, params) {
                 if (!v) {
                     return "";
