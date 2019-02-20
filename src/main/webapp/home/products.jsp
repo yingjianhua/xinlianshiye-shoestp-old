@@ -303,7 +303,7 @@ $('html').on('click', '#signin_close', function () {
         methods: {
             imgurl(row) {
                 if (row != "") {
-                    return 'https://image.shoestp.com/' + row
+                    return 'https://image.shoestp.com/' + row + '?x-oss-process=image/resize,m_fill,h_195,w_195'
                 }
                 return null
             },
