@@ -1,11 +1,16 @@
 package com.xinlianshiye.shoestp.shop.service.rfq.impl;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
@@ -17,6 +22,7 @@ import com.xinlianshiye.shoestp.shop.view.rfq.RFQCurrencyView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationThrowawayView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQSupplierView;
+import com.xinlianshiye.shoestp.shop.view.rfq.supplierConsult.RFQConsultProductView;
 
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultRelation;
@@ -25,15 +31,16 @@ import irille.Entity.RFQ.Enums.RFQConsultType;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
+import irille.pub.bean.sql.SQL;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.pub.util.GetValue;
+import irille.shop.pdt.PdtProduct;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltErate;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
-import irille.view.RFQ.PutRFQConsultView;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -152,6 +159,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 		quotation.setImages(Arrays.asList((relation.getImage()==null?"":relation.getImage()).split(",")));
 		quotation.setDescription(relation.getDescription());
 		quotation.setQuantity(relation.getQuantity());
+		quotation.setUnit(relation.gtUnit().getLine().getName());
 		quotation.setMinPrice(relation.getMinprice());
 		quotation.setMaxPrice(relation.getMaxprice());
 		PltErate erate = relation.gtCurrency();
@@ -203,6 +211,19 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 		view.setPrice(consult.getPrice());
 		view.setUnit(consult.gtUnit().getLine().getName());
 		view.setType(consult.getType());
+		view.setValieDate(consult.getValidDate());
+		view.setPaymentTerms(consult.gtPayType().getLine().getName());
+		view.setShippingTerms(consult.gtShippingType().getLine().getName());
+		if(consult.gtType() == RFQConsultType.supplier_INQUIRY) {
+			view.setExtraRequest(consult.getExtraRequest());
+			try {
+				if(consult.getProductRequest() != null && !consult.getProductRequest().isEmpty()) {
+					view.setProductRequest(om.readValue(consult.getProductRequest(), new TypeReference<List<RFQConsultProductView>>() {}));
+				}
+			} catch (IOException e) {
+				log.warn("RFQConsult表主键为{}的记录 字段productRequest格式错误", consult.getPkey());
+			}
+		}
 		view.setImages(Arrays.asList((consult.getImage()==null?"":consult.getImage()).split(",")));
 		return view;
 	}
@@ -252,6 +273,94 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 		}
 		consult.stStatus(RFQConsultStatus.close);
 		consult.upd();
+	}
+
+	@Override
+	public void addImage(UsrPurchase purchase, Integer consultPkey, String images) {
+		RFQConsult consult = Query.selectFrom(RFQConsult.class).WHERE(RFQConsult.T.PKEY, "=?", consultPkey).WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey()).query();
+		if(consult == null) {
+			throw new WebMessageException(ReturnCode.service_gone, "数据不存在");
+		}
+		if(consult.gtType() != RFQConsultType.supplier_INQUIRY) {
+			throw new WebMessageException(ReturnCode.service_state_error, "数据异常");
+		}
+		final Integer limit = 5;//图片数量上限
+		Integer leftCount = 0;
+		if(consult.getImage() == null || consult.getImage().isEmpty()) {
+			leftCount = limit;
+		} else {
+			leftCount = limit - consult.getImage().split(",").length;
+		}
+		if(images == null || images.isEmpty()) {
+			throw new WebMessageException(ReturnCode.valid_notempty, "请选择图片");
+		}
+		Integer length = images.split(",").length;
+		if(length > leftCount) {
+			//上传图片超出限制了
+			throw new WebMessageException(ReturnCode.valid_notempty, "图片数量超出上限");
+		}
+		List<String> list = new ArrayList<>(Arrays.asList(consult.getImage().split(",")));
+		list.addAll(Arrays.asList(images.split(",")));
+		consult.setImage(list.stream().collect(Collectors.joining(",")));
+		consult.upd();
+	}
+
+	@Override
+	public void addProductRequest(UsrPurchase purchase, Integer consultPkey, String products) {
+		RFQConsult consult = Query.selectFrom(RFQConsult.class).WHERE(RFQConsult.T.PKEY, "=?", consultPkey).WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey()).query();
+		if(consult == null) {
+			throw new WebMessageException(ReturnCode.service_gone, "数据不存在");
+		}
+		if(consult.gtType() != RFQConsultType.supplier_INQUIRY) {
+			throw new WebMessageException(ReturnCode.service_state_error, "数据异常");
+		}
+		RFQConsultRelation relation = Query.selectFrom(RFQConsultRelation.class).WHERE(RFQConsultRelation.T.CONSULT, "=?", consultPkey).query();
+		if(relation == null) {
+			log.warn("数据异常: RFQConsult表主键为{} 的记录 缺少一个对应的RFQConsultRelation记录", consultPkey);
+			throw new WebMessageException(ReturnCode.service_wrong_data, "数据异常");
+		}
+		if(products == null || products.isEmpty()) {
+			throw new WebMessageException(ReturnCode.valid_notempty, "请选择产品");
+		}
+		
+		final Integer limit = 50;
+		
+		String productRequest = consult.getProductRequest();
+		Set<RFQConsultProductView> productRequestSet;
+		if(productRequest == null || productRequest.isEmpty()) {
+			productRequestSet = new HashSet<>();
+		} else {
+			try {
+				productRequestSet = om.readValue(consult.getProductRequest(), new TypeReference<Set<RFQConsultProductView>>() {});
+			} catch (IOException e) {
+				productRequestSet = new HashSet<>();
+			}
+		}
+		String[] params = products.split(",");
+		if(productRequestSet.size() + params.length > limit) {
+			throw new WebMessageException(ReturnCode.valid_notempty, "产品数量超出上限");
+		}
+		BeanQuery<PdtProduct> query = Query
+				.SELECT(PdtProduct.T.PKEY)
+				.SELECT(PdtProduct.T.NAME)
+				.SELECT(PdtProduct.T.PICTURE)
+				.FROM(PdtProduct.class)
+				.WHERE(PdtProduct.T.PKEY, SQL.getInSql(params.length), Arrays.stream(params).map(Integer::valueOf).toArray(Serializable[]::new))
+				.WHERE(PdtProduct.T.SUPPLIER, "=?", relation.getSupplierId()).limit(0, 50);
+		for (PdtProduct product : query.queryList()) {
+			RFQConsultProductView view = new RFQConsultProductView();
+			view.setPkey(product.getPkey());
+			view.setName(product.getName());
+			view.setImage(product.getPicture());
+			productRequestSet.add(view);
+		}
+		try {
+			consult.setProductRequest(om.writeValueAsString(productRequestSet));
+			consult.upd();
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 }

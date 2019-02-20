@@ -66,4 +66,16 @@ public class RFQConsultServiceTest extends BaseTest {
 		RFQConsultView consult = service.getDetail(purchase, consultPkey);
 		System.out.println(om.writeValueAsString(consult));
 	}
+	
+	@Test
+	@Ignore
+	public void testAddProductRequest() {
+		RFQConsult.TB.getCode();
+		UsrPurchase purchase = new UsrPurchase();
+		purchase.setPkey(1261);
+		purchase.setName("建化");
+		Integer consultPkey = 7;
+		String products = "339,340";
+		service.addProductRequest(purchase, consultPkey, products);
+	}
 }
