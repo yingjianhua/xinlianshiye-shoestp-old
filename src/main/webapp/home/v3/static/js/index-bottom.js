@@ -55,7 +55,7 @@ Vue.component('index-bottom', {
             <p><img src="/home/v3/static/images/o2obottomzf.png" alt="">©1988-2019 xinlian.com ALL right reserved</p>
             </a>
         </div>
-        <a href="javascript:void(0)" @click="goto('o2otop')">
+        <a href="javascript:;" @click="goto('o2otop')">
             <div class="o2ogototop">
                 <img src="/home/v3/static/images/o2ogototop.png" alt="">
             </div>
@@ -153,7 +153,8 @@ Vue.component('index-bottom', {
             }
         },
         goto: function (id) {
-            document.getElementById(id).scrollIntoView(true);
+            window.scrollTo(0,0);
+            // document.getElementById('o2oTop').scrollIntoView(true);
         },
         submit: function () {
             let regEmail = /.+@[a-z0-9\.]+\.(com|cn|net)$/;
