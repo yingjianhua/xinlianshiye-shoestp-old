@@ -1,34 +1,46 @@
 package com.xinlianshiye.shoestp.shop.service.usr.impl;
 
+import org.json.JSONException;
+
 import com.xinlianshiye.shoestp.shop.service.usr.UsrSupplierService;
 import com.xinlianshiye.shoestp.shop.view.usr.SupplierView;
 
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
+import irille.pub.tb.FldLanguage.Language;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 
 public class UsrSupplierServiceImpl implements UsrSupplierService {
 
 	@Override
-	public SupplierView detail(UsrPurchase purchase, Integer supplierPkey) {
+	public SupplierView detail(UsrPurchase purchase, Integer supplierPkey, Language lang) throws JSONException {
 		BeanQuery<UsrSupplier> query = Query.selectFrom(UsrSupplier.class);
 		query.WHERE(UsrSupplier.T.PKEY, "=?", supplierPkey);
 		UsrSupplier supplier = query.query();
 		
 		SupplierView view = new SupplierView();
-		view.setCountry(supplier.gtCountry().getName());
-		view.setBusinessType(supplier.getBusinessTyp());
+		view.setPkey(supplier.getPkey());
+		view.setName(supplier.getName());
+		view.setLogo(supplier.getLogo());
+		view.setCountry(supplier.gtCountry().getName(lang));
+		view.setBusinessType(supplier.getBusinessTyp(lang));
 		view.setYearEstablished(supplier.getCompanyEstablishTime());
-		view.setMainProducts(supplier.getMainProd());
-		view.setLocation(supplier.getLocation());
-		view.setEmployeeCount(supplier.getTotalEmployees());
-		view.setAnnualRevenue(supplier.getAnnualSales());
-		view.setMainMarket(supplier.getMainSalesArea());
-//		view.setTransactionCount(supplier.getc);
-		Integer country = supplier.getCountry();
-		String mainSalesArea = supplier.getMainSalesArea();
-		return null;
+		view.setMainProducts(supplier.getMainProd(lang));
+		view.setLocation(supplier.getLocation(lang));
+		view.setEmployeeCount(supplier.getTotalEmployees(lang));
+		view.setAnnualRevenue(supplier.getAnnualSales(lang));
+		view.setMainMarket(supplier.getMainSalesArea(lang));
+		view.setTransactionCount("");
+		view.setTransactionAmount("");
+		view.setMemberSince(supplier.getApprTime());
+		view.setDepartment(supplier.getDepartment(lang));
+		view.setJobTitle(supplier.getJobTitle(lang));
+		view.setCompany(supplier.getName());
+		view.setContractManufacturing("");
+		view.setOverseasOffice("");
+		view.setCompanyCertification("");
+		return view;
 	}
 
 }

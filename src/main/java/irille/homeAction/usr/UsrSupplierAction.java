@@ -404,8 +404,8 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
     
 	@Override
 	@NeedLogin
-	public void getDetail() throws IOException {
-		write(usrSupplierService2.detail(getPurchase(), supplierPkey));
+	public void getDetail() throws IOException, JSONException {
+		write(usrSupplierService2.detail(getPurchase(), supplierPkey, curLanguage()));
 	}
 
 }
