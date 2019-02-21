@@ -1,8 +1,5 @@
 package com.xinlianshiye.shoestp.seller.service.rfq.impl;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -20,7 +17,6 @@ import irille.Dao.RFQ.RFQConsultRelationDao;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
-import irille.Entity.RFQ.Enums.RFQConsultMessageType;
 import irille.Entity.RFQ.JSON.ConsultMessage;
 import irille.Entity.RFQ.JSON.RFQConsultAlertUrlMessage;
 import irille.Entity.RFQ.JSON.RFQConsultImageMessage;
@@ -136,30 +132,6 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 		message.setUrl("https://www.shoestp.com/home/pdt_PdtProduct_gtProductsInfo?expoKey="+uuid);//TODO 链接现在尚未确定  确定后补上 带上询盘聊天消息的uuid做为参数
 		RFQConsultMessageView messageView = sendMessage(supplier, consultPkey, message);
 		return sendMessage(supplier, consultPkey, message, uuid);
-	}
-
-	@Override
-	public Integer checkPrivateExpoKey(String expoKey) {
-		RFQConsultMessage message = rFQConsultMessageDao.findByUuid(expoKey);
-		if(message == null)
-			return null;
-		if(message.gtType() != RFQConsultMessageType.ALERT_URL)
-			return null;
-		try {
-			RFQConsultAlertUrlMessage content = om.readValue(message.getContent(), RFQConsultAlertUrlMessage.class);
-			if(content.getValidDate() == null) {
-				content.setValidDate(Date.from(LocalDateTime.now().plusDays(2).atZone(ZoneId.systemDefault()).toInstant()));
-				message.setContent(om.writeValueAsString(content));
-				rFQConsultMessageDao.save(message);
-				return content.getProductId();
-			} else if(content.getValidDate().after(new Date())) {
-				return content.getProductId();
-			} else {
-				return null;
-			}
-		} catch (IOException e) {
-			return null;
-		}
 	}
 
 }
