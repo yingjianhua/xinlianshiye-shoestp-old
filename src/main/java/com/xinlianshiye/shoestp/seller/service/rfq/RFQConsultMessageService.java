@@ -1,8 +1,8 @@
-package irille.Service.Manage.RFQ;
+package com.xinlianshiye.shoestp.seller.service.rfq;
 
 import com.google.inject.ImplementedBy;
+import com.xinlianshiye.shoestp.seller.service.rfq.impl.RFQConsultMessageServiceImpl;
 
-import irille.Service.Manage.RFQ.Imp.RFQConsultMessageServiceImpl;
 import irille.sellerAction.rfq.view.RFQConsultMessageView;
 import irille.sellerAction.rfq.view.RFQConsultMessagesView;
 import irille.shop.usr.UsrSupplier;
@@ -49,4 +49,12 @@ public interface RFQConsultMessageService {
 	 * @author Jianhua Ying
 	 */
 	RFQConsultMessageView sendPrivateExpoPdt(UsrSupplier supplier, Integer consultPkey, Integer productPkey);
+	
+	/**
+	 * 核对私人展厅产品密钥
+	 * <p>若密钥存在并且没有过期,则返回产品主键,否则返回null
+	 * @param expoKey 私人展厅产品密钥
+	 * @author Jianhua Ying
+	 */
+	Integer checkPrivateExpoKey(String expoKey);
 }

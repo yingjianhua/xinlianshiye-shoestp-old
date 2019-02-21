@@ -1,14 +1,14 @@
-package irille.Service.Manage.RFQ.Imp;
+package com.xinlianshiye.shoestp.seller.service.rfq.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
+import com.xinlianshiye.shoestp.seller.service.rfq.RFQConsultGroupService;
 
 import irille.Dao.RFQ.RFQConsultGroupDao;
 import irille.Dao.RFQ.RFQConsultGroupRelationDao;
 import irille.Entity.RFQ.RFQConsultGroup;
-import irille.Service.Manage.RFQ.RFQConsultGroupService;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.sellerAction.rfq.view.RFQConsultGroupView;

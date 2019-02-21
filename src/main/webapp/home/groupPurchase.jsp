@@ -206,8 +206,8 @@
         </c:if>
         <!-- 商品列表 end -->
 
-        <%@ include file="/home/template/new-foot.jsp" %>
-
+        <%--<%@ include file="/home/template/new-foot.jsp" %>--%>
+        <index-bottom></index-bottom>
     </div>
     <script type="text/javascript">
         var pkey;
@@ -600,6 +600,7 @@
         })
     </script>
     <script src="/home/v3/static/js/index-top.js"></script>
+    <script src="/home/v3/static/js/index-bottom.js"></script>
 </body>
 
 </html>

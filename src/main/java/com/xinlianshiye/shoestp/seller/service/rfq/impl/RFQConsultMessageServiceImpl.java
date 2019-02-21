@@ -1,5 +1,6 @@
-package irille.Service.Manage.RFQ.Imp;
+package com.xinlianshiye.shoestp.seller.service.rfq.impl;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -10,6 +11,7 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import com.xinlianshiye.shoestp.seller.service.rfq.RFQConsultMessageService;
 
 import irille.Dao.PdtProductDao;
 import irille.Dao.RFQ.RFQConsultDao;
@@ -18,11 +20,11 @@ import irille.Dao.RFQ.RFQConsultRelationDao;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
+import irille.Entity.RFQ.Enums.RFQConsultMessageType;
 import irille.Entity.RFQ.JSON.ConsultMessage;
 import irille.Entity.RFQ.JSON.RFQConsultAlertUrlMessage;
 import irille.Entity.RFQ.JSON.RFQConsultImageMessage;
 import irille.Entity.RFQ.JSON.RFQConsultTextMessage;
-import irille.Service.Manage.RFQ.RFQConsultMessageService;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.sellerAction.rfq.view.RFQConsultMessageContactView;
@@ -75,6 +77,10 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 	}
 	
 	private RFQConsultMessageView sendMessage(UsrSupplier supplier, Integer consultPkey, ConsultMessage message) {
+		return sendMessage(supplier, consultPkey, message, createUuid());
+	}
+	
+	private RFQConsultMessageView sendMessage(UsrSupplier supplier, Integer consultPkey, ConsultMessage message, String uuid) { 
 		RFQConsultRelation relation = rFQConsultRelationDao.findByConsult_PkeySupplier_Pkey(consultPkey, supplier.getPkey());
 		//商家发送消息后 设置采购商消息未读取
 		if(relation.gtHadReadPurchase()) {
@@ -82,7 +88,7 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 			rFQConsultRelationDao.save(relation);
 		}
 		RFQConsultMessage bean = new RFQConsultMessage();
-		bean.setUuid(UUID.randomUUID().toString().replaceAll("-", ""));
+		bean.setUuid(uuid);
 		try {
 			bean.setContent(om.writeValueAsString(message));
 		} catch (JsonProcessingException e) {
@@ -95,6 +101,10 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 		bean.stHadRead(false);
 		rFQConsultMessageDao.save(bean);
 		return RFQConsultMessageView.Builder.toView(bean);
+	}
+	
+	private static String createUuid() {
+		return UUID.randomUUID().toString().replaceAll("-", "");
 	}
 	
 	@Override
@@ -117,13 +127,39 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 			throw new WebMessageException(ReturnCode.service_gone, "不是私人展厅商品");
 		}
 		RFQConsultAlertUrlMessage message = new RFQConsultAlertUrlMessage();
-		//三天(72小时)后过期
-		message.setValidDate(Date.from(LocalDateTime.now().plusDays(3).atZone(ZoneId.systemDefault()).toInstant()));
+//		//三天(72小时)后过期
+//		message.setValidDate(Date.from(LocalDateTime.now().plusDays(3).atZone(ZoneId.systemDefault()).toInstant()));
 		message.setProductId(productPkey);
 		message.setAlertMsg("该链接被打开后72小时内有效，72小时后该链接失效，买家将无法查看该产品");
 		message.setShowMsg("产品链接");
-		message.setUrl("");//TODO 链接现在尚未确定  确定后补上 带上询盘聊天消息的uuid做为参数
-		return sendMessage(supplier, consultPkey, message);
+		String uuid = createUuid();
+		message.setUrl("https://www.shoestp.com/home/pdt_PdtProduct_gtProductsInfo?expoKey="+uuid);//TODO 链接现在尚未确定  确定后补上 带上询盘聊天消息的uuid做为参数
+		RFQConsultMessageView messageView = sendMessage(supplier, consultPkey, message);
+		return sendMessage(supplier, consultPkey, message, uuid);
+	}
+
+	@Override
+	public Integer checkPrivateExpoKey(String expoKey) {
+		RFQConsultMessage message = rFQConsultMessageDao.findByUuid(expoKey);
+		if(message == null)
+			return null;
+		if(message.gtType() != RFQConsultMessageType.ALERT_URL)
+			return null;
+		try {
+			RFQConsultAlertUrlMessage content = om.readValue(message.getContent(), RFQConsultAlertUrlMessage.class);
+			if(content.getValidDate() == null) {
+				content.setValidDate(Date.from(LocalDateTime.now().plusDays(2).atZone(ZoneId.systemDefault()).toInstant()));
+				message.setContent(om.writeValueAsString(content));
+				rFQConsultMessageDao.save(message);
+				return content.getProductId();
+			} else if(content.getValidDate().after(new Date())) {
+				return content.getProductId();
+			} else {
+				return null;
+			}
+		} catch (IOException e) {
+			return null;
+		}
 	}
 
 }

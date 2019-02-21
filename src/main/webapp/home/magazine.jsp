@@ -135,8 +135,9 @@
             </c:forEach>
         </div>
     </div>
+    <index-bottom></index-bottom>
 </div>
-<%@ include file="/home/template/new-foot.jsp" %>
+<%--<%@ include file="/home/template/new-foot.jsp" %>--%>
 <script>
     $('.project-content .project-item').hover(function () {
         $(this).find('.project-info').find('.icon-label').attr("src", "/home/static/themes/default/mobile/images/on-label.png")
@@ -145,6 +146,7 @@
     })
 </script>
 <script src="/home/v3/static/js/index-top.js"></script>
+<script src="/home/v3/static/js/index-bottom.js"></script>
 <script>
     new Vue({
         el:"#app"

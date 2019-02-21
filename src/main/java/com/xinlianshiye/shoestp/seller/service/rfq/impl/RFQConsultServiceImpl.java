@@ -1,4 +1,4 @@
-package irille.Service.Manage.RFQ.Imp;
+package com.xinlianshiye.shoestp.seller.service.rfq.impl;
 
 import java.util.Date;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.google.inject.Inject;
+import com.xinlianshiye.shoestp.seller.service.rfq.RFQConsultService;
 
 import irille.Dao.RFQ.RFQConsultGroupDao;
 import irille.Dao.RFQ.RFQConsultGroupRelationDao;
@@ -15,7 +16,6 @@ import irille.Entity.RFQ.RFQConsultGroup;
 import irille.Entity.RFQ.RFQConsultGroupRelation;
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
-import irille.Service.Manage.RFQ.RFQConsultService;
 import irille.platform.rfq.view.CountryView;
 import irille.platform.rfq.view.ProductView;
 import irille.platform.rfq.view.PurchaseView;
@@ -132,10 +132,6 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 		view.setIsDeleted(isDeletedCount);
 		view.setNotDeleted(notDeletedCount);
 		return view;
-	}
-	
-	private void testCount() {
-		System.out.println(count(new UsrSupplier() {{setPkey(1);}}, null));;
 	}
 
     @Override
@@ -259,33 +255,6 @@ public class RFQConsultServiceImpl implements RFQConsultService {
             return view;
         }).collect(Collectors.toList());
         return new Page<>(result, start, limit, query.queryCount());
-    }
-
-    public static void main(String[] args) {
-        new RFQConsultServiceImpl().testDirector();
-    }
-
-    public void testDirector() {
-        RFQConsultMessage.TB.getCode();
-        RFQConsultRelation.TB.getCode();
-        RFQConsult.TB.getCode();
-        UsrPurchase.TB.getCode();
-        RFQConsultGroupRelation.TB.getCode();
-        PltCountry.TB.getCode();
-
-//        testPage();
-        testCount();
-    }
-
-    public void testPage() {
-        long l1 = System.currentTimeMillis();
-        Page<RFQConsultRelationView> page = page(new UsrSupplier() {{
-            setPkey(1);
-        }}, 0, 10, "", 1, true, (byte) 1, (byte) 2, false, new Date(), new Date(), (byte) 1);
-        System.out.println(page.getTotalCount());
-        System.out.println(page.getItems());
-        long l2 = System.currentTimeMillis();
-        System.out.println(l2 - l1);
     }
 
 }

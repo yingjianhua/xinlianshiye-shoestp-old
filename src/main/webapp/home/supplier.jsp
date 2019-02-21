@@ -667,9 +667,10 @@
         </div>
         <!-- .new_suppx -->
     </div>
+    <index-bottom></index-bottom>
 </div>
 <!-- #sup_main -->
-<jsp:include page="template/new-foot.jsp"></jsp:include>
+<%--<jsp:include page="template/new-foot.jsp"></jsp:include>--%>
 <div id="hj_top" style="opacity: 0; bottom: 10%;">
     <img src="./static/images/hj_top.png">
 </div>
@@ -824,6 +825,7 @@
 <script type="text/javascript" src="./static/js/review.js"></script>
 <script type="text/javascript" src="./static/js/lightbox.min.js"></script>
 <script src="/home/v3/static/js/index-top.js"></script>
+<script src="/home/v3/static/js/index-bottom.js"></script>
 <script>
     new Vue({
         el:"#sup_main"
