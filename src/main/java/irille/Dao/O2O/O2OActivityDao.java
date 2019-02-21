@@ -101,7 +101,7 @@ public class O2OActivityDao {
                 .WHERE(status != null, O2O_PrivateExpoPdt.T.STATUS, "=?", status)
                 .WHERE(verify_status != null, O2O_PrivateExpoPdt.T.VERIFY_STATUS, "=?", verify_status)
                 .WHERE(cat != null, PdtCat.T.NAME, "like ?", "%" + cat + "%")
-                .WHERE(pdtName != null, PdtProduct.T.NAME, "like ?", "%" + pdtName + "%")
+                .WHERE(pdtName != null&&pdtName.length()>0, PdtProduct.T.NAME, "like ?", "%" + pdtName + "%")
                 .limit(start, limit);
         return query.queryMaps();
     }
