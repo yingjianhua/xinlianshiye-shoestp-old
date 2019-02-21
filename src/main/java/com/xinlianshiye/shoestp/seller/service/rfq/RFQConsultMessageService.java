@@ -49,4 +49,12 @@ public interface RFQConsultMessageService {
 	 * @author Jianhua Ying
 	 */
 	RFQConsultMessageView sendPrivateExpoPdt(UsrSupplier supplier, Integer consultPkey, Integer productPkey);
+	
+	/**
+	 * 核对私人展厅产品密钥
+	 * <p>若密钥存在并且没有过期,则返回产品主键,否则返回null
+	 * @param expoKey 私人展厅产品密钥
+	 * @author Jianhua Ying
+	 */
+	Integer checkPrivateExpoKey(String expoKey);
 }

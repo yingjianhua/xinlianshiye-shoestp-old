@@ -48,4 +48,9 @@ public class RFQConsultMessageDaoImpl implements RFQConsultMessageDao {
 		}}).queryCount();
 	}
 
+	@Override
+	public RFQConsultMessage findByUuid(String uuid) {
+		return Query.selectFrom(RFQConsultMessage.class).WHERE(RFQConsultMessage.T.UUID, "=?", uuid).query();
+	}
+
 }
