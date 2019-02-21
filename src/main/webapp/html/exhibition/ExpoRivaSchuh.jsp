@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <jsp:include page="/home/v3/header.jsp"></jsp:include>
 <script src="/html/exhibition/js/config.js"></script>
 <link rel="stylesheet" href="/html/exhibition/css/index.css">
@@ -12,9 +12,7 @@
 <jsp:include page="/home/v3/nav.jsp"></jsp:include>
 <div id="lhl-garda">
     <!--header banner-->
-    <div id="app">
-        <index-top></index-top>
-    </div>
+    <index-top></index-top>
     <div class="garda-banner">
         <div class="banner-title">
             <h2 class="banner-title-h2">Expo Riva Schuh</h2>
@@ -188,11 +186,14 @@
                 <iframe src="http://www.google.cn/maps/embed?pb=!1m18!1m12!1m3!1d2776.6443163117033!2d10.838571916360769!3d45.898426379108294!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x478216c3cc7855f9%3A0x501438a33f51bd82!2sRiva+del+Garda+Fiere!5e0!3m2!1szh-CN!2scn!4v1548678441090"
                         width="1240" height="564" frameborder="0" style="border:0" allowfullscreen></iframe>
             </div>
-            <h4 class="garda-map_text" style="font-size: 22px;margin-top: 54px;">Riva del Garda Fiere Via Baltera, 38066 Riva del Garda TN, Italy</h4>
+            <h4 class="garda-map_text" style="font-size: 22px;margin-top: 54px;">Riva del Garda Fiere Via Baltera, 38066
+                Riva del Garda TN, Italy</h4>
         </div>
     </div>
+    <index-bottom></index-bottom>
 </div>
-
+<script src="/home/v3/static/js/index-bottom.js"></script>
+<script src="/home/v3/static/js/index-top.js"></script>
 <script>
     new Vue({
         el: '#lhl-garda',
@@ -227,12 +228,6 @@
         methods: {}
     })
 </script>
-<jsp:include page="/home/v2/template/foot.jsp"></jsp:include>
-<script src="/home/v3/static/js/index-top.js"></script>
-<script>
-    new Vue({
-        el:"#app"
-    })
-</script>
+<%--<jsp:include page="/home/v2/template/foot.jsp"></jsp:include>--%>
 </body>
 </html>

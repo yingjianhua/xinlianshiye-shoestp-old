@@ -227,6 +227,7 @@
                     <button class="button_all" onclick="parent.LC_API.open_chat_window({source:'minimized'}); return false">立即联系</button>
                 </div>
             </div>
+            <index-bottom></index-bottom>
         </div>
         <script>
             var countriesList = {
@@ -467,8 +468,9 @@
 
 
 
-	<jsp:include page="template/new-foot.jsp"></jsp:include>
+	<%--<jsp:include page="template/new-foot.jsp"></jsp:include>--%>
 <script src="/home/v3/static/js/index-top.js"></script>
+<script src="/home/v3/static/js/index-bottom.js"></script>
 <script>
     new Vue({
         el:"#app"

@@ -638,13 +638,15 @@
                 <img src="/home/static/images/show5.png" alt="" style="width:100%;vertical-align: middle;">
             </div>
         </div>
+        <index-bottom></index-bottom>
     </div>
-    <jsp:include page="template/new-foot.jsp"></jsp:include>
+    <%--<jsp:include page="template/new-foot.jsp"></jsp:include>--%>
 
 <div id="hj_top" style="opacity: 0; bottom: 10%;">
     <img src="./static/images/hj_top.png">
 </div>
 <script src="/home/v3/static/js/index-top.js"></script>
+<script src="/home/v3/static/js/index-bottom.js"></script>
 <script>
     new Vue({
         el:"#app"

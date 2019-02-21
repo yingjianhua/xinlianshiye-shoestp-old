@@ -14,9 +14,7 @@
 
 <jsp:include page="/home/v3/nav.jsp"></jsp:include>
 <main id="gjhApp" class="gjhMain">
-    <div id="app">
-        <index-top></index-top>
-    </div>
+    <index-top></index-top>
     <div class="wide">
         <header>
             <img src="/html/exhibition/images/bannerbg.jpg" alt="">
@@ -169,7 +167,10 @@
             </div>
         </section>
     </div>
+    <index-bottom></index-bottom>
 </main>
+<script src="/home/v3/static/js/index-top.js"></script>
+<script src="/home/v3/static/js/index-bottom.js"></script>
 <script>
     new Vue({
         el: "#gjhApp",
@@ -180,12 +181,6 @@
         methods: {}
     })
 </script>
-<jsp:include page="/home/v2/template/foot.jsp"></jsp:include>
-<script src="/home/v3/static/js/index-top.js"></script>
-<script>
-    new Vue({
-        el: "#app"
-    })
-</script>
+<%--<jsp:include page="/home/v2/template/foot.jsp"></jsp:include>--%>
 </body>
 </html>

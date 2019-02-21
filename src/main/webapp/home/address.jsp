@@ -412,12 +412,13 @@
 			</div>
 		</div>
 	</div>
+	<index-bottom></index-bottom>
 </div>
 <form action="/home/odr_OdrOrder_toSettlementPage" method="post" id="toSettlementPage">
  	<input type="hidden" value='${jsonCarts}' name="jsonCarts"/>
  </form>
 <input type="hidden"  id="hid"></input>
-<%@ include file="/home/template/new-foot.jsp" %>
+<%--<%@ include file="/home/template/new-foot.jsp" %>--%>
 </body>
 <script type="text/javascript">
 
@@ -768,6 +769,7 @@
 
 </script>
 <script src="/home/v3/static/js/index-top.js"></script>
+<script src="/home/v3/static/js/index-bottom.js"></script>
 <script>
     new Vue({
         el:"#main"

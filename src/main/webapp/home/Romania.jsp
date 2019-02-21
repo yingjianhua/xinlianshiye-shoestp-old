@@ -400,16 +400,18 @@
                   target="_blank">
         </map>
     </div>
+    <index-bottom></index-bottom>
 </div>
 
 <!-- 内容 end -->
-<%@ include file="/home/template/new-foot.jsp" %>
+<%--<%@ include file="/home/template/new-foot.jsp" %>--%>
 
 <!-- Google Tag Manager -->
 <script type="text/javascript" src="./static/js/tracking.js"></script>
 <script type="text/javascript" src="./static/js/js.js"></script>
 <script type="text/javascript" src="./static/js/conversion_async.js"></script>
 <script src="/home/v3/static/js/index-top.js"></script>
+<script src="/home/v3/static/js/index-bottom.js"></script>
 <script>
     new Vue({
         el: "#top-big-goodsList-pic"
