@@ -56,7 +56,8 @@
                     </el-select>
                 </el-col>
                 <el-col :span="8">
-                    <el-select v-model="form.country" placeholder="Country" size="medium" :filter-method="filterCountry"
+                    <el-select v-model="form.country" placeholder="Country" size="medium"
+
                                filterable>
                         <el-option
                                 v-for="item in contoryfilteroptions"
@@ -400,22 +401,28 @@
                 }
             },
             filterCountry: function (val) {
-                var reg = new RegExp("^" + val, "i")
-                if (!val) {
-                    this.$set(this, 'contoryfilteroptions', this.contoryoptions)
-                } else {
-                    let option = [];
-                    let k = 0;
-                    for (let i  in this.contoryoptions) {
-                        if (reg.test(this.contoryoptions[i].name)) {
-                            option[k] = this.contoryoptions[i];
-                            k++;
-                        }
-                    }
-                    this.$set(this, 'contoryfilteroptions', option)
-                }
+                // var reg = new RegExp("^" + val, "i")
+                // console.log("reg is:",reg);
+                // if (!val) {
+                //     this.$set(this, 'contoryfilteroptions', this.contoryoptions)
+                // } else {
+                //     let option = [];
+                //     let k = 0;
+                //     for (let i  in this.contoryoptions) {
+                //         if (reg.test(this.contoryoptions[i].name)) {
+                //             option[k] = this.contoryoptions[i];
+                //             k++;
+                //         }
+                //     }
+                //     this.$set(this, 'contoryfilteroptions', option)
+                // }
+                this.contoryfilteroptions = this.contoryfilteroptions.filter(option => {
+                    var reg = new RegExp("^" + val, "i");
+                    return reg.test(option.name)
+                })
             },
             submit: function () {
+                console.log("submit start")
                 for (let i in this.form) {
                     if (!this.regTest(i, this.form[i])) {
                         return false;

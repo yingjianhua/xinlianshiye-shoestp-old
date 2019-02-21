@@ -271,7 +271,7 @@ $('html').on('click', '#signin_close', function () {
 
 <script>
 
-
+    user_obj.sign_in_init();
     new Vue(
         {
             el: "#foot"
@@ -430,6 +430,7 @@ $('html').on('click', '#signin_close', function () {
                 //
                 //     });
                 // }
+                user_obj.inbox_init()
                 if (!isLogin) {
                     // user_obj.set_form_sign_in('', window.location.href, 1);
                     // return
