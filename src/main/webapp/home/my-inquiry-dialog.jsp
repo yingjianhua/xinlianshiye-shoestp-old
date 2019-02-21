@@ -329,9 +329,10 @@
             </div>
             </div>
         </div>
+        <index-bottom></index-bottom>
     </div>
 
-    <%@ include file="/home/template/new-foot.jsp" %>
+    <%--<%@ include file="/home/template/new-foot.jsp" %>--%>
 
     <div id="hj_top" style="opacity: 0;">
         <img src="/home/static/images/hj_top.png">
@@ -528,6 +529,7 @@
       // })
   </script>
     <script src="/home/v3/static/js/index-top.js"></script>
+    <script src="/home/v3/static/js/index-bottom.js"></script>
 
 </body>
 

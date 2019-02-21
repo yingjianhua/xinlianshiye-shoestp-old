@@ -202,11 +202,13 @@
             </div>
             <!-- 联系-信息2 - end -->
         </div>
+        <index-bottom></index-bottom>
     </div>
     </c:if>
-    <%@ include file="/home/template/new-foot.jsp" %>
+    <%--<%@ include file="/home/template/new-foot.jsp" %>--%>
     ${supView.traceCode}
     <script src="/home/v3/static/js/index-top.js"></script>
+    <script src="/home/v3/static/js/index-bottom.js"></script>
     <script>
         new Vue({
             el:"#main"
