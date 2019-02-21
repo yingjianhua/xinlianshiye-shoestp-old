@@ -32,6 +32,8 @@ public class ProductInfoView implements BaseView {
     private int authTime;
     //
     private long pdtId;
+    //产品类型
+    private Byte type;
     //
     private String itemCode;
     //剩余库存:产品表的stock字段
@@ -141,8 +143,15 @@ public class ProductInfoView implements BaseView {
         return stock;
     }
 
-
-    public int getFavorite_count() {
+    public Byte getType() {
+		return type;
+	}
+    
+	public void setType(Byte type) {
+		this.type = type;
+	}
+	
+	public int getFavorite_count() {
         return favorite_count;
     }
 

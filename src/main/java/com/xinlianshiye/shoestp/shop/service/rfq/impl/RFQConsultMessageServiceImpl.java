@@ -1,5 +1,8 @@
 package com.xinlianshiye.shoestp.shop.service.rfq.impl;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -13,9 +16,12 @@ import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultMessageContactView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultMessageView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultMessagesView;
 
+import irille.Dao.RFQ.RFQConsultMessageDao;
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
+import irille.Entity.RFQ.Enums.RFQConsultMessageType;
 import irille.Entity.RFQ.JSON.ConsultMessage;
+import irille.Entity.RFQ.JSON.RFQConsultAlertUrlMessage;
 import irille.Entity.RFQ.JSON.RFQConsultTextMessage;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
@@ -95,6 +101,33 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 		bean.stHadRead(false);
 		bean.ins();
 		return RFQConsultMessageView.Builder.toView(bean);
+	}
+	
+	@Inject
+	private RFQConsultMessageDao rFQConsultMessageDao;
+
+	@Override
+	public Integer checkPrivateExpoKey(String expoKey) {
+		RFQConsultMessage message = rFQConsultMessageDao.findByUuid(expoKey);
+		if(message == null)
+			return null;
+		if(message.gtType() != RFQConsultMessageType.ALERT_URL)
+			return null;
+		try {
+			RFQConsultAlertUrlMessage content = om.readValue(message.getContent(), RFQConsultAlertUrlMessage.class);
+			if(content.getValidDate() == null) {
+				content.setValidDate(Date.from(LocalDateTime.now().plusDays(2).atZone(ZoneId.systemDefault()).toInstant()));
+				message.setContent(om.writeValueAsString(content));
+				rFQConsultMessageDao.save(message);
+				return content.getProductId();
+			} else if(content.getValidDate().after(new Date())) {
+				return content.getProductId();
+			} else {
+				return null;
+			}
+		} catch (IOException e) {
+			return null;
+		}
 	}
 
 }
