@@ -458,7 +458,6 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> {
     }
 
     private  Page page;
-
     /*
      *   获取供应商中心列表
      * @Author HuangHaoBin
