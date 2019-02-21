@@ -166,4 +166,15 @@ public class UsrSupplierDao {
       return query.queryMaps();
   }
 
+  /*
+   *   判断用户类型
+   * @Author HuangHaoBin
+   **/
+  public boolean isSupplier(String loginName){
+      BeanQuery query = new BeanQuery();
+      query.SELECT(
+              UsrSupplier.class
+      ).FROM(UsrSupplier.class);
+      return query.queryMaps().size() > 0;
+  }
 }
