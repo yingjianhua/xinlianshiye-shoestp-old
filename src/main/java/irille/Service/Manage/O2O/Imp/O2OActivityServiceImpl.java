@@ -1,16 +1,35 @@
 package irille.Service.Manage.O2O.Imp;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.google.inject.Inject;
+
+import irille.Dao.PdtCatDao;
 import irille.Dao.O2O.O2OActivityDao;
 import irille.Dao.O2O.O2OProductDao;
-import irille.Dao.PdtCatDao;
-import irille.Entity.O2O.Enums.O2O_ActivityStatus;
-import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
-import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_Activity;
 import irille.Entity.O2O.O2O_JoinInfo;
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Entity.O2O.O2O_Product;
+import irille.Entity.O2O.Enums.O2O_ActivityStatus;
+import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
+import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Service.Manage.O2O.O2OActivityService;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
@@ -23,23 +42,11 @@ import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrSupplier;
+import irille.view.Page;
 import irille.view.O2O.O2OActivityView;
 import irille.view.O2O.O2OProductView;
 import irille.view.O2O.PdtSearchView;
-import irille.view.Page;
 import irille.view.se.sendEmail;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class O2OActivityServiceImpl implements O2OActivityService {
 
@@ -180,8 +187,8 @@ public class O2OActivityServiceImpl implements O2OActivityService {
         activity.setAddress(view.getAddr());
         activity.setActivityCat(view.getActivityCat());
         activity.setRules(view.getRules());
-        activity.setStartDate(view.getStartDate());
-        activity.setEndDate(view.getEndDate());
+        activity.setStartDate(new Date(view.getStartTime()));
+        activity.setEndDate(new Date(view.getEndTime()));
         activity.setUpdatedTime(new Date());
         if (null != view.getPkey()) {
             activity.upd();
