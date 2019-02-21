@@ -1,13 +1,22 @@
 package irille.Dao.O2O;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+
 import irille.Aops.Caches;
+import irille.Entity.O2O.O2O_Activity;
+import irille.Entity.O2O.O2O_Activity.T;
+import irille.Entity.O2O.O2O_JoinInfo;
+import irille.Entity.O2O.O2O_Map;
+import irille.Entity.O2O.O2O_PrivateExpoPdt;
+import irille.Entity.O2O.O2O_Product;
 import irille.Entity.O2O.Enums.O2O_ActivityStatus;
 import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
-import irille.Entity.O2O.*;
-import irille.Entity.O2O.O2O_Activity.T;
 import irille.core.sys.Sys;
-import irille.core.sys.SysEm;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
 import irille.shop.pdt.Pdt;
@@ -18,11 +27,6 @@ import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplierRole;
 import irille.view.O2O.PdtSearchView;
-
-import javax.annotation.Nonnull;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA. User: Lijie<HelloBox@outlook.com> Date: 2019/1/26 Time: 12:50
@@ -233,8 +237,8 @@ public class O2OProductDao {
                 .WHERE(PdtProduct.T.IS_VERIFY, "=?", Sys.OYn.YES.getLine().getKey())
                 .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON.getLine().getKey())
 //                .WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.GENERAL.getLine().getKey())
-                .WHERE("("+PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()+"=? OR " + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()+"=? )", Pdt.OProductType.GENERAL.getLine().getKey(),Pdt.OProductType.O2O.getLine().getKey())
-                .WHERE("("+ O2O_Product.class.getSimpleName() +"."+O2O_Product.T.ACTIVITY_ID.getFld().getCodeSqlField() + "<> ? and " + O2O_Product.class.getSimpleName() +"." + O2O_Product.T.STATUS.getFld().getCodeSqlField() + "<>? OR "+ O2O_Product.class.getSimpleName() +"." + O2O_Product.T.PKEY.getFld().getCodeSqlField() + " IS NULL )", activity,O2O_ProductStatus.WAITOFF.getLine().getKey());
+                .WHERE("("+PdtProduct.class.getSimpleName() + "." + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()+"=? OR " + PdtProduct.class.getSimpleName() + "." + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()+"=? )", Pdt.OProductType.GENERAL.getLine().getKey(),Pdt.OProductType.O2O.getLine().getKey())
+                .WHERE("(("+ O2O_Product.class.getSimpleName() +"."+O2O_Product.T.ACTIVITY_ID.getFld().getCodeSqlField() + "<> ? and " + O2O_Product.class.getSimpleName() +"." + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField() + "=? OR "+O2O_Product.class.getSimpleName() +"."+O2O_Product.T.PRODUCT_ID.getFld().getCodeSqlField() + " <> "+PdtProduct.class.getSimpleName()+"."+PdtProduct.T.PKEY.getFld().getCodeSqlField()+" OR "+ O2O_Product.class.getSimpleName() +"." + O2O_Product.T.PKEY.getFld().getCodeSqlField() + " IS NULL ) OR ("+O2O_Product.class.getSimpleName() + "." + O2O_Product.T.ACTIVITY_ID.getFld().getCodeSqlField() +" =? AND "+O2O_Product.class.getSimpleName()+"." + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField()+" =? ))", activity,O2O_ProductStatus.PASS.getLine().getKey(),activity,O2O_PrivateExpoPdtStatus.Failed.getLine().getKey());
         System.err.println(sql.toString());
         return Query.sql(sql).queryMaps();
 

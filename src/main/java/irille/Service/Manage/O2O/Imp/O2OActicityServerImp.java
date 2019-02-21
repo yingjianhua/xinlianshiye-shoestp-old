@@ -1,26 +1,27 @@
 package irille.Service.Manage.O2O.Imp;
 
-import irille.Dao.O2O.O2OActivityDao;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+
 import irille.Dao.PdtProductDao;
-import irille.Entity.O2O.Enums.O2O_ProductStatus;
+import irille.Dao.O2O.O2OActivityDao;
 import irille.Entity.O2O.O2O_Activity;
 import irille.Entity.O2O.O2O_JoinInfo;
 import irille.Entity.O2O.O2O_Product;
+import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Service.Manage.O2O.IO2OActicityServer;
 import irille.pub.Log;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.pub.idu.Idu;
-import irille.pub.util.GetValue;
-import irille.sellerAction.o2o.inf.IO2oActivityAction;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrSupplier;
-
-import javax.inject.Inject;
-import java.math.BigDecimal;
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class O2OActicityServerImp implements IO2OActicityServer{
 
@@ -75,8 +76,10 @@ public class O2OActicityServerImp implements IO2OActicityServer{
             }
             O2O_Product o2oPdt = O2O_Product.chkUniqueProduct_id_join_info_id(false,pdt.getPkey(),joinInfo.getPkey());
             if(o2oPdt != null){
-                if(!o2oPdt.getVerifyStatus().equals(O2O_ProductStatus.Failed)){
+                if(!o2oPdt.getVerifyStatus().equals(O2O_ProductStatus.Failed.getLine().getKey())){
                     continue;
+                }else if(o2oPdt.getVerifyStatus().equals(O2O_ProductStatus.Failed.getLine().getKey())){
+                	o2oPdt.setVerifyStatus(O2O_ProductStatus._DEFAULT.getLine().getKey());
                 }
             }else{
                 o2oPdt = new O2O_Product();
