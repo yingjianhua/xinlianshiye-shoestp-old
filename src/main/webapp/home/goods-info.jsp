@@ -698,7 +698,7 @@
         </div>
         <div style="padding: 15px"></div>
     </div>
-
+    <index-bottom></index-bottom>
 </div>
 <script>
 
@@ -880,7 +880,7 @@
     }
 </script>
 <script src="/home/v3/static/js/index-top.js"></script>
-
+<script src="/home/v3/static/js/index-bottom.js"></script>
 <script>
         user_obj.sign_in_init();
     var app = new Vue({
@@ -1348,6 +1348,6 @@
 <c:if test="${not empty supView.traceCode && fn:length(supView.traceCode)>0}">
     ${supView.traceCode}
 </c:if>
-<jsp:include page="template/new-foot.jsp"></jsp:include>
+<%--<jsp:include page="template/new-foot.jsp"></jsp:include>--%>
 
 

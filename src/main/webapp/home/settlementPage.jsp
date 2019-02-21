@@ -813,8 +813,9 @@
             <form action="/home/usr_UsrPurchaseLine_addmanagement" method="post" id="toSetBillAddress">
                 <input type="hidden" value='${jsonCarts}' name="jsonCarts"/>
             </form>
+            <index-bottom></index-bottom>
         </div>
-        <%@ include file="/home/template/new-foot.jsp" %>
+        <%--<%@ include file="/home/template/new-foot.jsp" %>--%>
         <div id="hj_top" style="opacity: 0;">
             <img src="./static/images/hj_top.png">
         </div>
@@ -904,6 +905,7 @@
 
 </script>
 <script src="/home/v3/static/js/index-top.js"></script>
+<script src="/home/v3/static/js/index-bottom.js"></script>
 <script>
     new Vue({
         el:"#main"

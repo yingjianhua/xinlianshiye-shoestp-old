@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <jsp:include page="/home/v3/header.jsp"></jsp:include>
 <script src="/html/exhibition/js/config.js"></script>
 <link rel="stylesheet" href="/html/exhibition/css/index.css">
@@ -10,9 +10,7 @@
 </style>
 <jsp:include page="/home/v3/nav.jsp"></jsp:include>
 <div id="linExhibitionLasVages">
-    <div id="app">
-        <index-top></index-top>
-    </div>
+    <index-top></index-top>
     <div class="lasvagesbannercon">
         <img class='lasvagesbanner' src="/html/exhibition/images/bannerlasvages.png" alt="">
     </div>
@@ -29,10 +27,12 @@
                 <div class="detailcon">
                     <h3>FOOTWEAR SOURCING AT MAGIC</h3>
                     <div class="hen"></div>
-                    <p>FOOTWEAR SOURCING AT MAGIC is the only show created for brands and retailers to source their footwear
+                    <p>FOOTWEAR SOURCING AT MAGIC is the only show created for brands and retailers to source their
+                        footwear
                         production directly from factories around the globe. Conveniently located alongside our
                         international footwear show, FN PLATFORM, FOOTWEAR SOURCING AT MAGIC allows designers, product
-                        development teams, and private label marketers to connect, shop, and expand their businesses on a
+                        development teams, and private label marketers to connect, shop, and expand their businesses on
+                        a
                         global scale.</p>
                 </div>
             </div>
@@ -108,33 +108,27 @@
         <h2>Venue Map & Directions</h2>
         <div class="map">
             <iframe
-                src="http://www.google.cn/maps/embed?pb=!1m18!1m12!1m3!1d145836.0008093548!2d-115.12423013907598!3d36.12882713541526!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c8c46640af22e7%3A0xa93a4afe2fe7b046!2sLas+Vegas+Convention+Center!5e0!3m2!1szh-CN!2scn!4v1548672922122"
-                width="1040" height="474" frameborder="0" style="border:0" allowfullscreen></iframe>
+                    src="http://www.google.cn/maps/embed?pb=!1m18!1m12!1m3!1d145836.0008093548!2d-115.12423013907598!3d36.12882713541526!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c8c46640af22e7%3A0xa93a4afe2fe7b046!2sLas+Vegas+Convention+Center!5e0!3m2!1szh-CN!2scn!4v1548672922122"
+                    width="1040" height="474" frameborder="0" style="border:0" allowfullscreen></iframe>
         </div>
-        <h2  style="font-size: 22px;margin-top: 54px;">LAS VEGAS AND MANDALAY BAY CONVENTION CENTERS<br>LAS VEGAS<br> USA</h2>
+        <h2 style="font-size: 22px;margin-top: 54px;">LAS VEGAS AND MANDALAY BAY CONVENTION CENTERS<br>LAS VEGAS<br> USA
+        </h2>
     </div>
+    <index-bottom></index-bottom>
 </div>
+<script src="/home/v3/static/js/index-top.js"></script>
+<script src="/home/v3/static/js/index-bottom.js"></script>
 <script>
     new Vue({
         el: '#linExhibitionLasVages',
-        data: {
-
-        },
-        methods: {
-
-        },
+        data: {},
+        methods: {},
         mounted() {
 
         }
     })
 </script>
 <%--<jsp:include page="/home/v2/template/foot.jsp"></jsp:include>--%>
-<%@ include file="/home/v2/template/foot.jsp" %>
-<script src="/home/v3/static/js/index-top.js"></script>
-<script>
-    new Vue({
-        el:"#app"
-    })
-</script>
+<%--<%@ include file="/home/v2/template/foot.jsp" %>--%>
 </body>
 </html>

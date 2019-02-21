@@ -318,13 +318,14 @@
 
             </div>
         </div>
+        <index-bottom></index-bottom>
 	</div>
 	<form action="/home/odr_OdrOrder_toSettlementPage" method="post" id="buynow">
          <input type="hidden" name="jsonCarts" value="" class="carts"/>
          <input type="hidden" name="enterType" value='1' />
          <input type="hidden" name="pid" value="${id}"/>
      </form>
-	 <%@ include file="/home/template/new-foot.jsp" %>
+	 <%--<%@ include file="/home/template/new-foot.jsp" %>--%>
 	<div id="hj_top" style="opacity: 0;">
 		<img src="./static/images/hj_top.png">
 	</div>
@@ -1121,6 +1122,7 @@
         })
     </script>
     <script src="/home/v3/static/js/index-top.js"></script>
+    <script src="/home/v3/static/js/index-bottom.js"></script>
 </body>
 
 </html>

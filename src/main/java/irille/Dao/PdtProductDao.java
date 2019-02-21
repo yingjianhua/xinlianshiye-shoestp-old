@@ -542,6 +542,11 @@ public class PdtProductDao {
                         o.put("status", value.getLine().getName());
                     }
                 }
+                if(privateExpoPdt.getStatus().equals(2)){
+                    o.put("upANDlow",1);
+                }else{
+                    o.put("upANDlow",0);
+                }
             } else if ((Byte) o.get(PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()) == Pdt.OProductType.O2O.getLine().getKey()) {
                 SQL sql = new SQL() {{
                     SELECT(O2O_Product.class).FROM(O2O_Product.class).WHERE(O2O_Product.T.PRODUCT_ID, "=?", (Integer) o.get(PdtProduct.T.PKEY.getFld().getCodeSqlField()));
@@ -561,6 +566,7 @@ public class PdtProductDao {
                 } else {
                     o.put("status", "审核未通过");
                 }
+                o.put("upANDlow",(Byte)PdtProduct.T.STATE.getFld().getDefaultValue());
             }
             o.put("category", translateUtil.getLanguage(o.get("category"), PltConfigDAO.supplierLanguage(supplierId)));
             o.put("rewrite", SEOUtils.getPdtProductTitle(Integer.valueOf(String.valueOf(o.get("pkey"))), String.valueOf(o.get("name"))));
