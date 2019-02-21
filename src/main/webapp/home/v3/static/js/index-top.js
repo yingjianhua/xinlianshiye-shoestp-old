@@ -11,7 +11,7 @@ template: `<div>
                     <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                     </el-option>
                 </el-select>
-                <input type="text" v-model="input" style="height: 100%;padding: 0;">
+                <input type="text" v-model="input">
                 <div class="searchbotton" @click="submit"><img src="/home/v3/static/images/indexiconserch.png" alt=""></div>
             </div>
             <dl class="o2otoplikes">
