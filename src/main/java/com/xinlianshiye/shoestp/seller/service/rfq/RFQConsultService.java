@@ -1,10 +1,10 @@
-package irille.Service.Manage.RFQ;
+package com.xinlianshiye.shoestp.seller.service.rfq;
 
 import java.util.Date;
 
 import com.google.inject.ImplementedBy;
+import com.xinlianshiye.shoestp.seller.service.rfq.impl.RFQConsultServiceImpl;
 
-import irille.Service.Manage.RFQ.Imp.RFQConsultServiceImpl;
 import irille.platform.rfq.view.RFQConsultRelationView;
 import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
 import irille.sellerAction.rfq.view.RFQConsultRelationCountView;

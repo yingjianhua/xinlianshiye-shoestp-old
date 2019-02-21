@@ -1,4 +1,4 @@
-package irille.Service.Manage.RFQ.Imp;
+package com.xinlianshiye.shoestp.seller.service.rfq.impl;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import com.xinlianshiye.shoestp.seller.service.rfq.RFQConsultMessageService;
 
 import irille.Dao.PdtProductDao;
 import irille.Dao.RFQ.RFQConsultDao;
@@ -22,7 +23,6 @@ import irille.Entity.RFQ.JSON.ConsultMessage;
 import irille.Entity.RFQ.JSON.RFQConsultAlertUrlMessage;
 import irille.Entity.RFQ.JSON.RFQConsultImageMessage;
 import irille.Entity.RFQ.JSON.RFQConsultTextMessage;
-import irille.Service.Manage.RFQ.RFQConsultMessageService;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.sellerAction.rfq.view.RFQConsultMessageContactView;
