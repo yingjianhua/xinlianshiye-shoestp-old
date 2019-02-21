@@ -683,11 +683,9 @@ a {
 #xsq .goods-category-item .right-goods-wrap .item:hover .hover-show {
   top: 0;
   opacity: 1;
-}
-
-#xsq .goods-category-item .right-goods-wrap .item:hover .link-box {
-  height: 100%;
-}
+}#xsq .goods-category-item .right-goods-wrap .item:hover .link-box {
+   height: 100%;
+ }
 
 #xsq .goods-category-item .right-goods-wrap .hover-text-wrap {
   padding: 12px 15px;
@@ -1273,7 +1271,7 @@ a {
   border-radius: unset;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  font-family: Arial-BoldMT;
+  font-family: inherit;
   font-size: 16px;
   color: #10389c;
 }
