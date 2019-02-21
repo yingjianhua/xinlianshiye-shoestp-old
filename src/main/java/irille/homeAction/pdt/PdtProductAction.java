@@ -318,6 +318,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
     @Getter
     @Setter
     private SEOView seoView;
+    private String expoKey;//私人展厅产品的密钥, 没有密钥或者密钥过期都不能进入页面
 
     /**
      * @Description: 商品详情页 Jsp
