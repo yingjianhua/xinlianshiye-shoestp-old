@@ -718,9 +718,12 @@
         <div class="blank12"></div>
         <!-- <iframe name="export_pdf" id="export_pdf" class="export_pdf" src="./static/saved_resource.html" style="width:0px; height:0px;"></iframe> -->
     </div>
+    <div id="app">
+        <index-bottom></index-bottom>
+    </div>
 </div>
 </div>
-<%@ include file="/home/template/new-foot.jsp" %>
+<%--<%@ include file="/home/template/new-foot.jsp" %>--%>
 
 
 <script type="text/javascript" src="./static/js/module.js"></script>
@@ -729,7 +732,12 @@
 <%-- <script type="text/javascript" src="./static/js/addthis_widget.js"></script> --%>
 
 </body>
-
+<script src="/home/v3/static/js/index-bottom.js"></script>
+<script>
+    new Vue({
+        el:"#app"
+    })
+</script>
 <script tyle="text/javascript">
     var time = '${groupPurchase.endTime}';
     var startTime = '${groupPurchase.startTime}';
