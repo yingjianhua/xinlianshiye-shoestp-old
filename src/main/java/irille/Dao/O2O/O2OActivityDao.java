@@ -69,7 +69,7 @@ public class O2OActivityDao {
     }
 
 
-    public List<Map<String, Object>> privetePdtList(int start, int limit, Integer status, Integer verify_status, String cat, String supName) {
+    public List<Map<String, Object>> privetePdtList(int start, int limit, Integer status, Integer verify_status, String cat, String supName,String pdtName) {
         BeanQuery query = Query.SELECT(
                 PdtProduct.T.PKEY,
                 PdtProduct.T.NAME,
@@ -101,6 +101,7 @@ public class O2OActivityDao {
                 .WHERE(status != null, O2O_PrivateExpoPdt.T.STATUS, "=?", status)
                 .WHERE(verify_status != null, O2O_PrivateExpoPdt.T.VERIFY_STATUS, "=?", verify_status)
                 .WHERE(cat != null, PdtCat.T.NAME, "like ?", "%" + cat + "%")
+                .WHERE(pdtName != null, PdtProduct.T.NAME, "like ?", "%" + pdtName + "%")
                 .limit(start, limit);
         return query.queryMaps();
     }
