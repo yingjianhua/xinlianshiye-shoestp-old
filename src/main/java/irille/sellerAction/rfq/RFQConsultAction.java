@@ -1,9 +1,10 @@
 package irille.sellerAction.rfq;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xinlianshiye.shoestp.seller.service.rfq.RFQConsultService;
+
 import irille.Entity.RFQ.RFQConsult;
 import irille.Service.Manage.RFQ.IRFQManageService;
-import irille.Service.Manage.RFQ.RFQConsultService;
 import irille.pub.util.upload.ImageUpload;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.rfq.inf.IRFQConsultAction;

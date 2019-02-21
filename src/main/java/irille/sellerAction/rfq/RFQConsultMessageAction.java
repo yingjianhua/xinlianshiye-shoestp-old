@@ -3,10 +3,10 @@ package irille.sellerAction.rfq;
 import java.io.IOException;
 
 import com.google.inject.Inject;
+import com.xinlianshiye.shoestp.seller.service.rfq.RFQConsultMessageService;
 
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.Enums.RFQConsultMessageType;
-import irille.Service.Manage.RFQ.RFQConsultMessageService;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.rfq.inf.IRFQConsultMessageAction;
 import irille.sellerAction.rfq.view.RFQConsultMessageView;

@@ -1,8 +1,8 @@
-package irille.Service.Manage.RFQ;
+package com.xinlianshiye.shoestp.seller.service.rfq;
 
 import com.google.inject.ImplementedBy;
+import com.xinlianshiye.shoestp.seller.service.rfq.impl.RFQConsultMessageServiceImpl;
 
-import irille.Service.Manage.RFQ.Imp.RFQConsultMessageServiceImpl;
 import irille.sellerAction.rfq.view.RFQConsultMessageView;
 import irille.sellerAction.rfq.view.RFQConsultMessagesView;
 import irille.shop.usr.UsrSupplier;
