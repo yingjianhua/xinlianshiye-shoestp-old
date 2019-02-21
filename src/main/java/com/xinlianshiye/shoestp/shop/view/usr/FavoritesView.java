@@ -7,7 +7,10 @@ import java.util.List;
 
 import org.json.JSONException;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import irille.homeAction.HomeAction;
+import irille.pub.i18n.I18NFieldSerializer;
 import irille.pub.util.SetBeans.SetBean.Annotations.SetBean;
 import irille.shop.pdt.Pdt;
 import irille.shop.plt.PltErateDAO;
@@ -18,6 +21,7 @@ import irille.view.BaseView;
 public class FavoritesView implements BaseView {
     @SetBean(OriginalField = "picture")
     private String img;
+    @JsonSerialize(using=I18NFieldSerializer.class)
     private String name;
     //价格
     @SetBean(OriginalField = "cur_price")
