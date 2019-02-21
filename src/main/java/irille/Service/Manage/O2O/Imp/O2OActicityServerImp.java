@@ -75,8 +75,10 @@ public class O2OActicityServerImp implements IO2OActicityServer{
             }
             O2O_Product o2oPdt = O2O_Product.chkUniqueProduct_id_join_info_id(false,pdt.getPkey(),joinInfo.getPkey());
             if(o2oPdt != null){
-                if(!o2oPdt.getVerifyStatus().equals(O2O_ProductStatus.Failed)){
+                if(!o2oPdt.getVerifyStatus().equals(O2O_ProductStatus.Failed.getLine().getKey())){
                     continue;
+                }else if(o2oPdt.getVerifyStatus().equals(O2O_ProductStatus.Failed.getLine().getKey())){
+                    o2oPdt.setVerifyStatus(O2O_ProductStatus._DEFAULT.getLine().getKey());
                 }
             }else{
                 o2oPdt = new O2O_Product();
