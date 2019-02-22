@@ -71,7 +71,7 @@ public class PurchaseAction extends AbstractHomeAction implements IPurchaseActio
 	@Override
 	@NeedLogin
 	public void changeEmail() throws IOException {
-		usrPurchaseService.changeEmail(getPurchase(), email, newPassword);
+		usrPurchaseService.changeEmail(getPurchase(), email, password);
 		write();
 	}
 
