@@ -569,15 +569,23 @@ public class PdtProductDao {
                     o.put("upANDlow",0);
                 }
             } else if ((Byte) o.get(PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()) == Pdt.OProductType.O2O.getLine().getKey()) {
-//                SQL sql = new SQL() {{
-//                    SELECT(O2O_Product.class).FROM(O2O_Product.class).WHERE(O2O_Product.T.PRODUCT_ID, "=?", (Integer) o.get(PdtProduct.T.PKEY.getFld().getCodeSqlField()));
-//                }};
-//                List<O2O_Product> o2oList = Query.sql(sql).queryList(O2O_Product.class);
             	Integer joinInfoId = GetValue.get(o,O2O_Product.T.JOIN_INFO_ID, Integer.class, null);
             	O2O_Product p = O2O_Product.chkUniqueProduct_id_join_info_id(true, GetValue.get(o, PdtProduct.T.PKEY,Integer.class, null),joinInfoId);
-            	
-            	
                 if (null != p) {
+                	SQL sql = new SQL() {{
+                		SELECT(O2O_Product.class).FROM(O2O_Product.class).WHERE(O2O_Product.T.PRODUCT_ID, "=?",p.getProductId());
+                	}};
+                	List<O2O_Product> o2oList = Query.sql(sql).queryList(O2O_Product.class);
+                	boolean flag = false;
+                	for(O2O_Product o2o:o2oList) {
+                		if(!o2o.getStatus().equals(O2O_ProductStatus.PASS.getLine().getKey())) {
+                			flag = true;
+                			break;
+                		}
+                	}
+                	if(!flag) {
+                		o.put("o2o_lower", 1);//o2o商品已下架,可编辑状态
+                	}
             		o.put("status", p.gtVerifyStatus().getLine().getName());
                 } else {
                     o.put("status", "");

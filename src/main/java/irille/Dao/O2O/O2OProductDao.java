@@ -1,13 +1,22 @@
 package irille.Dao.O2O;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+
 import irille.Aops.Caches;
+import irille.Entity.O2O.O2O_Activity;
+import irille.Entity.O2O.O2O_Activity.T;
+import irille.Entity.O2O.O2O_JoinInfo;
+import irille.Entity.O2O.O2O_Map;
+import irille.Entity.O2O.O2O_PrivateExpoPdt;
+import irille.Entity.O2O.O2O_Product;
 import irille.Entity.O2O.Enums.O2O_ActivityStatus;
 import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
-import irille.Entity.O2O.*;
-import irille.Entity.O2O.O2O_Activity.T;
 import irille.core.sys.Sys;
-import irille.core.sys.SysEm;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
 import irille.shop.pdt.Pdt;
@@ -18,11 +27,6 @@ import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplierRole;
 import irille.view.O2O.PdtSearchView;
-
-import javax.annotation.Nonnull;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA. User: Lijie<HelloBox@outlook.com> Date: 2019/1/26 Time: 12:50
@@ -222,6 +226,7 @@ public class O2OProductDao {
                 PdtProduct.T.MIN_OQ,
                 PdtProduct.T.CUR_PRICE,
                 PdtProduct.T.PRODUCT_TYPE,
+                O2O_Product.T.STATUS,
                 PdtProduct.T.PICTURE)
                 .SELECT(PdtProduct.T.NAME, "pdtName")
                 .SELECT(UsrSupplier.T.NAME, "supName")
@@ -340,7 +345,16 @@ public class O2OProductDao {
             return null;
         }
     }
-
+    
+    public List<O2O_Product> findAllByProd(Integer product){
+    	SQL sql = new SQL();
+    	sql.SELECT(O2O_Product.class).FROM(O2O_Product.class).WHERE(O2O_Product.T.PRODUCT_ID, "=?",product);
+    	return Query.sql(sql).queryList(O2O_Product.class);
+    }
+    
+    /**
+     * 获取通过审核/上架的O2O商品
+     */
     public List<O2O_Product> findAllByProd_Pkey(Integer product){
         SQL sql = new SQL();
         sql.SELECT(O2O_Product.class).FROM(O2O_Product.class).WHERE(O2O_Product.T.PRODUCT_ID," =? ",product);
