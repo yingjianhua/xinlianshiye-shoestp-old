@@ -22,12 +22,12 @@
                     </a>
                 </el-menu-item>
                 <el-menu-item index="3">
-                    <a href="https://www.shoestp.com/home/pdt_PdtProduct_o2oList" target="_blank">
+                    <a href="/home/pdt_PdtProduct_o2oList" target="_blank">
                         <s:text name="Romanian Office Exhibition"/>
                     </a>
                 </el-menu-item>
                 <el-menu-item index="4">
-                    <a href="https://www.shoestp.com/html/SVS/svs.jsp" target="_blank">
+                    <a href="/html/SVS/svs.jsp" target="_blank">
                         <s:text name="SVS Suppliers"/>
                     </a>
                 </el-menu-item>
