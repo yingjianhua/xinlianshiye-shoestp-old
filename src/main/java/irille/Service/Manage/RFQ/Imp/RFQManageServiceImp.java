@@ -7,6 +7,7 @@ import irille.Dao.Old.RFQ.RFQConsultUpdDAO;
 import irille.Dao.RFQ.RFQConsultDao;
 import irille.Entity.RFQ.Enums.RFQConsultPayType;
 import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
+import irille.Entity.RFQ.Enums.RFQConsultUnit;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Service.Manage.RFQ.IRFQManageService;
@@ -53,7 +54,7 @@ public class RFQManageServiceImp implements IRFQManageService {
         if (keyword != null)
             keyword = "%" + keyword + "%";
         List<Map<String, Object>> list = rfqConsultDao.getRFQList(start, limit, keyword, supId);
-        List<RFQListBodyInfoView> result = new ArrayList<>();
+                List<RFQListBodyInfoView> result = new ArrayList<>();
         for (Map<String, Object> map : list) {
             RFQListBodyInfoView rfqListBodyInfoView = new RFQListBodyInfoView();
             rfqListBodyInfoView.setId(GetValue.get(map, RFQConsult.T.PKEY, Integer.class, 0));
@@ -147,6 +148,7 @@ public class RFQManageServiceImp implements IRFQManageService {
         rfqConsultRelation.setMaxprice(quoteInfo.getMax_price());
         rfqConsultRelation.setCurrency(quoteInfo.getCurrency());
         rfqConsultRelation.setValidDate(quoteInfo.getValidity());
+        rfqConsultRelation.stUnit(RFQConsultUnit.PAIR);
         rfqConsultRelation.stPaytype((RFQConsultPayType) RFQConsultPayType.DEFAULT.getLine().get(quoteInfo.getPayType()));
         rfqConsultRelation.stTransittype((RFQConsultShipping_Type) RFQConsultShipping_Type.FOB.getLine().get(quoteInfo.getTransitType()));
         rfqConsultRelation.stSample(quoteInfo.isSample());
