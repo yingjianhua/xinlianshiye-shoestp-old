@@ -514,7 +514,7 @@
                     this.$alert('Please login to operate', 'Please login to operate', {
                         confirmButtonText: 'Ok',
                         callback: action => {
-                            window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView"
+                            window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView"
                         }
                     });
                     return

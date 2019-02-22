@@ -1365,6 +1365,7 @@ a {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  height: 50px;
   padding: 7px 10px;
   border: solid 1px #fff;
   background-color: #fff;
@@ -1373,9 +1374,9 @@ a {
 
 #o2otop .o2otopcon .o2otoplikes dd {
   position: absolute;
-  top: 49.54px;
+  top: 49px;
   z-index: 99;
-  left: -133px;
+  right: 0;
   background-color: #fff;
   width: 270px;
   background-color: #ffffff;
