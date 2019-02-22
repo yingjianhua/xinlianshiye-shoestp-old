@@ -1242,6 +1242,7 @@ a {
     width: 700px;
     height: 46px;
     border: 2px solid #10389c;
+    box-sizing: border-box;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -1270,7 +1271,7 @@ a {
     border-radius: unset;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-    font-family: Arial-BoldMT;
+    font-family: inherit;
     font-size: 16px;
     color: #10389c;
 }
@@ -1305,8 +1306,9 @@ a {
     -webkit-box-flex: 1;
     -ms-flex-positive: 1;
     flex-grow: 1;
-    border: 1px solid #10389c;
+    /*border: 1px solid #10389c;*/
     border-left: none;
+    border-color: transparent;
     text-indent: 10px;
     font-family: Arial-BoldMT;
     font-size: 16px;

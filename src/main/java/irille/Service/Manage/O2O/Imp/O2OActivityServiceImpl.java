@@ -452,8 +452,8 @@ public class O2OActivityServiceImpl implements O2OActivityService {
      * @author lijie@shoestp.cn
      */
     @Override
-    public Page priveteList(int start, int limit, Integer status, Integer verify_status, String cat, String supName) {
-        List<Map<String, Object>> maps = o2OActivityDao.privetePdtList(start, limit, status, verify_status, cat, supName);
+    public Page priveteList(int start, int limit, Integer status, Integer verify_status, String cat, String supName,String pdtName) {
+        List<Map<String, Object>> maps = o2OActivityDao.privetePdtList(start, limit, status, verify_status, cat, supName,pdtName);
         List<O2OProductView> result = new ArrayList<>();
         for (Map<String, Object> map : maps) {
             O2OProductView o2OProductView = new O2OProductView();

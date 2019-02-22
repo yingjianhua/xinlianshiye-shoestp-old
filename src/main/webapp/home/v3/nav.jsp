@@ -156,10 +156,10 @@
         </div>
     </div>
 </div>
-<script src="/home/v2/static/lang/element/en.js"></script>
+<%--<script src="/home/v2/static/lang/element/en.js"></script>--%>
 <script>
 
-    ELEMENT.locale(ELEMENT.lang.en)
+    // ELEMENT.locale(ELEMENT.lang.en)
     var sysConfig = {
         baseImageUrl: "https://image.shoestp.com",
         currency_symbol: "$",

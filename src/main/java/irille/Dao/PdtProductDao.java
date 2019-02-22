@@ -961,7 +961,8 @@ public class PdtProductDao {
                 sql.WHERE(buff.toString());
         }
         if (mOrder != null) {
-            sql.WHERE(PdtProduct.T.MIN_OQ, " >=? ", mOrder);
+            sql.WHERE(PdtProduct.T.MIN_OQ, " <=? ", mOrder);
+            sql.WHERE(PdtProduct.T.MIN_OQ, " >? ", 0);
             sql.ORDER_BY(PdtProduct.T.MIN_OQ, "asc");
         }
         if (min != null && min.compareTo(BigDecimal.ZERO) == 1) {

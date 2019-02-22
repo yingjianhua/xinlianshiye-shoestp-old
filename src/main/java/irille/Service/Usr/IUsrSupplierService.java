@@ -56,4 +56,10 @@ public interface IUsrSupplierService {
    * @Author HuangHaoBin
    **/
   Page listSupplier(Integer start, Integer limit);
+
+  /*
+   *   判断用户类型 0:普通用户 1:商家
+   * @Author HuangHaoBin
+   **/
+  Integer isSupplier(String loginName);
 }

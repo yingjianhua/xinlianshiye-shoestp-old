@@ -734,6 +734,7 @@
 </body>
 <script src="/home/v3/static/js/index-bottom.js"></script>
 <script>
+    user_obj.sign_in_init();
     new Vue({
         el:"#app"
     })
