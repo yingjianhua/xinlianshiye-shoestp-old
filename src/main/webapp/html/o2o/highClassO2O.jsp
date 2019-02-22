@@ -17,10 +17,31 @@
         cursor: pointer;
         text-align: center;
     }
+    /*自定义弹框样式*/
+    .myAlertClass{
+        width: 360px;
+        padding-bottom: 30px;
+    }
+    .myAlertClass .el-message-box__content{
+        min-height: 60px;
+        padding: 20px 25px;
+    }
+    .myAlertClass .el-message-box__btns{
+        text-align: center;
+    }
+    .myAlertClass .el-message-box__btns .el-button--primary{
+        min-width: 140px;
+        font-size: 14px;
+        border-color: #10389c;
+        background: #10389c;
+    }
+    .myAlertClass .el-message-box__btns .el-button--primary:hover{
+        border-color: #35c;
+        background: #35c;
+    }
 </style>
 
 <jsp:include page="/home/v3/nav.jsp"></jsp:include>
-
 <div id="lhl-highClass">
     <o2o-top :show="1"></o2o-top>
     <!---->
@@ -113,7 +134,7 @@
         <p class="main-sign-text">
             Please fill out the online registration form in our O2O webpage after you've registered or login
             Shoestp.com. We will send you an invitation card one month before the start of the new product show.</p>
-        <a href="O2Oinputform.jsp" class="button">Online</a>
+        <a href="javascript: void(0);" class="button" @click="isSupplier">Online</a>
     </div>
     <!--Time and location-->
     <div class="wrap main-location">
@@ -207,6 +228,28 @@
             this.getporduct();
         },
         methods: {
+            isSupplier() {
+                if (!sysConfig.user) {
+                    this.$alert('Please register or login your buyer account if you want public RFQ.', '', {
+                        confirmButtonText: 'Sign in',
+                        customClass: "myAlertClass",
+                        callback: action => {
+                            if(action!=="confirm")return;
+                            window.open('/home/usr_UsrPurchase_sign')
+                        }
+                    });
+                    // user_obj.set_form_sign_in('', window.location.href, 1);
+                    return
+                }else {
+                    if(sysConfig.user.user_type === 1){
+                        this.$alert('Please register or login your buyer account if you want filling the Registration Form.', '', {
+                            customClass: "myAlertClass",
+                        });
+                    }else{
+                        window.location.href='O2Oinputform.jsp';
+                    }
+                }
+            },
             enterOperate(num) {
                 this.overLi = num;
                 this.$refs.carousel.setActiveItem(num - 1);
