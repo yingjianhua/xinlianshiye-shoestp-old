@@ -11,9 +11,12 @@ import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Entity.O2O.O2O_Product;
 import irille.Entity.Pk.PkCompetitionData;
 import irille.Entity.RFQ.RFQConsult;
+import irille.Entity.RFQ.RFQConsultGroup;
+import irille.Entity.RFQ.RFQConsultGroupRelation;
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Entity.RFQ.RFQPurchaseContact;
+import irille.Entity.RFQ.RFQPurchaseContactGroup;
 import irille.core.prv.PrvRoleAct;
 import irille.core.sys.SysModule;
 import irille.pub.Log;
@@ -71,6 +74,9 @@ public class Plt extends PackageBase {
         addTb(63, Contact.class);
         addTb(64, ContactGroup.class);
         addTb(65, RFQPurchaseContact.class);
+        addTb(66, RFQPurchaseContactGroup.class);
+        addTb(67, RFQConsultGroup.class);
+        addTb(68, RFQConsultGroupRelation.class);
     }
 
     @Override
