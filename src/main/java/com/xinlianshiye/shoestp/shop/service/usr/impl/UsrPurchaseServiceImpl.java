@@ -1,14 +1,17 @@
 package com.xinlianshiye.shoestp.shop.service.usr.impl;
 
 import com.google.inject.Inject;
+import com.xinlianshiye.shoestp.common.dao.usr.UsrPurchaseDao;
 import com.xinlianshiye.shoestp.shop.service.usr.UsrPurchaseService;
+import com.xinlianshiye.shoestp.shop.view.usr.PurchaseAccountSettingView;
 import com.xinlianshiye.shoestp.shop.view.usr.PurchaseView;
 
 import irille.Dao.RFQ.RFQConsultMessageDao;
 import irille.Dao.RFQ.RFQConsultRelationDao;
-import irille.Dao.Usr.UsrPurchaseDao;
+import irille.pub.DateTools;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
+import irille.pub.validate.Valid;
 import irille.shop.usr.UsrPurchase;
 
 public class UsrPurchaseServiceImpl implements UsrPurchaseService {
@@ -37,6 +40,42 @@ public class UsrPurchaseServiceImpl implements UsrPurchaseService {
 		view.setRequestsFromConnectionsCount(rFQConsultRelationDao.countNewByPurchaseGroupBySupplier(purchase.getPkey()));
 		view.setUnreadMessagersCount(rFQConsultMessageDao.countUnreadByRelation_PurchaseGroupByRelation(purchase.getPkey()));
 		return view;
+	}
+
+	@Override
+	public void changeEmail(UsrPurchase purchase, String email, String password) {
+		//检查密码
+		checkPassword(purchase, password);
+		UsrPurchase purchase2 = usrPurchaseDao.findByLoginNameOrEmail(email);
+		if(purchase2 != null) {
+			//用户名或邮箱地址已被使用
+			throw new WebMessageException(ReturnCode.service_unknow, "邮箱重复,请使用其它邮箱");
+		}
+		purchase.setEmail(email);
+		usrPurchaseDao.save(purchase);
+	}
+
+	@Override
+	public void changePassword(UsrPurchase purchase, String newPassword, String password) {
+		//检查密码
+		checkPassword(purchase, password);
+		//校验新密码格式的有效性
+		validPassword(newPassword);
+		purchase.setPassword(DateTools.getDigest(purchase.getPkey()+newPassword));
+		usrPurchaseDao.save(purchase);
+	}
+
+	@Override
+	public void editAccount(UsrPurchase purchase, PurchaseAccountSettingView accountSetting) {
+		//校验数据
+		accountSetting.valid();
+		purchase.setSex(accountSetting.getGender());
+		purchase.setName(accountSetting.getFirstName());
+		purchase.setName(accountSetting.getSurname());
+		purchase.setTelphone(accountSetting.getPhone());
+		purchase.setCompany(accountSetting.getCompany());
+		purchase.setAddress(accountSetting.getAddress());
+		usrPurchaseDao.save(purchase);
 	}
 
 }
