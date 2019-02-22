@@ -509,16 +509,16 @@
                 }
             },
             beforeUpload(file) {
-                // if (!isLogin) {
-                //     sessionStorage['Temp_publish_form'] = JSON.stringify(this.form)
-                //     this.$alert('Please login to operate', 'Please login to operate', {
-                //         confirmButtonText: 'Ok',
-                //         callback: action => {
-                //             window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView"
-                //         }
-                //     });
-                //     return
-                // }
+                if (!isLogin) {
+                    sessionStorage['Temp_publish_form'] = JSON.stringify(this.form)
+                    this.$alert('Please login to operate', 'Please login to operate', {
+                        confirmButtonText: 'Ok',
+                        callback: action => {
+                            window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView"
+                        }
+                    });
+                    return
+                }
                 const isLt2M = file.size / 1024 < 500;
 
                 if (!isLt2M) {
