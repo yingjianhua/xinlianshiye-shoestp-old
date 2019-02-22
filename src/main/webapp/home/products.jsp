@@ -18,8 +18,8 @@
 <script src="/home/v3/static/js/index-top.js">
 </script>
 <style media="screen">
-    #o2otop .o2otopcon .topsearch > input{
-        height:unset !important;
+    #o2otop .o2otopcon .topsearch > input {
+        height: unset !important;
         border: 0;
     }
 </style>
@@ -244,6 +244,7 @@ $('html').on('click', '#signin_close', function () {
                     :total="allpage"
                     prev-text="Previous"
                     next-text="Next"
+                    :current-page="curr"
                     @current-change="current_change">
             </el-pagination>
         </block>
@@ -296,17 +297,18 @@ $('html').on('click', '#signin_close', function () {
             breadcrumbnav: [],
             page: 0,
             limit: 8,
+            curr: 1,
             classLists: [],
             bigPicBox: false,
             bigPicBoxpic: '',
         },
         methods: {
-            imgurl(row,resize) {
+            imgurl(row, resize) {
                 if (row != "") {
-                    if (resize){
-                      return 'https://image.shoestp.com/' + row + '?x-oss-process=image/resize,m_fill,h_195,w_195'
-                    }else{
-                      return 'https://image.shoestp.com/' + row+ '?x-oss-process=image/resize,m_fill,h_500,w_500'
+                    if (resize) {
+                        return 'https://image.shoestp.com/' + row + '?x-oss-process=image/resize,m_fill,h_195,w_195'
+                    } else {
+                        return 'https://image.shoestp.com/' + row + '?x-oss-process=image/resize,m_fill,h_500,w_500'
                     }
                 }
                 return null
@@ -454,6 +456,7 @@ $('html').on('click', '#signin_close', function () {
 
             //   页数加载
             current_change: function (currentPage) {
+                this.curr = currentPage
                 this.page = (currentPage - 1) * this.limit;
                 this.productList();
                 document.body.scrollTop = 0
@@ -514,6 +517,9 @@ $('html').on('click', '#signin_close', function () {
                         type: 'warning'
                     });
                 } else {
+                    this.limit = 8
+                    this.page = 0
+                    this.curr = 1
                     this.productList();
                 }
             },
