@@ -40,6 +40,9 @@ public class O2OActicityServerImp implements IO2OActicityServer{
         O2O_Activity activityEntity = o2OActivityDao.getActivityInfoById(activity);
         if(null == activityEntity)
             throw LOG.err("noActivity","活动不存在");
+        if(activityEntity.getEndDate().before(new Date())){
+        	throw new WebMessageException(ReturnCode.failure, "活动已结束,无法报名参加");
+        }
         boolean flag = false;
         O2O_JoinInfo joinInfo = O2O_JoinInfo.chkUniqueActivity_supplier(false,activity,supplier.getPkey());
         if(null == joinInfo){
@@ -78,15 +81,15 @@ public class O2OActicityServerImp implements IO2OActicityServer{
                 if(!o2oPdt.getVerifyStatus().equals(O2O_ProductStatus.Failed.getLine().getKey())){
                     continue;
                 }else if(o2oPdt.getVerifyStatus().equals(O2O_ProductStatus.Failed.getLine().getKey())){
-                    o2oPdt.setVerifyStatus(O2O_ProductStatus._DEFAULT.getLine().getKey());
+                	o2oPdt.setVerifyStatus(O2O_ProductStatus._DEFAULT.getLine().getKey());
                 }
             }else{
                 o2oPdt = new O2O_Product();
-                if(pdt.getProductType().equals(Pdt.OProductType.O2O.getLine().getKey())){
-                	o2oPdt.setVerifyStatus(O2O_ProductStatus.PASS.getLine().getKey());
-                }else{
+//                if(pdt.getProductType().equals(Pdt.OProductType.O2O.getLine().getKey())){
+//                	o2oPdt.setVerifyStatus(O2O_ProductStatus.PASS.getLine().getKey());
+//                }else{
                 	o2oPdt.setVerifyStatus(O2O_ProductStatus._DEFAULT.getLine().getKey());
-                }
+//                }
             }
             o2oPdt.setStatus(O2O_ProductStatus.ON.getLine().getKey());
             o2oPdt.setActivityId(activityEntity.getPkey());

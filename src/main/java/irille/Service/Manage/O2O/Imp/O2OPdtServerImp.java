@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -324,9 +325,22 @@ public class O2OPdtServerImp implements IO2OPdtServer {
                 listAll.addAll(pdtProductDao.getCatsNodeByCatId(cat));
             });
         }
+        
+        List<Integer> existsProdPkeys = o2OProductDao.findAllByActivityAndSupplier(activity, supplier.getPkey()).stream().map(bean->{
+        	return bean.getProductId();
+        }).collect(Collectors.toList());
 
-
-        return o2OProductDao.findAllGeneralByIsVerifyAndStateAndSupplier(supplier,activity, listAll).stream().map(bean -> {
+        return o2OProductDao.findAllGeneralByIsVerifyAndStateAndSupplier(supplier,activity, listAll).stream().filter(new Predicate<Map<String,Object>>(){
+			@Override
+			public boolean test(Map<String, Object> bean) {
+				Integer id = GetValue.get(bean, PdtProduct.T.PKEY, Integer.class, null);
+				if(existsProdPkeys.indexOf(id) != -1) {
+					return false;
+				}else {
+					return true;
+				}
+			}
+        }).map(bean -> {
             O2OActivityPdtInfoView view = new O2OActivityPdtInfoView();
             view.setId(GetValue.get(bean, PdtProduct.T.PKEY, Integer.class, null));
             view.setCode(GetValue.get(bean, PdtProduct.T.CODE, String.class, ""));
