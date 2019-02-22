@@ -14,6 +14,7 @@ public class PurchaseView implements BaseView {
 	private Integer favoriteCount; //收藏数
 	private Integer cartCount; //购物车数
 	private Integer inquiryCount; //询盘数
+	private PurchaseAccountSettingView accountSetting;//账户设置中可以设置的属性
 	
 	public static PurchaseView build(UsrPurchase purchase, Integer favoriteCount, Integer cartCount, Integer inquiryCount) {
 		PurchaseView view = new PurchaseView();
