@@ -110,6 +110,7 @@ template: `<div>
         }
     },
     mounted(){
+      Vue.set(this.$data,'input',unescape(decodeURIComponent(getParams('Keyword',getParams('keyWord',getParams('keyword',''))))))
       this.getconfig();
     },
     methods:{
