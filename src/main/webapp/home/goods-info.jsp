@@ -47,6 +47,20 @@
     <!-- index为以上几个合并后的压缩文件 - 加前缀 -->
     <!-- <link rel="stylesheet" href="css/index.css" /> -->
     <link rel="stylesheet" href="/home/v3/static/css/swiper.min.css"/>
+    <style>
+        .clearfix{zoom:1}
+        .clearfix:after{
+            visibility: hidden;
+            display: block;
+            font-size: 0;
+            content: " ";
+            clear: both;
+            height: 0;
+        }
+        #o2otop .o2otopcon .o2otoplikes dd{
+            width: 238px
+        }
+    </style>
     <script>
         window.dataLayer = window.dataLayer || [];
 
@@ -687,7 +701,7 @@
                     <div class="blank12"></div>
                 </div>
                 <div class="prod_review_view" v-if="!isLogin">
-                    <div class="review_sign"><s:text name="groupPurchaseGoodsInfo.After_Login"/>
+                    <div class="review_sign"><s:text name="groupPurchaseGoodsInfo.After_Login"><s:param>/home/usr_UsrPurchase_sign</s:param></s:text>
                     </div>
                     <div class="blank12"></div>
 
