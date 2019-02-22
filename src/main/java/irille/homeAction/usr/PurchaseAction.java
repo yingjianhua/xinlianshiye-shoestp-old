@@ -2,9 +2,11 @@ package irille.homeAction.usr;
 
 import java.io.IOException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.xinlianshiye.shoestp.shop.service.usr.UsrFavoriteService;
 import com.xinlianshiye.shoestp.shop.service.usr.UsrPurchaseService;
+import com.xinlianshiye.shoestp.shop.view.usr.PurchaseAccountSettingView;
 
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.homeAction.AbstractHomeAction;
@@ -23,6 +25,8 @@ public class PurchaseAction extends AbstractHomeAction implements IPurchaseActio
 	private UsrPurchaseService usrPurchaseService;
 	@Inject
 	private UsrFavoriteService usrFavoriteService;
+	@Inject
+	private ObjectMapper om;
 
 	@Override
 	@NeedLogin
@@ -51,6 +55,31 @@ public class PurchaseAction extends AbstractHomeAction implements IPurchaseActio
 	@NeedLogin
 	public void favorite() throws IOException {
 		write(usrFavoriteService.page(getPurchase(), category, true,  start,  limit));
+	}
+
+	private String password;
+	private String email;
+	private String newPassword;
+	
+	@Override
+	@NeedLogin
+	public void changePassword() throws IOException {
+		usrPurchaseService.changePassword(getPurchase(), newPassword, password);
+		write();
+	}
+
+	@Override
+	@NeedLogin
+	public void changeEmail() throws IOException {
+		usrPurchaseService.changeEmail(getPurchase(), email, newPassword);
+		write();
+	}
+
+	@Override
+	@NeedLogin
+	public void editAccount() throws IOException {
+		usrPurchaseService.editAccount(getPurchase(), om.readValue(getJsonBody(), PurchaseAccountSettingView.class));
+		write();
 	}
 
 }

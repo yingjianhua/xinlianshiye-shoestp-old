@@ -234,7 +234,7 @@ public class O2OProductDao {
                 .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON.getLine().getKey())
 //                .WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.GENERAL.getLine().getKey())
                 .WHERE("("+PdtProduct.class.getSimpleName() + "." + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()+"=? OR " + PdtProduct.class.getSimpleName() + "." + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()+"=? )", Pdt.OProductType.GENERAL.getLine().getKey(),Pdt.OProductType.O2O.getLine().getKey())
-                .WHERE("(("+ O2O_Product.class.getSimpleName() +"."+O2O_Product.T.ACTIVITY_ID.getFld().getCodeSqlField() + "<> ? and " + O2O_Product.class.getSimpleName() +"." + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField() + "=? OR "+O2O_Product.class.getSimpleName() +"."+O2O_Product.T.PRODUCT_ID.getFld().getCodeSqlField() + " <> "+PdtProduct.class.getSimpleName()+"."+PdtProduct.T.PKEY.getFld().getCodeSqlField()+" OR "+ O2O_Product.class.getSimpleName() +"." + O2O_Product.T.PKEY.getFld().getCodeSqlField() + " IS NULL ) OR ("+O2O_Product.class.getSimpleName() + "." + O2O_Product.T.ACTIVITY_ID.getFld().getCodeSqlField() +" =? AND "+O2O_Product.class.getSimpleName()+"." + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField()+" =? ))", activity,O2O_ProductStatus.PASS.getLine().getKey(),activity,O2O_PrivateExpoPdtStatus.Failed.getLine().getKey());
+                .WHERE("(("+ O2O_Product.class.getSimpleName() +"."+O2O_Product.T.ACTIVITY_ID.getFld().getCodeSqlField() + "<> ? and " + O2O_Product.class.getSimpleName() +"." + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField() + "=? OR "+ O2O_Product.class.getSimpleName() +"." + O2O_Product.T.PKEY.getFld().getCodeSqlField() + " IS NULL ) OR ("+O2O_Product.class.getSimpleName() + "." + O2O_Product.T.ACTIVITY_ID.getFld().getCodeSqlField() +" =? AND "+O2O_Product.class.getSimpleName()+"." + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField()+" =? ))", activity,O2O_ProductStatus.PASS.getLine().getKey(),activity,O2O_PrivateExpoPdtStatus.Failed.getLine().getKey());
         System.err.println(sql.toString());
         return Query.sql(sql).queryMaps();
 
@@ -348,6 +348,17 @@ public class O2OProductDao {
         sql.WHERE(O2O_Product.T.VERIFY_STATUS, " =? ", O2O_ProductStatus.PASS.getLine().getKey());
 
         return Query.sql(sql).queryList(O2O_Product.class);
+    }
+    
+    public List<O2O_Product> findAllByActivityAndSupplier(Integer activity,Integer supplier){
+    	SQL sql = new SQL();
+    	sql.SELECT(O2O_Product.class).FROM(O2O_Product.class)
+    	.LEFT_JOIN(O2O_JoinInfo.class,O2O_JoinInfo.T.PKEY,O2O_Product.T.JOIN_INFO_ID)
+    	.WHERE(O2O_JoinInfo.T.SUPPLIER," =? ",supplier)
+    	.WHERE(O2O_Product.T.ACTIVITY_ID, " =? ", activity)
+    	.WHERE(O2O_Product.T.VERIFY_STATUS, " <>? ", O2O_ProductStatus.Failed.getLine().getKey());
+    	
+    	return Query.sql(sql).queryList(O2O_Product.class);
     }
 
 }
