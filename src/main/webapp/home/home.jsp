@@ -114,7 +114,7 @@
                     <li class="nomr"><a href="/home/usr_UsrConsult_publishView">Request quotation details</a></li>
                 </ul>
 
-                <a :href="'/home/usr_UsrConsult_publishView?title='+encodeURIComponent(RFQ_title)+'&quantity='+RFQ_quantity+'&chooesValue='+chooesValue"
+                <a @click="GoRFQ"
                    class="boxListBtn01" target="_blank">Request For Quotation</a>
             </div>
 
@@ -178,12 +178,13 @@
 												</div> -->
                                                 <div class="hover-show">
                                                     <a :href="goods.rewrite" target="_blank" class="link-box">
-                                                        <div class="hover-text-wrap" >
-                                                                <div class="goods-name ellipsis_2">
-                                                                    {{goods.title}}
-                                                                </div>
-                                                             <div class="goods-price" >
-                                                                US <span>{{sysConfig.currency_symbol}}{{goods.price}}</span>
+                                                        <div class="hover-text-wrap">
+                                                            <div class="goods-name ellipsis_2">
+                                                                {{goods.title}}
+                                                            </div>
+                                                            <div class="goods-price">
+                                                                US
+                                                                <span>{{sysConfig.currency_symbol}}{{goods.price}}</span>
                                                             </div>
                                                             <div class="min-order">
                                                                 Min.Order:{{goods.min_order || 0}} pairs
@@ -336,7 +337,8 @@
                             </div>
                         </div>
                         <div class="inquiry-btn">
-                            <a :href="'/'+item.rewrite" target="_blank" style="color:#666;text-align: left;padding: 20px;height: 100%;">
+                            <a :href="'/'+item.rewrite" target="_blank"
+                               style="color:#666;text-align: left;padding: 20px;height: 100%;">
                                 <div class="ellipsis_2" style="font-size:12px;line-height: 20px;">{{item.pdtName}}</div>
                                 <div style="font-size:18px;margin-top:10px;">
                                     <span style="color: #232323;">US</span>
@@ -347,7 +349,8 @@
                                 </div>
                             </a>
                             <a class="inquiry-a"
-                               :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" target="_blank" style="z-index: 999">
+                               :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" target="_blank"
+                               style="z-index: 999">
                                 Inquiry
                             </a>
                         </div>
@@ -387,7 +390,8 @@
                             </div>
                         </div>
                         <div class="inquiry-btn">
-                            <a :href="'/'+item.rewrite" target="_blank" style="color:#666;text-align: left;padding: 20px;height: 100%;">
+                            <a :href="'/'+item.rewrite" target="_blank"
+                               style="color:#666;text-align: left;padding: 20px;height: 100%;">
                                 <div class="ellipsis_2" style="font-size:12px;line-height: 20px;">{{item.pdtName}}</div>
                                 <div style="font-size:18px;margin-top:10px;">
                                     <span style="color: #232323;">US</span>
@@ -398,7 +402,8 @@
                                 </div>
                             </a>
                             <a class="inquiry-a"
-                               :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" target="_blank" style="z-index: 999">
+                               :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" target="_blank"
+                               style="z-index: 999">
                                 Inquiry
                             </a>
                         </div>
@@ -580,6 +585,19 @@
             this.getShowRoomGoodsList();
         },
         methods: {
+            GoRFQ() {
+                if (!isLogin) {
+                    sessionStorage['Temp_publish_form'] = JSON.stringify(this.form)
+                    this.$alert('Please login to operate', 'Please login to operate', {
+                        confirmButtonText: 'Ok',
+                        callback: action => {
+                            window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView"
+                        }
+                    });
+                    return
+                }
+                window.location.href = "/home/usr_UsrConsult_publishView?title="+encodeURIComponent(this.RFQ_title)+"&quantity="+this.RFQ_quantity+"&chooesValue="+this.chooesValue
+            },
             image: function image(v, params) {
                 if (!v) {
                     return "";
