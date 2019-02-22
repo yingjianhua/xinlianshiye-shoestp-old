@@ -46,7 +46,7 @@ public class UsrConsultAction extends HomeAction<UsrConsult> implements IUsrCons
 		setResult("/home/my-inquiry-publish.jsp");
 		return TRENDS;
 	}
-
+	@NeedLogin
 	public String productPublishView() {
 		setResult("/home/pdt-inquiry-publish.jsp");
 		return TRENDS;
