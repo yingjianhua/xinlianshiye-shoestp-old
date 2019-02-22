@@ -146,4 +146,9 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
     }
     return page;
   }
+
+  @Override
+  public Integer isSupplier(String loginName) {
+    return usrSupplierDao.isSupplier(loginName) ? 1 : 0;
+  }
 }

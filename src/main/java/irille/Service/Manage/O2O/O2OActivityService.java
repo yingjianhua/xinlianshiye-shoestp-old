@@ -65,5 +65,5 @@ public interface O2OActivityService {
 
     O2OActivityView load(Integer pkey);
 
-    Page priveteList(int start, int limit, Integer status, Integer verify_status, String cat, String supName);
+    Page priveteList(int start, int limit, Integer status, Integer verify_status, String cat, String supName,String pdtName);
 }

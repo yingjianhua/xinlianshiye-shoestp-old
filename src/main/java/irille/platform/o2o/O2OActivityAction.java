@@ -32,6 +32,7 @@ public class O2OActivityAction extends ActionBase<O2O_Activity> implements IO2OA
     private Integer status;
     private Integer verify_status;
     private String catName;
+    private String pdtName;
 
 
     @Override
@@ -48,7 +49,7 @@ public class O2OActivityAction extends ActionBase<O2O_Activity> implements IO2OA
     public void privetePdtlist() throws IOException {
         if (getLimit() == 0) setLimit(20);
         if (getStart() < 0) setStart(0);
-        write(o2OActivityService.priveteList(getStart(), getLimit(), status, verify_status, catName, keyword));
+        write(o2OActivityService.priveteList(getStart(), getLimit(), status, verify_status, catName, keyword,pdtName));
     }
 
     @Override

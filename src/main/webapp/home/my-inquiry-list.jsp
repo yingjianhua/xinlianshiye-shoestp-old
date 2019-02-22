@@ -319,9 +319,9 @@
                 </div>
             </div>
         </div>
-        <index-bottom></index-bottom>
-    </div>
 
+    </div>
+    <index-bottom></index-bottom>
 
 </div>
 <%--<%@ include file="/home/template/new-foot.jsp" %>--%>
