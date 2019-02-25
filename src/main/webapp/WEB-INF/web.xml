@@ -126,4 +126,9 @@
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>
         </user-data-constraint>
     </security-constraint> -->
+    
+    
+    <listener>
+	    <listener-class>irille.pub.scheduled.ScheduledTask</listener-class>
+	</listener>
 </web-app>

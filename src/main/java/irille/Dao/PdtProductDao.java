@@ -6,6 +6,7 @@ import static java.util.stream.Collectors.toList;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLDecoder;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,7 +39,9 @@ import irille.homeAction.pdt.dto.PdtProductView;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
+import irille.pub.bean.query.SqlQuery;
 import irille.pub.bean.sql.SQL;
+import irille.pub.svr.DbPool;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumFld;
 import irille.pub.util.GetValue;
@@ -1205,4 +1208,23 @@ public class PdtProductDao {
         System.out.println(ss.length() - 1);
         System.out.println(ss.substring(11, 13));
     }
+
+	public void upd(List<PdtProduct> prods) {
+		for(int i=0;i<prods.size();i++) {
+			PdtProduct a = prods.get(i);
+    		String sql = " UPDATE " + PdtProduct.TB.getCodeSqlTb() + " SET " + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField() + " = " + a.getProductType() + " WHERE " + PdtProduct.T.PKEY.getFld().getCodeSqlField() + " = " + a.getPkey() + ";";
+        	try {
+        		System.out.println(new SqlQuery(sql).executeUpdate());
+        	}catch(Exception e) {
+        		e.printStackTrace();
+        	}
+    		
+    	}
+    	
+    	try {
+			DbPool.getInstance().getConn().commit();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	}
 }
