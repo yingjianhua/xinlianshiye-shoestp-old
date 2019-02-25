@@ -309,6 +309,27 @@ public class O2OPdtServerImp implements IO2OPdtServer {
 
         }
     }
+    
+    public static void main(String[] args) {
+    	List<Integer> is = Arrays.asList(1,2,2,3,4,3);
+    	List<Integer> bb = new ArrayList<>();
+    	List<Integer> cc = is.stream().filter(new Predicate<Integer>() {
+
+			@Override
+			public boolean test(Integer t) {
+				if(bb.indexOf(t) != -1) {
+					return false;
+				}else {
+					return true;
+				}
+			}
+    		
+    	}).map(bean ->{
+    		bb.add(bean);
+    		return bean;
+    	}).collect(Collectors.toList());
+    	System.out.println(bb);
+    }
 
     @Override
     public List<O2OActivityPdtInfoView> listAllGeneral(UsrSupplier supplier, Integer activity) {
@@ -334,9 +355,10 @@ public class O2OPdtServerImp implements IO2OPdtServer {
 			@Override
 			public boolean test(Map<String, Object> bean) {
 				Integer id = GetValue.get(bean, PdtProduct.T.PKEY, Integer.class, null);
-				if(existsProdPkeys.indexOf(id) != -1) {
+				Byte status = GetValue.get(bean, O2O_Product.T.STATUS, Byte.class, null);
+				if((existsProdPkeys.indexOf(id) != -1)) {
 					return false;
-				}else {
+				}else{
 					return true;
 				}
 			}
