@@ -46,6 +46,7 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 		}
 		
 		relation.stHadReadPurchase(true);
+		relation.stIsNew(false);
 		relation.upd();
 
 		BeanQuery<RFQConsultMessage> query2 = Query.selectFrom(RFQConsultMessage.class);

@@ -63,8 +63,8 @@ public class O2OPdtServerImp implements IO2OPdtServer {
     private O2O_PrivateExpoPdtInsDAO o2OPrivateExpoPdtInsDAO;
     @Inject
     private O2O_JoinInfoInsDAO o2OJoinInfoInsDAO;
-    @Inject
-    private O2OProductDao o2OProductDao;
+    
+    private O2OProductDao o2OProductDao = new O2OProductDao();
     @Inject
     private O2OActivityDao o2OActivityDao;
 
@@ -379,6 +379,19 @@ public class O2OPdtServerImp implements IO2OPdtServer {
             }
             return view;
         }).collect(Collectors.toList());
+    }
+    
+    
+    //判断产品是否为O2O产品 null-不是O2O商品  false-活动自己的O2O商品  true-是O2O商品
+    @Override
+    public Boolean judgeO2o(PdtProduct product) {
+    	List<O2O_Product> products = o2OProductDao.findAllByVerifyStatusAndStatusAndActivity_Status(product);
+    	if(null != products && products.size() > 1) {
+    		return true;
+    	}else if(null != products && products.size() > 0) {
+    		return false;
+    	}
+    	return null;
     }
 
 
