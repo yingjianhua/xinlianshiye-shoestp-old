@@ -64,9 +64,9 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 			//关键字匹配询盘标题和报价供应商名称
 			query
 			.WHERE(RFQConsult.T.TITLE, "like ?", "%"+keyword+"%")
-			.OR()
-			.WHERE(UsrSupplier.T.NAME, "like ?", "%"+keyword+"%");
+			.orWhere(UsrSupplier.T.NAME, "like ?", "%"+keyword+"%");
 		}
+		query.AND().WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey());
 		if(type != null) {
 			//询盘类型
 			query.WHERE(RFQConsult.T.TYPE, "=?", type);
@@ -75,7 +75,6 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 			//是否有新消息
 			query.WHERE(RFQConsultRelation.T.IS_NEW, "=?", unread);
 		}
-		query.WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey());
 		query.GROUP_BY(RFQConsult.T.PKEY);
 		query.limit(start, limit);
 		List<RFQConsultView> result = query.queryMaps().stream().map(map->{
@@ -154,6 +153,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 		BeanQuery<RFQConsultRelation> query = Query
 				.selectFrom(RFQConsultRelation.class)
 				.WHERE(RFQConsultRelation.T.PURCHASE_ID, "=?", purchase.getPkey())
+				.WHERE(RFQConsultRelation.T.IS_DELETED_PURCHASE, "=?", false)
 				.WHERE(RFQConsultRelation.T.PKEY, "=?", relationPkey);
 		RFQConsultRelation relation = query.query();
 		RFQQuotationView quotation = new RFQQuotationView();
