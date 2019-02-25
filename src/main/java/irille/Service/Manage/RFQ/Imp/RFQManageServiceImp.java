@@ -7,6 +7,7 @@ import irille.Dao.Old.RFQ.RFQConsultUpdDAO;
 import irille.Dao.RFQ.RFQConsultDao;
 import irille.Entity.RFQ.Enums.RFQConsultPayType;
 import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
+import irille.Entity.RFQ.Enums.RFQConsultType;
 import irille.Entity.RFQ.Enums.RFQConsultUnit;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultRelation;
@@ -94,9 +95,14 @@ public class RFQManageServiceImp implements IRFQManageService {
         infoView.setLeft_count(rfqConsult.getTotal() - rfqConsult.getLeftCount());
         infoView.setImage(rfqConsult.getImage());
         infoView.setPurchaseName(rfqConsult.gtPurchaseId().getName());
-        infoView.setMin_price(Integer.valueOf(GetValue.getStringIndex(rfqConsult.getPrice(), "-", 0)));
-        infoView.setMax_price(Integer.valueOf(GetValue.getStringIndex(rfqConsult.getPrice(), "-", 1)));
-        infoView.setCountryId(rfqConsult.getCountry());
+        if (rfqConsult.gtType() == RFQConsultType.RFQ) {
+            infoView.setMin_price(Integer.valueOf(GetValue.getStringIndex(rfqConsult.getPrice(), "-", 0)));
+            infoView.setMax_price(Integer.valueOf(GetValue.getStringIndex(rfqConsult.getPrice(), "-", 1)));
+            infoView.setCurrencyname(BeanBase.load(PltErate.class, rfqConsult.getCurrency()).getCurName());
+            infoView.setDescriotion(rfqConsult.getContent()); //询盘内容
+        }
+            infoView.setCountryId(rfqConsult.getCountry());
+        infoView.setDestination(rfqConsult.getDestination()); //目的地
         infoView.setQuantity(rfqConsult.getQuantity());
         infoView.setDestination(rfqConsult.getDestination()); //目的地
         infoView.setDescriotion(rfqConsult.getContent()); //询盘内容
