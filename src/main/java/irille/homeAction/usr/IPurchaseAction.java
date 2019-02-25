@@ -66,4 +66,11 @@ public interface IPurchaseAction {
 	 * @author Jianhua Ying
 	 */
 	void editAccount() throws IOException;
+	
+	/**
+	 * 获取账号信息(用于设置账号信息页面的反填充)
+	 * @throws IOException
+	 * @author Jianhua Ying
+	 */
+	void accountProfile() throws IOException;
 }

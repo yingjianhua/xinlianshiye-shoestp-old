@@ -55,7 +55,7 @@ public class RFQManageServiceImp implements IRFQManageService {
         if (keyword != null)
             keyword = "%" + keyword + "%";
         List<Map<String, Object>> list = rfqConsultDao.getRFQList(start, limit, keyword, supId);
-                List<RFQListBodyInfoView> result = new ArrayList<>();
+        List<RFQListBodyInfoView> result = new ArrayList<>();
         for (Map<String, Object> map : list) {
             RFQListBodyInfoView rfqListBodyInfoView = new RFQListBodyInfoView();
             rfqListBodyInfoView.setId(GetValue.get(map, RFQConsult.T.PKEY, Integer.class, 0));
@@ -101,12 +101,14 @@ public class RFQManageServiceImp implements IRFQManageService {
             infoView.setCurrencyname(BeanBase.load(PltErate.class, rfqConsult.getCurrency()).getCurName());
             infoView.setDescriotion(rfqConsult.getContent()); //询盘内容
         }
-            infoView.setCountryId(rfqConsult.getCountry());
+        infoView.setCountryId(rfqConsult.getCountry());
         infoView.setDestination(rfqConsult.getDestination()); //目的地
         infoView.setQuantity(rfqConsult.getQuantity());
         infoView.setDestination(rfqConsult.getDestination()); //目的地
         infoView.setDescriotion(rfqConsult.getContent()); //询盘内容
-        infoView.setCurrencyname(BeanBase.load(PltErate.class, rfqConsult.getCurrency()).getCurName());
+        if (rfqConsult.getCurrency() != null) {
+            infoView.setCurrencyname(BeanBase.load(PltErate.class, rfqConsult.getCurrency()).getCurName());
+        }
         if (rfqConsult.getPayType() != null)
             infoView.setPay_type(rfqConsult.gtPayType().getLine().getName());
         if (rfqConsult.getShippingType() != null)

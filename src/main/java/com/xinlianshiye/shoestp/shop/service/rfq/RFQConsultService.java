@@ -8,6 +8,7 @@ import com.xinlianshiye.shoestp.shop.service.rfq.impl.RFQConsultServiceImpl;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultRelationView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationView;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQUnreadCountView;
 
 import irille.shop.usr.UsrPurchase;
 import irille.view.Page;
@@ -27,6 +28,14 @@ public interface RFQConsultService {
      * @author Jianhua Ying
      */
     Page<RFQConsultView> pageMine(UsrPurchase purchase, Byte type, String keyword, Boolean unread, Integer start, Integer limit);
+    
+    /**
+     * 统计询盘的未读消息
+     * @param purchase 采购商
+     * @return
+     * @author Jianhua Ying
+     */
+    RFQUnreadCountView countUnread(UsrPurchase purchase);
     
     /**
      * RFQ或询盘详情

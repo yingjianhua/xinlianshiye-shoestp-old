@@ -237,5 +237,11 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
 		rFQConsultService.addProductRequest(getPurchase(), consultPkey, products);
 		write();
 	}
+
+	@Override
+	@NeedLogin
+	public void unreadCount() throws IOException {
+		write(rFQConsultService.countUnread(getPurchase()));
+	}
     
 }
