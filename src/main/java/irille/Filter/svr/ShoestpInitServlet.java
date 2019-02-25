@@ -34,7 +34,7 @@ public class ShoestpInitServlet extends HttpServlet {
         SysMenuAction.initMenus();
         logger.info("设置数据库模式");
         //设置数据库Mode
-        BeanBase.list("SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY',''));");
+        BeanBase.executeUpdate("SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY',''));");
         logger.info("初始化数据...");
         Plt_ConfPackage.INST.install();
 //        logger.info("初始化计划任务...");

@@ -1,37 +1,11 @@
 package irille.Dao;
 
-import static irille.core.sys.Sys.OYn.YES;
-import static java.util.stream.Collectors.toList;
-
-import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
-import java.net.URLDecoder;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
-import javax.inject.Inject;
-
-import org.apache.logging.log4j.util.Strings;
-import org.json.JSONException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import irille.Aops.Caches;
+import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
+import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_Activity;
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Entity.O2O.O2O_Product;
-import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
-import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.action.dataimport.util.StringUtil;
 import irille.core.sys.Sys;
 import irille.homeAction.pdt.dto.PdtProductView;
@@ -41,31 +15,37 @@ import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumFld;
+import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.GetValue;
 import irille.pub.util.SEOUtils;
-import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.pub.util.TranslateLanguage.translateUtil;
-import irille.shop.pdt.Pdt;
-import irille.shop.pdt.PdtAttrLine;
-import irille.shop.pdt.PdtAttrLineDAO;
-import irille.shop.pdt.PdtCat;
-import irille.shop.pdt.PdtCatDAO;
-import irille.shop.pdt.PdtProduct;
-import irille.shop.pdt.PdtSpec;
+import irille.shop.pdt.*;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltProvince;
-import irille.shop.usr.Usr;
-import irille.shop.usr.UsrFavorites;
-import irille.shop.usr.UsrFavoritesDAO;
-import irille.shop.usr.UsrProductCategory;
-import irille.shop.usr.UsrPurchase;
-import irille.shop.usr.UsrSupplier;
+import irille.shop.usr.*;
 import irille.view.Page;
 import irille.view.pdt.PdtProductBaseInfoView;
 import irille.view.pdt.PdtProductCatView;
 import irille.view.pdt.PdtSearchView;
+import org.apache.logging.log4j.util.Strings;
+import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import static irille.core.sys.Sys.OYn.YES;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -503,7 +483,8 @@ public class PdtProductDao {
     }
 
     public Page getProductListManage(String name, String number, Integer supplierId, int cat, int start, int limit, Integer search) {
-        BeanQuery q = Query
+    	SQL sql1 = new SQL();
+    			sql1
                 .SELECT(PdtProduct.T.PKEY, PdtProduct.T.NAME, PdtProduct.T.CODE, PdtProduct.T.CUR_PRICE, PdtProduct.T.PICTURE, PdtProduct.T.PRODUCT_TYPE, PdtProduct.T.UPDATE_TIME, PdtProduct.T.IS_VERIFY)
                 .SELECT(PdtCat.T.NAME, "category")
                 .SELECT(UsrProductCategory.T.NAME, "categoryDiy")
@@ -512,7 +493,8 @@ public class PdtProductDao {
                 .LEFT_JOIN(PdtCat.class, PdtProduct.T.CATEGORY, PdtCat.T.PKEY)
                 .LEFT_JOIN(UsrProductCategory.class, PdtProduct.T.CATEGORY_DIY, UsrProductCategory.T.PKEY)
                 .LEFT_JOIN(O2O_PrivateExpoPdt.class, O2O_PrivateExpoPdt.T.PDT_ID, PdtProduct.T.PKEY)
-                .LEFT_JOIN(O2O_Product.class, O2O_Product.T.PRODUCT_ID, PdtProduct.T.PKEY)
+//                .LEFT_JOIN(O2O_Product.class, O2O_Product.T.PRODUCT_ID, PdtProduct.T.PKEY)
+                .LEFT_JOIN("(select * from o2_o__product ORDER BY updated_time DESC limit 1) O2O_Product  ON O2O_Product.product_id = PdtProduct.pkey ")
                 .WHERE(name != null && name.length() > 0, PdtProduct.T.NAME, "like ?", "%" + name + "%")
                 .WHERE(number != null && number.length() > 0, PdtProduct.T.CODE, "like ?", "%" + number + "%")
                 .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierId)
@@ -525,15 +507,15 @@ public class PdtProductDao {
         if (search != null) {
             switch (search) {
                 case 2:
-                    q.WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.PrivateExpo.getLine().getKey());
+                	sql1.WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.PrivateExpo.getLine().getKey());
                     break;
                 case 3:
-                    q.WHERE("(" + O2O_PrivateExpoPdt.class.getSimpleName() + "." + O2O_PrivateExpoPdt.T.VERIFY_STATUS.getFld().getCodeSqlField() +
+                	sql1.WHERE("(" + O2O_PrivateExpoPdt.class.getSimpleName() + "." + O2O_PrivateExpoPdt.T.VERIFY_STATUS.getFld().getCodeSqlField() +
                                     "=? OR " + O2O_Product.class.getSimpleName() + "." + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField() + " =?)"
                             , O2O_PrivateExpoPdtStatus.PASS.getLine().getKey(), O2O_ProductStatus.PASS.getLine().getKey());
                     break;
                 case 4:
-                    q.WHERE("(" + O2O_PrivateExpoPdt.class.getSimpleName() + "." + O2O_PrivateExpoPdt.T.VERIFY_STATUS.getFld().getCodeSqlField() +
+                	sql1.WHERE("(" + O2O_PrivateExpoPdt.class.getSimpleName() + "." + O2O_PrivateExpoPdt.T.VERIFY_STATUS.getFld().getCodeSqlField() +
                                     "=? OR " + O2O_Product.class.getSimpleName() + "." + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField() +
                                     " =?)"
                             , O2O_PrivateExpoPdtStatus.Failed.getLine().getKey(), O2O_ProductStatus.Failed.getLine().getKey());
@@ -544,12 +526,13 @@ public class PdtProductDao {
             List list = (List) getCatsNodeByCatId(cat).stream().map(o -> {
                 return String.valueOf(o);
             }).collect(toList());
-            q.WHERE(cat != 0, PdtProduct.T.CATEGORY, "in (" + String.join(",", list) + ")");
+            sql1.WHERE(cat != 0, PdtProduct.T.CATEGORY, "in (" + String.join(",", list) + ")");
         }
-        Integer totalCount = q.queryCount();
+        Integer totalCount = Query.sql(sql1).queryCount();
         start = (start - 1 > -1 ? start - 1 : 0);
 //        q.limit(start * limit, limit).queryMaps();
-        List<Map> list = q.limit(start * limit, limit).queryMaps();
+        sql1.LIMIT(start * limit, limit);
+        List<Map<String,Object>> list = Query.sql(sql1).queryMaps();
         Page page = new Page(list.stream().map(o -> {
             for (Pdt.OProductType value : Pdt.OProductType.values()) {
                 if (value.getLine().getKey() == (Byte) o.get(PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField())) {
@@ -563,22 +546,30 @@ public class PdtProductDao {
                         o.put("status", value.getLine().getName());
                     }
                 }
-                if(privateExpoPdt.getStatus().equals(2)){
-                    o.put("upANDlow",1);
-                }else{
-                    o.put("upANDlow",0);
+                if (privateExpoPdt.getStatus().equals(2)) {
+                    o.put("upANDlow", 1);
+                } else {
+                    o.put("upANDlow", 0);
                 }
             } else if ((Byte) o.get(PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()) == Pdt.OProductType.O2O.getLine().getKey()) {
-//                SQL sql = new SQL() {{
-//                    SELECT(O2O_Product.class).FROM(O2O_Product.class).WHERE(O2O_Product.T.PRODUCT_ID, "=?", (Integer) o.get(PdtProduct.T.PKEY.getFld().getCodeSqlField()));
-//                }};
-//                List<O2O_Product> o2oList = Query.sql(sql).queryList(O2O_Product.class);
-            	Integer joinInfoId = GetValue.get(o,O2O_Product.T.JOIN_INFO_ID, Integer.class, null);
-            	O2O_Product p = O2O_Product.chkUniqueProduct_id_join_info_id(true, GetValue.get(o, PdtProduct.T.PKEY,Integer.class, null),joinInfoId);
-            	
-            	
+                Integer joinInfoId = GetValue.get(o, O2O_Product.T.JOIN_INFO_ID, Integer.class, null);
+                O2O_Product p = O2O_Product.chkUniqueProduct_id_join_info_id(true, GetValue.get(o, PdtProduct.T.PKEY, Integer.class, null), joinInfoId);
                 if (null != p) {
-            		o.put("status", p.gtVerifyStatus().getLine().getName());
+                    SQL sql = new SQL() {{
+                        SELECT(O2O_Product.class).FROM(O2O_Product.class).WHERE(O2O_Product.T.PRODUCT_ID, "=?", p.getProductId());
+                    }};
+                    List<O2O_Product> o2oList = Query.sql(sql).queryList(O2O_Product.class);
+                    boolean flag = false;
+                    for (O2O_Product o2o : o2oList) {
+                        if (!o2o.getStatus().equals(O2O_ProductStatus.PASS.getLine().getKey())) {
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if (!flag) {
+                        o.put("o2o_lower", 1);//o2o商品已下架,可编辑状态
+                    }
+                    o.put("status", p.gtVerifyStatus().getLine().getName());
                 } else {
                     o.put("status", "");
                     logger.error(String.format("存在脏数据,商品Id:%d", GetValue.get(o, PdtProduct.T.PKEY, Integer.class, -1)));
@@ -589,7 +580,7 @@ public class PdtProductDao {
                 } else {
                     o.put("status", "审核未通过");
                 }
-                o.put("upANDlow",(Byte)PdtProduct.T.STATE.getFld().getDefaultValue());
+                o.put("upANDlow", (Byte) PdtProduct.T.STATE.getFld().getDefaultValue());
             }
             o.put("category", translateUtil.getLanguage(o.get("category"), PltConfigDAO.supplierLanguage(supplierId)));
             o.put("rewrite", SEOUtils.getPdtProductTitle(Integer.valueOf(String.valueOf(o.get("pkey"))), String.valueOf(o.get("name"))));
@@ -788,13 +779,14 @@ public class PdtProductDao {
                 UsrSupplier.T.LOGO
         ).SELECT(
                 UsrSupplier.T.NAME, "supName"
-        ).FROM(
+        ).SELECT(UsrSupplier.T.PKEY, "supId").FROM(
                 PdtProduct.class
         ).LEFT_JOIN(
                 UsrSupplier.class, UsrSupplier.T.PKEY, PdtProduct.T.SUPPLIER
         ).WHERE(
                 PdtProduct.T.PKEY, "=?", id
         )
+
         ;
         return Query.sql(sql).queryMap();
     }

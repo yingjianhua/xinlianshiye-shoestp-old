@@ -2,38 +2,51 @@ package irille.Service.Manage.Pdt.Imp;
 
 import static irille.pub.util.AppConfig.objectMapper;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.google.gson.JsonObject;
+
 import irille.Dao.PdtProductDao;
-import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
+import irille.Dao.O2O.O2OProductDao;
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
+import irille.Entity.O2O.O2O_Product;
+import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
+import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Service.Manage.Pdt.IPdtProductManageService;
 import irille.core.sys.Sys;
 import irille.pub.Log;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.svr.Env;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.CacheUtils;
-import irille.shop.pdt.*;
+import irille.shop.pdt.Pdt;
+import irille.shop.pdt.PdtCat;
+import irille.shop.pdt.PdtProduct;
+import irille.shop.pdt.PdtProductDAO;
+import irille.shop.pdt.PdtSpec;
 import irille.shop.usr.UsrProductCategory;
 import irille.view.Page;
 import irille.view.pdt.PdtProductCatView;
-
 import irille.view.pdt.PdtProductSaveView;
 import irille.view.pdt.PdtProductSpecSaveView;
 import irille.view.pdt.WarehouseView;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
-import javax.inject.Inject;
 
 /**
  * Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/7 Time: 15:55
@@ -43,6 +56,8 @@ public class PdtProductManageServiceImp implements IPdtProductManageService {
 
     @Inject
     PdtProductDao pdtProductDao;
+    
+    private O2OProductDao o2oProductDao = new O2OProductDao();
 
     @Inject
     private PdtProductDAO.Publish pdtSave;
@@ -67,6 +82,25 @@ public class PdtProductManageServiceImp implements IPdtProductManageService {
         PdtProductSaveView pdtProductSaveView = objectMapper
                 .readValue(data, PdtProductSaveView.class);
         PdtProduct pdtProduct = new PdtProduct();
+        if(pdtProductSaveView.getId() > 0) {
+        	PdtProduct prod = pdtProductDao.findByPkey(pdtProductSaveView.getId());
+        	if(prod.getProductType().equals(Pdt.OProductType.O2O.getLine().getKey())) {
+        		List<O2O_Product> o2oProds = o2oProductDao.findAllByProd_Pkey(prod.getPkey());
+        		if(null != o2oProds && o2oProds.size()>0) {
+        			boolean flag = false;
+            		for(O2O_Product o2oProd:o2oProds) {
+            			if(!o2oProd.getStatus().equals(O2O_ProductStatus.PASS.getLine().getKey())) {
+            				flag = true;
+            				break;
+            			}
+            		}
+            		if(flag) {
+            			throw new WebMessageException(ReturnCode.failure, "O2O商品无法编辑");
+            		}
+        		}
+        	}
+        }
+        
         pdtProduct.setSupplier(supId);
         pdtProduct.setPkey(pdtProductSaveView.getId());
         pdtProduct.setName(objectMapper.writeValueAsString(pdtProductSaveView.getPdtName()));
@@ -198,11 +232,13 @@ public class PdtProductManageServiceImp implements IPdtProductManageService {
         pdtProduct.setSeoDescription(seoDescription.toString());
         pdtProduct.setSeoKeyword(seoKeyword.toString());
         pdtProduct.setStock(countStock);
-        if (pdtProductSaveView.getRadio() != 0) {
+        
+    	if (pdtProductSaveView.getRadio() != 0) {
             pdtProduct.setProductType(Pdt.OProductType.PrivateExpo.getLine().getKey());
         } else {
             pdtProduct.setProductType((byte) 0);
         }
+        
         if (pdtProduct.getPkey() < 0) {
             pdtSave.setB(pdtProduct);
             pdtSave.setLines(list);

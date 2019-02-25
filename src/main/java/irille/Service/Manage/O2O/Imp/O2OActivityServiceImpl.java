@@ -383,14 +383,20 @@ public class O2OActivityServiceImpl implements O2OActivityService {
             o2OProduct.setMessage("拒绝申请下架，拒绝理由：" + reason);
             email.setSubject("【鞋贸港】O2O商品下架失败");
             email.setContent("您申请商品编号为【" + pdt.getCode() + "】的商品拒绝下架，拒绝理由：" + reason);
-
+            o2OProduct.upd();
         } else if (status.equals(O2O_ProductStatus.PASS)) {
-            o2OProduct.setMessage("下架成功");
+        	o2OProduct.del();
+        	List<O2O_Product> o2oProds = o2OProductDao.findAllByProd(o2OProduct.getProductId());
+        	if(!(null != o2oProds && o2oProds.size()>0)) {
+        		PdtProduct product = o2OProduct.gtProductId();
+        		product.setProductType(Pdt.OProductType.GENERAL.getLine().getKey());
+        		product.upd();
+        	}
             email.setSubject("【鞋贸港】O2O商品下架成功");
             pdt.stProductType(Pdt.OProductType.GENERAL);
             email.setContent("您申请商品编号为【" + pdt.getCode() + "】的商品下架成功");
         }
-        o2OProduct.upd();
+        
         try {
             EmailUtils.sendMail(email);
         } catch (IOException e) {
