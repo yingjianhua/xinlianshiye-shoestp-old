@@ -217,7 +217,8 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 		view.setValieDate(consult.getValidDate());
 		view.setPaymentTerms(consult.gtPayType().getLine().getName());
 		view.setShippingTerms(consult.gtShippingType().getLine().getName());
-		view.setVerifyStatus(consult.getVerifyStatus());;
+		view.setVerifyStatus(consult.getVerifyStatus());
+		view.setStatus(consult.getStatus());
 		if(consult.gtType() == RFQConsultType.supplier_INQUIRY) {
 			view.setExtraRequest(consult.getExtraRequest());
 			try {
@@ -352,6 +353,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 				.WHERE(PdtProduct.T.PKEY, SQL.getInSql(params.length), Arrays.stream(params).map(Integer::valueOf).toArray(Serializable[]::new))
 				.WHERE(PdtProduct.T.SUPPLIER, "=?", relation.getSupplierId()).limit(0, 50);
 		for (PdtProduct product : query.queryList()) {
+			System.out.println("11111111111111");
 			RFQConsultProductView view = new RFQConsultProductView();
 			view.setPkey(product.getPkey());
 			view.setName(product.getName());
@@ -360,6 +362,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 		}
 		try {
 			consult.setProductRequest(om.writeValueAsString(productRequestSet));
+			System.out.println(om.writeValueAsString(productRequestSet));
 			consult.upd();
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();

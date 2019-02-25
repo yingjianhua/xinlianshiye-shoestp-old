@@ -25,4 +25,5 @@ public class RFQConsultView implements BaseView {
 	private List<String> images;//询盘图片
 	private List<RFQConsultRelationView> relations;//询盘关联
 	private Byte verifyStatus;//审核状态 	1: 未审核, 2: 未通过, 3: 通过
+	private Byte status;//询盘状态 1: 待发布, 2: 进行中,3: 已完成, 4: 已关闭
 }
