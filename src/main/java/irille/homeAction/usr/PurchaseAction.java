@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.xinlianshiye.shoestp.shop.service.usr.UsrFavoriteService;
 import com.xinlianshiye.shoestp.shop.service.usr.UsrPurchaseService;
-import com.xinlianshiye.shoestp.shop.view.usr.PurchaseAccountSettingView;
+import com.xinlianshiye.shoestp.shop.view.usr.PurchaseView;
 
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.homeAction.AbstractHomeAction;
@@ -78,8 +78,13 @@ public class PurchaseAction extends AbstractHomeAction implements IPurchaseActio
 	@Override
 	@NeedLogin
 	public void editAccount() throws IOException {
-		usrPurchaseService.editAccount(getPurchase(), om.readValue(getJsonBody(), PurchaseAccountSettingView.class));
+		usrPurchaseService.editAccount(getPurchase(), om.readValue(getJsonBody(), PurchaseView.class));
 		write();
+	}
+
+	@Override
+	public void accountProfile() throws IOException {
+		write(usrPurchaseService.getAccount(getPurchase()));
 	}
 
 }

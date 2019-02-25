@@ -11,7 +11,13 @@ public interface IRFQConsultAction {
 	 * @throws IOException
 	 * @author Jianhua Ying
 	 */
-	void pageMine() throws IOException ;
+	void pageMine() throws IOException;
+	
+	/**
+	 * 统计我的询盘的未读消息数量, 一个询盘的一个供应商的多条消息记一条
+	 * @throws IOException
+	 */
+	void unreadCount() throws IOException;
 	
 	/**
 	 * 询盘详情

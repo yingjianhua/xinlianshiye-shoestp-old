@@ -3,15 +3,14 @@ package com.xinlianshiye.shoestp.shop.service.usr.impl;
 import com.google.inject.Inject;
 import com.xinlianshiye.shoestp.common.dao.usr.UsrPurchaseDao;
 import com.xinlianshiye.shoestp.shop.service.usr.UsrPurchaseService;
-import com.xinlianshiye.shoestp.shop.view.usr.PurchaseAccountSettingView;
 import com.xinlianshiye.shoestp.shop.view.usr.PurchaseView;
+import com.xinlianshiye.shoestp.shop.view.usr.PurchaseView.EditAccountValidator;
 
 import irille.Dao.RFQ.RFQConsultMessageDao;
 import irille.Dao.RFQ.RFQConsultRelationDao;
 import irille.pub.DateTools;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
-import irille.pub.validate.Valid;
 import irille.shop.usr.UsrPurchase;
 
 public class UsrPurchaseServiceImpl implements UsrPurchaseService {
@@ -66,16 +65,29 @@ public class UsrPurchaseServiceImpl implements UsrPurchaseService {
 	}
 
 	@Override
-	public void editAccount(UsrPurchase purchase, PurchaseAccountSettingView accountSetting) {
+	public void editAccount(UsrPurchase purchase, PurchaseView accountSetting) {
 		//校验数据
-		accountSetting.valid();
+		accountSetting.validThrow(EditAccountValidator.class);
 		purchase.setSex(accountSetting.getGender());
 		purchase.setName(accountSetting.getFirstName());
-		purchase.setName(accountSetting.getSurname());
+		purchase.setSurname(accountSetting.getSurname());
 		purchase.setTelphone(accountSetting.getPhone());
 		purchase.setCompany(accountSetting.getCompany());
 		purchase.setAddress(accountSetting.getAddress());
 		usrPurchaseDao.save(purchase);
+	}
+
+	@Override
+	public PurchaseView getAccount(UsrPurchase purchase) {
+		PurchaseView view = new PurchaseView();
+		view.setEmail(purchase.getEmail());
+		view.setGender(purchase.getSex());
+		view.setAddress(purchase.getAddress());
+		view.setCompany(purchase.getCompany());
+		view.setPhone(purchase.getTelphone());
+		view.setSurname(purchase.getSurname());
+		view.setFirstName(purchase.getName());
+		return view;
 	}
 
 }
