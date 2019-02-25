@@ -350,9 +350,9 @@ public class PdtProductServiceImp implements IPdtProductService {
      * @return
      */
     @Override
-    public PageSearch searchPdt(String[] orderfld,UsrPurchase purchase, FldLanguage.Language curLanguage, Integer lose, String pName, Integer cate, Integer level, String export, Integer mOrder, BigDecimal min, BigDecimal max, Integer IsO2o, String o2oAddress, Integer start, Integer limit) {
+    public PageSearch searchPdt(String[] orderfld,UsrPurchase purchase,Integer supplier, FldLanguage.Language curLanguage, Integer lose, String pName, Integer cate, Integer level, String export, Integer mOrder, BigDecimal min, BigDecimal max, Integer IsO2o, String o2oAddress, Integer start, Integer limit) {
 
-        PageSearch pageSearch = new PageSearch(pdtProductDao.searchPdtByQuery(orderfld,purchase, curLanguage, lose, pName, cate, level, export, mOrder, min, max, IsO2o, o2oAddress, start, limit));
+        PageSearch pageSearch = new PageSearch(pdtProductDao.searchPdtByQuery(orderfld,purchase,supplier, curLanguage, lose, pName, cate, level, export, mOrder, min, max, IsO2o, o2oAddress, start, limit));
         List<PdtSearchView> data = pageSearch.getItems();
         List<PdtSearchView> result = data.stream().filter(new Predicate<PdtSearchView>(){
             @Override
