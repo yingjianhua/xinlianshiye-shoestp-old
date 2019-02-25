@@ -1,22 +1,10 @@
 package irille.homeAction.pdt;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.inject.Inject;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultMessageService;
-
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.Service.Pdt.IPdtProductService;
 import irille.Service.Pdt.Imp.PdtproductPageselect;
@@ -32,27 +20,28 @@ import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.odr.OdrOrderDAO;
-import irille.shop.pdt.Pdt;
-import irille.shop.pdt.PdtAttr;
-import irille.shop.pdt.PdtAttrLine;
-import irille.shop.pdt.PdtColor;
-import irille.shop.pdt.PdtComment;
-import irille.shop.pdt.PdtCommentDAO;
-import irille.shop.pdt.PdtProduct;
-import irille.shop.pdt.PdtProductDAO;
-import irille.shop.pdt.PdtSize;
+import irille.shop.pdt.*;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplierDAO;
+import irille.view.O2O.O2OMapView;
 import irille.view.Page;
 import irille.view.ResultView;
-import irille.view.O2O.O2OMapView;
 import irille.view.pdt.CommentView;
 import irille.view.pdt.PdtCommentSatisFactionView;
 import irille.view.pdt.PdtCommentViewPageView;
 import irille.view.usr.SupplierView;
 import lombok.Getter;
 import lombok.Setter;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import javax.inject.Inject;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @Setter
@@ -60,7 +49,7 @@ import lombok.Setter;
 public class PdtProductAction extends HomeAction<PdtProduct> {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Inject
     private PdtproductPageselect pdtpageSelect = new PdtproductPageselect();
     private static final OdrOrderDAO.Query Odrderquery = new OdrOrderDAO.Query();
@@ -165,25 +154,27 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
     private String keyword;
 
     private int searchtype;
-    
+
     private String pName;
-    
+
     private Integer cate;
-    
+
     private Integer level;
-    
+
     private String export;
-    
+
     private Integer mOrder;
-    
+
     private BigDecimal min;
-    
+
     private BigDecimal max;
-    
+
     private Integer lose;
-    
+
     private Integer IsO2o;
-    
+
+    private Integer supplier;
+
     private String o2oAddress;
 
     /***
@@ -210,7 +201,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
                 setStart(0);
             if (getLimit() == 0 || getLimit() < 0)
                 setLimit(10);
-            write(pdtProduct.searchPdt(orderfld, purchase, curLanguage, lose, pName, cate, level, export, mOrder, min, max, IsO2o, o2oAddress, getStart(), getLimit()));
+            write(pdtProduct.searchPdt(orderfld, purchase, supplier,curLanguage, lose, pName, cate, level, export, mOrder, min, max, IsO2o, o2oAddress, getStart(), getLimit()));
         } else {
             write(objectMapper.writeValueAsString(pdtProduct
                     .getProductListByCategory(iduPage, orderfld, isOrder(), getCated(), getSpec(),
@@ -268,7 +259,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
     private SupplierView supView;
 
     private SEOView seoView;
-    
+
     private String expoKey;//私人展厅产品的密钥, 没有密钥或者密钥过期都不能进入页面
 
     /**
@@ -297,7 +288,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
                     return HomeAction.TRENDS;
             	}
             }
-            
+
             if (null != infoView.getMap())
                 setMap(infoView.getMap());
             seoView = new SEOView();
@@ -606,7 +597,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
     }
 
     private String sort;
-    
+
     private Integer type;
 
     /**
@@ -645,7 +636,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
     }
 
     private Integer rankingBasis;
-    
+
     private Integer basis = 0;
 
     public void getProductBySup() throws Exception {

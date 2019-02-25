@@ -66,6 +66,7 @@ public class UsrFavoriteServiceImpl implements UsrFavoriteService {
         if (cat > 0) {
             List<Integer> catsNodeByCatId = pdtProductDao.getCatsNodeByCatId(cat);
             query.WHERE(PdtProduct.T.CATEGORY, SQL.getInSql(catsNodeByCatId.size()), catsNodeByCatId.toArray(new Serializable[catsNodeByCatId.size()]));
+            query.WHERE(UsrFavorites.T.SHOW_STATE, "=?", Sys.OYn.YES);
         } else {
             if (cat < 0) {
                 query.WHERE(UsrFavorites.T.SHOW_STATE, "=?", Sys.OYn.NO);
