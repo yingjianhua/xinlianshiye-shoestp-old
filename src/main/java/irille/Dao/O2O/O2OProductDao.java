@@ -232,14 +232,15 @@ public class O2OProductDao {
                 .SELECT(UsrSupplier.T.NAME, "supName")
                 .FROM(PdtProduct.class)
                 .LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, PdtProduct.T.SUPPLIER)
-                .LEFT_JOIN(O2O_Product.class, O2O_Product.T.PRODUCT_ID, PdtProduct.T.PKEY)
+                .LEFT_JOIN("(select * from o2_o__product ORDER BY updated_time DESC limit 1) O2O_Product  ON O2O_Product.product_id = PdtProduct.pkey ")
+//                .LEFT_JOIN(O2O_Product.class, O2O_Product.T.PRODUCT_ID, PdtProduct.T.PKEY)
                 .WHERE(!pkeys.equals(""), PdtProduct.T.CATEGORY, " in(" + pkeys + ")")
                 .WHERE(PdtProduct.T.SUPPLIER, "=?", supplier.getPkey())
                 .WHERE(PdtProduct.T.IS_VERIFY, "=?", Sys.OYn.YES.getLine().getKey())
                 .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON.getLine().getKey())
 //                .WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.GENERAL.getLine().getKey())
                 .WHERE("("+PdtProduct.class.getSimpleName() + "." + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()+"=? OR " + PdtProduct.class.getSimpleName() + "." + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()+"=? )", Pdt.OProductType.GENERAL.getLine().getKey(),Pdt.OProductType.O2O.getLine().getKey())
-                .WHERE("(("+ O2O_Product.class.getSimpleName() +"."+O2O_Product.T.ACTIVITY_ID.getFld().getCodeSqlField() + "<> ? and " + O2O_Product.class.getSimpleName() +"." + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField() + "=? OR "+ O2O_Product.class.getSimpleName() +"." + O2O_Product.T.PKEY.getFld().getCodeSqlField() + " IS NULL ) OR ("+O2O_Product.class.getSimpleName() + "." + O2O_Product.T.ACTIVITY_ID.getFld().getCodeSqlField() +" =? AND "+O2O_Product.class.getSimpleName()+"." + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField()+" =? ))", activity,O2O_ProductStatus.PASS.getLine().getKey(),activity,O2O_PrivateExpoPdtStatus.Failed.getLine().getKey());
+                .WHERE("(("+ O2O_Product.class.getSimpleName() +"."+O2O_Product.T.ACTIVITY_ID.getFld().getCodeSqlField() + "<> ? OR "+ O2O_Product.class.getSimpleName() +"." + O2O_Product.T.PKEY.getFld().getCodeSqlField() + " IS NULL ) OR ("+O2O_Product.class.getSimpleName() + "." + O2O_Product.T.ACTIVITY_ID.getFld().getCodeSqlField() +" =? AND "+O2O_Product.class.getSimpleName()+"." + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField()+" =? ))", activity,activity,O2O_PrivateExpoPdtStatus.Failed.getLine().getKey());
         System.err.println(sql.toString());
         return Query.sql(sql).queryMaps();
 

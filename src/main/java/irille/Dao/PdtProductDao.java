@@ -483,7 +483,8 @@ public class PdtProductDao {
     }
 
     public Page getProductListManage(String name, String number, Integer supplierId, int cat, int start, int limit, Integer search) {
-        BeanQuery q = Query
+    	SQL sql1 = new SQL();
+    			sql1
                 .SELECT(PdtProduct.T.PKEY, PdtProduct.T.NAME, PdtProduct.T.CODE, PdtProduct.T.CUR_PRICE, PdtProduct.T.PICTURE, PdtProduct.T.PRODUCT_TYPE, PdtProduct.T.UPDATE_TIME, PdtProduct.T.IS_VERIFY)
                 .SELECT(PdtCat.T.NAME, "category")
                 .SELECT(UsrProductCategory.T.NAME, "categoryDiy")
@@ -492,7 +493,8 @@ public class PdtProductDao {
                 .LEFT_JOIN(PdtCat.class, PdtProduct.T.CATEGORY, PdtCat.T.PKEY)
                 .LEFT_JOIN(UsrProductCategory.class, PdtProduct.T.CATEGORY_DIY, UsrProductCategory.T.PKEY)
                 .LEFT_JOIN(O2O_PrivateExpoPdt.class, O2O_PrivateExpoPdt.T.PDT_ID, PdtProduct.T.PKEY)
-                .LEFT_JOIN(O2O_Product.class, O2O_Product.T.PRODUCT_ID, PdtProduct.T.PKEY)
+//                .LEFT_JOIN(O2O_Product.class, O2O_Product.T.PRODUCT_ID, PdtProduct.T.PKEY)
+                .LEFT_JOIN("(select * from o2_o__product ORDER BY updated_time DESC limit 1) O2O_Product  ON O2O_Product.product_id = PdtProduct.pkey ")
                 .WHERE(name != null && name.length() > 0, PdtProduct.T.NAME, "like ?", "%" + name + "%")
                 .WHERE(number != null && number.length() > 0, PdtProduct.T.CODE, "like ?", "%" + number + "%")
                 .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierId)
@@ -505,15 +507,15 @@ public class PdtProductDao {
         if (search != null) {
             switch (search) {
                 case 2:
-                    q.WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.PrivateExpo.getLine().getKey());
+                	sql1.WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.PrivateExpo.getLine().getKey());
                     break;
                 case 3:
-                    q.WHERE("(" + O2O_PrivateExpoPdt.class.getSimpleName() + "." + O2O_PrivateExpoPdt.T.VERIFY_STATUS.getFld().getCodeSqlField() +
+                	sql1.WHERE("(" + O2O_PrivateExpoPdt.class.getSimpleName() + "." + O2O_PrivateExpoPdt.T.VERIFY_STATUS.getFld().getCodeSqlField() +
                                     "=? OR " + O2O_Product.class.getSimpleName() + "." + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField() + " =?)"
                             , O2O_PrivateExpoPdtStatus.PASS.getLine().getKey(), O2O_ProductStatus.PASS.getLine().getKey());
                     break;
                 case 4:
-                    q.WHERE("(" + O2O_PrivateExpoPdt.class.getSimpleName() + "." + O2O_PrivateExpoPdt.T.VERIFY_STATUS.getFld().getCodeSqlField() +
+                	sql1.WHERE("(" + O2O_PrivateExpoPdt.class.getSimpleName() + "." + O2O_PrivateExpoPdt.T.VERIFY_STATUS.getFld().getCodeSqlField() +
                                     "=? OR " + O2O_Product.class.getSimpleName() + "." + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField() +
                                     " =?)"
                             , O2O_PrivateExpoPdtStatus.Failed.getLine().getKey(), O2O_ProductStatus.Failed.getLine().getKey());
@@ -524,12 +526,13 @@ public class PdtProductDao {
             List list = (List) getCatsNodeByCatId(cat).stream().map(o -> {
                 return String.valueOf(o);
             }).collect(toList());
-            q.WHERE(cat != 0, PdtProduct.T.CATEGORY, "in (" + String.join(",", list) + ")");
+            sql1.WHERE(cat != 0, PdtProduct.T.CATEGORY, "in (" + String.join(",", list) + ")");
         }
-        Integer totalCount = q.queryCount();
+        Integer totalCount = Query.sql(sql1).queryCount();
         start = (start - 1 > -1 ? start - 1 : 0);
 //        q.limit(start * limit, limit).queryMaps();
-        List<Map> list = q.limit(start * limit, limit).queryMaps();
+        sql1.LIMIT(start * limit, limit);
+        List<Map<String,Object>> list = Query.sql(sql1).queryMaps();
         Page page = new Page(list.stream().map(o -> {
             for (Pdt.OProductType value : Pdt.OProductType.values()) {
                 if (value.getLine().getKey() == (Byte) o.get(PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField())) {
