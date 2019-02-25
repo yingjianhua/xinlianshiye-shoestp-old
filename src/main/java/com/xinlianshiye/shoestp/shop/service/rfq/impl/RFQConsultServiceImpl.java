@@ -22,6 +22,7 @@ import com.xinlianshiye.shoestp.shop.view.rfq.RFQCurrencyView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationThrowawayView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQSupplierView;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQUnreadCountView;
 import com.xinlianshiye.shoestp.shop.view.rfq.supplierConsult.RFQConsultProductView;
 
 import irille.Entity.RFQ.RFQConsult;
@@ -101,6 +102,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 		query.SELECT(RFQConsultRelation.T.SAMPLE);
 		query.SELECT(RFQConsultRelation.T.CREATE_DATE);
 		query.SELECT(RFQConsultRelation.T.IS_NEW);
+		query.SELECT(RFQConsultRelation.T.HAD_READ_PURCHASE);
 		query.SELECT(UsrSupplier.T.PKEY, "supplierPkey");
 		query.SELECT(UsrSupplier.T.NAME, "supplierName");
 		query.SELECT(UsrSupplier.T.COUNTRY, "supplierCountry");
@@ -139,6 +141,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 			country.setShortName(GetValue.get(map, "countryShortName", String.class, null));
 			country.setFlag(GetValue.get(map, "countryFlag", String.class, null));
 			supplier.setCountry(country);
+			relation.setUnread(BeanBase.byteToBoolean(GetValue.get(map, RFQConsultRelation.T.HAD_READ_PURCHASE, Byte.class, null)));
 			relation.setQuotation(quotation);
 			relation.setSupplier(supplier);
 			return relation;
@@ -214,6 +217,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 		view.setValieDate(consult.getValidDate());
 		view.setPaymentTerms(consult.gtPayType().getLine().getName());
 		view.setShippingTerms(consult.gtShippingType().getLine().getName());
+		view.setVerifyStatus(consult.getVerifyStatus());;
 		if(consult.gtType() == RFQConsultType.supplier_INQUIRY) {
 			view.setExtraRequest(consult.getExtraRequest());
 			try {
@@ -361,6 +365,41 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 			e.printStackTrace();
 		}
 		
+	}
+
+	@Override
+	public RFQUnreadCountView countUnread(UsrPurchase purchase) {
+		RFQUnreadCountView view = new RFQUnreadCountView();
+		Query.sql(new SQL().
+				SELECT("count(1)")
+				.SELECT(RFQConsult.T.TYPE).FROM(RFQConsult.class)
+				.LEFT_JOIN(RFQConsultRelation.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY)
+				.WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey())
+				.WHERE(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", false)
+				.GROUP_BY(RFQConsultRelation.T.PKEY))
+				.queryMaps()
+				.stream().forEach(map -> {
+			Integer count = GetValue.get(map, "count(1)", Integer.class, null);
+			Byte type = GetValue.get(map, RFQConsult.T.TYPE, Byte.class, null);
+			switch (type) {
+			case (byte)1:
+				view.setT1(count);
+				break;
+			case (byte)2:
+				view.setT2(count);
+			break;
+			case (byte)3:
+				view.setT3(count);
+			break;
+			case (byte)4:
+				view.setT4(count);
+			break;
+			default:
+				break;
+			}
+			view.setAll(view.getAll() + count);
+		});
+		return view;
 	}
 	
 }
