@@ -48,7 +48,7 @@ public class RFQConsultServiceTest extends BaseTest {
 	}
 	
 	@Test
-	@Ignore
+//	@Ignore
 	public void testGetQuotation() throws JsonProcessingException {
 		UsrPurchase purchase = new UsrPurchase();
 		purchase.setPkey(1261);
@@ -73,20 +73,35 @@ public class RFQConsultServiceTest extends BaseTest {
 	
 	@Test
 	@Ignore
-	public void testAddProductRequest() {
+	public void testAddProductRequest() throws JsonProcessingException {
 		UsrPurchase purchase = new UsrPurchase();
 		purchase.setPkey(1261);
 		purchase.setName("建化");
-		Integer consultPkey = 7;
+		Integer consultPkey = 5;
+		RFQConsultView detail2 = service.getDetail(purchase, consultPkey);
+		System.out.println(om.writeValueAsString(detail2));
 		String products = "339,340";
 		service.addProductRequest(purchase, consultPkey, products);
+		RFQConsultView detail = service.getDetail(purchase, consultPkey);
+		System.out.println(om.writeValueAsString(detail));
 	}
 	
 	@Test
+	@Ignore
 	public void testCountUnread() throws JsonProcessingException {
 		UsrPurchase purchase = UsrPurchase.load(UsrPurchase.class, 1261);
 		
 		RFQUnreadCountView unreadCount = service.countUnread(purchase);
 		System.out.println(om.writeValueAsString(unreadCount));
+	}
+	
+	@Test
+	@Ignore
+	public void testDeleteQuotation() throws JsonProcessingException {
+		UsrPurchase purchase = UsrPurchase.load(UsrPurchase.class, 1261);
+		Integer relationPkey = 3;
+		service.deleteQuotation(purchase, relationPkey);
+		Page<RFQConsultView> view = service.pageMine(purchase, null, null, null, 0, 10);
+		System.out.println(om.writeValueAsString(view));
 	}
 }
