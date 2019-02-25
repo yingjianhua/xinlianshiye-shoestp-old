@@ -1,5 +1,8 @@
 package irille.homeAction.usr;
 
+import com.xinlianshiye.shoestp.shop.service.usr.UsrFavoriteService;
+import com.xinlianshiye.shoestp.shop.view.usr.FavoritesView;
+import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.Service.Usr.IUsrSupplierService;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
@@ -8,7 +11,6 @@ import irille.pub.LogMessage;
 import irille.pub.bean.BeanBase;
 import irille.pub.i18n.I18NUtil;
 import irille.pub.idu.IduPage;
-import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.*;
 import irille.shop.usr.UsrCart;
@@ -17,8 +19,6 @@ import irille.shop.usr.UsrFavoritesDAO;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.xinlianshiye.shoestp.shop.view.usr.FavoritesView;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -31,11 +31,14 @@ import java.util.List;
  * @author yjh
  */
 public class UsrFavoritesAction extends HomeAction<UsrFavorites> {
-	private static final LogMessage LOG = new LogMessage(UsrFavoritesAction.class);
+    private static final LogMessage LOG = new LogMessage(UsrFavoritesAction.class);
     private static final PdtCatDAO.Query CATQUERY = new PdtCatDAO.Query();
 
     @Inject
     IUsrSupplierService usrSupplier;
+
+    @Inject
+    UsrFavoriteService usrFavoriteService;
 
     private static final String timeout_err = "timeout.";
     private byte code;
@@ -95,7 +98,7 @@ public class UsrFavoritesAction extends HomeAction<UsrFavorites> {
     }
 
 
-    private int pageNumber=1;
+    private int pageNumber = 1;
     private int category;
 
     public Integer getCategory() {
@@ -190,19 +193,28 @@ public class UsrFavoritesAction extends HomeAction<UsrFavorites> {
     }
 
     /**
+     * @throws IOException
      * @see PurchaseAction#favorite
      * 功能迁移到
-     * @throws IOException
      */
     @Deprecated
+    @NeedLogin
     public void myfavoriteAjax() throws IOException {
         if (getPurchase() == null) {
             writeErr(-1, "未登录");
         }
-        IduPage page = new IduPage();
-        page.setStart(pageNumber);
-        List pageFavorites = usrSupplier.getFavoritesListByCat(page, category, getPurchase().getPkey(), Sys.OYn.YES);
-        write(pageFavorites);
+        if (isMobile()) {
+            IduPage page = new IduPage();
+            page.setStart(pageNumber);
+            List pageFavorites = usrSupplier.getFavoritesListByCat(page, category, getPurchase().getPkey(), Sys.OYn.YES);
+            write(pageFavorites);
+        } else {
+            if (getStart() < 0)
+                setStart(0);
+            if (getLimit() <= 0)
+                setLimit(8);
+            write(usrFavoriteService.getMyFavoritesList(getStart(), getLimit(), getCatPkey(), getPurchase()));
+        }
     }
 
 
@@ -220,14 +232,13 @@ public class UsrFavoritesAction extends HomeAction<UsrFavorites> {
         } else {
             recycle.setBKey(getPkey());
         }
-        try{
-        	recycle.commit();
-        	write();
-        }catch(Exp e){
-        	writeErr(e.getLastMessage());
+        try {
+            recycle.commit();
+            write();
+        } catch (Exp e) {
+            writeErr(e.getLastMessage());
         }
     }
-
 
 
     private Integer pdtPkey;
@@ -271,7 +282,7 @@ public class UsrFavoritesAction extends HomeAction<UsrFavorites> {
                 }
             } catch (ArrayIndexOutOfBoundsException e) {
                 errCount++;
-                throw LOG.errTran("goods_info%No_Spec","该产品尚未发布规格");
+                throw LOG.errTran("goods_info%No_Spec", "该产品尚未发布规格");
             } finally {
                 continue;
             }
@@ -292,11 +303,11 @@ public class UsrFavoritesAction extends HomeAction<UsrFavorites> {
     public void restoreFavorite() throws IOException, JSONException {
         UsrFavoritesDAO.RestoreFavorite restore = new UsrFavoritesDAO.RestoreFavorite();
         restore.setBKey(getPkey());
-        try{
-        	restore.commit();
-        	write();
-        }catch(Exp e){
-        	writeErr(e.getLastMessage());
+        try {
+            restore.commit();
+            write();
+        } catch (Exp e) {
+            writeErr(e.getLastMessage());
         }
     }
 
@@ -316,11 +327,11 @@ public class UsrFavoritesAction extends HomeAction<UsrFavorites> {
         } else {
             delFavorite.setBKey(getPkey());
         }
-        try{
-        	delFavorite.commit();
-        	write();
-        }catch(Exp e){
-        	writeErr(e.getLastMessage());
+        try {
+            delFavorite.commit();
+            write();
+        } catch (Exp e) {
+            writeErr(e.getLastMessage());
         }
     }
 
