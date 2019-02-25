@@ -1,5 +1,7 @@
 package com.xinlianshiye.shoestp.shop.service.rfq;
 
+import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -21,7 +23,14 @@ public class RFQPurchaseContactServiceTest extends BaseTest {
 	@Inject
 	private ObjectMapper om;
 	
+	@BeforeClass
+	public static void initBean() {
+		RFQPurchaseContact.TB.getCode();
+		RFQConsultRelation.TB.getCode();
+	}
+	
 	@Test
+	@Ignore
 	public void testDeleteGroup() {
 		UsrPurchase purchase = new UsrPurchase();
 		purchase.setPkey(1);
@@ -30,9 +39,15 @@ public class RFQPurchaseContactServiceTest extends BaseTest {
 	}
 	
 	@Test
+	public void testAdd() {
+		UsrPurchase purchase = UsrPurchase.load(UsrPurchase.class, 1261);
+		Integer supplierPkey = 23;
+		service.add(purchase, supplierPkey);
+	}
+	
+	@Test
+	@Ignore
 	public void testPage() throws JsonProcessingException {
-		RFQPurchaseContact.TB.getCode();
-		RFQConsultRelation.TB.getCode();
 		om.setSerializationInclusion(Include.NON_NULL);
 		
 		UsrPurchase purchase = new UsrPurchase();
