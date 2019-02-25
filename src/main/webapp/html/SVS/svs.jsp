@@ -101,9 +101,11 @@
         <section class="tagcloud">
             <div v-for="item in tagcloud"><p>{{item.content}}</p><p>-----from {{item.name}}</p></div>
         </section>
-        <o2o-bottom></o2o-bottom>
+        <index-bottom></index-bottom>
+    <%--<o2o-bottom></o2o-bottom>--%>
   </main>
-    <script src="components/O2O-bottom.js"></script>
+    <%--<script src="components/O2O-bottom.js"></script>--%>
+<script src="/home/v3/static/js/index-bottom.js"></script>
   <script>
       new Vue({
 			el: "#svsApp",
@@ -168,5 +170,23 @@
       keep: false //鼠标移出组件后是否继续随鼠标滚动, 取值: false, true(默认) 对应 减速至初速度滚动, 随鼠标滚动
     });
   </script>
+<style>
+    #o2obottom {
+        font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+        background-color: #424d65;
+    }
+    #o2obottom .emailform{
+        width: 1240px;
+    }
+    #o2obottom .o2obottomlinks ul {
+        color: white;
+    }
+    #o2obottom .o2obottomlinks ul .ullink a {
+        color: white;
+    }
+    #o2obottom .o2obottomcopyright{
+        border-top: 1px solid #575f75;
+    }
+</style>
 </body>
 </html>
