@@ -2,7 +2,6 @@ package com.xinlianshiye.shoestp.shop.service.usr;
 
 import com.google.inject.ImplementedBy;
 import com.xinlianshiye.shoestp.shop.service.usr.impl.UsrPurchaseServiceImpl;
-import com.xinlianshiye.shoestp.shop.view.usr.PurchaseAccountSettingView;
 import com.xinlianshiye.shoestp.shop.view.usr.PurchaseView;
 
 import irille.pub.DateTools;
@@ -53,7 +52,14 @@ public interface UsrPurchaseService {
 	 * @param accountSetting 账户设置内容
 	 * @author Jianhua Ying
 	 */
-	void editAccount(UsrPurchase purchase, PurchaseAccountSettingView accountSetting);
+	void editAccount(UsrPurchase purchase, PurchaseView accountSetting);
+	
+	/**
+	 * 获取账号信息
+	 * @param purchase
+	 * @return
+	 */
+	PurchaseView getAccount(UsrPurchase purchase);
 	
 	/**
 	 * 校验密码格式的有效性
