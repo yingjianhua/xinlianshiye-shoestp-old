@@ -127,7 +127,7 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
       supplierView.setId(usrSupplierPkey);
       supplierView.setShowName(GetValue.get(map,UsrSupplier.T.SHOW_NAME , String.class, null));
       supplierView.setIsAuth(GetValue.get(map,UsrSupplier.T.IS_AUTH , Byte.class, (byte)0));
-      supplierView.setLogo(GetValue.get(map,UsrSupplier.T.SHOW_NAME , String.class, null));
+      supplierView.setLogo(GetValue.get(map,UsrSupplier.T.LOGO , String.class, null));
       supplierView.setMainSalesArea(GetValue.get(map,UsrSupplier.T.SHOW_NAME , String.class, null));
       //添加商品列表
       List<PdtProductView> pdtProductViews = new ArrayList<>();

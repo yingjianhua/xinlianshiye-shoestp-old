@@ -92,7 +92,7 @@
           </div>
           <div class="supplier-btn ripple" :class="scrollTop3?'bounce':''">
                 Selceted SVS Suppliers
-              <img src="./images/right-arrow.png" alt="">
+              <a href="svsSuplies.jsp"><img src="./images/right-arrow.png" alt=""></a>
           </div>
           <div style="color:#1989fa;text-align:center;margin:20px 0;font-size:18px;">
                 We recommend the 50 quality suppliers for you

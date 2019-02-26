@@ -255,7 +255,11 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 			//已经过期
 			throw new WebMessageException(ReturnCode.service_state_error, "已过期");
 		}
-		if(Query.selectFrom(RFQConsultRelation.class).WHERE(RFQConsultRelation.T.CONSULT, "=?", consultPkey).exists()) {
+		if(Query.selectFrom(RFQConsultRelation.class)
+				.WHERE(RFQConsultRelation.T.CONSULT, "=?", consultPkey)
+				.WHERE(RFQConsultRelation.T.IS_DELETED_PURCHASE, "=?", false)
+				.WHERE(RFQConsultRelation.T.IS_DELETED_SUPPLIER, "=?", false)
+				.exists()) {
 			//已经有报价 不能添加额外信息
 			throw new WebMessageException(ReturnCode.service_state_error, "已有报价");
 		}
