@@ -18,7 +18,6 @@
     <script type="text/javascript"
             src="/static/js/plugins/goodsInfo/jquery.SuperSlide.2.1.1.js"></script>
 
-    <script type="text/javascript" src="./static/markerwithlabel.js"></script>
     <link href="./static/css/goodsInfoNew.css" rel="stylesheet" type="text/css">
     <link href="./static/css/style.css" rel="stylesheet" type="text/css">
     <link href="./static/css/global.css" rel="stylesheet" type="text/css">
@@ -47,8 +46,11 @@
     <!-- <link rel="stylesheet" href="css/index.css" /> -->
     <link rel="stylesheet" href="/home/v3/static/css/swiper.min.css"/>
     <style>
-        .clearfix{zoom:1}
-        .clearfix:after{
+        .clearfix {
+            zoom: 1
+        }
+
+        .clearfix:after {
             visibility: hidden;
             display: block;
             font-size: 0;
@@ -56,7 +58,8 @@
             clear: both;
             height: 0;
         }
-        #o2otop .o2otopcon .o2otoplikes dd{
+
+        #o2otop .o2otopcon .o2otoplikes dd {
             width: 238px
         }
     </style>
@@ -73,6 +76,37 @@
     </script>
     <script>
         var isLogin = ${env.login!=null};
+          function getParams(name, defaultValue) {
+            var url = window.location.href;
+            var l = url.lastIndexOf(name)
+            if (l != -1) {
+                var ll = url.indexOf("&", l);
+                if (ll == -1 || l > ll) {
+                    ll = url.length
+                }
+                url = url.substring(l, ll);
+                var result = url.split("=")
+                if (result.length == 2) {
+                    switch (typeof defaultValue) {
+                        case "number":
+                            return parseInt(result[1]);
+                        case "boolean":
+                            return Boolean(result[1])
+                        default:
+                            return result[1];
+                    }
+                }
+            } else {
+                if (defaultValue == 'NONE') {
+                    return null;
+                }
+                if (defaultValue == null) {
+                    return -1;
+                }
+                return defaultValue
+            }
+            return -1;
+        }
     </script>
 </head>
 <body id="goodsInfo" class="lang_en w_1200">
@@ -700,7 +734,8 @@
                     <div class="blank12"></div>
                 </div>
                 <div class="prod_review_view" v-if="!isLogin">
-                    <div class="review_sign"><s:text name="groupPurchaseGoodsInfo.After_Login"><s:param>/home/usr_UsrPurchase_sign</s:param></s:text>
+                    <div class="review_sign"><s:text
+                            name="groupPurchaseGoodsInfo.After_Login"><s:param>/home/usr_UsrPurchase_sign</s:param></s:text>
                     </div>
                     <div class="blank12"></div>
 
@@ -892,12 +927,12 @@
         });
     }
 </script>
-  <script type="text/javascript"
-            src="http://maps.google.com/maps/api/js?key=AIzaSyCPbc3yNYQgVc56qbUuAY_Yap-uDMkDkvc"  async></script>
+
+
 <script src="/home/v3/static/js/index-top.js"></script>
 <script src="/home/v3/static/js/index-bottom.js"></script>
 <script>
-        user_obj.sign_in_init();
+    user_obj.sign_in_init();
     var app = new Vue({
         el: "#app",
         data: {
@@ -1351,7 +1386,9 @@
 
 
 </script>
-
+<script type="text/javascript"
+        src="http://maps.google.com/maps/api/js?key=AIzaSyCPbc3yNYQgVc56qbUuAY_Yap-uDMkDkvc" async></script>
+<script type="text/javascript" src="./static/markerwithlabel.js"></script>
 <style>
     .loading {
         text-align: center;
