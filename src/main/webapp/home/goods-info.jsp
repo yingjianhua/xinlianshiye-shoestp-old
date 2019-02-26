@@ -1387,7 +1387,7 @@
 
 </script>
 <script type="text/javascript"
-        src="http://maps.google.com/maps/api/js?key=AIzaSyCPbc3yNYQgVc56qbUuAY_Yap-uDMkDkvc" async></script>
+        src="/home/static/js/maps.js?key=AIzaSyCPbc3yNYQgVc56qbUuAY_Yap-uDMkDkvc" async></script>
 <script type="text/javascript" src="./static/markerwithlabel.js"></script>
 <style>
     .loading {
