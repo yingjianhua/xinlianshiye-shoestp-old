@@ -125,21 +125,22 @@ public class O2OActicityServerImp implements IO2OActicityServer,Job{
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		System.out.println("<<<======开始更新O2O活动状态======>>>");
 		List<O2O_Activity> activities = o2OActivityDao.findAllByStatusExceptEnd();
-		System.out.println(activities.size());
-		String actPkeys = activities.stream().map(a->{
-			return String.valueOf(a.getPkey());
-		}).collect(Collectors.joining(","));
-		
-		List<O2O_Product> products = o2OProductDao.findAllByActivityIn(actPkeys);
 		Map<Integer,List<O2O_Product>> map = new HashMap<Integer,List<O2O_Product>>();
-		for(O2O_Product o:products) {
-			O2O_Activity activity = o.gtActivityId();
-			if(map.containsKey(activity.getPkey())) {
-				map.get(activity.getPkey()).add(o);
-			}else {
-				List<O2O_Product> oprod = new ArrayList<O2O_Product>();
-				oprod.add(o);
-				map.put(activity.getPkey(), oprod);
+		if(activities != null && activities.size()>0) {
+			String actPkeys = activities.stream().map(a->{
+				return String.valueOf(a.getPkey());
+			}).collect(Collectors.joining(","));
+			
+			List<O2O_Product> products = o2OProductDao.findAllByActivityIn(actPkeys);
+			for(O2O_Product o:products) {
+				O2O_Activity activity = o.gtActivityId();
+				if(map.containsKey(activity.getPkey())) {
+					map.get(activity.getPkey()).add(o);
+				}else {
+					List<O2O_Product> oprod = new ArrayList<O2O_Product>();
+					oprod.add(o);
+					map.put(activity.getPkey(), oprod);
+				}
 			}
 		}
 		List<O2O_Activity> acts = new ArrayList<O2O_Activity>();
