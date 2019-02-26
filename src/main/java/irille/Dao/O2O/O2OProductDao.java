@@ -365,6 +365,21 @@ public class O2OProductDao {
         return Query.sql(sql).queryList(O2O_Product.class);
     }
     
+    /**
+     * 根据获取通过审核/上架/活动未结束的O2O商品
+     */
+    public List<O2O_Product> findAllByVerifyStatusAndStatusAndActivity_Status(PdtProduct product){
+    	SQL sql = new SQL();
+    	sql.SELECT(O2O_Product.class).FROM(O2O_Product.class)
+    		.LEFT_JOIN(O2O_Activity.class, O2O_Activity.T.PKEY, O2O_Product.T.ACTIVITY_ID)
+    		.WHERE(O2O_Product.T.VERIFY_STATUS, "=?", O2O_ProductStatus.PASS.getLine().getKey())
+    		.WHERE(O2O_Product.T.STATUS, "=?", O2O_ProductStatus.ON.getLine().getKey())
+    		.WHERE(O2O_Activity.T.STATUS, "<>?", O2O_ActivityStatus.END.getLine().getKey())
+    		.WHERE(O2O_Activity.T.STATUS, "<>?", O2O_ActivityStatus.CLOSE.getLine().getKey());
+    	
+    	return Query.sql(sql).queryList(O2O_Product.class);
+    }
+    
     public List<O2O_Product> findAllByActivityAndSupplier(Integer activity,Integer supplier){
     	SQL sql = new SQL();
     	sql.SELECT(O2O_Product.class).FROM(O2O_Product.class)
@@ -375,5 +390,11 @@ public class O2OProductDao {
     	
     	return Query.sql(sql).queryList(O2O_Product.class);
     }
+
+	public List<O2O_Product> findAllByActivityIn(String actPkeys) {
+		SQL sql = new SQL();
+		sql.SELECT(O2O_Product.class).FROM(O2O_Product.class).WHERE(O2O_Product.T.ACTIVITY_ID, " in ("+actPkeys+")");
+		return Query.sql(sql).queryList(O2O_Product.class);
+	}
 
 }

@@ -1,14 +1,6 @@
 package com.xinlianshiye.shoestp.shop.view.usr;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONException;
-
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 import irille.homeAction.HomeAction;
 import irille.pub.i18n.I18NFieldSerializer;
 import irille.pub.util.SetBeans.SetBean.Annotations.SetBean;
@@ -17,11 +9,17 @@ import irille.shop.plt.PltErateDAO;
 import irille.shop.prm.PrmGroupPurchaseLine;
 import irille.shop.usr.UsrFavorites;
 import irille.view.BaseView;
+import org.json.JSONException;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FavoritesView implements BaseView {
     @SetBean(OriginalField = "picture")
     private String img;
-    @JsonSerialize(using=I18NFieldSerializer.class)
+    @JsonSerialize(using = I18NFieldSerializer.class)
     private String name;
     //价格
     @SetBean(OriginalField = "cur_price")
@@ -34,6 +32,8 @@ public class FavoritesView implements BaseView {
     //购物车Id
     @SetBean(OriginalField = "pkey")
     private Integer id;
+    @SetBean(OriginalField = "min_oq")
+    private Integer min_order;
 
     public static FavoritesView buildByFavorite(UsrFavorites favorite) {
         FavoritesView view = new FavoritesView();
@@ -134,5 +134,13 @@ public class FavoritesView implements BaseView {
                 ", \"pdtPkey\":" + pdtPkey +
                 ", \"id\":" + id +
                 '}';
+    }
+
+    public Integer getMin_order() {
+        return min_order;
+    }
+
+    public void setMin_order(Integer min_order) {
+        this.min_order = min_order;
     }
 }
