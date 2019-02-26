@@ -17,8 +17,7 @@
     <script type="text/javascript" src="./static/js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript"
             src="/static/js/plugins/goodsInfo/jquery.SuperSlide.2.1.1.js"></script>
-    <script type="text/javascript"
-            src="http://maps.google.com/maps/api/js?key=AIzaSyCPbc3yNYQgVc56qbUuAY_Yap-uDMkDkvc"></script>
+
     <script type="text/javascript" src="./static/markerwithlabel.js"></script>
     <link href="./static/css/goodsInfoNew.css" rel="stylesheet" type="text/css">
     <link href="./static/css/style.css" rel="stylesheet" type="text/css">
@@ -893,6 +892,8 @@
         });
     }
 </script>
+  <script type="text/javascript"
+            src="http://maps.google.com/maps/api/js?key=AIzaSyCPbc3yNYQgVc56qbUuAY_Yap-uDMkDkvc"  async></script>
 <script src="/home/v3/static/js/index-top.js"></script>
 <script src="/home/v3/static/js/index-bottom.js"></script>
 <script>
