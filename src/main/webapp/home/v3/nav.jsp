@@ -11,22 +11,22 @@
             <!-- 顶部左侧 - 4个下拉选 -->
             <el-menu :default-active="activeTopNavIndex" class="el-menu-demo" mode="horizontal"
                      @select="handleTopNavSelect">
-                <el-menu-item index="11">
+                <el-menu-item index="11" class="link-item">
                     <a href="/home/usr_UsrPurchase" target="_blank">
                         <s:text name="Home"/>
                     </a>
                 </el-menu-item>
-                <el-menu-item index="2">
+                <el-menu-item index="2" class="link-item">
                     <a href="/home/pdt_PdtProduct" target="_blank">
                         <s:text name="Products"/>
                     </a>
                 </el-menu-item>
-                <el-menu-item index="3">
+                <el-menu-item index="3" class="link-item">
                     <a href="/home/pdt_PdtProduct_o2oList" target="_blank">
                         <s:text name="Romanian Office Exhibition"/>
                     </a>
                 </el-menu-item>
-                <el-menu-item index="4">
+                <el-menu-item index="4" class="link-item">
                     <a href="/html/SVS/svs.jsp" target="_blank">
                         <s:text name="SVS Suppliers"/>
                     </a>
