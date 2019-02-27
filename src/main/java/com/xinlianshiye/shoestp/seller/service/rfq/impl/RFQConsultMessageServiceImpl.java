@@ -23,6 +23,7 @@ import irille.Entity.RFQ.JSON.RFQConsultImageMessage;
 import irille.Entity.RFQ.JSON.RFQConsultTextMessage;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
+import irille.pub.util.AppConfig;
 import irille.sellerAction.rfq.view.RFQConsultMessageContactView;
 import irille.sellerAction.rfq.view.RFQConsultMessageView;
 import irille.sellerAction.rfq.view.RFQConsultMessagesView;
@@ -129,8 +130,7 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 		message.setAlertMsg("该链接被打开后72小时内有效，72小时后该链接失效，买家将无法查看该产品");
 		message.setShowMsg("产品链接");
 		String uuid = createUuid();
-		message.setUrl("https://www.shoestp.com/home/pdt_PdtProduct_gtProductsInfo?expoKey="+uuid);//TODO 链接现在尚未确定  确定后补上 带上询盘聊天消息的uuid做为参数
-		RFQConsultMessageView messageView = sendMessage(supplier, consultPkey, message);
+		message.setUrl(AppConfig.domain + "home/pdt_PdtProduct_gtProductsInfo?expoKey=" + uuid);//TODO 链接现在尚未确定  确定后补上 带上询盘聊天消息的uuid做为参数
 		return sendMessage(supplier, consultPkey, message, uuid);
 	}
 
