@@ -154,12 +154,23 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
 		write();
 	}
 
-	@Override
-	@NeedLogin
+    @Override
+    public void getRFQList() throws IOException {
+	    write(rFQConsultService.getRFQList());
+
+    }
+
+    private Integer rfqPkey;
+    @Override
+    public void getRFQDetails() throws IOException {
+	    write(rFQConsultService.getRFQDetails(rfqPkey));
+    }
+
+    @NeedLogin
 	public void quotationDetail() throws IOException {
 		write(rFQConsultService.getQuotation(getPurchase(), quotationPkey));
 	}
-	
+
 	Integer consultPkey;
 
 	@Override

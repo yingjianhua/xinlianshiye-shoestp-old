@@ -10,6 +10,8 @@ import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQUnreadCountView;
 
+import irille.homeAction.rfq.view.RFQDetailsView;
+import irille.homeAction.rfq.view.RFQListView;
 import irille.shop.usr.UsrPurchase;
 import irille.view.Page;
 
@@ -111,4 +113,20 @@ public interface RFQConsultService {
 	 * @author Jianhua Ying
 	 */
 	RFQQuotationView getQuotation(UsrPurchase purchase, Integer relationPkey);
+
+	/**
+	 * 获取RFQ列表
+	 * @author zjl
+	 * @Date 2019/2/27 14:35
+	 * @return
+	 */
+	List<RFQListView> getRFQList();
+
+	/**
+	 * 获取RFQ详情
+	 * @author zjl
+	 * @Date 2019/2/27 16:13
+	 * @return
+	 */
+	RFQDetailsView getRFQDetails(Integer pkey);
 }

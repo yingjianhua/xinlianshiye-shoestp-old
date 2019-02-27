@@ -52,6 +52,12 @@ public class RFQConsultAction extends ActionBase<RFQConsult> implements IRFQCons
     write();
   }
 
+  @Override
+  public void recommend() throws IOException {
+    rFQConsultService.recommend(consult);
+    write();
+  }
+
 	@Override
 	public void offerInfo() throws IOException {
 		write(rFQConsultService.relationInfo(relation));

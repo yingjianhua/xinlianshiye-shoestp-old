@@ -49,6 +49,12 @@ public interface IRFQConsultAction {
 	 * @throws IOException
 	 */
 	void delete() throws IOException ;
+
+	/**
+	 * 是否推荐RFQ到首页
+	 * @throws IOException
+	 */
+	void recommend()throws IOException;
 	
 	/**
 	 * 商家报价信息

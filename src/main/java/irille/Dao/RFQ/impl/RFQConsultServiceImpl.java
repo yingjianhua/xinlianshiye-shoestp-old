@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import irille.Dao.RFQ.RFQConsultDao;
 import irille.Dao.RFQ.RFQConsultRelationDao;
 import irille.Dao.RFQ.RFQConsultService;
+import irille.Entity.RFQ.Enums.RFQConsultRecommend;
 import irille.Entity.RFQ.Enums.RFQConsultStatus;
 import irille.Entity.RFQ.Enums.RFQConsultType;
 import irille.Entity.RFQ.Enums.RFQConsultVerifyStatus;
@@ -25,8 +26,8 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 
     @Override
     public Page<RFQConsultView> page(Integer start, Integer limit, RFQConsultView condition) {
-    	//标记为已删除的询盘不在平台端显示
-		condition.setIsDeleted(false);
+        //标记为已删除的询盘不在平台端显示
+        condition.setIsDeleted(false);
         return rFQConsultDao.findAllView(start, limit, condition);
     }
 
@@ -98,16 +99,29 @@ public class RFQConsultServiceImpl implements RFQConsultService {
         }
     }
 
-	@Override
-	public RFQConsultQuoteInfoView relationInfo(RFQConsultRelationView view) {
-		if(view.getPkey() == null) {
-			throw new WebMessageException(ReturnCode.valid_notnull, "请选择商家");
-		}
-		RFQConsultRelation relation = rFQConsultRelationDao.findByPkey(view.getPkey());
-		if(relation == null) {
-			throw new WebMessageException(ReturnCode.valid_notnull, "请选择商家");
-		}
-		return RFQConsultQuoteInfoView.Builder.toView(relation);
-	}
+    @Override
+    public void recommend(RFQConsultView view) {
+        RFQConsult consult = null;
+        if (view.getPkey() == null || (consult = rFQConsultDao.findById(view.getPkey())) == null) {
+            throw new WebMessageException(ReturnCode.valid_notnull, "请选择RFQ");
+        }
+        System.err.println(view.getRecommend() == null);
+        System.err.println(view.getRecommend() == 0);
+        System.err.println((view.getRecommend() == null || view.getRecommend() == 0));
+        consult.setRecommend((view.getRecommend() == null || view.getRecommend() == 0) ? RFQConsultRecommend.RECOMMENDED.getLine().getKey() : RFQConsultRecommend.NOT_RECOMMENDED.getLine().getKey());
+        rFQConsultDao.save(consult);
+    }
+
+    @Override
+    public RFQConsultQuoteInfoView relationInfo(RFQConsultRelationView view) {
+        if (view.getPkey() == null) {
+            throw new WebMessageException(ReturnCode.valid_notnull, "请选择商家");
+        }
+        RFQConsultRelation relation = rFQConsultRelationDao.findByPkey(view.getPkey());
+        if (relation == null) {
+            throw new WebMessageException(ReturnCode.valid_notnull, "请选择商家");
+        }
+        return RFQConsultQuoteInfoView.Builder.toView(relation);
+    }
 
 }

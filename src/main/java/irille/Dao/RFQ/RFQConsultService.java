@@ -27,6 +27,7 @@ public interface RFQConsultService {
 	 * @author Jianhua Ying
 	 */
 	RFQConsultView detail(RFQConsultView condition);
+
 	
 	/**
 	 * 审核询盘
@@ -46,6 +47,14 @@ public interface RFQConsultService {
 	 * @author Jianhua Ying
 	 */
 	void delete(RFQConsultView view);
+
+	/**
+	 * 是否推荐RFQ到首页
+	 * @author zjl
+	 * @Date 2019/2/27 13:23
+	 * @param view
+	 */
+	void recommend(RFQConsultView view);
 	
 	/**
 	 * 商家询盘报价信息

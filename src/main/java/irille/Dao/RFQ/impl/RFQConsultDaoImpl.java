@@ -1,6 +1,7 @@
 package irille.Dao.RFQ.impl;
 
 import irille.Dao.RFQ.RFQConsultDao;
+import irille.Entity.RFQ.Enums.RFQConsultRecommend;
 import irille.Entity.RFQ.Enums.RFQConsultType;
 import irille.Entity.RFQ.Enums.RFQConsultVerifyStatus;
 import irille.Entity.RFQ.RFQConsult;
@@ -15,6 +16,7 @@ import irille.pub.bean.sql.SQL;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
+import irille.shop.plt.Plt;
 import irille.shop.plt.PltCountry;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
@@ -107,7 +109,8 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                         RFQConsult.T.VALID_DATE,//询盘过期时间
                         RFQConsult.T.STATUS,//询盘状态
                         RFQConsult.T.VERIFY_STATUS,//询盘审核状态
-                        RFQConsult.T.CREATE_TIME//发布时间
+                        RFQConsult.T.CREATE_TIME,//发布时间
+                        RFQConsult.T.RECOMMEND//是否推荐
                 )
                 .SELECT(UsrSupplier.T.PKEY, "supplierPkey")//询盘供应商主键
                 .SELECT(UsrSupplier.T.NAME, "supplierName")//询盘供应商名称
@@ -119,13 +122,15 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 .SELECT(PdtProduct.T.NAME, "productName")//询盘商品名称
                 .SELECT(UsrPurchase.T.PKEY, "purchasePkey")//询盘采购商主键
                 .SELECT(UsrPurchase.T.NAME, "purchaseName")//询盘采购商名称
-                .SELECT(PltCountry.T.PKEY, "countryPkey")//询盘国家主键
-                .SELECT(PltCountry.T.NAME, "countryName")//询盘国家名称
+                .SELECT(PltCountry.T.PKEY, "countryPkey")//采购商国家主键
+                .SELECT(PltCountry.T.NAME, "countryName")//采购商国家名称
+                .SELECT(PltCountry.T.NATIONAL_FLAG, "countryLogo")//采购商国家国旗
                 .FROM(RFQConsult.class)
                 .LEFT_JOIN(UsrPurchase.class, RFQConsult.T.PURCHASE_ID, UsrPurchase.T.PKEY)
+                .LEFT_JOIN(PltCountry.class, UsrPurchase.T.COUNTRY, PltCountry.T.PKEY)
                 .LEFT_JOIN(UsrSupplier.class, RFQConsult.T.SUPPLIER_ID, UsrSupplier.T.PKEY)
                 .LEFT_JOIN(UsrSupplierRole.class, UsrSupplier.T.ROLE, UsrSupplierRole.T.PKEY)
-                .LEFT_JOIN(PltCountry.class, RFQConsult.T.COUNTRY, PltCountry.T.PKEY)
+//                .LEFT_JOIN(PltCountry.class, RFQConsult.T.COUNTRY, PltCountry.T.PKEY)
                 .LEFT_JOIN(PdtProduct.class, RFQConsult.T.PRODUCT, PdtProduct.T.PKEY)
                 .LEFT_JOIN(PdtCat.class, PdtProduct.T.CATEGORY, PdtCat.T.PKEY);
     }
@@ -164,6 +169,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
             view.setCountry(new CountryView() {{
                 setPkey((Integer) map.get("countryPkey"));
                 setName((String) map.get("countryName"));
+                setNationalFlag((String) map.get("countryLogo"));
             }});
         }
         view.setQuantity((Integer) map.get(RFQConsult.T.QUANTITY.getFld().getCodeSqlField()));
@@ -174,6 +180,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         view.setStatus((Byte) map.get(RFQConsult.T.STATUS.getFld().getCodeSqlField()));
         view.setVerifyStatus((Byte) map.get(RFQConsult.T.VERIFY_STATUS.getFld().getCodeSqlField()));
         view.setCreateTime((Date) map.get(RFQConsult.T.CREATE_TIME.getFld().getCodeSqlField()));
+        view.setRecommend(map.get(RFQConsult.T.RECOMMEND.getFld().getCodeSqlField()) != null ? (Byte) map.get(RFQConsult.T.RECOMMEND.getFld().getCodeSqlField()) : RFQConsultRecommend.NOT_RECOMMENDED.getLine().getKey());
         return view;
     }
 
