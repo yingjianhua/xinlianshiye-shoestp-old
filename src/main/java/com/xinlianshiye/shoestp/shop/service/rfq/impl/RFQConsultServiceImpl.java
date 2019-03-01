@@ -243,13 +243,18 @@ public class RFQConsultServiceImpl implements RFQConsultService {
         view.setUserCountry((String) userMap.get("country"));
         view.setUserCountryImage((String) userMap.get(PltCountry.T.NATIONAL_FLAG.getFld().getCodeSqlField()));
         Map<String, Object> rfqMap = Query.sql(rfqSql).queryMap();
-        view.setPkey((Integer)rfqMap.get(RFQConsult.T.PKEY.getFld().getCodeSqlField()));
-        view.setTitle((String)rfqMap.get(RFQConsult.T.TITLE.getFld().getCodeSqlField()));
-        view.setTime((Date)rfqMap.get(RFQConsult.T.CREATE_TIME.getFld().getCodeSqlField()));
-        view.setRfqCountry((String)rfqMap.get(PltCountry.T.NAME.getFld().getCodeSqlField()));
-        view.setPdtImages((String)rfqMap.get(RFQConsult.T.IMAGE.getFld().getCodeSqlField()));
-        view.setPdtDetails((String)rfqMap.get(RFQConsult.T.CONTENT.getFld().getCodeSqlField()));
-        view.setQuantitys((Integer)rfqMap.get(RFQConsult.T.QUANTITY.getFld().getCodeSqlField()));
+        view.setPkey((Integer) rfqMap.get(RFQConsult.T.PKEY.getFld().getCodeSqlField()));
+        view.setTitle((String) rfqMap.get(RFQConsult.T.TITLE.getFld().getCodeSqlField()));
+        view.setTime((Date) rfqMap.get(RFQConsult.T.CREATE_TIME.getFld().getCodeSqlField()));
+        view.setRfqCountry((String) rfqMap.get(PltCountry.T.NAME.getFld().getCodeSqlField()));
+        view.setPdtImages((String) rfqMap.get(RFQConsult.T.IMAGE.getFld().getCodeSqlField()));
+        view.setPdtDetails((String) rfqMap.get(RFQConsult.T.CONTENT.getFld().getCodeSqlField()));
+        view.setQuantitys((Integer) rfqMap.get(RFQConsult.T.QUANTITY.getFld().getCodeSqlField()));
+        for (RFQConsultPayType value : RFQConsultPayType.values()) {
+            if (value.getLine().getKey() == (Byte) rfqMap.get(RFQConsult.T.PAY_TYPE.getFld().getCodeSqlField())) {
+                view.setPayMethod(value.getLine().getName());
+            }
+        }
         return view;
     }
 

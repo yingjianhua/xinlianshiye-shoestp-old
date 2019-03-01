@@ -124,4 +124,25 @@ public class RFQConsultServiceImpl implements RFQConsultService {
         return RFQConsultQuoteInfoView.Builder.toView(relation);
     }
 
+    @Override
+    public Page getRFQMsgList(RFQConsultView view, Integer start, Integer limit) {
+        Integer id = view.getPkey();
+        if (start == null) start = 0;
+        if (limit == null) limit = 3;
+        if (id == null) {
+            throw new WebMessageException(ReturnCode.valid_notnull, "请选择RFQ");
+        }
+        return rFQConsultDao.getRFQMsgList(id, start, limit);
+    }
+
+    @Override
+    public Page getMessage(Integer id, Integer start, Integer limit) {
+        if (start == null) start = 0;
+        if (limit == null) limit = 16;
+        if (id == null) {
+            throw new WebMessageException(ReturnCode.valid_notnull, "请选择报价");
+        }
+        return rFQConsultDao.getMessage(id,start,limit);
+    }
+
 }
