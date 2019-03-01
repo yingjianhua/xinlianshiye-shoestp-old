@@ -77,7 +77,7 @@ public class RFQConsultRelationDaoImpl implements RFQConsultRelationDao {
 	public List<RFQConsultRelation> findAllByConsult_PkeySupplier_Pkey(String consultPkeys, Integer supplierPkey) {
 		return Query.SELECT(RFQConsultRelation.class)
 				.WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supplierPkey)
-				.WHERE(RFQConsultRelation.T.PKEY, "in (" + Stream.of(consultPkeys.split(",")).map(i -> "?").collect(Collectors.joining(",")) + ")", Stream.of(consultPkeys.split(",")).map(Integer::new).toArray(Serializable[]::new))
+				.WHERE(RFQConsultRelation.T.CONSULT, "in (" + Stream.of(consultPkeys.split(",")).map(i -> "?").collect(Collectors.joining(",")) + ")", Stream.of(consultPkeys.split(",")).map(Integer::new).toArray(Serializable[]::new))
 				.queryList();
 	}
 
