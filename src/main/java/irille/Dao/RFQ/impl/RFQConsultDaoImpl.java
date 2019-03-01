@@ -597,24 +597,26 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
             }
             num++;
         }
-        List<Map<String, Object>> entitys = Query.sql(str).queryMaps();
-        for (Map<String, Object> m : entitys) {
-            if (m.get("msgContent") != null) {
-                RFQMessageView rfqMessageView = beans.get(m.get("relPkey"));
-                if (rfqMessageView != null) {
-                    RFQConsultMessageView view = new RFQConsultMessageView();
-                    view.setPkey((Integer) m.get("msgPkey"));
-                    view.setContent((String) m.get("msgContent"));
-                    view.setType((Byte) m.get("msgType"));
-                    view.setSendTime((Date) m.get("msgTime"));
-                    view.setRelation((Integer) m.get("relPkey"));
-                    view.setP2S((((Byte) m.get("msgPs")) == 1) ? true : false);
-                    if (rfqMessageView.getMessages() != null) {
-                        rfqMessageView.getMessages().add(view);
-                    } else {
-                        List<RFQConsultMessageView> views = new ArrayList<>();
-                        views.add(view);
-                        rfqMessageView.setMessages(views);
+        if (!("".equals(str))) {
+            List<Map<String, Object>> entitys = Query.sql(str).queryMaps();
+            for (Map<String, Object> m : entitys) {
+                if (m.get("msgContent") != null) {
+                    RFQMessageView rfqMessageView = beans.get(m.get("relPkey"));
+                    if (rfqMessageView != null) {
+                        RFQConsultMessageView view = new RFQConsultMessageView();
+                        view.setPkey((Integer) m.get("msgPkey"));
+                        view.setContent((String) m.get("msgContent"));
+                        view.setType((Byte) m.get("msgType"));
+                        view.setSendTime((Date) m.get("msgTime"));
+                        view.setRelation((Integer) m.get("relPkey"));
+                        view.setP2S((((Byte) m.get("msgPs")) == 1) ? true : false);
+                        if (rfqMessageView.getMessages() != null) {
+                            rfqMessageView.getMessages().add(view);
+                        } else {
+                            List<RFQConsultMessageView> views = new ArrayList<>();
+                            views.add(view);
+                            rfqMessageView.setMessages(views);
+                        }
                     }
                 }
             }
