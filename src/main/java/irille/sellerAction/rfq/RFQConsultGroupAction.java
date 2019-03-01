@@ -3,9 +3,9 @@ package irille.sellerAction.rfq;
 import java.io.IOException;
 
 import com.google.inject.Inject;
+import com.xinlianshiye.shoestp.seller.service.rfq.RFQConsultGroupService;
 
 import irille.Entity.RFQ.RFQConsultGroup;
-import irille.Service.Manage.RFQ.RFQConsultGroupService;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.rfq.inf.IRFQConsultGroupAction;
 import irille.sellerAction.rfq.view.RFQConsultGroupView;

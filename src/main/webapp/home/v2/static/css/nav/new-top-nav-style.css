@@ -7,10 +7,10 @@
   width: 100%;
   z-index: 999;
   border-bottom: 1px solid #ccc;
-  background: #f9f9f9; }
+  background: #fff; }
 
 #new-top-nav .el-menu--horizontal {
-  background: #f9f9f9; }
+  background: #fff; }
 
 .el-menu--horizontal {
   border-bottom-width: 0 !important; }
@@ -19,16 +19,20 @@
 #new-top-nav .el-menu--horizontal > .el-menu-item,
 #new-top-nav .el-menu--horizontal > .el-submenu .el-submenu__title {
   height: 32px;
-  line-height: 32px;
+  line-height: 30px;
   font-size: 14px;
   color: #000; }
-
+#new-top-nav .el-menu--horizontal > .el-menu-item.link-item{
+  color: #777;
+}
 /* 布局 - 文字左对齐 - 左侧不留白*/
 #new-top-nav .el-menu--horizontal > .el-menu-item,
 #new-top-nav .el-submenu__title {
-  padding: 0;
+  padding: 0 8px;
   margin-right: 32px; }
-
+#new-top-nav .el-menu--horizontal>.el-menu-item.is-active{
+  border-bottom-color: transparent;
+}
 #new-top-nav .el-menu--horizontal > .el-menu-item:first-child {
   margin-left: 0; }
 

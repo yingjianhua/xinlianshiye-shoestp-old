@@ -364,7 +364,7 @@ public class OdrOrderDAO {
             Integer purchase, Integer status, Integer start, Integer limit) {
         BeanQuery<OdrOrder> q =
                 irille.pub.bean.Query.SELECT(OdrOrder.class).WHERE(T.PURCHASE, "=?", purchase);
-        if (status.intValue() == -1 || status.equals(Odr.OdrState.DELETED.getLine().getKey()))
+        if (status.intValue() == -1 || status==Byte.valueOf(Odr.OdrState.DELETED.getLine().getKey()).intValue())
             q.WHERE(T.STATE, "!=?", Odr.OdrState.DELETED.getLine().getKey());
         else q.WHERE(T.STATE, "=?", status);
         int totalCount = q.queryCount();
@@ -1357,7 +1357,7 @@ public class OdrOrderDAO {
                         }
                     }
                 }
-                typeSet.add(Integer.valueOf(Integer.valueOf(cart.gtSpec().gtProduct().getProductType())));
+                typeSet.add(Integer.valueOf(cart.gtSpec().gtProduct().getProductType()));
             }
         }
 
@@ -1682,7 +1682,7 @@ public class OdrOrderDAO {
                             line.getProduct());
             String specId = "";
             for (PdtSpec spec : specList) {
-                if (specId == "") {
+                if (specId.equals("")) {
                     specId += spec.getPkey();
                 } else {
                     specId += "," + spec.getPkey();
@@ -1763,9 +1763,12 @@ public class OdrOrderDAO {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    BigDecimal specTotalPrice = new BigDecimal(qty).multiply(spec.getPrice());
-                    setAllQty(getAllQty() + qty);
-                    setTotalAmt(getTotalAmt().add(specTotalPrice));
+                    BigDecimal specTotalPrice = BigDecimal.ZERO;
+                    if (qty != null && spec.getPrice() != null) {
+                        specTotalPrice = new BigDecimal(qty).multiply(spec.getPrice());
+                        setAllQty(getAllQty() + qty);
+                        setTotalAmt(getTotalAmt().add(specTotalPrice));
+                    }
                     // 获得供应商
                     UsrSupplier supplier =
                             translateUtil.getAutoTranslate(product.gtSupplier(), HomeAction.curLanguage());

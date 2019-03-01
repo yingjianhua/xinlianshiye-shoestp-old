@@ -1,16 +1,35 @@
 package irille.Service.Manage.O2O.Imp;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.google.inject.Inject;
+
+import irille.Dao.PdtCatDao;
 import irille.Dao.O2O.O2OActivityDao;
 import irille.Dao.O2O.O2OProductDao;
-import irille.Dao.PdtCatDao;
-import irille.Entity.O2O.Enums.O2O_ActivityStatus;
-import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
-import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_Activity;
 import irille.Entity.O2O.O2O_JoinInfo;
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Entity.O2O.O2O_Product;
+import irille.Entity.O2O.Enums.O2O_ActivityStatus;
+import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
+import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Service.Manage.O2O.O2OActivityService;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
@@ -23,23 +42,11 @@ import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrSupplier;
+import irille.view.Page;
 import irille.view.O2O.O2OActivityView;
 import irille.view.O2O.O2OProductView;
 import irille.view.O2O.PdtSearchView;
-import irille.view.Page;
 import irille.view.se.sendEmail;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class O2OActivityServiceImpl implements O2OActivityService {
 
@@ -148,7 +155,7 @@ public class O2OActivityServiceImpl implements O2OActivityService {
         if (o2OProductDao.countByActivity(pkey) > 0) {
             throw new WebMessageException(ReturnCode.service_unknow, "已有商品报名参加活动,不能关闭");
         }
-        bean.stStatus(O2O_ActivityStatus.END);
+        bean.stStatus(O2O_ActivityStatus.CLOSE);
         bean.upd();
     }
 
@@ -163,6 +170,8 @@ public class O2OActivityServiceImpl implements O2OActivityService {
             activity = o2OActivityDao.findById(view.getPkey());
             if (activity.getStatus().equals(O2O_ActivityStatus.ACTIVITY.getLine().getKey()))
                 throw new WebMessageException(ReturnCode.failure, "无法编辑进行中的活动");
+            if (activity.getStatus().equals(O2O_ActivityStatus.CLOSE.getLine().getKey()))
+                throw new WebMessageException(ReturnCode.failure, "无法编辑已关闭的活动");
         } else {
             activity = new O2O_Activity();
             Date now = new Date();
@@ -178,8 +187,8 @@ public class O2OActivityServiceImpl implements O2OActivityService {
         activity.setAddress(view.getAddr());
         activity.setActivityCat(view.getActivityCat());
         activity.setRules(view.getRules());
-        activity.setStartDate(view.getStartDate());
-        activity.setEndDate(view.getEndDate());
+        activity.setStartDate(new Date(view.getStartTime()));
+        activity.setEndDate(new Date(view.getEndTime()));
         activity.setUpdatedTime(new Date());
         if (null != view.getPkey()) {
             activity.upd();
@@ -374,14 +383,20 @@ public class O2OActivityServiceImpl implements O2OActivityService {
             o2OProduct.setMessage("拒绝申请下架，拒绝理由：" + reason);
             email.setSubject("【鞋贸港】O2O商品下架失败");
             email.setContent("您申请商品编号为【" + pdt.getCode() + "】的商品拒绝下架，拒绝理由：" + reason);
-
+            o2OProduct.upd();
         } else if (status.equals(O2O_ProductStatus.PASS)) {
-            o2OProduct.setMessage("下架成功");
+        	o2OProduct.del();
+        	List<O2O_Product> o2oProds = o2OProductDao.findAllByProd(o2OProduct.getProductId());
+        	if(!(null != o2oProds && o2oProds.size()>0)) {
+        		PdtProduct product = o2OProduct.gtProductId();
+        		product.setProductType(Pdt.OProductType.GENERAL.getLine().getKey());
+        		product.upd();
+        	}
             email.setSubject("【鞋贸港】O2O商品下架成功");
             pdt.stProductType(Pdt.OProductType.GENERAL);
             email.setContent("您申请商品编号为【" + pdt.getCode() + "】的商品下架成功");
         }
-        o2OProduct.upd();
+        
         try {
             EmailUtils.sendMail(email);
         } catch (IOException e) {
@@ -443,8 +458,8 @@ public class O2OActivityServiceImpl implements O2OActivityService {
      * @author lijie@shoestp.cn
      */
     @Override
-    public Page priveteList(int start, int limit, Integer status, Integer verify_status, String cat, String supName) {
-        List<Map<String, Object>> maps = o2OActivityDao.privetePdtList(start, limit, status, verify_status, cat, supName);
+    public Page priveteList(int start, int limit, Integer status, Integer verify_status, String cat, String supName,String pdtName) {
+        List<Map<String, Object>> maps = o2OActivityDao.privetePdtList(start, limit, status, verify_status, cat, supName,pdtName);
         List<O2OProductView> result = new ArrayList<>();
         for (Map<String, Object> map : maps) {
             O2OProductView o2OProductView = new O2OProductView();

@@ -210,6 +210,7 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
 	// ON:1,上架
 	// OFF:0,下架
 	// DELETE:2,删除
+	// MERCHANTDEL:3,商家删除
   private Byte _soldInTime;	// 定时上架 <OYn>  BYTE
 	// YES:1,是
 	// NO:0,否
@@ -226,6 +227,8 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
 	// GENERAL:0,普通产品
 	// GROUP:1,联合采购产品
 	// GATHER:2,采集商品
+	// PrivateExpo:3,私人展会商品
+	// O2O:4,O2O商品
   private Byte _isNew;	// 新品 <OYn>  BYTE
 	// YES:1,是
 	// NO:0,否

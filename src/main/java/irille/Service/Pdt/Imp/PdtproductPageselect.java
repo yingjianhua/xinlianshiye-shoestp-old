@@ -317,6 +317,7 @@ public class PdtproductPageselect {
                 productInfoView.setAuthTime(getAuthTime(supplier));
             }
             productInfoView.setPdtId(pdtProduct.getPkey());
+            productInfoView.setType(pdtProduct.getProductType());
             productInfoView.setMin_oq(pdtProduct.getMinOq());
             productInfoView.setMax_oq(pdtProduct.getMaxOq());
             productInfoView.setItemCode(pdtProduct.getCode());

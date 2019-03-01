@@ -23,7 +23,7 @@ public class RFQConsultQuoteInfoView implements BaseView {
     private int min_price;   //价格区间
     private int max_price;   //价格区间
     private int currency;   //币种
-	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss",timezone = "GMT+8")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date validity;  //有效值至
     private int payType;  //支付方式外键
     private int transitType;//运输方式 枚举

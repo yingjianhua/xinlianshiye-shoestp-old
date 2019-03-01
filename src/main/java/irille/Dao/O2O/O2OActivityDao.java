@@ -1,24 +1,28 @@
 package irille.Dao.O2O;
 
-import irille.Entity.O2O.Enums.O2O_ActivityStatus;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import irille.Entity.O2O.O2O_Activity;
 import irille.Entity.O2O.O2O_Activity.T;
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
+import irille.Entity.O2O.Enums.O2O_ActivityStatus;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
+import irille.pub.bean.query.SqlQuery;
+import irille.pub.bean.sql.SQL;
+import irille.pub.svr.DbPool;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrProductCategory;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplierRole;
-import irille.view.O2O.O2OActivityView;
 import irille.view.Page;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import irille.view.O2O.O2OActivityView;
 
 /**
  * Created by IntelliJ IDEA. User: Lijie<HelloBox@outlook.com> Date: 2019/1/26
@@ -69,7 +73,7 @@ public class O2OActivityDao {
     }
 
 
-    public List<Map<String, Object>> privetePdtList(int start, int limit, Integer status, Integer verify_status, String cat, String supName) {
+    public List<Map<String, Object>> privetePdtList(int start, int limit, Integer status, Integer verify_status, String cat, String supName,String pdtName) {
         BeanQuery query = Query.SELECT(
                 PdtProduct.T.PKEY,
                 PdtProduct.T.NAME,
@@ -101,6 +105,7 @@ public class O2OActivityDao {
                 .WHERE(status != null, O2O_PrivateExpoPdt.T.STATUS, "=?", status)
                 .WHERE(verify_status != null, O2O_PrivateExpoPdt.T.VERIFY_STATUS, "=?", verify_status)
                 .WHERE(cat != null, PdtCat.T.NAME, "like ?", "%" + cat + "%")
+                .WHERE(pdtName != null&&pdtName.length()>0, PdtProduct.T.NAME, "like ?", "%" + pdtName + "%")
                 .limit(start, limit);
         return query.queryMaps();
     }
@@ -111,5 +116,32 @@ public class O2OActivityDao {
         )
                 .FROM(O2O_PrivateExpoPdt.class);
         return query.queryCount();
+    }
+    
+    public List<O2O_Activity> findAllByStatusExceptEnd(){
+    	SQL sql = new SQL();
+    	sql.SELECT(O2O_Activity.class).FROM(O2O_Activity.class)
+    	.WHERE(O2O_Activity.T.STATUS, " <>? ",O2O_ActivityStatus.END.getLine().getKey())
+    	.WHERE(O2O_Activity.T.STATUS, " <>? ",O2O_ActivityStatus.CLOSE.getLine().getKey());
+    	return Query.sql(sql).queryList(O2O_Activity.class);
+    }
+    
+    public void upd(List<O2O_Activity> activities) {
+    	for(int i=0;i<activities.size();i++) {
+    		O2O_Activity a = activities.get(i);
+    		String sql = " UPDATE " + O2O_Activity.TB.getCodeSqlTb() + " SET " + O2O_Activity.T.STATUS.getFld().getCodeSqlField() + " = " + a.getStatus() + " WHERE " + O2O_Activity.T.PKEY.getFld().getCodeSqlField() + " = " + a.getPkey() + ";";
+        	try {
+        		System.out.println(new SqlQuery(sql).executeUpdate());
+        	}catch(Exception e) {
+        		e.printStackTrace();
+        	}
+    		
+    	}
+    	
+    	try {
+			DbPool.getInstance().getConn().commit();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
     }
 }

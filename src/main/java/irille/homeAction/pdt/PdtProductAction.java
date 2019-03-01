@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultMessageService;
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.Service.Pdt.IPdtProductService;
 import irille.Service.Pdt.Imp.PdtproductPageselect;
@@ -43,15 +44,20 @@ import java.util.List;
 import java.util.Map;
 
 
+@Setter
+@Getter
 public class PdtProductAction extends HomeAction<PdtProduct> {
 
+	private static final long serialVersionUID = 1L;
 
-    @Inject
+	@Inject
     private PdtproductPageselect pdtpageSelect = new PdtproductPageselect();
     private static final OdrOrderDAO.Query Odrderquery = new OdrOrderDAO.Query();
     private static final PdtCommentDAO.pageSelect commentPageSelect = new PdtCommentDAO.pageSelect();
     @Inject
     private ObjectMapper objectMapper;
+    @Inject
+    private RFQConsultMessageService rFQConsultMessageService;
 
     @Inject
     private IPdtProductService pdtProduct;
@@ -103,7 +109,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
         setResult("/home/products.jsp");
         return HomeAction.TRENDS;
     }
-    
+
     /***
      * 转发页面到产品列表
      * O2O商品列表页
@@ -116,12 +122,12 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
     }
 
     private boolean _order;
-    private String _price;
+    private String price;
     @Setter
     private String[] orderfld;
-    private int _cated = -1;
-    private String _where;
-    private String _spec;
+    private int cated = -1;
+    private String where;
+    private String spec;
     private String _onlyFld;
 
     @Getter
@@ -137,22 +143,6 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
         return this;
     }
 
-    public String getSpec() {
-        return _spec;
-    }
-
-    public void setSpec(String _spec) {
-        this._spec = _spec;
-    }
-
-    public String getWhere() {
-        return _where;
-    }
-
-    public void setWhere(String where) {
-        this._where = where;
-    }
-
     public boolean isOrder() {
         return _order;
     }
@@ -161,66 +151,30 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
         this._order = order;
     }
 
-    public String getPrice() {
-        return _price;
-    }
+    private String keyword;
 
-    public void setPrice(String price) {
-        this._price = price;
-    }
-
-
-    public int getCated() {
-        return _cated;
-    }
-
-    public void setCated(int cated) {
-        this._cated = cated;
-    }
-
-    private String _keyword;
-
-    public String getKeyword() {
-        return _keyword;
-    }
-
-    public void setKeyword(String keyword) {
-        this._keyword = keyword;
-    }
-
-
-    @Getter
-    @Setter
     private int searchtype;
-    @Getter
-    @Setter
+
     private String pName;
-    @Getter
-    @Setter
+
     private Integer cate;
-    @Getter
-    @Setter
+
     private Integer level;
-    @Getter
-    @Setter
+
     private String export;
-    @Getter
-    @Setter
+
     private Integer mOrder;
-    @Getter
-    @Setter
+
     private BigDecimal min;
-    @Getter
-    @Setter
+
     private BigDecimal max;
-    @Getter
-    @Setter
+
     private Integer lose;
-    @Getter
-    @Setter
+
     private Integer IsO2o;
-    @Getter
-    @Setter
+
+    private Integer supplier;
+
     private String o2oAddress;
 
     /***
@@ -247,7 +201,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
                 setStart(0);
             if (getLimit() == 0 || getLimit() < 0)
                 setLimit(10);
-            write(pdtProduct.searchPdt(orderfld,purchase, curLanguage, lose, pName, cate, level, export, mOrder, min, max, IsO2o, o2oAddress, getStart(), getLimit()));
+            write(pdtProduct.searchPdt(orderfld, purchase, supplier,curLanguage, lose, pName, cate, level, export, mOrder, min, max, IsO2o, o2oAddress, getStart(), getLimit()));
         } else {
             write(objectMapper.writeValueAsString(pdtProduct
                     .getProductListByCategory(iduPage, orderfld, isOrder(), getCated(), getSpec(),
@@ -287,8 +241,6 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
      * @return
      * @date 2018/7/24 15:49
      */
-    @Getter
-    @Setter
     private Integer v;
 
     public void gtNewProducts() throws Exception {
@@ -304,20 +256,11 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
         }
     }
 
-
     private SupplierView supView;
 
-    public SupplierView getSupView() {
-        return supView;
-    }
-
-    public void setSupView(SupplierView supView) {
-        this.supView = supView;
-    }
-
-    @Getter
-    @Setter
     private SEOView seoView;
+
+    private String expoKey;//私人展厅产品的密钥, 没有密钥或者密钥过期都不能进入页面
 
     /**
      * @Description: 商品详情页 Jsp
@@ -337,6 +280,15 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
             if (infoView == null) {
                 throw LOG.err("not exists", "产品id[{0}]不存在", getId());
             }
+            if(infoView.getType() != null && infoView.getType().equals(Pdt.OProductType.PrivateExpo.getLine().getKey())) {
+            	//若产品类型为私人展厅产品, 需要判断链接密钥有效期 只有正确的密钥能获取进入页面,否则返回404页面
+            	Integer expoProductPkey;
+            	if(expoKey == null || (expoProductPkey = rFQConsultMessageService.checkPrivateExpoKey(expoKey)) == null || !Long.valueOf(expoProductPkey.toString()).equals(infoView.getPdtId())) {
+            		setResult("404.jsp");
+                    return HomeAction.TRENDS;
+            	}
+            }
+
             if (null != infoView.getMap())
                 setMap(infoView.getMap());
             seoView = new SEOView();
@@ -358,8 +310,6 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
     /**
      * ===============O2O INFO START===============
      **/
-    @Getter
-    @Setter
     private O2OMapView map;
 
     /**===============O2O INFO END===============**/
@@ -456,7 +406,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
                     List<PdtAttrLine> pdtAttrLineList = Idu
                             .getLines(PdtAttrLine.T.PKEY.getFld(), pdtAttrlinepk);
                     for (PdtAttrLine pdtAttrLine : pdtAttrLineList) {
-                        if (pdtAttr.getPkey() == pdtAttrLine.getMain()) {
+                        if (pdtAttr.getPkey().equals(pdtAttrLine.getMain())) {
                             attrLineJson = crtJsonByBean(pdtAttrLine);
                             attrLineJson.put(PdtAttrLine.T.NAME.getFld().getCode(), pdtAttrLine.getName());
                             attrLineJson.put(PdtAttrLine.T.PKEY.getFld().getCode(), pdtAttrLine.getPkey());
@@ -486,38 +436,10 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
      * @author lijie@shoestp.cn
      * @date 2018/8/10 18:46
      */
-    private String _comment;
+    private String comment;
     private String _images;
-    private String _satisfaction;
-    private PdtCommentViewPageView _commentViewPageView;
-
-    public PdtCommentViewPageView getCommentViewPageView() {
-        return _commentViewPageView;
-    }
-
-    public PdtProductAction setCommentViewPageView(PdtCommentViewPageView _CommentViewPageView) {
-        this._commentViewPageView = _CommentViewPageView;
-        return this;
-    }
-
-
-    public String getComment() {
-        return _comment;
-    }
-
-    public String getSatisfaction() {
-        return _satisfaction;
-    }
-
-    public PdtProductAction setSatisfaction(String _satisfaction) {
-        this._satisfaction = _satisfaction;
-        return this;
-    }
-
-
-    public void setComment(String comment) {
-        this._comment = comment;
-    }
+    private String satisfaction;
+    private PdtCommentViewPageView commentViewPageView;
 
     public String getImages() {
         return _images;
@@ -620,14 +542,6 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
 
     private Page<CommentView> commentView;
 
-    public Page<CommentView> getCommentView() {
-        return commentView;
-    }
-
-    public void setCommentView(Page<CommentView> commentView) {
-        this.commentView = commentView;
-    }
-
     /**
      * 查询当前采购商评论的所有商品
      */
@@ -682,11 +596,8 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
         }
     }
 
-    @Setter
-    @Getter
     private String sort;
-    @Setter
-    @Getter
+
     private Integer type;
 
     /**
@@ -724,25 +635,9 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
         writerOrExport(json);
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-
     private Integer rankingBasis;
+
     private Integer basis = 0;
-
-    public Integer getRankingBasis() {
-        return rankingBasis;
-    }
-
-    public void setRankingBasis(Integer rankingBasis) {
-        this.rankingBasis = rankingBasis;
-    }
 
     public void getProductBySup() throws Exception {
         setStart(getPage() <= 1 ? 0 : (getPage() - 1) * getLimit());
@@ -753,14 +648,5 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
         write(new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL)
                 .writeValueAsString(map));
     }
-
-    public Integer getBasis() {
-        return basis;
-    }
-
-    public void setBasis(Integer basis) {
-        this.basis = basis;
-    }
-
 
 }

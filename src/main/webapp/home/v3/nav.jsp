@@ -11,10 +11,31 @@
             <!-- 顶部左侧 - 4个下拉选 -->
             <el-menu :default-active="activeTopNavIndex" class="el-menu-demo" mode="horizontal"
                      @select="handleTopNavSelect">
+                <el-menu-item index="11" class="link-item">
+                    <a href="/home/usr_UsrPurchase" target="_blank">
+                        <s:text name="Home"/>
+                    </a>
+                </el-menu-item>
+                <el-menu-item index="2" class="link-item">
+                    <a href="/home/pdt_PdtProduct" target="_blank">
+                        <s:text name="Products"/>
+                    </a>
+                </el-menu-item>
+                <el-menu-item index="3" class="link-item">
+                    <a href="/home/pdt_PdtProduct_o2oList" target="_blank">
+                        <s:text name="Romanian Office Exhibition"/>
+                    </a>
+                </el-menu-item>
+                <el-menu-item index="4" class="link-item">
+                    <a href="/html/SVS/svs.jsp" target="_blank">
+                        <s:text name="SVS Suppliers"/>
+                    </a>
+                </el-menu-item>
                 <%--<el-submenu index="1" class="no-arrow new-top-nav-item">--%>
                 <%--<template slot="title">--%>
                 <%--<s:text name="OEM"/>--%>
                 <%--</template>--%>
+                <%--</el-submenu>--%>
                 <%--<el-menu-item index="1-1">--%>
                 <%--<a href="/home/pdt_PdtProduct?cated=373">--%>
                 <%--<s:text name="Men"/>--%>
@@ -156,10 +177,10 @@
         </div>
     </div>
 </div>
-<script src="/home/v2/static/lang/element/en.js"></script>
+<%--<script src="/home/v2/static/lang/element/en.js"></script>--%>
 <script>
 
-    ELEMENT.locale(ELEMENT.lang.en)
+    // ELEMENT.locale(ELEMENT.lang.en)
     var sysConfig = {
         baseImageUrl: "https://image.shoestp.com",
         currency_symbol: "$",
@@ -170,28 +191,28 @@
     }
     var nav = new Vue({
         el: "#nav",
-        data:{
-                activeTopNavIndex: 1, //默认选中的web-top澳航栏
-                topSearchBarCategory: 0, //搜索 分类前的下拉选
-                language: "en",
-                languageList: [],
-                sysConfig: {
-                    baseImageUrl: "https://image.shoestp.com",
-                    currency_symbol: "$",
-                    current_language: "en",
-                },
-                search: {
-                    keyword: '',
-                    typeList: [
-                        {
-                            label: "Product",
-                            value: 0
-                        },
-                        {
-                            label: "Suppiler",
-                            value: 1
-                        }
-                    ]
+        data: {
+            activeTopNavIndex: 1, //默认选中的web-top澳航栏
+            topSearchBarCategory: 0, //搜索 分类前的下拉选
+            language: "en",
+            languageList: [],
+            sysConfig: {
+                baseImageUrl: "https://image.shoestp.com",
+                currency_symbol: "$",
+                current_language: "en",
+            },
+            search: {
+                keyword: '',
+                typeList: [
+                    {
+                        label: "Product",
+                        value: 0
+                    },
+                    {
+                        label: "Suppiler",
+                        value: 1
+                    }
+                ]
             }
         }, computed: {
             _language: function () {
@@ -223,7 +244,7 @@
 
         }, mounted() {
             var self = this
-            Vue.set(this.search,'keyword',unescape(decodeURIComponent(getParams('Keyword',getParams('keyWord',getParams('keyword',''))))))
+            Vue.set(this.search, 'keyword', unescape(decodeURIComponent(getParams('Keyword', getParams('keyWord', getParams('keyword', ''))))))
             axios({
                 url: "/home/plt_PltConfig_getSysConfig"
             }).then(function (res) {

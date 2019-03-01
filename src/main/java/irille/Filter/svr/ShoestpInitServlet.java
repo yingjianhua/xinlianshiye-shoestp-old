@@ -2,8 +2,7 @@ package irille.Filter.svr;
 
 import irille.action.sys.SysMenuAction;
 import irille.pub.ClassTools;
-import irille.pub.Task.TaskUtil;
-import irille.pub.Task.Tasks.GetGooleAnalyticsTask;
+import irille.pub.bean.BeanBase;
 import irille.pub.bean.PackageBase;
 import irille.pub.bean.PackageBase.TbMsg;
 import irille.pub.inf.IDb;
@@ -15,7 +14,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
-import java.util.concurrent.TimeUnit;
 
 public class ShoestpInitServlet extends HttpServlet {
 
@@ -34,12 +32,14 @@ public class ShoestpInitServlet extends HttpServlet {
 
         logger.info("初始化所有安装模块下的菜单...");
         SysMenuAction.initMenus();
-
+        logger.info("设置数据库模式");
+        //设置数据库Mode
+        BeanBase.executeUpdate("SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY',''));");
         logger.info("初始化数据...");
         Plt_ConfPackage.INST.install();
-        logger.info("初始化计划任务...");
-        TaskUtil taskUtil = new TaskUtil();
-        taskUtil.addTask(new GetGooleAnalyticsTask(), 1L, TimeUnit.DAYS);
+//        logger.info("初始化计划任务...");
+//        TaskUtil taskUtil = new TaskUtil();
+//        taskUtil.addTask(new GetGooleAnalyticsTask(), 1L, TimeUnit.DAYS);
 
     }
 
