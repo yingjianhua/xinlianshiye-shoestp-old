@@ -11,7 +11,7 @@
 <jsp:include page="/home/v3/nav.jsp"></jsp:include>
 <div id="linExhibitionLasVages">
     <index-top></index-top>
-    <div class="lasvagesbannercon">
+    <div class="lasvagesbannercon" style="padding-top: 11px;">
         <img class='lasvagesbanner' src="/html/exhibition/images/bannerlasvages.png" alt="">
     </div>
     <div class="lasvagesdetailconout">
