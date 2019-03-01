@@ -43,6 +43,14 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     APPR_BY(SYS.APPR_BY_NULL),       //createBy liyichao	审核人
     APPR_TIME(SYS.APPR_DATE_TIME__NULL), //createBy liyichao	审核时间
     /**
+     * 3.1.0新增字段
+     */
+    ENGLISH_NAME(SYS.STR__100_NULL, "英文名称"),
+    ANNUAL_PRODUCTION(SYS.STR__100_NULL, "年产量"),
+    POSTCODE(SYS.STR__20_NULL, "邮编"),
+    TARGETED_MARKET(SYS.MUILTI_LANGUAGE_NULL, "目标市场"),
+    CONTACT_EMAIL(SYS.STR__100, "联系人邮箱"),
+    /**
      * 公司信息
      */
     NAME(SYS.NAME__100, "名称"), // 名称
@@ -73,8 +81,8 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     FAX(SYS.STR__20_NULL, "传真"),//传真
     QQ(SYS.QQ),//QQ
     CERT_PHOTO(SYS.STR__200_NULL, "资质证书"),//资质证书
-    ID_CARD_FRONT_PHOTO(SYS.STR__200_NULL, "身份证正面"),//身份证正面
-    ID_CARD_BACK_PHOTO(SYS.STR__200_NULL, "身份证反面"),//身份证反面
+    ID_CARD_FRONT_PHOTO(SYS.STR__200_NULL, "法人身份证正面"),//实际使用（正反面图片）
+    ID_CARD_BACK_PHOTO(SYS.STR__200_NULL, "法人身份证反面"),//身份证反面
     COOP_CERT_PHOTO(SYS.STR__200_NULL, "合作凭证"),//合作凭证
     TAXPAYER_TYPE(SYS.STR__100_NULL, "纳税人类型"),
     ID_CARD(SYS.STR__50_NULL, "法人身份证号码"),//法人身份证号码
@@ -89,7 +97,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     BANK_BRANCH(SYS.STR__100_NULL, "银行开户行"),
     BANK_COUNTRY(PltCountry.fldOutKey()),//,"开户行国家"
     BANK_PROVINCE(PltProvince.fldOutKey()),//"开户行省份"
-    CONTACTS_ID_CARD_FRONT_PHOTO(SYS.STR__200_NULL, "运营负责人身份证正面"),
+    CONTACTS_ID_CARD_FRONT_PHOTO(SYS.STR__200_NULL, "运营负责人身份证正面"), //实际使用（正反面图片）
     CONTACTS_ID_CARD_BACK_PHOTO(SYS.STR__200_NULL, "运营负责人身份证反面"),
 
     /**
@@ -214,6 +222,11 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   // APPR:1,已审核
   private Integer _apprBy;  // 审核员 <表主键:SysUser>  INT<null>
   private Date _apprTime;  // 审核时间  TIME<null>
+  private String _englishName;  // 名称  STR(100)
+  private String _annualProduction;  // 年产量  STR(100)
+  private String _postcode;  // 邮编  STR(100)
+  private String _targetedMarket;  // 目标市场  STR(100)
+  private String _contactEmail;  // 联系人邮箱  STR(100)
   private String _name;  // 名称  STR(100)
   private String _registeredCapital;  // 注册资金  STR(100)
   private Integer _category;  // 供应商分类 <表主键:UsrSupplierCategory>  INT
@@ -331,6 +344,11 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     _status = OStatus.DEFAULT.getLine().getKey();  // 状态 <OStatus>  BYTE
     _apprBy = null;  // 审核员 <表主键:SysUser>  INT
     _apprTime = null;  // 审核时间  TIME
+    _englishName = null;
+    _annualProduction = null;
+    _postcode = null;
+    _targetedMarket = null;
+    _contactEmail = null;
     _name = null;  // 名称  STR(100)
     _registeredCapital = null;  // 注册资金  STR(100)
     _category = null;  // 供应商分类 <表主键:UsrSupplierCategory>  INT
@@ -523,6 +541,36 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
 
   public void setApprTime(Date apprTime) {
     _apprTime = apprTime;
+  }
+
+  public String getEnglishName() { return _englishName;}
+
+  public void setEnglishName(String englishName) {
+    _englishName = englishName;
+  }
+
+  public String getAnnualProduction() { return _annualProduction;}
+
+  public void setAnnualProduction(String annualProduction) {
+    _annualProduction = annualProduction;
+  }
+
+  public String getPostcode() { return _postcode;}
+
+  public void setPostcode(String postcode) {
+    _postcode = postcode;
+  }
+
+  public String getTargetedMarket() { return _targetedMarket;}
+
+  public void setTargetedMarket(String targetedMarket) {
+    _targetedMarket = targetedMarket;
+  }
+
+  public String getContactEmail() { return _contactEmail;}
+
+  public void setContactEmail(String contactEmail) {
+    _contactEmail = contactEmail;
   }
 
   public String getName() {

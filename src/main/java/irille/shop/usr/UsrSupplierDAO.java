@@ -833,45 +833,44 @@ public class UsrSupplierDAO {
 
   /**
    * 更新供应商信息
-   *
-   * @author liyichao
+   * @author: lingjian
+   * @Date: 2019/3/1 16:21
    */
   public static UsrSupplier updInfo(UsrSupplier supplier) {
     UsrSupplier model = BeanBase.load(UsrSupplier.class, supplier.getPkey());
     PropertyUtils.copyProperties(
         model,
         supplier,
+        T.SHOW_NAME, // 公司名称
+        T.ENGLISH_NAME, // 英文名称
+        T.COMPANY_TYPE, // 公司类型 多国语言
         T.COMPANY_NATURE, // 企业性质 多国语言
-        T.COMPANY_TYPE, // 企业类型 多国语言
-        T.CATEGORY, // 供应商分类
-        T.WEB_SITE, // 网址
+        T.COMPANY_ESTABLISH_TIME, //企业成立时间
+        T.WEB_SITE, // 公司官网网站地址
+        T.COMPANY_ADDR, // 公司详细地址
+        T.ANNUAL_PRODUCTION, // 年产量
+        T.TELEPHONE, // 公司电话
         T.FAX, // 传真
-        T.OPERATION_TERM, // 业务期限
-        T.MAIN_SALES_AREA, // 主销售区 多国语言
-        T.MAIN_PROD, // 主要产品 多国语言
-        T.PROD_PATTERN, // 生产模式 多国语言
-        T.DES, // 备注
-        T.CREDIT_CODE, // 信用代码
-        T.QQ, // QQ
+        T.POSTCODE, // 邮编
+        T.TARGETED_MARKET, // 目标市场
+        T.PROD_PATTERN, // 生产模式
+        T.CREDIT_CODE, // 统一社会信用代码
+        T.REGISTERED_CAPITAL, // 注册资本
+        T.ENTITY, // 法定代表人
+        T.BUSINESS_LICENSE_IS_SECULAR, // 营业执照是否长期
+        T.BUSINESS_LICENSE_BEGIN_TIME, // 营业执照开始时间
+        T.BUSINESS_LICENSE_END_TIME, // 营业执照结束时间
         T.TAXPAYER_TYPE, // 纳税人类型
-        T.HEAD_PIC, // 头像
         T.CONTACTS, // 联系人
-        T.DEPARTMENT, // Department 多国语言
-        T.JOB_TITLE, // Job_Title 多国语言
-        T.PHONE, // 手机 必填重要！新的询盘会通知到这里！
-        T.SETTLEMENT_BANK, // 结算开户行
-        T.BANK_ACCOUNT, // 银行账号
-        T.BANK_BRANCH, // 银行开户行
-        T.BANK_COUNTRY, // ,"开户行国家"
-        T.BANK_PROVINCE, // "开户行省份"
-        T.SHOW_NAME, // 网站显示名称
-        T.SEO_TITLE, // 客人能通过这些字搜索到店铺，多个关键字用空格分开
-        T.SEO_CONTENT, // 客人能通过这些字描述决定进不进店，多个描述字用空格分开
-        T.COOP_CERT_PHOTO, // 合作凭证
-        T.TRACE_CODE, // 跟踪代码
-        T.WEB_SIZE_TITLE, // 自定义链接名称
-        T.TONGJI_URL, // 第三方统计 地址
-        T.TONGJI_PWD // 第三方统计 密码
+        T.DEPARTMENT, // 联系人部门
+        T.JOB_TITLE, // 联系人职称
+        T.PHONE, // 手机
+        T.CONTACT_EMAIL, // 联系人邮箱
+        T.CERT_PHOTO, // 营业执照副本复印件
+        T.ID_CARD_FRONT_PHOTO, // 法人代表身份证复印件
+        T.ID_CARD, // 法人代表身份证号码
+        T.CONTACTS_ID_CARD_FRONT_PHOTO, // 运营人员身份证复印件
+        T.OPERATE_ID_CARD // 运营人员身份证号码
         );
     translateUtil.autoTranslate(model, true).upd();
     return model;
@@ -888,7 +887,8 @@ public class UsrSupplierDAO {
 
     /** 根据pkey获取商家信息 id => 供应商id type = 1 获取商家首页信息 type = 2 获取商家产品页信息 type = 3&4 获取商家公司页或者联系页信息 */
     public static SupplierView getSupView(
-        FldLanguage.Language language, Serializable id, Integer type) {
+            FldLanguage.Language language, Serializable id, Integer type) {
+
       UsrSupplier supplier =
           translateUtil.getAutoTranslate(BeanBase.load(UsrSupplier.class, id), language);
       SupplierView view = new SupplierView();
@@ -911,6 +911,7 @@ public class UsrSupplierDAO {
       view.setImList(UsrSupImDAO.getEnabledImSetting(supplier.getPkey())); // 店铺内聊天插件
       view.setTraceCode(supplier.getTraceCode()); // 跟踪代码 STR(100)<null>
       view.setWebSizeTitle(supplier.getWebSizeTitle()); // 跟踪代码 STR(100)<null>
+
       switch (type) {
         case 1: // 首页
           view.setHomePageOn(supplier.getHomePageOn()); // 公司是否启用首页个性化装修
@@ -965,6 +966,7 @@ public class UsrSupplierDAO {
           view.setContactPageDiy(supplier.getContactPageDiy()); // 联系页个性化装修
           break;
       }
+
       return view;
     }
   }
