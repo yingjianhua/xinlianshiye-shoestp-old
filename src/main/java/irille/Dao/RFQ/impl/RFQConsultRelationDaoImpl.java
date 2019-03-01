@@ -48,6 +48,7 @@ public class RFQConsultRelationDaoImpl implements RFQConsultRelationDao {
 			view.setPurchaseId((Integer)map.get(RFQConsultRelation.T.PURCHASE_ID.getFld().getCodeSqlField()));
 //			view.setFavorite((Byte)map.get(RFQConsultRelation.T.FAVORITE.getFld().getCodeSqlField()));
 			view.setRowVersion((Short)map.get(RFQConsultRelation.T.ROW_VERSION.getFld().getCodeSqlField()));
+
 			return view;
 		}).collect(Collectors.toList());
 	}

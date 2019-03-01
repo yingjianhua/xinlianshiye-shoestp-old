@@ -63,4 +63,20 @@ public interface IRFQConsultAction {
 	 * @author Jianhua Ying
 	 */
 	void offerInfo() throws IOException ;
+
+	/**
+	 * 获取RFQ的聊天历史
+	 * @author zjl
+	 * @Date 2019/2/28 10:29
+	 * @throws IOException
+	 */
+	void getMsgList() throws  IOException;
+
+	/**
+	 * 获取报价的详细聊天历史
+	 * @author zjl
+	 * @Date 2019/2/29 8:39
+	 * @throws IOException
+	 */
+	void getMessage()throws  IOException;
 }

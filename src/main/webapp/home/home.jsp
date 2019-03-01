@@ -242,7 +242,7 @@
                                 order: <span>{{item.quantity}} {{item.currency}}</span>
                             </div>
                             <div class="btn-quote" :data-pkey="item.pkey">
-                                Read More
+                                <a :href="'/home/rfq_RFQConsult_getRFQReadMore?rfqPkey=' + item.pkey">Read More</a>
                             </div>
                         </li>
                     </ul>
