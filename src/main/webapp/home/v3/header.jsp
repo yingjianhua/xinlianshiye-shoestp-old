@@ -28,7 +28,7 @@
             apikey="afbc9f957e7689049c3282fe7696d30e7cb260e0ce11c148c0cf9e31d4e802f5"></script>
     <link rel="stylesheet" href="/home/v3/static/css/element-ui/element-ui.css"/>
 
-
+    <script src="/home/v2/static/js/base/qs.js"></script>
     <link rel="stylesheet" href="/home/v3/static/css/reset.css"/>
     <link rel="stylesheet" href="/home/v3/static/css/index.css">
 
