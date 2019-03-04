@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <jsp:include page="v3/header.jsp"></jsp:include>
+<script src="/home/v2/static/js/base/qs.js"></script>
 <link rel="stylesheet" href="/home/v3/static/css/user/ureset.css"/>
 <link rel="stylesheet" href="/home/v3/static/css/user/uindex.css"/>
 <link rel="stylesheet" href="/home/v2/static/css/nav/new-top-nav-style.css"/>
@@ -157,10 +158,10 @@
                 Favorites
             </div>
             <div class="favorites-main flexSb">
-                <a href="" target="_blank"><img src="/home/v3/static/images/user/icon_left_d.png" alt=""></a>
+                <a href="/home/usr_UsrFavorites_myfavorite" target="_blank"><img src="/home/v3/static/images/user/icon_left_d.png" alt=""></a>
                 <ul class="favorites-list clearfix">
                     <li class="favorites-item" v-for="(item,index) in favoriteList" :key="index">
-                        <a href="" target="_blank">
+                        <a :href="'/home/pdt_PdtProduct_gtProductsInfo?id='+item.id" target="_blank">
                             <div class="favorites-item-img">
                                 <img :src="image(item.img,'?x-oss-process=image/resize,m_pad,h_150,w_150')" alt="">
                             </div>
@@ -170,7 +171,7 @@
                         </a>
                     </li>
                 </ul>
-                <a href="" target="_blank"><img src="/home/v3/static/images/user/icon_right_d.png" alt=""></a>
+                <a href="/home/usr_UsrFavorites_myfavorite" target="_blank"><img src="/home/v3/static/images/user/icon_right_d.png" alt=""></a>
             </div>
         </div>
         <!-- 个性化设置 -->
