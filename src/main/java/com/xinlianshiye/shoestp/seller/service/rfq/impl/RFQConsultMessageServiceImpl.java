@@ -56,7 +56,7 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 		List<RFQConsultMessageView> msgs = list.stream().map(bean->{
 			RFQConsultMessageView view = RFQConsultMessageView.Builder.toView(bean);
 			//若消息为未读消息, 设置为已读
-			if(!bean.gtHadRead()) {
+			if(bean.gtP2s() && !bean.gtHadRead()) {
 				bean.stHadRead(true);
 				rFQConsultMessageDao.save(bean);
 			}
