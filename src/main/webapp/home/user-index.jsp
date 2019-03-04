@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <jsp:include page="v3/header.jsp"></jsp:include>
-<script src="/home/v2/static/js/base/qs.js"></script>
 <link rel="stylesheet" href="/home/v3/static/css/user/ureset.css"/>
 <link rel="stylesheet" href="/home/v3/static/css/user/uindex.css"/>
 <link rel="stylesheet" href="/home/v2/static/css/nav/new-top-nav-style.css"/>
