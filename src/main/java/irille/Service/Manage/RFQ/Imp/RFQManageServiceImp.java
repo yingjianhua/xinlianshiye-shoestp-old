@@ -215,7 +215,7 @@ public class RFQManageServiceImp implements IRFQManageService {
             UsrPurchase up = BeanBase.load(UsrPurchase.class, GetValue.get(map, RFQConsultRelation.T.PURCHASE_ID, Date.class, null));
             body.setPurchaseName(up.getName());
             body.setPurchaseCountryIMG(up.gtCountry().getNationalFlag());
-            if (GetValue.get(map, RFQConsultRelation.T.HAD_READ_SUPPLIER, Byte.class, (byte) -1) == 0) {
+            if (GetValue.get(map, RFQConsultRelation.T.HAD_READ_SUPPLIER, Byte.class, (byte) -1) == 0 && GetValue.get(map, RFQConsultRelation.T.HAD_READ_PURCHASE, Byte.class, (byte) -1) == 1) {
                 body.setStatus(3);
             } else {
                 if (GetValue.get(map, RFQConsultRelation.T.HAD_READ_PURCHASE, Byte.class, (byte) -1) == 0)

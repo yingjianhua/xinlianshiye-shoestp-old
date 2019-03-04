@@ -1150,7 +1150,7 @@
 					inquiresType: null,	// inquires筛选选中的值 1.RFQ 2.普通询盘 3.私人 4.店铺询盘 其余为All
 					isInquiresOptionShow: false,	// inquires是否显示下拉筛选
 					inquiresOptionUnreadInfo: {},	// inquires下拉 对应的未读信息数量
-					isUnread: true, //unread是否选中
+					isUnread: false, //unread是否选中
 					inquiryKeyword: "", //搜索信息
 					inquiryList: [], //询盘列表信息
 					inquiryLisPageStart: 0, //询盘列表 分页
@@ -1810,6 +1810,10 @@
 						let chatMsgObj = res.data.result;
 						chatMsgObj.msgs.forEach((msg,index)=>{
 							let txtContent = JSON.parse(msg.content);
+							if(msg.type==2){
+                                console.log(2)
+							    console.log(txtContent)
+							}
 							msg.content = this.msgContentSwitch(txtContent,msg.type)
 							// 传回私人展厅信息时 - 保存私人展厅信息
 							if(msg.type==4){
@@ -1899,14 +1903,14 @@
 							content = content.content;
 							break;
 						case 2:
-							content = `<img src=${content.imageUrl} alt=${content.alt}/>`;
+							content = "<img src='"+this.image(content.imageUrl)+"'/>";
 							break;
 						case 3:
 						case 4:
 							let linkUrl = content.url.indexOf("http") != -1 ? content.url : ("http://" + content.url)
 							content = `
-								<a href=${linkUrl} target="_blank">
-									${content.url}
+								<a href=${"${linkUrl}"} target="_blank">
+									${"${content.url}"}
 								</a>
 							`;
 							break;
