@@ -10,11 +10,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 
 public class ResultMapper {
 	public static final Log LOG = new Log(ResultMapper.class);
@@ -30,7 +26,7 @@ public class ResultMapper {
 	@SuppressWarnings("rawtypes")
 	private static final <T extends Bean> T fromResultSet(ResultSet rs, Class<T> beanClass) {
 		T bean = BeanBase.newInstance(beanClass);
-		Fld[] flds = Tb.getTBByBean(beanClass).getFlds(); 
+		Fld[] flds = Tb.getTBByBean(beanClass).getFlds();
 		try {
 			for (Fld fld : flds) {
 				try {
@@ -44,7 +40,7 @@ public class ResultMapper {
 			throw LOG.err(e, "setBeanfromResultSet", "数据库记录->对象【{0}】时出错!", beanClass);
 		}
 	}
-	
+
 	public static <T extends Bean<?, ?>> T asBean(ResultSet rs, Class<T> beanClass) {
 		try {
 			if(rs.next())
@@ -54,7 +50,7 @@ public class ResultMapper {
 			throw LOG.err("asBeanFromResultSet", "数据库记录->[{0}]对象出错", beanClass.getName());
 		}
 	}
-	
+
 	public static <T extends Bean<?, ?>> List<T> asBeanList(ResultSet rs, Class<T> beanClass) {
 		try {
 			Vector<T> list = new Vector<T>();
@@ -92,10 +88,10 @@ public class ResultMapper {
 		}
 		return null;
 	}
-	
+
 	public static Map<String, Object> asMap(ResultSet rs) {
 		try {
-			Map<String, Object> map = new HashMap<>();
+			Map<String, Object> map = new WeakHashMap<>();
 //		System.out.println("column length:"+l);
 //		System.out.println("  |catalogName|tableName|schemaName|columnClassName|columnLabel|scale|columnDisplaySize|precision|columnType|columnTypeName|columnName|columnValue|"
 //				+ "javaType|");
@@ -122,15 +118,15 @@ public class ResultMapper {
 					}
 //				System.out.println((i+1)+""
 //						+" | "+md.getCatalogName(i+1)
-//						+" | "+md.getTableName(i+1) 
-//						+" | "+md.getSchemaName(i+1) 
+//						+" | "+md.getTableName(i+1)
+//						+" | "+md.getSchemaName(i+1)
 //						+" | "+md.getColumnClassName(i+1)
 //						+" | "+md.getColumnLabel(i+1)
 //						+" | "+md.getScale(i+1)
 //						+" | "+md.getColumnDisplaySize(i+1)
 //						+" | "+md.getPrecision(i+1)
 //						+" | "+md.getColumnType(i+1)
-//						+" | "+md.getColumnTypeName(i+1) 
+//						+" | "+md.getColumnTypeName(i+1)
 //						+" | "+md.getColumnName(i+1)
 //						+" | "+rs.getObject(i+1)
 //						+" | "+rs.getObject(i+1).getClass().getName()
@@ -143,14 +139,14 @@ public class ResultMapper {
 			throw LOG.err("asMapFromResultSet", "数据库记录->Map对象出错");
 		}
 	}
-	
+
 	public static List<Map<String, Object>> asMaps(ResultSet rs)  {
 		try {
 			List<Map<String, Object>> list = new ArrayList<>();
 			ResultSetMetaData md = rs.getMetaData();
 			int l = md.getColumnCount();
 			while(rs.next()) {
-				Map<String, Object> map = new HashMap<>();
+				Map<String, Object> map = new WeakHashMap<>();
 				for(int i=0;i<l;i++){
 					String key = md.getColumnLabel(i+1);
 					Object value = null;
@@ -173,5 +169,5 @@ public class ResultMapper {
 			throw LOG.err("asMapsFromResultSet", "数据库记录->List<Map>对象出错");
 		}
 	}
-	
+
 }

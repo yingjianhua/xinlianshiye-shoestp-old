@@ -93,6 +93,13 @@ public class UsrMessagesAction extends HomeAction<UsrMessages> {
         return HomeAction.TRENDS;
     }
 
+
+    @ItpCheckPurchaseLogin.NeedLogin
+    public String center() {
+        setResult("/home/user-msgCenter.jsp");
+        return HomeAction.TRENDS;
+    }
+
     @ItpCheckPurchaseLogin.NeedLogin
     public String systemMessage() {
         setResult("/home/systemMessage.jsp");
