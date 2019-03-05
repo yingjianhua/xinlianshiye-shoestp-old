@@ -30,10 +30,11 @@
     <link href="./static/css/style_new.css" rel="stylesheet" type="text/css">
     <!-- 轮播插件 -->
     <script type="text/javascript" src="./static/js/jquery.SuperSlide.js"></script>
+    <script type="text/javascript" src="./static/js/qs.js"></script>
 </head>
 <jsp:include page="v3/header.jsp"/>
 <jsp:include page="v3/nav.jsp"/>
-<body class="lang_en w_1200">
+<body class="new-style-page lang_en w_1200">
 
 
 <%@ include file="/home/template/web-top.jsp" %>
@@ -174,7 +175,7 @@
             <!-- 商家-信息1 - end -->
 
             <!-- 商家-信息2 -->
-            <div class="enterprise-info-wrap  mb60">
+            <div class="enterprise-info-wrap">
                 <h3 class="enterprise-info-title">
                     <s:text name="authenticationInformation"/></h3>
                 <div class="enterprise-info-content">
@@ -261,6 +262,24 @@
 
                         <div class="supplier-info-item">
                             <h5 class="title">
+                                <i class="icon icon-defence-safe"></i>
+                                <span>Onsite Check</span>
+                            </h5>
+                            <div class="text">
+                                    The supplier information has been checked and confirmed by SHOESTP.COM staff.
+                            </div>
+                        </div>
+                        <div class="supplier-info-item">
+                            <h5 class="title">
+                                <i class="icon icon-certification "></i>
+                                <span>Certification</span>
+                            </h5>
+                            <div class="text">
+                                The supplier's company premises are inspected by the SHOESTP.COM staff and confirmed that the scene is authentic.
+                            </div>
+                        </div>
+                        <div class="supplier-info-item">
+                            <h5 class="title">
                                 <i class="icon icon-years icon-years-07"></i>
                                 <span><s:text name="AgeLimit"/></span>
                             </h5>
@@ -272,10 +291,89 @@
                 </div>
             </div>
             <!-- 商家-信息2 - end -->
+            <!-- Contact supplier 表单 start -->
+            <div class="contact-supplier">
+                <h3 class="title">Contact supplier</h3>
+                <div class="supplier-form">
+                    <div class="flexSt">
+                        <div class="company-logo">
+                            <img src="./static/images/ico/icon-svs.png" alt="">
+                        </div>
+                        <p class="company-name">Crystal Metis Wuhan Metis Technology Co., Ltd.</p>
+                        <div>
+                            <img src="./static/images/ico/icon-svs.png" alt="">
+                            svs
+                        </div>
+                    </div>
+                    <el-form :model="form" :rules="rules" ref="form" label-width="150px">
+                        <el-form-item label="Name of inquiry" prop="name" class="name">
+                            <el-row :gutter="15">
+                                <el-col :span="4">
+                                        <div>I am looking for</div>
+                                </el-col>
+                                <el-col :span="8">
+                                        <el-input v-model.trim="form.name"></el-input>
+                                </el-col>
+                                <el-col :span="5" >
+                                    <div>on shoestp.com</div>
+                                </el-col>
+                            </el-row>
+                        </el-form-item>
+                        <el-form-item label="Purchase  Quantity" prop="quantity">
+                            <el-row :gutter="10">
+                              <el-col :span="7">
+                                <el-input v-model.number.trim="form.quantity"></el-input>
+                              </el-col>
+                              <el-col :span="5">
+                                <el-form-item prop="unitType">
+                                  <el-select v-model="form.unitType" placeholder="Pairs">
+                                    <el-option label="Pairs" value="1"></el-option> 
+                                    <el-option label="Forty-Foot Container" value="2"></el-option>
+                                    <el-option label="Twenty-Foot Container" value="3"></el-option>
+                                  </el-select>
+                                </el-form-item>
+                              </el-col>
+                            </el-row>
+                          </el-form-item>
+                        <el-form-item label="Extra Request" prop="type" class="request">
+                          <el-checkbox-group v-model="form.type">
+                            <el-checkbox label="Price" name="Price"></el-checkbox>
+                            <el-checkbox label="Inspection Certificate" name="Inspection Certificate"></el-checkbox>
+                            <el-checkbox label="Product Specifications" name="Product Specifications"></el-checkbox>
+                            <el-checkbox label="Company Profile" name="Company Profile"></el-checkbox>
+                          </el-checkbox-group>
+                        </el-form-item>
+                        <el-form-item label="Message:" prop="descriotion">
+                            <el-input placeholder="Enter product details such as color, size, materials etc. and other specification requirements to receive an accurate quote." type="textarea" v-model.trim="form.descriotion":autosize="{ minRows: 8, maxRows: 8}"></el-input>
+                        </el-form-item>
+                        <el-form-item label="" prop="images">
+                            <div class="upImg flexSt">
+                                <el-upload action="/home/usr_UsrConsult_upload" list-type="picture-card"
+                                :on-success="handlePictureCardPreview" :limit="5" :on-remove="handleRemove"
+                                :before-upload="beforeUpload"
+                                accept=".jpg,.jpeg,.png"
+                                >
+                                <img src="./static/images/ico/add-photos.png">
+                                </el-upload>
+                                <span class="add-photos-font" style="margin-left:10px;">add photos</span>
+                            </div>
+                        </el-form-item>
+                        <el-form-item>
+                         <div style="color: #e54544;">
+                            * Recommend matching suppliers if this supplier doesn't contact me on Message Center within 24 hours. RFQ
+                         </div>
+                        </el-form-item>
+                        <el-form-item>
+                          <el-button type="primary" @click="submitForm('form')">Send inquiry now</el-button>
+                        </el-form-item>
+                      </el-form>
+                </div>
+            </div>
+            <!-- Contact supplier 表单 end -->
         </div>
-        <index-bottom></index-bottom>
-    </div>
 
+    </div>
+    <index-bottom></index-bottom>
 
     <%--<%@ include file="/home/template/new-foot.jsp" %>--%>
     <script type="text/javascript" src="./static/js/module.js"></script>
@@ -298,7 +396,181 @@
     <script src="/home/v3/static/js/index-bottom.js"></script>
     <script>
         new Vue({
-            el:"#main"
+            el:"#main",
+            data: {
+                imgsToUpload: [], // 需要upload的img - 显示在页面上
+                options: [{
+                        value: "1",
+                        label: "Pairs"
+                    },
+                    {
+                        value: "2",
+                        label: "Forty-Foot Container"
+                    },
+                    {
+                        value: "3",
+                        label: "Twenty-Foot Container"
+                    },
+                ],
+                form: {
+                    pdtId:'',
+                    name:'',
+                    quantity: '',
+                    unitType: '',
+                    descriotion: '',
+                    title: '',
+                    images: '',
+                    type:[],
+                },
+                rules: {
+                    nameL:[
+                        { message: '请输入名字'}
+                    ],
+                    quantity: [{
+                        required: true,
+                        trigger: 'blur' ,
+                        message: 'Can not be empty'
+                    }, {
+                        type: 'number',
+                        message: 'Must be a number'
+                    }],
+                    unitType: [{
+                        required: true,
+                        message: 'Please select a unit',
+                        trigger: 'change'
+                    }],
+                    descriotion: [{
+                        required: true,
+                        message: 'Please fill in the message',
+                        trigger: 'blur'
+                    }]
+                },
+                pkey:null,
+                supData:[],
+            },
+            mounted() {
+                // 进来页面获取到供应商信息
+                let self = this;
+                self.pkey = self.getQueryString("pkey");
+            },
+            methods: {
+                // elementui 上传功能 *2 - 删除操作
+                handleRemove(file, fileList) {
+                    // 清空imgs数组
+                    this.imgsToUpload = [];
+                    // 删除图片后，将授予的图片地址放入数组
+                    $.each(fileList, (i, v) => {
+                        console.log(v)
+                        this.imgsToUpload.push(v.response.result.url)
+                    })
+
+                    if ((this.imgsToUpload.length <= 4)) {
+                        $(".upImg .el-upload.el-upload--picture-card,.upImg .add-photos-font").show();
+                    }
+                },
+                // elementui 上传功能 *2 - 上传成功操作
+                handlePictureCardPreview(response, file, fileList) {
+                    console.log("上传成功response" + response)
+                    console.log(file)
+                    console.log(fileList)
+                    if (response.ret != 1) return;
+                    // 添加图片后，在前面显示 img
+                    this.imgsToUpload.push(file.response.result.url);
+                    if (this.imgsToUpload.length >= 5) {
+                        $(".upImg .el-upload.el-upload--picture-card,.upImg .add-photos-font").hide();
+                    }
+                    console.log(this.imgsToUpload)
+
+                },
+                // 上传图片文件之前
+                beforeUpload(file){
+                    console.log(file)
+                    let size = file.size / 1024;
+                    if(size > 500 ){
+                        this.$message.error('Image size cannot exceed 500k');
+                        return false;
+                    }
+                },
+                submitForm(formName) { // 表单提交
+                    this.$refs[formName].validate((valid) => {
+                        if (valid) {
+                            console.log(this.form)
+                            this.form.images = this.imgsToUpload.join(",");
+                            // this.form.pdtId = this.id;
+                            console.log(this.imgsToUpload)
+                            // if (this.form.images.length == 0) {
+                            //     // if(${env.login==null}){
+                            //     //     this.$message({
+                            //     //         showClose: true,
+                            //     //         message: 'Pleaselogin',
+                            //     //         type: 'warning'
+                            //     //     });
+
+                            //     //     window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
+                            //     // }
+                            //     this.$message.error('Please upload an image');
+                            //     return
+                            // }
+                            console.log('submit!');
+                            axios.post("/home/rfq_RFQConsult_putRFQInquiry", Qs.stringify(
+                               { data:JSON.stringify(this.form)}
+                               ))
+                                .then((res) => {
+                                    console.log(res)
+                                    // 提交成功时
+                                    if (res.data.ret == 1) {
+                                        // 提示信息
+                                        this.$message({
+                                            showClose: true,
+                                            message: '提交成功',
+                                            type: 'success'
+                                        });
+                                        setTimeout(function () {
+                                            gtag_report_conversion()
+                                            window.location.href =
+                                                '/home/usr_UsrConsult_listView';
+                                        }, 2000)
+                                        // 未登录时
+                                    } else if (res.data.ret == -1) {
+                                        window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrSupplier_gtSupInfo?pkey=' + this.pkey;
+                                        // 提交失败时
+                                    } else {
+                                        this.$alert(res.data.msg, {
+                                            confirmButtonText: 'OK'
+                                        });
+                                    }
+
+                                })
+                                .catch((err) => {
+                                    console.log(err)
+                                })
+                        } else {
+                            console.log('error submit!!');
+                            // if (!this.form.quantity) {
+                            //     this.$message.error('Quantity cannot be empty');
+                            // } else if (!this.form.unitType) {
+                            //     this.$message.error("Select unit");
+                            // } else if (!this.form.descriotion) {
+                            //     this.$message.error('Please fill in the message');
+                            // }
+                            // return false;
+                        }
+                    });
+                },
+                getQueryString: (name) => {
+      			let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+      			let reg_rewrite = new RegExp("(^|/)" + name + "/([^/]*)(/|$)", "i");
+  		    	let r = window.location.search.substr(1).match(reg);
+  			    let q = window.location.pathname.substr(1).match(reg_rewrite);
+  			    if(r != null){
+  			        return unescape(r[2]);
+  			    }else if(q != null){
+  			        return unescape(q[2]);
+  			    }else{
+  			        return null;
+  			    }
+    			}
+            }
         })
     </script>
 </body>

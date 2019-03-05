@@ -1240,7 +1240,7 @@ a {
 }
 
 #o2otop .o2otopcon .topsearch {
-    width: 700px;
+    width: 570px;
     height: 46px;
     border: 2px solid #10389c;
     box-sizing: border-box;
@@ -1302,7 +1302,7 @@ a {
 }
 
 #o2otop .o2otopcon .topsearch > input {
-    width: 530px;
+    width: 400px;
     height: 40px;
     -webkit-box-flex: 1;
     -ms-flex-positive: 1;
@@ -1349,6 +1349,9 @@ a {
     margin-left: 10px;
     position: relative;
 }
+#o2otop .o2otopcon .o2otoplikes .o2otoplikenum{
+   position: relative;
+}
 
 #o2otop .o2otopcon .o2otoplikes:hover dd {
     display: block;
@@ -1371,6 +1374,7 @@ a {
     border: solid 1px #fff;
     background-color: #fff;
     z-index: 999;
+    box-sizing: border-box;
 }
 
 #o2otop .o2otopcon .o2otoplikes dd {
@@ -1500,21 +1504,18 @@ a {
 }
 
 #o2otop .o2otopcon .o2otoplikes .o2otoplikenum p:nth-child(1) {
-    width: 16px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 16px;
+    text-align: center;
     height: 16px;
+    line-height: 16px;
+    padding: 0 4.5px;
     background-color: #9fafd7;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    border-radius: 50%;
+    border-radius: 16px;
     color: white;
-    font-size: 13px;
+    font-size: 12px;
     margin-bottom: 4px;
 }
 
@@ -1523,7 +1524,115 @@ a {
     font-size: 14px;
     color: #7f7f7f;
 }
+/* #o2otop .o2otopcon .o2otopmessage{
+    
+    
+}
+#o2otop .o2otopcon .o2otopmessage dt{
+    
+} */
+#o2otop .o2otopcon .o2otopmessage dd{
+    position: absolute;
+    top: 49px;
+    z-index: 9;
+    right: 0;
+    width: 346px;
+    min-height: 100px;
+	max-height: 584px;
+	box-shadow: 0px 2px 4px 0px 
+		rgba(187, 187, 187, 0.25);
+    border: solid 1px #d8d8d8;
+    
+    padding: 0;
+    color: #7f7f7f;
+}
+#o2otop .o2otopcon .o2otopmessage dd .message-title{
+    height: 40px;
+    line-height: 40px;
+    padding: 0 15px;
+    border-bottom: 1px solid #dee2ec;
+}
+#o2otop .o2otopcon .o2otopmessage dd ul{
+    border: none;
+    padding: 0;
+    max-height: 534px;
+    overflow: auto;
+}
+#o2otop .o2otopcon .o2otopmessage dd ul .more-btn{
+    color: #10389c;
+    cursor: pointer;
+    text-align: center;
+    line-height: 30px;
+}
+#o2otop .o2otopcon .o2otopmessage dd ul li{
+    height: auto;
+    line-height: 16px;
+    border-top: 1px solid #dee2ec;
+    padding: 20px 15px 12px 15px;
+    font-size: 12px !important;
+    cursor:pointer;
+}
+#o2otop .o2otopcon .o2otopmessage dd ul li .message-icon{
+    width: 8px;
+	height: 8px;
+    border-radius: 50%;
+    margin:3px 5px 0 0;
+}
+#o2otop .o2otopcon .o2otopmessage dd ul li .message-icon-new{
+    background-color: #d90202;
+}
+#o2otop .o2otopcon .o2otopmessage dd ul li .message-icon-old{
+    background-color: #d1d9ec;
+}
+#o2otop .o2otopcon .o2otopmessage dd ul li a{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack:start;
+    -ms-flex-pack:  flex-start;
+    justify-content: flex-start;
+    -webkit-box-align: start!important;
+    -ms-flex-align: start!important;
+        align-items: flex-start !important;
+}
+#o2otop .o2otopcon .o2otopmessage dd ul li a>div{
+    width: 299px;
+}
+#o2otop .o2otopcon .o2otopmessage dd ul li a>div div{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+            margin-top: 10px;
+}
+#o2otop .o2otopcon .o2otopmessage dd ul li a>div div img{
+    margin-right:5px;
+}
+#o2otop .o2otopcon .o2otopmessage dd ul li a>div p{
+    word-break: break-all;
+}
 
+#o2otop .o2otopcon .o2otopmessage ::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+  }
+  #o2otop .o2otopcon .o2otopmessage ::-webkit-scrollbar-track{
+      background:#dee2ec;
+  }
+  #o2otop .o2otopcon .o2otopmessage ::-webkit-scrollbar-thumb {
+        border-radius: 6px;
+      min-height: 20px;
+      background:#fff;
+      border:1px solid #dee2ec;
+  } 
+  #o2otop .o2otopcon .o2otopmessage ::-webkit-scrollbar-corner {
+    background:#dee2ec;
+  }
 #xc .el-progress-bar__outer {
     background-color: #dee2ec;
 }
