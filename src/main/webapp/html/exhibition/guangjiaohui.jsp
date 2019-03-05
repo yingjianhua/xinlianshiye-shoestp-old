@@ -4,18 +4,11 @@
 <script src="/html/exhibition/js/tagcloud.js"></script>
 <link rel="stylesheet" href="/html/exhibition/css/reset.css"/>
 <link rel="stylesheet" href="/html/exhibition/css/index.css">
-<style>
-    .wide {
-        width: 1240px;
-        margin: 0 auto;
-    }
-</style>
-
 
 <jsp:include page="/home/v3/nav.jsp"></jsp:include>
 <main id="gjhApp">
         <index-top></index-top>
-    <div class="wide">
+    <!-- <div class="wide"> -->
             <header class="clearfix w_1240">
                     <div class="left-video fl">
                         <video width="650" height="365" controls controlsList='nofullscreen nodownload noremote footbar'>
@@ -163,7 +156,7 @@
                             China
                     </div>
                 </section>
-    </div>
+    <!-- </div> -->
     <index-bottom></index-bottom>
   </main>
 <script src="/home/v3/static/js/index-top.js"></script>
