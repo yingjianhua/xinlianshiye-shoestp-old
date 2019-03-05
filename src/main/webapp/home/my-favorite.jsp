@@ -53,8 +53,9 @@
                     </div>
                     <div class="porduct-inquiry-btn porduct-btn">
                         <a href="javascript:void(0)" @click="restore(item.id)" v-if="catPkey == -1">Restore</a>
-                        <a :href="'/home/usr_UsrConsult_publishView?product_id='+item.pdtPkey" target="_blank" v-else>Inquiry</a>
+                        <a :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtPkey" target="_blank" v-else>Inquiry</a>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -292,7 +293,6 @@
                     limit,
                 }))
                     .then(function (res) {
-                        console.log(res);
                         if (res.data.ret == -1) {
                             window.location.href =
                                 '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
