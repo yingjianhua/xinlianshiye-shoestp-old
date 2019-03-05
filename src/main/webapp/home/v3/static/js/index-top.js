@@ -82,7 +82,7 @@ template: `<div>
             </dl>
 
             <a class="o2otoplikes" href="/home/usr_UsrFavorites_myfavorite">
-                <img src="/home/v3/static/images/o2otopfavoroite.png" alt="">
+                <img src="/home/v3/static/images/icon_top_love.png" alt="" style="margin-right: 10px">
                 <div class="o2otoplikenum">
                     <div style="height: 20px;">
                         <p v-if="sysConfig.user">{{sysConfig.user.favorite_count }}</p>
