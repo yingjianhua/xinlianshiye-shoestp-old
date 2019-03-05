@@ -20,7 +20,7 @@ template: `<div>
                     <div class="o2otoplikenum">
                         <div style="height:  20px;">
                         </div>
-                        <p>My Shosetp</p>
+                        <p>My Shoestp</p>
                     </div>
                 </dt>
                 <!--  没有登录看到的  -->
