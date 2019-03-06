@@ -74,6 +74,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
             query.WHERE(RFQConsultRelation.T.IS_NEW, "=?", unread);
         }
         query.GROUP_BY(RFQConsult.T.PKEY);
+        query.ORDER_BY(RFQConsult.T.CREATE_TIME, "desc");
         query.limit(start, limit);
         List<RFQConsultView> result = query.queryMaps().stream().map(map -> {
             RFQConsultView consult = new RFQConsultView();
