@@ -56,13 +56,16 @@ public class RFQConsultServiceImpl implements RFQConsultService {
                     .orWhere(UsrSupplier.T.NAME, "like ?", "%" + keyword + "%");
         }
         query.AND().WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey());
+        query.WHERE(RFQConsult.T.IS_DELETED, "=?", false);
         if (type != null) {
             //询盘类型
             query.WHERE(RFQConsult.T.TYPE, "=?", type);
         }
         if (unread != null) {
             //是否有新消息
-            query.WHERE(RFQConsultRelation.T.IS_NEW, "=?", unread);
+        	if(unread) {
+        		query.WHERE(RFQConsultRelation.T.IS_NEW, "=?", true).orWhere(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", false);
+        	}
         }
         query.GROUP_BY(RFQConsult.T.PKEY);
         query.ORDER_BY(RFQConsult.T.CREATE_TIME, "desc");
@@ -279,9 +282,17 @@ public class RFQConsultServiceImpl implements RFQConsultService {
         query.WHERE(RFQConsultRelation.T.PURCHASE_ID, "=?", purchase.getPkey());
         query.WHERE(RFQConsultRelation.T.PKEY, "=?", relationPkey);
         RFQConsultRelation relation = query.query();
-        if (relation != null && !relation.gtIsDeletedPurchase()) {
-            relation.stIsDeletedPurchase(true);
-            relation.upd();
+        if(relation == null || relation.gtIsDeletedPurchase())
+        	return;
+        RFQConsult consult = relation.gtConsult();
+        if(consult.gtType() == RFQConsultType.RFQ) {
+        	//RFQ 只需要将当前relation标记为已删除就行了, 不需要对consult做修改
+	        relation.stIsDeletedPurchase(true);
+	        relation.upd();
+        } else {
+        	//其它类型的询盘, 因为询盘和relation是一对一的关系, 所以在删除relation的同时 也删除询盘
+        	consult.stIsDeleted(true);
+        	consult.upd();
         }
     }
 
@@ -293,7 +304,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
         RFQConsult consult = query.query();
         if (consult == null) {
             throw new WebMessageException(ReturnCode.service_gone, "询盘不存在");
-        }
+        }	
         RFQConsultView view = new RFQConsultView();
         view.setPkey(consult.getPkey());
         view.setTitle(consult.getTitle());
@@ -301,7 +312,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
         view.setDetail(consult.getContent());
         view.setQuantity(consult.getQuantity());
         view.setPrice(consult.getPrice());
-        view.setUnit(consult.gtUnit().getLine().getName());
+        view.setUnit(consult.getUnit() == null? null : consult.gtUnit().getLine().getName());
         view.setType(consult.getType());
         view.setValieDate(consult.getValidDate());
         view.setPaymentTerms(consult.getPayType() == null? null : consult.gtPayType().getLine().getName());
