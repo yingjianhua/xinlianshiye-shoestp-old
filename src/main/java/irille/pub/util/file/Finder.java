@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 /**
  * 文件搜索器
@@ -56,5 +57,14 @@ public class Finder {
 		Long d99 = System.currentTimeMillis();
 		System.out.println("总用时: "+(d99-d0)+" ms");
 		return this;
+	}
+	
+	/**
+	 * 对搜索到的文件进行消费
+	 * @param consumer 消费者
+	 * @return this,可进行连续操作
+	 */
+	public Stream<String> stream() {
+		return files.stream();
 	}
 }

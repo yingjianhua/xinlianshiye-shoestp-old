@@ -1,8 +1,16 @@
 package irille.Entity.RFQ;
 
+import java.util.Date;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import irille.Config.Attribute;
+import irille.Config.Variable;
 import irille.Entity.RFQ.Enums.RFQConsultPayType;
 import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
 import irille.Entity.RFQ.Enums.RFQConsultUnit;
+import irille.Entity.pm.PM.OTempType;
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
 import irille.pub.bean.BeanInt;
@@ -13,11 +21,12 @@ import irille.pub.tb.Tb;
 import irille.shop.plt.PltErate;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.util.Date;
 
+@Variable(group = {OTempType.RFQ_REPLY,OTempType.RFQ_INFO_NOTICE},enumType=RFQConsultRelation.T.class,clazz=RFQConsultRelation.class,attributes = {
+		@Attribute(name="报价标题",field="TITLE",type=String.class),
+		@Attribute(name="产品描述",field="DESCRIPTION",type=String.class)}
+)
 public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
 
 	private static final long serialVersionUID = 2353321755373329372L;

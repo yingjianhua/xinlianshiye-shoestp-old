@@ -17,6 +17,9 @@ import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Entity.RFQ.RFQPurchaseContact;
 import irille.Entity.RFQ.RFQPurchaseContactGroup;
+import irille.Entity.pm.PMMessage;
+import irille.Entity.pm.PMRead;
+import irille.Entity.pm.PMTemplate;
 import irille.core.prv.PrvRoleAct;
 import irille.core.sys.SysModule;
 import irille.pub.Log;
@@ -77,6 +80,9 @@ public class Plt extends PackageBase {
         addTb(66, RFQPurchaseContactGroup.class);
         addTb(67, RFQConsultGroup.class);
         addTb(68, RFQConsultGroupRelation.class);
+        addTb(69, PMMessage.class);
+        addTb(70, PMRead.class);
+        addTb(71, PMTemplate.class);
     }
 
     @Override

@@ -1,5 +1,16 @@
 package irille.shop.pdt;
 
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import irille.Config.Attribute;
+import irille.Config.Variable;
+import irille.Entity.pm.PM.OTempType;
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
 import irille.core.sys.SysSeq;
@@ -18,19 +29,19 @@ import irille.shop.pdt.Pdt.OStockOut;
 import irille.shop.usr.UsrMemberLevel;
 import irille.shop.usr.UsrProductCategory;
 import irille.shop.usr.UsrSupplier;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 
 /**
  * 产品
  *
  * @author yingjianhua
  */
+@Variable(group = {OTempType.PROD_APPR_NOTICE},enumType=PdtProduct.T.class,clazz=PdtProduct.class,attributes = {
+		@Attribute(name="商品名称",field="NAME",type=String.class),
+		@Attribute(name="商品审核状态",field="IS_VERIFY",type=Sys.OYn.class),
+		@Attribute(name="商品审核时间",field="VERIFY_TIME",type=Date.class),
+		@Attribute(name="商品编号",field="CODE",type=String.class),
+		@Attribute(name="商品商城价",field="CUR_PRICE",type=BigDecimal.class)}
+)
 public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
     public static final Tb TB = new Tb(PdtProduct.class, "产品").setAutoIncrement().addActIUDL();
 

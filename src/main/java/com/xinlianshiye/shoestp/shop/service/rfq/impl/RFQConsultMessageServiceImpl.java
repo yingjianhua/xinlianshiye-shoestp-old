@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
 import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultMessageService;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultMessageContactView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultMessageView;
@@ -23,6 +24,7 @@ import irille.Entity.RFQ.Enums.RFQConsultMessageType;
 import irille.Entity.RFQ.JSON.ConsultMessage;
 import irille.Entity.RFQ.JSON.RFQConsultAlertUrlMessage;
 import irille.Entity.RFQ.JSON.RFQConsultTextMessage;
+import irille.Entity.pm.PM.OTempType;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.exception.ReturnCode;
@@ -34,6 +36,9 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 	
 	@Inject
 	private ObjectMapper om;
+	
+	@Inject 
+	private IPMMessageService messageService;
 
 	@Override
 	public RFQConsultMessagesView page(UsrPurchase purchase, Integer relationPkey, Integer start, Integer limit) {
@@ -102,6 +107,7 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 		bean.stP2s(true);
 		bean.stHadRead(false);
 		bean.ins();
+		messageService.send(OTempType.RFQ_REPLY, relation.gtSupplierId(), null, bean);
 		return RFQConsultMessageView.Builder.toView(bean);
 	}
 	
