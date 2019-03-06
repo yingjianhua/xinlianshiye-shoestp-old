@@ -217,9 +217,10 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
 			RFQPurchaseContactGroupView view = new RFQPurchaseContactGroupView();
 			view.setPkey(map.getPkey());
 			view.setName(map.getName());
+			view.setCount(Query.SELECT(RFQPurchaseContact.class).WHERE(RFQPurchaseContact.T.CONTACT_GROUP, "=?", map.getPkey()).queryCount());
 			return view;
 		}).collect(Collectors.toList());
 		return result;
 	}
-
+	
 }
