@@ -2,15 +2,10 @@ package irille.Entity.RFQ;
 
 import java.util.Date;
 
+import irille.Entity.RFQ.Enums.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import irille.Entity.RFQ.Enums.RFQConsultPayType;
-import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
-import irille.Entity.RFQ.Enums.RFQConsultStatus;
-import irille.Entity.RFQ.Enums.RFQConsultType;
-import irille.Entity.RFQ.Enums.RFQConsultUnit;
-import irille.Entity.RFQ.Enums.RFQConsultVerifyStatus;
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
 import irille.pub.bean.BeanInt;
@@ -56,6 +51,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
         EXTRA_DESCRIPTION(Sys.T.STR__2000_NULL, "额外信息"),//总共可以修改3次, 修改次数在change_count字段统计
         CREATE_TIME(Sys.T.DATE_TIME, "创建时间"),
         IS_DELETED(Sys.T.YN, "是否已删除"),//为了适应在删除询盘的情况, 只影响到询盘不能被抢单,而不影响已抢单询盘的聊天功能, 故增加此字段, 用于标记询盘是否已删除
+        RECOMMEND(Tb.crt(RFQConsultRecommend.DEFAULT).setNull()),//是否推荐，0：不推荐，1：推荐
         ROW_VERSION(Sys.T.ROW_VERSION),
         // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
         // <<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
@@ -147,7 +143,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
 	// CNF:3,CNF
 	// CRF:4,CRF
   private Integer _currency;	// 费率设置 <表主键:PltErate>  INT<null>
-  private String _extraRequest;	// 字符100  STR(100)
+  private String _extraRequest;	// 字符100  STR(100)<null>
   private String _productRequest;	// JSON  JSONOBJECT
   private String _destination;	// 目的地  STR(200)<null>
   private Integer _total;	// 总抢单数  INT
@@ -157,6 +153,9 @@ public class RFQConsult extends BeanInt<RFQConsult> {
   private Byte _isDeleted;	// 是否已删除 <OYn>  BYTE
 	// YES:1,是
 	// NO:0,否
+  private Byte _recommend;	// 是否推荐 <RFQConsultRecommend>  BYTE
+	// NOT_RECOMMENDED:0,不推荐
+	// RECOMMENDED:1,推荐
   private Short _rowVersion;	// 版本  SHORT
 
 	@Override
@@ -188,6 +187,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
     _extraDescription=null;	// 额外信息  STR(2000)
     _createTime=Env.getTranBeginTime();	// 创建时间  TIME
     _isDeleted=OYn.DEFAULT.getLine().getKey();	// 是否已删除 <OYn>  BYTE
+    _recommend=RFQConsultRecommend.DEFAULT.getLine().getKey();	// 是否推荐 <RFQConsultRecommend>  BYTE
     _rowVersion=0;	// 版本  SHORT
     return this;
   }
@@ -457,6 +457,18 @@ public class RFQConsult extends BeanInt<RFQConsult> {
   }
   public void stIsDeleted(Boolean isDeleted){
     _isDeleted=booleanToByte(isDeleted);
+  }
+  public Byte getRecommend(){
+    return _recommend;
+  }
+  public void setRecommend(Byte recommend){
+    _recommend=recommend;
+  }
+  public RFQConsultRecommend gtRecommend(){
+    return (RFQConsultRecommend)(RFQConsultRecommend.NOT_RECOMMENDED.getLine().get(_recommend));
+  }
+  public void stRecommend(RFQConsultRecommend recommend){
+    _recommend=recommend.getLine().getKey();
   }
   public Short getRowVersion(){
     return _rowVersion;

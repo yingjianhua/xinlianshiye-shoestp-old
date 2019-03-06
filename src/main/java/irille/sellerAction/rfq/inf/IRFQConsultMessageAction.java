@@ -24,4 +24,7 @@ public interface IRFQConsultMessageAction extends ISellerAction, IEnableable {
      */
     @RequestMapping(alias = "发送消息", sort = 2)
     void send() throws IOException;
+
+    @RequestMapping(alias = "上传图片重写", sort = 3)
+    void upload() throws IOException;
 }

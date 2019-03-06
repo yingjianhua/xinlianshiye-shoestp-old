@@ -1,6 +1,7 @@
 package irille.Dao.RFQ.impl;
 
 import irille.Dao.RFQ.RFQConsultDao;
+import irille.Entity.RFQ.Enums.RFQConsultRecommend;
 import irille.Entity.RFQ.Enums.RFQConsultType;
 import irille.Entity.RFQ.Enums.RFQConsultVerifyStatus;
 import irille.Entity.RFQ.RFQConsult;
@@ -12,9 +13,14 @@ import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
+import irille.pub.util.GetValue;
+import irille.pub.util.TranslateLanguage.TranslateBean;
+import irille.pub.util.TranslateLanguage.translateUtil;
+import irille.sellerAction.rfq.view.RFQConsultMessageView;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
+import irille.shop.plt.Plt;
 import irille.shop.plt.PltCountry;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
@@ -24,9 +30,7 @@ import org.junit.Test;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -107,7 +111,8 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                         RFQConsult.T.VALID_DATE,//询盘过期时间
                         RFQConsult.T.STATUS,//询盘状态
                         RFQConsult.T.VERIFY_STATUS,//询盘审核状态
-                        RFQConsult.T.CREATE_TIME//发布时间
+                        RFQConsult.T.CREATE_TIME,//发布时间
+                        RFQConsult.T.RECOMMEND//是否推荐
                 )
                 .SELECT(UsrSupplier.T.PKEY, "supplierPkey")//询盘供应商主键
                 .SELECT(UsrSupplier.T.NAME, "supplierName")//询盘供应商名称
@@ -119,13 +124,15 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 .SELECT(PdtProduct.T.NAME, "productName")//询盘商品名称
                 .SELECT(UsrPurchase.T.PKEY, "purchasePkey")//询盘采购商主键
                 .SELECT(UsrPurchase.T.NAME, "purchaseName")//询盘采购商名称
-                .SELECT(PltCountry.T.PKEY, "countryPkey")//询盘国家主键
-                .SELECT(PltCountry.T.NAME, "countryName")//询盘国家名称
+                .SELECT(PltCountry.T.PKEY, "countryPkey")//采购商国家主键
+                .SELECT(PltCountry.T.NAME, "countryName")//采购商国家名称
+                .SELECT(PltCountry.T.NATIONAL_FLAG, "countryLogo")//采购商国家国旗
                 .FROM(RFQConsult.class)
                 .LEFT_JOIN(UsrPurchase.class, RFQConsult.T.PURCHASE_ID, UsrPurchase.T.PKEY)
+                .LEFT_JOIN(PltCountry.class, UsrPurchase.T.COUNTRY, PltCountry.T.PKEY)
                 .LEFT_JOIN(UsrSupplier.class, RFQConsult.T.SUPPLIER_ID, UsrSupplier.T.PKEY)
                 .LEFT_JOIN(UsrSupplierRole.class, UsrSupplier.T.ROLE, UsrSupplierRole.T.PKEY)
-                .LEFT_JOIN(PltCountry.class, RFQConsult.T.COUNTRY, PltCountry.T.PKEY)
+//                .LEFT_JOIN(PltCountry.class, RFQConsult.T.COUNTRY, PltCountry.T.PKEY)
                 .LEFT_JOIN(PdtProduct.class, RFQConsult.T.PRODUCT, PdtProduct.T.PKEY)
                 .LEFT_JOIN(PdtCat.class, PdtProduct.T.CATEGORY, PdtCat.T.PKEY);
     }
@@ -164,6 +171,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
             view.setCountry(new CountryView() {{
                 setPkey((Integer) map.get("countryPkey"));
                 setName((String) map.get("countryName"));
+                setNationalFlag((String) map.get("countryLogo"));
             }});
         }
         view.setQuantity((Integer) map.get(RFQConsult.T.QUANTITY.getFld().getCodeSqlField()));
@@ -174,6 +182,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         view.setStatus((Byte) map.get(RFQConsult.T.STATUS.getFld().getCodeSqlField()));
         view.setVerifyStatus((Byte) map.get(RFQConsult.T.VERIFY_STATUS.getFld().getCodeSqlField()));
         view.setCreateTime((Date) map.get(RFQConsult.T.CREATE_TIME.getFld().getCodeSqlField()));
+        view.setRecommend(map.get(RFQConsult.T.RECOMMEND.getFld().getCodeSqlField()) != null ? (Byte) map.get(RFQConsult.T.RECOMMEND.getFld().getCodeSqlField()) : RFQConsultRecommend.NOT_RECOMMENDED.getLine().getKey());
         return view;
     }
 
@@ -307,7 +316,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 .WHERE(RFQConsult.T.VALID_DATE, ">?", LocalDateTime.now())
                 .WHERE(RFQConsult.T.VERIFY_STATUS, "=?", RFQConsultVerifyStatus.PASS)
         ;
-        sql.ORDER_BY(RFQConsult.T.CREATE_TIME, " DESC ");
+        sql.ORDER_BY(RFQConsult.T.CREATE_TIME, "desc");
         return Query.sql(sql).queryMaps();
     }
 
@@ -529,7 +538,108 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 .WHERE(
                         RFQConsultRelation.T.CONSULT, "=?", id
                 );
-
         return Query.sql(sql).queryMap();
+    }
+
+    @Override
+    public Page getRFQMsgList(Integer id, Integer start, Integer limit) {
+        SQL sql = new SQL() {{
+            SELECT(RFQConsultRelation.class)
+                    .SELECT(UsrSupplier.T.NAME, "supplierName")
+                    .SELECT(UsrSupplier.T.PKEY, "supplierId")
+                    .SELECT(UsrPurchase.T.NAME, "userName")
+                    .FROM(RFQConsultRelation.class)
+                    .LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, RFQConsultRelation.T.SUPPLIER_ID)
+                    .LEFT_JOIN(UsrPurchase.class, UsrPurchase.T.PKEY, RFQConsultRelation.T.PURCHASE_ID)
+                    .WHERE(RFQConsultRelation.T.CONSULT, "=?", id)
+                    .LIMIT(start, limit);
+        }};
+        int num = 0;
+        String str = "";
+        Map<Integer, RFQMessageView> beans = new HashMap<>();
+        Integer count = Query.sql(sql).queryCount();
+        List<Map<String, Object>> lists = Query.sql(sql).queryMaps();
+        for (Map<String, Object> map : lists) {
+            RFQMessageView view = new RFQMessageView();
+            view.setPkey((Integer) map.get(RFQConsultRelation.T.PKEY.getFld().getCodeSqlField()));
+            view.setSupplierName((String) map.get("supplierName"));
+            view.setUser((String) map.get("userName"));
+            str += "( SELECT" +
+                    " m.msgPkey AS msgPkey," +
+                    " m.content AS msgContent," +
+                    " m.type AS msgType," +
+                    " m.time AS msgTime," +
+                    " m.ps AS msgPs," +
+                    " relation.pkey as relPkey " +
+                    " FROM" +
+                    " r_f_q_consult_relation relation" +
+                    " LEFT JOIN (" +
+                    " SELECT" +
+                    " msg.pkey AS msgPkey," +
+                    " msg.relation AS rel," +
+                    " msg.content AS content," +
+                    " msg.type AS type," +
+                    " msg.send_time AS time," +
+                    " msg.p2s AS ps " +
+                    " FROM" +
+                    " r_f_q_consult_message msg " +
+                    " ) m ON m.rel = relation.pkey " +
+                    " WHERE" +
+                    " relation.supplier_id = " + ((Integer) map.get("supplierId")) +
+                    " AND relation.consult = " + id +
+                    " ORDER BY" +
+                    " m.time DESC " + "LIMIT 0,4) ";
+            if (lists.size() - 1 != num) {
+                str += " UNION ALL ";
+            }
+            if (!beans.containsKey(view.getPkey())) {
+                beans.put(view.getPkey(), view);
+            }
+            num++;
+        }
+        if (!("".equals(str))) {
+            List<Map<String, Object>> entitys = Query.sql(str).queryMaps();
+            for (Map<String, Object> m : entitys) {
+                if (m.get("msgContent") != null) {
+                    RFQMessageView rfqMessageView = beans.get(m.get("relPkey"));
+                    if (rfqMessageView != null) {
+                        RFQConsultMessageView view = new RFQConsultMessageView();
+                        view.setPkey((Integer) m.get("msgPkey"));
+                        view.setContent((String) m.get("msgContent"));
+                        view.setType((Byte) m.get("msgType"));
+                        view.setSendTime((Date) m.get("msgTime"));
+                        view.setRelation((Integer) m.get("relPkey"));
+                        view.setP2S((((Byte) m.get("msgPs")) == 1) ? true : false);
+                        if (rfqMessageView.getMessages() != null) {
+                            rfqMessageView.getMessages().add(view);
+                        } else {
+                            List<RFQConsultMessageView> views = new ArrayList<>();
+                            views.add(view);
+                            rfqMessageView.setMessages(views);
+                        }
+                    }
+                }
+            }
+        }
+        return new Page<RFQMessageView>(new ArrayList<RFQMessageView>(beans.values()), start, limit, count);
+    }
+
+    @Override
+    public Page getMessage(Integer id, Integer start, Integer limit) {
+        SQL sql = new SQL() {{
+            SELECT(RFQConsultMessage.class)
+                    .FROM(RFQConsultMessage.class)
+                    .WHERE(RFQConsultMessage.T.RELATION, "=?", id)
+                    .ORDER_BY(RFQConsultMessage.T.SEND_TIME, "desc");
+        }};
+        Integer count = Query.sql(sql).queryCount();
+        List<RFQConsultMessageView> view = Query.sql(sql.LIMIT(start, limit)).queryMaps().stream().map(o -> new RFQConsultMessageView() {{
+            setPkey((Integer) o.get(RFQConsultMessage.T.PKEY.getFld().getCodeSqlField()));
+            setContent((String) o.get(RFQConsultMessage.T.CONTENT.getFld().getCodeSqlField()));
+            setType((Byte) o.get(RFQConsultMessage.T.TYPE.getFld().getCodeSqlField()));
+            setSendTime((Date) o.get(RFQConsultMessage.T.SEND_TIME.getFld().getCodeSqlField()));
+            setP2S((((Byte) o.get(RFQConsultMessage.T.P2S.getFld().getCodeSqlField())) == 1) ? true : false);
+        }}).collect(Collectors.toList());
+        return new Page(view, start, limit, count);
     }
 }

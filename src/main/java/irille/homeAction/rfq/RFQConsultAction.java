@@ -134,77 +134,99 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
         return TRENDS;
     }
 
+    /**
+     * @Description: RFQ readMore页面
+     * @author zjl
+     */
+    public String getRFQReadMore() {
+        setResult("/home/readMore.jsp", false);
+        return TRENDS;
+    }
+
     private String keyword;
     private Byte t;
     private Boolean unread;
     private Integer start = 0;
     private Integer limit = 10;
 
-	@Override
-	@NeedLogin
-	public void pageMine() throws IOException {
-		write(rFQConsultService.pageMine(getPurchase(), t, keyword, unread, start, limit));
-	}
-	private Integer quotationPkey;
-	
-	@Override
-	@NeedLogin
-	public void deleteQuotation() throws IOException {
-		rFQConsultService.deleteQuotation(getPurchase(), quotationPkey);
-		write();
-	}
+    @Override
+    @NeedLogin
+    public void pageMine() throws IOException {
+        write(rFQConsultService.pageMine(getPurchase(), t, keyword, unread, start, limit));
+    }
 
-	@Override
-	@NeedLogin
-	public void quotationDetail() throws IOException {
-		write(rFQConsultService.getQuotation(getPurchase(), quotationPkey));
-	}
-	
-	Integer consultPkey;
+    private Integer quotationPkey;
 
-	@Override
-	@NeedLogin
-	public void detail() throws IOException {
-		write(rFQConsultService.getDetail(getPurchase(), consultPkey));
-	}
+    @Override
+    @NeedLogin
+    public void deleteQuotation() throws IOException {
+        rFQConsultService.deleteQuotation(getPurchase(), quotationPkey);
+        write();
+    }
 
-	private Integer relationPkey;
-	
-	@Override
-	@NeedLogin
-	public void pageMsgs() throws IOException {
-		write(rFQConsultMessageService.page(getPurchase(), relationPkey, start, limit));
-	}
-	
-	private String content;
+    @Override
+    public void getRFQList() throws IOException {
+        write(rFQConsultService.getRFQList());
 
-	@Override
-	@NeedLogin
-	public void sendMessage() throws IOException {
-		write(rFQConsultMessageService.send(getPurchase(), relationPkey, content));
-	}
+    }
 
-	private String information;
-	private Date validDate;
-	
-	@Override
-	@NeedLogin
-	public void addInformation() throws IOException {
-		rFQConsultService.addMoreInformation(getPurchase(), consultPkey, information, validDate);
-		write();
-	}
+    private Integer rfqPkey;
 
-	@Override
-	@NeedLogin
-	public void close() throws IOException {
-		rFQConsultService.close(getPurchase(), consultPkey);
-		write();
-	}
+    @Override
+    public void getRFQDetails() throws IOException {
+        write(rFQConsultService.getRFQDetails(rfqPkey));
+    }
 
-	@Override
-	@NeedLogin
-	public void edit() throws IOException {
-		 String json = getJsonBody();
+    @NeedLogin
+    public void quotationDetail() throws IOException {
+        write(rFQConsultService.getQuotation(getPurchase(), quotationPkey));
+    }
+
+    Integer consultPkey;
+
+    @Override
+    @NeedLogin
+    public void detail() throws IOException {
+        write(rFQConsultService.getDetail(getPurchase(), consultPkey));
+    }
+
+    private Integer relationPkey;
+
+    @Override
+    @NeedLogin
+    public void pageMsgs() throws IOException {
+        write(rFQConsultMessageService.page(getPurchase(), relationPkey, start, limit));
+    }
+
+    private String content;
+
+    @Override
+    @NeedLogin
+    public void sendMessage() throws IOException {
+        write(rFQConsultMessageService.send(getPurchase(), relationPkey, content));
+    }
+
+    private String information;
+    private Date validDate;
+
+    @Override
+    @NeedLogin
+    public void addInformation() throws IOException {
+        rFQConsultService.addMoreInformation(getPurchase(), consultPkey, information, validDate);
+        write();
+    }
+
+    @Override
+    @NeedLogin
+    public void close() throws IOException {
+        rFQConsultService.close(getPurchase(), consultPkey);
+        write();
+    }
+
+    @Override
+    @NeedLogin
+    public void edit() throws IOException {
+        String json = getJsonBody();
         EditRFQConsultView editRFQConsultView = objectMapper.readValue(json, EditRFQConsultView.class);
         System.out.println(json);
         System.out.println(editRFQConsultView);
@@ -218,30 +240,30 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
             }
         }
         writeErr(-1, "ID为空");
-	}
+    }
 
-	private String images;
-	
-	@Override
-	@NeedLogin
-	public void addImage() throws IOException {
-		rFQConsultService.addImage(getPurchase(), consultPkey, images);
-		write();
-	}
+    private String images;
 
-	private String products;
-	
-	@Override
-	@NeedLogin
-	public void addProductRequest() throws IOException {
-		rFQConsultService.addProductRequest(getPurchase(), consultPkey, products);
-		write();
-	}
+    @Override
+    @NeedLogin
+    public void addImage() throws IOException {
+        rFQConsultService.addImage(getPurchase(), consultPkey, images);
+        write();
+    }
 
-	@Override
-	@NeedLogin
-	public void unreadCount() throws IOException {
-		write(rFQConsultService.countUnread(getPurchase()));
-	}
-    
+    private String products;
+
+    @Override
+    @NeedLogin
+    public void addProductRequest() throws IOException {
+        rFQConsultService.addProductRequest(getPurchase(), consultPkey, products);
+        write();
+    }
+
+    @Override
+    @NeedLogin
+    public void unreadCount() throws IOException {
+        write(rFQConsultService.countUnread(getPurchase()));
+    }
+
 }
