@@ -92,7 +92,8 @@ public class RFQConsultServiceImpl implements RFQConsultService {
             consult.setPkey(GetValue.get(map, RFQConsult.T.PKEY, Integer.class, null));
             consult.setTitle(GetValue.get(map, RFQConsult.T.TITLE, String.class, null));
             consult.setType(GetValue.get(map, RFQConsult.T.TYPE, Byte.class, null));
-            consult.setImages(Arrays.asList(GetValue.get(map, RFQConsult.T.IMAGE, String.class, "").split(",")));
+            String image = GetValue.get(map, RFQConsult.T.IMAGE, String.class, null);
+            consult.setImages(image == null ? new ArrayList<>() : Arrays.asList(image.split(",")));
             consult.setRelations(listRelation(consult.getPkey()));
             return consult;
         }).collect(Collectors.toList());
@@ -100,6 +101,10 @@ public class RFQConsultServiceImpl implements RFQConsultService {
         return new Page<>(result, start, limit, totalCount);
     }
 
+    public static void main(String[] args) {
+    	Arrays.asList(null);
+	}
+    
     @Override
     public List<RFQConsultRelationView> listRelation(Integer consultPkey) {
         BeanQuery<?> query = Query.SELECT(RFQConsultRelation.T.PKEY);
@@ -329,7 +334,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
                 log.warn("RFQConsult表主键为{}的记录 字段productRequest格式错误", consult.getPkey());
             }
         }
-        view.setImages(Arrays.asList((consult.getImage() == null ? "" : consult.getImage()).split(",")));
+        view.setImages(consult.getImage() == null ? new ArrayList<>() : Arrays.asList(consult.getImage().split(",")));
         return view;
     }
 
