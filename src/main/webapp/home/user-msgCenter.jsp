@@ -179,7 +179,7 @@
 												:data-inquiry-index="inquiryIndex"
 												v-if="inquiry.relations && inquiry.relations.length==0">
 									      <img class="goods-pic" alt="goods's pic"
-													:src="image(inquiry.images[0]) + (inquiry.type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')">
+													:src="inquiry.images[0]?(image(inquiry.images[0]) + (inquiry.type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')):'/home/v3/static/images/no_img.png'">
 												<div class="goods-info">
 													<div class="goods-name">
 														<div class="ellipsis_1">{{inquiry.title}}</div>
@@ -200,7 +200,7 @@
 												@click="(inquiry.type==1 && isScale)?viewInquiryDetail($event):''"
 												:data-inquiry-index="inquiryIndex">
 									      <img class="goods-pic" alt="goods's pic"
-													:src="image(inquiry.images[0]) + (inquiry.type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')"
+													:src="inquiry.images[0]?(image(inquiry.images[0]) + (inquiry.type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')):'/home/v3/static/images/no_img.png'"
 													:data-inquiry-index="inquiryIndex">
 												<div class="goods-info"
 													:data-inquiry-index="inquiryIndex">
@@ -823,7 +823,7 @@
 						<div class="inquiry-overview">
 							<img class="inquiry-main-pic" alt=""
 								v-if="inquiryDetail.images"
-							  :src="image(inquiryDetail.images[0])">
+							  :src="inquiryDetail.images[0]?(image(inquiryDetail.images[0])):'/home/v3/static/images/no_img.png'">
 							<div class="content-box-wrap">
 								<div class="content-box1">
 									<div class="content-box">
@@ -1201,6 +1201,12 @@
 
 					// 聊天信息
 					chatMsgObj: {},  //聊天窗口信息
+
+                // inquiryLisPageStart: 0, //询盘列表 分页
+                // inquiryLisPageLimit: 10, //询盘列表 分页
+                // isInquiryLisLoading: false, //询盘列表 加载开关
+                // isInquiryLoadOver: false, //询盘列表 是否已加载完全
+
 					isAllRead: false,  //信息是否已读
 					sendMsgValue: "", //发送的内容
 
@@ -1263,6 +1269,8 @@
 
 				// 获取询盘列表
 				getInquiryList() {
+				    console.log("获取询盘列表")
+				    console.log("获取询盘列表")
 					// 正在加载 or 已加载完全
 					if(this.isInquiryLisLoading || this.isInquiryLoadOver) return;
 					this.isInquiryLisLoading = true;
@@ -1272,7 +1280,7 @@
 								t: this.inquiresType,
 								unread: this.isUnread,
 								start: this.inquiryLisPageStart,
-								limit: this.inquiryLisPageLimit
+								limit: this.inquiryLisPageLimit,
 							}
 						})
 						.then((res) => {
@@ -1300,6 +1308,7 @@
 
 				// 加载下一页询盘列表
 				loadMoreInquiryList(){
+				    console.log("load more")
 					this.inquiryLisPageStart += this.inquiryLisPageLimit;
 					this.getInquiryList();
 				},
@@ -1802,6 +1811,8 @@
 
 					axios.get('/home/rfq_RFQConsult_pageMsgs', {
 						params:{
+                            start: 0,
+                            limit: 5,
 							relationPkey: this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].quotation.pkey,
 						}
 					})

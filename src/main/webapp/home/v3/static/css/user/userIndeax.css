@@ -461,7 +461,7 @@
     -webkit-box-flex: 0;
         -ms-flex: none;
             flex: none;
-    width: 725px;
+    width: 711px;
     height: 670px;
     margin-left: 14px;
     border: solid 1px #dddddd;
@@ -895,7 +895,7 @@
       -webkit-box-pack: justify;
           -ms-flex-pack: justify;
               justify-content: space-between;
-      width: 684px;
+      width: 669px;
       height: 48px;
       padding: 0 8px;
       margin-top: 20px;
