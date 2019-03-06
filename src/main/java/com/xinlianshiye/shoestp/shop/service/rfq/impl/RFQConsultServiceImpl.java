@@ -1,41 +1,15 @@
 package com.xinlianshiye.shoestp.shop.service.rfq.impl;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultService;
-import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultRelationView;
-import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultView;
-import com.xinlianshiye.shoestp.shop.view.rfq.RFQCountryView;
-import com.xinlianshiye.shoestp.shop.view.rfq.RFQCurrencyView;
-import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationImageView;
-import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationThrowawayView;
-import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationView;
-import com.xinlianshiye.shoestp.shop.view.rfq.RFQSupplierView;
-import com.xinlianshiye.shoestp.shop.view.rfq.RFQUnreadCountView;
+import com.xinlianshiye.shoestp.shop.view.rfq.*;
 import com.xinlianshiye.shoestp.shop.view.rfq.supplierConsult.RFQConsultProductView;
-
+import irille.Entity.RFQ.Enums.*;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultRelation;
-import irille.Entity.RFQ.Enums.RFQConsultPayType;
-import irille.Entity.RFQ.Enums.RFQConsultRecommend;
-import irille.Entity.RFQ.Enums.RFQConsultStatus;
-import irille.Entity.RFQ.Enums.RFQConsultType;
-import irille.Entity.RFQ.Enums.RFQConsultUnit;
-import irille.Entity.RFQ.Enums.RFQConsultVerifyStatus;
 import irille.homeAction.rfq.view.RFQDetailsView;
 import irille.homeAction.rfq.view.RFQListView;
 import irille.pub.bean.BeanBase;
@@ -52,6 +26,12 @@ import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class RFQConsultServiceImpl implements RFQConsultService {
@@ -177,7 +157,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
         quotation.setPkey(relation.getPkey());
         quotation.setTitle(relation.getTitle());
         try {
-        	if(relation.getImage() != null && !relation.getImage().isEmpty()) { 
+        	if(relation.getImage() != null && !relation.getImage().isEmpty()) {
         		quotation.setImages(om.readValue(relation.getImage(), new TypeReference<List<RFQQuotationImageView>>() { }));
         	}
 		} catch (IOException e) {
@@ -276,8 +256,13 @@ public class RFQConsultServiceImpl implements RFQConsultService {
         view.setPdtDetails((String) rfqMap.get(RFQConsult.T.CONTENT.getFld().getCodeSqlField()));
         view.setQuantitys((Integer) rfqMap.get(RFQConsult.T.QUANTITY.getFld().getCodeSqlField()));
         for (RFQConsultPayType value : RFQConsultPayType.values()) {
-            if (value.getLine().getKey() == (Byte) rfqMap.get(RFQConsult.T.PAY_TYPE.getFld().getCodeSqlField())) {
-                view.setPayMethod(value.getLine().getName());
+            if (rfqMap.size() > 0) {
+                Object o = rfqMap.get(RFQConsult.T.PAY_TYPE.getFld().getCodeSqlField());
+                if (o != null) {
+                    if (value.getLine().getKey() == Byte.parseByte(String.valueOf(o))) {
+                        view.setPayMethod(value.getLine().getName());
+                    }
+                }
             }
         }
         return view;

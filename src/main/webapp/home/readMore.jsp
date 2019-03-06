@@ -1,28 +1,11 @@
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, minimum-scale=1.0,maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta content="telephone=no" name="format-detection">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="keywords" content="鞋贸港">
-    <meta name="description" content="鞋贸港">
-    <title>鞋贸港</title>
-    <link rel="stylesheet" href="./v3/static/css/reset.css"/>
-    <link rel="stylesheet" href="./static/css/readMore.css"/>
-    <link rel="stylesheet" href="./v3/static/css/element-ui/element-ui.css">
-    <script src="./v2/static/js/base/vue.js"></script>
-    <script src="./v2/static/js/base/element-ui.js"></script>
-    <script src="./v2/static/js/base/axios.min.js"></script>
-</head>
-
+<jsp:include page="v3/header.jsp"/>
+<link rel="stylesheet" href="./static/css/readMore.css"/>
 <body>
+<jsp:include page="v3/nav.jsp"></jsp:include>
 <div id="readMore" class="clearfix" v-cloak>
+    <index-top></index-top>
     <div class="top-box">
         <!-- <a href="" target="_blank"> -->
         <div class="top-banner"></div>
@@ -153,10 +136,12 @@
             </el-form>
         </div>
     </div>
+    <index-bottom></index-bottom>
+
 </div>
-<!--<script>-->
-<!--var isLogin = true;    //  判断登录状态-->
-<!--</script>-->
+<script src="/home/v3/static/js/index-top.js"></script>
+<script src="/home/v3/static/js/index-bottom.js"></script>
+
 <script>
     new Vue({
         el: "#readMore",
