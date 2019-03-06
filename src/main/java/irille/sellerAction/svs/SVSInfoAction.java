@@ -57,7 +57,7 @@ public class SVSInfoAction extends SellerAction<SVSInfo> implements ISVSInfoActi
 		svs.stSupplier(getSupplier());
 		svs.setDynamicScore(0);
 		service.application(svs);
-		writeSuccess();;
+		writeSuccess();
 		;
 	}
 
