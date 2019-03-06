@@ -5,12 +5,15 @@ import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import irille.Config.Attribute;
+import irille.Config.Variable;
 import irille.Entity.RFQ.Enums.RFQConsultPayType;
 import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
 import irille.Entity.RFQ.Enums.RFQConsultStatus;
 import irille.Entity.RFQ.Enums.RFQConsultType;
 import irille.Entity.RFQ.Enums.RFQConsultUnit;
 import irille.Entity.RFQ.Enums.RFQConsultVerifyStatus;
+import irille.Entity.pm.PM.OTempType;
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
 import irille.pub.bean.BeanInt;
@@ -23,7 +26,11 @@ import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltErate;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
-
+@Variable(group = {OTempType.INQUIRY_NOTICE_SUPPLIER,OTempType.RFQ_INFO_NOTICE},enumType=RFQConsult.T.class,clazz=RFQConsult.class,attributes = {
+		@Attribute(name="询盘标题",field="TITLE",type=String.class),
+		@Attribute(name="询盘内容",field="CONTENT",type=String.class),
+		@Attribute(name="询盘时间",field="CREATE_TIME",type=Date.class)}
+)
 public class RFQConsult extends BeanInt<RFQConsult> {
     private static final long serialVersionUID = 7524946206877858631L;
     public static final Tb<?> TB = new Tb<>(RFQConsult.class, "新询盘").setAutoIncrement();

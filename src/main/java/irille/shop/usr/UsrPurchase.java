@@ -1,5 +1,10 @@
 package irille.shop.usr;
 
+import java.util.Date;
+
+import irille.Config.Attribute;
+import irille.Config.Variable;
+import irille.Entity.pm.PM.OTempType;
 import irille.core.sys.Sys.OSex;
 import irille.pub.bean.BeanInt;
 import irille.pub.inf.IExtName;
@@ -10,8 +15,10 @@ import irille.pub.tb.Tb.Index;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltErate;
 
-import java.util.Date;
-
+@Variable(group = {OTempType.INQUIRY_NOTICE_SUPPLIER},enumType=UsrPurchase.T.class,clazz=UsrPurchase.class,attributes = {
+		@Attribute(name="采购商名称",field="NAME",type=String.class),
+		@Attribute(name="采购商手机号",field="TELPHONE",type=String.class)}
+)
 public class UsrPurchase extends BeanInt<UsrPurchase> implements IExtName{
 	
 	public static final Tb TB = new Tb(UsrPurchase.class,"采购商")

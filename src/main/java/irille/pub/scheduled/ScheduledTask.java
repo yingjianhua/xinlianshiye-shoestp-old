@@ -26,7 +26,7 @@ public class ScheduledTask implements ServletContextListener{
 	
 	public void initScheduledTask() {
 //		addTask(QuartzTest.class,1,"测试");
-		addTask(O2OActicityServerImp.class,16,"O2O活动状态变更");
+		addTask(O2OActicityServerImp.class,1600,"O2O活动状态变更");
 	}
 	
 	public void addTask(Class clazz,int time,String name) {

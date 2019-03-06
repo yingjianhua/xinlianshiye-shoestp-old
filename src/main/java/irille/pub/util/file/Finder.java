@@ -57,4 +57,13 @@ public class Finder {
 		System.out.println("总用时: "+(d99-d0)+" ms");
 		return this;
 	}
+	
+	/**
+	 * 对搜索到的文件进行消费
+	 * @param consumer 消费者
+	 * @return this,可进行连续操作
+	 */
+	public Stream<String> stream() {
+		return files.stream();
+	}
 }

@@ -1,17 +1,25 @@
 package irille.Entity.RFQ;
 
+import java.util.Date;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import irille.Config.Attribute;
+import irille.Config.Variable;
 import irille.Entity.RFQ.Enums.RFQConsultMessageType;
+import irille.Entity.pm.PM.OTempType;
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
 import irille.pub.bean.BeanInt;
 import irille.pub.tb.Fld;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.util.Date;
-
+@Variable(group = {OTempType.RFQ_REPLY},enumType=RFQConsultMessage.T.class,clazz=RFQConsultMessage.class,attributes = {
+		@Attribute(name="RFQ内容",field="CONTENT",type=String.class),
+		@Attribute(name="留言时间",field="SEND_TIME",type=Date.class)}
+)
 public class RFQConsultMessage extends BeanInt<RFQConsultMessage> {
 	
 	private static final long serialVersionUID = 2455737683431610037L;
