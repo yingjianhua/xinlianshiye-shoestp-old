@@ -42,6 +42,7 @@ public class SVSInfo  extends BeanInt<SVSInfo>{
 		GRADE(Tb.crt(SVSGradeType.DEFAULT)),
 		APPLICATION_TIME(Sys.T.DATE_TIME,"申请认证时间"),
 		AUTHENTICATION_TIME(Sys.T.DATE_TIME,"认证时间"),
+		FAILURE_REASONS(Sys.T.STR__200_NULL,"认证失败原因"),
 	    ROW_VERSION(Sys.T.ROW_VERSION),
         // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
         // <<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
@@ -105,6 +106,7 @@ public class SVSInfo  extends BeanInt<SVSInfo>{
 	// NotAvailable:0,暂无等级
   private Date _applicationTime;	// 申请认证时间  TIME
   private Date _authenticationTime;	// 认证时间  TIME
+  private String _failureReasons;	// 认证失败原因  STR(200)<null>
   private Short _rowVersion;	// 版本  SHORT
 
 	@Override
@@ -124,6 +126,7 @@ public class SVSInfo  extends BeanInt<SVSInfo>{
     _grade=SVSGradeType.DEFAULT.getLine().getKey();	// SVS商家等级类型 <SVSGradeType>  BYTE
     _applicationTime=Env.getTranBeginTime();	// 申请认证时间  TIME
     _authenticationTime=Env.getTranBeginTime();	// 认证时间  TIME
+    _failureReasons=null;	// 认证失败原因  STR(200)
     _rowVersion=0;	// 版本  SHORT
     return this;
   }
@@ -283,6 +286,12 @@ public class SVSInfo  extends BeanInt<SVSInfo>{
   }
   public void setAuthenticationTime(Date authenticationTime){
     _authenticationTime=authenticationTime;
+  }
+  public String getFailureReasons(){
+    return _failureReasons;
+  }
+  public void setFailureReasons(String failureReasons){
+    _failureReasons=failureReasons;
   }
   public Short getRowVersion(){
     return _rowVersion;

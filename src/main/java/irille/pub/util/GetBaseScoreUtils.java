@@ -12,8 +12,8 @@ import irille.view.SVS.SVSInfoView;
 import irille.view.SVS.SVSInfoView.*;
 
 public class GetBaseScoreUtils {
-	@Inject
-	public static ObjectMapper om;
+	
+	public static ObjectMapper om =new ObjectMapper();
 
 	/**
 	 * 计算基础分
@@ -30,11 +30,16 @@ public class GetBaseScoreUtils {
 	 * @throws JsonMappingException
 	 * @throws JsonParseException
 	 */
-	public static int getBaseScore(research research, productionCapacity productionCapacity, realFactory realFactory,
-			productQuality productQuality, tradeTeam tradeTeam, exhibitionAttended exhibition, partner partner)
-			throws Exception {
-		SVSInfoView view = new SVSInfoView(research, productionCapacity, realFactory, productQuality, tradeTeam,
-				exhibition, partner);
+	public static int getBaseScore(String res, String capacity, String factory, String quality, String team,
+			String exhibition, String part) throws Exception {
+		SVSInfoView view = new SVSInfoView(
+				om.readValue(res, research.class),
+				om.readValue(capacity, productionCapacity.class),
+				om.readValue(factory, realFactory.class),
+				om.readValue(quality, productQuality.class), 
+				om.readValue(team, tradeTeam.class),
+				om.readValue(exhibition, exhibitionAttended.class),
+				om.readValue(part, partner.class));
 		Integer score = view.countScore();
 		return score;
 	}

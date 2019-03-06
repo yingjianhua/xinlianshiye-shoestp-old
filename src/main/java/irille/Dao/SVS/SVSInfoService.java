@@ -1,18 +1,24 @@
 package irille.Dao.SVS;
 
+import com.google.inject.ImplementedBy;
+
+import irille.Dao.SVS.impl.SVSInfoServiceImpl;
+import irille.Entity.SVS.SVSInfo;
+import irille.view.SVS.SVSInfoView.exhibitionAttended;
+import irille.view.SVS.SVSInfoView.partner;
+import irille.view.SVS.SVSInfoView.productQuality;
+import irille.view.SVS.SVSInfoView.productionCapacity;
+import irille.view.SVS.SVSInfoView.realFactory;
+import irille.view.SVS.SVSInfoView.research;
+import irille.view.SVS.SVSInfoView.tradeTeam;
+@ImplementedBy(SVSInfoServiceImpl.class)
 public interface SVSInfoService {
 
 	/**
 	 * 申请认证SVS
+	 * 
 	 * @author GS
-	 * @param research           研发能力信息
-	 * @param productionCapacity 生产能力信息
-	 * @param realFactory        工厂信息
-	 * @param productQuality     产品质量信息
-	 * @param tradeTeam          外贸团队信息
-	 * @param exhibition         参加的展会信息
-	 * @param partner            合作商信息
+	 * 
 	 */
-	public void applicationForCertification(String research, String productionCapacity, String realFactory,
-			String productQuality, String tradeTeam, String exhibition, String partner);
+	public void application(SVSInfo svs) throws Exception;
 }

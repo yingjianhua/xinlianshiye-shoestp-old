@@ -2,11 +2,26 @@ package irille.view.SVS;
 
 import java.util.List;
 
-import irille.platform.lg.View.statisticsView;
 import irille.view.BaseView;
 import irille.view.SVS.BaseScore.Calulate;
-import irille.view.SVS.BaseScore.*;
-
+import irille.view.SVS.BaseScore.Countable;
+import irille.view.SVS.BaseScore.ExhibitionAttendedHandler;
+import irille.view.SVS.BaseScore.NeedleCartNumHandler;
+import irille.view.SVS.BaseScore.PartnerHandler;
+import irille.view.SVS.BaseScore.ProductISOCertificateHandler;
+import irille.view.SVS.BaseScore.ProductQualityCertificateHandler;
+import irille.view.SVS.BaseScore.ProductTestEquipmentHandler;
+import irille.view.SVS.BaseScore.ProductionExportVolumeHandler;
+import irille.view.SVS.BaseScore.ProductionLineQuantityHandler;
+import irille.view.SVS.BaseScore.RealEmployeesNumHandler;
+import irille.view.SVS.BaseScore.RealIsSystemHandler;
+import irille.view.SVS.BaseScore.RealLicenceHandler;
+import irille.view.SVS.BaseScore.ResCertificateHandler;
+import irille.view.SVS.BaseScore.ResNumOfShoesHandler;
+import irille.view.SVS.BaseScore.ResearchIsTeamHandler;
+import irille.view.SVS.BaseScore.TradeExperienceHandler;
+import irille.view.SVS.BaseScore.TradeIsTeamHandler;
+import irille.view.SVS.BaseScore.TradeTeamSizeHandler;
 import lombok.Data;
 
 @Data
@@ -24,7 +39,7 @@ public class SVSInfoView extends Countable implements BaseView {
 		this.exhibitionAttended = exhibitionAttended;
 		this.partner = partner;
 	}
-
+	@Calulate
 	private research research;
 	private productionCapacity productionCapacity;
 	private realFactory realFactory;
@@ -34,7 +49,7 @@ public class SVSInfoView extends Countable implements BaseView {
 	private partner partner;
 
 	@Data
-	public static class research {
+	public static class research extends Countable {
 		// 研发能力
 		@Calulate(handleClass = ResearchIsTeamHandler.class)
 		Integer isTeam; // 是否拥有研发团队0代表没有 1代表有
