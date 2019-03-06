@@ -1,5 +1,6 @@
 package irille.Service.Manage.RFQ.Imp;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import irille.Dao.Old.RFQ.RFQConsultMessageDAO;
 import irille.Dao.Old.RFQ.RFQConsultRelationDAO;
@@ -150,7 +151,6 @@ public class RFQManageServiceImp implements IRFQManageService {
         rfqConsultRelation.setCurrency(quoteInfo.getCurrency());
         rfqConsultRelation.setTitle(quoteInfo.getTitle());
         rfqConsultRelation.setDescription(quoteInfo.getDescriotion());
-        rfqConsultRelation.setImage(quoteInfo.getImages());
         rfqConsultRelation.setQuantity(quoteInfo.getQuantity());
         rfqConsultRelation.setMinprice(quoteInfo.getMin_price());
         rfqConsultRelation.setMaxprice(quoteInfo.getMax_price());
@@ -161,7 +161,12 @@ public class RFQManageServiceImp implements IRFQManageService {
         rfqConsultRelation.stTransittype((RFQConsultShipping_Type) RFQConsultShipping_Type.FOB.getLine().get(quoteInfo.getTransitType()));
         rfqConsultRelation.stSample(quoteInfo.isSample());
         rfqConsultRelation.setCompanydescribe(quoteInfo.getCompanyDescribe());
-        rfqConsultRelation.setThrowaway(quoteInfo.getThrowaway());
+        try {
+            rfqConsultRelation.setImage(objectMapper.writeValueAsString(quoteInfo.getImages()));
+            rfqConsultRelation.setThrowaway(objectMapper.writeValueAsString(quoteInfo.getThrowaway()));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         rfqConsultRelation.stIsNew(true);
         rfqConsultRelation.stHadReadPurchase(false);
         rfqConsultRelation.stHadReadSupplier(true);
@@ -171,6 +176,7 @@ public class RFQManageServiceImp implements IRFQManageService {
         rfqConsultRelationDAO.commit();
         if (consult.getLeftCount() < consult.getTotal()) {
             consult.setLeftCount(consult.getLeftCount() + 1);
+            consult.setProductRequest("{}");
             rfqConsultUpdDAO.setB(consult).commit();
         }
         return 1;
