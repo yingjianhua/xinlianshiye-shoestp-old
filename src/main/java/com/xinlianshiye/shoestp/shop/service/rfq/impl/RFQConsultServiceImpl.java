@@ -484,7 +484,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
                 .LEFT_JOIN(RFQConsultRelation.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY)
                 .WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey())
                 .WHERE(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", false)
-                .GROUP_BY(RFQConsultRelation.T.PKEY))
+                .GROUP_BY(RFQConsult.T.TYPE))
                 .queryMaps()
                 .stream().forEach(map -> {
             Integer count = GetValue.get(map, "count(1)", Integer.class, null);
