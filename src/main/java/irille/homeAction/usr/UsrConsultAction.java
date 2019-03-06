@@ -32,8 +32,8 @@ public class UsrConsultAction extends HomeAction<UsrConsult> implements IUsrCons
 	 */
 	@Override
 	public String publicListView() {
-		setResult("/home/public-inquiry-list.jsp");
-		return TRENDS;
+	    setResult("/home/usr_UsrMessages_center");
+        return HomeAction.RTRENDS;
 	}
 
 	/**

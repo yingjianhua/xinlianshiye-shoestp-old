@@ -315,7 +315,7 @@ ul{
                 supData: [],
             },
             mounted()
-            {if (sessionStorage['Temp_Pdt_publish_form']){
+            {if (sessionStorage['Temp_Pdt_publish_form'] &&sessionStorage['Temp_Pdt_publish_form']!=''&&sessionStorage['Temp_Pdt_publish_form']!='null'){
                     this.form=JSON.parse(sessionStorage['Temp_Pdt_publish_form'])
                 }
                 // 进来页面获取到供应商信息
@@ -414,7 +414,7 @@ ul{
                             this.form.images = this.imgsToUpload.join(",");
                             this.form.pdtId = this.id;
                             console.log(this.imgsToUpload)
-                            if (this.form.images.length == 0) {
+                            // if (this.form.images.length == 0) {
                                 // if(${env.login==null}){
                                 //     this.$message({
                                 //         showClose: true,
@@ -424,10 +424,10 @@ ul{
 
                                 //     window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
                                 // }
-                                this.$message.error('Please upload an image');
-                                return
-                            }
-                            console.log('submit!');
+                                // this.$message.error('Please upload an image');
+                                // return
+                            // }
+                            // console.log('submit!');
                             axios.post(url, this.form)
                                 .then((res) => {
                                     console.log(res)
@@ -440,11 +440,8 @@ ul{
                                             type: 'success'
                                         });
                                         setTimeout(function () {
-                                            gtag_report_conversion()
-                                                                    sessionStorage['Temp_Pdt_publish_form']=null
-
-                                            window.location.href =
-                                                '/home/usr_UsrConsult_listView';
+                                                    sessionStorage.removeItem('Temp_Pdt_publish_form')
+                                            window.location.href =getParams('backUrl','/');
                                         }, 2000)
                                         // 未登录时
                                     } else if (res.data.ret == -1) {

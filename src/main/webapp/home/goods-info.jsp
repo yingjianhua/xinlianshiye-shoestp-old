@@ -1015,7 +1015,8 @@
                     user_obj.set_form_sign_in('', window.location.href, 1);
                     return
                 }
-                window.location = '/home/usr_UsrConsult_productPublishView?product_id=' + this.goodsInfo.pdtId
+              window.location = '/home/usr_UsrConsult_productPublishView?product_id=' + this.goodsInfo.pdtId+'&backUrl='+window.location.href
+
                 // axios({
                 //     url: "/home/pdt_PdtConsultPdtList_add",
                 //     method: "post",

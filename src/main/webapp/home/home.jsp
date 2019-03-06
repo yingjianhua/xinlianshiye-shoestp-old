@@ -190,9 +190,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="btn-group">
-                                                            <a class="btn-inquiry btn-blue"
-                                                               :href="'/home/usr_UsrConsult_productPublishView?product_id='+goods.id"
-                                                               target="_blank" style="z-index: 999">
+                                                           <a class="inquiry-a"
+                                                               :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId+'&backUrl='+window.location.href" target="_blank" style="z-index: 999">
                                                                 Inquiry
                                                             </a>
                                                         </div>
@@ -346,8 +345,8 @@
                                     Min.Order: {{item.minOrder}} pairs
                                 </div>
                             </a>
-                            <a class="inquiry-a"
-                               :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" target="_blank" style="z-index: 999">
+                             <a class="inquiry-a"
+                               :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId+'&backUrl='+window.location.href" target="_blank" style="z-index: 999">
                                 Inquiry
                             </a>
                         </div>
