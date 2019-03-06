@@ -41,12 +41,12 @@ public class Countable {
 				if (attribute == null)
 					return 0;
 				Countable countable = (Countable) attribute;
-				return countable.countScore();
+				totalScore += countable.countScore();
 			} else {
 				Class<? extends SVSHandler<?>>[] handleClasses = calulate.handleClass();
 				for (Class<? extends SVSHandler<?>> handleClass : handleClasses) {
 					SVSHandler<?> svsHandler = handerMap.get(handleClass);
-					totalScore += svsHandler.getScore(field.get(this));
+					totalScore += svsHandler.getScore(attribute);
 				}
 			}
 		}

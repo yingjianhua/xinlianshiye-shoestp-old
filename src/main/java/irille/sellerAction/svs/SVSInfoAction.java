@@ -1,11 +1,8 @@
 package irille.sellerAction.svs;
 
 import java.util.Date;
-
 import javax.inject.Inject;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import irille.Dao.SVS.SVSInfoService;
 import irille.Entity.SVS.SVSInfo;
 import irille.Entity.SVS.Enums.SVSAuthenticationStatus;
@@ -13,13 +10,6 @@ import irille.Entity.SVS.Enums.SVSGradeType;
 import irille.action.seller.SellerAction;
 import irille.pub.util.GetBaseScoreUtils;
 import irille.sellerAction.svs.inf.ISVSInfoAction;
-import irille.view.SVS.SVSInfoView.exhibitionAttended;
-import irille.view.SVS.SVSInfoView.partner;
-import irille.view.SVS.SVSInfoView.productQuality;
-import irille.view.SVS.SVSInfoView.productionCapacity;
-import irille.view.SVS.SVSInfoView.realFactory;
-import irille.view.SVS.SVSInfoView.research;
-import irille.view.SVS.SVSInfoView.tradeTeam;
 import lombok.Data;
 
 @Data
@@ -40,6 +30,9 @@ public class SVSInfoAction extends SellerAction<SVSInfo> implements ISVSInfoActi
 	// 申请认证
 	@Override
 	public void application() throws Exception {
+		
+		
+		
 		SVSInfo svs = new SVSInfo();
 		int score = GetBaseScoreUtils.getBaseScore(search, capacity, factory, quality, team, exhibition, partner);
 		System.out.println(score);
@@ -62,8 +55,9 @@ public class SVSInfoAction extends SellerAction<SVSInfo> implements ISVSInfoActi
 		svs.setExhibitionAttended(om.writeValueAsString(exhibition));
 		svs.setPartner(om.writeValueAsString(partner));
 		svs.stSupplier(getSupplier());
+		svs.setDynamicScore(0);
 		service.application(svs);
-
+		writeSuccess();;
 		;
 	}
 

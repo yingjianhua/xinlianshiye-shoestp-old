@@ -8,5 +8,7 @@ import irille.Entity.SVS.SVSInfo;
 public interface SVSInfoDao {
 
 	void save(SVSInfo bean);
+	
+	int  findSVSInfoBySupplier(Integer supplier);
 
 }

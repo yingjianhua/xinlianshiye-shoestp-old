@@ -37,11 +37,11 @@ public class SVSInfo  extends BeanInt<SVSInfo>{
 		EXHIBITION_ATTENDED(Sys.T.JSON,"参加过的展会"),
 		PARTNER(Sys.T.JSON,"合作商"),
 		BASE_SCORE(Sys.T.INT,"基础分"),
-		DYNAMIC_SCORE(Sys.T.AMT,"动态分"),
+		DYNAMIC_SCORE(Sys.T.INT,"动态分"),
 		STATUS(Tb.crt(SVSAuthenticationStatus.DEFAULT)),
 		GRADE(Tb.crt(SVSGradeType.DEFAULT)),
 		APPLICATION_TIME(Sys.T.DATE_TIME,"申请认证时间"),
-		AUTHENTICATION_TIME(Sys.T.DATE_TIME,"认证时间"),
+		AUTHENTICATION_TIME(Sys.T.DATE_TIME__NULL,"认证时间"),
 		FAILURE_REASONS(Sys.T.STR__200_NULL,"认证失败原因"),
 	    ROW_VERSION(Sys.T.ROW_VERSION),
         // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
@@ -93,7 +93,7 @@ public class SVSInfo  extends BeanInt<SVSInfo>{
   private String _exhibitionAttended;	// 参加过的展会  JSONOBJECT
   private String _partner;	// 合作商  JSONOBJECT
   private Integer _baseScore;	// 基础分  INT
-  private BigDecimal _dynamicScore;	// 动态分  DEC(16,2)
+  private Integer _dynamicScore;	// 动态分  INT
   private Byte _status;	// 认证结果类型 <SVSAuthenticationStatus>  BYTE
 	// SUCCESS:1,认证成功
 	// FAIL:2,认证失败
@@ -105,7 +105,7 @@ public class SVSInfo  extends BeanInt<SVSInfo>{
 	// DIAMONDS:3,钻石
 	// NotAvailable:0,暂无等级
   private Date _applicationTime;	// 申请认证时间  TIME
-  private Date _authenticationTime;	// 认证时间  TIME
+  private Date _authenticationTime;	// 认证时间  TIME<null>
   private String _failureReasons;	// 认证失败原因  STR(200)<null>
   private Short _rowVersion;	// 版本  SHORT
 
@@ -121,11 +121,11 @@ public class SVSInfo  extends BeanInt<SVSInfo>{
     _exhibitionAttended=null;	// 参加过的展会  JSONOBJECT
     _partner=null;	// 合作商  JSONOBJECT
     _baseScore=0;	// 基础分  INT
-    _dynamicScore=ZERO;	// 动态分  DEC(16,2)
+    _dynamicScore=0;	// 动态分  INT
     _status=SVSAuthenticationStatus.DEFAULT.getLine().getKey();	// 认证结果类型 <SVSAuthenticationStatus>  BYTE
     _grade=SVSGradeType.DEFAULT.getLine().getKey();	// SVS商家等级类型 <SVSGradeType>  BYTE
     _applicationTime=Env.getTranBeginTime();	// 申请认证时间  TIME
-    _authenticationTime=Env.getTranBeginTime();	// 认证时间  TIME
+    _authenticationTime=null;	// 认证时间  TIME
     _failureReasons=null;	// 认证失败原因  STR(200)
     _rowVersion=0;	// 版本  SHORT
     return this;
@@ -245,10 +245,10 @@ public class SVSInfo  extends BeanInt<SVSInfo>{
   public void setBaseScore(Integer baseScore){
     _baseScore=baseScore;
   }
-  public BigDecimal getDynamicScore(){
+  public Integer getDynamicScore(){
     return _dynamicScore;
   }
-  public void setDynamicScore(BigDecimal dynamicScore){
+  public void setDynamicScore(Integer dynamicScore){
     _dynamicScore=dynamicScore;
   }
   public Byte getStatus(){
