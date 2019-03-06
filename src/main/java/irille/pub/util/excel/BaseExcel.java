@@ -381,7 +381,7 @@ public class BaseExcel {
      * @author lijie@shoestp.cn
      */
     public Map<String, PictureData> getPic() {
-        Map<String, PictureData> sheetIndexPicMap = new HashMap();
+        Map<String, PictureData> sheetIndexPicMap = new WeakHashMap<>();
         if (workbook instanceof XSSFWorkbook) {
             for (POIXMLDocumentPart dr : ((XSSFSheet) activeSheet).getRelations()) {
                 if (dr instanceof XSSFDrawing) {
@@ -466,8 +466,7 @@ public class BaseExcel {
      * @author lijie@shoestp.cn
      */
     public void addPic(int i, int i1, int i2, int i3, String s) {
-        try {
-            CloseableHttpClient httpclient = HttpClients.createDefault();
+        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
             HttpGet httpGet = new HttpGet(String.valueOf(s));
             httpGet
                     .setHeader(
@@ -490,7 +489,6 @@ public class BaseExcel {
             ImageIO.write(bufferedImage, filesuffix, byteArrayOut);
             Drawing patriarch = activeSheet.createDrawingPatriarch();
             ClientAnchor anchor = null;
-
             if (workbook instanceof XSSFWorkbook) {
                 anchor = new XSSFClientAnchor(0, 0, 255, 255, (short) i, i1, (short) i2, i3);
             } else {
@@ -518,7 +516,6 @@ public class BaseExcel {
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
         }
     }
 

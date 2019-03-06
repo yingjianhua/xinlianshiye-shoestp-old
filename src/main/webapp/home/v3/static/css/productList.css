@@ -297,7 +297,7 @@ a, a:link, a:visited, a:hover, a:active {
 	text-align: center;
 	line-height:20px;
 	border-radius:50%;
-	border:1px solid #eee;
+	border:1px solid #ddd;
 	z-index:3;
 	cursor:pointer;
 }

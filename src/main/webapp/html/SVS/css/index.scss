@@ -38,7 +38,7 @@
     header {
         &>div {
             max-width: 1920px;
-            min-width:1200px; 
+            min-width:1200px;
             background: url('../images/bannerbg1.png') center center no-repeat;
             height: 786px;
             margin: 0 auto;
@@ -100,7 +100,7 @@
             width: 385px;
             height: 426px;
             background-color: #ffffff;
-            box-shadow: 2px 3px 4px 0px 
+            box-shadow: 2px 3px 4px 0px
                 rgba(161, 161, 161, 0.25);
             border-radius: 12px;
             text-align: center;
@@ -123,7 +123,7 @@
             &:hover{
                 transform: translateY(-20px);
             }
-            
+
         }
        }
     }
@@ -140,11 +140,12 @@
                  margin: 20px 0 70px 0;
             }
         }
-       
+
     }
     .advantage{
         width: 100%;
         text-align: center;
+      background: #fff;
         h1{
             font-size: 40px;
             color: #2f4597;
@@ -193,7 +194,7 @@
                         text-align: center;
                         color: #333333;
                         font-weight: bold;
-                        
+
                     }
                     .benchmarks-info{
                         width: 334px;
@@ -308,7 +309,7 @@
           transform: translate3d(0, 100%, 0);
           visibility: visible;
         }
-      
+
         to {
           transform: translate3d(0, 0, 0);
         }
@@ -321,13 +322,13 @@
           opacity: 0;
           transform: translate3d(-100%, 0, 0);
         }
-      
+
         to {
           opacity: 1;
           transform: none;
         }
       }
-      
+
       .fadeInLeft {
         animation-name: fadeInLeft;
       }
@@ -336,13 +337,13 @@
           opacity: 0;
           transform: translate3d(100%, 0, 0);
         }
-      
+
         to {
           opacity: 1;
           transform: none;
         }
       }
-      
+
       .fadeInRight {
         animation-name: fadeInRight;
       }
@@ -351,13 +352,13 @@
           opacity: 0;
           transform: translate3d(0, -100%, 0);
         }
-      
+
         to {
           opacity: 1;
           transform: none;
         }
       }
-      
+
       .fadeInDown {
         animation-name: fadeInDown;
       }
@@ -366,26 +367,26 @@
           animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
           transform: translate3d(0,0,0);
         }
-      
+
         40%, 43% {
           animation-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060);
           transform: translate3d(0, -30px, 0);
         }
-      
+
         70% {
           animation-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060);
           transform: translate3d(0, -15px, 0);
         }
-      
+
         90% {
           transform: translate3d(0,-4px,0);
         }
       }
-      
+
       .bounce {
         animation-name: bounce;
         transform-origin: center bottom;
       }
-      
-      
+
+
 }

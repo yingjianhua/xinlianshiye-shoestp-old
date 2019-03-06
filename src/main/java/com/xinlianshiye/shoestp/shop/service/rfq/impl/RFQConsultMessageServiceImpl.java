@@ -51,6 +51,7 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 
 		BeanQuery<RFQConsultMessage> query2 = Query.selectFrom(RFQConsultMessage.class);
 		query2.WHERE(RFQConsultMessage.T.RELATION, "=?", relationPkey);
+		query2.ORDER_BY(RFQConsultMessage.T.SEND_TIME, "desc");
 		query2.limit(start, limit);
 		List<RFQConsultMessage> messages = query2.queryList();
 		

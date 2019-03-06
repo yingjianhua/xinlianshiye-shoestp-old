@@ -1240,7 +1240,7 @@ a {
 }
 
 #o2otop .o2otopcon .topsearch {
-    width: 700px;
+    width: 680px;
     height: 46px;
     border: 2px solid #10389c;
     box-sizing: border-box;
@@ -1367,7 +1367,7 @@ a {
     -ms-flex-align: center;
     align-items: center;
     height: 50px;
-    padding: 7px 10px;
+    padding: 7px 9px;
     border: solid 1px #fff;
     background-color: #fff;
     z-index: 999;

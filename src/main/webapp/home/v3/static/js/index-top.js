@@ -18,9 +18,13 @@ template: `<div>
                 <dt>
                     <img src="/home/v3/static/images/indextopren.png" alt="">
                     <div class="o2otoplikenum">
-                        <div style="height:  20px;">
+                        <div style="height:20px;">
+                         <div  v-if="!sysConfig.user">
+                            <a href="/home/usr_UsrPurchase_sign" style="border-right: 1px solid #b7b7b7;padding-right: 3px;color: #4fa2d7;font-size:12px;" target="_blank">Register</a>
+                            <a href="/home/usr_UsrPurchase_sign" style="color: #4fa2d7;font-size:12px;" target="_blank">Login</a>
+                         </div>
                         </div>
-                        <p>My Shosetp</p>
+                        <p>My Shoestp</p>
                     </div>
                 </dt>
                 <!--  没有登录看到的  -->
@@ -54,10 +58,10 @@ template: `<div>
                     </div>
                     <ul>
                         <li><a href="/home/usr_UsrPurchase_userIndex" target="_blank">My Shoestp <i class="el-icon-arrow-right"></i></a></li>
-                        <li><a href="" target="_blank">RFQ List <i class="el-icon-arrow-right"></i></a></li>
-                        <li><a href="home/usr_UsrConsult_listView" target="_blank">My Inquiry <i class="el-icon-arrow-right"></i></a></li>
+                        <li><a href="/home/usr_UsrMessages_center" target="_blank">RFQ List <i class="el-icon-arrow-right"></i></a></li>
+                        <li><a href="/home/usr_UsrConsult_listView" target="_blank">My Inquiry <i class="el-icon-arrow-right"></i></a></li>
                         <li><a href="/home/usr_UsrPurchase_userIndex" target="_blank">My Account <i class="el-icon-arrow-right"></i></a></li>
-                        <li><a href="/home/usr_UsrSupplier_supplierEntry" target="_blank">我要开店 <i class="el-icon-arrow-right"></i></a></li>
+                        <li style="font-size: 15px;font-weight: bold;"><a href="/home/usr_UsrSupplier_supplierEntry" target="_blank">我要开店 <i class="el-icon-arrow-right"></i></a></li>
                     </ul>
                     <div class="after-login"><a href="/home/usr_UsrConsult_publishView" target="_blank">Submit RFQ</a></div>
                     <div class="hours  after-login">Get multiple quotes within 24 hours！</div>
@@ -67,10 +71,10 @@ template: `<div>
                     <ul>
                         <li class="flexSb user-name"><div class="ellipsis_1">Hi {{sysConfig.user.name}}</div><a href="/home/usr_UsrPurchase_signOut" target="_blank">sign out</a></li>
                         <li><a href="/home/usr_UsrPurchase_userIndex" target="_blank">My Shoestp <i class="el-icon-arrow-right"></i></a></li>
-                        <li><a href="/home/usr_UsrConsult_listView" target="_blank">RFQ List <i class="el-icon-arrow-right"></i></a></li>
+                        <li><a href="//home/usr_UsrMessages_center" target="_blank">RFQ List <i class="el-icon-arrow-right"></i></a></li>
                         <li><a href="/home/usr_UsrConsult_listView" target="_blank">My Inquiry <i class="el-icon-arrow-right"></i></a></li>
                         <li><a href="/home/usr_UsrPurchase_userIndex" target="_blank">My Account <i class="el-icon-arrow-right"></i></a></li>
-                        <li><a href="/home/usr_UsrSupplier_supplierEntry" target="_blank">我要开店 <i class="el-icon-arrow-right"></i></a></li>
+                        <li style="font-size: 15px;font-weight: bold;"><a href="/home/usr_UsrSupplier_supplierEntry" target="_blank">我要开店 <i class="el-icon-arrow-right"></i></a></li>
                     </ul>
                     <div class="after-login"><a href="/home/usr_UsrConsult_publishView" target="_blank">Submit RFQ</a></div>
                     <div class="hours after-login">Get multiple quotes within 24 hours！</div>
@@ -78,7 +82,7 @@ template: `<div>
             </dl>
 
             <a class="o2otoplikes" href="/home/usr_UsrFavorites_myfavorite">
-                <img src="/home/v3/static/images/o2otopfavoroite.png" alt="">
+                <img src="/home/v3/static/images/icon_top_love.png" alt="" style="margin-right: 10px">
                 <div class="o2otoplikenum">
                     <div style="height: 20px;">
                         <p v-if="sysConfig.user">{{sysConfig.user.favorite_count }}</p>
