@@ -207,9 +207,10 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
         setUser(null);
         if (isMobile())
             setResult("/home/usr_UsrPurchase_sign", false);
-        else
-            setResult("/", false);
-
+        else {
+            String referer = ServletActionContext.getRequest().getHeader("referer");
+            setResult(referer != null && referer.length() > 0 ? referer : "/", false);
+        }
         return HomeAction.RTRENDS;
     }
 
