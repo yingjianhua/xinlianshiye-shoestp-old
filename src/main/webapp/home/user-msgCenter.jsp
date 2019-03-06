@@ -51,10 +51,10 @@
 
 </style>
 </head>
-<body  class=" bg-gray  page-personal-center">
+<body class="bg-gray  page-personal-center">
 <jsp:include page="v3/nav-nobody.jsp"
 ></jsp:include>
-<div id="shoesTp" class=" w_1240">
+<div id="shoesTp"  class=" w_1240 ">
 		<main class="main">
 			<div class="wide por clearfix flex-layout">
 				<!-- 左侧 My-Accoung 列表 -->
@@ -111,8 +111,10 @@
 										<ul class="pop-inquires-list">
 											<li class="inquires-item title">My Services</li>
 											<li class="inquires-item sub">
-												<i class="el-icon-plus prefix-icon"></i>
-												Submit RFQ
+												<a target="_blank" href="/home/usr_UsrConsult_publishView" style="color: #7f7f7f;">
+													<i class="el-icon-plus prefix-icon"></i>
+													Submit RFQ
+												</a>
 											</li>
 											<li class="inquires-item title">Inquiries</li>
 											<li class="inquires-item sub" @click="chooesInquiryType()">
@@ -182,7 +184,7 @@
 													<div class="goods-name">
 														<div class="ellipsis_1">{{inquiry.title}}</div>
 													</div>
-													<div class="status">{{inquiry.type}}</div>
+													<div class="status">{{inquiry.type | optionsStatus2Text}}</div>
 												</div>
 												<transition name="el-fade-in">
 													<div class="my-btn-normal btn-view"
@@ -205,7 +207,7 @@
 													<div class="goods-name">
 														<div class="ellipsis_1">{{inquiry.title}}</div>
 													</div>
-													<div class="status">{{inquiry.type}}</div>
+													<div class="status">{{inquiry.type | optionsStatus2Text}}</div>
 												</div>
 												<transition name="el-fade-in">
 													<div class="my-btn-normal btn-view"
@@ -249,13 +251,15 @@
 														<div class="goods-name ellipsis_1">
 																{{relation.quotation.title}}
 														</div>
-														<img class="goods-pic" :src="image(relation.quotation.images[0])" alt="goods's pic">
-														<div class="goods-spec">
-															{{relation.quotation.minPrice}}-{{relation.quotation.maxPrice}} {{relation.quotation.currency.shortName}}
-														</div>
-														<div class="sample">
-															{{relation.quotation.sample?"Have sample":"No sample"}}
-														</div>
+														<template v-if="inquiry.type==1">
+															<img class="goods-pic" :src="image(relation.quotation.images[0].url)" alt="goods's pic">
+															<div class="goods-spec">
+																{{relation.quotation.minPrice}}-{{relation.quotation.maxPrice}} {{relation.quotation.currency.shortName}}
+															</div>
+															<div class="sample">
+																{{relation.quotation.sample?"Have sample":"No sample"}}
+															</div>
+														</template>
 
 														<div class="my-btn-normal btn-contact"
 															:data-inquiry-id="inquiry.pkey"
@@ -284,7 +288,7 @@
 															@click="addContact">Add Contact</li>
 													</ul>
 													<div slot="reference">
-														<img class="icon-more" src="./images/icon_more.png" alt="">
+														<img class="icon-more" src="/home/v3/static/images/user/icon_more.png" alt="">
 													</div>
 												</el-popover>
 											</div>
@@ -900,7 +904,7 @@
 											<span class="title">Product image or file:</span>
 											<div class="text">
 												<img class="pic-item" alt="goods' pic"
-													:src="image(goodsPic)"
+													:src="image(goodsPic.url)"
 													v-for="goodsPic in quotationDetail.images">
 											</div>
 										</li>
@@ -1262,19 +1266,14 @@
 					// 正在加载 or 已加载完全
 					if(this.isInquiryLisLoading || this.isInquiryLoadOver) return;
 					this.isInquiryLisLoading = true;
-                    // 参数拼接 - unread未勾选时不传
-                    var postData={
-                        keyword: this.inquiryKeyword,
-                        t: this.inquiresType,
-                        start: this.inquiryLisPageStart,
-                        limit: this.inquiryLisPageLimit
-                    }
-                    if( this.isUnread ){
-                        postData.unread = true;
-                    }
-
 					axios.get('/home/rfq_RFQConsult_pageMine', {
-							params: postData
+							params: {
+								keyword: this.inquiryKeyword,
+								t: this.inquiresType,
+								unread: this.isUnread,
+								start: this.inquiryLisPageStart,
+								limit: this.inquiryLisPageLimit
+							}
 						})
 						.then((res) => {
 							this.isInquiryLisLoading = false;
