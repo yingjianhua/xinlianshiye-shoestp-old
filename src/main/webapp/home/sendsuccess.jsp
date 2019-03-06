@@ -189,7 +189,9 @@ body{ background-image:none;}
 			<a href="https://www.shoeslogo.com/" title="shoeslogo.com" target="_blank" style="margin:0 5px;"><img src="./static/images/854464db07.png" alt="shoeslogo.com"></a><a href="http://www.shoesmat.com/" title="shoesmat.com" target="_blank" style="margin:0 5px;"><img src="./static/images/0f12682298.png" alt="shoesmat.com"></a><a href="http://www.shoesrd.com/" title="shoesrd.com" target="_blank" style="margin:0 5px;"><img src="./static/images/3c27f32d85.png" alt="shoesrd.com"></a><a href="http://www.wzsomt.com/" title="wzsomt.com" target="_blank" style="margin:0 5px;"><img src="./static/images/d30276cc0d.png" alt="wzsomt.com"></a>
 		</div>
 		<div class="copyright">
-			Copyright © 2016-2017 温州新联实业股份有限公司. All Rights Reserved. 浙ICP备16034166号-1 浙公网安备 33030402000493号 &nbsp;&nbsp;&nbsp;&nbsp;
+			Copyright © 2016-2017 温州新联实业股份有限公司. All Rights Reserved.
+			<%--浙ICP备16034166号-1 浙公网安备 33030402000493号--%>
+			&nbsp;&nbsp;&nbsp;&nbsp;
 		</div>
 	</div>
 	</body>

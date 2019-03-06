@@ -7,10 +7,9 @@ import irille.pub.Str;
 import irille.shop.usr.UsrConsult;
 import irille.shop.usr.UsrConsultDAO;
 import irille.view.usr.ConsultView;
+import org.json.JSONException;
 
 import java.io.IOException;
-
-import org.json.JSONException;
 /**
  * 采购商action
  * @author yjh
@@ -45,6 +44,11 @@ public class UsrConsultAction extends HomeAction<UsrConsult> implements IUsrCons
 	@Override
 	public String publishView() {
 		setResult("/home/my-inquiry-publish.jsp");
+		return TRENDS;
+	}
+	@NeedLogin
+	public String productPublishView() {
+		setResult("/home/pdt-inquiry-publish.jsp");
 		return TRENDS;
 	}
 

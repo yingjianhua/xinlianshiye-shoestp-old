@@ -35,123 +35,130 @@
     <link rel="stylesheet" href="./static/css/layer.css" type="text/css">
     <script src="./static/js/layer.js" type="text/javascript"></script>
 </head>
-
+<jsp:include page="v3/header.jsp"/>
+<jsp:include page="v3/nav.jsp"/>
 <body class="lang_en w_1200">
 <%@ include file="/home/template/web-top.jsp" %>
-<%@ include file="/home/template/new-header.jsp" %>
-<%@ include file="/home/template/shop-header.jsp" %>
-<c:if test="${supView.productPageOn==1}">
-    <div class="clean">
-        <c:if test="${supView.productPageDiy != null && supView.productPageDiy != ''}">
-            ${supView.productPageDiy}
-        </c:if>
-    </div>
-</c:if>
-<div>
-    <%--    <div class="clean">
-           <c:if test="${supplier.productPageDiy != null && supplier.productPageDiy != ''}">
-               ${supplier.productPageDiy}
-           </c:if>
-       </div> --%>
-    <div class="wide">
-        <div class="enterprise-info-wrap">
-            <h3 class="enterprise-info-title clean">
-                <s:text name="hottestItems"/>
-                <div class="fr">
-                    <ul class="tool-group">
-                        <li class="tool-item">
-                            <span class="tool-name"><s:text name="sort_by"/></span>
-                            <div class="tool-content tool-drop-down-wrap">
-                                <div class="tool-drop-down-btn">
+<div id="main">
+    <index-top></index-top>
+    <%@ include file="/home/template/shop-header.jsp" %>
+    <c:if test="${supView.productPageOn==1}">
+        <div class="clean">
+            <c:if test="${supView.productPageDiy != null && supView.productPageDiy != ''}">
+                ${supView.productPageDiy}
+            </c:if>
+        </div>
+    </c:if>
+    <div>
+        <%--    <div class="clean">
+               <c:if test="${supplier.productPageDiy != null && supplier.productPageDiy != ''}">
+                   ${supplier.productPageDiy}
+               </c:if>
+           </div> --%>
+        <div class="wide">
+            <div class="enterprise-info-wrap">
+                <h3 class="enterprise-info-title clearfix">
+                <%--<h3 class="enterprise-info-title clearfix" style="margin-bottom: 5px">--%>
+                    <s:text name="hottestItems"/>
+                    <div class="fr">
+                        <ul class="tool-group">
+                            <li class="tool-item">
+                                <span class="tool-name"><s:text name="sort_by"/></span>
+                                <div class="tool-content tool-drop-down-wrap">
+                                    <div class="tool-drop-down-btn">
                     <span class="select-text" id="sort">
                     		<s:text name="most_popular"/>
                     </span>
-                                    <i class="icon icon-arrow-down"></i>
+                                        <i class="icon icon-arrow-down"></i>
+                                    </div>
+
+                                    <div class="tool-drop-down-content">
+                                        <ul>
+                                            <li>
+                                                <a href="javascript:chooseThisSort(0);"><s:text
+                                                        name="most_popular"/></a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:chooseThisSort(1);"><s:text
+                                                        name="sales"/></a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:chooseThisSort(2);"><s:text
+                                                        name="fav"/></a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:chooseThisSort(3);"><s:text
+                                                        name="new"/></a>
+
+                                            </li>
+                                            <li>
+                                                <a href="javascript:chooseThisSort(4);"><s:text
+                                                        name="price"/></a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
+                            </li>
 
-                                <div class="tool-drop-down-content">
-                                    <ul>
-                                        <li>
-                                            <a href="javascript:chooseThisSort(0);"><s:text
-                                                    name="most_popular"/></a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:chooseThisSort(1);"><s:text
-                                                    name="sales"/></a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:chooseThisSort(2);"><s:text
-                                                    name="fav"/></a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:chooseThisSort(3);"><s:text
-                                                    name="new"/></a>
-
-                                        </li>
-                                        <li>
-                                            <a href="javascript:chooseThisSort(4);"><s:text
-                                                    name="price"/></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="tool-item">
-                            <span class="tool-name"><s:text name="attr.category"/></span>
-                            <div class="tool-content tool-drop-down-wrap">
-                                <div class="tool-drop-down-btn">
+                            <li class="tool-item">
+                                <span class="tool-name"><s:text name="attr.category"/></span>
+                                <div class="tool-content tool-drop-down-wrap">
+                                    <div class="tool-drop-down-btn">
                     <span class="select-text" id="category">
 						<s:text name="allCategories"/>
 					</span>
-                                    <i class="icon icon-arrow-down"></i>
-                                </div>
+                                        <i class="icon icon-arrow-down"></i>
+                                    </div>
 
-                                <div class="tool-drop-down-content">
-                                    <ul class="category">
-                                        <li><a onclick="chooseThisCat('')"><s:text
-                                                name="allCategories"/></a></li>
-                                        <c:forEach items="${topDiyCat}" var="cat">
-                                            <li>
-                                                <a onclick="chooseThisCat(${cat.pkey},'${cat.name}')">${cat.name}</a>
-                                            </li>
-                                        </c:forEach>
-                                    </ul>
+                                    <div class="tool-drop-down-content">
+                                        <ul class="category">
+                                            <li><a onclick="chooseThisCat('')"><s:text
+                                                    name="allCategories"/></a></li>
+                                            <c:forEach items="${topDiyCat}" var="cat">
+                                                <li>
+                                                    <a onclick="chooseThisCat(${cat.pkey},'${cat.name}')">${cat.name}</a>
+                                                </li>
+                                            </c:forEach>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                    </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </h3>
+                <div  style="clear:both;"></div>
+
+                <!-- 商品展示 -->
+                <%--  <c:if test="${pageAll != 0}"> --%>
+                <div class="goods-wrap" id="products">
                 </div>
-            </h3>
+                <!-- 页面跳转 - 按钮组 -->
+                <ul id="turn_page">
+                </ul>
+                <%--  </c:if> --%>
+                <%--  <c:if test="${pageAll == 0}">
 
-            <!-- 商品展示 -->
-            <%--  <c:if test="${pageAll != 0}"> --%>
-            <div class="goods-wrap" id="products">
+                 </c:if> --%>
+                <!-- 没有商品时显示 -->
+                <div style="border-top: 1px dotted #ccc;text-align: center;display: none;" id="noGoods">
+                    <p style="padding: 215px 0;text-align: center;display:  inline-block;">
+                        <em style="width: 20px;height: 1px;background-color: #000;display: block;float: left;margin-top: 8px;margin-right: 20px;"></em>
+                        未发布此类产品
+                        <em style="width: 20px;height: 1px;background-color: #000;display: block;float: right;margin-top: 8px;margin-left: 20px;"></em>
+                    </p>
+                </div>
+                <div class="blank25"></div>
             </div>
-            <!-- 页面跳转 - 按钮组 -->
-            <ul id="turn_page">
-            </ul>
-            <%--  </c:if> --%>
-            <%--  <c:if test="${pageAll == 0}">
-
-             </c:if> --%>
-            <!-- 没有商品时显示 -->
-            <div style="border-top: 1px dotted #ccc;text-align: center;display: none;" id="noGoods">
-                <p style="padding: 215px 0;text-align: center;display:  inline-block;">
-                    <em style="width: 20px;height: 1px;background-color: #000;display: block;float: left;margin-top: 8px;margin-right: 20px;"></em>
-                    未发布此类产品
-                    <em style="width: 20px;height: 1px;background-color: #000;display: block;float: right;margin-top: 8px;margin-left: 20px;"></em>
-                </p>
-            </div>
-            <div class="blank25"></div>
         </div>
+            <index-bottom></index-bottom>
+    </div>
+
+    <%--<%@ include file="/home/template/new-foot.jsp" %>--%>
+
+    <div align="center">
     </div>
 </div>
 
-<%@ include file="/home/template/new-foot.jsp" %>
-
-<div align="center">
-</div>
 <script type="text/javascript">
     var pkey = '${supView.pkey}';
     var page = 1;
@@ -361,6 +368,13 @@
 </script>
 
 ${supView.traceCode}
+<script src="/home/v3/static/js/index-top.js"></script>
+<script src="/home/v3/static/js/index-bottom.js"></script>
+<script>
+    new Vue({
+        el:"#main"
+    })
+</script>
 </body>
 
 </html>

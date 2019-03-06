@@ -7,12 +7,12 @@
             <div class="right">
                 <h3><s:text name="Subscribe_Now"/></h3>
                 <!-- <p>Receive The Latest Offers and Promotions Free your Email  Subscribe</p> -->
-                <p><s:text name="Receive_The_Latest_Offers_and_Promotions_Free"/> </p>
+                <%--<p><s:text name="Receive_The_Latest_Offers_and_Promotions_Free"/> </p>--%>
                 <input type="text" v-model="form.email" placeholder="<s:text name="Your_Email"/>"><span
                     @click="subscribe"><s:text name="Subscribe"/></span>
             </div>
             <div class="left">
-                <h3 style="text-indent: 2px;"><s:text name="Follow_Us"/></h3>
+                <h3 style="text-indent: 2px;white-space: nowrap;"><s:text name="Follow_Us"/></h3>
                 <div class="logos">
 
                     <a href="http://www.facebook.com/share.php?src=bm&v=4&u=https%3A%2F%2Fwww.shoestp.com%2Fhome%2Fusr_UsrPurchase&t=facebook"><img

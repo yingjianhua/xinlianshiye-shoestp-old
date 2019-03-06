@@ -30,6 +30,7 @@ public class PdtProductBaseInfoView implements BaseView {
     @SetBean(OriginalField = "picture")
     private String image;
 
+    private Integer min_oq;
     private Integer favorite_count;
 
     private boolean isFav;

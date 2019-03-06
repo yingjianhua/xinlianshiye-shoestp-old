@@ -159,10 +159,10 @@ public class translateUtil {
             TranslateOptions translateOptions = null;
             try {
                 translateOptions = TranslateOptions.getDefaultInstance();
+                translate = translateOptions.getService();
             } catch (Exception e) {
 
             }
-            translate = translateOptions.getService();
         }
     }
 
@@ -348,6 +348,7 @@ public class translateUtil {
         }
         return newAutoTranslate(obj, translateFilter);
     }
+
 
     /**
      * @Description: 自动翻译  根据平台设置的语言

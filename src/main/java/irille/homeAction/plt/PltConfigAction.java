@@ -1,6 +1,7 @@
 package irille.homeAction.plt;
 
 import irille.Service.Plt.PltService;
+import irille.Service.Usr.IUsrSupplierService;
 import irille.homeAction.HomeAction;
 import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.CacheUtils;
@@ -17,6 +18,7 @@ import org.json.JSONException;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class PltConfigAction extends HomeAction<PltConfig> {
 
@@ -26,7 +28,8 @@ public class PltConfigAction extends HomeAction<PltConfig> {
     private Integer currency;
     @Inject
     private PltService pltService;
-
+    @Inject
+    private IUsrSupplierService UsrSupplierService;
 
     /**
      * 切换网站展示语言
@@ -61,14 +64,19 @@ public class PltConfigAction extends HomeAction<PltConfig> {
         sysConfigView.setCurrency_symbol(HomeAction.curCurrency().getSymbol());
         sysConfigView.setBaseImageUrl("https://image.shoestp.com");
         if (getPurchase() != null) {
+
             PltUserInfo userInfo = new PltUserInfo();
             userInfo.setId(getPurchase().getPkey());
             userInfo.setName(getPurchase().getLoginName());
             userInfo.setFavorite_count(UsrFavoritesDAO.countByPurchase(getPurchase().getPkey()));
             userInfo.setInquiry_count(UsrConsultDAO.countByPurchase(getPurchase().getPkey()));
             userInfo.setShopping_cart_count(UsrCartDAO.Query.countByPurchase(getPurchase().getPkey()));
+            userInfo.setUser_type(UsrSupplierService.isSupplier(getPurchase().getLoginName()));//判断是否为商家用户 赋值给usertype 0:普通用户 1: 商家用户
             sysConfigView.setUser(userInfo);
         }
+        sysConfigView.setCurrencyList(PltErateDAO.list().stream().filter(pltErateView -> {
+            return pltErateView.getEnabled();
+        }).collect(Collectors.toList()));
         write(sysConfigView);
     }
 

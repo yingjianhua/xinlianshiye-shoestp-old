@@ -1,6 +1,7 @@
 package irille.shop.plt;
 
 
+import irille.platform.plt.View.CountryView;
 import irille.pub.Log;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.BeanBase;
@@ -13,8 +14,10 @@ import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.plt.Plt.ErrMsgs;
 import irille.shop.plt.PltCountry.T;
+import irille.view.Page;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PltCountryDAO {
     private static final Log LOG = new Log(PltCountryDAO.class);
@@ -107,7 +110,7 @@ public class PltCountryDAO {
         public void valid() {
             super.valid();
             if (PltCountry.chkUniqueShort_name(true, getB().getShortName()) != null)
-                throw LOG.err(ErrMsgs.uniqueErr, PltCountry.T.NAME.getFld().getName());
+                throw LOG.err(ErrMsgs.uniqueErr, T.NAME.getFld().getName());
 
         }
     }
@@ -116,7 +119,7 @@ public class PltCountryDAO {
         @Override
         public void before() {
             PltCountry dbBean = loadThisBeanAndLock();
-            PropertyUtils.copyPropertiesWithout(dbBean, getB(), PltCountry.T.PKEY, PltCountry.T.ENABLED, PltCountry.T.HOT, PltCountry.T.CREATED_BY, PltCountry.T.CREATED_TIME);
+            PropertyUtils.copyPropertiesWithout(dbBean, getB(), T.PKEY, T.ENABLED, T.HOT, T.CREATED_BY, T.CREATED_TIME);
             translateUtil.autoTranslateByManageLanguage(dbBean, true);
             setB(dbBean);
             String wheresql = PltProvince.T.MAIN.getFld().getCodeSqlField() + "=?";
@@ -177,18 +180,91 @@ public class PltCountryDAO {
 
     public static class Hot extends IduOther<Hot, PltCountry> {
         @Override
-        public void run() {
-            super.run();
-            getB().stHot(!getB().gtHot()); //判断是否选中
-            getB().upd();
+        public void before() {
         }
 
         @Override
-        public void after() {
-            addCountry = null;
-            super.after();
+        public void valid() {
+        }
+
+        @Override
+        public void run() {
+            getB().setHot(getB().getHot()); //判断是否选中
+            PltCountry dbBean = loadThisBeanAndLock();
+            PropertyUtils.copyProperties(dbBean, getB(), T.HOT);
+            dbBean.upd();
+            super.run();
         }
     }
 
+    public static class enable extends IduOther<enable, PltCountry> {
+        @Override
+        public void before() {
+        }
 
+        @Override
+        public void valid() {
+        }
+
+        @Override
+        public void run() {
+            getB().stEnabled(!getB().gtEnabled()); //判断是否选中
+            PltCountry dbBean = loadThisBeanAndLock();
+            PropertyUtils.copyProperties(dbBean, getB(), T.ENABLED);
+            dbBean.upd();
+            super.run();
+        }
+    }
+
+    //获取国家列表  参数 国家名称
+    public static Page list(String countryName,String shortName,String zone, Integer start, Integer limit) {
+        if (null == start) {
+            start = 0;
+        }
+        if (null == limit) {
+            limit = 10;
+        }
+        SQL sql = new SQL() {{
+            SELECT(PltCountry.class)
+                    .SELECT(PltErate.T.SYMBOL)
+                    .FROM(PltCountry.class)
+                    .LEFT_JOIN(PltErate.class, PltErate.T.PKEY, PltCountry.T.CURRENCY);
+            if (null != countryName) {
+                WHERE(T.NAME, "like '%" + countryName + "%'");
+            }
+            if (null != shortName) {
+                WHERE(T.SHORT_NAME, "like '%" + shortName + "%'");
+            }
+            if (null != zone) {
+                WHERE(T.ZONE, "like '%" + zone + "%'");
+            }
+        }};
+        Integer count = Query.sql(sql).queryCount();
+        List<CountryView> list = Query.sql(sql.LIMIT(start, limit)).queryMaps().stream().map(bean -> new CountryView() {{
+            setId((Integer) bean.get(T.PKEY.getFld().getCodeSqlField()));
+            setName((String) bean.get(T.NAME.getFld().getCodeSqlField()));
+            setShortName((String) bean.get(T.SHORT_NAME.getFld().getCodeSqlField()));
+            setZone((String) bean.get(T.ZONE.getFld().getCodeSqlField()));
+            setCurrencyId((Integer) bean.get(T.CURRENCY.getFld().getCodeSqlField()));
+            setCurrency((String) bean.get(PltErate.T.SYMBOL.getFld().getCodeSqlField()));
+            setFlag((String) bean.get(T.NATIONAL_FLAG.getFld().getCodeSqlField()));
+            setIsenable(Integer.valueOf(String.valueOf(bean.get(T.ENABLED.getFld().getCodeSqlField()))) == 1 ? true : false);
+            setIshot(Integer.valueOf(String.valueOf(bean.get(T.HOT.getFld().getCodeSqlField()))) == 1 ? true : false);
+            setIsdefault(Integer.valueOf(String.valueOf(bean.get(T.ISDEFAULT.getFld().getCodeSqlField()))) == 1 ? true : false);
+        }}).collect(Collectors.toList());
+        return new Page(list, start, limit, count);
+    }
+
+    public static void updCountry(CountryView view) {
+        PltCountry pltCountry = BeanBase.load(PltCountry.class,view.getId());
+        pltCountry.setName(view.getName());
+        pltCountry.setShortName(view.getShortName());
+        pltCountry.setZone(view.getZone());
+        pltCountry.setCurrency(view.getCurrencyId());
+        pltCountry.setNationalFlag(view.getFlag());
+        pltCountry.stEnabled(view.isIsenable());
+        pltCountry.stHot(view.isIshot());
+        pltCountry.stIsdefault(view.isIsdefault());
+        pltCountry.upd();
+    }
 }

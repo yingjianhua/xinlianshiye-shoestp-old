@@ -17,6 +17,7 @@
     <script type="text/javascript" src="./static/js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript"
             src="/static/js/plugins/goodsInfo/jquery.SuperSlide.2.1.1.js"></script>
+
     <link href="./static/css/goodsInfoNew.css" rel="stylesheet" type="text/css">
     <link href="./static/css/style.css" rel="stylesheet" type="text/css">
     <link href="./static/css/global.css" rel="stylesheet" type="text/css">
@@ -27,11 +28,241 @@
     <script type="text/javascript" src="/home/static/js/vue.min.js"></script>
     <script type="text/javascript" src="/home/static/js/qs.js"></script>
     <script type="text/javascript" src="/home/static/js/axios.min.js"></script>
+
+    <script src='/home/v2/static/js/base/element-ui.js'></script>
+    <script src="https://cdn.bootcss.com/babel-polyfill/7.2.5/polyfill.min.js"></script>
+    <link rel="stylesheet" href="/home/v2/static/css/base/element-ui/element-ui.css"/>
+    <link rel="stylesheet" href="/home/v2/static/css/base/foot.css"/>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
+    <script src="https://js.fundebug.cn/fundebug.1.5.1.min.js"
+            apikey="afbc9f957e7689049c3282fe7696d30e7cb260e0ce11c148c0cf9e31d4e802f5"></script>
+    <%--<link rel="stylesheet" href="/home/v3/static/css/element-ui/element-ui.css"/>--%>
+
+
+    <%--<link rel="stylesheet" href="/home/v3/static/css/reset.css"/>--%>
+    <link rel="stylesheet" href="/home/v3/static/css/index.css">
+
+    <!-- index为以上几个合并后的压缩文件 - 加前缀 -->
+    <!-- <link rel="stylesheet" href="css/index.css" /> -->
+    <link rel="stylesheet" href="/home/v3/static/css/swiper.min.css"/>
+    <style>
+        .clearfix {
+            zoom: 1
+        }
+
+        .clearfix:after {
+            visibility: hidden;
+            display: block;
+            font-size: 0;
+            content: " ";
+            clear: both;
+            height: 0;
+        }
+
+        #o2otop .o2otopcon .o2otoplikes dd {
+            width: 238px
+        }
+    </style>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'AW-783435725');
+        gtag('config', 'UA-127715615-6')
+    </script>
+    <script>
+        var isLogin = ${env.login!=null};
+          function getParams(name, defaultValue) {
+            var url = window.location.href;
+            var l = url.lastIndexOf(name)
+            if (l != -1) {
+                var ll = url.indexOf("&", l);
+                if (ll == -1 || l > ll) {
+                    ll = url.length
+                }
+                url = url.substring(l, ll);
+                var result = url.split("=")
+                if (result.length == 2) {
+                    switch (typeof defaultValue) {
+                        case "number":
+                            return parseInt(result[1]);
+                        case "boolean":
+                            return Boolean(result[1])
+                        default:
+                            return result[1];
+                    }
+                }
+            } else {
+                if (defaultValue == 'NONE') {
+                    return null;
+                }
+                if (defaultValue == null) {
+                    return -1;
+                }
+                return defaultValue
+            }
+            return -1;
+        }
+    </script>
 </head>
 <body id="goodsInfo" class="lang_en w_1200">
+<div id="nav" style="height: auto;">
+    <div id="new-top-nav" class="wide-wrap">
+        <div class="wide" style="width: 1240px;min-width: 1240px;margin: 0 auto">
+            <!-- 顶部左侧 - 4个下拉选 -->
+            <el-menu :default-active="activeTopNavIndex" class="el-menu-demo" mode="horizontal"
+                     @select="handleTopNavSelect">
+                <el-submenu index="8" class="fr no-arrow" v-if="languageList.length>0">
+                    <template slot="title">
+                        Language
+                    </template>
+                    <el-menu-item index="7-1" v-for="language in languageList">
+                        <a rel="nofollow" @click="changeLang(language.shortName)">
+                            {{language.displayName}}
+                        </a>
+                    </el-menu-item>
+                </el-submenu>
+
+                </el-menu-item>
+                <el-menu-item index="7" class="fr">
+                    <a href="/home/usr_UsrConsult_listView" target="_blank">
+                        <s:text name="RFQ"/>
+                    </a>
+                </el-menu-item>
+            </el-menu>
+        </div>
+    </div>
+</div>
+<script src="/home/v2/static/lang/element/en.js"></script>
+<script>
+
+    ELEMENT.locale(ELEMENT.lang.en)
+    var sysConfig = {
+        baseImageUrl: "https://image.shoestp.com",
+        currency_symbol: "$",
+        current_language: "en",
+    }
+    var messages = {
+        shoestp: null
+    }
+    var nav = new Vue({
+        el: "#nav",
+        data() {
+            return {
+                activeTopNavIndex: 1, //默认选中的web-top澳航栏
+                topSearchBarCategory: 0, //搜索 分类前的下拉选
+                language: "en",
+                languageList: [],
+                sysConfig: {
+                    baseImageUrl: "https://image.shoestp.com",
+                    currency_symbol: "$",
+                    current_language: "en",
+                },
+                search: {
+                    keyword: "",
+                    typeList: [
+                        {
+                            label: "Product",
+                            value: 0
+                        },
+                        {
+                            label: "Suppiler",
+                            value: 1
+                        }
+                    ]
+                }
+            }
+        }, computed: {
+            _language: function () {
+                for (var key in this.$data.languageList) {
+                    if (this.$data.languageList[key]["shortName"] == this.$data.language) {
+                        return this.$data.languageList[key]["displayName"]
+                    }
+                }
+                return "-1"
+            },
+            _favorite_count: function () {
+                if (this.sysConfig.user) {
+                    return this.sysConfig.user.favorite_count
+                }
+                return 0
+            },
+            _inquiry_count: function () {
+                if (this.sysConfig.user) {
+                    return this.sysConfig.user.inquiry_count
+                }
+                return 0
+            },
+            _shopping_cart_count: function () {
+                if (this.sysConfig.user) {
+                    return this.sysConfig.user.shopping_cart_count
+                }
+                return 0
+            }
+
+        }, mounted() {
+            var self = this
+            axios({
+                url: "/home/plt_PltConfig_getSysConfig"
+            }).then(function (res) {
+                if (res.data.ret && res.data.ret == 1) {
+                    sysConfig = res.data.result
+                    Vue.set(self, "language", res.data.result.current_language)
+                    Vue.set(self, "sysConfig", res.data.result)
+                    Vue.set(self, "languageList", res.data.result.languages)
+                } else {
+                    console.error("ERR::FLAG")
+                }
+            }).catch(function (err) {
+                console.error(err)
+                console.error("ERR::FLAG")
+            })
+        },
+        methods: {
+            searchClick() {
+                window.location.href = "/home/pdt_PdtProduct?Keyword=" + this.search.keyword
+                    + "&v=2&searchtype=" + this.topSearchBarCategory
+            },
+            handleTopNavSelect(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            changeLang(lang) {
+                var self = this
+                axios({
+                    url: "/home/plt_PltConfig_changeLanguage",
+                    method: "get",
+                    params: {
+                        request_locale: lang
+                    }
+                }).then(function (res) {
+                    if (res.data.ret && res.data.ret == 1) {
+                        location.reload();
+                    } else {
+                        console.error("ERR::FLAG")
+                    }
+                })
+
+            },
+            handleLanguageSelect(e) {
+                console.log("click")
+                console.log(e.target.dataset.language)
+                console.log(e.currentTarget)
+                if (e.target && e.target.dataset && e.target.dataset.language) {
+                    this.language = e.target.dataset.language;
+                }
+            }
+        }
+    })
+</script>
+<div style="height: 33px;">
+</div>
 <jsp:include page="template/web-top.jsp"></jsp:include>
-<jsp:include page="template/new-header.jsp"></jsp:include>
 <div id="app">
+    <index-top></index-top>
 
     <!--头部-->
     <div class="xmgHead wide-wrap">
@@ -70,7 +301,7 @@
                 </c:if>
             </div>
             <a class="xmgBtn fr"
-               :href="'/home/usr_UsrConsult_publishView?supplierId='+goodsInfo.supId"
+               :href="'/home/usr_UsrConsult_productPublishView?supplierId='+goodsInfo.supId"
                target="_blank"></a>
         </div>
     </div>
@@ -346,6 +577,37 @@
 
         <!--产品详情-->
         <div class="prodDescLeft" style="width:100%;">
+
+            <!-- ===============O2O INFO START=============== -->
+            <s:if test="map != null">
+                <s:if test="env.login == null">
+                    <div style="">
+                        <a href="/home/usr_UsrPurchase_sign" style="
+    text-align:  center;
+    position: relative;
+    top: 240px;
+    z-index: 999;display: block;
+">Please Login</a>
+                        <img src="./static/images/mosaic.png" style="
+    width: 1200px;
+    height: 420px;
+    opacity:  0.5;
+    position: relative;
+    z-index: 998;
+    margin: 20px 0;
+"/>
+                    </div>
+                </s:if>
+                <s:if test="env.login != null">
+                    <div id="loading" class="loading">
+                        <img src="./static/images/loading.gif">
+                    </div>
+                    <div id="o2oMap" style="width:100%;height:400px;margin:20px 0;">
+
+                    </div>
+                </s:if>
+                <!-- ===============O2O INFO END=============== -->
+            </s:if>
             <div class="prodDescription">
                 <ul class="pdTitle">
                     <li class="current">
@@ -472,7 +734,8 @@
                     <div class="blank12"></div>
                 </div>
                 <div class="prod_review_view" v-if="!isLogin">
-                    <div class="review_sign"><s:text name="groupPurchaseGoodsInfo.After_Login"/>
+                    <div class="review_sign"><s:text
+                            name="groupPurchaseGoodsInfo.After_Login"><s:param>/home/usr_UsrPurchase_sign</s:param></s:text>
                     </div>
                     <div class="blank12"></div>
 
@@ -483,7 +746,7 @@
         </div>
         <div style="padding: 15px"></div>
     </div>
-
+    <index-bottom></index-bottom>
 </div>
 <script>
 
@@ -526,6 +789,11 @@
             $('#shipping_cost_button').removeAttr('disabled');
         }
     });
+    $('html').on('click', '#signin_close', function () {
+        $('#signin_module').remove();
+        global_obj.div_mask(1);
+
+    })
     $.fn.extend({
         //添加购物车抛物线插件
         fly: function (t, callback) {
@@ -659,11 +927,21 @@
         });
     }
 </script>
-<script>
 
+
+<script src="/home/v3/static/js/index-top.js"></script>
+<script src="/home/v3/static/js/index-bottom.js"></script>
+<script>
+    user_obj.sign_in_init();
     var app = new Vue({
         el: "#app",
         data: {
+            <s:if test="map != null && env.login != null">
+            map: null,
+            marker: null,
+            latLng: {lat: ${map.latitude}, lng: ${map.longitude}},
+            address: '${map.name}',
+            </s:if>
             goodsInfo:${goodsInfo},
             selectSpec: 0,
             isLogin:${env.login!=null},
@@ -675,6 +953,25 @@
                 catlength: 0
             }
         }, mounted() {
+            <s:if test="map != null && env.login != null">
+            var self = this
+            // 创建地图实例，zoom是缩放比例
+            this.map = new google.maps.Map(document.getElementById('o2oMap'), {
+                center: self.latLng,
+                zoom: 12
+            })
+            this.marker = new google.maps.Marker({
+                position: self.latLng
+            })
+            this.marker.setMap(self.map)
+            var infowindow = new google.maps.InfoWindow({content: self.address});
+            infowindow.open(self.map, self.marker);
+
+            this.map.addListener('tilesloaded', function () {
+                $("#loading").css("display", "none");
+            })
+
+            </s:if>
             for (var key in this.goodsInfo.spec) {
                 for (var value in this.goodsInfo.spec[key]) {
                     this.$set(this.status.cat, this.goodsInfo.spec[key][value].id, 0)
@@ -718,19 +1015,20 @@
                     user_obj.set_form_sign_in('', window.location.href, 1);
                     return
                 }
-                axios({
-                    url: "/home/pdt_PdtConsultPdtList_add",
-                    method: "post",
-                    data: Qs.stringify({
-                        product: this.goodsInfo.pdtId
-                    })
-                }).then(function (data) {
-                    if (data.data) {
-                        if (data.data.ret && data.data.ret === 1) {
-                            carWindow(data.data, lang_obj.global.inqadd)
-                        }
-                    }
-                })
+                window.location = '/home/usr_UsrConsult_productPublishView?product_id=' + this.goodsInfo.pdtId
+                // axios({
+                //     url: "/home/pdt_PdtConsultPdtList_add",
+                //     method: "post",
+                //     data: Qs.stringify({
+                //         product: this.goodsInfo.pdtId
+                //     })
+                // }).then(function (data) {
+                //     if (data.data) {
+                //         if (data.data.ret && data.data.ret === 1) {
+                //             carWindow(data.data, lang_obj.global.inqadd)
+                //         }
+                //     }
+                // })
             },
             buy() {
                 if (!isLogin) {
@@ -991,7 +1289,7 @@
                 return this.goodsInfo.spec[temp];
             },
             _pdtPic() {
-                if (this.selectSpec > 0) {
+                if (this.selectSpec >= 0) {
                     if (this._specList && this._specList.length > 0)
                         if (this._specList[0].img && this._specList[0].img.length > 0) {
                             return this.image(this._specList[0].img)
@@ -1088,9 +1386,20 @@
 
 
 </script>
+<script type="text/javascript"
+        src="/home/static/js/maps.js?key=AIzaSyCPbc3yNYQgVc56qbUuAY_Yap-uDMkDkvc" async></script>
+<script type="text/javascript" src="./static/markerwithlabel.js"></script>
+<style>
+    .loading {
+        text-align: center;
+        position: relative;
+        z-index: 999;
+        top: 250px;
+    }
+</style>
 <c:if test="${not empty supView.traceCode && fn:length(supView.traceCode)>0}">
     ${supView.traceCode}
 </c:if>
-<jsp:include page="template/new-foot.jsp"></jsp:include>
+<%--<jsp:include page="template/new-foot.jsp"></jsp:include>--%>
 
 

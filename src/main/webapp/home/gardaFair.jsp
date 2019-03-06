@@ -221,10 +221,14 @@
         }
     </style>
 </head>
+<jsp:include page="v3/header.jsp"/>
+<jsp:include page="v3/nav.jsp"/>
 <body class="lang_en w_1200">
 <%@ include file="/home/template/web-top.jsp" %>
-<%@ include file="/home/template/new-header.jsp" %>
-    <div>
+<div id="app">
+    <index-top></index-top>
+</div>
+    <div class="wide">
         <div style="width:100%;margin:0 auto;background: #fbfbfb;overflow: hidden;">
             <!-- <svg class="icon-baoming" aria-hidden="true">
             <use xlink:href="#icon-baoming-copy"></use>
@@ -634,11 +638,19 @@
                 <img src="/home/static/images/show5.png" alt="" style="width:100%;vertical-align: middle;">
             </div>
         </div>
+        <index-bottom></index-bottom>
     </div>
-    <jsp:include page="template/new-foot.jsp"></jsp:include>
+    <%--<jsp:include page="template/new-foot.jsp"></jsp:include>--%>
 
 <div id="hj_top" style="opacity: 0; bottom: 10%;">
     <img src="./static/images/hj_top.png">
 </div>
+<script src="/home/v3/static/js/index-top.js"></script>
+<script src="/home/v3/static/js/index-bottom.js"></script>
+<script>
+    new Vue({
+        el:"#app"
+    })
+</script>
 </body>
 </html>

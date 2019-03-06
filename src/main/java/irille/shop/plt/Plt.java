@@ -2,8 +2,21 @@ package irille.shop.plt;
 
 import irille.Entity.Activity.ActivityInfo;
 import irille.Entity.Activity.SupGoogleView;
-import irille.Entity.Pk.PkCompetitionData;
+import irille.Entity.Contact.Contact;
+import irille.Entity.Contact.ContactGroup;
 import irille.Entity.NewInquiry.NewInquiry;
+import irille.Entity.O2O.O2O_Activity;
+import irille.Entity.O2O.O2O_JoinInfo;
+import irille.Entity.O2O.O2O_PrivateExpoPdt;
+import irille.Entity.O2O.O2O_Product;
+import irille.Entity.Pk.PkCompetitionData;
+import irille.Entity.RFQ.RFQConsult;
+import irille.Entity.RFQ.RFQConsultGroup;
+import irille.Entity.RFQ.RFQConsultGroupRelation;
+import irille.Entity.RFQ.RFQConsultMessage;
+import irille.Entity.RFQ.RFQConsultRelation;
+import irille.Entity.RFQ.RFQPurchaseContact;
+import irille.Entity.RFQ.RFQPurchaseContactGroup;
 import irille.core.prv.PrvRoleAct;
 import irille.core.sys.SysModule;
 import irille.pub.Log;
@@ -49,9 +62,21 @@ public class Plt extends PackageBase {
         addTb(41, PltFreightSellerLine.class);
         addTb(43, ActivityInfo.class);
         addTb(44, SupGoogleView.class);
-        addTb(47, NewInquiry.class);
         addTb(46, PkCompetitionData.class);
-
+        addTb(47, NewInquiry.class);
+        addTb(48, O2O_Activity.class);
+        addTb(49, O2O_Product.class);
+        addTb(50, O2O_PrivateExpoPdt.class);
+        addTb(51, O2O_JoinInfo.class);
+        addTb(60, RFQConsult.class);
+        addTb(61, RFQConsultMessage.class);
+        addTb(62, RFQConsultRelation.class);
+        addTb(63, Contact.class);
+        addTb(64, ContactGroup.class);
+        addTb(65, RFQPurchaseContact.class);
+        addTb(66, RFQPurchaseContactGroup.class);
+        addTb(67, RFQConsultGroup.class);
+        addTb(68, RFQConsultGroupRelation.class);
     }
 
     @Override
@@ -118,8 +143,7 @@ public class Plt extends PackageBase {
     public enum ErrMsgs implements IMsg {// 信息定义的类名必须为Msgs, 以便系统能检索
         // @formatter:off
         uniqueErr("记录【{0}】已存在，不可操作！"), lowPriceErr("【{0}】不能低于【{1}】"), notNull(
-                "【{0}】不能为空"),
-        ;
+                "【{0}】不能为空"), last("最后一条【{0}】不可删除");
         private String _msg;
 
         private ErrMsgs(String msg) {

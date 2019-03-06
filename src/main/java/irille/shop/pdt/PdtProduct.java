@@ -119,6 +119,7 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
         ;
         //>>>以下是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别>>>
         //<<<以上是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别<<<
+        public static final Tb.Index IDX_SUPPLIER_SKU = TB.addIndex("supplier_sku", false, T.SUPPLIER, T.SKU);
         private Fld _fld;
 
         private T(Class clazz, String name, boolean... isnull) {
@@ -209,6 +210,7 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
 	// ON:1,上架
 	// OFF:0,下架
 	// DELETE:2,删除
+	// MERCHANTDEL:3,商家删除
   private Byte _soldInTime;	// 定时上架 <OYn>  BYTE
 	// YES:1,是
 	// NO:0,否
@@ -225,6 +227,8 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
 	// GENERAL:0,普通产品
 	// GROUP:1,联合采购产品
 	// GATHER:2,采集商品
+	// PrivateExpo:3,私人展会商品
+	// O2O:4,O2O商品
   private Byte _isNew;	// 新品 <OYn>  BYTE
 	// YES:1,是
 	// NO:0,否

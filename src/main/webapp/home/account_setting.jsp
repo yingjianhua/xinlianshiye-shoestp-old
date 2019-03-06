@@ -1,402 +1,447 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="/struts-tags" prefix="s"%>
-<%@ taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="renderer" content="webkit">
-
-<meta name="keywords" content="fashion wholesale soes,cheap wholesale shoes,wholesale shoes,shoes customization,shoes trade,shoes,Manufacturers,shoestp">
-<meta name="description" content="foreign trade experts online service! ShoeSTP provides you with customization and wholesale for all kinds of high-quality shoes from 300 professional foreign trade shoes companies!">
-<title>An Online B2B market——-Shoestp.com,gathering 300 professional shoes manufacture companies</title>
-<link href="/home/static/css/global.css" rel="stylesheet" type="text/css">
-<link href="/home/static/css/global(1).css" rel="stylesheet" type="text/css">
-<link href="/home/static/css/user.css" rel="stylesheet" type="text/css">
-<link href="/home/static/css/style.css" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="/home/static/js/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="/home/static/js/main.js"></script>
-<link rel="stylesheet" href="/home/static/css/animate.min.css">
-<link rel="stylesheet" href="/home/static/css/swiper.min.css" type="text/css">
-<script type="text/javascript" src="./static/js/layer.js"></script>
-<link rel="stylesheet" href="./static/css/layer.css" type="text/css">
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<jsp:include page="v3/header.jsp"></jsp:include>
+<link rel="stylesheet" href="/home/v3/static/css/user/ureset.css"/>
+<link rel="stylesheet" href="/home/v3/static/css/user/uindex.css"/>
+<link rel="stylesheet" href="/home/v2/static/css/nav/new-top-nav-style.css"/>
 <style>
-#lib_user .textbtn {
-    clear: left;
-    float: left;
-    margin-left: 428px;
+    .el-button--primary {
+        width: 100px;
+        height: 36px;
+        background-color: #10389c;
+        border-radius: 4px;
+        border-color: #10389c;
     }
-#lib_user input{
-	width:242px;
-}
-#lib_user input.red{
-	border:1px solid red;
-}
-#lib_user .span{
-	line-height:28px;
-}
-#lib_user .span.green{
-	color:green;
-}
+
+    .el-button--primary:hover {
+        background-color: #2856b7;
+    }
 </style>
+
 </head>
 
-<body class="lang_en w_1200">
-    <%@ include file="/home/template/web-top.jsp" %>
-    <%@ include file="/home/template/new-header.jsp" %>
-<!-- .new_header -->
-<div id="main" class="wide">
-<div id="lib_user" class="clearfix">
-	<div id="lib_user_crumb" class="widget">
-		<ul class="crumb_box clearfix">
-			<li class="home"><a href="/" title="Home"><s:text name="Global.Home"/><i></i></a></li>
-			<li class="crumb1"><a href="/home/usr_UsrPurchase_userIndex" title="My Account"><s:text name="Global.My_Account"/><i></i></a></li>
-			<li class="crumb2 root"><a href="/home/usr_UsrPurchase_usrSetting" title="Account Settings"><s:text name="Global.Account_Settings"/><i></i></a></li>
-		</ul>
-	</div>
-	<%@ include file="/home/template/account/lib-user-menu.jsp" %>
-	<div id="lib_user_main">
-		<link href="/home/static/css/daterangepicker.css" rel="stylesheet" type="text/css">
-		<h1 class="lib_user_title"><s:text name="Global.Account_Settings"/></h1>
-		<div id="lib_user_setting">
-			<h3><%-- <s:text name="vip0"/> --%></h3>
-			<form id="frm_profile">
-				<table width="100%" cellpadding="0" cellspacing="0" border="0">
-				<tbody>
-				<tr>
-					<th width="172" nowrap="nowrap">
-						<s:text name="account_setting.Gender"/>:
-					</th>
-					 <td>
-						<select name="bean.sex" notnull="">
-								<option value="0" disabled selected style="display: none;"  ><s:text name="Global.Please_Choose"/></option>
-								<option <c:if test="${usrPurchase.sex == 1}">selected="selected"</c:if> value="1"><s:text name="account_setting.Men"/></option>
-								<option <c:if test="${usrPurchase.sex == 2}">selected="selected"</c:if> value="2"><s:text name="account_setting.Ms"/></option>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<th nowrap="nowrap">
-						<span class="fc_red">*</span><s:text name="Global.First_Name"/>:
-					</th>
-					<td>
-						<input name="bean.name" id="name" class="form_input" type="text" size="40" maxlength="40" value="${usrPurchase.name}" notnull="">
-					</td>
-				</tr>
-				<tr>
-					<th nowrap="nowrap">
-						<span class="fc_red">*</span><s:text name="Global.Surname"/>:
-					</th>
-					<td>
-						<input name="bean.surname" id="surname" class="form_input" type="text" size="40" maxlength="40" value="${usrPurchase.surname}" notnull="">
-					</td>
-				</tr>
-				<tr>
-					<th nowrap="nowrap">
-						<span class="fc_red">*</span><s:text name="Global.Phone"/>:
-					</th>
-					<td>
-						<input type="text" name="bean.telphone" id="telphone" value="${usrPurchase.telphone}" size="30" maxlength="20" class="form_input amount" notnull="">
-					</td>
-				</tr>
-				<tr>
-					<th nowrap="nowrap">
-						<span class="fc_red">*</span><s:text name="Global.Company"/>:
-					</th>
-					<td>
-						<input type="text" name="bean.company" id="company" value="${usrPurchase.company}" size="30" maxlength="50" class="form_input" notnull="">
-					</td>
-				</tr>
-				<tr>
-					<th nowrap="nowrap">
-						<s:text name="Global.Address"/>:
-					</th>
-					<td>
-						<input type="text" name="bean.address" value="${usrPurchase.address}" size="30" maxlength="50" class="form_input">
-					</td>
-				</tr>
-				<tr>
-					<th nowrap="nowrap">
-						&nbsp;
-					</th>
-					<td>
-
-					</td>
-				</tr>
-				<tr>
-					<th nowrap="nowrap">
-						&nbsp;
-					</th>
-					<td>
-						<span class="fz_14px fc_red"><%-- <s:text name="vip1"/> --%></span>
-					</td>
-				</tr>
-				</tbody>
-				</table>
-
-			</form>
-
-			<button type="submit" class="textbtn" id="improvePersonalInformation"><s:text name="Global.Save"/></button>
-			<span class="span"></span>
-			<input type="hidden" name="do_action" value="user.mod_profile">
-			<div class="line">
-			</div>
-			<h3><s:text name="account_setting.Change_Email_Address"/></h3>
-			<form id="frm_email">
-				<table width="100%" cellpadding="0" cellspacing="0" border="0">
-				<tbody>
-				<tr>
-					<th nowrap="nowrap">
-						<span class="fc_red">*</span><s:text name="account_setting.Existing_Password"/>:
-					</th>
-					<td>
-						<input name="bean.pkey"  value="${usrPurchase.pkey}" class="form_input" type="hidden" size="40" notnull="">
-						<input name="pwd" id="pwd" class="form_input" type="password" size="40" notnull="">
-					</td>
-				</tr>
-				<tr>
-					<th nowrap="nowrap">
-						<span class="fc_red">*</span><s:text name="account_setting.New_Email_Address"/>:
-					</th>
-					<td>
-						<input name="newEmail" id="email" value="${usrPurchase.email}" class="form_input" type="text" size="40" maxlength="100" format="Email" notnull="">
-					</td>
-				</tr>
-				<tr>
-					<th nowrap="nowrap">
-						&nbsp;
-					</th>
-					<td>
-
-					</td>
-				</tr>
-				</tbody>
-				</table>
-
-			</form>
-			<button type="submit" class="textbtn" id="ChangeYourEmailAddress"><s:text name="Global.Save"/></button>
-			<input type="hidden" name="do_action" value="user.mod_email">
-			<div class="line">
-			</div>
-			<h3><s:text name="account_setting.Change_Password"/></h3>
-			<form id="frm_password">
-				<table width="100%" cellpadding="0" cellspacing="0" border="0">
-				<tbody>
-				<tr>
-					<th nowrap="nowrap">
-						<span class="fc_red">*</span><s:text name="account_setting.Existing_Password"/>:
-					</th>
-					<td>
-					    <input name="bean.pkey" value="${usrPurchase.pkey}"    class="form_input" type="hidden" size="40" notnull="">
-						<input name="oldPwd" id="oldPwd" class="form_input" type="password" size="40" notnull="">
-					</td>
-				</tr>
-				<tr>
-					<th nowrap="nowrap">
-						<span class="fc_red">*</span><s:text name="Global.New_Password"/>:
-					</th>
-					<td>
-						<input name="newPwd" id="newPwd" class="form_input" type="password" size="40" notnull="">
-					</td>
-				</tr>
-				<tr>
-					<th nowrap="nowrap">
-						<span class="fc_red">*</span><s:text name="Global.Confirm_Password"/>:
-					</th>
-					<td>
-						<input name="NewPassword2" id="newPwd2" class="form_input" type="password" size="40" notnull="">
-					</td>
-				</tr>
-				<tr>
-					<th nowrap="nowrap">
-						&nbsp;
-					</th>
-					<td>
-
-					</td>
-				</tr>
-				</tbody>
-				</table>
-			</form>
-			<button type="submit" class="textbtn" id="ChangeYourPassword"><s:text name="Global.Save"/> </button>
-			<input type="hidden" name="do_action" value="user.mod_password">
-			<div class="clear">
-			</div>
-		</div>
-		<script type="text/javascript">
-	var frm_profile = $('#frm_profile');
-	frm_profile.find('button:submit').click(function(){
-		if(global_obj.check_form(frm_profile.find('*[notnull]'))){return false;};
-	});
-	var frm_email = $('#frm_email');
-	frm_email.find('button:submit').click(function(){
-		if(global_obj.check_form(frm_email.find('*[notnull]'), frm_email.find('*[format]'))){return false;};
-	});
-	var frm_password = $('#frm_password');
-	frm_password.find('button:submit').click(function(){
-		if(global_obj.check_form(frm_password.find('*[notnull]'))){return false;};
-	});
-	(function(){
-		$('form#frm_profile input[name=Birthday]').daterangepicker({
-			showDropdowns:true,
-			singleDatePicker:true,
-			timePicker:false,
-			format:'MM/DD/YYYY'
-		});
-	});
-		</script>
-	</div>
+<body>
+<jsp:include page="v3/nav-nobody.jsp"></jsp:include>
+<div id="personalCenter" class="clearfix" v-cloak>
+    <div class="user-menu fl">
+       <div class="user-menu-title"><img src="/home/v3/static/images/user/icon_account.png" alt="" style="margin:0 8px 2px 0;">My Account
+        </div>
+        <div class="user-menu-item"><a href="/home/usr_UsrPurchase_userIndex">Home <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+        <div class="user-menu-item"><a href="/home/usr_UsrMessages_center">Message Center <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+        <div class="user-menu-item"><a href="/home/usr_UsrPurchase_contacts">Contacts <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+        <div class="user-menu-item"><a href="/home/usr_UsrFavorites_myfavorite">My Favourites <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+        <div class="user-menu-item"><a href="/home/usr_UsrPurchase_usrSetting">Account Settings <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+    </div>
+    <div class="setting-main fr">
+        <div class="account-setting-box">
+            <h1>Account Settings</h1>
+            <div class="section1">
+                <el-row>
+                    <el-col :span="12" :offset="6">
+                        <el-form status-icon :model="form1" :rules="rules" ref="form1" label-width="170px" class="">
+                            <el-form-item label="Gender" prop="gender">
+                                <el-select v-model="form1.gender" placeholder="请选择性别">
+                                    <el-option label="保密" value="0"></el-option>
+                                    <el-option label="男士" value="1"></el-option>
+                                    <el-option label="女士" value="2"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="First Name:" prop="firstName">
+                                <el-input v-model.trim="form1.firstName" placeholder="请输入名字"/>
+                            </el-form-item>
+                            <el-form-item label="Surname:" prop="surname">
+                                <el-input v-model.trim="form1.surname" placeholder="请输入姓氏"/>
+                            </el-form-item>
+                            <el-form-item label="Phone:" prop="phone">
+                                <el-input v-model.trim="form1.phone" placeholder="请输入手机"/>
+                            </el-form-item>
+                            <el-form-item label="Company:" prop="company">
+                                <el-input v-model.trim="form1.company" placeholder="请输入公司名字"/>
+                            </el-form-item>
+                            <el-form-item label="Address:" prop="address">
+                                <el-input v-model.trim="form1.address" placeholder="请输入地址"/>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button type="primary" @click="submitForm1('form1')">Save</el-button>
+                            </el-form-item>
+                        </el-form>
+                    </el-col>
+                </el-row>
+            </div>
+            <div class="section2">
+                <el-row>
+                    <el-col :span="4">
+                        <div style="line-height:40px;">Change Email Address</div>
+                    </el-col>
+                    <el-col :span="12" :offset="2">
+                        <el-form status-icon :model="form2" :rules="rules" ref="form2" label-width="170px" class="">
+                            <el-form-item label="Existing Password:" prop="password">
+                                <el-input type="password" v-model.trim="form2.password" placeholder="请输入密码"/>
+                            </el-form-item>
+                            <el-form-item label="New Email Address:" prop="email">
+                                <el-input type="email" v-model.trim="form2.email" placeholder="请输入新的邮箱地址"/>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button type="primary" @click="submitForm2('form2')">Save</el-button>
+                            </el-form-item>
+                        </el-form>
+                    </el-col>
+                </el-row>
+            </div>
+            <div class="section3">
+                <el-row>
+                    <el-col :span="4">
+                        <div style="line-height:40px;">Change Password</div>
+                    </el-col>
+                    <el-col :span="12" :offset="2">
+                        <el-form status-icon :model="form3" :rules="rules" ref="form3" label-width="170px" class="">
+                            <el-form-item label="Existing Password:" prop="password">
+                                <el-input type="password" v-model.trim="form3.password" placeholder="请输入现有密码"/>
+                            </el-form-item>
+                            <el-form-item label="New Password:" prop="newPassword">
+                                <el-input type="password" v-model.trim="form3.newPassword" placeholder="请输入新的密码"/>
+                            </el-form-item>
+                            <el-form-item label="Confirm Password:" prop="ckPwd">
+                                <el-input type="password" v-model.trim="form3.ckPwd" placeholder="请输入确认密码"/>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button type="primary" @click="submitForm3('form3')">Save</el-button>
+                            </el-form-item>
+                        </el-form>
+                    </el-col>
+                </el-row>
+            </div>
+        </div>
+    </div>
 </div>
+<script src="/home/v3/static/js/index-bottom.js"></script>
+<div id="bottom" style="margin-top: 25px">
+    <index-bottom></index-bottom>
 </div>
-﻿
-    <%@ include file="/home/template/new-foot.jsp" %>
-<div id="hj_top" style="opacity: 0;">
-<img src="/home/static/images/hj_top.png">
-</div>
-﻿
-
-</body>
+<script>
+    new Vue({
+        el: "#bottom"
+    })
+</script>
 
 <script>
+    new Vue({
+        el: "#personalCenter",
+        data() {
+            var validateEmail = (rule, value, callback) => {
+                if (!value) {
+                    callback(new Error('请输入邮箱地址'));
+                    return
+                }
+                setTimeout(() => {
+                    if (!(/[\w]+(\.[\w]+)*@[\w]+(\.[\w])+/.test(this.form2.email))) {
+                        callback(new Error('请输入正确的邮箱格式'))
+                    } else {
+                        callback()
+                    }
+                }, 100)
+            };
+            var validatePass = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入密码'));
+                } else if (value.length < 8) {
+                    callback(new Error('密码最少8位数!'));
+                } else {
+                    if (this.form3.ckPwd !== '') {
+                        this.$refs.form3.validateField('ckPwd');
+                    }
+                    callback();
+                }
+            };
+            var validatePass2 = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请再次输入密码'));
+                } else if (value !== this.form3.newPassword) {
+                    callback(new Error('两次输入密码不一致!'));
+                } else if (value.length < 8) {
+                    callback(new Error('密码最少8位数!'));
+                }
+                else {
+                    callback();
+                }
+            };
+            return {
+                accountInfo: [], // 账号设置信息
+                form1: {
+                    gender: '',  //性别
+                    surname: '', // 姓氏
+                    firstName: '', // 名字
+                    phone: '', // 手机
+                    company: '', // 公司
+                    address: '', // 地址
+                },
+                form2: {
+                    password: '', // 密码
+                    email: '',  // 新的邮箱
+                },
+                form3: {
+                    password: '',  // 现在的密码
+                    newPassword: '',  // 新的密码
+                    ckPwd: '',  // 确认密码
+                },
 
-$.ajax({
-	type:'post',
-	async: false,
-	url:'/plt_PltConfig_enabledLanguage',
-	data:'',
-	dataType: 'json',
-	success:function(data){
-		$.each(data,function(key,value){
-// 			if(value.isEnabled){
+                rules: { //表单验证
+                    firstName: [{
+                        required: true,
+                        message: '请输入名字',
+                        trigger: 'blur'
+                    }],
+                    surname: [{
+                        required: true,
+                        message: '请输入姓氏',
+                        trigger: 'blur'
+                    }],
+                    phone: [{
+                        required: true,
+                        message: '请输入手机',
+                        trigger: 'blur'
+                    }],
+                    address: [{
+                        message: '请输入地址',
+                        trigger: 'blur'
+                    }],
+                    company: [{
+                        required: true,
+                        message: '请输入公司名字',
+                        trigger: 'blur'
+                    }],
+                    gender: [{
+                        message: '请选择性别',
+                        trigger: 'change'
+                    }],
+                    password: [{
+                        required: true,
+                        message: '请输入密码',
+                        trigger: 'blur'
+                    }],
+                    email: [{validator: validateEmail, trigger: 'blur', required: true,}],
+                    newPassword: [
+                        {validator: validatePass, trigger: ['blur', 'change'], required: true,}
+                    ],
+                    ckPwd: [
+                        {validator: validatePass2, trigger: ['blur', 'change'], required: true,}
+                    ],
+                },
 
-				$("#current").append(
-				'<a data-lang="'+value.shortName+'" class="current">'+value.displayName+'</a>'
-				)
-				//id="PdtName"
-// 			}
-		})
-	}
-});
+            }
 
+        },
+        mounted() {
+            this.getAccountSettings();
+        },
+        methods: {
+            getAccountSettings() { // 获取个人账号设置信息
+                let self = this;
+                axios.get('/home/usr_Purchase_accountProfile')
+                    .then(function (res) {
+                        console.log(res);
+                        self.accountInfo = res.data.result;
+                        self.form1.gender = res.data.result.gender.toString();
+                        self.form1.firstName = res.data.result.firstName;
+                        self.form1.surname = res.data.result.surname;
+                        self.form1.phone = res.data.result.phone;
+                        self.form1.company = res.data.result.company;
+                        self.form1.address = res.data.result.address;
+                        self.form2.email = res.data.result.email;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            submitForm1(formName) { // 第一部分表单提交    信息
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        let data = JSON.stringify(this.form1)
+                        console.log('submit!');
+                        console.log(data)
+                        axios.post('/home/usr_Purchase_editAccount', data,
+                            {headers: {'Content-Type': 'application/json'}}
+                        )
+                            .then((res) => {
+                                console.log(res)
+                                // 提交成功时
+                                if (res.data.ret == 1) {
+                                    // 提示信息
+                                    this.$message({
+                                        showClose: true,
+                                        message: '提交成功',
+                                        type: 'success'
+                                    });
+                                    // setTimeout(function () {
+                                    //   gtag_report_conversion()
+                                    //   window.location.href =
+                                    //     '/home/usr_UsrConsult_listView';
+                                    // }, 2000)
+                                    setTimeout(function () {
+                                        window.location.reload();
+                                    }, 2000)
+                                    // 未登录时
+                                } else if (res.data.ret == -1) {
+                                    window.location.href =
+                                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
+                                    // 提交失败时
+                                } else {
+                                    this.$alert(res.data.msg, {
+                                        confirmButtonText: 'OK'
+                                    });
+                                }
+                            })
+                            .catch((err) => {
+                                console.log(err)
+                            })
+                    } else {
+                        console.log('error submit!!');
+                        // if (!this.form1.firstName) {
+                        //   this.$message.error('名字不能为空');
+                        // } else if (!this.form1.company) {
+                        //   this.$message.error("公司不能为空");
+                        // } else if (!this.form1.phone) {
+                        //   this.$message.error('手机不能为空');
+                        // }else if (!this.form1.surname) {
+                        //   this.$message.error('姓氏不能为空');
+                        // }
+                        // return false;
+                    }
+                });
+            },
+            submitForm2(formName) { // 第二部分表单提交    邮箱
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        console.log('submit!');
+                        axios.post('/home/usr_Purchase_changeEmail', Qs.stringify({
+                            email: this.form2.email,
+                            password: this.form2.password
+                        }))
+                            .then((res) => {
+                                console.log(res)
+                                // 提交成功时
+                                if (res.data.ret == 1) {
+                                    // 提示信息
+                                    this.$message({
+                                        showClose: true,
+                                        message: '提交成功',
+                                        type: 'success'
+                                    });
+                                    // setTimeout(function () {
+                                    //   gtag_report_conversion()
+                                    //   window.location.href =
+                                    //     '/home/usr_UsrConsult_listView';
+                                    // }, 2000)
+                                    setTimeout(function () {
+                                        window.location.reload();
+                                    }, 2000)
+                                    // 未登录时
+                                } else if (res.data.ret == -1) {
+                                    window.location.href =
+                                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
+                                    // 提交失败时
+                                } else {
+                                    this.$alert(res.data.msg, {
+                                        confirmButtonText: 'OK'
+                                    });
+                                }
+                            })
+                            .catch((err) => {
+                                console.log(err)
+                            })
+                    } else {
+                        console.log('error submit!!');
+                        // if (!this.form2.password) {
+                        //   this.$message.error('密码不能为空');
+                        // } else if (!this.form2.email) {
+                        //   this.$message.error("邮箱不能为空");
+                        // } else if (!(/[\w]+(\.[\w]+)*@[\w]+(\.[\w])+/.test(this.form2.email))) {
+                        //   this.$message.error("请输入正确的邮箱地址!");
+                        // }
+                        // return false;
+                    }
+                });
+            },
+            submitForm3(formName) { // 第三部分表单提交    密码
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        console.log(this.form3)
 
+                        // if(this.form3.newPassword != this.form3.ckPwd){
+                        //   this.$message.error('两次密码不相同');
+                        //   return ;
+                        // }
+                        console.log('submit!');
+                        axios.post('/home/usr_Purchase_changePassword', Qs.stringify({
+                            password: this.form3.password,
+                            newPassword: this.form3.newPassword
+                        }))
+                            .then((res) => {
+                                console.log(res)
+                                // 提交成功时
+                                if (res.data.ret == 1) {
+                                    // 提示信息
+                                    this.$message({
+                                        showClose: true,
+                                        message: '提交成功',
+                                        type: 'success'
+                                    });
+                                    // setTimeout(function () {
+                                    //   gtag_report_conversion()
+                                    //   window.location.href =
+                                    //     '/home/usr_UsrConsult_listView';
+                                    // }, 2000)
+                                    setTimeout(function () {
+                                        window.location.reload();
+                                    }, 2000)
+                                    // 未登录时
+                                } else if (res.data.ret == -1) {
+                                    window.location.href =
+                                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
+                                    // 提交失败时
+                                } else {
+                                    this.$alert(res.data.msg, {
+                                        confirmButtonText: 'OK'
+                                    });
+                                }
 
+                            })
+                            .catch((err) => {
+                                console.log(err)
+                            })
+                    } else {
+                        console.log('error submit!!');
+                        console.log(this.form3.password.length)
+                        console.log(this.form3.ckPwd.length)
+                        // if (!this.form3.password) {
+                        //   this.$message.error('密码不能为空');
+                        // } else if (this.form3.password.length <= 8) {
+                        //   this.$message.error("密码长度最少8位数");
+                        // }else if (!this.form3.newPassword) {
+                        //   this.$message.error("新密码不能为空");
+                        // }else if (this.form3.newPassword.length <= 8) {
+                        //   this.$message.error("新密码长度最少8位数");
+                        // }else if (!this.form3.ckPwd) {
+                        //   this.$message.error("确认密码不能为空");
+                        // }else if (this.form3.ckPwd.length <= 8) {
+                        //   this.$message.error("确认密码长度最少8位数");
+                        // }
+                        // return false;
+                    }
+                });
+            },
+
+            image(v, params) {
+                if (!v) {
+                    return ""
+                }
+                if (!params) {
+                    params = ""
+                }
+                return "https://image.shoestp.com" + v + params
+            },
+        }
+    })
 </script>
-<script type="text/javascript">
-	$("#improvePersonalInformation").on("click",function(){
-		var num=0;
-		$(".span").html("");
-		$("#name").removeClass("red");
-		$("#surname").removeClass("red");
-		$("#telphone").removeClass("red");
-		$("#company").removeClass("red");
-		if($("#name").val()==null||$("#name").val()==""){
-			$("#name").addClass("red");
-			num+=1;
-		}
-		if($("#surname").val()==null||$("#surname").val()==""){
-			$("#surname").addClass("red");
-			num+=1;
-		}
-		if($("#telphone").val()==null||$("#telphone").val()==""){
-			$("#telphone").addClass("red");
-			num+=1;
-		}
-		if($("#company").val()==null||$("#company").val()==""){
-			$("#company").addClass("red");
-			num+=1;
-		}
-		if(num==0){
-			$.ajax({
-			url:"/home/usr_UsrPurchase_updPurchaseInf",
-			data:$("#frm_profile").serialize(),
-			type:"post",
-			dataType:"json",
-			success:function(data){
-				if(data.ret==1){
-					layer.msg(lang_obj.addressfrom.Successfully_modified,{icon:1,time:3000});
-				}
-			}
-		})
-		}
-
-
-	})
-	$("#ChangeYourEmailAddress").on("click",function(){
-		var num=0;
-		var reg=/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
-		$("#pwd").removeClass("red");
-		$("#email").removeClass("red");
-		if($("#pwd").val()==null||$("#pwd").val()==""){
-			$("#pwd").addClass("red");
-			num+=1;
-		}
-		if($("#email").val()==null||$("#email").val()==""){
-			$("#email").addClass("red");
-			num+=1;
-		}
-		if(!reg.test($("#email").val())){
-      layer.msg('Email format error', {icon: 2});
-			num+=1;
-		}
-		if(num==0){
-			$.ajax({
-				url:"/home/usr_UsrPurchase_upEmail",
-				data:$("#frm_email").serialize(),
-				type:"post",
-				dataType:"json",
-				success:function(data){
-					if(data.ret==1){
-						layer.msg(lang_obj.signIn.email+" "+lang_obj.addressfrom.Successfully_modified,{icon:1,time:3000},function(){
-							location.reload();
-						});
-					}else{
-            			layer.msg(getMessage(data.msg), {icon: 2});
-					}
-				}
-			})
-		}
-	})
-	$("#ChangeYourPassword").on("click",function(){
-		$("#oldPwd").removeClass("red");
-		$("#newPwd").removeClass("red");
-		$("#newPwd2").removeClass("red");
-		var num=0;
-		if($("#oldPwd").val()==null||$("#oldPwd").val()==""){
-			$("#oldPwd").addClass("red");
-			num+=1;
-		}
-		if($("#newPwd").val()==null||$("#newPwd").val()==""){
-			$("#newPwd").addClass("red");
-			num+=1;
-		}
-		if($("#newPwd2").val()==null||$("#newPwd2").val()==""){
-			$("#newPwd2").addClass("red");
-			num+=1;
-		}
-		if($("#newPwd").val()!=$("#newPwd2").val()){
-			num+=1;
-      		layer.msg('The passwords entered do not match', {icon: 2});
-		}
-		if(num==0){
-			$.ajax({
-				url:"/home/usr_UsrPurchase_updPwd",
-				data:$("#frm_password").serialize(),
-				type:"post",
-				dataType:"json",
-				success:function(data){
-					if(data.ret==1){
-						layer.msg(lang_obj.signIn.password+" "+lang_obj.addressfrom.Successfully_modified,{icon:1,time:3000},function(){
-							location.reload();
-						});
-					}else{
-            			layer.msg(getMessage(data.msg), {icon: 2});
-					}
-				}
-			})
-		}
-	})
-</script>
+</body>
 
 </html>

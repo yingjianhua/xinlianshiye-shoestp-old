@@ -20,9 +20,12 @@ import irille.shop.plt.PltErateDAO;
 import irille.shop.plt.PltFreightSeller;
 import irille.shop.plt.PltProvinceDAO;
 import irille.shop.usr.*;
+import irille.view.Manage.OdrMeeting.OdrMeetingOrderView;
 import irille.view.Page;
 import irille.view.odr.OrderView;
 import irille.view.plt.CurrencyView;
+import lombok.Getter;
+import lombok.Setter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -598,6 +601,23 @@ public class OdrOrderAction extends HomeAction<OdrOrder> implements IOdrOrderAct
         generateOrder.commit();
         CONFIRM_ORDER_MAP.remove(getPurchase().getPkey());
         String orderNumber = generateOrder.getOrderNumber();
+        json.put("ret", 1);
+        json.put("orderNumbers", orderNumber);
+        writerOrExport(json);
+    }
+
+    public void insOrder() throws Exception {
+        UsrPurchaseLine address = null;
+        try {
+            address = BeanBase.load(UsrPurchaseLine.class, getPurchaseLine());
+        } catch (Exp e) {
+            throw LOG.errTran("addressfrom%Please_Select_The_Shipping_Address", "请选择收货地址");
+        }
+        OdrOrderDAO.intOrder intOrder = new OdrOrderDAO.intOrder(getJsonCarts(), address, curCurrency().getPkey(), getOdrView(), getEnterType());
+        JSONObject json = new JSONObject();
+        intOrder.commit();
+        CONFIRM_ORDER_MAP.remove(getPurchase().getPkey());
+        String orderNumber = intOrder.getOrderNumber();
         json.put("ret", 1);
         json.put("orderNumbers", orderNumber);
         writerOrExport(json);

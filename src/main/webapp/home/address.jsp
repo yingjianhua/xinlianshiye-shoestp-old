@@ -77,43 +77,43 @@
   .addr-operate-wrap .icon-edit,.addr-operate-wrap .icon-delete{margin-left: 6px;}
   </style>
 </head>
+<jsp:include page="v3/header.jsp"/>
+<jsp:include page="v3/nav.jsp"/>
 <body class="lang_en w_1200">
-﻿
-
-
  	 <%@ include file="/home/template/web-top.jsp" %>
-	<%@ include file="/home/template/new-header.jsp" %>
-<div id="main" class="wide">
-<div id="lib_user" class="clearfix">
-	<div id="lib_user_crumb" class="widget">
-		<ul class="crumb_box clearfix">
-			<li class="home"><a href="/" title="Home"><s:text name="Global.Home"/><i></i></a></li>
-			<li class="crumb1"><a href="/home/usr_UsrPurchase_userIndex" title="My Account"><s:text name="Global.My_Account"/><i></i></a></li>
-			<li class="crumb2 root"><a href="/home/usr_UsrPurchaseLine_addmanagement" title="Manage Address Book"><s:text name="address.Management_Address_Book"/><i></i></a></li>
-		</ul>
-	</div>
-		<%@include file="/home/template/account/lib-user-menu.jsp" %>
-	<div id="lib_user_main">
-		<script type="text/javascript">
-		    $(document).ready(function(){
-				user_obj.address_init();
-			});
-    	</script>
-		<h1 class="lib_user_title"><s:text name="address.Management_Address_Book"/></h1>
-		<div id="lib_user_address" class="index_pro_list clearfix">
+<div id="main">
+	<index-top></index-top>
+	<div class="wide">
+		<div id="lib_user" class="clearfix">
+			<div id="lib_user_crumb" class="widget">
+				<ul class="crumb_box clearfix">
+					<li class="home"><a href="/" title="Home"><s:text name="Global.Home"/><i></i></a></li>
+					<li class="crumb1"><a href="/home/usr_UsrPurchase_userIndex" title="My Account"><s:text name="Global.My_Account"/><i></i></a></li>
+					<li class="crumb2 root"><a href="/home/usr_UsrPurchaseLine_addmanagement" title="Manage Address Book"><s:text name="address.Management_Address_Book"/><i></i></a></li>
+				</ul>
+			</div>
+			<%@include file="/home/template/account/lib-user-menu.jsp" %>
+			<div id="lib_user_main">
+				<script type="text/javascript">
+                    $(document).ready(function(){
+                        user_obj.address_init();
+                    });
+				</script>
+				<h1 class="lib_user_title"><s:text name="address.Management_Address_Book"/></h1>
+				<div id="lib_user_address" class="index_pro_list clearfix">
 
-			<div class="shipping_addr">
-				<h3 class="big"><s:text name="address.Your_Billing_Address"/></h3>
-				<div class="clearfix addr_list">
-					<c:if test="${date=='1'}">
-						<p class="big">
-							<a  class="textbtn addAddress"  onclick="addresstype(1)"><s:text name="address.Add_A_New_Billing_Address"/></a>
-						</p>
-					</c:if>
+					<div class="shipping_addr">
+						<h3 class="big"><s:text name="address.Your_Billing_Address"/></h3>
+						<div class="clearfix addr_list">
+							<c:if test="${date=='1'}">
+								<p class="big">
+									<a  class="textbtn addAddress"  onclick="addresstype(1)"><s:text name="address.Add_A_New_Billing_Address"/></a>
+								</p>
+							</c:if>
 							<div class="clear">
 							</div>
-						<c:if test="${date=='0'}">
-							<s:iterator value="billAddr" var="line">
+							<c:if test="${date=='0'}">
+								<s:iterator value="billAddr" var="line">
 									<ul class="addr_item fl">
 										<li><strong>${line.name} ${line.surname}</strong></li>
 										<li>${line.address}</li>
@@ -123,301 +123,302 @@
 										<li><span class="phone_icon"><s:text name="Global.Phone"/>: ${line.phoneNumber}</span></li>
 										<li><a class="edit_shipping_addr textbtn" onclick="updaddress(${line.id})" addrid="444"><s:text name="Global.Edit"/></a></li>
 									</ul>
-							</s:iterator>
-						</c:if>
-				</div>
-			</div>
-
-			<div class="shipping_addr">
-				<h3 class="big"><s:text name="address.Your_Shipping_Address"/></h3>
-				<div class="clearfix addr_list">
-					<p class="big">
-						<input type="hidden" value="" id="testaddress"></input>
-						<a  class="textbtn addAddress"   onclick="addresstype(0)"><s:text name="Global.Add_New_Shipping_Address"/></a>
-					</p>
-					<div class="clear">
+								</s:iterator>
+							</c:if>
+						</div>
 					</div>
-					<c:if test="${data==0}">
-						<s:iterator value="shippingAddr" var="line">
-								<ul class="addr_item fl">
-									<li><strong>${line.name} ${line.surname}</strong></li>
-									<li>${line.address}</li>
-									<li>${line.city},${line.region},${line.emailCode}</li>
-									<li>&nbsp;</li>
-									<li>${line.country}</li>
-									<li><span class="phone_icon"><s:text name="Global.Phone"/>: ${line.phoneNumber}</span></li>
-                  <li class="por">
-                    <c:if test="${line.isdefault == 0}">
-                      <a class="del_shipping_addr textbtn btn-default-addr" version="${line.rowVersion}" adid="${line.id}" onclick="setDefault(this)" ><s:text name="address.Set_As_Default_Address"/></a>
-                    </c:if>
-                    <c:if test="${line.isdefault == 1}">
-                      <a class="del_shipping_addr textbtn btn-default-addr" onclick="setDefault()" ><s:text name="address.Default_Address"/></a>
-                    </c:if>
-                    <div class="addr-operate-wrap">
-                      <a class="icon-edit edit_shipping_addr" onclick="updaddress(${line.id})" addrid="444">
-                        <img src="/home/static/images/ico/icon-edit2.png" alt="">
-                      </a>
-                      <a class="icon-delete" onclick="deleaddress(${line.id})">
-                        <img src="/home/static/images/ico/icon-delete2.png" alt="">
-                      </a>
-                    </div>
-                  </li>
-								</ul>
-						</s:iterator>
-					</c:if>
-				</div>
-			</div>
 
-			<div id="addressForm">
-				<h3 class="big"><s:text name="address.Your_Billing_Address"/></h3>
-				<script type="text/javascript">$(document).ready(function(){user_obj.user_address()});</script>
-				<div class="editAddr">
-					<form id="addressshow">
-            <%-- 区分添加modify1 or modify时的字段 --%>
-            <input id="addressType" type="hidden" name="addressType" value="0">
-						<input id="addressId" type="hidden" name="edit_address_id" value="">
-						<a id="cancelAddr" class="cancel" href="javascript:;" style="display:;"><s:text name="Global.Cancel"/></a>
-						<p>
-							<span class="required" style="color:red">*</span>&nbsp;<span class="indicates"><s:text name="Global.Indicates_Required_Fields"/></span>
-						</p>
-						<table class="tb-shippingAddr">
-						<tbody>
-						<tr>
-							<th>
-							</th>
-							<td>
-							</td>
-						</tr>
-						<tr>
-							<th>
-								<label><s:text name="Global.Name"/>:</label>
-							</th>
-							<td class="recipient">
-								<div>
-									<input type="text" id="adname" name="bean.name" maxlength="32" class="elmbBlur"  value="">
-									<p>
-										<span class="required">*</span>&nbsp;<s:text name="Global.First_Name"/>
-									</p>
-                  <p id="addname" style="display:none; color:red;" ><s:text name="address.Please_Enter_Your_Name"/></p>
-									<p class="errorInfo">
-									</p>
-								</div>
-								<div>
-									<input type="text" id="adsurname" name="bean.surname" maxlength="32" class="elmbBlur" value="">
-									<p>
-										<span class="required">*</span>&nbsp;<s:text name="Global.Surname"/>
-									</p>
-                  <p id="addsurname" style="display:none; color:red;" ><s:text name="address.Please_Enter_Your_Last_Name"/></p>
-									<p class="errorInfo">
-									</p>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<th>
-								<span class="required">*</span><label><s:text name="Global.Postal_Code"/>:</label>
-							</th>
-							<td>
-								<input type="text" id="ademailcode" name="bean.emailcode" maxlength="10" class="elmbBlur" value="">
-								<p id="addemail" style="display:none; color:red;" ><s:text name="address.Please_Enter_Your_Zip_Code"/></p>
-								<p class="errorInfo">
-								</p>
-							</td>
-						</tr>
-						<tr>
-							<th>
-								<span class="required">*</span><label><s:text name="Global.Country"/>:</label>
-							</th>
-							<td>
-								<select  id="country" placeholder="Please Choose Your Country" style="display:none;" class="chzn-done" value="">
-									<option value="-1"></option>
-									<optgroup label="---------">
-									</optgroup>
-								</select>
-								<input id="countryin" name="bean.country" type="hidden"  value="${countries[0].pkey}" />
-								<div id="country_chzn" class="chzn-container chzn-container-single" style="width:310px">
-									<a href="javascript:void(0)"  class="chzn-single">
-										<span id="selCountry"  value="${countries[0].pkey}">${countries[0].name}</span>
-									<div>
-										<b></b>
-									</div>
-									</a>
-									<div class="chzn-drop" style="left: -9000px; width: 308px;">
-										<div class="chzn-search clearfix" style="height: 20px;">
-											<input type="text" autocomplete="off" class="">
-										</div>
-										<ul class="chzn-results" id="countrylist">
-											<s:iterator value="countries" var="line">
-												<li class="group-option active-result" id="${line.pkey}" onclick="listProv(${line.pkey})" >${line.name}</li>
-											</s:iterator>
-										</ul>
-
-									</div>
-								</div>
-								<p class="errorInfo">
-								</p>
-							</td>
-						</tr>
-						<tr id="taxCode" style="display: none;">
-							<th>
-								<span class="required">*</span><label>CPF or CNPJ code:</label>
-							</th>
-							<td>
-								<select name="tax_code_type" class="taxCodeOption" id="taxCodeOption" disabled="disabled">
-									<option value="1" selected="selected">CPF (personal order)</option>
-									<option value="2">CNPJ (company order)</option>
-								</select>
-								<input type="text" name="tax_code_value" id="taxCodeValue" maxlength="11" class="taxCodeValue elmbBlur" disabled="disabled">
-								<p class="lightGray">
-									Please only input numbers, no dots, dashes or other characters.
-								</p>
-								<p class="errorInfo">
-								</p>
-							</td>
-						</tr>
-						<tr id="tariffCode" style="display: none;">
-							<th>
-								<span class="required">*</span><label>Personal or VAT ID</label>
-							</th>
-							<td>
-								<select name="tax_code_type" class="tariffCodeOption" id="tariffCodeOption" disabled="disabled">
-									<option value="3" selected="selected">My personal details</option>
-									<option value="4">VAT ID number (company order)</option>
-								</select>
-								<input type="text" name="tax_code_value" id="tariffCodeValue" maxlength="11" class="tariffCodeValue elmbBlur" disabled="disabled">
-								<a href="javascript:void(0);" class="lightGray askTipsTariff" title="Your Personal ID/VAT ID number is required to ensure successful delivery of your order."><s:text name="Global.Doubt"/></a>
-								<p class="lightGray">
-									Please only input numbers, no dots, dashes or other characters.
-								</p>
-								<p class="errorInfo">
-								</p>
-							</td>
-						</tr>
-						<tr id="zoneId" style="display: table-row;">
-							<th>
-								<span class="required">*</span><label><s:text name="Global.Province"/>:</label>
-							</th>
-							<td>
-								<select  id="usrsregion" placeholder="Please select---" class="chzn-done" style="display:none;" value="">
-									<option value="-1"></option>
-									<optgroup label="---------">
-									</optgroup>
-								</select>
-								<input id="inpkey" name="bean.pkey" type="hidden"  value="" />
-								<input id="inprowV" name="bean.rowVersion" type="hidden"  value="" />
-								<input id="provincesin" name="province" type="hidden"  value="${provinces[0].pkey}" />
-
-								<div  id="showProvice">
-									<div    class="chzn-container chzn-container-single" style="width:310px">
-  									<a href="javascript:void(0)" class="chzn-single" tabindex="0">
-                      <span id="setpro"  value="${provinces[0].pkey}">${provinces[0].name}</span>
-  									  <span id="addregion" style="display:none; color:red;" >Please select your state/province/region.</span>
-    									<div>
-    										<b></b>
-    									</div>
-  									</a>
-
-  									<div class="chzn-drop" style="left: -9000px; width: 308px;">
-    									<div class="chzn-search clearfix" style="height: 20px;">
-    											<input type="text" autocomplete="off" tabindex="-1" class="">
-    									</div>
-    									<ul class="chzn-results" id="provin" >
-      									<s:iterator value="provinces" var="line">
-      										<li class="group-option active-result" name="shepiguai" id="${line.pkey}" onclick="proin(${line.pkey})">${line.name}</li>
-      									</s:iterator>
-    									</ul>
-  									</div>
-									</div>
-								</div>
-                <%-- 自己输入省份 --%>
-                <%-- <div id="showProviceInput">
-								     <input type="text" name=""  id="newProvince" maxlength="32" class="elmbBlur"
-                       oninput="inputMyAddrByMyself(this)" placeholder="<s:text name="manualinput"/>"/>
-								</div>
-                <p id="provinceErrTip" style="display:none; color:red;" >Please complete your province.</p>
-								<p class="errorInfo">
-								</p> --%>
-							</td>
-						</tr>
-						<tr id="state" style="display: none;">
-							<th>
-								<label>State / Province / Region:</label>
-							</th>
-							<td>
-								<input type="text" name="" maxlength="32" class="elmbBlur" disabled="disabled">
-							</td>
-						</tr>
-						<tr>
-							<th>
-								<span class="required">*</span><label><s:text name="Global.City"/>:</label>
-							</th>
-							<td>
-								<input type="text" name="bean.city" id="adcity" maxlength="30" class="elmbBlur" value="">
-								<p id="addcity" style="display:none; color:red;" ><s:text name="address.Please_Enter_Your_City"/></p>
-								<p class="errorInfo">
-								</p>
-							</td>
-						</tr>
-						<tr>
-							<th>
-								<span class="required">*</span><label><s:text name="Global.Detailed_Address"/>:</label>
-							</th>
-							<td>
-								<input type="text" name="bean.address" id="adaddress" maxlength="100" class="elmbBlur" value="">
-								<p id="addaddress" style="display:none; color:red;" ><s:text name="address.Please_Enter_Your_Full_Address"/></p>
-								<p class="lightGray">
-									<s:text name="address.For_Example"/>
-								</p>
-							</td>
-						</tr>
-						<tr>
-
-						</tr>
-						<tr>
-							<th>
-								<span class="required">*</span><label><s:text name="Global.Phone"/>:</label>
-							</th>
-							<td>
-								<!-- <input id="countryCode" class="left countryCode" name="CountryCode" type="text" value="" readonly=""> -->
-								<div class="left editableSelect hasLayout">
-									<input type="text" name="bean.phonenumber" id="adphonenumber" class="phoneNum elmbBlur" maxlength="15" autocomplete="off" value="">
-									<p id="addphonenumber" style="display:none; color:red;" ><s:text name="address.Please_Enter_Your_Phone_Number"/></p>
-									<ul id="otherPhones">
+					<div class="shipping_addr">
+						<h3 class="big"><s:text name="address.Your_Shipping_Address"/></h3>
+						<div class="clearfix addr_list">
+							<p class="big">
+								<input type="hidden" value="" id="testaddress"></input>
+								<a  class="textbtn addAddress"   onclick="addresstype(0)"><s:text name="Global.Add_New_Shipping_Address"/></a>
+							</p>
+							<div class="clear">
+							</div>
+							<c:if test="${data==0}">
+								<s:iterator value="shippingAddr" var="line">
+									<ul class="addr_item fl">
+										<li><strong>${line.name} ${line.surname}</strong></li>
+										<li>${line.address}</li>
+										<li>${line.city},${line.region},${line.emailCode}</li>
+										<li>&nbsp;</li>
+										<li>${line.country}</li>
+										<li><span class="phone_icon"><s:text name="Global.Phone"/>: ${line.phoneNumber}</span></li>
+										<li class="por">
+											<c:if test="${line.isdefault == 0}">
+												<a class="del_shipping_addr textbtn btn-default-addr" version="${line.rowVersion}" adid="${line.id}" onclick="setDefault(this)" ><s:text name="address.Set_As_Default_Address"/></a>
+											</c:if>
+											<c:if test="${line.isdefault == 1}">
+												<a class="del_shipping_addr textbtn btn-default-addr" onclick="setDefault()" ><s:text name="address.Default_Address"/></a>
+											</c:if>
+											<div class="addr-operate-wrap">
+												<a class="icon-edit edit_shipping_addr" onclick="updaddress(${line.id})" addrid="444">
+													<img src="/home/static/images/ico/icon-edit2.png" alt="">
+												</a>
+												<a class="icon-delete" onclick="deleaddress(${line.id})">
+													<img src="/home/static/images/ico/icon-delete2.png" alt="">
+												</a>
+											</div>
+										</li>
 									</ul>
-									<p class="errorInfo">
-									</p>
-								</div>
-								<a href="javascript:void(0);" class="lightGray askTips" title="We ask for your phone number just in case we need to reach you regarding your order."><s:text name="user.whyAsk"/></a>
-								<p id="phoneSample" class="lightGray clearfix">
-									<s:text name="Global.For_Example"/>: +<span>1</span> 9549031647-535
+								</s:iterator>
+							</c:if>
+						</div>
+					</div>
+
+					<div id="addressForm">
+						<h3 class="big"><s:text name="address.Your_Billing_Address"/></h3>
+						<script type="text/javascript">$(document).ready(function(){user_obj.user_address()});</script>
+						<div class="editAddr">
+							<form id="addressshow">
+								<%-- 区分添加modify1 or modify时的字段 --%>
+								<input id="addressType" type="hidden" name="addressType" value="0">
+								<input id="addressId" type="hidden" name="edit_address_id" value="">
+								<a id="cancelAddr" class="cancel" href="javascript:;" style="display:;"><s:text name="Global.Cancel"/></a>
+								<p>
+									<span class="required" style="color:red">*</span>&nbsp;<span class="indicates"><s:text name="Global.Indicates_Required_Fields"/></span>
 								</p>
-							</td>
-						</tr>
-						<tr>
-							<th>
-							</th>
-							<td>
-									<button  type="button" class="textbtn" id="d0" onclick="modify()" style="display:none"><s:text name="Global.Save"/></button>
-									<button  type="button" class="textbtn" id="d1" onclick="modify1()" style="display:none"><s:text name="Global.Save"/></button>
-							</td>
-						</tr>
-						</tbody>
-						</table>
-						<input type="reset" id="resetAddr" style="display:none;">
-						<input type="hidden" name="typeAddr" value="0">
-					</form>
+								<table class="tb-shippingAddr">
+									<tbody>
+									<tr>
+										<th>
+										</th>
+										<td>
+										</td>
+									</tr>
+									<tr>
+										<th>
+											<label><s:text name="Global.Name"/>:</label>
+										</th>
+										<td class="recipient">
+											<div>
+												<input type="text" id="adname" name="bean.name" maxlength="32" class="elmbBlur"  value="">
+												<p>
+													<span class="required">*</span>&nbsp;<s:text name="Global.First_Name"/>
+												</p>
+												<p id="addname" style="display:none; color:red;" ><s:text name="address.Please_Enter_Your_Name"/></p>
+												<p class="errorInfo">
+												</p>
+											</div>
+											<div>
+												<input type="text" id="adsurname" name="bean.surname" maxlength="32" class="elmbBlur" value="">
+												<p>
+													<span class="required">*</span>&nbsp;<s:text name="Global.Surname"/>
+												</p>
+												<p id="addsurname" style="display:none; color:red;" ><s:text name="address.Please_Enter_Your_Last_Name"/></p>
+												<p class="errorInfo">
+												</p>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th>
+											<span class="required">*</span><label><s:text name="Global.Postal_Code"/>:</label>
+										</th>
+										<td>
+											<input type="text" id="ademailcode" name="bean.emailcode" maxlength="10" class="elmbBlur" value="">
+											<p id="addemail" style="display:none; color:red;" ><s:text name="address.Please_Enter_Your_Zip_Code"/></p>
+											<p class="errorInfo">
+											</p>
+										</td>
+									</tr>
+									<tr>
+										<th>
+											<span class="required">*</span><label><s:text name="Global.Country"/>:</label>
+										</th>
+										<td>
+											<select  id="country" placeholder="Please Choose Your Country" style="display:none;" class="chzn-done" value="">
+												<option value="-1"></option>
+												<optgroup label="---------">
+												</optgroup>
+											</select>
+											<input id="countryin" name="bean.country" type="hidden"  value="${countries[0].pkey}" />
+											<div id="country_chzn" class="chzn-container chzn-container-single" style="width:310px">
+												<a href="javascript:void(0)"  class="chzn-single">
+													<span id="selCountry"  value="${countries[0].pkey}">${countries[0].name}</span>
+													<div>
+														<b></b>
+													</div>
+												</a>
+												<div class="chzn-drop" style="left: -9000px; width: 308px;">
+													<div class="chzn-search clearfix" style="height: 20px;">
+														<input type="text" autocomplete="off" class="">
+													</div>
+													<ul class="chzn-results" id="countrylist">
+														<s:iterator value="countries" var="line">
+															<li class="group-option active-result" id="${line.pkey}" onclick="listProv(${line.pkey})" >${line.name}</li>
+														</s:iterator>
+													</ul>
+
+												</div>
+											</div>
+											<p class="errorInfo">
+											</p>
+										</td>
+									</tr>
+									<tr id="taxCode" style="display: none;">
+										<th>
+											<span class="required">*</span><label>CPF or CNPJ code:</label>
+										</th>
+										<td>
+											<select name="tax_code_type" class="taxCodeOption" id="taxCodeOption" disabled="disabled">
+												<option value="1" selected="selected">CPF (personal order)</option>
+												<option value="2">CNPJ (company order)</option>
+											</select>
+											<input type="text" name="tax_code_value" id="taxCodeValue" maxlength="11" class="taxCodeValue elmbBlur" disabled="disabled">
+											<p class="lightGray">
+												Please only input numbers, no dots, dashes or other characters.
+											</p>
+											<p class="errorInfo">
+											</p>
+										</td>
+									</tr>
+									<tr id="tariffCode" style="display: none;">
+										<th>
+											<span class="required">*</span><label>Personal or VAT ID</label>
+										</th>
+										<td>
+											<select name="tax_code_type" class="tariffCodeOption" id="tariffCodeOption" disabled="disabled">
+												<option value="3" selected="selected">My personal details</option>
+												<option value="4">VAT ID number (company order)</option>
+											</select>
+											<input type="text" name="tax_code_value" id="tariffCodeValue" maxlength="11" class="tariffCodeValue elmbBlur" disabled="disabled">
+											<a href="javascript:void(0);" class="lightGray askTipsTariff" title="Your Personal ID/VAT ID number is required to ensure successful delivery of your order."><s:text name="Global.Doubt"/></a>
+											<p class="lightGray">
+												Please only input numbers, no dots, dashes or other characters.
+											</p>
+											<p class="errorInfo">
+											</p>
+										</td>
+									</tr>
+									<tr id="zoneId" style="display: table-row;">
+										<th>
+											<span class="required">*</span><label><s:text name="Global.Province"/>:</label>
+										</th>
+										<td>
+											<select  id="usrsregion" placeholder="Please select---" class="chzn-done" style="display:none;" value="">
+												<option value="-1"></option>
+												<optgroup label="---------">
+												</optgroup>
+											</select>
+											<input id="inpkey" name="bean.pkey" type="hidden"  value="" />
+											<input id="inprowV" name="bean.rowVersion" type="hidden"  value="" />
+											<input id="provincesin" name="province" type="hidden"  value="${provinces[0].pkey}" />
+
+											<div  id="showProvice">
+												<div    class="chzn-container chzn-container-single" style="width:310px">
+													<a href="javascript:void(0)" class="chzn-single" tabindex="0">
+														<span id="setpro"  value="${provinces[0].pkey}">${provinces[0].name}</span>
+														<span id="addregion" style="display:none; color:red;" >Please select your state/province/region.</span>
+														<div>
+															<b></b>
+														</div>
+													</a>
+
+													<div class="chzn-drop" style="left: -9000px; width: 308px;">
+														<div class="chzn-search clearfix" style="height: 20px;">
+															<input type="text" autocomplete="off" tabindex="-1" class="">
+														</div>
+														<ul class="chzn-results" id="provin" >
+															<s:iterator value="provinces" var="line">
+																<li class="group-option active-result" name="shepiguai" id="${line.pkey}" onclick="proin(${line.pkey})">${line.name}</li>
+															</s:iterator>
+														</ul>
+													</div>
+												</div>
+											</div>
+											<%-- 自己输入省份 --%>
+											<%-- <div id="showProviceInput">
+                                                                 <input type="text" name=""  id="newProvince" maxlength="32" class="elmbBlur"
+                                                   oninput="inputMyAddrByMyself(this)" placeholder="<s:text name="manualinput"/>"/>
+                                                            </div>
+                                            <p id="provinceErrTip" style="display:none; color:red;" >Please complete your province.</p>
+                                                            <p class="errorInfo">
+                                                            </p> --%>
+										</td>
+									</tr>
+									<tr id="state" style="display: none;">
+										<th>
+											<label>State / Province / Region:</label>
+										</th>
+										<td>
+											<input type="text" name="" maxlength="32" class="elmbBlur" disabled="disabled">
+										</td>
+									</tr>
+									<tr>
+										<th>
+											<span class="required">*</span><label><s:text name="Global.City"/>:</label>
+										</th>
+										<td>
+											<input type="text" name="bean.city" id="adcity" maxlength="30" class="elmbBlur" value="">
+											<p id="addcity" style="display:none; color:red;" ><s:text name="address.Please_Enter_Your_City"/></p>
+											<p class="errorInfo">
+											</p>
+										</td>
+									</tr>
+									<tr>
+										<th>
+											<span class="required">*</span><label><s:text name="Global.Detailed_Address"/>:</label>
+										</th>
+										<td>
+											<input type="text" name="bean.address" id="adaddress" maxlength="100" class="elmbBlur" value="">
+											<p id="addaddress" style="display:none; color:red;" ><s:text name="address.Please_Enter_Your_Full_Address"/></p>
+											<p class="lightGray">
+												<s:text name="address.For_Example"/>
+											</p>
+										</td>
+									</tr>
+									<tr>
+
+									</tr>
+									<tr>
+										<th>
+											<span class="required">*</span><label><s:text name="Global.Phone"/>:</label>
+										</th>
+										<td>
+											<!-- <input id="countryCode" class="left countryCode" name="CountryCode" type="text" value="" readonly=""> -->
+											<div class="left editableSelect hasLayout">
+												<input type="text" name="bean.phonenumber" id="adphonenumber" class="phoneNum elmbBlur" maxlength="15" autocomplete="off" value="">
+												<p id="addphonenumber" style="display:none; color:red;" ><s:text name="address.Please_Enter_Your_Phone_Number"/></p>
+												<ul id="otherPhones">
+												</ul>
+												<p class="errorInfo">
+												</p>
+											</div>
+											<a href="javascript:void(0);" class="lightGray askTips" title="We ask for your phone number just in case we need to reach you regarding your order."><s:text name="user.whyAsk"/></a>
+											<p id="phoneSample" class="lightGray clearfix">
+												<s:text name="Global.For_Example"/>: +<span>1</span> 9549031647-535
+											</p>
+										</td>
+									</tr>
+									<tr>
+										<th>
+										</th>
+										<td>
+											<button  type="button" class="textbtn" id="d0" onclick="modify()" style="display:none"><s:text name="Global.Save"/></button>
+											<button  type="button" class="textbtn" id="d1" onclick="modify1()" style="display:none"><s:text name="Global.Save"/></button>
+										</td>
+									</tr>
+									</tbody>
+								</table>
+								<input type="reset" id="resetAddr" style="display:none;">
+								<input type="hidden" name="typeAddr" value="0">
+							</form>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	<index-bottom></index-bottom>
 </div>
-</div>
-
 <form action="/home/odr_OdrOrder_toSettlementPage" method="post" id="toSettlementPage">
  	<input type="hidden" value='${jsonCarts}' name="jsonCarts"/>
  </form>
 <input type="hidden"  id="hid"></input>
-<%@ include file="/home/template/new-foot.jsp" %>
+<%--<%@ include file="/home/template/new-foot.jsp" %>--%>
 </body>
 <script type="text/javascript">
 
@@ -767,4 +768,12 @@
 	}
 
 </script>
+<script src="/home/v3/static/js/index-top.js"></script>
+<script src="/home/v3/static/js/index-bottom.js"></script>
+<script>
+    new Vue({
+        el:"#main"
+    })
+</script>
+
 </html>

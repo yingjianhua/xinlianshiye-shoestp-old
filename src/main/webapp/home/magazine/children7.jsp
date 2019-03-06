@@ -178,7 +178,7 @@
                     img: "http://shoestest.oss-cn-hangzhou.aliyuncs.com/public/upload2/cnt/magazine/50f35ff2084e658316c22f73b448d70f.jpg",
                     name: "Fashion Cool Branded Design Mesh Upper Sports Shoes",
                     price: "5.50",
-                    url: "https://www.shoestp.com/fashion-cool-branded-design-mesh-upper-sports-shoes_p2404.html"
+                    url: "https://www.shoestp.com/fashion-cool-branded-design-mesh-upper-sports-shoes_p2.html"
                 },
                 {
                     img: "http://shoestest.oss-cn-hangzhou.aliyuncs.com/public/upload2/cnt/magazine/66975d0983f0770b4250e79c10f8b0f4.jpg",

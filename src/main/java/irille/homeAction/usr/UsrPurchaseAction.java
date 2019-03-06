@@ -547,7 +547,7 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
      * @author yingjianhua
      */
     public String sign() throws JSONException {
-        countrys = pltService.getCountryList(curLanguage(),null);
+        countrys = pltService.getCountryList(curLanguage(), null);
         setResult("/home/sign-up.jsp");
         return TRENDS;
     }
@@ -1065,4 +1065,11 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
         this.indexAdView4PC = indexAdView4PC;
     }
 
+
+    //
+    @NeedLogin
+    public String contacts() {
+        setResult("user-contacts.jsp");
+        return TRENDS;
+    }
 }

@@ -1,3 +1,21 @@
+/* 上传图片 预览的样式调整 */
+#lib_user_main .el-upload--picture-card {
+    border-width: 0;
+    width: 90px;
+    height: 90px;
+}
+
+#lib_user_main .el-upload-list--picture-card .el-upload-list__item {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 0;
+}
+
+#lib_user_main .el-upload-list--picture-card .el-upload-list__item-thumbnail {
+    object-fit: contain;
+}
+
+
 .flex {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -47,20 +65,18 @@
       font-weight: bold;
   }
   .inputHeight{
-      height: 30px;
+      height: 32px;
+      box-sizing: border-box;
   }
-  .main_left header{
+  .main_right header{
       display: flex;
       align-items: center;
+      margin: 6px 0 15px;
   }
-  .main_left header>div:nth-child(2){
-      margin-left: 10px;
-  }
-  .main_left header>div:nth-child(2)>h2{
-      margin-bottom: 10px;
-  }
-  .main_left>div:nth-of-type(1) h1{
-      margin: 20px 0;
+  .main_right .main_rightT{
+    color: #999;
+    font-size: 15px;
+    line-height: 1.4;
   }
   .box{
       border: 1px solid gray;
@@ -71,6 +87,9 @@
       }
       .clear{
           clear: both;
+      }
+      .tc{
+        text-align: center;
       }
       h3{
           margin: 10px 0;
@@ -86,13 +105,22 @@
           height: 30px;
           border: 1px solid #ddd;
       }
-     .submit{
+     input.submit{
           width: 100%;
           height: 30px;
           border: none;
           color: white;
           font-size: 16px;
           background-color: #003d80;
+          /* padding: 0 15px;
+          min-width: 151px;
+          line-height: 50px;
+          border: none;
+          color: white;
+          font-size: 20px;
+          font-weight: bold;
+          background-color: rgba(235, 0, 0, 1);
+          border-radius: 6px; */
       }
       .chooseImg{
           height: 100%;
@@ -146,10 +174,11 @@
       width: 100%;
       height: 398px;
       outline:none;
-      margin-bottom: 15px;
+      /* margin-bottom: 15px; */
       padding: 7px;
       border: 1px solid #ddd;
       box-sizing: border-box;
+      border-radius: 0;
   }
   .marginBottom{
       margin-bottom: 15px;
@@ -161,7 +190,11 @@
       line-height: 25px;
   }
   .main_rightB{
-      margin-top: 50px;
+      margin-top: 40px;
+  }
+  .main_rightB p{
+      color: #999;
+      font-size: 15px;
   }
 
   /* 閫夎喘鍟嗗搧css */
@@ -232,10 +265,13 @@
       margin: 4px 3px;
   }
   #lib_user_main .header-title1{
-    font-size:28px;
+    margin-bottom: 10px;
+    /* font-size:28px; */
+    font-size:36px;
     font-weight: bold;
   }
   #lib_user_main .header-title2{
+    color: #000;
     font-size:22px;
     font-weight: bold;
   }
@@ -257,10 +293,57 @@
     position: absolute;
     left: -10px;
     top: 10px;
+    line-height: 1.2;
+    font-size: 12px;
     color: red;
   }
 
+  .noWrap{
+    white-space: nowrap;
+  }
+  .el-form-item .el-form-item--small.el-form-item{
+    margin-bottom: 0;
+  }
 
+  form .el-form-item__label{
+    font-weight: bold;
+    color: #000;
+  }
+  form .el-form-item__error{
+    white-space: nowrap;
+  }
+  .form-item-label{
+    line-height: 32px;
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  .inquiry-goods-info .input-unit{
+    /* padding-left: 6px; */
+    color: #666;
+    font-weight: bold;
+  }
+  form .el-collapse{
+    border-top-width: 0;
+    border-bottom-width: 0;
+  }
+  form .el-collapse-item__wrap{
+    border-bottom-width: 0;
+  }
+  form .el-collapse-item__content{
+    padding-bottom: 5px;
+  }
+  form .el-collapse-item__header{
+    font-weight: bold;
+    font-size: 14px;
+    /* border-bottom: 1px solid #ebeef5; */
+  }
+  form .el-collapse{
+    padding-bottom: 25px;
+  }
+  .transport-box{
+    width: 215px;
+  }
 
 
 

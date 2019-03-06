@@ -166,7 +166,23 @@ public class UsrSupplierRoleDAO {
 		}
 
 	}
-	
+	/**
+	*@Description:  平台 插入重新方法 登录pkey在action获取session
+	*@date 2019/1/22 17:29
+	*@anthor wilson zhang
+	*/
+	public static class insctrl extends IduIns<insctrl, UsrSupplierRole> {
+		@Override
+		public void before() {
+			super.before();
+			if (UsrSupplierRole.chkUniqueCode(false, getB().getCode()) != null) {
+				throw LOG.err("notFound",  "角色代码[{0}]已存在,不可重名!", getB()
+						.getCode());
+			}
+			getB().stIsDefault(false);
+			getB().setUpdatedTime(Env.getTranBeginTime());
+		}
+	}
 	public static class Upd extends IduUpd<Upd, UsrSupplierRole> {
 
 		public void before() {
@@ -183,9 +199,28 @@ public class UsrSupplierRoleDAO {
 			getB().stUpdatedBy(getUser());
 			getB().setUpdatedTime(Env.getSystemTime());
 		}
-
 	}
+	/**
+	 *@Description:  平台 修改重新方法 登录pkey在action获取session
+	 *@date 2019/1/22 17:29
+	 *@anthor wilson zhang
+	 */
+	public static class Updctrl1role extends IduUpd<Updctrl1role, UsrSupplierRole> {
 
+		public void before() {
+			super.before();
+			UsrSupplierRole dbBean = loadThisBeanAndLock();
+			if (!dbBean.getCode().equals(getB().getCode())) {
+				if (UsrSupplierRole.chkUniqueCode(false, getB().getCode()) != null) {
+					throw LOG.err("notFound",  "角色代码[{0}]已存在,不可重名!", getB()
+							.getCode());
+				}
+			}
+			PropertyUtils.copyProperties(dbBean, getB(), UsrSupplierRole.T.NAME, UsrSupplierRole.T.CODE);
+			setB(dbBean);
+			getB().setUpdatedTime(Env.getSystemTime());
+		}
+	}
 	public static class Del extends IduDel<Del, UsrSupplierRole> {
 		@Override
 		public void before() {
@@ -193,16 +228,9 @@ public class UsrSupplierRoleDAO {
 		  if(getB().gtIsDefault()) {
 			  throw LOG.err(Msgs.isDefault);
 		  }
-		  
-		  int count = countWhere(UsrSupplierRole.T.IS_DEFAULT.getFld().getCodeSqlField()+"=?", BeanBase.booleanToByte(true));
+		  int count =BeanBase.list(UsrSupplier.class,UsrSupplier.T.ROLE.getFld().getCodeSqlField()+"= "+getB().getPkey(),false).size();
 		  if(count > 0) {
 			  throw LOG.err(Msgs.isReference);
-		  }
-		  
-		  String where = Idu.sqlString("{0}=?", UsrSupplierRoleAct.T.ROLE);
-		  List<UsrSupplierRoleAct> acts = UsrSupplierRoleAct.list(UsrSupplierRoleAct.class, where, true, getB().getPkey());
-		  for(UsrSupplierRoleAct line:acts) {
-		  	line.del();
 		  }
 		  // TODO ProvCtrl.getInstance().clearAll();
 		}
@@ -520,15 +548,16 @@ public class UsrSupplierRoleDAO {
 		 * @param lines 功能组 eg: 
 		 */
 		public static void iud(UsrSupplierRole role, String type, String lines) {
-			
+			// 当前角色所用有的所有权限
 			Set<String> roleActs = new HashSet<String>();
 			if(role.getActs()!=null&&!role.getActs().trim().equals("")) {
 				for(String act:role.getActs().split(",")) {
 					roleActs.add(act);
 				}
 			}
-			
+			// 当前模块下的素有权限
 			List<UsrAccess> list = UsrAccessDAO.MODULE_ACCESS.get(type);
+			// 当前模块下的素有权限
 			Set<String> allActs = new HashSet<String>();
 			for(UsrAccess act:list) {
 				allActs.add(act.getPkey());

@@ -7,6 +7,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import irille.Dao.PdtProductDao;
+import irille.Entity.O2O.O2O_PrivateExpoPdt;
+import irille.Entity.O2O.O2O_Product;
+import irille.Service.Manage.O2O.IO2OMapServer;
+import irille.Service.Manage.O2O.IO2OPdtServer;
 import irille.Service.Pdt.IPdtProductService;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
@@ -14,6 +18,8 @@ import irille.homeAction.pdt.dto.ProductInfoView;
 import irille.homeAction.pdt.dto.SpecView;
 import irille.pub.Exp;
 import irille.pub.bean.BeanBase;
+import irille.pub.bean.Query;
+import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduPage;
 import irille.pub.util.AppConfig;
 import irille.pub.util.FormaterSql.FormaterSql;
@@ -26,6 +32,7 @@ import irille.shop.plt.PltErate;
 import irille.shop.plt.PltErateDAO;
 import irille.shop.usr.UsrFavorites;
 import irille.shop.usr.UsrSupplier;
+import irille.view.O2O.O2OMapView;
 import irille.view.pdt.PdtProductSaveView;
 import irille.view.pdt.PdtProductSpecSaveView;
 import irille.view.pdt.PdtYouMayLikeView;
@@ -310,6 +317,7 @@ public class PdtproductPageselect {
                 productInfoView.setAuthTime(getAuthTime(supplier));
             }
             productInfoView.setPdtId(pdtProduct.getPkey());
+            productInfoView.setType(pdtProduct.getProductType());
             productInfoView.setMin_oq(pdtProduct.getMinOq());
             productInfoView.setMax_oq(pdtProduct.getMaxOq());
             productInfoView.setItemCode(pdtProduct.getCode());
@@ -325,6 +333,14 @@ public class PdtproductPageselect {
             productInfoView.setPdtImg(pdtProduct.getPicture());
             productInfoView.setFavorite_count(pdtProduct.getFavoriteCount());
             productInfoView.setFavorite(isFavorite(purId, id));
+            /**===============O2O INFO START===============**/
+            ProductInfoView o2oPdt = initO2O(pdtProduct);
+            if(null != o2oPdt){
+                productInfoView.setMap(o2oPdt.getMap());
+                productInfoView.setPrice(PltErateDAO.Query.getTargetPrice(o2oPdt.getPrice(), curCurrency.getNowrate()).setScale(2, RoundingMode.HALF_UP));
+                productInfoView.setMin_oq(o2oPdt.getMin_oq());
+            }
+            /**===============O2O INFO END===============**/
             IduPage page = new IduPage();
             page.setStart(1);
             page.setLimit(5);
@@ -427,6 +443,19 @@ public class PdtproductPageselect {
         return null;
     }
 
+    /**===============O2O INFO START===============**/
+    @Inject
+    private IO2OMapServer io2OMapServer;
+
+    public ProductInfoView initO2O(PdtProduct product){
+        if(product.getProductType().equals(Pdt.OProductType.O2O.getLine().getKey())){
+            return io2OMapServer.findByEarliestPdt_PkeyAnd(HomeAction.curLanguage(),product.getPkey());
+        }
+        return null;
+    }
+    /**===============O2O INFO END===============**/
+
+
     public int getAuthTime(UsrSupplier supplier) {
         int time1 = 0;
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
@@ -486,7 +515,6 @@ public class PdtproductPageselect {
             saveView.setPrice(pdtSpec.getPrice().doubleValue() == -1 ? null : pdtSpec.getPrice().doubleValue());
             saveView.setStock(pdtSpec.getStoreCount() > 0 ? pdtSpec.getStoreCount() : null);
             saveView.setWeight(pdtSpec.getWeight().intValue() == -1 ? null : pdtSpec.getWeight().intValue());
-            saveView.setPrice(pdtSpec.getPrice().doubleValue() == -1 ? null : pdtSpec.getPrice().doubleValue());
 //                saveView.setStock(pdtSpec.getStoreCount() > 0 ? pdtSpec.getStoreCount() : 0);
 //                saveView.setWeight(pdtSpec.getWeight().intValue());
             saveView.setColor(pdtSpec.getColor());
@@ -568,6 +596,10 @@ public class PdtproductPageselect {
             }
             return Integer.valueOf(s);
         }).collect(Collectors.toSet()));
+        view.setRadio(0);
+        if (pdtProduct.getProductType() == Pdt.OProductType.PrivateExpo.getLine().getKey()) {
+            view.setRadio(1);
+        }
         view.setWarnStock(pdtProduct.getWarnStock().intValue());
         view.setState(pdtProduct.getState() == Sys.OYn.YES.getLine().getKey() ? true : false);
         view.setSoldInStatus(pdtProduct.gtSoldInTime());

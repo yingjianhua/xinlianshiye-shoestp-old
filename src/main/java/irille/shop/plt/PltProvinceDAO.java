@@ -1,5 +1,6 @@
 package irille.shop.plt;
 
+import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.I18NSQL;
 import irille.pub.bean.sql.SQL;
@@ -36,5 +37,4 @@ public class PltProvinceDAO {
 		}
 		return views;
 	}
-	
 }

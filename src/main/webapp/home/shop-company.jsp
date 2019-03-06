@@ -31,19 +31,21 @@
     <!-- 轮播插件 -->
     <script type="text/javascript" src="./static/js/jquery.SuperSlide.js"></script>
 </head>
-
+<jsp:include page="v3/header.jsp"/>
+<jsp:include page="v3/nav.jsp"/>
 <body class="lang_en w_1200">
 
 
 <%@ include file="/home/template/web-top.jsp" %>
-<%@ include file="/home/template/new-header.jsp" %>
-<%@ include file="/home/template/shop-header.jsp" %>
 
 
-<div>
+
+<div id="main">
 
     <div class="clean">
     </div>
+    <index-top></index-top>
+    <%@ include file="/home/template/shop-header.jsp" %>
     <div class="wide">
         <!-- 商家-信息1 -->
         <div class="enterprise-info-wrap">
@@ -271,10 +273,11 @@
             </div>
             <!-- 商家-信息2 - end -->
         </div>
+        <index-bottom></index-bottom>
     </div>
 
 
-    <%@ include file="/home/template/new-foot.jsp" %>
+    <%--<%@ include file="/home/template/new-foot.jsp" %>--%>
     <script type="text/javascript" src="./static/js/module.js"></script>
     <script type="text/javascript" src="./static/js/review.js"></script>
     <script type="text/javascript" src="./static/js/lightbox.min.js"></script>
@@ -291,6 +294,13 @@
 
     </script>
     ${supView.traceCode}
+    <script src="/home/v3/static/js/index-top.js"></script>
+    <script src="/home/v3/static/js/index-bottom.js"></script>
+    <script>
+        new Vue({
+            el:"#main"
+        })
+    </script>
 </body>
 
 </html>

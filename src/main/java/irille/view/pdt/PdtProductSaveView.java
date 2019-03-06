@@ -49,6 +49,24 @@ public class PdtProductSaveView implements BaseView {
     private boolean freeShipping;
     private Map description;
     private int from = -1;
+    private Integer radio;//私人展厅商品/普通商品      0：普通商品 1：私人展厅商品
+    private Integer warehouse;//保存到仓库和发布的区分 0：保存到仓库 1：发布
+
+    public Integer getWarehouse() {
+        return warehouse;
+    }
+
+    public void setWarehouse(Integer warehouse) {
+        this.warehouse = warehouse;
+    }
+
+    public Integer getRadio() {
+        return radio;
+    }
+
+    public void setRadio(Integer radio) {
+        this.radio = radio;
+    }
 
     public Map getPdtName() {
         return pdtName;
