@@ -3,7 +3,13 @@ package com.xinlianshiye.shoestp.shop.service.rfq.impl;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -15,16 +21,21 @@ import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultRelationView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQCountryView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQCurrencyView;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationImageView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationThrowawayView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQSupplierView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQUnreadCountView;
 import com.xinlianshiye.shoestp.shop.view.rfq.supplierConsult.RFQConsultProductView;
 
-import irille.Entity.RFQ.Enums.*;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultRelation;
-import irille.action.dataimport.util.BeanUtil;
+import irille.Entity.RFQ.Enums.RFQConsultPayType;
+import irille.Entity.RFQ.Enums.RFQConsultRecommend;
+import irille.Entity.RFQ.Enums.RFQConsultStatus;
+import irille.Entity.RFQ.Enums.RFQConsultType;
+import irille.Entity.RFQ.Enums.RFQConsultUnit;
+import irille.Entity.RFQ.Enums.RFQConsultVerifyStatus;
 import irille.homeAction.rfq.view.RFQDetailsView;
 import irille.homeAction.rfq.view.RFQListView;
 import irille.pub.bean.BeanBase;
@@ -121,7 +132,14 @@ public class RFQConsultServiceImpl implements RFQConsultService {
             quotation.setPkey(GetValue.get(map, RFQConsultRelation.T.PKEY, Integer.class, null));
             quotation.setTitle(GetValue.get(map, RFQConsultRelation.T.TITLE, String.class, null));
             quotation.setDescription(GetValue.get(map, RFQConsultRelation.T.DESCRIPTION, String.class, null));
-            quotation.setImages(Arrays.asList(GetValue.get(map, RFQConsultRelation.T.IMAGE, String.class, "").split(",")));
+            try {
+            	String image = GetValue.get(map, RFQConsultRelation.T.IMAGE, String.class, null);
+            	if(image != null && !image.isEmpty()) {
+            		quotation.setImages(om.readValue(image, new TypeReference<List<RFQQuotationImageView>>() { }));
+            	}
+			} catch (IOException e) {
+				log.warn("RFQConsultRelation主键为{}的记录的image字段格式有问题", quotation.getPkey());
+			}
             quotation.setMinPrice(GetValue.get(map, RFQConsultRelation.T.MINPRICE, Integer.class, null));
             quotation.setMaxPrice(GetValue.get(map, RFQConsultRelation.T.MAXPRICE, Integer.class, null));
             RFQCurrencyView currency = new RFQCurrencyView();
@@ -158,7 +176,13 @@ public class RFQConsultServiceImpl implements RFQConsultService {
         RFQQuotationView quotation = new RFQQuotationView();
         quotation.setPkey(relation.getPkey());
         quotation.setTitle(relation.getTitle());
-        quotation.setImages(Arrays.asList((relation.getImage() == null ? "" : relation.getImage()).split(",")));
+        try {
+        	if(relation.getImage() != null && !relation.getImage().isEmpty()) { 
+        		quotation.setImages(om.readValue(relation.getImage(), new TypeReference<List<RFQQuotationImageView>>() { }));
+        	}
+		} catch (IOException e) {
+			log.warn("RFQConsultRelation主键为{}的记录的image字段格式有问题", relationPkey);
+		}
         quotation.setDescription(relation.getDescription());
         quotation.setQuantity(relation.getQuantity());
         quotation.setUnit(relation.gtUnit().getLine().getName());
@@ -290,8 +314,8 @@ public class RFQConsultServiceImpl implements RFQConsultService {
         view.setUnit(consult.gtUnit().getLine().getName());
         view.setType(consult.getType());
         view.setValieDate(consult.getValidDate());
-        view.setPaymentTerms(consult.gtPayType().getLine().getName());
-        view.setShippingTerms(consult.gtShippingType().getLine().getName());
+        view.setPaymentTerms(consult.getPayType() == null? null : consult.gtPayType().getLine().getName());
+        view.setShippingTerms(consult.gtShippingType() == null? null : consult.gtShippingType().getLine().getName());
         view.setVerifyStatus(consult.getVerifyStatus());
         view.setStatus(consult.getStatus());
         if (consult.gtType() == RFQConsultType.supplier_INQUIRY) {
