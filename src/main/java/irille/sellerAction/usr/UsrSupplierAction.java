@@ -444,15 +444,19 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     json.put("annex",j);
     writerOrExport(json);
   }
-
-
+  @Getter
+  @Setter
+  private Integer purchasePkey;
+  @Getter
+  @Setter
+  private Language lang;
 
   @Getter
   @Setter
   private String contactsIdCardFrontPhotoName;
   @Getter
   @Setter
-  private String idCardFrontPhoto;
+  private String idCardFrontPhotoName;
 
   /**
    * 更新供应商信息
@@ -464,7 +468,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     try {
       UsrAnnex annex = UsrAnnex.chkUniqueSupplier(false,getSupplier().getPkey());
       if(getSupplier().getPkey() != null) {
-        annex.setIdCardFrontPhotoName(idCardFrontPhoto);
+        annex.setIdCardFrontPhotoName(idCardFrontPhotoName);
         annex.setContactsIdCardFrontPhotoName(contactsIdCardFrontPhotoName);
       }
       UsrSupplier newSupplier = UsrSupplierDAO.updInfo(getBean());

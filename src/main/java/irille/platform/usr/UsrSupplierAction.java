@@ -1,7 +1,6 @@
 package irille.platform.usr;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import irille.action.ActionBase;
 import irille.action.MgtAction;
 import irille.pub.util.upload.ImageUpload;
 import irille.shop.usr.UsrSupplier;
@@ -59,6 +58,16 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
 	@Getter
 	@Setter
 	private File file;
+
+	/**
+	 * 获取开店申请列表
+	 * @author: lingjian
+	 * @Date: 2019/3/4 15:59
+	 * @throws IOException
+	 */
+	public void getShopApplication() throws IOException {
+		write(UsrSupplierDAO.getShopApplication(getStart(), getLimit(), name, status));
+	}
 
 	/**
 	 * @Description: 获取供应商列表

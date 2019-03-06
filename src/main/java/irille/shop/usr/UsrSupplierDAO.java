@@ -11,6 +11,7 @@ import irille.pub.DateTools;
 import irille.pub.LogMessage;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.BeanBase;
+import irille.pub.bean.query.SqlQuery;
 import irille.pub.bean.sql.SQL;
 import irille.pub.idu.*;
 import irille.pub.svr.DbPool;
@@ -763,17 +764,18 @@ public class UsrSupplierDAO {
 
     ValidForm vf = new ValidForm(bean);
     ValidRegex vr = new ValidRegex(bean);
-
+//
     vf.validNotEmpty(
-        T.NAME,
-        T.CATEGORY,
-        T.COUNTRY,
-        T.PROVINCE,
-        T.CITY,
-        T.COMPANY_ADDR,
-        T.EMAIL,
-        T.CREDIT_CODE,
-        T.ENTITY);
+            T.CATEGORY,
+            T.NAME,
+            T.COUNTRY,
+            T.PROVINCE,
+            T.CITY,
+            T.COMPANY_ADDR,
+            T.EMAIL,
+            T.CREDIT_CODE,
+            T.ENTITY
+            );
     // 不是长期的营业执照需要填写营业执照有效期
     if (!bean.gtBusinessLicenseIsSecular()) {
       vf.validNotEmpty(T.BUSINESS_LICENSE_BEGIN_TIME, T.BUSINESS_LICENSE_END_TIME);
@@ -829,6 +831,98 @@ public class UsrSupplierDAO {
     supplier.stStatus(OStatus.INIT);
     supplier.upd();
     return supplier;
+  }
+
+  /**
+   *
+   * @param pkey
+   * @return
+   */
+  public static UsrSupplier getStatus(Integer pkey) {
+    UsrSupplier supplier = BeanBase.load(UsrSupplier.class, pkey);
+    SQL sql = new SQL() {{
+      SELECT(
+              T.PKEY,
+              T.STATUS
+      );
+      FROM(UsrSupplier.class);
+    }};
+    SqlQuery query = irille.pub.bean.Query.sql(sql);
+    supplier.stStatus(supplier.gtStatus());
+    return supplier;
+  }
+
+  /**
+   * 创建供应商信息
+   * @author: lingjian
+   * @Date: 2019/3/4 10:01
+   * @param view
+   * @param lang
+   * @return
+   * @throws JSONException
+   */
+  public static UsrSupplier insSupplier(UsrSupplier view, Language lang)
+          throws JSONException {
+    UsrMain main = irille.pub.bean.Query.SELECT(UsrMain.class,view.getUserId());
+    UsrSupplier bean = new UsrSupplier();
+    //必填项
+    bean.stRole(UsrSupplierRoleDAO.getDefault());
+    bean.setLoginName(main.getNickname()); //UsrMain表的昵称
+    bean.setEmail(main.getEmail()); //UsrMain表的邮箱
+    bean.stStatus(Usr.OStatus.INIT); //审核状态
+    bean.stIsAuth(Usr.OIsAuth.NO); //认证状态
+    bean.setSort(default_sort); //排序
+    bean.setCountry(main.getCountry()); //国家
+    bean.setProvince(main.getProvince()); //省份
+    bean.setBankCountry(main.getCountry()); //开户行国家
+    bean.setBankProvince(main.getProvince()); //开户行省份
+    bean.stHomePageOn(false); //首页个性装修开关
+    bean.stProductPageOn(false); //产品页个性装修开关
+    bean.stContactPageOn(false); //联系页个性装修开关
+    bean.stIsPro(false); //供应商首页产品展示
+    bean.setUpdateTime(Env.getTranBeginTime()); //更新时间
+    bean.setCategory(40); //供应商分类
+
+    bean.setUserId(view.getUserId()); //UsrMain表的pkey
+    bean.setPassword(main.getPassword()); //UsrMain表的密码
+    bean.setName(view.getName()); //公司名称-必填
+    bean.setEnglishName(view.getEnglishName()); //公司英文名称
+    bean.stCompanyType(new JSONObject().put(lang.name(), view.getCompanyType())); //企业类型
+    bean.stCompanyNature(new JSONObject().put(lang.name(), view.getCompanyNature())); //企业性质
+    bean.setCompanyEstablishTime(view.getCompanyEstablishTime()); //成立时间
+    bean.setWebsite(view.getWebsite()); //官网地址
+    bean.stCompanyAddr(new JSONObject().put(lang.name(), view.getCompanyAddr())); //详细地址
+    bean.setAnnualProduction(view.getAnnualProduction()); //年产量
+    bean.setTelephone(view.getTelephone()); //公司电话
+    bean.setFax(view.getFax()); //传真
+    bean.setPostcode(view.getPostcode()); //邮编
+    bean.setTargetedMarket(view.getTargetedMarket()); //目标市场
+    bean.stProdPattern(new JSONObject().put(lang.name(),view.getProdPattern())); //生产模式
+    bean.setCreditCode(view.getCreditCode()); //信用代码
+    bean.setRegisteredCapital(view.getRegisteredCapital()); //注册资金-必填
+    bean.setEntity(view.getEntity()); //企业法人-必填
+    bean.setEntity(view.getEntity()); //企业法人-必填
+    bean.setBusinessLicenseIsSecular(view.getBusinessLicenseIsSecular()); //营业执照是否在有效期-必填
+    if(view.getBusinessLicenseIsSecular()==0){
+      bean.setBusinessLicenseBeginTime(view.getBusinessLicenseBeginTime()); //营业执照开始时间
+      bean.setBusinessLicenseEndTime(view.getBusinessLicenseEndTime()); //营业执照结束时间
+    }
+    bean.setTaxpayerType(view.getTaxpayerType()); //纳税人类型
+
+    bean.setContacts(view.getContacts()); //联系人
+    bean.stDepartment(new JSONObject().put(lang.name(),view.getDepartment())); //联系人部门
+    bean.stJobTitle(new JSONObject().put(lang.name(),view.getJobTitle())); //联系人职称
+    bean.setPhone(view.getPhone()); //联系人手机
+    bean.setContactEmail(view.getContactEmail()); //联系人邮箱
+
+    bean.setCertPhoto(view.getCertPhoto()); //资质证书复印件
+    bean.setIdCardFrontPhoto(view.getIdCardFrontPhoto()); //法人身份证复印件
+    bean.setIdCard(view.getIdCard()); //法人身份证号码
+    bean.setContactsIdCardFrontPhoto(view.getContactsIdCardFrontPhoto()); //运营负责人身份证复印件
+    bean.setOperateIdCard(view.getOperateIdCard()); //运营负责人身份证号码
+    bean.setApplicationTime(view.getApplicationTime()); //申请时间
+    bean.ins();
+    return bean;
   }
 
   /**
@@ -1340,6 +1434,52 @@ public class UsrSupplierDAO {
     /**
      * ———————————————————分割线(新平台)—————————————————————————
      */
+
+    public static Page getShopApplication(Integer start, Integer limit, String name, Integer status) {
+      if (start == null) {
+        start = 0;
+      }
+      if (limit == null) {
+        limit = 15;
+      }
+      SQL sql = new SQL() {
+        {
+          SELECT(
+                  T.PKEY,
+                  T.NAME,
+                  T.COMPANY_ADDR,
+                  T.APPLICATION_TIME,
+                  T.STORE_STATUS,
+                  T.STATUS
+                  )
+                  .FROM(UsrSupplier.class)
+                  .WHERE(T.STATUS,"!=1")
+                  .WHERE(T.STORE_STATUS, "!=1");
+          if (name != null) {
+            WHERE(T.NAME, "like '%" + name + "%'");
+          }
+          if (status != null) {
+            WHERE(T.STATUS, "=?", status);
+          }
+        }
+      };
+      Integer count = irille.pub.bean.Query.sql(sql).queryCount();
+      List<SuppliersView> list = irille.pub.bean.Query.sql(sql.LIMIT(start, limit)).queryMaps().stream().map(o -> new SuppliersView() {{
+        setId((Integer) o.get(T.PKEY.getFld().getCodeSqlField()));
+        setName((String) o.get(T.NAME.getFld().getCodeSqlField()));
+        String contacts = BeanBase.load(UsrMain.class, (Integer) o.get(T.PKEY.getFld().getCodeSqlField())).getContacts();
+        if(contacts != null){
+          setContacts(contacts);
+        }
+        setCompanyAddr((String) o.get(T.COMPANY_ADDR.getFld().getCodeSqlField()));
+        setApplicationTime((Date) o.get(T.APPLICATION_TIME.getFld().getCodeSqlField()));
+        setStoreStatus(Byte.valueOf(String.valueOf(o.get(T.STORE_STATUS.getFld().getCodeSqlField()))));
+        setStatus(Byte.valueOf(String.valueOf(o.get(T.STATUS.getFld().getCodeSqlField()))));
+      }}).collect(Collectors.toList());
+      return new Page(list, start, limit, count);
+    }
+
+
     public static Page getSuppliers(Integer start, Integer limit, String name, Integer category, Integer status) {
         if (start == null) {
             start = 0;
@@ -1390,6 +1530,13 @@ public class UsrSupplierDAO {
             setId((Integer) o.get(UsrSupplierCategory.T.PKEY.getFld().getCodeSqlField()));
             setName((String) o.get(UsrSupplierCategory.T.NAME.getFld().getCodeSqlField()));
         }}).collect(Collectors.toList());
+       List<StoreStatusView> storeStatus = new ArrayList<>();
+       for (Usr.SStatus value : Usr.SStatus.values()) {
+         StoreStatusView view = new StoreStatusView();
+         view.setId(value.getLine().getKey());
+         view.setName(value.getLine().getName());
+         storeStatus.add(view);
+       }
         List<StatusView> status = new ArrayList<>();
         for (OStatus value : OStatus.values()) {
             StatusView view = new StatusView();
@@ -1426,6 +1573,7 @@ public class UsrSupplierDAO {
         view.setAuths(auths);
         view.setIsPros(isPros);
         view.setCountrys(countrys);
+        view.setStoreStatus(storeStatus);
         return view;
     }
 

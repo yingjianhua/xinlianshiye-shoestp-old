@@ -27,6 +27,7 @@ import irille.pub.tb.EnumLine;
 import irille.pub.tb.IEnumOpt;
 import irille.pub.tb.Tb;
 import irille.pub.tb.TbBase;
+import irille.shop.usr.UsrAnnex;
 
 public class Plt extends PackageBase {
     private static final Log LOG = new Log(Plt.class);
@@ -77,6 +78,7 @@ public class Plt extends PackageBase {
         addTb(66, RFQPurchaseContactGroup.class);
         addTb(67, RFQConsultGroup.class);
         addTb(68, RFQConsultGroupRelation.class);
+        addTb(69, UsrAnnex.class);
     }
 
     @Override

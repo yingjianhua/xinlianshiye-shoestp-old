@@ -18,7 +18,7 @@ public class Usr extends PackageBase {
 
 	private Usr() {
 	}
-	
+
 	@Override
 	public void initTbMsg() { // 初始化表信息
 		addTb(1, UsrSupplierCategory.class);
@@ -53,7 +53,7 @@ public class Usr extends PackageBase {
 	public int getPackageId() {
 		return Plt_ConfPackage.INST.getPackageId(getClass());
 	}
-	
+
 	/**
 	 * 初始化，在运行期间仅执行一次
 	 */
@@ -66,25 +66,39 @@ public class Usr extends PackageBase {
 	public enum OIsAuth implements IEnumOpt {
 		NO(0,"未认证"),YES(1,"已认证");
 		public static final String NAME="供应商认证";
-		public static final OIsAuth DEFAULT = NO; 
+		public static final OIsAuth DEFAULT = NO;
 		private EnumLine _line;
 		private OIsAuth(int key, String name) {_line=new EnumLine(this,key,name);}
 		public EnumLine getLine(){return _line;	}
 	}
-	
+
 	/*
 	 * 供应商审核
 	 * createBy liyichao
 	 */
 	public enum OStatus implements IEnumOpt {//@formatter:off
-		INIT(0,"未审核"),APPR(1,"已审核");
-		public static final String NAME="状态";
+		INIT(0,"未审核"),APPR(1,"审核通过"),FAIL(2,"审核不通过");
+		public static final String NAME="审核状态";
 		public static final OStatus DEFAULT = INIT; // 定义缺省值
 		private EnumLine _line;
 		private OStatus(int key, String name) {_line=new EnumLine(this,key,name);	}
 		public EnumLine getLine(){return _line;	}
 	}		//@formatter:on
-	
+
+	/*
+	 * 店铺审核
+	 * @author: lingjian
+	 * @Date: 2019/3/4 15:51
+	 */
+	public enum SStatus implements IEnumOpt {//@formatter:off
+		DOWN(0,"关闭"),OPEN(1,"开启");
+		public static final String NAME="店铺状态";
+		public static final SStatus DEFAULT = DOWN; // 定义缺省值
+		private EnumLine _line;
+		private SStatus(int key, String name) {_line=new EnumLine(this,key,name);	}
+		public EnumLine getLine(){return _line;	}
+	}
+
 	/**
 	 * 我的收藏加入的类型
 	 * @author liyichao
@@ -97,10 +111,10 @@ public class Usr extends PackageBase {
 		private OJoinType(int key, String name) {_line=new EnumLine(this,key,name);	}
 		public EnumLine getLine(){return _line;	}
 	}//@formatter:on
-	
+
 	public enum ErrMsgs implements IMsg {// 信息定义的类名必须为Msgs, 以便系统能检索
 		// @formatter:off
-		emptyErr("记录{0}不存在，不可操作！"), 
+		emptyErr("记录{0}不存在，不可操作！"),
 		copyErr("{0}已存在"),
 		wrongErr("请输入营业执照时间"),
 		noSubmit("请选择商品"),
@@ -115,16 +129,16 @@ public class Usr extends PackageBase {
 		noChoose("请勾选商品"),
 		soldOut("商品已售完");
 		private String _msg;
-		
+
 		private ErrMsgs(String msg) {
 		_msg = msg;
 		}
-	
+
 		public String getMsg() {
 		return _msg;
 		}
 	} // @formatter:on
-	
+
 	/**
 	 * xiayan
 	 * 用户地址簿地址类型
@@ -142,7 +156,7 @@ public class Usr extends PackageBase {
 			return _line;
 		}
 	}
-	
+
 	/**
 	 * @author liyichao
 	 * IM代码使用类型
@@ -158,6 +172,22 @@ public class Usr extends PackageBase {
 			return _line;
 		}
 	}
-	
-	
+
+	/**
+	 * @author chen
+	 * 身份
+	 */
+	public enum IDType implements IEnumOpt{
+		BUYNER(0,"买家"),SELLER(1,"卖家");
+		public static final String NAME="身份类型";
+		public static final IDType DEFAULT = BUYNER; // 定义缺省值
+		private EnumLine _line;
+		private IDType(int key, String name) {_line=new EnumLine(this,key,name);}
+		@Override
+		public EnumLine getLine() {
+			return _line;
+		}
+	}
+
+
 }
