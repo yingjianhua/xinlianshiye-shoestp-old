@@ -11,12 +11,14 @@ public class SVSInfoDaoImpl implements SVSInfoDao {
 	 * 更新或者插入SVS对象
 	 */
 	@Override
-	public void save(SVSInfo bean) {
+	public SVSInfo save(SVSInfo bean) {
+		SVSInfo inf =new SVSInfo();
 		if (null == bean.getPkey()) {
-			bean.ins();
+		 inf = bean.ins();
 		} else {
-			bean.upd();
+		 inf = bean.upd();
 		}
+		return inf;
 
 	}
 

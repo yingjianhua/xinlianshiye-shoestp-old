@@ -4,6 +4,7 @@ import com.google.inject.ImplementedBy;
 
 import irille.Dao.SVS.impl.SVSInfoServiceImpl;
 import irille.Entity.SVS.SVSInfo;
+import irille.view.SVS.SVSDetailedInfoView;
 import irille.view.SVS.SVSInfoView.exhibitionAttended;
 import irille.view.SVS.SVSInfoView.partner;
 import irille.view.SVS.SVSInfoView.productQuality;
@@ -20,5 +21,5 @@ public interface SVSInfoService {
 	 * @author GS
 	 * 
 	 */
-	public void application(SVSInfo svs) throws Exception;
+	public SVSDetailedInfoView application(SVSInfo svs) throws Exception;
 }
