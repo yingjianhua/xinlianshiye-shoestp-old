@@ -51,10 +51,10 @@
 
 </style>
 </head>
-<body >
+<body  class=" bg-gray  page-personal-center">
 <jsp:include page="v3/nav-nobody.jsp"
 ></jsp:include>
-<div id="shoesTp"  class=" w_1240 bg-gray  page-personal-center">
+<div id="shoesTp" class=" w_1240">
 		<main class="main">
 			<div class="wide por clearfix flex-layout">
 				<!-- 左侧 My-Accoung 列表 -->
@@ -1262,14 +1262,19 @@
 					// 正在加载 or 已加载完全
 					if(this.isInquiryLisLoading || this.isInquiryLoadOver) return;
 					this.isInquiryLisLoading = true;
+                    // 参数拼接 - unread未勾选时不传
+                    var postData={
+                        keyword: this.inquiryKeyword,
+                        t: this.inquiresType,
+                        start: this.inquiryLisPageStart,
+                        limit: this.inquiryLisPageLimit
+                    }
+                    if( this.isUnread ){
+                        postData.unread = true;
+                    }
+
 					axios.get('/home/rfq_RFQConsult_pageMine', {
-							params: {
-								keyword: this.inquiryKeyword,
-								t: this.inquiresType,
-								unread: this.isUnread,
-								start: this.inquiryLisPageStart,
-								limit: this.inquiryLisPageLimit
-							}
+							params: postData
 						})
 						.then((res) => {
 							this.isInquiryLisLoading = false;
