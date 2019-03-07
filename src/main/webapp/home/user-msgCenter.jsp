@@ -87,10 +87,12 @@
 					<%--</div>--%>
 				<%--</div>--%>
 				 <div class="user-menu fl">
-            <div class="user-menu-title"><img src="/home/v3/static/images/user/icon_account.png" alt="" style="margin:0 8px 2px 0;">My Account
+            <div class="user-menu-title">
+				<img src="/home/v3/static/images/user/icon_account.png" alt="" style="margin:0 8px 2px 0;">My Account
         </div>
+
         <div class="user-menu-item"><a href="/home/usr_UsrPurchase_userIndex">Home <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
-        <div class="user-menu-item"><a href="/home/usr_UsrMessages_center">Message Center <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+        <div class="user-menu-item"><a href="/home/usr_UsrMessages_center" style="color:#10389c;">Message Center <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
         <div class="user-menu-item"><a href="/home/usr_UsrPurchase_contacts">Contacts <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
         <div class="user-menu-item"><a href="/home/usr_UsrFavorites_myfavorite">My Favourites <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
         <div class="user-menu-item"><a href="/home/usr_UsrPurchase_usrSetting">Account Settings <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
@@ -271,7 +273,9 @@
 
 												<div class="more">
 													<transition name="el-fade-in">
-														<div v-show="isScale" class="time">2019-1-8</div>
+														<div v-show="isScale" class="time">
+															{{ relation.quotation.createDate | dataFormat('yyyy-MM-dd')}}
+														</div>
 													</transition>
 													<el-popover popper-class="my-popover-operate"
 													v-model="inquiryList[inquiryIndex].relations[relationsIndex].showPopover">
@@ -736,6 +740,13 @@
 								noresize="false" tag="section">
 								<div class="chat-content" ref="chatContent">
 									<!-- 聊天框顶部supplier信息 -->
+										<div @click="loadMoreChatInfo"
+										 v-if="!isChatMsgListLoadOver"
+										style="text-align: center;position: relative;top: -12px;">
+										<span style="color: #66b1ff;cursor: pointer;">Load more</span>
+										{{isChatMsgListLoading}}
+										{{isChatMsgListLoadOver}}
+									</div>
 									<div class="chater-info">
 										LOCATION：
 										<img  alt="" class="pic-flag" :src="image(inquiryList[nowInquiryIndex].relations[nowSupplierIndex].supplier.country.flag)"
@@ -748,11 +759,11 @@
 									<!-- 聊天框内容 -->
 									<ul class="chat-list">
 										<li class="chat-item" :class="{mine: msg.p2S}"
-											v-for="(msg,i) in chatMsgObj.msgs"
+											v-for="(msg,i) in chatMsgList"
 											:key="msg.sendTime">
 											<!-- 有头像显示头像，没有头像显示首字母 -->
 											<template v-if="msg.p2S">
-												<img class="pic-head" alt="head's pic"
+												<img class="pic-head"
 													v-if="chatMsgObj.another.avatar"
 												  :src="image(chatMsgObj.another.avatar)">
 												<div class="pic-head" v-else>
@@ -760,7 +771,7 @@
 												</div>
 											</template>
 											<template v-else>
-												<img class="pic-head" alt="head's pic"
+												<img class="pic-head"
 													v-if="chatMsgObj.myself.avatar"
 												  :src="image(chatMsgObj.myself.avatar)">
 												<div class="pic-head" v-else>
@@ -1201,6 +1212,11 @@
 
 					// 聊天信息
 					chatMsgObj: {},  //聊天窗口信息
+					chatMsgList: [], //聊天信息
+					chatMsgListPageStart: 0, //聊天信息列表 分页
+					chatMsgListPageLimit: 10, //聊天信息列表 分页
+					isChatMsgListLoading: false, //聊天信息列表 加载开关
+					isChatMsgListLoadOver: false, //聊天信息列表 是否已加载完全
 					isAllRead: false,  //信息是否已读
 					sendMsgValue: "", //发送的内容
 
@@ -1215,7 +1231,7 @@
 			methods: {
 				image(v, params) {
 					if (!v) {
-						return ""
+						return "/home/v3/static/images/no_img.png"
 					}
 					if (!params) {
 						params = ""
@@ -1842,10 +1858,18 @@
 								}
 							}
 						})
-						this.chatMsgObj = chatMsgObj;
-
+						this.chatMsgList.push(...chatMsgList);
+                        // 第一次加载时取双方的name信息
+                        // 第一次加载时滚动置底 - 之后加载more时不滚动置底
+                        if(this.chatMsgListPageStart==0){
+                            this.chatMsgObj = res.data.result;
+                            // 下拉置底
+                            this.$nextTick(()=>{
+								var scrollHeight = this.$refs.chatContent.scrollHeight;
+								this.$refs.chatContentScroll.wrap.scrollTop = scrollHeight;
+                            })
+                        }
 						this.sendMsgValue = "";
-
 						// 下拉置底
 						this.$nextTick(()=>{
 							var scrollHeight = this.$refs.chatContent.scrollHeight;
@@ -1853,10 +1877,25 @@
 						})
 					})
 					.catch((error) => {
+					      this.isChatMsgListLoading = false;
 						console.log(error);
 					});
 				},
+				// 加载更多聊天信息
+				loadMoreChatInfo(){
+                    if(this.isChatMsgListLoading || this.isChatMsgListLoadOver) return;
+                    this.chatMsgListPageStart += this.chatMsgListPageLimit;
+                    this.getChatInfo();
+				},
 
+                //reset 聊天信息
+                resetInquiryOptions(){
+                    this.chatMsgListPageStart = 0;
+                    this.chatMsgList = [];
+                    this.chatMsgObj = {};
+                    this.isChatMsgListLoading = false;
+                    this.isChatMsgListLoadOver = false;
+                },
 				// 倒计时函数
 				countDown( maxtime, timeObj, fn )  {
 						maxtime = maxtime/1000;

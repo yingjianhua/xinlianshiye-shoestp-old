@@ -6,6 +6,7 @@ import irille.shop.usr.UsrPurchase;
 import irille.view.RFQ.PutInquiryView;
 import irille.view.v3.rfq.PutRFQConsultView;
 import irille.view.v3.rfq.EditRFQConsultView;
+import irille.view.v3.rfq.PutSupplierConsultView;
 
 /**
  * Created by IntelliJ IDEA.
@@ -42,4 +43,12 @@ public interface IRFQConsultService {
      * @author lijie@shoestp.cn
      */
     int edItRFQInquiry(EditRFQConsultView readValue, UsrPurchase purchase);
+
+
+    /**
+     * @Description: 供应商询盘
+     * @date 2019/3/7 10:11
+     * @author lijie@shoestp.cn
+     */
+    int putSupplierInquiry(PutSupplierConsultView readValue, UsrPurchase purchase);
 }

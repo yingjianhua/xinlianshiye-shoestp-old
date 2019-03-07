@@ -273,7 +273,9 @@
             </div>
             <!-- 商家-信息2 - end -->
         </div>
-        <index-bottom></index-bottom>
+    </div>
+    <div id="bottom">
+                <index-bottom></index-bottom>
     </div>
 
 
@@ -298,7 +300,7 @@
     <script src="/home/v3/static/js/index-bottom.js"></script>
     <script>
         new Vue({
-            el:"#main"
+            el:"#bottom"
         })
     </script>
 </body>

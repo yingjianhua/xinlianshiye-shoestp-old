@@ -804,6 +804,8 @@
           -o-object-fit: contain;
              object-fit: contain; }
       .page-personal-center .chat-wrap .chat-content .chat-list {
+           display: flex;
+        flex-direction: column-reverse;
         padding-bottom: 15px; }
       .page-personal-center .chat-wrap .chat-content img {
         max-height: 200px;

@@ -669,14 +669,28 @@ public class PdtProductDAO {
         public static Map getProductBySup(FldLanguage.Language lang, Serializable supplier,
                                           Integer start, Integer limit, Integer cat, Integer sort, Integer orderType) {
             Map map = new HashMap();
-            SQL sql = new SQL() {{
-                SELECT(T.PKEY, T.PICTURE, T.NAME, T.CUR_PRICE, T.IS_HOT)
-                        .FROM(PdtProduct.class)
-                        .WHERE(T.SUPPLIER, "=?", supplier)
-                        .WHERE(T.STATE, "=?", Pdt.OState.ON)
-                        .WHERE(T.IS_VERIFY, "=?", Sys.OYn.YES)
-                        .WHERE(T.PRODUCT_TYPE, "<>?", Pdt.OProductType.GROUP);
-            }};
+            SQL sql = new SQL();
+            StringJoiner joiner = new StringJoiner(",");
+            joiner.add(String.valueOf(Pdt.OProductType.GENERAL.getLine().getKey()));
+            joiner.add(String.valueOf(Pdt.OProductType.GATHER.getLine().getKey()));
+            sql.SELECT(T.PKEY, T.PICTURE, T.NAME, T.CUR_PRICE, T.IS_HOT)
+                    .FROM(PdtProduct.class)
+                    .WHERE(T.SUPPLIER, "=?", supplier)
+                    .WHERE(T.STATE, "=?", Pdt.OState.ON)
+                    .WHERE(T.IS_VERIFY, "=?", Sys.OYn.YES)
+                    .WHERE(T.PRODUCT_TYPE, "in (" + joiner.toString() + ")");
+//            粘合O2O商品
+            SQL o2oSql = new SQL();
+            o2oSql
+                    .SELECT(T.PKEY, T.PICTURE, T.NAME, T.CUR_PRICE, T.IS_HOT).FROM(PdtProduct.class)
+                    .LEFT_JOIN(O2O_Product.class, O2O_Product.T.PRODUCT_ID, T.PKEY)
+                    .WHERE(O2O_Product.T.VERIFY_STATUS, "=?", O2O_ProductStatus.PASS)
+                    .WHERE(O2O_Product.T.STATUS, "=?", O2O_ProductStatus.ON)
+                    .WHERE(cat != -1, T.CATEGORY_DIY,
+                            "in(" + UsrProductCategoryDAO.Sellect.getAllChild(lang, supplier, cat) + ")")
+
+
+            ;
             if (cat != -1) {
                 sql.WHERE(T.CATEGORY_DIY,
                         "in(" + UsrProductCategoryDAO.Sellect.getAllChild(lang, supplier, cat) + ")");
@@ -689,31 +703,49 @@ public class PdtProductDAO {
             switch (sort) {
                 case 1:
                     sql.ORDER_BY(T.SALES, rankingBasis);
+                    o2oSql.ORDER_BY(T.SALES, rankingBasis);
                     break;
                 case 2:
                     sql.ORDER_BY(T.Favorite_Count, rankingBasis);
+                    o2oSql.ORDER_BY(T.Favorite_Count, rankingBasis);
                     break;
                 case 3:
                     sql.ORDER_BY(T.IS_NEW, rankingBasis);
+                    o2oSql.ORDER_BY(T.IS_NEW, rankingBasis);
                     break;
                 case 4:
                     sql.ORDER_BY(T.CUR_PRICE, rankingBasis);
+                    o2oSql.ORDER_BY(T.CUR_PRICE, rankingBasis);
                     break;
                 default:
                     sql.ORDER_BY(T.IS_HOT,
                             rankingBasis.trim().toLowerCase().equals("desc") ? " ASC " : " DESC ");
+                    o2oSql.ORDER_BY(T.IS_HOT,
+                            rankingBasis.trim().toLowerCase().equals("desc") ? " ASC " : " DESC ");
                     break;
             }
             sql.ORDER_BY(T.PKEY, rankingBasis);
+            o2oSql.ORDER_BY(T.PKEY, rankingBasis);
             sql.LIMIT(start, limit);
-            map.put("items", irille.pub.bean.Query.sql(sql).queryList(PdtProduct.class)
-                    .stream()
-                    .map(bean -> new PdtView() {{
-                        String name = bean.getName();
-                        translateUtil.getAutoTranslate(bean, lang);
-                        setPdt(bean);
-                        setRewrite(bean.getPkey(), name);
-                    }}).collect(Collectors.toList()));
+            o2oSql.LIMIT(start, limit);
+            List<PdtView> list = new ArrayList<>();
+            irille.pub.bean.Query.sql(sql).queryList(PdtProduct.class).forEach(pdtProduct -> {
+                PdtView pdtView = new PdtView();
+                String name = pdtProduct.getName();
+                translateUtil.getAutoTranslate(pdtProduct, lang);
+                pdtView.setPdt(pdtProduct);
+                pdtView.setRewrite(pdtProduct.getPkey(), name);
+                list.add(pdtView);
+            });
+            irille.pub.bean.Query.sql(o2oSql).queryList(PdtProduct.class).forEach(pdtProduct -> {
+                PdtView pdtView = new PdtView();
+                String name = pdtProduct.getName();
+                translateUtil.getAutoTranslate(pdtProduct, lang);
+                pdtView.setPdt(pdtProduct);
+                pdtView.setRewrite(pdtProduct.getPkey(), name);
+                list.add(pdtView);
+            });
+            map.put("items", list);
             return map;
         }
 
@@ -730,6 +762,7 @@ public class PdtProductDAO {
 //                        TODO  商家目前不能设置首页商品所以展示去掉
 //                        .WHERE(T.IS_INDEX, "=?", Sys.OYn.YES)
                         .WHERE(T.IS_VERIFY, "=?", Sys.OYn.YES)
+//TODO 这里缺少O2O的商品列表
                         .WHERE(T.PRODUCT_TYPE, "=?", Pdt.OProductType.GENERAL)
                         .ORDER_BY(T.UPDATE_TIME, "DESC")
                         .LIMIT(0, 8);

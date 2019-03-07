@@ -99,32 +99,6 @@
     <index-top></index-top>
     <div class="wide">
         <div id="lib_user" class="clearfix">
-            <s:if test="env.login!=null">
-                <div id="lib_user_crumb" class="widget">
-                    <ul class="crumb_box clearfix">
-                        <li class="home">
-                            <a href="/home/usr_UsrPurchase" title="Home">
-                                <s:text name="Global.Home"/>
-                                <i></i>
-                            </a>
-                        </li>
-                        <li class="crumb1">
-                            <a href="/home/usr_UsrPurchase_userIndex" title="My Account">
-                                <s:text name="Global.My_Account"/>
-                                <i></i>
-                            </a>
-                        </li>
-                        <li class="crumb2 root">
-                            <a href="/home/usr_UsrConsult_publishView" title="My Inquiry/RFQ">
-                                <s:text name="my-inquiry-publish.View_Inquiry"/>
-                                <i></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <%@ include file="template/account/lib-user-menu.jsp" %>
-            </s:if>
-
             <div id="lib_user_main">
                 <div id="lib_user_msg" class="clearfix">
 

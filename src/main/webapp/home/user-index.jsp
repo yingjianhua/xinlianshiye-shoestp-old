@@ -39,10 +39,10 @@
     <div class="user-menu fl">
        <div class="user-menu-title"><img src="/home/v3/static/images/user/icon_account.png" alt="" style="margin:0 8px 2px 0;">My Account
         </div>
-        <div class="user-menu-item"><a href="/home/usr_UsrPurchase_userIndex">Home <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+        <div class="user-menu-item"><a style="color:#10389c;" href="/home/usr_UsrPurchase_userIndex">Home <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
         <div class="user-menu-item"><a href="/home/usr_UsrMessages_center">Message Center <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
         <div class="user-menu-item"><a href="/home/usr_UsrPurchase_contacts">Contacts <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
-        <div class="user-menu-item"><a href="/home/usr_UsrFavorites_myfavorite">My Favourites <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+        <div class="user-menu-item"><a href="/home/usr_UsrFavorites_myfavorite">My Favoutities <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
         <div class="user-menu-item"><a href="/home/usr_UsrPurchase_usrSetting">Account Settings <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
     </div>
     <div class="user-main fr">
@@ -57,7 +57,7 @@
                                  alt="">
                         </div>
                         <div class="user-info-item-name" style="color: #232323;">
-                            {{userInfo.nickname}}
+                            {{userInfo.nickname?userInfo.nickname:'Nickname'}}
                         </div>
                         <div class="avatar-upload clearfix ripple fadeIn" v-if="isShowAvatarUpload">
                             <!-- action="https://jsonplaceholder.typicode.com/posts/" -->
@@ -84,34 +84,42 @@
                             </div>
                         </div>
                     </div>
-                    <div class="icon-id"><img src="/home/v3/static/images/user/icon_id.png" alt=""></div>
+                    <div class="icon-id">
+                        <a href="/home/usr_UsrPurchase_usrSetting">
+                             <img src="/home/v3/static/images/user/icon_id.png" alt="">
+                        </a>
+                    </div>
 
                 </div>
             </div>
             <div class="user-info-item flexCc">
-                <div>
-                    <div class="flexCc">
-                        <span style="font-size:36px;">{{userInfo.unreadMessagersCount}}</span>
-                        <img src="/home/v3/static/images/user/icon_message.png" alt="" style="margin-left:10px;">
+                 <a href="/home/usr_UsrMessages_center">
+                    <div>
+                        <div class="flexCc">
+                            <span style="font-size:36px;">{{userInfo.unreadMessagersCount}}</span>
+                            <img src="/home/v3/static/images/user/icon_message.png" alt="" style="margin-left:10px;">
+                        </div>
+                        <div class="user-info-item-name">
+                            Unread Messagers
+                        </div>
                     </div>
-                    <div class="user-info-item-name">
-                        Unread Messagers
-                    </div>
-                </div>
+                </a>
             </div>
             <div class="user-info-item flexCc">
-                <div>
-                    <div class="flexCc">
-                        <span style="font-size:36px;">{{userInfo.requestsFromConnectionsCount}}</span>
-                        <!-- <el-badge is-dot> -->
-                        <el-badge>
-                            <img src="/home/v3/static/images/user/icon_alarm.png" alt="" style="margin-left:10px;">
-                        </el-badge>
+                <a href="/home/usr_UsrPurchase_contacts">
+                    <div>
+                        <div class="flexCc">
+                            <span style="font-size:36px;">{{userInfo.requestsFromConnectionsCount}}</span>
+                            <!-- <el-badge is-dot> -->
+                            <el-badge>
+                                <img src="/home/v3/static/images/user/icon_alarm.png" alt="" style="margin-left:10px;">
+                            </el-badge>
+                        </div>
+                        <div class="user-info-item-name">
+                            Requests from Connections
+                        </div>
                     </div>
-                    <div class="user-info-item-name">
-                        Requests from Connections
-                    </div>
-                </div>
+                  </a>
             </div>
         </div>
         <!-- 问题表单 -->
@@ -130,7 +138,7 @@
                 <el-form-item label="Estimates Order Quantity :" prop="quantity">
                     <el-row>
                         <el-col :span="7">
-                            <el-input v-model="form.quantity"></el-input>
+                            <el-input v-model="form.quantity" placeholder="Please enter the quantity"></el-input>
                         </el-col>
                         <el-col :span="5" :offset="1">
                             <el-form-item prop="unit">
@@ -178,7 +186,7 @@
             <h3>Hi {{userInfo.nickname}}</h3>
             <p>Please complete your personalized profile to enjoy carefully selected product recommendations, access to
                 selected & verified Trade Assurance sellers, and more.</p>
-            <a href="" target="_blank">Personalize Now</a>
+            <a href="javascript:void(0)" target="_blank">Personalize Now</a>
         </div>
     </div>
 </div>
@@ -212,23 +220,23 @@
             rules: { //表单验证
                 title: [{
                     required: true,
-                    message: '请输入标题',
+                    message: 'Please enter the product name',
                     trigger: 'blur'
                 },],
 
                 descriotion: [{
                     required: true,
-                    message: '请输入内容',
+                    message: 'Please enter your Proct/Service Details',
                     trigger: 'blur'
                 }],
                 quantity: [{
                     required: true,
-                    message: '请输入数量',
+                    message: 'Please enter the quantity',
                     trigger: 'blur'
                 }],
                 unit: [{
                     required: true,
-                    message: '请选择单位',
+                    message: 'Please select a unit',
                     trigger: 'change'
                 }],
             },
@@ -310,7 +318,7 @@
                                     // 未登录时
                                 } else if (res.data.ret == -1) {
                                     window.location.href =
-                                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
+                                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_userIndex';
                                     // 提交失败时
                                 } else {
                                     this.$alert(res.data.msg, {
@@ -350,10 +358,10 @@
                 const isJPG = file.type === 'image/jpeg';
                 const isLt3M = file.size / 1024 / 1024 < 3;
                 if (!isJPG) {
-                    this.$message.error('上传头像图片只能是 JPG 格式!');
+                    this.$message.error('Upload avatar image can only be JPG format');
                 }
                 if (!isLt3M) {
-                    this.$message.error('上传头像图片大小不能超过 3MB!');
+                    this.$message.error("Upload avatar image size can't exceed 3MB!");
                 }
                 return isJPG && isLt3M;
             },
@@ -370,7 +378,7 @@
                         }
                         ;
                         self.start = 0;
-                        self.$message.success("提交成功");
+                        self.$message.success("Submitted Successfully");
                         self.isShowAvatarUpload = !self.isShowAvatarUpload
                         self.getUserInfo();
                     })
