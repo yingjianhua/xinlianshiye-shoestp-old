@@ -90,7 +90,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         rfqConsult.setCountry(usrPurchase.getCountry());
         rfqConsultDAO.setB(rfqConsult);
         rfqConsultDAO.commit();
-
+        messageService.send(OTempType.RFQ_INFO_NOTICE,null, usrPurchase, rfqConsult);
     }
 
     @Override
@@ -164,7 +164,8 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         rfqConsultRelation.setThrowaway("{}");
         rfqConsultRelation.ins();
         //TODO 询盘发送站内信
-        messageService.send(OTempType.INQUIRY_NOTICE_SUPPLIER, rfqConsultRelation.gtSupplierId(),null, rfqConsult,rfqConsultRelation.gtPurchaseId());
+        messageService.send(OTempType.INQUIRY_NOTICE_PURCHASE, null,purchase, rfqConsult,rfqConsultRelation);
+//        messageService.send(OTempType.INQUIRY_NOTICE_SUPPLIER, rfqConsultRelation.gtSupplierId(),null, rfqConsult,rfqConsultRelation.gtPurchaseId());
     }
 
 

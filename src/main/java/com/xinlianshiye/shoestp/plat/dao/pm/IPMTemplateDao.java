@@ -14,8 +14,8 @@ public interface IPMTemplateDao {
 
 	void add(List<PMTemplate> addBeans);
 
-	void upd(List<PMTemplate> editBeans);
-
 	PMTemplate load(Integer pkey);
+
+	void del(List<PMTemplate> delBeans);
 	
 }

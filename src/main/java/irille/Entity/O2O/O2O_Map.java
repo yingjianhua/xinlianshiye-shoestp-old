@@ -1,14 +1,23 @@
 package irille.Entity.O2O;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import irille.Config.Attribute;
+import irille.Config.Variable;
+import irille.Entity.pm.PM.OTempType;
 import irille.core.sys.Sys;
 import irille.pub.bean.BeanInt;
 import irille.pub.tb.Fld;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+@Variable(group = {OTempType.O2O_ACTIVITY_NOTICE},enumType=O2O_Map.T.class,clazz=O2O_Map.class,attributes = {
+		@Attribute(name="地址名称",field="NAME",type=FldLanguage.class),
+		@Attribute(name="经度",field="LONGITUDE",type=String.class),
+		@Attribute(name="纬度",field="LATITUDE",type=String.class)
+		}
+)
 public class O2O_Map extends BeanInt<O2O_Map> {
 
 	private static final long serialVersionUID = 1L;

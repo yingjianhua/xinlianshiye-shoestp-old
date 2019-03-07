@@ -1,29 +1,43 @@
 package irille.Service.Manage.O2O.Imp;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+
+import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
+import com.xinlianshiye.shoestp.plat.service.pm.imp.PMMessageServiceImp;
+
+import irille.Dao.PdtProductDao;
 import irille.Dao.O2O.O2OActivityDao;
 import irille.Dao.O2O.O2OProductDao;
-import irille.Dao.PdtProductDao;
-import irille.Entity.O2O.Enums.O2O_ActivityStatus;
-import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_Activity;
 import irille.Entity.O2O.O2O_JoinInfo;
 import irille.Entity.O2O.O2O_Product;
+import irille.Entity.O2O.Enums.O2O_ActivityStatus;
+import irille.Entity.O2O.Enums.O2O_ProductStatus;
+import irille.Entity.pm.PM.OTempType;
 import irille.Service.Manage.O2O.IO2OActicityServer;
 import irille.Service.Manage.O2O.IO2OPdtServer;
 import irille.pub.Log;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.pub.idu.Idu;
+import irille.pub.svr.DbPool;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrSupplier;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
+@Slf4j
 public class O2OActicityServerImp implements IO2OActicityServer, Job {
 
     private static final Log LOG = new Log(O2OActicityServerImp.class);
@@ -35,12 +49,15 @@ public class O2OActicityServerImp implements IO2OActicityServer, Job {
     private static PdtProductDao pdtProductDao;
 
     private static IO2OPdtServer o2OPdtServer;
+    
+    private static IPMMessageService messageService;
 
     static {
         if (pdtProductDao == null) pdtProductDao = new PdtProductDao();
         if (o2OActivityDao == null) o2OActivityDao = new O2OActivityDao();
         if (o2OProductDao == null) o2OProductDao = new O2OProductDao();
         if (o2OPdtServer == null) o2OPdtServer = new O2OPdtServerImp();
+        if (messageService == null) messageService = new PMMessageServiceImp();
     }
 
     /**
@@ -124,7 +141,7 @@ public class O2OActicityServerImp implements IO2OActicityServer, Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        System.out.println("<<<======开始更新O2O活动状态======>>>");
+        log.info("<<<======开始更新O2O活动状态======>>>");
         List<O2O_Activity> activities = o2OActivityDao.findAllByStatusExceptEnd();
         Map<Integer, List<O2O_Product>> map = new HashMap<Integer, List<O2O_Product>>();
         if (activities != null && activities.size() > 0) {
@@ -148,47 +165,54 @@ public class O2OActicityServerImp implements IO2OActicityServer, Job {
         List<PdtProduct> prods = new ArrayList<PdtProduct>();
 
         Date now = new Date();
-        for (O2O_Activity a : activities) {
-            System.out.println(a.getPkey() + " = " + a.getEndDate());
-            System.out.println(now);
-            System.err.println(a.getEndDate().before(now));
-            if (a.getEndDate().before(now)) {
-                //结束时间早于现在,活动结束
-
-                a.setStatus(O2O_ActivityStatus.END.getLine().getKey());
-                List<O2O_Product> prods2 = map.get(a.getPkey());
-                if (prods2 != null) {
-                    for (O2O_Product p : prods2) {
-                        //活动结束,变为普通商品
-                        PdtProduct product = p.gtProductId();
-                        if (o2OPdtServer.judgeO2o(product) != null && o2OPdtServer.judgeO2o(product).equals(false)) {
-                            //是(O2O商品-普通商品)
-                            product.setProductType(Pdt.OProductType.GENERAL.getLine().getKey());
-                            prods.add(product);
+        if(null != activities) {
+        	for (O2O_Activity a : activities) {
+                if (a.getEndDate().before(now) && (!a.getStatus().equals(O2O_ActivityStatus.END.getLine().getKey()) || !a.getStatus().equals(O2O_ActivityStatus.CLOSE.getLine().getKey()))) {
+                    //结束时间早于现在,活动结束
+                    a.setStatus(O2O_ActivityStatus.END.getLine().getKey());
+                    List<O2O_Product> prods2 = map.get(a.getPkey());
+                    if (prods2 != null) {
+                        for (O2O_Product p : prods2) {
+                            //活动结束,变为普通商品
+                            PdtProduct product = p.gtProductId();
+                            if (o2OPdtServer.judgeO2o(product) != null && o2OPdtServer.judgeO2o(product).equals(false)) {
+                                //是(O2O商品-普通商品)
+                                product.setProductType(Pdt.OProductType.GENERAL.getLine().getKey());
+                                prods.add(product);
+                            }
                         }
+                        acts.add(a);
                     }
+                }
+                if (a.getStartDate().before(now) && a.getEndDate().after(now) && !a.getStatus().equals(O2O_ActivityStatus.ACTIVITY.getLine().getKey())) {
+                    //开始时间早于现在,结束时间晚于现在,活动进行中
+                    a.setStatus(O2O_ActivityStatus.ACTIVITY.getLine().getKey());
                     acts.add(a);
                 }
-            }
-            if (a.getStartDate().before(now) && a.getEndDate().after(now)) {
-                //开始时间早于现在,结束时间晚于现在,活动进行中
-                a.setStatus(O2O_ActivityStatus.ACTIVITY.getLine().getKey());
-                acts.add(a);
-            }
-            if (a.getStartDate().after(now)) {
-                //开始时间晚于现在,活动未开始
-                a.setStatus(O2O_ActivityStatus.TOBEGIN.getLine().getKey());
-                acts.add(a);
-            }
+                if (a.getStartDate().after(now) && !a.getStatus().equals(O2O_ActivityStatus.TOBEGIN.getLine().getKey())) {
+                    //开始时间晚于现在,活动未开始
+                    a.setStatus(O2O_ActivityStatus.TOBEGIN.getLine().getKey());
+                    acts.add(a);
+                }
 
+            }
         }
         if (acts.size() > 0) {
             o2OActivityDao.upd(acts);
+            for(O2O_Activity act:acts) {
+            	messageService.send(OTempType.O2O_ACTIVITY_NOTICE, null, null, act,act.gtAddress());
+            }
+            try {
+    			DbPool.getInstance().getConn().commit();
+    		} catch (SQLException e) {
+    			e.printStackTrace();
+    		}
         }
         if (prods.size() > 0) {
             pdtProductDao.upd(prods);
         }
-        System.out.println("<<<======更新O2O活动状态结束======>>>");
+        
+        log.info("<<<======更新O2O活动状态结束======>>>");
 
     }
 

@@ -23,7 +23,7 @@ import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 
 
-@Variable(group = {OTempType.RFQ_REPLY,OTempType.RFQ_INFO_NOTICE},enumType=RFQConsultRelation.T.class,clazz=RFQConsultRelation.class,attributes = {
+@Variable(group = {OTempType.INQUIRY_NOTICE_PURCHASE,OTempType.RFQ_MESSAGE_NOTICE},enumType=RFQConsultRelation.T.class,clazz=RFQConsultRelation.class,attributes = {
 		@Attribute(name="报价标题",field="TITLE",type=String.class),
 		@Attribute(name="产品描述",field="DESCRIPTION",type=String.class)}
 )

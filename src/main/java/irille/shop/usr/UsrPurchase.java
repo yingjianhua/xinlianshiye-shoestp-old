@@ -15,7 +15,7 @@ import irille.pub.tb.Tb.Index;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltErate;
 
-@Variable(group = {OTempType.INQUIRY_NOTICE_SUPPLIER},enumType=UsrPurchase.T.class,clazz=UsrPurchase.class,attributes = {
+@Variable(group = {OTempType.INQUIRY_NOTICE_SUPPLIER,OTempType.PURCHASE_FORGET_PASSWORD},enumType=UsrPurchase.T.class,clazz=UsrPurchase.class,attributes = {
 		@Attribute(name="采购商名称",field="NAME",type=String.class),
 		@Attribute(name="采购商手机号",field="TELPHONE",type=String.class)}
 )
