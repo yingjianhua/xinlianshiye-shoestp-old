@@ -1,6 +1,5 @@
 package irille.Entity.SVS;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import org.json.JSONException;
@@ -16,72 +15,73 @@ import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
 import irille.shop.usr.UsrSupplier;
 
-public class SVSInfo  extends BeanInt<SVSInfo>{
-	
+public class SVSInfo extends BeanInt<SVSInfo> {
+
 	public static void main(String[] args) {
 		System.out.println(TB.getCode());
 		System.out.println(SVSInfo.T.PKEY);
 		System.out.println(TB.getFlds().length);
 	}
-	
+
 	public static final Tb<?> TB = new Tb<>(SVSInfo.class, "SVS认证").setAutoIncrement().addActIUDL();
 
-    public enum T implements IEnumFld {
-        PKEY(Tb.crtIntPkey()),
-        SUPPLIER(UsrSupplier.fldOutKey()),
-		RESEARCH(Sys.T.JSON,"研发能力"), 
-		PRODUCTION_CAPACITY(Sys.T.JSON,"生产能力"),
-		REAL_FACTORY(Sys.T.JSON,"真实工厂"),
-		PRODUCT_QUALITY(Sys.T.JSON,"产品质量"),
-		FOREIGN_TRADE_TEAM(Sys.T.JSON,"外贸团队"),
-		EXHIBITION_ATTENDED(Sys.T.JSON,"参加过的展会"),
-		PARTNER(Sys.T.JSON,"合作商"),
-		BASE_SCORE(Sys.T.INT,"基础分"),
-		DYNAMIC_SCORE(Sys.T.AMT,"动态分"),
+	public enum T implements IEnumFld {
+		PKEY(Tb.crtIntPkey()), 
+		SUPPLIER(UsrSupplier.fldOutKey()), 
+		RESEARCH(Sys.T.JSON, "研发能力"),
+		PRODUCTION_CAPACITY(Sys.T.JSON, "生产能力"),
+		REAL_FACTORY(Sys.T.JSON, "真实工厂"),
+		PRODUCT_QUALITY(Sys.T.JSON, "产品质量"),
+		FOREIGN_TRADE_TEAM(Sys.T.JSON, "外贸团队"),
+		EXHIBITION_ATTENDED(Sys.T.JSON, "参加过的展会"),
+		PARTNER(Sys.T.JSON, "合作商"),
+		BASE_SCORE(Sys.T.INT, "基础分"),
+		DYNAMIC_SCORE(Sys.T.INT, "动态分"),
 		STATUS(Tb.crt(SVSAuthenticationStatus.DEFAULT)),
 		GRADE(Tb.crt(SVSGradeType.DEFAULT)),
-		APPLICATION_TIME(Sys.T.DATE_TIME,"申请认证时间"),
-		AUTHENTICATION_TIME(Sys.T.DATE_TIME,"认证时间"),
-		FAILURE_REASONS(Sys.T.STR__200_NULL,"认证失败原因"),
-	    ROW_VERSION(Sys.T.ROW_VERSION),
-        // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
-        // <<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
-        ;
-        // >>>以下是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别>>>
-        // <<<以上是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别<<<
+		APPLICATION_TIME(Sys.T.DATE_TIME, "申请认证时间"),
+		AUTHENTICATION_TIME(Sys.T.DATE_TIME__NULL, "认证时间"),
+		FAILURE_REASONS(Sys.T.STR__200_NULL, "认证失败原因"),
+		APPLICATION_COUNT(Sys.T.INT,"申请认证次数"),
+		ROW_VERSION(Sys.T.ROW_VERSION),
+		// >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
+		// <<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
+		;
+		// >>>以下是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别>>>
+		// <<<以上是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别<<<
 
-        private Fld<?> _fld;
+		private Fld<?> _fld;
 
-        private T(Class<?> clazz, String name, boolean... isnull) {
-            _fld = TB.addOutKey(clazz, this, name, isnull);
-        }
+		private T(Class<?> clazz, String name, boolean... isnull) {
+			_fld = TB.addOutKey(clazz, this, name, isnull);
+		}
 
-        private T(IEnumFld fld, boolean... isnull) {
-            this(fld, null, isnull);
-        }
+		private T(IEnumFld fld, boolean... isnull) {
+			this(fld, null, isnull);
+		}
 
-        private T(IEnumFld fld, String name, boolean... null1) {
-            _fld = TB.add(fld, this, name, null1);
-        }
+		private T(IEnumFld fld, String name, boolean... null1) {
+			_fld = TB.add(fld, this, name, null1);
+		}
 
-        private T(IEnumFld fld, String name, int strLen) {
-            _fld = TB.add(fld, this, name, strLen);
-        }
+		private T(IEnumFld fld, String name, int strLen) {
+			_fld = TB.add(fld, this, name, strLen);
+		}
 
-        private T(Fld<?> fld) {
-            _fld = TB.add(fld, this);
-        }
+		private T(Fld<?> fld) {
+			_fld = TB.add(fld, this);
+		}
 
-        public Fld<?> getFld() {
-            return _fld;
-        }
-    }
+		public Fld<?> getFld() {
+			return _fld;
+		}
+	}
 
-    static { // 在此可以加一些对FLD进行特殊设定的代码
-        T.PKEY.getFld().getTb().lockAllFlds();// 加锁所有字段,不可以修改
-    }
+	static { // 在此可以加一些对FLD进行特殊设定的代码
+		T.PKEY.getFld().getTb().lockAllFlds();// 加锁所有字段,不可以修改
+	}
 
-    // >>>以下是自动产生的源代码行--源代码--请保留此行用于识别>>>
+	// >>>以下是自动产生的源代码行--源代码--请保留此行用于识别>>>
   //实例变量定义-----------------------------------------
   private Integer _pkey;	// 编号  INT
   private Integer _supplier;	// 供应商 <表主键:UsrSupplier>  INT
@@ -93,7 +93,7 @@ public class SVSInfo  extends BeanInt<SVSInfo>{
   private String _exhibitionAttended;	// 参加过的展会  JSONOBJECT
   private String _partner;	// 合作商  JSONOBJECT
   private Integer _baseScore;	// 基础分  INT
-  private BigDecimal _dynamicScore;	// 动态分  DEC(16,2)
+  private Integer _dynamicScore;	// 动态分  INT
   private Byte _status;	// 认证结果类型 <SVSAuthenticationStatus>  BYTE
 	// SUCCESS:1,认证成功
 	// FAIL:2,认证失败
@@ -105,8 +105,9 @@ public class SVSInfo  extends BeanInt<SVSInfo>{
 	// DIAMONDS:3,钻石
 	// NotAvailable:0,暂无等级
   private Date _applicationTime;	// 申请认证时间  TIME
-  private Date _authenticationTime;	// 认证时间  TIME
+  private Date _authenticationTime;	// 认证时间  TIME<null>
   private String _failureReasons;	// 认证失败原因  STR(200)<null>
+  private Integer _applicationCount;	// 申请认证次数  INT
   private Short _rowVersion;	// 版本  SHORT
 
 	@Override
@@ -121,12 +122,13 @@ public class SVSInfo  extends BeanInt<SVSInfo>{
     _exhibitionAttended=null;	// 参加过的展会  JSONOBJECT
     _partner=null;	// 合作商  JSONOBJECT
     _baseScore=0;	// 基础分  INT
-    _dynamicScore=ZERO;	// 动态分  DEC(16,2)
+    _dynamicScore=0;	// 动态分  INT
     _status=SVSAuthenticationStatus.DEFAULT.getLine().getKey();	// 认证结果类型 <SVSAuthenticationStatus>  BYTE
     _grade=SVSGradeType.DEFAULT.getLine().getKey();	// SVS商家等级类型 <SVSGradeType>  BYTE
     _applicationTime=Env.getTranBeginTime();	// 申请认证时间  TIME
-    _authenticationTime=Env.getTranBeginTime();	// 认证时间  TIME
+    _authenticationTime=null;	// 认证时间  TIME
     _failureReasons=null;	// 认证失败原因  STR(200)
+    _applicationCount=0;	// 申请认证次数  INT
     _rowVersion=0;	// 版本  SHORT
     return this;
   }
@@ -245,10 +247,10 @@ public class SVSInfo  extends BeanInt<SVSInfo>{
   public void setBaseScore(Integer baseScore){
     _baseScore=baseScore;
   }
-  public BigDecimal getDynamicScore(){
+  public Integer getDynamicScore(){
     return _dynamicScore;
   }
-  public void setDynamicScore(BigDecimal dynamicScore){
+  public void setDynamicScore(Integer dynamicScore){
     _dynamicScore=dynamicScore;
   }
   public Byte getStatus(){
@@ -293,6 +295,12 @@ public class SVSInfo  extends BeanInt<SVSInfo>{
   public void setFailureReasons(String failureReasons){
     _failureReasons=failureReasons;
   }
+  public Integer getApplicationCount(){
+    return _applicationCount;
+  }
+  public void setApplicationCount(Integer applicationCount){
+    _applicationCount=applicationCount;
+  }
   public Short getRowVersion(){
     return _rowVersion;
   }
@@ -300,6 +308,6 @@ public class SVSInfo  extends BeanInt<SVSInfo>{
     _rowVersion=rowVersion;
   }
 
-    // <<<以上是自动产生的源代码行--源代码--请保留此行用于识别<<<
+	// <<<以上是自动产生的源代码行--源代码--请保留此行用于识别<<<
 
 }

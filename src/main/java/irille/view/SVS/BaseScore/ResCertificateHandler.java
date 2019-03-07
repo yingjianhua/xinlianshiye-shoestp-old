@@ -4,6 +4,8 @@ public class ResCertificateHandler implements SVSHandler<String> {
 	//专利证书基础分值计算
 	@Override	
 	public int getScore(Object v) {
+		if (null == v)
+			return 0;
 		String value=(String)v;
 		String[] array = value.split(",");
 		if (array.length == 1)

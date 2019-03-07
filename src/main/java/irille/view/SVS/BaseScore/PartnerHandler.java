@@ -8,6 +8,8 @@ public class PartnerHandler implements SVSHandler<List<SVSPartnerView>> {
 	// 合作商信息基础分计算
 	@Override
 	public int getScore(Object v) {
+		if (null == v)
+			return 0;
 		List<SVSPartnerView> value = (List<SVSPartnerView>)v;
 		if (value.size() > 0)
 			return 5;

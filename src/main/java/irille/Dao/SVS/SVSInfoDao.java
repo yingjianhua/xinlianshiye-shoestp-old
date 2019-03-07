@@ -7,6 +7,8 @@ import irille.Entity.SVS.SVSInfo;
 @ImplementedBy(SVSInfoDaoImpl.class)
 public interface SVSInfoDao {
 
-	void save(SVSInfo bean);
+	SVSInfo save(SVSInfo bean);
+	
+	SVSInfo  findSVSInfoBySupplier(Integer supplier);
 
 }

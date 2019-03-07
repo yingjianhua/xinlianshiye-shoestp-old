@@ -4,6 +4,8 @@ public class RealLicenceHandler implements SVSHandler<String> {
 	// 出口许可证分值计算
 	@Override
 	public int getScore(Object v) {
+		if (null == v)
+			return 0;
 		String value=(String)v;
 		if (value != null && !value.equals(""))
 			return 8;

@@ -2,6 +2,7 @@ package irille.view.SVS;
 
 import java.util.List;
 
+import irille.Entity.SVS.SVSInfo;
 import irille.view.BaseView;
 import irille.view.SVS.BaseScore.Calulate;
 import irille.view.SVS.BaseScore.Countable;
@@ -41,11 +42,17 @@ public class SVSInfoView extends Countable implements BaseView {
 	}
 	@Calulate
 	private research research;
+	@Calulate
 	private productionCapacity productionCapacity;
+	@Calulate
 	private realFactory realFactory;
+	@Calulate
 	private productQuality productQuality;
+	@Calulate
 	private tradeTeam tradeTeam;
+	@Calulate
 	private exhibitionAttended exhibitionAttended;
+	@Calulate
 	private partner partner;
 
 	@Data
@@ -58,18 +65,19 @@ public class SVSInfoView extends Countable implements BaseView {
 		@Calulate(handleClass = ResNumOfShoesHandler.class)
 		Integer numOfShoes;// 鞋款数量
 	}
-
-	public static class productionCapacity {
+	@Data
+	public static class productionCapacity extends Countable {
 		// 生产能力
 		@Calulate(handleClass = NeedleCartNumHandler.class)
-		String needleCartNum;// 针车数量
+		Integer needleCartNum;// 针车数量
 		@Calulate(handleClass = ProductionLineQuantityHandler.class)
 		Integer productionLineQuantity;// 生产线数量
 		@Calulate(handleClass = ProductionExportVolumeHandler.class)
 		Integer exportVolume;// 年出口额
 	}
 
-	public static class realFactory {
+	@Data
+	public static class realFactory extends Countable {
 		// 真实工厂
 		@Calulate(handleClass = RealIsSystemHandler.class)
 		Integer isSystem;// 是否有系统0代表没有 1代表有
@@ -78,18 +86,18 @@ public class SVSInfoView extends Countable implements BaseView {
 		@Calulate(handleClass = RealLicenceHandler.class)
 		String licence;// 出口许可证
 	}
-
-	public static class productQuality {
+	@Data
+	public static class productQuality   extends Countable{
 		// 产品质量
 		@Calulate(handleClass = ProductQualityCertificateHandler.class)
 		String certificate; // 第三方认证证书
 		@Calulate(handleClass = ProductISOCertificateHandler.class)
-		String ISOCertificate;// ISO认证证书
+		String isoCertificate;// ISO认证证书
 		@Calulate(handleClass = ProductTestEquipmentHandler.class)
 		Integer testEquipment;// 测试设备
 	}
-
-	public static class tradeTeam {
+	@Data
+	public static class tradeTeam   extends Countable{
 		// 外贸团队
 		@Calulate(handleClass = TradeIsTeamHandler.class)
 		Integer isTeam;
@@ -98,14 +106,14 @@ public class SVSInfoView extends Countable implements BaseView {
 		@Calulate(handleClass = TradeExperienceHandler.class)
 		Integer experience;// 外贸经验
 	}
-
-	public static class exhibitionAttended {
+	@Data
+	public static class exhibitionAttended  extends Countable {
 		// 参加过的展会信息
 		@Calulate(handleClass = ExhibitionAttendedHandler.class)
 		List<SVSExhibitionView> exhibitionInfos;
 	}
-
-	public static class partner {
+	@Data
+	public static class partner  extends Countable{
 		// 合作商信息
 		@Calulate(handleClass = PartnerHandler.class)
 		List<SVSPartnerView> partnerInfos;
