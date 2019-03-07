@@ -27,8 +27,8 @@ public interface SVSInfoService {
 	public SVSDetailedInfoView getSVSInfo(Integer supplierId) throws Exception;
 
 	/**
-	 * 修改认证信息
-	 * 
+	 * 商家端修改认证信息
+	 * @author GS
 	 * @param supplierId
 	 * @param res
 	 * @param capacity
@@ -42,4 +42,20 @@ public interface SVSInfoService {
 	 */
 	public SVSDetailedInfoView updSVSInfo(Integer supplierId, String res, String capacity, String factory,
 			String quality, String team, String exhibition, String part) throws Exception;
+	/**
+	 * 平台端修改商家认证信息
+	 * @param supplierId
+	 * @param res
+	 * @param capacity
+	 * @param factory
+	 * @param quality
+	 * @param team
+	 * @param exhibition
+	 * @param part
+	 * @return
+	 * @throws Exception
+	 */
+	public SVSDetailedInfoView adminUpdSVSInfo(Integer supplierId, String res, String capacity, String factory,
+			String quality, String team, String exhibition, String part) throws Exception;
+	
 }

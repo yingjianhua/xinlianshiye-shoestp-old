@@ -151,4 +151,39 @@ public class SVSInfoServiceImpl implements SVSInfoService {
 		}
 		return diffDay;
 	}
+
+	/**
+	 * 平台手动给对应用户认证
+	 * 
+	 * @author GS
+	 */
+	@Override
+	public SVSDetailedInfoView adminUpdSVSInfo(Integer supplierId, String res, String capacity, String factory,
+			String quality, String team, String exhibition, String part) throws Exception {
+		SVSInfo svs = SVSInfoDao.findSVSInfoBySupplier(supplierId);
+		if (null == svs)
+			throw new WebMessageException(ReturnCode.failure, "该用户暂未申请SVS认证");
+		if (svs.gtStatus() != SVSAuthenticationStatus.FAIL)
+			throw new WebMessageException(ReturnCode.failure, "该商户无须平台手动认证");
+		int score = GetBaseScoreUtils.getBaseScore(res, capacity, factory, quality, team, exhibition, part);
+		if (score < 30)
+			throw new WebMessageException(ReturnCode.failure, "未满足银牌基础分值,无法提交认证");
+		if (score >= 30 && score <= 59)
+			svs.stGrade(SVSGradeType.SILVER);
+		if (score >= 60)
+			svs.stGrade(SVSGradeType.GOLD);
+		svs.stStatus(SVSAuthenticationStatus.SUCCESS);
+		svs.setBaseScore(score);
+		svs.setApplicationTime(new Date());
+		svs.setResearch(res);
+		svs.setProductionCapacity(capacity);
+		svs.setRealFactory(factory);
+		svs.setProductQuality(quality);
+		svs.setForeignTradeTeam(team);
+		svs.setExhibitionAttended(exhibition);
+		svs.setAuthenticationTime(new Date());
+		svs.setPartner(part);
+		SVSInfoDao.save(svs);
+		return CreateView(SVSInfoDao.save(svs));
+	}
 }
