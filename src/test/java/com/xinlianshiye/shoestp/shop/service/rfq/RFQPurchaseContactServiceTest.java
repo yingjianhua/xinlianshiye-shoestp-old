@@ -1,5 +1,7 @@
 package com.xinlianshiye.shoestp.shop.service.rfq;
 
+import java.util.List;
+
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -9,6 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.xinlianshiye.shoestp.BaseTest;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQPurchaseContactGroupView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQPurchaseContactView;
 
 import irille.Entity.RFQ.RFQConsultRelation;
@@ -39,6 +42,7 @@ public class RFQPurchaseContactServiceTest extends BaseTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testAdd() {
 		UsrPurchase purchase = UsrPurchase.load(UsrPurchase.class, 1261);
 		Integer supplierPkey = 23;
@@ -59,5 +63,12 @@ public class RFQPurchaseContactServiceTest extends BaseTest {
 		Integer limit = 10;
 		Page<RFQPurchaseContactView> page = service.page(purchase, keyword, groupPkey, start, limit);
 		System.out.println(om.writeValueAsString(page));
+	}
+	
+	@Test
+	public void testListGroup() throws JsonProcessingException {
+		UsrPurchase purchase = UsrPurchase.load(UsrPurchase.class, 838);
+		List<RFQPurchaseContactGroupView> listGroup = service.listGroup(purchase);
+		System.out.println(om.writeValueAsString(listGroup));
 	}
 }
