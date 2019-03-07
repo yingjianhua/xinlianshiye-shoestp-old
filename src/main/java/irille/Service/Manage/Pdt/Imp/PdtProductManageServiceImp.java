@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import irille.sellerAction.pdt.view.PrivatePdtView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,7 +57,7 @@ public class PdtProductManageServiceImp implements IPdtProductManageService {
 
     @Inject
     PdtProductDao pdtProductDao;
-    
+
     private O2OProductDao o2oProductDao = new O2OProductDao();
 
     @Inject
@@ -82,25 +83,25 @@ public class PdtProductManageServiceImp implements IPdtProductManageService {
         PdtProductSaveView pdtProductSaveView = objectMapper
                 .readValue(data, PdtProductSaveView.class);
         PdtProduct pdtProduct = new PdtProduct();
-        if(pdtProductSaveView.getId() > 0) {
-        	PdtProduct prod = pdtProductDao.findByPkey(pdtProductSaveView.getId());
-        	if(prod.getProductType().equals(Pdt.OProductType.O2O.getLine().getKey())) {
-        		List<O2O_Product> o2oProds = o2oProductDao.findAllByProd_Pkey(prod.getPkey());
-        		if(null != o2oProds && o2oProds.size()>0) {
-        			boolean flag = false;
-            		for(O2O_Product o2oProd:o2oProds) {
-            			if(!o2oProd.getStatus().equals(O2O_ProductStatus.PASS.getLine().getKey())) {
-            				flag = true;
-            				break;
-            			}
-            		}
-            		if(flag) {
-            			throw new WebMessageException(ReturnCode.failure, "O2O商品无法编辑");
-            		}
-        		}
-        	}
+        if (pdtProductSaveView.getId() > 0) {
+            PdtProduct prod = pdtProductDao.findByPkey(pdtProductSaveView.getId());
+            if (prod.getProductType().equals(Pdt.OProductType.O2O.getLine().getKey())) {
+                List<O2O_Product> o2oProds = o2oProductDao.findAllByProd_Pkey(prod.getPkey());
+                if (null != o2oProds && o2oProds.size() > 0) {
+                    boolean flag = false;
+                    for (O2O_Product o2oProd : o2oProds) {
+                        if (!o2oProd.getStatus().equals(O2O_ProductStatus.PASS.getLine().getKey())) {
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if (flag) {
+                        throw new WebMessageException(ReturnCode.failure, "O2O商品无法编辑");
+                    }
+                }
+            }
         }
-        
+
         pdtProduct.setSupplier(supId);
         pdtProduct.setPkey(pdtProductSaveView.getId());
         pdtProduct.setName(objectMapper.writeValueAsString(pdtProductSaveView.getPdtName()));
@@ -232,13 +233,13 @@ public class PdtProductManageServiceImp implements IPdtProductManageService {
         pdtProduct.setSeoDescription(seoDescription.toString());
         pdtProduct.setSeoKeyword(seoKeyword.toString());
         pdtProduct.setStock(countStock);
-        
-    	if (pdtProductSaveView.getRadio() != 0) {
+
+        if (pdtProductSaveView.getRadio() != 0) {
             pdtProduct.setProductType(Pdt.OProductType.PrivateExpo.getLine().getKey());
         } else {
             pdtProduct.setProductType((byte) 0);
         }
-        
+
         if (pdtProduct.getPkey() < 0) {
             pdtSave.setB(pdtProduct);
             pdtSave.setLines(list);
@@ -354,5 +355,10 @@ public class PdtProductManageServiceImp implements IPdtProductManageService {
             }
         }
         return array;
+    }
+
+    @Override
+    public Page getPrivatePdts(Integer supId, Integer start, Integer limit) {
+        return pdtProductDao.getPrivatePdts(supId, start, limit);
     }
 }

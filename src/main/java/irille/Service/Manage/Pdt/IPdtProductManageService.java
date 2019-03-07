@@ -28,4 +28,5 @@ public interface IPdtProductManageService {
 
     Page getWarehouse(Integer supplier, String productName, String productNum, Integer status, Integer start, Integer limit,Integer type);
     JSONArray getProductCates();
+    Page getPrivatePdts(Integer supId,Integer start,Integer limit);
 }
