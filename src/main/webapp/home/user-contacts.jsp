@@ -33,23 +33,16 @@
         <!-- 联系 -->
         <div class="contacts-main fr clearfix">
             <div class="contacts-main-left fl">
-                <!-- "contactPkey" == {{contactPkey}} -->
-                <!-- "start" == {{start}} -->
-                "groupCount" == {{groupCount}} <br>   
-                "allGroupCount" == {{allGroupCount}} <br>   
-                "nowGroupCount" == {{nowGroupCount}}
-                <!-- <div class="select">ALL CONTACTS-2</div> -->
-                <!-- <dl @mouseenter="hoverMouseEnter" @mouseleave="hoverMouseLeave"> -->
                 <dl>
                     <dt class="select-header flexSb" @click="clickSelect">
                         <div class="flexCc" style="text-align:center;width:100%;">
                          <span class="ellipsis1" style="display: inline-block;max-width:116px;line-height: 16px;">
                             {{groupName}}&nbsp;
-                         </span> 
-                         <span> 
+                         </span>
+                         <span>
                                - {{nowGroupCount}}
-                         </span> 
-                        
+                         </span>
+
                         </div>
                         <i class="el-icon-arrow-up" :class="isShowHoverSelect?'rotate-i':''"></i>
                     </dt>
