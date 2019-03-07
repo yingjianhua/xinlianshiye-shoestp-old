@@ -1,5 +1,14 @@
 package irille.sellerAction.usr;
 
+import java.io.IOException;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import irille.Service.Manage.Pdt.IPdtCatManageService;
 import irille.pub.Exp;
 import irille.pub.Str;
@@ -14,13 +23,6 @@ import irille.shop.usr.UsrProductCategory;
 import irille.shop.usr.UsrProductCategoryDAO;
 import lombok.Getter;
 import lombok.Setter;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import javax.inject.Inject;
-import java.io.IOException;
-import java.util.List;
 
 public class UsrProductCategoryAction extends SellerAction<UsrProductCategory> implements IUsrProductCategoryAction {
 
@@ -89,36 +91,42 @@ public class UsrProductCategoryAction extends SellerAction<UsrProductCategory> i
         JSONArray cat3Array = new JSONArray();
 
         List<UsrProductCategory> catList = BeanBase.list(UsrProductCategory.class, UsrProductCategory.T.SUPPLIER.getFld().getCodeSqlField() + " = ? AND " + UsrProductCategory.T.CATEGORY_UP.getFld().getCodeSqlField() + " is null ", false, SellerAction.getSupplier().getPkey());
-        for (UsrProductCategory pdtProduct : catList) {
-            JSONObject cat1 = new JSONObject();
-            cat1.put("pkey", pdtProduct.getPkey());
-            cat1.put("name", pdtProduct.getName(PltConfigDAO.supplierLanguage(getSupplier().getPkey())));
-            cat1.put("categoryUp", pdtProduct.getCategoryUp());
-            cat1.put("enabled", pdtProduct.getEnabled());
-            cat1Array.put(cat1);
+        if(null != catList) {
+        	for (UsrProductCategory pdtProduct : catList) {
+                JSONObject cat1 = new JSONObject();
+                cat1.put("pkey", pdtProduct.getPkey());
+                cat1.put("name", pdtProduct.getName(PltConfigDAO.supplierLanguage(getSupplier().getPkey())));
+                cat1.put("categoryUp", pdtProduct.getCategoryUp());
+                cat1.put("enabled", pdtProduct.getEnabled());
+                cat1Array.put(cat1);
+            }
         }
         List<UsrProductCategory> cat2List = null;
         List<UsrProductCategory> cat3List = null;
         if (catList != null && catList.size() > 0) {
             cat2List = BeanBase.list(UsrProductCategory.class, UsrProductCategory.T.SUPPLIER.getFld().getCodeSqlField() + " = ? AND " + UsrProductCategory.T.CATEGORY_UP.getFld().getCodeSqlField() + " in(" + UsrProductCategoryDAO.getPkeys(catList) + ") ", false, SellerAction.getSupplier().getPkey());
-            for (UsrProductCategory pdtProduct : cat2List) {
-                JSONObject cat2 = new JSONObject();
-                cat2.put("pkey", pdtProduct.getPkey());
-                cat2.put("name", pdtProduct.getName(PltConfigDAO.supplierLanguage(getSupplier().getPkey())));
-                cat2.put("categoryUp", pdtProduct.getCategoryUp());
-                cat2.put("enabled", pdtProduct.getEnabled());
-                cat2Array.put(cat2);
+            if(null != cat2List) {
+            	for (UsrProductCategory pdtProduct : cat2List) {
+                    JSONObject cat2 = new JSONObject();
+                    cat2.put("pkey", pdtProduct.getPkey());
+                    cat2.put("name", pdtProduct.getName(PltConfigDAO.supplierLanguage(getSupplier().getPkey())));
+                    cat2.put("categoryUp", pdtProduct.getCategoryUp());
+                    cat2.put("enabled", pdtProduct.getEnabled());
+                    cat2Array.put(cat2);
+                }
             }
         }
         if (cat2List != null && cat2List.size() > 0) {
             cat3List = BeanBase.list(UsrProductCategory.class, UsrProductCategory.T.SUPPLIER.getFld().getCodeSqlField() + " = ? AND " + UsrProductCategory.T.CATEGORY_UP.getFld().getCodeSqlField() + " in(" + UsrProductCategoryDAO.getPkeys(cat2List) + ") ", false, SellerAction.getSupplier().getPkey());
-            for (UsrProductCategory pdtProduct : cat3List) {
-                JSONObject cat3 = new JSONObject();
-                cat3.put("pkey", pdtProduct.getPkey());
-                cat3.put("name", pdtProduct.getName(PltConfigDAO.supplierLanguage(getSupplier().getPkey())));
-                cat3.put("categoryUp", pdtProduct.getCategoryUp());
-                cat3.put("enabled", pdtProduct.getEnabled());
-                cat3Array.put(cat3);
+            if(null != cat3List) {
+            	for (UsrProductCategory pdtProduct : cat3List) {
+                    JSONObject cat3 = new JSONObject();
+                    cat3.put("pkey", pdtProduct.getPkey());
+                    cat3.put("name", pdtProduct.getName(PltConfigDAO.supplierLanguage(getSupplier().getPkey())));
+                    cat3.put("categoryUp", pdtProduct.getCategoryUp());
+                    cat3.put("enabled", pdtProduct.getEnabled());
+                    cat3Array.put(cat3);
+                }
             }
         }
 
@@ -139,7 +147,6 @@ public class UsrProductCategoryAction extends SellerAction<UsrProductCategory> i
         UsrProductCategory cat = BeanBase.load(UsrProductCategory.class, getBean().getPkey());
         cat.setEnabled(getBean().getEnabled());
         upperAndLower.setB(cat);
-        JSONObject json = new JSONObject();
         try {
             upperAndLower.commit();
             write();
@@ -156,7 +163,6 @@ public class UsrProductCategoryAction extends SellerAction<UsrProductCategory> i
      */
 
     public void update() throws Exception {
-        JSONObject json = new JSONObject();
         UsrProductCategoryDAO.Update update = new UsrProductCategoryDAO.Update();
         update.setB(getBean());
         try {
