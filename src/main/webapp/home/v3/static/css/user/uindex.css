@@ -316,7 +316,7 @@
       } */
 
       #personalCenter .contacts-main .contacts-main-left>dl .select-header {
-        padding: 20px;
+        padding: 20px 15px;
         color: #232323;
         font-weight: bold;
         cursor:pointer;
@@ -336,7 +336,7 @@
         border-bottom: 1px solid #dde1eb;
       }
       #personalCenter .contacts-main .contacts-main-left>dl .select-content .select-title>div{
-        padding: 0 20px;
+        padding: 0 20px 0 10px;
       }
       #personalCenter .contacts-main .contacts-main-left>dl .select-content .add-group{
         position: relative;
@@ -393,6 +393,11 @@
         line-height: 30px;
         padding: 0 20px;
         cursor: pointer;
+      }
+      #personalCenter .contacts-main .ellipsis1{
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow:ellipsis;
       }
       #personalCenter .contacts-main .contacts-main-left>dl .select-content ul li>div:first-child{
         width: 71%;
@@ -584,13 +589,14 @@
           #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2 li .h2{
           	width:140px;
           	margin-left:10px;
+            padding-right: 10px;
           	word-break: break-all;
 					  text-overflow: ellipsis;
 					  display: -webkit-box;
 					  -webkit-box-orient: vertical;
 					  -webkit-line-clamp: 2;
 					  overflow: hidden;
-					  margin-top:12px;
+					  /* margin-top:12px; */
           }
           #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2 li .h3{
           	line-height:52px;
@@ -605,7 +611,7 @@
       width: 723px; }
     #personalCenter .contacts-main .contacts-main-right  .supplier-detail-no-data{
       width: 100%;
-      height: 680px;
+      height: 734px;
       background-color: #f2f3f7;
       font-size: 14px;
       color: #9d9ea1;
