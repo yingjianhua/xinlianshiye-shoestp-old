@@ -91,7 +91,7 @@ public class SVSInfoView extends Countable implements BaseView {
 		@Calulate(handleClass = ProductQualityCertificateHandler.class)
 		String certificate; // 第三方认证证书
 		@Calulate(handleClass = ProductISOCertificateHandler.class)
-		String ISOCertificate;// ISO认证证书
+		String isoCertificate;// ISO认证证书
 		@Calulate(handleClass = ProductTestEquipmentHandler.class)
 		Integer testEquipment;// 测试设备
 	}
