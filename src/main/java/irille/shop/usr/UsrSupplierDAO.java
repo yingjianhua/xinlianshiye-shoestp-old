@@ -903,8 +903,8 @@ public class UsrSupplierDAO {
     bean.setEntity(view.getEntity()); //企业法人-必填
     bean.setEntity(view.getEntity()); //企业法人-必填
     bean.setBusinessLicenseIsSecular(view.getBusinessLicenseIsSecular()); //营业执照是否在有效期-必填
+    bean.setBusinessLicenseBeginTime(view.getBusinessLicenseBeginTime()); //营业执照开始时间
     if(view.getBusinessLicenseIsSecular()==0){
-      bean.setBusinessLicenseBeginTime(view.getBusinessLicenseBeginTime()); //营业执照开始时间
       bean.setBusinessLicenseEndTime(view.getBusinessLicenseEndTime()); //营业执照结束时间
     }
     bean.setTaxpayerType(view.getTaxpayerType()); //纳税人类型
@@ -1467,10 +1467,10 @@ public class UsrSupplierDAO {
       List<SuppliersView> list = irille.pub.bean.Query.sql(sql.LIMIT(start, limit)).queryMaps().stream().map(o -> new SuppliersView() {{
         setId((Integer) o.get(T.PKEY.getFld().getCodeSqlField()));
         setName((String) o.get(T.NAME.getFld().getCodeSqlField()));
-        String contacts = BeanBase.load(UsrMain.class, (Integer) o.get(T.PKEY.getFld().getCodeSqlField())).getContacts();
-        if(contacts != null){
-          setContacts(contacts);
-        }
+//        String contacts = BeanBase.load(UsrMain.class, (Integer) o.get(T.PKEY.getFld().getCodeSqlField())).getContacts();
+//        if(contacts != null){
+//          setContacts(contacts);
+//        }
         setCompanyAddr((String) o.get(T.COMPANY_ADDR.getFld().getCodeSqlField()));
         setApplicationTime((Date) o.get(T.APPLICATION_TIME.getFld().getCodeSqlField()));
         setStoreStatus(Byte.valueOf(String.valueOf(o.get(T.STORE_STATUS.getFld().getCodeSqlField()))));
