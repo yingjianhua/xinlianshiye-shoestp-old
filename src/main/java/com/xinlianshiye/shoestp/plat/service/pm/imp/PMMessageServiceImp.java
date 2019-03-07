@@ -148,7 +148,7 @@ public class PMMessageServiceImp implements IPMMessageService{
 	
 	private PMMessage initMessage(OTempType type,UsrSupplier supplier,UsrPurchase purchase,String title, String content) {
 		PMMessage message = new PMMessage();
-		message.setRcvrType(type.getLine().getKey());
+		message.setRcvrType(type.getRcvrType().getLine().getKey());
 		message.setTitle(title);
 		message.setContent(content);
 		message.setType(type.getLine().getKey());
