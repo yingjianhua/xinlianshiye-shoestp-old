@@ -44,7 +44,6 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 		if(relation == null) {
 			throw new WebMessageException(ReturnCode.service_gone, "数据不存在");
 		}
-		
 		relation.stHadReadPurchase(true);
 		relation.stIsNew(false);
 		relation.upd();
