@@ -3,7 +3,13 @@ package com.xinlianshiye.shoestp.shop.service.rfq.impl;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -15,16 +21,21 @@ import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultRelationView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQCountryView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQCurrencyView;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationImageView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationThrowawayView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQSupplierView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQUnreadCountView;
 import com.xinlianshiye.shoestp.shop.view.rfq.supplierConsult.RFQConsultProductView;
 
-import irille.Entity.RFQ.Enums.*;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultRelation;
-import irille.action.dataimport.util.BeanUtil;
+import irille.Entity.RFQ.Enums.RFQConsultPayType;
+import irille.Entity.RFQ.Enums.RFQConsultRecommend;
+import irille.Entity.RFQ.Enums.RFQConsultStatus;
+import irille.Entity.RFQ.Enums.RFQConsultType;
+import irille.Entity.RFQ.Enums.RFQConsultUnit;
+import irille.Entity.RFQ.Enums.RFQConsultVerifyStatus;
 import irille.homeAction.rfq.view.RFQDetailsView;
 import irille.homeAction.rfq.view.RFQListView;
 import irille.pub.bean.BeanBase;
@@ -65,22 +76,27 @@ public class RFQConsultServiceImpl implements RFQConsultService {
                     .orWhere(UsrSupplier.T.NAME, "like ?", "%" + keyword + "%");
         }
         query.AND().WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey());
+        query.WHERE(RFQConsult.T.IS_DELETED, "=?", false);
         if (type != null) {
             //询盘类型
             query.WHERE(RFQConsult.T.TYPE, "=?", type);
         }
         if (unread != null) {
             //是否有新消息
-            query.WHERE(RFQConsultRelation.T.IS_NEW, "=?", unread);
+        	if(unread) {
+        		query.WHERE(RFQConsultRelation.T.IS_NEW, "=?", true).orWhere(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", false);
+        	}
         }
         query.GROUP_BY(RFQConsult.T.PKEY);
+        query.ORDER_BY(RFQConsult.T.CREATE_TIME, "desc");
         query.limit(start, limit);
         List<RFQConsultView> result = query.queryMaps().stream().map(map -> {
             RFQConsultView consult = new RFQConsultView();
             consult.setPkey(GetValue.get(map, RFQConsult.T.PKEY, Integer.class, null));
             consult.setTitle(GetValue.get(map, RFQConsult.T.TITLE, String.class, null));
             consult.setType(GetValue.get(map, RFQConsult.T.TYPE, Byte.class, null));
-            consult.setImages(Arrays.asList(GetValue.get(map, RFQConsult.T.IMAGE, String.class, "").split(",")));
+            String image = GetValue.get(map, RFQConsult.T.IMAGE, String.class, null);
+            consult.setImages(image == null ? new ArrayList<>() : Arrays.asList(image.split(",")));
             consult.setRelations(listRelation(consult.getPkey()));
             return consult;
         }).collect(Collectors.toList());
@@ -120,7 +136,14 @@ public class RFQConsultServiceImpl implements RFQConsultService {
             quotation.setPkey(GetValue.get(map, RFQConsultRelation.T.PKEY, Integer.class, null));
             quotation.setTitle(GetValue.get(map, RFQConsultRelation.T.TITLE, String.class, null));
             quotation.setDescription(GetValue.get(map, RFQConsultRelation.T.DESCRIPTION, String.class, null));
-            quotation.setImages(Arrays.asList(GetValue.get(map, RFQConsultRelation.T.IMAGE, String.class, "").split(",")));
+            try {
+            	String image = GetValue.get(map, RFQConsultRelation.T.IMAGE, String.class, null);
+            	if(image != null && !image.isEmpty()) {
+            		quotation.setImages(om.readValue(image, new TypeReference<List<RFQQuotationImageView>>() { }));
+            	}
+			} catch (IOException e) {
+				log.warn("RFQConsultRelation主键为{}的记录的image字段格式有问题", quotation.getPkey());
+			}
             quotation.setMinPrice(GetValue.get(map, RFQConsultRelation.T.MINPRICE, Integer.class, null));
             quotation.setMaxPrice(GetValue.get(map, RFQConsultRelation.T.MAXPRICE, Integer.class, null));
             RFQCurrencyView currency = new RFQCurrencyView();
@@ -157,7 +180,13 @@ public class RFQConsultServiceImpl implements RFQConsultService {
         RFQQuotationView quotation = new RFQQuotationView();
         quotation.setPkey(relation.getPkey());
         quotation.setTitle(relation.getTitle());
-        quotation.setImages(Arrays.asList((relation.getImage() == null ? "" : relation.getImage()).split(",")));
+        try {
+        	if(relation.getImage() != null && !relation.getImage().isEmpty()) { 
+        		quotation.setImages(om.readValue(relation.getImage(), new TypeReference<List<RFQQuotationImageView>>() { }));
+        	}
+		} catch (IOException e) {
+			log.warn("RFQConsultRelation主键为{}的记录的image字段格式有问题", relationPkey);
+		}
         quotation.setDescription(relation.getDescription());
         quotation.setQuantity(relation.getQuantity());
         quotation.setUnit(relation.gtUnit().getLine().getName());
@@ -264,9 +293,17 @@ public class RFQConsultServiceImpl implements RFQConsultService {
         query.WHERE(RFQConsultRelation.T.PURCHASE_ID, "=?", purchase.getPkey());
         query.WHERE(RFQConsultRelation.T.PKEY, "=?", relationPkey);
         RFQConsultRelation relation = query.query();
-        if (relation != null && !relation.gtIsDeletedPurchase()) {
-            relation.stIsDeletedPurchase(true);
-            relation.upd();
+        if(relation == null || relation.gtIsDeletedPurchase())
+        	return;
+        RFQConsult consult = relation.gtConsult();
+        if(consult.gtType() == RFQConsultType.RFQ) {
+        	//RFQ 只需要将当前relation标记为已删除就行了, 不需要对consult做修改
+	        relation.stIsDeletedPurchase(true);
+	        relation.upd();
+        } else {
+        	//其它类型的询盘, 因为询盘和relation是一对一的关系, 所以在删除relation的同时 也删除询盘
+        	consult.stIsDeleted(true);
+        	consult.upd();
         }
     }
 
@@ -278,7 +315,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
         RFQConsult consult = query.query();
         if (consult == null) {
             throw new WebMessageException(ReturnCode.service_gone, "询盘不存在");
-        }
+        }	
         RFQConsultView view = new RFQConsultView();
         view.setPkey(consult.getPkey());
         view.setTitle(consult.getTitle());
@@ -286,11 +323,11 @@ public class RFQConsultServiceImpl implements RFQConsultService {
         view.setDetail(consult.getContent());
         view.setQuantity(consult.getQuantity());
         view.setPrice(consult.getPrice());
-        view.setUnit(consult.gtUnit().getLine().getName());
+        view.setUnit(consult.getUnit() == null? null : consult.gtUnit().getLine().getName());
         view.setType(consult.getType());
         view.setValieDate(consult.getValidDate());
-        view.setPaymentTerms(consult.gtPayType().getLine().getName());
-        view.setShippingTerms(consult.gtShippingType().getLine().getName());
+        view.setPaymentTerms(consult.getPayType() == null? null : consult.gtPayType().getLine().getName());
+        view.setShippingTerms(consult.gtShippingType() == null? null : consult.gtShippingType().getLine().getName());
         view.setVerifyStatus(consult.getVerifyStatus());
         view.setStatus(consult.getStatus());
         if (consult.gtType() == RFQConsultType.supplier_INQUIRY) {
@@ -304,7 +341,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
                 log.warn("RFQConsult表主键为{}的记录 字段productRequest格式错误", consult.getPkey());
             }
         }
-        view.setImages(Arrays.asList((consult.getImage() == null ? "" : consult.getImage()).split(",")));
+        view.setImages(consult.getImage() == null ? new ArrayList<>() : Arrays.asList(consult.getImage().split(",")));
         return view;
     }
 
@@ -459,7 +496,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
                 .LEFT_JOIN(RFQConsultRelation.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY)
                 .WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey())
                 .WHERE(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", false)
-                .GROUP_BY(RFQConsultRelation.T.PKEY))
+                .GROUP_BY(RFQConsult.T.TYPE))
                 .queryMaps()
                 .stream().forEach(map -> {
             Integer count = GetValue.get(map, "count(1)", Integer.class, null);
