@@ -105,7 +105,7 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
     private IndexAdView4PC indexAdView4PC;
     private List<UsrPurchaseLine> usrPurchaseLine;
     private Integer pkey;
-
+   
     public Integer getPkey() {
         return pkey;
     }
@@ -197,6 +197,9 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
     private static final String vcode_err = "Verification code error.";
     private static final String login_err = "Incorrect email address or password. Please try again.Make sure the Caps Lock is off before you enter password.";
 
+    @Setter
+    @Getter
+    private String backUrl;
     /**
      * 登录
      */
@@ -227,9 +230,10 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
         setUser(null);
         if (isMobile())
             setResult("/home/usr_UsrPurchase_sign", false);
-        else
-            setResult("/", false);
-
+        else {
+            String referer = ServletActionContext.getRequest().getHeader("referer");
+            setResult(referer != null && referer.length() > 0 ? referer : "/", false);
+        }
         return HomeAction.RTRENDS;
     }
 

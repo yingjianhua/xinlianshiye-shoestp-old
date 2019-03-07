@@ -22,6 +22,18 @@
         height: unset !important;
         border: 0;
     }
+
+    .el-pagination{
+        position: relative;
+        overflow: hidden;
+    }
+    .el-pagination:before{
+        content:"鞋贸港";
+        position: absolute;
+        z-index: -1;
+        color: transparent;
+        left: 9999px;
+    }
 </style>
 <script>     new Vue({
     el: "#new_navs"
@@ -48,6 +60,13 @@ $('html').on('click', '#signin_close', function () {
     </div>
     <!--分级导航 end-->
 
+    <el-pagination
+            layout="prev, pager, next"
+            :total="allpage"
+            prev-text="Previous"
+            next-text="Next"
+            :current-page="1">
+    </el-pagination>
     <!--页面左部分类导航-->
     <div class="leftNav fl">
         <h1>Related categories</h1>
@@ -237,7 +256,6 @@ $('html').on('click', '#signin_close', function () {
             <!--产品 end-->
 
         </div>
-
         <block v-show="productLists.length>0">
             <el-pagination
                     layout="prev, pager, next"
@@ -253,7 +271,6 @@ $('html').on('click', '#signin_close', function () {
             <h1>NO RESULT</h1>
             <p>There is no relevant content for the time being.</p>
         </div>
-
     </div>
     <!--页面右部列表  end-->
 
@@ -525,10 +542,12 @@ $('html').on('click', '#signin_close', function () {
             },
             // 点击左侧分类时跳转
             categorySearch(e) {
-                this.lose = 1
+                this.lose = 1;
+                this.curr = 1;
                 this.cated = e.currentTarget.dataset.cated;
                 console.log(this.cated)
                 this.page = 0;
+                this.curr = 1
                 this.productList();
             },
             //   添加到询盘

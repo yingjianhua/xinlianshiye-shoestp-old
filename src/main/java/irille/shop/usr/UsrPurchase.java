@@ -48,7 +48,7 @@ public class UsrPurchase extends BeanInt<UsrPurchase> implements IExtName{
 		COUNTRY(PltCountry.fldOutKey().setName("国家").setNull()),
 		FACEBOOK_USER_ID(SYS.STR__100_NULL,"FACEBOOK用户ID"),
 		GOOGLE_USER_ID(SYS.STR__100_NULL,"谷歌用户ID"),
-		
+		UserId(UsrMain.fldOutKey().setName("用户").setNull()),
 		/**
 		 * 平台信息
 		 */
@@ -121,6 +121,7 @@ public class UsrPurchase extends BeanInt<UsrPurchase> implements IExtName{
   private Integer _country;	// 国家 <表主键:PltCountry>  INT<null>
   private String _facebookUserId;	// FACEBOOK用户ID  STR(100)<null>
   private String _googleUserId;	// 谷歌用户ID  STR(100)<null>
+  private Integer _userid;	// 用户 <表主键:UsrMain>  INT<null>
   private Integer _memberLevel;	// 会员等级 <表主键:UsrMemberLevel>  INT<null>
   private Short _rowVersion;	// 版本  SHORT
 
@@ -144,6 +145,7 @@ public class UsrPurchase extends BeanInt<UsrPurchase> implements IExtName{
     _country=null;	// 国家 <表主键:PltCountry>  INT
     _facebookUserId=null;	// FACEBOOK用户ID  STR(100)
     _googleUserId=null;	// 谷歌用户ID  STR(100)
+    _userid=null;	// 用户 <表主键:UsrMain>  INT
     _memberLevel=null;	// 会员等级 <表主键:UsrMemberLevel>  INT
     _rowVersion=0;	// 版本  SHORT
     return this;
@@ -303,6 +305,23 @@ public class UsrPurchase extends BeanInt<UsrPurchase> implements IExtName{
   }
   public void setGoogleUserId(String googleUserId){
     _googleUserId=googleUserId;
+  }
+  public Integer getUserid(){
+    return _userid;
+  }
+  public void setUserid(Integer userid){
+    _userid=userid;
+  }
+  public UsrMain gtUserid(){
+    if(getUserid()==null)
+      return null;
+    return (UsrMain)get(UsrMain.class,getUserid());
+  }
+  public void stUserid(UsrMain userid){
+    if(userid==null)
+      setUserid(null);
+    else
+      setUserid(userid.getPkey());
   }
   public Integer getMemberLevel(){
     return _memberLevel;

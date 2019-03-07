@@ -213,13 +213,23 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
 	@Override
 	public List<RFQPurchaseContactGroupView> listGroup(UsrPurchase purchase) {
 		List<RFQPurchaseContactGroup> list = Query.selectFrom(RFQPurchaseContactGroup.class).WHERE(RFQPurchaseContactGroup.T.PURCHASE, "=?", purchase.getPkey()).queryList();
+		RFQPurchaseContactGroup nogroup = new RFQPurchaseContactGroup();
+		nogroup.setName("nogroup");
+		list.add(nogroup);
+		RFQPurchaseContactGroupView all = new RFQPurchaseContactGroupView();
+		all.setName("all");
+		all.setCount(0);
 		List<RFQPurchaseContactGroupView> result = list.stream().map(map->{
 			RFQPurchaseContactGroupView view = new RFQPurchaseContactGroupView();
 			view.setPkey(map.getPkey());
 			view.setName(map.getName());
+			BeanQuery<RFQPurchaseContact> query = Query.SELECT(RFQPurchaseContact.class);
+			view.setCount(map.getPkey() == null ? query.WHERE(RFQPurchaseContact.T.CONTACT_GROUP, "is null").queryCount() : query.WHERE(RFQPurchaseContact.T.CONTACT_GROUP, "=?", map.getPkey()).queryCount());
+			all.setCount(all.getCount() + view.getCount());
 			return view;
 		}).collect(Collectors.toList());
+		result.add(all);
 		return result;
 	}
-
+	
 }
