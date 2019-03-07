@@ -77,8 +77,8 @@ public class PMMessageDaoImp implements IPMMessageDao{
 		Integer countNoRead = 0;
 		
 		for(Map<String, Object> k:map) {
-			Long r = GetValue.get(k, "c", Long.class, (long)0);
-			if(r.equals((long)0)){
+			Integer r = GetValue.get(k, "c", Integer.class, 0);
+			if(r.equals(0)){
 				countNoRead++;
 			}
 		}
@@ -90,7 +90,7 @@ public class PMMessageDaoImp implements IPMMessageDao{
 			model.setContent(GetValue.get(item, "content", String.class, null));
 			Date time = GetValue.get(item,"sendTime", Date.class, null);
 			model.setTime(time==null?null:time.getTime());
-			Long r = GetValue.get(item, "c", Long.class, (long)0);
+			Integer r = GetValue.get(item, "c", Integer.class, 0);
 			model.setRead(r.intValue());
 			return model;
 		}).collect(Collectors.toList());
