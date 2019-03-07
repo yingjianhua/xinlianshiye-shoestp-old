@@ -1,5 +1,10 @@
 package irille.sellerAction.rfq;
 
+import java.io.IOException;
+import java.util.Date;
+
+import javax.inject.Inject;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xinlianshiye.shoestp.seller.service.rfq.RFQConsultService;
 
@@ -10,10 +15,6 @@ import irille.sellerAction.SellerAction;
 import irille.sellerAction.rfq.inf.IRFQConsultAction;
 import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
 import lombok.Setter;
-
-import javax.inject.Inject;
-import java.io.IOException;
-import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -44,6 +45,15 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
     private Integer country;
     private Integer id;
     private String data;
+    
+    /**
+     * 消息中心询盘消息
+     * liyichao
+     * @throws IOException 
+     */
+    public void message() throws IOException {
+    	write(rFQConsultService.message(getSupplier(), null, start, limit));
+    }
 
     public void getRFQList() throws IOException {
         if (start == null) start = 0;
@@ -56,7 +66,8 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
     }
 
     public void putRFQQuoteInfo() throws IOException {
-        RFQConsultQuoteInfoView quoteInfo = objectMapper.readValue(data, RFQConsultQuoteInfoView.class);
+        String  json=getJsonBody();
+        RFQConsultQuoteInfoView quoteInfo = objectMapper.readValue(json, RFQConsultQuoteInfoView.class);
         irfqManageService.putRFQQuoteInfo(quoteInfo, getSupplier().getPkey());
         write();
     }
@@ -111,12 +122,12 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
     public void list() throws IOException {
     	write(rFQConsultService.page(getSupplier(), start, limit, keyword, groupId, isFavorite, type, readStatus, isDeleted, startDate, endDate, orderType));
     }
-    
+
     @Override
     public void count() throws IOException {
     	write(rFQConsultService.count(getSupplier(), isDeleted));
     }
-    
+
 	@Override
 	public void moveToRecycled() throws IOException {
 		rFQConsultService.moveToRecycled(getSupplier(), ids, true);
@@ -154,7 +165,7 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
 			write(ImageUpload.upload2(beanClazz(), getFileFileName(), getFile()));
 		}
 	}
-	
-	
+
+
 
 }

@@ -158,6 +158,21 @@ public class Usr extends PackageBase {
 			return _line;
 		}
 	}
+	/**
+	 * @author chen
+	 * 身份
+	 */
+	public enum IDType implements IEnumOpt{
+		BUYNER(0,"买家"),SELLER(1,"卖家");
+		public static final String NAME="身份类型";
+		public static final IDType DEFAULT = BUYNER; // 定义缺省值
+		private EnumLine _line;
+		private IDType(int key, String name) {_line=new EnumLine(this,key,name);}
+		@Override
+		public EnumLine getLine() {
+			return _line;
+		}
+	}
 	
 	
 }

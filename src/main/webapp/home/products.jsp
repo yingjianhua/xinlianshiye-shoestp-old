@@ -525,7 +525,8 @@ $('html').on('click', '#signin_close', function () {
             },
             // 点击左侧分类时跳转
             categorySearch(e) {
-                this.lose = 1
+                this.lose = 1;
+                this.curr = 1;
                 this.cated = e.currentTarget.dataset.cated;
                 console.log(this.cated)
                 this.page = 0;
