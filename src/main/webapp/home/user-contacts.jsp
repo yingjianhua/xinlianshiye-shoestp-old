@@ -5,8 +5,7 @@
 <link rel="stylesheet" href="/home/v2/static/css/nav/new-top-nav-style.css"/>
 <style>
     .el-button--primary {
-        width: 100px;
-        height: 36px;
+
         background-color: #10389c;
         border-radius: 4px;
         border-color: #10389c;
@@ -27,8 +26,8 @@
         </div>
         <div class="user-menu-item"><a href="/home/usr_UsrPurchase_userIndex">Home <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
         <div class="user-menu-item"><a href="/home/usr_UsrMessages_center">Message Center <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
-        <div class="user-menu-item"><a href="/home/usr_UsrPurchase_contacts">Contacts <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
-        <div class="user-menu-item"><a href="/home/usr_UsrFavorites_myfavorite">My Favourites <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+        <div class="user-menu-item"><a style="color:#10389c;" href="/home/usr_UsrPurchase_contacts">Contacts <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+        <div class="user-menu-item"><a href="/home/usr_UsrFavorites_myfavorite">My Favoutities <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
         <div class="user-menu-item"><a href="/home/usr_UsrPurchase_usrSetting">Account Settings <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
         </div>
         <!-- 联系 -->
@@ -36,17 +35,29 @@
             <div class="contacts-main-left fl">
                 <!-- "contactPkey" == {{contactPkey}} -->
                 <!-- "start" == {{start}} -->
+                "groupCount" == {{groupCount}} <br>   
+                "allGroupCount" == {{allGroupCount}} <br>   
+                "nowGroupCount" == {{nowGroupCount}}
                 <!-- <div class="select">ALL CONTACTS-2</div> -->
-                <dl @mouseenter="hoverMouseEnter" @mouseleave="hoverMouseLeave">
-                    <dt class="select-header flexSb">
-                        <div>ALL CONTACTS-2</div>
-                        <i class="el-icon-arrow-up"></i>
+                <!-- <dl @mouseenter="hoverMouseEnter" @mouseleave="hoverMouseLeave"> -->
+                <dl>
+                    <dt class="select-header flexSb" @click="clickSelect">
+                        <div class="flexCc" style="text-align:center;width:100%;">
+                         <span class="ellipsis1" style="display: inline-block;max-width:116px;line-height: 16px;">
+                            {{groupName}}&nbsp;
+                         </span> 
+                         <span> 
+                               - {{nowGroupCount}}
+                         </span> 
+                        
+                        </div>
+                        <i class="el-icon-arrow-up" :class="isShowHoverSelect?'rotate-i':''"></i>
                     </dt>
                     <dd class="select-content" v-show="isShowHoverSelect">
                         <div class="select-title">
-                            <div class="flexSb" @click="clickGroupItem('')" style="cursor: pointer;">
-                                <div>ALL CONTACTS</div>
-                                <div>2</div>
+                            <div class="flexSb" @click="clickGroupItem($event,'','ALL CONTACTS',allGroupCount)" style="cursor: pointer;">
+                                <div style="width:130px;" class="ellipsis1">ALL CONTACTS</div>
+                                <div>{{allGroupCount}}</div>
                             </div>
                         </div>
                         <div class="add-group">
@@ -54,32 +65,32 @@
                                 <div>Groups</div>
                                 <div class="add-font">+</div>
                             </div>
-                            <div class="add-group-input clearfix" v-if="isAddSearchGroup">
-                                <input type="text" placeholder="添加新的分组" v-model.trim="addInput" @keyup.enter="addGroup">
+                            <div class="add-group-input clearfix" v-show="isAddSearchGroup">
+                                <input type="text"  ref="addInputFocus" placeholder="添加新的分组" v-model.trim="addInput" @keyup.enter="addGroup">
                                 <div class="fr add-group-go" @click="addGroup">Go</div>
                             </div>
                             <div class="edit-group-input clearfix" v-if="isEditSearchGroup">
-                                <input type="text" placeholder="编辑分组" v-model.trim="editInput" @keyup.enter="editGroup">
+                                <input type="text" ref="editInputFocus" placeholder="编辑分组" v-model.trim="editInput" @keyup.enter="editGroup">
                                 <div class="fr add-group-go" @click="editGroup">Go</div>
                             </div>
 
                         </div>
                         <ul>
-                            <li class="flexSb" v-for="(item,index) in groupList" :key="index" @click="clickGroupItem(item.pkey)">
-                                <div>{{item.name}}</div>
-                                <div><img src="./images/bianxie.png" alt="" @click.stop="clickShowEditGruop(item.name,item.pkey)"><img
-                                        src="./images/lajitong.png" alt="" style="padding-right:0;" @click.stop="deleteGroup(item.pkey)"></div>
+                            <li class="flexSb" v-for="(item,index) in groupList" :key="index" @click="clickGroupItem($event,item.pkey,item.name,item.count)">
+                                <div class="ellipsis1">{{item.name}}</div>
+                                <div><img src="/home/v3/static/images/user/bianxie.png" alt="" @click.stop="clickShowEditGruop(item.name,item.pkey)"><img
+                                        src="/home/v3/static/images/user/lajitong.png" alt="" style="padding-right:0;" @click.stop="deleteGroup(item.pkey)"></div>
                             </li>
                         </ul>
                     </dd>
                 </dl>
                 <div class="search clearfix">
                     <input type="text" placeholder="please input the keyword" v-model.trim="contactKeyWord" @keyup.enter="getContactList(contactKeyWord,groupPkey,0,limit)"/>
-                    <div class="fr" @click="getContactList(contactKeyWord,groupPkey,0,limit)"><img src="./images/icon_search2.png" alt=""></div>
+                    <div class="fr" @click="getContactList(contactKeyWord,groupPkey,0,limit)"><img src="/home/v3/static/images/user/icon_search2.png" alt=""></div>
                 </div>
                 <div class="cml-list" v-if="contactList.length <= 0">
                     <div class="contact-list-no-data">
-                        <img src="./images/no_data1.png" alt="">
+                        <img src="/home/v3/static/images/user/no_data1.png" alt="">
                         <div style="font-size:12px;">No results found. <br>
                              Please check search terms and try again.</div>
                     </div>
@@ -94,7 +105,7 @@
                             <div class="h2 fl">
                                 <div class="supplier-name">{{item.supplier.name}}</div>
                                 <div class="fc999 supplier-svs">
-                                    <img src="./images/icon-svs.png" alt="">SVS
+                                    <img src="/home/v3/static/images/user/icon-svs.png" alt="">SVS
                                     <span style="margin-left:5px;">{{item.supplier.contacts}}</span>
                                 </div>
                             </div>
@@ -123,10 +134,10 @@
                         <div class="cml-box2" v-if="item.relation != ''">
                             <h2>Inquiry History</h2>
                             <ul>
-                                <li v-for="(inquiryItem,index) in item.relation" :key="index">
+                                <li class="flexCc" v-for="(inquiryItem,index) in item.relation" :key="index">
                                     <div class="h1 fl">
                                         <img v-if="inquiryItem.consult.images"
-                                        :src="image(inquiryItem.consult.images[0])+(item.type==3?'?x-oss-process=image/resize,w_43,h_43/blur,r_5,s_20':'')" alt="" />
+                                        :src="inquiryItem.consult.type==3?image(inquiryItem.consult.images[0]) + '?x-oss-process=image/resize,w_43,h_43/blur,r_5,s_20':image(inquiryItem.consult.images[0])" alt="" />
                                         <i v-if="inquiryItem.quotation.isNew"></i>
                                     </div>
                                     <div class="h2 fl">{{inquiryItem.consult.title}}</div>
@@ -141,7 +152,7 @@
             <div class="contacts-main-right fr" v-if="supplierInfo == ''">
                 <div class="supplier-detail-no-data flexCc">
                    <div style="text-align:center;margin-bottom:20px;">
-                        <img src="./images/no_data2.png" alt="">
+                        <img src="/home/v3/static/images/user/no_data2.png" alt="">
                     <div>No results found. Please check search terms and try again.</div>
                    </div>
                 </div>
@@ -299,8 +310,13 @@
                 groupPkey:'', // 分组ID
                 isShowHoverSelect:false,
                 supplierInfo:[], // 供应商信息
-                supplierPkey:'', // 供应商联系人pkey
+                supplierPkey:'', // 供应商联系人pkeyy
                 contactPkey:'', // 供应商移动分组 pkey
+                isGroupShow: false,  // 是否显示分组
+                groupName:'ALL CONTACTS',  // 分组名字
+                nowGroupCount:'',  // 当前分组联系人数量
+                groupCount:'',  // 分组里联系人数量
+                allGroupCount:'',  // 总联系人数量
             },
             mounted() {
                 this.getGroupList(); //获取分组
@@ -362,12 +378,47 @@
                 });
             },
             methods: {
-                clickGroupItem(groupPkey){  // 点击分组
-                    console.log(groupPkey)
-                    this.groupPkey = groupPkey;
+                hidePanel: function(event){
+                    var sp = document.getElementById("dd");
+                        if(sp){
+                            if(!sp.contains(event.target)){            //这句是说如果我们点击到了id为myPanel以外的区域
+                                this.isShowHoverSelect= false;
+                            }
+                        }
+                    },
+                clickGroupItem(e,groupPkey,name,count){  // 点击分组
+                    console.log(e)
+                    console.log(e.target)
+                    console.log("groupPkey=============" + groupPkey)
+                    console.log("name==============" + name)
+                    console.log("count============" + count)
+                    console.log(this.groupCount)
+                    console.log(!groupPkey)
+                    this.groupCount = count;
+                    // if(groupPkey == ''){
+                    //     this.nowGroupCount = this.allGroupCount;
+                    //     console.log("==========空的============" +this.nowGroupCount)
+                    // }else{
+                    //   this.nowGroupCount = count;
+                    //   console.log("================有值============" + this.nowGroupCount)
+                    // }
+                    this.groupName = name;
+                    this.isAddSearchGroup = false;
+                    this.isEditSearchGroup = false;
                     this.start = 0;
+                    this.groupPkey = groupPkey;
                     this.popupindex= 0;
                     this.getContactList(this.contactKeyWord,this.groupPkey,this.start,this.limit)
+                    if(name == "ALL CONTACTS"){
+                        this.nowGroupCount = this.allGroupCount;
+                        console.log(this.nowGroupCount)
+                        console.log("==========空的============" +this.nowGroupCount)
+                    }else{
+                    //   this.nowGroupCount = this.groupCount;
+                      this.nowGroupCount = count;
+                      console.log(this.nowGroupCount)
+                      console.log("================有值============" + this.nowGroupCount)
+                    }
                 },
                 getContactList(keyword,groupPkey,start,limit) { // 获取联系人列表
                     // var self = this;
@@ -472,6 +523,10 @@
                     self.editNewPkey = pkey;
                     // self.isEditSearchGroup = !self.isEditSearchGroup;
                     self.editInput = name;
+                    self.$nextTick(function () {
+                        // input 获取焦点
+                        self.$refs.editInputFocus.focus()
+                    })
                     console.log(name)
                     console.log(pkey)
                     console.log(self.editNewPkey)
@@ -489,6 +544,11 @@
                                 self.$message.error(res.data.msg);
                                 return
                             };
+                            self.$message({
+                                        showClose: true,
+                                        message: '编辑成功',
+                                        type: 'success'
+                                    });
                            self.getGroupList();
                         })
                         .catch(function (error) {
@@ -514,6 +574,11 @@
                                 return
                             };
                             self.getGroupList();
+                            self.$message({
+                                        showClose: true,
+                                        message: '删除成功',
+                                        type: 'success'
+                                    });
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -554,6 +619,10 @@
                     //     self.isAddSearchGroup = true;
                     // }
                     self.isAddSearchGroup  = !self.isAddSearchGroup
+                     self.$nextTick(function () {
+                        // input 获取焦点
+                        self.$refs.addInputFocus.focus()
+                    })
                 },
                 addGroup() { // 添加分组
                     var self = this;
@@ -569,6 +638,7 @@
                                 self.$message.error(res.data.msg);
                                 return
                             };
+                            self.$message.success("添加成功");
                             self.addInput = ''
                             self.getGroupList();
                         })
@@ -615,6 +685,13 @@
                     this.isShowHoverSelect =  true
                     // this.isEditSearchGroup =  false
                 },
+                clickSelect(){  // 点击是否 显示  分组
+                    this.isShowHoverSelect = !this.isShowHoverSelect
+                    if(!this.isShowHoverSelect){
+                        this.isAddSearchGroup =  false
+                        this.isEditSearchGroup =  false
+                    }
+                },
                 image(v, params) { // 图片加前缀 地址
                     if (!v) {
                         return ""
@@ -638,6 +715,6 @@
         })
     </script>
 
-</body>
+</body> count
 
 </html>

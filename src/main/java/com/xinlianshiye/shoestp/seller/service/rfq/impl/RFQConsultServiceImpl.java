@@ -44,6 +44,17 @@ public class RFQConsultServiceImpl implements RFQConsultService {
     private RFQConsultGroupRelationDao rFQConsultGroupRelationDao;
     @Inject
     private RFQConsultRelationDao rFQConsultRelationDao;
+    
+    @Override
+    public Page message(UsrSupplier supplier,UsrPurchase purchase,Integer start,Integer limit) {
+    	if(supplier != null) {
+    		return rFQConsultGroupRelationDao.message(supplier.getPkey(),true, start, limit);
+    	}else if(purchase != null) {
+    		return rFQConsultGroupRelationDao.message(purchase.getPkey(),false, start, limit);
+    	}else {
+    		return rFQConsultGroupRelationDao.message(null,false, start, limit);
+    	}
+    }
 
     @Override
     public void moveToGroup(UsrSupplier supplier, String consultPkeys, Integer groupPkey) {

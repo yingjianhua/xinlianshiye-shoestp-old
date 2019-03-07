@@ -364,7 +364,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
             //已经有报价 不能添加额外信息
             throw new WebMessageException(ReturnCode.service_state_error, "已有报价");
         }
-        if (validDate.before(new Date())) {
+        if (validDate == null || validDate.before(new Date())) {
             throw new WebMessageException(ReturnCode.valid_illegal, "有效时间不合法");
         }
         consult.setExtraDescription(information);

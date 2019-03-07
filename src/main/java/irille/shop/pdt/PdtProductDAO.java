@@ -1,11 +1,24 @@
 package irille.shop.pdt;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
-import irille.Entity.O2O.Enums.O2O_ProductStatus;
+import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
+import com.xinlianshiye.shoestp.plat.service.pm.imp.PMMessageServiceImp;
+
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Entity.O2O.O2O_Product;
+import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
+import irille.Entity.O2O.Enums.O2O_ProductStatus;
+import irille.Entity.pm.PM.OTempType;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
 import irille.homeAction.usr.dto.PdtView;
@@ -24,8 +37,8 @@ import irille.pub.idu.IduOther;
 import irille.pub.idu.IduUpd;
 import irille.pub.svr.Env;
 import irille.pub.tb.FldLanguage;
-import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.SEOUtils;
+import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.TranslateLanguage.TranslateFilter;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.sellerAction.SellerAction;
@@ -36,11 +49,6 @@ import irille.shop.usr.UsrCartDAO;
 import irille.shop.usr.UsrProductCategoryDAO;
 import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
-
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class PdtProductDAO {
 
@@ -859,6 +867,7 @@ public class PdtProductDAO {
             }
         };
         PdtProduct pp = irille.pub.bean.Query.sql(pdt).query(PdtProduct.class);
+        O2O_Product o2oPdt = null;
         if (pp == null) {
             throw new WebMessageException(ReturnCode.service_gone, "产品不存在");
         }
@@ -868,7 +877,7 @@ public class PdtProductDAO {
                         .FROM(O2O_Product.class)
                         .WHERE(O2O_Product.T.PRODUCT_ID, "=?", id);
             }};
-            O2O_Product o2oPdt = irille.pub.bean.Query.sql(o2o).query(O2O_Product.class);
+            o2oPdt = irille.pub.bean.Query.sql(o2o).query(O2O_Product.class);
             if (status == 0) {
                 o2oPdt.setMessage(message);
                 o2oPdt.stVerifyStatus(O2O_ProductStatus.Failed);
@@ -883,6 +892,11 @@ public class PdtProductDAO {
             }
             pp.upd();
         }
+        
+        //TODO 产品审核发送站内信
+        IPMMessageService messageService = new PMMessageServiceImp();
+        UsrSupplier supplier = pp.gtSupplier();
+        messageService.send(OTempType.PROD_APPR_NOTICE, supplier, null, pp,supplier,o2oPdt);
     }
 
     /**
