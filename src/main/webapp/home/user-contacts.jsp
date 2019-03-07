@@ -3,18 +3,6 @@
 <link rel="stylesheet" href="/home/v3/static/css/user/ureset.css"/>
 <link rel="stylesheet" href="/home/v3/static/css/user/uindex.css"/>
 <link rel="stylesheet" href="/home/v2/static/css/nav/new-top-nav-style.css"/>
-<style>
-    .el-button--primary {
-
-        background-color: #10389c;
-        border-radius: 4px;
-        border-color: #10389c;
-    }
-
-    .el-button--primary:hover {
-        background-color: #2856b7;
-    }
-</style>
 
 </head>
 
@@ -34,14 +22,13 @@
         <div class="contacts-main fr clearfix">
             <div class="contacts-main-left fl">
                 <!-- "contactPkey" == {{contactPkey}} -->
-                <!-- "start" == {{start}} -->
-                "groupCount" == {{groupCount}} <br>   
-                "allGroupCount" == {{allGroupCount}} <br>   
-                "nowGroupCount" == {{nowGroupCount}}
+                <!-- "start" == {{start}} -->  
+                <!-- "allGroupCount" == {{allGroupCount}} <br>   
+                "nowGroupCount" == {{nowGroupCount}} -->
                 <!-- <div class="select">ALL CONTACTS-2</div> -->
                 <!-- <dl @mouseenter="hoverMouseEnter" @mouseleave="hoverMouseLeave"> -->
-                <dl>
-                    <dt class="select-header flexSb" @click="clickSelect">
+                <dl class="usermessage" ref="box">
+                    <dt class="select-header flexSb usermessage" @click.stop="clickSelect">
                         <div class="flexCc" style="text-align:center;width:100%;">
                          <span class="ellipsis1" style="display: inline-block;max-width:116px;line-height: 16px;">
                             {{groupName}}&nbsp;
@@ -53,7 +40,7 @@
                         </div>
                         <i class="el-icon-arrow-up" :class="isShowHoverSelect?'rotate-i':''"></i>
                     </dt>
-                    <dd  class="select-content" v-show="isShowHoverSelect">
+                    <dd  class="select-content usermessage" v-show="isShowHoverSelect">
                         <div class="select-title">
                             <div class="flexSb" @click="clickGroupItem($event,'','ALL CONTACTS',allGroupCount)" style="cursor: pointer;">
                                 <div style="width:130px;" class="ellipsis1">ALL CONTACTS</div>
@@ -65,7 +52,7 @@
                                 <div>Groups</div>
                                 <div class="add-font">+</div>
                             </div>
-                            <div class="add-group-input clearfix" v-show="isAddSearchGroup">
+                            <div class="add-group-input clearfix" v-if="isAddSearchGroup">
                                 <input type="text"  ref="addInputFocus" placeholder="添加新的分组" v-model.trim="addInput" @keyup.enter="addGroup">
                                 <div class="fr add-group-go" @click="addGroup">Go</div>
                             </div>
@@ -76,7 +63,7 @@
 
                         </div>
                         <ul>
-                            <li class="flexSb" v-for="(item,index) in groupList" :key="index" @click="clickGroupItem($event,item.pkey,item.name,item.count)">
+                            <li v-if="item.pkey" class="flexSb" v-for="(item,index) in groupList" :key="index" @click="clickGroupItem($event,item.pkey,item.name,item.count)">
                                 <div class="ellipsis1">{{item.name}}</div>
                                 <div><img src="/home/v3/static/images/user/bianxie.png" alt="" @click.stop="clickShowEditGruop(item.name,item.pkey)"><img
                                         src="/home/v3/static/images/user/lajitong.png" alt="" style="padding-right:0;" @click.stop="deleteGroup(item.pkey)"></div>
@@ -134,14 +121,16 @@
                         <div class="cml-box2" v-if="item.relation != ''">
                             <h2>Inquiry History</h2>
                             <ul>
-                                <li class="flexCc" v-for="(inquiryItem,index) in item.relation" :key="index">
-                                    <div class="h1 fl">
+                                <li v-for="(inquiryItem,index) in item.relation" :key="index">
+                                   <a :href="'/home/usr_UsrMessages_center?supplierPkey=' + item.supplier.pkey + '&consultPkey=' + inquiryItem.consult.pkey + '&relationPkey=' + inquiryItem.quotation.pkey " class="flexSb clearfix">
+                                         <div class="h1">
                                         <img v-if="inquiryItem.consult.images"
                                         :src="inquiryItem.consult.type==3?image(inquiryItem.consult.images[0]) + '?x-oss-process=image/resize,w_43,h_43/blur,r_5,s_20':image(inquiryItem.consult.images[0])" alt="" />
                                         <i v-if="inquiryItem.quotation.isNew"></i>
                                     </div>
-                                    <div class="h2 fl">{{inquiryItem.consult.title}}</div>
-                                    <div class="h3 fr">{{timeFormat(inquiryItem.quotation.createDate).substr(5)}}</div>
+                                    <div class="h2">{{inquiryItem.consult.title}}</div>
+                                    <div class="h3">{{timeFormat(inquiryItem.quotation.createDate).substr(5)}}</div>
+                                   </a>
                                 </li>
                             </ul>
                         </div>
@@ -250,7 +239,7 @@
                             </ul>
                         </div>
                         <div class="comBox-b2 clearfix">
-                            <h2>Visit Activilty(last 90 days)</h2>
+                            <h2>RFQ Activilty(last 90 days)</h2>
                             <ul class="info">
                                 <li class="clearfix">
                                     <span class="h1">Valid RFQs Submitted:</span>
@@ -266,7 +255,7 @@
                         </div>
 
                         <div class="comBox-b2 clearfix">
-                            <h2>Visit Activilty(last 90 days)</h2>
+                            <h2>Inquiry Activilty(last 90 days)</h2>
                             <ul class="info">
                                 <li class="clearfix">
                                     <span class="h1">Suppliers Response Rate:</span>
@@ -315,8 +304,16 @@
                 isGroupShow: false,  // 是否显示分组
                 groupName:'ALL CONTACTS',  // 分组名字
                 nowGroupCount:'',  // 当前分组联系人数量
-                groupCount:'',  // 分组里联系人数量
                 allGroupCount:'',  // 总联系人数量
+            },
+            created(){
+                document.addEventListener('click',(e)=>{
+                    console.log("this.$refs.box.contains(e.target)");
+                    console.log(this.$refs.box.contains(e.target));
+                    if(!this.$refs.box.contains(e.target)){
+                        this.isShowHoverSelect = false;
+                    }
+                })
             },
             mounted() {
                 this.getGroupList(); //获取分组
@@ -378,21 +375,11 @@
                 });
             },
             methods: {
-                hidePanel: function(event){
-                    var sp = document.getElementById("dd");
-                        if(sp){
-                            if(!sp.contains(event.target)){            //这句是说如果我们点击到了id为myPanel以外的区域
-                                this.isShowHoverSelect= false;
-                            }
-                        }
-                    },
                 clickGroupItem(e,groupPkey,name,count){  // 点击分组
-                    console.log("groupPkey=============" + groupPkey)
+                    console.log("groupPkey==============" + groupPkey)
                     console.log("name==============" + name)
                     console.log("count============" + count)
-                    console.log(this.groupCount)
                     console.log(!groupPkey)
-                    this.groupCount = count;
                     // if(groupPkey == ''){
                     //     this.nowGroupCount = this.allGroupCount;
                     //     console.log("==========空的============" +this.nowGroupCount)
@@ -412,7 +399,6 @@
                         console.log(this.nowGroupCount)
                         console.log("==========空的============" +this.nowGroupCount)
                     }else{
-                    //   this.nowGroupCount = this.groupCount;
                       this.nowGroupCount = count;
                       console.log(this.nowGroupCount)
                       console.log("================有值============" + this.nowGroupCount)
@@ -504,12 +490,12 @@
                                 self.$message.error(res.data.msg);
                                 return
                             };
-                            // for (let i = 0; i < res.data.result.length; i++) {
-                            //     if(res.data.result[i].name == 'all' && !res.data.result[i].pkey){
-                            //         self.allGroupCount = res.data.result[i].count;
-                            //     }
-                            // }
-                            // console.log(self.allGroupCount)
+                            for (let i = 0; i < res.data.result.length; i++) {
+                                if(res.data.result[i].name == 'all' && !res.data.result[i].pkey){
+                                    self.allGroupCount = res.data.result[i].count;
+                                }
+                            }
+                            self.nowGroupCount = self.allGroupCount;
                             self.groupList = res.data.result;
                         })
                         .catch((error) => {
@@ -527,10 +513,12 @@
                     self.editNewPkey = pkey;
                     // self.isEditSearchGroup = !self.isEditSearchGroup;
                     self.editInput = name;
-                    self.$nextTick(function () {
-                        // input 获取焦点
-                        self.$refs.editInputFocus.focus()
-                    })
+                    if(self.isEditSearchGroup){
+                        self.$nextTick(function () {
+                            // input 获取焦点
+                            self.$refs.editInputFocus.focus()
+                        })
+                    }
                     console.log(name)
                     console.log(pkey)
                     console.log(self.editNewPkey)
@@ -617,16 +605,13 @@
                 clickShowAddGruop(){  // 点击是否显示 添加分组框
                     var self = this;
                     console.log(self.isAddSearchGroup)
-                    // if(self.isAddSearchGroup){
-                    //     self.isAddSearchGroup = false;
-                    // }else{
-                    //     self.isAddSearchGroup = true;
-                    // }
                     self.isAddSearchGroup  = !self.isAddSearchGroup
-                     self.$nextTick(function () {
-                        // input 获取焦点
-                        self.$refs.addInputFocus.focus()
-                    })
+                    if(self.isAddSearchGroup){
+                        self.$nextTick(function () {
+                            // input 获取焦点
+                            self.$refs.addInputFocus.focus()
+                        })
+                    }
                 },
                 addGroup() { // 添加分组
                     var self = this;

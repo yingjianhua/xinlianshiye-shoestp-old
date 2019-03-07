@@ -48,7 +48,7 @@ Vue.component('index-top', {
                     </ul>
                 </template>
                 <template v-else>
-                    <div style="line-height: 100px;text-align: center;">
+                    <div style="line-height: 100px;text-align: center;font-size: 18px;">
                         No news yet
                     </div>
                 </template>
@@ -200,8 +200,8 @@ Vue.component('index-top', {
         getPMmessage(start,limit){
             var self = this
             axios.get(
-                'http://192.168.1.48:889/mock/5c6a1556af4d250024d48c6d/home/home/pm_PMMessage_list', {
-                // '/home/pm_PMMessage_list', {
+                // 'http://192.168.1.48:889/mock/5c6a1556af4d250024d48c6d/home/home/pm_PMMessage_list', {
+                '/home/pm_PMMessage_list', {
                     params: {
                         start,
                         limit,
@@ -213,23 +213,20 @@ Vue.component('index-top', {
                 console.log(res)
                 if (res.data.ret == 1) {
                     self.countNoRead = res.data.result.countNoRead;
-                    // self.PMMessageList.push(...res.data.result.items);
-                    self.PMMessageList.push(...res.data.result);
-                    // if(res.data.result.items.length <= 0){
-                    if(res.data.result.length <= 0){
+                    self.PMMessageList.push(...res.data.result.items);
+                    // self.PMMessageList.push(...res.data.result);
+                    if(res.data.result.items.length <= 0){
+                    // if(res.data.result.length <= 0){
                        self.PMmoreSwitch == false; 
                        self.$message('No more');
                        return;
                     }
                 }
             })
-            
-            
-            
             .catch(function (error) {
                 console.log(error);
             });
-            },
+        },
         msgClick(message,i){   // 点击消息 
             var self = this;
             axios.post('/home/pm_PMMessage_read', Qs.stringify({
@@ -250,7 +247,7 @@ Vue.component('index-top', {
         },
         moreClick(){    // 点击 加载更多消息
             var self = this;
-            if(this.PMmoreSwitch){
+            if(self.PMmoreSwitch){
                 self.msgStart = self.msgStart  + self.msgLimit
                 self.getPMmessage(self.msgStart,self.msgLimit);
             }else{
