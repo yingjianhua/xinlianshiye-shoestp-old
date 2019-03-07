@@ -67,7 +67,7 @@ public class PrmGroupPurchaseAction extends SellerAction<PrmGroupPurchase> imple
 		JSONArray ja = new JSONArray();
 		// 目前过滤器的搜索，是肯定会带初始条件的
 		PrmGroupPurchaseDAO.GroupList groupList = new PrmGroupPurchaseDAO.GroupList();//------->此处重写了PrmUnionDAO中的page->
-		if(title != null && title.trim() != ""){
+		if(title != null && !title.trim().equals("")){
 			groupList.setTitle(title);
 		}
 		if(pageNumber == null || pageNumber.intValue() == 0){
@@ -92,7 +92,7 @@ public class PrmGroupPurchaseAction extends SellerAction<PrmGroupPurchase> imple
 				List<PdtSpec> specList = BeanBase.list(PdtSpec.class,PdtSpec.T.PRODUCT.getFld().getCodeSqlField() + " = ? ",false,pdtPkey);
 				String specPkey = "";
 				for(PdtSpec spec : specList){
-					if(specPkey == ""){
+					if(specPkey.equals("")){
 						specPkey += spec.getPkey();
 					}else{
 						specPkey += "," + spec.getPkey();
@@ -129,7 +129,7 @@ public class PrmGroupPurchaseAction extends SellerAction<PrmGroupPurchase> imple
 			List<PdtSpec> specList = BeanBase.list(PdtSpec.class,PdtSpec.T.PRODUCT.getFld().getCodeSqlField() + " = ? ",false,pdtPkey);
 			String specPkey = "";
 			for(PdtSpec spec : specList){
-				if(specPkey == ""){
+				if(specPkey.equals("")){
 					specPkey += spec.getPkey();
 				}else{
 					specPkey += "," + spec.getPkey();
@@ -288,12 +288,14 @@ public class PrmGroupPurchaseAction extends SellerAction<PrmGroupPurchase> imple
 		}
 		List<OdrOrderLine> orderLineList = BeanBase.list(OdrOrderLine.class,OdrOrderLine.T.SPEC.getFld().getCodeSqlField() + " in (" + specIds + ") ",false);
 		Map<PdtSpec,Integer> sta = new HashMap<PdtSpec,Integer>();
+		if(null != orderLineList) {
 		for(OdrOrderLine orderLine : orderLineList){
 			if(sta.get(orderLine.gtSpec()) == null){
 				sta.put(orderLine.gtSpec(), orderLine.getQty());
 			}else{
 				Integer qty = sta.get(orderLine.gtSpec());
 				sta.put(orderLine.gtSpec(), qty + orderLine.getQty());
+				}
 			}
 		}
 		JSONObject jsonCarts = new JSONObject();

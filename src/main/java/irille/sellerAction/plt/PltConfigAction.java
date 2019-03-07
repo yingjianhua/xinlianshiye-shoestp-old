@@ -33,7 +33,6 @@ public class PltConfigAction  extends ActionBase<PltConfig> implements IPltConfi
 	}
 	public void enabledLanguage() throws IOException, JSONException {
 		PltConfig.getVariable(Variable.Language);
-		Map<String, String> r = new HashMap<>();
 		JSONArray array = new JSONArray();
 		for(Language L:Language.values()) {
 			JSONObject json = new JSONObject().put("shortName",L.name()).put("displayName", L.displayName());

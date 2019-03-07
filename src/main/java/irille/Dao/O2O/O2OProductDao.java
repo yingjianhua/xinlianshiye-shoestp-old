@@ -105,16 +105,18 @@ public class O2OProductDao {
         Date now = new Date();
         sql.WHERE(T.START_DATE, " <= ?", now);
         if (null != status) {
-            if (status.equals(O2O_ActivityStatus.TOBEGIN.getLine().getKey())) {
+            if (status.byteValue() == O2O_ActivityStatus.TOBEGIN.getLine().getKey()) {
                 //未开始
                 sql.WHERE(T.START_DATE, ">?", now);
-            } else if (status.equals(O2O_ActivityStatus.ACTIVITY.getLine().getKey())) {
+            } else if (status.byteValue() == O2O_ActivityStatus.ACTIVITY.getLine().getKey()) {
                 //活动中
                 sql.WHERE(T.START_DATE, "<?", now);
                 sql.WHERE(T.END_DATE, ">?", now);
-            } else if (status.equals(O2O_ActivityStatus.END.getLine().getKey())) {
+            } else if (status.byteValue() == O2O_ActivityStatus.END.getLine().getKey()) {
                 //结束
                 sql.WHERE(T.END_DATE, "<?", now);
+            }else if(status.byteValue() == O2O_ActivityStatus.CLOSE.getLine().getKey()) {
+            	sql.WHERE(O2O_Activity.T.STATUS, " =? ", status.byteValue());
             }
         }
 
@@ -142,16 +144,18 @@ public class O2OProductDao {
         Date now = new Date();
         sql.WHERE(T.START_DATE, " <= ?", now);
         if (null != status) {
-            if (status.equals(O2O_ActivityStatus.TOBEGIN.getLine().getKey())) {
+            if (status.byteValue() == O2O_ActivityStatus.TOBEGIN.getLine().getKey()) {
                 //未开始
                 sql.WHERE(T.START_DATE, ">?", now);
-            } else if (status.equals(O2O_ActivityStatus.ACTIVITY.getLine().getKey())) {
+            } else if (status.byteValue() == O2O_ActivityStatus.ACTIVITY.getLine().getKey()) {
                 //活动中
                 sql.WHERE(T.START_DATE, "<?", now);
                 sql.WHERE(T.END_DATE, ">?", now);
-            } else if (status.equals(O2O_ActivityStatus.END.getLine().getKey())) {
+            } else if (status.byteValue() == O2O_ActivityStatus.END.getLine().getKey()) {
                 //结束
                 sql.WHERE(T.END_DATE, "<?", now);
+            }else if(status.byteValue() == O2O_ActivityStatus.CLOSE.getLine().getKey()) {
+            	sql.WHERE(O2O_Activity.T.STATUS, " =? ", status.byteValue());
             }
         }
 //                .WHERE(status != null,T.STATUS,"=?",status);
