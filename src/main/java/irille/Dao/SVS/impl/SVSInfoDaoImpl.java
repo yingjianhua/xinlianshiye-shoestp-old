@@ -28,12 +28,12 @@ public class SVSInfoDaoImpl implements SVSInfoDao {
 	 * @author GS
 	 */
 	@Override
-	public int findSVSInfoBySupplier(Integer supplier) {
+	public SVSInfo findSVSInfoBySupplier(Integer supplier) {
 		SQL sql = new SQL();
-		sql.SELECT(SVSInfo.T.PKEY);
+		sql.SELECT(SVSInfo.class);
 		sql.FROM(SVSInfo.class);
 		sql.WHERE(SVSInfo.T.SUPPLIER, " =?", supplier);
-		return Query.sql(sql).queryCount();
+		return Query.sql(sql).query(SVSInfo.class);
 	}
 
 }

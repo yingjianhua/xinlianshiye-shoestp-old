@@ -13,38 +13,42 @@ import irille.view.SVS.SVSInfoView.productionCapacity;
 import irille.view.SVS.SVSInfoView.realFactory;
 import irille.view.SVS.SVSInfoView.research;
 import irille.view.SVS.SVSInfoView.tradeTeam;
+import irille.view.SVS.BaseScore.ProductionLineQuantityHandler;
 import lombok.Data;
 
 @Data
 public class SVSDetailedInfoView implements BaseView {
 
-	private Integer id;
+	private Integer id; // SVS认证ID
 
-	private String factory;
+	private realFactory factory; // 真实工厂信息
 
-	private Byte grade;
+	private Byte grade; // 会员等级
 
-	private Integer baseScore;
+	private Integer baseScore; // 基础分
 
-	private String research;
+	private research research; // 研发能力信息
 
-	private String team;
+	private tradeTeam team; // 外贸团队信息
 
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	private Date applicationTime;
+	private Date applicationTime;// 申请认证时间
 
-	private Byte status;
+	private Byte status;// 认证状态
 
-	private UsrSupplier supplier;
+	private UsrSupplier supplier;// 申请认证用户
 
-	private String exhibition;
+	private exhibitionAttended exhibition; // 展会信息
 
-	private Integer dynamicScore;
+	private Integer dynamicScore;// 动态分
 
-	private String quality;
+	private productQuality quality; // 产品质量信息
 
-	private String capacity;
-	
-	private String partner;
+	private productionCapacity capacity;// 生产能力信息
 
+	private partner part;// 合作商信息
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	private Date autTime; // 审核时间
+
+	private Integer count;// 申请认证次数
 }

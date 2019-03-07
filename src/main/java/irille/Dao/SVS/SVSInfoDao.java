@@ -9,6 +9,6 @@ public interface SVSInfoDao {
 
 	SVSInfo save(SVSInfo bean);
 	
-	int  findSVSInfoBySupplier(Integer supplier);
+	SVSInfo  findSVSInfoBySupplier(Integer supplier);
 
 }

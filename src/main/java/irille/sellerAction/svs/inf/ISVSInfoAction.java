@@ -10,7 +10,7 @@ public interface ISVSInfoAction extends ISellerAction {
 	@RequestMapping(alias = "申请认证", sort = 1)
 	void application() throws Exception;
 
-	@RequestMapping(alias = "修改认证信息", sort = 2)
+	@RequestMapping(alias = "修改认证信息", sort = 3)
 	void updAutInfo() throws Exception;
 
 	@RequestMapping(alias = "获取信息", sort = 2)

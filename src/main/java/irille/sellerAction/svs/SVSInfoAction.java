@@ -10,6 +10,7 @@ import irille.Entity.SVS.Enums.SVSGradeType;
 import irille.action.seller.SellerAction;
 import irille.pub.util.GetBaseScoreUtils;
 import irille.sellerAction.svs.inf.ISVSInfoAction;
+import irille.view.SVS.SVSInfoView.research;
 import lombok.Data;
 
 @Data
@@ -27,12 +28,14 @@ public class SVSInfoAction extends SellerAction<SVSInfo> implements ISVSInfoActi
 	private String exhibition;
 	private String partner;
 
-	// 申请认证
+	/**
+	 * 提交认证信息
+	 * 
+	 * @author GS
+	 */
 	@Override
 	public void application() throws Exception {
-		
-		
-		
+
 		SVSInfo svs = new SVSInfo();
 		int score = GetBaseScoreUtils.getBaseScore(search, capacity, factory, quality, team, exhibition, partner);
 		System.out.println(score);
@@ -47,28 +50,46 @@ public class SVSInfoAction extends SellerAction<SVSInfo> implements ISVSInfoActi
 		svs.stStatus(SVSAuthenticationStatus.ToBeAudited);
 		svs.setBaseScore(score);
 		svs.setApplicationTime(new Date());
-		svs.setResearch(om.writeValueAsString(search));
-		svs.setProductionCapacity(om.writeValueAsString(capacity));
-		svs.setRealFactory(om.writeValueAsString(factory));
-		svs.setProductQuality(om.writeValueAsString(quality));
-		svs.setForeignTradeTeam(om.writeValueAsString(team));
-		svs.setExhibitionAttended(om.writeValueAsString(exhibition));
-		svs.setPartner(om.writeValueAsString(partner));
+		svs.setResearch(search);
+		svs.setProductionCapacity(capacity);
+		svs.setRealFactory(factory);
+		svs.setProductQuality(quality);
+		svs.setForeignTradeTeam(team);
+		svs.setExhibitionAttended(exhibition);
+		svs.setPartner(partner);
 		svs.stSupplier(getSupplier());
 		svs.setDynamicScore(0);
+		svs.setApplicationCount(1);
 		write(service.application(svs));
 		;
 	}
 
+	/**
+	 * 更新用户SVS用户信息
+	 * 
+	 * @author GS
+	 */
 	@Override
 	public void updAutInfo() throws Exception {
-		// TODO Auto-generated method stub
+
+		if (getSupplier() != null)
+			write(service.updSVSInfo(getSupplier().getPkey(), search, capacity, factory, quality, team, exhibition,
+					partner));
+		else
+			writeErr(-1, "用户未登录");
 
 	}
 
+	/**
+	 * 获取用户SVS认证信息
+	 * 
+	 * @author GS
+	 */
 	@Override
 	public void getAutInfo() throws Exception {
-		// TODO Auto-generated method stub
-
+		if (getSupplier() != null)
+			write(service.getSVSInfo(getSupplier().getPkey()));
+		else
+			writeErr(-1, "用户未登录");
 	};
 }
