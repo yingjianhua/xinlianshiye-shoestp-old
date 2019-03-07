@@ -13,16 +13,22 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.xinlianshiye.shoestp.plat.service.pm.IVariableService;
 import com.xinlianshiye.shoestp.plat.view.pm.VariableView;
 
 import irille.Config.Attribute;
 import irille.Config.Variable;
+import irille.Entity.RFQ.JSON.ConsultMessage;
 import irille.Entity.pm.PM.OTempType;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
+import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumOpt;
 import irille.pub.util.Scanner;
+import irille.pub.util.TranslateLanguage.translateUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -37,33 +43,15 @@ public class VariableServiceImp implements IVariableService{
 	}
 	
 	//变量有中文名称/变量值/所属操作
-		public static void main(String[] args) {
-//			O2O_Product product = new O2O_Product();
-//			product.setLowerDate(new Date());
-//			product.setStatus(O2O_ProductStatus.Failed.getLine().getKey());
-//			product.setRemark("郭松");
-//			PdtProduct product1 = new PdtProduct();
-//			product1.setName("李逸超");
-//			product.stProductId(product1);
-//			String template = "我是{$备注},现在是{$下架时间},商品名称是{$商品名称},haha{$商品上下架状态}";
-//			VariableServiceImp service = new VariableServiceImp();
-//			System.out.println(map.get(Integer.valueOf(OTempType.PROD_APPR_NOTICE.getLine().getKey())));
-//			String str = service.render(map.get(Integer.valueOf(OTempType.PROD_APPR_NOTICE.getLine().getKey())), template,product,product1);
-//			System.out.println(str);
-//			for(Integer key:map.keySet()) {
-//				System.out.println(key);
-//				Map<String,VariableView> views = map.get(key);
-//				for(String key2:views.keySet()) {
-//					System.out.println(key2 + ":" + views.get(key2));
-//				}
-//			}
-			System.out.println(map);
+		public static void main(String[] args) throws JSONException {
+			String s = "{\"content\":\"22222\"}";
+			JSONObject json = new JSONObject(s);
+			System.out.println(json);
 		}
 	
 	//根据模板类型获取对应变量
 	@Override
 	public List<String> loadByTempType(Integer type){
-		System.err.println(map);
 		Map<String,VariableView> variables = map.get(type);
 		List<String> keys = new ArrayList<>();
 		if(variables != null && variables.size() > 0) {
@@ -182,6 +170,13 @@ public class VariableServiceImp implements IVariableService{
 			String str = matcher.group();
 			String key = str.substring(str.indexOf("$")+1,str.lastIndexOf("}"));
 			VariableView variable = variableMap.get(key);
+			Object object = null;
+			
+			if(key.equals("now") || key.equals("当前时刻")) {
+				object = sdf.format(new Date());
+				template = template.replaceAll(str.replace("{","\\{").replace("$", "\\$").replace("}", "\\}"), String.valueOf(object));
+				continue;
+			}
 			
 			if(variable == null){
 				log.info("非法参数【"+key+"】");
@@ -192,18 +187,36 @@ public class VariableServiceImp implements IVariableService{
 			if(null == field) {
 				continue;
 			}
-			Object object = null;
 			for(Object obj : objects) {
 				try {
 					field.setAccessible(true);
-					if(variable.getFieldType() == Date.class) {
+					if(null == field.get(obj)) {
+						object = String.valueOf("");
+					}else if(variable.getFieldType() == ConsultMessage.class){
+						JSONObject json = new JSONObject(String.valueOf(field.get(obj)));
+						if(json.has("imageUrl")) {
+							object = "<img src='' alt=''/>";
+							if(json.has("alt")) {
+								object += " alt='"+json.getString("alt")+"'";
+							}else {
+								object += " />";
+							}
+						}else if(json.has("content")) {
+							object = json.getString("content");
+						}else if(json.has("url")){
+							object = "<a target='_blank' href="+json.getString("url")+"></a>";
+						}
+					}else if(variable.getFieldType() == Date.class) {
 						object = sdf.format((Date)field.get(obj));
+					}else if(variable.getFieldType() == FldLanguage.class){
+						JSONObject json = new JSONObject(String.valueOf(field.get(obj)));
+						object = translateUtil.getLanguage(field.get(obj),FldLanguage.Language.en);
 					}else if(variable.getFieldType().isEnum()){
 						object = fromValue1(variable.getFieldType(),field.get(obj));
 					}else{
 						object = field.get(obj);
 					}
-				} catch (IllegalArgumentException | IllegalAccessException | SecurityException e) {
+				} catch (IllegalArgumentException | IllegalAccessException | SecurityException | JSONException e) {
 					continue;
 				}
 			}

@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import irille.Config.Attribute;
 import irille.Config.Variable;
 import irille.Entity.RFQ.Enums.RFQConsultMessageType;
+import irille.Entity.RFQ.JSON.ConsultMessage;
 import irille.Entity.pm.PM.OTempType;
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
@@ -16,8 +17,8 @@ import irille.pub.tb.Fld;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
 
-@Variable(group = {OTempType.RFQ_REPLY},enumType=RFQConsultMessage.T.class,clazz=RFQConsultMessage.class,attributes = {
-		@Attribute(name="RFQ内容",field="CONTENT",type=String.class),
+@Variable(group = {OTempType.RFQ_REPLY,OTempType.RFQ_MESSAGE_NOTICE},enumType=RFQConsultMessage.T.class,clazz=RFQConsultMessage.class,attributes = {
+		@Attribute(name="RFQ内容",field="CONTENT",type=ConsultMessage.class),
 		@Attribute(name="留言时间",field="SEND_TIME",type=Date.class)}
 )
 public class RFQConsultMessage extends BeanInt<RFQConsultMessage> {

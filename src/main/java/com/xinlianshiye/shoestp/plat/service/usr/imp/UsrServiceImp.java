@@ -2,21 +2,19 @@ package com.xinlianshiye.shoestp.plat.service.usr.imp;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import com.xinlianshiye.shoestp.plat.dao.usr.IUsrPurchaseDao;
 import com.xinlianshiye.shoestp.plat.dao.usr.IUsrSupplierDao;
+import com.xinlianshiye.shoestp.plat.dao.usr.imp.UsrPurchaseDaoImp;
+import com.xinlianshiye.shoestp.plat.dao.usr.imp.UsrSupplierDaoImp;
 import com.xinlianshiye.shoestp.plat.service.usr.IUsrService;
 
 import irille.Entity.pm.PM.ORCVRType;
 
 public class UsrServiceImp implements IUsrService{
 	
-	@Inject
-	private IUsrSupplierDao supplierDao;
+	private IUsrSupplierDao supplierDao = new UsrSupplierDaoImp();
 	
-	@Inject
-	private IUsrPurchaseDao purchaseDao;
+	private IUsrPurchaseDao purchaseDao = new UsrPurchaseDaoImp();
 	
 	@Override
 	public List<String> getMailsBy(ORCVRType type){

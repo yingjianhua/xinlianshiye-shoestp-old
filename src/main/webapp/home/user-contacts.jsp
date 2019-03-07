@@ -35,18 +35,29 @@
             <div class="contacts-main-left fl">
                 <!-- "contactPkey" == {{contactPkey}} -->
                 <!-- "start" == {{start}} -->
+                "groupCount" == {{groupCount}} <br>   
+                "allGroupCount" == {{allGroupCount}} <br>   
+                "nowGroupCount" == {{nowGroupCount}}
                 <!-- <div class="select">ALL CONTACTS-2</div> -->
                 <!-- <dl @mouseenter="hoverMouseEnter" @mouseleave="hoverMouseLeave"> -->
                 <dl>
                     <dt class="select-header flexSb" @click="clickSelect">
-                        <div>ALL CONTACTS-2</div>
+                        <div class="flexCc" style="text-align:center;width:100%;">
+                         <span class="ellipsis1" style="display: inline-block;max-width:116px;line-height: 16px;">
+                            {{groupName}}&nbsp;
+                         </span> 
+                         <span> 
+                               - {{nowGroupCount}}
+                         </span> 
+                        
+                        </div>
                         <i class="el-icon-arrow-up" :class="isShowHoverSelect?'rotate-i':''"></i>
                     </dt>
                     <dd class="select-content" v-show="isShowHoverSelect">
                         <div class="select-title">
-                            <div class="flexSb" @click="clickGroupItem($event,'','ALL CONTACTS','56')" style="cursor: pointer;">
-                                <div>ALL CONTACTS</div>
-                                <div>56</div>
+                            <div class="flexSb" @click="clickGroupItem($event,'','ALL CONTACTS',allGroupCount)" style="cursor: pointer;">
+                                <div style="width:130px;" class="ellipsis1">ALL CONTACTS</div>
+                                <div>{{allGroupCount}}</div>
                             </div>
                         </div>
                         <div class="add-group">
@@ -66,7 +77,7 @@
                         </div>
                         <ul>
                             <li class="flexSb" v-for="(item,index) in groupList" :key="index" @click="clickGroupItem($event,item.pkey,item.name,item.count)">
-                                <div>{{item.name}}</div>
+                                <div class="ellipsis1">{{item.name}}</div>
                                 <div><img src="/home/v3/static/images/user/bianxie.png" alt="" @click.stop="clickShowEditGruop(item.name,item.pkey)"><img
                                         src="/home/v3/static/images/user/lajitong.png" alt="" style="padding-right:0;" @click.stop="deleteGroup(item.pkey)"></div>
                             </li>
@@ -123,7 +134,7 @@
                         <div class="cml-box2" v-if="item.relation != ''">
                             <h2>Inquiry History</h2>
                             <ul>
-                                <li v-for="(inquiryItem,index) in item.relation" :key="index">
+                                <li class="flexCc" v-for="(inquiryItem,index) in item.relation" :key="index">
                                     <div class="h1 fl">
                                         <img v-if="inquiryItem.consult.images"
                                         :src="inquiryItem.consult.type==3?image(inquiryItem.consult.images[0]) + '?x-oss-process=image/resize,w_43,h_43/blur,r_5,s_20':image(inquiryItem.consult.images[0])" alt="" />
@@ -302,6 +313,10 @@
                 supplierPkey:'', // 供应商联系人pkeyy
                 contactPkey:'', // 供应商移动分组 pkey
                 isGroupShow: false,  // 是否显示分组
+                groupName:'ALL CONTACTS',  // 分组名字
+                nowGroupCount:'',  // 当前分组联系人数量
+                groupCount:'',  // 分组里联系人数量
+                allGroupCount:'',  // 总联系人数量
             },
             mounted() {
                 this.getGroupList(); //获取分组
@@ -363,16 +378,47 @@
                 });
             },
             methods: {
+                hidePanel: function(event){
+                    var sp = document.getElementById("dd");
+                        if(sp){
+                            if(!sp.contains(event.target)){            //这句是说如果我们点击到了id为myPanel以外的区域
+                                this.isShowHoverSelect= false;
+                            }
+                        }
+                    },
                 clickGroupItem(e,groupPkey,name,count){  // 点击分组
                     console.log(e)
                     console.log(e.target)
                     console.log("groupPkey=============" + groupPkey)
                     console.log("name==============" + name)
                     console.log("count============" + count)
-                    this.groupPkey = groupPkey;
+                    console.log(this.groupCount)
+                    console.log(!groupPkey)
+                    this.groupCount = count;
+                    // if(groupPkey == ''){
+                    //     this.nowGroupCount = this.allGroupCount;
+                    //     console.log("==========空的============" +this.nowGroupCount)
+                    // }else{
+                    //   this.nowGroupCount = count;
+                    //   console.log("================有值============" + this.nowGroupCount)
+                    // }
+                    this.groupName = name;
+                    this.isAddSearchGroup = false;
+                    this.isEditSearchGroup = false;
                     this.start = 0;
+                    this.groupPkey = groupPkey;
                     this.popupindex= 0;
                     this.getContactList(this.contactKeyWord,this.groupPkey,this.start,this.limit)
+                    if(name == "ALL CONTACTS"){
+                        this.nowGroupCount = this.allGroupCount;
+                        console.log(this.nowGroupCount)
+                        console.log("==========空的============" +this.nowGroupCount)
+                    }else{
+                    //   this.nowGroupCount = this.groupCount;
+                      this.nowGroupCount = count;
+                      console.log(this.nowGroupCount)
+                      console.log("================有值============" + this.nowGroupCount)
+                    }
                 },
                 getContactList(keyword,groupPkey,start,limit) { // 获取联系人列表
                     // var self = this;
