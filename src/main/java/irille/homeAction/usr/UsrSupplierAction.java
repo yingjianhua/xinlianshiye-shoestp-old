@@ -407,5 +407,5 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
 	public void getDetail() throws IOException, JSONException {
 		write(usrSupplierService2.detail(getPurchase(), supplierPkey, curLanguage()));
 	}
-
+	
 }
