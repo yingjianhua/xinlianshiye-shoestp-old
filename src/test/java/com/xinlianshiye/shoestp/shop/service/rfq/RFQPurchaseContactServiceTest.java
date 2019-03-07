@@ -50,13 +50,14 @@ public class RFQPurchaseContactServiceTest extends BaseTest {
 	}
 	
 	@Test
-	@Ignore
 	public void testPage() throws JsonProcessingException {
 		om.setSerializationInclusion(Include.NON_NULL);
 		
 		UsrPurchase purchase = new UsrPurchase();
-		purchase.setPkey(1261);
-		String keyword = "亿力";
+		purchase.setPkey(838);
+		
+		String keyword = null;
+//		String keyword = "亿力";
 //		String keyword = "girl";
 		Integer groupPkey = null;
 		Integer start = 0;
@@ -66,6 +67,7 @@ public class RFQPurchaseContactServiceTest extends BaseTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testListGroup() throws JsonProcessingException {
 		UsrPurchase purchase = UsrPurchase.load(UsrPurchase.class, 838);
 		List<RFQPurchaseContactGroupView> listGroup = service.listGroup(purchase);

@@ -6,6 +6,11 @@ import javax.servlet.http.HttpServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.xinlianshiye.shoestp.plat.service.pm.IPMTemplateService;
+import com.xinlianshiye.shoestp.plat.service.pm.IVariableService;
+import com.xinlianshiye.shoestp.plat.service.pm.imp.PMTemplateServiceImp;
+import com.xinlianshiye.shoestp.plat.service.pm.imp.VariableServiceImp;
+
 import irille.action.sys.SysMenuAction;
 import irille.pub.ClassTools;
 import irille.pub.bean.BeanBase;
@@ -40,11 +45,11 @@ public class ShoestpInitServlet extends HttpServlet {
         Plt_ConfPackage.INST.install();
         
         
-//        logger.info("初始化站内信模板...");
-//        IPMTemplateService templateService = new PMTemplateServiceImp();
-//        templateService.initTemp();
-//        IVariableService variableService = new VariableServiceImp();
-//        logger.info("站内信模板初始化完毕...");
+        logger.info("初始化站内信模板...");
+        IPMTemplateService templateService = new PMTemplateServiceImp();
+        templateService.initTemp();
+        IVariableService variableService = new VariableServiceImp();
+        logger.info("站内信模板初始化完毕...");
 //        logger.info("初始化计划任务...");
 //        TaskUtil taskUtil = new TaskUtil();
 //        taskUtil.addTask(new GetGooleAnalyticsTask(), 1L, TimeUnit.DAYS);

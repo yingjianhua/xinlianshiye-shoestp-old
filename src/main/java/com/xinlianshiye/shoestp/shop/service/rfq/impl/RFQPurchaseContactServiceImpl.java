@@ -81,7 +81,7 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
 		BeanQuery<?> query = Query.SELECT(RFQConsultRelation.T.PKEY);
 		query.SELECT(RFQConsultRelation.T.IS_NEW);
 		query.SELECT(RFQConsultRelation.T.CREATE_DATE);
-		query.SELECT(RFQConsult.T.PKEY);
+		query.SELECT(RFQConsult.T.PKEY, "consultPkey");
 		query.SELECT(RFQConsult.T.TITLE);
 		query.SELECT(RFQConsult.T.IMAGE);
 		query.SELECT(RFQConsult.T.TYPE);
@@ -95,10 +95,12 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
 		List<RFQConsultRelationView> result = query.queryMaps().stream().map(map->{
 			RFQConsultRelationView relation = new RFQConsultRelationView();
 			RFQQuotationView quotation = new RFQQuotationView();
+			quotation.setPkey(GetValue.get(map, RFQConsultRelation.T.PKEY, Integer.class, null));
 			quotation.setIsNew(BeanBase.byteToBoolean(GetValue.get(map, RFQConsultRelation.T.IS_NEW, Byte.class, null)));
 			quotation.setCreateDate(GetValue.get(map, RFQConsultRelation.T.CREATE_DATE, Date.class, null));
 			relation.setQuotation(quotation);
 			RFQConsultView consult = new RFQConsultView();
+			consult.setPkey(GetValue.get(map, "consultPkey", Integer.class, null));
 			consult.setTitle(GetValue.get(map, RFQConsult.T.TITLE, String.class, ""));
 			consult.setType(GetValue.get(map, RFQConsult.T.TYPE, Byte.class, null));
 			consult.setImages(Arrays.asList(GetValue.get(map, RFQConsult.T.IMAGE, String.class, "").split(",")));

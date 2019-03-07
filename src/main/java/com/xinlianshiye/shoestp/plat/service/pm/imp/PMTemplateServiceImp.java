@@ -15,12 +15,11 @@ import com.xinlianshiye.shoestp.plat.view.pm.TemplateView;
 import irille.Entity.pm.PM.OTempType;
 import irille.Entity.pm.PMTemplate;
 import irille.core.sys.Sys.OYn;
-import irille.pub.idu.Idu;
 import irille.pub.svr.DbPool;
 
 public class PMTemplateServiceImp implements IPMTemplateService{
 	
-	private Map<Integer,PMTemplate> templateMap = null;
+	private static Map<Integer,PMTemplate> templateMap = null;
 	
 	@Override
 	public Map<Integer, PMTemplate> getTemplateMap() {
@@ -103,19 +102,14 @@ public class PMTemplateServiceImp implements IPMTemplateService{
 		Map<Integer,PMTemplate> beans = list2Map(templateDao.list());
 		
 		List<PMTemplate> addBeans = new ArrayList<>();
-//		List<PMTemplate> editBeans = new ArrayList<>();
 		for(OTempType temp:temps) {
 			if(!beans.containsKey(Integer.valueOf(temp.getLine().getKey()))) {
 				if(temp.getLine().getKey() != (byte)-1) {
 					addBeans.add(initBean(temp));
 				}
+			}else {
+				beans.remove(Integer.valueOf(temp.getLine().getKey()));
 			}
-//			else {
-//				PMTemplate template = beans.remove(Integer.valueOf(temp.getLine().getKey()));
-//				template.setRcvrType(temp.getRcvrType().getLine().getKey());
-//				template.setType(temp.getLine().getKey());
-//				editBeans.add(template);
-//			}
 		}
 		if(beans.size() > 0) {
 			//删除
@@ -123,14 +117,13 @@ public class PMTemplateServiceImp implements IPMTemplateService{
 			for(Integer key:beans.keySet()) {
 				delBeans.add(beans.get(key));
 			}
-			Idu.delLine(delBeans);
+			if(delBeans.size()>0) {
+				templateDao.del(delBeans);
+			}
 		}
 		if(addBeans.size() > 0) {
 			templateDao.add(addBeans);
 		}
-//		if(editBeans.size() > 0) {
-//			templateDao.upd(editBeans);
-//		}
 		loadTempList();
 	}
 	
@@ -146,6 +139,7 @@ public class PMTemplateServiceImp implements IPMTemplateService{
 		template.setType(temp.getLine().getKey());
 		template.setEmailStatus(OYn.NO.getLine().getKey());
 		template.setPmStatus(OYn.NO.getLine().getKey());
+		template.setRowVersion((short)0);
 		return template;
 	}
 	

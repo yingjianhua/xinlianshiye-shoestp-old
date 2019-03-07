@@ -38,11 +38,12 @@ public class PM{
     public enum OTempType implements IEnumOpt {//@formatter:off
     	UNSET(-1,"",ORCVRType.SUPPLIER,""),
     	REGISTER_SUPPLIER(0, "邮件验证",ORCVRType.SUPPLIER,""), 
-    	SHOP_APPR(1, "店铺审核通知",ORCVRType.SUPPLIER,""),
+    	SHOP_APPR(1, "店铺审核通知",ORCVRType.SUPPLIER,"/platform/usr_UsrSupplier_updStatus"),
     	ADVERTISEMENT_SUPPLIER(2,"广告推送",ORCVRType.SUPPLIER,""),
     	SVS_WRITE_NOTICE(3,"SVS填写通知",ORCVRType.SUPPLIER,""),
     	SVS_APPR_NOTICE(4,"SVS审核通知",ORCVRType.SUPPLIER,""),
-    	PROD_APPR_NOTICE(5,"产品审核通知",ORCVRType.SUPPLIER,""),
+    	PROD_APPR_NOTICE(5,"产品审核通知",ORCVRType.SUPPLIER,"/platform/pdt_PdtProduct_review"),
+    	O2O_PROD_APPR_NOTICE(22,"O2O产品审核通知",ORCVRType.SUPPLIER,"/platform/o2o_O2OActivity_pass"),
     	ACTIVITY_NOTICE(6,"活动提醒",ORCVRType.SUPPLIER,""),
     	O2O_STOCK(7,"O2O批发库存状态提醒",ORCVRType.SUPPLIER,""),
     	O2O_ORDER(8,"O2O批发订单状态提醒",ORCVRType.SUPPLIER,""),
@@ -50,15 +51,19 @@ public class PM{
     	INQUIRY_NOTICE_SUPPLIER(10,"询盘提醒",ORCVRType.SUPPLIER,""),
     	CONTACT_INFO_NOTICE_SUPPLIER(11,"联系人信息提醒",ORCVRType.SUPPLIER,""),
     	ORDER_STATUS_NOTICE_SUPPLIER(12,"订单状态提醒",ORCVRType.SUPPLIER,""),
+    	O2O_ACTIVITY_NOTICE(24,"O2O活动提醒",ORCVRType.SUPPLIER,"irille.Service.Manage.O2O.Imp.O2OActicityServerImp.execute"),
     	
     	REGISTER_PURCHASE(13, "邮件验证",ORCVRType.PURCHASE,""),
     	SYSTEM_NOTICE(14,"系统提醒",ORCVRType.PURCHASE,""),
     	ADVERTISEMENT_PURCHASE(15,"广告推送",ORCVRType.PURCHASE,""),
-    	RFQ_INFO_NOTICE(16,"RFQ信息提醒",ORCVRType.PURCHASE,""),
-    	INQUIRY_NOTICE_PURCHASE(17,"询盘提醒",ORCVRType.PURCHASE,""),
+    	RFQ_INFO_NOTICE(16,"RFQ信息提醒",ORCVRType.PURCHASE,"/home/rfq_RFQConsult_putRFQInquiry"),
+    	INQUIRY_NOTICE_PURCHASE(17,"询盘提醒",ORCVRType.PURCHASE,"/home/rfq_RFQConsult_putInquiry"),
     	CONTACT_INFO_NOTICE_PURCHASE(18,"联系人信息提醒",ORCVRType.PURCHASE,""),
     	ACTIVITY_INFO_NOTICE(19,"活动信息推送",ORCVRType.PURCHASE,""),
-    	ORDER_STATUS_NOTICE_PURCHASE(20,"订单状态提醒",ORCVRType.PURCHASE,"")
+    	ORDER_STATUS_NOTICE_PURCHASE(20,"订单状态提醒",ORCVRType.PURCHASE,""),
+    	
+    	RFQ_MESSAGE_NOTICE(23,"RFQ消息提醒",ORCVRType.PURCHASE,"/seller/rfq_RFQConsultMessage_send"),
+    	PURCHASE_FORGET_PASSWORD(21,"用户忘记密码",ORCVRType.PURCHASE,"/home/usr_UsrPurchase_uda")
     	;
     	public static final String NAME = "收件人类型";
     	public static final OTempType DEFAULT = UNSET; // 定义缺省值

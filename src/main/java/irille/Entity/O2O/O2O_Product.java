@@ -17,7 +17,7 @@ import irille.shop.pdt.PdtProduct;
 /**
  * Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/13 Time: 16:18 O2O产品
  */
-@Variable(group = {OTempType.PROD_APPR_NOTICE},enumType=O2O_Product.T.class,clazz=O2O_Product.class,attributes = {
+@Variable(group = {OTempType.O2O_PROD_APPR_NOTICE},enumType=O2O_Product.T.class,clazz=O2O_Product.class,attributes = {
 		@Attribute(name="O2O商品审核状态",field="VERIFY_STATUS",type=O2O_ProductStatus.class),
 		@Attribute(name="O2O商品上下架状态",field="STATUS",type=O2O_ProductStatus.class),
 		@Attribute(name="O2O下架时间",field="LOWER_DATE",type=Date.class),
