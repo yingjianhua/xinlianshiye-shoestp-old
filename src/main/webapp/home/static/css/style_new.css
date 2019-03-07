@@ -628,7 +628,78 @@ body {
   font-size: 13px;
   line-height: 1.7;
 }
-
+/* 公司简介 底部表单 start */
+.contact-supplier{
+  margin-bottom: 50px;
+}
+.contact-supplier .title{
+  height: 80px;
+  line-height: 80px;
+  padding-top: 5px;
+  font-size: 20px;
+  font-weight: bold;
+}
+.contact-supplier .supplier-form{
+  background-color: #ffffff;
+  padding:55px 200px;
+}
+.contact-supplier .supplier-form .el-form-item__label{
+  color: #232323;
+  text-align: left;
+  font-weight: bold;
+}
+.contact-supplier .supplier-form .name .el-form-item__label,.contact-supplier .supplier-form .request .el-form-item__label{
+  padding: 0 0 0 10px;
+}
+.contact-supplier .supplier-form .flexSt{
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+}
+.contact-supplier .supplier-form .company-name{
+ margin: 0 20px 0 10px;
+ font-size: 18px;
+}
+.contact-supplier .supplier-form .company-logo{
+   width: 48px;
+   height: 48px;
+}
+.contact-supplier .supplier-form .company-logo img{
+   width: 100%;
+   height: 100%;
+   object-fit:contain;
+}
+.contact-supplier .supplier-form .upImg .el-upload-list--picture-card .el-upload-list__item-thumbnail{
+  object-fit: contain;
+}
+.contact-supplier .supplier-form .upImg .el-upload-list--picture-card .el-upload-list__item{
+    width: 51px;
+    height: 51px;
+}
+.contact-supplier .supplier-form .el-checkbox+.el-checkbox{
+  margin-left:0;
+}
+.contact-supplier .supplier-form .upImg .el-upload--picture-card{
+  width: 51px;
+  height: 51px;
+  padding-top: 16.5px;
+}
+.contact-supplier .supplier-form .el-button--primary{
+  background-color: #10389c;
+  font-size: 18px;
+}
+.new-style-page .wide{
+  width: 1240px;
+  margin: 0 auto;
+  min-width: 1240px;
+}
+/* 公司简介 底部表单 end */
 .bg-gray {
   padding-bottom: 60px;
   background: #dee6ee;

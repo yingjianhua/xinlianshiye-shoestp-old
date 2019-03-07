@@ -347,7 +347,7 @@
                                 </div>
                             </a>
                             <a class="inquiry-a"
-                               :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" target="_blank" style="z-index: 999">
+                               :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId+'&backUrl='+window.location.href" target="_blank" style="z-index: 999">
                                 Inquiry
                             </a>
                         </div>
@@ -398,7 +398,7 @@
                                 </div>
                             </a>
                             <a class="inquiry-a"
-                               :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" target="_blank" style="z-index: 999">
+                               :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId+'&backUrl='+window.location.href" target="_blank" style="z-index: 999">
                                 Inquiry
                             </a>
                         </div>

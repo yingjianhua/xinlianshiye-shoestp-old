@@ -51,10 +51,10 @@
 
 </style>
 </head>
-<body >
+<body class="bg-gray  page-personal-center">
 <jsp:include page="v3/nav-nobody.jsp"
 ></jsp:include>
-<div id="shoesTp"  class=" w_1240 bg-gray  page-personal-center">
+<div id="shoesTp"  class=" w_1240 ">
 		<main class="main">
 			<div class="wide por clearfix flex-layout">
 				<!-- 左侧 My-Accoung 列表 -->
@@ -111,8 +111,10 @@
 										<ul class="pop-inquires-list">
 											<li class="inquires-item title">My Services</li>
 											<li class="inquires-item sub">
-												<i class="el-icon-plus prefix-icon"></i>
-												Submit RFQ
+												<a target="_blank" href="/home/usr_UsrConsult_publishView" style="color: #7f7f7f;">
+													<i class="el-icon-plus prefix-icon"></i>
+													Submit RFQ
+												</a>
 											</li>
 											<li class="inquires-item title">Inquiries</li>
 											<li class="inquires-item sub" @click="chooesInquiryType()">
@@ -177,12 +179,12 @@
 												:data-inquiry-index="inquiryIndex"
 												v-if="inquiry.relations && inquiry.relations.length==0">
 									      <img class="goods-pic" alt="goods's pic"
-													:src="image(inquiry.images[0]) + (inquiry.type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')">
+													:src="inquiry.images[0]?(image(inquiry.images[0]) + (inquiry.type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')):'/home/v3/static/images/no_img.png'">
 												<div class="goods-info">
 													<div class="goods-name">
 														<div class="ellipsis_1">{{inquiry.title}}</div>
 													</div>
-													<div class="status">{{inquiry.type}}</div>
+													<div class="status">{{inquiry.type | optionsStatus2Text}}</div>
 												</div>
 												<transition name="el-fade-in">
 													<div class="my-btn-normal btn-view"
@@ -198,14 +200,14 @@
 												@click="(inquiry.type==1 && isScale)?viewInquiryDetail($event):''"
 												:data-inquiry-index="inquiryIndex">
 									      <img class="goods-pic" alt="goods's pic"
-													:src="image(inquiry.images[0]) + (inquiry.type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')"
+													:src="inquiry.images[0]?(image(inquiry.images[0]) + (inquiry.type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')):'/home/v3/static/images/no_img.png'"
 													:data-inquiry-index="inquiryIndex">
 												<div class="goods-info"
 													:data-inquiry-index="inquiryIndex">
 													<div class="goods-name">
 														<div class="ellipsis_1">{{inquiry.title}}</div>
 													</div>
-													<div class="status">{{inquiry.type}}</div>
+													<div class="status">{{inquiry.type | optionsStatus2Text}}</div>
 												</div>
 												<transition name="el-fade-in">
 													<div class="my-btn-normal btn-view"
@@ -249,13 +251,15 @@
 														<div class="goods-name ellipsis_1">
 																{{relation.quotation.title}}
 														</div>
-														<img class="goods-pic" :src="image(relation.quotation.images[0])" alt="goods's pic">
-														<div class="goods-spec">
-															{{relation.quotation.minPrice}}-{{relation.quotation.maxPrice}} {{relation.quotation.currency.shortName}}
-														</div>
-														<div class="sample">
-															{{relation.quotation.sample?"Have sample":"No sample"}}
-														</div>
+														<template v-if="inquiry.type==1">
+															<img class="goods-pic" :src="image(relation.quotation.images[0].url)" alt="goods's pic">
+															<div class="goods-spec">
+																{{relation.quotation.minPrice}}-{{relation.quotation.maxPrice}} {{relation.quotation.currency.shortName}}
+															</div>
+															<div class="sample">
+																{{relation.quotation.sample?"Have sample":"No sample"}}
+															</div>
+														</template>
 
 														<div class="my-btn-normal btn-contact"
 															:data-inquiry-id="inquiry.pkey"
@@ -284,7 +288,7 @@
 															@click="addContact">Add Contact</li>
 													</ul>
 													<div slot="reference">
-														<img class="icon-more" src="./images/icon_more.png" alt="">
+														<img class="icon-more" src="/home/v3/static/images/user/icon_more.png" alt="">
 													</div>
 												</el-popover>
 											</div>
@@ -819,7 +823,7 @@
 						<div class="inquiry-overview">
 							<img class="inquiry-main-pic" alt=""
 								v-if="inquiryDetail.images"
-							  :src="image(inquiryDetail.images[0])">
+							  :src="inquiryDetail.images[0]?(image(inquiryDetail.images[0])):'/home/v3/static/images/no_img.png'">
 							<div class="content-box-wrap">
 								<div class="content-box1">
 									<div class="content-box">
@@ -900,7 +904,7 @@
 											<span class="title">Product image or file:</span>
 											<div class="text">
 												<img class="pic-item" alt="goods' pic"
-													:src="image(goodsPic)"
+													:src="image(goodsPic.url)"
 													v-for="goodsPic in quotationDetail.images">
 											</div>
 										</li>
@@ -1197,6 +1201,12 @@
 
 					// 聊天信息
 					chatMsgObj: {},  //聊天窗口信息
+
+                // inquiryLisPageStart: 0, //询盘列表 分页
+                // inquiryLisPageLimit: 10, //询盘列表 分页
+                // isInquiryLisLoading: false, //询盘列表 加载开关
+                // isInquiryLoadOver: false, //询盘列表 是否已加载完全
+
 					isAllRead: false,  //信息是否已读
 					sendMsgValue: "", //发送的内容
 
@@ -1259,6 +1269,8 @@
 
 				// 获取询盘列表
 				getInquiryList() {
+				    console.log("获取询盘列表")
+				    console.log("获取询盘列表")
 					// 正在加载 or 已加载完全
 					if(this.isInquiryLisLoading || this.isInquiryLoadOver) return;
 					this.isInquiryLisLoading = true;
@@ -1268,7 +1280,7 @@
 								t: this.inquiresType,
 								unread: this.isUnread,
 								start: this.inquiryLisPageStart,
-								limit: this.inquiryLisPageLimit
+								limit: this.inquiryLisPageLimit,
 							}
 						})
 						.then((res) => {
@@ -1296,6 +1308,7 @@
 
 				// 加载下一页询盘列表
 				loadMoreInquiryList(){
+				    console.log("load more")
 					this.inquiryLisPageStart += this.inquiryLisPageLimit;
 					this.getInquiryList();
 				},
@@ -1798,6 +1811,8 @@
 
 					axios.get('/home/rfq_RFQConsult_pageMsgs', {
 						params:{
+                            start: 0,
+                            limit: 5,
 							relationPkey: this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].quotation.pkey,
 						}
 					})
