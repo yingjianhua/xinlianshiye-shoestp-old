@@ -10,6 +10,7 @@
 
     <style>
         #shoesTp .user-menu {
+        font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
         width: 180px;
         height: 285px;
         flex: none;
@@ -22,6 +23,7 @@
         height: 44px;
         line-height: 44px;
         font-weight: bold;
+        font-size: 16px;
     }
 
     #shoesTp .user-menu .user-menu-item {
@@ -87,10 +89,8 @@
 					<%--</div>--%>
 				<%--</div>--%>
 				 <div class="user-menu fl">
-            <div class="user-menu-title">
-				<img src="/home/v3/static/images/user/icon_account.png" alt="" style="margin:0 8px 2px 0;">My Account
+				<div class="user-menu-title"><img src="/home/v3/static/images/user/icon_account.png" alt="" style="margin:0 8px 2px 0;">My Account
         </div>
-
         <div class="user-menu-item"><a href="/home/usr_UsrPurchase_userIndex">Home <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
         <div class="user-menu-item"><a href="/home/usr_UsrMessages_center" style="color:#10389c;">Message Center <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
         <div class="user-menu-item"><a href="/home/usr_UsrPurchase_contacts">Contacts <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
@@ -236,7 +236,7 @@
 													</div>
 												</el-badge>
 
-												<div class="contacter-info"
+										<div class="contacter-info" :class="{'show-long-name': inquiry.type!=1 && !isScale}"
 													:data-inquiry-id="inquiry.pkey"
 													:data-supplier-index="relationsIndex"
 													:data-inquiry-index="inquiryIndex"
@@ -250,11 +250,12 @@
 												<transition name="el-fade-in">
 													<div class="show-group"
 														v-show="!isScale">
+												<template v-if="inquiry.type==1">
 														<div class="goods-name ellipsis_1">
 																{{relation.quotation.title}}
 														</div>
-														<template v-if="inquiry.type==1">
-															<img class="goods-pic" :src="image(relation.quotation.images[0])" alt="goods's pic">
+													<img class="goods-pic"
+														 :src="relation.quotation.images[0]?(image(relation.quotation.images[0].url)):'/home/v3/static/images/no_img.png'" alt="goods's pic">
 															<div class="goods-spec">
 																{{relation.quotation.minPrice}}-{{relation.quotation.maxPrice}} {{relation.quotation.currency.shortName}}
 															</div>
@@ -323,7 +324,7 @@
 
 				<!-- 右侧聊天框 -->
 				<transition name="slide-right">
-					<div class="chat-wrap" v-show="isScale && showChatBox">
+				<div class="chat-wrap" v-show="isScale && showChatBox && inquiryList.length">
 						<div class="chat-header">
 							<div class="name" v-if="supplierDetail.company">
 								<!-- 有头像显示头像，没有头像显示首字母 -->
@@ -696,7 +697,7 @@
 													<li class="goods-pic-item"
 														v-for="product in inquiryDetail.productRequest"
 														:key="product.image">
-														 <img class="product-pic" :src="image(product.image.split(',')[0])" alt="">
+													<img class="product-pic" :src="product.image?(image(product.image.split(',')[0])):'/home/v3/static/images/no_img.png'" alt="">
 														 <div class="goods-name ellipsis_1">
 														 	{{product.name}}
 														 </div>
@@ -829,12 +830,12 @@
 
 				<!-- view信息 - 询盘详情 + 报价详情 -->
 				<transition name="slide-right">
-					<div class="inquiry-detail-wrap" v-show="isScale && showRFQDeailBox">
+				<div class="inquiry-detail-wrap" v-show="isScale && showRFQDeailBox && !showChatBox && inquiryList.length">
 						<!-- 第一个框 - 询盘详情 -->
 						<div class="inquiry-overview">
 							<img class="inquiry-main-pic" alt=""
 								v-if="inquiryDetail.images"
-							  :src="image(inquiryDetail.images[0])">
+							 :src="inquiryDetail.images[0]?(image(inquiryDetail.images[0])):'/home/v3/static/images/no_img.png'">
 							<div class="content-box-wrap">
 								<div class="content-box1">
 									<div class="content-box">
@@ -915,7 +916,7 @@
 											<span class="title">Product image or file:</span>
 											<div class="text">
 												<img class="pic-item" alt="goods' pic"
-													:src="image(goodsPic)"
+												 :src="image(goodsPic.url)"
 													v-for="goodsPic in quotationDetail.images">
 											</div>
 										</li>
@@ -996,6 +997,14 @@
 					</div>
 				</transition>
 				<!-- view信息 - 询盘详情 + 报价详情 - end -->
+
+            <!-- 没有搜索到信息时的 右侧占位图 -->
+            <transition name="slide-right">
+                <div class="no-data-wrap-in-right" v-show="inquiryList.length==0 && isScale && !isInquiryLisLoading">
+                    <img class="img-placoholder" src="/home/v3/static/images/user/no_data2.png" alt="">
+                </div>
+            </transition>
+            <!-- 没有搜索到信息时的 右侧占位图 -->
 			</div>
 		</main>
 
@@ -1213,10 +1222,12 @@
 					// 聊天信息
 					chatMsgObj: {},  //聊天窗口信息
 					chatMsgList: [], //聊天信息
+
 					chatMsgListPageStart: 0, //聊天信息列表 分页
 					chatMsgListPageLimit: 10, //聊天信息列表 分页
 					isChatMsgListLoading: false, //聊天信息列表 加载开关
 					isChatMsgListLoadOver: false, //聊天信息列表 是否已加载完全
+
 					isAllRead: false,  //信息是否已读
 					sendMsgValue: "", //发送的内容
 
@@ -1231,7 +1242,7 @@
 			methods: {
 				image(v, params) {
 					if (!v) {
-						return "/home/v3/static/images/no_img.png"
+					return ""
 					}
 					if (!params) {
 						params = ""
@@ -1278,7 +1289,15 @@
 				},
 
 				// 获取询盘列表
+            //参数 isShowFirstOne: 为了功能-搜索后显示第一个
 				getInquiryList() {
+			    // 在缩小状态 - 且是重新加载时（reset使inquiryLisPageStart=0），显示第一个
+                let isShowFirstOne = false;
+			    if(this.isScale && this.inquiryLisPageStart==0){
+                    isShowFirstOne = true;
+                }
+				console.log("获取询盘列表")
+
 					// 正在加载 or 已加载完全
 					if(this.isInquiryLisLoading || this.isInquiryLoadOver) return;
 					this.isInquiryLisLoading = true;
@@ -1304,13 +1323,42 @@
 							// 加载至最后一页
 							if (res.data.result.items.length < this.inquiryLisPageLimit) {
 								this.isInquiryLoadOver = true;
-							};
-							this.inquiryList.push(...res.data.result.items);
-
+				}else{
 							// 添加下拉加载事件
 							this.$nextTick(() => {
 								this.scrollLoadMore("#inquiry-collapse-list",this.loadMoreInquiryList)
               });
+                }
+				this.inquiryList.push(...res.data.result.items);
+
+				//为了功能-搜索后显示第一个
+				if(isShowFirstOne){
+				    // 没有数据时显示占位图
+				    if(!res.data.result.items || res.data.result.items.length==0){
+
+                    }
+				    // RFQ时显示询盘详情
+				    if(res.data.result.items[0].type==1){
+                        this.showChatBox = false;
+                        this.showRFQDeailBox = true;
+
+                        //获取询盘详情
+                        this.getInquiryDetail();
+                        //获取报价详情 - 第一个
+                        this.quotationDetailList=[];
+                        this.quotationDetailListIndex=0;
+                        this.getQuotationDetail();
+                    }else{
+                        this.showChatBox = true;
+                        this.showRFQDeailBox = false;
+                        //获取chat列表
+                        this.getChatInfo();
+                        //获取询盘详情
+                        this.getInquiryDetail();
+                        //获取功能供应商详情
+                        this.getSupplierDetail();
+                    }
+                }
 						})
 						.catch((error) => {
 							this.isInquiryLisLoading = false;
@@ -1320,14 +1368,15 @@
 
 				// 加载下一页询盘列表
 				loadMoreInquiryList(){
+				console.log("load more")
 					this.inquiryLisPageStart += this.inquiryLisPageLimit;
 					this.getInquiryList();
 				},
 
 				//reset 询盘信息
 				resetInquiryOptions(){
-					this.showChatBox = false;
-					this.showRFQDeailBox = false;
+				// this.showChatBox = false;
+				// this.showRFQDeailBox = false;
 					this.nowInquiryIndex = 0;
 					this.nowSupplierIndex = 0;
 					this.quotationDetailList = [];
@@ -1337,10 +1386,14 @@
 					this.inquiryList = [];
 					this.isInquiryLisLoading = false;
 					this.isInquiryLoadOver = false;
+                // 重置聊天信息
+                this.resetChatMsg();
 				},
 
 				// 搜索事件
 				searchInInquiryList(){
+				console.log("search")
+				console.log(this.isScale)
 					this.resetInquiryOptions();
 					this.getInquiryList();
 				},
@@ -1408,6 +1461,7 @@
 								return
 							};
 							this.inquiryDetail = res.data.result;
+				this.addInformationForm.validDate =  res.data.result.valieDate;
 
 							// 获取已add的商品id集合
 							if(res.data.result.productRequest && res.data.result.productRequest.length){
@@ -1533,7 +1587,6 @@
 									validDate: this.addInformationForm.validDate,
 								}))
 								.then((res) => {
-									console.log("确认修改 suc");
 									if (res.data.ret != 1) {
 										this.$message.error(res.data.msg);
 										return
@@ -1542,11 +1595,13 @@
 					          message: 'Add more information success',
 					          type: 'success'
 					        });
+						this.isEditAddInformationDialogShow = false;
 									// 重新获取询盘列表
 									this.resetInquiryOptions();
 									this.getInquiryList();
 								})
 								.catch((error) => {
+							this.isEditAddInformationDialogShow = false;
 									console.log(error);
 								});
 	          } else {
@@ -1674,6 +1729,10 @@
 					var supplierIndex = dataset.supplierIndex;
 					var inquiryIndex = dataset.inquiryIndex;
 					if(this.nowSupplierIndex==supplierIndex && this.nowInquiryIndex == inquiryIndex && Object.keys(this.supplierDetail).length != 0) return;
+
+				// 重置聊天信息
+				this.resetChatMsg();
+
 					this.nowSupplierIndex = supplierIndex;
 					this.nowInquiryIndex = inquiryIndex;
 
@@ -1812,27 +1871,38 @@
 				//获取询盘留言列表 - 对话框信息
 				getChatInfo(){
 					this.isAllRead = false;
-					if(this.chatMsgObj.msgs){
-						this.chatMsgObj.msgs.forEach((msg,index)=>{
+				if(this.chatMsgList){
+					this.chatMsgList.forEach((msg,index)=>{
 							if(msg.type==4){
 								clearInterval( msg.personalShow.timer );
 							}
 						})
 					}
 
+				this.isChatMsgListLoading = true;
+
 					axios.get('/home/rfq_RFQConsult_pageMsgs', {
 						params:{
+						start: this.chatMsgListPageStart,
+						limit: this.chatMsgListPageLimit,
 							relationPkey: this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].quotation.pkey,
 						}
 					})
 					.then((res) => {
+					this.isChatMsgListLoading = false;
 						console.log("获取询盘留言列表 - suc");
 						if (res.data.ret != 1) {
 							this.$message.error(res.data.msg);
 							return
 						};
-						let chatMsgObj = res.data.result;
-						chatMsgObj.msgs.forEach((msg,index)=>{
+
+				if (res.data.result.msgs.length < this.chatMsgListPageLimit) {
+					this.isChatMsgListLoadOver = true;
+				};
+
+				let chatMsgList = res.data.result.msgs;
+				// this.chatMsgList.push(...res.data.result.msgs);
+				chatMsgList.forEach((msg,index)=>{
 							let txtContent = JSON.parse(msg.content);
 							if(msg.type==2){
                                 console.log(2)
@@ -1870,17 +1940,14 @@
                             })
                         }
 						this.sendMsgValue = "";
-						// 下拉置底
-						this.$nextTick(()=>{
-							var scrollHeight = this.$refs.chatContent.scrollHeight;
-							this.$refs.chatContentScroll.wrap.scrollTop = scrollHeight;
-						})
+
 					})
 					.catch((error) => {
 					      this.isChatMsgListLoading = false;
 						console.log(error);
 					});
 				},
+
 				// 加载更多聊天信息
 				loadMoreChatInfo(){
                     if(this.isChatMsgListLoading || this.isChatMsgListLoadOver) return;
@@ -1889,13 +1956,14 @@
 				},
 
                 //reset 聊天信息
-                resetInquiryOptions(){
+			resetChatMsg(){
                     this.chatMsgListPageStart = 0;
                     this.chatMsgList = [];
                     this.chatMsgObj = {};
                     this.isChatMsgListLoading = false;
                     this.isChatMsgListLoadOver = false;
                 },
+
 				// 倒计时函数
 				countDown( maxtime, timeObj, fn )  {
 						maxtime = maxtime/1000;
