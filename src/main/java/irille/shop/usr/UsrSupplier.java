@@ -8,7 +8,7 @@ import org.json.JSONObject;
 import irille.Config.Attribute;
 import irille.Config.Variable;
 import irille.Entity.pm.PM.OTempType;
-import irille.core.sys.Sys.OYn;
+import irille.core.sys.Sys;
 import irille.core.sys.SysUser;
 import irille.pub.bean.BeanInt;
 import irille.pub.inf.IExtName;
@@ -20,8 +20,6 @@ import irille.pub.tb.Tb;
 import irille.pub.tb.Tb.Index;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltProvince;
-import irille.shop.usr.Usr.OIsAuth;
-import irille.shop.usr.Usr.OStatus;
 
 /**
  * 供应商
