@@ -148,7 +148,7 @@
                             </div>
 
                             <div class="inquiry-goods-info">
-                                <el-form-item label="Purchase Quantity：" required>
+                                <el-form-item style="white-space: nowrap;" label="Purchase Quantity：" required>
                                     <el-col :span="15">
                                         <el-form-item label-width="0" prop="quantity">
                                             <el-input v-model.number="form.quantity"></el-input>
@@ -488,7 +488,7 @@
                     this.$alert('Please login to operate', 'Please login to operate', {
                         confirmButtonText: 'Ok',
                         callback: action => {
-                            window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView"
+                            window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView"
                         }
                     });
                     return
@@ -588,7 +588,7 @@
                                                 pay_type: 1, //支付方式
                                             }
                                             window.location.href =
-                                                '/home/usr_UsrConsult_listView';
+                                                '/home/usr_UsrMessages_center';
                                         }, 2000)
                                         // 未登录时
                                     } else if (res.data.ret == -1) {

@@ -4,12 +4,14 @@ import com.google.inject.Inject;
 import com.xinlianshiye.shoestp.seller.service.rfq.RFQConsultMessageService;
 import irille.Entity.RFQ.Enums.RFQConsultMessageType;
 import irille.Entity.RFQ.RFQConsultMessage;
+import irille.pub.util.upload.ImageUpload;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.rfq.inf.IRFQConsultMessageAction;
 import irille.sellerAction.rfq.view.RFQConsultMessageView;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.File;
 import java.io.IOException;
 
 @Setter
@@ -50,5 +52,14 @@ public class RFQConsultMessageAction extends SellerAction<RFQConsultMessage> imp
 	public void list() throws IOException {
 		write(rFQConsultMessageService.page(getSupplier(), getStart(), getLimit(), consultId));
 	}
+	private String fileFileName = "";
+	private File file;
 
+	public void upload() throws IOException {
+		if(getSupplier() == null) {
+			writeTimeout();
+		} else {
+			write(ImageUpload.upload(beanClazz(), fileFileName, file));
+		}
+	}
 }

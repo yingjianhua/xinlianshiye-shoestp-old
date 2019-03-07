@@ -210,7 +210,7 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
         } else {
             write(pdtProductManage
                     .getProductList(getName(), getNumber(), getSupplier().getPkey(), getCat(), getStart(),
-                            getLimit(),getSearch()));
+                            getLimit(), getSearch()));
         }
     }
 
@@ -469,5 +469,10 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
         del.commit();
         json.put("success", true);
         writerOrExport(json);
+    }
+
+    @Override
+    public void getPrivates() throws IOException {
+        write(pdtProductManage.getPrivatePdts(getSupplier().getPkey(), getStart(), getLimit()));
     }
 }
