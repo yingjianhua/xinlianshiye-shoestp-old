@@ -38,7 +38,7 @@ public class PltFreightDao {
         sql.SELECT(PltFreight.T.ENABLED);
         sql.SELECT(PltFreight.T.TYPE);
         sql.FROM(PltFreight.class);
-        if (selectcompany != null && "" != selectcompany) {
+        if (selectcompany != null && !"".equals(selectcompany)) {
             sql.WHERE(PltFreight.T.COMPANY," like '%"+selectcompany+"%'");
         }
         Integer count = Query.sql(sql).queryCount();
