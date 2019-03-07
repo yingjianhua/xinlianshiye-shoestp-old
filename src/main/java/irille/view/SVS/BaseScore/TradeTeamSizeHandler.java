@@ -7,14 +7,13 @@ public class TradeTeamSizeHandler implements SVSHandler<Integer> {
 		if (null == v)
 			return 0;
 		Integer value = (Integer) v;
-		if (value < 10)
-			return 1;
-		else if (value >= 10 && value <= 15)
-			return 3;
-		else if (value > 15)
+		if (value > 15)
 			return 6;
+		else if (value >= 10)
+			return 3;
 		else
-			return 0;
+			return 1;
+
 	}
 
 }

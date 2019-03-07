@@ -2,6 +2,7 @@ package irille.view.SVS;
 
 import java.util.List;
 
+import irille.Entity.SVS.SVSInfo;
 import irille.view.BaseView;
 import irille.view.SVS.BaseScore.Calulate;
 import irille.view.SVS.BaseScore.Countable;
