@@ -340,6 +340,10 @@
       .page-personal-center .inquires-list-wrap .collapse-box .contact-list .contacter-info {
         width: 100px;
         padding-right: 0px; }
+.page-personal-center .inquires-list-wrap .collapse-box .contact-list .contacter-info.show-long-name {
+  width: 688px;
+  padding-right: 15px;
+  }
         .page-personal-center .inquires-list-wrap .collapse-box .contact-list .contacter-info .name {
           -webkit-box-flex: 1;
               -ms-flex-positive: 1;
