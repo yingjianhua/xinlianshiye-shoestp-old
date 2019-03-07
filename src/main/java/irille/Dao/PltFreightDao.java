@@ -1,5 +1,9 @@
 package irille.Dao;
 
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import irille.platform.plt.View.DeliveryAreaView;
 import irille.platform.plt.View.FreightManagementView;
 import irille.platform.plt.View.ShippingSettingView;
@@ -8,15 +12,12 @@ import irille.pub.PubInfs;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
-import irille.pub.idu.IduIns;
-import irille.pub.idu.IduInsLines;
 import irille.pub.svr.Env;
-import irille.shop.plt.*;
+import irille.shop.plt.Plt;
+import irille.shop.plt.PltFreight;
+import irille.shop.plt.PltFreightDAO;
+import irille.shop.plt.PltFreightLine;
 import irille.view.Page;
-
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 public class PltFreightDao {
@@ -38,7 +39,7 @@ public class PltFreightDao {
         sql.SELECT(PltFreight.T.ENABLED);
         sql.SELECT(PltFreight.T.TYPE);
         sql.FROM(PltFreight.class);
-        if (selectcompany != null && "" != selectcompany) {
+        if (selectcompany != null && !"".equals(selectcompany)) {
             sql.WHERE(PltFreight.T.COMPANY," like '%"+selectcompany+"%'");
         }
         Integer count = Query.sql(sql).queryCount();

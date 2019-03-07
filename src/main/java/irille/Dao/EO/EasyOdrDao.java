@@ -1,5 +1,22 @@
 package irille.Dao.EO;
 
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.json.JSONObject;
+
 import irille.pub.LogMessage;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
@@ -16,21 +33,10 @@ import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltProvince;
 import irille.shop.usr.UsrCart;
 import irille.shop.usr.UsrPurchase;
+import irille.view.Page;
 import irille.view.Easy.EasyodrView;
 import irille.view.Easy.EolineView;
-import irille.view.Page;
 import irille.view.odr.OrderSearchView;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.ss.usermodel.*;
-import org.json.JSONObject;
-
-import javax.inject.Inject;
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class EasyOdrDao {
     private static final LogMessage LOG = new LogMessage(EasyOdrDao.class);
@@ -177,11 +183,11 @@ public class EasyOdrDao {
      * @anthor wilson zhang
      */
     public Page sellerlist(Integer start, Integer limit, OrderSearchView osv, Integer supplierid) {
-        if (null != start) {
+        if (null == start) {
             start = 0;
         }
-        if (null != limit) {
-            start = 0;
+        if (null == limit) {
+            limit = 10;
         }
         SQL sql = new SQL() {{
             SELECT(T.PKEY, T.TIME, T.ORDER_NUM, T.ADDRESS, T.COUNYPD, T.NAME, T.PHONE, T.PURCHASE)

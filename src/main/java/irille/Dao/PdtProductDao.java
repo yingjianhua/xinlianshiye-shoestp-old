@@ -103,10 +103,8 @@ public class PdtProductDao {
         ;
         productRules(query);
         newProduct(query);
-        if (where != null) {
-            if (where != null && where.length() > 0) {
-                query.WHERE(PdtProduct.T.CATEGORY, "=?", where);
-            }
+        if (where != null && where.length() > 0) {
+            query.WHERE(PdtProduct.T.CATEGORY, "=?", where);
         }
         return query.queryMaps();
     }
@@ -835,11 +833,9 @@ public class PdtProductDao {
                 .FROM(PdtProduct.class)
                 .limit(start, limit)
         ;
-        if (where != null) {
-            if (where != null && where.length() > 0) {
-                query.WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", where);
-                query.ORDER_BY(PdtProduct.T.SOLD_TIME_B, "desc");
-            }
+        if (where != null && where.length() > 0) {
+            query.WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", where);
+            query.ORDER_BY(PdtProduct.T.SOLD_TIME_B, "desc");
         }
         return query.queryList();
     }
@@ -1107,9 +1103,9 @@ public class PdtProductDao {
             if (gender == 0) {
                 Integer pdtCatPkey = Integer.parseInt(map.get("pdtCatPkey").toString());
                 Integer pdtCatUp = Integer.parseInt(map.get("pdtCatUp") == null ? "0" : map.get("pdtCatUp").toString());
-                if (menList.contains(pdtCatUp) || menList.contains(pdtCatPkey) || pdtCatPkey == men)
+                if (menList.contains(pdtCatUp) || menList.contains(pdtCatPkey) || pdtCatPkey.equals(men))
                     gender = 1;
-                else if (womenList.contains(pdtCatUp) || womenList.contains(pdtCatPkey) || pdtCatPkey == women)
+                else if (womenList.contains(pdtCatUp) || womenList.contains(pdtCatPkey) || pdtCatPkey.equals(women))
                     gender = 2;
                 else
                     gender = 3;
