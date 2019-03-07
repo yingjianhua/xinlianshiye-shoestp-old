@@ -66,8 +66,6 @@
     <script src="/home/static/js/axios.min.js"></script>
     <script src="/home/static/js/element-ui.js"></script>
     <link rel="stylesheet" type="text/css" href="/home/static/css/element-ui.css"/>
-    <script src="https://js.fundebug.cn/fundebug.1.5.1.min.js"
-            apikey="afbc9f957e7689049c3282fe7696d30e7cb260e0ce11c148c0cf9e31d4e802f5"></script>
     <style type="text/css">
         #livechat-compact-container {
             transform: translateY(-50%) !important;
