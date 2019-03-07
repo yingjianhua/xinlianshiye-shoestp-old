@@ -1,70 +1,45 @@
 package com.xinlianshiye.shoestp.plat.dao.pm.imp;
 
-import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.xinlianshiye.shoestp.plat.dao.pm.IPMTemplateDao;
 
 import irille.Entity.pm.PMTemplate;
-import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
-import irille.pub.bean.sql.SQL;
-import irille.pub.svr.DbPool;
+import irille.pub.tb.IEnumFld;
+import irille.pub.util.BatchUtils;
 
 public class PMTemplateDaoImp implements IPMTemplateDao{
 	
+	private List<String> sqls = new ArrayList<>();
 	
 	@Override
 	public List<PMTemplate> list(){
-		SQL sql = new SQL();
-		sql.SELECT(PMTemplate.class).FROM(PMTemplate.class);
-		return Query.sql(sql).queryList(PMTemplate.class);
+		return Query.selectFrom(PMTemplate.class).queryList();
 	}
 
 	@Override
 	public void add(List<PMTemplate> addBeans) {
-		for(int i=0;i<addBeans.size();i++) {
-			PMTemplate bean = addBeans.get(i);
-			String sql = " INSERT INTO " + PMTemplate.TB.getCodeSqlTb() + " SET " + PMTemplate.T.RCVR_TYPE.getFld().getCodeSqlField() + " = " + bean.getRcvrType() + ","
-					+ PMTemplate.T.TYPE.getFld().getCodeSqlField() + " = " + bean.getType() + ","
-					+ PMTemplate.T.TITLE.getFld().getCodeSqlField() + " = '" + bean.getTitle() + "',"
-					+ PMTemplate.T.EMAIL_STATUS.getFld().getCodeSqlField() + " = " + bean.getEmailStatus() + ","
-					+ PMTemplate.T.PM_STATUS.getFld().getCodeSqlField() + " = " + bean.getEmailStatus() + ","
-					+ PMTemplate.T.ROW_VERSION.getFld().getCodeSqlField() + " = 0 ";
-			BeanBase.executeUpdate(sql);
-		}
-		
-		
-		try {
-			DbPool.getInstance().getConn().commit();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public void upd(List<PMTemplate> editBeans) {
-		for(int i=0;i<editBeans.size();i++) {
-			PMTemplate bean = editBeans.get(i);
-			String sql = " UPDATE " + PMTemplate.TB.getCodeSqlTb() + " SET " + PMTemplate.T.RCVR_TYPE.getFld().getCodeSqlField() + " = " + bean.getRcvrType() + ","
-					+ PMTemplate.T.TYPE.getFld().getCodeSqlField() + " = " + bean.getType() + ","
-					+ PMTemplate.T.EMAIL_STATUS.getFld().getCodeSqlField() + " = " + bean.getEmailStatus() + ","
-					+ PMTemplate.T.PM_STATUS.getFld().getCodeSqlField() + " = " + bean.getEmailStatus() + ","
-					+ PMTemplate.T.ROW_VERSION.getFld().getCodeSqlField() + " = " + (bean.getRowVersion()+1)
-					+ " WHERE " + PMTemplate.T.PKEY.getFld().getCodeSqlField() + " = " + bean.getPkey();
-			BeanBase.executeUpdate(sql);
-		}
-		
-		
-		try {
-			DbPool.getInstance().getConn().commit();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		List<IEnumFld> fields = Arrays.asList(PMTemplate.T.RCVR_TYPE,PMTemplate.T.TYPE,PMTemplate.T.TITLE,PMTemplate.T.EMAIL_STATUS,PMTemplate.T.PM_STATUS,PMTemplate.T.ROW_VERSION);
+		BatchUtils.batchIns(PMTemplate.class, fields, addBeans);
 	}
 	
+	@Override
+	public void del(List<PMTemplate> delBeans) {
+		List<IEnumFld> fields = Arrays.asList(PMTemplate.T.PKEY);
+		BatchUtils.batchDel(PMTemplate.class, fields, delBeans);
+	}
+
 	@Override
 	public PMTemplate load(Integer pkey) {
 		return Query.SELECT(PMTemplate.class, pkey);
 	}
+	
+	public void addSql(String sql) {
+		sqls.add(sql);
+	}
+
+	
 }
