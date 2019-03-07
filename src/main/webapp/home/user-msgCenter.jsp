@@ -10,6 +10,7 @@
 
 <style>
 	#shoesTp .user-menu {
+        font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
 		width: 180px;
 		height: 285px;
 		flex: none;
@@ -22,6 +23,7 @@
 		height: 44px;
 		line-height: 44px;
 		font-weight: bold;
+        font-size: 16px;
 	}
 
 	#shoesTp .user-menu .user-menu-item {
@@ -322,7 +324,7 @@
 
 			<!-- 右侧聊天框 -->
 			<transition name="slide-right">
-				<div class="chat-wrap" v-show="isScale && showChatBox">
+				<div class="chat-wrap" v-show="isScale && showChatBox && inquiryList.length">
 					<div class="chat-header">
 						<div class="name" v-if="supplierDetail.company">
 							<!-- 有头像显示头像，没有头像显示首字母 -->
@@ -743,8 +745,6 @@
 									 v-if="!isChatMsgListLoadOver"
 									 style="text-align: center;position: relative;top: -12px;">
 									<span style="color: #66b1ff;cursor: pointer;">Load more</span>
-									{{isChatMsgListLoading}}
-									{{isChatMsgListLoadOver}}
 								</div>
 								<div class="chater-info">
 									LOCATION：
@@ -828,7 +828,7 @@
 
 			<!-- view信息 - 询盘详情 + 报价详情 -->
 			<transition name="slide-right">
-				<div class="inquiry-detail-wrap" v-show="isScale && showRFQDeailBox && !showChatBox">
+				<div class="inquiry-detail-wrap" v-show="isScale && showRFQDeailBox && !showChatBox && inquiryList.length">
 					<!-- 第一个框 - 询盘详情 -->
 					<div class="inquiry-overview">
 						<img class="inquiry-main-pic" alt=""
@@ -995,6 +995,14 @@
 				</div>
 			</transition>
 			<!-- view信息 - 询盘详情 + 报价详情 - end -->
+
+            <!-- 没有搜索到信息时的 右侧占位图 -->
+            <transition name="slide-right">
+                <div class="no-data-wrap-in-right" v-show="inquiryList.length==0 && isScale && !isInquiryLisLoading">
+                    <img class="img-placoholder" src="/home/v3/static/images/user/no_data2.png" alt="">
+                </div>
+            </transition>
+            <!-- 没有搜索到信息时的 右侧占位图 -->
 		</div>
 	</main>
 
@@ -1279,7 +1287,13 @@
 			},
 
 			// 获取询盘列表
+            //参数 isShowFirstOne: 为了功能-搜索后显示第一个
 			getInquiryList() {
+			    // 在缩小状态 - 且是重新加载时（reset使inquiryLisPageStart=0），显示第一个
+                let isShowFirstOne = false;
+			    if(this.isScale && this.inquiryLisPageStart==0){
+                    isShowFirstOne = true;
+                }
 				console.log("获取询盘列表")
 
 				// 正在加载 or 已加载完全
@@ -1307,13 +1321,42 @@
 				// 加载至最后一页
 				if (res.data.result.items.length < this.inquiryLisPageLimit) {
 					this.isInquiryLoadOver = true;
-				};
+				}else{
+                    // 添加下拉加载事件
+                    this.$nextTick(() => {
+                        this.scrollLoadMore("#inquiry-collapse-list",this.loadMoreInquiryList)
+                    });
+                }
 				this.inquiryList.push(...res.data.result.items);
 
-				// 添加下拉加载事件
-				this.$nextTick(() => {
-					this.scrollLoadMore("#inquiry-collapse-list",this.loadMoreInquiryList)
-				});
+				//为了功能-搜索后显示第一个
+				if(isShowFirstOne){
+				    // 没有数据时显示占位图
+				    if(!res.data.result.items || res.data.result.items.length==0){
+
+                    }
+				    // RFQ时显示询盘详情
+				    if(res.data.result.items[0].type==1){
+                        this.showChatBox = false;
+                        this.showRFQDeailBox = true;
+
+                        //获取询盘详情
+                        this.getInquiryDetail();
+                        //获取报价详情 - 第一个
+                        this.quotationDetailList=[];
+                        this.quotationDetailListIndex=0;
+                        this.getQuotationDetail();
+                    }else{
+                        this.showChatBox = true;
+                        this.showRFQDeailBox = false;
+                        //获取chat列表
+                        this.getChatInfo();
+                        //获取询盘详情
+                        this.getInquiryDetail();
+                        //获取功能供应商详情
+                        this.getSupplierDetail();
+                    }
+                }
 			})
 			.catch((error) => {
 					this.isInquiryLisLoading = false;
@@ -1341,6 +1384,8 @@
 				this.inquiryList = [];
 				this.isInquiryLisLoading = false;
 				this.isInquiryLoadOver = false;
+                // 重置聊天信息
+                this.resetChatMsg();
 			},
 
 			// 搜索事件
