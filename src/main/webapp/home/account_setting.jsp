@@ -256,13 +256,13 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         let data = JSON.stringify(this.form1)
-                        console.log('submit!');
-                        console.log(data)
+                        // console.log('submit!');
+                        // console.log(data)
                         axios.post('/home/usr_Purchase_editAccount', data,
                             {headers: {'Content-Type': 'application/json'}}
                         )
                             .then((res) => {
-                                console.log(res)
+                                // console.log(res)
                                 // 提交成功时
                                 if (res.data.ret == 1) {
                                     // 提示信息
@@ -311,13 +311,13 @@
             submitForm2(formName) { // 第二部分表单提交    邮箱
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        console.log('submit!');
+                        // console.log('submit!');
                         axios.post('/home/usr_Purchase_changeEmail', Qs.stringify({
                             email: this.form2.email,
                             password: this.form2.password
                         }))
                             .then((res) => {
-                                console.log(res)
+                                // console.log(res)
                                 // 提交成功时
                                 if (res.data.ret == 1) {
                                     // 提示信息
@@ -364,19 +364,19 @@
             submitForm3(formName) { // 第三部分表单提交    密码
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        console.log(this.form3)
+                        // console.log(this.form3)
 
                         // if(this.form3.newPassword != this.form3.ckPwd){
                         //   this.$message.error('两次密码不相同');
                         //   return ;
                         // }
-                        console.log('submit!');
+                        // console.log('submit!');
                         axios.post('/home/usr_Purchase_changePassword', Qs.stringify({
                             password: this.form3.password,
                             newPassword: this.form3.newPassword
                         }))
                             .then((res) => {
-                                console.log(res)
+                                // console.log(res)
                                 // 提交成功时
                                 if (res.data.ret == 1) {
                                     // 提示信息
@@ -409,9 +409,9 @@
                                 console.log(err)
                             })
                     } else {
-                        console.log('error submit!!');
-                        console.log(this.form3.password.length)
-                        console.log(this.form3.ckPwd.length)
+                        // console.log('error submit!!');
+                        // console.log(this.form3.password.length)
+                        // console.log(this.form3.ckPwd.length)
                         // if (!this.form3.password) {
                         //   this.$message.error('密码不能为空');
                         // } else if (this.form3.password.length <= 8) {

@@ -106,7 +106,7 @@
                                             <p class="font-b fc666">Add to Grop</p>
                                             <dl>
                                                 <!-- {{groupItem.pkey}} -->
-                                                <dd v-if="groupItem.pkey"  @click="moveGroup(item.pkey,groupItem.pkey,groupItem.name,groupItem.count)" v-for="(groupItem,index) in groupList" :key="index">{{groupItem.name}}--{{groupItem.count}}</dd>
+                                                <dd v-if="groupItem.pkey"  @click="moveGroup(item.pkey,groupItem.pkey,groupItem.name,groupItem.count)" v-for="(groupItem,index) in groupList" :key="index">{{groupItem.name}}</dd>
                                             </dl>
                                         </li>
                                         <li @click="deleteContact(item.supplier.pkey)">
@@ -158,7 +158,7 @@
                 <div class="conti-more fr">
                     <div class="h1">Move to <i class="el-icon-arrow-up"></i></div>
                     <ul>
-                        <li v-if="item.pkey" v-for="(item,index) in groupList" :key="index" @click="moveGroup(contactPkey,item.pkey,item.name,item.count)">{{item.name}}---{{item.count}}</li>
+                        <li v-if="item.pkey" v-for="(item,index) in groupList" :key="index" @click="moveGroup(contactPkey,item.pkey,item.name,item.count)">{{item.name}}</li>
                     </ul>
                 </div>
             </div>
@@ -310,8 +310,8 @@
         },
         created(){
             document.addEventListener('click',(e)=>{
-                console.log("this.$refs.dl.contains(e.target)");
-            console.log(this.$refs.dl.contains(e.target));
+            //     console.log("this.$refs.dl.contains(e.target)");
+            // console.log(this.$refs.dl.contains(e.target));
             if(!this.$refs.dl.contains(e.target)){
                 this.isShowHoverSelect = false;
             }
@@ -343,7 +343,7 @@
                             }
                         )
                             .then((res) => {
-                            console.log(res);
+                            // console.log(res);
                         // this.popupindex = 0;
                         this.contactMoreSwitch = true;
                         this.contactList.push(...res.data.result.items);
@@ -358,7 +358,7 @@
                             this.popupindex = this.popupindex;
                             this.supplierPkey = this.contactList[this.popupindex].supplier.pkey
                             this.contactPkey = this.contactList[0].pkey
-                            console.log("this.supplierPkey ==== " + this.supplierPkey)
+                            // console.log("this.supplierPkey ==== " + this.supplierPkey)
                             this.getSupplierDetail(this.supplierPkey)
                         }
 
@@ -409,7 +409,7 @@
                     }
                 )
                     .then((res) => {
-                    console.log(res);
+                    // console.log(res);
                 // this.popupindex = 0;
                 this.contactMoreSwitch = true;
                 this.contactList=[];
@@ -424,7 +424,7 @@
                     this.popupindex = this.popupindex;
                     this.supplierPkey = this.contactList[0].supplier.pkey
                     this.contactPkey = this.contactList[0].pkey
-                    console.log("this.supplierPkey ==== " + this.supplierPkey)
+                    // console.log("this.supplierPkey ==== " + this.supplierPkey)
                     this.getSupplierDetail(this.supplierPkey)
                 }
                 // this.contactKeyWord = ''
@@ -451,7 +451,7 @@
                         supplierPkey,
                     }, ))
                         .then(function (res) {
-                            console.log(res);
+                            // console.log(res);
                             if (res.data.ret != 1) {
                                 self.$message.error(res.data.msg);
                                 return
@@ -474,7 +474,7 @@
                     '/home/rfq_RFQContact_listGroup'
                 )
                     .then((res) => {
-                    console.log(res);
+                    // console.log(res);
                 if (res.data.ret != 1) {
                     self.$message.error(res.data.msg);
                     return
@@ -508,9 +508,9 @@
                         self.$refs.editInputFocus.focus()
                     })
                 }
-                console.log(name)
-                console.log(pkey)
-                console.log(self.editNewPkey)
+                // console.log(name)
+                // console.log(pkey)
+                // console.log(self.editNewPkey)
             },
             editGroup() { // 编辑分组
                 var self = this;
@@ -520,7 +520,7 @@
                     groupName: self.editInput
                 }, ))
                     .then(function (res) {
-                        console.log(res);
+                        // console.log(res);
                         if (res.data.ret != 1) {
                             self.$message.error(res.data.msg);
                             return
@@ -548,7 +548,7 @@
                         groupPkey
                     }))
                         .then(function (res) {
-                            console.log(res);
+                            // console.log(res);
                             if (res.data.ret != 1) {
                                 self.$message.error(res.data.msg);
                                 return
@@ -570,17 +570,17 @@
                 });
             },
             moveGroup(contactPkey,groupPkey,name,count){ // 移动分组
-                console.log(contactPkey)
-                console.log(groupPkey)
-                console.log("name==============" + name)
-                console.log("count===========" + count)
+                // console.log(contactPkey)
+                // console.log(groupPkey)
+                // console.log("name==============" + name)
+                // console.log("count===========" + count)
                 var self = this;
                 axios.post('/home/rfq_RFQContact_moveToGroup', Qs.stringify({
                     contactPkey,
                     groupPkey
                 }))
                     .then(function (res) {
-                        console.log(res);
+                        // console.log(res);
                         if (res.data.ret != 1) {
                             self.$message.error(res.data.msg);
                             return
@@ -600,7 +600,7 @@
             },
             clickShowAddGruop(){  // 点击是否显示 添加分组框
                 var self = this;
-                console.log(self.isAddSearchGroup)
+                // console.log(self.isAddSearchGroup)
                 self.isAddSearchGroup  = !self.isAddSearchGroup
                 if(self.isAddSearchGroup){
                     self.$nextTick(function () {
@@ -640,7 +640,7 @@
                     }
                 )
                     .then((res) => {
-                    console.log(res);
+                    // console.log(res);
                 if (res.data.ret != 1) {
                     self.$message.error(res.data.msg);
                     return
@@ -653,8 +653,8 @@
             });
             },
             clickContact(index,pkey){ // 点击联系人
-                console.log(index)
-                console.log(pkey)
+                // console.log(index)
+                // console.log(pkey)
                 this.popupindex = index;
                 var self = this;
                 self.supplierPkey = pkey;
@@ -671,7 +671,7 @@
                 // this.isEditSearchGroup =  false
             },
             clickSelect(){  // 点击是否 显示  分组
-                console.log("显示分组")
+                // console.log("显示分组")
                 this.isShowHoverSelect = !this.isShowHoverSelect
                 if(!this.isShowHoverSelect){
                     this.isAddSearchGroup =  false

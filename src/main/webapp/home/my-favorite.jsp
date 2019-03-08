@@ -156,17 +156,17 @@
                     self.checkedCode = [];
                 }
                 if (self.isAllChecked) {
-                    console.log(self.checkedCode)
+                    // console.log(self.checkedCode)
                     self.favoriteList.forEach(function (item) {
                         self.checkedCode.push(item.id)
                     }, self)
                 } else {
                     self.checkedCode = [];
                 }
-                console.log(self.checkedCode)
+                // console.log(self.checkedCode)
             },
             remove(pkey) {  // 商品单个移除到回收站  和  回收站单个商品永久删除
-                console.log("点了删除" + pkey)
+                // console.log("点了删除" + pkey)
                 var self = this;
                 if (self.catPkey == -1) {
                     // 回收站里
@@ -213,7 +213,7 @@
                 var confimName;
                 var url;
                 if (self.checkedCode.length <= 0) {
-                    console.log("没有选择项")
+                    // console.log("没有选择项")
                     self.$message.error("Please select the item you want to delete");
                     return;
                 }
@@ -270,7 +270,7 @@
                         pkey,
                     }))
                         .then(function (res) {
-                            console.log(res);
+                            // console.log(res);
                             if (res.data.ret == -1) {
                                 window.location.href =
                                     '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
@@ -303,7 +303,7 @@
                     limit,
                 }))
                     .then(function (res) {
-                        console.log(res);
+                        // console.log(res);
                         if (res.data.ret == -1) {
                             window.location.href =
                                 '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';

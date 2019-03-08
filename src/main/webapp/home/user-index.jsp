@@ -52,6 +52,7 @@
                 <div class="flexCc">
                     <div class="avatar-box">
                         <div class="avatar">
+
                             <img @click="clickShowUploadAvatar"
                                  :src="userInfo.avatar?image(userInfo.avatar):'/home/v3/static/images/user/toux_me.png'"
                                  alt="">
@@ -273,7 +274,7 @@
                     }
                 })
                     .then(function (res) {
-                        console.log(res);
+                        // console.log(res);
                         if (res.data.ret == -1) {
                             window.location.href =
                                 '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
@@ -292,13 +293,13 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         let data = JSON.stringify(this.form)
-                        console.log(this.form)
-                        console.log('submit!');
+                        // console.log(this.form)
+                        // console.log('submit!');
                         axios.post('/home/rfq_RFQConsult_putRFQInquiry', data,
                             {headers: {'Content-Type': 'application/json'}}
                         )
                             .then((res) => {
-                                console.log(res)
+                                // console.log(res)
                                 // 提交成功时
                                 if (res.data.ret == 1) {
                                     // 提示信息
@@ -347,12 +348,12 @@
             },
             // 头像上传
             handleAvatarSuccess(res, file) {
-                console.log(res)
-                console.log(res.result.url)
-                console.log(file)
-                this.userInfo.avatar = res.result.url
-                console.log(this.userInfo.avatar)
-
+                // console.log(res)
+                // console.log(res.result.url)
+                // console.log(file)
+                // this.userInfo.avatar = res.result.url
+                // console.log(this.userInfo.avatar)
+                this.$set(this.userInfo,"avatar",res.result.url)
             },
             beforeAvatarUpload(file) {
                 const isJPG = file.type === 'image/jpeg';
@@ -371,7 +372,7 @@
                     avatar,
                 }))
                     .then(function (res) {
-                        console.log(res);
+                        // console.log(res);
                         if (res.data.ret != 1) {
                             self.$message.error(res.data.msg);
                             return

@@ -22,29 +22,28 @@ Vue.component('index-top', {
                     <div style="height: 20px;">
                         <p>{{countNoRead > 0 ? countNoRead : 0}}</p>
                     </div>
-                    <p>Messages</p>
+                    <p>Messages {{PMmoreSwitch}}</p>
                 </div>
               </dt>
               <dd>
                 <template v-if="PMMessageList.length >= 1">
                     <p class="message-title">You have {{countNoRead}} new messages</p>
-                    <ul>
+                    <ul class="msg-list">
                         <li v-for="(item,index) in PMMessageList" :key="index" @click="msgClick(item.pkey,index)">
                             <a href="javascript:void(0)">
-                                <i class="message-icon" :class="item.read?'message-icon-new':'message-icon-old'"></i>
+                                <i class="message-icon" :class="!item.read?'message-icon-new':'message-icon-old'"></i>
                                 <div>
-                                    <p :class="item.read?'ellipsis_2':''" :style="item.read?'color:#999999;':''">{{item.content}}</p>
+                                    <p :class="!item.read?'ellipsis_2':''" :style="!item.read?'color:#999999;':''">{{item.content}}</p>
                                     <div>
                                         <img src="/home/v3/static/images/o2otopmessagetime.png" alt="">
                                          <span>{{item.time | timeDistance}}</span> 
-                                         <!-- <span>{{item.time | formatMsgTime}}</span> -->
                                     </div>
                                 </div>
                             </a>
                         </li>
-                        <div class="more-btn" @click="moreClick">
+                         <div class="more-btn" @click="moreClick">
                             More
-                        </div>
+                        </div> 
                     </ul>
                 </template>
                 <template v-else>
@@ -174,6 +173,27 @@ Vue.component('index-top', {
         Vue.set(this.$data, 'input', unescape(decodeURIComponent(getParams('Keyword', getParams('keyWord', getParams('keyword', ''))))))
         this.getconfig();
         this.getPMmessage(this.msgStart,this.msgLimit);
+        // setTimeout(() => {
+        //     this.$nextTick(() => {
+        //         let el = document.querySelector('.msg-list');
+        //         let offsetHeight = el.offsetHeight;
+        //         el.onscroll = () => {
+        //             let scrollTop = el.scrollTop;
+        //             let scrollHeight = el.scrollHeight;
+        //             if ((offsetHeight + scrollTop) - scrollHeight >= -1) {
+        //                 console.log("到底了")
+        //                 // 滚动到底部需要执行的代码
+        //                 if(this.PMmoreSwitch){
+        //                     this.msgStart = this.msgStart  + this.msgLimit
+        //                     this.getPMmessage(this.msgStart,this.msgLimit);
+        //                 }else{
+        //                     this.$message('No more station letters');
+        //                 }
+
+        //             }
+        //         };
+        //     });
+        // }, 1000);
     },
     methods: {
         submit: function () {
@@ -200,25 +220,24 @@ Vue.component('index-top', {
         getPMmessage(start,limit){
             var self = this
             axios.get(
-                // 'http://192.168.1.48:889/mock/5c6a1556af4d250024d48c6d/home/home/pm_PMMessage_list', {
                 '/home/pm_PMMessage_list', {
                     params: {
                         start,
                         limit,
                     }
-                }
-            )
+                })
             .then(function (res) {
-                console.log("PMMMMMMMMMMMMMMMMMM" + res)
-                console.log(res)
+                // console.log("PMMMMMMMMMMMMMMMMMM" + res)
+                // console.log(res)
                 if (res.data.ret == 1) {
                     self.countNoRead = res.data.result.countNoRead;
                     self.PMMessageList.push(...res.data.result.items);
-                    // self.PMMessageList.push(...res.data.result);
+                    // console.log("res.data.result.items.length=======" + res.data.result.items.length)
                     if(res.data.result.items.length <= 0){
-                    // if(res.data.result.length <= 0){
-                       self.PMmoreSwitch == false; 
-                       self.$message('No more');
+                        // console.log(res)
+                        // console.log(self.PMmoreSwitch)
+                        self.PMmoreSwitch = false; 
+                    //    self.$message('No more station letters');
                        return;
                     }
                 }
@@ -233,13 +252,15 @@ Vue.component('index-top', {
                     message,
                 }))
                 .then(function (res) {
-                    console.log(res);
-                    if (res.data.ret != 1) {
+                    // console.log("点击消息=======" + res);
+                    // console.log(res);
+                    if (!res.data.success) {
                         self.$message.error(res.data.msg);
                         return
                     };
-                    self.$message.success("Have read");
-                    self.$set(self.PMMessageList[i],"read",false)
+                    // self.$message.success("Have read");
+                    self.getPMmessage(self.msgStart,self.msgLimit);
+                    self.$set(self.PMMessageList[i],"read",true)
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -247,61 +268,30 @@ Vue.component('index-top', {
         },
         moreClick(){    // 点击 加载更多消息
             var self = this;
+            // console.log("self.PMmoreSwitch ==== " + self.PMmoreSwitch)
             if(self.PMmoreSwitch){
                 self.msgStart = self.msgStart  + self.msgLimit
                 self.getPMmessage(self.msgStart,self.msgLimit);
             }else{
-                self.$message('No more');
+                self.$message('No more station letters');
             }
         },
         
          
     },
     filters: {
-        // formatMsgTime (dateTimeStamp) {
-        //     var minute =  60;
-        //     var hour = minute * 60;
-        //     var day = hour * 24;
-        //     var halfamonth = day * 15;
-        //     var month = day * 30;
-        //     var now = new Date().getTime();
-        //     var diffValue = (now - dateTimeStamp) / 1000;
-        //     if(diffValue < 0){return;}
-        //     var monthC =diffValue/month;
-        //     var weekC =diffValue/(7*day);
-        //     var dayC =diffValue/day;
-        //     var hourC =diffValue/hour;
-        //     var minC =diffValue/minute;
-        //     if(monthC>=1){
-        //         result="" + parseInt(monthC) + "months";
-        //     }
-        //     else if(weekC>=1){
-        //         result="" + parseInt(weekC) + "weeks";
-        //     }
-        //     else if(dayC>=1){
-        //         result=""+ parseInt(dayC) +"days";
-        //     }
-        //     else if(hourC>=1){
-        //         result=""+ parseInt(hourC) +"hours";
-        //     }
-        //     else if(minC>=1){
-        //         result=""+ parseInt(minC) +"minutes";
-        //     }else
-        //     result="just";
-        //     return result;
-        //     },
             timeDistance(value){
                 let nowt = Math.round(new Date() / 1000)
                 let times = (nowt - value / 1000);
                 if(times>31536000){
-                    return `${parseInt(times/31536000)}years`
+                    return `${parseInt(times/31536000)} years ago`
                 }else if(times>=86400&times<31536000){
-                    return `${parseInt(times/86400)}days`;
+                    return `${parseInt(times/86400)} days ago`;
                 }else if(times>=3600&times<86400){
-                    return `${parseInt(times/3600)}hours`;
+                    return `${parseInt(times/3600)} hours ago`;
                 }else if(times>60&times<3600){
-                    return `${parseInt(times/60)}minutes`;
-                }else if(times<60){return 'just'}
+                    return `${parseInt(times/60)} minutes ago`;
+                }else if(times<60){return 'Just now'}
     
             },
     }
