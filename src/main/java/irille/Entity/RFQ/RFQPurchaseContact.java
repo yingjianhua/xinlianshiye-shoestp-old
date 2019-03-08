@@ -21,7 +21,7 @@ public class RFQPurchaseContact extends BeanInt<RFQPurchaseContact> {
         PKEY(Tb.crtIntPkey()),
         PURCHASE(UsrPurchase.fldOutKey()),//采购商
         SUPPLIER(UsrSupplier.fldOutKey()),//供应商
-        CONTACT_GROUP(RFQPurchaseContactGroup.fldOutKey()),//联系人分组
+        CONTACT_GROUP(RFQPurchaseContactGroup.fldOutKey().setNull(true)),//联系人分组
         CREATED_TIME(Sys.T.CREATED_DATE),//建立时间
         ROW_VERSION(Sys.T.ROW_VERSION),
         // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
