@@ -41,7 +41,7 @@ public class UsrSupplierServiceImpl implements UsrSupplierService {
 		view.setMemberSince(supplier.getApprTime());
 		view.setDepartment(supplier.getDepartment(lang));
 		view.setJobTitle(supplier.getJobTitle(lang));
-		view.setCompany(supplier.getName());
+		view.setCompany(supplier.getShowName());
 		view.setContractManufacturing("");
 		view.setOverseasOffice("");
 		view.setCompanyCertification("");
