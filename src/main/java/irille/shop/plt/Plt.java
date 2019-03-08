@@ -20,6 +20,7 @@ import irille.Entity.RFQ.RFQPurchaseContactGroup;
 import irille.Entity.pm.PMMessage;
 import irille.Entity.pm.PMRead;
 import irille.Entity.pm.PMTemplate;
+import irille.Entity.SVS.SVSInfo;
 import irille.core.prv.PrvRoleAct;
 import irille.core.sys.SysModule;
 import irille.pub.Log;
@@ -83,6 +84,8 @@ public class Plt extends PackageBase {
         addTb(69, PMMessage.class);
         addTb(70, PMRead.class);
         addTb(71, PMTemplate.class);
+        addTb(72, SVSInfo.class);
+        
     }
 
     @Override
