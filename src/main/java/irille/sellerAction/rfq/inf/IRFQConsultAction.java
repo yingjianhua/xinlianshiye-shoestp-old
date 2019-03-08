@@ -1,11 +1,11 @@
 package irille.sellerAction.rfq.inf;
 
+import java.io.IOException;
+
 import irille.Filter.svr.Controller;
 import irille.Filter.svr.RequestMapping;
 import irille.sellerAction.IEnableable;
 import irille.sellerAction.ISellerAction;
-
-import java.io.IOException;
 
 @Controller(module = "询盘", name = "RFQ询盘")
 public interface IRFQConsultAction extends ISellerAction, IEnableable {
@@ -88,5 +88,11 @@ public interface IRFQConsultAction extends ISellerAction, IEnableable {
      */
     @RequestMapping(alias = "统计询价单", sort = 13)
 	void count() throws IOException;
+    
+    /**
+     * 获取询价单信息
+     */
+    @RequestMapping(alias = "询价单信息", sort = 14)
+    void message() throws IOException;
 
 }

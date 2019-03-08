@@ -24,14 +24,15 @@ public class RFQConsultMessageServiceTest extends BaseTest {
 		purchase.setPkey(1261);
 		purchase.setName("建化");
 		Integer relationPkey = 1;
+		Integer nextMessagePkey = 100;
 		Integer start = 0;
 		Integer limit = 10;
 		
-		RFQConsultMessagesView page = service.page(purchase, relationPkey, start, limit);
+		RFQConsultMessagesView page = service.page(purchase, relationPkey, nextMessagePkey, start, limit);
 		System.out.println(om.writeValueAsString(page));
 	}
 	
-	@Test
+//	@Test
 	public void testSend() throws JsonProcessingException {
 		UsrPurchase purchase = new UsrPurchase();
 		purchase.setPkey(1261);

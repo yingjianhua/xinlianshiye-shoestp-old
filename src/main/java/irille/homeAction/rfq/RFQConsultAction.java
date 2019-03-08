@@ -191,11 +191,12 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
     }
 
     private Integer relationPkey;
+    private Integer nextMessagePkey;//询盘聊天消息主键, 从该消息开始查询 而不是从头开始查询
 
     @Override
     @NeedLogin
     public void pageMsgs() throws IOException {
-        write(rFQConsultMessageService.page(getPurchase(), relationPkey, start, limit));
+        write(rFQConsultMessageService.page(getPurchase(), relationPkey, nextMessagePkey, start, limit));
     }
 
     private String content;

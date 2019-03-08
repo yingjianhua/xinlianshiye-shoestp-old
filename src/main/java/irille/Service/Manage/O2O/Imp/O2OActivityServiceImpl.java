@@ -19,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.inject.Inject;
+import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
 
 import irille.Dao.PdtCatDao;
 import irille.Dao.O2O.O2OActivityDao;
@@ -30,6 +31,7 @@ import irille.Entity.O2O.O2O_Product;
 import irille.Entity.O2O.Enums.O2O_ActivityStatus;
 import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
+import irille.Entity.pm.PM.OTempType;
 import irille.Service.Manage.O2O.O2OActivityService;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
@@ -56,6 +58,9 @@ public class O2OActivityServiceImpl implements O2OActivityService {
     private O2OProductDao o2OProductDao;
     @Inject
     private PdtCatDao pdtCatDao;
+    
+    @Inject
+    private IPMMessageService messageService;
 
     @Override
     public Page<O2OActivityView> list(Integer start, Integer limit, O2OActivityView condition) {
@@ -325,6 +330,8 @@ public class O2OActivityServiceImpl implements O2OActivityService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        UsrSupplier supplier =  o2OProduct.gtJoinInfoId().gtSupplier();
+        messageService.send(OTempType.O2O_PROD_APPR_NOTICE, supplier, null, supplier,o2OProduct,o2OProduct.gtProductId());
     }
 
     /**

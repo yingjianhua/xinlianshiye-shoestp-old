@@ -29,7 +29,7 @@
         <div class="user-menu-item"><a href="/home/usr_UsrMessages_center">Message Center <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
         <div class="user-menu-item"><a href="/home/usr_UsrPurchase_contacts">Contacts <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
         <div class="user-menu-item"><a href="/home/usr_UsrFavorites_myfavorite">My Favourites <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
-        <div class="user-menu-item"><a href="/home/usr_UsrPurchase_usrSetting">Account Settings <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+        <div class="user-menu-item"><a style="color:#10389c;" href="/home/usr_UsrPurchase_usrSetting">Account Settings <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
     </div>
     <div class="setting-main fr">
         <div class="account-setting-box">
@@ -39,26 +39,26 @@
                     <el-col :span="12" :offset="6">
                         <el-form status-icon :model="form1" :rules="rules" ref="form1" label-width="170px" class="">
                             <el-form-item label="Gender" prop="gender">
-                                <el-select v-model="form1.gender" placeholder="请选择性别">
-                                    <el-option label="保密" value="0"></el-option>
-                                    <el-option label="男士" value="1"></el-option>
-                                    <el-option label="女士" value="2"></el-option>
+                                <el-select v-model="form1.gender" placeholder="Please select gender">
+                                    <el-option label="confidentiality" value="0"></el-option>
+                                    <el-option label="men" value="1"></el-option>
+                                    <el-option label="women" value="2"></el-option>
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="First Name:" prop="firstName">
-                                <el-input v-model.trim="form1.firstName" placeholder="请输入名字"/>
+                                <el-input v-model.trim="form1.firstName" placeholder="Please enter a firstName"/>
                             </el-form-item>
                             <el-form-item label="Surname:" prop="surname">
-                                <el-input v-model.trim="form1.surname" placeholder="请输入姓氏"/>
+                                <el-input v-model.trim="form1.surname" placeholder="Please enter a surname"/>
                             </el-form-item>
                             <el-form-item label="Phone:" prop="phone">
-                                <el-input v-model.trim="form1.phone" placeholder="请输入手机"/>
+                                <el-input v-model.trim="form1.phone" placeholder="Please enter your phone"/>
                             </el-form-item>
                             <el-form-item label="Company:" prop="company">
-                                <el-input v-model.trim="form1.company" placeholder="请输入公司名字"/>
+                                <el-input v-model.trim="form1.company" placeholder="Please enter the company name"/>
                             </el-form-item>
                             <el-form-item label="Address:" prop="address">
-                                <el-input v-model.trim="form1.address" placeholder="请输入地址"/>
+                                <el-input v-model.trim="form1.address" placeholder="Please enter the address"/>
                             </el-form-item>
                             <el-form-item>
                                 <el-button type="primary" @click="submitForm1('form1')">Save</el-button>
@@ -70,15 +70,15 @@
             <div class="section2">
                 <el-row>
                     <el-col :span="4">
-                        <div style="line-height:40px;">Change Email Address</div>
+                        <div style="line-height:40px;">Changge Email Address</div>
                     </el-col>
                     <el-col :span="12" :offset="2">
                         <el-form status-icon :model="form2" :rules="rules" ref="form2" label-width="170px" class="">
                             <el-form-item label="Existing Password:" prop="password">
-                                <el-input type="password" v-model.trim="form2.password" placeholder="请输入密码"/>
+                                <el-input type="password" v-model.trim="form2.password" placeholder="Please enter your password"/>
                             </el-form-item>
                             <el-form-item label="New Email Address:" prop="email">
-                                <el-input type="email" v-model.trim="form2.email" placeholder="请输入新的邮箱地址"/>
+                                <el-input type="email" v-model.trim="form2.email" placeholder="Please input the email address"/>
                             </el-form-item>
                             <el-form-item>
                                 <el-button type="primary" @click="submitForm2('form2')">Save</el-button>
@@ -90,18 +90,18 @@
             <div class="section3">
                 <el-row>
                     <el-col :span="4">
-                        <div style="line-height:40px;">Change Password</div>
+                        <div style="line-height:40px;">Changge Password</div>
                     </el-col>
                     <el-col :span="12" :offset="2">
                         <el-form status-icon :model="form3" :rules="rules" ref="form3" label-width="170px" class="">
                             <el-form-item label="Existing Password:" prop="password">
-                                <el-input type="password" v-model.trim="form3.password" placeholder="请输入现有密码"/>
+                                <el-input type="password" v-model.trim="form3.password" placeholder="Please enter your password"/>
                             </el-form-item>
                             <el-form-item label="New Password:" prop="newPassword">
-                                <el-input type="password" v-model.trim="form3.newPassword" placeholder="请输入新的密码"/>
+                                <el-input type="password" v-model.trim="form3.newPassword" placeholder="Please enter a new password"/>
                             </el-form-item>
                             <el-form-item label="Confirm Password:" prop="ckPwd">
-                                <el-input type="password" v-model.trim="form3.ckPwd" placeholder="请输入确认密码"/>
+                                <el-input type="password" v-model.trim="form3.ckPwd" placeholder="Please enter the confirmation password"/>
                             </el-form-item>
                             <el-form-item>
                                 <el-button type="primary" @click="submitForm3('form3')">Save</el-button>
@@ -129,12 +129,12 @@
         data() {
             var validateEmail = (rule, value, callback) => {
                 if (!value) {
-                    callback(new Error('请输入邮箱地址'));
+                    callback(new Error('Please input the email address'));
                     return
                 }
                 setTimeout(() => {
                     if (!(/[\w]+(\.[\w]+)*@[\w]+(\.[\w])+/.test(this.form2.email))) {
-                        callback(new Error('请输入正确的邮箱格式'))
+                        callback(new Error('Please enter the correct mailbox format'))
                     } else {
                         callback()
                     }
@@ -142,9 +142,9 @@
             };
             var validatePass = (rule, value, callback) => {
                 if (value === '') {
-                    callback(new Error('请输入密码'));
+                    callback(new Error('Please enter your password'));
                 } else if (value.length < 8) {
-                    callback(new Error('密码最少8位数!'));
+                    callback(new Error('Password at least 8 digits!'));
                 } else {
                     if (this.form3.ckPwd !== '') {
                         this.$refs.form3.validateField('ckPwd');
@@ -154,11 +154,11 @@
             };
             var validatePass2 = (rule, value, callback) => {
                 if (value === '') {
-                    callback(new Error('请再次输入密码'));
+                    callback(new Error('Please enter your password again'));
                 } else if (value !== this.form3.newPassword) {
-                    callback(new Error('两次输入密码不一致!'));
+                    callback(new Error('Inconsistent input password twice!'));
                 } else if (value.length < 8) {
-                    callback(new Error('密码最少8位数!'));
+                    callback(new Error('Password at least 8 digits!'));
                 }
                 else {
                     callback();
@@ -187,35 +187,35 @@
                 rules: { //表单验证
                     firstName: [{
                         required: true,
-                        message: '请输入名字',
+                        message: 'Please enter a firstName',
                         trigger: 'blur'
                     }],
                     surname: [{
                         required: true,
-                        message: '请输入姓氏',
+                        message: 'Please enter a surname',
                         trigger: 'blur'
                     }],
                     phone: [{
                         required: true,
-                        message: '请输入手机',
+                        message: 'Please enter your phone',
                         trigger: 'blur'
                     }],
                     address: [{
-                        message: '请输入地址',
+                        message: 'Please enter the address',
                         trigger: 'blur'
                     }],
                     company: [{
                         required: true,
-                        message: '请输入公司名字',
+                        message: 'Please enter the company name',
                         trigger: 'blur'
                     }],
                     gender: [{
-                        message: '请选择性别',
+                        message: 'Please select gender',
                         trigger: 'change'
                     }],
                     password: [{
                         required: true,
-                        message: '请输入密码',
+                        message: 'Please enter your password',
                         trigger: 'blur'
                     }],
                     email: [{validator: validateEmail, trigger: 'blur', required: true,}],
@@ -268,7 +268,7 @@
                                     // 提示信息
                                     this.$message({
                                         showClose: true,
-                                        message: '提交成功',
+                                        message: 'Submitted successfully',
                                         type: 'success'
                                     });
                                     // setTimeout(function () {
@@ -282,7 +282,7 @@
                                     // 未登录时
                                 } else if (res.data.ret == -1) {
                                     window.location.href =
-                                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
+                                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_usrSetting';
                                     // 提交失败时
                                 } else {
                                     this.$alert(res.data.msg, {
@@ -323,7 +323,7 @@
                                     // 提示信息
                                     this.$message({
                                         showClose: true,
-                                        message: '提交成功',
+                                        message: 'Submitted successfully',
                                         type: 'success'
                                     });
                                     // setTimeout(function () {
@@ -337,7 +337,7 @@
                                     // 未登录时
                                 } else if (res.data.ret == -1) {
                                     window.location.href =
-                                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
+                                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_usrSetting';
                                     // 提交失败时
                                 } else {
                                     this.$alert(res.data.msg, {
@@ -382,7 +382,7 @@
                                     // 提示信息
                                     this.$message({
                                         showClose: true,
-                                        message: '提交成功',
+                                        message: 'Submitted successfully',
                                         type: 'success'
                                     });
                                     // setTimeout(function () {
@@ -396,7 +396,7 @@
                                     // 未登录时
                                 } else if (res.data.ret == -1) {
                                     window.location.href =
-                                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
+                                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_usrSetting';
                                     // 提交失败时
                                 } else {
                                     this.$alert(res.data.msg, {

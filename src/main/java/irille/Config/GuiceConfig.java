@@ -1,5 +1,9 @@
 package irille.Config;
 
+import javax.inject.Singleton;
+
+import org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -10,11 +14,9 @@ import com.google.inject.matcher.Matchers;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
+
 import irille.Aops.CacheAopsInterceptor;
 import irille.Aops.Caches;
-import org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter;
-
-import javax.inject.Singleton;
 
 /**
  * Created by IntelliJ IDEA.
