@@ -505,7 +505,7 @@ public class PdtProductDao {
         return result;
     }
 
-    public Page getProductListManage(String name, String number, Integer supplierId, int cat, int start, int limit, Integer search) {
+    public Page getProductListManage(Integer pkey,String name, String number, Integer supplierId, int cat, int start, int limit, Integer search) {
     	SQL sql1 = new SQL();
     			sql1
                 .SELECT(PdtProduct.T.PKEY, PdtProduct.T.NAME, PdtProduct.T.CODE, PdtProduct.T.CUR_PRICE, PdtProduct.T.PICTURE, PdtProduct.T.PRODUCT_TYPE, PdtProduct.T.UPDATE_TIME, PdtProduct.T.IS_VERIFY)
@@ -518,17 +518,45 @@ public class PdtProductDao {
                 .LEFT_JOIN(O2O_PrivateExpoPdt.class, O2O_PrivateExpoPdt.T.PDT_ID, PdtProduct.T.PKEY)
 //                .LEFT_JOIN(O2O_Product.class, O2O_Product.T.PRODUCT_ID, PdtProduct.T.PKEY)
                 .LEFT_JOIN("(select * from o2_o__product ORDER BY updated_time DESC limit 1) O2O_Product  ON O2O_Product.product_id = PdtProduct.pkey ")
-                .WHERE(name != null && name.length() > 0, PdtProduct.T.NAME, "like ?", "%" + name + "%")
-                .WHERE(number != null && number.length() > 0, PdtProduct.T.CODE, "like ?", "%" + number + "%")
+               // .WHERE(name != null && name.length() > 0, PdtProduct.T.NAME, "like ?", "%" + name + "%")
+               // .WHERE(number != null && number.length() > 0, PdtProduct.T.CODE, "like ?", "%" + number + "%")
                 .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierId)
                 .WHERE(PdtProduct.T.PRODUCT_TYPE, " <> ?", Pdt.OProductType.GROUP.getLine().getKey())
                 .WHERE(PdtProduct.T.PRODUCT_TYPE, " <> ?", Pdt.OProductType.GATHER.getLine().getKey())
                 .WHERE(PdtProduct.T.STATE, "<>?", Pdt.OState.DELETE.getLine().getKey())
                 .WHERE(PdtProduct.T.STATE, "<>?", Pdt.OState.MERCHANTDEL.getLine().getKey())
-                .WHERE(PdtProduct.T.STATE, "<>?", Pdt.OState.OFF.getLine().getKey())
-                .ORDER_BY(PdtProduct.T.UPDATE_TIME, "desc");
+                .WHERE(PdtProduct.T.STATE, "<>?", Pdt.OState.OFF.getLine().getKey());
+               // .WHERE(pkey != null && pkey > 0, PdtProduct.T.PKEY," =? ",pkey);
+              //  .ORDER_BY(PdtProduct.T.UPDATE_TIME, "desc");
+    			boolean b = false;
+    			if(name != null && name.length() > 0) {
+    				sql1.AND();
+    				b = true;
+    				sql1.WHERE(PdtProduct.T.NAME, "like ?", "%" + name + "%");
+    			}
+    			if(number != null && number.length() > 0) {
+    				if(b) {
+    					sql1.orWhere(PdtProduct.T.CODE, "like ?", "%" + number + "%");
+    				}else {
+    					sql1.AND();
+        				b = true;
+    					sql1.WHERE(PdtProduct.T.CODE, "like ?", "%" + number + "%");
+    				}
+    			}
+    			if(pkey != null && pkey > 0) {
+    				if(b) {
+    					sql1.orWhere(PdtProduct.T.PKEY," =? ",pkey);
+    				}else {
+    					sql1.WHERE(PdtProduct.T.PKEY," =? ",pkey);
+    				}
+    				
+    			}
+    			sql1.ORDER_BY(PdtProduct.T.UPDATE_TIME, "desc");
         if (search != null) {
             switch (search) {
+            	case 0:
+	            	sql1.WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.GENERAL.getLine().getKey());
+	                break;
                 case 2:
                 	sql1.WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.PrivateExpo.getLine().getKey());
                     break;

@@ -1,5 +1,10 @@
 package irille.shop.pdt;
 
+import java.util.Date;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import irille.core.sys.Sys.OYn;
 import irille.core.sys.SysUser;
 import irille.pub.bean.BeanInt;
@@ -9,10 +14,7 @@ import irille.pub.tb.Fld;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Date;
+import irille.shop.usr.UsrSupplier;
 
 /**
  * 产品属性
@@ -28,8 +30,9 @@ public class PdtAttr extends BeanInt<PdtAttr> {
         CATEGORY(PdtAttrCat.fldOutKey("category", "分类")),
         //TYPING_TYPE(Tb.crt(OTypingType.DEFAULT)), //录入方式  手工录入，列表选择
         DELETED(SYS.NY,"是否删除"),
-        CREATE_BY(SYS.CREATED_BY),
+        CREATE_BY(SysUser.fldOutKey().setNull()),
         CREATE_TIME(SYS.CREATED_DATE_TIME),
+        SUPPLIER(UsrSupplier.fldOutKey().setNull()), //供应商
         ROW_VERSION(SYS.ROW_VERSION),
         //>>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
         //<<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
@@ -87,6 +90,7 @@ public class PdtAttr extends BeanInt<PdtAttr> {
 	// NO:0,否
   private Integer _createBy;	// 建档员 <表主键:SysUser>  INT
   private Date _createTime;	// 建档时间  TIME
+  private Integer _supplier;	// 供应商 <表主键:UsrSupplier>  INT<null>
   private Short _rowVersion;	// 版本  SHORT
 
 	@Override
@@ -97,6 +101,7 @@ public class PdtAttr extends BeanInt<PdtAttr> {
     _deleted=OYn.DEFAULT.getLine().getKey();	// 是否删除 <OYn>  BYTE
     _createBy=Idu.getUser().getPkey();	// 建档员 <表主键:SysUser>  INT
     _createTime=Env.getTranBeginTime();	// 建档时间  TIME
+    _supplier=null;	// 供应商 <表主键:UsrSupplier>  INT
     _rowVersion=0;	// 版本  SHORT
     return this;
   }
@@ -177,6 +182,23 @@ public class PdtAttr extends BeanInt<PdtAttr> {
   }
   public void setCreateTime(Date createTime){
     _createTime=createTime;
+  }
+  public Integer getSupplier(){
+    return _supplier;
+  }
+  public void setSupplier(Integer supplier){
+    _supplier=supplier;
+  }
+  public UsrSupplier gtSupplier(){
+    if(getSupplier()==null)
+      return null;
+    return (UsrSupplier)get(UsrSupplier.class,getSupplier());
+  }
+  public void stSupplier(UsrSupplier supplier){
+    if(supplier==null)
+      setSupplier(null);
+    else
+      setSupplier(supplier.getPkey());
   }
   public Short getRowVersion(){
     return _rowVersion;

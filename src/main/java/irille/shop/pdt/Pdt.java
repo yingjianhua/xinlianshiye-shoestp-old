@@ -143,5 +143,34 @@ public class Pdt extends PackageBase {
         }
     }
 
+    public enum OVer implements IEnumOpt {
+    	 ELSE(0,"其他"),NEW_1(1,"新版本");
+    	 public static final String NAME = "类型";
+         public static final OVer DEFAULT = ELSE;
+         private EnumLine _line;
 
+         private OVer(int key, String name) {
+             _line = new EnumLine(this, key, name);
+         }
+
+         public EnumLine getLine() {
+             return _line;
+         }
+    }
+    
+    public enum OSizeType implements IEnumOpt {
+    	USA(1,"美码"),EU(2,"欧码");
+    	public static final String NAME = "类型";
+        public static final OSizeType DEFAULT = EU;
+        private EnumLine _line;
+
+        private OSizeType(int key, String name) {
+            _line = new EnumLine(this, key, name);
+        }
+
+        public EnumLine getLine() {
+            return _line;
+        }
+    }
+    
 }

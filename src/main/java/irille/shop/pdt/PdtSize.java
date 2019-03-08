@@ -1,22 +1,23 @@
 package irille.shop.pdt;
 
+import java.util.Date;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import irille.core.sys.Sys.OYn;
 import irille.core.sys.SysUser;
 import irille.pub.bean.BeanInt;
-import irille.pub.idu.Idu;
 import irille.pub.inf.IExtName;
 import irille.pub.svr.Env;
 import irille.pub.tb.Fld;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
+import irille.shop.pdt.Pdt.OSizeType;
+import irille.shop.pdt.Pdt.OVer;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.usr.UsrSupplier;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Date;
 
 /**
  * 产品尺寸
@@ -33,6 +34,8 @@ public class PdtSize extends BeanInt<PdtSize> implements IExtName {
 		DELETED(SYS.NY,"是否删除"),
 		CREATE_BY(SysUser.fldOutKey().setNull()),
 		CREATE_TIME(SYS.CREATED_DATE_TIME),
+		TYPE(Tb.crt(Pdt.OSizeType.EU).setNull()),  //美码 或者 欧码
+		TYPEVER(Tb.crt(Pdt.OVer.ELSE)), //版本 原颜色数据为0 新尺码数据为1
 		ROW_VERSION(SYS.ROW_VERSION),
 		//>>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
 		//<<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
@@ -85,6 +88,12 @@ public class PdtSize extends BeanInt<PdtSize> implements IExtName {
 	// NO:0,否
   private Integer _createBy;	// 用户 <表主键:SysUser>  INT<null>
   private Date _createTime;	// 建档时间  TIME
+  private Byte _type;	// 类型 <OSizeType>  BYTE
+	// USA:1,美码
+	// EU:2,欧码
+  private Byte _typever;	// 类型 <OVer>  BYTE
+	// ELSE:0,其他
+	// NEW_1:1,新版本
   private Short _rowVersion;	// 版本  SHORT
 
 	@Override
@@ -96,6 +105,8 @@ public class PdtSize extends BeanInt<PdtSize> implements IExtName {
     _deleted=OYn.DEFAULT.getLine().getKey();	// 是否删除 <OYn>  BYTE
     _createBy=null;	// 用户 <表主键:SysUser>  INT
     _createTime=Env.getTranBeginTime();	// 建档时间  TIME
+    _type=OSizeType.DEFAULT.getLine().getKey();	// 类型 <OSizeType>  BYTE
+    _typever=OVer.DEFAULT.getLine().getKey();	// 类型 <OVer>  BYTE
     _rowVersion=0;	// 版本  SHORT
     return this;
   }
@@ -193,6 +204,30 @@ public class PdtSize extends BeanInt<PdtSize> implements IExtName {
   }
   public void setCreateTime(Date createTime){
     _createTime=createTime;
+  }
+  public Byte getType(){
+    return _type;
+  }
+  public void setType(Byte type){
+    _type=type;
+  }
+  public OSizeType gtType(){
+    return (OSizeType)(OSizeType.EU.getLine().get(_type));
+  }
+  public void stType(OSizeType type){
+    _type=type.getLine().getKey();
+  }
+  public Byte getTypever(){
+    return _typever;
+  }
+  public void setTypever(Byte typever){
+    _typever=typever;
+  }
+  public OVer gtTypever(){
+    return (OVer)(OVer.ELSE.getLine().get(_typever));
+  }
+  public void stTypever(OVer typever){
+    _typever=typever.getLine().getKey();
   }
   public Short getRowVersion(){
     return _rowVersion;
