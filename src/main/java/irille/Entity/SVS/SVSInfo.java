@@ -5,8 +5,13 @@ import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import irille.Config.Attribute;
+import irille.Config.Variable;
+import irille.Entity.O2O.O2O_Product;
+import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.SVS.Enums.SVSAuthenticationStatus;
 import irille.Entity.SVS.Enums.SVSGradeType;
+import irille.Entity.pm.PM.OTempType;
 import irille.core.sys.Sys;
 import irille.pub.bean.BeanInt;
 import irille.pub.svr.Env;
@@ -14,7 +19,12 @@ import irille.pub.tb.Fld;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
 import irille.shop.usr.UsrSupplier;
+import irille.view.SVS.SVSInfoView.research;
 
+@Variable(group = {OTempType.SVS_APPR_NOTICE},enumType=SVSInfo.T.class,clazz=SVSInfo.class,attributes = {
+		@Attribute(name="认证状态",field="STATUS",type=SVSAuthenticationStatus.class),
+		@Attribute(name="审核时间",field="AUTHENTICATION_TIME",type=Date.class)}
+)
 public class SVSInfo extends BeanInt<SVSInfo> {
 
 	public static void main(String[] args) {

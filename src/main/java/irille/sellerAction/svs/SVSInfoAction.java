@@ -10,6 +10,7 @@ import irille.Entity.SVS.Enums.SVSGradeType;
 import irille.action.seller.SellerAction;
 import irille.pub.util.GetBaseScoreUtils;
 import irille.sellerAction.svs.inf.ISVSInfoAction;
+import irille.shop.usr.Usr;
 import irille.view.SVS.SVSInfoView.research;
 import lombok.Data;
 
@@ -36,9 +37,16 @@ public class SVSInfoAction extends SellerAction<SVSInfo> implements ISVSInfoActi
 	@Override
 	public void application() throws Exception {
 
+		if (getSupplier() == null) {
+			writeErr("用户未登录,无法提交认证信息");
+			return;
+		}
+		if (getSupplier().gtStatus() != Usr.OStatus.APPR) {
+			writeErr("商家未审核,无法提交认证信息");
+			return;
+		}
 		SVSInfo svs = new SVSInfo();
 		int score = GetBaseScoreUtils.getBaseScore(search, capacity, factory, quality, team, exhibition, partner);
-		System.out.println(score);
 		if (score < 30) {
 			writeErr("未满足银牌基础分值,无法提交认证");
 			return;

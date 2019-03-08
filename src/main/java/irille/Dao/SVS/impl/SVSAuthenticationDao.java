@@ -13,32 +13,19 @@ import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrSupplier;
 import irille.view.SVS.SVSAuthenticationView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SVSAuthenticationDao {
     @Inject
     ObjectMapper om;
     //查看认证信息
-    public static SVSAuthenticationView querySVS(Integer pkey) {
+    public  static SVSInfo querySVS(Integer pkey) {
         SQL sql = new SQL(){{
             SELECT(SVSInfo.class).FROM(SVSInfo.class).WHERE(SVSInfo.T.PKEY," =? ",pkey);
         }};
         SVSInfo sVSInfo = Query.sql(sql).query(SVSInfo.class);
-        System.out.println(sVSInfo.getSupplier());
-       SQL sq = new SQL(){{
-           SELECT(UsrSupplier.class).FROM(UsrSupplier.class).WHERE(UsrSupplier.T.PKEY," =? ",sVSInfo.getSupplier());
-       }};
-        UsrSupplier usrSupplier = Query.sql(sq).query(UsrSupplier.class);
-        SVSAuthenticationView svsAuthenticationView=new SVSAuthenticationView();
-        svsAuthenticationView.setExhibitionAttended(sVSInfo.getExhibitionAttended());
-        svsAuthenticationView.setForeingTradeTeam(sVSInfo.getForeignTradeTeam());
-        svsAuthenticationView.setPkey(sVSInfo.getPkey());
-        svsAuthenticationView.setPratner(sVSInfo.getPartner());
-        svsAuthenticationView.setProductiveCapacity(sVSInfo.getProductionCapacity());
-        svsAuthenticationView.setRealFactory(sVSInfo.getRealFactory());
-        svsAuthenticationView.setForeingTradeTeam(sVSInfo.getForeignTradeTeam());
-        svsAuthenticationView.setResearch(sVSInfo.getResearch());
-        svsAuthenticationView.setStatus(sVSInfo.getStatus());
-        svsAuthenticationView.setSupplier(usrSupplier.getName());
-        return svsAuthenticationView;
+        return sVSInfo;
     }
 
     //进行认证

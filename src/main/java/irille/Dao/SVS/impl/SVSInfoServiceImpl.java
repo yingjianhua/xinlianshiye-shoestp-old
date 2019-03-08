@@ -8,15 +8,19 @@ import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
+
 import irille.Dao.SVS.SVSInfoDao;
 import irille.Dao.SVS.SVSInfoService;
 import irille.Entity.SVS.SVSInfo;
 import irille.Entity.SVS.Enums.SVSAuthenticationStatus;
 import irille.Entity.SVS.Enums.SVSGradeType;
+import irille.Entity.pm.PM.OTempType;
 import irille.core.sys.SysSystem;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.pub.util.GetBaseScoreUtils;
+import irille.shop.usr.UsrSupplier;
 import irille.view.SVS.SVSDetailedInfoView;
 import irille.view.SVS.SVSInfoView.exhibitionAttended;
 import irille.view.SVS.SVSInfoView.partner;
@@ -31,6 +35,8 @@ public class SVSInfoServiceImpl implements SVSInfoService {
 	private SVSInfoDao SVSInfoDao;
 	@Inject
 	ObjectMapper om;
+	@Inject
+	IPMMessageService pm;
 
 	/**
 	 * 申请认证SVS
@@ -158,9 +164,9 @@ public class SVSInfoServiceImpl implements SVSInfoService {
 	 * @author GS
 	 */
 	@Override
-	public SVSDetailedInfoView adminUpdSVSInfo(Integer supplierId, String res, String capacity, String factory,
+	public SVSDetailedInfoView adminUpdSVSInfo(UsrSupplier supplier, String res, String capacity, String factory,
 			String quality, String team, String exhibition, String part) throws Exception {
-		SVSInfo svs = SVSInfoDao.findSVSInfoBySupplier(supplierId);
+		SVSInfo svs = SVSInfoDao.findSVSInfoBySupplier(supplier.getPkey());
 		if (null == svs)
 			throw new WebMessageException(ReturnCode.failure, "该用户暂未申请SVS认证");
 		if (svs.gtStatus() != SVSAuthenticationStatus.FAIL)
@@ -184,6 +190,7 @@ public class SVSInfoServiceImpl implements SVSInfoService {
 		svs.setAuthenticationTime(new Date());
 		svs.setPartner(part);
 		SVSInfoDao.save(svs);
+		pm.send(OTempType.SVS_APPR_NOTICE, supplier, null, svs);
 		return CreateView(SVSInfoDao.save(svs));
 	}
 }

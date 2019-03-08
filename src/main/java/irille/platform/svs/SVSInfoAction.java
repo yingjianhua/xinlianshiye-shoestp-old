@@ -27,7 +27,7 @@ public class SVSInfoAction extends ActionBase<SVSInfo> {
 	public void updAutInfo() throws Exception {
 		UsrSupplier supplier = BeanBase.load(UsrSupplier.class, supplierId);
 		if (supplier != null)
-			write(service.adminUpdSVSInfo(supplierId, search, capacity, factory, quality, team, exhibition, partner));
+			write(service.adminUpdSVSInfo(supplier, search, capacity, factory, quality, team, exhibition, partner));
 		else
 			writeErr(-1, "用户不存在无法提交认证信息");
 	};

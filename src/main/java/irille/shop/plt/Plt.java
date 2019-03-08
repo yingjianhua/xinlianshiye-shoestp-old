@@ -85,7 +85,6 @@ public class Plt extends PackageBase {
         addTb(70, PMRead.class);
         addTb(71, PMTemplate.class);
         addTb(72, SVSInfo.class);
-        
     }
 
     @Override

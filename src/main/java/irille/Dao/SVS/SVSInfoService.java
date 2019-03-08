@@ -4,6 +4,7 @@ import com.google.inject.ImplementedBy;
 
 import irille.Dao.SVS.impl.SVSInfoServiceImpl;
 import irille.Entity.SVS.SVSInfo;
+import irille.shop.usr.UsrSupplier;
 import irille.view.SVS.SVSDetailedInfoView;
 import irille.view.SVS.SVSInfoView.exhibitionAttended;
 import irille.view.SVS.SVSInfoView.partner;
@@ -55,7 +56,7 @@ public interface SVSInfoService {
 	 * @return
 	 * @throws Exception
 	 */
-	public SVSDetailedInfoView adminUpdSVSInfo(Integer supplierId, String res, String capacity, String factory,
+	public SVSDetailedInfoView adminUpdSVSInfo(UsrSupplier supplier, String res, String capacity, String factory,
 			String quality, String team, String exhibition, String part) throws Exception;
 	
 }

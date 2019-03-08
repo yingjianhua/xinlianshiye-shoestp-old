@@ -316,7 +316,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
         view.setType(consult.getType());
         view.setValieDate(consult.getValidDate());
         view.setPaymentTerms(consult.getPayType() == null? null : consult.gtPayType().getLine().getName());
-        view.setShippingTerms(consult.gtShippingType() == null? null : consult.gtShippingType().getLine().getName());
+        view.setShippingTerms(consult.getShippingType() == null? null : consult.gtShippingType().getLine().getName());
         view.setVerifyStatus(consult.getVerifyStatus());
         view.setStatus(consult.getStatus());
         if (consult.gtType() == RFQConsultType.supplier_INQUIRY) {
