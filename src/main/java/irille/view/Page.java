@@ -13,12 +13,14 @@ public class Page<T extends BaseView> {
 	public static final String PAGE_START = "start";
 	public static final String PAGE_LIMIT = "limit";
 	public static final String PAGE_ITEMS = "items";
+	public static final String PAGE_NO_READ = "countNoRead";
     
 	private int totalCount;
 	private int totalPage;
 	private int currentPage;
 	private int start;
 	private int limit;
+	private int countNoRead;
 	private List<T> items;
 	
 	public Page(int totalCount, int totalPage, int currentPage, int start, int limit, List<T> items) {
@@ -43,6 +45,20 @@ public class Page<T extends BaseView> {
 			this.currentPage = start/limit+1;
 		}
 	}
+	public Page(List<T> items, int start, int limit, int totalCount,int countNoRead) {
+		this.items = items;
+		this.start = start;
+		this.limit = limit;
+		this.countNoRead = countNoRead;
+		this.totalCount = totalCount;
+		if(limit == 0) {
+			this.totalPage = 1;
+			this.currentPage = 1;
+		} else {
+			this.totalPage = totalCount/limit+(totalCount%limit>0?1:0);
+			this.currentPage = start/limit+1;
+		}
+	}
 	public JSONObject toJSON() throws JSONException {
 		JSONObject json = new JSONObject();
 		JSONArray ja = new JSONArray(items, false);
@@ -51,6 +67,7 @@ public class Page<T extends BaseView> {
 		json.put(PAGE_CURRENTPAGE, currentPage);
 		json.put(PAGE_START, start);
 		json.put(PAGE_LIMIT, limit);
+		json.put(PAGE_NO_READ, countNoRead);
 		json.put(PAGE_ITEMS, ja);
 		return json;
 	}
@@ -94,4 +111,11 @@ public class Page<T extends BaseView> {
 	public void setItems(List<T> items) {
 		this.items = items;
 	}
+	public int getCountNoRead() {
+		return countNoRead;
+	}
+	public void setCountNoRead(int countNoRead) {
+		this.countNoRead = countNoRead;
+	}
+	
 }

@@ -6,6 +6,8 @@ import com.google.inject.ImplementedBy;
 
 import irille.Dao.RFQ.impl.RFQConsultGroupRelationDaoImpl;
 import irille.Entity.RFQ.RFQConsultGroupRelation;
+import irille.view.Page;
+import irille.view.RFQ.InquiryMessageView;
 
 @ImplementedBy(RFQConsultGroupRelationDaoImpl.class)
 public interface RFQConsultGroupRelationDao {
@@ -19,4 +21,6 @@ public interface RFQConsultGroupRelationDao {
 	void deleteByGroup_pkey(Integer groupId);
 	
 	List<RFQConsultGroupRelation> findAllByGroup_Pkey(Integer groupPkey);
+
+	Page<InquiryMessageView> message(Integer rec, boolean supplier, Integer start, Integer limit);
 }

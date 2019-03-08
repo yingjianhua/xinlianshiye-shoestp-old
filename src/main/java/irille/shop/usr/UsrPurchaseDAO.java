@@ -1,5 +1,16 @@
 package irille.shop.usr;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
+import com.xinlianshiye.shoestp.plat.service.pm.imp.PMMessageServiceImp;
+
+import irille.Entity.pm.PM.OTempType;
 import irille.core.sys.Sys.OSex;
 import irille.homeAction.HomeAction;
 import irille.platform.usr.View.UsrPurchaseListView;
@@ -9,9 +20,7 @@ import irille.pub.LogMessage;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.Bean;
 import irille.pub.bean.BeanBase;
-import irille.pub.bean.Query;
 import irille.pub.bean.sql.MconditionsView;
-import irille.pub.bean.sql.SQL;
 import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduDel;
 import irille.pub.idu.IduIns;
@@ -19,22 +28,11 @@ import irille.pub.idu.IduOther;
 import irille.pub.idu.IduUpdLines;
 import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
-import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.pub.validate.ValidRegex;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltErate;
-import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltErateDAO;
 import irille.view.Page;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class UsrPurchaseDAO {
     public static final LogMessage LOG = new LogMessage(UsrPurchase.class);
@@ -212,7 +210,16 @@ public class UsrPurchaseDAO {
 		   		supplier.upd();
 		   		getB().upd();
 	   	     }
-	        }
+	    }
+
+		@Override
+		public void after() {
+			super.after();
+			IPMMessageService messageService = new PMMessageServiceImp();
+			messageService.send(OTempType.PURCHASE_FORGET_PASSWORD, null, getB(), getB());
+		}
+        
+        
     }
 
     /**

@@ -17,7 +17,7 @@
         <div class="user-menu-item"><a href="/home/usr_UsrPurchase_userIndex">Home <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
         <div class="user-menu-item"><a href="/home/usr_UsrMessages_center">Message Center <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
         <div class="user-menu-item"><a href="/home/usr_UsrPurchase_contacts">Contacts <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
-        <div class="user-menu-item"><a href="/home/usr_UsrFavorites_myfavorite">My Favourites <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+        <div class="user-menu-item"><a style="color:#10389c;" href="/home/usr_UsrFavorites_myfavorite">My Favourites <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
         <div class="user-menu-item"><a href="/home/usr_UsrPurchase_usrSetting">Account Settings <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
     </div>
     <div class="favorite-main fr">
@@ -29,54 +29,64 @@
                 </li>
             </ul>
         </div>
-        <div class="favorite-list clearfix">
-            <div class="favorite-item" v-for="(item, index) in favoriteList" :key="index">
-                <input type="checkbox" @change="singleChecked" :value="item.id" v-model="checkedCode">
-                <div class="porduct-img">
-                    <a href="javascript:void(0)" target="_blank">
-                        <img :src="image(item.img)" alt="">
-                    </a>
-                </div>
-                <div class="ellipsis_2 porduct-name">
-                    <a href="javascript:void(0)" target="_blank">{{item.name}}</a>
-                </div>
-                <div class="porduct-price">
-                    <span style="color: #232323;">US</span>
-                    <span style="color: #e54544;">{{sysConfig.currency_symbol}} {{item.amt}}</span>
-                </div>
-                <div class="porduct-minOrder">
-                    Min.Order: {{item.min_order}} pairs
-                </div>
-                <div class="porduct-btn-list flexSb">
-                    <div class="porduct-remove-btn porduct-btn">
-                        <a href="javascript:void(0)" @click="remove(item.id)">Remove</a>
+                <div class="favorite-list clearfix">
+                    <template v-if="favoriteList.length > 0">
+                    <div class="favorite-item" v-for="(item, index) in favoriteList" :key="index">
+                        <input type="checkbox" @change="singleChecked" :value="item.id" v-model="checkedCode">
+                        <div class="porduct-img">
+                            <a href="javascript:void(0)" target="_blank">
+                                <img :src="image(item.img)" alt="">
+                            </a>
+                        </div>
+                        <div class="ellipsis_2 porduct-name">
+                            <a href="javascript:void(0)" target="_blank">{{item.name}}</a>
+                        </div>
+                        <div class="porduct-price">
+                            <span style="color: #232323;">US</span>
+                            <span style="color: #e54544;">{{sysConfig.currency_symbol}} {{item.amt}}</span>
+                        </div>
+                        <div class="porduct-minOrder">
+                            Min.Order: {{item.min_order}} pairs
+                        </div>
+                        <div class="porduct-btn-list flexSb">
+                            <div class="porduct-remove-btn porduct-btn">
+                                <a href="javascript:void(0)" @click="remove(item.id)">Remove</a>
+                            </div>
+                            <div class="porduct-inquiry-btn porduct-btn">
+                                <a href="javascript:void(0)" @click="restore(item.id)" v-if="catPkey == -1">Restore</a>
+                                <a :href="'/home/usr_UsrConsult_publishView?product_id='+item.pdtPkey" target="_blank" v-else>Inquiry</a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="porduct-inquiry-btn porduct-btn">
-                        <a href="javascript:void(0)" @click="restore(item.id)" v-if="catPkey == -1">Restore</a>
-                        <a :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtPkey" target="_blank" v-else>Inquiry</a>
-                    </div>
+                    </template>
+                      <template v-else>
+                        <div style="height:566px;text-align:center;line-height:566px;font-size:32px;font-weight:bold;">
+                            No valid information
+                        </div>
+                    </template>
+                </div>
 
+
+            <template v-if="favoriteList.length > 0">
+            <div class="page-box">
+                <el-pagination
+                        background
+                        @current-change="handleCurrentChange"
+                        prev-text="< Previous"
+                        next-text="Next >"
+                        :current-page="currentPage"
+                        layout="prev, pager, next"
+                        :total="totalCount">
+                </el-pagination>
+            </div>
+            <!-- 正常  和  回收站的按钮 -->
+            <div class="bottom-btn-list flexSe">
+                <input type="checkbox" v-model='isAllChecked' @change='chooseAll'>
+                <div class="bottom-btn bottom-remove-btn" @click="removeAll">
+                    <a href="javascript:void(0)">{{catPkey == -1?'Empty recycle bin':'Clear all'}}</a>
                 </div>
             </div>
-        </div>
-        <div class="page-box">
-            <el-pagination
-                    background
-                    @current-change="handleCurrentChange"
-                    prev-text="< Previous"
-                    next-text="Next >"
-                    :current-page="currentPage"
-                    layout="prev, pager, next"
-                    :total="totalCount">
-            </el-pagination>
-        </div>
-        <!-- 正常  和  回收站的按钮 -->
-        <div class="bottom-btn-list flexSe">
-            <input type="checkbox" v-model='isAllChecked' @change='chooseAll'>
-            <div class="bottom-btn bottom-remove-btn" @click="removeAll">
-                <a href="javascript:void(0)">{{catPkey == -1?'Empty recycle bin':'Clear all'}}</a>
-            </div>
-        </div>
+        </template>
     </div>
 </div>
 <script src="/home/v3/static/js/index-bottom.js"></script>
@@ -160,16 +170,16 @@
                 var self = this;
                 if (self.catPkey == -1) {
                     // 回收站里
-                    confimName = '是否删除该商品'
+                    confimName = 'Whether to delete the item'
                     url = '/home/usr_UsrFavorites_delFavorite'
                 } else {
                     // 正常分类
-                    confimName = '是否将该商品移入回收站'
+                    confimName = 'Whether to move the item to the recycle bin'
                     url = '/home/usr_UsrFavorites_recycleFavorite'
                 }
-                self.$confirm(confimName, '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
+                self.$confirm(confimName, 'Prompt', {
+                    confirmButtonText: 'Determine',
+                    cancelButtonText: 'Cancel',
                     type: 'warning'
                 }).then(() => {
                     //  确定按钮
@@ -182,7 +192,7 @@
                                 window.location.href =
                                     '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
                             } else if (res.data.ret == 1) {
-                                self.$message.success("删除成功");
+                                self.$message.success("Successfully deleted");
                                 self.getFavoriteList(self.catPkey, self.start, self.limit);
                             } else {
                                 self.$message.error(res.data.msg);
@@ -204,21 +214,21 @@
                 var url;
                 if (self.checkedCode.length <= 0) {
                     console.log("没有选择项")
-                    self.$message.error("请选择需要删除的商品");
+                    self.$message.error("Please select the item you want to delete");
                     return;
                 }
                 console.log(self.checkedCode)
                 if (self.catPkey == -1) {
-                    confimName = '是否删除该商品'
+                    confimName = 'Whether to delete the item'
                     url = '/home/usr_UsrFavorites_delFavorite'
                 } else {
-                    confimName = '是否将该商品移入回收站'
+                    confimName = 'Whether to move the item to the recycle bin'
                     url = '/home/usr_UsrFavorites_recycleFavorite'
                 }
                 console.log(confimName)
-                self.$confirm(confimName, '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
+                self.$confirm(confimName, 'Prompt', {
+                    confirmButtonText: 'Determine',
+                    cancelButtonText: 'Cancel',
                     type: 'warning'
                 }).then(() => {
                     //  确定按钮
@@ -231,7 +241,7 @@
                                 window.location.href =
                                     '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
                             } else if (res.data.ret == 1) {
-                                self.$message.success("删除成功");
+                                self.$message.success("Successfully deleted");
                                 self.isAllChecked = false;  // 取消全选
                                 self.checkedCode = [];      // 清空选中数据
                                 self.getFavoriteList(self.catPkey, self.start, self.limit);
@@ -250,9 +260,9 @@
             },
             restore(pkey) {  // 回收站 商品  还原到 收藏夹
                 var self = this;
-                self.$confirm("是否恢复到收藏夹", '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
+                self.$confirm("Whether to restore to favorites", 'Prompt', {
+                    confirmButtonText: 'Determine',
+                    cancelButtonText: 'Cancel',
                     type: 'warning'
                 }).then(() => {
                     //  确定按钮
@@ -265,7 +275,7 @@
                                 window.location.href =
                                     '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
                             } else if (res.data.ret == 1) {
-                                self.$message.success("恢复成功");
+                                self.$message.success("Successful recovery");
                                 self.getFavoriteList(self.catPkey, self.start, self.limit);
                             } else {
                                 self.$message.error(res.data.msg);
@@ -293,6 +303,7 @@
                     limit,
                 }))
                     .then(function (res) {
+                        console.log(res);
                         if (res.data.ret == -1) {
                             window.location.href =
                                 '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';

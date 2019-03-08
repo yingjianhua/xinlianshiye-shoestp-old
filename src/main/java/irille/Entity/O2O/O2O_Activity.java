@@ -5,7 +5,10 @@ import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import irille.Config.Attribute;
+import irille.Config.Variable;
 import irille.Entity.O2O.Enums.O2O_ActivityStatus;
+import irille.Entity.pm.PM.OTempType;
 import irille.core.sys.Sys;
 import irille.pub.bean.BeanInt;
 import irille.pub.svr.Env;
@@ -17,6 +20,13 @@ import irille.pub.tb.Tb;
 /**
  * Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/13 Time: 16:18
  */
+@Variable(group = {OTempType.O2O_ACTIVITY_NOTICE},enumType=O2O_Activity.T.class,clazz=O2O_Activity.class,attributes = {
+		@Attribute(name="活动名称",field="NAME",type=String.class),
+		@Attribute(name="活动状态",field="STATUS",type=O2O_ActivityStatus.class),
+		@Attribute(name="活动开始时间",field="START_DATE",type=Date.class),
+		@Attribute(name="活动结束时间",field="END_DATE",type=Date.class),
+		@Attribute(name="活动规则",field="RULES",type=FldLanguage.class)}
+)
 public class O2O_Activity extends BeanInt<O2O_Activity> {
 
 	private static final long serialVersionUID = 1L;

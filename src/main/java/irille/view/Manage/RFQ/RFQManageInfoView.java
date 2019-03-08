@@ -17,6 +17,8 @@ import java.util.List;
 public class RFQManageInfoView implements BaseView {
     private int id;
     private String title;
+    private Byte type;//询盘类型
+    private Integer productId;//产品主键, 普通产品询盘和私人展厅产品询盘时 有值
     private String purchaseName;
     @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
     private Date create_date;

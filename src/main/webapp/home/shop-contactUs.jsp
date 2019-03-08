@@ -202,8 +202,8 @@
             </div>
             <!-- 联系-信息2 - end -->
         </div>
-        <index-bottom></index-bottom>
     </div>
+    <index-bottom></index-bottom>
     </c:if>
     <%--<%@ include file="/home/template/new-foot.jsp" %>--%>
     ${supView.traceCode}
