@@ -1,5 +1,10 @@
 package irille.shop.usr;
 
+import java.util.Date;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import irille.Config.Attribute;
 import irille.Config.Variable;
 import irille.Entity.pm.PM.OTempType;
@@ -15,17 +20,13 @@ import irille.pub.tb.Tb;
 import irille.pub.tb.Tb.Index;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltProvince;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Date;
 
 /**
  * 供应商
  *
  * @author yingjianhua
  */
-@Variable(group = {OTempType.SHOP_APPR,OTempType.PROD_APPR_NOTICE},enumType=UsrSupplier.T.class,clazz=UsrSupplier.class,attributes = {
+@Variable(group = {OTempType.SHOP_APPR,OTempType.PROD_APPR_NOTICE,OTempType.O2O_PROD_APPR_NOTICE,OTempType.RFQ_MESSAGE_NOTICE},enumType=UsrSupplier.T.class,clazz=UsrSupplier.class,attributes = {
 		@Attribute(name="企业审核状态",field="STATUS",type=Usr.OStatus.class),
 		@Attribute(name="企业审核时间",field="APPR_TIME",type=Date.class),
 		@Attribute(name="公司名称",field="NAME",type=String.class),

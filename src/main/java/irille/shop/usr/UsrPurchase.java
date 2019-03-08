@@ -15,7 +15,7 @@ import irille.pub.tb.Tb.Index;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltErate;
 
-@Variable(group = {OTempType.INQUIRY_NOTICE_SUPPLIER},enumType=UsrPurchase.T.class,clazz=UsrPurchase.class,attributes = {
+@Variable(group = {OTempType.INQUIRY_NOTICE_SUPPLIER,OTempType.PURCHASE_FORGET_PASSWORD},enumType=UsrPurchase.T.class,clazz=UsrPurchase.class,attributes = {
 		@Attribute(name="采购商名称",field="NAME",type=String.class),
 		@Attribute(name="采购商手机号",field="TELPHONE",type=String.class)}
 )
@@ -49,7 +49,6 @@ public class UsrPurchase extends BeanInt<UsrPurchase> implements IExtName{
 		FACEBOOK_USER_ID(SYS.STR__100_NULL,"FACEBOOK用户ID"),
 		GOOGLE_USER_ID(SYS.STR__100_NULL,"谷歌用户ID"),
 		UserId(UsrMain.fldOutKey().setName("用户").setNull()),
-		
 		/**
 		 * 平台信息
 		 */

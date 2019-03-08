@@ -177,11 +177,11 @@ public class EasyOdrDao {
      * @anthor wilson zhang
      */
     public Page sellerlist(Integer start, Integer limit, OrderSearchView osv, Integer supplierid) {
-        if (null != start) {
+        if (null == start) {
             start = 0;
         }
-        if (null != limit) {
-            start = 0;
+        if (null == limit) {
+            limit = 10;
         }
         SQL sql = new SQL() {{
             SELECT(T.PKEY, T.TIME, T.ORDER_NUM, T.ADDRESS, T.COUNYPD, T.NAME, T.PHONE, T.PURCHASE)

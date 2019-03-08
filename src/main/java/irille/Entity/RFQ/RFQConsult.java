@@ -2,7 +2,6 @@ package irille.Entity.RFQ;
 
 import java.util.Date;
 
-import irille.Entity.RFQ.Enums.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 

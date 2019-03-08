@@ -65,8 +65,8 @@
                         </div>
                     </template>
                 </div>
-            
-          
+
+
             <template v-if="favoriteList.length > 0">
             <div class="page-box">
                 <el-pagination

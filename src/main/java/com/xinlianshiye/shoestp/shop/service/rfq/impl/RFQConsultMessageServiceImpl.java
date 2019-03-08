@@ -39,9 +39,9 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 	
 	@Inject 
 	private IPMMessageService messageService;
-
+	
 	@Override
-	public RFQConsultMessagesView page(UsrPurchase purchase, Integer relationPkey, Integer start, Integer limit) {
+	public RFQConsultMessagesView page(UsrPurchase purchase, Integer relationPkey, Integer messageStartPkey, Integer start, Integer limit) {
 		BeanQuery<RFQConsultRelation> query = Query.selectFrom(RFQConsultRelation.class);
 		query.WHERE(RFQConsultRelation.T.PURCHASE_ID, "=?", purchase.getPkey());
 		query.WHERE(RFQConsultRelation.T.PKEY, "=?", relationPkey);
@@ -55,6 +55,9 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 
 		BeanQuery<RFQConsultMessage> query2 = Query.selectFrom(RFQConsultMessage.class);
 		query2.WHERE(RFQConsultMessage.T.RELATION, "=?", relationPkey);
+		if(messageStartPkey != null) {
+			query2.WHERE(RFQConsultMessage.T.PKEY, ">?", messageStartPkey);
+		}
 		query2.ORDER_BY(RFQConsultMessage.T.SEND_TIME, "desc");
 		query2.limit(start, limit);
 		List<RFQConsultMessage> messages = query2.queryList();
