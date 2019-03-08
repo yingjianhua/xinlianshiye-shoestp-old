@@ -8,7 +8,8 @@ import irille.view.SVS.SVSAuthenticationView;
 @ImplementedBy(SVSAuthenticationServiceImpl.class)
 public interface SVSAuthenticationService {
     //查询
-    SVSAuthenticationView getAutInfo(Integer pkey);
+    SVSAuthenticationView getAutInfo(Integer pkey) throws Exception;
+
     //认证
-    void Authentication(Integer status, Integer grade, String reasons, Integer pkey);
+    void Authentication(Integer status, Integer grade, String reasons, Integer pkey)throws Exception;
 }
