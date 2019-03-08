@@ -2,6 +2,9 @@ package com.xinlianshiye.shoestp.shop.view.usr;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import irille.pub.i18n.I18NFieldSerializer;
 import irille.view.BaseView;
 import lombok.Data;
 
@@ -9,9 +12,11 @@ import lombok.Data;
 public class SupplierView implements BaseView {
  
 	private Integer pkey;
-	private String name;//供应商名称
+	@JsonSerialize(using = I18NFieldSerializer.class)
+	private String name;//供应商名称(showName)
 	private String logo;//logo(头像)
 	private String country;//国家
+	private String countryFlag;//国家国旗
 	private Date yearEstablished;//公司成立年份
 	private String mainProducts;//主要产品
 	private String location;//地址
