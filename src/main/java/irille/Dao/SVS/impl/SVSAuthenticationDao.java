@@ -29,13 +29,16 @@ public class SVSAuthenticationDao {
     }
 
     //进行认证
-    public static void updateSVS(Integer status, Integer grade, String reasons, Integer pkey) {
+    public static void updateSVS(Integer status, Integer grade, String reasons, Integer pkey,Integer score) {
         SVSInfo svsInfo = BeanBase.load(SVSInfo.class, pkey);
         svsInfo.setStatus((byte) status.intValue());
         if(status==1){
             svsInfo.setAuthenticationTime(Env.getSystemTime());
         }
-        svsInfo.setGrade((byte) grade.intValue());
+        svsInfo.setBaseScore(score);
+        if(grade!=null){
+            svsInfo.setGrade((byte) grade.intValue());
+        }
         svsInfo.setFailureReasons(reasons);
         svsInfo.upd();
     }

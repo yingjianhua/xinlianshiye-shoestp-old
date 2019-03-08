@@ -27,6 +27,7 @@ public class SupplierView implements BaseView {
 	private Date memberSince;//注册时间
 	private String department;//部门
 	private String jobTitle;//
+	@JsonSerialize(using = I18NFieldSerializer.class)
 	private String company;//公司名字
 	private String businessType;//企业类型
 	private String mainMarket;//主要市场
