@@ -15,7 +15,7 @@
         <div class="user-menu-item"><a href="/home/usr_UsrPurchase_userIndex">Home <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
         <div class="user-menu-item"><a href="/home/usr_UsrMessages_center">Message Center <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
         <div class="user-menu-item"><a style="color:#10389c;" href="/home/usr_UsrPurchase_contacts">Contacts <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
-        <div class="user-menu-item"><a href="/home/usr_UsrFavorites_myfavorite">My Favoutities <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+        <div class="user-menu-item"><a href="/home/usr_UsrFavorites_myfavorite">My Favourites <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
         <div class="user-menu-item"><a href="/home/usr_UsrPurchase_usrSetting">Account Settings <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
         </div>
         <!-- 联系 -->
@@ -23,11 +23,12 @@
             <div class="contacts-main-left fl">
                 <!-- "contactPkey" == {{contactPkey}} -->
                 <!-- "start" == {{start}} -->  
+                <!-- "{{groupName}}"====== {{groupName}} -->
                 <!-- "allGroupCount" == {{allGroupCount}} <br>   
                 "nowGroupCount" == {{nowGroupCount}} -->
                 <!-- <div class="select">ALL CONTACTS-2</div> -->
                 <!-- <dl @mouseenter="hoverMouseEnter" @mouseleave="hoverMouseLeave"> -->
-                <dl class="usermessage" ref="box">
+                <dl class="usermessage" ref="dl">
                     <dt class="select-header flexSb usermessage" @click.stop="clickSelect">
                         <div class="flexCc" style="text-align:center;width:100%;">
                          <span class="ellipsis1" style="display: inline-block;max-width:116px;line-height: 16px;">
@@ -309,9 +310,9 @@
             },
             created(){
                 document.addEventListener('click',(e)=>{
-                    console.log("this.$refs.box.contains(e.target)");
-                    console.log(this.$refs.box.contains(e.target));
-                    if(!this.$refs.box.contains(e.target)){
+                    console.log("this.$refs.dl.contains(e.target)");
+                    console.log(this.$refs.dl.contains(e.target));
+                    if(!this.$refs.dl.contains(e.target)){
                         this.isShowHoverSelect = false;
                     }
                 })
@@ -360,7 +361,6 @@
                                     console.log("this.supplierPkey ==== " + this.supplierPkey)
                                     this.getSupplierDetail(this.supplierPkey)
                                 }
-                                // self.contactSwitch
 
                             })
                             .catch((error) => {
@@ -447,9 +447,6 @@
                     cancelButtonText: 'Cancel',
                     type: 'warning'
                     }).then(() => {
-                        console.log("删除联系人")
-                        self.nowGroupCount = self.nowGroupCount - 1;
-                            return;
                         axios.post('/home/rfq_RFQContact_delete', Qs.stringify({
                             supplierPkey,
                         }, ))
@@ -539,8 +536,8 @@
                             console.log(error);
                         });
                 },
-                deleteGroup(pkey) { // 删除分组
-                    console.log(pkey)
+                deleteGroup(groupPkey) { // 删除分组
+                    console.log(groupPkey)
                     var self = this;
                     self.$confirm('Whether to delete the group?', 'Prompt', {
                     confirmButtonText: 'Determine',
@@ -548,7 +545,7 @@
                     type: 'warning'
                     }).then(() => {
                         axios.post('/home/rfq_RFQContact_deleteGroup', Qs.stringify({
-                            groupPkey: pkey
+                            groupPkey
                         }))
                         .then(function (res) {
                             console.log(res);
@@ -560,11 +557,10 @@
                                         showClose: true,
                                         message: 'Successfully deleted',
                                         type: 'success',
-                                        duration:500,
-                                        onClose:function(){
-                                            window.location.reload();
-                                        }
                                     });
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 500);
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -592,12 +588,9 @@
                             self.start = 0;
                             self.popupindex = 0;
                             self.$message.success("Mobile success");
-                            
-                            // if(name == "ALL CONTACTS"){
-                            //     self.nowGroupCount = self.allGroupCount;
-                            // }else{
+                            if(self.groupName  != 'ALL CONTACTS'){
                                 self.nowGroupCount = self.nowGroupCount - 1;
-                            // }
+                            }
                             self.getGroupList();
                             self.getContactList(self.contactKeyWord,self.groupPkey,self.start,self.limit);
                         })
