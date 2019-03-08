@@ -14,13 +14,14 @@ public interface RFQConsultMessageService {
 	 * 分页查询聊天信息
 	 * @param purchase 采购商
 	 * @param relationPkey 询盘关联主键
-	 * @param messageStartPkey 从指定message开始查询
+	 * @param nextMessagePkey 从指定message开始查询, 读取新消息
+	 * @param preMessagePkey 从指定message开始查询, 读取历史消息
 	 * @param start 开始记录数
 	 * @param limit 每页记录数
 	 * @author Jianhua Ying
 	 * @return 
 	 */
-	RFQConsultMessagesView page(UsrPurchase purchase, Integer relationPkey, Integer messageStartPkey, Integer start, Integer limit);
+	RFQConsultMessagesView page(UsrPurchase purchase, Integer relationPkey, Integer nextMessagePkey, Integer preMessagePkey, Integer start, Integer limit);
 	
 	/**
 	 * 采购商发送聊天消息
