@@ -25,6 +25,11 @@ public class SVSInfoAction extends ActionBase<SVSInfo> {
 
 	// 修改对应认证信息
 	public void updAutInfo() throws Exception {
+		if (supplierId == null) {
+			writeErr(-1, "用户编号不能为空");
+			return;
+		}
+
 		UsrSupplier supplier = BeanBase.load(UsrSupplier.class, supplierId);
 		if (supplier != null)
 			write(service.adminUpdSVSInfo(supplier, search, capacity, factory, quality, team, exhibition, partner));

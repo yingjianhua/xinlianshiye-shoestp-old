@@ -2,6 +2,7 @@ package irille.Dao.SVS.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import irille.Entity.SVS.Enums.SVSAuthenticationStatus;
 import irille.Entity.SVS.SVSInfo;
 import irille.platform.pdt.View.pdtCatView.PdtCatView;
 import irille.pub.bean.BeanBase;
@@ -29,13 +30,16 @@ public class SVSAuthenticationDao {
     }
 
     //进行认证
-    public static void updateSVS(Integer status, Integer grade, String reasons, Integer pkey) {
+    public static void updateSVS(Integer status, Integer grade, String reasons, Integer pkey,Integer score) {
         SVSInfo svsInfo = BeanBase.load(SVSInfo.class, pkey);
         svsInfo.setStatus((byte) status.intValue());
-        if(status==1){
+        if(status==SVSAuthenticationStatus.SUCCESS.getLine().getKey()){
+            svsInfo.setBaseScore(score);
             svsInfo.setAuthenticationTime(Env.getSystemTime());
         }
-        svsInfo.setGrade((byte) grade.intValue());
+        if(grade!=null){
+            svsInfo.setGrade((byte) grade.intValue());
+        }
         svsInfo.setFailureReasons(reasons);
         svsInfo.upd();
     }

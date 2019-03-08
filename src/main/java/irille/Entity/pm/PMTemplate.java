@@ -99,6 +99,7 @@ public class PMTemplate extends BeanInt<PMTemplate> {
 	// SVS_WRITE_NOTICE:3,SVS填写通知
 	// SVS_APPR_NOTICE:4,SVS审核通知
 	// PROD_APPR_NOTICE:5,产品审核通知
+	// O2O_PROD_APPR_NOTICE:22,O2O产品审核通知
 	// ACTIVITY_NOTICE:6,活动提醒
 	// O2O_STOCK:7,O2O批发库存状态提醒
 	// O2O_ORDER:8,O2O批发订单状态提醒
@@ -106,12 +107,11 @@ public class PMTemplate extends BeanInt<PMTemplate> {
 	// INQUIRY_NOTICE_SUPPLIER:10,询盘提醒
 	// CONTACT_INFO_NOTICE_SUPPLIER:11,联系人信息提醒
 	// ORDER_STATUS_NOTICE_SUPPLIER:12,订单状态提醒
+	// O2O_ACTIVITY_NOTICE:24,O2O活动提醒
 	// REGISTER_PURCHASE:13,邮件验证
 	// SYSTEM_NOTICE:14,系统提醒
 	// ADVERTISEMENT_PURCHASE:15,广告推送
 	// RFQ_INFO_NOTICE:16,RFQ信息提醒
-	// INQUIRY_NOTICE_PURCHASE:17,询盘提醒
-	// CONTACT_INFO_NOTICE_PURCHASE:18,联系人信息提醒
   private Byte _emailStatus;	// 是否 <OYn>  BYTE
 	// YES:1,是
 	// NO:0,否

@@ -2,20 +2,29 @@ package irille.Dao.SVS.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
 import irille.Dao.SVS.SVSAuthenticationService;
+import irille.Entity.SVS.Enums.SVSAuthenticationStatus;
 import irille.Entity.SVS.SVSInfo;
+import irille.Entity.pm.PM;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.pub.util.GetBaseScoreUtils;
 
+import irille.shop.usr.UsrPurchase;
+import irille.shop.usr.UsrSupplier;
 import irille.view.SVS.SVSAuthenticationView;
 import irille.view.SVS.SVSInfoView;
+
+import java.util.Date;
 
 
 public class SVSAuthenticationServiceImpl implements SVSAuthenticationService {
     @Inject
     ObjectMapper om;
-
+    @Inject
+    IPMMessageService pm;
+    //获取认证信息
     @Override
     public SVSAuthenticationView getAutInfo(Integer pkey) throws Exception {
         SVSInfo info = SVSAuthenticationDao.querySVS(pkey);
@@ -43,15 +52,22 @@ public class SVSAuthenticationServiceImpl implements SVSAuthenticationService {
         return view;
     }
 
-
+    //平台进行认证
     @Override
-    public void Authentication(Integer status, Integer grade, String reasons, Integer pkey) throws Exception {
-        SVSInfo info = SVSAuthenticationDao.querySVS(pkey);
-        int score = GetBaseScoreUtils.getBaseScore(info.getResearch(), info.getProductionCapacity(), info.getRealFactory(), info.getProductQuality(), info.getForeignTradeTeam(), info.getExhibitionAttended(), info.getPartner());
-        System.out.println(score);
-        if (score < 50) {
+    public void Authentication(UsrSupplier supplier,Integer status, Integer grade, String reasons, Integer pkey) throws Exception {
+        SVSInfo svs = SVSAuthenticationDao.querySVS(pkey);
+        int score = GetBaseScoreUtils.getBaseScore(svs.getResearch(), svs.getProductionCapacity(), svs.getRealFactory(), svs.getProductQuality(), svs.getForeignTradeTeam(), svs.getExhibitionAttended(), svs.getPartner());
+        if (score < 30) {
             throw new WebMessageException(ReturnCode.failure, "未满足银牌基础分值,无法提交认证");
         }
-        SVSAuthenticationDao.updateSVS(status, grade, reasons, pkey);
+        SVSAuthenticationDao.updateSVS(status, grade, reasons, pkey,score);
+        if(status==SVSAuthenticationStatus.SUCCESS.getLine().getKey()){
+            svs.setAuthenticationTime(new Date());
+            svs.stStatus(SVSAuthenticationStatus.SUCCESS);
+        }else if(status==SVSAuthenticationStatus.FAIL.getLine().getKey()){
+            svs.stStatus(SVSAuthenticationStatus.FAIL);
+        }
+        pm.send(PM.OTempType.SVS_APPR_NOTICE,supplier, null, svs);
+
     }
 }
