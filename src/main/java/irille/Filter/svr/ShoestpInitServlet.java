@@ -1,8 +1,11 @@
 package irille.Filter.svr;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
+import irille.pub.scheduled.ScheduledTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,8 +31,9 @@ public class ShoestpInitServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(ShoestpInitServlet.class);
 
     private static final IDb db = Env.INST.getDB();
-    
-    public void init() throws ServletException {
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
         logger.info("自动建表...");
         createTable(LgAccess.class);
 
@@ -54,6 +58,9 @@ public class ShoestpInitServlet extends HttpServlet {
 //        TaskUtil taskUtil = new TaskUtil();
 //        taskUtil.addTask(new GetGooleAnalyticsTask(), 1L, TimeUnit.DAYS);
 
+        ServletContext context = config.getServletContext();
+        context.createListener(ScheduledTask.class);
+//        context.addListener(ScheduledTask.class.getName());
     }
 
     public void initBeanLoad() {
