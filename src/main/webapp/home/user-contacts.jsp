@@ -23,8 +23,8 @@
             <div class="contacts-main-left fl">
                 <!-- "contactPkey" == {{contactPkey}} -->
                 <!-- "start" == {{start}} -->  
-                "allGroupCount" == {{allGroupCount}} <br>   
-                "nowGroupCount" == {{nowGroupCount}}
+                <!-- "allGroupCount" == {{allGroupCount}} <br>   
+                "nowGroupCount" == {{nowGroupCount}} -->
                 <!-- <div class="select">ALL CONTACTS-2</div> -->
                 <!-- <dl @mouseenter="hoverMouseEnter" @mouseleave="hoverMouseLeave"> -->
                 <dl class="usermessage" ref="box">
@@ -386,6 +386,7 @@
                     this.start = 0;
                     this.groupPkey = groupPkey;
                     this.popupindex= 0;
+                    this.contactKeyWord= '';
                     this.getContactList(this.contactKeyWord,this.groupPkey,this.start,this.limit)
                     if(name == "ALL CONTACTS"){
                         this.nowGroupCount = this.allGroupCount;
@@ -446,6 +447,9 @@
                     cancelButtonText: 'Cancel',
                     type: 'warning'
                     }).then(() => {
+                        console.log("删除联系人")
+                        self.nowGroupCount = self.nowGroupCount - 1;
+                            return;
                         axios.post('/home/rfq_RFQContact_delete', Qs.stringify({
                             supplierPkey,
                         }, ))
@@ -456,6 +460,7 @@
                                 return
                             };
                             self.start =  0;
+                            self.nowGroupCount = self.nowGroupCount - 1;
                             self.getContactList(self.contactKeyWord,self.groupPkey,self.start,self.limit);
                         })
                         .catch(function (error) {
@@ -551,11 +556,14 @@
                                 self.$message.error(res.data.msg);
                                 return
                             };
-                            self.getGroupList();
                             self.$message({
                                         showClose: true,
                                         message: 'Successfully deleted',
-                                        type: 'success'
+                                        type: 'success',
+                                        duration:500,
+                                        onClose:function(){
+                                            window.location.reload();
+                                        }
                                     });
                         })
                         .catch(function (error) {
@@ -590,7 +598,6 @@
                             // }else{
                                 self.nowGroupCount = self.nowGroupCount - 1;
                             // }
-                            console.log("self.nowGroupCount =============" +  self.nowGroupCount)
                             self.getGroupList();
                             self.getContactList(self.contactKeyWord,self.groupPkey,self.start,self.limit);
                         })
