@@ -60,20 +60,11 @@ public class SVSAuthenticationServiceImpl implements SVSAuthenticationService {
         if (score < 30) {
             throw new WebMessageException(ReturnCode.failure, "未满足银牌基础分值,无法提交认证");
         }
-        svs.setBaseScore(score);
-        svs.setResearch(svs.getResearch());
-        svs.setProductionCapacity(svs.getProductionCapacity());
-        svs.setRealFactory(svs.getRealFactory());
-        svs.setProductQuality(svs.getProductQuality());
-        svs.setForeignTradeTeam(svs.getForeignTradeTeam());
-        svs.setExhibitionAttended(svs.getExhibitionAttended());
-        svs.setApplicationTime(svs.getAuthenticationTime());
-        svs.setAuthenticationTime(new Date());
-        svs.setPartner(svs.getPartner());
         SVSAuthenticationDao.updateSVS(status, grade, reasons, pkey,score);
-        if(status.equals(SVSAuthenticationStatus.SUCCESS.getLine().getKey())){
+        if(status==SVSAuthenticationStatus.SUCCESS.getLine().getKey()){
+            svs.setAuthenticationTime(new Date());
             svs.stStatus(SVSAuthenticationStatus.SUCCESS);
-        }else if(status.equals(SVSAuthenticationStatus.FAIL.getLine().getKey())){
+        }else if(status==SVSAuthenticationStatus.FAIL.getLine().getKey()){
             svs.stStatus(SVSAuthenticationStatus.FAIL);
         }
         pm.send(PM.OTempType.SVS_APPR_NOTICE,supplier, null, svs);
