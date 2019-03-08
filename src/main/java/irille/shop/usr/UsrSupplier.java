@@ -426,7 +426,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     _webSite=null;	// 网址  STR(100)
     _tongjiUrl=null;	// 第三方统计地址  STR(200)
     _tongjiPwd=null;	// 第三方统计密码  STR(40)
-    _updateTime= Env.getTranBeginTime();	// 更新时间  TIME
+    _updateTime=Env.getTranBeginTime();	// 更新时间  TIME
     _userid=null;	// 用户 <表主键:UsrMain>  INT
     _rowVersion=0;	// 版本  SHORT
     return this;
