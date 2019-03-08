@@ -528,6 +528,8 @@
           .cml-pupbox ul li dl{
          	display:none;
 	       	width:104px;
+          min-height: 92px;
+          text-align:center;
 	       	line-height:34px;
 	       	position:absolute;
 	       	border:1px solid #dee2ec;
@@ -546,6 +548,12 @@
            .cml-pupbox ul li,
            .cml-pupbox dl dd{
           	padding-left:10px;
+          }
+          .cml-pupbox dl dd{
+            width:103px;
+            overflow: hidden;
+        white-space: nowrap;
+        text-overflow:ellipsis;
           }
            .cml-pupbox ul li:hover,
            .cml-pupbox dl dd:hover{
@@ -691,6 +699,10 @@
        	}
        #personalCenter .contacts-main .contacts-main-right .contacts-info .conti-more ul li{
        	padding-left:24px;
+         width:102px;
+          overflow: hidden;
+        white-space: nowrap;
+        text-overflow:ellipsis;
        }
        #personalCenter .contacts-main .contacts-main-right .contacts-info .conti-more ul li:hover{
        	background:#dee2ec;
