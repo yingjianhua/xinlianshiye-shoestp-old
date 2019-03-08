@@ -41,7 +41,7 @@ public class PM{
     	SHOP_APPR(1, "店铺审核通知",ORCVRType.SUPPLIER,"/platform/usr_UsrSupplier_updStatus"),
     	ADVERTISEMENT_SUPPLIER(2,"广告推送",ORCVRType.SUPPLIER,""),
     	SVS_WRITE_NOTICE(3,"SVS填写通知",ORCVRType.SUPPLIER,""),
-    	SVS_APPR_NOTICE(4,"SVS审核通知",ORCVRType.SUPPLIER,""),
+    	SVS_APPR_NOTICE(4,"SVS审核通知",ORCVRType.SUPPLIER,"/platform/svs_SVSInfo_updAutInfo"),
     	PROD_APPR_NOTICE(5,"产品审核通知",ORCVRType.SUPPLIER,"/platform/pdt_PdtProduct_review"),
     	O2O_PROD_APPR_NOTICE(22,"O2O产品审核通知",ORCVRType.SUPPLIER,"/platform/o2o_O2OActivity_pass"),
     	ACTIVITY_NOTICE(6,"活动提醒",ORCVRType.SUPPLIER,""),

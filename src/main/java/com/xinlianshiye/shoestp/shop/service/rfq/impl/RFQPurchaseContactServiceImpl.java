@@ -208,6 +208,9 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
 		if(contact == null) {
 			throw new WebMessageException(ReturnCode.service_gone, "请重新选择联系人");
 		}
+		if(group.getPkey().equals(contact.getContactGroup())) {
+			throw new WebMessageException(ReturnCode.service_wrong_data, "该联系人已在" + group.getName());
+		}
 		contact.setContactGroup(group.getPkey());
 		contact.upd();
 	}

@@ -377,12 +377,9 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     JSONArray categoryArray = new JSONArray();
     JSONArray provinceArray = new JSONArray();
     UsrSupplier supplier = BeanBase.load(UsrSupplier.class, SellerAction.getSupplier().getPkey());
-    PltCountry country = new PltCountry();
-    PltProvince province = new PltProvince();
-    UsrSupplierCategory category = new UsrSupplierCategory();
-    List<PltCountry> countryList = country.list(PltCountry.class, "", false);
-    List<UsrSupplierCategory> categoryList = category.list(UsrSupplierCategory.class, "", false);
-    List<PltProvince> provinceList = province.list(PltProvince.class, "", false);
+    List<PltCountry> countryList = BeanBase.list(PltCountry.class, "", false);
+    List<UsrSupplierCategory> categoryList = BeanBase.list(UsrSupplierCategory.class, "", false);
+    List<PltProvince> provinceList = BeanBase.list(PltProvince.class, "", false);
     JSONObject countryJson = null;
     JSONObject categoryJson = null;
     JSONObject provinceJson = null;
@@ -471,7 +468,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
             key.equals("zh_TW") && value.equals(""))) {
           throw LOG.err("needWrite", "{0}语种必填", FldLanguage.Language.valueOf(key).displayName());
         }
-        if (value == "") {
+        if (value.equals("")) {
           json.put(key, json.getString("en"));
         }
       }
