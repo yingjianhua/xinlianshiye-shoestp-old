@@ -6,10 +6,12 @@ import irille.core.sys.Sys;
 import irille.homeAction.usr.dto.Page_supplierProductView;
 import irille.homeAction.usr.dto.SupplierListView;
 import irille.platform.usr.View.UsrSUPSelectView;
+import irille.platform.usr.View.UsrSupplierNewView;
 import irille.platform.usr.View.UsrSupplierView.*;
 import irille.pub.DateTools;
 import irille.pub.LogMessage;
 import irille.pub.PropertyUtils;
+import irille.pub.bean.Bean;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.query.SqlQuery;
 import irille.pub.bean.sql.SQL;
@@ -853,6 +855,81 @@ public class UsrSupplierDAO {
   }
 
   /**
+   * 审核
+   * @param pkey
+   * @param status
+   * @param reason
+   * @return
+   */
+  public static UsrSupplier reviewStatus(String pkey,Integer status,String reason){
+    UsrSupplier supplier = BeanBase.load(UsrSupplier.class, pkey);
+    if(status == 0){
+      supplier.stStatus(OStatus.INIT);
+    }else if(status == 1){
+      supplier.stStatus(OStatus.APPR);
+    }else if(status == 2){
+      supplier.stStatus(OStatus.FAIL);
+      supplier.setReason(reason);
+    }
+    supplier.upd();
+    return supplier;
+  }
+
+  /**
+     * 根据id获取供应商信息
+     * @author: lingjian
+     * @Date: 2019/3/8 9:36
+     * @param pkey
+     * @return
+     */
+    public static List<UsrSupplierNewView> getSupplierById(String pkey){
+        SQL sql=new SQL(){{
+            SELECT(UsrSupplier.class).FROM(UsrSupplier.class).WHERE(UsrSupplier.T.PKEY,"=?",pkey);
+        }};
+        List<UsrSupplierNewView> list= irille.pub.bean.Query.sql(sql).queryMaps().stream().map(bean->new UsrSupplierNewView(){{
+            setPkey((Integer)bean.get(T.PKEY.getFld().getCodeSqlField()));
+            setName((String) bean.get(T.EMAIL.getFld().getCodeSqlField()));
+            setWebsite((String) bean.get(T.WEBSITE.getFld().getCodeSqlField()));
+            setEnglishName((String) bean.get(T.ENGLISH_NAME.getFld().getCodeSqlField()));
+            setCompanyAddr((String) bean.get(T.COMPANY_ADDR.getFld().getCodeSqlField()));
+            setTelephone((String) bean.get(T.TELEPHONE.getFld().getCodeSqlField()));
+            setPostcode((String) bean.get(T.POSTCODE.getFld().getCodeSqlField()));
+            setFax((String) bean.get(T.FAX.getFld().getCodeSqlField()));
+            UsrMain main = Bean.load(UsrMain.class, (Integer) bean.get(T.USER_ID.getFld().getCodeSqlField()));
+            if(main != null){
+              setMainContacts(main.getContacts());
+              setMainEmail(main.getEmail());
+              setMainTelphone(main.getTelphone());
+            }
+            setCompanyType((String) bean.get(T.COMPANY_TYPE.getFld().getCodeSqlField()));
+            setCompanyNature((String) bean.get(T.COMPANY_NATURE.getFld().getCodeSqlField()));
+            setCompanyEstablishTime((Date) bean.get(T.COMPANY_ESTABLISH_TIME.getFld().getCodeSqlField()));
+            setTargetedMarket((String) bean.get(T.TARGETED_MARKET.getFld().getCodeSqlField()));
+            setProdPattern((String) bean.get(T.PROD_PATTERN.getFld().getCodeSqlField()));
+            setAnnualProduction((String) bean.get(T.ANNUAL_PRODUCTION.getFld().getCodeSqlField()));
+            setRegisteredCapital((String) bean.get(T.REGISTERED_CAPITAL.getFld().getCodeSqlField()));
+            setEntity((String) bean.get(T.ENTITY.getFld().getCodeSqlField()));
+            setTaxpayerType((String) bean.get(T.TAXPAYER_TYPE.getFld().getCodeSqlField()));
+            setCreditCode((String) bean.get(T.CREDIT_CODE.getFld().getCodeSqlField()));
+            setBusinessLicenseIsSecular((Byte) bean.get(T.BUSINESS_LICENSE_IS_SECULAR.getFld().getCodeSqlField()));
+            if((Byte) bean.get(T.BUSINESS_LICENSE_IS_SECULAR.getFld().getCodeSqlField()) == 0) {
+              setBusinessLicenseBeginTime((String) bean.get(T.BUSINESS_LICENSE_BEGIN_TIME.getFld().getCodeSqlField()));
+              setBusinessLicenseEndTime((String) bean.get(T.BUSINESS_LICENSE_END_TIME.getFld().getCodeSqlField()));
+            }
+            setContacts((String) bean.get(T.CONTACTS.getFld().getCodeSqlField()));
+            setDepartment((String) bean.get(T.DEPARTMENT.getFld().getCodeSqlField()));
+            setJobTitle((String) bean.get(T.JOB_TITLE.getFld().getCodeSqlField()));
+            setPhone((String) bean.get(T.PHONE.getFld().getCodeSqlField()));
+            setContactEmail((String) bean.get(T.CONTACT_EMAIL.getFld().getCodeSqlField()));
+            setCertPhoto((String) bean.get(T.CERT_PHOTO.getFld().getCodeSqlField()));
+            setIdCardFrontPhoto((String) bean.get(T.ID_CARD_FRONT_PHOTO.getFld().getCodeSqlField()));
+            setContactsIdCardFrontPhoto((String) bean.get(T.CONTACTS_ID_CARD_FRONT_PHOTO.getFld().getCodeSqlField()));
+            setStatus((Byte) bean.get(T.STATUS.getFld().getCodeSqlField()));
+        }}).collect(Collectors.toList());
+        return list;
+    }
+
+  /**
    * 创建供应商信息
    * @author: lingjian
    * @Date: 2019/3/4 10:01
@@ -870,6 +947,7 @@ public class UsrSupplierDAO {
     bean.setLoginName(main.getNickname()); //UsrMain表的昵称
     bean.setEmail(main.getEmail()); //UsrMain表的邮箱
     bean.stStatus(Usr.OStatus.INIT); //审核状态
+    bean.stStoreStatus(Usr.SStatus.DOWN); //店铺状态
     bean.stIsAuth(Usr.OIsAuth.NO); //认证状态
     bean.setSort(default_sort); //排序
     bean.setCountry(main.getCountry()); //国家
@@ -884,7 +962,7 @@ public class UsrSupplierDAO {
     bean.setCategory(40); //供应商分类
 
     bean.setUserId(view.getUserId()); //UsrMain表的pkey
-    bean.setPassword(main.getPassword()); //UsrMain表的密码
+    bean.setPassword(DateTools.getDigest(main.getPkey()+main.getPassword())); //UsrMain表的密码
     bean.setName(view.getName()); //公司名称-必填
     bean.setEnglishName(view.getEnglishName()); //公司英文名称
     bean.stCompanyType(new JSONObject().put(lang.name(), view.getCompanyType())); //企业类型
@@ -921,7 +999,8 @@ public class UsrSupplierDAO {
     bean.setContactsIdCardFrontPhoto(view.getContactsIdCardFrontPhoto()); //运营负责人身份证复印件
     bean.setOperateIdCard(view.getOperateIdCard()); //运营负责人身份证号码
     bean.setApplicationTime(view.getApplicationTime()); //申请时间
-    bean.ins();
+//    bean.ins();
+    translateUtil.autoTranslate(bean, true).ins();
     return bean;
   }
 
@@ -1444,15 +1523,7 @@ public class UsrSupplierDAO {
       }
       SQL sql = new SQL() {
         {
-          SELECT(
-                  T.PKEY,
-                  T.NAME,
-                  T.COMPANY_ADDR,
-                  T.APPLICATION_TIME,
-                  T.STORE_STATUS,
-                  T.STATUS
-                  )
-                  .FROM(UsrSupplier.class)
+          SELECT(UsrSupplier.class).FROM(UsrSupplier.class)
                   .WHERE(T.STATUS,"!=1")
                   .WHERE(T.STORE_STATUS, "!=1");
           if (name != null) {
@@ -1467,10 +1538,8 @@ public class UsrSupplierDAO {
       List<SuppliersView> list = irille.pub.bean.Query.sql(sql.LIMIT(start, limit)).queryMaps().stream().map(o -> new SuppliersView() {{
         setId((Integer) o.get(T.PKEY.getFld().getCodeSqlField()));
         setName((String) o.get(T.NAME.getFld().getCodeSqlField()));
-//        String contacts = BeanBase.load(UsrMain.class, (Integer) o.get(T.PKEY.getFld().getCodeSqlField())).getContacts();
-//        if(contacts != null){
-//          setContacts(contacts);
-//        }
+        String contacts = BeanBase.load(UsrMain.class, (Serializable) o.get(T.USER_ID.getFld().getCodeSqlField())).getContacts();
+        setContacts(contacts);
         setCompanyAddr((String) o.get(T.COMPANY_ADDR.getFld().getCodeSqlField()));
         setApplicationTime((Date) o.get(T.APPLICATION_TIME.getFld().getCodeSqlField()));
         setStoreStatus(Byte.valueOf(String.valueOf(o.get(T.STORE_STATUS.getFld().getCodeSqlField()))));

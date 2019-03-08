@@ -46,6 +46,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     /**
      * 3.1.0新增字段
      */
+    REASON(SYS.STR__100,"审核不通过理由备注"),
     STORE_STATUS(TB.crt(SStatus.DOWN)), //店铺状态 0：关闭，1开启
     ENGLISH_NAME(SYS.STR__100, "英文名称"),
     ANNUAL_PRODUCTION(SYS.STR__100, "年产量"),
@@ -53,8 +54,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     TARGETED_MARKET(SYS.STR__100_NULL, "目标市场"),
     CONTACT_EMAIL(SYS.STR__100, "联系人邮箱"),
     APPLICATION_TIME(SYS.DATE, "申请时间"),
-    USER_ID(UsrMain.fldOutKey().setName("用户").setNull()),
-
+    USER_ID(UsrMain.fldOutKey()),
     /**
      * 公司信息
      */
@@ -228,6 +228,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
 	// FAIL:2,审核不通过
   private Integer _apprBy;	// 审核员 <表主键:SysUser>  INT<null>
   private Date _apprTime;	// 审核时间  TIME<null>
+  private String _reason;	// 审核不通过理由备注  STR(100)
   private Byte _storeStatus;	// 店铺状态 <SStatus>  BYTE
 	// DOWN:0,关闭
 	// OPEN:1,开启
@@ -237,7 +238,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   private String _targetedMarket;	// 目标市场  STR(100)<null>
   private String _contactEmail;	// 联系人邮箱  STR(100)
   private Date _applicationTime;	// 申请时间  DATE
-  private Integer _userId;	// 用户 <表主键:UsrMain>  INT<null>
+  private Integer _userId;	// 用户登陆信息表 <表主键:UsrMain>  INT
   private String _name;	// 名称  STR(100)
   private String _registeredCapital;	// 注册资金  STR(100)
   private Integer _category;	// 供应商分类 <表主键:UsrSupplierCategory>  INT
@@ -355,6 +356,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     _status=OStatus.DEFAULT.getLine().getKey();	// 审核状态 <OStatus>  BYTE
     _apprBy=null;	// 审核员 <表主键:SysUser>  INT
     _apprTime=null;	// 审核时间  TIME
+    _reason=null;	// 审核不通过理由备注  STR(100)
     _storeStatus=SStatus.DEFAULT.getLine().getKey();	// 店铺状态 <SStatus>  BYTE
     _englishName=null;	// 英文名称  STR(100)
     _annualProduction=null;	// 年产量  STR(100)
@@ -362,7 +364,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     _targetedMarket=null;	// 目标市场  STR(100)
     _contactEmail=null;	// 联系人邮箱  STR(100)
     _applicationTime=null;	// 申请时间  DATE
-    _userId=null;	// 用户 <表主键:UsrMain>  INT
+    _userId=null;	// 用户登陆信息表 <表主键:UsrMain>  INT
     _name=null;	// 名称  STR(100)
     _registeredCapital=null;	// 注册资金  STR(100)
     _category=null;	// 供应商分类 <表主键:UsrSupplierCategory>  INT
@@ -529,6 +531,12 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   }
   public void setApprTime(Date apprTime){
     _apprTime=apprTime;
+  }
+  public String getReason(){
+    return _reason;
+  }
+  public void setReason(String reason){
+    _reason=reason;
   }
   public Byte getStoreStatus(){
     return _storeStatus;
