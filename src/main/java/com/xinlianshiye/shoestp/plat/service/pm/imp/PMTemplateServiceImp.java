@@ -23,6 +23,9 @@ public class PMTemplateServiceImp implements IPMTemplateService{
 	
 	@Override
 	public Map<Integer, PMTemplate> getTemplateMap() {
+      if(null == templateMap) {
+			templateMap = new HashMap<>();
+		}
 		return templateMap;
 	}
 	public void setTemplateMap(Map<Integer, PMTemplate> templateMap) {
