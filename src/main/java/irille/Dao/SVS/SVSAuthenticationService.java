@@ -1,8 +1,8 @@
 package irille.Dao.SVS;
 
+
 import com.google.inject.ImplementedBy;
 import irille.Dao.SVS.impl.SVSAuthenticationServiceImpl;
-import irille.Entity.SVS.SVSInfo;
 import irille.view.SVS.SVSAuthenticationView;
 
 @ImplementedBy(SVSAuthenticationServiceImpl.class)
