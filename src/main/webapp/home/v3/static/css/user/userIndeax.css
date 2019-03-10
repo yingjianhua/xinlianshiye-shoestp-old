@@ -514,8 +514,15 @@
     z-index: 100;
     -webkit-transition: all 0.6s;
     transition: all 0.6s;
+    max-width: 500px;
     font-size: 12px;
     text-align: center; }
+.page-personal-center .chat-wrap .chat-header .full-name.ellipsis_5 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical; }
 .page-personal-center .chat-wrap .chat-header .full-name.isShowMore {
     left: 14px;
     top: 125px;
@@ -578,6 +585,7 @@
     line-height: 22px; }
 .page-personal-center .chat-wrap .chater-more-info .basic-info-wrap .label {
     width: 120px;
+    white-space: nowrap;
     -ms-flex-negative: 0;
     flex-shrink: 0; }
 .page-personal-center .chat-wrap .chater-more-info .basic-info-wrap .content {
