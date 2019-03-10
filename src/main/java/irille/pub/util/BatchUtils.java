@@ -16,6 +16,10 @@ import irille.shop.pdt.PdtProduct;
 
 public class BatchUtils {
 	
+	private static IEnumFld castEnum(Object obj) {
+	    return (IEnumFld)obj;
+	  }
+	
 	public static <T extends Bean> void batchIns(Class<T> beanClass,List<T> objs) {
 		Class t = null;
 		try {
@@ -119,6 +123,7 @@ public class BatchUtils {
 	}
 	
 	public static <T extends Bean> void batch(String sql,Stack<IEnumFld> flds,List<T> objs) {
+		System.err.println(sql);
 		PreparedStatement pt = null;
 		Connection connection = null;
 			try {
@@ -128,12 +133,13 @@ public class BatchUtils {
 				int nums = 0;
 				for(T obj:objs) {
 					int i = 1;
-					for(IEnumFld f : flds) {
+					for(IEnumFld f:flds) {
 						try {
 							Field field = obj.getClass().getDeclaredField("_" + f.getFld().getCode());
 							field.setAccessible(true);
 							pt.setObject(i, field.get(obj));
 							field.get(obj);
+							
 							i++;
 							nums++;
 							if(nums%1000 == 0) {
@@ -144,7 +150,7 @@ public class BatchUtils {
 							e.printStackTrace();
 						}
 					}
-					pt.addBatch();
+						pt.addBatch();
 				}
 				pt.executeBatch();
 				connection.commit();
@@ -154,6 +160,7 @@ public class BatchUtils {
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
+				e.printStackTrace();
 			} finally {
 				if(pt != null) {
 					DbPool.close(pt);

@@ -1,5 +1,17 @@
 package irille.sellerAction.pdt;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.apache.struts2.ServletActionContext;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import irille.Service.Manage.Pdt.IPdtProductManageService;
 import irille.Service.Pdt.Imp.PdtproductPageselect;
 import irille.core.sys.Sys;
@@ -21,20 +33,8 @@ import irille.shop.pdt.PdtSpec;
 import irille.shop.pdt.PdtSpecDAO;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltFreightSeller;
-
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import javax.inject.Inject;
-import javax.servlet.ServletResponse;
-
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.struts2.ServletActionContext;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtProductAction {
 
@@ -73,6 +73,9 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
                 break;
             case 0:
                 writeErr(0, "商品颜色尺码必须填写");
+                break;
+            case -2:
+                writeErr(-3, "阶梯价不能为空");
                 break;
             default:
                 write();
@@ -200,6 +203,12 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
     }
 
     private Integer search;
+    @Setter
+    @Getter
+    private String queryType;
+    @Setter
+    @Getter
+    private String data;
 
     /**
      * 根据登陆id查询产品
@@ -208,9 +217,21 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
         if (getSupplier() == null) {
             writeTimeout();
         } else {
-            write(pdtProductManage
-                    .getProductList(getName(), getNumber(), getSupplier().getPkey(), getCat(), getStart(),
-                            getLimit(),getSearch()));
+        	if(queryType != null && "3.1".equals(queryType)) {
+        		Integer pdtPkey = null;
+        		try {
+        			pdtPkey = Integer.parseInt(data);
+				} catch (NumberFormatException e) {
+					pdtPkey = null;
+				}
+        		write(pdtProductManage
+                        .getProductList(pdtPkey,data, data, getSupplier().getPkey(), getCat(), getStart(),
+                                getLimit(),getSearch()));		
+        	}else {
+        		write(pdtProductManage
+                        .getProductList(null,getName(), getNumber(), getSupplier().getPkey(), getCat(), getStart(),
+                                getLimit(),getSearch()));
+        	}
         }
     }
 

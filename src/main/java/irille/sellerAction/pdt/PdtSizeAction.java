@@ -5,14 +5,18 @@ import java.io.IOException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import irille.action.dataimport.util.StringUtil;
 import irille.pub.Exp;
 import irille.pub.tb.FldLanguage;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.pdt.inf.IPdtSizeAction;
+import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtSize;
 import irille.shop.pdt.PdtSizeDAO;
 import irille.shop.plt.PltConfigDAO;
+import lombok.Getter;
+import lombok.Setter;
 
 public class PdtSizeAction extends SellerAction<PdtSize> implements IPdtSizeAction {
 
@@ -92,6 +96,53 @@ public class PdtSizeAction extends SellerAction<PdtSize> implements IPdtSizeActi
         } catch (Exp e) {
             writeErr(e.getLastMessage());
         }
+    }
+    
+    @Setter
+    @Getter
+    private Integer sizeType;
+    @Setter
+    @Getter
+    private String sizeName;
+    /**
+     * -商家新增尺码
+     * @throws Exception
+     */
+    public void insSize() throws Exception {
+    	if(sizeType == null || !StringUtil.hasValue(sizeName)) {
+    		writeErr(0, "参数错误");
+    		return;
+    	}
+    	if(sizeType != (int)Pdt.OSizeType.USA.getLine().getKey() && sizeType != (int)Pdt.OSizeType.EU.getLine().getKey() ) {
+    		writeErr(0, "参数错误");
+    		return;
+    	}
+    	byte by = Byte.parseByte(sizeType.toString());
+    	PdtSize insSize = PdtSizeDAO.insSize(by, sizeName, getSupplier().getPkey(),PltConfigDAO.supplierLanguage(getSupplier()));
+    	JSONObject json = new JSONObject(insSize);
+    	writerOrExport(json);
+    }
+    
+    public void updSize()throws Exception {
+    	if(!StringUtil.hasValue(getBean().getName())) {
+    		writeErr(0, "参数错误");
+    		return;
+    	}
+    	PdtSizeDAO.updSize( getSupplier().getPkey(), getBean().getPkey(), getBean().getName());
+    	write();
+    }
+    
+    public void delSize() throws Exception {
+    	PdtSizeDAO.delSize(getSupplier().getPkey(), getBean().getPkey());
+    	write();
+    }
+    
+    public void getList() throws Exception {
+    	JSONObject json = new JSONObject();
+        JSONArray ja = new JSONArray();
+        ja = new JSONArray(PdtSizeDAO.newListSummary(PltConfigDAO.supplierLanguage(getSupplier()), 1), false);
+        json.put(STORE_ROOT, ja);
+        writerOrExport(json);
     }
 
 }

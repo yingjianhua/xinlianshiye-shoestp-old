@@ -20,5 +20,12 @@ public interface IPdtSizeAction extends ISellerAction{
     void delSizeBySup() throws Exception;
     @RequestMapping(alias = "修改尺寸", sort = 4)
     void updSizeBySup() throws Exception;
-
+    @RequestMapping(alias = "新商家新增尺寸")
+    void insSize() throws Exception;
+    @RequestMapping(alias = "新商家修改尺寸")
+    void updSize()throws Exception;
+    @RequestMapping(alias = "新商家删除尺寸")
+    void delSize() throws Exception;
+    @RequestMapping(alias = "新商家获取尺寸")
+    void getList() throws Exception;
 }

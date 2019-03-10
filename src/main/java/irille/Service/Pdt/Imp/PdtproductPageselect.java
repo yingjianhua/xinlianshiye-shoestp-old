@@ -1,16 +1,33 @@
 package irille.Service.Pdt.Imp;
 
+import static irille.core.sys.Sys.OYn.YES;
+
+import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javax.inject.Inject;
+
+import org.json.JSONException;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.util.Maps;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
 import irille.Dao.PdtProductDao;
-import irille.Entity.O2O.O2O_PrivateExpoPdt;
-import irille.Entity.O2O.O2O_Product;
 import irille.Service.Manage.O2O.IO2OMapServer;
-import irille.Service.Manage.O2O.IO2OPdtServer;
 import irille.Service.Pdt.IPdtProductService;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
@@ -18,35 +35,30 @@ import irille.homeAction.pdt.dto.ProductInfoView;
 import irille.homeAction.pdt.dto.SpecView;
 import irille.pub.Exp;
 import irille.pub.bean.BeanBase;
-import irille.pub.bean.Query;
-import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduPage;
 import irille.pub.util.AppConfig;
-import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.SEOUtils;
+import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.pub.util.TranslateLanguage.translateUtil;
-import irille.shop.pdt.*;
+import irille.shop.pdt.Pdt;
+import irille.shop.pdt.PdtAttr;
+import irille.shop.pdt.PdtAttrLine;
+import irille.shop.pdt.PdtCat;
+import irille.shop.pdt.PdtColorDAO;
+import irille.shop.pdt.PdtCommentDAO;
+import irille.shop.pdt.PdtProduct;
+import irille.shop.pdt.PdtSpec;
+import irille.shop.pdt.PdtSpecDAO;
+import irille.shop.pdt.PdtTieredPricingDao;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltErate;
 import irille.shop.plt.PltErateDAO;
 import irille.shop.usr.UsrFavorites;
 import irille.shop.usr.UsrSupplier;
-import irille.view.O2O.O2OMapView;
 import irille.view.pdt.PdtProductSaveView;
 import irille.view.pdt.PdtProductSpecSaveView;
 import irille.view.pdt.PdtYouMayLikeView;
-import org.json.JSONException;
-
-import javax.inject.Inject;
-import java.math.RoundingMode;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static irille.core.sys.Sys.OYn.YES;
 
 /**
  * l临时拉出来..带整合入Service
@@ -611,6 +623,11 @@ public class PdtproductPageselect {
         view.setLength(pdtProduct.getLength().intValue());
         view.setBriefDescription(pdtProduct.getBriefDescription());
         view.setSpec(getSpec(pdtProduct.getPkey(), function));
+        view.setColor(PdtColorDAO.getPdtColorList(pdtProduct.getColorAttr()));
+        view.setNewSpec(PdtSpecDAO.getList(pdtProduct.getPkey()));
+        view.setTieredPricing(PdtTieredPricingDao.getList(pdtProduct.getPkey()));
+        view.setSoldInStatus(pdtProduct.gtSoldInTime());
+        view.setPutawayDate(pdtProduct.getSoldTimeB());
         return view;
     }
 

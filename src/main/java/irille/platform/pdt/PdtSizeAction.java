@@ -1,12 +1,16 @@
 package irille.platform.pdt;
 
+import java.io.IOException;
+
 import irille.action.ActionBase;
+import irille.action.dataimport.util.StringUtil;
 import irille.pub.svr.LoginUserMsg;
+import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtSize;
 import irille.shop.pdt.PdtSizeDAO;
 import lombok.Data;
-
-import java.io.IOException;
+import lombok.Getter;
+import lombok.Setter;
 
 
 /**
@@ -38,6 +42,10 @@ public class PdtSizeAction extends ActionBase<PdtSize> {
      */
     public void list() throws Exception {
         write(PdtSizeDAO.listSize(name,productCategory,getStart(), getLimit()));
+    }
+    
+    public void newList() throws Exception {
+    	 write(PdtSizeDAO.newListSize(name,productCategory,getStart(), getLimit()));
     }
 
     /**
@@ -81,5 +89,29 @@ public class PdtSizeAction extends ActionBase<PdtSize> {
         remove.setBKey(getBean().getPkey());
         remove.commit();
         write();
+    }
+    
+    @Setter
+    @Getter
+    private Integer sizeType;
+    @Setter
+    @Getter
+    private String sizeName;
+    @Setter
+    @Getter
+    private Integer cate;
+    
+    public void plaInsSize() throws IOException {
+    	if(sizeType == null || sizeType != Pdt.OSizeType.USA.getLine().getKey() || sizeType != Pdt.OSizeType.EU.getLine().getKey() || !StringUtil.hasValue(sizeName))
+    		writeErr(0, "参数错误");
+    	byte by = Byte.parseByte(sizeType.toString());
+    	PdtSizeDAO.plaInsSize(getLoginSys(), by, sizeName, cate);
+    }
+    
+    public void plaUpdSize() throws IOException {
+    	if(sizeType == null || sizeType != Pdt.OSizeType.USA.getLine().getKey() || sizeType != Pdt.OSizeType.EU.getLine().getKey() || !StringUtil.hasValue(sizeName))
+    		writeErr(0, "参数错误");
+    	byte by = Byte.parseByte(sizeType.toString());
+    	PdtSizeDAO.plaUpdSize(id, by, name, cate);
     }
 }

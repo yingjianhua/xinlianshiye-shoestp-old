@@ -1,5 +1,13 @@
 package irille.shop.pdt;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
 import irille.core.sys.SysUser;
@@ -10,21 +18,21 @@ import irille.pub.bean.Bean;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
-import irille.pub.idu.*;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
+import irille.pub.idu.IduIns;
+import irille.pub.idu.IduInsLines;
+import irille.pub.idu.IduOther;
+import irille.pub.idu.IduUpd;
+import irille.pub.idu.IduUpdLines;
 import irille.pub.svr.Env;
 import irille.pub.tb.FldLanguage;
+import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.PdtAttr.T;
 import irille.shop.plt.PltConfigDAO;
 import irille.view.Page;
 import irille.view.pdt.PdtProductVueView;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class PdtAttrDAO {
     public static final Log LOG = new Log(PdtAttrDAO.class);
@@ -174,6 +182,36 @@ public class PdtAttrDAO {
             });
             return result;
         }
+        
+        /**
+         * xy
+         * @param language
+         * @param supplier
+         * @return
+         */
+        public List getAllAttr(FldLanguage.Language language,Integer supplier) {
+            List result = new ArrayList();
+            //不做分类查询
+            String sql = PdtAttr.T.DELETED.getFld().getCodeSqlField() + " = " + OYn.NO.getLine().getKey();
+            PdtAttr.list(PdtAttr.class, sql, false).forEach(l -> {
+                PdtProductVueView attr = new PdtProductVueView();
+                translateUtil.getAutoTranslate(l, language);
+                attr.setId(l.getPkey());
+                attr.setName(l.getName());
+                attr.setSupplier(l.getSupplier());
+                List lineList = new ArrayList();
+                PdtAttrLine.list(PdtAttrLine.class, PdtAttrLine.T.MAIN + "=" + l.getPkey() + " AND " + PdtAttrLine.T.DELETED + " = " + OYn.NO.getLine().getKey(), false).forEach(ll -> {
+                    translateUtil.getAutoTranslate(ll, language);
+                    PdtProductVueView line = new PdtProductVueView();
+                    line.setId(ll.getPkey());
+                    line.setName(ll.getName());
+                    lineList.add(line);
+                });
+                attr.setItems(lineList);
+                result.add(attr);
+            });
+            return result;
+        }
     }
 
     public static class Upd extends IduUpdLines<Upd, PdtAttr, PdtAttrLine> {
@@ -235,4 +273,70 @@ public class PdtAttrDAO {
         }
     }
 
+    /**
+     * -验证商家添加了多少属性
+     * @param supplier
+     * @return
+     */
+    public static Integer verifySupplierCount(Integer supplier) {
+    	SQL sql = new SQL();
+    	sql.SELECT(PdtAttr.class);
+    	sql.FROM(PdtAttr.class);
+    	sql.WHERE(PdtAttr.T.SUPPLIER," =? ",supplier);
+    	sql.WHERE(PdtAttr.T.DELETED, " =? ",OYn.NO.getLine().getKey());
+    	Integer count = Query.sql(sql).queryCount();
+    	return count;
+    }
+    
+    /**
+     * -商家删除属性与属性明细
+     * @param attrPkey
+     */
+    public static void delAttrAndAttrLine(Integer attrPkey,Integer supplier) {
+    	PdtAttr attr = Query.SELECT(PdtAttr.class, attrPkey);
+    	if(attr == null || attr.getSupplier() == null || !attr.getSupplier().equals(supplier))
+    		throw new WebMessageException(ReturnCode.service_wrong_data,"参数错误");
+    	PdtAttrDAO.Del del = new Del();
+    	del.setB(attr);
+    	del.commit();
+    }
+    
+    public static PdtProductVueView insAttrAndAttrLine(Integer supplier,String name,String value,Language lag) {
+    	PdtAttr attr = new PdtAttr();
+    	attr.setName(name);
+    	attr.setCategory(132);
+    	attr.setDeleted(OYn.NO.getLine().getKey());
+    	attr.setCreateTime(Env.getSystemTime());
+    	attr.setSupplier(supplier);
+    	attr.setRowVersion((short)0);
+    	translateUtil.autoTranslate(attr);
+    	PdtAttr insAttr = attr.ins();
+    	PdtAttrLine attrLine = new PdtAttrLine();
+    	attrLine.setName(value);
+    	attrLine.setMain(insAttr.getPkey());
+    	attrLine.setDeleted(OYn.NO.getLine().getKey());
+    	attrLine.setCreateTime(Env.getSystemTime());
+    	attrLine.setRowVersion((short)0);
+    	translateUtil.autoTranslate(attrLine);
+    	attrLine.ins();
+    	PdtProductVueView attrView = new PdtProductVueView();
+    	attrView.setId(attr.getPkey());
+    	try {
+			attrView.setName(attr.getName(lag));
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+    	attrView.setSupplier(attr.getSupplier());
+        List lineList = new ArrayList();
+        PdtAttrLine.list(PdtAttrLine.class, PdtAttrLine.T.MAIN + "=" + attr.getPkey() + " AND " + PdtAttrLine.T.DELETED + " = " + OYn.NO.getLine().getKey(), false).forEach(ll -> {
+            translateUtil.getAutoTranslate(ll, lag);
+            PdtProductVueView line = new PdtProductVueView();
+            line.setId(ll.getPkey());
+            line.setName(ll.getName());
+            lineList.add(line);
+        });
+        attrView.setItems(lineList);
+    	return attrView;
+    }
+    
 }
