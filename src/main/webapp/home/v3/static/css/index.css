@@ -1557,12 +1557,13 @@ a {
     padding: 0;
     max-height: 534px;
     overflow: auto;
+    margin-bottom:0;
 }
 #o2otop .o2otopcon .o2otopmessage dd ul .more-btn{
     color: #10389c;
     cursor: pointer;
     text-align: center;
-    line-height: 30px;
+    line-height: 40px;
 }
 #o2otop .o2otopcon .o2otopmessage dd ul li{
     height: auto;
@@ -1596,7 +1597,7 @@ a {
         align-items: flex-start !important;
 }
 #o2otop .o2otopcon .o2otopmessage dd ul li a>div{
-    width: 299px;
+    width: 290px;
 }
 #o2otop .o2otopcon .o2otopmessage dd ul li a>div div{
     display: -webkit-box;
