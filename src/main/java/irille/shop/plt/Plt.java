@@ -32,6 +32,7 @@ import irille.pub.tb.EnumLine;
 import irille.pub.tb.IEnumOpt;
 import irille.pub.tb.Tb;
 import irille.pub.tb.TbBase;
+import irille.shop.usr.UsrAnnex;
 
 public class Plt extends PackageBase {
     private static final Log LOG = new Log(Plt.class);
@@ -87,6 +88,8 @@ public class Plt extends PackageBase {
         addTb(71, PMTemplate.class);
         addTb(72, SVSInfo.class);
         addTb(72, SVSNewestPdt.class);
+         addTb(73, UsrAnnex.class);
+    }
     }
 
     @Override

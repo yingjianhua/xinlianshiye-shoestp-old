@@ -20,6 +20,13 @@ import irille.pub.tb.Tb;
 import irille.pub.tb.Tb.Index;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltProvince;
+import irille.shop.usr.Usr.OIsAuth;
+import irille.shop.usr.Usr.OStatus;
+import irille.shop.usr.Usr.SStatus;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Date;
 
 /**
  * 供应商
@@ -47,9 +54,20 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     ROLE(UsrSupplierRole.fldOutKey()),
     LOGIN_NAME(SYS.CODE__40, "登录账号"),
     PASSWORD(SYS.PASSWORD__NULL),
-    STATUS(TB.crt(Usr.OStatus.DEFAULT)), //createBy liyichao
+    STATUS(TB.crt(Usr.OStatus.DEFAULT)), //审核状态 createBy liyichao
     APPR_BY(SYS.APPR_BY_NULL),       //createBy liyichao	审核人
     APPR_TIME(SYS.APPR_DATE_TIME__NULL), //createBy liyichao	审核时间
+    /**
+     * 3.1.0新增字段
+     */
+    REASON(SYS.STR__100,"审核不通过理由备注"),
+    STORE_STATUS(TB.crt(SStatus.DOWN)), //店铺状态 0：关闭，1开启
+    ENGLISH_NAME(SYS.STR__100, "英文名称"),
+    ANNUAL_PRODUCTION(SYS.STR__100, "年产量"),
+    POSTCODE(SYS.STR__20, "邮编"),
+    TARGETED_MARKET(SYS.STR__100_NULL, "目标市场"),
+    CONTACT_EMAIL(SYS.STR__100, "联系人邮箱"),
+    APPLICATION_TIME(SYS.DATE, "申请时间"),
     /**
      * 公司信息
      */
@@ -81,8 +99,8 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     FAX(SYS.STR__20_NULL, "传真"),//传真
     QQ(SYS.QQ),//QQ
     CERT_PHOTO(SYS.STR__200_NULL, "资质证书"),//资质证书
-    ID_CARD_FRONT_PHOTO(SYS.STR__200_NULL, "身份证正面"),//身份证正面
-    ID_CARD_BACK_PHOTO(SYS.STR__200_NULL, "身份证反面"),//身份证反面
+    ID_CARD_FRONT_PHOTO(SYS.STR__200_NULL, "法人身份证正面"),//实际使用（正反面图片）
+    ID_CARD_BACK_PHOTO(SYS.STR__200_NULL, "法人身份证反面"),//身份证反面
     COOP_CERT_PHOTO(SYS.STR__200_NULL, "合作凭证"),//合作凭证
     TAXPAYER_TYPE(SYS.STR__100_NULL, "纳税人类型"),
     ID_CARD(SYS.STR__50_NULL, "法人身份证号码"),//法人身份证号码
@@ -97,7 +115,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     BANK_BRANCH(SYS.STR__100_NULL, "银行开户行"),
     BANK_COUNTRY(PltCountry.fldOutKey()),//,"开户行国家"
     BANK_PROVINCE(PltProvince.fldOutKey()),//"开户行省份"
-    CONTACTS_ID_CARD_FRONT_PHOTO(SYS.STR__200_NULL, "运营负责人身份证正面"),
+    CONTACTS_ID_CARD_FRONT_PHOTO(SYS.STR__200_NULL, "运营负责人身份证正面"), //实际使用（正反面图片）
     CONTACTS_ID_CARD_BACK_PHOTO(SYS.STR__200_NULL, "运营负责人身份证反面"),
 
     /**
@@ -218,11 +236,22 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   private Integer _role;	// 供应商角色 <表主键:UsrSupplierRole>  INT
   private String _loginName;	// 登录账号  STR(40)
   private String _password;	// 密码  STR(40)<null>
-  private Byte _status;	// 状态 <OStatus>  BYTE
+  private Byte _status;	// 审核状态 <OStatus>  BYTE
 	// INIT:0,未审核
-	// APPR:1,已审核
+	// APPR:1,审核通过
+	// FAIL:2,审核不通过
   private Integer _apprBy;	// 审核员 <表主键:SysUser>  INT<null>
   private Date _apprTime;	// 审核时间  TIME<null>
+  private String _reason;	// 审核不通过理由备注  STR(100)
+  private Byte _storeStatus;	// 店铺状态 <SStatus>  BYTE
+	// DOWN:0,关闭
+	// OPEN:1,开启
+  private String _englishName;	// 英文名称  STR(100)
+  private String _annualProduction;	// 年产量  STR(100)
+  private String _postcode;	// 邮编  STR(20)
+  private String _targetedMarket;	// 目标市场  STR(100)<null>
+  private String _contactEmail;	// 联系人邮箱  STR(100)
+  private Date _applicationTime;	// 申请时间  DATE
   private String _name;	// 名称  STR(100)
   private String _registeredCapital;	// 注册资金  STR(100)
   private Integer _category;	// 供应商分类 <表主键:UsrSupplierCategory>  INT
@@ -255,8 +284,8 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   private String _fax;	// 传真  STR(20)<null>
   private String _qq;	// QQ  STR(100)<null>
   private String _certPhoto;	// 资质证书  STR(200)<null>
-  private String _idCardFrontPhoto;	// 身份证正面  STR(200)<null>
-  private String _idCardBackPhoto;	// 身份证反面  STR(200)<null>
+  private String _idCardFrontPhoto;	// 法人身份证正面  STR(200)<null>
+  private String _idCardBackPhoto;	// 法人身份证反面  STR(200)<null>
   private String _coopCertPhoto;	// 合作凭证  STR(200)<null>
   private String _taxpayerType;	// 纳税人类型  STR(100)<null>
   private String _idCard;	// 法人身份证号码  STR(50)<null>
@@ -338,13 +367,21 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     _role=null;	// 供应商角色 <表主键:UsrSupplierRole>  INT
     _loginName=null;	// 登录账号  STR(40)
     _password=null;	// 密码  STR(40)
-    _status= Usr.OStatus.DEFAULT.getLine().getKey();	// 状态 <OStatus>  BYTE
+    _status=OStatus.DEFAULT.getLine().getKey();	// 审核状态 <OStatus>  BYTE
     _apprBy=null;	// 审核员 <表主键:SysUser>  INT
     _apprTime=null;	// 审核时间  TIME
+    _reason=null;	// 审核不通过理由备注  STR(100)
+    _storeStatus=SStatus.DEFAULT.getLine().getKey();	// 店铺状态 <SStatus>  BYTE
+    _englishName=null;	// 英文名称  STR(100)
+    _annualProduction=null;	// 年产量  STR(100)
+    _postcode=null;	// 邮编  STR(20)
+    _targetedMarket=null;	// 目标市场  STR(100)
+    _contactEmail=null;	// 联系人邮箱  STR(100)
+    _applicationTime=null;	// 申请时间  DATE
     _name=null;	// 名称  STR(100)
     _registeredCapital=null;	// 注册资金  STR(100)
     _category=null;	// 供应商分类 <表主键:UsrSupplierCategory>  INT
-    _isAuth= Usr.OIsAuth.DEFAULT.getLine().getKey();	// 供应商认证 <OIsAuth>  BYTE
+    _isAuth=OIsAuth.DEFAULT.getLine().getKey();	// 供应商认证 <OIsAuth>  BYTE
     _sort=0;	// 排序号  INT
     _seoTitle=null;	// 店铺关键字  JSONOBJECT
     _seoContent=null;	// 搜索引擎说明  JSONOBJECT
@@ -364,13 +401,13 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     _email=null;	// Email  STR(100)
     _businessLicenseBeginTime=null;	// 营业执照开始时间  STR(100)
     _businessLicenseEndTime=null;	// 营业执照到期时间  STR(100)
-    _businessLicenseIsSecular= Sys.OYn.DEFAULT.getLine().getKey();	// 是否长期 <OYn>  BYTE
+    _businessLicenseIsSecular=OYn.DEFAULT.getLine().getKey();	// 是否长期 <OYn>  BYTE
     _telephone=null;	// 电话  STR(20)
     _fax=null;	// 传真  STR(20)
     _qq=null;	// QQ  STR(100)
     _certPhoto=null;	// 资质证书  STR(200)
-    _idCardFrontPhoto=null;	// 身份证正面  STR(200)
-    _idCardBackPhoto=null;	// 身份证反面  STR(200)
+    _idCardFrontPhoto=null;	// 法人身份证正面  STR(200)
+    _idCardBackPhoto=null;	// 法人身份证反面  STR(200)
     _coopCertPhoto=null;	// 合作凭证  STR(200)
     _taxpayerType=null;	// 纳税人类型  STR(100)
     _idCard=null;	// 法人身份证号码  STR(50)
@@ -399,7 +436,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     _country=null;	// 国家管理 <表主键:PltCountry>  INT
     _province=null;	// 省份 <表主键:PltProvince>  INT
     _city=null;	// City  JSONOBJECT
-    _isPro= Sys.OYn.DEFAULT.getLine().getKey();	// 供应商首页产品展示 <OYn>  BYTE
+    _isPro=OYn.DEFAULT.getLine().getKey();	// 供应商首页产品展示 <OYn>  BYTE
     _logo=null;	// logo  STR(200)
     _signBackgd=null;	// 店招背景  STR(200)
     _adPhoto=null;	// 广告图  JSONOBJECT
@@ -414,13 +451,13 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     _homePageDiyMobile=null;	// 首页个性装修（移动）  STR(1000)
     _productPageDiyMobile=null;	// 产品页个性装修（移动）  STR(1000)
     _contactPageDiyMobile=null;	// 联系页个性装修（移动）  STR(1000)
-    _homePageOn= Sys.OYn.DEFAULT.getLine().getKey();	// 首页个性装修开关 <OYn>  BYTE
-    _productPageOn= Sys.OYn.DEFAULT.getLine().getKey();	// 产品页个性装修开关 <OYn>  BYTE
-    _contactPageOn= Sys.OYn.DEFAULT.getLine().getKey();	// 联系页个性装修开关 <OYn>  BYTE
-    _bottomHomeProductsOn= Sys.OYn.DEFAULT.getLine().getKey();	// 首页底部产品展示开关 <OYn>  BYTE
-    _homePosterOn= Sys.OYn.DEFAULT.getLine().getKey();	// 首页大海报开关 <OYn>  BYTE
-    _homeBusinessBigPosterOn= Sys.OYn.DEFAULT.getLine().getKey();	// 首页企业大海报开关 <OYn>  BYTE
-    _companyIntroductionPageCustomDecorationOn= Sys.OYn.DEFAULT.getLine().getKey();	// 公司介绍页自定义装修开关 <OYn>  BYTE
+    _homePageOn=OYn.DEFAULT.getLine().getKey();	// 首页个性装修开关 <OYn>  BYTE
+    _productPageOn=OYn.DEFAULT.getLine().getKey();	// 产品页个性装修开关 <OYn>  BYTE
+    _contactPageOn=OYn.DEFAULT.getLine().getKey();	// 联系页个性装修开关 <OYn>  BYTE
+    _bottomHomeProductsOn=OYn.DEFAULT.getLine().getKey();	// 首页底部产品展示开关 <OYn>  BYTE
+    _homePosterOn=OYn.DEFAULT.getLine().getKey();	// 首页大海报开关 <OYn>  BYTE
+    _homeBusinessBigPosterOn=OYn.DEFAULT.getLine().getKey();	// 首页企业大海报开关 <OYn>  BYTE
+    _companyIntroductionPageCustomDecorationOn=OYn.DEFAULT.getLine().getKey();	// 公司介绍页自定义装修开关 <OYn>  BYTE
     _traceCode=null;	// 跟踪代码  TEXT(200)
     _webSizeTitle=null;	// 自定义链接名称  STR(100)
     _webSite=null;	// 网址  STR(100)
@@ -480,10 +517,10 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   public void setStatus(Byte status){
     _status=status;
   }
-  public Usr.OStatus gtStatus(){
-    return (Usr.OStatus)(Usr.OStatus.INIT.getLine().get(_status));
+  public OStatus gtStatus(){
+    return (OStatus)(OStatus.INIT.getLine().get(_status));
   }
-  public void stStatus(Usr.OStatus status){
+  public void stStatus(OStatus status){
     _status=status.getLine().getKey();
   }
   public Integer getApprBy(){
@@ -508,6 +545,60 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   }
   public void setApprTime(Date apprTime){
     _apprTime=apprTime;
+  }
+  public String getReason(){
+    return _reason;
+  }
+  public void setReason(String reason){
+    _reason=reason;
+  }
+  public Byte getStoreStatus(){
+    return _storeStatus;
+  }
+  public void setStoreStatus(Byte storeStatus){
+    _storeStatus=storeStatus;
+  }
+  public SStatus gtStoreStatus(){
+    return (SStatus)(SStatus.DOWN.getLine().get(_storeStatus));
+  }
+  public void stStoreStatus(SStatus storeStatus){
+    _storeStatus=storeStatus.getLine().getKey();
+  }
+  public String getEnglishName(){
+    return _englishName;
+  }
+  public void setEnglishName(String englishName){
+    _englishName=englishName;
+  }
+  public String getAnnualProduction(){
+    return _annualProduction;
+  }
+  public void setAnnualProduction(String annualProduction){
+    _annualProduction=annualProduction;
+  }
+  public String getPostcode(){
+    return _postcode;
+  }
+  public void setPostcode(String postcode){
+    _postcode=postcode;
+  }
+  public String getTargetedMarket(){
+    return _targetedMarket;
+  }
+  public void setTargetedMarket(String targetedMarket){
+    _targetedMarket=targetedMarket;
+  }
+  public String getContactEmail(){
+    return _contactEmail;
+  }
+  public void setContactEmail(String contactEmail){
+    _contactEmail=contactEmail;
+  }
+  public Date getApplicationTime(){
+    return _applicationTime;
+  }
+  public void setApplicationTime(Date applicationTime){
+    _applicationTime=applicationTime;
   }
   public String getName(){
     return _name;
