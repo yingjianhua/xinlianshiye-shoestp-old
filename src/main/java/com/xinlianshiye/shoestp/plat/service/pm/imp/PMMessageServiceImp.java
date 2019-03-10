@@ -35,7 +35,7 @@ public class PMMessageServiceImp implements IPMMessageService{
 	
 	@Inject
 	private IPMTemplateDao templateDao;
-	
+
 	private IPMTemplateService templateService = new PMTemplateServiceImp();
 	
 	private IVariableService variableService = new VariableServiceImp();

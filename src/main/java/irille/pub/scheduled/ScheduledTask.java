@@ -1,6 +1,7 @@
 package irille.pub.scheduled;
 
 import irille.Service.Manage.O2O.Imp.O2OActicityServerImp;
+import irille.pub.dynamicScore.SVSNewestPdtAction;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
@@ -21,6 +22,7 @@ public class ScheduledTask implements ServletContextListener {
     public void initScheduledTask() {
 //		addTask(QuartzTest.class,1,"测试");
         addTask(O2OActicityServerImp.class, 5 * minute, "O2O活动状态变更");
+        addTask(SVSNewestPdtAction.class, 150, "SVS动态分");
     }
 
     public void addTask(Class clazz, int time, String name) {
