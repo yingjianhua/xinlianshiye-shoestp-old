@@ -6,6 +6,7 @@ import irille.Entity.RFQ.Enums.RFQConsultVerifyStatus;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
+import irille.Entity.RFQ.RFQConsultRelation.T;
 import irille.core.sys.Sys;
 import irille.platform.rfq.view.*;
 import irille.pub.bean.BeanBase;
@@ -284,7 +285,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                         RFQConsultRelation.T.FAVORITE,
                         RFQConsultRelation.T.CONSULT
                 )
-                .SELECT("count(1) as inquiry")
+                .SELECT(T.PKEY,"inquiry")
                 .FROM(RFQConsultRelation.class)
                 .WHERE(RFQConsultRelation.T.SUPPLIER_ID, "= ?")
         ;
@@ -309,7 +310,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 .WHERE(RFQConsult.T.VERIFY_STATUS, "=?", RFQConsultVerifyStatus.PASS)
         ;
         sql.ORDER_BY(RFQConsult.T.CREATE_TIME, " DESC ");
-        return Query.sql(sql).queryMaps();
+      return Query.sql(sql).queryMaps();
     }
 
     public RFQConsult getRFQInfo(int id) {

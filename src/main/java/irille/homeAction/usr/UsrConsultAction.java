@@ -43,10 +43,10 @@ public class UsrConsultAction extends HomeAction<UsrConsult> implements IUsrCons
 	 */
 	@Override
 	public String publishView() {
-//		setResult("/home/my-inquiry-publish.jsp");
-//		return TRENDS;
-        setResult("/home/usr_UsrMessages_center");
-        return HomeAction.RTRENDS;
+		setResult("/home/my-inquiry-publish.jsp");
+		return TRENDS;
+//        setResult("/home/usr_UsrMessages_center");
+//        return HomeAction.RTRENDS;
 	}
 	@NeedLogin
 	public String productPublishView() {
