@@ -18,7 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class UsrMainDao1 {
+public class UsrMainDao {
     public static final LogMessage LOG = new LogMessage(UsrMain.class);
 
 
