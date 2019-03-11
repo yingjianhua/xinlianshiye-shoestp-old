@@ -29,7 +29,7 @@ public class UsrPurchase extends BeanInt<UsrPurchase> implements IExtName{
 		ICON(SYS.IMG__200_NULL,"头像"),
 		EMAIL(SYS.EMAIL__NULL,"邮箱"),
 		REG_TIME(SYS.DATE_TIME__NULL,"注册时间"),
-		LOGIN_NAME(SYS.CODE__40,"登录账号"),
+		LOGIN_NAME(SYS.STR__50,"登录账号"),
 		PASSWORD(SYS.PASSWORD__NULL),
 		CURRENCY(PltErate.fldOutKey("currency", "默认货币")), //弃用字段
 		REG_IP(SYS.IP__NULL,"注册IP"),
@@ -103,7 +103,7 @@ public class UsrPurchase extends BeanInt<UsrPurchase> implements IExtName{
   private String _icon;	// 头像  STR(200)<null>
   private String _email;	// 邮箱  STR(100)<null>
   private Date _regTime;	// 注册时间  TIME<null>
-  private String _loginName;	// 登录账号  STR(40)
+  private String _loginName;	// 登录账号  STR(50)
   private String _password;	// 密码  STR(40)<null>
   private Integer _currency;	// 默认货币 <表主键:PltErate>  INT
   private String _regIp;	// 注册IP  STR(30)<null>
@@ -126,7 +126,7 @@ public class UsrPurchase extends BeanInt<UsrPurchase> implements IExtName{
     _icon=null;	// 头像  STR(200)
     _email=null;	// 邮箱  STR(100)
     _regTime=null;	// 注册时间  TIME
-    _loginName=null;	// 登录账号  STR(40)
+    _loginName=null;	// 登录账号  STR(50)
     _password=null;	// 密码  STR(40)
     _currency=null;	// 默认货币 <表主键:PltErate>  INT
     _regIp=null;	// 注册IP  STR(30)
