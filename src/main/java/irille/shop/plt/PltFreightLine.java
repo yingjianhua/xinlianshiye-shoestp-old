@@ -18,8 +18,8 @@ public class PltFreightLine  extends BeanInt<PltFreightLine>{
 		SECTION(SYS.STR__100,"区间"),
 		BRIEF(SYS.STR__100_NULL,"简介"),
 		FREE(SYS.NY,"免运费"),
-		FREE_PRICE(SYS.PRICE,"免运费价格", true),
-		EXTRA_PRICE(SYS.PRICE,"附加费用", true),
+		FREE_PRICE(SYS.PRICE,"免运费价格"),
+		EXTRA_PRICE(SYS.PRICE,"附加费用"),
 		WEIGHT_SECTION(SYS.INT,"首重区间"),
 		AGGRAVATE_SECTION(SYS.INT,"续重区间"),
 		WEIGHT_PRICE(SYS.PRICE,"首重价格"),
@@ -62,8 +62,8 @@ public class PltFreightLine  extends BeanInt<PltFreightLine>{
   private Byte _free;	// 免运费 <OYn>  BYTE
 	// YES:1,是
 	// NO:0,否
-  private BigDecimal _freePrice;	// 免运费价格  DEC(14,4)<null>
-  private BigDecimal _extraPrice;	// 附加费用  DEC(14,4)<null>
+  private BigDecimal _freePrice;	// 免运费价格  DEC(14,4)
+  private BigDecimal _extraPrice;	// 附加费用  DEC(14,4)
   private Integer _weightSection;	// 首重区间  INT
   private Integer _aggravateSection;	// 续重区间  INT
   private BigDecimal _weightPrice;	// 首重价格  DEC(14,4)

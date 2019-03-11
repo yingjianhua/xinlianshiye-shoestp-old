@@ -37,7 +37,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   public enum T implements IEnumFld {//@formatter:off
     PKEY(TB.crtIntPkey()),
     ROLE(UsrSupplierRole.fldOutKey()),
-    LOGIN_NAME(SYS.CODE__40, "登录账号"),
+    LOGIN_NAME(SYS.STR__50, "登录账号"),
     PASSWORD(SYS.PASSWORD__NULL),
     STATUS(TB.crt(Usr.OStatus.DEFAULT)), //createBy liyichao
     APPR_BY(SYS.APPR_BY_NULL),       //createBy liyichao	审核人
@@ -207,7 +207,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   //实例变量定义-----------------------------------------
   private Integer _pkey;  // 编号  INT
   private Integer _role;  // 供应商角色 <表主键:UsrSupplierRole>  INT
-  private String _loginName;  // 登录账号  STR(40)
+  private String _loginName;  // 登录账号  STR(50)
   private String _password;  // 密码  STR(40)<null>
   private Byte _status;  // 状态 <OStatus>  BYTE
   // INIT:0,未审核
@@ -326,7 +326,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   public UsrSupplier init() {
     super.init();
     _role = null;  // 供应商角色 <表主键:UsrSupplierRole>  INT
-    _loginName = null;  // 登录账号  STR(40)
+    _loginName = null;  // 登录账号  STR(50)
     _password = null;  // 密码  STR(40)
     _status = OStatus.DEFAULT.getLine().getKey();  // 状态 <OStatus>  BYTE
     _apprBy = null;  // 审核员 <表主键:SysUser>  INT
