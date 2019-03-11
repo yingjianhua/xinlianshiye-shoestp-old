@@ -101,12 +101,23 @@ public interface SVSNewestPdtService {
      * @return
      */
     List<Integer> getSupDiamondsAndGold();
+
     /**
-     * 获取SVS认证
-     * 用于新增或修改SVS认证表中的动态分
+     * 获取已通过审核的SVS商家
+     * 每个月20号进行计算级别
      *
-     * @param supId
      * @return
      */
-    SQL getSVSInfo(Integer supId);
+    List<Integer> getSVSInfoSupIds();
+
+    /**
+     * 获取SVS认证
+     * 用于新增或修改SVS认证表
+     *
+     * @param supIds
+     * @return
+     */
+    SQL getSVSInfos(String supIds);
+
+
 }
