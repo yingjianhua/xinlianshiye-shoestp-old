@@ -100,9 +100,9 @@ public interface ISVSNewestPdtAction {
     /**
      * SVS认证商家等级自动审核
      *
-     * @param supIds
+     * @return
      */
-    void updSVSGrade(String supIds);
+    void updSVSGrade();
 
     /**
      * 用于修改SVS认证表

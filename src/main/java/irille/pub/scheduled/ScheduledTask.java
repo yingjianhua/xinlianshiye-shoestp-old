@@ -9,6 +9,7 @@ import org.quartz.impl.StdSchedulerFactory;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import java.text.ParseException;
 import java.util.TimeZone;
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -17,9 +18,8 @@ import java.util.concurrent.LinkedBlockingDeque;
  * 秒为单位
  */
 public class ScheduledTask implements ServletContextListener {
-    private static final int minute = 60 ;
+    private static final int minute = 60;
     private static final int hour = 60 * 60;
-
     private LinkedBlockingDeque<Task> _tasks = new LinkedBlockingDeque<Task>();
 
     private Scheduler scheduler = null;
@@ -27,21 +27,22 @@ public class ScheduledTask implements ServletContextListener {
     public void initScheduledTask() {
 //		addTask(QuartzTest.class,1,"测试");
         addTask(O2OActicityServerImp.class, 5 * minute, "O2O活动状态变更");
-        addTask(SVSNewestPdtAction.class, 5, "SVS动态分");
+        addTask(SVSNewestPdtAction.updSVSFraction.class, "0 0/15 * * * ?", "SVS动态分");
+        addTask(SVSNewestPdtAction.updSVSGrade.class, "0 0 0 20 * ?", "SVS等级");
     }
 
     public void addTask(Class clazz, Object time, String name) {
         Task t = new Task();
         t.setClazz(clazz);
-        if(time instanceof Integer){
+        if (time instanceof Integer) {
             t.setTime(Integer.valueOf(String.valueOf(time)));
-        }else if(time instanceof String){
-            if(CronExpression.isValidExpression(String.valueOf(time))){
+        } else if (time instanceof String) {
+            if (CronExpression.isValidExpression(String.valueOf(time))) {
                 t.setCron(String.valueOf(time));
-            }else{
+            } else {
                 throw new WebMessageException("非法Cron表达式");
             }
-        }else{
+        } else {
             throw new WebMessageException("不支持的时间类型");
         }
 
@@ -57,7 +58,7 @@ public class ScheduledTask implements ServletContextListener {
                     .build();
 
             Trigger trigger = null;
-            if(t.getTime() != null){
+            if (t.getTime() != null) {
                 trigger = TriggerBuilder.newTrigger()
                         .withIdentity(t.getClazz().getSimpleName() + "_Trigger", t.getClazz().getName().substring(0, t.getClazz().getName().lastIndexOf(".")))
                         .startNow()
@@ -65,10 +66,10 @@ public class ScheduledTask implements ServletContextListener {
                                 .withIntervalInSeconds(t.getTime())
                                 .repeatForever())
                         .build();
-            }else if(t.getCron() != null){
+            } else if (t.getCron() != null) {
                 trigger = TriggerBuilder.newTrigger()
                         .withIdentity(t.getClazz().getSimpleName() + "_Trigger", t.getClazz().getName().substring(0, t.getClazz().getName().lastIndexOf(".")))
-                        .withSchedule(CronScheduleBuilder.cronSchedule("").inTimeZone(TimeZone.getDefault()))
+                        .withSchedule(CronScheduleBuilder.cronSchedule(t.getCron()).inTimeZone(TimeZone.getDefault()))
                         .build();
             }
 
