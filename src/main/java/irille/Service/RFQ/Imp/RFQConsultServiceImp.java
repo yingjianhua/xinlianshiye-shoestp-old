@@ -88,6 +88,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         rfqConsult.stIsDeleted(false);
         rfqConsult.setChangeCount((short) 0);
         rfqConsult.setCountry(usrPurchase.getCountry());
+        rfqConsult.setExtraRequest(rfqConsultView.getExtraRequest());
         rfqConsultDAO.setB(rfqConsult);
         rfqConsultDAO.commit();
         messageService.send(OTempType.RFQ_INFO_NOTICE,null, usrPurchase, rfqConsult);
@@ -263,4 +264,56 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         return -1;
     }
 
+    @Override
+    public int putSupplierInquiry(PutSupplierConsultView consultView, UsrPurchase purchase) {
+        RFQConsult consult = new RFQConsult();
+        consult.setTitle(consultView.getTitle());
+        consult.setDestination(consultView.getDescription());
+        StringJoiner joiner = new StringJoiner(",");
+        for (String s : consultView.getExtra_request()) {
+            joiner.add(s);
+        }
+        consult.setExtraRequest(joiner.toString());
+        consult.setSupplierId(consultView.getSupplierId());
+        consult.setImage(consultView.getImages());
+        consult.setQuantity(consultView.getQuantity());
+        RFQConsultUnit rfqConsultUnit;
+        try {
+            rfqConsultUnit = (RFQConsultUnit) RFQConsultUnit.PAIR.getLine().get(consultView.getUnit());
+        } catch (Exception e) {
+            e.printStackTrace();
+            rfqConsultUnit = RFQConsultUnit.PAIR;
+        }
+        ;
+        consult.stUnit(rfqConsultUnit);
+        rfqConsultDAO.setB(consult).commit();
+        RFQConsultRelation rfqConsultRelation = new RFQConsultRelation();
+        rfqConsultRelation.setConsult(consult.getPkey());
+        rfqConsultRelation.setSupplierId(consultView.getSupplierId());
+        rfqConsultRelation.setPurchaseId(purchase.getPkey());
+        rfqConsultRelation.stInRecycleBin(false);
+        rfqConsultRelation.stFavorite(false);
+        rfqConsultRelation.setTitle("");
+        rfqConsultRelation.setDescription("");
+        rfqConsultRelation.setImage("{}");
+        rfqConsultRelation.setQuantity(0);
+        rfqConsultRelation.stUnit(RFQConsultUnit.PAIR);
+        rfqConsultRelation.setMinprice(0);
+        rfqConsultRelation.setMaxprice(0);
+        rfqConsultRelation.setCurrency(0);
+        rfqConsultRelation.setValidDate(null);
+        rfqConsultRelation.stPaytype(RFQConsultPayType.DEFAULT);
+        rfqConsultRelation.stTransittype(RFQConsultShipping_Type.FOB);
+        rfqConsultRelation.setCreateDate(new Date());
+        rfqConsultRelation.stIsNew(false);
+        rfqConsultRelation.stSample(false);
+        rfqConsultRelation.stHadReadSupplier(false);
+        rfqConsultRelation.stHadReadPurchase(false);
+        rfqConsultRelation.stIsDeletedPurchase(false);
+        rfqConsultRelation.stIsDeletedSupplier(false);
+        rfqConsultRelation.setThrowaway("{}");
+        rfqConsultRelation.ins();
+        return 0;
+    }
 }
+
