@@ -253,54 +253,6 @@
     </div>
     <!-- 夏超 -->
     <section id="xc" class="w_1240">
-        <!-- 第一段 -->
-        <div class="section1">
-            <div class="title clearfix">
-                <div class="fl clearfix">
-                    <span class="fl">Crowdfunding</span>
-                    <ul class="fl clearfix">
-                        <li>Lower price in small number</li>
-                        <li>Fashion Design will be published</li>
-                    </ul>
-                </div>
-                <%--<a target="_blank" href="https://www.shoestp.com/home/Activity_Romania_classifyactivity" class="fr">More--%>
-                <%--></a>--%>
-            </div>
-            <div class="product-list clearfix">
-                <template v-for="(item, index) in CrowdFundingList" :key="index">
-                    <div class="product-item">
-                        <div class="product-img">
-                            <a :href="item.url" target="_blank">
-                                <img :src="item.imgUrl" alt="">
-                            </a>
-                        </div>
-                        <div class="product-content">
-                            <div class="product-info ellipsis_2">
-                                <a :href="item.url" target="_blank">
-                                    {{item.title}}
-                                </a>
-                            </div>
-                            <div style="margin-top:20px;">
-                                <div class="clearfix" style="color: #232323;">
-                                    <span style="color: #e54544;" class="font-bold">{{item.salesVolume}}</span>
-                                    <span class="font-bold" style="color: #b0b0b0;">sales volume</span>
-                                    <span class="fr font-bold" style=" font-size: 14px;">{{item.percentage}}%</span>
-                                </div>
-                                <el-progress style="margin:10px 0" :percentage="item.percentage" color="#1a4091"
-                                             :show-text="false"></el-progress>
-                                <div>
-                                    <img style="width:14px;" src="/home/v3/static/images/icon_sj.png" alt="">
-                                    <span style=" font-size: 12px;color: #b0b0b0;">Remaining {{item.endTime}} days</span>
-                                </div>
-                            </div>
-                            <!-- <div class="like-btn">
-                                <img src="/home/v3/static/images/icon_like.png" alt="" style="width:21px;">
-                            </div> -->
-                        </div>
-                    </div>
-                </template>
-            </div>
-        </div>
         <!-- 第二段 -->
         <div class="section2 clearfix">
             <!-- 左边 -->
