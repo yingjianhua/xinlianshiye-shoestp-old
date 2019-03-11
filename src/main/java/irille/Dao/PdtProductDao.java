@@ -3,6 +3,7 @@ package irille.Dao;
 import static irille.core.sys.Sys.OYn.YES;
 import static java.util.stream.Collectors.toList;
 
+import irille.shop.usr.UsrSupplier.T;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLDecoder;
@@ -800,6 +801,9 @@ public class PdtProductDao {
                 UsrSupplier.T.ROLE,
                 UsrSupplier.T.LOGO
         ).SELECT(
+                T.PKEY, "supId"
+        ).
+            SELECT(
                 UsrSupplier.T.NAME, "supName"
         ).FROM(
                 PdtProduct.class

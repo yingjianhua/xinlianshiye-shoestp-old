@@ -201,7 +201,7 @@
                 fastly and accurately. We creat SVS is for make buyers to get better buying experence.</p> -->
         </div>
         <div class="supplier-btn ripple" :class="scrollTop3?'bounce':''">
-            <a href="javascript:void(0)" target="_blank" style="width:100%;height:100%">
+            <a href="./svsSuplies.jsp" target="_blank" style="width:100%;height:100%">
                 Look SVS Suppliers Now
                 <img src="./images/right-arrow.png" alt="">
             </a>
