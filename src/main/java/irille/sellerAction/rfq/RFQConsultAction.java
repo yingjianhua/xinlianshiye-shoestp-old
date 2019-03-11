@@ -110,12 +110,12 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
     public void list() throws IOException {
     	write(rFQConsultService.page(getSupplier(), start, limit, keyword, groupId, isFavorite, type, readStatus, isDeleted, startDate, endDate, orderType));
     }
-    
+
     @Override
     public void count() throws IOException {
     	write(rFQConsultService.count(getSupplier(), isDeleted));
     }
-    
+
 	@Override
 	public void moveToRecycled() throws IOException {
 		rFQConsultService.moveToRecycled(getSupplier(), ids, true);
@@ -153,7 +153,7 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
 			write(ImageUpload.upload2(beanClazz(), getFileFileName(), getFile()));
 		}
 	}
-	
-	
+
+
 
 }

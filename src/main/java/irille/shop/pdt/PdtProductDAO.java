@@ -723,6 +723,8 @@ public class PdtProductDAO {
          * 获取店铺首页产品(条件:/对应商家/新品/上架/通过审核/首页显示/普通产品
          */
         public static List<PdtView> getIndexProduct(Integer supplier, FldLanguage.Language lang) {
+
+            System.err.println("supplier==="+supplier);
             SQL sql = new SQL() {{
                 SELECT(T.PKEY, T.PICTURE, T.NAME, T.CUR_PRICE)
                         .FROM(PdtProduct.class)
@@ -736,14 +738,19 @@ public class PdtProductDAO {
                         .LIMIT(0, 8);
             }};
 
-            return irille.pub.bean.Query.sql(sql).queryList(PdtProduct.class)
-                    .stream()
-                    .map(bean -> new PdtView() {{
+            //TODO
+            System.err.println("sql===>"+sql);
+            System.err.println("运行时间1"+System.currentTimeMillis());
+            List<PdtView> collect = irille.pub.bean.Query.sql(sql).queryList(PdtProduct.class).stream().map(bean -> new PdtView() {{
                         String name = bean.getName();
-                        translateUtil.getAutoTranslate(bean, lang);
-                        setPdt(bean);
+//                        translateUtil.getAutoTranslate(bean, lang);
+//                        setPdt(bean);
                         setRewrite(bean.getPkey(), name);
                     }}).collect(Collectors.toList());
+            System.err.println("产品===》"+collect);
+            System.err.println("运行时间2===》"+System.currentTimeMillis());
+
+            return collect;
         }
     }
 

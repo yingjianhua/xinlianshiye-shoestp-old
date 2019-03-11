@@ -10,17 +10,55 @@ import irille.view.usr.UserView;
 
 public class UsrUserDAO {
 	private static final Log LOG = new Log(UsrUserDAO.class);
-	
+
 	public static UserView purchaseSignIn(String loginName, String password) {
     	UserView view = new UserView();
     	UsrPurchase purchase = UsrPurchase.chkUniqueLogin_name(false, loginName);
-    	if (purchase != null && purchase.getPassword().equals(DateTools.getDigest(purchase.getPkey() + password))) { 
+    	if (purchase != null && purchase.getPassword().equals(DateTools.getDigest(purchase.getPkey() + password))) {
 	        UsrSupplier supplier = UsrSupplier.chkUniqueLogin_name(false, loginName);
 	        view.setPurchase(purchase);
 	        view.setSupplier(supplier);
     	}
         return view;
 	}
+
+	/**
+	 * 根据facebookID获取采购商与供应商对象
+	 * @author: lingjian
+	 * @Date: 2019/2/21 16:32
+	 * @param loginName
+	 * @param facebookID
+	 * @return
+	 */
+	public static UserView purchaseSignInByFacebook(String loginName,String facebookID) {
+		UserView view = new UserView();
+		UsrPurchase purchase = UsrPurchase.chkUniqueFacebook_user_id(false, facebookID);
+		if (purchase != null) {
+			UsrSupplier supplier = UsrSupplier.chkUniqueLogin_name(false, loginName);
+			view.setPurchase(purchase);
+			view.setSupplier(supplier);
+		}
+		return view;
+	}
+
+    /**
+     * 根据facebookID获取采购商与供应商对象
+     * @author: lingjian
+     * @Date: 2019/2/21 16:32
+     * @param loginName
+     * @param googleID
+     * @return
+     */
+    public static UserView purchaseSignInByGoole(String loginName,String googleID) {
+        UserView view = new UserView();
+        UsrPurchase purchase = UsrPurchase.chkUniqueGoogle_user_id(false, googleID);
+        if (purchase != null) {
+            UsrSupplier supplier = UsrSupplier.chkUniqueLogin_name(false, loginName);
+            view.setPurchase(purchase);
+            view.setSupplier(supplier);
+        }
+        return view;
+    }
 	/**
 	 * 用户登录验证
 	 *
@@ -56,10 +94,10 @@ public class UsrUserDAO {
     	UserView view = new UserView();
     	view.setSupplier(supplier);
     	view.setPurchase(purchase);
-    	
+
         return view;
 	}
-	
+
 	/**
 	 * 修改供应商登录密码
 	 * <p>若该供应商同时也是采购商,则同时修改供应商和采购商的密码
@@ -85,7 +123,7 @@ public class UsrUserDAO {
             purchase.upd();
         }
     }
-	
+
 	public static UserView findByLoginName(String loginName) {
 		UsrSupplier supplier = UsrSupplier.chkUniqueLogin_name(false, loginName);
 		UsrPurchase purchase = UsrPurchase.chkUniqueLogin_name(false, loginName);
@@ -94,11 +132,11 @@ public class UsrUserDAO {
     	view.setPurchase(purchase);
     	return view;
 	}
-	
+
 	public static UsrPurchase findPurchaseByLoginName(String loginName) {
 		return UsrPurchase.chkUniqueLogin_name(false, loginName);
 	}
-	
+
 	public static UsrSupplier findSupplierByLoginName(String loginName) {
 		return UsrSupplier.chkUniqueLogin_name(false, loginName);
 	}

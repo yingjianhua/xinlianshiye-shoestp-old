@@ -78,7 +78,7 @@ public class RFQManageServiceImp implements IRFQManageService {
             }
             result.add(rfqListBodyInfoView);
         }
-
+        System.err.println(rfqConsultDao.getRFQListCount(start, limit, keyword, supId));
         return new Page(result, start, limit, rfqConsultDao.getRFQListCount(start, limit, keyword, supId));
     }
 

@@ -9,12 +9,12 @@ import irille.shop.usr.UsrSupplier;
  *
  */
 public class UserView {
-	
+
 	private String loginName;
 	private UsrSupplier supplier;
 	private UsrPurchase purchase;
-	
-	
+
+
 	public String getLoginName() {
 		return loginName;
 	}
@@ -41,5 +41,14 @@ public class UserView {
 	}
 	public boolean isSupplier() {
 		return supplier!=null;
+	}
+
+	@Override
+	public String toString() {
+		return "UserView{" +
+				"loginName='" + loginName + '\'' +
+				", supplier=" + supplier +
+				", purchase=" + purchase +
+				'}';
 	}
 }

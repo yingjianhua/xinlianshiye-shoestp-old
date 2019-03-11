@@ -28,4 +28,5 @@ public class RFQListBodyInfoView implements BaseView {
 
     private String content;
     private Byte unit;
+
 }
