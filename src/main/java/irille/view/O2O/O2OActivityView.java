@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
 import irille.Entity.O2O.O2O_Activity;
 import irille.view.BaseView;
 import lombok.Data;
-import org.json.JSONArray;
 
 @Data
 public class O2OActivityView implements BaseView {
@@ -26,12 +26,16 @@ public class O2OActivityView implements BaseView {
     private List<Map<String,Object>> catList;
     private String rules;    // 规则描述  JSONOBJECT
     private String address;    // JSON  JSONOBJECT
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date startDate;    // 日期时间  TIME
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date endDate;    // 日期时间  TIME
     private Date updatedTime;    // 更新时间  TIME
     private Short rowVersion;    // 版本  SHORT
+    
+    
+    private long startTime;
+    private long endTime;
     
     public static O2OActivityView toView(O2O_Activity bean) {
     	O2OActivityView view = new O2OActivityView();

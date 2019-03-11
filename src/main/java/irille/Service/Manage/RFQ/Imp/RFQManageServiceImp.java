@@ -1,5 +1,6 @@
 package irille.Service.Manage.RFQ.Imp;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import irille.Dao.Old.RFQ.RFQConsultMessageDAO;
 import irille.Dao.Old.RFQ.RFQConsultRelationDAO;
@@ -7,6 +8,8 @@ import irille.Dao.Old.RFQ.RFQConsultUpdDAO;
 import irille.Dao.RFQ.RFQConsultDao;
 import irille.Entity.RFQ.Enums.RFQConsultPayType;
 import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
+import irille.Entity.RFQ.Enums.RFQConsultType;
+import irille.Entity.RFQ.Enums.RFQConsultUnit;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Service.Manage.RFQ.IRFQManageService;
@@ -88,18 +91,27 @@ public class RFQManageServiceImp implements IRFQManageService {
         RFQManageInfoView infoView = new RFQManageInfoView();
         infoView.setId(rfqConsult.getPkey());
         infoView.setTitle(rfqConsult.getTitle());
+        infoView.setType(rfqConsult.getType());
+        infoView.setProductId(rfqConsult.getProduct());
         infoView.setCreate_date(rfqConsult.getCreateTime());
         infoView.setValid_date(rfqConsult.getValidDate());
         infoView.setLeft_count(rfqConsult.getTotal() - rfqConsult.getLeftCount());
         infoView.setImage(rfqConsult.getImage());
         infoView.setPurchaseName(rfqConsult.gtPurchaseId().getName());
-        infoView.setMin_price(Integer.valueOf(GetValue.getStringIndex(rfqConsult.getPrice(), "-", 0)));
-        infoView.setMax_price(Integer.valueOf(GetValue.getStringIndex(rfqConsult.getPrice(), "-", 1)));
+        if (rfqConsult.gtType() == RFQConsultType.RFQ) {
+            infoView.setMin_price(Integer.valueOf(GetValue.getStringIndex(rfqConsult.getPrice(), "-", 0)));
+            infoView.setMax_price(Integer.valueOf(GetValue.getStringIndex(rfqConsult.getPrice(), "-", 1)));
+            infoView.setCurrencyname(BeanBase.load(PltErate.class, rfqConsult.getCurrency()).getCurName());
+            infoView.setDescriotion(rfqConsult.getContent()); //询盘内容
+        }
         infoView.setCountryId(rfqConsult.getCountry());
+        infoView.setDestination(rfqConsult.getDestination()); //目的地
         infoView.setQuantity(rfqConsult.getQuantity());
         infoView.setDestination(rfqConsult.getDestination()); //目的地
         infoView.setDescriotion(rfqConsult.getContent()); //询盘内容
-        infoView.setCurrencyname(BeanBase.load(PltErate.class, rfqConsult.getCurrency()).getCurName());
+        if (rfqConsult.getCurrency() != null) {
+            infoView.setCurrencyname(BeanBase.load(PltErate.class, rfqConsult.getCurrency()).getCurName());
+        }
         if (rfqConsult.getPayType() != null)
             infoView.setPay_type(rfqConsult.gtPayType().getLine().getName());
         if (rfqConsult.getShippingType() != null)
@@ -141,24 +153,32 @@ public class RFQManageServiceImp implements IRFQManageService {
         rfqConsultRelation.setCurrency(quoteInfo.getCurrency());
         rfqConsultRelation.setTitle(quoteInfo.getTitle());
         rfqConsultRelation.setDescription(quoteInfo.getDescriotion());
-        rfqConsultRelation.setImage(quoteInfo.getImages());
         rfqConsultRelation.setQuantity(quoteInfo.getQuantity());
         rfqConsultRelation.setMinprice(quoteInfo.getMin_price());
         rfqConsultRelation.setMaxprice(quoteInfo.getMax_price());
         rfqConsultRelation.setCurrency(quoteInfo.getCurrency());
         rfqConsultRelation.setValidDate(quoteInfo.getValidity());
+        rfqConsultRelation.stUnit(RFQConsultUnit.PAIR);
         rfqConsultRelation.stPaytype((RFQConsultPayType) RFQConsultPayType.DEFAULT.getLine().get(quoteInfo.getPayType()));
         rfqConsultRelation.stTransittype((RFQConsultShipping_Type) RFQConsultShipping_Type.FOB.getLine().get(quoteInfo.getTransitType()));
         rfqConsultRelation.stSample(quoteInfo.isSample());
         rfqConsultRelation.setCompanydescribe(quoteInfo.getCompanyDescribe());
-        rfqConsultRelation.setThrowaway(quoteInfo.getThrowaway());
+        try {
+            rfqConsultRelation.setImage(objectMapper.writeValueAsString(quoteInfo.getImages()));
+            rfqConsultRelation.setThrowaway(objectMapper.writeValueAsString(quoteInfo.getThrowaway()));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         rfqConsultRelation.stIsNew(true);
         rfqConsultRelation.stHadReadPurchase(false);
         rfqConsultRelation.stHadReadSupplier(true);
+        rfqConsultRelation.stIsDeletedPurchase(false);
+        rfqConsultRelation.stIsDeletedSupplier(false);
         rfqConsultRelationDAO.setB(rfqConsultRelation);
         rfqConsultRelationDAO.commit();
         if (consult.getLeftCount() < consult.getTotal()) {
             consult.setLeftCount(consult.getLeftCount() + 1);
+            consult.setProductRequest("{}");
             rfqConsultUpdDAO.setB(consult).commit();
         }
         return 1;
@@ -203,7 +223,7 @@ public class RFQManageServiceImp implements IRFQManageService {
             UsrPurchase up = BeanBase.load(UsrPurchase.class, GetValue.get(map, RFQConsultRelation.T.PURCHASE_ID, Date.class, null));
             body.setPurchaseName(up.getName());
             body.setPurchaseCountryIMG(up.gtCountry().getNationalFlag());
-            if (GetValue.get(map, RFQConsultRelation.T.HAD_READ_SUPPLIER, Byte.class, (byte) -1) == 0) {
+            if (GetValue.get(map, RFQConsultRelation.T.HAD_READ_SUPPLIER, Byte.class, (byte) -1) == 0 && GetValue.get(map, RFQConsultRelation.T.HAD_READ_PURCHASE, Byte.class, (byte) -1) == 1) {
                 body.setStatus(3);
             } else {
                 if (GetValue.get(map, RFQConsultRelation.T.HAD_READ_PURCHASE, Byte.class, (byte) -1) == 0)
@@ -214,7 +234,7 @@ public class RFQManageServiceImp implements IRFQManageService {
             }
             result.add(body);
         }
-        return new Page(result, start, limit, 10);
+        return new Page(result, start, limit, rfqConsultDao.count(type, date, keyword, flag, status, country, Supid));
     }
 
     @Override

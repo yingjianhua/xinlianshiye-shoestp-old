@@ -49,9 +49,10 @@ public class RFQConsultView implements BaseView {
 	private Integer total; // 总抢单数 INT
 	private Short changeCount; // 修改总数 SHORT
 	private String extraDescription; // 修改总数 STR(2000)<null>
-	@JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private Date createTime; // 创建时间 TIME
 	private Short rowVersion; // 版本 SHORT
 	private Boolean isDeleted;	// 是否已删除 <OYn>  BYTE
+	private Byte recommend;//是否推荐
 	private List<RFQConsultRelationView> relations;//抢单成功的供应商
 }

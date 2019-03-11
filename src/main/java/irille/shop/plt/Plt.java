@@ -11,8 +11,17 @@ import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Entity.O2O.O2O_Product;
 import irille.Entity.Pk.PkCompetitionData;
 import irille.Entity.RFQ.RFQConsult;
+import irille.Entity.RFQ.RFQConsultGroup;
+import irille.Entity.RFQ.RFQConsultGroupRelation;
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
+import irille.Entity.RFQ.RFQPurchaseContact;
+import irille.Entity.RFQ.RFQPurchaseContactGroup;
+import irille.Entity.SVS.SVSNewestPdt;
+import irille.Entity.pm.PMMessage;
+import irille.Entity.pm.PMRead;
+import irille.Entity.pm.PMTemplate;
+import irille.Entity.SVS.SVSInfo;
 import irille.core.prv.PrvRoleAct;
 import irille.core.sys.SysModule;
 import irille.pub.Log;
@@ -23,6 +32,7 @@ import irille.pub.tb.EnumLine;
 import irille.pub.tb.IEnumOpt;
 import irille.pub.tb.Tb;
 import irille.pub.tb.TbBase;
+import irille.shop.usr.UsrAnnex;
 
 public class Plt extends PackageBase {
     private static final Log LOG = new Log(Plt.class);
@@ -69,6 +79,16 @@ public class Plt extends PackageBase {
         addTb(62, RFQConsultRelation.class);
         addTb(63, Contact.class);
         addTb(64, ContactGroup.class);
+        addTb(65, RFQPurchaseContact.class);
+        addTb(66, RFQPurchaseContactGroup.class);
+        addTb(67, RFQConsultGroup.class);
+        addTb(68, RFQConsultGroupRelation.class);
+        addTb(69, PMMessage.class);
+        addTb(70, PMRead.class);
+        addTb(71, PMTemplate.class);
+        addTb(72, SVSInfo.class);
+        addTb(72, SVSNewestPdt.class);
+         addTb(73, UsrAnnex.class);
     }
 
     @Override

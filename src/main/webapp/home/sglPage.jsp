@@ -23,6 +23,10 @@
         .bo {
             font-weight: bold;
         }
+
+        #o2otop .o2otopcon .topsearch > input {
+            border: 1px solid #10389c;
+        }
     </style>
 
 </head>
@@ -54,10 +58,11 @@
         <div class="blank25">
         </div>
     </div>
+    <index-bottom></index-bottom>
 </div>
 ﻿
 
-<%@ include file="/home/template/new-foot.jsp" %>
+<%--<%@ include file="/home/template/new-foot.jsp" %>--%>
 
 </body>
 <script type="text/javascript">
@@ -118,9 +123,10 @@
     }
 </script>
 <script src="/home/v3/static/js/index-top.js"></script>
+<script src="/home/v3/static/js/index-bottom.js"></script>
 <script>
     new Vue({
-        el:"#main"
+        el: "#main"
     })
 </script>
 </html>

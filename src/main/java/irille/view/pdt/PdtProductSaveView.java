@@ -1,12 +1,12 @@
 package irille.view.pdt;
 
 
-import irille.view.BaseView;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import irille.view.BaseView;
 
 /**
  * Created by IntelliJ IDEA.
@@ -51,6 +51,42 @@ public class PdtProductSaveView implements BaseView {
     private int from = -1;
     private Integer radio;//私人展厅商品/普通商品      0：普通商品 1：私人展厅商品
     private Integer warehouse;//保存到仓库和发布的区分 0：保存到仓库 1：发布
+    private List<NewSpceView> newSpec;
+    private List<PdtTieredPricingView> tieredPricing;
+    private List<PdtColorView> color;
+    private Date putawayDate;
+    
+    public Date getPutawayDate() {
+		return putawayDate;
+	}
+
+	public void setPutawayDate(Date putawayDate) {
+		this.putawayDate = putawayDate;
+	}
+
+    public List<NewSpceView> getNewSpec() {
+		return newSpec;
+	}
+
+	public List<PdtColorView> getColor() {
+		return color;
+	}
+
+	public void setColor(List<PdtColorView> color) {
+		this.color = color;
+	}
+
+	public void setNewSpec(List<NewSpceView> newSpec) {
+		this.newSpec = newSpec;
+	}
+
+	public List<PdtTieredPricingView> getTieredPricing() {
+		return tieredPricing;
+	}
+
+	public void setTieredPricing(List<PdtTieredPricingView> tieredPricing) {
+		this.tieredPricing = tieredPricing;
+	}
 
     public Integer getWarehouse() {
         return warehouse;

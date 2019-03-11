@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -62,8 +63,8 @@ public class O2OPdtServerImp implements IO2OPdtServer {
     private O2O_PrivateExpoPdtInsDAO o2OPrivateExpoPdtInsDAO;
     @Inject
     private O2O_JoinInfoInsDAO o2OJoinInfoInsDAO;
-    @Inject
-    private O2OProductDao o2OProductDao;
+    
+    private O2OProductDao o2OProductDao = new O2OProductDao();
     @Inject
     private O2OActivityDao o2OActivityDao;
 
@@ -82,7 +83,7 @@ public class O2OPdtServerImp implements IO2OPdtServer {
     public List<PdtNewPdtInfo> O2OList(UsrPurchase purchase, Integer start, Integer limit) {
         List<PdtNewPdtInfo> items = o2OProductDao.o2oList(purchase, start, limit).stream().map(pdt -> {
             PdtNewPdtInfo item = new PdtNewPdtInfo();
-            item.setFavorite(null == GetValue.get(pdt, "ismyfavorite", Boolean.class, null) ? false : GetValue.get(pdt, "ismyfavorite", Boolean.class, null));
+            item.setFavorite(null != GetValue.get(pdt, "ismyfavorite", Integer.class, null));
             item.setImage(GetValue.getFirstImage(GetValue.get(pdt, PdtProduct.T.PICTURE, String.class, null)));
             Long pdtPkey = Long.valueOf(String.valueOf(GetValue.get(pdt, PdtProduct.T.PKEY, Integer.class, -1)));
             item.setId(pdtPkey);
@@ -308,6 +309,27 @@ public class O2OPdtServerImp implements IO2OPdtServer {
 
         }
     }
+    
+    public static void main(String[] args) {
+    	List<Integer> is = Arrays.asList(1,2,2,3,4,3);
+    	List<Integer> bb = new ArrayList<>();
+    	List<Integer> cc = is.stream().filter(new Predicate<Integer>() {
+
+			@Override
+			public boolean test(Integer t) {
+				if(bb.indexOf(t) != -1) {
+					return false;
+				}else {
+					return true;
+				}
+			}
+    		
+    	}).map(bean ->{
+    		bb.add(bean);
+    		return bean;
+    	}).collect(Collectors.toList());
+    	System.out.println(bb);
+    }
 
     @Override
     public List<O2OActivityPdtInfoView> listAllGeneral(UsrSupplier supplier, Integer activity) {
@@ -324,9 +346,23 @@ public class O2OPdtServerImp implements IO2OPdtServer {
                 listAll.addAll(pdtProductDao.getCatsNodeByCatId(cat));
             });
         }
+        
+        List<Integer> existsProdPkeys = o2OProductDao.findAllByActivityAndSupplier(activity, supplier.getPkey()).stream().map(bean->{
+        	return bean.getProductId();
+        }).collect(Collectors.toList());
 
-
-        return o2OProductDao.findAllGeneralByIsVerifyAndStateAndSupplier(supplier,activity, listAll).stream().map(bean -> {
+        return o2OProductDao.findAllGeneralByIsVerifyAndStateAndSupplier(supplier,activity, listAll).stream().filter(new Predicate<Map<String,Object>>(){
+			@Override
+			public boolean test(Map<String, Object> bean) {
+				Integer id = GetValue.get(bean, PdtProduct.T.PKEY, Integer.class, null);
+				Byte status = GetValue.get(bean, O2O_Product.T.STATUS, Byte.class, null);
+				if((existsProdPkeys.indexOf(id) != -1)) {
+					return false;
+				}else{
+					return true;
+				}
+			}
+        }).map(bean -> {
             O2OActivityPdtInfoView view = new O2OActivityPdtInfoView();
             view.setId(GetValue.get(bean, PdtProduct.T.PKEY, Integer.class, null));
             view.setCode(GetValue.get(bean, PdtProduct.T.CODE, String.class, ""));
@@ -343,6 +379,19 @@ public class O2OPdtServerImp implements IO2OPdtServer {
             }
             return view;
         }).collect(Collectors.toList());
+    }
+    
+    
+    //判断产品是否为O2O产品 null-不是O2O商品  false-活动自己的O2O商品  true-是O2O商品
+    @Override
+    public Boolean judgeO2o(PdtProduct product) {
+    	List<O2O_Product> products = o2OProductDao.findAllByVerifyStatusAndStatusAndActivity_Status(product);
+    	if(null != products && products.size() > 1) {
+    		return true;
+    	}else if(null != products && products.size() > 0) {
+    		return false;
+    	}
+    	return null;
     }
 
 

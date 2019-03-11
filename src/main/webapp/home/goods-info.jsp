@@ -17,9 +17,7 @@
     <script type="text/javascript" src="./static/js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript"
             src="/static/js/plugins/goodsInfo/jquery.SuperSlide.2.1.1.js"></script>
-    <script type="text/javascript"
-            src="http://maps.google.com/maps/api/js?key=AIzaSyCPbc3yNYQgVc56qbUuAY_Yap-uDMkDkvc"></script>
-    <script type="text/javascript" src="./static/markerwithlabel.js"></script>
+
     <link href="./static/css/goodsInfoNew.css" rel="stylesheet" type="text/css">
     <link href="./static/css/style.css" rel="stylesheet" type="text/css">
     <link href="./static/css/global.css" rel="stylesheet" type="text/css">
@@ -36,8 +34,6 @@
     <link rel="stylesheet" href="/home/v2/static/css/base/element-ui/element-ui.css"/>
     <link rel="stylesheet" href="/home/v2/static/css/base/foot.css"/>
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
-    <script src="https://js.fundebug.cn/fundebug.1.5.1.min.js"
-            apikey="afbc9f957e7689049c3282fe7696d30e7cb260e0ce11c148c0cf9e31d4e802f5"></script>
     <%--<link rel="stylesheet" href="/home/v3/static/css/element-ui/element-ui.css"/>--%>
 
 
@@ -47,6 +43,24 @@
     <!-- index为以上几个合并后的压缩文件 - 加前缀 -->
     <!-- <link rel="stylesheet" href="css/index.css" /> -->
     <link rel="stylesheet" href="/home/v3/static/css/swiper.min.css"/>
+    <style>
+        .clearfix {
+            zoom: 1
+        }
+
+        .clearfix:after {
+            visibility: hidden;
+            display: block;
+            font-size: 0;
+            content: " ";
+            clear: both;
+            height: 0;
+        }
+
+        #o2otop .o2otopcon .o2otoplikes dd {
+            width: 238px
+        }
+    </style>
     <script>
         window.dataLayer = window.dataLayer || [];
 
@@ -60,6 +74,37 @@
     </script>
     <script>
         var isLogin = ${env.login!=null};
+          function getParams(name, defaultValue) {
+            var url = window.location.href;
+            var l = url.lastIndexOf(name)
+            if (l != -1) {
+                var ll = url.indexOf("&", l);
+                if (ll == -1 || l > ll) {
+                    ll = url.length
+                }
+                url = url.substring(l, ll);
+                var result = url.split("=")
+                if (result.length == 2) {
+                    switch (typeof defaultValue) {
+                        case "number":
+                            return parseInt(result[1]);
+                        case "boolean":
+                            return Boolean(result[1])
+                        default:
+                            return result[1];
+                    }
+                }
+            } else {
+                if (defaultValue == 'NONE') {
+                    return null;
+                }
+                if (defaultValue == null) {
+                    return -1;
+                }
+                return defaultValue
+            }
+            return -1;
+        }
     </script>
 </head>
 <body id="goodsInfo" class="lang_en w_1200">
@@ -687,7 +732,8 @@
                     <div class="blank12"></div>
                 </div>
                 <div class="prod_review_view" v-if="!isLogin">
-                    <div class="review_sign"><s:text name="groupPurchaseGoodsInfo.After_Login"/>
+                    <div class="review_sign"><s:text
+                            name="groupPurchaseGoodsInfo.After_Login"><s:param>/home/usr_UsrPurchase_sign</s:param></s:text>
                     </div>
                     <div class="blank12"></div>
 
@@ -698,7 +744,7 @@
         </div>
         <div style="padding: 15px"></div>
     </div>
-
+    <index-bottom></index-bottom>
 </div>
 <script>
 
@@ -879,10 +925,12 @@
         });
     }
 </script>
+
+
 <script src="/home/v3/static/js/index-top.js"></script>
-
+<script src="/home/v3/static/js/index-bottom.js"></script>
 <script>
-
+    user_obj.sign_in_init();
     var app = new Vue({
         el: "#app",
         data: {
@@ -965,7 +1013,8 @@
                     user_obj.set_form_sign_in('', window.location.href, 1);
                     return
                 }
-                window.location = '/home/usr_UsrConsult_productPublishView?product_id=' + this.goodsInfo.pdtId
+                window.location = '/home/usr_UsrConsult_productPublishView?product_id=' + this.goodsInfo.pdtId+'&backUrl='+window.location.href
+
                 // axios({
                 //     url: "/home/pdt_PdtConsultPdtList_add",
                 //     method: "post",
@@ -1239,7 +1288,7 @@
                 return this.goodsInfo.spec[temp];
             },
             _pdtPic() {
-                if (this.selectSpec > 0) {
+                if (this.selectSpec >= 0) {
                     if (this._specList && this._specList.length > 0)
                         if (this._specList[0].img && this._specList[0].img.length > 0) {
                             return this.image(this._specList[0].img)
@@ -1336,7 +1385,9 @@
 
 
 </script>
-
+<script type="text/javascript"
+        src="/home/static/js/maps.js?key=AIzaSyCPbc3yNYQgVc56qbUuAY_Yap-uDMkDkvc" async></script>
+<script type="text/javascript" src="./static/markerwithlabel.js"></script>
 <style>
     .loading {
         text-align: center;
@@ -1348,6 +1399,6 @@
 <c:if test="${not empty supView.traceCode && fn:length(supView.traceCode)>0}">
     ${supView.traceCode}
 </c:if>
-<jsp:include page="template/new-foot.jsp"></jsp:include>
+<%--<jsp:include page="template/new-foot.jsp"></jsp:include>--%>
 
 

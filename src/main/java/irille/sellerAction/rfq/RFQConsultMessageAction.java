@@ -1,12 +1,14 @@
 package irille.sellerAction.rfq;
 
+import java.io.File;
 import java.io.IOException;
 
 import com.google.inject.Inject;
+import com.xinlianshiye.shoestp.seller.service.rfq.RFQConsultMessageService;
 
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.Enums.RFQConsultMessageType;
-import irille.Service.Manage.RFQ.RFQConsultMessageService;
+import irille.pub.util.upload.ImageUpload;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.rfq.inf.IRFQConsultMessageAction;
 import irille.sellerAction.rfq.view.RFQConsultMessageView;
@@ -37,7 +39,7 @@ public class RFQConsultMessageAction extends SellerAction<RFQConsultMessage> imp
 			message = rFQConsultMessageService.sendTextMessage(getSupplier(), consultId, content);
 		} else if(RFQConsultMessageType.IMAGE.getLine().getKey() == type) {
 			message = rFQConsultMessageService.sendImageMessage(getSupplier(), consultId, imageUrl);
-		} else if(RFQConsultMessageType.URL.getLine().getKey() == type) {
+		} else if(RFQConsultMessageType.ALERT_URL.getLine().getKey() == type) {
 			message = rFQConsultMessageService.sendPrivateExpoPdt(getSupplier(), consultId, productId);
 		} else {
 			
@@ -50,6 +52,16 @@ public class RFQConsultMessageAction extends SellerAction<RFQConsultMessage> imp
 	@Override
 	public void list() throws IOException {
 		write(rFQConsultMessageService.page(getSupplier(), getStart(), getLimit(), consultId));
+	}
+	private String fileFileName = "";
+	private File file;
+
+	public void upload() throws IOException {
+		if(getSupplier() == null) {
+			writeTimeout();
+		} else {
+			write(ImageUpload.upload(beanClazz(), fileFileName, file));
+		}
 	}
 
 }

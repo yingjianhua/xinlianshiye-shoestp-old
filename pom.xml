@@ -55,11 +55,38 @@
     </profiles>
 
     <dependencies>
+    	<dependency>
+		    <groupId>org.quartz-scheduler</groupId>
+		    <artifactId>quartz</artifactId>
+		    <version>2.2.1</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.quartz-scheduler</groupId>
+		    <artifactId>quartz-jobs</artifactId>
+		    <version>2.2.1</version>
+		</dependency>
+    
+    
         <dependency>
             <groupId>com.irille</groupId>
             <artifactId>irille-base-plat</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        
+		<!-- <dependency>
+		    <groupId>org.glassfish</groupId>
+		    <artifactId>javax.el</artifactId>
+		    <version>3.0.1-b09</version>
+		</dependency> -->
+		        
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-validator</artifactId>
+		    <version>6.0.15.Final</version>
+		</dependency>
+
         <!-- https://mvnrepository.com/artifact/org.tuckey/urlrewritefilter -->
         <dependency>
             <groupId>org.tuckey</groupId>

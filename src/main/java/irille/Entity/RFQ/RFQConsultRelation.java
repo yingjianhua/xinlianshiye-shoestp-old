@@ -1,7 +1,16 @@
 package irille.Entity.RFQ;
 
+import java.util.Date;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import irille.Config.Attribute;
+import irille.Config.Variable;
 import irille.Entity.RFQ.Enums.RFQConsultPayType;
 import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
+import irille.Entity.RFQ.Enums.RFQConsultUnit;
+import irille.Entity.pm.PM.OTempType;
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
 import irille.pub.bean.BeanInt;
@@ -12,11 +21,12 @@ import irille.pub.tb.Tb;
 import irille.shop.plt.PltErate;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.util.Date;
 
+@Variable(group = {OTempType.INQUIRY_NOTICE_PURCHASE,OTempType.RFQ_MESSAGE_NOTICE},enumType=RFQConsultRelation.T.class,clazz=RFQConsultRelation.class,attributes = {
+		@Attribute(name="报价标题",field="TITLE",type=String.class),
+		@Attribute(name="产品描述",field="DESCRIPTION",type=String.class)}
+)
 public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
 
 	private static final long serialVersionUID = 2353321755373329372L;
@@ -31,10 +41,11 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
         PURCHASE_ID(UsrPurchase.fldOutKey().setName("采购商")),
         IN_RECYCLE_BIN(Sys.T.YN, "是否在回收站"),//是否在回收站, true: 在回收站, false: 不在回收站
         FAVORITE(Sys.T.YN, "是否添加FLAG"),
-        TITLE(Sys.T.STR__200_NULL),
-        DESCRIPTION(Sys.T.STR__2000_NULL, "描述"),
-        IMAGE(Sys.T.JSON, "图片(多图)"),
+        TITLE(Sys.T.STR__200_NULL),//报价标题(产品标题)
+        DESCRIPTION(Sys.T.STR__2000_NULL, "描述"),//产品描述
+        IMAGE(Sys.T.JSON, "图片(多图)"),//产品图片
         QUANTITY(Sys.T.INT, "数量"),
+        UNIT(Tb.crt(RFQConsultUnit.DEFAULT)),//商品数量单位
         MINPRICE(Sys.T.INT, "价格区间"),
         MAXPRICE(Sys.T.INT, "价格区间"),
         CURRENCY(PltErate.fldOutKey()),
@@ -48,6 +59,8 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
         IS_NEW(Sys.T.YN),//是否为新关联, 初始为true, 供应商查看后为false
         HAD_READ_PURCHASE(Sys.T.YN),//采购商是否已经读取消息
         HAD_READ_SUPPLIER(Sys.T.YN),//供应商是否已经读取消息
+        IS_DELETED_PURCHASE(Sys.T.YN),//采购商已删除
+        IS_DELETED_SUPPLIER(Sys.T.YN),//供应商已删除
         ROW_VERSION(Sys.T.ROW_VERSION),
             // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
             // <<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
@@ -111,6 +124,10 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
   private String _description;	// 描述  STR(2000)<null>
   private String _image;	// 图片(多图)  JSONOBJECT
   private Integer _quantity;	// 数量  INT
+  private Byte _unit;	// 货物单位 <RFQConsultUnit>  BYTE
+	// PAIR:1,Pairs
+	// Twenty_Foot_Container:2,Twenty-Foot Container
+	// Forty_Foot_Container:3,Forty-Foot Container
   private Integer _minprice;	// 价格区间  INT
   private Integer _maxprice;	// 价格区间  INT
   private Integer _currency;	// 费率设置 <表主键:PltErate>  INT
@@ -141,6 +158,12 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
   private Byte _hadReadSupplier;	// 是否 <OYn>  BYTE
 	// YES:1,是
 	// NO:0,否
+  private Byte _isDeletedPurchase;	// 是否 <OYn>  BYTE
+	// YES:1,是
+	// NO:0,否
+  private Byte _isDeletedSupplier;	// 是否 <OYn>  BYTE
+	// YES:1,是
+	// NO:0,否
   private Short _rowVersion;	// 版本  SHORT
 
 	@Override
@@ -155,6 +178,7 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
     _description=null;	// 描述  STR(2000)
     _image=null;	// 图片(多图)  JSONOBJECT
     _quantity=0;	// 数量  INT
+    _unit=RFQConsultUnit.DEFAULT.getLine().getKey();	// 货物单位 <RFQConsultUnit>  BYTE
     _minprice=0;	// 价格区间  INT
     _maxprice=0;	// 价格区间  INT
     _currency=null;	// 费率设置 <表主键:PltErate>  INT
@@ -168,6 +192,8 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
     _isNew=OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
     _hadReadPurchase=OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
     _hadReadSupplier=OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
+    _isDeletedPurchase=OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
+    _isDeletedSupplier=OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
     _rowVersion=0;	// 版本  SHORT
     return this;
   }
@@ -283,6 +309,18 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
   }
   public void setQuantity(Integer quantity){
     _quantity=quantity;
+  }
+  public Byte getUnit(){
+    return _unit;
+  }
+  public void setUnit(Byte unit){
+    _unit=unit;
+  }
+  public RFQConsultUnit gtUnit(){
+    return (RFQConsultUnit)(RFQConsultUnit.PAIR.getLine().get(_unit));
+  }
+  public void stUnit(RFQConsultUnit unit){
+    _unit=unit.getLine().getKey();
   }
   public Integer getMinprice(){
     return _minprice;
@@ -414,6 +452,30 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
   }
   public void stHadReadSupplier(Boolean hadReadSupplier){
     _hadReadSupplier=booleanToByte(hadReadSupplier);
+  }
+  public Byte getIsDeletedPurchase(){
+    return _isDeletedPurchase;
+  }
+  public void setIsDeletedPurchase(Byte isDeletedPurchase){
+    _isDeletedPurchase=isDeletedPurchase;
+  }
+  public Boolean gtIsDeletedPurchase(){
+    return byteToBoolean(_isDeletedPurchase);
+  }
+  public void stIsDeletedPurchase(Boolean isDeletedPurchase){
+    _isDeletedPurchase=booleanToByte(isDeletedPurchase);
+  }
+  public Byte getIsDeletedSupplier(){
+    return _isDeletedSupplier;
+  }
+  public void setIsDeletedSupplier(Byte isDeletedSupplier){
+    _isDeletedSupplier=isDeletedSupplier;
+  }
+  public Boolean gtIsDeletedSupplier(){
+    return byteToBoolean(_isDeletedSupplier);
+  }
+  public void stIsDeletedSupplier(Boolean isDeletedSupplier){
+    _isDeletedSupplier=booleanToByte(isDeletedSupplier);
   }
   public Short getRowVersion(){
     return _rowVersion;

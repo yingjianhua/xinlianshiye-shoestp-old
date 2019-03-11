@@ -1,6 +1,37 @@
 package irille.homeAction.usr;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.inject.Inject;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts2.ServletActionContext;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.sun.mail.util.MailSSLSocketFactory;
+
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.Service.Pdt.IPdtProductService;
 import irille.Service.Pdt.Imp.PdtproductPageselect;
@@ -10,7 +41,6 @@ import irille.homeAction.HomeAction;
 import irille.homeAction.cnt.dto.CntAd_IndexCategoryView;
 import irille.homeAction.usr.dto.PurchaseIndexView;
 import irille.homeAction.usr.inf.IUsrPurchaseAction;
-import irille.platform.usr.View.UsrPurchaseView;
 import irille.pub.Exp;
 import irille.pub.LogMessage;
 import irille.pub.Str;
@@ -23,7 +53,13 @@ import irille.shop.cnt.CntAd.OAdLocation;
 import irille.shop.cnt.CntAdDAO;
 import irille.shop.odr.OdrOrder;
 import irille.shop.odr.OdrOrderDAO;
-import irille.shop.usr.*;
+import irille.shop.usr.UsrCart;
+import irille.shop.usr.UsrFavoritesDAO;
+import irille.shop.usr.UsrPurchase;
+import irille.shop.usr.UsrPurchaseDAO;
+import irille.shop.usr.UsrPurchaseLine;
+import irille.shop.usr.UsrPurchaseLineDAO;
+import irille.shop.usr.UsrUserDAO;
 import irille.view.cnt.IndexAdView4Mobile;
 import irille.view.cnt.IndexAdView4PC;
 import irille.view.plt.CountryView;
@@ -33,32 +69,6 @@ import irille.view.usr.UserIndexView;
 import irille.view.usr.UserView;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
-import org.apache.struts2.ServletActionContext;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import javax.inject.Inject;
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.text.DateFormat;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 采购商action
@@ -95,7 +105,7 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
     private IndexAdView4PC indexAdView4PC;
     private List<UsrPurchaseLine> usrPurchaseLine;
     private Integer pkey;
-
+   
     public Integer getPkey() {
         return pkey;
     }
@@ -187,6 +197,9 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
     private static final String vcode_err = "Verification code error.";
     private static final String login_err = "Incorrect email address or password. Please try again.Make sure the Caps Lock is off before you enter password.";
 
+    @Setter
+    @Getter
+    private String backUrl;
     /**
      * 登录
      */
@@ -217,9 +230,10 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
         setUser(null);
         if (isMobile())
             setResult("/home/usr_UsrPurchase_sign", false);
-        else
-            setResult("/", false);
-
+        else {
+            String referer = ServletActionContext.getRequest().getHeader("referer");
+            setResult(referer != null && referer.length() > 0 ? referer : "/", false);
+        }
         return HomeAction.RTRENDS;
     }
 
@@ -556,8 +570,7 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
      * @author yingjianhua
      */
     public String sign() throws JSONException {
-
-        countrys = pltService.getCountryList(curLanguage(),null);
+        countrys = pltService.getCountryList(curLanguage(), null);
         setResult("/home/sign-up.jsp");
         return TRENDS;
     }
@@ -904,120 +917,6 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
     private static final String faceBook_AppId = "718848724966585";
     private static final String faceBook_Secret = "76de67dabb685e1b389d6b744a3492a7";
 
-    @Getter
-    @Setter
-    private String facebookID;
-
-    @Getter
-    @Setter
-    private String googleID;
-
-
-
-    /**
-     * facebook第三方登陆
-     * @author: lingjian
-     * @Date: 2019/2/21 16:31
-     * @throws Exception
-     */
-    public void faceBookNewlogin() throws Exception {
-        JSONObject returnJson = new JSONObject();
-        List<UsrPurchaseView> list = UsrPurchaseDAO.selectFaceBookeId();
-        for (int i = 0; i < list.size(); i++) {
-            UsrPurchaseView obj = list.get(i);
-            if(facebookID != null && facebookID.equals(obj.getFacebookID())){
-                UserView user = UsrUserDAO.purchaseSignInByFacebook(obj.getLoginName(), obj.getFacebookID());
-                System.err.println("user====>>"+user);
-                if (user.isPurchase()) {
-                    //登录成功
-                    setUser(user);
-                    JSONObject json = new JSONObject().put("ret", 1);
-                    if (!Str.isEmpty(getJumpUrl()))
-                        json.put("msg", new JSONArray().put(getJumpUrl()));
-                    writeSuccess(json);
-                    return;
-                }
-                writeSuccess(new JSONObject().put("ret", 0).put("msg", new JSONArray().put(login_err)));
-                return;
-            }
-        }
-    }
-
-    @Getter
-    @Setter
-    private String code;
-
-    public void test() throws Exception {
-
-        System.err.println("code======>"+code);
-        String url = "https://www.linkedin.com/uas/oauth2/accessToken";
-
-        HttpClient httpclient= HttpClients.createDefault();
-
-        HttpPost httpPost=new HttpPost(url);
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("grant_type","authorization_code"));
-        params.add(new BasicNameValuePair("code",code));
-        params.add(new BasicNameValuePair("redirect_uri","http://localhost:8080/home/usr_UsrPurchase_sign"));
-        params.add(new BasicNameValuePair("client_id","81xpp0e4b5z1fh"));
-        params.add(new BasicNameValuePair("client_secret","ZE7gQVTlCDiimST8"));
-        httpPost.setEntity(new UrlEncodedFormEntity(params));
-
-        HttpResponse response = httpclient.execute(httpPost);
-        String s = EntityUtils.toString(response.getEntity(), "utf-8");
-
-        JSONObject returnJson = new JSONObject(s);
-        String access_token = returnJson.get("access_token").toString();
-        System.err.println("access_token====>"+access_token);
-
-
-        String url2 = "https://api.linkedin.com/v2/me?access_token"+access_token;
-        HttpGet httpGet = new HttpGet(url2);
-        httpGet.setHeader("accept","*/*");
-        httpGet.setHeader("connection","Keep-Alive");
-        httpGet.setHeader("Host","api.linkedin.com");
-        httpGet.setHeader("Authorization","Bearer "+access_token);
-        System.err.println("httpGet====>"+httpGet);
-
-        HttpResponse responseGet = httpclient.execute(httpGet);
-        System.err.println("HttpResponse======>"+responseGet);
-        String s1 = EntityUtils.toString(responseGet.getEntity(), "utf-8");
-//        System.err.println("HttpResponse======>"+s1);
-
-
-    }
-
-    /**
-     * google第三方登陆
-     * @author: lingjian
-     * @Date: 2019/2/21 16:31
-     * @throws Exception
-     */
-    public void googleNewlogin() throws Exception {
-        JSONObject returnJson = new JSONObject();
-        List<UsrPurchaseView> list = UsrPurchaseDAO.selectFaceBookeId();
-        for (int i = 0; i < list.size(); i++) {
-            UsrPurchaseView obj = list.get(i);
-            if(googleID != null && googleID.equals(obj.getGoogleID())){
-                UserView user = UsrUserDAO.purchaseSignInByGoole(obj.getLoginName(), obj.getGoogleID());
-                if (user.isPurchase()) {
-                    //登录成功
-                    setUser(user);
-                    JSONObject json = new JSONObject().put("ret", 1);
-                    if (!Str.isEmpty(getJumpUrl()))
-                        json.put("msg", new JSONArray().put(getJumpUrl()));
-                    writeSuccess(json);
-                    return;
-                }
-                writeSuccess(new JSONObject().put("ret", 0).put("msg", new JSONArray().put(login_err)));
-                return;
-            }
-        }
-
-
-    }
-
-
     /**
      * FACEBOOK第三方账号登陆
      *
@@ -1189,4 +1088,11 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
         this.indexAdView4PC = indexAdView4PC;
     }
 
+
+    //
+    @NeedLogin
+    public String contacts() {
+        setResult("user-contacts.jsp");
+        return TRENDS;
+    }
 }

@@ -1,11 +1,24 @@
 package irille.shop.pdt;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
-import irille.Entity.O2O.Enums.O2O_ProductStatus;
+import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
+import com.xinlianshiye.shoestp.plat.service.pm.imp.PMMessageServiceImp;
+
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Entity.O2O.O2O_Product;
+import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
+import irille.Entity.O2O.Enums.O2O_ProductStatus;
+import irille.Entity.pm.PM.OTempType;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
 import irille.homeAction.usr.dto.PdtView;
@@ -16,18 +29,16 @@ import irille.pub.Log;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.Bean;
 import irille.pub.bean.BeanBase;
-import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
 import irille.pub.exception.ReturnCode;
-import irille.pub.exception.WebMessage;
 import irille.pub.exception.WebMessageException;
 import irille.pub.idu.IduIns;
 import irille.pub.idu.IduOther;
 import irille.pub.idu.IduUpd;
 import irille.pub.svr.Env;
 import irille.pub.tb.FldLanguage;
-import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.SEOUtils;
+import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.TranslateLanguage.TranslateFilter;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.sellerAction.SellerAction;
@@ -38,11 +49,6 @@ import irille.shop.usr.UsrCartDAO;
 import irille.shop.usr.UsrProductCategoryDAO;
 import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
-
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class PdtProductDAO {
 
@@ -731,7 +737,8 @@ public class PdtProductDAO {
                         .WHERE(T.SUPPLIER, "=?", supplier)
 //                        .WHERE(T.IS_NEW, "=?", Sys.OYn.YES)
                         .WHERE(T.STATE, "=?", Pdt.OState.ON)
-                        .WHERE(T.IS_INDEX, "=?", Sys.OYn.YES)
+//                        TODO  商家目前不能设置首页商品所以展示去掉
+//                        .WHERE(T.IS_INDEX, "=?", Sys.OYn.YES)
                         .WHERE(T.IS_VERIFY, "=?", Sys.OYn.YES)
                         .WHERE(T.PRODUCT_TYPE, "=?", Pdt.OProductType.GENERAL)
                         .ORDER_BY(T.UPDATE_TIME, "DESC")
@@ -754,9 +761,6 @@ public class PdtProductDAO {
         }
     }
 
-    public static void getWarehouse() {
-
-    }
 
     public static Page getProducts(Integer start, Integer limit, SeartchView seartch) {
         if (start == null) {
@@ -870,6 +874,7 @@ public class PdtProductDAO {
             }
         };
         PdtProduct pp = irille.pub.bean.Query.sql(pdt).query(PdtProduct.class);
+        O2O_Product o2oPdt = null;
         if (pp == null) {
             throw new WebMessageException(ReturnCode.service_gone, "产品不存在");
         }
@@ -879,7 +884,7 @@ public class PdtProductDAO {
                         .FROM(O2O_Product.class)
                         .WHERE(O2O_Product.T.PRODUCT_ID, "=?", id);
             }};
-            O2O_Product o2oPdt = irille.pub.bean.Query.sql(o2o).query(O2O_Product.class);
+            o2oPdt = irille.pub.bean.Query.sql(o2o).query(O2O_Product.class);
             if (status == 0) {
                 o2oPdt.setMessage(message);
                 o2oPdt.stVerifyStatus(O2O_ProductStatus.Failed);
@@ -894,6 +899,11 @@ public class PdtProductDAO {
             }
             pp.upd();
         }
+        
+        //TODO 产品审核发送站内信
+        IPMMessageService messageService = new PMMessageServiceImp();
+        UsrSupplier supplier = pp.gtSupplier();
+        messageService.send(OTempType.PROD_APPR_NOTICE, supplier, null, pp,supplier,o2oPdt);
     }
 
     /**

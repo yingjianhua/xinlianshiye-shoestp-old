@@ -85,6 +85,9 @@
         .null {
             border: 1px solid red !important;
         }
+        #o2otop .o2otopcon .topsearch > input{
+            border: 1px solid #10389c;
+        }
     </style>
 
     <%--统计代码--%>
@@ -96,32 +99,6 @@
     <index-top></index-top>
     <div class="wide">
         <div id="lib_user" class="clearfix">
-            <s:if test="env.login!=null">
-                <div id="lib_user_crumb" class="widget">
-                    <ul class="crumb_box clearfix">
-                        <li class="home">
-                            <a href="/home/usr_UsrPurchase" title="Home">
-                                <s:text name="Global.Home"/>
-                                <i></i>
-                            </a>
-                        </li>
-                        <li class="crumb1">
-                            <a href="/home/usr_UsrPurchase_userIndex" title="My Account">
-                                <s:text name="Global.My_Account"/>
-                                <i></i>
-                            </a>
-                        </li>
-                        <li class="crumb2 root">
-                            <a href="/home/usr_UsrConsult_publishView" title="My Inquiry/RFQ">
-                                <s:text name="my-inquiry-publish.View_Inquiry"/>
-                                <i></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <%@ include file="template/account/lib-user-menu.jsp" %>
-            </s:if>
-
             <div id="lib_user_main">
                 <div id="lib_user_msg" class="clearfix">
 
@@ -295,9 +272,10 @@
             </div>
         </div>
     </div>
+    <index-bottom></index-bottom>
 </div>
 
-<%@ include file="/home/template/new-foot.jsp" %>
+<%--<%@ include file="/home/template/new-foot.jsp" %>--%>
 
 <div id="hj_top" style="opacity: 0;">
     <img src="/home/static/images/hj_top.png">
@@ -318,6 +296,7 @@
     }
 </script>
 <script src="/home/v3/static/js/index-top.js"></script>
+<script src="/home/v3/static/js/index-bottom.js"></script>
 <script type="text/javascript">
     // 最高价格 - 不鞥低于最低价
     const validateMaxPrice = (rule, value, callback) => {
@@ -509,7 +488,7 @@
                     this.$alert('Please login to operate', 'Please login to operate', {
                         confirmButtonText: 'Ok',
                         callback: action => {
-                            window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView"
+                            window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView"
                         }
                     });
                     return

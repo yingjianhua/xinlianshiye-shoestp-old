@@ -108,8 +108,9 @@
             <s:text name="No_EnquiryInformation"/>
         </div>
     </div>
+    <index-bottom></index-bottom>
 </div>
-<%@ include file="/home/template/new-foot.jsp" %>
+<%--<%@ include file="/home/template/new-foot.jsp" %>--%>
 </body>
 <script>
     var app = new Vue({
@@ -153,5 +154,6 @@
     })
 </script>
 <script src="/home/v3/static/js/index-top.js"></script>
+<script src="/home/v3/static/js/index-bottom.js"></script>
 
 </html>

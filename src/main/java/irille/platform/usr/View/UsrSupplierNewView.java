@@ -47,5 +47,4 @@ public class UsrSupplierNewView implements BaseView {
     private String contactsIdCardFrontPhoto; //运营人员身份证正反面复印件
 
     private Byte status; //审核状态
-    private String reason; //审核不通过理由
 }

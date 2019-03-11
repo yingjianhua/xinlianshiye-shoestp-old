@@ -24,39 +24,15 @@
     <link rel="stylesheet" href="/home/v2/static/css/base/element-ui/element-ui.css"/>
     <link rel="stylesheet" href="/home/v2/static/css/base/foot.css"/>
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
-    <script src="https://js.fundebug.cn/fundebug.1.5.1.min.js"
-            apikey="afbc9f957e7689049c3282fe7696d30e7cb260e0ce11c148c0cf9e31d4e802f5"></script>
     <link rel="stylesheet" href="/home/v3/static/css/element-ui/element-ui.css"/>
 
+    <script src="/home/v2/static/js/base/qs.js"></script>
     <link rel="stylesheet" href="/home/v3/static/css/reset.css"/>
     <link rel="stylesheet" href="/home/v3/static/css/index.css">
 
     <!-- index为以上几个合并后的压缩文件 - 加前缀 -->
     <!-- <link rel="stylesheet" href="css/index.css" /> -->
     <link rel="stylesheet" href="/home/v3/static/css/swiper.min.css"/>
-
-    <script>
-        window.fbAsyncInit = function() {
-            FB.init({
-                appId      : '801883060180295',
-                cookie     : true,
-                xfbml      : true,
-                version    : 'v3.2'
-            });
-
-            FB.AppEvents.logPageView();
-
-        };
-
-        (function(d, s, id){
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) {return;}
-            js = d.createElement(s); js.id = id;
-            js.src = "https://connect.facebook.net/en_US/sdk.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-    </script>
-
     <script>
         window.dataLayer = window.dataLayer || [];
 
@@ -70,6 +46,7 @@
     </script>
     <script>
         var isLogin = ${env.login!=null};
+        var user_obj = null;
 
         function getParams(name, defaultValue) {
             var url = window.location.href;
@@ -101,5 +78,9 @@
                 return defaultValue
             }
             return -1;
+        }
+
+        if (user_obj) {
+            user_obj.sign_in_init()
         }
     </script>

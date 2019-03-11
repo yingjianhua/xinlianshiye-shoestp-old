@@ -8,10 +8,11 @@ import org.apache.struts2.interceptor.RequestAware;
 import org.apache.struts2.interceptor.SessionAware;
 import org.json.JSONException;
 
+import com.xinlianshiye.shoestp.shop.view.usr.PurchaseView;
+
 import irille.Filter.svr.ItpSessionmsg;
 import irille.homeAction.pdt.dto.ProductCatView;
 import irille.homeAction.usr.dto.EnvView;
-import irille.homeAction.usr.dto.PurchaseView;
 import irille.pub.bean.BeanBase;
 import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.AppConfig;

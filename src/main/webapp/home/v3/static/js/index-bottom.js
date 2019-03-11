@@ -1,6 +1,6 @@
 Vue.component('index-bottom', {
     template: `<div id="o2obottom">
-<div class="brand-list">
+<div class="brand-list" v-if="LogoIsShow()">
           <a class="brand-item" target="_blank" href="https://www.shoeslogo.com/">
             <img src="/home/v3/static/images/brand01.png" alt="" />
           </a>
@@ -17,7 +17,7 @@ Vue.component('index-bottom', {
         <div class="emailform">
             <p>Trade Alert - Delivering the latest product trends and industry news straight to your inbox.</p>
             <div class="email">
-                <input type="text" v-model="email" placeholder="Your Emial">
+                <input type="text" v-model="email" placeholder="Your Email">
                 <div class="botton" @click="submit">Subscribe</div>
             </div>
             <p>We’ll never share your email address with a third-party</p>
@@ -30,7 +30,7 @@ Vue.component('index-bottom', {
                 </li>
             </ul>
             <ul class="share-links">
-                <li class="ultitle">Connect With Us</li>
+                <li class="ultitle">Follow Us</li>
                 <li class="ullink">
                     <a href="http://www.facebook.com/share.php?src=bm&v=4&u=http%3A%2F%2Flocalhost%3A8080%2Fhome%2Fcnt_CntSglPageCategory_gosglpage%3Fpkey%3D8&t=facebook" target="_blank">
                         <img class="icon" src="/home/v3/static/images/icon-facebook.png" alt="" />
@@ -51,11 +51,11 @@ Vue.component('index-bottom', {
             </ul>
         </div>
         <div class="o2obottomcopyright">
-            <a href="/home/cnt_CntSglPageCategory_gosglpage?pkey=2"><p>Privacy Policy - Team and Conditions - <span>Refund Policy</span> -Regarding Payment - FAQ</p>        
+            <a href="/home/cnt_CntSglPageCategory_gosglpage?pkey=2"><p>Privacy Policy - Terms & Conditions - <span>Refund Policy</span> -Regarding Payment - FAQ</p>        
             <p><img src="/home/v3/static/images/o2obottomzf.png" alt="">©1988-2019 xinlian.com ALL right reserved</p>
             </a>
         </div>
-        <a href="javascript:void(0)" @click="goto('o2otop')">
+        <a href="javascript:;" @click="goto('o2otop')">
             <div class="o2ogototop">
                 <img src="/home/v3/static/images/o2ogototop.png" alt="">
             </div>
@@ -67,24 +67,19 @@ Vue.component('index-bottom', {
             email: '',
             links: [
                 {
-                    title: 'WholeSale',
+                    title: 'Help',
                     url: [
                         {
-                            atitle: 'Men',
-                            alink: '/home/pdt_PdtProduct?cated=373'
-                        },
-                        {
-                            atitle: 'Women',
-                            alink: '/home/pdt_PdtProduct?cated=380'
-                        },
-                        {
-                            atitle: 'Children',
-                            alink: '/home/pdt_PdtProduct?cated=387'
+                            atitle: 'Regarding Payment',
+                            alink: '/home/cnt_CntSglPageCategory_gosglpage?pkey=1'
+                        }, {
+                            atitle: 'FAQ',
+                            alink: '/home/cnt_CntSglPageCategory_gosglpage?pkey=2'
                         }
                     ]
                 },
                 {
-                    title: 'Trade Shows',
+                    title: 'Trade Show',
                     url: [
                         {
                             atitle: 'Romania',
@@ -93,6 +88,20 @@ Vue.component('index-bottom', {
                     ]
                 },
                 {
+                    title: 'Terms & Conditions',
+                    url: [
+                        {
+                            atitle: 'Privacy Policy',
+                            alink: '/home/cnt_CntSglPageCategory_gosglpage?pkey=3'
+                        }, {
+                            atitle: 'Terms & Conditions',
+                            alink: '/home/cnt_CntSglPageCategory_gosglpage?pkey=4'
+                        }, {
+                            atitle: 'Refund Policy',
+                            alink: '/home/cnt_CntSglPageCategory_gosglpage?pkey=5'
+                        }
+                    ]
+                }, {
                     title: 'About us',
                     url: [
                         {
@@ -104,17 +113,48 @@ Vue.component('index-bottom', {
                             alink: '/home/cnt_CntSglPageCategory_gosglpage?pkey=7'
                         },
                         {
-                            atitle: 'Contact US',
+                            atitle: 'Contact Us',
                             alink: '/home/cnt_CntSglPageCategory_gosglpage?pkey=8'
+                        },
+                        {
+                            atitle: '店铺管理',
+                            alink: '/newseller/'
                         }
                     ]
                 }
+                // {
+                //     title: 'WholeSale',
+                //     url: [
+                //         {
+                //             atitle: 'Men',
+                //             alink: '/home/pdt_PdtProduct?cated=373'
+                //         },
+                //         {
+                //             atitle: 'Women',
+                //             alink: '/home/pdt_PdtProduct?cated=380'
+                //         },
+                //         {
+                //             atitle: 'Children',
+                //             alink: '/home/pdt_PdtProduct?cated=387'
+                //         }
+                //     ]
+                // },
+
+
             ]
         }
     },
     methods: {
+        LogoIsShow() {
+            if (window.location.pathname === '/home/cnt_CntSglPageCategory_gosglpage') {
+                if (window.location.search.split('=')[1] === '6' || window.location.search.split('=')[1] === '7' || window.location.search.split('=')[1] === '8') {
+                    return true
+                }
+            }
+        },
         goto: function (id) {
-            document.getElementById(id).scrollIntoView(true);
+            window.scrollTo(0,0);
+            // document.getElementById('o2oTop').scrollIntoView(true);
         },
         submit: function () {
             let regEmail = /.+@[a-z0-9\.]+\.(com|cn|net)$/;

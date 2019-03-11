@@ -1,13 +1,22 @@
 package irille.Dao.O2O;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+
 import irille.Aops.Caches;
+import irille.Entity.O2O.O2O_Activity;
+import irille.Entity.O2O.O2O_Activity.T;
+import irille.Entity.O2O.O2O_JoinInfo;
+import irille.Entity.O2O.O2O_Map;
+import irille.Entity.O2O.O2O_PrivateExpoPdt;
+import irille.Entity.O2O.O2O_Product;
 import irille.Entity.O2O.Enums.O2O_ActivityStatus;
 import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
-import irille.Entity.O2O.*;
-import irille.Entity.O2O.O2O_Activity.T;
 import irille.core.sys.Sys;
-import irille.core.sys.SysEm;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
 import irille.shop.pdt.Pdt;
@@ -18,11 +27,6 @@ import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplierRole;
 import irille.view.O2O.PdtSearchView;
-
-import javax.annotation.Nonnull;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA. User: Lijie<HelloBox@outlook.com> Date: 2019/1/26 Time: 12:50
@@ -101,16 +105,18 @@ public class O2OProductDao {
         Date now = new Date();
         sql.WHERE(T.START_DATE, " <= ?", now);
         if (null != status) {
-            if (status.equals(O2O_ActivityStatus.TOBEGIN.getLine().getKey())) {
+            if (status.byteValue() == O2O_ActivityStatus.TOBEGIN.getLine().getKey()) {
                 //未开始
                 sql.WHERE(T.START_DATE, ">?", now);
-            } else if (status.equals(O2O_ActivityStatus.ACTIVITY.getLine().getKey())) {
+            } else if (status.byteValue() == O2O_ActivityStatus.ACTIVITY.getLine().getKey()) {
                 //活动中
                 sql.WHERE(T.START_DATE, "<?", now);
                 sql.WHERE(T.END_DATE, ">?", now);
-            } else if (status.equals(O2O_ActivityStatus.END.getLine().getKey())) {
+            } else if (status.byteValue() == O2O_ActivityStatus.END.getLine().getKey()) {
                 //结束
                 sql.WHERE(T.END_DATE, "<?", now);
+            }else if(status.byteValue() == O2O_ActivityStatus.CLOSE.getLine().getKey()) {
+            	sql.WHERE(O2O_Activity.T.STATUS, " =? ", status.byteValue());
             }
         }
 
@@ -138,16 +144,18 @@ public class O2OProductDao {
         Date now = new Date();
         sql.WHERE(T.START_DATE, " <= ?", now);
         if (null != status) {
-            if (status.equals(O2O_ActivityStatus.TOBEGIN.getLine().getKey())) {
+            if (status.byteValue() == O2O_ActivityStatus.TOBEGIN.getLine().getKey()) {
                 //未开始
                 sql.WHERE(T.START_DATE, ">?", now);
-            } else if (status.equals(O2O_ActivityStatus.ACTIVITY.getLine().getKey())) {
+            } else if (status.byteValue() == O2O_ActivityStatus.ACTIVITY.getLine().getKey()) {
                 //活动中
                 sql.WHERE(T.START_DATE, "<?", now);
                 sql.WHERE(T.END_DATE, ">?", now);
-            } else if (status.equals(O2O_ActivityStatus.END.getLine().getKey())) {
+            } else if (status.byteValue() == O2O_ActivityStatus.END.getLine().getKey()) {
                 //结束
                 sql.WHERE(T.END_DATE, "<?", now);
+            }else if(status.byteValue() == O2O_ActivityStatus.CLOSE.getLine().getKey()) {
+            	sql.WHERE(O2O_Activity.T.STATUS, " =? ", status.byteValue());
             }
         }
 //                .WHERE(status != null,T.STATUS,"=?",status);
@@ -222,19 +230,21 @@ public class O2OProductDao {
                 PdtProduct.T.MIN_OQ,
                 PdtProduct.T.CUR_PRICE,
                 PdtProduct.T.PRODUCT_TYPE,
+                O2O_Product.T.STATUS,
                 PdtProduct.T.PICTURE)
                 .SELECT(PdtProduct.T.NAME, "pdtName")
                 .SELECT(UsrSupplier.T.NAME, "supName")
                 .FROM(PdtProduct.class)
                 .LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, PdtProduct.T.SUPPLIER)
-                .LEFT_JOIN(O2O_Product.class, O2O_Product.T.PRODUCT_ID, PdtProduct.T.PKEY)
+                .LEFT_JOIN("(select * from o2_o__product ORDER BY updated_time DESC limit 1) O2O_Product  ON O2O_Product.product_id = PdtProduct.pkey ")
+//                .LEFT_JOIN(O2O_Product.class, O2O_Product.T.PRODUCT_ID, PdtProduct.T.PKEY)
                 .WHERE(!pkeys.equals(""), PdtProduct.T.CATEGORY, " in(" + pkeys + ")")
                 .WHERE(PdtProduct.T.SUPPLIER, "=?", supplier.getPkey())
                 .WHERE(PdtProduct.T.IS_VERIFY, "=?", Sys.OYn.YES.getLine().getKey())
                 .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON.getLine().getKey())
 //                .WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.GENERAL.getLine().getKey())
-                .WHERE("("+PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()+"=? OR " + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()+"=? )", Pdt.OProductType.GENERAL.getLine().getKey(),Pdt.OProductType.O2O.getLine().getKey())
-                .WHERE("("+ O2O_Product.class.getSimpleName() +"."+O2O_Product.T.ACTIVITY_ID.getFld().getCodeSqlField() + "<> ? and " + O2O_Product.class.getSimpleName() +"." + O2O_Product.T.STATUS.getFld().getCodeSqlField() + "<>? OR "+ O2O_Product.class.getSimpleName() +"." + O2O_Product.T.PKEY.getFld().getCodeSqlField() + " IS NULL )", activity,O2O_ProductStatus.WAITOFF.getLine().getKey());
+                .WHERE("("+PdtProduct.class.getSimpleName() + "." + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()+"=? OR " + PdtProduct.class.getSimpleName() + "." + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()+"=? )", Pdt.OProductType.GENERAL.getLine().getKey(),Pdt.OProductType.O2O.getLine().getKey())
+                .WHERE("(("+ O2O_Product.class.getSimpleName() +"."+O2O_Product.T.ACTIVITY_ID.getFld().getCodeSqlField() + "<> ? OR "+ O2O_Product.class.getSimpleName() +"." + O2O_Product.T.PKEY.getFld().getCodeSqlField() + " IS NULL ) OR ("+O2O_Product.class.getSimpleName() + "." + O2O_Product.T.ACTIVITY_ID.getFld().getCodeSqlField() +" =? AND "+O2O_Product.class.getSimpleName()+"." + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField()+" =? ))", activity,activity,O2O_PrivateExpoPdtStatus.Failed.getLine().getKey());
         System.err.println(sql.toString());
         return Query.sql(sql).queryMaps();
 
@@ -340,5 +350,55 @@ public class O2OProductDao {
             return null;
         }
     }
+    
+    public List<O2O_Product> findAllByProd(Integer product){
+    	SQL sql = new SQL();
+    	sql.SELECT(O2O_Product.class).FROM(O2O_Product.class).WHERE(O2O_Product.T.PRODUCT_ID, "=?",product);
+    	return Query.sql(sql).queryList(O2O_Product.class);
+    }
+    
+    /**
+     * 获取通过审核/上架的O2O商品
+     */
+    public List<O2O_Product> findAllByProd_Pkey(Integer product){
+        SQL sql = new SQL();
+        sql.SELECT(O2O_Product.class).FROM(O2O_Product.class).WHERE(O2O_Product.T.PRODUCT_ID," =? ",product);
+        sql.WHERE("("+O2O_Product.T.STATUS + " = ?  OR " + O2O_Product.T.STATUS +  "= ? OR "+O2O_Product.T.STATUS+" = ? )",O2O_ProductStatus.ON.getLine().getKey(),O2O_ProductStatus.WAITOFF.getLine().getKey(),O2O_ProductStatus.Failed.getLine().getKey());
+        sql.WHERE(O2O_Product.T.VERIFY_STATUS, " =? ", O2O_ProductStatus.PASS.getLine().getKey());
+
+        return Query.sql(sql).queryList(O2O_Product.class);
+    }
+    
+    /**
+     * 根据获取通过审核/上架/活动未结束的O2O商品
+     */
+    public List<O2O_Product> findAllByVerifyStatusAndStatusAndActivity_Status(PdtProduct product){
+    	SQL sql = new SQL();
+    	sql.SELECT(O2O_Product.class).FROM(O2O_Product.class)
+    		.LEFT_JOIN(O2O_Activity.class, O2O_Activity.T.PKEY, O2O_Product.T.ACTIVITY_ID)
+    		.WHERE(O2O_Product.T.VERIFY_STATUS, "=?", O2O_ProductStatus.PASS.getLine().getKey())
+    		.WHERE(O2O_Product.T.STATUS, "=?", O2O_ProductStatus.ON.getLine().getKey())
+    		.WHERE(O2O_Activity.T.STATUS, "<>?", O2O_ActivityStatus.END.getLine().getKey())
+    		.WHERE(O2O_Activity.T.STATUS, "<>?", O2O_ActivityStatus.CLOSE.getLine().getKey());
+    	
+    	return Query.sql(sql).queryList(O2O_Product.class);
+    }
+    
+    public List<O2O_Product> findAllByActivityAndSupplier(Integer activity,Integer supplier){
+    	SQL sql = new SQL();
+    	sql.SELECT(O2O_Product.class).FROM(O2O_Product.class)
+    	.LEFT_JOIN(O2O_JoinInfo.class,O2O_JoinInfo.T.PKEY,O2O_Product.T.JOIN_INFO_ID)
+    	.WHERE(O2O_JoinInfo.T.SUPPLIER," =? ",supplier)
+    	.WHERE(O2O_Product.T.ACTIVITY_ID, " =? ", activity)
+    	.WHERE(O2O_Product.T.VERIFY_STATUS, " <>? ", O2O_ProductStatus.Failed.getLine().getKey());
+    	
+    	return Query.sql(sql).queryList(O2O_Product.class);
+    }
+
+	public List<O2O_Product> findAllByActivityIn(String actPkeys) {
+		SQL sql = new SQL();
+		sql.SELECT(O2O_Product.class).FROM(O2O_Product.class).WHERE(O2O_Product.T.ACTIVITY_ID, " in ("+actPkeys+")");
+		return Query.sql(sql).queryList(O2O_Product.class);
+	}
 
 }

@@ -6,6 +6,8 @@ import irille.view.plt.LanguageView;
 
 import java.util.List;
 
+import com.xinlianshiye.shoestp.shop.view.usr.PurchaseView;
+
 
 /**
  * 系统环境参数

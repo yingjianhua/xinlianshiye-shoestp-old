@@ -25,6 +25,7 @@ public enum ReturnCode {
 	valid_regex(504),//正则校验不通过
 	valid_illegal(505),//非法参数
 	valid_toolong(506),//过长
+	valid_tooShort(507),//过短
 	;
 	int code;
 	private ReturnCode(int code) {

@@ -23,7 +23,6 @@ import irille.shop.pdt.PdtProduct;
 import irille.shop.pdt.PdtSize;
 import irille.shop.pdt.PdtSpec;
 import irille.shop.plt.PltConfigDAO;
-import irille.shop.plt.PltProvince;
 import irille.shop.plt.PltTrantslate;
 import irille.shop.plt.PltTrantslateDAO;
 import irille.shop.usr.UsrSupplier;
@@ -160,10 +159,10 @@ public class translateUtil {
             TranslateOptions translateOptions = null;
             try {
                 translateOptions = TranslateOptions.getDefaultInstance();
+                translate = translateOptions.getService();
             } catch (Exception e) {
 
             }
-            translate = translateOptions.getService();
         }
     }
 

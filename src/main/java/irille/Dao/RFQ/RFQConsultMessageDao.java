@@ -20,4 +20,12 @@ public interface RFQConsultMessageDao {
 	 * @return
 	 */
 	Integer countUnreadByRelation_PurchaseGroupByRelation(Integer purchasePkey);
+	
+	/**
+	 * 通过uuid获取消息
+	 * @param uuid 唯一标识
+	 * @return
+	 * @author Jianhua Ying
+	 */
+	RFQConsultMessage findByUuid(String uuid);
 }

@@ -1,12 +1,15 @@
 package irille.Service.Usr;
 
 import com.google.inject.ImplementedBy;
+import com.xinlianshiye.shoestp.shop.view.usr.FavoritesView;
+
 import irille.Service.Usr.Imp.UsrSupplierServiceImp;
 import irille.core.sys.Sys;
-import irille.homeAction.usr.dto.FavoritesView;
 import irille.homeAction.usr.dto.SupplierListView;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage;
+import irille.view.Page;
+
 import java.util.List;
 
 /**
@@ -47,4 +50,16 @@ public interface IUsrSupplierService {
    */
   List getSupplierInfo(IduPage page);
 
+
+  /*
+   *   供应商中心列表
+   * @Author HuangHaoBin
+   **/
+  Page listSupplier(Integer start, Integer limit);
+
+  /*
+   *   判断用户类型 0:普通用户 1:商家
+   * @Author HuangHaoBin
+   **/
+  Integer isSupplier(String loginName);
 }

@@ -1,8 +1,8 @@
 package irille.platform.usr;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import irille.action.ActionBase;
 import irille.action.MgtAction;
+import irille.platform.usr.View.UsrSupplierNewView;
 import irille.pub.util.upload.ImageUpload;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplierDAO;
@@ -59,6 +59,47 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
 	@Getter
 	@Setter
 	private File file;
+
+	/**
+	 * 获取开店申请列表
+	 * @author: lingjian
+	 * @Date: 2019/3/4 15:59
+	 * @throws IOException
+	 */
+	public void getShopApplication() throws IOException {
+		write(UsrSupplierDAO.getShopApplication(getStart(), getLimit(), name, status));
+	}
+
+
+	@Getter
+	@Setter
+	private String id;
+
+	/**
+	 * 根据id获取供应商信息
+	 * @author: lingjian
+	 * @Date: 2019/3/8 10:41
+	 * @throws IOException
+	 */
+	public void getSupplierById() throws IOException {
+		write(UsrSupplierDAO.getSupplierById(id));
+	}
+
+	@Getter
+	@Setter
+	private String reason;
+
+	/**
+	 * 审核
+	 * @throws IOException
+	 */
+	public void reviewStatus() throws IOException {
+		UsrSupplier supplier = UsrSupplierDAO.reviewStatus(id,status,reason);
+		UsrSupplierNewView usrSupplierNewView = new UsrSupplierNewView();
+		usrSupplierNewView.setStatus(supplier.getStatus());
+		write(usrSupplierNewView);
+	}
+
 
 	/**
 	 * @Description: 获取供应商列表

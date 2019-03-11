@@ -7,7 +7,6 @@ import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.SqlQuery;
 import irille.pub.bean.sql.SQL;
-import irille.pub.tb.FldLanguage;
 import irille.pub.tb.FldLanguage.Language;
 import irille.pub.verify.RandomImageServlet;
 import irille.sellerAction.SellerAction;
@@ -17,10 +16,7 @@ import irille.sellerAction.view.operateinfoView;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltProvince;
-import irille.shop.usr.UsrSupplier;
-import irille.shop.usr.UsrSupplierCategory;
-import irille.shop.usr.UsrSupplierDAO;
-import irille.shop.usr.UsrUserDAO;
+import irille.shop.usr.*;
 import irille.view.usr.AccountSettingsView;
 import irille.view.usr.UserView;
 import irille.view.usr.UsrshopSettingView;
@@ -35,8 +31,8 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsrSupplierAction {
 
@@ -377,12 +373,9 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     JSONArray categoryArray = new JSONArray();
     JSONArray provinceArray = new JSONArray();
     UsrSupplier supplier = BeanBase.load(UsrSupplier.class, SellerAction.getSupplier().getPkey());
-    PltCountry country = new PltCountry();
-    PltProvince province = new PltProvince();
-    UsrSupplierCategory category = new UsrSupplierCategory();
-    List<PltCountry> countryList = country.list(PltCountry.class, "", false);
-    List<UsrSupplierCategory> categoryList = category.list(UsrSupplierCategory.class, "", false);
-    List<PltProvince> provinceList = province.list(PltProvince.class, "", false);
+    List<PltCountry> countryList = BeanBase.list(PltCountry.class, "", false);
+    List<UsrSupplierCategory> categoryList = BeanBase.list(UsrSupplierCategory.class, "", false);
+    List<PltProvince> provinceList = BeanBase.list(PltProvince.class, "", false);
     JSONObject countryJson = null;
     JSONObject categoryJson = null;
     JSONObject provinceJson = null;
@@ -415,30 +408,34 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
   }
 
 
-  /**
-   * 获取登录供应商信息
-   *
-   * @author liyichao
+
+
+/**
+   * 获取供应商信息
+   * @author: lingjian
+   * @Date: 2019/3/1 15:49
    */
   public void loadOnlineSup() throws Exception {
     UsrSupplier supplier = BeanBase
-        .loadAndLock(UsrSupplier.class, SellerAction.getSupplier().getPkey());
+            .load(UsrSupplier.class, getSupplier().getPkey());
     SQL sql = new SQL() {{
-      SELECT(UsrSupplier.T.SHOW_NAME);
-      FROM(UsrSupplier.class);
-      WHERE(UsrSupplier.T.PKEY, "=?").PARAM(SellerAction.getSupplier().getPkey());
+      SELECT(UsrAnnex.class);
+      FROM(UsrAnnex.class);
+      WHERE(UsrAnnex.T.SUPPLIER, "=?",supplier.getPkey());
     }};
     SqlQuery query = Query.sql(sql);
-    JSONObject showname = null;
-    if (query.queryObject(UsrSupplier.class) != null) {
-      showname = new JSONObject(String.valueOf(query.queryObject(UsrSupplier.class)));
-    }
+    Map<String, Object> obj = query.queryMap();
     JSONObject json = crtJsonByBean(supplier);
-    json.put("showname", showname);
+    JSONObject j = new JSONObject();
+    for(String key:obj.keySet()){
+      j.put(key,obj.get(key));
+    }
+    json.put("annex",j);
     writerOrExport(json);
   }
 
-  /**
+
+    /**
    * @Description: 店铺信息
    * @date 2018/12/18 9:34
    * @anthor wilson zhang
@@ -447,37 +444,36 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     write(UsrSupplierDAO.getsupinfo(getSupplier().getPkey(),
         PltConfigDAO.supplierLanguage(getSupplier().getPkey())));
   }
+  @Getter
+  @Setter
+  private Integer purchasePkey;
+  @Getter
+  @Setter
+  private Language lang;
+
+  @Getter
+  @Setter
+  private String contactsIdCardFrontPhotoName;
+  @Getter
+  @Setter
+  private String idCardFrontPhotoName;
 
   /**
    * 更新供应商信息
-   *
-   * @author liyichao
-   * @return
+   * @author: lingjian
+   * @Date: 2019/3/1 15:49
    * @throws IOException
    */
-  @Getter
-  @Setter
-  private String showName;
-
-
   public void updInfo() throws Exception {
     try {
-      JSONObject json = new JSONObject(getShowName());
-      Iterator<String> jsonIte = json.keys();
-      while (jsonIte.hasNext()) {
-        String key = jsonIte.next();
-        String value = json.getString(key);
-        if ((key.equals("en") && value.equals("")) || (key.equals("zh_CN") && value.equals("")) || (
-            key.equals("zh_TW") && value.equals(""))) {
-          throw LOG.err("needWrite", "{0}语种必填", FldLanguage.Language.valueOf(key).displayName());
-        }
-        if (value == "") {
-          json.put(key, json.getString("en"));
-        }
+      UsrAnnex annex = UsrAnnex.chkUniqueSupplier(false,getSupplier().getPkey());
+      if(getSupplier().getPkey() != null) {
+        annex.setIdCardFrontPhotoName(idCardFrontPhotoName);
+        annex.setContactsIdCardFrontPhotoName(contactsIdCardFrontPhotoName);
       }
       UsrSupplier newSupplier = UsrSupplierDAO.updInfo(getBean());
-      newSupplier.stShowName(json);
       newSupplier.upd();
+      annex.upd();
       write();
     } catch (Exp e) {
       writeErr(e.getLastMessage());

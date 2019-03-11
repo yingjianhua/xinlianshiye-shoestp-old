@@ -1,5 +1,16 @@
 package irille.shop.usr;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
+import com.xinlianshiye.shoestp.plat.service.pm.imp.PMMessageServiceImp;
+
+import irille.Entity.pm.PM.OTempType;
 import irille.core.sys.Sys.OSex;
 import irille.homeAction.HomeAction;
 import irille.platform.usr.View.UsrPurchaseListView;
@@ -23,30 +34,9 @@ import irille.shop.plt.PltErate;
 import irille.shop.plt.PltErateDAO;
 import irille.view.Page;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
 public class UsrPurchaseDAO {
     public static final LogMessage LOG = new LogMessage(UsrPurchase.class);
 
-
-    /**
-     *@Description:   查询采购商的facebookid
-     *
-     */
-    public static List<UsrPurchaseView> selectFaceBookeId(){
-        SQL sql=new SQL(){{
-            SELECT(UsrPurchase.class).FROM(UsrPurchase.class);
-        }};
-        List<UsrPurchaseView> list= irille.pub.bean.Query.sql(sql).queryMaps().stream().map(bean->new UsrPurchaseView(){{
-            setPkey((Integer)bean.get(UsrPurchase.T.PKEY.getFld().getCodeSqlField()));
-            setLoginName((String) bean.get(UsrPurchase.T.LOGIN_NAME.getFld().getCodeSqlField()));
-            setPassword((String) bean.get(UsrPurchase.T.PASSWORD.getFld().getCodeSqlField()));
-            setFacebookID((String) bean.get(UsrPurchase.T.FACEBOOK_USER_ID.getFld().getCodeSqlField()));
-            setGoogleID((String) bean.get(UsrPurchase.T.GOOGLE_USER_ID.getFld().getCodeSqlField()));
-        }}).collect(Collectors.toList());
-        return list;
-    }
 
     /**
      *@Description:   查询采购商列表
@@ -220,7 +210,16 @@ public class UsrPurchaseDAO {
 		   		supplier.upd();
 		   		getB().upd();
 	   	     }
-	        }
+	    }
+
+		@Override
+		public void after() {
+			super.after();
+			IPMMessageService messageService = new PMMessageServiceImp();
+			messageService.send(OTempType.PURCHASE_FORGET_PASSWORD, null, getB(), getB());
+		}
+        
+        
     }
 
     /**
@@ -284,7 +283,7 @@ public class UsrPurchaseDAO {
      * 更新采购商账户信息
      */
     public static class updPurchaseInf extends IduOther<updPurchaseInf, UsrPurchase> {
-
+        
 
         @Override
         public void before() {
@@ -317,7 +316,7 @@ public class UsrPurchaseDAO {
         public void setNewPwd(String newPwd) {
             this.newPwd = newPwd;
         }
-
+        
         public String getUpdResult() {
 			return updResult;
 		}
@@ -345,8 +344,8 @@ public class UsrPurchaseDAO {
         }
 
     }
-
-
+    
+    
 
     /**
      * @author lijie@shoestp.cn
@@ -381,7 +380,7 @@ public class UsrPurchaseDAO {
 
     }
     /**
-     *
+     * 
      * @author admin
      *@author zhengjianli
      *@date 2018/8/17
@@ -415,7 +414,7 @@ public class UsrPurchaseDAO {
             }
     	}
     }
-
+    
     /**
      * 修改FaceBookId
      * @author GS
