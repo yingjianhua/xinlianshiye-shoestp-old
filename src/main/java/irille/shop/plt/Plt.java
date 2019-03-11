@@ -90,7 +90,6 @@ public class Plt extends PackageBase {
         addTb(72, SVSNewestPdt.class);
          addTb(73, UsrAnnex.class);
     }
-    }
 
     @Override
     public void initTranData() {

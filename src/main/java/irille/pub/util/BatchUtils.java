@@ -15,11 +15,11 @@ import irille.pub.tb.Tb;
 import irille.shop.pdt.PdtProduct;
 
 public class BatchUtils {
-	
+
 	private static IEnumFld castEnum(Object obj) {
 	    return (IEnumFld)obj;
 	  }
-	
+
 	public static <T extends Bean> void batchIns(Class<T> beanClass,List<T> objs) {
 		Class t = null;
 		try {
@@ -34,7 +34,7 @@ public class BatchUtils {
 		}
 		batchIns(beanClass,flds,objs);
 	}
-	
+
 	public static <T extends Bean> void batchIns(Class<T> beanClass,List<IEnumFld> flds,List<T> objs) {
 		StringBuffer sql = new StringBuffer();
 		sql.append(" INSERT INTO ");
@@ -49,10 +49,10 @@ public class BatchUtils {
 			}
 			stack.push(flds.get(i));
 		}
-		
+
 		batch(sql.toString(),stack,objs);
 	}
-	
+
 	public static <T extends Bean> void batchDel(Class<T> beanClass,List<IEnumFld> flds,List<T> objs) {
 		StringBuffer sql = new StringBuffer();
 		sql.append(" DELETE FROM ");
@@ -67,10 +67,10 @@ public class BatchUtils {
 			}
 			stack.push(flds.get(i));
 		}
-		
+
 		batch(sql.toString(),stack,objs);
 	}
-	
+
 	public static <T extends Bean> void batchUpd(Class<T> beanClass,List<IEnumFld> flds,List<IEnumFld> whereFlds,List<T> objs) {
 		StringBuffer sql = new StringBuffer();
 		sql.append(" UPDATE ");
@@ -85,11 +85,11 @@ public class BatchUtils {
 			}
 			stack.push(flds.get(i));
 		}
-		
+
 		if(null != whereFlds && whereFlds.size() > 0) {
 			sql.append(" WHERE ");
 			for(int i=0;i<whereFlds.size();i++) {
-				
+
 				sql.append(whereFlds.get(i).getFld().getCodeSqlField());
 				sql.append(" =? ");
 				if(i != flds.size()-1) {
@@ -98,12 +98,8 @@ public class BatchUtils {
 				stack.push(whereFlds.get(i));
 			}
 		}
-		
+
 		batch(sql.toString(),stack,objs);
-	}
-	
-	private static IEnumFld castEnum(Object obj) {
-		return (IEnumFld)obj;
 	}
 	
 	public static void main(String[] args) throws ClassNotFoundException {
@@ -121,7 +117,7 @@ public class BatchUtils {
 			System.out.println(castEnum(object).getFld().getCodeSqlField());
 		}
 	}
-	
+
 	public static <T extends Bean> void batch(String sql,Stack<IEnumFld> flds,List<T> objs) {
 		System.err.println(sql);
 		PreparedStatement pt = null;
@@ -139,7 +135,7 @@ public class BatchUtils {
 							field.setAccessible(true);
 							pt.setObject(i, field.get(obj));
 							field.get(obj);
-							
+
 							i++;
 							nums++;
 							if(nums%1000 == 0) {
@@ -166,6 +162,6 @@ public class BatchUtils {
 					DbPool.close(pt);
 				}
 			}
-			
+
 	}
 }

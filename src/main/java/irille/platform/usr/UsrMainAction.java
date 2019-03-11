@@ -2,7 +2,7 @@ package irille.platform.usr;
 
 import irille.action.MgtAction;
 import irille.shop.usr.UsrMain;
-import irille.shop.usr.UsrMainDAO;
+import irille.shop.usr.UsrMainDao;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,7 +34,7 @@ public class UsrMainAction extends MgtAction<UsrMain> {
 	 * @throws IOException
 	 */
 	public void getRegistList() throws IOException {
-		write(UsrMainDAO.getRegistList(getStart(), getLimit(),company,email));
+		write(UsrMainDao.getRegistList(getStart(), getLimit(),company,email));
 	}
 
 	@Getter
@@ -46,6 +46,6 @@ public class UsrMainAction extends MgtAction<UsrMain> {
 	 * @throws IOException
 	 */
 	public void getRegistById() throws IOException {
-		write(UsrMainDAO.getRegistById(id));
+		write(UsrMainDao.getRegistById(id));
 	}
 }

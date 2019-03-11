@@ -1,14 +1,9 @@
 package irille.shop.usr;
 
-import java.util.Date;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import irille.Config.Attribute;
 import irille.Config.Variable;
 import irille.Entity.pm.PM.OTempType;
-import irille.core.sys.Sys;
+import irille.core.sys.Sys.OYn;
 import irille.core.sys.SysUser;
 import irille.pub.bean.BeanInt;
 import irille.pub.inf.IExtName;
@@ -23,10 +18,9 @@ import irille.shop.plt.PltProvince;
 import irille.shop.usr.Usr.OIsAuth;
 import irille.shop.usr.Usr.OStatus;
 import irille.shop.usr.Usr.SStatus;
+import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Date;
 
 /**
  * 供应商
@@ -401,7 +395,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     _email=null;	// Email  STR(100)
     _businessLicenseBeginTime=null;	// 营业执照开始时间  STR(100)
     _businessLicenseEndTime=null;	// 营业执照到期时间  STR(100)
-    _businessLicenseIsSecular=OYn.DEFAULT.getLine().getKey();	// 是否长期 <OYn>  BYTE
+    _businessLicenseIsSecular= OYn.DEFAULT.getLine().getKey();	// 是否长期 <OYn>  BYTE
     _telephone=null;	// 电话  STR(20)
     _fax=null;	// 传真  STR(20)
     _qq=null;	// QQ  STR(100)
