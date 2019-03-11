@@ -32,4 +32,6 @@ public class PutRFQConsultView implements BaseView {
     private int shipping_type;
     //    目的地
     private String destination;
+    //额外请求
+    private String extraRequest;
 }

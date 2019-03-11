@@ -78,6 +78,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         rfqConsult.stIsDeleted(false);
         rfqConsult.setChangeCount((short) 0);
         rfqConsult.setCountry(usrPurchase.getCountry());
+        rfqConsult.setExtraRequest(rfqConsultView.getExtraRequest());
         rfqConsultDAO.setB(rfqConsult);
         rfqConsultDAO.commit();
 
