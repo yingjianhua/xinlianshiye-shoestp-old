@@ -2,18 +2,23 @@ package irille.pub.scheduled;
 
 import irille.Service.Manage.O2O.Imp.O2OActicityServerImp;
 import irille.pub.dynamicScore.SVSNewestPdtAction;
+import irille.pub.exception.WebMessageException;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import java.util.TimeZone;
 import java.util.concurrent.LinkedBlockingDeque;
 
 @Slf4j
+/**
+ * 秒为单位
+ */
 public class ScheduledTask implements ServletContextListener {
-    private static final int minute = 60 * 10;
-    private static final int hour = 60 * 10 * 60;
+    private static final int minute = 60 ;
+    private static final int hour = 60 * 60;
 
     private LinkedBlockingDeque<Task> _tasks = new LinkedBlockingDeque<Task>();
 
@@ -22,13 +27,24 @@ public class ScheduledTask implements ServletContextListener {
     public void initScheduledTask() {
 //		addTask(QuartzTest.class,1,"测试");
         addTask(O2OActicityServerImp.class, 5 * minute, "O2O活动状态变更");
-        addTask(SVSNewestPdtAction.class, 150, "SVS动态分");
+        addTask(SVSNewestPdtAction.class, 5, "SVS动态分");
     }
 
-    public void addTask(Class clazz, int time, String name) {
+    public void addTask(Class clazz, Object time, String name) {
         Task t = new Task();
         t.setClazz(clazz);
-        t.setTime(time);
+        if(time instanceof Integer){
+            t.setTime(Integer.valueOf(String.valueOf(time)));
+        }else if(time instanceof String){
+            if(CronExpression.isValidExpression(String.valueOf(time))){
+                t.setCron(String.valueOf(time));
+            }else{
+                throw new WebMessageException("非法Cron表达式");
+            }
+        }else{
+            throw new WebMessageException("不支持的时间类型");
+        }
+
         t.setName(name);
         _tasks.add(t);
     }
@@ -40,14 +56,21 @@ public class ScheduledTask implements ServletContextListener {
                     .withIdentity(t.getClazz().getSimpleName() + "_Job", t.getClazz().getName().substring(0, t.getClazz().getName().lastIndexOf(".")))
                     .build();
 
-
-            Trigger trigger = TriggerBuilder.newTrigger()
-                    .withIdentity(t.getClazz().getSimpleName() + "_Trigger", t.getClazz().getName().substring(0, t.getClazz().getName().lastIndexOf(".")))
-                    .startNow()
-                    .withSchedule(SimpleScheduleBuilder.simpleSchedule()
-                            .withIntervalInSeconds(t.getTime())
-                            .repeatForever())
-                    .build();
+            Trigger trigger = null;
+            if(t.getTime() != null){
+                trigger = TriggerBuilder.newTrigger()
+                        .withIdentity(t.getClazz().getSimpleName() + "_Trigger", t.getClazz().getName().substring(0, t.getClazz().getName().lastIndexOf(".")))
+                        .startNow()
+                        .withSchedule(SimpleScheduleBuilder.simpleSchedule()
+                                .withIntervalInSeconds(t.getTime())
+                                .repeatForever())
+                        .build();
+            }else if(t.getCron() != null){
+                trigger = TriggerBuilder.newTrigger()
+                        .withIdentity(t.getClazz().getSimpleName() + "_Trigger", t.getClazz().getName().substring(0, t.getClazz().getName().lastIndexOf(".")))
+                        .withSchedule(CronScheduleBuilder.cronSchedule("").inTimeZone(TimeZone.getDefault()))
+                        .build();
+            }
 
             try {
                 scheduler.scheduleJob(job, trigger);

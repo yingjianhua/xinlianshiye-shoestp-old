@@ -33,7 +33,7 @@ public class ShoestpInitServlet extends HttpServlet {
     private static final IDb db = Env.INST.getDB();
 
     @Override
-    public void init(ServletConfig config) throws ServletException {
+    public void init() throws ServletException {
         logger.info("自动建表...");
         createTable(LgAccess.class);
 
@@ -47,20 +47,12 @@ public class ShoestpInitServlet extends HttpServlet {
         BeanBase.executeUpdate("SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY',''));");
         logger.info("初始化数据...");
         Plt_ConfPackage.INST.install();
-        
-        
         logger.info("初始化站内信模板...");
         IPMTemplateService templateService = new PMTemplateServiceImp();
         templateService.initTemp();
-        IVariableService variableService = new VariableServiceImp();
         logger.info("站内信模板初始化完毕...");
-//        logger.info("初始化计划任务...");
-//        TaskUtil taskUtil = new TaskUtil();
-//        taskUtil.addTask(new GetGooleAnalyticsTask(), 1L, TimeUnit.DAYS);
 
-        ServletContext context = config.getServletContext();
-        context.createListener(ScheduledTask.class);
-//        context.addListener(ScheduledTask.class.getName());
+
     }
 
     public void initBeanLoad() {
