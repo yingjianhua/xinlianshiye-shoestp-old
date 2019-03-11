@@ -182,7 +182,7 @@
 										 :data-inquiry-index="inquiryIndex"
 										 v-if="inquiry.relations && inquiry.relations.length==0">
 										<img class="goods-pic" alt="goods's pic"
-											 :src="inquiry.images[0]?(image(inquiry.images[0]) + (inquiry.type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')):'/home/v3/static/images/no_img.png'">
+											 :src="(inquiry.images && inquiry.images[0])?(image(inquiry.images[0]) + (inquiry.type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')):'/home/v3/static/images/no_img.png'">
 										<div class="goods-info">
 											<div class="goods-name">
 												<div class="ellipsis_1">{{inquiry.title}}</div>
@@ -203,7 +203,7 @@
 										 @click="(inquiry.type==1 && isScale)?viewInquiryDetail($event):''"
 										 :data-inquiry-index="inquiryIndex">
 										<img class="goods-pic" alt="goods's pic"
-											 :src="inquiry.images[0]?(image(inquiry.images[0]) + (inquiry.type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')):'/home/v3/static/images/no_img.png'"
+											 :src="(inquiry.images && inquiry.images[0])?(image(inquiry.images[0]) + (inquiry.type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')):'/home/v3/static/images/no_img.png'"
 											 :data-inquiry-index="inquiryIndex">
 										<div class="goods-info"
 											 :data-inquiry-index="inquiryIndex">
@@ -233,7 +233,7 @@
 												 :data-supplier-index="relationsIndex"
 												 :data-inquiry-index="inquiryIndex"
 												 @click="isScale?contactSupplier($event):''">
-												{{relation.supplier.name[0]}}
+												{{relation.supplier && relation.supplier.name && relation.supplier.name[0]}}
 											</div>
 										</el-badge>
 
@@ -256,7 +256,7 @@
 														{{relation.quotation.title}}
 													</div>
 													<img class="goods-pic"
-														 :src="relation.quotation.images[0]?(image(relation.quotation.images[0].url)):'/home/v3/static/images/no_img.png'" alt="goods's pic">
+														 :src="(relation.quotation && relation.quotation.images && relation.quotation.images[0])?(image(relation.quotation.images[0].url)):'/home/v3/static/images/no_img.png'" alt="goods's pic">
 													<div class="goods-spec">
 														{{relation.quotation.minPrice}}-{{relation.quotation.maxPrice}} {{relation.quotation.currency.shortName}}
 													</div>
@@ -334,7 +334,7 @@
 								 v-if="supplierDetail.logo">
 							<div class="short-name" v-else
 								 :class="{isShowMore: isShowMore}">
-								{{supplierDetail.name[0]}}
+								{{supplierDetail.name && supplierDetail.name[0]}}
 							</div>
 
 							<div class="full-name" :class="{isShowMore: isShowMore, ellipsis_5: isShowMore, ellipsis_1: !isShowMore}">
@@ -692,7 +692,7 @@
 												<li class="goods-pic-item"
 													v-for="product in inquiryDetail.productRequest"
 													:key="product.image">
-													<img class="product-pic" :src="product.image?(image(product.image.split(',')[0])):'/home/v3/static/images/no_img.png'" alt="">
+													<img class="product-pic" :src="(product.image && product.image.split(',') && product.image.split(',')[0])?(image(product.image.split(',')[0])):'/home/v3/static/images/no_img.png'" alt="">
 													<div class="goods-name ellipsis_1">
 														{{product.name}}
 													</div>
