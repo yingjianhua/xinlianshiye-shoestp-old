@@ -55,6 +55,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
      * 3.1.0新增字段
      */
     REASON(SYS.STR__100,"审核不通过理由备注"),
+    CLOSE_REASON(SYS.STR__100,"店铺关闭原因"),
     STORE_STATUS(TB.crt(SStatus.DOWN)), //店铺状态 0：关闭，1开启
     ENGLISH_NAME(SYS.STR__100, "英文名称"),
     ANNUAL_PRODUCTION(SYS.STR__100, "年产量"),
@@ -237,6 +238,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   private Integer _apprBy;	// 审核员 <表主键:SysUser>  INT<null>
   private Date _apprTime;	// 审核时间  TIME<null>
   private String _reason;	// 审核不通过理由备注  STR(100)
+  private String _closeReason;	// 店铺关闭原因  STR(100)
   private Byte _storeStatus;	// 店铺状态 <SStatus>  BYTE
 	// DOWN:0,关闭
 	// OPEN:1,开启
@@ -365,6 +367,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     _apprBy=null;	// 审核员 <表主键:SysUser>  INT
     _apprTime=null;	// 审核时间  TIME
     _reason=null;	// 审核不通过理由备注  STR(100)
+    _closeReason=null;	// 店铺关闭原因  STR(100)
     _storeStatus=SStatus.DEFAULT.getLine().getKey();	// 店铺状态 <SStatus>  BYTE
     _englishName=null;	// 英文名称  STR(100)
     _annualProduction=null;	// 年产量  STR(100)
@@ -545,6 +548,12 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   }
   public void setReason(String reason){
     _reason=reason;
+  }
+  public String getCloseReason(){
+    return _closeReason;
+  }
+  public void setCloseReason(String closeReason){
+    _closeReason=closeReason;
   }
   public Byte getStoreStatus(){
     return _storeStatus;

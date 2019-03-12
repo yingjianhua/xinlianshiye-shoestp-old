@@ -43,8 +43,20 @@ public class UsrSupplierNewView implements BaseView {
     private String contactEmail; //联系人邮箱
     // 证件信息
     private String certPhoto; //企业营业执照副本复印件
+    private String certPhotoName; //企业营业执照副本复印件文件名
     private String idCardFrontPhoto; //法人代表身份证正反面复印件
+    private String idCardFrontPhotoName; //法人代表身份证正反面复印件文件名
     private String contactsIdCardFrontPhoto; //运营人员身份证正反面复印件
+    private String contactsIdCardFrontPhotoName; //运营人员身份证正反面复印件文件名
 
     private Byte status; //审核状态
+    private String reason; //审核不通过理由
+
+    private Byte storeStatus; //店铺状态
+    private Integer userId; //UsrMain的外键
+    private String closeReason; //店铺关闭原因
+    @JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
+    private Date applicationTime; //申请时间
+
+
 }

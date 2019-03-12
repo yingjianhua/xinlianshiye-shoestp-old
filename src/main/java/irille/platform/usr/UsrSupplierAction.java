@@ -3,7 +3,10 @@ package irille.platform.usr;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import irille.action.MgtAction;
 import irille.platform.usr.View.UsrSupplierNewView;
+import irille.pub.Exp;
 import irille.pub.util.upload.ImageUpload;
+import irille.shop.usr.UsrAnnex;
+import irille.shop.usr.UsrMain;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplierDAO;
 import irille.view.plt.ImageView;
@@ -14,6 +17,8 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 
+@Getter
+@Setter
 public class UsrSupplierAction extends MgtAction<UsrSupplier> {
 	@Override
 	public Class beanClazz() {
@@ -32,33 +37,31 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
 	 *@date 2019/1/23 19:20
 	 *@anthor wilson zhang
 	 */
-	@Getter
-	@Setter
+
 	private  String fldvalue;
-	@Getter
-	@Setter
 	private  String condition;
+
 	public void ListUsrSup()throws Exception {
-		write(	UsrSupplierDAO.listsupselect(fldvalue,condition,getStart(),getLimit()));
+		write(UsrSupplierDAO.listsupselect(fldvalue,condition,getStart(),getLimit()));
 	}
-	@Getter
-	@Setter
+
 	private Integer supplier;
-	@Getter
-	@Setter
 	private String name;
-	@Getter
-	@Setter
 	private Integer category;
-	@Getter
-	@Setter
 	private Integer status;
-	@Getter
-	@Setter
+	private Integer storeStatus;
 	private String fileFileName = "";
-	@Getter
-	@Setter
 	private File file;
+
+	/**
+	 * 获取店铺列表
+	 * @author: lingjian
+	 * @Date: 2019/3/11 10:48
+	 * @throws IOException
+	 */
+	public void getShopList() throws IOException {
+		write(UsrSupplierDAO.getShopList(getStart(), getLimit(), name, storeStatus));
+	}
 
 	/**
 	 * 获取开店申请列表
@@ -71,8 +74,49 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
 	}
 
 
-	@Getter
-	@Setter
+	private String certPhotoName;
+	private String idCardFrontPhotoName;
+	private String contactsIdCardFrontPhotoName;
+	private String mainEmail;
+	private String mainContacts;
+	private String mainTelphone;
+	/**
+	 * 更新
+	 * @author: lingjian
+	 * @Date: 2019/3/11 10:48
+	 * @throws IOException
+	 */
+	public void updShopList() throws IOException {
+		try {
+			UsrAnnex annex = UsrAnnex.chkUniqueSupplier(false,getBean().getPkey());
+			if(annex != null) {
+				annex.setCertPhotoName(certPhotoName);
+				annex.setIdCardFrontPhotoName(idCardFrontPhotoName);
+				annex.setContactsIdCardFrontPhotoName(contactsIdCardFrontPhotoName);
+				annex.upd();
+			}else{
+				UsrAnnex annex1 = new UsrAnnex();
+				annex1.setSupplier(getBean().getPkey());
+				annex1.setCertPhotoName(certPhotoName);
+				annex1.setIdCardFrontPhotoName(idCardFrontPhotoName);
+				annex1.setContactsIdCardFrontPhotoName(contactsIdCardFrontPhotoName);
+				annex1.ins();
+			}
+			UsrMain main = UsrMain.chkUniqueEmail(false,mainEmail);
+			if(mainEmail != null){
+				main.setEmail(mainEmail);
+				main.setContacts(mainContacts);
+				main.setTelphone(mainTelphone);
+			}
+			UsrSupplier newSupplier = UsrSupplierDAO.updInfo(getBean());
+			newSupplier.upd();
+			main.upd();
+			write();
+		} catch (Exp e) {
+			writeErr(e.getLastMessage());
+		}
+	}
+
 	private String id;
 
 	/**
@@ -85,12 +129,12 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
 		write(UsrSupplierDAO.getSupplierById(id));
 	}
 
-	@Getter
-	@Setter
 	private String reason;
 
 	/**
 	 * 审核
+	 * @author: lingjian
+	 * @Date: 2019/3/11 10:45
 	 * @throws IOException
 	 */
 	public void reviewStatus() throws IOException {
