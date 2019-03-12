@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
 import com.xinlianshiye.shoestp.seller.service.rfq.RFQConsultMessageService;
 
 import irille.Dao.PdtProductDao;
@@ -21,6 +22,7 @@ import irille.Entity.RFQ.JSON.ConsultMessage;
 import irille.Entity.RFQ.JSON.RFQConsultAlertUrlMessage;
 import irille.Entity.RFQ.JSON.RFQConsultImageMessage;
 import irille.Entity.RFQ.JSON.RFQConsultTextMessage;
+import irille.Entity.pm.PM.OTempType;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.pub.util.AppConfig;
@@ -44,6 +46,9 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
     private PdtProductDao pdtProductDao;
     @Inject
     private ObjectMapper om;
+
+	@Inject
+	private IPMMessageService messageService;
 
     @Override
     public RFQConsultMessagesView page(UsrSupplier supplier, Integer start, Integer limit, Integer consultPkey) {
@@ -97,6 +102,7 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
         bean.stP2s(false);
         bean.stHadRead(false);
         rFQConsultMessageDao.save(bean);
+		messageService.send(OTempType.RFQ_MESSAGE_NOTICE, null, relation.gtPurchaseId(), relation,bean,supplier);
         return RFQConsultMessageView.Builder.toView(bean);
     }
 
@@ -130,12 +136,12 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
         RFQConsultAlertUrlMessage message = new RFQConsultAlertUrlMessage();
 //		//三天(72小时)后过期
 //		message.setValidDate(Date.from(LocalDateTime.now().plusDays(3).atZone(ZoneId.systemDefault()).toInstant()));
-        message.setProductId(productPkey);
-        message.setAlertMsg("该链接被打开后72小时内有效，72小时后该链接失效，买家将无法查看该产品");
+		message.setProductId(productPkey);
+		message.setAlertMsg("该链接被打开后72小时内有效，72小时后该链接失效，买家将无法查看该产品");
         message.setShowMsg(product.getName());
-        String uuid = createUuid();
-        message.setUrl(AppConfig.domain + "home/pdt_PdtProduct_gtProductsInfo?expoKey=" + uuid);//TODO 链接现在尚未确定  确定后补上 带上询盘聊天消息的uuid做为参数
-        return sendMessage(supplier, consultPkey, message, uuid);
-    }
+		String uuid = createUuid();
+		message.setUrl(AppConfig.domain + "home/pdt_PdtProduct_gtProductsInfo?expoKey=" + uuid);//TODO 链接现在尚未确定  确定后补上 带上询盘聊天消息的uuid做为参数
+		return sendMessage(supplier, consultPkey, message, uuid);
+	}
 
 }

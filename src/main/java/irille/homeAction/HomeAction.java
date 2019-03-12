@@ -1,42 +1,22 @@
 package irille.homeAction;
 
+import com.xinlianshiye.shoestp.shop.view.usr.PurchaseView;
 import irille.Filter.svr.ItpSessionmsg;
 import irille.action.BeanAction;
 import irille.core.sys.SysTable;
-import irille.Filter.svr.ItpSessionmsg;
 import irille.gl.gs.GsGoods;
 import irille.homeAction.pdt.dto.ProductCatView;
 import irille.homeAction.usr.dto.EnvView;
 import irille.pub.ClassTools;
 import irille.pub.Log;
 import irille.pub.Str;
-import irille.pub.bean.Bean;
-import irille.pub.bean.BeanBase;
-import irille.pub.bean.BeanInt;
-import irille.pub.bean.BeanLong;
-import irille.pub.bean.BeanMain;
-import irille.pub.bean.BeanStr;
-import irille.pub.idu.IduApprove;
-import irille.pub.idu.IduDel;
-import irille.pub.idu.IduEnabled;
-import irille.pub.idu.IduIns;
-import irille.pub.idu.IduPage;
-import irille.pub.idu.IduUnEnabled;
-import irille.pub.idu.IduUnapprove;
-import irille.pub.idu.IduUpd;
+import irille.pub.bean.*;
+import irille.pub.idu.*;
 import irille.pub.inf.IExtName;
 import irille.pub.svr.Env;
-import irille.pub.tb.Fld;
-import irille.pub.tb.FldEnumByte;
+import irille.pub.tb.*;
 import irille.pub.tb.FldLanguage.Language;
-import irille.pub.tb.FldLongTbObj;
-import irille.pub.tb.FldOptCust;
-import irille.pub.tb.FldOutKey;
-import irille.pub.tb.IEnumOpt;
 import irille.pub.tb.Infs.IOptLine;
-import irille.pub.tb.OptBase;
-import irille.pub.tb.OptCust;
-import irille.pub.tb.Tb;
 import irille.pub.util.AppConfig;
 import irille.pub.util.upload.ImageUpload;
 import irille.pub.verify.RandomImageServlet;
@@ -51,29 +31,7 @@ import irille.shop.usr.UsrPurchase;
 import irille.view.home.EnvConfig;
 import irille.view.plt.CurrencyView;
 import irille.view.usr.UserView;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.Serializable;
-import java.sql.Types;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.CellRangeAddress;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.ApplicationAware;
@@ -83,7 +41,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.xinlianshiye.shoestp.shop.view.usr.PurchaseView;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Serializable;
+import java.sql.Types;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public abstract class HomeAction<THIS extends BeanMain<?, ?>> extends BeanAction<THIS> implements RequestAware, SessionAware, ApplicationAware {
 	public static final Log LOG = new Log(HomeAction.class);
@@ -659,6 +626,7 @@ public abstract class HomeAction<THIS extends BeanMain<?, ?>> extends BeanAction
 	 */
 	public JSONObject crtJsonByBean(Bean bean, String pref) throws Exception {
 		JSONObject lineJson = new JSONObject();
+		irille.pub.tb.FldLanguage.Language cur_lang = null;
 		for (Fld fld : bean.gtTB().getFlds()) {
 			String fldcode = fld.getCode();
 			//			if (fld instanceof FldLines || fld instanceof FldV)
@@ -668,6 +636,18 @@ public abstract class HomeAction<THIS extends BeanMain<?, ?>> extends BeanAction
 			Object obj = bean.propertyValue(fld);
 			if (obj == null)
 				continue;
+			if(fld instanceof FldLanguage) {
+				if(cur_lang == null) {
+					cur_lang = PltConfigDAO.manageLanguage();
+				}
+				JSONObject json = new JSONObject((String)obj);
+				if(json.has(cur_lang.name())) {
+					lineJson.put(pref + fldcode, json.getString(cur_lang.name()));
+				} else {
+					lineJson.put(pref + fldcode, json.getString("en"));
+				}
+				continue;
+			}
 			if (fld instanceof FldOutKey) {
 				if (obj instanceof String && Str.isEmpty(obj.toString()))
 					continue;

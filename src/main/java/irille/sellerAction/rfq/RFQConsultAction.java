@@ -1,5 +1,10 @@
 package irille.sellerAction.rfq;
 
+import java.io.IOException;
+import java.util.Date;
+
+import javax.inject.Inject;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xinlianshiye.shoestp.seller.service.rfq.RFQConsultService;
 
@@ -10,10 +15,6 @@ import irille.sellerAction.SellerAction;
 import irille.sellerAction.rfq.inf.IRFQConsultAction;
 import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
 import lombok.Setter;
-
-import javax.inject.Inject;
-import java.io.IOException;
-import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -44,6 +45,15 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
     private Integer country;
     private Integer id;
     private String data;
+    
+    /**
+     * 消息中心询盘消息
+     * liyichao
+     * @throws IOException 
+     */
+    public void message() throws IOException {
+    	write(rFQConsultService.message(getSupplier(), null, start, limit));
+    }
 
     public void getRFQList() throws IOException {
         if (start == null) start = 0;

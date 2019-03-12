@@ -92,13 +92,13 @@ public class UsrProductCategoryAction extends SellerAction<UsrProductCategory> i
 
         List<UsrProductCategory> catList = BeanBase.list(UsrProductCategory.class, UsrProductCategory.T.SUPPLIER.getFld().getCodeSqlField() + " = ? AND " + UsrProductCategory.T.CATEGORY_UP.getFld().getCodeSqlField() + " is null ", false, SellerAction.getSupplier().getPkey());
         if(null != catList) {
-        	for (UsrProductCategory pdtProduct : catList) {
-                JSONObject cat1 = new JSONObject();
-                cat1.put("pkey", pdtProduct.getPkey());
-                cat1.put("name", pdtProduct.getName(PltConfigDAO.supplierLanguage(getSupplier().getPkey())));
-                cat1.put("categoryUp", pdtProduct.getCategoryUp());
-                cat1.put("enabled", pdtProduct.getEnabled());
-                cat1Array.put(cat1);
+        for (UsrProductCategory pdtProduct : catList) {
+            JSONObject cat1 = new JSONObject();
+            cat1.put("pkey", pdtProduct.getPkey());
+            cat1.put("name", pdtProduct.getName(PltConfigDAO.supplierLanguage(getSupplier().getPkey())));
+            cat1.put("categoryUp", pdtProduct.getCategoryUp());
+            cat1.put("enabled", pdtProduct.getEnabled());
+            cat1Array.put(cat1);
             }
         }
         List<UsrProductCategory> cat2List = null;
@@ -106,26 +106,26 @@ public class UsrProductCategoryAction extends SellerAction<UsrProductCategory> i
         if (catList != null && catList.size() > 0) {
             cat2List = BeanBase.list(UsrProductCategory.class, UsrProductCategory.T.SUPPLIER.getFld().getCodeSqlField() + " = ? AND " + UsrProductCategory.T.CATEGORY_UP.getFld().getCodeSqlField() + " in(" + UsrProductCategoryDAO.getPkeys(catList) + ") ", false, SellerAction.getSupplier().getPkey());
             if(null != cat2List) {
-            	for (UsrProductCategory pdtProduct : cat2List) {
-                    JSONObject cat2 = new JSONObject();
-                    cat2.put("pkey", pdtProduct.getPkey());
-                    cat2.put("name", pdtProduct.getName(PltConfigDAO.supplierLanguage(getSupplier().getPkey())));
-                    cat2.put("categoryUp", pdtProduct.getCategoryUp());
-                    cat2.put("enabled", pdtProduct.getEnabled());
-                    cat2Array.put(cat2);
+            for (UsrProductCategory pdtProduct : cat2List) {
+                JSONObject cat2 = new JSONObject();
+                cat2.put("pkey", pdtProduct.getPkey());
+                cat2.put("name", pdtProduct.getName(PltConfigDAO.supplierLanguage(getSupplier().getPkey())));
+                cat2.put("categoryUp", pdtProduct.getCategoryUp());
+                cat2.put("enabled", pdtProduct.getEnabled());
+                cat2Array.put(cat2);
                 }
             }
         }
         if (cat2List != null && cat2List.size() > 0) {
             cat3List = BeanBase.list(UsrProductCategory.class, UsrProductCategory.T.SUPPLIER.getFld().getCodeSqlField() + " = ? AND " + UsrProductCategory.T.CATEGORY_UP.getFld().getCodeSqlField() + " in(" + UsrProductCategoryDAO.getPkeys(cat2List) + ") ", false, SellerAction.getSupplier().getPkey());
             if(null != cat3List) {
-            	for (UsrProductCategory pdtProduct : cat3List) {
-                    JSONObject cat3 = new JSONObject();
-                    cat3.put("pkey", pdtProduct.getPkey());
-                    cat3.put("name", pdtProduct.getName(PltConfigDAO.supplierLanguage(getSupplier().getPkey())));
-                    cat3.put("categoryUp", pdtProduct.getCategoryUp());
-                    cat3.put("enabled", pdtProduct.getEnabled());
-                    cat3Array.put(cat3);
+            for (UsrProductCategory pdtProduct : cat3List) {
+                JSONObject cat3 = new JSONObject();
+                cat3.put("pkey", pdtProduct.getPkey());
+                cat3.put("name", pdtProduct.getName(PltConfigDAO.supplierLanguage(getSupplier().getPkey())));
+                cat3.put("categoryUp", pdtProduct.getCategoryUp());
+                cat3.put("enabled", pdtProduct.getEnabled());
+                cat3Array.put(cat3);
                 }
             }
         }

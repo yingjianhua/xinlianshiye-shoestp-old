@@ -8,6 +8,7 @@ import com.xinlianshiye.shoestp.shop.view.usr.SupplierView;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.tb.FldLanguage.Language;
+import irille.shop.plt.PltCountry;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 
@@ -40,7 +41,7 @@ public class UsrSupplierServiceImpl implements UsrSupplierService {
 		view.setMemberSince(supplier.getApprTime());
 		view.setDepartment(supplier.getDepartment(lang));
 		view.setJobTitle(supplier.getJobTitle(lang));
-		view.setCompany(supplier.getName());
+		view.setCompany(supplier.getShowName());
 		view.setContractManufacturing("");
 		view.setOverseasOffice("");
 		view.setCompanyCertification("");

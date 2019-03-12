@@ -16,6 +16,7 @@ import irille.view.RFQ.RFQPdtInfo;
 import irille.view.plt.CountryView;
 import irille.view.v3.rfq.EditRFQConsultView;
 import irille.view.v3.rfq.PutRFQConsultView;
+import irille.view.v3.rfq.EditRFQConsultView;
 import irille.view.v3.rfq.PutSupplierConsultView;
 import lombok.Setter;
 import org.apache.struts2.ServletActionContext;
@@ -147,6 +148,15 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
         return TRENDS;
     }
 
+    /**
+     * @Description: RFQ readMore页面
+     * @author zjl
+     */
+    public String getRFQReadMore() {
+        setResult("/home/readMore.jsp", false);
+        return TRENDS;
+    }
+
     private String keyword;
     private Byte t;
     private Boolean unread;
@@ -169,6 +179,18 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
     }
 
     @Override
+    public void getRFQList() throws IOException {
+        write(rFQConsultService.getRFQList());
+
+    }
+
+    private Integer rfqPkey;
+
+    @Override
+    public void getRFQDetails() throws IOException {
+        write(rFQConsultService.getRFQDetails(rfqPkey));
+    }
+
     @NeedLogin
     public void quotationDetail() throws IOException {
         write(rFQConsultService.getQuotation(getPurchase(), quotationPkey));

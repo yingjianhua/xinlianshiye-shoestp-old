@@ -28,5 +28,11 @@ public class PdtView {
 		this.rewrite =SEOUtils.getPdtProductTitle(id, name);;
 	}
 
-
+	@Override
+	public String toString() {
+		return "PdtView{" +
+				"pdt=" + pdt +
+				", rewrite='" + rewrite + '\'' +
+				'}';
+	}
 }

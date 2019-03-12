@@ -1,6 +1,12 @@
 package irille.Entity.O2O;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
+import irille.Config.Attribute;
+import irille.Config.Variable;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
+import irille.Entity.pm.PM.OTempType;
 import irille.pub.bean.BeanInt;
 import irille.pub.svr.Env;
 import irille.pub.tb.Fld;
@@ -8,12 +14,17 @@ import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
 import irille.shop.pdt.PdtProduct;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 /**
  * Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/13 Time: 16:18 O2O产品
  */
+@Variable(group = {OTempType.O2O_PROD_APPR_NOTICE},enumType=O2O_Product.T.class,clazz=O2O_Product.class,attributes = {
+		@Attribute(name="O2O商品审核状态",field="VERIFY_STATUS",type=O2O_ProductStatus.class),
+		@Attribute(name="O2O商品上下架状态",field="STATUS",type=O2O_ProductStatus.class),
+		@Attribute(name="O2O下架时间",field="LOWER_DATE",type=Date.class),
+		@Attribute(name="O2O上架时间",field="UPPER_DATE",type=Date.class),
+		@Attribute(name="O2O备注",field="REMARK",type=String.class),
+		@Attribute(name="O2O商品更新时间",field="UPDATED_TIME",type=Date.class)}
+)
 public class O2O_Product extends BeanInt<O2O_Product> {
 
     public static final Tb TB = new Tb(O2O_Product.class, "O2O商品信息").setAutoIncrement().addActIUDL();

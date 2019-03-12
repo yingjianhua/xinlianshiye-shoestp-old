@@ -1,5 +1,13 @@
 package irille.sellerAction.pdt;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import irille.action.dataimport.util.StringUtil;
 import irille.pub.Str;
 import irille.pub.idu.Idu;
 import irille.pub.idu.IduPage;
@@ -9,13 +17,8 @@ import irille.shop.pdt.PdtAttr;
 import irille.shop.pdt.PdtAttrDAO;
 import irille.shop.pdt.PdtAttrLine;
 import irille.shop.plt.PltConfigDAO;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
+import lombok.Getter;
+import lombok.Setter;
 
 public class PdtAttrAction extends SellerAction<PdtAttr> implements IPdtAttrAction {
     private List<PdtAttrLine> _listLine = new ArrayList<PdtAttrLine>();
@@ -92,8 +95,40 @@ public class PdtAttrAction extends SellerAction<PdtAttr> implements IPdtAttrActi
     @Override
     public void AttrList() throws IOException {
         PdtAttrDAO.PageSelect pageSelect = new PdtAttrDAO.PageSelect();
-        write(pageSelect.getAllAttr(PltConfigDAO.supplierLanguage(getSupplier())));
+        write(pageSelect.getAllAttr(PltConfigDAO.supplierLanguage(getSupplier()),getSupplier().getPkey()));
     }
 
+    @Setter
+    @Getter
+    private String attrValue;
+    /**
+     * -新增产品属性与产品属性明细
+     * @throws IOException
+     */
+    public void addAttr() throws IOException {
+    	if(!StringUtil.hasValue(getBean().getName()) || !StringUtil.hasValue(attrValue)) {
+    		writeErr(0, "属性信息不完整");
+    		return;
+    	}
+    	Integer count = PdtAttrDAO.verifySupplierCount(getSupplier().getPkey());
+    	if(count >= 5 ) {
+    		writeErr(-101, "您已经添加5个属性了");
+    		return;
+    	}
+    		
+    	write(PdtAttrDAO.insAttrAndAttrLine(getSupplier().getPkey(),getBean().getName(),attrValue,PltConfigDAO.supplierLanguage(getSupplier())));
+    }
+    
+    /**
+     * 删除
+     */
+    public void del() throws IOException {
+    	if(getBean().getPkey() == null) {
+    		writeErr(0, "参数错误");
+    		return;
+    	}
+    	PdtAttrDAO.delAttrAndAttrLine(getBean().getPkey(),getSupplier().getPkey());
+    	write();
+    }
 
 }

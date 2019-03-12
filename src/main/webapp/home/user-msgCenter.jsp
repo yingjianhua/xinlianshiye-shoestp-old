@@ -827,7 +827,7 @@
 					<div class="inquiry-overview">
 						<img class="inquiry-main-pic" alt=""
 							 v-if="inquiryDetail.images"
-							 :src="inquiryDetail.images[0]?(image(inquiryDetail.images[0])):'/home/v3/static/images/no_img.png'">
+							 :src="(inquiryDetail.images && inquiryDetail.images[0])?(image(inquiryDetail.images[0])):'/home/v3/static/images/no_img.png'">
 						<div class="content-box-wrap">
 							<div class="content-box1">
 								<div class="content-box">
@@ -1105,7 +1105,7 @@
 					v-for="goods in addProductGoodsListObj.items"
 					:data-product-id="goods.pdtId"
 					@click="selectAddProductGoods">
-					<img class="goods-pic" :src="image(goods.picture.split(',')[0])" alt="goods's pic">
+					<img class="goods-pic" :src="(goods.picture && goods.picture.split(',') && goods.picture.split(',')[0])?image(goods.picture.split(',')[0]):'/home/v3/static/images/no_img.png'" alt="goods's pic">
 					<div class="goods-name ellipsis_1">
 						{{goods.pdtName}}
 					</div>

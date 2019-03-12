@@ -75,13 +75,13 @@
             <artifactId>irille-base-plat</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-
-		<dependency>
+        
+		<!-- <dependency>
 		    <groupId>org.glassfish</groupId>
 		    <artifactId>javax.el</artifactId>
 		    <version>3.0.1-b09</version>
-		</dependency>
-
+		</dependency> -->
+		        
 		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
 		<dependency>
 		    <groupId>org.hibernate</groupId>

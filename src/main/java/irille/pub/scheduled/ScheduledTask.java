@@ -1,12 +1,16 @@
 package irille.pub.scheduled;
 
 import irille.Service.Manage.O2O.Imp.O2OActicityServerImp;
+import irille.pub.dynamicScore.SVSNewestPdtAction;
+import irille.pub.exception.WebMessageException;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import java.text.ParseException;
+import java.util.TimeZone;
 import java.util.concurrent.LinkedBlockingDeque;
 
 @Slf4j
@@ -24,6 +28,8 @@ public class ScheduledTask implements ServletContextListener {
     public void initScheduledTask() {
 //		addTask(QuartzTest.class,1,"测试");
         addTask(O2OActicityServerImp.class, 5 * minute, "O2O活动状态变更");
+        addTask(SVSNewestPdtAction.updSVSFraction.class, "0 0/15 * * * ?", "SVS动态分");
+        addTask(SVSNewestPdtAction.updSVSGrade.class, "0 0 0 20 * ?", "SVS等级");
     }
 
     public void addTask(Class clazz, Object time, String name) {
@@ -55,12 +61,12 @@ public class ScheduledTask implements ServletContextListener {
             Trigger trigger = null;
             if (t.getTime() != null) {
                 trigger = TriggerBuilder.newTrigger()
-                    .withIdentity(t.getClazz().getSimpleName() + "_Trigger", t.getClazz().getName().substring(0, t.getClazz().getName().lastIndexOf(".")))
-                    .startNow()
-                    .withSchedule(SimpleScheduleBuilder.simpleSchedule()
-                            .withIntervalInSeconds(t.getTime())
-                            .repeatForever())
-                    .build();
+                        .withIdentity(t.getClazz().getSimpleName() + "_Trigger", t.getClazz().getName().substring(0, t.getClazz().getName().lastIndexOf(".")))
+                        .startNow()
+                        .withSchedule(SimpleScheduleBuilder.simpleSchedule()
+                                .withIntervalInSeconds(t.getTime())
+                                .repeatForever())
+                        .build();
             } else if (t.getCron() != null) {
                 trigger = TriggerBuilder.newTrigger()
                         .withIdentity(t.getClazz().getSimpleName() + "_Trigger", t.getClazz().getName().substring(0, t.getClazz().getName().lastIndexOf(".")))

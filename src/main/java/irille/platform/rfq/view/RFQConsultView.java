@@ -53,5 +53,6 @@ public class RFQConsultView implements BaseView {
 	private Date createTime; // 创建时间 TIME
 	private Short rowVersion; // 版本 SHORT
 	private Boolean isDeleted;	// 是否已删除 <OYn>  BYTE
+	private Byte recommend;//是否推荐
 	private List<RFQConsultRelationView> relations;//抢单成功的供应商
 }

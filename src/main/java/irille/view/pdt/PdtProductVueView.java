@@ -1,9 +1,9 @@
 package irille.view.pdt;
 
+import java.util.List;
+
 import irille.pub.util.SetBeans.SetBean.Annotations.SetBean;
 import irille.view.BaseView;
-
-import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,7 +17,7 @@ public class PdtProductVueView implements BaseView {
     private String name;
     @SetBean(NotSet = true)
     private List items;
-
+    private Integer supplier;
 
     public int getId() {
         return id;
@@ -45,5 +45,13 @@ public class PdtProductVueView implements BaseView {
         this.id = id;
         return this;
     }
+
+	public Integer getSupplier() {
+		return supplier;
+	}
+
+	public void setSupplier(Integer supplier) {
+		this.supplier = supplier;
+	}
 
 }

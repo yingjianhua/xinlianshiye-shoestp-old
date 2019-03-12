@@ -8,6 +8,7 @@ import com.xinlianshiye.shoestp.seller.service.rfq.impl.RFQConsultServiceImpl;
 import irille.platform.rfq.view.RFQConsultRelationView;
 import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
 import irille.sellerAction.rfq.view.RFQConsultRelationCountView;
+import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
 
@@ -86,5 +87,7 @@ public interface RFQConsultService {
 	 * 
 	 */
 	RFQConsultRelationCountView count(UsrSupplier supplier, Boolean isDeleted);
+
+	Page message(UsrSupplier supplier, UsrPurchase purchase, Integer start, Integer limit);
 
 }

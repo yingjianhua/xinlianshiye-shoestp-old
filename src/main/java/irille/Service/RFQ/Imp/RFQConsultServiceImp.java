@@ -1,11 +1,18 @@
 package irille.Service.RFQ.Imp;
 
+import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
 import irille.Dao.Old.RFQ.RFQConsultDAO;
 import irille.Dao.Old.RFQ.RFQConsultUpdDAO;
 import irille.Dao.PdtProductDao;
-import irille.Entity.RFQ.Enums.*;
+import irille.Entity.RFQ.Enums.RFQConsultPayType;
+import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
+import irille.Entity.RFQ.Enums.RFQConsultStatus;
+import irille.Entity.RFQ.Enums.RFQConsultType;
+import irille.Entity.RFQ.Enums.RFQConsultUnit;
+import irille.Entity.RFQ.Enums.RFQConsultVerifyStatus;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultRelation;
+import irille.Entity.pm.PM.OTempType;
 import irille.Service.RFQ.IRFQConsultService;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
@@ -15,15 +22,14 @@ import irille.view.RFQ.PutInquiryView;
 import irille.view.v3.rfq.EditRFQConsultView;
 import irille.view.v3.rfq.PutRFQConsultView;
 import irille.view.v3.rfq.PutSupplierConsultView;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import javax.inject.Inject;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Map;
 import java.util.StringJoiner;
+import javax.inject.Inject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Created by IntelliJ IDEA.
@@ -39,6 +45,8 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     private RFQConsultUpdDAO rfqConsultUpdDAO;
     @Inject
     PdtProductDao pdtProductDao;
+    @Inject
+    private IPMMessageService messageService;
 
     private static final Logger logger = LogManager.getLogger(RFQConsultServiceImp.class);
 
@@ -81,7 +89,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         rfqConsult.setExtraRequest(rfqConsultView.getExtraRequest());
         rfqConsultDAO.setB(rfqConsult);
         rfqConsultDAO.commit();
-
+        messageService.send(OTempType.RFQ_INFO_NOTICE,null, usrPurchase, rfqConsult);
     }
 
     @Override
@@ -154,6 +162,9 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         rfqConsultRelation.stIsDeletedSupplier(false);
         rfqConsultRelation.setThrowaway("{}");
         rfqConsultRelation.ins();
+        //TODO 询盘发送站内信
+        messageService.send(OTempType.INQUIRY_NOTICE_PURCHASE, null,purchase, rfqConsult,rfqConsultRelation);
+//        messageService.send(OTempType.INQUIRY_NOTICE_SUPPLIER, rfqConsultRelation.gtSupplierId(),null, rfqConsult,rfqConsultRelation.gtPurchaseId());
     }
 
 

@@ -451,55 +451,14 @@
             classLists: [],
             showRoomGoodsList: [],
             showRoomPicList: [{imgUrl: "/home/v3/static/images/show-room_01.jpg"}, {imgUrl: "/home/v3/static/images/show-room_02.jpg"}, {imgUrl: "/home/v3/static/images/show-room_03.jpg"}, {imgUrl: "/home/v3/static/images/show-room_04.jpg"}, {imgUrl: "/home/v3/static/images/show-room_05.jpg"}, {imgUrl: "/home/v3/static/images/show-room_06.jpg"}, {imgUrl: "/home/v3/static/images/show-room_07.jpg"}, {imgUrl: "/home/v3/static/images/show-room_08.jpg"}, {imgUrl: "/home/v3/static/images/show-room_09.jpg"}, {imgUrl: "/home/v3/static/images/show-room_10.jpg"}, {imgUrl: "/home/v3/static/images/show-room_11.png"}, {imgUrl: "/home/v3/static/images/show-room_12.jpg"}, {imgUrl: "/home/v3/static/images/show-room_13.jpg"}, {imgUrl: "/home/v3/static/images/show-room_14.jpg"}, {imgUrl: "/home/v3/static/images/show-room_15.jpg"}],
-            RFQList: [{
-                id: 1,
-                country: "Egypt",
-                country_logo: "/home/v3/static/images/flag-egypt.png",
-                title: "Do you have some sandals styles? pls kindly send me the photos.",
-                quantity: 600,
-                create_date: "03-02-2019"
-            }, {
-                id: 2,
-                country: "Netherlands",
-                country_logo: "/home/v3/static/images/flag-netherlands.png",
-                title: "I'm looking for some new Autumn-Winter styles,do you have？",
-                quantity: 1200,
-                create_date: "03-02-2019"
-            }, {
-                id: 3,
-                country: "Brazil",
-                country_logo: "/home/v3/static/images/flag-brazil.jpg",
-                title: "Do you have some sandals styles? pls kindly send me the photos.",
-                quantity: 500,
-                create_date: "03-02-2019"
-            }, {
-                id: 4,
-                country: "Singapore",
-                country_logo: "/home/v3/static/images/flag-singapore.jpg",
-                title: "We are looking for very cheap shoes styles, do you have?",
-                quantity: 1500,
-                create_date: "03-02-2019"
-            }, {
-                id: 5,
-                country: "Philippines",
-                country_logo: "/home/v3/static/images/flag-philippines.jpg",
-                title: "I want some kids boots, for girl.",
-                quantity: 800,
-                create_date: "03-02-2019"
-            }, {
-                id: 6,
-                country: "South Africa",
-                country_logo: "/home/v3/static/images/flag-south-africa.png",
-                title: "If my order is big, will your price become cheap? Price on your website is too high.",
-                quantity: 2000,
-                create_date: "03-02-2019"
-            }]
+            RFQList: []
         },
         mounted: function mounted() {
             this.getMostPopular();
             this.getHotSale();
             this.classList();
             this.getShowRoomGoodsList();
+            this.getRFQList();
         },
         methods: {
             image: function image(v, params) {

@@ -415,7 +415,7 @@ ul{
                             this.form.pdtId = this.id;
                             console.log(this.imgsToUpload)
                             // if (this.form.images.length == 0) {
-                                // if(${env.login==null}){
+                                <%--// if(${env.login==null}){--%>
                                 //     this.$message({
                                 //         showClose: true,
                                 //         message: 'Pleaselogin',
@@ -440,7 +440,7 @@ ul{
                                             type: 'success'
                                         });
                                         setTimeout(function () {
-                                                    sessionStorage.removeItem('Temp_Pdt_publish_form')
+                                            sessionStorage.removeItem('Temp_Pdt_publish_form')
                                             window.location.href =getParams('backUrl','/');
                                         }, 2000)
                                         // 未登录时

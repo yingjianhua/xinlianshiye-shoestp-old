@@ -92,6 +92,22 @@ public interface IRFQConsultAction {
 	 * @throws IOException
 	 * @author Jianhua Ying
 	 */
-	void quotationDetail() throws IOException;
+//	void quotationDetail() throws IOException;
 
+	/**
+	 * 获取RFQ列表
+	 * @author zjl
+	 * @Date 2019/2/27 16:10
+	 * @return
+	 * @throws IOException
+	 */
+	void getRFQList() throws IOException;
+
+	/**
+	 * 获取RFQ详情
+	 * @author zjl
+	 * @Date 2019/2/27 16:10
+	 * @throws IOException
+	 */
+	void getRFQDetails() throws IOException;
 }

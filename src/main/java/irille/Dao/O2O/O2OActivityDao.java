@@ -1,6 +1,6 @@
 package irille.Dao.O2O;
 
-import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -12,9 +12,8 @@ import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Entity.O2O.Enums.O2O_ActivityStatus;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
-import irille.pub.bean.query.SqlQuery;
 import irille.pub.bean.sql.SQL;
-import irille.pub.svr.DbPool;
+import irille.pub.util.BatchUtils;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;

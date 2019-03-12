@@ -289,12 +289,12 @@ public class PrmGroupPurchaseAction extends SellerAction<PrmGroupPurchase> imple
 		List<OdrOrderLine> orderLineList = BeanBase.list(OdrOrderLine.class,OdrOrderLine.T.SPEC.getFld().getCodeSqlField() + " in (" + specIds + ") ",false);
 		Map<PdtSpec,Integer> sta = new HashMap<PdtSpec,Integer>();
 		if(null != orderLineList) {
-			for(OdrOrderLine orderLine : orderLineList){
-				if(sta.get(orderLine.gtSpec()) == null){
-					sta.put(orderLine.gtSpec(), orderLine.getQty());
-				}else{
-					Integer qty = sta.get(orderLine.gtSpec());
-					sta.put(orderLine.gtSpec(), qty + orderLine.getQty());
+		for(OdrOrderLine orderLine : orderLineList){
+			if(sta.get(orderLine.gtSpec()) == null){
+				sta.put(orderLine.gtSpec(), orderLine.getQty());
+			}else{
+				Integer qty = sta.get(orderLine.gtSpec());
+				sta.put(orderLine.gtSpec(), qty + orderLine.getQty());
 				}
 			}
 		}

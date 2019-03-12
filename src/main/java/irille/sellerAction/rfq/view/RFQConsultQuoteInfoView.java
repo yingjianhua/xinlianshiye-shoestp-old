@@ -21,14 +21,14 @@ import java.util.List;
 @Data
 public class RFQConsultQuoteInfoView implements BaseView {
     private int rfqId;  //询盘的ID
-    private String  title;   //商品名称
+    private String title;   //商品名称
     private String descriotion;   //商品详细描述
     private List images;  //商品图片 多图
     private int quantity;  //数量
     private int min_price;   //价格区间
     private int max_price;   //价格区间
     private int currency;   //币种
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date validity;  //有效值至
     private int payType;  //支付方式外键
     private int transitType;//运输方式 枚举
@@ -38,12 +38,12 @@ public class RFQConsultQuoteInfoView implements BaseView {
 
     public static class Builder {
 
-    	public static RFQConsultQuoteInfoView toView(RFQConsultRelation bean) {
-    		RFQConsultQuoteInfoView view = new RFQConsultQuoteInfoView();
-    		view.setRfqId(bean.getConsult());
-    		view.setTitle(bean.getTitle());
-    		view.setDescriotion(bean.getDescription());
-			try {
+        public static RFQConsultQuoteInfoView toView(RFQConsultRelation bean) {
+            RFQConsultQuoteInfoView view = new RFQConsultQuoteInfoView();
+            view.setRfqId(bean.getConsult());
+            view.setTitle(bean.getTitle());
+            view.setDescriotion(bean.getDescription());
+            try {
                 String s = bean.getImage();
                 ObjectMapper objectMapper = new ObjectMapper();
                 view.setImages(objectMapper.readValue(s, List.class));
@@ -54,18 +54,18 @@ public class RFQConsultQuoteInfoView implements BaseView {
             } catch (JsonMappingException e) {
                 e.printStackTrace();
             } catch (IOException e) {
-				e.printStackTrace();
-			}
-    		view.setQuantity(bean.getQuantity());
-    		view.setMin_price(bean.getMinprice());
-    		view.setMax_price(bean.getMaxprice());
-    		view.setCurrency(bean.getCurrency());
-    		view.setValidity(bean.getValidDate());
-    		view.setPayType(bean.getPaytype());
-    		view.setTransitType(bean.getTransittype());
-    		view.setSample(bean.gtSample());
-    		view.setCompanyDescribe(bean.getCompanydescribe());
-    		return view;
-    	}
+                e.printStackTrace();
+            }
+            view.setQuantity(bean.getQuantity());
+            view.setMin_price(bean.getMinprice());
+            view.setMax_price(bean.getMaxprice());
+            view.setCurrency(bean.getCurrency());
+            view.setValidity(bean.getValidDate());
+            view.setPayType(bean.getPaytype());
+            view.setTransitType(bean.getTransittype());
+            view.setSample(bean.gtSample());
+            view.setCompanyDescribe(bean.getCompanydescribe());
+            return view;
+        }
     }
 }

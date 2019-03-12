@@ -91,7 +91,7 @@ public class RFQManageServiceImp implements IRFQManageService {
         RFQManageInfoView infoView = new RFQManageInfoView();
         infoView.setId(rfqConsult.getPkey());
         infoView.setTitle(rfqConsult.getTitle());
-         infoView.setType(rfqConsult.getType());
+        infoView.setType(rfqConsult.getType());
         infoView.setProductId(rfqConsult.getProduct());
         infoView.setCreate_date(rfqConsult.getCreateTime());
         infoView.setValid_date(rfqConsult.getValidDate());

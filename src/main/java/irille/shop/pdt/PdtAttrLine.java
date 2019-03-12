@@ -1,5 +1,10 @@
 package irille.shop.pdt;
 
+import java.util.Date;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import irille.core.sys.Sys.OYn;
 import irille.core.sys.SysUser;
 import irille.pub.bean.BeanInt;
@@ -9,10 +14,6 @@ import irille.pub.tb.Fld;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Date;
 
 /**
  * 产品属性明细
@@ -27,7 +28,7 @@ public class PdtAttrLine extends BeanInt<PdtAttrLine> {
         NAME(SYS.MUILTI_LANGUAGE, "名称"), // 名称 多国语言
         MAIN(PdtAttr.fldOutKey()), //所属属性
         DELETED(SYS.NY,"是否删除"),
-        CREATE_BY(SYS.CREATED_BY),
+        CREATE_BY(SysUser.fldOutKey().setNull()),
         CREATE_TIME(SYS.CREATED_DATE_TIME),
         ROW_VERSION(SYS.ROW_VERSION),
         //>>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>

@@ -33,7 +33,7 @@ public class RFQConsultMessageServiceTest extends BaseTest {
 		System.out.println(om.writeValueAsString(page));
 	}
 	
-	@Test
+//	@Test
 	public void testSend() throws JsonProcessingException {
 		UsrPurchase purchase = new UsrPurchase();
 		purchase.setPkey(1261);

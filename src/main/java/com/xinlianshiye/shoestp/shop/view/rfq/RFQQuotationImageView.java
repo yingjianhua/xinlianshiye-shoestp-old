@@ -12,5 +12,5 @@ public class RFQQuotationImageView implements BaseView {
 
 	private String name;//报价图片名称
 	private String url;//报价图片地址
-
+	
 }

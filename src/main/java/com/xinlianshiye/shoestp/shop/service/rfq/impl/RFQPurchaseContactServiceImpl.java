@@ -236,5 +236,5 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
 		result.add(all);
 		return result;
 	}
-
+	
 }

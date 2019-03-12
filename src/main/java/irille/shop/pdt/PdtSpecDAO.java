@@ -2,18 +2,20 @@ package irille.shop.pdt;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import irille.core.sys.Sys.OYn;
-import irille.pub.Log;
 import irille.pub.LogMessage;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.BeanBase;
+import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduIns;
 import irille.pub.idu.IduOther;
 import irille.pub.idu.IduUpd;
 import irille.shop.pdt.PdtSpec.T;
-import irille.shop.usr.Usr;
 import irille.shop.usr.UsrCart;
+import irille.view.pdt.NewSpceView;
 
 public class PdtSpecDAO {
     public static final LogMessage LOG = new LogMessage(PdtSpecDAO.class);
@@ -108,5 +110,36 @@ public class PdtSpecDAO {
 			spec.setStoreCount(spec.getStoreCount() - qty);
 			spec.upd();
 		}
+	}
+	
+	public static List<NewSpceView> getList(Integer pdtPkey){
+		SQL sql = new SQL();
+		sql.SELECT(PdtSpec.class);
+		sql.FROM(PdtSpec.class);
+		sql.WHERE(PdtSpec.T.DELETED, " =? ",OYn.NO.getLine().getKey());
+		sql.WHERE(PdtSpec.T.PRODUCT, " =? ",pdtPkey);
+		List<PdtSpec> list = irille.pub.bean.Query.sql(sql).queryList(PdtSpec.class);
+		return list.stream().filter(new Predicate<PdtSpec>() {
+
+			@Override
+			public boolean test(PdtSpec t) {
+				if(t.gtColor().getType() == Pdt.OVer.ELSE.getLine().getKey() || t.gtSize().getTypever() == Pdt.OVer.ELSE.getLine().getKey()) {
+					return false;
+				}
+				return true;
+			}
+			
+		}).map(bean -> new NewSpceView() {{
+			setSku(bean.getSku());
+			setCount(bean.getStoreCount());
+			setId(bean.getPkey());
+			setSize(bean.getSize());
+			setSizeName(bean.gtSize().getName());
+			setSizeType(bean.gtSize().getType()==null?null:(int)bean.gtSize().getType());
+			setColor(bean.getColor());
+			setColorImg(bean.getPics());
+			setColorName(bean.gtColor().getName());
+			setColorType((int)bean.gtColor().getType());
+		}}).collect(Collectors.toList());
 	}
 }

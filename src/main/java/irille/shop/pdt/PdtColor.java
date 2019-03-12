@@ -1,22 +1,21 @@
 package irille.shop.pdt;
 
+import java.util.Date;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import irille.core.sys.Sys.OYn;
 import irille.core.sys.SysUser;
 import irille.pub.bean.BeanInt;
-import irille.pub.idu.Idu;
 import irille.pub.inf.IExtName;
 import irille.pub.svr.Env;
 import irille.pub.tb.Fld;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
-import irille.shop.plt.PltConfigDAO;
+import irille.shop.pdt.Pdt.OVer;
 import irille.shop.usr.UsrSupplier;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Date;
 
 /**
  * 产品顏色
@@ -32,6 +31,9 @@ public class PdtColor extends BeanInt<PdtColor> implements IExtName {
 		DELETED(SYS.NY,"是否删除"),
 		CREATE_BY(SysUser.fldOutKey().setNull()),
 		CREATE_TIME(SYS.CREATED_DATE_TIME),
+		PICTURE(SYS.STR__200_NULL), //颜色图片
+		TYPE(Tb.crt(Pdt.OVer.ELSE)), //版本 原颜色数据为0 新颜色数据为1
+		DEFAULT_COLOR(SYS.NY,"是否默认"), //是否系统默认颜色
 		ROW_VERSION(SYS.ROW_VERSION),
 		//>>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
 		//<<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
@@ -78,6 +80,13 @@ public class PdtColor extends BeanInt<PdtColor> implements IExtName {
 	// NO:0,否
   private Integer _createBy;	// 用户 <表主键:SysUser>  INT<null>
   private Date _createTime;	// 建档时间  TIME
+  private String _picture;	// 字符200  STR(200)<null>
+  private Byte _type;	// 类型 <OType>  BYTE
+	// ELSE:0,其他
+	// NEW_1:1,新版本
+  private Byte _defaultColor;	// 是否默认 <OYn>  BYTE
+	// YES:1,是
+	// NO:0,否
   private Short _rowVersion;	// 版本  SHORT
 
 	@Override
@@ -88,6 +97,9 @@ public class PdtColor extends BeanInt<PdtColor> implements IExtName {
     _deleted=OYn.DEFAULT.getLine().getKey();	// 是否删除 <OYn>  BYTE
     _createBy=null;	// 用户 <表主键:SysUser>  INT
     _createTime=Env.getTranBeginTime();	// 建档时间  TIME
+    _picture=null;	// 字符200  STR(200)
+    _type=OVer.DEFAULT.getLine().getKey();	// 类型 <OType>  BYTE
+    _defaultColor=OYn.DEFAULT.getLine().getKey();	// 是否默认 <OYn>  BYTE
     _rowVersion=0;	// 版本  SHORT
     return this;
   }
@@ -168,6 +180,36 @@ public class PdtColor extends BeanInt<PdtColor> implements IExtName {
   }
   public void setCreateTime(Date createTime){
     _createTime=createTime;
+  }
+  public String getPicture(){
+    return _picture;
+  }
+  public void setPicture(String picture){
+    _picture=picture;
+  }
+  public Byte getType(){
+    return _type;
+  }
+  public void setType(Byte type){
+    _type=type;
+  }
+  public OVer gtType(){
+    return (OVer)(OVer.ELSE.getLine().get(_type));
+  }
+  public void stType(OVer type){
+    _type=type.getLine().getKey();
+  }
+  public Byte getDefaultColor(){
+    return _defaultColor;
+  }
+  public void setDefaultColor(Byte defaultColor){
+    _defaultColor=defaultColor;
+  }
+  public Boolean gtDefaultColor(){
+    return byteToBoolean(_defaultColor);
+  }
+  public void stDefaultColor(Boolean defaultColor){
+    _defaultColor=booleanToByte(defaultColor);
   }
   public Short getRowVersion(){
     return _rowVersion;

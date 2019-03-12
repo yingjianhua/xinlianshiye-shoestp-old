@@ -52,7 +52,7 @@ public interface RFQConsultDao {
     RFQConsult getRFQInfo(int id);
 
     /**
-     * @Description: 查询已经报价列表 
+     * @Description: 查询已经报价列表
      * @date 2019/2/1 9:49
      * @author lijie@shoestp.cn
      */
@@ -70,11 +70,14 @@ public interface RFQConsultDao {
 
     int getPdtListCount(Integer start, Integer limit, String keyword, Integer pkey);
 
-    List<Map<String,Object>> getMyRFQQuoteList(Integer start, Integer limit,byte type,  Date date, String keyword, boolean flag, Integer status, Integer country, int supId);
+    List<Map<String, Object>> getMyRFQQuoteList(Integer start, Integer limit, byte type, Date date, String keyword, boolean flag, Integer status, Integer country, int supId);
 
     Integer count(byte type, Date date, String keyword, boolean flag, Integer status, Integer country, int supId);
 
-    Map<String,Object> getMyRFQQuoteInfo(Integer id, Integer pkey);
+    Map<String, Object> getMyRFQQuoteInfo(Integer id, Integer pkey);
 
+    Page getRFQMsgList(Integer id, Integer start, Integer limit);
+
+    Page getMessage(Integer id, Integer start, Integer limit);
 
 }
