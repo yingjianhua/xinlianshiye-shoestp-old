@@ -3,18 +3,6 @@
 <link rel="stylesheet" href="/home/v3/static/css/user/ureset.css"/>
 <link rel="stylesheet" href="/home/v3/static/css/user/uindex.css"/>
 <link rel="stylesheet" href="/home/v2/static/css/nav/new-top-nav-style.css"/>
-<style>
-    .el-button--primary {
-
-        background-color: #10389c;
-        border-radius: 4px;
-        border-color: #10389c;
-    }
-
-    .el-button--primary:hover {
-        background-color: #2856b7;
-    }
-</style>
 
 </head>
 
@@ -33,8 +21,15 @@
         <!-- 联系 -->
         <div class="contacts-main fr clearfix">
             <div class="contacts-main-left fl">
-                <dl>
-                    <dt class="select-header flexSb" @click="clickSelect">
+            <!-- "contactPkey" == {{contactPkey}} -->
+            <!-- "start" == {{start}} -->
+            <!-- "{{groupName}}"====== {{groupName}} -->
+            <!-- "allGroupCount" == {{allGroupCount}} <br>
+            "nowGroupCount" == {{nowGroupCount}} -->
+            <!-- <div class="select">ALL CONTACTS-2</div> -->
+            <!-- <dl @mouseenter="hoverMouseEnter" @mouseleave="hoverMouseLeave"> -->
+            <dl class="usermessage" ref="dl">
+                <dt class="select-header flexSb usermessage" @click.stop="clickSelect">
                         <div class="flexCc" style="text-align:center;width:100%;">
                          <span class="ellipsis1" style="display: inline-block;max-width:116px;line-height: 16px;">
                             {{groupName}}&nbsp;
@@ -46,7 +41,7 @@
                         </div>
                         <i class="el-icon-arrow-up" :class="isShowHoverSelect?'rotate-i':''"></i>
                     </dt>
-                    <dd class="select-content" v-show="isShowHoverSelect">
+                <dd  class="select-content usermessage" v-show="isShowHoverSelect">
                         <div class="select-title">
                             <div class="flexSb" @click="clickGroupItem($event,'','ALL CONTACTS',allGroupCount)" style="cursor: pointer;">
                                 <div style="width:130px;" class="ellipsis1">ALL CONTACTS</div>
@@ -58,21 +53,21 @@
                                 <div>Groups</div>
                                 <div class="add-font">+</div>
                             </div>
-                            <div class="add-group-input clearfix" v-show="isAddSearchGroup">
-                                <input type="text"  ref="addInputFocus" placeholder="添加新的分组" v-model.trim="addInput" @keyup.enter="addGroup">
+                        <div class="add-group-input clearfix" v-if="isAddSearchGroup">
+                            <input type="text"  ref="addInputFocus" placeholder="Add a new group" v-model.trim="addInput" @keyup.enter="addGroup">
                                 <div class="fr add-group-go" @click="addGroup">Go</div>
                             </div>
                             <div class="edit-group-input clearfix" v-if="isEditSearchGroup">
-                                <input type="text" ref="editInputFocus" placeholder="编辑分组" v-model.trim="editInput" @keyup.enter="editGroup">
+                            <input type="text" ref="editInputFocus" placeholder="Edit group" v-model.trim="editInput" @keyup.enter="editGroup">
                                 <div class="fr add-group-go" @click="editGroup">Go</div>
                             </div>
 
                         </div>
                         <ul>
-                            <li class="flexSb" v-for="(item,index) in groupList" :key="index" @click="clickGroupItem($event,item.pkey,item.name,item.count)">
+                        <li v-if="item.pkey" class="flexSb" v-for="(item,index) in groupList" :key="index" @click="clickGroupItem($event,item.pkey,item.name,item.count)">
                                 <div class="ellipsis1">{{item.name}}</div>
-                                <div><img src="/home/v3/static/images/user/bianxie.png" alt="" @click.stop="clickShowEditGruop(item.name,item.pkey)"><img
-                                        src="/home/v3/static/images/user/lajitong.png" alt="" style="padding-right:0;" @click.stop="deleteGroup(item.pkey)"></div>
+                            <div><img src="/home/v3/static/images/user/bianxie.png" alt="Edit" @click.stop="clickShowEditGruop(item.name,item.pkey)"><img
+                                    src="/home/v3/static/images/user/lajitong.png" alt="Delete" style="padding-right:0;" @click.stop="deleteGroup(item.pkey)"></div>
                             </li>
                         </ul>
                     </dd>
@@ -110,7 +105,8 @@
                                             <li>
                                                 <p class="font-b fc666">Add to Grop</p>
                                                 <dl>
-                                                    <dd @click="moveGroup(item.pkey,groupItem.pkey)" v-for="(groupItem,index) in groupList" :key="index">{{groupItem.name}}</dd>
+                                                <!-- {{groupItem.pkey}} -->
+                                                <dd v-if="groupItem.pkey"  @click="moveGroup(item.pkey,groupItem.pkey,groupItem.name,groupItem.count)" v-for="(groupItem,index) in groupList" :key="index">{{groupItem.name}}</dd>
                                                 </dl>
                                             </li>
                                             <li @click="deleteContact(item.supplier.pkey)">
@@ -127,14 +123,16 @@
                         <div class="cml-box2" v-if="item.relation != ''">
                             <h2>Inquiry History</h2>
                             <ul>
-                                <li class="flexCc" v-for="(inquiryItem,index) in item.relation" :key="index">
-                                    <div class="h1 fl">
+                            <li v-for="(inquiryItem,index) in item.relation" :key="index">
+                                <a :href="'/home/usr_UsrMessages_center?supplierPkey=' + item.supplier.pkey + '&consultPkey=' + inquiryItem.consult.pkey + '&relationPkey=' + inquiryItem.quotation.pkey " class="flexSb clearfix">
+                                    <div class="h1">
                                         <img v-if="inquiryItem.consult.images"
                                         :src="inquiryItem.consult.type==3?image(inquiryItem.consult.images[0]) + '?x-oss-process=image/resize,w_43,h_43/blur,r_5,s_20':image(inquiryItem.consult.images[0])" alt="" />
                                         <i v-if="inquiryItem.quotation.isNew"></i>
                                     </div>
-                                    <div class="h2 fl">{{inquiryItem.consult.title}}</div>
-                                    <div class="h3 fr">{{timeFormat(inquiryItem.quotation.createDate).substr(5)}}</div>
+                                    <div class="h2">{{inquiryItem.consult.title}}</div>
+                                    <div class="h3">{{timeFormat(inquiryItem.quotation.createDate).substr(5)}}</div>
+                                </a>
                                 </li>
                             </ul>
                         </div>
@@ -160,7 +158,7 @@
                     <div class="conti-more fr">
                         <div class="h1">Move to <i class="el-icon-arrow-up"></i></div>
                         <ul>
-                            <li v-for="(item,index) in groupList" :key="index" @click="moveGroup(contactPkey,item.pkey)">{{item.name}}</li>
+                        <li v-if="item.pkey" v-for="(item,index) in groupList" :key="index" @click="moveGroup(contactPkey,item.pkey,item.name,item.count)">{{item.name}}</li>
                         </ul>
                     </div>
                 </div>
@@ -243,7 +241,7 @@
                             </ul>
                         </div>
                         <div class="comBox-b2 clearfix">
-                            <h2>Visit Activilty(last 90 days)</h2>
+                        <h2>RFQ Activilty(last 90 days)</h2>
                             <ul class="info">
                                 <li class="clearfix">
                                     <span class="h1">Valid RFQs Submitted:</span>
@@ -259,7 +257,7 @@
                         </div>
 
                         <div class="comBox-b2 clearfix">
-                            <h2>Visit Activilty(last 90 days)</h2>
+                        <h2>Inquiry Activilty(last 90 days)</h2>
                             <ul class="info">
                                 <li class="clearfix">
                                     <span class="h1">Suppliers Response Rate:</span>
@@ -307,10 +305,18 @@
                 contactPkey:'', // 供应商移动分组 pkey
                 isGroupShow: false,  // 是否显示分组
                 groupName:'ALL CONTACTS',  // 分组名字
-                nowGroupCount:'',  // 当前分组联系人数量
-                groupCount:'',  // 分组里联系人数量
+            nowGroupCount:this.allGroupCount,  // 当前分组联系人数量
                 allGroupCount:'',  // 总联系人数量
             },
+        created(){
+            document.addEventListener('click',(e)=>{
+            //     console.log("this.$refs.dl.contains(e.target)");
+            // console.log(this.$refs.dl.contains(e.target));
+            if(!this.$refs.dl.contains(e.target)){
+                this.isShowHoverSelect = false;
+            }
+        })
+        },
             mounted() {
                 this.getGroupList(); //获取分组
                 this.getContactList(this.contactKeyWord,this.groupPkey,this.start,this.limit); //获取联系人
@@ -337,14 +343,14 @@
                                 }
                             )
                             .then((res) => {
-                                console.log(res);
+                            // console.log(res);
                                 // this.popupindex = 0;
                                 this.contactMoreSwitch = true;
                                 this.contactList.push(...res.data.result.items);
 
                                 if(res.data.result.items.length <= 0){
                                     this.contactMoreSwitch = false
-                                    this.$message('没有更多了');
+                            this.$message('No more');
                                     this.supplierPkey = '';
                                     // this.contactPkey = '';
                                     // this.supplierInfo = '';
@@ -352,10 +358,9 @@
                                     this.popupindex = this.popupindex;
                                     this.supplierPkey = this.contactList[this.popupindex].supplier.pkey
                                     this.contactPkey = this.contactList[0].pkey
-                                    console.log("this.supplierPkey ==== " + this.supplierPkey)
+                            // console.log("this.supplierPkey ==== " + this.supplierPkey)
                                     this.getSupplierDetail(this.supplierPkey)
                                 }
-                                // self.contactSwitch
 
                             })
                             .catch((error) => {
@@ -363,60 +368,36 @@
                                 console.log(error);
                             });
                         }else{
-                            this.$message('没有更多了');
+                        this.$message('No more');
                         }
 
                         }
                     };
+            setTimeout(() => {
+                this.nowGroupCount = this.allGroupCount;
+        }, 50);
                 });
             },
             methods: {
-                hidePanel: function(event){
-                    var sp = document.getElementById("dd");
-                        if(sp){
-                            if(!sp.contains(event.target)){            //这句是说如果我们点击到了id为myPanel以外的区域
-                                this.isShowHoverSelect= false;
-                            }
-                        }
-                    },
                 clickGroupItem(e,groupPkey,name,count){  // 点击分组
-                    console.log("groupPkey=============" + groupPkey)
-                    console.log("name==============" + name)
-                    console.log("count============" + count)
-                    console.log(this.groupCount)
-                    console.log(!groupPkey)
-                    this.groupCount = count;
-                    // if(groupPkey == ''){
-                    //     this.nowGroupCount = this.allGroupCount;
-                    //     console.log("==========空的============" +this.nowGroupCount)
-                    // }else{
-                    //   this.nowGroupCount = count;
-                    //   console.log("================有值============" + this.nowGroupCount)
-                    // }
                     this.groupName = name;
                     this.isAddSearchGroup = false;
                     this.isEditSearchGroup = false;
                     this.start = 0;
                     this.groupPkey = groupPkey;
                     this.popupindex= 0;
+                this.contactKeyWord= '';
                     this.getContactList(this.contactKeyWord,this.groupPkey,this.start,this.limit)
                     if(name == "ALL CONTACTS"){
                         this.nowGroupCount = this.allGroupCount;
-                        console.log(this.nowGroupCount)
-                        console.log("==========空的============" +this.nowGroupCount)
                     }else{
-                    //   this.nowGroupCount = this.groupCount;
                       this.nowGroupCount = count;
-                      console.log(this.nowGroupCount)
-                      console.log("================有值============" + this.nowGroupCount)
                     }
                 },
                 getContactList(keyword,groupPkey,start,limit) { // 获取联系人列表
                     // var self = this;
                     this.start = 0;
-                    // if(){
 
-                    // }
                     axios.get(
                             '/home/rfq_RFQContact_page', {
                                 params: {
@@ -428,14 +409,14 @@
                             }
                         )
                         .then((res) => {
-                            console.log(res);
+                    // console.log(res);
                             // this.popupindex = 0;
                             this.contactMoreSwitch = true;
                             this.contactList=[];
                             this.contactList = res.data.result.items;
                             if(res.data.result.items.length <= 0){
                                 this.contactMoreSwitch = false
-                                this.$message('没有更多了');
+                    this.$message('No more');
                                 this.supplierPkey = '';
                                 // this.contactPkey = '';
                                 this.supplierInfo = '';
@@ -443,7 +424,7 @@
                                 this.popupindex = this.popupindex;
                                 this.supplierPkey = this.contactList[0].supplier.pkey
                                 this.contactPkey = this.contactList[0].pkey
-                                console.log("this.supplierPkey ==== " + this.supplierPkey)
+                    // console.log("this.supplierPkey ==== " + this.supplierPkey)
                                 this.getSupplierDetail(this.supplierPkey)
                             }
                             // this.contactKeyWord = ''
@@ -461,21 +442,22 @@
 
                 deleteContact(supplierPkey){  // 删除联系人
                     var self = this;
-                    self.$confirm('是否删除该联系人?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
+                self.$confirm('Whether to delete the contact?', 'Prompt', {
+                    confirmButtonText: 'Determine',
+                    cancelButtonText: 'Cancel',
                     type: 'warning'
                     }).then(() => {
                         axios.post('/home/rfq_RFQContact_delete', Qs.stringify({
                             supplierPkey,
                         }, ))
                         .then(function (res) {
-                            console.log(res);
+                            // console.log(res);
                             if (res.data.ret != 1) {
                                 self.$message.error(res.data.msg);
                                 return
                             };
                             self.start =  0;
+                            self.nowGroupCount = self.nowGroupCount - 1;
                             self.getContactList(self.contactKeyWord,self.groupPkey,self.start,self.limit);
                         })
                         .catch(function (error) {
@@ -492,17 +474,17 @@
                             '/home/rfq_RFQContact_listGroup'
                         )
                         .then((res) => {
-                            console.log(res);
+                    // console.log(res);
                             if (res.data.ret != 1) {
                                 self.$message.error(res.data.msg);
                                 return
                             };
-                            // for (let i = 0; i < res.data.result.length; i++) {
-                            //     if(res.data.result[i].name == 'all' && !res.data.result[i].pkey){
-                            //         self.allGroupCount = res.data.result[i].count;
-                            //     }
-                            // }
-                            // console.log(self.allGroupCount)
+                for (let i = 0; i < res.data.result.length; i++) {
+                    if(res.data.result[i].name == 'all' && !res.data.result[i].pkey){
+                        self.allGroupCount = res.data.result[i].count;
+                    }
+                }
+                // self.nowGroupCount = self.allGroupCount;
                             self.groupList = res.data.result;
                         })
                         .catch((error) => {
@@ -520,13 +502,15 @@
                     self.editNewPkey = pkey;
                     // self.isEditSearchGroup = !self.isEditSearchGroup;
                     self.editInput = name;
+                if(self.isEditSearchGroup){
                     self.$nextTick(function () {
                         // input 获取焦点
                         self.$refs.editInputFocus.focus()
                     })
-                    console.log(name)
-                    console.log(pkey)
-                    console.log(self.editNewPkey)
+                }
+                // console.log(name)
+                // console.log(pkey)
+                // console.log(self.editNewPkey)
                 },
                 editGroup() { // 编辑分组
                     var self = this;
@@ -536,14 +520,14 @@
                             groupName: self.editInput
                         }, ))
                         .then(function (res) {
-                            console.log(res);
+                        // console.log(res);
                             if (res.data.ret != 1) {
                                 self.$message.error(res.data.msg);
                                 return
                             };
                             self.$message({
                                         showClose: true,
-                                        message: '编辑成功',
+                            message: 'Successful editing',
                                         type: 'success'
                                     });
                            self.getGroupList();
@@ -552,30 +536,31 @@
                             console.log(error);
                         });
                 },
-                deleteGroup(pkey) { // 删除分组
-                    console.log(pkey)
-                    console.log("删除分组")
+            deleteGroup(groupPkey) { // 删除分组
+                console.log(groupPkey)
                     var self = this;
-                    self.$confirm('是否删除该分组, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
+                self.$confirm('Whether to delete the group?', 'Prompt', {
+                    confirmButtonText: 'Determine',
+                    cancelButtonText: 'Cancel',
                     type: 'warning'
                     }).then(() => {
                         axios.post('/home/rfq_RFQContact_deleteGroup', Qs.stringify({
-                            groupPkey: pkey
+                        groupPkey
                         }))
                         .then(function (res) {
-                            console.log(res);
+                            // console.log(res);
                             if (res.data.ret != 1) {
                                 self.$message.error(res.data.msg);
                                 return
                             };
-                            self.getGroupList();
                             self.$message({
                                         showClose: true,
-                                        message: '删除成功',
-                                        type: 'success'
+                                message: 'Successfully deleted',
+                                type: 'success',
                                     });
+                            setTimeout(() => {
+                                window.location.reload();
+                        }, 500);
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -584,22 +569,28 @@
 
                     });
                 },
-                moveGroup(contactPkey,groupPkey){ // 移动分组
-                    console.log(contactPkey)
-                    console.log(groupPkey)
+            moveGroup(contactPkey,groupPkey,name,count){ // 移动分组
+                // console.log(contactPkey)
+                // console.log(groupPkey)
+                // console.log("name==============" + name)
+                // console.log("count===========" + count)
                     var self = this;
                     axios.post('/home/rfq_RFQContact_moveToGroup', Qs.stringify({
                             contactPkey,
                             groupPkey
                         }))
                         .then(function (res) {
-                            console.log(res);
+                        // console.log(res);
                             if (res.data.ret != 1) {
                                 self.$message.error(res.data.msg);
                                 return
                             };
                             self.start = 0;
-                            self.$message.success("移动成功");
+                        self.popupindex = 0;
+                        self.$message.success("Mobile success");
+                        if(self.groupName  != 'ALL CONTACTS'){
+                            self.nowGroupCount = self.nowGroupCount - 1;
+                        }
                             self.getGroupList();
                             self.getContactList(self.contactKeyWord,self.groupPkey,self.start,self.limit);
                         })
@@ -609,17 +600,14 @@
                 },
                 clickShowAddGruop(){  // 点击是否显示 添加分组框
                     var self = this;
-                    console.log(self.isAddSearchGroup)
-                    // if(self.isAddSearchGroup){
-                    //     self.isAddSearchGroup = false;
-                    // }else{
-                    //     self.isAddSearchGroup = true;
-                    // }
+                // console.log(self.isAddSearchGroup)
                     self.isAddSearchGroup  = !self.isAddSearchGroup
+                if(self.isAddSearchGroup){
                      self.$nextTick(function () {
                         // input 获取焦点
                         self.$refs.addInputFocus.focus()
                     })
+                }
                 },
                 addGroup() { // 添加分组
                     var self = this;
@@ -635,7 +623,7 @@
                                 self.$message.error(res.data.msg);
                                 return
                             };
-                            self.$message.success("添加成功");
+                        self.$message.success("Added successfully");
                             self.addInput = ''
                             self.getGroupList();
                         })
@@ -652,7 +640,7 @@
                             }
                         )
                         .then((res) => {
-                            console.log(res);
+                    // console.log(res);
                             if (res.data.ret != 1) {
                                 self.$message.error(res.data.msg);
                                 return
@@ -665,8 +653,8 @@
                         });
                 },
                 clickContact(index,pkey){ // 点击联系人
-                    console.log(index)
-                    console.log(pkey)
+                // console.log(index)
+                // console.log(pkey)
                     this.popupindex = index;
                     var self = this;
                     self.supplierPkey = pkey;
@@ -683,14 +671,8 @@
                     // this.isEditSearchGroup =  false
                 },
                 clickSelect(){  // 点击是否 显示  分组
-                console.log("显示分组")
+                // console.log("显示分组")
                     this.isShowHoverSelect = !this.isShowHoverSelect
-                        // var sp = document.getElementById("dd");
-                        // if(sp){
-                        //     if(!sp.contains(event.target)){            //这句是说如果我们点击到了id为myPanel以外的区域
-                        //         this.isShowHoverSelect= false;
-                        //     }
-                        // }
                     if(!this.isShowHoverSelect){
                         this.isAddSearchGroup =  false
                         this.isEditSearchGroup =  false
@@ -719,6 +701,6 @@
         })
     </script>
 
-</body> count
+</body> 
 
 </html>

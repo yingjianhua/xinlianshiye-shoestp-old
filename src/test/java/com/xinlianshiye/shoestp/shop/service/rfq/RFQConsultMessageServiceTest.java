@@ -27,7 +27,7 @@ public class RFQConsultMessageServiceTest extends BaseTest {
 		Integer start = 0;
 		Integer limit = 10;
 		
-		RFQConsultMessagesView page = service.page(purchase, relationPkey, start, limit);
+		RFQConsultMessagesView page = service.page(purchase, relationPkey, nextMessagePkey, preMessagePkey, start, limit);
 		System.out.println(om.writeValueAsString(page));
 	}
 	
