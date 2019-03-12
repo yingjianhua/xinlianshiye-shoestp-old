@@ -28,7 +28,6 @@
         height: 100%;
         object-fit: contain;
     }
-
 </style>
 
 </head>
@@ -50,7 +49,7 @@
         <div class="user-info clearfix flexCc">
             <div class="user-info-item flexCc">
                 <div class="flexCc">
-                    <div class="avatar-box">
+                    <div class="avatar-box" ref="avatarUpload">
                         <div class="avatar">
 
                             <img @click="clickShowUploadAvatar"
@@ -60,7 +59,8 @@
                         <div class="user-info-item-name" style="color: #232323;">
                             {{userInfo.nickname?userInfo.nickname:'Nickname'}}
                         </div>
-                        <div class="avatar-upload clearfix ripple fadeIn" v-if="isShowAvatarUpload">
+                         <transition name="user-fade-in">
+                        <div class="avatar-upload clearfix  " v-if="isShowAvatarUpload">
                             <!-- action="https://jsonplaceholder.typicode.com/posts/" -->
                             <div class="fl upload-box">
                                 <div>
@@ -84,6 +84,7 @@
                                 <p>Upload JPG format,sized no larger than 3MB</p>
                             </div>
                         </div>
+                    </transition>
                     </div>
                     <div class="icon-id">
                         <a href="/home/usr_UsrPurchase_usrSetting">
@@ -241,6 +242,15 @@
                     trigger: 'change'
                 }],
             },
+        },
+         created(){
+            document.addEventListener('click',(e)=>{
+            //     console.log("this.$refs.dl.contains(e.target)");
+            // console.log(this.$refs.dl.contains(e.target));
+            if(!this.$refs.avatarUpload.contains(e.target)){
+                this.isShowAvatarUpload = false;
+            }
+        })
         },
         mounted() {
             this.getUserInfo();

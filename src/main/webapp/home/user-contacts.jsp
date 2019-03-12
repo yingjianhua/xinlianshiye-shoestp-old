@@ -39,8 +39,9 @@
                          </span>
 
                     </div>
-                    <i class="el-icon-arrow-up" :class="isShowHoverSelect?'rotate-i':''"></i>
+                    <i class="el-icon-arrow-right" :class="isShowHoverSelect?'rotate-i':''"></i>
                 </dt>
+            <transition name="user-fade-in">
                 <dd  class="select-content usermessage" v-show="isShowHoverSelect">
                     <div class="select-title">
                         <div class="flexSb" @click="clickGroupItem($event,'','ALL CONTACTS',allGroupCount)" style="cursor: pointer;">
@@ -53,15 +54,18 @@
                             <div>Groups</div>
                             <div class="add-font">+</div>
                         </div>
+                        <transition name="user-fade-in">
                         <div class="add-group-input clearfix" v-if="isAddSearchGroup">
                             <input type="text"  ref="addInputFocus" placeholder="Add a new group" v-model.trim="addInput" @keyup.enter="addGroup">
                             <div class="fr add-group-go" @click="addGroup">Go</div>
                         </div>
+                        <transition>
+                        <transition name="user-fade-in">
                         <div class="edit-group-input clearfix" v-if="isEditSearchGroup">
                             <input type="text" ref="editInputFocus" placeholder="Edit group" v-model.trim="editInput" @keyup.enter="editGroup">
                             <div class="fr add-group-go" @click="editGroup">Go</div>
                         </div>
-
+                        <transition>
                     </div>
                     <ul>
                         <li v-if="item.pkey" class="flexSb" v-for="(item,index) in groupList" :key="index" @click="clickGroupItem($event,item.pkey,item.name,item.count)">
@@ -71,6 +75,7 @@
                         </li>
                     </ul>
                 </dd>
+                </transition>
             </dl>
             <div class="search clearfix">
                 <input type="text" placeholder="please input the keyword" v-model.trim="contactKeyWord" @keyup.enter="getContactList(contactKeyWord,groupPkey,0,limit)"/>
@@ -156,7 +161,7 @@
                 </div>
 
                 <div class="conti-more fr">
-                    <div class="h1">Move to <i class="el-icon-arrow-up"></i></div>
+                    <div class="h1">Move to <i class="el-icon-arrow-right"></i></div>
                     <ul>
                         <li v-if="item.pkey" v-for="(item,index) in groupList" :key="index" @click="moveGroup(contactPkey,item.pkey,item.name,item.count)">{{item.name}}</li>
                     </ul>
@@ -456,7 +461,13 @@
                                 self.$message.error(res.data.msg);
                                 return
                             };
+                             self.$message({
+                                showClose: true,
+                                message: 'Successfully deleted',
+                                type: 'success',
+                            });
                             self.start =  0;
+                            self.popupindex =  0;
                             self.nowGroupCount = self.nowGroupCount - 1;
                             self.getContactList(self.contactKeyWord,self.groupPkey,self.start,self.limit);
                         })

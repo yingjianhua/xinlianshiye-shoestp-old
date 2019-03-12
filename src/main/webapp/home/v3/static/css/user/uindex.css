@@ -146,6 +146,12 @@
         position: relative;
         height: 97px;
       }
+      #personalCenter .user-fade-in-enter-active, .user-fade-in-leave-active {
+        transition: opacity .5s;
+      }
+      #personalCenter .user-fade-in-enter, .user-fade-in-leave-to /* .fade-leave-active below version 2.1.8 */ {
+          opacity: 0;
+      }
       #personalCenter .user-main .user-info .user-info-item  .avatar-box .avatar-uploader .el-upload-dragger{
          width: 80px;
          height: 80px;
@@ -309,7 +315,7 @@
         transition: all 0.3s linear;
         }
       #personalCenter .contacts-main .contacts-main-left>dl .rotate-i{
-        transform: rotate(180deg);
+        transform: rotate(90deg);
         }
       /* #personalCenter .contacts-main .contacts-main-left dl:hover dd{
         display: block;
@@ -672,16 +678,16 @@
        	color:#7f7f7f;
        	cursor:pointer;
        }
-       #personalCenter .contacts-main .contacts-main-right .contacts-info .conti-more .el-icon-arrow-up{
+       #personalCenter .contacts-main .contacts-main-right .contacts-info .conti-more .el-icon-arrow-right{
        	margin-left:6px;
        	-webkit-transition:all .4s;-moz-transition:all .4s;-o-transition:all .4s;transition:all .4s;
        }
-       #personalCenter .contacts-main .contacts-main-right .contacts-info .conti-more:hover .el-icon-arrow-up{
-       	transform:rotate(180deg);
-		    -webkit-transform:rotate(180deg);
-		    -moz-transform:rotate(180deg);
-		    -ms-transform:rotate(180deg);
-		    -o-transform:rotate(180deg);
+       #personalCenter .contacts-main .contacts-main-right .contacts-info .conti-more:hover .el-icon-arrow-right{
+       	transform:rotate(90deg);
+		    -webkit-transform:rotate(90deg);
+		    -moz-transform:rotate(90deg);
+		    -ms-transform:rotate(90deg);
+		    -o-transform:rotate(90deg);
        }
 
        #personalCenter .contacts-main .contacts-main-right .contacts-info .conti-more ul{
