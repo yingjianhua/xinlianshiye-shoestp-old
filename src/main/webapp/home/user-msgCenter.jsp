@@ -1825,10 +1825,13 @@
 			contactSupplier(e){
 				console.log("contactSupplier")
 				// 显示顶部show more信息
+				clearTimeout(this.timeoutTimer);
 				this.timeoutTimer = setTimeout(()=>{
 					// 聊天信息大于8条时，不再自动显示show more
 					if( this.chatMsgList.length < 8 ){
 						this.isShowMore = true;
+					}else{
+						this.isAllRead = true;
 					}
 					clearTimeout(this.timeoutTimer);
 				}, this.showChatBox?200:1000)
