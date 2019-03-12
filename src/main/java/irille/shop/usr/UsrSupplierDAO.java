@@ -953,8 +953,9 @@ public class UsrSupplierDAO {
             setTelephone((String) bean.get(T.TELEPHONE.getFld().getCodeSqlField()));
             setPostcode((String) bean.get(T.POSTCODE.getFld().getCodeSqlField()));
             setFax((String) bean.get(T.FAX.getFld().getCodeSqlField()));
-            setUserId((Integer) bean.get(T.USER_ID.getFld().getCodeSqlField()));
-            UsrMain main = Bean.load(UsrMain.class, (Integer) bean.get(T.USER_ID.getFld().getCodeSqlField()));
+            setUserId((Integer) bean.get(T.UserId.getFld().getCodeSqlField()));
+            UsrMain main = Bean.load(UsrMain.class,
+                (Integer) bean.get(T.UserId.getFld().getCodeSqlField()));
             if(main != null){
               setMainContacts(main.getContacts());
               setMainEmail(main.getEmail());
@@ -1014,7 +1015,7 @@ public class UsrSupplierDAO {
    */
   public static UsrSupplier insSupplier(UsrSupplier view, Language lang)
       throws JSONException {
-    UsrMain main = irille.pub.bean.Query.SELECT(UsrMain.class,view.getUserId());
+    UsrMain main = irille.pub.bean.Query.SELECT(UsrMain.class,view.getUserid());
     UsrSupplier bean = new UsrSupplier();
     //必填项
     bean.stRole(UsrSupplierRoleDAO.getDefault());
@@ -1035,7 +1036,7 @@ public class UsrSupplierDAO {
     bean.setUpdateTime(Env.getTranBeginTime()); //更新时间
     bean.setCategory(40); //供应商分类
 
-    bean.setUserId(view.getUserId()); //UsrMain表的pkey
+    bean.setUserid(view.getUserid()); //UsrMain表的pkey
     bean.setPassword(DateTools.getDigest(main.getPkey()+main.getPassword())); //UsrMain表的密码
     bean.setName(view.getName()); //公司名称-必填
     bean.setEnglishName(view.getEnglishName()); //公司英文名称
@@ -1159,7 +1160,8 @@ public class UsrSupplierDAO {
     List<SuppliersView> list = irille.pub.bean.Query.sql(sql.LIMIT(start, limit)).queryMaps().stream().map(o -> new SuppliersView() {{
       setId((Integer) o.get(T.PKEY.getFld().getCodeSqlField()));
       setName((String) o.get(T.NAME.getFld().getCodeSqlField()));
-      String contacts = BeanBase.load(UsrMain.class, (Serializable) o.get(T.USER_ID.getFld().getCodeSqlField())).getContacts();
+      String contacts = BeanBase.load(UsrMain.class,
+          (Serializable) o.get(T.UserId.getFld().getCodeSqlField())).getContacts();
       setContacts(contacts);
       setCompanyAddr((String) o.get(T.COMPANY_ADDR.getFld().getCodeSqlField()));
       setApplicationTime((Date) o.get(T.APPLICATION_TIME.getFld().getCodeSqlField()));
@@ -1198,7 +1200,8 @@ public class UsrSupplierDAO {
     List<SuppliersView> list = irille.pub.bean.Query.sql(sql.LIMIT(start, limit)).queryMaps().stream().map(o -> new SuppliersView() {{
       setId((Integer) o.get(T.PKEY.getFld().getCodeSqlField()));
       setName((String) o.get(T.NAME.getFld().getCodeSqlField()));
-      UsrMain main = BeanBase.load(UsrMain.class, (Serializable) o.get(T.USER_ID.getFld().getCodeSqlField()));
+      UsrMain main = BeanBase.load(UsrMain.class,
+          (Serializable) o.get(T.UserId.getFld().getCodeSqlField()));
       if(main != null){
         setMainId(main.getPkey());
         setEmail(main.getEmail());

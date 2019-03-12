@@ -63,6 +63,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     TARGETED_MARKET(SYS.STR__100_NULL, "目标市场"),
     CONTACT_EMAIL(SYS.STR__100, "联系人邮箱"),
     APPLICATION_TIME(SYS.DATE, "申请时间"),
+    STOREOPEN_TIME(SYS.DATE, "店铺开通时间"),
     /**
      * 公司信息
      */
@@ -229,7 +230,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   //实例变量定义-----------------------------------------
   private Integer _pkey;	// 编号  INT
   private Integer _role;	// 供应商角色 <表主键:UsrSupplierRole>  INT
-  private String _loginName;	// 登录账号  STR(40)
+  private String _loginName;	// 登录账号  STR(50)
   private String _password;	// 密码  STR(40)<null>
   private Byte _status;	// 审核状态 <OStatus>  BYTE
 	// INIT:0,未审核
@@ -248,6 +249,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   private String _targetedMarket;	// 目标市场  STR(100)<null>
   private String _contactEmail;	// 联系人邮箱  STR(100)
   private Date _applicationTime;	// 申请时间  DATE
+  private Date _storeopenTime;	// 店铺开通时间  DATE
   private String _name;	// 名称  STR(100)
   private String _registeredCapital;	// 注册资金  STR(100)
   private Integer _category;	// 供应商分类 <表主键:UsrSupplierCategory>  INT
@@ -361,7 +363,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   public UsrSupplier init(){
 		super.init();
     _role=null;	// 供应商角色 <表主键:UsrSupplierRole>  INT
-    _loginName=null;	// 登录账号  STR(40)
+    _loginName=null;	// 登录账号  STR(50)
     _password=null;	// 密码  STR(40)
     _status=OStatus.DEFAULT.getLine().getKey();	// 审核状态 <OStatus>  BYTE
     _apprBy=null;	// 审核员 <表主键:SysUser>  INT
@@ -375,6 +377,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     _targetedMarket=null;	// 目标市场  STR(100)
     _contactEmail=null;	// 联系人邮箱  STR(100)
     _applicationTime=null;	// 申请时间  DATE
+    _storeopenTime=null;	// 店铺开通时间  DATE
     _name=null;	// 名称  STR(100)
     _registeredCapital=null;	// 注册资金  STR(100)
     _category=null;	// 供应商分类 <表主键:UsrSupplierCategory>  INT
@@ -398,7 +401,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     _email=null;	// Email  STR(100)
     _businessLicenseBeginTime=null;	// 营业执照开始时间  STR(100)
     _businessLicenseEndTime=null;	// 营业执照到期时间  STR(100)
-    _businessLicenseIsSecular= OYn.DEFAULT.getLine().getKey();	// 是否长期 <OYn>  BYTE
+    _businessLicenseIsSecular=OYn.DEFAULT.getLine().getKey();	// 是否长期 <OYn>  BYTE
     _telephone=null;	// 电话  STR(20)
     _fax=null;	// 传真  STR(20)
     _qq=null;	// QQ  STR(100)
@@ -603,6 +606,12 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   public void setApplicationTime(Date applicationTime){
     _applicationTime=applicationTime;
   }
+  public Date getStoreopenTime(){
+    return _storeopenTime;
+  }
+  public void setStoreopenTime(Date storeopenTime){
+    _storeopenTime=storeopenTime;
+  }
   public String getName(){
     return _name;
   }
@@ -638,10 +647,10 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   public void setIsAuth(Byte isAuth){
     _isAuth=isAuth;
   }
-  public Usr.OIsAuth gtIsAuth(){
-    return (Usr.OIsAuth)(Usr.OIsAuth.NO.getLine().get(_isAuth));
+  public OIsAuth gtIsAuth(){
+    return (OIsAuth)(OIsAuth.NO.getLine().get(_isAuth));
   }
-  public void stIsAuth(Usr.OIsAuth isAuth){
+  public void stIsAuth(OIsAuth isAuth){
     _isAuth=isAuth.getLine().getKey();
   }
   public Integer getSort(){
