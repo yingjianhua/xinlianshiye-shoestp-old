@@ -2,11 +2,11 @@ package irille.pub.exception;
 
 public interface IWebMessage {
 
-	public Integer getRet();
+  public Integer getRet();
 
-	public String getMsg();
+  public String getMsg();
 
-	public Object getResult();
+  public Object getResult();
 
-	public ReturnCode getCode();
+  public ReturnCode getCode();
 }

@@ -10,12 +10,11 @@ import irille.Entity.pm.PMTemplate;
 @ImplementedBy(PMTemplateDaoImp.class)
 public interface IPMTemplateDao {
 
-	List<PMTemplate> list();
+  List<PMTemplate> list();
 
-	void add(List<PMTemplate> addBeans);
+  void add(List<PMTemplate> addBeans);
 
-	PMTemplate load(Integer pkey);
+  PMTemplate load(Integer pkey);
 
-	void del(List<PMTemplate> delBeans);
-	
+  void del(List<PMTemplate> delBeans);
 }

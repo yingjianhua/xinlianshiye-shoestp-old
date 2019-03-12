@@ -1,12 +1,12 @@
 package irille.platform.odr.view.OdrOrder;
 
+import java.util.List;
+
 import irille.view.BaseView;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 public class ConditionView implements BaseView {
-    private List<StatusView> statusList;
-    private List<TypeView> typeList;
+  private List<StatusView> statusList;
+  private List<TypeView> typeList;
 }

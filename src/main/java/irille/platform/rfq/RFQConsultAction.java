@@ -58,18 +58,20 @@ public class RFQConsultAction extends ActionBase<RFQConsult> implements IRFQCons
     write();
   }
 
-	@Override
-	public void offerInfo() throws IOException {
-		write(rFQConsultService.relationInfo(relation));
-	}
+  @Override
+  public void offerInfo() throws IOException {
+    write(rFQConsultService.relationInfo(relation));
+  }
 
   @Override
   public void getMsgList() throws IOException {
-    write(rFQConsultService.getRFQMsgList(consult,getStart(),getLimit()));
+    write(rFQConsultService.getRFQMsgList(consult, getStart(), getLimit()));
   }
+
   private Integer id;
+
   @Override
   public void getMessage() throws IOException {
-    write(rFQConsultService.getMessage(id,getStart(),getLimit()));
+    write(rFQConsultService.getMessage(id, getStart(), getLimit()));
   }
 }
