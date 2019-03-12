@@ -16,6 +16,8 @@ import irille.view.RFQ.RFQPdtInfo;
 import irille.view.plt.CountryView;
 import irille.view.v3.rfq.PutRFQConsultView;
 import irille.view.v3.rfq.EditRFQConsultView;
+import irille.view.v3.rfq.PutRFQConsultView;
+import irille.view.v3.rfq.PutSupplierConsultView;
 import lombok.Setter;
 import org.apache.struts2.ServletActionContext;
 
@@ -64,6 +66,18 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
     @ItpCheckPurchaseLogin.NeedLogin
     public void putRFQInquiry() throws IOException {
         irfqConsultService.putRFQInquiry(objectMapper.readValue(getJsonBody(), PutRFQConsultView.class), getPurchase());
+        write();
+    }
+
+
+    /**
+     * @Description: RFQ询盘
+     * @date 2019/1/30 11:10
+     * @author lijie@shoestp.cn
+     */
+    @ItpCheckPurchaseLogin.NeedLogin
+    public void putSupplierInquiry() throws IOException {
+        irfqConsultService.putSupplierInquiry(objectMapper.readValue(getJsonBody(), PutSupplierConsultView.class), getPurchase());
         write();
     }
 
