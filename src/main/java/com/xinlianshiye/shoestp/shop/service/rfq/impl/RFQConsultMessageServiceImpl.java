@@ -129,7 +129,7 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 		try {
 			RFQConsultAlertUrlMessage content = om.readValue(message.getContent(), RFQConsultAlertUrlMessage.class);
 			if(content.getValidDate() == null) {
-				content.setValidDate(Date.from(LocalDateTime.now().plusDays(2).atZone(ZoneId.systemDefault()).toInstant()));
+				content.setValidDate(Date.from(LocalDateTime.now().plusDays(3).atZone(ZoneId.systemDefault()).toInstant()));
 				message.setContent(om.writeValueAsString(content));
 				rFQConsultMessageDao.save(message);
 				return content.getProductId();

@@ -140,7 +140,7 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 		message.setAlertMsg("该链接被打开后72小时内有效，72小时后该链接失效，买家将无法查看该产品");
         message.setShowMsg(product.getName());
 		String uuid = createUuid();
-		message.setUrl(AppConfig.domain + "home/pdt_PdtProduct_gtProductsInfo?expoKey=" + uuid);//TODO 链接现在尚未确定  确定后补上 带上询盘聊天消息的uuid做为参数
+		message.setUrl(AppConfig.domain + "home/pdt_PdtProduct_gtProductsInfo?id=" + product.getPkey() + "&expoKey=" + uuid);//TODO 链接现在尚未确定  确定后补上 带上询盘聊天消息的uuid做为参数
 		return sendMessage(supplier, consultPkey, message, uuid);
 	}
 
