@@ -1,28 +1,26 @@
 package irille.Dao.O2O;
 
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
+import irille.Entity.O2O.Enums.O2O_ActivityStatus;
 import irille.Entity.O2O.O2O_Activity;
 import irille.Entity.O2O.O2O_Activity.T;
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
-import irille.Entity.O2O.Enums.O2O_ActivityStatus;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
-import irille.pub.bean.query.SqlQuery;
 import irille.pub.bean.sql.SQL;
-import irille.pub.svr.DbPool;
+import irille.pub.util.BatchUtils;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrProductCategory;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplierRole;
-import irille.view.Page;
 import irille.view.O2O.O2OActivityView;
+import irille.view.Page;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by IntelliJ IDEA. User: Lijie<HelloBox@outlook.com> Date: 2019/1/26
@@ -117,7 +115,7 @@ public class O2OActivityDao {
                 .FROM(O2O_PrivateExpoPdt.class);
         return query.queryCount();
     }
-    
+
     public List<O2O_Activity> findAllByStatusExceptEnd(){
     	SQL sql = new SQL();
     	sql.SELECT(O2O_Activity.class).FROM(O2O_Activity.class)
@@ -125,7 +123,7 @@ public class O2OActivityDao {
     	.WHERE(O2O_Activity.T.STATUS, " <>? ",O2O_ActivityStatus.CLOSE.getLine().getKey());
     	return Query.sql(sql).queryList(O2O_Activity.class);
     }
-    
+
     public void upd(List<O2O_Activity> activities) {
     	BatchUtils.batchUpd(O2O_Activity.class, Arrays.asList(O2O_Activity.T.STATUS), Arrays.asList(O2O_Activity.T.PKEY), activities);
    	}

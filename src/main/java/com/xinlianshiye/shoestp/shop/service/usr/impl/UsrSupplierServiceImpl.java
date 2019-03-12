@@ -1,15 +1,14 @@
 package com.xinlianshiye.shoestp.shop.service.usr.impl;
 
-import org.json.JSONException;
-
 import com.xinlianshiye.shoestp.shop.service.usr.UsrSupplierService;
 import com.xinlianshiye.shoestp.shop.view.usr.SupplierView;
-
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.tb.FldLanguage.Language;
+import irille.shop.plt.PltCountry;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
+import org.json.JSONException;
 
 public class UsrSupplierServiceImpl implements UsrSupplierService {
 
@@ -18,7 +17,7 @@ public class UsrSupplierServiceImpl implements UsrSupplierService {
 		BeanQuery<UsrSupplier> query = Query.selectFrom(UsrSupplier.class);
 		query.WHERE(UsrSupplier.T.PKEY, "=?", supplierPkey);
 		UsrSupplier supplier = query.query();
-		
+
 		SupplierView view = new SupplierView();
 		view.setPkey(supplier.getPkey());
 		view.setName(supplier.getShowName());
