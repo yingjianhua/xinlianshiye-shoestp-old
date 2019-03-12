@@ -797,7 +797,7 @@ public class PdtProductDao {
                 UsrSupplier.T.ROLE,
                 UsrSupplier.T.LOGO
         ).SELECT(
-                T.PKEY, "supId"
+                UsrSupplier.T.PKEY, "supId"
         ).
             SELECT(
                 UsrSupplier.T.NAME, "supName"
