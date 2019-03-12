@@ -337,10 +337,10 @@
                         </el-form-item>
                         <el-form-item label="Extra Request" prop="extraRequest" class="request">
                             <el-checkbox-group v-model="form.extraRequest">
-                                <el-checkbox label="Price" name="price"></el-checkbox>
-                                <el-checkbox label="Inspection Certificate" name="inspection certificate"></el-checkbox>
-                                <el-checkbox label="Product Specifications" name="product specifications"></el-checkbox>
-                                <el-checkbox label="Company Profile" name="company profile"></el-checkbox>
+                                <el-checkbox label="price" name="price">Price</el-checkbox>
+                                <el-checkbox label="inspection certificate" name="inspection certificate">Inspection Certificate</el-checkbox>
+                                <el-checkbox label="product specifications" name="product specifications">Product Specifications</el-checkbox>
+                                <el-checkbox label="company profile" name="company profile">Company Profile</el-checkbox>
                             </el-checkbox-group>
                         </el-form-item>
                         <el-form-item label="Message:" prop="descriotion">
