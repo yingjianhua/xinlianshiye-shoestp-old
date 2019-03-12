@@ -2209,7 +2209,7 @@
 
 			//第一次点击type=4的私人展厅
 			alertPersonalShowTime(linkUrl, itemObj) {
-				this.$confirm('After the link click on start the countdown, you will have 48 hours to view this private business of goods throughout the hall.', '', {
+				this.$confirm('After the link click on start the countdown, you will have 72 hours to view this private business of goods throughout the hall.', '', {
 					confirmButtonText: 'Start',
 					cancelButtonText: 'Cancel',
 					customClass: "my-confirm-class",
@@ -2222,7 +2222,7 @@
 					// this.getChatInfo();
 
 					//本地自己计算个倒计时 - 获取数据时也会起 - 不刷新页面
-					var diffTime = 48*60*60*1000; //倒计时48小时
+					var diffTime = 72*60*60*1000; //倒计时72小时
 					this.$set(itemObj,'validDate',Date.now()+diffTime);
 					this.countDown(diffTime, itemObj);
 			},1000)
