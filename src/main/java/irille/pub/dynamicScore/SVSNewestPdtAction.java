@@ -4,20 +4,19 @@ import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Entity.O2O.O2O_Product;
 import irille.Entity.SVS.Enums.SVSGradeType;
 import irille.Entity.SVS.SVSInfo;
+import irille.Entity.SVS.SVSNewestPdt;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
 import irille.pub.svr.Env;
 import irille.pub.util.BatchUtils;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import text.SVSNewestPdt;
-
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
 public class SVSNewestPdtAction implements ISVSNewestPdtAction {
     private SVSNewestPdtService svsNewestPdtService = new SVSNewestPdtServiceImpl();

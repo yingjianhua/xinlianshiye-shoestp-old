@@ -16,7 +16,6 @@ import irille.view.RFQ.RFQPdtInfo;
 import irille.view.plt.CountryView;
 import irille.view.v3.rfq.PutRFQConsultView;
 import irille.view.v3.rfq.EditRFQConsultView;
-import irille.view.v3.rfq.PutRFQConsultView;
 import irille.view.v3.rfq.PutSupplierConsultView;
 import lombok.Setter;
 import org.apache.struts2.ServletActionContext;
