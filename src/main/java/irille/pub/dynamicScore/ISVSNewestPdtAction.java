@@ -81,13 +81,34 @@ public interface ISVSNewestPdtAction {
     List<Integer> getSupDiamondsAndGold();
 
     /**
+     * 获取已认证的所有商家
+     * 每个月20号进行计算级别
+     *
+     * @return
+     */
+    List<Integer> getSVSInfoSupIds();
+
+    /**
      * 获取SVS认证
      * 用于新增或修改SVS认证表中的动态分
      *
-     * @param supId
+     * @param supIds
      * @return
      */
-    SVSInfo getSVSInfo(Integer supId);
+    List<SVSInfo> getSVSInfos(String supIds);
 
+    /**
+     * SVS认证商家等级自动审核
+     *
+     * @return
+     */
+    void updSVSGrade();
 
+    /**
+     * 用于修改SVS认证表
+     *
+     * @param supIds:需要修改的采购商pkey
+     * @return
+     */
+    List<SVSInfo> getSVSInfos(List<Integer> supIds);
 }

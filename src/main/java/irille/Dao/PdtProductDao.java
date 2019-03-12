@@ -3,6 +3,7 @@ package irille.Dao;
 import static irille.core.sys.Sys.OYn.YES;
 import static java.util.stream.Collectors.toList;
 
+import irille.shop.usr.UsrSupplier.T;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLDecoder;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import irille.sellerAction.pdt.view.PrivatePdtView;
 import org.apache.logging.log4j.util.Strings;
 import org.json.JSONException;
 import org.slf4j.Logger;
@@ -1224,5 +1226,27 @@ public class PdtProductDao {
         } catch (SQLException e1) {
             e1.printStackTrace();
         }
+    }
+
+    public Page getPrivatePdts(Integer supId, Integer start, Integer limit) {
+        SQL sql = new SQL() {{
+            SELECT(PdtProduct.T.PKEY, PdtProduct.T.PICTURE, PdtProduct.T.NAME)
+                    .FROM(PdtProduct.class)
+                    .LEFT_JOIN(O2O_PrivateExpoPdt.class, O2O_PrivateExpoPdt.T.PDT_ID, PdtProduct.T.PKEY)
+                    .WHERE(PdtProduct.T.SUPPLIER, "=?", supId)
+                    .WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.PrivateExpo)
+                    .WHERE(O2O_PrivateExpoPdt.T.STATUS, "=?", O2O_PrivateExpoPdtStatus.ON)
+                    .WHERE(O2O_PrivateExpoPdt.T.VERIFY_STATUS, "=?", O2O_PrivateExpoPdtStatus.PASS);
+        }};
+        Integer count = Query.sql(sql).queryCount();
+        List<PrivatePdtView> list = Query.sql(sql.LIMIT(start, limit)).queryMaps().stream().map(o -> new PrivatePdtView() {
+            {
+                System.out.println(o);
+                setPkey((Integer) o.get(PdtProduct.T.PKEY.getFld().getCodeSqlField()));
+                setName((String) o.get(PdtProduct.T.NAME.getFld().getCodeSqlField()));
+                setImages((String) o.get(PdtProduct.T.PICTURE.getFld().getCodeSqlField()));
+            }
+        }).collect(toList());
+        return new Page(list, start, limit, count);
     }
 }

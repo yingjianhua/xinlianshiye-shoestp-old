@@ -35,8 +35,6 @@ public class SVSNewestPdtServiceImpl implements SVSNewestPdtService {
     public Date getMonth() {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.DAY_OF_MONTH, -30);
-        System.out.println(now.getTime());
-        System.out.println(Env.getTranBeginTime());
         return now.getTime();
     }
 
@@ -77,7 +75,7 @@ public class SVSNewestPdtServiceImpl implements SVSNewestPdtService {
         if (isOpenThirty(supId)) {
             sql.WHERE(SVSNewestPdt.T.ADDED_TIME, ">=?", getMonth());
         }
-        sql.WHERE(SVSNewestPdt.T.ADDED_TIME, "<?", Env.getTranBeginTime());
+        sql.WHERE(SVSNewestPdt.T.ADDED_TIME, "<?", new Date());
         return sql;
     }
 
@@ -114,7 +112,7 @@ public class SVSNewestPdtServiceImpl implements SVSNewestPdtService {
             if (isOpenThirty(supId)) {
                 WHERE(RFQConsultRelation.T.CREATE_DATE, ">=?", getMonth());
             }
-            WHERE(RFQConsultRelation.T.CREATE_DATE, "<?", Env.getTranBeginTime())
+            WHERE(RFQConsultRelation.T.CREATE_DATE, "<?", new Date())
                     .ORDER_BY(RFQConsultMessage.T.SEND_TIME, "DESC");
         }};
         Integer num = 0;
@@ -147,8 +145,8 @@ public class SVSNewestPdtServiceImpl implements SVSNewestPdtService {
                 if (isOpenThirty(supId)) {
                     WHERE(RFQConsultRelation.T.CREATE_DATE, ">=?", getMonth());
                 }
-                WHERE(RFQConsultRelation.T.CREATE_DATE, "<?", Env.getTranBeginTime());
-                WHERE(RFQConsultRelation.T.VALID_DATE, ">?", Env.getTranBeginTime());
+                WHERE(RFQConsultRelation.T.CREATE_DATE, "<?", new Date());
+                WHERE(RFQConsultRelation.T.VALID_DATE, ">?", new Date());
 
             }
         };
@@ -157,13 +155,18 @@ public class SVSNewestPdtServiceImpl implements SVSNewestPdtService {
 
     @Override
     public List<Integer> getSupDiamondsAndGold() {
+        String sql = " select supplier from s_v_s_info where status = " + SVSAuthenticationStatus.SUCCESS.getLine().getKey() + " OR ( grade =" + SVSGradeType.GOLD.getLine().getKey() + " OR grade = " + SVSGradeType.DIAMONDS.getLine().getKey() + ")";
+        List<Integer> supIds = Query.sql(sql).queryMaps().stream().map(o -> {
+            return ((Integer) o.get("supplier"));
+        }).collect(Collectors.toList());
+        return supIds;
+    }
+
+    @Override
+    public List<Integer> getSVSInfoSupIds() {
         SQL sql = new SQL() {{
             SELECT(SVSInfo.class)
                     .FROM(SVSInfo.class)
-                    .WHERE(SVSInfo.T.STATUS, "=?", SVSAuthenticationStatus.SUCCESS)
-                    .WHERE(SVSInfo.T.GRADE, "=?", SVSGradeType.GOLD)
-                    .OR()
-                    .WHERE(SVSInfo.T.GRADE, "=?", SVSGradeType.DIAMONDS)
                     .WHERE(SVSInfo.T.STATUS, "=?", SVSAuthenticationStatus.SUCCESS);
         }};
         List<Integer> supIds = Query.sql(sql).queryMaps().stream().map(o -> {
@@ -173,12 +176,13 @@ public class SVSNewestPdtServiceImpl implements SVSNewestPdtService {
     }
 
     @Override
-    public SQL getSVSInfo(Integer supId) {
-        SQL sql = new SQL(){{
-            SELECT(SVSInfo.class)
-                    .FROM(SVSInfo.class)
-                    .WHERE(SVSInfo.T.SUPPLIER,"=?",supId);
-        }};
+    public SQL getSVSInfos(String supIds) {
+        SQL sql = new SQL();
+        sql.SELECT(SVSInfo.class)
+                .FROM(SVSInfo.class)
+                .WHERE(SVSInfo.T.SUPPLIER, "in(" + supIds + ")");
         return sql;
     }
+
+
 }

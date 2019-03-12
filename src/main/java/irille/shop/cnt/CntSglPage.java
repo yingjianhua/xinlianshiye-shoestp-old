@@ -30,7 +30,7 @@ public class CntSglPage extends BeanInt<CntSglPage> { // implements ICmbRpRpt{
         TITLE(SYS.MUILTI_LANGUAGE, "标题"), // 多国语言
         PAGE_TYPE(CntSglPageCategory.fldOutKey()),
         BRIEF(SYS.SUMMARY__100_NULL, "简述"),
-        DESCRIP(SYS.MUILTI_LANGUAGE, "详细描述"), // 多国语言
+        DESCRIP(SYS.MUILTI_LANGUAGE, "详细描述", true), // 多国语言
         ENABLED(SYS.ENABLED),
         SORT(SYS.SORT__SHORT),
 //        LANG(SYS.STR__8, "语言标识"),

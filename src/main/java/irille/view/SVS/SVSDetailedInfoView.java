@@ -51,4 +51,6 @@ public class SVSDetailedInfoView implements BaseView {
 	private Date autTime; // 审核时间
 
 	private Integer count;// 申请认证次数
+
+	private String reason;// 失败原因
 }

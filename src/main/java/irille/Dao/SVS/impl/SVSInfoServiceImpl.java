@@ -97,6 +97,8 @@ public class SVSInfoServiceImpl implements SVSInfoService {
 				&& info.gtStatus() != SVSAuthenticationStatus.NoApplication)
 			view.setAutTime(info.getAuthenticationTime());
 		view.setCount(info.getApplicationCount());
+		if (info.gtStatus() == SVSAuthenticationStatus.FAIL)
+			view.setReason(info.getFailureReasons());
 		return view;
 
 	}

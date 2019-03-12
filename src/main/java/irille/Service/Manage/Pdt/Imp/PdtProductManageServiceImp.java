@@ -484,4 +484,9 @@ public class PdtProductManageServiceImp implements IPdtProductManageService {
     }
     return array;
   }
+
+    @Override
+    public Page getPrivatePdts(Integer supId, Integer start, Integer limit) {
+        return pdtProductDao.getPrivatePdts(supId, start, limit);
+    }
 }

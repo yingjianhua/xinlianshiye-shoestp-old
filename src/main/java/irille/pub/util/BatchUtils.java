@@ -92,7 +92,7 @@ public class BatchUtils {
 
 				sql.append(whereFlds.get(i).getFld().getCodeSqlField());
 				sql.append(" =? ");
-				if(i != flds.size()-1) {
+				if(i != whereFlds.size()-1) {
 					sql.append(",");
 				}
 				stack.push(whereFlds.get(i));
@@ -119,7 +119,6 @@ public class BatchUtils {
 	}
 
 	public static <T extends Bean> void batch(String sql,Stack<IEnumFld> flds,List<T> objs) {
-		System.err.println(sql);
 		PreparedStatement pt = null;
 		Connection connection = null;
 			try {

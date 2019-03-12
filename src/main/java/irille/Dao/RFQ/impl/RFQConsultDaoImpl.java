@@ -66,6 +66,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         }
         //询盘的审核状态
         query.WHERE(condition.getVerifyStatus() != null, RFQConsult.T.VERIFY_STATUS, "= ?", condition.getVerifyStatus());
+        query.ORDER_BY(RFQConsult.T.CREATE_TIME, "DESC");
         query.limit(start, limit);
         return new Page<>(toView(query.queryMaps()), start, limit, query.queryCount());
     }
@@ -292,7 +293,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                         RFQConsultRelation.T.FAVORITE,
                         RFQConsultRelation.T.CONSULT
                 )
-                .SELECT("count(1) as inquiry")
+                .SELECT(T.PKEY,"inquiry")
                 .FROM(RFQConsultRelation.class)
                 .WHERE(RFQConsultRelation.T.SUPPLIER_ID, "= ?")
         ;

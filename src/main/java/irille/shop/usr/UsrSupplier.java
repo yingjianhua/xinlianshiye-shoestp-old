@@ -46,7 +46,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   public enum T implements IEnumFld {//@formatter:off
     PKEY(TB.crtIntPkey()),
     ROLE(UsrSupplierRole.fldOutKey()),
-    LOGIN_NAME(SYS.CODE__40, "登录账号"),
+    LOGIN_NAME(SYS.STR__50, "登录账号"),
     PASSWORD(SYS.PASSWORD__NULL),
     STATUS(TB.crt(Usr.OStatus.DEFAULT)), //审核状态 createBy liyichao
     APPR_BY(SYS.APPR_BY_NULL),       //createBy liyichao	审核人

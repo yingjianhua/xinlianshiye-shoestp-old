@@ -471,4 +471,9 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
     json.put("success", true);
     writerOrExport(json);
   }
+
+    @Override
+    public void getPrivates() throws IOException {
+        write(pdtProductManage.getPrivatePdts(getSupplier().getPkey(), getStart(), getLimit()));
+    }
 }
