@@ -17,7 +17,11 @@ public class SuppliersView implements BaseView {
     private Byte storeStatus;//店铺状态
     private Byte status;//审核状态
 
-    private String contacts; //联系人
+
+    private Integer mainId; //注册ID
+    private String email; //注册邮箱
+    private String contacts; //注册联系人姓名
+    private String telphone; //注册联系人号码
 
     private String category;//供应商分类
     private Byte auth;//供应商认证
