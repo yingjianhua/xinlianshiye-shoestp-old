@@ -7,32 +7,37 @@ import irille.Entity.RFQ.Enums.RFQConsultVerifyStatus;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
+import irille.Entity.RFQ.RFQConsultRelation.T;
 import irille.core.sys.Sys;
-import irille.platform.rfq.view.*;
+import irille.platform.rfq.view.CountryView;
+import irille.platform.rfq.view.ProductView;
+import irille.platform.rfq.view.PurchaseView;
+import irille.platform.rfq.view.RFQConsultView;
+import irille.platform.rfq.view.RFQMessageView;
+import irille.platform.rfq.view.SupplierView;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
-import irille.pub.util.GetValue;
-import irille.pub.util.TranslateLanguage.TranslateBean;
-import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.sellerAction.rfq.view.RFQConsultMessageView;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
-import irille.shop.plt.Plt;
 import irille.shop.plt.PltCountry;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplierRole;
 import irille.view.Page;
-import org.junit.Test;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.junit.Test;
 
 public class RFQConsultDaoImpl implements RFQConsultDao {
 
