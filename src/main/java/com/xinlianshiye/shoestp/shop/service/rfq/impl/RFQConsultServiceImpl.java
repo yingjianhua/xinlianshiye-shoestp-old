@@ -40,7 +40,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 	@Override
 	public Page<RFQConsultView> pageMine(UsrPurchase purchase, Byte type, String keyword, Boolean unread, Integer start, Integer limit) {
 		BeanQuery<?> query = Query.SELECT(RFQConsult.T.PKEY);
-		query.SELECT(RFQConsult.T.TYPE);
+        query.SELECT(RFQConsult.T.STATUS);
 		query.SELECT(RFQConsult.T.TITLE);
 		query.SELECT(RFQConsult.T.IMAGE);
 		query.SELECT(RFQConsult.T.TYPE);
@@ -73,6 +73,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 			consult.setPkey(GetValue.get(map, RFQConsult.T.PKEY, Integer.class, null));
 			consult.setTitle(GetValue.get(map, RFQConsult.T.TITLE, String.class, null));
 			consult.setType(GetValue.get(map, RFQConsult.T.TYPE, Byte.class, null));
+            consult.setStatus(GetValue.get(map, RFQConsult.T.STATUS, Byte.class, null));
 			String image = GetValue.get(map, RFQConsult.T.IMAGE, String.class, null);
             consult.setImages(image == null ? new ArrayList<>() : Arrays.asList(image.split(",")));
   			consult.setRelations(listRelation(consult.getPkey()));
@@ -276,7 +277,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 			//已经有报价 不能添加额外信息
 			throw new WebMessageException(ReturnCode.service_state_error, "已有报价");
 		}
-		if(validDate.before(new Date())) {
+        if (validDate == null || validDate.before(new Date())) {
 			throw new WebMessageException(ReturnCode.valid_illegal, "有效时间不合法");
 		}
 		consult.setExtraDescription(information);
@@ -396,7 +397,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 				.LEFT_JOIN(RFQConsultRelation.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY)
 				.WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey())
 				.WHERE(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", false)
-				.GROUP_BY(RFQConsultRelation.T.PKEY))
+                .GROUP_BY(RFQConsult.T.TYPE))
 				.queryMaps()
 				.stream().forEach(map -> {
 			Integer count = GetValue.get(map, "count(1)", Integer.class, null);

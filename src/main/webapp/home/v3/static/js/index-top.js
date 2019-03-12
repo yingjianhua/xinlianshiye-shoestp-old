@@ -59,7 +59,7 @@ template: `<div>
                     <ul>
                         <li><a href="/home/usr_UsrPurchase_userIndex" target="_blank">My Shoestp <i class="el-icon-arrow-right"></i></a></li>
                         <li><a href="/home/usr_UsrMessages_center" target="_blank">RFQ List <i class="el-icon-arrow-right"></i></a></li>
-                        <li><a href="/home/usr_UsrConsult_listView" target="_blank">My Inquiry <i class="el-icon-arrow-right"></i></a></li>
+                        <li><a href="/home/usr_UsrMessages_center" target="_blank">My Inquiry <i class="el-icon-arrow-right"></i></a></li>
                         <li><a href="/home/usr_UsrPurchase_userIndex" target="_blank">My Account <i class="el-icon-arrow-right"></i></a></li>
                         <li style="font-size: 15px;font-weight: bold;"><a href="/home/usr_UsrSupplier_supplierEntry" target="_blank">我要开店 <i class="el-icon-arrow-right"></i></a></li>
                     </ul>
@@ -72,7 +72,7 @@ template: `<div>
                         <li class="flexSb user-name"><div class="ellipsis_1">Hi {{sysConfig.user.name}}</div><a href="/home/usr_UsrPurchase_signOut" >Sign out</a></li>
                         <li><a href="/home/usr_UsrPurchase_userIndex" target="_blank">My Shoestp <i class="el-icon-arrow-right"></i></a></li>
                         <li><a href="/home/usr_UsrMessages_center" target="_blank">RFQ List <i class="el-icon-arrow-right"></i></a></li>
-                        <li><a href="/home/usr_UsrConsult_listView" target="_blank">My Inquiry <i class="el-icon-arrow-right"></i></a></li>
+                        <li><a href="/home/usr_UsrMessages_center" target="_blank">My Inquiry <i class="el-icon-arrow-right"></i></a></li>
                         <li><a href="/home/usr_UsrPurchase_userIndex" target="_blank">My Account <i class="el-icon-arrow-right"></i></a></li>
                         <li style="font-size: 15px;font-weight: bold;"><a href="/home/usr_UsrSupplier_supplierEntry" target="_blank">我要开店 <i class="el-icon-arrow-right"></i></a></li>
                     </ul>

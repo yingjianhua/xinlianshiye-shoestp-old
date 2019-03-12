@@ -127,21 +127,6 @@ public class O2OActivityDao {
     }
     
     public void upd(List<O2O_Activity> activities) {
-    	for(int i=0;i<activities.size();i++) {
-    		O2O_Activity a = activities.get(i);
-    		String sql = " UPDATE " + O2O_Activity.TB.getCodeSqlTb() + " SET " + O2O_Activity.T.STATUS.getFld().getCodeSqlField() + " = " + a.getStatus() + " WHERE " + O2O_Activity.T.PKEY.getFld().getCodeSqlField() + " = " + a.getPkey() + ";";
-        	try {
-        		System.out.println(new SqlQuery(sql).executeUpdate());
-        	}catch(Exception e) {
-        		e.printStackTrace();
-        	}
-    		
-    	}
-    	
-    	try {
-			DbPool.getInstance().getConn().commit();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-    }
+    	BatchUtils.batchUpd(O2O_Activity.class, Arrays.asList(O2O_Activity.T.STATUS), Arrays.asList(O2O_Activity.T.PKEY), activities);
+   	}
 }
