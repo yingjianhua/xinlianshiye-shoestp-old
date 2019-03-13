@@ -11,16 +11,17 @@ import irille.view.RFQ.InquiryMessageView;
 
 @ImplementedBy(RFQConsultGroupRelationDaoImpl.class)
 public interface RFQConsultGroupRelationDao {
-	
-	void save(RFQConsultGroupRelation bean);
-	
-	RFQConsultGroupRelation findByConsult_PkeySupplier_Pkey(Integer consultPkey, Integer supplierPkey);
-	
-	Integer countByGroup_pkey(Integer groupId);
-	
-	void deleteByGroup_pkey(Integer groupId);
-	
-	List<RFQConsultGroupRelation> findAllByGroup_Pkey(Integer groupPkey);
 
-	Page<InquiryMessageView> message(Integer rec, boolean supplier, Integer start, Integer limit);
+  void save(RFQConsultGroupRelation bean);
+
+  RFQConsultGroupRelation findByConsult_PkeySupplier_Pkey(
+      Integer consultPkey, Integer supplierPkey);
+
+  Integer countByGroup_pkey(Integer groupId);
+
+  void deleteByGroup_pkey(Integer groupId);
+
+  List<RFQConsultGroupRelation> findAllByGroup_Pkey(Integer groupPkey);
+
+  Page<InquiryMessageView> message(Integer rec, boolean supplier, Integer start, Integer limit);
 }

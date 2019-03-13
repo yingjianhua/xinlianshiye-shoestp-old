@@ -9,31 +9,27 @@ import irille.pub.tb.Tb;
 import irille.pub.tb.TbBase;
 import irille.shop.plt.Plt_ConfPackage;
 
-
 public class Omt extends PackageBase {
-    private static final Log LOG = new Log(Omt.class);
-    public static final Omt INST= new Omt();
-    public static TbBase TB = new TbBase<Tb>(Omt.class,"平台管理");
-    private Omt(){
+  private static final Log LOG = new Log(Omt.class);
+  public static final Omt INST = new Omt();
+  public static TbBase TB = new TbBase<Tb>(Omt.class, "平台管理");
 
-    }
-    public static void main(String[] args) {
-        StartInitServlet.initBeanLoad();
-        PrvRoleAct.TB.getCode();
-        Plt_ConfPackage.INST.install();
-    }
-    @Override
-    public void initTbMsg() {
+  private Omt() {}
 
-    }
+  public static void main(String[] args) {
+    StartInitServlet.initBeanLoad();
+    PrvRoleAct.TB.getCode();
+    Plt_ConfPackage.INST.install();
+  }
 
-    @Override
-    public void initTranData() {
+  @Override
+  public void initTbMsg() {}
 
-    }
+  @Override
+  public void initTranData() {}
 
-    @Override
-    public SysModule initModule() {
-        return iuModule(Omt.TB, "plt-平台管理-700");
-    }
+  @Override
+  public SysModule initModule() {
+    return iuModule(Omt.TB, "plt-平台管理-700");
+  }
 }

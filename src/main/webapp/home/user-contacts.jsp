@@ -712,6 +712,6 @@
     })
 </script>
 
-</body> count
+</body> 
 
 </html>

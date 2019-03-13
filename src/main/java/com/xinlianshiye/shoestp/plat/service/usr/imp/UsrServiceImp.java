@@ -10,31 +10,31 @@ import com.xinlianshiye.shoestp.plat.service.usr.IUsrService;
 
 import irille.Entity.pm.PM.ORCVRType;
 
-public class UsrServiceImp implements IUsrService{
-	
-	private IUsrSupplierDao supplierDao = new UsrSupplierDaoImp();
-	
-	private IUsrPurchaseDao purchaseDao = new UsrPurchaseDaoImp();
-	
-	@Override
-	public List<String> getMailsBy(ORCVRType type){
-		List<String> mails = null;
-		if(type.equals(ORCVRType.SUPPLIER)) {
-			mails = supplierDao.getSupplierEmail();
-		}else if(type.equals(ORCVRType.PURCHASE)) {
-			mails = purchaseDao.getPurchaseEmail();
-		}
-		return mails;
-	}
-	
-	@Override
-	public Integer count(ORCVRType type) {
-		if(type.equals(ORCVRType.SUPPLIER)) {
-			return supplierDao.count();
-		}else if(type.equals(ORCVRType.PURCHASE)) {
-			return purchaseDao.count();
-		}else {
-			return 0;
-		}
-	}
+public class UsrServiceImp implements IUsrService {
+
+  private IUsrSupplierDao supplierDao = new UsrSupplierDaoImp();
+
+  private IUsrPurchaseDao purchaseDao = new UsrPurchaseDaoImp();
+
+  @Override
+  public List<String> getMailsBy(ORCVRType type) {
+    List<String> mails = null;
+    if (type.equals(ORCVRType.SUPPLIER)) {
+      mails = supplierDao.getSupplierEmail();
+    } else if (type.equals(ORCVRType.PURCHASE)) {
+      mails = purchaseDao.getPurchaseEmail();
+    }
+    return mails;
+  }
+
+  @Override
+  public Integer count(ORCVRType type) {
+    if (type.equals(ORCVRType.SUPPLIER)) {
+      return supplierDao.count();
+    } else if (type.equals(ORCVRType.PURCHASE)) {
+      return purchaseDao.count();
+    } else {
+      return 0;
+    }
+  }
 }

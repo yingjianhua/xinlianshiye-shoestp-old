@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <jsp:include page="/home/v3/header.jsp"></jsp:include>
 <script src="/html/exhibition/js/config.js"></script>
-<link rel="stylesheet" href="/html/exhibition/css/index.css">
+<link rel="stylesheet" href="/html/exhibition/css/lhl-index.css">
 <jsp:include page="/home/v3/nav.jsp"></jsp:include>
 <div id="lhl-garda">
 	<!--header banner-->
@@ -12,9 +12,9 @@
 			<p class="banner-title-address">Riva del Garda Fiere,<br>Riva del Garda,Italy</p>
 		</div>
 		<div class="banner-image">
-			<img src="images/ERS-banner.png" alt="" name="ERS-banner">
+			<img src="/html/exhibition/images/ERS-banner.png" alt="" name="ERS-banner">
 			<div class="banner-image-video">
-				<video src="images/Making%20of%20sport%20shoes.MP4" tabindex="-1" controlslist="nodownload" poster="images/ERS-video.png" controls preload="auto" name="video"></video>
+				<video src="/html/exhibition/images/Making%20of%20sport%20shoes.MP4" tabindex="-1" controlslist="nodownload" poster="/html/exhibition/images/ERS-video.png" controls preload="auto" name="video"></video>
 			</div>
 		</div>
 	</div>
@@ -41,15 +41,15 @@
 		<!--<img src="images/ERS-Gardabags.png" alt="" name="ERS-Gardabags">-->
 	</div>
 	<div class="garda-suppliersList">
-		<img src="images/ERS-suppliersList01.png" alt="" name="ERS-suppliersList">
-		<img src="images/ERS-suppliersList02.png" alt="" name="ERS-suppliersList">
-		<img src="images/ERS-suppliersList03.png" alt="" name="ERS-suppliersList">
-		<img src="images/ERS-suppliersList04.png" alt="" name="ERS-suppliersList">
+		<img src="/html/exhibition/images/ERS-suppliersList01.png" alt="" name="ERS-suppliersList">
+		<img src="/html/exhibition/images/ERS-suppliersList02.png" alt="" name="ERS-suppliersList">
+		<img src="/html/exhibition/images/ERS-suppliersList03.png" alt="" name="ERS-suppliersList">
+		<img src="/html/exhibition/images/ERS-suppliersList04.png" alt="" name="ERS-suppliersList">
 	</div>
 	<!--Information-->
 	<div class="garda-detail">
 		<div class="garda-detail_edition garda_center">
-			<img src="images/ERS-edition.png" alt="" name="ERS-edition">
+			<img src="/html/exhibition/images/ERS-edition.png" alt="" name="ERS-edition">
 			<!--<img src="images/ERS-shoesList.png" alt="" name="ERS-shoesList">-->
 		</div>
 		<!--Basic Information-->
@@ -120,9 +120,9 @@
 		<!--Selected Suppliers List-->
 		<div class="garda-suppliers garda_center">
 			<h2 class="garda_h2">Selected Suppliers List</h2>
-			<img src="images/ERS-suppliers01.png" alt="" name="ERS-suppliers">
-			<img src="images/ERS-suppliers02.png" alt="" name="ERS-suppliers">
-			<img src="images/ERS-suppliers03.png" alt="" name="ERS-suppliers">
+			<img src="/html/exhibition/images/ERS-suppliers01.png" alt="" name="ERS-suppliers">
+			<img src="/html/exhibition/images/ERS-suppliers02.png" alt="" name="ERS-suppliers">
+			<img src="/html/exhibition/images/ERS-suppliers03.png" alt="" name="ERS-suppliers">
 		</div>
 		<!--Buyers' Lounge-->
 		<div class="garda-lounge garda_center">
@@ -137,7 +137,7 @@
 					relax, develop contacts and network.
 				</p>
 			</div>
-			<img src="images/ERS-ourbooth.png" alt="" name="ERS-ourbooth">
+			<img src="/html/exhibition/images/ERS-ourbooth.png" alt="" name="ERS-ourbooth">
 		</div>
 		<!--Venue Map & Directions-->
 		<div class="garda-map garda_center">
@@ -146,7 +146,7 @@
 				<iframe src="http://www.google.cn/maps/embed?pb=!1m18!1m12!1m3!1d2776.6443163117033!2d10.838571916360769!3d45.898426379108294!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x478216c3cc7855f9%3A0x501438a33f51bd82!2sRiva+del+Garda+Fiere!5e0!3m2!1szh-CN!2scn!4v1548678441090"
 				        width="692" height="564" frameborder="0" style="border:0" allowfullscreen></iframe>
 				<div class="garda-map_image" @click="dialogTableGardabags = true">
-					<img src="images/ERS-Gardabags.png" name="gardabags" alt="">
+					<img src="/html/exhibition/images/ERS-Gardabags.png" name="gardabags" alt="">
 				</div>
 			</div>
 			<h4 class="garda-map_text">Riva del Garda Fiere Via Baltera, 38066 Riva del Garda TN, Italy</h4>
@@ -154,8 +154,9 @@
 	</div>
 
 	<el-dialog title="收货地址" :visible.sync="dialogTableGardabags">
-		<img src="images/ERS-Gardabags.png" name="dialog-Gardabags" alt="">
+		<img src="/html/exhibition/images/ERS-Gardabags.png" name="dialog-Gardabags" alt="">
 	</el-dialog>
+	    <index-bottom></index-bottom>
 </div>
 <script src="/home/v3/static/js/index-bottom.js"></script>
 <script src="/home/v3/static/js/index-top.js"></script>

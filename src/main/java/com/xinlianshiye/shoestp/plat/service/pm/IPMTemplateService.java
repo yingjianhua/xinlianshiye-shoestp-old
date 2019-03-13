@@ -11,14 +11,13 @@ import irille.Entity.pm.PMTemplate;
 
 @ImplementedBy(PMTemplateServiceImp.class)
 public interface IPMTemplateService {
-	void initTemp();
+  void initTemp();
 
-	List<TemplateView> list();
+  List<TemplateView> list();
 
-	void upd(TemplateView view);
+  void upd(TemplateView view);
 
-	void enable(TemplateView view);
+  void enable(TemplateView view);
 
-	Map<Integer, PMTemplate> getTemplateMap();
-
+  Map<Integer, PMTemplate> getTemplateMap();
 }

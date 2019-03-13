@@ -8,8 +8,7 @@ import com.xinlianshiye.shoestp.plat.dao.usr.imp.UsrPurchaseDaoImp;
 @ImplementedBy(UsrPurchaseDaoImp.class)
 public interface IUsrPurchaseDao {
 
-	List<String> getPurchaseEmail();
+  List<String> getPurchaseEmail();
 
-	Integer count();
-
+  Integer count();
 }

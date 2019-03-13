@@ -7,11 +7,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.apache.struts2.ServletActionContext;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import irille.Service.Manage.Pdt.IPdtProductManageService;
 import irille.Service.Pdt.Imp.PdtproductPageselect;
 import irille.core.sys.Sys;
@@ -26,25 +21,23 @@ import irille.pub.tb.Tb;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.pdt.inf.IPdtProductAction;
-import irille.shop.pdt.Pdt;
-import irille.shop.pdt.PdtProduct;
-import irille.shop.pdt.PdtProductDAO;
-import irille.shop.pdt.PdtSpec;
-import irille.shop.pdt.PdtSpecDAO;
+import irille.shop.pdt.*;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltFreightSeller;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.struts2.ServletActionContext;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtProductAction {
 
   private static final long serialVersionUID = 1L;
   private List<PdtSpec> _SpecListLine = new ArrayList<PdtSpec>();
 
-  @Inject
-  private IPdtProductManageService pdtProductManage;
-  @Inject
-  private PdtproductPageselect pdtpageSelect;
+  @Inject private IPdtProductManageService pdtProductManage;
+  @Inject private PdtproductPageselect pdtpageSelect;
 
   public String pdtProductList() throws Exception {
     setResult("Product-List.html");
@@ -59,9 +52,9 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
     this._SpecListLine = _SpecListLine;
   }
 
-
   /**
    * @Description: VUe 发布商品
+   *
    * @author lijie@shoestp.cn
    * @date 2018/8/24 10:19
    */
@@ -80,11 +73,11 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
       default:
         write();
     }
-
   }
 
   /**
    * @Description: 获取根据id获取商品
+   *
    * @author lijie@shoestp.cn
    * @date 2018/8/24 16:35
    */
@@ -92,9 +85,7 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
     try {
       write(
           pdtpageSelect.sellerGetProductById(
-              Integer.valueOf(String.valueOf(getId())), getSupplier().getPkey()
-          )
-      );
+              Integer.valueOf(String.valueOf(getId())), getSupplier().getPkey()));
       return;
     } catch (JSONException e) {
       e.printStackTrace();
@@ -104,8 +95,9 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
 
   public void copyProduct() {
     try {
-      write(pdtpageSelect.sellerCopyProductById(Integer.valueOf(String.valueOf(getId())),
-          getSupplier().getPkey()));
+      write(
+          pdtpageSelect.sellerCopyProductById(
+              Integer.valueOf(String.valueOf(getId())), getSupplier().getPkey()));
       return;
     } catch (JSONException e) {
       e.printStackTrace();
@@ -119,14 +111,11 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
     }
   }
 
-  /**
-   * 生成递增编号
-   */
+  /** 生成递增编号 */
   public void getSeqnumInt() throws Exception {
     JSONObject json = new JSONObject();
     json.put("CODE", SysSeqDAO.getSeqnumInt(PdtProduct.TB));
     writerOrExport(json);
-
   }
 
   /**
@@ -137,8 +126,11 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
   public String crtFilter() throws JSONException {
     String sql = "";
     if (Str.isEmpty(getFilter())) {
-      sql += " AND " + PltFreightSeller.T.SUPPLIER.getFld().getCodeSqlField() + "=" + SellerAction
-          .getSupplier().getPkey();
+      sql +=
+          " AND "
+              + PltFreightSeller.T.SUPPLIER.getFld().getCodeSqlField()
+              + "="
+              + SellerAction.getSupplier().getPkey();
       return crtFilterAll() + sql + orderByAsc();
     }
     JSONArray ja = new JSONArray(getFilter());
@@ -147,8 +139,11 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
       JSONObject json = ja.getJSONObject(i);
       String fldName = json.getString(QUERY_PROPERTY);
       String param = json.getString(QUERY_VALUE);
-      sql += " AND " + PltFreightSeller.T.SUPPLIER.getFld().getCodeSqlField() + "=" + SellerAction
-          .getSupplier().getPkey();
+      sql +=
+          " AND "
+              + PltFreightSeller.T.SUPPLIER.getFld().getCodeSqlField()
+              + "="
+              + SellerAction.getSupplier().getPkey();
       if (Str.isEmpty(param)) {
         continue;
       }
@@ -165,9 +160,9 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
   }
 
   private String name;
-  //分类
+  // 分类
   private int cat;
-  //产品编号
+  // 产品编号
   private String number;
 
   public int getCat() {
@@ -203,26 +198,25 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
   }
 
   private Integer search;
-  @Setter
-  @Getter
-  private String queryType;
-  @Setter
-  @Getter
-  private String data;
+  @Setter @Getter private String queryType;
+  @Setter @Getter private String data;
 
-  /**
-   * 根据登陆id查询产品
-   */
+  /** 根据登陆id查询产品 */
   public void layuiList() throws Exception {
     if (getSupplier() == null) {
       writeTimeout();
     } else {
-      write(pdtProductManage
-          .getProductList(getName(), getNumber(), getSupplier().getPkey(), getCat(), getStart(),
-              getLimit(), getSearch()));
+      write(
+          pdtProductManage.getProductList(
+              getName(),
+              getNumber(),
+              getSupplier().getPkey(),
+              getCat(),
+              getStart(),
+              getLimit(),
+              getSearch()));
     }
   }
-
 
   /**
    * 获取所有普通商品
@@ -231,13 +225,25 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
    */
   public void getAllPdt() throws Exception {
     JSONObject json = new JSONObject();
-    List<PdtProduct> pdtList = BeanBase.list(PdtProduct.class,
-        PdtProduct.T.SUPPLIER.getFld().getCodeSqlField() + " = " + SellerAction.getSupplier()
-            .getPkey() + " AND " + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField() + " <> "
-            + Pdt.OProductType.GROUP.getLine().getKey() + " AND " + PdtProduct.T.STATE.getFld()
-            .getCodeSqlField() + " = " + Pdt.OState.ON.getLine().getKey() + " AND "
-            + PdtProduct.T.IS_VERIFY.getFld().getCodeSqlField() + " = " + Sys.OYn.YES.getLine()
-            .getKey(), false);
+    List<PdtProduct> pdtList =
+        BeanBase.list(
+            PdtProduct.class,
+            PdtProduct.T.SUPPLIER.getFld().getCodeSqlField()
+                + " = "
+                + SellerAction.getSupplier().getPkey()
+                + " AND "
+                + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()
+                + " <> "
+                + Pdt.OProductType.GROUP.getLine().getKey()
+                + " AND "
+                + PdtProduct.T.STATE.getFld().getCodeSqlField()
+                + " = "
+                + Pdt.OState.ON.getLine().getKey()
+                + " AND "
+                + PdtProduct.T.IS_VERIFY.getFld().getCodeSqlField()
+                + " = "
+                + Sys.OYn.YES.getLine().getKey(),
+            false);
     JSONArray pdtArray = new JSONArray();
     for (PdtProduct pdt : pdtList) {
       pdtArray.put(crtJsonByBean(pdt));
@@ -246,7 +252,6 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
     json.put(STORE_TOTAL, pdtList.size());
     writerOrExport(json);
   }
-
 
   public void list() throws Exception {
     JSONObject json = new JSONObject();
@@ -261,8 +266,8 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
     List<PdtProduct> list = page.getList();
     JSONObject lineJson = null;
     for (PdtProduct line : list) {
-			/*line.setName(line.getName(PltConfigDAO.supplierLanguage(getSupplier())));
-			System.out.println(line.getName());*/
+      /*line.setName(line.getName(PltConfigDAO.supplierLanguage(getSupplier())));
+      System.out.println(line.getName());*/
       line.setDescription(line.getDescription(PltConfigDAO.supplierLanguage(getSupplier())));
     }
     ja = new JSONArray(list, false);
@@ -271,10 +276,7 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
     writerOrExport(json);
   }
 
-
-  /**
-   * 商家修改
-   */
+  /** 商家修改 */
   public void usrUpdRun() throws Exception {
     List<PdtSpec> specListLine = getSpecListLine();
     PdtSpecDAO.upd specUpd = new PdtSpecDAO.upd();
@@ -283,31 +285,35 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
         PdtSpec load = PdtSpec.load(PdtSpec.class, specListLine.get(i).getPkey());
         if (!load.getKeyName(PltConfigDAO.supplierLanguage(getSupplier()))
             .equals(specListLine.get(i).getKeyName())) {
-          specListLine.get(i).setKeyName(
-              translateUtil.getMultiLanguageTrans(specListLine.get(i).getKeyName(), true));
+          specListLine
+              .get(i)
+              .setKeyName(
+                  translateUtil.getMultiLanguageTrans(specListLine.get(i).getKeyName(), true));
           specListLine.get(i).setMarkup(BigDecimal.ZERO);
           specListLine.get(i).upd();
         } else {
           specListLine.get(i).setMarkup(BigDecimal.ZERO);
-          //specListLine.get(i).upd();
+          // specListLine.get(i).upd();
           specUpd.setB(specListLine.get(i));
           specUpd.commit();
         }
       } else {
         if (i == 0) {
           for (int p = 0; p < specListLine.size(); p++) {
-            specListLine.get(p).setKeyName(
-                translateUtil.getMultiLanguageTrans(specListLine.get(p).getKeyName(), true));
+            specListLine
+                .get(p)
+                .setKeyName(
+                    translateUtil.getMultiLanguageTrans(specListLine.get(p).getKeyName(), true));
             specListLine.get(p).setMarkup(BigDecimal.ZERO);
           }
-          //删除后插入规格
+          // 删除后插入规格
           PdtProduct gtProduct = specListLine.get(0).gtProduct();
-          List<PdtSpec> list = BeanBase
-              .list(PdtSpec.class, PdtSpec.T.PRODUCT + " = " + gtProduct.getPkey(), false);
+          List<PdtSpec> list =
+              BeanBase.list(PdtSpec.class, PdtSpec.T.PRODUCT + " = " + gtProduct.getPkey(), false);
           for (int j = 0; j < list.size(); j++) {
             list.get(j).del();
           }
-          //新增
+          // 新增
           Idu.insLine(gtProduct, specListLine, PdtSpec.T.PRODUCT.getFld());
           break;
         }
@@ -336,7 +342,7 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
       updBefore();
       PdtProductDAO.Upd1 upd = new PdtProductDAO.Upd1();
       upd.setB(getBean());
-      //upd.setLines(specListLine);
+      // upd.setLines(specListLine);
       upd.commit();
       updAfter();
       json.put("success", true);
@@ -344,19 +350,19 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
       PdtProductDAO.Upd2 upd = new PdtProductDAO.Upd2();
       _bean = subPro(_bean);
       upd.setB(getBean());
-      //upd.setLines(specListLine);
+      // upd.setLines(specListLine);
       upd.commit();
       updAfter();
       json.put("success", true);
     }
-		/*setBean(_bean);
-		updBefore();
-		PdtProductDAO.Upd1 upd = new PdtProductDAO.Upd1();
-		upd.setB(getBean());
-		//upd.setLines(specListLine);
-		upd.commit();
-		updAfter();
-		json.put("success", true);*/
+    /*setBean(_bean);
+    updBefore();
+    PdtProductDAO.Upd1 upd = new PdtProductDAO.Upd1();
+    upd.setB(getBean());
+    //upd.setLines(specListLine);
+    upd.commit();
+    updAfter();
+    json.put("success", true);*/
     writerOrExport(json);
   }
 
@@ -396,7 +402,7 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
     PdtProductDAO.DelDetails del = new PdtProductDAO.DelDetails();
     del.setBKey(getPkey());
     del.commit();
-//		writeSuccess(getBean());
+    //		writeSuccess(getBean());
     json.put("success", true);
     writerOrExport(json);
   }
@@ -407,38 +413,30 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
     return null;
   }
 
-  @Getter
-  @Setter
-  private String productName;
-  @Getter
-  @Setter
-  private String productNum;
-  @Getter
-  @Setter
-  private Integer status;
-  @Getter
-  @Setter
-  private Integer type;
+  @Getter @Setter private String productName;
+  @Getter @Setter private String productNum;
+  @Getter @Setter private Integer status;
+  @Getter @Setter private Integer type;
 
-  /**
-   * @Description: 获取仓库列表//获取回收站列表 *@date 2019/1/28 13:45 *@anthor zjl
-   */
+  /** @Description: 获取仓库列表//获取回收站列表 *@date 2019/1/28 13:45 *@anthor zjl */
   public void getWarehouse() throws IOException {
-    write(pdtProductManage
-        .getWarehouse(getSupplier().getPkey(), productName, productNum, status, getStart(),
-            getLimit(), type));
+    write(
+        pdtProductManage.getWarehouse(
+            getSupplier().getPkey(),
+            productName,
+            productNum,
+            status,
+            getStart(),
+            getLimit(),
+            type));
   }
 
-  /**
-   * @Description: 获取商品分类 *@date 2019/1/28 14:53 *@anthor zjl
-   */
+  /** @Description: 获取商品分类 *@date 2019/1/28 14:53 *@anthor zjl */
   public void getProductCates() throws IOException {
     ServletActionContext.getResponse().getWriter().print(pdtProductManage.getProductCates());
   }
 
-  /**
-   * @Description: 还原 *@date 2019/1/28 14:53 *@anthor zjl
-   */
+  /** @Description: 还原 *@date 2019/1/28 14:53 *@anthor zjl */
   public void reduction() throws Exception {
     JSONObject json = new JSONObject();
     PdtProductDAO.Reduction del = new PdtProductDAO.Reduction();
@@ -448,9 +446,7 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
     writerOrExport(json);
   }
 
-  /**
-   * @Description: 删除 *@date 2019/1/28 14:53 *@anthor zjl
-   */
+  /** @Description: 删除 *@date 2019/1/28 14:53 *@anthor zjl */
   public void remove() throws Exception {
     JSONObject json = new JSONObject();
     PdtProductDAO.Remove del = new PdtProductDAO.Remove();
@@ -460,9 +456,7 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
     writerOrExport(json);
   }
 
-  /**
-   * @Description: 删除 *@date 2019/1/28 14:53 *@anthor zjl
-   */
+  /** @Description: 删除 *@date 2019/1/28 14:53 *@anthor zjl */
   public void obtaineds() throws Exception {
     JSONObject json = new JSONObject();
     PdtProductDAO.Obtained del = new PdtProductDAO.Obtained();
@@ -472,8 +466,8 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
     writerOrExport(json);
   }
 
-    @Override
-    public void getPrivates() throws IOException {
-        write(pdtProductManage.getPrivatePdts(getSupplier().getPkey(), getStart(), getLimit()));
-    }
+  @Override
+  public void getPrivates() throws IOException {
+    write(pdtProductManage.getPrivatePdts(getSupplier().getPkey(), getStart(), getLimit()));
+  }
 }

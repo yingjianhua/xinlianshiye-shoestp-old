@@ -1,57 +1,58 @@
 package irille.view.plt;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import irille.pub.i18n.I18NFieldSerializer;
 import irille.view.BaseView;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 public class CountryView implements BaseView {
 
-    private int id;
-    @JsonSerialize(using = I18NFieldSerializer.class)
-    private String name;
-    private String shortName;
-    private String flag;
-    private boolean isDefault;
+  private int id;
 
-    public int getId() {
-        return id;
-    }
+  @JsonSerialize(using = I18NFieldSerializer.class)
+  private String name;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  private String shortName;
+  private String flag;
+  private boolean isDefault;
 
-    public String getName() {
-        return name;
-    }
+  public int getId() {
+    return id;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setId(int id) {
+    this.id = id;
+  }
 
-    public String getShortName() {
-        return shortName;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public String getFlag() {
-        return flag;
-    }
+  public String getShortName() {
+    return shortName;
+  }
 
-    public void setFlag(String flag) {
-        this.flag = flag;
-    }
+  public void setShortName(String shortName) {
+    this.shortName = shortName;
+  }
 
-    public boolean getIsDefault() {
-        return isDefault;
-    }
+  public String getFlag() {
+    return flag;
+  }
 
-    public void setIsDefault(boolean isDefault) {
-        this.isDefault = isDefault;
-    }
+  public void setFlag(String flag) {
+    this.flag = flag;
+  }
 
+  public boolean getIsDefault() {
+    return isDefault;
+  }
+
+  public void setIsDefault(boolean isDefault) {
+    this.isDefault = isDefault;
+  }
 }

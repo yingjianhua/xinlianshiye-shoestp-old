@@ -6,8 +6,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProvincesView implements BaseView{
-     
-	private Integer id;
-	private String name;
+public class ProvincesView implements BaseView {
+
+  private Integer id;
+  private String name;
 }
