@@ -131,10 +131,10 @@
             </div>
             <el-form ref="form" :model="form" :rules="rules" label-width="220px" class="quotation-form">
                 <el-form-item label="Product Name :" prop="title">
-                    <el-input v-model="form.title" placeholder="Please Enter The Product Name."></el-input>
+                    <el-input v-model.trim="form.title" placeholder="Please Enter The Product Name."></el-input>
                 </el-form-item>
                 <el-form-item label="Product Detailed Specification :" prop="descriotion">
-                    <el-input type="textarea" :rows="6" v-model="form.descriotion"
+                    <el-input type="textarea" :rows="6" v-model.trim="form.descriotion"
                               placeholder="Please enter your Proct/Service Details"></el-input>
                 </el-form-item>
                 <el-form-item label="Estimates Order Quantity :" prop="quantity">
