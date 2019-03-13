@@ -1,6 +1,13 @@
 package irille.homeAction.prm;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.*;
+
+import javax.inject.Inject;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import irille.Service.Odr.IOrderService;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
@@ -30,11 +37,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import javax.inject.Inject;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.*;
 
 public class PrmGroupPurchaseAction extends HomeAction<PrmGroupPurchase> {
 

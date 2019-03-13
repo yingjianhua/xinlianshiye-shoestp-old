@@ -8,7 +8,7 @@ import irille.shop.usr.UsrPurchase;
 @ImplementedBy(UsrPurchaseDaoImpl.class)
 public interface UsrPurchaseDao {
 
-	void save(UsrPurchase purchase);
-	
-	UsrPurchase findByLoginNameOrEmail(String loginName);
+  void save(UsrPurchase purchase);
+
+  UsrPurchase findByLoginNameOrEmail(String loginName);
 }

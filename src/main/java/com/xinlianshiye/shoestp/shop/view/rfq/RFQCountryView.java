@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class RFQCountryView implements BaseView {
 
-	private Integer pkey;
-	private String shortName;
-	private String flag;
+  private Integer pkey;
+  private String shortName;
+  private String flag;
 }

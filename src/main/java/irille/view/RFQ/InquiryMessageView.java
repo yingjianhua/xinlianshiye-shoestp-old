@@ -7,9 +7,8 @@ import lombok.Data;
 
 @Data
 public class InquiryMessageView implements BaseView {
-	private Integer pkey;
-	private String title;
-	private Integer read;
-	private Date time;
-	
+  private Integer pkey;
+  private String title;
+  private Integer read;
+  private Date time;
 }

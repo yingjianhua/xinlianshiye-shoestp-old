@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class PrivatePdtView implements BaseView {
-    private Integer pkey;
-    private String name;
-    private String images;
+  private Integer pkey;
+  private String name;
+  private String images;
 }

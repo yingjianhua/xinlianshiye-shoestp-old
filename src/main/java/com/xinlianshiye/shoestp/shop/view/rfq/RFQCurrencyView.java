@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 public class RFQCurrencyView implements BaseView {
 
-	private Integer pkey;
-	private String shortName;
+  private Integer pkey;
+  private String shortName;
 }

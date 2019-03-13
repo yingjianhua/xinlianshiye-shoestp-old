@@ -172,7 +172,7 @@
 						<el-collapse :value="(inquiryList[0] && inquiryList[0].relations && inquiryList[0].relations.length)?0:-1" v-if="inquiryList.length">
 							<el-collapse-item :name="inquiryIndex"
 											  v-for="(inquiry,inquiryIndex) in inquiryList"
-                                              v-if="(inquiry==1 || !inquiry.isDeleteInLocal )"
+                                              v-if="(inquiry.type==1 || !inquiry.isDeleteInLocal )"
 											  :key="inquiry.pkey">
 								<!-- 询盘列表头部 -->
 								<template slot="title">
@@ -286,7 +286,7 @@
 														:data-quotation-pkey="relation.quotation.pkey"
 														:data-inquiry-index="inquiryIndex"
 														:data-relations-index="relationsIndex"
-														@click="closeInquiry">Delete</li>
+														@click="deleteInquiry">Delete</li>
 													<li class="operate-item"
 														:data-inquiry-index="inquiryIndex"
 														:data-relations-index="relationsIndex"
@@ -755,7 +755,7 @@
 										v-for="(msg,i) in chatMsgList"
 										:key="msg.sendTime">
 										<!-- 有头像显示头像，没有头像显示首字母 -->
-										<template v-if="msg.p2S">
+										<template v-if="!msg.p2S">
 											<img class="pic-head"
 												 v-if="chatMsgObj.another.avatar"
 												 :src="image(chatMsgObj.another.avatar)">
@@ -784,7 +784,7 @@
 												<el-badge is-dot :hidden="!(!msg.p2S && !msg.hadRead) || isAllRead">
 													<div class="content-msg"
 														 :class="{showAlert:msg.type==4 && !msg.personalShow.validDate}"
-														 @click="(msg.type==4 && !msg.personalShow.validDate)?alertPersonalShowTime(msg.personalShow.linkUrl):''"
+														 @click="(msg.type==4 && !msg.personalShow.validDate)?alertPersonalShowTime(msg.personalShow.linkUrl,msg.personalShow):''"
 														 v-html="msg.content">
 													</div>
 												</el-badge>
@@ -876,10 +876,13 @@
 							<div class="content-box" v-if="inquiryDetail.images && inquiryDetail.images.length > 0">
 								<h3 class="content-header">Attach files:</h3>
 								<ul class="content attach-file-list">
-									<li class="attach-file-item" v-for="picUrl in inquiryDetail.images">
-										<img :src="image(picUrl)" alt="product's pic" class="inquiry-pic">
+									<li class="attach-file-item" v-for="picUrl in inquiryDetail.images" v-if="picUrl">
+										<img v-if="isImg(picUrl)" :src="image(picUrl)" alt="product's pic" class="inquiry-pic">
 										<!-- <p class="ellipsis_1">goods thiods things</p> -->
 									</li>
+									<%--<li class="attach-file-item" v-for="picUrl in inquiryDetail.images" v-if="picUrl">--%>
+										<%--<a href="">else</a>--%>
+									<%--</li>--%>
 								</ul>
 							</div>
 						</div>
@@ -968,11 +971,16 @@
 									</li>
 									<li class="item" v-if="quotationDetail.throwaways && quotationDetail.throwaways.length">
 										<div class="title">Company product book:</div>
-										<div class="text">
-
-											<img class="company-book-item"  alt="product's book"
-												 :src="image(productBook.url)"
-												 v-for="productBook in quotationDetail.throwaways">
+										<div class="text books">
+											<template
+												v-for="productBook in quotationDetail.throwaways">
+												<img class="company-book-item"  alt="product's book"
+													 v-if="isImg(productBook.url)"
+													 :src="image(productBook.url)">
+												<div v-else>
+													<a :href="image(productBook.url)" class="book-link">《{{productBook.name}}》</a>
+												</div>
+											</template>
 										</div>
 									</li>
 								</ul>
@@ -1508,6 +1516,8 @@
 
 			//获取询盘详情
 			getInquiryDetail(){
+				//先清空之前的数据
+				this.inquiryDetail={};
 				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
 				this.consultPkey = this.isFromContactList?this.consultPkey:this.inquiryList[this.nowInquiryIndex].pkey;
 				axios.get('/home/rfq_RFQConsult_detail', {
@@ -1538,9 +1548,29 @@
 			});
 			},
 
+			// 判断传回来的数据是否是图片
+			isImg(addrUrl){
+				// 获取地址后缀
+				let imgSuffix = addrUrl.substring(addrUrl.lastIndexOf(".") + 1, addrUrl.length);
+				// 图片后缀数组 - 判断后缀是否在该数组内
+				let imgSuffixArr = ["BMP","JPG","JPEG","PNG","GIF"];
+
+				if(imgSuffix){
+					imgSuffix = imgSuffix.toUpperCase();
+					if( imgSuffixArr.indexOf(imgSuffix) != -1 ){
+						return true
+					}
+					return false;
+				}
+				return false;
+			},
+
 			//获取功能供应商详情
 			getSupplierDetail(){
 				console.log("getSupplierDetail")
+				//先清空之前的数据
+				this.supplierDetail={};
+
 				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
 				this.supplierPkey = this.isFromContactList?this.supplierPkey:this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].supplier.pkey;
 				axios.get('/home/usr_UsrSupplier_getDetail', {
@@ -1720,7 +1750,7 @@
 			},
 
 			//删除询盘
-			closeInquiry(e){
+			deleteInquiry(e){
 				var inquiryIndex = e.currentTarget.dataset.inquiryIndex;
 				var relationsIndex = e.currentTarget.dataset.relationsIndex;
 				var quotationPkey = e.currentTarget.dataset.quotationPkey;
@@ -1746,7 +1776,7 @@
 				//如果出错，下面代码先注释吧
 				// 本地显示时 静态删除 - 不请求后台刷新
                 //如果删除的是当前对话框or当前显示的RFQ详情，delete后刷新页面
-                if(this.nowInquiryIndex == inquiryIndex && nowSupplierIndex == relationsIndex){
+                if(this.nowInquiryIndex == inquiryIndex && this.nowSupplierIndex == relationsIndex){
                     this.resetInquiryOptions();
                     this.getInquiryList();
                 // 否则本地显示时 静态删除 - 不请求后台刷新
@@ -1795,10 +1825,16 @@
 			contactSupplier(e){
 				console.log("contactSupplier")
 				// 显示顶部show more信息
-				this.timeoutTimer = setTimeout(()=>{
-					this.isShowMore = true;
 				clearTimeout(this.timeoutTimer);
-			}, this.showChatBox?200:1000)
+				this.timeoutTimer = setTimeout(()=>{
+					// 聊天信息大于8条时，不再自动显示show more
+					if( this.chatMsgList.length < 8 ){
+						this.isShowMore = true;
+					}else{
+						this.isAllRead = true;
+					}
+					clearTimeout(this.timeoutTimer);
+				}, this.showChatBox?200:1000)
 
 				this.isScale = true;
 				this.showChatBox = true;
@@ -2103,6 +2139,10 @@
 				maxtime = maxtime/1000;
 				clearInterval( timeObj.timer );
 
+				var formatNumber = function (n) {
+					n = n.toString();
+					return n[1] ? n : '0' + n;
+				};
 				timeObj.timer = setInterval(()=> {
 					if( !!maxtime ){
 					var day = Math.floor(maxtime / 86400),
@@ -2111,7 +2151,7 @@
 							seconds = Math.floor(maxtime%60),
 							msg = "距离结束还有"+(day*24+hour)+"时"+minutes+"分"+seconds+"秒";
 					// timeObj.countDown = (day*24+hour) + ":" +minutes+":"+seconds;
-					this.$set(timeObj,"countDown",(day*24+hour) + ":" +minutes+":"+seconds)
+					this.$set(timeObj,"countDown",( formatNumber(day*24+hour) ) + ":" + formatNumber(minutes) +":"+ formatNumber(seconds) );
 					// fn( msg );
 					--maxtime;
 				} else {
@@ -2171,8 +2211,8 @@
 			},
 
 			//第一次点击type=4的私人展厅
-			alertPersonalShowTime(linkUrl) {
-				this.$confirm('After the link click on start the countdown, you will have 48 hours to view this private business of goods throughout the hall.', '', {
+			alertPersonalShowTime(linkUrl, itemObj) {
+				this.$confirm('After the link click on start the countdown, you will have 72 hours to view this private business of goods throughout the hall.', '', {
 					confirmButtonText: 'Start',
 					cancelButtonText: 'Cancel',
 					customClass: "my-confirm-class",
@@ -2182,7 +2222,12 @@
 					window.open(linkUrl);
 				setTimeout(()=>{
 					//获取chat列表 - 此时获取数据时将返回倒计时
-					this.getChatInfo();
+					// this.getChatInfo();
+
+					//本地自己计算个倒计时 - 获取数据时也会起 - 不刷新页面
+					var diffTime = 72*60*60*1000; //倒计时72小时
+					this.$set(itemObj,'validDate',Date.now()+diffTime);
+					this.countDown(diffTime, itemObj);
 			},1000)
 			});
 			},

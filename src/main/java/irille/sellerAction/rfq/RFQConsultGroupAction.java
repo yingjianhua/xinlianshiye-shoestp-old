@@ -14,34 +14,33 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RFQConsultGroupAction extends SellerAction<RFQConsultGroup> implements IRFQConsultGroupAction {
+public class RFQConsultGroupAction extends SellerAction<RFQConsultGroup>
+    implements IRFQConsultGroupAction {
 
-	private static final long serialVersionUID = 1L;
-	
-	@Inject
-	private RFQConsultGroupService rFQConsultGroupService;
+  private static final long serialVersionUID = 1L;
 
-	private RFQConsultGroupView group;
-	
-	@Override
-	public void ins() throws IOException {
-		write(rFQConsultGroupService.create(getSupplier(), group));
-	}
+  @Inject private RFQConsultGroupService rFQConsultGroupService;
 
-	@Override
-	public void upd() throws IOException {
-		write(rFQConsultGroupService.edit(getSupplier(), group));
-	}
+  private RFQConsultGroupView group;
 
-	@Override
-	public void del() throws IOException {
-		rFQConsultGroupService.delete(getSupplier(), group);
-		write();
-	}
-	
-	@Override
-	public void list() throws IOException {
-		write(rFQConsultGroupService.list(getSupplier()));
-	}
+  @Override
+  public void ins() throws IOException {
+    write(rFQConsultGroupService.create(getSupplier(), group));
+  }
 
+  @Override
+  public void upd() throws IOException {
+    write(rFQConsultGroupService.edit(getSupplier(), group));
+  }
+
+  @Override
+  public void del() throws IOException {
+    rFQConsultGroupService.delete(getSupplier(), group);
+    write();
+  }
+
+  @Override
+  public void list() throws IOException {
+    write(rFQConsultGroupService.list(getSupplier()));
+  }
 }
