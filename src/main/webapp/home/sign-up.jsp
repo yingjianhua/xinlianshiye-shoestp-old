@@ -32,7 +32,7 @@
     <link rel="stylesheet" href="./static/css/layer.css" type="text/css">
     <script type="text/javascript">
         $(document).ready(function () {
-            user_obj.sign_in_init(undefined, "<s:if test="jumpUrl==null">/home/usr_UsrPurchase_userIndex</s:if><s:else>${jumpUrl }</s:else><s:if test="backUrl!=null">&backUrl=${backUrl }</s:if>");
+            user_obj.sign_in_init(undefined, "<s:if test="jumpUrl==null">/home/usr_UsrPurchase_userIndex</s:if><s:else>${jumpUrl }</s:else>");
             user_obj.sign_up_init();
         });
     </script>
