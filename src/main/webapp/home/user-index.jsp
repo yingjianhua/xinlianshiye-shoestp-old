@@ -206,8 +206,18 @@
 <script>
     new Vue({
         el: "#personalCenter",
-        data: {
-            isShowAvatarUpload: false, // 头像上传框
+        data() {
+            var validateQuantity = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('Please enter the quantity'));
+                }
+                if(parseInt(value)!=value){
+                    callback(new Error('Please enter an integer'));
+                }
+                callback();
+            };
+            return{
+                isShowAvatarUpload: false, // 头像上传框
             form: {
                 title: '',
                 descriotion: '',
@@ -231,17 +241,15 @@
                     message: 'Please enter your Proct/Service Details',
                     trigger: 'blur'
                 }],
-                quantity: [{
-                    required: true,
-                    message: 'Please enter the quantity',
-                    trigger: 'blur'
-                }],
+                quantity: [{required: true,validator: validateQuantity, trigger: 'blur' }],
                 unit: [{
                     required: true,
                     message: 'Please select a unit',
                     trigger: 'change'
                 }],
             },
+            }
+            
         },
          created(){
             document.addEventListener('click',(e)=>{
