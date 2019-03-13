@@ -88,6 +88,49 @@
         #o2otop .o2otopcon .topsearch > input{
             border: 1px solid #10389c;
         }
+
+        /*左侧个人中心*/
+        #left-user-menu .user-menu {
+            font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+            width: 180px;
+            height: 285px;
+            flex: none;
+            background-color: #ffffff;
+            border: solid 1px #dedede;
+            padding: 8px 24px;
+        }
+
+        #left-user-menu .user-menu .user-menu-title {
+            height: 44px;
+            line-height: 44px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        #left-user-menu .user-menu .user-menu-item {
+            height: 44px;
+            line-height: 44px;
+            border-bottom: solid 1px #dddddd;
+            font-size: 14px;
+        }
+
+        #left-user-menu .user-menu .user-menu-item:last-child {
+            border: none;
+        }
+
+        #left-user-menu .user-menu .user-menu-item a {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            color: #232323;
+            text-decoration: none;
+        }
     </style>
 
     <%--统计代码--%>
@@ -99,6 +142,21 @@
     <index-top></index-top>
     <div class="wide">
         <div id="lib_user" class="clearfix">
+            <%--左侧个人中心列表--%>
+            <s:if test="env.login!=null">
+                <div id="left-user-menu" class="fl">
+                    <div class="user-menu">
+                        <div class="user-menu-title"><img src="/home/v3/static/images/user/icon_account.png" alt="" style="margin:0 8px 2px 0;">My Account</div>
+                        <div class="user-menu-item"><a href="/home/usr_UsrPurchase_userIndex">Home <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+                        <div class="user-menu-item"><a href="/home/usr_UsrMessages_center">Message Center <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+                        <div class="user-menu-item"><a href="/home/usr_UsrPurchase_contacts">Contacts <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+                        <div class="user-menu-item"><a href="/home/usr_UsrFavorites_myfavorite">My Favourites <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+                        <div class="user-menu-item"><a href="/home/usr_UsrPurchase_usrSetting">Account Settings <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+                    </div>
+                </div>
+            </s:if>
+
+            <%--中间具体内容   --%>
             <div id="lib_user_main">
                 <div id="lib_user_msg" class="clearfix">
 
@@ -148,7 +206,7 @@
                             </div>
 
                             <div class="inquiry-goods-info">
-                                <el-form-item style="white-space: nowrap;" label="Purchase Quantity：" required>
+                                <el-form-item label="Purchase Quantity：" required>
                                     <el-col :span="15">
                                         <el-form-item label-width="0" prop="quantity">
                                             <el-input v-model.number="form.quantity"></el-input>
@@ -469,6 +527,16 @@
                 if (r != null) return unescape(decodeURIComponent(r[2]));
                 return null;
             },
+            //完成后跳转回哪个页面
+            // - 参数为手输的默认地址
+            // - 地址中有值时用地址中的值，否则用调用时的参数地址，也没填写时跳转回首页
+            whichPageFrom(defaultUrl){
+                let whichPageFrom =  this.GetQueryString("whichPageFrom") || defaultUrl || "usr_UsrPurchase";
+                if( whichPageFrom.indexOf("/home/") == -1 ){
+                    whichPageFrom = "/home/" + whichPageFrom;
+                }
+                return whichPageFrom;
+            },
             // elementui 上传功能 *2 - 删除操作
             handleRemove(file, fileList) {
                 // 清空imgs数组
@@ -571,7 +639,7 @@
                                             message: '<s:text name="my-inquiry-publish.Successfully_Released"/>',
                                             type: 'success'
                                         });
-                                        setTimeout(function () {
+                                        setTimeout( () => {
                                             gtag_report_conversion()
                                             sessionStorage['Temp_publish_form'] = { // 需要上传给后台的对象
                                                 title: "",
@@ -588,7 +656,8 @@
                                                 pay_type: 1, //支付方式
                                             }
                                             window.location.href =
-                                                '/home/usr_UsrMessages_center';
+                                                this.whichPageFrom("usr_UsrMessages_center");
+                                                // '/home/usr_UsrMessages_center';
                                         }, 2000)
                                         // 未登录时
                                     } else if (res.data.ret == -1) {
