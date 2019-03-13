@@ -102,9 +102,9 @@
         <!-- 问题表单 -->
         <div class="quotation">
             <div class="quotation-title clearfix">
-                <h3 class="fl">Request for Quotation</h3>
+                <h3 class="fl">Request For Quotation</h3>
             </div>
-            <el-form ref="form" :model="form" :rules="rules" label-width="220px" class="quotation-form">
+            <el-form ref="form" :model="form" :rules="rules" label-width="275px" class="quotation-form">
                 <el-form-item label="Product Name :" prop="title">
                     <el-input v-model="form.title" placeholder="Please Enter The Product Name."></el-input>
                 </el-form-item>
@@ -131,7 +131,7 @@
                 <el-form-item>
                     <el-button type="primary" @click="submitForm('form')">Submit</el-button>
                     <a href="/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1"
-                       style="color: #9fafd7;font: size 12px;" target="_blank">Add more requirements</a>
+                       style="color: #9fafd7;font-size :14px;" target="_blank">Add more requirements</a>
                 </el-form-item>
             </el-form>
         </div>
@@ -145,50 +145,58 @@
 <script>
     new Vue({
         el: "#readMore",
-        data: {
-            companyInfo: [],
-            images: [],
-            pdtDetails: false,
-            bannerList: [
-                {
-                    imgUrl: '/home/v3/static/images/ljxbanner1.jpg',
-                    url: "/country/Romania-Pantofi-en-gros/romania-index-ro.html"
+        data(){
+            var validateQuantity = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('Please enter the quantity'));
+                }
+                if(parseInt(value)!=value){
+                    callback(new Error('Please enter an integer'));
+                }
+                callback();
+            };
+            return{
+                companyInfo: [],
+                images: [],
+                pdtDetails: false,
+                bannerList: [
+                    {
+                        imgUrl: '/home/v3/static/images/ljxbanner1.jpg',
+                        url: "/country/Romania-Pantofi-en-gros/romania-index-ro.html"
+                    },
+                    {imgUrl: '/home/v3/static/images/ljxbanner2.jpg', url: "/home/pdt_PdtProduct"},
+                    {imgUrl: '/home/v3/static/images/ljxbanner3.jpg', url: "/home/usr_UsrConsult_publishView"},
+                ],
+                form: {
+                    title: '',
+                    descriotion: '',
+                    quantity: '',
+                    unit: '',
+                    currency: 1,
+                    pay_type: 1,
+                    shipping_type: 1
                 },
-                {imgUrl: '/home/v3/static/images/ljxbanner2.jpg', url: "/home/pdt_PdtProduct"},
-                {imgUrl: '/home/v3/static/images/ljxbanner3.jpg', url: "/home/usr_UsrConsult_publishView"},
-            ],
-            form: {
-                title: '',
-                descriotion: '',
-                quantity: '',
-                unit: '',
-                currency: 1,
-                pay_type: 1,
-                shipping_type: 1
-            },
-            rules: {  //表单验证
-                title: [{
-                    required: true,
-                    message: '请输入标题',
-                    trigger: 'blur'
-                },],
+                rules: {  //表单验证
+                    title: [{
+                        required: true,
+                        message: 'Please fill in the title',
+                        trigger: 'blur'
+                    },],
 
-                descriotion: [{
-                    required: true,
-                    message: '请输入内容',
-                    trigger: 'blur'
-                }],
-                quantity: [{
-                    required: true,
-                    message: '请输入数量',
-                    trigger: 'blur'
-                }],
-                unit: [{
-                    required: true,
-                    message: '请选择单位',
-                    trigger: 'change'
-                }],
-            },
+                    descriotion: [{
+                        required: true,
+                        message: 'Please fill in the descriotion',
+                        trigger: 'blur'
+                    }],
+                    quantity: [{ validator: validateQuantity, trigger: 'blur' }],
+                    unit: [{
+                        required: true,
+                        message: 'Please select a unit',
+                        trigger: 'change'
+                    }],
+                },
+                }
+            
         },
         mounted() {
             var self = this;
@@ -219,13 +227,13 @@
                     this.pdtDetails = true;
                 } else {
                     //  没有登录 提醒去登录
-                    this.$confirm('登录后可以查看完整信息!是否登录?', '提示', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
+                    this.$confirm('After logging in, you can view the complete information! Are you logged in?', 'Prompt', {
+                        confirmButtonText: 'Determine',
+                        cancelButtonText: 'Cancel',
                         type: 'warning'
                     }).then(() => {
                         window.location.href =
-                            '/home/usr_UsrPurchase_sign?jumpUrl=/home/rfq_RFQConsult_getRFQReadMore';
+                            '/home/usr_UsrPurchase_sign?jumpUrl=/home/rfq_RFQConsult_getRFQReadMore?rfqPkey=' + this.rfqPkey;
                     }).catch(() => {
 
                     });
@@ -257,7 +265,7 @@
                                     // 提示信息
                                     this.$message({
                                         showClose: true,
-                                        message: '提交成功',
+                                        message: 'Submitted successfully',
                                         type: 'success'
                                     });
                                     // setTimeout(function () {
@@ -271,7 +279,7 @@
                                     // 未登录时
                                 } else if (res.data.ret == -1) {
                                     window.location.href =
-                                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/rfq_RFQConsult_getRFQReadMore';
+                                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/rfq_RFQConsult_getRFQReadMore?rfqPkey=' + this.rfqPkey;
                                     // 提交失败时
                                 } else {
                                     this.$alert(res.data.msg, {
