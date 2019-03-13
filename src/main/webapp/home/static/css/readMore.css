@@ -44,7 +44,7 @@
     min-width: 1200px;
     margin: 0 auto; }
     #readMore .content-box .section1 {
-      font-size: 18px; }
+      font-size: 16px; }
       #readMore .content-box .section1 h1 {
         margin: 50px 0 25px 0;
         font-size: 26px; }
@@ -77,9 +77,10 @@
                 -ms-flex-align: start;
                     align-items: flex-start; }
             #readMore .content-box .section1 .section1-content ul li .section1-content-left .list {
+              word-wrap: break-word;
               width: 400px; }
     #readMore .content-box .section2 {
-      font-size: 18px; }
+      font-size: 16px; }
       #readMore .content-box .section2 h1 {
         margin: 50px 0 25px 0;
         font-size: 26px; }
@@ -102,13 +103,13 @@
             color: #7c7c7c; }
           #readMore .content-box .section2 .section2-content .section2-ul2 a {
             display: inline-block;
-            width: 280px;
-            height: 60px;
-            line-height: 60px;
+            width: 200px;
+            height: 40px;
+            line-height: 40px;
             text-align: center;
             background-color: #10389c;
             border-radius: 3px;
-            font-size: 26px;
+            font-size: 18px;
             color: #fff;
             text-decoration: none; }
         #readMore .content-box .section2 .section2-content ul li {
@@ -137,6 +138,9 @@
       margin-bottom: 37px;
       background-color: #ffffff;
       border: solid 1px #dddddd; }
+    #readMore .content-box .quotation .textarea-placeholder textarea{
+      font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif !important;
+     }
       #readMore .content-box .quotation .quotation-title {
         padding: 43px 30px; }
       #readMore .content-box .quotation .quotation-title h3{
@@ -144,7 +148,7 @@
       #readMore .content-box .quotation .quotation-form {
             padding: 0 100px 0 80px; }
       #readMore .content-box .quotation .quotation-form .el-form-item__label{
-            font-size: 18px;
+            font-size: 16px;
         }
       #readMore .content-box .quotation .el-button--primary {
         width: 173px;
