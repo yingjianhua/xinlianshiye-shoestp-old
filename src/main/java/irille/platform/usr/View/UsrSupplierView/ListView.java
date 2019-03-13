@@ -13,4 +13,6 @@ public class ListView implements BaseView {
   private List<IsProsView> isPros; // 供应商首页产品展示
   private List<CountryView> countrys; // 国家列表
   private List<StoreStatusView> storeStatus; // 店铺列表
+  private List<SVSStatusView> svsStatus; // svs认证状态
+  private List<SVSGradeView> svsGrade; // svs认证状态
 }
