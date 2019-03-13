@@ -25,6 +25,7 @@ public abstract class BaseAction extends ActionSupport {
   private static final ObjectMapper oMapper =
       new ObjectMapper().setSerializationInclusion(Include.NON_NULL);
 
+
   /**
    * 登录超时或者未登录
    *
@@ -48,6 +49,11 @@ public abstract class BaseAction extends ActionSupport {
 
   public static <T extends BaseView> void write(T view) throws IOException {
     writeAsJson(RET_CODE_SUCCESS, null, view);
+  }
+
+  public static void write(com.xinlianshiye.shoestp.common.errcode.MessageView view)
+      throws IOException {
+    writeAsJson(view.getRet(), view.getMsg(), null);
   }
 
   public static <T extends BaseView> void write(Collection<T> list) throws IOException {

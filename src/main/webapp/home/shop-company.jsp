@@ -40,7 +40,6 @@
 <%@ include file="/home/template/web-top.jsp" %>
 
 
-
 <div id="main">
 
     <div class="clean">
@@ -275,7 +274,8 @@
                                 <span>Certification</span>
                             </h5>
                             <div class="text">
-                                The supplier's company premises are inspected by the SHOESTP.COM staff and confirmed that the scene is authentic.
+                                The supplier's company premises are inspected by the SHOESTP.COM staff and confirmed
+                                that the scene is authentic.
                             </div>
                         </div>
                         <div class="supplier-info-item">
@@ -297,7 +297,8 @@
                 <div class="supplier-form">
                     <div class="flexSt">
                         <div class="company-logo">
-                            <img  src="${envConfig.imageBaseUrl}${supView.logo}?x-oss-process=image/resize,m_pad,h_130,w_165" alt="">
+                            <img src="${envConfig.imageBaseUrl}${supView.logo}?x-oss-process=image/resize,m_pad,h_130,w_165"
+                                 alt="">
                         </div>
                         <p class="company-name"><c:if test="${supView.name != 'null'}">${supView.showName}</c:if></p>
                         <div>
@@ -314,7 +315,7 @@
                                 <el-col :span="8">
                                     <el-input v-model.trim="form.title"></el-input>
                                 </el-col>
-                                <el-col :span="5" >
+                                <el-col :span="5">
                                     <div>on shoestp.com</div>
                                 </el-col>
                             </el-row>
@@ -338,13 +339,21 @@
                         <el-form-item label="Extra Request" prop="extraRequest" class="request">
                             <el-checkbox-group v-model="form.extraRequest">
                                 <el-checkbox label="price" name="price">Price</el-checkbox>
-                                <el-checkbox label="inspection certificate" name="inspection certificate">Inspection Certificate</el-checkbox>
-                                <el-checkbox label="product specifications" name="product specifications">Product Specifications</el-checkbox>
-                                <el-checkbox label="company profile" name="company profile">Company Profile</el-checkbox>
+                                <el-checkbox label="inspection certificate" name="inspection certificate">Inspection
+                                    Certificate
+                                </el-checkbox>
+                                <el-checkbox label="product specifications" name="product specifications">Product
+                                    Specifications
+                                </el-checkbox>
+                                <el-checkbox label="company profile" name="company profile">Company Profile
+                                </el-checkbox>
                             </el-checkbox-group>
                         </el-form-item>
                         <el-form-item label="Message:" prop="descriotion">
-                            <el-input placeholder="Enter product details such as color, size, materials etc. and other specification requirements to receive an accurate quote." type="textarea" v-model.trim="form.descriotion":autosize="{ minRows: 8, maxRows: 8}"></el-input>
+                            <el-input
+                                    placeholder="Enter product details such as color, size, materials etc. and other specification requirements to receive an accurate quote."
+                                    type="textarea" v-model.trim="form.descriotion"
+                                    :autosize="{ minRows: 8, maxRows: 8}"></el-input>
                         </el-form-item>
                         <el-form-item label="" prop="images">
                             <div class="upImg flexSt">
@@ -360,7 +369,8 @@
                         </el-form-item>
                         <el-form-item>
                             <div style="color: #e54544;">
-                                * Recommend matching suppliers if this supplier doesn't contact me on Message Center within 24 hours. RFQ
+                                * Recommend matching suppliers if this supplier doesn't contact me on Message Center
+                                within 24 hours. RFQ
                             </div>
                         </el-form-item>
                         <el-form-item>
@@ -396,15 +406,15 @@
     <script src="/home/v3/static/js/index-bottom.js"></script>
     <script>
         new Vue({
-            el:"#main",
+            el: "#main",
             data() {
-                 var validateQuantity = (rule, value, callback) => {
+                var validateQuantity = (rule, value, callback) => {
                     let re = /^[1-9]\d*$/;
-                    if(value){
-                        if(parseInt(value)!=value){
+                    if (value) {
+                        if (parseInt(value) != value) {
                             callback(new Error('Please enter an integer'));
                         }
-                        if( !re.test(value)){
+                        if (!re.test(value)) {
                             callback(new Error('The number cannot be 0'));
                         }
                     }
@@ -429,17 +439,17 @@
                         title: '', // 标题 名字
                         quantity: '',  // 数量
                         unit: 'Pairs',  // 单位
-                        extraRequest:[],  //  额外要求
+                        extraRequest: [],  //  额外要求
                         descriotion: '',  //描述
                         images: '',  // 图片
                     },
 
                     rules: {
-                        title:[
-                            { required: true,message: 'Please fill in the title'}
+                        title: [
+                            {required: true, message: 'Please fill in the title'}
                         ],
                         quantity: [
-                            { validator: validateQuantity, trigger: 'blur' }
+                            {validator: validateQuantity, trigger: 'blur'}
                         ],
                         descriotion: [{
                             required: true,
@@ -447,8 +457,8 @@
                             trigger: 'blur'
                         }]
                     },
-                    pkey:null,
-                    supData:[],
+                    pkey: null,
+                    supData: [],
                 }
             },
             mounted() {
@@ -486,10 +496,10 @@
 
                 },
                 // 上传图片文件之前
-                beforeUpload(file){
+                beforeUpload(file) {
                     console.log(file)
                     let size = file.size / 1024;
-                    if(size > 500 ){
+                    if (size > 500) {
                         this.$message.error('Image size cannot exceed 500k');
                         return false;
                     }
@@ -516,65 +526,68 @@
                             //     return
                             // }
                             console.log('submit!');
-                            let data = JSON.stringify(self.form)
-                            axios.post("/home/rfq_RFQConsult_putRFQInquiry",data)
+                            axios("/home/rfq_RFQConsult_putRFQInquiry", self.form, {
+                                headers: {
+                                    'Content-Type': 'application/json;charset=utf-8'
+                                }
+                            })
                             // axios.post("http://192.168.1.48:889/mock/5c6a1556af4d250024d48c6d/home/home/rfq_RFQConsult_putRFQInquiry",data)
                                 .then((res) => {
-                                console.log(res)
-                                // 提交成功时
-                                if (res.data.ret == 1) {
-                                // 提示信息
-                                self.$message({
-                                    showClose: true,
-                                    message: 'Submitted successfully',
-                                    type: 'success'
-                                });
-                                setTimeout(function () {
-                                    gtag_report_conversion()
-                                    window.location.href =
-                                        '/home/usr_UsrSupplier_gtSupInfo?pkey=' + self.pkey;
-                                }, 2000)
-                                // 未登录时
-                            } else if (res.data.ret == -1) {
-                                window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrSupplier_gtSupInfo?pkey=' + self.pkey;
-                                // 提交失败时
-                            } else {
-                                self.$alert(res.data.msg, {
-                                    confirmButtonText: 'OK'
-                                });
-                            }
+                                    console.log(res)
+                                    // 提交成功时
+                                    if (res.data.ret == 1) {
+                                        // 提示信息
+                                        self.$message({
+                                            showClose: true,
+                                            message: 'Submitted successfully',
+                                            type: 'success'
+                                        });
+                                        setTimeout(function () {
+                                            gtag_report_conversion()
+                                            window.location.href =
+                                                '/home/usr_UsrSupplier_gtSupInfo?pkey=' + self.pkey;
+                                        }, 2000)
+                                        // 未登录时
+                                    } else if (res.data.ret == -1) {
+                                        window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrSupplier_gtSupInfo?pkey=' + self.pkey;
+                                        // 提交失败时
+                                    } else {
+                                        self.$alert(res.data.msg, {
+                                            confirmButtonText: 'OK'
+                                        });
+                                    }
 
-                        })
-                        .catch((err) => {
-                                console.log(err)
-                            })
+                                })
+                                .catch((err) => {
+                                    console.log(err)
+                                })
                         } else {
                             console.log('error submit!!');
-                    // if (!self.form.quantity) {
-                    //     self.$message.error('Quantity cannot be empty');
-                    // } else if (!self.form.unit) {
-                    //     self.$message.error("Select unit");
-                    // } else if (!self.form.descriotion) {
-                    //     self.$message.error('Please fill in the message');
-                    // }
-                    // return false;
-                }
-                });
+                            // if (!self.form.quantity) {
+                            //     self.$message.error('Quantity cannot be empty');
+                            // } else if (!self.form.unit) {
+                            //     self.$message.error("Select unit");
+                            // } else if (!self.form.descriotion) {
+                            //     self.$message.error('Please fill in the message');
+                            // }
+                            // return false;
+                        }
+                    });
                 },
                 getQueryString: (name) => {
-                let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-        let reg_rewrite = new RegExp("(^|/)" + name + "/([^/]*)(/|$)", "i");
-        let r = window.location.search.substr(1).match(reg);
-        let q = window.location.pathname.substr(1).match(reg_rewrite);
-        if(r != null){
-            return unescape(r[2]);
-        }else if(q != null){
-            return unescape(q[2]);
-        }else{
-            return null;
-        }
-        }
-        }
+                    let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+                    let reg_rewrite = new RegExp("(^|/)" + name + "/([^/]*)(/|$)", "i");
+                    let r = window.location.search.substr(1).match(reg);
+                    let q = window.location.pathname.substr(1).match(reg_rewrite);
+                    if (r != null) {
+                        return unescape(r[2]);
+                    } else if (q != null) {
+                        return unescape(q[2]);
+                    } else {
+                        return null;
+                    }
+                }
+            }
         })
     </script>
 </body>

@@ -67,7 +67,11 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     rfqConsult.stIsDeleted(false);
     rfqConsult.setChangeCount((short) 0);
     rfqConsult.setCountry(usrPurchase.getCountry());
-    rfqConsult.setExtraRequest(rfqConsultView.getExtraRequest());
+    StringJoiner joiner = new StringJoiner(",");
+    for (String s : rfqConsultView.getExtraRequest()) {
+      joiner.add(s);
+    }
+    rfqConsult.setExtraRequest(joiner.toString());
     rfqConsultDAO.setB(rfqConsult);
     rfqConsultDAO.commit();
     messageService.send(OTempType.RFQ_INFO_NOTICE, null, usrPurchase, rfqConsult);

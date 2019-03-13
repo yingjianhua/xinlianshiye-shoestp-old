@@ -61,6 +61,7 @@ public class ItpCheckPurchaseLogin extends AbstractInterceptor {
         getParams(ServletActionContext.getRequest())
             .forEach(
                 (s, strings) -> {
+                  if (s.equalsIgnoreCase("jumpUrl")) return;
                   for (String string : strings) {
                     String t = s + "=" + string;
                     stringJoiner.add(t);
@@ -70,7 +71,10 @@ public class ItpCheckPurchaseLogin extends AbstractInterceptor {
         if (host == null || host.length() < 1) {
           host = AppConfig.domain;
         }
-        action.setJumpUrl(host + "?" + stringJoiner.toString());
+        if (stringJoiner.length() > 0) {
+          action.setJumpUrl(
+              ServletActionContext.getRequest().getServletPath() + "?" + stringJoiner.toString());
+        }
         return HomeAction.LOGIN;
       }
     }

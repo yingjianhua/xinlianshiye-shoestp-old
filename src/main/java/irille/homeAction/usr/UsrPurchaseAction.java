@@ -583,16 +583,14 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
     getParams()
         .forEach(
             (s, strings) -> {
+              if (s.equalsIgnoreCase("jumpUrl")) return;
               for (String string : strings) {
+
                 String t = s + "=" + string;
                 stringJoiner.add(t);
               }
             });
-    String host = ServletActionContext.getRequest().getHeader("Referer");
-    if (host == null || host.length() < 1) {
-      host = AppConfig.domain;
-    }
-    setJumpUrl(host + "?" + stringJoiner.toString());
+    if (stringJoiner.length() > 0) setJumpUrl(getJumpUrl() + "?" + stringJoiner.toString());
     setResult("/home/sign-up.jsp");
     return TRENDS;
   }
