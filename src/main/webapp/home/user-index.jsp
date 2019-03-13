@@ -140,7 +140,7 @@
                 <el-form-item label="Estimates Order Quantity :" prop="quantity">
                     <el-row>
                         <el-col :span="7">
-                            <el-input v-model="form.quantity" placeholder="Please enter the quantity"></el-input>
+                            <el-input v-model.trim="form.quantity" placeholder="Please enter the quantity"></el-input>
                         </el-col>
                         <el-col :span="5" :offset="1">
                             <el-form-item prop="unit">
@@ -208,11 +208,15 @@
         el: "#personalCenter",
         data() {
             var validateQuantity = (rule, value, callback) => {
+                let re = /^[1-9]\d*$/;
                 if (!value) {
                     return callback(new Error('Please enter the quantity'));
                 }
                 if(parseInt(value)!=value){
                     callback(new Error('Please enter an integer'));
+                }
+                if( !re.test(value)){
+                    callback(new Error('The number cannot be 0'));
                 }
                 callback();
             };
