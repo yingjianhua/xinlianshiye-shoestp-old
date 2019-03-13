@@ -208,7 +208,7 @@ ul{
                 </el-col>
                 <el-col class="" :span="5">
                     <el-form-item label="" prop="quantity">
-                        <el-input size="medium" placeholder="Quantity" v-model.lazy.trim.number="form.quantity"
+                        <el-input size="medium" placeholder="Quantity" v-model.trim="form.quantity"
                             clearable>
                         </el-input>
                     </el-form-item>
@@ -269,8 +269,22 @@ ul{
     <script>
         new Vue({
             el: "#xpApp",
-            data: {
-                imgsToUpload: [], // 需要upload的img - 显示在页面上
+            data(){
+                var validateQuantity = (rule, value, callback) => {
+                let re = /^[1-9]\d*$/;
+                if (!value) {
+                    return callback(new Error('Please enter the quantity'));
+                }
+                if(parseInt(value)!=value){
+                    callback(new Error('Please enter an integer'));
+                }
+                 if( !re.test(value)){
+                    callback(new Error('The number cannot be 0'));
+                }
+                callback();
+                };
+                return{
+                     imgsToUpload: [], // 需要upload的img - 显示在页面上
                 options: [{
                         value: "1",
                         label: "Pairs"
@@ -293,13 +307,7 @@ ul{
                     images: ''
                 },
                 rules: {
-                    quantity: [{
-                        required: true,
-                        message: 'Can not be empty'
-                    }, {
-                        type: 'number',
-                        message: 'Must be a number'
-                    }],
+                    quantity: [{required: true, validator: validateQuantity, trigger: 'blur' }],
                     unitType: [{
                         required: true,
                         message: 'Please select a unit',
@@ -313,6 +321,7 @@ ul{
                 },
                 id: null,
                 supData: [],
+                }
             },
             mounted()
             {if (sessionStorage['Temp_Pdt_publish_form'] &&sessionStorage['Temp_Pdt_publish_form']!=''&&sessionStorage['Temp_Pdt_publish_form']!='null'){
@@ -445,8 +454,7 @@ ul{
                                         }, 2000)
                                         // 未登录时
                                     } else if (res.data.ret == -1) {
-                                        window.location.href =
-                                            '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
+                                       window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_productPublishView?product_id="+this.getQueryString("product_id")
                                         // 提交失败时
                                     } else {
                                         this.$alert(res.data.msg, {
@@ -460,13 +468,13 @@ ul{
                                 })
                         } else {
                             console.log('error submit!!');
-                            if (!this.form.quantity) {
-                                this.$message.error('Quantity cannot be empty');
-                            } else if (!this.form.unitType) {
-                                this.$message.error("Select unit");
-                            } else if (!this.form.descriotion) {
-                                this.$message.error('Please fill in the message');
-                            }
+                            // if (!this.form.quantity) {
+                            //     this.$message.error('Quantity cannot be empty');
+                            // } else if (!this.form.unitType) {
+                            //     this.$message.error("Select unit");
+                            // } else if (!this.form.descriotion) {
+                            //     this.$message.error('Please fill in the message');
+                            // }
                             return false;
                         }
                     });
