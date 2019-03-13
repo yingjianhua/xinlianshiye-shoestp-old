@@ -322,7 +322,7 @@
                         <el-form-item label="Purchase  Quantity" prop="quantity" class="name">
                             <el-row :gutter="10">
                                 <el-col :span="7">
-                                    <el-input v-model.number.trim="form.quantity"></el-input>
+                                    <el-input v-model.trim="form.quantity"></el-input>
                                 </el-col>
                                 <el-col :span="5">
                                     <el-form-item prop="unit">
@@ -398,16 +398,17 @@
         new Vue({
             el:"#main",
             data() {
-                var validateQuantity = (rule, value, callback) => {
-                    var re = /^[0-9]+.?[0-9]*/;//判断字符串是否为数字//判断正整数/[1−9]+[0−9]∗]∗/ 
-                    if (value) {
-                        if(!re.test(value)){
-                            callback(new Error('Please enter a numeric type'));
+                 var validateQuantity = (rule, value, callback) => {
+                    let re = /^[1-9]\d*$/;
+                    if(value){
+                        if(parseInt(value)!=value){
+                            callback(new Error('Please enter an integer'));
                         }
-                        callback();
-                    } else{
-                        callback();
+                        if( !re.test(value)){
+                            callback(new Error('The number cannot be 0'));
+                        }
                     }
+                    callback();
                 };
                 return {
                     imgsToUpload: [], // 需要upload的img - 显示在页面上
@@ -427,7 +428,7 @@
                     form: {
                         title: '', // 标题 名字
                         quantity: '',  // 数量
-                        unit: '',  // 单位
+                        unit: 'Pairs',  // 单位
                         extraRequest:[],  //  额外要求
                         descriotion: '',  //描述
                         images: '',  // 图片

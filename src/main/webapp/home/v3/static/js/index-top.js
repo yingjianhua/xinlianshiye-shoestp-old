@@ -22,7 +22,7 @@ Vue.component('index-top', {
                     <div style="height: 20px;">
                         <p>{{countNoRead > 0 ? countNoRead : 0}}</p>
                     </div>
-                    <p>Messages {{PMmoreSwitch}}</p>
+                    <p>Messages</p>
                 </div>
               </dt>
               <dd>

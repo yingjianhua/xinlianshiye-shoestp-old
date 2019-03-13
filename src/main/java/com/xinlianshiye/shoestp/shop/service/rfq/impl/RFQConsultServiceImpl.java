@@ -71,6 +71,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
       // 是否有新消息
       if (unread) {
         query
+            .AND()
             .WHERE(RFQConsultRelation.T.IS_NEW, "=?", true)
             .orWhere(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", false);
       }

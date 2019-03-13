@@ -133,14 +133,19 @@
     #readMore .content-box .banner-box .el-carousel .el-carousel__indicator.is-active .el-carousel__button {
       background-color: #e54544 !important; }
     #readMore .content-box .quotation {
-      height: 470px;
+      padding-bottom: 20px;
       margin-bottom: 37px;
       background-color: #ffffff;
       border: solid 1px #dddddd; }
       #readMore .content-box .quotation .quotation-title {
         padding: 43px 30px; }
+      #readMore .content-box .quotation .quotation-title h3{
+        font-size: 26px;}
       #readMore .content-box .quotation .quotation-form {
-        padding: 0 80px; }
+            padding: 0 100px 0 80px; }
+      #readMore .content-box .quotation .quotation-form .el-form-item__label{
+            font-size: 18px;
+        }
       #readMore .content-box .quotation .el-button--primary {
         width: 173px;
         height: 40px;
