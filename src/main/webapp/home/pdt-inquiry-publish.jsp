@@ -305,7 +305,7 @@ ul{
                     descriotion: '',
                     title: '',
                     images: ''
-                },
+                }, 
                 rules: {
                     quantity: [{required: true, validator: validateQuantity, trigger: 'blur' }],
                     unitType: [{
