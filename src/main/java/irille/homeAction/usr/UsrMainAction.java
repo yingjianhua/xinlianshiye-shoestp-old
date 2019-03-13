@@ -1,19 +1,13 @@
 package irille.homeAction.usr;
 
-import com.sun.mail.util.MailSSLSocketFactory;
-import irille.homeAction.HomeAction;
-import irille.pub.Exp;
-import irille.pub.LogMessage;
-import irille.pub.Str;
-import irille.pub.util.AppConfig;
-import irille.shop.usr.UsrMain;
-import irille.shop.usr.UsrMainDao;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.UUID;
+
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -24,8 +18,21 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.github.benmanes.caffeine.cache.Cache;
+import com.sun.mail.util.MailSSLSocketFactory;
+
+import irille.homeAction.HomeAction;
+import irille.pub.Exp;
+import irille.pub.LogMessage;
+import irille.pub.Str;
+import irille.pub.util.AppConfig;
+import irille.pub.util.CacheUtils;
+import irille.shop.usr.UsrMain;
+import irille.shop.usr.UsrMainDao;
 
 /**
  * 用户Action
@@ -171,7 +178,8 @@ public class UsrMainAction extends HomeAction<UsrMain> {
     String title = "";
     if (type == 0) {
       String valide = verifyCode();
-      if (Str.isEmpty(valide) || Str.isEmpty(getCheckCode())
+      if (Str.isEmpty(valide)
+          || Str.isEmpty(getCheckCode())
           || valide.equals(getCheckCode()) == false) {
         throw LOG.errTran("验证码错误", "验证码错误");
       }
@@ -184,26 +192,33 @@ public class UsrMainAction extends HomeAction<UsrMain> {
     if (type == 1) {
       String valide = verifyCode();
       System.out.println("----" + valide);
-      if (Str.isEmpty(valide) || Str.isEmpty(getCheckCode())
+      if (Str.isEmpty(valide)
+          || Str.isEmpty(getCheckCode())
           || valide.equals(getCheckCode()) == false) {
         throw LOG.errTran("验证码错误", "验证码错误");
       }
 
       title = "Forgot password";
       if (main == null) {
-        throw LOG.errTran("该用户未注册", "该用户未注册");
+        // throw LOG.errTran("该用户未注册", "该用户未注册");
       }
       write();
     }
-
+    String uid = UUID.randomUUID().toString();
     Integer code = (int) ((Math.random() * 9 + 1) * 100000);
+    if (type == 0) {
+      CacheUtils.mailValid.put(uid, getEmail());
+    }
+    if (type == 2) {
+      CacheUtils.pwdValid.put(code, getEmail());
+    }
     // 收件人电子邮箱
     String to = "";
     to = getEmail();
     // 发件人电子邮箱
     String from = "notice@service.shoestp.com";
     // 指定发送邮件的主机为 smtp.qq.com
-    String host = "smtp.mxhichina.com";  //QQ 邮件服务器
+    String host = "smtp.mxhichina.com"; // QQ 邮件服务器
 
     // 获取系统属性
     Properties properties = System.getProperties();
@@ -217,12 +232,23 @@ public class UsrMainAction extends HomeAction<UsrMain> {
     properties.put("mail.smtp.ssl.enable", "true");
     properties.put("mail.smtp.ssl.socketFactory", sf);
     // 获取默认session对象
-    Session session = Session.getDefaultInstance(properties, new Authenticator() {
-      public PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication("notice@service.shoestp.com", "7p7UaRqBb"); //发件人邮件用户名、密码
-      }
-    });
+    Session session =
+        Session.getDefaultInstance(
+            properties,
+            new Authenticator() {
+              public PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(
+                    "notice@service.shoestp.com", "7p7UaRqBb"); // 发件人邮件用户名、密码
+              }
+            });
     try {
+      String mesg = "";
+      if (type == 0) {
+        mesg = "/home/usr_UsrMain_completeReg?uid=" + uid;
+      }
+      if (type == 2) {
+        mesg = "你的验证码为:" + code;
+      }
       // 创建默认的 MimeMessage 对象
       MimeMessage message = new MimeMessage(session);
 
@@ -237,18 +263,22 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 
       // 设置消息体
       System.out.println(AppConfig.mail_template_logo + "logo++++++++++++++++++++++++++++++++");
-      String text = AppConfig.mail_template
-          .replaceAll("\\{ForgotUrl\\}", AppConfig.domain + "你的验证码为:" + code)
-          .replaceAll("\\{Time\\}",
-              DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.MEDIUM, Locale.ENGLISH)
-                  .format(new Date()))
-          .replaceAll("\\{Logo\\}",
-              "<img style=\"max-width:350px;\" src=\"" + AppConfig.mail_template_logo
-                  + "\" border=\"0\">")
-          .replaceAll("\\{FullDomain\\}", AppConfig.mail_template_index)
-          .replaceAll("\\{Domain\\}", AppConfig.mail_template_domain)
-          .toString();
-//            message.setText(text);
+      String text =
+          AppConfig.mail_template
+              .replaceAll("\\{ForgotUrl\\}", AppConfig.domain + mesg)
+              .replaceAll(
+                  "\\{Time\\}",
+                  DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.MEDIUM, Locale.ENGLISH)
+                      .format(new Date()))
+              .replaceAll(
+                  "\\{Logo\\}",
+                  "<img style=\"max-width:350px;\" src=\""
+                      + AppConfig.mail_template_logo
+                      + "\" border=\"0\">")
+              .replaceAll("\\{FullDomain\\}", AppConfig.mail_template_index)
+              .replaceAll("\\{Domain\\}", AppConfig.mail_template_domain)
+              .toString();
+      //            message.setText(text);
       MimeMultipart mainpart = new MimeMultipart();
       MimeBodyPart bodyPart = new MimeBodyPart();
       bodyPart.setContent(text, "text/html; charset=utf-8");
@@ -264,7 +294,6 @@ public class UsrMainAction extends HomeAction<UsrMain> {
     } catch (MessagingException mex) {
       writeErr("邮件发送失败");
     }
-
   }
 
   /**
@@ -283,7 +312,6 @@ public class UsrMainAction extends HomeAction<UsrMain> {
     } catch (Exp e) {
       writeErr(e.getLastMessage());
     }
-
   }
 
   private String loginName;
@@ -315,7 +343,6 @@ public class UsrMainAction extends HomeAction<UsrMain> {
     this.thirdId = thirdId;
   }
 
-
   /**
    * 登陆(3.0)
    *
@@ -336,4 +363,54 @@ public class UsrMainAction extends HomeAction<UsrMain> {
     }
   }
 
+  private String uid;
+
+  public String getUid() {
+    return uid;
+  }
+
+  public void setUid(String uid) {
+    this.uid = uid;
+  }
+
+  /**
+   * 完成注册
+   *
+   * @author chen
+   */
+  public String completeReg() {
+    Cache cache = CacheUtils.mailValid;
+    String value = String.valueOf(cache.getIfPresent(Integer.parseInt(getUid())));
+    if (value != null && value.equals(getEmail())) {
+      setResult("/home/sendEmail.jsp");
+      return HomeAction.TRENDS;
+    } else {
+      throw LOG.errTran("该链接已超时", "该链接已超时");
+    }
+  }
+  /**
+   * 提交验证码(重置密码)
+   *
+   * @author chen
+   * @throws IOException
+   */
+  public void subValid() throws IOException {
+    Cache cache = CacheUtils.pwdValid;
+    String value = String.valueOf(cache.getIfPresent(Integer.parseInt(getCode())));
+    if (value != null && value.equals(getEmail())) {
+      write();
+    } else {
+      throw LOG.errTran("该验证码已超时", "该验证码已超时");
+    }
+  }
+
+  private String code;
+
+  public String getCode() {
+    return code;
+  }
+
+  public void setCode(String code) {
+    this.code = code;
+  }
 }
