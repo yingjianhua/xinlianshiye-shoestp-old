@@ -21,6 +21,7 @@
     <!-- 联系 -->
     <div class="contacts-main fr clearfix">
         <div class="contacts-main-left fl">
+        {{popupindex}}
             <!-- "contactPkey" == {{contactPkey}} -->
             <!-- "start" == {{start}} -->
             <!-- "{{groupName}}"====== {{groupName}} -->
@@ -433,10 +434,6 @@
                     this.getSupplierDetail(this.supplierPkey)
                 }
                 // this.contactKeyWord = ''
-                if(res.data.result.items.length <= 0){
-
-                }
-                // self.contactSwitch
 
             })
             .catch((error) => {
