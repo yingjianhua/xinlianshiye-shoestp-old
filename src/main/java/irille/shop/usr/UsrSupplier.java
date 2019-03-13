@@ -64,16 +64,16 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     APPR_BY(SYS.APPR_BY_NULL), // createBy liyichao	审核人
     APPR_TIME(SYS.APPR_DATE_TIME__NULL), // createBy liyichao	审核时间
     /** 3.1.0新增字段 */
-    REASON(SYS.STR__100, "审核不通过理由备注"),
-    CLOSE_REASON(SYS.STR__100, "店铺关闭原因"),
+    REASON(SYS.STR__100_NULL, "审核不通过理由备注"),
+    CLOSE_REASON(SYS.STR__100_NULL, "店铺关闭原因"),
     STORE_STATUS(TB.crt(SStatus.DOWN)), // 店铺状态 0：关闭，1开启
     ENGLISH_NAME(SYS.STR__100, "英文名称"),
-    ANNUAL_PRODUCTION(SYS.STR__100, "年产量"),
-    POSTCODE(SYS.STR__20, "邮编"),
-    TARGETED_MARKET(SYS.STR__100_NULL, "目标市场"),
-    CONTACT_EMAIL(SYS.STR__100, "联系人邮箱"),
+    ANNUAL_PRODUCTION(SYS.STR__100_NULL, "年产量"),
+    POSTCODE(SYS.STR__20_NULL, "邮编"),
+    TARGETED_MARKET(SYS.STR__100, "目标市场"),
+    CONTACT_EMAIL(SYS.STR__100_NULL, "联系人邮箱"),
     APPLICATION_TIME(SYS.DATE, "申请时间"),
-    STOREOPEN_TIME(SYS.DATE, "店铺开通时间"),
+    STOREOPEN_TIME(SYS.DATE__NULL, "店铺开通时间"),
     /** 公司信息 */
     NAME(SYS.NAME__100, "名称"), // 名称
     REGISTERED_CAPITAL(SYS.STR__100, "注册资金"), // 注册资金
@@ -84,16 +84,16 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     SEO_CONTENT(SYS.MUILTI_LANGUAGE_NULL, "搜索引擎说明"), // 客人能通过这些字描述决定进不进店，多个描述字用空格分开
     AUTH_TIME(SYS.TIME__NULL, "认证时间"), // 认证时间
     SHOW_NAME(SYS.MUILTI_LANGUAGE_NULL, "网站显示名称"), // 网站显示名称
-    ENTITY(SYS.NAME__100, "企业法人"), // 企业法人
+    ENTITY(SYS.NAME__100_NULL, "企业法人"), // 企业法人
     COMPANY_TYPE(SYS.MUILTI_LANGUAGE_NULL, "企业类型"), // 类型 多国语言
     COMPANY_NATURE(SYS.MUILTI_LANGUAGE_NULL, "企业性质"), // 性质 多国语言
-    CREDIT_CODE(SYS.CODE__100_NULL, "信用代码"), // 信用代码
+    CREDIT_CODE(SYS.CODE__100, "信用代码"), // 信用代码
     COMPANY_ESTABLISH_TIME(SYS.DATE__NULL, "成立时间"), // 成立时间
     OPERATION_TERM(SYS.STR__100_NULL, "业务期限"), // 业务期限
     MAIN_SALES_AREA(SYS.MUILTI_LANGUAGE_NULL, "主销售区"), // 主销售区 多国语言
     MAIN_PROD(SYS.MUILTI_LANGUAGE_NULL, "主要产品"), // 主要产品 多国语言
-    PROD_PATTERN(SYS.MUILTI_LANGUAGE_NULL, "生产模式"), // 生产模式 多国语言
-    COMPANY_ADDR(SYS.MUILTI_LANGUAGE_NULL, "地址"), // 地址 多国语言
+    PROD_PATTERN(SYS.MUILTI_LANGUAGE, "生产模式"), // 生产模式 多国语言
+    COMPANY_ADDR(SYS.MUILTI_LANGUAGE, "地址"), // 地址 多国语言
     DES(SYS.DESCRIP__200_NULL), // 备注
     EMAIL(SYS.STR__100, "Email"), // Email 必填重要！新的询盘会通知到这里！
     BUSINESS_LICENSE_BEGIN_TIME(SYS.STR__100_NULL, "营业执照开始时间"),
