@@ -15,28 +15,35 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
 public class createSSLUtils {
-	/**
-	 * 创建SSL 忽略证书验证
-	 * @author GS
-	 * @return
-	 */
-	 public static CloseableHttpClient createSSLClientDefault(){
-	        try {
-	                SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, new TrustStrategy(){
-	                //信任所有
-	                public boolean isTrusted(X509Certificate[] chain,String authType) throws CertificateException{
-	                return true;
-	                }
-	            }).build();
-	            SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext);
-	            return HttpClients.custom().setSSLSocketFactory(sslsf).build();
-	            } catch (KeyManagementException e) {
-	                e.printStackTrace();
-	            } catch (NoSuchAlgorithmException e) {
-	                e.printStackTrace();
-	            } catch (KeyStoreException e) {
-	                e.printStackTrace();
-	            } 
-	            return HttpClients.createDefault();
-	            }
+  /**
+   * 创建SSL 忽略证书验证
+   *
+   * @return
+   * @author GS
+   */
+  public static CloseableHttpClient createSSLClientDefault() {
+    try {
+      SSLContext sslContext =
+          new SSLContextBuilder()
+              .loadTrustMaterial(
+                  null,
+                  new TrustStrategy() {
+                    // 信任所有
+                    public boolean isTrusted(X509Certificate[] chain, String authType)
+                        throws CertificateException {
+                      return true;
+                    }
+                  })
+              .build();
+      SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext);
+      return HttpClients.custom().setSSLSocketFactory(sslsf).build();
+    } catch (KeyManagementException e) {
+      e.printStackTrace();
+    } catch (NoSuchAlgorithmException e) {
+      e.printStackTrace();
+    } catch (KeyStoreException e) {
+      e.printStackTrace();
+    }
+    return HttpClients.createDefault();
+  }
 }

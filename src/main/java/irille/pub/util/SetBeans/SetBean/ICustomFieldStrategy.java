@@ -1,12 +1,7 @@
 package irille.pub.util.SetBeans.SetBean;
 
-/**
- * Created by IntelliJ IDEA.
- * User: HelloBox passxml@gmail.com
- * Date: 2018/8/10
- * Time: 12:46
- */
+/** Created by IntelliJ IDEA. User: HelloBox passxml@gmail.com Date: 2018/8/10 Time: 12:46 */
 public interface ICustomFieldStrategy {
 
-    String getFieldName();
+  String getFieldName();
 }

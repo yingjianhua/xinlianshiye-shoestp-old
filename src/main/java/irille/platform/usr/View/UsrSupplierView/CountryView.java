@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class CountryView implements BaseView {
-    private Integer id;
-    private String name;
+  private Integer id;
+  private String name;
 }

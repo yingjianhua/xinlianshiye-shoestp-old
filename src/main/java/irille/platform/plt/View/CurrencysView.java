@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class CurrencysView implements BaseView {
-    private Integer id;
-    private String symbol;
-    private Byte siteCur;
+  private Integer id;
+  private String symbol;
+  private Byte siteCur;
 }

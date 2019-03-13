@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class LanguageView implements BaseView {
-    private String displayName;
-    private String shortName;
+  private String displayName;
+  private String shortName;
 }

@@ -5,8 +5,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 /**
  * from mybatis version 3.4.6
+ *
  * @author yingjianhua
  */
 public abstract class AbstractSQL<T> {
@@ -30,9 +32,7 @@ public abstract class AbstractSQL<T> {
     return getSelf();
   }
 
-  /**
-   * @since 3.4.2
-   */
+  /** @since 3.4.2 */
   public T SET(String... sets) {
     sql().sets.addAll(Arrays.asList(sets));
     return getSelf();
@@ -50,17 +50,13 @@ public abstract class AbstractSQL<T> {
     return getSelf();
   }
 
-  /**
-   * @since 3.4.2
-   */
+  /** @since 3.4.2 */
   public T INTO_COLUMNS(String... columns) {
     sql().columns.addAll(Arrays.asList(columns));
     return getSelf();
   }
 
-  /**
-   * @since 3.4.2
-   */
+  /** @since 3.4.2 */
   public T INTO_VALUES(String... values) {
     sql().values.addAll(Arrays.asList(values));
     return getSelf();
@@ -72,9 +68,7 @@ public abstract class AbstractSQL<T> {
     return getSelf();
   }
 
-  /**
-   * @since 3.4.2
-   */
+  /** @since 3.4.2 */
   public T SELECT(String... columns) {
     sql().statementType = SQLStatement.StatementType.SELECT;
     sql().select.addAll(Arrays.asList(columns));
@@ -87,9 +81,7 @@ public abstract class AbstractSQL<T> {
     return getSelf();
   }
 
-  /**
-   * @since 3.4.2
-   */
+  /** @since 3.4.2 */
   public T SELECT_DISTINCT(String... columns) {
     sql().distinct = true;
     SELECT(columns);
@@ -107,9 +99,7 @@ public abstract class AbstractSQL<T> {
     return getSelf();
   }
 
-  /**
-   * @since 3.4.2
-   */
+  /** @since 3.4.2 */
   public T FROM(String... tables) {
     sql().tables.addAll(Arrays.asList(tables));
     return getSelf();
@@ -120,9 +110,7 @@ public abstract class AbstractSQL<T> {
     return getSelf();
   }
 
-  /**
-   * @since 3.4.2
-   */
+  /** @since 3.4.2 */
   public T JOIN(String... joins) {
     sql().join.addAll(Arrays.asList(joins));
     return getSelf();
@@ -133,9 +121,7 @@ public abstract class AbstractSQL<T> {
     return getSelf();
   }
 
-  /**
-   * @since 3.4.2
-   */
+  /** @since 3.4.2 */
   public T INNER_JOIN(String... joins) {
     sql().innerJoin.addAll(Arrays.asList(joins));
     return getSelf();
@@ -146,9 +132,7 @@ public abstract class AbstractSQL<T> {
     return getSelf();
   }
 
-  /**
-   * @since 3.4.2
-   */
+  /** @since 3.4.2 */
   public T LEFT_OUTER_JOIN(String... joins) {
     sql().leftOuterJoin.addAll(Arrays.asList(joins));
     return getSelf();
@@ -159,9 +143,7 @@ public abstract class AbstractSQL<T> {
     return getSelf();
   }
 
-  /**
-   * @since 3.4.2
-   */
+  /** @since 3.4.2 */
   public T RIGHT_OUTER_JOIN(String... joins) {
     sql().rightOuterJoin.addAll(Arrays.asList(joins));
     return getSelf();
@@ -172,9 +154,7 @@ public abstract class AbstractSQL<T> {
     return getSelf();
   }
 
-  /**
-   * @since 3.4.2
-   */
+  /** @since 3.4.2 */
   public T OUTER_JOIN(String... joins) {
     sql().outerJoin.addAll(Arrays.asList(joins));
     return getSelf();
@@ -186,9 +166,7 @@ public abstract class AbstractSQL<T> {
     return getSelf();
   }
 
-  /**
-   * @since 3.4.2
-   */
+  /** @since 3.4.2 */
   public T WHERE(String... conditions) {
     sql().where.addAll(Arrays.asList(conditions));
     sql().lastList = sql().where;
@@ -215,9 +193,7 @@ public abstract class AbstractSQL<T> {
     return getSelf();
   }
 
-  /**
-   * @since 3.4.2
-   */
+  /** @since 3.4.2 */
   public T GROUP_BY(String... columns) {
     sql().groupBy.addAll(Arrays.asList(columns));
     return getSelf();
@@ -229,9 +205,7 @@ public abstract class AbstractSQL<T> {
     return getSelf();
   }
 
-  /**
-   * @since 3.4.2
-   */
+  /** @since 3.4.2 */
   public T HAVING(String... conditions) {
     sql().having.addAll(Arrays.asList(conditions));
     sql().lastList = sql().having;
@@ -244,18 +218,16 @@ public abstract class AbstractSQL<T> {
   }
 
   public T PARAM(Serializable param) {
-	sql().params.add(param);
-	return getSelf();
+    sql().params.add(param);
+    return getSelf();
   }
 
   public T PARAM(Serializable... params) {
-	sql().params.addAll(Arrays.asList(params));
-	return getSelf();
+    sql().params.addAll(Arrays.asList(params));
+    return getSelf();
   }
 
-  /**
-   * @since 3.4.2
-   */
+  /** @since 3.4.2 */
   public T ORDER_BY(String... columns) {
     sql().orderBy.addAll(Arrays.asList(columns));
     return getSelf();
@@ -279,7 +251,7 @@ public abstract class AbstractSQL<T> {
 
   @SuppressWarnings("unchecked")
   public List<Serializable> PARAMS() {
-	return (ArrayList<Serializable>)sql().params.clone();
+    return (ArrayList<Serializable>) sql().params.clone();
   }
 
   private static class SafeAppendable {
@@ -306,14 +278,13 @@ public abstract class AbstractSQL<T> {
     public boolean isEmpty() {
       return empty;
     }
-
   }
 
   protected boolean isSelect() {
-  	if (sql().statementType == null) {
-          return true;
-        }
-  	switch (sql().statementType) {
+    if (sql().statementType == null) {
+      return true;
+    }
+    switch (sql().statementType) {
       case DELETE:
         return false;
       case INSERT:
@@ -330,7 +301,10 @@ public abstract class AbstractSQL<T> {
   private static class SQLStatement {
 
     public enum StatementType {
-      DELETE, INSERT, SELECT, UPDATE
+      DELETE,
+      INSERT,
+      SELECT,
+      UPDATE
     }
 
     StatementType statementType;
@@ -353,11 +327,16 @@ public abstract class AbstractSQL<T> {
     boolean distinct;
 
     public SQLStatement() {
-        // Prevent Synthetic Access
+      // Prevent Synthetic Access
     }
 
-    private void sqlClause(SafeAppendable builder, String keyword, List<String> parts, String open, String close,
-                           String conjunction) {
+    private void sqlClause(
+        SafeAppendable builder,
+        String keyword,
+        List<String> parts,
+        String open,
+        String close,
+        String conjunction) {
       if (!parts.isEmpty()) {
         if (!builder.isEmpty()) {
           builder.append(" ");
@@ -368,7 +347,13 @@ public abstract class AbstractSQL<T> {
         String last = "________";
         for (int i = 0, n = parts.size(); i < n; i++) {
           String part = parts.get(i);
-          if (i > 0 && !part.equals(AND) && !part.equals(OR) && !part.equals(or) && !last.equals(AND) && !last.equals(OR) && !last.equals(or)) {
+          if (i > 0
+              && !part.equals(AND)
+              && !part.equals(OR)
+              && !part.equals(or)
+              && !last.equals(AND)
+              && !last.equals(OR)
+              && !last.equals(or)) {
             builder.append(conjunction);
           }
           builder.append(part);

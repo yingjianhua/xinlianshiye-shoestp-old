@@ -8,23 +8,22 @@ import irille.shop.plt.PltCityDao;
 
 /**
  * 中国城市
- * @author chen
  *
+ * @author chen
  */
-public class PltCityAction  extends HomeAction<PltCity>{
-	
-	private Integer province;
-	
-	public Integer getProvince() {
-		return province;
-	}
+public class PltCityAction extends HomeAction<PltCity> {
 
-	public void setProvince(Integer province) {
-		this.province = province;
-	}
+  private Integer province;
 
-	public void findByProvince() throws IOException {
-		write(PltCityDao.listByProvince(province));
-	}
+  public Integer getProvince() {
+    return province;
+  }
 
+  public void setProvince(Integer province) {
+    this.province = province;
+  }
+
+  public void findByProvince() throws IOException {
+    write(PltCityDao.listByProvince(province));
+  }
 }

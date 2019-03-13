@@ -536,6 +536,7 @@
             // 点击左侧分类时跳转
             categorySearch(e) {
                 this.lose = 1
+                this.curr = 1;
                 this.cated = e.currentTarget.dataset.cated;
                 this.page = 0;
                 this.productList();

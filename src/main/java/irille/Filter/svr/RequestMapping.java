@@ -9,6 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RequestMapping {
 
-	String alias();
-	int sort() default 99;
+  String alias();
+
+  int sort() default 99;
 }

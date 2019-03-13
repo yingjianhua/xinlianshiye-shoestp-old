@@ -148,7 +148,7 @@
                             </div>
 
                             <div class="inquiry-goods-info">
-                                <el-form-item label="Purchase Quantity：" required>
+                                <el-form-item style="white-space: nowrap;" label="Purchase Quantity：" required>
                                     <el-col :span="15">
                                         <el-form-item label-width="0" prop="quantity">
                                             <el-input v-model.number="form.quantity"></el-input>
@@ -588,7 +588,7 @@
                                                 pay_type: 1, //支付方式
                                             }
                                             window.location.href =
-                                                '/home/usr_UsrConsult_listView';
+                                                '/home/usr_UsrMessages_center';
                                         }, 2000)
                                         // 未登录时
                                     } else if (res.data.ret == -1) {

@@ -58,15 +58,6 @@ $('html').on('click', '#signin_close', function () {
         </blcok>
         <div class="h1"><a class="now" href="/" v-if="!breadcrumbnav || breadcrumbnav.length<=0"> All product</a></div>
     </div>
-    <!--分级导航 end-->
-
-    <el-pagination
-            layout="prev, pager, next"
-            :total="allpage"
-            prev-text="Previous"
-            next-text="Next"
-            :current-page="1">
-    </el-pagination>
     <!--页面左部分类导航-->
     <div class="leftNav fl">
         <h1>Related categories</h1>
@@ -542,8 +533,7 @@ $('html').on('click', '#signin_close', function () {
             },
             // 点击左侧分类时跳转
             categorySearch(e) {
-                this.lose = 1;
-                this.curr = 1;
+                this.lose = 1
                 this.cated = e.currentTarget.dataset.cated;
                 console.log(this.cated)
                 this.page = 0;

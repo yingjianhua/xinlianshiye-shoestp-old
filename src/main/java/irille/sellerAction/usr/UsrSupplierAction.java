@@ -1,5 +1,13 @@
 package irille.sellerAction.usr;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import irille.Service.Manage.Usr.IUsrSupplierManageService;
 import irille.pub.Exp;
 import irille.pub.Str;
@@ -27,24 +35,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
 public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsrSupplierAction {
 
-  @Getter
-  @Setter
-  private String logo;
-  @Getter
-  @Setter
-  private String newPwd;
-  @Getter
-  @Setter
-  private String oldPwd;
+  @Getter @Setter private String logo;
+  @Getter @Setter private String newPwd;
+  @Getter @Setter private String oldPwd;
 
   public void updBase() throws Exception {
     UsrSupplierDAO.UpdBase upd = new UsrSupplierDAO.UpdBase();
@@ -112,29 +107,27 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
       writeErr(e.getLastMessage());
     }
 
-//    	UsrSupplier supplier=new UsrSupplier();
-//        try {
-//        	String verifyCode = verifyCode();
-//            if (Str.isEmpty(verifyCode) || Str.isEmpty(getCheckCode()) || verifyCode.equals(getCheckCode()) == false)
-//                throw LOG.err("errcode", "验证码错误");
-//             supplier = UsrSupplierDAO.loginCheck(getBean().getLoginName(), getMmCheck());
-//
-//            this.session.put(LOGIN, supplier);
-//            SellerAction.initTran(supplier);
-//        } catch (Exp e) {
-//            setSarg1(e.getLastMessage());
-//            return SellerAction.LOGIN;
-//        }
-//
-//        setResult("/seller/admin/index/index.html");
-//        return RTRENDS;
+    //    	UsrSupplier supplier=new UsrSupplier();
+    //        try {
+    //        	String verifyCode = verifyCode();
+    //            if (Str.isEmpty(verifyCode) || Str.isEmpty(getCheckCode()) ||
+    // verifyCode.equals(getCheckCode()) == false)
+    //                throw LOG.err("errcode", "验证码错误");
+    //             supplier = UsrSupplierDAO.loginCheck(getBean().getLoginName(), getMmCheck());
+    //
+    //            this.session.put(LOGIN, supplier);
+    //            SellerAction.initTran(supplier);
+    //        } catch (Exp e) {
+    //            setSarg1(e.getLastMessage());
+    //            return SellerAction.LOGIN;
+    //        }
+    //
+    //        setResult("/seller/admin/index/index.html");
+    //        return RTRENDS;
 
   }
 
-
-  /**
-   * 注销供应商登录信息
-   */
+  /** 注销供应商登录信息 */
   @Override
   public String logon() {
     setUser(null);
@@ -147,7 +140,6 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
    *
    * @author zw
    */
-
   public void returnname() throws Exception {
     UsrSupplier us = new UsrSupplier();
     us.setName(getSupplier().getName());
@@ -197,9 +189,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     this._checkCode = _checkCode;
   }
 
-  /**
-   * 更新店铺设置信息
-   */
+  /** 更新店铺设置信息 */
   public void UpdBizDiy() throws Exception {
     UsrSupplierDAO.UpdBizDiy updbizdiy = new UsrSupplierDAO.UpdBizDiy();
     getBean().setPkey(SellerAction.getSupplier().getPkey());
@@ -219,13 +209,9 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
    *
    * @author zjl
    */
-  @Getter
-  @Setter
-  private AccountSettingsView asv;
+  @Getter @Setter private AccountSettingsView asv;
 
-  /**
-   * 更新账户设置
-   */
+  /** 更新账户设置 */
   public void upAccount() throws IOException {
     UsrSupplierDAO.updAccount(getSupplier().getPkey(), getAsv());
     write();
@@ -240,7 +226,6 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     write(UsrSupplierDAO.findById4AccountSet(getSupplier().getPkey()));
   }
 
-
   /**
    * 更新商家LOGO
    *
@@ -250,7 +235,6 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     UsrSupplierDAO.updLogo(logo, getSupplier().getPkey());
     write();
   }
-
 
   /**
    * 修改密码
@@ -262,11 +246,8 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     write();
   }
 
-  @Getter
-  @Setter
-  private UsrshopSettingView usv;
-  @Inject
-  private UsrSupplierDAO.setting usrSupplierSetting;
+  @Getter @Setter private UsrshopSettingView usv;
+  @Inject private UsrSupplierDAO.setting usrSupplierSetting;
 
   /**
    * 店铺装修
@@ -301,11 +282,9 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
 
   }
 
-  /**
-   * 供应商列表页面 Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/7/19 Time: 15:46
-   */
-
+  /** 供应商列表页面 Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/7/19 Time: 15:46 */
   private int _curr;
+
   private int _showItem;
   private int _cated = -1;
 
@@ -336,7 +315,6 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     this._showItem = showItem;
   }
 
-
   public String getEmail() {
     return email;
   }
@@ -361,7 +339,6 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     this.vCode = vCode;
   }
 
-
   /**
    * 获取国家数据,省份数据,以及供应商分类数据,采购商信息,返会给前端页面
    *
@@ -380,14 +357,14 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     JSONObject categoryJson = null;
     JSONObject provinceJson = null;
     JSONObject supplierJson = crtJsonByBean(supplier);
-    supplierJson
-        .put(UsrSupplier.T.HOME_PAGE_DIY.getFld().getCode(), supplier.getHomePageDiy(Language.en));
+    supplierJson.put(
+        UsrSupplier.T.HOME_PAGE_DIY.getFld().getCode(), supplier.getHomePageDiy(Language.en));
     supplierJson.put(UsrSupplier.T.COUNTRY.getFld().getCode(), crtJsonByBean(supplier.gtCountry()));
-    supplierJson
-        .put(UsrSupplier.T.PROVINCE.getFld().getCode(), crtJsonByBean(supplier.gtProvince()));
-    supplierJson
-        .put(UsrSupplier.T.CATEGORY.getFld().getCode(), crtJsonByBean(supplier.gtCategory()));
-    //supplierArray.put(supplierJson);
+    supplierJson.put(
+        UsrSupplier.T.PROVINCE.getFld().getCode(), crtJsonByBean(supplier.gtProvince()));
+    supplierJson.put(
+        UsrSupplier.T.CATEGORY.getFld().getCode(), crtJsonByBean(supplier.gtCategory()));
+    // supplierArray.put(supplierJson);
     for (PltCountry countryObj : countryList) {
       countryJson = crtJsonByBean(countryObj);
       countryArray.put(countryJson);
@@ -407,67 +384,60 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     writerOrExport(json);
   }
 
-
-
-
-/**
+  /**
    * 获取供应商信息
-   * @author: lingjian
-   * @Date: 2019/3/1 15:49
+   *
+   * @author: lingjian @Date: 2019/3/1 15:49
    */
   public void loadOnlineSup() throws Exception {
-    UsrSupplier supplier = BeanBase
-            .load(UsrSupplier.class, getSupplier().getPkey());
-    SQL sql = new SQL() {{
-      SELECT(UsrAnnex.class);
-      FROM(UsrAnnex.class);
-      WHERE(UsrAnnex.T.SUPPLIER, "=?",supplier.getPkey());
-    }};
+    UsrSupplier supplier = BeanBase.load(UsrSupplier.class, getSupplier().getPkey());
+    SQL sql =
+        new SQL() {
+          {
+            SELECT(UsrAnnex.class);
+            FROM(UsrAnnex.class);
+            WHERE(UsrAnnex.T.SUPPLIER, "=?", supplier.getPkey());
+          }
+        };
     SqlQuery query = Query.sql(sql);
     Map<String, Object> obj = query.queryMap();
     JSONObject json = crtJsonByBean(supplier);
     JSONObject j = new JSONObject();
-    for(String key:obj.keySet()){
-      j.put(key,obj.get(key));
+    for (String key : obj.keySet()) {
+      j.put(key, obj.get(key));
     }
-    json.put("annex",j);
+    json.put("annex", j);
     writerOrExport(json);
   }
 
-
-    /**
+  /**
    * @Description: 店铺信息
+   *
    * @date 2018/12/18 9:34
    * @anthor wilson zhang
    */
   public void getsupinfo() throws Exception {
-    write(UsrSupplierDAO.getsupinfo(getSupplier().getPkey(),
-        PltConfigDAO.supplierLanguage(getSupplier().getPkey())));
+    write(
+        UsrSupplierDAO.getsupinfo(
+            getSupplier().getPkey(), PltConfigDAO.supplierLanguage(getSupplier().getPkey())));
   }
-  @Getter
-  @Setter
-  private Integer purchasePkey;
-  @Getter
-  @Setter
-  private Language lang;
 
-  @Getter
-  @Setter
-  private String contactsIdCardFrontPhotoName;
-  @Getter
-  @Setter
-  private String idCardFrontPhotoName;
+  @Getter @Setter private Integer purchasePkey;
+  @Getter @Setter private Language lang;
+
+  @Getter @Setter private String contactsIdCardFrontPhotoName;
+  @Getter @Setter private String idCardFrontPhotoName;
 
   /**
    * 更新供应商信息
-   * @author: lingjian
-   * @Date: 2019/3/1 15:49
+   *
    * @throws IOException
+   * @author: lingjian @Date: 2019/3/1 15:49
    */
   public void updInfo() throws Exception {
     try {
-      UsrAnnex annex = UsrAnnex.chkUniqueSupplier(false,getSupplier().getPkey());
-      if(getSupplier().getPkey() != null) {
+      UsrAnnex annex = UsrAnnex.chkUniqueSupplier(false, getSupplier().getPkey());
+      if (getSupplier().getPkey() != null) {
         annex.setIdCardFrontPhotoName(idCardFrontPhotoName);
         annex.setContactsIdCardFrontPhotoName(contactsIdCardFrontPhotoName);
       }
@@ -502,15 +472,13 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
    * @author wilson zhang
    */
   public void loadshopsetting() throws Exception {
-    write(UsrSupplierDAO.loadshopsetting(getSupplier().getPkey(),
-        PltConfigDAO.supplierLanguage(SellerAction.getSupplier())));
-
+    write(
+        UsrSupplierDAO.loadshopsetting(
+            getSupplier().getPkey(), PltConfigDAO.supplierLanguage(SellerAction.getSupplier())));
   }
 
   /*                 新的写法   分割线               */
-  @Inject
-  IUsrSupplierManageService usrSupplierManageService;
-
+  @Inject IUsrSupplierManageService usrSupplierManageService;
 
   public void getShopSetting() throws IOException {
     write(usrSupplierManageService.getSettingInfoById(getSupplier().getPkey()));
@@ -526,9 +494,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     writeSuccess();
   }
 
-  @Getter
-  @Setter
-  UsrshopSettingView view;
+  @Getter @Setter UsrshopSettingView view;
 
   public void updShopSetting() throws IOException {
     usrSupplierManageService.updShopSetting(getSupplier().getPkey(), getView());
@@ -536,13 +502,12 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
   }
 
   /**
-   * @Description: 修改  店铺信息
+   * @Description: 修改 店铺信息
+   *
    * @date 2018/12/19 14:40
    * @anthor wilson zhang
    */
-  @Getter
-  @Setter
-  SupinfoView results;
+  @Getter @Setter SupinfoView results;
 
   public void updShopbase() throws Exception {
     UsrSupplier us = new UsrSupplier();
@@ -567,22 +532,23 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
 
   /**
    * @Description: 运营信息
+   *
    * @date 2018/12/19 14:40
    * @anthor wilson zhang
    */
   public void getoperateinfo() throws Exception {
-    write(UsrSupplierDAO.getoperateinfo(getSupplier().getPkey(),
-        PltConfigDAO.supplierLanguage(SellerAction.getSupplier())));
+    write(
+        UsrSupplierDAO.getoperateinfo(
+            getSupplier().getPkey(), PltConfigDAO.supplierLanguage(SellerAction.getSupplier())));
   }
 
   /**
-   * @Description: 修改  运营信息
+   * @Description: 修改 运营信息
+   *
    * @date 2018/12/19 14:40
    * @anthor wilson zhang
    */
-  @Getter
-  @Setter
-  operateinfoView ovs;
+  @Getter @Setter operateinfoView ovs;
 
   public void updoperateinfo() throws Exception {
     UsrSupplier us = new UsrSupplier();
@@ -606,6 +572,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
 
   /**
    * @Description: 2.1 认证信息
+   *
    * @date 2018/12/21 16:16
    * @anthor wilson zhang
    */

@@ -10,8 +10,7 @@ import lombok.Setter;
 @Setter
 public class AdView implements BaseView {
 
-	private List<AdLineView> items;
-	//产品分类, 仅当广告类型为产品分类广告时有效
-	private Integer category; 
-
+  private List<AdLineView> items;
+  // 产品分类, 仅当广告类型为产品分类广告时有效
+  private Integer category;
 }
