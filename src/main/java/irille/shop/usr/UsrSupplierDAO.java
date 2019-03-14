@@ -905,13 +905,14 @@ public class UsrSupplierDAO {
    * @return
    * @author: lingjian @Date: 2019/3/11 10:49
    */
-  public static UsrSupplier reviewStatus(String pkey, Integer status, String reason) {
+  public static UsrSupplier reviewStatus(String pkey, Integer status, String reason, Date storeopenTime) {
     UsrSupplier supplier = BeanBase.load(UsrSupplier.class, pkey);
     if (status == 0) {
       supplier.stStatus(OStatus.INIT);
     } else if (status == 1) {
       supplier.stStatus(OStatus.APPR);
       supplier.stStoreStatus(Usr.SStatus.OPEN);
+      supplier.setStoreopenTime(storeopenTime);
     } else if (status == 2) {
       supplier.stStatus(OStatus.FAIL);
       supplier.setReason(reason);
@@ -1028,6 +1029,8 @@ public class UsrSupplierDAO {
                         }
                         setApplicationTime(
                             (Date) bean.get(T.APPLICATION_TIME.getFld().getCodeSqlField()));
+                        setStoreopenTime(
+                                (Date) bean.get(T.STOREOPEN_TIME.getFld().getCodeSqlField()));
                       }
                     })
             .collect(Collectors.toList());
@@ -1237,7 +1240,7 @@ public class UsrSupplierDAO {
     SQL sql =
         new SQL() {
           {
-            SELECT(UsrSupplier.class).SELECT(SVSInfo.T.GRADE).SELECT(SVSInfo.T.STATUS,"svsStatus").FROM(UsrSupplier.class).WHERE(T.STATUS, "=1");
+            SELECT(UsrSupplier.class).SELECT(SVSInfo.T.PKEY,"svsId").SELECT(SVSInfo.T.GRADE).SELECT(SVSInfo.T.STATUS,"svsStatus").FROM(UsrSupplier.class).WHERE(T.STATUS, "=1");
             LEFT_JOIN(SVSInfo.class, T.PKEY,SVSInfo.T.SUPPLIER);
             if (name != null) {
               WHERE(T.NAME, "like '%" + name + "%'");
@@ -1257,7 +1260,10 @@ public class UsrSupplierDAO {
                 o ->
                     new SuppliersView() {
                       {
-                        setId((Integer) o.get(T.PKEY.getFld().getCodeSqlField()));
+                        setId((Integer) o.get(T.PKEY.getFld().getCodeSqlField())); // 供应商id
+                        if (o.get("svsId") != null) {
+                          setSvsId((Integer) o.get("svsId"));
+                        }
                         setName((String) o.get(T.NAME.getFld().getCodeSqlField()));
                         if (o.get(T.UserId.getFld().getCodeSqlField()) != null) {
                           UsrMain main =
@@ -1277,8 +1283,7 @@ public class UsrSupplierDAO {
                         if (o.get("svsStatus") != null) {
                           setSvsStatus((Byte) o.get("svsStatus"));
                         }
-                        setApplicationTime(
-                            (Date) o.get(T.APPLICATION_TIME.getFld().getCodeSqlField()));
+                        setStoreopenTime((Date) o.get(T.STOREOPEN_TIME.getFld().getCodeSqlField()));
                         setStoreStatus(
                             Byte.valueOf(
                                 String.valueOf(o.get(T.STORE_STATUS.getFld().getCodeSqlField()))));

@@ -2,6 +2,7 @@ package irille.platform.usr;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -126,6 +127,7 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
         main.upd();
       }
       UsrSupplier newSupplier = UsrSupplierDAO.updInfo(getBean());
+      newSupplier.setStoreopenTime(getBean().getStoreopenTime());
       newSupplier.upd();
       write();
     } catch (Exp e) {
@@ -146,6 +148,7 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
   }
 
   private String reason;
+  private Date storeopenTime;
 
   /**
    * 审核
@@ -154,7 +157,7 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
    * @author: lingjian @Date: 2019/3/11 10:45
    */
   public void reviewStatus() throws IOException {
-    UsrSupplier supplier = UsrSupplierDAO.reviewStatus(id, status, reason);
+    UsrSupplier supplier = UsrSupplierDAO.reviewStatus(id, status, reason,storeopenTime);
     UsrSupplierNewView usrSupplierNewView = new UsrSupplierNewView();
     usrSupplierNewView.setStatus(supplier.getStatus());
     write(usrSupplierNewView);

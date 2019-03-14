@@ -65,4 +65,6 @@ public class UsrSupplierNewView implements BaseView {
 
   @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
   private Date applicationTime; // 申请时间
+  @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+  private Date storeopenTime; // 店铺入驻时间
 }
