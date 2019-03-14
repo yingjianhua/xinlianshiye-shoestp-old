@@ -905,17 +905,21 @@ public class UsrSupplierDAO {
    * @return
    * @author: lingjian @Date: 2019/3/11 10:49
    */
+
   public static UsrSupplier reviewStatus(String pkey, Integer status, String reason, Date storeopenTime) {
     UsrSupplier supplier = BeanBase.load(UsrSupplier.class, pkey);
+    IPMMessageService messageService = new PMMessageServiceImp();
     if (status == 0) {
       supplier.stStatus(OStatus.INIT);
     } else if (status == 1) {
       supplier.stStatus(OStatus.APPR);
       supplier.stStoreStatus(Usr.SStatus.OPEN);
       supplier.setStoreopenTime(storeopenTime);
+      messageService.send(OTempType.SHOP_APPR,supplier,null,supplier);
     } else if (status == 2) {
       supplier.stStatus(OStatus.FAIL);
       supplier.setReason(reason);
+      messageService.send(OTempType.SHOP_APPR,supplier,null,supplier);
     }
     supplier.upd();
     return supplier;
