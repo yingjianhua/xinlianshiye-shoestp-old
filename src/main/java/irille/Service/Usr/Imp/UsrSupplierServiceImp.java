@@ -8,9 +8,11 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import com.xinlianshiye.shoestp.shop.view.usr.FavoritesView;
+import com.xinlianshiye.shoestp.shop.view.usr.SuplierDetailView;
 
 import irille.Dao.PdtProductDao;
 import irille.Dao.UsrSupplierDao;
+import irille.Entity.SVS.SVSInfo;
 import irille.Service.Usr.IUsrSupplierService;
 import irille.core.sys.Sys;
 import irille.homeAction.usr.dto.SupplierListView;
@@ -172,5 +174,19 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
   @Override
   public Integer isSupplier(String loginName) {
     return usrSupplierDao.isSupplier(loginName) ? 1 : 0;
+  }
+
+  @Override
+  public SuplierDetailView getSuplierDetail(Integer supplierPkey) {
+    SuplierDetailView view = new SuplierDetailView();
+    Map<String, Object> supMap = usrSupplierDao.getSupplierDetail(supplierPkey);
+    Map<String, Object> SVSMap = usrSupplierDao.getSupplierSVS(supplierPkey);
+    view.setPkey((Integer) supMap.get(UsrSupplier.T.PKEY.getFld().getCodeSqlField()));
+    view.setCompanyName((String) supMap.get(UsrSupplier.T.NAME.getFld().getCodeSqlField()));
+    view.setLogo((String) supMap.get(UsrSupplier.T.LOGO.getFld().getCodeSqlField()));
+    if (SVSMap.size() > 0) {
+      view.setSVSGRade((Byte) SVSMap.get(SVSInfo.T.GRADE.getFld().getCodeSqlField()));
+    }
+    return view;
   }
 }

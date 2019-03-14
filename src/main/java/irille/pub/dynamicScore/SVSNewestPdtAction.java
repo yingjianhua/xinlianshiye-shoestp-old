@@ -81,6 +81,7 @@ public class SVSNewestPdtAction implements ISVSNewestPdtAction {
 
   @Override
   public List<SVSInfo> getSVSInfos(String supIds) {
+    if (supIds == null || "".equals(supIds)) return null;
     return Query.sql(svsNewestPdtService.getSVSInfos(supIds)).queryList(SVSInfo.class);
   }
 
@@ -138,18 +139,19 @@ public class SVSNewestPdtAction implements ISVSNewestPdtAction {
       SVSNewestPdt.TB.getCodeSqlTb();
       Env.INST.initTran(null, null);
       SVSNewestPdtAction svsNewestPdtAction = new SVSNewestPdtAction();
-
-      List<SVSInfo> infos =
-          svsNewestPdtAction.getSVSInfos(svsNewestPdtAction.getSupDiamondsAndGold());
-      infos.forEach(
-          info -> {
-            info.setDynamicScore(svsNewestPdtAction.getTotalScore(info.getSupplier()));
-          });
-      BatchUtils.batchUpd(
-          SVSInfo.class,
-          Arrays.asList(SVSInfo.T.DYNAMIC_SCORE),
-          Arrays.asList(SVSInfo.T.PKEY),
-          infos);
+      if (svsNewestPdtAction.getSupDiamondsAndGold().size() > 0) {
+        List<SVSInfo> infos =
+            svsNewestPdtAction.getSVSInfos(svsNewestPdtAction.getSupDiamondsAndGold());
+        infos.forEach(
+            info -> {
+              info.setDynamicScore(svsNewestPdtAction.getTotalScore(info.getSupplier()));
+            });
+        BatchUtils.batchUpd(
+            SVSInfo.class,
+            Arrays.asList(SVSInfo.T.DYNAMIC_SCORE),
+            Arrays.asList(SVSInfo.T.PKEY),
+            infos);
+      }
       System.out.println("====SVS修改动态分END====");
     }
   }
