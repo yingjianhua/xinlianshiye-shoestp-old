@@ -41,7 +41,8 @@ import org.json.JSONObject;
       @Attribute(name = "企业审核状态", field = "STATUS", type = Usr.OStatus.class),
       @Attribute(name = "企业审核时间", field = "APPR_TIME", type = Date.class),
       @Attribute(name = "公司名称", field = "NAME", type = String.class),
-      @Attribute(name = "企业法人", field = "ENTITY", type = String.class)
+      @Attribute(name = "企业法人", field = "ENTITY", type = String.class),
+      @Attribute(name = "理由/备注", field = "REASON", type = String.class)
     })
 public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
 

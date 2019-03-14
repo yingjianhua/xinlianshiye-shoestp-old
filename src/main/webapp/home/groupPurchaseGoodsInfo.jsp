@@ -216,9 +216,9 @@
                                 <div>
                                     ${env.currency.symbols}${product.curPrice}
                                 </div>
-                                &lt;%&ndash; <del>
+                                <%-- <del>
                                     ${env.currency.symbols}${sourceProduct.curPrice}
-                                </del> &ndash;%&gt;
+                                </del> --%>
                             </div>--%>
                     <!-- 商品编号 -->
                     <div class="activities_goods_num">

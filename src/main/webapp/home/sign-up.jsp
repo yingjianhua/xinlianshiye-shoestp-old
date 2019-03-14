@@ -29,6 +29,10 @@
     <script type="text/javascript" src="./static/js/lang/${env.curLanguage }.js"></script>
     <script type="text/javascript" src="./static/js/layer.js"></script>
     <script type="text/javascript" src="./static/js/jquery.combo.select.js"></script>
+
+    <script src="./static/js/hellojs/demos/client_ids.js"></script>
+    <script type="text/javascript" src="./static/js/hellojs/dist/hello.all.js"></script>
+
     <link rel="stylesheet" href="./static/css/layer.css" type="text/css">
     <script type="text/javascript">
         $(document).ready(function () {
@@ -36,6 +40,38 @@
             user_obj.sign_up_init();
         });
     </script>
+
+    <%--google支持--%>
+    <meta name="google-signin-client_id" content="1094073562755-0sf2r98c8q0ik850jafbe7o5qoclsi63.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <%--<script>--%>
+        <%--// facebook异步调用支持--%>
+        <%--window.fbAsyncInit = function() {--%>
+            <%--FB.init({--%>
+                <%--appId      : '801883060180295',--%>
+                <%--cookie     : true,  // enable cookies to allow the server to access--%>
+                                    <%--// the session--%>
+                <%--xfbml      : true,  // parse social plugins on this page--%>
+                <%--version    : 'v3.2' // The Graph API version to use for the call--%>
+            <%--});--%>
+
+            <%--FB.getLoginStatus(function(response) {--%>
+                <%--statusChangeCallback(response);--%>
+            <%--});--%>
+
+        <%--};--%>
+        <%--(function(d, s, id) {--%>
+            <%--var js, fjs = d.getElementsByTagName(s)[0];--%>
+            <%--if (d.getElementById(id)) return;--%>
+            <%--js = d.createElement(s); js.id = id;--%>
+            <%--js.src = "https://connect.facebook.net/en_US/sdk.js";--%>
+            <%--fjs.parentNode.insertBefore(js, fjs);--%>
+        <%--}(document, 'script', 'facebook-jssdk'));--%>
+    <%--</script>--%>
+
+
+
 </head>
 
 <body>
@@ -253,6 +289,27 @@
                         name="createAccount"/></button>
             </div>
         </form>
+
+        <!-- facebook登陆 -->
+        <%--<fb:login-button--%>
+                <%--scope="public_profile,email"--%>
+                <%--onlogin="checkLoginState();">--%>
+        <%--</fb:login-button>--%>
+        <%--google登陆--%>
+        <%--<div class="g-signin2" data-onsuccess="onSignIn"></div>--%>
+
+        <%--<div id="fb-root"></div>--%>
+        <%--<script async defer src="https://connect.facebook.net/zh_CN/sdk.js#xfbml=1&version=v3.2&appId=801883060180295&autoLogAppEvents=1"></script>--%>
+        <%--<div onlogin="checkLoginState();" class="fb-login-button" data-size="large" data-button-type="continue_with" data-auto-logout-link="true" data-use-continue-as="true"></div>--%>
+        <%--<button onclick="ajaxforid()">登陆</button>--%>
+
+        <%--<button onclick="linkedin()">linkedin</button>--%>
+        <button id='profile' onclick="login('facebook');">facebook</button>
+
+        <%--<button id='login' onclick="login('linkedin')">LinkedIn</button>--%>
+
+
+
         <div class="info fr">
             <div class="box member">
                 <p><s:text name="Global.Already_Have_An_Account"/></p>
@@ -304,6 +361,164 @@
     gtag('config', 'AW-783435725');
     gtag('config', 'UA-127715615-6')
 </script>
+
+<script class="pre">
+    function login(network) {
+        var facebook = hello(network);
+        facebook.login().then(function() {
+            // get user profile data
+            return facebook.api('me');
+        }).then(function(p) {
+            console.log("p====>",p)
+            document.getElementById('profile').innerHTML = "<img src='"+ p.thumbnail + "' width=24/>Connected to "+ network +" as " + p.name;
+            console.log(p.id)
+        })
+            .catch(function(err) {
+                console.log(err);
+            });
+    }
+
+</script>
+<script class="pre">
+    hello.init({
+        facebook: ''
+        // 'linkedin' : '81xpp0e4b5z1fh',
+    }, {
+        // scope : ['friends','email'],
+        redirect_uri: 'https://5c937c6f.ngrok.io/home/usr_UsrPurchase_sign',
+        // oauth_proxy: OAUTH_PROXY_URL
+    });
+</script>
+
+<%--<script>--%>
+    <%--var a = "";--%>
+    <%--function linkedin() {--%>
+        <%--window.location.href = "https://www.linkedin.com/uas/oauth2/authorization?state=987654321&" +--%>
+                <%--"response_type=code&" +--%>
+                <%--"client_id=81xpp0e4b5z1fh&" +--%>
+                <%--"redirect_uri=http://localhost:8080/home/usr_UsrPurchase_sign&" +--%>
+                <%--"scope=r_basicprofile";--%>
+        <%--console.log(getParam("code"))--%>
+        <%--$.ajax({--%>
+            <%--url: '/home/usr_UsrPurchase_test',--%>
+            <%--type: 'post',--%>
+            <%--data: {--%>
+                <%--'code':getParam("code")--%>
+            <%--},--%>
+            <%--dataType: 'json',--%>
+            <%--success: function (data) {--%>
+                <%--console.log("data==>",data)--%>
+            <%--}--%>
+        <%--});--%>
+    <%--}--%>
+
+    <%--function getParam(paramName) {--%>
+        <%--paramValue = "", isFound = !1;--%>
+        <%--if (this.location.search.indexOf("?") == 0 && this.location.search.indexOf("=") > 1) {--%>
+            <%--arrSource = unescape(this.location.search).substring(1, this.location.search.length).split("&"), i = 0;--%>
+            <%--while (i < arrSource.length && !isFound) arrSource[i].indexOf("=") > 0 && arrSource[i].split("=")[0].toLowerCase() == paramName.toLowerCase() && (paramValue = arrSource[i].split("=")[1], isFound = !0), i++--%>
+        <%--}--%>
+        <%--return paramValue == "" && (paramValue = null), paramValue--%>
+    <%--}--%>
+<%--</script>--%>
+
+<%--google登陆--%>
+<script>
+    function onSignIn(googleUser) {
+        console.log("ssss")
+        var profile = googleUser.getBasicProfile();
+        console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+        $.ajax({
+            url: '/home/usr_UsrPurchase_googleNewlogin',
+            type: 'post',
+            data: {
+                'googleID':profile.getId().toString()
+            },
+            dataType: 'json',
+            success: function (data) {
+                console.log("data==>",data)
+                if(data.ret == 1){
+                    window.location.href = '/home/usr_UsrPurchase_userIndex'
+                }else{
+                    // window.location.href = '/home/usr_UsrPurchase'
+                }
+            }
+        });
+    }
+
+</script>
+
+<%--facebook登陆--%>
+<script>
+    // facebook登陆回调函数
+    function statusChangeCallback(response) {
+        console.log('statusChangeCallback');
+        console.log(response);
+        if (response.status === 'connected') {
+            testAPI(response);
+        } else {
+            // document.getElementById('status').innerHTML = 'Please log ' +
+            //     'into this app.';
+        }
+    }
+
+    // 登陆时调用此函数
+    function checkLoginState() {
+        //获取登陆状态
+        FB.getLoginStatus(function(response) {
+            statusChangeCallback(response);
+        });
+    }
+
+    //登陆成功后调用的方法
+    function testAPI(response) {
+        console.log('Welcome!  Fetching your information.... ');
+        console.log(response);
+        FB.api('/me', function(response) {
+            console.log('Successful login for: ',response.id);
+            $.ajax({
+                url: '/home/usr_UsrPurchase_faceBookNewlogin',
+                type: 'post',
+                data: {
+                    'facebookID':response.id.toString()
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.log("data==>",data)
+                    if(data.ret == 1){
+                        window.location.href = '/home/usr_UsrPurchase_userIndex'
+                    }else{
+                        // window.location.href = '/home/usr_UsrPurchase'
+                    }
+                }
+            });
+        });
+    }
+
+    function ajaxforid() {
+        console.log("ssss")
+        var id = 119600319125978;
+        // var id = 0;
+        $.ajax({
+            url: '/home/usr_UsrPurchase_faceBookNewlogin',
+            type: 'post',
+            data: {
+                'facebookID':id
+            },
+            dataType: 'json',
+            success: function (data) {
+                console.log("data==>",data)
+                if(data.ret == 1){
+                    window.location.href = '/home/usr_UsrPurchase_userIndex'
+                }else{
+                    window.location.href = '/home/usr_UsrPurchase_sign'
+                }
+            }
+        });
+    }
+</script>
+
+
 <script>
     function gtag_report_conversion(url) {
         var callback = function () {

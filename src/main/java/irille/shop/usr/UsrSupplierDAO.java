@@ -905,17 +905,21 @@ public class UsrSupplierDAO {
    * @return
    * @author: lingjian @Date: 2019/3/11 10:49
    */
+
   public static UsrSupplier reviewStatus(String pkey, Integer status, String reason, Date storeopenTime) {
     UsrSupplier supplier = BeanBase.load(UsrSupplier.class, pkey);
+    IPMMessageService messageService = new PMMessageServiceImp();
     if (status == 0) {
       supplier.stStatus(OStatus.INIT);
     } else if (status == 1) {
       supplier.stStatus(OStatus.APPR);
       supplier.stStoreStatus(Usr.SStatus.OPEN);
       supplier.setStoreopenTime(storeopenTime);
+      messageService.send(OTempType.SHOP_APPR,supplier,null,supplier);
     } else if (status == 2) {
       supplier.stStatus(OStatus.FAIL);
       supplier.setReason(reason);
+      messageService.send(OTempType.SHOP_APPR,supplier,null,supplier);
     }
     supplier.upd();
     return supplier;
@@ -1057,13 +1061,17 @@ public class UsrSupplierDAO {
     bean.stStoreStatus(Usr.SStatus.DOWN); // 店铺状态
     bean.stIsAuth(Usr.OIsAuth.NO); // 认证状态
     bean.setSort(default_sort); // 排序
-    bean.setCountry(main.getCountry()); // 国家
-    bean.setProvince(main.getProvince()); // 省份
-    bean.setBankCountry(main.getCountry()); // 开户行国家
-    bean.setBankProvince(main.getProvince()); // 开户行省份
+    bean.setCountry(7); // 国家
+    bean.setProvince(257); // 省份
+    bean.setBankCountry(7); // 开户行国家
+    bean.setBankProvince(257); // 开户行省份
     bean.stHomePageOn(false); // 首页个性装修开关
     bean.stProductPageOn(false); // 产品页个性装修开关
     bean.stContactPageOn(false); // 联系页个性装修开关
+    bean.stBottomHomeProductsOn(false); //首页底部产品展示开关
+    bean.stHomePosterOn(false);
+    bean.stHomeBusinessBigPosterOn(false);
+    bean.stCompanyIntroductionPageCustomDecorationOn(false);
     bean.stIsPro(false); // 供应商首页产品展示
     bean.setUpdateTime(Env.getTranBeginTime()); // 更新时间
     bean.setCategory(40); // 供应商分类
@@ -1072,17 +1080,19 @@ public class UsrSupplierDAO {
     bean.setPassword(DateTools.getDigest(main.getPkey() + main.getPassword())); // UsrMain表的密码
     bean.setName(view.getName()); // 公司名称-必填
     bean.setEnglishName(view.getEnglishName()); // 公司英文名称
-    bean.stCompanyType(new JSONObject().put(lang.name(), view.getCompanyType())); // 企业类型
-    bean.stCompanyNature(new JSONObject().put(lang.name(), view.getCompanyNature())); // 企业性质
+
+    bean.setCompanyType(view.getCompanyType()); // 企业类型
+    bean.setCompanyNature(view.getCompanyNature()); // 企业性质
+
     bean.setCompanyEstablishTime(view.getCompanyEstablishTime()); // 成立时间
     bean.setWebsite(view.getWebsite()); // 官网地址
-    bean.stCompanyAddr(new JSONObject().put(lang.name(), view.getCompanyAddr())); // 详细地址
+    bean.setCompanyAddr(view.getCompanyAddr()); // 详细地址
     bean.setAnnualProduction(view.getAnnualProduction()); // 年产量
     bean.setTelephone(view.getTelephone()); // 公司电话
     bean.setFax(view.getFax()); // 传真
     bean.setPostcode(view.getPostcode()); // 邮编
     bean.setTargetedMarket(view.getTargetedMarket()); // 目标市场
-    bean.stProdPattern(new JSONObject().put(lang.name(), view.getProdPattern())); // 生产模式
+    bean.setProdPattern(view.getProdPattern()); // 生产模式
     bean.setCreditCode(view.getCreditCode()); // 信用代码
     bean.setRegisteredCapital(view.getRegisteredCapital()); // 注册资金-必填
     bean.setEntity(view.getEntity()); // 企业法人-必填
@@ -1095,8 +1105,8 @@ public class UsrSupplierDAO {
     bean.setTaxpayerType(view.getTaxpayerType()); // 纳税人类型
 
     bean.setContacts(view.getContacts()); // 联系人
-    bean.stDepartment(new JSONObject().put(lang.name(), view.getDepartment())); // 联系人部门
-    bean.stJobTitle(new JSONObject().put(lang.name(), view.getJobTitle())); // 联系人职称
+    bean.setDepartment(view.getDepartment()); // 联系人部门
+    bean.setJobTitle(view.getJobTitle()); // 联系人职称
     bean.setPhone(view.getPhone()); // 联系人手机
     bean.setContactEmail(view.getContactEmail()); // 联系人邮箱
 
