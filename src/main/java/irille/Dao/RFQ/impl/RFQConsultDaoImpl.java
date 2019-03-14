@@ -451,7 +451,8 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
       boolean flag,
       Integer status,
       Integer country,
-      int supId) {
+      int supId,
+      Integer usrCountry) {
     SQL sql = new SQL();
     sql.SELECT(
             RFQConsult.T.PKEY,
@@ -468,9 +469,10 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         .SELECT(RFQConsultRelation.T.CREATE_DATE, "myCreate_time")
         .FROM(RFQConsult.class)
         .LEFT_JOIN(RFQConsultRelation.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY)
+        .LEFT_JOIN(UsrPurchase.class, UsrPurchase.T.PKEY, T.PURCHASE_ID)
         .WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supId)
         .WHERE(RFQConsultRelation.T.IN_RECYCLE_BIN, "=?", Sys.OYn.NO);
-    switch (type) {
+    switch (status != null ? status : type) {
       case 2:
         sql.WHERE(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", Sys.OYn.NO);
         break;
@@ -483,7 +485,11 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
             .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.YES);
         break;
     }
-
+    sql.WHERE(country != null, RFQConsult.T.COUNTRY, "=?", country);
+    sql.WHERE(date != null, T.CREATE_DATE, ">=?", date);
+    sql.WHERE(keyword != null, RFQConsult.T.TITLE, "like ?", "%" + keyword + "%");
+    sql.WHERE(T.FAVORITE, "=?", flag);
+    sql.WHERE(usrCountry != null, UsrPurchase.T.COUNTRY, "=?", usrCountry);
     sql.LIMIT(start, limit);
     return Query.sql(sql).queryMaps();
   }

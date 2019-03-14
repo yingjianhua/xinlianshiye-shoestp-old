@@ -222,12 +222,13 @@ public class RFQManageServiceImp implements IRFQManageService {
       boolean flag,
       Integer status,
       Integer country,
-      int Supid)
+      int Supid,
+      Integer usrCountry)
       throws IOException {
     List<Map<String, Object>> list = null;
     list =
         rfqConsultDao.getMyRFQQuoteList(
-            start, limit, type, date, keyword, flag, status, country, Supid);
+            start, limit, type, date, keyword, flag, status, country, Supid,usrCountry);
     List<RFQManageMyQuoteListBody> result = new ArrayList<>();
     for (Map<String, Object> map : list) {
       RFQManageMyQuoteListBody body = new RFQManageMyQuoteListBody();
@@ -246,6 +247,8 @@ public class RFQManageServiceImp implements IRFQManageService {
               GetValue.get(map, RFQConsultRelation.T.PURCHASE_ID, Date.class, null));
       body.setPurchaseName(up.getName());
       body.setPurchaseCountryIMG(up.gtCountry().getNationalFlag());
+      body.setPurchaseCountry(up.gtCountry().getName());
+      body.setPurchaseCountryPkey(up.gtCountry().getPkey());
       if (GetValue.get(map, RFQConsultRelation.T.HAD_READ_SUPPLIER, Byte.class, (byte) -1) == 0
           && GetValue.get(map, RFQConsultRelation.T.HAD_READ_PURCHASE, Byte.class, (byte) -1)
               == 1) {
