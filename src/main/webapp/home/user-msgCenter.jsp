@@ -410,8 +410,7 @@
 										<div class="box-title">Basic information</div>
 										<div class="row-item product-info-box">
 											<img class="product-pic" alt="product's pic"
-												 v-if="inquiryDetail.images"
-												 :src="image(inquiryDetail.images[0]) + (inquiryList[nowInquiryIndex].type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')">
+												 :src="(inquiryDetail.images && inquiryDetail.images[0]) ? (image(inquiryDetail.images[0]) + (inquiryList[nowInquiryIndex].type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')) : '/home/v3/static/images/no_img.png'">
 											<div class="product-descript">
 												{{inquiryDetail.title}}
 											</div>
@@ -435,6 +434,7 @@
 											<ul class="photos-list">
 												<li class="photo-item"
 													v-for="picUrl in inquiryDetail.images"
+													v-if="picUrl"
 													:key="picUrl">
 													<img class="product-pic" alt="product's pic"
 														 :src="image(picUrl) + (inquiryList[nowInquiryIndex].type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')">
@@ -521,6 +521,7 @@
 												<div class="content">
 													<img class="product-pic"  alt=""
 														 :src="image(imgUrl)"
+														 v-if="imgUrl"
 														 v-for="imgUrl in inquiryDetail.images"
 														 :key="imgUrl">
 												</div>
@@ -671,6 +672,7 @@
 										<ul class="goods-pic-wrap" v-if="inquiryDetail.images && inquiryDetail.images.length">
 											<li class="goods-pic-item"
 												v-for="picUrl in inquiryDetail.images"
+												v-if="picUrl"
 												:key="picUrl">
 												<img class="product-pic" :src="image(picUrl)" alt="">
 											</li>
@@ -759,16 +761,22 @@
 											<img class="pic-head"
 												 v-if="chatMsgObj.another.avatar"
 												 :src="image(chatMsgObj.another.avatar)">
-											<div class="pic-head" v-else>
+											<div class="pic-head" v-else-if="chatMsgObj.another.name">
 												{{chatMsgObj.another.name[0]}}
+											</div>
+											<div class="pic-head" v-else>
+												H
 											</div>
 										</template>
 										<template v-else>
 											<img class="pic-head"
 												 v-if="chatMsgObj.myself.avatar"
 												 :src="image(chatMsgObj.myself.avatar)">
-											<div class="pic-head" v-else>
+											<div class="pic-head" v-else-if="chatMsgObj.myself.name">
 												{{chatMsgObj.myself.name[0]}}
+											</div>
+											<div class="pic-head" v-else>
+												M
 											</div>
 										</template>
 

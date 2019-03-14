@@ -1,6 +1,7 @@
 package irille.action;
 
 import java.io.*;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -48,6 +49,10 @@ public abstract class BeanAction<T extends BeanMain> extends BaseAction {
 
   public String getParams(String name) {
     return ServletActionContext.getRequest().getParameter(name);
+  }
+
+  public Map<String, String[]> getParams() {
+    return ServletActionContext.getRequest().getParameterMap();
   }
 
   protected void sendOutPuiStreanm(

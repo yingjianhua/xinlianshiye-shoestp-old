@@ -6,6 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 import java.util.Enumeration;
+import java.util.Map;
+import java.util.StringJoiner;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +17,7 @@ import com.opensymphony.xwork2.ActionProxy;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 
 import irille.homeAction.HomeAction;
+import irille.pub.util.AppConfig;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrUserDAO;
 import irille.view.usr.UserView;
@@ -54,7 +57,24 @@ public class ItpCheckPurchaseLogin extends AbstractInterceptor {
         return null;
       } else if (returnType.equals(String.class) && HomeAction.getPurchase() == null) {
         HomeAction<?> action = (HomeAction<?>) actionInvocation.getAction();
-        action.setJumpUrl(getJumpUrl(ServletActionContext.getRequest()));
+        StringJoiner stringJoiner = new StringJoiner("&");
+        getParams(ServletActionContext.getRequest())
+            .forEach(
+                (s, strings) -> {
+                  if (s.equalsIgnoreCase("jumpUrl")) return;
+                  for (String string : strings) {
+                    String t = s + "=" + string;
+                    stringJoiner.add(t);
+                  }
+                });
+        String host = ServletActionContext.getRequest().getHeader("Referer");
+        if (host == null || host.length() < 1) {
+          host = AppConfig.domain;
+        }
+        if (stringJoiner.length() > 0) {
+          action.setJumpUrl(
+              ServletActionContext.getRequest().getServletPath() + "?" + stringJoiner.toString());
+        }
         return HomeAction.LOGIN;
       }
     }
@@ -91,6 +111,10 @@ public class ItpCheckPurchaseLogin extends AbstractInterceptor {
     } else {
       return getServletUrl(request) + "?" + params;
     }
+  }
+
+  public Map<String, String[]> getParams(HttpServletRequest request) {
+    return request.getParameterMap();
   }
 
   public String getParameters(HttpServletRequest request) {

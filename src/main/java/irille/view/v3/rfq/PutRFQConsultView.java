@@ -1,6 +1,7 @@
 package irille.view.v3.rfq;
 
 import java.util.Date;
+import java.util.List;
 
 import irille.view.BaseView;
 import lombok.Data;
@@ -28,5 +29,5 @@ public class PutRFQConsultView implements BaseView {
   //    目的地
   private String destination;
   // 额外请求
-  private String extraRequest;
+  private List<String> extraRequest;
 }

@@ -6,13 +6,23 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.UUID;
 
-import javax.mail.*;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.github.benmanes.caffeine.cache.Cache;
 import com.sun.mail.util.MailSSLSocketFactory;
 
 import irille.homeAction.HomeAction;
@@ -20,10 +30,9 @@ import irille.pub.Exp;
 import irille.pub.LogMessage;
 import irille.pub.Str;
 import irille.pub.util.AppConfig;
+import irille.pub.util.CacheUtils;
 import irille.shop.usr.UsrMain;
 import irille.shop.usr.UsrMainDao;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * 用户Action
@@ -191,12 +200,18 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 
       title = "Forgot password";
       if (main == null) {
-        throw LOG.errTran("该用户未注册", "该用户未注册");
+        // throw LOG.errTran("该用户未注册", "该用户未注册");
       }
       write();
     }
-
+    String uid = UUID.randomUUID().toString();
     Integer code = (int) ((Math.random() * 9 + 1) * 100000);
+    if (type == 0) {
+      CacheUtils.mailValid.put(uid, getEmail());
+    }
+    if (type == 2) {
+      CacheUtils.pwdValid.put(code, getEmail());
+    }
     // 收件人电子邮箱
     String to = "";
     to = getEmail();
@@ -227,6 +242,13 @@ public class UsrMainAction extends HomeAction<UsrMain> {
               }
             });
     try {
+      String mesg = "";
+      if (type == 0) {
+        mesg = "/home/usr_UsrMain_completeReg?uid=" + uid;
+      }
+      if (type == 2) {
+        mesg = "你的验证码为:" + code;
+      }
       // 创建默认的 MimeMessage 对象
       MimeMessage message = new MimeMessage(session);
 
@@ -243,7 +265,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
       System.out.println(AppConfig.mail_template_logo + "logo++++++++++++++++++++++++++++++++");
       String text =
           AppConfig.mail_template
-              .replaceAll("\\{ForgotUrl\\}", AppConfig.domain + "你的验证码为:" + code)
+              .replaceAll("\\{ForgotUrl\\}", AppConfig.domain + mesg)
               .replaceAll(
                   "\\{Time\\}",
                   DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.MEDIUM, Locale.ENGLISH)
@@ -339,5 +361,56 @@ public class UsrMainAction extends HomeAction<UsrMain> {
       json.put("sign", false);
       writerOrExport(json);
     }
+  }
+
+  private String uid;
+
+  public String getUid() {
+    return uid;
+  }
+
+  public void setUid(String uid) {
+    this.uid = uid;
+  }
+
+  /**
+   * 完成注册
+   *
+   * @author chen
+   */
+  public String completeReg() {
+    Cache cache = CacheUtils.mailValid;
+    String value = String.valueOf(cache.getIfPresent(Integer.parseInt(getUid())));
+    if (value != null && value.equals(getEmail())) {
+      setResult("/home/sendEmail.jsp");
+      return HomeAction.TRENDS;
+    } else {
+      throw LOG.errTran("该链接已超时", "该链接已超时");
+    }
+  }
+  /**
+   * 提交验证码(重置密码)
+   *
+   * @author chen
+   * @throws IOException
+   */
+  public void subValid() throws IOException {
+    Cache cache = CacheUtils.pwdValid;
+    String value = String.valueOf(cache.getIfPresent(Integer.parseInt(getCode())));
+    if (value != null && value.equals(getEmail())) {
+      write();
+    } else {
+      throw LOG.errTran("该验证码已超时", "该验证码已超时");
+    }
+  }
+
+  private String code;
+
+  public String getCode() {
+    return code;
+  }
+
+  public void setCode(String code) {
+    this.code = code;
   }
 }

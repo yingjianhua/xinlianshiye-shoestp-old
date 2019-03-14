@@ -173,7 +173,7 @@ public class UsrSupplierDao {
     query
         .SELECT(UsrSupplier.class)
         .FROM(UsrSupplier.class)
-        .WHERE(T.LOGIN_NAME, "like '%" + loginName + "%'");
-    return query.queryMaps().size() > 0;
+        .WHERE(T.LOGIN_NAME, "like ?", "%" + loginName + "%");
+    return query.queryCount() > 0;
   }
 }

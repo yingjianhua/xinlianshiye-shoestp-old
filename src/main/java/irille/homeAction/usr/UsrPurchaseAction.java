@@ -177,8 +177,6 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
   private static final String login_err =
       "Incorrect email address or password. Please try again.Make sure the Caps Lock is off before you enter password.";
 
-  @Setter @Getter private String backUrl;
-
   /** 登录 */
   public void signIn() throws Exception {
     String verifyCode = verifyCode();
@@ -581,6 +579,18 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
    */
   public String sign() throws JSONException {
     countrys = pltService.getCountryList(curLanguage(), null);
+    StringJoiner stringJoiner = new StringJoiner("&");
+    getParams()
+        .forEach(
+            (s, strings) -> {
+              if (s.equalsIgnoreCase("jumpUrl")) return;
+              for (String string : strings) {
+
+                String t = s + "=" + string;
+                stringJoiner.add(t);
+              }
+            });
+    if (stringJoiner.length() > 0) setJumpUrl(getJumpUrl() + "?" + stringJoiner.toString());
     setResult("/home/sign-up.jsp");
     return TRENDS;
   }

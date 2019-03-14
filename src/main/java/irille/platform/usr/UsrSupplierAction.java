@@ -53,6 +53,7 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
   private Integer category;
   private Integer status;
   private Integer storeStatus;
+  private Integer svsGrade;
   private String fileFileName = "";
   private File file;
 
@@ -63,7 +64,7 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
    * @author: lingjian @Date: 2019/3/11 10:48
    */
   public void getShopList() throws IOException {
-    write(UsrSupplierDAO.getShopList(getStart(), getLimit(), name, storeStatus));
+    write(UsrSupplierDAO.getShopList(getStart(), getLimit(), name, storeStatus,svsGrade));
   }
 
   /**
@@ -82,6 +83,9 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
   private String mainEmail;
   private String mainContacts;
   private String mainTelphone;
+  private Integer mainProvince;
+  private Integer mainCity;
+  private Integer mainZone;
 
   /**
    * 更新
@@ -110,10 +114,19 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
         main.setEmail(mainEmail);
         main.setContacts(mainContacts);
         main.setTelphone(mainTelphone);
+        if(mainProvince != null){
+          main.setProvince(mainProvince);
+        }
+        if(mainCity != null){
+          main.setCity(mainCity);
+        }
+        if(mainZone != null){
+          main.setZone(mainZone);
+        }
+        main.upd();
       }
       UsrSupplier newSupplier = UsrSupplierDAO.updInfo(getBean());
       newSupplier.upd();
-      main.upd();
       write();
     } catch (Exp e) {
       writeErr(e.getLastMessage());
@@ -126,7 +139,7 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
    * 根据id获取供应商信息
    *
    * @throws IOException
-   * @author: lingjian @Date: 2019/3/8 10:41
+   * @author: lingjian  @Date: 2019/3/8 10:41
    */
   public void getSupplierById() throws IOException {
     write(UsrSupplierDAO.getSupplierById(id));
