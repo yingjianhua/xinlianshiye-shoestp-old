@@ -365,6 +365,25 @@ a, a:link, a:visited, a:hover, a:active {
 #productList .rightList .common .common-box .common-boxtitle .fr .h3{
 	line-height:25px;
 }
+#productList .rightList .common .common-box .common-boxtitle .product-inquiry-btn{
+    height: 28px;
+    border-radius: 3px;
+    background: #f5f7f7;
+    border: 1px #ddd solid;
+    color: #232323;
+    text-align: center;
+		line-height: 28px;
+		padding: 0 20px;
+    font-size: 14px;
+		position: absolute;
+		bottom:10px;
+		left:0;
+}
+#productList .rightList .common .common-box .common-boxtitle .product-inquiry-btn:hover{
+	background: #10389c;
+    border: 1px #10389c solid;
+    color: #fff;
+}
 #productList .rightList .common .common-box .common-boxspan{
 	width:246px;
 	color:#b0b0b0;

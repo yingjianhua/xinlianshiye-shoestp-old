@@ -170,7 +170,8 @@ $('html').on('click', '#signin_close', function () {
                         </el-carousel>
                     </div>
                 </div>
-                <a :href="'/'+item.rewrite" class="common-boxtitle" target="_blank">
+                <div class="common-boxtitle" >
+                    <a :href="'/'+item.rewrite" target="_blank" style="width:100%;">
                     <h1>
                         <div class="ootit" v-show="item.pdtType"><img class="mtf4"
                                                                       src="/home/v3/static/images/ico/icon_o2o.png"
@@ -178,7 +179,7 @@ $('html').on('click', '#signin_close', function () {
                         </div>
                         {{item.pdtName}}
                     </h1>
-                    <div>
+                    <div class="clearfix" style="position:relative;">
                         <div class="fl">
                             <h2>US <span>{{sysConfig.currency_symbol}}{{ item.price }}</span></h2>
                             <div class="h3">Min.Order: {{item.minOrder}} pairs</div>
@@ -205,8 +206,13 @@ $('html').on('click', '#signin_close', function () {
                                 {{item.closed?item.closed:'No data'}}
                             </div>
                         </div>
+                        <a class="product-inquiry-btn" target="_blank"
+                        :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId"
+                        :data-id="item.supId">Product Inquiry</a>
+                        
                     </div>
                 </a>
+                    </div>
                 <div class="common-boxspan fr">
                     <a class="h1" :href="'/home/usr_UsrSupplier_gtSupIndex?pkey='+item.supId"
                        target="_blank"><%--<div class="year">{{item.enter}}YRS</div>--%>{{item.supName}}</a>
@@ -240,7 +246,7 @@ $('html').on('click', '#signin_close', function () {
 
                     <!-- <a class="btn" href="javascript:;" @click="addRFQ" :data-id = "item.pdtId">Contact Supplier</a> -->
                     <a class="btn" target="_blank"
-                       :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" :data-id="item.pdtId">Contact
+                    :href="'/home/usr_UsrSupplier_goContactSupplier?supplierPkey='+item.supId" :data-id="item.pdtId">Contact
                         Supplier</a>
                 </div>
             </div>
