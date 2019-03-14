@@ -11,12 +11,12 @@ import irille.pub.DateTools;
 import irille.pub.LogMessage;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.Bean;
+import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduIns;
 import irille.pub.idu.IduUpd;
 import irille.pub.validate.ValidRegex;
-import irille.shop.plt.PltCountry;
-import irille.shop.plt.PltProvince;
+import irille.shop.plt.*;
 import irille.view.Page;
 
 public class UsrMainDao {
@@ -230,7 +230,7 @@ public class UsrMainDao {
         };
     Integer count = irille.pub.bean.Query.sql(sql).queryCount();
     List<UsrMainView> list =
-        irille.pub.bean.Query.sql(sql.LIMIT(start, limit)).queryMaps().stream()
+        Query.sql(sql.LIMIT(start, limit)).queryMaps().stream()
             .map(
                 bean ->
                     new UsrMainView() {
@@ -240,18 +240,28 @@ public class UsrMainDao {
                         setNickName(
                             (String) bean.get(UsrMain.T.NICKNAME.getFld().getCodeSqlField()));
                         setCompany((String) bean.get(UsrMain.T.COMPANY.getFld().getCodeSqlField()));
-                        setCountry(
-                            Bean.load(
-                                    PltCountry.class,
-                                    (Integer)
-                                        bean.get(UsrMain.T.COUNTRY.getFld().getCodeSqlField()))
-                                .getName());
-                        setProvince(
-                            Bean.load(
-                                    PltProvince.class,
-                                    (Integer)
-                                        bean.get(UsrMain.T.PROVINCE.getFld().getCodeSqlField()))
-                                .getName());
+                        if (bean.get(UsrMain.T.PROVINCE.getFld().getCodeSqlField()) != null) {
+                          setProvince(
+                              Bean.load(
+                                      PltProvinces.class,
+                                      (Integer)
+                                          bean.get(UsrMain.T.PROVINCE.getFld().getCodeSqlField()))
+                                  .getName());
+                        }
+                        if (bean.get(UsrMain.T.CITY.getFld().getCodeSqlField()) != null) {
+                          setCity(
+                              Bean.load(
+                                      PltCity.class,
+                                      (Integer) bean.get(UsrMain.T.CITY.getFld().getCodeSqlField()))
+                                  .getName());
+                        }
+                        if (bean.get(UsrMain.T.ZONE.getFld().getCodeSqlField()) != null) {
+                          setZone(
+                              Bean.load(
+                                      PltArea.class,
+                                      (Integer) bean.get(UsrMain.T.ZONE.getFld().getCodeSqlField()))
+                                  .getName());
+                        }
                         setAddress((String) bean.get(UsrMain.T.ADDRESS.getFld().getCodeSqlField()));
                         setContacts(
                             (String) bean.get(UsrMain.T.CONTACTS.getFld().getCodeSqlField()));
@@ -289,18 +299,27 @@ public class UsrMainDao {
                         setNickName(
                             (String) bean.get(UsrMain.T.NICKNAME.getFld().getCodeSqlField()));
                         setCompany((String) bean.get(UsrMain.T.COMPANY.getFld().getCodeSqlField()));
-                        setCountry(
-                            Bean.load(
-                                    PltCountry.class,
-                                    (Integer)
-                                        bean.get(UsrMain.T.COUNTRY.getFld().getCodeSqlField()))
-                                .getName());
-                        setProvince(
-                            Bean.load(
-                                    PltProvince.class,
-                                    (Integer)
-                                        bean.get(UsrMain.T.PROVINCE.getFld().getCodeSqlField()))
-                                .getName());
+                        if(bean.get(UsrMain.T.PROVINCE.getFld().getCodeSqlField()) != null){
+                          setProvince(Bean.load(
+                                  PltProvinces.class,
+                                  (Integer)
+                                          bean.get(UsrMain.T.PROVINCE.getFld().getCodeSqlField()))
+                                  .getName());
+                        }
+                        if(bean.get(UsrMain.T.CITY.getFld().getCodeSqlField()) != null){
+                          setCity(Bean.load(
+                                  PltCity.class,
+                                  (Integer)
+                                          bean.get(UsrMain.T.CITY.getFld().getCodeSqlField()))
+                                  .getName());
+                        }
+                        if(bean.get(UsrMain.T.ZONE.getFld().getCodeSqlField()) != null){
+                          setZone(Bean.load(
+                                  PltArea.class,
+                                  (Integer)
+                                          bean.get(UsrMain.T.ZONE.getFld().getCodeSqlField()))
+                                  .getName());
+                        }
                         setAddress((String) bean.get(UsrMain.T.ADDRESS.getFld().getCodeSqlField()));
                         setContacts(
                             (String) bean.get(UsrMain.T.CONTACTS.getFld().getCodeSqlField()));
