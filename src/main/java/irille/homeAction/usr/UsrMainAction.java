@@ -2,25 +2,19 @@ package irille.homeAction.usr;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.UUID;
 
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.inject.Inject;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.sun.mail.util.MailSSLSocketFactory;
@@ -33,6 +27,11 @@ import irille.pub.util.AppConfig;
 import irille.pub.util.CacheUtils;
 import irille.shop.usr.UsrMain;
 import irille.shop.usr.UsrMainDao;
+import irille.view.usr.UserView;
+import lombok.Getter;
+import lombok.Setter;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * 用户Action
@@ -43,96 +42,26 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 
   private static LogMessage LOG = new LogMessage(UsrMainAction.class);
 
-  public String getCheckCode() {
-    return checkCode;
-  }
+  @Inject private UsrMainDao.Ins ins;
+  @Inject private UsrMainDao.updPwd updPwd;
+  @Inject private UsrMainDao usrMainDao;
 
-  public void setCheckCode(String checkCode) {
-    this.checkCode = checkCode;
-  }
+  @Getter @Setter private String checkCode;
+  @Getter @Setter private String pwd;
+  @Getter @Setter private String pwdA;
+  @Getter @Setter private String email;
+  @Getter @Setter private Integer type;
+  @Getter @Setter private String firstName;
+  @Getter @Setter private String lastName;
+  @Getter @Setter private String telPre;
+  @Getter @Setter private String telMid;
+  @Getter @Setter private String telAft;
+  @Getter @Setter private String loginName;
+  @Setter @Getter private String code;
 
-  public String getPwd() {
-    return pwd;
-  }
-
-  public void setPwd(String pwd) {
-    this.pwd = pwd;
-  }
-
-  public String getPwdA() {
-    return pwdA;
-  }
-
-  public void setPwdA(String pwdA) {
-    this.pwdA = pwdA;
-  }
-
-  private String checkCode;
-  private String pwd;
-  private String pwdA;
-  private String email;
-  private Integer type;
-  private String firstName;
-  private String lastName;
-  private String telPre;
-  private String telMid;
-  private String telAft;
-
-  public String getTelPre() {
-    return telPre;
-  }
-
-  public void setTelPre(String telPre) {
-    this.telPre = telPre;
-  }
-
-  public String getTelMid() {
-    return telMid;
-  }
-
-  public void setTelMid(String telMid) {
-    this.telMid = telMid;
-  }
-
-  public String getTelAft() {
-    return telAft;
-  }
-
-  public void setTelAft(String telAft) {
-    this.telAft = telAft;
-  }
-
-  public String getFirstName() {
-    return firstName;
-  }
-
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
-
-  public String getLastName() {
-    return lastName;
-  }
-
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
-  }
-
-  public Integer getType() {
-    return type;
-  }
-
-  public void setType(Integer type) {
-    this.type = type;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
+  @Getter @Setter private String thirdName;
+  @Getter @Setter private String thirdId;
+  @Setter @Getter private String uid;
 
   /**
    * pc端注册(3.0)
@@ -145,6 +74,9 @@ public class UsrMainAction extends HomeAction<UsrMain> {
     if (Str.isEmpty(code) || Str.isEmpty(getCheckCode()) || code.equals(getCheckCode()) == false) {
       throw LOG.errTran("signIn%verification", "验证码错误");
     }
+    if (CacheUtils.mailValid.getIfPresent(uid) == null) {
+      throw LOG.errTran("signIn%Invalid Uid", "无效的UID");
+    }
     insBefore();
     if (getBean().getIdentity() == 1) {
       String name = getFirstName() + "," + getLastName();
@@ -154,8 +86,6 @@ public class UsrMainAction extends HomeAction<UsrMain> {
       String tel = getTelPre() + "-" + getTelMid() + "-" + getTelAft();
       getBean().setTelphone(tel);
     }
-    System.out.println(getBean().getNickname());
-    UsrMainDao.Ins ins = new UsrMainDao.Ins();
     ins.setB(getBean());
     ins.setPwd(getPwd());
     ins.setPwdA(getPwdA());
@@ -163,6 +93,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
       ins.commit();
       insAfter();
       write();
+      CacheUtils.mailValid.invalidate(uid);
     } catch (Exp e) {
       writeErr(e.getLastMessage());
     }
@@ -197,15 +128,18 @@ public class UsrMainAction extends HomeAction<UsrMain> {
           || valide.equals(getCheckCode()) == false) {
         throw LOG.errTran("验证码错误", "验证码错误");
       }
-
       title = "Forgot password";
       if (main == null) {
         // throw LOG.errTran("该用户未注册", "该用户未注册");
       }
       write();
     }
+
     String uid = UUID.randomUUID().toString();
-    Integer code = (int) ((Math.random() * 9 + 1) * 100000);
+
+    //    Integer code = (int) ((Math.random() * 9 + 1) * 100000);
+    SecureRandom secureRandom = new SecureRandom();
+    Integer code = secureRandom.nextInt(999999);
     if (type == 0) {
       CacheUtils.mailValid.put(uid, getEmail());
     }
@@ -244,7 +178,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
     try {
       String mesg = "";
       if (type == 0) {
-        mesg = "/home/usr_UsrMain_completeReg?uid=" + uid;
+        mesg = "/home/usr_UsrMain_completeReg?uid=" + uid + "&email=" + email;
       }
       if (type == 2) {
         mesg = "你的验证码为:" + code;
@@ -302,45 +236,15 @@ public class UsrMainAction extends HomeAction<UsrMain> {
    * @author chen
    */
   public void updPwd() throws Exception {
-    UsrMainDao.updPwd upd = new UsrMainDao.updPwd();
-    upd.setNewPwd(pwdA);
-    upd.setOldPwd(pwd);
-    upd.setEmail(getEmail());
+    updPwd.setNewPwd(pwdA);
+    updPwd.setOldPwd(pwd);
+    updPwd.setEmail(getEmail());
     try {
-      upd.commit();
+      updPwd.commit();
       write();
     } catch (Exp e) {
       writeErr(e.getLastMessage());
     }
-  }
-
-  private String loginName;
-
-  public String getLoginName() {
-    return loginName;
-  }
-
-  public void setLoginName(String loginName) {
-    this.loginName = loginName;
-  }
-
-  private String thirdName;
-  private String thirdId;
-
-  public String getThirdName() {
-    return thirdName;
-  }
-
-  public void setThirdName(String thirdName) {
-    this.thirdName = thirdName;
-  }
-
-  public String getThirdId() {
-    return thirdId;
-  }
-
-  public void setThirdId(String thirdId) {
-    this.thirdId = thirdId;
   }
 
   /**
@@ -349,8 +253,9 @@ public class UsrMainAction extends HomeAction<UsrMain> {
    * @author chen
    */
   public void login() throws Exception {
-    UsrMainDao ud = new UsrMainDao();
-    if (ud.loginValid(loginName, pwd, thirdName, thirdId)) {
+    UserView userView = usrMainDao.loginValid(loginName, pwd, thirdName, thirdId);
+    if (userView != null) {
+      setUser(userView);
       JSONObject json = new JSONObject();
       json.put("ret", 1);
       json.put("sign", true);
@@ -363,30 +268,24 @@ public class UsrMainAction extends HomeAction<UsrMain> {
     }
   }
 
-  private String uid;
-
-  public String getUid() {
-    return uid;
-  }
-
-  public void setUid(String uid) {
-    this.uid = uid;
-  }
-
   /**
    * 完成注册
    *
    * @author chen
    */
   public String completeReg() {
-    Cache cache = CacheUtils.mailValid;
-    String value = String.valueOf(cache.getIfPresent(Integer.parseInt(getUid())));
-    if (value != null && value.equals(getEmail())) {
-      setResult("/home/sendEmail.jsp");
-      return HomeAction.TRENDS;
+    if (code != null && code.equalsIgnoreCase("status")) {
+      setResult("/home/v3/jsp/reg/register-step3.jsp");
     } else {
-      throw LOG.errTran("该链接已超时", "该链接已超时");
+      Cache cache = CacheUtils.mailValid;
+      String value = String.valueOf(cache.getIfPresent(getUid()));
+      if (value != null && value.equals(getEmail())) {
+        setResult("/home/v3/jsp/reg/register-step2.jsp");
+      } else {
+        throw LOG.errTran("该链接已超时", "该链接已超时");
+      }
     }
+    return HomeAction.TRENDS;
   }
   /**
    * 提交验证码(重置密码)
@@ -404,13 +303,13 @@ public class UsrMainAction extends HomeAction<UsrMain> {
     }
   }
 
-  private String code;
-
-  public String getCode() {
-    return code;
+  public String register() {
+    setResult("/home/v3/jsp/reg/register-step1.jsp");
+    return HomeAction.TRENDS;
   }
 
-  public void setCode(String code) {
-    this.code = code;
+  public String forget() {
+    setResult("/home/v3/jsp/forgetPassword/index.jsp");
+    return HomeAction.TRENDS;
   }
 }

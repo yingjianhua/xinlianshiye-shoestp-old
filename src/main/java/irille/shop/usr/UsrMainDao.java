@@ -12,12 +12,16 @@ import irille.pub.LogMessage;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.Bean;
 import irille.pub.bean.Query;
+import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduIns;
 import irille.pub.idu.IduUpd;
 import irille.pub.validate.ValidRegex;
-import irille.shop.plt.*;
+import irille.shop.plt.PltArea;
+import irille.shop.plt.PltCity;
+import irille.shop.plt.PltProvinces;
 import irille.view.Page;
+import irille.view.usr.UserView;
 
 public class UsrMainDao {
   public static final LogMessage LOG = new LogMessage(UsrMain.class);
@@ -69,7 +73,6 @@ public class UsrMainDao {
       String newPwd = getB().getPkey() + pwd;
       getB().setPassword(DateTools.getDigest(newPwd));
       getB().upd();
-
       // 暂时复制用户信息到老表
       if (getB().getIdentity() == 0) {
         UsrPurchase up = new UsrPurchase();
@@ -85,6 +88,7 @@ public class UsrMainDao {
         up.setRegTime(getB().getRegTime());
         up.setFacebookUserId(getB().getFacebookUserId());
         up.setGoogleUserId(getB().getGoogleUserId());
+        up.setUserid(getB().getPkey());
         up.ins();
       }
       super.after();
@@ -169,34 +173,35 @@ public class UsrMainDao {
     }
   }
 
-  public Boolean loginValid(String loginName, String pwd, String thirdName, String thirdId) {
+  public UserView loginValid(String loginName, String pwd, String thirdName, String thirdId) {
     if (thirdName != null) {
       if (thirdName == "facebook") {
+        //        TODO 原来登陆Session逻辑所以第三方登陆暂时搁置
         if (UsrMain.chkUniqueFacebook_user_id(false, thirdId) != null) {
-          return true;
+          return null;
         } else {
-          return false;
+          return null;
         }
       }
       if (thirdName == "google") {
         if (UsrMain.chkUniqueGoogle_user_id(false, thirdId) != null) {
-          return true;
+          return null;
         } else {
-          return false;
+          return null;
         }
       }
       if (thirdName == "linkedin") {
         if (UsrMain.chkUniqueLinkedin_user_id(false, thirdId) != null) {
-          return true;
+          return null;
         } else {
-          return false;
+          return null;
         }
       }
       if (thirdName == "linkedin") {
         if (UsrMain.chkUniqueTwitter_user_id(false, thirdId) != null) {
-          return true;
+          return null;
         } else {
-          return false;
+          return null;
         }
       }
     }
@@ -205,9 +210,21 @@ public class UsrMainDao {
       if (um == null) throw LOG.err("loginName not exists", "用户不存在");
       String mdPwd = DateTools.getDigest(um.getPkey() + pwd);
       if (!mdPwd.equals(um.getPassword())) throw LOG.err("wrong password", "用户名和密码不匹配");
+      if (um.gtIdentity() == Usr.IDType.BUYNER) {
+        UserView userView = new UserView();
+        BeanQuery query = new BeanQuery();
+        userView.setPurchase(
+            (UsrPurchase)
+                query
+                    .SELECT(UsrPurchase.class)
+                    .FROM(UsrPurchase.class)
+                    .WHERE(UsrPurchase.T.UserId, "=?", um.getPkey())
+                    .query(UsrPurchase.class));
+        return userView;
+      }
+    } else {
     }
-
-    return true;
+    return null;
   }
 
   /**
@@ -299,25 +316,26 @@ public class UsrMainDao {
                         setNickName(
                             (String) bean.get(UsrMain.T.NICKNAME.getFld().getCodeSqlField()));
                         setCompany((String) bean.get(UsrMain.T.COMPANY.getFld().getCodeSqlField()));
-                        if(bean.get(UsrMain.T.PROVINCE.getFld().getCodeSqlField()) != null){
-                          setProvince(Bean.load(
-                                  PltProvinces.class,
-                                  (Integer)
+                        if (bean.get(UsrMain.T.PROVINCE.getFld().getCodeSqlField()) != null) {
+                          setProvince(
+                              Bean.load(
+                                      PltProvinces.class,
+                                      (Integer)
                                           bean.get(UsrMain.T.PROVINCE.getFld().getCodeSqlField()))
                                   .getName());
                         }
-                        if(bean.get(UsrMain.T.CITY.getFld().getCodeSqlField()) != null){
-                          setCity(Bean.load(
-                                  PltCity.class,
-                                  (Integer)
-                                          bean.get(UsrMain.T.CITY.getFld().getCodeSqlField()))
+                        if (bean.get(UsrMain.T.CITY.getFld().getCodeSqlField()) != null) {
+                          setCity(
+                              Bean.load(
+                                      PltCity.class,
+                                      (Integer) bean.get(UsrMain.T.CITY.getFld().getCodeSqlField()))
                                   .getName());
                         }
-                        if(bean.get(UsrMain.T.ZONE.getFld().getCodeSqlField()) != null){
-                          setZone(Bean.load(
-                                  PltArea.class,
-                                  (Integer)
-                                          bean.get(UsrMain.T.ZONE.getFld().getCodeSqlField()))
+                        if (bean.get(UsrMain.T.ZONE.getFld().getCodeSqlField()) != null) {
+                          setZone(
+                              Bean.load(
+                                      PltArea.class,
+                                      (Integer) bean.get(UsrMain.T.ZONE.getFld().getCodeSqlField()))
                                   .getName());
                         }
                         setAddress((String) bean.get(UsrMain.T.ADDRESS.getFld().getCodeSqlField()));

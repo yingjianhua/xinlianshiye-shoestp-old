@@ -70,7 +70,7 @@ Vue.component('index-top', {
                     <div class="o2otoplikenum">
                         <div style="height:  20px;">
                             <div  v-if="!sysConfig.user">
-                                <a href="/home/usr_UsrPurchase_sign" style="border-right: 1px solid #b7b7b7;padding-right: 3px;color: #4fa2d7;font-size:12px;" target="_blank">Register</a>
+                                <a href="/home/usr_UsrMain_register" style="border-right: 1px solid #b7b7b7;padding-right: 3px;color: #4fa2d7;font-size:12px;" target="_blank">Register</a>
                                 <a href="/home/usr_UsrPurchase_sign" style="color: #4fa2d7;font-size:12px;" target="_blank">Login</a>
                             </div>
                         </div>
@@ -83,7 +83,7 @@ Vue.component('index-top', {
                     <div style="font-size:16px;margin:  18px  0;">Get started now</div>
                     <div class="login-btn"><a href="/home/usr_UsrPurchase_sign" >Login</a></div>
                     <div style="text-align:center;font-size:16px;margin:  8px  0;">or</div>
-                    <div class="registered-btn"><a href="/home/usr_UsrPurchase_sign" target="_blank">Registration</a></div>
+                    <div class="registered-btn"><a href="/home/usr_UsrMain_register" target="_blank">Registration</a></div>
                     <div style="color:#777777;text-align:center;margin:  15px  0;">Continue with：</div>
                     <div class="clearfix  other-login-list">
                         <div class="fl  other-login-item">
@@ -236,7 +236,7 @@ Vue.component('index-top', {
                     if(res.data.result.items.length <= 0){
                         // console.log(res)
                         // console.log(self.PMmoreSwitch)
-                        self.PMmoreSwitch = false; 
+                        self.PMmoreSwitch = false;
                     //    self.$message('No more station letters');
                        return;
                     }
@@ -246,7 +246,7 @@ Vue.component('index-top', {
                 console.log(error);
             });
         },
-        msgClick(message,i){   // 点击消息 
+        msgClick(message,i){   // 点击消息
             var self = this;
             axios.post('/home/pm_PMMessage_read', Qs.stringify({
                     message,
@@ -276,8 +276,8 @@ Vue.component('index-top', {
                 self.$message('No more station letters');
             }
         },
-        
-         
+
+
     },
     filters: {
             timeDistance(value){
@@ -292,7 +292,7 @@ Vue.component('index-top', {
                 }else if(times>60&times<3600){
                     return `${parseInt(times/60)} minutes ago`;
                 }else if(times<60){return 'Just now'}
-    
+
             },
     }
 })
