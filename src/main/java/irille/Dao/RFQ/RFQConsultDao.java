@@ -81,7 +81,8 @@ public interface RFQConsultDao {
       boolean flag,
       Integer status,
       Integer country,
-      int supId);
+      int supId,
+      Integer usrCountry);
 
   Integer count(
       byte type,

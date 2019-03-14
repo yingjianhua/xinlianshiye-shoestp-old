@@ -35,7 +35,8 @@ public interface IRFQManageService {
       boolean flag,
       Integer status,
       Integer country,
-      int supid)
+      int supid,
+      Integer userCountry)
       throws IOException;
 
   RFQMyuoteInfo getMyRFQQuoteInfo(Integer id, Integer pkey) throws IOException;
