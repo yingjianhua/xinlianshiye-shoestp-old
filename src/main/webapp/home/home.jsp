@@ -260,7 +260,7 @@
                     <h3>Recently Viewed</h3>
                     <p style="opacity: 0.5;margin-top: 15px;line-height: 20px;">
                         The goods you’ve <br>
-                        serched at last time
+                        searched last time
                     </p>
                     <a href="/home/pdt_PdtProduct?orderfld=MostPopular" class="see-all fir-see-all" target="_blank">See
                         All</a>
