@@ -48,7 +48,7 @@
         <div class="introduce">
             <h3>{{introducemsg[2].title}}</h3>
             <div class="linhen"></div>
-            <h5>Customer could better know the quality of a shoe</h5>
+            <h5>Customer could know better about the quality of shoes.</h5>
             <div class="introducebody">
                 <img class="ripple"  :class="top >= srcolltop[2].value? 'slideInRight' : ''"
                      :src="introducemsg[2].img" alt="">
@@ -82,19 +82,19 @@
         data: {
             introducemsg: [
                 {
-                    title: 'Why do customer needs O2O',
+                    title: 'Why does customer need O2O?',
                     img: 'images/introduce1.png',
-                    msg: 'If a company plan to do both e-commerce and physical (“brick-and-mortar”) stores, then the O2O marketing strategy should is be considering to use. Capitalizes on both presences to drive increased sales. This can work in both directions, but online to offline allows you to reach an arguably broader audience of prospective new customers. E-commerce sales continue to rise year-on-year, while mobile accounts for an increasing of online sales too.  For selling shoes, it is important to make customers touch the real shoes sample, so that the Customer could better know the quality of a shoe.'
+                    msg: 'If a company plans to have both e-commerce and physical (“brick-and-mortar”) stores, then the O2O marketing strategy that capitalizes on both presences to drive increased sales should be considered. This can work in both directions, but online to offline allows you to reach an arguably broader audience of prospective new customers. E-commerce sales continue to rise year-on-year, while mobile accounts for an increasing of online sales too. In the shoes business, it is important to reassure customers with the quality by providing them with the shoes sample.'
                 },
                 {
-                    title: 'What kinds of O2O are we?',
+                    title: 'What kind of O2O are we?',
                     img: 'images/introduce2.png',
-                    msg: 'Shoestp.com is the only e-commerce trading platform for footwear in China. Our main trading mode is B2B. Nowadays, most O2O models coordinate with the online retail business but don\'t forget that B2B also needs O2O to match development. For the shoe industries, almost all wholesalers still need to go to the local factory and check the samples, or they need the factory to send samples to them. This tradtional model will greatly increase the selection time, which would lead to buyers miss great bussiness opportuity. Therefore, we launched O2O for B2B to save the time for wholesalers going abroad to look for samples or waiting for samples delivery, making them more convenient and faster.'
+                    msg: 'Shoestp.com is the only e-commerce trading platform for footwear in China. Our main trading mode is B2B. Nowadays, most O2O models coordinate with the online retail business but don\'t forget that B2B also needs O2O to match the development. For the shoe industries, almost all wholesalers still need to checking the samples by going to the local factory, otherwise they need to have the factory send them samples. This traditional model takes buyers a long time to make decisions, which leads to the situation where buyers miss great business opportunities. Therefore, we launched O2O for B2B to save the time for wholesalers to go abroad to look for samples or wait for samples delivery, which makes it more convenient and faster.'
                 },
                 {
-                    title: 'Where is the O2O market of us',
+                    title: 'Where is the O2O market for us?',
                     img: 'images/introduce3.png',
-                    msg: 'For the different grade and price of footwear, we will promote new design O2O and bargain district O2O. The new design O2O is focused on the latest design by  original design manufacturers in China. We collect their shoes directly and displayed them in offline stores, so that wholesalers could touch the latest designs without leaving their regions. The bargain district O2O area is targeted at developing country markets such as Africa, parts of India, Latin America, etc. In order to facilitate customers to search online shoes and offline to check the real thing at same time, so that they know more about the products they buy.'
+                    msg: 'According to the different levels of grade and price of footwear, we will promote new design and bargain district for O2O. The newest design for O2O is from the latest design by manufacturers in China. We collect the shoes from their factories and display them in the offline stores, so the wholesalers could see the latest designs in person and even without leaving their regions. The bargain district O2O area is targeted at markets in developing countries, such as South Africa, India, Mexico, Brazil, etc. The customers can know better about the product they buy by searching online and check the real shoes offline.'
                 }
             ],
 
