@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.inject.ImplementedBy;
 import com.xinlianshiye.shoestp.shop.view.usr.FavoritesView;
+import com.xinlianshiye.shoestp.shop.view.usr.SuplierDetailView;
 
 import irille.Service.Usr.Imp.UsrSupplierServiceImp;
 import irille.core.sys.Sys;
@@ -58,4 +59,6 @@ public interface IUsrSupplierService {
    * @Author HuangHaoBin
    **/
   Integer isSupplier(String loginName);
+
+  SuplierDetailView getSuplierDetail(Integer supplierPkey);
 }

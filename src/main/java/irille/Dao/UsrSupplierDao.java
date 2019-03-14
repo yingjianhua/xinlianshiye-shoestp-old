@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import irille.Aops.Caches;
+import irille.Entity.SVS.SVSInfo;
 import irille.core.sys.Sys;
 import irille.homeAction.usr.dto.Page_supplierProductView;
 import irille.homeAction.usr.dto.SupplierListView;
@@ -175,5 +176,21 @@ public class UsrSupplierDao {
         .FROM(UsrSupplier.class)
         .WHERE(T.LOGIN_NAME, "like ?", "%" + loginName + "%");
     return query.queryCount() > 0;
+  }
+  public Map<String, Object> getSupplierDetail(Integer supId){
+      SQL sql = new SQL(){{
+          SELECT(T.PKEY,T.NAME,T.LOGO)
+              .FROM(UsrSupplier.class)
+              .WHERE(T.PKEY,"=?",supId);
+      }};
+      return Query.sql(sql).queryMap();
+  }
+  public Map<String, Object> getSupplierSVS(Integer supId){
+      SQL sql = new SQL(){{
+          SELECT(SVSInfo.T.PKEY,SVSInfo.T.GRADE)
+              .FROM(SVSInfo.class)
+              .WHERE(SVSInfo.T.SUPPLIER,"=?",supId);
+      }};
+      return Query.sql(sql).queryMap();
   }
 }

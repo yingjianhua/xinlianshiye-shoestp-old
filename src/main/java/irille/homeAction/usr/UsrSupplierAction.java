@@ -489,4 +489,12 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
   public void getDetail() throws IOException, JSONException {
     write(usrSupplierService2.detail(getPurchase(), supplierPkey, curLanguage()));
   }
+
+  public String goContactSupplier(){
+      setResult("/home/contact-supplier.jsp");
+      return TRENDS;
+  }
+  public void getSupplierDetail() throws IOException {
+      write(usrSupplierService.getSuplierDetail(supplierPkey));
+  }
 }
