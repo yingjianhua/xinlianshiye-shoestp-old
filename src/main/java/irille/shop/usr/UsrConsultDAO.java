@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import irille.Entity.RFQ.Enums.RFQConsultStatus;
+import irille.Entity.RFQ.RFQConsult;
 import irille.core.sys.Sys;
 import irille.platform.usr.View.UsrConsultView;
 import irille.pub.Log;
@@ -137,14 +139,29 @@ public class UsrConsultDAO {
    * @return
    * @author yingjianhua
    */
-  public static Integer countByPurchase(Integer purchase) {
-    return Query.SELECT(UsrConsult.class).WHERE(T.PURCHASE, "=?", purchase).queryCount();
+  public static Integer countByUsrMainId(Integer purchase) {
+    return Query.SELECT(RFQConsult.class)
+        .LEFT_JOIN(UsrPurchase.class, UsrPurchase.T.PKEY, RFQConsult.T.PURCHASE_ID)
+        .LEFT_JOIN(UsrMain.class, UsrMain.T.PKEY, UsrPurchase.T.UserId)
+        .WHERE(UsrMain.T.PKEY, "=?", purchase)
+        .WHERE(RFQConsult.T.IS_DELETED, "=?", Sys.OYn.NO)
+        .WHERE(RFQConsult.T.STATUS, "=?", RFQConsultStatus.runing)
+        .queryCount();
+    // TODO 老逻辑待清理
     //		SQL sql = new SQL(){{
     //			SELECT(UsrConsult.class);
     //			FROM(UsrConsult.class);
     //			WHERE(T.PURCHASE, "=?", purchase);
     //		}};
     //		return Query.sql(sql).queryCount();
+  }
+
+  public static int countByPurchase(Integer pkey) {
+    return Query.SELECT(RFQConsult.class)
+        .WHERE(RFQConsult.T.PURCHASE_ID, "=?", pkey)
+        .WHERE(RFQConsult.T.IS_DELETED, "=?", Sys.OYn.NO)
+        .WHERE(RFQConsult.T.STATUS, "=?", RFQConsultStatus.runing)
+        .queryCount();
   }
 
   /**

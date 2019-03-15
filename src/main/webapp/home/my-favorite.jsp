@@ -10,7 +10,9 @@
 
 <body>
 <jsp:include page="v3/nav-nobody.jsp"></jsp:include>
+<script src="/home/v3/static/js/index-top.js"></script>
 <div id="personalCenter" class="clearfix" v-cloak>
+    <index-top></index-top>
       <div class="user-menu fl">
             <div class="user-menu-title"><img src="/home/v3/static/images/user/icon_account.png" alt="" style="margin:0 8px 2px 0;">My Account
         </div>

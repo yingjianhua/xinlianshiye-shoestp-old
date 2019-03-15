@@ -35,6 +35,7 @@ public class SessionMsg {
       new String[] {"android", "windows phone", "mobile", "iphone"};
 
   private String loginName;
+  private Integer pkey;
   private boolean isPurchase;
   private boolean isSupplier;
   private Language lang;
@@ -138,6 +139,7 @@ public class SessionMsg {
 
   public UserView getUser() {
     UserView user = new UserView();
+    user.setPkey(pkey);
     user.setSupplier(this.getSupplier());
     user.setPurchase(this.getPurchase());
     user.setLoginName(loginName);
@@ -151,6 +153,7 @@ public class SessionMsg {
     } else {
       this.setSupplier(user.getSupplier());
       this.setPurchase(user.getPurchase());
+      this.pkey = user.getPkey();
     }
   }
 

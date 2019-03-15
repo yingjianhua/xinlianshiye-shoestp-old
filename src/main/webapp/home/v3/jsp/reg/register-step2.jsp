@@ -673,6 +673,7 @@
                                 telPre: this.registerForm.telPrefix1,  //此处为buyer信息
                                 telMid: this.registerForm.telPrefix2,
                                 telAft: this.registerForm.tel,
+                                uid:getParams("uid",""),
                                 bean: {
                                     email: this.registerForm.email,
                                     identity: this.registerForm.user == "buyer" ? 0 : 1,
@@ -723,7 +724,7 @@
                                 // 保存密码，注册成功后直接登录用
                                 localStorage.setItem("registerPsd", this.registerForm.psd)
                                 // 注册成功跳转至成功页面
-                                window.location.href = "./register-step3.html"
+                                window.location.href = window.location.href+"&code=status"
                             })
                             .catch((error) => {
                                 this.refreshCode();

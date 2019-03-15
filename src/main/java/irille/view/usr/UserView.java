@@ -2,27 +2,31 @@ package irille.view.usr;
 
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
+import lombok.Data;
 
 /**
  * 登录用户
  *
  * @author yingjianhua
  */
+@Data
 public class UserView {
 
+  private Integer pkey;
   private String loginName;
   private UsrSupplier supplier;
   private UsrPurchase purchase;
 
-  public String getLoginName() {
-    return loginName;
+  private int user_type = 0;
+
+  public boolean isSupplier() {
+    return user_type == 1;
   }
 
-  public void setLoginName(String loginName) {
-    this.loginName = loginName;
+  public boolean isPurchase() {
+    return user_type == 0;
   }
-
-  public UsrSupplier getSupplier() {
+ public UsrSupplier getSupplier() {
     return supplier;
   }
 
@@ -42,11 +46,4 @@ public class UserView {
     return supplier != null || purchase != null;
   }
 
-  public boolean isPurchase() {
-    return purchase != null;
-  }
-
-  public boolean isSupplier() {
-    return supplier != null;
-  }
 }

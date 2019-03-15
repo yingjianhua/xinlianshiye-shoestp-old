@@ -397,8 +397,8 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
 
   /** 返回发送邮件页 */
   public String sendEmail() {
-    setResult("/home/sendEmail.jsp");
-    return HomeAction.TRENDS;
+    setResult("/home/usr_UsrMain_forget");
+    return HomeAction.RTRENDS;
   }
 
   /**
@@ -578,19 +578,19 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
    * @author yingjianhua
    */
   public String sign() throws JSONException {
-//    countrys = pltService.getCountryList(curLanguage(), null);
-//    StringJoiner stringJoiner = new StringJoiner("&");
-//    getParams()
-//        .forEach(
-//            (s, strings) -> {
-//              if (s.equalsIgnoreCase("jumpUrl")) return;
-//              for (String string : strings) {
-//
-//                String t = s + "=" + string;
-//                stringJoiner.add(t);
-//              }
-//            });
-//    if (stringJoiner.length() > 0) setJumpUrl(getJumpUrl() + "?" + stringJoiner.toString());
+    //    countrys = pltService.getCountryList(curLanguage(), null);
+    //    StringJoiner stringJoiner = new StringJoiner("&");
+    //    getParams()
+    //        .forEach(
+    //            (s, strings) -> {
+    //              if (s.equalsIgnoreCase("jumpUrl")) return;
+    //              for (String string : strings) {
+    //
+    //                String t = s + "=" + string;
+    //                stringJoiner.add(t);
+    //              }
+    //            });
+    //    if (stringJoiner.length() > 0) setJumpUrl(getJumpUrl() + "?" + stringJoiner.toString());
     setResult("/home/v3/jsp/login/login.jsp");
     return TRENDS;
   }

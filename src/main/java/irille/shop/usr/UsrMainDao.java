@@ -88,7 +88,7 @@ public class UsrMainDao {
         up.setRegTime(getB().getRegTime());
         up.setFacebookUserId(getB().getFacebookUserId());
         up.setGoogleUserId(getB().getGoogleUserId());
-        up.setUserid(getB().getPkey());
+        up.setRowVersion((short) 0);
         up.ins();
       }
       super.after();
@@ -208,21 +208,36 @@ public class UsrMainDao {
     if (loginName != null) {
       UsrMain um = UsrMain.chkUniqueEmail(false, loginName);
       if (um == null) throw LOG.err("loginName not exists", "用户不存在");
+      System.out.println(um.getPkey() + pwd);
       String mdPwd = DateTools.getDigest(um.getPkey() + pwd);
       if (!mdPwd.equals(um.getPassword())) throw LOG.err("wrong password", "用户名和密码不匹配");
-      if (um.gtIdentity() == Usr.IDType.BUYNER) {
-        UserView userView = new UserView();
-        BeanQuery query = new BeanQuery();
-        userView.setPurchase(
-            (UsrPurchase)
-                query
-                    .SELECT(UsrPurchase.class)
-                    .FROM(UsrPurchase.class)
-                    .WHERE(UsrPurchase.T.UserId, "=?", um.getPkey())
-                    .query(UsrPurchase.class));
-        return userView;
+      UserView userView = new UserView();
+      userView.setLoginName(um.getEmail());
+      userView.setPkey(um.getPkey());
+      userView.setUser_type(um.getIdentity());
+      BeanQuery query = new BeanQuery();
+      switch (um.gtIdentity()) {
+        case BUYNER:
+          userView.setPurchase(
+              (UsrPurchase)
+                  query
+                      .SELECT(UsrPurchase.class)
+                      .FROM(UsrPurchase.class)
+                      .WHERE(UsrPurchase.T.UserId, "=?", um.getPkey())
+                      .query(UsrPurchase.class));
+          return userView;
+//        case SELLER:
+//          userView.setSupplier(
+//              (UsrSupplier)
+//                  query
+//                      .SELECT(UsrSupplier.class)
+//                      .FROM(UsrSupplier.class)
+//                      .WHERE(UsrSupplier.T.UserId, "=?", um.getPkey())
+//                      .query(UsrSupplier.class));
+//          return userView;
       }
     } else {
+
     }
     return null;
   }
