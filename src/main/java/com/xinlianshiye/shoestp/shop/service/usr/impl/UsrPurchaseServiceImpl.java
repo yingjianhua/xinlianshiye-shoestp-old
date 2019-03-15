@@ -9,8 +9,11 @@ import com.xinlianshiye.shoestp.shop.view.usr.PurchaseView.EditAccountValidator;
 import irille.Dao.RFQ.RFQConsultMessageDao;
 import irille.Dao.RFQ.RFQConsultRelationDao;
 import irille.pub.DateTools;
+import irille.pub.bean.BeanBase;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
+import irille.shop.usr.Usr;
+import irille.shop.usr.UsrMain;
 import irille.shop.usr.UsrPurchase;
 
 public class UsrPurchaseServiceImpl implements UsrPurchaseService {
@@ -50,6 +53,9 @@ public class UsrPurchaseServiceImpl implements UsrPurchaseService {
       throw new WebMessageException(ReturnCode.service_unknow, "邮箱重复,请使用其它邮箱");
     }
     purchase.setEmail(email);
+    UsrMain main = BeanBase.load(UsrMain.class, purchase.getUserid());
+    main.setEmail(email);
+    main.upd();
     usrPurchaseDao.save(purchase);
   }
 
@@ -60,6 +66,9 @@ public class UsrPurchaseServiceImpl implements UsrPurchaseService {
     // 校验新密码格式的有效性
     validPassword(newPassword);
     purchase.setPassword(DateTools.getDigest(purchase.getPkey() + newPassword));
+    UsrMain main = BeanBase.load(UsrMain.class, purchase.getUserid());
+    main.setPassword(DateTools.getDigest(purchase.getPkey() + newPassword));
+    main.upd();
     usrPurchaseDao.save(purchase);
   }
 
@@ -73,6 +82,11 @@ public class UsrPurchaseServiceImpl implements UsrPurchaseService {
     purchase.setTelphone(accountSetting.getPhone());
     purchase.setCompany(accountSetting.getCompany());
     purchase.setAddress(accountSetting.getAddress());
+    UsrMain main = BeanBase.load(UsrMain.class, purchase.getUserid());
+    main.setNickname(accountSetting.getSurname() + "," + accountSetting.getFirstName());
+    main.setTelphone(accountSetting.getPhone());
+    main.setCompany(accountSetting.getCompany());
+    main.upd();
     usrPurchaseDao.save(purchase);
   }
 
