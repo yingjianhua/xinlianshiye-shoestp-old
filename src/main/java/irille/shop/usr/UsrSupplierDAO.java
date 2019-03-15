@@ -1126,46 +1126,63 @@ public class UsrSupplierDAO {
    * @author: lingjian @Date: 2019/3/1 16:21
    */
   public static UsrSupplier updInfo(UsrSupplier supplier) {
-    UsrSupplier model = BeanBase.load(UsrSupplier.class, supplier.getPkey());
-    PropertyUtils.copyProperties(
-        model,
-        supplier,
-        T.NAME, // 公司名称
-        T.ENGLISH_NAME, // 英文名称
-        T.COMPANY_TYPE, // 公司类型 多国语言
-        T.COMPANY_NATURE, // 企业性质 多国语言
-        T.COMPANY_ESTABLISH_TIME, // 企业成立时间
-        T.WEB_SITE, // 公司官网网站地址
-        T.COMPANY_ADDR, // 公司详细地址
-        T.ANNUAL_PRODUCTION, // 年产量
-        T.TELEPHONE, // 公司电话
-        T.FAX, // 传真
-        T.POSTCODE, // 邮编
-        T.TARGETED_MARKET, // 目标市场
-        T.PROD_PATTERN, // 生产模式
-        T.CREDIT_CODE, // 统一社会信用代码
-        T.REGISTERED_CAPITAL, // 注册资本
-        T.ENTITY, // 法定代表人
-        T.BUSINESS_LICENSE_IS_SECULAR, // 营业执照是否长期
-        T.BUSINESS_LICENSE_BEGIN_TIME, // 营业执照开始时间
-        T.BUSINESS_LICENSE_END_TIME, // 营业执照结束时间
-        T.TAXPAYER_TYPE, // 纳税人类型
-        T.CONTACTS, // 联系人
-        T.DEPARTMENT, // 联系人部门
-        T.JOB_TITLE, // 联系人职称
-        T.PHONE, // 联系人手机
-        T.CONTACT_EMAIL, // 联系人邮箱
-        T.CERT_PHOTO, // 营业执照副本复印件
-        T.ID_CARD_FRONT_PHOTO, // 法人代表身份证复印件
-        T.ID_CARD, // 法人代表身份证号码
-        T.CONTACTS_ID_CARD_FRONT_PHOTO, // 运营人员身份证复印件
-        T.OPERATE_ID_CARD, // 运营人员身份证号码
-        T.STORE_STATUS,
-        T.CLOSE_REASON);
-    //    model.upd();
-    translateUtil.autoTranslate(model, true).upd();
-    return model;
-  }
+        UsrSupplier model = BeanBase.load(UsrSupplier.class, supplier.getPkey());
+        PropertyUtils.copyProperties(
+                model,
+                supplier,
+                T.NAME, // 公司名称
+                T.ENGLISH_NAME, // 英文名称
+                T.COMPANY_TYPE, // 公司类型 多国语言
+                T.COMPANY_NATURE, // 企业性质 多国语言
+                T.COMPANY_ESTABLISH_TIME, // 企业成立时间
+                T.WEB_SITE, // 公司官网网站地址
+                T.COMPANY_ADDR, // 公司详细地址
+                T.ANNUAL_PRODUCTION, // 年产量
+                T.TELEPHONE, // 公司电话
+                T.FAX, // 传真
+                T.POSTCODE, // 邮编
+                T.TARGETED_MARKET, // 目标市场
+                T.PROD_PATTERN, // 生产模式
+                T.CREDIT_CODE, // 统一社会信用代码
+                T.REGISTERED_CAPITAL, // 注册资本
+                T.ENTITY, // 法定代表人
+                T.BUSINESS_LICENSE_IS_SECULAR, // 营业执照是否长期
+                T.BUSINESS_LICENSE_BEGIN_TIME, // 营业执照开始时间
+                T.BUSINESS_LICENSE_END_TIME, // 营业执照结束时间
+                T.TAXPAYER_TYPE, // 纳税人类型
+                T.CONTACTS, // 联系人
+                T.DEPARTMENT, // 联系人部门
+                T.JOB_TITLE, // 联系人职称
+                T.PHONE, // 联系人手机
+                T.CONTACT_EMAIL, // 联系人邮箱
+                T.CERT_PHOTO, // 营业执照副本复印件
+                T.ID_CARD_FRONT_PHOTO, // 法人代表身份证复印件
+                T.ID_CARD, // 法人代表身份证号码
+                T.CONTACTS_ID_CARD_FRONT_PHOTO, // 运营人员身份证复印件
+                T.OPERATE_ID_CARD, // 运营人员身份证号码
+                T.STORE_STATUS,
+                T.CLOSE_REASON);
+        //    model.upd();
+        translateUtil.autoTranslate(model, true).upd();
+        return model;
+    }
+
+    /**
+     * 更新关闭店铺状态
+     * @param supplier
+     * @return
+     */
+    public static UsrSupplier updStore(UsrSupplier supplier) {
+        UsrSupplier model = BeanBase.load(UsrSupplier.class, supplier.getPkey());
+        PropertyUtils.copyProperties(
+                model,
+                supplier,
+                T.STORE_STATUS,
+                T.CLOSE_REASON,
+                T.STOREOPEN_TIME);
+            model.upd();
+        return model;
+    }
 
   /**
    * 获取开店申请列表

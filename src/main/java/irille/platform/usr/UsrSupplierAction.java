@@ -89,7 +89,7 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
   private Integer mainZone;
 
   /**
-   * 更新
+   * 更新店铺开启时的信息
    *
    * @throws IOException
    * @author: lingjian @Date: 2019/3/11 10:48
@@ -128,6 +128,20 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
       }
       UsrSupplier newSupplier = UsrSupplierDAO.updInfo(getBean());
       newSupplier.setStoreopenTime(getBean().getStoreopenTime());
+      newSupplier.upd();
+      write();
+    } catch (Exp e) {
+      writeErr(e.getLastMessage());
+    }
+  }
+
+  /**
+   * 更新店铺关闭后的信息
+   * @throws IOException
+   */
+  public void updStore() throws IOException {
+    try {
+      UsrSupplier newSupplier = UsrSupplierDAO.updStore(getBean());
       newSupplier.upd();
       write();
     } catch (Exp e) {
