@@ -946,7 +946,7 @@ public class UsrSupplierDAO {
                     new UsrSupplierNewView() {
                       {
                         setPkey((Integer) bean.get(T.PKEY.getFld().getCodeSqlField()));
-                        setName((String) bean.get(T.EMAIL.getFld().getCodeSqlField()));
+                        setName((String) bean.get(T.NAME.getFld().getCodeSqlField()));
                         setWebsite((String) bean.get(T.WEBSITE.getFld().getCodeSqlField()));
                         setEnglishName(
                             (String) bean.get(T.ENGLISH_NAME.getFld().getCodeSqlField()));
