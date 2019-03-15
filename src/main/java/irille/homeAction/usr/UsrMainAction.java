@@ -1,26 +1,17 @@
 package irille.homeAction.usr;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Properties;
-import java.util.UUID;
+import java.util.*;
 
 import javax.inject.Inject;
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
 
 import com.github.benmanes.caffeine.cache.Cache;
-import com.sun.mail.util.MailSSLSocketFactory;
 
 import irille.homeAction.HomeAction;
-import irille.pub.Exp;
 import irille.pub.LogMessage;
 import irille.pub.Str;
 import irille.pub.util.AppConfig;
@@ -32,6 +23,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.simplejavamail.email.EmailBuilder;
+import org.simplejavamail.mailer.Mailer;
 
 /**
  * 用户Action
@@ -62,6 +55,28 @@ public class UsrMainAction extends HomeAction<UsrMain> {
   @Getter @Setter private String thirdName;
   @Getter @Setter private String thirdId;
   @Setter @Getter private String uid;
+  @Inject private Mailer mailer;
+  private static Map<String, String> mailTemplate;
+
+  static {
+    mailTemplate = new HashMap<>();
+    List<String> list = Arrays.asList("checkEmail", "forgetPassWord");
+    for (String fileName : list) {
+      BufferedReader reader =
+          new BufferedReader(
+              new InputStreamReader(
+                  UsrMainAction.class.getResourceAsStream("/mailPage/" + fileName + ".html")));
+      StringJoiner stringJoiner = new StringJoiner("\r\n");
+      try {
+        while (reader.ready()) {
+          stringJoiner.add(reader.readLine());
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+      mailTemplate.put(fileName, stringJoiner.toString());
+    }
+  }
 
   /**
    * pc端注册(3.0)
@@ -134,95 +149,39 @@ public class UsrMainAction extends HomeAction<UsrMain> {
     String uid = UUID.randomUUID().toString();
 
     //    Integer code = (int) ((Math.random() * 9 + 1) * 100000);
-    SecureRandom secureRandom = new SecureRandom();
-    Integer code = secureRandom.nextInt(999999);
-    if (type == 0) {
-      CacheUtils.mailValid.put(uid, getEmail());
-    }
-    if (type == 2) {
-      CacheUtils.pwdValid.put(code, getEmail());
-    }
-    // 收件人电子邮箱
-    String to = "";
-    to = getEmail();
-    // 发件人电子邮箱
-    String from = "notice@service.shoestp.com";
-    // 指定发送邮件的主机为 smtp.qq.com
-    String host = "smtp.mxhichina.com"; // QQ 邮件服务器
 
-    // 获取系统属性
-    Properties properties = System.getProperties();
-
-    // 设置邮件服务器
-    properties.setProperty("mail.smtp.host", host);
-
-    properties.put("mail.smtp.auth", "true");
-    MailSSLSocketFactory sf = new MailSSLSocketFactory();
-    sf.setTrustAllHosts(true);
-    properties.put("mail.smtp.ssl.enable", "true");
-    properties.put("mail.smtp.ssl.socketFactory", sf);
-    // 获取默认session对象
-    Session session =
-        Session.getDefaultInstance(
-            properties,
-            new Authenticator() {
-              public PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(
-                    "notice@service.shoestp.com", "7p7UaRqBb"); // 发件人邮件用户名、密码
-              }
-            });
-    try {
-      String mesg = "";
-      if (type == 0) {
-        mesg = "/home/usr_UsrMain_completeReg?uid=" + uid + "&email=" + email;
-      }
-      if (type == 2) {
-        mesg = "你的验证码为:" + code;
-      }
-      // 创建默认的 MimeMessage 对象
-      MimeMessage message = new MimeMessage(session);
-
-      // Set From: 头部头字段
-      message.setFrom(new InternetAddress(from));
-
-      // Set To: 头部头字段
-      message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-
-      // Set Subject: 头部头字段
-      message.setSubject(AppConfig.mail_template_domain + title);
-
-      // 设置消息体
-      System.out.println(AppConfig.mail_template_logo + "logo++++++++++++++++++++++++++++++++");
-      String text =
-          AppConfig.mail_template
-              .replaceAll("\\{ForgotUrl\\}", AppConfig.domain + mesg)
-              .replaceAll(
-                  "\\{Time\\}",
-                  DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.MEDIUM, Locale.ENGLISH)
-                      .format(new Date()))
-              .replaceAll(
-                  "\\{Logo\\}",
-                  "<img style=\"max-width:350px;\" src=\""
-                      + AppConfig.mail_template_logo
-                      + "\" border=\"0\">")
-              .replaceAll("\\{FullDomain\\}", AppConfig.mail_template_index)
-              .replaceAll("\\{Domain\\}", AppConfig.mail_template_domain)
-              .toString();
-      //            message.setText(text);
-      MimeMultipart mainpart = new MimeMultipart();
-      MimeBodyPart bodyPart = new MimeBodyPart();
-      bodyPart.setContent(text, "text/html; charset=utf-8");
-      mainpart.addBodyPart(bodyPart);
-      message.setContent(mainpart);
-      // 发送消息
-      Transport.send(message);
-      if (type == 0) {
+    switch (type) {
+      case 0:
+        CacheUtils.mailValid.put(uid, getEmail());
+        String mesg =
+            AppConfig.domain + "home/usr_UsrMain_completeReg?uid=" + uid + "&email=" + email;
+        mailer.sendMail(
+            EmailBuilder.startingBlank()
+                .withSubject("Shoestp User Registration")
+                .prependTextHTML(mailTemplate.get("checkEmail").replaceAll("\\{\\{url}}", mesg))
+                .from("Shoestp", "notice@service.shoestp.com")
+                .to(getEmail())
+                .buildEmail(),
+            true);
         write();
-      } else if (type == 2) {
-        write(code.toString());
-      }
-    } catch (MessagingException mex) {
-      writeErr("邮件发送失败");
+        return;
+      case 2:
+        SecureRandom secureRandom = new SecureRandom();
+        Integer code = secureRandom.nextInt(999999);
+        CacheUtils.pwdValid.put(code, getEmail());
+        mailer.sendMail(
+            EmailBuilder.startingBlank()
+                .withSubject("Shoestp Rest Your Password")
+                .prependTextHTML(
+                    mailTemplate
+                        .get("forgetPassWord")
+                        .replaceAll("\\{\\{CODE}}", String.valueOf(code)))
+                .from("Shoestp", "notice@service.shoestp.com")
+                .to(getEmail())
+                .buildEmail(),
+            true);
+        write();
+        return;
     }
   }
 
@@ -232,15 +191,21 @@ public class UsrMainAction extends HomeAction<UsrMain> {
    * @author chen
    */
   public void updPwd() throws Exception {
+    if (code == null || code.length() < 1) {
+      writeErr(-1, "Invalid Mail Verification Code");
+      return;
+    }
+    if (CacheUtils.pwdValid.getIfPresent(Integer.valueOf(code)) == null
+        || !CacheUtils.pwdValid.getIfPresent(Integer.valueOf(code)).equals(getEmail())) {
+      writeErr(-1, "Invalid Mail Code or Email");
+      return;
+    }
     updPwd.setNewPwd(pwdA);
     updPwd.setOldPwd(pwd);
     updPwd.setEmail(getEmail());
-    try {
-      updPwd.commit();
-      write();
-    } catch (Exp e) {
-      writeErr(e.getLastMessage());
-    }
+    updPwd.commit();
+    CacheUtils.pwdValid.invalidate(code);
+    write();
   }
 
   /**
@@ -278,7 +243,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
       if (value != null && value.equals(getEmail())) {
         setResult("/home/v3/jsp/reg/register-step2.jsp");
       } else {
-        throw LOG.errTran("该链接已超时", "该链接已超时");
+        setResult("/home/v3/jsp/reg/register-step3.jsp");
       }
     }
     return HomeAction.TRENDS;

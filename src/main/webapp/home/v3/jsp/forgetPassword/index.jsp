@@ -348,7 +348,8 @@
                         Qs.stringify({
                             pwd: than.password,
                             pwdA: than.checkpasword,
-                            email: than.email
+                            email: than.email,
+                            code: than.promptMessage
                         })
                     ).then(res => {
                         if (res.data.ret == 1) {
