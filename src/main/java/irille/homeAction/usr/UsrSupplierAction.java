@@ -131,6 +131,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
       for (String key : obj.keySet()) {
         j.put(key, obj.get(key));
       }
+      System.err.println("时间格式：" + j.toString());
       json.put("annex", j);
     }
     writerOrExport(json);
@@ -149,6 +150,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
         annex.setIdCardFrontPhotoName(idCardFrontPhotoName);
         annex.setContactsIdCardFrontPhotoName(contactsIdCardFrontPhotoName);
       }
+      System.err.println("时间===》" + getBean().getPkey());
       UsrSupplier newSupplier = UsrSupplierDAO.updInfo(getBean());
       newSupplier.stStatus(OStatus.INIT);
       newSupplier.upd();

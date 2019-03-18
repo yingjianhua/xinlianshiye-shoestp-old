@@ -2,7 +2,11 @@ package irille.shop.pdt;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.google.gson.JsonObject;
@@ -10,10 +14,10 @@ import com.google.gson.JsonParser;
 import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
 import com.xinlianshiye.shoestp.plat.service.pm.imp.PMMessageServiceImp;
 
-import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
-import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Entity.O2O.O2O_Product;
+import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
+import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.pm.PM.OTempType;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
@@ -33,8 +37,8 @@ import irille.pub.idu.IduOther;
 import irille.pub.idu.IduUpd;
 import irille.pub.svr.Env;
 import irille.pub.tb.FldLanguage;
-import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.SEOUtils;
+import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.TranslateLanguage.TranslateFilter;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.sellerAction.SellerAction;
@@ -250,6 +254,9 @@ public class PdtProductDAO {
           T.PRODUCT_TYPE);
       translateUtil.newAutoTranslate(dbBean, translateFilter);
       getB().setUpdateTime(Env.getTranBeginTime());
+      dbBean.setDescribeModule1(getB().getDescribeModule1());
+      dbBean.setDescribeModule2(getB().getDescribeModule2());
+      dbBean.setDescribeModule3(getB().getDescribeModule3());
       setB(dbBean);
     }
 
@@ -610,7 +617,11 @@ public class PdtProductDAO {
           T.SEO_KEYWORD,
           T.SEO_TITLE,
           T.PRODUCT_TYPE);
-      setB(translateUtil.newAutoTranslate(dbBean, translateFilter));
+      translateUtil.newAutoTranslate(dbBean, translateFilter);
+      dbBean.setDescribeModule1(getB().getDescribeModule1());
+      dbBean.setDescribeModule2(getB().getDescribeModule2());
+      dbBean.setDescribeModule3(getB().getDescribeModule3());
+      setB(dbBean);
       getLines()
           .forEach(
               pdtSpec -> {
@@ -719,10 +730,10 @@ public class PdtProductDAO {
       joiner.add(String.valueOf(Pdt.OProductType.GENERAL.getLine().getKey()));
       joiner.add(String.valueOf(Pdt.OProductType.GATHER.getLine().getKey()));
       sql.SELECT(T.PKEY, T.PICTURE, T.NAME, T.CUR_PRICE, T.IS_HOT)
-          .FROM(PdtProduct.class)
-          .WHERE(T.SUPPLIER, "=?", supplier)
-          .WHERE(T.STATE, "=?", Pdt.OState.ON)
-          .WHERE(T.IS_VERIFY, "=?", Sys.OYn.YES)
+                  .FROM(PdtProduct.class)
+                  .WHERE(T.SUPPLIER, "=?", supplier)
+                  .WHERE(T.STATE, "=?", Pdt.OState.ON)
+                  .WHERE(T.IS_VERIFY, "=?", Sys.OYn.YES)
           .WHERE(T.PRODUCT_TYPE, "in (" + joiner.toString() + ")");
       //            粘合O2O商品
       SQL o2oSql = new SQL();
