@@ -30,8 +30,13 @@ import irille.shop.plt.PltProvince;
 import irille.shop.prm.PrmGroupPurchase;
 import irille.shop.prm.PrmGroupPurchaseDAO;
 import irille.shop.usr.Usr.OStatus;
-import irille.shop.usr.*;
+import irille.shop.usr.UsrAnnex;
+import irille.shop.usr.UsrProductCategory;
+import irille.shop.usr.UsrProductCategoryDAO;
+import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplier.T;
+import irille.shop.usr.UsrSupplierCategoryDAO;
+import irille.shop.usr.UsrSupplierDAO;
 import irille.view.pdt.CategoryView;
 import irille.view.usr.SupplierView;
 import irille.view.usr.UserView;
@@ -406,11 +411,13 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
   private Byte entryStep;
 
   /** 商家入驻页面 */
-  @NeedLogin
+  @NeedLogin(supplier = true)
   public String supplierEntry() {
     UserView user = getUser();
     if (!user.isSupplier()) {
       entryStep = 0;
+      setResult("/home/usr_UsrPurchase_sign");
+      return RTRENDS;
     }
     // 没有Supplier 信息未入住商家
     if (user.getSupplier() == null) {
