@@ -312,28 +312,28 @@
         <ul class="psd-strength-tips-list">
             <!-- <li class="tip-item" v-for="(tip, index) in psdStrength.tips">
                 {{tip}}
-                <img src="./images/icon_dui_green.png" class="isRight" alt="" v-if="psdStrength.arr[index]">
-                <img src="./images/icon_cuo_blue.png" class="isError" alt="" v-else>
+                <img src="/home/v3/static/images/forgetPassword/icon_dui_green.png" class="isRight" alt="" v-if="psdStrength.arr[index]">
+                <img src="/home/v3/static/images/forgetPassword/icon_cuo_blue.png" class="isError" alt="" v-else>
             </li> -->
             <li class="tip-item">
                 {{registerForm.user=='buyer'?'6 to 20 characters':'6到12个字符'}}
-                <img src="./images/icon_dui_green.png" class="isRight" alt="" v-if="psdStrength.arr[0]">
-                <img src="./images/icon_cuo_blue.png" class="isError" alt="" v-else>
+                <img src="/home/v3/static/images/forgetPassword/icon_dui_green.png" class="isRight" alt="" v-if="psdStrength.arr[0]">
+                <img src="/home/v3/static/images/forgetPassword/icon_cuo_blue.png" class="isError" alt="" v-else>
             </li>
             <li class="tip-item">
                 {{registerForm.user=='buyer'?
                 'Only consists of letters,numbers and symbols':
                 '仅限字母、数字、以及符号'}}
 
-                <img src="./images/icon_dui_green.png" class="isRight" alt="" v-if="psdStrength.arr[1]">
-                <img src="./images/icon_cuo_blue.png" class="isError" alt="" v-else>
+                <img src="/home/v3/static/images/forgetPassword/icon_dui_green.png" class="isRight" alt="" v-if="psdStrength.arr[1]">
+                <img src="/home/v3/static/images/forgetPassword/icon_cuo_blue.png" class="isError" alt="" v-else>
             </li>
             <li class="tip-item">
                 {{registerForm.user=='buyer'?
                 'Contains at least two of the following:letters numbers and symbols':
                 '至少包含以下中的两种: 字母、数字、以及符号'}}
-                <img src="./images/icon_dui_green.png" class="isRight" alt="" v-if="psdStrength.arr[2]">
-                <img src="./images/icon_cuo_blue.png" class="isError" alt="" v-else>
+                <img src="/home/v3/static/images/forgetPassword/icon_dui_green.png" class="isRight" alt="" v-if="psdStrength.arr[2]">
+                <img src="/home/v3/static/images/forgetPassword/icon_cuo_blue.png" class="isError" alt="" v-else>
             </li>
         </ul>
     </el-popover>
