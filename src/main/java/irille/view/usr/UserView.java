@@ -26,7 +26,8 @@ public class UserView {
   public boolean isPurchase() {
     return user_type == 0;
   }
- public UsrSupplier getSupplier() {
+
+  public UsrSupplier getSupplier() {
     return supplier;
   }
 
@@ -43,7 +44,6 @@ public class UserView {
   }
 
   public boolean haveUser() {
-    return supplier != null || purchase != null;
+    return (pkey != null && pkey > 0) || supplier != null || purchase != null;
   }
-
 }

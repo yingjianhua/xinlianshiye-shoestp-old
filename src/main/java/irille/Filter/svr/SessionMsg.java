@@ -150,10 +150,13 @@ public class SessionMsg {
     if (user == null || !user.haveUser()) {
       isPurchase = false;
       isSupplier = false;
+      pkey = null;
+      loginName = null;
     } else {
       this.setSupplier(user.getSupplier());
       this.setPurchase(user.getPurchase());
       this.pkey = user.getPkey();
+      this.loginName = user.getLoginName();
     }
   }
 
