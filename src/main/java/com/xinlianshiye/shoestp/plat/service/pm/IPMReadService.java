@@ -5,5 +5,5 @@ import com.xinlianshiye.shoestp.plat.service.pm.imp.PMReadServiceImp;
 
 @ImplementedBy(PMReadServiceImp.class)
 public interface IPMReadService {
-	public void read(Integer reader,Integer message);
+  public void read(Integer reader, Integer message);
 }

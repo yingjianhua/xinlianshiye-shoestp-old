@@ -35,158 +35,167 @@ import irille.shop.usr.UsrSupplier;
  *
  * @author yingjianhua
  */
-@Variable(group = {OTempType.PROD_APPR_NOTICE,OTempType.O2O_PROD_APPR_NOTICE},enumType=PdtProduct.T.class,clazz=PdtProduct.class,attributes = {
-		@Attribute(name="商品名称",field="NAME",type=FldLanguage.class),
-		@Attribute(name="商品审核状态",field="IS_VERIFY",type=Sys.OYn.class),
-		@Attribute(name="商品审核时间",field="VERIFY_TIME",type=Date.class),
-		@Attribute(name="商品编号",field="CODE",type=String.class),
-		@Attribute(name="商品商城价",field="CUR_PRICE",type=BigDecimal.class)}
-)
+@Variable(
+    group = {OTempType.PROD_APPR_NOTICE, OTempType.O2O_PROD_APPR_NOTICE},
+    enumType = PdtProduct.T.class,
+    clazz = PdtProduct.class,
+    attributes = {
+      @Attribute(name = "商品名称", field = "NAME", type = FldLanguage.class),
+      @Attribute(name = "商品审核状态", field = "IS_VERIFY", type = Sys.OYn.class),
+      @Attribute(name = "商品审核时间", field = "VERIFY_TIME", type = Date.class),
+      @Attribute(name = "商品编号", field = "CODE", type = String.class),
+      @Attribute(name = "商品商城价", field = "CUR_PRICE", type = BigDecimal.class)
+    })
 public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
-    public static final Tb TB = new Tb(PdtProduct.class, "产品").setAutoIncrement().addActIUDL();
+  public static final Tb TB = new Tb(PdtProduct.class, "产品").setAutoIncrement().addActIUDL();
 
-    public enum T implements IEnumFld {//@formatter:off
-        PKEY(TB.crtIntPkey()),
-        NAME(SYS.MUILTI_LANGUAGE, "名称"), // 名称 多国语言
-        IS_VERIFY(SYS.YN, "产品审核"), //是否审核通过
-        VERIFY_BY(SYS.CHECK_BY__NULL, "审核人员"), //审核人员
-        VERIFY_TIME(SYS.DATE_TIME, "审核时间"), //审核时间
-        CATEGORY(PdtCat.fldOutKey("category", "产品类目")),
-        CATEGORY_DIY(UsrProductCategory.fldOutKey("category", "店铺类目").setNull()),
-        CODE(SYS.CODE__100_NULL, "编号"), //产品编号,不填写为系统默认编号
-        SKU(SYS.CODE__100_NULL, "SKU（出厂编码）"),//SKU(出厂编码),不填写为系统默认编号
-        //		COMMISSION(SYS.AMT, "佣金"),//佣金
-        SUPPLIER(UsrSupplier.fldOutKey()), //供应商
-        MEMBER_LEVEL(UsrMemberLevel.fldOutKey().setNull()),//会员等级  保留字段，用户等级优先级排后，有时间再做
-        //		DIY_WEBSIZE(SYS.URL__NULL, "自定义地址"),//自定义地址
-        PICTURE(SYS.IMG_MULTI__1000, "产品图片"),//产品图片 多图 图片大小建议: 500*500像素
-        //		UPDATE_WATERMARK(SYS.YN, "更新水印图片"),//更新水印图片
-        MKT_PRICE(SYS.AMT, "市场价$"),//市场价$   做预留 默认值:0
-        CUR_PRICE(SYS.AMT, "商城价$"),//商城价$
-        PUR_PRICE(SYS.AMT, "进货价$"), //进货价$  做预留 默认值:0
-        //当前台选择的产品属性的价格是单价，批发价的计算就会以折扣的方式来计算
-        WS_PRICE(SYS.AMT, "批发价"), //批发价 wholesale_price {100:10,1000:90,2000:80}
-        MIN_OQ(SYS.INT_PLUS_OR_ZERO, "起订量"),//起订量
-        MAX_OQ(SYS.INT_PLUS_OR_ZERO, "最大购买量"), //最大购买量
-        SALES(SYS.INT_PLUS_OR_ZERO, "产品销量"), //产品销量 显示已经完成订单的商品数量
-        STOCK(SYS.INT_PLUS_OR_ZERO, "库存"), //库存
-        WARN_STOCK(SYS.INT_PLUS_OR_ZERO, "警告库存"), //警告库存 低于警告库存量，提醒供应商
-        NORM_ATTR(SYS.STR__1000_NULL, "商品属性"), //普通商品属性 通过,分隔 对应AttributeLine
-        SIZE_ATTR(SYS.STR__100, "规格属性"), //规格属性    PdtSize的pkeys
-        COLOR_ATTR(SYS.STR__100, "颜色属性"), //颜色属性   PdtColor的pkeys
+  public enum T implements IEnumFld { // @formatter:off
+    PKEY(TB.crtIntPkey()),
+    NAME(SYS.MUILTI_LANGUAGE, "名称"), // 名称 多国语言
+    IS_VERIFY(SYS.YN, "产品审核"), // 是否审核通过
+    VERIFY_BY(SYS.CHECK_BY__NULL, "审核人员"), // 审核人员
+    VERIFY_TIME(SYS.DATE_TIME, "审核时间"), // 审核时间
+    CATEGORY(PdtCat.fldOutKey("category", "产品类目")),
+    CATEGORY_DIY(UsrProductCategory.fldOutKey("category", "店铺类目").setNull()),
+    CODE(SYS.CODE__100_NULL, "编号"), // 产品编号,不填写为系统默认编号
+    SKU(SYS.CODE__100_NULL, "SKU（出厂编码）"), // SKU(出厂编码),不填写为系统默认编号
+    //		COMMISSION(SYS.AMT, "佣金"),//佣金
+    SUPPLIER(UsrSupplier.fldOutKey()), // 供应商
+    MEMBER_LEVEL(UsrMemberLevel.fldOutKey().setNull()), // 会员等级  保留字段，用户等级优先级排后，有时间再做
+    //		DIY_WEBSIZE(SYS.URL__NULL, "自定义地址"),//自定义地址
+    PICTURE(SYS.IMG_MULTI__1000, "产品图片"), // 产品图片 多图 图片大小建议: 500*500像素
+    //		UPDATE_WATERMARK(SYS.YN, "更新水印图片"),//更新水印图片
+    MKT_PRICE(SYS.AMT, "市场价$"), // 市场价$   做预留 默认值:0
+    CUR_PRICE(SYS.AMT, "商城价$"), // 商城价$
+    PUR_PRICE(SYS.AMT, "进货价$"), // 进货价$  做预留 默认值:0
+    // 当前台选择的产品属性的价格是单价，批发价的计算就会以折扣的方式来计算
+    WS_PRICE(SYS.AMT, "批发价"), // 批发价 wholesale_price {100:10,1000:90,2000:80}
+    MIN_OQ(SYS.INT_PLUS_OR_ZERO, "起订量"), // 起订量
+    MAX_OQ(SYS.INT_PLUS_OR_ZERO, "最大购买量"), // 最大购买量
+    SALES(SYS.INT_PLUS_OR_ZERO, "产品销量"), // 产品销量 显示已经完成订单的商品数量
+    STOCK(SYS.INT_PLUS_OR_ZERO, "库存"), // 库存
+    WARN_STOCK(SYS.INT_PLUS_OR_ZERO, "警告库存"), // 警告库存 低于警告库存量，提醒供应商
+    NORM_ATTR(SYS.STR__1000_NULL, "商品属性"), // 普通商品属性 通过,分隔 对应AttributeLine
+    SIZE_ATTR(SYS.STR__100, "规格属性"), // 规格属性    PdtSize的pkeys
+    COLOR_ATTR(SYS.STR__100, "颜色属性"), // 颜色属性   PdtColor的pkeys
 
-        STOCK_OUT(Tb.crt(Pdt.OStockOut.SOLDOUT)), //脱销状态  商品脱销后加入购物车和购买按钮的显示
-        STATE(Tb.crt(Pdt.OState.DEFAULT)), //销售状态 上架和下架
-        SOLD_IN_TIME(SYS.YN, "定时上架"), //定时上架
-        SOLD_TIME_B(SYS.DATE_TIME__NULL, "上架时间(开始)"), // 上架时间(开始)
-        SOLD_TIME_E(SYS.DATE_TIME__NULL, "上架时间(结束)"), // 上架时间(结束)
+    STOCK_OUT(Tb.crt(Pdt.OStockOut.SOLDOUT)), // 脱销状态  商品脱销后加入购物车和购买按钮的显示
+    STATE(Tb.crt(Pdt.OState.DEFAULT)), // 销售状态 上架和下架
+    SOLD_IN_TIME(SYS.YN, "定时上架"), // 定时上架
+    SOLD_TIME_B(SYS.DATE_TIME__NULL, "上架时间(开始)"), // 上架时间(开始)
+    SOLD_TIME_E(SYS.DATE_TIME__NULL, "上架时间(结束)"), // 上架时间(结束)
 
-        IS_DEFAULT_REVIEW(SYS.YN, "默认评论"), //默认评论
-        DEFAULT_REVIEW_RATING(SYS.AMT, "默认评论平均分"), //默认评论平均分
-        DEFAULT_REVIEW_COUNT(SYS.INT, "默认评论人数"), //默认评论人数
-        Favorite_Count(SYS.INT, "收藏数"), //收藏数
+    IS_DEFAULT_REVIEW(SYS.YN, "默认评论"), // 默认评论
+    DEFAULT_REVIEW_RATING(SYS.AMT, "默认评论平均分"), // 默认评论平均分
+    DEFAULT_REVIEW_COUNT(SYS.INT, "默认评论人数"), // 默认评论人数
+    Favorite_Count(SYS.INT, "收藏数"), // 收藏数
 
-        SOURCE_PRODUCT(PdtProduct.fldOutKey().setNull()),//原始产品
-        PRODUCT_TYPE(Tb.crt(Pdt.OProductType.DEFAULT)),
+    SOURCE_PRODUCT(PdtProduct.fldOutKey().setNull()), // 原始产品
+    PRODUCT_TYPE(Tb.crt(Pdt.OProductType.DEFAULT)),
 
-        IS_NEW(SYS.YN, "新品"),//新品
-        IS_INDEX(SYS.YN, "首页显示"), //首页显示
-        IS_HOT(SYS.YN, "热卖"), //热卖
-        ISBESTDEALS(SYS.YN, "畅销"), //畅销
-        MY_ORDER(SYS.SORT__SHORT, "排序优先级"), //排序优先级
+    IS_NEW(SYS.YN, "新品"), // 新品
+    IS_INDEX(SYS.YN, "首页显示"), // 首页显示
+    IS_HOT(SYS.YN, "热卖"), // 热卖
+    ISBESTDEALS(SYS.YN, "畅销"), // 畅销
+    MY_ORDER(SYS.SORT__SHORT, "排序优先级"), // 排序优先级
 
-        //标题与标签
-        SEO_TITLE(SYS.JSON, "标题"), //标题
-        SEO_KEYWORD(SYS.JSON, "关键词"), //关键词
-        SEO_DESCRIPTION(SYS.JSON, "简述"), //简述
-        //物流运费
-        IS_FREE_SHIPPING(SYS.YN, "免运费"), //免运费
-        WEIGHT(SYS.AMT, "重量"), //重量
-        //CUBAGE(SYS.STR__100_NULL, "体积(长,宽,高)"), //体积 长，宽，高
-        LENGTH(SYS.AMT, "长"),
-        WIDTH(SYS.AMT, "宽"),
-        HEIGHT(SYS.AMT, "高"),
+    // 标题与标签
+    SEO_TITLE(SYS.JSON, "标题"), // 标题
+    SEO_KEYWORD(SYS.JSON, "关键词"), // 关键词
+    SEO_DESCRIPTION(SYS.JSON, "简述"), // 简述
+    // 物流运费
+    IS_FREE_SHIPPING(SYS.YN, "免运费"), // 免运费
+    WEIGHT(SYS.AMT, "重量"), // 重量
+    // CUBAGE(SYS.STR__100_NULL, "体积(长,宽,高)"), //体积 长，宽，高
+    LENGTH(SYS.AMT, "长"),
+    WIDTH(SYS.AMT, "宽"),
+    HEIGHT(SYS.AMT, "高"),
 
-        //文字描述
-        BRIEF_DESCRIPTION(SYS.STR__100_NULL, "简短描述"), //简短描述
-        DESCRIPTION(SYS.MUILTI_LANGUAGE, "详细介绍"), //详细介绍  多国语言
-        //选项卡1
-        IS_SHOW_TAB_1(SYS.YN, "选项卡1"), //显示选项卡1
-        TABNAME_1(SYS.NAME__100_NULL, "选项卡1标题"), //选项卡1 标题
-        TAB_1(SYS.STR__1000_NULL, "选项卡1内容"), //选项卡1内容
-        //选项卡2
-        IS_SHOW_TAB_2(SYS.YN, "选项卡2"),//显示选项卡1
-        TABNAME_2(SYS.NAME__100_NULL, "选项卡2标题"), //选项卡1 标题
-        TAB_2(SYS.STR__1000_NULL, "选项卡2内容"), //选项卡1内容
-        //选项卡3
-        IS_SHOW_TAB_3(SYS.YN, "选项卡3"),//显示选项卡1
-        TABNAME_3(SYS.NAME__100_NULL, "选项卡3标题"), //选项卡1 标题
-        TAB_3(SYS.STR__1000_NULL, "选项卡3内容"), //选项卡1内容
+    // 文字描述
+    BRIEF_DESCRIPTION(SYS.STR__100_NULL, "简短描述"), // 简短描述
+    DESCRIPTION(SYS.MUILTI_LANGUAGE, "详细介绍"), // 详细介绍  多国语言
+    // 选项卡1
+    IS_SHOW_TAB_1(SYS.YN, "选项卡1"), // 显示选项卡1
+    TABNAME_1(SYS.NAME__100_NULL, "选项卡1标题"), // 选项卡1 标题
+    TAB_1(SYS.STR__1000_NULL, "选项卡1内容"), // 选项卡1内容
+    // 选项卡2
+    IS_SHOW_TAB_2(SYS.YN, "选项卡2"), // 显示选项卡1
+    TABNAME_2(SYS.NAME__100_NULL, "选项卡2标题"), // 选项卡1 标题
+    TAB_2(SYS.STR__1000_NULL, "选项卡2内容"), // 选项卡1内容
+    // 选项卡3
+    IS_SHOW_TAB_3(SYS.YN, "选项卡3"), // 显示选项卡1
+    TABNAME_3(SYS.NAME__100_NULL, "选项卡3标题"), // 选项卡1 标题
+    TAB_3(SYS.STR__1000_NULL, "选项卡3内容"), // 选项卡1内容
 
-        UPDATE_TIME(SYS.UPDATED_DATE_TIME),
-        ROW_VERSION(SYS.ROW_VERSION),
-        //>>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
-        //<<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
-        ;
-        //>>>以下是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别>>>
-        //<<<以上是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别<<<
-        public static final Tb.Index IDX_SUPPLIER_SKU = TB.addIndex("supplier_sku", false, T.SUPPLIER, T.SKU);
-        private Fld _fld;
+    // 3.1 描述模块
+    DESCRIBE_MODULE_1(SYS.MUILTI_LANGUAGE_NULL, "详细描述模块1"),
+    DESCRIBE_MODULE_2(SYS.MUILTI_LANGUAGE_NULL, "详细描述模块2"),
+    DESCRIBE_MODULE_3(SYS.MUILTI_LANGUAGE_NULL, "详细描述模块3"),
+    FIRST_PUTAWAY(SYS.YN, "是否首次上架"),
 
-        private T(Class clazz, String name, boolean... isnull) {
-            _fld = TB.addOutKey(clazz, this, name, isnull);
-        }
+    UPDATE_TIME(SYS.UPDATED_DATE_TIME),
+    ROW_VERSION(SYS.ROW_VERSION),
+  // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
+  // <<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
+  ;
+    // >>>以下是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别>>>
+    // <<<以上是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别<<<
+    public static final Tb.Index IDX_SUPPLIER_SKU =
+        TB.addIndex("supplier_sku", false, T.SUPPLIER, T.SKU);
+    private Fld _fld;
 
-        private T(IEnumFld fld, boolean... isnull) {
-            this(fld, null, isnull);
-        }
-
-        private T(IEnumFld fld, String name, boolean... null1) {
-            _fld = TB.add(fld, this, name, null1);
-        }
-
-        private T(IEnumFld fld, String name, int strLen) {
-            _fld = TB.add(fld, this, name, strLen);
-        }
-
-        private T(Fld fld) {
-            _fld = TB.add(fld, this);
-        }
-
-        public Fld getFld() {
-            return _fld;
-        }
+    private T(Class clazz, String name, boolean... isnull) {
+      _fld = TB.addOutKey(clazz, this, name, isnull);
     }
 
-    static { //在此可以加一些对FLD进行特殊设定的代码
-        T.PKEY.getFld().getTb().lockAllFlds();//加锁所有字段,不可以修改
+    private T(IEnumFld fld, boolean... isnull) {
+      this(fld, null, isnull);
     }
 
-    public static Fld fldOutKey() {
-        return fldOutKey(TB.getCodeNoPackage(), TB.getShortName()).setType(null);
+    private T(IEnumFld fld, String name, boolean... null1) {
+      _fld = TB.add(fld, this, name, null1);
     }
 
-    public static Fld fldOutKey(String code, String name) {
-        return Tb.crtOutKey(TB, code, name);
+    private T(IEnumFld fld, String name, int strLen) {
+      _fld = TB.add(fld, this, name, strLen);
     }
 
-    @Override
-    public String getExtName() {
-        return getName();
+    private T(Fld fld) {
+      _fld = TB.add(fld, this);
     }
 
-    @Override
-    public void initSeq(SysSeq s) {
-        s.setPkey(gtTable().getPkey());
-        s.stOrgFlag(false);
-        s.stType(Sys.OType.NONE);
-
+    public Fld getFld() {
+      return _fld;
     }
+  }
 
+  static { // 在此可以加一些对FLD进行特殊设定的代码
+    T.PKEY.getFld().getTb().lockAllFlds(); // 加锁所有字段,不可以修改
+  }
 
-    //@formatter:on
+  public static Fld fldOutKey() {
+    return fldOutKey(TB.getCodeNoPackage(), TB.getShortName()).setType(null);
+  }
 
-    //>>>以下是自动产生的源代码行--源代码--请保留此行用于识别>>>
+  public static Fld fldOutKey(String code, String name) {
+    return Tb.crtOutKey(TB, code, name);
+  }
+
+  @Override
+  public String getExtName() {
+    return getName();
+  }
+
+  @Override
+  public void initSeq(SysSeq s) {
+    s.setPkey(gtTable().getPkey());
+    s.stOrgFlag(false);
+    s.stType(Sys.OType.NONE);
+  }
+
+  // @formatter:on
+
+  // >>>以下是自动产生的源代码行--源代码--请保留此行用于识别>>>
   //实例变量定义-----------------------------------------
   private Integer _pkey;	// 编号  INT
   private String _name;	// 名称  JSONOBJECT
@@ -280,6 +289,12 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
 	// NO:0,否
   private String _tabname3;	// 选项卡3标题  STR(100)<null>
   private String _tab3;	// 选项卡3内容  STR(1000)<null>
+  private String _describeModule1;	// 详细描述模块1  JSONOBJECT<null>
+  private String _describeModule2;	// 详细描述模块2  JSONOBJECT<null>
+  private String _describeModule3;	// 详细描述模块3  JSONOBJECT<null>
+  private Byte _firstPutaway;	// 是否首次上架 <OYn>  BYTE
+	// YES:1,是
+	// NO:0,否
   private Date _updateTime;	// 更新时间  TIME
   private Short _rowVersion;	// 版本  SHORT
 
@@ -344,6 +359,10 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
     _isShowTab3=OYn.DEFAULT.getLine().getKey();	// 选项卡3 <OYn>  BYTE
     _tabname3=null;	// 选项卡3标题  STR(100)
     _tab3=null;	// 选项卡3内容  STR(1000)
+    _describeModule1=null;	// 详细描述模块1  JSONOBJECT
+    _describeModule2=null;	// 详细描述模块2  JSONOBJECT
+    _describeModule3=null;	// 详细描述模块3  JSONOBJECT
+    _firstPutaway=OYn.DEFAULT.getLine().getKey();	// 是否首次上架 <OYn>  BYTE
     _updateTime=Env.getTranBeginTime();	// 更新时间  TIME
     _rowVersion=0;	// 版本  SHORT
     return this;
@@ -896,6 +915,72 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
   public void setTab3(String tab3){
     _tab3=tab3;
   }
+  public String getDescribeModule1(){
+    return _describeModule1;
+  }
+  public void setDescribeModule1(String describeModule1){
+    _describeModule1=describeModule1;
+  }
+  public JSONObject gtDescribeModule1() throws JSONException {
+    return getDescribeModule1()==null?new JSONObject():new JSONObject(getDescribeModule1());
+  }
+  public void stDescribeModule1(JSONObject describeModule1){
+    setDescribeModule1(describeModule1==null?null:describeModule1.toString());
+  }
+  public String getDescribeModule1(FldLanguage.Language l) throws JSONException {
+    return gtDescribeModule1().has(l.name())?gtDescribeModule1().getString(l.name()):"";
+  }
+  public void setDescribeModule1(String describeModule1, FldLanguage.Language l) throws JSONException {
+    stDescribeModule1(gtDescribeModule1().put(l.name(), describeModule1));
+  }
+  public String getDescribeModule2(){
+    return _describeModule2;
+  }
+  public void setDescribeModule2(String describeModule2){
+    _describeModule2=describeModule2;
+  }
+  public JSONObject gtDescribeModule2() throws JSONException {
+    return getDescribeModule2()==null?new JSONObject():new JSONObject(getDescribeModule2());
+  }
+  public void stDescribeModule2(JSONObject describeModule2){
+    setDescribeModule2(describeModule2==null?null:describeModule2.toString());
+  }
+  public String getDescribeModule2(FldLanguage.Language l) throws JSONException {
+    return gtDescribeModule2().has(l.name())?gtDescribeModule2().getString(l.name()):"";
+  }
+  public void setDescribeModule2(String describeModule2, FldLanguage.Language l) throws JSONException {
+    stDescribeModule2(gtDescribeModule2().put(l.name(), describeModule2));
+  }
+  public String getDescribeModule3(){
+    return _describeModule3;
+  }
+  public void setDescribeModule3(String describeModule3){
+    _describeModule3=describeModule3;
+  }
+  public JSONObject gtDescribeModule3() throws JSONException {
+    return getDescribeModule3()==null?new JSONObject():new JSONObject(getDescribeModule3());
+  }
+  public void stDescribeModule3(JSONObject describeModule3){
+    setDescribeModule3(describeModule3==null?null:describeModule3.toString());
+  }
+  public String getDescribeModule3(FldLanguage.Language l) throws JSONException {
+    return gtDescribeModule3().has(l.name())?gtDescribeModule3().getString(l.name()):"";
+  }
+  public void setDescribeModule3(String describeModule3, FldLanguage.Language l) throws JSONException {
+    stDescribeModule3(gtDescribeModule3().put(l.name(), describeModule3));
+  }
+  public Byte getFirstPutaway(){
+    return _firstPutaway;
+  }
+  public void setFirstPutaway(Byte firstPutaway){
+    _firstPutaway=firstPutaway;
+  }
+  public Boolean gtFirstPutaway(){
+    return byteToBoolean(_firstPutaway);
+  }
+  public void stFirstPutaway(Boolean firstPutaway){
+    _firstPutaway=booleanToByte(firstPutaway);
+  }
   public Date getUpdateTime(){
     return _updateTime;
   }
@@ -909,33 +994,32 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
     _rowVersion=rowVersion;
   }
 
-    //<<<以上是自动产生的源代码行--源代码--请保留此行用于识别<<<
+  // <<<以上是自动产生的源代码行--源代码--请保留此行用于识别<<<
 
+  /**
+   * * 所有商品列表页 根据什么排列，枚举类
+   *
+   * @author lijie@shoestp.cn
+   * @param
+   * @return
+   * @date 2018/7/23 15:28
+   */
+  public enum ProductsIndexOrderByType {
+    MostPopular(T.MY_ORDER, T.UPDATE_TIME),
+    Sales(T.SALES),
+    Favorites(T.Favorite_Count),
+    Price(T.CUR_PRICE),
+    New(T.PKEY, T.MY_ORDER, T.UPDATE_TIME),
+    Hot(T.IS_HOT);
 
-    /***
-     * 所有商品列表页
-     * 根据什么排列，枚举类
-     * @author lijie@shoestp.cn
-     * @param
-     * @return
-     * @date 2018/7/23 15:28
-     */
-    public enum ProductsIndexOrderByType {
-        MostPopular(T.MY_ORDER, T.UPDATE_TIME),
-        Sales(T.SALES),
-        Favorites(T.Favorite_Count),
-        Price(T.CUR_PRICE),
-        New(T.PKEY, T.MY_ORDER, T.UPDATE_TIME),
-        Hot(T.IS_HOT);
+    private List<IEnumFld> fld;
 
-        private List<IEnumFld> fld;
-
-        ProductsIndexOrderByType(IEnumFld... fld) {
-            this.fld = Arrays.asList(fld);
-        }
-
-        public List<IEnumFld> getFld() {
-            return fld;
-        }
+    ProductsIndexOrderByType(IEnumFld... fld) {
+      this.fld = Arrays.asList(fld);
     }
+
+    public List<IEnumFld> getFld() {
+      return fld;
+    }
+  }
 }

@@ -6,7 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Task {
-	private Class clazz;
-	private int time;
-	private String name;
+  private Class clazz;
+  private Integer time;
+  private String name;
+  private String cron;
 }

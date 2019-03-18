@@ -28,7 +28,6 @@
         height: 100%;
         object-fit: contain;
     }
-
 </style>
 
 </head>
@@ -50,7 +49,7 @@
         <div class="user-info clearfix flexCc">
             <div class="user-info-item flexCc">
                 <div class="flexCc">
-                    <div class="avatar-box">
+                    <div class="avatar-box" ref="avatarUpload">
                         <div class="avatar">
 
                             <img @click="clickShowUploadAvatar"
@@ -60,7 +59,8 @@
                         <div class="user-info-item-name" style="color: #232323;">
                             {{userInfo.nickname?userInfo.nickname:'Nickname'}}
                         </div>
-                        <div class="avatar-upload clearfix ripple fadeIn" v-if="isShowAvatarUpload">
+                         <transition name="user-fade-in">
+                        <div class="avatar-upload clearfix  " v-if="isShowAvatarUpload">
                             <!-- action="https://jsonplaceholder.typicode.com/posts/" -->
                             <div class="fl upload-box">
                                 <div>
@@ -84,6 +84,7 @@
                                 <p>Upload JPG format,sized no larger than 3MB</p>
                             </div>
                         </div>
+                    </transition>
                     </div>
                     <div class="icon-id">
                         <a href="/home/usr_UsrPurchase_usrSetting">
@@ -130,16 +131,16 @@
             </div>
             <el-form ref="form" :model="form" :rules="rules" label-width="220px" class="quotation-form">
                 <el-form-item label="Product Name :" prop="title">
-                    <el-input v-model="form.title" placeholder="Please Enter The Product Name."></el-input>
+                    <el-input v-model.trim="form.title" placeholder="Please Enter The Product Name."></el-input>
                 </el-form-item>
                 <el-form-item label="Product Detailed Specification :" prop="descriotion">
-                    <el-input type="textarea" :rows="6" v-model="form.descriotion"
+                    <el-input type="textarea" :rows="6" v-model.trim="form.descriotion"
                               placeholder="Please enter your Proct/Service Details"></el-input>
                 </el-form-item>
                 <el-form-item label="Estimates Order Quantity :" prop="quantity">
                     <el-row>
                         <el-col :span="7">
-                            <el-input v-model="form.quantity" placeholder="Please enter the quantity"></el-input>
+                            <el-input v-model.trim="form.quantity" placeholder="Please enter the quantity"></el-input>
                         </el-col>
                         <el-col :span="5" :offset="1">
                             <el-form-item prop="unit">
@@ -205,8 +206,22 @@
 <script>
     new Vue({
         el: "#personalCenter",
-        data: {
-            isShowAvatarUpload: false, // 头像上传框
+        data() {
+            var validateQuantity = (rule, value, callback) => {
+                let re = /^[1-9]\d*$/;
+                if (!value) {
+                    return callback(new Error('Please enter the quantity'));
+                }
+                if(parseInt(value)!=value){
+                    callback(new Error('Please enter an integer'));
+                }
+                if( !re.test(value)){
+                    callback(new Error('The number cannot be 0'));
+                }
+                callback();
+            };
+            return{
+                isShowAvatarUpload: false, // 头像上传框
             form: {
                 title: '',
                 descriotion: '',
@@ -230,17 +245,24 @@
                     message: 'Please enter your Proct/Service Details',
                     trigger: 'blur'
                 }],
-                quantity: [{
-                    required: true,
-                    message: 'Please enter the quantity',
-                    trigger: 'blur'
-                }],
+                quantity: [{required: true,validator: validateQuantity, trigger: 'blur' }],
                 unit: [{
                     required: true,
                     message: 'Please select a unit',
                     trigger: 'change'
                 }],
             },
+            }
+            
+        },
+         created(){
+            document.addEventListener('click',(e)=>{
+            //     console.log("this.$refs.dl.contains(e.target)");
+            // console.log(this.$refs.dl.contains(e.target));
+            if(!this.$refs.avatarUpload.contains(e.target)){
+                this.isShowAvatarUpload = false;
+            }
+        })
         },
         mounted() {
             this.getUserInfo();

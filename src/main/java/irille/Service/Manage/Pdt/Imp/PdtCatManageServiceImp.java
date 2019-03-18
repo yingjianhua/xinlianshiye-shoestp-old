@@ -1,5 +1,10 @@
 package irille.Service.Manage.Pdt.Imp;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+
 import irille.Dao.PdtProductCatDao;
 import irille.Service.Manage.Pdt.IPdtCatManageService;
 import irille.pub.bean.BeanBase;
@@ -10,10 +15,6 @@ import irille.view.Page;
 import irille.view.pdt.CategoryView;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import javax.inject.Inject;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/8 Time: 11:32 */
 public class PdtCatManageServiceImp implements IPdtCatManageService {
@@ -36,9 +37,7 @@ public class PdtCatManageServiceImp implements IPdtCatManageService {
   public Page getProductSEOs(
       Integer statr, Integer limit, Integer supplier, FldLanguage.Language language) {
     List<ProductSEOsView> list =
-        pdtProductCatDao
-            .getProductSEOs(supplier)
-            .stream()
+        pdtProductCatDao.getProductSEOs(supplier).stream()
             .map(
                 o -> {
                   JSONObject json;
@@ -116,13 +115,16 @@ public class PdtCatManageServiceImp implements IPdtCatManageService {
     pp.upd();
   }
 
-    @Override
-    public List<CategoryView> pList() {
-      return pdtProductCatDao.pList().stream().map(cat->{
-        CategoryView view = new CategoryView();
-        view.setId(cat.getPkey());
-        view.setName(cat.getName());
-        return view;
-      }).collect(Collectors.toList());
-    }
+  @Override
+  public List<CategoryView> pList() {
+    return pdtProductCatDao.pList().stream()
+        .map(
+            cat -> {
+              CategoryView view = new CategoryView();
+              view.setId(cat.getPkey());
+              view.setName(cat.getName());
+              return view;
+            })
+        .collect(Collectors.toList());
+  }
 }

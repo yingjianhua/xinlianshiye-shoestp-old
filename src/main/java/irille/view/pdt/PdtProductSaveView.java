@@ -55,8 +55,17 @@ public class PdtProductSaveView implements BaseView {
     private List<PdtTieredPricingView> tieredPricing;
     private List<PdtColorView> color;
     private Date putawayDate;
+    private String[] desModule;
     
-    public Date getPutawayDate() {
+    public String[] getDesModule() {
+		return desModule;
+	}
+
+	public void setDesModule(String[] desModule) {
+		this.desModule = desModule;
+	}
+
+	public Date getPutawayDate() {
 		return putawayDate;
 	}
 

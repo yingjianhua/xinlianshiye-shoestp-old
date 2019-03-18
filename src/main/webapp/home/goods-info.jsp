@@ -34,6 +34,8 @@
     <link rel="stylesheet" href="/home/v2/static/css/base/element-ui/element-ui.css"/>
     <link rel="stylesheet" href="/home/v2/static/css/base/foot.css"/>
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
+    <script src="https://js.fundebug.cn/fundebug.1.5.1.min.js"
+            apikey="afbc9f957e7689049c3282fe7696d30e7cb260e0ce11c148c0cf9e31d4e802f5"></script>
     <%--<link rel="stylesheet" href="/home/v3/static/css/element-ui/element-ui.css"/>--%>
 
 
@@ -1013,7 +1015,7 @@
                     user_obj.set_form_sign_in('', window.location.href, 1);
                     return
                 }
-                window.location = '/home/usr_UsrConsult_productPublishView?product_id=' + this.goodsInfo.pdtId+'&backUrl='+window.location.href
+              window.location = '/home/usr_UsrConsult_productPublishView?product_id=' + this.goodsInfo.pdtId+'&backUrl='+window.location.href
 
                 // axios({
                 //     url: "/home/pdt_PdtConsultPdtList_add",

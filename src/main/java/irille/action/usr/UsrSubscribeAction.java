@@ -5,9 +5,8 @@ import irille.shop.usr.UsrSubscribe;
 
 public class UsrSubscribeAction extends MgtAction<UsrSubscribe> {
 
-
-    @Override
-    public Class beanClazz() {
-        return UsrSubscribe.class;
-    }
+  @Override
+  public Class beanClazz() {
+    return UsrSubscribe.class;
+  }
 }

@@ -9,7 +9,7 @@ import irille.view.Page;
 
 @ImplementedBy(PMMessageDaoImp.class)
 public interface IPMMessageDao {
-	Page<MessageView> list(MessageView view,Integer start,Integer limit);
-	
-	Page<MessageView> list(Integer rec,ORCVRType type,Integer start,Integer limit);
+  Page<MessageView> list(MessageView view, Integer start, Integer limit);
+
+  Page<MessageView> list(Integer rec, ORCVRType type, Integer start, Integer limit);
 }

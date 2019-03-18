@@ -17,7 +17,7 @@
             <h1>Product Information & Transport Information</h1>
             <div class="section1-content">
                 <ul>
-                    <li class="flexSb">
+                    <li class="flexSt">
                         <div class="section1-content-left flexSb">
                             <div class="title">Product Keywords:</div>
                             <div class="list clearfix">
@@ -38,15 +38,17 @@
                     <li class="flexSt">
                         <div class="title">Product Image:</div>
                         <div class="img-list flexSt">
-                            <div v-if="images" class="img-item" v-for="item in images">
-                                <img :src="images?isLogin?image(item):image(item)+ '?x-oss-process=image/resize,w_80/blur,r_8,s_8':'./static/images/no-pdtImages.png'"
-                                     alt="">
+                            <div class="img-item" v-if="images.length == 0">
+                                <img src="./static/images/no-pdtImages.png" alt="">
+                            </div>
+                            <div class="img-item" v-for="item in images" v-else>
+                                <img :src="isLogin?image(item):image(item)+ '?x-oss-process=image/resize,w_80/blur,r_8,s_8'" alt="">
                             </div>
                         </div>
                     </li>
                     <li class="flexSt">
                         <div class="title">Product Details:</div>
-                        <div style="text-decoration: underline;cursor: pointer;" @click="showpdtDetails">show</div>
+                        <div style="text-decoration: underline;cursor: pointer;" v-if="!pdtDetails" @click="showpdtDetails">show</div>
                         <div style="width:720px;" v-if="pdtDetails">{{companyInfo.pdtDetails}}</div>
                     </li>
                     <li class="flexSt">
@@ -86,7 +88,7 @@
                     <p>To view this buyer's contact information please <span style="color: #dd2811;">Sign In Now</span>
                         ! Not a member yet? It takes less than a minute to Join <span
                                 style="color: #dd2811;">FREE</span> now!</p>
-                    <a href="" target="_blank">Quote Now</a>
+                    <a href="javascript:void(0)" target="_blank" @click="quoteNow">Quote Now</a>
                 </ul>
             </div>
         </div>
@@ -102,20 +104,21 @@
         <!-- 问题表单 -->
         <div class="quotation">
             <div class="quotation-title clearfix">
-                <h3 class="fl">Request for Quotation</h3>
+                <h3 class="fl">Request For Quotation</h3>
             </div>
-            <el-form ref="form" :model="form" :rules="rules" label-width="220px" class="quotation-form">
+            <el-form ref="form" :model="form" :rules="rules" label-width="275px" class="quotation-form">
                 <el-form-item label="Product Name :" prop="title">
-                    <el-input v-model="form.title" placeholder="Please Enter The Product Name."></el-input>
+                    <el-input v-model.trim="form.title" placeholder="Please Enter The Product Name."></el-input>
                 </el-form-item>
+                
                 <el-form-item label="Product Detailed Specification :" prop="descriotion">
-                    <el-input type="textarea" :rows="6" v-model="form.descriotion"
+                    <el-input class="textarea-placeholder" type="textarea" :rows="6" v-model.trim="form.descriotion"
                               placeholder="Please enter your Proct/Service Details"></el-input>
                 </el-form-item>
                 <el-form-item label="Estimates Order Quantity :" prop="quantity">
                     <el-row>
                         <el-col :span="7">
-                            <el-input v-model="form.quantity"></el-input>
+                            <el-input v-model.trim="form.quantity"></el-input>
                         </el-col>
                         <el-col :span="5" :offset="1">
                             <el-form-item prop="unit">
@@ -131,7 +134,7 @@
                 <el-form-item>
                     <el-button type="primary" @click="submitForm('form')">Submit</el-button>
                     <a href="/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1"
-                       style="color: #9fafd7;font: size 12px;" target="_blank">Add more requirements</a>
+                       style="color: #9fafd7;font-size :14px;" target="_blank">Add more requirements</a>
                 </el-form-item>
             </el-form>
         </div>
@@ -145,50 +148,59 @@
 <script>
     new Vue({
         el: "#readMore",
-        data: {
-            companyInfo: [],
-            images: [],
-            pdtDetails: false,
-            bannerList: [
-                {
-                    imgUrl: '/home/v3/static/images/ljxbanner1.jpg',
-                    url: "/country/Romania-Pantofi-en-gros/romania-index-ro.html"
+        data(){
+            var validateQuantity = (rule, value, callback) => {
+                let re = /^[1-9]\d*$/;
+                if (!value) {
+                    return callback(new Error('Please enter the quantity'));
+                }
+                if(parseInt(value)!=value){
+                    callback(new Error('Please enter an integer'));
+                }
+                 if( !re.test(value)){
+                    callback(new Error('The number cannot be 0'));
+                }
+                callback();
+            };
+            return{
+                companyInfo: [],
+                images: [],
+                pdtDetails: false, // 商品详情是否显示
+                bannerList: [
+                    {imgUrl: '/home/v3/static/images/ljxbanner1.jpg',url: "/country/Romania-Pantofi-en-gros/romania-index-ro.html"},
+                    {imgUrl: '/home/v3/static/images/ljxbanner2.jpg', url: "/home/pdt_PdtProduct"},
+                    {imgUrl: '/home/v3/static/images/ljxbanner3.jpg', url: "/home/usr_UsrConsult_publishView"},
+                ],
+                form: {
+                    title: '',
+                    descriotion: '',
+                    quantity: '',
+                    unit: '',
+                    currency: 1,
+                    pay_type: 1,
+                    shipping_type: 1
                 },
-                {imgUrl: '/home/v3/static/images/ljxbanner2.jpg', url: "/home/pdt_PdtProduct"},
-                {imgUrl: '/home/v3/static/images/ljxbanner3.jpg', url: "/home/usr_UsrConsult_publishView"},
-            ],
-            form: {
-                title: '',
-                descriotion: '',
-                quantity: '',
-                unit: '',
-                currency: 1,
-                pay_type: 1,
-                shipping_type: 1
-            },
-            rules: {  //表单验证
-                title: [{
-                    required: true,
-                    message: '请输入标题',
-                    trigger: 'blur'
-                },],
+                rules: {  //表单验证
+                    title: [{
+                        required: true,
+                        message: 'Please fill in the title',
+                        trigger: 'blur'
+                    },],
 
-                descriotion: [{
-                    required: true,
-                    message: '请输入内容',
-                    trigger: 'blur'
-                }],
-                quantity: [{
-                    required: true,
-                    message: '请输入数量',
-                    trigger: 'blur'
-                }],
-                unit: [{
-                    required: true,
-                    message: '请选择单位',
-                    trigger: 'change'
-                }],
-            },
+                    descriotion: [{
+                        required: true,
+                        message: 'Please fill in the descriotion',
+                        trigger: 'blur'
+                    }],
+                    quantity: [{required: true, validator: validateQuantity, trigger: 'blur' }],
+                    unit: [{
+                        required: true,
+                        message: 'Please select a unit',
+                        trigger: 'change'
+                    }],
+                },
+                }
+            
         },
         mounted() {
             var self = this;
@@ -202,7 +214,9 @@
                     console.log(res);
                     if (res.data.ret == 1) {
                         self.companyInfo = res.data.result;
-                        self.images = res.data.result.pdtImages.split(",")
+                        if(res.data.result.pdtImages){
+                            self.images = res.data.result.pdtImages.split(",")
+                        }
                     } else {
                         self.$message.error(res.data.msg);
                         return
@@ -213,19 +227,53 @@
                 });
         },
         methods: {
+            quoteNow(){
+            //     // user_type  0普通用户  1卖家
+               if(sysConfig.user){
+                //   有登录
+                console.log("登录")
+                    if(sysConfig.user.user_type == 0){
+                        // 普通用户
+                        this.$alert('Please register or login your supplier account before you provide a quote for this RFQ', {
+                        confirmButtonText: 'Sign In',
+                        customClass: "my-custom-element-alert-class fs-content-18",
+                        callback: action => {
+                            console.log(action)
+                            if(action == 'confirm'){
+                                console.log("确定")
+                                window.location.href =
+                                '/home/usr_UsrPurchase_sign?jumpUrl=/home/rfq_RFQConsult_getRFQReadMore?rfqPkey=' + this.rfqPkey;
+                            }else{
+                                console.log("关闭")
+                                return;
+                            }
+                        }
+                    });
+                    }else{
+                        // 卖家
+                         window.location.href =
+                                '/newseller/#/RFQ/details?id=' + this.rfqPkey;
+                    }
+               }else{
+                   console.log("没有登录")
+                //    没有登录
+                 window.location.href =
+                            '/home/usr_UsrPurchase_sign?jumpUrl=/home/rfq_RFQConsult_getRFQReadMore?rfqPkey=' + this.rfqPkey;
+               }
+            },
             showpdtDetails() {  //点击显示 商品详情
                 if (isLogin) {
                     //  登录了
                     this.pdtDetails = true;
                 } else {
                     //  没有登录 提醒去登录
-                    this.$confirm('登录后可以查看完整信息!是否登录?', '提示', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
+                    this.$confirm('After logging in, you can view the complete information! Are you logged in?', 'Prompt', {
+                        confirmButtonText: 'Determine',
+                        cancelButtonText: 'Cancel',
                         type: 'warning'
                     }).then(() => {
                         window.location.href =
-                            '/home/usr_UsrPurchase_sign?jumpUrl=/home/rfq_RFQConsult_getRFQReadMore';
+                            '/home/usr_UsrPurchase_sign?jumpUrl=/home/rfq_RFQConsult_getRFQReadMore?rfqPkey=' + this.rfqPkey;
                     }).catch(() => {
 
                     });
@@ -257,7 +305,7 @@
                                     // 提示信息
                                     this.$message({
                                         showClose: true,
-                                        message: '提交成功',
+                                        message: 'Submitted successfully',
                                         type: 'success'
                                     });
                                     // setTimeout(function () {
@@ -271,7 +319,7 @@
                                     // 未登录时
                                 } else if (res.data.ret == -1) {
                                     window.location.href =
-                                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/rfq_RFQConsult_getRFQReadMore';
+                                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/rfq_RFQConsult_getRFQReadMore?rfqPkey=' + this.rfqPkey;
                                     // 提交失败时
                                 } else {
                                     this.$alert(res.data.msg, {

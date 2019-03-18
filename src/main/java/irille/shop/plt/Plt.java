@@ -17,11 +17,11 @@ import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Entity.RFQ.RFQPurchaseContact;
 import irille.Entity.RFQ.RFQPurchaseContactGroup;
+import irille.Entity.SVS.SVSInfo;
 import irille.Entity.SVS.SVSNewestPdt;
 import irille.Entity.pm.PMMessage;
 import irille.Entity.pm.PMRead;
 import irille.Entity.pm.PMTemplate;
-import irille.Entity.SVS.SVSInfo;
 import irille.core.prv.PrvRoleAct;
 import irille.core.sys.SysModule;
 import irille.pub.Log;
@@ -87,7 +87,7 @@ public class Plt extends PackageBase {
         addTb(70, PMRead.class);
         addTb(71, PMTemplate.class);
         addTb(72, SVSInfo.class);
-        addTb(72, SVSNewestPdt.class);
+        addTb(74, SVSNewestPdt.class);
          addTb(73, UsrAnnex.class);
     }
 

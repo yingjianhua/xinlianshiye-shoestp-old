@@ -1,5 +1,11 @@
 package irille.shop.prm;
 
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+
 import irille.Dao.PdtCatDao;
 import irille.platform.prm.View.PrmGroupPurchaseLineView.PrmGroupPurchaseLineView;
 import irille.platform.prm.View.PrmGroupPurchaseLineView.StatusView;
@@ -21,402 +27,424 @@ import irille.view.prm.GroupProductView;
 import irille.view.prm.shoesView;
 import irille.view.v2.Prm.PrmPdtInfo;
 
-import javax.inject.Inject;
-import java.math.BigDecimal;
-import java.util.*;
-import java.util.stream.Collectors;
-
 public class PrmGroupPurchaseLineDAO
-        extends IduOther<PrmGroupPurchaseLineDAO, PrmGroupPurchaseLine> {
-    public static final Log LOG = new Log(PrmGroupPurchaseLineDAO.class);
+    extends IduOther<PrmGroupPurchaseLineDAO, PrmGroupPurchaseLine> {
+  public static final Log LOG = new Log(PrmGroupPurchaseLineDAO.class);
 
-    @Inject
-    private PdtCatDao pdtCatDao;
+  @Inject private PdtCatDao pdtCatDao;
 
-    /**
-     * 根据活动pkey查询其明细产品
-     * 需搜索字段:/PrmGroupPurchaseLine.T.COUNT,PrmGroupPurchaseLine.T.PKEY,PdtProduct.T.CUR_PRICE,PdtProduct.T.PICTURE/PdtProduct.T.NAME/原始产品curprice/PdtProduct.T.DEFAULT_REVIEW_RATING
-     * 查询条件 :/产品上架/活动pkey/产品分类/分页
-     *
-     * @param lang
-     * @param start    分页查询起始位置
-     * @param limit    每页记录数
-     * @param category 产品分类
-     * @param sort     排序依据
-     * @param type     排序类型
-     * @param id       活动id
-     * @return
-     */
-    public Map getActInfo(
-            FldLanguage.Language lang,
-            Integer start,
-            Integer limit,
-            Integer category,
-            Integer sort,
-            Integer type,
-            Integer id,
-            Integer purchasepkey) {
-        Map map = new HashMap();
-        SQL sql =
-                new SQL() {
-                    {
-                        SELECT(
-                                PrmGroupPurchaseLine.T.PKEY,
-                                PrmGroupPurchaseLine.T.PRODUCT,
-                                PrmGroupPurchaseLine.T.COUNT)
-                                .FROM(PrmGroupPurchaseLine.class);
-                        LEFT_JOIN(PdtProduct.class, PdtProduct.T.PKEY, PrmGroupPurchaseLine.T.PRODUCT)
-                                .WHERE(PrmGroupPurchaseLine.T.MAIN, "=?", id)
-                                .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON);
-                    }
-                };
-        if (category != -1) {
-            /**
-             * @Description: 联合采购过滤
-             *
-             * @date 2018/12/13 9:57
-             * @author lijie@shoestp.cn
-             */
-            switch (category) {
-                case -2: {
-                    List<Integer> list = Arrays.asList(375, 374, 377, 527);
-                    List filter = new ArrayList();
-                    for (Integer integer : list) {
-                        filter.addAll(Arrays.asList(pdtCatDao.getAllChild(lang, integer).split(",")));
-                    }
-                    List result = new ArrayList();
-                    for (String s : pdtCatDao.getAllChild(lang, 373).split(",")) {
-                        if (!filter.contains(s)) {
-                            result.add(s);
-                        }
-                    }
-                    if (result.size() > 0) {
-                        sql.WHERE(PdtProduct.T.CATEGORY, " in( " + String.join(",", result) + " ) ");
-                    }
-                }
-                break;
-                case -3: {
-                    List<Integer> list = Arrays.asList(381, 383, 492);
-                    List filter = new ArrayList();
-                    for (Integer integer : list) {
-                        filter.addAll(Arrays.asList(pdtCatDao.getAllChild(lang, integer).split(",")));
-                    }
-                    List result = new ArrayList();
-                    for (String s : pdtCatDao.getAllChild(lang, 380).split(",")) {
-                        if (!filter.contains(s)) {
-                            result.add(s);
-                        }
-                    }
-                    if (result.size() > 0) {
-                        sql.WHERE(PdtProduct.T.CATEGORY, " in( " + String.join(",", result) + " ) ");
-                    }
-                }
-                break;
-
-                case -4: {
-                    List<Integer> list = Arrays.asList(516, 391);
-                    List filter = new ArrayList();
-                    for (Integer integer : list) {
-                        filter.addAll(Arrays.asList(pdtCatDao.getAllChild(lang, integer).split(",")));
-                    }
-                    List result = new ArrayList();
-                    for (String s : pdtCatDao.getAllChild(lang, 387).split(",")) {
-                        if (!filter.contains(s)) {
-                            result.add(s);
-                        }
-                    }
-                    if (result.size() > 0) {
-                        sql.WHERE(PdtProduct.T.CATEGORY, " in( " + String.join(",", result) + " ) ");
-                    }
-                }
-                break;
-                default:
-                    sql.WHERE(PdtProduct.T.CATEGORY, " in( " + pdtCatDao.getAllChild(lang, category) + " ) ");
+  /**
+   * 根据活动pkey查询其明细产品
+   * 需搜索字段:/PrmGroupPurchaseLine.T.COUNT,PrmGroupPurchaseLine.T.PKEY,PdtProduct.T.CUR_PRICE,PdtProduct.T.PICTURE/PdtProduct.T.NAME/原始产品curprice/PdtProduct.T.DEFAULT_REVIEW_RATING
+   * 查询条件 :/产品上架/活动pkey/产品分类/分页
+   *
+   * @param lang
+   * @param start 分页查询起始位置
+   * @param limit 每页记录数
+   * @param category 产品分类
+   * @param sort 排序依据
+   * @param type 排序类型
+   * @param id 活动id
+   * @return
+   */
+  public Map getActInfo(
+      FldLanguage.Language lang,
+      Integer start,
+      Integer limit,
+      Integer category,
+      Integer sort,
+      Integer type,
+      Integer id,
+      Integer purchasepkey) {
+    Map map = new HashMap();
+    SQL sql =
+        new SQL() {
+          {
+            SELECT(
+                    PrmGroupPurchaseLine.T.PKEY,
+                    PrmGroupPurchaseLine.T.PRODUCT,
+                    PrmGroupPurchaseLine.T.COUNT)
+                .FROM(PrmGroupPurchaseLine.class);
+            LEFT_JOIN(PdtProduct.class, PdtProduct.T.PKEY, PrmGroupPurchaseLine.T.PRODUCT)
+                .WHERE(PrmGroupPurchaseLine.T.MAIN, "=?", id)
+                .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON);
+          }
+        };
+    if (category != -1) {
+      /**
+       * @Description: 联合采购过滤
+       *
+       * @date 2018/12/13 9:57
+       * @author lijie@shoestp.cn
+       */
+      switch (category) {
+        case -2:
+          {
+            List<Integer> list = Arrays.asList(375, 374, 377, 527);
+            List filter = new ArrayList();
+            for (Integer integer : list) {
+              filter.addAll(Arrays.asList(pdtCatDao.getAllChild(lang, integer).split(",")));
             }
-        }
-
-        map.put("pageAll", Math.ceil((double) irille.pub.bean.Query.sql(sql).queryCount() / limit));
-        String rankingBasis = " DESC ";
-        if (type == 1) {
-            rankingBasis = " ASC ";
-        }
-        switch (sort) {
-            case 1:
-                sql.ORDER_BY(PdtProduct.T.CUR_PRICE, rankingBasis);
-                break;
-            case 2:
-                sql.ORDER_BY(PdtProduct.T.DEFAULT_REVIEW_COUNT, rankingBasis);
-                break;
-            case 3:
-                sql.ORDER_BY(PdtProduct.T.SALES, rankingBasis);
-                break;
-            default:
-                sql.ORDER_BY(
-                        PrmGroupPurchaseLine.T.COUNT,
-                        rankingBasis.trim().toLowerCase().equals("desc") ? " ASC " : " DESC ");
-                break;
-        }
-        sql.ORDER_BY(PrmGroupPurchaseLine.T.PKEY, rankingBasis);
-        sql.LIMIT(start, limit);
-        map.put(
-                "items",
-                irille.pub.bean.Query.sql(sql)
-                        .queryList(PrmGroupPurchaseLine.class)
-                        .stream()
-                        .map(
-                                bean ->
-                                        new GroupProductView() {
-                                            {
-                                                PdtProduct product = bean.gtProduct();
-                                                setIsmyfavorite(Likebest(purchasepkey, product.getPkey()));
-                                                setRewrite(bean.getPkey(), product.getName());
-                                                product = translateUtil.getAutoTranslate(product, lang);
-                                                setId(bean.getPkey());
-                                                setCount(product.getMinOq());
-                                                setName(product.getName());
-                                                setImage(product.getPicture());
-                                                setSourcePrice(product.gtSourceProduct().getCurPrice());
-                                                setCurPrice(product.getCurPrice());
-                                                setProductId(product.getPkey());
-                                                setReviewRating(product.getDefaultReviewRating().intValue());
-                                                setReviewCount(product.getDefaultReviewCount());
-                                            }
-                                        })
-                        .collect(Collectors.toList()));
-        return map;
-    }
-
-    public GproductListView getgroupshoplist(Integer purchaseid) {
-        GproductListView glv = new GproductListView();
-        String manpkeys = pdtCatDao.getAllChild(FldLanguage.Language.en, 373);
-        String womanpkeys = pdtCatDao.getAllChild(FldLanguage.Language.en, 380);
-        String children = pdtCatDao.getAllChild(FldLanguage.Language.en, 387);
-        glv.setManshoes(loadshoesView(purchaseid, manpkeys, "mancache"));
-        glv.setWomanshoes(loadshoesView(purchaseid, womanpkeys, "wumancache"));
-        glv.setChildrenshoes(loadshoesView(purchaseid, children, "childrencache"));
-        return glv;
-    }
-
-    public GproductListView getgroupshoplist2(Integer purchaseid) {
-        GproductListView glv = new GproductListView();
-        String manpkeys = pdtCatDao.getAllChild(FldLanguage.Language.en, 373);
-        String womanpkeys = pdtCatDao.getAllChild(FldLanguage.Language.en, 380);
-        String children = pdtCatDao.getAllChild(FldLanguage.Language.en, 387);
-        glv.setManshoes(loadshoesView2(purchaseid, manpkeys, "mancache"));
-        glv.setWomanshoes(loadshoesView2(purchaseid, womanpkeys, "wumancache"));
-        glv.setChildrenshoes(loadshoesView2(purchaseid, children, "childrencache"));
-        return glv;
-    }
-
-    public List<PrmPdtInfo> loadshoesView2(Integer purchaseid, String pkeys, String keycache) {
-        List<PrmPdtInfo> manglv =
-                (List<PrmPdtInfo>)
-                        CacheUtils.groupshopcache.get(
-                                keycache + "2",
-                                o -> {
-                                    SQL mansql = new SQL();
-                                    mansql
-                                            .SELECT(PrmGroupPurchaseLine.T.PKEY)
-                                            .SELECT(PdtProduct.T.PKEY, "PPKEY")
-                                            .SELECT(
-                                                    PdtProduct.T.NAME,
-                                                    PdtProduct.T.PICTURE,
-                                                    PdtProduct.T.MIN_OQ,
-                                                    PdtProduct.T.CUR_PRICE)
-                                            .FROM(PrmGroupPurchaseLine.class)
-                                            .LEFT_JOIN(
-                                                    PdtProduct.class, PdtProduct.T.PKEY, PrmGroupPurchaseLine.T.PRODUCT)
-                                            .LEFT_JOIN(
-                                                    PrmGroupPurchase.class,
-                                                    PrmGroupPurchase.T.PKEY,
-                                                    PrmGroupPurchaseLine.T.MAIN)
-                                            .WHERE(PdtProduct.T.CATEGORY, " in (" + pkeys + ") ")
-                                            .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON);
-                                    //                    .WHERE(PrmGroupPurchase.T.END_TIME, ">?", new Date())
-                                    ;
-                                    List<PrmPdtInfo> listman =
-                                            Query.sql(mansql)
-                                                    .queryMaps()
-                                                    .stream()
-                                                    .map(
-                                                            Y ->
-                                                                    new PrmPdtInfo() {
-                                                                        {
-                                                                            setId(
-                                                                                    (Integer)
-                                                                                            Y.get(
-                                                                                                    PrmGroupPurchaseLine.T
-                                                                                                            .PKEY
-                                                                                                            .getFld()
-                                                                                                            .getCodeSqlField()));
-                                                                            setImg(
-                                                                                    (String)
-                                                                                            Y.get(
-                                                                                                    PdtProduct.T.PICTURE.getFld().getCodeSqlField()));
-                                                                            setTitle(
-                                                                                    (String)
-                                                                                            Y.get(PdtProduct.T.NAME.getFld().getCodeSqlField()));
-                                                                            setProductid((Integer) Y.get("PPKEY"));
-                                                                            setPrice(
-                                                                                    GetValue.get(
-                                                                                            Y, "cur_price", BigDecimal.class, BigDecimal.ZERO));
-                                                                            setMin_order(GetValue.get(Y, "min_oq", Integer.class, 0));
-                                                                        }
-                                                                    })
-                                                    .collect(Collectors.toList());
-                                    return listman;
-                                });
-        Set<Integer> intSet = new HashSet<>();
-        Integer i = 10;
-        if (manglv.size() != 0) {
-            while (intSet.size() < 6 && i > 0) {
-                i--;
-                intSet.add(new Random().nextInt(manglv.size()));
+            List result = new ArrayList();
+            for (String s : pdtCatDao.getAllChild(lang, 373).split(",")) {
+              if (!filter.contains(s)) {
+                result.add(s);
+              }
             }
-        }
-
-        Integer[] ints = intSet.toArray(new Integer[intSet.size()]);
-        List<PrmPdtInfo> manglvshow = new ArrayList<>();
-        for (int m = 0; m < ints.length; m++) {
-            manglv.get(ints[m]).setFavorite(Likebest(purchaseid, manglv.get(ints[m]).getProductid()));
-            manglvshow.add(manglv.get(ints[m]));
-        }
-        return manglvshow;
-    }
-
-    public List<shoesView> loadshoesView(Integer purchaseid, String pkeys, String keycache) {
-        List<shoesView> manglv =
-                (List<shoesView>)
-                        CacheUtils.groupshopcache.get(
-                                keycache,
-                                o -> {
-                                    SQL mansql =
-                                            new SQL() {
-                                                {
-                                                    SELECT(PrmGroupPurchaseLine.T.PKEY)
-                                                            .SELECT(PdtProduct.T.PKEY, "PPKEY")
-                                                            .SELECT(PdtProduct.T.NAME, PdtProduct.T.PICTURE)
-                                                            .FROM(PrmGroupPurchaseLine.class)
-                                                            .LEFT_JOIN(
-                                                                    PdtProduct.class,
-                                                                    PdtProduct.T.PKEY,
-                                                                    PrmGroupPurchaseLine.T.PRODUCT)
-                                                            .LEFT_JOIN(
-                                                                    PrmGroupPurchase.class,
-                                                                    PrmGroupPurchase.T.PKEY,
-                                                                    PrmGroupPurchaseLine.T.MAIN)
-                                                            .WHERE(PdtProduct.T.CATEGORY, " in (" + pkeys + ") ")
-                                                            .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON);
-                                                    //                        .WHERE(PrmGroupPurchase.T.END_TIME, ">?", new
-                                                    // Date())
-                                                    ;
-                                                }
-                                            };
-                                    List<shoesView> listman =
-                                            Query.sql(mansql)
-                                                    .queryMaps()
-                                                    .stream()
-                                                    .map(
-                                                            Y ->
-                                                                    new shoesView() {
-                                                                        {
-                                                                            setId(
-                                                                                    (Integer)
-                                                                                            Y.get(
-                                                                                                    PrmGroupPurchaseLine.T
-                                                                                                            .PKEY
-                                                                                                            .getFld()
-                                                                                                            .getCodeSqlField()));
-                                                                            setImg(
-                                                                                    (String)
-                                                                                            Y.get(
-                                                                                                    PdtProduct.T.PICTURE.getFld().getCodeSqlField()));
-                                                                            setName(
-                                                                                    (String)
-                                                                                            Y.get(PdtProduct.T.NAME.getFld().getCodeSqlField()));
-                                                                            setProductid((Integer) Y.get("PPKEY"));
-                                                                        }
-                                                                    })
-                                                    .collect(Collectors.toList());
-                                    return listman;
-                                });
-        Set<Integer> intSet = new HashSet<>();
-        Integer i = 10;
-        if (manglv.size() != 0) {
-            while (intSet.size() < 6 && i > 0) {
-                i--;
-                intSet.add(new Random().nextInt(manglv.size()));
+            if (result.size() > 0) {
+              sql.WHERE(PdtProduct.T.CATEGORY, " in( " + String.join(",", result) + " ) ");
             }
-        }
+          }
+          break;
+        case -3:
+          {
+            List<Integer> list = Arrays.asList(381, 383, 492);
+            List filter = new ArrayList();
+            for (Integer integer : list) {
+              filter.addAll(Arrays.asList(pdtCatDao.getAllChild(lang, integer).split(",")));
+            }
+            List result = new ArrayList();
+            for (String s : pdtCatDao.getAllChild(lang, 380).split(",")) {
+              if (!filter.contains(s)) {
+                result.add(s);
+              }
+            }
+            if (result.size() > 0) {
+              sql.WHERE(PdtProduct.T.CATEGORY, " in( " + String.join(",", result) + " ) ");
+            }
+          }
+          break;
 
-        Integer[] ints = intSet.toArray(new Integer[intSet.size()]);
-        List<shoesView> manglvshow = new ArrayList<>();
-        for (int m = 0; m < ints.length; m++) {
-            manglv.get(ints[m]).setIsFavorite(Likebest(purchaseid, manglv.get(ints[m]).getProductid()));
-            manglvshow.add(manglv.get(ints[m]));
-        }
-        return manglvshow;
+        case -4:
+          {
+            List<Integer> list = Arrays.asList(516, 391);
+            List filter = new ArrayList();
+            for (Integer integer : list) {
+              filter.addAll(Arrays.asList(pdtCatDao.getAllChild(lang, integer).split(",")));
+            }
+            List result = new ArrayList();
+            for (String s : pdtCatDao.getAllChild(lang, 387).split(",")) {
+              if (!filter.contains(s)) {
+                result.add(s);
+              }
+            }
+            if (result.size() > 0) {
+              sql.WHERE(PdtProduct.T.CATEGORY, " in( " + String.join(",", result) + " ) ");
+            }
+          }
+          break;
+        default:
+          sql.WHERE(PdtProduct.T.CATEGORY, " in( " + pdtCatDao.getAllChild(lang, category) + " ) ");
+      }
     }
 
-    /**
-     * @Description: 返回是否是已收藏的
-     * @date 2018/11/28 9:21
-     * @anthor wilson zhang
-     */
-    public Boolean Likebest(Integer purchaseid, Integer pkey) {
-        if (purchaseid != null && purchaseid != -1) {
-            SQL sql =
-                    new SQL() {
+    map.put("pageAll", Math.ceil((double) irille.pub.bean.Query.sql(sql).queryCount() / limit));
+    String rankingBasis = " DESC ";
+    if (type == 1) {
+      rankingBasis = " ASC ";
+    }
+    switch (sort) {
+      case 1:
+        sql.ORDER_BY(PdtProduct.T.CUR_PRICE, rankingBasis);
+        break;
+      case 2:
+        sql.ORDER_BY(PdtProduct.T.DEFAULT_REVIEW_COUNT, rankingBasis);
+        break;
+      case 3:
+        sql.ORDER_BY(PdtProduct.T.SALES, rankingBasis);
+        break;
+      default:
+        sql.ORDER_BY(
+            PrmGroupPurchaseLine.T.COUNT,
+            rankingBasis.trim().toLowerCase().equals("desc") ? " ASC " : " DESC ");
+        break;
+    }
+    sql.ORDER_BY(PrmGroupPurchaseLine.T.PKEY, rankingBasis);
+    sql.LIMIT(start, limit);
+    map.put(
+        "items",
+        irille.pub.bean.Query.sql(sql).queryList(PrmGroupPurchaseLine.class).stream()
+            .map(
+                bean ->
+                    new GroupProductView() {
+                      {
+                        PdtProduct product = bean.gtProduct();
+                        setIsmyfavorite(Likebest(purchasepkey, product.getPkey()));
+                        setRewrite(bean.getPkey(), product.getName());
+                        product = translateUtil.getAutoTranslate(product, lang);
+                        setId(bean.getPkey());
+                        setCount(product.getMinOq());
+                        setName(product.getName());
+                        setImage(product.getPicture());
+                        setSourcePrice(product.gtSourceProduct().getCurPrice());
+                        setCurPrice(product.getCurPrice());
+                        setProductId(product.getPkey());
+                        setReviewRating(product.getDefaultReviewRating().intValue());
+                        setReviewCount(product.getDefaultReviewCount());
+                      }
+                    })
+            .collect(Collectors.toList()));
+    return map;
+  }
+
+  public GproductListView getgroupshoplist(Integer purchaseid) {
+    GproductListView glv = new GproductListView();
+    String manpkeys = pdtCatDao.getAllChild(FldLanguage.Language.en, 373);
+    String womanpkeys = pdtCatDao.getAllChild(FldLanguage.Language.en, 380);
+    String children = pdtCatDao.getAllChild(FldLanguage.Language.en, 387);
+    glv.setManshoes(loadshoesView(purchaseid, manpkeys, "mancache"));
+    glv.setWomanshoes(loadshoesView(purchaseid, womanpkeys, "wumancache"));
+    glv.setChildrenshoes(loadshoesView(purchaseid, children, "childrencache"));
+    return glv;
+  }
+
+  public GproductListView getgroupshoplist2(Integer purchaseid) {
+    GproductListView glv = new GproductListView();
+    String manpkeys = pdtCatDao.getAllChild(FldLanguage.Language.en, 373);
+    String womanpkeys = pdtCatDao.getAllChild(FldLanguage.Language.en, 380);
+    String children = pdtCatDao.getAllChild(FldLanguage.Language.en, 387);
+    glv.setManshoes(loadshoesView2(purchaseid, manpkeys, "mancache"));
+    glv.setWomanshoes(loadshoesView2(purchaseid, womanpkeys, "wumancache"));
+    glv.setChildrenshoes(loadshoesView2(purchaseid, children, "childrencache"));
+    return glv;
+  }
+
+  public List<PrmPdtInfo> loadshoesView2(Integer purchaseid, String pkeys, String keycache) {
+    List<PrmPdtInfo> manglv =
+        (List<PrmPdtInfo>)
+            CacheUtils.groupshopcache.get(
+                keycache + "2",
+                o -> {
+                  SQL mansql = new SQL();
+                  mansql
+                      .SELECT(PrmGroupPurchaseLine.T.PKEY)
+                      .SELECT(PdtProduct.T.PKEY, "PPKEY")
+                      .SELECT(
+                          PdtProduct.T.NAME,
+                          PdtProduct.T.PICTURE,
+                          PdtProduct.T.MIN_OQ,
+                          PdtProduct.T.CUR_PRICE)
+                      .FROM(PrmGroupPurchaseLine.class)
+                      .LEFT_JOIN(
+                          PdtProduct.class, PdtProduct.T.PKEY, PrmGroupPurchaseLine.T.PRODUCT)
+                      .LEFT_JOIN(
+                          PrmGroupPurchase.class,
+                          PrmGroupPurchase.T.PKEY,
+                          PrmGroupPurchaseLine.T.MAIN)
+                      .WHERE(PdtProduct.T.CATEGORY, " in (" + pkeys + ") ")
+                      .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON);
+                  //                    .WHERE(PrmGroupPurchase.T.END_TIME, ">?", new Date())
+                  ;
+                  List<PrmPdtInfo> listman =
+                      Query.sql(mansql).queryMaps().stream()
+                          .map(
+                              Y ->
+                                  new PrmPdtInfo() {
+                                    {
+                                      setId(
+                                          (Integer)
+                                              Y.get(
+                                                  PrmGroupPurchaseLine.T
+                                                      .PKEY
+                                                      .getFld()
+                                                      .getCodeSqlField()));
+                                      setImg(
+                                          (String)
+                                              Y.get(
+                                                  PdtProduct.T.PICTURE.getFld().getCodeSqlField()));
+                                      setTitle(
+                                          (String)
+                                              Y.get(PdtProduct.T.NAME.getFld().getCodeSqlField()));
+                                      setProductid((Integer) Y.get("PPKEY"));
+                                      setPrice(
+                                          GetValue.get(
+                                              Y, "cur_price", BigDecimal.class, BigDecimal.ZERO));
+                                      setMin_order(GetValue.get(Y, "min_oq", Integer.class, 0));
+                                    }
+                                  })
+                          .collect(Collectors.toList());
+                  return listman;
+                });
+    Set<Integer> intSet = new HashSet<>();
+    Integer i = 10;
+    if (manglv.size() != 0) {
+      while (intSet.size() < 6 && i > 0) {
+        i--;
+        intSet.add(new Random().nextInt(manglv.size()));
+      }
+    }
+
+    Integer[] ints = intSet.toArray(new Integer[intSet.size()]);
+    List<PrmPdtInfo> manglvshow = new ArrayList<>();
+    for (int m = 0; m < ints.length; m++) {
+      manglv.get(ints[m]).setFavorite(Likebest(purchaseid, manglv.get(ints[m]).getProductid()));
+      manglvshow.add(manglv.get(ints[m]));
+    }
+    return manglvshow;
+  }
+
+  public List<shoesView> loadshoesView(Integer purchaseid, String pkeys, String keycache) {
+    List<shoesView> manglv =
+        (List<shoesView>)
+            CacheUtils.groupshopcache.get(
+                keycache,
+                o -> {
+                  SQL mansql =
+                      new SQL() {
                         {
-                            SELECT(UsrFavorites.class)
-                                    .FROM(UsrFavorites.class)
-                                    .WHERE(UsrFavorites.T.PRODUCT, "=?", pkey);
-                            WHERE(UsrFavorites.T.PURCHASE, " =? ", purchaseid);
+                          SELECT(PrmGroupPurchaseLine.T.PKEY)
+                              .SELECT(PdtProduct.T.PKEY, "PPKEY")
+                              .SELECT(PdtProduct.T.NAME, PdtProduct.T.PICTURE)
+                              .FROM(PrmGroupPurchaseLine.class)
+                              .LEFT_JOIN(
+                                  PdtProduct.class,
+                                  PdtProduct.T.PKEY,
+                                  PrmGroupPurchaseLine.T.PRODUCT)
+                              .LEFT_JOIN(
+                                  PrmGroupPurchase.class,
+                                  PrmGroupPurchase.T.PKEY,
+                                  PrmGroupPurchaseLine.T.MAIN)
+                              .WHERE(PdtProduct.T.CATEGORY, " in (" + pkeys + ") ")
+                              .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON);
+                          //                        .WHERE(PrmGroupPurchase.T.END_TIME, ">?", new
+                          // Date())
+                          ;
                         }
-                    };
-            if (Query.sql(sql).queryCount() > 0) {
-                return true;
+                      };
+                  List<shoesView> listman =
+                      Query.sql(mansql).queryMaps().stream()
+                          .map(
+                              Y ->
+                                  new shoesView() {
+                                    {
+                                      setId(
+                                          (Integer)
+                                              Y.get(
+                                                  PrmGroupPurchaseLine.T
+                                                      .PKEY
+                                                      .getFld()
+                                                      .getCodeSqlField()));
+                                      setImg(
+                                          (String)
+                                              Y.get(
+                                                  PdtProduct.T.PICTURE.getFld().getCodeSqlField()));
+                                      setName(
+                                          (String)
+                                              Y.get(PdtProduct.T.NAME.getFld().getCodeSqlField()));
+                                      setProductid((Integer) Y.get("PPKEY"));
+                                    }
+                                  })
+                          .collect(Collectors.toList());
+                  return listman;
+                });
+    Set<Integer> intSet = new HashSet<>();
+    Integer i = 10;
+    if (manglv.size() != 0) {
+      while (intSet.size() < 6 && i > 0) {
+        i--;
+        intSet.add(new Random().nextInt(manglv.size()));
+      }
+    }
+
+    Integer[] ints = intSet.toArray(new Integer[intSet.size()]);
+    List<shoesView> manglvshow = new ArrayList<>();
+    for (int m = 0; m < ints.length; m++) {
+      manglv.get(ints[m]).setIsFavorite(Likebest(purchaseid, manglv.get(ints[m]).getProductid()));
+      manglvshow.add(manglv.get(ints[m]));
+    }
+    return manglvshow;
+  }
+
+  /**
+   * @Description: 返回是否是已收藏的
+   *
+   * @date 2018/11/28 9:21
+   * @anthor wilson zhang
+   */
+  public Boolean Likebest(Integer purchaseid, Integer pkey) {
+    if (purchaseid != null && purchaseid != -1) {
+      SQL sql =
+          new SQL() {
+            {
+              SELECT(UsrFavorites.class)
+                  .FROM(UsrFavorites.class)
+                  .WHERE(UsrFavorites.T.PRODUCT, "=?", pkey);
+              WHERE(UsrFavorites.T.PURCHASE, " =? ", purchaseid);
             }
-        }
-        return false;
+          };
+      if (Query.sql(sql).queryCount() > 0) {
+        return true;
+      }
     }
+    return false;
+  }
 
-    /**
-     * —————————————————分割线(新平台)—————————————————————————
-     */
-    public static Page getProducts(Integer start, Integer limit, Integer id) {
-        if (start == null) {
-            start = 0;
-        }
-        if (limit == null) {
-            limit = 5;
-        }
-        SQL sql = new SQL() {{
+  /** —————————————————分割线(新平台)————————————————————————— */
+  public static Page getProducts(Integer start, Integer limit, Integer id) {
+    if (start == null) {
+      start = 0;
+    }
+    if (limit == null) {
+      limit = 5;
+    }
+    SQL sql =
+        new SQL() {
+          {
             SELECT(PrmGroupPurchaseLine.class)
-                    .FROM(PrmGroupPurchaseLine.class)
-                    .WHERE(PrmGroupPurchaseLine.T.MAIN, "=?", id);
-        }};
-        Integer count = Query.sql(sql).queryCount();
-        List<PrmGroupPurchaseLineView> list = Query.sql(sql.LIMIT(start, limit)).queryMaps().stream().map(o -> new PrmGroupPurchaseLineView() {{
-            setId((Integer) o.get(PrmGroupPurchaseLine.T.PKEY.getFld().getCodeSqlField()));
-            setProduct(BeanBase.load(PdtProduct.class, (Integer) o.get(PrmGroupPurchaseLine.T.PRODUCT.getFld().getCodeSqlField())).getName());
-            setCount((Long) o.get(PrmGroupPurchaseLine.T.COUNT.getFld().getCodeSqlField()));
-            setBoughtCount((Long) o.get(PrmGroupPurchaseLine.T.BOUGHT_COUNT.getFld().getCodeSqlField()));
-            setStatus(Integer.valueOf(String.valueOf(o.get(PrmGroupPurchaseLine.T.STATE.getFld().getCodeSqlField()))));
-        }}).collect(Collectors.toList());
-        return new Page(list, start, limit, count);
-    }
+                .FROM(PrmGroupPurchaseLine.class)
+                .WHERE(PrmGroupPurchaseLine.T.MAIN, "=?", id);
+          }
+        };
+    Integer count = Query.sql(sql).queryCount();
+    List<PrmGroupPurchaseLineView> list =
+        Query.sql(sql.LIMIT(start, limit)).queryMaps().stream()
+            .map(
+                o ->
+                    new PrmGroupPurchaseLineView() {
+                      {
+                        setId(
+                            (Integer)
+                                o.get(PrmGroupPurchaseLine.T.PKEY.getFld().getCodeSqlField()));
+                        setProduct(
+                            BeanBase.load(
+                                    PdtProduct.class,
+                                    (Integer)
+                                        o.get(
+                                            PrmGroupPurchaseLine.T
+                                                .PRODUCT
+                                                .getFld()
+                                                .getCodeSqlField()))
+                                .getName());
+                        setCount(
+                            (Long) o.get(PrmGroupPurchaseLine.T.COUNT.getFld().getCodeSqlField()));
+                        setBoughtCount(
+                            (Long)
+                                o.get(
+                                    PrmGroupPurchaseLine.T
+                                        .BOUGHT_COUNT
+                                        .getFld()
+                                        .getCodeSqlField()));
+                        setStatus(
+                            Integer.valueOf(
+                                String.valueOf(
+                                    o.get(
+                                        PrmGroupPurchaseLine.T.STATE.getFld().getCodeSqlField()))));
+                      }
+                    })
+            .collect(Collectors.toList());
+    return new Page(list, start, limit, count);
+  }
 
-    public static List<StatusView> getStatus() {
-        List<StatusView> list = new ArrayList<>();
-        for (Prm.OSend value : Prm.OSend.values()) {
-            StatusView view = new StatusView();
-            view.setId(value.getLine().getKey());
-            view.setStatus(value.getLine().getName());
-            list.add(view);
-        }
-        return list;
+  public static List<StatusView> getStatus() {
+    List<StatusView> list = new ArrayList<>();
+    for (Prm.OSend value : Prm.OSend.values()) {
+      StatusView view = new StatusView();
+      view.setId(value.getLine().getKey());
+      view.setStatus(value.getLine().getName());
+      list.add(view);
     }
+    return list;
+  }
 
-    /**—————————————————分割线(新平台)END—————————————————————————*/
+  /** —————————————————分割线(新平台)END————————————————————————— */
 }
