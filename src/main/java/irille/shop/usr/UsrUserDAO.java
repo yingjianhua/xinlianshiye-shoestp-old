@@ -35,28 +35,24 @@ public class UsrUserDAO {
     if (Str.isEmpty(loginName)) throw LOG.err("loginCheck", "请输入用户名");
     if (password == null || Str.isEmpty(password)) throw LOG.err("loginCheck", "请输入密码");
     UsrSupplier supplier = UsrSupplier.chkUniqueLogin_name(false, loginName);
-    UsrPurchase purchase = UsrPurchase.chkUniqueLogin_name(false, loginName);
     if (supplier == null) {
       throw LOG.err("loginName not exists", "用户不存在");
     }
     if (supplier.gtStatus() == OStatus.INIT) {
       throw LOG.err("wait for appr", "审核中不能登录");
     }
-    if (purchase == null) {
-      // 由于原来系统有很多供应商账号是没有对应的采购商账号的,在只有供应商账号的情况下,根据供应商的账号密码登录
-      // throw LOG.err("loginName not exists", "供应商账户没有采购商账号");
-      if (!DateTools.getDigest(supplier.getPkey() + password).equals(supplier.getPassword())) {
-        throw LOG.err("wrong password", "用户名和密码不匹配");
-      }
+    UsrMain main = supplier.gtUserid();
+    if (main == null) {
+      throw LOG.err("Invalid User", "用户名不存在或无效的用户名");
     } else {
-      if (!DateTools.getDigest(purchase.getPkey() + password).equals(purchase.getPassword())) {
+      if (!DateTools.getDigest(main.getPkey() + password).equals(main.getPassword())) {
         throw LOG.err("wrong password", "用户名和密码不匹配");
       }
     }
     UserView view = new UserView();
     view.setSupplier(supplier);
-    view.setPurchase(purchase);
-
+    view.setPkey(main.getPkey());
+    view.setUser_type(1);
     return view;
   }
 

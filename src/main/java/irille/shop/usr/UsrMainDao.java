@@ -226,15 +226,15 @@ public class UsrMainDao {
                       .WHERE(UsrPurchase.T.UserId, "=?", um.getPkey())
                       .query(UsrPurchase.class));
           return userView;
-//        case SELLER:
-//          userView.setSupplier(
-//              (UsrSupplier)
-//                  query
-//                      .SELECT(UsrSupplier.class)
-//                      .FROM(UsrSupplier.class)
-//                      .WHERE(UsrSupplier.T.UserId, "=?", um.getPkey())
-//                      .query(UsrSupplier.class));
-//          return userView;
+        case SELLER:
+          userView.setSupplier(
+              (UsrSupplier)
+                  query
+                      .SELECT(UsrSupplier.class)
+                      .FROM(UsrSupplier.class)
+                      .WHERE(UsrSupplier.T.UserId, "=?", um.getPkey())
+                      .query(UsrSupplier.class));
+          return userView;
       }
     } else {
 
