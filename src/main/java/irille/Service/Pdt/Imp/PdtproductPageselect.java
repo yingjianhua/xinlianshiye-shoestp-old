@@ -1,13 +1,23 @@
 package irille.Service.Pdt.Imp;
 
+import static irille.core.sys.Sys.OYn.YES;
+
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.inject.Inject;
+
+import org.json.JSONException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,11 +37,20 @@ import irille.pub.Exp;
 import irille.pub.bean.BeanBase;
 import irille.pub.idu.IduPage;
 import irille.pub.util.AppConfig;
-import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.SEOUtils;
+import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.pub.util.TranslateLanguage.translateUtil;
-import irille.shop.pdt.*;
+import irille.shop.pdt.Pdt;
+import irille.shop.pdt.PdtAttr;
+import irille.shop.pdt.PdtAttrLine;
+import irille.shop.pdt.PdtCat;
+import irille.shop.pdt.PdtColorDAO;
+import irille.shop.pdt.PdtCommentDAO;
+import irille.shop.pdt.PdtProduct;
+import irille.shop.pdt.PdtSpec;
+import irille.shop.pdt.PdtSpecDAO;
+import irille.shop.pdt.PdtTieredPricingDao;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltErate;
 import irille.shop.plt.PltErateDAO;
@@ -39,10 +58,8 @@ import irille.shop.usr.UsrFavorites;
 import irille.shop.usr.UsrSupplier;
 import irille.view.pdt.PdtProductSaveView;
 import irille.view.pdt.PdtProductSpecSaveView;
+import irille.view.pdt.PdtTieredPricingView;
 import irille.view.pdt.PdtYouMayLikeView;
-import org.json.JSONException;
-
-import static irille.core.sys.Sys.OYn.YES;
 
 /**
  * l临时拉出来..带整合入Service Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/7 Time: 16:33
@@ -456,6 +473,25 @@ public class PdtproductPageselect {
       productInfoView.setSeoTitle(pdtProduct.getSeoTitle());
       productInfoView.setSeoKeywords(pdtProduct.getSeoKeyword());
       productInfoView.setSeoDescription(pdtProduct.getSeoDescription());
+      // 获取阶梯价
+      List<PdtTieredPricingView> tpView = PdtTieredPricingDao.getList(pdtProduct.getPkey());
+      if (tpView == null || tpView.isEmpty()) {
+        productInfoView.setTpView(null);
+      } else {
+        productInfoView.setTpView(tpView);
+      }
+      // 获取3个描述模块
+      List<String> desModule = new ArrayList<>();
+      if (pdtProduct.getDescribeModule1() != null) {
+        desModule.add(pdtProduct.getDescribeModule1(HomeAction.curLanguage()));
+      }
+      if (pdtProduct.getDescribeModule2() != null) {
+        desModule.add(pdtProduct.getDescribeModule2(HomeAction.curLanguage()));
+      }
+      if (pdtProduct.getDescribeModule3() != null) {
+        desModule.add(pdtProduct.getDescribeModule3(HomeAction.curLanguage()));
+      }
+      productInfoView.setDesModule(desModule);
       //
       // productInfoView.setSeoKeywords(SEOUtils.firstUpperCase(productInfoView.getPdtName()));
       //            List list1 = (List) productInfoView.getBreadcrumbNav().stream().map(o -> {
@@ -469,7 +505,7 @@ public class PdtproductPageselect {
     return null;
   }
 
-  /** ===============O2O INFO START=============== */
+  /** ===============O2O INFO START===============* */
   @Inject private IO2OMapServer io2OMapServer;
 
   public ProductInfoView initO2O(PdtProduct product) {
@@ -478,18 +514,18 @@ public class PdtproductPageselect {
     }
     return null;
   }
-
-  /** ===============O2O INFO END=============== */
+  /** ===============O2O INFO END===============* */
   public int getAuthTime(UsrSupplier supplier) {
     int time1 = 0;
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
     Date authTime2 = supplier.getAuthTime();
+    if (authTime2 == null) return 1;
     String time = formatter.format(authTime2);
     Calendar c = Calendar.getInstance();
     int y1 = Integer.parseInt(time);
     c.setTime(new Date());
     int y2 = c.get(Calendar.YEAR);
-    time1 = y1 - y2 == 0 ? 1 : y1 - y2;
+    time1 = y2 - y1 == 0 ? 1 : y2 - y1;
     return time1;
   }
 
@@ -573,6 +609,17 @@ public class PdtproductPageselect {
     }
     JsonObject jsonObject = (JsonObject) new JsonParser().parse(pdtProduct.getName());
     JsonObject description = (JsonObject) new JsonParser().parse(pdtProduct.getDescription());
+    String[] desModule = new String[3];
+    if (pdtProduct.getDescribeModule1() != null) {
+      desModule[0] = pdtProduct.getDescribeModule1();
+    }
+    if (pdtProduct.getDescribeModule2() != null) {
+      desModule[1] = pdtProduct.getDescribeModule2();
+    }
+    if (pdtProduct.getDescribeModule3() != null) {
+      desModule[2] = pdtProduct.getDescribeModule3();
+    }
+    view.setDesModule(desModule);
     translateUtil.getAutoTranslate(pdtProduct, PltConfigDAO.supplierLanguage(supId));
     Map map = new HashMap();
     for (Map.Entry<String, JsonElement> elementEntry : jsonObject.entrySet()) {

@@ -64,7 +64,7 @@ public class PltConfigAction extends HomeAction<PltConfig> {
     sysConfigView.setCurrency_symbol(HomeAction.curCurrency().getSymbol());
     sysConfigView.setBaseImageUrl("https://image.shoestp.com");
     UserView userView = getUser();
-    if (userView.haveUser()) {
+    if (userView!=null &&userView.haveUser()) {
       PltUserInfo userInfo = new PltUserInfo();
       userInfo.setId(userView.getPkey());
       userInfo.setName(userView.getLoginName());

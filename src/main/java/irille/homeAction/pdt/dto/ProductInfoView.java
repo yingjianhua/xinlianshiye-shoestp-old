@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import irille.pub.i18n.I18NFieldSerializer;
 import irille.view.BaseView;
 import irille.view.O2O.O2OMapView;
+import irille.view.pdt.PdtTieredPricingView;
 
 public class ProductInfoView implements BaseView {
   /** ===============O2O INFO START=============== */
@@ -101,6 +102,45 @@ public class ProductInfoView implements BaseView {
   private String seoDescription;
 
   private String rewrite;
+  ////////////////// 3.1
+  // 阶梯价
+  private List<PdtTieredPricingView> tpView;
+  // 描述模板
+  private List<String> desModule;
+  /*  //国家代码
+  private String countryCode;
+  //国旗
+  private String banner;
+  //证书
+  private boolean credential;
+  //svs等级
+  private Integer svs;
+  //R&D研发能力
+  private BigDecimal RD;
+  //产量
+  private BigDecimal outPut;
+  //商家规模
+  private BigDecimal scale;
+  //国家
+  private String country;
+  //省
+  private String province;*/
+
+  public List<String> getDesModule() {
+    return desModule;
+  }
+
+  public void setDesModule(List<String> desModule) {
+    this.desModule = desModule;
+  }
+
+  public List<PdtTieredPricingView> getTpView() {
+    return tpView;
+  }
+
+  public void setTpView(List<PdtTieredPricingView> tpView) {
+    this.tpView = tpView;
+  }
 
   public String getRewrite() {
     return rewrite;

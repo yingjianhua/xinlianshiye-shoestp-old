@@ -1,5 +1,6 @@
 package irille.shop.pdt;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -50,7 +51,7 @@ public class PdtTieredPricingDao {
         .collect(Collectors.toList());
   }
 
-  public static void updByPdt(Integer pkey, List<PdtTieredPricingView> tpView) {
+  public static void updByPdt(Integer pkey, List<PdtTieredPricingView> tpView, Integer pdtPkey) {
     SQL sql = new SQL();
     sql.SELECT(PdtTieredPricing.class);
     sql.FROM(PdtTieredPricing.class);
@@ -61,6 +62,7 @@ public class PdtTieredPricingDao {
       return;
     }
     Set<Integer> tpSet = new HashSet<>();
+    List<PdtTieredPricing> tpList = new ArrayList<>();
     for (int i = 0; i < list.size(); i++) {
       tpSet.add(list.get(i).getPkey());
       boolean b = false;
@@ -71,11 +73,32 @@ public class PdtTieredPricingDao {
           list.get(i).setMinOq(tpView.get(j).getCount());
           list.get(i).upd();
         }
+        if (tpView.get(j).getId() < 0) {
+          tpSet.add(tpView.get(j).getId());
+        }
       }
       if (!b) {
         list.get(i).setDeleted(OYn.YES.getLine().getKey());
         list.get(i).upd();
       }
+    }
+    if (tpSet != null && !tpSet.isEmpty()) {
+      for (PdtTieredPricingView itemView : tpView) {
+        if (tpSet.contains(itemView.getId())) {
+          PdtTieredPricing pdtTP = new PdtTieredPricing();
+          pdtTP.setMinOq(itemView.getCount());
+          pdtTP.setCurPrice(itemView.getPrice());
+          pdtTP.setMain(
+              itemView.getType() == 1 ? OYn.YES.getLine().getKey() : OYn.NO.getLine().getKey());
+          pdtTP.setProduct(pdtPkey);
+          pdtTP.setDeleted(OYn.NO.getLine().getKey());
+          pdtTP.setRowVersion((short) 0);
+          tpList.add(pdtTP);
+        }
+      }
+    }
+    if (tpList != null && !tpList.isEmpty()) {
+      ins(tpList);
     }
   }
 }

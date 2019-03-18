@@ -2,6 +2,8 @@ package irille.pub.exception;
 
 import java.text.MessageFormat;
 
+import com.xinlianshiye.shoestp.common.errcode.MessageView;
+
 public class WebMessageException extends WebException {
 
   private static final long serialVersionUID = 1L;
@@ -12,6 +14,10 @@ public class WebMessageException extends WebException {
 
   public WebMessageException(ReturnCode code, String message) {
     super(code, message);
+  }
+
+  public WebMessageException(MessageView messageBuild) {
+    super(messageBuild.getReturnCode(), messageBuild.getMsg());
   }
 
   public WebMessageException(ReturnCode code, String message, Object... params) {

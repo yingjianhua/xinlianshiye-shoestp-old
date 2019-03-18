@@ -1,11 +1,15 @@
 package com.xinlianshiye.shoestp.common.errcode;
 
+import irille.pub.exception.ReturnCode;
 import irille.view.BaseView;
+import lombok.Data;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2019/3/13 Time: 16:52 */
+@Data
 public class MessageView implements BaseView {
   private Integer ret;
   private String msg;
+  private ReturnCode returnCode;
 
   public MessageView(Integer ret, String msg) {
     this.ret = ret;
@@ -16,19 +20,8 @@ public class MessageView implements BaseView {
     this.ret = ret;
   }
 
-  public Integer getRet() {
-    return ret;
-  }
-
-  public void setRet(Integer ret) {
-    this.ret = ret;
-  }
-
-  public String getMsg() {
-    return msg;
-  }
-
-  public void setMsg(String msg) {
+  public MessageView(ReturnCode returnCode, String msg) {
     this.msg = msg;
+    this.returnCode = returnCode;
   }
 }

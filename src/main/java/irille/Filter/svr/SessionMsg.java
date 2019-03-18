@@ -138,13 +138,17 @@ public class SessionMsg {
   }
 
   public UserView getUser() {
-    UserView user = new UserView();
-    user.setPkey(pkey);
-    user.setSupplier(this.getSupplier());
-    user.setPurchase(this.getPurchase());
-    user.setLoginName(loginName);
-    user.setUser_type(isSupplier ? 1 : 0);
-    return user;
+    if (pkey != null) {
+      UserView user = new UserView();
+      user.setPkey(pkey);
+      user.setSupplier(this.getSupplier());
+      user.setPurchase(this.getPurchase());
+      user.setLoginName(loginName);
+      user.setUser_type(isSupplier ? 1 : 0);
+      return user;
+    } else {
+      return null;
+    }
   }
 
   public void setUser(UserView user) {

@@ -14,6 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import irille.pub.exception.ReturnCode;
 import irille.pub.tb.FldLanguage;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2019/3/13 Time: 16:02 */
@@ -81,6 +82,19 @@ public class MessageBuild {
     }
     if (body == null) {
       return new MessageView(code);
+    }
+    return new MessageView(code, body);
+  }
+
+  public static MessageView buildMessage(ReturnCode code, FldLanguage.Language language) {
+    HashMap<Integer, String> map = hashMap.get(language.name());
+    String body = null;
+    if (map != null) body = map.get(code.getCode());
+    if (body == null || hashMap.get(FldLanguage.Language.en.name()) == null) {
+      body = hashMap.get(FldLanguage.Language.en.name()).get(code.getCode());
+    }
+    if (body == null) {
+      return new MessageView(code, code.name());
     }
     return new MessageView(code, body);
   }

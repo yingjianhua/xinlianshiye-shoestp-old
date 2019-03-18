@@ -40,5 +40,4 @@ public interface IRFQManageService {
       throws IOException;
 
   RFQMyuoteInfo getMyRFQQuoteInfo(Integer id, Integer pkey) throws IOException;
-
 }
