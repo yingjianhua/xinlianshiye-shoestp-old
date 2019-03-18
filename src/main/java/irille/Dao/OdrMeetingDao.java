@@ -92,7 +92,7 @@ public class OdrMeetingDao {
                 OrderMeetingAuditRelease.T.ODRMEETING,
                 OrderMeeting.T.PKEY);
 
-            if (name != "" && name != null) {
+            if (name != null && !("".equals(name))) {
               WHERE(OrderMeeting.T.NAME, " like '%" + name + "%'");
             }
             if (onstate != null) {

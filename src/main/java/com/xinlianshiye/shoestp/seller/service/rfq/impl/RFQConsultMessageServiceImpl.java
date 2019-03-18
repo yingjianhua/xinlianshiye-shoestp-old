@@ -145,7 +145,7 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
   public RFQConsultMessageView sendPrivateExpoPdt(
       UsrSupplier supplier, Integer consultPkey, Integer productPkey) {
     PdtProduct product = pdtProductDao.findByPkey(productPkey);
-    if (product.getSupplier() != supplier.getPkey()) {
+    if (product.getSupplier() != null && !(product.getSupplier().equals(supplier.getPkey()))) {
       throw new WebMessageException(ReturnCode.service_gone, "商品错误");
     }
     if (!product.gtProductType().equals(OProductType.PrivateExpo)) {
