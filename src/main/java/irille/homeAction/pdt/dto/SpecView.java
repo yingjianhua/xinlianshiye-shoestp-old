@@ -5,6 +5,8 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONException;
+
 import irille.homeAction.HomeAction;
 import irille.pub.util.DataFilters;
 import irille.shop.pdt.PdtSpec;
@@ -28,6 +30,8 @@ public class SpecView {
   // 颜色Id
   private int colorId;
   private int sizeId;
+
+  private int sizeType;
   /**
    * @Description: 规格多图
    *
@@ -63,6 +67,7 @@ public class SpecView {
     view.setProductId(spec.getProduct());
     view.setColor(spec.gtColor().getName(HomeAction.curLanguage()));
     view.setSize(spec.gtSize().getName(HomeAction.curLanguage()));
+    view.setSizeType(spec.gtSize().getType() == null ? -1 : spec.gtSize().getType());
     view.setPrice(
         PltErateDAO.Query.getTargetPrice(spec.getPrice(), bigDecimal.getRate())
             .setScale(2, RoundingMode.HALF_UP));
@@ -189,37 +194,42 @@ public class SpecView {
     this.imgList = imgList;
   }
 
+  public int getSizeType() {
+    return sizeType;
+  }
+
+  public void setSizeType(int sizeType) {
+    this.sizeType = sizeType;
+  }
+
   @Override
   public String toString() {
-    return "SpecView{"
-        + "id="
+    return "SpecView {id="
         + id
         + ", productId="
         + productId
-        + ", img='"
+        + ", img="
         + img
-        + '\''
-        + ", color='"
+        + ", color="
         + color
-        + '\''
-        + ", size='"
+        + ", size="
         + size
-        + '\''
         + ", price="
         + price
         + ", qty="
         + qty
         + ", weight="
         + weight
-        + ", sku='"
+        + ", sku="
         + sku
-        + '\''
         + ", colorId="
         + colorId
         + ", sizeId="
         + sizeId
+        + ", sizeType="
+        + sizeType
         + ", imgList="
         + imgList
-        + '}';
+        + "}";
   }
 }
