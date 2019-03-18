@@ -26,10 +26,10 @@
             <div class="w_1200 top-font fadeInLeft ripple">
                 <h1>SVS Certification System</h1>
                 <p>
-                    SVS is a Certification System for the factory, <br>
+                    SVS is a Certification System for the factory.<br>
                     SVS based on key aspects which shoes buyers'most care for, <br>
-                    such as actual manufactor,production capacity,product quality,R&D capacity,trade capacity,trade
-                    show,etc.
+                    such as actual manufactor, production capacity, product quality, R&D capacity, trade capacity, trade
+                    show, etc.
                 </p>
             </div>
         </div>
@@ -39,21 +39,17 @@
             <div class="service-box">
                 <div class="service-item ripple">
                     <h2 class="ripple slideInUp">On-Site Audits</h2>
-                    <p class="ripple slideInUp">the Shoestp as a third party will send
-                        professionals to conduct on-site audits</p>
+                    <p class="ripple slideInUp">Shoestp will send professionals to conduct on-site audits as a third party.</p>
                     <img class="ripple slideInUp" src="./images/label1.png" alt="">
                 </div>
                 <div class="service-item ripple">
                     <h2 class="ripple slideInUp">Classify Factories</h2>
-                    <p class="ripple slideInUp">According to the factory strength,
-                        Shoestp will classify factories.</p>
+                    <p class="ripple slideInUp">Shoestp will classify factories by their actual strength.</p>
                     <img class="ripple slideInUp" src="./images/label2.png" alt="">
                 </div>
                 <div class="service-item ripple">
                     <h2 class="ripple slideInUp">ROS</h2>
-                    <p class="ripple slideInUp">A more detailed classification of suppliers
-                        from the three dimensions of R&D, Output,
-                        and Scale.</p>
+                    <p class="ripple slideInUp">Shoestp will provide a more detailed classification of suppliers in three aspects of R&D, Output, and Scale.</p>
                     <img class="ripple slideInUp" src="./images/label3.png" alt="" style=" margin-top: 20px;">
                 </div>
             </div>
@@ -63,7 +59,7 @@
         <div class="w_1200">
             <div class="title">
                 <h1>SVS Certification Process</h1>
-                <p>The Auditors on-site checking ensure that factory information is true and objective.</p>
+                <p>The Auditors on-site checking ensures that factory information is true and objective.</p>
             </div>
             <div>
                 <img src="./images/certification-process.png" alt="">
@@ -92,7 +88,7 @@
     </section>
     <section class="benchmarks">
         <div class="w_1200">
-            <h1 style="padding-top:65px;">How Do You Get Your Benefit From SVS </h1>
+            <h1 style="padding-top:65px;">How Do You Benefit From SVS</h1>
             <h1 style="color: #2f4597;margin-bottom:50px;">The 7 SVS benchmarks</h1>
             <div class="benchmarks-main">
                 <ul class="benchmarks-list clearfix">
@@ -182,9 +178,7 @@
         <div class="w_1370 flexSb">
             <div class="font ripple" :class="scrollTop2?'fadeInDown':''">
                 <h1>The Benefits of SVS</h1>
-                <p>SVS Certification System will make buyers find
-                    their target Supplier more faster, accurate and
-                    time-saving than other way.</p>
+                <p>SVS Certification System helps buyer find their target Supplier more faster, accurate and time-saving than any other way.</p>
             </div>
             <div class="">
                 <img src="./images/bannerbg3.png" alt="">
@@ -193,21 +187,20 @@
     </section>
     <section class="supplier" id="supplier">
         <div class="supplier-font">
-            <h1 class="ripple" :class="scrollTop3?'fadeInLeft':''">What is SVS supplier？</h1>
-            <p class="ripple" :class="scrollTop3?'fadeInLeft':''">Our SVS suppliers that have been verified by relevant
-                personnel and approved by the platform.</p>
+            <h1 class="ripple" :class="scrollTop3?'fadeInLeft':''">Who Can Be SVS Supplier？</h1>
+            <p class="ripple" :class="scrollTop3?'fadeInLeft':''">All SVS suppliers have been verified and approved by relevant personnel of platform.</p>
             <!-- <h2 class="ripple" :class="scrollTop3?'fadeInRight':''">Why establish SVS Certification system</h2>
             <p class="ripple" :class="scrollTop3?'fadeInRight':''">Shoestp is committed to improving the efficiency of buyers and making buyers picking suppliers <br>
                 fastly and accurately. We creat SVS is for make buyers to get better buying experence.</p> -->
         </div>
         <div class="supplier-btn ripple" :class="scrollTop3?'bounce':''">
-            <a href="javascript:void(0)" target="_blank" style="width:100%;height:100%">
+            <a href="./svsSuplies.jsp" target="_blank" style="width:100%;height:100%">
                 Look SVS Suppliers Now
                 <img src="./images/right-arrow.png" alt="">
             </a>
         </div>
         <div style="color:#1989fa;text-align:center;margin:20px 0;font-size:18px;">
-            We recommend the 50 quality suppliers for you
+            We recommend 50 qualified suppliers to you.
         </div>
     </section>
     <section class="tagcloud">

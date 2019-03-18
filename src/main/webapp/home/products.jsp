@@ -10,42 +10,36 @@
 <script type="text/javascript" src="/home/static/js/lang/${env.curLanguage }.js"></script>
 <script type="text/javascript" src="/home/static/js/global.js"></script>
 <script type="text/javascript" src="/home/static/js/global(1).js"></script>
-<body>
-<jsp:include page="v3/nav.jsp"></jsp:include>
-<div id="new_navs">
-    <index-top class="product"></index-top>
-</div>
-<script src="/home/v3/static/js/index-top.js">
-</script>
+<link rel="stylesheet" href="/home/v2/static/css/nav/new-top-nav-style.css"/>
 <style media="screen">
     #o2otop .o2otopcon .topsearch > input {
         height: unset !important;
         border: 0;
     }
 
-    .el-pagination{
+    .el-pagination {
         position: relative;
         overflow: hidden;
     }
-    .el-pagination:before{
-        content:"鞋贸港";
+
+    .el-pagination:before {
+        content: "鞋贸港";
         position: absolute;
         z-index: -1;
         color: transparent;
         left: 9999px;
     }
 </style>
-<script>     new Vue({
-    el: "#new_navs"
-})
-
-$('html').on('click', '#signin_close', function () {
-    $('#signin_module').remove();
-    global_obj.div_mask(1);
-
-})
+<script>
+    $('html').on('click', '#signin_close', function () {
+        $('#signin_module').remove();
+        global_obj.div_mask(1);
+    })
 </script>
+<body>
+<jsp:include page="v3/nav-nobody.jsp"></jsp:include>
 <div id="productList" class="clearfix w1240">
+    <index-top class="product"></index-top>
     <!--分级导航-->
     <div class="topNav">
         <div class="h1"><a href="/">Home</a><i class="el-icon-arrow-right"></i></div>
@@ -58,15 +52,6 @@ $('html').on('click', '#signin_close', function () {
         </blcok>
         <div class="h1"><a class="now" href="/" v-if="!breadcrumbnav || breadcrumbnav.length<=0"> All product</a></div>
     </div>
-    <!--分级导航 end-->
-
-    <el-pagination
-            layout="prev, pager, next"
-            :total="allpage"
-            prev-text="Previous"
-            next-text="Next"
-            :current-page="1">
-    </el-pagination>
     <!--页面左部分类导航-->
     <div class="leftNav fl">
         <h1>Related categories</h1>
@@ -179,43 +164,49 @@ $('html').on('click', '#signin_close', function () {
                         </el-carousel>
                     </div>
                 </div>
-                <a :href="'/'+item.rewrite" class="common-boxtitle" target="_blank">
-                    <h1>
-                        <div class="ootit" v-show="item.pdtType"><img class="mtf4"
-                                                                      src="/home/v3/static/images/ico/icon_o2o.png"
-                                                                      alt="O2O"/>O2O
+                <div class="common-boxtitle">
+                    <a :href="'/'+item.rewrite" target="_blank" style="width:100%;">
+                        <h1>
+                            <div class="ootit" v-show="item.pdtType"><img class="mtf4"
+                                                                          src="/home/v3/static/images/ico/icon_o2o.png"
+                                                                          alt="O2O"/>O2O
+                            </div>
+                            {{item.pdtName}}
+                        </h1>
+                        <div class="clearfix" style="position:relative;">
+                            <div class="fl">
+                                <h2>US <span>{{sysConfig.currency_symbol}}{{ item.price }}</span></h2>
+                                <div class="h3">Min.Order: {{item.minOrder}} pairs</div>
+                            </div>
+                            <div class="fr" style="width: 196px;">
+                                <div class="">
+                                    <div class="h3">Inner Material:</div>
+                                    {{item.inner?item.inner:'No data'}}
+                                </div>
+                                <div class="">
+                                    <div class="h3">Sole Material:</div>
+                                    {{item.sole?item.sole:'No data'}}
+                                </div>
+                                <div class="">
+                                    <div class="h3">Upper Material:</div>
+                                    {{item.upper?item.upper:'No data'}}
+                                </div>
+                                <div class="">
+                                    <div class="h3">Appropriate Season:</div>
+                                    {{item.season?item.season:'No data'}}
+                                </div>
+                                <div class="">
+                                    <div class="h3">Closed Way:</div>
+                                    {{item.closed?item.closed:'No data'}}
+                                </div>
+                            </div>
+                            <a class="product-inquiry-btn" target="_blank"
+                               :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId"
+                               :data-id="item.supId">Product Inquiry</a>
+
                         </div>
-                        {{item.pdtName}}
-                    </h1>
-                    <div>
-                        <div class="fl">
-                            <h2>US <span>{{sysConfig.currency_symbol}}{{ item.price }}</span></h2>
-                            <div class="h3">Min.Order: {{item.minOrder}} pairs</div>
-                        </div>
-                        <div class="fr" style="width: 196px;">
-                            <div class="">
-                                <div class="h3">Inner Material:</div>
-                                {{item.inner?item.inner:'No data'}}
-                            </div>
-                            <div class="">
-                                <div class="h3">Sole Material:</div>
-                                {{item.sole?item.sole:'No data'}}
-                            </div>
-                            <div class="">
-                                <div class="h3">Upper Material:</div>
-                                {{item.upper?item.upper:'No data'}}
-                            </div>
-                            <div class="">
-                                <div class="h3">Appropriate Season:</div>
-                                {{item.season?item.season:'No data'}}
-                            </div>
-                            <div class="">
-                                <div class="h3">Closed Way:</div>
-                                {{item.closed?item.closed:'No data'}}
-                            </div>
-                        </div>
-                    </div>
-                </a>
+                    </a>
+                </div>
                 <div class="common-boxspan fr">
                     <a class="h1" :href="'/home/usr_UsrSupplier_gtSupIndex?pkey='+item.supId"
                        target="_blank"><%--<div class="year">{{item.enter}}YRS</div>--%>{{item.supName}}</a>
@@ -249,7 +240,7 @@ $('html').on('click', '#signin_close', function () {
 
                     <!-- <a class="btn" href="javascript:;" @click="addRFQ" :data-id = "item.pdtId">Contact Supplier</a> -->
                     <a class="btn" target="_blank"
-                       :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" :data-id="item.pdtId">Contact
+                       :href="'/home/usr_UsrSupplier_goContactSupplier?supplierPkey='+item.supId" :data-id="item.pdtId">Contact
                         Supplier</a>
                 </div>
             </div>
@@ -284,18 +275,16 @@ $('html').on('click', '#signin_close', function () {
     <index-bottom></index-bottom>
 </div>
 
-
+<script src="/home/v3/static/js/index-top.js"></script>
 <script src="/home/v3/static/js/index-bottom.js"></script>
-
 <script>
-
     user_obj.sign_in_init();
     new Vue(
         {
             el: "#foot"
         }
     )
-    new Vue({
+    var app=new Vue({
         el: '#productList',
         data: {
             selelv: "",
@@ -542,8 +531,7 @@ $('html').on('click', '#signin_close', function () {
             },
             // 点击左侧分类时跳转
             categorySearch(e) {
-                this.lose = 1;
-                this.curr = 1;
+                this.lose = 1
                 this.cated = e.currentTarget.dataset.cated;
                 console.log(this.cated)
                 this.page = 0;

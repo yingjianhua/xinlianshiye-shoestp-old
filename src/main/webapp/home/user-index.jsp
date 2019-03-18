@@ -28,14 +28,15 @@
         height: 100%;
         object-fit: contain;
     }
-
 </style>
 
 </head>
 
 <body>
 <jsp:include page="v3/nav-nobody.jsp"></jsp:include>
+<script src="/home/v3/static/js/index-top.js"></script>
 <div id="personalCenter" class="clearfix" v-cloak>
+    <index-top></index-top>
     <div class="user-menu fl">
        <div class="user-menu-title"><img src="/home/v3/static/images/user/icon_account.png" alt="" style="margin:0 8px 2px 0;">My Account
         </div>
@@ -50,8 +51,9 @@
         <div class="user-info clearfix flexCc">
             <div class="user-info-item flexCc">
                 <div class="flexCc">
-                    <div class="avatar-box">
+                    <div class="avatar-box" ref="avatarUpload">
                         <div class="avatar">
+
                             <img @click="clickShowUploadAvatar"
                                  :src="userInfo.avatar?image(userInfo.avatar):'/home/v3/static/images/user/toux_me.png'"
                                  alt="">
@@ -59,7 +61,8 @@
                         <div class="user-info-item-name" style="color: #232323;">
                             {{userInfo.nickname?userInfo.nickname:'Nickname'}}
                         </div>
-                        <div class="avatar-upload clearfix ripple fadeIn" v-if="isShowAvatarUpload">
+                         <transition name="user-fade-in">
+                        <div class="avatar-upload clearfix  " v-if="isShowAvatarUpload">
                             <!-- action="https://jsonplaceholder.typicode.com/posts/" -->
                             <div class="fl upload-box">
                                 <div>
@@ -83,6 +86,7 @@
                                 <p>Upload JPG format,sized no larger than 3MB</p>
                             </div>
                         </div>
+                    </transition>
                     </div>
                     <div class="icon-id">
                         <a href="/home/usr_UsrPurchase_usrSetting">
@@ -129,16 +133,16 @@
             </div>
             <el-form ref="form" :model="form" :rules="rules" label-width="220px" class="quotation-form">
                 <el-form-item label="Product Name :" prop="title">
-                    <el-input v-model="form.title" placeholder="Please Enter The Product Name."></el-input>
+                    <el-input v-model.trim="form.title" placeholder="Please Enter The Product Name."></el-input>
                 </el-form-item>
                 <el-form-item label="Product Detailed Specification :" prop="descriotion">
-                    <el-input type="textarea" :rows="6" v-model="form.descriotion"
+                    <el-input type="textarea" :rows="6" v-model.trim="form.descriotion"
                               placeholder="Please enter your Proct/Service Details"></el-input>
                 </el-form-item>
                 <el-form-item label="Estimates Order Quantity :" prop="quantity">
                     <el-row>
                         <el-col :span="7">
-                            <el-input v-model="form.quantity" placeholder="Please enter the quantity"></el-input>
+                            <el-input v-model.trim="form.quantity" placeholder="Please enter the quantity"></el-input>
                         </el-col>
                         <el-col :span="5" :offset="1">
                             <el-form-item prop="unit">
@@ -204,8 +208,22 @@
 <script>
     new Vue({
         el: "#personalCenter",
-        data: {
-            isShowAvatarUpload: false, // 头像上传框
+        data() {
+            var validateQuantity = (rule, value, callback) => {
+                let re = /^[1-9]\d*$/;
+                if (!value) {
+                    return callback(new Error('Please enter the quantity'));
+                }
+                if(parseInt(value)!=value){
+                    callback(new Error('Please enter an integer'));
+                }
+                if( !re.test(value)){
+                    callback(new Error('The number cannot be 0'));
+                }
+                callback();
+            };
+            return{
+                isShowAvatarUpload: false, // 头像上传框
             form: {
                 title: '',
                 descriotion: '',
@@ -229,17 +247,24 @@
                     message: 'Please enter your Proct/Service Details',
                     trigger: 'blur'
                 }],
-                quantity: [{
-                    required: true,
-                    message: 'Please enter the quantity',
-                    trigger: 'blur'
-                }],
+                quantity: [{required: true,validator: validateQuantity, trigger: 'blur' }],
                 unit: [{
                     required: true,
                     message: 'Please select a unit',
                     trigger: 'change'
                 }],
             },
+            }
+
+        },
+         created(){
+            document.addEventListener('click',(e)=>{
+            //     console.log("this.$refs.dl.contains(e.target)");
+            // console.log(this.$refs.dl.contains(e.target));
+            if(!this.$refs.avatarUpload.contains(e.target)){
+                this.isShowAvatarUpload = false;
+            }
+        })
         },
         mounted() {
             this.getUserInfo();
@@ -273,7 +298,7 @@
                     }
                 })
                     .then(function (res) {
-                        console.log(res);
+                        // console.log(res);
                         if (res.data.ret == -1) {
                             window.location.href =
                                 '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
@@ -292,13 +317,13 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         let data = JSON.stringify(this.form)
-                        console.log(this.form)
-                        console.log('submit!');
+                        // console.log(this.form)
+                        // console.log('submit!');
                         axios.post('/home/rfq_RFQConsult_putRFQInquiry', data,
                             {headers: {'Content-Type': 'application/json'}}
                         )
                             .then((res) => {
-                                console.log(res)
+                                // console.log(res)
                                 // 提交成功时
                                 if (res.data.ret == 1) {
                                     // 提示信息
@@ -347,12 +372,12 @@
             },
             // 头像上传
             handleAvatarSuccess(res, file) {
-                console.log(res)
-                console.log(res.result.url)
-                console.log(file)
-                this.userInfo.avatar = res.result.url
-                console.log(this.userInfo.avatar)
-
+                // console.log(res)
+                // console.log(res.result.url)
+                // console.log(file)
+                // this.userInfo.avatar = res.result.url
+                // console.log(this.userInfo.avatar)
+                this.$set(this.userInfo,"avatar",res.result.url)
             },
             beforeAvatarUpload(file) {
                 const isJPG = file.type === 'image/jpeg';
@@ -371,7 +396,7 @@
                     avatar,
                 }))
                     .then(function (res) {
-                        console.log(res);
+                        // console.log(res);
                         if (res.data.ret != 1) {
                             self.$message.error(res.data.msg);
                             return

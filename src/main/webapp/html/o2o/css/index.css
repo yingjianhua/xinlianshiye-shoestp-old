@@ -471,7 +471,10 @@ li {
     min-height: 75px;
     position: relative;
     border-left: 2px solid #dddddd;
+}
 
+#lhl-highClass .main-operate-content ul li:last-child {
+    border-left: 2px solid transparent;
 }
 
 #lhl-highClass .rank {
@@ -500,6 +503,7 @@ li {
 #lhl-highClass .content-text01 {
     color: #7f7f7f;
     margin-top: 15px;
+    cursor: default;
 }
 
 #lhl-highClass .operate-image {
@@ -561,7 +565,11 @@ li {
 
 #lhl-highClass .sample-item {
     width: 180px;
-    height: 250px;
+    /*height: 250px;*/
+    height: 260px;
+    padding-top: 13px;
+    box-sizing: border-box;
+
     margin: 10px;
     display: inline-block;
     background-color: white;
@@ -607,6 +615,10 @@ li {
     margin-top: 40px;
 }
 
+#lhl-highClass .sample-button:hover{
+    background-color: #35c;
+}
+
 #lhl-highClass .sample-item img {
     width: 154px;
     height: 154px;
@@ -635,6 +647,7 @@ li {
 }
 
 #lhl-highClass .show-line {
+    height: 32px;
     text-overflow: -o-ellipsis-lastline;
     overflow: hidden;
     text-overflow: ellipsis;

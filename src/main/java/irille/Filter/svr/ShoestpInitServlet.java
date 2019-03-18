@@ -3,13 +3,8 @@ package irille.Filter.svr;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.xinlianshiye.shoestp.plat.service.pm.IPMTemplateService;
-import com.xinlianshiye.shoestp.plat.service.pm.IVariableService;
 import com.xinlianshiye.shoestp.plat.service.pm.imp.PMTemplateServiceImp;
-import com.xinlianshiye.shoestp.plat.service.pm.imp.VariableServiceImp;
 
 import irille.action.sys.SysMenuAction;
 import irille.pub.ClassTools;
@@ -20,57 +15,53 @@ import irille.pub.inf.IDb;
 import irille.pub.svr.Env;
 import irille.shop.lg.LgAccess;
 import irille.shop.plt.Plt_ConfPackage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ShoestpInitServlet extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private static final Logger logger = LoggerFactory.getLogger(ShoestpInitServlet.class);
+  private static final Logger logger = LoggerFactory.getLogger(ShoestpInitServlet.class);
 
-    private static final IDb db = Env.INST.getDB();
-    
-    public void init() throws ServletException {
-        logger.info("自动建表...");
-        createTable(LgAccess.class);
+  private static final IDb db = Env.INST.getDB();
 
-        logger.info("初始化基类...");
-        initBeanLoad();
+  @Override
+  public void init() throws ServletException {
+    logger.info("自动建表...");
+    createTable(LgAccess.class);
 
-        logger.info("初始化所有安装模块下的菜单...");
-        SysMenuAction.initMenus();
-        logger.info("设置数据库模式");
-        //设置数据库Mode
-        BeanBase.executeUpdate("SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY',''));");
-        logger.info("初始化数据...");
-        Plt_ConfPackage.INST.install();
-        
-        
-        logger.info("初始化站内信模板...");
-        IPMTemplateService templateService = new PMTemplateServiceImp();
-        templateService.initTemp();
-        IVariableService variableService = new VariableServiceImp();
-        logger.info("站内信模板初始化完毕...");
-//        logger.info("初始化计划任务...");
-//        TaskUtil taskUtil = new TaskUtil();
-//        taskUtil.addTask(new GetGooleAnalyticsTask(), 1L, TimeUnit.DAYS);
+    logger.info("初始化基类...");
+    initBeanLoad();
 
+    logger.info("初始化所有安装模块下的菜单...");
+    SysMenuAction.initMenus();
+    logger.info("设置数据库模式");
+    // 设置数据库Mode
+    BeanBase.executeUpdate(
+        "SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY',''));");
+    logger.info("初始化数据...");
+    Plt_ConfPackage.INST.install();
+    logger.info("初始化站内信模板...");
+    IPMTemplateService templateService = new PMTemplateServiceImp();
+    templateService.initTemp();
+    logger.info("站内信模板初始化完毕...");
+  }
+
+  public void initBeanLoad() {
+    for (Class<?> packClass : Plt_ConfPackage.INST.getPacks().keySet()) {
+      PackageBase pack = (PackageBase) ClassTools.getStaticProerty(packClass, "INST");
+      for (TbMsg tb : pack.getTbMsgs()) {
+        System.out.println("类初始加载：" + tb.getTb().getCode());
+      }
     }
+  }
 
-    public void initBeanLoad() {
-        for (Class<?> packClass : Plt_ConfPackage.INST.getPacks().keySet()) {
-            PackageBase pack = (PackageBase) ClassTools.getStaticProerty(packClass, "INST");
-            for (TbMsg tb : pack.getTbMsgs()) {
-                System.out.println("类初始加载：" + tb.getTb().getCode());
-            }
-        }
+  public void createTable(Class<?> beanClass) {
+    try {
+      db.db(beanClass);
+    } catch (Exception e) {
+      e.printStackTrace();
     }
-
-    public void createTable(Class<?> beanClass) {
-        try {
-            db.db(beanClass);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
+  }
 }

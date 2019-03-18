@@ -1,7 +1,18 @@
 package irille.Service.Usr.Imp;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+
+import com.xinlianshiye.shoestp.shop.view.usr.FavoritesView;
+import com.xinlianshiye.shoestp.shop.view.usr.SuplierDetailView;
+
 import irille.Dao.PdtProductDao;
 import irille.Dao.UsrSupplierDao;
+import irille.Entity.SVS.SVSInfo;
 import irille.Service.Usr.IUsrSupplierService;
 import irille.core.sys.Sys;
 import irille.homeAction.usr.dto.SupplierListView;
@@ -20,95 +31,108 @@ import irille.view.Page;
 import irille.view.v3.Pdt.PdtProductView;
 import irille.view.v3.usr.UsrSupplierView;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import javax.inject.Inject;
-
-import com.xinlianshiye.shoestp.shop.view.usr.FavoritesView;
-
-/**
- * Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/5 Time: 16:25
- */
+/** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/5 Time: 16:25 */
 public class UsrSupplierServiceImp implements IUsrSupplierService {
 
-  @Inject
-  UsrSupplierDao usrSupplierDao;
-  @Inject
-  PdtProductDao pdtProductDao;
+  @Inject UsrSupplierDao usrSupplierDao;
+  @Inject PdtProductDao pdtProductDao;
 
   @Override
-  public List<FavoritesView> getFavoritesListByCat(IduPage page, int cat, int purId,
-      Sys.OYn showState) {
+  public List<FavoritesView> getFavoritesListByCat(
+      IduPage page, int cat, int purId, Sys.OYn showState) {
     FormaterSql sql = FormaterSql.build(this);
-    sql.select(UsrFavorites.T.PKEY, UsrFavorites.T.PRODUCT, irille.shop.pdt.PdtProduct.T.PRODUCT_TYPE,
-        irille.shop.pdt.PdtProduct.T.NAME,
-        irille.shop.pdt.PdtProduct.T.PICTURE, irille.shop.pdt.PdtProduct.T.CUR_PRICE
-
-    ).eqAutoAnd(UsrFavorites.T.PURCHASE, purId, s -> {
-      if (s == null) {
-        return false;
-      }
-      return s.intValue() > 0 ? true : false;
-    }).page(page).leftjoin(irille.shop.pdt.PdtProduct.T.PKEY, UsrFavorites.T.PRODUCT)
-        .eqAutoAnd(UsrFavorites.T.SHOW_STATE,
-            showState.getLine().getKey());
-    sql.in(irille.shop.pdt.PdtProduct.T.CATEGORY, pdtProductDao.getCatsNodeByCatId(cat), s -> {
-      if (s == null) {
-        return false;
-      }
-      return s.size() > 0 ? true : false;
-    });
+    sql.select(
+            UsrFavorites.T.PKEY,
+            UsrFavorites.T.PRODUCT,
+            irille.shop.pdt.PdtProduct.T.PRODUCT_TYPE,
+            irille.shop.pdt.PdtProduct.T.NAME,
+            irille.shop.pdt.PdtProduct.T.PICTURE,
+            irille.shop.pdt.PdtProduct.T.CUR_PRICE)
+        .eqAutoAnd(
+            UsrFavorites.T.PURCHASE,
+            purId,
+            s -> {
+              if (s == null) {
+                return false;
+              }
+              return s.intValue() > 0 ? true : false;
+            })
+        .page(page)
+        .leftjoin(irille.shop.pdt.PdtProduct.T.PKEY, UsrFavorites.T.PRODUCT)
+        .eqAutoAnd(UsrFavorites.T.SHOW_STATE, showState.getLine().getKey());
+    sql.in(
+        irille.shop.pdt.PdtProduct.T.CATEGORY,
+        pdtProductDao.getCatsNodeByCatId(cat),
+        s -> {
+          if (s == null) {
+            return false;
+          }
+          return s.size() > 0 ? true : false;
+        });
     List result = new ArrayList();
     List list = sql.castListMap(BeanBase.list(sql.buildSql(), sql.getParms()));
     sql.clean().select(PrmGroupPurchaseLine.T.PKEY).eq(PrmGroupPurchaseLine.T.PRODUCT);
-    list.forEach(s -> {
-      FavoritesView view = SetBeans.set(s, FavoritesView.class);
-      if (view.getGroupLine() != null && view.getGroupLine() == 1) {
-        view.setGroupLine(
-            sql.castInt(BeanBase.queryOneRowIsNull(sql.buildSql(), view.getPdtPkey())));
-      }
-      result.add(view);
-    });
+    list.forEach(
+        s -> {
+          FavoritesView view = SetBeans.set(s, FavoritesView.class);
+          if (view.getGroupLine() != null && view.getGroupLine() == 1) {
+            view.setGroupLine(
+                sql.castInt(BeanBase.queryOneRowIsNull(sql.buildSql(), view.getPdtPkey())));
+          }
+          result.add(view);
+        });
     return result;
   }
 
   @Override
   public Long getFavoritesCountByCat(IduPage page, int cat, int purId, Sys.OYn showState) {
     FormaterSql sql = FormaterSql.build(this);
-    sql.select(UsrFavorites.T.PKEY, UsrFavorites.T.PRODUCT, irille.shop.pdt.PdtProduct.T.NAME, irille.shop.pdt.PdtProduct.T.PICTURE,
-        irille.shop.pdt.PdtProduct.T.CUR_PRICE
-
-    ).eqAutoAnd(UsrFavorites.T.PURCHASE, purId, s -> {
-      if (s == null) {
-        return false;
-      }
-      return s.intValue() > 0 ? true : false;
-    }).page(page).leftjoin(irille.shop.pdt.PdtProduct.T.PKEY, UsrFavorites.T.PRODUCT)
-        .eqAutoAnd(UsrFavorites.T.SHOW_STATE,
-            showState.getLine().getKey());
+    sql.select(
+            UsrFavorites.T.PKEY,
+            UsrFavorites.T.PRODUCT,
+            irille.shop.pdt.PdtProduct.T.NAME,
+            irille.shop.pdt.PdtProduct.T.PICTURE,
+            irille.shop.pdt.PdtProduct.T.CUR_PRICE)
+        .eqAutoAnd(
+            UsrFavorites.T.PURCHASE,
+            purId,
+            s -> {
+              if (s == null) {
+                return false;
+              }
+              return s.intValue() > 0 ? true : false;
+            })
+        .page(page)
+        .leftjoin(irille.shop.pdt.PdtProduct.T.PKEY, UsrFavorites.T.PRODUCT)
+        .eqAutoAnd(UsrFavorites.T.SHOW_STATE, showState.getLine().getKey());
     if (cat > 0) {
-      sql.in(irille.shop.pdt.PdtProduct.T.CATEGORY, pdtProductDao.getCatsNodeByCatId(cat), s -> {
-        if (s == null) {
-          return false;
-        }
-        return s.size() > 0 ? true : false;
-      });
+      sql.in(
+          irille.shop.pdt.PdtProduct.T.CATEGORY,
+          pdtProductDao.getCatsNodeByCatId(cat),
+          s -> {
+            if (s == null) {
+              return false;
+            }
+            return s.size() > 0 ? true : false;
+          });
     }
     return sql.castLong(BeanBase.queryOneRowIsNull(sql.buildCountSql(), sql.getParms()));
   }
 
   @Override
-  public List<SupplierListView> getSupplierListAndPdtList(IduPage iduPage,
-      FldLanguage.Language language) {
-    List<SupplierListView> list = usrSupplierDao
-        .getSupplierListAndPdtList(iduPage.getStart(), iduPage.getLimit(), iduPage.getWhere());
-    return list.stream().map(supplierListView -> {
-      supplierListView
-          .setProdpattern(translateUtil.getLanguage(supplierListView.getProdpattern(), language));
-      return supplierListView;
-    }).collect(Collectors.toList());
+  public List<SupplierListView> getSupplierListAndPdtList(
+      IduPage iduPage, FldLanguage.Language language) {
+    List<SupplierListView> list =
+        usrSupplierDao.getSupplierListAndPdtList(
+            iduPage.getStart(), iduPage.getLimit(), iduPage.getWhere());
+    return list.stream()
+        .map(
+            supplierListView -> {
+              supplierListView.setProdpattern(
+                  translateUtil.getLanguage(supplierListView.getProdpattern(), language));
+              return supplierListView;
+            })
+        .collect(Collectors.toList());
   }
 
   @Override
@@ -117,32 +141,32 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
   }
 
   @Override
-  public Page listSupplier(Integer start , Integer limit) {
+  public Page listSupplier(Integer start, Integer limit) {
     Page page = null;
     List<UsrSupplierView> supplierViews = new ArrayList<>();
-    List<Map> usrSuppliers = usrSupplierDao.listSuppliers(start , limit);
+    List<Map> usrSuppliers = usrSupplierDao.listSuppliers(start, limit);
     for (Map map : usrSuppliers) {
       UsrSupplierView supplierView = new UsrSupplierView();
-      Integer usrSupplierPkey = GetValue.get(map,UsrSupplier.T.PKEY , Integer.class, 0);
+      Integer usrSupplierPkey = GetValue.get(map, UsrSupplier.T.PKEY, Integer.class, 0);
       supplierView.setId(usrSupplierPkey);
-      supplierView.setShowName(GetValue.get(map,UsrSupplier.T.SHOW_NAME , String.class, null));
-      supplierView.setIsAuth(GetValue.get(map,UsrSupplier.T.IS_AUTH , Byte.class, (byte)0));
-      supplierView.setLogo(GetValue.get(map,UsrSupplier.T.LOGO , String.class, null));
-      supplierView.setMainSalesArea(GetValue.get(map,UsrSupplier.T.SHOW_NAME , String.class, null));
-      //添加商品列表
+      supplierView.setShowName(GetValue.get(map, UsrSupplier.T.SHOW_NAME, String.class, null));
+      supplierView.setIsAuth(GetValue.get(map, UsrSupplier.T.IS_AUTH, Byte.class, (byte) 0));
+      supplierView.setLogo(GetValue.get(map, UsrSupplier.T.LOGO, String.class, null));
+      supplierView.setMainSalesArea(GetValue.get(map, UsrSupplier.T.SHOW_NAME, String.class, null));
+      // 添加商品列表
       List<PdtProductView> pdtProductViews = new ArrayList<>();
       List<Map> pdtProducts = pdtProductDao.findBySupplier(usrSupplierPkey);
       for (Map map1 : pdtProducts) {
         PdtProductView pdtProductView = new PdtProductView();
-        pdtProductView.setId(GetValue.get(map1 , PdtProduct.T.PKEY , Integer.class , 0));
-        pdtProductView.setName(GetValue.get(map1 , PdtProduct.T.NAME , String.class , null));
-        pdtProductView.setPicture(GetValue.get(map1 , PdtProduct.T.PICTURE , String.class , null));
+        pdtProductView.setId(GetValue.get(map1, PdtProduct.T.PKEY, Integer.class, 0));
+        pdtProductView.setName(GetValue.get(map1, PdtProduct.T.NAME, String.class, null));
+        pdtProductView.setPicture(GetValue.get(map1, PdtProduct.T.PICTURE, String.class, null));
         pdtProductViews.add(pdtProductView);
       }
       supplierView.setProducts(pdtProductViews);
-      //将所有查找到的供应商的数据加入List
+      // 将所有查找到的供应商的数据加入List
       supplierViews.add(supplierView);
-      page = new Page(supplierViews , start , limit , usrSupplierDao.listSuppliers(null , null).size());
+      page = new Page(supplierViews, start, limit, usrSupplierDao.listSuppliers(null, null).size());
     }
     return page;
   }
@@ -150,5 +174,19 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
   @Override
   public Integer isSupplier(String loginName) {
     return usrSupplierDao.isSupplier(loginName) ? 1 : 0;
+  }
+
+  @Override
+  public SuplierDetailView getSuplierDetail(Integer supplierPkey) {
+    SuplierDetailView view = new SuplierDetailView();
+    Map<String, Object> supMap = usrSupplierDao.getSupplierDetail(supplierPkey);
+    Map<String, Object> SVSMap = usrSupplierDao.getSupplierSVS(supplierPkey);
+    view.setPkey((Integer) supMap.get(UsrSupplier.T.PKEY.getFld().getCodeSqlField()));
+    view.setCompanyName((String) supMap.get(UsrSupplier.T.NAME.getFld().getCodeSqlField()));
+    view.setLogo((String) supMap.get(UsrSupplier.T.LOGO.getFld().getCodeSqlField()));
+    if (SVSMap.size() > 0) {
+      view.setSVSGRade((Byte) SVSMap.get(SVSInfo.T.GRADE.getFld().getCodeSqlField()));
+    }
+    return view;
   }
 }

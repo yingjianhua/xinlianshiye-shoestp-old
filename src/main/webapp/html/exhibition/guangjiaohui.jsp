@@ -22,9 +22,9 @@
                 <section class="section1">
                     <h1>Introduction of China Import and Export Fair</h1>
                     <p>China Import and Export Fair, also known as Canton Fair, is established in 1957. Co-hosted by the Ministry of Commerce of PRC and the People’s Government of Guangdong Province and organized by China Foreign Trade Centre, it is held every spring and autumn in Guangzhou, China. Canton Fair is a comprehensive international trading event with the longest history, the largest scale, the most complete exhibit variety, the largest buyer attendance, the broadest distribution of buyers’ source country and the greatest business turnover in China.</p>
-                   
+
                     <p>After 61 years’ reform and innovative development, the Canton Fair has withstood various challenges and never been interrupted. The Canton Fair enhances trade connection between China and the world, demonstrating China’s image and achievements of development. It is an outstanding platform for Chinese enterprises to explore the international market and an exemplary base to implement China’s strategies for foreign trade growth. The Canton Fair serves as the first and foremost platform to promote China’s foreign trade, and a barometer of the foreign trade sector. It is the window, epitome and symbol of China’s opening up.</p>
-                    
+
                     <p>information application, market orientation, and international development. We are endeavored to build a “Smart Canton Fair” and “Green Canton Fair”. We are working hard to transform Canton Fair from an export trading platform to a comprehensive one integrating customer networking, display and negotiation, industrial exchange, information release and product promotion. We will give full play to Canton Fair’s function as an overall platform for opening-up which allows for buying and selling to the globe, and make new contributions to China’s development into a strong economic and trade power and the development of open economy.</p>
                 </section>
                 <section class="section2 w_1240">
@@ -78,7 +78,7 @@
                             </div>
                     </div>
                 </section>
-                
+
                 <section class="section4 w_1240 flexSb">
                     <div class="item">
                         <div class="font">
@@ -112,7 +112,7 @@
                     </div>
                 </section>
                 <section class="section5 w_1240">
-                        
+
                         <table  cellspacing="0">
                             <tr>
                                 <th style="width:142px;">Session</th>
@@ -152,12 +152,13 @@
                     <div class="content">
                         <h3> China Import and Export Fair(Canton Fair Complex)</h3>
                             382 Yuejiang Middle Rd Haizhu Qu Guangzhou Shi Guangdong Sheng 510310
-                            <br>    
+                            <br>
                             China
                     </div>
                 </section>
     <!-- </div> -->
     <index-bottom></index-bottom>
+
   </main>
 <script src="/home/v3/static/js/index-top.js"></script>
 <script src="/home/v3/static/js/index-bottom.js"></script>

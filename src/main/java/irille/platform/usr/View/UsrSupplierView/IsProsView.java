@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class IsProsView implements BaseView {
-    private Byte id;
-    private String name;
+  private Byte id;
+  private String name;
 }

@@ -28,27 +28,26 @@ Vue.component('index-top', {
               <dd>
                 <template v-if="PMMessageList.length >= 1">
                     <p class="message-title">You have {{countNoRead}} new messages</p>
-                    <ul>
+                    <ul class="msg-list">
                         <li v-for="(item,index) in PMMessageList" :key="index" @click="msgClick(item.pkey,index)">
                             <a href="javascript:void(0)">
-                                <i class="message-icon" :class="item.read?'message-icon-new':'message-icon-old'"></i>
+                                <i class="message-icon" :class="!item.read?'message-icon-new':'message-icon-old'"></i>
                                 <div>
-                                    <p :class="item.read?'ellipsis_2':''" :style="item.read?'color:#999999;':''">{{item.content}}</p>
+                                    <p :class="!item.read?'ellipsis_2':''" :style="!item.read?'color:#999999;':''">{{item.content}}</p>
                                     <div>
                                         <img src="/home/v3/static/images/o2otopmessagetime.png" alt="">
                                          <span>{{item.time | timeDistance}}</span> 
-                                         <!-- <span>{{item.time | formatMsgTime}}</span> -->
                                     </div>
                                 </div>
                             </a>
                         </li>
-                        <div class="more-btn" @click="moreClick">
+                         <div class="more-btn" @click="moreClick">
                             More
-                        </div>
+                        </div> 
                     </ul>
                 </template>
                 <template v-else>
-                    <div style="line-height: 100px;text-align: center;">
+                    <div style="line-height: 100px;text-align: center;font-size: 18px;">
                         No news yet
                     </div>
                 </template>
@@ -71,7 +70,7 @@ Vue.component('index-top', {
                     <div class="o2otoplikenum">
                         <div style="height:  20px;">
                             <div  v-if="!sysConfig.user">
-                                <a href="/home/usr_UsrPurchase_sign" style="border-right: 1px solid #b7b7b7;padding-right: 3px;color: #4fa2d7;font-size:12px;" target="_blank">Register</a>
+                                <a href="/home/usr_UsrMain_register" style="border-right: 1px solid #b7b7b7;padding-right: 3px;color: #4fa2d7;font-size:12px;" target="_blank">Register</a>
                                 <a href="/home/usr_UsrPurchase_sign" style="color: #4fa2d7;font-size:12px;" target="_blank">Login</a>
                             </div>
                         </div>
@@ -82,9 +81,9 @@ Vue.component('index-top', {
                 <!--  没有登录看到的  -->
                 <dd v-if="!sysConfig.user">
                     <div style="font-size:16px;margin:  18px  0;">Get started now</div>
-                    <div class="login-btn"><a href="/home/usr_UsrPurchase_sign" target="_blank">Login</a></div>
+                    <div class="login-btn"><a href="/home/usr_UsrPurchase_sign" >Login</a></div>
                     <div style="text-align:center;font-size:16px;margin:  8px  0;">or</div>
-                    <div class="registered-btn"><a href="/home/usr_UsrPurchase_sign" target="_blank">Registration</a></div>
+                    <div class="registered-btn"><a href="/home/usr_UsrMain_register" target="_blank">Registration</a></div>
                     <div style="color:#777777;text-align:center;margin:  15px  0;">Continue with：</div>
                     <div class="clearfix  other-login-list">
                         <div class="fl  other-login-item">
@@ -121,11 +120,11 @@ Vue.component('index-top', {
                 <!--  登陆后看到的  -->
                 <dd v-if="sysConfig.user">
                     <ul>
-                        <li class="flexSb user-name"><div class="ellipsis_1">Hi {{sysConfig.user.name}}</div><a href="/home/usr_UsrPurchase_signOut" target="_blank">sign out</a></li>
-                        <li><a href="/home/usr_UsrPurchase_userIndex" target="_blank">My Shoestp <i class="el-icon-arrow-right"></i></a></li>
-                        <li><a href="/home/usr_UsrMessages_center" target="_blank">RFQ List <i class="el-icon-arrow-right"></i></a></li>
-                        <li><a href="/home/usr_UsrMessages_center" target="_blank">My Inquiry <i class="el-icon-arrow-right"></i></a></li>
-                        <li><a href="/home/usr_UsrPurchase_userIndex" target="_blank">My Account <i class="el-icon-arrow-right"></i></a></li>
+                        <li class="flexSb user-name"><div class="ellipsis_1">Hi {{sysConfig.user.name}}</div><a href="/home/usr_UsrPurchase_signOut" >Sign out</a></li>
+                        <li v-if="sysConfig.user.user_type==0"><a href="/home/usr_UsrPurchase_userIndex" target="_blank">My Shoestp <i class="el-icon-arrow-right"></i></a></li>
+                        <li v-if="sysConfig.user.user_type==0"><a href="/home/usr_UsrMessages_center" target="_blank">RFQ List <i class="el-icon-arrow-right"></i></a></li>
+                        <li v-if="sysConfig.user.user_type==0"><a href="/home/usr_UsrMessages_center" target="_blank">My Inquiry <i class="el-icon-arrow-right"></i></a></li>
+                        <li v-if="sysConfig.user.user_type==0"><a href="/home/usr_UsrPurchase_userIndex" target="_blank">My Account <i class="el-icon-arrow-right"></i></a></li>
                         <li style="font-size:15px;font-weight: bold;"><a href="/home/usr_UsrSupplier_supplierEntry" target="_blank">我要开店 <i class="el-icon-arrow-right"></i></a></li>
                     </ul>
                     <div class="after-login"><a href="/home/usr_UsrConsult_publishView" target="_blank">Submit RFQ</a></div>
@@ -174,6 +173,27 @@ Vue.component('index-top', {
         Vue.set(this.$data, 'input', unescape(decodeURIComponent(getParams('Keyword', getParams('keyWord', getParams('keyword', ''))))))
         this.getconfig();
         this.getPMmessage(this.msgStart,this.msgLimit);
+        // setTimeout(() => {
+        //     this.$nextTick(() => {
+        //         let el = document.querySelector('.msg-list');
+        //         let offsetHeight = el.offsetHeight;
+        //         el.onscroll = () => {
+        //             let scrollTop = el.scrollTop;
+        //             let scrollHeight = el.scrollHeight;
+        //             if ((offsetHeight + scrollTop) - scrollHeight >= -1) {
+        //                 console.log("到底了")
+        //                 // 滚动到底部需要执行的代码
+        //                 if(this.PMmoreSwitch){
+        //                     this.msgStart = this.msgStart  + this.msgLimit
+        //                     this.getPMmessage(this.msgStart,this.msgLimit);
+        //                 }else{
+        //                     this.$message('No more station letters');
+        //                 }
+
+        //             }
+        //         };
+        //     });
+        // }, 1000);
     },
     methods: {
         submit: function () {
@@ -200,49 +220,47 @@ Vue.component('index-top', {
         getPMmessage(start,limit){
             var self = this
             axios.get(
-                'http://192.168.1.48:889/mock/5c6a1556af4d250024d48c6d/home/home/pm_PMMessage_list', {
-                // '/home/pm_PMMessage_list', {
+                '/home/pm_PMMessage_list', {
                     params: {
                         start,
                         limit,
                     }
-                }
-            )
+                })
             .then(function (res) {
-                console.log("PMMMMMMMMMMMMMMMMMM" + res)
-                console.log(res)
+                // console.log("PMMMMMMMMMMMMMMMMMM" + res)
+                // console.log(res)
                 if (res.data.ret == 1) {
                     self.countNoRead = res.data.result.countNoRead;
-                    // self.PMMessageList.push(...res.data.result.items);
-                    self.PMMessageList.push(...res.data.result);
-                    // if(res.data.result.items.length <= 0){
-                    if(res.data.result.length <= 0){
-                       self.PMmoreSwitch == false; 
-                       self.$message('No more');
+                    self.PMMessageList.push(...res.data.result.items);
+                    // console.log("res.data.result.items.length=======" + res.data.result.items.length)
+                    if(res.data.result.items.length <= 0){
+                        // console.log(res)
+                        // console.log(self.PMmoreSwitch)
+                        self.PMmoreSwitch = false;
+                    //    self.$message('No more station letters');
                        return;
                     }
                 }
             })
-            
-            
-            
             .catch(function (error) {
                 console.log(error);
             });
-            },
-        msgClick(message,i){   // 点击消息 
+        },
+        msgClick(message,i){   // 点击消息
             var self = this;
             axios.post('/home/pm_PMMessage_read', Qs.stringify({
                     message,
                 }))
                 .then(function (res) {
-                    console.log(res);
-                    if (res.data.ret != 1) {
+                    // console.log("点击消息=======" + res);
+                    // console.log(res);
+                    if (!res.data.success) {
                         self.$message.error(res.data.msg);
                         return
                     };
-                    self.$message.success("Have read");
-                    self.$set(self.PMMessageList[i],"read",false)
+                    // self.$message.success("Have read");
+                    self.getPMmessage(self.msgStart,self.msgLimit);
+                    self.$set(self.PMMessageList[i],"read",true)
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -250,62 +268,31 @@ Vue.component('index-top', {
         },
         moreClick(){    // 点击 加载更多消息
             var self = this;
-            if(this.PMmoreSwitch){
+            // console.log("self.PMmoreSwitch ==== " + self.PMmoreSwitch)
+            if(self.PMmoreSwitch){
                 self.msgStart = self.msgStart  + self.msgLimit
                 self.getPMmessage(self.msgStart,self.msgLimit);
             }else{
-                self.$message('No more');
+                self.$message('No more station letters');
             }
         },
-        
-         
+
+
     },
     filters: {
-        // formatMsgTime (dateTimeStamp) {
-        //     var minute =  60;
-        //     var hour = minute * 60;
-        //     var day = hour * 24;
-        //     var halfamonth = day * 15;
-        //     var month = day * 30;
-        //     var now = new Date().getTime();
-        //     var diffValue = (now - dateTimeStamp) / 1000;
-        //     if(diffValue < 0){return;}
-        //     var monthC =diffValue/month;
-        //     var weekC =diffValue/(7*day);
-        //     var dayC =diffValue/day;
-        //     var hourC =diffValue/hour;
-        //     var minC =diffValue/minute;
-        //     if(monthC>=1){
-        //         result="" + parseInt(monthC) + "months";
-        //     }
-        //     else if(weekC>=1){
-        //         result="" + parseInt(weekC) + "weeks";
-        //     }
-        //     else if(dayC>=1){
-        //         result=""+ parseInt(dayC) +"days";
-        //     }
-        //     else if(hourC>=1){
-        //         result=""+ parseInt(hourC) +"hours";
-        //     }
-        //     else if(minC>=1){
-        //         result=""+ parseInt(minC) +"minutes";
-        //     }else
-        //     result="just";
-        //     return result;
-        //     },
             timeDistance(value){
                 let nowt = Math.round(new Date() / 1000)
                 let times = (nowt - value / 1000);
                 if(times>31536000){
-                    return `${parseInt(times/31536000)}years`
+                    return `${parseInt(times/31536000)} years ago`
                 }else if(times>=86400&times<31536000){
-                    return `${parseInt(times/86400)}days`;
+                    return `${parseInt(times/86400)} days ago`;
                 }else if(times>=3600&times<86400){
-                    return `${parseInt(times/3600)}hours`;
+                    return `${parseInt(times/3600)} hours ago`;
                 }else if(times>60&times<3600){
-                    return `${parseInt(times/60)}minutes`;
-                }else if(times<60){return 'just'}
-    
+                    return `${parseInt(times/60)} minutes ago`;
+                }else if(times<60){return 'Just now'}
+
             },
     }
 })

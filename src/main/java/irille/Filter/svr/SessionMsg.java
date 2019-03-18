@@ -1,6 +1,14 @@
 package irille.Filter.svr;
 
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+
 import com.opensymphony.xwork2.ActionInvocation;
+
 import irille.pub.tb.FldLanguage.Language;
 import irille.shop.plt.PltConfig;
 import irille.shop.plt.PltConfig.Variable;
@@ -10,11 +18,6 @@ import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrUserDAO;
 import irille.view.usr.UserView;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.ServletActionContext;
 
 /**
@@ -24,15 +27,15 @@ import org.apache.struts2.ServletActionContext;
  */
 public class SessionMsg {
 
-  /**
-   * 存放于session中的键值
-   */
+  /** 存放于session中的键值 */
   public static final String session_key = "SESSION_MSG";
+
   private static final String WW_TRANS_I18N_LOCALE = "WW_TRANS_I18N_LOCALE";
-  private static final String[] mobile_device_array = new String[]{"android", "windows phone",
-      "mobile", "iphone"};
+  private static final String[] mobile_device_array =
+      new String[] {"android", "windows phone", "mobile", "iphone"};
 
   private String loginName;
+  private Integer pkey;
   private boolean isPurchase;
   private boolean isSupplier;
   private Language lang;
@@ -53,7 +56,7 @@ public class SessionMsg {
     HttpServletRequest request = ServletActionContext.getRequest();
     Map<String, Object> session = actionInvocation.getInvocationContext().getSession();
 
-    //设置是否为移动设备
+    // 设置是否为移动设备
     String agent = request.getHeader("User-Agent").toLowerCase();
     Boolean isMobile = false;
     for (String device : mobile_device_array) {
@@ -73,7 +76,7 @@ public class SessionMsg {
       localObj = session.get(WW_TRANS_I18N_LOCALE);
     }
     Locale locale = (Locale) localObj;
-    //设置语言
+    // 设置语言
 
     if (sessionmsg.getLang() == null || !sessionmsg.getLang().name().equals(locale.toString())) {
       Set<String> languages = new HashSet<>();
@@ -98,7 +101,6 @@ public class SessionMsg {
       }
       sessionmsg.setLang(lang);
     }
-
   }
 
   public boolean isPurchase() {
@@ -136,20 +138,43 @@ public class SessionMsg {
   }
 
   public UserView getUser() {
-    UserView user = new UserView();
-    user.setSupplier(this.getSupplier());
-    user.setPurchase(this.getPurchase());
-    user.setLoginName(loginName);
-    return user;
+    if (pkey != null) {
+      UserView user = new UserView();
+      user.setPkey(pkey);
+      user.setSupplier(this.getSupplier());
+      user.setPurchase(this.getPurchase());
+      user.setLoginName(loginName);
+      user.setUser_type(isSupplier ? 1 : 0);
+      return user;
+    } else {
+      return null;
+    }
   }
 
   public void setUser(UserView user) {
     if (user == null || !user.haveUser()) {
       isPurchase = false;
       isSupplier = false;
+      pkey = null;
+      loginName = null;
     } else {
       this.setSupplier(user.getSupplier());
       this.setPurchase(user.getPurchase());
+      this.pkey = user.getPkey();
+      this.loginName = user.getLoginName();
+      switch (user.getUser_type()) {
+        case 0:
+          {
+            isPurchase = true;
+            isSupplier = false;
+          }
+          break;
+        case 1:
+          {
+            isSupplier = true;
+            isPurchase = false;
+          }
+      }
     }
   }
 
@@ -184,5 +209,4 @@ public class SessionMsg {
   public void setIsMobile(Boolean isMobile) {
     this.isMobile = isMobile;
   }
-
 }

@@ -13,13 +13,11 @@ import irille.view.Page;
 @ImplementedBy(PMMessageServiceImp.class)
 public interface IPMMessageService {
 
-	/**
-	 * 发送
-	 */
-	void send(OTempType tempType, UsrSupplier supplier, UsrPurchase purchase, Object... objects);
+  /** 发送 */
+  void send(OTempType tempType, UsrSupplier supplier, UsrPurchase purchase, Object... objects);
 
-	Page list(MessageView view, Integer start, Integer limit);
-	
-	Page list(UsrSupplier supplier, UsrPurchase purchase, ORCVRType type, Integer start, Integer limit);
+  Page list(MessageView view, Integer start, Integer limit);
 
+  Page list(
+      UsrSupplier supplier, UsrPurchase purchase, ORCVRType type, Integer start, Integer limit);
 }

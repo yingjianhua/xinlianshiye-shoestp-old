@@ -12,20 +12,18 @@ import irille.action.MgtAction;
 import lombok.Data;
 
 @Data
-public class PMMessageAction extends MgtAction<PMMessage>{
+public class PMMessageAction extends MgtAction<PMMessage> {
 
-	@Override
-	public Class beanClazz() {
-		return PMMessage.class;
-	}
-	
-	@Inject
-	private IPMMessageService messageService;
-	
-	private MessageView view;
-	
-	public void list() throws IOException {
-		write(messageService.list(getView(), getStart(), getLimit()));
-	}
+  @Override
+  public Class beanClazz() {
+    return PMMessage.class;
+  }
 
+  @Inject private IPMMessageService messageService;
+
+  private MessageView view;
+
+  public void list() throws IOException {
+    write(messageService.list(getView(), getStart(), getLimit()));
+  }
 }

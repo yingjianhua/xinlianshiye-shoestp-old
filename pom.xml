@@ -25,11 +25,16 @@
             <id>dev</id><!--执行打包命令时将使用此处的id进行定位 -->
             <properties>
                 <environment>dev</environment>
-                <!--此处为对应的环境放置配置文件的目录，上一步创建的为dev,这里设置为dev。下面两个目录配置参照此处 -->
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
+        </profile>
+        <profile>
+            <id>rc</id><!--执行打包命令时将使用此处的id进行定位 -->
+            <properties>
+                <environment>rc</environment>
+            </properties>
         </profile>
         <profile>
             <id>test</id>
@@ -48,44 +53,41 @@
             <properties>
                 <environment>prod</environment>
             </properties>
-            <!--<activation>-->
-            <!--<activeByDefault>true</activeByDefault>&lt;!&ndash;此处将dev设置为默认环境 &ndash;&gt;-->
-            <!--</activation>-->
         </profile>
     </profiles>
 
     <dependencies>
-    	<dependency>
-		    <groupId>org.quartz-scheduler</groupId>
-		    <artifactId>quartz</artifactId>
-		    <version>2.2.1</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.quartz-scheduler</groupId>
-		    <artifactId>quartz-jobs</artifactId>
-		    <version>2.2.1</version>
-		</dependency>
-    
-    
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>2.2.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz-jobs</artifactId>
+            <version>2.2.1</version>
+        </dependency>
+
+
         <dependency>
             <groupId>com.irille</groupId>
             <artifactId>irille-base-plat</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        
-		<dependency>
-		    <groupId>org.glassfish</groupId>
-		    <artifactId>javax.el</artifactId>
-		    <version>3.0.1-b09</version>
-		</dependency>
-		        
-		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
-		<dependency>
-		    <groupId>org.hibernate</groupId>
-		    <artifactId>hibernate-validator</artifactId>
-		    <version>6.0.15.Final</version>
-		</dependency>
+
+        <!-- <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.el</artifactId>
+            <version>3.0.1-b09</version>
+        </dependency> -->
+
+        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.0.15.Final</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.tuckey/urlrewritefilter -->
         <dependency>
@@ -162,6 +164,11 @@
             <groupId>com.google.apis</groupId>
             <artifactId>google-api-services-analyticsreporting</artifactId>
             <version>v4-rev128-1.25.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.simplejavamail</groupId>
+            <artifactId>simple-java-mail</artifactId>
+            <version>5.1.3</version>
         </dependency>
 
     </dependencies>

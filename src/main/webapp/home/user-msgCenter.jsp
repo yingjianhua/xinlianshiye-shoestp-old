@@ -57,6 +57,7 @@
 <jsp:include page="v3/nav-nobody.jsp"
 ></jsp:include>
 <div id="shoesTp"  class=" w_1240 ">
+	<index-top></index-top>
 	<main class="main">
 		<div class="wide por clearfix flex-layout">
 			<!-- 左侧 My-Accoung 列表 -->
@@ -172,6 +173,7 @@
 						<el-collapse :value="(inquiryList[0] && inquiryList[0].relations && inquiryList[0].relations.length)?0:-1" v-if="inquiryList.length">
 							<el-collapse-item :name="inquiryIndex"
 											  v-for="(inquiry,inquiryIndex) in inquiryList"
+                                              v-if="(inquiry.type==1 || !inquiry.isDeleteInLocal )"
 											  :key="inquiry.pkey">
 								<!-- 询盘列表头部 -->
 								<template slot="title">
@@ -181,12 +183,12 @@
 										 :data-inquiry-index="inquiryIndex"
 										 v-if="inquiry.relations && inquiry.relations.length==0">
 										<img class="goods-pic" alt="goods's pic"
-											 :src="inquiry.images[0]?(image(inquiry.images[0]) + (inquiry.type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')):'/home/v3/static/images/no_img.png'">
+											 :src="(inquiry.images && inquiry.images[0])?(image(inquiry.images[0]) + (inquiry.type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')):'/home/v3/static/images/no_img.png'">
 										<div class="goods-info">
 											<div class="goods-name">
 												<div class="ellipsis_1">{{inquiry.title}}</div>
 											</div>
-											<div class="status">{{inquiry.type | optionsStatus2Text}}</div>
+											<div class="status" v-if="inquiry.type==1">{{inquiry.status | inquiryStatus2Text}}</div>
 										</div>
 										<transition name="el-fade-in">
 											<div class="my-btn-normal btn-view"
@@ -202,14 +204,14 @@
 										 @click="(inquiry.type==1 && isScale)?viewInquiryDetail($event):''"
 										 :data-inquiry-index="inquiryIndex">
 										<img class="goods-pic" alt="goods's pic"
-											 :src="inquiry.images[0]?(image(inquiry.images[0]) + (inquiry.type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')):'/home/v3/static/images/no_img.png'"
+											 :src="(inquiry.images && inquiry.images[0])?(image(inquiry.images[0]) + (inquiry.type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')):'/home/v3/static/images/no_img.png'"
 											 :data-inquiry-index="inquiryIndex">
 										<div class="goods-info"
 											 :data-inquiry-index="inquiryIndex">
 											<div class="goods-name">
 												<div class="ellipsis_1">{{inquiry.title}}</div>
 											</div>
-											<div class="status">{{inquiry.type | optionsStatus2Text}}</div>
+                                            <div class="status" v-if="inquiry.type==1">{{inquiry.status | inquiryStatus2Text}}</div>
 										</div>
 										<transition name="el-fade-in">
 											<div class="my-btn-normal btn-view"
@@ -232,7 +234,7 @@
 												 :data-supplier-index="relationsIndex"
 												 :data-inquiry-index="inquiryIndex"
 												 @click="isScale?contactSupplier($event):''">
-												{{relation.supplier.name[0]}}
+												{{relation.supplier && relation.supplier.name && relation.supplier.name[0]}}
 											</div>
 										</el-badge>
 
@@ -255,7 +257,7 @@
 														{{relation.quotation.title}}
 													</div>
 													<img class="goods-pic"
-														 :src="relation.quotation.images[0]?(image(relation.quotation.images[0].url)):'/home/v3/static/images/no_img.png'" alt="goods's pic">
+														 :src="(relation.quotation && relation.quotation.images && relation.quotation.images[0])?(image(relation.quotation.images[0].url)):'/home/v3/static/images/no_img.png'" alt="goods's pic">
 													<div class="goods-spec">
 														{{relation.quotation.minPrice}}-{{relation.quotation.maxPrice}} {{relation.quotation.currency.shortName}}
 													</div>
@@ -285,7 +287,7 @@
 														:data-quotation-pkey="relation.quotation.pkey"
 														:data-inquiry-index="inquiryIndex"
 														:data-relations-index="relationsIndex"
-														@click="closeQuotation">Delete</li>
+														@click="deleteInquiry">Delete</li>
 													<li class="operate-item"
 														:data-inquiry-index="inquiryIndex"
 														:data-relations-index="relationsIndex"
@@ -333,11 +335,11 @@
 								 v-if="supplierDetail.logo">
 							<div class="short-name" v-else
 								 :class="{isShowMore: isShowMore}">
-								{{supplierDetail.company[0]}}
+								{{supplierDetail.name && supplierDetail.name[0]}}
 							</div>
 
-							<div class="full-name" :class="{isShowMore: isShowMore}">
-								{{supplierDetail.company}}
+							<div class="full-name" :class="{isShowMore: isShowMore, ellipsis_5: isShowMore, ellipsis_1: !isShowMore}">
+								{{supplierDetail.name}}
 							</div>
 						</div>
 						<div class="grow"></div>
@@ -356,53 +358,51 @@
 									<!-- supplier信息 -->
 									<ul class="basic-info-wrap">
 										<li class="box-title">Basic information</li>
-										<li class="basic-item" v-if="supplierDetail.country">
+										<li class="basic-item">
 											<div class="label">Country / Region:</div>
 											<div class="content">
-												<img  alt="" class="pic-flag" :src="image(inquiryList[nowInquiryIndex].relations[nowSupplierIndex].supplier.country.flag)"
-													  v-if="inquiryList[nowInquiryIndex] &&
-														inquiryList[nowInquiryIndex].relations &&  inquiryList[nowInquiryIndex].relations[nowSupplierIndex] && inquiryList[nowInquiryIndex].relations[nowSupplierIndex].supplier && inquiryList[nowInquiryIndex].relations[nowSupplierIndex].supplier.country && inquiryList[nowInquiryIndex].relations[nowSupplierIndex].supplier.country.flag">
+												<img  alt="" class="pic-flag" :src="image(supplierDetail.countryFlag)">
 												{{supplierDetail.country}}
 											</div>
 										</li>
-										<li class="basic-item" v-if="supplierDetail.businessType">
+										<li class="basic-item">
 											<div class="label">Business type:</div>
 											<div class="content">{{supplierDetail.businessType}}</div>
 										</li>
-										<li class="basic-item" v-if="supplierDetail.yearEstablished">
+										<li class="basic-item">
 											<div class="label">Year established:</div>
 											<div class="content">
 												{{supplierDetail.yearEstablished | dataFormat('yyyy-MM-dd')}}
 											</div>
 										</li>
-										<li class="basic-item" v-if="supplierDetail.mainProducts">
-											<div class="label">Main products:</div>
-											<div class="content">{{supplierDetail.mainProducts}}</div>
-										</li>
-										<li class="basic-item" v-if="supplierDetail.location">
-											<div class="label">Location:</div>
-											<div class="content">{{supplierDetail.location}}</div>
-										</li>
-										<li class="basic-item" v-if="supplierDetail.employeeCount">
+										<%--<li class="basic-item" v-if="supplierDetail.mainProducts">--%>
+											<%--<div class="label">Main products:</div>--%>
+											<%--<div class="content">{{supplierDetail.mainProducts}}</div>--%>
+										<%--</li>--%>
+										<%--<li class="basic-item" v-if="supplierDetail.location">--%>
+											<%--<div class="label">Location:</div>--%>
+											<%--<div class="content">{{supplierDetail.location}}</div>--%>
+										<%--</li>--%>
+										<li class="basic-item">
 											<div class="label">EmployeeCount:</div>
 											<div class="content">{{supplierDetail.employeeCount}}</div>
 										</li>
-										<li class="basic-item" v-if="supplierDetail.annualRevenue">
-											<div class="label">Annual revenue:</div>
-											<div class="content">{{supplierDetail.annualRevenue}}</div>
+										<li class="basic-item">
+											<div class="label" style="width: 135px;">Annual export volume:</div>
+											<div class="content">11{{supplierDetail.annualRevenue}}</div>
 										</li>
-										<li class="basic-item" v-if="supplierDetail.mainMarket">
+										<li class="basic-item">
 											<div class="label">Main markets:</div>
 											<div class="content">{{supplierDetail.mainMarket}}</div>
 										</li>
-										<li class="basic-item" v-if="supplierDetail.transactionCount">
-											<div class="label">TransactionCount:</div>
-											<div class="content">{{supplierDetail.transactionCount}}</div>
-										</li>
-										<li class="basic-item" v-if="supplierDetail.transactionAmount">
-											<div class="label">Transaction amount:</div>
-											<div class="content">{{supplierDetail.transactionAmount}}</div>
-										</li>
+										<%--<li class="basic-item" v-if="supplierDetail.transactionCount">--%>
+											<%--<div class="label">TransactionCount:</div>--%>
+											<%--<div class="content">{{supplierDetail.transactionCount}}</div>--%>
+										<%--</li>--%>
+										<%--<li class="basic-item" v-if="supplierDetail.transactionAmount">--%>
+											<%--<div class="label">Transaction amount:</div>--%>
+											<%--<div class="content">{{supplierDetail.transactionAmount}}</div>--%>
+										<%--</li>--%>
 									</ul>
 									<!-- supplier信息 - end -->
 
@@ -411,8 +411,7 @@
 										<div class="box-title">Basic information</div>
 										<div class="row-item product-info-box">
 											<img class="product-pic" alt="product's pic"
-												 v-if="inquiryDetail.images"
-												 :src="image(inquiryDetail.images[0]) + (inquiryList[nowInquiryIndex].type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')">
+												 :src="(inquiryDetail.images && inquiryDetail.images[0]) ? (image(inquiryDetail.images[0]) + (inquiryList[nowInquiryIndex].type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')) : '/home/v3/static/images/no_img.png'">
 											<div class="product-descript">
 												{{inquiryDetail.title}}
 											</div>
@@ -436,6 +435,7 @@
 											<ul class="photos-list">
 												<li class="photo-item"
 													v-for="picUrl in inquiryDetail.images"
+													v-if="picUrl"
 													:key="picUrl">
 													<img class="product-pic" alt="product's pic"
 														 :src="image(picUrl) + (inquiryList[nowInquiryIndex].type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')">
@@ -451,56 +451,54 @@
 									<!-- 头像 -->
 									<div class="chater-header"></div>
 									<!-- supplier信息 -->
-									<ul class="basic-info-wrap">
-										<li class="box-title">Basic information</li>
-										<li class="basic-item" v-if="supplierDetail.country">
-											<div class="label">Country / Region:</div>
-											<div class="content">
-												<img  alt="" class="pic-flag" :src="image(inquiryList[nowInquiryIndex].relations[nowSupplierIndex].supplier.country.flag)"
-													  v-if="inquiryList[nowInquiryIndex] &&
-														inquiryList[nowInquiryIndex].relations && inquiryList[nowInquiryIndex].relations[nowSupplierIndex] && inquiryList[nowInquiryIndex].relations[nowSupplierIndex].supplier && inquiryList[nowInquiryIndex].relations[nowSupplierIndex].supplier.country && inquiryList[nowInquiryIndex].relations[nowSupplierIndex].supplier.country.flag">
-												{{supplierDetail.country}}
-											</div>
-										</li>
-										<li class="basic-item" v-if="supplierDetail.businessType">
-											<div class="label">Business type:</div>
-											<div class="content">{{supplierDetail.businessType}}</div>
-										</li>
-										<li class="basic-item" v-if="supplierDetail.yearEstablished">
-											<div class="label">Year established:</div>
-											<div class="content">
-												{{supplierDetail.yearEstablished | dataFormat('yyyy-MM-dd')}}
-											</div>
-										</li>
-										<li class="basic-item" v-if="supplierDetail.mainProducts">
-											<div class="label">Main products:</div>
-											<div class="content">{{supplierDetail.mainProducts}}</div>
-										</li>
-										<li class="basic-item" v-if="supplierDetail.location">
-											<div class="label">Location:</div>
-											<div class="content">{{supplierDetail.location}}</div>
-										</li>
-										<li class="basic-item" v-if="supplierDetail.employeeCount">
-											<div class="label">EmployeeCount:</div>
-											<div class="content">{{supplierDetail.employeeCount}}</div>
-										</li>
-										<li class="basic-item" v-if="supplierDetail.annualRevenue">
-											<div class="label">Annual revenue:</div>
-											<div class="content">{{supplierDetail.annualRevenue}}</div>
-										</li>
-										<li class="basic-item" v-if="supplierDetail.mainMarket">
-											<div class="label">Main markets:</div>
-											<div class="content">{{supplierDetail.mainMarket}}</div>
-										</li>
-										<li class="basic-item" v-if="supplierDetail.transactionCount">
-											<div class="label">TransactionCount:</div>
-											<div class="content">{{supplierDetail.transactionCount}}</div>
-										</li>
-										<li class="basic-item" v-if="supplierDetail.transactionAmount">
-											<div class="label">Transaction amount:</div>
-											<div class="content">{{supplierDetail.transactionAmount}}</div>
-										</li>
-									</ul>
+                                    <ul class="basic-info-wrap">
+                                        <li class="box-title">Basic information</li>
+                                        <li class="basic-item">
+                                            <div class="label">Country / Region:</div>
+                                            <div class="content">
+                                                <img  alt="" class="pic-flag" :src="image(supplierDetail.countryFlag)">
+                                                {{supplierDetail.country}}
+                                            </div>
+                                        </li>
+                                        <li class="basic-item">
+                                            <div class="label">Business type:</div>
+                                            <div class="content">{{supplierDetail.businessType}}</div>
+                                        </li>
+                                        <li class="basic-item">
+                                            <div class="label">Year established:</div>
+                                            <div class="content">
+                                                {{supplierDetail.yearEstablished | dataFormat('yyyy-MM-dd')}}
+                                            </div>
+                                        </li>
+                                        <%--<li class="basic-item" v-if="supplierDetail.mainProducts">--%>
+                                        <%--<div class="label">Main products:</div>--%>
+                                        <%--<div class="content">{{supplierDetail.mainProducts}}</div>--%>
+                                        <%--</li>--%>
+                                        <%--<li class="basic-item" v-if="supplierDetail.location">--%>
+                                        <%--<div class="label">Location:</div>--%>
+                                        <%--<div class="content">{{supplierDetail.location}}</div>--%>
+                                        <%--</li>--%>
+                                        <li class="basic-item">
+                                            <div class="label">EmployeeCount:</div>
+                                            <div class="content">{{supplierDetail.employeeCount}}</div>
+                                        </li>
+                                        <li class="basic-item">
+                                            <div class="label" style="width: 135px;">Annual export volume:</div>
+                                            <div class="content">11{{supplierDetail.annualRevenue}}</div>
+                                        </li>
+                                        <li class="basic-item">
+                                            <div class="label">Main markets:</div>
+                                            <div class="content">{{supplierDetail.mainMarket}}</div>
+                                        </li>
+                                        <%--<li class="basic-item" v-if="supplierDetail.transactionCount">--%>
+                                        <%--<div class="label">TransactionCount:</div>--%>
+                                        <%--<div class="content">{{supplierDetail.transactionCount}}</div>--%>
+                                        <%--</li>--%>
+                                        <%--<li class="basic-item" v-if="supplierDetail.transactionAmount">--%>
+                                        <%--<div class="label">Transaction amount:</div>--%>
+                                        <%--<div class="content">{{supplierDetail.transactionAmount}}</div>--%>
+                                        <%--</li>--%>
+                                    </ul>
 									<!-- supplier信息 - end -->
 
 									<!-- RFQ基础信息 -->
@@ -524,6 +522,7 @@
 												<div class="content">
 													<img class="product-pic"  alt=""
 														 :src="image(imgUrl)"
+														 v-if="imgUrl"
 														 v-for="imgUrl in inquiryDetail.images"
 														 :key="imgUrl">
 												</div>
@@ -579,56 +578,54 @@
 									<!-- 头像 -->
 									<div class="chater-header"></div>
 									<!-- supplier信息 -->
-									<ul class="basic-info-wrap">
-										<li class="box-title">Basic information</li>
-										<li class="basic-item" v-if="supplierDetail.country">
-											<div class="label">Country / Region:</div>
-											<div class="content">
-												<img  alt="" class="pic-flag" :src="image(inquiryList[nowInquiryIndex].relations[nowSupplierIndex].supplier.country.flag)"
-													  v-if="inquiryList[nowInquiryIndex] &&
-														inquiryList[nowInquiryIndex].relations &&  inquiryList[nowInquiryIndex].relations[nowSupplierIndex] && inquiryList[nowInquiryIndex].relations[nowSupplierIndex].supplier && inquiryList[nowInquiryIndex].relations[nowSupplierIndex].supplier.country && inquiryList[nowInquiryIndex].relations[nowSupplierIndex].supplier.country.flag">
-												{{supplierDetail.country}}
-											</div>
-										</li>
-										<li class="basic-item" v-if="supplierDetail.businessType">
-											<div class="label">Business type:</div>
-											<div class="content">{{supplierDetail.businessType}}</div>
-										</li>
-										<li class="basic-item" v-if="supplierDetail.yearEstablished">
-											<div class="label">Year established:</div>
-											<div class="content">
-												{{supplierDetail.yearEstablished | dataFormat('yyyy-MM-dd')}}
-											</div>
-										</li>
-										<li class="basic-item" v-if="supplierDetail.mainProducts">
-											<div class="label">Main products:</div>
-											<div class="content">{{supplierDetail.mainProducts}}</div>
-										</li>
-										<li class="basic-item" v-if="supplierDetail.location">
-											<div class="label">Location:</div>
-											<div class="content">{{supplierDetail.location}}</div>
-										</li>
-										<li class="basic-item" v-if="supplierDetail.employeeCount">
-											<div class="label">EmployeeCount:</div>
-											<div class="content">{{supplierDetail.employeeCount}}</div>
-										</li>
-										<li class="basic-item" v-if="supplierDetail.annualRevenue">
-											<div class="label">Annual revenue:</div>
-											<div class="content">{{supplierDetail.annualRevenue}}</div>
-										</li>
-										<li class="basic-item" v-if="supplierDetail.mainMarket">
-											<div class="label">Main markets:</div>
-											<div class="content">{{supplierDetail.mainMarket}}</div>
-										</li>
-										<li class="basic-item" v-if="supplierDetail.transactionCount">
-											<div class="label">TransactionCount:</div>
-											<div class="content">{{supplierDetail.transactionCount}}</div>
-										</li>
-										<li class="basic-item" v-if="supplierDetail.transactionAmount">
-											<div class="label">Transaction amount:</div>
-											<div class="content">{{supplierDetail.transactionAmount}}</div>
-										</li>
-									</ul>
+                                    <ul class="basic-info-wrap">
+                                        <li class="box-title">Basic information</li>
+                                        <li class="basic-item">
+                                            <div class="label">Country / Region:</div>
+                                            <div class="content">
+                                                <img  alt="" class="pic-flag" :src="image(supplierDetail.countryFlag)">
+                                                {{supplierDetail.country}}
+                                            </div>
+                                        </li>
+                                        <li class="basic-item">
+                                            <div class="label">Business type:</div>
+                                            <div class="content">{{supplierDetail.businessType}}</div>
+                                        </li>
+                                        <li class="basic-item">
+                                            <div class="label">Year established:</div>
+                                            <div class="content">
+                                                {{supplierDetail.yearEstablished | dataFormat('yyyy-MM-dd')}}
+                                            </div>
+                                        </li>
+                                        <%--<li class="basic-item" v-if="supplierDetail.mainProducts">--%>
+                                        <%--<div class="label">Main products:</div>--%>
+                                        <%--<div class="content">{{supplierDetail.mainProducts}}</div>--%>
+                                        <%--</li>--%>
+                                        <%--<li class="basic-item" v-if="supplierDetail.location">--%>
+                                        <%--<div class="label">Location:</div>--%>
+                                        <%--<div class="content">{{supplierDetail.location}}</div>--%>
+                                        <%--</li>--%>
+                                        <li class="basic-item">
+                                            <div class="label">EmployeeCount:</div>
+                                            <div class="content">{{supplierDetail.employeeCount}}</div>
+                                        </li>
+                                        <li class="basic-item">
+                                            <div class="label" style="width: 135px;">Annual export volume:</div>
+                                            <div class="content">11{{supplierDetail.annualRevenue}}</div>
+                                        </li>
+                                        <li class="basic-item">
+                                            <div class="label">Main markets:</div>
+                                            <div class="content">{{supplierDetail.mainMarket}}</div>
+                                        </li>
+                                        <%--<li class="basic-item" v-if="supplierDetail.transactionCount">--%>
+                                        <%--<div class="label">TransactionCount:</div>--%>
+                                        <%--<div class="content">{{supplierDetail.transactionCount}}</div>--%>
+                                        <%--</li>--%>
+                                        <%--<li class="basic-item" v-if="supplierDetail.transactionAmount">--%>
+                                        <%--<div class="label">Transaction amount:</div>--%>
+                                        <%--<div class="content">{{supplierDetail.transactionAmount}}</div>--%>
+                                        <%--</li>--%>
+                                    </ul>
 									<!-- supplier信息 - end -->
 
 									<!-- 商家询盘 基础信息 -->
@@ -676,6 +673,7 @@
 										<ul class="goods-pic-wrap" v-if="inquiryDetail.images && inquiryDetail.images.length">
 											<li class="goods-pic-item"
 												v-for="picUrl in inquiryDetail.images"
+												v-if="picUrl"
 												:key="picUrl">
 												<img class="product-pic" :src="image(picUrl)" alt="">
 											</li>
@@ -697,7 +695,7 @@
 												<li class="goods-pic-item"
 													v-for="product in inquiryDetail.productRequest"
 													:key="product.image">
-													<img class="product-pic" :src="product.image?(image(product.image.split(',')[0])):'/home/v3/static/images/no_img.png'" alt="">
+													<img class="product-pic" :src="(product.image && product.image.split(',') && product.image.split(',')[0])?(image(product.image.split(',')[0])):'/home/v3/static/images/no_img.png'" alt="">
 													<div class="goods-name ellipsis_1">
 														{{product.name}}
 													</div>
@@ -742,15 +740,14 @@
 							<div class="chat-content" ref="chatContent">
 								<!-- 聊天框顶部supplier信息 -->
 								<div @click="loadMoreChatInfo"
-									 v-if="!isChatMsgListLoadOver"
+									 v-if="!isChatMsgListLoadOver && chatMsgList.length > 0"
 									 style="text-align: center;position: relative;top: -12px;">
 									<span style="color: #66b1ff;cursor: pointer;">Load more</span>
 								</div>
 								<div class="chater-info">
 									LOCATION：
-									<img  alt="" class="pic-flag" :src="image(inquiryList[nowInquiryIndex].relations[nowSupplierIndex].supplier.country.flag)"
-										  v-if="inquiryList[nowInquiryIndex] &&
-											inquiryList[nowInquiryIndex].relations && inquiryList[nowInquiryIndex].relations[nowSupplierIndex] && inquiryList[nowInquiryIndex].relations[nowSupplierIndex].supplier && inquiryList[nowInquiryIndex].relations[nowSupplierIndex].supplier.country && inquiryList[nowInquiryIndex].relations[nowSupplierIndex].supplier.country.flag">
+									<img  alt="" class="pic-flag" :src="image(supplierDetail.countryFlag)"
+										  v-if="supplierDetail.countryFlag">
 									{{supplierDetail.location}}
 									<!-- IP:115.218.107.* -->
 									<div>Message only sent to you</div>
@@ -761,20 +758,26 @@
 										v-for="(msg,i) in chatMsgList"
 										:key="msg.sendTime">
 										<!-- 有头像显示头像，没有头像显示首字母 -->
-										<template v-if="msg.p2S">
+										<template v-if="!msg.p2S">
 											<img class="pic-head"
 												 v-if="chatMsgObj.another.avatar"
 												 :src="image(chatMsgObj.another.avatar)">
-											<div class="pic-head" v-else>
+											<div class="pic-head" v-else-if="chatMsgObj.another.name">
 												{{chatMsgObj.another.name[0]}}
+											</div>
+											<div class="pic-head" v-else>
+												H
 											</div>
 										</template>
 										<template v-else>
 											<img class="pic-head"
 												 v-if="chatMsgObj.myself.avatar"
 												 :src="image(chatMsgObj.myself.avatar)">
-											<div class="pic-head" v-else>
+											<div class="pic-head" v-else-if="chatMsgObj.myself.name">
 												{{chatMsgObj.myself.name[0]}}
+											</div>
+											<div class="pic-head" v-else>
+												M
 											</div>
 										</template>
 
@@ -790,7 +793,7 @@
 												<el-badge is-dot :hidden="!(!msg.p2S && !msg.hadRead) || isAllRead">
 													<div class="content-msg"
 														 :class="{showAlert:msg.type==4 && !msg.personalShow.validDate}"
-														 @click="(msg.type==4 && !msg.personalShow.validDate)?alertPersonalShowTime(msg.personalShow.linkUrl):''"
+														 @click="(msg.type==4 && !msg.personalShow.validDate)?alertPersonalShowTime(msg.personalShow.linkUrl,msg.personalShow):''"
 														 v-html="msg.content">
 													</div>
 												</el-badge>
@@ -833,7 +836,7 @@
 					<div class="inquiry-overview">
 						<img class="inquiry-main-pic" alt=""
 							 v-if="inquiryDetail.images"
-							 :src="inquiryDetail.images[0]?(image(inquiryDetail.images[0])):'/home/v3/static/images/no_img.png'">
+							 :src="(inquiryDetail.images && inquiryDetail.images[0])?(image(inquiryDetail.images[0])):'/home/v3/static/images/no_img.png'">
 						<div class="content-box-wrap">
 							<div class="content-box1">
 								<div class="content-box">
@@ -868,7 +871,7 @@
 									</el-button>
 									<el-button size="mini"
 											   :disabled="inquiryDetail.status == 4"
-											   @click="closeInquiry">Close</el-button>
+											   @click="closeRFQ">Close</el-button>
 								</div>
 							</div>
 
@@ -882,10 +885,13 @@
 							<div class="content-box" v-if="inquiryDetail.images && inquiryDetail.images.length > 0">
 								<h3 class="content-header">Attach files:</h3>
 								<ul class="content attach-file-list">
-									<li class="attach-file-item" v-for="picUrl in inquiryDetail.images">
-										<img :src="image(picUrl)" alt="product's pic" class="inquiry-pic">
+									<li class="attach-file-item" v-for="picUrl in inquiryDetail.images" v-if="picUrl">
+										<img v-if="isImg(picUrl)" :src="image(picUrl)" alt="product's pic" class="inquiry-pic">
 										<!-- <p class="ellipsis_1">goods thiods things</p> -->
 									</li>
+									<%--<li class="attach-file-item" v-for="picUrl in inquiryDetail.images" v-if="picUrl">--%>
+										<%--<a href="">else</a>--%>
+									<%--</li>--%>
 								</ul>
 							</div>
 						</div>
@@ -974,11 +980,16 @@
 									</li>
 									<li class="item" v-if="quotationDetail.throwaways && quotationDetail.throwaways.length">
 										<div class="title">Company product book:</div>
-										<div class="text">
-
-											<img class="company-book-item"  alt="product's book"
-												 :src="image(productBook.url)"
-												 v-for="productBook in quotationDetail.throwaways">
+										<div class="text books">
+											<template
+												v-for="productBook in quotationDetail.throwaways">
+												<img class="company-book-item"  alt="product's book"
+													 v-if="isImg(productBook.url)"
+													 :src="image(productBook.url)">
+												<div v-else>
+													<a :href="image(productBook.url)" class="book-link">《{{productBook.name}}》</a>
+												</div>
+											</template>
 										</div>
 									</li>
 								</ul>
@@ -1021,7 +1032,7 @@
 			    ]"
 			>
 				<el-input type="textarea" resize="none"
-						  v-model="addInformationForm.information">
+						  v-model.trim="addInformationForm.information">
 				</el-input>
 				<div class="font-num">{{addInformationForm.information.length || 0}}/100</div>
 			</el-form-item>
@@ -1029,6 +1040,7 @@
 			<el-form-item label="Valid to " >
 				<el-date-picker type="date" placeholder="Select the end date"
 								style="width: 100%;"
+								value-format="yyyy-MM-dd HH:mm:ss"
 								v-model="addInformationForm.validDate"
 								:picker-options="validDatePickerOptions">
 				</el-date-picker>
@@ -1102,7 +1114,7 @@
 					v-for="goods in addProductGoodsListObj.items"
 					:data-product-id="goods.pdtId"
 					@click="selectAddProductGoods">
-					<img class="goods-pic" :src="image(goods.picture.split(',')[0])" alt="goods's pic">
+					<img class="goods-pic" :src="(goods.picture && goods.picture.split(',') && goods.picture.split(',')[0])?image(goods.picture.split(',')[0]):'/home/v3/static/images/no_img.png'" alt="goods's pic">
 					<div class="goods-name ellipsis_1">
 						{{goods.pdtName}}
 					</div>
@@ -1146,6 +1158,7 @@
 	<!-- 修改弹框 - end -->
 
 </div>
+<script src="/home/v3/static/js/index-top.js"></script>
 <script src="/home/v3/static/js/index-bottom.js"></script>
 <div id="bottom" style="margin-top: 25px">
 	<index-bottom></index-bottom>
@@ -1183,6 +1196,10 @@
 			// 列表选择 - 及详情
 			nowInquiryIndex: 0, //当前显示询盘信息是哪一个
 			nowSupplierIndex: 0, //当前显示对话框供应商所在下标 - sendMsg用
+			consultPkey: 0,  //跟上面俩个下标相关，对应的值 - inquiryList[this.nowInquiryIndex].pkey
+			supplierPkey: 0, //跟上面俩个下标相关，对应的值 - supplier.pkey
+			relationPkey: 0, //跟上面俩个下标相关，对应的值 - quotation.pkey,
+
 			inquiryDetail: {},  //当前 view 显示询盘信息详情
 			supplierDetail: {},  //当前 view 显示供应商信息详情
 			quotationDetailList: [],  //当前 view 显示询盘信息页面下的 报价详情
@@ -1222,13 +1239,16 @@
 			chatMsgList: [], //聊天信息
 
 			chatMsgListPageStart: 0, //聊天信息列表 分页
-			chatMsgListPageLimit: 10, //聊天信息列表 分页
+			chatMsgListPagePrePkey: null, //聊天信息列表 分页 - 防止信息重复获取 - load more
+            chatMsgListPageNextPkey: null, //聊天信息列表 分页 - 防止信息重复获取 - 发消息时获取最新消息
+			chatMsgListPageLimit: 20, //聊天信息列表 分页
 			isChatMsgListLoading: false, //聊天信息列表 加载开关
 			isChatMsgListLoadOver: false, //聊天信息列表 是否已加载完全
 
 			isAllRead: false,  //信息是否已读
 			sendMsgValue: "", //发送的内容
 
+			isFromContactList: false, //显示联系人 聊天框（从联系人列表跳转过来时为true）
 			testObj:{
 				status
 			}
@@ -1236,6 +1256,24 @@
 		mounted() {
 			// 获取询盘列表
 			this.getInquiryList();
+
+			// 从联系人那边跳转过来时，显示聊天框
+			if(this.GetQueryString("supplierPkey") && this.GetQueryString("consultPkey") && this.GetQueryString("relationPkey") ){
+				this.isFromContactList = true;
+				this.isScale = true;
+				this.showChatBox = true;
+
+				this.supplierPkey = this.GetQueryString("supplierPkey");
+				this.consultPkey = this.GetQueryString("consultPkey");
+				this.relationPkey = this.GetQueryString("relationPkey");
+
+				//获取chat列表
+				this.getChatInfo();
+				//获取询盘详情
+				this.getInquiryDetail();
+				//获取功能供应商详情
+				this.getSupplierDetail();
+			}
 		},
 		methods: {
 			image(v, params) {
@@ -1247,6 +1285,38 @@
 				}
 				return "https://image.shoestp.com" + v + params
 			},
+
+			// 读取链接带参
+			GetQueryString(name){
+				var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if(r!=null)return  unescape(r[2]); return null;
+			},
+
+			// 时间戳转换时间
+			dataFormatMethod: function (value, fmt) {
+				if( !value ) return;
+				let getDate = new Date(value);
+				let o = {
+					'M+': getDate.getMonth() + 1,
+					'd+': getDate.getDate(),
+					'h+': getDate.getHours(),
+					'm+': getDate.getMinutes(),
+					's+': getDate.getSeconds(),
+					'q+': Math.floor((getDate.getMonth() + 3) / 3),
+					'S': getDate.getMilliseconds()
+				};
+				if (/(y+)/.test(fmt)) {
+					fmt = fmt.replace(RegExp.$1, (getDate.getFullYear() + '').substr(4 - RegExp.$1.length))
+				}
+				for (let k in o) {
+					if (new RegExp('(' + k + ')').test(fmt)) {
+						fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
+					}
+				}
+				return fmt;
+			},
+
 			// 大小缩小事件
 			scale(){
 				this.isScale=!this.isScale
@@ -1318,6 +1388,9 @@
 					this.$message.error(res.data.msg);
 					return
 				};
+
+				this.inquiryList.push(...res.data.result.items);
+
 				// 加载至最后一页
 				if (res.data.result.items.length < this.inquiryLisPageLimit) {
 					this.isInquiryLoadOver = true;
@@ -1327,14 +1400,12 @@
                         this.scrollLoadMore("#inquiry-collapse-list",this.loadMoreInquiryList)
                     });
                 }
-				this.inquiryList.push(...res.data.result.items);
+
+				// 从联系人那边跳转过来时，显示对应的聊天框，而不用显示第一个
+				if(this.isFromContactList) return;
 
 				//为了功能-搜索后显示第一个
 				if(isShowFirstOne){
-				    // 没有数据时显示占位图
-				    if(!res.data.result.items || res.data.result.items.length==0){
-
-                    }
 				    // RFQ时显示询盘详情
 				    if(res.data.result.items[0].type==1){
                         this.showChatBox = false;
@@ -1377,6 +1448,12 @@
 				// this.showRFQDeailBox = false;
 				this.nowInquiryIndex = 0;
 				this.nowSupplierIndex = 0;
+				//以下4个为 从联系人列表跳转过来时使用
+				this.supplierPkey = 0;
+				this.consultPkey = 0;
+				this.relationPkey = 0;
+				this.isFromContactList = false;
+
 				this.quotationDetailList = [];
 				this.quotationDetailListIndex = 0;
 
@@ -1436,6 +1513,7 @@
 				this.isScale = true;
 				this.showChatBox = false;
 				this.showRFQDeailBox = true;
+				this.isFromContactList = false; //从联系人列表跳转过来时的值
 				// 获取当前点击的inquiry下标
 				this.nowInquiryIndex = inquiryIndex;
 				//获取询盘详情
@@ -1448,9 +1526,13 @@
 
 			//获取询盘详情
 			getInquiryDetail(){
+				//先清空之前的数据
+				this.inquiryDetail={};
+				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
+				this.consultPkey = this.isFromContactList?this.consultPkey:this.inquiryList[this.nowInquiryIndex].pkey;
 				axios.get('/home/rfq_RFQConsult_detail', {
 					params:{
-						consultPkey: this.inquiryList[this.nowInquiryIndex].pkey,
+						consultPkey: this.consultPkey,
 					}
 				})
 						.then((res) => {
@@ -1459,7 +1541,7 @@
 					return
 				};
 				this.inquiryDetail = res.data.result;
-				this.addInformationForm.validDate =  res.data.result.valieDate;
+				this.addInformationForm.validDate = this.dataFormatMethod(res.data.result.valieDate,"yyyy-MM-dd hh:mm:ss");
 
 				// 获取已add的商品id集合
 				if(res.data.result.productRequest && res.data.result.productRequest.length){
@@ -1476,12 +1558,34 @@
 			});
 			},
 
+			// 判断传回来的数据是否是图片
+			isImg(addrUrl){
+				// 获取地址后缀
+				let imgSuffix = addrUrl.substring(addrUrl.lastIndexOf(".") + 1, addrUrl.length);
+				// 图片后缀数组 - 判断后缀是否在该数组内
+				let imgSuffixArr = ["BMP","JPG","JPEG","PNG","GIF"];
+
+				if(imgSuffix){
+					imgSuffix = imgSuffix.toUpperCase();
+					if( imgSuffixArr.indexOf(imgSuffix) != -1 ){
+						return true
+					}
+					return false;
+				}
+				return false;
+			},
+
 			//获取功能供应商详情
 			getSupplierDetail(){
 				console.log("getSupplierDetail")
+				//先清空之前的数据
+				this.supplierDetail={};
+
+				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
+				this.supplierPkey = this.isFromContactList?this.supplierPkey:this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].supplier.pkey;
 				axios.get('/home/usr_UsrSupplier_getDetail', {
 					params:{
-						supplierPkey: this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].supplier.pkey,
+						supplierPkey: this.supplierPkey,
 					}
 				})
 						.then((res) => {
@@ -1507,9 +1611,10 @@
 					this.$message.error(res.msg);
 					return
 				};
-
+				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
+				this.consultPkey = this.isFromContactList?this.consultPkey:this.inquiryList[this.nowInquiryIndex].pkey;
 				axios.post('/home/rfq_RFQConsult_addImage', Qs.stringify({
-					consultPkey: this.inquiryList[this.nowInquiryIndex].pkey,
+					consultPkey: this.consultPkey,
 					images: res.result.url,
 				}))
 						.then((res) => {
@@ -1572,7 +1677,7 @@
 			cancelEditAddInformationDialog (){
 				this.isEditAddInformationDialogShow = false;
 				this.addInformationForm.information = "";
-				this.addInformationForm.validDate = "";
+				// this.addInformationForm.validDate = "";
 			},
 
 			//确认修改 - 添加额外信息
@@ -1594,9 +1699,17 @@
 							type: 'success'
 						});
 						this.isEditAddInformationDialogShow = false;
+						this.addInformationForm.information = "";
 						// 重新获取询盘列表
-						this.resetInquiryOptions();
-						this.getInquiryList();
+						// this.resetInquiryOptions();
+						// this.getInquiryList();
+
+						//获取询盘详情
+						this.getInquiryDetail();
+						//获取报价详情 - 第一个
+						this.quotationDetailList=[];
+						this.quotationDetailListIndex=0;
+						this.getQuotationDetail();
 					})
 					.catch((error) => {
 							this.isEditAddInformationDialogShow = false;
@@ -1609,8 +1722,8 @@
 			});
 			},
 
-			//关闭询盘
-			closeInquiry(e){
+			//关闭RFQ
+			closeRFQ(e){
 				this.$confirm('Are you sure to close the inquiry?', 'tip', {
 					confirmButtonText: 'sure',
 					cancelButtonText: 'cancel',
@@ -1630,9 +1743,12 @@
 					message: 'Close inquiry success',
 					type: 'success'
 				});
-				// // 重新获取询盘列表
-				// window.location.reload()
+				//获取询盘详情
 				this.getInquiryDetail();
+				//获取报价详情 - 第一个
+				this.quotationDetailList=[];
+				this.quotationDetailListIndex=0;
+				this.getQuotationDetail();
 			})
 			.catch((error) => {
 					console.log(error);
@@ -1643,8 +1759,8 @@
 			});
 			},
 
-			//关闭报价
-			closeQuotation(e){
+			//删除询盘
+			deleteInquiry(e){
 				var inquiryIndex = e.currentTarget.dataset.inquiryIndex;
 				var relationsIndex = e.currentTarget.dataset.relationsIndex;
 				var quotationPkey = e.currentTarget.dataset.quotationPkey;
@@ -1664,14 +1780,20 @@
 				});
 
 				// 重新获取询盘列表
-				this.resetInquiryOptions();
-				this.getInquiryList();
+				// this.resetInquiryOptions();
+				// this.getInquiryList();
+
+				//如果出错，下面代码先注释吧
 				// 本地显示时 静态删除 - 不请求后台刷新
-				// this.$set(this.inquiryList[inquiryIndex].relations[relationsIndex],"isDeleteInLocal",true)
-				// if(this.nowInquiryIndex==inquiryIndex && this.nowSupplierIndex==relationsIndex){
-				// 	this.nowSupplierIndex = -1;
-				// 	this.showChatBox = false;
-				// }
+                //如果删除的是当前对话框or当前显示的RFQ详情，delete后刷新页面
+                if(this.nowInquiryIndex == inquiryIndex && this.nowSupplierIndex == relationsIndex){
+                    this.resetInquiryOptions();
+                    this.getInquiryList();
+                // 否则本地显示时 静态删除 - 不请求后台刷新
+                }else{
+                    this.$set(this.inquiryList[inquiryIndex].relations[relationsIndex],"isDeleteInLocal",true);
+                    this.$set(this.inquiryList[inquiryIndex],"isDeleteInLocal",true);
+                }
 			})
 			.catch((error) => {
 					console.log(error);
@@ -1713,14 +1835,21 @@
 			contactSupplier(e){
 				console.log("contactSupplier")
 				// 显示顶部show more信息
-				this.timeoutTimer = setTimeout(()=>{
-					this.isShowMore = true;
 				clearTimeout(this.timeoutTimer);
-			}, this.showChatBox?200:1000)
+				this.timeoutTimer = setTimeout(()=>{
+					// 聊天信息大于8条时，不再自动显示show more
+					if( this.chatMsgList.length < 8 ){
+						this.isShowMore = true;
+					}else{
+						this.isAllRead = true;
+					}
+					clearTimeout(this.timeoutTimer);
+				}, this.showChatBox?200:1000)
 
 				this.isScale = true;
 				this.showChatBox = true;
 				this.showRFQDeailBox = false;
+				this.isFromContactList = false; //从联系人列表跳转过来时的值
 
 				var dataset = e.currentTarget.dataset;
 				var inquiryId = dataset.inquiryId;
@@ -1753,13 +1882,15 @@
 
 			// 获取add product商品列表
 			getAddProductList(){
-				axios.get('/testHome/pdt_PdtProduct_gtProductsIndexListAjax', {
+				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
+				this.supplierPkey = this.isFromContactList?this.supplierPkey:this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].supplier.pkey;
+				axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax', {
 					params: {
 						v: 3,
 						lose: this.addProductCatogeryValue?1:0,
 						cate: this.addProductCatogeryValue,
 						pName: this.addProductKeyword,
-						supplier: this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].supplier.pkey,
+						supplier: this.supplierPkey,
 						// IsO2o: 1,
 						start: this.addProductPageStart,
 						limit: this.addProductPageLimit
@@ -1818,9 +1949,11 @@
 			//确认选中add product商品
 			confirmAddProduct(e){
 				console.log(this.addProductSelectedPdtIds)
+				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
+				this.consultPkey = this.isFromContactList?this.consultPkey:this.inquiryList[this.nowInquiryIndex].pkey;
 				axios.post('/home/rfq_RFQConsult_addProductRequest', Qs.stringify({
 					products: this.addProductSelectedPdtIds.join(),
-					consultPkey: this.inquiryList[this.nowInquiryIndex].pkey
+					consultPkey: this.consultPkey
 				}))
 						.then((res) => {
 					if (res.data.ret != 1) {
@@ -1867,23 +2000,33 @@
 			},
 
 			//获取询盘留言列表 - 对话框信息
-			getChatInfo(){
+			//参数为 searchMore：搜索上一页，从preMessagePkey开始查询
+			//       searchLast：发消息时，获取最新消息，从nextMessagePkey开始查询
+			getChatInfo({searchMore=false,searchLast=false}={}){
+			    console.log("searchLast is")
+			    console.log(searchLast)
+			    console.log(this.chatMsgListPageNextPkey)
 				this.isAllRead = false;
-				if(this.chatMsgList){
-					this.chatMsgList.forEach((msg,index)=>{
-						if(msg.type==4){
-						clearInterval( msg.personalShow.timer );
-					}
-				})
-				}
-
+			    // 私人展厅倒计时取消 - 获取信息后重置
+				// if(this.chatMsgList && (!searchMore && !searchLast)){
+				// 	this.chatMsgList.forEach((msg,index)=>{
+				// 		if(msg.type==4){
+				// 		clearInterval( msg.personalShow.timer );
+				// 	}
+				// })
+				// }
 				this.isChatMsgListLoading = true;
+
+				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
+				this.relationPkey = this.isFromContactList?this.relationPkey:this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].quotation.pkey;
 
 				axios.get('/home/rfq_RFQConsult_pageMsgs', {
 					params:{
-						start: this.chatMsgListPageStart,
+						start: 0,
+                        preMessagePkey:  searchMore?this.chatMsgListPagePrePkey:null,
+                        nextMessagePkey: searchLast?this.chatMsgListPageNextPkey:null,
 						limit: this.chatMsgListPageLimit,
-						relationPkey: this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].quotation.pkey,
+						relationPkey: this.relationPkey,
 					}
 				})
 						.then((res) => {
@@ -1893,10 +2036,27 @@
 					this.$message.error(res.data.msg);
 					return
 				};
-
-				if (res.data.result.msgs.length < this.chatMsgListPageLimit) {
+				// 是否全部加载完毕 - 不以加载最新消息为判断
+				if (!searchLast && (res.data.result.msgs.length < this.chatMsgListPageLimit)) {
 					this.isChatMsgListLoadOver = true;
 				};
+
+                console.log("msgs is")
+                console.log(res.data.result.msgs)
+                console.log(searchLast)
+				// 保存最后一个 prePkey，用以load more
+                if(!searchLast){
+                    this.chatMsgListPagePrePkey = res.data.result.msgs[res.data.result.msgs.length - 1].pkey || null;
+                }
+                // 保存最新一个 nextPkey，用以发送消息时获取最新代码
+				if(!searchMore){
+                    console.log("searchLast is true")
+                    this.chatMsgListPageNextPkey = res.data.result.msgs[0].pkey || null;
+                }
+				console.log('chatMsgListPagePrePkey is:');
+				console.log(this.chatMsgListPagePrePkey);
+                console.log('chatMsgListPageNextPkey is:');
+                console.log(this.chatMsgListPageNextPkey);
 
 				let chatMsgList = res.data.result.msgs;
 				// this.chatMsgList.push(...res.data.result.msgs);
@@ -1926,15 +2086,27 @@
 					}
 				}
 			})
-				this.chatMsgList.push(...chatMsgList);
+                // 发消息时会获取最新消息 - 信息加载在前面
+                if(searchLast){
+                    this.chatMsgList.unshift(...chatMsgList);
+                // 其余全部加载信息到后面
+                }else{
+                    this.chatMsgList.push(...chatMsgList);
+                }
+
 				// 第一次加载时取双方的name信息
 				// 第一次加载时滚动置底 - 之后加载more时不滚动置底
-				if(this.chatMsgListPageStart==0){
-					this.chatMsgObj = res.data.result;
+                // 搜索最新消息后 - 发送消息后，页面显示最下面
+				if(this.chatMsgListPageStart==0 || searchLast){
+				this.chatMsgObj = res.data.result;
 					// 下拉置底
 					this.$nextTick(()=>{
 						var scrollHeight = this.$refs.chatContent.scrollHeight;
-					this.$refs.chatContentScroll.wrap.scrollTop = scrollHeight;
+						this.$refs.chatContentScroll.wrap.scrollTop = scrollHeight;
+					})
+				}else{
+					this.$nextTick(()=>{
+						this.$refs.chatContentScroll.wrap.scrollTop = chatMsgList.length * 91;
 				})
 				}
 				this.sendMsgValue = "";
@@ -1950,12 +2122,22 @@
 			loadMoreChatInfo(){
 				if(this.isChatMsgListLoading || this.isChatMsgListLoadOver) return;
 				this.chatMsgListPageStart += this.chatMsgListPageLimit;
-				this.getChatInfo();
+				this.getChatInfo({searchMore:true});
 			},
 
 			//reset 聊天信息
 			resetChatMsg(){
 				this.chatMsgListPageStart = 0;
+				this.chatMsgListPagePrePkey = null;
+				this.chatMsgListPageNextPkey = null;
+                // 私人展厅倒计时取消 - 获取信息后重置
+                if(this.chatMsgList){
+                    this.chatMsgList.forEach((msg,index)=>{
+                        if(msg.type==4){
+                            clearInterval( msg.personalShow.timer );
+                        }
+                    })
+                }
 				this.chatMsgList = [];
 				this.chatMsgObj = {};
 				this.isChatMsgListLoading = false;
@@ -1967,6 +2149,10 @@
 				maxtime = maxtime/1000;
 				clearInterval( timeObj.timer );
 
+				var formatNumber = function (n) {
+					n = n.toString();
+					return n[1] ? n : '0' + n;
+				};
 				timeObj.timer = setInterval(()=> {
 					if( !!maxtime ){
 					var day = Math.floor(maxtime / 86400),
@@ -1975,7 +2161,7 @@
 							seconds = Math.floor(maxtime%60),
 							msg = "距离结束还有"+(day*24+hour)+"时"+minutes+"分"+seconds+"秒";
 					// timeObj.countDown = (day*24+hour) + ":" +minutes+":"+seconds;
-					this.$set(timeObj,"countDown",(day*24+hour) + ":" +minutes+":"+seconds)
+					this.$set(timeObj,"countDown",( formatNumber(day*24+hour) ) + ":" + formatNumber(minutes) +":"+ formatNumber(seconds) );
 					// fn( msg );
 					--maxtime;
 				} else {
@@ -1989,10 +2175,11 @@
 			sendMsg(){
 				console.log("sendMsg")
 				if(!this.sendMsgValue) return;
-
+				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
+				this.relationPkey = this.isFromContactList?this.relationPkey:this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].quotation.pkey;
 				axios.post('/home/rfq_RFQConsult_sendMessage', Qs.stringify({
 					content: this.sendMsgValue,
-					relationPkey: this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].quotation.pkey,
+					relationPkey: this.relationPkey,
 				}))
 						.then((res) => {
 					console.log("发送消息 suc");
@@ -2000,7 +2187,7 @@
 					this.$message.error(res.data.msg);
 					return
 				};
-				this.getChatInfo();
+				this.getChatInfo({searchLast: true});
 			})
 			.catch((error) => {
 					console.log(error);
@@ -2034,8 +2221,8 @@
 			},
 
 			//第一次点击type=4的私人展厅
-			alertPersonalShowTime(linkUrl) {
-				this.$confirm('After the link click on start the countdown, you will have 48 hours to view this private business of goods throughout the hall.', '', {
+			alertPersonalShowTime(linkUrl, itemObj) {
+				this.$confirm('After the link click on start the countdown, you will have 72 hours to view this private business of goods throughout the hall.', '', {
 					confirmButtonText: 'Start',
 					cancelButtonText: 'Cancel',
 					customClass: "my-confirm-class",
@@ -2045,7 +2232,12 @@
 					window.open(linkUrl);
 				setTimeout(()=>{
 					//获取chat列表 - 此时获取数据时将返回倒计时
-					this.getChatInfo();
+					// this.getChatInfo();
+
+					//本地自己计算个倒计时 - 获取数据时也会起 - 不刷新页面
+					var diffTime = 72*60*60*1000; //倒计时72小时
+					this.$set(itemObj,'validDate',Date.now()+diffTime);
+					this.countDown(diffTime, itemObj);
 			},1000)
 			});
 			},
@@ -2094,6 +2286,28 @@
 						break;
 					default:
 						text = "All Inquires";
+						break;
+				}
+				return text;
+			},
+			// Inquiry的status转换对应文字
+			inquiryStatus2Text: function (status) {
+				var text = "";
+				switch(status){
+					case 1:
+						text = "Waiting for publication";
+						break;
+					case 2:
+						text = "Verifying";
+						break;
+					case 3:
+						text = "Finished";
+						break;
+					case 4:
+						text = "Closed";
+						break;
+					default:
+						text = "";
 						break;
 				}
 				return text;

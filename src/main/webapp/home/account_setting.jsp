@@ -21,7 +21,9 @@
 
 <body>
 <jsp:include page="v3/nav-nobody.jsp"></jsp:include>
+<script src="/home/v3/static/js/index-top.js"></script>
 <div id="personalCenter" class="clearfix" v-cloak>
+    <index-top></index-top>
     <div class="user-menu fl">
        <div class="user-menu-title"><img src="/home/v3/static/images/user/icon_account.png" alt="" style="margin:0 8px 2px 0;">My Account
         </div>
@@ -70,7 +72,7 @@
             <div class="section2">
                 <el-row>
                     <el-col :span="4">
-                        <div style="line-height:40px;">Changge Email Address</div>
+                        <div style="line-height:40px;">Change Email Address</div>
                     </el-col>
                     <el-col :span="12" :offset="2">
                         <el-form status-icon :model="form2" :rules="rules" ref="form2" label-width="170px" class="">
@@ -90,7 +92,7 @@
             <div class="section3">
                 <el-row>
                     <el-col :span="4">
-                        <div style="line-height:40px;">Changge Password</div>
+                        <div style="line-height:40px;">Change Password</div>
                     </el-col>
                     <el-col :span="12" :offset="2">
                         <el-form status-icon :model="form3" :rules="rules" ref="form3" label-width="170px" class="">
@@ -256,13 +258,13 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         let data = JSON.stringify(this.form1)
-                        console.log('submit!');
-                        console.log(data)
+                        // console.log('submit!');
+                        // console.log(data)
                         axios.post('/home/usr_Purchase_editAccount', data,
                             {headers: {'Content-Type': 'application/json'}}
                         )
                             .then((res) => {
-                                console.log(res)
+                                // console.log(res)
                                 // 提交成功时
                                 if (res.data.ret == 1) {
                                     // 提示信息
@@ -311,13 +313,13 @@
             submitForm2(formName) { // 第二部分表单提交    邮箱
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        console.log('submit!');
+                        // console.log('submit!');
                         axios.post('/home/usr_Purchase_changeEmail', Qs.stringify({
                             email: this.form2.email,
                             password: this.form2.password
                         }))
                             .then((res) => {
-                                console.log(res)
+                                // console.log(res)
                                 // 提交成功时
                                 if (res.data.ret == 1) {
                                     // 提示信息
@@ -364,19 +366,19 @@
             submitForm3(formName) { // 第三部分表单提交    密码
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        console.log(this.form3)
+                        // console.log(this.form3)
 
                         // if(this.form3.newPassword != this.form3.ckPwd){
                         //   this.$message.error('两次密码不相同');
                         //   return ;
                         // }
-                        console.log('submit!');
+                        // console.log('submit!');
                         axios.post('/home/usr_Purchase_changePassword', Qs.stringify({
                             password: this.form3.password,
                             newPassword: this.form3.newPassword
                         }))
                             .then((res) => {
-                                console.log(res)
+                                // console.log(res)
                                 // 提交成功时
                                 if (res.data.ret == 1) {
                                     // 提示信息
@@ -409,9 +411,9 @@
                                 console.log(err)
                             })
                     } else {
-                        console.log('error submit!!');
-                        console.log(this.form3.password.length)
-                        console.log(this.form3.ckPwd.length)
+                        // console.log('error submit!!');
+                        // console.log(this.form3.password.length)
+                        // console.log(this.form3.ckPwd.length)
                         // if (!this.form3.password) {
                         //   this.$message.error('密码不能为空');
                         // } else if (this.form3.password.length <= 8) {

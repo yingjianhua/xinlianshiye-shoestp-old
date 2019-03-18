@@ -374,6 +374,24 @@ ${supView.traceCode}
     new Vue({
         el:"#main"
     })
+    // 点击选择下拉框按钮，显示下拉内容
+$(".tool-group .tool-drop-down-btn").click(function(){
+	$(".tool-group .tool-drop-down-content").hide();
+	$(".tool-group .tool-drop-down-btn").removeClass("active");
+	$(this).toggleClass("active")
+				 .siblings(".tool-drop-down-content").toggle();
+})
+
+// 获得点击事件
+$(document).click(function(e){
+	var target = $(e.target);
+	// 如果点击的是 选择下拉框中，则不干什么；如果点击的是其余地方，则将显示出来的下拉内容隐藏掉
+	if( target.closest(".tool-drop-down-wrap").length !== 0 ) return;
+	$(".tool-group .tool-drop-down-content").hide();
+	$(".tool-group .tool-drop-down-btn").removeClass("active");
+	// e.stopPropagation();
+})
+
 </script>
 </body>
 

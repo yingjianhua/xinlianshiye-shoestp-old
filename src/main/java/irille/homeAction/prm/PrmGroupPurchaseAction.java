@@ -1,6 +1,13 @@
 package irille.homeAction.prm;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.*;
+
+import javax.inject.Inject;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import irille.Service.Odr.IOrderService;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
@@ -30,11 +37,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import javax.inject.Inject;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.*;
 
 public class PrmGroupPurchaseAction extends HomeAction<PrmGroupPurchase> {
 
@@ -327,6 +329,7 @@ public class PrmGroupPurchaseAction extends HomeAction<PrmGroupPurchase> {
    * @throws Exception
    */
   public String getGroupPdt() throws Exception {
+
     new PrmGroupPurchaseDAO.GroupList().commit();
     groupPurchaseLine = BeanBase.get(PrmGroupPurchaseLine.class, getPkey()); // 获取点击的联合采购明细
     translateUtil.getAutoTranslate(groupPurchaseLine, HomeAction.curLanguage());
@@ -345,11 +348,17 @@ public class PrmGroupPurchaseAction extends HomeAction<PrmGroupPurchase> {
         new BigDecimal(Math.ceil(product.getDefaultReviewRating().doubleValue())));
     translateUtil.getAutoTranslate(product, HomeAction.curLanguage());
     supplier = product.gtSupplier(); // 获取点击的联合采购的商家
+
+    //TODO
     setSupView(UsrSupplierDAO.Select.getSupView(curLanguage(), supplier.getPkey(), 1));
+
     translateUtil.getAutoTranslate(supplier, HomeAction.curLanguage());
 
+
+//    System.err.println("运行时间1=======》"+System.currentTimeMillis());
     //		List<PdtProduct> newProList =  BeanBase.list(PdtProduct.class,PdtProduct.T.SUPPLIER + " = "
     // + supplier.getPkey() + " AND " + PdtProduct.T.IS_NEW + " = 1 ",false);
+    //TODO
     List<PdtProduct> newProList =
         BeanBase.list(
             PdtProduct.class,
@@ -371,6 +380,8 @@ public class PrmGroupPurchaseAction extends HomeAction<PrmGroupPurchase> {
             Pdt.OProductType.GENERAL.getLine().getKey(),
             supplier.getPkey(),
             Sys.OYn.YES.getLine().getKey());
+
+
     if (newProList.size() > 0) {
       Random r = new Random();
       for (int i = 0; i < 5; i++) {
@@ -383,6 +394,7 @@ public class PrmGroupPurchaseAction extends HomeAction<PrmGroupPurchase> {
         recommendationPdt.add(view);
       }
     }
+
     String attrStr = product.getNormAttr();
     if (attrStr != null) {
       String[] attrArr = attrStr.split(SYMBOL);
@@ -409,7 +421,6 @@ public class PrmGroupPurchaseAction extends HomeAction<PrmGroupPurchase> {
       colorArr = new String[1];
       colorArr[0] = product.getColorAttr();
     }
-
     for (int i = 0; i < colorArr.length; i++) {
       // colorSpecList中为该颜色的规格
       List<PdtSpec> colorSpecList =
@@ -458,6 +469,7 @@ public class PrmGroupPurchaseAction extends HomeAction<PrmGroupPurchase> {
         orderService.getPrmSaleInfo(product.getPkey(), Integer.valueOf(String.valueOf(getPkey())));
     setResult("/home/groupPurchaseGoodsInfo.jsp");
     return HomeAction.TRENDS;
+
   }
 
   /** 取分类PdtCat对象的上级分类 */

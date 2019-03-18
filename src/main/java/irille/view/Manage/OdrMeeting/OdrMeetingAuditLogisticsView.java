@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class OdrMeetingAuditLogisticsView implements BaseView {
-    private String logisticsCompany;
-    private String trackingNumber;
-    private String remarks;
+  private String logisticsCompany;
+  private String trackingNumber;
+  private String remarks;
 }

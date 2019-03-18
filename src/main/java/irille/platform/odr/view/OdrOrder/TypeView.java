@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class TypeView implements BaseView {
-    private Byte id;
-    private String value;
+  private Byte id;
+  private String value;
 }
