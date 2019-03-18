@@ -11,16 +11,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import irille.pub.Log;
 import irille.pub.bean.Bean;
 import irille.pub.bean.BeanBase;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.svr.DbPool;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public abstract class AbstractQuery {
-  private static final Log LOG = new Log(AbstractQuery.class);
-  private static final Logger log = LoggerFactory.getLogger(AbstractQuery.class);
 
   protected static final Config config = new Config();
 
@@ -113,14 +112,14 @@ public abstract class AbstractQuery {
    */
   protected int executeUpdate() {
     printSql(getSql(), getParams());
-    //		if(needDebug()) printSql(getSql(), getParams());
     PreparedStatement stmt = null;
     try {
       stmt = DbPool.getInstance().getConn().prepareStatement(getSql());
       BeanBase.toPreparedStatementData(stmt, 1, getParams());
       return stmt.executeUpdate();
     } catch (Exception e) {
-      throw LOG.err("executeUpdate", "执行【{0}】出错", getSql());
+    	log.warn("执行【{}】出错!", e.getMessage());
+    	throw new WebMessageException(ReturnCode.db_unknow, "service error");
     } finally {
       DbPool.close(stmt);
     }
@@ -138,7 +137,8 @@ public abstract class AbstractQuery {
       rs = stmt.executeQuery();
       return f.apply(rs);
     } catch (Exception e) {
-      throw LOG.err(e, "queryCountRecord", "取数据库记录时出错【{0}】!", sql);
+    	log.warn("取数据库记录时出错【{}】!", e.getMessage());
+    	throw new WebMessageException(ReturnCode.db_unknow, "service error");
     } finally {
       DbPool.close(stmt, rs);
     }
@@ -146,7 +146,6 @@ public abstract class AbstractQuery {
 
   protected <R> R query(Function<ResultSet, R> f) {
     printSql(getSql(), getParams());
-    //		log.debug("sql:"+getSql()+"|"+params(getParams()));
     PreparedStatement stmt = null;
     ResultSet rs = null;
     try {
@@ -156,7 +155,8 @@ public abstract class AbstractQuery {
       rs = stmt.executeQuery();
       return f.apply(rs);
     } catch (Exception e) {
-      throw LOG.err(e, "queryRecord", "取数据库记录时出错【{0}】!", getSql());
+    	log.warn("取数据库记录时出错【{}】!", e.getMessage());
+    	throw new WebMessageException(ReturnCode.db_unknow, "service error");
     } finally {
       DbPool.close(stmt, rs);
     }
