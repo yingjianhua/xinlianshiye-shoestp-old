@@ -18,7 +18,7 @@ public class PdtDescribeModuleDAo {
 
   public static final LogMessage LOG = new LogMessage(PdtDescribeModuleDAo.class);
 
-  public static List<PdtDescribeModuleView> getList(Integer supplier) {
+  public static Page getList(Integer supplier, Integer start, Integer limit) {
     SQL sql = new SQL();
     sql.SELECT(PdtDescribeModule.class);
     sql.FROM(PdtDescribeModule.class);
@@ -27,7 +27,12 @@ public class PdtDescribeModuleDAo {
     sql.orWhere(PdtDescribeModule.T.DEFAULT_MODULE, " =? ", OYn.YES.getLine().getKey());
     sql.AND();
     sql.WHERE(PdtDescribeModule.T.DELETED, " =? ", OYn.NO.getLine().getKey());
-    List<PdtDescribeModule> list = Query.sql(sql).queryList(PdtDescribeModule.class);
+    if (limit != 0) {
+      sql.LIMIT(start, limit);
+    }
+    Integer count = Query.sql(sql).queryCount();
+    List<PdtDescribeModule> list =
+        Query.sql(sql.LIMIT(start, limit)).queryList(PdtDescribeModule.class);
     List<PdtDescribeModuleView> listView =
         list.stream()
             .map(
@@ -44,7 +49,7 @@ public class PdtDescribeModuleDAo {
                       }
                     })
             .collect(Collectors.toList());
-    return listView;
+    return new Page(listView, start, limit, count);
   }
 
   public static PdtDescribeModuleView getInfo(Integer supplier, Integer dmPkey) {

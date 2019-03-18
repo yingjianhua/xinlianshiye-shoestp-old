@@ -1078,6 +1078,16 @@
 
 <script src="/home/v3/static/js/index-top.js"></script>
 <script src="/home/v3/static/js/index-bottom.js"></script>
+
+
+<script type="text/javascript">
+$('html').on('click', '#signin_close', function () {
+    $('#signin_module').remove();
+    global_obj.div_mask(1);
+
+})
+</script>
+
 <script>
 
     new Vue({
@@ -1292,7 +1302,7 @@
 	                }
 	                window.open(back_url, "bookmarkWindow");
 	        	},
-	        	addRFQ() {
+	        	addRFQ:function() {
 	                if (!isLogin) {
 	                    user_obj.set_form_sign_in('', window.location.href, 1);
 	                    return
