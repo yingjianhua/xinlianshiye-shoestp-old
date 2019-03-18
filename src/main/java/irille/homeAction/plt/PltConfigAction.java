@@ -17,7 +17,7 @@ import irille.shop.plt.PltErateDAO;
 import irille.shop.usr.UsrCartDAO;
 import irille.shop.usr.UsrConsultDAO;
 import irille.shop.usr.UsrFavoritesDAO;
- import irille.view.usr.UserView;
+import irille.view.usr.UserView;
 import irille.view.v2.Plt.PltSysConfigView;
 import irille.view.v2.Plt.PltUserInfo;
 import org.json.JSONException;
@@ -68,6 +68,7 @@ public class PltConfigAction extends HomeAction<PltConfig> {
       PltUserInfo userInfo = new PltUserInfo();
       userInfo.setId(userView.getPkey());
       userInfo.setName(userView.getLoginName());
+       userInfo.setUser_type(userView.getUser_type());
       if (userInfo.getUser_type() == 0) {
         userInfo.setFavorite_count(UsrFavoritesDAO.countByPurchase(userView.getPkey()));
         userInfo.setInquiry_count(UsrConsultDAO.countByUsrMainId(userView.getPkey()));

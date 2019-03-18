@@ -52,6 +52,7 @@ public class UsrUserDAO {
     UserView view = new UserView();
     view.setSupplier(supplier);
     view.setPkey(main.getPkey());
+    view.setLoginName(supplier.getLoginName());
     view.setUser_type(1);
     return view;
   }
