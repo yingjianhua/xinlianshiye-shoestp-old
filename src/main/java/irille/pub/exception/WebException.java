@@ -22,6 +22,7 @@ public class WebException extends RuntimeException {
     this.code = code;
   }
 
+
   public WebException(String message, Object... params) {
     this(new MessageFormat(message).format(params).toString());
   }

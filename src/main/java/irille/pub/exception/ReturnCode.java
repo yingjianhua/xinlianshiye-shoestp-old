@@ -13,6 +13,11 @@ public enum ReturnCode {
   service_gone(204), // 资源不可用
   service_unauthorized(205), // 没有权限
   service_state_error(206), // 状态异常
+  service_user_exists(207), // 用户已存在
+  service_user_notfound(208), // 用户不存在
+  service_Invalid_verification_code(209), // 无效的验证码
+  service_Invalid_UID(210), // 无效的UID
+  service_Invalid_Title(211), // 无效的标题
 
   third_unknow(300), // 第三方库异常
 

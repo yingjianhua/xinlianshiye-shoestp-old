@@ -4,13 +4,10 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import irille.pub.Log;
 import irille.pub.bean.Bean;
 import irille.pub.bean.BeanBase;
 
 public class SqlQuery extends AbstractQuery {
-
-  public static final Log LOG = new Log(SqlQuery.class);
 
   public SqlQuery(String sql, Serializable... params) {
     this.sql = sql;

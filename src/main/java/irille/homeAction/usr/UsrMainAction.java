@@ -10,10 +10,13 @@ import java.util.*;
 import javax.inject.Inject;
 
 import com.github.benmanes.caffeine.cache.Cache;
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
 
 import irille.homeAction.HomeAction;
 import irille.pub.LogMessage;
 import irille.pub.Str;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.util.AppConfig;
 import irille.pub.util.CacheUtils;
 import irille.shop.usr.UsrMain;
@@ -85,9 +88,10 @@ public class UsrMainAction extends HomeAction<UsrMain> {
    */
   public void regist() throws IOException {
     String code = verifyCode();
-    System.out.println("..." + getBean().getEmail());
     if (Str.isEmpty(code) || Str.isEmpty(getCheckCode()) || code.equals(getCheckCode()) == false) {
-      throw LOG.errTran("signIn%verification", "验证码错误");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(
+              ReturnCode.service_verification_code, HomeAction.curLanguage()));
     }
     if (uid == null
         || CacheUtils.mailValid.getIfPresent(uid) == null
@@ -125,32 +129,31 @@ public class UsrMainAction extends HomeAction<UsrMain> {
       if (Str.isEmpty(valide)
           || Str.isEmpty(getCheckCode())
           || valide.equals(getCheckCode()) == false) {
-        throw LOG.errTran("验证码错误", "验证码错误");
+        throw LOG.errTran("signIn%verification", "验证码错误");
       }
 
       title = "User registration";
       if (main != null) {
-        throw LOG.errTran("该用户已注册", "该用户已注册");
+        throw LOG.errTran("signIn%Username_Exists", "该用户已注册");
       }
     }
     if (type == 1) {
       String valide = verifyCode();
-      System.out.println("----" + valide);
       if (Str.isEmpty(valide)
           || Str.isEmpty(getCheckCode())
           || valide.equals(getCheckCode()) == false) {
-        throw LOG.errTran("验证码错误", "验证码错误");
+        throw LOG.errTran("signIn%verification", "验证码错误");
       }
       title = "Forgot password";
       if (main == null) {
-        // throw LOG.errTran("该用户未注册", "该用户未注册");
+        throw LOG.errTran("signIn%Username_noExists", "该用户未注册");
       }
       write();
     }
 
     String uid = UUID.randomUUID().toString();
 
-    //    Integer code = (int) ((Math.random() * 9 + 1) * 100000);
+    // Integer code = (int) ((Math.random() * 9 + 1) * 100000);
 
     switch (type) {
       case 0:
@@ -250,6 +253,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
     }
     return HomeAction.TRENDS;
   }
+
   /**
    * 提交验证码(重置密码)
    *
@@ -262,7 +266,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
     if (value != null && value.equals(getEmail())) {
       write();
     } else {
-      throw LOG.errTran("该验证码已超时", "该验证码已超时");
+      writeErr(-1, "Invalid Mail Verification Code");
     }
   }
 
