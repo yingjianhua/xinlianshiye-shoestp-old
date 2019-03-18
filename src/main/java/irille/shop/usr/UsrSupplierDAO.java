@@ -1142,7 +1142,7 @@ public class UsrSupplierDAO {
         T.COMPANY_TYPE, // 公司类型 多国语言
         T.COMPANY_NATURE, // 企业性质 多国语言
         T.COMPANY_ESTABLISH_TIME, // 企业成立时间
-        T.WEB_SITE, // 公司官网网站地址
+        T.WEBSITE, // 公司官网网站地址
         T.COMPANY_ADDR, // 公司详细地址
         T.ANNUAL_PRODUCTION, // 年产量
         T.TELEPHONE, // 公司电话
