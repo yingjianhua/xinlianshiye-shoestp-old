@@ -150,7 +150,7 @@
                     <span class="countrybotton" @click="showselectcon">
                       你已选择{{basicInfo.targetedMarket.length}}个国家
                     </span>
-                                    <div class="select" :class="iscountryshow? '' : 'selecthidden'">
+                                    <div class="select" :class="iscountryshow? '' : 'selecthidden'" style="z-index:99">
                                         <div class="showselect" v-show="basicInfo.targetedMarket != 0">
                         <span v-for="item,index in selectcountry">
                           {{item.name}}
@@ -172,6 +172,7 @@
                                         </div>
                                     </div>
                                 </div>
+    <div style="position: fixed;top:0;left:0;width: 100%;height: 100%;background-color: transparent;z-index:98" v-show="iscountryshow" @click="iscountryshow = !iscountryshow"></div>
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
