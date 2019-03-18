@@ -21,6 +21,10 @@ public class UsrSupplierNewView implements BaseView {
   private String mainEmail; // 供应商注册时的邮箱
   private String mainContacts; // 供应商注册时的联系人姓名
   private String mainTelphone; // 供应商注册时的联系人电话
+  private Integer mainProvince; // 供应商注册时的省
+  private Integer mainCity; // 供应商注册时的市
+  private Integer mainZone; // 供应商注册时的区
+
   // 营业执照副本
   private String companyType; // 公司类型
   private String companyNature; // 企业性质
@@ -61,4 +65,6 @@ public class UsrSupplierNewView implements BaseView {
 
   @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
   private Date applicationTime; // 申请时间
+  @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+  private Date storeopenTime; // 店铺入驻时间
 }

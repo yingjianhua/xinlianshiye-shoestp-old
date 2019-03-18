@@ -35,6 +35,7 @@ public class SessionMsg {
       new String[] {"android", "windows phone", "mobile", "iphone"};
 
   private String loginName;
+  private Integer pkey;
   private boolean isPurchase;
   private boolean isSupplier;
   private Language lang;
@@ -138,9 +139,11 @@ public class SessionMsg {
 
   public UserView getUser() {
     UserView user = new UserView();
+    user.setPkey(pkey);
     user.setSupplier(this.getSupplier());
     user.setPurchase(this.getPurchase());
     user.setLoginName(loginName);
+    user.setUser_type(isSupplier ? 1 : 0);
     return user;
   }
 
@@ -148,9 +151,26 @@ public class SessionMsg {
     if (user == null || !user.haveUser()) {
       isPurchase = false;
       isSupplier = false;
+      pkey = null;
+      loginName = null;
     } else {
       this.setSupplier(user.getSupplier());
       this.setPurchase(user.getPurchase());
+      this.pkey = user.getPkey();
+      this.loginName = user.getLoginName();
+      switch (user.getUser_type()) {
+        case 0:
+          {
+            isPurchase = true;
+            isSupplier = false;
+          }
+          break;
+        case 1:
+          {
+            isSupplier = true;
+            isPurchase = false;
+          }
+      }
     }
   }
 

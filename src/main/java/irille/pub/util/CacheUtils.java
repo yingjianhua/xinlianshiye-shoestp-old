@@ -59,4 +59,25 @@ public class CacheUtils {
    */
   public static Cache groupshopcache =
       Caffeine.newBuilder().expireAfterAccess(15, TimeUnit.MINUTES).build();
+  /**
+   * @Description: 邮箱注册失效
+   *
+   * @author chen
+   */
+  public static Cache mailValid =
+      Caffeine.newBuilder().expireAfterAccess(24, TimeUnit.HOURS).build();
+
+  /**
+   * @Description: 邮箱重置密码失效
+   *
+   * @author chen
+   */
+  public static Cache pwdValid =
+      Caffeine.newBuilder().expireAfterAccess(15, TimeUnit.MINUTES).build();
+  /**
+   * @Description: 60S间隔发送邮箱
+   *
+   * @author chen
+   */
+  public static Cache sendEm = Caffeine.newBuilder().expireAfterAccess(1, TimeUnit.MINUTES).build();
 }

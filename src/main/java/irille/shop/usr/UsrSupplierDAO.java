@@ -16,6 +16,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
 import com.xinlianshiye.shoestp.plat.service.pm.imp.PMMessageServiceImp;
 
+import irille.Entity.SVS.Enums.SVSAuthenticationStatus;
+import irille.Entity.SVS.Enums.SVSGradeType;
+import irille.Entity.SVS.SVSInfo;
 import irille.Entity.pm.PM.OTempType;
 import irille.core.sys.Sys;
 import irille.homeAction.usr.dto.Page_supplierProductView;
@@ -891,7 +894,7 @@ public class UsrSupplierDAO {
     return supplier;
   }
 
-  // <<<================<2019-3-8 && 3.10-new>==================>>>
+  // <<<================<2019-3-8 && 3.10-new-start>==================>>>
 
   /**
    * 审核
@@ -902,16 +905,21 @@ public class UsrSupplierDAO {
    * @return
    * @author: lingjian @Date: 2019/3/11 10:49
    */
-  public static UsrSupplier reviewStatus(String pkey, Integer status, String reason) {
+  public static UsrSupplier reviewStatus(
+      String pkey, Integer status, String reason, Date storeopenTime) {
     UsrSupplier supplier = BeanBase.load(UsrSupplier.class, pkey);
+    IPMMessageService messageService = new PMMessageServiceImp();
     if (status == 0) {
       supplier.stStatus(OStatus.INIT);
     } else if (status == 1) {
       supplier.stStatus(OStatus.APPR);
       supplier.stStoreStatus(Usr.SStatus.OPEN);
+      supplier.setStoreopenTime(storeopenTime);
+      messageService.send(OTempType.SHOP_APPR, supplier, null, supplier);
     } else if (status == 2) {
       supplier.stStatus(OStatus.FAIL);
       supplier.setReason(reason);
+      messageService.send(OTempType.SHOP_APPR, supplier, null, supplier);
     }
     supplier.upd();
     return supplier;
@@ -938,7 +946,7 @@ public class UsrSupplierDAO {
                     new UsrSupplierNewView() {
                       {
                         setPkey((Integer) bean.get(T.PKEY.getFld().getCodeSqlField()));
-                        setName((String) bean.get(T.EMAIL.getFld().getCodeSqlField()));
+                        setName((String) bean.get(T.NAME.getFld().getCodeSqlField()));
                         setWebsite((String) bean.get(T.WEBSITE.getFld().getCodeSqlField()));
                         setEnglishName(
                             (String) bean.get(T.ENGLISH_NAME.getFld().getCodeSqlField()));
@@ -947,17 +955,21 @@ public class UsrSupplierDAO {
                         setTelephone((String) bean.get(T.TELEPHONE.getFld().getCodeSqlField()));
                         setPostcode((String) bean.get(T.POSTCODE.getFld().getCodeSqlField()));
                         setFax((String) bean.get(T.FAX.getFld().getCodeSqlField()));
-                        setUserId((Integer) bean.get(T.UserId.getFld().getCodeSqlField()));
-                        UsrMain main =
-                            Bean.load(
-                                UsrMain.class,
-                                (Integer) bean.get(T.UserId.getFld().getCodeSqlField()));
-                        if (main != null) {
-                          setMainContacts(main.getContacts());
-                          setMainEmail(main.getEmail());
-                          setMainTelphone(main.getTelphone());
+                        if (bean.get(T.UserId.getFld().getCodeSqlField()) != null) {
+                          setUserId((Integer) bean.get(T.UserId.getFld().getCodeSqlField()));
+                          UsrMain main =
+                              Bean.load(
+                                  UsrMain.class,
+                                  (Integer) bean.get(T.UserId.getFld().getCodeSqlField()));
+                          if (main != null) {
+                            setMainContacts(main.getContacts());
+                            setMainEmail(main.getEmail());
+                            setMainTelphone(main.getTelphone());
+                            setMainProvince(main.getProvince());
+                            setMainCity(main.getCity());
+                            setMainZone(main.getZone());
+                          }
                         }
-
                         setCompanyType(
                             (String) bean.get(T.COMPANY_TYPE.getFld().getCodeSqlField()));
                         setCompanyNature(
@@ -1021,6 +1033,8 @@ public class UsrSupplierDAO {
                         }
                         setApplicationTime(
                             (Date) bean.get(T.APPLICATION_TIME.getFld().getCodeSqlField()));
+                        setStoreopenTime(
+                            (Date) bean.get(T.STOREOPEN_TIME.getFld().getCodeSqlField()));
                       }
                     })
             .collect(Collectors.toList());
@@ -1041,19 +1055,27 @@ public class UsrSupplierDAO {
     UsrSupplier bean = new UsrSupplier();
     // 必填项
     bean.stRole(UsrSupplierRoleDAO.getDefault());
-    bean.setLoginName(main.getNickname()); // UsrMain表的昵称
+    if (main.getNickname() == null) {
+      bean.setLoginName(main.getEmail()); // UsrMain表的昵称
+    } else {
+      bean.setLoginName(main.getNickname()); // UsrMain表的昵称
+    }
     bean.setEmail(main.getEmail()); // UsrMain表的邮箱
     bean.stStatus(Usr.OStatus.INIT); // 审核状态
     bean.stStoreStatus(Usr.SStatus.DOWN); // 店铺状态
     bean.stIsAuth(Usr.OIsAuth.NO); // 认证状态
     bean.setSort(default_sort); // 排序
-    bean.setCountry(main.getCountry()); // 国家
-    bean.setProvince(main.getProvince()); // 省份
-    bean.setBankCountry(main.getCountry()); // 开户行国家
-    bean.setBankProvince(main.getProvince()); // 开户行省份
+    bean.setCountry(7); // 国家
+    bean.setProvince(257); // 省份
+    bean.setBankCountry(7); // 开户行国家
+    bean.setBankProvince(257); // 开户行省份
     bean.stHomePageOn(false); // 首页个性装修开关
     bean.stProductPageOn(false); // 产品页个性装修开关
     bean.stContactPageOn(false); // 联系页个性装修开关
+    bean.stBottomHomeProductsOn(false); // 首页底部产品展示开关
+    bean.stHomePosterOn(false);
+    bean.stHomeBusinessBigPosterOn(false);
+    bean.stCompanyIntroductionPageCustomDecorationOn(false);
     bean.stIsPro(false); // 供应商首页产品展示
     bean.setUpdateTime(Env.getTranBeginTime()); // 更新时间
     bean.setCategory(40); // 供应商分类
@@ -1062,17 +1084,19 @@ public class UsrSupplierDAO {
     bean.setPassword(DateTools.getDigest(main.getPkey() + main.getPassword())); // UsrMain表的密码
     bean.setName(view.getName()); // 公司名称-必填
     bean.setEnglishName(view.getEnglishName()); // 公司英文名称
-    bean.stCompanyType(new JSONObject().put(lang.name(), view.getCompanyType())); // 企业类型
-    bean.stCompanyNature(new JSONObject().put(lang.name(), view.getCompanyNature())); // 企业性质
+
+    bean.setCompanyType(view.getCompanyType()); // 企业类型
+    bean.setCompanyNature(view.getCompanyNature()); // 企业性质
+
     bean.setCompanyEstablishTime(view.getCompanyEstablishTime()); // 成立时间
     bean.setWebsite(view.getWebsite()); // 官网地址
-    bean.stCompanyAddr(new JSONObject().put(lang.name(), view.getCompanyAddr())); // 详细地址
+    bean.setCompanyAddr(view.getCompanyAddr()); // 详细地址
     bean.setAnnualProduction(view.getAnnualProduction()); // 年产量
     bean.setTelephone(view.getTelephone()); // 公司电话
     bean.setFax(view.getFax()); // 传真
     bean.setPostcode(view.getPostcode()); // 邮编
     bean.setTargetedMarket(view.getTargetedMarket()); // 目标市场
-    bean.stProdPattern(new JSONObject().put(lang.name(), view.getProdPattern())); // 生产模式
+    bean.setProdPattern(view.getProdPattern()); // 生产模式
     bean.setCreditCode(view.getCreditCode()); // 信用代码
     bean.setRegisteredCapital(view.getRegisteredCapital()); // 注册资金-必填
     bean.setEntity(view.getEntity()); // 企业法人-必填
@@ -1085,11 +1109,14 @@ public class UsrSupplierDAO {
     bean.setTaxpayerType(view.getTaxpayerType()); // 纳税人类型
 
     bean.setContacts(view.getContacts()); // 联系人
-    bean.stDepartment(new JSONObject().put(lang.name(), view.getDepartment())); // 联系人部门
-    bean.stJobTitle(new JSONObject().put(lang.name(), view.getJobTitle())); // 联系人职称
+    bean.setDepartment(view.getDepartment()); // 联系人部门
+    bean.setJobTitle(view.getJobTitle()); // 联系人职称
     bean.setPhone(view.getPhone()); // 联系人手机
-    bean.setContactEmail(view.getContactEmail()); // 联系人邮箱
-
+    if (view.getContactEmail() == null) {
+      bean.setContactEmail(main.getEmail()); // 联系人邮箱
+    } else {
+      bean.setContactEmail(view.getContactEmail()); // 联系人邮箱
+    }
     bean.setCertPhoto(view.getCertPhoto()); // 资质证书复印件
     bean.setIdCardFrontPhoto(view.getIdCardFrontPhoto()); // 法人身份证复印件
     bean.setIdCard(view.getIdCard()); // 法人身份证号码
@@ -1148,6 +1175,19 @@ public class UsrSupplierDAO {
   }
 
   /**
+   * 更新关闭店铺状态
+   *
+   * @param supplier
+   * @return
+   */
+  public static UsrSupplier updStore(UsrSupplier supplier) {
+    UsrSupplier model = BeanBase.load(UsrSupplier.class, supplier.getPkey());
+    PropertyUtils.copyProperties(model, supplier, T.STORE_STATUS, T.CLOSE_REASON, T.STOREOPEN_TIME);
+    model.upd();
+    return model;
+  }
+
+  /**
    * 获取开店申请列表
    *
    * @param start
@@ -1188,12 +1228,15 @@ public class UsrSupplierDAO {
                       {
                         setId((Integer) o.get(T.PKEY.getFld().getCodeSqlField()));
                         setName((String) o.get(T.NAME.getFld().getCodeSqlField()));
-                        String contacts =
-                            BeanBase.load(
-                                    UsrMain.class,
-                                    (Serializable) o.get(T.UserId.getFld().getCodeSqlField()))
-                                .getContacts();
-                        setContacts(contacts);
+                        if (o.get(T.UserId.getFld().getCodeSqlField()) != null) {
+                          UsrMain main =
+                              BeanBase.load(
+                                  UsrMain.class,
+                                  (Serializable) o.get(T.UserId.getFld().getCodeSqlField()));
+                          if (main != null) {
+                            setContacts(main.getContacts());
+                          }
+                        }
                         setCompanyAddr((String) o.get(T.COMPANY_ADDR.getFld().getCodeSqlField()));
                         setApplicationTime(
                             (Date) o.get(T.APPLICATION_TIME.getFld().getCodeSqlField()));
@@ -1212,11 +1255,13 @@ public class UsrSupplierDAO {
   /**
    * 获取店铺列表
    *
+   * @author: lingjian @Date: 2019/3/13 11:10
    * @param start
    * @param limit
    * @return
    */
-  public static Page getShopList(Integer start, Integer limit, String name, Integer storeStatus) {
+  public static Page getShopList(
+      Integer start, Integer limit, String name, Integer storeStatus, Integer svsGrade) {
     if (start == null) {
       start = 0;
     }
@@ -1226,12 +1271,21 @@ public class UsrSupplierDAO {
     SQL sql =
         new SQL() {
           {
-            SELECT(UsrSupplier.class).FROM(UsrSupplier.class).WHERE(T.STATUS, "=1");
+            SELECT(UsrSupplier.class)
+                .SELECT(SVSInfo.T.PKEY, "svsId")
+                .SELECT(SVSInfo.T.GRADE)
+                .SELECT(SVSInfo.T.STATUS, "svsStatus")
+                .FROM(UsrSupplier.class)
+                .WHERE(T.STATUS, "=1");
+            LEFT_JOIN(SVSInfo.class, T.PKEY, SVSInfo.T.SUPPLIER);
             if (name != null) {
               WHERE(T.NAME, "like '%" + name + "%'");
             }
             if (storeStatus != null) {
               WHERE(T.STORE_STATUS, "=?", storeStatus);
+            }
+            if (svsGrade != null) {
+              WHERE(SVSInfo.T.GRADE, "=?", svsGrade);
             }
           }
         };
@@ -1242,20 +1296,30 @@ public class UsrSupplierDAO {
                 o ->
                     new SuppliersView() {
                       {
-                        setId((Integer) o.get(T.PKEY.getFld().getCodeSqlField()));
-                        setName((String) o.get(T.NAME.getFld().getCodeSqlField()));
-                        UsrMain main =
-                            BeanBase.load(
-                                UsrMain.class,
-                                (Serializable) o.get(T.UserId.getFld().getCodeSqlField()));
-                        if (main != null) {
-                          setMainId(main.getPkey());
-                          setEmail(main.getEmail());
-                          setContacts(main.getContacts());
-                          setTelphone(main.getTelphone());
+                        setId((Integer) o.get(T.PKEY.getFld().getCodeSqlField())); // 供应商id
+                        if (o.get("svsId") != null) {
+                          setSvsId((Integer) o.get("svsId"));
                         }
-                        setApplicationTime(
-                            (Date) o.get(T.APPLICATION_TIME.getFld().getCodeSqlField()));
+                        setName((String) o.get(T.NAME.getFld().getCodeSqlField()));
+                        if (o.get(T.UserId.getFld().getCodeSqlField()) != null) {
+                          UsrMain main =
+                              BeanBase.load(
+                                  UsrMain.class,
+                                  (Serializable) o.get(T.UserId.getFld().getCodeSqlField()));
+                          if (main != null) {
+                            setMainId(main.getPkey());
+                            setEmail(main.getEmail());
+                            setContacts(main.getContacts());
+                            setTelphone(main.getTelphone());
+                          }
+                        }
+                        if (o.get(SVSInfo.T.GRADE.getFld().getCodeSqlField()) != null) {
+                          setSvsGrade((Byte) o.get(SVSInfo.T.GRADE.getFld().getCodeSqlField()));
+                        }
+                        if (o.get("svsStatus") != null) {
+                          setSvsStatus((Byte) o.get("svsStatus"));
+                        }
+                        setStoreopenTime((Date) o.get(T.STOREOPEN_TIME.getFld().getCodeSqlField()));
                         setStoreStatus(
                             Byte.valueOf(
                                 String.valueOf(o.get(T.STORE_STATUS.getFld().getCodeSqlField()))));
@@ -1265,7 +1329,7 @@ public class UsrSupplierDAO {
     return new Page(list, start, limit, count);
   }
 
-  // <<<================<2019-3-8 && 3.10new>==================>>>
+  // <<<================<2019-3-8 && 3.10new-end>==================>>>
 
   // ================<2018-9-29 && new>==================
 
@@ -1802,6 +1866,20 @@ public class UsrSupplierDAO {
                       }
                     })
             .collect(Collectors.toList());
+    List<SVSStatusView> svsStatus = new ArrayList<>();
+    for (SVSAuthenticationStatus value : SVSAuthenticationStatus.values()) {
+      SVSStatusView view = new SVSStatusView();
+      view.setId(value.getLine().getKey());
+      view.setName(value.getLine().getName());
+      svsStatus.add(view);
+    }
+    List<SVSGradeView> svsGrade = new ArrayList<>();
+    for (SVSGradeType value : SVSGradeType.values()) {
+      SVSGradeView view = new SVSGradeView();
+      view.setId(value.getLine().getKey());
+      view.setName(value.getLine().getName());
+      svsGrade.add(view);
+    }
     List<StoreStatusView> storeStatus = new ArrayList<>();
     for (Usr.SStatus value : Usr.SStatus.values()) {
       StoreStatusView view = new StoreStatusView();
@@ -1854,6 +1932,8 @@ public class UsrSupplierDAO {
     view.setIsPros(isPros);
     view.setCountrys(countrys);
     view.setStoreStatus(storeStatus);
+    view.setSvsStatus(svsStatus);
+    view.setSvsGrade(svsGrade);
     return view;
   }
 

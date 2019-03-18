@@ -17,6 +17,7 @@ import irille.shop.plt.PltErateDAO;
 import irille.shop.usr.UsrCartDAO;
 import irille.shop.usr.UsrConsultDAO;
 import irille.shop.usr.UsrFavoritesDAO;
+import irille.view.usr.UserView;
 import irille.view.v2.Plt.PltSysConfigView;
 import irille.view.v2.Plt.PltUserInfo;
 import org.json.JSONException;
@@ -62,17 +63,23 @@ public class PltConfigAction extends HomeAction<PltConfig> {
     sysConfigView.setCurrent_language(HomeAction.curLanguage());
     sysConfigView.setCurrency_symbol(HomeAction.curCurrency().getSymbol());
     sysConfigView.setBaseImageUrl("https://image.shoestp.com");
-    if (getPurchase() != null) {
-
+    UserView userView = getUser();
+    if (userView.haveUser()) {
       PltUserInfo userInfo = new PltUserInfo();
-      userInfo.setId(getPurchase().getPkey());
-      userInfo.setName(getPurchase().getLoginName());
-      userInfo.setFavorite_count(UsrFavoritesDAO.countByPurchase(getPurchase().getPkey()));
-      userInfo.setInquiry_count(UsrConsultDAO.countByPurchase(getPurchase().getPkey()));
-      userInfo.setShopping_cart_count(UsrCartDAO.Query.countByPurchase(getPurchase().getPkey()));
-      userInfo.setUser_type(
-          UsrSupplierService.isSupplier(
-              getPurchase().getLoginName())); // 判断是否为商家用户 赋值给usertype 0:普通用户 1: 商家用户
+      userInfo.setId(userView.getPkey());
+      userInfo.setName(userView.getLoginName());
+       userInfo.setUser_type(userView.getUser_type());
+      if (userInfo.getUser_type() == 0) {
+        userInfo.setFavorite_count(UsrFavoritesDAO.countByPurchase(userView.getPkey()));
+        userInfo.setInquiry_count(UsrConsultDAO.countByUsrMainId(userView.getPkey()));
+        userInfo.setShopping_cart_count(UsrCartDAO.Query.countByPurchase(userView.getPkey()));
+      } else {
+        // TODO
+        userInfo.setInquiry_count(0);
+        userInfo.setFavorite_count(0);
+        userInfo.setShopping_cart_count(0);
+      }
+      userInfo.setUser_type(userInfo.getUser_type()); // 判断是否为商家用户 赋值给usertype 0:普通用户 1: 商家用户
       sysConfigView.setUser(userInfo);
     }
     sysConfigView.setCurrencyList(

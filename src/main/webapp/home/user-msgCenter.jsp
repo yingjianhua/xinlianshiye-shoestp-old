@@ -57,6 +57,7 @@
 <jsp:include page="v3/nav-nobody.jsp"
 ></jsp:include>
 <div id="shoesTp"  class=" w_1240 ">
+	<index-top></index-top>
 	<main class="main">
 		<div class="wide por clearfix flex-layout">
 			<!-- 左侧 My-Accoung 列表 -->
@@ -1157,6 +1158,7 @@
 	<!-- 修改弹框 - end -->
 
 </div>
+<script src="/home/v3/static/js/index-top.js"></script>
 <script src="/home/v3/static/js/index-bottom.js"></script>
 <div id="bottom" style="margin-top: 25px">
 	<index-bottom></index-bottom>

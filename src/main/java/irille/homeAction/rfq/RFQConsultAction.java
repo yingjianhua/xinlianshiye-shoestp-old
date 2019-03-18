@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.inject.Inject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
 import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultMessageService;
 import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultService;
 
@@ -52,8 +53,13 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
    */
   @ItpCheckPurchaseLogin.NeedLogin
   public void putRFQInquiry() throws IOException {
+    String data = getJsonBody();
+    if (data == null) {
+      write(MessageBuild.build(201, HomeAction.curLanguage()));
+      return;
+    }
     irfqConsultService.putRFQInquiry(
-        objectMapper.readValue(getJsonBody(), PutRFQConsultView.class), getPurchase());
+        objectMapper.readValue(data, PutRFQConsultView.class), getPurchase());
     write();
   }
 
@@ -65,8 +71,19 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
    */
   @ItpCheckPurchaseLogin.NeedLogin
   public void putSupplierInquiry() throws IOException {
-    irfqConsultService.putSupplierInquiry(
-        objectMapper.readValue(getJsonBody(), PutSupplierConsultView.class), getPurchase());
+    String data = getJsonBody();
+    if (data == null) {
+      write(MessageBuild.build(201, HomeAction.curLanguage()));
+      return;
+    }
+    PutSupplierConsultView putSupplierConsultView =
+        objectMapper.readValue(data, PutSupplierConsultView.class);
+    if (putSupplierConsultView.getTitle() == null
+        || putSupplierConsultView.getTitle().length() < 1) {
+      write(MessageBuild.build(202, HomeAction.curLanguage()));
+      return;
+    }
+    irfqConsultService.putSupplierInquiry(putSupplierConsultView, getPurchase());
     write();
   }
 
@@ -78,7 +95,12 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
    */
   @ItpCheckPurchaseLogin.NeedLogin
   public void putInquiry() throws IOException {
-    PutInquiryView view = objectMapper.readValue(getJsonBody(), PutInquiryView.class);
+    String data = getJsonBody();
+    if (data == null) {
+      write(MessageBuild.build(201, HomeAction.curLanguage()));
+      return;
+    }
+    PutInquiryView view = objectMapper.readValue(data, PutInquiryView.class);
     String[] country = City.find(ServletActionContext.getRequest().getRemoteAddr());
     int countryId = -1;
     if (country != null && country.length > 0) {
@@ -107,8 +129,13 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
    */
   @ItpCheckPurchaseLogin.NeedLogin
   public void putPrivateInquiry() throws IOException {
+    String data = getJsonBody();
+    if (data == null) {
+      write(MessageBuild.build(201, HomeAction.curLanguage()));
+      return;
+    }
     irfqConsultService.putPrivateInquiry(
-        objectMapper.readValue(getJsonBody(), PutInquiryView.class), getPurchase());
+        objectMapper.readValue(data, PutInquiryView.class), getPurchase());
     write();
   }
 
@@ -238,10 +265,12 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   @Override
   @NeedLogin
   public void edit() throws IOException {
-    String json = getJsonBody();
-    EditRFQConsultView editRFQConsultView = objectMapper.readValue(json, EditRFQConsultView.class);
-    System.out.println(json);
-    System.out.println(editRFQConsultView);
+    String data = getJsonBody();
+    if (data == null) {
+      write(MessageBuild.build(201, HomeAction.curLanguage()));
+      return;
+    }
+    EditRFQConsultView editRFQConsultView = objectMapper.readValue(data, EditRFQConsultView.class);
     if (editRFQConsultView.getId() != null && editRFQConsultView.getId() > 0) {
       if (irfqConsultService.edItRFQInquiry(editRFQConsultView, getPurchase()) == 1) {
         write();

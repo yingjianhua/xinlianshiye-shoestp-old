@@ -1147,7 +1147,7 @@ public abstract class HomeAction<THIS extends BeanMain<?, ?>> extends BeanAction
   private File file;
 
   public void upload() throws IOException {
-    if (getPurchase() == null) {
+    if (getUser() == null || getUser().getPkey() == null || getUser().getLoginName() == null) {
       writeTimeout();
     } else {
       write(ImageUpload.upload(beanClazz(), fileFileName, file));
