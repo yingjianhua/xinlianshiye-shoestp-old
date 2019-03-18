@@ -427,6 +427,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
     if (validDate == null || validDate.before(new Date())) {
       throw new WebMessageException(ReturnCode.valid_illegal, "有效时间不合法");
     }
+    consult.setChangeCount((short)(consult.getChangeCount() + (short)1));
     consult.setExtraDescription(information);
     consult.setValidDate(validDate);
     consult.upd();
