@@ -88,7 +88,7 @@
                     <p>To view this buyer's contact information please <span style="color: #dd2811;">Sign In Now</span>
                         ! Not a member yet? It takes less than a minute to Join <span
                                 style="color: #dd2811;">FREE</span> now!</p>
-                    <a href="javascript:void(0)" target="_blank" @click="quoteNow">Quote Now</a>
+                    <a href="javascript:void(0)" @click="quoteNow">Quote Now</a>
                 </ul>
             </div>
         </div>
