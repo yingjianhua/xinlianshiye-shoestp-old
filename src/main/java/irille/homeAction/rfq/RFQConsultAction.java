@@ -16,6 +16,8 @@ import irille.Service.Pdt.IPdtProductService;
 import irille.Service.Plt.PltService;
 import irille.Service.RFQ.IRFQConsultService;
 import irille.homeAction.HomeAction;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.tb.FldLanguage;
 import irille.pub.util.ipUtils.City;
 import irille.view.RFQ.PutInquiryView;
@@ -55,8 +57,8 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   public void putRFQInquiry() throws IOException {
     String data = getJsonBody();
     if (data == null) {
-      write(MessageBuild.build(201, HomeAction.curLanguage()));
-      return;
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_wrong_data, HomeAction.curLanguage()));
     }
     irfqConsultService.putRFQInquiry(
         objectMapper.readValue(data, PutRFQConsultView.class), getPurchase());
@@ -73,15 +75,15 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   public void putSupplierInquiry() throws IOException {
     String data = getJsonBody();
     if (data == null) {
-      write(MessageBuild.build(201, HomeAction.curLanguage()));
-      return;
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_wrong_data, HomeAction.curLanguage()));
     }
     PutSupplierConsultView putSupplierConsultView =
         objectMapper.readValue(data, PutSupplierConsultView.class);
     if (putSupplierConsultView.getTitle() == null
         || putSupplierConsultView.getTitle().length() < 1) {
-      write(MessageBuild.build(202, HomeAction.curLanguage()));
-      return;
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_Invalid_Title, HomeAction.curLanguage()));
     }
     irfqConsultService.putSupplierInquiry(putSupplierConsultView, getPurchase());
     write();
@@ -97,8 +99,8 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   public void putInquiry() throws IOException {
     String data = getJsonBody();
     if (data == null) {
-      write(MessageBuild.build(201, HomeAction.curLanguage()));
-      return;
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_wrong_data, HomeAction.curLanguage()));
     }
     PutInquiryView view = objectMapper.readValue(data, PutInquiryView.class);
     String[] country = City.find(ServletActionContext.getRequest().getRemoteAddr());
