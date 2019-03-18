@@ -156,7 +156,7 @@ public class PrmGroupPurchaseLineDAO
       default:
         sql.ORDER_BY(
             PrmGroupPurchaseLine.T.COUNT,
-            rankingBasis.trim().toLowerCase().equals("desc") ? " ASC " : " DESC ");
+            rankingBasis.trim().equalsIgnoreCase("desc") ? " ASC " : " DESC ");
         break;
     }
     sql.ORDER_BY(PrmGroupPurchaseLine.T.PKEY, rankingBasis);

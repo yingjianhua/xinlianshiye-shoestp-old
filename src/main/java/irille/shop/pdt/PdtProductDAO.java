@@ -766,9 +766,9 @@ public class PdtProductDAO {
           break;
         default:
           sql.ORDER_BY(
-              T.IS_HOT, rankingBasis.trim().toLowerCase().equals("desc") ? " ASC " : " DESC ");
+              T.IS_HOT, rankingBasis.trim().equalsIgnoreCase("desc") ? " ASC " : " DESC ");
           o2oSql.ORDER_BY(
-              T.IS_HOT, rankingBasis.trim().toLowerCase().equals("desc") ? " ASC " : " DESC ");
+              T.IS_HOT, rankingBasis.trim().equalsIgnoreCase("desc") ? " ASC " : " DESC ");
           break;
       }
       sql.ORDER_BY(T.PKEY, rankingBasis);
