@@ -143,6 +143,7 @@ public class SessionMsg {
     user.setSupplier(this.getSupplier());
     user.setPurchase(this.getPurchase());
     user.setLoginName(loginName);
+    user.setUser_type(isSupplier ? 1 : 0);
     return user;
   }
 
@@ -157,6 +158,19 @@ public class SessionMsg {
       this.setPurchase(user.getPurchase());
       this.pkey = user.getPkey();
       this.loginName = user.getLoginName();
+      switch (user.getUser_type()) {
+        case 0:
+          {
+            isPurchase = true;
+            isSupplier = false;
+          }
+          break;
+        case 1:
+          {
+            isSupplier = true;
+            isPurchase = false;
+          }
+      }
     }
   }
 
