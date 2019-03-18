@@ -257,7 +257,8 @@
                         <p>Upon creating my account, I agree to:</p>
                         <p>
                             - The 
-                            <span class="link">shoestp.com User Agreement</span>
+                            <%--<span class="link">shoestp.com User Agreement</span>--%>
+                            <a class="link" href="/home/cnt_CntSglPageCategory_gosglpageshoestp?pkey=9" target="_blank">shoestp.com User Agreement</a>
                         </p>
                         <p>- Receive emails related to shoestp.com membership and services</p>
                     </div>
@@ -266,7 +267,8 @@
                         <p>创建网站账号的同时，我同意：</p>
                         <p>
                             - 遵守
-                            <span class="link">shoestp.com</span>
+                            <%--<span class=a"link">shoestp.com</span>--%>
+                            <a class="link" href="/home/cnt_CntSglPageCategory_gosglpageshoestp?pkey=9" target="_blank">shoestp.com</a>
                             会员协议
                         </p>
                         <p>- 愿意接收相关来自shoestp.com的会员及服务邮件</p>
@@ -376,7 +378,10 @@
         } else if (value.length < 6 || value.length > 20) {
             app.psdStrength.isPsdRight = false;
             callback(new Error(app.registerForm.user == 'buyer' ? 'Please set password within 6 to 20 characters' : '请设置6-20位的密码'));
-        } else {
+        } else if( !(/^(?![0-9]+$)(?![a-zA-Z]+$)(?!([^(0-9a-zA-Z)]|[])+$)([^(0-9a-zA-Z)]|[]|[a-zA-Z]|[0-9]){6,}$/.test(value))  ){
+            app.psdStrength.isPsdRight = false;
+            callback(new Error(app.registerForm.user == 'buyer' ? 'Please enter two of the three formats: numbers, letters and symbols.' : '请输入以下三种格式中的两种：数字、字母及符号'));
+        }else{
             app.psdStrength.isPsdRight = true;
             if (app.registerForm.psd2 !== '') {
                 app.$refs.registerForm.validateField('psd2');
@@ -529,7 +534,7 @@
             this.getCountryList();
             this.getProvinceList();
             console.log("registerEmail's:")
-            this.registerForm.email = this.GetQueryString("registerEmail") || localStorage.getItem("registerEmail")
+            this.registerForm.email = this.GetQueryString("email") || localStorage.getItem("registerEmail")
         },
         methods: {
             image(v, params) {
