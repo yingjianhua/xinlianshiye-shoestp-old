@@ -89,7 +89,9 @@ public class UsrMainAction extends HomeAction<UsrMain> {
     if (Str.isEmpty(code) || Str.isEmpty(getCheckCode()) || code.equals(getCheckCode()) == false) {
       throw LOG.errTran("signIn%verification", "验证码错误");
     }
-    if (!CacheUtils.mailValid.getIfPresent(uid).equals(getBean().getEmail())) {
+    if (uid == null
+        || CacheUtils.mailValid.getIfPresent(uid) == null
+        || !CacheUtils.mailValid.getIfPresent(uid).equals(getBean().getEmail())) {
       throw LOG.errTran("signIn%Invalid Uid", "无效的UID");
     }
     insBefore();
