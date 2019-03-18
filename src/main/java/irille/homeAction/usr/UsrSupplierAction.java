@@ -83,8 +83,10 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
    *
    * @author: lingjian @Date: 2019/3/4 14:23
    */
+  @NeedLogin
   public void insInfo() throws Exception {
-    try {
+    if (getUser().getUser_type() == 1) {
+      getBean().setLoginName(getUser().getLoginName());
       UsrSupplier supplier = UsrSupplierDAO.insSupplier(getBean(), curLanguage());
       UsrAnnex annex = new UsrAnnex();
       if (supplier.getPkey() != null) {
@@ -95,8 +97,6 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
       }
       annex.ins();
       write();
-    } catch (Exp e) {
-      writeErr(e.getLastMessage());
     }
   }
 
@@ -122,7 +122,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
           .WHERE(UsrAnnex.T.SUPPLIER, " =? ", supplier.get(0).getPkey());
       SqlQuery query = Query.sql(sql);
 
-      if(crtJsonByBean(supplier.get(0)) != null){
+      if (crtJsonByBean(supplier.get(0)) != null) {
         json = crtJsonByBean(supplier.get(0));
       }
       Map<String, Object> obj = query.queryMap();
@@ -409,13 +409,13 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
     UserView user = getUser();
     if (!user.isSupplier()) {
       entryStep = 0;
-    } else if (user.getSupplier().gtStatus() == OStatus.INIT) {
-      entryStep = 4;
-    } else if (user.getSupplier().gtStatus() == OStatus.APPR) {
-      setResult("/seller", false);
-      return RTRENDS;
     }
-    setResult("/home/supplier-entry.jsp");
+    // 没有Supplier 信息未入住商家
+    if (user.getSupplier() == null) {
+      setResult("/home/v3/jsp/supplier-entry/index.jsp");
+    }
+
+    setResult("/home/v3/jsp/supplier-entry/index.jsp");
     return TRENDS;
   }
   //
@@ -491,11 +491,12 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
     write(usrSupplierService2.detail(getPurchase(), supplierPkey, curLanguage()));
   }
 
-  public String goContactSupplier(){
-      setResult("/home/contact-supplier.jsp");
-      return TRENDS;
+  public String goContactSupplier() {
+    setResult("/home/contact-supplier.jsp");
+    return TRENDS;
   }
+
   public void getSupplierDetail() throws IOException {
-      write(usrSupplierService.getSuplierDetail(supplierPkey));
+    write(usrSupplierService.getSuplierDetail(supplierPkey));
   }
 }

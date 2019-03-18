@@ -42,7 +42,6 @@ public class ItpCheckPurchaseLogin extends AbstractInterceptor {
       HomeAction<?> action = (HomeAction<?>) actionInvocation.getAction();
       action.initEnv();
     }
-
     ActionProxy proxy = actionInvocation.getProxy();
     Method method = proxy.getAction().getClass().getMethod(proxy.getMethod());
     if (method.getReturnType().equals(String.class)) {
@@ -52,10 +51,10 @@ public class ItpCheckPurchaseLogin extends AbstractInterceptor {
     }
     if (method.getAnnotation(NeedLogin.class) != null) {
       Class<?> returnType = method.getReturnType();
-      if (returnType.equals(void.class) && HomeAction.getPurchase() == null) {
+      if (returnType.equals(void.class) && HomeAction.getUser() == null) {
         HomeAction.writeTimeout();
         return null;
-      } else if (returnType.equals(String.class) && HomeAction.getPurchase() == null) {
+      } else if (returnType.equals(String.class) && HomeAction.getUser() == null) {
         HomeAction<?> action = (HomeAction<?>) actionInvocation.getAction();
         StringJoiner stringJoiner = new StringJoiner("&");
         getParams(ServletActionContext.getRequest())

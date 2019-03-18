@@ -905,8 +905,8 @@ public class UsrSupplierDAO {
    * @return
    * @author: lingjian @Date: 2019/3/11 10:49
    */
-
-  public static UsrSupplier reviewStatus(String pkey, Integer status, String reason, Date storeopenTime) {
+  public static UsrSupplier reviewStatus(
+      String pkey, Integer status, String reason, Date storeopenTime) {
     UsrSupplier supplier = BeanBase.load(UsrSupplier.class, pkey);
     IPMMessageService messageService = new PMMessageServiceImp();
     if (status == 0) {
@@ -915,11 +915,11 @@ public class UsrSupplierDAO {
       supplier.stStatus(OStatus.APPR);
       supplier.stStoreStatus(Usr.SStatus.OPEN);
       supplier.setStoreopenTime(storeopenTime);
-      messageService.send(OTempType.SHOP_APPR,supplier,null,supplier);
+      messageService.send(OTempType.SHOP_APPR, supplier, null, supplier);
     } else if (status == 2) {
       supplier.stStatus(OStatus.FAIL);
       supplier.setReason(reason);
-      messageService.send(OTempType.SHOP_APPR,supplier,null,supplier);
+      messageService.send(OTempType.SHOP_APPR, supplier, null, supplier);
     }
     supplier.upd();
     return supplier;
@@ -955,12 +955,12 @@ public class UsrSupplierDAO {
                         setTelephone((String) bean.get(T.TELEPHONE.getFld().getCodeSqlField()));
                         setPostcode((String) bean.get(T.POSTCODE.getFld().getCodeSqlField()));
                         setFax((String) bean.get(T.FAX.getFld().getCodeSqlField()));
-                        if(bean.get(T.UserId.getFld().getCodeSqlField()) != null) {
+                        if (bean.get(T.UserId.getFld().getCodeSqlField()) != null) {
                           setUserId((Integer) bean.get(T.UserId.getFld().getCodeSqlField()));
                           UsrMain main =
-                                  Bean.load(
-                                          UsrMain.class,
-                                          (Integer) bean.get(T.UserId.getFld().getCodeSqlField()));
+                              Bean.load(
+                                  UsrMain.class,
+                                  (Integer) bean.get(T.UserId.getFld().getCodeSqlField()));
                           if (main != null) {
                             setMainContacts(main.getContacts());
                             setMainEmail(main.getEmail());
@@ -1034,7 +1034,7 @@ public class UsrSupplierDAO {
                         setApplicationTime(
                             (Date) bean.get(T.APPLICATION_TIME.getFld().getCodeSqlField()));
                         setStoreopenTime(
-                                (Date) bean.get(T.STOREOPEN_TIME.getFld().getCodeSqlField()));
+                            (Date) bean.get(T.STOREOPEN_TIME.getFld().getCodeSqlField()));
                       }
                     })
             .collect(Collectors.toList());
@@ -1055,7 +1055,11 @@ public class UsrSupplierDAO {
     UsrSupplier bean = new UsrSupplier();
     // 必填项
     bean.stRole(UsrSupplierRoleDAO.getDefault());
-    bean.setLoginName(main.getNickname()); // UsrMain表的昵称
+    if (main.getNickname() == null) {
+      bean.setLoginName(main.getEmail()); // UsrMain表的昵称
+    } else {
+      bean.setLoginName(main.getNickname()); // UsrMain表的昵称
+    }
     bean.setEmail(main.getEmail()); // UsrMain表的邮箱
     bean.stStatus(Usr.OStatus.INIT); // 审核状态
     bean.stStoreStatus(Usr.SStatus.DOWN); // 店铺状态
@@ -1068,7 +1072,7 @@ public class UsrSupplierDAO {
     bean.stHomePageOn(false); // 首页个性装修开关
     bean.stProductPageOn(false); // 产品页个性装修开关
     bean.stContactPageOn(false); // 联系页个性装修开关
-    bean.stBottomHomeProductsOn(false); //首页底部产品展示开关
+    bean.stBottomHomeProductsOn(false); // 首页底部产品展示开关
     bean.stHomePosterOn(false);
     bean.stHomeBusinessBigPosterOn(false);
     bean.stCompanyIntroductionPageCustomDecorationOn(false);
@@ -1108,8 +1112,11 @@ public class UsrSupplierDAO {
     bean.setDepartment(view.getDepartment()); // 联系人部门
     bean.setJobTitle(view.getJobTitle()); // 联系人职称
     bean.setPhone(view.getPhone()); // 联系人手机
-    bean.setContactEmail(view.getContactEmail()); // 联系人邮箱
-
+    if (view.getContactEmail() == null) {
+      bean.setContactEmail(main.getEmail()); // 联系人邮箱
+    } else {
+      bean.setContactEmail(view.getContactEmail()); // 联系人邮箱
+    }
     bean.setCertPhoto(view.getCertPhoto()); // 资质证书复印件
     bean.setIdCardFrontPhoto(view.getIdCardFrontPhoto()); // 法人身份证复印件
     bean.setIdCard(view.getIdCard()); // 法人身份证号码
@@ -1126,63 +1133,59 @@ public class UsrSupplierDAO {
    * @author: lingjian @Date: 2019/3/1 16:21
    */
   public static UsrSupplier updInfo(UsrSupplier supplier) {
-        UsrSupplier model = BeanBase.load(UsrSupplier.class, supplier.getPkey());
-        PropertyUtils.copyProperties(
-                model,
-                supplier,
-                T.NAME, // 公司名称
-                T.ENGLISH_NAME, // 英文名称
-                T.COMPANY_TYPE, // 公司类型 多国语言
-                T.COMPANY_NATURE, // 企业性质 多国语言
-                T.COMPANY_ESTABLISH_TIME, // 企业成立时间
-                T.WEB_SITE, // 公司官网网站地址
-                T.COMPANY_ADDR, // 公司详细地址
-                T.ANNUAL_PRODUCTION, // 年产量
-                T.TELEPHONE, // 公司电话
-                T.FAX, // 传真
-                T.POSTCODE, // 邮编
-                T.TARGETED_MARKET, // 目标市场
-                T.PROD_PATTERN, // 生产模式
-                T.CREDIT_CODE, // 统一社会信用代码
-                T.REGISTERED_CAPITAL, // 注册资本
-                T.ENTITY, // 法定代表人
-                T.BUSINESS_LICENSE_IS_SECULAR, // 营业执照是否长期
-                T.BUSINESS_LICENSE_BEGIN_TIME, // 营业执照开始时间
-                T.BUSINESS_LICENSE_END_TIME, // 营业执照结束时间
-                T.TAXPAYER_TYPE, // 纳税人类型
-                T.CONTACTS, // 联系人
-                T.DEPARTMENT, // 联系人部门
-                T.JOB_TITLE, // 联系人职称
-                T.PHONE, // 联系人手机
-                T.CONTACT_EMAIL, // 联系人邮箱
-                T.CERT_PHOTO, // 营业执照副本复印件
-                T.ID_CARD_FRONT_PHOTO, // 法人代表身份证复印件
-                T.ID_CARD, // 法人代表身份证号码
-                T.CONTACTS_ID_CARD_FRONT_PHOTO, // 运营人员身份证复印件
-                T.OPERATE_ID_CARD, // 运营人员身份证号码
-                T.STORE_STATUS,
-                T.CLOSE_REASON);
-        //    model.upd();
-        translateUtil.autoTranslate(model, true).upd();
-        return model;
-    }
+    UsrSupplier model = BeanBase.load(UsrSupplier.class, supplier.getPkey());
+    PropertyUtils.copyProperties(
+        model,
+        supplier,
+        T.NAME, // 公司名称
+        T.ENGLISH_NAME, // 英文名称
+        T.COMPANY_TYPE, // 公司类型 多国语言
+        T.COMPANY_NATURE, // 企业性质 多国语言
+        T.COMPANY_ESTABLISH_TIME, // 企业成立时间
+        T.WEB_SITE, // 公司官网网站地址
+        T.COMPANY_ADDR, // 公司详细地址
+        T.ANNUAL_PRODUCTION, // 年产量
+        T.TELEPHONE, // 公司电话
+        T.FAX, // 传真
+        T.POSTCODE, // 邮编
+        T.TARGETED_MARKET, // 目标市场
+        T.PROD_PATTERN, // 生产模式
+        T.CREDIT_CODE, // 统一社会信用代码
+        T.REGISTERED_CAPITAL, // 注册资本
+        T.ENTITY, // 法定代表人
+        T.BUSINESS_LICENSE_IS_SECULAR, // 营业执照是否长期
+        T.BUSINESS_LICENSE_BEGIN_TIME, // 营业执照开始时间
+        T.BUSINESS_LICENSE_END_TIME, // 营业执照结束时间
+        T.TAXPAYER_TYPE, // 纳税人类型
+        T.CONTACTS, // 联系人
+        T.DEPARTMENT, // 联系人部门
+        T.JOB_TITLE, // 联系人职称
+        T.PHONE, // 联系人手机
+        T.CONTACT_EMAIL, // 联系人邮箱
+        T.CERT_PHOTO, // 营业执照副本复印件
+        T.ID_CARD_FRONT_PHOTO, // 法人代表身份证复印件
+        T.ID_CARD, // 法人代表身份证号码
+        T.CONTACTS_ID_CARD_FRONT_PHOTO, // 运营人员身份证复印件
+        T.OPERATE_ID_CARD, // 运营人员身份证号码
+        T.STORE_STATUS,
+        T.CLOSE_REASON);
+    //    model.upd();
+    translateUtil.autoTranslate(model, true).upd();
+    return model;
+  }
 
-    /**
-     * 更新关闭店铺状态
-     * @param supplier
-     * @return
-     */
-    public static UsrSupplier updStore(UsrSupplier supplier) {
-        UsrSupplier model = BeanBase.load(UsrSupplier.class, supplier.getPkey());
-        PropertyUtils.copyProperties(
-                model,
-                supplier,
-                T.STORE_STATUS,
-                T.CLOSE_REASON,
-                T.STOREOPEN_TIME);
-            model.upd();
-        return model;
-    }
+  /**
+   * 更新关闭店铺状态
+   *
+   * @param supplier
+   * @return
+   */
+  public static UsrSupplier updStore(UsrSupplier supplier) {
+    UsrSupplier model = BeanBase.load(UsrSupplier.class, supplier.getPkey());
+    PropertyUtils.copyProperties(model, supplier, T.STORE_STATUS, T.CLOSE_REASON, T.STOREOPEN_TIME);
+    model.upd();
+    return model;
+  }
 
   /**
    * 获取开店申请列表
@@ -1225,11 +1228,12 @@ public class UsrSupplierDAO {
                       {
                         setId((Integer) o.get(T.PKEY.getFld().getCodeSqlField()));
                         setName((String) o.get(T.NAME.getFld().getCodeSqlField()));
-                        if(o.get(T.UserId.getFld().getCodeSqlField()) != null) {
-                          UsrMain main = BeanBase.load(
+                        if (o.get(T.UserId.getFld().getCodeSqlField()) != null) {
+                          UsrMain main =
+                              BeanBase.load(
                                   UsrMain.class,
                                   (Serializable) o.get(T.UserId.getFld().getCodeSqlField()));
-                          if(main != null){
+                          if (main != null) {
                             setContacts(main.getContacts());
                           }
                         }
@@ -1251,13 +1255,13 @@ public class UsrSupplierDAO {
   /**
    * 获取店铺列表
    *
-   * @author: lingjian
-   * @Date: 2019/3/13 11:10
+   * @author: lingjian @Date: 2019/3/13 11:10
    * @param start
    * @param limit
    * @return
    */
-  public static Page getShopList(Integer start, Integer limit, String name, Integer storeStatus, Integer svsGrade) {
+  public static Page getShopList(
+      Integer start, Integer limit, String name, Integer storeStatus, Integer svsGrade) {
     if (start == null) {
       start = 0;
     }
@@ -1267,16 +1271,21 @@ public class UsrSupplierDAO {
     SQL sql =
         new SQL() {
           {
-            SELECT(UsrSupplier.class).SELECT(SVSInfo.T.PKEY,"svsId").SELECT(SVSInfo.T.GRADE).SELECT(SVSInfo.T.STATUS,"svsStatus").FROM(UsrSupplier.class).WHERE(T.STATUS, "=1");
-            LEFT_JOIN(SVSInfo.class, T.PKEY,SVSInfo.T.SUPPLIER);
+            SELECT(UsrSupplier.class)
+                .SELECT(SVSInfo.T.PKEY, "svsId")
+                .SELECT(SVSInfo.T.GRADE)
+                .SELECT(SVSInfo.T.STATUS, "svsStatus")
+                .FROM(UsrSupplier.class)
+                .WHERE(T.STATUS, "=1");
+            LEFT_JOIN(SVSInfo.class, T.PKEY, SVSInfo.T.SUPPLIER);
             if (name != null) {
               WHERE(T.NAME, "like '%" + name + "%'");
             }
             if (storeStatus != null) {
               WHERE(T.STORE_STATUS, "=?", storeStatus);
             }
-            if(svsGrade != null){
-              WHERE(SVSInfo.T.GRADE,"=?",svsGrade);
+            if (svsGrade != null) {
+              WHERE(SVSInfo.T.GRADE, "=?", svsGrade);
             }
           }
         };

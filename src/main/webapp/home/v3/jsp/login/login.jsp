@@ -42,15 +42,15 @@
                                  :show-message="false"
                                  :model="loginForm" :rules="loginFormRules">
                             <!-- 防止用户名、密码自动填充 -->
-                            <input type="text" name="catch-name" class="incase-autocomplete-input">
-                            <input type="password" name="catch-psd" class="incase-autocomplete-input">
+                            <input type="text" name="catch-name" >
+                            <input type="password" name="catch-psd">
 
                             <el-form-item label="Email" prop="email">
-                                <el-input v-model="loginForm.email" placeholder="Email address or member ID"></el-input>
+                                <el-input v-model="loginForm.email" placeholder="Email address or member ID" auto-complete="on"></el-input>
                             </el-form-item>
 
                             <el-form-item label="Password" prop="psd">
-                                <el-input v-model="loginForm.psd" placeholder="Password" type="password"></el-input>
+                                <el-input v-model="loginForm.psd" placeholder="Password" auto-complete="on" type="password"></el-input>
                             </el-form-item>
                         </el-form>
 
@@ -60,7 +60,7 @@
                                 Forgot your password?
                             </a>
                         </div>
-                        <el-button type="primary" size="medium" class="btn-login"
+                        <el-button type="primary" size="medium" type="submit" class="btn-login"
                                    @click="submit">Sign In
                         </el-button>
 
