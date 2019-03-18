@@ -12,7 +12,7 @@ public class PdtDescribeModuleAction extends SellerAction<PdtDescribeModule>
     implements IPdtDescribeModuleAction {
 
   public void getList() throws IOException {
-    write(PdtDescribeModuleDAo.getList(getSupplier().getPkey()));
+    write(PdtDescribeModuleDAo.getList(getSupplier().getPkey(), getStart(), getLimit()));
   }
 
   public void getInfo() throws IOException {
