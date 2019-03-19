@@ -237,10 +237,17 @@
                             than.judgeEmailShow = true;
                             than.getemailCode();
                         }else{
-                            than.$message({
-                                message: res.data.msg,
-                                type: 'warning'
-                            });
+                            if(res.data.msg){
+                                than.$message({
+                                    message: res.data.msg,
+                                    type: 'warning'
+                                });
+                            }else{
+                                than.$message({
+                                    message: 'Verification Failed ',
+                                    type: 'warning'
+                                });
+                            }
                         }
                     }).catch(err => {
                         console.log(err)
@@ -264,10 +271,17 @@
                             than.again = 60
                             than.timeout();
                         }else{
-                            than.$message({
-                                message: res.data.msg,
-                                type: 'warning'
-                            });
+                            if(res.data.msg){
+                                than.$message({
+                                    message: res.data.msg,
+                                    type: 'warning'
+                                });
+                            }else{
+                                than.$message({
+                                    message: 'Verification Failed ',
+                                    type: 'warning'
+                                });
+                            }
                         }
                     }).catch(err => {
                         console.log(err)
@@ -308,6 +322,7 @@
             },
             //验证密码强度
             passwordtest: function () {
+                this.checkpass = true;
                 let lv = 0;
                 if (this.password.match(/[a-z]/g)) {
                     lv++;
@@ -341,7 +356,7 @@
                     this.check = true;
                     this.checkpasswordtext = '';
                 } else {
-                    this.hidden = true;
+                    this.hidden = false;
                     this.check = false;
                     this.checkpass = false;
                     this.checkpasswordtext = 'Please retype your right password';
@@ -385,10 +400,17 @@
                         if (res.data.ret == 1) {
                             than.state++
                         }else{
-                            than.$message({
-                                message: res.data.msg,
-                                type: 'warning'
-                            });
+                            if(res.data.msg){
+                                than.$message({
+                                    message: res.data.msg,
+                                    type: 'warning'
+                                });
+                            }else{
+                                than.$message({
+                                    message: 'Password reset failed ',
+                                    type: 'warning'
+                                });
+                            }
                         }
                     }).catch(err => {
                         console.log(err)
