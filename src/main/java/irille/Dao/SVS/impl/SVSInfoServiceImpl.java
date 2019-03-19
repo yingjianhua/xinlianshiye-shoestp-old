@@ -175,7 +175,6 @@ public class SVSInfoServiceImpl implements SVSInfoService {
       String team,
       String exhibition,
       String part) {
-    try {
       SVSInfo svs = SVSInfoDao.findSVSInfoBySupplier(supplier.getPkey());
       if (null == svs) throw new WebMessageException(ReturnCode.failure, "该用户暂未申请SVS认证");
       if (svs.gtStatus() != SVSAuthenticationStatus.FAIL)
@@ -199,9 +198,6 @@ public class SVSInfoServiceImpl implements SVSInfoService {
       SVSInfoDao.save(svs);
       pm.send(OTempType.SVS_APPR_NOTICE, supplier, null, svs);
       return CreateView(SVSInfoDao.save(svs));
-
-    } catch (Exception e) {
-      throw new WebMessageException(ReturnCode.service_wrong_data, "数据异常");
-    }
+   
   }
 }
