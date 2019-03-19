@@ -24,7 +24,7 @@ import irille.pub.idu.IduOther;
 import irille.pub.idu.IduUpdLines;
 import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
-import irille.pub.validate.ValidRegex;
+import irille.pub.validate.ValidRegex2;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltErate;
 import irille.shop.plt.PltErateDAO;
@@ -292,7 +292,7 @@ public class UsrPurchaseDAO {
   }
 
   private static void toValid(UsrPurchase bean) {
-    ValidRegex vr = new ValidRegex(bean);
+    ValidRegex2 vr = new ValidRegex2(bean);
     vr.validEmail(UsrPurchase.T.EMAIL);
   }
 

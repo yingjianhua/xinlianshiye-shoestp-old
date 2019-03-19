@@ -16,7 +16,7 @@ import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduIns;
 import irille.pub.idu.IduUpd;
-import irille.pub.validate.ValidRegex;
+import irille.pub.validate.ValidRegex2;
 import irille.shop.plt.PltArea;
 import irille.shop.plt.PltCity;
 import irille.shop.plt.PltProvinces;
@@ -101,7 +101,7 @@ public class UsrMainDao {
    * @param bean
    */
   private static void toValid(UsrMain bean) {
-    ValidRegex vr = new ValidRegex(bean);
+    ValidRegex2 vr = new ValidRegex2(bean);
     vr.validEmail(UsrMain.T.EMAIL);
   }
 

@@ -25,12 +25,14 @@ import irille.pub.bean.query.SqlQuery;
 import irille.pub.bean.sql.SQL;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage;
+import irille.pub.validate.ValidForm;
+import irille.pub.validate.ValidRegex2;
 import irille.shop.pdt.PdtCatDAO;
 import irille.shop.plt.PltProvince;
 import irille.shop.prm.PrmGroupPurchase;
 import irille.shop.prm.PrmGroupPurchaseDAO;
-import irille.shop.usr.Usr.OStatus;
 import irille.shop.usr.*;
+import irille.shop.usr.Usr.OStatus;
 import irille.shop.usr.UsrSupplier.T;
 import irille.view.pdt.CategoryView;
 import irille.view.usr.SupplierView;
@@ -86,6 +88,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
   @NeedLogin
   public void insInfo() throws Exception {
     if (getUser().getUser_type() == 1) {
+      regex(); //正则校验
       getBean().setLoginName(getUser().getLoginName());
       UsrSupplier supplier = UsrSupplierDAO.insSupplier(getBean(), curLanguage());
       UsrAnnex annex = new UsrAnnex();
@@ -99,6 +102,27 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
       write();
     }
   }
+
+  //正则校验
+  public void regex() throws Exception{
+    ValidForm valid = new ValidForm(getBean());
+    valid.validNotEmpty(UsrSupplier.T.NAME,UsrSupplier.T.ENGLISH_NAME, UsrSupplier.T.COMPANY_ADDR,UsrSupplier.T.TARGETED_MARKET,UsrSupplier.T.PROD_PATTERN,UsrSupplier.T.CREDIT_CODE,UsrSupplier.T.CERT_PHOTO);
+    ValidRegex2 regex = new ValidRegex2(getBean());
+    regex.validAZLen(50,UsrSupplier.T.ENGLISH_NAME);
+    if(getBean().getAnnualProduction() != null) regex.validRegexMatched("[0-9]{1,30}", "年产量只能输入数字，且数字个数在1~30个之间",UsrSupplier.T.ANNUAL_PRODUCTION);
+    if(getBean().getTelephone() != null) regex.validPhone(UsrSupplier.T.TELEPHONE);
+    if(getBean().getPhone() != null) regex.validPhone(UsrSupplier.T.PHONE);
+    if(getBean().getFax() != null) regex.validRegexMatched("[0-9]{12,30}","传真只能输入数字，且数字个数在12~30个之间", UsrSupplier.T.FAX);
+    if(getBean().getPostcode() != null) regex.validRegexMatched("[0-9]{6}","邮编只能输入数字，且数字个数为6个", UsrSupplier.T.POSTCODE);
+    if(getBean().getRegisteredCapital() != null) regex.validRegexMatched("[A-Za-z0-9\\u4e00-\\u9fa5]+", "注册资本只能输入中文、英文和数字", UsrSupplier.T.REGISTERED_CAPITAL);
+    if(getBean().getEntity() != null) regex.validRegexMatched("[\\u4e00-\\u9fa5]{2,5}", "法定代表人只能输入中文，且个数为2~5个", UsrSupplier.T.ENTITY);
+    if(getBean().getDepartment() != null) regex.validRegexMatched("[A-Za-z\\u4e00-\\u9fa5]{1,15}", "联系人部门只能输入中文、英文，且个数在15个之内", UsrSupplier.T.DEPARTMENT);
+    if(getBean().getJobTitle() != null) regex.validRegexMatched("[A-Za-z\\u4e00-\\u9fa5]{1,15}", "联系人职称只能输入中文、英文，且个数在15个之内", UsrSupplier.T.JOB_TITLE);
+    if(getBean().getContactEmail() != null) regex.validEmail(UsrSupplier.T.CONTACT_EMAIL);
+    if(getBean().getIdCard() != null) regex.validRegexMatched("(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)", "请输入正确的18位身份证号码", T.ID_CARD);
+    if(getBean().getOperateIdCard() != null) regex.validRegexMatched("(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)", "请输入正确的18位身份证号码", T.OPERATE_ID_CARD);
+  }
+
 
   /**
    * 获取供应商信息
@@ -143,14 +167,24 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
    */
   public void updInfo() throws Exception {
     try {
+      regex(); //正则校验
       UsrAnnex annex = UsrAnnex.chkUniqueSupplier(false, getBean().getPkey());
       if (getBean().getPkey() != null) {
         annex.setCertPhotoName(certPhotoName);
         annex.setIdCardFrontPhotoName(idCardFrontPhotoName);
         annex.setContactsIdCardFrontPhotoName(contactsIdCardFrontPhotoName);
       }
+      UsrMain main = BeanBase.load(UsrMain.class, getBean().getUserid());
+      if(main != null){
+        main.setCompany(getBean().getName());
+        main.setAddress(getBean().getCompanyAddr());
+        main.setContacts(getBean().getContacts());
+        main.setTelphone(getBean().getPhone());
+        main.upd();
+      }
       UsrSupplier newSupplier = UsrSupplierDAO.updInfo(getBean());
       newSupplier.stStatus(OStatus.INIT);
+      newSupplier.stStoreStatus(Usr.SStatus.DOWN);
       newSupplier.upd();
       annex.upd();
       write();

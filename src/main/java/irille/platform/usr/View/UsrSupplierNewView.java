@@ -19,8 +19,6 @@ public class UsrSupplierNewView implements BaseView {
   private String postcode; // 邮编
   private String fax; // 传真
   private String mainEmail; // 供应商注册时的邮箱
-  private String mainContacts; // 供应商注册时的联系人姓名
-  private String mainTelphone; // 供应商注册时的联系人电话
   private Integer mainProvince; // 供应商注册时的省
   private Integer mainCity; // 供应商注册时的市
   private Integer mainZone; // 供应商注册时的区
