@@ -18,7 +18,11 @@
         color: #ffffff;
         margin-right: 10px;
     }
-
+    .el-button:focus, .el-button:hover{
+        color: #ffffff;
+        border-color: #10389c;
+        background-color: #10389c;
+    }
     .el-textarea__inner {
         resize: none
     }
@@ -156,7 +160,7 @@
                     </el-row>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="" @click="submitForm('form')">Confirm</el-button>
+                    <el-button :disabled="flag" type="button" @click="submitForm('form')">Confirm</el-button>
                     <a href="/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1"
                        style="color: #9fafd7;font: size 12px;" target="_blank">Add more requirements</a>
                 </el-form-item>
@@ -169,10 +173,10 @@
                 Favorites
             </div>
             <div class="favorites-main flexSb">
-                <a href="/home/usr_UsrFavorites_myfavorite" target="_blank"><img src="/home/v3/static/images/user/icon_left_d.png" alt=""></a>
+                <a href="/home/usr_UsrFavorites_myfavorite"><img src="/home/v3/static/images/user/icon_left_d.png" alt=""></a>
                 <ul class="favorites-list clearfix">
                     <li class="favorites-item" v-for="(item,index) in favoriteList" :key="index">
-                        <a :href="'/home/pdt_PdtProduct_gtProductsInfo?id='+item.id" target="_blank">
+                        <a :href="'/home/pdt_PdtProduct_gtProductsInfo?id='+item.pdtPkey" target="_blank">
                             <div class="favorites-item-img">
                                 <img :src="image(item.img,'?x-oss-process=image/resize,m_pad,h_150,w_150')" alt="">
                             </div>
@@ -182,7 +186,7 @@
                         </a>
                     </li>
                 </ul>
-                <a href="/home/usr_UsrFavorites_myfavorite" target="_blank"><img src="/home/v3/static/images/user/icon_right_d.png" alt=""></a>
+                <a href="/home/usr_UsrFavorites_myfavorite"><img src="/home/v3/static/images/user/icon_right_d.png" alt=""></a>
             </div>
         </div>
         <!-- 个性化设置 -->
@@ -190,7 +194,8 @@
             <h3>Hi {{userInfo.nickname}}</h3>
             <p>Please complete your personalized profile to enjoy carefully selected product recommendations, access to
                 selected & verified Trade Assurance sellers, and more.</p>
-            <a href="javascript:void(0)" target="_blank">Personalize Now</a>
+            <a href="javascript: void(0);">Personalize Now</a>
+            <!-- <a href="#"  @click="return false" >Personalize Now</a> -->
         </div>
     </div>
 </div>
@@ -223,6 +228,7 @@
                 callback();
             };
             return{
+                flag : false, 
                 isShowAvatarUpload: false, // 头像上传框
             form: {
                 title: '',
@@ -316,6 +322,7 @@
             submitForm(formName) { //表单提交
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                        this.flag = true;
                         let data = JSON.stringify(this.form)
                         // console.log(this.form)
                         // console.log('submit!');
@@ -329,7 +336,7 @@
                                     // 提示信息
                                     this.$message({
                                         showClose: true,
-                                        message: '提交成功',
+                                        message: 'Submitted successfully',
                                         type: 'success'
                                     });
                                     // setTimeout(function () {
@@ -339,13 +346,14 @@
                                     // }, 2000)
                                     setTimeout(function () {
                                         window.location.reload();
-                                    }, 2000)
+                                    }, 1500)
                                     // 未登录时
                                 } else if (res.data.ret == -1) {
                                     window.location.href =
                                         '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_userIndex';
                                     // 提交失败时
                                 } else {
+                                    this.flag = false;
                                     this.$alert(res.data.msg, {
                                         confirmButtonText: 'OK'
                                     });
@@ -353,6 +361,7 @@
 
                             })
                             .catch((err) => {
+                                this.flag = false;
                                 console.log(err)
                             })
                     } else {
