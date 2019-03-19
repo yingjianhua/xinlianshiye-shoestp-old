@@ -65,29 +65,32 @@ public class SVSInfoServiceImpl implements SVSInfoService {
    * @throws JsonParseException
    * @author GS
    */
-  private SVSDetailedInfoView CreateView(SVSInfo info) throws Exception {
-    SVSDetailedInfoView view = new SVSDetailedInfoView();
-    view.setId(info.getPkey());
-    view.setApplicationTime(info.getApplicationTime());
-    view.setBaseScore(info.getBaseScore());
-    view.setGrade(info.getGrade());
-    view.setStatus(info.getStatus());
-    // view.setSupplier(info.gtSupplier());
-    System.out.println(info.getProductQuality());
-    view.setCapacity(om.readValue(info.getProductionCapacity(), productionCapacity.class));
-    view.setExhibition(om.readValue(info.getExhibitionAttended(), exhibitionAttended.class));
-    view.setFactory(om.readValue(info.getRealFactory(), realFactory.class));
-    view.setQuality(om.readValue(info.getProductQuality(), productQuality.class));
-    view.setResearch(om.readValue(info.getResearch(), research.class));
-    view.setTeam(om.readValue(info.getForeignTradeTeam(), tradeTeam.class));
-    view.setPart(om.readValue(info.getPartner(), partner.class));
-    if (null != info.getAuthenticationTime()
-        && info.gtStatus() != SVSAuthenticationStatus.ToBeAudited
-        && info.gtStatus() != SVSAuthenticationStatus.NoApplication)
-      view.setAutTime(info.getAuthenticationTime());
-    view.setCount(info.getApplicationCount());
-    if (info.gtStatus() == SVSAuthenticationStatus.FAIL) view.setReason(info.getFailureReasons());
-    return view;
+  private SVSDetailedInfoView CreateView(SVSInfo info) {
+    try {
+      SVSDetailedInfoView view = new SVSDetailedInfoView();
+      view.setId(info.getPkey());
+      view.setApplicationTime(info.getApplicationTime());
+      view.setBaseScore(info.getBaseScore());
+      view.setGrade(info.getGrade());
+      view.setStatus(info.getStatus());
+      view.setCapacity(om.readValue(info.getProductionCapacity(), productionCapacity.class));
+      view.setExhibition(om.readValue(info.getExhibitionAttended(), exhibitionAttended.class));
+      view.setFactory(om.readValue(info.getRealFactory(), realFactory.class));
+      view.setQuality(om.readValue(info.getProductQuality(), productQuality.class));
+      view.setResearch(om.readValue(info.getResearch(), research.class));
+      view.setTeam(om.readValue(info.getForeignTradeTeam(), tradeTeam.class));
+      view.setPart(om.readValue(info.getPartner(), partner.class));
+      if (null != info.getAuthenticationTime()
+          && info.gtStatus() != SVSAuthenticationStatus.ToBeAudited
+          && info.gtStatus() != SVSAuthenticationStatus.NoApplication)
+        view.setAutTime(info.getAuthenticationTime());
+      view.setCount(info.getApplicationCount());
+      if (info.gtStatus() == SVSAuthenticationStatus.FAIL) view.setReason(info.getFailureReasons());
+      return view;
+
+    } catch (Exception e) {
+      throw new WebMessageException(ReturnCode.service_wrong_data, "数据异常");
+    }
   }
 
   /**
@@ -143,13 +146,18 @@ public class SVSInfoServiceImpl implements SVSInfoService {
    * @return
    */
   private Long timeDiffForDay(Date start, Date end) {
-    long diff = end.getTime() - start.getTime();
-    long nh = 1000 * 60 * 60 * 24; // 一小时的毫秒数
-    long diffDay = diff / nh; // 计算差多少小时
-    if (diff % nh > 0) {
-      diffDay += 1;
+    try {
+      long diff = end.getTime() - start.getTime();
+      long nh = 1000 * 60 * 60 * 24; // 一小时的毫秒数
+      long diffDay = diff / nh; // 计算差多少小时
+      if (diff % nh > 0) {
+        diffDay += 1;
+      }
+      return diffDay;
+
+    } catch (Exception e) {
+      throw new WebMessageException(ReturnCode.failure, "时间间隔计算异常");
     }
-    return diffDay;
   }
 
   /**
@@ -166,30 +174,34 @@ public class SVSInfoServiceImpl implements SVSInfoService {
       String quality,
       String team,
       String exhibition,
-      String part)
-      throws Exception {
-    SVSInfo svs = SVSInfoDao.findSVSInfoBySupplier(supplier.getPkey());
-    if (null == svs) throw new WebMessageException(ReturnCode.failure, "该用户暂未申请SVS认证");
-    if (svs.gtStatus() != SVSAuthenticationStatus.FAIL)
-      throw new WebMessageException(ReturnCode.failure, "该商户无须平台手动认证");
-    int score =
-        GetBaseScoreUtils.getBaseScore(res, capacity, factory, quality, team, exhibition, part);
-    if (score < 30) throw new WebMessageException(ReturnCode.failure, "未满足银牌基础分值,无法提交认证");
-    if (score >= 30 && score <= 59) svs.stGrade(SVSGradeType.SILVER);
-    if (score >= 60) svs.stGrade(SVSGradeType.GOLD);
-    svs.stStatus(SVSAuthenticationStatus.SUCCESS);
-    svs.setBaseScore(score);
-    svs.setApplicationTime(new Date());
-    svs.setResearch(res);
-    svs.setProductionCapacity(capacity);
-    svs.setRealFactory(factory);
-    svs.setProductQuality(quality);
-    svs.setForeignTradeTeam(team);
-    svs.setExhibitionAttended(exhibition);
-    svs.setAuthenticationTime(new Date());
-    svs.setPartner(part);
-    SVSInfoDao.save(svs);
-    pm.send(OTempType.SVS_APPR_NOTICE, supplier, null, svs);
-    return CreateView(SVSInfoDao.save(svs));
+      String part) {
+    try {
+      SVSInfo svs = SVSInfoDao.findSVSInfoBySupplier(supplier.getPkey());
+      if (null == svs) throw new WebMessageException(ReturnCode.failure, "该用户暂未申请SVS认证");
+      if (svs.gtStatus() != SVSAuthenticationStatus.FAIL)
+        throw new WebMessageException(ReturnCode.failure, "该商户无须平台手动认证");
+      int score =
+          GetBaseScoreUtils.getBaseScore(res, capacity, factory, quality, team, exhibition, part);
+      if (score < 30) throw new WebMessageException(ReturnCode.failure, "未满足银牌基础分值,无法提交认证");
+      if (score >= 30 && score <= 59) svs.stGrade(SVSGradeType.SILVER);
+      if (score >= 60) svs.stGrade(SVSGradeType.GOLD);
+      svs.stStatus(SVSAuthenticationStatus.SUCCESS);
+      svs.setBaseScore(score);
+      svs.setApplicationTime(new Date());
+      svs.setResearch(res);
+      svs.setProductionCapacity(capacity);
+      svs.setRealFactory(factory);
+      svs.setProductQuality(quality);
+      svs.setForeignTradeTeam(team);
+      svs.setExhibitionAttended(exhibition);
+      svs.setAuthenticationTime(new Date());
+      svs.setPartner(part);
+      SVSInfoDao.save(svs);
+      pm.send(OTempType.SVS_APPR_NOTICE, supplier, null, svs);
+      return CreateView(SVSInfoDao.save(svs));
+
+    } catch (Exception e) {
+      throw new WebMessageException(ReturnCode.service_wrong_data, "数据异常");
+    }
   }
 }
