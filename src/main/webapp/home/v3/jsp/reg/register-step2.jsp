@@ -599,7 +599,7 @@
                         this.provinceList = res.data.result;
                     })
                     .catch((error) => {
-                        console.log(error);
+                        this.$message.error(error || 'Network error,please try again later');
                     });
             },
             // 获取省对应的市列表
@@ -619,7 +619,7 @@
                         this.cityList = res.data.result;
                     })
                     .catch((error) => {
-                        console.log(error);
+                        this.$message.error(error || 'Network error,please try again later');
                     });
             },
             // 获取市对应的区列表
@@ -639,7 +639,7 @@
                         this.townList = res.data.result;
                     })
                     .catch((error) => {
-                        console.log(error);
+                        this.$message.error(error || 'Network error,please try again later');
                     });
             },
             // 获取国家列表 - buyer用
@@ -655,7 +655,7 @@
                         this.countryList = res.data.result;
                     })
                     .catch((error) => {
-                        console.log(error);
+                        this.$message.error(error || 'Network error,please try again later');
                     });
             },
 
@@ -737,7 +737,7 @@
                             })
                             .catch((error) => {
                                 this.refreshCode();
-                                console.log(error);
+                                this.$message.error(error || 'Network error,please try again later');
                             });
 
                         console.log('submit');

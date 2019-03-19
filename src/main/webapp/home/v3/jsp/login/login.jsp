@@ -242,7 +242,7 @@
                         }
                     })
                     .catch((error) => {
-                        console.log(error);
+                        this.$message.error(error || 'Network error,please try again later');
                     });
             },
 
