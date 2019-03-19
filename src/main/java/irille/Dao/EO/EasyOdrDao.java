@@ -210,7 +210,7 @@ public class EasyOdrDao {
                 WHERE(T.TIME, "<?", osv.getEndTime());
               }
               if (null != osv.getNumber()) {
-                WHERE(T.ORDER_NUM, "like '%" + osv.getNumber() + "%'");
+                WHERE(T.ORDER_NUM, "like ?","%" + osv.getNumber() + "%");
               }
             }
             if (null != supplierid) {

@@ -1,27 +1,30 @@
 package irille.Aops;
 
+import java.util.StringJoiner;
+
 import irille.pub.util.CacheUtils;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.apache.struts2.ServletActionContext;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/9 Time: 10:06 */
 public class CacheAopsInterceptor implements MethodInterceptor {
 
   @Override
   public Object invoke(MethodInvocation methodInvocation) throws Throwable {
-    StringBuffer buffer = new StringBuffer();
+    StringJoiner buffer = new StringJoiner("_");
     for (Object argument : methodInvocation.getArguments()) {
-      if (argument != null) buffer.append(argument);
+      if (argument != null) buffer.add(String.valueOf(argument));
     }
     if (buffer.length() > 0) {
-      buffer
-          .insert(
-              0,
-              String.valueOf(
-                  (methodInvocation.getClass().toString()
-                      + methodInvocation.getMethod().getName())))
-          .append("_");
+      buffer.add(
+          String.valueOf(
+              (methodInvocation.getClass().toString()
+                  + methodInvocation.getMethod().getName()
+                  + methodInvocation.getMethod().getParameterTypes())));
     }
+    buffer.add(ServletActionContext.getRequest().getSession().getId());
+    buffer.add(methodInvocation.getMethod().getReturnType().getSimpleName());
     Object result =
         CacheUtils.cache.get(
             buffer.toString(),

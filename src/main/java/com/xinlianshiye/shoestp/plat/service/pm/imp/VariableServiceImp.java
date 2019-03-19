@@ -4,9 +4,17 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.xinlianshiye.shoestp.plat.service.pm.IVariableService;
 import com.xinlianshiye.shoestp.plat.view.pm.VariableView;
@@ -22,8 +30,6 @@ import irille.pub.tb.IEnumOpt;
 import irille.pub.util.Scanner;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 @Slf4j
 public class VariableServiceImp implements IVariableService {
@@ -228,6 +234,37 @@ public class VariableServiceImp implements IVariableService {
     }
 
     return template;
+  }
+
+  @Override
+  public boolean hasUnableVariable(String template, Byte type) {
+    List<String> varibales = varibaleFromContent(template);
+    Map<String, VariableView> vs = map.get(Integer.valueOf(type));
+    boolean flag = true;
+    for (String v : varibales) {
+      if ("now".equals(v) || "当前时刻".equals(v)) {
+        continue;
+      }
+      if (!vs.containsKey(v)) {
+        flag = false;
+        break;
+      }
+    }
+    return flag;
+  }
+
+  @Override
+  public List<String> varibaleFromContent(String template) {
+    String reg = "\\{\\$[\\S]*?\\}{1}";
+    Pattern pattern = Pattern.compile(reg);
+    Matcher matcher = pattern.matcher(template);
+    List<String> variables = new ArrayList<>();
+    while (matcher.find()) {
+      String str = matcher.group();
+      String key = str.substring(str.indexOf("$") + 1, str.lastIndexOf("}"));
+      variables.add(key);
+    }
+    return variables;
   }
 
   @Override

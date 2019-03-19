@@ -17,4 +17,8 @@ public interface IVariableService {
   String render(Map<String, VariableView> variableMap, String template, Object[] objects);
 
   Map<String, VariableView> getMap(OTempType tempType);
+
+  boolean hasUnableVariable(String template, Byte type);
+
+  List<String> varibaleFromContent(String template);
 }

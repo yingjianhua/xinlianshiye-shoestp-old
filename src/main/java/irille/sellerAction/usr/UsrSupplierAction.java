@@ -16,6 +16,8 @@ import irille.pub.bean.Query;
 import irille.pub.bean.query.SqlQuery;
 import irille.pub.bean.sql.SQL;
 import irille.pub.tb.FldLanguage.Language;
+import irille.pub.validate.ValidForm;
+import irille.pub.validate.ValidRegex2;
 import irille.pub.verify.RandomImageServlet;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.usr.inf.IUsrSupplierAction;
@@ -423,7 +425,6 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
   }
 
   @Getter @Setter private Integer purchasePkey;
-  @Getter @Setter private Language lang;
 
   @Getter @Setter private String contactsIdCardFrontPhotoName;
   @Getter @Setter private String idCardFrontPhotoName;
@@ -436,6 +437,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
    */
   public void updInfo() throws Exception {
     try {
+      regex();
       UsrAnnex annex = UsrAnnex.chkUniqueSupplier(false, getSupplier().getPkey());
       if (annex != null) {
         annex.setIdCardFrontPhotoName(idCardFrontPhotoName);
@@ -447,6 +449,12 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
         annex1.setContactsIdCardFrontPhotoName(contactsIdCardFrontPhotoName);
         annex1.ins();
       }
+      UsrMain main = BeanBase.load(UsrMain.class, getBean().getUserid());
+      if(main != null){
+        main.setContacts(getBean().getContacts());
+        main.setTelphone(getBean().getPhone());
+        main.upd();
+      }
       UsrSupplier newSupplier = UsrSupplierDAO.updInfo(getBean());
       newSupplier.upd();
       annex.upd();
@@ -454,6 +462,42 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     } catch (Exp e) {
       writeErr(e.getLastMessage());
     }
+  }
+
+  //正则校验
+  public void regex() throws Exception{
+    ValidForm valid = new ValidForm(getBean());
+    valid.validNotEmpty(UsrSupplier.T.NAME,UsrSupplier.T.ENGLISH_NAME, UsrSupplier.T.COMPANY_ADDR,UsrSupplier.T.TARGETED_MARKET,UsrSupplier.T.PROD_PATTERN,UsrSupplier.T.CREDIT_CODE,UsrSupplier.T.CERT_PHOTO);
+    ValidRegex2 regex = new ValidRegex2(getBean());
+    regex.validAZLen(50,UsrSupplier.T.ENGLISH_NAME);
+    if(getBean().getAnnualProduction() != null)
+      regex.validRegexMatched("[0-9]{1,30}", "年产量只能输入数字，且数字个数在1~30个之间",UsrSupplier.T.ANNUAL_PRODUCTION);
+    if(getBean().getTelephone() != null)
+      regex.validPhone(UsrSupplier.T.TELEPHONE);
+    if(getBean().getPhone() != null)
+      regex.validPhone(UsrSupplier.T.PHONE);
+    if(getBean().getFax() != null)
+      regex.validRegexMatched("[0-9]{12,30}","传真只能输入数字，且数字个数在12~30个之间", UsrSupplier.T.FAX);
+    if(getBean().getPostcode() != null)
+      regex.validRegexMatched("[0-9]{6}","邮编只能输入数字，且数字个数为6个", UsrSupplier.T.POSTCODE);
+    if(getBean().getRegisteredCapital() != null)
+      regex.validRegexMatched("[A-Za-z0-9\\u4e00-\\u9fa5]+", "注册资本只能输入中文、英文和数字", UsrSupplier.T.REGISTERED_CAPITAL);
+    if(getBean().getEntity() != null)
+      regex.validRegexMatched("[\\u4e00-\\u9fa5]{2,5}", "法定代表人只能输入中文，且个数为2~5个", UsrSupplier.T.ENTITY);
+    if(getBean().getDepartment() != null)
+      regex.validRegexMatched("[A-Za-z\\u4e00-\\u9fa5]{1,15}", "联系人部门只能输入中文、英文，且个数在15个之内", UsrSupplier.T.DEPARTMENT);
+    if(getBean().getJobTitle() != null)
+      regex.validRegexMatched("[A-Za-z\\u4e00-\\u9fa5]{1,15}", "联系人职称只能输入中文、英文，且个数在15个之内", UsrSupplier.T.JOB_TITLE);
+    if(getBean().getContactEmail() != null)
+      regex.validEmail(UsrSupplier.T.CONTACT_EMAIL);
+    if (getBean().getIdCard() != null)
+      regex.validRegexMatched(
+          "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)", "请输入正确的18位身份证号码", UsrSupplier.T.ID_CARD);
+    if (getBean().getOperateIdCard() != null)
+      regex.validRegexMatched(
+          "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)",
+          "请输入正确的18位身份证号码",
+          UsrSupplier.T.OPERATE_ID_CARD);
   }
 
   public String getNewPwd() {

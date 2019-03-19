@@ -1,6 +1,10 @@
 package irille.sellerAction.pdt;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import irille.action.dataimport.util.StringUtil;
 import irille.pub.Exp;
@@ -14,8 +18,6 @@ import irille.shop.pdt.PdtSizeDAO;
 import irille.shop.plt.PltConfigDAO;
 import lombok.Getter;
 import lombok.Setter;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 public class PdtSizeAction extends SellerAction<PdtSize> implements IPdtSizeAction {
 
@@ -110,6 +112,12 @@ public class PdtSizeAction extends SellerAction<PdtSize> implements IPdtSizeActi
    * @throws Exception
    */
   public void insSize() throws Exception {
+    try {
+      BigDecimal b = new BigDecimal(sizeName);
+    } catch (NumberFormatException e) {
+      writeErr(-1, "尺寸必须数字");
+      return;
+    }
     if (sizeType == null || !StringUtil.hasValue(sizeName)) {
       writeErr(0, "参数错误");
       return;
@@ -128,6 +136,12 @@ public class PdtSizeAction extends SellerAction<PdtSize> implements IPdtSizeActi
   }
 
   public void updSize() throws Exception {
+    try {
+      BigDecimal b = new BigDecimal(sizeName);
+    } catch (NumberFormatException e) {
+      writeErr(-1, "尺寸必须数字");
+      return;
+    }
     if (!StringUtil.hasValue(getBean().getName())) {
       writeErr(0, "参数错误");
       return;

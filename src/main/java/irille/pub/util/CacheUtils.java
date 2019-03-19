@@ -50,7 +50,7 @@ public class CacheUtils {
    * @date 2018/11/8 14:34
    * @author lijie@shoestp.cn
    */
-  public static Cache cache = Caffeine.newBuilder().expireAfterAccess(15, TimeUnit.MINUTES).build();
+  public static Cache cache = Caffeine.newBuilder().expireAfterAccess(5, TimeUnit.MINUTES).build();
   /**
    * @Description: PK大赛 联合采购男鞋女鞋儿童鞋分类 缓存数据
    *

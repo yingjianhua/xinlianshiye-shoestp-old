@@ -2428,7 +2428,7 @@ public class OdrOrderDAO {
           {
             SELECT(OdrOrder.class).FROM(OdrOrder.class);
             if (orderNum != null) {
-              WHERE(T.ORDER_NUM, "like '%" + orderNum + "%'");
+              WHERE(T.ORDER_NUM, "like ?"," '%" + orderNum + "%'");
             }
             if (state != null) {
               WHERE(T.STATE, "=?", state);

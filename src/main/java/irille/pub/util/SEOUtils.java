@@ -11,6 +11,9 @@ public class SEOUtils {
           || json.lastIndexOf("}") == json.length() + 1
           || json.lastIndexOf("}") == json.length() - 1) {
         JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();
+        if (jsonObject.get("en") == null) {
+          return getPdtProductTitle(pkey, "Shoestp");
+        }
         return getPdtProductTitle(pkey, jsonObject.get("en").getAsString());
       } else {
         json.trim();
