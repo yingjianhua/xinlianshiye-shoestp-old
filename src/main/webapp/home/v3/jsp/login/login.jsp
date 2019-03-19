@@ -109,6 +109,8 @@
 </div>
 <script src="/home/v3/static/js/index-top.js"></script>
 <script src="/home/v3/static/js/index-bottom.js"></script>
+<%--公共函数--%>
+<script src="/home/utils/util.js"></script>
 <script>
     // 密码验证
     // const validatePsd = (rule, value, callback) => {
@@ -213,6 +215,9 @@
                         loginName: this.loginForm.email,
                         pwd: this.loginForm.psd,
                     }
+                }
+                if( util_function_obj.GetQueryString("jumpUrl") ){
+                    postData.jumpUrl = util_function_obj.GetLoginJumpBackUrl();
                 }
 
                 axios.post('/home/usr_UsrMain_login', Qs.stringify(postData))
