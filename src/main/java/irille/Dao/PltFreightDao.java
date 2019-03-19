@@ -230,10 +230,10 @@ public class PltFreightDao {
     if (pltFreightLine.getAggravatePrice().compareTo(BigDecimal.ZERO) < 0) {
       throw LOG.err(Msgs.priceMinErr, PltFreightLine.T.AGGRAVATE_PRICE.getFld().getName());
     }
-    if (pltFreightLine.getWeightSection() < 0) {
+    if (pltFreightLine.getWeightSection() .compareTo(BigDecimal.ZERO) < 0) {
       throw LOG.err(Msgs.priceMinErr, PltFreightLine.T.WEIGHT_SECTION.getFld().getName());
     }
-    if (pltFreightLine.getAggravateSection() < 0) {
+    if (pltFreightLine.getAggravateSection().compareTo(BigDecimal.ZERO) < 0) {
       throw LOG.err(Msgs.priceMinErr, PltFreightLine.T.AGGRAVATE_SECTION.getFld().getName());
     }
     pltFreightLine.upd();
