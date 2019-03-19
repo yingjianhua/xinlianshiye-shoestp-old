@@ -175,29 +175,28 @@ public class SVSInfoServiceImpl implements SVSInfoService {
       String team,
       String exhibition,
       String part) {
-      SVSInfo svs = SVSInfoDao.findSVSInfoBySupplier(supplier.getPkey());
-      if (null == svs) throw new WebMessageException(ReturnCode.failure, "该用户暂未申请SVS认证");
-      if (svs.gtStatus() != SVSAuthenticationStatus.FAIL)
-        throw new WebMessageException(ReturnCode.failure, "该商户无须平台手动认证");
-      int score =
-          GetBaseScoreUtils.getBaseScore(res, capacity, factory, quality, team, exhibition, part);
-      if (score < 30) throw new WebMessageException(ReturnCode.failure, "未满足银牌基础分值,无法提交认证");
-      if (score >= 30 && score <= 59) svs.stGrade(SVSGradeType.SILVER);
-      if (score >= 60) svs.stGrade(SVSGradeType.GOLD);
-      svs.stStatus(SVSAuthenticationStatus.SUCCESS);
-      svs.setBaseScore(score);
-      svs.setApplicationTime(new Date());
-      svs.setResearch(res);
-      svs.setProductionCapacity(capacity);
-      svs.setRealFactory(factory);
-      svs.setProductQuality(quality);
-      svs.setForeignTradeTeam(team);
-      svs.setExhibitionAttended(exhibition);
-      svs.setAuthenticationTime(new Date());
-      svs.setPartner(part);
-      SVSInfoDao.save(svs);
-      pm.send(OTempType.SVS_APPR_NOTICE, supplier, null, svs);
-      return CreateView(SVSInfoDao.save(svs));
-   
+    SVSInfo svs = SVSInfoDao.findSVSInfoBySupplier(supplier.getPkey());
+    if (null == svs) throw new WebMessageException(ReturnCode.failure, "该用户暂未申请SVS认证");
+    if (svs.gtStatus() != SVSAuthenticationStatus.FAIL)
+      throw new WebMessageException(ReturnCode.failure, "该商户无须平台手动认证");
+    int score =
+        GetBaseScoreUtils.getBaseScore(res, capacity, factory, quality, team, exhibition, part);
+    if (score < 30) throw new WebMessageException(ReturnCode.failure, "未满足银牌基础分值,无法提交认证");
+    if (score >= 30 && score <= 59) svs.stGrade(SVSGradeType.SILVER);
+    if (score >= 60) svs.stGrade(SVSGradeType.GOLD);
+    svs.stStatus(SVSAuthenticationStatus.SUCCESS);
+    svs.setBaseScore(score);
+    svs.setApplicationTime(new Date());
+    svs.setResearch(res);
+    svs.setProductionCapacity(capacity);
+    svs.setRealFactory(factory);
+    svs.setProductQuality(quality);
+    svs.setForeignTradeTeam(team);
+    svs.setExhibitionAttended(exhibition);
+    svs.setAuthenticationTime(new Date());
+    svs.setPartner(part);
+    SVSInfoDao.save(svs);
+    pm.send(OTempType.SVS_APPR_NOTICE, supplier, null, svs);
+    return CreateView(SVSInfoDao.save(svs));
   }
 }
