@@ -358,7 +358,6 @@
 </script>
 <script src="/home/v3/static/js/index-top.js"></script>
 <script src="/home/v3/static/js/index-bottom.js"></script>
-<script src="/home/utils/util.js"></script>
 <script type="text/javascript">
     // 最高价格 - 不鞥低于最低价
     const validateMaxPrice = (rule, value, callback) => {
@@ -557,7 +556,7 @@
             beforeUpload(file) {
                 if (!isLogin) {
                     sessionStorage['Temp_publish_form'] = JSON.stringify(this.form)
-                    util_function_obj.alertWhenNoLogin(this, "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView");
+                    util_function_obj.alertWhenNoLogin(this, "jumpUrl=/home/usr_UsrConsult_publishView");
                     return
                 }
                 const isLt2M = file.size / 1024 < 500;
@@ -601,7 +600,7 @@
 
                 if (!isLogin) {
                     sessionStorage['Temp_publish_form'] = JSON.stringify(this.form);
-                    util_function_obj.alertWhenNoLogin(this, "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView");
+                    util_function_obj.alertWhenNoLogin(this, "jumpUrl=/home/usr_UsrConsult_publishView");
                     return;
                 }
 
@@ -672,7 +671,7 @@
                                         // 未登录时
                                     } else if (res.data.ret == -1) {
                                         sessionStorage['Temp_publish_form'] = JSON.stringify(this.form)
-                                        util_function_obj.alertWhenNoLogin(this, "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView");
+                                        util_function_obj.alertWhenNoLogin(this, "jumpUrl=/home/usr_UsrConsult_publishView");
                                         return
                                     } else {
                                         console.log('提交失败else');
