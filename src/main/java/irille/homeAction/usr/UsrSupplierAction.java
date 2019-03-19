@@ -119,8 +119,12 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
     if(getBean().getDepartment() != null) regex.validRegexMatched("[A-Za-z\\u4e00-\\u9fa5]{1,15}", "联系人部门只能输入中文、英文，且个数在15个之内", UsrSupplier.T.DEPARTMENT);
     if(getBean().getJobTitle() != null) regex.validRegexMatched("[A-Za-z\\u4e00-\\u9fa5]{1,15}", "联系人职称只能输入中文、英文，且个数在15个之内", UsrSupplier.T.JOB_TITLE);
     if(getBean().getContactEmail() != null) regex.validEmail(UsrSupplier.T.CONTACT_EMAIL);
-    if(getBean().getIdCard() != null) regex.validRegexMatched("(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)", "请输入正确的18位身份证号码", T.ID_CARD);
-    if(getBean().getOperateIdCard() != null) regex.validRegexMatched("(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)", "请输入正确的18位身份证号码", T.OPERATE_ID_CARD);
+    if (getBean().getIdCard() != null)
+      regex.validRegexMatched(
+          "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)", "请输入正确的18位身份证号码", T.ID_CARD);
+    if (getBean().getOperateIdCard() != null)
+      regex.validRegexMatched(
+          "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)", "请输入正确的18位身份证号码", T.OPERATE_ID_CARD);
   }
 
 

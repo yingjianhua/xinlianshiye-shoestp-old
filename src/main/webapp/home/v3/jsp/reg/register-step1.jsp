@@ -185,7 +185,7 @@
                 ],
                 code: [
                     {required: true, message: 'Code can\'t be empty!', trigger: 'blur'},
-                    { min: 4, max: 4, message: 'Please enter 4 characters or numbers', trigger: 'blur' }
+                    // { min: 4, max: 4, message: 'Please enter 4 characters or numbers', trigger: 'blur' }
                 ],
             },
         },

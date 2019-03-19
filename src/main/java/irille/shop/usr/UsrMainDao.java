@@ -2,13 +2,10 @@ package irille.shop.usr;
 
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
 
-import irille.homeAction.HomeAction;
 import irille.platform.usr.View.UsrMainView;
 import irille.pub.DateTools;
 import irille.pub.LogMessage;
@@ -22,6 +19,8 @@ import irille.pub.exception.WebMessageException;
 import irille.pub.idu.IduIns;
 import irille.pub.idu.IduUpd;
 import irille.pub.tb.FldLanguage.Language;
+import irille.pub.validate.Regular;
+import irille.pub.validate.ValidRegex;
 import irille.pub.validate.ValidRegex2;
 import irille.shop.plt.PltArea;
 import irille.shop.plt.PltCity;
@@ -67,18 +66,6 @@ public class UsrMainDao {
 		@Override
 		public void valid() {
 			super.valid();
-			UsrValid valid = new UsrValid(getB());
-			if (getB().getEmail() == null)
-				throw new WebMessageException(
-						MessageBuild.buildMessage(ReturnCode.valid_mail_notnull, HomeAction.curLanguage()));
-			UsrMain main = UsrMain.chkUniqueEmail(false, getB().getEmail());
-			valid.validCopy(main);
-			valid.validWrongPassword(pwd, pwdA);
-			valid.validMail(getB().getEmail());
-			if (getB().getTelphone() != null) {
-				valid.validPhone(getB().getTelphone());
-			}
-			// toValid(getB());
 		}
 
 		@Override
@@ -114,7 +101,7 @@ public class UsrMainDao {
 	 * @param bean
 	 */
 	private static void toValid(UsrMain bean) {
-    ValidRegex2 vr = new ValidRegex2(bean);
+		ValidRegex2 vr = new ValidRegex2(bean);
 		vr.validEmail(UsrMain.T.EMAIL);
 	}
 
@@ -140,17 +127,17 @@ public class UsrMainDao {
 			this.newPwd = newPwd;
 		}
 
-    private String newPwd;
-    private String oldPwd;
-    private Language language;
+		private String newPwd;
+		private String oldPwd;
+		private Language language;
 
-    public Language getLanguage() {
-      return language;
-    }
+		public Language getLanguage() {
+			return language;
+		}
 
-    public void setLanguage(Language language) {
-      this.language = language;
-    }
+		public void setLanguage(Language language) {
+			this.language = language;
+		}
 
 		public String getEmail() {
 			return email;
@@ -170,21 +157,18 @@ public class UsrMainDao {
 			setB(usr);
 		}
 
-    @Override
-    public void valid() {
-      super.valid();
-      Pattern Password_Pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-zA-Z])(.{6,20})$");
-      Matcher matcher = Password_Pattern.matcher(oldPwd);
-      if (!matcher.matches()) {
-        throw new WebMessageException(
-            MessageBuild.buildMessage(ReturnCode.password_format, language));
-        //        throw LOG.errTran("密码为6到20为的数字和字母组成\"", "密码为6到20为的数字和字母组成");
-      }
-      if (!oldPwd.equals(newPwd)) {
-        throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.dif_password, language));
-        //        throw LOG.errTran("两次密码输入不一致", "两次密码输入不一致");
-      }
-    }
+		@Override
+		public void valid() {
+			super.valid();
+			if (!ValidRegex.regMarch(Regular.REGULAR_PWD, oldPwd)) {
+				throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.password_format, language));
+				// throw LOG.errTran("密码为6到20为的数字和字母组成\"", "密码为6到20为的数字和字母组成");
+			}
+			if (!oldPwd.equals(newPwd)) {
+				throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.dif_password, language));
+				// throw LOG.errTran("两次密码输入不一致", "两次密码输入不一致");
+			}
+		}
 
 		@Override
 		public void run() {
@@ -194,76 +178,63 @@ public class UsrMainDao {
 		}
 	}
 
-  public UserView loginValid(
-      String loginName, String pwd, String thirdName, String thirdId, Language language) {
-    if (thirdName != null) {
-      if (thirdName == "facebook") {
-        //        TODO 原来登陆Session逻辑所以第三方登陆暂时搁置
-        if (UsrMain.chkUniqueFacebook_user_id(false, thirdId) != null) {
-          return null;
-        } else {
-          return null;
-        }
-      }
-      if (thirdName == "google") {
-        if (UsrMain.chkUniqueGoogle_user_id(false, thirdId) != null) {
-          return null;
-        } else {
-          return null;
-        }
-      }
-      if (thirdName == "linkedin") {
-        if (UsrMain.chkUniqueLinkedin_user_id(false, thirdId) != null) {
-          return null;
-        } else {
-          return null;
-        }
-      }
-      if (thirdName == "linkedin") {
-        if (UsrMain.chkUniqueTwitter_user_id(false, thirdId) != null) {
-          return null;
-        } else {
-          return null;
-        }
-      }
-    }
-    if (loginName != null) {
-      UsrMain um = UsrMain.chkUniqueEmail(false, loginName);
-      if (um == null) {
-        throw new WebMessageException(
-            MessageBuild.buildMessage(ReturnCode.service_user_notfound, language));
-      }
-      String mdPwd = DateTools.getDigest(um.getPkey() + pwd);
-      if (!mdPwd.equals(um.getPassword())) {
-        throw new WebMessageException(
-            MessageBuild.buildMessage(ReturnCode.wrong_password, language));
-      }
-      UserView userView = new UserView();
-      userView.setLoginName(um.getEmail());
-      userView.setPkey(um.getPkey());
-      userView.setUser_type(um.getIdentity());
-      BeanQuery query = new BeanQuery();
-      switch (um.gtIdentity()) {
-        case BUYNER:
-          userView.setPurchase(
-              (UsrPurchase)
-                  query
-                      .SELECT(UsrPurchase.class)
-                      .FROM(UsrPurchase.class)
-                      .WHERE(UsrPurchase.T.UserId, "=?", um.getPkey())
-                      .query(UsrPurchase.class));
-          return userView;
-        case SELLER:
-          userView.setSupplier(
-              (UsrSupplier)
-                  query
-                      .SELECT(UsrSupplier.class)
-                      .FROM(UsrSupplier.class)
-                      .WHERE(UsrSupplier.T.UserId, "=?", um.getPkey())
-                      .query(UsrSupplier.class));
-          return userView;
-      }
-    } else {
+	public UserView loginValid(String loginName, String pwd, String thirdName, String thirdId, Language language) {
+		if (thirdName != null) {
+			if (thirdName == "facebook") {
+				// TODO 原来登陆Session逻辑所以第三方登陆暂时搁置
+				if (UsrMain.chkUniqueFacebook_user_id(false, thirdId) != null) {
+					return null;
+				} else {
+					return null;
+				}
+			}
+			if (thirdName == "google") {
+				if (UsrMain.chkUniqueGoogle_user_id(false, thirdId) != null) {
+					return null;
+				} else {
+					return null;
+				}
+			}
+			if (thirdName == "linkedin") {
+				if (UsrMain.chkUniqueLinkedin_user_id(false, thirdId) != null) {
+					return null;
+				} else {
+					return null;
+				}
+			}
+			if (thirdName == "linkedin") {
+				if (UsrMain.chkUniqueTwitter_user_id(false, thirdId) != null) {
+					return null;
+				} else {
+					return null;
+				}
+			}
+		}
+		if (loginName != null) {
+			UsrMain um = UsrMain.chkUniqueEmail(false, loginName);
+			if (um == null) {
+				throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.service_user_notfound, language));
+			}
+			String mdPwd = DateTools.getDigest(um.getPkey() + pwd);
+			if (!mdPwd.equals(um.getPassword())) {
+				throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.wrong_password, language));
+			}
+			UserView userView = new UserView();
+			userView.setLoginName(um.getEmail());
+			userView.setPkey(um.getPkey());
+			userView.setUser_type(um.getIdentity());
+			BeanQuery query = new BeanQuery();
+			switch (um.gtIdentity()) {
+			case BUYNER:
+				userView.setPurchase((UsrPurchase) query.SELECT(UsrPurchase.class).FROM(UsrPurchase.class)
+						.WHERE(UsrPurchase.T.UserId, "=?", um.getPkey()).query(UsrPurchase.class));
+				return userView;
+			case SELLER:
+				userView.setSupplier((UsrSupplier) query.SELECT(UsrSupplier.class).FROM(UsrSupplier.class)
+						.WHERE(UsrSupplier.T.UserId, "=?", um.getPkey()).query(UsrSupplier.class));
+				return userView;
+			}
+		} else {
 
 		}
 		return null;
