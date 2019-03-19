@@ -12,7 +12,6 @@ import irille.pub.DateTools;
 import irille.pub.bean.BeanBase;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
-import irille.shop.usr.Usr;
 import irille.shop.usr.UsrMain;
 import irille.shop.usr.UsrPurchase;
 
@@ -39,7 +38,7 @@ public class UsrPurchaseServiceImpl implements UsrPurchaseService {
     view.setRequestsFromConnectionsCount(
         rFQConsultRelationDao.countNewByPurchaseGroupBySupplier(purchase.getPkey()));
     view.setUnreadMessagersCount(
-        rFQConsultMessageDao.countUnreadByRelation_PurchaseGroupByRelation(purchase.getPkey()));
+        rFQConsultMessageDao.countPurchaseUnreadByRelation_PurchaseGroupByRelation(purchase.getPkey()));
     return view;
   }
 

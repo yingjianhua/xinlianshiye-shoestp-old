@@ -48,7 +48,7 @@ public class RFQConsultServiceTest extends BaseTest {
 	}
 	
 	@Test
-//	@Ignore
+	@Ignore
 	public void testGetQuotation() throws JsonProcessingException {
 		UsrPurchase purchase = new UsrPurchase();
 		purchase.setPkey(1261);
@@ -87,9 +87,9 @@ public class RFQConsultServiceTest extends BaseTest {
 	}
 	
 	@Test
-	@Ignore
+//	@Ignore
 	public void testCountUnread() throws JsonProcessingException {
-		UsrPurchase purchase = UsrPurchase.load(UsrPurchase.class, 1261);
+		UsrPurchase purchase = UsrPurchase.load(UsrPurchase.class, 3787);
 		
 		RFQUnreadCountView unreadCount = service.countUnread(purchase);
 		System.out.println(om.writeValueAsString(unreadCount));
