@@ -408,7 +408,7 @@
         // 正式的密码验证
         if (value === '') {
             callback(new Error(app.registerForm.user == 'buyer' ? 'Telephone number can\'t be empty!' : '电话号码不能为空'));
-        } else if (!/^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/.test(value)) {
+        } else if (value.length <8 || value.length>11) {
             callback(new Error(app.registerForm.user == 'buyer' ? 'Telephone number\'s format is incorrect' : '电话号码格式不正确'));
         } else {
             app.$refs.registerForm.validateField('telPrefix1');
@@ -424,6 +424,8 @@
         if (value === '') {
             console.log("empty")
             callback(new Error(app.registerForm.user == 'buyer' ? 'Code can\'t be empty!' : '验证码不能为空'));
+        }else if(value.length!=4){
+            callback(new Error(app.registerForm.user == 'buyer' ? 'Please enter 4 characters or numbers' : '请输入4位数的验证码'));
         } else {
             console.log("not empty")
             callback();
@@ -590,14 +592,14 @@
                         console.log("getProvinceList suc")
                         console.log(res.data.result)
                         if (res.data.ret != 1) {
-                            this.$message.error(res.data.msg);
+                            this.$message.error(res.data.msg || "Get province list error,please try again later");
                             return
                         }
                         ;
                         this.provinceList = res.data.result;
                     })
                     .catch((error) => {
-                        console.log(error);
+                        this.$message.error(error || 'Network error,please try again later');
                     });
             },
             // 获取省对应的市列表
@@ -610,14 +612,14 @@
                     .then((res) => {
                         console.log("getCityList suc")
                         if (res.data.ret != 1) {
-                            this.$message.error(res.data.msg);
+                            this.$message.error(res.data.msg || "Get city list error,please try again later");
                             return
                         }
                         ;
                         this.cityList = res.data.result;
                     })
                     .catch((error) => {
-                        console.log(error);
+                        this.$message.error(error || 'Network error,please try again later');
                     });
             },
             // 获取市对应的区列表
@@ -630,14 +632,14 @@
                     .then((res) => {
                         console.log("getTownList suc")
                         if (res.data.ret != 1) {
-                            this.$message.error(res.data.msg);
+                            this.$message.error(res.data.msg || "Get town list error,please try again later");
                             return
                         }
                         ;
                         this.townList = res.data.result;
                     })
                     .catch((error) => {
-                        console.log(error);
+                        this.$message.error(error || 'Network error,please try again later');
                     });
             },
             // 获取国家列表 - buyer用
@@ -646,14 +648,14 @@
                     .then((res) => {
                         console.log("获取国家列表 suc")
                         if (res.data.ret != 1) {
-                            this.$message.error(res.data.msg);
+                            this.$message.error(res.data.msg || "Get country list error,please try again later");
                             return
                         }
                         ;
                         this.countryList = res.data.result;
                     })
                     .catch((error) => {
-                        console.log(error);
+                        this.$message.error(error || 'Network error,please try again later');
                     });
             },
 
@@ -724,7 +726,7 @@
                             .then((res) => {
                                 this.refreshCode();
                                 if (res.data.ret != 1) {
-                                    this.$message.error(res.data.msg);
+                                    this.$message.error(res.data.msg || "Register error,please try again later");
                                     return
                                 }
                                 ;
@@ -735,7 +737,7 @@
                             })
                             .catch((error) => {
                                 this.refreshCode();
-                                console.log(error);
+                                this.$message.error(error || 'Network error,please try again later');
                             });
 
                         console.log('submit');

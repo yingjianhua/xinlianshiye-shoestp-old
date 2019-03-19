@@ -4,19 +4,25 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.json.JSONObject;
+
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
+
 import irille.Dao.EO.EasyOdrDao;
 import irille.Service.Eo.EasyOdrService;
 import irille.pub.Exp;
 import irille.pub.LogMessage;
 import irille.pub.bean.BeanBase;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.svr.Env;
+import irille.pub.tb.FldLanguage.Language;
 import irille.shop.easy.EasyOdr;
 import irille.shop.easy.EasyOdrline;
 import irille.shop.pdt.PdtSpec;
 import irille.shop.usr.UsrPurchaseLine;
 import irille.view.Easy.EasyodrView;
 import irille.view.Easy.EolineView;
-import org.json.JSONObject;
 
 public class EasyOdrServiceimpl implements EasyOdrService {
   private static final LogMessage LOG = new LogMessage(EasyOdrDao.class);
@@ -24,13 +30,15 @@ public class EasyOdrServiceimpl implements EasyOdrService {
   @Inject private EasyOdrDao easyOdrDao;
 
   @Override
-  public void generateOrder(Integer getPurchaseLineid, Integer purchaseid, List<EasyodrView> list)
+  public void generateOrder(
+      Integer getPurchaseLineid, Integer purchaseid, List<EasyodrView> list, Language language)
       throws Exception {
     UsrPurchaseLine address = null;
     try {
       address = BeanBase.load(UsrPurchaseLine.class, getPurchaseLineid);
     } catch (Exp e) {
-      throw LOG.errTran("addressfrom%Please_Select_The_Shipping_Address", "请选择收货地址");
+      throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.choose_address, language));
+      //      throw LOG.errTran("addressfrom%Please_Select_The_Shipping_Address", "请选择收货地址");
     }
     for (int j = 0; j < list.size(); j++) {
       EasyOdr eo = new EasyOdr();

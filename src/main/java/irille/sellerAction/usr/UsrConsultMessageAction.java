@@ -2,11 +2,13 @@ package irille.sellerAction.usr;
 
 import java.io.IOException;
 
+import org.json.JSONException;
+
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.usr.inf.IUsrConsultMessageAction;
+import irille.shop.plt.PltConfigDAO;
 import irille.shop.usr.UsrConsultMessage;
 import irille.shop.usr.UsrConsultMessageDAO;
-import org.json.JSONException;
 
 public class UsrConsultMessageAction extends SellerAction<UsrConsultMessage>
     implements IUsrConsultMessageAction {
@@ -28,7 +30,13 @@ public class UsrConsultMessageAction extends SellerAction<UsrConsultMessage>
     if (getSupplier() == null) {
       writeTimeout();
     } else {
-      new UsrConsultMessageDAO.Send(false, relation, getSupplier().getPkey(), content).commit();
+      new UsrConsultMessageDAO.Send(
+              false,
+              relation,
+              getSupplier().getPkey(),
+              content,
+              PltConfigDAO.supplierLanguage(getSupplier()))
+          .commit();
       write();
     }
   }

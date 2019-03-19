@@ -3,6 +3,10 @@ package irille.homeAction.usr;
 import java.io.IOException;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.homeAction.HomeAction;
 import irille.homeAction.usr.dto.AddressView;
@@ -18,9 +22,6 @@ import irille.shop.usr.Usr;
 import irille.shop.usr.UsrPurchaseLine;
 import irille.shop.usr.UsrPurchaseLine.T;
 import irille.shop.usr.UsrPurchaseLineDAO;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class UsrPurchaseLineAction extends HomeAction<UsrPurchaseLine> {
 
@@ -410,6 +411,7 @@ public class UsrPurchaseLineAction extends HomeAction<UsrPurchaseLine> {
     UsrPurchaseLineDAO.updAdress usrPurchaseLineDAO = new UsrPurchaseLineDAO.updAdress();
     JSONObject json = new JSONObject();
     usrPurchaseLineDAO.setProvince(province);
+    usrPurchaseLineDAO.setLanguage(curLanguage());
     usrPurchaseLineDAO.setB(getBean());
     usrPurchaseLineDAO.commit();
     if (usrPurchaseLineDAO.getQueryProResult().equals("success")) {
@@ -432,6 +434,7 @@ public class UsrPurchaseLineAction extends HomeAction<UsrPurchaseLine> {
   public void AddToAddress() throws Exception {
     UsrPurchaseLineDAO.InsAddress usrPurchaseLineDAO = new UsrPurchaseLineDAO.InsAddress();
     usrPurchaseLineDAO.setProvince(province);
+    usrPurchaseLineDAO.setLanguage(curLanguage());
     usrPurchaseLineDAO.setAddressType(addressType);
     usrPurchaseLineDAO.setB(getBean());
     try {

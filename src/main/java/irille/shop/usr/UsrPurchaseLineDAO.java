@@ -2,15 +2,20 @@ package irille.shop.usr;
 
 import java.util.List;
 
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
+
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
 import irille.pub.LogMessage;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.idu.IduDel;
 import irille.pub.idu.IduIns;
 import irille.pub.idu.IduUpd;
+import irille.pub.tb.FldLanguage.Language;
 import irille.shop.plt.PltProvince;
 import irille.shop.usr.Usr.OAddress;
 import irille.shop.usr.UsrPurchaseLine.T;
@@ -176,6 +181,15 @@ public class UsrPurchaseLineDAO {
   public static class updAdress extends IduUpd<upd, UsrPurchaseLine> {
     private String province;
     private String queryProResult;
+    private Language language;
+
+    public Language getLanguage() {
+      return language;
+    }
+
+    public void setLanguage(Language language) {
+      this.language = language;
+    }
 
     public String getQueryProResult() {
       return queryProResult;
@@ -200,7 +214,10 @@ public class UsrPurchaseLineDAO {
         PltProvince queryProvince = BeanBase.chk(PltProvince.class, provinceValue);
         if (null == queryProvince) {
           setQueryProResult("省记录不存在");
-          throw LOG.err("provinceErr", "{0}记录不存在", PltProvince.T.PKEY.getFld().getName());
+          throw new WebMessageException(
+              MessageBuild.buildMessage(ReturnCode.no_province, language));
+          //          throw LOG.err("provinceErr", "{0}记录不存在",
+          // PltProvince.T.PKEY.getFld().getName());
         } else {
           getB().setRegion(provinceValue);
         }
@@ -214,7 +231,10 @@ public class UsrPurchaseLineDAO {
           getB().setRegion(pltProvince.getPkey());
         } else {
           setQueryProResult("省记录添加失败");
-          throw LOG.err("provinceAddErr", "{0}记录添加失败", PltProvince.T.PKEY.getFld().getName());
+          throw new WebMessageException(
+              MessageBuild.buildMessage(ReturnCode.no_province, language));
+          //          throw LOG.err("provinceAddErr", "{0}记录添加失败",
+          // PltProvince.T.PKEY.getFld().getName());
         }
       }
       getB().stIsdefault(true);
@@ -235,6 +255,15 @@ public class UsrPurchaseLineDAO {
     private String province;
     private String addressType;
     private String queryProResult;
+    private Language language;
+
+    public Language getLanguage() {
+      return language;
+    }
+
+    public void setLanguage(Language language) {
+      this.language = language;
+    }
 
     public String getQueryProResult() {
       return queryProResult;
@@ -267,7 +296,9 @@ public class UsrPurchaseLineDAO {
         PltProvince queryProvince = BeanBase.chk(PltProvince.class, provinceValue);
         if (null == queryProvince) {
           setQueryProResult("省记录不存在");
-          throw LOG.errTran("addressfrom%No_Province", "省级记录不存在");
+          throw new WebMessageException(
+              MessageBuild.buildMessage(ReturnCode.no_province, language));
+          //          throw LOG.errTran("addressfrom%No_Province", "省级记录不存在");
         } else {
           getB().setRegion(provinceValue);
         }
@@ -281,7 +312,9 @@ public class UsrPurchaseLineDAO {
           getB().setRegion(pltProvince.getPkey());
         } else {
           setQueryProResult("省记录添加失败");
-          throw LOG.errTran("addressfrom%No_Province", "省级记录不存在");
+          throw new WebMessageException(
+              MessageBuild.buildMessage(ReturnCode.no_province, language));
+          //          throw LOG.errTran("addressfrom%No_Province", "省级记录不存在");
         }
       }
       if (getAddressType().equals(String.valueOf(Usr.OAddress.COMMON.getLine().getKey()))) {

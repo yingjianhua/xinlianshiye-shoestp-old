@@ -84,7 +84,7 @@
                     <span class="form-item_error" v-show="errorShow">
                                 <img src="/home/v3/static/images/forgetPassword/icon_cuo.png" name="cuo"
                                      alt="">
-                                {{promptMessage}}</span>
+                                {{errMessage}}</span>
                 </div>
                 <div class="form-item">
                     <span class="form-item_label"></span>
@@ -129,11 +129,14 @@
             <div class="input">
                 <h4 class="label">New password</h4>
                 <input type="password" v-model="password"
-                       @input="passwordtest" placeholder="Please input
-                            password">
+                       @input="passwordtest" placeholder="Please input  password">
                 <div class="showmsg">
-                    <img src="/home/v3/static/images/forgetPassword/loginright.png" alt=""
-                         v-if="password">
+                    <%--<img src="/home/v3/static/images/forgetPassword/loginright.png" alt=""--%>
+                         <%--v-if="password">--%>
+                    <img src="images/loginright.png" alt="" v-if="password
+                    && checkpass">
+                    <img src="images/loginerr.png" alt="" v-if="password
+                    && !checkpass">
                     <h4 class="msg">{{passwordStrength}}</h4>
                 </div>
             </div>
@@ -154,7 +157,7 @@
         <div class="confirm" @click="submitpassword">Confirm</div>
     </div>
     <div class="checksuccess" v-if="state == 2">
-        密码找回成功,立即<a href="/">返回</a>
+        Password recovery successful,<a href="">Return</a>immediately
     </div>
     <index-bottom></index-bottom>
 </div>
@@ -181,6 +184,8 @@
             check: false,//确认新密码和确认密码是否一致的状态
             hidden: false,//对与错的图标的隐藏
             checkpasswordtext: '',//确认密码文本
+            errMessage:'',
+            checkpass:true,
 
             state: 0,
             loginstate: [
@@ -231,9 +236,21 @@
                         if (res.data.ret == 1) {
                             than.judgeEmailShow = true;
                             than.getemailCode();
+                        }else{
+                            if(res.data.msg){
+                                than.$message({
+                                    message: res.data.msg,
+                                    type: 'warning'
+                                });
+                            }else{
+                                than.$message({
+                                    message: 'Verification Failed ',
+                                    type: 'warning'
+                                });
+                            }
                         }
                     }).catch(err => {
-                        console.log(err);
+                        console.log(err)
                     })
                     // than.judgeEmailShow = true;
                 }
@@ -249,10 +266,25 @@
                             checkCode: than.promptMessage // 发送到邮箱的验证码
                         })
                     ).then(res => {
-                        console.log(res.data)
-                        than.emailCode = res.data
-                        than.again = 60
-                        than.timeout();
+                        if(res.data.ret == 1){
+                            than.timeCode = res.data.timeCode
+                            than.again = 60
+                            than.timeout();
+                        }else{
+                            if(res.data.msg){
+                                than.$message({
+                                    message: res.data.msg,
+                                    type: 'warning'
+                                });
+                            }else{
+                                than.$message({
+                                    message: 'Verification Failed ',
+                                    type: 'warning'
+                                });
+                            }
+                        }
+                    }).catch(err => {
+                        console.log(err)
                     })
                 }
             },
@@ -280,6 +312,9 @@
                     if (res.data.ret == 1) {
                         this.errorShow = !this.errorShow
                         this.state++;
+                    }else{
+                        this.errorShow = !this.errorShow
+                        this.errMessage = 'Verification code error'
                     }
                 }).catch(err => {
                     console.log(err);
@@ -287,6 +322,7 @@
             },
             //验证密码强度
             passwordtest: function () {
+                this.checkpass = true;
                 let lv = 0;
                 if (this.password.match(/[a-z]/g)) {
                     lv++;
@@ -320,29 +356,38 @@
                     this.check = true;
                     this.checkpasswordtext = '';
                 } else {
-                    this.hidden = true;
+                    this.hidden = false;
                     this.check = false;
+                    this.checkpass = false;
                     this.checkpasswordtext = 'Please retype your right password';
                 }
             },
             //提交确认密码
             submitpassword: function (val) {
+                this.checkpassword();
                 if (this.password == '') {
                     this.passwordStrength = 'Password cannot be empty';
                     this.hidden = false;
+                    this.check = false;
+                    this.checkpass = false;
                     return false;
                 }
                 if (this.password.length < 6) {
                     this.passwordStrength = 'Passwords must be 6 to 20 characters long';
                     this.hidden = false;
+                    this.check = false;
+                    this.checkpass = false;
                     return false;
                 }
                 if (!(this.password.match(/[a-z]/g) && this.password.match(/[0-9]/g))) {
                     this.passwordStrength = 'The password consists of Numbers and letters';
                     this.hidden = false;
+                    this.check = false;
+                    this.checkpass = false;
                     return false;
                 }
                 if (this.check) {
+                    this.checkpass = true;
                     const than = this
                     axios.post('/home/usr_UsrMain_updPwd',
                         Qs.stringify({
@@ -354,6 +399,18 @@
                     ).then(res => {
                         if (res.data.ret == 1) {
                             than.state++
+                        }else{
+                            if(res.data.msg){
+                                than.$message({
+                                    message: res.data.msg,
+                                    type: 'warning'
+                                });
+                            }else{
+                                than.$message({
+                                    message: 'Password reset failed ',
+                                    type: 'warning'
+                                });
+                            }
                         }
                     }).catch(err => {
                         console.log(err)

@@ -8,6 +8,8 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 import com.opensymphony.xwork2.ActionInvocation;
+import com.xinlianshiye.shoestp.seller.service.usr.IUsrSupplierSellerDao;
+import com.xinlianshiye.shoestp.seller.service.usr.imp.UsrSupplierSellerDaoImp;
 
 import irille.pub.tb.FldLanguage.Language;
 import irille.shop.plt.PltConfig;
@@ -43,12 +45,15 @@ public class SessionMsg {
   private Boolean isMobile;
   private static Integer count = 0;
 
+  private static IUsrSupplierSellerDao supplierSellerDao;
+
   public static SessionMsg build() {
     SessionMsg msg = new SessionMsg();
     msg.isPurchase = false;
     msg.isSupplier = false;
     msg.setIsMobile(false);
     msg.setCurrency(PltErateDAO.Query.siteDefCurrency().getPkey());
+    supplierSellerDao = new UsrSupplierSellerDaoImp();
     return msg;
   }
 
@@ -125,7 +130,11 @@ public class SessionMsg {
   }
 
   public UsrSupplier getSupplier() {
-    return isSupplier ? UsrUserDAO.findSupplierByLoginName(loginName) : null;
+    if (isSupplier) {
+      return supplierSellerDao.findByUsrMainId(pkey);
+    }
+    return null;
+    //    return isSupplier ? UsrUserDAO.findSupplierByLoginName(loginName) : null;
   }
 
   public void setSupplier(UsrSupplier supplier) {
