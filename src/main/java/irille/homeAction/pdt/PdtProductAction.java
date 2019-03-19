@@ -344,7 +344,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
           translateUtil.getLanguage(infoView.getSeoKeywords(), HomeAction.curLanguage()));
       setGoodsInfo(objectMapper.writeValueAsString(infoView));
     }
-    setResult("goods-info.jsp");
+    setResult("productInfo.jsp");
     return HomeAction.TRENDS;
   }
 
