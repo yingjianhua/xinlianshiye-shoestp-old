@@ -118,8 +118,10 @@ public class RFQConsultServiceImpl implements RFQConsultService {
     query.SELECT(RFQConsult.T.TITLE);
     query.SELECT(RFQConsult.T.IMAGE);
     query.SELECT(RFQConsult.T.TYPE);
+    query.SELECT(PdtProduct.T.PICTURE);
     query.FROM(RFQConsult.class);
     query.LEFT_JOIN(RFQConsultRelation.class, RFQConsult.T.PKEY, RFQConsultRelation.T.CONSULT);
+    query.LEFT_JOIN(PdtProduct.class, RFQConsult.T.PRODUCT, PdtProduct.T.PKEY);
     if (keyword != null && !keyword.isEmpty()) {
       query.LEFT_JOIN(UsrSupplier.class, RFQConsultRelation.T.SUPPLIER_ID, UsrSupplier.T.PKEY);
       // 关键字匹配询盘标题和报价供应商名称
@@ -158,6 +160,8 @@ public class RFQConsultServiceImpl implements RFQConsultService {
                   String image = GetValue.get(map, RFQConsult.T.IMAGE, String.class, null);
                   consult.setImages(
                       image == null ? new ArrayList<>() : Arrays.asList(image.split(",")));
+                  String productImage = GetValue.get(map, PdtProduct.T.PICTURE, String.class, "");
+                  consult.setProductImage(productImage.split(",")[0]);
                   consult.setRelations(listRelation(consult.getPkey()));
                   return consult;
                 })

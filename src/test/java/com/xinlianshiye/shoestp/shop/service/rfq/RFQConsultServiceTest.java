@@ -38,13 +38,14 @@ public class RFQConsultServiceTest extends BaseTest {
 		UsrPurchase purchase = new UsrPurchase();
 		purchase.setPkey(3787);
 		purchase.setName("建化");
-		Byte type = 1;
+
+		Byte type = 2;
 		String keyword = "";
 		Boolean unread = null;
 		Integer lastRelation = null;
 		Integer start = 0;
 		Integer limit = 10;
-		Page<RFQConsultView> page = service.pageMine(purchase, type, keyword, unread, lastRelation, start, limit);
+		Page<RFQConsultView> page = service.pageMine(purchase, type, keyword, unread, lastRelation, start, limit); 
 		System.out.println(om.writeValueAsString(page));
 		
 		type = null;

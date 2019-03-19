@@ -22,6 +22,7 @@ public class RFQConsultView implements BaseView {
   private String shippingTerms; // 运送条款
   private String extraRequest; // 额外请求
   private List<RFQConsultProductView> productRequest; // 感兴趣产品列表
+  private String productImage;// 产品图片 只有产品询盘和私人展厅产品询盘时 该字段会有值
   private List<String> images; // 询盘图片
   private List<RFQConsultRelationView> relations; // 询盘关联
   private Byte verifyStatus; // 审核状态 	1: 未审核, 2: 未通过, 3: 通过
