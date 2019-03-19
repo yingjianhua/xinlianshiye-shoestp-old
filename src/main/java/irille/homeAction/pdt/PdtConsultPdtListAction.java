@@ -2,9 +2,13 @@ package irille.homeAction.pdt;
 
 import java.io.IOException;
 
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
+
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.homeAction.HomeAction;
 import irille.homeAction.pdt.inf.IPdtConsultPdtListAction;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.shop.pdt.PdtConsultPdtList;
 import irille.shop.pdt.PdtConsultPdtListDAO;
 import irille.view.pdt.ConsultProductView;
@@ -53,9 +57,11 @@ public class PdtConsultPdtListAction extends HomeAction<PdtConsultPdtList>
    */
   public void delete() throws Exception {
     if (getPurchase() == null) writeErr(-1, "timeout");
-    else if (!PdtConsultPdtListDAO.isOwner((Integer) getId(), getPurchase().getPkey()))
-      writeErr("wrong owner");
-    else {
+    else if (!PdtConsultPdtListDAO.isOwner((Integer) getId(), getPurchase().getPkey())) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_gone, curLanguage()));
+      //      writeErr("wrong owner");
+    } else {
       PdtConsultPdtListDAO.delete((Integer) getId());
       write();
     }
@@ -75,8 +81,10 @@ public class PdtConsultPdtListAction extends HomeAction<PdtConsultPdtList>
     } else {
       for (String id : ids.split(",")) {
         if (!PdtConsultPdtListDAO.isOwner(Integer.valueOf(id), getPurchase().getPkey())) {
-          writeErr("wrong owner");
-          return;
+          throw new WebMessageException(
+              MessageBuild.buildMessage(ReturnCode.service_gone, curLanguage()));
+          //          writeErr("wrong owner");
+          //          return;
         }
       }
       for (String id : ids.split(",")) {

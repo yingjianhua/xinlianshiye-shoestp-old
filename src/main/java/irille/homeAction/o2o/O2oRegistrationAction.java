@@ -4,11 +4,15 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
+
 import irille.Entity.O2O.O2oRegistration;
 import irille.Service.Manage.O2O.IO2OPdtServer;
 import irille.homeAction.HomeAction;
 import irille.platform.o2o.View.O2o_RegistrationView;
 import irille.pub.LogMessage;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.shop.o2o.O2O_RegistrationDao;
 import lombok.Data;
 
@@ -34,8 +38,10 @@ public class O2oRegistrationAction extends HomeAction<O2oRegistration> {
     boolean b = true;
     if (view == null) {
       b = false;
-      writeErr("报名失败,请填写完整!");
-      return;
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.imperfect_data, curLanguage()));
+      //      writeErr("报名失败,请填写完整!");
+      //      return;
     }
     if (view.getFullName() == null || view.getFullName().trim().equals("")) b = false;
     if (view.getGender() == null) b = false;
@@ -49,8 +55,10 @@ public class O2oRegistrationAction extends HomeAction<O2oRegistration> {
       b = false;
     if (view.getActivityId() == null) b = false;
     if (!b) {
-      writeErr("报名失败,请填写完整!");
-      return;
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.imperfect_data, curLanguage()));
+      //      writeErr("报名失败,请填写完整!");
+      //      return;
     }
     o2O_registrationDao.ins(view);
     write();

@@ -7,6 +7,7 @@ import com.xinlianshiye.shoestp.shop.service.rfq.impl.RFQPurchaseContactServiceI
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQPurchaseContactGroupView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQPurchaseContactView;
 
+import irille.pub.tb.FldLanguage.Language;
 import irille.shop.usr.UsrPurchase;
 import irille.view.Page;
 
@@ -52,7 +53,7 @@ public interface RFQPurchaseContactService {
    * @param groupName 分组名字
    * @author Jianhua Ying
    */
-  void addGroup(UsrPurchase purchase, String groupName);
+  void addGroup(UsrPurchase purchase, String groupName, Language language);
 
   /**
    * 删除分组
@@ -71,7 +72,7 @@ public interface RFQPurchaseContactService {
    * @param groupName 分组名字
    * @author Jianhua Ying
    */
-  void editGroup(UsrPurchase purchase, Integer groupPkey, String groupName);
+  void editGroup(UsrPurchase purchase, Integer groupPkey, String groupName, Language language);
 
   /**
    * 移动分组
@@ -81,7 +82,7 @@ public interface RFQPurchaseContactService {
    * @param groupPkey 分组主键
    * @author Jianhua Ying
    */
-  void moveToGroup(UsrPurchase purchase, Integer contactPkey, Integer groupPkey);
+  void moveToGroup(UsrPurchase purchase, Integer contactPkey, Integer groupPkey, Language language);
 
   /**
    * 列表分组

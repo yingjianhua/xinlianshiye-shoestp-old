@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
+import org.apache.struts2.ServletActionContext;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
 import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultMessageService;
@@ -27,7 +29,6 @@ import irille.view.v3.rfq.EditRFQConsultView;
 import irille.view.v3.rfq.PutRFQConsultView;
 import irille.view.v3.rfq.PutSupplierConsultView;
 import lombok.Setter;
-import org.apache.struts2.ServletActionContext;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2019/1/30 Time: 9:35 */
 @Setter
@@ -133,8 +134,9 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   public void putPrivateInquiry() throws IOException {
     String data = getJsonBody();
     if (data == null) {
-      write(MessageBuild.build(201, HomeAction.curLanguage()));
-      return;
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_wrong_data, curLanguage()));
+      //      write(MessageBuild.build(201, HomeAction.curLanguage()));
     }
     irfqConsultService.putPrivateInquiry(
         objectMapper.readValue(data, PutInquiryView.class), getPurchase());
@@ -224,7 +226,7 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   @Override
   @NeedLogin
   public void detail() throws IOException {
-    write(rFQConsultService.getDetail(getPurchase(), consultPkey));
+    write(rFQConsultService.getDetail(getPurchase(), consultPkey, curLanguage()));
   }
 
   private Integer relationPkey;
@@ -236,7 +238,13 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   public void pageMsgs() throws IOException {
     write(
         rFQConsultMessageService.page(
-            getPurchase(), relationPkey, nextMessagePkey, preMessagePkey, start, limit));
+            getPurchase(),
+            relationPkey,
+            nextMessagePkey,
+            preMessagePkey,
+            start,
+            limit,
+            curLanguage()));
   }
 
   private String content;
@@ -253,14 +261,15 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   @Override
   @NeedLogin
   public void addInformation() throws IOException {
-    rFQConsultService.addMoreInformation(getPurchase(), consultPkey, information, validDate);
+    rFQConsultService.addMoreInformation(
+        getPurchase(), consultPkey, information, validDate, curLanguage());
     write();
   }
 
   @Override
   @NeedLogin
   public void close() throws IOException {
-    rFQConsultService.close(getPurchase(), consultPkey);
+    rFQConsultService.close(getPurchase(), consultPkey, curLanguage());
     write();
   }
 
@@ -269,8 +278,10 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   public void edit() throws IOException {
     String data = getJsonBody();
     if (data == null) {
-      write(MessageBuild.build(201, HomeAction.curLanguage()));
-      return;
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_wrong_data, curLanguage()));
+      //      write(MessageBuild.build(201, HomeAction.curLanguage()));
+      //      return;
     }
     EditRFQConsultView editRFQConsultView = objectMapper.readValue(data, EditRFQConsultView.class);
     if (editRFQConsultView.getId() != null && editRFQConsultView.getId() > 0) {
@@ -278,8 +289,10 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
         write();
         return;
       } else {
-        writeErr(-1, "该询盘不存在或者发生未知错误");
-        return;
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.inquiry_wrong_data, curLanguage()));
+        //        writeErr(-1, "该询盘不存在或者发生未知错误");
+        //        return;
       }
     }
     writeErr(-1, "ID为空");
@@ -290,7 +303,7 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   @Override
   @NeedLogin
   public void addImage() throws IOException {
-    rFQConsultService.addImage(getPurchase(), consultPkey, images);
+    rFQConsultService.addImage(getPurchase(), consultPkey, images, curLanguage());
     write();
   }
 
@@ -299,7 +312,7 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   @Override
   @NeedLogin
   public void addProductRequest() throws IOException {
-    rFQConsultService.addProductRequest(getPurchase(), consultPkey, products);
+    rFQConsultService.addProductRequest(getPurchase(), consultPkey, products, curLanguage());
     write();
   }
 

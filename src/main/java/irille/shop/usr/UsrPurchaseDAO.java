@@ -1,8 +1,13 @@
 package irille.shop.usr;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
 import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
 import com.xinlianshiye.shoestp.plat.service.pm.imp.PMMessageServiceImp;
 
@@ -18,10 +23,13 @@ import irille.pub.bean.Bean;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.sql.MconditionsView;
 import irille.pub.bean.sql.SQL;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.idu.IduDel;
 import irille.pub.idu.IduIns;
 import irille.pub.idu.IduOther;
 import irille.pub.idu.IduUpdLines;
+import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.pub.validate.ValidRegex;
@@ -320,6 +328,15 @@ public class UsrPurchaseDAO {
     private String oldPwd;
     private String newPwd;
     private String updResult;
+    private Language language;
+
+    public Language getLanguage() {
+      return language;
+    }
+
+    public void setLanguage(Language language) {
+      this.language = language;
+    }
 
     public String getOldPwd() {
       return oldPwd;
@@ -360,7 +377,9 @@ public class UsrPurchaseDAO {
         setUpdResult("success");
       } else {
         setUpdResult("原密码错误");
-        throw LOG.errTran("signIn%original_password_wrong", "原密码错误");
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.origin_password_wrong, language));
+        //        throw LOG.errTran("signIn%original_password_wrong", "原密码错误");
       }
     }
   }
@@ -405,6 +424,15 @@ public class UsrPurchaseDAO {
   public static class upEmail extends IduOther<upEmail, UsrPurchase> {
     private String Pwd;
     private String newEmail;
+    private Language language;
+
+    public Language getLanguage() {
+      return language;
+    }
+
+    public void setLanguage(Language language) {
+      this.language = language;
+    }
 
     public String getNewEmail() {
       return newEmail;
@@ -432,7 +460,9 @@ public class UsrPurchaseDAO {
         PropertyUtils.copyProperties(purchase, getB(), UsrPurchase.T.EMAIL);
         purchase.upd();
       } else {
-        throw LOG.errTran("signIn%original_password_wrong", "原密码错误");
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.origin_password_wrong, language));
+        //        throw LOG.errTran("signIn%original_password_wrong", "原密码错误");
       }
     }
   }

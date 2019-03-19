@@ -5,10 +5,14 @@ import java.util.Arrays;
 
 import javax.inject.Inject;
 
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
+
 import irille.Dao.Old.ActivitySignIn.ActivityNewInqDao;
 import irille.Entity.NewInquiry.NewInquiry;
 import irille.Service.Activity.IActivityService;
 import irille.homeAction.HomeAction;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -41,9 +45,13 @@ public class RomaniaAction extends HomeAction {
     NewInquiry inq = new NewInquiry();
     if (!(Arrays.asList(281, 298, 283, 318, 279, 295, 16, 291, 282, 13, 317, 23, 78, 301, 165, 292)
         .contains(supId))) {
-      writeErr(-1, "该供应商不是指定供应商");
+      //      writeErr(-1, "该供应商不是指定供应商");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.wrong_supplier, curLanguage()));
     } else if (!(email.matches("^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$"))) {
-      writeErr(0, "邮箱格式不正确");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_Invalid_email, curLanguage()));
+      //      writeErr(0, "邮箱格式不正确");
     } else {
       inq.setSupplierid(supId);
       inq.setName(name);

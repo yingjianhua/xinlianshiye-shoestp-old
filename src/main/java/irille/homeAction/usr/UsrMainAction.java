@@ -44,61 +44,27 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 
 	private static LogMessage LOG = new LogMessage(UsrMainAction.class);
 
-	@Inject
-	private UsrMainDao.Ins ins;
-	@Inject
-	private UsrMainDao.updPwd updPwd;
-	@Inject
-	private UsrMainDao usrMainDao;
+  @Inject private UsrMainDao.Ins ins;
+  @Inject private UsrMainDao.updPwd updPwd;
+  @Inject private UsrMainDao usrMainDao;
 
-	@Getter
-	@Setter
-	private String checkCode;
-	@Getter
-	@Setter
-	private String pwd;
-	@Getter
-	@Setter
-	private String pwdA;
-	@Getter
-	@Setter
-	private String email;
-	@Getter
-	@Setter
-	private Integer type;
-	@Getter
-	@Setter
-	private String firstName;
-	@Getter
-	@Setter
-	private String lastName;
-	@Getter
-	@Setter
-	private String telPre;
-	@Getter
-	@Setter
-	private String telMid;
-	@Getter
-	@Setter
-	private String telAft;
-	@Getter
-	@Setter
-	private String loginName;
-	@Setter
-	@Getter
-	private String code;
+  @Getter @Setter private String checkCode;
+  @Getter @Setter private String pwd;
+  @Getter @Setter private String pwdA;
+  @Getter @Setter private String email;
+  @Getter @Setter private Integer type;
+  @Getter @Setter private String firstName;
+  @Getter @Setter private String lastName;
+  @Getter @Setter private String telPre;
+  @Getter @Setter private String telMid;
+  @Getter @Setter private String telAft;
+  @Getter @Setter private String loginName;
+  @Setter @Getter private String code;
 
-	@Getter
-	@Setter
-	private String thirdName;
-	@Getter
-	@Setter
-	private String thirdId;
-	@Setter
-	@Getter
-	private String uid;
-	@Inject
-	private Mailer mailer;
+  @Getter @Setter private String thirdName;
+  @Getter @Setter private String thirdId;
+  @Setter @Getter private String uid;
+  @Inject private Mailer mailer;
 	private static Map<String, String> mailTemplate;
 
 	static {

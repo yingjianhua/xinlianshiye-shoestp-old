@@ -1,17 +1,30 @@
 package irille.Dao.Old.Odr;
 
+import static irille.shop.odr.OdrOrderDAO.getOrder;
+
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.google.inject.Inject;
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
 
 import irille.Service.Eo.EasyOdrService;
 import irille.homeAction.HomeAction;
 import irille.homeAction.usr.dto.OdrView;
 import irille.pub.LogMessage;
 import irille.pub.bean.BeanBase;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.idu.Idu;
 import irille.pub.idu.IduOther;
+import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.odr.OdrHistoryDAO;
 import irille.shop.odr.OdrOrder;
@@ -21,14 +34,15 @@ import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.pdt.PdtSpec;
 import irille.shop.pdt.PdtSpecDAO;
-import irille.shop.usr.*;
+import irille.shop.usr.Usr;
+import irille.shop.usr.UsrCartDAO;
+import irille.shop.usr.UsrPurchase;
+import irille.shop.usr.UsrPurchaseLine;
+import irille.shop.usr.UsrPurchaseLineDAO;
+import irille.shop.usr.UsrSupplier;
 import irille.view.Easy.EasyodrView;
 import irille.view.Easy.EolineView;
 import lombok.Data;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import static irille.shop.odr.OdrOrderDAO.getOrder;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/12/14 Time: 10:16 */
 @Data
@@ -42,6 +56,7 @@ public class GenerateOrder extends IduOther<GenerateOrder, OdrOrder> {
   private Integer enterType;
   private String orderNumber = "";
   private UsrPurchaseLine billAddress;
+  private Language language;
   /** <<<<<<<以下Map的key为 supplier##type >>>>>> */
   private Map<String, Map<PdtSpec, Integer>> orderInfo =
       new HashMap<String, Map<PdtSpec, Integer>>();
@@ -54,7 +69,9 @@ public class GenerateOrder extends IduOther<GenerateOrder, OdrOrder> {
       billAddress =
           UsrPurchaseLineDAO.listByPurchaseAddrsstype(purchaseId, Usr.OAddress.BILLED).get(0);
     } catch (ArrayIndexOutOfBoundsException e) {
-      throw LOG.errTran("addressfrom%Please_Select_The_Billing_Address", "请先设置帐单邮寄地址");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.Please_Select_The_Billing_Address, language));
+      //      throw LOG.errTran("addressfrom%Please_Select_The_Billing_Address", "请先设置帐单邮寄地址");
     }
     try {
       // 购物车 json   spec :数量
@@ -91,7 +108,7 @@ public class GenerateOrder extends IduOther<GenerateOrder, OdrOrder> {
             easyodrView.setList(l);
             list.add(easyodrView);
           }
-          easyOdrService.generateOrder(address.getPkey(), purchaseId, list);
+          easyOdrService.generateOrder(address.getPkey(), purchaseId, list, language);
         }
         if (orderInfo.get(key) == null) {
           Map<PdtSpec, Integer> orderLineInfo = new HashMap<PdtSpec, Integer>();

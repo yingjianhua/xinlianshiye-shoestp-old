@@ -3,18 +3,35 @@ package irille.homeAction.usr;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.text.DateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
-import javax.mail.*;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.struts2.ServletActionContext;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.sun.mail.util.MailSSLSocketFactory;
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
 
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.Service.Pdt.IPdtProductService;
@@ -29,15 +46,24 @@ import irille.pub.Exp;
 import irille.pub.LogMessage;
 import irille.pub.Str;
 import irille.pub.bean.BeanBase;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.idu.IduPage;
 import irille.pub.util.AppConfig;
 import irille.pub.util.sendHttpsUtils;
+import irille.pub.validate.ValidRegex;
 import irille.shop.cnt.CntAd;
 import irille.shop.cnt.CntAd.OAdLocation;
 import irille.shop.cnt.CntAdDAO;
 import irille.shop.odr.OdrOrder;
 import irille.shop.odr.OdrOrderDAO;
-import irille.shop.usr.*;
+import irille.shop.usr.UsrCart;
+import irille.shop.usr.UsrFavoritesDAO;
+import irille.shop.usr.UsrPurchase;
+import irille.shop.usr.UsrPurchaseDAO;
+import irille.shop.usr.UsrPurchaseLine;
+import irille.shop.usr.UsrPurchaseLineDAO;
+import irille.shop.usr.UsrUserDAO;
 import irille.view.cnt.IndexAdView4Mobile;
 import irille.view.cnt.IndexAdView4PC;
 import irille.view.plt.CountryView;
@@ -47,10 +73,6 @@ import irille.view.usr.UserIndexView;
 import irille.view.usr.UserView;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.struts2.ServletActionContext;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * 采购商action
@@ -315,7 +337,10 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
     if (Str.isEmpty(verifyCode)
         || Str.isEmpty(getCheckCode())
         || verifyCode.equals(getCheckCode()) == false)
-      throw LOG.errTran("signIn%verification", "验证码错误");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(
+              ReturnCode.service_verification_code,
+              HomeAction.curLanguage())); // .errTran("signIn%verification", "验证码错误");
     insBefore();
     UsrPurchaseDAO.Ins ins = new UsrPurchaseDAO.Ins();
     ins.setB(getBean());
@@ -426,7 +451,9 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
       json.put("purchase", purchase.getPkey());
       writerOrExport(json);
     } catch (ArrayIndexOutOfBoundsException e) {
-      writeErr("format%isemail");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_Invalid_email, HomeAction.curLanguage()));
+      //      writeErr("format%isemail");
     }
   }
 
@@ -550,8 +577,10 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
     if ((Str.isEmpty(verifyCode)
         || Str.isEmpty(_checkCode)
         || verifyCode.equals(_checkCode) == false)) {
-      writeSuccess(new JSONObject().put("ret", -1).put("msg", "signIn%verification"));
-      return;
+      //      writeSuccess(new JSONObject().put("ret", -1).put("msg", "signIn%verification"));
+      //      return;
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_Invalid_verification_code, curLanguage()));
     } else {
       UsrPurchaseDAO.Ins ins = new UsrPurchaseDAO.Ins();
       purchase = new UsrPurchase();
@@ -736,6 +765,7 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
     UsrPurchaseDAO.updPwd usrPurchaseDao = new UsrPurchaseDAO.updPwd();
     usrPurchaseDao.setOldPwd(oldPwd);
     usrPurchaseDao.setNewPwd(newPwd);
+    usrPurchaseDao.setLanguage(curLanguage());
     getBean().setPkey(HomeAction.getPurchase().getPkey());
     usrPurchaseDao.setB(getBean());
     try {
@@ -839,6 +869,7 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
   public void upEmail() throws Exception {
     UsrPurchaseDAO.upEmail usrPurchaseDAO = new UsrPurchaseDAO.upEmail();
     usrPurchaseDAO.setPwd(pwd);
+    usrPurchaseDAO.setLanguage(curLanguage());
     usrPurchaseDAO.setNewEmail(newEmail);
     usrPurchaseDAO.setB(getBean());
     try {
@@ -949,8 +980,10 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
     UsrPurchaseDAO.upFacebook UsrPurchaseDAO = new UsrPurchaseDAO.upFacebook();
     String user_id = "";
     if (null == faceBookToken || "".equals(faceBookToken)) {
-      writeErr("参与校验的Token不能为空！");
-      return;
+      //      writeErr("参与校验的Token不能为空！");
+      //      return;
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.valid_notnull_token, curLanguage()));
     } else {
       String faceBook_checkUrl =
           "https://graph.facebook.com/debug_token?access_token="
@@ -1002,14 +1035,18 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
               writeSuccess(json);
               return;
             } else {
-              writeErr("该账户未与邮箱绑定，无法第三方登陆");
-              return;
+              throw new WebMessageException(
+                  MessageBuild.buildMessage(ReturnCode.username_email_no_binding, curLanguage()));
+              //              writeErr("该账户未与邮箱绑定，无法第三方登陆");
+              //              return;
             }
           }
         }
       } else {
-        writeErr("校验失败，请确认FaceBook账号是否正确！");
-        return;
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.check_google_username, curLanguage(), "FaceBook"));
+        //        writeErr("校验失败，请确认FaceBook账号是否正确！");
+        //        return;
       }
     }
   }
@@ -1030,12 +1067,16 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
    * @author GS
    */
   public void googleLogin() throws Exception {
+    ValidRegex regex = new ValidRegex(getBean());
+    regex.validEmail(UsrPurchase.T.EMAIL);
     JSONObject returnJson = new JSONObject();
     UsrPurchaseDAO.upGoogleBook UsrPurchaseDAO = new UsrPurchaseDAO.upGoogleBook();
     String user_id = "";
     if (null == googleToken || "".equals(googleToken)) {
-      writeErr("参与校验的Token不能为空!");
-      return;
+      //      writeErr("参与校验的Token不能为空!");
+      //      return;
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.valid_notnull_token, curLanguage()));
     } else {
       String google_checkUrl =
           "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=" + googleToken;
@@ -1081,14 +1122,18 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
               writeSuccess(json);
               return;
             } else {
-              writeErr("该账户未与邮箱绑定，无法第三方登陆");
-              return;
+              throw new WebMessageException(
+                  MessageBuild.buildMessage(ReturnCode.username_email_no_binding, curLanguage()));
+              //              writeErr("该账户未与邮箱绑定，无法第三方登陆");
+              //              return;
             }
           }
         }
       } else {
-        writeErr("校验失败，请确认Google账号是否正确！");
-        return;
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.check_google_username, curLanguage(), "Google"));
+        //        writeErr("校验失败，请确认Google账号是否正确！");
+        //        return;
       }
     }
   }

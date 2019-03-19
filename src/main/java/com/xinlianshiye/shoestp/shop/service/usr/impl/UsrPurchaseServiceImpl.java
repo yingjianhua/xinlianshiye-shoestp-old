@@ -2,6 +2,7 @@ package com.xinlianshiye.shoestp.shop.service.usr.impl;
 
 import com.google.inject.Inject;
 import com.xinlianshiye.shoestp.common.dao.usr.UsrPurchaseDao;
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
 import com.xinlianshiye.shoestp.shop.service.usr.UsrPurchaseService;
 import com.xinlianshiye.shoestp.shop.view.usr.PurchaseView;
 import com.xinlianshiye.shoestp.shop.view.usr.PurchaseView.EditAccountValidator;
@@ -12,7 +13,7 @@ import irille.pub.DateTools;
 import irille.pub.bean.BeanBase;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
-import irille.shop.usr.Usr;
+import irille.pub.tb.FldLanguage.Language;
 import irille.shop.usr.UsrMain;
 import irille.shop.usr.UsrPurchase;
 
@@ -23,9 +24,11 @@ public class UsrPurchaseServiceImpl implements UsrPurchaseService {
   @Inject private RFQConsultRelationDao rFQConsultRelationDao;
 
   @Override
-  public void editAvatar(UsrPurchase purchase, String avatar) {
+  public void editAvatar(UsrPurchase purchase, String avatar, Language language) {
     if (avatar == null || avatar.isEmpty()) {
-      throw new WebMessageException(ReturnCode.valid_notblank, "请重新上传头像");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.reselect_upload_headpic, language));
+      //      throw new WebMessageException(ReturnCode.valid_notblank, "请重新上传头像");
     }
     purchase.setIcon(avatar);
     usrPurchaseDao.save(purchase);
@@ -44,13 +47,14 @@ public class UsrPurchaseServiceImpl implements UsrPurchaseService {
   }
 
   @Override
-  public void changeEmail(UsrPurchase purchase, String email, String password) {
+  public void changeEmail(UsrPurchase purchase, String email, String password, Language language) {
     // 检查密码
     checkPassword(purchase, password);
     UsrPurchase purchase2 = usrPurchaseDao.findByLoginNameOrEmail(email);
     if (purchase2 != null) {
       // 用户名或邮箱地址已被使用
-      throw new WebMessageException(ReturnCode.service_unknow, "邮箱重复,请使用其它邮箱");
+      throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.mail_exists, language));
+      //      throw new WebMessageException(ReturnCode.service_unknow, "邮箱重复,请使用其它邮箱");
     }
     purchase.setEmail(email);
     UsrMain main = BeanBase.load(UsrMain.class, purchase.getUserid());

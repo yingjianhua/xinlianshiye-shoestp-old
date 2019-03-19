@@ -6,18 +6,29 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
 
-import irille.Entity.OdrerMeetings.Enums.OrderMeetingStatus;
 import irille.Entity.OdrerMeetings.OrderMeeting;
 import irille.Entity.OdrerMeetings.OrderMeetingOrder;
 import irille.Entity.OdrerMeetings.OrderMeetingProduct;
+import irille.Entity.OdrerMeetings.Enums.OrderMeetingStatus;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
 import irille.homeAction.usr.dto.ColorView;
@@ -33,8 +44,16 @@ import irille.pub.PropertyUtils;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.i18n.I18NUtil;
-import irille.pub.idu.*;
+import irille.pub.idu.Idu;
+import irille.pub.idu.IduDel;
+import irille.pub.idu.IduIns;
+import irille.pub.idu.IduInsLines;
+import irille.pub.idu.IduOther;
+import irille.pub.idu.IduUpd;
+import irille.pub.idu.IduUpdLines;
 import irille.pub.svr.Env;
 import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.FormaterSql.FormaterSql;
@@ -43,12 +62,27 @@ import irille.pub.util.excel.BaseExcel;
 import irille.sellerAction.odr.OdrExportExcelAction;
 import irille.shop.odr.Odr.OdrState;
 import irille.shop.odr.OdrOrder.T;
-import irille.shop.pdt.*;
-import irille.shop.plt.*;
+import irille.shop.pdt.Pdt;
+import irille.shop.pdt.PdtColor;
+import irille.shop.pdt.PdtProduct;
+import irille.shop.pdt.PdtSpec;
+import irille.shop.pdt.PdtSpecDAO;
+import irille.shop.plt.PltErate;
+import irille.shop.plt.PltErateDAO;
+import irille.shop.plt.PltFreightSeller;
+import irille.shop.plt.PltFreightSellerDAO;
+import irille.shop.plt.PltPay;
+import irille.shop.plt.PltPayDAO;
 import irille.shop.prm.Prm;
 import irille.shop.prm.PrmGroupPurchaseLine;
-import irille.shop.usr.*;
+import irille.shop.usr.Usr;
 import irille.shop.usr.Usr.OAddress;
+import irille.shop.usr.UsrCart;
+import irille.shop.usr.UsrCartDAO;
+import irille.shop.usr.UsrPurchase;
+import irille.shop.usr.UsrPurchaseLine;
+import irille.shop.usr.UsrPurchaseLineDAO;
+import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
 import irille.view.odr.HistoryView;
 import irille.view.odr.OrderLineView;
@@ -58,8 +92,6 @@ import irille.view.plt.FreightSellerlistView;
 import irille.view.plt.PayTypeView;
 import irille.view.usr.AddressView;
 import irille.view.usr.SupplierView;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class OdrOrderDAO {
 
@@ -69,8 +101,11 @@ public class OdrOrderDAO {
   public static OrderView findSummary(String number, Integer purchase, Language lang)
       throws JSONException, IOException {
     OdrOrder order = loadByOrderNumPurchase(number, purchase);
-    if (order == null)
-      throw LOG.err("not exists", "订单编号为[{0}]且采购商pkey为[{1}]的订单不存在", number, purchase);
+    if (order == null) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.order_wrong_data, lang, number));
+      //    	throw LOG.err("not exists", "订单编号为[{0}]且采购商pkey为[{1}]的订单不存在", number, purchase);
+    }
     List<OdrOrderLine> odrLineList = OdrOrderLineDAO.listByOrder(order.getPkey());
     OrderView view = new OrderView();
     PltErate currency = order.gtCurrency();
@@ -118,8 +153,12 @@ public class OdrOrderDAO {
   public static OrderView detail(String orderNum, UsrPurchase purchase, Language lang)
       throws JSONException, JsonParseException, JsonMappingException, IOException {
     OdrOrder order = loadByOrderNumPurchase(orderNum, purchase.getPkey());
-    if (order == null)
-      throw LOG.err("not exists", "订单编号为[{0}]且采购商pkey为[{1}]的订单不存在", orderNum, purchase);
+    if (order == null) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.order_wrong_data, lang, orderNum));
+      //          	throw LOG.err("not exists", "订单编号为[{0}]的订单不存在", orderNum,
+      // purchase);
+    }
     List<OdrOrderLine> odrLineList = OdrOrderLineDAO.listByOrder(order.getPkey());
     OrderView view = new OrderView();
     PltErate currency = order.gtCurrency();
@@ -183,7 +222,11 @@ public class OdrOrderDAO {
   public static OrderView detailprint(String orderNum, Language lang)
       throws JSONException, JsonParseException, JsonMappingException, IOException {
     OdrOrder order = OdrOrder.chkUniqueOrderNum(false, orderNum);
-    if (order == null) throw LOG.err("not exists", "订单编号为[{0}]的订单不存在", orderNum);
+    if (order == null) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.order_wrong_data, lang, orderNum));
+      //    	throw LOG.err("not exists", "订单编号为[{0}]的订单不存在", orderNum);
+    }
     List<OdrOrderLine> odrLineList = OdrOrderLineDAO.listByOrder(order.getPkey());
     OrderView view = new OrderView();
     PltErate currency = order.gtCurrency();
@@ -253,8 +296,11 @@ public class OdrOrderDAO {
       String orderNum, UsrSupplier supplier, Language lang)
       throws JSONException, JsonParseException, JsonMappingException, IOException {
     OdrOrder order = loadByOrderNumSupplier(orderNum, supplier.getPkey());
-    if (order == null)
-      throw LOG.err("not exists", "订单编号为[{0}]且供应商pkey为[{1}]的订单不存在", orderNum, supplier);
+    if (order == null) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.order_wrong_data, lang, orderNum));
+      //    	throw LOG.err("not exists", "订单编号为[{0}]且供应商pkey为[{1}]的订单不存在", orderNum, supplier);
+    }
     List<OdrOrderLine> odrLineList = OdrOrderLineDAO.listByOrder(order.getPkey());
     OrderView view = new OrderView();
     PltErate currency = order.gtCurrency();
@@ -903,10 +949,14 @@ public class OdrOrderDAO {
    *
    * @author yingjianhua
    */
-  public static void pay(String number, String payContent, Integer currency, UsrPurchase purchase) {
+  public static void pay(
+      String number, String payContent, Integer currency, UsrPurchase purchase, Language language) {
     OdrOrder bean = loadByOrderNumPurchase(number, purchase.getPkey());
-    if (bean.gtState() != OdrState.WAIT)
-      throw LOG.err("订单状态错误", "订单状态为[{0}]不能支付", bean.gtState().getLine().getName());
+    if (bean.gtState() != OdrState.WAIT) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.order_service_state_error, language));
+      //    	throw LOG.err("订单状态错误", "订单状态为[{0}]不能支付", bean.gtState().getLine().getName());
+    }
     bean.stState(Odr.OdrState.WAITCONFIRM);
     try {
       JSONObject json = new JSONObject(payContent);
@@ -924,7 +974,9 @@ public class OdrOrderDAO {
       json2.put(I18NUtil.getBundle("Global.Remarks"), json.getString("Contents"));
       bean.setPaycontent(json2.toString());
     } catch (JSONException e) {
-      throw LOG.err("数据异常", "支付信息数据异常");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_wrong_data, language));
+      // throw LOG.err("数据异常", "支付信息数据异常");
     }
     OdrHistoryDAO.add(
         bean.getPkey(),
@@ -1093,10 +1145,13 @@ public class OdrOrderDAO {
    * @param purchase 采购商pkey
    * @author yingjianhua
    */
-  public static void confirmReceiving(String number, Integer purchase) {
+  public static void confirmReceiving(String number, Integer purchase, Language lang) {
     OdrOrder bean = loadByOrderNumPurchase(number, purchase);
-    if (bean == null)
-      throw LOG.err("not exists", "订单编号为[{0}]且采购商pkey为[{1}]的订单不存在", number, purchase);
+    if (bean == null) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.order_wrong_data, lang, number));
+      //    	throw LOG.err("not exists", "订单编号为[{0}]且采购商pkey为[{1}]的订单不存在", number, purchase);
+    }
     switch (bean.gtState()) {
       case DELIVER:
         OdrHistory history = new OdrHistory();
@@ -1115,11 +1170,13 @@ public class OdrOrderDAO {
         bean.upd();
         break;
       default:
-        throw LOG.err(
-            "statusErr",
-            "订单编号为[{0}]的订单状态为[{1}],不能确认收货",
-            number,
-            bean.gtState().getLine().getName());
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.order_wrong_data, lang, number));
+        //        throw LOG.err(
+        //            "statusErr",
+        //            "订单编号为[{0}]的订单状态为[{1}],不能确认收货",
+        //            number,
+        //            bean.gtState().getLine().getName());
     }
   }
 
@@ -1187,6 +1244,7 @@ public class OdrOrderDAO {
     private String carts;
     private Integer address;
     private Integer currency;
+    private Language language;
     private Map<Integer, List<UsrCart>> cartMap = new HashMap<Integer, List<UsrCart>>();
     private List<UsrSupplier> supplierList = new ArrayList<UsrSupplier>();
     private List<PdtSpec> specList = new ArrayList<PdtSpec>();
@@ -1200,7 +1258,9 @@ public class OdrOrderDAO {
       for (UsrCart cart : cartList) {
         for (UsrCart cart2 : cartList) {
           if (!cart.getPurchase().equals(cart2.getPurchase())) {
-            throw LOG.err(Usr.ErrMsgs.noAccess);
+            throw new WebMessageException(
+                MessageBuild.buildMessage(ReturnCode.service_gone, language));
+            //            throw LOG.err(Usr.ErrMsgs.noAccess);
           }
         }
         if (cartMap.get(cart.getSupplier()) == null) {
@@ -1217,10 +1277,14 @@ public class OdrOrderDAO {
     public void valid() {
       for (OdrView view : odrView) {
         if (view.getExpress().intValue() == -1) {
-          throw LOG.err("noChoose", "请选择快递方式");
+          throw new WebMessageException(
+              MessageBuild.buildMessage(ReturnCode.choose_express, language));
+          //          throw LOG.err("noChoose", "请选择快递方式");
         }
         if (view.getPayMethod().intValue() == -1) {
-          throw LOG.err("noChoose", "请选择支付方式");
+          throw new WebMessageException(
+              MessageBuild.buildMessage(ReturnCode.choose_paymode, language));
+          //          throw LOG.err("noChoose", "请选择支付方式");
         }
       }
     }
@@ -1238,6 +1302,7 @@ public class OdrOrderDAO {
             buildOrder.setOdrRemarks(view.getOdrRemarks());
           }
         }
+        buildOrder.setLanguage(language);
         buildOrder.setCurrency(getCurrency());
         buildOrder.setState("0");
         buildOrder.setAddress(address);
@@ -1277,6 +1342,14 @@ public class OdrOrderDAO {
     public void setOdrView(List<OdrView> odrView) {
       this.odrView = odrView;
     }
+
+    public Language getLanguage() {
+      return language;
+    }
+
+    public void setLanguage(Language language) {
+      this.language = language;
+    }
   }
 
   /**
@@ -1300,10 +1373,13 @@ public class OdrOrderDAO {
     private List<String> orders = new ArrayList<String>();
     private String orderNum;
     private String state;
+    private Language language;
 
     public void before() {
       if (getCurrency() == null) {
-        throw LOG.err("noCurrency", "未选择货币");
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.choose_currency, language));
+        //        throw LOG.err("noCurrency", "未选择货币");
       }
       UsrPurchaseLine upl =
           irille.pub.bean.Query.SELECT(UsrPurchaseLine.class)
@@ -1311,7 +1387,9 @@ public class OdrOrderDAO {
               .WHERE(UsrPurchaseLine.T.ADDRSSTYPE, "=?", OAddress.BILLED.getLine().getKey())
               .query();
       if (upl == null) {
-        throw LOG.errTran("addressfrom%Please_Select_The_Billing_Address", "请先设置帐单邮寄地址");
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.Please_Select_The_Billing_Address, language));
+        //        throw LOG.errTran("addressfrom%Please_Select_The_Billing_Address", "请先设置帐单邮寄地址");
       }
       for (UsrCart cart : carts) {
         OdrOrderLine orderLine = new OdrOrderLine();
@@ -1572,6 +1650,14 @@ public class OdrOrderDAO {
 
     public void setOrders(List<String> orders) {
       this.orders = orders;
+    }
+
+    public Language getLanguage() {
+      return language;
+    }
+
+    public void setLanguage(Language language) {
+      this.language = language;
     }
   }
 
