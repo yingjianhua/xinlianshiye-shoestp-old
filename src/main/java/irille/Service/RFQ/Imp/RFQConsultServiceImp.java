@@ -261,7 +261,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     }
     ;
     consult.stUnit(rfqConsultUnit);
-    consult.setCountry(BeanBase.load(UsrSupplier.class, consultView.getSupplierId()).getCountry());
+    consult.setCountry(purchase.getCountry());
     consult.setLeftCount(0);
     consult.setPurchaseId(purchase.getPkey());
     consult.stType(RFQConsultType.supplier_INQUIRY);
