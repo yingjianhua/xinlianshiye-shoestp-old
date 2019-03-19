@@ -90,11 +90,14 @@
                                 </el-col>
                                 <el-col :span="5">
                                     <el-form-item prop="unit">
-                                        <el-select v-model="form.unit" placeholder="Pairs">
-                                            <el-option label="Pairs" value="1"></el-option>
-                                            <el-option label="Forty-Foot Container" value="2"></el-option>
-                                            <el-option label="Twenty-Foot Container" value="3"></el-option>
-                                        </el-select>
+                                            <el-select v-model="form.unit" placeholder="Unit">
+                                                    <el-option
+                                                    v-for="item in options"
+                                                    :key="item.value"
+                                                    :label="item.label"
+                                                    :value="item.value">
+                                                  </el-option>
+                                            </el-select>
                                     </el-form-item>
                                 </el-col>
                             </el-row>
@@ -128,7 +131,7 @@
                             </div>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="submitForm('form')">Send inquiry now</el-button>
+                            <el-button :disabled="flag" type="primary" @click="submitForm('form')">Send inquiry now</el-button>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -163,19 +166,18 @@
         new Vue({
             el:"#main",
             data() {
-                 var validateQuantity = (rule, value, callback) => {
-                    let re = /^[1-9]\d*$/;
-                    if(value){
-                        if(parseInt(value)!=value){
-                            callback(new Error('Please enter an integer'));
-                        }
-                        if( !re.test(value)){
-                            callback(new Error('The number cannot be 0'));
-                        }
+                var validateQuantity = (rule, value, callback) => {
+                    let re = /^\+?[1-9][0-9]*$/;
+                    if (!value) {
+                        return callback(new Error('Please enter the quantity'));
+                    }
+                    if(!re.test(value)){
+                        return callback(new Error("Can't start with 0, can't have decimal point"));
                     }
                     callback();
                 };
                 return {
+                    flag : false, 
                     companyInfo:[], // 供应商信息
                     imgsToUpload: [], // 需要upload的img - 显示在页面上
                     options: [{
@@ -194,10 +196,11 @@
                     form: {
                         title: '', // 标题 名字
                         quantity: '',  // 数量
-                        unit: 'Pairs',  // 单位
+                        unit: '1',  // 单位
                         extraRequest:[],  //  额外要求
                         descriotion: '',  //描述
                         images: '',  // 图片
+                        supplierId: null  // 供应商id
                     },
 
                     rules: {
@@ -221,6 +224,10 @@
                 // 进来页面获取到供应商信息
                 let self = this;
                 self.supplierPkey = self.getQueryString("supplierPkey");
+                if(!isLogin){
+                    window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrSupplier_goContactSupplier?supplierPkey=' + self.supplierPkey;
+                    }
+                self.$set(self.form,"supplierId",self.supplierPkey)
                 axios.get('/home/usr_UsrSupplier_getSupplierDetail', {
                 // axios.get('http://192.168.1.48:889/mock/5c6a1556af4d250024d48c6d/home/home/usr_UsrSupplier_getSupplierDetail', {
                 params: {
@@ -229,11 +236,11 @@
             })
                 .then(function (res) {
                     console.log(res);
-                    if (res.data.ret == 1) {
-                        self.companyInfo = res.data.result;
-                    } else {
-                        self.$message.error(res.data.msg);
+                    if (res.data.ret != 1) {
+                        self.$message.error(res.data.msg || "Failed to get, please refresh the page and try again");
                         return
+                    } else {
+                        self.companyInfo = res.data.result;
                     }
                 })
                 .catch(function (error) {
@@ -280,8 +287,12 @@
                 },
                 submitForm(formName) { // 表单提交
                     let self = this;
+                    if(!isLogin){
+                        window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrSupplier_goContactSupplier?supplierPkey=' + self.supplierPkey;
+                    }
                     self.$refs[formName].validate((valid) => {
                         if (valid) {
+                            self.flag = true;
                             console.log(self.form)
                             self.form.images = self.imgsToUpload.join(",");
                             // self.form.pdtId = self.id;
@@ -301,7 +312,9 @@
                             // }
                             console.log('submit!');
                             let data = JSON.stringify(self.form)
-                            axios.post("/home/rfq_RFQConsult_putRFQInquiry",data)
+                            axios.post("/home/rfq_RFQConsult_putSupplierInquiry",data,
+                                {headers: {'Content-Type': 'application/json'}}
+                            )
                                 .then((res) => {
                                 console.log(res)
                                 // 提交成功时
@@ -313,22 +326,27 @@
                                     type: 'success'
                                 });
                                 setTimeout(function () {
-                                    gtag_report_conversion()
-                                    window.location.href =
-                                        '/home/usr_UsrSupplier_goContactSupplier?supplierPkey=' + self.supplierPkey;
-                                }, 2000)
+                                    // gtag_report_conversion()
+                                    // window.location.href =
+                                    //     '/home/usr_UsrSupplier_gtSupInfo?pkey=' + self.pkey;
+                                    window.location.reload();
+                                }, 1500)
                                 // 未登录时
                             } else if (res.data.ret == -1) {
                                 window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrSupplier_goContactSupplier?supplierPkey=' + self.supplierPkey;
                                 // 提交失败时
                             } else {
-                                self.$alert(res.data.msg, {
-                                    confirmButtonText: 'OK'
+                                self.flag = false;
+                                self.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
+                                    confirmButtonText: 'OK',
+                                    customClass: "my-custom-element-alert-class fs-content-18",
                                 });
                             }
 
                         })
                         .catch((err) => {
+                            self.flag = false;
+                            self.$message.error("Network error, please refresh the page and try again");
                             console.log(err)
                         })
                         } else {

@@ -9,12 +9,21 @@
         height: 36px;
         background-color: #10389c;
         border-radius: 4px;
+        color: #ffffff;
         border-color: #10389c;
     }
-
+   
     .el-button--primary:hover {
-        background-color: #2856b7;
+        color: #ffffff;
+        border-color: #10389c;
+        background-color: #10389c;
     }
+    .el-button--primary.is-disabled, .el-button--primary.is-disabled:active, .el-button--primary.is-disabled:focus, .el-button--primary.is-disabled:hover{
+        color: #ffffff;
+        border-color: #10389c;
+        background-color: #10389c;
+    }
+    
 </style>
 
 </head>
@@ -63,7 +72,7 @@
                                 <el-input v-model.trim="form1.address" placeholder="Please enter the address"/>
                             </el-form-item>
                             <el-form-item>
-                                <el-button type="primary" @click="submitForm1('form1')">Save</el-button>
+                                <el-button :disabled="flag" type="primary" @click="submitForm1('form1')">Save</el-button>
                             </el-form-item>
                         </el-form>
                     </el-col>
@@ -83,7 +92,7 @@
                                 <el-input type="email" v-model.trim="form2.email" placeholder="Please input the email address"/>
                             </el-form-item>
                             <el-form-item>
-                                <el-button type="primary" @click="submitForm2('form2')">Save</el-button>
+                                <el-button :disabled="flag" type="primary" @click="submitForm2('form2')">Save</el-button>
                             </el-form-item>
                         </el-form>
                     </el-col>
@@ -106,7 +115,7 @@
                                 <el-input type="password" v-model.trim="form3.ckPwd" placeholder="Please enter the confirmation password"/>
                             </el-form-item>
                             <el-form-item>
-                                <el-button type="primary" @click="submitForm3('form3')">Save</el-button>
+                                <el-button :disabled="flag" type="primary" @click="submitForm3('form3')">Save</el-button>
                             </el-form-item>
                         </el-form>
                     </el-col>
@@ -186,6 +195,7 @@
                 }
             };
             return {
+                flag : false, 
                 accountInfo: [], // 账号设置信息
                 form1: {
                     gender: '',  //性别
@@ -238,6 +248,10 @@
 
         },
         mounted() {
+            if(!isLogin){
+                window.location.href =
+                                    '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_usrSetting';
+                }
             this.getAccountSettings();
         },
         methods: {
@@ -246,22 +260,33 @@
                 axios.get('/home/usr_Purchase_accountProfile')
                     .then(function (res) {
                         console.log(res);
-                        self.accountInfo = res.data.result;
-                        self.form1.gender = res.data.result.gender.toString();
-                        self.form1.firstName = res.data.result.firstName;
-                        self.form1.surname = res.data.result.surname;
-                        self.form1.phone = res.data.result.phone;
-                        self.form1.company = res.data.result.company;
-                        self.form1.address = res.data.result.address;
-                        self.form2.email = res.data.result.email;
+                        if(res.data.ret != 1){
+                            self.$message.error("Failed to get information, please refresh the page and try again");
+                            return;
+                        }else{
+                            self.accountInfo = res.data.result;
+                            self.form1.gender = res.data.result.gender.toString();
+                            self.form1.firstName = res.data.result.firstName;
+                            self.form1.surname = res.data.result.surname;
+                            self.form1.phone = res.data.result.phone;
+                            self.form1.company = res.data.result.company;
+                            self.form1.address = res.data.result.address;
+                            self.form2.email = res.data.result.email;
+                        }
                     })
                     .catch(function (error) {
+                        self.$message.error("Network error, please refresh the page and try again");
                         console.log(error);
                     });
             },
             submitForm1(formName) { // 第一部分表单提交    信息
+                if(!isLogin){
+                window.location.href =
+                                    '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_usrSetting';
+                }
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                        this.flag = true;
                         let data = JSON.stringify(this.form1)
                         // console.log('submit!');
                         // console.log(data)
@@ -292,12 +317,16 @@
                                         '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_usrSetting';
                                     // 提交失败时
                                 } else {
-                                    this.$alert(res.data.msg, {
-                                        confirmButtonText: 'OK'
+                                    this.flag = false;
+                                    this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
+                                        confirmButtonText: 'OK',
+                                        customClass: "my-custom-element-alert-class fs-content-18",
                                     });
                                 }
                             })
                             .catch((err) => {
+                                this.flag = false;
+                                self.$message.error("Network error, please refresh the page and try again");
                                 console.log(err)
                             })
                     } else {
@@ -316,8 +345,13 @@
                 });
             },
             submitForm2(formName) { // 第二部分表单提交    邮箱
+                if(!isLogin){
+                window.location.href =
+                                    '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_usrSetting';
+                }
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                        this.flag = true;
                         // console.log('submit!');
                         axios.post('/home/usr_Purchase_changeEmail', Qs.stringify({
                             email: this.form2.email,
@@ -347,12 +381,16 @@
                                         '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_usrSetting';
                                     // 提交失败时
                                 } else {
-                                    this.$alert(res.data.msg, {
-                                        confirmButtonText: 'OK'
+                                    this.flag = false;
+                                    this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
+                                        confirmButtonText: 'OK',
+                                        customClass: "my-custom-element-alert-class fs-content-18",
                                     });
                                 }
                             })
                             .catch((err) => {
+                                this.flag = false;
+                                self.$message.error("Network error, please refresh the page and try again");
                                 console.log(err)
                             })
                     } else {
@@ -369,15 +407,13 @@
                 });
             },
             submitForm3(formName) { // 第三部分表单提交    密码
+                if(!isLogin){
+                window.location.href =
+                                    '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_usrSetting';
+                }
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        // console.log(this.form3)
-
-                        // if(this.form3.newPassword != this.form3.ckPwd){
-                        //   this.$message.error('两次密码不相同');
-                        //   return ;
-                        // }
-                        // console.log('submit!');
+                        this.flag = true;
                         axios.post('/home/usr_Purchase_changePassword', Qs.stringify({
                             password: this.form3.password,
                             newPassword: this.form3.newPassword
@@ -406,13 +442,17 @@
                                         '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_usrSetting';
                                     // 提交失败时
                                 } else {
-                                    this.$alert(res.data.msg, {
-                                        confirmButtonText: 'OK'
+                                    this.flag = false;
+                                    this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
+                                        confirmButtonText: 'OK',
+                                        customClass: "my-custom-element-alert-class fs-content-18",
                                     });
                                 }
 
                             })
                             .catch((err) => {
+                                this.flag = false;
+                                self.$message.error("Network error, please refresh the page and try again");
                                 console.log(err)
                             })
                     } else {
