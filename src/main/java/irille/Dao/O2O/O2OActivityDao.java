@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import irille.Entity.O2O.Enums.O2O_ActivityStatus;
 import irille.Entity.O2O.O2O_Activity;
 import irille.Entity.O2O.O2O_Activity.T;
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
+import irille.Entity.O2O.Enums.O2O_ActivityStatus;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
@@ -20,8 +20,8 @@ import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrProductCategory;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplierRole;
-import irille.view.O2O.O2OActivityView;
 import irille.view.Page;
+import irille.view.O2O.O2OActivityView;
 
 /** Created by IntelliJ IDEA. User: Lijie<HelloBox@outlook.com> Date: 2019/1/26 Time: 12:50 */
 public class O2OActivityDao {
@@ -68,7 +68,8 @@ public class O2OActivityDao {
       }
     }
     //				query.WHERE(condition.getStatus()!=null,T.STATUS,"=?",condition.getStatus());
-
+    Integer count = query.queryCount();
+    query.ORDER_BY(O2O_Activity.T.START_DATE, " DESC ").limit(start, limit);
     List<O2OActivityView> result =
         query.queryList().stream()
             .map(
@@ -76,7 +77,7 @@ public class O2OActivityDao {
                   return O2OActivityView.toView(bean);
                 })
             .collect(Collectors.toList());
-    Integer count = query.queryCount();
+
     return new Page<O2OActivityView>(result, start, limit, count);
   }
 

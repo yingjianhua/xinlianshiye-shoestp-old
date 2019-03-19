@@ -6,25 +6,35 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.google.inject.Inject;
 import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
 
+import irille.Dao.PdtCatDao;
 import irille.Dao.O2O.O2OActivityDao;
 import irille.Dao.O2O.O2OProductDao;
-import irille.Dao.PdtCatDao;
+import irille.Entity.O2O.O2O_Activity;
+import irille.Entity.O2O.O2O_JoinInfo;
+import irille.Entity.O2O.O2O_Map;
+import irille.Entity.O2O.O2O_PrivateExpoPdt;
+import irille.Entity.O2O.O2O_Product;
 import irille.Entity.O2O.Enums.O2O_ActivityStatus;
 import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
-import irille.Entity.O2O.O2O_Activity;
-import irille.Entity.O2O.O2O_JoinInfo;
-import irille.Entity.O2O.O2O_PrivateExpoPdt;
-import irille.Entity.O2O.O2O_Product;
 import irille.Entity.pm.PM.OTempType;
 import irille.Service.Manage.O2O.O2OActivityService;
+import irille.pub.bean.BeanBase;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.pub.tb.FldLanguage;
@@ -36,13 +46,11 @@ import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrSupplier;
+import irille.view.Page;
 import irille.view.O2O.O2OActivityView;
 import irille.view.O2O.O2OProductView;
 import irille.view.O2O.PdtSearchView;
-import irille.view.Page;
 import irille.view.se.sendEmail;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class O2OActivityServiceImpl implements O2OActivityService {
 
@@ -212,8 +220,25 @@ public class O2OActivityServiceImpl implements O2OActivityService {
 
     // 活动分类
     if (view.getActivityCat() == null || view.getActivityCat().trim().equals("")) {
+      throw new WebMessageException(ReturnCode.failure, "请选择活动产品分类");
+    }
+    if ("-1".equals(view.getActivityCat())) {
       view.setActivityCat(null);
     } else {
+      List<PdtCat> cats =
+          BeanBase.list(
+              PdtCat.class,
+              PdtCat.T.PKEY.getFld().getCodeSqlField() + " IN (?) ",
+              false,
+              view.getActivityCat());
+      if (cats.size() != view.getActivityCat().split(",").length) {
+        throw new WebMessageException(ReturnCode.service_wrong_data, "分类数据不存在");
+      }
+      for (PdtCat c : cats) {
+        if (null != c.getCategoryUp()) {
+          throw new WebMessageException(ReturnCode.service_unknow, "只能为一级分类发布活动");
+        }
+      }
       view.setActivityCat(
           Stream.of(view.getActivityCat().split(","))
               .map(
@@ -223,7 +248,6 @@ public class O2OActivityServiceImpl implements O2OActivityService {
               .collect(Collectors.toSet()).stream()
               .map(
                   pkey -> {
-                    // 没有校验产品分类是否存在, 平台段应该没有那么多幺蛾子
                     return String.valueOf(pkey);
                   })
               .collect(Collectors.joining(",")));
@@ -243,6 +267,11 @@ public class O2OActivityServiceImpl implements O2OActivityService {
     if (view.getAddr() == null) {
       throw new WebMessageException(ReturnCode.valid_notnull, "请填写活动国家/地区");
     }
+    O2O_Map map = BeanBase.chk(O2O_Map.class, view.getAddr());
+    if (null == map) {
+      throw new WebMessageException(
+          ReturnCode.service_wrong_data, "主键为【" + view.getAddr() + "】的地址不存在");
+    }
 
     // 活动截止时间
     if (view.getEndDate() == null) {
@@ -253,8 +282,11 @@ public class O2OActivityServiceImpl implements O2OActivityService {
       try {
         view.setEndDate(sdf.parse(sdf.format(view.getEndDate())));
       } catch (ParseException e) {
-        e.printStackTrace();
+        throw new WebMessageException(ReturnCode.failure, "日期格式异常");
       }
+    }
+    if (view.getStartDate().before(new Date())) {
+      throw new WebMessageException(ReturnCode.failure, "起始时间不能早于系统时间");
     }
     if (view.getStartDate().after(view.getEndDate())) {
       throw new WebMessageException(ReturnCode.failure, "起始时间不能晚于结束时间");
@@ -263,8 +295,22 @@ public class O2OActivityServiceImpl implements O2OActivityService {
     if (view.getRules() == null || view.getRules().trim().equals("")) {
       throw new WebMessageException(ReturnCode.valid_notblank, "请填写活动规则");
     }
-    if (view.getRules().length() > 800) {
-      // 暂时不限定字数
+    // 暂时不限定字数
+    try {
+      JSONObject rule = new JSONObject(view.getRules());
+      if (!rule.has(FldLanguage.Language.zh_CN.name())) {
+        throw new WebMessageException(ReturnCode.service_wrong_data, "请填写中文规则");
+      }
+      String r = String.valueOf(rule.get(FldLanguage.Language.zh_CN.name()));
+      if ("".equals(r.trim())) {
+        throw new WebMessageException(ReturnCode.service_wrong_data, "请填写中文规则");
+      }
+      if (r.length() > 800) {
+        throw new WebMessageException(ReturnCode.valid_toolong, "规则限制800字");
+      }
+
+    } catch (JSONException e) {
+      throw new WebMessageException(ReturnCode.service_wrong_data, "数据格式异常");
     }
   }
 
