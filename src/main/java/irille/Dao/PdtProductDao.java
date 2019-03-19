@@ -694,7 +694,7 @@ public class PdtProductDao {
   }
 
   @Caches
-  public List getYouMayLike(int cat, Integer pubPkey) {
+  public List<Map<String, Object>> getYouMayLike(int cat, Integer pubPkey) {
     SQL sql = new SQL();
     if (pubPkey != null) {
       SQL childrenQuery = new SQL();
@@ -717,10 +717,34 @@ public class PdtProductDao {
       sql.WHERE(PdtProduct.T.PKEY, " in(" + pkeys + ") ");
     }
     productRules(sql);
+    return irille.pub.bean.Query.sql(sql).queryMaps();
+  }
+
+  @Caches
+  public List<Map<String, Object>> getYouMayLike(int start, int limit, int cat, Integer pubPkey) {
+    SQL sql = new SQL();
     if (pubPkey != null) {
-      return irille.pub.bean.Query.sql(sql).queryMaps();
+      SQL childrenQuery = new SQL();
+      childrenQuery
+          .SELECT(UsrFavorites.T.PKEY)
+          .FROM(UsrFavorites.class)
+          .WHERE(UsrFavorites.T.PURCHASE, "=?", pubPkey)
+          .WHERE(UsrFavorites.T.PRODUCT, "=", PdtProduct.T.PKEY);
+      sql.SELECT(childrenQuery, "isFavorite");
     }
-    return irille.pub.bean.Query.sql(sql).queryList(PdtProduct.class);
+    sql.SELECT(
+            PdtProduct.T.PKEY,
+            PdtProduct.T.NAME,
+            PdtProduct.T.CUR_PRICE,
+            PdtProduct.T.PICTURE,
+            PdtProduct.T.MIN_OQ)
+        .FROM(PdtProduct.class);
+    if (cat > 0) {
+      String pkeys = getYouMayLikeProd(cat);
+      sql.WHERE(PdtProduct.T.PKEY, " in(" + pkeys + ") ");
+    }
+    productRules(sql).LIMIT(start, limit);
+    return irille.pub.bean.Query.sql(sql).queryMaps();
   }
 
   /**
@@ -1396,5 +1420,11 @@ public class PdtProductDao {
                     })
             .collect(toList());
     return new Page(list, start, limit, count);
+  }
+
+  @Caches
+  public int getPdtCount() {
+    return Query.sql(productRules(new SQL()).SELECT(PdtProduct.class).FROM(PdtProduct.class))
+        .queryCount();
   }
 }

@@ -61,10 +61,10 @@ public class LgAccessDAO {
 
   private static String getUser(UserView user) {
     String s = "";
-    if (user.isPurchase()) {
+    if (user != null && user.isPurchase()) {
       s += "purchase";
       if (user.isSupplier()) s += "|supplier";
-    } else if (user.isSupplier()) {
+    } else if (user != null && user.isSupplier()) {
       s += "supplier";
     } else {
       s += "anonymous";
@@ -73,7 +73,7 @@ public class LgAccessDAO {
   }
 
   private static String getLoginName(UserView user) {
-    if (user.haveUser()) return user.getLoginName();
+    if (user !=null && user.haveUser()) return user.getLoginName();
     return null;
   }
 
