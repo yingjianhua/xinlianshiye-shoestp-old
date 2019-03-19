@@ -256,7 +256,7 @@ ul{
             <el-row type="flex" justify="end">
                 <div style="padding:30px;">
                     <el-form-item>
-                        <el-button type="primary" @click="submitForm('form')">Send inquiry now</el-button>
+                        <el-button :disabled="flag" type="primary" @click="submitForm('form')">Send inquiry now</el-button>
                     </el-form-item>
                 </div>
             </el-row>
@@ -284,6 +284,7 @@ ul{
                 callback();
                 };
                 return{
+                    flag : false, 
                      imgsToUpload: [], // 需要upload的img - 显示在页面上
                 options: [{
                         value: "1",
@@ -419,6 +420,7 @@ ul{
                     }
                     this.$refs[formName].validate((valid) => {
                         if (valid) {
+                            this.flag = true;
                             console.log(this.form)
                             this.form.images = this.imgsToUpload.join(",");
                             this.form.pdtId = this.id;
@@ -451,12 +453,13 @@ ul{
                                         setTimeout(function () {
                                             sessionStorage.removeItem('Temp_Pdt_publish_form')
                                             window.location.href =getParams('backUrl','/');
-                                        }, 2000)
+                                        }, 1500)
                                         // 未登录时
                                     } else if (res.data.ret == -1) {
                                        window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_productPublishView?product_id="+this.getQueryString("product_id")
                                         // 提交失败时
                                     } else {
+                                        this.flag = false;
                                         this.$alert(res.data.msg, {
                                             confirmButtonText: 'OK'
                                         });
@@ -464,6 +467,7 @@ ul{
 
                                 })
                                 .catch((err) => {
+                                    this.flag = false;
                                     console.log(err)
                                 })
                         } else {

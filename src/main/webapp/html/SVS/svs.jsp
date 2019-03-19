@@ -247,13 +247,13 @@
         methods: {
             handleScroll() {
                 var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-                if (scrollTop >= 330) {
+                if (scrollTop >= 1300) {
                     this.scrollTop1 = true;
                 }
-                if (scrollTop >= 900) {
+                if (scrollTop >= 2800) {
                     this.scrollTop2 = true;
                 }
-                if (scrollTop >= 1400) {
+                if (scrollTop >= 3210) {
                     this.scrollTop3 = true;
                 }
             },

@@ -2,6 +2,7 @@ package irille.platform.plt;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 import javax.inject.Inject;
 
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import irille.Dao.PltFreightDao;
 import irille.action.MgtAction;
+import irille.core.sys.Sys;
 import irille.platform.plt.View.DeliveryAreaView;
 import irille.platform.plt.View.FreightManagementView;
 import irille.pub.svr.LoginUserMsg;
@@ -58,7 +60,20 @@ public class PltFreightAction extends MgtAction<PltFreight> {
   public void insShipping() throws IOException {
     LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
     freightManagementView.setCreatedby(lu.get_user().getPkey());
-    pltFreightDAO.insShipping(freightManagementView);
+    PltFreight pltFreight = pltFreightDAO.insShipping(freightManagementView);
+   if(null!=pltFreight){
+        PltFreightLine pf=new PltFreightLine();
+        pf.setMain(pltFreight.getPkey());
+        pf.setSection("全区");
+        pf.setFree(Sys.OYn.NO.getLine().getKey());
+        pf.setFreePrice(BigDecimal.ZERO);
+        pf.setExtraPrice(BigDecimal.ZERO);
+        pf.setWeightPrice(BigDecimal.ZERO);
+        pf.setAggravatePrice(BigDecimal.ZERO);
+        pf.setAggravateSection(0);
+        pf.setWeightSection(0);
+        pltFreightDAO.insDeliveryArea(pf);
+   }
     write();
   }
 

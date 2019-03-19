@@ -364,7 +364,7 @@
         top:0;
       }
       #personalCenter .contacts-main .contacts-main-left>dl .select-content .add-group .add-group-input input,#personalCenter .contacts-main .contacts-main-left>dl .select-content .add-group .edit-group-input input{
-        width: 117px;
+        width: 116px;
         height: 29px;
         border-top-left-radius: 3px;
         border-bottom-left-radius: 3px;
@@ -609,7 +609,49 @@
            	right:4px;
            	top:4px;
            }
-          #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2 li .h2{
+           #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2 li .wrap {
+            height: 40px;
+            line-height: 20px;
+            overflow: hidden;
+            width:140px;
+          	margin-left:10px;
+            padding-right: 10px;
+        }
+        
+        #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2 li .wrap .text {
+            float: right;
+            margin-left: -5px;
+            width: 100%;
+            word-break: break-all;
+        }
+        
+        #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2 li .wrap::before {
+            float: left;
+            width: 5px;
+            content: '';
+            height: 40px;
+        }
+        
+        #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2 li:hover .wrap::after {
+          background-color:#e2e7f3;
+        }
+        #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2 li .wrap::after {
+            float: right;
+            content: "...";
+            height: 20px;
+            line-height: 20px;
+            /* 为三个省略号的宽度 */
+            width: 1em;
+            /* 使盒子不占位置 */
+            margin-left: -1em;
+            /* 移动省略号位置 */
+            position: relative;
+            left: 100%;
+            top: -20px;
+            padding-right: 5px;
+            background-color: #FFF;
+        }
+          /* #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2 li .h2{
           	width:140px;
           	margin-left:10px;
             padding-right: 10px;
@@ -619,8 +661,8 @@
 					  -webkit-box-orient: vertical;
 					  -webkit-line-clamp: 2;
 					  overflow: hidden;
-					  /* margin-top:12px; */
-          }
+					  margin-top:0;
+          } */
           #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2 li .h3{
           	line-height:52px;
           	color:#999;
@@ -865,10 +907,50 @@
           height: 100%;
           object-fit: contain;
       }
+
+
+
       #personalCenter .favorite-main .favorite-list .favorite-item .porduct-name{
         font-size: 12px;
         margin-top: 10px;
       }
+      #personalCenter .favorite-main .favorite-list .favorite-item .porduct-name {
+        height: 40px;
+        line-height: 20px;
+        overflow: hidden;
+    }
+    
+    #personalCenter .favorite-main .favorite-list .favorite-item .porduct-name .text {
+        float: right;
+        margin-left: -5px;
+        width: 100%;
+        word-break: break-all;
+    }
+    
+    #personalCenter .favorite-main .favorite-list .favorite-item .porduct-name::before {
+        float: left;
+        width: 5px;
+        content: '';
+        height: 40px;
+    }
+    
+    #personalCenter .favorite-main .favorite-list .favorite-item .porduct-name::after {
+        float: right;
+        content: "...";
+        height: 20px;
+        line-height: 20px;
+        /* 为三个省略号的宽度 */
+        width: 1em;
+        /* 使盒子不占位置 */
+        margin-left: -1em;
+        /* 移动省略号位置 */
+        position: relative;
+        left: 100%;
+        top: -20px;
+        padding-right: 5px;
+        background-color: #FFF;
+    }
+
       #personalCenter .favorite-main .favorite-list .favorite-item .porduct-price{
         font-size: 18px;
         margin: 10px 0;

@@ -94,7 +94,7 @@ public class PltFreightDao {
   }
 
   // 插入快递公司
-  public void insShipping(FreightManagementView view) {
+  public PltFreight insShipping(FreightManagementView view) {
     PltFreight pltFreight = new PltFreight();
     pltFreight.setCompany(view.getCompany());
     pltFreight.setLogo(view.getLogo());
@@ -125,7 +125,7 @@ public class PltFreightDao {
       if (pltFreight.getSort() < 0)
         throw LOG.err(Plt.ErrMsgs.lowPriceErr, PltFreight.T.SORT.getFld().getName(), 0);
     }
-    pltFreight.ins();
+     return pltFreight.ins();
   }
 
   // 插入区间
