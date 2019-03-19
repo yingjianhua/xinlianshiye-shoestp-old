@@ -3,7 +3,6 @@ package irille.pub.bean;
 import java.io.Serializable;
 import java.util.List;
 
-import irille.pub.Log;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.query.SqlQuery;
 import irille.pub.bean.sql.SQL;
@@ -12,7 +11,6 @@ import irille.pub.tb.FldLanguage.Language;
 import irille.pub.tb.IEnumFld;
 
 public class Query {
-  public static final Log LOG = new Log(Query.class);
 
   @SuppressWarnings("unused")
   public static void main(String[] args) {

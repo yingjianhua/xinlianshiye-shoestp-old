@@ -23,7 +23,7 @@
     <!-- 联系 -->
     <div class="contacts-main fr clearfix">
         <div class="contacts-main-left fl">
-        {{popupindex}}
+        <!-- {{popupindex}} -->
             <!-- "contactPkey" == {{contactPkey}} -->
             <!-- "start" == {{start}} -->
             <!-- "{{groupName}}"====== {{groupName}} -->
@@ -59,7 +59,7 @@
                         </div>
                         <transition name="user-fade-in">
                         <div class="add-group-input clearfix" v-if="isAddSearchGroup">
-                            <input type="text"  ref="addInputFocus" placeholder="Add a new group" v-model.trim="addInput" @keyup.enter="addGroup">
+                            <input type="text" ref="addInputFocus" placeholder="Add a new group" v-model.trim="addInput" @keyup.enter="addGroup">
                             <div class="fr add-group-go" @click="addGroup">Go</div>
                         </div>
                         <transition>
@@ -138,7 +138,13 @@
                                              :src="inquiryItem.consult.type==3?image(inquiryItem.consult.images[0]) + '?x-oss-process=image/resize,w_43,h_43/blur,r_5,s_20':image(inquiryItem.consult.images[0])" alt="" />
                                         <i v-if="inquiryItem.quotation.isNew"></i>
                                     </div>
-                                    <div class="h2">{{inquiryItem.consult.title}}</div>
+                                    <!-- <div class="h2">{{inquiryItem.consult.title}}</div> -->
+                                    <!-- <div class="h2">{{inquiryItem.consult.title}}</div> -->
+                                    <div class="wrap">
+                                        <div class="text">
+                                            {{inquiryItem.consult.title}}
+                                        </div>
+                                    </div>
                                     <div class="h3">{{timeFormat(inquiryItem.quotation.createDate).substr(5)}}</div>
                                 </a>
                             </li>
@@ -313,7 +319,7 @@
             contactPkey:'', // 供应商移动分组 pkey
             isGroupShow: false,  // 是否显示分组
             groupName:'ALL CONTACTS',  // 分组名字
-            nowGroupCount:this.allGroupCount,  // 当前分组联系人数量
+            nowGroupCount:0,  // 当前分组联系人数量
             allGroupCount:'',  // 总联系人数量
         },
         created(){
@@ -322,6 +328,8 @@
             // console.log(this.$refs.dl.contains(e.target));
             if(!this.$refs.dl.contains(e.target)){
                 this.isShowHoverSelect = false;
+                this.isAddSearchGroup = false // 是否显示添加分组输入框
+                this.isEditSearchGroup = false // 是否显示编辑分组输入框
             }
         })
         },
@@ -383,7 +391,7 @@
             };
             setTimeout(() => {
                 this.nowGroupCount = this.allGroupCount;
-        }, 50);
+        }, 100);
         });
         },
         methods: {
@@ -524,27 +532,32 @@
             },
             editGroup() { // 编辑分组
                 var self = this;
-                self.isEditSearchGroup = false;
-                axios.post('/home/rfq_RFQContact_editGroup', Qs.stringify({
-                    groupPkey: self.editNewPkey,
-                    groupName: self.editInput
-                }, ))
-                    .then(function (res) {
-                        // console.log(res);
-                        if (res.data.ret != 1) {
-                            self.$message.error(res.data.msg);
-                            return
-                        };
-                        self.$message({
-                            showClose: true,
-                            message: 'Successful editing',
-                            type: 'success'
+                if(self.editInput.length > 10){
+                    this.$message.error('Enter up to 10 characters');
+                    return;
+                }else{
+                    self.isEditSearchGroup = false;
+                    axios.post('/home/rfq_RFQContact_editGroup', Qs.stringify({
+                        groupPkey: self.editNewPkey,
+                        groupName: self.editInput
+                    }))
+                        .then(function (res) {
+                            // console.log(res);
+                            if (res.data.ret != 1) {
+                                self.$message.error(res.data.msg);
+                                return
+                            };
+                            self.$message({
+                                showClose: true,
+                                message: 'Successful editing',
+                                type: 'success'
+                            });
+                            self.getGroupList();
+                        })
+                        .catch(function (error) {
+                            console.log(error);
                         });
-                        self.getGroupList();
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+                }
             },
             deleteGroup(groupPkey) { // 删除分组
                 console.log(groupPkey)
@@ -621,25 +634,30 @@
             },
             addGroup() { // 添加分组
                 var self = this;
-                if(self.isAddSearchGroup){
-                    self.isAddSearchGroup = false;
+                if(self.addInput.length > 10){
+                    this.$message.error('Enter up to 10 characters');
+                    return;
+                }else{
+                    if(self.isAddSearchGroup){
+                        self.isAddSearchGroup = false;
+                    }
+                    axios.post('/home/rfq_RFQContact_addGroup', Qs.stringify({
+                        groupName: self.addInput
+                    }))
+                        .then(function (res) {
+                            console.log(res);
+                            if (res.data.ret != 1) {
+                                self.$message.error(res.data.msg);
+                                return
+                            };
+                            self.$message.success("Added successfully");
+                            self.addInput = ''
+                            self.getGroupList();
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
                 }
-                axios.post('/home/rfq_RFQContact_addGroup', Qs.stringify({
-                    groupName: self.addInput
-                }))
-                    .then(function (res) {
-                        console.log(res);
-                        if (res.data.ret != 1) {
-                            self.$message.error(res.data.msg);
-                            return
-                        };
-                        self.$message.success("Added successfully");
-                        self.addInput = ''
-                        self.getGroupList();
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
             },
             getSupplierDetail(supplierPkey){  // 获取供应商详情
                 var self = this;

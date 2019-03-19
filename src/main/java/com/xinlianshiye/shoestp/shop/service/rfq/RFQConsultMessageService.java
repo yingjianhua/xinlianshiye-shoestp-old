@@ -5,6 +5,7 @@ import com.xinlianshiye.shoestp.shop.service.rfq.impl.RFQConsultMessageServiceIm
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultMessageView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultMessagesView;
 
+import irille.pub.tb.FldLanguage.Language;
 import irille.shop.usr.UsrPurchase;
 
 @ImplementedBy(RFQConsultMessageServiceImpl.class)
@@ -28,7 +29,8 @@ public interface RFQConsultMessageService {
       Integer nextMessagePkey,
       Integer preMessagePkey,
       Integer start,
-      Integer limit);
+      Integer limit,
+      Language language);
 
   /**
    * 采购商发送聊天消息

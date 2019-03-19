@@ -38,14 +38,14 @@
                 <el-form-item id="email"
                               label="Your Email Address" prop="email">
                     <el-input placeholder="Email"
-                              v-model="registerForm.email">
+                              v-model.trim="registerForm.email">
                     </el-input>
                 </el-form-item>
 
                 <el-form-item class="verification-code-wrap01" label="Verification Code" prop="code">
                     <div class="verification-code-wrap">
                         <el-input placeholder="Verification code"
-                                  v-model="registerForm.code">
+                                  v-model.trim="registerForm.code">
                         </el-input>
                         <img :src="codeUrl" alt="Verification code"
                              class="pic-code">
@@ -184,7 +184,8 @@
                     }
                 ],
                 code: [
-                    {required: true, message: 'Code can\'t be empty!', trigger: 'blur'}
+                    {required: true, message: 'Code can\'t be empty!', trigger: 'blur'},
+                    { min: 4, max: 4, message: 'Please enter 4 characters or numbers', trigger: 'blur' }
                 ],
             },
         },
@@ -227,7 +228,7 @@
                 }))
                     .then((res) => {
                         if (res.data.ret != 1) {
-                            this.$message.error(res.data.msg);
+                            this.$message.error(res.data.msg || "Send email error,please try again later");
                             return
                         }
                         ;
@@ -246,7 +247,7 @@
                         this.step = 2;
                     })
                     .catch((error) => {
-                        console.log(error);
+                        this.$message.error(error || 'Network error,please try again later');
                     });
             },
 

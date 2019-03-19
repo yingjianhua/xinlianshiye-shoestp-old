@@ -20,7 +20,7 @@ public class EasyOdrAction extends HomeAction<EasyOdr> {
 
   public void generateOrder() throws Exception {
     //        新的订单
-    easyOdrService.generateOrder(purchaseLine, getPurchase().getPkey(), list);
+    easyOdrService.generateOrder(purchaseLine, getPurchase().getPkey(), list, curLanguage());
     write();
   }
 }

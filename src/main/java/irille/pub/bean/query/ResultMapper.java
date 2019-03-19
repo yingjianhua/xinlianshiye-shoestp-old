@@ -4,22 +4,29 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
+import java.util.WeakHashMap;
 
-import irille.pub.Log;
 import irille.pub.bean.Bean;
 import irille.pub.bean.BeanBase;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.tb.Fld;
 import irille.pub.tb.Tb;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class ResultMapper {
-  public static final Log LOG = new Log(ResultMapper.class);
-
+	
   private static final void propertySet(Bean<?, ?> bean, Fld<?> fld, Object val) {
     try {
       fld.getSetMethod().invoke(bean, val);
     } catch (Exception e) {
-      throw LOG.err(e, "setField", "对Bean的字段【{0}】赋值出错!", fld.getName());
+    	log.warn("数据库记录转换到对象 赋值出错 : {}", e.getMessage());
+    	throw new WebMessageException(ReturnCode.db_unknow, "service error");
     }
   }
 
@@ -37,7 +44,8 @@ public class ResultMapper {
       }
       return bean;
     } catch (Exception e) {
-      throw LOG.err(e, "setBeanfromResultSet", "数据库记录->对象【{0}】时出错!", beanClass);
+      log.warn("数据库记录转换到对象 赋值出错 : {}", e.getMessage());
+      throw new WebMessageException(ReturnCode.db_unknow, "service error");
     }
   }
 
@@ -46,7 +54,8 @@ public class ResultMapper {
       if (rs.next()) return fromResultSet(rs, beanClass);
       return null;
     } catch (Exception e) {
-      throw LOG.err("asBeanFromResultSet", "数据库记录->[{0}]对象出错", beanClass.getName());
+      log.warn("数据库记录转换到对象 赋值出错 : {}", e.getMessage());
+      throw new WebMessageException(ReturnCode.db_unknow, "service error");
     }
   }
 
@@ -58,7 +67,8 @@ public class ResultMapper {
       }
       return list;
     } catch (SQLException e) {
-      throw LOG.err("asBeanListFromResultSet", "数据库记录->List<{0}>对象出错", beanClass.getName());
+      log.warn("数据库记录转换到对象 赋值出错 : {}", e.getMessage());
+      throw new WebMessageException(ReturnCode.db_unknow, "service error");
     }
   }
 
@@ -70,7 +80,8 @@ public class ResultMapper {
       }
       return list;
     } catch (Exception e) {
-      throw LOG.err("asObjectsFromResultSet", "数据库记录->List<{0}>对象出错", resultClass.getName());
+      log.warn("数据库记录转换到对象 赋值出错 : {}", e.getMessage());
+      throw new WebMessageException(ReturnCode.db_unknow, "service error");
     }
   }
 
@@ -85,7 +96,8 @@ public class ResultMapper {
         }
       }
     } catch (Exception e) {
-      throw LOG.err("asObjectFromResultSet", "数据库记录->[{0}]对象出错", resultClass.getName());
+      log.warn("数据库记录转换到对象 赋值出错 : {}", e.getMessage());
+      throw new WebMessageException(ReturnCode.db_unknow, "service error");
     }
     return null;
   }
@@ -135,7 +147,8 @@ public class ResultMapper {
       }
       return map;
     } catch (Exception e) {
-      throw LOG.err("asMapFromResultSet", "数据库记录->Map对象出错");
+      log.warn("数据库记录转换到对象 赋值出错 : {}", e.getMessage());
+      throw new WebMessageException(ReturnCode.db_unknow, "service error");
     }
   }
 
@@ -165,7 +178,8 @@ public class ResultMapper {
       }
       return list;
     } catch (SQLException e) {
-      throw LOG.err("asMapsFromResultSet", "数据库记录->List<Map>对象出错");
+      log.warn("数据库记录转换到对象 赋值出错 : {}", e.getMessage());
+      throw new WebMessageException(ReturnCode.db_unknow, "service error");
     }
   }
 }

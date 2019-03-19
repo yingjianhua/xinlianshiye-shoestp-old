@@ -6,7 +6,19 @@ import java.util.concurrent.LinkedBlockingDeque;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.quartz.CronExpression;
+import org.quartz.CronScheduleBuilder;
+import org.quartz.JobBuilder;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.SimpleScheduleBuilder;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
+import org.quartz.impl.StdSchedulerFactory;
+
 import irille.Service.Manage.O2O.Imp.O2OActicityServerImp;
+import irille.Service.Manage.Pdt.Imp.PdtProductManageServiceImp;
 import irille.pub.dynamicScore.SVSNewestPdtAction;
 import irille.pub.exception.WebMessageException;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +40,7 @@ public class ScheduledTask implements ServletContextListener {
     addTask(O2OActicityServerImp.class, 5 * minute, "O2O活动状态变更");
     addTask(SVSNewestPdtAction.updSVSFraction.class, "0 0/15 * * * ?", "SVS动态分");
     addTask(SVSNewestPdtAction.updSVSGrade.class, "0 0 0 20 * ?", "SVS等级");
+    addTask(PdtProductManageServiceImp.class, "0 1 * * * ? *", "产品上架状态变更");
   }
 
   public void addTask(Class clazz, Object time, String name) {

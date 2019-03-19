@@ -274,7 +274,7 @@
                             </div>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="submitForm('form')">Send inquiry now</el-button>
+                            <el-button :disabled="flag" type="primary" @click="submitForm('form')">Send inquiry now</el-button>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -305,6 +305,7 @@
                     callback();
                 };
                 return {
+                    flag : false, 
                     imgsToUpload: [], // 需要upload的img - 显示在页面上
                     options: [{
                         value: "1",
@@ -392,6 +393,7 @@
                     let self = this;
                     self.$refs[formName].validate((valid) => {
                         if (valid) {
+                            self.flag = true;
                             console.log(self.form)
                             self.form.images = self.imgsToUpload.join(",");
                             // self.form.pdtId = self.id;
@@ -427,12 +429,13 @@
                                     gtag_report_conversion()
                                     window.location.href =
                                         '/home/usr_UsrSupplier_gtSupContact?pkey=' + self.pkey;
-                                }, 2000)
+                                }, 1500)
                                 // 未登录时
                             } else if (res.data.ret == -1) {
                                 window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrSupplier_gtSupContact?pkey=' + self.pkey;
                                 // 提交失败时
                             } else {
+                                self.flag = false;
                                 self.$alert(res.data.msg, {
                                     confirmButtonText: 'OK'
                                 });
@@ -440,6 +443,7 @@
 
                         })
                         .catch((err) => {
+                            self.flag = false;
                                 console.log(err)
                             })
                         } else {

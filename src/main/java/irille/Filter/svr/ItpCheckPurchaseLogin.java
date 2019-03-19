@@ -49,12 +49,14 @@ public class ItpCheckPurchaseLogin extends AbstractInterceptor {
       response.setHeader(
           "cache-control", "no-store, no-cache, must-reval…te, post-check=0, pre-check=0");
     }
-    if (method.getAnnotation(NeedLogin.class) != null) {
+    NeedLogin annotation = method.getAnnotation(NeedLogin.class);
+    if (annotation != null) {
       Class<?> returnType = method.getReturnType();
       if (returnType.equals(void.class) && HomeAction.getUser() == null) {
         HomeAction.writeTimeout();
         return null;
-      } else if (returnType.equals(String.class) && HomeAction.getUser() == null) {
+      } else if (returnType.equals(String.class) && HomeAction.getUser() == null
+          || HomeAction.getUser().isSupplier() != annotation.supplier()) {
         HomeAction<?> action = (HomeAction<?>) actionInvocation.getAction();
         StringJoiner stringJoiner = new StringJoiner("&");
         getParams(ServletActionContext.getRequest())
@@ -89,7 +91,10 @@ public class ItpCheckPurchaseLogin extends AbstractInterceptor {
    */
   @Target({ElementType.METHOD})
   @Retention(RetentionPolicy.RUNTIME)
-  public @interface NeedLogin {}
+  public @interface NeedLogin {
+    // TODO 这里改用用户组会更好用
+    boolean supplier() default false;
+  }
 
   public static void s(Object s) {
     System.out.println(s);

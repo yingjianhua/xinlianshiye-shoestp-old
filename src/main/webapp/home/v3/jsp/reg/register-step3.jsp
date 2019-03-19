@@ -87,7 +87,9 @@
         },
         mounted() {
             // 成功后直接登录
-            this.autoLogin();
+            setTimeout(()=>{
+                this.autoLogin();
+            },1000);
             // 倒计时
             this.countDownTimer = setInterval(() => {
                 this.countDown--;
@@ -114,16 +116,15 @@
                     pwd: registerPsd,
                 }))
                     .then((res) => {
-                        if (res.data.ret != 1) {
-                            this.$message.error(res.data.msg);
-                            return
-                        }
-                        ;
+                        // if (res.data.ret != 1) {
+                        //     this.$message.error(res.data.msg);
+                        //     return
+                        // };
                         localStorage.removeItem("registerEmail")
                         localStorage.removeItem("registerPsd")
                     })
                     .catch((error) => {
-                        console.log(error);
+                        this.$message.error(error || 'Network error,please try again later');
                     });
             },
         }

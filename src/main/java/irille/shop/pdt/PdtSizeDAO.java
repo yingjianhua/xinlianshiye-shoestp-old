@@ -3,8 +3,13 @@ package irille.shop.pdt;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
@@ -72,7 +77,11 @@ public class PdtSizeDAO {
                       {
                         setId((Integer) bean.get(T.PKEY.getFld().getCodeSqlField()));
                         setName((String) bean.get(T.NAME.getFld().getCodeSqlField()));
-
+                        if (bean.get(T.TYPE.getFld().getCodeSqlField()) != null)
+                          setType(
+                              Integer.parseInt(
+                                  bean.get(T.TYPE.getFld().getCodeSqlField()).toString()));
+                        setTypeVer((Byte) bean.get(T.TYPEVER.getFld().getCodeSqlField()));
                         Integer s =
                             (Integer) bean.get(T.PRODUCT_CATEGORY.getFld().getCodeSqlField());
                         if (null != s) {
@@ -159,7 +168,7 @@ public class PdtSizeDAO {
     public void before() {
       getB().setDeleted(OYn.NO.getLine().getKey());
       getB().setCreateTime(Env.getTranBeginTime());
-      setB(translateUtil.autoTranslate(getB()));
+      // setB(translateUtil.autoTranslate(getB()));
       super.before();
     }
   }
@@ -177,12 +186,13 @@ public class PdtSizeDAO {
       getB().setCreateTime(Env.getSystemTime()); // 自动生成修改时间
       PropertyUtils.copyPropertiesWithout(
           dbBean,
-          translateUtil.autoTranslateByManageLanguage(getB(), true),
+          getB(),
           PdtSize.T.PKEY,
           PdtSize.T.SUPPLIER,
           PdtSize.T.CREATE_BY,
           PdtSize.T.CREATE_TIME,
           PdtSize.T.DELETED,
+          PdtSize.T.TYPEVER,
           PdtSize.T.ROW_VERSION);
       setB(dbBean);
     }
@@ -293,7 +303,7 @@ public class PdtSizeDAO {
 
     public void run() {
       PdtSize size = getB().ins();
-    }
+  }
 
     public void after() {
       setB(
@@ -387,6 +397,7 @@ public class PdtSizeDAO {
    * @return
    */
   public static PdtSize insSize(Byte type, String name, Integer supplier, Language lag) {
+    checkName(name, false);
     PdtSize size = new PdtSize();
     size.setName(name);
     size.setSupplier(supplier);
@@ -415,6 +426,7 @@ public class PdtSizeDAO {
    * @param name
    */
   public static void updSize(Integer supplier, Integer pkey, String name) {
+    checkName(name, false);
     SQL sql = new SQL();
     sql.SELECT(PdtSize.class);
     sql.FROM(PdtSize.class);
@@ -455,6 +467,7 @@ public class PdtSizeDAO {
   public static void plaInsSize(SysUser user, Byte type, String name, Integer pdtCate) {
     PdtSize size = new PdtSize();
     size.setName(name);
+    checkName(size.getName(), true);
     if (pdtCate != null) {
       PdtCat cat = Query.SELECT(PdtCat.class, pdtCate);
       if (cat != null) size.setProductCategory(pdtCate);
@@ -482,11 +495,35 @@ public class PdtSizeDAO {
     if (size == null) throw new WebMessageException(ReturnCode.service_wrong_data, "参数错误");
     size.setType(type);
     size.setName(name);
+    checkName(size.getName(), true);
     if (pdtCate != null) {
       PdtCat cat = Query.SELECT(PdtCat.class, pdtCate);
       if (cat != null) size.setProductCategory(pdtCate);
     }
     translateUtil.autoTranslate(size);
     size.upd();
+  }
+
+  public static void checkName(String name, boolean lag) {
+    if (lag) {
+      try {
+        JSONObject json = new JSONObject(name);
+        Object object = json.get("en");
+        Pattern p = Pattern.compile("[0-9]+([.]{1}[0-9]+){0,1}");
+        Matcher matcher = p.matcher(object.toString());
+        if (!matcher.matches())
+          throw new WebMessageException(ReturnCode.service_wrong_data, "名称只能为数字");
+        if (object.toString().length() > 5)
+          throw new WebMessageException(ReturnCode.service_wrong_data, "长度最大为5");
+      } catch (JSONException | NullPointerException e) {
+        throw new WebMessageException(ReturnCode.service_wrong_data, "参数错误");
+      }
+    } else {
+      Pattern p = Pattern.compile("[0-9]+([.]{1}[0-9]+){0,1}");
+      Matcher matcher = p.matcher(name);
+      if (!matcher.matches())
+        throw new WebMessageException(ReturnCode.service_wrong_data, "名称只能为数字");
+      if (name.length() > 5) throw new WebMessageException(ReturnCode.service_wrong_data, "长度最大为5");
+    }
   }
 }

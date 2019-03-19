@@ -77,12 +77,14 @@ public class PdtColorDAO {
                         setName((String) bean.get(T.NAME.getFld().getCodeSqlField()));
                         //            setCreatedby(BeanBase.load(SysUser.class,
                         // Integer.valueOf(String.valueOf(bean.get(T.CREATE_BY.getFld().getCodeSqlField())))).getLoginName());
+                        setPicture((String) bean.get(T.PICTURE.getFld().getCodeSqlField()));
                         Integer c =
                             (Integer) bean.get(PdtSize.T.CREATE_BY.getFld().getCodeSqlField());
                         if (null != c) {
                           setCreatedby(BeanBase.load(SysUser.class, c).getLoginName());
                         }
                         setCreatedtime((Date) bean.get(T.CREATE_TIME.getFld().getCodeSqlField()));
+                        setType((Byte) bean.get(T.TYPE.getFld().getCodeSqlField()));
                       }
                     })
             .collect(Collectors.toList());
@@ -173,7 +175,9 @@ public class PdtColorDAO {
           T.CREATE_BY,
           T.CREATE_TIME,
           T.DELETED,
-          T.ROW_VERSION);
+          T.ROW_VERSION,
+          T.TYPE,
+          T.DEFAULT_COLOR);
       setB(dbBean);
     }
   }

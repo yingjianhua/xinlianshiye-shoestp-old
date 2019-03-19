@@ -129,6 +129,22 @@
     new Vue({
         el: "#personalCenter",
         data() {
+            var validatePhone = (rule, value, callback) => {
+                if (!value) {
+                    callback(new Error('Please input the phone number'));
+                    return
+                }
+                if(value.length != 11){
+                    callback(new Error('Please enter 11 mobile phone number'));
+                    return
+                }
+                if(!(/^(((13[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1}))+\d{8})$/.test(this.form1.phone))){
+                    callback(new Error('Wrong format of phone number'));
+                    return
+                }else{
+                    callback()
+                }
+            };
             var validateEmail = (rule, value, callback) => {
                 if (!value) {
                     callback(new Error('Please input the email address'));
@@ -145,8 +161,10 @@
             var validatePass = (rule, value, callback) => {
                 if (value === '') {
                     callback(new Error('Please enter your password'));
-                } else if (value.length < 8) {
-                    callback(new Error('Password at least 8 digits!'));
+                } else if (value.length < 8 || value.length > 20) {
+                    callback(new Error('Please enter a password of 8 to 20 digits'));
+                }else if(!(/^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{8,20}$/.test(this.form3.newPassword))){
+                    callback(new Error('Password must contain numbers and letters'));
                 } else {
                     if (this.form3.ckPwd !== '') {
                         this.$refs.form3.validateField('ckPwd');
@@ -159,10 +177,11 @@
                     callback(new Error('Please enter your password again'));
                 } else if (value !== this.form3.newPassword) {
                     callback(new Error('Inconsistent input password twice!'));
-                } else if (value.length < 8) {
-                    callback(new Error('Password at least 8 digits!'));
-                }
-                else {
+                } else if (value.length < 8 || value.length > 20) {
+                    callback(new Error('Please enter a password of 8 to 20 digits'));
+                }else if(!(/^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{8,20}$/.test(this.form3.ckPwd))){
+                    callback(new Error('Password must contain numbers and letters'));
+                }else {
                     callback();
                 }
             };
@@ -187,39 +206,25 @@
                 },
 
                 rules: { //表单验证
-                    firstName: [{
-                        required: true,
-                        message: 'Please enter a firstName',
-                        trigger: 'blur'
-                    }],
-                    surname: [{
-                        required: true,
-                        message: 'Please enter a surname',
-                        trigger: 'blur'
-                    }],
-                    phone: [{
-                        required: true,
-                        message: 'Please enter your phone',
-                        trigger: 'blur'
-                    }],
-                    address: [{
-                        message: 'Please enter the address',
-                        trigger: 'blur'
-                    }],
-                    company: [{
-                        required: true,
-                        message: 'Please enter the company name',
-                        trigger: 'blur'
-                    }],
+                    firstName: [{required: true,message: 'Please enter a firstName',trigger: 'blur'},
+                        { max: 50, message: 'Enter up to 50 characters', trigger: 'blur' }
+                    ],
+                    surname: [{ required: true,message: 'Please enter a surname',trigger: 'blur'},
+                        { max: 50, message: 'Enter up to 50 characters', trigger: 'blur' }
+                    ],
+                    
+                    phone:[{validator: validatePhone, trigger: 'blur', required: true,}],
+                    address: [{message: 'Please enter the address',trigger: 'blur'},
+                        { max: 50, message: 'Enter up to 50 characters', trigger: 'blur' }
+                    ],
+                    company: [{required: true,message: 'Please enter the company name',trigger: 'blur'},
+                        { max: 50, message: 'Enter up to 50 characters', trigger: 'blur' }
+                    ],
                     gender: [{
                         message: 'Please select gender',
                         trigger: 'change'
                     }],
-                    password: [{
-                        required: true,
-                        message: 'Please enter your password',
-                        trigger: 'blur'
-                    }],
+                    password: [{required: true,message: 'Please enter your password',trigger: 'blur'}],
                     email: [{validator: validateEmail, trigger: 'blur', required: true,}],
                     newPassword: [
                         {validator: validatePass, trigger: ['blur', 'change'], required: true,}
@@ -280,7 +285,7 @@
                                     // }, 2000)
                                     setTimeout(function () {
                                         window.location.reload();
-                                    }, 2000)
+                                    }, 1500)
                                     // 未登录时
                                 } else if (res.data.ret == -1) {
                                     window.location.href =
@@ -335,7 +340,7 @@
                                     // }, 2000)
                                     setTimeout(function () {
                                         window.location.reload();
-                                    }, 2000)
+                                    }, 1500)
                                     // 未登录时
                                 } else if (res.data.ret == -1) {
                                     window.location.href =
@@ -394,7 +399,7 @@
                                     // }, 2000)
                                     setTimeout(function () {
                                         window.location.reload();
-                                    }, 2000)
+                                    }, 1500)
                                     // 未登录时
                                 } else if (res.data.ret == -1) {
                                     window.location.href =

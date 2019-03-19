@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
 import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultMessageService;
 
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
@@ -23,6 +24,8 @@ import irille.homeAction.pdt.dto.ProductInfoView;
 import irille.homeAction.pdt.dto.SEOView;
 import irille.pub.Str;
 import irille.pub.bean.BeanBase;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.i18n.I18NUtil;
 import irille.pub.idu.Idu;
 import irille.pub.idu.IduPage;
@@ -299,12 +302,14 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
    */
   public String gtProductsInfo() throws Exception {
     if (Long.valueOf(getId().toString()) < 1) {
-      throw LOG.err("not exists", "产品id[{0}]不存在", getId());
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.product_wrong_data, curLanguage()));
     }
     UsrSupplier supplier = BeanBase.load(PdtProduct.class, getId()).gtSupplier();
     setSupView(UsrSupplierDAO.Select.getSupView(curLanguage(), supplier.getPkey(), 0));
+    ProductInfoView infoView = null;
     if (!isMobile()) {
-      ProductInfoView infoView =
+      infoView =
           pdtpageSelect.getProductsById(
               Integer.valueOf(getId().toString()),
               Sys.OYn.YES,
@@ -312,18 +317,20 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
               getPurchase() != null ? getPurchase().getPkey() : -1,
               HomeAction.curCurrency());
       if (infoView == null) {
-        throw LOG.err("not exists", "产品id[{0}]不存在", getId());
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.product_wrong_data, curLanguage()));
+        //        throw LOG.err("not exists", "产品id[{0}]不存在", getId());
       }
       if (infoView.getType() != null
           && infoView.getType().equals(Pdt.OProductType.PrivateExpo.getLine().getKey())) {
         // 若产品类型为私人展厅产品, 需要判断链接密钥有效期 只有正确的密钥能获取进入页面,否则返回404页面
         Integer expoProductPkey;
-        if (expoKey == null
+        /*if (expoKey == null
             || (expoProductPkey = rFQConsultMessageService.checkPrivateExpoKey(expoKey)) == null
             || !Long.valueOf(expoProductPkey.toString()).equals(infoView.getPdtId())) {
           setResult("404.jsp");
           return HomeAction.TRENDS;
-        }
+        }*/
       }
 
       if (null != infoView.getMap()) setMap(infoView.getMap());
@@ -335,7 +342,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
           translateUtil.getLanguage(infoView.getSeoKeywords(), HomeAction.curLanguage()));
       setGoodsInfo(objectMapper.writeValueAsString(infoView));
     }
-    setResult("goods-info.jsp");
+    setResult("/home/v3/jsp/productInfo/productInfo.jsp");
     return HomeAction.TRENDS;
   }
 
@@ -374,16 +381,6 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
     page.setStart(getPage());
     page.setLimit(getLimit());
     write(pdtProduct.getYouMayLike(page, getCated()));
-  }
-
-  /**
-   * @Description: 完全随机商品
-   *
-   * @date 2018/12/14 19:16
-   * @author lijie@shoestp.cn
-   */
-  public void getRandomPdt() throws IOException {
-    write(pdtProduct.getRandomPdt(getLimit(), getCated(), getPurchase()));
   }
 
   private Integer id;
@@ -474,18 +471,9 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
    */
   private String comment;
 
-  private String _images;
+  @Getter @Setter private String images;
   private String satisfaction;
   private PdtCommentViewPageView commentViewPageView;
-
-  public String getImages() {
-    return _images;
-  }
-
-  public PdtProductAction setImages(String _images) {
-    this._images = _images;
-    return this;
-  }
 
   public String viewComments() {
     setResult("/home/comment_view.jsp");
@@ -667,7 +655,9 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
           where += " ORDER BY " + sort + " ASC ";
         }
       } else {
-        throw new Exception("缺少必要参数 type");
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.service_wrong_data, curLanguage()));
+        //        throw new Exception("缺少必要参数 type");
       }
     }
     List<PdtProduct> pdtList =
@@ -696,9 +686,13 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
             getRankingBasis(),
             getBasis());
     map.put("page", getPage());
-    write(
-        new ObjectMapper()
-            .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-            .writeValueAsString(map));
+    write(objectMapper.writeValueAsString(map));
   }
+
+  //  首页随机商品接口
+  public void getRandomProduct() throws IOException {
+    if (getLimit() < 1) setLimit(10);
+    write(pdtProduct.getRandomPdt(getLimit(), getCated(), getPurchase()));
+  }
+
 }

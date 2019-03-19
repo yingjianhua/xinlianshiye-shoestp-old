@@ -137,7 +137,7 @@
 
                     <el-row>
                         <el-col :span="12">
-                            <el-form-item label="公司官网地址:">
+                            <el-form-item label="公司官网地址:" prop="website">
                                 <el-input v-model="basicInfo.website"></el-input>
                             </el-form-item>
                         </el-col>
@@ -150,7 +150,7 @@
                     <span class="countrybotton" @click="showselectcon">
                       你已选择{{basicInfo.targetedMarket.length}}个国家
                     </span>
-                                    <div class="select" :class="iscountryshow? '' : 'selecthidden'">
+                                    <div class="select" :class="iscountryshow? '' : 'selecthidden'" style="z-index:99;top:97%;">
                                         <div class="showselect" v-show="basicInfo.targetedMarket != 0">
                         <span v-for="item,index in selectcountry">
                           {{item.name}}
@@ -172,10 +172,11 @@
                                         </div>
                                     </div>
                                 </div>
+    <div style="position: fixed;top:0;left:0;width: 100%;height: 100%;background-color: transparent;z-index:98" v-show="iscountryshow" @click="iscountryshow = !iscountryshow"></div>
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
-                            <el-form-item label="年产量:">
+                            <el-form-item label="年产量:" prop="annualProduction">
                                 <el-input v-model="basicInfo.annualProduction"></el-input>
                             </el-form-item>
                         </el-col>
@@ -252,7 +253,7 @@
                     <!-- <el-form label-position="right" label-width="150px" :model="basicInfo" :rules="firstform"> -->
                     <el-row>
                         <el-col :span="12">
-                            <el-form-item label="联系人姓名">
+                            <el-form-item label="联系人姓名" prop="contacts">
                                 <el-input v-model="basicInfo.contacts"></el-input>
                             </el-form-item>
                         </el-col>
@@ -270,7 +271,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
-                            <el-form-item label="联系人手机">
+                            <el-form-item label="联系人手机" prop="phone">
                                 <el-input v-model="basicInfo.phone"></el-input>
                             </el-form-item>
                         </el-col>
@@ -388,11 +389,24 @@
 <script src="/home/v3/static/js/index-bottom.js"></script>
 <script>
 
-    var validateName = function (rule, value, callback) {
+    var validateName = function(rule, value, callback){
+        let reg = /^[a-zA-Z\u4e00-\u9fa5]{3,15}$/
         if (!value) {
             return callback(new Error("请填写名称"));
+        } else if(!reg.test(value)){
+            return callback(new Error("请填写3至15个字符"));
         } else {
             callback();
+        }
+    };
+    var validateenglishName = function(rule, value, callback){
+        let reg = /^[a-zA-Z]{0,30}$/
+        if (!value) {
+            return callback(new Error("请填写英文名称"));
+        } else if(!reg.test(value)){
+            return callback(new Error("请填写30个字符以内的英文"));
+        } else {
+         callback();
         }
     };
     var validateAddr = function (rule, value, callback) {
@@ -431,6 +445,16 @@
             return callback(new Error("请填写至少12位数字"));
         } else {
             callback();
+        }
+    };
+    var validatewebsite = function(rule, value, callback){
+        let reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?/
+        if (!value) {
+            callback();
+        } else if(!reg.test(value)){
+            return callback(new Error("请填写正确的网址格式"));
+        } else {
+             callback();
         }
     };
     var validateRegist = function (rule, value, callback) {
@@ -509,12 +533,21 @@
         if (!value) {
             callback();
         } else if (!regsfz.test(value)) {
-            return callback(new Error("如若上传,请填写正确的身份证"));
+            return callback(new Error("请填写正确的身份证号码"));
         } else {
             callback();
         }
     };
-
+    var validatecontacts = function(rule, value, callback){
+        let reg = /^[a-zA-Z\u4e00-\u9fa5]{3,15}$/
+        if (!value) {
+            callback();
+        } else if(!reg.test(value)){
+            return callback(new Error("请填写3至15个字符"));
+        } else {
+            callback();
+        }
+    };
     new Vue({
         el: '#shopenter',
         data: {
@@ -599,7 +632,7 @@
                     {validator: validateName, trigger: 'blur'}
                 ],
                 englishName: [
-                    {validator: validateName, trigger: 'blur'}
+                    {validator: validateenglishName, trigger: 'blur'}
                 ],
                 companyAddr: [
                     {validator: validateAddr, trigger: 'blur'}
@@ -613,17 +646,29 @@
                 fax: [
                     {validator: validateFax, trigger: 'blur'}
                 ],
+                website:[
+                    { validator: validatewebsite, trigger: 'blur' }
+                ],
+                annualProduction:[
+                    { validator: validateRegist, trigger: 'change' }
+                ],
                 registeredCapital: [
                     {validator: validateRegist, trigger: 'blur'}
                 ],
                 entity: [
                     {validator: validateEntity, trigger: 'blur'}
                 ],
+                contacts:[
+                    { validator: validatecontacts, trigger: 'blur' }
+                ],
                 department: [
                     {validator: validateRegist, trigger: 'blur'}
                 ],
                 jobTitle: [
                     {validator: validateJob, trigger: 'blur'}
+                ],
+                phone:[
+                    { validator: validateTel, trigger: 'blur' }
                 ],
                 contactEmail: [
                     {validator: validateEmail, trigger: 'blur'}
@@ -666,11 +711,12 @@
                 }).then(function (res) {
                     let data = res.data
                     if (data.status == null) {
+                         self.getMainmsg();
                         return false;
                     } else if (data.status == 0) {
                         self.step = 3;
                     } else if (data.status == 1) {
-                        console.log('成功,跳转去其他页面')
+                        window.location.href = '/newseller/'
                     } else if (data.status == 2) {
                         self.state = true;
                         self.step = 3;
@@ -708,13 +754,66 @@
                 axios.get('/home/plt_PltConfig_getSysConfig')
                     .then(function (res) {
                         if (res.data.ret == 1) {
-                            self.$set(self, 'usermsg', res.data.result.user)
-                            self.basicInfo.userid = res.data.result.user.id
-                            self.basicInfo.lang = res.data.result.current_language
-                            self.getcountry();
-                            self.getRetype();
+                            if(res.data.result.user){
+                                self.$set(self,'usermsg',res.data.result.user)
+                                self.basicInfo.userid = res.data.result.user.id
+                                self.basicInfo.lang = res.data.result.current_language
+                                self.getcountry();
+                                self.getRetype();
+                            }else{
+                                self.showmsg('请先登录,3秒后跳转至登录页面')
+                                setTimeout(function(){
+                                    window.location.href='/home/usr_UsrPurchase_sign'
+                                },3000)
+                            }
+                        }else{
+                            if(res.data.msg){
+                                self.$message({
+                                    message: res.data.msg,
+                                    type: 'warning'
+                                });
+                            }else{
+                                self.$message({
+                                    message: '获取个人信息失败',
+                                    type: 'warning'
+                                });
+                            }
                         }
+                    }).catch(function(err){
+                        console.log(err)
                     })
+            },
+            //获取公司信息
+            getMainmsg:function(){
+                let self = this;
+                axios.get('/home/usr_UsrMain_getRegistById',{
+                    params:{
+                         id:self.basicInfo.userid
+                    }
+                }).then(function(res){
+                    if(res.data.ret == 1){
+                        let data = res.data.result[0];
+                        if(data.company){
+                            self.basicInfo.name = data.company;
+                        }
+                        if(data.address){
+                            self.basicInfo.companyAddr = data.address;
+                         }
+                        if(data.contacts){
+                            self.basicInfo.contacts = data.contacts;
+                        }
+                        if(data.telphone){
+                            self.basicInfo.phone = data.telphone;
+                        }
+                    }else{
+                        self.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        });
+                    }
+                }).catch(function(err){
+                    console.log(err)
+                })
             },
             //获取国家
             getcountry: function () {
@@ -724,9 +823,25 @@
                         lang: self.basicInfo.lang
                     }
                 }).then(function (res) {
-                    self.$set(self, 'country', res.data.result)
-                    self.$set(self, 'exhibitionCountry', res.data.result)
-                    self.exhibitionCountrylength = Math.ceil(self.exhibitionCountry.length / 3)
+                    if(res.data.ret == 1){
+                        self.$set(self, 'country', res.data.result)
+                        self.$set(self, 'exhibitionCountry', res.data.result)
+                        self.exhibitionCountrylength = Math.ceil(self.exhibitionCountry.length / 3)
+                    }else{
+                        if(res.data.msg){
+                            self.$message({
+                                message: res.data.msg,
+                                type: 'warning'
+                            });
+                        }else{
+                            self.$message({
+                                message: '获取国家列表失败',
+                                type: 'warning'
+                            });
+                        }
+                    }
+                }).catch(function(err){
+                    console.log(err)
                 })
             },
             //承认条约
@@ -741,17 +856,59 @@
                 this.showimgurl = this.showimgurls[val]
             },
             //上传图片回传
-            comsuccess: function (response, file, fileList) {
-                this.basicInfo.certPhotoName = response.result.originalName;
-                this.basicInfo.certPhoto = response.result.url;
+            comsuccess:function(response, file, fileList){
+                if(response.ret == 1){
+                    this.basicInfo.certPhotoName = response.result.originalName;
+                    this.basicInfo.certPhoto = response.result.url;
+                }else{
+                    if(response.msg){
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        });
+                    }else{
+                        this.$message({
+                            message: '图片上传失败',
+                            type: 'warning'
+                        });
+                    }
+                }
             },
-            legalsuccess: function (response, file, fileList) {
-                this.basicInfo.idCardFrontPhotoName = response.result.originalName;
-                this.basicInfo.idCardFrontPhoto = response.result.url;
+            legalsuccess:function(response, file, fileList){
+                if(response.ret == 1){
+                    this.basicInfo.idCardFrontPhotoName = response.result.originalName;
+                    this.basicInfo.idCardFrontPhoto = response.result.url;
+                }else{
+                    if(response.msg){
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        });
+                    }else{
+                        this.$message({
+                            message: '图片上传失败',
+                            type: 'warning'
+                        });
+                    }
+                }
             },
-            operatesuccess: function (response, file, fileList) {
-                this.basicInfo.contactsIdCardFrontPhotoName = response.result.originalName;
-                this.basicInfo.contactsIdCardFrontPhoto = response.result.url;
+            operatesuccess:function(response, file, fileList){
+                if(response.ret == 1){
+                    this.basicInfo.contactsIdCardFrontPhotoName = response.result.originalName;
+                    this.basicInfo.contactsIdCardFrontPhoto = response.result.url;
+                }else{
+                    if(response.msg){
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        });
+                    }else{
+                        this.$message({
+                            message: '图片上传失败',
+                            type: 'warning'
+                        });
+                    }
+                }
             },
             //营业执照,身份证的验证,和最后提交
             submitimg: function () {
@@ -796,7 +953,10 @@
                                 self.firstSubmit(data)
                             }
                         }).catch(() => {
-                            self.showmsg('Submit cancel')
+                            self.$message({
+                                message: 'Submit cancel',
+                                type: 'warning'
+                            });
                         })
                     }
                 })
@@ -813,7 +973,17 @@
                             self.step += 1;
                         }, 1000)
                     } else {
-                        self.showmsg('Submit Failed')
+                        if(res.data.msg){
+                            self.$message({
+                                message: res.data.msg,
+                                type: 'warning'
+                            });
+                        }else{
+                            self.$message({
+                                message: 'Submit Fail',
+                                type: 'warning'
+                            });
+                        }
                     }
                 }).catch(function (error) {
                     console.log(error)
@@ -834,7 +1004,17 @@
                             self.step += 1;
                         }, 1000)
                     } else {
-                        self.showmsg('Submit Failed')
+                        if(res.data.msg){
+                            self.$message({
+                                message: res.data.msg,
+                                type: 'warning'
+                            });
+                        }else{
+                            self.$message({
+                                message: 'Submit Fail',
+                                type: 'warning'
+                            });
+                        }
                     }
                 }).catch(function (error) {
                     console.log(error)

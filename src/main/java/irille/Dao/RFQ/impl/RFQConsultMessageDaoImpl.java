@@ -36,7 +36,7 @@ public class RFQConsultMessageDaoImpl implements RFQConsultMessageDao {
   }
 
   @Override
-  public Integer countUnreadByRelation_PurchaseGroupByRelation(Integer purchasePkey) {
+  public Integer countPurchaseUnreadByRelation_PurchaseGroupByRelation(Integer purchasePkey) {
     return Query.sql(
             new SQL() {
               {
@@ -45,13 +45,11 @@ public class RFQConsultMessageDaoImpl implements RFQConsultMessageDao {
                     new SQL() {
                       {
                         SELECT("1").FROM(RFQConsultMessage.class);
-                        LEFT_JOIN(
-                            RFQConsultRelation.class,
-                            RFQConsultMessage.T.RELATION,
-                            RFQConsultRelation.T.PKEY);
+                        LEFT_JOIN(RFQConsultRelation.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY);
                         WHERE(RFQConsultRelation.T.PURCHASE_ID, "=?", purchasePkey);
-                        WHERE(RFQConsultMessage.T.HAD_READ, "=?", false);
-                        GROUP_BY(RFQConsultMessage.T.RELATION);
+                        WHERE(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", false);
+                        WHERE(RFQConsultRelation.T.IS_DELETED_PURCHASE, "=?", false);
+                        GROUP_BY(RFQConsultRelation.T.PKEY);
                       }
                     },
                     "a");

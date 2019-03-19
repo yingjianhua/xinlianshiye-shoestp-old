@@ -1,17 +1,17 @@
 package irille.Service.Pdt.Imp;
 
 import java.math.BigDecimal;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
 import irille.Aops.Caches;
-import irille.Dao.O2O.O2OProductDao;
 import irille.Dao.PdtProductDao;
+import irille.Dao.O2O.O2OProductDao;
 import irille.Entity.O2O.O2O_Product;
 import irille.Service.Pdt.IPdtProductService;
 import irille.homeAction.HomeAction;
@@ -105,81 +105,69 @@ public class PdtProductServiceImp implements IPdtProductService {
 
   @Override
   public List<PdtProductBaseInfoView> getYouMayLike(IduPage iduPage, int cat) {
-    List<PdtProduct> result = pdtProductDao.getYouMayLike(cat, null);
+    List<Map<String, Object>> result = pdtProductDao.getYouMayLike(cat, null);
     return result.stream()
         .map(
-            bean ->
-                new PdtProductBaseInfoView() {
-                  {
-                    setRewrite(SEOUtils.getPdtProductTitle(bean.getPkey(), bean.getName()));
-                    translateUtil.getAutoTranslate(bean, HomeAction.curLanguage());
-                    setId(bean.getPkey());
-                    setPrice(bean.getCurPrice());
-                    setImage(bean.getPicture());
-                    setName(bean.getName());
-                  }
-                })
+            bean -> {
+              PdtProductBaseInfoView pdtProductBaseInfoView = new PdtProductBaseInfoView();
+              pdtProductBaseInfoView.setRewrite(
+                  SEOUtils.getPdtProductTitle(
+                      GetValue.get(bean, PdtProduct.T.PKEY, Integer.class, 0),
+                      GetValue.get(bean, PdtProduct.T.NAME, String.class, "{}")));
+              translateUtil.getLanguage(bean, HomeAction.curLanguage());
+              pdtProductBaseInfoView.setId(GetValue.get(bean, PdtProduct.T.PKEY, Integer.class, 0));
+              pdtProductBaseInfoView.setPrice(
+                  GetValue.get(bean, PdtProduct.T.CUR_PRICE, BigDecimal.class, BigDecimal.ZERO));
+              pdtProductBaseInfoView.setImage(
+                  GetValue.get(bean, PdtProduct.T.PICTURE, String.class, ""));
+              pdtProductBaseInfoView.setName(
+                  GetValue.get(bean, PdtProduct.T.NAME, String.class, ""));
+              return pdtProductBaseInfoView;
+            })
         .collect(Collectors.toList());
   }
 
   /**
-   * @Description: 随机数
+   * @Description: 随机商品
    *
-   * @date 2018/12/14 18:22
+   * <p>查出所有所有的商品,然后随机数去取
+   *
+   * @date 2019年3月19日 16点31分
    * @author lijie@shoestp.cn
    */
   @Override
   public List<PdtNewPdtInfo> getRandomPdt(Integer limit, int cat, UsrPurchase purchase) {
-    List resultSet;
-    if (purchase != null) {
-      resultSet = pdtProductDao.getYouMayLike(cat, purchase.getPkey());
-    } else {
-      resultSet = pdtProductDao.getYouMayLike(cat, null);
+    List<PdtNewPdtInfo> resultSet = new ArrayList<>();
+    SecureRandom secureRandom = new SecureRandom();
+    for (Map<String, Object> map :
+        pdtProductDao.getYouMayLike(
+            secureRandom.nextInt(pdtProductDao.getPdtCount()),
+            100,
+            cat,
+            purchase == null ? null : purchase.getPkey())) {
+      PdtNewPdtInfo info = new PdtNewPdtInfo();
+      info.setId(Long.valueOf(GetValue.get(map, PdtProduct.T.PKEY, Integer.class, 0)));
+      info.setTitle(GetValue.get(map, PdtProduct.T.NAME, String.class, ""));
+      info.setImage(
+          GetValue.getFirstImage(GetValue.get(map, PdtProduct.T.PICTURE, String.class, "")));
+      info.setPrice(GetValue.get(map, PdtProduct.T.CUR_PRICE, BigDecimal.class, BigDecimal.ZERO));
+      info.setMin_order(GetValue.get(map, PdtProduct.T.MIN_OQ, Integer.class, 0));
+      Integer integer = GetValue.get(map, "isFavorite", Integer.class, 0);
+      info.setFavorite(integer > 0);
+      info.setRewrite(
+          SEOUtils.getPdtProductTitle(
+              GetValue.get(map, PdtProduct.T.PKEY, Integer.class, 0),
+              GetValue.get(map, PdtProduct.T.NAME, String.class, "")));
+      resultSet.add(info);
     }
-    List<PdtNewPdtInfo> result = new ArrayList<>();
-    if (limit == null || limit < 1) {
-      limit = 12;
-    }
+    List result = new ArrayList();
+    List<Integer> list = new ArrayList();
     while (true) {
-      if (result.size() > limit) {
-        break;
+      Integer i = secureRandom.nextInt(resultSet.size());
+      if (!list.contains(i)) {
+        result.add(resultSet.get(i));
       }
-      Double integer = Math.random() * resultSet.size();
-      Object object = resultSet.get(integer.intValue());
-      PdtNewPdtInfo newPdtInfo = new PdtNewPdtInfo();
-      if (object instanceof PdtProduct) {
-        PdtProduct pdtProduct = (PdtProduct) resultSet.get(integer.intValue());
-        newPdtInfo.setId(pdtProduct.getPkey().longValue());
-        newPdtInfo.setTitle(pdtProduct.getName());
-        newPdtInfo.setPrice(pdtProduct.getCurPrice());
-        String[] strings = pdtProduct.getPicture().split(",");
-        if (strings != null && strings.length > 0) {
-          newPdtInfo.setImage(strings[0]);
-        } else {
-          newPdtInfo.setImage(pdtProduct.getPicture());
-        }
-        newPdtInfo.setMin_order(pdtProduct.getMinOq());
-        newPdtInfo.setRewrite(
-            SEOUtils.getPdtProductTitle(pdtProduct.getPkey(), pdtProduct.getName()));
-
-      } else {
-        Map<String, Object> pdtProduct = (Map<String, Object>) resultSet.get(integer.intValue());
-        newPdtInfo.setId(Long.valueOf(String.valueOf(pdtProduct.get("pkey"))));
-        newPdtInfo.setTitle(GetValue.get(pdtProduct, "name", String.class, ""));
-        newPdtInfo.setPrice(
-            GetValue.get(pdtProduct, "cur_price", BigDecimal.class, BigDecimal.ZERO));
-
-        String[] strings = GetValue.get(pdtProduct, "picture", String.class, "").split(",");
-        if (strings != null && strings.length > 0) {
-          newPdtInfo.setImage(strings[0]);
-        } else {
-          newPdtInfo.setImage(GetValue.get(pdtProduct, "picture", String.class, ""));
-        }
-        newPdtInfo.setMin_order(GetValue.get(pdtProduct, "min_oq", Integer.class, 0));
-        newPdtInfo.setRewrite(
-            SEOUtils.getPdtProductTitle(newPdtInfo.getId().intValue(), newPdtInfo.getTitle()));
-      }
-      result.add(newPdtInfo);
+      if (result.size() >= limit) break;
     }
     return result;
   }
@@ -392,20 +380,17 @@ public class PdtProductServiceImp implements IPdtProductService {
     List<PdtSearchView> result =
         data.stream()
             .filter(
-                new Predicate<PdtSearchView>() {
-                  @Override
-                  public boolean test(PdtSearchView o) {
-                    if (o.getPdtType()
-                        .equals(Integer.valueOf(Pdt.OProductType.O2O.getLine().getKey()))) {
-                      List<O2O_Product> o2os = o2OProductDao.findAllByProd_Pkey(o.getPdtId());
-                      if (o2os != null && o2os.size() > 0) {
-                        o.setPdtType(Integer.valueOf(Pdt.OProductType.O2O.getLine().getKey()));
-                      } else {
-                        o.setPdtType(Integer.valueOf(Pdt.OProductType.GENERAL.getLine().getKey()));
-                      }
+                o -> {
+                  if (o.getPdtType()
+                      .equals(Integer.valueOf(Pdt.OProductType.O2O.getLine().getKey()))) {
+                    List<O2O_Product> o2os = o2OProductDao.findAllByProd_Pkey(o.getPdtId());
+                    if (o2os != null && o2os.size() > 0) {
+                      o.setPdtType(Integer.valueOf(Pdt.OProductType.O2O.getLine().getKey()));
+                    } else {
+                      o.setPdtType(Integer.valueOf(Pdt.OProductType.GENERAL.getLine().getKey()));
                     }
-                    return true;
                   }
+                  return true;
                 })
             .collect(Collectors.toList());
     pageSearch.setItems(result);

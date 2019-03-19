@@ -288,7 +288,7 @@
                         </div>
                         <div class="inquiry-btn">
                             <a :href="'/'+item.rewrite" target="_blank" style="color:#666;text-align: left;padding: 20px;height: 100%;">
-                                <div class="ellipsis_2" style="font-size:12px;line-height: 20px;">{{item.title}}</div>
+                                <div class="ellipsis_2" style="font-size:12px;line-height: 20px;max-height:120px;overflow: hidden;">{{item.title}}</div>
                                 <div style="font-size:18px;margin-top:10px;">
                                     <span style="color: #232323;">US</span>
                                     <span style="color: #e54544;">{{sysConfig.currency_symbol}}{{item.price}}</span>
@@ -339,7 +339,7 @@
                         </div>
                         <div class="inquiry-btn">
                             <a :href="'/'+item.rewrite" target="_blank" style="color:#666;text-align: left;padding: 20px;height: 100%;">
-                                <div class="ellipsis_2" style="font-size:12px;line-height: 20px;">{{item.title}}</div>
+                                <div class="ellipsis_2" style="font-size:12px;line-height: 20px;max-height:120px;overflow: hidden;">{{item.title}}</div>
                                 <div style="font-size:18px;margin-top:10px;">
                                     <span style="color: #232323;">US</span>
                                     <span style="color: #e54544;">{{sysConfig.currency_symbol}}{{item.price}}</span>
@@ -480,12 +480,12 @@
                     console.log("getRFQList");
                     console.log(res);
                     if (res.data.ret != 1) {
-                        self.$message.error(res.data.msg);
+                        self.$message.error(res.data.msg || "Get RFQ list error,please try again later");
                         return;
                     }
                     self.RFQList = res.data.result;
                 }).catch(function (error) {
-                    console.log(error);
+                    self.$message.error(error || 'Network error,please try again later');
                 });
             },
             getMostPopular: function getMostPopular() {
@@ -501,19 +501,20 @@
                 //     }
                 // })
                 // 接口改为随机商品
-                axios.get('/home/temporary_Temporary_generalList', {
+                axios.get('/home/pdt_PdtProduct_getRandomProduct', {
                     params: {
                         limit: 5,
                     }
                 })
                     .then(function (res) {
-                    console.log("getMostPopular");
-                    console.log(res);
+                        if (res.data.ret != 1) {
+                            self.$message.error(res.data.msg || "Get products list error,please try again later");
+                            return;
+                        }
                     // self.MostPopular = res.data.result.items;
                     self.MostPopular = res.data.result;
-                    console.log(self.MostPopular);
                 }).catch(function (error) {
-                    console.log(error);
+                    self.$message.error(error || 'Network error,please try again later');
                 });
             },
             getHotSale: function getHotSale() {
@@ -529,16 +530,19 @@
                 //     }
                 // })
                 // 接口改为随机商品
-                axios.get('/home/temporary_Temporary_generalList', {
+                axios.get('/home/pdt_PdtProduct_getRandomProduct', {
                     params: {
                         limit: 5,
                     }
                 })
                     .then(function (res) {
-                    console.log(res);
+                        if (res.data.ret != 1) {
+                            self.$message.error(res.data.msg || "Get products list error,please try again later");
+                            return;
+                        }
                     self.HotSale = res.data.result;
                 }).catch(function (error) {
-                    console.log(error);
+                    self.$message.error(error || 'Network error,please try again later');
                 });
             },
             classList: function classList(e) {
@@ -549,9 +553,13 @@
                         limit: 5
                     }
                 }).then(function (res) {
+                    if (res.data.ret != 1) {
+                        _this.$message.error(res.data.msg || "Get category list error,please try again later");
+                        return;
+                    }
                     _this.classLists = res.data.result;
                 }).catch(function (error) {
-                    console.log("err");
+                    _this.$message.error(error || 'Network error,please try again later');
                 });
             },
             chooesbtn: function chooesbtn(e) {
@@ -578,7 +586,7 @@
                     console.log("鞋子列表suc");
                     console.log(res);
                     if (res.data.ret != 1) {
-                        _this2.$message.error(res.data.msg);
+                        _this2.$message.error(res.data.msg || "Get O2O products error,please try again later");
                         return;
                     }
                     ;
@@ -627,7 +635,7 @@
                         });
                     });
                 }).catch(function (error) {
-                    console.log(error);
+                    _this2.$message.error(error || 'Network error,please try again later');
                 });
             }
         }
@@ -635,18 +643,5 @@
 
 
 </script>
-<style>
-    .svs_learn_more {
-        display: block !important;
-        background-color: rgb(26, 64, 145);
-        font-size: 18px;
-        padding: 8px;
-        border-radius: 2px;
-        text-align: center;
-        color: #ffffff !important;
-        width: 131px;
-        margin: 44px auto;
-    }
-</style>
 </body>
 </html>

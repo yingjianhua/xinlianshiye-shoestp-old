@@ -3,12 +3,17 @@ package irille.shop.usr;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
+
 import irille.pub.Log;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.idu.IduIns;
 import irille.pub.svr.Env;
+import irille.pub.tb.FldLanguage.Language;
 import irille.shop.usr.UsrConsultMessage.T;
 import irille.view.usr.ConsultMessageView;
 import irille.view.usr.ConsultRelationView;
@@ -64,12 +69,14 @@ public class UsrConsultMessageDAO {
     private int sender;
     private String content;
     UsrConsultRelation relation;
+    private Language language;
 
-    public Send(boolean p2s, int relation, int sender, String content) {
+    public Send(boolean p2s, int relation, int sender, String content, Language language) {
       this.p2s = p2s;
       this.relationId = relation;
       this.sender = sender;
       this.content = content;
+      this.language = language;
     }
 
     @Override
@@ -77,11 +84,13 @@ public class UsrConsultMessageDAO {
       relation = UsrConsultRelation.load(UsrConsultRelation.class, relationId);
       if (p2s) { // 采购商给供应商留言
         if (!relation.gtConsult().getPurchase().equals(sender)) {
-          throw LOG.err("senderErr", "wrong sender");
+          throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.senderErr, language));
+          // throw LOG.err("senderErr", "wrong sender");
         }
       } else {
         if (!relation.getSupplier().equals(sender)) {
-          throw LOG.err("senderErr", "wrong sender");
+          throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.senderErr, language));
+          //          throw LOG.err("senderErr", "wrong sender");
         }
       }
       UsrConsultMessage message = new UsrConsultMessage();
