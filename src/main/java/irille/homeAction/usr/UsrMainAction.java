@@ -139,6 +139,14 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 					MessageBuild.buildMessage(ReturnCode.service_Invalid_UID, HomeAction.curLanguage()));
 		}
 		insBefore();
+		if (Str.isEmpty(getFirstName()) || Str.isEmpty(getLastName())) {
+			throw new WebMessageException(
+					MessageBuild.buildMessage(ReturnCode.valid_name_notnull, HomeAction.curLanguage()));
+		}
+		if (Str.isEmpty(getBean().getTelphone())) {
+			throw new WebMessageException(
+					MessageBuild.buildMessage(ReturnCode.valid_phone_notnull, HomeAction.curLanguage()));
+		}
 		if (getBean().getIdentity() == 1) {
 			String name = getFirstName() + "," + getLastName();
 			getBean().setContacts(name);

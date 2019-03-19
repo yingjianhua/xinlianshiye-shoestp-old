@@ -39,7 +39,9 @@ public enum ReturnCode {
 	valid_phoneRegex(509), // 手机格式不正确
 	valid_pwdRegex(510), // 密码格式不正确
 	valid_mail_notnull(511), // 邮箱不能为空
-	valid_pwd_notnull(512),// 密码不能为空
+	valid_pwd_notnull(512), // 密码不能为空
+	valid_name_notnull(513), // 姓名不能为空
+	valid_phone_notnull(514),// 手机不能为空
 	;
 	int code;
 
