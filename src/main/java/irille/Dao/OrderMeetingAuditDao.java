@@ -102,7 +102,7 @@ public class OrderMeetingAuditDao {
             FROM(OrderMeetingAudit.class);
             LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, OrderMeetingAudit.T.SUPPLIERID);
             if (name != null) {
-              WHERE(UsrSupplier.T.NAME, " like  '%" + name + "%'");
+              WHERE(UsrSupplier.T.NAME, " like ?","%" + name + "%");
             }
             if (status != null) {
               WHERE(OrderMeetingAudit.T.STATUS, " =? ", status);

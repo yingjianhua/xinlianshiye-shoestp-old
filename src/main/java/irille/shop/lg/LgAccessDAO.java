@@ -172,13 +172,13 @@ public class LgAccessDAO {
           {
             SELECT(LgAccess.class).FROM(LgAccess.class);
             if (user != null) {
-              WHERE(LgAccess.T.USER, "like '%" + user + "%'");
+              WHERE(LgAccess.T.USER, "like ?","%" + user + "%");
             }
             if (loginName != null) {
-              WHERE(LgAccess.T.LOGINNAME, "like '%" + loginName + "%'");
+              WHERE(LgAccess.T.LOGINNAME, "like ?","%" + loginName + "%");
             }
             if (requestUrl != null) {
-              WHERE(LgAccess.T.REQUESTURL, "like '%" + requestUrl + "%'");
+              WHERE(LgAccess.T.REQUESTURL, "like ?","%" + requestUrl + "%");
             }
           }
         };

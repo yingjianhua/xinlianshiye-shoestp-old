@@ -110,7 +110,7 @@ public class OdrMeetingProductDao {
                 WHERE(OrderMeetingProduct.T.SUPPLIERID, "=?", supplier);
               }
               if (inputContent != null) {
-                WHERE(PdtProduct.T.NAME, "like'%" + inputContent + "%'");
+                WHERE(PdtProduct.T.NAME, "like ?","%" + inputContent + "%");
               }
               if (status != null) {
                 switch (status) {
@@ -159,7 +159,7 @@ public class OdrMeetingProductDao {
                 WHERE(OrderMeetingProduct.T.SUPPLIERID, "=?", supplierId);
               }
               if (inputContent != null) {
-                WHERE(PdtProduct.T.NAME, "like'%" + inputContent + "%'");
+                WHERE(PdtProduct.T.NAME, "like ? ","%" + inputContent + "%");
               }
               if (status != null) {
                 switch (status) {
