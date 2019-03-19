@@ -16,6 +16,8 @@ import irille.Service.Pdt.IPdtProductService;
 import irille.Service.Plt.PltService;
 import irille.Service.RFQ.IRFQConsultService;
 import irille.homeAction.HomeAction;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.tb.FldLanguage;
 import irille.pub.util.ipUtils.City;
 import irille.view.RFQ.PutInquiryView;
@@ -55,8 +57,8 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   public void putRFQInquiry() throws IOException {
     String data = getJsonBody();
     if (data == null) {
-      write(MessageBuild.build(201, HomeAction.curLanguage()));
-      return;
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_wrong_data, HomeAction.curLanguage()));
     }
     irfqConsultService.putRFQInquiry(
         objectMapper.readValue(data, PutRFQConsultView.class), getPurchase());
@@ -73,15 +75,15 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   public void putSupplierInquiry() throws IOException {
     String data = getJsonBody();
     if (data == null) {
-      write(MessageBuild.build(201, HomeAction.curLanguage()));
-      return;
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_wrong_data, HomeAction.curLanguage()));
     }
     PutSupplierConsultView putSupplierConsultView =
         objectMapper.readValue(data, PutSupplierConsultView.class);
     if (putSupplierConsultView.getTitle() == null
         || putSupplierConsultView.getTitle().length() < 1) {
-      write(MessageBuild.build(202, HomeAction.curLanguage()));
-      return;
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_Invalid_Title, HomeAction.curLanguage()));
     }
     irfqConsultService.putSupplierInquiry(putSupplierConsultView, getPurchase());
     write();
@@ -97,8 +99,8 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   public void putInquiry() throws IOException {
     String data = getJsonBody();
     if (data == null) {
-      write(MessageBuild.build(201, HomeAction.curLanguage()));
-      return;
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_wrong_data, HomeAction.curLanguage()));
     }
     PutInquiryView view = objectMapper.readValue(data, PutInquiryView.class);
     String[] country = City.find(ServletActionContext.getRequest().getRemoteAddr());
@@ -131,8 +133,8 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   public void putPrivateInquiry() throws IOException {
     String data = getJsonBody();
     if (data == null) {
-      write(MessageBuild.build(201, HomeAction.curLanguage()));
-      return;
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_wrong_data, curLanguage()));
     }
     irfqConsultService.putPrivateInquiry(
         objectMapper.readValue(data, PutInquiryView.class), getPurchase());
@@ -222,7 +224,7 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   @Override
   @NeedLogin
   public void detail() throws IOException {
-    write(rFQConsultService.getDetail(getPurchase(), consultPkey));
+    write(rFQConsultService.getDetail(getPurchase(), consultPkey, curLanguage()));
   }
 
   private Integer relationPkey;
@@ -234,7 +236,13 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   public void pageMsgs() throws IOException {
     write(
         rFQConsultMessageService.page(
-            getPurchase(), relationPkey, nextMessagePkey, preMessagePkey, start, limit));
+            getPurchase(),
+            relationPkey,
+            nextMessagePkey,
+            preMessagePkey,
+            start,
+            limit,
+            curLanguage()));
   }
 
   private String content;
@@ -251,14 +259,15 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   @Override
   @NeedLogin
   public void addInformation() throws IOException {
-    rFQConsultService.addMoreInformation(getPurchase(), consultPkey, information, validDate);
+    rFQConsultService.addMoreInformation(
+        getPurchase(), consultPkey, information, validDate, curLanguage());
     write();
   }
 
   @Override
   @NeedLogin
   public void close() throws IOException {
-    rFQConsultService.close(getPurchase(), consultPkey);
+    rFQConsultService.close(getPurchase(), consultPkey, curLanguage());
     write();
   }
 
@@ -267,8 +276,8 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   public void edit() throws IOException {
     String data = getJsonBody();
     if (data == null) {
-      write(MessageBuild.build(201, HomeAction.curLanguage()));
-      return;
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_wrong_data, curLanguage()));
     }
     EditRFQConsultView editRFQConsultView = objectMapper.readValue(data, EditRFQConsultView.class);
     if (editRFQConsultView.getId() != null && editRFQConsultView.getId() > 0) {
@@ -276,8 +285,8 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
         write();
         return;
       } else {
-        writeErr(-1, "该询盘不存在或者发生未知错误");
-        return;
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.inquiry_wrong_data, curLanguage()));
       }
     }
     writeErr(-1, "ID为空");
@@ -288,7 +297,7 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   @Override
   @NeedLogin
   public void addImage() throws IOException {
-    rFQConsultService.addImage(getPurchase(), consultPkey, images);
+    rFQConsultService.addImage(getPurchase(), consultPkey, images, curLanguage());
     write();
   }
 
@@ -297,7 +306,7 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   @Override
   @NeedLogin
   public void addProductRequest() throws IOException {
-    rFQConsultService.addProductRequest(getPurchase(), consultPkey, products);
+    rFQConsultService.addProductRequest(getPurchase(), consultPkey, products, curLanguage());
     write();
   }
 

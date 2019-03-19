@@ -288,7 +288,7 @@
                         </div>
                         <div class="inquiry-btn">
                             <a :href="'/'+item.rewrite" target="_blank" style="color:#666;text-align: left;padding: 20px;height: 100%;">
-                                <div class="ellipsis_2" style="font-size:12px;line-height: 20px;">{{item.title}}</div>
+                                <div class="ellipsis_2" style="font-size:12px;line-height: 20px;max-height:120px;overflow: hidden;">{{item.title}}</div>
                                 <div style="font-size:18px;margin-top:10px;">
                                     <span style="color: #232323;">US</span>
                                     <span style="color: #e54544;">{{sysConfig.currency_symbol}}{{item.price}}</span>
@@ -339,7 +339,7 @@
                         </div>
                         <div class="inquiry-btn">
                             <a :href="'/'+item.rewrite" target="_blank" style="color:#666;text-align: left;padding: 20px;height: 100%;">
-                                <div class="ellipsis_2" style="font-size:12px;line-height: 20px;">{{item.title}}</div>
+                                <div class="ellipsis_2" style="font-size:12px;line-height: 20px;max-height:120px;overflow: hidden;">{{item.title}}</div>
                                 <div style="font-size:18px;margin-top:10px;">
                                     <span style="color: #232323;">US</span>
                                     <span style="color: #e54544;">{{sysConfig.currency_symbol}}{{item.price}}</span>

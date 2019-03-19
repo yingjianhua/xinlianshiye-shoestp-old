@@ -5,8 +5,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import irille.Entity.RFQ.Enums.RFQConsultStatus;
+import org.json.JSONException;
+
 import irille.Entity.RFQ.RFQConsult;
+import irille.Entity.RFQ.Enums.RFQConsultStatus;
 import irille.core.sys.Sys;
 import irille.platform.usr.View.UsrConsultView;
 import irille.pub.Log;
@@ -29,7 +31,6 @@ import irille.shop.usr.UsrConsult.T;
 import irille.view.Page;
 import irille.view.usr.ConsultRelationView;
 import irille.view.usr.ConsultView;
-import org.json.JSONException;
 
 public class UsrConsultDAO {
   public static final Log LOG = new Log(UsrConsultDAO.class);

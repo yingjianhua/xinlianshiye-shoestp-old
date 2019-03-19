@@ -3,7 +3,9 @@ package irille.platform.pdt;
 import java.io.IOException;
 
 import irille.action.ActionBase;
+import irille.core.sys.Sys.OYn;
 import irille.pub.svr.LoginUserMsg;
+import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtColor;
 import irille.shop.pdt.PdtColorDAO;
 import lombok.Data;
@@ -48,6 +50,8 @@ public class PdtColorAction extends ActionBase<PdtColor> {
   public void ins() throws IOException {
     LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
     getBean().setCreateBy(lu.get_user().getPkey());
+    getBean().setType(Pdt.OVer.NEW_1.getLine().getKey());
+    getBean().setDefaultColor(OYn.YES.getLine().getKey());
     PdtColorDAO.InsColor dl = new PdtColorDAO.InsColor();
     dl.setB(getBean());
     dl.commit();
@@ -83,4 +87,11 @@ public class PdtColorAction extends ActionBase<PdtColor> {
     remove.commit();
     write();
   }
+
+  /**
+   * 新新增
+   *
+   * @throws Exception
+   */
+  public void plaIns() throws Exception {}
 }

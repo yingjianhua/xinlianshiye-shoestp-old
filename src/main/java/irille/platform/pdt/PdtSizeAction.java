@@ -36,9 +36,9 @@ public class PdtSizeAction extends ActionBase<PdtSize> {
   /**
    * 查询产品尺寸列表+搜索
    *
-   * @throws Exception
    * @author lingjian
    * @date 2019/1/22 13:36
+   * @throws Exception
    */
   public void list() throws Exception {
     write(PdtSizeDAO.listSize(name, productCategory, getStart(), getLimit()));
@@ -51,13 +51,14 @@ public class PdtSizeAction extends ActionBase<PdtSize> {
   /**
    * 新增产品尺寸
    *
-   * @throws IOException
    * @author lingjian
    * @date 2019/1/22 13:36
+   * @throws IOException
    */
   public void ins() throws IOException {
     LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
     getBean().setCreateBy(lu.get_user().getPkey());
+    getBean().setTypever(Pdt.OVer.NEW_1.getLine().getKey());
     PdtSizeDAO.InsSize dl = new PdtSizeDAO.InsSize();
     dl.setB(getBean());
     dl.commit();
@@ -67,9 +68,9 @@ public class PdtSizeAction extends ActionBase<PdtSize> {
   /**
    * 修改产品尺寸
    *
-   * @throws IOException
    * @author lingjian
    * @date 2019/1/22 13:36
+   * @throws IOException
    */
   public void upd() throws IOException {
     LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
@@ -83,9 +84,9 @@ public class PdtSizeAction extends ActionBase<PdtSize> {
   /**
    * 删除产品尺寸
    *
-   * @throws IOException
    * @author lingjian
    * @date 2019/1/22 13:38
+   * @throws IOException
    */
   public void delete() throws IOException {
     PdtSizeDAO.DelSize remove = new PdtSizeDAO.DelSize();

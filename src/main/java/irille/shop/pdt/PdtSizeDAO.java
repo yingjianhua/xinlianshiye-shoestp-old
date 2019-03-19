@@ -72,7 +72,11 @@ public class PdtSizeDAO {
                       {
                         setId((Integer) bean.get(T.PKEY.getFld().getCodeSqlField()));
                         setName((String) bean.get(T.NAME.getFld().getCodeSqlField()));
-
+                        if (bean.get(T.TYPE.getFld().getCodeSqlField()) != null)
+                          setType(
+                              Integer.parseInt(
+                                  bean.get(T.TYPE.getFld().getCodeSqlField()).toString()));
+                        setTypeVer((Byte) bean.get(T.TYPEVER.getFld().getCodeSqlField()));
                         Integer s =
                             (Integer) bean.get(T.PRODUCT_CATEGORY.getFld().getCodeSqlField());
                         if (null != s) {
@@ -159,7 +163,7 @@ public class PdtSizeDAO {
     public void before() {
       getB().setDeleted(OYn.NO.getLine().getKey());
       getB().setCreateTime(Env.getTranBeginTime());
-      setB(translateUtil.autoTranslate(getB()));
+      // setB(translateUtil.autoTranslate(getB()));
       super.before();
     }
   }
@@ -177,12 +181,13 @@ public class PdtSizeDAO {
       getB().setCreateTime(Env.getSystemTime()); // 自动生成修改时间
       PropertyUtils.copyPropertiesWithout(
           dbBean,
-          translateUtil.autoTranslateByManageLanguage(getB(), true),
+          getB(),
           PdtSize.T.PKEY,
           PdtSize.T.SUPPLIER,
           PdtSize.T.CREATE_BY,
           PdtSize.T.CREATE_TIME,
           PdtSize.T.DELETED,
+          PdtSize.T.TYPEVER,
           PdtSize.T.ROW_VERSION);
       setB(dbBean);
     }
@@ -293,7 +298,7 @@ public class PdtSizeDAO {
 
     public void run() {
       PdtSize size = getB().ins();
-    }
+  }
 
     public void after() {
       setB(

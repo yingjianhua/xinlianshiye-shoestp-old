@@ -2,12 +2,13 @@ package irille.homeAction.usr;
 
 import java.io.IOException;
 
+import org.json.JSONException;
+
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.homeAction.HomeAction;
 import irille.homeAction.usr.inf.IUsrConsultMessageAction;
 import irille.shop.usr.UsrConsultMessage;
 import irille.shop.usr.UsrConsultMessageDAO;
-import org.json.JSONException;
 
 public class UsrConsultMessageAction extends HomeAction<UsrConsultMessage>
     implements IUsrConsultMessageAction {
@@ -49,7 +50,8 @@ public class UsrConsultMessageAction extends HomeAction<UsrConsultMessage>
    */
   @NeedLogin
   public void send2Supplier() throws IOException, JSONException {
-    new UsrConsultMessageDAO.Send(true, relation, getPurchase().getPkey(), content).commit();
+    new UsrConsultMessageDAO.Send(true, relation, getPurchase().getPkey(), content, curLanguage())
+        .commit();
     write();
   }
 

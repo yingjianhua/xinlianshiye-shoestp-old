@@ -1396,7 +1396,7 @@ a {
 
 #o2otop .o2otopcon .o2otoplikes dd .other-login-list {
     width: 168px;
-    margin: 0 auto;
+    margin: 0 auto 10px auto;
 }
 
 #o2otop .o2otopcon .o2otoplikes dd .other-login-list .other-login-item {

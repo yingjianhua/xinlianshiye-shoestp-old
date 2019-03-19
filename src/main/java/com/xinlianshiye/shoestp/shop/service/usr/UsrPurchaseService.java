@@ -7,6 +7,7 @@ import com.xinlianshiye.shoestp.shop.view.usr.PurchaseView;
 import irille.pub.DateTools;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
+import irille.pub.tb.FldLanguage.Language;
 import irille.shop.usr.UsrPurchase;
 
 @ImplementedBy(UsrPurchaseServiceImpl.class)
@@ -19,7 +20,7 @@ public interface UsrPurchaseService {
    * @param avatar 头像地址
    * @author Jianhua Ying
    */
-  void editAvatar(UsrPurchase purchase, String avatar);
+  void editAvatar(UsrPurchase purchase, String avatar, Language language);
 
   /**
    * 获取个人信息
@@ -38,7 +39,7 @@ public interface UsrPurchaseService {
    * @param password 密码
    * @author Jianhua Ying
    */
-  void changeEmail(UsrPurchase purchase, String email, String password);
+  void changeEmail(UsrPurchase purchase, String email, String password, Language language);
 
   /**
    * 修改密码

@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
 import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
 import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultMessageService;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultMessageContactView;
@@ -18,17 +19,18 @@ import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultMessageView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultMessagesView;
 
 import irille.Dao.RFQ.RFQConsultMessageDao;
+import irille.Entity.RFQ.RFQConsultMessage;
+import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Entity.RFQ.Enums.RFQConsultMessageType;
 import irille.Entity.RFQ.JSON.ConsultMessage;
 import irille.Entity.RFQ.JSON.RFQConsultAlertUrlMessage;
 import irille.Entity.RFQ.JSON.RFQConsultTextMessage;
-import irille.Entity.RFQ.RFQConsultMessage;
-import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Entity.pm.PM.OTempType;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
+import irille.pub.tb.FldLanguage.Language;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 
@@ -45,13 +47,15 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
       Integer nextMessagePkey,
       Integer preMessagePkey,
       Integer start,
-      Integer limit) {
+      Integer limit,
+      Language language) {
     BeanQuery<RFQConsultRelation> query = Query.selectFrom(RFQConsultRelation.class);
     query.WHERE(RFQConsultRelation.T.PURCHASE_ID, "=?", purchase.getPkey());
     query.WHERE(RFQConsultRelation.T.PKEY, "=?", relationPkey);
     RFQConsultRelation relation = query.query();
     if (relation == null) {
-      throw new WebMessageException(ReturnCode.service_gone, "数据不存在");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_wrong_data, language));
     }
     relation.stHadReadPurchase(true);
     relation.stIsNew(false);
