@@ -642,6 +642,7 @@ a {
 }
 
 #xsq .goods-category-item .right-goods-wrap .goods-info-wrap {
+    width: 180px;
     padding: 4px 20px 6px;
     -webkit-transition: all 0.4s;
     transition: all 0.4s;

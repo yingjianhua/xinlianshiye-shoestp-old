@@ -36,7 +36,7 @@
                      :model="registerForm"
                      :rules="registerFormRules">
                 <!-- 防止用户名、密码自动填充 -->
-                <input type="text" name="catch-name" class="incase-autocomplete-input">
+                <%--<input type="text" name="catch-name" class="incase-autocomplete-input">--%>
                 <input type="password" name="catch-psd" class="incase-autocomplete-input">
 
                 <el-form-item class="text-form-item have-info"
@@ -50,8 +50,9 @@
                               id="psd" prop="psd">
                     <el-input :placeholder="registerForm.user=='buyer'?'Please enter your password':'请输入您的密码'"
                               type="password"
+                              onkeyup="this.value=this.value.replace(/\s+/g,'')"
                               v-popover:popover-psd-strength
-                              v-model="registerForm.psd">
+                              v-model.trim="registerForm.psd">
                     </el-input>
                     <!-- 密码强度显示 -->
                     <div class="isPsdRight" v-if="psdStrength.isPsdRight">
@@ -70,7 +71,7 @@
                     <div class="verification-code-wrap">
                         <el-input type="password"
                                   :placeholder="registerForm.user=='buyer'?'Please retype your password':'请再次输入您的密码'"
-                                  v-model="registerForm.psd2">
+                                  v-model.trim="registerForm.psd2">
                         </el-input>
                     </div>
                 </el-form-item>
@@ -94,14 +95,14 @@
                     <el-form-item label="Full name" key="fullName"
                                   id="fullName" prop="fullName">
                         <el-input placeholder="Please input fullname"
-                                  v-model="registerForm.fullName">
+                                  v-model.trim="registerForm.fullName">
                         </el-input>
                     </el-form-item>
 
                     <!-- 国家 -->
                     <el-form-item label="Country Name" key="country"
                                   id="country" prop="country">
-                        <el-select v-model="registerForm.country" style="width: 100%;"
+                        <el-select v-model.trim="registerForm.country" style="width: 100%;"
                                    placeholder="Please select the country">
                             <el-option
                                     v-for="country in countryList"
@@ -117,7 +118,7 @@
                         <div class="tel-inner">
                             <el-form-item class="tel-inner1" id="telPrefix1" key="telPrefix1" prop="telPrefix1">
                                 <el-input
-                                        v-model="registerForm.telPrefix1">
+                                        v-model.trim="registerForm.telPrefix1">
                                 </el-input>
                             </el-form-item>
 
@@ -125,7 +126,7 @@
 
                             <el-form-item class="tel-inner2" id="telPrefix2" key="telPrefix2" prop="telPrefix2">
                                 <el-input
-                                        v-model="registerForm.telPrefix2">
+                                        v-model.trim="registerForm.telPrefix2">
                                 </el-input>
                             </el-form-item>
 
@@ -133,7 +134,7 @@
 
                             <el-form-item class=" tel-inner3" id="tel" prop="tel" key="tel">
                                 <el-input placeholder="Please enter your telephone"
-                                          v-model="registerForm.tel">
+                                          v-model.trim="registerForm.tel">
                                 </el-input>
                             </el-form-item>
                         </div>
@@ -147,7 +148,7 @@
                     <el-form-item label="公司全称" key="supCompanyName"
                                   id="supCompanyName" prop="supCompanyName">
                         <el-input placeholder="请输入营业执照上的公司名称"
-                                  v-model="registerForm.supCompanyName">
+                                  v-model.trim="registerForm.supCompanyName">
                         </el-input>
                     </el-form-item>
 
@@ -156,12 +157,12 @@
                         <div class="two-division">
                             <el-form-item id="supLastName" key="supLastName" prop="supLastName" class="half">
                                 <el-input placeholder="名"
-                                          v-model="registerForm.supLastName">
+                                          v-model.trim="registerForm.supLastName">
                                 </el-input>
                             </el-form-item>
                             <el-form-item id="supFirstName" key="supFirstName" prop="supFirstName" class="half">
                                 <el-input placeholder="姓"
-                                          v-model="registerForm.supFirstName">
+                                          v-model.trim="registerForm.supFirstName">
                                 </el-input>
                             </el-form-item>
                         </div>
@@ -171,7 +172,7 @@
                     <el-form-item label="电话号码" key="supTel"
                                   id="supTel" prop="supTel">
                         <el-input placeholder="请输入电话号码"
-                                  v-model="registerForm.supTel">
+                                  v-model.trim="registerForm.supTel">
                         </el-input>
                     </el-form-item>
 
@@ -181,7 +182,7 @@
                             <el-form-item id="supAddrCountry" prop="supAddrCountry" class="one-third"
                                           key="supAddr-wrap"
                                           error="">
-                                <el-select v-model="registerForm.supAddrCountry"
+                                <el-select v-model.trim="registerForm.supAddrCountry"
                                            key="supAddrCountry"
                                            placeholder="请选择省">
                                     <el-option
@@ -193,7 +194,7 @@
                                 </el-select>
                             </el-form-item>
                             <el-form-item id="supAddrCity" prop="supAddrCity" class="one-third">
-                                <el-select v-model="registerForm.supAddrCity"
+                                <el-select v-model.trim="registerForm.supAddrCity"
                                            :disabled="registerForm.supAddrCountry<=0"
                                            key="supAddrCity"
                                            placeholder="请选择市">
@@ -206,7 +207,7 @@
                                 </el-select>
                             </el-form-item>
                             <el-form-item id="supAddrTown" prop="supAddrTown" class="one-third">
-                                <el-select v-model="registerForm.supAddrTown"
+                                <el-select v-model.trim="registerForm.supAddrTown"
                                            :disabled="registerForm.supAddrCountry<=0 || registerForm.supAddrCity<=0"
                                            key="supAddrTown"
                                            placeholder="请选择县">
@@ -225,7 +226,7 @@
                     <el-form-item class="detail-addr-input" id="supAddrDetail" prop="supAddrDetail" key="supAddrDetail">
                         <el-input type="textarea" resize="none"
                                   placeholder="请填写详细地址"
-                                  v-model="registerForm.supAddrDetail">
+                                  v-model.trim="registerForm.supAddrDetail">
                         </el-input>
                     </el-form-item>
 
@@ -237,7 +238,7 @@
                     <div class="verification-code-wrap">
                         <el-input
                                 :placeholder="registerForm.user=='buyer'?'Please enter the code':'请填写验证码'"
-                                v-model="registerForm.code">
+                                v-model.trim="registerForm.code">
                         </el-input>
                         <img :src="codeUrl" alt="Verification code"
                              class="pic-code">
@@ -257,7 +258,8 @@
                         <p>Upon creating my account, I agree to:</p>
                         <p>
                             - The 
-                            <span class="link">shoestp.com User Agreement</span>
+                            <%--<span class="link">shoestp.com User Agreement</span>--%>
+                            <a class="link" href="/home/cnt_CntSglPageCategory_gosglpageshoestp?pkey=9" target="_blank">shoestp.com User Agreement</a>
                         </p>
                         <p>- Receive emails related to shoestp.com membership and services</p>
                     </div>
@@ -266,7 +268,8 @@
                         <p>创建网站账号的同时，我同意：</p>
                         <p>
                             - 遵守
-                            <span class="link">shoestp.com</span>
+                            <%--<span class=a"link">shoestp.com</span>--%>
+                            <a class="link" href="/home/cnt_CntSglPageCategory_gosglpageshoestp?pkey=9" target="_blank">shoestp.com</a>
                             会员协议
                         </p>
                         <p>- 愿意接收相关来自shoestp.com的会员及服务邮件</p>
@@ -310,28 +313,28 @@
         <ul class="psd-strength-tips-list">
             <!-- <li class="tip-item" v-for="(tip, index) in psdStrength.tips">
                 {{tip}}
-                <img src="./images/icon_dui_green.png" class="isRight" alt="" v-if="psdStrength.arr[index]">
-                <img src="./images/icon_cuo_blue.png" class="isError" alt="" v-else>
+                <img src="/home/v3/static/images/forgetPassword/icon_dui_green.png" class="isRight" alt="" v-if="psdStrength.arr[index]">
+                <img src="/home/v3/static/images/forgetPassword/icon_cuo_blue.png" class="isError" alt="" v-else>
             </li> -->
             <li class="tip-item">
                 {{registerForm.user=='buyer'?'6 to 20 characters':'6到12个字符'}}
-                <img src="./images/icon_dui_green.png" class="isRight" alt="" v-if="psdStrength.arr[0]">
-                <img src="./images/icon_cuo_blue.png" class="isError" alt="" v-else>
+                <img src="/home/v3/static/images/forgetPassword/icon_dui_green.png" class="isRight" alt="" v-if="psdStrength.arr[0]">
+                <img src="/home/v3/static/images/forgetPassword/icon_cuo_blue.png" class="isError" alt="" v-else>
             </li>
             <li class="tip-item">
                 {{registerForm.user=='buyer'?
                 'Only consists of letters,numbers and symbols':
                 '仅限字母、数字、以及符号'}}
 
-                <img src="./images/icon_dui_green.png" class="isRight" alt="" v-if="psdStrength.arr[1]">
-                <img src="./images/icon_cuo_blue.png" class="isError" alt="" v-else>
+                <img src="/home/v3/static/images/forgetPassword/icon_dui_green.png" class="isRight" alt="" v-if="psdStrength.arr[1]">
+                <img src="/home/v3/static/images/forgetPassword/icon_cuo_blue.png" class="isError" alt="" v-else>
             </li>
             <li class="tip-item">
                 {{registerForm.user=='buyer'?
                 'Contains at least two of the following:letters numbers and symbols':
                 '至少包含以下中的两种: 字母、数字、以及符号'}}
-                <img src="./images/icon_dui_green.png" class="isRight" alt="" v-if="psdStrength.arr[2]">
-                <img src="./images/icon_cuo_blue.png" class="isError" alt="" v-else>
+                <img src="/home/v3/static/images/forgetPassword/icon_dui_green.png" class="isRight" alt="" v-if="psdStrength.arr[2]">
+                <img src="/home/v3/static/images/forgetPassword/icon_cuo_blue.png" class="isError" alt="" v-else>
             </li>
         </ul>
     </el-popover>
@@ -376,7 +379,10 @@
         } else if (value.length < 6 || value.length > 20) {
             app.psdStrength.isPsdRight = false;
             callback(new Error(app.registerForm.user == 'buyer' ? 'Please set password within 6 to 20 characters' : '请设置6-20位的密码'));
-        } else {
+        } else if( !(/^(?![0-9]+$)(?![a-zA-Z]+$)(?!([^(0-9a-zA-Z)]|[])+$)([^(0-9a-zA-Z)]|[]|[a-zA-Z]|[0-9]){6,}$/.test(value))  ){
+            app.psdStrength.isPsdRight = false;
+            callback(new Error(app.registerForm.user == 'buyer' ? 'Please enter two of the three formats: numbers, letters and symbols.' : '请输入以下三种格式中的两种：数字、字母及符号'));
+        }else{
             app.psdStrength.isPsdRight = true;
             if (app.registerForm.psd2 !== '') {
                 app.$refs.registerForm.validateField('psd2');
@@ -529,7 +535,7 @@
             this.getCountryList();
             this.getProvinceList();
             console.log("registerEmail's:")
-            this.registerForm.email = this.GetQueryString("registerEmail") || localStorage.getItem("registerEmail")
+            this.registerForm.email = this.GetQueryString("email") || localStorage.getItem("registerEmail")
         },
         methods: {
             image(v, params) {
