@@ -112,12 +112,12 @@
                         <el-col :span="12">
                             <el-form-item label="*公司详细地址:" prop="companyAddr">
                                 <el-input v-model="basicInfo.companyAddr"
-                                          :class="{'null' : !basicInfo.companyAddr}"></el-input>
+                                          :class="{'null' : !basicInfo.companyAddr}" placeholder="https://"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
                             <el-form-item label="公司电话:" prop="telephone">
-                                <el-input v-model="basicInfo.telephone"></el-input>
+                                <el-input v-model="basicInfo.telephone" placeholder="+86-155555555"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -272,7 +272,7 @@
                         </el-col>
                         <el-col :span="12">
                             <el-form-item label="联系人手机" prop="phone">
-                                <el-input v-model="basicInfo.phone"></el-input>
+                                <el-input v-model="basicInfo.phone" placeholder="+86-155555555"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -418,11 +418,11 @@
         }
     };
     var validateTel = function (rule, value, callback) {
-        let reg = /^[0-9]+$/
+        let reg = /^[+\d]?\d{1,3}-\d{1,16}$/
         if (!value) {
             callback();
         } else if (!reg.test(value)) {
-            return callback(new Error("请填写数字"));
+            return callback(new Error("请填写正确的手机格式"));
         } else {
             callback();
         }
@@ -448,7 +448,7 @@
         }
     };
     var validatewebsite = function(rule, value, callback){
-        let reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?/
+        let reg = /^http[s]?:\/\/[\w]{1,}.?[\w]{1,}.?[\w/.?&=-]{1,}$/
         if (!value) {
             callback();
         } else if(!reg.test(value)){
