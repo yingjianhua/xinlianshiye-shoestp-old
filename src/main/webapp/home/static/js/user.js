@@ -44,11 +44,11 @@ var user_obj = {
                             $('#w_login_vcode').show();
                         }
                         if(data.ret==0){
-                        $('#error_login_box').html(lang_obj.signIn.error_note).show();	
+                        $('#error_login_box').html(lang_obj.signIn.error_note).show();
                         }else{
-                        $('#error_login_box').html(lang_obj.signIn.verification).show();	
+                        $('#error_login_box').html(lang_obj.signIn.verification).show();
                         }
-                       
+
                     } else {
                         if ($('input[name=comeback]').length) {
                             var $callback = $('input[name=comeback]').val();
@@ -69,7 +69,7 @@ var user_obj = {
         var addStr = '',
             obj = $('body'),
             w = $(window),
-            regUrl = '/home/usr_UsrPurchase_sign';
+            regUrl = '/home/usr_UsrMain_register';
 
         if (type == 'parent') {//父框架元素
             obj = $(window.parent.document).find('body');
@@ -90,7 +90,7 @@ var user_obj = {
         signin_html = signin_html + '<div class="row" id="w_login_vcode" style="display:none;"><label for="vcode">' + lang_obj.global.vcode + '</label><div class="clean"><input name="checkCode" class="lib_txt fl" type="text" maxlength="4" style="text-transform:uppercase; width:80px; margin-right:10px;" /><img src="/servlet/verify.img" onclick="this.src=\'/servlet/verify.img?name=login&length=4&charset=en&r=\'+Math.random();" class="fl" style="cursor:pointer;"></div></div>';
         signin_html = signin_html + '<div class="row">' + lang_obj.signIn.forgot + '</div>';
         signin_html = signin_html + '<div class="row protect"><input class="ckb" type="checkbox" name="IsStay" value="1" checked="checked" /> ' + lang_obj.signIn.stay_note + '</div>';
-        signin_html = signin_html + '<div class="row"><button class="signbtn signin FontBgColor FontBorderColor" type="submit">' + lang_obj.signIn.sign_in + '</button>' + (!obj.find('form.register').length ? '<a href="' + ($('#addtocart_button').length ? '/home/usr_UsrPurchase_sign?AddToCart=1' + (obj.find('#attr_hide').val() ? '&' + addStr : '') : '/home/usr_UsrPurchase_sign') + '" class="signbtn signup">' + lang_obj.signIn.join_fee + '</a>' : '') + '</div>';
+        signin_html = signin_html + '<div class="row"><button class="signbtn signin FontBgColor FontBorderColor" type="submit">' + lang_obj.signIn.sign_in + '</button>' + (!obj.find('form.register').length ? '<a href="' + ($('#addtocart_button').length ? '/home/usr_UsrPurchase_sign?AddToCart=1' + (obj.find('#attr_hide').val() ? '&' + addStr : '') : '/home/usr_UsrMain_register') + '" class="signbtn signup">' + lang_obj.signIn.join_fee + '</a>' : '') + '</div>';
         signin_html = signin_html + '<input type="hidden" name="do_action" value="user.login" />';
         signin_html = signin_html + '<input type="hidden" name="vcodeNum" id="w_vcode_num" value="1" />';
         if (obj.find('input[name=jumpUrl]').length)
@@ -646,7 +646,7 @@ var user_obj = {
                 cityTips = lang_obj.user.address_tips.city;
            /* else if (ueeshop_config.lang != 'zh_TW' && ueeshop_config.lang != 'jp' && city.val().length < 3)
                 cityTips = lang_obj.user.address_tips.city_length;*/
-            
+
             if (country.val() == '') {
                 countryTips = lang_obj.user.address_tips.country;
                 //countryTips="Please choose your country."
@@ -655,7 +655,7 @@ var user_obj = {
             /*if(typeof(state_obj.attr("disabled"))=="undefined" && state_obj.val()==-1)	//typeof($("#aid").attr("rel"))=="undefined"
                 stateTips=lang_obj.user.address_tips.state;
             else */
-            
+
             if (state_obj.val() == '') {
                 stateTips = lang_obj.user.address_tips.state;
                 //stateTips="Please choose your province."

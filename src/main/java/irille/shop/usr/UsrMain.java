@@ -20,7 +20,7 @@ public class UsrMain extends BeanInt<UsrMain> {
 	public enum T implements IEnumFld {
 		PKEY(TB.crtIntPkey()), EMAIL(SYS.STR__100, "邮箱"), NICKNAME(SYS.STR__200_NULL, "昵称"), PASSWORD(SYS.PASSWORD),
 		COUNTRY(PltCountry.fldOutKey().setName("国家").setNull()), TELPHONE(SYS.STR__200, "手机号码"),
-		COMPANY(SYS.STR__100_NULL, "公司名称"), CONTACTS(SYS.NAME__40, "联系人"), // 联系人
+		COMPANY(SYS.STR__100_NULL, "公司名称"), CONTACTS(SYS.NAME__40_NULL, "联系人"), // 联系人
 		PROVINCE(PltProvinces.fldOutKey().setName("省份").setNull()), CITY(PltCity.fldOutKey().setName("城市").setNull()),
 		ZONE(PltArea.fldOutKey().setName("地区").setNull()), ADDRESS(SYS.STR__200_NULL),
 		REG_TIME(SYS.DATE_TIME__NULL, "注册时间"), IDENTITY(TB.crt(Usr.IDType.DEFAULT)),
@@ -89,7 +89,7 @@ public class UsrMain extends BeanInt<UsrMain> {
   private Integer _country;	// 国家 <表主键:PltCountry>  INT<null>
   private String _telphone;	// 手机号码  STR(200)
   private String _company;	// 公司名称  STR(100)<null>
-  private String _contacts;	// 联系人  STR(40)
+  private String _contacts;	// 联系人  STR(40)<null>
   private Integer _province;	// 省份 <表主键:PltProvinces>  INT<null>
   private Integer _city;	// 城市 <表主键:PltCity>  INT<null>
   private Integer _zone;	// 地区 <表主键:PltArea>  INT<null>

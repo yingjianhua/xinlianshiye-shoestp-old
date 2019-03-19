@@ -29,22 +29,13 @@ import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.odr.OdrOrderDAO;
-import irille.shop.pdt.Pdt;
-import irille.shop.pdt.PdtAttr;
-import irille.shop.pdt.PdtAttrLine;
-import irille.shop.pdt.PdtColor;
-import irille.shop.pdt.PdtComment;
-import irille.shop.pdt.PdtCommentDAO;
-import irille.shop.pdt.PdtProduct;
-import irille.shop.pdt.PdtProductDAO;
-import irille.shop.pdt.PdtSize;
+import irille.shop.pdt.*;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplierDAO;
 import irille.view.O2O.O2OMapView;
 import irille.view.Page;
 import irille.view.ResultView;
-import irille.view.O2O.O2OMapView;
 import irille.view.pdt.CommentView;
 import irille.view.pdt.PdtCommentSatisFactionView;
 import irille.view.pdt.PdtCommentViewPageView;
@@ -307,49 +298,44 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
    * @date 2018/7/27 10:56
    */
   public String gtProductsInfo() throws Exception {
-    if (Long.valueOf(getId().toString()) < 1) {
-      throw LOG.err("not exists", "产品id[{0}]不存在", getId());
-    }
-    UsrSupplier supplier = BeanBase.load(PdtProduct.class, getId()).gtSupplier();
-    setSupView(UsrSupplierDAO.Select.getSupView(curLanguage(), supplier.getPkey(), 0));
-    if (!isMobile()) {
-      ProductInfoView infoView =
-          pdtpageSelect.getProductsById(
-              Integer.valueOf(getId().toString()),
-              Sys.OYn.YES,
-              Pdt.OState.ON,
-              getPurchase() != null ? getPurchase().getPkey() : -1,
-              HomeAction.curCurrency());
-      if (infoView == null) {
-        throw LOG.err("not exists", "产品id[{0}]不存在", getId());
-      }
-      if (infoView.getType() != null
-          && infoView.getType().equals(Pdt.OProductType.PrivateExpo.getLine().getKey())) {
-        // 若产品类型为私人展厅产品, 需要判断链接密钥有效期 只有正确的密钥能获取进入页面,否则返回404页面
-        Integer expoProductPkey;
-        if (expoKey == null
-            || (expoProductPkey = rFQConsultMessageService.checkPrivateExpoKey(expoKey)) == null
-            || !Long.valueOf(expoProductPkey.toString()).equals(infoView.getPdtId())) {
-          setResult("404.jsp");
-          return HomeAction.TRENDS;
-        }
-      }
-
-      if (null != infoView.getMap()) setMap(infoView.getMap());
-      seoView = new SEOView();
-      seoView.setTitle(translateUtil.getLanguage(infoView.getSeoTitle(), HomeAction.curLanguage()));
-      seoView.setDescription(
-          translateUtil.getLanguage(infoView.getSeoDescription(), HomeAction.curLanguage()));
-      seoView.setKeyWord(
-          translateUtil.getLanguage(infoView.getSeoKeywords(), HomeAction.curLanguage()));
-      setGoodsInfo(objectMapper.writeValueAsString(infoView));
-    }
-    setResult("goods-info.jsp");
-    return HomeAction.TRENDS;
-  }
-
-  public String gtProductsInfo1() throws Exception {
-    if (Long.valueOf(getId().toString()) < 1) {
+//    if (Long.valueOf(getId().toString()) < 1) {
+//      throw LOG.err("not exists", "产品id[{0}]不存在", getId());
+//    }
+//    UsrSupplier supplier = BeanBase.load(PdtProduct.class, getId()).gtSupplier();
+//    setSupView(UsrSupplierDAO.Select.getSupView(curLanguage(), supplier.getPkey(), 0));
+//    if (!isMobile()) {
+//      ProductInfoView infoView =
+//          pdtpageSelect.getProductsById(
+//              Integer.valueOf(getId().toString()),
+//              Sys.OYn.YES,
+//              Pdt.OState.ON,
+//              getPurchase() != null ? getPurchase().getPkey() : -1,
+//              HomeAction.curCurrency());
+//      if (infoView == null) {
+//        throw LOG.err("not exists", "产品id[{0}]不存在", getId());
+//      }
+//      if (infoView.getType() != null
+//          && infoView.getType().equals(Pdt.OProductType.PrivateExpo.getLine().getKey())) {
+//        // 若产品类型为私人展厅产品, 需要判断链接密钥有效期 只有正确的密钥能获取进入页面,否则返回404页面
+//        Integer expoProductPkey;
+//        if (expoKey == null
+//            || (expoProductPkey = rFQConsultMessageService.checkPrivateExpoKey(expoKey)) == null
+//            || !Long.valueOf(expoProductPkey.toString()).equals(infoView.getPdtId())) {
+//          setResult("404.jsp");
+//          return HomeAction.TRENDS;
+//        }
+//      }
+//
+//      if (null != infoView.getMap()) setMap(infoView.getMap());
+//      seoView = new SEOView();
+//      seoView.setTitle(translateUtil.getLanguage(infoView.getSeoTitle(), HomeAction.curLanguage()));
+//      seoView.setDescription(
+//          translateUtil.getLanguage(infoView.getSeoDescription(), HomeAction.curLanguage()));
+//      seoView.setKeyWord(
+//          translateUtil.getLanguage(infoView.getSeoKeywords(), HomeAction.curLanguage()));
+//      setGoodsInfo(objectMapper.writeValueAsString(infoView));
+//    }
+     if (Long.valueOf(getId().toString()) < 1) {
       throw LOG.err("not exists", "产品id[{0}]不存在", getId());
     }
     UsrSupplier supplier = BeanBase.load(PdtProduct.class, getId()).gtSupplier();
@@ -388,7 +374,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
       setGoodsInfo(objectMapper.writeValueAsString(infoView));
     }
     // write(infoView);
-    setResult("productInfo.jsp");
+    setResult("/home/v3/jsp/productInfo/productInfo.jsp");
     return HomeAction.TRENDS;
   }
 
