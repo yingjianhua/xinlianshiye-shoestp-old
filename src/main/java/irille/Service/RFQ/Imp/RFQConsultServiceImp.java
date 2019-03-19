@@ -18,10 +18,14 @@ import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Entity.pm.PM.OTempType;
 import irille.Service.RFQ.IRFQConsultService;
+import irille.core.sys.Sys;
+import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
+import irille.pub.svr.Env;
 import irille.pub.util.GetValue;
 import irille.shop.usr.UsrPurchase;
+import irille.shop.usr.UsrSupplier;
 import irille.view.RFQ.PutInquiryView;
 import irille.view.v3.rfq.EditRFQConsultView;
 import irille.view.v3.rfq.PutRFQConsultView;
@@ -68,11 +72,11 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     rfqConsult.setChangeCount((short) 0);
     rfqConsult.setCountry(usrPurchase.getCountry());
     StringJoiner joiner = new StringJoiner(",");
-    if(rfqConsultView.getExtraRequest()!=null){
-        for (String s : rfqConsultView.getExtraRequest()) {
-            joiner.add(s);
-        }
-        rfqConsult.setExtraRequest(joiner.toString());
+    if (rfqConsultView.getExtraRequest() != null) {
+      for (String s : rfqConsultView.getExtraRequest()) {
+        joiner.add(s);
+      }
+      rfqConsult.setExtraRequest(joiner.toString());
     }
     rfqConsultDAO.setB(rfqConsult);
     rfqConsultDAO.commit();
@@ -257,6 +261,16 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     }
     ;
     consult.stUnit(rfqConsultUnit);
+    consult.setCountry(BeanBase.load(UsrSupplier.class, consultView.getSupplierId()).getCountry());
+    consult.setLeftCount(0);
+    consult.setPurchaseId(purchase.getPkey());
+    consult.stType(RFQConsultType.supplier_INQUIRY);
+    consult.stStatus(RFQConsultStatus.runing);
+    consult.stVerifyStatus(RFQConsultVerifyStatus.PASS);
+    consult.setValidDate(Env.getTranBeginTime());
+    consult.setTotal(0);
+    consult.setChangeCount(Short.valueOf("0"));
+    consult.setIsDeleted(Sys.OYn.NO.getLine().getKey());
     rfqConsultDAO.setB(consult).commit();
     RFQConsultRelation rfqConsultRelation = new RFQConsultRelation();
     rfqConsultRelation.setConsult(consult.getPkey());
