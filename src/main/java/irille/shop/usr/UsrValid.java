@@ -4,9 +4,14 @@ import java.math.BigDecimal;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
+
+import irille.homeAction.HomeAction;
 import irille.pub.LogMessage;
 import irille.pub.PubInfs.IMsg;
 import irille.pub.bean.Bean;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.validate.ValidForm;
 import org.apache.commons.lang3.StringUtils;
 
@@ -49,18 +54,23 @@ public class UsrValid extends ValidForm {
   public void validMail(String mail, Object... param) {
     String reg = "^\\w+((-\\w+)|(\\.\\w+))*\\@[A-Za-z0-9]+((\\.|-)[A-Za-z0-9]+)*\\.[A-Za-z0-9]+$";
     boolean flag = reg(reg, mail);
-    if (flag == false) throw LOG.err(errMsgs.wrongErr, param);
+    if (flag == false)
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.valid_mailRegex, HomeAction.curLanguage()));
   }
 
   public void validPhone(String phone, Object... param) {
     String telephone = "^[0-9]*$";
     boolean flag = reg(telephone, phone);
-    if (flag == false) throw LOG.err(errMsgs.wrongErr, param);
+    if (flag == false)
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.valid_mailRegex, HomeAction.curLanguage()));
   }
 
   public void validCopy(Bean param) {
     if (param != null) {
-      throw LOG.errTran("signIn%Username_Exists", "用户名已存在");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_user_exists, HomeAction.curLanguage()));
     }
   }
 
@@ -74,7 +84,16 @@ public class UsrValid extends ValidForm {
     if (StringUtils.isEmpty(copyPassword)
         || StringUtils.isEmpty(password)
         || !password.equals(copyPassword)) {
-      throw LOG.errTran("global%confirm_password_error", "登入密码与确认密码不匹配，请重新输入！");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.wrong_password, HomeAction.curLanguage()));
     }
+  }
+
+  public void validPassword(String password, Object... param) {
+    String pwd = "^(?=.*[0-9])(?=.*[a-zA-Z])(.{6,20})$";
+    boolean flag = reg(pwd, password);
+    if (flag == false)
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.valid_pwdRegex, HomeAction.curLanguage()));
   }
 }

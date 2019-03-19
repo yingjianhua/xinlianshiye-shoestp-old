@@ -10,7 +10,13 @@ import irille.Entity.O2O.O2O_JoinInfo;
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Entity.O2O.O2O_Product;
 import irille.Entity.Pk.PkCompetitionData;
-import irille.Entity.RFQ.*;
+import irille.Entity.RFQ.RFQConsult;
+import irille.Entity.RFQ.RFQConsultGroup;
+import irille.Entity.RFQ.RFQConsultGroupRelation;
+import irille.Entity.RFQ.RFQConsultMessage;
+import irille.Entity.RFQ.RFQConsultRelation;
+import irille.Entity.RFQ.RFQPurchaseContact;
+import irille.Entity.RFQ.RFQPurchaseContactGroup;
 import irille.Entity.SVS.SVSInfo;
 import irille.Entity.SVS.SVSNewestPdt;
 import irille.Entity.pm.PMMessage;
@@ -33,7 +39,8 @@ public class Plt extends PackageBase {
   public static final Plt INST = new Plt();
   public static TbBase TB = new TbBase<Tb>(Plt.class, "平台管理"); // 定义公共的Fld对象用
 
-  private Plt() {}
+    private Plt() {
+    }
 
   public static void main(String[] args) {
     StartInitServlet.initBeanLoad();

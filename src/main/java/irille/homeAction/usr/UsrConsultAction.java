@@ -2,14 +2,19 @@ package irille.homeAction.usr;
 
 import java.io.IOException;
 
+import org.json.JSONException;
+
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
+
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.homeAction.HomeAction;
 import irille.homeAction.usr.inf.IUsrConsultAction;
 import irille.pub.Str;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.shop.usr.UsrConsult;
 import irille.shop.usr.UsrConsultDAO;
 import irille.view.usr.ConsultView;
-import org.json.JSONException;
 
 /**
  * 采购商action
@@ -98,7 +103,9 @@ public class UsrConsultAction extends HomeAction<UsrConsult> implements IUsrCons
     System.out.println("syscode:" + verifyCode());
     System.out.println("vCode:" + vCode);
     if ((Str.isEmpty(verifyCode) || Str.isEmpty(vCode) || verifyCode.equals(vCode) == false)) {
-      writeErr(vcode_err);
+      //      writeErr(vcode_err);
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_verification_code, curLanguage()));
     } else {
       new UsrConsultDAO.Publish(v, getPurchase().getPkey()).commit();
       write();
@@ -136,7 +143,10 @@ public class UsrConsultAction extends HomeAction<UsrConsult> implements IUsrCons
   @Override
   public void detail() throws Exception {
     ConsultView view = UsrConsultDAO.load((Integer) getId(), curLanguage());
-    if (view == null) writeErr(not_exists_err);
+    if (view == null)
+      throw new WebMessageException(
+          MessageBuild.buildMessage(
+              ReturnCode.inquiry_wrong_data, curLanguage())); // writeErr(not_exists_err);
     else write(view);
   }
 
@@ -149,7 +159,9 @@ public class UsrConsultAction extends HomeAction<UsrConsult> implements IUsrCons
   @NeedLogin
   public void delete() throws Exception {
     if (!UsrConsultDAO.isOwner((Integer) getId(), getPurchase().getPkey())) {
-      writeErr("wrong owner");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_gone, curLanguage()));
+      // writeErr("wrong owner");
     } else {
       UsrConsultDAO.delete((Integer) getId());
       write();
@@ -167,8 +179,10 @@ public class UsrConsultAction extends HomeAction<UsrConsult> implements IUsrCons
   public void deletes() throws Exception {
     for (String id : ids.split(",")) {
       if (!UsrConsultDAO.isOwner(Integer.valueOf(id), getPurchase().getPkey())) {
-        writeErr("wrong owner");
-        return;
+        //        writeErr("wrong owner");
+        //        return;
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.service_gone, curLanguage()));
       }
     }
     for (String id : ids.split(",")) {

@@ -60,7 +60,7 @@ public class PltFreightSellerLineDAO {
               T.WEIGHT_PRICE,
               T.WEIGHT_SECTION,
               T.AGGRAVATE_SECTION);
-      numberValid().validIntegerPositive(T.WEIGHT_SECTION, T.AGGRAVATE_SECTION);
+      numberValid().validBigDecimalPositive(T.WEIGHT_SECTION, T.AGGRAVATE_SECTION);
       numberValid()
           .validBigDecimalPositive(T.FREE_PRICE, T.EXTRA_PRICE, T.WEIGHT_PRICE, T.AGGRAVATE_PRICE);
       super.valid();
@@ -85,7 +85,7 @@ public class PltFreightSellerLineDAO {
               T.WEIGHT_PRICE,
               T.WEIGHT_SECTION,
               T.AGGRAVATE_SECTION);
-      numberValid().validIntegerPositive(T.WEIGHT_SECTION, T.AGGRAVATE_SECTION);
+      numberValid().validBigDecimalPositive(T.WEIGHT_SECTION, T.AGGRAVATE_SECTION);
       numberValid()
           .validBigDecimalPositive(T.FREE_PRICE, T.EXTRA_PRICE, T.WEIGHT_PRICE, T.AGGRAVATE_PRICE);
       super.valid();

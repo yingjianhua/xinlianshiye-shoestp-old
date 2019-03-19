@@ -94,7 +94,7 @@ public class PltFreightDao {
   }
 
   // 插入快递公司
-  public void insShipping(FreightManagementView view) {
+  public PltFreight insShipping(FreightManagementView view) {
     PltFreight pltFreight = new PltFreight();
     pltFreight.setCompany(view.getCompany());
     pltFreight.setLogo(view.getLogo());
@@ -125,7 +125,7 @@ public class PltFreightDao {
       if (pltFreight.getSort() < 0)
         throw LOG.err(Plt.ErrMsgs.lowPriceErr, PltFreight.T.SORT.getFld().getName(), 0);
     }
-    pltFreight.ins();
+     return pltFreight.ins();
   }
 
   // 插入区间
@@ -230,10 +230,10 @@ public class PltFreightDao {
     if (pltFreightLine.getAggravatePrice().compareTo(BigDecimal.ZERO) < 0) {
       throw LOG.err(Msgs.priceMinErr, PltFreightLine.T.AGGRAVATE_PRICE.getFld().getName());
     }
-    if (pltFreightLine.getWeightSection() < 0) {
+    if (pltFreightLine.getWeightSection() .compareTo(BigDecimal.ZERO) < 0) {
       throw LOG.err(Msgs.priceMinErr, PltFreightLine.T.WEIGHT_SECTION.getFld().getName());
     }
-    if (pltFreightLine.getAggravateSection() < 0) {
+    if (pltFreightLine.getAggravateSection().compareTo(BigDecimal.ZERO) < 0) {
       throw LOG.err(Msgs.priceMinErr, PltFreightLine.T.AGGRAVATE_SECTION.getFld().getName());
     }
     pltFreightLine.upd();

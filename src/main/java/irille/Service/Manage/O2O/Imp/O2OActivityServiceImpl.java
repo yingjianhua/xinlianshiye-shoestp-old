@@ -6,23 +6,31 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.google.inject.Inject;
 import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
 
+import irille.Dao.PdtCatDao;
 import irille.Dao.O2O.O2OActivityDao;
 import irille.Dao.O2O.O2OProductDao;
-import irille.Dao.PdtCatDao;
-import irille.Entity.O2O.Enums.O2O_ActivityStatus;
-import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
-import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_Activity;
 import irille.Entity.O2O.O2O_JoinInfo;
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Entity.O2O.O2O_Product;
+import irille.Entity.O2O.Enums.O2O_ActivityStatus;
+import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
+import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.pm.PM.OTempType;
 import irille.Service.Manage.O2O.O2OActivityService;
 import irille.pub.exception.ReturnCode;
@@ -36,13 +44,11 @@ import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrSupplier;
+import irille.view.Page;
 import irille.view.O2O.O2OActivityView;
 import irille.view.O2O.O2OProductView;
 import irille.view.O2O.PdtSearchView;
-import irille.view.Page;
 import irille.view.se.sendEmail;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class O2OActivityServiceImpl implements O2OActivityService {
 
@@ -306,6 +312,9 @@ public class O2OActivityServiceImpl implements O2OActivityService {
   public void appr(Integer id, String reason, O2O_ProductStatus status) {
     O2O_Product o2OProduct = o2OProductDao.findByPkey(id);
     if (null == o2OProduct) throw new WebMessageException(ReturnCode.failure, "商品不存在");
+    if (!o2OProduct.getVerifyStatus().equals(O2O_ProductStatus._DEFAULT.getLine().getKey())) {
+      throw new WebMessageException(ReturnCode.failure, "该商品已被审核");
+    }
     o2OProduct.setVerifyStatus(status.getLine().getKey());
     sendEmail email = new sendEmail();
     if (!AppConfig.dev) {
@@ -374,6 +383,9 @@ public class O2OActivityServiceImpl implements O2OActivityService {
   /** 处理上下架 */
   public void lowerAndUpper(Integer id, String reason, O2O_ProductStatus status) {
     O2O_Product o2OProduct = o2OProductDao.findByPkey(id);
+    if (o2OProduct.getStatus().equals(O2O_ProductStatus.WAITOFF.getLine().getKey())) {
+      throw new WebMessageException(ReturnCode.failure, "该条信息已被处理");
+    }
     sendEmail email = new sendEmail();
     UsrSupplier supplier = o2OProduct.gtJoinInfoId().gtSupplier();
     if (!AppConfig.dev) {

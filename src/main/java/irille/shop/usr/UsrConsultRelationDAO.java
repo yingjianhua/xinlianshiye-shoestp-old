@@ -3,6 +3,8 @@ package irille.shop.usr;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONException;
+
 import irille.pub.Log;
 import irille.pub.Str;
 import irille.pub.bean.BeanBase;
@@ -17,7 +19,6 @@ import irille.view.Page;
 import irille.view.usr.ConsultMessageView;
 import irille.view.usr.ConsultRelationView;
 import irille.view.usr.ConsultView;
-import org.json.JSONException;
 
 public class UsrConsultRelationDAO {
   public static final Log LOG = new Log(UsrConsultRelationDAO.class);
@@ -106,8 +107,10 @@ public class UsrConsultRelationDAO {
     private Integer supplier;
     private String msg;
     private String quotedPrice;
+    private Language language;
 
-    public Quote(Integer consultId, Integer supplier, String msg, String quotedPrice) {
+    public Quote(
+        Integer consultId, Integer supplier, String msg, String quotedPrice, Language language) {
       System.out.println("consultId:" + consultId);
       System.out.println("supplier:" + supplier);
       System.out.println("msg:" + msg);
@@ -116,6 +119,7 @@ public class UsrConsultRelationDAO {
       this.supplier = supplier;
       this.msg = msg;
       this.quotedPrice = quotedPrice;
+      this.language = language;
     }
 
     @Override
@@ -142,8 +146,9 @@ public class UsrConsultRelationDAO {
       consult.stHaveNewMsg(true);
       consult.upd();
 
-      new UsrConsultMessageDAO.Send(false, getB().getPkey(), supplier, msg).commit();
-      new UsrConsultMessageDAO.Send(false, getB().getPkey(), supplier, "报价:\t\n" + quotedPrice)
+      new UsrConsultMessageDAO.Send(false, getB().getPkey(), supplier, msg, language).commit();
+      new UsrConsultMessageDAO.Send(
+              false, getB().getPkey(), supplier, "报价:\t\n" + quotedPrice, language)
           .commit();
     }
   }

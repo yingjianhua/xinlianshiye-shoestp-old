@@ -39,18 +39,13 @@
                         <el-form ref="loginForm" class="login-form"
                                  label-position="top" size="medium"
                                  :hide-required-asterisk="true"
-                                 :show-message="false"
                                  :model="loginForm" :rules="loginFormRules">
                             <!-- 防止用户名、密码自动填充 -->
-                            <input type="text" name="catch-name" >
-                            <input type="password" name="catch-psd">
-
                             <el-form-item label="Email" prop="email">
-                                <el-input v-model="loginForm.email" placeholder="Email address or member ID" auto-complete="on"></el-input>
+                                <el-input v-model="loginForm.email"  name="catch-name"  placeholder="Email address or member ID" auto-complete="on"></el-input>
                             </el-form-item>
-
                             <el-form-item label="Password" prop="psd">
-                                <el-input v-model="loginForm.psd" placeholder="Password" auto-complete="on" type="password"></el-input>
+                                <el-input v-model="loginForm.psd"  name="catch-psd" placeholder="Password" auto-complete="on" type="password"></el-input>
                             </el-form-item>
                         </el-form>
 
@@ -110,6 +105,8 @@
 </div>
 <script src="/home/v3/static/js/index-top.js"></script>
 <script src="/home/v3/static/js/index-bottom.js"></script>
+<%--公共函数--%>
+<script src="/home/utils/util.js"></script>
 <script>
     var app = new Vue({
         el: "#app",
@@ -121,10 +118,16 @@
             },
             loginFormRules: {
                 email: [
-                    {required: true, message: '', trigger: 'blur'}
+                    {required: true, message: 'Email can\'t be empty!', trigger: 'blur'}, {
+                        pattern: /^[0-9A-Za-z][\.-_0-9A-Za-z]*@[0-9A-Za-z]+(?:\.[0-9A-Za-z]+)+$/,
+                        message: 'E-mail format is incorrect',
+                        trigger: 'blur'
+                    }
                 ],
                 psd: [
-                    {required: true, message: '', trigger: 'blur'}
+                    // {validator: validatePsd, trigger: 'change'},
+                    { required: true, message: 'Password can\'t be empty', trigger: 'blur' },
+                    { min: 6, max: 20, message: 'Please enter 6 to 20 characters', trigger: 'blur' }
                 ],
             },
         },
@@ -198,11 +201,14 @@
                         pwd: this.loginForm.psd,
                     }
                 }
+                if( util_function_obj.GetQueryString("jumpUrl") ){
+                    postData.jumpUrl = util_function_obj.GetLoginJumpBackUrl();
+                }
 
                 axios.post('/home/usr_UsrMain_login', Qs.stringify(postData))
                     .then((res) => {
                         if (res.data.ret != 1) {
-                            this.$message.error(res.data.msg);
+                            this.$message.error(res.data.msg || "Login error, please try again later");
                             return
                         }
                         ;
@@ -226,7 +232,7 @@
                         }
                     })
                     .catch((error) => {
-                        console.log(error);
+                        this.$message.error(error || 'Network error,please try again later');
                     });
             },
 
