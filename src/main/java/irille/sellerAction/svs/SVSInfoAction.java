@@ -11,6 +11,8 @@ import irille.Entity.SVS.Enums.SVSAuthenticationStatus;
 import irille.Entity.SVS.Enums.SVSGradeType;
 import irille.Entity.SVS.SVSInfo;
 import irille.action.seller.SellerAction;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.util.GetBaseScoreUtils;
 import irille.sellerAction.svs.inf.ISVSInfoAction;
 import irille.shop.usr.Usr;
@@ -37,22 +39,15 @@ public class SVSInfoAction extends SellerAction<SVSInfo> implements ISVSInfoActi
   @Override
   public void application() throws Exception {
 
-    if (getSupplier() == null) {
-      writeErr("用户未登录,无法提交认证信息");
-      return;
-    }
-    if (getSupplier().gtStatus() != Usr.OStatus.APPR) {
-      writeErr("商家未审核,无法提交认证信息");
-      return;
-    }
+    if (getSupplier() == null) throw new WebMessageException(ReturnCode.failure, "用户未登录,无法提交认证信息");
+    if (getSupplier().gtStatus() != Usr.OStatus.APPR)
+      throw new WebMessageException(ReturnCode.failure, "商家未审核,无法提交认证信息");
     SVSInfo svs = new SVSInfo();
     int score =
         GetBaseScoreUtils.getBaseScore(
             search, capacity, factory, quality, team, exhibition, partner);
-    if (score < 30) {
-      writeErr("未满足银牌基础分值,无法提交认证");
-      return;
-    }
+    if (score < 30) throw new WebMessageException(ReturnCode.failure, "未满足银牌基础分值,无法提交认证");
+
     if (score >= 30 && score <= 59) svs.stGrade(SVSGradeType.SILVER);
     if (score >= 60) svs.stGrade(SVSGradeType.GOLD);
     svs.stStatus(SVSAuthenticationStatus.ToBeAudited);
@@ -91,7 +86,7 @@ public class SVSInfoAction extends SellerAction<SVSInfo> implements ISVSInfoActi
               team,
               exhibition,
               partner));
-    else writeErr(-1, "用户未登录");
+    else throw new WebMessageException(ReturnCode.failure, "用户未登录");
   }
 
   /**
@@ -102,6 +97,6 @@ public class SVSInfoAction extends SellerAction<SVSInfo> implements ISVSInfoActi
   @Override
   public void getAutInfo() throws Exception {
     if (getSupplier() != null) write(service.getSVSInfo(getSupplier().getPkey()));
-    else writeErr(-1, "用户未登录");
+    else throw new WebMessageException(ReturnCode.failure, "用户未登录");
   };
 }

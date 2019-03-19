@@ -36,12 +36,12 @@
                     <div class="favorite-item" v-for="(item, index) in favoriteList" :key="index">
                         <input type="checkbox" @change="singleChecked" :value="item.id" v-model="checkedCode">
                         <div class="porduct-img">
-                            <a href="javascript:void(0)" target="_blank">
+                            <a :href="'/home/pdt_PdtProduct_gtProductsInfo?id=' + item.pdtPkey" target="_blank">
                                 <img :src="image(item.img)" alt="">
                             </a>
                         </div>
-                        <div class="ellipsis_2 porduct-name">
-                            <a href="javascript:void(0)" target="_blank">{{item.name}}</a>
+                        <div class="porduct-name">
+                            <a :href="'/home/pdt_PdtProduct_gtProductsInfo?id=' + item.pdtPkey" target="_blank" class="text">{{item.name}}</a>
                         </div>
                         <div class="porduct-price">
                             <span style="color: #232323;">US</span>
@@ -56,7 +56,8 @@
                             </div>
                             <div class="porduct-inquiry-btn porduct-btn">
                                 <a href="javascript:void(0)" @click="restore(item.id)" v-if="catPkey == -1">Restore</a>
-                                <a :href="'/home/usr_UsrConsult_publishView?product_id='+item.pdtPkey" target="_blank" v-else>Inquiry</a>
+                                <!-- <a :href="'/home/usr_UsrConsult_publishView?product_id='+item.pdtPkey" target="_blank" v-else>Inquiry</a> -->
+                                <a :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtPkey+'&backUrl='+window.location.href" target="_blank" v-else>Inquiry</a>
                             </div>
                         </div>
                     </div>
