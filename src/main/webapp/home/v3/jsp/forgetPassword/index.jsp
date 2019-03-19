@@ -157,7 +157,7 @@
         <div class="confirm" @click="submitpassword">Confirm</div>
     </div>
     <div class="checksuccess" v-if="state == 2">
-        密码找回成功,立即<a href="/">返回</a>
+        Password recovery successful,<a href="">Return</a>immediately
     </div>
     <index-bottom></index-bottom>
 </div>
@@ -236,9 +236,14 @@
                         if (res.data.ret == 1) {
                             than.judgeEmailShow = true;
                             than.getemailCode();
+                        }else{
+                            than.$message({
+                                message: res.data.msg,
+                                type: 'warning'
+                            });
                         }
                     }).catch(err => {
-                        console.log(err);
+                        console.log(err)
                     })
                     // than.judgeEmailShow = true;
                 }
@@ -254,10 +259,18 @@
                             checkCode: than.promptMessage // 发送到邮箱的验证码
                         })
                     ).then(res => {
-                        console.log(res.data)
-                        than.emailCode = res.data
-                        than.again = 60
-                        than.timeout();
+                        if(res.data.ret == 1){
+                            than.timeCode = res.data.timeCode
+                            than.again = 60
+                            than.timeout();
+                        }else{
+                            than.$message({
+                                message: res.data.msg,
+                                type: 'warning'
+                            });
+                        }
+                    }).catch(err => {
+                        console.log(err)
                     })
                 }
             },
@@ -371,6 +384,11 @@
                     ).then(res => {
                         if (res.data.ret == 1) {
                             than.state++
+                        }else{
+                            than.$message({
+                                message: res.data.msg,
+                                type: 'warning'
+                            });
                         }
                     }).catch(err => {
                         console.log(err)
