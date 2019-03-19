@@ -114,7 +114,7 @@ public class UsrMainDao {
 	 * @param bean
 	 */
 	private static void toValid(UsrMain bean) {
-		ValidRegex vr = new ValidRegex(bean);
+    ValidRegex2 vr = new ValidRegex2(bean);
 		vr.validEmail(UsrMain.T.EMAIL);
 	}
 

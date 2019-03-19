@@ -21,7 +21,7 @@ public class NewInqDao {
                 .WHERE(NewInquiry.T.SUPPLIERID, "=?", supplierId)
                 .LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, NewInquiry.T.SUPPLIERID);
             if (name != null) {
-              WHERE(NewInquiry.T.NAME, "like '%" + name + "%' ");
+              WHERE(NewInquiry.T.NAME, "like ?","%" + name + "%");
             }
           }
         };
