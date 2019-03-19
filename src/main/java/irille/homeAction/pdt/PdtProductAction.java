@@ -8,10 +8,14 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
 import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultMessageService;
 
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
@@ -23,6 +27,8 @@ import irille.homeAction.pdt.dto.ProductInfoView;
 import irille.homeAction.pdt.dto.SEOView;
 import irille.pub.Str;
 import irille.pub.bean.BeanBase;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.i18n.I18NUtil;
 import irille.pub.idu.Idu;
 import irille.pub.idu.IduPage;
@@ -41,7 +47,6 @@ import irille.shop.pdt.PdtSize;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplierDAO;
-import irille.view.O2O.O2OMapView;
 import irille.view.Page;
 import irille.view.ResultView;
 import irille.view.O2O.O2OMapView;
@@ -51,8 +56,6 @@ import irille.view.pdt.PdtCommentViewPageView;
 import irille.view.usr.SupplierView;
 import lombok.Getter;
 import lombok.Setter;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 @Setter
 @Getter
@@ -308,7 +311,9 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
    */
   public String gtProductsInfo() throws Exception {
     if (Long.valueOf(getId().toString()) < 1) {
-      throw LOG.err("not exists", "产品id[{0}]不存在", getId());
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.product_wrong_data, curLanguage()));
+      //      throw LOG.err("not exists", "产品id[{0}]不存在", getId());
     }
     UsrSupplier supplier = BeanBase.load(PdtProduct.class, getId()).gtSupplier();
     setSupView(UsrSupplierDAO.Select.getSupView(curLanguage(), supplier.getPkey(), 0));
@@ -321,7 +326,9 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
               getPurchase() != null ? getPurchase().getPkey() : -1,
               HomeAction.curCurrency());
       if (infoView == null) {
-        throw LOG.err("not exists", "产品id[{0}]不存在", getId());
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.product_wrong_data, curLanguage()));
+        //        throw LOG.err("not exists", "产品id[{0}]不存在", getId());
       }
       if (infoView.getType() != null
           && infoView.getType().equals(Pdt.OProductType.PrivateExpo.getLine().getKey())) {
@@ -350,7 +357,9 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
 
   public String gtProductsInfo1() throws Exception {
     if (Long.valueOf(getId().toString()) < 1) {
-      throw LOG.err("not exists", "产品id[{0}]不存在", getId());
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.product_wrong_data, curLanguage()));
+      //      throw LOG.err("not exists", "产品id[{0}]不存在", getId());
     }
     UsrSupplier supplier = BeanBase.load(PdtProduct.class, getId()).gtSupplier();
     setSupView(UsrSupplierDAO.Select.getSupView(curLanguage(), supplier.getPkey(), 0));
@@ -364,7 +373,9 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
               getPurchase() != null ? getPurchase().getPkey() : -1,
               HomeAction.curCurrency());
       if (infoView == null) {
-        throw LOG.err("not exists", "产品id[{0}]不存在", getId());
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.product_wrong_data, curLanguage()));
+        //        throw LOG.err("not exists", "产品id[{0}]不存在", getId());
       }
       if (infoView.getType() != null
           && infoView.getType().equals(Pdt.OProductType.PrivateExpo.getLine().getKey())) {
@@ -394,7 +405,9 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
 
   public void gtProductsInfo2() throws Exception {
     if (Long.valueOf(getId().toString()) < 1) {
-      throw LOG.err("not exists", "产品id[{0}]不存在", getId());
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.product_wrong_data, curLanguage()));
+      //      throw LOG.err("not exists", "产品id[{0}]不存在", getId());
     }
     UsrSupplier supplier = BeanBase.load(PdtProduct.class, getId()).gtSupplier();
     setSupView(UsrSupplierDAO.Select.getSupView(curLanguage(), supplier.getPkey(), 0));
@@ -408,7 +421,9 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
               getPurchase() != null ? getPurchase().getPkey() : -1,
               HomeAction.curCurrency());
       if (infoView == null) {
-        throw LOG.err("not exists", "产品id[{0}]不存在", getId());
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.product_wrong_data, curLanguage()));
+        //        throw LOG.err("not exists", "产品id[{0}]不存在", getId());
       }
       if (infoView.getType() != null
           && infoView.getType().equals(Pdt.OProductType.PrivateExpo.getLine().getKey())) {
@@ -764,7 +779,9 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
           where += " ORDER BY " + sort + " ASC ";
         }
       } else {
-        throw new Exception("缺少必要参数 type");
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.service_wrong_data, curLanguage()));
+        //        throw new Exception("缺少必要参数 type");
       }
     }
     List<PdtProduct> pdtList =

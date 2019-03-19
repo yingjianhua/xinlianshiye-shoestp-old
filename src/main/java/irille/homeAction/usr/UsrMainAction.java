@@ -5,9 +5,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringJoiner;
+import java.util.UUID;
 
 import javax.inject.Inject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.simplejavamail.email.EmailBuilder;
+import org.simplejavamail.mailer.Mailer;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
@@ -24,10 +34,6 @@ import irille.shop.usr.UsrMainDao;
 import irille.view.usr.UserView;
 import lombok.Getter;
 import lombok.Setter;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.simplejavamail.email.EmailBuilder;
-import org.simplejavamail.mailer.Mailer;
 
 /**
  * 用户Action
@@ -96,7 +102,9 @@ public class UsrMainAction extends HomeAction<UsrMain> {
     if (uid == null
         || CacheUtils.mailValid.getIfPresent(uid) == null
         || !CacheUtils.mailValid.getIfPresent(uid).equals(getBean().getEmail())) {
-      throw LOG.errTran("signIn%Invalid Uid", "无效的UID");
+      //      throw LOG.errTran("signIn%Invalid Uid", "无效的UID");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_Invalid_UID, curLanguage()));
     }
     insBefore();
     if (getBean().getIdentity() == 1) {
@@ -129,12 +137,16 @@ public class UsrMainAction extends HomeAction<UsrMain> {
       if (Str.isEmpty(valide)
           || Str.isEmpty(getCheckCode())
           || valide.equals(getCheckCode()) == false) {
-        throw LOG.errTran("signIn%verification", "验证码错误");
+        //        throw LOG.errTran("signIn%verification", "验证码错误");
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.service_Invalid_verification_code, curLanguage()));
       }
 
       title = "User registration";
       if (main != null) {
-        throw LOG.errTran("signIn%Username_Exists", "该用户已注册");
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.service_user_exists, curLanguage()));
+        //        throw LOG.errTran("signIn%Username_Exists", "该用户已注册");
       }
     }
     if (type == 1) {
@@ -142,11 +154,15 @@ public class UsrMainAction extends HomeAction<UsrMain> {
       if (Str.isEmpty(valide)
           || Str.isEmpty(getCheckCode())
           || valide.equals(getCheckCode()) == false) {
-        throw LOG.errTran("signIn%verification", "验证码错误");
+        //        throw LOG.errTran("signIn%verification", "验证码错误");
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.service_Invalid_verification_code, curLanguage()));
       }
       title = "Forgot password";
       if (main == null) {
-        throw LOG.errTran("signIn%Username_noExists", "该用户未注册");
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.service_user_exists, curLanguage()));
+        //        throw LOG.errTran("signIn%Username_noExists", "该用户未注册");
       }
       write();
     }
@@ -197,17 +213,22 @@ public class UsrMainAction extends HomeAction<UsrMain> {
    */
   public void updPwd() throws Exception {
     if (code == null || code.length() < 1) {
-      writeErr(-1, "Invalid Mail Verification Code");
-      return;
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.email_code_wrong, curLanguage()));
+      //      writeErr(-1, "Invalid Mail Verification Code");
+      //      return;
     }
     if (CacheUtils.pwdValid.getIfPresent(Integer.valueOf(code)) == null
         || !CacheUtils.pwdValid.getIfPresent(Integer.valueOf(code)).equals(getEmail())) {
-      writeErr(-1, "Invalid Mail Code or Email");
-      return;
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.email_code_wrong, curLanguage()));
+      //      writeErr(-1, "Invalid Mail Code or Email");
+      //      return;
     }
     updPwd.setNewPwd(pwdA);
     updPwd.setOldPwd(pwd);
     updPwd.setEmail(getEmail());
+    updPwd.setLanguage(curLanguage());
     updPwd.commit();
     CacheUtils.pwdValid.invalidate(code);
     write();
@@ -219,7 +240,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
    * @author chen
    */
   public void login() throws Exception {
-    UserView userView = usrMainDao.loginValid(loginName, pwd, thirdName, thirdId);
+    UserView userView = usrMainDao.loginValid(loginName, pwd, thirdName, thirdId, curLanguage());
     if (userView != null) {
       setUser(userView);
       JSONObject json = new JSONObject();

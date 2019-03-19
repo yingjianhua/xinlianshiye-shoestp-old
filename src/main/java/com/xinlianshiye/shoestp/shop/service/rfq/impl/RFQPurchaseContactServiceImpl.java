@@ -5,8 +5,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
 import com.xinlianshiye.shoestp.shop.service.rfq.RFQPurchaseContactService;
-import com.xinlianshiye.shoestp.shop.view.rfq.*;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultRelationView;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultView;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQPurchaseContactGroupView;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQPurchaseContactView;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationView;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQSupplierView;
 
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultRelation;
@@ -17,6 +23,7 @@ import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
+import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.GetValue;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
@@ -160,15 +167,19 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
   }
 
   @Override
-  public void addGroup(UsrPurchase purchase, String groupName) {
+  public void addGroup(UsrPurchase purchase, String groupName, Language language) {
     if (groupName == null || groupName.isEmpty()) {
-      throw new WebMessageException(ReturnCode.valid_notempty, "请输入分组名字");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.please_input_group_name, language));
+      //      throw new WebMessageException(ReturnCode.valid_notempty, "请输入分组名字");
     }
     BeanQuery<RFQPurchaseContactGroup> query = Query.selectFrom(RFQPurchaseContactGroup.class);
     query.WHERE(RFQPurchaseContactGroup.T.PURCHASE, "=?", purchase.getPkey());
     query.WHERE(RFQPurchaseContactGroup.T.NAME, "=?", groupName);
     if (query.exists()) {
-      throw new WebMessageException(ReturnCode.valid_notempty, "请重新填写分组名字");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.please_reselect_input_group_name, language));
+      //      throw new WebMessageException(ReturnCode.valid_notempty, "请重新填写分组名字");
     }
     RFQPurchaseContactGroup group = new RFQPurchaseContactGroup();
     group.setName(groupName);
@@ -193,15 +204,20 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
   }
 
   @Override
-  public void editGroup(UsrPurchase purchase, Integer groupPkey, String groupName) {
+  public void editGroup(
+      UsrPurchase purchase, Integer groupPkey, String groupName, Language language) {
     if (groupName == null || groupName.isEmpty()) {
-      throw new WebMessageException(ReturnCode.valid_notempty, "请输入分组名字");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.please_input_group_name, language));
+      //      throw new WebMessageException(ReturnCode.valid_notempty, "请输入分组名字");
     }
     BeanQuery<RFQPurchaseContactGroup> query = Query.selectFrom(RFQPurchaseContactGroup.class);
     query.WHERE(RFQPurchaseContactGroup.T.PURCHASE, "=?", purchase.getPkey());
     query.WHERE(RFQPurchaseContactGroup.T.NAME, "=?", groupName);
     if (query.exists()) {
-      throw new WebMessageException(ReturnCode.valid_notempty, "请重新填写分组名字");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.please_reselect_input_group_name, language));
+      //      throw new WebMessageException(ReturnCode.valid_notempty, "请重新填写分组名字");
     }
     BeanQuery<RFQPurchaseContactGroup> query2 = Query.selectFrom(RFQPurchaseContactGroup.class);
     query2.WHERE(RFQPurchaseContactGroup.T.PURCHASE, "=?", purchase.getPkey());
@@ -212,23 +228,29 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
   }
 
   @Override
-  public void moveToGroup(UsrPurchase purchase, Integer contactPkey, Integer groupPkey) {
+  public void moveToGroup(
+      UsrPurchase purchase, Integer contactPkey, Integer groupPkey, Language language) {
     BeanQuery<RFQPurchaseContactGroup> query = Query.selectFrom(RFQPurchaseContactGroup.class);
     query.WHERE(RFQPurchaseContactGroup.T.PURCHASE, "=?", purchase.getPkey());
     query.WHERE(RFQPurchaseContactGroup.T.PKEY, "=?", groupPkey);
     RFQPurchaseContactGroup group = query.query();
     if (group == null) {
-      throw new WebMessageException(ReturnCode.service_gone, "请重新选择分组");
+      throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.reselect_group, language));
+      //      throw new WebMessageException(ReturnCode.service_gone, "请重新选择分组");
     }
     BeanQuery<RFQPurchaseContact> query2 = Query.selectFrom(RFQPurchaseContact.class);
     query2.WHERE(RFQPurchaseContact.T.PURCHASE, "=?", purchase.getPkey());
     query2.WHERE(RFQPurchaseContact.T.PKEY, "=?", contactPkey);
     RFQPurchaseContact contact = query2.query();
     if (contact == null) {
-      throw new WebMessageException(ReturnCode.service_gone, "请重新选择联系人");
+      throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.choose_contact, language));
+      //      throw new WebMessageException(ReturnCode.service_gone, "请重新选择联系人");
     }
     if (group.getPkey().equals(contact.getContactGroup())) {
-      throw new WebMessageException(ReturnCode.service_wrong_data, "该联系人已在" + group.getName());
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.group_contact, language, group.getName()));
+      //      throw new WebMessageException(ReturnCode.service_wrong_data, "该联系人已在" +
+      // group.getName());
     }
     contact.setContactGroup(group.getPkey());
     contact.upd();

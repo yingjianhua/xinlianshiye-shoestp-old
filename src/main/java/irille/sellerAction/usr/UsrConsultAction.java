@@ -2,13 +2,14 @@ package irille.sellerAction.usr;
 
 import java.io.IOException;
 
+import org.json.JSONException;
+
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.usr.inf.IUsrConsultAction;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.usr.UsrConsult;
 import irille.shop.usr.UsrConsultDAO;
 import irille.shop.usr.UsrConsultRelationDAO;
-import org.json.JSONException;
 
 public class UsrConsultAction extends SellerAction<UsrConsult> implements IUsrConsultAction {
 
@@ -80,7 +81,11 @@ public class UsrConsultAction extends SellerAction<UsrConsult> implements IUsrCo
         writeErr("consult is not exists");
       } else {
         new UsrConsultRelationDAO.Quote(
-                (Integer) getId(), getSupplier().getPkey(), msg, quotedPrice)
+                (Integer) getId(),
+                getSupplier().getPkey(),
+                msg,
+                quotedPrice,
+                PltConfigDAO.supplierLanguage(getSupplier()))
             .commit();
         write();
       }

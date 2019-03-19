@@ -2,13 +2,21 @@ package irille.homeAction.odr;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
 
 import irille.Dao.Old.Odr.GenerateOrder;
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
@@ -19,6 +27,8 @@ import irille.homeAction.usr.dto.OdrView;
 import irille.pub.Exp;
 import irille.pub.LogMessage;
 import irille.pub.bean.BeanBase;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.shop.odr.OdrHistoryDAO;
 import irille.shop.odr.OdrOrder;
 import irille.shop.odr.OdrOrderDAO;
@@ -27,12 +37,15 @@ import irille.shop.plt.PltCountryDAO;
 import irille.shop.plt.PltErateDAO;
 import irille.shop.plt.PltFreightSeller;
 import irille.shop.plt.PltProvinceDAO;
-import irille.shop.usr.*;
+import irille.shop.usr.Usr;
+import irille.shop.usr.UsrCart;
+import irille.shop.usr.UsrCartDAO;
+import irille.shop.usr.UsrPurchase;
+import irille.shop.usr.UsrPurchaseLine;
+import irille.shop.usr.UsrPurchaseLineDAO;
 import irille.view.Page;
 import irille.view.odr.OrderView;
 import irille.view.plt.CurrencyView;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * 采购商action
@@ -132,7 +145,7 @@ public class OdrOrderAction extends HomeAction<OdrOrder> implements IOdrOrderAct
    */
   @NeedLogin
   public void confirmReceiving() throws IOException {
-    OdrOrderDAO.confirmReceiving(orderNumber, getPurchase().getPkey());
+    OdrOrderDAO.confirmReceiving(orderNumber, getPurchase().getPkey(), curLanguage());
     write();
   }
 
@@ -183,7 +196,9 @@ public class OdrOrderAction extends HomeAction<OdrOrder> implements IOdrOrderAct
       }
     }
     if (getAddress() == null) {
-      throw LOG.errTran("addressfrom%Please_Select_The_Shipping_Address", "请选择收货地址");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.choose_address, curLanguage()));
+      //      throw LOG.errTran("addressfrom%Please_Select_The_Shipping_Address", "请选择收货地址");
     }
     UsrPurchaseLine address = BeanBase.load(UsrPurchaseLine.class, getAddress());
     OdrOrderDAO.BuildOrderByCart buildOrder = new OdrOrderDAO.BuildOrderByCart();
@@ -193,6 +208,7 @@ public class OdrOrderAction extends HomeAction<OdrOrder> implements IOdrOrderAct
     buildOrder.setPayType(payType);
     buildOrder.setCarts(carts);
     buildOrder.setOdrRemarks(getOdrRemarks());
+    buildOrder.setLanguage(curLanguage());
     buildOrder.setAddress(address);
     buildOrder.setState(state);
     buildOrder.setCurrency(getCurrency());
@@ -208,7 +224,7 @@ public class OdrOrderAction extends HomeAction<OdrOrder> implements IOdrOrderAct
 
   /** 确认付款 */
   public void pay() throws IOException, JSONException {
-    OdrOrderDAO.pay(orderNumber, payContent, currency, getPurchase());
+    OdrOrderDAO.pay(orderNumber, payContent, currency, getPurchase(), curLanguage());
     write();
   }
 
@@ -219,6 +235,7 @@ public class OdrOrderAction extends HomeAction<OdrOrder> implements IOdrOrderAct
     buildOrder.setAddress(getPurchaseLine());
     buildOrder.setCarts(getCarts());
     buildOrder.setOdrView(getOdrView());
+    buildOrder.setLanguage(curLanguage());
     buildOrder.setCurrency(getCurrency());
     try {
       buildOrder.commit();
@@ -591,13 +608,16 @@ public class OdrOrderAction extends HomeAction<OdrOrder> implements IOdrOrderAct
     try {
       address = BeanBase.load(UsrPurchaseLine.class, getPurchaseLine());
     } catch (Exp e) {
-      throw LOG.errTran("addressfrom%Please_Select_The_Shipping_Address", "请选择收货地址");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.choose_address, curLanguage()));
+      //      throw LOG.errTran("addressfrom%Please_Select_The_Shipping_Address", "请选择收货地址");
     }
     generateOrder.setJsonCarts(getJsonCarts());
     generateOrder.setAddress(address);
     generateOrder.setCurrency(curCurrency().getPkey());
     generateOrder.setOdrViews(getOdrView());
     generateOrder.setEnterType(getEnterType());
+    generateOrder.setLanguage(curLanguage());
     JSONObject json = new JSONObject();
     generateOrder.commit();
     CONFIRM_ORDER_MAP.remove(getPurchase().getPkey());
@@ -612,7 +632,9 @@ public class OdrOrderAction extends HomeAction<OdrOrder> implements IOdrOrderAct
     try {
       address = BeanBase.load(UsrPurchaseLine.class, getPurchaseLine());
     } catch (Exp e) {
-      throw LOG.errTran("addressfrom%Please_Select_The_Shipping_Address", "请选择收货地址");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.choose_address, curLanguage()));
+      //      throw LOG.errTran("addressfrom%Please_Select_The_Shipping_Address", "请选择收货地址");
     }
     OdrOrderDAO.intOrder intOrder =
         new OdrOrderDAO.intOrder(

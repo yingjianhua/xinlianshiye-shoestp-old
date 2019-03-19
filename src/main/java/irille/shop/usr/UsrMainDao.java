@@ -6,6 +6,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
+
 import irille.platform.usr.View.UsrMainView;
 import irille.pub.DateTools;
 import irille.pub.LogMessage;
@@ -14,8 +16,11 @@ import irille.pub.bean.Bean;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.idu.IduIns;
 import irille.pub.idu.IduUpd;
+import irille.pub.tb.FldLanguage.Language;
 import irille.pub.validate.ValidRegex;
 import irille.shop.plt.PltArea;
 import irille.shop.plt.PltCity;
@@ -129,6 +134,15 @@ public class UsrMainDao {
 
     private String newPwd;
     private String oldPwd;
+    private Language language;
+
+    public Language getLanguage() {
+      return language;
+    }
+
+    public void setLanguage(Language language) {
+      this.language = language;
+    }
 
     public String getEmail() {
       return email;
@@ -154,14 +168,16 @@ public class UsrMainDao {
       Pattern Password_Pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-zA-Z])(.{6,20})$");
       Matcher matcher = Password_Pattern.matcher(oldPwd);
       if (!matcher.matches()) {
-        throw LOG.errTran("密码为6到20为的数字和字母组成\"", "密码为6到20为的数字和字母组成");
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.password_format, language));
+        //        throw LOG.errTran("密码为6到20为的数字和字母组成\"", "密码为6到20为的数字和字母组成");
       }
       System.out.println("..." + oldPwd);
       System.out.println("..." + newPwd);
       System.out.println("..." + oldPwd.equals(newPwd));
       if (!oldPwd.equals(newPwd)) {
-
-        throw LOG.errTran("两次密码输入不一致", "两次密码输入不一致");
+        throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.dif_password, language));
+        //        throw LOG.errTran("两次密码输入不一致", "两次密码输入不一致");
       }
     }
 
@@ -173,7 +189,8 @@ public class UsrMainDao {
     }
   }
 
-  public UserView loginValid(String loginName, String pwd, String thirdName, String thirdId) {
+  public UserView loginValid(
+      String loginName, String pwd, String thirdName, String thirdId, Language language) {
     if (thirdName != null) {
       if (thirdName == "facebook") {
         //        TODO 原来登陆Session逻辑所以第三方登陆暂时搁置
@@ -207,10 +224,18 @@ public class UsrMainDao {
     }
     if (loginName != null) {
       UsrMain um = UsrMain.chkUniqueEmail(false, loginName);
-      if (um == null) throw LOG.err("loginName not exists", "用户不存在");
+      if (um == null) {
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.service_user_notfound, language));
+        // throw LOG.err("loginName not exists", "用户不存在");
+      }
       System.out.println(um.getPkey() + pwd);
       String mdPwd = DateTools.getDigest(um.getPkey() + pwd);
-      if (!mdPwd.equals(um.getPassword())) throw LOG.err("wrong password", "用户名和密码不匹配");
+      if (!mdPwd.equals(um.getPassword())) {
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.wrong_password, language));
+        // throw LOG.err("wrong password", "用户名和密码不匹配");
+      }
       UserView userView = new UserView();
       userView.setLoginName(um.getEmail());
       userView.setPkey(um.getPkey());
