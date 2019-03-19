@@ -177,7 +177,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 			String tel = getTelPre() + "-" + getTelMid() + "-" + getTelAft();
 			getBean().setTelphone(tel);
 		} else {
-			if (!ValidRegex.regMarch(Regular.REGULAR_TEL, getBean().getTelphone())) {
+			if (!ValidRegex.regMarch(Regular.REGULAR_CHINATEL, getBean().getTelphone())) {
 				throw new WebMessageException(
 						MessageBuild.buildMessage(ReturnCode.valid_phoneRegex, HomeAction.curLanguage()));
 			}
