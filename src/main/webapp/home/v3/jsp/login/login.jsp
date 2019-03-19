@@ -39,7 +39,6 @@
                         <el-form ref="loginForm" class="login-form"
                                  label-position="top" size="medium"
                                  :hide-required-asterisk="true"
-                                 :show-message="false"
                                  :model="loginForm" :rules="loginFormRules">
                             <!-- 防止用户名、密码自动填充 -->
                             <%--<input type="text" name="catch-name" class="incase-autocomplete-input">--%>
@@ -111,6 +110,17 @@
 <script src="/home/v3/static/js/index-top.js"></script>
 <script src="/home/v3/static/js/index-bottom.js"></script>
 <script>
+    // 密码验证
+    // const validatePsd = (rule, value, callback) => {
+    //     // 正式的密码验证
+    //     if (value === '') {
+    //         callback(new Error('Password can\'t be empty!'));
+    //     } else if (value.length < 6 || value.length > 20) {
+    //         callback(new Error('Please enter password within 6 to 20 characters'));
+    //     }else{
+    //         callback();
+    //     }
+    // };
     var app = new Vue({
         el: "#app",
         data: {
@@ -121,10 +131,16 @@
             },
             loginFormRules: {
                 email: [
-                    {required: true, message: '', trigger: 'blur'}
+                    {required: true, message: 'Email can\'t be empty!', trigger: 'blur'}, {
+                        pattern: /^[0-9A-Za-z][\.-_0-9A-Za-z]*@[0-9A-Za-z]+(?:\.[0-9A-Za-z]+)+$/,
+                        message: 'E-mail format is incorrect',
+                        trigger: 'blur'
+                    }
                 ],
                 psd: [
-                    {required: true, message: '', trigger: 'blur'}
+                    // {validator: validatePsd, trigger: 'change'},
+                    { required: true, message: 'Password can\'t be empty', trigger: 'blur' },
+                    { min: 6, max: 20, message: 'Please enter 6 to 20 characters', trigger: 'blur' }
                 ],
             },
         },
@@ -202,7 +218,7 @@
                 axios.post('/home/usr_UsrMain_login', Qs.stringify(postData))
                     .then((res) => {
                         if (res.data.ret != 1) {
-                            this.$message.error(res.data.msg);
+                            this.$message.error(res.data.msg || "Login error, please try again later");
                             return
                         }
                         ;
