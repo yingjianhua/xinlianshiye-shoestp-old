@@ -115,9 +115,13 @@ public class SVSInfoServiceImpl implements SVSInfoService {
     if (svs.gtStatus() == SVSAuthenticationStatus.SUCCESS
         && timeDiffForDay(svs.getApplicationTime(), new Date()) <= 180)
       throw new WebMessageException(ReturnCode.failure, "商户距离上次认证成功未满半年,无法再次提交认证");
-    else if (svs.gtStatus() != SVSAuthenticationStatus.FAIL
-        && timeDiffForDay(svs.getApplicationTime(), new Date()) > 180)
+    else if (svs.gtStatus()==SVSAuthenticationStatus.ToBeAudited||svs.gtStatus()==SVSAuthenticationStatus.NoApplication)
       throw new WebMessageException(ReturnCode.failure, "商户认证待审核,无法提交认证");
+    
+    System.out.println(svs.gtStatus());
+    System.out.println(svs.gtStatus() != SVSAuthenticationStatus.FAIL
+        && timeDiffForDay(svs.getApplicationTime(), new Date()) > 180);
+    
     int score =
         GetBaseScoreUtils.getBaseScore(res, capacity, factory, quality, team, exhibition, part);
     if (score < 30) throw new WebMessageException(ReturnCode.failure, "未满足银牌基础分值,无法提交认证");
