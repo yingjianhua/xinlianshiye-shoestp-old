@@ -28,7 +28,6 @@ public class UsrPurchaseServiceImpl implements UsrPurchaseService {
     if (avatar == null || avatar.isEmpty()) {
       throw new WebMessageException(
           MessageBuild.buildMessage(ReturnCode.reselect_upload_headpic, language));
-      //      throw new WebMessageException(ReturnCode.valid_notblank, "请重新上传头像");
     }
     purchase.setIcon(avatar);
     usrPurchaseDao.save(purchase);
@@ -42,7 +41,7 @@ public class UsrPurchaseServiceImpl implements UsrPurchaseService {
     view.setRequestsFromConnectionsCount(
         rFQConsultRelationDao.countNewByPurchaseGroupBySupplier(purchase.getPkey()));
     view.setUnreadMessagersCount(
-        rFQConsultMessageDao.countUnreadByRelation_PurchaseGroupByRelation(purchase.getPkey()));
+        rFQConsultMessageDao.countPurchaseUnreadByRelation_PurchaseGroupByRelation(purchase.getPkey()));
     return view;
   }
 
@@ -54,8 +53,7 @@ public class UsrPurchaseServiceImpl implements UsrPurchaseService {
     if (purchase2 != null) {
       // 用户名或邮箱地址已被使用
       throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.mail_exists, language));
-      //      throw new WebMessageException(ReturnCode.service_unknow, "邮箱重复,请使用其它邮箱");
-    }
+      }
     purchase.setEmail(email);
     UsrMain main = BeanBase.load(UsrMain.class, purchase.getUserid());
     main.setEmail(email);

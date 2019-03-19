@@ -21,7 +21,7 @@ public interface RFQConsultMessageDao {
    * @param purchasePkey
    * @return
    */
-  Integer countUnreadByRelation_PurchaseGroupByRelation(Integer purchasePkey);
+  Integer countPurchaseUnreadByRelation_PurchaseGroupByRelation(Integer purchasePkey);
 
   /**
    * 通过uuid获取消息

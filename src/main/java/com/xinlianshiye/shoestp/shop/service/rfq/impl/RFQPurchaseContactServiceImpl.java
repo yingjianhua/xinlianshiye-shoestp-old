@@ -278,7 +278,9 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
                   BeanQuery<RFQPurchaseContact> query = Query.SELECT(RFQPurchaseContact.class);
                   view.setCount(
                       map.getPkey() == null
-                          ? query.WHERE(RFQPurchaseContact.T.CONTACT_GROUP, "is null").queryCount()
+                          ? query.WHERE(RFQPurchaseContact.T.CONTACT_GROUP, "is null")
+                              .WHERE(RFQPurchaseContact.T.PURCHASE, "=?", purchase.getPkey())
+                              .queryCount()
                           : query
                               .WHERE(RFQPurchaseContact.T.CONTACT_GROUP, "=?", map.getPkey())
                               .queryCount());
