@@ -35,7 +35,6 @@ public class SVSInfoAction extends SellerAction<SVSInfo> implements ISVSInfoActi
    *
    * @author GS
    */
-  @NeedLogin
   @Override
   public void application() throws Exception {
 
@@ -79,7 +78,6 @@ public class SVSInfoAction extends SellerAction<SVSInfo> implements ISVSInfoActi
    *
    * @author GS
    */
-  @NeedLogin
   @Override
   public void updAutInfo() throws Exception {
 
@@ -102,7 +100,6 @@ public class SVSInfoAction extends SellerAction<SVSInfo> implements ISVSInfoActi
    *
    * @author GS
    */
-  @NeedLogin
   @Override
   public void getAutInfo() throws Exception {
     if (getSupplier() != null) write(service.getSVSInfo(getSupplier().getPkey()));
