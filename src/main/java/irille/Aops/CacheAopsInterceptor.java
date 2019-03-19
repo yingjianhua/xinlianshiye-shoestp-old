@@ -19,7 +19,9 @@ public class CacheAopsInterceptor implements MethodInterceptor {
     if (buffer.length() > 0) {
       buffer.add(
           String.valueOf(
-              (methodInvocation.getClass().toString() + methodInvocation.getMethod().getName())));
+              (methodInvocation.getClass().toString()
+                  + methodInvocation.getMethod().getName()
+                  + methodInvocation.getMethod().getParameterTypes())));
     }
     buffer.add(ServletActionContext.getRequest().getSession().getId());
     buffer.add(methodInvocation.getMethod().getReturnType().getSimpleName());
