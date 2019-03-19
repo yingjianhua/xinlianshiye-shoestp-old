@@ -26,6 +26,7 @@ public interface RFQConsultService {
    * @param type 询盘类型
    * @param keyword 搜索关键字 匹配询盘标题和报价商家的名字
    * @param unread 未读
+   * @param lastRelation 从第一条记录开始 一直查询到指定relation所在的询盘
    * @param start 开始记录数
    * @param limit 每页记录数
    * @author Jianhua Ying
@@ -35,6 +36,7 @@ public interface RFQConsultService {
       Byte type,
       String keyword,
       Boolean unread,
+      Integer lastRelation,
       Integer start,
       Integer limit);
 
