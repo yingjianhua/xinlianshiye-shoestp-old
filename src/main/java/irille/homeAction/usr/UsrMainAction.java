@@ -277,13 +277,13 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 			throw new WebMessageException(
 					MessageBuild.buildMessage(ReturnCode.service_Invalid_email, HomeAction.curLanguage()));
 		}
-		if (pwd == null || pwdA == null) {
-			throw new WebMessageException(
-					MessageBuild.buildMessage(ReturnCode.valid_pwd_notnull, HomeAction.curLanguage()));
-		}
 		if (getEmail() == null) {
 			throw new WebMessageException(
 					MessageBuild.buildMessage(ReturnCode.valid_mail_notnull, HomeAction.curLanguage()));
+		}
+		if (pwd == null) {
+			throw new WebMessageException(
+					MessageBuild.buildMessage(ReturnCode.valid_pwd_notnull, HomeAction.curLanguage()));
 		}
 		updPwd.setNewPwd(pwdA);
 		updPwd.setOldPwd(pwd);
