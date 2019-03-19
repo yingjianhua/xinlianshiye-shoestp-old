@@ -171,7 +171,7 @@
 					<!-- 手风琴效果 - 下拉加载事件 -->
 					<div class="collapse-box" id="inquiry-collapse-list">
 						<el-collapse :value="(inquiryList[0] && inquiryList[0].relations && inquiryList[0].relations.length)?0:-1" v-if="inquiryList.length">
-							<el-collapse-item :name="inquiryIndex"
+							<el-collapse-item :class="{active: nowInquiryIndex==inquiryIndex}" :name="inquiryIndex"
 											  v-for="(inquiry,inquiryIndex) in inquiryList"
                                               v-if="(inquiry.type==1 || !inquiry.isDeleteInLocal )"
 											  :key="inquiry.pkey">
@@ -224,7 +224,7 @@
 
 								<!-- 每一个下拉的内容 -->
 								<ul class="contact-list" v-if="inquiry.relations && inquiry.relations.length">
-									<li class="contact-item"
+									<li class="contact-item" :class="{active: nowInquiryIndex==inquiryIndex && nowSupplierIndex==relationsIndex}"
 										v-for="(relation,relationsIndex) in inquiry.relations"
 										v-if="!relation.isDeleteInLocal"
 										:key="relation.supplier.pkey">
@@ -1249,11 +1249,14 @@
 			sendMsgValue: "", //发送的内容
 
 			isFromContactList: false, //显示联系人 聊天框（从联系人列表跳转过来时为true）
-			testObj:{
-				status
-			}
+			testObj:{}
 		},
 		mounted() {
+			if (!isLogin) {
+				util_function_obj.alertWhenNoLogin(this);
+				return false;
+			}
+
 			// 获取询盘列表
 			this.getInquiryList();
 
@@ -1273,6 +1276,8 @@
 				this.getInquiryDetail();
 				//获取功能供应商详情
 				this.getSupplierDetail();
+				// 显示下拉show more选项
+				this.chatShowMore();
 			}
 		},
 		methods: {
@@ -1385,7 +1390,7 @@
 						.then((res) => {
 					this.isInquiryLisLoading = false;
 				if (res.data.ret != 1) {
-					this.$message.error(res.data.msg);
+					this.$message.error(res.data.msg || "Get inquiry list error,please try again later");
 					return
 				};
 
@@ -1431,7 +1436,7 @@
 			})
 			.catch((error) => {
 					this.isInquiryLisLoading = false;
-				console.log(error);
+				this.$message.error(error || 'Network error,please try again later');
 			});
 			},
 
@@ -1480,13 +1485,13 @@
 					console.log("显示下拉选项 点击事件 suc");
 				console.log(res);
 				if (res.data.ret != 1) {
-					this.$message.error(res.data.msg);
+					this.$message.error(res.data.msg || "Get Inquiry's options error,please try again later");
 					return
 				};
 				this.inquiresOptionUnreadInfo = res.data.result;
 			})
 			.catch((error) => {
-					console.log(error);
+				this.$message.error(error || 'Network error,please try again later');
 			});
 			},
 
@@ -1507,6 +1512,11 @@
 
 			// 点view 查看询盘详情及报价
 			viewInquiryDetail(e){
+				if (!isLogin) {
+					util_function_obj.alertWhenNoLogin(this);
+					return false;
+				}
+
 				console.log("viewInquiryDetail")
 				e.stopPropagation();
 				var inquiryIndex = e.currentTarget.dataset.inquiryIndex;
@@ -1537,7 +1547,7 @@
 				})
 						.then((res) => {
 					if (res.data.ret != 1) {
-					this.$message.error(res.data.msg);
+					this.$message.error(res.data.msg || "Get inquiry's detail error,please try again later");
 					return
 				};
 				this.inquiryDetail = res.data.result;
@@ -1554,7 +1564,7 @@
 				}
 			})
 			.catch((error) => {
-					console.log(error);
+				this.$message.error(error || 'Network error,please try again later');
 			});
 			},
 
@@ -1590,14 +1600,14 @@
 				})
 						.then((res) => {
 					if (res.data.ret != 1) {
-					this.$message.error(res.data.msg);
+					this.$message.error(res.data.msg || "Get supplier's detail error,please try again later");
 					return
 				};
 				this.supplierDetail = res.data.result;
 
 			})
 			.catch((error) => {
-					console.log(error);
+					this.$message.error(error || 'Network error,please try again later');
 			});
 			},
 
@@ -1608,7 +1618,7 @@
 				console.log(res.ret)
 				console.log(file)
 				if (res.ret != 1) {
-					this.$message.error(res.msg);
+					this.$message.error(res.msg || "Images upload error,please try again later");
 					return
 				};
 				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
@@ -1619,7 +1629,7 @@
 				}))
 						.then((res) => {
 					if (res.data.ret != 1) {
-					this.$message.error(res.data.msg);
+					this.$message.error(res.data.msg || "Images upload error,please try again later");
 					return
 				};
 				this.$message({
@@ -1628,12 +1638,17 @@
 				});
 			})
 			.catch((error) => {
-					console.log(error);
+					this.$message.error(error || 'Network error,please try again later');
 			});
 			},
 
 			//获取报价详情
 			getQuotationDetail(){
+				if (!isLogin) {
+					util_function_obj.alertWhenNoLogin(this);
+					return false;
+				}
+
 				console.log("getQuotationDetail")
 				var nowInquiry = this.inquiryList[this.nowInquiryIndex];
 				if( !nowInquiry.relations || !nowInquiry.relations.length ) return;
@@ -1648,14 +1663,14 @@
 					this.btnLoading = false;
 				console.log("获取报价详情 suc");
 				if (res.data.ret != 1) {
-					this.$message.error(res.data.msg);
+					this.$message.error(res.data.msg || "Get quotation's detail error,please try again later");
 					return
 				};
 				this.quotationDetailList.push(res.data.result);
 			})
 			.catch((error) => {
 					this.btnLoading = false;
-				console.log(error);
+				this.$message.error(error || 'Network error,please try again later');
 			});
 			},
 
@@ -1682,6 +1697,11 @@
 
 			//确认修改 - 添加额外信息
 			addInformationConfirm(){
+				if (!isLogin) {
+					util_function_obj.alertWhenNoLogin(this);
+					return false;
+				}
+
 				this.$refs.addInformationForm.validate((valid) => {
 					if (valid) {
 						axios.post('/home/rfq_RFQConsult_addInformation', Qs.stringify({
@@ -1691,7 +1711,7 @@
 						}))
 								.then((res) => {
 						if (res.data.ret != 1) {
-							this.$message.error(res.data.msg);
+							this.$message.error(res.data.msg || "Add information error,please try again later");
 							return
 						};
 						this.$message({
@@ -1713,7 +1733,7 @@
 					})
 					.catch((error) => {
 							this.isEditAddInformationDialogShow = false;
-							console.log(error);
+						this.$message.error(error || 'Network error,please try again later');
 					});
 					} else {
 						console.log('error submit!!');
@@ -1724,6 +1744,11 @@
 
 			//关闭RFQ
 			closeRFQ(e){
+				if (!isLogin) {
+					util_function_obj.alertWhenNoLogin(this);
+					return false;
+				}
+
 				this.$confirm('Are you sure to close the inquiry?', 'tip', {
 					confirmButtonText: 'sure',
 					cancelButtonText: 'cancel',
@@ -1736,7 +1761,7 @@
 							.then((res) => {
 						console.log(res);
 				if (res.data.ret != 1) {
-					this.$message.error(res.data.msg);
+					this.$message.error(res.data.msg || "Close RFQ error,please try again later");
 					return
 				};
 				this.$message({
@@ -1751,7 +1776,7 @@
 				this.getQuotationDetail();
 			})
 			.catch((error) => {
-					console.log(error);
+					this.$message.error(error || 'Network error,please try again later');
 			});
 
 			}).catch((error) => {
@@ -1761,6 +1786,11 @@
 
 			//删除询盘
 			deleteInquiry(e){
+				if (!isLogin) {
+					util_function_obj.alertWhenNoLogin(this);
+					return false;
+				}
+
 				var inquiryIndex = e.currentTarget.dataset.inquiryIndex;
 				var relationsIndex = e.currentTarget.dataset.relationsIndex;
 				var quotationPkey = e.currentTarget.dataset.quotationPkey;
@@ -1771,7 +1801,7 @@
 						.then((res) => {
 					console.log("关闭询盘 suc");
 				if (res.data.ret != 1) {
-					this.$message.error(res.data.msg);
+					this.$message.error(res.data.msg || "Delete inquiry error,please try again later");
 					return
 				};
 				this.$message({
@@ -1802,6 +1832,11 @@
 
 			//添加至联系人
 			addContact(e){
+				if (!isLogin) {
+					util_function_obj.alertWhenNoLogin(this);
+					return false;
+				}
+
 				var dataset = e.currentTarget.dataset;
 				var inquiryIndex = dataset.inquiryIndex;
 				var relationsIndex = dataset.relationsIndex;
@@ -1814,7 +1849,7 @@
 						.then((res) => {
 					console.log("添加至联系人 suc");
 				if (res.data.ret != 1) {
-					this.$message.error(res.data.msg);
+					this.$message.error(res.data.msg || "Add contact error,please try again later");
 					return
 				};
 				this.$message({
@@ -1823,7 +1858,7 @@
 				});
 			})
 			.catch((error) => {
-					console.log(error);
+					this.$message.error(error || 'Network error,please try again later');
 			});
 			},
 
@@ -1833,6 +1868,11 @@
 
 			// 点击联系相应的供应商
 			contactSupplier(e){
+				if (!isLogin) {
+					util_function_obj.alertWhenNoLogin(this);
+					return false;
+				}
+
 				console.log("contactSupplier")
 				// 显示顶部show more信息
 				clearTimeout(this.timeoutTimer);
@@ -1899,13 +1939,13 @@
 						.then((res) => {
 					console.log("获取商品列表 suc");
 				if (res.data.ret != 1) {
-					this.$message.error(res.data.msg);
+					this.$message.error(res.data.msg || "Get product's list error,please try again later");
 					return
 				};
 				this.addProductGoodsListObj = res.data.result;
 			})
 			.catch((error) => {
-					console.log(error);
+				this.$message.error(error || 'Network error,please try again later');
 			});
 			},
 
@@ -1957,7 +1997,7 @@
 				}))
 						.then((res) => {
 					if (res.data.ret != 1) {
-					this.$message.error(res.data.msg);
+					this.$message.error(res.data.msg || "Add products error,please try again later");
 					return
 				};
 
@@ -1970,7 +2010,7 @@
 				this.getInquiryDetail();
 			})
 			.catch((error) => {
-					console.log(error);
+				this.$message.error(error || 'Network error,please try again later');
 			});
 			},
 
@@ -2003,6 +2043,11 @@
 			//参数为 searchMore：搜索上一页，从preMessagePkey开始查询
 			//       searchLast：发消息时，获取最新消息，从nextMessagePkey开始查询
 			getChatInfo({searchMore=false,searchLast=false}={}){
+				if (!isLogin) {
+					util_function_obj.alertWhenNoLogin(this);
+					return false;
+				}
+
 			    console.log("searchLast is")
 			    console.log(searchLast)
 			    console.log(this.chatMsgListPageNextPkey)
@@ -2033,7 +2078,7 @@
 					this.isChatMsgListLoading = false;
 				console.log("获取询盘留言列表 - suc");
 				if (res.data.ret != 1) {
-					this.$message.error(res.data.msg);
+					this.$message.error(res.data.msg || "Get chat information error,please try again later");
 					return
 				};
 				// 是否全部加载完毕 - 不以加载最新消息为判断
@@ -2114,7 +2159,7 @@
 			})
 			.catch((error) => {
 					this.isChatMsgListLoading = false;
-				console.log(error);
+				this.$message.error(error || 'Network error,please try again later');
 			});
 			},
 
@@ -2173,6 +2218,11 @@
 
 			// 发送消息
 			sendMsg(){
+				if (!isLogin) {
+					util_function_obj.alertWhenNoLogin(this);
+					return false;
+				}
+
 				console.log("sendMsg")
 				if(!this.sendMsgValue) return;
 				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
@@ -2184,13 +2234,13 @@
 						.then((res) => {
 					console.log("发送消息 suc");
 				if (res.data.ret != 1) {
-					this.$message.error(res.data.msg);
+					this.$message.error(res.data.msg || "Send message error,please try again later");
 					return
 				};
 				this.getChatInfo({searchLast: true});
 			})
 			.catch((error) => {
-					console.log(error);
+					this.$message.error(error || 'Network error,please try again later');
 			});
 
 			},
@@ -2318,10 +2368,10 @@
 				var text = "All Inquires";
 				switch(status){
 					case 1:
-						text = "Under Review"; //审核中
+						text = "Verifying"; //审核中
 						break;
 					case 2:
-						text = "Audit Not Passed"; //审核不通过
+						text = "Reject"; //审核不通过
 						break;
 					case 3:
 						text = "Approved"; //审核通过

@@ -20,7 +20,6 @@
         <button @click="out('linkedin');">退出登陆linkedin</button>
     </div> -->
 
-
     <!-- flex布局，高度100% -->
     <div class="main w_1240" style="width: 100%">
         <div class="login-page-content">
@@ -41,11 +40,15 @@
                                  :hide-required-asterisk="true"
                                  :model="loginForm" :rules="loginFormRules">
                             <!-- 防止用户名、密码自动填充 -->
+                            <%--<input type="text" name="catch-name" class="incase-autocomplete-input">--%>
+                            <%--<input type="password" name="catch-psd" class="incase-autocomplete-input">--%>
+
                             <el-form-item label="Email" prop="email">
-                                <el-input v-model="loginForm.email"  name="catch-name"  placeholder="Email address or member ID" auto-complete="on"></el-input>
+                                <el-input v-model="loginForm.email" placeholder="Email address or member ID" auto-complete="on"></el-input>
                             </el-form-item>
+
                             <el-form-item label="Password" prop="psd">
-                                <el-input v-model="loginForm.psd"  name="catch-psd" placeholder="Password" auto-complete="on" type="password"></el-input>
+                                <el-input v-model="loginForm.psd" placeholder="Password" auto-complete="on" type="password"></el-input>
                             </el-form-item>
                         </el-form>
 
@@ -105,9 +108,19 @@
 </div>
 <script src="/home/v3/static/js/index-top.js"></script>
 <script src="/home/v3/static/js/index-bottom.js"></script>
-<%--公共函数--%>
-<script src="/home/utils/util.js"></script>
+
 <script>
+    // 密码验证
+    // const validatePsd = (rule, value, callback) => {
+    //     // 正式的密码验证
+    //     if (value === '') {
+    //         callback(new Error('Password can\'t be empty!'));
+    //     } else if (value.length < 6 || value.length > 20) {
+    //         callback(new Error('Please enter password within 6 to 20 characters'));
+    //     }else{
+    //         callback();
+    //     }
+    // };
     var app = new Vue({
         el: "#app",
         data: {
