@@ -31,14 +31,9 @@ import irille.shop.pdt.PdtCatDAO;
 import irille.shop.plt.PltProvince;
 import irille.shop.prm.PrmGroupPurchase;
 import irille.shop.prm.PrmGroupPurchaseDAO;
+import irille.shop.usr.*;
 import irille.shop.usr.Usr.OStatus;
-import irille.shop.usr.UsrAnnex;
-import irille.shop.usr.UsrProductCategory;
-import irille.shop.usr.UsrProductCategoryDAO;
-import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplier.T;
-import irille.shop.usr.UsrSupplierCategoryDAO;
-import irille.shop.usr.UsrSupplierDAO;
 import irille.view.pdt.CategoryView;
 import irille.view.usr.SupplierView;
 import irille.view.usr.UserView;
@@ -90,7 +85,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
    *
    * @author: lingjian @Date: 2019/3/4 14:23
    */
-  @NeedLogin
+  @NeedLogin(supplier = true)
   public void insInfo() throws Exception {
     if (getUser().getUser_type() == 1) {
       regex(); //正则校验
@@ -134,6 +129,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
    *
    * @author: lingjian @Date: 2019/3/5 16:19
    */
+  @NeedLogin(supplier = true)
   public void loadOnlineSup() throws Exception {
     SQL sql1 =
         new SQL() {
@@ -171,6 +167,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
    *
    * @author: lingjian @Date: 2019/3/1 15:49
    */
+  @NeedLogin(supplier = true)
   public void updInfo() throws Exception {
     try {
       regex(); //正则校验
