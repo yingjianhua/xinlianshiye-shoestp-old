@@ -1160,7 +1160,7 @@ public class UsrSupplierDAO {
             T.NAME, // 公司名称
             T.ENGLISH_NAME, // 英文名称
             T.COMPANY_ESTABLISH_TIME, // 企业成立时间
-            T.WEB_SITE, // 公司官网网站地址
+            T.WEBSITE, // 公司官网网站地址
             T.ANNUAL_PRODUCTION, // 年产量
             T.TELEPHONE, // 公司电话
             T.FAX, // 传真
