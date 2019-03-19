@@ -319,4 +319,15 @@ public class UsrMainAction extends HomeAction<UsrMain> {
     setResult("/home/v3/jsp/forgetPassword/index.jsp");
     return HomeAction.TRENDS;
   }
+
+
+  @Getter @Setter private String id;
+  /**
+   * 根据id获取供应商注册信息
+   *
+   * @throws IOException
+   */
+  public void getRegistById() throws IOException {
+    write(UsrMainDao.getRegistById(id));
+  }
 }
