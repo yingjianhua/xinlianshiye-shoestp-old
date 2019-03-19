@@ -14,9 +14,9 @@
     <c:if test="${seoView.description!=null}">
         <meta name="description" content="${seoView.description}"/>
     </c:if>
-    <script type="text/javascript" src="./static/js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="/home/static/js/jquery-1.7.2.min.js"></script>
     <!--    <link rel="stylesheet" href="./css/productList.css"/>-->
-    <link rel="stylesheet" href="home/v3/static/css/productInfo/reset.css"/>
+    <link rel="stylesheet" href="/home/v3/static/css/productInfo/reset.css"/>
     <script src='/home/v2/static/js/base/vue.min.js'></script>
     <!-- 引入样式 -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">

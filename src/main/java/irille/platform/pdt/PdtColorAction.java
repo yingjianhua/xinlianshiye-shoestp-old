@@ -3,6 +3,7 @@ package irille.platform.pdt;
 import java.io.IOException;
 
 import irille.action.ActionBase;
+import irille.action.dataimport.util.StringUtil;
 import irille.core.sys.Sys.OYn;
 import irille.pub.svr.LoginUserMsg;
 import irille.shop.pdt.Pdt;
@@ -48,6 +49,10 @@ public class PdtColorAction extends ActionBase<PdtColor> {
    * @date 2019/1/22 13:36
    */
   public void ins() throws IOException {
+    if (!StringUtil.hasValue(getBean().getName()) && !StringUtil.hasValue(getBean().getPicture())) {
+      writeErr(-1, "颜色名称与图片不能为空");
+      return;
+    }
     LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
     getBean().setCreateBy(lu.get_user().getPkey());
     getBean().setType(Pdt.OVer.NEW_1.getLine().getKey());
@@ -66,6 +71,10 @@ public class PdtColorAction extends ActionBase<PdtColor> {
    * @date 2019/1/22 13:36
    */
   public void upd() throws IOException {
+    if (!StringUtil.hasValue(getBean().getName()) && !StringUtil.hasValue(getBean().getPicture())) {
+      writeErr(-1, "颜色名称与图片不能为空");
+      return;
+    }
     LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
     getBean().setCreateBy(lu.get_user().getPkey());
     PdtColorDAO.UpdColor upd = new PdtColorDAO.UpdColor();
