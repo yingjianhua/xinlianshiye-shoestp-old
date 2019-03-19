@@ -48,6 +48,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
       Integer start,
       Integer limit) {
     BeanQuery<?> query = Query.SELECT(RFQConsult.T.PKEY);
+    query.SELECT(RFQConsult.T.VERIFY_STATUS);
     query.SELECT(RFQConsult.T.STATUS);
     query.SELECT(RFQConsult.T.TITLE);
     query.SELECT(RFQConsult.T.IMAGE);
@@ -88,6 +89,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
                   consult.setTitle(GetValue.get(map, RFQConsult.T.TITLE, String.class, null));
                   consult.setType(GetValue.get(map, RFQConsult.T.TYPE, Byte.class, null));
                   consult.setStatus(GetValue.get(map, RFQConsult.T.STATUS, Byte.class, null));
+                  consult.setVerifyStatus(GetValue.get(map, RFQConsult.T.VERIFY_STATUS, Byte.class, null));
                   String image = GetValue.get(map, RFQConsult.T.IMAGE, String.class, null);
                   consult.setImages(
                       image == null ? new ArrayList<>() : Arrays.asList(image.split(",")));
