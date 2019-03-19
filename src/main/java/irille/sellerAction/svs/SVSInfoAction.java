@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import irille.Dao.SVS.SVSInfoService;
 import irille.Entity.SVS.Enums.SVSAuthenticationStatus;
 import irille.Entity.SVS.Enums.SVSGradeType;
+import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.Entity.SVS.SVSInfo;
 import irille.action.seller.SellerAction;
 import irille.pub.util.GetBaseScoreUtils;
@@ -34,6 +35,7 @@ public class SVSInfoAction extends SellerAction<SVSInfo> implements ISVSInfoActi
    *
    * @author GS
    */
+  @NeedLogin
   @Override
   public void application() throws Exception {
 
@@ -77,6 +79,7 @@ public class SVSInfoAction extends SellerAction<SVSInfo> implements ISVSInfoActi
    *
    * @author GS
    */
+  @NeedLogin
   @Override
   public void updAutInfo() throws Exception {
 
@@ -99,6 +102,7 @@ public class SVSInfoAction extends SellerAction<SVSInfo> implements ISVSInfoActi
    *
    * @author GS
    */
+  @NeedLogin
   @Override
   public void getAutInfo() throws Exception {
     if (getSupplier() != null) write(service.getSVSInfo(getSupplier().getPkey()));
