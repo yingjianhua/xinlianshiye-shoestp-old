@@ -3,11 +3,17 @@ package irille.sellerAction.pdt;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import irille.action.dataimport.util.StringUtil;
 import irille.pub.Str;
 import irille.pub.idu.Idu;
 import irille.pub.idu.IduPage;
+import irille.pub.validate.Regular;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.pdt.inf.IPdtAttrAction;
 import irille.shop.pdt.PdtAttr;
@@ -16,8 +22,6 @@ import irille.shop.pdt.PdtAttrLine;
 import irille.shop.plt.PltConfigDAO;
 import lombok.Getter;
 import lombok.Setter;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 public class PdtAttrAction extends SellerAction<PdtAttr> implements IPdtAttrAction {
   private List<PdtAttrLine> _listLine = new ArrayList<PdtAttrLine>();
@@ -110,6 +114,13 @@ public class PdtAttrAction extends SellerAction<PdtAttr> implements IPdtAttrActi
   public void addAttr() throws IOException {
     if (!StringUtil.hasValue(getBean().getName()) || !StringUtil.hasValue(attrValue)) {
       writeErr(0, "属性信息不完整");
+      return;
+    }
+    Pattern p = Pattern.compile(Regular.REGULAR_ENG);
+    Matcher matcher = p.matcher(getBean().getName());
+    Matcher matcher1 = p.matcher(attrValue);
+    if (!matcher.matches() || !matcher1.matches()) {
+      writeErr(-100, "请输入英文属性名称与内容!");
       return;
     }
     Integer count = PdtAttrDAO.verifySupplierCount(getSupplier().getPkey());

@@ -352,6 +352,9 @@ public class O2OActivityServiceImpl implements O2OActivityService {
   public void appr(Integer id, String reason, O2O_ProductStatus status) {
     O2O_Product o2OProduct = o2OProductDao.findByPkey(id);
     if (null == o2OProduct) throw new WebMessageException(ReturnCode.failure, "商品不存在");
+    if (!o2OProduct.getVerifyStatus().equals(O2O_ProductStatus._DEFAULT.getLine().getKey())) {
+      throw new WebMessageException(ReturnCode.failure, "该商品已被审核");
+    }
     o2OProduct.setVerifyStatus(status.getLine().getKey());
     sendEmail email = new sendEmail();
     if (!AppConfig.dev) {
@@ -420,6 +423,9 @@ public class O2OActivityServiceImpl implements O2OActivityService {
   /** 处理上下架 */
   public void lowerAndUpper(Integer id, String reason, O2O_ProductStatus status) {
     O2O_Product o2OProduct = o2OProductDao.findByPkey(id);
+    if (o2OProduct.getStatus().equals(O2O_ProductStatus.WAITOFF.getLine().getKey())) {
+      throw new WebMessageException(ReturnCode.failure, "该条信息已被处理");
+    }
     sendEmail email = new sendEmail();
     UsrSupplier supplier = o2OProduct.gtJoinInfoId().gtSupplier();
     if (!AppConfig.dev) {

@@ -3,20 +3,40 @@ package com.xinlianshiye.shoestp.shop.service.rfq.impl;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
 import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultService;
-import com.xinlianshiye.shoestp.shop.view.rfq.*;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultRelationView;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultView;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQCountryView;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQCurrencyView;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationImageView;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationThrowawayView;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationView;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQSupplierView;
+import com.xinlianshiye.shoestp.shop.view.rfq.RFQUnreadCountView;
 import com.xinlianshiye.shoestp.shop.view.rfq.supplierConsult.RFQConsultProductView;
 
-import irille.Entity.RFQ.Enums.*;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultRelation;
+import irille.Entity.RFQ.Enums.RFQConsultPayType;
+import irille.Entity.RFQ.Enums.RFQConsultRecommend;
+import irille.Entity.RFQ.Enums.RFQConsultStatus;
+import irille.Entity.RFQ.Enums.RFQConsultType;
+import irille.Entity.RFQ.Enums.RFQConsultUnit;
+import irille.Entity.RFQ.Enums.RFQConsultVerifyStatus;
 import irille.homeAction.rfq.view.RFQDetailsView;
 import irille.homeAction.rfq.view.RFQListView;
 import irille.pub.bean.BeanBase;
@@ -25,6 +45,7 @@ import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
+import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.GetValue;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.plt.PltCountry;
@@ -45,15 +66,62 @@ public class RFQConsultServiceImpl implements RFQConsultService {
       Byte type,
       String keyword,
       Boolean unread,
+      Integer lastRelation,
       Integer start,
       Integer limit) {
+	  
+	  if(lastRelation != null) {
+		  SQL sql = new SQL();
+		  sql.SELECT(RFQConsultRelation.T.PKEY);
+		  sql.FROM(RFQConsult.class);
+		  sql.LEFT_JOIN(RFQConsultRelation.class, RFQConsult.T.PKEY, RFQConsultRelation.T.CONSULT);
+		    if (keyword != null && !keyword.isEmpty()) {
+		    	sql.LEFT_JOIN(UsrSupplier.class, RFQConsultRelation.T.SUPPLIER_ID, UsrSupplier.T.PKEY);
+		      // 关键字匹配询盘标题和报价供应商名称
+		    	sql
+		          .WHERE(RFQConsult.T.TITLE, "like ?", "%" + keyword + "%")
+		          .orWhere(UsrSupplier.T.NAME, "like ?", "%" + keyword + "%");
+		    }
+		    sql.AND().WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey());
+		    sql.WHERE(RFQConsult.T.IS_DELETED, "=?", false);
+		    if (type != null) {
+		      // 询盘类型
+		    	sql.WHERE(RFQConsult.T.TYPE, "=?", type);
+		    }
+		    if (unread != null) {
+		      // 是否有新消息
+		      if (unread) {
+		    	  sql
+		            .AND()
+		            .WHERE(RFQConsultRelation.T.IS_NEW, "=?", true)
+		            .orWhere(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", false);
+		      }
+		    }
+		    sql.GROUP_BY(RFQConsult.T.PKEY);
+		    sql.ORDER_BY(RFQConsult.T.CREATE_TIME, "desc");
+		    SQL sql2 = new SQL();
+		    sql2.SELECT("( @i := @i + 1 ) as i");
+		    sql2.SELECT(RFQConsultRelation.T.PKEY);
+		    sql2.FROM(sql, RFQConsultRelation.class);
+		    sql2.FROM(new SQL().SELECT("@i := 0"), "it");
+		    SQL sql3 = new SQL();
+		    sql3.SELECT("i");
+		    sql3.FROM(sql2, RFQConsultRelation.class);
+		    sql3.WHERE(RFQConsultRelation.T.PKEY, "=?", lastRelation);
+		    Integer index = Query.sql(sql3).queryObject(Integer.class);
+		    if(index != null)
+		    	limit = index;
+	  }
     BeanQuery<?> query = Query.SELECT(RFQConsult.T.PKEY);
+    query.SELECT(RFQConsult.T.VERIFY_STATUS);
     query.SELECT(RFQConsult.T.STATUS);
     query.SELECT(RFQConsult.T.TITLE);
     query.SELECT(RFQConsult.T.IMAGE);
     query.SELECT(RFQConsult.T.TYPE);
+    query.SELECT(PdtProduct.T.PICTURE);
     query.FROM(RFQConsult.class);
     query.LEFT_JOIN(RFQConsultRelation.class, RFQConsult.T.PKEY, RFQConsultRelation.T.CONSULT);
+    query.LEFT_JOIN(PdtProduct.class, RFQConsult.T.PRODUCT, PdtProduct.T.PKEY);
     if (keyword != null && !keyword.isEmpty()) {
       query.LEFT_JOIN(UsrSupplier.class, RFQConsultRelation.T.SUPPLIER_ID, UsrSupplier.T.PKEY);
       // 关键字匹配询盘标题和报价供应商名称
@@ -88,9 +156,12 @@ public class RFQConsultServiceImpl implements RFQConsultService {
                   consult.setTitle(GetValue.get(map, RFQConsult.T.TITLE, String.class, null));
                   consult.setType(GetValue.get(map, RFQConsult.T.TYPE, Byte.class, null));
                   consult.setStatus(GetValue.get(map, RFQConsult.T.STATUS, Byte.class, null));
+                  consult.setVerifyStatus(GetValue.get(map, RFQConsult.T.VERIFY_STATUS, Byte.class, null));
                   String image = GetValue.get(map, RFQConsult.T.IMAGE, String.class, null);
                   consult.setImages(
                       image == null ? new ArrayList<>() : Arrays.asList(image.split(",")));
+                  String productImage = GetValue.get(map, PdtProduct.T.PICTURE, String.class, "");
+                  consult.setProductImage(productImage.split(",")[0]);
                   consult.setRelations(listRelation(consult.getPkey()));
                   return consult;
                 })
@@ -344,13 +415,14 @@ public class RFQConsultServiceImpl implements RFQConsultService {
   }
 
   @Override
-  public RFQConsultView getDetail(UsrPurchase purchase, Integer consultPkey) {
+  public RFQConsultView getDetail(UsrPurchase purchase, Integer consultPkey, Language language) {
     BeanQuery<RFQConsult> query = Query.selectFrom(RFQConsult.class);
     query.WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey());
     query.WHERE(RFQConsult.T.PKEY, "=?", consultPkey);
     RFQConsult consult = query.query();
     if (consult == null) {
-      throw new WebMessageException(ReturnCode.service_gone, "询盘不存在");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.inquiry_wrong_data, language));
     }
     RFQConsultView view = new RFQConsultView();
     view.setPkey(consult.getPkey());
@@ -390,31 +462,44 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 
   @Override
   public void addMoreInformation(
-      UsrPurchase purchase, Integer consultPkey, String information, Date validDate) {
+      UsrPurchase purchase,
+      Integer consultPkey,
+      String information,
+      Date validDate,
+      Language language) {
     RFQConsult consult =
         Query.selectFrom(RFQConsult.class)
             .WHERE(RFQConsult.T.PKEY, "=?", consultPkey)
             .WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey())
             .query();
     if (consult == null) {
-      throw new WebMessageException(ReturnCode.service_gone, "数据不存在");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.inquiry_wrong_data, language));
+      //      throw new WebMessageException(ReturnCode.service_gone, "数据不存在");
     }
     if (consult.gtType() != RFQConsultType.RFQ) {
       // 只有RFQ询盘能添加额外信息
-      throw new WebMessageException(ReturnCode.service_state_error, "数据错误");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_wrong_data, language));
+      //      throw new WebMessageException(ReturnCode.service_state_error, "数据错误");
     }
     if (consult.gtStatus() != RFQConsultStatus.ready
         && consult.gtStatus() != RFQConsultStatus.runing) {
       // 只有待发布和进行中能添加额外信息
-      throw new WebMessageException(ReturnCode.service_state_error, "状态错误");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_state_error, language));
+      //      throw new WebMessageException(ReturnCode.service_state_error, "状态错误");
     }
     if (consult.getChangeCount() >= 3) {
       // 最多修改三次
-      throw new WebMessageException(ReturnCode.service_state_error, "最多修改三次");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.max_update_numbers, language, 3));
+      //      throw new WebMessageException(ReturnCode.service_state_error, "最多修改三次");
     }
     if (consult.getValidDate().before(new Date())) {
       // 已经过期
-      throw new WebMessageException(ReturnCode.service_state_error, "已过期");
+      throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.overdue, language, 3));
+      //      throw new WebMessageException(ReturnCode.service_state_error, "已过期");
     }
     if (Query.selectFrom(RFQConsultRelation.class)
         .WHERE(RFQConsultRelation.T.CONSULT, "=?", consultPkey)
@@ -422,46 +507,56 @@ public class RFQConsultServiceImpl implements RFQConsultService {
         .WHERE(RFQConsultRelation.T.IS_DELETED_SUPPLIER, "=?", false)
         .exists()) {
       // 已经有报价 不能添加额外信息
-      throw new WebMessageException(ReturnCode.service_state_error, "已有报价");
+      throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.already_quot, language));
+      //      throw new WebMessageException(ReturnCode.service_state_error, "已有报价");
     }
     if (validDate == null || validDate.before(new Date())) {
-      throw new WebMessageException(ReturnCode.valid_illegal, "有效时间不合法");
+      throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.time_wrong, language));
+      //      throw new WebMessageException(ReturnCode.valid_illegal, "有效时间不合法");
     }
-    consult.setChangeCount((short)(consult.getChangeCount() + (short)1));
+    consult.setChangeCount((short) (consult.getChangeCount() + (short) 1));
     consult.setExtraDescription(information);
     consult.setValidDate(validDate);
     consult.upd();
   }
 
   @Override
-  public void close(UsrPurchase purchase, Integer consultPkey) {
+  public void close(UsrPurchase purchase, Integer consultPkey, Language language) {
     RFQConsult consult =
         Query.selectFrom(RFQConsult.class)
             .WHERE(RFQConsult.T.PKEY, "=?", consultPkey)
             .WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey())
             .query();
     if (consult == null) {
-      throw new WebMessageException(ReturnCode.service_gone, "数据不存在");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.inquiry_wrong_data, language));
+      //      throw new WebMessageException(ReturnCode.service_gone, "数据不存在");
     }
     if (consult.gtStatus() == RFQConsultStatus.close) {
-      throw new WebMessageException(ReturnCode.service_state_error, "已关闭,不能进行操作");
+      throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.close, language));
+      //      throw new WebMessageException(ReturnCode.service_state_error, "已关闭,不能进行操作");
     }
     consult.stStatus(RFQConsultStatus.close);
     consult.upd();
   }
 
   @Override
-  public void addImage(UsrPurchase purchase, Integer consultPkey, String images) {
+  public void addImage(
+      UsrPurchase purchase, Integer consultPkey, String images, Language language) {
     RFQConsult consult =
         Query.selectFrom(RFQConsult.class)
             .WHERE(RFQConsult.T.PKEY, "=?", consultPkey)
             .WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey())
             .query();
     if (consult == null) {
-      throw new WebMessageException(ReturnCode.service_gone, "数据不存在");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.inquiry_wrong_data, language));
+      //      throw new WebMessageException(ReturnCode.service_gone, "数据不存在");
     }
     if (consult.gtType() != RFQConsultType.supplier_INQUIRY) {
-      throw new WebMessageException(ReturnCode.service_state_error, "数据异常");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_wrong_data, language));
+      //      throw new WebMessageException(ReturnCode.service_state_error, "数据异常");
     }
     final Integer limit = 5; // 图片数量上限
     Integer leftCount = 0;
@@ -471,12 +566,16 @@ public class RFQConsultServiceImpl implements RFQConsultService {
       leftCount = limit - consult.getImage().split(",").length;
     }
     if (images == null || images.isEmpty()) {
-      throw new WebMessageException(ReturnCode.valid_notempty, "请选择图片");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.please_choose_image, language));
+      //      throw new WebMessageException(ReturnCode.valid_notempty, "请选择图片");
     }
     Integer length = images.split(",").length;
     if (length > leftCount) {
       // 上传图片超出限制了
-      throw new WebMessageException(ReturnCode.valid_notempty, "图片数量超出上限");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.images_too_much, language));
+      //      throw new WebMessageException(ReturnCode.valid_notempty, "图片数量超出上限");
     }
     List<String> list = new ArrayList<>(Arrays.asList(consult.getImage().split(",")));
     list.addAll(Arrays.asList(images.split(",")));
@@ -485,17 +584,22 @@ public class RFQConsultServiceImpl implements RFQConsultService {
   }
 
   @Override
-  public void addProductRequest(UsrPurchase purchase, Integer consultPkey, String products) {
+  public void addProductRequest(
+      UsrPurchase purchase, Integer consultPkey, String products, Language language) {
     RFQConsult consult =
         Query.selectFrom(RFQConsult.class)
             .WHERE(RFQConsult.T.PKEY, "=?", consultPkey)
             .WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey())
             .query();
     if (consult == null) {
-      throw new WebMessageException(ReturnCode.service_gone, "数据不存在");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.inquiry_wrong_data, language));
+      //      throw new WebMessageException(ReturnCode.service_gone, "数据不存在");
     }
     if (consult.gtType() != RFQConsultType.supplier_INQUIRY) {
-      throw new WebMessageException(ReturnCode.service_state_error, "数据异常");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_wrong_data, language));
+      //      throw new WebMessageException(ReturnCode.service_state_error, "数据异常");
     }
     RFQConsultRelation relation =
         Query.selectFrom(RFQConsultRelation.class)
@@ -503,10 +607,14 @@ public class RFQConsultServiceImpl implements RFQConsultService {
             .query();
     if (relation == null) {
       log.warn("数据异常: RFQConsult表主键为{} 的记录 缺少一个对应的RFQConsultRelation记录", consultPkey);
-      throw new WebMessageException(ReturnCode.service_wrong_data, "数据异常");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_wrong_data, language));
+      //      throw new WebMessageException(ReturnCode.service_wrong_data, "数据异常");
     }
     if (products == null || products.isEmpty()) {
-      throw new WebMessageException(ReturnCode.valid_notempty, "请选择产品");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.cart_checked_error, language));
+      //      throw new WebMessageException(ReturnCode.valid_notempty, "请选择产品");
     }
 
     final Integer limit = 50;
@@ -526,7 +634,9 @@ public class RFQConsultServiceImpl implements RFQConsultService {
     }
     String[] params = products.split(",");
     if (productRequestSet.size() + params.length > limit) {
-      throw new WebMessageException(ReturnCode.valid_notempty, "产品数量超出上限");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.products_too_much, language));
+      //      throw new WebMessageException(ReturnCode.valid_notempty, "产品数量超出上限");
     }
     BeanQuery<PdtProduct> query =
         Query.SELECT(PdtProduct.T.PKEY)

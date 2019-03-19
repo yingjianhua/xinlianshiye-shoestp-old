@@ -174,7 +174,7 @@
                         <el-form size="small" label-width="160px" ref="form" :rules="rules" :model="form" id="inquiry_form">
                             <div class="input-wrap required">
                                 <el-form-item label-width="0" prop="title">
-                                    <el-input placeholder="Key words of products you are looking for" v-model="form.title"></el-input>
+                                    <el-input placeholder="Key words of products you are looking for" v-model.trim="form.title"></el-input>
                                 </el-form-item>
                             </div>
 
@@ -185,7 +185,7 @@
                             <div class="form_main">
                                 <el-form-item label-width="0" prop="descriotion">
                                     <el-input type="textarea" :autosize="{ minRows: 14, maxRows: 14}" placeholder="Please let us know your requirements as detail as possible. You may include: color, size, material, gradw/standard, etc."
-                                              v-model="form.descriotion">
+                                              v-model.trim="form.descriotion">
                                     </el-input>
                                 </el-form-item>
                             </div>
@@ -209,13 +209,14 @@
                                 <el-form-item label="Purchase Quantity：" required>
                                     <el-col :span="15">
                                         <el-form-item label-width="0" prop="quantity">
-                                            <el-input v-model.number="form.quantity"></el-input>
+                                            <el-input v-model.trim.number="form.quantity"
+                                                      onkeyup="this.value=this.value.replace(/[^0-9.]+/g,'')"></el-input>
                                         </el-form-item>
                                     </el-col>
 
                                     <el-col class="input-unit" :span="6" :offset="1">
                                         <!-- Pairs -->
-                                        <el-select placeholder="" v-model="form.unit">
+                                        <el-select placeholder="" v-model.trim="form.unit">
                                             <el-option label="Pairs" :value="1"></el-option>
                                             <el-option label="Forty-Foot Container" :value="2"></el-option>
                                             <el-option label="Twenty-Foot Container" :value="3"></el-option>
@@ -228,7 +229,8 @@
                                 <el-form-item label="Price：">
                                     <el-col :span="7">
                                         <el-form-item prop="min_price">
-                                            <el-input v-model.number="form.min_price"></el-input>
+                                            <el-input v-model.trim.number="form.min_price"
+                                                      onkeyup="this.value=this.value.replace(/[^0-9.]+/g,'')"></el-input>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :span="1">
@@ -236,7 +238,8 @@
                                     </el-col>
                                     <el-col :span="7">
                                         <el-form-item prop="max_price">
-                                            <el-input v-model.number="form.max_price"></el-input>
+                                            <el-input v-model.trim.number="form.max_price"
+                                                      onkeyup="this.value=this.value.replace(/[^0-9.]+/g,'')"></el-input>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :span="6" :offset="1">
@@ -275,7 +278,7 @@
                                             </el-form-item>
                                             <!-- 目的地 -->
                                             <el-form-item label-width="0">
-                                                <el-input v-model="form.destination" placeholder="Destination Port"></el-input>
+                                                <el-input v-model.trim="form.destination" placeholder="Destination Port"></el-input>
                                             </el-form-item>
                                             <!-- 支付方式 -->
                                             <el-form-item label-width="0">
@@ -553,12 +556,7 @@
             beforeUpload(file) {
                 if (!isLogin) {
                     sessionStorage['Temp_publish_form'] = JSON.stringify(this.form)
-                    this.$alert('Please login to operate', 'Please login to operate', {
-                        confirmButtonText: 'Ok',
-                        callback: action => {
-                            window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView"
-                        }
-                    });
+                    util_function_obj.alertWhenNoLogin(this, "jumpUrl=/home/usr_UsrConsult_publishView");
                     return
                 }
                 const isLt2M = file.size / 1024 < 500;
@@ -585,16 +583,27 @@
 
             // 整个form提交
             submit() {
+                // if (!isLogin) {
+                //     sessionStorage['Temp_publish_form'] = JSON.stringify(this.form)
+                //     this.$alert('Please login to operate', {
+                //         confirmButtonText: 'Ok',
+                //         customClass: "my-custom-element-alert-class fs-content-18",
+                //         center: true,
+                //         callback: action => {
+                //             if(action=="confirm"){
+                //                 window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView"
+                //             }
+                //         }
+                //     });
+                //     return
+                // }
+
                 if (!isLogin) {
-                    sessionStorage['Temp_publish_form'] = JSON.stringify(this.form)
-                    this.$alert('Please login to operate', 'Please login to operate', {
-                        confirmButtonText: 'Ok',
-                        callback: action => {
-                            window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView"
-                        }
-                    });
-                    return
+                    sessionStorage['Temp_publish_form'] = JSON.stringify(this.form);
+                    util_function_obj.alertWhenNoLogin(this, "jumpUrl=/home/usr_UsrConsult_publishView");
+                    return;
                 }
+
                 this.$refs.form.validate((valid) => {
                     if (valid) {
                         console.log('submit validate suc');
@@ -661,14 +670,13 @@
                                         }, 2000)
                                         // 未登录时
                                     } else if (res.data.ret == -1) {
-                                        console.log('提交失败-1');
-                                        window.location.href =
-                                            '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
-                                        // 提交失败时
+                                        sessionStorage['Temp_publish_form'] = JSON.stringify(this.form)
+                                        util_function_obj.alertWhenNoLogin(this, "jumpUrl=/home/usr_UsrConsult_publishView");
+                                        return
                                     } else {
                                         console.log('提交失败else');
                                         this.flag = false;
-                                        this.$alert(res.data.msg, {
+                                        this.$alert(res.data.msg || "Submit error,please try again later", {
                                             confirmButtonText: '<s:text name="my-inquiry-publish.Ok"/>'
                                         });
                                     }
@@ -677,6 +685,7 @@
                                 .catch((err) => {
                                     this.flag = false;
                                     this.rq_mark = true;
+                                    this.$message.error(err || 'Network error,please try again later');
                                 })
                         }
                     } else {
@@ -687,7 +696,6 @@
 
         },
         mounted() {
-
             if (sessionStorage['Temp_publish_form']) {
                 this.form = JSON.parse(sessionStorage['Temp_publish_form'])
                 // Vue.$set()

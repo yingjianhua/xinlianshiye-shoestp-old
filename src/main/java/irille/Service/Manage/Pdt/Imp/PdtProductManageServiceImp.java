@@ -34,6 +34,7 @@ import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.SVS.SVSNewestPdt;
 import irille.Service.Manage.Pdt.IPdtProductManageService;
+import irille.action.dataimport.util.StringUtil;
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
 import irille.pub.Log;
@@ -143,7 +144,7 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
         tieredPricing.add(pdtTP);
       }
     } else {
-      return -2;
+      return -3; // 阶梯价不能为空
     }
     BigDecimal min = Collections.min(minPriceList); // 最小价格
     Set<Integer> colorSet = new HashSet<>(); // 颜色列表
@@ -201,7 +202,7 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
             jsonKeyNmae.put(item.toString(), str);
           }
           spec.setKeyName(jsonKeyNmae.toString());
-        } catch (JSONException e) {
+        } catch (JSONException | NullPointerException e) {
           // TODO Auto-generated catch block
           e.printStackTrace();
         }
@@ -219,6 +220,8 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
         spec.setRowVersion((short) 0);
         list.add(spec);
       }
+    } else {
+      return 0;
     }
     if (pdtProductSaveView.getDesModule() != null) {
       for (int i = 0; i < pdtProductSaveView.getDesModule().length; i++) {
@@ -253,6 +256,16 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
     // 店铺分类
     pdtProduct.setCategoryDiy(pdtProductSaveView.getSupplierCat());
     pdtProduct.setCode(pdtProductSaveView.getNumber_right());
+    if (!StringUtil.hasValue(pdtProduct.getName())) {
+      return -4;
+    } else if (pdtProduct.getCategory() == null || pdtProduct.getCategory() <= 0) {
+      return -5;
+    } else if (pdtProduct.getCategoryDiy() == null || pdtProduct.getCategoryDiy() <= 0) {
+      return -6;
+    } else if (!StringUtil.hasValue(pdtProduct.getCode())) {
+      return -7;
+    }
+
     pdtProduct.setSku("");
     pdtProduct.setCurPrice(min); // 商城价
     pdtProduct.setPurPrice(BigDecimal.valueOf(0));
@@ -340,7 +353,9 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
     pdtProduct.setDescription(objectMapper.writeValueAsString(pdtProductSaveView.getDescription()));
     pdtProduct.setPicture(String.join(",", pdtProductSaveView.getPdtPics().values()));
     pdtProduct.setWeight(BigDecimal.valueOf(pdtProductSaveView.getWeight()));
-
+    if (!StringUtil.hasValue(pdtProduct.getPicture())) {
+      return -8;
+    }
     /*
      * if (pdtProductSaveView.getSpec() == null) { return 0; } if
      * (pdtProductSaveView.getSpec().size() < 1) { return 0; } for

@@ -3,8 +3,13 @@ package irille.shop.pdt;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
@@ -392,6 +397,7 @@ public class PdtSizeDAO {
    * @return
    */
   public static PdtSize insSize(Byte type, String name, Integer supplier, Language lag) {
+    checkName(name, false);
     PdtSize size = new PdtSize();
     size.setName(name);
     size.setSupplier(supplier);
@@ -420,6 +426,7 @@ public class PdtSizeDAO {
    * @param name
    */
   public static void updSize(Integer supplier, Integer pkey, String name) {
+    checkName(name, false);
     SQL sql = new SQL();
     sql.SELECT(PdtSize.class);
     sql.FROM(PdtSize.class);
@@ -460,6 +467,7 @@ public class PdtSizeDAO {
   public static void plaInsSize(SysUser user, Byte type, String name, Integer pdtCate) {
     PdtSize size = new PdtSize();
     size.setName(name);
+    checkName(size.getName(), true);
     if (pdtCate != null) {
       PdtCat cat = Query.SELECT(PdtCat.class, pdtCate);
       if (cat != null) size.setProductCategory(pdtCate);
@@ -487,11 +495,35 @@ public class PdtSizeDAO {
     if (size == null) throw new WebMessageException(ReturnCode.service_wrong_data, "参数错误");
     size.setType(type);
     size.setName(name);
+    checkName(size.getName(), true);
     if (pdtCate != null) {
       PdtCat cat = Query.SELECT(PdtCat.class, pdtCate);
       if (cat != null) size.setProductCategory(pdtCate);
     }
     translateUtil.autoTranslate(size);
     size.upd();
+  }
+
+  public static void checkName(String name, boolean lag) {
+    if (lag) {
+      try {
+        JSONObject json = new JSONObject(name);
+        Object object = json.get("en");
+        Pattern p = Pattern.compile("[0-9]+([.]{1}[0-9]+){0,1}");
+        Matcher matcher = p.matcher(object.toString());
+        if (!matcher.matches())
+          throw new WebMessageException(ReturnCode.service_wrong_data, "名称只能为数字");
+        if (object.toString().length() > 5)
+          throw new WebMessageException(ReturnCode.service_wrong_data, "长度最大为5");
+      } catch (JSONException | NullPointerException e) {
+        throw new WebMessageException(ReturnCode.service_wrong_data, "参数错误");
+      }
+    } else {
+      Pattern p = Pattern.compile("[0-9]+([.]{1}[0-9]+){0,1}");
+      Matcher matcher = p.matcher(name);
+      if (!matcher.matches())
+        throw new WebMessageException(ReturnCode.service_wrong_data, "名称只能为数字");
+      if (name.length() > 5) throw new WebMessageException(ReturnCode.service_wrong_data, "长度最大为5");
+    }
   }
 }

@@ -42,14 +42,14 @@ public class RFQContactAction extends AbstractHomeAction implements IRFQContactA
   @Override
   @NeedLogin
   public void moveToGroup() throws IOException {
-    rFQPurchaseContactService.moveToGroup(getPurchase(), contactPkey, groupPkey);
+    rFQPurchaseContactService.moveToGroup(getPurchase(), contactPkey, groupPkey, curLanguage());
     write();
   }
 
   @Override
   @NeedLogin
   public void addGroup() throws IOException {
-    rFQPurchaseContactService.addGroup(getPurchase(), groupName);
+    rFQPurchaseContactService.addGroup(getPurchase(), groupName, curLanguage());
     write();
   }
 
@@ -63,7 +63,7 @@ public class RFQContactAction extends AbstractHomeAction implements IRFQContactA
   @Override
   @NeedLogin
   public void editGroup() throws IOException {
-    rFQPurchaseContactService.editGroup(getPurchase(), groupPkey, groupName);
+    rFQPurchaseContactService.editGroup(getPurchase(), groupPkey, groupName, curLanguage());
     write();
   }
 

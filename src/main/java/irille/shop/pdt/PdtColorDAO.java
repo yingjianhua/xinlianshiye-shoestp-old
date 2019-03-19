@@ -84,6 +84,7 @@ public class PdtColorDAO {
                           setCreatedby(BeanBase.load(SysUser.class, c).getLoginName());
                         }
                         setCreatedtime((Date) bean.get(T.CREATE_TIME.getFld().getCodeSqlField()));
+                        setType((Byte) bean.get(T.TYPE.getFld().getCodeSqlField()));
                       }
                     })
             .collect(Collectors.toList());

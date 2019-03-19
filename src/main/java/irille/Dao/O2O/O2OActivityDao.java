@@ -65,6 +65,8 @@ public class O2OActivityDao {
       } else if (condition.getStatus().equals(O2O_ActivityStatus.END.getLine().getKey())) {
         // 结束
         query.WHERE(T.END_DATE, "<?", now);
+      } else if (condition.getStatus().equals(O2O_ActivityStatus.CLOSE.getLine().getKey())) {
+        query.WHERE(T.STATUS, " =? ", O2O_ActivityStatus.CLOSE.getLine().getKey());
       }
     }
     //				query.WHERE(condition.getStatus()!=null,T.STATUS,"=?",condition.getStatus());

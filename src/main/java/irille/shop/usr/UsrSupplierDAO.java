@@ -42,7 +42,7 @@ import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.SEOUtils;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.pub.validate.ValidForm;
-import irille.pub.validate.ValidRegex;
+import irille.pub.validate.ValidRegex2;
 import irille.sellerAction.view.AuthenticationView;
 import irille.sellerAction.view.SupinfoView;
 import irille.sellerAction.view.operateinfoView;
@@ -807,7 +807,7 @@ public class UsrSupplierDAO {
     }
 
     ValidForm vf = new ValidForm(bean);
-    ValidRegex vr = new ValidRegex(bean);
+    ValidRegex2 vr = new ValidRegex2(bean);
     //
     vf.validNotEmpty(
         T.CATEGORY,
@@ -962,9 +962,7 @@ public class UsrSupplierDAO {
                                   UsrMain.class,
                                   (Integer) bean.get(T.UserId.getFld().getCodeSqlField()));
                           if (main != null) {
-                            setMainContacts(main.getContacts());
                             setMainEmail(main.getEmail());
-                            setMainTelphone(main.getTelphone());
                             setMainProvince(main.getProvince());
                             setMainCity(main.getCity());
                             setMainZone(main.getZone());
@@ -1051,7 +1049,23 @@ public class UsrSupplierDAO {
    * @author: lingjian @Date: 2019/3/4 10:01
    */
   public static UsrSupplier insSupplier(UsrSupplier view, Language lang) throws JSONException {
+
+    UsrSupplier beanjson = new UsrSupplier();
+    beanjson.setCompanyType(view.getCompanyType()); // 企业类型
+    beanjson.setCompanyNature(view.getCompanyNature()); // 企业性质
+    beanjson.setCompanyAddr(view.getCompanyAddr()); // 详细地址
+    beanjson.setProdPattern(view.getProdPattern()); // 生产模式
+    beanjson.setDepartment(view.getDepartment()); // 联系人部门
+    beanjson.setJobTitle(view.getJobTitle()); // 联系人职称
+    translateUtil.autoTranslate(beanjson, true);
+
     UsrMain main = irille.pub.bean.Query.SELECT(UsrMain.class, view.getUserid());
+    main.setContacts(view.getContacts());
+    main.setTelphone(view.getPhone());
+    main.setCompany(view.getName());
+    main.setAddress(view.getCompanyAddr());
+    main.upd();
+
     UsrSupplier bean = new UsrSupplier();
     // 必填项
     bean.stRole(UsrSupplierRoleDAO.getDefault());
@@ -1085,18 +1099,17 @@ public class UsrSupplierDAO {
     bean.setName(view.getName()); // 公司名称-必填
     bean.setEnglishName(view.getEnglishName()); // 公司英文名称
 
-    bean.setCompanyType(view.getCompanyType()); // 企业类型
-    bean.setCompanyNature(view.getCompanyNature()); // 企业性质
-
+    bean.setCompanyType(beanjson.getCompanyType()); // 企业类型
+    bean.setCompanyNature(beanjson.getCompanyNature()); // 企业性质
     bean.setCompanyEstablishTime(view.getCompanyEstablishTime()); // 成立时间
     bean.setWebsite(view.getWebsite()); // 官网地址
-    bean.setCompanyAddr(view.getCompanyAddr()); // 详细地址
+    bean.setCompanyAddr(beanjson.getCompanyAddr()); // 详细地址
     bean.setAnnualProduction(view.getAnnualProduction()); // 年产量
     bean.setTelephone(view.getTelephone()); // 公司电话
     bean.setFax(view.getFax()); // 传真
     bean.setPostcode(view.getPostcode()); // 邮编
     bean.setTargetedMarket(view.getTargetedMarket()); // 目标市场
-    bean.setProdPattern(view.getProdPattern()); // 生产模式
+    bean.setProdPattern(beanjson.getProdPattern()); // 生产模式
     bean.setCreditCode(view.getCreditCode()); // 信用代码
     bean.setRegisteredCapital(view.getRegisteredCapital()); // 注册资金-必填
     bean.setEntity(view.getEntity()); // 企业法人-必填
@@ -1109,8 +1122,8 @@ public class UsrSupplierDAO {
     bean.setTaxpayerType(view.getTaxpayerType()); // 纳税人类型
 
     bean.setContacts(view.getContacts()); // 联系人
-    bean.setDepartment(view.getDepartment()); // 联系人部门
-    bean.setJobTitle(view.getJobTitle()); // 联系人职称
+    bean.setDepartment(beanjson.getDepartment()); // 联系人部门
+    bean.setJobTitle(beanjson.getJobTitle()); // 联系人职称
     bean.setPhone(view.getPhone()); // 联系人手机
     if (view.getContactEmail() == null) {
       bean.setContactEmail(main.getEmail()); // 联系人邮箱
@@ -1123,7 +1136,7 @@ public class UsrSupplierDAO {
     bean.setContactsIdCardFrontPhoto(view.getContactsIdCardFrontPhoto()); // 运营负责人身份证复印件
     bean.setOperateIdCard(view.getOperateIdCard()); // 运营负责人身份证号码
     bean.setApplicationTime(view.getApplicationTime()); // 申请时间
-    translateUtil.autoTranslate(bean, true).ins();
+    bean.ins();
     return bean;
   }
 
@@ -1135,42 +1148,57 @@ public class UsrSupplierDAO {
   public static UsrSupplier updInfo(UsrSupplier supplier) {
     UsrSupplier model = BeanBase.load(UsrSupplier.class, supplier.getPkey());
     PropertyUtils.copyProperties(
-        model,
-        supplier,
-        T.NAME, // 公司名称
-        T.ENGLISH_NAME, // 英文名称
-        T.COMPANY_TYPE, // 公司类型 多国语言
-        T.COMPANY_NATURE, // 企业性质 多国语言
-        T.COMPANY_ESTABLISH_TIME, // 企业成立时间
-        T.WEB_SITE, // 公司官网网站地址
-        T.COMPANY_ADDR, // 公司详细地址
-        T.ANNUAL_PRODUCTION, // 年产量
-        T.TELEPHONE, // 公司电话
-        T.FAX, // 传真
-        T.POSTCODE, // 邮编
-        T.TARGETED_MARKET, // 目标市场
-        T.PROD_PATTERN, // 生产模式
-        T.CREDIT_CODE, // 统一社会信用代码
-        T.REGISTERED_CAPITAL, // 注册资本
-        T.ENTITY, // 法定代表人
-        T.BUSINESS_LICENSE_IS_SECULAR, // 营业执照是否长期
-        T.BUSINESS_LICENSE_BEGIN_TIME, // 营业执照开始时间
-        T.BUSINESS_LICENSE_END_TIME, // 营业执照结束时间
-        T.TAXPAYER_TYPE, // 纳税人类型
-        T.CONTACTS, // 联系人
-        T.DEPARTMENT, // 联系人部门
-        T.JOB_TITLE, // 联系人职称
-        T.PHONE, // 联系人手机
-        T.CONTACT_EMAIL, // 联系人邮箱
-        T.CERT_PHOTO, // 营业执照副本复印件
-        T.ID_CARD_FRONT_PHOTO, // 法人代表身份证复印件
-        T.ID_CARD, // 法人代表身份证号码
-        T.CONTACTS_ID_CARD_FRONT_PHOTO, // 运营人员身份证复印件
-        T.OPERATE_ID_CARD, // 运营人员身份证号码
-        T.STORE_STATUS,
-        T.CLOSE_REASON);
-    //    model.upd();
-    translateUtil.autoTranslate(model, true).upd();
+            model,
+            supplier,
+            T.COMPANY_TYPE, // 公司类型 多国语言
+            T.COMPANY_NATURE, // 企业性质 多国语言
+            T.COMPANY_ADDR, // 公司详细地址 多国语言
+            T.PROD_PATTERN, // 生产模式 多国语言
+            T.DEPARTMENT, // 联系人部门 多国语言
+            T.JOB_TITLE, // 联系人职称 多国语言
+
+            T.NAME, // 公司名称
+            T.ENGLISH_NAME, // 英文名称
+            T.COMPANY_ESTABLISH_TIME, // 企业成立时间
+            T.WEBSITE, // 公司官网网站地址
+            T.ANNUAL_PRODUCTION, // 年产量
+            T.TELEPHONE, // 公司电话
+            T.FAX, // 传真
+            T.POSTCODE, // 邮编
+            T.TARGETED_MARKET, // 目标市场
+            T.CREDIT_CODE, // 统一社会信用代码
+            T.REGISTERED_CAPITAL, // 注册资本
+            T.ENTITY, // 法定代表人
+            T.BUSINESS_LICENSE_IS_SECULAR, // 营业执照是否长期
+            T.BUSINESS_LICENSE_BEGIN_TIME, // 营业执照开始时间
+            T.BUSINESS_LICENSE_END_TIME, // 营业执照结束时间
+            T.TAXPAYER_TYPE, // 纳税人类型
+            T.CONTACTS, // 联系人
+            T.PHONE, // 联系人手机
+            T.CONTACT_EMAIL, // 联系人邮箱
+            T.CERT_PHOTO, // 营业执照副本复印件
+            T.ID_CARD_FRONT_PHOTO, // 法人代表身份证复印件
+            T.ID_CARD, // 法人代表身份证号码
+            T.CONTACTS_ID_CARD_FRONT_PHOTO, // 运营人员身份证复印件
+            T.OPERATE_ID_CARD, // 运营人员身份证号码
+            T.STORE_STATUS,
+            T.CLOSE_REASON
+    );
+    UsrSupplier s = new UsrSupplier();
+    s.setCompanyType(supplier.getCompanyType());
+    s.setCompanyNature(supplier.getCompanyNature());
+    s.setCompanyAddr(supplier.getCompanyAddr());
+    s.setProdPattern(supplier.getProdPattern());
+    s.setDepartment(supplier.getDepartment());
+    s.setJobTitle(supplier.getJobTitle());
+    translateUtil.autoTranslate(s,true);
+    model.setCompanyType(s.getCompanyType());
+    model.setCompanyNature(s.getCompanyNature());
+    model.setCompanyAddr(s.getCompanyAddr());
+    model.setProdPattern(s.getProdPattern());
+    model.setDepartment(s.getDepartment());
+    model.setJobTitle(s.getJobTitle());
+    model.upd();
     return model;
   }
 
@@ -1228,15 +1256,7 @@ public class UsrSupplierDAO {
                       {
                         setId((Integer) o.get(T.PKEY.getFld().getCodeSqlField()));
                         setName((String) o.get(T.NAME.getFld().getCodeSqlField()));
-                        if (o.get(T.UserId.getFld().getCodeSqlField()) != null) {
-                          UsrMain main =
-                              BeanBase.load(
-                                  UsrMain.class,
-                                  (Serializable) o.get(T.UserId.getFld().getCodeSqlField()));
-                          if (main != null) {
-                            setContacts(main.getContacts());
-                          }
-                        }
+                        setContacts((String) o.get(T.CONTACTS.getFld().getCodeSqlField()));
                         setCompanyAddr((String) o.get(T.COMPANY_ADDR.getFld().getCodeSqlField()));
                         setApplicationTime(
                             (Date) o.get(T.APPLICATION_TIME.getFld().getCodeSqlField()));
@@ -1309,8 +1329,6 @@ public class UsrSupplierDAO {
                           if (main != null) {
                             setMainId(main.getPkey());
                             setEmail(main.getEmail());
-                            setContacts(main.getContacts());
-                            setTelphone(main.getTelphone());
                           }
                         }
                         if (o.get(SVSInfo.T.GRADE.getFld().getCodeSqlField()) != null) {
@@ -1319,6 +1337,8 @@ public class UsrSupplierDAO {
                         if (o.get("svsStatus") != null) {
                           setSvsStatus((Byte) o.get("svsStatus"));
                         }
+                        setContacts((String) o.get(T.CONTACTS.getFld().getCodeSqlField()));
+                        setTelphone((String) o.get(T.PHONE.getFld().getCodeSqlField()));
                         setStoreopenTime((Date) o.get(T.STOREOPEN_TIME.getFld().getCodeSqlField()));
                         setStoreStatus(
                             Byte.valueOf(

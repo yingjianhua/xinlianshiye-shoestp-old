@@ -62,7 +62,7 @@ public class PltFreightAction extends MgtAction<PltFreight> {
     freightManagementView.setCreatedby(lu.get_user().getPkey());
     PltFreight pltFreight = pltFreightDAO.insShipping(freightManagementView);
    if(null!=pltFreight){
-        PltFreightLine pf=new PltFreightLine();
+       PltFreightLine pf=new PltFreightLine();
         pf.setMain(pltFreight.getPkey());
         pf.setSection("全区");
         pf.setFree(Sys.OYn.NO.getLine().getKey());
@@ -70,8 +70,8 @@ public class PltFreightAction extends MgtAction<PltFreight> {
         pf.setExtraPrice(BigDecimal.ZERO);
         pf.setWeightPrice(BigDecimal.ZERO);
         pf.setAggravatePrice(BigDecimal.ZERO);
-        pf.setAggravateSection(0);
-        pf.setWeightSection(0);
+        pf.setAggravateSection(BigDecimal.ZERO);
+        pf.setWeightSection(BigDecimal.ZERO);
         pltFreightDAO.insDeliveryArea(pf);
    }
     write();
@@ -143,7 +143,6 @@ public class PltFreightAction extends MgtAction<PltFreight> {
     json.put("STORE_ROOT", ja);
     writerOrExport(json);
   }
-
   @Getter @Setter private String fileFileName = "";
   @Getter @Setter private File file;
 

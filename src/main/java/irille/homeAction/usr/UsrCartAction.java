@@ -2,7 +2,17 @@ package irille.homeAction.usr;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
 
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.core.sys.Sys;
@@ -20,16 +30,31 @@ import irille.homeAction.usr.dto.ColorView;
 import irille.pub.Exp;
 import irille.pub.LogMessage;
 import irille.pub.bean.BeanBase;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.odr.Odr.PayType;
-import irille.shop.pdt.*;
-import irille.shop.plt.*;
+import irille.shop.pdt.Pdt;
+import irille.shop.pdt.PdtCat;
+import irille.shop.pdt.PdtCatDAO;
+import irille.shop.pdt.PdtProduct;
+import irille.shop.pdt.PdtProductDAO;
+import irille.shop.pdt.PdtSpec;
+import irille.shop.pdt.PdtSpecDAO;
+import irille.shop.plt.PltCountry;
+import irille.shop.plt.PltFreight;
+import irille.shop.plt.PltFreightSeller;
+import irille.shop.plt.PltPay;
+import irille.shop.plt.PltProvince;
 import irille.shop.prm.PrmGroupPurchaseLine;
-import irille.shop.usr.*;
+import irille.shop.usr.Usr;
 import irille.shop.usr.Usr.OAddress;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import irille.shop.usr.UsrCart;
+import irille.shop.usr.UsrCartDAO;
+import irille.shop.usr.UsrPurchaseLine;
+import irille.shop.usr.UsrPurchaseLineDAO;
+import irille.shop.usr.UsrSupplier;
+import irille.shop.usr.UsrSupplierDAO;
 
 public class UsrCartAction extends HomeAction<UsrCart> {
   private static final LogMessage LOG = new LogMessage(UsrCartAction.class);
@@ -171,21 +196,17 @@ public class UsrCartAction extends HomeAction<UsrCart> {
     submitCart.commit();
     List<UsrPurchaseLine> listUsrPurchaseLine =
         UsrPurchaseLineDAO.listByPurchaseAddrsstype(
-            getPurchase().getPkey(),
-            OAddress
-                .COMMON); // BeanBase.list(UsrPurchaseLine.class,
-                          // UsrPurchaseLine.T.PURCHASE.getFld().getCodeSqlField() + " =? AND " +
-                          // UsrPurchaseLine.T.ADDRSSTYPE.getFld().getCodeSqlField() + " = ?
-                          // ",false,HomeAction.getPurchase().getPkey(),Usr.OAddress.COMMON.getLine().getKey());
+            getPurchase().getPkey(), OAddress.COMMON); // BeanBase.list(UsrPurchaseLine.class,
+    // UsrPurchaseLine.T.PURCHASE.getFld().getCodeSqlField() + " =? AND " +
+    // UsrPurchaseLine.T.ADDRSSTYPE.getFld().getCodeSqlField() + " = ?
+    // ",false,HomeAction.getPurchase().getPkey(),Usr.OAddress.COMMON.getLine().getKey());
     List<AddressView> address = AddressView.buildByPurchaseLine(listUsrPurchaseLine);
     List<UsrPurchaseLine> billAddressList =
         UsrPurchaseLineDAO.listByPurchaseAddrsstype(
-            getPurchase().getPkey(),
-            OAddress
-                .BILLED); // BeanBase.list(UsrPurchaseLine.class,
-                          // UsrPurchaseLine.T.PURCHASE.getFld().getCodeSqlField() + " =? AND " +
-                          // UsrPurchaseLine.T.ADDRSSTYPE.getFld().getCodeSqlField() + " = ?
-                          // ",false,HomeAction.getPurchase().getPkey(),Usr.OAddress.BILLED.getLine().getKey());
+            getPurchase().getPkey(), OAddress.BILLED); // BeanBase.list(UsrPurchaseLine.class,
+    // UsrPurchaseLine.T.PURCHASE.getFld().getCodeSqlField() + " =? AND " +
+    // UsrPurchaseLine.T.ADDRSSTYPE.getFld().getCodeSqlField() + " = ?
+    // ",false,HomeAction.getPurchase().getPkey(),Usr.OAddress.BILLED.getLine().getKey());
     AddressView billAddress = null;
     if (billAddressList != null && billAddressList.size() > 0) {
       billAddress = AddressView.buildByPurchaseLine(billAddressList.get(0));
@@ -208,14 +229,14 @@ public class UsrCartAction extends HomeAction<UsrCart> {
             PltCountry.class,
             " 1=1 ",
             false); // PltCountryDAO.list(curLanguage());//BeanBase.list(PltCountry.class,
-                    // null,false);
+    // null,false);
     Map<Integer, List<PltProvince>> provinceMap = new HashMap<Integer, List<PltProvince>>();
     List<PltProvince> provinceList =
         BeanBase.list(
             PltProvince.class,
             " 1=1 ",
             false); // PltProvinceDAO.list(curLanguage());//BeanBase.list(PltProvince.class, null
-                    // ,false);
+    // ,false);
     for (PltProvince p : provinceList) {
       if (provinceMap.get(p.getMain()) == null) {
         List<PltProvince> proList = new ArrayList<PltProvince>();
@@ -998,7 +1019,8 @@ public class UsrCartAction extends HomeAction<UsrCart> {
   public void delCartByPdt() throws IOException, JSONException {
     if ((getPdtPkeys() == null || getPdtPkeys().trim().equals(""))
         && (getCartPkeys() == null || getCartPkeys().equals(""))) {
-      throw LOG.errTran("cart%checked_error", "请选择至少一个产品");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.cart_checked_error, curLanguage()));
     }
     List<PdtSpec> specList1 = new ArrayList<PdtSpec>();
     if (getPdtPkeys() != null && !getPdtPkeys().trim().equals("")) {
@@ -1008,7 +1030,9 @@ public class UsrCartAction extends HomeAction<UsrCart> {
               PdtSpec.T.PRODUCT.getFld().getCodeSqlField() + " in( " + getPdtPkeys() + " )",
               false);
       if (specList1 == null || specList1.size() <= 0) {
-        throw LOG.errTran("global%unknown_mistake", "未知错误");
+        //        throw LOG.errTran("global%unknown_mistake", "未知错误");
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.service_wrong_data, curLanguage()));
       }
       String specArr = "";
       for (PdtSpec spec : specList1) {
@@ -1098,7 +1122,9 @@ public class UsrCartAction extends HomeAction<UsrCart> {
               false,
               cartPdt.getPkey());
       if (specList == null || specList.size() <= 0) {
-        throw LOG.errTran("goods_info%No_Spec", "该商品尚未发布规格");
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.goods_info_No_Spec, curLanguage()));
+        //        throw LOG.errTran("goods_info%No_Spec", "该商品尚未发布规格");
       }
       UsrCart existsCart =
           UsrCart.chkUniqueSpec_purchase(false, specList.get(0).getPkey(), getPurchase().getPkey());
@@ -1209,12 +1235,10 @@ public class UsrCartAction extends HomeAction<UsrCart> {
     }
     List<UsrPurchaseLine> billAddressList =
         UsrPurchaseLineDAO.listByPurchaseAddrsstype(
-            getPurchase().getPkey(),
-            OAddress
-                .BILLED); // BeanBase.list(UsrPurchaseLine.class,
-                          // UsrPurchaseLine.T.PURCHASE.getFld().getCodeSqlField() + " =? AND " +
-                          // UsrPurchaseLine.T.ADDRSSTYPE.getFld().getCodeSqlField() + " = ?
-                          // ",false,HomeAction.getPurchase().getPkey(),Usr.OAddress.BILLED.getLine().getKey());
+            getPurchase().getPkey(), OAddress.BILLED); // BeanBase.list(UsrPurchaseLine.class,
+    // UsrPurchaseLine.T.PURCHASE.getFld().getCodeSqlField() + " =? AND " +
+    // UsrPurchaseLine.T.ADDRSSTYPE.getFld().getCodeSqlField() + " = ?
+    // ",false,HomeAction.getPurchase().getPkey(),Usr.OAddress.BILLED.getLine().getKey());
     AddressView billAddress = null;
     if (billAddressList != null && billAddressList.size() > 0) {
       billAddress = AddressView.buildByPurchaseLine(billAddressList.get(0));
@@ -1268,7 +1292,8 @@ public class UsrCartAction extends HomeAction<UsrCart> {
     for (UsrCart cart : carts) {
       for (UsrCart cart2 : carts) {
         if (!cart.getPurchase().equals(cart2.getPurchase())) {
-          throw LOG.errTran("global%unknown_mistake", "未知错误");
+          throw new WebMessageException(
+              MessageBuild.buildMessage(ReturnCode.service_gone, curLanguage()));
         }
       }
       totalQty += cart.getQty();

@@ -12,6 +12,7 @@ import com.xinlianshiye.shoestp.shop.view.rfq.RFQUnreadCountView;
 
 import irille.homeAction.rfq.view.RFQDetailsView;
 import irille.homeAction.rfq.view.RFQListView;
+import irille.pub.tb.FldLanguage.Language;
 import irille.shop.usr.UsrPurchase;
 import irille.view.Page;
 
@@ -25,6 +26,7 @@ public interface RFQConsultService {
    * @param type 询盘类型
    * @param keyword 搜索关键字 匹配询盘标题和报价商家的名字
    * @param unread 未读
+   * @param lastRelation 从第一条记录开始 一直查询到指定relation所在的询盘
    * @param start 开始记录数
    * @param limit 每页记录数
    * @author Jianhua Ying
@@ -34,6 +36,7 @@ public interface RFQConsultService {
       Byte type,
       String keyword,
       Boolean unread,
+      Integer lastRelation,
       Integer start,
       Integer limit);
 
@@ -54,7 +57,7 @@ public interface RFQConsultService {
    * @return
    * @author Jianhua Ying
    */
-  RFQConsultView getDetail(UsrPurchase purchase, Integer consultPkey);
+  RFQConsultView getDetail(UsrPurchase purchase, Integer consultPkey, Language language);
 
   /**
    * 给RFQ询盘添加额外的信息,更新有效时间
@@ -66,7 +69,11 @@ public interface RFQConsultService {
    * @author Jianhua Ying
    */
   void addMoreInformation(
-      UsrPurchase purchase, Integer consultPkey, String information, Date validDate);
+      UsrPurchase purchase,
+      Integer consultPkey,
+      String information,
+      Date validDate,
+      Language language);
 
   /**
    * 给询盘添加图片
@@ -78,7 +85,7 @@ public interface RFQConsultService {
    * @param images 图片链接 多图 通过逗号分隔
    * @author Jianhua Ying
    */
-  void addImage(UsrPurchase purchase, Integer consultPkey, String images);
+  void addImage(UsrPurchase purchase, Integer consultPkey, String images, Language language);
 
   /**
    * 给询盘添加感兴趣的产品
@@ -90,7 +97,8 @@ public interface RFQConsultService {
    * @param products 产品主键, 多产品通过逗号分隔
    * @author Jianhua Ying
    */
-  void addProductRequest(UsrPurchase purchase, Integer consultPkey, String products);
+  void addProductRequest(
+      UsrPurchase purchase, Integer consultPkey, String products, Language language);
 
   /**
    * 关闭RFQ询盘
@@ -101,7 +109,7 @@ public interface RFQConsultService {
    * @param consultPkey 询盘主键
    * @author Jianhua Ying
    */
-  void close(UsrPurchase purchase, Integer consultPkey);
+  void close(UsrPurchase purchase, Integer consultPkey, Language language);
 
   /**
    * 查询RFQ的报价状况

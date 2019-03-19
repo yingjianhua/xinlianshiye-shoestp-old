@@ -13,8 +13,8 @@ public class DeliveryAreaView implements BaseView {
   private Byte freeShipping; // 免运费
   private BigDecimal freeShippingPrice; // 免运费价格
   private BigDecimal additionalFees; // 附加费用
-  private Integer firstInterval; // 首重区间
-  private Integer continuedInterval; // 续重区间
+  private BigDecimal firstInterval; // 首重区间
+  private BigDecimal continuedInterval; // 续重区间
   private BigDecimal firstPrice; // 首重价格
   private BigDecimal aggravatingPrice; // 加重价格
 }

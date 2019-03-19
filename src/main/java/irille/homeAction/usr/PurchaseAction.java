@@ -36,7 +36,7 @@ public class PurchaseAction extends AbstractHomeAction implements IPurchaseActio
   @Override
   @NeedLogin
   public void editAvatar() throws IOException {
-    usrPurchaseService.editAvatar(getPurchase(), avatar);
+    usrPurchaseService.editAvatar(getPurchase(), avatar, curLanguage());
     write();
   }
 
@@ -68,7 +68,7 @@ public class PurchaseAction extends AbstractHomeAction implements IPurchaseActio
   @Override
   @NeedLogin
   public void changeEmail() throws IOException {
-    usrPurchaseService.changeEmail(getPurchase(), email, password);
+    usrPurchaseService.changeEmail(getPurchase(), email, password, curLanguage());
     write();
   }
 

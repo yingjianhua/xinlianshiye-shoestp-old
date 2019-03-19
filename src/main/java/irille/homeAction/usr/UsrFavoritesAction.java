@@ -6,6 +6,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
 import com.xinlianshiye.shoestp.shop.service.usr.UsrFavoriteService;
 import com.xinlianshiye.shoestp.shop.view.usr.FavoritesView;
 
@@ -16,16 +21,18 @@ import irille.homeAction.HomeAction;
 import irille.pub.Exp;
 import irille.pub.LogMessage;
 import irille.pub.bean.BeanBase;
-import irille.pub.i18n.I18NUtil;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.idu.IduPage;
 import irille.pub.util.TranslateLanguage.translateUtil;
-import irille.shop.pdt.*;
+import irille.shop.pdt.PdtCat;
+import irille.shop.pdt.PdtCatDAO;
+import irille.shop.pdt.PdtProduct;
+import irille.shop.pdt.PdtProductDAO;
+import irille.shop.pdt.PdtSpec;
 import irille.shop.usr.UsrCart;
 import irille.shop.usr.UsrFavorites;
 import irille.shop.usr.UsrFavoritesDAO;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * 采购商action
@@ -165,7 +172,9 @@ public class UsrFavoritesAction extends HomeAction<UsrFavorites> {
 
   public void myRecycleAjax() throws IOException {
     if (getPurchase() == null) {
-      writeErr(-1, "未登录");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_timeout, curLanguage()));
+      //      writeErr(-1, "未登录");
     }
     IduPage page = new IduPage();
     page.setStart(pageNumber);
@@ -216,7 +225,9 @@ public class UsrFavoritesAction extends HomeAction<UsrFavorites> {
   @NeedLogin
   public void myfavoriteAjax() throws IOException {
     if (getPurchase() == null) {
-      writeErr(-1, "未登录");
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_timeout, curLanguage()));
+      //      writeErr(-1, "未登录");
     }
     if (isMobile()) {
       IduPage page = new IduPage();
@@ -268,7 +279,9 @@ public class UsrFavoritesAction extends HomeAction<UsrFavorites> {
   public void addSinglePdt() throws Exception {
     if (getFavoritesPkeys() == null || getFavoritesPkeys().trim() == "") {
       //            throw LOG.err(Usr.ErrMsgs.noSubmit);
-      throw LOG.err("没有选择产品", I18NUtil.getBundle("PleaseSelect"));
+      //      throw LOG.err("没有选择产品", I18NUtil.getBundle("PleaseSelect"));
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.cart_checked_error, curLanguage()));
     }
     String[] favoritePkeyArr = getFavoritesPkeys().split(",");
     int errCount = 0;
@@ -304,7 +317,9 @@ public class UsrFavoritesAction extends HomeAction<UsrFavorites> {
         }
       } catch (ArrayIndexOutOfBoundsException e) {
         errCount++;
-        throw LOG.errTran("goods_info%No_Spec", "该产品尚未发布规格");
+        //        throw LOG.errTran("goods_info%No_Spec", "该产品尚未发布规格");
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.goods_info_No_Spec, curLanguage()));
       } finally {
         continue;
       }
