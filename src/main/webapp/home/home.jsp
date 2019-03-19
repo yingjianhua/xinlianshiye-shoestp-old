@@ -501,7 +501,7 @@
                 //     }
                 // })
                 // 接口改为随机商品
-                axios.get('/home/temporary_Temporary_generalList', {
+                axios.get('/home/pdt_PdtProduct_getRandomProduct', {
                     params: {
                         limit: 5,
                     }
@@ -530,7 +530,7 @@
                 //     }
                 // })
                 // 接口改为随机商品
-                axios.get('/home/temporary_Temporary_generalList', {
+                axios.get('/home/pdt_PdtProduct_getRandomProduct', {
                     params: {
                         limit: 5,
                     }

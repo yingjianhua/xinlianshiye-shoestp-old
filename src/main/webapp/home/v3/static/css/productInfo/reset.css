@@ -35,6 +35,7 @@ ul{
     clear: both;
     height: 0;
 }
+
 [v-cloak]{
 	display: none;
 }
@@ -65,7 +66,7 @@ ul{
   -webkit-box-orient: vertical;
 }
 /* 3行省略号 */
-.ellipsis_3{ 
+.ellipsis_3{
   overflow : hidden;
   text-overflow: ellipsis;
   display: -webkit-box;

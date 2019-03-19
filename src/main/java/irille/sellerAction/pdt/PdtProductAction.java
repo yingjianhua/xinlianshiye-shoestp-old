@@ -7,6 +7,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.struts2.ServletActionContext;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import irille.Service.Manage.Pdt.IPdtProductManageService;
 import irille.Service.Pdt.Imp.PdtproductPageselect;
 import irille.core.sys.Sys;
@@ -21,15 +26,15 @@ import irille.pub.tb.Tb;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.pdt.inf.IPdtProductAction;
-import irille.shop.pdt.*;
+import irille.shop.pdt.Pdt;
+import irille.shop.pdt.PdtProduct;
+import irille.shop.pdt.PdtProductDAO;
+import irille.shop.pdt.PdtSpec;
+import irille.shop.pdt.PdtSpecDAO;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltFreightSeller;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.struts2.ServletActionContext;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtProductAction {
 
@@ -67,8 +72,23 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
       case 0:
         writeErr(0, "商品颜色尺码必须填写");
         break;
-      case -2:
+      case -3:
         writeErr(-3, "阶梯价不能为空");
+        break;
+      case -4:
+        writeErr(-4, "名称不能为空");
+        break;
+      case -5:
+        writeErr(-5, "产品分类不能为空");
+        break;
+      case -6:
+        writeErr(-6, "店铺分类不能为空");
+        break;
+      case -7:
+        writeErr(-7, "商品货号不能为空");
+        break;
+      case -8:
+        writeErr(-8, "产品图片不能为空");
         break;
       default:
         write();

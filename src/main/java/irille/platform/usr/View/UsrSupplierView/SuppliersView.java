@@ -25,8 +25,8 @@ public class SuppliersView implements BaseView {
 
   private Integer mainId; // 注册ID
   private String email; // 注册邮箱
-  private String contacts; // 注册联系人姓名
-  private String telphone; // 注册联系人号码
+  private String contacts; // 联系人姓名
+  private String telphone; // 联系人号码
 
   private Byte svsGrade; // svs等级
   private Byte svsStatus; // svs认证状态

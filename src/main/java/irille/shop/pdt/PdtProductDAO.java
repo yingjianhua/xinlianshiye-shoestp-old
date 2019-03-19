@@ -68,13 +68,13 @@ public class PdtProductDAO {
             SELECT(PdtProduct.class).FROM(PdtProduct.class);
             if (fldvalue != null) {
               if (fldvalue.equalsIgnoreCase("name")) {
-                WHERE(PdtProduct.T.NAME, "like '%" + condition + "%'");
+                WHERE(PdtProduct.T.NAME, "like ?","'%" + condition + "%'");
               }
               if (fldvalue.equalsIgnoreCase("sku")) {
-                WHERE(T.SKU, "like '%" + condition + "%'");
+                WHERE(T.SKU, "like ?","'%" + condition + "%'");
               }
               if (fldvalue.equalsIgnoreCase("code")) {
-                WHERE(T.CODE, "like '%" + condition + "%'");
+                WHERE(T.CODE, "like ?","'%" + condition + "%'");
               }
               if (fldvalue.equalsIgnoreCase("supplier")) {
                 WHERE(T.SUPPLIER, "=?" + condition);

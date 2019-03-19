@@ -22,7 +22,7 @@ import irille.pub.exception.WebMessageException;
 import irille.pub.idu.IduIns;
 import irille.pub.idu.IduUpd;
 import irille.pub.tb.FldLanguage.Language;
-import irille.pub.validate.ValidRegex;
+import irille.pub.validate.ValidRegex2;
 import irille.shop.plt.PltArea;
 import irille.shop.plt.PltCity;
 import irille.shop.plt.PltProvinces;
@@ -114,7 +114,7 @@ public class UsrMainDao {
 	 * @param bean
 	 */
 	private static void toValid(UsrMain bean) {
-		ValidRegex vr = new ValidRegex(bean);
+    ValidRegex2 vr = new ValidRegex2(bean);
 		vr.validEmail(UsrMain.T.EMAIL);
 	}
 

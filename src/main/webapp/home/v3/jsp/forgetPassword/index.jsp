@@ -32,7 +32,7 @@
                 <div class="form-item">
                     <span class="form-item_label">Your Email Address</span>
                     <input type="text" class="form-item_input"
-                           v-model="email" @blur="judgeEmail">
+                           v-model="email" @blur="judgeEmail" style="border:1px solid gray">
                     <span class="form-item_hint">{{promptMessage}}</span>
                 </div>
                 <div class="form-item">
@@ -47,7 +47,7 @@
                 <div class="form-item">
                     <span class="form-item_label">Verification Code</span>
                     <input type="text" class="form-item_input
-                                form-item_code" v-model="authCode">
+                                form-item_code" v-model="authCode" style="border:1px solid gray">
                     <span class="code-image" @click="codechange"><img
                             :src="imgCode" alt=""></span>
                 </div>

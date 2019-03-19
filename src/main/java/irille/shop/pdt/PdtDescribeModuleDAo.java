@@ -27,9 +27,6 @@ public class PdtDescribeModuleDAo {
     sql.orWhere(PdtDescribeModule.T.DEFAULT_MODULE, " =? ", OYn.YES.getLine().getKey());
     sql.AND();
     sql.WHERE(PdtDescribeModule.T.DELETED, " =? ", OYn.NO.getLine().getKey());
-    if (limit != 0) {
-      sql.LIMIT(start, limit);
-    }
     Integer count = Query.sql(sql).queryCount();
     List<PdtDescribeModule> list =
         Query.sql(sql.LIMIT(start, limit)).queryList(PdtDescribeModule.class);
@@ -83,6 +80,7 @@ public class PdtDescribeModuleDAo {
   }
 
   public static void add(PdtDescribeModule dm, Integer supplier) {
+    checkLenth(dm);
     Integer queryCount =
         Query.SELECT(PdtDescribeModule.class)
             .FROM(PdtDescribeModule.class)
@@ -92,6 +90,7 @@ public class PdtDescribeModuleDAo {
     if (queryCount >= 10) {
       throw new WebMessageException(ReturnCode.service_wrong_data, "您已添加了10条,无法继续添加");
     }
+
     dm.setSupplier(supplier);
     dm.setCreateTime(Env.getSystemTime());
     dm.setUpdateTime(Env.getSystemTime());
@@ -101,6 +100,7 @@ public class PdtDescribeModuleDAo {
   }
 
   public static void upd(PdtDescribeModule dm, Integer supplier) {
+    checkLenth(dm);
     PdtDescribeModule bean = verify(supplier, dm.getPkey());
     bean.setName(dm.getName());
     bean.setRemark(dm.getRemark());
@@ -171,6 +171,7 @@ public class PdtDescribeModuleDAo {
   }
 
   public static void platUpd(PdtDescribeModule dm) {
+    checkLenth(dm);
     PdtDescribeModule bean = Query.SELECT(PdtDescribeModule.class, dm.getPkey());
     if (bean == null) throw new WebMessageException(ReturnCode.service_wrong_data, "参数错误");
     bean.setName(dm.getName());
@@ -182,6 +183,7 @@ public class PdtDescribeModuleDAo {
   }
 
   public static void platAdd(PdtDescribeModule dm) {
+    checkLenth(dm);
     dm.setCreateTime(Env.getSystemTime());
     dm.setUpdateTime(Env.getSystemTime());
     dm.setDefaultModule(OYn.YES.getLine().getKey());
@@ -195,5 +197,11 @@ public class PdtDescribeModuleDAo {
     if (bean == null) throw new WebMessageException(ReturnCode.service_wrong_data, "参数错误");
     bean.setDeleted(OYn.YES.getLine().getKey());
     bean.upd();
+  }
+
+  public static void checkLenth(PdtDescribeModule dm) {
+    if (dm.getName().length() > PdtDescribeModule.T.NAME.getFld().getLen()
+        || dm.getRemark().length() > PdtDescribeModule.T.REMARK.getFld().getLen())
+      throw new WebMessageException(ReturnCode.service_wrong_data, "超出名称长度");
   }
 }

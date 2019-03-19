@@ -301,7 +301,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
    * @date 2018/7/27 10:56
    */
   public String gtProductsInfo() throws Exception {
-     if (Long.valueOf(getId().toString()) < 1) {
+    if (Long.valueOf(getId().toString()) < 1) {
       throw new WebMessageException(
           MessageBuild.buildMessage(ReturnCode.product_wrong_data, curLanguage()));
     }
@@ -346,7 +346,6 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
     return HomeAction.TRENDS;
   }
 
-
   /** ===============O2O INFO START=============== */
   private O2OMapView map;
 
@@ -382,16 +381,6 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
     page.setStart(getPage());
     page.setLimit(getLimit());
     write(pdtProduct.getYouMayLike(page, getCated()));
-  }
-
-  /**
-   * @Description: 完全随机商品
-   *
-   * @date 2018/12/14 19:16
-   * @author lijie@shoestp.cn
-   */
-  public void getRandomPdt() throws IOException {
-    write(pdtProduct.getRandomPdt(getLimit(), getCated(), getPurchase()));
   }
 
   private Integer id;
@@ -482,18 +471,9 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
    */
   private String comment;
 
-  private String _images;
+  @Getter @Setter private String images;
   private String satisfaction;
   private PdtCommentViewPageView commentViewPageView;
-
-  public String getImages() {
-    return _images;
-  }
-
-  public PdtProductAction setImages(String _images) {
-    this._images = _images;
-    return this;
-  }
 
   public String viewComments() {
     setResult("/home/comment_view.jsp");
@@ -706,9 +686,13 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
             getRankingBasis(),
             getBasis());
     map.put("page", getPage());
-    write(
-        new ObjectMapper()
-            .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-            .writeValueAsString(map));
+    write(objectMapper.writeValueAsString(map));
   }
+
+  //  首页随机商品接口
+  public void getRandomProduct() throws IOException {
+    if (getLimit() < 1) setLimit(10);
+    write(pdtProduct.getRandomPdt(getLimit(), getCated(), getPurchase()));
+  }
+
 }

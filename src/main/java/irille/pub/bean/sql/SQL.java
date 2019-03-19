@@ -201,10 +201,10 @@ public class SQL {
               WHERE(fld, " =? ", mv.getContent());
             }
             if (mv.getCondition() == 5) {
-              WHERE(fld, " like '%" + mv.getContent() + "%' ");
+              WHERE(fld, " like ?","%" + mv.getContent() + "%");
             }
             if (mv.getCondition() == 6) {
-              WHERE(fld, " not like '%" + mv.getContent() + "%' ");
+              WHERE(fld, " not like ?","%" + mv.getContent() + "%");
             }
           } else {
             if (mv.getCondition() == 1) {
