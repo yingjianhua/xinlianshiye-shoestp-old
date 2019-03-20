@@ -46,7 +46,6 @@
         <div class="account-setting-box">
             <h1>Account Settings</h1>
             <div class="section1">
-                <div>66666666666666666666666666666666</div>
                 <el-form status-icon :model="form1" :rules="rules" ref="form1" label-width="170px" class="">
                 <el-row>
                     <el-col :span="12" :offset="6">
