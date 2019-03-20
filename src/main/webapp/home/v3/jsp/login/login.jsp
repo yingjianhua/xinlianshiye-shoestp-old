@@ -48,7 +48,8 @@
                             </el-form-item>
 
                             <el-form-item label="Password" prop="psd">
-                                <el-input v-model="loginForm.psd" placeholder="Password" auto-complete="on" type="password"></el-input>
+                                <el-input v-model="loginForm.psd" onkeyup="this.value=this.value.replace(/\s+/g,'')"
+                                          placeholder="Password" auto-complete="on" type="password"></el-input>
                             </el-form-item>
                         </el-form>
 
@@ -132,7 +133,7 @@
             loginFormRules: {
                 email: [
                     {required: true, message: 'Email can\'t be empty!', trigger: 'blur'}, {
-                        pattern: /^[0-9A-Za-z][\.-_0-9A-Za-z]*@[0-9A-Za-z]+(?:\.[0-9A-Za-z]+)+$/,
+                        pattern: /^[\w]{1,16}@+\w{1,15}.\w{2,5}$/,
                         message: 'E-mail format is incorrect',
                         trigger: 'blur'
                     }
