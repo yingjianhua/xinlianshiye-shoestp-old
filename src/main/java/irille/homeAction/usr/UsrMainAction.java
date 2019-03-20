@@ -183,7 +183,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 			}
 		}
 		UsrMain main = UsrMain.chkUniqueEmail(false, getBean().getEmail());
-		if (main == null) {
+		if (main != null) {
 			throw new WebMessageException(
 					MessageBuild.buildMessage(ReturnCode.service_user_exists, HomeAction.curLanguage()));
 		}
