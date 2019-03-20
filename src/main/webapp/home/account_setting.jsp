@@ -151,7 +151,6 @@
         el: "#personalCenter",
         data() {
             var validatePhone = (rule, value, callback) => {
-                debugger
                 if (!value) {
                     callback(new Error('Please input the phone number'));
                     return
