@@ -418,7 +418,7 @@
         }
     };
     var validateTel = function (rule, value, callback) {
-        let reg = /^1[\d]{10}$/
+        let reg = /(^1\d{10}$)|(^(\d{3,4}-)?\d{7,8}$)/
         if (!value) {
             callback();
         } else if (!reg.test(value)) {
@@ -438,11 +438,11 @@
         }
     };
     var validateFax = function (rule, value, callback) {
-        let reg = /^[0-9]{12,}$/
+        let reg = /^(\d{3,4}-)?\d{7,8}$/
         if (!value) {
             callback();
         } else if (!reg.test(value)) {
-            return callback(new Error("请填写至少12位数字"));
+            return callback(new Error("请填写正确传真格式"));
         } else {
             callback();
         }
@@ -458,21 +458,21 @@
         }
     };
     var validateRegist = function(rule, value, callback){
-        let reg = /^[\d]+$/
+        let reg = /^([1-9]\d*|0)(\.\d*[1-9])?$/
         if (!value) {
          callback();
         } else if(!reg.test(value)){
-            return callback(new Error("请填写数字"));
+            return callback(new Error("请填写数字,不能以0开头"));
         } else {
             callback();
         }
     };
     var validateEntity = function (rule, value, callback) {
-        let reg = /^[\u4e00-\u9fa5]{2,5}$/
+        let reg = /^[\u4e00-\u9fa5]{2,6}$/
         if (!value) {
             callback();
         } else if (!reg.test(value)) {
-            return callback(new Error("请填写2至5个中文"));
+            return callback(new Error("请填写2至6个中文"));
         } else {
             callback();
         }
@@ -539,11 +539,11 @@
         }
     };
     var validatecontacts = function(rule, value, callback){
-        let reg = /^[a-zA-Z\u4e00-\u9fa5]{3,15}$/
+        let reg = /^[A-Za-z\u4e00-\u9fa5]{0,30}$/
         if (!value) {
             callback();
         } else if(!reg.test(value)){
-            return callback(new Error("请填写3至15个字符"));
+            return callback(new Error("请填写30个以内字符"));
         } else {
             callback();
         }
@@ -662,10 +662,10 @@
                     { validator: validatecontacts, trigger: 'blur' }
                 ],
                 department: [
-                    {validator: validateRegist, trigger: 'blur'}
+                    {validator: validatecontacts, trigger: 'blur'}
                 ],
                 jobTitle: [
-                    {validator: validateJob, trigger: 'blur'}
+                    {validator: validatecontacts, trigger: 'blur'}
                 ],
                 phone:[
                     { validator: validateTel, trigger: 'blur' }
