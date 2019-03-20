@@ -2,8 +2,6 @@ package irille.homeAction.usr;
 
 import java.io.IOException;
 
-import org.json.JSONException;
-
 import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
 
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
@@ -15,6 +13,7 @@ import irille.pub.exception.WebMessageException;
 import irille.shop.usr.UsrConsult;
 import irille.shop.usr.UsrConsultDAO;
 import irille.view.usr.ConsultView;
+import org.json.JSONException;
 
 /**
  * 采购商action
@@ -55,7 +54,6 @@ public class UsrConsultAction extends HomeAction<UsrConsult> implements IUsrCons
     return TRENDS;
   }
 
-  @NeedLogin
   public String productPublishView() {
     setResult("/home/pdt-inquiry-publish.jsp");
     return TRENDS;
