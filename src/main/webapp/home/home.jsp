@@ -114,8 +114,8 @@
                     <li class="nomr"><a href="/home/usr_UsrConsult_publishView">Request quotation details</a></li>
                 </ul>
 
-                <a :href="'/home/usr_UsrConsult_publishView?title='+encodeURIComponent(RFQ_title)+'&quantity='+RFQ_quantity+'&chooesValue='+chooesValue"
-                   class="boxListBtn01" target="_blank">Request For Quotation</a>
+                <a @click="ToRFQ(encodeURIComponent(RFQ_title),RFQ_quantity,chooesValue)"
+                   class="boxListBtn01">Request For Quotation</a>
             </div>
 
         </div>
@@ -190,8 +190,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="btn-group">
-                                                           <a class="btn-inquiry btn-blue"
-                                                               :href="'/home/usr_UsrConsult_productPublishView?product_id='+goods.id+'&backUrl='+window.location.href" target="_blank" style="z-index: 999">
+                                                           <a class="btn-inquiry btn-blue" @click.stop="ToProductInquiry(goods.id)" style="z-index: 999">
                                                                 Inquiry
                                                             </a>
                                                         </div>
@@ -297,8 +296,7 @@
                                     Min.Order: {{item.min_order}} pairs
                                 </div>
                             </a>
-                            <a class="inquiry-a"
-                               :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.id+'&backUrl='+window.location.href" target="_blank" style="z-index: 999">
+                            <a class="inquiry-a"  @click.stop="ToProductInquiry(item.id)" style="z-index: 999">
                                 Inquiry
                             </a>
                         </div>
@@ -348,8 +346,7 @@
                                     Min.Order: {{item.min_order}} pairs
                                 </div>
                             </a>
-                            <a class="inquiry-a"
-                               :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.id+'&backUrl='+window.location.href" target="_blank" style="z-index: 999">
+                            <a class="inquiry-a"   @click.stop="ToProductInquiry(item.id)" style="z-index: 999">
                                 Inquiry
                             </a>
                         </div>
@@ -461,6 +458,52 @@
             this.getRFQList();
         },
         methods: {
+            // 跳转RFQ   
+             ToRFQ(title,quantity,chooesValue){
+                if(sysConfig && sysConfig.user){
+                    // 登录了
+                    if(sysConfig.user.user_type == 1){
+                        this.$alert("Sorry, Supplier can't enter",{
+                            confirmButtonText: 'Ok',
+                            customClass: "my-custom-element-alert-class fs-content-18",
+                            center: true,
+                            callback: action =>{
+                                return
+                            }
+                        });
+                        return
+                    }else{
+                        window.open("/home/usr_UsrConsult_publishView?title=" +title+"&quantity="+quantity+"&chooesValue="+chooesValue);   
+                    }
+                }else{
+                    // 没登录
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                }
+             },
+            // 跳转商品询盘表单
+            ToProductInquiry(pdtId){
+                if(sysConfig && sysConfig.user){
+                    // 登录了
+                    if(sysConfig.user.user_type == 1){
+                        this.$alert("Sorry, Supplier can't enter",{
+                            confirmButtonText: 'Ok',
+                            customClass: "my-custom-element-alert-class fs-content-18",
+                            center: true,
+                            callback: action =>{
+                                return
+                            }
+                        });
+                        return
+                    }else{
+                        window.open("/home/usr_UsrConsult_productPublishView?product_id=" + pdtId + "&backUrl=" + window.location.href);   
+                    }
+                }else{
+                    // 没登录
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                }
+            },
             image: function image(v, params) {
                 if (!v) {
                     return "";

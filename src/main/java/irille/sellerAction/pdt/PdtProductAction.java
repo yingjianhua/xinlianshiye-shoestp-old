@@ -234,7 +234,8 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
               getCat(),
               getStart(),
               getLimit(),
-              getSearch()));
+              getSearch(),
+              getData()));
     }
   }
 

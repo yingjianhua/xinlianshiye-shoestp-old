@@ -1067,6 +1067,7 @@ public class PdtProductDAO {
       }
       o2oPdt.upd();
     } else {
+      pp.stIsVerify(false);
       pp.setState(status);
       if (status == 0) {
         pp.setTab3(message);

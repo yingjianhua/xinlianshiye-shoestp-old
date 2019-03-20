@@ -84,8 +84,10 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
       int cat,
       int start,
       int limit,
-      Integer search) {
-    return pdtProductDao.getProductListManage(name, number, supplierId, cat, start, limit, search);
+      Integer search,
+      String data) {
+    return pdtProductDao.getProductListManage(
+        name, number, supplierId, cat, start, limit, search, data);
   }
 
   @Override
@@ -331,7 +333,12 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
       pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
       pdtProduct.setSoldTimeB(Env.getSystemTime());
       pdtProduct.setState(Pdt.OState.ON.getLine().getKey());
+      //      if (null != pdtProduct.getPkey()) {
+      //        PdtProduct product = BeanBase.load(PdtProduct.class, pdtProduct.getPkey());
+      //        pdtProduct.setIsVerify(product.getIsVerify());
+      //      } else {
       pdtProduct.setIsVerify(Sys.OYn.YES.getLine().getKey());
+      //      }
     }
     pdtProduct.setIsNew((byte) 1);
     pdtProduct.setIsIndex((byte) 1);

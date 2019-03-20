@@ -107,7 +107,6 @@ Vue.component('index-top', {
                             </a>
                         </div>
                     </div>
-                    <div class="after-login"><a href="/home/usr_UsrConsult_publishView" target="_blank">Submit RFQ</a></div>
                     <div class="hours  after-login">Get multiple quotes within 24 hours！</div>
                 </dd>
                 <!--  登陆后看到的  -->
@@ -118,9 +117,9 @@ Vue.component('index-top', {
                         <li v-if="sysConfig.user.user_type==0"><a href="/home/usr_UsrMessages_center" target="_blank">RFQ List <i class="el-icon-arrow-right"></i></a></li>
                         <li v-if="sysConfig.user.user_type==0"><a href="/home/usr_UsrMessages_center" target="_blank">My Inquiry <i class="el-icon-arrow-right"></i></a></li>
                         <li v-if="sysConfig.user.user_type==0"><a href="/home/usr_UsrPurchase_userIndex" target="_blank">My Account <i class="el-icon-arrow-right"></i></a></li>
-                        <li style="font-size:15px;font-weight: bold;"><a href="/home/usr_UsrSupplier_supplierEntry" target="_blank">我要开店 <i class="el-icon-arrow-right"></i></a></li>
+                        <li v-if="sysConfig.user.user_type==1" style="font-size:15px;font-weight: bold;"><a href="/home/usr_UsrSupplier_supplierEntry" target="_blank">我要开店 <i class="el-icon-arrow-right"></i></a></li>
                     </ul>
-                    <div class="after-login"><a href="/home/usr_UsrConsult_publishView" target="_blank">Submit RFQ</a></div>
+                    <div v-if="sysConfig.user.user_type==0" class="after-login"><a href="/home/usr_UsrConsult_publishView" target="_blank">Submit RFQ</a></div>
                     <div class="hours after-login">Get multiple quotes within 24 hours！</div>
                 </dd>
             </dl>
