@@ -732,7 +732,7 @@
                                 // 保存密码，注册成功后直接登录用
                                 localStorage.setItem("registerPsd", this.registerForm.psd)
                                 // 注册成功跳转至成功页面
-                                window.location.href = window.location.href + "&code=status&type=" +  this.registerForm.user
+                                window.location.href = window.location.href + "&code=status&regType=" +  this.registerForm.user
                             })
                             .catch((error) => {
                                 this.refreshCode();
