@@ -556,7 +556,7 @@
             beforeUpload(file) {
                 if (!isLogin) {
                     sessionStorage['Temp_publish_form'] = JSON.stringify(this.form)
-                    util_function_obj.alertWhenNoLogin(this, "jumpUrl=/home/usr_UsrConsult_publishView");
+                    util_function_obj.alertWhenNoLogin(this);
                     return
                 }
                 const isLt2M = file.size / 1024 < 500;
@@ -600,7 +600,7 @@
 
                 if (!isLogin) {
                     sessionStorage['Temp_publish_form'] = JSON.stringify(this.form);
-                    util_function_obj.alertWhenNoLogin(this, "jumpUrl=/home/usr_UsrConsult_publishView");
+                    util_function_obj.alertWhenNoLogin(this);
                     return;
                 }
 
@@ -671,7 +671,7 @@
                                         // 未登录时
                                     } else if (res.data.ret == -1) {
                                         sessionStorage['Temp_publish_form'] = JSON.stringify(this.form)
-                                        util_function_obj.alertWhenNoLogin(this, "jumpUrl=/home/usr_UsrConsult_publishView");
+                                        util_function_obj.alertWhenNoLogin(this);
                                         return
                                     } else {
                                         console.log('提交失败else');

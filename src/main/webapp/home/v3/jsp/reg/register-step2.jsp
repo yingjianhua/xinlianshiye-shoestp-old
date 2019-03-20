@@ -482,7 +482,7 @@
                     {required: true, message: 'Telephone prefix can\'t be empty!', trigger: 'blur'}
                 ],
                 telPrefix2: [
-                    {required: true, message: 'Telephone prefix can\'t be empty!', trigger: 'blur'}
+                    // {required: true, message: 'Telephone prefix can\'t be empty!', trigger: 'blur'}
                 ],
                 tel: [
                     {validator: validateTel, trigger: 'blur'},
@@ -503,7 +503,8 @@
                 ],
                 supTel: [
                     {required: true, message: '电话号码不可为空!', trigger: 'blur'}, {
-                        pattern: /^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/,
+                        pattern: /^1\d{10}$/,
+                        // pattern: /^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/,
                         message: '电话号码格式不正确',
                         trigger: 'blur'
                     }
@@ -731,7 +732,7 @@
                                 // 保存密码，注册成功后直接登录用
                                 localStorage.setItem("registerPsd", this.registerForm.psd)
                                 // 注册成功跳转至成功页面
-                                window.location.href = window.location.href + "&code=status"
+                                window.location.href = window.location.href + "&code=status&type=" +  this.registerForm.user
                             })
                             .catch((error) => {
                                 this.refreshCode();
