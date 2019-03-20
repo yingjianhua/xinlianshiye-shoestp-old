@@ -46,25 +46,38 @@
         <div class="account-setting-box">
             <h1>Account Settings</h1>
             <div class="section1">
+                <div>66666666666666666666666666666666</div>
+                <el-form status-icon :model="form1" :rules="rules" ref="form1" label-width="170px" class="">
                 <el-row>
                     <el-col :span="12" :offset="6">
-                        <el-form status-icon :model="form1" :rules="rules" ref="form1" label-width="170px" class="">
-                            <el-form-item label="Gender" prop="gender">
-                                <el-select v-model="form1.gender" placeholder="Please select gender">
-                                    <el-option label="confidentiality" value="0"></el-option>
-                                    <el-option label="men" value="1"></el-option>
-                                    <el-option label="women" value="2"></el-option>
-                                </el-select>
-                            </el-form-item>
-                            <el-form-item label="First Name:" prop="firstName">
-                                <el-input v-model.trim="form1.firstName" placeholder="Please enter a firstName"/>
-                            </el-form-item>
-                            <el-form-item label="Surname:" prop="surname">
-                                <el-input v-model.trim="form1.surname" placeholder="Please enter a surname"/>
-                            </el-form-item>
-                            <el-form-item label="Phone:" prop="phone">
+
+                        <el-form-item label="Gender" prop="gender">
+                            <el-select v-model="form1.gender" placeholder="Please select gender">
+                                <el-option label="confidentiality" value="0"></el-option>
+                                <el-option label="men" value="1"></el-option>
+                                <el-option label="women" value="2"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="First Name:" prop="firstName">
+                            <el-input v-model.trim="form1.firstName" placeholder="Please enter a firstName"/>
+                        </el-form-item>
+                        <el-form-item label="Surname:" prop="surname">
+                            <el-input v-model.trim="form1.surname" placeholder="Please enter a surname"/>
+                        </el-form-item>
+                    </el-col>
+                   </el-row>
+                        <el-row>
+                                <el-col :span="12" :offset="6">
+                                    <el-form-item label="Phone:" prop="phone">
                                 <el-input v-model.trim="form1.phone" placeholder="Please enter your phone"/>
                             </el-form-item>
+                            </el-col>
+                            <el-col :span="6">
+                                    <div style="font-size:10px;line-height: 41.38px;margin-left: 10px;color: #999;">Example:0086-12345678,+86-12345678</div>
+                                </el-col>
+                        </el-row>
+                        <el-row>
+                                <el-col :span="12" :offset="6">
                             <el-form-item label="Company:" prop="company">
                                 <el-input v-model.trim="form1.company" placeholder="Please enter the company name"/>
                             </el-form-item>
@@ -74,9 +87,9 @@
                             <el-form-item>
                                 <el-button :disabled="flag" type="primary" @click="submitForm1('form1')">Save</el-button>
                             </el-form-item>
-                        </el-form>
-                    </el-col>
-                </el-row>
+                        </el-col>
+                    </el-row>
+                </el-form>
             </div>
             <div class="section2">
                 <el-row>
@@ -139,16 +152,13 @@
         el: "#personalCenter",
         data() {
             var validatePhone = (rule, value, callback) => {
+                debugger
                 if (!value) {
                     callback(new Error('Please input the phone number'));
                     return
                 }
-                if(value.length != 11){
-                    callback(new Error('Please enter 11 mobile phone number'));
-                    return
-                }
-                if(!(/^(((13[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1}))+\d{8})$/.test(this.form1.phone))){
-                    callback(new Error('Wrong format of phone number'));
+                if(!(/^[+\d]?\d{1,3}-\d{6,16}$/.test(this.form1.phone))){
+                    callback(new Error('Please enter the correct phone number'));
                     return
                 }else{
                     callback()
@@ -160,7 +170,7 @@
                     return
                 }
                 setTimeout(() => {
-                    if (!(/[\w]+(\.[\w]+)*@[\w]+(\.[\w])+/.test(this.form2.email))) {
+                    if (!(/^[\w]{1,16}@+\w{1,15}.\w{2,5}$/.test(this.form2.email))) {
                         callback(new Error('Please enter the correct mailbox format'))
                     } else {
                         callback()
@@ -168,12 +178,10 @@
                 }, 100)
             };
             var validatePass = (rule, value, callback) => {
-                if (value === '') {
+                if (!value) {
                     callback(new Error('Please enter your password'));
-                } else if (value.length < 8 || value.length > 20) {
-                    callback(new Error('Please enter a password of 8 to 20 digits'));
-                }else if(!(/^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{8,20}$/.test(this.form3.newPassword))){
-                    callback(new Error('Password must contain numbers and letters'));
+                }else if(!(/^[^\s]{6,20}$/.test(this.form3.newPassword))){
+                    callback(new Error('Please enter a 6 to 20 digit password, no spaces'));
                 } else {
                     if (this.form3.ckPwd !== '') {
                         this.$refs.form3.validateField('ckPwd');
@@ -182,14 +190,12 @@
                 }
             };
             var validatePass2 = (rule, value, callback) => {
-                if (value === '') {
+                if (!value) {
                     callback(new Error('Please enter your password again'));
                 } else if (value !== this.form3.newPassword) {
                     callback(new Error('Inconsistent input password twice!'));
-                } else if (value.length < 8 || value.length > 20) {
-                    callback(new Error('Please enter a password of 8 to 20 digits'));
-                }else if(!(/^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{8,20}$/.test(this.form3.ckPwd))){
-                    callback(new Error('Password must contain numbers and letters'));
+                } else if(!(/^[^\s]{6,20}$/.test(this.form3.ckPwd))){
+                    callback(new Error('Please enter a 6 to 20 digit password, no spaces'));
                 }else {
                     callback();
                 }
@@ -411,12 +417,13 @@
                 window.location.href =
                                     '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_usrSetting';
                 }
+
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.flag = true;
                         axios.post('/home/usr_Purchase_changePassword', Qs.stringify({
-                            password: this.form3.password,
-                            newPassword: this.form3.newPassword
+                            password: this.form3.password.replace(/\s+/g,''),
+                            newPassword: this.form3.newPassword.replace(/\s+/g,'')
                         }))
                             .then((res) => {
                                 // console.log(res)
@@ -433,9 +440,9 @@
                                     //   window.location.href =
                                     //     '/home/usr_UsrConsult_listView';
                                     // }, 2000)
-                                    setTimeout(function () {
-                                        window.location.reload();
-                                    }, 1500)
+                                    // setTimeout(function () {
+                                    //     window.location.reload();
+                                    // }, 1500)
                                     // 未登录时
                                 } else if (res.data.ret == -1) {
                                     window.location.href =
