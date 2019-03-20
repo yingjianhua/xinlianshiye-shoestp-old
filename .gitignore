@@ -22,4 +22,4 @@ src/main/resources/environment
 src/main/resources/environment/*
 
 #jrebel
-rebel.xml
+src/main/resources/rebel.xml
