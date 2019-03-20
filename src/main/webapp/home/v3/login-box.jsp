@@ -79,7 +79,8 @@
     var loginBoxVue = new Vue({
         el: "#login-box-global",
         data: {
-            showLoginBox: false,
+            showLoginBox: false, //是否显示登录弹框 - 外部改变
+            jumpBackUrl: null, //传给后台的返回地址
 
             loginForm: {
                 email: '',
@@ -171,17 +172,15 @@
                     }
                 }
                 // 这里与登录页面不同 - 那边是取地址栏中的jumpUrl - 此处直接传参形式
-                // if( util_function_obj.GetQueryString("jumpUrl") ){
-                //     postData.jumpUrl = util_function_obj.GetLoginJumpBackUrl();
-                // }
+                if( this.jumpBackUrl ){
+                    postData.jumpUrl = this.jumpBackUrl;
+                }
 
                 axios.post('/home/usr_UsrMain_login', Qs.stringify(postData))
                     .then((res) => {
                     if (res.data.ret != 1) {
                     this.$message.error(res.data.msg || "Login error, please try again later");
                     return
-                }else{
-                        window.location.reload()
                 }
                 ;
 
@@ -189,8 +188,8 @@
                 // 第三方账号已注册时，直接登录 - sign感觉后台逻辑不对！！！一直是true
                 if (res.data.sign) {
                     // test
-                    window.location.href = "/";
-                    // alert("To Index Page")
+                    // window.location.href = "/";
+                    window.location.reload()
                 } else {
                     // 未注册时：
                     //普通登录提示：该账户未注册，请重试

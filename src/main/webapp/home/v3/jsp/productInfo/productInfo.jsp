@@ -1293,8 +1293,12 @@
                         if (data.data.ret && data.data.ret == 1) {
                             self.productinfocom.favorite = data.data.type !== 1
                             self.productinfocom.favorite_count = data.data.number
+                        }else{
+                            self.$message.error(data.data.msg || "Add to favorite error, please try again later");
                         }
                     }
+                }).catch((error)=>{
+                    self.$message.error(error || 'Network error,please try again later');
                 })
             },
             /* productinfo:function(){
@@ -1433,7 +1437,7 @@
             addRFQ: function () {
                 if (!isLogin) {
                     // user_obj.set_form_sign_in('', window.location.href, 1);
-                    util_function_obj.alertWhenNoLogin(this,"jumpUrl=/home/usr_UsrConsult_productPublishView?product_id=" + this.productinfocom.pdtId);
+                    util_function_obj.alertWhenNoLogin(this,"/home/usr_UsrConsult_productPublishView?product_id=" + this.productinfocom.pdtId);
                     return
                 }
                 window.location = '/home/usr_UsrConsult_productPublishView?product_id=' + this.productinfocom.pdtId + '&backUrl=' + window.location.href

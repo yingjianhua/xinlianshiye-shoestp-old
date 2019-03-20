@@ -2,6 +2,7 @@ var util_function_obj={
     alertWhenNoLogin: function(that,jumpBackUrl,callback){
         // 显示登录弹框 - jsp引入的vue实例
         loginBoxVue.showLoginBox = true;
+        loginBoxVue.jumpBackUrl = jumpBackUrl || null;
         // that.$alert('Please login to operate', {
         //     confirmButtonText: 'Ok',
         //     customClass: "my-custom-element-alert-class fs-content-18",
