@@ -141,10 +141,6 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 					MessageBuild.buildMessage(ReturnCode.service_Invalid_UID, HomeAction.curLanguage()));
 		}
 		insBefore();
-		if (Str.isEmpty(getBean().getTelphone())) {
-			throw new WebMessageException(
-					MessageBuild.buildMessage(ReturnCode.valid_phone_notnull, HomeAction.curLanguage()));
-		}
 		if (getBean().getIdentity() == 1) {
 			if (Str.isEmpty(getFirstName()) && Str.isEmpty(getLastName())) {
 				String name = getFirstName() + "," + getLastName();
@@ -169,6 +165,10 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 			throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.dif_password, HomeAction.curLanguage()));
 		}
 		if (getBean().getIdentity() == 0) {
+			if (getTelPre() == null || getTelMid() == null || getTelAft() == null) {
+				throw new WebMessageException(
+						MessageBuild.buildMessage(ReturnCode.valid_phone_notnull, HomeAction.curLanguage()));
+			}
 			String phone = getTelPre() + "-" + getTelMid() + getTelAft();
 			if (!ValidRegex.regMarch(Regular.REGULAR_TEL, phone)) {
 				throw new WebMessageException(
@@ -177,6 +177,10 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 			String tel = getTelPre() + "-" + getTelMid() + "-" + getTelAft();
 			getBean().setTelphone(tel);
 		} else {
+			if (getBean().getTelphone() == null) {
+				throw new WebMessageException(
+						MessageBuild.buildMessage(ReturnCode.valid_phone_notnull, HomeAction.curLanguage()));
+			}
 			if (!ValidRegex.regMarch(Regular.REGULAR_CHINATEL, getBean().getTelphone())) {
 				throw new WebMessageException(
 						MessageBuild.buildMessage(ReturnCode.valid_phoneRegex, HomeAction.curLanguage()));
@@ -187,6 +191,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 			throw new WebMessageException(
 					MessageBuild.buildMessage(ReturnCode.service_user_exists, HomeAction.curLanguage()));
 		}
+		getBean().setEmail(getBean().getEmail().toLowerCase());
 		getBean().setPassword(getPwd());
 		ins.setB(getBean());
 		ins.commit();
