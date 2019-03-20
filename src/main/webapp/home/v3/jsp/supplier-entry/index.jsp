@@ -390,21 +390,21 @@
 <script>
 
     var validateName = function(rule, value, callback){
-        let reg = /^[a-zA-Z\u4e00-\u9fa5]{3,15}$/
+        let reg = /^[A-Za-z\u4e00-\u9fa5]{1,50}$/
         if (!value) {
             return callback(new Error("请填写名称"));
         } else if(!reg.test(value)){
-            return callback(new Error("请填写3至15个字符"));
+            return callback(new Error("请填写中文或英文,且不超过50位"));
         } else {
             callback();
         }
     };
     var validateenglishName = function(rule, value, callback){
-        let reg = /^[a-zA-Z]{0,30}$/
+        let reg = /^[a-zA-Z ]{1,60}$/
         if (!value) {
             return callback(new Error("请填写英文名称"));
         } else if(!reg.test(value)){
-            return callback(new Error("请填写30个字符以内的英文"));
+            return callback(new Error("请填写英文字母,且不超过60位"));
         } else {
          callback();
         }
