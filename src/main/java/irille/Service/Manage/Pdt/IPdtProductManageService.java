@@ -4,13 +4,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import org.json.JSONArray;
+
 import com.google.inject.ImplementedBy;
 
 import irille.Service.Manage.Pdt.Imp.PdtProductManageServiceImp;
 import irille.pub.tb.FldLanguage;
 import irille.view.Page;
 import irille.view.pdt.PdtProductCatView;
-import org.json.JSONArray;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/7 Time: 15:53 */
 @ImplementedBy(PdtProductManageServiceImp.class)
@@ -23,7 +24,8 @@ public interface IPdtProductManageService {
       int cat,
       int start,
       int limit,
-      Integer search);
+      Integer search,
+      String data);
 
   List<PdtProductCatView> getCatChildNodesByCatId(int i, FldLanguage.Language supplierLanguage);
 

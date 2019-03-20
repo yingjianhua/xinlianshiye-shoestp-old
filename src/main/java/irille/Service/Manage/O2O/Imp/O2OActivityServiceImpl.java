@@ -32,6 +32,7 @@ import irille.Entity.O2O.O2O_Product;
 import irille.Entity.O2O.Enums.O2O_ActivityStatus;
 import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
+import irille.Entity.SVS.Enums.SVSGradeType;
 import irille.Entity.pm.PM.OTempType;
 import irille.Service.Manage.O2O.O2OActivityService;
 import irille.pub.bean.BeanBase;
@@ -339,7 +340,17 @@ public class O2OActivityServiceImpl implements O2OActivityService {
                   item.setMobile(GetValue.get(map, O2O_JoinInfo.T.Tel, String.class, null));
                   Integer pdtPkey = GetValue.get(map, "pdtPkey", Integer.class, -1);
                   item.setRewriter(SEOUtils.getPdtProductTitle(pdtPkey, pdtName));
-
+                  String name = null;
+                  for (SVSGradeType g : SVSGradeType.values()) {
+                    Byte gid = GetValue.get(map, "grade", Byte.class, null);
+                    if (null != gid) {
+                      if (gid.equals(g.getLine().getKey())) {
+                        name = g.getLine().getName();
+                        break;
+                      }
+                    }
+                  }
+                  item.setGrade(name);
                   item.setState(GetValue.get(map, O2O_Product.T.STATUS, Byte.class, null));
                   item.setMessage(GetValue.get(map, O2O_Product.T.REMARK, String.class, null));
                   return item;
