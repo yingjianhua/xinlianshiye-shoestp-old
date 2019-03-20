@@ -493,13 +493,28 @@
 
                 //下面是联系商的rule
                 supCompanyName: [
-                    {required: true, message: '公司名称不可为空', trigger: 'blur'}
+                    {required: true, message: '公司名称不可为空', trigger: 'blur'},
+                    {
+                        pattern: /^[^~!@#$%^&*()_+=-\]\[';/.,<>?:"{}` ].*?[^~!@#$%^&*()_+=-\]\[';/.,<>?:"{}` ]$/,
+                        message: '公司名称不可包含特殊字符',
+                        trigger: 'blur'
+                    }
                 ],
                 supFirstName: [
-                    {required: true, message: '联系人姓名不可为空', trigger: 'blur'}
+                    {required: true, message: '联系人姓名不可为空', trigger: 'blur'},
+                    {
+                        pattern: /^[\u4E00-\u9FA5]$/,
+                        message: '姓名需为中文',
+                        trigger: 'blur'
+                    }
                 ],
                 supLastName: [
-                    {required: true, message: '联系人姓名不可为空', trigger: 'blur'}
+                    {required: true, message: '联系人姓名不可为空', trigger: 'blur'},
+                    {
+                        pattern: /^[\u4E00-\u9FA5]$/,
+                        message: '姓名需为中文',
+                        trigger: 'blur'
+                    }
                 ],
                 supTel: [
                     {required: true, message: '电话号码不可为空!', trigger: 'blur'}, {

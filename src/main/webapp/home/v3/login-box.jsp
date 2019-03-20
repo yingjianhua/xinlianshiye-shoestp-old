@@ -90,7 +90,7 @@
             loginFormRules: {
                 email: [
                     {required: true, message: 'Email can\'t be empty!', trigger: 'blur'}, {
-                        pattern: /^[\w]{1,16}@+\w{1,15}.\w{2,5}$/,
+                        pattern: /^[\w]{1,32}@\w{1,15}.\w{2,5}$/,
                         message: 'E-mail format is incorrect',
                         trigger: 'blur'
                     }
