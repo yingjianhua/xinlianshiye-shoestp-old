@@ -3,6 +3,9 @@ package irille.Filter.svr;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.xinlianshiye.shoestp.plat.service.pm.IPMTemplateService;
 import com.xinlianshiye.shoestp.plat.service.pm.imp.PMTemplateServiceImp;
 
@@ -13,10 +16,9 @@ import irille.pub.bean.PackageBase;
 import irille.pub.bean.PackageBase.TbMsg;
 import irille.pub.inf.IDb;
 import irille.pub.svr.Env;
+import irille.pub.util.Censor.SensitiveWord;
 import irille.shop.lg.LgAccess;
 import irille.shop.plt.Plt_ConfPackage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ShoestpInitServlet extends HttpServlet {
 
@@ -46,6 +48,9 @@ public class ShoestpInitServlet extends HttpServlet {
     IPMTemplateService templateService = new PMTemplateServiceImp();
     templateService.initTemp();
     logger.info("站内信模板初始化完毕...");
+
+    SensitiveWord.InitializationWork();
+    logger.info("初始化敏感字符");
   }
 
   public void initBeanLoad() {
