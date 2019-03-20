@@ -244,28 +244,10 @@
                 });
         },
         methods: {
-            // 跳转RFQ   
+            // 跳转RFQ
             ToRFQ(){
-                if(sysConfig && sysConfig.user){
-                    // 登录了
-                    if(sysConfig.user.user_type == 1){
-                        this.$alert("Sorry, Supplier can't enter",{
-                            confirmButtonText: 'Ok',
-                            customClass: "my-custom-element-alert-class fs-content-18",
-                            center: true,
-                            callback: action =>{
-                                return
-                            }
-                        });
-                        return
-                    }else{
-                        window.open("/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1");   
-                    }
-                }else{
-                    // 没登录
-                    util_function_obj.alertWhenNoLogin(this);
-                    return
-                }
+                let url = "/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1" + "&backUrl=" + window.location.href
+                util_function_obj.supplierCantEnter(this, url);
              },
             quoteNow(){
             //     // user_type  0普通用户  1卖家

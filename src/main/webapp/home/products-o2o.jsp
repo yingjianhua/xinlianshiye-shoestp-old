@@ -346,52 +346,15 @@
             bigPicBoxpic: '',
         },
         methods: {
-            // 跳转供应商表单
-            ToContactSupplier(supplierPkey){
-                if(sysConfig && sysConfig.user){
-                    // 登录了
-                    if(sysConfig.user.user_type == 1){
-                        this.$alert("Sorry, Supplier can't enter",{
-                            confirmButtonText: 'Ok',
-                            customClass: "my-custom-element-alert-class fs-content-18",
-                            center: true,
-                            callback: action =>{
-                                return
-                            }
-                        });
-                        return
-                    }else{
-                        window.open("/home/usr_UsrSupplier_goContactSupplier?supplierPkey=" + supplierPkey+ "&backUrl=" + window.location.href);   
-                    }
-                }else{
-                    // 没登录
-                    util_function_obj.alertWhenNoLogin(this);
-                    return
-                }
-                
+             // 跳转供应商表单
+             ToContactSupplier(supplierPkey){
+                let url = "/home/usr_UsrSupplier_goContactSupplier?supplierPkey=" + supplierPkey+ "&backUrl=" + window.location.href;
+                util_function_obj.supplierCantEnter(this, url);
             },
             // 跳转商品询盘表单
             ToProductInquiry(pdtId){
-                if(sysConfig && sysConfig.user){
-                    // 登录了
-                    if(sysConfig.user.user_type == 1){
-                        this.$alert("Sorry, Supplier can't enter",{
-                            confirmButtonText: 'Ok',
-                            customClass: "my-custom-element-alert-class fs-content-18",
-                            center: true,
-                            callback: action =>{
-                                return
-                            }
-                        });
-                        return
-                    }else{
-                        window.open('/home/usr_UsrConsult_productPublishView?product_id=' + pdtId+ "&backUrl=" + window.location.href);   
-                    }
-                }else{
-                    // 没登录
-                    util_function_obj.alertWhenNoLogin(this);
-                    return
-                }
+                let url = '/home/usr_UsrConsult_productPublishView?product_id=' + pdtId+ "&backUrl=" + window.location.href;
+                util_function_obj.supplierCantEnter(this, url);
             },
             imgUrlappend(row) {
                 if (row !== null & row !== '') {
@@ -475,6 +438,10 @@
             },
             // 添加收藏呵取消收藏
             shoucang: function (e) {
+                if(!isLogin){
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                }
                 var index = e.currentTarget.dataset.num;
                 // if(this.productLists[index].eshrine==false){
                 // 	axios.get('/home/usr_UsrFavorites_addFavorite', {
