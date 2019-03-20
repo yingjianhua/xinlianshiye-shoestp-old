@@ -423,7 +423,8 @@ public class O2OActivityServiceImpl implements O2OActivityService {
   /** 处理上下架 */
   public void lowerAndUpper(Integer id, String reason, O2O_ProductStatus status) {
     O2O_Product o2OProduct = o2OProductDao.findByPkey(id);
-    if (o2OProduct.getStatus().equals(O2O_ProductStatus.WAITOFF.getLine().getKey())) {
+    if (null == o2OProduct) throw new WebMessageException(ReturnCode.failure, "商品不存在");
+    if (!o2OProduct.getStatus().equals(O2O_ProductStatus.WAITOFF.getLine().getKey())) {
       throw new WebMessageException(ReturnCode.failure, "该条信息已被处理");
     }
     sendEmail email = new sendEmail();
@@ -431,7 +432,6 @@ public class O2OActivityServiceImpl implements O2OActivityService {
     if (!AppConfig.dev) {
       email.setReceiver(supplier.getEmail());
     }
-    if (null == o2OProduct) throw new WebMessageException(ReturnCode.failure, "商品不存在");
     o2OProduct.setStatus(status.getLine().getKey());
     PdtProduct pdt = o2OProduct.gtProductId();
     if (status == O2O_ProductStatus.Failed) {
@@ -443,15 +443,14 @@ public class O2OActivityServiceImpl implements O2OActivityService {
       email.setContent("您申请商品编号为【" + pdt.getCode() + "】的商品拒绝下架，拒绝理由：" + reason);
       o2OProduct.upd();
     } else if (status.equals(O2O_ProductStatus.PASS)) {
-      o2OProduct.del();
       List<O2O_Product> o2oProds = o2OProductDao.findAllByProd(o2OProduct.getProductId());
       if (!(null != o2oProds && o2oProds.size() > 0)) {
         PdtProduct product = o2OProduct.gtProductId();
         product.setProductType(Pdt.OProductType.GENERAL.getLine().getKey());
         product.upd();
       }
+      o2OProduct.del();
       email.setSubject("【鞋贸港】O2O商品下架成功");
-      pdt.stProductType(Pdt.OProductType.GENERAL);
       email.setContent("您申请商品编号为【" + pdt.getCode() + "】的商品下架成功");
     }
 

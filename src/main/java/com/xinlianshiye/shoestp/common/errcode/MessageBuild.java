@@ -195,12 +195,13 @@ public class MessageBuild {
     if (map != null) body = map.get(code.getCode());
     if (body == null || hashMap.get(FldLanguage.Language.en.name()) == null) {
       body = hashMap.get(FldLanguage.Language.en.name()).get(code.getCode());
-      if (strs.length > 0) {
-        body = new MessageFormat(body).format(String.valueOf(strs)).toString();
-      }
     }
     if (body == null) {
       return new MessageView(code, code.name());
+    } else {
+      if (strs.length > 0) {
+        body = new MessageFormat(body).format(strs).toString();
+      }
     }
     return new MessageView(code, body);
   }

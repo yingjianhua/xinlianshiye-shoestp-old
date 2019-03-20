@@ -53,7 +53,7 @@ public class UsrPurchaseServiceImpl implements UsrPurchaseService {
     if (purchase2 != null) {
       // 用户名或邮箱地址已被使用
       throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.mail_exists, language));
-      }
+    }
     purchase.setEmail(email);
     UsrMain main = BeanBase.load(UsrMain.class, purchase.getUserid());
     main.setEmail(email);

@@ -1,20 +1,29 @@
 package irille.Service.Manage.O2O.Imp;
 
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
 import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
 import com.xinlianshiye.shoestp.plat.service.pm.imp.PMMessageServiceImp;
 
+import irille.Dao.PdtProductDao;
 import irille.Dao.O2O.O2OActivityDao;
 import irille.Dao.O2O.O2OProductDao;
-import irille.Dao.PdtProductDao;
-import irille.Entity.O2O.Enums.O2O_ActivityStatus;
-import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_Activity;
 import irille.Entity.O2O.O2O_JoinInfo;
 import irille.Entity.O2O.O2O_Product;
+import irille.Entity.O2O.Enums.O2O_ActivityStatus;
+import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.pm.PM.OTempType;
 import irille.Service.Manage.O2O.IO2OActicityServer;
 import irille.Service.Manage.O2O.IO2OPdtServer;
@@ -23,13 +32,12 @@ import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.pub.idu.Idu;
 import irille.pub.svr.DbPool;
+import irille.pub.validate.Regular;
+import irille.pub.validate.ValidRegex;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrSupplier;
 import lombok.extern.slf4j.Slf4j;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 @Slf4j
 public class O2OActicityServerImp implements IO2OActicityServer, Job {
@@ -57,6 +65,15 @@ public class O2OActicityServerImp implements IO2OActicityServer, Job {
   /** 参与活动 */
   @Override
   public void enroll(UsrSupplier supplier, Integer activity, String name, String tel, String pdts) {
+    if (null == name || (null != name && "".equals(name.trim()))) {
+      throw new WebMessageException(ReturnCode.failure, "请输入名称");
+    }
+    if (null == tel || (null != tel) && "".equals(tel.trim())) {
+      throw new WebMessageException(ReturnCode.failure, "请输入电话号码");
+    }
+    if (!ValidRegex.regMarch(Regular.REGULAR_TEL, tel)) {
+      throw new WebMessageException(ReturnCode.failure, "请输入格式正确的电话号码");
+    }
     O2O_Activity activityEntity = o2OActivityDao.getActivityInfoById(activity);
     if (null == activityEntity) throw LOG.err("noActivity", "活动不存在");
     if (activityEntity.getEndDate().before(new Date())) {
