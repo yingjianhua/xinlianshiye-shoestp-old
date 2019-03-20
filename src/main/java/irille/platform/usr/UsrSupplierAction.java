@@ -12,6 +12,7 @@ import irille.platform.usr.View.UsrSupplierNewView;
 import irille.pub.Exp;
 import irille.pub.util.upload.ImageUpload;
 import irille.pub.validate.ValidForm;
+import irille.pub.validate.ValidRegex2;
 import irille.shop.usr.UsrAnnex;
 import irille.shop.usr.UsrMain;
 import irille.shop.usr.UsrSupplier;
