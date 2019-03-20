@@ -345,7 +345,7 @@ public class O2OProductDao {
         .LEFT_JOIN(PdtCat.class, PdtCat.T.PKEY, PdtProduct.T.CATEGORY)
         .LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, O2O_JoinInfo.T.SUPPLIER)
         .LEFT_JOIN(UsrSupplierRole.class, UsrSupplierRole.T.PKEY, UsrSupplier.T.ROLE);
-    sql.WHERE(null != search.getActId(), O2O_Activity.T.PKEY, "= ?", search.getActId());
+    sql.WHERE(null != search.getActId(), O2O_Product.T.ACTIVITY_ID, "= ?", search.getActId());
     sql.WHERE(
         null != search.getActivity(),
         O2O_Activity.T.NAME,
@@ -382,7 +382,7 @@ public class O2OProductDao {
         .LEFT_JOIN(PdtCat.class, PdtCat.T.PKEY, PdtProduct.T.CATEGORY)
         .LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, O2O_JoinInfo.T.SUPPLIER)
         .LEFT_JOIN(UsrSupplierRole.class, UsrSupplierRole.T.PKEY, UsrSupplier.T.ROLE)
-        .WHERE(null != search.getActId(), O2O_Product.T.PKEY, "=?", search.getActId())
+        .WHERE(null != search.getActId(), O2O_Product.T.ACTIVITY_ID, "=?", search.getActId())
         .WHERE(null != search.getActivity(), T.NAME, "like ?", "%" + search.getActivity() + "%")
         .WHERE(
             null != search.getCategory(), PdtCat.T.NAME, "like ?", "%" + search.getCategory() + "%")
