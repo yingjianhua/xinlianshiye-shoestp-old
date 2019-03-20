@@ -533,13 +533,6 @@
             //完成后跳转回哪个页面
             // - 参数为手输的默认地址
             // - 地址中有值时用地址中的值，否则用调用时的参数地址，也没填写时跳转回首页
-            whichPageFrom(defaultUrl){
-                let whichPageFrom =  this.GetQueryString("whichPageFrom") || defaultUrl || "usr_UsrPurchase";
-                if( whichPageFrom.indexOf("/home/") == -1 ){
-                    whichPageFrom = "/home/" + whichPageFrom;
-                }
-                return whichPageFrom;
-            },
             // elementui 上传功能 *2 - 删除操作
             handleRemove(file, fileList) {
                 // 清空imgs数组
@@ -664,9 +657,15 @@
                                                 destination: "", //目的地
                                                 pay_type: 1, //支付方式
                                             }
-                                            window.location.href =
-                                                this.whichPageFrom("usr_UsrMessages_center");
-                                                // '/home/usr_UsrMessages_center';
+                                            // 有传回跳地址时直接回跳，否则跳首页
+                                            let url = window.location.href;
+                                            if(url.indexOf("backUrl=")!=-1){
+                                                let backUrl = url.substr(url.indexOf("backUrl")+8);
+                                                window.location.href = backUrl;
+                                            }else{
+                                                window.location.href = "/";
+                                            }
+
                                         }, 2000)
                                         // 未登录时
                                     } else if (res.data.ret == -1) {
