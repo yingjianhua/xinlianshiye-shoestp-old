@@ -56,12 +56,23 @@
         <!-- 注册成功提示信息 -->
         <div class="step3-tips-wrap">
             Registered Successfully！
-            <a @click="goToIndexPage">Go to login</a>
-            <div class="timer">
-					<span v-if="countDown >= 0">
-						{{countDown}}
-					</span>
-            </div>
+
+            <template v-if="type == 'supplier'">
+                <a @click="goToOpenShop">Open Shop Immediately</a>
+                <div class="timer">
+                        <span v-if="countDown >= 0">
+                            {{countDown}}
+                        </span>
+                </div>
+            </template>
+            <template v-else>
+                <a @click="goToIndexPage">Go To Index Page</a>
+                <div class="timer">
+                        <span v-if="countDown >= 0">
+                            {{countDown}}
+                        </span>
+                </div>
+            </template>
         </div>
         <!-- 注册成功提示信息 - end -->
 
@@ -84,12 +95,17 @@
         data: {
             countDown: 10, //倒计时
             countDownTimer: null, //倒计时计数器
+            type: "buyer", //注册人的类型 -  buyer 、 supplier
         },
         mounted() {
+            let type = util_function_obj.GetQueryString("type");
+            if(type){
+                this.type = type;
+            }
             // 成功后直接登录
             setTimeout(()=>{
                 this.autoLogin();
-            },1000);
+            },200);
             // 倒计时
             this.countDownTimer = setInterval(() => {
                 this.countDown--;
@@ -104,6 +120,27 @@
             goToIndexPage() {
                 // test
                 window.location.href = "/";
+                // alert("To index page")
+            },
+            goToOpenShop() {
+                clearInterval(this.countDownTimer);
+
+                this.$confirm('Are you sure to open shop now?', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    center: true,
+                    customClass: "my-custom-element-alert-class fs-content-18",
+                    callback: action => {
+                        console.log(action)
+                        if(action == 'confirm'){
+                            window.location.href = '/home/usr_UsrSupplier_supplierEntry';
+                        }else{
+                            window.location.href = '/';
+                        }
+                    }
+                });
+
+                // window.location.href = "/home/usr_UsrSupplier_supplierEntry";
                 // alert("To index page")
             },
             autoLogin() {

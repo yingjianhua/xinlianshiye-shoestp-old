@@ -1,3 +1,6 @@
+<%--全局登录弹框--%>
+<jsp:include page="/home/v3/login-box.jsp"></jsp:include>
+
 <!-- 顶部nav栏 -->
 <div id="nav" style="height: auto;">
     <div id="new-top-nav" class="wide-wrap">
@@ -171,3 +174,4 @@
 </script>
 <div style="height: 33px;">
 </div>
+
