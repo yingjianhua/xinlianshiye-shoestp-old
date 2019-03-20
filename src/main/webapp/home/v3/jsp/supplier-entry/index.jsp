@@ -117,7 +117,7 @@
                         </el-col>
                         <el-col :span="12">
                             <el-form-item label="公司电话:" prop="telephone">
-                                <el-input v-model="basicInfo.telephone" placeholder="+86-155555555"></el-input>
+                                <el-input v-model="basicInfo.telephone" placeholder="15266666666"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -138,7 +138,7 @@
                     <el-row>
                         <el-col :span="12">
                             <el-form-item label="公司官网地址:" prop="website">
-                                <el-input v-model="basicInfo.website"></el-input>
+                                <el-input v-model="basicInfo.website" placeholder="http(s)://"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -272,7 +272,7 @@
                         </el-col>
                         <el-col :span="12">
                             <el-form-item label="联系人手机" prop="phone">
-                                <el-input v-model="basicInfo.phone" placeholder="+86-155555555"></el-input>
+                                <el-input v-model="basicInfo.phone" placeholder="15266666666"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -418,7 +418,7 @@
         }
     };
     var validateTel = function (rule, value, callback) {
-        let reg = /^[+\d]?\d{1,3}-\d{1,16}$/
+        let reg = /^1[\d]{10}$/
         if (!value) {
             callback();
         } else if (!reg.test(value)) {
