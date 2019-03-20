@@ -1,7 +1,6 @@
 package irille.platform.pdt;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 
 import irille.action.ActionBase;
 import irille.action.dataimport.util.StringUtil;
@@ -57,12 +56,6 @@ public class PdtSizeAction extends ActionBase<PdtSize> {
    * @throws IOException
    */
   public void ins() throws IOException {
-    try {
-      BigDecimal b = new BigDecimal(getBean().getName());
-    } catch (NumberFormatException e) {
-      writeErr(-1, "尺寸必须数字");
-      return;
-    }
     LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
     getBean().setCreateBy(lu.get_user().getPkey());
     getBean().setTypever(Pdt.OVer.NEW_1.getLine().getKey());
@@ -80,12 +73,6 @@ public class PdtSizeAction extends ActionBase<PdtSize> {
    * @throws IOException
    */
   public void upd() throws IOException {
-    try {
-      BigDecimal b = new BigDecimal(getBean().getName());
-    } catch (NumberFormatException e) {
-      writeErr(-1, "尺寸必须数字");
-      return;
-    }
     LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
     getBean().setCreateBy(lu.get_user().getPkey());
     PdtSizeDAO.UpdSize upd = new PdtSizeDAO.UpdSize();

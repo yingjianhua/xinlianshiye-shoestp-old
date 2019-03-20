@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -141,16 +142,27 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 					MessageBuild.buildMessage(ReturnCode.service_Invalid_UID, HomeAction.curLanguage()));
 		}
 		insBefore();
-		if (Str.isEmpty(getBean().getTelphone())) {
-			throw new WebMessageException(
-					MessageBuild.buildMessage(ReturnCode.valid_phone_notnull, HomeAction.curLanguage()));
-		}
 		if (getBean().getIdentity() == 1) {
 			if (Str.isEmpty(getFirstName()) && Str.isEmpty(getLastName())) {
 				String name = getFirstName() + "," + getLastName();
+				if (!ValidRegex.regMarch(Regular.REGULAR_NAME, name)) {
+					throw new WebMessageException(
+							MessageBuild.buildMessage(ReturnCode.valid_nameRegex, HomeAction.curLanguage()));
+				}
 				getBean().setContacts(name);
 			} else {
 				getBean().setContacts(null);
+			}
+		} else {
+			if (!ValidRegex.regMarch(Regular.REGULAR_NAME, getBean().getNickname())) {
+				throw new WebMessageException(
+						MessageBuild.buildMessage(ReturnCode.valid_nameRegex, HomeAction.curLanguage()));
+			}
+		}
+		if (getBean().getCompany() != null) {
+			if (!ValidRegex.regMarch(Regular.REGULAR_COMPANY, getBean().getCompany())) {
+				throw new WebMessageException(
+						MessageBuild.buildMessage(ReturnCode.valid_companyNameRegex, HomeAction.curLanguage()));
 			}
 		}
 		if (getBean().getEmail() == null) {
@@ -169,6 +181,10 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 			throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.dif_password, HomeAction.curLanguage()));
 		}
 		if (getBean().getIdentity() == 0) {
+			if (getTelPre() == null || getTelMid() == null || getTelAft() == null) {
+				throw new WebMessageException(
+						MessageBuild.buildMessage(ReturnCode.valid_phone_notnull, HomeAction.curLanguage()));
+			}
 			String phone = getTelPre() + "-" + getTelMid() + getTelAft();
 			if (!ValidRegex.regMarch(Regular.REGULAR_TEL, phone)) {
 				throw new WebMessageException(
@@ -177,6 +193,10 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 			String tel = getTelPre() + "-" + getTelMid() + "-" + getTelAft();
 			getBean().setTelphone(tel);
 		} else {
+			if (getBean().getTelphone() == null) {
+				throw new WebMessageException(
+						MessageBuild.buildMessage(ReturnCode.valid_phone_notnull, HomeAction.curLanguage()));
+			}
 			if (!ValidRegex.regMarch(Regular.REGULAR_CHINATEL, getBean().getTelphone())) {
 				throw new WebMessageException(
 						MessageBuild.buildMessage(ReturnCode.valid_phoneRegex, HomeAction.curLanguage()));
@@ -187,6 +207,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 			throw new WebMessageException(
 					MessageBuild.buildMessage(ReturnCode.service_user_exists, HomeAction.curLanguage()));
 		}
+		getBean().setEmail(getBean().getEmail().toLowerCase());
 		getBean().setPassword(getPwd());
 		ins.setB(getBean());
 		ins.commit();
@@ -204,6 +225,10 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 		if (getEmail() == null) {
 			throw new WebMessageException(
 					MessageBuild.buildMessage(ReturnCode.valid_mail_notnull, HomeAction.curLanguage()));
+		}
+		if (!ValidRegex.regMarch(Regular.REGULAR_EMAIL, getEmail())) {
+			throw new WebMessageException(
+					MessageBuild.buildMessage(ReturnCode.valid_mailRegex, HomeAction.curLanguage()));
 		}
 		UsrMain main = UsrMain.chkUniqueEmail(false, getEmail());
 		String title = "";
@@ -240,7 +265,20 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 
 		switch (type) {
 		case 0:
+			Cache cache = CacheUtils.sendEm;
+			String value = String.valueOf(cache.getIfPresent(getEmail()));
+			if (value != null && !value.equals("null")) {
+				Long time = Long.parseLong(value);
+				long now = new Date().getTime();
+				int interval = (int) ((now - time) / 1000);
+				if (interval < 60) {
+					throw new WebMessageException(
+							MessageBuild.buildMessage(ReturnCode.send_ofen, HomeAction.curLanguage()));
+				}
+			}
+
 			CacheUtils.mailValid.put(uid, getEmail());
+			CacheUtils.sendEm.put(getEmail(), new Date().getTime());
 			String mesg = AppConfig.domain + "home/usr_UsrMain_completeReg?uid=" + uid + "&email=" + email;
 			mailer.sendMail(EmailBuilder.startingBlank().withSubject("Shoestp User Registration")
 					.prependTextHTML(mailTemplate.get("checkEmail").replaceAll("\\{\\{url}}", mesg))
@@ -248,9 +286,21 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 			write();
 			return;
 		case 2:
+			Cache cachec = CacheUtils.sendEm;
+			String valuec = String.valueOf(cachec.getIfPresent(getEmail()));
+			if (valuec != null && !valuec.equals("null")) {
+				Long time = Long.parseLong(valuec);
+				long now = new Date().getTime();
+				int interval = (int) ((now - time) / 1000);
+				if (interval < 60) {
+					throw new WebMessageException(
+							MessageBuild.buildMessage(ReturnCode.send_ofen, HomeAction.curLanguage()));
+				}
+			}
 			SecureRandom secureRandom = new SecureRandom();
 			Integer code = secureRandom.nextInt(999999);
 			CacheUtils.pwdValid.put(code, getEmail());
+			CacheUtils.sendEm.put(getEmail(), new Date().getTime());
 			mailer.sendMail(EmailBuilder.startingBlank().withSubject("Shoestp Rest Your Password")
 					.prependTextHTML(
 							mailTemplate.get("forgetPassWord").replaceAll("\\{\\{CODE}}", String.valueOf(code)))
@@ -311,6 +361,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 			JSONObject json = new JSONObject();
 			json.put("ret", 1);
 			json.put("sign", true);
+			json.put("jumpUrl", getParams("jumpUrl"));
 			writerOrExport(json);
 		} else {
 			JSONObject json = new JSONObject();
@@ -331,7 +382,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 		} else {
 			Cache cache = CacheUtils.mailValid;
 			String value = String.valueOf(cache.getIfPresent(getUid()));
-			if (value != null && value.equals(getEmail())) {
+			if (cache.getIfPresent(getUid()) != null && value.equals(getEmail())) {
 				setResult("/home/v3/jsp/reg/register-step2.jsp");
 			} else {
 				setResult("/home/v3/jsp/reg/register-step3.jsp");
@@ -349,7 +400,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 	public void subValid() throws IOException {
 		Cache cache = CacheUtils.pwdValid;
 		String value = String.valueOf(cache.getIfPresent(Integer.parseInt(getCode())));
-		if (value != null && value.equals(getEmail())) {
+		if (cache.getIfPresent(Integer.parseInt(getCode())) != null && value.equals(getEmail())) {
 			write();
 		} else {
 			throw new WebMessageException(

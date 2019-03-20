@@ -7,11 +7,15 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import irille.Aops.Caches;
+import irille.Entity.O2O.O2O_Activity;
+import irille.Entity.O2O.O2O_Activity.T;
+import irille.Entity.O2O.O2O_JoinInfo;
+import irille.Entity.O2O.O2O_Map;
+import irille.Entity.O2O.O2O_PrivateExpoPdt;
+import irille.Entity.O2O.O2O_Product;
 import irille.Entity.O2O.Enums.O2O_ActivityStatus;
 import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
-import irille.Entity.O2O.*;
-import irille.Entity.O2O.O2O_Activity.T;
 import irille.core.sys.Sys;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
@@ -341,8 +345,12 @@ public class O2OProductDao {
         .LEFT_JOIN(PdtCat.class, PdtCat.T.PKEY, PdtProduct.T.CATEGORY)
         .LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, O2O_JoinInfo.T.SUPPLIER)
         .LEFT_JOIN(UsrSupplierRole.class, UsrSupplierRole.T.PKEY, UsrSupplier.T.ROLE);
-    sql.WHERE(null != search.getActId(), O2O_Activity.T.PKEY, "= ?", search.getActId());
-    sql.WHERE(null != search.getActivity(), T.NAME, "like ?", "%" + search.getActivity() + "%");
+    sql.WHERE(null != search.getActId(), O2O_Product.T.ACTIVITY_ID, "= ?", search.getActId());
+    sql.WHERE(
+        null != search.getActivity(),
+        O2O_Activity.T.NAME,
+        "like ?",
+        "%" + search.getActivity() + "%");
     sql.WHERE(
         null != search.getCategory(), PdtCat.T.NAME, "like ?", "%" + search.getCategory() + "%");
     sql.WHERE(
@@ -374,7 +382,7 @@ public class O2OProductDao {
         .LEFT_JOIN(PdtCat.class, PdtCat.T.PKEY, PdtProduct.T.CATEGORY)
         .LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, O2O_JoinInfo.T.SUPPLIER)
         .LEFT_JOIN(UsrSupplierRole.class, UsrSupplierRole.T.PKEY, UsrSupplier.T.ROLE)
-        .WHERE(null != search.getActId(), O2O_Product.T.PKEY, "=?", search.getActId())
+        .WHERE(null != search.getActId(), O2O_Product.T.ACTIVITY_ID, "=?", search.getActId())
         .WHERE(null != search.getActivity(), T.NAME, "like ?", "%" + search.getActivity() + "%")
         .WHERE(
             null != search.getCategory(), PdtCat.T.NAME, "like ?", "%" + search.getCategory() + "%")
