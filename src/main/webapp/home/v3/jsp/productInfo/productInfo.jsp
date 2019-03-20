@@ -496,6 +496,7 @@
         }
 
         #productInfo .productInfo-com .frBox .h5 .y3 li {
+            position: relative;
             float: left;
             /*width:30px;*/
             padding: 0 5px;
@@ -505,9 +506,20 @@
             /*background:#f5f5f5;*/
             margin-right: 10px;
             margin-bottom: 10px;
-            border: 1px solid #ddd;
+            border: 2px solid transparent;
             cursor: pointer;
             overflow: hidden;
+        }
+        /*否则hover时宽度变粗，样式有问题*/
+        #productInfo .productInfo-com .frBox .h5 .y3 li:before{
+            content :"";
+            display: inline-block;
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            border: 1px solid #ddd;
         }
 
         #productInfo .productInfo-com .frBox .h5 li {
@@ -526,6 +538,9 @@
         #productInfo .productInfo-com .frBox .h5 .y3 li:hover,
         #productInfo .productInfo-com .frBox .h5 .y2 li:hover {
             border: 2px solid #e54544;
+        }
+        #productInfo .productInfo-com .frBox .h5 .y3 li:hover:before{
+            border-color: transparent;
         }
 
         #productInfo .productInfo-com .frBox .h5 .y3 li.sele .hitb,
@@ -1242,18 +1257,8 @@
         },
         methods: {
             contactSupplier(){
-                if(sysConfig && sysConfig.user && sysConfig.user.user_type == 1){
-                    this.$alert("Sorry, Supplier can't enter",{
-                        confirmButtonText: 'Ok',
-                        customClass: "my-custom-element-alert-class fs-content-18",
-                        center: true,
-                        callback: action =>{
-                            return
-                        }
-                    });
-                    return
-                }
-                window.location.href="/home/usr_UsrSupplier_goContactSupplier?supplierPkey=" + this.productinfocom.supId;
+                var jumpUrl = "/home/usr_UsrSupplier_goContactSupplier?supplierPkey=" + this.productinfocom.supId + '&backUrl=' + window.location.href;;
+                util_function_obj.supplierCantEnter(this, jumpUrl);
             },
             // 选择放大镜的图片
             selePicli: function (e) {
@@ -1437,7 +1442,7 @@
             addRFQ: function () {
                 if (!isLogin) {
                     // user_obj.set_form_sign_in('', window.location.href, 1);
-                    util_function_obj.alertWhenNoLogin(this,"/home/usr_UsrConsult_productPublishView?product_id=" + this.productinfocom.pdtId);
+                    util_function_obj.alertWhenNoLogin(this,"/home/usr_UsrConsult_productPublishView?product_id=" + this.productinfocom.pdtId+ '&backUrl=' + window.location.href);
                     return
                 }
                 window.location = '/home/usr_UsrConsult_productPublishView?product_id=' + this.productinfocom.pdtId + '&backUrl=' + window.location.href
