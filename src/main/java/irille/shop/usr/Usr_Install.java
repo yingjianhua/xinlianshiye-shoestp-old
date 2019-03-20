@@ -39,7 +39,7 @@ public class Usr_Install extends InstallBase {
     Env.INST.initTran(msg, null);
     initUsrSupplierCategory();
     initUsrSupplierRole();
-    initUsrAccess();
+//    initUsrAccess();
   }
 
   private void initUsrSupplierCategory() {

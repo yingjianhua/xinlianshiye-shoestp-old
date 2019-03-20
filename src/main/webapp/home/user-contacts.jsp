@@ -320,7 +320,7 @@
             isGroupShow: false,  // 是否显示分组
             groupName:'ALL CONTACTS',  // 分组名字
             nowGroupCount:0,  // 当前分组联系人数量
-            allGroupCount:'',  // 总联系人数量
+            allGroupCount:0,  // 总联系人数量
         },
         created(){
             document.addEventListener('click',(e)=>{
@@ -334,6 +334,10 @@
         })
         },
         mounted() {
+            if(!isLogin){
+            window.location.href =
+                                '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_contacts';
+            }
             this.getGroupList(); //获取分组
             this.getContactList(this.contactKeyWord,this.groupPkey,this.start,this.limit); //获取联系人
             this.$nextTick(() => {
@@ -391,7 +395,7 @@
             };
             setTimeout(() => {
                 this.nowGroupCount = this.allGroupCount;
-        }, 100);
+            }, 100);
         });
         },
         methods: {
@@ -399,6 +403,7 @@
                 this.groupName = name;
                 this.isAddSearchGroup = false;
                 this.isEditSearchGroup = false;
+                this.isShowHoverSelect = false;
                 this.start = 0;
                 this.groupPkey = groupPkey;
                 this.popupindex= 0;

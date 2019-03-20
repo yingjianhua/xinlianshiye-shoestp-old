@@ -3,6 +3,7 @@ package irille.platform.pdt;
 import java.io.IOException;
 
 import irille.action.ActionBase;
+import irille.action.dataimport.util.StringUtil;
 import irille.pub.svr.LoginUserMsg;
 import irille.shop.pdt.PdtAttr;
 import irille.shop.pdt.PdtAttrDAO;
@@ -52,6 +53,10 @@ public class PdtAttrAction extends ActionBase<PdtAttr> {
    * @date 2019/1/22 13:36
    */
   public void ins() throws IOException {
+    if (!StringUtil.hasValue(getBean().getName()) || getBean().getName().length() > 20) {
+      writeErr(-1, "属性名称不能为空,并且不能过长");
+      return;
+    }
     LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
     getBean().setCreateBy(lu.get_user().getPkey());
     PdtAttrDAO.InsAttr dl = new PdtAttrDAO.InsAttr();
@@ -68,6 +73,10 @@ public class PdtAttrAction extends ActionBase<PdtAttr> {
    * @date 2019/1/22 13:36
    */
   public void upd() throws IOException {
+    if (!StringUtil.hasValue(getBean().getName()) || getBean().getName().length() > 20) {
+      writeErr(-1, "属性名称不能为空,并且不能过长");
+      return;
+    }
     LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
     getBean().setCreateBy(lu.get_user().getPkey());
     PdtAttrDAO.UpdAttr upd = new PdtAttrDAO.UpdAttr();

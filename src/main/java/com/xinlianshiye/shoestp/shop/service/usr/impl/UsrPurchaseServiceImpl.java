@@ -49,6 +49,8 @@ public class UsrPurchaseServiceImpl implements UsrPurchaseService {
   public void changeEmail(UsrPurchase purchase, String email, String password, Language language) {
     // 检查密码
     checkPassword(purchase, password);
+    // 校验邮箱地址格式的有效性
+    validEmail(email);
     UsrPurchase purchase2 = usrPurchaseDao.findByLoginNameOrEmail(email);
     if (purchase2 != null) {
       // 用户名或邮箱地址已被使用
@@ -81,6 +83,9 @@ public class UsrPurchaseServiceImpl implements UsrPurchaseService {
     purchase.setSex(accountSetting.getGender());
     purchase.setName(accountSetting.getFirstName());
     purchase.setSurname(accountSetting.getSurname());
+    // 校验手机号码格式的有效性
+    if(accountSetting.getPhone() != null) 
+    	validMobile(accountSetting.getPhone());
     purchase.setTelphone(accountSetting.getPhone());
     purchase.setCompany(accountSetting.getCompany());
     purchase.setAddress(accountSetting.getAddress());

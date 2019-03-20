@@ -194,13 +194,12 @@ ul{
                 <el-col :span="2">
                     <div style="box-shadow:#333 0px 0px 10px;width:60px;height:60px;">
                         <!-- 商品图片 -->
-
                         <img :src="image(supData.image, supData.type==3 ?'?x-oss-process=image/resize,w_60,h_60/blur,r_5,s_30':'')" alt="" style="width:100%;">
                     </div>
                 </el-col>
                 <el-col :span="12">
                     <div class="ellipsis_2 detail">
-                        <a href="javascript:void(0)">
+                        <a :href="'/home/pdt_PdtProduct_gtProductsInfo?id=' + supData.id" target="_blank">
                             <!-- 商品名字 -->
                             {{supData.title}}
                         </a>
@@ -271,17 +270,14 @@ ul{
             el: "#xpApp",
             data(){
                 var validateQuantity = (rule, value, callback) => {
-                let re = /^[1-9]\d*$/;
-                if (!value) {
-                    return callback(new Error('Please enter the quantity'));
-                }
-                if(parseInt(value)!=value){
-                    callback(new Error('Please enter an integer'));
-                }
-                 if( !re.test(value)){
-                    callback(new Error('The number cannot be 0'));
-                }
-                callback();
+                    let re = /^\+?[1-9][0-9]*$/;
+                    if (!value) {
+                        return callback(new Error('Please enter the quantity'));
+                    }
+                    if(!re.test(value)){
+                        return callback(new Error("Can't start with 0, can't have decimal point"));
+                    }
+                    callback();
                 };
                 return{
                     flag : false, 
@@ -332,16 +328,20 @@ ul{
                 var self = this;
                 self.id = self.getQueryString("product_id");
                 // var id = 5
-
                 axios.post('/home/rfq_RFQConsult_getPdtInfo', Qs.stringify({
                         id: self.id,
                     }))
                     .then(function (res) {
                         console.log(res);
-                        self.supData = res.data.result;
-                        self.form.title = self.supData.title;
+                        if(res.data.ret != 1){
+                            self.$message.error('Failed to get information, please refresh the page and try again');
+                        }else{
+                            self.supData = res.data.result;
+                            self.form.title = self.supData.title;
+                        }
                     })
                     .catch(function (error) {
+                        self.$message.error("Network error, please refresh the page and try again");
                         console.log(error);
                     });
             },
@@ -374,6 +374,10 @@ ul{
                     console.log(response)
                     console.log(file)
                     console.log(fileList)
+                    // if (response.ret != 1) {
+                    //     this.$message.error('Image upload failed, please refresh the page and try again');
+                    //     return;
+                    // }
                     if (response.ret != 1) return;
                     // 添加图片后，在前面显示 img
                     this.imgsToUpload.push(file.response.result.url);
@@ -389,8 +393,9 @@ ul{
                         sessionStorage['Temp_Pdt_publish_form']=JSON.stringify(this.form)
                         this.$alert('Please login to operate', 'Please login to operate', {
                             confirmButtonText: 'Ok',
+                            customClass: "my-custom-element-alert-class fs-content-18",
                             callback: action => {
-                                window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_productPublishView?product_id"+this.getQueryString("product_id")
+                                window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_productPublishView?product_id="+this.getQueryString("product_id")
                             }
                         });
                         return
@@ -406,6 +411,7 @@ ul{
                         sessionStorage['Temp_Pdt_publish_form']=JSON.stringify(this.form)
                         this.$alert('Please login to operate', 'Please login to operate', {
                             confirmButtonText: 'Ok',
+                            customClass: "my-custom-element-alert-class fs-content-18",
                             callback: action => {
                                 window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_productPublishView?product_id="+this.getQueryString("product_id")
                             }
@@ -460,14 +466,16 @@ ul{
                                         // 提交失败时
                                     } else {
                                         this.flag = false;
-                                        this.$alert(res.data.msg, {
-                                            confirmButtonText: 'OK'
+                                        this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
+                                            confirmButtonText: 'OK',
+                                            customClass: "my-custom-element-alert-class fs-content-18",
                                         });
                                     }
 
                                 })
                                 .catch((err) => {
                                     this.flag = false;
+                                    this.$message.error("Network error, please refresh the page and try again");
                                     console.log(err)
                                 })
                         } else {
