@@ -63,11 +63,6 @@ import irille.view.pdt.PdtProductCatView;
 import irille.view.pdt.PdtProductSaveView;
 import irille.view.pdt.PdtTieredPricingView;
 import irille.view.pdt.WarehouseView;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import static irille.pub.util.AppConfig.objectMapper;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/7 Time: 15:55 */
 public class PdtProductManageServiceImp implements IPdtProductManageService, Job {
@@ -471,8 +466,7 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
       }
       PdtTieredPricingDao.ins(tieredPricing);
     } else {
-      PdtTieredPricingDao.updByPdt(
-          pdtProductSaveView.getId(), pdtProductSaveView.getTieredPricing(), pdt.getPkey());
+      PdtTieredPricingDao.updByPdt(pdtProductSaveView.getTieredPricing(), pdt.getPkey());
     }
     return 1;
   }
