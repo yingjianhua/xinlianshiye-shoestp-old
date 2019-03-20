@@ -910,6 +910,8 @@
 <div style="height: 33px;">
 </div>
 <jsp:include page="/home/template/web-top.jsp"></jsp:include>
+<%--全局登录弹框--%>
+<jsp:include page="/home/v3/login-box.jsp"></jsp:include>
 <div id="productInfo">
     <index-top></index-top>
 
