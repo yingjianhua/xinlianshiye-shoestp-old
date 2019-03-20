@@ -259,7 +259,7 @@
                             </div>
                         </c:if>
 
-                        <div class="supplier-info-item">
+                        <!-- <div class="supplier-info-item">
                             <h5 class="title">
                                 <i class="icon icon-defence-safe"></i>
                                 <span>Onsite Check</span>
@@ -277,7 +277,7 @@
                                 The supplier's company premises are inspected by the SHOESTP.COM staff and confirmed
                                 that the scene is authentic.
                             </div>
-                        </div>
+                        </div> -->
                         <div class="supplier-info-item">
                             <h5 class="title">
                                 <i class="icon icon-years icon-years-07"></i>
@@ -327,17 +327,20 @@
                                 </el-col>
                                 <el-col :span="5">
                                     <el-form-item prop="unit">
-                                        <el-select v-model="form.unit" placeholder="Pairs">
-                                            <el-option label="Pairs" value="1"></el-option>
-                                            <el-option label="Forty-Foot Container" value="2"></el-option>
-                                            <el-option label="Twenty-Foot Container" value="3"></el-option>
+                                        <el-select v-model="form.unit" placeholder="Unit">
+                                                <el-option
+                                                v-for="item in options"
+                                                :key="item.value"
+                                                :label="item.label"
+                                                :value="item.value">
+                                              </el-option>
                                         </el-select>
                                     </el-form-item>
                                 </el-col>
                             </el-row>
                         </el-form-item>
                         <el-form-item label="Extra Request" prop="extraRequest" class="request">
-                            <el-checkbox-group v-model="form.extraRequest">
+                            <el-checkbox-group v-model="form.extra_request">
                                 <el-checkbox label="price" name="price">Price</el-checkbox>
                                 <el-checkbox label="inspection certificate" name="inspection certificate">Inspection
                                     Certificate
@@ -409,14 +412,12 @@
             el: "#main",
             data() {
                 var validateQuantity = (rule, value, callback) => {
-                    let re = /^[1-9]\d*$/;
-                    if (value) {
-                        if (parseInt(value) != value) {
-                            callback(new Error('Please enter an integer'));
-                        }
-                        if (!re.test(value)) {
-                            callback(new Error('The number cannot be 0'));
-                        }
+                    let re = /^\+?[1-9][0-9]*$/;
+                    if (!value) {
+                        return callback(new Error('Please enter the quantity'));
+                    }
+                    if(!re.test(value)){
+                        return callback(new Error("Can't start with 0, can't have decimal point"));
                     }
                     callback();
                 };
@@ -439,10 +440,11 @@
                     form: {
                         title: '', // 标题 名字
                         quantity: '',  // 数量
-                        unit: 'Pairs',  // 单位
-                        extraRequest: [],  //  额外要求
+                        unit: '1',  // 单位
+                        extra_request: [],  //  额外要求
                         descriotion: '',  //描述
                         images: '',  // 图片
+                        supplierId: null  // 供应商id
                     },
 
                     rules: {
@@ -465,7 +467,12 @@
             mounted() {
                 // 进来页面获取到供应商信息
                 let self = this;
+                // console.log(window.location.href)
                 self.pkey = self.getQueryString("pkey");
+                if(!isLogin){
+                    window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrSupplier_gtSupInfo?pkey=' + self.pkey;
+                    }
+                self.$set(self.form,"supplierId",self.pkey)
             },
             methods: {
                 // elementui 上传功能 *2 - 删除操作
@@ -485,6 +492,7 @@
                 // elementui 上传功能 *2 - 上传成功操作
                 handlePictureCardPreview(response, file, fileList) {
                     console.log("上传成功response" + response)
+                    console.log(response)
                     console.log(file)
                     console.log(fileList)
                     if (response.ret != 1) return;
@@ -499,6 +507,16 @@
                 // 上传图片文件之前
                 beforeUpload(file) {
                     console.log(file)
+                    // if (!isLogin) {
+                    //     this.$alert('Please login to operate', 'Please login to operate', {
+                    //         confirmButtonText: 'Ok',
+                    //         customClass: "my-custom-element-alert-class fs-content-18",
+                    //         callback: action => {
+                    //             window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrSupplier_gtSupInfo?pkey="+this.pkey
+                    //         }
+                    //     });
+                    //     return
+                    // }
                     let size = file.size / 1024;
                     if (size > 500) {
                         this.$message.error('Image size cannot exceed 500k');
@@ -507,6 +525,19 @@
                 },
                 submitForm(formName) { // 表单提交
                     let self = this;
+                    if(!isLogin){
+                     window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrSupplier_gtSupInfo?pkey=' + self.pkey;
+                    }
+                    // if (!isLogin) {
+                    //     self.$alert('Please login to operate', 'Please login to operate', {
+                    //         confirmButtonText: 'Ok',
+                    //         customClass: "my-custom-element-alert-class fs-content-18",
+                    //         callback: action => {
+                    //             window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrSupplier_gtSupInfo?pkey="+this.pkey
+                    //         }
+                    //     });
+                    //     return
+                    // }
                     self.$refs[formName].validate((valid) => {
                         if (valid) {
                             self.flag = true;
@@ -528,12 +559,11 @@
                             //     return
                             // }
                             console.log('submit!');
-                            axios("/home/rfq_RFQConsult_putRFQInquiry", self.form, {
-                                headers: {
-                                    'Content-Type': 'application/json;charset=utf-8'
-                                }
-                            })
-                            // axios.post("http://192.168.1.48:889/mock/5c6a1556af4d250024d48c6d/home/home/rfq_RFQConsult_putRFQInquiry",data)
+                            let data = JSON.stringify(self.form)
+                            axios.post("/home/rfq_RFQConsult_putSupplierInquiry", data, 
+                            // axios.post("http://192.168.1.48:889/mock/5c6a1556af4d250024d48c6d/home/home/rfq_RFQConsult_putSupplierInquiry", data, 
+                                {headers: {'Content-Type': 'application/json'}}
+                            )
                                 .then((res) => {
                                     console.log(res)
                                     // 提交成功时
@@ -545,9 +575,10 @@
                                             type: 'success'
                                         });
                                         setTimeout(function () {
-                                            gtag_report_conversion()
-                                            window.location.href =
-                                                '/home/usr_UsrSupplier_gtSupInfo?pkey=' + self.pkey;
+                                            // gtag_report_conversion()
+                                            // window.location.href =
+                                            //     '/home/usr_UsrSupplier_gtSupInfo?pkey=' + self.pkey;
+                                            window.location.reload();
                                         }, 1500)
                                         // 未登录时
                                     } else if (res.data.ret == -1) {
@@ -555,14 +586,16 @@
                                         // 提交失败时
                                     } else {
                                         self.flag = false;
-                                        self.$alert(res.data.msg, {
-                                            confirmButtonText: 'OK'
+                                        this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
+                                            confirmButtonText: 'OK',
+                                            customClass: "my-custom-element-alert-class fs-content-18",
                                         });
                                     }
 
                                 })
                                 .catch((err) => {
                                     self.flag = false;
+                                    self.$message.error("Network error, please refresh the page and try again");
                                     console.log(err)
                                 })
                         } else {

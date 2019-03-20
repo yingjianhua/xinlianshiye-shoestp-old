@@ -122,17 +122,20 @@
                         </el-col>
                         <el-col :span="5" :offset="1">
                             <el-form-item prop="unit">
-                                <el-select v-model="form.unit" placeholder="Pairs">
-                                    <el-option label="Pairs" value="1"></el-option>
-                                    <el-option label="Forty-Foot Container" value="2"></el-option>
-                                    <el-option label="Twenty-Foot Container" value="3"></el-option>
-                                </el-select>
+                                    <el-select v-model="form.unit" placeholder="Unit">
+                                            <el-option
+                                            v-for="item in options"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value">
+                                          </el-option>
+                                    </el-select>
                             </el-form-item>
                         </el-col>
                     </el-row>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="submitForm('form')">Submit</el-button>
+                    <el-button :disabled="flag" type="primary" @click="submitForm('form')">Submit</el-button>
                     <a href="/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1"
                        style="color: #9fafd7;font-size :14px;" target="_blank">Add more requirements</a>
                 </el-form-item>
@@ -163,6 +166,7 @@
                 callback();
             };
             return{
+                flag : false, 
                 companyInfo: [],
                 images: [],
                 pdtDetails: false, // 商品详情是否显示
@@ -171,11 +175,24 @@
                     {imgUrl: '/home/v3/static/images/ljxbanner2.jpg', url: "/home/pdt_PdtProduct"},
                     {imgUrl: '/home/v3/static/images/ljxbanner3.jpg', url: "/home/usr_UsrConsult_publishView"},
                 ],
+                options: [{
+                        value: "1",
+                        label: "Pairs"
+                    },
+                        {
+                            value: "2",
+                            label: "Forty-Foot Container"
+                        },
+                        {
+                            value: "3",
+                            label: "Twenty-Foot Container"
+                        },
+                    ],
                 form: {
                     title: '',
                     descriotion: '',
                     quantity: '',
-                    unit: '',
+                    unit: '1',
                     currency: 1,
                     pay_type: 1,
                     shipping_type: 1
@@ -218,11 +235,12 @@
                             self.images = res.data.result.pdtImages.split(",")
                         }
                     } else {
-                        self.$message.error(res.data.msg);
+                        self.$message.error(res.data.msg || "Get information error, please refresh the page and try again");
                         return
                     }
                 })
                 .catch(function (error) {
+                    self.$message.error("Network error, please refresh the page and try again");
                     console.log(error);
                 });
         },
@@ -270,7 +288,8 @@
                     this.$confirm('After logging in, you can view the complete information! Are you logged in?', 'Prompt', {
                         confirmButtonText: 'Determine',
                         cancelButtonText: 'Cancel',
-                        type: 'warning'
+                        type: 'warning',
+                        customClass: "my-custom-element-alert-class fs-content-18",
                     }).then(() => {
                         window.location.href =
                             '/home/usr_UsrPurchase_sign?jumpUrl=/home/rfq_RFQConsult_getRFQReadMore?rfqPkey=' + this.rfqPkey;
@@ -290,8 +309,13 @@
                 return "https://image.shoestp.com" + v + params
             },
             submitForm(formName) { //表单提交
+                if(!isLogin){
+                       window.location.href =
+                                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/rfq_RFQConsult_getRFQReadMore?rfqPkey=' + this.rfqPkey;
+                    }
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                        this.flag = true;
                         console.log(this.form)
                         console.log('submit!');
                         let data = JSON.stringify(this.form)
@@ -315,20 +339,24 @@
                                     // }, 2000)
                                     setTimeout(function () {
                                         window.location.reload();
-                                    }, 2000)
+                                    }, 1500)
                                     // 未登录时
                                 } else if (res.data.ret == -1) {
                                     window.location.href =
                                         '/home/usr_UsrPurchase_sign?jumpUrl=/home/rfq_RFQConsult_getRFQReadMore?rfqPkey=' + this.rfqPkey;
                                     // 提交失败时
                                 } else {
-                                    this.$alert(res.data.msg, {
-                                        confirmButtonText: 'OK'
+                                    this.flag = false;
+                                    this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
+                                        confirmButtonText: 'OK',
+                                        customClass: "my-custom-element-alert-class fs-content-18",
                                     });
                                 }
 
                             })
                             .catch((err) => {
+                                this.flag = false;
+                                this.$message.error("Network error, please refresh the page and try again");
                                 console.log(err)
                             })
                     } else {
