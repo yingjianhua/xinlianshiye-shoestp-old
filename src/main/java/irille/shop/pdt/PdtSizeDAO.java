@@ -34,7 +34,6 @@ import irille.sellerAction.SellerAction;
 import irille.shop.pdt.PdtSize.T;
 import irille.shop.plt.PltConfigDAO;
 import irille.view.Page;
-import org.json.JSONException;
 
 public class PdtSizeDAO {
   public static final Log LOG = new Log(PdtSizeDAO.class);
@@ -303,7 +302,7 @@ public class PdtSizeDAO {
 
     public void run() {
       PdtSize size = getB().ins();
-  }
+    }
 
     public void after() {
       setB(
@@ -397,7 +396,7 @@ public class PdtSizeDAO {
    * @return
    */
   public static PdtSize insSize(Byte type, String name, Integer supplier, Language lag) {
-    checkName(name, false);
+    checkName(name, true);
     PdtSize size = new PdtSize();
     size.setName(name);
     size.setSupplier(supplier);
@@ -426,7 +425,7 @@ public class PdtSizeDAO {
    * @param name
    */
   public static void updSize(Integer supplier, Integer pkey, String name) {
-    checkName(name, false);
+    checkName(name, true);
     SQL sql = new SQL();
     sql.SELECT(PdtSize.class);
     sql.FROM(PdtSize.class);

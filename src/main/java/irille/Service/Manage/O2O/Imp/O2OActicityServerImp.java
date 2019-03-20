@@ -32,6 +32,7 @@ import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.pub.idu.Idu;
 import irille.pub.svr.DbPool;
+import irille.pub.util.BatchUtils;
 import irille.pub.validate.Regular;
 import irille.pub.validate.ValidRegex;
 import irille.shop.pdt.Pdt;
@@ -71,10 +72,9 @@ public class O2OActicityServerImp implements IO2OActicityServer, Job {
     if (null == tel || (null != tel) && "".equals(tel.trim())) {
       throw new WebMessageException(ReturnCode.failure, "请输入电话号码");
     }
-    if (!ValidRegex.regMarch(Regular.REGULAR_CHINATEL, tel)) {
+    if (!ValidRegex.regMarch(Regular.REGULAR_TEL, tel)) {
       throw new WebMessageException(ReturnCode.failure, "请输入格式正确的电话号码");
     }
-
     O2O_Activity activityEntity = o2OActivityDao.getActivityInfoById(activity);
     if (null == activityEntity) {
       throw LOG.err("noActivity", "活动不存在");
@@ -156,7 +156,12 @@ public class O2OActicityServerImp implements IO2OActicityServer, Job {
       Idu.insLine(joinInfo, insO2oPdts, O2O_Product.T.JOIN_INFO_ID.getFld());
     }
     if (updO2oPdts.size() > 0) {
-      Idu.updLine(joinInfo, updO2oPdts, O2O_Product.T.JOIN_INFO_ID.getFld());
+      BatchUtils.batchUpd(
+          O2O_Product.class,
+          Arrays.asList(O2O_Product.T.VERIFY_STATUS),
+          Arrays.asList(O2O_Product.T.PKEY),
+          updO2oPdts);
+      //      Idu.updLine(joinInfo, updO2oPdts, O2O_Product.T.JOIN_INFO_ID.getFld());
     }
   }
 

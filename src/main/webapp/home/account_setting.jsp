@@ -46,7 +46,6 @@
         <div class="account-setting-box">
             <h1>Account Settings</h1>
             <div class="section1">
-                <div>66666666666666666666666666666666</div>
                 <el-form status-icon :model="form1" :rules="rules" ref="form1" label-width="170px" class="">
                 <el-row>
                     <el-col :span="12" :offset="6">
@@ -152,7 +151,6 @@
         el: "#personalCenter",
         data() {
             var validatePhone = (rule, value, callback) => {
-                debugger
                 if (!value) {
                     callback(new Error('Please input the phone number'));
                     return
@@ -240,7 +238,10 @@
                         message: 'Please select gender',
                         trigger: 'change'
                     }],
-                    password: [{required: true,message: 'Please enter your password',trigger: 'blur'}],
+                    password: [
+                        {required: true,message: 'Please enter your password',trigger: 'blur'},
+                        { pattern: /^[^\s]{6,20}$/, message: 'Cannot contain spaces' }
+                    ],
                     email: [{validator: validateEmail, trigger: 'blur', required: true,}],
                     newPassword: [
                         {validator: validatePass, trigger: ['blur', 'change'], required: true,}
@@ -422,8 +423,8 @@
                     if (valid) {
                         this.flag = true;
                         axios.post('/home/usr_Purchase_changePassword', Qs.stringify({
-                            password: this.form3.password.replace(/\s+/g,''),
-                            newPassword: this.form3.newPassword.replace(/\s+/g,'')
+                            password: this.form3.password,
+                            newPassword: this.form3.newPassword
                         }))
                             .then((res) => {
                                 // console.log(res)

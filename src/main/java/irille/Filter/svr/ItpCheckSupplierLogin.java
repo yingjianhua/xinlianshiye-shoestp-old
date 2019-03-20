@@ -58,20 +58,20 @@ public class ItpCheckSupplierLogin extends AbstractInterceptor {
     //			return "index";
     //		}
 
-    if (!UsrSupplierRoleDAO.ALL_ACT.contains(actionName)) {
-      // 非法请求
-      HttpServletResponse response = ServletActionContext.getResponse();
-      JSONObject json = new JSONObject().put("success", false).put("msg", "非法请求");
-      response.getWriter().print(json.toString());
-      return null;
-    }
-    if (!UsrSupplierRoleDAO.getRoleAllAct().get(supplier.getRole()).contains(actionName)) {
-      // 没有权限
-      HttpServletResponse response = ServletActionContext.getResponse();
-      JSONObject json = new JSONObject().put("success", false).put("msg", "没有权限");
-      response.getWriter().print(json.toString());
-      return null;
-    }
+//    if (!UsrSupplierRoleDAO.ALL_ACT.contains(actionName)) {
+//      // 非法请求
+//      HttpServletResponse response = ServletActionContext.getResponse();
+//      JSONObject json = new JSONObject().put("success", false).put("msg", "非法请求");
+//      response.getWriter().print(json.toString());
+//      return null;
+//    }
+//    if (!UsrSupplierRoleDAO.getRoleAllAct().get(supplier.getRole()).contains(actionName)) {
+//      // 没有权限
+//      HttpServletResponse response = ServletActionContext.getResponse();
+//      JSONObject json = new JSONObject().put("success", false).put("msg", "没有权限");
+//      response.getWriter().print(json.toString());
+//      return null;
+//    }
     return actionInvocation.invoke();
   }
 

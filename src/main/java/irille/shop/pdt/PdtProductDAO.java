@@ -15,10 +15,10 @@ import com.google.gson.JsonParser;
 import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
 import com.xinlianshiye.shoestp.plat.service.pm.imp.PMMessageServiceImp;
 
-import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
-import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Entity.O2O.O2O_Product;
+import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
+import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.pm.PM.OTempType;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
@@ -38,8 +38,8 @@ import irille.pub.idu.IduOther;
 import irille.pub.idu.IduUpd;
 import irille.pub.svr.Env;
 import irille.pub.tb.FldLanguage;
-import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.SEOUtils;
+import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.TranslateLanguage.TranslateFilter;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.sellerAction.SellerAction;
@@ -68,13 +68,13 @@ public class PdtProductDAO {
             SELECT(PdtProduct.class).FROM(PdtProduct.class);
             if (fldvalue != null) {
               if (fldvalue.equalsIgnoreCase("name")) {
-                WHERE(PdtProduct.T.NAME, "like ?","'%" + condition + "%'");
+                WHERE(PdtProduct.T.NAME, "like ?", "'%" + condition + "%'");
               }
               if (fldvalue.equalsIgnoreCase("sku")) {
-                WHERE(T.SKU, "like ?","'%" + condition + "%'");
+                WHERE(T.SKU, "like ?", "'%" + condition + "%'");
               }
               if (fldvalue.equalsIgnoreCase("code")) {
-                WHERE(T.CODE, "like ?","'%" + condition + "%'");
+                WHERE(T.CODE, "like ?", "'%" + condition + "%'");
               }
               if (fldvalue.equalsIgnoreCase("supplier")) {
                 WHERE(T.SUPPLIER, "=?" + condition);
@@ -731,10 +731,10 @@ public class PdtProductDAO {
       joiner.add(String.valueOf(Pdt.OProductType.GENERAL.getLine().getKey()));
       joiner.add(String.valueOf(Pdt.OProductType.GATHER.getLine().getKey()));
       sql.SELECT(T.PKEY, T.PICTURE, T.NAME, T.CUR_PRICE, T.IS_HOT)
-                  .FROM(PdtProduct.class)
-                  .WHERE(T.SUPPLIER, "=?", supplier)
-                  .WHERE(T.STATE, "=?", Pdt.OState.ON)
-                  .WHERE(T.IS_VERIFY, "=?", Sys.OYn.YES)
+          .FROM(PdtProduct.class)
+          .WHERE(T.SUPPLIER, "=?", supplier)
+          .WHERE(T.STATE, "=?", Pdt.OState.ON)
+          .WHERE(T.IS_VERIFY, "=?", Sys.OYn.YES)
           .WHERE(T.PRODUCT_TYPE, "in (" + joiner.toString() + ")");
       //            粘合O2O商品
       SQL o2oSql = new SQL();
@@ -777,8 +777,7 @@ public class PdtProductDAO {
           o2oSql.ORDER_BY(T.CUR_PRICE, rankingBasis);
           break;
         default:
-          sql.ORDER_BY(
-              T.IS_HOT, rankingBasis.trim().equalsIgnoreCase("desc") ? " ASC " : " DESC ");
+          sql.ORDER_BY(T.IS_HOT, rankingBasis.trim().equalsIgnoreCase("desc") ? " ASC " : " DESC ");
           o2oSql.ORDER_BY(
               T.IS_HOT, rankingBasis.trim().equalsIgnoreCase("desc") ? " ASC " : " DESC ");
           break;
@@ -885,6 +884,11 @@ public class PdtProductDAO {
                       "=?",
                       seartch.getProductType())
                   .WHERE(
+                      null != seartch.getProductCode(),
+                      PdtProduct.T.CODE,
+                      " like ?",
+                      "%" + seartch.getProductCode() + "%")
+                  .WHERE(
                       seartch.getShopName() != null,
                       UsrSupplier.T.NAME,
                       "like ?",
@@ -916,7 +920,11 @@ public class PdtProductDAO {
         };
     Integer count = irille.pub.bean.Query.sql(sql).queryCount();
     List<ProductsView> list =
-        irille.pub.bean.Query.sql(sql.LIMIT(start, limit)).queryMaps().stream()
+        irille.pub.bean.Query.sql(
+                sql.ORDER_BY(PdtProduct.T.SOLD_TIME_B, " DESC ")
+                    .ORDER_BY(PdtProduct.T.PKEY, " DESC ")
+                    .LIMIT(start, limit))
+            .queryMaps().stream()
             .map(
                 o ->
                     new ProductsView() {
