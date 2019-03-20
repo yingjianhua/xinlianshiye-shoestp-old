@@ -3,6 +3,7 @@ package irille.platform.usr;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -225,6 +226,33 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
 
   /** @Description: 更新供应商基本信息 *@date 2019/1/21 14:20 *@anthor zjl */
   public void updBasicInformation() throws IOException {
+    String regex = "^[\\w]{1,16}@+\\w{1,15}.\\w{2,5}$";
+    Pattern pattern = Pattern.compile(regex);
+    if (getBean().getName().isEmpty()) {
+      writeErr("名称不可为空");
+      return;
+    }
+    if (getBean().getCategory() == null) {
+      writeErr("供应商分类不可为空");
+      return;
+    }
+    if (getBean().getIsAuth() == null) {
+      writeErr("供应商认证不可为空");
+      return;
+    }
+    if (getBean().getEntity().isEmpty()) {
+      writeErr("企业法人不可为空");
+      return;
+    }
+    if (getBean().getEmail().isEmpty() && !(pattern.matcher(getBean().getEmail()).matches())) {
+      writeErr("邮箱不可为空或者邮箱格式不正确");
+      return;
+    }
+    if (getBean().getSort() == null) {
+      writeErr("排序号不可为空");
+      return;
+    }
+
     UsrSupplierDAO.UpdBasicInformation upd = new UsrSupplierDAO.UpdBasicInformation();
     upd.setB(getBean());
     upd.commit();
@@ -238,6 +266,18 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
 
   /** @Description: 更新供应商页面资料 *@date 2019/1/21 14:58 *@anthor zjl */
   public void updPageInformation() throws IOException {
+    if (getBean().getCountry()==null){
+      writeErr("国家不能为空");
+      return;
+    }
+    if (getBean().getProvince()==null){
+      writeErr("省份不能为空");
+      return;
+    }
+    if (getBean().getIsPro()==null){
+      writeErr("供应商首页产品展示不能为空");
+      return;
+    }
     UsrSupplierDAO.UpdPageInformation upd = new UsrSupplierDAO.UpdPageInformation();
     upd.setB(getBean());
     upd.commit();

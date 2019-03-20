@@ -37,7 +37,7 @@
                         <input type="checkbox" @change="singleChecked" :value="item.id" v-model="checkedCode">
                         <div class="porduct-img">
                             <a :href="'/home/pdt_PdtProduct_gtProductsInfo?id=' + item.pdtPkey" target="_blank">
-                                <img :src="image(item.img)" alt="">
+                                <img :src="image(item.img,185)" alt="">
                             </a>
                         </div>
                         <div class="porduct-name">
@@ -56,7 +56,7 @@
                             </div>
                             <div class="porduct-inquiry-btn porduct-btn">
                                 <a href="javascript:void(0)" @click="restore(item.id)" v-if="catPkey == -1">Restore</a>
-                                <!-- <a :href="'/home/usr_UsrConsult_publishView?product_id='+item.pdtPkey" target="_blank" v-else>Inquiry</a> -->
+                                <!-- <a :href="'/home/usr_UsrFavorites_myfavorite?product_id='+item.pdtPkey" target="_blank" v-else>Inquiry</a> -->
                                 <a :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtPkey+'&backUrl='+window.location.href" target="_blank" v-else>Inquiry</a>
                             </div>
                         </div>
@@ -124,6 +124,10 @@
             isAllChecked: false,  // 是否全选
         },
         mounted() {
+            if(!isLogin){
+            window.location.href =
+                                '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrFavorites_myfavorite';
+            }
             this.getFavoriteList('', this.start, this.limit);
         },
         methods: {
@@ -152,6 +156,8 @@
                 } else {  // 只要有一个checkbox不选中，让全选按钮不选中
                     this.isAllChecked = false;
                 }
+                console.log("this.favoriteList.length ===" + this.favoriteList.length)
+            console.log("this.checkedCode.length ===" + this.checkedCode.length)
             },
             chooseAll: function (e) {  // 用户全选
                 var self = this;
@@ -183,7 +189,8 @@
                 self.$confirm(confimName, 'Prompt', {
                     confirmButtonText: 'Determine',
                     cancelButtonText: 'Cancel',
-                    type: 'warning'
+                    type: 'warning',
+                    customClass: "my-custom-element-alert-class fs-content-18",
                 }).then(() => {
                     //  确定按钮
                     axios.post(url, Qs.stringify({
@@ -193,17 +200,19 @@
                             console.log(res);
                             if (res.data.ret == -1) {
                                 window.location.href =
-                                    '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
+                                    '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrFavorites_myfavorite';
                             } else if (res.data.ret == 1) {
                                 self.$message.success("Successfully deleted");
+                                self.isAllChecked = false;  // 取消全选
+                                self.checkedCode = [];      // 清空选中数据         
                                 self.getFavoriteList(self.catPkey, self.start, self.limit);
                             } else {
-                                self.$message.error(res.data.msg);
+                                self.$message.error(res.data.msg || "Delete failed, please refresh the page and try again");
                                 return
                             }
-                            self.favoriteList = res.data.result.items;
                         })
                         .catch(function (error) {
+                            self.$message.error("Network error, please refresh the page and try again");
                             console.log(error);
                         });
                 }).catch(() => {
@@ -232,7 +241,8 @@
                 self.$confirm(confimName, 'Prompt', {
                     confirmButtonText: 'Determine',
                     cancelButtonText: 'Cancel',
-                    type: 'warning'
+                    type: 'warning',
+                    customClass: "my-custom-element-alert-class fs-content-18",
                 }).then(() => {
                     //  确定按钮
                     axios.post(url, Qs.stringify({
@@ -242,19 +252,19 @@
                             console.log(res);
                             if (res.data.ret == -1) {
                                 window.location.href =
-                                    '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
+                                    '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrFavorites_myfavorite';
                             } else if (res.data.ret == 1) {
                                 self.$message.success("Successfully deleted");
                                 self.isAllChecked = false;  // 取消全选
                                 self.checkedCode = [];      // 清空选中数据
                                 self.getFavoriteList(self.catPkey, self.start, self.limit);
                             } else {
-                                self.$message.error(res.data.msg);
+                                self.$message.error(res.data.msg || "Delete failed, please refresh the page and try again");
                                 return
                             }
-                            self.favoriteList = res.data.result.items;
                         })
                         .catch(function (error) {
+                            self.$message.error("Network error, please refresh the page and try again");
                             console.log(error);
                         });
                 }).catch(() => {
@@ -266,7 +276,8 @@
                 self.$confirm("Whether to restore to favorites", 'Prompt', {
                     confirmButtonText: 'Determine',
                     cancelButtonText: 'Cancel',
-                    type: 'warning'
+                    type: 'warning',
+                    customClass: "my-custom-element-alert-class fs-content-18",
                 }).then(() => {
                     //  确定按钮
                     axios.post("/home/usr_UsrFavorites_restoreFavorite", Qs.stringify({
@@ -276,17 +287,19 @@
                             // console.log(res);
                             if (res.data.ret == -1) {
                                 window.location.href =
-                                    '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
+                                    '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrFavorites_myfavorite';
                             } else if (res.data.ret == 1) {
                                 self.$message.success("Successful recovery");
+                                self.isAllChecked = false;  // 取消全选
+                                self.checkedCode = [];      // 清空选中数据   
                                 self.getFavoriteList(self.catPkey, self.start, self.limit);
                             } else {
-                                self.$message.error(res.data.msg);
+                                self.$message.error(res.data.msg || "The operation failed, please refresh the page and try again");
                                 return
                             }
-                            self.favoriteList = res.data.result.items;
                         })
                         .catch(function (error) {
+                            self.$message.error("Network error, please refresh the page and try again");
                             console.log(error);
                         });
                 }).catch(() => {
@@ -309,28 +322,35 @@
                         // console.log(res);
                         if (res.data.ret == -1) {
                             window.location.href =
-                                '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
+                                '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrFavorites_myfavorite';
                         } else if (res.data.ret == 1) {
                             self.totalCount = res.data.result.totalCount
                             self.favoriteList = res.data.result.items;
                         } else {
-                            self.$message.error(res.data.msg);
+                            self.$message.error(res.data.msg || "Failed to get, please refresh the page and try again");
                             return
                         }
                     })
                     .catch(function (error) {
+                        self.$message.error("Network error, please refresh the page and try again");
                         console.log(error);
                     });
             },
-            image(v, params) {
-                if (!v) {
-                    return ""
-                }
-                if (!params) {
-                    params = ""
-                }
-                return "https://image.shoestp.com" + v + params
-            },
+            image(url, w, h, param) {
+					var postfixUrl = ""; //后缀
+					if (!url) {
+						return ""
+					}
+					if (w && h) {
+						postfixUrl = "?x-oss-process=image/resize,w_" + w + ",h_" + h;
+					}else if(w){
+						postfixUrl = "?x-oss-process=image/resize,w_" + w + ",h_" + w;
+					}
+					if(param){
+						postfixUrl += param;
+					}
+					return "https://image.shoestp.com" + url + postfixUrl;
+				},
         }
     })
 </script>

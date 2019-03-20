@@ -43,7 +43,7 @@ public class O2OActivityDao {
             // 截止时间
             .WHERE(
                 condition.getEndDate() != null,
-                O2O_Activity.T.END_DATE,
+                O2O_Activity.T.START_DATE,
                 "<=?",
                 condition.getEndDate())
             // 活动名称

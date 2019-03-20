@@ -51,11 +51,11 @@ public class PdtTieredPricingDao {
         .collect(Collectors.toList());
   }
 
-  public static void updByPdt(Integer pkey, List<PdtTieredPricingView> tpView, Integer pdtPkey) {
+  public static void updByPdt(List<PdtTieredPricingView> tpView, Integer pdtPkey) {
     SQL sql = new SQL();
     sql.SELECT(PdtTieredPricing.class);
     sql.FROM(PdtTieredPricing.class);
-    sql.WHERE(PdtTieredPricing.T.PRODUCT, " =? ", pkey);
+    sql.WHERE(PdtTieredPricing.T.PRODUCT, " =? ", pdtPkey);
     sql.WHERE(PdtTieredPricing.T.DELETED, " =? ", OYn.NO.getLine().getKey());
     List<PdtTieredPricing> list = Query.sql(sql).queryList(PdtTieredPricing.class);
     if (list == null) {
@@ -84,7 +84,7 @@ public class PdtTieredPricingDao {
     }
     if (tpSet != null && !tpSet.isEmpty()) {
       for (PdtTieredPricingView itemView : tpView) {
-        if (tpSet.contains(itemView.getId())) {
+        if (tpSet.contains(itemView.getId()) && itemView.getId() <= 0) {
           PdtTieredPricing pdtTP = new PdtTieredPricing();
           pdtTP.setMinOq(itemView.getCount());
           pdtTP.setCurPrice(itemView.getPrice());

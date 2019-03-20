@@ -4,16 +4,17 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
+import org.json.JSONException;
+
+import irille.Entity.O2O.O2O_Activity;
 import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
-import irille.Entity.O2O.O2O_Activity;
 import irille.Service.Manage.O2O.O2OActivityService;
 import irille.action.ActionBase;
 import irille.view.O2O.O2OActivityView;
 import irille.view.O2O.PdtSearchView;
 import lombok.Getter;
 import lombok.Setter;
-import org.json.JSONException;
 
 @Setter
 public class O2OActivityAction extends ActionBase<O2O_Activity> implements IO2OActivityAction {
@@ -24,7 +25,7 @@ public class O2OActivityAction extends ActionBase<O2O_Activity> implements IO2OA
 
   @Getter private O2OActivityView activity;
 
-  private PdtSearchView search;
+  @Getter private PdtSearchView search;
   private String reason;
   private Integer id;
   private String keyword;

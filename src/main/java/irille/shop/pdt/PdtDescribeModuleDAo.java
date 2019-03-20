@@ -3,6 +3,7 @@ package irille.shop.pdt;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import irille.action.dataimport.util.StringUtil;
 import irille.core.sys.Sys.OYn;
 import irille.pub.LogMessage;
 import irille.pub.bean.Query;
@@ -10,6 +11,7 @@ import irille.pub.bean.sql.SQL;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.pub.svr.Env;
+import irille.pub.util.Censor.SensitiveWord;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.view.Page;
 import irille.view.pdt.PdtDescribeModuleView;
@@ -200,8 +202,13 @@ public class PdtDescribeModuleDAo {
   }
 
   public static void checkLenth(PdtDescribeModule dm) {
-    if (dm.getName().length() > PdtDescribeModule.T.NAME.getFld().getLen()
-        || dm.getRemark().length() > PdtDescribeModule.T.REMARK.getFld().getLen())
+    if (dm.getName().length() > PdtDescribeModule.T.NAME.getFld().getLen())
       throw new WebMessageException(ReturnCode.service_wrong_data, "超出名称长度");
+    if (StringUtil.hasValue(dm.getRemark())) {
+      if (dm.getRemark().length() > PdtDescribeModule.T.REMARK.getFld().getLen())
+        throw new WebMessageException(ReturnCode.service_wrong_data, "超出备注长度");
+    }
+    // 敏感词校验
+    SensitiveWord.filterInfo(dm.getName());
   }
 }

@@ -1,5 +1,8 @@
 package com.xinlianshiye.shoestp.shop.service.usr;
 
+import java.util.regex.Pattern;
+
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -43,9 +46,27 @@ public class UsrPurchaseServiceTest extends BaseTest {
   }
 
   @Test
+  @Ignore
   public void getProfile() throws JsonProcessingException {
     UsrPurchase purchase = Query.SELECT(UsrPurchase.class, 3787);
     PurchaseView profile = service.getProfile(purchase);
     System.out.println(om.writeValueAsString(profile));
+  }
+  
+  @Test
+  public void testValidPassword() {
+	  Pattern pattern = Pattern.compile(UsrPurchaseService.password_regex);
+	  Assert.assertTrue(pattern.matcher("123456").matches());
+	  Assert.assertTrue(pattern.matcher("123456123123").matches());
+	  Assert.assertTrue(pattern.matcher("1235ssss6464").matches());
+	  Assert.assertTrue(pattern.matcher("sssfeh``1fgu65jkl,11").matches());
+	  Assert.assertTrue(pattern.matcher("12345678.").matches());
+	  Assert.assertFalse(pattern.matcher("12345").matches());
+	  Assert.assertFalse(pattern.matcher("").matches());
+	  Assert.assertFalse(pattern.matcher("             	").matches());
+	  Assert.assertFalse(pattern.matcher("						12").matches());
+//	  Assert.assertFalse(pattern.matcher(null).matches());
+	  Assert.assertFalse(pattern.matcher("561651g1as6f1ghs231af561f561sd26f1a58161f6a1d54f156s1").matches());
+	  Assert.assertFalse(pattern.matcher("fa dasf asdf").matches());
   }
 }

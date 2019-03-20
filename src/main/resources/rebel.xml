@@ -7,18 +7,18 @@
 <application generated-by="eclipse" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.zeroturnaround.com" xsi:schemaLocation="http://www.zeroturnaround.com http://update.zeroturnaround.com/jrebel/rebel-2_1.xsd">
 
 	<classpath>
-		<dir name="C:/Users/xinlian/git/shoestp/target/classes">
+		<dir name="C:/Users/admin/Desktop/shoestp/develop/shoestp/target/classes">
 		</dir>
 	</classpath>
 
 	<web>
 		<link target="/">
-			<dir name="C:/Users/xinlian/git/shoestp/target/m2e-wtp/web-resources">
+			<dir name="C:/Users/admin/Desktop/shoestp/develop/shoestp/target/m2e-wtp/web-resources">
 				<exclude name="/"/>
 			</dir>
 		</link>
 		<link target="/">
-			<dir name="C:/Users/xinlian/git/shoestp/src/main/webapp">
+			<dir name="C:/Users/admin/Desktop/shoestp/develop/shoestp/src/main/webapp">
 			</dir>
 		</link>
 	</web>
