@@ -162,7 +162,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 		if (getBean().getCompany() != null) {
 			if (!ValidRegex.regMarch(Regular.REGULAR_COMPANY, getBean().getCompany())) {
 				throw new WebMessageException(
-						MessageBuild.buildMessage(ReturnCode.valid_nameRegex, HomeAction.curLanguage()));
+						MessageBuild.buildMessage(ReturnCode.valid_companyNameRegex, HomeAction.curLanguage()));
 			}
 		}
 		if (getBean().getEmail() == null) {
