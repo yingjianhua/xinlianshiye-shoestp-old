@@ -177,7 +177,7 @@
                         </el-col>
                         <el-col :span="12">
                             <el-form-item label="年产量:" prop="annualProduction">
-                                <el-input v-model="basicInfo.annualProduction"></el-input>
+                                <el-input v-model="basicInfo.annualProduction" style="width: 88%;"></el-input>双
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -203,7 +203,7 @@
                         </el-col>
                         <el-col :span="12">
                             <el-form-item label="注册资本:" prop="registeredCapital">
-                                <el-input v-model="basicInfo.registeredCapital"></el-input>
+                                <el-input v-model="basicInfo.registeredCapital" style="width: 88%;"></el-input>万
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -457,12 +457,12 @@
              callback();
         }
     };
-    var validateRegist = function (rule, value, callback) {
-        let reg = /^[A-Za-z0-9\u4e00-\u9fa5]+$/
+    var validateRegist = function(rule, value, callback){
+        let reg = /^[\d]+$/
         if (!value) {
-            callback();
-        } else if (!reg.test(value)) {
-            return callback(new Error("请填写中文,英文或数字"));
+         callback();
+        } else if(!reg.test(value)){
+            return callback(new Error("请填写数字"));
         } else {
             callback();
         }
