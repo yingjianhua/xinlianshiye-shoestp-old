@@ -66,16 +66,62 @@ public class RFQConsultServiceImpl implements RFQConsultService {
       Byte type,
       String keyword,
       Boolean unread,
+      Integer lastRelation,
       Integer start,
       Integer limit) {
+	  
+	  if(lastRelation != null) {
+		  SQL sql = new SQL();
+		  sql.SELECT(RFQConsultRelation.T.PKEY);
+		  sql.FROM(RFQConsult.class);
+		  sql.LEFT_JOIN(RFQConsultRelation.class, RFQConsult.T.PKEY, RFQConsultRelation.T.CONSULT);
+		    if (keyword != null && !keyword.isEmpty()) {
+		    	sql.LEFT_JOIN(UsrSupplier.class, RFQConsultRelation.T.SUPPLIER_ID, UsrSupplier.T.PKEY);
+		      // 关键字匹配询盘标题和报价供应商名称
+		    	sql
+		          .WHERE(RFQConsult.T.TITLE, "like ?", "%" + keyword + "%")
+		          .orWhere(UsrSupplier.T.NAME, "like ?", "%" + keyword + "%");
+		    }
+		    sql.AND().WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey());
+		    sql.WHERE(RFQConsult.T.IS_DELETED, "=?", false);
+		    if (type != null) {
+		      // 询盘类型
+		    	sql.WHERE(RFQConsult.T.TYPE, "=?", type);
+		    }
+		    if (unread != null) {
+		      // 是否有新消息
+		      if (unread) {
+		    	  sql
+		            .AND()
+		            .WHERE(RFQConsultRelation.T.IS_NEW, "=?", true)
+		            .orWhere(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", false);
+		      }
+		    }
+		    sql.GROUP_BY(RFQConsult.T.PKEY);
+		    sql.ORDER_BY(RFQConsult.T.CREATE_TIME, "desc");
+		    SQL sql2 = new SQL();
+		    sql2.SELECT("( @i := @i + 1 ) as i");
+		    sql2.SELECT(RFQConsultRelation.T.PKEY);
+		    sql2.FROM(sql, RFQConsultRelation.class);
+		    sql2.FROM(new SQL().SELECT("@i := 0"), "it");
+		    SQL sql3 = new SQL();
+		    sql3.SELECT("i");
+		    sql3.FROM(sql2, RFQConsultRelation.class);
+		    sql3.WHERE(RFQConsultRelation.T.PKEY, "=?", lastRelation);
+		    Integer index = Query.sql(sql3).queryObject(Integer.class);
+		    if(index != null)
+		    	limit = index;
+	  }
     BeanQuery<?> query = Query.SELECT(RFQConsult.T.PKEY);
     query.SELECT(RFQConsult.T.VERIFY_STATUS);
     query.SELECT(RFQConsult.T.STATUS);
     query.SELECT(RFQConsult.T.TITLE);
     query.SELECT(RFQConsult.T.IMAGE);
     query.SELECT(RFQConsult.T.TYPE);
+    query.SELECT(PdtProduct.T.PICTURE);
     query.FROM(RFQConsult.class);
     query.LEFT_JOIN(RFQConsultRelation.class, RFQConsult.T.PKEY, RFQConsultRelation.T.CONSULT);
+    query.LEFT_JOIN(PdtProduct.class, RFQConsult.T.PRODUCT, PdtProduct.T.PKEY);
     if (keyword != null && !keyword.isEmpty()) {
       query.LEFT_JOIN(UsrSupplier.class, RFQConsultRelation.T.SUPPLIER_ID, UsrSupplier.T.PKEY);
       // 关键字匹配询盘标题和报价供应商名称
@@ -114,6 +160,8 @@ public class RFQConsultServiceImpl implements RFQConsultService {
                   String image = GetValue.get(map, RFQConsult.T.IMAGE, String.class, null);
                   consult.setImages(
                       image == null ? new ArrayList<>() : Arrays.asList(image.split(",")));
+                  String productImage = GetValue.get(map, PdtProduct.T.PICTURE, String.class, "");
+                  consult.setProductImage(productImage.split(",")[0]);
                   consult.setRelations(listRelation(consult.getPkey()));
                   return consult;
                 })

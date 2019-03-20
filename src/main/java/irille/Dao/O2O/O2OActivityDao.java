@@ -70,7 +70,8 @@ public class O2OActivityDao {
       }
     }
     //				query.WHERE(condition.getStatus()!=null,T.STATUS,"=?",condition.getStatus());
-
+    Integer count = query.queryCount();
+    query.ORDER_BY(O2O_Activity.T.START_DATE, " DESC ").limit(start, limit);
     List<O2OActivityView> result =
         query.queryList().stream()
             .map(
@@ -78,7 +79,7 @@ public class O2OActivityDao {
                   return O2OActivityView.toView(bean);
                 })
             .collect(Collectors.toList());
-    Integer count = query.queryCount();
+
     return new Page<O2OActivityView>(result, start, limit, count);
   }
 

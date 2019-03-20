@@ -93,7 +93,7 @@ public class OdrMeetingDao {
                 OrderMeeting.T.PKEY);
 
             if (name != null && !("".equals(name))) {
-              WHERE(OrderMeeting.T.NAME, " like '%" + name + "%'");
+              WHERE(OrderMeeting.T.NAME, " like ?","%" + name + "%");
             }
             if (onstate != null) {
               WHERE(OrderMeeting.T.STATUS, " =?", onstate);
@@ -191,7 +191,7 @@ public class OdrMeetingDao {
                 " =?",
                 OrderMeetingAuditStatus.ACTIVITY.getLine().getKey());
             if (name != null) {
-              WHERE(OrderMeeting.T.NAME, " like '%" + name + "%'");
+              WHERE(OrderMeeting.T.NAME, " like ?","%" + name + "%");
             }
             if (onstate != null) {
               WHERE(OrderMeeting.T.STATUS, " =?", onstate);
@@ -296,7 +296,7 @@ public class OdrMeetingDao {
                 " =?",
                 OrderMeetingAuditStatus.ACTIVITY.getLine().getKey());
             if (name != null) {
-              WHERE(OrderMeeting.T.NAME, " like  '%" + name + "%'");
+              WHERE(OrderMeeting.T.NAME, " like ?","%" + name + "%");
             }
             if (onstate != null) {
               WHERE(OrderMeeting.T.STATUS, " =?", onstate);

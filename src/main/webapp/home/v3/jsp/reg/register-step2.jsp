@@ -424,8 +424,6 @@
         if (value === '') {
             console.log("empty")
             callback(new Error(app.registerForm.user == 'buyer' ? 'Code can\'t be empty!' : '验证码不能为空'));
-        }else if(value.length!=4){
-            callback(new Error(app.registerForm.user == 'buyer' ? 'Please enter 4 characters or numbers' : '请输入4位数的验证码'));
         } else {
             console.log("not empty")
             callback();

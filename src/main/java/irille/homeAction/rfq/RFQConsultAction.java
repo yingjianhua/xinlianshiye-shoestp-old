@@ -184,13 +184,14 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   private String keyword;
   private Byte t;
   private Boolean unread;
+  private Integer lastRelation;
   private Integer start = 0;
   private Integer limit = 10;
 
   @Override
   @NeedLogin
   public void pageMine() throws IOException {
-    write(rFQConsultService.pageMine(getPurchase(), t, keyword, unread, start, limit));
+    write(rFQConsultService.pageMine(getPurchase(), t, keyword, unread, lastRelation, start, limit));
   }
 
   private Integer quotationPkey;
