@@ -28,6 +28,7 @@ public class DefaultTypeSafe implements ITypeSafe {
     addConvertFactorys(new LongToIntegerConvert());
     addConvertFactorys(new BigDecimalToDoubleConvert());
     addConvertFactorys(new BigDecimalToIntegerConvert());
+    addConvertFactorys(new ByteToIntegerConvert());
   }
 
   @Override

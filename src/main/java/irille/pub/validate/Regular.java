@@ -7,5 +7,6 @@ public class Regular {
 	public static String REGULAR_EMAIL = "^[\\w]{1,16}@+\\w{1,15}.\\w{2,5}$"; // 邮箱校验
 	public static String REGULAR_PWD = "^[^\\s]{6,20}$"; // 密码校验(6-20位字母加数字)
 	public static String REGULAR_CHINATEL = "^1\\d{10}$"; // 国内手机校验
-	public static String REGULAR_NAME = "^([\\\\u4e00-\\\\u9fa5]{1,20}|[a-zA-Z\\\\.\\\\s]{1,20})$"; // 中英文名字校验
+	public static String REGULAR_NAME = "^[\\u4E00-\\u9FA5]{2,6}$"; // 中英文名字校验
+	public static String REGULAR_COMPANY = "^[^~!@#$%^&*()_+=-\\]\\[';/.,<>?:\"{}` ].*?[^~!@#$%^&*()_+=-\\]\\[';/.,<>?:\"{}` ]$"; // 公司名字校验
 }

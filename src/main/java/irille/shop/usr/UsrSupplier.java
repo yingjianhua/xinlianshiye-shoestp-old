@@ -111,7 +111,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     ID_CARD(SYS.STR__50_NULL, "法人身份证号码"), // 法人身份证号码
     OPERATE_ID_CARD(SYS.STR__100_NULL, "运营身份证号码"), // 运营身份证号码
     /** 运营信息 */
-    CONTACTS(SYS.NAME__40_NULL, "联系人"), // 联系人
+    CONTACTS(SYS.MUILTI_LANGUAGE_NULL, "联系人"), // 联系人
     PHONE(SYS.STR__20_NULL, "手机"), // 手机 必填重要！新的询盘会通知到这里！
     SETTLEMENT_BANK(SYS.STR__100_NULL, "结算开户行"),
     BANK_ACCOUNT(SYS.STR__100_NULL, "银行账号"),
