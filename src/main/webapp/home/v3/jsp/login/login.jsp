@@ -230,7 +230,11 @@
                         // 第三方账号已注册时，直接登录 - sign感觉后台逻辑不对！！！一直是true
                         if (res.data.sign) {
                             // test
-                            window.location.href = "/";
+                            if (res.data&&res.data.jumpUrl){
+                                window.location.href = res.data.jumpUrl;
+                            }else{
+                                window.location.href = "/";
+                            }
                             // alert("To Index Page")
                         } else {
                             // 未注册时：
