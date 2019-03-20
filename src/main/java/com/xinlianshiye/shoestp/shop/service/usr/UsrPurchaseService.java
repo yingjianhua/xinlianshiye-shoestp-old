@@ -10,6 +10,7 @@ import irille.pub.DateTools;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.pub.tb.FldLanguage.Language;
+import irille.shop.usr.UsrMain;
 import irille.shop.usr.UsrPurchase;
 
 @ImplementedBy(UsrPurchaseServiceImpl.class)
@@ -121,7 +122,8 @@ public interface UsrPurchaseService {
    * @author Jianhua Ying
    */
   default void checkPassword(UsrPurchase purchase, String password) {
-    if (!purchase.getPassword().equals(DateTools.getDigest(purchase.getPkey() + password))) {
+    UsrMain usrMain = purchase.gtUserid();
+    if (!usrMain.getPassword().equals(DateTools.getDigest(usrMain.getPkey() + password))) {
       throw new WebMessageException(ReturnCode.service_unknow, "密码不正确");
     }
   }

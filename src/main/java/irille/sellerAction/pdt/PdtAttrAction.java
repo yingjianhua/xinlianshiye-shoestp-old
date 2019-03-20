@@ -123,6 +123,14 @@ public class PdtAttrAction extends SellerAction<PdtAttr> implements IPdtAttrActi
       writeErr(-100, "请输入英文属性名称与内容!");
       return;
     }
+    if (getBean().getName().length() > 20) {
+      writeErr(-101, "属性名称过长");
+      return;
+    }
+    if (attrValue.length() > 20) {
+      writeErr(-101, "属性值过长");
+      return;
+    }
     Integer count = PdtAttrDAO.verifySupplierCount(getSupplier().getPkey());
     if (count >= 5) {
       writeErr(-101, "您已经添加5个属性了");
