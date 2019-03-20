@@ -32,6 +32,7 @@ import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.pub.idu.Idu;
 import irille.pub.svr.DbPool;
+import irille.pub.util.BatchUtils;
 import irille.pub.validate.Regular;
 import irille.pub.validate.ValidRegex;
 import irille.shop.pdt.Pdt;
@@ -155,7 +156,12 @@ public class O2OActicityServerImp implements IO2OActicityServer, Job {
       Idu.insLine(joinInfo, insO2oPdts, O2O_Product.T.JOIN_INFO_ID.getFld());
     }
     if (updO2oPdts.size() > 0) {
-      Idu.updLine(joinInfo, updO2oPdts, O2O_Product.T.JOIN_INFO_ID.getFld());
+      BatchUtils.batchUpd(
+          O2O_Product.class,
+          Arrays.asList(O2O_Product.T.VERIFY_STATUS),
+          Arrays.asList(O2O_Product.T.PKEY),
+          updO2oPdts);
+      //      Idu.updLine(joinInfo, updO2oPdts, O2O_Product.T.JOIN_INFO_ID.getFld());
     }
   }
 
