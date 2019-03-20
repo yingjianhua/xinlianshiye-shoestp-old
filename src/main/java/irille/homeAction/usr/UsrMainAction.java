@@ -187,10 +187,8 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 			throw new WebMessageException(
 					MessageBuild.buildMessage(ReturnCode.service_user_exists, HomeAction.curLanguage()));
 		}
-
+		getBean().setPassword(getPwd());
 		ins.setB(getBean());
-		ins.setPwd(getPwd());
-		ins.setPwdA(getPwdA());
 		ins.commit();
 		insAfter();
 		write();

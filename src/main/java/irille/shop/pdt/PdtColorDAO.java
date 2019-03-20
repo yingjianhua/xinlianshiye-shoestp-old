@@ -149,6 +149,7 @@ public class PdtColorDAO {
   public static class InsColor extends IduIns<PdtColorDAO.Ins, PdtColor> {
     @Override
     public void before() {
+      checkColorLength(getB().getName());
       getB().setDeleted(OYn.NO.getLine().getKey());
       getB().setCreateTime(Env.getTranBeginTime());
       setB(translateUtil.autoTranslate(getB()));
@@ -165,6 +166,7 @@ public class PdtColorDAO {
   public static class UpdColor extends IduUpd<PdtColorDAO.Upd, PdtColor> {
     @Override
     public void before() {
+      checkColorLength(getB().getName());
       PdtColor dbBean = loadThisBeanAndLock();
       getB().setCreateTime(Env.getSystemTime()); // 自动生成修改时间
       PropertyUtils.copyPropertiesWithout(
@@ -349,6 +351,7 @@ public class PdtColorDAO {
         || !StringUtil.hasValue(color.getName())
         || !StringUtil.hasValue(color.getPicture()))
       throw new WebMessageException(ReturnCode.service_wrong_data, "请输入完整");
+    checkColorLength(color.getName());
     color.setSupplier(supplier);
     color.setDeleted(OYn.NO.getLine().getKey());
     color.setCreateTime(Env.getSystemTime());
@@ -378,6 +381,7 @@ public class PdtColorDAO {
     if (StringUtil.hasValue(name)) {
       color.setName(name);
     }
+    checkColorLength(color.getName());
     if (StringUtil.hasValue(pictrue)) {
       color.setPicture(pictrue);
     }
@@ -455,6 +459,12 @@ public class PdtColorDAO {
     if (color != null && color.getDefaultColor() != OYn.YES.getLine().getKey()) {
       color.setDeleted(OYn.YES.getLine().getKey());
       color.upd();
+    }
+  }
+
+  public static void checkColorLength(String name) {
+    if (name.length() > 20) {
+      throw new WebMessageException(ReturnCode.service_wrong_data, "颜色名称过长");
     }
   }
 }

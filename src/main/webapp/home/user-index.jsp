@@ -150,11 +150,14 @@
                         </el-col>
                         <el-col :span="5" :offset="1">
                             <el-form-item prop="unit">
-                                <el-select v-model="form.unit" placeholder="Pairs">
-                                    <el-option label="Pairs" value="1"></el-option>
-                                    <el-option label="Forty-Foot Container" value="2"></el-option>
-                                    <el-option label="Twenty-Foot Container" value="3"></el-option>
-                                </el-select>
+                                    <el-select v-model="form.unit" placeholder="Unit">
+                                            <el-option
+                                            v-for="item in options"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value">
+                                          </el-option>
+                                    </el-select>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -173,30 +176,34 @@
                 Favorites
             </div>
             <div class="favorites-main flexSb">
-                <a href="/home/usr_UsrFavorites_myfavorite"><img src="/home/v3/static/images/user/icon_left_d.png" alt=""></a>
-                <ul class="favorites-list clearfix">
-                    <li class="favorites-item" v-for="(item,index) in favoriteList" :key="index">
-                        <a :href="'/home/pdt_PdtProduct_gtProductsInfo?id='+item.pdtPkey" target="_blank">
-                            <div class="favorites-item-img">
-                                <img :src="image(item.img,'?x-oss-process=image/resize,m_pad,h_150,w_150')" alt="">
-                            </div>
-                            <div class="favorites-item-name">
-                                {{item.name}}
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-                <a href="/home/usr_UsrFavorites_myfavorite"><img src="/home/v3/static/images/user/icon_right_d.png" alt=""></a>
+                <template v-if="favoriteList.length <= 0">
+                    <div class="favorites-list" style="font-size: 20px;color: #7f7f7f;text-align:center;line-height:169px;">No collection items</div>
+                </template>
+                <template v-else>
+                    <a href="/home/usr_UsrFavorites_myfavorite"><img src="/home/v3/static/images/user/icon_left_d.png" alt=""></a>
+                    <ul class="favorites-list clearfix">
+                        <li class="favorites-item" v-for="(item,index) in favoriteList" :key="index">
+                            <a :href="'/home/pdt_PdtProduct_gtProductsInfo?id='+item.pdtPkey" target="_blank">
+                                <div class="favorites-item-img">
+                                    <img :src="image(item.img,'?x-oss-process=image/resize,m_pad,h_150,w_150')" alt="">
+                                </div>
+                                <div class="favorites-item-name">
+                                    {{item.name}}
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <a href="/home/usr_UsrFavorites_myfavorite"><img src="/home/v3/static/images/user/icon_right_d.png" alt=""></a>
+                </template>
             </div>
         </div>
-        <!-- 个性化设置 -->
-        <div class="personalize">
+        <!-- 个性化设置 功能没做  先隐藏 -->
+        <!-- <div class="personalize">
             <h3>Hi {{userInfo.nickname}}</h3>
             <p>Please complete your personalized profile to enjoy carefully selected product recommendations, access to
                 selected & verified Trade Assurance sellers, and more.</p>
             <a href="javascript: void(0);">Personalize Now</a>
-            <!-- <a href="#"  @click="return false" >Personalize Now</a> -->
-        </div>
+        </div> -->
     </div>
 </div>
 <script src="/home/v3/static/js/index-bottom.js"></script>
@@ -215,26 +222,36 @@
         el: "#personalCenter",
         data() {
             var validateQuantity = (rule, value, callback) => {
-                let re = /^[1-9]\d*$/;
+                let re = /^\+?[1-9][0-9]*$/;
                 if (!value) {
                     return callback(new Error('Please enter the quantity'));
                 }
-                if(parseInt(value)!=value){
-                    callback(new Error('Please enter an integer'));
-                }
-                if( !re.test(value)){
-                    callback(new Error('The number cannot be 0'));
+                if(!re.test(value)){
+                    return callback(new Error("Can't start with 0, can't have decimal point"));
                 }
                 callback();
             };
             return{
                 flag : false, 
                 isShowAvatarUpload: false, // 头像上传框
+                options: [{
+                        value: "1",
+                        label: "Pairs"
+                    },
+                        {
+                            value: "2",
+                            label: "Forty-Foot Container"
+                        },
+                        {
+                            value: "3",
+                            label: "Twenty-Foot Container"
+                        },
+                    ],
             form: {
                 title: '',
                 descriotion: '',
                 quantity: '',
-                unit: '',
+                unit: '1',
                 currency: 1,
                 pay_type: 1,
                 shipping_type: 1
@@ -264,11 +281,20 @@
 
         },
          created(){
+             if(!isLogin){
+                window.location.href =
+                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_userIndex';
+             }
             document.addEventListener('click',(e)=>{
             //     console.log("this.$refs.dl.contains(e.target)");
             // console.log(this.$refs.dl.contains(e.target));
             if(!this.$refs.avatarUpload.contains(e.target)){
                 this.isShowAvatarUpload = false;
+                if(this.userInfo.avatar){
+                    this.userInfo.avatar = this.userInfo.avatar;
+                }else{
+                    this.userInfo.avatar = ''
+                }
             }
         })
         },
@@ -289,9 +315,14 @@
                 axios.get('/home/usr_Purchase_profile')
                     .then(function (res) {
                         console.log(res);
-                        self.userInfo = res.data.result;
+                        if (res.data.ret == 1) {
+                            self.userInfo = res.data.result;
+                        }  else {
+                            self.$message.error(res.data.msg || "Failed to get personal information, please refresh the page and try again");
+                        }
                     })
                     .catch(function (error) {
+                        self.$message.error("Network error, please refresh the page and try again");
                         console.log(error);
                     });
             },
@@ -307,19 +338,24 @@
                         // console.log(res);
                         if (res.data.ret == -1) {
                             window.location.href =
-                                '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
+                                '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_userIndex';
                         } else if (res.data.ret == 1) {
                             self.favoriteList = res.data.result.items;
                         } else {
-                            self.$message.error(res.data.msg);
+                            self.$message.error(res.data.msg || "Failed to get the list of favorites, please refresh the page and try again");
                             return
                         }
                     })
                     .catch(function (error) {
+                        self.$message.error("Network error, please refresh the page and try again");
                         console.log(error);
                     });
             },
             submitForm(formName) { //表单提交
+                if(!isLogin){
+                    window.location.href =
+                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_userIndex';
+                }
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.flag = true;
@@ -339,11 +375,6 @@
                                         message: 'Submitted successfully',
                                         type: 'success'
                                     });
-                                    // setTimeout(function () {
-                                    //   gtag_report_conversion()
-                                    //   window.location.href =
-                                    //     '/home/usr_UsrConsult_listView';
-                                    // }, 2000)
                                     setTimeout(function () {
                                         window.location.reload();
                                     }, 1500)
@@ -354,14 +385,16 @@
                                     // 提交失败时
                                 } else {
                                     this.flag = false;
-                                    this.$alert(res.data.msg, {
-                                        confirmButtonText: 'OK'
+                                    this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
+                                        confirmButtonText: 'OK',
+                                        customClass: "my-custom-element-alert-class fs-content-18",
                                     });
                                 }
 
                             })
                             .catch((err) => {
                                 this.flag = false;
+                                self.$message.error("Network error, please refresh the page and try again");
                                 console.log(err)
                             })
                     } else {
@@ -382,11 +415,16 @@
             // 头像上传
             handleAvatarSuccess(res, file) {
                 // console.log(res)
+                // console.log(res.ret)
                 // console.log(res.result.url)
                 // console.log(file)
                 // this.userInfo.avatar = res.result.url
                 // console.log(this.userInfo.avatar)
-                this.$set(this.userInfo,"avatar",res.result.url)
+                if(res.ret == 1){
+                    this.$set(this.userInfo,"avatar",res.result.url)
+                }else{
+                    this.$message.error('Avatar upload failed, please refresh the page and try again');
+                }
             },
             beforeAvatarUpload(file) {
                 const isJPG = file.type === 'image/jpeg';
@@ -407,7 +445,7 @@
                     .then(function (res) {
                         // console.log(res);
                         if (res.data.ret != 1) {
-                            self.$message.error(res.data.msg);
+                            self.$message.error(res.data.msg || "Avatar upload failed, please refresh the page and try again");
                             return
                         }
                         ;

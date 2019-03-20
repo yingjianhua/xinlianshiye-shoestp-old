@@ -38,25 +38,6 @@ public class UsrMainDao {
 	 */
 	public static class Ins extends IduIns<Ins, UsrMain> {
 
-		private String pwd;
-		private String pwdA;
-
-		public String getPwd() {
-			return pwd;
-		}
-
-		public void setPwd(String pwd) {
-			this.pwd = pwd;
-		}
-
-		public String getPwdA() {
-			return pwdA;
-		}
-
-		public void setPwdA(String pwdA) {
-			this.pwdA = pwdA;
-		}
-
 		@Override
 		public void before() {
 			getB().setRegTime(new Date());
@@ -70,7 +51,7 @@ public class UsrMainDao {
 
 		@Override
 		public void after() {
-			String newPwd = getB().getPkey() + pwd;
+			String newPwd = getB().getPkey() + getB().getPassword();
 			getB().setPassword(DateTools.getDigest(newPwd));
 			getB().upd();
 			// 暂时复制用户信息到老表
