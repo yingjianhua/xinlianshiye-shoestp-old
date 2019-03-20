@@ -63,6 +63,22 @@ var util_function_obj={
     //     return window.location.search.substr(1);
     // },
 
+    // 供应商有些地方不能进入 - 询盘之类的
+    supplierCantEnter(that,url){
+        if(sysConfig && sysConfig.user && sysConfig.user.user_type == 1){
+            that.$alert("Sorry, Supplier can't enter",{
+                confirmButtonText: 'Ok',
+                customClass: "my-custom-element-alert-class fs-content-18",
+                center: true,
+                callback: action =>{
+                    return
+                }
+            });
+            return
+        }
+        window.location.href = url;
+    },
+
     // 图片地址加前缀-后缀
     image: function(url, w, h, param) {
         var postfixUrl = ""; //后缀

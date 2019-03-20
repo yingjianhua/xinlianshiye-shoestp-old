@@ -98,7 +98,7 @@
             type: "buyer", //注册人的类型 -  buyer 、 supplier
         },
         mounted() {
-            let type = util_function_obj.GetQueryString("type");
+            let type = util_function_obj.GetQueryString("regType");
             if(type){
                 this.type = type;
             }

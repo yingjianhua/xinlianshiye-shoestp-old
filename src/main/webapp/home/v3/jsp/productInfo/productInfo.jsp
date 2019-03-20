@@ -1257,18 +1257,8 @@
         },
         methods: {
             contactSupplier(){
-                if(sysConfig && sysConfig.user && sysConfig.user.user_type == 1){
-                    this.$alert("Sorry, Supplier can't enter",{
-                        confirmButtonText: 'Ok',
-                        customClass: "my-custom-element-alert-class fs-content-18",
-                        center: true,
-                        callback: action =>{
-                            return
-                        }
-                    });
-                    return
-                }
-                window.location.href="/home/usr_UsrSupplier_goContactSupplier?supplierPkey=" + this.productinfocom.supId;
+                var jumpUrl = "/home/usr_UsrSupplier_goContactSupplier?supplierPkey=" + this.productinfocom.supId + '&backUrl=' + window.location.href;;
+                util_function_obj.supplierCantEnter(this, jumpUrl);
             },
             // 选择放大镜的图片
             selePicli: function (e) {
