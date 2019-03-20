@@ -353,7 +353,8 @@
                 let self = this;
                 self.pkey = self.getQueryString("pkey");
                 if(!isLogin){
-                        window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrSupplier_gtSupContact?pkey=' + self.pkey;
+                    util_function_obj.alertWhenNoLogin(self);
+                        return
                     }
                 self.$set(self.form,"supplierId",self.pkey)
             },
@@ -398,28 +399,29 @@
                 submitForm(formName) { // 表单提交
                     let self = this;
                     if(!isLogin){
-                        window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrSupplier_gtSupContact?pkey=' + self.pkey;
-                    }
-                    self.$refs[formName].validate((valid) => {
+                        util_function_obj.alertWhenNoLogin(self);
+                        return
+                    }else{
+                        // 登录了
+                        if(sysConfig.user.user_type == 1){
+                            self.$alert("Sorry, the supplier cannot submit the form",{
+                                confirmButtonText: 'Ok',
+                                customClass: "my-custom-element-alert-class fs-content-18",
+                                center: true,
+                                callback: action =>{
+                                    return
+                                }
+                            });
+                            return
+                        }else{
+                            // 普通用户
+                            self.$refs[formName].validate((valid) => {
                         if (valid) {
                             self.flag = true;
                             console.log(self.form)
                             self.form.images = self.imgsToUpload.join(",");
                             // self.form.pdtId = self.id;
                             console.log(self.imgsToUpload)
-                            // if (self.form.images.length == 0) {
-                            //     // if(${env.login==null}){
-                            //     //     self.$message({
-                            //     //         showClose: true,
-                            //     //         message: 'Pleaselogin',
-                            //     //         type: 'warning'
-                            //     //     });
-
-                            //     //     window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
-                            //     // }
-                            //     self.$message.error('Please upload an image');
-                            //     return
-                            // }
                             console.log('submit!');
                             let data = JSON.stringify(self.form)
                             axios.post("/home/rfq_RFQConsult_putSupplierInquiry",data,
@@ -442,9 +444,6 @@
                                     window.location.reload();
                                 }, 1500)
                                 // 未登录时
-                            } else if (res.data.ret == -1) {
-                                window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrSupplier_gtSupContact?pkey=' + self.pkey;
-                                // 提交失败时
                             } else {
                                 self.flag = false;
                                 self.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
@@ -471,6 +470,9 @@
                     // return false;
                 }
                 });
+                        }
+                    }
+                    
                 },
                 getQueryString: (name) => {
                 let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");

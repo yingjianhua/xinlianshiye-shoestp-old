@@ -328,10 +328,11 @@ a, a:link, a:visited, a:hover, a:active {
 	float:left;
 	margin-left:50px;
 	width:418px;
-	height:170px;
+  max-height:205px;
 	border-right:1px dashed #ddd;
 	padding-right:40px;
 	text-decoration:none;
+	position: relative;
 }
 #productList .rightList .common .common-box .common-boxtitle h1{
 	font-size:14px;
@@ -378,6 +379,7 @@ a, a:link, a:visited, a:hover, a:active {
 		position: absolute;
 		bottom:10px;
 		left:0;
+		cursor: pointer;
 }
 #productList .rightList .common .common-box .common-boxtitle .product-inquiry-btn:hover{
 	background: #10389c;
@@ -434,6 +436,7 @@ a, a:link, a:visited, a:hover, a:active {
 	font-size:14px;
 	margin-top:20px;
 	text-decoration:none;
+	cursor: pointer;
 }
 #productList .rightList .common .common-box .common-boxspan .btn:hover{
 	background:#10389c;

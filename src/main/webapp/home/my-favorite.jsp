@@ -125,8 +125,8 @@
         },
         mounted() {
             if(!isLogin){
-            window.location.href =
-                                '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrFavorites_myfavorite';
+                util_function_obj.alertWhenNoLogin(this);
+                        return
             }
             this.getFavoriteList('', this.start, this.limit);
         },
@@ -176,6 +176,10 @@
             },
             remove(pkey) {  // 商品单个移除到回收站  和  回收站单个商品永久删除
                 // console.log("点了删除" + pkey)
+                if(!isLogin){ 
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                }
                 var self = this;
                 if (self.catPkey == -1) {
                     // 回收站里
@@ -198,10 +202,7 @@
                     }))
                         .then(function (res) {
                             console.log(res);
-                            if (res.data.ret == -1) {
-                                window.location.href =
-                                    '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrFavorites_myfavorite';
-                            } else if (res.data.ret == 1) {
+                            if (res.data.ret == 1) {
                                 self.$message.success("Successfully deleted");
                                 self.isAllChecked = false;  // 取消全选
                                 self.checkedCode = [];      // 清空选中数据         
@@ -221,6 +222,10 @@
             },
             removeAll() {  // 删除其他分类多个商品   和   删除回收站多个商品
                 console.log(this.checkedCode)
+                if(!isLogin){ 
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                }
                 var self = this;
                 var confimName;
                 var url;
@@ -250,10 +255,7 @@
                     }))
                         .then(function (res) {
                             console.log(res);
-                            if (res.data.ret == -1) {
-                                window.location.href =
-                                    '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrFavorites_myfavorite';
-                            } else if (res.data.ret == 1) {
+                             if (res.data.ret == 1) {
                                 self.$message.success("Successfully deleted");
                                 self.isAllChecked = false;  // 取消全选
                                 self.checkedCode = [];      // 清空选中数据
@@ -272,6 +274,10 @@
                 });
             },
             restore(pkey) {  // 回收站 商品  还原到 收藏夹
+                if(!isLogin){ 
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                }
                 var self = this;
                 self.$confirm("Whether to restore to favorites", 'Prompt', {
                     confirmButtonText: 'Determine',
@@ -285,10 +291,7 @@
                     }))
                         .then(function (res) {
                             // console.log(res);
-                            if (res.data.ret == -1) {
-                                window.location.href =
-                                    '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrFavorites_myfavorite';
-                            } else if (res.data.ret == 1) {
+                           if (res.data.ret == 1) {
                                 self.$message.success("Successful recovery");
                                 self.isAllChecked = false;  // 取消全选
                                 self.checkedCode = [];      // 清空选中数据   
@@ -319,11 +322,7 @@
                     limit,
                 }))
                     .then(function (res) {
-                        // console.log(res);
-                        if (res.data.ret == -1) {
-                            window.location.href =
-                                '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrFavorites_myfavorite';
-                        } else if (res.data.ret == 1) {
+                        if (res.data.ret == 1) {
                             self.totalCount = res.data.result.totalCount
                             self.favoriteList = res.data.result.items;
                         } else {

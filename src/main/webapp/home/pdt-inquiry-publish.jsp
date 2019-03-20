@@ -159,6 +159,25 @@ ul{
         max-width: 500px; }
         .xpMain .xp-form .detail-box .detail a:hover {
           color: #409EFF; }
+         
+    .el-button--primary {
+        height: 36px;
+        background-color: #10389c;
+        border-radius: 4px;
+        color: #ffffff;
+        border-color: #10389c;
+    }
+   
+    .el-button--primary:hover {
+        color: #ffffff;
+        border-color: #10389c;
+        background-color: #10389c;
+    }
+    .el-button--primary.is-disabled, .el-button--primary.is-disabled:active, .el-button--primary.is-disabled:focus, .el-button--primary.is-disabled:hover{
+        color: #ffffff;
+        border-color: #10389c;
+        background-color: #10389c;
+    }
 /*# sourceMappingURL=index.css.map */
     </style>
 
@@ -320,8 +339,12 @@ ul{
                 supData: [],
                 }
             },
-            mounted()
-            {if (sessionStorage['Temp_Pdt_publish_form'] &&sessionStorage['Temp_Pdt_publish_form']!=''&&sessionStorage['Temp_Pdt_publish_form']!='null'){
+            mounted(){
+                if(!isLogin){ 
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                }
+                if (sessionStorage['Temp_Pdt_publish_form'] &&sessionStorage['Temp_Pdt_publish_form']!=''&&sessionStorage['Temp_Pdt_publish_form']!='null'){
                     this.form=JSON.parse(sessionStorage['Temp_Pdt_publish_form'])
                 }
                 // 进来页面获取到供应商信息
@@ -409,13 +432,7 @@ ul{
                 submitForm(formName) { // 表单提交
                     if (!isLogin) {
                         sessionStorage['Temp_Pdt_publish_form']=JSON.stringify(this.form)
-                        this.$alert('Please login to operate', 'Please login to operate', {
-                            confirmButtonText: 'Ok',
-                            customClass: "my-custom-element-alert-class fs-content-18",
-                            callback: action => {
-                                window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_productPublishView?product_id="+this.getQueryString("product_id")
-                            }
-                        });
+                        util_function_obj.alertWhenNoLogin(this);
                         return
                     }
                     let url;
@@ -460,10 +477,6 @@ ul{
                                             sessionStorage.removeItem('Temp_Pdt_publish_form')
                                             window.location.href =getParams('backUrl','/');
                                         }, 1500)
-                                        // 未登录时
-                                    } else if (res.data.ret == -1) {
-                                       window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_productPublishView?product_id="+this.getQueryString("product_id")
-                                        // 提交失败时
                                     } else {
                                         this.flag = false;
                                         this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {

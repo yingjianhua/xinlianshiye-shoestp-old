@@ -164,8 +164,7 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button :disabled="flag" type="button" @click="submitForm('form')">Confirm</el-button>
-                    <a href="/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1"
-                       style="color: #9fafd7;font: size 12px;" target="_blank">Add more requirements</a>
+                    <a @click="ToRFQ" style="color: #9fafd7;font: size 12px;cursor: pointer;">Add more requirements</a>
                 </el-form-item>
             </el-form>
         </div>
@@ -281,10 +280,7 @@
 
         },
          created(){
-             if(!isLogin){
-                window.location.href =
-                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_userIndex';
-             }
+             
             document.addEventListener('click',(e)=>{
             //     console.log("this.$refs.dl.contains(e.target)");
             // console.log(this.$refs.dl.contains(e.target));
@@ -299,10 +295,37 @@
         })
         },
         mounted() {
+            if(!isLogin){
+                util_function_obj.alertWhenNoLogin(this);
+                return
+             }
             this.getUserInfo();
             this.getFavoriteList();
         },
         methods: {
+            // 跳转RFQ   
+            ToRFQ(){
+                if(sysConfig && sysConfig.user){
+                    // 登录了
+                    if(sysConfig.user.user_type == 1){
+                        this.$alert("Sorry, Supplier can't enter",{
+                            confirmButtonText: 'Ok',
+                            customClass: "my-custom-element-alert-class fs-content-18",
+                            center: true,
+                            callback: action =>{
+                                return
+                            }
+                        });
+                        return
+                    }else{
+                        window.open("/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1");   
+                    }
+                }else{
+                    // 没登录
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                }
+             },
             clickShowUploadAvatar() {  // 点击头像出现 头像上传
                 this.isShowAvatarUpload = !this.isShowAvatarUpload
                 // if(this.isShowAvatarUpload == false){
@@ -335,11 +358,7 @@
                     }
                 })
                     .then(function (res) {
-                        // console.log(res);
-                        if (res.data.ret == -1) {
-                            window.location.href =
-                                '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_userIndex';
-                        } else if (res.data.ret == 1) {
+                         if (res.data.ret == 1) {
                             self.favoriteList = res.data.result.items;
                         } else {
                             self.$message.error(res.data.msg || "Failed to get the list of favorites, please refresh the page and try again");
@@ -352,11 +371,24 @@
                     });
             },
             submitForm(formName) { //表单提交
-                if(!isLogin){
-                    window.location.href =
-                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_userIndex';
-                }
-                this.$refs[formName].validate((valid) => {
+                if(!isLogin){ 
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                }else{
+                        // 登录了
+                        if(sysConfig.user.user_type == 1){
+                            this.$alert("Sorry, the supplier cannot submit the form",{
+                                confirmButtonText: 'Ok',
+                                customClass: "my-custom-element-alert-class fs-content-18",
+                                center: true,
+                                callback: action =>{
+                                    return
+                                }
+                            });
+                            return
+                        }else{
+                            // 普通用户
+                            this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.flag = true;
                         let data = JSON.stringify(this.form)
@@ -378,12 +410,9 @@
                                     setTimeout(function () {
                                         window.location.reload();
                                     }, 1500)
-                                    // 未登录时
-                                } else if (res.data.ret == -1) {
-                                    window.location.href =
-                                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_userIndex';
-                                    // 提交失败时
-                                } else {
+                                }
+                                // 提交失败时
+                                 else {
                                     this.flag = false;
                                     this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
                                         confirmButtonText: 'OK',
@@ -411,6 +440,10 @@
                         // return false;
                     }
                 });
+                        }
+                    }
+                
+               
             },
             // 头像上传
             handleAvatarSuccess(res, file) {
@@ -438,6 +471,10 @@
                 return isJPG && isLt3M;
             },
             clickUploadAvatar(avatar) {
+                if(!isLogin){
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                }
                 var self = this;
                 axios.post('/home/usr_Purchase_editAvatar', Qs.stringify({
                     avatar,
@@ -455,6 +492,7 @@
                         self.getUserInfo();
                     })
                     .catch(function (error) {
+                        this.$message.error("Network error, please refresh the page and try again");
                         console.log(error);
                     });
             },

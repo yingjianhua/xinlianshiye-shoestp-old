@@ -200,12 +200,13 @@
                                     {{item.closed?item.closed:'No data'}}
                                 </div>
                             </div>
-                            <a class="product-inquiry-btn" target="_blank"
+                            <!-- <a class="product-inquiry-btn" target="_blank"
                                :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId"
-                               :data-id="item.supId">Product Inquiry</a>
-
-                        </div>
-                    </a>
+                               :data-id="item.supId">Product Inquiry</a> -->
+                               
+                            </div>
+                        </a>
+                        <div class="product-inquiry-btn" @click.stop="ToProductInquiry(item.pdtId)">Product Inquiry</div>
                 </div>
                 <div class="common-boxspan fr">
                     <a class="h1" :href="'/home/usr_UsrSupplier_gtSupIndex?pkey='+item.supId"
@@ -239,9 +240,9 @@
                     </div>
 
                     <!-- <a class="btn" href="javascript:;" @click="addRFQ" :data-id = "item.pdtId">Contact Supplier</a> -->
-                    <a class="btn" target="_blank"
-                       :href="'/home/usr_UsrSupplier_goContactSupplier?supplierPkey='+item.supId" :data-id="item.pdtId">Contact
-                        Supplier</a>
+                    <a class="btn" @click="ToContactSupplier(item.supId)">
+                        Contact Supplier
+                    </a>
                 </div>
             </div>
             <!--产品 end-->
@@ -571,7 +572,53 @@
             bigPicBoxclose(e) {
                 this.bigPicBox = false
             },
-
+            // 跳转供应商表单
+            ToContactSupplier(supplierPkey){
+                if(sysConfig && sysConfig.user){
+                    // 登录了
+                    if(sysConfig.user.user_type == 1){
+                        this.$alert("Sorry, Supplier can't enter",{
+                            confirmButtonText: 'Ok',
+                            customClass: "my-custom-element-alert-class fs-content-18",
+                            center: true,
+                            callback: action =>{
+                                return
+                            }
+                        });
+                        return
+                    }else{
+                        window.open("/home/usr_UsrSupplier_goContactSupplier?supplierPkey=" + supplierPkey+ "&backUrl=" + window.location.href);   
+                    }
+                }else{
+                    // 没登录
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                }
+                
+            },
+            // 跳转商品询盘表单
+            ToProductInquiry(pdtId){
+                if(sysConfig && sysConfig.user){
+                    // 登录了
+                    if(sysConfig.user.user_type == 1){
+                        this.$alert("Sorry, Supplier can't enter",{
+                            confirmButtonText: 'Ok',
+                            customClass: "my-custom-element-alert-class fs-content-18",
+                            center: true,
+                            callback: action =>{
+                                return
+                            }
+                        });
+                        return
+                    }else{
+                        window.open('/home/usr_UsrConsult_productPublishView?product_id=' + pdtId+ "&backUrl=" + window.location.href);   
+                    }
+                }else{
+                    // 没登录
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                }
+            },
         },
         mounted() {
             this.pName = this.GetQueryString("Keyword")
