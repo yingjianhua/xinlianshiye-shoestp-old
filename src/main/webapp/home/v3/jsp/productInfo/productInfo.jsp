@@ -24,9 +24,10 @@
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script src="/home/static/js/axios.min.js"></script>
     <script src="/home/static/js/qs.js"></script>
-
+    <%--公共函数--%>
+    <script src="/home/utils/util.js"></script>
     <link rel="stylesheet" href="/home/v2/static/css/base/element-ui/element-ui.css"/>
-    --%>
+
     <link href="/home/v3/static/css/productInfo/goodsInfoNew.css" rel="stylesheet" type="text/css">
     <link href="/home/static/css/style.css" rel="stylesheet" type="text/css">
     <link href="/home/static/css/global.css" rel="stylesheet" type="text/css">
@@ -1170,8 +1171,8 @@
                         <div class="h6">China</div>
                     </div>
 
-                    <div class="hBtn"><a
-                            :href="'/home/usr_UsrSupplier_goContactSupplier?supplierPkey='+productinfocom.supId"><img
+                    <div class="hBtn" @click="contactSupplier"><a
+                            href="javascript: void(0);"><img
                             src="/home/v3/static/images/productInfo/icon-youjian.png" alt=""/>Contact Supplier</a></div>
 
                     <a :href="'/home/usr_UsrSupplier_gtSupInfo?pkey='+productinfocom.supId" class="h8">View Company
@@ -1238,6 +1239,20 @@
             }
         },
         methods: {
+            contactSupplier(){
+                if(sysConfig && sysConfig.user && sysConfig.user.user_type == 1){
+                    this.$alert("Sorry, Supplier can't enter",{
+                        confirmButtonText: 'Ok',
+                        customClass: "my-custom-element-alert-class fs-content-18",
+                        center: true,
+                        callback: action =>{
+                            return
+                        }
+                    });
+                    return
+                }
+                window.location.href="/home/usr_UsrSupplier_goContactSupplier?supplierPkey=" + this.productinfocom.supId;
+            },
             // 选择放大镜的图片
             selePicli: function (e) {
                 this.selePicIndex = e.currentTarget.dataset.index;
@@ -1261,7 +1276,8 @@
 
             addfav: function () {
                 if (!isLogin) {
-                    user_obj.set_form_sign_in('', window.location.href, 1);
+                    // user_obj.set_form_sign_in('', window.location.href, 1);
+                    util_function_obj.alertWhenNoLogin(this);
                     return
                 }
                 var self = this
@@ -1414,7 +1430,8 @@
             },
             addRFQ: function () {
                 if (!isLogin) {
-                    user_obj.set_form_sign_in('', window.location.href, 1);
+                    // user_obj.set_form_sign_in('', window.location.href, 1);
+                    util_function_obj.alertWhenNoLogin(this,"jumpUrl=/home/usr_UsrConsult_productPublishView?product_id=" + this.productinfocom.pdtId);
                     return
                 }
                 window.location = '/home/usr_UsrConsult_productPublishView?product_id=' + this.productinfocom.pdtId + '&backUrl=' + window.location.href
