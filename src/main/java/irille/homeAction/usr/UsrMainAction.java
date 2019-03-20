@@ -183,14 +183,12 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 			}
 		}
 		UsrMain main = UsrMain.chkUniqueEmail(false, getBean().getEmail());
-		if (main == null) {
+		if (main != null) {
 			throw new WebMessageException(
 					MessageBuild.buildMessage(ReturnCode.service_user_exists, HomeAction.curLanguage()));
 		}
-
+		getBean().setPassword(getPwd());
 		ins.setB(getBean());
-		ins.setPwd(getPwd());
-		ins.setPwdA(getPwdA());
 		ins.commit();
 		insAfter();
 		write();
