@@ -131,6 +131,10 @@
             color: #232323;
             text-decoration: none;
         }
+
+        .el-form-item__label{
+            white-space: nowrap;
+        }
     </style>
 
     <%--统计代码--%>
@@ -519,11 +523,6 @@
                 descriotion: [{
                     required: true,
                     message: 'Please enter description information',
-                    trigger: 'blur'
-                },{
-                    min: 1,
-                    max: 2500,
-                    message: 'Content cannot exceed 2500 characters',
                     trigger: 'blur'
                 }],
                 quantity: [{
