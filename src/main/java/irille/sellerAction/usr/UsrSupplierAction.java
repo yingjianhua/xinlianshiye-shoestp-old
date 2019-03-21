@@ -15,6 +15,7 @@ import irille.pub.Exp;
 import irille.pub.Str;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
+import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.query.SqlQuery;
 import irille.pub.bean.sql.SQL;
 import irille.pub.exception.ReturnCode;
@@ -109,7 +110,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
       writeErr("验证码错误");
       return;
     }
-    UserView user;
+    UserView user = null;
     if (Str.isEmpty(email)) throw LOG.err("loginCheck", "请输入用户名");
     if (password == null || Str.isEmpty(password)) throw LOG.err("loginCheck", "请输入密码");
     UsrMain main = UsrMain.chkUniqueEmail(false, email);
@@ -120,7 +121,12 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
         throw LOG.err("wrong password", "用户名和密码不匹配");
       }
     }
-    UsrSupplier supplier = UsrSupplier.chkUniqueLogin_name(false, email);
+    BeanQuery<UsrSupplier> query = new BeanQuery();
+    query
+        .SELECT(UsrSupplier.class)
+        .FROM(UsrSupplier.class)
+        .WHERE(UsrSupplier.T.UserId, "=?", main.getPkey());
+    UsrSupplier supplier = query.query();
     if (supplier == null) {
       JSONObject json = new JSONObject();
       json.put("ret", -2);
@@ -134,25 +140,6 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     user = UsrUserDAO.supplierSignIn(supplier, main);
     setUser(user);
     write();
-
-    //    	UsrSupplier supplier=new UsrSupplier();
-    //        try {
-    //        	String verifyCode = verifyCode();
-    //            if (Str.isEmpty(verifyCode) || Str.isEmpty(getCheckCode()) ||
-    // verifyCode.equals(getCheckCode()) == false)
-    //                throw LOG.err("errcode", "验证码错误");
-    //             supplier = UsrSupplierDAO.loginCheck(getBean().getLoginName(), getMmCheck());
-    //
-    //            this.session.put(LOGIN, supplier);
-    //            SellerAction.initTran(supplier);
-    //        } catch (Exp e) {
-    //            setSarg1(e.getLastMessage());
-    //            return SellerAction.LOGIN;
-    //        }
-    //
-    //        setResult("/seller/admin/index/index.html");
-    //        return RTRENDS;
-
   }
 
   /** 注销供应商登录信息 */
