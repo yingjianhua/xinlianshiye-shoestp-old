@@ -90,7 +90,8 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
     if (getUser().getUser_type() == 1) {
       regex(); //正则校验
       getBean().setLoginName(getUser().getLoginName());
-      UsrSupplier supplier = UsrSupplierDAO.insSupplier(getBean(), curLanguage());
+      UsrSupplier supplier = UsrSupplierDAO.insSupplierNo(getBean(), curLanguage()); //没有多国语言翻译
+//      UsrSupplier supplier = UsrSupplierDAO.insSupplier(getBean()); //有多国语言翻译
       UsrAnnex annex = new UsrAnnex();
       if (supplier.getPkey() != null) {
         annex.setSupplier(supplier.getPkey());
@@ -219,7 +220,8 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
         main.setTelphone(getBean().getPhone());
         main.upd();
       }
-      UsrSupplier newSupplier = UsrSupplierDAO.updInfo(getBean());
+      UsrSupplier newSupplier = UsrSupplierDAO.updInfoNo(getBean(),lang); //没有多国语言翻译
+//      UsrSupplier newSupplier = UsrSupplierDAO.updInfo(getBean()); //有多国语言翻译
       newSupplier.stStatus(OStatus.INIT);
       newSupplier.stStoreStatus(Usr.SStatus.DOWN);
       newSupplier.upd();
