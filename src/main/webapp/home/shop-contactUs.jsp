@@ -116,7 +116,7 @@
                 <c:if test="${env.login == null}">
                     <div class="tip-info fr">
                         <s:text name="ViewAfterLogin"/>
-                        <a class="SignInButton"><s:text name="sign_in"/></a>
+                        <a class="SignInButton" @click="util_function_obj.alertWhenNoLogin(this);"><s:text name="sign_in"/></a>
                     </div>
                 </c:if>
             </h3>
@@ -352,10 +352,6 @@
                 // 进来页面获取到供应商信息
                 let self = this;
                 self.pkey = self.getQueryString("pkey");
-                if(!isLogin){
-                    util_function_obj.alertWhenNoLogin(self);
-                        return
-                    }
                 self.$set(self.form,"supplierId",self.pkey)
             },
             methods: {

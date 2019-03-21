@@ -574,50 +574,13 @@
             },
             // 跳转供应商表单
             ToContactSupplier(supplierPkey){
-                if(sysConfig && sysConfig.user){
-                    // 登录了
-                    if(sysConfig.user.user_type == 1){
-                        this.$alert("Sorry, Supplier can't enter",{
-                            confirmButtonText: 'Ok',
-                            customClass: "my-custom-element-alert-class fs-content-18",
-                            center: true,
-                            callback: action =>{
-                                return
-                            }
-                        });
-                        return
-                    }else{
-                        window.open("/home/usr_UsrSupplier_goContactSupplier?supplierPkey=" + supplierPkey+ "&backUrl=" + window.location.href);   
-                    }
-                }else{
-                    // 没登录
-                    util_function_obj.alertWhenNoLogin(this);
-                    return
-                }
-                
+                let url = "/home/usr_UsrSupplier_goContactSupplier?supplierPkey=" + supplierPkey+ "&backUrl=" + window.location.href;
+                util_function_obj.supplierCantEnter(this, url);
             },
             // 跳转商品询盘表单
             ToProductInquiry(pdtId){
-                if(sysConfig && sysConfig.user){
-                    // 登录了
-                    if(sysConfig.user.user_type == 1){
-                        this.$alert("Sorry, Supplier can't enter",{
-                            confirmButtonText: 'Ok',
-                            customClass: "my-custom-element-alert-class fs-content-18",
-                            center: true,
-                            callback: action =>{
-                                return
-                            }
-                        });
-                        return
-                    }else{
-                        window.open('/home/usr_UsrConsult_productPublishView?product_id=' + pdtId+ "&backUrl=" + window.location.href);   
-                    }
-                }else{
-                    // 没登录
-                    util_function_obj.alertWhenNoLogin(this);
-                    return
-                }
+                let url = '/home/usr_UsrConsult_productPublishView?product_id=' + pdtId+ "&backUrl=" + window.location.href;
+                util_function_obj.supplierCantEnter(this, url);
             },
         },
         mounted() {

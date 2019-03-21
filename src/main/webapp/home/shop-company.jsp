@@ -469,10 +469,6 @@
                 let self = this;
                 // console.log(window.location.href)
                 self.pkey = self.getQueryString("pkey");
-                if(!isLogin){
-                    util_function_obj.alertWhenNoLogin(self);
-                        return
-                    }
                 self.$set(self.form,"supplierId",self.pkey)
             },
             methods: {

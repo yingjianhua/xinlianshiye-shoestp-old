@@ -340,17 +340,12 @@ ul{
                 }
             },
             mounted(){
-                if(!isLogin){ 
-                    util_function_obj.alertWhenNoLogin(this);
-                    return
-                }
                 if (sessionStorage['Temp_Pdt_publish_form'] &&sessionStorage['Temp_Pdt_publish_form']!=''&&sessionStorage['Temp_Pdt_publish_form']!='null'){
                     this.form=JSON.parse(sessionStorage['Temp_Pdt_publish_form'])
                 }
                 // 进来页面获取到供应商信息
                 var self = this;
                 self.id = self.getQueryString("product_id");
-                // var id = 5
                 axios.post('/home/rfq_RFQConsult_getPdtInfo', Qs.stringify({
                         id: self.id,
                     }))

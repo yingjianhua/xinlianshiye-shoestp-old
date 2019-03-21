@@ -224,10 +224,6 @@
                 // 进来页面获取到供应商信息
                 let self = this;
                 self.supplierPkey = self.getQueryString("supplierPkey");
-                if(!isLogin){
-                    util_function_obj.alertWhenNoLogin(self);
-                    return
-                    }
                 self.$set(self.form,"supplierId",self.supplierPkey)
                 axios.get('/home/usr_UsrSupplier_getSupplierDetail', {
                 // axios.get('http://192.168.1.48:889/mock/5c6a1556af4d250024d48c6d/home/home/usr_UsrSupplier_getSupplierDetail', {
