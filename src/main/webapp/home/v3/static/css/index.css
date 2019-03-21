@@ -254,6 +254,7 @@ body {
     transform: translate(-50%);
     width: 163.3px;
     background-color: #1a4091;
+    cursor: pointer;
 }
 
 #xc .section2 .product-list .product-item .inquiry-btn a.inquiry-a:hover {

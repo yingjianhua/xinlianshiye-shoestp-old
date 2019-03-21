@@ -256,8 +256,8 @@
         },
         mounted() {
             if(!isLogin){
-                window.location.href =
-                                    '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_usrSetting';
+                util_function_obj.alertWhenNoLogin(this);
+                        return
                 }
             this.getAccountSettings();
         },
@@ -288,8 +288,8 @@
             },
             submitForm1(formName) { // 第一部分表单提交    信息
                 if(!isLogin){
-                window.location.href =
-                                    '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_usrSetting';
+                    util_function_obj.alertWhenNoLogin(this);
+                        return
                 }
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
@@ -318,11 +318,6 @@
                                     setTimeout(function () {
                                         window.location.reload();
                                     }, 1500)
-                                    // 未登录时
-                                } else if (res.data.ret == -1) {
-                                    window.location.href =
-                                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_usrSetting';
-                                    // 提交失败时
                                 } else {
                                     this.flag = false;
                                     this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
@@ -353,8 +348,8 @@
             },
             submitForm2(formName) { // 第二部分表单提交    邮箱
                 if(!isLogin){
-                window.location.href =
-                                    '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_usrSetting';
+                    util_function_obj.alertWhenNoLogin(this);
+                        return
                 }
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
@@ -382,11 +377,6 @@
                                     setTimeout(function () {
                                         window.location.reload();
                                     }, 1500)
-                                    // 未登录时
-                                } else if (res.data.ret == -1) {
-                                    window.location.href =
-                                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_usrSetting';
-                                    // 提交失败时
                                 } else {
                                     this.flag = false;
                                     this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
@@ -415,8 +405,8 @@
             },
             submitForm3(formName) { // 第三部分表单提交    密码
                 if(!isLogin){
-                window.location.href =
-                                    '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_usrSetting';
+                    util_function_obj.alertWhenNoLogin(this);
+                        return
                 }
 
                 this.$refs[formName].validate((valid) => {
@@ -445,11 +435,7 @@
                                     //     window.location.reload();
                                     // }, 1500)
                                     // 未登录时
-                                } else if (res.data.ret == -1) {
-                                    window.location.href =
-                                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_usrSetting';
-                                    // 提交失败时
-                                } else {
+                                }  else {
                                     this.flag = false;
                                     this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
                                         confirmButtonText: 'OK',

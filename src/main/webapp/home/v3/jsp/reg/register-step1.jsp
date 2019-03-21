@@ -178,7 +178,8 @@
             registerFormRules: {
                 email: [
                     {required: true, message: 'Email can\'t be empty!', trigger: 'blur'}, {
-                        pattern: /^[0-9A-Za-z][\.-_0-9A-Za-z]*@[0-9A-Za-z]+(?:\.[0-9A-Za-z]+)+$/,
+                        // pattern: /^[0-9A-Za-z][\.-_0-9A-Za-z]*@[0-9A-Za-z]+(?:\.[0-9A-Za-z]+)+$/,
+                        pattern: /^[\w]{1,32}@\w{1,15}.\w{2,5}$/,
                         message: 'E-mail format is incorrect',
                         trigger: 'blur'
                     }

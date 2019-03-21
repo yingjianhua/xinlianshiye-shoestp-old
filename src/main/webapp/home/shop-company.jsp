@@ -469,9 +469,6 @@
                 let self = this;
                 // console.log(window.location.href)
                 self.pkey = self.getQueryString("pkey");
-                if(!isLogin){
-                    window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrSupplier_gtSupInfo?pkey=' + self.pkey;
-                    }
                 self.$set(self.form,"supplierId",self.pkey)
             },
             methods: {
@@ -526,42 +523,31 @@
                 submitForm(formName) { // 表单提交
                     let self = this;
                     if(!isLogin){
-                     window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrSupplier_gtSupInfo?pkey=' + self.pkey;
-                    }
-                    // if (!isLogin) {
-                    //     self.$alert('Please login to operate', 'Please login to operate', {
-                    //         confirmButtonText: 'Ok',
-                    //         customClass: "my-custom-element-alert-class fs-content-18",
-                    //         callback: action => {
-                    //             window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrSupplier_gtSupInfo?pkey="+this.pkey
-                    //         }
-                    //     });
-                    //     return
-                    // }
-                    self.$refs[formName].validate((valid) => {
-                        if (valid) {
+                        util_function_obj.alertWhenNoLogin(self);
+                        return
+                    }else{
+                        // 登录了
+                        if(sysConfig.user.user_type == 1){
+                            self.$alert("Sorry, the supplier cannot submit the form",{
+                                confirmButtonText: 'Ok',
+                                customClass: "my-custom-element-alert-class fs-content-18",
+                                center: true,
+                                callback: action =>{
+                                    return
+                                }
+                            });
+                            return
+                        }else{
+                            // 普通用户
+                        self.$refs[formName].validate((valid) => {
+                         if (valid) {
                             self.flag = true;
                             console.log(self.form)
                             self.form.images = self.imgsToUpload.join(",");
-                            // self.form.pdtId = self.id;
                             console.log(self.imgsToUpload)
-                            // if (self.form.images.length == 0) {
-                            //     // if(${env.login==null}){
-                            //     //     self.$message({
-                            //     //         showClose: true,
-                            //     //         message: 'Pleaselogin',
-                            //     //         type: 'warning'
-                            //     //     });
-
-                            //     //     window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
-                            //     // }
-                            //     self.$message.error('Please upload an image');
-                            //     return
-                            // }
                             console.log('submit!');
                             let data = JSON.stringify(self.form)
                             axios.post("/home/rfq_RFQConsult_putSupplierInquiry", data, 
-                            // axios.post("http://192.168.1.48:889/mock/5c6a1556af4d250024d48c6d/home/home/rfq_RFQConsult_putSupplierInquiry", data, 
                                 {headers: {'Content-Type': 'application/json'}}
                             )
                                 .then((res) => {
@@ -581,9 +567,6 @@
                                             window.location.reload();
                                         }, 1500)
                                         // 未登录时
-                                    } else if (res.data.ret == -1) {
-                                        window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrSupplier_gtSupInfo?pkey=' + self.pkey;
-                                        // 提交失败时
                                     } else {
                                         self.flag = false;
                                         this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
@@ -598,18 +581,21 @@
                                     self.$message.error("Network error, please refresh the page and try again");
                                     console.log(err)
                                 })
-                        } else {
-                            console.log('error submit!!');
-                            // if (!self.form.quantity) {
-                            //     self.$message.error('Quantity cannot be empty');
-                            // } else if (!self.form.unit) {
-                            //     self.$message.error("Select unit");
-                            // } else if (!self.form.descriotion) {
-                            //     self.$message.error('Please fill in the message');
-                            // }
-                            // return false;
+                                } else {
+                                    console.log('error submit!!');
+                                    // if (!self.form.quantity) {
+                                    //     self.$message.error('Quantity cannot be empty');
+                                    // } else if (!self.form.unit) {
+                                    //     self.$message.error("Select unit");
+                                    // } else if (!self.form.descriotion) {
+                                    //     self.$message.error('Please fill in the message');
+                                    // }
+                                    // return false;
+                                }
+                            });
                         }
-                    });
+                    }
+                   
                 },
                 getQueryString: (name) => {
                     let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
