@@ -21,8 +21,12 @@ import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.SqlQuery;
 import irille.pub.bean.sql.SQL;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.tb.FldLanguage.Language;
+import irille.pub.validate.Regular;
 import irille.pub.validate.ValidForm;
+import irille.pub.validate.ValidRegex;
 import irille.pub.validate.ValidRegex2;
 import irille.pub.verify.RandomImageServlet;
 import irille.sellerAction.SellerAction;
@@ -255,10 +259,14 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
    * @author yingjianhua
    */
   public void UpdPwd() throws Exception {
+    if ("".equals(newPwd) || null == newPwd || "".equals(oldPwd) || null == oldPwd)
+      throw new WebMessageException(ReturnCode.failure, "密码输入不能为空");
+    if (!ValidRegex.regMarch(Regular.REGULAR_PWD, newPwd))
+      throw new WebMessageException(ReturnCode.password_format, "密码为6到20为的数字和字母组成");
     UsrUserDAO.updSupplierPassword(getSupplier().getPkey(), oldPwd, newPwd);
     write();
   }
-
+  
   @Getter @Setter private UsrshopSettingView usv;
   @Inject private UsrSupplierDAO.setting usrSupplierSetting;
 
