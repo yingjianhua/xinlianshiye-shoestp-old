@@ -617,7 +617,7 @@
                 operateIdCard: '',
                 applicationTime: '',
                 purchasePkey: 9999,
-                lang: 'zh-TW',
+                lang: 'zh_CN',
                 userid: null
             },
             //用户信息
@@ -757,7 +757,7 @@
                             if(res.data.result.user){
                                 self.$set(self,'usermsg',res.data.result.user)
                                 self.basicInfo.userid = res.data.result.user.id
-                                self.basicInfo.lang = res.data.result.current_language
+                                // self.basicInfo.lang = res.data.result.current_language
                                 self.getcountry();
                                 self.getRetype();
                             }else{
