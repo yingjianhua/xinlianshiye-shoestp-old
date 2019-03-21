@@ -132,7 +132,12 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
 				throw LOG.err("wrong password", "用户名和密码不匹配");
 			}
 		}
-		UsrSupplier supplier = UsrSupplier.chkUniqueLogin_name(false, email);
+		SQL sql = new SQL() {
+			{
+				SELECT(UsrSupplier.class).FROM(UsrSupplier.class).WHERE(UsrSupplier.T.UserId, "= ?", main.getPkey());
+			}
+		};
+		UsrSupplier supplier = Query.sql(sql).query(UsrSupplier.class);
 		if (supplier == null) {
 			JSONObject json = new JSONObject();
 			json.put("ret", -2);
@@ -146,7 +151,6 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
 		user = UsrUserDAO.supplierSignIn(supplier, main);
 		setUser(user);
 		write();
-
 		// UsrSupplier supplier=new UsrSupplier();
 		// try {
 		// String verifyCode = verifyCode();
