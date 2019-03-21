@@ -90,7 +90,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
     if (getUser().getUser_type() == 1) {
       regex(); //正则校验
       getBean().setLoginName(getUser().getLoginName());
-      UsrSupplier supplier = UsrSupplierDAO.insSupplierNo(getBean(), curLanguage()); //没有多国语言翻译
+      UsrSupplier supplier = UsrSupplierDAO.insSupplierNo(getBean(), lang); //没有多国语言翻译
 //      UsrSupplier supplier = UsrSupplierDAO.insSupplier(getBean()); //有多国语言翻译
       UsrAnnex annex = new UsrAnnex();
       if (supplier.getPkey() != null) {
@@ -182,11 +182,11 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
           .FROM(UsrAnnex.class)
           .WHERE(UsrAnnex.T.SUPPLIER, " =? ", supplier.get(0).getPkey());
       SqlQuery query = Query.sql(sql);
-
       if (crtJsonByBean(supplier.get(0)) != null) {
         json = crtJsonByBean(supplier.get(0));
       }
       Map<String, Object> obj = query.queryMap();
+
 
       JSONObject j = new JSONObject();
       for (String key : obj.keySet()) {

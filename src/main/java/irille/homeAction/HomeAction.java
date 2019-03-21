@@ -613,6 +613,7 @@ public abstract class HomeAction<THIS extends BeanMain<?, ?>> extends BeanAction
     return crtJsonByBean(bean, "");
   }
 
+
   /**
    * 将POJO对象中转为对应的JSONOBJECT对象 列表数据与，修改加载的数据字段无前缀，为字段代码 新增或修改操作返回时，带前缀bean.，用于EXT的new
    * xxxModel()去替换list内容
@@ -634,7 +635,7 @@ public abstract class HomeAction<THIS extends BeanMain<?, ?>> extends BeanAction
       if (obj == null) continue;
       if (fld instanceof FldLanguage) {
         if (cur_lang == null) {
-          cur_lang = PltConfigDAO.manageLanguage();
+          cur_lang = Language.zh_CN;
         }
         JSONObject json = new JSONObject((String) obj);
         if (json.has(cur_lang.name())) {
@@ -680,6 +681,7 @@ public abstract class HomeAction<THIS extends BeanMain<?, ?>> extends BeanAction
     crtJsonExt(lineJson, bean, pref);
     return lineJson;
   }
+
 
   public JSONObject crtJsonExt(JSONObject json, Bean bean, String pref) throws Exception {
     return json;
