@@ -166,16 +166,6 @@
         new Vue({
             el:"#main",
             data() {
-                var validateQuantity = (rule, value, callback) => {
-                    let re = /^\+?[1-9][0-9]*$/;
-                    if (!value) {
-                        return callback(new Error('Please enter the quantity'));
-                    }
-                    if(!re.test(value)){
-                        return callback(new Error("Can't start with 0, can't have decimal point"));
-                    }
-                    callback();
-                };
                 return {
                     flag : false, 
                     companyInfo:[], // 供应商信息
@@ -208,7 +198,8 @@
                             { required: true,message: 'Please fill in the title'}
                         ],
                         quantity: [
-                            { validator: validateQuantity, trigger: 'blur' }
+                            {required: true,message: 'Please enter the quantity',trigger: 'blur'},
+                            { pattern: /^\+?[1-9][0-9]*$/, message: "Please enter a number, can't start with 0, can't have decimal point" }
                         ],
                         descriotion: [{
                             required: true,
