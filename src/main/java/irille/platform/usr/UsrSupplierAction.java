@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import irille.action.MgtAction;
 import irille.platform.usr.View.UsrSupplierNewView;
 import irille.pub.Exp;
+import irille.pub.bean.BeanBase;
 import irille.pub.util.upload.ImageUpload;
 import irille.pub.validate.ValidForm;
 import irille.pub.validate.ValidRegex2;
@@ -114,9 +115,12 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
         annex1.setContactsIdCardFrontPhotoName(contactsIdCardFrontPhotoName);
         annex1.ins();
       }
-      UsrMain main = UsrMain.chkUniqueEmail(false, mainEmail);
-      if (mainEmail != null) {
-        main.setEmail(mainEmail);
+
+      UsrMain main = BeanBase.load(UsrMain.class, getBean().getUserid());
+      if (main != null) {
+        if(mainEmail != null){
+          main.setEmail(mainEmail);
+        }
         main.setCompany(getBean().getName());
         main.setAddress(getBean().getCompanyAddr());
         main.setContacts(getBean().getContacts());
