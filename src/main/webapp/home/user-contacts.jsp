@@ -466,7 +466,8 @@
                 self.$confirm('Whether to delete the contact?', 'Prompt', {
                     confirmButtonText: 'Determine',
                     cancelButtonText: 'Cancel',
-                    type: 'warning'
+                    type: 'warning',
+                    customClass: "my-custom-element-alert-class fs-content-18",
                 }).then(() => {
                     axios.post('/home/rfq_RFQContact_delete', Qs.stringify({
                         supplierPkey,
@@ -584,7 +585,8 @@
                 self.$confirm('Whether to delete the group?', 'Prompt', {
                     confirmButtonText: 'Determine',
                     cancelButtonText: 'Cancel',
-                    type: 'warning'
+                    type: 'warning',
+                    customClass: "my-custom-element-alert-class fs-content-18",
                 }).then(() => {
                     axios.post('/home/rfq_RFQContact_deleteGroup', Qs.stringify({
                         groupPkey
@@ -609,7 +611,7 @@
                             console.log(error);
                         });
             }).catch(() => {
-                self.$message.error("Network error, please refresh the page and try again");
+               
                 });
             },
             moveGroup(contactPkey,groupPkey,name,count){ // 移动分组
