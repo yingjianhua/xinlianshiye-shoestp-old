@@ -110,14 +110,6 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
 	private String password;
 	private String vCode;
 
-	/** 注销供应商登录信息 */
-	@Override
-	public String logon() {
-		setUser(null);
-		setResult("/seller/admin/index/login.jsp");
-		return RTRENDS;
-	}
-
 	@Override
 	public void login() throws Exception {
 		String verifyCode = verifyCode();
