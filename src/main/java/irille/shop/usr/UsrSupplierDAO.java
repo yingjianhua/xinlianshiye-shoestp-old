@@ -1039,16 +1039,178 @@ public class UsrSupplierDAO {
     return list;
   }
 
+  public static String getJson() {
+    String json = "{";
+    for (int i = 0;i < FldLanguage.Language.values().length;i++) {
+      if (i == FldLanguage.Language.values().length-1) {
+        json += "'" + FldLanguage.Language.values()[i] + "':''}";
+      }else{
+        json += "'" + FldLanguage.Language.values()[i] + "':'',";
+      }
+    }
+    return json;
+  }
+
   /**
-   * 创建供应商信息
-   *
+   * 创建供应商信息-没有多国语言翻译
+   * @author: lingjian
+   * @Date: 2019/3/20 19:29
    * @param view
    * @param lang
    * @return
    * @throws JSONException
+   */
+  public static UsrSupplier insSupplierNo(UsrSupplier view, Language lang) throws JSONException {
+    String json =getJson();
+    UsrMain main = irille.pub.bean.Query.SELECT(UsrMain.class, view.getUserid());
+    main.setContacts(view.getContacts());
+    main.setTelphone(view.getPhone());
+    main.setCompany(view.getName());
+    main.setAddress(view.getCompanyAddr());
+    main.upd();
+
+    UsrSupplier bean = new UsrSupplier();
+    // 必填项
+    bean.stRole(UsrSupplierRoleDAO.getDefault());
+    if (main.getNickname() == null) {
+      bean.setLoginName(main.getEmail()); // UsrMain表的昵称
+    } else {
+      bean.setLoginName(main.getNickname()); // UsrMain表的昵称
+    }
+    bean.setEmail(main.getEmail()); // UsrMain表的邮箱
+    bean.stStatus(Usr.OStatus.INIT); // 审核状态
+    bean.stStoreStatus(Usr.SStatus.DOWN); // 店铺状态
+    bean.stIsAuth(Usr.OIsAuth.NO); // 认证状态
+    bean.setSort(default_sort); // 排序
+    bean.setCountry(7); // 国家
+    bean.setProvince(257); // 省份
+    bean.setBankCountry(7); // 开户行国家
+    bean.setBankProvince(257); // 开户行省份
+    bean.stHomePageOn(false); // 首页个性装修开关
+    bean.stProductPageOn(false); // 产品页个性装修开关
+    bean.stContactPageOn(false); // 联系页个性装修开关
+    bean.stBottomHomeProductsOn(false); // 首页底部产品展示开关
+    bean.stHomePosterOn(false);
+    bean.stHomeBusinessBigPosterOn(false);
+    bean.stCompanyIntroductionPageCustomDecorationOn(false);
+    bean.stIsPro(false); // 供应商首页产品展示
+    bean.setUpdateTime(Env.getTranBeginTime()); // 更新时间
+    bean.setCategory(40); // 供应商分类
+
+    bean.setUserid(view.getUserid()); // UsrMain表的pkey
+    bean.setPassword(DateTools.getDigest(main.getPkey() + main.getPassword())); // UsrMain表的密码
+    bean.setName(view.getName()); // 公司名称-必填
+    bean.setEnglishName(view.getEnglishName()); // 公司英文名称
+    bean.stShowName(new JSONObject(json).put(lang.name(), view.getName())); //前端公司展示名称
+
+    bean.stCompanyType(new JSONObject(json).put(lang.name(), view.getCompanyType())); // 企业类型
+    bean.stCompanyNature(new JSONObject(json).put(lang.name(), view.getCompanyNature())); // 企业性质
+    bean.setCompanyEstablishTime(view.getCompanyEstablishTime()); // 成立时间
+    bean.setWebsite(view.getWebsite()); // 官网地址
+    bean.stCompanyAddr(new JSONObject(json).put(lang.name(), view.getCompanyAddr())); // 详细地址
+    bean.setAnnualProduction(view.getAnnualProduction()); // 年产量
+    bean.setTelephone(view.getTelephone()); // 公司电话
+    bean.setFax(view.getFax()); // 传真
+    bean.setPostcode(view.getPostcode()); // 邮编
+    bean.setTargetedMarket(view.getTargetedMarket()); // 目标市场
+    bean.stProdPattern(new JSONObject(json).put(lang.name(), view.getProdPattern())); // 生产模式
+    bean.setCreditCode(view.getCreditCode()); // 信用代码
+    bean.setRegisteredCapital(view.getRegisteredCapital()); // 注册资金-必填
+    bean.setEntity(view.getEntity()); // 企业法人-必填
+    bean.setEntity(view.getEntity()); // 企业法人-必填
+    bean.setBusinessLicenseIsSecular(view.getBusinessLicenseIsSecular()); // 营业执照是否在有效期-必填
+    bean.setBusinessLicenseBeginTime(view.getBusinessLicenseBeginTime()); // 营业执照开始时间
+    if (view.getBusinessLicenseIsSecular() == 0) {
+      bean.setBusinessLicenseEndTime(view.getBusinessLicenseEndTime()); // 营业执照结束时间
+    }
+    bean.setTaxpayerType(view.getTaxpayerType()); // 纳税人类型
+
+    bean.stContacts(new JSONObject(json).put(lang.name(), view.getContacts())); // 联系人
+    bean.stDepartment(new JSONObject(json).put(lang.name(), view.getDepartment())); // 联系人部门
+    bean.stJobTitle(new JSONObject(json).put(lang.name(), view.getJobTitle())); // 联系人职称
+    bean.setPhone(view.getPhone()); // 联系人手机
+    if (view.getContactEmail() == null) {
+      bean.setContactEmail(main.getEmail()); // 联系人邮箱
+    } else {
+      bean.setContactEmail(view.getContactEmail()); // 联系人邮箱
+    }
+    bean.setCertPhoto(view.getCertPhoto()); // 资质证书复印件
+    bean.setIdCardFrontPhoto(view.getIdCardFrontPhoto()); // 法人身份证复印件
+    bean.setIdCard(view.getIdCard()); // 法人身份证号码
+    bean.setContactsIdCardFrontPhoto(view.getContactsIdCardFrontPhoto()); // 运营负责人身份证复印件
+    bean.setOperateIdCard(view.getOperateIdCard()); // 运营负责人身份证号码
+    bean.setApplicationTime(view.getApplicationTime()); // 申请时间
+    bean.ins();
+    return bean;
+  }
+
+  /**
+   * 更新供应商信息-没多国语言翻译
+   *
+   * @author: lingjian @Date: 2019/3/1 16:21
+   */
+  public static UsrSupplier updInfoNo(UsrSupplier supplier,Language lang) throws JSONException {
+    UsrSupplier model = BeanBase.load(UsrSupplier.class, supplier.getPkey());
+    PropertyUtils.copyProperties(
+            model,
+            supplier,
+            T.COMPANY_TYPE, // 公司类型 多国语言
+            T.COMPANY_NATURE, // 企业性质 多国语言
+            T.COMPANY_ADDR, // 公司详细地址 多国语言
+            T.PROD_PATTERN, // 生产模式 多国语言
+            T.DEPARTMENT, // 联系人部门 多国语言
+            T.JOB_TITLE, // 联系人职称 多国语言
+            T.CONTACTS, // 联系人 多国语言
+            T.SHOW_NAME, //公司名称 多国语言
+
+            T.NAME, // 公司名称
+            T.ENGLISH_NAME, // 英文名称
+            T.COMPANY_ESTABLISH_TIME, // 企业成立时间
+            T.WEBSITE, // 公司官网网站地址
+            T.ANNUAL_PRODUCTION, // 年产量
+            T.TELEPHONE, // 公司电话
+            T.FAX, // 传真
+            T.POSTCODE, // 邮编
+            T.TARGETED_MARKET, // 目标市场
+            T.CREDIT_CODE, // 统一社会信用代码
+            T.REGISTERED_CAPITAL, // 注册资本
+            T.ENTITY, // 法定代表人
+            T.BUSINESS_LICENSE_IS_SECULAR, // 营业执照是否长期
+            T.BUSINESS_LICENSE_BEGIN_TIME, // 营业执照开始时间
+            T.BUSINESS_LICENSE_END_TIME, // 营业执照结束时间
+            T.TAXPAYER_TYPE, // 纳税人类型
+            T.PHONE, // 联系人手机
+            T.CONTACT_EMAIL, // 联系人邮箱
+            T.CERT_PHOTO, // 营业执照副本复印件
+            T.ID_CARD_FRONT_PHOTO, // 法人代表身份证复印件
+            T.ID_CARD, // 法人代表身份证号码
+            T.CONTACTS_ID_CARD_FRONT_PHOTO, // 运营人员身份证复印件
+            T.OPERATE_ID_CARD, // 运营人员身份证号码
+            T.STORE_STATUS,
+            T.CLOSE_REASON
+    );
+    String json =getJson();
+    model.stShowName(new JSONObject(json).put(lang.name(), supplier.getName()));
+    model.stCompanyType(new JSONObject(json).put(lang.name(), supplier.getCompanyType()));
+    model.stCompanyNature(new JSONObject(json).put(lang.name(), supplier.getCompanyNature()));
+    model.stCompanyAddr(new JSONObject(json).put(lang.name(), supplier.getCompanyAddr()));
+    model.stProdPattern(new JSONObject(json).put(lang.name(), supplier.getProdPattern()));
+    model.stContacts(new JSONObject(json).put(lang.name(), supplier.getContacts()));
+    model.stDepartment(new JSONObject(json).put(lang.name(), supplier.getDepartment()));
+    model.stJobTitle(new JSONObject(json).put(lang.name(), supplier.getJobTitle()));
+    model.upd();
+    return model;
+  }
+
+  /**
+   * 创建供应商信息-有多国语言翻译
+   *
+   * @param view
+   * @return
+   * @throws JSONException
    * @author: lingjian @Date: 2019/3/4 10:01
    */
-  public static UsrSupplier insSupplier(UsrSupplier view, Language lang) throws JSONException {
+  public static UsrSupplier insSupplier(UsrSupplier view) throws JSONException {
 
     UsrSupplier beanjson = new UsrSupplier();
     beanjson.setShowName(view.getName()); //前端公司展示名称
@@ -1143,7 +1305,7 @@ public class UsrSupplierDAO {
   }
 
   /**
-   * 更新供应商信息
+   * 更新供应商信息-有多国语言翻译
    *
    * @author: lingjian @Date: 2019/3/1 16:21
    */

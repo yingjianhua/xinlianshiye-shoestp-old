@@ -10,7 +10,11 @@ import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.I18NSQL;
 import irille.pub.bean.sql.SQL;
-import irille.pub.idu.*;
+import irille.pub.idu.Idu;
+import irille.pub.idu.IduDel;
+import irille.pub.idu.IduInsLines;
+import irille.pub.idu.IduOther;
+import irille.pub.idu.IduUpdLines;
 import irille.pub.svr.Env;
 import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.TranslateLanguage.translateUtil;
@@ -241,13 +245,13 @@ public class PltCountryDAO {
                 .FROM(PltCountry.class)
                 .LEFT_JOIN(PltErate.class, PltErate.T.PKEY, PltCountry.T.CURRENCY);
             if (null != countryName) {
-              WHERE(T.NAME, "like '%" + countryName + "%'");
+              WHERE(T.NAME, "like ?", "%" + countryName + "%");
             }
             if (null != shortName) {
-              WHERE(T.SHORT_NAME, "like '%" + shortName + "%'");
+              WHERE(T.SHORT_NAME, "like ?", "%" + shortName + "%");
             }
             if (null != zone) {
-              WHERE(T.ZONE, "like '%" + zone + "%'");
+              WHERE(T.ZONE, "like ?", "%" + zone + "%");
             }
           }
         };

@@ -386,7 +386,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 			if (cache.getIfPresent(getUid()) != null && value.equals(getEmail())) {
 				setResult("/home/v3/jsp/reg/register-step2.jsp");
 			} else {
-				setResult("/home/v3/jsp/reg/register-step3.jsp");
+				setResult("/home/v3/jsp/reg/register-error.jsp");
 			}
 		}
 		return HomeAction.TRENDS;
