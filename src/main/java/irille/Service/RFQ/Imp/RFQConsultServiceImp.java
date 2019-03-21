@@ -256,11 +256,13 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     RFQConsult consult = new RFQConsult();
     consult.setTitle(consultView.getTitle());
     consult.setDestination(consultView.getDescription());
-    StringJoiner joiner = new StringJoiner(",");
-    for (String s : consultView.getExtra_request()) {
-      joiner.add(s);
+    if(consultView.getExtra_request() != null && consultView.getExtra_request().size() > 0) {
+    	StringJoiner joiner = new StringJoiner(",");
+	    for (String s : consultView.getExtra_request()) {
+	      joiner.add(s);
+	    }
+	    consult.setExtraRequest(joiner.toString());
     }
-    consult.setExtraRequest(joiner.toString());
     consult.setSupplierId(consultView.getSupplierId());
     consult.setImage(consultView.getImages());
     consult.setQuantity(consultView.getQuantity());
