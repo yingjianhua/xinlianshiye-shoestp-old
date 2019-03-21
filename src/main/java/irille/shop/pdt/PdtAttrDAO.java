@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
 import irille.core.sys.SysUser;
@@ -17,7 +20,11 @@ import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
-import irille.pub.idu.*;
+import irille.pub.idu.IduIns;
+import irille.pub.idu.IduInsLines;
+import irille.pub.idu.IduOther;
+import irille.pub.idu.IduUpd;
+import irille.pub.idu.IduUpdLines;
 import irille.pub.svr.Env;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.FldLanguage.Language;
@@ -26,8 +33,6 @@ import irille.shop.pdt.PdtAttr.T;
 import irille.shop.plt.PltConfigDAO;
 import irille.view.Page;
 import irille.view.pdt.PdtProductVueView;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class PdtAttrDAO {
   public static final Log LOG = new Log(PdtAttrDAO.class);
@@ -222,7 +227,19 @@ public class PdtAttrDAO {
       List result = new ArrayList();
       // 不做分类查询
       String sql = PdtAttr.T.DELETED.getFld().getCodeSqlField() + " = " + OYn.NO.getLine().getKey();
-      PdtAttr.list(PdtAttr.class, sql, false)
+      //      PdtAttr.list(PdtAttr.class, sql, false)
+      BeanBase.list(
+              PdtAttr.class,
+              "("
+                  + PdtAttr.T.SUPPLIER.getFld().getCodeSqlField()
+                  + " =? OR "
+                  + PdtAttr.T.SUPPLIER.getFld().getCodeSqlField()
+                  + " IS NULL ) AND "
+                  + PdtAttr.T.DELETED.getFld().getCodeSqlField()
+                  + " = ? ",
+              false,
+              supplier,
+              OYn.NO.getLine().getKey())
           .forEach(
               l -> {
                 PdtProductVueView attr = new PdtProductVueView();
@@ -336,15 +353,42 @@ public class PdtAttrDAO {
    */
   public static void delAttrAndAttrLine(Integer attrPkey, Integer supplier) {
     PdtAttr attr = Query.SELECT(PdtAttr.class, attrPkey);
-    if (attr == null || attr.getSupplier() == null || !attr.getSupplier().equals(supplier))
+    if (attr == null || attr.getSupplier() == null || !attr.getSupplier().equals(supplier)) {
       throw new WebMessageException(ReturnCode.service_wrong_data, "参数错误");
-    PdtAttrDAO.Del del = new Del();
-    del.setB(attr);
-    del.commit();
+    }
+    List<PdtProduct> products =
+        BeanBase.list(
+            PdtProduct.class,
+            PdtProduct.T.NORM_ATTR.getFld().getCodeSqlField() + " like ?",
+            false,
+            "%" + attr.getPkey().toString() + "%");
+
+    //    PdtAttrDAO.Del del = new Del();
+    //    del.setB(attr);
+    //    del.commit();
   }
 
   public static PdtProductVueView insAttrAndAttrLine(
       Integer supplier, String name, String value, Language lag) {
+
+    List<PdtAttr> attrs =
+        BeanBase.list(
+            PdtAttr.class,
+            PdtAttr.T.NAME.getFld().getCodeSqlField()
+                + "->'$.en' = ? AND "
+                + PdtAttr.T.SUPPLIER.getFld().getCodeSqlField()
+                + " =? AND "
+                + PdtAttr.T.DELETED.getFld().getCodeSqlField()
+                + " =? ",
+            false,
+            name,
+            supplier,
+            OYn.NO.getLine().getKey());
+
+    if (null != attrs && attrs.size() > 0) {
+      throw new WebMessageException(ReturnCode.failure, "属性名【" + name + "】已存在,请勿重复添加");
+    }
+
     PdtAttr attr = new PdtAttr();
     attr.setName(name);
     attr.setCategory(132);
