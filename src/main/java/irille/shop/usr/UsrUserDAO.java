@@ -1,9 +1,13 @@
 package irille.shop.usr;
 
+import java.util.Date;
+
 import irille.pub.DateTools;
 import irille.pub.Log;
 import irille.pub.Str;
 import irille.pub.bean.Query;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.shop.usr.Usr.OStatus;
 import irille.shop.usr.UsrSupplier.T;
 import irille.view.usr.UserView;
@@ -68,24 +72,19 @@ public class UsrUserDAO {
    * @author Jianhua Ying
    */
   public static void updSupplierPassword(Integer id, String origin, String target) {
+    UsrMain main = new UsrMain();
     UsrSupplier supplier = Query.SELECT(UsrSupplier.class, id);
-    UsrPurchase purchase =
-        Query.SELECT(UsrPurchase.class)
-            .LEFT_JOIN(UsrSupplier.class, UsrPurchase.T.LOGIN_NAME, T.LOGIN_NAME)
-            .WHERE(T.PKEY, "=?", id)
-            .query();
-    if (purchase == null) {
-      if (!supplier.getPassword().equals(DateTools.getDigest(supplier.getPkey() + origin)))
-        throw LOG.err("pwdCheck", "原密码输入错误");
-      supplier.setPassword(DateTools.getDigest(supplier.getPkey() + target));
-      supplier.upd();
+    if (supplier != null) main = Query.SELECT(UsrMain.class, supplier.getUserid());
+    else throw new WebMessageException(ReturnCode.failure, "用户信息有误");
+    if (null != main.getPkey()) {
+      if (!main.getPassword().equals(DateTools.getDigest(main.getPkey() + origin))) {
+        throw new WebMessageException(ReturnCode.failure, "原密码错误");
+      } else {
+        main.setPassword(DateTools.getDigest(main.getPkey() + target));
+        main.upd();
+      }
     } else {
-      if (!purchase.getPassword().equals(DateTools.getDigest(purchase.getPkey() + origin)))
-        throw LOG.err("pwdCheck", "原密码输入错误");
-      supplier.setPassword(DateTools.getDigest(supplier.getPkey() + target));
-      supplier.upd();
-      purchase.setPassword(DateTools.getDigest(purchase.getPkey() + target));
-      purchase.upd();
+      throw new WebMessageException(ReturnCode.failure, "用户信息有误");
     }
   }
 

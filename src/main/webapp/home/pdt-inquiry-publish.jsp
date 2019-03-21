@@ -409,13 +409,7 @@ ul{
                 beforeUpload(file) {
                     if (!isLogin) {
                         sessionStorage['Temp_Pdt_publish_form']=JSON.stringify(this.form)
-                        this.$alert('Please login to operate', 'Please login to operate', {
-                            confirmButtonText: 'Ok',
-                            customClass: "my-custom-element-alert-class fs-content-18",
-                            callback: action => {
-                                window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_productPublishView?product_id="+this.getQueryString("product_id")
-                            }
-                        });
+                        util_function_obj.alertWhenNoLogin(this);
                         return
                     }
                     let size = file.size / 1024;
@@ -429,75 +423,73 @@ ul{
                         sessionStorage['Temp_Pdt_publish_form']=JSON.stringify(this.form)
                         util_function_obj.alertWhenNoLogin(this);
                         return
-                    }
-                    let url;
-                    if (this.supData.type == 3) {
-                        url = "/home/rfq_RFQConsult_putPrivateInquiry"
-                    } else {
-                        url = "/home/rfq_RFQConsult_putInquiry"
-                    }
-                    this.$refs[formName].validate((valid) => {
-                        if (valid) {
-                            this.flag = true;
-                            console.log(this.form)
-                            this.form.images = this.imgsToUpload.join(",");
-                            this.form.pdtId = this.id;
-                            console.log(this.imgsToUpload)
-                            // if (this.form.images.length == 0) {
-                                <%--// if(${env.login==null}){--%>
-                                //     this.$message({
-                                //         showClose: true,
-                                //         message: 'Pleaselogin',
-                                //         type: 'warning'
-                                //     });
+                    }else{
+                        if(sysConfig.user.user_type == 1){
+                            self.$alert("Sorry, the supplier cannot submit the form",{
+                                confirmButtonText: 'Ok',
+                                customClass: "my-custom-element-alert-class fs-content-18",
+                                center: true,
+                                callback: action =>{
+                                    return
+                                }
+                            });
+                            return
+                        }else{
+                            let url;
+                            if (this.supData.type == 3) {
+                                url = "/home/rfq_RFQConsult_putPrivateInquiry"
+                            } else {
+                                url = "/home/rfq_RFQConsult_putInquiry"
+                            }
+                            this.$refs[formName].validate((valid) => {
+                                if (valid) {
+                                    this.flag = true;
+                                    console.log(this.form)
+                                    this.form.images = this.imgsToUpload.join(",");
+                                    this.form.pdtId = this.id;
+                                    axios.post(url, this.form)
+                                        .then((res) => {
+                                            console.log(res)
+                                            // 提交成功时
+                                            if (res.data.ret == 1) {
+                                                // 提示信息
+                                                this.$message({
+                                                    showClose: true,
+                                                    message: 'my-inquiry-publish.Successfully_Released',
+                                                    type: 'success'
+                                                });
+                                                setTimeout(function () {
+                                                    sessionStorage.removeItem('Temp_Pdt_publish_form')
+                                                    window.location.href =getParams('backUrl','/');
+                                                }, 1500)
+                                            } else {
+                                                this.flag = false;
+                                                this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
+                                                    confirmButtonText: 'OK',
+                                                    customClass: "my-custom-element-alert-class fs-content-18",
+                                                });
+                                            }
 
-                                //     window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
-                                // }
-                                // this.$message.error('Please upload an image');
-                                // return
-                            // }
-                            // console.log('submit!');
-                            axios.post(url, this.form)
-                                .then((res) => {
-                                    console.log(res)
-                                    // 提交成功时
-                                    if (res.data.ret == 1) {
-                                        // 提示信息
-                                        this.$message({
-                                            showClose: true,
-                                            message: 'my-inquiry-publish.Successfully_Released',
-                                            type: 'success'
-                                        });
-                                        setTimeout(function () {
-                                            sessionStorage.removeItem('Temp_Pdt_publish_form')
-                                            window.location.href =getParams('backUrl','/');
-                                        }, 1500)
-                                    } else {
-                                        this.flag = false;
-                                        this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
-                                            confirmButtonText: 'OK',
-                                            customClass: "my-custom-element-alert-class fs-content-18",
-                                        });
-                                    }
-
-                                })
-                                .catch((err) => {
-                                    this.flag = false;
-                                    this.$message.error("Network error, please refresh the page and try again");
-                                    console.log(err)
-                                })
-                        } else {
-                            console.log('error submit!!');
-                            // if (!this.form.quantity) {
-                            //     this.$message.error('Quantity cannot be empty');
-                            // } else if (!this.form.unitType) {
-                            //     this.$message.error("Select unit");
-                            // } else if (!this.form.descriotion) {
-                            //     this.$message.error('Please fill in the message');
-                            // }
-                            return false;
+                                        })
+                                        .catch((err) => {
+                                            this.flag = false;
+                                            this.$message.error("Network error, please refresh the page and try again");
+                                            console.log(err)
+                                        })
+                                } else {
+                                    console.log('error submit!!');
+                                    // if (!this.form.quantity) {
+                                    //     this.$message.error('Quantity cannot be empty');
+                                    // } else if (!this.form.unitType) {
+                                    //     this.$message.error("Select unit");
+                                    // } else if (!this.form.descriotion) {
+                                    //     this.$message.error('Please fill in the message');
+                                    // }
+                                    return false;
+                                }
+                            });
                         }
-                    });
+                    }
                 },
                 getQueryString: (name) => {
                     let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
