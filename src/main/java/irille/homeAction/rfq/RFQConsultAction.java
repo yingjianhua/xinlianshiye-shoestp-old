@@ -1,6 +1,7 @@
 package irille.homeAction.rfq;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.inject.Inject;
@@ -60,8 +61,9 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
       throw new WebMessageException(
           MessageBuild.buildMessage(ReturnCode.service_wrong_data, HomeAction.curLanguage()));
     }
-    irfqConsultService.putRFQInquiry(
-        objectMapper.readValue(data, PutRFQConsultView.class), getPurchase());
+    PutRFQConsultView rFQConsultView = objectMapper.readValue(data, PutRFQConsultView.class);
+    validPutRFQInquiry(rFQConsultView);
+    irfqConsultService.putRFQInquiry(rFQConsultView, getPurchase());
     write();
   }
 
@@ -315,5 +317,28 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   @NeedLogin
   public void unreadCount() throws IOException {
     write(rFQConsultService.countUnread(getPurchase()));
+  }
+
+  /**
+   * 校验putRFQInquiry接口的前端数据
+   * @param rfqConsultView 前端数据
+   * @author Jianhua Ying
+   */
+  private void validPutRFQInquiry(PutRFQConsultView rfqConsultView) {
+
+    if (rfqConsultView.getMin_price() == null
+        || rfqConsultView.getMin_price().compareTo(BigDecimal.valueOf(100000)) >= 0
+        || rfqConsultView.getMin_price().compareTo(BigDecimal.ZERO) < 0) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(
+              ReturnCode.valid_price_range, HomeAction.curLanguage(), "0.00", "99999.99"));
+    }
+    if (rfqConsultView.getMax_price() == null
+        || rfqConsultView.getMax_price().compareTo(BigDecimal.valueOf(100000)) >= 0
+        || rfqConsultView.getMin_price().compareTo(BigDecimal.ZERO) < 0) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(
+              ReturnCode.valid_price_range, HomeAction.curLanguage(), "0.00", "99999.99"));
+    }
   }
 }

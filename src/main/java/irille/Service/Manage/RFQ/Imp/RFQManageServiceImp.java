@@ -1,7 +1,12 @@
 package irille.Service.Manage.RFQ.Imp;
 
 import java.io.IOException;
-import java.util.*;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -12,12 +17,12 @@ import irille.Dao.Old.RFQ.RFQConsultMessageDAO;
 import irille.Dao.Old.RFQ.RFQConsultRelationDAO;
 import irille.Dao.Old.RFQ.RFQConsultUpdDAO;
 import irille.Dao.RFQ.RFQConsultDao;
+import irille.Entity.RFQ.RFQConsult;
+import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Entity.RFQ.Enums.RFQConsultPayType;
 import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
 import irille.Entity.RFQ.Enums.RFQConsultType;
 import irille.Entity.RFQ.Enums.RFQConsultUnit;
-import irille.Entity.RFQ.RFQConsult;
-import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Service.Manage.RFQ.IRFQManageService;
 import irille.action.dataimport.util.DateUtil;
 import irille.pub.bean.BeanBase;
@@ -28,8 +33,12 @@ import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.plt.PltErate;
 import irille.shop.usr.UsrPurchase;
-import irille.view.Manage.RFQ.*;
 import irille.view.Page;
+import irille.view.Manage.RFQ.RFQListBodyInfoView;
+import irille.view.Manage.RFQ.RFQManageInfoView;
+import irille.view.Manage.RFQ.RFQManageMyQuoteListBody;
+import irille.view.Manage.RFQ.RFQMyuoteInfo;
+import irille.view.Manage.RFQ.RFQPdtInfo;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2019/1/30 Time: 14:58 */
 public class RFQManageServiceImp implements IRFQManageService {
@@ -96,9 +105,11 @@ public class RFQManageServiceImp implements IRFQManageService {
     infoView.setPurchaseName(rfqConsult.gtPurchaseId().getName());
     if (rfqConsult.gtType() == RFQConsultType.RFQ) {
       infoView.setMin_price(
-          Integer.valueOf(GetValue.getStringIndex(rfqConsult.getPrice(), "-", 0)));
+          BigDecimal.valueOf(
+              Double.valueOf(GetValue.getStringIndex(rfqConsult.getPrice(), "-", 0))));
       infoView.setMax_price(
-          Integer.valueOf(GetValue.getStringIndex(rfqConsult.getPrice(), "-", 1)));
+          BigDecimal.valueOf(
+              Double.valueOf(GetValue.getStringIndex(rfqConsult.getPrice(), "-", 1))));
       infoView.setCurrencyname(
           BeanBase.load(PltErate.class, rfqConsult.getCurrency()).getCurName());
       infoView.setDescriotion(rfqConsult.getContent()); // 询盘内容
