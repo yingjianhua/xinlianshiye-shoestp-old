@@ -1064,7 +1064,9 @@ public class UsrSupplierDAO {
     String json =getJson();
     UsrMain main = irille.pub.bean.Query.SELECT(UsrMain.class, view.getUserid());
     main.setContacts(view.getContacts());
-    main.setTelphone(view.getPhone());
+    if (view.getPhone() != null) {
+      main.setTelphone(view.getPhone());
+    }
     main.setCompany(view.getName());
     main.setAddress(view.getCompanyAddr());
     main.upd();
@@ -1224,7 +1226,9 @@ public class UsrSupplierDAO {
     translateUtil.autoTranslate(beanjson, true);
     UsrMain main = irille.pub.bean.Query.SELECT(UsrMain.class, view.getUserid());
     main.setContacts(view.getContacts());
-    main.setTelphone(view.getPhone());
+    if (view.getPhone() != null) {
+      main.setTelphone(view.getPhone());
+    }
     main.setCompany(view.getName());
     main.setAddress(view.getCompanyAddr());
     main.upd();

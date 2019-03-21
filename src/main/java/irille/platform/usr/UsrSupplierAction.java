@@ -120,7 +120,9 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
         main.setCompany(getBean().getName());
         main.setAddress(getBean().getCompanyAddr());
         main.setContacts(getBean().getContacts());
-        main.setTelphone(getBean().getPhone());
+        if (getBean().getPhone() != null) {
+          main.setTelphone(getBean().getPhone());
+        }
         if(mainProvince != null){
           main.setProvince(mainProvince);
         }
