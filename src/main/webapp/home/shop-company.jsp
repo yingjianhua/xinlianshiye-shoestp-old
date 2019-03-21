@@ -339,7 +339,7 @@
                                 </el-col>
                             </el-row>
                         </el-form-item>
-                        <el-form-item label="Extra Request" prop="extraRequest" class="request">
+                        <el-form-item label="Extra Request" prop="extra_request" class="request">
                             <el-checkbox-group v-model="form.extra_request">
                                 <el-checkbox label="price" name="price">Price</el-checkbox>
                                 <el-checkbox label="inspection certificate" name="inspection certificate">Inspection

@@ -102,8 +102,8 @@
                                 </el-col>
                             </el-row>
                         </el-form-item>
-                        <el-form-item label="Extra Request" prop="extraRequest" class="request">
-                            <el-checkbox-group v-model="form.extraRequest">
+                        <el-form-item label="Extra Request" prop="extra_request" class="request">
+                            <el-checkbox-group v-model="form.extra_request">
                                 <el-checkbox label="price" name="price">Price</el-checkbox>
                                 <el-checkbox label="inspection certificate" name="inspection certificate">Inspection Certificate</el-checkbox>
                                 <el-checkbox label="product specifications" name="product specifications">Product Specifications</el-checkbox>
@@ -187,7 +187,7 @@
                         title: '', // 标题 名字
                         quantity: '',  // 数量
                         unit: '1',  // 单位
-                        extraRequest:[],  //  额外要求
+                        extra_request:[],  //  额外要求
                         description: '',  //描述
                         images: '',  // 图片
                         supplierId: null  // 供应商id
