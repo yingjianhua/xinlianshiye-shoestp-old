@@ -209,8 +209,8 @@
                                 <el-form-item label="Purchase Quantity：" required>
                                     <el-col :span="15">
                                         <el-form-item label-width="0" prop="quantity">
-                                            <el-input v-model.trim.number="form.quantity"
-                                                      onkeyup="this.value=this.value.replace(/[^0-9.]+/g,'')"></el-input>
+                                            <el-input v-model.trim="form.quantity"
+                                                      onkeyup="this.value=this.value.replace(/[^0-9]+/g,'')"></el-input>
                                         </el-form-item>
                                     </el-col>
 
@@ -229,7 +229,7 @@
                                 <el-form-item label="Price：">
                                     <el-col :span="7">
                                         <el-form-item prop="min_price">
-                                            <el-input v-model.trim.number="form.min_price"
+                                            <el-input v-model.trim="form.min_price"
                                                       onkeyup="this.value=this.value.replace(/[^0-9.]+/g,'')"></el-input>
                                         </el-form-item>
                                     </el-col>
@@ -238,7 +238,7 @@
                                     </el-col>
                                     <el-col :span="7">
                                         <el-form-item prop="max_price">
-                                            <el-input v-model.trim.number="form.max_price"
+                                            <el-input v-model.trim="form.max_price"
                                                       onkeyup="this.value=this.value.replace(/[^0-9.]+/g,'')"></el-input>
                                         </el-form-item>
                                     </el-col>
@@ -359,15 +359,37 @@
 <script src="/home/v3/static/js/index-top.js"></script>
 <script src="/home/v3/static/js/index-bottom.js"></script>
 <script type="text/javascript">
-    // 最高价格 - 不鞥低于最低价
-    const validateMaxPrice = (rule, value, callback) => {
-        let pattrn = /^((?!0)\d+(\.\d+)?)$/g
+    // 最低价格
+    const validateMinPrice = (rule, value, callback) => {
         if (!value) {
             callback();
             return
+            // 小数点验证
+        }else if(parseFloat(value) != value){
+            callback(new Error('Please enter a right number'));
+            return;
+        } else if( !/^([1-9]{1}\d{0,5}|([0]{1}))(\.(\d){1,2})?$/.test(value) ){
+            callback(new Error('Price can\'t greater than 6 digit integer and 2 decimal places'));
+        } else {
+            callback();
         }
-        if (!pattrn.test(value)) {
-            callback(new Error('Please enter a number type'));
+    };
+    // 最高价格 - 不鞥低于最低价
+    const validateMaxPrice = (rule, value, callback) => {
+        // let pattrn = /^((?!0)\d+(\.\d+)?)$/g
+        if (!value) {
+            callback();
+            return
+        // 小数点验证
+        }else if(parseFloat(value) != value){
+            callback(new Error('Please enter a right number'));
+            return;
+        } else
+        // if (!pattrn.test(value)) {
+        //     callback(new Error('Please enter a number type'));
+        // }else
+            if( !/^([1-9]{1}\d{0,5}|([0]{1}))(\.(\d){1,2})?$/.test(value) ){
+            callback(new Error('Price can\'t greater than 6 digit integer and 2 decimal places'));
         } else if (value < (vm.form.min_price ? vm.form.min_price : 0)) {
             callback(new Error('The maximum must be greater than the minimum!'));
         } else {
@@ -498,6 +520,11 @@
                     required: true,
                     message: 'Please enter description information',
                     trigger: 'blur'
+                },{
+                    min: 1,
+                    max: 2500,
+                    message: 'Content cannot exceed 2500 characters',
+                    trigger: 'blur'
                 }],
                 quantity: [{
                     required: true,
@@ -505,15 +532,15 @@
                     trigger: 'blur'
                 },
                     {
-                        type: "number",
-                        message: 'Please fill in with numbers.',
+                        pattern: /^\+?[1-9][0-9]*$/,
+                        message: 'Please enter the positive integer',
                         trigger: 'blur'
                     }
                 ],
                 min_price: [{
-                    type: "number",
-                    message: 'Please enter a number type',
-                    trigger: 'blur'
+                    validator: validateMinPrice,
+                    trigger: 'blur',
+                    type: "number"
                 }],
                 max_price: [{
                     validator: validateMaxPrice,
