@@ -522,7 +522,7 @@
                 },
                 submitForm(formName) { // 表单提交
                     let self = this;
-                    if(!isLogin){
+                    if(!sysConfig.user){
                         util_function_obj.alertWhenNoLogin(self);
                         return
                     }else{
