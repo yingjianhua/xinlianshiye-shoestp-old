@@ -356,16 +356,50 @@ public class PdtAttrDAO {
     if (attr == null || attr.getSupplier() == null || !attr.getSupplier().equals(supplier)) {
       throw new WebMessageException(ReturnCode.service_wrong_data, "参数错误");
     }
-    List<PdtProduct> products =
+    List<PdtAttrLine> lines =
         BeanBase.list(
-            PdtProduct.class,
-            PdtProduct.T.NORM_ATTR.getFld().getCodeSqlField() + " like ?",
+            PdtAttrLine.class,
+            PdtAttrLine.T.MAIN.getFld().getCodeSqlField()
+                + " =? AND "
+                + PdtAttrLine.T.DELETED.getFld().getCodeSqlField()
+                + " =? ",
             false,
-            "%" + attr.getPkey().toString() + "%");
+            attrPkey,
+            OYn.NO.getLine().getKey());
+    if (lines != null && lines.size() > 0) {
+      List<Integer> linePkeys =
+          lines.stream()
+              .map(
+                  bean -> {
+                    return bean.getPkey();
+                  })
+              .collect(Collectors.toList());
+      String condition =
+          linePkeys.stream()
+              .map(
+                  b -> {
+                    return String.valueOf(b);
+                  })
+              .collect(Collectors.joining("|"));
+      List<PdtProduct> products =
+          BeanBase.list(
+              PdtProduct.class,
+              PdtProduct.T.NORM_ATTR.getFld().getCodeSqlField() + " REGEXP (?) ",
+              false,
+              condition);
+      if (null != products && products.size() > 0) {
+        try {
+          String name = attr.getName(PltConfigDAO.supplierLanguage(supplier));
+          throw new WebMessageException(ReturnCode.failure, "属性【" + name + "】存在商品不可删除");
+        } catch (JSONException e) {
+          e.printStackTrace();
+        }
+      }
+    }
 
-    //    PdtAttrDAO.Del del = new Del();
-    //    del.setB(attr);
-    //    del.commit();
+    PdtAttrDAO.Del del = new Del();
+    del.setB(attr);
+    del.commit();
   }
 
   public static PdtProductVueView insAttrAndAttrLine(
