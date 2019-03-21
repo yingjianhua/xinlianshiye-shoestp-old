@@ -68,6 +68,7 @@ public class RFQContactAction extends AbstractHomeAction implements IRFQContactA
   @Override
   @NeedLogin
   public void editGroup() throws IOException {
+    validAddGroup(groupName);
     rFQPurchaseContactService.editGroup(getPurchase(), groupPkey, groupName, curLanguage());
     write();
   }
@@ -89,12 +90,13 @@ public class RFQContactAction extends AbstractHomeAction implements IRFQContactA
   private static final Pattern groupNamePattern = Pattern.compile("^[^\\s]{1,10}$");
 
   private void validAddGroup(String groupName) {
-    if (groupName == null
-        || groupName.trim().isEmpty()
-        || groupName.length() > 10
-        || !groupNamePattern.matcher(groupName).matches()) {
+    if (groupName == null || groupName.trim().isEmpty()) {
       throw new WebMessageException(
           MessageBuild.buildMessage(ReturnCode.please_input_group_name, curLanguage()));
+    }
+    if (groupName.length() > 10 || !groupNamePattern.matcher(groupName).matches()) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.valid_group_name_illegal, curLanguage()));
     }
   }
 }
