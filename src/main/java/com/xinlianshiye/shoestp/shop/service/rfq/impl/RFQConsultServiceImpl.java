@@ -430,14 +430,17 @@ public class RFQConsultServiceImpl implements RFQConsultService {
     view.setType(consult.getType());
     view.setDetail(consult.getContent());
     view.setQuantity(consult.getQuantity());
-    view.setPrice(consult.getPrice());
     view.setUnit(consult.getUnit() == null ? null : consult.gtUnit().getLine().getName());
+    view.setPrice(consult.getPrice());
+    view.setCurrency(consult.getCurrency() == null ? null : consult.gtCurrency().getCurName());
     view.setType(consult.getType());
+    view.setMoreInformation(consult.getExtraDescription());
     view.setValieDate(consult.getValidDate());
-    view.setPaymentTerms(
-        consult.getPayType() == null ? null : consult.gtPayType().getLine().getName());
     view.setShippingTerms(
         consult.getShippingType() == null ? null : consult.gtShippingType().getLine().getName());
+    view.setDestination(consult.getDestination());
+    view.setPaymentTerms(
+        consult.getPayType() == null ? null : consult.gtPayType().getLine().getName());
     view.setVerifyStatus(consult.getVerifyStatus());
     view.setStatus(consult.getStatus());
     if (consult.gtType() == RFQConsultType.supplier_INQUIRY) {
