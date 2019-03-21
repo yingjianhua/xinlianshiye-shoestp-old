@@ -110,8 +110,8 @@
                                 <el-checkbox label="company profile" name="company profile">Company Profile</el-checkbox>
                             </el-checkbox-group>
                         </el-form-item>
-                        <el-form-item label="Message:" prop="descriotion">
-                            <el-input placeholder="Enter product details such as color, size, materials etc. and other specification requirements to receive an accurate quote." type="textarea" v-model.trim="form.descriotion":autosize="{ minRows: 8, maxRows: 8}"></el-input>
+                        <el-form-item label="Message:" prop="description">
+                            <el-input placeholder="Enter product details such as color, size, materials etc. and other specification requirements to receive an accurate quote." type="textarea" v-model.trim="form.description":autosize="{ minRows: 8, maxRows: 8}"></el-input>
                         </el-form-item>
                         <el-form-item label="" prop="images">
                             <div class="upImg flexSt">
@@ -188,7 +188,7 @@
                         quantity: '',  // 数量
                         unit: '1',  // 单位
                         extraRequest:[],  //  额外要求
-                        descriotion: '',  //描述
+                        description: '',  //描述
                         images: '',  // 图片
                         supplierId: null  // 供应商id
                     },
@@ -201,7 +201,7 @@
                             {required: true,message: 'Please enter the quantity',trigger: 'blur'},
                             { pattern: /^\+?[1-9][0-9]*$/, message: "Please enter a number, can't start with 0, can't have decimal point" }
                         ],
-                        descriotion: [{
+                        description: [{
                             required: true,
                             message: 'Please fill in the message',
                             trigger: 'blur'
@@ -339,7 +339,7 @@
                             //     self.$message.error('Quantity cannot be empty');
                             // } else if (!self.form.unit) {
                             //     self.$message.error("Select unit");
-                            // } else if (!self.form.descriotion) {
+                            // } else if (!self.form.description) {
                             //     self.$message.error('Please fill in the message');
                             // }
                             // return false;
