@@ -104,12 +104,19 @@ public class RFQManageServiceImp implements IRFQManageService {
     infoView.setImage(rfqConsult.getImage());
     infoView.setPurchaseName(rfqConsult.gtPurchaseId().getName());
     if (rfqConsult.gtType() == RFQConsultType.RFQ) {
-      infoView.setMin_price(
-          BigDecimal.valueOf(
-              Double.valueOf(GetValue.getStringIndex(rfqConsult.getPrice(), "-", 0))));
-      infoView.setMax_price(
-          BigDecimal.valueOf(
-              Double.valueOf(GetValue.getStringIndex(rfqConsult.getPrice(), "-", 1))));
+      String[] price = rfqConsult.getPrice().split("-");
+      if (price.length > 0) {
+        String min_price = price[0];
+        if (min_price != null && !min_price.trim().equals("")) {
+          infoView.setMin_price(BigDecimal.valueOf(Double.valueOf(min_price)));
+        }
+      }
+      if (price.length > 1) {
+        String max_price = price[1];
+        if (max_price != null && !max_price.trim().equals("")) {
+          infoView.setMax_price(BigDecimal.valueOf(Double.valueOf(max_price)));
+        }
+      }
       infoView.setCurrencyname(
           BeanBase.load(PltErate.class, rfqConsult.getCurrency()).getCurName());
       infoView.setDescriotion(rfqConsult.getContent()); // 询盘内容

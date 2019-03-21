@@ -66,9 +66,13 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     rfqConsult.setValidDate(
         Date.from(LocalDate.now().plusMonths(1).atStartOfDay(ZoneId.systemDefault()).toInstant()));
     rfqConsult.setPrice(
-        rfqConsultView.getMin_price().setScale(2, RoundingMode.DOWN)
+        (rfqConsultView.getMin_price() == null
+                ? ""
+                : rfqConsultView.getMin_price().setScale(2, RoundingMode.DOWN))
             + "-"
-            + rfqConsultView.getMax_price().setScale(2, RoundingMode.DOWN));
+            + (rfqConsultView.getMax_price() == null
+                ? ""
+                : rfqConsultView.getMax_price().setScale(2, RoundingMode.DOWN)));
     rfqConsult.stPayType(
         (RFQConsultPayType) RFQConsultPayType.DEFAULT.getLine().get(rfqConsultView.getPay_type()));
     rfqConsult.stShippingType(RFQConsultShipping_Type.FOB);
