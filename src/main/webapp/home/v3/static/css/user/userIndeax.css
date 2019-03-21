@@ -249,6 +249,8 @@
     color: #fff; }
 .page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item.active .el-collapse-item__header .collapse-title .goods-info .status {
     color: #fff; }
+.page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item.active .el-collapse-item__header .collapse-title .mask {
+    background: #b2bfdf; }
 .page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item.active .el-collapse-item__header .el-collapse-item__arrow {
     color: #fff; }
 .page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item__content {
@@ -299,7 +301,7 @@
     right: -30px;
     top: 0;
     width: 32px;
-    height: 90px;
+    height: 100%;
     background: #f3f4fc; }
 .page-personal-center .inquires-list-wrap .collapse-box .contact-list .contact-item {
     position: relative;
