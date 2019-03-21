@@ -3,6 +3,8 @@
 <%--全局登录弹窗--%>
 <link rel="stylesheet" href="/home/v3/static/css/login/login.css">
 <script src="/home/v3/static/js/hello.all.js"></script>
+<%--公共函数--%>
+<%--<script src="/home/utils/util.js"></script>--%>
 <div id="login-box-global">
     <el-dialog
             custom-class="popup-login-box-global"
@@ -89,8 +91,9 @@
             },
             loginFormRules: {
                 email: [
-                    {required: true, message: 'Email can\'t be empty!', trigger: 'blur'}, {
-                        pattern: /^[\w]{1,32}@\w{1,15}.\w{2,5}$/,
+                    {required: true, message: 'Email can\'t be empty!', trigger: 'blur'},
+                    {
+                        pattern: util_regular_obj.register.email,
                         message: 'E-mail format is incorrect',
                         trigger: 'blur'
                     }
@@ -98,7 +101,11 @@
                 psd: [
                     // {validator: validatePsd, trigger: 'change'},
                     { required: true, message: 'Password can\'t be empty', trigger: 'blur' },
-                    { min: 6, max: 20, message: 'Please enter 6 to 20 characters', trigger: 'blur' }
+                    {
+                        pattern: util_regular_obj.register.psd,
+                        message: 'Please enter 6 to 20 characters',
+                        trigger: 'blur'
+                    }
                 ],
             },
         },

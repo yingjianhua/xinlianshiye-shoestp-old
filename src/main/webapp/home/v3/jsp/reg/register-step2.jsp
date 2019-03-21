@@ -383,7 +383,8 @@
         if (value === '') {
             app.psdStrength.isPsdRight = false;
             callback(new Error(app.registerForm.user == 'buyer' ? 'Password can\'t be empty!' : '密码不能为空'));
-        } else if (value.length < 6 || value.length > 20) {
+        // } else if (value.length < 6 || value.length > 20) {
+        } else if (!(util_regular_obj.register.psd.test(value))) {
             app.psdStrength.isPsdRight = false;
             callback(new Error(app.registerForm.user == 'buyer' ? 'Please set password within 6 to 20 characters' : '请设置6-20位的密码'));
         // } else if( !(/^(?![0-9]+$)(?![a-zA-Z]+$)(?!([^(0-9a-zA-Z)]|[])+$)([^(0-9a-zA-Z)]|[]|[a-zA-Z]|[0-9]){6,}$/.test(value))  ){
@@ -503,7 +504,7 @@
                 supCompanyName: [
                     {required: true, message: '公司名称不可为空', trigger: 'blur'},
                     {
-                        pattern: /^[^~!@#$%^&*()_+=-\]\[';/.,<>?:"{}` ].*?[^~!@#$%^&*()_+=-\]\[';/.,<>?:"{}` ]$/,
+                        pattern: util_regular_obj.register.companyName,
                         message: '公司名称不可包含特殊字符',
                         trigger: 'blur'
                     }
@@ -526,7 +527,7 @@
                 ],
                 supTel: [
                     {required: true, message: '电话号码不可为空!', trigger: 'blur'}, {
-                        pattern: /^1\d{10}$/,
+                        pattern: util_regular_obj.register.phoneChina,
                         // pattern: /^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/,
                         message: '电话号码格式不正确',
                         trigger: 'blur'
