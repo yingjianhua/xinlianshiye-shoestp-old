@@ -506,10 +506,10 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
             }
 
             if (productName != null) {
-              WHERE(PdtProduct.T.NAME, "like '%" + productName + "%'");
+              WHERE(PdtProduct.T.NAME, "like ?", "%" + productName + "%");
             }
             if (productNum != null) {
-              WHERE(PdtProduct.T.CODE, "like '%" + productNum + "%'");
+              WHERE(PdtProduct.T.CODE, "like ?", "%" + productNum + "%");
             }
             if (status != null) {
               WHERE(PdtProduct.T.CATEGORY, "=?", status);
