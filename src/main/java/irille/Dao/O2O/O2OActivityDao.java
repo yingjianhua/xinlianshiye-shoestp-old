@@ -120,7 +120,7 @@ public class O2OActivityDao {
             .LEFT_JOIN(
                 UsrProductCategory.class, UsrProductCategory.T.PKEY, PdtProduct.T.CATEGORY_DIY)
             .WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.PrivateExpo)
-            .WHERE(supName != null, UsrSupplier.T.NAME, "like", supName)
+            .WHERE(supName != null, UsrSupplier.T.NAME, "like ? ", supName)
             .WHERE(status != null, O2O_PrivateExpoPdt.T.STATUS, "=?", status)
             .WHERE(verify_status != null, O2O_PrivateExpoPdt.T.VERIFY_STATUS, "=?", verify_status)
             .WHERE(cat != null, PdtCat.T.NAME, "like ?", "%" + cat + "%")
@@ -133,9 +133,19 @@ public class O2OActivityDao {
     return query.queryMaps();
   }
 
-  public Integer privetePdtListCount() {
-    BeanQuery query =
-        Query.SELECT(O2O_PrivateExpoPdt.T.VERIFY_STATUS).FROM(O2O_PrivateExpoPdt.class);
+  public Integer privetePdtListCount(
+      Integer status, Integer verify_status, String cat, String supName, String pdtName) {
+    BeanQuery query = Query.SELECT(PdtProduct.T.PKEY).FROM(PdtProduct.class);
+    query.LEFT_JOIN(O2O_PrivateExpoPdt.class, O2O_PrivateExpoPdt.T.PDT_ID, PdtProduct.T.PKEY);
+    query.LEFT_JOIN(PdtCat.class, PdtCat.T.PKEY, PdtProduct.T.CATEGORY);
+    query.LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, PdtProduct.T.SUPPLIER);
+    query.WHERE(supName != null, UsrSupplier.T.NAME, "like ? ", supName);
+    query.WHERE(status != null, O2O_PrivateExpoPdt.T.STATUS, "=?", status);
+    query.WHERE(verify_status != null, O2O_PrivateExpoPdt.T.VERIFY_STATUS, "=?", verify_status);
+    query.WHERE(cat != null, PdtCat.T.NAME, "like ?", "%" + cat + "%");
+    query.WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.PrivateExpo);
+    query.WHERE(
+        pdtName != null && pdtName.length() > 0, PdtProduct.T.NAME, "like ?", "%" + pdtName + "%");
     return query.queryCount();
   }
 
