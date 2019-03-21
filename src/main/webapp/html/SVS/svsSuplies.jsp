@@ -17,11 +17,6 @@
 	<title></title>
     <link rel="stylesheet" href="css/reset.css">
     <script src="components/O2O-bottom.js"></script>
-    <style>
-        #o2otop .o2otopcon .topsearch > input {
-            border: 1px solid #10389c;
-        }
-    </style>
 </head>
 <jsp:include page="/home/v3/header.jsp"/>
 <body>
@@ -74,14 +69,14 @@
             </div>
             <div class="supliescon">
                 <div class="logo">
-                    <img :src="image(item.logo)" alt="">
-                    <div>
+                    <img :src="util_function_obj.image(item.logo,160,130)" alt="">
+                    <div @click="ToContactSupplier(item.id)">
                         <img src="images/subliesconxin.png" alt="">
                         <span>Contact Supplier</span>
                     </div>
                 </div>
                 <div class="introduce" style="width:320px">
-                    <p class="title">{{item.showName}}</p>
+                    <a class="title" :href="'/home/usr_UsrSupplier_gtSupIndex?pkey=' + item.id" target="_blank">{{item.showName}}</a>
                     <p class="p">{{item.showName}}</p>
                     <div class="level">
                         <p><img src="images/subliesiconcert.png" alt=""> Certificate | &nbsp;&nbsp;<img src="images/subliesiconsvs1.png" alt="" v-if="item.isAuth  == 1"><img src="images/subliesiconsvs2.png" alt="" v-if="item.isAuth  == 2"><img src="images/subliesiconsvs3.png" alt="" v-if="item.isAuth  == 3"> SVS</p>
@@ -99,8 +94,10 @@
                 </div>
                 <div class="product">
                     <div v-for="pro in item.products">
-                        <img :src="image(pro.picture.split(',')[0])" alt="">
-                        <p>{{pro.name}}</p>
+                        <a :href="'/home/pdt_PdtProduct_gtProductsInfo?id=' + pro.id" target="_blank">
+                            <img :src="util_function_obj.image(pro.picture.split(',')[0],144)" alt="">
+                            <p>{{pro.name}}</p>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -122,12 +119,12 @@
                 <div class="content_item">
                     <h2 class="content_item_h2">RFQ</h2>
                     <p class="content_item_text">Post exact requests to find exact Chinese Suppliers </p>
-                    <a href="" class="content_item_button btn_colour_1">Post Your Request</a>
+                    <a @click="ToRFQ" class="content_item_button btn_colour_1">Post Your Request</a>
                 </div>
                 <div class="content_item content_item_right">
                     <h2 class="content_item_h2">Supplier Search</h2>
                     <p class="content_item_text">Find More Supplier</p>
-                    <a href="" class="content_item_button btn_colour_2">Search now</a>
+                    <a href="javascript:void(0)" class="content_item_button btn_colour_2">Search now</a>
                 </div>
             </div>
         </div>
@@ -161,15 +158,15 @@
                 sublies:[],
 			},
 			methods:{
-                image: function image(v) {
-                    if (!v) {
-                        return "";
-                    }
-                    var t = v.split(",");
-                    if (t && t.length > 0) {
-                        return sysConfig.baseImageUrl + t[0];
-                    }
-                    return sysConfig.baseImageUrl + v;
+                // 跳转RFQ   
+                ToRFQ(){
+                    let url = "/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1"+ "&backUrl=" + window.location.href
+                    util_function_obj.supplierCantEnter(this, url);
+                },
+                // 跳转供应商表单
+                ToContactSupplier(supplierPkey){
+                    let url = "/home/usr_UsrSupplier_goContactSupplier?supplierPkey=" + supplierPkey+ "&backUrl=" + window.location.href;
+                    util_function_obj.supplierCantEnter(this, url);
                 },
                 showcheck:function (id) {
                     for (let i=1;i<4;i++){

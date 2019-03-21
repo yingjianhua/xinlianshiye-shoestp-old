@@ -135,7 +135,7 @@
                                 <a :href="'/home/usr_UsrMessages_center?supplierPkey=' + item.supplier.pkey + '&consultPkey=' + inquiryItem.consult.pkey + '&relationPkey=' + inquiryItem.quotation.pkey " class="flexSb clearfix">
                                     <div class="h1">
                                         <img v-if="inquiryItem.consult.images"
-                                             :src="inquiryItem.consult.type==3?image(inquiryItem.consult.images[0]) + '?x-oss-process=image/resize,w_43,h_43/blur,r_5,s_20':image(inquiryItem.consult.images[0])" alt="" />
+                                             :src="inquiryItem.consult.type==3?util_function_obj.image(inquiryItem.consult.images[0]) + '?x-oss-process=image/resize,w_52,h_52/blur,r_5,s_20' : util_function_obj.image(inquiryItem.consult.images[0],52,52)" alt="" />
                                         <i v-if="inquiryItem.quotation.isNew"></i>
                                     </div>
                                     <!-- <div class="h2">{{inquiryItem.consult.title}}</div> -->
@@ -334,10 +334,6 @@
         })
         },
         mounted() {
-            if(!isLogin){ 
-                    util_function_obj.alertWhenNoLogin(this);
-                    return
-                }
             this.getGroupList(); //获取分组
             this.getContactList(this.contactKeyWord,this.groupPkey,this.start,this.limit); //获取联系人
             this.$nextTick(() => {
@@ -400,7 +396,7 @@
         },
         methods: {
             clickGroupItem(e,groupPkey,name,count){  // 点击分组
-                if(!isLogin){ 
+                if(!sysConfig.user){ 
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 }
@@ -462,7 +458,7 @@
             },
 
             deleteContact(supplierPkey){  // 删除联系人
-                if(!isLogin){ 
+                if(!sysConfig.user){ 
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 }
@@ -545,7 +541,7 @@
                 // console.log(self.editNewPkey)
             },
             editGroup() { // 编辑分组
-                if(!isLogin){ 
+                if(!sysConfig.user){ 
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 }
@@ -580,7 +576,7 @@
             },
             deleteGroup(groupPkey) { // 删除分组
                 console.log(groupPkey)
-                if(!isLogin){ 
+                if(!sysConfig.user){ 
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 }
@@ -617,7 +613,7 @@
                 });
             },
             moveGroup(contactPkey,groupPkey,name,count){ // 移动分组
-                if(!isLogin){ 
+                if(!sysConfig.user){ 
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 }
@@ -662,7 +658,7 @@
                 }
             },
             addGroup() { // 添加分组
-                if(!isLogin){ 
+                if(!sysConfig.user){ 
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 }
@@ -716,7 +712,7 @@
             });
             },
             clickContact(index,pkey){ // 点击联系人
-                if(!isLogin){ 
+                if(!sysConfig.user){ 
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 }

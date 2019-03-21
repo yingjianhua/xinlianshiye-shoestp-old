@@ -49,7 +49,6 @@
                 <el-form status-icon :model="form1" :rules="rules" ref="form1" label-width="170px" class="">
                 <el-row>
                     <el-col :span="12" :offset="6">
-
                         <el-form-item label="Gender" prop="gender">
                             <el-select v-model="form1.gender" placeholder="Please select gender">
                                 <el-option label="confidentiality" value="0"></el-option>
@@ -168,7 +167,7 @@
                     return
                 }
                 setTimeout(() => {
-                    if (!(/^[\w]{1,16}@+\w{1,15}.\w{2,5}$/.test(this.form2.email))) {
+                    if (!(util_regular_obj.register.email.test(this.form2.email))) {
                         callback(new Error('Please enter the correct mailbox format'))
                     } else {
                         callback()
@@ -178,7 +177,7 @@
             var validatePass = (rule, value, callback) => {
                 if (!value) {
                     callback(new Error('Please enter your password'));
-                }else if(!(/^[^\s]{6,20}$/.test(this.form3.newPassword))){
+                }else if(!(util_regular_obj.register.psd.test(this.form3.newPassword))){
                     callback(new Error('Please enter a 6 to 20 digit password, no spaces'));
                 } else {
                     if (this.form3.ckPwd !== '') {
@@ -192,7 +191,7 @@
                     callback(new Error('Please enter your password again'));
                 } else if (value !== this.form3.newPassword) {
                     callback(new Error('Inconsistent input password twice!'));
-                } else if(!(/^[^\s]{6,20}$/.test(this.form3.ckPwd))){
+                } else if(!(util_regular_obj.register.psd.test(this.form3.ckPwd))){
                     callback(new Error('Please enter a 6 to 20 digit password, no spaces'));
                 }else {
                     callback();
@@ -218,21 +217,21 @@
                     newPassword: '',  // 新的密码
                     ckPwd: '',  // 确认密码
                 },
-
                 rules: { //表单验证
                     firstName: [{required: true,message: 'Please enter a firstName',trigger: 'blur'},
-                        { max: 50, message: 'Enter up to 50 characters', trigger: 'blur' }
+                        { max: 50, message: 'Enter up to 50 characters', trigger: 'blur' },
                     ],
                     surname: [{ required: true,message: 'Please enter a surname',trigger: 'blur'},
-                        { max: 50, message: 'Enter up to 50 characters', trigger: 'blur' }
+                        { max: 50, message: 'Enter up to 50 characters', trigger: 'blur' },
                     ],
                     
                     phone:[{validator: validatePhone, trigger: 'blur', required: true,}],
                     address: [{message: 'Please enter the address',trigger: 'blur'},
-                        { max: 50, message: 'Enter up to 50 characters', trigger: 'blur' }
+                        // { max: 50, message: 'Enter up to 50 characters', trigger: 'blur' }
                     ],
                     company: [{required: true,message: 'Please enter the company name',trigger: 'blur'},
-                        { max: 50, message: 'Enter up to 50 characters', trigger: 'blur' }
+                        // { max: 50, message: 'Enter up to 50 characters', trigger: 'blur' },
+                        { pattern: util_regular_obj.register.companyName, message: 'The name does not meet the specifications, please re-fill' }
                     ],
                     gender: [{
                         message: 'Please select gender',
@@ -255,10 +254,6 @@
 
         },
         mounted() {
-            if(!isLogin){
-                util_function_obj.alertWhenNoLogin(this);
-                        return
-                }
             this.getAccountSettings();
         },
         methods: {
@@ -287,7 +282,7 @@
                     });
             },
             submitForm1(formName) { // 第一部分表单提交    信息
-                if(!isLogin){
+                if(!sysConfig.user){
                     util_function_obj.alertWhenNoLogin(this);
                         return
                 }
@@ -347,7 +342,7 @@
                 });
             },
             submitForm2(formName) { // 第二部分表单提交    邮箱
-                if(!isLogin){
+                if(!sysConfig.user){
                     util_function_obj.alertWhenNoLogin(this);
                         return
                 }
@@ -404,7 +399,7 @@
                 });
             },
             submitForm3(formName) { // 第三部分表单提交    密码
-                if(!isLogin){
+                if(!sysConfig.user){
                     util_function_obj.alertWhenNoLogin(this);
                         return
                 }
@@ -469,16 +464,6 @@
                         // return false;
                     }
                 });
-            },
-
-            image(v, params) {
-                if (!v) {
-                    return ""
-                }
-                if (!params) {
-                    params = ""
-                }
-                return "https://image.shoestp.com" + v + params
             },
         }
     })

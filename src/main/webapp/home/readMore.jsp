@@ -42,7 +42,7 @@
                                 <img src="./static/images/no-pdtImages.png" alt="">
                             </div>
                             <div class="img-item" v-for="item in images" v-else>
-                                <img :src="isLogin?image(item):image(item)+ '?x-oss-process=image/resize,w_80/blur,r_8,s_8'" alt="">
+                                <img :src="sysConfig.user?image(item):image(item)+ '?x-oss-process=image/resize,w_80/blur,r_8,s_8'" alt="">
                             </div>
                         </div>
                     </li>
@@ -286,7 +286,7 @@
                }
             },
             showpdtDetails() {  //点击显示 商品详情
-                if (isLogin) {
+                if (sysConfig.user) {
                     //  登录了
                     this.pdtDetails = true;
                 } else {
@@ -304,7 +304,7 @@
                 return "https://image.shoestp.com" + v + params
             },
             submitForm(formName) { //表单提交
-                if(!isLogin){
+                if(!sysConfig.user){
                     util_function_obj.alertWhenNoLogin(this);
                         return
                     }else{

@@ -124,10 +124,6 @@
             isAllChecked: false,  // 是否全选
         },
         mounted() {
-            if(!isLogin){
-                util_function_obj.alertWhenNoLogin(this);
-                        return
-            }
             this.getFavoriteList('', this.start, this.limit);
         },
         methods: {
@@ -176,7 +172,7 @@
             },
             remove(pkey) {  // 商品单个移除到回收站  和  回收站单个商品永久删除
                 // console.log("点了删除" + pkey)
-                if(!isLogin){ 
+                if(!sysConfig.user){ 
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 }
@@ -222,7 +218,7 @@
             },
             removeAll() {  // 删除其他分类多个商品   和   删除回收站多个商品
                 console.log(this.checkedCode)
-                if(!isLogin){ 
+                if(!sysConfig.user){ 
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 }
@@ -274,7 +270,7 @@
                 });
             },
             restore(pkey) {  // 回收站 商品  还原到 收藏夹
-                if(!isLogin){ 
+                if(!sysConfig.user){ 
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 }

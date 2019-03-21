@@ -1,6 +1,6 @@
 <%--全局登录弹框--%>
 <jsp:include page="/home/v3/login-box.jsp"></jsp:include>
-
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <!-- 顶部nav栏 -->
 <div id="nav" style="height: auto;">
     <div id="new-top-nav" class="wide-wrap">
@@ -42,7 +42,7 @@
 
                 </el-menu-item>
                 <el-menu-item index="7" class="fr">
-                    <a href="/home/usr_UsrConsult_listView" target="_blank">
+                    <a @click="ToRFQ">
                         <s:text name="RFQ"/>
                     </a>
                 </el-menu-item>
@@ -135,6 +135,11 @@
             })
         },
         methods: {
+            // 跳转RFQ   
+            ToRFQ(){
+                let url = "/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1"+ "&backUrl=" + window.location.href
+                util_function_obj.supplierCantEnter(this, url);
+             },
             searchClick() {
                 window.location.href = "/home/pdt_PdtProduct?Keyword=" + this.search.keyword
                     + "&v=2&searchtype=" + this.topSearchBarCategory
