@@ -438,11 +438,13 @@
                 //
                 //     });
                 // }
-                user_obj.inbox_init()
+                // user_obj.inbox_init()
                 if (!isLogin) {
                     // user_obj.set_form_sign_in('', window.location.href, 1);
                     // return
-                    user_obj.set_form_sign_in('', window.location.href, 1);
+                    // user_obj.set_form_sign_in('', window.location.href, 1);
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
                 } else {
 
                     axios.get('/home/usr_UsrFavorites_addFavorite', {
@@ -541,7 +543,8 @@
             //   添加到询盘
             addRFQ(e) {
                 if (!isLogin) {
-                    user_obj.set_form_sign_in('', window.location.href, 1);
+                    // user_obj.set_form_sign_in('', window.location.href, 1);
+                    util_function_obj.alertWhenNoLogin(this);
                     return
                 }
                 axios({

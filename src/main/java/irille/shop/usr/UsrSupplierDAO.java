@@ -1051,14 +1051,15 @@ public class UsrSupplierDAO {
   public static UsrSupplier insSupplier(UsrSupplier view, Language lang) throws JSONException {
 
     UsrSupplier beanjson = new UsrSupplier();
+    beanjson.setShowName(view.getName()); //前端公司展示名称
     beanjson.setCompanyType(view.getCompanyType()); // 企业类型
     beanjson.setCompanyNature(view.getCompanyNature()); // 企业性质
     beanjson.setCompanyAddr(view.getCompanyAddr()); // 详细地址
     beanjson.setProdPattern(view.getProdPattern()); // 生产模式
+    beanjson.setContacts(view.getContacts()); //联系人
     beanjson.setDepartment(view.getDepartment()); // 联系人部门
     beanjson.setJobTitle(view.getJobTitle()); // 联系人职称
     translateUtil.autoTranslate(beanjson, true);
-
     UsrMain main = irille.pub.bean.Query.SELECT(UsrMain.class, view.getUserid());
     main.setContacts(view.getContacts());
     main.setTelphone(view.getPhone());
@@ -1098,6 +1099,7 @@ public class UsrSupplierDAO {
     bean.setPassword(DateTools.getDigest(main.getPkey() + main.getPassword())); // UsrMain表的密码
     bean.setName(view.getName()); // 公司名称-必填
     bean.setEnglishName(view.getEnglishName()); // 公司英文名称
+    bean.setShowName(beanjson.getShowName()); //前端公司展示名称
 
     bean.setCompanyType(beanjson.getCompanyType()); // 企业类型
     bean.setCompanyNature(beanjson.getCompanyNature()); // 企业性质
@@ -1121,7 +1123,7 @@ public class UsrSupplierDAO {
     }
     bean.setTaxpayerType(view.getTaxpayerType()); // 纳税人类型
 
-    bean.setContacts(view.getContacts()); // 联系人
+    bean.setContacts(beanjson.getContacts()); // 联系人
     bean.setDepartment(beanjson.getDepartment()); // 联系人部门
     bean.setJobTitle(beanjson.getJobTitle()); // 联系人职称
     bean.setPhone(view.getPhone()); // 联系人手机
@@ -1156,6 +1158,8 @@ public class UsrSupplierDAO {
             T.PROD_PATTERN, // 生产模式 多国语言
             T.DEPARTMENT, // 联系人部门 多国语言
             T.JOB_TITLE, // 联系人职称 多国语言
+            T.CONTACTS, // 联系人 多国语言
+            T.SHOW_NAME, //公司名称 多国语言
 
             T.NAME, // 公司名称
             T.ENGLISH_NAME, // 英文名称
@@ -1173,7 +1177,6 @@ public class UsrSupplierDAO {
             T.BUSINESS_LICENSE_BEGIN_TIME, // 营业执照开始时间
             T.BUSINESS_LICENSE_END_TIME, // 营业执照结束时间
             T.TAXPAYER_TYPE, // 纳税人类型
-            T.CONTACTS, // 联系人
             T.PHONE, // 联系人手机
             T.CONTACT_EMAIL, // 联系人邮箱
             T.CERT_PHOTO, // 营业执照副本复印件
@@ -1189,15 +1192,19 @@ public class UsrSupplierDAO {
     s.setCompanyNature(supplier.getCompanyNature());
     s.setCompanyAddr(supplier.getCompanyAddr());
     s.setProdPattern(supplier.getProdPattern());
+    s.setContacts(supplier.getContacts());
     s.setDepartment(supplier.getDepartment());
     s.setJobTitle(supplier.getJobTitle());
+    s.setShowName(supplier.getName());
     translateUtil.autoTranslate(s,true);
     model.setCompanyType(s.getCompanyType());
     model.setCompanyNature(s.getCompanyNature());
     model.setCompanyAddr(s.getCompanyAddr());
     model.setProdPattern(s.getProdPattern());
+    model.setContacts(s.getContacts());
     model.setDepartment(s.getDepartment());
     model.setJobTitle(s.getJobTitle());
+    model.setShowName(s.getShowName());
     model.upd();
     return model;
   }

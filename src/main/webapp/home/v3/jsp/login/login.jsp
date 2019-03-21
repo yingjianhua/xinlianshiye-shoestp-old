@@ -5,7 +5,8 @@
 <link rel="stylesheet" href="/home/v2/static/css/nav/new-top-nav-style.css"/>
 <body class="bg-gray  page-login">
 <jsp:include page="/home/v3/nav-nobody.jsp"></jsp:include>
-<div id="app" class="flex-column-layout min-height100">
+
+<div id="app" class="flex-column-layout">
     <index-top></index-top>
     <!-- // 第三方 - hellojs -->
     <!-- test -->
@@ -48,7 +49,8 @@
                             </el-form-item>
 
                             <el-form-item label="Password" prop="psd">
-                                <el-input v-model="loginForm.psd" placeholder="Password" auto-complete="on" type="password"></el-input>
+                                <el-input v-model="loginForm.psd" onkeyup="this.value=this.value.replace(/\s+/g,'')"
+                                          placeholder="Password" auto-complete="on" type="password"></el-input>
                             </el-form-item>
                         </el-form>
 
@@ -124,7 +126,6 @@
     var app = new Vue({
         el: "#app",
         data: {
-
             loginForm: {
                 email: '',
                 psd: '',
@@ -132,7 +133,7 @@
             loginFormRules: {
                 email: [
                     {required: true, message: 'Email can\'t be empty!', trigger: 'blur'}, {
-                        pattern: /^[0-9A-Za-z][\.-_0-9A-Za-z]*@[0-9A-Za-z]+(?:\.[0-9A-Za-z]+)+$/,
+                        pattern: /^[\w]{1,16}@+\w{1,15}.\w{2,5}$/,
                         message: 'E-mail format is incorrect',
                         trigger: 'blur'
                     }
@@ -214,6 +215,7 @@
                         pwd: this.loginForm.psd,
                     }
                 }
+                // 这里与登录弹窗不同 - 此处是取地址栏中的jumpUrl - 那边直接传参形式
                 if( util_function_obj.GetQueryString("jumpUrl") ){
                     postData.jumpUrl = util_function_obj.GetLoginJumpBackUrl();
                 }
