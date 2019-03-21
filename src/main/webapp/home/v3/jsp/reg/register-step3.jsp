@@ -41,15 +41,21 @@
         <ul class="step-overview">
             <li class="step-item">
                 1
-                <div class="title">请设置用户名</div>
+                <div class="title">
+                    {{type == 'supplier'?"请设置用户名":"Please Set The Username"}}
+                </div>
             </li>
             <li class="step-item">
                 2
-                <div class="title">填写账号信息</div>
+                <div class="title">
+                    {{type == 'supplier'?"填写账号信息":"Please Fill In The Account Information"}}
+                </div>
             </li>
             <li class="step-item active">
                 3
-                <div class="title">注册成功</div>
+                <div class="title">
+                    {{type == 'supplier'?"注册成功":"Registration Success"}}
+                </div>
             </li>
         </ul>
 
@@ -131,7 +137,6 @@
                     center: true,
                     customClass: "my-custom-element-alert-class fs-content-18",
                     callback: action => {
-                        console.log(action)
                         if(action == 'confirm'){
                             window.location.href = '/home/usr_UsrSupplier_supplierEntry';
                         }else{

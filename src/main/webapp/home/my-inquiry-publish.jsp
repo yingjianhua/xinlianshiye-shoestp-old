@@ -595,6 +595,17 @@
                     sessionStorage['Temp_publish_form'] = JSON.stringify(this.form);
                     util_function_obj.alertWhenNoLogin(this);
                     return;
+                // 供应商不能提交
+                }else if(sysConfig && sysConfig.user && sysConfig.user.user_type == 1){
+                    this.$alert("Sorry, the supplier cannot submit the form",{
+                        confirmButtonText: 'Ok',
+                        customClass: "my-custom-element-alert-class fs-content-18",
+                        center: true,
+                        callback: action =>{
+                            return
+                        }
+                    });
+                    return
                 }
 
                 this.$refs.form.validate((valid) => {
