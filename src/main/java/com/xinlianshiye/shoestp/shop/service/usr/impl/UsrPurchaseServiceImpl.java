@@ -71,7 +71,7 @@ public class UsrPurchaseServiceImpl implements UsrPurchaseService {
     validPassword(newPassword);
     purchase.setPassword(DateTools.getDigest(purchase.getPkey() + newPassword));
     UsrMain main = BeanBase.load(UsrMain.class, purchase.getUserid());
-    main.setPassword(DateTools.getDigest(purchase.getPkey() + newPassword));
+    main.setPassword(DateTools.getDigest(main.getPkey() + newPassword));
     main.upd();
     usrPurchaseDao.save(purchase);
   }

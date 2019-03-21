@@ -81,7 +81,8 @@ public class PltTrantslateDAO {
                 if (tv.getMode().equalsIgnoreCase(PltTrantslate.T.SOURCE_TEXT.toString())) {
                   WHERE(
                       PltTrantslate.T.SOURCE_TEXT,
-                      tv.getCondition() + " '%" + tv.getContent() + "%'");
+                      tv.getCondition() + " ? ",
+                      "%" + tv.getContent() + "%");
                 }
                 if (tv.getMode().equalsIgnoreCase(PltTrantslate.T.TARGET.toString())) {
                   WHERE(PltTrantslate.T.TARGET, tv.getCondition() + " '%" + tv.getContent() + "%'");
@@ -89,7 +90,8 @@ public class PltTrantslateDAO {
                 if (tv.getMode().equalsIgnoreCase(PltTrantslate.T.TARGET_TEXT.toString())) {
                   WHERE(
                       PltTrantslate.T.TARGET_TEXT,
-                      tv.getCondition() + " '%" + tv.getContent() + "%'");
+                      tv.getCondition() + " ? ",
+                      "%" + tv.getContent() + "%");
                 }
                 if (tv.getMode().equalsIgnoreCase(PltTrantslate.T.CREATED_TIME.toString())) {
 

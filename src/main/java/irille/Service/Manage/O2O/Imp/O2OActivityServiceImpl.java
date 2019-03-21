@@ -561,6 +561,10 @@ public class O2OActivityServiceImpl implements O2OActivityService {
       o2OProductView.setSupCat(GetValue.get(map, "SuppdtCat", String.class, null));
       result.add(o2OProductView);
     }
-    return new Page(result, start, limit, o2OActivityDao.privetePdtListCount());
+    return new Page(
+        result,
+        start,
+        limit,
+        o2OActivityDao.privetePdtListCount(status, verify_status, cat, supName, pdtName));
   }
 }
