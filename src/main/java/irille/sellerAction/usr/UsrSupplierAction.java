@@ -8,11 +8,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.struts2.ServletActionContext;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import irille.Service.Manage.Usr.IUsrSupplierManageService;
 import irille.action.dataimport.util.StringUtil;
 import irille.pub.Exp;
@@ -36,12 +31,7 @@ import irille.sellerAction.view.operateinfoView;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltProvince;
-import irille.shop.usr.UsrAnnex;
-import irille.shop.usr.UsrMain;
-import irille.shop.usr.UsrSupplier;
-import irille.shop.usr.UsrSupplierCategory;
-import irille.shop.usr.UsrSupplierDAO;
-import irille.shop.usr.UsrUserDAO;
+import irille.shop.usr.*;
 import irille.view.usr.AccountSettingsView;
 import irille.view.usr.UserView;
 import irille.view.usr.UsrshopSettingView;
@@ -266,7 +256,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     UsrUserDAO.updSupplierPassword(getSupplier().getPkey(), oldPwd, newPwd);
     write();
   }
-  
+
   @Getter @Setter private UsrshopSettingView usv;
   @Inject private UsrSupplierDAO.setting usrSupplierSetting;
 
@@ -502,7 +492,8 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     if (getBean().getTelephone() != null) regex.validPhone(UsrSupplier.T.TELEPHONE);
     if (getBean().getPhone() != null) regex.validPhone(UsrSupplier.T.PHONE);
     if (getBean().getFax() != null)
-      regex.validRegexMatched("[0-9]{12,30}", "传真只能输入数字，且数字个数在12~30个之间", UsrSupplier.T.FAX);
+      regex.validRegexMatched(
+              "(\\d{3,4}-)?\\d{7,8}", "请填写正确传真格式", UsrSupplier.T.FAX);
     if (getBean().getPostcode() != null)
       regex.validRegexMatched("[0-9]{6}", "邮编只能输入数字，且数字个数为6个", UsrSupplier.T.POSTCODE);
     if (getBean().getRegisteredCapital() != null)
