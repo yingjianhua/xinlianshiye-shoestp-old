@@ -74,8 +74,9 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
     myself.setName(supplier.getName());
     RFQConsultMessageContactView another = new RFQConsultMessageContactView();
     another.setAvatar(purchase.getIcon());
-    another.setName(purchase.getName());
-
+    if (null != purchase.getName() || "".equals(purchase.getName()))
+      another.setName(purchase.getName());
+    else another.setName("Himself");
     return new RFQConsultMessagesView(msgs, myself, another);
   }
 
