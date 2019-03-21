@@ -288,16 +288,6 @@ ul{
         new Vue({
             el: "#xpApp",
             data(){
-                var validateQuantity = (rule, value, callback) => {
-                    let re = /^\+?[1-9][0-9]*$/;
-                    if (!value) {
-                        return callback(new Error('Please enter the quantity'));
-                    }
-                    if(!re.test(value)){
-                        return callback(new Error("Can't start with 0, can't have decimal point"));
-                    }
-                    callback();
-                };
                 return{
                     flag : false, 
                      imgsToUpload: [], // 需要upload的img - 显示在页面上
@@ -323,7 +313,10 @@ ul{
                     images: ''
                 }, 
                 rules: {
-                    quantity: [{required: true, validator: validateQuantity, trigger: 'blur' }],
+                    quantity: [
+                            {required: true,message: 'Please enter the quantity',trigger: 'blur'},
+                            { pattern: /^\+?[1-9][0-9]*$/, message: "Please enter a number, can't start with 0, can't have decimal point" }
+                        ],
                     unitType: [{
                         required: true,
                         message: 'Please select a unit',

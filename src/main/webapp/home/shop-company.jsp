@@ -339,7 +339,7 @@
                                 </el-col>
                             </el-row>
                         </el-form-item>
-                        <el-form-item label="Extra Request" prop="extraRequest" class="request">
+                        <el-form-item label="Extra Request" prop="extra_request" class="request">
                             <el-checkbox-group v-model="form.extra_request">
                                 <el-checkbox label="price" name="price">Price</el-checkbox>
                                 <el-checkbox label="inspection certificate" name="inspection certificate">Inspection
@@ -352,10 +352,10 @@
                                 </el-checkbox>
                             </el-checkbox-group>
                         </el-form-item>
-                        <el-form-item label="Message:" prop="descriotion">
+                        <el-form-item label="Message:" prop="description">
                             <el-input
                                     placeholder="Enter product details such as color, size, materials etc. and other specification requirements to receive an accurate quote."
-                                    type="textarea" v-model.trim="form.descriotion"
+                                    type="textarea" v-model.trim="form.description"
                                     :autosize="{ minRows: 8, maxRows: 8}"></el-input>
                         </el-form-item>
                         <el-form-item label="" prop="images">
@@ -411,16 +411,6 @@
         new Vue({
             el: "#main",
             data() {
-                var validateQuantity = (rule, value, callback) => {
-                    let re = /^\+?[1-9][0-9]*$/;
-                    if (!value) {
-                        return callback(new Error('Please enter the quantity'));
-                    }
-                    if(!re.test(value)){
-                        return callback(new Error("Can't start with 0, can't have decimal point"));
-                    }
-                    callback();
-                };
                 return {
                     flag : false, 
                     imgsToUpload: [], // 需要upload的img - 显示在页面上
@@ -442,7 +432,7 @@
                         quantity: '',  // 数量
                         unit: '1',  // 单位
                         extra_request: [],  //  额外要求
-                        descriotion: '',  //描述
+                        description: '',  //描述
                         images: '',  // 图片
                         supplierId: null  // 供应商id
                     },
@@ -452,9 +442,10 @@
                             {required: true, message: 'Please fill in the title'}
                         ],
                         quantity: [
-                            {validator: validateQuantity, trigger: 'blur'}
+                            {required: true,message: 'Please enter the quantity',trigger: 'blur'},
+                            { pattern: /^\+?[1-9][0-9]*$/, message: "Please enter a number, can't start with 0, can't have decimal point" }
                         ],
-                        descriotion: [{
+                        description: [{
                             required: true,
                             message: 'Please fill in the message',
                             trigger: 'blur'
@@ -587,7 +578,7 @@
                                     //     self.$message.error('Quantity cannot be empty');
                                     // } else if (!self.form.unit) {
                                     //     self.$message.error("Select unit");
-                                    // } else if (!self.form.descriotion) {
+                                    // } else if (!self.form.description) {
                                     //     self.$message.error('Please fill in the message');
                                     // }
                                     // return false;

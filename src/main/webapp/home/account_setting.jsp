@@ -154,7 +154,7 @@
                     callback(new Error('Please input the phone number'));
                     return
                 }
-                if(!(/^[+\d]?\d{1,3}-\d{6,16}$/.test(this.form1.phone))){
+                if(!(util_regular_obj.register.phoneAreaCode.test(this.form1.phone))){
                     callback(new Error('Please enter the correct phone number'));
                     return
                 }else{
@@ -239,7 +239,7 @@
                     }],
                     password: [
                         {required: true,message: 'Please enter your password',trigger: 'blur'},
-                        { pattern: /^[^\s]{6,20}$/, message: 'Cannot contain spaces' }
+                        { pattern: util_regular_obj.register.psd, message: 'Please enter the correct password' }
                     ],
                     email: [{validator: validateEmail, trigger: 'blur', required: true,}],
                     newPassword: [

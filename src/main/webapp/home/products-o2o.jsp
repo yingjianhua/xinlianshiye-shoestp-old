@@ -19,9 +19,14 @@
         cursor: pointer;
         text-align: center;
     }
-
-    #o2obottom .o2obottomlinks ul {
-        color: #0c0e23;
+    #o2obottom .o2obottomcopyright{
+        border-top: 1px solid #575f75 !important;
+    }
+    #o2obottom .o2obottomlinks ul .ullink a{
+        color: white !important;
+    }
+    #o2obottom {
+        background-color: #424d65 !important;
     }
 </style>
 <body>
@@ -35,7 +40,8 @@
 <script src="/html/o2o/js/config.js"></script>
 <link rel="stylesheet" href="/html/o2o/css/index.css">
 <script src="/home/components/O2O-top.js"></script>
-<script src="/home/components/O2O-bottom.js"></script>
+<!-- <script src="/home/components/O2O-bottom.js"></script> -->
+<script src="/home/v3/static/js/index-bottom.js"></script>
 
 <script>     new Vue({
     el: "#new_navs"
@@ -280,7 +286,7 @@
 </div>
 
 <div id="foot">
-    <o2o-bottom></o2o-bottom>
+        <index-bottom></index-bottom>
 </div>
 
 
