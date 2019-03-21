@@ -11,6 +11,7 @@ import irille.action.MgtAction;
 import irille.platform.usr.View.UsrSupplierNewView;
 import irille.pub.Exp;
 import irille.pub.bean.BeanBase;
+import irille.pub.exception.WebMessageException;
 import irille.pub.util.upload.ImageUpload;
 import irille.pub.validate.ValidForm;
 import irille.pub.validate.ValidRegex2;
@@ -119,7 +120,7 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
       UsrMain main = BeanBase.load(UsrMain.class, getBean().getUserid());
       if (main != null) {
         if(mainEmail != null){
-          main.setEmail(mainEmail);
+            main.setEmail(mainEmail);
         }
         main.setCompany(getBean().getName());
         main.setAddress(getBean().getCompanyAddr());
@@ -153,6 +154,10 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
     valid.validNotEmpty(UsrSupplier.T.NAME,UsrSupplier.T.ENGLISH_NAME, UsrSupplier.T.COMPANY_ADDR,UsrSupplier.T.TARGETED_MARKET,UsrSupplier.T.PROD_PATTERN,UsrSupplier.T.CREDIT_CODE,UsrSupplier.T.CERT_PHOTO);
     ValidRegex2 regex = new ValidRegex2(getBean());
     regex.validAZLen(50,UsrSupplier.T.ENGLISH_NAME);
+      UsrMain main = UsrMain.chkUniqueEmail(false, mainEmail);
+      if(main != null){
+          throw new WebMessageException("邮箱已被他人注册，请更换邮箱");
+      }
     if (getBean().getName() != null)
       regex.validRegexMatched(
           "[A-Za-z\\u4e00-\\u9fa5]{1,50}",
