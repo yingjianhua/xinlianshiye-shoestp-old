@@ -16,15 +16,18 @@
         <ul class="step-overview">
             <li class="step-item active">
                 1
-                <div class="title">请设置用户名</div>
+                <div class="title">Please Set The Username</div>
+                <%--<div class="title">请设置用户名</div>--%>
             </li>
             <li class="step-item">
                 2
-                <div class="title">填写账号信息</div>
+                <div class="title">Please Fill In The Account Information</div>
+                <%--<div class="title">填写账号信息</div>--%>
             </li>
             <li class="step-item">
                 3
-                <div class="title">注册成功</div>
+                <div class="title">Registration Success</div>
+                <%--<div class="title">注册成功</div>--%>
             </li>
         </ul>
 
@@ -37,7 +40,7 @@
                      :rules="registerFormRules">
                 <el-form-item id="email"
                               label="Your Email Address" prop="email">
-                    <el-input placeholder="Email"
+                    <el-input placeholder="Email" @change="changeEmail"
                               v-model.trim="registerForm.email">
                     </el-input>
                 </el-form-item>
@@ -220,6 +223,11 @@
                 return null;
             },
 
+            // 改变邮箱大小写
+            changeEmail(val){
+                this.registerForm.email = val.toLowerCase();
+            },
+
             // 发送验证码至邮箱
             sendCodeToEmail() {
                 axios.post('/home/usr_UsrMain_sendEm', Qs.stringify({
@@ -238,11 +246,16 @@
 
                         // 生成对应邮箱跳转地址
                         let mailAddr = this.registerForm.email.split('@')[1];  //获取邮箱域名
+                        this.isEmailSuffixMatch = false; // 是否能匹配到邮箱后缀
                         for (var key in emailAddrList) {
                             if (key == mailAddr) {
                                 console.log(emailAddrList[key])
                                 this.mailDetailAddr = emailAddrList[key]
+                                this.isEmailSuffixMatch = true;
                             }
+                        }
+                        if(!this.isEmailSuffixMatch){
+                            this.mailDetailAddr = "";
                         }
 
                         this.step = 2;
@@ -290,7 +303,20 @@
                 this.$refs.registerForm.resetFields();
             },
             toCheckEmail() {
-                window.open(this.mailDetailAddr);
+                if(this.mailDetailAddr){
+                    window.open(this.mailDetailAddr);
+                }else{
+                    this.$alert("Can't find the email address, please login to your email to activate",{
+                        confirmButtonText: 'Ok',
+                        customClass: "my-custom-element-alert-class fs-content-18",
+                        center: true,
+                        callback: action =>{
+                            return
+                        }
+                    });
+                    return
+                }
+
             },
 
         }

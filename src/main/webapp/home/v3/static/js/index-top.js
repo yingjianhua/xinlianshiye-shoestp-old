@@ -33,7 +33,7 @@ Vue.component('index-top', {
                             <a href="javascript:void(0)">
                                 <i class="message-icon" :class="!item.read?'message-icon-new':'message-icon-old'"></i>
                                 <div>
-                                    <p :class="!item.read?'ellipsis_2':''" :style="!item.read?'color:#999999;':''">{{item.content}}</p>
+                                    <p :class="!item.read?'p_ellipsis':''" :style="!item.read?'color:#999999;':''">{{item.content}}</p>
                                     <div>
                                         <img src="/home/v3/static/images/o2otopmessagetime.png" alt="">
                                          <span>{{item.time | timeDistance}}</span> 
@@ -71,7 +71,7 @@ Vue.component('index-top', {
                         <div style="height:  20px;">
                             <div  v-if="!sysConfig.user">
                                 <a href="/home/usr_UsrMain_register" style="border-right: 1px solid #b7b7b7;padding-right: 3px;color: #4fa2d7;font-size:12px;" target="_blank">Register</a>
-                                <a  @click="util_function_obj.alertWhenNoLogin(this);" style="color: #4fa2d7;font-size:12px;" >Login</a>
+                                <a  @click="util_function_obj.alertWhenNoLogin(this);" style="color: #4fa2d7;font-size:12px;cursor: pointer;" >Login</a>
                             </div>
                         </div>
                         <p>My Shosetp</p>
@@ -119,7 +119,7 @@ Vue.component('index-top', {
                         <li v-if="sysConfig.user.user_type==0"><a href="/home/usr_UsrPurchase_userIndex" target="_blank">My Account <i class="el-icon-arrow-right"></i></a></li>
                         <li v-if="sysConfig.user.user_type==1" style="font-size:15px;font-weight: bold;"><a href="/home/usr_UsrSupplier_supplierEntry" target="_blank">我要开店 <i class="el-icon-arrow-right"></i></a></li>
                     </ul>
-                    <div v-if="sysConfig.user.user_type==0" class="after-login"><a href="/home/usr_UsrConsult_publishView" target="_blank">Submit RFQ</a></div>
+                    <div v-if="sysConfig.user.user_type==0" class="after-login"  @click="ToRFQ" style="cursor: pointer;">Submit RFQ</div>
                     <div class="hours after-login">Get multiple quotes within 24 hours！</div>
                 </dd>
             </dl>
@@ -152,10 +152,11 @@ Vue.component('index-top', {
                     value: 0,
                     label: 'Product'
                 },
-                {
-                    value: 1,
-                    label: 'Suppiler'
-                }
+                // 先隐藏搜索供应商
+                // {
+                //     value: 1,
+                //     label: 'Supplier'
+                // }
             ],
             sysConfig: {},
             PMMessageList:[],
@@ -188,6 +189,11 @@ Vue.component('index-top', {
         // }, 1000);
     },
     methods: {
+        // 跳转RFQ   
+        ToRFQ(){
+            let url = "/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1" + "&backUrl=" + window.location.href
+            util_function_obj.supplierCantEnter(this, url);
+         },
         submit: function () {
             if (this.input) {
                 window.location = '/home/pdt_PdtProduct?Keyword=' + this.input + '&v=2&searchtype=' + this.select;

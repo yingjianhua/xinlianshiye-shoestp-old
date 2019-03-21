@@ -32,7 +32,7 @@
                 <div class="form-item">
                     <span class="form-item_label">Your Email Address</span>
                     <input type="text" class="form-item_input"
-                           v-model="email" @blur="judgeEmail" style="border:1px solid gray">
+                           v-model.trim="email" @blur="judgeEmail" style="border:1px solid gray">
                     <span class="form-item_hint">{{promptMessage}}</span>
                 </div>
                 <div class="form-item">
@@ -47,7 +47,7 @@
                 <div class="form-item">
                     <span class="form-item_label">Verification Code</span>
                     <input type="text" class="form-item_input
-                                form-item_code" v-model="authCode" style="border:1px solid gray">
+                                form-item_code" v-model.trim="authCode" style="border:1px solid gray">
                     <span class="code-image" @click="codechange"><img
                             :src="imgCode" alt=""></span>
                 </div>
@@ -74,7 +74,7 @@
                 <div class="form-item">
                     <span class="form-item_label">Verification Code</span>
                     <input type="text" class="form-item_input
-                                form-item_codePass" v-model="promptMessage">
+                                form-item_codePass" style="border: 1px solid gray;" v-model.trim="promptMessage">
                     <span class="send-button" @click="getemailCode">Get
                                 verification code again <span v-if="again != 0">{{again}}
                                     s</span></span>
@@ -128,21 +128,23 @@
             </div>
             <div class="input">
                 <h4 class="label">New password</h4>
-                <input type="password" v-model="password"
+                <input type="password" v-model.trim="password"
+                       onkeyup="this.value=this.value.replace(/\s+/g,'')"
                        @input="passwordtest" placeholder="Please input  password">
                 <div class="showmsg">
                     <%--<img src="/home/v3/static/images/forgetPassword/loginright.png" alt=""--%>
                          <%--v-if="password">--%>
-                    <img src="images/loginright.png" alt="" v-if="password
+                    <img src="/home/v3/static/images/forgetPassword/loginright.png" alt="" v-if="password
                     && checkpass">
-                    <img src="images/loginerr.png" alt="" v-if="password
+                    <img src="/home/v3/static/images/forgetPassword/loginerr.png" alt="" v-if="password
                     && !checkpass">
                     <h4 class="msg">{{passwordStrength}}</h4>
                 </div>
             </div>
             <div class="input">
                 <h4 class="label">Confirm password</h4>
-                <input type="password" v-model="checkpasword"
+                <input type="password" v-model.trim="checkpasword"
+                       onkeyup="this.value=this.value.replace(/\s+/g,'')"
                        @blur="checkpassword" @keyup.enter="checkpassword"
                        placeholder="Please input password again">
                 <div class="showmsg">
@@ -157,7 +159,7 @@
         <div class="confirm" @click="submitpassword">Confirm</div>
     </div>
     <div class="checksuccess" v-if="state == 2">
-        Password recovery successful,<a href="">Return</a>immediately
+        Password recovery successful,<a href="/">Return</a>immediately
     </div>
     <index-bottom></index-bottom>
 </div>
@@ -206,7 +208,9 @@
         methods: {
             // 判断邮箱是否注册
             judgeEmail() {
-                let regular = /.+@[a-z0-9\.]+\.(com|cn|net)$/;
+                this.email = this.email.toLowerCase();
+                // let regular = /.+@[a-z0-9\.]+\.(com|cn|net)$/;
+                let regular = util_regular_obj.register.email;
                 if (!this.email) {
                     this.promptMessage = 'Email cannot be empty'
                     return false
@@ -313,8 +317,8 @@
                         this.errorShow = !this.errorShow
                         this.state++;
                     }else{
-                        this.errorShow = !this.errorShow
-                        this.errMessage = 'Verification code error'
+                        this.errorShow = !this.errorShow;
+                        this.errMessage = res.data.msg || 'Verification code error';
                     }
                 }).catch(err => {
                     console.log(err);
@@ -323,14 +327,15 @@
             //验证密码强度
             passwordtest: function () {
                 this.checkpass = true;
+                this.hidden = false;
                 let lv = 0;
-                if (this.password.match(/[a-z]/g)) {
+                if (this.password.match(/[a-zA-Z]/g)) {
                     lv++;
                 }
                 if (this.password.match(/[0-9]/g)) {
                     lv++;
                 }
-                if (this.password.match(/(.[^a-z0-9])/g)) {
+                if (this.password.match(/(.[^a-zA-Z0-9])/g)) {
                     lv++;
                 }
                 if (this.password.length < 6) {
@@ -340,7 +345,9 @@
                     lv = 3;
                 }
                 if (this.password == '') {
-                    this.passwordStrength = ''
+                    this.passwordStrength = 'Password can\'t be empty'
+                    this.checkpass = false;
+                    return;
                 } else if (lv == 0 || lv == 1) {
                     this.passwordStrength = 'Strength: Weak'
                 } else if (lv == 2) {
@@ -348,9 +355,20 @@
                 } else if (lv == 3) {
                     this.passwordStrength = 'Strength: Strong'
                 }
+
+                if( !util_regular_obj.register.psd.test(this.password) ){
+                    this.passwordStrength = "Please set password within 6 to 20 characters"
+                    this.checkpass = false;
+                }
             },
             //确认密码
             checkpassword: function () {
+                if(!this.checkpasword){
+                    this.hidden = false;
+                    this.check = false;
+                    this.checkpasswordtext = 'Please enter password again';
+                    return;
+                }
                 if (this.password === this.checkpasword) {
                     this.hidden = true;
                     this.check = true;
@@ -358,8 +376,8 @@
                 } else {
                     this.hidden = false;
                     this.check = false;
-                    this.checkpass = false;
-                    this.checkpasswordtext = 'Please retype your right password';
+                    // this.checkpass = false;
+                    this.checkpasswordtext = 'The two passwords are inconsistent';
                 }
             },
             //提交确认密码
@@ -373,19 +391,19 @@
                     return false;
                 }
                 if (this.password.length < 6) {
-                    this.passwordStrength = 'Passwords must be 6 to 20 characters long';
+                    this.passwordStrength = 'Please set password within 6 to 20 characters';
                     this.hidden = false;
                     this.check = false;
                     this.checkpass = false;
                     return false;
                 }
-                if (!(this.password.match(/[a-z]/g) && this.password.match(/[0-9]/g))) {
-                    this.passwordStrength = 'The password consists of Numbers and letters';
-                    this.hidden = false;
-                    this.check = false;
-                    this.checkpass = false;
-                    return false;
-                }
+                // if (!(this.password.match(/[a-z]/g) && this.password.match(/[0-9]/g))) {
+                //     this.passwordStrength = 'The password consists of Numbers and letters';
+                //     this.hidden = false;
+                //     this.check = false;
+                //     this.checkpass = false;
+                //     return false;
+                // }
                 if (this.check) {
                     this.checkpass = true;
                     const than = this

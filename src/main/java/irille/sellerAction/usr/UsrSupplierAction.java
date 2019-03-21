@@ -111,10 +111,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
 
 	@Override
 	public void login() throws Exception {
-		System.out.println("vCode:" + vCode);
 		String verifyCode = verifyCode();
-		System.out.println("verifyCode:" + verifyCode);
-
 		if (Str.isEmpty(verifyCode) || Str.isEmpty(vCode) || !verifyCode.equals(vCode)) {
 			writeErr("验证码错误");
 			return;
@@ -151,6 +148,23 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
 		user = UsrUserDAO.supplierSignIn(supplier, main);
 		setUser(user);
 		write();
+		// UsrSupplier supplier=new UsrSupplier();
+		// try {
+		// String verifyCode = verifyCode();
+		// if (Str.isEmpty(verifyCode) || Str.isEmpty(getCheckCode()) ||
+		// verifyCode.equals(getCheckCode()) == false)
+		// throw LOG.err("errcode", "验证码错误");
+		// supplier = UsrSupplierDAO.loginCheck(getBean().getLoginName(), getMmCheck());
+		//
+		// this.session.put(LOGIN, supplier);
+		// SellerAction.initTran(supplier);
+		// } catch (Exp e) {
+		// setSarg1(e.getLastMessage());
+		// return SellerAction.LOGIN;
+		// }
+		//
+		// setResult("/seller/admin/index/index.html");
+		// return RTRENDS;
 		// UsrSupplier supplier=new UsrSupplier();
 		// try {
 		// String verifyCode = verifyCode();
@@ -534,7 +548,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
 		if (getBean().getPhone() != null)
 			regex.validPhone(UsrSupplier.T.PHONE);
 		if (getBean().getFax() != null)
-			regex.validRegexMatched("[0-9]{12,30}", "传真只能输入数字，且数字个数在12~30个之间", UsrSupplier.T.FAX);
+			regex.validRegexMatched("(\\d{3,4}-)?\\d{7,8}", "请填写正确传真格式", UsrSupplier.T.FAX);
 		if (getBean().getPostcode() != null)
 			regex.validRegexMatched("[0-9]{6}", "邮编只能输入数字，且数字个数为6个", UsrSupplier.T.POSTCODE);
 		if (getBean().getRegisteredCapital() != null)

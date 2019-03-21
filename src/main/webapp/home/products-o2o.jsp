@@ -436,47 +436,13 @@
                     this.$set(this.classLists[i].children[j], "xiala", 2)
                 }
             },
-            // 添加收藏呵取消收藏
+            // 添加收藏和取消收藏
             shoucang: function (e) {
-                if(!isLogin){
+                var index = e.currentTarget.dataset.num;
+                if(!sysConfig.user){
                     util_function_obj.alertWhenNoLogin(this);
                     return
-                }
-                var index = e.currentTarget.dataset.num;
-                // if(this.productLists[index].eshrine==false){
-                // 	axios.get('/home/usr_UsrFavorites_addFavorite', {
-                //       params: {
-                //       	pdtPkey:e.currentTarget.dataset.id
-                //       }
-                //   })
-                //     .then((res) => {
-                //     	if(ret!=-1){
-                //     		this.$set(this.productLists[index],"eshrine",true)
-                //     	}
-                //     })
-                //     .catch((error) => {
-                //
-                //     });
-                //
-                // }else{
-                // 	axios.get('/home/usr_UsrFavorites_addFavorite', {
-                //       params: {
-                //       	pdtPkey:e.currentTarget.dataset.id
-                //       }
-                //   })
-                //     .then((res) => {
-                //     	this.$set(this.productLists[index],"eshrine",false)
-                //     })
-                //     .catch((error) => {
-                //
-                //     });
-                // }
-                if (!isLogin) {
-                    // user_obj.set_form_sign_in('', window.location.href, 1);
-                    // return
-                    user_obj.set_form_sign_in('', window.location.href, 1);
-                } else {
-
+                }else {
                     axios.get('/home/usr_UsrFavorites_addFavorite', {
                         params: {
                             pdtPkey: e.currentTarget.dataset.id
@@ -567,7 +533,7 @@
             },
             //   添加到询盘
             addRFQ(e) {
-                if (!isLogin) {
+                if (!sysConfig.user) {
                     user_obj.set_form_sign_in('', window.location.href, 1);
                     return
                 }
