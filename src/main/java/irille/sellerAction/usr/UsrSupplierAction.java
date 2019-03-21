@@ -32,7 +32,13 @@ import irille.sellerAction.view.operateinfoView;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltProvince;
-import irille.shop.usr.*;
+import irille.shop.usr.Usr;
+import irille.shop.usr.UsrAnnex;
+import irille.shop.usr.UsrMain;
+import irille.shop.usr.UsrSupplier;
+import irille.shop.usr.UsrSupplierCategory;
+import irille.shop.usr.UsrSupplierDAO;
+import irille.shop.usr.UsrUserDAO;
 import irille.view.usr.AccountSettingsView;
 import irille.view.usr.UserView;
 import irille.view.usr.UsrshopSettingView;
@@ -97,42 +103,37 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
   private String vCode;
 
   @Override
-  public void login() throws IOException {
-    System.out.println("vCode:" + vCode);
+  public void login() throws Exception {
     String verifyCode = verifyCode();
-    System.out.println("verifyCode:" + verifyCode);
-
     if (Str.isEmpty(verifyCode) || Str.isEmpty(vCode) || !verifyCode.equals(vCode)) {
       writeErr("验证码错误");
       return;
     }
     UserView user;
-		if (Str.isEmpty(email))
-			throw LOG.err("loginCheck", "请输入用户名");
-		if (password == null || Str.isEmpty(password))
-			throw LOG.err("loginCheck", "请输入密码");
-		UsrMain main = UsrMain.chkUniqueEmail(false, email);
-		if (main == null) {
-			throw LOG.err("Invalid User", "用户名不存在或无效的用户名");
-		} else {
-			if (!DateTools.getDigest(main.getPkey() + password).equals(main.getPassword())) {
-				throw LOG.err("wrong password", "用户名和密码不匹配");
-			}
-		}
-		UsrSupplier supplier = UsrSupplier.chkUniqueLogin_name(false, email);
-		if (supplier == null) {
-			JSONObject json = new JSONObject();
-			json.put("ret", -2);
-			json.put("msg", "用户尚未开通店铺,是否前往开通店铺");
-			writerOrExport(json);
-			return;
-		}
-		if (supplier.gtStatus() == OStatus.INIT) {
-			throw LOG.err("wait for appr", "审核中不能登录");
-		}
-		user = UsrUserDAO.supplierSignIn(supplier, main);
-      setUser(user);
-      write();
+    if (Str.isEmpty(email)) throw LOG.err("loginCheck", "请输入用户名");
+    if (password == null || Str.isEmpty(password)) throw LOG.err("loginCheck", "请输入密码");
+    UsrMain main = UsrMain.chkUniqueEmail(false, email);
+    if (main == null) {
+      throw LOG.err("Invalid User", "用户名不存在或无效的用户名");
+    } else {
+      if (!DateTools.getDigest(main.getPkey() + password).equals(main.getPassword())) {
+        throw LOG.err("wrong password", "用户名和密码不匹配");
+      }
+    }
+    UsrSupplier supplier = UsrSupplier.chkUniqueLogin_name(false, email);
+    if (supplier == null) {
+      JSONObject json = new JSONObject();
+      json.put("ret", -2);
+      json.put("msg", "用户尚未开通店铺,是否前往开通店铺");
+      writerOrExport(json);
+      return;
+    }
+    if (supplier.gtStatus() == Usr.OStatus.INIT) {
+      throw LOG.err("wait for appr", "审核中不能登录");
+    }
+    user = UsrUserDAO.supplierSignIn(supplier, main);
+    setUser(user);
+    write();
 
     //    	UsrSupplier supplier=new UsrSupplier();
     //        try {
@@ -512,8 +513,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     if (getBean().getTelephone() != null) regex.validPhone(UsrSupplier.T.TELEPHONE);
     if (getBean().getPhone() != null) regex.validPhone(UsrSupplier.T.PHONE);
     if (getBean().getFax() != null)
-      regex.validRegexMatched(
-              "(\\d{3,4}-)?\\d{7,8}", "请填写正确传真格式", UsrSupplier.T.FAX);
+      regex.validRegexMatched("(\\d{3,4}-)?\\d{7,8}", "请填写正确传真格式", UsrSupplier.T.FAX);
     if (getBean().getPostcode() != null)
       regex.validRegexMatched("[0-9]{6}", "邮编只能输入数字，且数字个数为6个", UsrSupplier.T.POSTCODE);
     if (getBean().getRegisteredCapital() != null)
@@ -531,8 +531,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     if (getBean().getContactEmail() != null) regex.validEmail(UsrSupplier.T.CONTACT_EMAIL);
     if (getBean().getIdCard() != null)
       regex.validRegexMatched(
-          "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)",
-              "请输入正确的18位身份证号码", UsrSupplier.T.ID_CARD);
+          "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)", "请输入正确的18位身份证号码", UsrSupplier.T.ID_CARD);
     if (getBean().getOperateIdCard() != null)
       regex.validRegexMatched(
           "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)",
