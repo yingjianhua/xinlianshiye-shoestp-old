@@ -334,10 +334,10 @@
         })
         },
         mounted() {
-            if(!isLogin){
-            window.location.href =
-                                '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_contacts';
-            }
+            if(!isLogin){ 
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                }
             this.getGroupList(); //获取分组
             this.getContactList(this.contactKeyWord,this.groupPkey,this.start,this.limit); //获取联系人
             this.$nextTick(() => {
@@ -400,6 +400,10 @@
         },
         methods: {
             clickGroupItem(e,groupPkey,name,count){  // 点击分组
+                if(!isLogin){ 
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                }
                 this.groupName = name;
                 this.isAddSearchGroup = false;
                 this.isEditSearchGroup = false;
@@ -458,6 +462,10 @@
             },
 
             deleteContact(supplierPkey){  // 删除联系人
+                if(!isLogin){ 
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                }
                 var self = this;
                 self.$confirm('Whether to delete the contact?', 'Prompt', {
                     confirmButtonText: 'Determine',
@@ -499,7 +507,7 @@
                     .then((res) => {
                     // console.log(res);
                 if (res.data.ret != 1) {
-                    self.$message.error(res.data.msg);
+                    self.$message.error(res.data.msg || "Network error, please refresh the page and try again");
                     return
                 };
                 for (let i = 0; i < res.data.result.length; i++) {
@@ -511,6 +519,7 @@
                 self.groupList = res.data.result;
             })
             .catch((error) => {
+                self.$message.error("Network error, please refresh the page and try again");
                     console.log("fail");
                 console.log(error);
             });
@@ -536,6 +545,10 @@
                 // console.log(self.editNewPkey)
             },
             editGroup() { // 编辑分组
+                if(!isLogin){ 
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                }
                 var self = this;
                 if(self.editInput.length > 10){
                     this.$message.error('Enter up to 10 characters');
@@ -549,7 +562,7 @@
                         .then(function (res) {
                             // console.log(res);
                             if (res.data.ret != 1) {
-                                self.$message.error(res.data.msg);
+                                self.$message.error(res.data.msg || "Network error, please refresh the page and try again");
                                 return
                             };
                             self.$message({
@@ -560,12 +573,17 @@
                             self.getGroupList();
                         })
                         .catch(function (error) {
+                            self.$message.error("Network error, please refresh the page and try again");
                             console.log(error);
                         });
                 }
             },
             deleteGroup(groupPkey) { // 删除分组
                 console.log(groupPkey)
+                if(!isLogin){ 
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                }
                 var self = this;
                 self.$confirm('Whether to delete the group?', 'Prompt', {
                     confirmButtonText: 'Determine',
@@ -578,7 +596,7 @@
                         .then(function (res) {
                             // console.log(res);
                             if (res.data.ret != 1) {
-                                self.$message.error(res.data.msg);
+                                self.$message.error(res.data.msg || "Network error, please refresh the page and try again");
                                 return
                             };
                             self.$message({
@@ -591,13 +609,18 @@
                         }, 500);
                         })
                         .catch(function (error) {
+                            self.$message.error("Network error, please refresh the page and try again");
                             console.log(error);
                         });
             }).catch(() => {
-
+                self.$message.error("Network error, please refresh the page and try again");
                 });
             },
             moveGroup(contactPkey,groupPkey,name,count){ // 移动分组
+                if(!isLogin){ 
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                }
                 // console.log(contactPkey)
                 // console.log(groupPkey)
                 // console.log("name==============" + name)
@@ -610,7 +633,7 @@
                     .then(function (res) {
                         // console.log(res);
                         if (res.data.ret != 1) {
-                            self.$message.error(res.data.msg);
+                            self.$message.error(res.data.msg || "Network error, please refresh the page and try again");
                             return
                         };
                         self.start = 0;
@@ -624,6 +647,7 @@
                     })
                     .catch(function (error) {
                         console.log(error);
+                        self.$message.error("Network error, please refresh the page and try again");
                     });
             },
             clickShowAddGruop(){  // 点击是否显示 添加分组框
@@ -638,6 +662,10 @@
                 }
             },
             addGroup() { // 添加分组
+                if(!isLogin){ 
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                }
                 var self = this;
                 if(self.addInput.length > 10){
                     this.$message.error('Enter up to 10 characters');
@@ -652,7 +680,7 @@
                         .then(function (res) {
                             console.log(res);
                             if (res.data.ret != 1) {
-                                self.$message.error(res.data.msg);
+                                self.$message.error(res.data.msg || "Network error, please refresh the page and try again");
                                 return
                             };
                             self.$message.success("Added successfully");
@@ -660,6 +688,7 @@
                             self.getGroupList();
                         })
                         .catch(function (error) {
+                            self.$message.error("Network error, please refresh the page and try again");
                             console.log(error);
                         });
                 }
@@ -675,17 +704,22 @@
                     .then((res) => {
                     // console.log(res);
                 if (res.data.ret != 1) {
-                    self.$message.error(res.data.msg);
+                    self.$message.error(res.data.msg || "Network error, please refresh the page and try again");
                     return
                 };
                 self.supplierInfo = res.data.result;
             })
             .catch((error) => {
                     console.log("fail");
+                    self.$message.error("Network error, please refresh the page and try again");
                 console.log(error);
             });
             },
             clickContact(index,pkey){ // 点击联系人
+                if(!isLogin){ 
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                }
                 // console.log(index)
                 // console.log(pkey)
                 this.popupindex = index;

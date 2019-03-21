@@ -55,7 +55,7 @@ Vue.component('index-top', {
               </dd>
             </dl>
             <!-- 站内信 没有登录看到的  -->
-            <a class="o2otoplikes" href="/home/usr_UsrMessages_center" v-if="!sysConfig.user" target="_blank">
+            <a class="o2otoplikes" style="cursor: pointer;"  @click="util_function_obj.alertWhenNoLogin(this);" v-if="!sysConfig.user">
                 <img src="/home/v3/static/images/o2otopmessage.png" alt="" style="margin-right:10px;">
                 <div class="o2otoplikenum">
                     <div style="height: 20px;">
@@ -71,7 +71,7 @@ Vue.component('index-top', {
                         <div style="height:  20px;">
                             <div  v-if="!sysConfig.user">
                                 <a href="/home/usr_UsrMain_register" style="border-right: 1px solid #b7b7b7;padding-right: 3px;color: #4fa2d7;font-size:12px;" target="_blank">Register</a>
-                                <a href="/home/usr_UsrPurchase_sign" style="color: #4fa2d7;font-size:12px;" target="_blank">Login</a>
+                                <a  @click="util_function_obj.alertWhenNoLogin(this);" style="color: #4fa2d7;font-size:12px;" >Login</a>
                             </div>
                         </div>
                         <p>My Shosetp</p>
@@ -81,7 +81,7 @@ Vue.component('index-top', {
                 <!--  没有登录看到的  -->
                 <dd v-if="!sysConfig.user">
                     <div style="font-size:16px;margin:  18px  0;">Get started now</div>
-                    <div class="login-btn"><a href="/home/usr_UsrPurchase_sign" >Login</a></div>
+                    <div class="login-btn"><a @click="util_function_obj.alertWhenNoLogin(this);">Login</a></div>
                     <div style="text-align:center;font-size:16px;margin:  8px  0;">or</div>
                     <div class="registered-btn"><a href="/home/usr_UsrMain_register" target="_blank">Registration</a></div>
                     <div style="color:#777777;text-align:center;margin:  15px  0;">Continue with：</div>
@@ -107,7 +107,6 @@ Vue.component('index-top', {
                             </a>
                         </div>
                     </div>
-                    <div class="after-login"><a href="/home/usr_UsrConsult_publishView" target="_blank">Submit RFQ</a></div>
                     <div class="hours  after-login">Get multiple quotes within 24 hours！</div>
                 </dd>
                 <!--  登陆后看到的  -->
@@ -118,9 +117,9 @@ Vue.component('index-top', {
                         <li v-if="sysConfig.user.user_type==0"><a href="/home/usr_UsrMessages_center" target="_blank">RFQ List <i class="el-icon-arrow-right"></i></a></li>
                         <li v-if="sysConfig.user.user_type==0"><a href="/home/usr_UsrMessages_center" target="_blank">My Inquiry <i class="el-icon-arrow-right"></i></a></li>
                         <li v-if="sysConfig.user.user_type==0"><a href="/home/usr_UsrPurchase_userIndex" target="_blank">My Account <i class="el-icon-arrow-right"></i></a></li>
-                        <li style="font-size:15px;font-weight: bold;"><a href="/home/usr_UsrSupplier_supplierEntry" target="_blank">我要开店 <i class="el-icon-arrow-right"></i></a></li>
+                        <li v-if="sysConfig.user.user_type==1" style="font-size:15px;font-weight: bold;"><a href="/home/usr_UsrSupplier_supplierEntry" target="_blank">我要开店 <i class="el-icon-arrow-right"></i></a></li>
                     </ul>
-                    <div class="after-login"><a href="/home/usr_UsrConsult_publishView" target="_blank">Submit RFQ</a></div>
+                    <div v-if="sysConfig.user.user_type==0" class="after-login"><a href="/home/usr_UsrConsult_publishView" target="_blank">Submit RFQ</a></div>
                     <div class="hours after-login">Get multiple quotes within 24 hours！</div>
                 </dd>
             </dl>

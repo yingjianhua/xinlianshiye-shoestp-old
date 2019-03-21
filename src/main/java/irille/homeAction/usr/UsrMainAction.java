@@ -142,29 +142,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 					MessageBuild.buildMessage(ReturnCode.service_Invalid_UID, HomeAction.curLanguage()));
 		}
 		insBefore();
-		if (getBean().getIdentity() == 1) {
-			if (Str.isEmpty(getFirstName()) && Str.isEmpty(getLastName())) {
-				String name = getFirstName() + "," + getLastName();
-				if (!ValidRegex.regMarch(Regular.REGULAR_NAME, name)) {
-					throw new WebMessageException(
-							MessageBuild.buildMessage(ReturnCode.valid_nameRegex, HomeAction.curLanguage()));
-				}
-				getBean().setContacts(name);
-			} else {
-				getBean().setContacts(null);
-			}
-		} else {
-			if (!ValidRegex.regMarch(Regular.REGULAR_NAME, getBean().getNickname())) {
-				throw new WebMessageException(
-						MessageBuild.buildMessage(ReturnCode.valid_nameRegex, HomeAction.curLanguage()));
-			}
-		}
-		if (getBean().getCompany() != null) {
-			if (!ValidRegex.regMarch(Regular.REGULAR_COMPANY, getBean().getCompany())) {
-				throw new WebMessageException(
-						MessageBuild.buildMessage(ReturnCode.valid_companyNameRegex, HomeAction.curLanguage()));
-			}
-		}
+
 		if (getBean().getEmail() == null) {
 			throw new WebMessageException(
 					MessageBuild.buildMessage(ReturnCode.valid_mail_notnull, HomeAction.curLanguage()));
@@ -179,6 +157,29 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 		}
 		if (!pwd.equals(pwdA)) {
 			throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.dif_password, HomeAction.curLanguage()));
+		}
+		if (getBean().getCompany() != null) {
+			if (!ValidRegex.regMarch(Regular.REGULAR_COMPANY, getBean().getCompany())) {
+				throw new WebMessageException(
+						MessageBuild.buildMessage(ReturnCode.valid_companyNameRegex, HomeAction.curLanguage()));
+			}
+		}
+		if (getBean().getIdentity() == 1) {
+			if (!Str.isEmpty(getFirstName()) && !Str.isEmpty(getLastName())) {
+				String name = getFirstName() + "," + getLastName();
+				if (!ValidRegex.regMarch(Regular.REGULAR_NAME, getFirstName().trim() + getLastName().trim())) {
+					throw new WebMessageException(
+							MessageBuild.buildMessage(ReturnCode.valid_nameRegex, HomeAction.curLanguage()));
+				}
+				getBean().setContacts(name);
+			} else {
+				getBean().setContacts(null);
+			}
+		} else {
+			if (!ValidRegex.regMarch(Regular.REGULAR_NAME, getBean().getNickname())) {
+				throw new WebMessageException(
+						MessageBuild.buildMessage(ReturnCode.valid_nameRegex, HomeAction.curLanguage()));
+			}
 		}
 		if (getBean().getIdentity() == 0) {
 			if (getTelPre() == null || getTelMid() == null || getTelAft() == null) {

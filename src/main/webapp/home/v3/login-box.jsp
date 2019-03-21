@@ -2,6 +2,7 @@
 
 <%--全局登录弹窗--%>
 <link rel="stylesheet" href="/home/v3/static/css/login/login.css">
+<script src="/home/v3/static/js/hello.all.js"></script>
 <div id="login-box-global">
     <el-dialog
             custom-class="popup-login-box-global"
@@ -89,7 +90,7 @@
             loginFormRules: {
                 email: [
                     {required: true, message: 'Email can\'t be empty!', trigger: 'blur'}, {
-                        pattern: /^[\w]{1,16}@+\w{1,15}.\w{2,5}$/,
+                        pattern: /^[\w]{1,32}@\w{1,15}.\w{2,5}$/,
                         message: 'E-mail format is incorrect',
                         trigger: 'blur'
                     }
@@ -187,9 +188,12 @@
                 // 已注册时，直接登录 - 并跳转
                 // 第三方账号已注册时，直接登录 - sign感觉后台逻辑不对！！！一直是true
                 if (res.data.sign) {
-                    // test
-                    // window.location.href = "/";
-                    window.location.reload()
+                    // 登陆成功后，有返回地址时，跳转该地址 - 否则刷新当前页面
+                    if(res.data.jumpUrl){
+                        window.location.href = res.data.jumpUrl;
+                    }else{
+                        window.location.reload()
+                    }
                 } else {
                     // 未注册时：
                     //普通登录提示：该账户未注册，请重试

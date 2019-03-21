@@ -31,6 +31,7 @@ public class O2OProductView implements BaseView {
   private String rewriter;
   private Integer stock; // 私人展会
   private String supCat; // 私人展会
+  private String grade;
 
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date update_date; // 私人展会 上架时间

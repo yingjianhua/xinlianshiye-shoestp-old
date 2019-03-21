@@ -16,6 +16,7 @@ import irille.Entity.O2O.O2O_Product;
 import irille.Entity.O2O.Enums.O2O_ActivityStatus;
 import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
+import irille.Entity.SVS.SVSInfo;
 import irille.core.sys.Sys;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
@@ -337,6 +338,7 @@ public class O2OProductDao {
         .SELECT(UsrSupplier.T.NAME, "supName")
         .SELECT(UsrSupplierRole.T.NAME, "roleName")
         .SELECT(O2O_JoinInfo.T.NAME, "joinInfo")
+        .SELECT(SVSInfo.T.GRADE, "grade")
         .FROM(O2O_Product.class)
         .LEFT_JOIN(O2O_JoinInfo.class, O2O_JoinInfo.T.PKEY, O2O_Product.T.JOIN_INFO_ID)
         .LEFT_JOIN(O2O_Activity.class, T.PKEY, O2O_Product.T.ACTIVITY_ID)
@@ -344,6 +346,7 @@ public class O2OProductDao {
         .LEFT_JOIN(PdtProduct.class, PdtProduct.T.PKEY, O2O_Product.T.PRODUCT_ID)
         .LEFT_JOIN(PdtCat.class, PdtCat.T.PKEY, PdtProduct.T.CATEGORY)
         .LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, O2O_JoinInfo.T.SUPPLIER)
+        .LEFT_JOIN(SVSInfo.class, SVSInfo.T.SUPPLIER, O2O_JoinInfo.T.SUPPLIER)
         .LEFT_JOIN(UsrSupplierRole.class, UsrSupplierRole.T.PKEY, UsrSupplier.T.ROLE);
     sql.WHERE(null != search.getActId(), O2O_Product.T.ACTIVITY_ID, "= ?", search.getActId());
     sql.WHERE(
@@ -360,6 +363,7 @@ public class O2OProductDao {
         "%" + search.getSupplier() + "%");
     sql.WHERE(
         null != search.getRole(), UsrSupplierRole.T.NAME, "like ?", "%" + search.getRole() + "%");
+    sql.WHERE(null != search.getGrade(), SVSInfo.T.GRADE, " =? ", search.getGrade());
     sql.WHERE(null != search.getArea(), O2O_Map.T.NAME, "like ?", "%" + search.getArea() + "%");
     sql.WHERE(null != search.getStatus(), O2O_Product.T.VERIFY_STATUS, "=?", search.getStatus());
     sql.WHERE(null != search.getState(), O2O_Product.T.STATUS, "=?", search.getState());

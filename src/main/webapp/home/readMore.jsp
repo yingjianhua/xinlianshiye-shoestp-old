@@ -136,8 +136,7 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button :disabled="flag" type="primary" @click="submitForm('form')">Submit</el-button>
-                    <a href="/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1"
-                       style="color: #9fafd7;font-size :14px;" target="_blank">Add more requirements</a>
+                    <a @click="ToRFQ" style="color: #9fafd7;font-size :14px;cursor: pointer;">Add more requirements</a>
                 </el-form-item>
             </el-form>
         </div>
@@ -245,6 +244,11 @@
                 });
         },
         methods: {
+            // 跳转RFQ
+            ToRFQ(){
+                let url = "/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1" + "&backUrl=" + window.location.href
+                util_function_obj.supplierCantEnter(this, url);
+             },
             quoteNow(){
             //     // user_type  0普通用户  1卖家
                if(sysConfig.user){
@@ -275,8 +279,10 @@
                }else{
                    console.log("没有登录")
                 //    没有登录
-                 window.location.href =
-                            '/home/usr_UsrPurchase_sign?jumpUrl=/home/rfq_RFQConsult_getRFQReadMore?rfqPkey=' + this.rfqPkey;
+                //  window.location.href =
+                //             '/home/usr_UsrPurchase_sign?jumpUrl=/home/rfq_RFQConsult_getRFQReadMore?rfqPkey=' + this.rfqPkey;
+                util_function_obj.alertWhenNoLogin(this);
+                        return
                }
             },
             showpdtDetails() {  //点击显示 商品详情
@@ -284,19 +290,8 @@
                     //  登录了
                     this.pdtDetails = true;
                 } else {
-                    //  没有登录 提醒去登录
-                    this.$confirm('After logging in, you can view the complete information! Are you logged in?', 'Prompt', {
-                        confirmButtonText: 'Determine',
-                        cancelButtonText: 'Cancel',
-                        type: 'warning',
-                        customClass: "my-custom-element-alert-class fs-content-18",
-                    }).then(() => {
-                        window.location.href =
-                            '/home/usr_UsrPurchase_sign?jumpUrl=/home/rfq_RFQConsult_getRFQReadMore?rfqPkey=' + this.rfqPkey;
-                    }).catch(() => {
-
-                    });
-
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
                 }
             },
             image(v, params) {
@@ -310,10 +305,23 @@
             },
             submitForm(formName) { //表单提交
                 if(!isLogin){
-                       window.location.href =
-                                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/rfq_RFQConsult_getRFQReadMore?rfqPkey=' + this.rfqPkey;
-                    }
-                this.$refs[formName].validate((valid) => {
+                    util_function_obj.alertWhenNoLogin(this);
+                        return
+                    }else{
+                        // 登录了
+                        if(sysConfig.user.user_type == 1){
+                            this.$alert("Sorry, the supplier cannot submit the form",{
+                                confirmButtonText: 'Ok',
+                                customClass: "my-custom-element-alert-class fs-content-18",
+                                center: true,
+                                callback: action =>{
+                                    return
+                                }
+                            });
+                            return
+                        }else{
+                            // 普通用户
+                            this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.flag = true;
                         console.log(this.form)
@@ -332,20 +340,11 @@
                                         message: 'Submitted successfully',
                                         type: 'success'
                                     });
-                                    // setTimeout(function () {
-                                    //   gtag_report_conversion()
-                                    //   window.location.href =
-                                    //     '/home/usr_UsrConsult_listView';
-                                    // }, 2000)
                                     setTimeout(function () {
                                         window.location.reload();
                                     }, 1500)
                                     // 未登录时
-                                } else if (res.data.ret == -1) {
-                                    window.location.href =
-                                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/rfq_RFQConsult_getRFQReadMore?rfqPkey=' + this.rfqPkey;
-                                    // 提交失败时
-                                } else {
+                                }  else {
                                     this.flag = false;
                                     this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
                                         confirmButtonText: 'OK',
@@ -364,6 +363,9 @@
 
                     }
                 });
+                        }
+                    }
+               
             },
             getQueryString: (name) => {
                 let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
