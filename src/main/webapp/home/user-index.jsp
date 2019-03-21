@@ -295,10 +295,6 @@
         })
         },
         mounted() {
-            if(!isLogin){
-                util_function_obj.alertWhenNoLogin(this);
-                return
-             }
             this.getUserInfo();
             this.getFavoriteList();
         },
@@ -353,7 +349,7 @@
                     });
             },
             submitForm(formName) { //表单提交
-                if(!isLogin){ 
+                if(!sysConfig.user){ 
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 }else{
@@ -453,7 +449,7 @@
                 return isJPG && isLt3M;
             },
             clickUploadAvatar(avatar) {
-                if(!isLogin){
+                if(!sysConfig.user){
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 }
