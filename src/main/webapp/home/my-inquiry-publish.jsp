@@ -532,7 +532,7 @@
                 },
                     {
                         pattern: util_regular_obj.register.positiveInteger,
-                        message: 'Please enter the positive integer',
+                        message: 'Please enter the positive integer，and can\'t beyond 10 digits',
                         trigger: 'blur'
                     }
                 ],
