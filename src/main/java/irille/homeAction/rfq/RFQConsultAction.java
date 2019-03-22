@@ -251,11 +251,19 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   }
 
   private String content;
+  private String imageUrl;
 
   @Override
   @NeedLogin
   public void sendMessage() throws IOException {
-    write(rFQConsultMessageService.send(getPurchase(), relationPkey, content));
+    if (imageUrl != null) {
+      write(rFQConsultMessageService.sendImageMessage(getPurchase(), relationPkey, imageUrl));
+    } else if (content != null) {
+      write(rFQConsultMessageService.sendTextMessage(getPurchase(), relationPkey, content));
+    } else {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.valid_notblank, curLanguage()));
+    }
   }
 
   private String information;
