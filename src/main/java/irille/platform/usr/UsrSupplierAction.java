@@ -14,6 +14,7 @@ import irille.pub.bean.BeanBase;
 import irille.pub.exception.WebMessageException;
 import irille.pub.util.upload.ImageUpload;
 import irille.pub.validate.ValidForm;
+import irille.pub.validate.ValidRegex;
 import irille.pub.validate.ValidRegex2;
 import irille.shop.usr.UsrAnnex;
 import irille.shop.usr.UsrMain;
@@ -157,10 +158,15 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
     valid.validNotEmpty(UsrSupplier.T.NAME,UsrSupplier.T.ENGLISH_NAME, UsrSupplier.T.COMPANY_ADDR,UsrSupplier.T.TARGETED_MARKET,UsrSupplier.T.PROD_PATTERN,UsrSupplier.T.CREDIT_CODE,UsrSupplier.T.CERT_PHOTO);
     ValidRegex2 regex = new ValidRegex2(getBean());
     regex.validAZLen(50,UsrSupplier.T.ENGLISH_NAME);
-      UsrMain main = UsrMain.chkUniqueEmail(false, mainEmail);
-      if(main != null && !main.getEmail().toLowerCase().equals(mainEmail.toLowerCase())){
-          throw new WebMessageException("邮箱已被他人注册，请更换邮箱");
-      }
+    if(mainEmail != null){
+      if(!ValidRegex.regMarch("^[\\w]{1,16}@+\\w{1,15}.\\w{2,5}$", mainEmail))
+        throw new WebMessageException("请输入正确邮箱格式");
+    }
+    UsrMain main = UsrMain.chkUniqueEmail(false, mainEmail);
+    UsrMain main1 = BeanBase.load(UsrMain.class, getBean().getUserid());
+    if(main != null && !main1.getEmail().toLowerCase().equals(mainEmail.toLowerCase())){
+        throw new WebMessageException("邮箱已被他人注册，请更换邮箱");
+    }
     if (getBean().getName() != null)
       regex.validRegexMatched(
               REGULAR_COMPANY,
