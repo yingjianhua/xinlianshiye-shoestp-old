@@ -18,6 +18,7 @@ import irille.Dao.Old.RFQ.RFQConsultRelationDAO;
 import irille.Dao.Old.RFQ.RFQConsultUpdDAO;
 import irille.Dao.RFQ.RFQConsultDao;
 import irille.Entity.RFQ.RFQConsult;
+import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Entity.RFQ.Enums.RFQConsultPayType;
 import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
@@ -246,8 +247,9 @@ public class RFQManageServiceImp implements IRFQManageService {
     List<Map<String, Object>> list = null;
     list =
         rfqConsultDao.getMyRFQQuoteList(
-            start, limit, type, date, keyword, flag, status, country, Supid,usrCountry);
+            start, limit, type, date, keyword, flag, status, country, Supid, usrCountry);
     List<RFQManageMyQuoteListBody> result = new ArrayList<>();
+    Map<Integer, Object> countryMap = new HashMap<>();
     for (Map<String, Object> map : list) {
       RFQManageMyQuoteListBody body = new RFQManageMyQuoteListBody();
       body.setId(GetValue.get(map, RFQConsult.T.PKEY, Integer.class, 0));
@@ -267,12 +269,12 @@ public class RFQManageServiceImp implements IRFQManageService {
       body.setPurchaseCountryIMG(up.gtCountry().getNationalFlag());
       body.setPurchaseCountry(up.gtCountry().getName());
       body.setPurchaseCountryPkey(up.gtCountry().getPkey());
-      if (GetValue.get(map, RFQConsultRelation.T.HAD_READ_SUPPLIER, Byte.class, (byte) -1) == 0
-          && GetValue.get(map, RFQConsultRelation.T.HAD_READ_PURCHASE, Byte.class, (byte) -1)
-              == 1) {
+      countryMap.put(up.gtCountry().getPkey(), up.gtCountry().getName());
+      if (GetValue.get(map, RFQConsultMessage.T.P2S, Byte.class, (byte) -1) == 1) {
         body.setStatus(3);
       } else {
-        if (GetValue.get(map, RFQConsultRelation.T.HAD_READ_PURCHASE, Byte.class, (byte) -1) == 0)
+        if (GetValue.get(map, RFQConsultMessage.T.P2S, Byte.class, (byte) -1) == 0
+            && GetValue.get(map, RFQConsultMessage.T.HAD_READ, Byte.class, (byte) -1) == 0)
           body.setStatus(1);
         else {
           body.setStatus(2);
@@ -280,11 +282,7 @@ public class RFQManageServiceImp implements IRFQManageService {
       }
       result.add(body);
     }
-    return new Page(
-        result,
-        start,
-        limit,
-        rfqConsultDao.count(type, date, keyword, flag, status, country, Supid));
+    return new Page(result, start, limit, list.size(), countryMap);
   }
 
   @Override

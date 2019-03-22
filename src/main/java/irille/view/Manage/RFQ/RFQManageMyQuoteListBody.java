@@ -1,9 +1,9 @@
 package irille.view.Manage.RFQ;
 
 import java.util.Date;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import lombok.Data;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2019/1/31 Time: 15:40 */
@@ -26,6 +26,7 @@ public class RFQManageMyQuoteListBody {
   private int status;
   private String purchaseName; // 采购商名称
   private String purchaseCountryIMG; // 采购商注册时选择的国家国旗
-  private String purchaseCountry;//采购商注册时选择的国家
-  private Integer purchaseCountryPkey;//采购商注册时选择的国家Pkey
+  private String purchaseCountry; // 采购商注册时选择的国家
+  private Integer purchaseCountryPkey; // 采购商注册时选择的国家Pkey
+  private Map<Integer, Object> purchaseCountryMap;
 }

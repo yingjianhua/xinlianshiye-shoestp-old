@@ -464,7 +464,9 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
             RFQConsultRelation.T.HAD_READ_SUPPLIER,
             RFQConsultRelation.T.QUANTITY,
             RFQConsultRelation.T.DESCRIPTION,
-            RFQConsultRelation.T.PURCHASE_ID)
+            RFQConsultRelation.T.PURCHASE_ID,
+            RFQConsultMessage.T.HAD_READ,
+            RFQConsultMessage.T.P2S)
         .SELECT(RFQConsultRelation.T.TITLE, "myTitle")
         .SELECT(RFQConsultRelation.T.CREATE_DATE, "myCreate_time")
         .FROM(RFQConsult.class)
@@ -473,15 +475,30 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         .WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supId)
         .WHERE(RFQConsultRelation.T.IN_RECYCLE_BIN, "=?", Sys.OYn.NO);
     switch (status != null ? status : type) {
+      case 0:
+        sql.LEFT_JOIN(
+            RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY);
+        break;
+      case 1:
+        sql.LEFT_JOIN(
+            RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY);
+        break;
       case 2:
-        sql.WHERE(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", Sys.OYn.NO);
+        sql.LEFT_JOIN(
+                RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY)
+            .WHERE(RFQConsultMessage.T.HAD_READ, "=?", Sys.OYn.NO)
+            .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.NO);
         break;
       case 3:
-        sql.WHERE(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", Sys.OYn.YES);
+        sql.LEFT_JOIN(
+                RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY)
+            .WHERE(RFQConsultMessage.T.HAD_READ, "=?", Sys.OYn.YES)
+            .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.NO);
         break;
       case 4:
         sql.LEFT_JOIN(
                 RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY)
+            .WHERE(RFQConsultMessage.T.HAD_READ, "=?", Sys.OYn.YES)
             .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.YES);
         break;
     }
@@ -490,6 +507,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
     sql.WHERE(keyword != null, RFQConsult.T.TITLE, "like ?", "%" + keyword + "%");
     sql.WHERE(T.FAVORITE, "=?", flag);
     sql.WHERE(usrCountry != null, UsrPurchase.T.COUNTRY, "=?", usrCountry);
+    sql.GROUP_BY(RFQConsultMessage.T.RELATION);
     sql.LIMIT(start, limit);
     return Query.sql(sql).queryMaps();
   }
