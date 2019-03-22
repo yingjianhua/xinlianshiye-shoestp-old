@@ -28,19 +28,15 @@
     <link href="./static/css/global(1).css" rel="stylesheet" type="text/css">
     <link href="./static/css/user.css" rel="stylesheet" type="text/css">
     <link href="./static/css/style.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="./static/js/jquery-1.7.2.min.js">
-    </script>
+    <%--<script type="text/javascript" src="./static/js/jquery-1.7.2.min.js"></script>--%>
     <script type="text/javascript" src="./static/js/lang/en.js">
     </script>
-    <script type="text/javascript" src="./static/js/main.js">
-    </script>
+    <%--<script type="text/javascript" src="./static/js/main.js"></script>--%>
     <!--<link href="//www.shoestp.com/static/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">-->
-    <link rel="stylesheet" href="./static/css/animate.min.css" type="text/css">
-    <link rel="stylesheet" href="./static/css/swiper.min.css" type="text/css">
-    <script src="./static/js/swiper.min.js" type="text/javascript">
-    </script>
-    <script src="./static/js/lazyload.min.js" type="text/javascript">
-    </script>
+    <%--<link rel="stylesheet" href="./static/css/animate.min.css" type="text/css">--%>
+    <%--<link rel="stylesheet" href="./static/css/swiper.min.css" type="text/css">--%>
+    <%--<script src="./static/js/swiper.min.js" type="text/javascript"></script>--%>
+    <%--<script src="./static/js/lazyload.min.js" type="text/javascript"></script>--%>
     <!-- <script type="text/javascript">
         $(function () {
             products_list_obj.init();
@@ -48,16 +44,14 @@
     </script> -->
     <%-- <script src="./static/js/saved_resource" type="text/javascript">
     </script> --%>
-    <script src="./static/js/qs.js" type="text/javascript">
-    </script>
+    <%--<script src="./static/js/qs.js" type="text/javascript"></script>--%>
     <link href="./static/css/row_4.css" rel="stylesheet" type="text/css">
     <link href="./static/css/inquiry-publish.css" rel="stylesheet" type="text/css">
 
-    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
-    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.4.6/lib/theme-chalk/index.css">
-    <script src="https://unpkg.com/element-ui@2.4.6/lib/index.js"></script>
+    <%--<script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>--%>
+    <%--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>--%>
+    <%--<link rel="stylesheet" href="https://unpkg.com/element-ui@2.4.6/lib/theme-chalk/index.css">--%>
+    <%--<script src="https://unpkg.com/element-ui@2.4.6/lib/index.js"></script>--%>
     <style media="screen">
         /* 上传图片 预览的样式调整 */
         .el-upload--picture-card {
