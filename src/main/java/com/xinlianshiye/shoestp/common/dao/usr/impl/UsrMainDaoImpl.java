@@ -11,7 +11,7 @@ public class UsrMainDaoImpl implements UsrMainDao {
 
   @Override
   public void save(UsrMain main) {
-    if (main.getPkey() == null) {
+    if (main.getPkey() != null) {
       main.upd();
     } else {
       main.ins();
