@@ -1,5 +1,6 @@
 package com.xinlianshiye.shoestp.shop.view.rfq;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -20,8 +21,8 @@ public class RFQQuotationView implements BaseView {
   private Integer quantity; // 数量
   private String unit; // 数量单位
   private List<RFQQuotationImageView> images; // 图片 多图
-  private Integer minPrice; // 最低价格
-  private Integer maxPrice; // 最高价格
+  private BigDecimal minPrice; // 最低价格
+  private BigDecimal maxPrice; // 最高价格
   private RFQCurrencyView currency; // 货币缩写
   private Date validDate; // 有效时间
   private String paymentTerms; // 支付条约

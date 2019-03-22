@@ -32,6 +32,7 @@ import irille.pub.tb.EnumLine;
 import irille.pub.tb.IEnumOpt;
 import irille.pub.tb.Tb;
 import irille.pub.tb.TbBase;
+import irille.shop.pdt.PdtTieredPricing;
 import irille.shop.usr.UsrAnnex;
 
 public class Plt extends PackageBase {
@@ -39,8 +40,7 @@ public class Plt extends PackageBase {
   public static final Plt INST = new Plt();
   public static TbBase TB = new TbBase<Tb>(Plt.class, "平台管理"); // 定义公共的Fld对象用
 
-    private Plt() {
-    }
+  private Plt() {}
 
   public static void main(String[] args) {
     StartInitServlet.initBeanLoad();
@@ -89,6 +89,7 @@ public class Plt extends PackageBase {
     addTb(72, SVSInfo.class);
     addTb(74, SVSNewestPdt.class);
     addTb(73, UsrAnnex.class);
+    addTb(76, PdtTieredPricing.class);
   }
 
   @Override

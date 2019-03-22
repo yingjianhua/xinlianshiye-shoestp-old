@@ -1,6 +1,10 @@
 package irille.Entity.RFQ;
 
+import java.math.BigDecimal;
 import java.util.Date;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import irille.Config.Attribute;
 import irille.Config.Variable;
@@ -18,8 +22,6 @@ import irille.pub.tb.Tb;
 import irille.shop.plt.PltErate;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 @Variable(
     group = {OTempType.INQUIRY_NOTICE_PURCHASE, OTempType.RFQ_MESSAGE_NOTICE},
@@ -47,8 +49,8 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
     IMAGE(Sys.T.JSON, "图片(多图)"), // 产品图片
     QUANTITY(Sys.T.INT, "数量"),
     UNIT(Tb.crt(RFQConsultUnit.DEFAULT)), // 商品数量单位
-    MINPRICE(Sys.T.INT, "价格区间"),
-    MAXPRICE(Sys.T.INT, "价格区间"),
+    MINPRICE(SYS.AMT, "价格区间"),
+    MAXPRICE(SYS.AMT, "价格区间"),
     CURRENCY(PltErate.fldOutKey()),
     VALID_DATE(Sys.T.DATE_TIME__NULL), // 过期时间 RFQ询盘可以设置过期时间, 过期后RFQ列表中将不再出现 供应商也就不能报价
     PAYTYPE(Tb.crt(RFQConsultPayType.DEFAULT)), // 支付方式
@@ -129,12 +131,12 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
   // PAIR:1,Pairs
   // Twenty_Foot_Container:2,Twenty-Foot Container
   // Forty_Foot_Container:3,Forty-Foot Container
-  private Integer _minprice; // 价格区间  INT
-  private Integer _maxprice; // 价格区间  INT
+  private BigDecimal _minprice; // 价格区间  DEC(16,2)
+  private BigDecimal _maxprice; // 价格区间  DEC(16,2)
   private Integer _currency; // 费率设置 <表主键:PltErate>  INT
   private Date _validDate; // 日期时间  TIME<null>
   private Byte _paytype; // 支付方式 <RFQConsultPayType>  BYTE
-  // TT:1,TT支付
+  // TT:1,T/T
   // LC:2,L/C
   // DP:3,D/P
   // WesternUnion:4,Western Union
@@ -180,8 +182,8 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
     _image = null; // 图片(多图)  JSONOBJECT
     _quantity = 0; // 数量  INT
     _unit = RFQConsultUnit.DEFAULT.getLine().getKey(); // 货物单位 <RFQConsultUnit>  BYTE
-    _minprice = 0; // 价格区间  INT
-    _maxprice = 0; // 价格区间  INT
+    _minprice = ZERO; // 价格区间  DEC(16,2)
+    _maxprice = ZERO; // 价格区间  DEC(16,2)
     _currency = null; // 费率设置 <表主键:PltErate>  INT
     _validDate = null; // 日期时间  TIME
     _paytype = RFQConsultPayType.DEFAULT.getLine().getKey(); // 支付方式 <RFQConsultPayType>  BYTE
@@ -351,19 +353,19 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
     _unit = unit.getLine().getKey();
   }
 
-  public Integer getMinprice() {
+  public BigDecimal getMinprice() {
     return _minprice;
   }
 
-  public void setMinprice(Integer minprice) {
+  public void setMinprice(BigDecimal minprice) {
     _minprice = minprice;
   }
 
-  public Integer getMaxprice() {
+  public BigDecimal getMaxprice() {
     return _maxprice;
   }
 
-  public void setMaxprice(Integer maxprice) {
+  public void setMaxprice(BigDecimal maxprice) {
     _maxprice = maxprice;
   }
 

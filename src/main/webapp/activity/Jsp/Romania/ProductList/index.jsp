@@ -783,7 +783,7 @@
             },
             inquiry(id) { // 点击 询盘
                 console.log(id)
-                if (!isLogin) {
+                if (!sysConfig || !sysConfig.user) {
                     user_obj.set_form_sign_in('', window.location.href, 1);
                     return
                 } else {
@@ -839,7 +839,7 @@
                 this.getGoodsList(this.page, this.limit, this.cated);
             },
             addCollection(id, index) { // 添加收藏
-                if (!isLogin) {
+                if (!sysConfig || !sysConfig.user) {
                     // user_obj.set_form_sign_in('', window.location.href, 1);
                     // return
                     user_obj.set_form_sign_in('', window.location.href, 1);

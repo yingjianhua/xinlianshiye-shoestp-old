@@ -38,8 +38,8 @@ Vue.component('index-bottom', {
                     <a href="https://twitter.com/shoes_logo" target="_blank">
                         <img class="icon" src="/home/v3/static/images/icon-bird.png" alt="" />
                     </a>
-                    <a href="javascript:void(0);" target="_blank">
-                        <img class="icon" src="/home/v3/static/images/icon-g.png" alt="" />
+                    <a href="https://www.instagram.com/shoestpcn/" target="_blank">
+                        <img class="icon" src="/home/v3/static/images/icon-ins.png" alt="" />
                     </a>
                     <a href="https://www.linkedin.com/company/shoestp/?viewAsMember=true" target="_blank">
                         <img class="icon" src="/home/v3/static/images/icon-in.png" alt="" />
