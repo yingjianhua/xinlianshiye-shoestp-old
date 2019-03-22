@@ -661,23 +661,25 @@ public class RFQConsultServiceImpl implements RFQConsultService {
       }
     }
 
-    BeanQuery<PdtProduct> query =
-        Query.SELECT(PdtProduct.T.PKEY)
-            .SELECT(PdtProduct.T.NAME)
-            .SELECT(PdtProduct.T.PICTURE)
-            .FROM(PdtProduct.class)
-            .WHERE(
-                PdtProduct.T.PKEY,
-                SQL.getInSql(need_add.size()),
-                need_add.toArray(new Serializable[need_add.size()]))
-            .WHERE(PdtProduct.T.SUPPLIER, "=?", relation.getSupplierId())
-            .limit(0, limit);
-    for (PdtProduct product : query.queryList()) {
-      RFQConsultProductView view = new RFQConsultProductView();
-      view.setPkey(product.getPkey());
-      view.setName(product.getName());
-      view.setImage(product.getPicture());
-      target.add(view);
+    if (need_add.size() > 0) {
+      BeanQuery<PdtProduct> query =
+          Query.SELECT(PdtProduct.T.PKEY)
+              .SELECT(PdtProduct.T.NAME)
+              .SELECT(PdtProduct.T.PICTURE)
+              .FROM(PdtProduct.class)
+              .WHERE(
+                  PdtProduct.T.PKEY,
+                  SQL.getInSql(need_add.size()),
+                  need_add.toArray(new Serializable[need_add.size()]))
+              .WHERE(PdtProduct.T.SUPPLIER, "=?", relation.getSupplierId())
+              .limit(0, limit);
+      for (PdtProduct product : query.queryList()) {
+        RFQConsultProductView view = new RFQConsultProductView();
+        view.setPkey(product.getPkey());
+        view.setName(product.getName());
+        view.setImage(product.getPicture());
+        target.add(view);
+      }
     }
     try {
       consult.setProductRequest(om.writeValueAsString(target));
