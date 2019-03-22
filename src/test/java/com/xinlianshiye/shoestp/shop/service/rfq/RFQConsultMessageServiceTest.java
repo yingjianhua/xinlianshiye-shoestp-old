@@ -41,7 +41,7 @@ public class RFQConsultMessageServiceTest extends BaseTest {
     Integer relationPkey = 1;
     String content = "nihao ";
 
-    RFQConsultMessageView message = service.send(purchase, relationPkey, content);
+    RFQConsultMessageView message = service.sendTextMessage(purchase, relationPkey, content);
     System.out.println(om.writeValueAsString(message));
   }
 }

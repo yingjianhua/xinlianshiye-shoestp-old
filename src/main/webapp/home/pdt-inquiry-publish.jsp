@@ -454,7 +454,7 @@ ul{
                                                 });
                                                 setTimeout(function () {
                                                     sessionStorage.removeItem('Temp_Pdt_publish_form')
-                                                    window.location.href =getParams('backUrl','/');
+                                                    window.location.href = util_function_obj.GetParamsFullUrl('backUrl=','/');
                                                 }, 1500)
                                             } else {
                                                 this.flag = false;
