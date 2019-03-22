@@ -35,6 +35,7 @@ import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.action.dataimport.util.StringUtil;
 import irille.core.sys.Sys;
+import irille.core.sys.Sys.OYn;
 import irille.homeAction.pdt.dto.PdtProductView;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
@@ -57,6 +58,7 @@ import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtCatDAO;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.pdt.PdtSpec;
+import irille.shop.pdt.PdtTieredPricing;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltProvince;
@@ -1232,7 +1234,33 @@ public class PdtProductDao {
                       {
                         Integer pdtPkey = Integer.parseInt(map.get("pdtPkey").toString());
                         setPdtId(pdtPkey);
+
+                        SQL curPriceSql = new SQL();
+                        curPriceSql.SELECT(
+                            " MAX("
+                                + PdtTieredPricing.class.getSimpleName()
+                                + "."
+                                + PdtTieredPricing.T.CUR_PRICE.getFld().getCodeSqlField()
+                                + ") AS maxCurPrice");
+                        curPriceSql.SELECT(
+                            " MIN("
+                                + PdtTieredPricing.class.getSimpleName()
+                                + "."
+                                + PdtTieredPricing.T.CUR_PRICE.getFld().getCodeSqlField()
+                                + ") AS minCurPrice");
+                        curPriceSql.FROM(PdtTieredPricing.class);
+                        curPriceSql.WHERE(PdtTieredPricing.T.PRODUCT, " =? ", pdtPkey);
+                        curPriceSql.WHERE(
+                            PdtTieredPricing.T.DELETED, " =? ", OYn.NO.getLine().getKey());
+
+                        Map<String, Object> mm = Query.sql(curPriceSql).queryMap();
+                        if (null != mm) {
+                          setMaxCurPrice(GetValue.get(mm, "maxCurPrice", BigDecimal.class, null));
+                          setMinCurPrice(GetValue.get(mm, "minCurPrice", BigDecimal.class, null));
+                        }
+
                         setPdtName(map.get("pdtName").toString());
+
                         if (IsO2o != null && IsO2o == 1) {
                           for (O2O_Product o2opdt : copy) {
                             if (pdtPkey.equals(o2opdt.getProductId())) {

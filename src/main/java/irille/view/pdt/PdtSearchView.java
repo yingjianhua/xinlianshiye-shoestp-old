@@ -49,4 +49,8 @@ public class PdtSearchView implements BaseView {
   private double scale; // 规模？----暂无功能
   private String country; // 国家?----暂无功能
   private Integer enter; // 入驻时间
+
+  private BigDecimal maxCurPrice;
+
+  private BigDecimal minCurPrice;
 }
