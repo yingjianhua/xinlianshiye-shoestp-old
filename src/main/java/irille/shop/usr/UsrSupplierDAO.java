@@ -33,6 +33,7 @@ import irille.pub.bean.Bean;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.query.SqlQuery;
 import irille.pub.bean.sql.SQL;
+import irille.pub.exception.WebMessageException;
 import irille.pub.idu.*;
 import irille.pub.svr.DbPool;
 import irille.pub.svr.Env;
@@ -915,11 +916,20 @@ public class UsrSupplierDAO {
       supplier.stStatus(OStatus.APPR);
       supplier.stStoreStatus(Usr.SStatus.OPEN);
       supplier.setStoreopenTime(storeopenTime);
-      messageService.send(OTempType.SHOP_APPR, supplier, null, supplier);
+      try{
+        messageService.send(OTempType.SHOP_APPR, supplier, null, supplier);
+      } catch (Exception e) {
+        throw new WebMessageException("店铺审核通知站内信出现错误，请关闭站内信");
+      }
+
     } else if (status == 2) {
       supplier.stStatus(OStatus.FAIL);
       supplier.setReason(reason);
-      messageService.send(OTempType.SHOP_APPR, supplier, null, supplier);
+      try{
+        messageService.send(OTempType.SHOP_APPR, supplier, null, supplier);
+      } catch (Exception e) {
+        throw new WebMessageException("店铺审核通知站内信出现错误，请关闭站内信");
+      }
     }
     supplier.upd();
     return supplier;

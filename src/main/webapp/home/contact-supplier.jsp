@@ -277,7 +277,7 @@
                 },
                 submitForm(formName) { // 表单提交
                     let self = this;
-                    if(!sysConfig.user){
+                    if(!sysConfig || !sysConfig.user){
                         util_function_obj.alertWhenNoLogin(self);
                         return
                     }else{
@@ -319,7 +319,7 @@
                                     // gtag_report_conversion()
                                     // window.location.href =
                                     //     '/home/usr_UsrSupplier_gtSupInfo?pkey=' + self.pkey;
-                                    window.location.href =getParams('backUrl','/');
+                                    window.location.href = util_function_obj.GetParamsFullUrl('backUrl=','/');
                                 }, 1500)
                             }  else {
                                 self.flag = false;

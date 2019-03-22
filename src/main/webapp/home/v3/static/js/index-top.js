@@ -81,7 +81,7 @@ Vue.component('index-top', {
                 <!--  没有登录看到的  -->
                 <dd v-if="!sysConfig.user">
                     <div style="font-size:16px;margin:  18px  0;">Get started now</div>
-                    <div class="login-btn"><a @click="util_function_obj.alertWhenNoLogin(this);">Login</a></div>
+                    <div class="login-btn"><a :href="'/home/usr_UsrPurchase_sign?jumpUrl=' + window.location.href">Login</a></div>
                     <div style="text-align:center;font-size:16px;margin:  8px  0;">or</div>
                     <div class="registered-btn"><a href="/home/usr_UsrMain_register" target="_blank">Registration</a></div>
                     <div style="color:#777777;text-align:center;margin:  15px  0;">Continue with：</div>

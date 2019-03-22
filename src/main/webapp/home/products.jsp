@@ -128,14 +128,14 @@
             </div> --%>
 
             <div class="top-box2" style="margin-left: 20px;">Min Order :
-                <input class="w63" type="text" @blur="lessthan222" @keyup.enter="lessthan222" v-model="lessthan"
+                <input class="w63" type="text" @blur="lessthan222" @keyup.enter="lessthan222" v-model.trim="lessthan"
                        placeholder="less than" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/>
             </div>
             <div class="i0"></div>
             <div class="top-box2">Price :
-                <input class="w63" type="text" @blur="min222" @keyup.enter="min222" v-model.number="min" placeholder="min."
+                <input class="w63" type="text" @blur="min222" @keyup.enter="min222" v-model.trim.number="min" placeholder="min."
                        onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/> -
-                <input class="w63" type="text" @blur="min222" @keyup.enter="min222" v-model.number="max" placeholder="max."
+                <input class="w63" type="text" @blur="min222" @keyup.enter="min222" v-model.trim.number="max" placeholder="max."
                        onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/>
             </div>
 
@@ -401,7 +401,7 @@
             // 添加收藏和取消收藏
             shoucang: function (e) {
                 var index = e.currentTarget.dataset.num;
-                if (!sysConfig.user) {
+                if (!sysConfig || !sysConfig.user) {
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 } else {
@@ -478,19 +478,19 @@
             // 点击后才实现搜索
             search() {
                 // min order正整数判断
-                if( !util_regular_obj.register.positiveInteger.test(this.lessthan) ){
+                if( this.lessthan && !util_regular_obj.register.positiveInteger.test(this.lessthan) ){
                     this.$message({
                         message: 'Min order should be positive integer number',
                         type: 'warning'
                     });
                     return;
-                }else if( !util_regular_obj.register.priceDecimal.test(this.min) ){
+                }else if( this.min && !util_regular_obj.register.priceDecimal.test(this.min) ){
                     this.$message({
                         message: 'Min price can\'t greater than 6 digit integer and 2 decimal places',
                         type: 'warning'
                     });
                     return;
-                }else if( !util_regular_obj.register.priceDecimal.test(this.max) ){
+                }else if( this.max && !util_regular_obj.register.priceDecimal.test(this.max) ){
                     this.$message({
                         message: 'Max price can\'t greater than 6 digit integer and 2 decimal places',
                         type: 'warning'
@@ -519,7 +519,7 @@
             },
             //   添加到询盘
             addRFQ(e) {
-                if (!sysConfig.user) {
+                if (!sysConfig || !sysConfig.user) {
                     // user_obj.set_form_sign_in('', window.location.href, 1);
                     util_function_obj.alertWhenNoLogin(this);
                     return

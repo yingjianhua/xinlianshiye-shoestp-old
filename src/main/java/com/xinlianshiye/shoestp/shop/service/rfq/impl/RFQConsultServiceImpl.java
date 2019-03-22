@@ -2,6 +2,7 @@ package com.xinlianshiye.shoestp.shop.service.rfq.impl;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -218,9 +219,9 @@ public class RFQConsultServiceImpl implements RFQConsultService {
                     log.warn("RFQConsultRelation主键为{}的记录的image字段格式有问题", quotation.getPkey());
                   }
                   quotation.setMinPrice(
-                      GetValue.get(map, RFQConsultRelation.T.MINPRICE, Integer.class, null));
+                      GetValue.get(map, RFQConsultRelation.T.MINPRICE, BigDecimal.class, null));
                   quotation.setMaxPrice(
-                      GetValue.get(map, RFQConsultRelation.T.MAXPRICE, Integer.class, null));
+                      GetValue.get(map, RFQConsultRelation.T.MAXPRICE, BigDecimal.class, null));
                   RFQCurrencyView currency = new RFQCurrencyView();
                   currency.setPkey(GetValue.get(map, "currencyPkey", Integer.class, null));
                   currency.setShortName(GetValue.get(map, "currencyShortName", String.class, null));

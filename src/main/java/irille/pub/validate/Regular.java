@@ -16,4 +16,10 @@ public class Regular {
 
 	/** * 考虑到其他语种问题..首尾不能为符号 且 长度在1-52为之间 */
 	public static String REGULAR_COMPANY = "^([^`~!@#$%^&*()+= -\\]\\[';/.,<>?:\"{}|]).{0,52}(?<![`~!@#$%^&*()+= -\\]\\[';/.,<>?:\"{}|])$"; // 公司名字校验
+	public static String REGULAR_WEBSITE = "^http[s]?:\\/\\/[\\w]{1,}.?[\\w]{1,}.?[\\w/.?&=-]{1,}$"; // 公司网址校验 请输入完整网址格式，如https://www.shoestp.com
+	public static String REGULAR_NUMBER = "^([1-9]\\d*|0)(\\.\\d*[1-9])?$"; // 纯数字校验 请填写数字,不能以0开头
+	public static String REGULAR_FAX = "^(\\d{3,4}-)?\\d{7,8}$"; // 传真 格式 0511-11111111(010-3333333)
+	public static String REGULAR_POSTCODE = "^[0-9]{6}$"; // 邮编 格式 320000
+  	public static String REGULAR_CHINESE = "^[\\u4e00-\\u9fa5]{2,6}$"; // 纯中文，长度为2-6个
+  	public static String REGULAR_IDCARD = "^(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)$"; // 身份证号码校验 格式 330825199903236569
 }

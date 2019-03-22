@@ -2,21 +2,36 @@ package irille.Dao.RFQ.impl;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.junit.Test;
+
 import irille.Dao.RFQ.RFQConsultDao;
-import irille.Entity.RFQ.Enums.RFQConsultRecommend;
-import irille.Entity.RFQ.Enums.RFQConsultType;
-import irille.Entity.RFQ.Enums.RFQConsultVerifyStatus;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Entity.RFQ.RFQConsultRelation.T;
-import irille.Entity.SVS.Enums.SVSGradeType;
+import irille.Entity.RFQ.Enums.RFQConsultRecommend;
+import irille.Entity.RFQ.Enums.RFQConsultType;
+import irille.Entity.RFQ.Enums.RFQConsultVerifyStatus;
 import irille.Entity.SVS.SVSInfo;
+import irille.Entity.SVS.Enums.SVSGradeType;
 import irille.core.sys.Sys;
-import irille.platform.rfq.view.*;
+import irille.platform.rfq.view.CountryView;
+import irille.platform.rfq.view.ProductView;
+import irille.platform.rfq.view.PurchaseView;
+import irille.platform.rfq.view.RFQConsultView;
+import irille.platform.rfq.view.RFQMessageView;
+import irille.platform.rfq.view.SupplierView;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
@@ -26,15 +41,12 @@ import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.plt.PltCountry;
+import irille.shop.plt.PltErate;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplierRole;
 import irille.view.Page;
 import irille.view.RFQ.InquirysView;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.junit.Test;
 
 public class RFQConsultDaoImpl implements RFQConsultDao {
 
@@ -83,8 +95,9 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         "= ?",
         condition.getVerifyStatus());
     query.ORDER_BY(RFQConsult.T.CREATE_TIME, "DESC");
+    Integer count = query.queryCount();
     query.limit(start, limit);
-    return new Page<>(toView(query.queryMaps()), start, limit, query.queryCount());
+    return new Page<>(toView(query.queryMaps()), start, limit, count);
   }
 
   /** @author Jianhua Ying */
@@ -99,7 +112,9 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
             RFQConsult.T.SHIPPING_TYPE,
             RFQConsult.T.PAY_TYPE,
             RFQConsult.T.EXTRA_DESCRIPTION,
+            PltErate.T.CUR_NAME,
             RFQConsult.T.IMAGE)
+        .LEFT_JOIN(PltErate.class, RFQConsult.T.CURRENCY, PltErate.T.PKEY)
         .WHERE(RFQConsult.T.PKEY, "=?", id);
     Map<String, Object> map = query.queryMap();
     RFQConsultView view = toView(map);
@@ -111,7 +126,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
     view.setExtraDescription(
         (String) map.get(RFQConsult.T.EXTRA_DESCRIPTION.getFld().getCodeSqlField()));
     view.setImage((String) map.get(RFQConsult.T.IMAGE.getFld().getCodeSqlField()));
-
+    view.setCurName((String) map.get(PltErate.T.CUR_NAME.getFld().getCodeSqlField()));
     return view;
   }
 
@@ -847,7 +862,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
           }
         };
     Map<String, Object> map = Query.sql(sql).queryMap();
-    InquirysView view =new InquirysView();
+    InquirysView view = new InquirysView();
     view.setRfqPkey((Integer) map.get("rfqPkey"));
     view.setRfqStatus((Byte) map.get("rfqStatus"));
     view.setProductName((String) map.get("productName"));

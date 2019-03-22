@@ -418,7 +418,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 
             // 点击询盘
             inquiry(productId) {
-                if (!isLogin) {
+                if (!sysConfig || !sysConfig.user) {
                     this.$toast.error(lang_obj.goods_info.Pleaselogin);
                     window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=" + window.location.href
                     return
@@ -446,7 +446,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 
             // 点击收藏
             collect(goodsId, goodsIndex) {
-                if (!isLogin) {
+                if (!sysConfig || !sysConfig.user) {
                     this.$toast.error(lang_obj.goods_info.Pleaselogin);
                     window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=" + window.location.href
                     return
