@@ -621,9 +621,9 @@ public class PdtProductDao {
       sql1.WHERE(cat != 0, PdtProduct.T.CATEGORY, "in (" + String.join(",", list) + ")");
     }
     Integer totalCount = Query.sql(sql1).queryCount();
-    start = (start - 1 > -1 ? start - 1 : 0);
+    //    start = (start - 1 > -1 ? start - 1 : 0);
     //        q.limit(start * limit, limit).queryMaps();
-    sql1.LIMIT(start * limit, limit);
+    sql1.LIMIT(start, limit);
     List<Map<String, Object>> list = Query.sql(sql1).queryMaps();
     Page page =
         new Page(
