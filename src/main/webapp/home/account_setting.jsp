@@ -219,10 +219,10 @@
                 },
                 rules: { //表单验证
                     firstName: [{required: true,message: 'Please enter a firstName',trigger: 'blur'},
-                        { pattern: util_regular_obj.register.nameGlobal, message: 'The name cannot exceed 32' }
+                        { pattern: util_regular_obj.register.nameGlobal, message: 'Name cannot exceed 32 digits' }
                     ],
                     surname: [{ required: true,message: 'Please enter a surname',trigger: 'blur'},
-                        { pattern: util_regular_obj.register.nameGlobal, message: 'The name cannot exceed 32' }
+                        { pattern: util_regular_obj.register.nameGlobal, message: 'Name cannot exceed 32 digits' }
                     ],
                     
                     phone:[{validator: validatePhone, trigger: 'blur', required: true,}],
@@ -230,7 +230,7 @@
                         { pattern: /^[^!@~`%^&*()+|\\}{":?/].{0,180}$/, message: 'Cannot enter special symbols, up to 180 digits' }
                     ],
                     company: [{required: true,message: 'Please enter the company name',trigger: 'blur'},
-                        { pattern: util_regular_obj.register.companyName, message: 'The name cannot exceed 50' }
+                        { pattern: util_regular_obj.register.companyName, message: 'Name cannot exceed 50 digits' }
                     ],
                     gender: [{
                         message: 'Please select gender',
