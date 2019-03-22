@@ -734,7 +734,7 @@
        #personalCenter .contacts-main .contacts-main-right .contacts-info .conti-more ul{
        	display:none;
         width:104px;
-        min-height:68px;
+        min-height:34px;
        	position:absolute;
        	border:1px solid #dee2ec;
        	top:32px;
