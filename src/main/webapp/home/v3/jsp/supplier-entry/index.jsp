@@ -150,7 +150,7 @@
                     <span class="countrybotton" @click="showselectcon">
                       你已选择{{basicInfo.targetedMarket.length}}个国家
                     </span>
-                                    <div class="select" :class="iscountryshow? '' : 'selecthidden'" style="z-index:99;top:97%;">
+                                    <div class="select" :class="iscountryshow? '' : 'selecthidden'" style="z-index:99;top:100%;">
                                         <div class="showselect" v-show="basicInfo.targetedMarket != 0">
                         <span v-for="item,index in selectcountry">
                           {{item.name}}
@@ -1033,6 +1033,16 @@
             //表单信息验证
             formSubmit: function () {
                 let self = this;
+                var begin = Date.parse(new Date(this.basicInfo.businessLicenseBeginTime))
+                var end = Date.parse(new Date(this.basicInfo.businessLicenseEndTime))
+                if (begin > end && this.basicInfo.businessLicenseIsSecular === '0') {
+                    this.$message({
+                        message: '营业执照结束时间，不能小于开始时间',
+                        type: 'warning',
+                        center: true
+                    })
+                    return false
+                }
                 this.$refs['basicInfo'].validate((vaild) => {
                     if (!vaild) {
                         self.$alert('请检查表单', {

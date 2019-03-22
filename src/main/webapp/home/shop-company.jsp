@@ -63,7 +63,7 @@
                         <h5 class="title">
                             <s:text name="supplier.businesstyp"/></h5>
                         <div class="text">
-                            <c:if test="${supView.businessTyp != 'null'}">${supView.businessTyp}</c:if></div>
+                            <c:if test="${supView.businessTyp != 'null'&& !fn:endsWith(supView.businessTyp,'”}')}">${supView.businessTyp}</c:if></div>
                     </div>
                     <c:set var="symbolNoLogin" value="********"/>
                     <div class="info-item">
@@ -140,7 +140,7 @@
                                 ${symbolNoLogin}
                             </c:if>
                             <c:if test="${env.login != null}">
-                                <c:if test="${supView.annualSales != 'null'}">${supView.annualSales}</c:if>
+                                <c:if test="${supView.annualSales != 'null'&& !fn:endsWith(supView.annualSales,'”}')}">${supView.annualSales}</c:if>
                             </c:if>
 
                         </div>
@@ -313,6 +313,7 @@
                                     <div>I am looking for</div>
                                 </el-col>
                                 <el-col :span="8">
+
                                     <el-input v-model.trim="form.title"></el-input>
                                 </el-col>
                                 <el-col :span="5">
@@ -412,7 +413,7 @@
             el: "#main",
             data() {
                 return {
-                    flag : false, 
+                    flag : false,
                     imgsToUpload: [], // 需要upload的img - 显示在页面上
                     options: [{
                         value: "1",
@@ -540,7 +541,7 @@
                             console.log(self.imgsToUpload)
                             console.log('submit!');
                             let data = JSON.stringify(self.form)
-                            axios.post("/home/rfq_RFQConsult_putSupplierInquiry", data, 
+                            axios.post("/home/rfq_RFQConsult_putSupplierInquiry", data,
                                 {headers: {'Content-Type': 'application/json'}}
                             )
                                 .then((res) => {
@@ -588,7 +589,7 @@
                             });
                         }
                     }
-                   
+
                 },
                 getQueryString: (name) => {
                     let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");

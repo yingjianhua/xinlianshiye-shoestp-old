@@ -523,7 +523,15 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         break;
     }
     sql.WHERE(country != null, RFQConsult.T.COUNTRY, "=?", country);
-    sql.WHERE(date != null, T.CREATE_DATE, ">=?", date);
+    if (null != date) {
+      sql.WHERE(
+          " DATEDIFF("
+              + RFQConsultRelation.class.getSimpleName()
+              + "."
+              + RFQConsultRelation.T.CREATE_DATE.getFld().getCodeSqlField()
+              + ",?) = 0",
+          date);
+    }
     sql.WHERE(keyword != null, RFQConsult.T.TITLE, "like ?", "%" + keyword + "%");
     sql.WHERE(T.FAVORITE, "=?", flag);
     sql.WHERE(usrCountry != null, UsrPurchase.T.COUNTRY, "=?", usrCountry);
