@@ -55,7 +55,7 @@ public class UsrPurchaseServiceTest extends BaseTest {
   
   @Test
   public void testValidPassword() {
-	  Pattern pattern = Pattern.compile(UsrPurchaseService.password_regex);
+	  Pattern pattern = UsrPurchaseService.password_regex;
 	  Assert.assertTrue(pattern.matcher("123456").matches());
 	  Assert.assertTrue(pattern.matcher("123456123123").matches());
 	  Assert.assertTrue(pattern.matcher("1235ssss6464").matches());
