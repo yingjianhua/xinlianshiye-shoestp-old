@@ -57,6 +57,13 @@ var util_function_obj={
         var searchUrl = window.location.search.substr(1);
         return searchUrl.substr( searchUrl.indexOf(searchStr) + searchStr.length);
     },
+    // 获取地址中 - 从params后，开始截取至最后
+    GetParamsFullUrl: function(params,defaultParams){
+        if(!params && !defaultParams) return "/";
+        var searchStr = params || defaultParams;
+        var searchUrl = window.location.search.substr(1);
+        return searchUrl.substr( searchUrl.indexOf(searchStr) + searchStr.length);
+    },
 
     // 获取地址参数 - 登录时用 - 返回该地址
     // GetSearchUrlParams: function(){
