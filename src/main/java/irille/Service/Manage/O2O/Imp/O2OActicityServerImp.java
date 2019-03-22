@@ -72,7 +72,8 @@ public class O2OActicityServerImp implements IO2OActicityServer, Job {
     if (null == tel || (null != tel) && "".equals(tel.trim())) {
       throw new WebMessageException(ReturnCode.failure, "请输入电话号码");
     }
-    if (!ValidRegex.regMarch(Regular.REGULAR_CHINATEL, tel)) {
+    if (!ValidRegex.regMarch(Regular.REGULAR_CHINATEL, tel)
+        && !ValidRegex.regMarch(Regular.REGULAR_TEL, tel)) {
       throw new WebMessageException(ReturnCode.failure, "请输入格式正确的电话号码");
     }
     O2O_Activity activityEntity = o2OActivityDao.getActivityInfoById(activity);

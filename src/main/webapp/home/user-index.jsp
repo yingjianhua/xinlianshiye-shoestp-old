@@ -248,11 +248,10 @@
             userInfo: [],
             favoriteList: [], //收藏列表
             rules: { //表单验证
-                title: [{
-                    required: true,
-                    message: 'Please enter the product name',
-                    trigger: 'blur'
-                },],
+                title: [
+                        {required: true,message: 'Please fill in the title',trigger: 'blur'},
+                        { max: 500, message: 'Enter up to 500 digits', trigger: 'blur' }
+                    ],
 
                 descriotion: [{
                     required: true,

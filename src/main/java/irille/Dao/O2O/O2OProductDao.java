@@ -16,6 +16,8 @@ import irille.Entity.O2O.O2O_Product;
 import irille.Entity.O2O.Enums.O2O_ActivityStatus;
 import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
+import irille.Entity.SVS.SVSInfo;
+import irille.Entity.SVS.Enums.SVSGradeType;
 import irille.core.sys.Sys;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
@@ -219,7 +221,8 @@ public class O2OProductDao {
             O2O_Product.T.REMARK)
         .FROM(O2O_Product.class)
         .LEFT_JOIN(PdtProduct.class, PdtProduct.T.PKEY, O2O_Product.T.PRODUCT_ID)
-        .WHERE(O2O_Product.T.JOIN_INFO_ID, "=?", infoId);
+        .WHERE(O2O_Product.T.JOIN_INFO_ID, "=?", infoId)
+        .ORDER_BY(O2O_Product.T.UPDATED_TIME, " DESC ");
     return Query.sql(sql).queryMaps();
   }
 
@@ -331,11 +334,13 @@ public class O2OProductDao {
             O2O_Product.T.REMARK,
             O2O_Product.T.PKEY)
         .SELECT(PdtProduct.T.PKEY, "pdtPkey")
+        .SELECT(PdtProduct.T.PICTURE, "image")
         .SELECT(O2O_Map.T.NAME, "mapName")
         .SELECT(PdtProduct.T.NAME, "pdtName")
         .SELECT(PdtCat.T.NAME, "catName")
         .SELECT(UsrSupplier.T.NAME, "supName")
         .SELECT(UsrSupplierRole.T.NAME, "roleName")
+        .SELECT(SVSInfo.T.GRADE, "grade")
         .SELECT(O2O_JoinInfo.T.NAME, "joinInfo")
         .FROM(O2O_Product.class)
         .LEFT_JOIN(O2O_JoinInfo.class, O2O_JoinInfo.T.PKEY, O2O_Product.T.JOIN_INFO_ID)
@@ -344,6 +349,7 @@ public class O2OProductDao {
         .LEFT_JOIN(PdtProduct.class, PdtProduct.T.PKEY, O2O_Product.T.PRODUCT_ID)
         .LEFT_JOIN(PdtCat.class, PdtCat.T.PKEY, PdtProduct.T.CATEGORY)
         .LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, O2O_JoinInfo.T.SUPPLIER)
+        .LEFT_JOIN(SVSInfo.class, SVSInfo.T.SUPPLIER, O2O_JoinInfo.T.SUPPLIER)
         .LEFT_JOIN(UsrSupplierRole.class, UsrSupplierRole.T.PKEY, UsrSupplier.T.ROLE);
     sql.WHERE(null != search.getActId(), O2O_Product.T.ACTIVITY_ID, "= ?", search.getActId());
     sql.WHERE(
@@ -364,7 +370,26 @@ public class O2OProductDao {
     sql.WHERE(null != search.getStatus(), O2O_Product.T.VERIFY_STATUS, "=?", search.getStatus());
     sql.WHERE(null != search.getState(), O2O_Product.T.STATUS, "=?", search.getState());
     sql.WHERE(type.equals(1), O2O_Product.T.STATUS, "<>?", O2O_ProductStatus.ON.getLine().getKey());
+    if (null != search.getGrade()) {
+      if (search.getGrade().equals(SVSGradeType.NotAvailable.getLine().getKey())) {
+        sql.WHERE(
+            "("
+                + SVSInfo.class.getSimpleName()
+                + "."
+                + SVSInfo.T.GRADE.getFld().getCodeSqlField()
+                + " IS NULL OR "
+                + SVSInfo.class.getSimpleName()
+                + "."
+                + SVSInfo.T.GRADE.getFld().getCodeSqlField()
+                + " = ? )",
+            O2O_ProductStatus.ON.getLine().getKey());
+      } else {
+        sql.WHERE(SVSInfo.T.GRADE, " =? ", search.getGrade());
+      }
+    }
+
     sql.ORDER_BY(O2O_Product.T.UPDATED_TIME, "DESC").LIMIT(start, limit);
+
     return Query.sql(sql).queryMaps();
   }
 
@@ -377,10 +402,11 @@ public class O2OProductDao {
         .FROM(O2O_Product.class)
         .LEFT_JOIN(O2O_JoinInfo.class, O2O_JoinInfo.T.PKEY, O2O_Product.T.JOIN_INFO_ID)
         .LEFT_JOIN(O2O_Activity.class, T.PKEY, O2O_JoinInfo.T.ACTIVITY)
-        .LEFT_JOIN(O2O_Map.class, O2O_Map.T.PKEY, O2O_JoinInfo.T.ACTIVITY)
+        .LEFT_JOIN(O2O_Map.class, O2O_Map.T.PKEY, T.ADDRESS)
         .LEFT_JOIN(PdtProduct.class, PdtProduct.T.PKEY, O2O_Product.T.PRODUCT_ID)
         .LEFT_JOIN(PdtCat.class, PdtCat.T.PKEY, PdtProduct.T.CATEGORY)
         .LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, O2O_JoinInfo.T.SUPPLIER)
+        .LEFT_JOIN(SVSInfo.class, SVSInfo.T.SUPPLIER, O2O_JoinInfo.T.SUPPLIER)
         .LEFT_JOIN(UsrSupplierRole.class, UsrSupplierRole.T.PKEY, UsrSupplier.T.ROLE)
         .WHERE(null != search.getActId(), O2O_Product.T.ACTIVITY_ID, "=?", search.getActId())
         .WHERE(null != search.getActivity(), T.NAME, "like ?", "%" + search.getActivity() + "%")
@@ -402,6 +428,23 @@ public class O2OProductDao {
         .WHERE(
             type.equals(1), O2O_Product.T.STATUS, "<>?", O2O_ProductStatus.ON.getLine().getKey());
     ;
+    if (null != search.getGrade()) {
+      if (search.getGrade().equals(SVSGradeType.NotAvailable.getLine().getKey())) {
+        sql.WHERE(
+            "("
+                + SVSInfo.class.getSimpleName()
+                + "."
+                + SVSInfo.T.GRADE.getFld().getCodeSqlField()
+                + " IS NULL OR "
+                + SVSInfo.class.getSimpleName()
+                + "."
+                + SVSInfo.T.GRADE.getFld().getCodeSqlField()
+                + " = ? )",
+            O2O_ProductStatus.ON.getLine().getKey());
+      } else {
+        sql.WHERE(SVSInfo.T.GRADE, " =? ", search.getGrade());
+      }
+    }
     return Query.sql(sql).queryCount();
   }
 

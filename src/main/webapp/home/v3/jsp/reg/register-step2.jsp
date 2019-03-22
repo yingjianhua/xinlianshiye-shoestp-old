@@ -512,7 +512,7 @@
                 supFirstName: [
                     {required: true, message: '联系人姓名不可为空', trigger: 'blur'},
                     {
-                        pattern: /^[\u4E00-\u9FA5]{1,6}$/,
+                        pattern: util_regular_obj.register.nameGlobal,
                         message: '姓名需为中文且长度不能超出6位数',
                         trigger: 'blur'
                     }
@@ -520,7 +520,8 @@
                 supLastName: [
                     {required: true, message: '联系人姓名不可为空', trigger: 'blur'},
                     {
-                        pattern: /^[\u4E00-\u9FA5]{1,6}$/,
+                        // pattern: /^[\u4E00-\u9FA5]{1,6}$/,
+                        pattern: util_regular_obj.register.nameGlobal,
                         message: '姓名需为中文且长度不能超出6位数',
                         trigger: 'blur'
                     }

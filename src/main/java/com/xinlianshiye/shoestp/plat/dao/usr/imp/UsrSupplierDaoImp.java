@@ -8,13 +8,16 @@ import com.xinlianshiye.shoestp.plat.dao.usr.IUsrSupplierDao;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
 import irille.pub.util.GetValue;
+import irille.shop.usr.UsrMain;
 import irille.shop.usr.UsrSupplier;
 
 public class UsrSupplierDaoImp implements IUsrSupplierDao {
   @Override
   public List<String> getSupplierEmail() {
     SQL sql = new SQL();
-    sql.SELECT(UsrSupplier.T.EMAIL).FROM(UsrSupplier.class);
+    sql.SELECT(UsrMain.T.EMAIL)
+        .LEFT_JOIN(UsrMain.class, UsrMain.T.PKEY, UsrSupplier.T.UserId)
+        .FROM(UsrSupplier.class);
 
     return Query.sql(sql).queryMaps().stream()
         .map(
@@ -23,7 +26,7 @@ public class UsrSupplierDaoImp implements IUsrSupplierDao {
             })
         .filter(
             mail -> {
-              if (null == mail && mail.trim().equals("")) {
+              if (null == mail && "".equals(mail)) {
                 return false;
               } else {
                 return true;
