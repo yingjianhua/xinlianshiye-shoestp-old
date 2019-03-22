@@ -55,6 +55,7 @@ li {
 }
 
 #linIntroduceO2O .bannercon {
+    margin-top: 98px;
     position: relative;
     background-color: rgba(145,166,217,0.2);
     background-image: url(../images/introducebanner.png);
@@ -418,6 +419,7 @@ li {
 
 #lhl-highClass .main-head {
     height: 675px;
+    margin-top: 98px;
     text-align: center;
     background: white url("../images/banner-hcO2O.png") center center no-repeat;
     background-size: cover;
