@@ -1,8 +1,6 @@
 package irille.view;
 
 import java.util.List;
-import java.util.Map;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,7 +21,6 @@ public class Page<T extends BaseView> {
   private int limit;
   private int countNoRead;
   private List<T> items;
-  private Map<Integer, String> countries;
 
   public Page(int totalCount, int totalPage, int currentPage, int start, int limit, List<T> items) {
     super();
@@ -39,21 +36,6 @@ public class Page<T extends BaseView> {
     this.items = items;
     this.start = start;
     this.limit = limit;
-    this.totalCount = totalCount;
-    if (limit == 0) {
-      this.totalPage = 1;
-      this.currentPage = 1;
-    } else {
-      this.totalPage = totalCount / limit + (totalCount % limit > 0 ? 1 : 0);
-      this.currentPage = start / limit + 1;
-    }
-  }
-
-  public Page(List<T> items, int start, int limit, int totalCount, Map<Integer, String> countries) {
-    this.items = items;
-    this.start = start;
-    this.limit = limit;
-    this.countries = countries;
     this.totalCount = totalCount;
     if (limit == 0) {
       this.totalPage = 1;
@@ -150,13 +132,5 @@ public class Page<T extends BaseView> {
 
   public void setCountNoRead(int countNoRead) {
     this.countNoRead = countNoRead;
-  }
-
-  public Map<Integer, String> getCountries() {
-    return countries;
-  }
-
-  public void setCountries(Map<Integer, String> countries) {
-    this.countries = countries;
   }
 }

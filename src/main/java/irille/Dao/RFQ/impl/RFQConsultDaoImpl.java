@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import irille.Dao.RFQ.RFQConsultDao;
 import irille.Entity.RFQ.Enums.RFQConsultRecommend;
 import irille.Entity.RFQ.Enums.RFQConsultType;
@@ -540,20 +539,36 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         .WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supId)
         .WHERE(RFQConsultRelation.T.IN_RECYCLE_BIN, "=?", Sys.OYn.NO);
     switch (type) {
+      case 0:
+        sql.LEFT_JOIN(
+            RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY);
+        break;
+      case 1:
+        sql.LEFT_JOIN(
+            RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY);
+        break;
       case 2:
-        sql.WHERE(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", Sys.OYn.NO);
+        sql.LEFT_JOIN(
+                RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY)
+            .WHERE(RFQConsultMessage.T.HAD_READ, "=?", Sys.OYn.NO)
+            .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.NO);
         break;
       case 3:
-        sql.WHERE(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", Sys.OYn.YES);
+        sql.LEFT_JOIN(
+                RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY)
+            .WHERE(RFQConsultMessage.T.HAD_READ, "=?", Sys.OYn.YES)
+            .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.NO);
         break;
       case 4:
         sql.LEFT_JOIN(
                 RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY)
+            .WHERE(RFQConsultMessage.T.HAD_READ, "=?", Sys.OYn.YES)
             .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.YES);
         break;
     }
+    sql.GROUP_BY(RFQConsultMessage.T.RELATION);
 
-    return Query.sql(sql).queryCount();
+    return Query.sql(sql).queryMaps().size();
   }
 
   @Override

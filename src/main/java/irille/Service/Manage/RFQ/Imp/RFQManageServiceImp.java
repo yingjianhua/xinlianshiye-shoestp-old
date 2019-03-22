@@ -31,6 +31,7 @@ import irille.pub.tb.FldLanguage;
 import irille.pub.util.GetValue;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
+import irille.sellerAction.rfq.view.RFQOfferListView;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.plt.PltErate;
 import irille.shop.usr.UsrPurchase;
@@ -282,7 +283,12 @@ public class RFQManageServiceImp implements IRFQManageService {
       }
       result.add(body);
     }
-    return new Page(result, start, limit, list.size(), countryMap);
+    return new RFQOfferListView(
+        result,
+        start,
+        limit,
+        rfqConsultDao.count(type, date, keyword, flag, status, country, Supid),
+        countryMap);
   }
 
   @Override
