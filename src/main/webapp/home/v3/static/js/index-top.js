@@ -4,7 +4,7 @@ Vue.component('index-top', {
     <div id="o2otop">
         <div class="o2otopcon" v-cloak>
             <!--<img src="/home/v3/static/images/o2otoplogo.png" alt="">-->
-            <a href="/home/usr_UsrPurchase" target="view_window"><img src="/home/v3/static/images/o2otoplogo.png" class="logo"
+            <a href="/home/usr_UsrPurchase" target="_blank"><img src="/home/v3/static/images/o2otoplogo.png" class="logo"
                     alt="logo"></a>
             <div class="topsearch">
                 <el-select popper-class="top-search-type" v-model="select" placeholder="Product" @change="selected">
@@ -71,7 +71,7 @@ Vue.component('index-top', {
                         <div style="height:  20px;">
                             <div  v-if="!sysConfig.user">
                                 <a href="/home/usr_UsrMain_register" style="border-right: 1px solid #b7b7b7;padding-right: 3px;color: #4fa2d7;font-size:12px;" target="_blank">Register</a>
-                                <a  @click="util_function_obj.alertWhenNoLogin(this);" style="color: #4fa2d7;font-size:12px;cursor: pointer;" >Login</a>
+                                <a :href="'/home/usr_UsrPurchase_sign?jumpUrl=' + window.location.href" style="color: #4fa2d7;font-size:12px;cursor: pointer;" >Login</a>
                             </div>
                         </div>
                         <p>My Shosetp</p>
