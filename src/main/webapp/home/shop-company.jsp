@@ -497,7 +497,7 @@
                 // 上传图片文件之前
                 beforeUpload(file) {
                     console.log(file)
-                    // if (!isLogin) {
+                    // if (!sysConfig || !sysConfig.user) {
                     //     this.$alert('Please login to operate', 'Please login to operate', {
                     //         confirmButtonText: 'Ok',
                     //         customClass: "my-custom-element-alert-class fs-content-18",
@@ -515,7 +515,7 @@
                 },
                 submitForm(formName) { // 表单提交
                     let self = this;
-                    if(!sysConfig.user){
+                    if(!sysConfig || !sysConfig.user){
                         util_function_obj.alertWhenNoLogin(self);
                         return
                     }else{

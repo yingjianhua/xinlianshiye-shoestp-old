@@ -87,11 +87,13 @@
                               :label="registerForm.user=='buyer'?'I am a':'我是'">
                     <label class="native-label">
                         <input type="radio" name="user" value="supplier" v-model="registerForm.user">
-                        {{registerForm.user=='buyer'?'Supplier':'供应商'}}
+                        <%--{{registerForm.user=='buyer'?'Supplier':'供应商'}}--%>
+                        供应商
                     </label>
                     <label class="native-label">
                         <input type="radio" name="user" value="buyer" v-model="registerForm.user">
-                        {{registerForm.user=='buyer'?'Buyer':'买家'}}
+                        <%--{{registerForm.user=='buyer'?'Buyer':'买家'}}--%>
+                        Buyer
                     </label>
                 </el-form-item>
 
@@ -413,28 +415,38 @@
     };
 
     // 电话号码验 - buyer - 电话 + 2个前缀
+    const validateTelPrefix1 = (rule, value, callback) => {
+        // 正式的密码验证
+        if (value === '') {
+            callback(new Error("Telephone prefix can't be empty!"));
+        }else{
+            app.$refs.registerForm.validateField('tel');
+            callback();
+        }
+    };
+    const validateTelPrefix2 = (rule, value, callback) => {
+        // 正式的密码验证
+        app.$refs.registerForm.validateField('tel');
+        callback();
+    };
     const validateTel = (rule, value, callback) => {
         // 正式的密码验证
         if (value === '') {
             callback(new Error(app.registerForm.user == 'buyer' ? 'Telephone number can\'t be empty!' : '电话号码不能为空'));
-        } else if (value.length <8 || value.length>11) {
-            callback(new Error(app.registerForm.user == 'buyer' ? 'Telephone number\'s format is incorrect' : '电话号码格式不正确'));
+        }else if(!util_regular_obj.register.phoneAreaCode.test(app.registerForm.telPrefix1+"-"+app.registerForm.telPrefix2+app.registerForm.tel)){
+            callback(new Error('Telephone number\'s format is incorrect，please check the prefix-tel and phone'));
         } else {
-            app.$refs.registerForm.validateField('telPrefix1');
-            app.$refs.registerForm.validateField('telPrefix2');
-            // app.registerForm.telPrefix1===""
+            // app.$refs.registerForm.validateField('telPrefix1');
+            // app.$refs.registerForm.validateField('telPrefix2');
             callback();
         }
     };
 
     // code码验 - 提示信息为中英文 - 静态改不了message - 只能动态写了！
     const validateCode = (rule, value, callback) => {
-        console.log("in code validate")
         if (value === '') {
-            console.log("empty")
             callback(new Error(app.registerForm.user == 'buyer' ? 'Code can\'t be empty!' : '验证码不能为空'));
         } else {
-            console.log("not empty")
             callback();
         }
     };
@@ -482,15 +494,22 @@
                     {validator: validatePsd2, trigger: 'blur'}
                 ],
                 fullName: [
-                    {required: true, message: 'FullName can\'t be empty!', trigger: 'blur'}
+                    {required: true, message: 'FullName can\'t be empty!', trigger: 'blur'},
+                    {
+                        pattern: util_regular_obj.register.nameGlobal,
+                        message: 'Please enter the real name',
+                        trigger: 'blur'
+                    }
                 ],
                 country: [
                     {required: true, message: 'Country can\'t be empty!', trigger: 'change'}
                 ],
                 telPrefix1: [
-                    {required: true, message: 'Telephone prefix can\'t be empty!', trigger: 'blur'}
+                    {validator: validateTelPrefix1, trigger: 'blur'},
+                    // {required: true, message: 'Telephone prefix can\'t be empty!', trigger: 'blur'}
                 ],
                 telPrefix2: [
+                    {validator: validateTelPrefix2, trigger: 'blur'},
                     // {required: true, message: 'Telephone prefix can\'t be empty!', trigger: 'blur'}
                 ],
                 tel: [
@@ -513,7 +532,7 @@
                     {required: true, message: '联系人姓名不可为空', trigger: 'blur'},
                     {
                         pattern: util_regular_obj.register.nameGlobal,
-                        message: '姓名需为中文且长度不能超出6位数',
+                        message: '请填写真实姓名',
                         trigger: 'blur'
                     }
                 ],
@@ -522,7 +541,7 @@
                     {
                         // pattern: /^[\u4E00-\u9FA5]{1,6}$/,
                         pattern: util_regular_obj.register.nameGlobal,
-                        message: '姓名需为中文且长度不能超出6位数',
+                        message: '请填写真实姓名',
                         trigger: 'blur'
                     }
                 ],

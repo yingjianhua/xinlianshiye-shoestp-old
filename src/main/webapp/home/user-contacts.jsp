@@ -411,7 +411,7 @@
         },
         methods: {
             clickGroupItem(e,groupPkey,name,count){  // 点击分组
-                if(!sysConfig.user){ 
+                if(!sysConfig || !sysConfig.user){
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 }
@@ -473,7 +473,7 @@
             },
 
             deleteContact(supplierPkey){  // 删除联系人
-                if(!sysConfig.user){ 
+                if(!sysConfig || !sysConfig.user){
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 }
@@ -557,7 +557,7 @@
                 // console.log(self.editNewPkey)
             },
             editGroup() { // 编辑分组
-                if(!sysConfig.user){ 
+                if(!sysConfig || !sysConfig.user){
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 }
@@ -592,7 +592,7 @@
             },
             deleteGroup(groupPkey) { // 删除分组
                 console.log(groupPkey)
-                if(!sysConfig.user){ 
+                if(!sysConfig || !sysConfig.user){
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 }
@@ -630,7 +630,7 @@
                 });
             },
             moveGroup(contactPkey,groupPkey,name,count){ // 移动分组
-                if(!sysConfig.user){ 
+                if(!sysConfig || !sysConfig.user){
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 }
@@ -675,7 +675,7 @@
                 }
             },
             addGroup() { // 添加分组
-                if(!sysConfig.user){ 
+                if(!sysConfig || !sysConfig.user){
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 }
@@ -729,7 +729,7 @@
             });
             },
             clickContact(index,pkey){ // 点击联系人
-                if(!sysConfig.user){ 
+                if(!sysConfig || !sysConfig.user){
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 }
