@@ -182,25 +182,32 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 			}
 		}
 		if (getBean().getIdentity() == 0) {
-			if (getTelPre() == null || getTelMid() == null || getTelAft() == null) {
+			if (Str.isEmpty(getTelPre()) || Str.isEmpty(getTelAft())) {
 				throw new WebMessageException(
 						MessageBuild.buildMessage(ReturnCode.valid_phone_notnull, HomeAction.curLanguage()));
 			}
-			String phone = getTelPre() + "-" + getTelMid() + getTelAft();
+			String phone = getTelPre() + "-" + (getTelMid() == null ? "" : getTelMid()) + getTelAft();
+			System.out.println(phone);
 			if (!ValidRegex.regMarch(Regular.REGULAR_TEL, phone)) {
 				throw new WebMessageException(
 						MessageBuild.buildMessage(ReturnCode.valid_phoneRegex, HomeAction.curLanguage()));
 			}
-			String tel = getTelPre() + "-" + getTelMid() + "-" + getTelAft();
+			String tel = getTelPre() + "-" + (getTelMid() == null ? "" : getTelMid()) + "-" + getTelAft();
 			getBean().setTelphone(tel);
 		} else {
-			if (getBean().getTelphone() == null) {
+			if (Str.isEmpty(getBean().getTelphone())) {
 				throw new WebMessageException(
 						MessageBuild.buildMessage(ReturnCode.valid_phone_notnull, HomeAction.curLanguage()));
 			}
 			if (!ValidRegex.regMarch(Regular.REGULAR_CHINATEL, getBean().getTelphone())) {
 				throw new WebMessageException(
 						MessageBuild.buildMessage(ReturnCode.valid_phoneRegex, HomeAction.curLanguage()));
+			}
+		}
+		if (!Str.isEmpty(getBean().getAddress())) {
+			if (!ValidRegex.regMarch(Regular.REGULAR_ARRRESS, getBean().getAddress())) {
+				throw new WebMessageException(
+						MessageBuild.buildMessage(ReturnCode.valid_adrRegex, HomeAction.curLanguage()));
 			}
 		}
 		UsrMain main = UsrMain.chkUniqueEmail(false, getBean().getEmail());

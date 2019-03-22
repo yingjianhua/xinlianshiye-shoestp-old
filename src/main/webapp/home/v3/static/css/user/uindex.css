@@ -551,8 +551,7 @@
          	display:block;
          }
 
-           .cml-pupbox ul li,
-           .cml-pupbox dl dd{
+           .cml-pupbox ul li{
           	padding-left:10px;
           }
           .cml-pupbox dl dd{
@@ -734,7 +733,8 @@
 
        #personalCenter .contacts-main .contacts-main-right .contacts-info .conti-more ul{
        	display:none;
-       	width:104px;
+        width:104px;
+        min-height:34px;
        	position:absolute;
        	border:1px solid #dee2ec;
        	top:32px;

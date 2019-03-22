@@ -1,7 +1,6 @@
 package irille.view;
 
 import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

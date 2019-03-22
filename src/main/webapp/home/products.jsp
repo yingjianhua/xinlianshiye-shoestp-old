@@ -267,7 +267,7 @@
     <!--页面右部列表  end-->
 
     <div class="bigPicBox" v-show="bigPicBox">
-        <img :src="util_function_obj.image(bigPicBoxpic)" alt=""/>
+        <img :src="util_function_obj.image(bigPicBoxpic,446)" alt=""/>
     </div>
 
 </div>

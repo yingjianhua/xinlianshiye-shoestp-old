@@ -95,8 +95,7 @@ public interface UsrPurchaseService {
    */
   default void validMobile(String mobile) {
     if (mobile == null
-        || !mobile_regex.matcher(mobile).matches()
-        || !mobile_regex2.matcher(mobile).matches()) {
+        || (!mobile_regex.matcher(mobile).matches() && !mobile_regex2.matcher(mobile).matches())) {
       throw new WebMessageException(ReturnCode.valid_phoneRegex, "手机格式不正确");
     }
   }

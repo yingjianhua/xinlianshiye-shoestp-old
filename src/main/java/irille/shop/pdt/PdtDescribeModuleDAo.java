@@ -7,6 +7,7 @@ import irille.action.dataimport.util.StringUtil;
 import irille.core.sys.Sys.OYn;
 import irille.pub.LogMessage;
 import irille.pub.bean.Query;
+import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
@@ -83,12 +84,12 @@ public class PdtDescribeModuleDAo {
 
   public static void add(PdtDescribeModule dm, Integer supplier) {
     checkLenth(dm);
-    Integer queryCount =
+
+    BeanQuery<PdtDescribeModule> sql =
         Query.SELECT(PdtDescribeModule.class)
-            .FROM(PdtDescribeModule.class)
             .WHERE(PdtDescribeModule.T.SUPPLIER, " =? ", supplier)
-            .WHERE(PdtDescribeModule.T.DELETED, " =? ", OYn.NO.getLine().getKey())
-            .queryCount();
+            .WHERE(PdtDescribeModule.T.DELETED, " =? ", OYn.NO.getLine().getKey());
+    Integer queryCount = sql.queryCount();
     if (queryCount >= 10) {
       throw new WebMessageException(ReturnCode.service_wrong_data, "您已添加了10条,无法继续添加");
     }
