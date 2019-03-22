@@ -496,7 +496,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
     if (user.getSupplier() == null) {
       setResult("/home/v3/jsp/supplier-entry/index.jsp");
     } else {
-      setResult("/newseller", false);
+      setResult("/newseller/", false);
       return RTRENDS;
     }
     return TRENDS;

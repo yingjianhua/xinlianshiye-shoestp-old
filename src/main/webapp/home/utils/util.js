@@ -62,6 +62,9 @@ var util_function_obj={
         if(!params && !defaultParams) return "/";
         var searchStr = params || defaultParams;
         var searchUrl = window.location.search.substr(1);
+        if (searchUrl.indexOf(searchStr)==-1){
+            return "/"
+        }
         return searchUrl.substr( searchUrl.indexOf(searchStr) + searchStr.length);
     },
 
