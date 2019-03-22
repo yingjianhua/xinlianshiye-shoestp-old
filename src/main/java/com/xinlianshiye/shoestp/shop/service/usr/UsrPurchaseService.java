@@ -10,6 +10,7 @@ import irille.pub.DateTools;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.pub.tb.FldLanguage.Language;
+import irille.pub.validate.Regular;
 import irille.shop.usr.UsrMain;
 import irille.shop.usr.UsrPurchase;
 
@@ -100,7 +101,7 @@ public interface UsrPurchaseService {
     }
   }
 
-  public static final Pattern email_regex = Pattern.compile("^[\\w]{1,16}@+\\w{1,15}.\\w{2,5}$");
+  public static final Pattern email_regex = Pattern.compile(Regular.REGULAR_EMAIL);
 
   /**
    * 校验邮箱地址格式的有效性

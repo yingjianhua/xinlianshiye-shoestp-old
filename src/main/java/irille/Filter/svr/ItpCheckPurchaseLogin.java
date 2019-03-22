@@ -18,25 +18,13 @@ import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 
 import irille.homeAction.HomeAction;
 import irille.pub.util.AppConfig;
-import irille.shop.usr.UsrPurchase;
-import irille.shop.usr.UsrUserDAO;
-import irille.view.usr.UserView;
 import org.apache.struts2.ServletActionContext;
 
 public class ItpCheckPurchaseLogin extends AbstractInterceptor {
 
   private static final long serialVersionUID = -5308775862619271060L;
 
-  private String autoLogin = "";
-
   public String intercept(ActionInvocation actionInvocation) throws Exception {
-    UsrPurchase purchase = ItpSessionmsg.getSessionmsg().getPurchase();
-    if (purchase == null && !"".equals(autoLogin)) {
-      UserView user = UsrUserDAO.findByLoginName(autoLogin);
-      ItpSessionmsg.getSessionmsg().setUser(user);
-      purchase = user.getPurchase();
-    }
-    // System.out.println(getJumpUrl(ServletActionContext.getRequest()));
     HttpServletResponse response = ServletActionContext.getResponse();
     if (actionInvocation.getAction() instanceof HomeAction) {
       HomeAction<?> action = (HomeAction<?>) actionInvocation.getAction();
@@ -98,14 +86,6 @@ public class ItpCheckPurchaseLogin extends AbstractInterceptor {
 
   public static void s(Object s) {
     System.out.println(s);
-  }
-
-  public String getAutoLogin() {
-    return autoLogin;
-  }
-
-  public void setAutoLogin(String autoLogin) {
-    this.autoLogin = autoLogin;
   }
 
   public String getJumpUrl(HttpServletRequest request) {
