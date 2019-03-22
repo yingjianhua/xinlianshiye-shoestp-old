@@ -252,7 +252,7 @@
                         });
                         return
                     }else{
-                        window.location.href='O2Oinputform.jsp';
+                        window.location.href="O2Oinputform.jsp?backUrl=" + window.location.href;;
                     }
                 }
             },
