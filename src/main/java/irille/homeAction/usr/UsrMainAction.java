@@ -203,6 +203,12 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 						MessageBuild.buildMessage(ReturnCode.valid_phoneRegex, HomeAction.curLanguage()));
 			}
 		}
+		if (!Str.isEmpty(getBean().getAddress())) {
+			if (!ValidRegex.regMarch(Regular.REGULAR_ARRRESS, getBean().getAddress())) {
+				throw new WebMessageException(
+						MessageBuild.buildMessage(ReturnCode.valid_adrRegex, HomeAction.curLanguage()));
+			}
+		}
 		UsrMain main = UsrMain.chkUniqueEmail(false, getBean().getEmail());
 		if (main != null) {
 			throw new WebMessageException(
