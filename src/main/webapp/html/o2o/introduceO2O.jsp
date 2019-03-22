@@ -1,9 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<jsp:include page="/home/v2/template/header.jsp"></jsp:include>
+<jsp:include page="/home/v3/header.jsp"></jsp:include>
     <script src="./js/config.js"></script>
     <link rel="stylesheet" href="css/index.css">
 <jsp:include page="/home/v3/nav.jsp"></jsp:include>
-
+<style>
+     #o2obottom .o2obottomlinks ul{
+        color: black;
+    }
+</style>
 <div id="linIntroduceO2O">
     <o2o-top></o2o-top>
     <div class="bannercon">
