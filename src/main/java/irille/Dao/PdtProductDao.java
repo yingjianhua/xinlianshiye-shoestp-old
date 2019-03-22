@@ -1280,6 +1280,10 @@ public class PdtProductDao {
                               new BigDecimal(
                                   map.get(PdtProduct.T.CUR_PRICE.getFld().getCodeSqlField())
                                       .toString()));
+                          if (null == mm) {
+                            setMinCurPrice(
+                                GetValue.get(mm, PdtProduct.T.MIN_OQ, BigDecimal.class, null));
+                          }
                           setMinOrder(
                               Integer.parseInt(
                                   map.get(PdtProduct.T.MIN_OQ.getFld().getCodeSqlField())
