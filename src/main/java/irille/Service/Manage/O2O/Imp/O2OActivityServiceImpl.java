@@ -337,6 +337,8 @@ public class O2OActivityServiceImpl implements O2OActivityService {
                   item.setSupplierName(GetValue.get(map, "supName", String.class, null));
                   item.setSupplierLevel(GetValue.get(map, "roleName", String.class, null));
                   item.setContact(GetValue.get(map, "joinInfo", String.class, null));
+                  item.setImage(
+                      GetValue.getFirstImage(GetValue.get(map, "image", String.class, "")));
                   item.setMobile(GetValue.get(map, O2O_JoinInfo.T.Tel, String.class, null));
                   Integer pdtPkey = GetValue.get(map, "pdtPkey", Integer.class, -1);
                   item.setRewriter(SEOUtils.getPdtProductTitle(pdtPkey, pdtName));
@@ -348,6 +350,8 @@ public class O2OActivityServiceImpl implements O2OActivityService {
                         name = g.getLine().getName();
                         break;
                       }
+                    } else {
+                      name = SVSGradeType.NotAvailable.getLine().getName();
                     }
                   }
                   item.setGrade(name);

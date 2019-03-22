@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -99,6 +100,21 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
   @Override
   public Integer saveProduct(String data, Integer supId) throws IOException, ExecutionException {
     PdtProductSaveView pdtProductSaveView = objectMapper.readValue(data, PdtProductSaveView.class);
+    Map pdtName = pdtProductSaveView.getPdtName();
+    if (null == pdtName.get(FldLanguage.Language.en.name())
+        || (null == pdtName.get(FldLanguage.Language.en.name())
+            && "".equals(String.valueOf(pdtName.get(FldLanguage.Language.en.name())).trim()))) {
+      throw new WebMessageException(ReturnCode.failure, "请输入产品英文名称");
+    }
+    for (Object key : pdtName.keySet()) {
+      if (null != pdtName.get(key)) {
+        String name = String.valueOf(pdtName.get(key));
+        if (name.length() > 500) {
+          throw new WebMessageException(ReturnCode.failure, "产品名称不可超过500字符");
+        }
+      }
+    }
+
     PdtProduct pdtProduct = new PdtProduct();
     if (pdtProductSaveView.getId() > 0) {
       PdtProduct prod = pdtProductDao.findByPkey(pdtProductSaveView.getId());
