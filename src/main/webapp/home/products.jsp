@@ -174,8 +174,11 @@
                             {{item.pdtName}}
                         </h1>
                         <div class="clearfix" style="position:relative;">
-                            <div class="fl">
-                                <h2>US <span>{{sysConfig.currency_symbol}}{{ item.price }}</span></h2>
+                            <div class="fl" style="width: 180px;">
+                                <h2>US
+                                    <span>{{sysConfig.currency_symbol}}
+                                    {{ item.minCurPrice == item.maxCurPrice ? item.minCurPrice: (item.minCurPrice +" ~ "+item.maxCurPrice) }}</span>
+                                </h2>
                                 <div class="h3">Min.Order: {{item.minOrder}} pairs</div>
                             </div>
                             <div class="fr" style="width: 196px;">
