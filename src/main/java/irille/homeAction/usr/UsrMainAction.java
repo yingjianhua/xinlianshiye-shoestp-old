@@ -182,7 +182,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 			}
 		}
 		if (getBean().getIdentity() == 0) {
-			if (getTelPre() == null || getTelMid() == null || getTelAft() == null) {
+			if (Str.isEmpty(getTelPre()) || Str.isEmpty(getTelMid()) || Str.isEmpty(getTelAft())) {
 				throw new WebMessageException(
 						MessageBuild.buildMessage(ReturnCode.valid_phone_notnull, HomeAction.curLanguage()));
 			}
@@ -194,7 +194,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 			String tel = getTelPre() + "-" + getTelMid() + "-" + getTelAft();
 			getBean().setTelphone(tel);
 		} else {
-			if (getBean().getTelphone() == null) {
+			if (Str.isEmpty(getBean().getTelphone())) {
 				throw new WebMessageException(
 						MessageBuild.buildMessage(ReturnCode.valid_phone_notnull, HomeAction.curLanguage()));
 			}
