@@ -10,22 +10,19 @@ import java.util.StringJoiner;
 
 import javax.inject.Inject;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
 
-import irille.Dao.PdtProductDao;
 import irille.Dao.Old.RFQ.RFQConsultDAO;
 import irille.Dao.Old.RFQ.RFQConsultUpdDAO;
-import irille.Entity.RFQ.RFQConsult;
-import irille.Entity.RFQ.RFQConsultRelation;
+import irille.Dao.PdtProductDao;
 import irille.Entity.RFQ.Enums.RFQConsultPayType;
 import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
 import irille.Entity.RFQ.Enums.RFQConsultStatus;
 import irille.Entity.RFQ.Enums.RFQConsultType;
 import irille.Entity.RFQ.Enums.RFQConsultUnit;
 import irille.Entity.RFQ.Enums.RFQConsultVerifyStatus;
+import irille.Entity.RFQ.RFQConsult;
+import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Entity.pm.PM.OTempType;
 import irille.Service.RFQ.IRFQConsultService;
 import irille.core.sys.Sys;
@@ -38,6 +35,8 @@ import irille.view.RFQ.PutInquiryView;
 import irille.view.v3.rfq.EditRFQConsultView;
 import irille.view.v3.rfq.PutRFQConsultView;
 import irille.view.v3.rfq.PutSupplierConsultView;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2019/1/30 Time: 9:52 */
 public class RFQConsultServiceImp implements IRFQConsultService {
@@ -143,8 +142,8 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     rfqConsultRelation.setImage("[]");
     rfqConsultRelation.setQuantity(0);
     rfqConsultRelation.stUnit(RFQConsultUnit.PAIR);
-    rfqConsultRelation.setMinprice(BigDecimal.valueOf(0));
-    rfqConsultRelation.setMaxprice(BigDecimal.valueOf(0));
+    rfqConsultRelation.setMinprice(BigDecimal.ZERO);
+    rfqConsultRelation.setMaxprice(BigDecimal.ZERO);
     rfqConsultRelation.setCurrency(0);
     rfqConsultRelation.setValidDate(null);
     rfqConsultRelation.stPaytype(RFQConsultPayType.DEFAULT);
@@ -208,8 +207,8 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     rfqConsultRelation.setImage("[]");
     rfqConsultRelation.setQuantity(0);
     rfqConsultRelation.stUnit(RFQConsultUnit.PAIR);
-    rfqConsultRelation.setMinprice(BigDecimal.valueOf(0));
-    rfqConsultRelation.setMaxprice(BigDecimal.valueOf(0));
+    rfqConsultRelation.setMinprice(BigDecimal.ZERO);
+    rfqConsultRelation.setMaxprice(BigDecimal.ZERO);
     rfqConsultRelation.setCurrency(0);
     rfqConsultRelation.setValidDate(null);
     rfqConsultRelation.stPaytype(RFQConsultPayType.DEFAULT);
@@ -298,8 +297,8 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     rfqConsultRelation.setImage("[]");
     rfqConsultRelation.setQuantity(0);
     rfqConsultRelation.stUnit(RFQConsultUnit.PAIR);
-    rfqConsultRelation.setMinprice(BigDecimal.valueOf(0));
-    rfqConsultRelation.setMaxprice(BigDecimal.valueOf(0));
+    rfqConsultRelation.setMinprice(BigDecimal.ZERO);
+    rfqConsultRelation.setMaxprice(BigDecimal.ZERO);
     rfqConsultRelation.setCurrency(0);
     rfqConsultRelation.setValidDate(null);
     rfqConsultRelation.stPaytype(RFQConsultPayType.DEFAULT);
