@@ -33,7 +33,7 @@ public interface RFQConsultMessageService {
       Language language);
 
   /**
-   * 采购商发送聊天消息
+   * 采购商发送文字消息
    *
    * @param purchase 采购商
    * @param relationPkey 询盘关联主键
@@ -41,7 +41,18 @@ public interface RFQConsultMessageService {
    * @return
    * @author Jianhua Ying
    */
-  RFQConsultMessageView send(UsrPurchase purchase, Integer relationPkey, String content);
+  RFQConsultMessageView sendTextMessage(UsrPurchase purchase, Integer relationPkey, String content);
+  
+  /**
+   * 采购商向询盘关联的供应商发送图片消息
+   *
+   * @param purchase 采购商
+   * @param relationPkey 询盘关联主键
+   * @param imageUrl 图片地址
+   * @return
+   * @author Jianhua Ying
+   */
+  RFQConsultMessageView sendImageMessage(UsrPurchase purchase, Integer relationPkey, String imageUrl);
 
   /**
    * 核对私人展厅产品密钥

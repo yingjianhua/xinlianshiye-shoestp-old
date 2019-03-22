@@ -254,7 +254,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
   @Override
   public int putSupplierInquiry(PutSupplierConsultView consultView, UsrPurchase purchase) {
     RFQConsult consult = new RFQConsult();
-    consult.setTitle(consultView.getTitle());
+    consult.setTitle("I am looking for " + consultView.getTitle() + " on shoestp.com");
     consult.setDestination(consultView.getDescription());
     if(consultView.getExtra_request() != null && consultView.getExtra_request().size() > 0) {
     	StringJoiner joiner = new StringJoiner(",");

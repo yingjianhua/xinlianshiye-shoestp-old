@@ -83,7 +83,8 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
     PutSupplierConsultView putSupplierConsultView =
         objectMapper.readValue(data, PutSupplierConsultView.class);
     if (putSupplierConsultView.getTitle() == null
-        || putSupplierConsultView.getTitle().length() < 1) {
+        || putSupplierConsultView.getTitle().length() < 1
+        || putSupplierConsultView.getTitle().length() > 100) {
       throw new WebMessageException(
           MessageBuild.buildMessage(ReturnCode.service_Invalid_Title, HomeAction.curLanguage()));
     }
@@ -193,7 +194,8 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   @Override
   @NeedLogin
   public void pageMine() throws IOException {
-    write(rFQConsultService.pageMine(getPurchase(), t, keyword, unread, lastRelation, start, limit));
+    write(
+        rFQConsultService.pageMine(getPurchase(), t, keyword, unread, lastRelation, start, limit));
   }
 
   private Integer quotationPkey;
@@ -249,11 +251,19 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   }
 
   private String content;
+  private String imageUrl;
 
   @Override
   @NeedLogin
   public void sendMessage() throws IOException {
-    write(rFQConsultMessageService.send(getPurchase(), relationPkey, content));
+    if (imageUrl != null) {
+      write(rFQConsultMessageService.sendImageMessage(getPurchase(), relationPkey, imageUrl));
+    } else if (content != null) {
+      write(rFQConsultMessageService.sendTextMessage(getPurchase(), relationPkey, content));
+    } else {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.valid_notblank, curLanguage()));
+    }
   }
 
   private String information;

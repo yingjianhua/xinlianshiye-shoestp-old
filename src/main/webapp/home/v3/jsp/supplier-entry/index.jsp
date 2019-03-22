@@ -112,7 +112,7 @@
                         <el-col :span="12">
                             <el-form-item label="*公司详细地址:" prop="companyAddr">
                                 <el-input v-model="basicInfo.companyAddr"
-                                          :class="{'null' : !basicInfo.companyAddr}" placeholder="https://"></el-input>
+                                          :class="{'null' : !basicInfo.companyAddr}"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
@@ -390,11 +390,11 @@
 <script>
 
     var validateName = function(rule, value, callback){
-        let reg = /^[A-Za-z\u4e00-\u9fa5]{1,50}$/
+        let reg = /^([^`~!@#$%^&*()+= -\]\[';/.,<>?:"{}|]).{0,52}(?<![`~!@#$%^&*()+= -\]\[';/.,<>?:"{}|])$/
         if (!value) {
             return callback(new Error("请填写名称"));
         } else if(!reg.test(value)){
-            return callback(new Error("请填写中文或英文,且不超过50位"));
+            return callback(new Error("公司名称首尾不能为符号,且长度在1-52位之间"));
         } else {
             callback();
         }
@@ -421,6 +421,16 @@
         let reg = /(^1\d{10}$)|(^(\d{3,4}-)?\d{7,8}$)/
         if (!value) {
             callback();
+        } else if (!reg.test(value)) {
+            return callback(new Error("请填写正确的手机格式"));
+        } else {
+            callback();
+        }
+    };
+    var validatePhone = function (rule, value, callback) {
+        let reg = /(^1\d{10}$)|(^(\d{3,4}-)?\d{7,8}$)/
+        if (!value) {
+            return callback(new Error("联系人手机不得为空"));
         } else if (!reg.test(value)) {
             return callback(new Error("请填写正确的手机格式"));
         } else {
@@ -539,11 +549,11 @@
         }
     };
     var validatecontacts = function(rule, value, callback){
-        let reg = /^[A-Za-z\u4e00-\u9fa5]{0,30}$/
+        let reg = /^([^`~!@#$%^&*()+= -\]\[';/.,<>?:"{}|]).{0,32}(?<![`~!@#$%^&*()+= -\]\[';/.,<>?:"{}|])$/
         if (!value) {
             callback();
         } else if(!reg.test(value)){
-            return callback(new Error("请填写30个以内字符"));
+            return callback(new Error("首尾不能为符号,且长度在1-32为之间"));
         } else {
             callback();
         }
@@ -668,7 +678,7 @@
                     {validator: validatecontacts, trigger: 'blur'}
                 ],
                 phone:[
-                    { validator: validateTel, trigger: 'blur' }
+                    { validator: validatePhone, trigger: 'blur' }
                 ],
                 contactEmail: [
                     {validator: validateEmail, trigger: 'blur'}

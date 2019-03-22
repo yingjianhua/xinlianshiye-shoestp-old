@@ -82,6 +82,7 @@ public enum ReturnCode {
 	valid_price_range(517), // 价格必须在 {2}-{3}之间
 	valid_group_name_illegal(518), // 价格必须在 {2}-{3}之间
 	valid_adrRegex(519), // 地址格式不正确
+	valid_code_overlenth(520),// 验证码超过长度
 	;
 	int code;
 

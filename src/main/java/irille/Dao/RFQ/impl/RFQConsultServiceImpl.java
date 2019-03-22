@@ -17,6 +17,9 @@ import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
 import irille.view.Page;
+import irille.view.RFQ.InquirysView;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class RFQConsultServiceImpl implements RFQConsultService {
 
@@ -146,5 +149,22 @@ public class RFQConsultServiceImpl implements RFQConsultService {
       throw new WebMessageException(ReturnCode.valid_notnull, "请选择报价");
     }
     return rFQConsultDao.getMessage(id, start, limit);
+  }
+
+  @Override
+  public Page getInqList(Integer start, Integer limit, Byte type, String supplierName, String purchaseName, String productName) {
+    if (start == null) start = 0;
+    if (limit == null) limit = 20;
+    return rFQConsultDao.getInqList(start,limit,type,supplierName,purchaseName,productName);
+  }
+
+  @Override
+  public JSONObject getInqStatus() throws JSONException {
+    return rFQConsultDao.getInqStatus();
+  }
+
+  @Override
+  public InquirysView getInqDetail(Integer rfqPkey) {
+    return rFQConsultDao.getInqDetail(rfqPkey);
   }
 }
