@@ -320,7 +320,7 @@
                                 </el-col>
                             </el-row>
                         </el-form-item>
-                        <el-form-item label="Purchase  Quantity" prop="quantity" class="name">
+                        <el-form-item label="Purchase  Quantity" prop="quantity">
                             <el-row :gutter="10">
                                 <el-col :span="7">
                                     <el-input v-model.trim="form.quantity"></el-input>
