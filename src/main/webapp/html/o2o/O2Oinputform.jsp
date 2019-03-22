@@ -45,11 +45,11 @@
             <el-row :gutter="20">
                 <el-col :span="8">
                     <el-input placeholder="Full Name"
-                              v-model="form.fullName" size="medium"
+                              v-model.trim="form.fullName" size="medium"
                     ></el-input>
                 </el-col>
                 <el-col :span="8">
-                    <el-select v-model="form.gender" placeholder="Gender" size="medium">
+                    <el-select v-model.trim="form.gender" placeholder="Gender" size="medium">
                         <el-option
                                 v-for="item in sexoptions"
                                 :key="item.value"
@@ -59,7 +59,7 @@
                     </el-select>
                 </el-col>
                 <el-col :span="8">
-                    <el-select v-model="form.country" placeholder="Country" size="medium"
+                    <el-select v-model.trim="form.country" placeholder="Country" size="medium"
 
                                filterable>
                         <el-option
@@ -77,13 +77,13 @@
             <!-- 第二行 -->
             <el-row :gutter="20">
                 <el-col :span="8">
-                    <el-input v-model="form.email" placeholder="Email" size="medium"></el-input>
+                    <el-input v-model.trim="form.email" placeholder="Email" size="medium"></el-input>
                 </el-col>
                 <el-col :span="2" style="padding-right:unset">
-                    <el-input v-model="form.countryCode" placeholder="Code" size="medium"></el-input>
+                    <el-input v-model.trim="form.countryCode" placeholder="Code" size="medium"></el-input>
                 </el-col>
                 <el-col :span="6">
-                    <el-input v-model="form.telphone" placeholder="Phone Number" size="medium"></el-input>
+                    <el-input v-model.trim="form.telphone" placeholder="Phone Number" size="medium"></el-input>
                 </el-col>
             </el-row>
             <!-- 第二行 - end -->
@@ -101,7 +101,7 @@
                                 <h5 class="category-title">
                                     {{i.label}}
                                 </h5>
-                                <el-checkbox-group v-model="form.Collections" v-for="item in i.children">
+                                <el-checkbox-group v-model.trim="form.Collections" v-for="item in i.children">
 
                                     <ul class="sub-category-list" v-if="item.children">
                                         <li class="sub-category-item" v-for="childitem in item.children"
@@ -121,7 +121,7 @@
             <!-- 第3行 input -->
             <el-row :gutter="20">
                 <el-col :span="16">
-                    <el-select v-model="form.marketing" multiple placeholder="Marketing (Multiple choice)"
+                    <el-select v-model.trim="form.marketing" multiple placeholder="Marketing (Multiple choice)"
                                size="medium">
                         <el-option
                                 v-for="item in marketingoptions"
@@ -132,7 +132,7 @@
                     </el-select>
                 </el-col>
                 <el-col :span="8">
-                    <el-select v-model="form.buyerType" placeholder="Buyer Type" size="medium">
+                    <el-select v-model.trim="form.buyerType" placeholder="Buyer Type" size="medium">
                         <el-option
                                 v-for="item in buyerTypeyoptions"
                                 :key="item.value"
@@ -147,7 +147,7 @@
             <!-- 第4行 input -->
             <el-row :gutter="20">
                 <el-col :span="16">
-                    <el-select v-model="form.exhibitionCountry" multiple
+                    <el-select v-model.trim="form.exhibitionCountry" multiple
                                placeholder="Areas where you wish to participate (Multiple choice)"
                                size="medium">
                         <el-option
@@ -167,7 +167,7 @@
                     type="textarea"
                     :rows="7"
                     placeholder="Remark"
-                    v-model="form.remarks">
+                    v-model.trim="form.remarks">
             </el-input>
             <!-- 第5行 input - end -->
 
@@ -384,28 +384,40 @@
                 }, 2000)
             },
             regTest: function (name, value) {
-                let regEmail = /.+@[a-z0-9\.]+\.(com|cn|net)$/;
-                let regTel = /[0-9]{6,}/;
-                let regCode = /[0-9]+/;
-                let regName = /^([^`~!@#$%^&*()+= -\]\[';/.,<>?:"{}|]).{0,32}(?<![`~!@#$%^&*()+= -\]\[';/.,<>?:"{}|])$/;
-                if (!value || value.length == 0) {
+                // let regEmail = /.+@[a-z0-9\.]+\.(com|cn|net)$/;
+                let regEmail = util_regular_obj.register.email;
+                // let regTel = /^[1-9]{6,16}$/;
+                let regTel = util_regular_obj.register.phoneAreaCode;
+                let regTel2 = util_regular_obj.register.phoneChina;
+                let regCode = /^[0-9]{1,6}$/;
+                // let regName = /^([^`~!@#$%^&*()+= -\]\[';/.,<>?:"{}|]).{0,32}(?<![`~!@#$%^&*()+= -\]\[';/.,<>?:"{}|])$/;
+                let regName = util_regular_obj.register.nameGlobal;
+                if (name!="countryCode" && (!value || value.length == 0)) {
+                    console.log("不能为空")
                     this.showerrmesssage(name + ' can not be empty');
-                    return false;
+                return false;
                 } else if (name == 'email' && !regEmail.test(value)) {
+                    console.log("email错误")
                     this.showerrmesssage(name + ' format error');
                     return false;
-                } else if (name == 'telphone' && !regTel.test(value)) {
-                    this.showerrmesssage(name + ' format error');
+                } else if (name == 'telphone' && (!regTel.test(this.form.countryCode + "-" + value) && !regTel2.test(value))) {
+                    console.log("telphone错误")
+                    this.showerrmesssage(name + " format error,Please enter the correct number, example: 0086-12345678, +86-12345678, 12345678901");
                     return false;
-                } else if (name == 'countryCode' && !regCode.test(value)) {
-                    this.showerrmesssage(name + ' format error');
-                    return false;
-                } else if (name == 'fullName' && !regName.test(value)) {
-                    this.showerrmesssage(name + ' format error, Name cannot exceed 32 digits');
+                } 
+                // else if (name == 'countryCode' && !regCode.test(value)) {
+                //     console.log("countryCode错误")
+                //     this.showerrmesssage(name + " format error,Can't exceed 4 digits");
+                //     return false;
+                // } 
+                else if (name == 'fullName' && !regName.test(value)) {
+                    console.log("fullName错误")
+                    this.showerrmesssage(name + " format error,Can't enter numbers, Can't exceed 32 digits");
                     return false;
                 } else {
                     return true;
                 }
+                
             },
             filterCountry: function (val) {
                 // var reg = new RegExp("^" + val, "i")
@@ -468,7 +480,7 @@
                                     center: true,
                                     callback: action =>{
                                          setTimeout(function () {
-                                            window.location.reload();
+                                            window.location.href = util_function_obj.GetParamsFullUrl('backUrl=','/');
                                         }, 2000)
                                     }
                                 });
