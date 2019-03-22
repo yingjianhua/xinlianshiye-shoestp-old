@@ -5,7 +5,7 @@
 <script src="/home/v3/static/js/hello.all.js"></script>
 <%--公共函数--%>
 <%--<script src="/home/utils/util.js"></script>--%>
-<div id="login-box-global">
+<div id="login-box-global" v-cloak>
     <el-dialog
             custom-class="popup-login-box-global"
             :visible.sync="showLoginBox"

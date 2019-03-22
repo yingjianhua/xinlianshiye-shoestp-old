@@ -1,5 +1,6 @@
 package irille.Service.RFQ.Imp;
 
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -142,8 +143,8 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     rfqConsultRelation.setImage("[]");
     rfqConsultRelation.setQuantity(0);
     rfqConsultRelation.stUnit(RFQConsultUnit.PAIR);
-    rfqConsultRelation.setMinprice(0);
-    rfqConsultRelation.setMaxprice(0);
+    rfqConsultRelation.setMinprice(BigDecimal.valueOf(0));
+    rfqConsultRelation.setMaxprice(BigDecimal.valueOf(0));
     rfqConsultRelation.setCurrency(0);
     rfqConsultRelation.setValidDate(null);
     rfqConsultRelation.stPaytype(RFQConsultPayType.DEFAULT);
@@ -207,8 +208,8 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     rfqConsultRelation.setImage("[]");
     rfqConsultRelation.setQuantity(0);
     rfqConsultRelation.stUnit(RFQConsultUnit.PAIR);
-    rfqConsultRelation.setMinprice(0);
-    rfqConsultRelation.setMaxprice(0);
+    rfqConsultRelation.setMinprice(BigDecimal.valueOf(0));
+    rfqConsultRelation.setMaxprice(BigDecimal.valueOf(0));
     rfqConsultRelation.setCurrency(0);
     rfqConsultRelation.setValidDate(null);
     rfqConsultRelation.stPaytype(RFQConsultPayType.DEFAULT);
@@ -256,12 +257,12 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     RFQConsult consult = new RFQConsult();
     consult.setTitle("I am looking for " + consultView.getTitle() + " on shoestp.com");
     consult.setDestination(consultView.getDescription());
-    if(consultView.getExtra_request() != null && consultView.getExtra_request().size() > 0) {
-    	StringJoiner joiner = new StringJoiner(",");
-	    for (String s : consultView.getExtra_request()) {
-	      joiner.add(s);
-	    }
-	    consult.setExtraRequest(joiner.toString());
+    if (consultView.getExtra_request() != null && consultView.getExtra_request().size() > 0) {
+      StringJoiner joiner = new StringJoiner(",");
+      for (String s : consultView.getExtra_request()) {
+        joiner.add(s);
+      }
+      consult.setExtraRequest(joiner.toString());
     }
     consult.setSupplierId(consultView.getSupplierId());
     consult.setImage(consultView.getImages());
@@ -297,8 +298,8 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     rfqConsultRelation.setImage("[]");
     rfqConsultRelation.setQuantity(0);
     rfqConsultRelation.stUnit(RFQConsultUnit.PAIR);
-    rfqConsultRelation.setMinprice(0);
-    rfqConsultRelation.setMaxprice(0);
+    rfqConsultRelation.setMinprice(BigDecimal.valueOf(0));
+    rfqConsultRelation.setMaxprice(BigDecimal.valueOf(0));
     rfqConsultRelation.setCurrency(0);
     rfqConsultRelation.setValidDate(null);
     rfqConsultRelation.stPaytype(RFQConsultPayType.DEFAULT);

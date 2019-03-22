@@ -113,6 +113,7 @@
           border: none;
           color: white;
           font-size: 16px;
+          cursor: pointer;
           background-color: #003d80;
           /* padding: 0 15px;
           min-width: 151px;
@@ -124,6 +125,9 @@
           background-color: rgba(235, 0, 0, 1);
           border-radius: 6px; */
       }
+        input.submit:hover{
+            background: #35c;
+        }
       .chooseImg{
           height: 100%;
           display: flex;

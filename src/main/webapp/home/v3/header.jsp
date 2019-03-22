@@ -32,7 +32,7 @@
     <link rel="stylesheet" href="/home/v3/static/css/reset.css"/>
     <link rel="stylesheet" href="/home/v3/static/css/index.css">
     <%--公共函数--%>
-    <script src="/home/utils/util.js"></script>
+    <script src="/home/utils/util.js" type="text/javascript"></script>
 
     <!-- index为以上几个合并后的压缩文件 - 加前缀 -->
     <!-- <link rel="stylesheet" href="css/index.css" /> -->

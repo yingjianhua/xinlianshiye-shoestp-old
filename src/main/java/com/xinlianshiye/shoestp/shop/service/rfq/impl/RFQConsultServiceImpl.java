@@ -2,6 +2,7 @@ package com.xinlianshiye.shoestp.shop.service.rfq.impl;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,49 +70,46 @@ public class RFQConsultServiceImpl implements RFQConsultService {
       Integer lastRelation,
       Integer start,
       Integer limit) {
-	  
-	  if(lastRelation != null) {
-		  SQL sql = new SQL();
-		  sql.SELECT(RFQConsultRelation.T.PKEY);
-		  sql.FROM(RFQConsult.class);
-		  sql.LEFT_JOIN(RFQConsultRelation.class, RFQConsult.T.PKEY, RFQConsultRelation.T.CONSULT);
-		    if (keyword != null && !keyword.isEmpty()) {
-		    	sql.LEFT_JOIN(UsrSupplier.class, RFQConsultRelation.T.SUPPLIER_ID, UsrSupplier.T.PKEY);
-		      // 关键字匹配询盘标题和报价供应商名称
-		    	sql
-		          .WHERE(RFQConsult.T.TITLE, "like ?", "%" + keyword + "%")
-		          .orWhere(UsrSupplier.T.NAME, "like ?", "%" + keyword + "%");
-		    }
-		    sql.AND().WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey());
-		    sql.WHERE(RFQConsult.T.IS_DELETED, "=?", false);
-		    if (type != null) {
-		      // 询盘类型
-		    	sql.WHERE(RFQConsult.T.TYPE, "=?", type);
-		    }
-		    if (unread != null) {
-		      // 是否有新消息
-		      if (unread) {
-		    	  sql
-		            .AND()
-		            .WHERE(RFQConsultRelation.T.IS_NEW, "=?", true)
-		            .orWhere(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", false);
-		      }
-		    }
-		    sql.GROUP_BY(RFQConsult.T.PKEY);
-		    sql.ORDER_BY(RFQConsult.T.CREATE_TIME, "desc");
-		    SQL sql2 = new SQL();
-		    sql2.SELECT("( @i := @i + 1 ) as i");
-		    sql2.SELECT(RFQConsultRelation.T.PKEY);
-		    sql2.FROM(sql, RFQConsultRelation.class);
-		    sql2.FROM(new SQL().SELECT("@i := 0"), "it");
-		    SQL sql3 = new SQL();
-		    sql3.SELECT("i");
-		    sql3.FROM(sql2, RFQConsultRelation.class);
-		    sql3.WHERE(RFQConsultRelation.T.PKEY, "=?", lastRelation);
-		    Integer index = Query.sql(sql3).queryObject(Integer.class);
-		    if(index != null)
-		    	limit = index;
-	  }
+
+    if (lastRelation != null) {
+      SQL sql = new SQL();
+      sql.SELECT(RFQConsultRelation.T.PKEY);
+      sql.FROM(RFQConsult.class);
+      sql.LEFT_JOIN(RFQConsultRelation.class, RFQConsult.T.PKEY, RFQConsultRelation.T.CONSULT);
+      if (keyword != null && !keyword.isEmpty()) {
+        sql.LEFT_JOIN(UsrSupplier.class, RFQConsultRelation.T.SUPPLIER_ID, UsrSupplier.T.PKEY);
+        // 关键字匹配询盘标题和报价供应商名称
+        sql.WHERE(RFQConsult.T.TITLE, "like ?", "%" + keyword + "%")
+            .orWhere(UsrSupplier.T.NAME, "like ?", "%" + keyword + "%");
+      }
+      sql.AND().WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey());
+      sql.WHERE(RFQConsult.T.IS_DELETED, "=?", false);
+      if (type != null) {
+        // 询盘类型
+        sql.WHERE(RFQConsult.T.TYPE, "=?", type);
+      }
+      if (unread != null) {
+        // 是否有新消息
+        if (unread) {
+          sql.AND()
+              .WHERE(RFQConsultRelation.T.IS_NEW, "=?", true)
+              .orWhere(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", false);
+        }
+      }
+      sql.GROUP_BY(RFQConsult.T.PKEY);
+      sql.ORDER_BY(RFQConsult.T.CREATE_TIME, "desc");
+      SQL sql2 = new SQL();
+      sql2.SELECT("( @i := @i + 1 ) as i");
+      sql2.SELECT(RFQConsultRelation.T.PKEY);
+      sql2.FROM(sql, RFQConsultRelation.class);
+      sql2.FROM(new SQL().SELECT("@i := 0"), "it");
+      SQL sql3 = new SQL();
+      sql3.SELECT("i");
+      sql3.FROM(sql2, RFQConsultRelation.class);
+      sql3.WHERE(RFQConsultRelation.T.PKEY, "=?", lastRelation);
+      Integer index = Query.sql(sql3).queryObject(Integer.class);
+      if (index != null) limit = index;
+    }
     BeanQuery<?> query = Query.SELECT(RFQConsult.T.PKEY);
     query.SELECT(RFQConsult.T.VERIFY_STATUS);
     query.SELECT(RFQConsult.T.STATUS);
@@ -156,7 +154,8 @@ public class RFQConsultServiceImpl implements RFQConsultService {
                   consult.setTitle(GetValue.get(map, RFQConsult.T.TITLE, String.class, null));
                   consult.setType(GetValue.get(map, RFQConsult.T.TYPE, Byte.class, null));
                   consult.setStatus(GetValue.get(map, RFQConsult.T.STATUS, Byte.class, null));
-                  consult.setVerifyStatus(GetValue.get(map, RFQConsult.T.VERIFY_STATUS, Byte.class, null));
+                  consult.setVerifyStatus(
+                      GetValue.get(map, RFQConsult.T.VERIFY_STATUS, Byte.class, null));
                   String image = GetValue.get(map, RFQConsult.T.IMAGE, String.class, null);
                   consult.setImages(
                       image == null ? new ArrayList<>() : Arrays.asList(image.split(",")));
@@ -220,9 +219,9 @@ public class RFQConsultServiceImpl implements RFQConsultService {
                     log.warn("RFQConsultRelation主键为{}的记录的image字段格式有问题", quotation.getPkey());
                   }
                   quotation.setMinPrice(
-                      GetValue.get(map, RFQConsultRelation.T.MINPRICE, Integer.class, null));
+                      GetValue.get(map, RFQConsultRelation.T.MINPRICE, BigDecimal.class, null));
                   quotation.setMaxPrice(
-                      GetValue.get(map, RFQConsultRelation.T.MAXPRICE, Integer.class, null));
+                      GetValue.get(map, RFQConsultRelation.T.MAXPRICE, BigDecimal.class, null));
                   RFQCurrencyView currency = new RFQCurrencyView();
                   currency.setPkey(GetValue.get(map, "currencyPkey", Integer.class, null));
                   currency.setShortName(GetValue.get(map, "currencyShortName", String.class, null));
@@ -622,7 +621,15 @@ public class RFQConsultServiceImpl implements RFQConsultService {
       //      throw new WebMessageException(ReturnCode.valid_notempty, "请选择产品");
     }
 
+    // 产品最多可以添加50个
     final Integer limit = 50;
+
+    String[] params = products.split(",");
+
+    if (params.length > limit)
+      // 选中产品数量超出预定限制 50个
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.products_too_much, language));
 
     String productRequest = consult.getProductRequest();
     Set<RFQConsultProductView> productRequestSet;
@@ -637,34 +644,46 @@ public class RFQConsultServiceImpl implements RFQConsultService {
         productRequestSet = new HashSet<>();
       }
     }
-    String[] params = products.split(",");
-    if (productRequestSet.size() + params.length > limit) {
-      throw new WebMessageException(
-          MessageBuild.buildMessage(ReturnCode.products_too_much, language));
-      //      throw new WebMessageException(ReturnCode.valid_notempty, "产品数量超出上限");
+    Set<RFQConsultProductView> target = new HashSet<>();
+    Set<Integer> need_add = new HashSet<>();
+    for (String productPkeyString : params) {
+      boolean exists = false;
+      Integer productPkey = Integer.valueOf(productPkeyString);
+      for (RFQConsultProductView rfqConsultProductView : productRequestSet) {
+        if (rfqConsultProductView.getPkey().equals(productPkey)) {
+          target.add(rfqConsultProductView);
+          productRequestSet.remove(rfqConsultProductView);
+          exists = true;
+          break;
+        }
+      }
+      if (!exists) {
+        need_add.add(productPkey);
+      }
     }
-    BeanQuery<PdtProduct> query =
-        Query.SELECT(PdtProduct.T.PKEY)
-            .SELECT(PdtProduct.T.NAME)
-            .SELECT(PdtProduct.T.PICTURE)
-            .FROM(PdtProduct.class)
-            .WHERE(
-                PdtProduct.T.PKEY,
-                SQL.getInSql(params.length),
-                Arrays.stream(params).map(Integer::valueOf).toArray(Serializable[]::new))
-            .WHERE(PdtProduct.T.SUPPLIER, "=?", relation.getSupplierId())
-            .limit(0, 50);
-    for (PdtProduct product : query.queryList()) {
-      System.out.println("11111111111111");
-      RFQConsultProductView view = new RFQConsultProductView();
-      view.setPkey(product.getPkey());
-      view.setName(product.getName());
-      view.setImage(product.getPicture());
-      productRequestSet.add(view);
+
+    if (need_add.size() > 0) {
+      BeanQuery<PdtProduct> query =
+          Query.SELECT(PdtProduct.T.PKEY)
+              .SELECT(PdtProduct.T.NAME)
+              .SELECT(PdtProduct.T.PICTURE)
+              .FROM(PdtProduct.class)
+              .WHERE(
+                  PdtProduct.T.PKEY,
+                  SQL.getInSql(need_add.size()),
+                  need_add.toArray(new Serializable[need_add.size()]))
+              .WHERE(PdtProduct.T.SUPPLIER, "=?", relation.getSupplierId())
+              .limit(0, limit);
+      for (PdtProduct product : query.queryList()) {
+        RFQConsultProductView view = new RFQConsultProductView();
+        view.setPkey(product.getPkey());
+        view.setName(product.getName());
+        view.setImage(product.getPicture());
+        target.add(view);
+      }
     }
     try {
-      consult.setProductRequest(om.writeValueAsString(productRequestSet));
-      System.out.println(om.writeValueAsString(productRequestSet));
+      consult.setProductRequest(om.writeValueAsString(target));
       consult.upd();
     } catch (JsonProcessingException e) {
       e.printStackTrace();
