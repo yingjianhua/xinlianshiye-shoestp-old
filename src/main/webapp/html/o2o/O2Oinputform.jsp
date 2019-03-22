@@ -387,6 +387,7 @@
                 let regEmail = /.+@[a-z0-9\.]+\.(com|cn|net)$/;
                 let regTel = /[0-9]{6,}/;
                 let regCode = /[0-9]+/;
+                let regName = /^([^`~!@#$%^&*()+= -\]\[';/.,<>?:"{}|]).{0,32}(?<![`~!@#$%^&*()+= -\]\[';/.,<>?:"{}|])$/;
                 if (!value || value.length == 0) {
                     this.showerrmesssage(name + ' can not be empty');
                     return false;
@@ -398,6 +399,9 @@
                     return false;
                 } else if (name == 'countryCode' && !regCode.test(value)) {
                     this.showerrmesssage(name + ' format error');
+                    return false;
+                } else if (name == 'fullName' && !regName.test(value)) {
+                    this.showerrmesssage(name + ' format error, Name cannot exceed 32 digits');
                     return false;
                 } else {
                     return true;
@@ -458,10 +462,19 @@
                     })
                 ).then(function (res) {
                     if (res.data.ret == 1) {
-                        self.showerrmesssage('Submit success');
-                        setTimeout(function () {
-                            window.location.reload();
-                        }, 3000)
+                        self.$alert("Your application has been submitted. We will inform you of the result within 10 work days.", {
+                                    confirmButtonText: 'OK, I know',
+                                    customClass: "my-custom-element-alert-class fs-content-18",
+                                    center: true,
+                                    callback: action =>{
+                                         setTimeout(function () {
+                                            window.location.reload();
+                                        }, 2000)
+                                    }
+                                });
+                        // setTimeout(function () {
+                        //     window.location.reload();
+                        // }, 3000)
                     } else {
                         self.showerrmesssage(res.data.msg)
                     }

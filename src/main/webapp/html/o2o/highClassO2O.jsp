@@ -125,7 +125,7 @@
                         <p class="sample-text">Min.Order:{{item.min_order}} pairs</p>
                     </div>
                     <div class="sample-item-model">
-                        <a href="javascript: void(0);" class="sample-button" @click="gotoinquery(item.id)">inquery</a>
+                        <a href="javascript: void(0);" class="sample-button" @click="ToProductInquiry(item.id)">inquery</a>
                     </div>
                 </div>
             </div>
@@ -231,6 +231,11 @@
             this.getporduct();
         },
         methods: {
+             // 跳转商品询盘表单
+             ToProductInquiry(pdtId){
+                let url = '/home/usr_UsrConsult_productPublishView?product_id=' + pdtId+ "&backUrl=" + window.location.href;
+                util_function_obj.supplierCantEnter(this, url);
+            },
             isSupplier() {
                 if (!sysConfig.user) {
                     util_function_obj.alertWhenNoLogin(self);
@@ -269,9 +274,6 @@
                     }
                 })
             },
-            gotoinquery: function (id) {
-                window.location = '/home/usr_UsrConsult_productPublishView?product_id=' + id;
-            }
         }
     })
 </script>
