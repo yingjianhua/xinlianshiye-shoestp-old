@@ -901,6 +901,10 @@ li {
     font-size: 18px;
     background-color: #10389c;
     border-radius: 3px;
+    cursor: pointer;
+}
+.o2o-form .btn-submit:hover{
+    background-color: #35c;
 }
 
 #o2oinputform .el-dialog__header {
