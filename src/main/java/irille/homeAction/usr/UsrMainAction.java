@@ -406,13 +406,21 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 	 * @throws IOException
 	 */
 	public void subValid() throws IOException {
+		if (Str.isEmpty(getCode())) {
+			throw new WebMessageException(
+					MessageBuild.buildMessage(ReturnCode.service_verification_code, HomeAction.curLanguage()));
+		}
+		if (getCode().trim().length() > 6) {
+			throw new WebMessageException(
+					MessageBuild.buildMessage(ReturnCode.valid_code_overlenth, HomeAction.curLanguage()));
+		}
 		Cache cache = CacheUtils.pwdValid;
 		String value = String.valueOf(cache.getIfPresent(Integer.parseInt(getCode())));
 		if (cache.getIfPresent(Integer.parseInt(getCode())) != null && value.equals(getEmail())) {
 			write();
 		} else {
 			throw new WebMessageException(
-					MessageBuild.buildMessage(ReturnCode.service_Invalid_UID, HomeAction.curLanguage()));
+					MessageBuild.buildMessage(ReturnCode.service_Invalid_verification_code, HomeAction.curLanguage()));
 		}
 	}
 
