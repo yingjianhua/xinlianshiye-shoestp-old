@@ -76,6 +76,8 @@
     color: #10389c !important; }
 .page-personal-center .el-scrollbar__wrap {
     overflow-x: hidden; }
+.page-personal-center .top-search-type .el-scrollbar__wrap {
+    overflow-x: scroll; }
 .page-personal-center .el-button {
     border-radius: 3px;
     border-color: #ddd;
