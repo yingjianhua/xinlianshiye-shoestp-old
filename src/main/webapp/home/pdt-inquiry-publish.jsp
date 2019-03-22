@@ -400,7 +400,7 @@ ul{
                 },
                 // 上传图片文件之前
                 beforeUpload(file) {
-                    if (!sysConfig.user) {
+                    if (!sysConfig || !sysConfig.user) {
                         sessionStorage['Temp_Pdt_publish_form']=JSON.stringify(this.form)
                         util_function_obj.alertWhenNoLogin(this);
                         return
@@ -412,7 +412,7 @@ ul{
                     }
                 },
                 submitForm(formName) { // 表单提交
-                    if (!sysConfig.user) {
+                    if (!sysConfig || !sysConfig.user) {
                         sessionStorage['Temp_Pdt_publish_form']=JSON.stringify(this.form)
                         util_function_obj.alertWhenNoLogin(this);
                         return

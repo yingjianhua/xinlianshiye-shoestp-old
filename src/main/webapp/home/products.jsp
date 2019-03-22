@@ -401,7 +401,7 @@
             // 添加收藏和取消收藏
             shoucang: function (e) {
                 var index = e.currentTarget.dataset.num;
-                if (!sysConfig.user) {
+                if (!sysConfig || !sysConfig.user) {
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 } else {
@@ -519,7 +519,7 @@
             },
             //   添加到询盘
             addRFQ(e) {
-                if (!sysConfig.user) {
+                if (!sysConfig || !sysConfig.user) {
                     // user_obj.set_form_sign_in('', window.location.href, 1);
                     util_function_obj.alertWhenNoLogin(this);
                     return

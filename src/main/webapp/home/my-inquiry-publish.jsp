@@ -531,7 +531,7 @@
                     trigger: 'blur'
                 },
                     {
-                        pattern: /^\+?[1-9][0-9]*$/,
+                        pattern: util_regular_obj.register.positiveInteger,
                         message: 'Please enter the positive integer',
                         trigger: 'blur'
                     }
@@ -573,7 +573,7 @@
                 }
             },
             beforeUpload(file) {
-                if (!isLogin) {
+                if (!sysConfig || !sysConfig.user) {
                     sessionStorage['Temp_publish_form'] = JSON.stringify(this.form)
                     util_function_obj.alertWhenNoLogin(this);
                     return
@@ -602,7 +602,7 @@
 
             // 整个form提交
             submit() {
-                // if (!isLogin) {
+                // if (!sysConfig || !sysConfig.user) {
                 //     sessionStorage['Temp_publish_form'] = JSON.stringify(this.form)
                 //     this.$alert('Please login to operate', {
                 //         confirmButtonText: 'Ok',
@@ -617,7 +617,7 @@
                 //     return
                 // }
 
-                if (!isLogin) {
+                if (!sysConfig || !sysConfig.user) {
                     sessionStorage['Temp_publish_form'] = JSON.stringify(this.form);
                     util_function_obj.alertWhenNoLogin(this);
                     return;

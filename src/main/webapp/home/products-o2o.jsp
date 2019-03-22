@@ -439,7 +439,7 @@
             // 添加收藏和取消收藏
             shoucang: function (e) {
                 var index = e.currentTarget.dataset.num;
-                if(!sysConfig.user){
+                if(!sysConfig || !sysConfig.user){
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 }else {

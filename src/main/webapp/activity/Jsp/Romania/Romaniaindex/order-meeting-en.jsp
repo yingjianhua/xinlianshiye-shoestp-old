@@ -698,7 +698,7 @@ maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
             },
             // 收藏
             collect(goodsId, whichShoesList, shoesIndex) {
-                if (!isLogin) {
+                if (!sysConfig || !sysConfig.user) {
                     user_obj.set_form_sign_in('', window.location.href, 1);
                     return
                 }

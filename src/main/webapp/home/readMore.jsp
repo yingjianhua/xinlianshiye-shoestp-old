@@ -303,7 +303,7 @@
                 return "https://image.shoestp.com" + v + params
             },
             submitForm(formName) { //表单提交
-                if(!sysConfig.user){
+                if(!sysConfig || !sysConfig.user){
                     util_function_obj.alertWhenNoLogin(this);
                         return
                     }else{

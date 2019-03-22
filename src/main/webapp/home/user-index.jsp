@@ -341,7 +341,7 @@
                     });
             },
             submitForm(formName) { //表单提交
-                if(!sysConfig.user){ 
+                if(!sysConfig || !sysConfig.user){
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 }else{
@@ -441,7 +441,7 @@
                 return isJPG && isLt3M;
             },
             clickUploadAvatar(avatar) {
-                if(!sysConfig.user){
+                if(!sysConfig || !sysConfig.user){
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 }

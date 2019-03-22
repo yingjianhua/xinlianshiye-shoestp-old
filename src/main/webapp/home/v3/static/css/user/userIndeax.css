@@ -82,6 +82,10 @@
     border-radius: 3px;
     border-color: #ddd;
     background-color: #f5f5f5; }
+.page-personal-center .el-button.is-circle {
+    border-radius: 50%;
+    border: 1px solid #dcdfe6;
+    background: #fff; }
 .page-personal-center .el-button--primary {
     border-radius: 3px;
     border-color: #10389c;

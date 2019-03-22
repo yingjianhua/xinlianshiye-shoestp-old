@@ -281,7 +281,7 @@
                     });
             },
             submitForm1(formName) { // 第一部分表单提交    信息
-                if(!sysConfig.user){
+                if(!sysConfig || !sysConfig.user){
                     util_function_obj.alertWhenNoLogin(this);
                         return
                 }
@@ -341,7 +341,7 @@
                 });
             },
             submitForm2(formName) { // 第二部分表单提交    邮箱
-                if(!sysConfig.user){
+                if(!sysConfig || !sysConfig.user){
                     util_function_obj.alertWhenNoLogin(this);
                         return
                 }
@@ -398,7 +398,7 @@
                 });
             },
             submitForm3(formName) { // 第三部分表单提交    密码
-                if(!sysConfig.user){
+                if(!sysConfig || !sysConfig.user){
                     util_function_obj.alertWhenNoLogin(this);
                         return
                 }

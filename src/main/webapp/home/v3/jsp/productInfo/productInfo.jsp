@@ -1282,7 +1282,7 @@
 
 
             addfav: function () {
-                if (!isLogin) {
+                if (!sysConfig || !sysConfig.user) {
                     // user_obj.set_form_sign_in('', window.location.href, 1);
                     util_function_obj.alertWhenNoLogin(this);
                     return
@@ -1440,7 +1440,7 @@
                 window.open(back_url, "bookmarkWindow");
             },
             addRFQ: function () {
-                if (!isLogin) {
+                if (!sysConfig || !sysConfig.user) {
                     // user_obj.set_form_sign_in('', window.location.href, 1);
                     util_function_obj.alertWhenNoLogin(this,"/home/usr_UsrConsult_productPublishView?product_id=" + this.productinfocom.pdtId+ '&backUrl=' + window.location.href);
                     return
