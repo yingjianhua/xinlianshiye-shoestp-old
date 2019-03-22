@@ -512,7 +512,7 @@
         }
     };
     var validateCredit = function (rule, value, callback) {
-        let reg = /[0-9A-Za-z]{18}/;
+        let reg = /^[0-9A-Za-z]{18}$/;
         if (!value) {
             return callback(new Error("请填写统一社会信用代码"));
         } else if (!reg.test(value)) {
