@@ -133,9 +133,9 @@
             </div>
             <div class="i0"></div>
             <div class="top-box2">Price :
-                <input type="text" @blur="min222" @keyup.enter="min222" v-model.number="min" placeholder="min."
+                <input class="w63" type="text" @blur="min222" @keyup.enter="min222" v-model.number="min" placeholder="min."
                        onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/> -
-                <input type="text" @blur="min222" @keyup.enter="min222" v-model.number="max" placeholder="max."
+                <input class="w63" type="text" @blur="min222" @keyup.enter="min222" v-model.number="max" placeholder="max."
                        onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/>
             </div>
 
@@ -158,7 +158,7 @@
                                 <div class="h3" @mouseenter="bigPicBoxopen" @mouseleave="bigPicBoxclose"
                                      :data-pic="item2">
                                     <a :href="'/'+item.rewrite" target="_blank"><img class="fl"
-                                                                                     :src="imgurl(item2,1)"/></a>
+                                                                                     :src="util_function_obj.image(item2,195)"/></a>
                                 </div>
                             </el-carousel-item>
                         </el-carousel>
@@ -267,7 +267,7 @@
     <!--页面右部列表  end-->
 
     <div class="bigPicBox" v-show="bigPicBox">
-        <img :src="imgurl(bigPicBoxpic)" alt=""/>
+        <img :src="util_function_obj.image(bigPicBoxpic,446)" alt=""/>
     </div>
 
 </div>
@@ -310,16 +310,6 @@
             bigPicBoxpic: '',
         },
         methods: {
-            imgurl(row, resize) {
-                if (row != "") {
-                    if (resize) {
-                        return 'https://image.shoestp.com/' + row + '?x-oss-process=image/resize,m_fill,h_195,w_195'
-                    } else {
-                        return 'https://image.shoestp.com/' + row + '?x-oss-process=image/resize,m_fill,h_500,w_500'
-                    }
-                }
-                return null
-            },
             // 读取链接带参
             GetQueryString(name) {
                 var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -487,7 +477,26 @@
             },
             // 点击后才实现搜索
             search() {
-                if (this.min >= 0 && this.max > 0 && this.max < this.min) {
+                // min order正整数判断
+                if( !util_regular_obj.register.positiveInteger.test(this.lessthan) ){
+                    this.$message({
+                        message: 'Min order should be positive integer number',
+                        type: 'warning'
+                    });
+                    return;
+                }else if( !util_regular_obj.register.priceDecimal.test(this.min) ){
+                    this.$message({
+                        message: 'Min price can\'t greater than 6 digit integer and 2 decimal places',
+                        type: 'warning'
+                    });
+                    return;
+                }else if( !util_regular_obj.register.priceDecimal.test(this.max) ){
+                    this.$message({
+                        message: 'Max price can\'t greater than 6 digit integer and 2 decimal places',
+                        type: 'warning'
+                    });
+                    return
+                }else if (this.min >= 0 && this.max > 0 && this.max < this.min) {
                     this.$message({
                         message: 'Max must be greater than Min',
                         type: 'warning'

@@ -333,9 +333,13 @@
 							<img :src="image(supplierDetail.logo)" alt="" class="short-name"
 								 :class="{isShowMore: isShowMore}"
 								 v-if="supplierDetail.logo">
-							<div class="short-name" v-else
+							<div class="short-name" v-else-if="supplierDetail.name"
 								 :class="{isShowMore: isShowMore}">
 								{{supplierDetail.name && supplierDetail.name[0]}}
+							</div>
+							<div class="short-name" v-else
+								 :class="{isShowMore: isShowMore}">
+								H
 							</div>
 
 							<div class="full-name" :class="{isShowMore: isShowMore, ellipsis_5: isShowMore, ellipsis_1: !isShowMore}">
@@ -845,12 +849,18 @@
 										<li class="item">
 											Quantity required：{{inquiryDetail.quantity}} {{inquiryDetail.unit}}
 										</li>
+                                        <li class="item" v-if="inquiryDetail.price">
+                                            Price：{{inquiryDetail.price}} {{inquiryDetail.currency}}
+                                        </li>
 										<li class="item">
 											Expiration time：{{inquiryDetail.valieDate | dataFormat('yyyy-MM-dd hh:mm:ss')}}
 										</li>
 										<li class="item" v-if="inquiryDetail.paymentTerms">
 											Payment：{{inquiryDetail.paymentTerms}}
 										</li>
+                                        <li class="item" v-if="inquiryDetail.destination">
+                                            Destination：{{inquiryDetail.destination}}
+                                        </li>
 										<li class="item" v-if="inquiryDetail.shippingTerms">
 											Shipping：{{inquiryDetail.shippingTerms}}
 										</li>
@@ -879,6 +889,8 @@
 								<h3 class="content-header">Product detailed specifications:</h3>
 								<div class="content">
 									{{inquiryDetail.detail}}
+                                    <br>
+                                    {{inquiryDetail.moreInformation?inquiryDetail.moreInformation:""}}
 								</div>
 							</div>
 

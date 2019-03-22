@@ -320,7 +320,7 @@
                                 </el-col>
                             </el-row>
                         </el-form-item>
-                        <el-form-item label="Purchase  Quantity" prop="quantity" class="name">
+                        <el-form-item label="Purchase  Quantity" prop="quantity">
                             <el-row :gutter="10">
                                 <el-col :span="7">
                                     <el-input v-model.trim="form.quantity"></el-input>
@@ -439,10 +439,12 @@
 
                     rules: {
                         title: [
-                            {required: true, message: 'Please fill in the title'}
+                            {required: true, message: 'Please fill in the title'},
+                            { max: 500, message: 'Enter up to 500 digits', trigger: 'blur' }
                         ],
                         quantity: [
                             {required: true,message: 'Please enter the quantity',trigger: 'blur'},
+                            { max: 10, message: 'Enter up to 10 digits', trigger: 'blur' },
                             { pattern: /^\+?[1-9][0-9]*$/, message: "Please enter a number, can't start with 0, can't have decimal point" }
                         ],
                         description: [{

@@ -7,7 +7,7 @@ Vue.component('index-top', {
             <a href="/home/usr_UsrPurchase" target="view_window"><img src="/home/v3/static/images/o2otoplogo.png" class="logo"
                     alt="logo"></a>
             <div class="topsearch">
-                <el-select v-model="select" placeholder="Product" @change="selected">
+                <el-select popper-class="top-search-type" v-model="select" placeholder="Product" @change="selected">
                     <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                     </el-option>
                 </el-select>

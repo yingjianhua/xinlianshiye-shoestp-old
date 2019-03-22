@@ -248,11 +248,10 @@
             userInfo: [],
             favoriteList: [], //收藏列表
             rules: { //表单验证
-                title: [{
-                    required: true,
-                    message: 'Please enter the product name',
-                    trigger: 'blur'
-                },],
+                title: [
+                        {required: true,message: 'Please fill in the title',trigger: 'blur'},
+                        { max: 500, message: 'Enter up to 500 digits', trigger: 'blur' }
+                    ],
 
                 descriotion: [{
                     required: true,
@@ -261,6 +260,7 @@
                 }],
                 quantity: [
                             {required: true,message: 'Please enter the quantity',trigger: 'blur'},
+                            { max: 10, message: 'Enter up to 10 digits', trigger: 'blur' },
                             { pattern: /^\+?[1-9][0-9]*$/, message: "Please enter a number, can't start with 0, can't have decimal point" }
                         ],
                 unit: [{

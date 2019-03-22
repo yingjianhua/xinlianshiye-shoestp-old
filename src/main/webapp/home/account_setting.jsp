@@ -219,19 +219,18 @@
                 },
                 rules: { //表单验证
                     firstName: [{required: true,message: 'Please enter a firstName',trigger: 'blur'},
-                        { max: 50, message: 'Enter up to 50 characters', trigger: 'blur' },
+                        { pattern: util_regular_obj.register.nameGlobal, message: 'Name cannot exceed 32 digits' }
                     ],
                     surname: [{ required: true,message: 'Please enter a surname',trigger: 'blur'},
-                        { max: 50, message: 'Enter up to 50 characters', trigger: 'blur' },
+                        { pattern: util_regular_obj.register.nameGlobal, message: 'Name cannot exceed 32 digits' }
                     ],
                     
                     phone:[{validator: validatePhone, trigger: 'blur', required: true,}],
                     address: [{message: 'Please enter the address',trigger: 'blur'},
-                        // { max: 50, message: 'Enter up to 50 characters', trigger: 'blur' }
+                        { pattern: /^[^!@~`%^&*()+|\\}{":?/].{0,180}$/, message: 'Cannot enter special symbols, up to 180 digits' }
                     ],
                     company: [{required: true,message: 'Please enter the company name',trigger: 'blur'},
-                        // { max: 50, message: 'Enter up to 50 characters', trigger: 'blur' },
-                        { pattern: util_regular_obj.register.companyName, message: 'The name does not meet the specifications, please re-fill' }
+                        { pattern: util_regular_obj.register.companyName, message: 'Name cannot exceed 50 digits' }
                     ],
                     gender: [{
                         message: 'Please select gender',
@@ -426,9 +425,9 @@
                                     //   window.location.href =
                                     //     '/home/usr_UsrConsult_listView';
                                     // }, 2000)
-                                    // setTimeout(function () {
-                                    //     window.location.reload();
-                                    // }, 1500)
+                                    setTimeout(function () {
+                                        window.location.reload();
+                                    }, 1500)
                                     // 未登录时
                                 }  else {
                                     this.flag = false;

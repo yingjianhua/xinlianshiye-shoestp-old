@@ -60,7 +60,7 @@
         </div>
         <!-- Buyer Background Information -->
         <div class="section2">
-            <h1>Buyer Background Information</h1>
+            <h1>Buyer Information</h1>
             <div class="section2-content flexSb">
                 <ul class="section2-ul1">
                     <li class="flexSt">
@@ -151,19 +151,6 @@
     new Vue({
         el: "#readMore",
         data(){
-            var validateQuantity = (rule, value, callback) => {
-                let re = /^[1-9]\d*$/;
-                if (!value) {
-                    return callback(new Error('Please enter the quantity'));
-                }
-                if(parseInt(value)!=value){
-                    callback(new Error('Please enter an integer'));
-                }
-                 if( !re.test(value)){
-                    callback(new Error('The number cannot be 0'));
-                }
-                callback();
-            };
             return{
                 flag : false, 
                 companyInfo: [],
@@ -197,18 +184,21 @@
                     shipping_type: 1
                 },
                 rules: {  //表单验证
-                    title: [{
-                        required: true,
-                        message: 'Please fill in the title',
-                        trigger: 'blur'
-                    },],
+                    title: [
+                        {required: true,message: 'Please fill in the title',trigger: 'blur'},
+                        { max: 500, message: 'Enter up to 500 digits', trigger: 'blur' }
+                    ],
 
                     descriotion: [{
                         required: true,
                         message: 'Please fill in the descriotion',
                         trigger: 'blur'
                     }],
-                    quantity: [{required: true, validator: validateQuantity, trigger: 'blur' }],
+                    quantity: [
+                            {required: true,message: 'Please enter the quantity',trigger: 'blur'},
+                            { max: 10, message: 'Enter up to 10 digits', trigger: 'blur' },
+                            { pattern: /^\+?[1-9][0-9]*$/, message: "Please enter a number, can't start with 0, can't have decimal point" }
+                        ],
                     unit: [{
                         required: true,
                         message: 'Please select a unit',

@@ -213,7 +213,7 @@ ul{
                 <el-col :span="2">
                     <div style="box-shadow:#333 0px 0px 10px;width:60px;height:60px;">
                         <!-- 商品图片 -->
-                        <img :src="image(supData.image, supData.type==3 ?'?x-oss-process=image/resize,w_60,h_60/blur,r_5,s_30':'')" alt="" style="width:100%;">
+                        <img :src="image(supData.image + '?x-oss-process=image/resize,w_60,h_60', supData.type==3 ?'?x-oss-process=image/resize,w_60,h_60/blur,r_5,s_30':'')" alt="" style="width:100%;">
                     </div>
                 </el-col>
                 <el-col :span="12">
@@ -315,6 +315,7 @@ ul{
                 rules: {
                     quantity: [
                             {required: true,message: 'Please enter the quantity',trigger: 'blur'},
+                            { max: 10, message: 'Enter up to 10 digits', trigger: 'blur' },
                             { pattern: /^\+?[1-9][0-9]*$/, message: "Please enter a number, can't start with 0, can't have decimal point" }
                         ],
                     unitType: [{

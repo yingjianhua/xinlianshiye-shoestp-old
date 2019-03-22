@@ -1,6 +1,7 @@
 package com.xinlianshiye.shoestp.shop.service.usr.impl;
 
 import com.google.inject.Inject;
+import com.xinlianshiye.shoestp.common.dao.usr.UsrMainDao;
 import com.xinlianshiye.shoestp.common.dao.usr.UsrPurchaseDao;
 import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
 import com.xinlianshiye.shoestp.shop.service.usr.UsrPurchaseService;
@@ -19,6 +20,7 @@ import irille.shop.usr.UsrPurchase;
 
 public class UsrPurchaseServiceImpl implements UsrPurchaseService {
 
+  @Inject private UsrMainDao usrMainDao;
   @Inject private UsrPurchaseDao usrPurchaseDao;
   @Inject private RFQConsultMessageDao rFQConsultMessageDao;
   @Inject private RFQConsultRelationDao rFQConsultRelationDao;
@@ -41,23 +43,27 @@ public class UsrPurchaseServiceImpl implements UsrPurchaseService {
     view.setRequestsFromConnectionsCount(
         rFQConsultRelationDao.countNewByPurchaseGroupBySupplier(purchase.getPkey()));
     view.setUnreadMessagersCount(
-        rFQConsultMessageDao.countPurchaseUnreadByRelation_PurchaseGroupByRelation(purchase.getPkey()));
+        rFQConsultMessageDao.countPurchaseUnreadByRelation_PurchaseGroupByRelation(
+            purchase.getPkey()));
     return view;
   }
 
   @Override
   public void changeEmail(UsrPurchase purchase, String email, String password, Language language) {
+    UsrMain main = purchase.gtUserid();
     // 检查密码
-    checkPassword(purchase, password);
+    checkPassword(main, password);
     // 校验邮箱地址格式的有效性
     validEmail(email);
-    UsrPurchase purchase2 = usrPurchaseDao.findByLoginNameOrEmail(email);
-    if (purchase2 != null) {
+    if (usrPurchaseDao.findByLoginNameOrEmail(email).isPresent()) {
+      // 用户名或邮箱地址已被使用
+      throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.mail_exists, language));
+    }
+    if (usrMainDao.findByEmail(email).isPresent()) {
       // 用户名或邮箱地址已被使用
       throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.mail_exists, language));
     }
     purchase.setEmail(email);
-    UsrMain main = BeanBase.load(UsrMain.class, purchase.getUserid());
     main.setEmail(email);
     main.upd();
     usrPurchaseDao.save(purchase);
@@ -65,15 +71,15 @@ public class UsrPurchaseServiceImpl implements UsrPurchaseService {
 
   @Override
   public void changePassword(UsrPurchase purchase, String newPassword, String password) {
+    UsrMain main = purchase.gtUserid();
     // 检查密码
-    checkPassword(purchase, password);
+    checkPassword(main, password);
     // 校验新密码格式的有效性
     validPassword(newPassword);
     purchase.setPassword(DateTools.getDigest(purchase.getPkey() + newPassword));
-    UsrMain main = BeanBase.load(UsrMain.class, purchase.getUserid());
-    main.setPassword(DateTools.getDigest(main.getPkey() + newPassword));
-    main.upd();
     usrPurchaseDao.save(purchase);
+    main.setPassword(DateTools.getDigest(main.getPkey() + newPassword));
+    usrMainDao.save(main);
   }
 
   @Override
@@ -84,8 +90,7 @@ public class UsrPurchaseServiceImpl implements UsrPurchaseService {
     purchase.setName(accountSetting.getFirstName());
     purchase.setSurname(accountSetting.getSurname());
     // 校验手机号码格式的有效性
-    if(accountSetting.getPhone() != null) 
-    	validMobile(accountSetting.getPhone());
+    if (accountSetting.getPhone() != null) validMobile(accountSetting.getPhone());
     purchase.setTelphone(accountSetting.getPhone());
     purchase.setCompany(accountSetting.getCompany());
     purchase.setAddress(accountSetting.getAddress());
