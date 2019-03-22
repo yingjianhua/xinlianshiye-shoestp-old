@@ -444,6 +444,7 @@
                         ],
                         quantity: [
                             {required: true,message: 'Please enter the quantity',trigger: 'blur'},
+                            { max: 10, message: 'Enter up to 10 digits', trigger: 'blur' },
                             { pattern: /^\+?[1-9][0-9]*$/, message: "Please enter a number, can't start with 0, can't have decimal point" }
                         ],
                         description: [{
