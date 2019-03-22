@@ -79,7 +79,7 @@
                             </li>
                         </template>
                         <template v-else>
-                                <div style="height:30px;line-height:30px;">暂无分组</div>
+                                <div style="height:30px;line-height:30px;">No grouping</div>
                         </template>
                     </ul>
                 </dd>
@@ -112,7 +112,7 @@
                         </div>
                         <div class="h3 fr">
                             <div class="fc7f7f7f">{{timeFormat(item.createdDate)}}</div>
-                            <el-popover placement="bottom" title="" width="80" trigger="hover">
+                            <el-popover placement="bottom" title="" width="80" trigger="click">
                                 <div class="cml-pupbox">
                                     <ul>
                                         <li>
@@ -123,7 +123,7 @@
                                                     <dd v-if="groupItem.pkey"  @click="moveGroup(item.pkey,groupItem.pkey,groupItem.name,groupItem.count)" v-for="(groupItem,index) in groupList" :key="index">{{groupItem.name}}</dd>
                                                 </template>
                                                 <template v-else>
-                                                    <div style="line-height:62px;">暂无分组</div>
+                                                    <div style="line-height:62px;">No grouping</div>
                                                 </template>
                                             </dl>
                                         </li>
@@ -186,7 +186,7 @@
                             <li v-if="item.pkey" v-for="(item,index) in groupList" :key="index" @click="moveGroup(contactPkey,item.pkey,item.name,item.count)">{{item.name}}</li>
                         </template>
                         <template v-else>
-                            <div style="line-height:68px;text-align:center;">暂无分组</div>
+                            <div style="line-height:68px;text-align:center;">No grouping</div>
                         </template>
                     </ul>
                 </div>
