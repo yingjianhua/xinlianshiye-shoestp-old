@@ -57,7 +57,13 @@ var util_function_obj={
         var searchUrl = window.location.search.substr(1);
         return searchUrl.substr( searchUrl.indexOf(searchStr) + searchStr.length);
     },
-
+    // 获取地址中 - 从params后，开始截取至最后
+    GetParamsFullUrl: function(params,defaultParams){
+        if(!params && !defaultParams) return "/";
+        var searchStr = params || defaultParams;
+        var searchUrl = window.location.search.substr(1);
+        return searchUrl.substr( searchUrl.indexOf(searchStr) + searchStr.length);
+    },
     // 获取地址参数 - 登录时用 - 返回该地址
     // GetSearchUrlParams: function(){
     //     return window.location.search.substr(1);
@@ -96,3 +102,14 @@ var util_function_obj={
         return "https://image.shoestp.com" + url + postfixUrl;
     },
 }
+var util_regular_obj = {
+    register:{
+        psd: /^[^\s]{6,20}$/,   //密码
+        phoneChina: /^1\d{10}$/,  //国内手机
+        phoneAreaCode: /^[+\d]?\d{1,3}-\d{6,16}$/,  //含国家区号手机 示例:0086-12345678,+86-12345678
+        email: /^[\w]{1,32}@\w{1,15}.\w{2,5}$/,  //邮箱正则
+        nameChina: /^[\u4E00-\u9FA5]{2,6}$/,  //姓名-中古
+        nameGlobal: /^([^`~!@#$%^&*()+= -\]\[';/.,<>?:"{}|]).{0,32}(?<![`~!@#$%^&*()+= -\]\[';/.,<>?:"{}|])$/,  //姓名
+        companyName: /^([^`~!@#$%^&*()+= -\]\[';/.,<>?:"{}|]).{0,52}(?<![`~!@#$%^&*()+= -\]\[';/.,<>?:"{}|])$/,  //公司名称
+    }
+};
