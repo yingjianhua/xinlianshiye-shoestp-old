@@ -158,7 +158,7 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
     ValidRegex2 regex = new ValidRegex2(getBean());
     regex.validAZLen(50,UsrSupplier.T.ENGLISH_NAME);
       UsrMain main = UsrMain.chkUniqueEmail(false, mainEmail);
-      if(main != null && !main.getEmail().equals(mainEmail)){
+      if(main != null && !main.getEmail().toLowerCase().equals(mainEmail.toLowerCase())){
           throw new WebMessageException("邮箱已被他人注册，请更换邮箱");
       }
     if (getBean().getName() != null)
