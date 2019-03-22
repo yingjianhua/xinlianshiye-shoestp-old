@@ -116,7 +116,7 @@
                 <p class="sample-wire"></p>
             </div>
             <div class="sample-right">
-                <div class="sample-item" v-for="item in sampleDetail">
+                <div class="sample-item" v-for="(item,index) in sampleDetail" v-if="index<8">
                     <img :src="baseimgurl + item.image+'?x-oss-process=image/resize,w_154,h_154/blur,r_5,s_20'" alt="">
                     <div class="sample-item-text">
                         <p class="sample-text show-line">{{item.title}}</p>
@@ -168,64 +168,7 @@
         data: {
             baseimgurl: 'https://image.shoestp.com',
             overLi: 1,
-            sampleDetail: [
-                {
-                    text: 'Autumn and winter retro outdoor men\'s shoes  ...',
-                    require: 'Min.Order:600 pairs',
-                    state: 'US',
-                    price: 7.9,
-                    image: 'images/highClass-pro_1a.png'
-                },
-                {
-                    text: 'Autumn and winter retro outdoor men\'s shoes  ...',
-                    require: 'Min.Order:600 pairs',
-                    state: 'US',
-                    price: 7.9,
-                    image: 'images/highClass-pro_1a.png'
-                },
-                {
-                    text: 'Autumn and winter retro outdoor men\'s shoes  ...',
-                    require: 'Min.Order:600 pairs',
-                    state: 'US',
-                    price: 7.9,
-                    image: 'images/highClass-pro_1a.png'
-                },
-                {
-                    text: 'Autumn and winter retro outdoor men\'s shoes  ...',
-                    require: 'Min.Order:600 pairs',
-                    state: 'US',
-                    price: 7.9,
-                    image: 'images/highClass-pro_1a.png'
-                },
-                {
-                    text: 'Autumn and winter retro outdoor men\'s shoes  ...',
-                    require: 'Min.Order:600 pairs',
-                    state: 'US',
-                    price: 7.9,
-                    image: 'images/highClass-pro_1.png'
-                },
-                {
-                    text: 'Autumn and winter retro outdoor men\'s shoes  ...',
-                    require: 'Min.Order:600 pairs',
-                    state: 'US',
-                    price: 7.9,
-                    image: 'images/highClass-pro_1.png'
-                },
-                {
-                    text: 'Autumn and winter retro outdoor men\'s shoes  ...',
-                    require: 'Min.Order:600 pairs',
-                    state: 'US',
-                    price: 7.9,
-                    image: 'images/highClass-pro_1.png'
-                },
-                {
-                    text: 'Autumn and winter retro outdoor men\'s shoes  ...',
-                    require: 'Min.Order:600 pairs',
-                    state: 'US',
-                    price: 7.9,
-                    image: 'images/highClass-pro_1.png'
-                }
-            ]
+            sampleDetail: []
         },
         mounted() {
             this.getporduct();
