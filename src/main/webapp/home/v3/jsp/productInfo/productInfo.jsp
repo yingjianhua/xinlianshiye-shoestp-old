@@ -1249,7 +1249,11 @@
                 arr.sort(function (a, b) {
                     return b - a;
                 })
-                that.price = arr[arr.length - 1] + '-' + arr[0];
+                if(that.productinfocom.tpView.length <= 1){
+                	that.price = that.productinfocom.price;
+                }else{
+                	that.price = arr[arr.length - 1] + '-' + arr[0];
+                }
             } else {
                 that.price = that.productinfocom.price;
                 that.tpView = false
