@@ -1,5 +1,7 @@
 package irille.Dao.RFQ;
 
+import java.io.IOException;
+
 import com.google.inject.ImplementedBy;
 
 import irille.Dao.RFQ.impl.RFQConsultServiceImpl;
@@ -7,6 +9,9 @@ import irille.platform.rfq.view.RFQConsultRelationView;
 import irille.platform.rfq.view.RFQConsultView;
 import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
 import irille.view.Page;
+import irille.view.RFQ.InquirysView;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 @ImplementedBy(RFQConsultServiceImpl.class)
 public interface RFQConsultService {
@@ -81,4 +86,31 @@ public interface RFQConsultService {
    * @author zjl @Date 2019/2/29 8:39
    */
   Page getMessage(Integer id, Integer start, Integer limit);
+  /**
+   * 获取询盘列表
+   *
+   * @throws IOException
+   * @author zjl @Date 2019/3/21 18:56
+   */
+  Page getInqList(
+      Integer start,
+      Integer limit,
+      Byte type,
+      String supplierName,
+      String purchaseName,
+      String productName);
+  /**
+   * 获取询盘类型 获取供应商SVS等级
+   *
+   * @throws IOException
+   * @author zjl @Date 2019/3/22 9:38
+   */
+  JSONObject getInqStatus() throws JSONException;
+  /**
+   * 获取询盘详情
+   *
+   * @throws IOException
+   * @author zjl @Date 2019/3/22 11:51
+   */
+  InquirysView getInqDetail(Integer rfqPkey);
 }
