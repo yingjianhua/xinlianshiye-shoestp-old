@@ -12,7 +12,7 @@
         color: #ffffff;
         border-color: #10389c;
     }
-   
+
     .el-button--primary:hover {
         color: #ffffff;
         border-color: #10389c;
@@ -23,7 +23,7 @@
         border-color: #10389c;
         background-color: #10389c;
     }
-    
+
 </style>
 
 </head>
@@ -198,7 +198,7 @@
                 }
             };
             return {
-                flag : false, 
+                flag : false,
                 accountInfo: [], // 账号设置信息
                 form1: {
                     gender: '',  //性别
@@ -219,18 +219,21 @@
                 },
                 rules: { //表单验证
                     firstName: [{required: true,message: 'Please enter a firstName',trigger: 'blur'},
-                        { pattern: util_regular_obj.register.nameGlobal, message: 'Name cannot exceed 32 digits' }
+                        // { pattern: util_regular_obj.register.nameGlobal, message: 'Name cannot exceed 32 digits' }
+                        { pattern: /^[^ ].{1,32}$/, message: 'Name cannot exceed 32 digits' }
                     ],
                     surname: [{ required: true,message: 'Please enter a surname',trigger: 'blur'},
-                        { pattern: util_regular_obj.register.nameGlobal, message: 'Name cannot exceed 32 digits' }
+                        // { pattern: util_regular_obj.register.nameGlobal, message: 'Name cannot exceed 32 digits' }
+                        { pattern: /^[^ ].{1,32}$/  , message: 'Name cannot exceed 32 digits' }
                     ],
-                    
+
                     phone:[{validator: validatePhone, trigger: 'blur', required: true,}],
                     address: [{message: 'Please enter the address',trigger: 'blur'},
                         { pattern: /^[^!@~`%^&*()+|\\}{":?/].{0,180}$/, message: 'Cannot enter special symbols, up to 180 digits' }
                     ],
                     company: [{required: true,message: 'Please enter the company name',trigger: 'blur'},
-                        { pattern: util_regular_obj.register.companyName, message: 'Name cannot exceed 50 digits' }
+                        // { pattern: util_regular_obj.register.companyName, message: 'Name cannot exceed 50 digits' }
+                        { pattern: /^[^ ].{1,32}$/, message: 'Name cannot exceed 50 digits' }
                     ],
                     gender: [{
                         message: 'Please select gender',
