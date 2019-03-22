@@ -31,9 +31,16 @@ import irille.shop.pdt.PdtCatDAO;
 import irille.shop.plt.PltProvince;
 import irille.shop.prm.PrmGroupPurchase;
 import irille.shop.prm.PrmGroupPurchaseDAO;
-import irille.shop.usr.*;
+import irille.shop.usr.Usr;
 import irille.shop.usr.Usr.OStatus;
+import irille.shop.usr.UsrAnnex;
+import irille.shop.usr.UsrMain;
+import irille.shop.usr.UsrProductCategory;
+import irille.shop.usr.UsrProductCategoryDAO;
+import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplier.T;
+import irille.shop.usr.UsrSupplierCategoryDAO;
+import irille.shop.usr.UsrSupplierDAO;
 import irille.view.pdt.CategoryView;
 import irille.view.usr.SupplierView;
 import irille.view.usr.UserView;
@@ -90,10 +97,10 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
   @NeedLogin(supplier = true)
   public void insInfo() throws Exception {
     if (getUser().getUser_type() == 1) {
-      regex(); //正则校验
+      regex(); // 正则校验
       getBean().setLoginName(getUser().getLoginName());
-      UsrSupplier supplier = UsrSupplierDAO.insSupplierNo(getBean(), lang); //没有多国语言翻译
-//      UsrSupplier supplier = UsrSupplierDAO.insSupplier(getBean()); //有多国语言翻译
+      UsrSupplier supplier = UsrSupplierDAO.insSupplierNo(getBean(), lang); // 没有多国语言翻译
+      //      UsrSupplier supplier = UsrSupplierDAO.insSupplier(getBean()); //有多国语言翻译
       UsrAnnex annex = new UsrAnnex();
       if (supplier.getPkey() != null) {
         annex.setSupplier(supplier.getPkey());
@@ -106,60 +113,60 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
     }
   }
 
-  //正则校验
-  public void regex() throws Exception{
+  // 正则校验
+  public void regex() throws Exception {
     ValidForm valid = new ValidForm(getBean());
-    valid.validNotEmpty(UsrSupplier.T.NAME,UsrSupplier.T.ENGLISH_NAME, UsrSupplier.T.COMPANY_ADDR,UsrSupplier.T.TARGETED_MARKET,UsrSupplier.T.PROD_PATTERN,UsrSupplier.T.CREDIT_CODE,UsrSupplier.T.CERT_PHOTO);
+    valid.validNotEmpty(
+        UsrSupplier.T.NAME,
+        UsrSupplier.T.ENGLISH_NAME,
+        UsrSupplier.T.COMPANY_ADDR,
+        UsrSupplier.T.TARGETED_MARKET,
+        UsrSupplier.T.PROD_PATTERN,
+        UsrSupplier.T.CREDIT_CODE,
+        UsrSupplier.T.CERT_PHOTO);
     ValidRegex2 regex = new ValidRegex2(getBean());
-    regex.validAZLen(50,UsrSupplier.T.ENGLISH_NAME);
+    regex.validAZLen(50, UsrSupplier.T.ENGLISH_NAME);
     if (getBean().getWebsite() != null)
       regex.validRegexMatched(
-              "http[s]?:\\/\\/[\\w]{1,}.?[\\w]{1,}.?[\\w/.?&=-]{1,}",
-              "请输入完整的网址格式，如https://www.shoestp.com",
-              UsrSupplier.T.WEBSITE);
+          "http[s]?:\\/\\/[\\w]{1,}.?[\\w]{1,}.?[\\w/.?&=-]{1,}",
+          "请输入完整的网址格式，如https://www.shoestp.com",
+          UsrSupplier.T.WEBSITE);
     if (getBean().getAnnualProduction() != null)
       regex.validRegexMatched(
-              "([1-9]\\d*|0)(\\.\\d*[1-9])?",
-              "年产量请填写数字,不能以0开头",
-              UsrSupplier.T.ANNUAL_PRODUCTION);
+          "([1-9]\\d*|0)(\\.\\d*[1-9])?", "年产量请填写数字,不能以0开头", UsrSupplier.T.ANNUAL_PRODUCTION);
     if (getBean().getTelephone() != null)
       regex.validRegexMatched(
-              "((\\d{3,4}-)?\\d{7,8})|(1\\d{10})", "请填写正确的固定电话格式", UsrSupplier.T.TELEPHONE);
+          "((\\d{3,4}-)?\\d{7,8})|(1\\d{10})", "请填写正确的固定电话格式", UsrSupplier.T.TELEPHONE);
     if (getBean().getFax() != null)
-      regex.validRegexMatched(
-              "(\\d{3,4}-)?\\d{7,8}", "请填写正确传真格式", UsrSupplier.T.FAX);
-    if(getBean().getPostcode() != null)
-      regex.validRegexMatched("[0-9]{6}","邮编只能输入数字，且数字个数为6个", UsrSupplier.T.POSTCODE);
+      regex.validRegexMatched("(\\d{3,4}-)?\\d{7,8}", "请填写正确传真格式", UsrSupplier.T.FAX);
+    if (getBean().getPostcode() != null)
+      regex.validRegexMatched("[0-9]{6}", "邮编只能输入数字，且数字个数为6个", UsrSupplier.T.POSTCODE);
     if (getBean().getRegisteredCapital() != null)
       regex.validRegexMatched(
-              "([1-9]\\d*|0)(\\.\\d*[1-9])?", "注册资本请填写数字,不能以0开头", UsrSupplier.T.REGISTERED_CAPITAL);
-    if(getBean().getEntity() != null)
-      regex.validRegexMatched("[\\u4e00-\\u9fa5]{2,6}", "法定代表人只能输入中文，且个数为2~6个", UsrSupplier.T.ENTITY);
+          "([1-9]\\d*|0)(\\.\\d*[1-9])?", "注册资本请填写数字,不能以0开头", UsrSupplier.T.REGISTERED_CAPITAL);
+    if (getBean().getEntity() != null)
+      regex.validRegexMatched(
+          "[\\u4e00-\\u9fa5]{2,6}", "法定代表人只能输入中文，且个数为2~6个", UsrSupplier.T.ENTITY);
     if (getBean().getContacts() != null)
-      regex.validRegexMatched(
-              REGULAR_NAME, "联系人姓名首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.CONTACTS);
+      regex.validRegexMatched(REGULAR_NAME, "联系人姓名首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.CONTACTS);
     if (getBean().getDepartment() != null)
-      regex.validRegexMatched(
-              REGULAR_NAME, "联系人部门首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.DEPARTMENT);
+      regex.validRegexMatched(REGULAR_NAME, "联系人部门首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.DEPARTMENT);
     if (getBean().getJobTitle() != null)
-      regex.validRegexMatched(
-              REGULAR_NAME, "联系人职称首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.JOB_TITLE);
+      regex.validRegexMatched(REGULAR_NAME, "联系人职称首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.JOB_TITLE);
     if (getBean().getPhone() != null)
       regex.validRegexMatched("1\\d{10}", "请填写11位手机格式的号码", UsrSupplier.T.PHONE);
     if (getBean().getContactEmail() != null)
       regex.validRegexMatched(
-              "^[\\w]{1,16}@+\\w{1,15}.\\w{2,5}$", "联系人邮箱请填写正确的邮箱格式", UsrSupplier.T.CONTACT_EMAIL);
+          "^[\\w]{1,16}@+\\w{1,15}.\\w{2,5}$", "联系人邮箱请填写正确的邮箱格式", UsrSupplier.T.CONTACT_EMAIL);
     if (getBean().getIdCard() != null)
       regex.validRegexMatched(
-              "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)",
-              "请输入正确的18位身份证号码", UsrSupplier.T.ID_CARD);
+          "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)", "请输入正确的18位身份证号码", UsrSupplier.T.ID_CARD);
     if (getBean().getOperateIdCard() != null)
       regex.validRegexMatched(
-              "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)",
-              "请输入正确的18位身份证号码",
-              UsrSupplier.T.OPERATE_ID_CARD);
+          "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)",
+          "请输入正确的18位身份证号码",
+          UsrSupplier.T.OPERATE_ID_CARD);
   }
-
 
   /**
    * 获取供应商信息
@@ -188,7 +195,6 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
       }
       Map<String, Object> obj = query.queryMap();
 
-
       JSONObject j = new JSONObject();
       for (String key : obj.keySet()) {
         j.put(key, obj.get(key));
@@ -206,7 +212,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
   @NeedLogin(supplier = true)
   public void updInfo() throws Exception {
     try {
-      regex(); //正则校验
+      regex(); // 正则校验
       UsrAnnex annex = UsrAnnex.chkUniqueSupplier(false, getBean().getPkey());
       if (getBean().getPkey() != null) {
         annex.setCertPhotoName(certPhotoName);
@@ -214,15 +220,15 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
         annex.setContactsIdCardFrontPhotoName(contactsIdCardFrontPhotoName);
       }
       UsrMain main = BeanBase.load(UsrMain.class, getBean().getUserid());
-      if(main != null){
+      if (main != null) {
         main.setCompany(getBean().getName());
         main.setAddress(getBean().getCompanyAddr());
         main.setContacts(getBean().getContacts());
         main.setTelphone(getBean().getPhone());
         main.upd();
       }
-      UsrSupplier newSupplier = UsrSupplierDAO.updInfoNo(getBean(),lang); //没有多国语言翻译
-//      UsrSupplier newSupplier = UsrSupplierDAO.updInfo(getBean()); //有多国语言翻译
+      UsrSupplier newSupplier = UsrSupplierDAO.updInfoNo(getBean(), lang); // 没有多国语言翻译
+      //      UsrSupplier newSupplier = UsrSupplierDAO.updInfo(getBean()); //有多国语言翻译
       newSupplier.stStatus(OStatus.INIT);
       newSupplier.stStoreStatus(Usr.SStatus.DOWN);
       newSupplier.upd();
@@ -489,26 +495,12 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
     // 没有Supplier 信息未入住商家
     if (user.getSupplier() == null) {
       setResult("/home/v3/jsp/supplier-entry/index.jsp");
+    } else {
+      setResult("/newseller", false);
+      return RTRENDS;
     }
-
-    setResult("/home/v3/jsp/supplier-entry/index.jsp");
     return TRENDS;
   }
-  //
-  //    public String enterSupPage() {
-  //        if (getPurchase() == null) {
-  //            setResult("/home/home.jsp");
-  //        }
-  //        if (UsrSupplier.chkUniqueLogin_name(false, getPurchase().getLoginName()) != null) {
-  //            setResult("/seller");
-  //            return RTRENDS;
-  //        } else {
-  //            pltCountry = BeanBase.list(PltCountry.class, "1=1", false);
-  //            usrSupplierCategory = BeanBase.list(UsrSupplierCategory.class, "1=1", false);
-  //            setResult("/home/storeapplication0.jsp");
-  //        }
-  //        return TRENDS;
-  //    }
 
   private SupplierView view;
 
