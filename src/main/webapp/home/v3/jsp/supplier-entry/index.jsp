@@ -427,6 +427,16 @@
             callback();
         }
     };
+    var validatePhone = function (rule, value, callback) {
+        let reg = /(^1\d{10}$)|(^(\d{3,4}-)?\d{7,8}$)/
+        if (!value) {
+            return callback(new Error("联系人手机不得为空"));
+        } else if (!reg.test(value)) {
+            return callback(new Error("请填写正确的手机格式"));
+        } else {
+            callback();
+        }
+    };
     var validatePost = function (rule, value, callback) {
         let reg = /^[0-9]{6}$/
         if (!value) {
@@ -668,7 +678,7 @@
                     {validator: validatecontacts, trigger: 'blur'}
                 ],
                 phone:[
-                    { validator: validateTel, trigger: 'blur' }
+                    { validator: validatePhone, trigger: 'blur' }
                 ],
                 contactEmail: [
                     {validator: validateEmail, trigger: 'blur'}
