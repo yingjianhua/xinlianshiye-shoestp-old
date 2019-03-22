@@ -158,7 +158,7 @@
                                 <div class="h3" @mouseenter="bigPicBoxopen" @mouseleave="bigPicBoxclose"
                                      :data-pic="item2">
                                     <a :href="'/'+item.rewrite" target="_blank"><img class="fl"
-                                                                                     :src="imgurl(item2,1)"/></a>
+                                                                                     :src="util_function_obj.image(item2,195)"/></a>
                                 </div>
                             </el-carousel-item>
                         </el-carousel>
@@ -267,7 +267,7 @@
     <!--页面右部列表  end-->
 
     <div class="bigPicBox" v-show="bigPicBox">
-        <img :src="imgurl(bigPicBoxpic)" alt=""/>
+        <img :src="util_function_obj.image(bigPicBoxpic)" alt=""/>
     </div>
 
 </div>
@@ -310,16 +310,6 @@
             bigPicBoxpic: '',
         },
         methods: {
-            imgurl(row, resize) {
-                if (row != "") {
-                    if (resize) {
-                        return 'https://image.shoestp.com/' + row + '?x-oss-process=image/resize,m_fill,h_195,w_195'
-                    } else {
-                        return 'https://image.shoestp.com/' + row + '?x-oss-process=image/resize,m_fill,h_500,w_500'
-                    }
-                }
-                return null
-            },
             // 读取链接带参
             GetQueryString(name) {
                 var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");

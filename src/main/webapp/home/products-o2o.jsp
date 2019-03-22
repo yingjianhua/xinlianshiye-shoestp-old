@@ -167,7 +167,7 @@
                                 <div class="h3" @mouseenter="bigPicBoxopen" @mouseleave="bigPicBoxclose"
                                      :data-pic="item2">
                                     <a :href="'/'+item.rewrite" target="_blank"><img class="fl"
-                                                                                     :src="imgUrlappend(item2)"/></a>
+                                                                                     :src="util_function_obj.image(item2,195)"/></a>
                                 </div>
                             </el-carousel-item>
                         </el-carousel>
@@ -280,7 +280,7 @@
     <!--页面右部列表  end-->
 
     <div class="bigPicBox" v-show="bigPicBox">
-        <img :src="imgUrlappend(bigPicBoxpic)" alt=""/>
+        <img :src="util_function_obj.image(bigPicBoxpic)" alt=""/>
     </div>
 
 </div>
@@ -361,12 +361,6 @@
             ToProductInquiry(pdtId){
                 let url = '/home/usr_UsrConsult_productPublishView?product_id=' + pdtId+ "&backUrl=" + window.location.href;
                 util_function_obj.supplierCantEnter(this, url);
-            },
-            imgUrlappend(row) {
-                if (row !== null & row !== '') {
-                    return 'https://image.shoestp.com/' + row
-                }
-                return null
             },
             // 读取链接带参
             GetQueryString(name) {

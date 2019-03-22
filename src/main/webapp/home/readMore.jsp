@@ -197,11 +197,10 @@
                     shipping_type: 1
                 },
                 rules: {  //表单验证
-                    title: [{
-                        required: true,
-                        message: 'Please fill in the title',
-                        trigger: 'blur'
-                    },],
+                    title: [
+                        {required: true,message: 'Please fill in the title',trigger: 'blur'},
+                        { max: 500, message: 'Enter up to 500 digits', trigger: 'blur' }
+                    ],
 
                     descriotion: [{
                         required: true,
