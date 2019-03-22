@@ -50,6 +50,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static irille.pub.validate.Regular.REGULAR_NAME;
+
 public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsrSupplierAction {
 
   @Getter @Setter private String logo;
@@ -476,46 +478,55 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
   // 正则校验
   public void regex() throws Exception {
     ValidForm valid = new ValidForm(getBean());
-    valid.validNotEmpty(
-        UsrSupplier.T.NAME,
-        UsrSupplier.T.ENGLISH_NAME,
-        UsrSupplier.T.COMPANY_ADDR,
-        UsrSupplier.T.TARGETED_MARKET,
-        UsrSupplier.T.PROD_PATTERN,
-        UsrSupplier.T.CREDIT_CODE,
-        UsrSupplier.T.CERT_PHOTO);
+    valid.validNotEmpty(UsrSupplier.T.NAME,UsrSupplier.T.ENGLISH_NAME, UsrSupplier.T.COMPANY_ADDR,UsrSupplier.T.TARGETED_MARKET,UsrSupplier.T.PROD_PATTERN,UsrSupplier.T.CREDIT_CODE,UsrSupplier.T.CERT_PHOTO);
     ValidRegex2 regex = new ValidRegex2(getBean());
-    regex.validAZLen(50, UsrSupplier.T.ENGLISH_NAME);
+    regex.validAZLen(50,UsrSupplier.T.ENGLISH_NAME);
+    if (getBean().getWebsite() != null)
+      regex.validRegexMatched(
+              "http[s]?:\\/\\/[\\w]{1,}.?[\\w]{1,}.?[\\w/.?&=-]{1,}",
+              "请输入完整的网址格式，如https://www.shoestp.com",
+              UsrSupplier.T.WEBSITE);
     if (getBean().getAnnualProduction() != null)
       regex.validRegexMatched(
-          "[0-9]{1,30}", "年产量只能输入数字，且数字个数在1~30个之间", UsrSupplier.T.ANNUAL_PRODUCTION);
-    if (getBean().getTelephone() != null) regex.validPhone(UsrSupplier.T.TELEPHONE);
-    if (getBean().getPhone() != null) regex.validPhone(UsrSupplier.T.PHONE);
+              "([1-9]\\d*|0)(\\.\\d*[1-9])?",
+              "年产量请填写数字,不能以0开头",
+              UsrSupplier.T.ANNUAL_PRODUCTION);
+    if (getBean().getTelephone() != null)
+      regex.validRegexMatched(
+              "((\\d{3,4}-)?\\d{7,8})|(1\\d{10})", "请填写正确的固定电话格式", UsrSupplier.T.TELEPHONE);
     if (getBean().getFax() != null)
-      regex.validRegexMatched("(\\d{3,4}-)?\\d{7,8}", "请填写正确传真格式", UsrSupplier.T.FAX);
-    if (getBean().getPostcode() != null)
-      regex.validRegexMatched("[0-9]{6}", "邮编只能输入数字，且数字个数为6个", UsrSupplier.T.POSTCODE);
+      regex.validRegexMatched(
+              "(\\d{3,4}-)?\\d{7,8}", "请填写正确传真格式", UsrSupplier.T.FAX);
+    if(getBean().getPostcode() != null)
+      regex.validRegexMatched("[0-9]{6}","邮编只能输入数字，且数字个数为6个", UsrSupplier.T.POSTCODE);
     if (getBean().getRegisteredCapital() != null)
       regex.validRegexMatched(
-          "[A-Za-z0-9\\u4e00-\\u9fa5]+", "注册资本只能输入中文、英文和数字", UsrSupplier.T.REGISTERED_CAPITAL);
-    if (getBean().getEntity() != null)
+              "([1-9]\\d*|0)(\\.\\d*[1-9])?", "注册资本请填写数字,不能以0开头", UsrSupplier.T.REGISTERED_CAPITAL);
+    if(getBean().getEntity() != null)
+      regex.validRegexMatched("[\\u4e00-\\u9fa5]{2,6}", "法定代表人只能输入中文，且个数为2~6个", UsrSupplier.T.ENTITY);
+    if (getBean().getContacts() != null)
       regex.validRegexMatched(
-          "[\\u4e00-\\u9fa5]{2,5}", "法定代表人只能输入中文，且个数为2~5个", UsrSupplier.T.ENTITY);
+              REGULAR_NAME, "联系人姓名首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.CONTACTS);
     if (getBean().getDepartment() != null)
       regex.validRegexMatched(
-          "[A-Za-z\\u4e00-\\u9fa5]{1,15}", "联系人部门只能输入中文、英文，且个数在15个之内", UsrSupplier.T.DEPARTMENT);
+              REGULAR_NAME, "联系人部门首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.DEPARTMENT);
     if (getBean().getJobTitle() != null)
       regex.validRegexMatched(
-          "[A-Za-z\\u4e00-\\u9fa5]{1,15}", "联系人职称只能输入中文、英文，且个数在15个之内", UsrSupplier.T.JOB_TITLE);
-    if (getBean().getContactEmail() != null) regex.validEmail(UsrSupplier.T.CONTACT_EMAIL);
+              REGULAR_NAME, "联系人职称首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.JOB_TITLE);
+    if (getBean().getPhone() != null)
+      regex.validRegexMatched("1\\d{10}", "请填写11位手机格式的号码", UsrSupplier.T.PHONE);
+    if (getBean().getContactEmail() != null)
+      regex.validRegexMatched(
+              "^[\\w]{1,16}@+\\w{1,15}.\\w{2,5}$", "联系人邮箱请填写正确的邮箱格式", UsrSupplier.T.CONTACT_EMAIL);
     if (getBean().getIdCard() != null)
       regex.validRegexMatched(
-          "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)", "请输入正确的18位身份证号码", UsrSupplier.T.ID_CARD);
+              "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)",
+              "请输入正确的18位身份证号码", UsrSupplier.T.ID_CARD);
     if (getBean().getOperateIdCard() != null)
       regex.validRegexMatched(
-          "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)",
-          "请输入正确的18位身份证号码",
-          UsrSupplier.T.OPERATE_ID_CARD);
+              "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)",
+              "请输入正确的18位身份证号码",
+              UsrSupplier.T.OPERATE_ID_CARD);
   }
 
   public String getNewPwd() {
