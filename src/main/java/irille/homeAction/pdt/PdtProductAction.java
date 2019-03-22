@@ -8,6 +8,9 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
@@ -32,21 +35,27 @@ import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.odr.OdrOrderDAO;
-import irille.shop.pdt.*;
+import irille.shop.pdt.Pdt;
+import irille.shop.pdt.PdtAttr;
+import irille.shop.pdt.PdtAttrLine;
+import irille.shop.pdt.PdtColor;
+import irille.shop.pdt.PdtComment;
+import irille.shop.pdt.PdtCommentDAO;
+import irille.shop.pdt.PdtProduct;
+import irille.shop.pdt.PdtProductDAO;
+import irille.shop.pdt.PdtSize;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplierDAO;
-import irille.view.O2O.O2OMapView;
 import irille.view.Page;
 import irille.view.ResultView;
+import irille.view.O2O.O2OMapView;
 import irille.view.pdt.CommentView;
 import irille.view.pdt.PdtCommentSatisFactionView;
 import irille.view.pdt.PdtCommentViewPageView;
 import irille.view.usr.SupplierView;
 import lombok.Getter;
 import lombok.Setter;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 @Setter
 @Getter
@@ -325,12 +334,12 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
           && infoView.getType().equals(Pdt.OProductType.PrivateExpo.getLine().getKey())) {
         // 若产品类型为私人展厅产品, 需要判断链接密钥有效期 只有正确的密钥能获取进入页面,否则返回404页面
         Integer expoProductPkey;
-        /*if (expoKey == null
+        if (expoKey == null
             || (expoProductPkey = rFQConsultMessageService.checkPrivateExpoKey(expoKey)) == null
             || !Long.valueOf(expoProductPkey.toString()).equals(infoView.getPdtId())) {
           setResult("404.jsp");
           return HomeAction.TRENDS;
-        }*/
+        }
       }
 
       if (null != infoView.getMap()) setMap(infoView.getMap());
@@ -370,12 +379,14 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
         && infoView.getType().equals(Pdt.OProductType.PrivateExpo.getLine().getKey())) {
       // 若产品类型为私人展厅产品, 需要判断链接密钥有效期 只有正确的密钥能获取进入页面,否则返回404页面
       Integer expoProductPkey;
-      /*if (expoKey == null
+      if (expoKey == null
           || (expoProductPkey = rFQConsultMessageService.checkPrivateExpoKey(expoKey)) == null
           || !Long.valueOf(expoProductPkey.toString()).equals(infoView.getPdtId())) {
-        setResult("404.jsp");
-        return HomeAction.TRENDS;
-      }*/
+        /*setResult("404.jsp");
+        return HomeAction.TRENDS;*/
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.service_gone, curLanguage()));
+      }
     }
 
     if (null != infoView.getMap()) setMap(infoView.getMap());
@@ -737,5 +748,4 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
     if (getLimit() < 1) setLimit(10);
     write(pdtProduct.getRandomPdt(getLimit(), getCated(), getPurchase()));
   }
-
 }
