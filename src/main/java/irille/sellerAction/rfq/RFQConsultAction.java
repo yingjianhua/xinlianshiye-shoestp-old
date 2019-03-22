@@ -36,7 +36,7 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
   private Integer country;
   private Integer id;
   private String data;
-  private Integer userCountry;
+  private Integer usrCountry;
 
   /**
    * 消息中心询盘消息 liyichao
@@ -47,7 +47,7 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
     write(rFQConsultService.message(getSupplier(), null, start, limit));
   }
 
-    public void getRFQList() throws IOException {
+  public void getRFQList() throws IOException {
     if (start == null) start = 0;
     if (limit == null) limit = 30;
     write(irfqManageService.getRFQList(start, limit, keyword, getSupplier().getPkey()));
@@ -80,7 +80,16 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
     if (limit == null) limit = 5;
     write(
         irfqManageService.getMyRFQQuoteList(
-            start, limit, type, date, keyword, flag, status, country, getSupplier().getPkey(),userCountry));
+            start,
+            limit,
+            type,
+            date,
+            keyword,
+            flag,
+            status,
+            country,
+            getSupplier().getPkey(),
+            usrCountry));
   }
 
   public void getMyRFQQuoteInfo() throws IOException {

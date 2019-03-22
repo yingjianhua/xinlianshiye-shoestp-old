@@ -209,7 +209,7 @@ li{
 
 /*chao 广州*/
 #gjhApp {
-    font-family: Lato-Regular;
+    /* font-family: Lato-Regular; */
     height: 100%; }
     #gjhApp a, #gjhApp a:link, #gjhApp a:visited, #gjhApp a:hover, #gjhApp a:active {
       display: inline-block;

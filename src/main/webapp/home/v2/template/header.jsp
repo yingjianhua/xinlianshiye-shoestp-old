@@ -22,7 +22,8 @@
     <link rel="stylesheet" href="/home/v2/static/css/base/element-ui/element-ui.css"/>
     <link rel="stylesheet" href="/home/v2/static/css/base/foot.css"/>
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
-
+    <%--????--%>
+    <script src="/home/utils/util.js"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
 

@@ -314,10 +314,10 @@
                     })
                 ).then(res => {
                     if (res.data.ret == 1) {
-                        this.errorShow = !this.errorShow
+                        this.errorShow = =  false
                         this.state++;
                     }else{
-                        this.errorShow = !this.errorShow;
+                        this.errorShow = true
                         this.errMessage = res.data.msg || 'Verification code error';
                     }
                 }).catch(err => {

@@ -196,7 +196,7 @@
                     rules: {
                         title:[
                             { required: true,message: 'Please fill in the title'},
-                            { max: 500, message: 'Enter up to 500 digits', trigger: 'blur' }
+                            { max: 100, message: 'Enter up to 100 digits', trigger: 'blur' }
                         ],
                         quantity: [
                             {required: true,message: 'Please enter the quantity',trigger: 'blur'},

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<jsp:include page="/home/v2/template/header.jsp"></jsp:include>
+<jsp:include page="/home/v3/header.jsp"></jsp:include>
 <script src="/home/static/js/qs.js"></script>
 
 <link rel="stylesheet" href="css/reset.css"/>
@@ -20,13 +20,16 @@
         cursor: pointer;
         text-align: center;
     }
+    #o2obottom .o2obottomlinks ul{
+        color: black;
+    }
 </style>
 
 
 <jsp:include page="/home/v3/nav.jsp"></jsp:include>
 
-<div id="o2oinputform" style="background: #F5F5F5">
-    <o2o-top :show="1"></o2o-top>
+<div id="o2oinputform" style="background: #F5F5F5;margin-top: 140px;">
+        <o2o-top :show="1"></o2o-top>
 
     <form action="" class="o2o-form" id="form">
         <h3 class="form-title">

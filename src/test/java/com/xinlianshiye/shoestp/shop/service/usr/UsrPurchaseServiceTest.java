@@ -2,11 +2,6 @@ package com.xinlianshiye.shoestp.shop.service.usr;
 
 import java.util.regex.Pattern;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
@@ -18,14 +13,18 @@ import irille.Entity.RFQ.RFQPurchaseContact;
 import irille.pub.bean.Query;
 import irille.pub.exception.WebMessageException;
 import irille.shop.usr.UsrPurchase;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
 
 public class UsrPurchaseServiceTest extends BaseTest {
 
   @Inject private UsrPurchaseService service;
   @Inject private ObjectMapper om;
-  
+
   @BeforeClass
-  public static void initBean() { 
+  public static void initBean() {
 	  RFQConsultRelation.TB.getCode();
 	  RFQPurchaseContact.TB.getCode();
   }
@@ -52,7 +51,7 @@ public class UsrPurchaseServiceTest extends BaseTest {
     PurchaseView profile = service.getProfile(purchase);
     System.out.println(om.writeValueAsString(profile));
   }
-  
+
   @Test
   public void testValidPassword() {
 	  Pattern pattern = UsrPurchaseService.password_regex;

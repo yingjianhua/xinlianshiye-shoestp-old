@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<jsp:include page="/home/v2/template/header.jsp"></jsp:include>
+<jsp:include page="/home/v3/header.jsp"></jsp:include>
 <link rel="stylesheet" href="css/index.css">
 <!-- 引入样式 -->
 <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
@@ -38,6 +38,9 @@
     .myAlertClass .el-message-box__btns .el-button--primary:hover{
         border-color: #35c;
         background: #35c;
+    }
+    #o2obottom .o2obottomlinks ul{
+        color: black;
     }
 </style>
 
@@ -230,21 +233,19 @@
         methods: {
             isSupplier() {
                 if (!sysConfig.user) {
-                    this.$alert('Please register or login your buyer account if you want public RFQ.', '', {
-                        confirmButtonText: 'Sign in',
-                        customClass: "myAlertClass",
-                        callback: action => {
-                            if(action!=="confirm")return;
-                            window.open('/home/usr_UsrPurchase_sign')
-                        }
-                    });
-                    // user_obj.set_form_sign_in('', window.location.href, 1);
+                    util_function_obj.alertWhenNoLogin(self);
                     return
                 }else {
                     if(sysConfig.user.user_type === 1){
-                        this.$alert('Please register or login your buyer account if you want filling the Registration Form.', '', {
-                            customClass: "myAlertClass",
+                        this.$alert('Please register or login your buyer account if you want filling the Registration Form.', {
+                            confirmButtonText: 'Ok',
+                            customClass: "my-custom-element-alert-class fs-content-18",
+                            center: true,
+                                callback: action =>{
+                                    return
+                                }
                         });
+                        return
                     }else{
                         window.location.href='O2Oinputform.jsp';
                     }

@@ -182,16 +182,17 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 			}
 		}
 		if (getBean().getIdentity() == 0) {
-			if (Str.isEmpty(getTelPre()) || Str.isEmpty(getTelMid()) || Str.isEmpty(getTelAft())) {
+			if (Str.isEmpty(getTelPre()) || Str.isEmpty(getTelAft())) {
 				throw new WebMessageException(
 						MessageBuild.buildMessage(ReturnCode.valid_phone_notnull, HomeAction.curLanguage()));
 			}
-			String phone = getTelPre() + "-" + getTelMid() + getTelAft();
+			String phone = getTelPre() + "-" + (getTelMid() == null ? "" : getTelMid()) + getTelAft();
+			System.out.println(phone);
 			if (!ValidRegex.regMarch(Regular.REGULAR_TEL, phone)) {
 				throw new WebMessageException(
 						MessageBuild.buildMessage(ReturnCode.valid_phoneRegex, HomeAction.curLanguage()));
 			}
-			String tel = getTelPre() + "-" + getTelMid() + "-" + getTelAft();
+			String tel = getTelPre() + "-" + (getTelMid() == null ? "" : getTelMid()) + "-" + getTelAft();
 			getBean().setTelphone(tel);
 		} else {
 			if (Str.isEmpty(getBean().getTelphone())) {
@@ -405,13 +406,21 @@ public class UsrMainAction extends HomeAction<UsrMain> {
 	 * @throws IOException
 	 */
 	public void subValid() throws IOException {
+		if (Str.isEmpty(getCode())) {
+			throw new WebMessageException(
+					MessageBuild.buildMessage(ReturnCode.service_verification_code, HomeAction.curLanguage()));
+		}
+		if (getCode().trim().length() > 6) {
+			throw new WebMessageException(
+					MessageBuild.buildMessage(ReturnCode.valid_code_overlenth, HomeAction.curLanguage()));
+		}
 		Cache cache = CacheUtils.pwdValid;
 		String value = String.valueOf(cache.getIfPresent(Integer.parseInt(getCode())));
 		if (cache.getIfPresent(Integer.parseInt(getCode())) != null && value.equals(getEmail())) {
 			write();
 		} else {
 			throw new WebMessageException(
-					MessageBuild.buildMessage(ReturnCode.service_Invalid_UID, HomeAction.curLanguage()));
+					MessageBuild.buildMessage(ReturnCode.service_Invalid_verification_code, HomeAction.curLanguage()));
 		}
 	}
 

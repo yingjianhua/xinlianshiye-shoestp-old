@@ -14,6 +14,7 @@ import irille.pub.bean.BeanBase;
 import irille.pub.exception.WebMessageException;
 import irille.pub.util.upload.ImageUpload;
 import irille.pub.validate.ValidForm;
+import irille.pub.validate.ValidRegex;
 import irille.pub.validate.ValidRegex2;
 import irille.shop.usr.UsrAnnex;
 import irille.shop.usr.UsrMain;
@@ -23,6 +24,9 @@ import irille.view.plt.ImageView;
 import lombok.Getter;
 import lombok.Setter;
 import org.json.JSONObject;
+
+import static irille.pub.validate.Regular.REGULAR_COMPANY;
+import static irille.pub.validate.Regular.REGULAR_NAME;
 
 @Getter
 @Setter
@@ -154,14 +158,19 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
     valid.validNotEmpty(UsrSupplier.T.NAME,UsrSupplier.T.ENGLISH_NAME, UsrSupplier.T.COMPANY_ADDR,UsrSupplier.T.TARGETED_MARKET,UsrSupplier.T.PROD_PATTERN,UsrSupplier.T.CREDIT_CODE,UsrSupplier.T.CERT_PHOTO);
     ValidRegex2 regex = new ValidRegex2(getBean());
     regex.validAZLen(50,UsrSupplier.T.ENGLISH_NAME);
-      UsrMain main = UsrMain.chkUniqueEmail(false, mainEmail);
-      if(main != null && !main.getEmail().equals(mainEmail)){
-          throw new WebMessageException("邮箱已被他人注册，请更换邮箱");
-      }
+    if(mainEmail != null){
+      if(!ValidRegex.regMarch("^[\\w]{1,16}@+\\w{1,15}.\\w{2,5}$", mainEmail))
+        throw new WebMessageException("请输入正确邮箱格式");
+    }
+    UsrMain main = UsrMain.chkUniqueEmail(false, mainEmail);
+    UsrMain main1 = BeanBase.load(UsrMain.class, getBean().getUserid());
+    if(main != null && !main1.getEmail().toLowerCase().equals(mainEmail.toLowerCase())){
+        throw new WebMessageException("邮箱已被他人注册，请更换邮箱");
+    }
     if (getBean().getName() != null)
       regex.validRegexMatched(
-          "[A-Za-z\\u4e00-\\u9fa5]{1,50}",
-          "请填写中文或英文,且不超过50位",
+              REGULAR_COMPANY,
+          "首尾不能为符号 且 长度在1-52位之间",
           UsrSupplier.T.NAME);
     if (getBean().getEnglishName() != null)
       regex.validRegexMatched(
@@ -196,13 +205,13 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
       regex.validRegexMatched("[\\u4e00-\\u9fa5]{2,6}", "法定代表人只能输入中文，且个数为2~6个", UsrSupplier.T.ENTITY);
     if (getBean().getContacts() != null)
       regex.validRegexMatched(
-              "[A-Za-z\\u4e00-\\u9fa5]{0,30}", "联系人姓名只能输入中文、英文，且个数在30个之内", UsrSupplier.T.CONTACTS);
+              REGULAR_NAME, "联系人姓名首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.CONTACTS);
     if (getBean().getDepartment() != null)
       regex.validRegexMatched(
-              "[A-Za-z\\u4e00-\\u9fa5]{0,30}", "联系人部门只能输入中文、英文，且个数在30个之内", UsrSupplier.T.DEPARTMENT);
+              REGULAR_NAME, "联系人部门首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.DEPARTMENT);
     if (getBean().getJobTitle() != null)
       regex.validRegexMatched(
-              "[A-Za-z\\u4e00-\\u9fa5]{0,30}", "联系人职称只能输入中文、英文，且个数在30个之内", UsrSupplier.T.JOB_TITLE);
+              REGULAR_NAME, "联系人职称首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.JOB_TITLE);
     if (getBean().getPhone() != null)
       regex.validRegexMatched("1\\d{10}", "请填写11位手机格式的号码", UsrSupplier.T.PHONE);
     if (getBean().getContactEmail() != null)
