@@ -185,6 +185,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
     query.SELECT(UsrSupplier.T.PKEY, "supplierPkey");
     query.SELECT(UsrSupplier.T.NAME, "supplierName");
     query.SELECT(UsrSupplier.T.COUNTRY, "supplierCountry");
+    query.SELECT(UsrSupplier.T.LOGO, "supplierLogo");
     query.SELECT(PltCountry.T.SHORT_NAME, "countryShortName");
     query.SELECT(PltCountry.T.NATIONAL_FLAG, "countryFlag");
     query.SELECT(PltErate.T.PKEY, "currencyPkey");
@@ -237,6 +238,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
                   RFQSupplierView supplier = new RFQSupplierView();
                   supplier.setPkey(GetValue.get(map, "supplierPkey", Integer.class, null));
                   supplier.setName(GetValue.get(map, "supplierName", String.class, null));
+                  supplier.setLogo(GetValue.get(map, "supplierLogo", String.class, null));
                   RFQCountryView country = new RFQCountryView();
                   country.setPkey(GetValue.get(map, "supplierCountry", Integer.class, null));
                   country.setShortName(GetValue.get(map, "countryShortName", String.class, null));

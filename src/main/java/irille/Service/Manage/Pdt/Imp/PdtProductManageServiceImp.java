@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +61,7 @@ import irille.shop.pdt.PdtTieredPricing;
 import irille.shop.pdt.PdtTieredPricingDao;
 import irille.shop.usr.UsrProductCategory;
 import irille.view.Page;
+import irille.view.pdt.NewSpceView;
 import irille.view.pdt.PdtProductCatView;
 import irille.view.pdt.PdtProductSaveView;
 import irille.view.pdt.PdtTieredPricingView;
@@ -166,6 +168,21 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
     List<PdtSpec> list = new ArrayList<>();
     // 优先新增颜色
     if (pdtProductSaveView.getNewSpec() != null && !pdtProductSaveView.getNewSpec().isEmpty()) {
+      Map<Integer, PdtColor> specMaps = new HashMap<>(); // key为specId  value为颜色
+      Map<String, PdtColor> insColorNames = new HashMap<>();
+      for (NewSpceView v : pdtProductSaveView.getNewSpec()) {
+        if (v.getColor() < 0) {
+          if (!insColorNames.containsKey(v.getColorName())) {
+            PdtColor color = new PdtColor();
+            color.setName(v.getColorName());
+            color.setPicture(v.getColorImg());
+            PdtColor insColor = PdtColorDAO.insColor(color, supId);
+            insColorNames.put(v.getColorName(), insColor);
+          }
+          specMaps.put(v.getId(), insColorNames.get(v.getColorName()));
+        }
+      }
+
       for (int i = 0; i < pdtProductSaveView.getNewSpec().size(); i++) {
         if (pdtProductSaveView.getSpecColor() != null
             && !pdtProductSaveView.getSpecColor().isEmpty()) {
@@ -182,23 +199,27 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
         }
         if (pdtProductSaveView.getId() <= 0) {
           if (pdtProductSaveView.getNewSpec().get(i).getColorType() == 0) {
-            PdtColor color = new PdtColor();
-            color.setName(pdtProductSaveView.getNewSpec().get(i).getColorName());
-            color.setPicture(pdtProductSaveView.getNewSpec().get(i).getColorImg());
-            PdtColor insColor = PdtColorDAO.insColor(color, supId);
-            pdtProductSaveView.getNewSpec().get(i).setColor(insColor.getPkey());
-            pdtProductSaveView.getNewSpec().get(i).setColorName(insColor.getName());
+            //            PdtColor color = new PdtColor();
+            //            color.setName(pdtProductSaveView.getNewSpec().get(i).getColorName());
+            //            color.setPicture(pdtProductSaveView.getNewSpec().get(i).getColorImg());
+            //            PdtColor insColor = PdtColorDAO.insColor(color, supId);
+            NewSpceView v = pdtProductSaveView.getNewSpec().get(i);
+            v.setColor(specMaps.get(v.getId()).getPkey());
+            v.setColorName(specMaps.get(v.getId()).getName());
+            //            pdtProductSaveView.getNewSpec().get(i).setColor(insColor.getPkey());
+            //            pdtProductSaveView.getNewSpec().get(i).setColorName(insColor.getName());
           }
           colorSet.add(pdtProductSaveView.getNewSpec().get(i).getColor());
         } else {
           spec.setProduct(pdtProductSaveView.getId());
           if (pdtProductSaveView.getNewSpec().get(i).getColor() <= 0) {
-            PdtColor color = new PdtColor();
-            color.setName(pdtProductSaveView.getNewSpec().get(i).getColorName());
-            color.setPicture(pdtProductSaveView.getNewSpec().get(i).getColorImg());
-            PdtColor insColor = PdtColorDAO.insColor(color, supId);
-            pdtProductSaveView.getNewSpec().get(i).setColor(insColor.getPkey());
-            pdtProductSaveView.getNewSpec().get(i).setColorName(insColor.getName());
+            //            PdtColor color = new PdtColor();
+            //            color.setName(pdtProductSaveView.getNewSpec().get(i).getColorName());
+            //            color.setPicture(pdtProductSaveView.getNewSpec().get(i).getColorImg());
+            //            PdtColor insColor = PdtColorDAO.insColor(color, supId);
+            NewSpceView v = pdtProductSaveView.getNewSpec().get(i);
+            v.setColor(specMaps.get(v.getId()).getPkey());
+            v.setColorName(specMaps.get(v.getId()).getName());
           }
           colorSet.add(pdtProductSaveView.getNewSpec().get(i).getColor());
         }

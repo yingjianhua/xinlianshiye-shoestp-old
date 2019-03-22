@@ -71,11 +71,16 @@
                         <transition>
                     </div>
                     <ul>
-                        <li v-if="item.pkey" class="flexSb" v-for="(item,index) in groupList" :key="index" @click="clickGroupItem($event,item.pkey,item.name,item.count)">
-                            <div class="ellipsis1">{{item.name}}</div>
-                            <div><img src="/home/v3/static/images/user/bianxie.png" alt="Edit" @click.stop="clickShowEditGruop(item.name,item.pkey)"><img
-                                    src="/home/v3/static/images/user/lajitong.png" alt="Delete" style="padding-right:0;" @click.stop="deleteGroup(item.pkey)"></div>
-                        </li>
+                        <template v-if="groupList.length > 2">
+                            <li class="flexSb" v-if="item.pkey" v-for="(item,index) in groupList" :key="index" @click="clickGroupItem($event,item.pkey,item.name,item.count)">
+                                <div class="ellipsis1">{{item.name}}</div>
+                                <div><img src="/home/v3/static/images/user/bianxie.png" alt="Edit" @click.stop="clickShowEditGruop(item.name,item.pkey)"><img
+                                        src="/home/v3/static/images/user/lajitong.png" alt="Delete" style="padding-right:0;" @click.stop="deleteGroup(item.pkey)"></div>
+                            </li>
+                        </template>
+                        <template v-else>
+                                <div style="height:30px;line-height:30px;">No grouping</div>
+                        </template>
                     </ul>
                 </dd>
                 </transition>
@@ -107,14 +112,19 @@
                         </div>
                         <div class="h3 fr">
                             <div class="fc7f7f7f">{{timeFormat(item.createdDate)}}</div>
-                            <el-popover placement="bottom" title="" width="80" trigger="hover">
+                            <el-popover placement="bottom" title="" width="80" trigger="click">
                                 <div class="cml-pupbox">
                                     <ul>
                                         <li>
                                             <p class="font-b fc666">Add to Grop</p>
                                             <dl>
                                                 <!-- {{groupItem.pkey}} -->
-                                                <dd v-if="groupItem.pkey"  @click="moveGroup(item.pkey,groupItem.pkey,groupItem.name,groupItem.count)" v-for="(groupItem,index) in groupList" :key="index">{{groupItem.name}}</dd>
+                                                <template v-if="groupList.length > 2">
+                                                    <dd v-if="groupItem.pkey"  @click="moveGroup(item.pkey,groupItem.pkey,groupItem.name,groupItem.count)" v-for="(groupItem,index) in groupList" :key="index">{{groupItem.name}}</dd>
+                                                </template>
+                                                <template v-else>
+                                                    <div style="line-height:62px;">No grouping</div>
+                                                </template>
                                             </dl>
                                         </li>
                                         <li @click="deleteContact(item.supplier.pkey)">
@@ -172,7 +182,12 @@
                 <div class="conti-more fr">
                     <div class="h1">Move to <i class="el-icon-arrow-right"></i></div>
                     <ul>
-                        <li v-if="item.pkey" v-for="(item,index) in groupList" :key="index" @click="moveGroup(contactPkey,item.pkey,item.name,item.count)">{{item.name}}</li>
+                        <template v-if="groupList.length > 2">
+                            <li v-if="item.pkey" v-for="(item,index) in groupList" :key="index" @click="moveGroup(contactPkey,item.pkey,item.name,item.count)">{{item.name}}</li>
+                        </template>
+                        <template v-else>
+                            <div style="line-height:68px;text-align:center;">No grouping</div>
+                        </template>
                     </ul>
                 </div>
             </div>

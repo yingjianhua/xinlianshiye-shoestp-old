@@ -81,6 +81,7 @@ public enum ReturnCode {
 	valid_companyNameRegex(516), // 公司名称格式不正确
 	valid_price_range(517), // 价格必须在 {2}-{3}之间
 	valid_group_name_illegal(518), // 价格必须在 {2}-{3}之间
+	valid_adrRegex(519), // 地址格式不正确
 	;
 	int code;
 
