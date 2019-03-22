@@ -64,6 +64,7 @@ public class UsrPurchaseServiceImpl implements UsrPurchaseService {
       throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.mail_exists, language));
     }
     purchase.setEmail(email);
+    purchase.setLoginName(email);
     main.setEmail(email);
     main.upd();
     usrPurchaseDao.save(purchase);

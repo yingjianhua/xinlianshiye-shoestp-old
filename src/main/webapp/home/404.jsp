@@ -21,6 +21,31 @@
     <link rel="stylesheet" href="./static/css/swiper.min.css" type="text/css">
     <script src="./static/js/swiper.min.js"></script>
     <script src="./static/js/lazyload.min.js"></script>
+    <style>
+        body{
+            display: flex;
+            flex-direction: column;
+        }
+        #app{
+            flex: none;
+        }
+        #main{
+            text-align: center;
+        }
+        #error_page{
+            flex: auto;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 0;
+        }
+        #error_page .error_warning{
+            min-width: 0;
+            display: inline-block;
+        }
+        .flex-grow{
+            flex: auto;
+        }
+    </style>
 </head>
 <jsp:include page="v3/header.jsp"/>
 <jsp:include page="v3/nav.jsp"/>
@@ -40,7 +65,10 @@
             </div>
         </div>
     </div>
-    <index-bottom></index-bottom>
+    <div class="flex-grow"></div>
+    <div id="bottom">
+        <index-bottom></index-bottom>
+    </div>
 </div>
 <%--<%@ include file="/home/template/new-foot.jsp" %>--%>
 <div id="hj_top" style="opacity: 0;">
@@ -50,7 +78,12 @@
 <script src="/home/v3/static/js/index-bottom.js"></script>
 <script>
     new Vue({
-        el:"#app"
+        el: "#app"
+    })
+</script>
+<script>
+    new Vue({
+        el: "#bottom"
     })
 </script>
 </body>
