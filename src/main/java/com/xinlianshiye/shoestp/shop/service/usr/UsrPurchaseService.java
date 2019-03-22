@@ -121,8 +121,7 @@ public interface UsrPurchaseService {
    * @param password 密码
    * @author Jianhua Ying
    */
-  default void checkPassword(UsrPurchase purchase, String password) {
-    UsrMain usrMain = purchase.gtUserid();
+  default void checkPassword(UsrMain usrMain, String password) {
     if (!usrMain.getPassword().equals(DateTools.getDigest(usrMain.getPkey() + password))) {
       throw new WebMessageException(ReturnCode.service_unknow, "密码不正确");
     }
