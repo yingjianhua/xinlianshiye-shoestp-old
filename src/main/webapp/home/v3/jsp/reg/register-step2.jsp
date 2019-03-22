@@ -433,7 +433,7 @@
         // 正式的密码验证
         if (value === '') {
             callback(new Error(app.registerForm.user == 'buyer' ? 'Telephone number can\'t be empty!' : '电话号码不能为空'));
-        }else if(!util_regular_obj.register.phoneAreaCode.test(app.registerForm.telPrefix1+app.registerForm.telPrefix2+"-"+app.registerForm.tel)){
+        }else if(!util_regular_obj.register.phoneAreaCode.test(app.registerForm.telPrefix1+"-"+app.registerForm.telPrefix2+app.registerForm.tel)){
             callback(new Error('Telephone number\'s format is incorrect，please check the prefix-tel and phone'));
         } else {
             // app.$refs.registerForm.validateField('telPrefix1');
