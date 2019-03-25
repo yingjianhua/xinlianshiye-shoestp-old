@@ -7,8 +7,10 @@
 <jsp:include page="/home/v3/nav-nobody.jsp"></jsp:include>
 <div id="app">
     <div class="placeholder wide" style="height: 93px;line-height: 93px;">
-        <img class="logo" src="/home/v3/static/images/login/o2otoplogo.png" alt=""
-             style="width: 204px;height: 41px;">
+        <a href="/">
+            <img class="logo" src="/home/v3/static/images/login/o2otoplogo.png" alt=""
+                 style="width: 204px;height: 41px;">
+        </a>
     </div>
 
     <main class="main wide">
@@ -365,7 +367,7 @@
         }
 
         // 密码强度*2
-        if (/^[a-zA-Z0-9_\-!@#$%^&*),.?(_+=\/>\\<\[\];':"]+$/.test(value)) {
+        if (/^[a-zA-Z0-9_\-!@#$%^\~\`&*),.?(_+=\/>\\<\[\]\{\|\};':"]+$/.test(value)) {
             app.psdStrength.arr.push(true)
             app.psdStrength.acount++;
         } else {
@@ -374,7 +376,7 @@
 
         // 密码强度*3
         // if (/^(?![a-zA-z]+$)(?!\d+$)(?![!@#$%^&*]+$)[a-zA-Z\d!@#$%^&*]+$/.test(value)) {
-        if (/^(?![0-9]+$)(?![a-zA-Z]+$)(?![_\-!@#$%^&*),.?(_+=\/>\\<\[\];':"]+$)[a-zA-Z0-9_\-!@#$%^&*),.?(_+=\/>\\<\[\];':"]{1,}$/.test(value)) {
+        if (/^(?![0-9]+$)(?![a-zA-Z]+$)(?![_\-!@#$%^\~\`&*),.?(_+=\/>\\<\[\]\{\|\};':"]+$)[a-zA-Z0-9_\-!@#$%^\~\`&*),.?(_+=\/>\\<\[\]\{\|\};':"]{1,}$/.test(value)) {
             app.psdStrength.arr.push(true)
             app.psdStrength.acount++;
         } else {

@@ -7,8 +7,10 @@
 <jsp:include page="/home/v3/nav-nobody.jsp"></jsp:include>
 <div id="app">
     <div class="placeholder wide" style="height: 93px;line-height: 93px;">
-        <img class="logo" src="/home/v3/static/images/login/o2otoplogo.png" alt=""
+        <a href="/">
+            <img class="logo" src="/home/v3/static/images/login/o2otoplogo.png" alt=""
              style="width: 204px;height: 41px;">
+        </a>
     </div>
 
     <main class="main wide">
