@@ -1062,20 +1062,16 @@
             //搜索国家
             filterCountry: function (val) {
                 var reg = new RegExp("^" + val, "i")
-                if (!val) {
-                    this.$set(this, 'exhibitionCountry', this.country)
-                } else {
-                    let option = [];
-                    let k = 0;
-                    for (let i  in this.exhibitionCountry) {
-                        if (reg.test(this.exhibitionCountry[i].name)) {
-                            option[k] = this.exhibitionCountry[i];
-                            k++;
-                        }
+                this.$set(this, 'exhibitionCountry', this.country)
+                let option = [];
+                let k = 0;
+                for (let i  in this.exhibitionCountry) {
+                    if (reg.test(this.exhibitionCountry[i].name)) {
+                        option[k] = this.exhibitionCountry[i];
+                        k++;
                     }
-                    this.$set(this, 'exhibitionCountry', option)
-                    console.log(this.exhibitionCountry)
                 }
+                this.$set(this, 'exhibitionCountry', option)
             },
             //消息提示
             showmsg: function (val) {
