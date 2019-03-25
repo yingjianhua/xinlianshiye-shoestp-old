@@ -55,7 +55,7 @@
                         </a>
                     </li>
                     <li class="share-item">
-                        <!-- <a href="javascript: void(0);" @click="login('google')">
+                        <!-- <a href="javascript: void(0);" @click="loginByThird('google')">
                         <img src="/home/v3/static/images/login/icon_g.png" alt="">
                         </a> -->
                         <a href="javascript: void(0);">
@@ -83,7 +83,7 @@
         el: "#login-box-global",
         data: {
             showLoginBox: false, //是否显示登录弹框 - 外部改变
-            jumpBackUrl: null, //传给后台的返回地址
+            jumpUrl: null, //传给后台的返回地址
 
             loginForm: {
                 email: '',
@@ -132,7 +132,7 @@
             },
 
             // 第三方 - hellojs
-            login(thirdName) {
+            loginByThird(thirdName) {
                 var self = this;
                 var facebook = hello(thirdName);
                 facebook.login().then(function (e) {
@@ -140,16 +140,16 @@
                     console.log(e)
                     // get user profile data
                     return facebook.api('me');
-                }).then(function (p) {
+                }).then(function (thirdInfo) {
                     console.log("facebook's login")
-                    console.log(p)
+                    console.log(thirdInfo)
                     // 第三方成功返回用户信息后，判断是否已在本项目注册
                     // 参数为第三方的名字“facebook”，及第三方返回的ID
-                    if (p.id) {
-                        // 将第三方信息保存在本地
+                    if (thirdInfo.id) {
+                        // 将第三方信息保存在本地 - test
                         localStorage.setItem("thirdName", thirdName);
-                        localStorage.setItem("thirdId", p.id);
-                        self.loginPost({thirdName: thirdName, thirdId: p.id})
+                        localStorage.setItem("thirdId", thirdInfo.id);
+                        self.login({thirdName: thirdName, thirdId: thirdInfo.id})
                     }
                 });
             },
@@ -164,7 +164,7 @@
             },
 
             // 自己的登录接口
-            loginPost(thirdData) {
+            login(thirdData) {
                 let postData;
                 // 当选择第三方登录时：
                 if (thirdData) {
@@ -180,8 +180,8 @@
                     }
                 }
                 // 这里与登录页面不同 - 那边是取地址栏中的jumpUrl - 此处直接传参形式
-                if( this.jumpBackUrl ){
-                    postData.jumpUrl = this.jumpBackUrl;
+                if( this.jumpUrl ){
+                    postData.jumpUrl = this.jumpUrl;
                 }
 
                 axios.post('/home/usr_UsrMain_login', Qs.stringify(postData))
@@ -194,7 +194,7 @@
 
                 // 已注册时，直接登录 - 并跳转
                 // 第三方账号已注册时，直接登录 - sign感觉后台逻辑不对！！！一直是true
-                if (res.data.sign) {
+                if (res.data && res.data.sign) {
                     // 登陆成功后，有返回地址时，跳转该地址 - 否则刷新当前页面
                     if(res.data.jumpUrl){
                         window.location.href = res.data.jumpUrl;
@@ -205,11 +205,11 @@
                     // 未注册时：
                     //普通登录提示：该账户未注册，请重试
                     if (!thirdData) {
-                        this.$message.error('The account is not registered, please try again');
+                        this.$message.error('The account is not registered, please confirm that the account is correct.');
                         // 第三方直接携带第三方id至注册页面
                     } else {
                         // test
-                        window.location.href = "./register-step1.html?isThird=true"
+                        window.location.href = "/home/usr_UsrMain_register?isThird=true"
                     }
                 }
             })
@@ -224,7 +224,7 @@
                     // 验证全部正确时
                     if (valid) {
                         console.log('submit');
-                        this.loginPost();
+                        this.login();
                     } else {
                         console.log('error submit!!');
                 return false;

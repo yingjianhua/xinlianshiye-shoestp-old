@@ -140,7 +140,7 @@ public class UsrMainDao {
 
 		@Override
 		public void valid() {
-			super.valid();
+			// super.valid();
 			if (!ValidRegex.regMarch(Regular.REGULAR_PWD, oldPwd)) {
 				throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.password_format, language));
 				// throw LOG.errTran("密码为6到20为的数字和字母组成\"", "密码为6到20为的数字和字母组成");

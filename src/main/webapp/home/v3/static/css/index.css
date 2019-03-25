@@ -996,6 +996,7 @@ a {
     top: 33px;
     left: 0;
     z-index: 999;
+    min-width: 1240px;
     width: 100%;
     box-shadow: 0 2px 3px #ccc;
     background: #fff;
@@ -1034,6 +1035,7 @@ a {
 }
 
 #o2obottom {
+    min-width: 1240px;
     padding-top: 10px;
     background-color: #424d65;
 }

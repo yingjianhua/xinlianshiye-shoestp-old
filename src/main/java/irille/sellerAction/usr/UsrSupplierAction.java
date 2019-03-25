@@ -518,7 +518,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
       regex.validRegexMatched("1\\d{10}", "请填写11位手机格式的号码", UsrSupplier.T.PHONE);
     if (getBean().getContactEmail() != null)
       regex.validRegexMatched(
-              "^[\\w]{1,16}@+\\w{1,15}.\\w{2,5}$", "联系人邮箱请填写正确的邮箱格式", UsrSupplier.T.CONTACT_EMAIL);
+              "^[\\w]{1,32}@+\\w{1,15}.\\w{2,5}$", "联系人邮箱请填写正确的邮箱格式", UsrSupplier.T.CONTACT_EMAIL);
     if (getBean().getIdCard() != null)
       regex.validRegexMatched(
               "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)",

@@ -59,12 +59,12 @@
                         <div class="text"><c:if test="${supView.name != 'null'}">${supView.showName}</c:if></div>
                     </div>
 
-                    <div class="info-item">
-                        <h5 class="title">
-                            <s:text name="supplier.businesstyp"/></h5>
-                        <div class="text">
-                            <c:if test="${supView.businessTyp != 'null'&& !fn:endsWith(supView.businessTyp,'”}')}">${supView.businessTyp}</c:if></div>
-                    </div>
+                    <%--<div class="info-item">--%>
+                        <%--<h5 class="title">--%>
+                            <%--<s:text name="supplier.businesstyp"/></h5>--%>
+                        <%--<div class="text">--%>
+                            <%--<c:if test="${supView.businessTyp != 'null'&& !fn:endsWith(supView.businessTyp,'”}')}">${supView.businessTyp}</c:if></div>--%>
+                    <%--</div>--%>
                     <c:set var="symbolNoLogin" value="********"/>
                     <div class="info-item">
                         <h5 class="title">
@@ -132,19 +132,19 @@
                         </div>
                     </div>
 
-                    <div class="info-item">
-                        <h5 class="title">
-                            <s:text name="supplier.annualsales"/></h5>
-                        <div class="text">
-                            <c:if test="${env.login == null}">
-                                ${symbolNoLogin}
-                            </c:if>
-                            <c:if test="${env.login != null}">
-                                <c:if test="${supView.annualSales != 'null'&& !fn:endsWith(supView.annualSales,'”}')}">${supView.annualSales}</c:if>
-                            </c:if>
+                    <%--<div class="info-item">--%>
+                        <%--<h5 class="title">--%>
+                            <%--<s:text name="supplier.annualsales"/></h5>--%>
+                        <%--<div class="text">--%>
+                            <%--<c:if test="${env.login == null}">--%>
+                                <%--${symbolNoLogin}--%>
+                            <%--</c:if>--%>
+                            <%--<c:if test="${env.login != null}">--%>
+                                <%--<c:if test="${supView.annualSales != 'null'&& !fn:endsWith(supView.annualSales,'”}')}">${supView.annualSales}</c:if>--%>
+                            <%--</c:if>--%>
 
-                        </div>
-                    </div>
+                        <%--</div>--%>
+                    <%--</div>--%>
                 </div>
 
                 <div class="divide-harf-item">
@@ -445,8 +445,7 @@
                         ],
                         quantity: [
                             {required: true,message: 'Please enter the quantity',trigger: 'blur'},
-                            { max: 10, message: 'Enter up to 10 digits', trigger: 'blur' },
-                            { pattern: /^\+?[1-9][0-9]*$/, message: "Please enter a number, can't start with 0, can't have decimal point" }
+                            { pattern: util_regular_obj.register.positiveInteger, message: "Please enter the positive integer，and can\'t beyond 10 digits" }
                         ],
                         description: [{
                             required: true,

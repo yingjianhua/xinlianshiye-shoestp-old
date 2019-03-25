@@ -159,7 +159,7 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
     ValidRegex2 regex = new ValidRegex2(getBean());
     regex.validAZLen(50,UsrSupplier.T.ENGLISH_NAME);
     if(mainEmail != null){
-      if(!ValidRegex.regMarch("^[\\w]{1,16}@+\\w{1,15}.\\w{2,5}$", mainEmail))
+      if(!ValidRegex.regMarch("^[\\w]{1,32}@+\\w{1,15}.\\w{2,5}$", mainEmail))
         throw new WebMessageException("请输入正确邮箱格式");
     }
     UsrMain main = UsrMain.chkUniqueEmail(false, mainEmail);
@@ -216,7 +216,7 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
       regex.validRegexMatched("1\\d{10}", "请填写11位手机格式的号码", UsrSupplier.T.PHONE);
     if (getBean().getContactEmail() != null)
       regex.validRegexMatched(
-              "^[\\w]{1,16}@+\\w{1,15}.\\w{2,5}$", "联系人邮箱请填写正确的邮箱格式", UsrSupplier.T.CONTACT_EMAIL);
+              "^[\\w]{1,32}@+\\w{1,15}.\\w{2,5}$", "联系人邮箱请填写正确的邮箱格式", UsrSupplier.T.CONTACT_EMAIL);
   }
 
   /**

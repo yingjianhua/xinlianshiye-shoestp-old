@@ -649,7 +649,7 @@ public class PdtProductDao {
                             o.put("status", value.getLine().getName());
                           }
                         }
-                        if (privateExpoPdt.getStatus().equals(2)) {
+                        if (privateExpoPdt.getStatus().equals((byte) 2)) {
                           o.put("upANDlow", 1);
                         } else {
                           o.put("upANDlow", 0);
@@ -1255,8 +1255,13 @@ public class PdtProductDao {
 
                         Map<String, Object> mm = Query.sql(curPriceSql).queryMap();
                         if (null != mm) {
-                          setMaxCurPrice(GetValue.get(mm, "maxCurPrice", BigDecimal.class, null));
-                          setMinCurPrice(GetValue.get(mm, "minCurPrice", BigDecimal.class, null));
+                          BigDecimal p =
+                              new BigDecimal(
+                                  String.valueOf(
+                                      map.get(PdtProduct.T.CUR_PRICE.getFld().getCodeSqlField())));
+                          setMinCurPrice(p);
+                          setMaxCurPrice(GetValue.get(mm, "maxCurPrice", BigDecimal.class, p));
+                          setMinCurPrice(GetValue.get(mm, "minCurPrice", BigDecimal.class, p));
                         }
 
                         setPdtName(map.get("pdtName").toString());
@@ -1280,10 +1285,7 @@ public class PdtProductDao {
                               new BigDecimal(
                                   map.get(PdtProduct.T.CUR_PRICE.getFld().getCodeSqlField())
                                       .toString()));
-                          if (null == mm) {
-                            setMinCurPrice(
-                                GetValue.get(mm, PdtProduct.T.MIN_OQ, BigDecimal.class, null));
-                          }
+
                           setMinOrder(
                               Integer.parseInt(
                                   map.get(PdtProduct.T.MIN_OQ.getFld().getCodeSqlField())
