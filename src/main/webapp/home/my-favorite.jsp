@@ -109,6 +109,7 @@
         el: "#personalCenter",
         data: {
             catPkeyList: [        // 分类类目 男 女 童 回收站
+                {catPkey: null, name: "All Collections"},
                 {catPkey: 373, name: "Men’s Collections"},
                 {catPkey: 380, name: "Women’s Collections"},
                 {catPkey: 387, name: "Kid’s Collections"},
