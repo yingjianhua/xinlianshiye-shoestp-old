@@ -5,7 +5,9 @@ import com.google.inject.ImplementedBy;
 import irille.Dao.SVS.impl.SVSInfoServiceImpl;
 import irille.Entity.SVS.SVSInfo;
 import irille.shop.usr.UsrSupplier;
+import irille.view.Page;
 import irille.view.SVS.SVSDetailedInfoView;
+import irille.view.SVS.SVSInfoListView;
 
 @ImplementedBy(SVSInfoServiceImpl.class)
 public interface SVSInfoService {
@@ -69,4 +71,6 @@ public interface SVSInfoService {
       String exhibition,
       String part)
       throws Exception;
+  
+  public Page<SVSInfoListView>  findSVSInfoList(Integer start,Integer limit,String shopName,Byte status,Byte shopStatus,Byte grade);
 }

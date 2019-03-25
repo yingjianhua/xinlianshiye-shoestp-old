@@ -116,7 +116,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     if (Str.isEmpty(email)) throw LOG.err("loginCheck", "请输入用户名");
     if (password == null || Str.isEmpty(password)) throw LOG.err("loginCheck", "请输入密码");
     //TODO Email 改为小写
-    UsrMain main = UsrMain.chkUniqueEmail(false, email);
+    UsrMain main = UsrMain.chkUniqueEmail(false, email.toLowerCase());
     if (main == null) {
       throw LOG.err("Invalid User", "用户名不存在或无效的用户名");
     } else {

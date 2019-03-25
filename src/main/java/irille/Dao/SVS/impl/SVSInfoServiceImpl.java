@@ -1,7 +1,10 @@
 package irille.Dao.SVS.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -18,8 +21,11 @@ import irille.Entity.pm.PM.OTempType;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.pub.util.GetBaseScoreUtils;
+import irille.pub.util.GetValue;
 import irille.shop.usr.UsrSupplier;
+import irille.view.Page;
 import irille.view.SVS.SVSDetailedInfoView;
+import irille.view.SVS.SVSInfoListView;
 import irille.view.SVS.SVSInfoView.*;
 
 public class SVSInfoServiceImpl implements SVSInfoService {
@@ -115,13 +121,15 @@ public class SVSInfoServiceImpl implements SVSInfoService {
     if (svs.gtStatus() == SVSAuthenticationStatus.SUCCESS
         && timeDiffForDay(svs.getApplicationTime(), new Date()) <= 180)
       throw new WebMessageException(ReturnCode.failure, "商户距离上次认证成功未满半年,无法再次提交认证");
-    else if (svs.gtStatus()==SVSAuthenticationStatus.ToBeAudited||svs.gtStatus()==SVSAuthenticationStatus.NoApplication)
+    else if (svs.gtStatus() == SVSAuthenticationStatus.ToBeAudited
+        || svs.gtStatus() == SVSAuthenticationStatus.NoApplication)
       throw new WebMessageException(ReturnCode.failure, "商户认证待审核,无法提交认证");
-    
+
     System.out.println(svs.gtStatus());
-    System.out.println(svs.gtStatus() != SVSAuthenticationStatus.FAIL
-        && timeDiffForDay(svs.getApplicationTime(), new Date()) > 180);
-    
+    System.out.println(
+        svs.gtStatus() != SVSAuthenticationStatus.FAIL
+            && timeDiffForDay(svs.getApplicationTime(), new Date()) > 180);
+
     int score =
         GetBaseScoreUtils.getBaseScore(res, capacity, factory, quality, team, exhibition, part);
     if (score < 30) throw new WebMessageException(ReturnCode.failure, "未满足银牌基础分值,无法提交认证");
@@ -202,5 +210,27 @@ public class SVSInfoServiceImpl implements SVSInfoService {
     SVSInfoDao.save(svs);
     pm.send(OTempType.SVS_APPR_NOTICE, supplier, null, svs);
     return CreateView(SVSInfoDao.save(svs));
+  }
+
+  /** 获取SVS列表 */
+  @Override
+  public Page<SVSInfoListView> findSVSInfoList(
+      Integer start, Integer limit, String shopName, Byte status, Byte shopStatus, Byte grade) {
+    List<Map<String, Object>> list = null;
+    list = SVSInfoDao.findSVSinfo(start, limit, shopName, status, shopStatus, grade);
+    List<SVSInfoListView> infoList = new ArrayList<>();
+    for (Map<String, Object> map : list) {
+      SVSInfoListView info = new SVSInfoListView();
+      info.setId(GetValue.get(map, "id", Integer.class, 0));
+      info.setName(GetValue.get(map, "name", String.class, null));
+      info.setShopName(GetValue.get(map, "shopName", String.class, null));
+      info.setStatus(GetValue.get(map, SVSInfo.T.STATUS, Byte.class, (byte) 0));
+      info.setShopStatus(GetValue.get(map, UsrSupplier.T.STATUS, Byte.class, (byte) 0));
+      info.setGrade(GetValue.get(map, SVSInfo.T.GRADE, Byte.class, (byte) 0));
+      info.setApplicationTime(GetValue.get(map, SVSInfo.T.APPLICATION_TIME, Date.class, null));
+      infoList.add(info);
+    }
+
+    return new Page<>(infoList, start, limit, SVSInfoDao.count());
   }
 }

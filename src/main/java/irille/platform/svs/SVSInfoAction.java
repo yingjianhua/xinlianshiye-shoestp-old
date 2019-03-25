@@ -1,5 +1,7 @@
 package irille.platform.svs;
 
+import java.io.IOException;
+
 import javax.inject.Inject;
 
 import irille.Dao.SVS.SVSInfoService;
@@ -24,6 +26,10 @@ public class SVSInfoAction extends ActionBase<SVSInfo> {
   private String team;
   private String exhibition;
   private String partner;
+  private String shopName;
+  private Byte status;
+  private Byte grade;
+  private Byte shopStatus;
 
   // 修改对应认证信息
   public void updAutInfo() throws Exception {
@@ -41,7 +47,11 @@ public class SVSInfoAction extends ActionBase<SVSInfo> {
   void getAutInfo() {};
 
   // 获取SVS认证信息列表
-  void findAutInf() {}
+ public void findAutInf() throws Exception {
+	 System.out.println(status);
+	if(getLimit()==0)setLimit(5);
+    write(service.findSVSInfoList(getStart(), getLimit(), shopName, status, shopStatus, grade));
+  }
 
   @Override
   public Class beanClazz() {

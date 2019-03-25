@@ -31,8 +31,8 @@
                     <!-- 右侧表单面板 -->
                     <div class="login-form-panel">
                         <div class="join-free">
-                            <!-- test -->
-                            <a href="/home/usr_UsrMain_register">Join Free</a>
+                            <%--<a href="/home/usr_UsrMain_register">Join Free</a>--%>
+                            <a @click="toRegister" href="javascript: void(0);">Join Free</a>
                         </div>
 
                         <!-- form 表单 -->
@@ -55,7 +55,6 @@
                         </el-form>
 
                         <div class="forget-psd-wrap">
-                            <!-- test -->
                             <a href="/home/usr_UsrMain_forget" class="forget-psd">
                                 Forgot your password?
                             </a>
@@ -172,6 +171,13 @@
                 return "https://image.shoestp.com" + v + params
             },
 
+            // 点击去注册
+            toRegister(){
+                // 保存是从哪个页面点击去注册的 - 到时候注册完成时跳转回来
+                localStorage.setItem("whichPageToRegister", window.location.href);
+                window.location.href = "/home/usr_UsrMain_register"
+            },
+
             // 第三方 - hellojs
             loginByThird(thirdName) {
                 var self = this;
@@ -219,6 +225,8 @@
                         loginName: this.loginForm.email,
                         pwd: this.loginForm.psd,
                     }
+                    localStorage.removeItem("thirdName");
+                    localStorage.removeItem("thirdId");
                 }
                 // 这里与登录弹窗不同 - 此处是取地址栏中的jumpUrl= - 那边直接传参形式
                 //jumpUrl传给后台后，后台会返回jumpUrl，并前端进行跳转

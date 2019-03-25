@@ -366,7 +366,7 @@
         }else if(parseFloat(value) != value){
             callback(new Error('Please enter a right number'));
             return;
-        } else if( !/^([1-9]{1}\d{0,5}|([0]{1}))(\.(\d){1,2})?$/.test(value) ){
+        } else if( !(util_regular_obj.register.priceDecimal.test(value)) ){
             callback(new Error('Price can\'t greater than 6 digit integer and 2 decimal places'));
         } else {
             callback();
@@ -386,9 +386,9 @@
         // if (!pattrn.test(value)) {
         //     callback(new Error('Please enter a number type'));
         // }else
-            if( !/^([1-9]{1}\d{0,5}|([0]{1}))(\.(\d){1,2})?$/.test(value) ){
+            if( !(util_regular_obj.register.priceDecimal.test(value)) ){
             callback(new Error('Price can\'t greater than 6 digit integer and 2 decimal places'));
-        } else if (value < (vm.form.min_price ? vm.form.min_price : 0)) {
+        } else if (parseFloat(value) < (vm.form.min_price ? parseFloat(vm.form.min_price) : 0)) {
             callback(new Error('The maximum must be greater than the minimum!'));
         } else {
             callback();
