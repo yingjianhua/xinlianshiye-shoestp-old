@@ -367,7 +367,7 @@
             </el-form>
             <div class="bottons">
                 <div class="botton botton1" @click="goback">上一步</div>
-                <div class="botton botton2" @click="submitimg">Submit</div>
+                <div class="botton botton2" @click="submitimg">提 交</div>
             </div>
         </div>
         <div class="step4" v-if="step == 3">
@@ -738,7 +738,7 @@
                     data['prodPattern'] = data['prodPattern'] ? data['prodPattern'].split(' / ') : []
                     data['userid'] = parseInt(data['userid'].split('##')[0])
                     data['certPhotoName'] = data['annex'].cert_photo_name
-                    data['idCardFrontPhotoName'] = data['annex'].id_card_front_photo_name
+                    data['idCardFrontPhotoName'] = data['annex'].    id_card_front_photo_name
                     data['contactsIdCardFrontPhotoName'] = data['annex'].contacts_id_card_front_photo_name
                     data['businessLicenseIsSecular'] = data['businessLicenseIsSecular'] + ''
                     if (data['businessLicenseIsSecular'] == '1') {
@@ -767,7 +767,6 @@
                             if(res.data.result.user){
                                 self.$set(self,'usermsg',res.data.result.user)
                                 self.basicInfo.userid = res.data.result.user.id
-                                // self.basicInfo.lang = res.data.result.current_language
                                 self.getcountry();
                                 self.getRetype();
                             }else{

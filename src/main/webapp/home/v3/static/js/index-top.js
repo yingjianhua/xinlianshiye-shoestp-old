@@ -187,6 +187,13 @@ Vue.component('index-top', {
         //         };
         //     });
         // }, 1000);
+
+        // 屏幕过小时，左右滚动
+        window.onscroll = function () {
+            var sl = -Math.max(document.body.scrollLeft, document.documentElement.scrollLeft);
+            document.getElementById('new-top-nav').style.left = sl + 'px';
+            document.getElementById('o2otop').style.left = sl + 'px';
+        }
     },
     methods: {
         // 跳转RFQ   
