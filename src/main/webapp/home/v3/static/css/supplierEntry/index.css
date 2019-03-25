@@ -165,6 +165,10 @@
   padding-bottom: 60px;
 }
 
+#shopenter .msgcon .step2 .companyForm .el-input{
+  vertical-align: bottom;
+}
+
 #shopenter .msgcon .step2 .companyForm .el-form .el-row .el-col-12 .el-form-item .el-form-item__content .countrycon {
   position: relative;
 }
