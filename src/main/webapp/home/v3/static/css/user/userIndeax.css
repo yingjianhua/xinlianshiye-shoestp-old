@@ -76,10 +76,16 @@
     color: #10389c !important; }
 .page-personal-center .el-scrollbar__wrap {
     overflow-x: hidden; }
+.page-personal-center .top-search-type .el-scrollbar__wrap {
+    overflow-x: scroll; }
 .page-personal-center .el-button {
     border-radius: 3px;
     border-color: #ddd;
     background-color: #f5f5f5; }
+.page-personal-center .el-button.is-circle {
+    border-radius: 50%;
+    border: 1px solid #dcdfe6;
+    background: #fff; }
 .page-personal-center .el-button--primary {
     border-radius: 3px;
     border-color: #10389c;
@@ -248,7 +254,9 @@
 .page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item.active .el-collapse-item__header .collapse-title .goods-info {
     color: #fff; }
 .page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item.active .el-collapse-item__header .collapse-title .goods-info .status {
-    color: #fff; }
+    color: #99d; }
+.page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item.active .el-collapse-item__header .collapse-title .mask {
+    background: #b2bfdf; }
 .page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item.active .el-collapse-item__header .el-collapse-item__arrow {
     color: #fff; }
 .page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item__content {
@@ -299,7 +307,7 @@
     right: -30px;
     top: 0;
     width: 32px;
-    height: 90px;
+    height: 100%;
     background: #f3f4fc; }
 .page-personal-center .inquires-list-wrap .collapse-box .contact-list .contact-item {
     position: relative;

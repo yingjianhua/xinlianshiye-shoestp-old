@@ -1,5 +1,7 @@
 package com.xinlianshiye.shoestp.common.dao.usr;
 
+import java.util.Optional;
+
 import com.google.inject.ImplementedBy;
 import com.xinlianshiye.shoestp.common.dao.usr.impl.UsrPurchaseDaoImpl;
 
@@ -10,5 +12,5 @@ public interface UsrPurchaseDao {
 
   void save(UsrPurchase purchase);
 
-  UsrPurchase findByLoginNameOrEmail(String loginName);
+  Optional<UsrPurchase> findByLoginNameOrEmail(String loginName);
 }

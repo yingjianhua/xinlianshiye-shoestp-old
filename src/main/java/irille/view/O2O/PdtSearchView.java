@@ -12,4 +12,5 @@ public class PdtSearchView {
   private String area; // 活动地区
   private Byte status; // 活动状态
   private Byte state; // 上下架状态
+  private Byte grade; // 供应商等级
 }

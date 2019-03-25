@@ -10,6 +10,7 @@ import irille.pub.DateTools;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.pub.tb.FldLanguage.Language;
+import irille.pub.validate.Regular;
 import irille.shop.usr.UsrMain;
 import irille.shop.usr.UsrPurchase;
 
@@ -71,7 +72,7 @@ public interface UsrPurchaseService {
    */
   PurchaseView getAccount(UsrPurchase purchase);
 
-  public static final String password_regex = "^[^\\s]{6,20}$";
+  public static final Pattern password_regex = Pattern.compile("^[^\\s]{6,20}$");
   /**
    * 校验密码格式的有效性
    * <li>长度 目前至少8位
@@ -81,13 +82,13 @@ public interface UsrPurchaseService {
    * @author Jianhua Ying
    */
   default void validPassword(String password) {
-    if (password == null || !Pattern.compile(password_regex).matcher(password).matches()) {
+    if (password == null || !password_regex.matcher(password).matches()) {
       throw new WebMessageException(ReturnCode.valid_pwdRegex, "密码格式不正确");
     }
   }
 
-  public static final String mobile_regex = "^1\\d{10}$";
-  public static final String mobile_regex2 = "^[+\\d]?\\d{1,3}-\\d{6,16}$";
+  public static final Pattern mobile_regex = Pattern.compile("^1\\d{10}$");
+  public static final Pattern mobile_regex2 = Pattern.compile("^[+\\d]?\\d{1,3}-\\d{6,16}$");
   /**
    * 校验手机号码格式的有效性
    *
@@ -95,13 +96,12 @@ public interface UsrPurchaseService {
    */
   default void validMobile(String mobile) {
     if (mobile == null
-        || !Pattern.compile(mobile_regex).matcher(mobile).matches()
-        || !Pattern.compile(mobile_regex2).matcher(mobile).matches()) {
+        || (!mobile_regex.matcher(mobile).matches() && !mobile_regex2.matcher(mobile).matches())) {
       throw new WebMessageException(ReturnCode.valid_phoneRegex, "手机格式不正确");
     }
   }
 
-  public static final String email_regex = "^[\\w]{1,16}@+\\w{1,15}.\\w{2,5}$";
+  public static final Pattern email_regex = Pattern.compile(Regular.REGULAR_EMAIL);
 
   /**
    * 校验邮箱地址格式的有效性
@@ -109,7 +109,7 @@ public interface UsrPurchaseService {
    * @param email
    */
   default void validEmail(String email) {
-    if (email == null || !Pattern.compile(email_regex).matcher(email).matches()) {
+    if (email == null || !email_regex.matcher(email).matches()) {
       throw new WebMessageException(ReturnCode.valid_mailRegex, "邮箱格式不正确");
     }
   }
@@ -121,8 +121,7 @@ public interface UsrPurchaseService {
    * @param password 密码
    * @author Jianhua Ying
    */
-  default void checkPassword(UsrPurchase purchase, String password) {
-    UsrMain usrMain = purchase.gtUserid();
+  default void checkPassword(UsrMain usrMain, String password) {
     if (!usrMain.getPassword().equals(DateTools.getDigest(usrMain.getPkey() + password))) {
       throw new WebMessageException(ReturnCode.service_unknow, "密码不正确");
     }

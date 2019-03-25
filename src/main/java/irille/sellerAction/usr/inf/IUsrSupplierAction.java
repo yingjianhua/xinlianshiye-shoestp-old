@@ -15,7 +15,7 @@ public interface IUsrSupplierAction extends ISellerAction {
    * @throws IOException
    */
   @RequestMapping(alias = "登录")
-  public void login() throws IOException;
+  public void login() throws Exception;
 
   /** 获取登录信息 */
   @RequestMapping(alias = "获取登录信息")
@@ -52,14 +52,6 @@ public interface IUsrSupplierAction extends ISellerAction {
    */
   @RequestMapping(alias = "更新店铺设置", sort = 7)
   public void UpdBizDiy() throws Exception;
-
-  /**
-   * 注销供应商登录信息
-   *
-   * @return
-   */
-  @RequestMapping(alias = "注销", sort = 8)
-  public String logon();
 
   /**
    * 上传图片

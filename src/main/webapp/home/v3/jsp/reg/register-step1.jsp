@@ -16,15 +16,18 @@
         <ul class="step-overview">
             <li class="step-item active">
                 1
-                <div class="title">请设置用户名</div>
+                <div class="title">Please Set The Username</div>
+                <%--<div class="title">请设置用户名</div>--%>
             </li>
             <li class="step-item">
                 2
-                <div class="title">填写账号信息</div>
+                <div class="title">Please Fill In The Account Information</div>
+                <%--<div class="title">填写账号信息</div>--%>
             </li>
             <li class="step-item">
                 3
-                <div class="title">注册成功</div>
+                <div class="title">Registration Success</div>
+                <%--<div class="title">注册成功</div>--%>
             </li>
         </ul>
 
@@ -35,14 +38,15 @@
                      :hide-required-asterisk="true"
                      :model="registerForm"
                      :rules="registerFormRules">
-                <el-form-item id="email"
+                <el-form-item id="email" :error="emailErrorMsg"
                               label="Your Email Address" prop="email">
-                    <el-input placeholder="Email"
+                    <el-input placeholder="Email" @change="changeEmail"
                               v-model.trim="registerForm.email">
                     </el-input>
                 </el-form-item>
 
-                <el-form-item class="verification-code-wrap01" label="Verification Code" prop="code">
+                <el-form-item class="verification-code-wrap01" :error="codeErrorMsg"
+                              label="Verification Code" prop="code">
                     <div class="verification-code-wrap">
                         <el-input placeholder="Verification code"
                                   v-model.trim="registerForm.code">
@@ -161,10 +165,21 @@
         'foxmail.com': 'http://www.foxmail.com',
         'outlook.com': 'http://www.outlook.com'
     };
-
-    new Vue({
+    const validateCode = (rule, value, callback) => {
+        // 正式的密码验证
+        if (value === '') {
+            callback(new Error("Code can't be empty!"));
+        }else{
+            registerPage1.codeErrorMsg="";
+            callback();
+        }
+    };
+    var registerPage1 = new Vue({
         el: "#app",
         data: {
+            emailErrorMsg:"",//邮箱已注册时显示用 - 非本地验证
+            codeErrorMsg:"",//验证码时显示用 - 非本格式地验证
+
             step: 1, //进行到第几步 1-本地code 2-邮箱code
             codeUrl: "/servlet/verify.img", // 本地验证码 - 刷新用
             mailDetailAddr: "", // 邮箱跳转地址
@@ -177,15 +192,15 @@
             },
             registerFormRules: {
                 email: [
-                    {required: true, message: 'Email can\'t be empty!', trigger: 'blur'}, {
-                        pattern: /^[0-9A-Za-z][\.-_0-9A-Za-z]*@[0-9A-Za-z]+(?:\.[0-9A-Za-z]+)+$/,
+                    {required: true, message: 'Email can\'t be empty!', trigger: 'change'}, {
+                        pattern: util_regular_obj.register.email,
                         message: 'E-mail format is incorrect',
-                        trigger: 'blur'
+                        trigger: 'change'
                     }
                 ],
                 code: [
-                    {required: true, message: 'Code can\'t be empty!', trigger: 'blur'},
-                    // { min: 4, max: 4, message: 'Please enter 4 characters or numbers', trigger: 'blur' }
+                    {validator: validateCode, trigger: 'change'},
+                    // {required: true, message: 'Code can\'t be empty!', trigger: 'blur'},
                 ],
             },
         },
@@ -219,6 +234,12 @@
                 return null;
             },
 
+            // 改变邮箱大小写
+            changeEmail(val){
+                this.registerForm.email = val.toLowerCase();
+                this.emailErrorMsg = "";
+            },
+
             // 发送验证码至邮箱
             sendCodeToEmail() {
                 axios.post('/home/usr_UsrMain_sendEm', Qs.stringify({
@@ -228,20 +249,29 @@
                 }))
                     .then((res) => {
                         if (res.data.ret != 1) {
+                            if(res.data.ret == 207){
+                                this.emailErrorMsg="The mailbox has been registered, please try other one"
+                            }else if(res.data.ret == 202){
+                                this.codeErrorMsg = "Verification code is wrong, please try again"
+                            }
                             this.$message.error(res.data.msg || "Send email error,please try again later");
                             return
-                        }
-                        ;
+                        };
 
                         localStorage.setItem("registerEmail", this.registerForm.email);
 
                         // 生成对应邮箱跳转地址
                         let mailAddr = this.registerForm.email.split('@')[1];  //获取邮箱域名
+                        this.isEmailSuffixMatch = false; // 是否能匹配到邮箱后缀
                         for (var key in emailAddrList) {
                             if (key == mailAddr) {
                                 console.log(emailAddrList[key])
                                 this.mailDetailAddr = emailAddrList[key]
+                                this.isEmailSuffixMatch = true;
                             }
+                        }
+                        if(!this.isEmailSuffixMatch){
+                            this.mailDetailAddr = "";
                         }
 
                         this.step = 2;
@@ -289,7 +319,20 @@
                 this.$refs.registerForm.resetFields();
             },
             toCheckEmail() {
-                window.open(this.mailDetailAddr);
+                if(this.mailDetailAddr){
+                    window.open(this.mailDetailAddr);
+                }else{
+                    this.$alert("Can't find the email address, please login to your email to activate",{
+                        confirmButtonText: 'Ok',
+                        customClass: "my-custom-element-alert-class fs-content-18",
+                        center: true,
+                        callback: action =>{
+                            return
+                        }
+                    });
+                    return
+                }
+
             },
 
         }

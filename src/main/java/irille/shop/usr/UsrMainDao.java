@@ -46,7 +46,7 @@ public class UsrMainDao {
 
 		@Override
 		public void valid() {
-			super.valid();
+			// super.valid();
 		}
 
 		@Override
@@ -245,6 +245,7 @@ public class UsrMainDao {
 				setEmail((String) bean.get(UsrMain.T.EMAIL.getFld().getCodeSqlField()));
 				setNickName((String) bean.get(UsrMain.T.NICKNAME.getFld().getCodeSqlField()));
 				setCompany((String) bean.get(UsrMain.T.COMPANY.getFld().getCodeSqlField()));
+				Object o = bean.get(UsrMain.T.PROVINCE.getFld().getCodeSqlField());
 				if (bean.get(UsrMain.T.PROVINCE.getFld().getCodeSqlField()) != null) {
 					setProvince(Bean
 							.load(PltProvinces.class, (Integer) bean.get(UsrMain.T.PROVINCE.getFld().getCodeSqlField()))

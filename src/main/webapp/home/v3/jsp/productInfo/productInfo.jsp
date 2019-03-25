@@ -510,9 +510,10 @@
             cursor: pointer;
             overflow: hidden;
         }
+
         /*否则hover时宽度变粗，样式有问题*/
-        #productInfo .productInfo-com .frBox .h5 .y3 li:before{
-            content :"";
+        #productInfo .productInfo-com .frBox .h5 .y3 li:before {
+            content: "";
             display: inline-block;
             position: absolute;
             left: 0;
@@ -539,7 +540,8 @@
         #productInfo .productInfo-com .frBox .h5 .y2 li:hover {
             border: 2px solid #e54544;
         }
-        #productInfo .productInfo-com .frBox .h5 .y3 li:hover:before{
+
+        #productInfo .productInfo-com .frBox .h5 .y3 li:hover:before {
             border-color: transparent;
         }
 
@@ -774,156 +776,8 @@
     </style>
 </head>
 <body id="goodsInfo" class="lang_en w_1200">
-<div id="nav" style="height: auto;">
-    <div id="new-top-nav" class="wide-wrap">
-        <div class="wide" style="width: 1240px;min-width: 1240px;margin: 0 auto">
-            <!-- 顶部左侧 - 4个下拉选 -->
-            <el-menu :default-active="activeTopNavIndex" class="el-menu-demo" mode="horizontal"
-                     @select="handleTopNavSelect">
-                <el-submenu index="8" class="fr no-arrow" v-if="languageList.length>0">
-                    <template slot="title">
-                        Language
-                    </template>
-                    <el-menu-item index="7-1" v-for="language in languageList">
-                        <a rel="nofollow" @click="changeLang(language.shortName)">
-                            {{language.displayName}}
-                        </a>
-                    </el-menu-item>
-                </el-submenu>
 
-                </el-menu-item>
-                <el-menu-item index="7" class="fr">
-                    <a href="/home/usr_UsrConsult_listView" target="_blank">
-                        <s:text name="RFQ"/>
-                    </a>
-                </el-menu-item>
-            </el-menu>
-        </div>
-    </div>
-</div>
-<script src="/home/v2/static/lang/element/en.js"></script>
-<script>
-
-    ELEMENT.locale(ELEMENT.lang.en)
-    var sysConfig = {
-        baseImageUrl: "https://image.shoestp.com",
-        currency_symbol: "$",
-        current_language: "en",
-    }
-    var messages = {
-        shoestp: null
-    }
-    var nav = new Vue({
-        el: "#nav",
-        data() {
-            return {
-                activeTopNavIndex: 1, //默认选中的web-top澳航栏
-                topSearchBarCategory: 0, //搜索 分类前的下拉选
-                language: "en",
-                languageList: [],
-                sysConfig: {
-                    baseImageUrl: "https://image.shoestp.com",
-                    currency_symbol: "$",
-                    current_language: "en",
-                },
-                search: {
-                    keyword: "",
-                    typeList: [
-                        {
-                            label: "Product",
-                            value: 0
-                        },
-                        {
-                            label: "Suppiler",
-                            value: 1
-                        }
-                    ]
-                }
-            }
-        }, computed: {
-            _language: function () {
-                for (var key in this.$data.languageList) {
-                    if (this.$data.languageList[key]["shortName"] == this.$data.language) {
-                        return this.$data.languageList[key]["displayName"]
-                    }
-                }
-                return "-1"
-            },
-            _favorite_count: function () {
-                if (this.sysConfig.user) {
-                    return this.sysConfig.user.favorite_count
-                }
-                return 0
-            },
-            _inquiry_count: function () {
-                if (this.sysConfig.user) {
-                    return this.sysConfig.user.inquiry_count
-                }
-                return 0
-            },
-            _shopping_cart_count: function () {
-                if (this.sysConfig.user) {
-                    return this.sysConfig.user.shopping_cart_count
-                }
-                return 0
-            }
-
-        }, mounted() {
-            var self = this
-            axios({
-                url: "/home/plt_PltConfig_getSysConfig"
-            }).then(function (res) {
-                if (res.data.ret && res.data.ret == 1) {
-                    sysConfig = res.data.result
-                    Vue.set(self, "language", res.data.result.current_language)
-                    Vue.set(self, "sysConfig", res.data.result)
-                    Vue.set(self, "languageList", res.data.result.languages)
-                } else {
-                    console.error("ERR::FLAG")
-                }
-            }).catch(function (err) {
-                console.error(err)
-                console.error("ERR::FLAG")
-            })
-        },
-        methods: {
-            searchClick() {
-                window.location.href = "/home/pdt_PdtProduct?Keyword=" + this.search.keyword
-                    + "&v=2&searchtype=" + this.topSearchBarCategory
-            },
-            handleTopNavSelect(key, keyPath) {
-                console.log(key, keyPath);
-            },
-            changeLang(lang) {
-                var self = this
-                axios({
-                    url: "/home/plt_PltConfig_changeLanguage",
-                    method: "get",
-                    params: {
-                        request_locale: lang
-                    }
-                }).then(function (res) {
-                    if (res.data.ret && res.data.ret == 1) {
-                        location.reload();
-                    } else {
-                        console.error("ERR::FLAG")
-                    }
-                })
-
-            },
-            handleLanguageSelect(e) {
-                console.log("click")
-                console.log(e.target.dataset.language)
-                console.log(e.currentTarget)
-                if (e.target && e.target.dataset && e.target.dataset.language) {
-                    this.language = e.target.dataset.language;
-                }
-            }
-        }
-    })
-</script>
-<div style="height: 33px;">
-</div>
+<jsp:include page="/home/v3/nav-nobody.jsp"></jsp:include>
 <jsp:include page="/home/template/web-top.jsp"></jsp:include>
 <%--全局登录弹框--%>
 <jsp:include page="/home/v3/login-box.jsp"></jsp:include>
@@ -1249,15 +1103,20 @@
                 arr.sort(function (a, b) {
                     return b - a;
                 })
-                that.price = arr[arr.length - 1] + '-' + arr[0];
+                if (that.productinfocom.tpView.length <= 1) {
+                    that.price = that.productinfocom.price;
+                } else {
+                    that.price = arr[arr.length - 1] + '-' + arr[0];
+                }
             } else {
                 that.price = that.productinfocom.price;
                 that.tpView = false
             }
         },
         methods: {
-            contactSupplier(){
-                var jumpUrl = "/home/usr_UsrSupplier_goContactSupplier?supplierPkey=" + this.productinfocom.supId + '&backUrl=' + window.location.href;;
+            contactSupplier() {
+                var jumpUrl = "/home/usr_UsrSupplier_goContactSupplier?supplierPkey=" + this.productinfocom.supId + '&backUrl=' + window.location.href;
+                ;
                 util_function_obj.supplierCantEnter(this, jumpUrl);
             },
             // 选择放大镜的图片
@@ -1282,7 +1141,7 @@
 
 
             addfav: function () {
-                if (!isLogin) {
+                if (!sysConfig || !sysConfig.user) {
                     // user_obj.set_form_sign_in('', window.location.href, 1);
                     util_function_obj.alertWhenNoLogin(this);
                     return
@@ -1298,11 +1157,11 @@
                         if (data.data.ret && data.data.ret == 1) {
                             self.productinfocom.favorite = data.data.type !== 1
                             self.productinfocom.favorite_count = data.data.number
-                        }else{
+                        } else {
                             self.$message.error(data.data.msg || "Add to favorite error, please try again later");
                         }
                     }
-                }).catch((error)=>{
+                }).catch((error) => {
                     self.$message.error(error || 'Network error,please try again later');
                 })
             },
@@ -1440,12 +1299,15 @@
                 window.open(back_url, "bookmarkWindow");
             },
             addRFQ: function () {
-                if (!isLogin) {
+                if (!sysConfig || !sysConfig.user) {
                     // user_obj.set_form_sign_in('', window.location.href, 1);
-                    util_function_obj.alertWhenNoLogin(this,"/home/usr_UsrConsult_productPublishView?product_id=" + this.productinfocom.pdtId+ '&backUrl=' + window.location.href);
+                    util_function_obj.alertWhenNoLogin(this, "/home/usr_UsrConsult_productPublishView?product_id=" + this.productinfocom.pdtId + '&backUrl=' + window.location.href);
                     return
+                } else {
+                    var jumpUrl = '/home/usr_UsrConsult_productPublishView?product_id=' + this.productinfocom.pdtId + '&backUrl=' + window.location.href;
+                    util_function_obj.supplierCantEnter(this, jumpUrl);
                 }
-                window.location = '/home/usr_UsrConsult_productPublishView?product_id=' + this.productinfocom.pdtId + '&backUrl=' + window.location.href
+                //window.location = '/home/usr_UsrConsult_productPublishView?product_id=' + this.productinfocom.pdtId + '&backUrl=' + window.location.href
             },
         },
 

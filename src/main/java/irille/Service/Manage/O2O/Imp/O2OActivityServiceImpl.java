@@ -32,6 +32,7 @@ import irille.Entity.O2O.O2O_Product;
 import irille.Entity.O2O.Enums.O2O_ActivityStatus;
 import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
+import irille.Entity.SVS.Enums.SVSGradeType;
 import irille.Entity.pm.PM.OTempType;
 import irille.Service.Manage.O2O.O2OActivityService;
 import irille.pub.bean.BeanBase;
@@ -336,10 +337,24 @@ public class O2OActivityServiceImpl implements O2OActivityService {
                   item.setSupplierName(GetValue.get(map, "supName", String.class, null));
                   item.setSupplierLevel(GetValue.get(map, "roleName", String.class, null));
                   item.setContact(GetValue.get(map, "joinInfo", String.class, null));
+                  item.setImage(
+                      GetValue.getFirstImage(GetValue.get(map, "image", String.class, "")));
                   item.setMobile(GetValue.get(map, O2O_JoinInfo.T.Tel, String.class, null));
                   Integer pdtPkey = GetValue.get(map, "pdtPkey", Integer.class, -1);
                   item.setRewriter(SEOUtils.getPdtProductTitle(pdtPkey, pdtName));
-
+                  String name = null;
+                  for (SVSGradeType g : SVSGradeType.values()) {
+                    Byte gid = GetValue.get(map, "grade", Byte.class, null);
+                    if (null != gid) {
+                      if (gid.equals(g.getLine().getKey())) {
+                        name = g.getLine().getName();
+                        break;
+                      }
+                    } else {
+                      name = SVSGradeType.NotAvailable.getLine().getName();
+                    }
+                  }
+                  item.setGrade(name);
                   item.setState(GetValue.get(map, O2O_Product.T.STATUS, Byte.class, null));
                   item.setMessage(GetValue.get(map, O2O_Product.T.REMARK, String.class, null));
                   return item;
@@ -550,6 +565,10 @@ public class O2OActivityServiceImpl implements O2OActivityService {
       o2OProductView.setSupCat(GetValue.get(map, "SuppdtCat", String.class, null));
       result.add(o2OProductView);
     }
-    return new Page(result, start, limit, o2OActivityDao.privetePdtListCount());
+    return new Page(
+        result,
+        start,
+        limit,
+        o2OActivityDao.privetePdtListCount(status, verify_status, cat, supName, pdtName));
   }
 }

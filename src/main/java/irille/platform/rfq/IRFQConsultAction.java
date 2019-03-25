@@ -2,6 +2,8 @@ package irille.platform.rfq;
 
 import java.io.IOException;
 
+import org.json.JSONException;
+
 /**
  * RFQ询盘控制层接口
  *
@@ -84,4 +86,26 @@ public interface IRFQConsultAction {
    * @author zjl @Date 2019/2/29 8:39
    */
   void getMessage() throws IOException;
+
+  /**
+   * 获取询盘列表
+   *
+   * @throws IOException
+   * @author zjl @Date 2019/3/21 18:56
+   */
+  void getInqList() throws IOException;
+  /**
+   * 获取询盘类型 获取供应商SVS等级
+   *
+   * @throws IOException
+   * @author zjl @Date 2019/3/22 9:38
+   */
+  void getInqStatus() throws Exception;
+  /**
+   * 获取询盘详情
+   *
+   * @throws IOException
+   * @author zjl @Date 2019/3/22 11:51
+   */
+  void getInqDetail() throws IOException;
 }

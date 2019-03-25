@@ -526,8 +526,8 @@ li {
 }
 
 #lhl-highClass .main-sample {
-    height: 612px;
-    background: white url("../images/highClass-sam_bg.png") center center no-repeat;
+    height: 638px;
+    background: white url("../images/highClass-sam_bg.png") no-repeat center center ;
     background-size: cover;
     margin-top: 90px;
 }
@@ -649,6 +649,7 @@ li {
 }
 
 #lhl-highClass .show-line {
+    line-height: 16px;
     height: 32px;
     text-overflow: -o-ellipsis-lastline;
     overflow: hidden;

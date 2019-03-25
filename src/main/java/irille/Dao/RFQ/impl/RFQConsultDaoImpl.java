@@ -2,20 +2,36 @@ package irille.Dao.RFQ.impl;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.junit.Test;
+
 import irille.Dao.RFQ.RFQConsultDao;
-import irille.Entity.RFQ.Enums.RFQConsultRecommend;
-import irille.Entity.RFQ.Enums.RFQConsultType;
-import irille.Entity.RFQ.Enums.RFQConsultVerifyStatus;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Entity.RFQ.RFQConsultRelation.T;
+import irille.Entity.RFQ.Enums.RFQConsultRecommend;
+import irille.Entity.RFQ.Enums.RFQConsultType;
+import irille.Entity.RFQ.Enums.RFQConsultVerifyStatus;
+import irille.Entity.SVS.SVSInfo;
+import irille.Entity.SVS.Enums.SVSGradeType;
 import irille.core.sys.Sys;
-import irille.platform.rfq.view.*;
+import irille.platform.rfq.view.CountryView;
+import irille.platform.rfq.view.ProductView;
+import irille.platform.rfq.view.PurchaseView;
+import irille.platform.rfq.view.RFQConsultView;
+import irille.platform.rfq.view.RFQMessageView;
+import irille.platform.rfq.view.SupplierView;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
@@ -25,11 +41,12 @@ import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.plt.PltCountry;
+import irille.shop.plt.PltErate;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplierRole;
 import irille.view.Page;
-import org.junit.Test;
+import irille.view.RFQ.InquirysView;
 
 public class RFQConsultDaoImpl implements RFQConsultDao {
 
@@ -78,8 +95,9 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         "= ?",
         condition.getVerifyStatus());
     query.ORDER_BY(RFQConsult.T.CREATE_TIME, "DESC");
+    Integer count = query.queryCount();
     query.limit(start, limit);
-    return new Page<>(toView(query.queryMaps()), start, limit, query.queryCount());
+    return new Page<>(toView(query.queryMaps()), start, limit, count);
   }
 
   /** @author Jianhua Ying */
@@ -94,7 +112,9 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
             RFQConsult.T.SHIPPING_TYPE,
             RFQConsult.T.PAY_TYPE,
             RFQConsult.T.EXTRA_DESCRIPTION,
+            PltErate.T.CUR_NAME,
             RFQConsult.T.IMAGE)
+        .LEFT_JOIN(PltErate.class, RFQConsult.T.CURRENCY, PltErate.T.PKEY)
         .WHERE(RFQConsult.T.PKEY, "=?", id);
     Map<String, Object> map = query.queryMap();
     RFQConsultView view = toView(map);
@@ -106,7 +126,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
     view.setExtraDescription(
         (String) map.get(RFQConsult.T.EXTRA_DESCRIPTION.getFld().getCodeSqlField()));
     view.setImage((String) map.get(RFQConsult.T.IMAGE.getFld().getCodeSqlField()));
-
+    view.setCurName((String) map.get(PltErate.T.CUR_NAME.getFld().getCodeSqlField()));
     return view;
   }
 
@@ -464,7 +484,9 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
             RFQConsultRelation.T.HAD_READ_SUPPLIER,
             RFQConsultRelation.T.QUANTITY,
             RFQConsultRelation.T.DESCRIPTION,
-            RFQConsultRelation.T.PURCHASE_ID)
+            RFQConsultRelation.T.PURCHASE_ID,
+            RFQConsultMessage.T.HAD_READ,
+            RFQConsultMessage.T.P2S)
         .SELECT(RFQConsultRelation.T.TITLE, "myTitle")
         .SELECT(RFQConsultRelation.T.CREATE_DATE, "myCreate_time")
         .FROM(RFQConsult.class)
@@ -473,23 +495,47 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         .WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supId)
         .WHERE(RFQConsultRelation.T.IN_RECYCLE_BIN, "=?", Sys.OYn.NO);
     switch (status != null ? status : type) {
+      case 0:
+        sql.LEFT_JOIN(
+            RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY);
+        break;
+      case 1:
+        sql.LEFT_JOIN(
+            RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY);
+        break;
       case 2:
-        sql.WHERE(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", Sys.OYn.NO);
+        sql.LEFT_JOIN(
+                RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY)
+            .WHERE(RFQConsultMessage.T.HAD_READ, "=?", Sys.OYn.NO)
+            .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.NO);
         break;
       case 3:
-        sql.WHERE(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", Sys.OYn.YES);
+        sql.LEFT_JOIN(
+                RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY)
+            .WHERE(RFQConsultMessage.T.HAD_READ, "=?", Sys.OYn.YES)
+            .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.NO);
         break;
       case 4:
         sql.LEFT_JOIN(
                 RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY)
+            .WHERE(RFQConsultMessage.T.HAD_READ, "=?", Sys.OYn.YES)
             .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.YES);
         break;
     }
     sql.WHERE(country != null, RFQConsult.T.COUNTRY, "=?", country);
-    sql.WHERE(date != null, T.CREATE_DATE, ">=?", date);
+    if (null != date) {
+      sql.WHERE(
+          " DATEDIFF("
+              + RFQConsultRelation.class.getSimpleName()
+              + "."
+              + RFQConsultRelation.T.CREATE_DATE.getFld().getCodeSqlField()
+              + ",?) = 0",
+          date);
+    }
     sql.WHERE(keyword != null, RFQConsult.T.TITLE, "like ?", "%" + keyword + "%");
     sql.WHERE(T.FAVORITE, "=?", flag);
     sql.WHERE(usrCountry != null, UsrPurchase.T.COUNTRY, "=?", usrCountry);
+    sql.GROUP_BY(RFQConsultMessage.T.RELATION);
     sql.LIMIT(start, limit);
     return Query.sql(sql).queryMaps();
   }
@@ -522,20 +568,36 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         .WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supId)
         .WHERE(RFQConsultRelation.T.IN_RECYCLE_BIN, "=?", Sys.OYn.NO);
     switch (type) {
+      case 0:
+        sql.LEFT_JOIN(
+            RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY);
+        break;
+      case 1:
+        sql.LEFT_JOIN(
+            RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY);
+        break;
       case 2:
-        sql.WHERE(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", Sys.OYn.NO);
+        sql.LEFT_JOIN(
+                RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY)
+            .WHERE(RFQConsultMessage.T.HAD_READ, "=?", Sys.OYn.NO)
+            .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.NO);
         break;
       case 3:
-        sql.WHERE(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", Sys.OYn.YES);
+        sql.LEFT_JOIN(
+                RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY)
+            .WHERE(RFQConsultMessage.T.HAD_READ, "=?", Sys.OYn.YES)
+            .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.NO);
         break;
       case 4:
         sql.LEFT_JOIN(
                 RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY)
+            .WHERE(RFQConsultMessage.T.HAD_READ, "=?", Sys.OYn.YES)
             .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.YES);
         break;
     }
+    sql.GROUP_BY(RFQConsultMessage.T.RELATION);
 
-    return Query.sql(sql).queryCount();
+    return Query.sql(sql).queryMaps().size();
   }
 
   @Override
@@ -689,5 +751,136 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                     })
             .collect(Collectors.toList());
     return new Page(view, start, limit, count);
+  }
+
+  @Override
+  public Page getInqList(
+      Integer start,
+      Integer limit,
+      Byte type,
+      String supplierName,
+      String purchaseName,
+      String productName) {
+    SQL sql =
+        new SQL() {
+          {
+            SELECT(RFQConsult.T.PKEY, "rfqPkey")
+                .SELECT(RFQConsult.T.TYPE, "rfqStatus")
+                .SELECT(PdtProduct.T.NAME, "productName")
+                .SELECT(PdtCat.T.NAME, "productCategories")
+                .SELECT(RFQConsult.T.QUANTITY, "quantity")
+                .SELECT(UsrPurchase.T.NAME, "purchaseName")
+                .SELECT(PltCountry.T.NAME, "purchaseCountry")
+                .SELECT(RFQConsult.T.CREATE_TIME, "releaseTime")
+                .SELECT(UsrSupplier.T.NAME, "supplierName")
+                .SELECT(SVSInfo.T.GRADE, "grade")
+                .FROM(RFQConsult.class)
+                .LEFT_JOIN(UsrPurchase.class, UsrPurchase.T.PKEY, RFQConsult.T.PURCHASE_ID)
+                .LEFT_JOIN(PdtProduct.class, PdtProduct.T.PKEY, RFQConsult.T.PRODUCT)
+                .LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, PdtProduct.T.SUPPLIER)
+                .LEFT_JOIN(PdtCat.class, PdtCat.T.PKEY, PdtProduct.T.CATEGORY)
+                .LEFT_JOIN(SVSInfo.class, SVSInfo.T.SUPPLIER, UsrSupplier.T.PKEY)
+                .LEFT_JOIN(PltCountry.class, PltCountry.T.PKEY, UsrPurchase.T.COUNTRY)
+                .WHERE(RFQConsult.T.TYPE, "=?", RFQConsultType.Private_INQUIRY)
+                .or()
+                .WHERE(RFQConsult.T.TYPE, "=?", RFQConsultType.INQUIRY)
+                .AND()
+                .WHERE("1 = 1")
+                .WHERE(type != null, RFQConsult.T.TYPE, "=?", type)
+                .WHERE(supplierName != null, UsrSupplier.T.NAME, "like ?", "%" + supplierName + "%")
+                .WHERE(purchaseName != null, UsrPurchase.T.NAME, "like ?", "%" + purchaseName + "%")
+                .WHERE(productName != null, PdtProduct.T.NAME, "like ?", "%" + productName + "%");
+          }
+        };
+    Integer num = Query.sql(sql).queryCount();
+    List<InquirysView> list =
+        Query.sql(sql.LIMIT(start, limit)).queryMaps().stream()
+            .map(
+                o ->
+                    new InquirysView() {
+                      {
+                        setRfqPkey((Integer) o.get("rfqPkey"));
+                        setRfqStatus((Byte) o.get("rfqStatus"));
+                        setProductName((String) o.get("productName"));
+                        setProductCategories((String) o.get("productCategories"));
+                        setQuantity((Integer) o.get("quantity"));
+                        setPurchaseName((String) o.get("purchaseName"));
+                        setPurchaseCountry((String) o.get("purchaseCountry"));
+                        setReleaseTime((Date) o.get("releaseTime"));
+                        setSupplierName((String) o.get("supplierName"));
+                        setGrade((Byte) o.get("grade"));
+                      }
+                    })
+            .collect(Collectors.toList());
+    return new Page(list, start, limit, num);
+  }
+
+  @Override
+  public JSONObject getInqStatus() throws JSONException {
+    JSONObject jsonObject = new JSONObject();
+    JSONArray inqTypeArray = new JSONArray();
+    JSONArray svsGradeArray = new JSONArray();
+    for (RFQConsultType value : RFQConsultType.values()) {
+      if (value.getLine().getKey() == RFQConsultType.INQUIRY.getLine().getKey()
+          || value.getLine().getKey() == RFQConsultType.Private_INQUIRY.getLine().getKey()) {
+        JSONObject object = new JSONObject();
+        object.put("key", value.getLine().getKey());
+        object.put("value", value.getLine().getName());
+        inqTypeArray.put(object);
+      }
+    }
+    for (SVSGradeType value : SVSGradeType.values()) {
+      JSONObject object = new JSONObject();
+      object.put("key", value.getLine().getKey());
+      object.put("value", value.getLine().getName());
+      svsGradeArray.put(object);
+    }
+    jsonObject.put("inqType", inqTypeArray);
+    jsonObject.put("svsGrade", svsGradeArray);
+    return jsonObject;
+  }
+
+  @Override
+  public InquirysView getInqDetail(Integer rfqPkey) {
+    SQL sql =
+        new SQL() {
+          {
+            SELECT(RFQConsult.T.PKEY, "rfqPkey")
+                .SELECT(RFQConsult.T.TYPE, "rfqStatus")
+                .SELECT(PdtProduct.T.NAME, "productName")
+                .SELECT(PdtCat.T.NAME, "productCategories")
+                .SELECT(RFQConsult.T.QUANTITY, "quantity")
+                .SELECT(UsrPurchase.T.NAME, "purchaseName")
+                .SELECT(PltCountry.T.NAME, "purchaseCountry")
+                .SELECT(UsrSupplier.T.NAME, "supplierName")
+                .SELECT(SVSInfo.T.GRADE, "grade")
+                .FROM(RFQConsult.class)
+                .LEFT_JOIN(UsrPurchase.class, UsrPurchase.T.PKEY, RFQConsult.T.PURCHASE_ID)
+                .LEFT_JOIN(PdtProduct.class, PdtProduct.T.PKEY, RFQConsult.T.PRODUCT)
+                .LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, PdtProduct.T.SUPPLIER)
+                .LEFT_JOIN(PdtCat.class, PdtCat.T.PKEY, PdtProduct.T.CATEGORY)
+                .LEFT_JOIN(SVSInfo.class, SVSInfo.T.SUPPLIER, UsrSupplier.T.PKEY)
+                .LEFT_JOIN(PltCountry.class, PltCountry.T.PKEY, UsrPurchase.T.COUNTRY)
+                .WHERE(RFQConsult.T.TYPE, "=?", RFQConsultType.Private_INQUIRY)
+                .or()
+                .WHERE(RFQConsult.T.TYPE, "=?", RFQConsultType.INQUIRY)
+                .AND()
+                .WHERE("1 = 1")
+                .WHERE(rfqPkey != null, RFQConsult.T.PKEY, "=?", rfqPkey);
+          }
+        };
+    Map<String, Object> map = Query.sql(sql).queryMap();
+    InquirysView view = new InquirysView();
+    view.setRfqPkey((Integer) map.get("rfqPkey"));
+    view.setRfqStatus((Byte) map.get("rfqStatus"));
+    view.setProductName((String) map.get("productName"));
+    view.setProductCategories((String) map.get("productCategories"));
+    view.setQuantity((Integer) map.get("quantity"));
+    view.setPurchaseName((String) map.get("purchaseName"));
+    view.setPurchaseCountry((String) map.get("purchaseCountry"));
+    view.setReleaseTime((Date) map.get("releaseTime"));
+    view.setSupplierName((String) map.get("supplierName"));
+    view.setGrade((Byte) map.get("grade"));
+    return view;
   }
 }

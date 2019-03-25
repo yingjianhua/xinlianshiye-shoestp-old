@@ -1,25 +1,41 @@
 package irille.Dao;
 
+import static irille.core.sys.Sys.OYn.YES;
+import static java.util.stream.Collectors.toList;
+
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import org.apache.logging.log4j.util.Strings;
+import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import irille.Aops.Caches;
-import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
-import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_Activity;
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Entity.O2O.O2O_Product;
+import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
+import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.action.dataimport.util.StringUtil;
 import irille.core.sys.Sys;
+import irille.core.sys.Sys.OYn;
 import irille.homeAction.pdt.dto.PdtProductView;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
@@ -29,28 +45,33 @@ import irille.pub.bean.sql.SQL;
 import irille.pub.svr.DbPool;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumFld;
-import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.GetValue;
 import irille.pub.util.SEOUtils;
+import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.sellerAction.pdt.view.PrivatePdtView;
-import irille.shop.pdt.*;
+import irille.shop.pdt.Pdt;
+import irille.shop.pdt.PdtAttrLine;
+import irille.shop.pdt.PdtAttrLineDAO;
+import irille.shop.pdt.PdtCat;
+import irille.shop.pdt.PdtCatDAO;
+import irille.shop.pdt.PdtProduct;
+import irille.shop.pdt.PdtSpec;
+import irille.shop.pdt.PdtTieredPricing;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltProvince;
-import irille.shop.usr.*;
+import irille.shop.usr.Usr;
+import irille.shop.usr.UsrFavorites;
+import irille.shop.usr.UsrFavoritesDAO;
+import irille.shop.usr.UsrProductCategory;
+import irille.shop.usr.UsrPurchase;
+import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
 import irille.view.pdt.PdtProductBaseInfoView;
 import irille.view.pdt.PdtProductCatView;
 import irille.view.pdt.PdtSearchView;
-import org.apache.logging.log4j.util.Strings;
-import org.json.JSONException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import static irille.core.sys.Sys.OYn.YES;
-import static java.util.stream.Collectors.toList;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/7 Time: 14:47 */
 public class PdtProductDao {
@@ -507,7 +528,8 @@ public class PdtProductDao {
       int cat,
       int start,
       int limit,
-      Integer search) {
+      Integer search,
+      String data) {
     SQL sql1 = new SQL();
     sql1.SELECT(
             PdtProduct.T.PKEY,
@@ -538,6 +560,21 @@ public class PdtProductDao {
         .WHERE(PdtProduct.T.STATE, "<>?", Pdt.OState.MERCHANTDEL.getLine().getKey())
         .WHERE(PdtProduct.T.STATE, "<>?", Pdt.OState.OFF.getLine().getKey())
         .ORDER_BY(PdtProduct.T.UPDATE_TIME, "desc");
+
+    if (null != data) {
+      sql1.WHERE(
+          "("
+              + PdtProduct.class.getSimpleName()
+              + "."
+              + PdtProduct.T.CODE.getFld().getCodeSqlField()
+              + " like ? OR "
+              + PdtProduct.class.getSimpleName()
+              + "."
+              + PdtProduct.T.NAME.getFld().getCodeSqlField()
+              + " like ?  )",
+          "%" + data + "%",
+          "%" + data + "%");
+    }
     if (search != null) {
       switch (search) {
         case 2:
@@ -586,9 +623,9 @@ public class PdtProductDao {
       sql1.WHERE(cat != 0, PdtProduct.T.CATEGORY, "in (" + String.join(",", list) + ")");
     }
     Integer totalCount = Query.sql(sql1).queryCount();
-    start = (start - 1 > -1 ? start - 1 : 0);
+    //    start = (start - 1 > -1 ? start - 1 : 0);
     //        q.limit(start * limit, limit).queryMaps();
-    sql1.LIMIT(start * limit, limit);
+    sql1.LIMIT(start, limit);
     List<Map<String, Object>> list = Query.sql(sql1).queryMaps();
     Page page =
         new Page(
@@ -1197,7 +1234,33 @@ public class PdtProductDao {
                       {
                         Integer pdtPkey = Integer.parseInt(map.get("pdtPkey").toString());
                         setPdtId(pdtPkey);
+
+                        SQL curPriceSql = new SQL();
+                        curPriceSql.SELECT(
+                            " MAX("
+                                + PdtTieredPricing.class.getSimpleName()
+                                + "."
+                                + PdtTieredPricing.T.CUR_PRICE.getFld().getCodeSqlField()
+                                + ") AS maxCurPrice");
+                        curPriceSql.SELECT(
+                            " MIN("
+                                + PdtTieredPricing.class.getSimpleName()
+                                + "."
+                                + PdtTieredPricing.T.CUR_PRICE.getFld().getCodeSqlField()
+                                + ") AS minCurPrice");
+                        curPriceSql.FROM(PdtTieredPricing.class);
+                        curPriceSql.WHERE(PdtTieredPricing.T.PRODUCT, " =? ", pdtPkey);
+                        curPriceSql.WHERE(
+                            PdtTieredPricing.T.DELETED, " =? ", OYn.NO.getLine().getKey());
+
+                        Map<String, Object> mm = Query.sql(curPriceSql).queryMap();
+                        if (null != mm) {
+                          setMaxCurPrice(GetValue.get(mm, "maxCurPrice", BigDecimal.class, null));
+                          setMinCurPrice(GetValue.get(mm, "minCurPrice", BigDecimal.class, null));
+                        }
+
                         setPdtName(map.get("pdtName").toString());
+
                         if (IsO2o != null && IsO2o == 1) {
                           for (O2O_Product o2opdt : copy) {
                             if (pdtPkey.equals(o2opdt.getProductId())) {
@@ -1217,6 +1280,10 @@ public class PdtProductDao {
                               new BigDecimal(
                                   map.get(PdtProduct.T.CUR_PRICE.getFld().getCodeSqlField())
                                       .toString()));
+                          if (null == mm) {
+                            setMinCurPrice(
+                                GetValue.get(mm, PdtProduct.T.MIN_OQ, BigDecimal.class, null));
+                          }
                           setMinOrder(
                               Integer.parseInt(
                                   map.get(PdtProduct.T.MIN_OQ.getFld().getCodeSqlField())

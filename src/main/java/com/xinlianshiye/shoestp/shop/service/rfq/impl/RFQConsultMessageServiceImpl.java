@@ -24,6 +24,7 @@ import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Entity.RFQ.Enums.RFQConsultMessageType;
 import irille.Entity.RFQ.JSON.ConsultMessage;
 import irille.Entity.RFQ.JSON.RFQConsultAlertUrlMessage;
+import irille.Entity.RFQ.JSON.RFQConsultImageMessage;
 import irille.Entity.RFQ.JSON.RFQConsultTextMessage;
 import irille.Entity.pm.PM.OTempType;
 import irille.pub.bean.Query;
@@ -100,15 +101,19 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
   }
 
   @Override
-  public RFQConsultMessageView send(UsrPurchase purchase, Integer relationPkey, String content) {
-    return sendMessage(
-        purchase,
-        relationPkey,
-        new RFQConsultTextMessage() {
-          {
-            setContent(content);
-          }
-        });
+  public RFQConsultMessageView sendTextMessage(
+      UsrPurchase purchase, Integer relationPkey, String content) {
+    RFQConsultTextMessage textMessage = new RFQConsultTextMessage();
+    textMessage.setContent(content);
+    return sendMessage(purchase, relationPkey, textMessage);
+  }
+
+  @Override
+  public RFQConsultMessageView sendImageMessage(
+      UsrPurchase purchase, Integer relationPkey, String imageUrl) {
+    RFQConsultImageMessage imageMessage = new RFQConsultImageMessage();
+    imageMessage.setImageUrl(imageUrl);
+    return sendMessage(purchase, relationPkey, imageMessage);
   }
 
   private RFQConsultMessageView sendMessage(

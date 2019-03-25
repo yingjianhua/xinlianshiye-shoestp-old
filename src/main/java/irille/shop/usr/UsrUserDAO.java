@@ -2,10 +2,10 @@ package irille.shop.usr;
 
 import irille.pub.DateTools;
 import irille.pub.Log;
-import irille.pub.Str;
 import irille.pub.bean.Query;
-import irille.shop.usr.Usr.OStatus;
-import irille.shop.usr.UsrSupplier.T;
+import irille.pub.bean.query.BeanQuery;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.view.usr.UserView;
 
 public class UsrUserDAO {
@@ -31,24 +31,8 @@ public class UsrUserDAO {
    * @param type 用户类型
    * @return
    */
-  public static UserView supplierSignIn(String loginName, String password) {
-    if (Str.isEmpty(loginName)) throw LOG.err("loginCheck", "请输入用户名");
-    if (password == null || Str.isEmpty(password)) throw LOG.err("loginCheck", "请输入密码");
-    UsrSupplier supplier = UsrSupplier.chkUniqueLogin_name(false, loginName);
-    if (supplier == null) {
-      throw LOG.err("loginName not exists", "用户不存在");
-    }
-    if (supplier.gtStatus() == OStatus.INIT) {
-      throw LOG.err("wait for appr", "审核中不能登录");
-    }
-    UsrMain main = supplier.gtUserid();
-    if (main == null) {
-      throw LOG.err("Invalid User", "用户名不存在或无效的用户名");
-    } else {
-      if (!DateTools.getDigest(main.getPkey() + password).equals(main.getPassword())) {
-        throw LOG.err("wrong password", "用户名和密码不匹配");
-      }
-    }
+  public static UserView supplierSignIn(UsrSupplier supplier, UsrMain main) {
+
     UserView view = new UserView();
     view.setSupplier(supplier);
     view.setPkey(main.getPkey());
@@ -68,41 +52,28 @@ public class UsrUserDAO {
    * @author Jianhua Ying
    */
   public static void updSupplierPassword(Integer id, String origin, String target) {
+    UsrMain main = new UsrMain();
     UsrSupplier supplier = Query.SELECT(UsrSupplier.class, id);
-    UsrPurchase purchase =
-        Query.SELECT(UsrPurchase.class)
-            .LEFT_JOIN(UsrSupplier.class, UsrPurchase.T.LOGIN_NAME, T.LOGIN_NAME)
-            .WHERE(T.PKEY, "=?", id)
-            .query();
-    if (purchase == null) {
-      if (!supplier.getPassword().equals(DateTools.getDigest(supplier.getPkey() + origin)))
-        throw LOG.err("pwdCheck", "原密码输入错误");
-      supplier.setPassword(DateTools.getDigest(supplier.getPkey() + target));
-      supplier.upd();
+    if (supplier != null) main = Query.SELECT(UsrMain.class, supplier.getUserid());
+    else throw new WebMessageException(ReturnCode.failure, "用户信息有误");
+    if (null != main.getPkey()) {
+      if (!main.getPassword().equals(DateTools.getDigest(main.getPkey() + origin))) {
+        throw new WebMessageException(ReturnCode.failure, "原密码错误");
+      } else {
+        main.setPassword(DateTools.getDigest(main.getPkey() + target));
+        main.upd();
+      }
     } else {
-      if (!purchase.getPassword().equals(DateTools.getDigest(purchase.getPkey() + origin)))
-        throw LOG.err("pwdCheck", "原密码输入错误");
-      supplier.setPassword(DateTools.getDigest(supplier.getPkey() + target));
-      supplier.upd();
-      purchase.setPassword(DateTools.getDigest(purchase.getPkey() + target));
-      purchase.upd();
+      throw new WebMessageException(ReturnCode.failure, "用户信息有误");
     }
   }
 
-  public static UserView findByLoginName(String loginName) {
-    UsrSupplier supplier = UsrSupplier.chkUniqueLogin_name(false, loginName);
-    UsrPurchase purchase = UsrPurchase.chkUniqueLogin_name(false, loginName);
-    UserView view = new UserView();
-    view.setSupplier(supplier);
-    view.setPurchase(purchase);
-    return view;
-  }
-
-  public static UsrPurchase findPurchaseByLoginName(String loginName) {
-    return UsrPurchase.chkUniqueLogin_name(false, loginName);
-  }
-
-  public static UsrSupplier findSupplierByLoginName(String loginName) {
-    return UsrSupplier.chkUniqueLogin_name(false, loginName);
+  public static UsrPurchase findByUesrId(Integer pkey) {
+    BeanQuery<UsrPurchase> beanQuery = new BeanQuery();
+    return beanQuery
+        .SELECT(UsrPurchase.class)
+        .FROM(UsrPurchase.class)
+        .WHERE(UsrPurchase.T.UserId, "=?", pkey)
+        .query(UsrPurchase.class);
   }
 }

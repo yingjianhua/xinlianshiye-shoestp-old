@@ -112,7 +112,7 @@
                         <el-col :span="12">
                             <el-form-item label="*公司详细地址:" prop="companyAddr">
                                 <el-input v-model="basicInfo.companyAddr"
-                                          :class="{'null' : !basicInfo.companyAddr}" placeholder="https://"></el-input>
+                                          :class="{'null' : !basicInfo.companyAddr}"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
@@ -150,7 +150,7 @@
                     <span class="countrybotton" @click="showselectcon">
                       你已选择{{basicInfo.targetedMarket.length}}个国家
                     </span>
-                                    <div class="select" :class="iscountryshow? '' : 'selecthidden'" style="z-index:99;top:97%;">
+                                    <div class="select" :class="iscountryshow? '' : 'selecthidden'" style="z-index:99;top:100%;">
                                         <div class="showselect" v-show="basicInfo.targetedMarket != 0">
                         <span v-for="item,index in selectcountry">
                           {{item.name}}
@@ -390,11 +390,11 @@
 <script>
 
     var validateName = function(rule, value, callback){
-        let reg = /^[A-Za-z\u4e00-\u9fa5]{1,50}$/
+        let reg = /^([^`~!@#$%^&*()+= -\]\[';/.,<>?:"{}|]).{0,52}(?<![`~!@#$%^&*()+= -\]\[';/.,<>?:"{}|])$/
         if (!value) {
             return callback(new Error("请填写名称"));
         } else if(!reg.test(value)){
-            return callback(new Error("请填写中文或英文,且不超过50位"));
+            return callback(new Error("公司名称首尾不能为符号,且长度在1-52位之间"));
         } else {
             callback();
         }
@@ -421,6 +421,16 @@
         let reg = /(^1\d{10}$)|(^(\d{3,4}-)?\d{7,8}$)/
         if (!value) {
             callback();
+        } else if (!reg.test(value)) {
+            return callback(new Error("请填写正确的手机格式"));
+        } else {
+            callback();
+        }
+    };
+    var validatePhone = function (rule, value, callback) {
+        let reg = /(^1\d{10}$)|(^(\d{3,4}-)?\d{7,8}$)/
+        if (!value) {
+            return callback(new Error("联系人手机不得为空"));
         } else if (!reg.test(value)) {
             return callback(new Error("请填写正确的手机格式"));
         } else {
@@ -512,7 +522,7 @@
         }
     };
     var validateCredit = function (rule, value, callback) {
-        let reg = /[0-9A-Za-z]{18}/;
+        let reg = /^[0-9A-Za-z]{18}$/;
         if (!value) {
             return callback(new Error("请填写统一社会信用代码"));
         } else if (!reg.test(value)) {
@@ -539,11 +549,11 @@
         }
     };
     var validatecontacts = function(rule, value, callback){
-        let reg = /^[A-Za-z\u4e00-\u9fa5]{0,30}$/
+        let reg = /^([^`~!@#$%^&*()+= -\]\[';/.,<>?:"{}|]).{0,32}(?<![`~!@#$%^&*()+= -\]\[';/.,<>?:"{}|])$/
         if (!value) {
             callback();
         } else if(!reg.test(value)){
-            return callback(new Error("请填写30个以内字符"));
+            return callback(new Error("首尾不能为符号,且长度在1-32为之间"));
         } else {
             callback();
         }
@@ -617,7 +627,7 @@
                 operateIdCard: '',
                 applicationTime: '',
                 purchasePkey: 9999,
-                lang: 'zh-TW',
+                lang: 'zh_CN',
                 userid: null
             },
             //用户信息
@@ -668,7 +678,7 @@
                     {validator: validatecontacts, trigger: 'blur'}
                 ],
                 phone:[
-                    { validator: validateTel, trigger: 'blur' }
+                    { validator: validatePhone, trigger: 'blur' }
                 ],
                 contactEmail: [
                     {validator: validateEmail, trigger: 'blur'}
@@ -757,7 +767,7 @@
                             if(res.data.result.user){
                                 self.$set(self,'usermsg',res.data.result.user)
                                 self.basicInfo.userid = res.data.result.user.id
-                                self.basicInfo.lang = res.data.result.current_language
+                                // self.basicInfo.lang = res.data.result.current_language
                                 self.getcountry();
                                 self.getRetype();
                             }else{
@@ -1023,6 +1033,16 @@
             //表单信息验证
             formSubmit: function () {
                 let self = this;
+                var begin = Date.parse(new Date(this.basicInfo.businessLicenseBeginTime))
+                var end = Date.parse(new Date(this.basicInfo.businessLicenseEndTime))
+                if (begin > end && this.basicInfo.businessLicenseIsSecular === '0') {
+                    this.$message({
+                        message: '营业执照结束时间，不能小于开始时间',
+                        type: 'warning',
+                        center: true
+                    })
+                    return false
+                }
                 this.$refs['basicInfo'].validate((vaild) => {
                     if (!vaild) {
                         self.$alert('请检查表单', {

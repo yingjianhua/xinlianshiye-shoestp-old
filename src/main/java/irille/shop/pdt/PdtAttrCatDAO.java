@@ -43,7 +43,7 @@ public class PdtAttrCatDAO {
     sql.WHERE(PdtAttrCat.T.DELETED, "=?", 0);
     // sql.WHERE(PdtAttrCat.T.DELETED,"=?" 1);
     if (name != null) {
-      sql.WHERE(PdtAttrCat.T.NAME, " like '%" + name + "%' ");
+      sql.WHERE(PdtAttrCat.T.NAME, " like ?", "%" + name + "%");
     }
     Integer count = Query.sql(sql).queryCount();
     List<PdtAttrCatView> list =

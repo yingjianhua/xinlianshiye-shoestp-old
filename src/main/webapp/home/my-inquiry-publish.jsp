@@ -28,19 +28,15 @@
     <link href="./static/css/global(1).css" rel="stylesheet" type="text/css">
     <link href="./static/css/user.css" rel="stylesheet" type="text/css">
     <link href="./static/css/style.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="./static/js/jquery-1.7.2.min.js">
-    </script>
+    <%--<script type="text/javascript" src="./static/js/jquery-1.7.2.min.js"></script>--%>
     <script type="text/javascript" src="./static/js/lang/en.js">
     </script>
-    <script type="text/javascript" src="./static/js/main.js">
-    </script>
+    <%--<script type="text/javascript" src="./static/js/main.js"></script>--%>
     <!--<link href="//www.shoestp.com/static/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">-->
-    <link rel="stylesheet" href="./static/css/animate.min.css" type="text/css">
-    <link rel="stylesheet" href="./static/css/swiper.min.css" type="text/css">
-    <script src="./static/js/swiper.min.js" type="text/javascript">
-    </script>
-    <script src="./static/js/lazyload.min.js" type="text/javascript">
-    </script>
+    <%--<link rel="stylesheet" href="./static/css/animate.min.css" type="text/css">--%>
+    <%--<link rel="stylesheet" href="./static/css/swiper.min.css" type="text/css">--%>
+    <%--<script src="./static/js/swiper.min.js" type="text/javascript"></script>--%>
+    <%--<script src="./static/js/lazyload.min.js" type="text/javascript"></script>--%>
     <!-- <script type="text/javascript">
         $(function () {
             products_list_obj.init();
@@ -48,16 +44,14 @@
     </script> -->
     <%-- <script src="./static/js/saved_resource" type="text/javascript">
     </script> --%>
-    <script src="./static/js/qs.js" type="text/javascript">
-    </script>
+    <%--<script src="./static/js/qs.js" type="text/javascript"></script>--%>
     <link href="./static/css/row_4.css" rel="stylesheet" type="text/css">
     <link href="./static/css/inquiry-publish.css" rel="stylesheet" type="text/css">
 
-    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
-    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.4.6/lib/theme-chalk/index.css">
-    <script src="https://unpkg.com/element-ui@2.4.6/lib/index.js"></script>
+    <%--<script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>--%>
+    <%--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>--%>
+    <%--<link rel="stylesheet" href="https://unpkg.com/element-ui@2.4.6/lib/theme-chalk/index.css">--%>
+    <%--<script src="https://unpkg.com/element-ui@2.4.6/lib/index.js"></script>--%>
     <style media="screen">
         /* 上传图片 预览的样式调整 */
         .el-upload--picture-card {
@@ -130,6 +124,10 @@
             align-items: center;
             color: #232323;
             text-decoration: none;
+        }
+
+        .el-form-item__label{
+            white-space: nowrap;
         }
     </style>
 
@@ -209,8 +207,8 @@
                                 <el-form-item label="Purchase Quantity：" required>
                                     <el-col :span="15">
                                         <el-form-item label-width="0" prop="quantity">
-                                            <el-input v-model.trim.number="form.quantity"
-                                                      onkeyup="this.value=this.value.replace(/[^0-9.]+/g,'')"></el-input>
+                                            <el-input v-model.trim="form.quantity"
+                                                      onkeyup="this.value=this.value.replace(/[^0-9]+/g,'')"></el-input>
                                         </el-form-item>
                                     </el-col>
 
@@ -229,7 +227,7 @@
                                 <el-form-item label="Price：">
                                     <el-col :span="7">
                                         <el-form-item prop="min_price">
-                                            <el-input v-model.trim.number="form.min_price"
+                                            <el-input v-model.trim="form.min_price"
                                                       onkeyup="this.value=this.value.replace(/[^0-9.]+/g,'')"></el-input>
                                         </el-form-item>
                                     </el-col>
@@ -238,7 +236,7 @@
                                     </el-col>
                                     <el-col :span="7">
                                         <el-form-item prop="max_price">
-                                            <el-input v-model.trim.number="form.max_price"
+                                            <el-input v-model.trim="form.max_price"
                                                       onkeyup="this.value=this.value.replace(/[^0-9.]+/g,'')"></el-input>
                                         </el-form-item>
                                     </el-col>
@@ -359,15 +357,37 @@
 <script src="/home/v3/static/js/index-top.js"></script>
 <script src="/home/v3/static/js/index-bottom.js"></script>
 <script type="text/javascript">
-    // 最高价格 - 不鞥低于最低价
-    const validateMaxPrice = (rule, value, callback) => {
-        let pattrn = /^((?!0)\d+(\.\d+)?)$/g
+    // 最低价格
+    const validateMinPrice = (rule, value, callback) => {
         if (!value) {
             callback();
             return
+            // 小数点验证
+        }else if(parseFloat(value) != value){
+            callback(new Error('Please enter a right number'));
+            return;
+        } else if( !/^([1-9]{1}\d{0,5}|([0]{1}))(\.(\d){1,2})?$/.test(value) ){
+            callback(new Error('Price can\'t greater than 6 digit integer and 2 decimal places'));
+        } else {
+            callback();
         }
-        if (!pattrn.test(value)) {
-            callback(new Error('Please enter a number type'));
+    };
+    // 最高价格 - 不鞥低于最低价
+    const validateMaxPrice = (rule, value, callback) => {
+        // let pattrn = /^((?!0)\d+(\.\d+)?)$/g
+        if (!value) {
+            callback();
+            return
+        // 小数点验证
+        }else if(parseFloat(value) != value){
+            callback(new Error('Please enter a right number'));
+            return;
+        } else
+        // if (!pattrn.test(value)) {
+        //     callback(new Error('Please enter a number type'));
+        // }else
+            if( !/^([1-9]{1}\d{0,5}|([0]{1}))(\.(\d){1,2})?$/.test(value) ){
+            callback(new Error('Price can\'t greater than 6 digit integer and 2 decimal places'));
         } else if (value < (vm.form.min_price ? vm.form.min_price : 0)) {
             callback(new Error('The maximum must be greater than the minimum!'));
         } else {
@@ -505,15 +525,15 @@
                     trigger: 'blur'
                 },
                     {
-                        type: "number",
-                        message: 'Please fill in with numbers.',
+                        pattern: util_regular_obj.register.positiveInteger,
+                        message: 'Please enter the positive integer，and can\'t beyond 10 digits',
                         trigger: 'blur'
                     }
                 ],
                 min_price: [{
-                    type: "number",
-                    message: 'Please enter a number type',
-                    trigger: 'blur'
+                    validator: validateMinPrice,
+                    trigger: 'blur',
+                    type: "number"
                 }],
                 max_price: [{
                     validator: validateMaxPrice,
@@ -533,13 +553,6 @@
             //完成后跳转回哪个页面
             // - 参数为手输的默认地址
             // - 地址中有值时用地址中的值，否则用调用时的参数地址，也没填写时跳转回首页
-            whichPageFrom(defaultUrl){
-                let whichPageFrom =  this.GetQueryString("whichPageFrom") || defaultUrl || "usr_UsrPurchase";
-                if( whichPageFrom.indexOf("/home/") == -1 ){
-                    whichPageFrom = "/home/" + whichPageFrom;
-                }
-                return whichPageFrom;
-            },
             // elementui 上传功能 *2 - 删除操作
             handleRemove(file, fileList) {
                 // 清空imgs数组
@@ -554,7 +567,7 @@
                 }
             },
             beforeUpload(file) {
-                if (!isLogin) {
+                if (!sysConfig || !sysConfig.user) {
                     sessionStorage['Temp_publish_form'] = JSON.stringify(this.form)
                     util_function_obj.alertWhenNoLogin(this);
                     return
@@ -583,7 +596,7 @@
 
             // 整个form提交
             submit() {
-                // if (!isLogin) {
+                // if (!sysConfig || !sysConfig.user) {
                 //     sessionStorage['Temp_publish_form'] = JSON.stringify(this.form)
                 //     this.$alert('Please login to operate', {
                 //         confirmButtonText: 'Ok',
@@ -598,10 +611,21 @@
                 //     return
                 // }
 
-                if (!isLogin) {
+                if (!sysConfig || !sysConfig.user) {
                     sessionStorage['Temp_publish_form'] = JSON.stringify(this.form);
                     util_function_obj.alertWhenNoLogin(this);
                     return;
+                // 供应商不能提交
+                }else if(sysConfig && sysConfig.user && sysConfig.user.user_type == 1){
+                    this.$alert("Sorry, the supplier cannot submit the form",{
+                        confirmButtonText: 'Ok',
+                        customClass: "my-custom-element-alert-class fs-content-18",
+                        center: true,
+                        callback: action =>{
+                            return
+                        }
+                    });
+                    return
                 }
 
                 this.$refs.form.validate((valid) => {
@@ -664,9 +688,15 @@
                                                 destination: "", //目的地
                                                 pay_type: 1, //支付方式
                                             }
-                                            window.location.href =
-                                                this.whichPageFrom("usr_UsrMessages_center");
-                                                // '/home/usr_UsrMessages_center';
+                                            // 有传回跳地址时直接回跳，否则跳首页
+                                            let url = window.location.href;
+                                            if(url.indexOf("backUrl=")!=-1){
+                                                let backUrl = url.substr(url.indexOf("backUrl")+8);
+                                                window.location.href = backUrl;
+                                            }else{
+                                                window.location.href = "/";
+                                            }
+
                                         }, 2000)
                                         // 未登录时
                                     } else if (res.data.ret == -1) {

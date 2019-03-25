@@ -117,7 +117,7 @@ public class SessionMsg {
   }
 
   public UsrPurchase getPurchase() {
-    return isPurchase ? UsrUserDAO.findPurchaseByLoginName(loginName) : null;
+    return isPurchase ? UsrUserDAO.findByUesrId(pkey) : null;
   }
 
   public void setPurchase(UsrPurchase purchase) {

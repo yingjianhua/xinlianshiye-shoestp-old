@@ -188,7 +188,7 @@
 											<div class="goods-name">
 												<div class="ellipsis_1">{{inquiry.title}}</div>
 											</div>
-											<div class="status" v-if="inquiry.type==1">{{inquiry.status | inquiryStatus2Text}}</div>
+											<div class="status" v-if="inquiry.type==1">{{inquiry.verifyStatus | inquiryStatus2Text}}</div>
 										</div>
 										<transition name="el-fade-in">
 											<div class="my-btn-normal btn-view"
@@ -211,7 +211,7 @@
 											<div class="goods-name">
 												<div class="ellipsis_1">{{inquiry.title}}</div>
 											</div>
-                                            <div class="status" v-if="inquiry.type==1">{{inquiry.status | inquiryStatus2Text}}</div>
+                                            <div class="status" v-if="inquiry.type==1">{{inquiry.verifyStatus | inquiryStatus2Text(true)}}</div>
 										</div>
 										<transition name="el-fade-in">
 											<div class="my-btn-normal btn-view"
@@ -328,15 +328,20 @@
 			<transition name="slide-right">
 				<div class="chat-wrap" v-show="isScale && showChatBox && inquiryList.length">
 					<div class="chat-header">
-						<div class="name" v-if="supplierDetail.company">
-							<!-- 有头像显示头像，没有头像显示首字母 -->
-							<img :src="image(supplierDetail.logo)" alt="" class="short-name"
-								 :class="{isShowMore: isShowMore}"
-								 v-if="supplierDetail.logo">
-							<div class="short-name" v-else
-								 :class="{isShowMore: isShowMore}">
-								{{supplierDetail.name && supplierDetail.name[0]}}
-							</div>
+						<div class="name">
+                            <%--<template  v-if="supplierDetail.company"></template>--%>
+                            <!-- 有头像显示头像，没有头像显示首字母 -->
+                            <img :src="image(supplierDetail.logo)" alt="" class="short-name"
+                                 :class="{isShowMore: isShowMore}"
+                                 v-if="supplierDetail.logo">
+                            <div class="short-name" v-else-if="supplierDetail.name"
+                                 :class="{isShowMore: isShowMore}">
+                                {{supplierDetail.name && supplierDetail.name[0]}}
+                            </div>
+                            <div class="short-name" v-else
+                                 :class="{isShowMore: isShowMore}">
+                                H
+                            </div>
 
 							<div class="full-name" :class="{isShowMore: isShowMore, ellipsis_5: isShowMore, ellipsis_1: !isShowMore}">
 								{{supplierDetail.name}}
@@ -408,7 +413,7 @@
 
 									<!-- 普通询盘基础信息 -->
 									<div class="basic-details-wrap normal-inquiry-drop-down-wrap">
-										<div class="box-title">Basic information</div>
+										<div class="box-title">Inquiry information</div>
 										<div class="row-item product-info-box">
 											<img class="product-pic" alt="product's pic"
 												 :src="(inquiryDetail.images && inquiryDetail.images[0]) ? (image(inquiryDetail.images[0]) + (inquiryList[nowInquiryIndex].type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')) : '/home/v3/static/images/no_img.png'">
@@ -822,6 +827,15 @@
 									  @focus="isShowMore = false"
 									  @keyup.enter.native="sendMsg"
 									  v-model.trim="sendMsgValue" placeholder="Please input the message"></el-input>
+
+							<el-upload style="margin-right: 10px;"
+									   :show-file-list="false"
+									   :on-success="chatAddImgSuc"
+									   action="/home/usr_Purchase_upload">
+								<el-button slot="trigger" icon="el-icon-plus" size="small" circle></el-button>
+							</el-upload>
+
+							<%--<el-button icon="el-icon-plus"  size="small" circle></el-button>--%>
 							<el-button class="btn-send" type="primary" size="small" @click="sendMsg">send</el-button>
 						</div>
 					</div>
@@ -845,12 +859,18 @@
 										<li class="item">
 											Quantity required：{{inquiryDetail.quantity}} {{inquiryDetail.unit}}
 										</li>
+                                        <li class="item" v-if="inquiryDetail.price">
+                                            Price：{{inquiryDetail.price}} {{inquiryDetail.currency}}
+                                        </li>
 										<li class="item">
 											Expiration time：{{inquiryDetail.valieDate | dataFormat('yyyy-MM-dd hh:mm:ss')}}
 										</li>
 										<li class="item" v-if="inquiryDetail.paymentTerms">
 											Payment：{{inquiryDetail.paymentTerms}}
 										</li>
+                                        <li class="item" v-if="inquiryDetail.destination">
+                                            Destination：{{inquiryDetail.destination}}
+                                        </li>
 										<li class="item" v-if="inquiryDetail.shippingTerms">
 											Shipping：{{inquiryDetail.shippingTerms}}
 										</li>
@@ -879,6 +899,8 @@
 								<h3 class="content-header">Product detailed specifications:</h3>
 								<div class="content">
 									{{inquiryDetail.detail}}
+                                    <br>
+                                    {{inquiryDetail.moreInformation?inquiryDetail.moreInformation:""}}
 								</div>
 							</div>
 
@@ -1247,16 +1269,12 @@
 
 			isAllRead: false,  //信息是否已读
 			sendMsgValue: "", //发送的内容
+			sendMsgImgValue: "", //发送的图片地址
 
 			isFromContactList: false, //显示联系人 聊天框（从联系人列表跳转过来时为true）
 			testObj:{}
 		},
 		mounted() {
-			if (!isLogin) {
-				util_function_obj.alertWhenNoLogin(this);
-				return false;
-			}
-
 			// 获取询盘列表
 			this.getInquiryList();
 
@@ -1512,7 +1530,7 @@
 
 			// 点view 查看询盘详情及报价
 			viewInquiryDetail(e){
-				if (!isLogin) {
+				if (!sysConfig || !sysConfig.user) {
 					util_function_obj.alertWhenNoLogin(this);
 					return false;
 				}
@@ -1644,7 +1662,7 @@
 
 			//获取报价详情
 			getQuotationDetail(){
-				if (!isLogin) {
+				if (!sysConfig || !sysConfig.user) {
 					util_function_obj.alertWhenNoLogin(this);
 					return false;
 				}
@@ -1697,7 +1715,7 @@
 
 			//确认修改 - 添加额外信息
 			addInformationConfirm(){
-				if (!isLogin) {
+				if (!sysConfig || !sysConfig.user) {
 					util_function_obj.alertWhenNoLogin(this);
 					return false;
 				}
@@ -1744,7 +1762,7 @@
 
 			//关闭RFQ
 			closeRFQ(e){
-				if (!isLogin) {
+				if (!sysConfig || !sysConfig.user) {
 					util_function_obj.alertWhenNoLogin(this);
 					return false;
 				}
@@ -1786,7 +1804,7 @@
 
 			//删除询盘
 			deleteInquiry(e){
-				if (!isLogin) {
+				if (!sysConfig || !sysConfig.user) {
 					util_function_obj.alertWhenNoLogin(this);
 					return false;
 				}
@@ -1832,7 +1850,7 @@
 
 			//添加至联系人
 			addContact(e){
-				if (!isLogin) {
+				if (!sysConfig || !sysConfig.user) {
 					util_function_obj.alertWhenNoLogin(this);
 					return false;
 				}
@@ -1868,7 +1886,7 @@
 
 			// 点击联系相应的供应商
 			contactSupplier(e){
-				if (!isLogin) {
+				if (!sysConfig || !sysConfig.user) {
 					util_function_obj.alertWhenNoLogin(this);
 					return false;
 				}
@@ -2043,7 +2061,7 @@
 			//参数为 searchMore：搜索上一页，从preMessagePkey开始查询
 			//       searchLast：发消息时，获取最新消息，从nextMessagePkey开始查询
 			getChatInfo({searchMore=false,searchLast=false}={}){
-				if (!isLogin) {
+				if (!sysConfig || !sysConfig.user) {
 					util_function_obj.alertWhenNoLogin(this);
 					return false;
 				}
@@ -2155,6 +2173,7 @@
 				})
 				}
 				this.sendMsgValue = "";
+				this.sendMsgImgValue = "";
 
 			})
 			.catch((error) => {
@@ -2216,19 +2235,47 @@
 			}, 1000);
 			},
 
+			// 聊天时发送图片
+			chatAddImgSuc(res, file, fileList){
+				console.log("chatAddImgSuc")
+				console.log(res)
+				console.log(file)
+				console.log(fileList)
+				if (res.ret != 1) {
+					this.$message.error(res.msg || "Images upload error,please try again later");
+					return
+				}else{
+					this.sendMsgImgValue = res.result.url;
+					this.sendMsg();
+				}
+				// axios.post('', Qs.stringify({
+				//
+				// }))
+				// 		.then((res) => {
+				// 	if (res.data.ret != 1) {
+				// 	this.$message.error(res.data.msg || "Images upload error,please try again later");
+				// 	return
+				// };
+				// this.$message({
+				// 	message: 'Add image success!',
+				// 	type: 'success'
+				// });
+			},
+
 			// 发送消息
 			sendMsg(){
-				if (!isLogin) {
+				if (!sysConfig || !sysConfig.user) {
 					util_function_obj.alertWhenNoLogin(this);
 					return false;
 				}
 
 				console.log("sendMsg")
-				if(!this.sendMsgValue) return;
+				if(!this.sendMsgValue && !this.sendMsgImgValue) return;
 				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
 				this.relationPkey = this.isFromContactList?this.relationPkey:this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].quotation.pkey;
 				axios.post('/home/rfq_RFQConsult_sendMessage', Qs.stringify({
 					content: this.sendMsgValue,
+					imageUrl: this.sendMsgImgValue,
 					relationPkey: this.relationPkey,
 				}))
 						.then((res) => {
@@ -2341,20 +2388,17 @@
 				return text;
 			},
 			// Inquiry的status转换对应文字
-			inquiryStatus2Text: function (status) {
+			inquiryStatus2Text: function (status, haveQuotation) {
 				var text = "";
 				switch(status){
 					case 1:
-						text = "Waiting for publication";
+						text = "Reject";
 						break;
 					case 2:
 						text = "Verifying";
 						break;
 					case 3:
-						text = "Finished";
-						break;
-					case 4:
-						text = "Closed";
+						text = haveQuotation?"Compare all quotation":"No quotation";
 						break;
 					default:
 						text = "";

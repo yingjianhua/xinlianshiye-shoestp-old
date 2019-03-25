@@ -133,7 +133,7 @@
             loginFormRules: {
                 email: [
                     {required: true, message: 'Email can\'t be empty!', trigger: 'blur'}, {
-                        pattern: /^[\w]{1,16}@+\w{1,15}.\w{2,5}$/,
+                        pattern: util_regular_obj.register.email,
                         message: 'E-mail format is incorrect',
                         trigger: 'blur'
                     }
@@ -141,7 +141,12 @@
                 psd: [
                     // {validator: validatePsd, trigger: 'change'},
                     { required: true, message: 'Password can\'t be empty', trigger: 'blur' },
-                    { min: 6, max: 20, message: 'Please enter 6 to 20 characters', trigger: 'blur' }
+                    {
+                        pattern: util_regular_obj.register.psd,
+                        message: 'Please enter 6 to 20 characters',
+                        trigger: 'blur'
+                    }
+                    // { min: 6, max: 20, message: 'Please enter 6 to 20 characters', trigger: 'blur' }
                 ],
             },
         },

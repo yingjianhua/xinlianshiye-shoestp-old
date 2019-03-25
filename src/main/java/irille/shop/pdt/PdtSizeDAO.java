@@ -27,6 +27,7 @@ import irille.pub.idu.IduIns;
 import irille.pub.idu.IduOther;
 import irille.pub.idu.IduUpd;
 import irille.pub.svr.Env;
+import irille.pub.tb.FldLanguage;
 import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.pub.validate.ValidForm;
@@ -397,6 +398,32 @@ public class PdtSizeDAO {
    */
   public static PdtSize insSize(Byte type, String name, Integer supplier, Language lag) {
     checkName(name, true);
+    String engName = "";
+    try {
+      JSONObject json = new JSONObject(name);
+      engName = String.valueOf(json.get(FldLanguage.Language.en.name()));
+    } catch (JSONException e) {
+      throw new WebMessageException(ReturnCode.failure, "非法格式");
+    }
+    if ("".equals(engName)) {
+      throw new WebMessageException(ReturnCode.failure, "请输入英文尺码");
+    }
+    List<PdtSize> attrs =
+        BeanBase.list(
+            PdtSize.class,
+            PdtSize.T.NAME.getFld().getCodeSqlField()
+                + "->'$.en' = ? AND "
+                + PdtSize.T.SUPPLIER.getFld().getCodeSqlField()
+                + " =? AND "
+                + PdtSize.T.DELETED.getFld().getCodeSqlField()
+                + " =? ",
+            false,
+            engName,
+            supplier,
+            OYn.NO.getLine().getKey());
+    if (null != attrs && attrs.size() > 0) {
+      throw new WebMessageException(ReturnCode.failure, "尺码【" + engName + "】已存在,请勿重复添加");
+    }
     PdtSize size = new PdtSize();
     size.setName(name);
     size.setSupplier(supplier);
@@ -426,6 +453,32 @@ public class PdtSizeDAO {
    */
   public static void updSize(Integer supplier, Integer pkey, String name) {
     checkName(name, true);
+    String engName = "";
+    try {
+      JSONObject json = new JSONObject(name);
+      engName = String.valueOf(json.get(FldLanguage.Language.en.name()));
+    } catch (JSONException e) {
+      throw new WebMessageException(ReturnCode.failure, "非法格式");
+    }
+    if ("".equals(engName)) {
+      throw new WebMessageException(ReturnCode.failure, "请输入英文尺码");
+    }
+    List<PdtSize> attrs =
+        BeanBase.list(
+            PdtSize.class,
+            PdtSize.T.NAME.getFld().getCodeSqlField()
+                + "->'$.en' = ? AND "
+                + PdtSize.T.SUPPLIER.getFld().getCodeSqlField()
+                + " =? AND "
+                + PdtSize.T.DELETED.getFld().getCodeSqlField()
+                + " =? ",
+            false,
+            engName,
+            supplier,
+            OYn.NO.getLine().getKey());
+    if (null != attrs && attrs.size() > 0) {
+      throw new WebMessageException(ReturnCode.failure, "尺码【" + engName + "】已存在,请勿重复添加");
+    }
     SQL sql = new SQL();
     sql.SELECT(PdtSize.class);
     sql.FROM(PdtSize.class);

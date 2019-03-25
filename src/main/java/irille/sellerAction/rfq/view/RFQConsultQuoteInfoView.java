@@ -1,6 +1,7 @@
 package irille.sellerAction.rfq.view;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -21,8 +22,8 @@ public class RFQConsultQuoteInfoView implements BaseView {
   private String descriotion; // 商品详细描述
   private List images; // 商品图片 多图
   private int quantity; // 数量
-  private int min_price; // 价格区间
-  private int max_price; // 价格区间
+  private BigDecimal min_price; // 价格区间
+  private BigDecimal max_price; // 价格区间
   private int currency; // 币种
 
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

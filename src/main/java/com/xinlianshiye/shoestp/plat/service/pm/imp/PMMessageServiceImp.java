@@ -65,7 +65,8 @@ public class PMMessageServiceImp implements IPMMessageService {
     PMTemplate template =
         templateService.getTemplateMap().get(Integer.valueOf(tempType.getLine().getKey()));
     if (null != template) {
-      if (template.getEmailStatus().equals(OYn.YES.getLine().getKey())) {
+      if (template.getEmailStatus().equals(OYn.YES.getLine().getKey())
+          && null != template.getMailContent()) {
         // 发送邮件
         String content =
             variableService.render(
@@ -79,7 +80,8 @@ public class PMMessageServiceImp implements IPMMessageService {
         }
       }
 
-      if (template.getPmStatus().equals(OYn.YES.getLine().getKey())) {
+      if (template.getPmStatus().equals(OYn.YES.getLine().getKey())
+          && null != template.getPmContent()) {
         // 发送站内信
         String content =
             variableService.render(
@@ -122,7 +124,7 @@ public class PMMessageServiceImp implements IPMMessageService {
       mail.setReceiver(purchase.getEmail());
     } else if (message.getRcvrType().equals(ORCVRType.SUPPLIER.getLine().getKey())
         && !message.getRcvr().equals(-1)) {
-      mail.setReceiver(supplier.getEmail());
+      mail.setReceiver(supplier.gtUserid().getEmail());
     }
     if (message.getRcvr() == -1) {
       int i = 0;

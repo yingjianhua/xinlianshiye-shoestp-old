@@ -952,6 +952,12 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   public void setOperateIdCard(String operateIdCard){
     _operateIdCard=operateIdCard;
   }
+  public JSONObject gtContacts() throws JSONException {
+    return getContacts()==null?new JSONObject():new JSONObject(getContacts());
+  }
+  public void stContacts(JSONObject contacts){
+    setContacts(contacts==null?null:contacts.toString());
+  }
   public String getContacts(){
     return _contacts;
   }
@@ -1016,6 +1022,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     else
       setBankProvince(bankProvince.getPkey());
   }
+
   public String getContactsIdCardFrontPhoto(){
     return _contactsIdCardFrontPhoto;
   }

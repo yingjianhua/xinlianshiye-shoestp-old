@@ -1,5 +1,6 @@
 package irille.view.Manage.RFQ;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -26,8 +27,8 @@ public class RFQManageInfoView implements BaseView {
   private int left_count;
   private boolean inquiry;
   private String image;
-  private int min_price;
-  private int max_price;
+  private BigDecimal min_price;
+  private BigDecimal max_price;
   private int countryId;
   private int quantity;
   private String descriotion; // 描述

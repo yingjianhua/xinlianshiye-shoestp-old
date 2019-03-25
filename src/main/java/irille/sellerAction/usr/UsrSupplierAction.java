@@ -9,14 +9,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import irille.Service.Manage.Usr.IUsrSupplierManageService;
+import irille.action.dataimport.util.StringUtil;
+import irille.pub.DateTools;
 import irille.pub.Exp;
 import irille.pub.Str;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
+import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.query.SqlQuery;
 import irille.pub.bean.sql.SQL;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.tb.FldLanguage.Language;
+import irille.pub.validate.Regular;
 import irille.pub.validate.ValidForm;
+import irille.pub.validate.ValidRegex;
 import irille.pub.validate.ValidRegex2;
 import irille.pub.verify.RandomImageServlet;
 import irille.sellerAction.SellerAction;
@@ -26,7 +33,13 @@ import irille.sellerAction.view.operateinfoView;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltProvince;
-import irille.shop.usr.*;
+import irille.shop.usr.Usr;
+import irille.shop.usr.UsrAnnex;
+import irille.shop.usr.UsrMain;
+import irille.shop.usr.UsrSupplier;
+import irille.shop.usr.UsrSupplierCategory;
+import irille.shop.usr.UsrSupplierDAO;
+import irille.shop.usr.UsrUserDAO;
 import irille.view.usr.AccountSettingsView;
 import irille.view.usr.UserView;
 import irille.view.usr.UsrshopSettingView;
@@ -36,6 +49,8 @@ import org.apache.struts2.ServletActionContext;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static irille.pub.validate.Regular.REGULAR_NAME;
 
 public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsrSupplierAction {
 
@@ -91,50 +106,43 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
   private String vCode;
 
   @Override
-  public void login() throws IOException {
-    System.out.println("vCode:" + vCode);
+  public void login() throws Exception {
     String verifyCode = verifyCode();
-    System.out.println("verifyCode:" + verifyCode);
-
     if (Str.isEmpty(verifyCode) || Str.isEmpty(vCode) || !verifyCode.equals(vCode)) {
       writeErr("验证码错误");
       return;
     }
-    UserView user;
-    try {
-      user = UsrUserDAO.supplierSignIn(email, password);
-      setUser(user);
-      write();
-    } catch (Exp e) {
-      writeErr(e.getLastMessage());
+    UserView user = null;
+    if (Str.isEmpty(email)) throw LOG.err("loginCheck", "请输入用户名");
+    if (password == null || Str.isEmpty(password)) throw LOG.err("loginCheck", "请输入密码");
+    //TODO Email 改为小写
+    UsrMain main = UsrMain.chkUniqueEmail(false, email);
+    if (main == null) {
+      throw LOG.err("Invalid User", "用户名不存在或无效的用户名");
+    } else {
+      if (!DateTools.getDigest(main.getPkey() + password).equals(main.getPassword())) {
+        throw LOG.err("wrong password", "用户名和密码不匹配");
+      }
     }
-
-    //    	UsrSupplier supplier=new UsrSupplier();
-    //        try {
-    //        	String verifyCode = verifyCode();
-    //            if (Str.isEmpty(verifyCode) || Str.isEmpty(getCheckCode()) ||
-    // verifyCode.equals(getCheckCode()) == false)
-    //                throw LOG.err("errcode", "验证码错误");
-    //             supplier = UsrSupplierDAO.loginCheck(getBean().getLoginName(), getMmCheck());
-    //
-    //            this.session.put(LOGIN, supplier);
-    //            SellerAction.initTran(supplier);
-    //        } catch (Exp e) {
-    //            setSarg1(e.getLastMessage());
-    //            return SellerAction.LOGIN;
-    //        }
-    //
-    //        setResult("/seller/admin/index/index.html");
-    //        return RTRENDS;
-
-  }
-
-  /** 注销供应商登录信息 */
-  @Override
-  public String logon() {
-    setUser(null);
-    setResult("/seller/admin/index/login.jsp");
-    return RTRENDS;
+    BeanQuery<UsrSupplier> query = new BeanQuery();
+    query
+        .SELECT(UsrSupplier.class)
+        .FROM(UsrSupplier.class)
+        .WHERE(UsrSupplier.T.UserId, "=?", main.getPkey());
+    UsrSupplier supplier = query.query();
+    if (supplier == null) {
+      JSONObject json = new JSONObject();
+      json.put("ret", -2);
+      json.put("msg", "用户尚未开通店铺,是否前往开通店铺");
+      writerOrExport(json);
+      return;
+    }
+    if (supplier.gtStatus() == Usr.OStatus.INIT) {
+      throw LOG.err("wait for appr", "审核中不能登录");
+    }
+    user = UsrUserDAO.supplierSignIn(supplier, main);
+    setUser(user);
+    write();
   }
 
   /**
@@ -244,6 +252,10 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
    * @author yingjianhua
    */
   public void UpdPwd() throws Exception {
+    if ("".equals(newPwd) || null == newPwd || "".equals(oldPwd) || null == oldPwd)
+      throw new WebMessageException(ReturnCode.failure, "密码输入不能为空");
+    if (!ValidRegex.regMarch(Regular.REGULAR_PWD, newPwd))
+      throw new WebMessageException(ReturnCode.password_format, "密码为6到20为的数字和字母组成");
     UsrUserDAO.updSupplierPassword(getSupplier().getPkey(), oldPwd, newPwd);
     write();
   }
@@ -450,7 +462,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
         annex1.ins();
       }
       UsrMain main = BeanBase.load(UsrMain.class, getBean().getUserid());
-      if(main != null){
+      if (main != null) {
         main.setContacts(getBean().getContacts());
         main.setTelphone(getBean().getPhone());
         main.upd();
@@ -464,59 +476,58 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     }
   }
 
-  //正则校验
-  public void regex() throws Exception{
+  // 正则校验
+  public void regex() throws Exception {
     ValidForm valid = new ValidForm(getBean());
     valid.validNotEmpty(UsrSupplier.T.NAME,UsrSupplier.T.ENGLISH_NAME, UsrSupplier.T.COMPANY_ADDR,UsrSupplier.T.TARGETED_MARKET,UsrSupplier.T.PROD_PATTERN,UsrSupplier.T.CREDIT_CODE,UsrSupplier.T.CERT_PHOTO);
     ValidRegex2 regex = new ValidRegex2(getBean());
     regex.validAZLen(50,UsrSupplier.T.ENGLISH_NAME);
     if (getBean().getWebsite() != null)
       regex.validRegexMatched(
-          "http[s]?:\\/\\/[\\w]{1,}.?[\\w]{1,}.?[\\w/.?&=-]{1,}",
-          "请输入完整的网址格式，如https://www.shoestp.com",
-          UsrSupplier.T.WEBSITE);
+              "http[s]?:\\/\\/[\\w]{1,}.?[\\w]{1,}.?[\\w/.?&=-]{1,}",
+              "请输入完整的网址格式，如https://www.shoestp.com",
+              UsrSupplier.T.WEBSITE);
     if (getBean().getAnnualProduction() != null)
       regex.validRegexMatched(
-          "([1-9]\\d*|0)(\\.\\d*[1-9])?",
-          "年产量请填写数字,不能以0开头",
-          UsrSupplier.T.ANNUAL_PRODUCTION);
+              "([1-9]\\d*|0)(\\.\\d*[1-9])?",
+              "年产量请填写数字,不能以0开头",
+              UsrSupplier.T.ANNUAL_PRODUCTION);
     if (getBean().getTelephone() != null)
       regex.validRegexMatched(
-          "((\\d{3,4}-)?\\d{7,8})|(1\\d{10})", "请填写正确的固定电话格式", UsrSupplier.T.TELEPHONE);
+              "((\\d{3,4}-)?\\d{7,8})|(1\\d{10})", "请填写正确的固定电话格式", UsrSupplier.T.TELEPHONE);
     if (getBean().getFax() != null)
       regex.validRegexMatched(
-          "(\\d{3,4}-)?\\d{7,8}", "请填写正确传真格式", UsrSupplier.T.FAX);
+              "(\\d{3,4}-)?\\d{7,8}", "请填写正确传真格式", UsrSupplier.T.FAX);
     if(getBean().getPostcode() != null)
       regex.validRegexMatched("[0-9]{6}","邮编只能输入数字，且数字个数为6个", UsrSupplier.T.POSTCODE);
     if (getBean().getRegisteredCapital() != null)
       regex.validRegexMatched(
-          "([1-9]\\d*|0)(\\.\\d*[1-9])?", "注册资本请填写数字,不能以0开头", UsrSupplier.T.REGISTERED_CAPITAL);
+              "([1-9]\\d*|0)(\\.\\d*[1-9])?", "注册资本请填写数字,不能以0开头", UsrSupplier.T.REGISTERED_CAPITAL);
     if(getBean().getEntity() != null)
       regex.validRegexMatched("[\\u4e00-\\u9fa5]{2,6}", "法定代表人只能输入中文，且个数为2~6个", UsrSupplier.T.ENTITY);
     if (getBean().getContacts() != null)
       regex.validRegexMatched(
-          "[A-Za-z\\u4e00-\\u9fa5]{0,30}", "联系人姓名只能输入中文、英文，且个数在30个之内", UsrSupplier.T.CONTACTS);
+              REGULAR_NAME, "联系人姓名首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.CONTACTS);
     if (getBean().getDepartment() != null)
       regex.validRegexMatched(
-          "[A-Za-z\\u4e00-\\u9fa5]{0,30}", "联系人部门只能输入中文、英文，且个数在30个之内", UsrSupplier.T.DEPARTMENT);
+              REGULAR_NAME, "联系人部门首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.DEPARTMENT);
     if (getBean().getJobTitle() != null)
       regex.validRegexMatched(
-          "[A-Za-z\\u4e00-\\u9fa5]{0,30}", "联系人职称只能输入中文、英文，且个数在30个之内", UsrSupplier.T.JOB_TITLE);
+              REGULAR_NAME, "联系人职称首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.JOB_TITLE);
     if (getBean().getPhone() != null)
       regex.validRegexMatched("1\\d{10}", "请填写11位手机格式的号码", UsrSupplier.T.PHONE);
-
     if (getBean().getContactEmail() != null)
       regex.validRegexMatched(
-          "^[\\w]{1,16}@+\\w{1,15}.\\w{2,5}$", "联系人邮箱请填写正确的邮箱格式", UsrSupplier.T.CONTACT_EMAIL);
+              "^[\\w]{1,16}@+\\w{1,15}.\\w{2,5}$", "联系人邮箱请填写正确的邮箱格式", UsrSupplier.T.CONTACT_EMAIL);
     if (getBean().getIdCard() != null)
       regex.validRegexMatched(
-          "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)",
+              "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)",
               "请输入正确的18位身份证号码", UsrSupplier.T.ID_CARD);
     if (getBean().getOperateIdCard() != null)
       regex.validRegexMatched(
-          "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)",
-          "请输入正确的18位身份证号码",
-          UsrSupplier.T.OPERATE_ID_CARD);
+              "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)",
+              "请输入正确的18位身份证号码",
+              UsrSupplier.T.OPERATE_ID_CARD);
   }
 
   public String getNewPwd() {
@@ -546,7 +557,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
             getSupplier().getPkey(), PltConfigDAO.supplierLanguage(SellerAction.getSupplier())));
   }
 
-  /*                 新的写法   分割线               */
+  /* 新的写法 分割线 */
   @Inject IUsrSupplierManageService usrSupplierManageService;
 
   public void getShopSetting() throws IOException {
@@ -579,6 +590,17 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
   @Getter @Setter SupinfoView results;
 
   public void updShopbase() throws Exception {
+    if (!StringUtil.hasValue(results.getQQ()) || !StringUtil.hasValue(results.getCredit_code())) {
+      writeErr("请输入QQ与信用代码");
+      return;
+    }
+    try {
+      JSONObject json = new JSONObject(results.getProd_patiern());
+      if (!StringUtil.hasValue(json.get("en"))) throw new NullPointerException();
+    } catch (JSONException | NullPointerException e) {
+      writeErr("请输入正确的生产模式");
+      return;
+    }
     UsrSupplier us = new UsrSupplier();
     us.setPkey(results.getId());
     us.setCompanyNature(results.getCompany_nature());

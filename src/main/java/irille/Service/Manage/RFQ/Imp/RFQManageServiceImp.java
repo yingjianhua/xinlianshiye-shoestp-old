@@ -1,7 +1,12 @@
 package irille.Service.Manage.RFQ.Imp;
 
 import java.io.IOException;
-import java.util.*;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -12,12 +17,13 @@ import irille.Dao.Old.RFQ.RFQConsultMessageDAO;
 import irille.Dao.Old.RFQ.RFQConsultRelationDAO;
 import irille.Dao.Old.RFQ.RFQConsultUpdDAO;
 import irille.Dao.RFQ.RFQConsultDao;
+import irille.Entity.RFQ.RFQConsult;
+import irille.Entity.RFQ.RFQConsultMessage;
+import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Entity.RFQ.Enums.RFQConsultPayType;
 import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
 import irille.Entity.RFQ.Enums.RFQConsultType;
 import irille.Entity.RFQ.Enums.RFQConsultUnit;
-import irille.Entity.RFQ.RFQConsult;
-import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Service.Manage.RFQ.IRFQManageService;
 import irille.action.dataimport.util.DateUtil;
 import irille.pub.bean.BeanBase;
@@ -25,11 +31,16 @@ import irille.pub.tb.FldLanguage;
 import irille.pub.util.GetValue;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
+import irille.sellerAction.rfq.view.RFQOfferListView;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.plt.PltErate;
 import irille.shop.usr.UsrPurchase;
-import irille.view.Manage.RFQ.*;
 import irille.view.Page;
+import irille.view.Manage.RFQ.RFQListBodyInfoView;
+import irille.view.Manage.RFQ.RFQManageInfoView;
+import irille.view.Manage.RFQ.RFQManageMyQuoteListBody;
+import irille.view.Manage.RFQ.RFQMyuoteInfo;
+import irille.view.Manage.RFQ.RFQPdtInfo;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2019/1/30 Time: 14:58 */
 public class RFQManageServiceImp implements IRFQManageService {
@@ -95,10 +106,19 @@ public class RFQManageServiceImp implements IRFQManageService {
     infoView.setImage(rfqConsult.getImage());
     infoView.setPurchaseName(rfqConsult.gtPurchaseId().getName());
     if (rfqConsult.gtType() == RFQConsultType.RFQ) {
-      infoView.setMin_price(
-          Integer.valueOf(GetValue.getStringIndex(rfqConsult.getPrice(), "-", 0)));
-      infoView.setMax_price(
-          Integer.valueOf(GetValue.getStringIndex(rfqConsult.getPrice(), "-", 1)));
+      String[] price = rfqConsult.getPrice().split("-");
+      if (price.length > 0) {
+        String min_price = price[0];
+        if (min_price != null && !min_price.trim().equals("")) {
+          infoView.setMin_price(BigDecimal.valueOf(Double.valueOf(min_price)));
+        }
+      }
+      if (price.length > 1) {
+        String max_price = price[1];
+        if (max_price != null && !max_price.trim().equals("")) {
+          infoView.setMax_price(BigDecimal.valueOf(Double.valueOf(max_price)));
+        }
+      }
       infoView.setCurrencyname(
           BeanBase.load(PltErate.class, rfqConsult.getCurrency()).getCurName());
       infoView.setDescriotion(rfqConsult.getContent()); // 询盘内容
@@ -228,8 +248,9 @@ public class RFQManageServiceImp implements IRFQManageService {
     List<Map<String, Object>> list = null;
     list =
         rfqConsultDao.getMyRFQQuoteList(
-            start, limit, type, date, keyword, flag, status, country, Supid,usrCountry);
+            start, limit, type, date, keyword, flag, status, country, Supid, usrCountry);
     List<RFQManageMyQuoteListBody> result = new ArrayList<>();
+    Map<Integer, Object> countryMap = new HashMap<>();
     for (Map<String, Object> map : list) {
       RFQManageMyQuoteListBody body = new RFQManageMyQuoteListBody();
       body.setId(GetValue.get(map, RFQConsult.T.PKEY, Integer.class, 0));
@@ -249,12 +270,12 @@ public class RFQManageServiceImp implements IRFQManageService {
       body.setPurchaseCountryIMG(up.gtCountry().getNationalFlag());
       body.setPurchaseCountry(up.gtCountry().getName());
       body.setPurchaseCountryPkey(up.gtCountry().getPkey());
-      if (GetValue.get(map, RFQConsultRelation.T.HAD_READ_SUPPLIER, Byte.class, (byte) -1) == 0
-          && GetValue.get(map, RFQConsultRelation.T.HAD_READ_PURCHASE, Byte.class, (byte) -1)
-              == 1) {
+      countryMap.put(up.gtCountry().getPkey(), up.gtCountry().getName());
+      if (GetValue.get(map, RFQConsultMessage.T.P2S, Byte.class, (byte) -1) == 1) {
         body.setStatus(3);
       } else {
-        if (GetValue.get(map, RFQConsultRelation.T.HAD_READ_PURCHASE, Byte.class, (byte) -1) == 0)
+        if (GetValue.get(map, RFQConsultMessage.T.P2S, Byte.class, (byte) -1) == 0
+            && GetValue.get(map, RFQConsultMessage.T.HAD_READ, Byte.class, (byte) -1) == 0)
           body.setStatus(1);
         else {
           body.setStatus(2);
@@ -262,11 +283,12 @@ public class RFQManageServiceImp implements IRFQManageService {
       }
       result.add(body);
     }
-    return new Page(
+    return new RFQOfferListView(
         result,
         start,
         limit,
-        rfqConsultDao.count(type, date, keyword, flag, status, country, Supid));
+        rfqConsultDao.count(type, date, keyword, flag, status, country, Supid),
+        countryMap);
   }
 
   @Override

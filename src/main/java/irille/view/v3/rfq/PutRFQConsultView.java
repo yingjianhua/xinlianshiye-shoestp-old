@@ -1,5 +1,6 @@
 package irille.view.v3.rfq;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -17,8 +18,8 @@ public class PutRFQConsultView implements BaseView {
   private int quantity;
   // 数量单位  枚举类对应
   private int unit = 1;
-  private int min_price;
-  private int max_price;
+  private BigDecimal min_price;
+  private BigDecimal max_price;
   //    币种外键
   private int currency;
   private Date valid_date;

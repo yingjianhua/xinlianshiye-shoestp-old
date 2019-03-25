@@ -168,18 +168,12 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
 
   @Override
   public void addGroup(UsrPurchase purchase, String groupName, Language language) {
-    if (groupName == null || groupName.isEmpty()) {
-      throw new WebMessageException(
-          MessageBuild.buildMessage(ReturnCode.please_input_group_name, language));
-      //      throw new WebMessageException(ReturnCode.valid_notempty, "请输入分组名字");
-    }
     BeanQuery<RFQPurchaseContactGroup> query = Query.selectFrom(RFQPurchaseContactGroup.class);
     query.WHERE(RFQPurchaseContactGroup.T.PURCHASE, "=?", purchase.getPkey());
     query.WHERE(RFQPurchaseContactGroup.T.NAME, "=?", groupName);
     if (query.exists()) {
       throw new WebMessageException(
           MessageBuild.buildMessage(ReturnCode.please_reselect_input_group_name, language));
-      //      throw new WebMessageException(ReturnCode.valid_notempty, "请重新填写分组名字");
     }
     RFQPurchaseContactGroup group = new RFQPurchaseContactGroup();
     group.setName(groupName);
