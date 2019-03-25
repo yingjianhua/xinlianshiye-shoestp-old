@@ -55,6 +55,8 @@ public interface RFQConsultDao {
 
   List<Map<String, Object>> getRFQList(int start, int limit, String keyword, int supId);
 
+  int getRFQListCount(int start, int limit, String keyword, Integer supId);
+
   RFQConsult getRFQInfo(int id);
 
   /**
@@ -69,8 +71,6 @@ public interface RFQConsultDao {
   RFQConsultRelation getRFQRelation(int rfqId, Integer pkey);
 
   Map<String, Object> getMyPdtInfo(Integer id, Integer pkey);
-
-  int getRFQListCount(int start, int limit, String keyword, Integer supId);
 
   List getPdtList(Integer start, Integer limit, String keyword, Integer pkey);
 
