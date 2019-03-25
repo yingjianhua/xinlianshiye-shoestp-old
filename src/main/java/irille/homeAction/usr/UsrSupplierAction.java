@@ -494,14 +494,11 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
     }
     // 没有Supplier 信息未入住商家
     UsrSupplier supplier = user.getSupplier();
-    if (supplier == null) {
-      setResult("/home/v3/jsp/supplier-entry/index.jsp");
-    } else {
-      if (supplier.gtStatus() == OStatus.APPR) {
-        setResult("/newseller/", false);
-        return RTRENDS;
-      }
+    if (supplier != null && supplier.gtStatus() == OStatus.APPR) {
+      setResult("/newseller/", false);
+      return RTRENDS;
     }
+    setResult("/home/v3/jsp/supplier-entry/index.jsp");
     return TRENDS;
   }
 
