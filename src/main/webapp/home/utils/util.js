@@ -58,21 +58,21 @@ var util_function_obj={
     },
 
     // 图片地址加前缀-后缀
-    // image: function(url, w, h, param) {
-    //     var postfixUrl = ""; //后缀
-    //     if (!url) {
-    //         return ""
-    //     }
-    //     if (w && h) {
-    //         postfixUrl = "?x-oss-process=image/resize,w_" + w + ",h_" + h;
-    //     }else if(w){
-    //         postfixUrl = "?x-oss-process=image/resize,w_" + w + ",h_" + w;
-    //     }
-    //     if(param){
-    //         postfixUrl += param;
-    //     }
-    //     return "https://image.shoestp.com" + url + postfixUrl;
-    // },
+    image: function(url, w, h, param) {
+        var postfixUrl = ""; //后缀
+        if (!url) {
+            return ""
+        }
+        if (w && h) {
+            postfixUrl = "?x-oss-process=image/resize,w_" + w + ",h_" + h;
+        }else if(w){
+            postfixUrl = "?x-oss-process=image/resize,w_" + w + ",h_" + w;
+        }
+        if(param){
+            postfixUrl += param;
+        }
+        return "https://image.shoestp.com" + url + postfixUrl;
+    },
 };
 
 

@@ -313,8 +313,7 @@
                                     <div>I am looking for</div>
                                 </el-col>
                                 <el-col :span="8">
-
-                                    <el-input v-model.trim="form.title"></el-input>
+                                    <el-input v-model="form.title" @blur="paxTrimBlur"></el-input>
                                 </el-col>
                                 <el-col :span="5">
                                     <div>on shoestp.com</div>
@@ -356,8 +355,8 @@
                         <el-form-item label="Message:" prop="description">
                             <el-input
                                     placeholder="Enter product details such as color, size, materials etc. and other specification requirements to receive an accurate quote."
-                                    type="textarea" v-model.trim="form.description"
-                                    :autosize="{ minRows: 8, maxRows: 8}"></el-input>
+                                    type="textarea" v-model="form.description"
+                                    :autosize="{ minRows: 8, maxRows: 8}" @blur="paxTrimBlur"></el-input>
                         </el-form-item>
                         <el-form-item label="" prop="images">
                             <div class="upImg flexSt">
@@ -465,6 +464,10 @@
                 self.$set(self.form,"supplierId",self.pkey)
             },
             methods: {
+                paxTrimBlur(){
+                    this.form.description =  this.form.description.trim();
+                    this.form.title =  this.form.title.trim();
+                },
                 // elementui 上传功能 *2 - 删除操作
                 handleRemove(file, fileList) {
                     // 清空imgs数组

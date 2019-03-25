@@ -125,7 +125,9 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
         UsrSupplier.T.CREDIT_CODE,
         UsrSupplier.T.CERT_PHOTO);
     ValidRegex2 regex = new ValidRegex2(getBean());
-    regex.validAZLen(50, UsrSupplier.T.ENGLISH_NAME);
+    if (getBean().getEnglishName() != null)
+      regex.validRegexMatched(
+              "^[a-zA-Z ]{1,60}$", "请填写英文字母,且不超过60位", UsrSupplier.T.ENGLISH_NAME);
     if (getBean().getWebsite() != null)
       regex.validRegexMatched(
           "http[s]?:\\/\\/[\\w]{1,}.?[\\w]{1,}.?[\\w/.?&=-]{1,}",
@@ -157,7 +159,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
       regex.validRegexMatched("1\\d{10}", "请填写11位手机格式的号码", UsrSupplier.T.PHONE);
     if (getBean().getContactEmail() != null)
       regex.validRegexMatched(
-          "^[\\w]{1,16}@+\\w{1,15}.\\w{2,5}$", "联系人邮箱请填写正确的邮箱格式", UsrSupplier.T.CONTACT_EMAIL);
+          "^[\\w]{1,32}@+\\w{1,15}.\\w{2,5}$", "联系人邮箱请填写正确的邮箱格式", UsrSupplier.T.CONTACT_EMAIL);
     if (getBean().getIdCard() != null)
       regex.validRegexMatched(
           "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)", "请输入正确的18位身份证号码", UsrSupplier.T.ID_CARD);

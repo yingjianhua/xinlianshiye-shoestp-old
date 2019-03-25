@@ -367,7 +367,7 @@
             </el-form>
             <div class="bottons">
                 <div class="botton botton1" @click="goback">上一步</div>
-                <div class="botton botton2" @click="submitimg">Submit</div>
+                <div class="botton botton2" @click="submitimg">提 交</div>
             </div>
         </div>
         <div class="step4" v-if="step == 3">
@@ -738,7 +738,7 @@
                     data['prodPattern'] = data['prodPattern'] ? data['prodPattern'].split(' / ') : []
                     data['userid'] = parseInt(data['userid'].split('##')[0])
                     data['certPhotoName'] = data['annex'].cert_photo_name
-                    data['idCardFrontPhotoName'] = data['annex'].id_card_front_photo_name
+                    data['idCardFrontPhotoName'] = data['annex'].    id_card_front_photo_name
                     data['contactsIdCardFrontPhotoName'] = data['annex'].contacts_id_card_front_photo_name
                     data['businessLicenseIsSecular'] = data['businessLicenseIsSecular'] + ''
                     if (data['businessLicenseIsSecular'] == '1') {
@@ -767,30 +767,23 @@
                             if(res.data.result.user){
                                 self.$set(self,'usermsg',res.data.result.user)
                                 self.basicInfo.userid = res.data.result.user.id
-                                // self.basicInfo.lang = res.data.result.current_language
                                 self.getcountry();
                                 self.getRetype();
                             }else{
-                                self.showmsg('请先登录,3秒后跳转至登录页面')
-                                setTimeout(function(){
-                                    window.location.href='/home/usr_UsrPurchase_sign'
-                                },3000)
+                                // self.showmsg('请先登录,3秒后跳转至登录页面')
+                                // setTimeout(function(){
+                                //     window.location.href='/home/usr_UsrPurchase_sign'
+                                // },3000)
+                                util_function_obj.alertWhenNoLogin(self);
                             }
                         }else{
-                            if(res.data.msg){
-                                self.$message({
-                                    message: res.data.msg,
-                                    type: 'warning'
-                                });
-                            }else{
-                                self.$message({
-                                    message: '获取个人信息失败',
-                                    type: 'warning'
-                                });
-                            }
+                            self.$message({
+                                message: res.data.msg || '获取个人信息失败',
+                                type: 'warning'
+                            });
                         }
                     }).catch(function(err){
-                        console.log(err)
+                        self.$message.error(err || 'Network error,please try again later');
                     })
             },
             //获取公司信息
@@ -817,12 +810,12 @@
                         }
                     }else{
                         self.$message({
-                            message: res.data.msg,
+                            message: res.data.msg || "获取公司信息失败，请稍后再试",
                             type: 'warning'
                         });
                     }
                 }).catch(function(err){
-                    console.log(err)
+                    self.$message.error(err || 'Network error,please try again later');
                 })
             },
             //获取国家
@@ -838,20 +831,13 @@
                         self.$set(self, 'exhibitionCountry', res.data.result)
                         self.exhibitionCountrylength = Math.ceil(self.exhibitionCountry.length / 3)
                     }else{
-                        if(res.data.msg){
-                            self.$message({
-                                message: res.data.msg,
-                                type: 'warning'
-                            });
-                        }else{
-                            self.$message({
-                                message: '获取国家列表失败',
-                                type: 'warning'
-                            });
-                        }
+                        self.$message({
+                            message: res.data.msg || '获取国家列表失败',
+                            type: 'warning'
+                        });
                     }
                 }).catch(function(err){
-                    console.log(err)
+                    self.$message.error(err || 'Network error,please try again later');
                 })
             },
             //承认条约
@@ -871,17 +857,10 @@
                     this.basicInfo.certPhotoName = response.result.originalName;
                     this.basicInfo.certPhoto = response.result.url;
                 }else{
-                    if(response.msg){
-                        this.$message({
-                            message: res.data.msg,
-                            type: 'warning'
-                        });
-                    }else{
-                        this.$message({
-                            message: '图片上传失败',
-                            type: 'warning'
-                        });
-                    }
+                    this.$message({
+                        message: response.msg || '图片上传失败',
+                        type: 'warning'
+                    });
                 }
             },
             legalsuccess:function(response, file, fileList){
@@ -889,17 +868,10 @@
                     this.basicInfo.idCardFrontPhotoName = response.result.originalName;
                     this.basicInfo.idCardFrontPhoto = response.result.url;
                 }else{
-                    if(response.msg){
-                        this.$message({
-                            message: res.data.msg,
-                            type: 'warning'
-                        });
-                    }else{
-                        this.$message({
-                            message: '图片上传失败',
-                            type: 'warning'
-                        });
-                    }
+                    this.$message({
+                        message: response.msg ||  '图片上传失败',
+                        type: 'warning'
+                    });
                 }
             },
             operatesuccess:function(response, file, fileList){
@@ -907,17 +879,10 @@
                     this.basicInfo.contactsIdCardFrontPhotoName = response.result.originalName;
                     this.basicInfo.contactsIdCardFrontPhoto = response.result.url;
                 }else{
-                    if(response.msg){
-                        this.$message({
-                            message: res.data.msg,
-                            type: 'warning'
-                        });
-                    }else{
-                        this.$message({
-                            message: '图片上传失败',
-                            type: 'warning'
-                        });
-                    }
+                    this.$message({
+                        message: response.msg ||  '图片上传失败',
+                        type: 'warning'
+                    });
                 }
             },
             //营业执照,身份证的验证,和最后提交
@@ -926,6 +891,8 @@
                 this.$refs['secondbasicInfo'].validate((vaild) => {
                     if (!vaild) {
                         self.$alert('请检查表单', {
+                            customClass: "my-custom-element-alert-class fs-content-18",
+                            center: true,
                             closeOnClickModal: true,
                             showConfirmButton: false
                         }).catch(() => {
@@ -933,6 +900,7 @@
                         return false
                     } else {
                         self.$confirm('是否提交?', '提示', {
+                            customClass: "my-custom-element-alert-class fs-content-18",
                             confirmButtonText: '确定',
                             cancelButtonText: '取消',
                             type: 'info ',
@@ -983,20 +951,13 @@
                             self.step += 1;
                         }, 1000)
                     } else {
-                        if(res.data.msg){
-                            self.$message({
-                                message: res.data.msg,
-                                type: 'warning'
-                            });
-                        }else{
-                            self.$message({
-                                message: 'Submit Fail',
-                                type: 'warning'
-                            });
-                        }
+                        self.$message({
+                            message: res.data.msg || 'Submit Fail',
+                            type: 'warning'
+                        });
                     }
                 }).catch(function (error) {
-                    console.log(error)
+                    self.$message.error(error || 'Network error,please try again later');
                 })
             },
             //修改提交
@@ -1014,20 +975,13 @@
                             self.step += 1;
                         }, 1000)
                     } else {
-                        if(res.data.msg){
-                            self.$message({
-                                message: res.data.msg,
-                                type: 'warning'
-                            });
-                        }else{
-                            self.$message({
-                                message: 'Submit Fail',
-                                type: 'warning'
-                            });
-                        }
+                        self.$message({
+                            message: res.data.msg || 'Submit Fail',
+                            type: 'warning'
+                        });
                     }
                 }).catch(function (error) {
-                    console.log(error)
+                    self.$message.error(error || 'Network error,please try again later');
                 })
             },
             //表单信息验证
@@ -1046,6 +1000,7 @@
                 this.$refs['basicInfo'].validate((vaild) => {
                     if (!vaild) {
                         self.$alert('请检查表单', {
+                            customClass: "my-custom-element-alert-class fs-content-18",
                             closeOnClickModal: true,
                             showConfirmButton: false
                         }).catch(() => {
@@ -1063,26 +1018,23 @@
             //搜索国家
             filterCountry: function (val) {
                 var reg = new RegExp("^" + val, "i")
-                if (!val) {
-                    this.$set(this, 'exhibitionCountry', this.country)
-                } else {
-                    let option = [];
-                    let k = 0;
-                    for (let i  in this.exhibitionCountry) {
-                        if (reg.test(this.exhibitionCountry[i].name)) {
-                            option[k] = this.exhibitionCountry[i];
-                            k++;
-                        }
+                this.$set(this, 'exhibitionCountry', this.country)
+                let option = [];
+                let k = 0;
+                for (let i  in this.exhibitionCountry) {
+                    if (reg.test(this.exhibitionCountry[i].name)) {
+                        option[k] = this.exhibitionCountry[i];
+                        k++;
                     }
-                    this.$set(this, 'exhibitionCountry', option)
-                    console.log(this.exhibitionCountry)
                 }
+                this.$set(this, 'exhibitionCountry', option)
             },
             //消息提示
             showmsg: function (val) {
                 this.$alert(val, {
                     closeOnClickModal: true,
-                    showConfirmButton: false
+                    showConfirmButton: false,
+                    customClass: "my-custom-element-alert-class fs-content-18",
                 }).catch(() => {
                 });
             },

@@ -29,12 +29,12 @@ Vue.component('index-top', {
                 <template v-if="PMMessageList.length >= 1">
                     <p class="message-title">You have {{countNoRead}} new messages</p>
                     <ul class="msg-list">
-                        <li v-for="(item,index) in PMMessageList" :key="index" @click="msgClick(item.pkey,index)">
+                        <li v-for="(item,index) in PMMessageList" :key="index" @click="msgClick(item.pkey,index,item.read)">
                             <a href="javascript:void(0)">
-                                <i class="message-icon" :class="!item.read?'message-icon-new':'message-icon-old'"></i>
+                                <i class="message-icon" :class="item.read == 0?'message-icon-new':'message-icon-old'"></i>
                                 <div>
-                                    <p :class="!item.read?'p_ellipsis':''" :style="!item.read?'color:#999999;':''">{{item.content}}</p>
-                                    <div>
+                                    <div class="div-content" :class="item.read == 0?'p_ellipsis':''" :style="item.read == 0?'color:#999999;':''" v-html="item.content"></div>
+                                    <div class="div-time">
                                         <img src="/home/v3/static/images/o2otopmessagetime.png" alt="">
                                          <span>{{item.time | timeDistance}}</span> 
                                     </div>
@@ -165,7 +165,26 @@ Vue.component('index-top', {
     mounted() {
         Vue.set(this.$data, 'input', unescape(decodeURIComponent(getParams('Keyword', getParams('keyWord', getParams('keyword', ''))))))
         this.getconfig();
-        this.getPMmessage(this.msgStart,this.msgLimit);
+        // this.getPMmessage(this.msgStart,this.msgLimit);
+            axios.get('/home/pm_PMMessage_list', {
+                    params: {
+                        start:this.msgStart,
+                        limit:this.msgLimit,
+                    }
+                })
+            .then((res) => {
+                if (res.data.ret == 1) {
+                    this.countNoRead = res.data.result.countNoRead;
+                    this.PMMessageList = res.data.result.items;
+                    if(res.data.result.items.length < 8){
+                        this.PMmoreSwitch = false;
+                        return;
+                    }
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
         // setTimeout(() => {
         //     this.$nextTick(() => {
         //         let el = document.querySelector('.msg-list');
@@ -232,17 +251,12 @@ Vue.component('index-top', {
                     }
                 })
             .then(function (res) {
-                // console.log("PMMMMMMMMMMMMMMMMMM" + res)
-                // console.log(res)
                 if (res.data.ret == 1) {
                     self.countNoRead = res.data.result.countNoRead;
                     self.PMMessageList.push(...res.data.result.items);
-                    // console.log("res.data.result.items.length=======" + res.data.result.items.length)
-                    if(res.data.result.items.length <= 0){
-                        // console.log(res)
-                        // console.log(self.PMmoreSwitch)
+                    console.log(res.data.result.items.length)
+                    if(res.data.result.items.length < 8){
                         self.PMmoreSwitch = false;
-                    //    self.$message('No more station letters');
                        return;
                     }
                 }
@@ -251,9 +265,12 @@ Vue.component('index-top', {
                 console.log(error);
             });
         },
-        msgClick(message,i){   // 点击消息
+        msgClick(message,i,read){   // 点击消息
             var self = this;
-            axios.post('/home/pm_PMMessage_read', Qs.stringify({
+            if(read == 1){
+                return;
+            }else{
+                axios.post('/home/pm_PMMessage_read', Qs.stringify({
                     message,
                 }))
                 .then(function (res) {
@@ -265,11 +282,12 @@ Vue.component('index-top', {
                     };
                     // self.$message.success("Have read");
                     self.getPMmessage(self.msgStart,self.msgLimit);
-                    self.$set(self.PMMessageList[i],"read",true)
+                    self.$set(self.PMMessageList[i],"read",1)
                 })
-                .catch(function (error) {
+                .catch(function (error) { 
                     console.log(error);
                 });
+            }
         },
         moreClick(){    // 点击 加载更多消息
             var self = this;
