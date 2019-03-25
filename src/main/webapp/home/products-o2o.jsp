@@ -19,9 +19,14 @@
         cursor: pointer;
         text-align: center;
     }
-
-    #o2obottom .o2obottomlinks ul {
-        color: #0c0e23;
+    #o2obottom .o2obottomcopyright{
+        border-top: 1px solid #575f75 !important;
+    }
+    #o2obottom .o2obottomlinks ul .ullink a{
+        color: white !important;
+    }
+    #o2obottom {
+        background-color: #424d65 !important;
     }
 </style>
 <body>
@@ -35,7 +40,8 @@
 <script src="/html/o2o/js/config.js"></script>
 <link rel="stylesheet" href="/html/o2o/css/index.css">
 <script src="/home/components/O2O-top.js"></script>
-<script src="/home/components/O2O-bottom.js"></script>
+<!-- <script src="/home/components/O2O-bottom.js"></script> -->
+<script src="/home/v3/static/js/index-bottom.js"></script>
 
 <script>     new Vue({
     el: "#new_navs"
@@ -131,14 +137,14 @@
             </div> --%>
 
             <div class="top-box2" style="margin-left: 20px;">Min Order :
-                <input class="w63" type="text" @blur="lessthan222" @keyup.enter="lessthan222" v-model="lessthan"
+                <input class="w63" type="text" @blur="lessthan222" @keyup.enter="lessthan222" v-model.trim="lessthan"
                        placeholder="less than" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/>
             </div>
             <div class="i0"></div>
             <div class="top-box2">Price :
-                <input type="text" @blur="min222" @keyup.enter="min222" v-model.number="min" placeholder="min."
+                <input class="w63" type="text" @blur="min222" @keyup.enter="min222" v-model.trim.number="min" placeholder="min."
                        onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/> -
-                <input type="text" @blur="min222" @keyup.enter="min222" v-model.number="max" placeholder="max."
+                <input class="w63" type="text" @blur="min222" @keyup.enter="min222" v-model.trim.number="max" placeholder="max."
                        onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/>
             </div>
 
@@ -161,49 +167,56 @@
                                 <div class="h3" @mouseenter="bigPicBoxopen" @mouseleave="bigPicBoxclose"
                                      :data-pic="item2">
                                     <a :href="'/'+item.rewrite" target="_blank"><img class="fl"
-                                                                                     :src="imgUrlappend(item2)"/></a>
+                                                                                     :src="util_function_obj.image(item2,195)"/></a>
                                 </div>
                             </el-carousel-item>
                         </el-carousel>
                     </div>
                 </div>
-                <a :href="'/'+item.rewrite" class="common-boxtitle" target="_blank">
-                    <h1>
-                        <div class="ootit" v-show="item.pdtType"><img class="mtf4"
-                                                                      src="/home/v3/static/images/ico/icon_o2o.png"
-                                                                      alt="O2O"/>O2O
-                        </div>
-                        {{item.pdtName}}
-                    </h1>
-                    <div>
-                        <div class="fl">
-                            <h2>US <span>{{sysConfig.currency_symbol}}{{ item.price }}</span></h2>
-                            <div class="h3">Min.Order: {{item.minOrder}} pairs</div>
-                        </div>
-                        <div class="fr" style="width: 196px;">
-                            <div class="">
-                                <div class="h3">Inner Material:</div>
-                                {{item.inner?item.inner:'No data'}}
-                            </div>
-                            <div class="">
-                                <div class="h3">Sole Material:</div>
-                                {{item.sole?item.sole:'No data'}}
-                            </div>
-                            <div class="">
-                                <div class="h3">Upper Material:</div>
-                                {{item.upper?item.upper:'No data'}}
-                            </div>
-                            <div class="">
-                                <div class="h3">Appropriate Season:</div>
-                                {{item.season?item.season:'No data'}}
-                            </div>
-                            <div class="">
-                                <div class="h3">Closed Way:</div>
-                                {{item.closed?item.closed:'No data'}}
-                            </div>
-                        </div>
+                <div class="common-boxtitle">
+                        <a :href="'/'+item.rewrite" target="_blank" style="width:100%;">
+                            <h1>
+                                <div class="ootit" v-show="item.pdtType"><img class="mtf4"
+                                                                              src="/home/v3/static/images/ico/icon_o2o.png"
+                                                                              alt="O2O"/>O2O
+                                </div>
+                                {{item.pdtName}}
+                            </h1>
+                            <div class="clearfix" style="position:relative;">
+                                <div class="fl">
+                                    <h2>US <span>{{sysConfig.currency_symbol}}{{ item.price }}</span></h2>
+                                    <div class="h3">Min.Order: {{item.minOrder}} pairs</div>
+                                </div>
+                                <div class="fr" style="width: 196px;">
+                                    <div class="">
+                                        <div class="h3">Inner Material:</div>
+                                        {{item.inner?item.inner:'No data'}}
+                                    </div>
+                                    <div class="">
+                                        <div class="h3">Sole Material:</div>
+                                        {{item.sole?item.sole:'No data'}}
+                                    </div>
+                                    <div class="">
+                                        <div class="h3">Upper Material:</div>
+                                        {{item.upper?item.upper:'No data'}}
+                                    </div>
+                                    <div class="">
+                                        <div class="h3">Appropriate Season:</div>
+                                        {{item.season?item.season:'No data'}}
+                                    </div>
+                                    <div class="">
+                                        <div class="h3">Closed Way:</div>
+                                        {{item.closed?item.closed:'No data'}}
+                                    </div>
+                                </div>
+                                <!-- <a class="product-inquiry-btn" target="_blank"
+                                   :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId"
+                                   :data-id="item.supId">Product Inquiry</a> -->
+                                   
+                                </div>
+                            </a>
+                            <div class="product-inquiry-btn" @click.stop="ToProductInquiry(item.pdtId)">Product Inquiry</div>
                     </div>
-                </a>
                 <div class="common-boxspan fr">
                     <a class="h1" :href="'/home/usr_UsrSupplier_gtSupIndex?pkey='+item.supId"
                        target="_blank"><%--<div class="year">{{item.enter}}YRS</div>--%>{{item.supName}}</a>
@@ -236,9 +249,12 @@
                     </div>
 
                     <!-- <a class="btn" href="javascript:;" @click="addRFQ" :data-id = "item.pdtId">Contact Supplier</a> -->
-                    <a class="btn" target="_blank"
+                    <!-- <a class="btn" target="_blank"
                        :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" :data-id="item.pdtId">Contact
-                        Supplier</a>
+                        Supplier</a> -->
+                        <a class="btn" @click="ToContactSupplier(item.supId)">
+                                Contact Supplier
+                            </a>
                 </div>
             </div>
             <!--产品 end-->
@@ -264,13 +280,13 @@
     <!--页面右部列表  end-->
 
     <div class="bigPicBox" v-show="bigPicBox">
-        <img :src="imgUrlappend(bigPicBoxpic)" alt=""/>
+        <img :src="util_function_obj.image(bigPicBoxpic,446)" alt=""/>
     </div>
 
 </div>
 
 <div id="foot">
-    <o2o-bottom></o2o-bottom>
+        <index-bottom></index-bottom>
 </div>
 
 
@@ -336,11 +352,15 @@
             bigPicBoxpic: '',
         },
         methods: {
-            imgUrlappend(row) {
-                if (row !== null & row !== '') {
-                    return 'https://image.shoestp.com/' + row
-                }
-                return null
+             // 跳转供应商表单
+             ToContactSupplier(supplierPkey){
+                let url = "/home/usr_UsrSupplier_goContactSupplier?supplierPkey=" + supplierPkey+ "&backUrl=" + window.location.href;
+                util_function_obj.supplierCantEnter(this, url);
+            },
+            // 跳转商品询盘表单
+            ToProductInquiry(pdtId){
+                let url = '/home/usr_UsrConsult_productPublishView?product_id=' + pdtId+ "&backUrl=" + window.location.href;
+                util_function_obj.supplierCantEnter(this, url);
             },
             // 读取链接带参
             GetQueryString(name) {
@@ -416,43 +436,13 @@
                     this.$set(this.classLists[i].children[j], "xiala", 2)
                 }
             },
-            // 添加收藏呵取消收藏
+            // 添加收藏和取消收藏
             shoucang: function (e) {
                 var index = e.currentTarget.dataset.num;
-                // if(this.productLists[index].eshrine==false){
-                // 	axios.get('/home/usr_UsrFavorites_addFavorite', {
-                //       params: {
-                //       	pdtPkey:e.currentTarget.dataset.id
-                //       }
-                //   })
-                //     .then((res) => {
-                //     	if(ret!=-1){
-                //     		this.$set(this.productLists[index],"eshrine",true)
-                //     	}
-                //     })
-                //     .catch((error) => {
-                //
-                //     });
-                //
-                // }else{
-                // 	axios.get('/home/usr_UsrFavorites_addFavorite', {
-                //       params: {
-                //       	pdtPkey:e.currentTarget.dataset.id
-                //       }
-                //   })
-                //     .then((res) => {
-                //     	this.$set(this.productLists[index],"eshrine",false)
-                //     })
-                //     .catch((error) => {
-                //
-                //     });
-                // }
-                if (!isLogin) {
-                    // user_obj.set_form_sign_in('', window.location.href, 1);
-                    // return
-                    user_obj.set_form_sign_in('', window.location.href, 1);
-                } else {
-
+                if(!sysConfig || !sysConfig.user){
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                }else {
                     axios.get('/home/usr_UsrFavorites_addFavorite', {
                         params: {
                             pdtPkey: e.currentTarget.dataset.id
@@ -524,11 +514,31 @@
             },
             // 点击后才实现搜索
             search() {
-                if (this.min >= 0 && this.max > 0 && this.max < this.min) {
+                // min order正整数判断
+                if( this.lessthan && !util_regular_obj.register.positiveInteger.test(this.lessthan) ){
+                    this.$message({
+                        message: 'Min order should be positive integer number',
+                        type: 'warning'
+                    });
+                    return;
+                }else if( this.min && !util_regular_obj.register.priceDecimal.test(this.min) ){
+                    this.$message({
+                        message: 'Min price can\'t greater than 6 digit integer and 2 decimal places',
+                        type: 'warning'
+                    });
+                    return;
+                }else if( this.max && !util_regular_obj.register.priceDecimal.test(this.max) ){
+                    this.$message({
+                        message: 'Max price can\'t greater than 6 digit integer and 2 decimal places',
+                        type: 'warning'
+                    });
+                    return
+                }else if (this.min >= 0 && this.max > 0 && this.max < this.min) {
                     this.$message({
                         message: 'Max must be greater than Min',
                         type: 'warning'
                     });
+                    return
                 } else {
                     this.productList();
                 }
@@ -536,13 +546,14 @@
             // 点击左侧分类时跳转
             categorySearch(e) {
                 this.lose = 1
+                this.curr = 1;
                 this.cated = e.currentTarget.dataset.cated;
                 this.page = 0;
                 this.productList();
             },
             //   添加到询盘
             addRFQ(e) {
-                if (!isLogin) {
+                if (!sysConfig.user) {
                     user_obj.set_form_sign_in('', window.location.href, 1);
                     return
                 }

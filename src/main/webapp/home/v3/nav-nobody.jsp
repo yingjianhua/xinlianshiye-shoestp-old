@@ -1,6 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%--全局登录弹框--%>
+<jsp:include page="/home/v3/login-box.jsp"></jsp:include>
 <%@ taglib prefix="s" uri="/struts-tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!-- 顶部nav栏 -->
 <div id="nav" style="height: auto;">
     <div id="new-top-nav" class="wide-wrap">
         <div class="wide" style="width: 1240px;min-width: 1240px;margin: 0 auto">
@@ -41,17 +42,18 @@
 
                 </el-menu-item>
                 <el-menu-item index="7" class="fr">
-                    <a href="/home/usr_UsrConsult_listView" target="_blank">
+                    <a @click="ToRFQ">
                         <s:text name="RFQ"/>
                     </a>
                 </el-menu-item>
             </el-menu>
         </div>
     </div>
-    <index-top></index-top>
 </div>
-<script src="/home/v3/static/js/index-top.js"></script>
+<%--<script src="/home/v2/static/lang/element/en.js"></script>--%>
 <script>
+
+    // ELEMENT.locale(ELEMENT.lang.en)
     var sysConfig = {
         baseImageUrl: "https://image.shoestp.com",
         currency_symbol: "$",
@@ -133,6 +135,11 @@
             })
         },
         methods: {
+            // 跳转RFQ   
+            ToRFQ(){
+                let url = "/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1"+ "&backUrl=" + window.location.href
+                util_function_obj.supplierCantEnter(this, url);
+             },
             searchClick() {
                 window.location.href = "/home/pdt_PdtProduct?Keyword=" + this.search.keyword
                     + "&v=2&searchtype=" + this.topSearchBarCategory
@@ -172,3 +179,4 @@
 </script>
 <div style="height: 33px;">
 </div>
+

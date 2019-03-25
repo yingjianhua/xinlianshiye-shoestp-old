@@ -1,4 +1,3 @@
-
 .w_1240 .wide {
     width: 1240px;
     min-width: 1240px;
@@ -77,10 +76,16 @@
     color: #10389c !important; }
 .page-personal-center .el-scrollbar__wrap {
     overflow-x: hidden; }
+.page-personal-center .top-search-type .el-scrollbar__wrap {
+    overflow-x: scroll; }
 .page-personal-center .el-button {
     border-radius: 3px;
     border-color: #ddd;
     background-color: #f5f5f5; }
+.page-personal-center .el-button.is-circle {
+    border-radius: 50%;
+    border: 1px solid #dcdfe6;
+    background: #fff; }
 .page-personal-center .el-button--primary {
     border-radius: 3px;
     border-color: #10389c;
@@ -240,12 +245,20 @@
     margin-right: 18px; }
 .page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item {
     margin-bottom: 10px; }
-.page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item.is-active {
-    margin-bottom: 0; }
+.page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item .el-collapse-item__wrap {
+    border-bottom-color: transparent; }
 .page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item:last-child {
     padding-bottom: 0; }
-.page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item:last-child .el-collapse-item__wrap {
-    border-bottom-color: transparent; }
+.page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item.active .el-collapse-item__header {
+    background: #b2bfdf; }
+.page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item.active .el-collapse-item__header .collapse-title .goods-info {
+    color: #fff; }
+.page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item.active .el-collapse-item__header .collapse-title .goods-info .status {
+    color: #99d; }
+.page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item.active .el-collapse-item__header .collapse-title .mask {
+    background: #b2bfdf; }
+.page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item.active .el-collapse-item__header .el-collapse-item__arrow {
+    color: #fff; }
 .page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item__content {
     padding-bottom: 0; }
 .page-personal-center .inquires-list-wrap .collapse-box .collapse-title {
@@ -294,9 +307,10 @@
     right: -30px;
     top: 0;
     width: 32px;
-    height: 90px;
+    height: 100%;
     background: #f3f4fc; }
 .page-personal-center .inquires-list-wrap .collapse-box .contact-list .contact-item {
+    position: relative;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -305,6 +319,14 @@
     align-items: center;
     padding: 20px 24px;
     white-space: nowrap; }
+.page-personal-center .inquires-list-wrap .collapse-box .contact-list .contact-item.active:after {
+    content: "";
+    position: absolute;
+    height: 40px;
+    width: 2px;
+    top: 25px;
+    left: 0;
+    background: #f88; }
 .page-personal-center .inquires-list-wrap .collapse-box .contact-list div, .page-personal-center .inquires-list-wrap .collapse-box .contact-list img {
     -ms-flex-negative: 0;
     flex-shrink: 0; }
@@ -338,10 +360,7 @@
     width: 24px;
     height: 14px; }
 .page-personal-center .inquires-list-wrap .collapse-box .contact-list .contacter-info.show-long-name {
-    width: 687px;
-    -webkit-box-flex: 1;
-    -ms-flex-positive: 1;
-    flex-grow: 1; }
+    width: 687px; }
 .page-personal-center .inquires-list-wrap .collapse-box .contact-list .show-group {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -512,6 +531,7 @@
     left: 92px;
     top: 16px;
     z-index: 100;
+    max-width: 500px;
     -webkit-transition: all 0.6s;
     transition: all 0.6s;
     font-size: 12px;
@@ -522,6 +542,12 @@
     width: 100px;
     text-align: center;
     font-size: 12px; }
+.page-personal-center .chat-wrap .chat-header .full-name.ellipsis_5 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical; }
 .page-personal-center .chat-wrap .chat-header .more {
     cursor: pointer; }
 .page-personal-center .chat-wrap .chater-more-info {
@@ -578,6 +604,7 @@
     line-height: 22px; }
 .page-personal-center .chat-wrap .chater-more-info .basic-info-wrap .label {
     width: 120px;
+    white-space: nowrap;
     -ms-flex-negative: 0;
     flex-shrink: 0; }
 .page-personal-center .chat-wrap .chater-more-info .basic-info-wrap .content {
@@ -828,6 +855,7 @@
     display: inline-block;
     line-height: 22px;
     padding: 10px 18px;
+    max-width: 500px;
     border-radius: 3px;
     background-color: #fff;
     -webkit-box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.1);
@@ -846,6 +874,7 @@
     -webkit-box-flex: 0;
     -ms-flex: none;
     flex: none;
+    min-width: 160px;
     line-height: 42px;
     padding: 0 10px;
     color: #9fafd7; }
@@ -860,6 +889,9 @@
     -o-object-fit: cover;
     object-fit: cover;
     text-align: center;
+    -webkit-box-flex: 0;
+    -ms-flex: none;
+    flex: none;
     font-size: 28px;
     color: #fff;
     border-radius: 50%;
@@ -1059,6 +1091,15 @@
     line-height: 20px;
     margin-bottom: 20px;
     color: #999; }
+.page-personal-center .inquiry-detail-wrap .quotation-detail-box .content-box.content-box03 .books {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap; }
 .page-personal-center .inquiry-detail-wrap .quotation-detail-box .content-box.content-box03 .company-book-item {
     height: 110px;
     max-width: 200px;
@@ -1066,6 +1107,11 @@
     object-fit: cover;
     margin-right: 10px;
     margin-top: 6px; }
+.page-personal-center .inquiry-detail-wrap .quotation-detail-box .content-box.content-box03 .book-link {
+    margin-right: 10px; }
+.page-personal-center .inquiry-detail-wrap .quotation-detail-box .content-box.content-box03 .book-link:hover {
+    color: #c9f;
+    text-decoration: underline; }
 .page-personal-center .inquiry-detail-wrap .view-more {
     width: 100%;
     color: #999;

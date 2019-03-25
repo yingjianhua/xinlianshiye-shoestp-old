@@ -12,10 +12,13 @@ import irille.Entity.pm.PM.OTempType;
 @ImplementedBy(VariableServiceImp.class)
 public interface IVariableService {
 
-	List<String> loadByTempType(Integer type);
+  List<String> loadByTempType(Integer type);
 
-	String render(Map<String, VariableView> variableMap, String template, Object[] objects);
+  String render(Map<String, VariableView> variableMap, String template, Object[] objects);
 
-	Map<String, VariableView> getMap(OTempType tempType);
-	
+  Map<String, VariableView> getMap(OTempType tempType);
+
+  boolean hasUnableVariable(String template, Byte type);
+
+  List<String> varibaleFromContent(String template);
 }

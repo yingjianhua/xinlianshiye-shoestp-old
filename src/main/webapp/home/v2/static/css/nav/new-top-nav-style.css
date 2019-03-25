@@ -209,3 +209,75 @@
   width: 100px; }
 
 /* ---------------- 顶部搜索栏 - end ---------------- */
+
+
+/* ---------------- elementUI 弹窗样式自定义 ---------------- */
+/*写的时候带参数customClass: "my-custom-element-alert-class",*/
+/*改内容文字大小时,同时传参 fs-content-16 or fs-content-18*/
+/*内容居中则才参数center: true*/
+/*自定义弹框样式*/
+.my-custom-element-alert-class{
+  width: 360px;
+  padding-bottom: 30px;
+}
+/*减小头部高度*/
+.my-custom-element-alert-class .el-message-box__header{
+  padding-top: 15px;
+}
+/*内容间距调整*/
+.my-custom-element-alert-class .el-message-box__content{
+  display: flex;
+  align-items: center;
+  min-height: 60px;
+  padding: 20px 25px;
+  margin-bottom: 6px;
+  color: #888;
+}
+/*设置中写了center时,内容也居中显示*/
+.my-custom-element-alert-class.el-message-box--center .el-message-box__content{
+  justify-content: center;
+}
+/*需要确认\取消的弹窗,提示内容会大点*/
+.my-custom-element-alert-class.fs-content-18 .el-message-box__content{
+  font-size: 18px;
+}
+.my-custom-element-alert-class.fs-content-16 .el-message-box__content{
+  font-size: 16px;
+}
+/*按钮组居中*/
+.my-custom-element-alert-class .el-message-box__btns{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row-reverse;
+}
+/*普通按钮样式修改*/
+.my-custom-element-alert-class .el-message-box__btns  .el-button--default {
+  min-width: 100px;
+  font-size: 14px;
+}
+.my-custom-element-alert-class .el-message-box__btns  .el-button--default:hover {
+  color: #333;
+  border-color: #aaa;
+  background: #fff;
+}
+/*单个按钮显示时,显示的蓝色样式*/
+.my-custom-element-alert-class .el-message-box__btns .el-button--primary{
+  min-width: 140px;
+  font-size: 14px;
+  border-color: #10389c;
+  background: #10389c;
+}
+.my-custom-element-alert-class .el-message-box__btns .el-button--primary:hover{
+  color: #fff;
+  border-color: #35c;
+  background: #35c;
+}
+/*两个按钮显示时的样式*/
+.my-custom-element-alert-class .el-message-box__btns  .el-button ~ .el-button--primary {
+  min-width: 120px;
+  font-size: 14px;
+  margin-left: 0;
+  margin-right: 15px;
+}
+/* ---------------- elementUI 弹窗样式自定义 - end ---------------- */

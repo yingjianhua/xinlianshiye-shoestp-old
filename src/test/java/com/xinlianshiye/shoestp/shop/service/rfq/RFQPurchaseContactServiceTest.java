@@ -50,6 +50,7 @@ public class RFQPurchaseContactServiceTest extends BaseTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testPage() throws JsonProcessingException {
 		om.setSerializationInclusion(Include.NON_NULL);
 		
@@ -67,9 +68,9 @@ public class RFQPurchaseContactServiceTest extends BaseTest {
 	}
 	
 	@Test
-	@Ignore
+//	@Ignore
 	public void testListGroup() throws JsonProcessingException {
-		UsrPurchase purchase = UsrPurchase.load(UsrPurchase.class, 838);
+		UsrPurchase purchase = UsrPurchase.load(UsrPurchase.class, 3787);
 		List<RFQPurchaseContactGroupView> listGroup = service.listGroup(purchase);
 		System.out.println(om.writeValueAsString(listGroup));
 	}

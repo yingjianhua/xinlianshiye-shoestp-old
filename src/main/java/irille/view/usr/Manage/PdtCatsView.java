@@ -1,35 +1,34 @@
 package irille.view.usr.Manage;
 
+import java.util.List;
+
 import lombok.Data;
 import org.start2do.SetBean.Annotations.SetBean;
 
-import java.util.List;
-
 /**
- * product/cat/list 列表使用的
- * Created by IntelliJ IDEA.
- * User: lijie@shoestp.cn
- * Date: 2018/11/8
- * Time: 11:20
+ * product/cat/list 列表使用的 Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/8 Time:
+ * 11:20
  */
 @Data
 public class PdtCatsView {
-    @SetBean(OriginalField = "pkey")
-    private int id;
-    @SetBean(OriginalField = "name")
-    private String title;
-    private boolean enabled;
-    private List<PdtCatsView> children;
+  @SetBean(OriginalField = "pkey")
+  private int id;
 
-    public int getId() {
-        return id;
-    }
+  @SetBean(OriginalField = "name")
+  private String title;
 
-    public void setId(String id) {
-        this.id = Integer.parseInt(id);
-    }
+  private boolean enabled;
+  private List<PdtCatsView> children;
 
-    public void setEnabled(Byte enabled) {
-        this.enabled = enabled == 1;
-    }
+  public int getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = Integer.parseInt(id);
+  }
+
+  public void setEnabled(Byte enabled) {
+    this.enabled = enabled == 1;
+  }
 }

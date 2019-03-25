@@ -32,19 +32,19 @@ Vue.component('index-bottom', {
             <ul class="share-links">
                 <li class="ultitle">Follow Us</li>
                 <li class="ullink">
-                    <a href="http://www.facebook.com/share.php?src=bm&v=4&u=http%3A%2F%2Flocalhost%3A8080%2Fhome%2Fcnt_CntSglPageCategory_gosglpage%3Fpkey%3D8&t=facebook" target="_blank">
+                    <a href="https://www.facebook.com/ShoestpCN/" target="_blank">
                         <img class="icon" src="/home/v3/static/images/icon-facebook.png" alt="" />
                     </a>
-                    <a href="https://twitter.com/intent/tweet?status=twitter:+http%3A%2F%2Flocalhost%3A8080%2Fhome%2Fcnt_CntSglPageCategory_gosglpage%3Fpkey%3D8" target="_blank">
+                    <a href="https://twitter.com/shoes_logo" target="_blank">
                         <img class="icon" src="/home/v3/static/images/icon-bird.png" alt="" />
                     </a>
-                    <a href="javascript:void(0);" target="_blank">
-                        <img class="icon" src="/home/v3/static/images/icon-g.png" alt="" />
+                    <a href="https://www.instagram.com/shoestpcn/" target="_blank">
+                        <img class="icon" src="/home/v3/static/images/icon-ins.png" alt="" />
                     </a>
-                    <a href="http://www.linkedin.com/cws/share?url=http%3A%2F%2Flocalhost%3A8080%2Fhome%2Fcnt_CntSglPageCategory_gosglpage%3Fpkey%3D8&title=linkedin" target="_blank">
+                    <a href="https://www.linkedin.com/company/shoestp/?viewAsMember=true" target="_blank">
                         <img class="icon" src="/home/v3/static/images/icon-in.png" alt="" />
                     </a>
-                    <a href="javascript:void(0);" target="_blank">
+                    <a href="https://www.youtube.com/channel/UCUHObFxGQ_FaHCKolyZ9k0w/featured?view_as=subscriber" target="_blank">
                         <img class="icon" src="/home/v3/static/images/icon-tube.png" alt="" />
                     </a>
                 </li>

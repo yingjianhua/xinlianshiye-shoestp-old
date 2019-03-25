@@ -1,0 +1,665 @@
+@charset "UTF-8";
+
+// 邮箱验证2个页面的样式
+.page-register_1,.page-register_2{
+  .el-form-item__label{
+    white-space: nowrap;
+  }
+  .el-input__inner{
+    border-radius: 0;
+  }
+  .el-button--primary{
+    border-radius: 3px;
+    border-color: #10389c;
+    background-color: #10389c;
+
+    &:hover{
+      border-color: #35c;
+      background-color: #35c;
+    }
+  }
+
+
+  // 为了自定义图标 - right、error
+  .my-validate-form{
+    .incase-autocomplete-input{
+      position: absolute;
+      z-index: -1;
+      left: 9999px;
+    }
+    .el-form-item{
+      position: relative;
+    }
+    .el-form-item__error{
+      top: 1px;
+      left: 109%;
+      line-height: inherit;
+      // min-width: 400px;
+      padding-top: 0;
+      white-space: nowrap;
+      // background: #fff;
+    }
+
+    // 自定义 - 表单验证对错icon图标
+    %my-form-validate-icon-right{
+      &:before{
+        content: "";
+        display: inline-block;
+        position: absolute;
+        left: auto;
+        right: -28px;
+        top: 12px;
+        width: 16px;
+        height: 15px;
+        background:  url("/home/v3/static/images/login/icon_righta.png") no-repeat center/ contain;
+      }
+    }
+    %my-form-validate-icon-error{
+      &:before{
+        content: "";
+        display: inline-block;
+        position: absolute;
+        left: auto;
+        right: -28px;
+        top: 12px;
+        z-index: 9;
+        width: 16px;
+        height: 15px;
+        background:  url("/home/v3/static/images/login/icon_cuo.png") no-repeat center/ contain;
+      }
+    }
+    // 验证成功时的对勾图标
+    .is-success{
+      .el-form-item__content{
+         @extend %my-form-validate-icon-right;
+      }
+    }
+    // 验证失败时的对勾图标
+    .is-error{
+      .el-form-item__content{
+        @extend %my-form-validate-icon-error;
+      }
+    }
+    // item内嵌时，只显示最后一个的icon对错背景
+    .el-form-item .el-form-item {
+      .el-form-item__content:before{
+        background: none;
+      }
+      &:last-child{
+        // 验证成功时的对勾图标
+        &.is-success{
+          .el-form-item__content{
+            @extend %my-form-validate-icon-right;
+          }
+        }
+        // 验证失败时的对勾图标
+        &.is-error{
+          .el-form-item__content{
+            @extend %my-form-validate-icon-error;
+          }
+        }
+      }
+
+      // 前面错了，后面只显示错误的icon
+      &.is-error {
+        &~ .el-form-item{
+          .el-form-item__error{
+            display: none;
+          }
+        }
+        &~ .el-form-item:last-child{
+          .el-form-item__content{
+            @extend %my-form-validate-icon-error;
+          }
+        }
+      }
+    }
+    // 移除必填项显示的红星
+    .el-form-item.is-required .el-form-item__label:before{
+      content: "";
+    }
+  }
+
+  .main{
+    padding: 60px 80px;
+    overflow: hidden;
+    font-size: 14px;
+    background: #fff;
+  }
+
+  // 注册流程概览
+  .step-overview{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 720px;
+    margin: 0 auto;
+    margin-bottom: 80px;
+
+    &:after{
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 620px;
+      height: 1px;
+      transform: translate(-50%);
+      background: #b6b0b0;
+    }
+    .step-item{
+      position: relative;
+      z-index: 1;
+      width: 66px;
+      height: 40px;
+      line-height: 40px;
+      flex: none;
+      text-align: center;
+      color: #fff;
+      cursor: default;
+      background: #fff;
+
+      .title{
+        position: absolute;
+        top: 35px;
+        left: 50%;
+        transform: translate(-50%);
+        white-space: nowrap;
+        color: #b6b0b0;
+      }
+
+      &:after{
+        content: "";
+        position: absolute;
+        z-index: -1;
+        left: 50%;
+        top: 50%;
+        width: 24px;
+        height: 24px;
+        transform: translate(-50%, -50%) rotateZ(45deg);
+        border-radius: 4px;
+        background: #d8d8d8;
+      }
+
+      &.active{
+        .title{
+          color: #10389c;
+        }
+        &:after{
+          background: #10389c;
+        }
+      }
+    }
+  }
+
+  // code包裹框
+  .verification-code-wrap{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .el-input{
+      font: auto;
+    }
+    // 验证码图片
+    .pic-code{
+      flex: none;
+      width: 120px;
+      height: 24px;
+      margin-left: 15px;
+      object-fit: contain;
+      cursor: pointer;
+      // background-color: #f4f5fa;
+    }
+    // 刷新验证码icon
+    .icon-recycle{
+      position: absolute;
+      right: -28px;
+      top: 12px;
+      z-index: 9;
+      width: 15px;
+      height: 15px;
+      object-fit: contain;
+      cursor: pointer;
+    }
+
+  }
+  // 注册第一步中的验证码样式 - 刷新的按钮位置与其他页面不同！
+  .verification-code-wrap01{
+    .el-form-item__content{
+      &:before{
+        display: none!important;
+      }
+    }
+    // .el-form-item__error{
+    //   left: 115%;
+    // }
+  }
+
+  // 第一步时的wrap - 本地验证码
+  .step-one-wrap{
+    width: 500px;
+    margin: 0 auto;
+  }
+
+  // 第二步时的wrap - 邮箱验证码
+  .step-two-wrap{
+    color: #232323;
+    // 中间的提示信息
+    .operate-info-box{
+      width: 500px;
+      margin: 0 auto;
+      padding-bottom: 90px;
+
+      .title{
+        line-height: 24px;
+        margin-bottom: 30px;
+        font-weight: bold;
+      }
+      .email{
+        color: #e54544;
+      }
+      .tips{
+        color: #7f7f7f;
+      }
+      .btn-wrap{
+        margin-top: 36px;
+        .btn{
+          min-width: 193px;
+        }
+        .tips{
+          display: inline-block;
+          margin-left: 6px;
+          cursor: pointer;
+          color: #9fafd7;
+        }
+      }
+    }
+
+    // 底部提示信息
+    .no-receive-tips{
+      padding: 50px;
+      border: solid 1px #dcdcdc;
+    	border-radius: 3px;
+      background-color: #f5f5f5;
+      .title{
+        margin-bottom: 25px;
+        font-size: 18px;
+        color: #232323;
+      }
+      .tips-content{
+        font-size: 12px;
+        color: #7f7f7f;
+        p{
+          margin-bottom: 12px;
+        }
+      }
+    }
+  }
+  // pop出来的按钮操作 样式修改
+  .my-popover-tips{
+    padding: 20px 28px;
+    text-align: left;
+    color: #232323;
+    border-radius: 0;
+
+    .tips-list{
+      .tip-item{
+        position: relative;
+        line-height: 1.5;
+        color: #7f7f7f;
+        cursor: pointer;
+        margin-bottom: 8px;
+        &:after{
+          content :"";
+          display: inline-block;
+          position: absolute;
+          left: -10px;
+          top: 10px;
+          width: 3px;
+          height: 3px;
+          background: #4c4c4c;
+        }
+        &:last-child{
+          margin-bottom: 0;
+        }
+      }
+      .btn-resend{
+        display: inline-block;
+        height: 26px;
+        line-height: 25px;
+        margin-top: 4px;
+        padding: 0 10px;
+        text-align: center;
+        color: #10389c;
+      	border-radius: 3px;
+      	border: solid 1px #9fafd7;
+        background-color: #ced6ea;
+        &:hover{
+          color: #fff;
+          border-color: #9fafd7;
+          background-color: #10389c;
+        }
+      }
+
+      .go-back{
+        color: #1a88cb;
+      }
+    }
+  }
+}
+// 邮箱验证2个页面的样式 - end
+
+
+.page-register_2{
+  // 密码提示强度 样式修改
+  .my-popover-tips-psd{
+    padding: 22px 20px;
+    text-align: left;
+    color: #7f7f7f;
+    font-size: 12px;
+    border-radius: 0;
+    border-color: #ddd;
+    box-shadow: none;
+    .popper__arrow{
+      border-right-color: #ddd;
+    }
+    // 密码强度条
+    .psd-strength{
+      display: flex;
+      align-items: center;
+      .title{
+        flex: none;
+        margin-right: 24px;
+        font-weight: bold;
+        color: #000;
+      }
+      .strength-bar{
+        display: flex;
+        flex: none;
+        width: 100px;
+        margin-right: 8px;
+        .bar{
+          width: 32px;
+          height: 11px;
+          margin-right: 1px;
+          border-radius: 2px;
+          background-color: #d8d8d8;
+          &.active{
+            background-color: #10389c;
+          }
+        }
+      }
+      .strength{
+        color: #10389c;
+      }
+    }
+
+    .psd-strength-tips-list{
+      padding-left: 27px;
+      padding-top: 15px;
+
+      .tip-item{
+        position: relative;
+        line-height: 1.5;
+        line-height: 20px;
+        color: #7f7f7f;
+        margin-bottom: 6px;
+        // 对错 显示
+        .isRight{
+          position: absolute;
+          left: -25px;
+          top: 4px;
+          width: 13px;
+          height: 11px;
+        }
+        .isError{
+          position: absolute;
+          left: -24px;
+          top: 5px;
+          width: 10px;
+          height: 10px;
+        }
+        &:last-child{
+          margin-bottom: 0;
+        }
+      }
+      .btn-resend{
+        display: inline-block;
+        height: 26px;
+        line-height: 25px;
+        margin-top: 4px;
+        padding: 0 10px;
+        text-align: center;
+        color: #10389c;
+      	border-radius: 3px;
+      	border: solid 1px #9fafd7;
+        background-color: #ced6ea;
+        &:hover{
+          color: #fff;
+          border-color: #9fafd7;
+          background-color: #10389c;
+        }
+      }
+
+      .go-back{
+        color: #1a88cb;
+      }
+    }
+  }
+
+  // 账户信息form
+  .count-info-form{
+    position: relative;
+    width: 500px;
+    margin-left: 280px;
+
+    // 内容为文字时，高度不需要那么高
+    .text-form-item{
+      margin-top: -12px;
+      margin-bottom: 10px;
+
+      &:first-child{
+        margin-top: 0;
+      }
+    }
+    // form-item显示文字时，字体变粗
+    .have-info .el-form-item__label{
+      font-weight: bold;
+      color: #000;
+    }
+    .el-form-item__label{
+      color: #7f7f7f;
+    }
+    // 内容二等分
+    .two-division{
+      .half{
+        &:first-child{
+          .el-form-item__error{
+            left: 229%;
+          }
+        }
+        &:nth-child(2){
+          .el-form-item__error{
+            left: 120%;
+          }
+        }
+      }
+    }
+    .two-division{
+      display: flex;
+      justify-content: space-between;
+      .half{
+        width: 48%;
+      }
+    }
+    // 内容三等分
+    .three-division{
+      display: flex;
+      justify-content: space-between;
+      .one-third{
+        width: 32%;
+
+        &:first-child{
+          .el-form-item__error{
+            left: 343%;
+          }
+        }
+        &:nth-child(2){
+          .el-form-item__error{
+            left: 235%;
+          }
+        }
+        &:nth-child(3){
+          .el-form-item__error{
+            left: 129%;
+          }
+        }
+      }
+    }
+    // 密码框
+    .pas-wrap{
+      position: relative;
+      .isPsdRight{
+        position: absolute;
+        left: 109%;
+        top: 1px;
+        white-space: nowrap;
+        .red{
+          color: #e54544;
+        }
+      }
+    }
+    // 原生写的单选
+    .native-label{
+      margin-right: 20px;
+      cursor: pointer;
+      color: #7f7f7f;
+      input[type="radio"] {
+        margin: -1px 1px 0 0 ;
+      }
+    }
+
+    // 电话wrap
+    .tel-wrap{
+      .tel-inner{
+        display: flex;
+        span{
+          margin: 0 3px;
+          color: #656565;
+        }
+      }
+      .tel-inner1{
+        width: 70px;
+        flex: none;
+        .el-form-item__error{
+          left: 398px;
+        }
+      }
+      .tel-inner2{
+        width: 70px;
+        flex: none;
+        .el-form-item__error{
+          left: 319px;
+        }
+      }
+      .tel-inner3{
+        .el-form-item__error{
+          left: 237px;
+        }
+      }
+      .el-form-item__error{
+        left: 237px;
+      }
+    }
+
+    // 详细地址 - textarea
+    .detail-addr-input{
+      margin-top: -10px;
+      .el-textarea__inner{
+        height: 124px;
+        border-radius: 0;
+      }
+    }
+
+    // 验证码
+    .verification-code-wrap{
+      // 验证码图片
+      .pic-code{
+
+      }
+      // 刷新验证码icon
+      .icon-recycle{
+        position: static;
+        width: 15px;
+        height: 15px;
+        margin: 0 2px 0 12px;
+        object-fit: contain;
+        cursor: pointer;
+      }
+    }
+
+    // 底部协议书
+    .agreement{
+      display: flex;
+      line-height: 18px;
+      margin-bottom: 26px;
+      color: #7f7f7f;
+      .label{
+        flex: none;
+        width: 135px;
+        padding-right: 6px;
+        text-align: right;
+      }
+      .agreement-list{
+        p{
+          margin-bottom: 6px;
+          white-space: nowrap;
+          .link{
+            color: #9fafd7;
+            cursor: pointer;
+          }
+          &:last-child{
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}
+// 修改$confirm弹窗样式
+// .my-confirm-class{
+//   width: 376px;
+//   .el-message-box__close{
+//     color: #000;
+//   }
+//   .el-message-box__content{
+//     padding-top: 20px;
+//     color: #7f7f7f;
+//   }
+//   .el-message-box__btns{
+//     display: flex;
+//     flex-direction: row-reverse;
+//     justify-content: center;
+//     .el-button{
+//       margin-left: 15px;
+//     }
+//   }
+//   .el-message-box__btns{
+//     padding-top: 30px;
+//     padding-bottom: 20px;
+//   }
+//   .el-button{
+//     width: 130px;
+//     background: #f6f7f9;
+//   }
+//   .el-button--primary{
+//     background: #10389c;
+//     border: 1px solid #10389c;
+//   }
+//   .el-button--medium {
+//     padding: 10px 20px;
+//     font-size: 14px;
+//     border-radius: 4px;
+//   }
+// }

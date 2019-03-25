@@ -2,13 +2,10 @@ package irille.shop.usr;
 
 import java.util.Date;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import irille.Config.Attribute;
 import irille.Config.Variable;
 import irille.Entity.pm.PM.OTempType;
-import irille.core.sys.Sys;
+import irille.core.sys.Sys.OYn;
 import irille.core.sys.SysUser;
 import irille.pub.bean.BeanInt;
 import irille.pub.inf.IExtName;
@@ -20,127 +17,151 @@ import irille.pub.tb.Tb;
 import irille.pub.tb.Tb.Index;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltProvince;
+import irille.shop.usr.Usr.OIsAuth;
+import irille.shop.usr.Usr.OStatus;
+import irille.shop.usr.Usr.SStatus;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * 供应商
  *
  * @author yingjianhua
  */
-@Variable(group = {OTempType.SHOP_APPR,OTempType.PROD_APPR_NOTICE,OTempType.O2O_PROD_APPR_NOTICE,OTempType.RFQ_MESSAGE_NOTICE},enumType=UsrSupplier.T.class,clazz=UsrSupplier.class,attributes = {
-		@Attribute(name="企业审核状态",field="STATUS",type=Usr.OStatus.class),
-		@Attribute(name="企业审核时间",field="APPR_TIME",type=Date.class),
-		@Attribute(name="公司名称",field="NAME",type=String.class),
-		@Attribute(name="企业法人",field="ENTITY",type=String.class)}
-)
+@Variable(
+    group = {
+      OTempType.SHOP_APPR,
+      OTempType.PROD_APPR_NOTICE,
+      OTempType.O2O_PROD_APPR_NOTICE,
+      OTempType.RFQ_MESSAGE_NOTICE
+    },
+    enumType = UsrSupplier.T.class,
+    clazz = UsrSupplier.class,
+    attributes = {
+      @Attribute(name = "企业审核状态", field = "STATUS", type = Usr.OStatus.class),
+      @Attribute(name = "企业审核时间", field = "APPR_TIME", type = Date.class),
+      @Attribute(name = "公司名称", field = "NAME", type = String.class),
+      @Attribute(name = "企业法人", field = "ENTITY", type = String.class),
+      @Attribute(name = "理由/备注", field = "REASON", type = String.class)
+    })
 public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
 
-  public static final Tb TB = new Tb(UsrSupplier.class, "供应商").setAutoIncrement()
-      .addActList()
-      .addActApprove()
-      .addActOpt("updBase", "基本信息", "upd-icon")
-      .addActOpt("updPage", "页面资料", "upd-icon")
-      .addActOpt("updDiy", "个性装修", "upd-icon")
-      .addActOpt("updMarketing", "营销设置", "upd-icon");
+  public static final Tb TB =
+      new Tb(UsrSupplier.class, "供应商")
+          .setAutoIncrement()
+          .addActList()
+          .addActApprove()
+          .addActOpt("updBase", "基本信息", "upd-icon")
+          .addActOpt("updPage", "页面资料", "upd-icon")
+          .addActOpt("updDiy", "个性装修", "upd-icon")
+          .addActOpt("updMarketing", "营销设置", "upd-icon");
 
-  public enum T implements IEnumFld {//@formatter:off
+  public enum T implements IEnumFld { // @formatter:off
     PKEY(TB.crtIntPkey()),
     ROLE(UsrSupplierRole.fldOutKey()),
-    LOGIN_NAME(SYS.CODE__40, "登录账号"),
+    LOGIN_NAME(SYS.STR__50, "登录账号"),
     PASSWORD(SYS.PASSWORD__NULL),
-    STATUS(TB.crt(Usr.OStatus.DEFAULT)), //createBy liyichao
-    APPR_BY(SYS.APPR_BY_NULL),       //createBy liyichao	审核人
-    APPR_TIME(SYS.APPR_DATE_TIME__NULL), //createBy liyichao	审核时间
-    /**
-     * 公司信息
-     */
+    STATUS(TB.crt(Usr.OStatus.DEFAULT)), // 审核状态 createBy liyichao
+    APPR_BY(SYS.APPR_BY_NULL), // createBy liyichao	审核人
+    APPR_TIME(SYS.APPR_DATE_TIME__NULL), // createBy liyichao	审核时间
+    /** 3.1.0新增字段 */
+    REASON(SYS.STR__100_NULL, "审核不通过理由备注"),
+    CLOSE_REASON(SYS.STR__100_NULL, "店铺关闭原因"),
+    STORE_STATUS(TB.crt(SStatus.DOWN)), // 店铺状态 0：关闭，1开启
+    ENGLISH_NAME(SYS.STR__100, "英文名称"),
+    ANNUAL_PRODUCTION(SYS.STR__100_NULL, "年产量"),
+    POSTCODE(SYS.STR__20_NULL, "邮编"),
+    TARGETED_MARKET(SYS.STR__100, "目标市场"),
+    CONTACT_EMAIL(SYS.STR__100_NULL, "联系人邮箱"),
+    APPLICATION_TIME(SYS.DATE, "申请时间"),
+    STOREOPEN_TIME(SYS.DATE__NULL, "店铺开通时间"),
+    /** 公司信息 */
     NAME(SYS.NAME__100, "名称"), // 名称
-    REGISTERED_CAPITAL(SYS.STR__100, "注册资金"),//注册资金
-    CATEGORY(UsrSupplierCategory.fldOutKey()),//供应商分类
-    IS_AUTH(TB.crt(Usr.OIsAuth.DEFAULT)),// 认证 true false
-    SORT(SYS.SORT__INT),//排序： 默认，最后，1-100
-    SEO_TITLE(SYS.MUILTI_LANGUAGE_NULL, "店铺关键字"),//客人能通过这些字搜索到店铺，多个关键字用空格分开
-    SEO_CONTENT(SYS.MUILTI_LANGUAGE_NULL, "搜索引擎说明"),// 客人能通过这些字描述决定进不进店，多个描述字用空格分开
-    AUTH_TIME(SYS.TIME__NULL, "认证时间"),//认证时间
-    SHOW_NAME(SYS.MUILTI_LANGUAGE_NULL, "网站显示名称"),// 网站显示名称
-    ENTITY(SYS.NAME__100, "企业法人"),//企业法人
-    COMPANY_TYPE(SYS.MUILTI_LANGUAGE_NULL, "企业类型"),//类型 多国语言
-    COMPANY_NATURE(SYS.MUILTI_LANGUAGE_NULL, "企业性质"),//性质 多国语言
-    CREDIT_CODE(SYS.CODE__100_NULL, "信用代码"),//信用代码
-    COMPANY_ESTABLISH_TIME(SYS.DATE__NULL, "成立时间"),//成立时间
-    OPERATION_TERM(SYS.STR__100_NULL, "业务期限"),//业务期限
-    MAIN_SALES_AREA(SYS.MUILTI_LANGUAGE_NULL, "主销售区"),//主销售区 多国语言
-    MAIN_PROD(SYS.MUILTI_LANGUAGE_NULL, "主要产品"),//主要产品 多国语言
-    PROD_PATTERN(SYS.MUILTI_LANGUAGE_NULL, "生产模式"),//生产模式 多国语言
-    COMPANY_ADDR(SYS.MUILTI_LANGUAGE_NULL, "地址"),//地址 多国语言
-    DES(SYS.DESCRIP__200_NULL),//备注
-    EMAIL(SYS.STR__100, "Email"),//Email 必填重要！新的询盘会通知到这里！
+    REGISTERED_CAPITAL(SYS.STR__100, "注册资金"), // 注册资金
+    CATEGORY(UsrSupplierCategory.fldOutKey()), // 供应商分类
+    IS_AUTH(TB.crt(Usr.OIsAuth.DEFAULT)), // 认证 true false
+    SORT(SYS.SORT__INT), // 排序： 默认，最后，1-100
+    SEO_TITLE(SYS.MUILTI_LANGUAGE_NULL, "店铺关键字"), // 客人能通过这些字搜索到店铺，多个关键字用空格分开
+    SEO_CONTENT(SYS.MUILTI_LANGUAGE_NULL, "搜索引擎说明"), // 客人能通过这些字描述决定进不进店，多个描述字用空格分开
+    AUTH_TIME(SYS.TIME__NULL, "认证时间"), // 认证时间
+    SHOW_NAME(SYS.MUILTI_LANGUAGE_NULL, "网站显示名称"), // 网站显示名称
+    ENTITY(SYS.NAME__100_NULL, "企业法人"), // 企业法人
+    COMPANY_TYPE(SYS.MUILTI_LANGUAGE_NULL, "企业类型"), // 类型 多国语言
+    COMPANY_NATURE(SYS.MUILTI_LANGUAGE_NULL, "企业性质"), // 性质 多国语言
+    CREDIT_CODE(SYS.CODE__100, "信用代码"), // 信用代码
+    COMPANY_ESTABLISH_TIME(SYS.DATE__NULL, "成立时间"), // 成立时间
+    OPERATION_TERM(SYS.STR__100_NULL, "业务期限"), // 业务期限
+    MAIN_SALES_AREA(SYS.MUILTI_LANGUAGE_NULL, "主销售区"), // 主销售区 多国语言
+    MAIN_PROD(SYS.MUILTI_LANGUAGE_NULL, "主要产品"), // 主要产品 多国语言
+    PROD_PATTERN(SYS.MUILTI_LANGUAGE, "生产模式"), // 生产模式 多国语言
+    COMPANY_ADDR(SYS.MUILTI_LANGUAGE, "地址"), // 地址 多国语言
+    DES(SYS.DESCRIP__200_NULL), // 备注
+    EMAIL(SYS.STR__100, "Email"), // Email 必填重要！新的询盘会通知到这里！
     BUSINESS_LICENSE_BEGIN_TIME(SYS.STR__100_NULL, "营业执照开始时间"),
     BUSINESS_LICENSE_END_TIME(SYS.STR__100_NULL, "营业执照到期时间"),
     BUSINESS_LICENSE_IS_SECULAR(SYS.NY, "是否长期"),
-    TELEPHONE(SYS.STR__20_NULL, "电话"),//电话
-    FAX(SYS.STR__20_NULL, "传真"),//传真
-    QQ(SYS.QQ),//QQ
-    CERT_PHOTO(SYS.STR__200_NULL, "资质证书"),//资质证书
-    ID_CARD_FRONT_PHOTO(SYS.STR__200_NULL, "身份证正面"),//身份证正面
-    ID_CARD_BACK_PHOTO(SYS.STR__200_NULL, "身份证反面"),//身份证反面
-    COOP_CERT_PHOTO(SYS.STR__200_NULL, "合作凭证"),//合作凭证
+    TELEPHONE(SYS.STR__20_NULL, "电话"), // 电话
+    FAX(SYS.STR__20_NULL, "传真"), // 传真
+    QQ(SYS.QQ), // QQ
+    CERT_PHOTO(SYS.STR__200_NULL, "资质证书"), // 资质证书
+    ID_CARD_FRONT_PHOTO(SYS.STR__200_NULL, "法人身份证正面"), // 实际使用（正反面图片）
+    ID_CARD_BACK_PHOTO(SYS.STR__200_NULL, "法人身份证反面"), // 身份证反面
+    COOP_CERT_PHOTO(SYS.STR__200_NULL, "合作凭证"), // 合作凭证
     TAXPAYER_TYPE(SYS.STR__100_NULL, "纳税人类型"),
-    ID_CARD(SYS.STR__50_NULL, "法人身份证号码"),//法人身份证号码
-    OPERATE_ID_CARD(SYS.STR__100_NULL, "运营身份证号码"),//运营身份证号码
-    /**
-     * 运营信息
-     */
-    CONTACTS(SYS.NAME__40_NULL, "联系人"),//联系人
-    PHONE(SYS.STR__20_NULL, "手机"),//手机 必填重要！新的询盘会通知到这里！
+    ID_CARD(SYS.STR__50_NULL, "法人身份证号码"), // 法人身份证号码
+    OPERATE_ID_CARD(SYS.STR__100_NULL, "运营身份证号码"), // 运营身份证号码
+    /** 运营信息 */
+    CONTACTS(SYS.MUILTI_LANGUAGE_NULL, "联系人"), // 联系人
+    PHONE(SYS.STR__20_NULL, "手机"), // 手机 必填重要！新的询盘会通知到这里！
     SETTLEMENT_BANK(SYS.STR__100_NULL, "结算开户行"),
     BANK_ACCOUNT(SYS.STR__100_NULL, "银行账号"),
     BANK_BRANCH(SYS.STR__100_NULL, "银行开户行"),
-    BANK_COUNTRY(PltCountry.fldOutKey()),//,"开户行国家"
-    BANK_PROVINCE(PltProvince.fldOutKey()),//"开户行省份"
-    CONTACTS_ID_CARD_FRONT_PHOTO(SYS.STR__200_NULL, "运营负责人身份证正面"),
+    BANK_COUNTRY(PltCountry.fldOutKey()), // ,"开户行国家"
+    BANK_PROVINCE(PltProvince.fldOutKey()), // "开户行省份"
+    CONTACTS_ID_CARD_FRONT_PHOTO(SYS.STR__200_NULL, "运营负责人身份证正面"), // 实际使用（正反面图片）
     CONTACTS_ID_CARD_BACK_PHOTO(SYS.STR__200_NULL, "运营负责人身份证反面"),
 
-    /**
-     * 前台页面资料
-     */
-    BUSINESS_TYP(SYS.MUILTI_LANGUAGE_NULL, "Business_typ"),//Business_typ 多国语言
-    LOCATION(SYS.MUILTI_LANGUAGE_NULL, "Location"),//Location 多国语言
-    PRODUCTION(SYS.MUILTI_LANGUAGE_NULL, "Production"),//Production 多国语言
-    DEVELOPER(SYS.MUILTI_LANGUAGE_NULL, "Developer"),//Developer 多国语言
-    TOTAL_EMPLOYEES(SYS.MUILTI_LANGUAGE_NULL, "Total_employees"),//Total_employees 多国语言
-    ANNUAL_SALES(SYS.MUILTI_LANGUAGE_NULL, "Annual_sales"),//Annual_sales 多国语言
-    TOP_3_MARKETS(SYS.MUILTI_LANGUAGE_NULL, "Top 3 Markets"),//Top 3 Markets 多国语言
-    MATERIALS(SYS.MUILTI_LANGUAGE_NULL, "Materials"),//Materials 多国语言
-    HEAD_PIC(SYS.STR__200_NULL, "头像"),//头像
-    DEPARTMENT(SYS.MUILTI_LANGUAGE_NULL, "联系人部门"),//联系人部门 多国语言
-    JOB_TITLE(SYS.MUILTI_LANGUAGE_NULL, "联系人职称"),//联系人职称  多国语言
-    WEBSITE(SYS.STR__100_NULL, "Website"),//Website
-    COUNTRY(PltCountry.fldOutKey()),//Country/Region 	国家
-    PROVINCE(PltProvince.fldOutKey()),//Province/state 	省份
-    CITY(SYS.MUILTI_LANGUAGE_NULL, "City"),//City 多国语言
+    /** 前台页面资料 */
+    BUSINESS_TYP(SYS.MUILTI_LANGUAGE_NULL, "Business_typ"), // Business_typ 多国语言
+    LOCATION(SYS.MUILTI_LANGUAGE_NULL, "Location"), // Location 多国语言
+    PRODUCTION(SYS.MUILTI_LANGUAGE_NULL, "Production"), // Production 多国语言
+    DEVELOPER(SYS.MUILTI_LANGUAGE_NULL, "Developer"), // Developer 多国语言
+    TOTAL_EMPLOYEES(SYS.MUILTI_LANGUAGE_NULL, "Total_employees"), // Total_employees 多国语言
+    ANNUAL_SALES(SYS.MUILTI_LANGUAGE_NULL, "Annual_sales"), // Annual_sales 多国语言
+    TOP_3_MARKETS(SYS.MUILTI_LANGUAGE_NULL, "Top 3 Markets"), // Top 3 Markets 多国语言
+    MATERIALS(SYS.MUILTI_LANGUAGE_NULL, "Materials"), // Materials 多国语言
+    HEAD_PIC(SYS.STR__200_NULL, "头像"), // 头像
+    DEPARTMENT(SYS.MUILTI_LANGUAGE_NULL, "联系人部门"), // 联系人部门 多国语言
+    JOB_TITLE(SYS.MUILTI_LANGUAGE_NULL, "联系人职称"), // 联系人职称  多国语言
+    WEBSITE(SYS.STR__100_NULL, "Website"), // Website
+    COUNTRY(PltCountry.fldOutKey()), // Country/Region 	国家
+    PROVINCE(PltProvince.fldOutKey()), // Province/state 	省份
+    CITY(SYS.MUILTI_LANGUAGE_NULL, "City"), // City 多国语言
 
-    Is_Pro(SYS.NY, "供应商首页产品展示"),//供应商首页产品展
-    LOGO(SYS.URL__NULL, "logo"),//logo 150*150像素
-    SIGN_BACKGD(SYS.URL__NULL, "店招背景"),//店招背景 1920x150像素
-    AD_PHOTO(SYS.MUILTI_LANGUAGE_NULL, "广告图"),//广告图 图片大小建议: 1200*550像素
-    AD_PHOTO_MOBILE(SYS.STR__1000_NULL, "移动端广告图"),//移动端广告图 图片大小建议: 640*340像素
-    AD_PHOTO_LINK(SYS.MUILTI_LANGUAGE_NULL,
-        "广告连接"),//广告连接 外链必须使用完整域名，即包含http://或https://，例： https://www.google.com。内链不需加域名，例: /products/
-    COMPANY_PHOTO(SYS.MUILTI_LANGUAGE_NULL, "企业图片"),//企业图片 图片大小建议: 780x480像素
-    COMPANY_PHOTO_LINK(SYS.MUILTI_LANGUAGE_NULL,
-        "企业图片连接"),//企业图片连接 外链必须使用完整域名，即包含http://或https://，例： https://www.google.com。内链不需加域名，例: /products/
+    Is_Pro(SYS.NY, "供应商首页产品展示"), // 供应商首页产品展
+    LOGO(SYS.URL__NULL, "logo"), // logo 150*150像素
+    SIGN_BACKGD(SYS.URL__NULL, "店招背景"), // 店招背景 1920x150像素
+    AD_PHOTO(SYS.MUILTI_LANGUAGE_NULL, "广告图"), // 广告图 图片大小建议: 1200*550像素
+    AD_PHOTO_MOBILE(SYS.STR__1000_NULL, "移动端广告图"), // 移动端广告图 图片大小建议: 640*340像素
+    AD_PHOTO_LINK(
+        SYS.MUILTI_LANGUAGE_NULL,
+        "广告连接"), // 广告连接 外链必须使用完整域名，即包含http://或https://，例： https://www.google.com。内链不需加域名，例:
+                 // /products/
+    COMPANY_PHOTO(SYS.MUILTI_LANGUAGE_NULL, "企业图片"), // 企业图片 图片大小建议: 780x480像素
+    COMPANY_PHOTO_LINK(
+        SYS.MUILTI_LANGUAGE_NULL,
+        "企业图片连接"), // 企业图片连接 外链必须使用完整域名，即包含http://或https://，例： https://www.google.com。内链不需加域名，例:
+                   // /products/
 
-    /**
-     * 个性装修 选择模板
-     */
-    HOME_PAGE_DIY(SYS.MUILTI_LANGUAGE_NULL, "首页个性装修"),//首页个性装修  多国语言
-    PRODUCT_PAGE_DIY(SYS.MUILTI_LANGUAGE_NULL, "产品页个性装修"),//产品页个性装修  多国语言
-    CONTACT_PAGE_DIY(SYS.MUILTI_LANGUAGE_NULL, "联系页个性装修"),//联系页个性装修  多国语言
-    COMPANY_INTRODUCTION_PAGE_CUSTOM_DECORATION(SYS.MUILTI_LANGUAGE_NULL,
-        "公司介绍页自定义装修"),//公司介绍页自定义装修  多国语言
-    HOME_PAGE_DIY_MOBILE(SYS.STR__1000_NULL, "首页个性装修（移动）"),//首页个性装修（移动）
-    PRODUCT_PAGE_DIY_MOBILE(SYS.STR__1000_NULL, "产品页个性装修（移动）"),//产品页个性装修（移动）
-    CONTACT_PAGE_DIY_MOBILE(SYS.STR__1000_NULL, "联系页个性装修（移动）"),//联系页个性装修（移动）
+    /** 个性装修 选择模板 */
+    HOME_PAGE_DIY(SYS.MUILTI_LANGUAGE_NULL, "首页个性装修"), // 首页个性装修  多国语言
+    PRODUCT_PAGE_DIY(SYS.MUILTI_LANGUAGE_NULL, "产品页个性装修"), // 产品页个性装修  多国语言
+    CONTACT_PAGE_DIY(SYS.MUILTI_LANGUAGE_NULL, "联系页个性装修"), // 联系页个性装修  多国语言
+    COMPANY_INTRODUCTION_PAGE_CUSTOM_DECORATION(
+        SYS.MUILTI_LANGUAGE_NULL, "公司介绍页自定义装修"), // 公司介绍页自定义装修  多国语言
+    HOME_PAGE_DIY_MOBILE(SYS.STR__1000_NULL, "首页个性装修（移动）"), // 首页个性装修（移动）
+    PRODUCT_PAGE_DIY_MOBILE(SYS.STR__1000_NULL, "产品页个性装修（移动）"), // 产品页个性装修（移动）
+    CONTACT_PAGE_DIY_MOBILE(SYS.STR__1000_NULL, "联系页个性装修（移动）"), // 联系页个性装修（移动）
     HOME_PAGE_ON(SYS.NY, "首页个性装修开关"),
     PRODUCT_PAGE_ON(SYS.NY, "产品页个性装修开关"),
     CONTACT_PAGE_ON(SYS.NY, "联系页个性装修开关"),
@@ -148,23 +169,21 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     HOME_POSTER_ON(SYS.NY, "首页大海报开关"),
     HOME_BUSINESS_BIG_POSTER_ON(SYS.NY, "首页企业大海报开关"),
     COMPANY_INTRODUCTION_PAGE_CUSTOM_DECORATION_ON(SYS.NY, "公司介绍页自定义装修开关"),
-    /**
-     * 营销设置
-     */
-    TRACE_CODE(SYS.TEXT__1000_NULL, "跟踪代码"),//跟踪代码
-    WEB_SIZE_TITLE(SYS.STR__100_NULL, "自定义链接名称"),//英文、数字、下划线
+    /** 营销设置 */
+    TRACE_CODE(SYS.TEXT__1000_NULL, "跟踪代码"), // 跟踪代码
+    WEB_SIZE_TITLE(SYS.STR__100_NULL, "自定义链接名称"), // 英文、数字、下划线
     WEB_SITE(SYS.STR__100_NULL, "网址"),
-    TONGJI_URL(SYS.URL__NULL, "第三方统计地址"),//第三方统计 地址
-    TONGJI_PWD(SYS.PASSWORD__NULL, "第三方统计密码"),//第三方统计 密码
-    UPDATE_TIME(SYS.UPDATED_DATE_TIME),//最后编辑时间
+    TONGJI_URL(SYS.URL__NULL, "第三方统计地址"), // 第三方统计 地址
+    TONGJI_PWD(SYS.PASSWORD__NULL, "第三方统计密码"), // 第三方统计 密码
+    UPDATE_TIME(SYS.UPDATED_DATE_TIME), // 最后编辑时间
     UserId(UsrMain.fldOutKey().setName("用户").setNull()),
 
     ROW_VERSION(SYS.ROW_VERSION),
-    //>>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
-    //<<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
-    ;
-    //>>>以下是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别>>>
-    //<<<以上是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别<<<
+  // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
+  // <<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
+  ;
+    // >>>以下是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别>>>
+    // <<<以上是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别<<<
     // 索引
     public static final Index IDX_LOGIN_NAME = TB.addIndex("login_name", true, T.LOGIN_NAME);
     private Fld _fld;
@@ -194,8 +213,8 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     }
   }
 
-  static { //在此可以加一些对FLD进行特殊设定的代码
-    T.PKEY.getFld().getTb().lockAllFlds();//加锁所有字段,不可以修改
+  static { // 在此可以加一些对FLD进行特殊设定的代码
+    T.PKEY.getFld().getTb().lockAllFlds(); // 加锁所有字段,不可以修改
   }
 
   public static Fld fldOutKey() {
@@ -210,19 +229,32 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   public String getExtName() {
     return getName();
   }
-  //@formatter:on
+  // @formatter:on
 
-  //>>>以下是自动产生的源代码行--源代码--请保留此行用于识别>>>
+  // >>>以下是自动产生的源代码行--源代码--请保留此行用于识别>>>
   //实例变量定义-----------------------------------------
   private Integer _pkey;	// 编号  INT
   private Integer _role;	// 供应商角色 <表主键:UsrSupplierRole>  INT
-  private String _loginName;	// 登录账号  STR(40)
+  private String _loginName;	// 登录账号  STR(50)
   private String _password;	// 密码  STR(40)<null>
-  private Byte _status;	// 状态 <OStatus>  BYTE
+  private Byte _status;	// 审核状态 <OStatus>  BYTE
 	// INIT:0,未审核
-	// APPR:1,已审核
+	// APPR:1,审核通过
+	// FAIL:2,审核不通过
   private Integer _apprBy;	// 审核员 <表主键:SysUser>  INT<null>
   private Date _apprTime;	// 审核时间  TIME<null>
+  private String _reason;	// 审核不通过理由备注  STR(100)<null>
+  private String _closeReason;	// 店铺关闭原因  STR(100)<null>
+  private Byte _storeStatus;	// 店铺状态 <SStatus>  BYTE
+	// DOWN:0,关闭
+	// OPEN:1,开启
+  private String _englishName;	// 英文名称  STR(100)
+  private String _annualProduction;	// 年产量  STR(100)<null>
+  private String _postcode;	// 邮编  STR(20)<null>
+  private String _targetedMarket;	// 目标市场  STR(100)
+  private String _contactEmail;	// 联系人邮箱  STR(100)<null>
+  private Date _applicationTime;	// 申请时间  DATE
+  private Date _storeopenTime;	// 店铺开通时间  DATE<null>
   private String _name;	// 名称  STR(100)
   private String _registeredCapital;	// 注册资金  STR(100)
   private Integer _category;	// 供应商分类 <表主键:UsrSupplierCategory>  INT
@@ -234,16 +266,16 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   private String _seoContent;	// 搜索引擎说明  JSONOBJECT<null>
   private Date _authTime;	// 认证时间  TIME<null>
   private String _showName;	// 网站显示名称  JSONOBJECT<null>
-  private String _entity;	// 企业法人  STR(100)
+  private String _entity;	// 企业法人  STR(100)<null>
   private String _companyType;	// 企业类型  JSONOBJECT<null>
   private String _companyNature;	// 企业性质  JSONOBJECT<null>
-  private String _creditCode;	// 信用代码  STR(100)<null>
+  private String _creditCode;	// 信用代码  STR(100)
   private Date _companyEstablishTime;	// 成立时间  DATE<null>
   private String _operationTerm;	// 业务期限  STR(100)<null>
   private String _mainSalesArea;	// 主销售区  JSONOBJECT<null>
   private String _mainProd;	// 主要产品  JSONOBJECT<null>
-  private String _prodPattern;	// 生产模式  JSONOBJECT<null>
-  private String _companyAddr;	// 地址  JSONOBJECT<null>
+  private String _prodPattern;	// 生产模式  JSONOBJECT
+  private String _companyAddr;	// 地址  JSONOBJECT
   private String _des;	// 描述  STR(200)<null>
   private String _email;	// Email  STR(100)
   private String _businessLicenseBeginTime;	// 营业执照开始时间  STR(100)<null>
@@ -255,8 +287,8 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   private String _fax;	// 传真  STR(20)<null>
   private String _qq;	// QQ  STR(100)<null>
   private String _certPhoto;	// 资质证书  STR(200)<null>
-  private String _idCardFrontPhoto;	// 身份证正面  STR(200)<null>
-  private String _idCardBackPhoto;	// 身份证反面  STR(200)<null>
+  private String _idCardFrontPhoto;	// 法人身份证正面  STR(200)<null>
+  private String _idCardBackPhoto;	// 法人身份证反面  STR(200)<null>
   private String _coopCertPhoto;	// 合作凭证  STR(200)<null>
   private String _taxpayerType;	// 纳税人类型  STR(100)<null>
   private String _idCard;	// 法人身份证号码  STR(50)<null>
@@ -336,15 +368,25 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   public UsrSupplier init(){
 		super.init();
     _role=null;	// 供应商角色 <表主键:UsrSupplierRole>  INT
-    _loginName=null;	// 登录账号  STR(40)
+    _loginName=null;	// 登录账号  STR(50)
     _password=null;	// 密码  STR(40)
-    _status= Usr.OStatus.DEFAULT.getLine().getKey();	// 状态 <OStatus>  BYTE
+    _status=OStatus.DEFAULT.getLine().getKey();	// 审核状态 <OStatus>  BYTE
     _apprBy=null;	// 审核员 <表主键:SysUser>  INT
     _apprTime=null;	// 审核时间  TIME
+    _reason=null;	// 审核不通过理由备注  STR(100)
+    _closeReason=null;	// 店铺关闭原因  STR(100)
+    _storeStatus=SStatus.DEFAULT.getLine().getKey();	// 店铺状态 <SStatus>  BYTE
+    _englishName=null;	// 英文名称  STR(100)
+    _annualProduction=null;	// 年产量  STR(100)
+    _postcode=null;	// 邮编  STR(20)
+    _targetedMarket=null;	// 目标市场  STR(100)
+    _contactEmail=null;	// 联系人邮箱  STR(100)
+    _applicationTime=null;	// 申请时间  DATE
+    _storeopenTime=null;	// 店铺开通时间  DATE
     _name=null;	// 名称  STR(100)
     _registeredCapital=null;	// 注册资金  STR(100)
     _category=null;	// 供应商分类 <表主键:UsrSupplierCategory>  INT
-    _isAuth= Usr.OIsAuth.DEFAULT.getLine().getKey();	// 供应商认证 <OIsAuth>  BYTE
+    _isAuth=OIsAuth.DEFAULT.getLine().getKey();	// 供应商认证 <OIsAuth>  BYTE
     _sort=0;	// 排序号  INT
     _seoTitle=null;	// 店铺关键字  JSONOBJECT
     _seoContent=null;	// 搜索引擎说明  JSONOBJECT
@@ -364,13 +406,13 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     _email=null;	// Email  STR(100)
     _businessLicenseBeginTime=null;	// 营业执照开始时间  STR(100)
     _businessLicenseEndTime=null;	// 营业执照到期时间  STR(100)
-    _businessLicenseIsSecular= Sys.OYn.DEFAULT.getLine().getKey();	// 是否长期 <OYn>  BYTE
+    _businessLicenseIsSecular=OYn.DEFAULT.getLine().getKey();	// 是否长期 <OYn>  BYTE
     _telephone=null;	// 电话  STR(20)
     _fax=null;	// 传真  STR(20)
     _qq=null;	// QQ  STR(100)
     _certPhoto=null;	// 资质证书  STR(200)
-    _idCardFrontPhoto=null;	// 身份证正面  STR(200)
-    _idCardBackPhoto=null;	// 身份证反面  STR(200)
+    _idCardFrontPhoto=null;	// 法人身份证正面  STR(200)
+    _idCardBackPhoto=null;	// 法人身份证反面  STR(200)
     _coopCertPhoto=null;	// 合作凭证  STR(200)
     _taxpayerType=null;	// 纳税人类型  STR(100)
     _idCard=null;	// 法人身份证号码  STR(50)
@@ -399,7 +441,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     _country=null;	// 国家管理 <表主键:PltCountry>  INT
     _province=null;	// 省份 <表主键:PltProvince>  INT
     _city=null;	// City  JSONOBJECT
-    _isPro= Sys.OYn.DEFAULT.getLine().getKey();	// 供应商首页产品展示 <OYn>  BYTE
+    _isPro=OYn.DEFAULT.getLine().getKey();	// 供应商首页产品展示 <OYn>  BYTE
     _logo=null;	// logo  STR(200)
     _signBackgd=null;	// 店招背景  STR(200)
     _adPhoto=null;	// 广告图  JSONOBJECT
@@ -414,19 +456,19 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     _homePageDiyMobile=null;	// 首页个性装修（移动）  STR(1000)
     _productPageDiyMobile=null;	// 产品页个性装修（移动）  STR(1000)
     _contactPageDiyMobile=null;	// 联系页个性装修（移动）  STR(1000)
-    _homePageOn= Sys.OYn.DEFAULT.getLine().getKey();	// 首页个性装修开关 <OYn>  BYTE
-    _productPageOn= Sys.OYn.DEFAULT.getLine().getKey();	// 产品页个性装修开关 <OYn>  BYTE
-    _contactPageOn= Sys.OYn.DEFAULT.getLine().getKey();	// 联系页个性装修开关 <OYn>  BYTE
-    _bottomHomeProductsOn= Sys.OYn.DEFAULT.getLine().getKey();	// 首页底部产品展示开关 <OYn>  BYTE
-    _homePosterOn= Sys.OYn.DEFAULT.getLine().getKey();	// 首页大海报开关 <OYn>  BYTE
-    _homeBusinessBigPosterOn= Sys.OYn.DEFAULT.getLine().getKey();	// 首页企业大海报开关 <OYn>  BYTE
-    _companyIntroductionPageCustomDecorationOn= Sys.OYn.DEFAULT.getLine().getKey();	// 公司介绍页自定义装修开关 <OYn>  BYTE
+    _homePageOn=OYn.DEFAULT.getLine().getKey();	// 首页个性装修开关 <OYn>  BYTE
+    _productPageOn=OYn.DEFAULT.getLine().getKey();	// 产品页个性装修开关 <OYn>  BYTE
+    _contactPageOn=OYn.DEFAULT.getLine().getKey();	// 联系页个性装修开关 <OYn>  BYTE
+    _bottomHomeProductsOn=OYn.DEFAULT.getLine().getKey();	// 首页底部产品展示开关 <OYn>  BYTE
+    _homePosterOn=OYn.DEFAULT.getLine().getKey();	// 首页大海报开关 <OYn>  BYTE
+    _homeBusinessBigPosterOn=OYn.DEFAULT.getLine().getKey();	// 首页企业大海报开关 <OYn>  BYTE
+    _companyIntroductionPageCustomDecorationOn=OYn.DEFAULT.getLine().getKey();	// 公司介绍页自定义装修开关 <OYn>  BYTE
     _traceCode=null;	// 跟踪代码  TEXT(200)
     _webSizeTitle=null;	// 自定义链接名称  STR(100)
     _webSite=null;	// 网址  STR(100)
     _tongjiUrl=null;	// 第三方统计地址  STR(200)
     _tongjiPwd=null;	// 第三方统计密码  STR(40)
-    _updateTime= Env.getTranBeginTime();	// 更新时间  TIME
+    _updateTime=Env.getTranBeginTime();	// 更新时间  TIME
     _userid=null;	// 用户 <表主键:UsrMain>  INT
     _rowVersion=0;	// 版本  SHORT
     return this;
@@ -480,10 +522,10 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   public void setStatus(Byte status){
     _status=status;
   }
-  public Usr.OStatus gtStatus(){
-    return (Usr.OStatus)(Usr.OStatus.INIT.getLine().get(_status));
+  public OStatus gtStatus(){
+    return (OStatus)(OStatus.INIT.getLine().get(_status));
   }
-  public void stStatus(Usr.OStatus status){
+  public void stStatus(OStatus status){
     _status=status.getLine().getKey();
   }
   public Integer getApprBy(){
@@ -508,6 +550,72 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   }
   public void setApprTime(Date apprTime){
     _apprTime=apprTime;
+  }
+  public String getReason(){
+    return _reason;
+  }
+  public void setReason(String reason){
+    _reason=reason;
+  }
+  public String getCloseReason(){
+    return _closeReason;
+  }
+  public void setCloseReason(String closeReason){
+    _closeReason=closeReason;
+  }
+  public Byte getStoreStatus(){
+    return _storeStatus;
+  }
+  public void setStoreStatus(Byte storeStatus){
+    _storeStatus=storeStatus;
+  }
+  public SStatus gtStoreStatus(){
+    return (SStatus)(SStatus.DOWN.getLine().get(_storeStatus));
+  }
+  public void stStoreStatus(SStatus storeStatus){
+    _storeStatus=storeStatus.getLine().getKey();
+  }
+  public String getEnglishName(){
+    return _englishName;
+  }
+  public void setEnglishName(String englishName){
+    _englishName=englishName;
+  }
+  public String getAnnualProduction(){
+    return _annualProduction;
+  }
+  public void setAnnualProduction(String annualProduction){
+    _annualProduction=annualProduction;
+  }
+  public String getPostcode(){
+    return _postcode;
+  }
+  public void setPostcode(String postcode){
+    _postcode=postcode;
+  }
+  public String getTargetedMarket(){
+    return _targetedMarket;
+  }
+  public void setTargetedMarket(String targetedMarket){
+    _targetedMarket=targetedMarket;
+  }
+  public String getContactEmail(){
+    return _contactEmail;
+  }
+  public void setContactEmail(String contactEmail){
+    _contactEmail=contactEmail;
+  }
+  public Date getApplicationTime(){
+    return _applicationTime;
+  }
+  public void setApplicationTime(Date applicationTime){
+    _applicationTime=applicationTime;
+  }
+  public Date getStoreopenTime(){
+    return _storeopenTime;
+  }
+  public void setStoreopenTime(Date storeopenTime){
+    _storeopenTime=storeopenTime;
   }
   public String getName(){
     return _name;
@@ -544,10 +652,10 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   public void setIsAuth(Byte isAuth){
     _isAuth=isAuth;
   }
-  public Usr.OIsAuth gtIsAuth(){
-    return (Usr.OIsAuth)(Usr.OIsAuth.NO.getLine().get(_isAuth));
+  public OIsAuth gtIsAuth(){
+    return (OIsAuth)(OIsAuth.NO.getLine().get(_isAuth));
   }
-  public void stIsAuth(Usr.OIsAuth isAuth){
+  public void stIsAuth(OIsAuth isAuth){
     _isAuth=isAuth.getLine().getKey();
   }
   public Integer getSort(){
@@ -844,6 +952,12 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   public void setOperateIdCard(String operateIdCard){
     _operateIdCard=operateIdCard;
   }
+  public JSONObject gtContacts() throws JSONException {
+    return getContacts()==null?new JSONObject():new JSONObject(getContacts());
+  }
+  public void stContacts(JSONObject contacts){
+    setContacts(contacts==null?null:contacts.toString());
+  }
   public String getContacts(){
     return _contacts;
   }
@@ -908,6 +1022,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     else
       setBankProvince(bankProvince.getPkey());
   }
+
   public String getContactsIdCardFrontPhoto(){
     return _contactsIdCardFrontPhoto;
   }
@@ -1500,5 +1615,5 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     _rowVersion=rowVersion;
   }
 
-  //<<<以上是自动产生的源代码行--源代码--请保留此行用于识别<<<
+  // <<<以上是自动产生的源代码行--源代码--请保留此行用于识别<<<
 }

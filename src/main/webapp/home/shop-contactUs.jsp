@@ -116,7 +116,7 @@
                 <c:if test="${env.login == null}">
                     <div class="tip-info fr">
                         <s:text name="ViewAfterLogin"/>
-                        <a class="SignInButton"><s:text name="sign_in"/></a>
+                        <a class="SignInButton" @click="util_function_obj.alertWhenNoLogin(this);"><s:text name="sign_in"/></a>
                     </div>
                 </c:if>
             </h3>
@@ -201,6 +201,88 @@
                 </div>
             </div>
             <!-- 联系-信息2 - end -->
+            <!-- Contact supplier 表单 start -->
+            <div class="contact-supplier">
+                <h3 class="title">Contact supplier</h3>
+                <div class="supplier-form">
+                    <div class="flexSt">
+                        <div class="company-logo">
+                            <img  src="${envConfig.imageBaseUrl}${supView.logo}?x-oss-process=image/resize,m_pad,h_130,w_165" alt="">
+                        </div>
+                        <p class="company-name"><c:if test="${supView.name != 'null'}">${supView.showName}</c:if></p>
+                        <div>
+                            <img src="./static/images/ico/icon-svs.png" alt="">
+                            svs
+                        </div>
+                    </div>
+                    <el-form :model="form" :rules="rules" ref="form" label-width="155px">
+                        <el-form-item label="Name of inquiry" prop="title">
+                            <el-row :gutter="15">
+                                <el-col :span="4">
+                                    <div>I am looking for</div>
+                                </el-col>
+                                <el-col :span="8">
+                                    <el-input v-model.trim="form.title"></el-input>
+                                </el-col>
+                                <el-col :span="5" >
+                                    <div>on shoestp.com</div>
+                                </el-col>
+                            </el-row>
+                        </el-form-item>
+                        <el-form-item label="Purchase  Quantity" prop="quantity">
+                            <el-row :gutter="10">
+                                <el-col :span="7">
+                                    <el-input v-model.trim="form.quantity"></el-input>
+                                </el-col>
+                                <el-col :span="5">
+                                    <el-form-item prop="unit">
+                                            <el-select v-model="form.unit" placeholder="Unit">
+                                                    <el-option
+                                                    v-for="item in options"
+                                                    :key="item.value"
+                                                    :label="item.label"
+                                                    :value="item.value">
+                                                  </el-option>
+                                            </el-select>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+                        </el-form-item>
+                        <el-form-item label="Extra Request" prop="extra_request" class="request">
+                           <el-checkbox-group v-model="form.extra_request">
+                                <el-checkbox label="price" name="price">Price</el-checkbox>
+                                <el-checkbox label="inspection certificate" name="inspection certificate">Inspection Certificate</el-checkbox>
+                                <el-checkbox label="product specifications" name="product specifications">Product Specifications</el-checkbox>
+                                <el-checkbox label="company profile" name="company profile">Company Profile</el-checkbox>
+                            </el-checkbox-group>
+                        </el-form-item>
+                        <el-form-item label="Message:" prop="description">
+                            <el-input placeholder="Enter product details such as color, size, materials etc. and other specification requirements to receive an accurate quote." type="textarea" v-model.trim="form.description":autosize="{ minRows: 8, maxRows: 8}"></el-input>
+                        </el-form-item>
+                        <el-form-item label="" prop="images">
+                            <div class="upImg flexSt">
+                                <el-upload action="/home/usr_UsrConsult_upload" list-type="picture-card"
+                                           :on-success="handlePictureCardPreview" :limit="5" :on-remove="handleRemove"
+                                           :before-upload="beforeUpload"
+                                           accept=".jpg,.jpeg,.png"
+                                >
+                                    <img src="./static/images/ico/add-photos.png">
+                                </el-upload>
+                                <span class="add-photos-font" style="margin-left:10px;">add photos</span>
+                            </div>
+                        </el-form-item>
+                        <el-form-item>
+                            <div style="color: #e54544;">
+                                * Recommend matching suppliers if this supplier doesn't contact me on Message Center within 24 hours. RFQ
+                            </div>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button :disabled="flag" type="primary" @click="submitForm('form')">Send inquiry now</el-button>
+                        </el-form-item>
+                    </el-form>
+                </div>
+            </div>
+            <!-- Contact supplier 表单 end -->
         </div>
     </div>
     <index-bottom></index-bottom>
@@ -211,8 +293,192 @@
     <script src="/home/v3/static/js/index-bottom.js"></script>
     <script>
         new Vue({
-            el:"#main"
+            el:"#main",
+            data() {
+                return {
+                    flag : false, 
+                    imgsToUpload: [], // 需要upload的img - 显示在页面上
+                    options: [{
+                        value: "1",
+                        label: "Pairs"
+                    },
+                        {
+                            value: "2",
+                            label: "Forty-Foot Container"
+                        },
+                        {
+                            value: "3",
+                            label: "Twenty-Foot Container"
+                        },
+                    ],
+                    form: {
+                        title: '', // 标题 名字
+                        quantity: '',  // 数量
+                        unit: '1',  // 单位
+                        extra_request:[],  //  额外要求
+                        description: '',  //描述
+                        images: '',  // 图片
+                        supplierId: null  // 供应商id
+                    },
+
+                    rules: {
+                        title:[
+                            { required: true,message: 'Please fill in the title'},
+                            { max: 500, message: 'Enter up to 500 digits', trigger: 'blur' }
+                        ],
+                        quantity: [
+                            {required: true,message: 'Please enter the quantity',trigger: 'blur'},
+                            { max: 10, message: 'Enter up to 10 digits', trigger: 'blur' },
+                            { pattern: /^\+?[1-9][0-9]*$/, message: "Please enter a number, can't start with 0, can't have decimal point" }
+                        ],
+                        description: [{
+                            required: true,
+                            message: 'Please fill in the message',
+                            trigger: 'blur'
+                        }]
+                    },
+                    pkey:null,
+                    supData:[],
+                }
+            },
+            mounted() {
+                // 进来页面获取到供应商信息
+                let self = this;
+                self.pkey = self.getQueryString("pkey");
+                self.$set(self.form,"supplierId",self.pkey)
+            },
+            methods: {
+                // elementui 上传功能 *2 - 删除操作
+                handleRemove(file, fileList) {
+                    // 清空imgs数组
+                    this.imgsToUpload = [];
+                    // 删除图片后，将授予的图片地址放入数组
+                    $.each(fileList, (i, v) => {
+                        console.log(v)
+                        this.imgsToUpload.push(v.response.result.url)
+                    })
+
+                    if ((this.imgsToUpload.length <= 4)) {
+                        $(".upImg .el-upload.el-upload--picture-card,.upImg .add-photos-font").show();
+                    }
+                },
+                // elementui 上传功能 *2 - 上传成功操作
+                handlePictureCardPreview(response, file, fileList) {
+                    console.log("上传成功response" + response)
+                    console.log(file)
+                    console.log(fileList)
+                    if (response.ret != 1) return;
+                    // 添加图片后，在前面显示 img
+                    this.imgsToUpload.push(file.response.result.url);
+                    if (this.imgsToUpload.length >= 5) {
+                        $(".upImg .el-upload.el-upload--picture-card,.upImg .add-photos-font").hide();
+                    }
+                    console.log(this.imgsToUpload)
+
+                },
+                // 上传图片文件之前
+                beforeUpload(file){
+                    console.log(file)
+                    let size = file.size / 1024;
+                    if(size > 500 ){
+                        this.$message.error('Image size cannot exceed 500k');
+                        return false;
+                    }
+                },
+                submitForm(formName) { // 表单提交
+                    let self = this;
+                    if(!sysConfig || !sysConfig.user){
+                        util_function_obj.alertWhenNoLogin(self);
+                        return
+                    }else{
+                        // 登录了
+                        if(sysConfig.user.user_type == 1){
+                            self.$alert("Sorry, the supplier cannot submit the form",{
+                                confirmButtonText: 'Ok',
+                                customClass: "my-custom-element-alert-class fs-content-18",
+                                center: true,
+                                callback: action =>{
+                                    return
+                                }
+                            });
+                            return
+                        }else{
+                            // 普通用户
+                            self.$refs[formName].validate((valid) => {
+                        if (valid) {
+                            self.flag = true;
+                            console.log(self.form)
+                            self.form.images = self.imgsToUpload.join(",");
+                            // self.form.pdtId = self.id;
+                            console.log(self.imgsToUpload)
+                            console.log('submit!');
+                            let data = JSON.stringify(self.form)
+                            axios.post("/home/rfq_RFQConsult_putSupplierInquiry",data,
+                                {headers: {'Content-Type': 'application/json'}}
+                            )
+                                .then((res) => {
+                                console.log(res)
+                                // 提交成功时
+                                if (res.data.ret == 1) {
+                                // 提示信息
+                                self.$message({
+                                    showClose: true,
+                                    message: 'Submitted successfully',
+                                    type: 'success'
+                                });
+                                setTimeout(function () {
+                                    // gtag_report_conversion()
+                                    // window.location.href =
+                                    //     '/home/usr_UsrSupplier_gtSupInfo?pkey=' + self.pkey;
+                                    window.location.reload();
+                                }, 1500)
+                                // 未登录时
+                            } else {
+                                self.flag = false;
+                                self.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
+                                    confirmButtonText: 'OK',
+                                    customClass: "my-custom-element-alert-class fs-content-18",
+                                });
+                            }
+
+                        })
+                        .catch((err) => {
+                            self.flag = false;
+                            self.$message.error("Network error, please refresh the page and try again");
+                                console.log(err)
+                            })
+                        } else {
+                            console.log('error submit!!');
+                    // if (!self.form.quantity) {
+                    //     self.$message.error('Quantity cannot be empty');
+                    // } else if (!self.form.unit) {
+                    //     self.$message.error("Select unit");
+                    // } else if (!self.form.description) {
+                    //     self.$message.error('Please fill in the message');
+                    // }
+                    // return false;
+                }
+                });
+                        }
+                    }
+                    
+                },
+                getQueryString: (name) => {
+                let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        let reg_rewrite = new RegExp("(^|/)" + name + "/([^/]*)(/|$)", "i");
+        let r = window.location.search.substr(1).match(reg);
+        let q = window.location.pathname.substr(1).match(reg_rewrite);
+        if(r != null){
+            return unescape(r[2]);
+        }else if(q != null){
+            return unescape(q[2]);
+        }else{
+            return null;
+        }
+        }
+        }
         })
+
     </script>
 </body>
 

@@ -13,91 +13,81 @@ import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltProvinces;
 import irille.shop.usr.Usr.IDType;
 
-public class UsrMain extends BeanInt<UsrMain>{
-      
-public static final Tb TB = new Tb(UsrMain.class, "用户登陆信息表").setAutoIncrement().addActIUDL();
-	
+public class UsrMain extends BeanInt<UsrMain> {
+
+	public static final Tb TB = new Tb(UsrMain.class, "用户登陆信息表").setAutoIncrement().addActIUDL();
+
 	public enum T implements IEnumFld {
-		PKEY(TB.crtIntPkey()),
-		EMAIL(SYS.EMAIL__NULL,"邮箱"),
-		NICKNAME(SYS.STR__200_NULL,"昵称"),
-		PASSWORD(SYS.PASSWORD__NULL),
-		COUNTRY(PltCountry.fldOutKey().setName("国家").setNull()),
-		TELPHONE(SYS.PHOTO__NULL,"手机号码"),
-		COMPANY(SYS.STR__100_NULL,"公司名称"),
-		CONTACTS(SYS.NAME__40_NULL, "联系人"),//联系人
-		PROVINCE(PltProvinces.fldOutKey().setName("省份").setNull()),
-		CITY(PltCity.fldOutKey().setName("城市").setNull()),
-		ZONE(PltArea.fldOutKey().setName("地区").setNull()),
-		ADDRESS(SYS.STR__200_NULL),
-		REG_TIME(SYS.DATE_TIME__NULL,"注册时间"),
-		IDENTITY(TB.crt(Usr.IDType.DEFAULT)),
-		FACEBOOK_USER_ID(SYS.STR__100_NULL,"FACEBOOK用户ID"),
-		GOOGLE_USER_ID(SYS.STR__100_NULL,"谷歌用户ID"),
-        LINKEDIN_USER_ID(SYS.STR__100_NULL,"领英用户ID"),
-        TWITTER_USER_ID(SYS.STR__100_NULL,"推特用户ID"),
+		PKEY(TB.crtIntPkey()), EMAIL(SYS.STR__100, "邮箱"), NICKNAME(SYS.STR__200_NULL, "昵称"), PASSWORD(SYS.PASSWORD),
+		COUNTRY(PltCountry.fldOutKey().setName("国家").setNull()), TELPHONE(SYS.STR__200, "手机号码"),
+		COMPANY(SYS.STR__100_NULL, "公司名称"), CONTACTS(SYS.NAME__40_NULL, "联系人"), // 联系人
+		PROVINCE(PltProvinces.fldOutKey().setName("省份").setNull()), CITY(PltCity.fldOutKey().setName("城市").setNull()),
+		ZONE(PltArea.fldOutKey().setName("地区").setNull()), ADDRESS(SYS.STR__200_NULL),
+		REG_TIME(SYS.DATE_TIME__NULL, "注册时间"), IDENTITY(TB.crt(Usr.IDType.DEFAULT)),
+		FACEBOOK_USER_ID(SYS.STR__100_NULL, "FACEBOOK用户ID"), GOOGLE_USER_ID(SYS.STR__100_NULL, "谷歌用户ID"),
+		LINKEDIN_USER_ID(SYS.STR__100_NULL, "领英用户ID"), TWITTER_USER_ID(SYS.STR__100_NULL, "推特用户ID"),
 		ROW_VERSION(SYS.ROW_VERSION),
-		
-		
+
 		// >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
-        // <<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
-        ;
-        // >>>以下是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别>>>
-        // <<<以上是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别<<<
+		// <<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
+		;
+		// >>>以下是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别>>>
+		// <<<以上是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别<<<
 		// 索引
-		public static final Index IDX_EMAIL = TB.addIndex("email", true,T.EMAIL);
-		public static final Index IDX_FACEBOOK_USER_ID= TB.addIndex("facebook_user_id", true,T.FACEBOOK_USER_ID);
-		public static final Index IDX_GOOGLE_USER_ID = TB.addIndex("google_user_id", true,T.GOOGLE_USER_ID);
-		public static final Index IDX_LINKEDIN_USER_ID = TB.addIndex("linkedin_user_id", true,T.LINKEDIN_USER_ID);
-		public static final Index IDX_TWITTER_USER_ID = TB.addIndex("twitter_user_id", true,T.TWITTER_USER_ID);
-		
-        private Fld _fld;
+		public static final Index IDX_EMAIL = TB.addIndex("email", true, T.EMAIL);
+		public static final Index IDX_FACEBOOK_USER_ID = TB.addIndex("facebook_user_id", true, T.FACEBOOK_USER_ID);
+		public static final Index IDX_GOOGLE_USER_ID = TB.addIndex("google_user_id", true, T.GOOGLE_USER_ID);
+		public static final Index IDX_LINKEDIN_USER_ID = TB.addIndex("linkedin_user_id", true, T.LINKEDIN_USER_ID);
+		public static final Index IDX_TWITTER_USER_ID = TB.addIndex("twitter_user_id", true, T.TWITTER_USER_ID);
 
-        private T(Class clazz, String name, boolean... isnull) {
-            _fld = TB.addOutKey(clazz, this, name, isnull);
-        }
+		private Fld _fld;
 
-        private T(IEnumFld fld, boolean... isnull) {
-            this(fld, null, isnull);
-        }
+		private T(Class clazz, String name, boolean... isnull) {
+			_fld = TB.addOutKey(clazz, this, name, isnull);
+		}
 
-        private T(IEnumFld fld, String name, boolean... null1) {
-            _fld = TB.add(fld, this, name, null1);
-        }
+		private T(IEnumFld fld, boolean... isnull) {
+			this(fld, null, isnull);
+		}
 
-        private T(IEnumFld fld, String name, int strLen) {
-            _fld = TB.add(fld, this, name, strLen);
-        }
+		private T(IEnumFld fld, String name, boolean... null1) {
+			_fld = TB.add(fld, this, name, null1);
+		}
 
-        private T(Fld fld) {
-            _fld = TB.add(fld, this);
-        }
+		private T(IEnumFld fld, String name, int strLen) {
+			_fld = TB.add(fld, this, name, strLen);
+		}
 
-        public Fld getFld() {
-            return _fld;
-        }
+		private T(Fld fld) {
+			_fld = TB.add(fld, this);
+		}
+
+		public Fld getFld() {
+			return _fld;
+		}
 	}
-	
+
 	static { // 在此可以加一些对FLD进行特殊设定的代码
-        T.PKEY.getFld().getTb().lockAllFlds(); // 加锁所有字段,不可以修改
-    }
+		T.PKEY.getFld().getTb().lockAllFlds(); // 加锁所有字段,不可以修改
+	}
 
-    public static Fld fldOutKey() {
-        return fldOutKey(TB.getCodeNoPackage(), TB.getShortName());
-    }
+	public static Fld fldOutKey() {
+		return fldOutKey(TB.getCodeNoPackage(), TB.getShortName());
+	}
 
-    public static Fld fldOutKey(String code, String name) {
-        return Tb.crtOutKey(TB, code, name);
-    }
-  //@formatter:on
-    // >>>以下是自动产生的源代码行--源代码--请保留此行用于识别>>>
+	public static Fld fldOutKey(String code, String name) {
+		return Tb.crtOutKey(TB, code, name);
+	}
+
+	// @formatter:on
+	// >>>以下是自动产生的源代码行--源代码--请保留此行用于识别>>>
   //实例变量定义-----------------------------------------
   private Integer _pkey;	// 编号  INT
-  private String _email;	// 邮箱  STR(100)<null>
+  private String _email;	// 邮箱  STR(100)
   private String _nickname;	// 昵称  STR(200)<null>
-  private String _password;	// 密码  STR(40)<null>
+  private String _password;	// 密码  STR(40)
   private Integer _country;	// 国家 <表主键:PltCountry>  INT<null>
-  private String _telphone;	// 手机号码  STR(200)<null>
+  private String _telphone;	// 手机号码  STR(200)
   private String _company;	// 公司名称  STR(100)<null>
   private String _contacts;	// 联系人  STR(40)<null>
   private Integer _province;	// 省份 <表主键:PltProvinces>  INT<null>
@@ -334,5 +324,5 @@ public static final Tb TB = new Tb(UsrMain.class, "用户登陆信息表").setAu
     _rowVersion=rowVersion;
   }
 
-    //<<<以上是自动产生的源代码行--源代码--请保留此行用于识别<<<
+	// <<<以上是自动产生的源代码行--源代码--请保留此行用于识别<<<
 }

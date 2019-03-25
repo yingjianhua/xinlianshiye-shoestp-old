@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class RecipientView implements BaseView {
-    private Integer recipientid;//收件人id
-    private String recipient;//收件人
+  private Integer recipientid; // 收件人id
+  private String recipient; // 收件人
 }

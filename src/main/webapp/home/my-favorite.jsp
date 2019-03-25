@@ -10,7 +10,9 @@
 
 <body>
 <jsp:include page="v3/nav-nobody.jsp"></jsp:include>
+<script src="/home/v3/static/js/index-top.js"></script>
 <div id="personalCenter" class="clearfix" v-cloak>
+    <index-top></index-top>
       <div class="user-menu fl">
             <div class="user-menu-title"><img src="/home/v3/static/images/user/icon_account.png" alt="" style="margin:0 8px 2px 0;">My Account
         </div>
@@ -34,12 +36,12 @@
                     <div class="favorite-item" v-for="(item, index) in favoriteList" :key="index">
                         <input type="checkbox" @change="singleChecked" :value="item.id" v-model="checkedCode">
                         <div class="porduct-img">
-                            <a href="javascript:void(0)" target="_blank">
-                                <img :src="image(item.img)" alt="">
+                            <a :href="'/home/pdt_PdtProduct_gtProductsInfo?id=' + item.pdtPkey" target="_blank">
+                                <img :src="image(item.img,185)" alt="">
                             </a>
                         </div>
-                        <div class="ellipsis_2 porduct-name">
-                            <a href="javascript:void(0)" target="_blank">{{item.name}}</a>
+                        <div class="porduct-name">
+                            <a :href="'/home/pdt_PdtProduct_gtProductsInfo?id=' + item.pdtPkey" target="_blank" class="text">{{item.name}}</a>
                         </div>
                         <div class="porduct-price">
                             <span style="color: #232323;">US</span>
@@ -54,7 +56,8 @@
                             </div>
                             <div class="porduct-inquiry-btn porduct-btn">
                                 <a href="javascript:void(0)" @click="restore(item.id)" v-if="catPkey == -1">Restore</a>
-                                <a :href="'/home/usr_UsrConsult_publishView?product_id='+item.pdtPkey" target="_blank" v-else>Inquiry</a>
+                                <!-- <a :href="'/home/usr_UsrFavorites_myfavorite?product_id='+item.pdtPkey" target="_blank" v-else>Inquiry</a> -->
+                                <a :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtPkey+'&backUrl='+window.location.href" target="_blank" v-else>Inquiry</a>
                             </div>
                         </div>
                     </div>
@@ -149,6 +152,8 @@
                 } else {  // 只要有一个checkbox不选中，让全选按钮不选中
                     this.isAllChecked = false;
                 }
+                console.log("this.favoriteList.length ===" + this.favoriteList.length)
+            console.log("this.checkedCode.length ===" + this.checkedCode.length)
             },
             chooseAll: function (e) {  // 用户全选
                 var self = this;
@@ -156,17 +161,21 @@
                     self.checkedCode = [];
                 }
                 if (self.isAllChecked) {
-                    console.log(self.checkedCode)
+                    // console.log(self.checkedCode)
                     self.favoriteList.forEach(function (item) {
                         self.checkedCode.push(item.id)
                     }, self)
                 } else {
                     self.checkedCode = [];
                 }
-                console.log(self.checkedCode)
+                // console.log(self.checkedCode)
             },
             remove(pkey) {  // 商品单个移除到回收站  和  回收站单个商品永久删除
-                console.log("点了删除" + pkey)
+                // console.log("点了删除" + pkey)
+                if(!sysConfig || !sysConfig.user){
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                }
                 var self = this;
                 if (self.catPkey == -1) {
                     // 回收站里
@@ -180,7 +189,8 @@
                 self.$confirm(confimName, 'Prompt', {
                     confirmButtonText: 'Determine',
                     cancelButtonText: 'Cancel',
-                    type: 'warning'
+                    type: 'warning',
+                    customClass: "my-custom-element-alert-class fs-content-18",
                 }).then(() => {
                     //  确定按钮
                     axios.post(url, Qs.stringify({
@@ -188,19 +198,18 @@
                     }))
                         .then(function (res) {
                             console.log(res);
-                            if (res.data.ret == -1) {
-                                window.location.href =
-                                    '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
-                            } else if (res.data.ret == 1) {
+                            if (res.data.ret == 1) {
                                 self.$message.success("Successfully deleted");
+                                self.isAllChecked = false;  // 取消全选
+                                self.checkedCode = [];      // 清空选中数据         
                                 self.getFavoriteList(self.catPkey, self.start, self.limit);
                             } else {
-                                self.$message.error(res.data.msg);
+                                self.$message.error(res.data.msg || "Delete failed, please refresh the page and try again");
                                 return
                             }
-                            self.favoriteList = res.data.result.items;
                         })
                         .catch(function (error) {
+                            self.$message.error("Network error, please refresh the page and try again");
                             console.log(error);
                         });
                 }).catch(() => {
@@ -209,11 +218,15 @@
             },
             removeAll() {  // 删除其他分类多个商品   和   删除回收站多个商品
                 console.log(this.checkedCode)
+                if(!sysConfig || !sysConfig.user){
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                }
                 var self = this;
                 var confimName;
                 var url;
                 if (self.checkedCode.length <= 0) {
-                    console.log("没有选择项")
+                    // console.log("没有选择项")
                     self.$message.error("Please select the item you want to delete");
                     return;
                 }
@@ -229,7 +242,8 @@
                 self.$confirm(confimName, 'Prompt', {
                     confirmButtonText: 'Determine',
                     cancelButtonText: 'Cancel',
-                    type: 'warning'
+                    type: 'warning',
+                    customClass: "my-custom-element-alert-class fs-content-18",
                 }).then(() => {
                     //  确定按钮
                     axios.post(url, Qs.stringify({
@@ -237,21 +251,18 @@
                     }))
                         .then(function (res) {
                             console.log(res);
-                            if (res.data.ret == -1) {
-                                window.location.href =
-                                    '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
-                            } else if (res.data.ret == 1) {
+                             if (res.data.ret == 1) {
                                 self.$message.success("Successfully deleted");
                                 self.isAllChecked = false;  // 取消全选
                                 self.checkedCode = [];      // 清空选中数据
                                 self.getFavoriteList(self.catPkey, self.start, self.limit);
                             } else {
-                                self.$message.error(res.data.msg);
+                                self.$message.error(res.data.msg || "Delete failed, please refresh the page and try again");
                                 return
                             }
-                            self.favoriteList = res.data.result.items;
                         })
                         .catch(function (error) {
+                            self.$message.error("Network error, please refresh the page and try again");
                             console.log(error);
                         });
                 }).catch(() => {
@@ -259,31 +270,35 @@
                 });
             },
             restore(pkey) {  // 回收站 商品  还原到 收藏夹
+                if(!sysConfig || !sysConfig.user){
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                }
                 var self = this;
                 self.$confirm("Whether to restore to favorites", 'Prompt', {
                     confirmButtonText: 'Determine',
                     cancelButtonText: 'Cancel',
-                    type: 'warning'
+                    type: 'warning',
+                    customClass: "my-custom-element-alert-class fs-content-18",
                 }).then(() => {
                     //  确定按钮
                     axios.post("/home/usr_UsrFavorites_restoreFavorite", Qs.stringify({
                         pkey,
                     }))
                         .then(function (res) {
-                            console.log(res);
-                            if (res.data.ret == -1) {
-                                window.location.href =
-                                    '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
-                            } else if (res.data.ret == 1) {
+                            // console.log(res);
+                           if (res.data.ret == 1) {
                                 self.$message.success("Successful recovery");
+                                self.isAllChecked = false;  // 取消全选
+                                self.checkedCode = [];      // 清空选中数据   
                                 self.getFavoriteList(self.catPkey, self.start, self.limit);
                             } else {
-                                self.$message.error(res.data.msg);
+                                self.$message.error(res.data.msg || "The operation failed, please refresh the page and try again");
                                 return
                             }
-                            self.favoriteList = res.data.result.items;
                         })
                         .catch(function (error) {
+                            self.$message.error("Network error, please refresh the page and try again");
                             console.log(error);
                         });
                 }).catch(() => {
@@ -303,31 +318,34 @@
                     limit,
                 }))
                     .then(function (res) {
-                        console.log(res);
-                        if (res.data.ret == -1) {
-                            window.location.href =
-                                '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
-                        } else if (res.data.ret == 1) {
+                        if (res.data.ret == 1) {
                             self.totalCount = res.data.result.totalCount
                             self.favoriteList = res.data.result.items;
                         } else {
-                            self.$message.error(res.data.msg);
+                            self.$message.error(res.data.msg || "Failed to get, please refresh the page and try again");
                             return
                         }
                     })
                     .catch(function (error) {
+                        self.$message.error("Network error, please refresh the page and try again");
                         console.log(error);
                     });
             },
-            image(v, params) {
-                if (!v) {
-                    return ""
-                }
-                if (!params) {
-                    params = ""
-                }
-                return "https://image.shoestp.com" + v + params
-            },
+            image(url, w, h, param) {
+					var postfixUrl = ""; //后缀
+					if (!url) {
+						return ""
+					}
+					if (w && h) {
+						postfixUrl = "?x-oss-process=image/resize,w_" + w + ",h_" + h;
+					}else if(w){
+						postfixUrl = "?x-oss-process=image/resize,w_" + w + ",h_" + w;
+					}
+					if(param){
+						postfixUrl += param;
+					}
+					return "https://image.shoestp.com" + url + postfixUrl;
+				},
         }
     })
 </script>
