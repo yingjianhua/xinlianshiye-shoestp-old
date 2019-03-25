@@ -2,12 +2,18 @@ package irille.platform.pdt;
 
 import java.io.IOException;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import irille.action.ActionBase;
 import irille.action.dataimport.util.StringUtil;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.svr.LoginUserMsg;
 import irille.shop.pdt.PdtAttr;
 import irille.shop.pdt.PdtAttrDAO;
 import irille.shop.pdt.PdtSize;
+import irille.shop.plt.PltConfigDAO;
 import lombok.Data;
 
 /**
@@ -53,10 +59,7 @@ public class PdtAttrAction extends ActionBase<PdtAttr> {
    * @date 2019/1/22 13:36
    */
   public void ins() throws IOException {
-    if (!StringUtil.hasValue(getBean().getName()) || getBean().getName().length() > 20) {
-      writeErr(-1, "属性名称不能为空,并且不能过长");
-      return;
-    }
+    verify(getBean());
     LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
     getBean().setCreateBy(lu.get_user().getPkey());
     PdtAttrDAO.InsAttr dl = new PdtAttrDAO.InsAttr();
@@ -73,10 +76,7 @@ public class PdtAttrAction extends ActionBase<PdtAttr> {
    * @date 2019/1/22 13:36
    */
   public void upd() throws IOException {
-    if (!StringUtil.hasValue(getBean().getName()) || getBean().getName().length() > 20) {
-      writeErr(-1, "属性名称不能为空,并且不能过长");
-      return;
-    }
+    verify(getBean());
     LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
     getBean().setCreateBy(lu.get_user().getPkey());
     PdtAttrDAO.UpdAttr upd = new PdtAttrDAO.UpdAttr();
@@ -97,5 +97,26 @@ public class PdtAttrAction extends ActionBase<PdtAttr> {
     remove.setBKey(getBean().getPkey());
     remove.commit();
     write();
+  }
+
+  public void verify(PdtAttr attr) throws IOException {
+    if (!StringUtil.hasValue(attr.getName()))
+      throw new WebMessageException(ReturnCode.service_wrong_data, "名称不能为空");
+    if (attr.getCategory() == null || attr.getCategory() <= 0) {
+      throw new WebMessageException(ReturnCode.service_wrong_data, "分类不能为空");
+    }
+    JSONObject json;
+    try {
+      json = new JSONObject(attr.getName());
+      Object object = json.get(PltConfigDAO.manageLanguage().toString());
+      if (!StringUtil.hasValue(object)) {
+        throw new WebMessageException(ReturnCode.service_wrong_data, "默认语言的的分类名称不可为空");
+      }
+      if (object.toString().length() > 20) {
+        throw new WebMessageException(ReturnCode.service_wrong_data, "名称不能过长");
+      }
+    } catch (JSONException e) {
+      throw new WebMessageException(ReturnCode.service_wrong_data, "参数错误");
+    }
   }
 }

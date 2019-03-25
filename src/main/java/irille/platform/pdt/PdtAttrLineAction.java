@@ -2,11 +2,17 @@ package irille.platform.pdt;
 
 import java.io.IOException;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import irille.action.ActionBase;
 import irille.action.dataimport.util.StringUtil;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.svr.LoginUserMsg;
 import irille.shop.pdt.PdtAttrLine;
 import irille.shop.pdt.PdtAttrLineDAO;
+import irille.shop.plt.PltConfigDAO;
 import lombok.Data;
 
 /**
@@ -51,14 +57,7 @@ public class PdtAttrLineAction extends ActionBase<PdtAttrLine> {
    * @date 2019/1/23 9:17
    */
   public void ins() throws IOException {
-    if (!StringUtil.hasValue(getBean().getName()) || getBean().getName().length() > 20) {
-      writeErr(-1, "属性名称不能为空,并且不能过长");
-      return;
-    }
-    if (getBean().getMain() == null || getBean().getMain() >= 0) {
-      writeErr(-2, "参数错误");
-      return;
-    }
+    verify(getBean());
     LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
     getBean().setCreateBy(lu.get_user().getPkey());
     PdtAttrLineDAO.InsAttrLine dl = new PdtAttrLineDAO.InsAttrLine();
@@ -75,14 +74,7 @@ public class PdtAttrLineAction extends ActionBase<PdtAttrLine> {
    * @date 2019/1/23 9:17
    */
   public void upd() throws IOException {
-    if (!StringUtil.hasValue(getBean().getName()) || getBean().getName().length() > 20) {
-      writeErr(-1, "属性名称不能为空,并且不能过长");
-      return;
-    }
-    if (getBean().getMain() == null || getBean().getMain() >= 0) {
-      writeErr(-2, "参数错误");
-      return;
-    }
+    verify(getBean());
     LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
     getBean().setCreateBy(lu.get_user().getPkey());
     PdtAttrLineDAO.UpdAttrLine upd = new PdtAttrLineDAO.UpdAttrLine();
@@ -103,5 +95,27 @@ public class PdtAttrLineAction extends ActionBase<PdtAttrLine> {
     remove.setBKey(getBean().getPkey());
     remove.commit();
     write();
+  }
+
+  public void verify(PdtAttrLine attrLine) throws IOException {
+    if (!StringUtil.hasValue(attrLine.getName())) {
+      throw new WebMessageException(ReturnCode.service_wrong_data, "名称不能为空");
+    }
+    JSONObject json;
+    try {
+      json = new JSONObject(attrLine.getName());
+      Object object = json.get(PltConfigDAO.manageLanguage().toString());
+      if (!StringUtil.hasValue(object)) {
+        throw new WebMessageException(ReturnCode.service_wrong_data, "默认语言的的分类名称不可为空");
+      }
+      if (object.toString().length() > 20) {
+        throw new WebMessageException(ReturnCode.service_wrong_data, "名称不能过长");
+      }
+    } catch (JSONException e) {
+      throw new WebMessageException(ReturnCode.service_wrong_data, "参数错误");
+    }
+    if (attrLine == null || attrLine.getMain() <= 0) {
+      throw new WebMessageException(ReturnCode.service_wrong_data, "参数错误");
+    }
   }
 }
