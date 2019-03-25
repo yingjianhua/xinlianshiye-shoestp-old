@@ -824,7 +824,7 @@
 						<!-- 聊天内容框 - end -->
 						<div class="send-msg-wrap">
 							<el-input class="msg-input"
-									  @focus="isShowMore = false"
+									  @focus="sendMsgInputFocus"
 									  @keyup.enter.native="sendMsg"
 									  v-model.trim="sendMsgValue" placeholder="Please input the message"></el-input>
 
@@ -2260,6 +2260,12 @@
 				// 	message: 'Add image success!',
 				// 	type: 'success'
 				// });
+			},
+
+			// 聚焦时视为消息已读
+			sendMsgInputFocus(){
+				this.isShowMore = false;
+				this.isAllRead = true;
 			},
 
 			// 发送消息
