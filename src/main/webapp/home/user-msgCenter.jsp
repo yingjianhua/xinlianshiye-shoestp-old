@@ -831,9 +831,7 @@
 							<el-upload style="margin-right: 10px;"
 									   :show-file-list="false"
 									   :on-success="chatAddImgSuc"
-									   action="/home/usr_Purchase_upload"
-									ref="upload"
-									action="https://jsonplaceholder.typicode.com/posts/">
+									   action="/home/usr_Purchase_upload">
 								<el-button slot="trigger" icon="el-icon-plus" size="small" circle></el-button>
 							</el-upload>
 
@@ -1271,6 +1269,7 @@
 
 			isAllRead: false,  //信息是否已读
 			sendMsgValue: "", //发送的内容
+			sendMsgImgValue: "", //发送的图片地址
 
 			isFromContactList: false, //显示联系人 聊天框（从联系人列表跳转过来时为true）
 			testObj:{}
@@ -2174,6 +2173,7 @@
 				})
 				}
 				this.sendMsgValue = "";
+				this.sendMsgImgValue = "";
 
 			})
 			.catch((error) => {
@@ -2244,7 +2244,10 @@
 				if (res.ret != 1) {
 					this.$message.error(res.msg || "Images upload error,please try again later");
 					return
-				};
+				}else{
+					this.sendMsgImgValue = res.result.url;
+					this.sendMsg();
+				}
 				// axios.post('', Qs.stringify({
 				//
 				// }))
@@ -2267,11 +2270,12 @@
 				}
 
 				console.log("sendMsg")
-				if(!this.sendMsgValue) return;
+				if(!this.sendMsgValue && !this.sendMsgImgValue) return;
 				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
 				this.relationPkey = this.isFromContactList?this.relationPkey:this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].quotation.pkey;
 				axios.post('/home/rfq_RFQConsult_sendMessage', Qs.stringify({
 					content: this.sendMsgValue,
+					imageUrl: this.sendMsgImgValue,
 					relationPkey: this.relationPkey,
 				}))
 						.then((res) => {
