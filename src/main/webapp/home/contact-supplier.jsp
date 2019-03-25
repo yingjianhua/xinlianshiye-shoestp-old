@@ -76,7 +76,7 @@
                                     <div>I am looking for</div>
                                 </el-col>
                                 <el-col :span="8">
-                                    <el-input v-model.trim="form.title"></el-input>
+                                    <el-input v-model="form.title"  @blur="paxTrimBlur"></el-input>
                                 </el-col>
                                 <el-col :span="5" >
                                     <div>on shoestp.com</div>
@@ -111,7 +111,7 @@
                             </el-checkbox-group>
                         </el-form-item>
                         <el-form-item label="Message:" prop="description">
-                            <el-input placeholder="Enter product details such as color, size, materials etc. and other specification requirements to receive an accurate quote." type="textarea" v-model.trim="form.description":autosize="{ minRows: 8, maxRows: 8}"></el-input>
+                            <el-input placeholder="Enter product details such as color, size, materials etc. and other specification requirements to receive an accurate quote." type="textarea" v-model="form.description":autosize="{ minRows: 8, maxRows: 8}"  @blur="paxTrimBlur"></el-input>
                         </el-form-item>
                         <el-form-item label="" prop="images">
                             <div class="upImg flexSt">
@@ -200,8 +200,7 @@
                         ],
                         quantity: [
                             {required: true,message: 'Please enter the quantity',trigger: 'blur'},
-                            { max: 10, message: 'Enter up to 10 digits', trigger: 'blur' },
-                            { pattern: /^\+?[1-9][0-9]*$/, message: "Please enter a number, can't start with 0, can't have decimal point" }
+                           { pattern: util_regular_obj.register.positiveInteger, message: "Please enter the positive integer，and can\'t beyond 10 digits" }
                         ],
                         description: [{
                             required: true,
@@ -238,6 +237,10 @@
                 });
             },
             methods: {
+                paxTrimBlur(){
+                    this.form.description =  this.form.description.trim();
+                    this.form.title =  this.form.title.trim();
+                },
                 // elementui 上传功能 *2 - 删除操作
                 handleRemove(file, fileList) {
                     // 清空imgs数组

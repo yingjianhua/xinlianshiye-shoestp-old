@@ -17,10 +17,12 @@ import irille.Entity.SVS.Enums.SVSAuthenticationStatus;
 import irille.Entity.SVS.Enums.SVSGradeType;
 import irille.Entity.SVS.SVSInfo;
 import irille.Entity.SVS.SVSNewestPdt;
+import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtProduct;
+import irille.shop.usr.UsrSupplier;
 
 public class SVSNewestPdtServiceImpl implements SVSNewestPdtService {
   @Override
@@ -40,7 +42,13 @@ public class SVSNewestPdtServiceImpl implements SVSNewestPdtService {
   @Override
   public Boolean isOpenThirty(Integer supId) {
     /** 缺少一个判断开店时间是否超过30天 超过30天统计30天之前的 */
-    return true;
+    UsrSupplier usrSupplier = BeanBase.load(UsrSupplier.class, supId);
+    System.out.println(getMonth());
+    System.out.println(usrSupplier.getStoreopenTime());
+    if (getMonth().compareTo(usrSupplier.getStoreopenTime()) == 1) {
+      return true;
+    }
+    return false;
   }
 
   @Override
