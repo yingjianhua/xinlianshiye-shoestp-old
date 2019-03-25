@@ -17,7 +17,7 @@
             <h1>Product Information & Transport Information</h1>
             <div class="section1-content">
                 <ul>
-                    <li class="flexSt">
+                    <li class="flexSb">
                         <div class="section1-content-left flexSb">
                             <div class="title">Product Keywords:</div>
                             <div class="list clearfix">
@@ -29,27 +29,32 @@
                                 <div class="title">Posted On:</div>
                                 <div>{{companyInfo.time}}</div>
                             </div>
-                            <div class="flexSt">
-                                <div class="title">Destination Port:</div>
-                                <div>{{companyInfo.rfqCountry}}</div>
-                            </div>
                         </div>
                     </li>
-                    <li class="flexSt">
-                        <div class="title">Product Image:</div>
-                        <div class="img-list flexSt">
-                            <div class="img-item" v-if="images.length == 0">
-                                <img src="./static/images/no-pdtImages.png" alt="">
+                    <li class="flexSb">
+                            <div class="section1-content-left flexSb">
+                                    <div class="title">Product Image:</div>
+                                    <div class="img-list flexSt">
+                                        <div class="img-item" v-if="images.length == 0">
+                                            <img src="./static/images/no-pdtImages.png" alt="">
+                                        </div>
+                                        <div class="img-item" v-for="item in images" v-else>
+                                            <img :src="sysConfig.user?image(item):image(item)+ '?x-oss-process=image/resize,w_80/blur,r_8,s_8'" alt="">
+                                        </div>
+                                    </div>
                             </div>
-                            <div class="img-item" v-for="item in images" v-else>
-                                <img :src="sysConfig.user?image(item):image(item)+ '?x-oss-process=image/resize,w_80/blur,r_8,s_8'" alt="">
+                            <div class="section1-content-right">
+                                <div class="flexSt">
+                                    <div class="title">Destination Port:</div>
+                                    <div>{{companyInfo.rfqCountry}}</div>
+                                </div>
                             </div>
-                        </div>
+                        
                     </li>
                     <li class="flexSt">
                         <div class="title">Product Details:</div>
                         <div style="text-decoration: underline;cursor: pointer;" v-if="!pdtDetails" @click="showpdtDetails">show</div>
-                        <div style="width:720px;" v-if="pdtDetails">{{companyInfo.pdtDetails}}</div>
+                        <div style="width:720px;word-wrap:break-word;" v-if="pdtDetails">{{companyInfo.pdtDetails}}</div>
                     </li>
                     <li class="flexSt">
                         <div class="title">Quantity Required:</div>
