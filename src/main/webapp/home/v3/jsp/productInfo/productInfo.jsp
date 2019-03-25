@@ -1087,13 +1087,18 @@
         mounted() {
             var that = this
             //this.productinfo();
-            that.selePic = that.productinfocom.pdtImg[0];
+            
 
             var firstKey = Object.keys(that.productinfocom.spec)[0];
             that.seleColorIndex = firstKey;
             that.sizeList = that.productinfocom.spec[firstKey];
             console.log(that.sizeList[0])
-
+			console.log(that.productinfocom)
+			if(that.sizeList[0].imgList != undefined){
+				that.selePic = that.sizeList[0].imgList[0];
+			}else{
+				that.selePic = that.productinfocom.pdtImg[0];
+			}
             if (that.productinfocom.tpView) {
                 that.tpView = that.productinfocom.tpView
                 var arr = new Array;
