@@ -11,13 +11,13 @@
     <!-- // 第三方 - hellojs -->
     <!-- test -->
     <!-- <div>
-        <button id='profile1' @click="login('facebook')">登陆facebook</button>
+        <button id='profile1' @click="loginByThird('facebook')">登陆facebook</button>
         <button @click="out('facebook');">退出登陆facebook</button>
 
-        <button id='profile2' @click="login('google')">登陆google</button>
+        <button id='profile2' @click="loginByThird('google')">登陆google</button>
         <button @click="out('google');">退出登陆google</button>
 
-        <button id='profile3' @click="login('linkedin')">登陆linkedin</button>
+        <button id='profile3' @click="loginByThird('linkedin')">登陆linkedin</button>
         <button @click="out('linkedin');">退出登陆linkedin</button>
     </div> -->
 
@@ -73,7 +73,7 @@
                                     </a>
                                 </li>
                                 <li class="share-item">
-                                    <!-- <a href="javascript: void(0);" @click="login('google')">
+                                    <!-- <a href="javascript: void(0);" @click="loginByThird('google')">
                                         <img src="/home/v3/static/images/login/icon_g.png" alt="">
                                     </a> -->
                                     <a href="javascript: void(0);">
@@ -173,7 +173,7 @@
             },
 
             // 第三方 - hellojs
-            login(thirdName) {
+            loginByThird(thirdName) {
                 var self = this;
                 var facebook = hello(thirdName);
                 facebook.login().then(function (e) {
@@ -181,16 +181,16 @@
                     console.log(e)
                     // get user profile data
                     return facebook.api('me');
-                }).then(function (p) {
+                }).then(function (thirdInfo) {
                     console.log("facebook's login")
-                    console.log(p)
+                    console.log(thirdInfo)
                     // 第三方成功返回用户信息后，判断是否已在本项目注册
                     // 参数为第三方的名字“facebook”，及第三方返回的ID
-                    if (p.id) {
-                        // 将第三方信息保存在本地
+                    if (thirdInfo.id) {
+                        // 将第三方信息保存在本地 - test
                         localStorage.setItem("thirdName", thirdName);
-                        localStorage.setItem("thirdId", p.id);
-                        self.loginPost({thirdName: thirdName, thirdId: p.id})
+                        localStorage.setItem("thirdId", thirdInfo.id);
+                        self.login({thirdName: thirdName, thirdId: thirdInfo.id})
                     }
                 });
             },
@@ -205,7 +205,7 @@
             },
 
             // 自己的登录接口
-            loginPost(thirdData) {
+            login(thirdData) {
                 let postData;
                 // 当选择第三方登录时：
                 if (thirdData) {
@@ -220,9 +220,10 @@
                         pwd: this.loginForm.psd,
                     }
                 }
-                // 这里与登录弹窗不同 - 此处是取地址栏中的jumpUrl - 那边直接传参形式
+                // 这里与登录弹窗不同 - 此处是取地址栏中的jumpUrl= - 那边直接传参形式
+                //jumpUrl传给后台后，后台会返回jumpUrl，并前端进行跳转
                 if( util_function_obj.GetQueryString("jumpUrl") ){
-                    postData.jumpUrl = util_function_obj.GetLoginJumpBackUrl();
+                    postData.jumpUrl = util_function_obj.GetParamsFullUrl("jumpUrl=");
                 }
 
                 axios.post('/home/usr_UsrMain_login', Qs.stringify(postData))
@@ -235,23 +236,22 @@
 
                         // 已注册时，直接登录 - 并跳转
                         // 第三方账号已注册时，直接登录 - sign感觉后台逻辑不对！！！一直是true
-                        if (res.data.sign) {
-                            // test
-                            if (res.data&&res.data.jumpUrl){
+                        if (res.data && res.data.sign) {
+                            // 前端有传jumpUrl时，后台亦会返回跳转地址
+                            if (res.data.jumpUrl){
                                 window.location.href = res.data.jumpUrl;
                             }else{
                                 window.location.href = "/";
                             }
-                            // alert("To Index Page")
                         } else {
                             // 未注册时：
                             //普通登录提示：该账户未注册，请重试
                             if (!thirdData) {
-                                this.$message.error('The account is not registered, please try again');
+                                this.$message.error('The account is not registered, please confirm that the account is correct.');
                                 // 第三方直接携带第三方id至注册页面
                             } else {
                                 // test
-                                window.location.href = "./register-step1.html?isThird=true"
+                                window.location.href = "/home/usr_UsrMain_register?isThird=true"
                             }
                         }
                     })
@@ -266,7 +266,7 @@
                     // 验证全部正确时
                     if (valid) {
                         console.log('submit');
-                        this.loginPost();
+                        this.login();
                     } else {
                         console.log('error submit!!');
                         return false;
