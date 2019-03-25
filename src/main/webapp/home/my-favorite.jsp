@@ -79,6 +79,7 @@
                         next-text="Next >"
                         :current-page="currentPage"
                         layout="prev, pager, next"
+                        page-size="8"
                         :total="totalCount">
                 </el-pagination>
             </div>
