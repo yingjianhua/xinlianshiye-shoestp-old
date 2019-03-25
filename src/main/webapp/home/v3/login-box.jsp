@@ -26,11 +26,15 @@
                 <%--<input type="password" name="catch-psd" class="incase-autocomplete-input">--%>
 
                 <el-form-item label="Email" prop="email">
-                    <el-input v-model="loginForm.email" placeholder="Email address or member ID" auto-complete="on"></el-input>
+                    <el-input v-model="loginForm.email"
+                              @keyup.enter.native="submit"
+                              placeholder="Email address or member ID" auto-complete="on"></el-input>
                 </el-form-item>
 
                 <el-form-item label="Password" prop="psd">
-                    <el-input v-model="loginForm.psd" onkeyup="this.value=this.value.replace(/\s+/g,'')"
+                    <el-input v-model="loginForm.psd"
+                              onkeyup="this.value=this.value.replace(/\s+/g,'')"
+                              @keyup.enter.native="submit"
                               placeholder="Password" auto-complete="on" type="password"></el-input>
                 </el-form-item>
             </el-form>
