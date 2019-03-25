@@ -124,9 +124,9 @@
         methods: {
             // 成功后跳转会 点击进行注册的页面
             goToIndexPage() {
-                // test
-                window.location.href = "/";
-                // alert("To index page")
+                let whichPageToRegister = localStorage.getItem("whichPageToRegister") || "/";
+                localStorage.removeItem("whichPageToRegister");
+                window.location.href = whichPageToRegister;
             },
             goToOpenShop() {
                 clearInterval(this.countDownTimer);
