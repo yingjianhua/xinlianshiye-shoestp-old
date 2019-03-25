@@ -1610,7 +1610,7 @@ a {
 #o2otop .o2otopcon .o2otopmessage dd ul li a>div{
     width: 290px;
 }
-#o2otop .o2otopcon .o2otopmessage dd ul li a>div div{
+#o2otop .o2otopcon .o2otopmessage dd ul li a>div .div-time{
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -1622,11 +1622,12 @@ a {
             justify-content: flex-end;
             margin-top: 10px;
 }
-#o2otop .o2otopcon .o2otopmessage dd ul li a>div div img{
+#o2otop .o2otopcon .o2otopmessage dd ul li a>div .div-time img{
     margin-right:5px;
 }
-#o2otop .o2otopcon .o2otopmessage dd ul li a>div p{
+#o2otop .o2otopcon .o2otopmessage dd ul li a>div .div-content{
     word-break: break-all;
+    min-height: 32px;
 }
 
 #o2otop .o2otopcon .o2otopmessage ::-webkit-scrollbar {
