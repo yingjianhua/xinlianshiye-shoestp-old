@@ -125,7 +125,9 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
         UsrSupplier.T.CREDIT_CODE,
         UsrSupplier.T.CERT_PHOTO);
     ValidRegex2 regex = new ValidRegex2(getBean());
-    regex.validAZLen(50, UsrSupplier.T.ENGLISH_NAME);
+    if (getBean().getEnglishName() != null)
+      regex.validRegexMatched(
+              "^[a-zA-Z ]{1,60}$", "请填写英文字母,且不超过60位", UsrSupplier.T.ENGLISH_NAME);
     if (getBean().getWebsite() != null)
       regex.validRegexMatched(
           "http[s]?:\\/\\/[\\w]{1,}.?[\\w]{1,}.?[\\w/.?&=-]{1,}",
