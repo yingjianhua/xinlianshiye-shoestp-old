@@ -219,9 +219,11 @@ public class RFQConsultServiceImpl implements RFQConsultService {
                     log.warn("RFQConsultRelation主键为{}的记录的image字段格式有问题", quotation.getPkey());
                   }
                   quotation.setMinPrice(
-                      GetValue.get(map, RFQConsultRelation.T.MINPRICE, BigDecimal.class, BigDecimal.ZERO));
+                      GetValue.get(
+                          map, RFQConsultRelation.T.MINPRICE, BigDecimal.class, BigDecimal.ZERO));
                   quotation.setMaxPrice(
-                      GetValue.get(map, RFQConsultRelation.T.MAXPRICE, BigDecimal.class, BigDecimal.ZERO));
+                      GetValue.get(
+                          map, RFQConsultRelation.T.MAXPRICE, BigDecimal.class, BigDecimal.ZERO));
                   RFQCurrencyView currency = new RFQCurrencyView();
                   currency.setPkey(GetValue.get(map, "currencyPkey", Integer.class, null));
                   currency.setShortName(GetValue.get(map, "currencyShortName", String.class, null));
@@ -244,7 +246,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
                   country.setFlag(GetValue.get(map, "countryFlag", String.class, null));
                   supplier.setCountry(country);
                   relation.setUnread(
-                      BeanBase.byteToBoolean(
+                      !BeanBase.byteToBoolean(
                           GetValue.get(
                               map, RFQConsultRelation.T.HAD_READ_PURCHASE, Byte.class, null)));
                   relation.setQuotation(quotation);

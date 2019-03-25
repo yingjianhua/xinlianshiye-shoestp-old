@@ -152,7 +152,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     rfqConsultRelation.stIsNew(false);
     rfqConsultRelation.stSample(false);
     rfqConsultRelation.stHadReadSupplier(false);
-    rfqConsultRelation.stHadReadPurchase(false);
+    rfqConsultRelation.stHadReadPurchase(true);
     rfqConsultRelation.stIsDeletedPurchase(false);
     rfqConsultRelation.stIsDeletedSupplier(false);
     rfqConsultRelation.setThrowaway("[]");
@@ -217,7 +217,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     rfqConsultRelation.stIsNew(false);
     rfqConsultRelation.stSample(false);
     rfqConsultRelation.stHadReadSupplier(false);
-    rfqConsultRelation.stHadReadPurchase(false);
+    rfqConsultRelation.stHadReadPurchase(true);
     rfqConsultRelation.stIsDeletedPurchase(false);
     rfqConsultRelation.stIsDeletedSupplier(false);
     rfqConsultRelation.setThrowaway("[]");
@@ -307,7 +307,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     rfqConsultRelation.stIsNew(false);
     rfqConsultRelation.stSample(false);
     rfqConsultRelation.stHadReadSupplier(false);
-    rfqConsultRelation.stHadReadPurchase(false);
+    rfqConsultRelation.stHadReadPurchase(true);
     rfqConsultRelation.stIsDeletedPurchase(false);
     rfqConsultRelation.stIsDeletedSupplier(false);
     rfqConsultRelation.setThrowaway("[]");
