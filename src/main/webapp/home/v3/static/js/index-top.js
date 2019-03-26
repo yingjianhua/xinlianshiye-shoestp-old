@@ -71,7 +71,7 @@ Vue.component('index-top', {
                         <div style="height:  20px;">
                             <div  v-if="!sysConfig.user">
                                 <a href="/home/usr_UsrMain_register" style="border-right: 1px solid #b7b7b7;padding-right: 3px;color: #4fa2d7;font-size:12px;" target="_blank">Register</a>
-                                <a :href="'/home/usr_UsrPurchase_sign?jumpUrl=' + window.location.href" style="color: #4fa2d7;font-size:12px;cursor: pointer;" >Login</a>
+                                <a href="javascript:void(0);" @click="toLogin" style="color: #4fa2d7;font-size:12px;cursor: pointer;" >Login</a>
                             </div>
                         </div>
                         <p>My Shosetp</p>
@@ -81,7 +81,8 @@ Vue.component('index-top', {
                 <!--  没有登录看到的  -->
                 <dd v-if="!sysConfig.user">
                     <div style="font-size:16px;margin:  18px  0;">Get started now</div>
-                    <div class="login-btn"><a :href="'/home/usr_UsrPurchase_sign?jumpUrl=' + window.location.href">Login</a></div>
+                    <!--<div class="login-btn"><a :href="'/home/usr_UsrPurchase_sign?jumpUrl=' + window.location.href">Login</a></div>-->
+                    <div class="login-btn"><a href="javascript:void(0);" @click="toLogin">Login</a></div>
                     <div style="text-align:center;font-size:16px;margin:  8px  0;">or</div>
                     <div class="registered-btn"><a href="/home/usr_UsrMain_register" target="_blank">Registration</a></div>
                     <div style="color:#777777;text-align:center;margin:  15px  0;">Continue with：</div>
@@ -116,7 +117,7 @@ Vue.component('index-top', {
                         <li v-if="sysConfig.user.user_type==0"><a href="/home/usr_UsrPurchase_userIndex" target="_blank">My Shoestp <i class="el-icon-arrow-right"></i></a></li>
                         <li v-if="sysConfig.user.user_type==0"><a href="/home/usr_UsrMessages_center" target="_blank">RFQ List <i class="el-icon-arrow-right"></i></a></li>
                         <li v-if="sysConfig.user.user_type==0"><a href="/home/usr_UsrMessages_center" target="_blank">My Inquiry <i class="el-icon-arrow-right"></i></a></li>
-                        <li v-if="sysConfig.user.user_type==0"><a href="/home/usr_UsrPurchase_userIndex" target="_blank">My Account <i class="el-icon-arrow-right"></i></a></li>
+                        <li v-if="sysConfig.user.user_type==0"><a href="/home/usr_UsrPurchase_usrSetting" target="_blank">My Account <i class="el-icon-arrow-right"></i></a></li>
                         <li v-if="sysConfig.user.user_type==1" style="font-size:15px;font-weight: bold;"><a href="/home/usr_UsrSupplier_supplierEntry" target="_blank">我要开店 <i class="el-icon-arrow-right"></i></a></li>
                     </ul>
                     <div v-if="sysConfig.user.user_type==0" class="after-login"  @click="ToRFQ" style="cursor: pointer;">Submit RFQ</div>
@@ -196,6 +197,19 @@ Vue.component('index-top', {
         }
     },
     methods: {
+        // 点击跳到login页面
+        toLogin(){
+            // 当前页就是登录页时，刷新页面即可
+            if( window.location.pathname.indexOf("usr_UsrPurchase_sign") != -1 ){
+                window.location.reload();
+            // 当前页是忘记密码页时，登录后返回首页
+            }else if( window.location.pathname.indexOf("usr_UsrMain_forget") != -1 ){
+                window.location.href = '/home/usr_UsrPurchase_sign'
+            // 其余情况登录后，返回点击login的页面
+            }else{
+                window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=' + window.location.href;
+            }
+        },
         // 跳转RFQ   
         ToRFQ(){
             let url = "/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1" + "&backUrl=" + window.location.href

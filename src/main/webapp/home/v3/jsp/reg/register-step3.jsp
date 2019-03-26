@@ -32,8 +32,10 @@
 <jsp:include page="/home/v3/nav-nobody.jsp"></jsp:include>
 <div id="app" class="w_1240">
     <div class="placeholder wide" style="height: 93px;line-height: 93px;">
-        <img class="logo" src="/home/v3/static/images/login/o2otoplogo.png" alt=""
-             style="width: 204px;height: 41px;">
+        <a href="/">
+            <img class="logo" src="/home/v3/static/images/login/o2otoplogo.png" alt=""
+                 style="width: 204px;height: 41px;">
+        </a>
     </div>
 
     <main class="main wide" style="min-height: 600px;">
@@ -122,12 +124,13 @@
             }, 1000)
         },
         methods: {
-            // 成功后跳转会 点击进行注册的页面
+            // 成功后跳转会回到 点击进行注册的页面
             goToIndexPage() {
                 let whichPageToRegister = localStorage.getItem("whichPageToRegister") || "/";
                 localStorage.removeItem("whichPageToRegister");
                 window.location.href = whichPageToRegister;
             },
+            // 点击前往开店流程，取消则直接跳转至首页
             goToOpenShop() {
                 clearInterval(this.countDownTimer);
 
@@ -144,9 +147,6 @@
                         }
                     }
                 });
-
-                // window.location.href = "/home/usr_UsrSupplier_supplierEntry";
-                // alert("To index page")
             },
             autoLogin() {
                 let registerEmail = localStorage.getItem("registerEmail");

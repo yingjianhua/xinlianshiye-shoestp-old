@@ -139,6 +139,10 @@
       height: 100%;
       /* margin:0 0 2px 7px; */
   }
+  /*上传图片超过5张后不显示加号按钮*/
+.chooseImg.no-plus-btn .el-upload--picture-card{
+    display: none;
+}
   .chooseBox p{
       text-align: center;
       border: 1px solid red;

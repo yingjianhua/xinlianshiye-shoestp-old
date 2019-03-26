@@ -159,7 +159,7 @@
             <div class="confirm" @click="submitpassword">Confirm</div>
         </div>
         <div class="checksuccess" v-if="state == 2">
-            Password recovery successful,<a href="/">Return</a>immediately
+            Password recovery successful, <a href="/">Return</a> immediately
         </div>
         <index-bottom></index-bottom>
     </div>

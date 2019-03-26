@@ -191,7 +191,7 @@
                             <div class="form_main marginBottom">
                                 <!--  添加 勾选商品后的图片显示 -->
                                 <div class="chooseImgWrap clearfix">
-                                    <div class="chooseImg fl">
+                                    <div class="chooseImg fl" :class="{'no-plus-btn': imgsToUpload.length >= 5}">
                                         <el-upload action="/home/usr_UsrConsult_upload" list-type="picture-card"
                                                    :on-success="handlePictureCardPreview" :limit="5"
                                                    :before-upload="beforeUpload"
@@ -558,13 +558,9 @@
                 // 清空imgs数组
                 this.imgsToUpload = [];
                 // 删除图片后，将授予的图片地址放入数组
-                $.each(fileList, (i, v) => {
+                fileList.forEach( (v, i) => {
                     this.imgsToUpload.push(v.response.result.url)
                 })
-
-                if (!(this.imgsToUpload.length >= 5)) {
-                    $(".chooseImg .el-upload.el-upload--picture-card").show();
-                }
             },
             beforeUpload(file) {
                 if (!sysConfig || !sysConfig.user) {
@@ -583,15 +579,11 @@
             handlePictureCardPreview(file, p2, p3) {
                 if (file.ret != 1) {
                     p3.splice(p3.length - 1, 1);
+                    this.$message.error(file.msg || "Upload error,please try again later");
                     return;
                 }
                 // 添加图片后，在前面显示 img
                 this.imgsToUpload.push(file.result.url);
-
-                // 勾选商品后 - 上传的图片4张时，隐藏添加按钮
-                if (this.imgsToUpload.length >= 5) {
-                    $(".chooseImg .el-upload.el-upload--picture-card").hide();
-                }
             },
 
             // 整个form提交
