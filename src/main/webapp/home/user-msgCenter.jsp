@@ -2398,10 +2398,10 @@
 				var text = "";
 				switch(status){
 					case 1:
-						text = "Reject";
+						text = "Verifying";
 						break;
 					case 2:
-						text = "Verifying";
+						text = "Reject";
 						break;
 					case 3:
 						text = haveQuotation?"Compare all quotation":"No quotation";
