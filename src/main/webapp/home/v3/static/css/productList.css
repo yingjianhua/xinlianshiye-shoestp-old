@@ -139,7 +139,7 @@ a, a:link, a:visited, a:hover, a:active {
 	padding-left:30px;
 }
 #productList .leftNav li{
-	color:#b0b0b0;
+	color:#999;
 	padding-bottom:12px;
   cursor: pointer;
 }
@@ -210,16 +210,16 @@ a, a:link, a:visited, a:hover, a:active {
 	background:#fff;
 	padding:20px;
 	width:530px;
-	height:70px;
+	height:150px;
 	overflow: auto;
 }
 #productList .rightList .top .top-box ul li{
-	color:#b0b0b0;
-	/* width:156px; */
+	color:#999;
+	width:156px;
 	height:14px;
 	line-height:14px;
 	float:left;
-	margin:0 30px 10px 0;
+	margin-bottom:10px;
 }
 #productList .rightList .top .top-box ul li .s{
 	display:inline-block;
@@ -346,7 +346,7 @@ a, a:link, a:visited, a:hover, a:active {
 	border-radius:50%;
 	background:#f6f7f9;
 	display:inline-block;
-	color:#b0b0b0;
+	color:#999;
 	font-weight:200;
 }
 #productList .rightList .common .common-box .ootit img{
@@ -360,7 +360,7 @@ a, a:link, a:visited, a:hover, a:active {
 	color:#e54544;
 }
 #productList .rightList .common .common-box .common-boxtitle .h3{
-	color:#b0b0b0;
+	color:#999;
 	display:inline-block;
 }
 #productList .rightList .common .common-box .common-boxtitle .fr .h3{
@@ -388,7 +388,7 @@ a, a:link, a:visited, a:hover, a:active {
 }
 #productList .rightList .common .common-box .common-boxspan{
 	width:246px;
-	color:#b0b0b0;
+	color:#999;
 	padding-right:36px;
 	line-height:24px;
 }
@@ -403,7 +403,7 @@ a, a:link, a:visited, a:hover, a:active {
 	width:36px;
 	height:14px;
 	color:#fff;
-	background:#b0b0b0;
+	background:#999;
 	border-radius:14px;
 	text-align: center;
 	line-height:14px;
@@ -477,7 +477,7 @@ a, a:link, a:visited, a:hover, a:active {
 	border:1px solid #ededed;
 	line-height:38px;
 	margin-left:-1px;
-	color:#b0b0b0;
+	color:#999;
 }
 #productList .el-pagination .el-pager li.active{
 	color:#10389c;
@@ -512,7 +512,7 @@ a, a:link, a:visited, a:hover, a:active {
 }
 #productList .noData p{
 	font-size:20px;
-	color:#b0b0b0;
+	color:#999;
 	margin-top:16px;
 }
 #productList .bigPicBox{

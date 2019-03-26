@@ -356,33 +356,63 @@
     const validatePsd = (rule, value, callback) => {
         // 计算密码强度
         app.psdStrength.arr = [];
+        app.psdStrength.score = 0;
         app.psdStrength.acount = 0;
 
-        // 密码强度*1
-        if (value.length>=6 && value.length<10) {
+        // 密码强度 - 是否符合条件*1
+        if (value.length>=6 && value.length<=20) {
             app.psdStrength.arr.push(true)
-        }else if(value.length>=10 && value.length<=20){
-            app.psdStrength.arr.push(true)
-            app.psdStrength.acount++;
-        } else {
+        }else {
             app.psdStrength.arr.push(false)
         }
 
-        // 密码强度*2
+        // 密码强度 - 是否符合条件*2
         if (/^[a-zA-Z0-9_\-!@#$%^\~\`&*),.?(_+=\/>\\<\[\]\{\|\};':"]+$/.test(value)) {
             app.psdStrength.arr.push(true)
-            app.psdStrength.acount++;
         } else {
             app.psdStrength.arr.push(false)
         }
 
-        // 密码强度*3
+        // 密码强度 - 是否符合条件*3
         // if (/^(?![a-zA-z]+$)(?!\d+$)(?![!@#$%^&*]+$)[a-zA-Z\d!@#$%^&*]+$/.test(value)) {
         if (/^(?![0-9]+$)(?![a-zA-Z]+$)(?![_\-!@#$%^\~\`&*),.?(_+=\/>\\<\[\]\{\|\};':"]+$)[a-zA-Z0-9_\-!@#$%^\~\`&*),.?(_+=\/>\\<\[\]\{\|\};':"]{1,}$/.test(value)) {
             app.psdStrength.arr.push(true)
-            app.psdStrength.acount++;
         } else {
             app.psdStrength.arr.push(false)
+        }
+
+        // 密码强度得分
+        // 密码长度
+        if(value.length>=6 && value.length<10){
+            app.psdStrength.score += 10;
+        }
+        if(value.length>=10){
+            app.psdStrength.score += 20;
+        }
+        // 是否含数字
+        if(/[0-9]+/.test(value)){
+            app.psdStrength.score += 10;
+        }
+        // 是否含小写字母
+        if(/[a-z]+/.test(value)){
+            app.psdStrength.score += 10;
+        }
+        // 是否含大写字母
+        if(/[A-Z]+/.test(value)){
+            app.psdStrength.score += 10;
+        }
+        // 是否含特殊字符
+        if(/[#_\-!@$%^\~\`&*),.?(_+=\/>\\<\[\]\{\|\};':"]+/.test(value)){
+            app.psdStrength.score += 10;
+        }
+
+        // 根据得分判断密码强弱
+        if(app.psdStrength.score <= 30){
+            app.psdStrength.acount = 1;
+        }else if(app.psdStrength.score <= 40){
+            app.psdStrength.acount = 2;
+        }else if(app.psdStrength.score > 40){
+            app.psdStrength.acount = 3;
         }
 
         // 正式的密码验证
@@ -422,7 +452,7 @@
     const validateTelPrefix1 = (rule, value, callback) => {
         // 正式的密码验证
         if (value === '') {
-            callback(new Error("Telephone prefix can't be empty!"));
+            callback();
         }else{
             app.$refs.registerForm.validateField('tel');
             callback();
@@ -436,7 +466,8 @@
     const validateTel = (rule, value, callback) => {
         // 正式的密码验证
         if (value === '') {
-            callback(new Error(app.registerForm.user == 'buyer' ? 'Telephone number can\'t be empty!' : '电话号码不能为空'));
+            // callback(new Error(app.registerForm.user == 'buyer' ? 'Telephone number can\'t be empty!' : '电话号码不能为空'));
+            callback();
         }else if(!util_regular_obj.register.phoneAreaCode.test(app.registerForm.telPrefix1+"-"+app.registerForm.telPrefix2+app.registerForm.tel)){
             callback(new Error('Telephone number\'s format is incorrect，please check the prefix-tel and phone'));
         } else {
@@ -464,7 +495,8 @@
             psdStrength: { //密码强度
                 isPsdRight: false, //密码是否符合要求
                 arr: [],    //密码强度 三个规则的匹配 true、false
-                acount: 0, //密码强度 三个规则匹配到了几个
+                score: 0, //密码得分
+                acount: 0, //密码强度
             },
             registerForm: {
                 email: '',
@@ -719,15 +751,15 @@
                         }
 
                         // buyer\supplier传送的数据不同
-                        let postData;
+                        let postData = {};
                         if (this.registerForm.user == "buyer") {
                             postData = {
                                 pwd: this.registerForm.psd,
                                 pwdA: this.registerForm.psd2,
                                 checkCode: this.registerForm.code,
-                                telPre: this.registerForm.telPrefix1,  //此处为buyer信息
-                                telMid: this.registerForm.telPrefix2,
-                                telAft: this.registerForm.tel,
+                                telPre: null,  //此处为buyer信息
+                                telMid: null,
+                                telAft: null,
                                 uid: getParams("uid", ""),
                                 bean: {
                                     email: this.registerForm.email,
@@ -737,6 +769,12 @@
                                     // facebookUserId: 0,
                                     // googleUserId: 0,
                                 }
+                            }
+                            // 电话可以不写（不传值），写了才传3个值
+                            if(this.registerForm.tel){
+                                postData.telPre = this.registerForm.telPrefix1;
+                                postData.telMid = this.registerForm.telPrefix2;
+                                postData.telAft = this.registerForm.tel;
                             }
                         } else {
                             postData = {
