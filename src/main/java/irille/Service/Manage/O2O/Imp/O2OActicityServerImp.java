@@ -33,6 +33,7 @@ import irille.pub.exception.WebMessageException;
 import irille.pub.idu.Idu;
 import irille.pub.svr.DbPool;
 import irille.pub.util.BatchUtils;
+import irille.pub.util.DateTimeUtil;
 import irille.pub.validate.Regular;
 import irille.pub.validate.ValidRegex;
 import irille.shop.pdt.Pdt;
@@ -194,6 +195,7 @@ public class O2OActicityServerImp implements IO2OActicityServer, Job {
     }
     List<O2O_Activity> acts = new ArrayList<O2O_Activity>();
     List<PdtProduct> prods = new ArrayList<PdtProduct>();
+    List<O2O_Product> lowerToUpper = new ArrayList<>();
 
     Date now = new Date();
     if (null != activities) {
@@ -225,6 +227,19 @@ public class O2OActicityServerImp implements IO2OActicityServer, Job {
           a.setStatus(O2O_ActivityStatus.ACTIVITY.getLine().getKey());
           acts.add(a);
         }
+        if (a.getStartDate().before(now) && a.getEndDate().after(now)) {
+          List<O2O_Product> prods2 = map.get(a.getPkey());
+          if (prods2 != null) {
+            for (O2O_Product p : prods2) {
+              if (p.getStatus().equals(O2O_ProductStatus.Failed.getLine().getKey())
+                  && DateTimeUtil.timeDiffForHour(p.getUpdatedTime(), now) >= 24) {
+                p.setStatus(O2O_ProductStatus.ON.getLine().getKey());
+                lowerToUpper.add(p);
+              }
+            }
+          }
+        }
+
         if (a.getStartDate().after(now)
             && !a.getStatus().equals(O2O_ActivityStatus.TOBEGIN.getLine().getKey())) {
           // 开始时间晚于现在,活动未开始
@@ -244,6 +259,14 @@ public class O2OActicityServerImp implements IO2OActicityServer, Job {
         e.printStackTrace();
       }
     }
+    if (lowerToUpper.size() > 0) {
+      BatchUtils.batchUpd(
+          O2O_Product.class,
+          Arrays.asList(O2O_Product.T.STATUS),
+          Arrays.asList(O2O_Product.T.PKEY),
+          lowerToUpper);
+    }
+
     if (prods.size() > 0) {
       pdtProductDao.upd(prods);
     }
