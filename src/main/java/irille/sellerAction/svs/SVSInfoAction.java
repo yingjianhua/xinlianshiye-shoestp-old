@@ -43,39 +43,39 @@ public class SVSInfoAction extends SellerAction<SVSInfo> implements ISVSInfoActi
     if (getSupplier() == null) throw new WebMessageException(ReturnCode.failure, "用户未登录,无法提交认证信息");
     if (getSupplier().gtStatus() != Usr.OStatus.APPR)
       throw new WebMessageException(ReturnCode.failure, "商家未审核,无法提交认证信息");
-    if (search.trim() == ""
+    if (null == search.trim()
+        || search.trim() == ""
         || "".equals(search.trim())
-        || null == search.trim()
         || "{}".equals(search.trim()))
       throw new WebMessageException(ReturnCode.failure, "研发能力信息不能为空");
-    if (capacity.trim() == ""
+    if (null == capacity.trim()
+        || capacity.trim() == ""
         || "".equals(capacity.trim())
-        || null == capacity.trim()
         || "{}".equals(capacity.trim()))
       throw new WebMessageException(ReturnCode.failure, "生产能力信息不能为空");
-    if (factory.trim() == ""
+    if (null == factory.trim()
+        || factory.trim() == ""
         || "".equals(factory.trim())
-        || null == factory.trim()
         || "{}".equals(factory.trim()))
       throw new WebMessageException(ReturnCode.failure, "工厂模式信息不能为空");
-    if (quality.trim() == ""
+    if (null == quality.trim()
+        || quality.trim() == ""
         || "".equals(quality.trim())
-        || null == quality.trim()
         || "{}".equals(quality.trim()))
       throw new WebMessageException(ReturnCode.failure, "产品质量信息不能为空");
-    if (team.trim() == ""
+    if (null == team.trim()
+        || team.trim() == ""
         || "".equals(team.trim())
-        || null == team.trim()
         || "{}".equals(team.trim()))
       throw new WebMessageException(ReturnCode.failure, "外贸团队信息不能为空");
-    if (exhibition.trim() == ""
+    if (null == exhibition.trim()
+        || exhibition.trim() == ""
         || "".equals(exhibition.trim())
-        || null == exhibition.trim()
         || "{}".equals(exhibition.trim()))
       throw new WebMessageException(ReturnCode.failure, "展会信息不能为空");
-    if (partner.trim() == ""
+    if (null == partner.trim()
+        || partner.trim() == ""
         || "".equals(partner.trim())
-        || null == partner.trim()
         || "{}".equals(partner.trim()))
       throw new WebMessageException(ReturnCode.failure, "合作商信息不能为空");
 
@@ -115,42 +115,41 @@ public class SVSInfoAction extends SellerAction<SVSInfo> implements ISVSInfoActi
    */
   @Override
   public void updAutInfo() throws Exception {
-    if (search.trim() == ""
+    if (null == search.trim()
+        || search.trim() == ""
         || "".equals(search.trim())
-        || null == search.trim()
         || "{}".equals(search.trim()))
       throw new WebMessageException(ReturnCode.failure, "研发能力信息不能为空");
-    if (capacity.trim() == ""
+    if (null == capacity.trim()
+        || capacity.trim() == ""
         || "".equals(capacity.trim())
-        || null == capacity.trim()
         || "{}".equals(capacity.trim()))
       throw new WebMessageException(ReturnCode.failure, "生产能力信息不能为空");
-    if (factory.trim() == ""
+    if (null == factory.trim()
+        || factory.trim() == ""
         || "".equals(factory.trim())
-        || null == factory.trim()
         || "{}".equals(factory.trim()))
       throw new WebMessageException(ReturnCode.failure, "工厂模式信息不能为空");
-    if (quality.trim() == ""
+    if (null == quality.trim()
+        || quality.trim() == ""
         || "".equals(quality.trim())
-        || null == quality.trim()
         || "{}".equals(quality.trim()))
       throw new WebMessageException(ReturnCode.failure, "产品质量信息不能为空");
-    if (team.trim() == ""
+    if (null == team.trim()
+        || team.trim() == ""
         || "".equals(team.trim())
-        || null == team.trim()
         || "{}".equals(team.trim()))
       throw new WebMessageException(ReturnCode.failure, "外贸团队信息不能为空");
-    if (exhibition.trim() == ""
+    if (null == exhibition.trim()
+        || exhibition.trim() == ""
         || "".equals(exhibition.trim())
-        || null == exhibition.trim()
         || "{}".equals(exhibition.trim()))
       throw new WebMessageException(ReturnCode.failure, "展会信息不能为空");
-    if (partner.trim() == ""
+    if (null == partner.trim()
+        || partner.trim() == ""
         || "".equals(partner.trim())
-        || null == partner.trim()
         || "{}".equals(partner.trim()))
       throw new WebMessageException(ReturnCode.failure, "合作商信息不能为空");
-
     if (getSupplier() != null)
       write(
           service.updSVSInfo(
