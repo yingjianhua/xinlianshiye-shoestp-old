@@ -178,9 +178,8 @@ public class MessageBuild {
   public static MessageView buildMessage(ReturnCode code, FldLanguage.Language language) {
     HashMap<Integer, String> map = hashMap.get(language.name());
     String body = null;
-    if (map != null) body = map.get(code.getCode());
-    if (body == null || hashMap.get(FldLanguage.Language.en.name()) == null) {
-      body = hashMap.get(FldLanguage.Language.en.name()).get(code.getCode());
+    if (map != null) {
+      body = map.get(code.getCode());
     }
     if (body == null) {
       return new MessageView(code, code.name());
@@ -192,9 +191,8 @@ public class MessageBuild {
       ReturnCode code, FldLanguage.Language language, Object... strs) {
     HashMap<Integer, String> map = hashMap.get(language.name());
     String body = null;
-    if (map != null) body = map.get(code.getCode());
-    if (body == null || hashMap.get(FldLanguage.Language.en.name()) == null) {
-      body = hashMap.get(FldLanguage.Language.en.name()).get(code.getCode());
+    if (map != null) {
+      body = map.get(code.getCode());
     }
     if (body == null) {
       return new MessageView(code, code.name());
