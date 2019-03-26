@@ -181,4 +181,22 @@ public class Pdt extends PackageBase {
       return _line;
     }
   }
+
+  public enum OAppr implements IEnumOpt {
+    _DEFAULT(0, "未审核"),
+    PASS(1, "审核通过"),
+    Failed(2, "审核失败"),
+    ;
+    public static final String NAME = "审核状态";
+    public static final OAppr DEFAULT = _DEFAULT;
+    private EnumLine _line;
+
+    private OAppr(int key, String name) {
+      _line = new EnumLine(this, key, name);
+    }
+
+    public EnumLine getLine() {
+      return _line;
+    }
+  }
 }

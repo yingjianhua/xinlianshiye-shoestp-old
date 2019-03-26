@@ -37,7 +37,6 @@ import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.SVS.SVSNewestPdt;
 import irille.Service.Manage.Pdt.IPdtProductManageService;
 import irille.action.dataimport.util.StringUtil;
-import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
 import irille.pub.Log;
 import irille.pub.bean.BeanBase;
@@ -349,8 +348,7 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
         pdtProduct.setSoldInTime(OYn.YES.getLine().getKey());
         pdtProduct.setSoldTimeB(pdtProductSaveView.getPutawayDate());
       }
-      pdtProduct.setState(Pdt.OState.OFF.getLine().getKey());
-      pdtProduct.setIsVerify(Sys.OYn.NO.getLine().getKey());
+
     } else if (pdtProduct.gtSoldInTime() && pdtProductSaveView.getWarehouse() != 0) {
       if (pdtProductSaveView.getPutawayDate().compareTo(new Date()) == -1) {
         pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
@@ -359,24 +357,26 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
         pdtProduct.setSoldInTime(OYn.YES.getLine().getKey());
         pdtProduct.setSoldTimeB(pdtProductSaveView.getPutawayDate());
       }
-      pdtProduct.setState(Pdt.OState.ON.getLine().getKey());
-      pdtProduct.setIsVerify(Sys.OYn.YES.getLine().getKey());
+      //      pdtProduct.setState(Pdt.OState.ON.getLine().getKey());
+      //      pdtProduct.setIsVerify(Sys.OYn.YES.getLine().getKey());
     } else if (!pdtProduct.gtSoldInTime() && pdtProductSaveView.getWarehouse() == 0) {
       pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
       pdtProduct.setSoldTimeB(Env.getSystemTime());
-      pdtProduct.setState(Pdt.OState.OFF.getLine().getKey());
-      pdtProduct.setIsVerify(Sys.OYn.NO.getLine().getKey());
+      //      pdtProduct.setState(Pdt.OState.OFF.getLine().getKey());
+      //      pdtProduct.setIsVerify(Sys.OYn.NO.getLine().getKey());
     } else {
       pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
       pdtProduct.setSoldTimeB(Env.getSystemTime());
-      pdtProduct.setState(Pdt.OState.ON.getLine().getKey());
+      //      pdtProduct.setState(Pdt.OState.ON.getLine().getKey());
       //      if (null != pdtProduct.getPkey()) {
       //        PdtProduct product = BeanBase.load(PdtProduct.class, pdtProduct.getPkey());
       //        pdtProduct.setIsVerify(product.getIsVerify());
       //      } else {
-      pdtProduct.setIsVerify(Sys.OYn.YES.getLine().getKey());
+      //      pdtProduct.setIsVerify(Sys.OYn.YES.getLine().getKey());
       //      }
     }
+    pdtProduct.setState(Pdt.OState.OFF.getLine().getKey());
+    pdtProduct.setIsVerify(Pdt.OAppr._DEFAULT.getLine().getKey());
     pdtProduct.setIsNew((byte) 1);
     pdtProduct.setIsIndex((byte) 1);
     pdtProduct.setIsHot((byte) 1);
@@ -635,10 +635,10 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
     SQL sql = new SQL();
     sql.SELECT(PdtProduct.class);
     sql.FROM(PdtProduct.class);
-    sql.WHERE(PdtProduct.T.STATE, " =? ", Pdt.OState.ON.getLine().getKey());
-    sql.WHERE(PdtProduct.T.IS_VERIFY, " =? ", OYn.YES.getLine().getKey());
+    sql.WHERE(PdtProduct.T.STATE, " =? ", Pdt.OState.OFF.getLine().getKey());
+    sql.WHERE(PdtProduct.T.IS_VERIFY, " =? ", Pdt.OAppr.PASS.getLine().getKey());
     sql.WHERE(PdtProduct.T.SOLD_IN_TIME, " =? ", OYn.YES.getLine().getKey());
-    sql.WHERE(PdtProduct.T.SOLD_TIME_B, " <=? ", new Date());
+    //    sql.WHERE(PdtProduct.T.SOLD_TIME_B, " <=? ", new Date());
     sql.WHERE(PdtProduct.T.FIRST_PUTAWAY, " =? ", OYn.NO.getLine().getKey());
     sql.AND();
     sql.WHERE(PdtProduct.T.PRODUCT_TYPE, " =? ", Pdt.OProductType.GENERAL.getLine().getKey());

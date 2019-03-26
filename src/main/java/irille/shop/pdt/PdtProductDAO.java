@@ -961,11 +961,12 @@ public class PdtProductDAO {
                           }
                         } else {
                           setIsO2O("普通商品");
-                          if ((Byte) o.get("isVerify") == 1) {
-                            setIsVerify((byte) 1);
-                          } else {
-                            setIsVerify((byte) 2);
-                          }
+                          setIsVerify((Byte) o.get("isVerify"));
+                          //                          if ((Byte) o.get("isVerify") == 1) {
+                          //                            setIsVerify((byte) 1);
+                          //                          } else if((Byte) o.get("isVerify") == 2){
+                          //                            setIsVerify((byte) 2);
+                          //                          }
                           setState((Byte) o.get("state"));
                         }
                         setPkey((Integer) o.get("pkey"));
@@ -979,6 +980,7 @@ public class PdtProductDAO {
                         setMinOq((Integer) o.get("minOq"));
                         setSupplierName((String) o.get("supplierName"));
                         setSoldTimeB((Date) o.get("soldTimeB"));
+                        setRewrite(SEOUtils.getPdtProductTitle(getPkey(), getPdtName()));
                       }
                     })
             .collect(Collectors.toList());
@@ -1021,8 +1023,20 @@ public class PdtProductDAO {
       o2oPdt.upd();
     } else {
       pp.setIsVerify(status);
-      if (status == 0) {
+      if (status.equals(Pdt.OAppr.Failed.getLine().getKey())) {
+        if (null == message || (null != message && "".equals(message.trim()))) {
+          throw new WebMessageException(ReturnCode.failure, "请输入拒绝理由");
+        }
         pp.setTab3(message);
+      } else if (status.equals(Pdt.OAppr.PASS.getLine().getKey())) {
+        if (pp.gtSoldInTime()) {
+          pp.stState(Pdt.OState.ON);
+        } else {
+          Date soldTime = pp.getSoldTimeB();
+          if (soldTime.before(new Date())) {
+            pp.stState(Pdt.OState.ON);
+          }
+        }
       }
       pp.upd();
     }
