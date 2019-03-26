@@ -240,12 +240,12 @@
     margin-right: 18px; }
 .page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item {
     margin-bottom: 10px; }
-.page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item.is-active {
-    margin-bottom: 0; }
+/*.page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item.is-active {*/
+    /*margin-bottom: 0; }*/
 .page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item:last-child {
     padding-bottom: 0; }
-.page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item:last-child .el-collapse-item__wrap {
-    border-bottom-color: transparent; }
+.page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item .el-collapse-item__wrap {
+    border-bottom: none; }
 .page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item__content {
     padding-bottom: 0; }
 .page-personal-center .inquires-list-wrap .collapse-box .collapse-title {
@@ -828,6 +828,7 @@
     display: inline-block;
     line-height: 22px;
     padding: 10px 18px;
+    max-width: 500px;
     border-radius: 3px;
     background-color: #fff;
     -webkit-box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.1);
@@ -846,6 +847,7 @@
     -webkit-box-flex: 0;
     -ms-flex: none;
     flex: none;
+    min-width: 160px;
     line-height: 42px;
     padding: 0 10px;
     color: #9fafd7; }
@@ -857,6 +859,9 @@
     line-height: 38px;
     margin-right: 12px;
     margin-top: 20px;
+    -webkit-box-flex: 0;
+    -ms-flex: none;
+    flex: none;
     -o-object-fit: cover;
     object-fit: cover;
     text-align: center;
@@ -1059,6 +1064,15 @@
     line-height: 20px;
     margin-bottom: 20px;
     color: #999; }
+/*.page-personal-center .inquiry-detail-wrap .quotation-detail-box .content-box.content-box03 .books {*/
+    /*display: -webkit-box;*/
+    /*display: -ms-flexbox;*/
+    /*display: flex;*/
+    /*-webkit-box-align: center;*/
+    /*-ms-flex-align: center;*/
+    /*align-items: center;*/
+    /*-ms-flex-wrap: wrap;*/
+    /*flex-wrap: wrap; }*/
 .page-personal-center .inquiry-detail-wrap .quotation-detail-box .content-box.content-box03 .company-book-item {
     height: 110px;
     max-width: 200px;
@@ -1066,6 +1080,12 @@
     object-fit: cover;
     margin-right: 10px;
     margin-top: 6px; }
+.page-personal-center .inquiry-detail-wrap .quotation-detail-box .content-box.content-box03 .book-link {
+    margin-right: 10px;
+    color: #99f;}
+.page-personal-center .inquiry-detail-wrap .quotation-detail-box .content-box.content-box03 .book-link:hover {
+    color: #c9f;
+    text-decoration: underline; }
 .page-personal-center .inquiry-detail-wrap .view-more {
     width: 100%;
     color: #999;
