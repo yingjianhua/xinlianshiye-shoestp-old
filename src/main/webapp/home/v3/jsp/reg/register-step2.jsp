@@ -67,8 +67,8 @@
                         {{registerForm.user=='buyer'?'Strength':'密码强度'}}
                         <span class="red">
 								{{registerForm.user=='buyer'?
-									(psdStrength.acount==3?'Strong':psdStrength.acount==2?'Medium':'Weak'):
-									(psdStrength.acount==3?'强':psdStrength.acount==2?'中':'弱')}}
+									(psdStrength.acount>=3?'Strong':psdStrength.acount==2?'Medium':'Weak'):
+									(psdStrength.acount>=3?'强':psdStrength.acount==2?'中':'弱')}}
 							</span>
                     </div>
                 </el-form-item>
@@ -316,8 +316,8 @@
             </ul>
             <div class="strength">
                 {{registerForm.user=='buyer'?
-                (psdStrength.acount==3?'Strong':psdStrength.acount==2?'Medium':'Weak'):
-                (psdStrength.acount==3?'强':psdStrength.acount==2?'中':'弱')}}
+                (psdStrength.acount>=3?'Strong':psdStrength.acount==2?'Medium':'Weak'):
+                (psdStrength.acount>=3?'强':psdStrength.acount==2?'中':'弱')}}
             </div>
         </div>
         <ul class="psd-strength-tips-list">
@@ -327,7 +327,7 @@
                 <img src="/home/v3/static/images/forgetPassword/icon_cuo_blue.png" class="isError" alt="" v-else>
             </li> -->
             <li class="tip-item">
-                {{registerForm.user=='buyer'?'6 to 20 characters':'6到12个字符'}}
+                {{registerForm.user=='buyer'?'6 to 20 characters':'6到20个字符'}}
                 <img src="/home/v3/static/images/forgetPassword/icon_dui_green.png" class="isRight" alt="" v-if="psdStrength.arr[0]">
                 <img src="/home/v3/static/images/forgetPassword/icon_cuo_blue.png" class="isError" alt="" v-else>
             </li>
@@ -359,7 +359,9 @@
         app.psdStrength.acount = 0;
 
         // 密码强度*1
-        if (value.length>=6 && value.length<=20) {
+        if (value.length>=6 && value.length<10) {
+            app.psdStrength.arr.push(true)
+        }else if(value.length>=10 && value.length<=20){
             app.psdStrength.arr.push(true)
             app.psdStrength.acount++;
         } else {
