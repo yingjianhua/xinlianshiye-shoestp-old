@@ -103,18 +103,27 @@
                 <p>Supplier Level<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
                 <div class="i1"></div>
                 <ul>
-                    <li data-selelv="1" @click="seleLevel">
-                        <div class="s" :class="[selelv==1?'sele':'']"></div>
-                        Level 1
-                    </li>
-                    <li data-selelv="2" @click="seleLevel">
-                        <div class="s" :class="[selelv==2?'sele':'']"></div>
-                        Level 2
-                    </li>
                     <li data-selelv="3" @click="seleLevel">
-                        <div class="s" :class="[selelv==3?'sele':'']"></div>
-                        Level 3
-                    </li>
+                            <div class="s" :class="[selelv==3?'sele':'']"></div>
+                            <!-- <img src="/home/v3/static/images/icion_svs_1d.png" alt=""> -->
+                            <img src="/home/v3/static/images/supplier-level3.png" alt="" style="margin-right:8px;">
+                            <!-- Level 3 -->
+                            Diamond
+                        </li>
+                        <li data-selelv="2" @click="seleLevel">
+                            <div class="s" :class="[selelv==2?'sele':'']"></div>
+                            <!-- <img src="/home/v3/static/images/icion_svs_2d.png" alt=""> -->
+                            <img src="/home/v3/static/images/supplier-level2.png" alt="" style="margin-right:8px;">
+                            <!-- Level 2 -->
+                            Gold
+                        </li>
+                        <li data-selelv="1" @click="seleLevel">
+                            <div class="s" :class="[selelv==1?'sele':'']"></div>
+                            <!-- <img src="/home/v3/static/images/icion_svs_3d.png" alt=""> -->
+                            <img src="/home/v3/static/images/supplier-level1.png" alt="" style="margin-right:8px;">
+                            <!-- Level 1 -->
+                            Silver
+                        </li>
                 </ul>
             </div>
 

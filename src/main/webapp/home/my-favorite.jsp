@@ -87,7 +87,7 @@
             <div class="bottom-btn-list flexSe">
                 <input type="checkbox" v-model='isAllChecked' @change='chooseAll'>
                 <div class="bottom-btn bottom-remove-btn" @click="removeAll">
-                    <a href="javascript:void(0)">{{catPkey == -1?'Empty recycle bin':'Clear all'}}</a>
+                    <a href="javascript:void(0)">{{catPkey == -1?'Empty recycle bin':'Clear'}}</a>
                 </div>
             </div>
         </template>
@@ -139,15 +139,6 @@
                 this.getFavoriteList(this.catPkey, 0, this.limit);
             },
             singleChecked: function () {  // 用户单选
-                //   var len = this.checkedCode.length;
-                //   if(len !== 0){
-                //   var code_list = "";
-                //   for(var i=0;i<len;i++){
-                //     code_list +=  this.checkedCode[i] + ",";
-                //   }
-                //   code_list = code_list.substring(0,code_list.lastIndexOf(','));
-                //   this.checkedCode = code_list;
-                // }
                 //判断每一个CheckBox是否选中，全选中让全选按钮选中
                 if (this.favoriteList.length == this.checkedCode.length) {
                     this.isAllChecked = true;
@@ -200,15 +191,18 @@
                     }))
                         .then(function (res) {
                             console.log(res);
-                            if (res.data.ret == 1) {
-                                self.$message.success("Successfully deleted");
-                                self.isAllChecked = false;  // 取消全选
-                                self.checkedCode = [];      // 清空选中数据         
-                                self.getFavoriteList(self.catPkey, self.start, self.limit);
-                            } else {
-                                self.$message.error(res.data.msg || "Delete failed, please refresh the page and try again");
+                            if (res.data.ret == -1) {
+                                util_function_obj.alertWhenNoLogin(self);
+                                return
+                            } else if (res.data.ret != 1) {
+                                self.$message.error(res.data.msg || "Network error, please refresh the page and try again");
                                 return
                             }
+                            self.$message.success("Successfully deleted");
+                            self.isAllChecked = false;  // 取消全选
+                            self.checkedCode = [];      // 清空选中数据         
+                            self.getFavoriteList(self.catPkey, self.start, self.limit);
+                            
                         })
                         .catch(function (error) {
                             self.$message.error("Network error, please refresh the page and try again");
@@ -220,10 +214,6 @@
             },
             removeAll() {  // 删除其他分类多个商品   和   删除回收站多个商品
                 console.log(this.checkedCode)
-                if(!sysConfig || !sysConfig.user){
-                    util_function_obj.alertWhenNoLogin(this);
-                    return
-                }
                 var self = this;
                 var confimName;
                 var url;
@@ -253,15 +243,18 @@
                     }))
                         .then(function (res) {
                             console.log(res);
-                             if (res.data.ret == 1) {
+                            if (res.data.ret == -1) {
+                                util_function_obj.alertWhenNoLogin(self);
+                                return
+                            } else if (res.data.ret != 1) {
+                                self.$message.error(res.data.msg || "Network error, please refresh the page and try again");
+                                return
+                            }
                                 self.$message.success("Successfully deleted");
                                 self.isAllChecked = false;  // 取消全选
                                 self.checkedCode = [];      // 清空选中数据
                                 self.getFavoriteList(self.catPkey, self.start, self.limit);
-                            } else {
-                                self.$message.error(res.data.msg || "Delete failed, please refresh the page and try again");
-                                return
-                            }
+                            
                         })
                         .catch(function (error) {
                             self.$message.error("Network error, please refresh the page and try again");
@@ -272,10 +265,6 @@
                 });
             },
             restore(pkey) {  // 回收站 商品  还原到 收藏夹
-                if(!sysConfig || !sysConfig.user){
-                    util_function_obj.alertWhenNoLogin(this);
-                    return
-                }
                 var self = this;
                 self.$confirm("Whether to restore to favorites", 'Prompt', {
                     confirmButtonText: 'Determine',
@@ -289,15 +278,18 @@
                     }))
                         .then(function (res) {
                             // console.log(res);
-                           if (res.data.ret == 1) {
+                            if (res.data.ret == -1) {
+                                util_function_obj.alertWhenNoLogin(self);
+                                return
+                            } else if (res.data.ret != 1) {
+                                self.$message.error(res.data.msg || "Network error, please refresh the page and try again");
+                                return
+                            }
                                 self.$message.success("Successful recovery");
                                 self.isAllChecked = false;  // 取消全选
                                 self.checkedCode = [];      // 清空选中数据   
                                 self.getFavoriteList(self.catPkey, self.start, self.limit);
-                            } else {
-                                self.$message.error(res.data.msg || "The operation failed, please refresh the page and try again");
-                                return
-                            }
+                            
                         })
                         .catch(function (error) {
                             self.$message.error("Network error, please refresh the page and try again");
@@ -320,13 +312,16 @@
                     limit,
                 }))
                     .then(function (res) {
-                        if (res.data.ret == 1) {
-                            self.totalCount = res.data.result.totalCount
-                            self.favoriteList = res.data.result.items;
-                        } else {
-                            self.$message.error(res.data.msg || "Failed to get, please refresh the page and try again");
+                        if (res.data.ret == -1) {
+                            util_function_obj.alertWhenNoLogin(self);
+                            return
+                        } else if (res.data.ret != 1) {
+                            self.$message.error(res.data.msg || "Network error, please refresh the page and try again");
                             return
                         }
+                        self.totalCount = res.data.result.totalCount
+                        self.favoriteList = res.data.result.items;
+                       
                     })
                     .catch(function (error) {
                         self.$message.error("Network error, please refresh the page and try again");

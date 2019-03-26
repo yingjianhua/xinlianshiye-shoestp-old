@@ -264,19 +264,21 @@
                 axios.get('/home/usr_Purchase_accountProfile')
                     .then(function (res) {
                         console.log(res);
-                        if(res.data.ret != 1){
-                            self.$message.error("Failed to get information, please refresh the page and try again");
-                            return;
-                        }else{
-                            self.accountInfo = res.data.result;
-                            self.form1.gender = res.data.result.gender.toString();
-                            self.form1.firstName = res.data.result.firstName;
-                            self.form1.surname = res.data.result.surname;
-                            self.form1.phone = res.data.result.phone;
-                            self.form1.company = res.data.result.company;
-                            self.form1.address = res.data.result.address;
-                            self.form2.email = res.data.result.email;
+                        if (res.data.ret == -1) {
+                            util_function_obj.alertWhenNoLogin(self);
+                            return
+                        } else if (res.data.ret != 1) {
+                            self.$message.error(res.data.msg || "Network error, please refresh the page and try again");
+                            return
                         }
+                        self.accountInfo = res.data.result;
+                        self.form1.gender = res.data.result.gender.toString();
+                        self.form1.firstName = res.data.result.firstName;
+                        self.form1.surname = res.data.result.surname;
+                        self.form1.phone = res.data.result.phone;
+                        self.form1.company = res.data.result.company;
+                        self.form1.address = res.data.result.address;
+                        self.form2.email = res.data.result.email;
                     })
                     .catch(function (error) {
                         self.$message.error("Network error, please refresh the page and try again");
@@ -299,29 +301,27 @@
                         )
                             .then((res) => {
                                 // console.log(res)
-                                // 提交成功时
-                                if (res.data.ret == 1) {
-                                    // 提示信息
-                                    this.$message({
-                                        showClose: true,
-                                        message: 'Submitted successfully',
-                                        type: 'success'
-                                    });
-                                    // setTimeout(function () {
-                                    //   gtag_report_conversion()
-                                    //   window.location.href =
-                                    //     '/home/usr_UsrConsult_listView';
-                                    // }, 2000)
-                                    setTimeout(function () {
-                                        window.location.reload();
-                                    }, 1500)
-                                } else {
+                                if (res.data.ret == -1) {
+                                    this.flag = false;
+                                    util_function_obj.alertWhenNoLogin(this);
+                                    return
+                                } else if (res.data.ret != 1) {
                                     this.flag = false;
                                     this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
                                         confirmButtonText: 'OK',
                                         customClass: "my-custom-element-alert-class fs-content-18",
                                     });
+                                    return
                                 }
+                                // 提交成功时  // 提示信息
+                                this.$message({
+                                    showClose: true,
+                                    message: 'Submitted successfully',
+                                    type: 'success'
+                                });
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 1500)
                             })
                             .catch((err) => {
                                 this.flag = false;
@@ -344,10 +344,6 @@
                 });
             },
             submitForm2(formName) { // 第二部分表单提交    邮箱
-                if(!sysConfig || !sysConfig.user){
-                    util_function_obj.alertWhenNoLogin(this);
-                        return
-                }
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.flag = true;
@@ -358,29 +354,28 @@
                         }))
                             .then((res) => {
                                 // console.log(res)
-                                // 提交成功时
-                                if (res.data.ret == 1) {
-                                    // 提示信息
-                                    this.$message({
-                                        showClose: true,
-                                        message: 'Submitted successfully',
-                                        type: 'success'
-                                    });
-                                    // setTimeout(function () {
-                                    //   gtag_report_conversion()
-                                    //   window.location.href =
-                                    //     '/home/usr_UsrConsult_listView';
-                                    // }, 2000)
-                                    setTimeout(function () {
-                                        window.location.reload();
-                                    }, 1500)
-                                } else {
+                                if (res.data.ret == -1) {
+                                    this.flag = false;
+                                    util_function_obj.alertWhenNoLogin(this);
+                                    return
+                                } else if (res.data.ret != 1) {
                                     this.flag = false;
                                     this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
                                         confirmButtonText: 'OK',
                                         customClass: "my-custom-element-alert-class fs-content-18",
                                     });
+                                    return
                                 }
+                                // 提交成功时   // 提示信息
+                                this.$message({
+                                    showClose: true,
+                                    message: 'Submitted successfully',
+                                    type: 'success'
+                                });
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 1500)
+                                
                             })
                             .catch((err) => {
                                 this.flag = false;
@@ -401,11 +396,6 @@
                 });
             },
             submitForm3(formName) { // 第三部分表单提交    密码
-                if(!sysConfig || !sysConfig.user){
-                    util_function_obj.alertWhenNoLogin(this);
-                        return
-                }
-
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.flag = true;
@@ -415,31 +405,27 @@
                         }))
                             .then((res) => {
                                 // console.log(res)
-                                // 提交成功时
-                                if (res.data.ret == 1) {
-                                    // 提示信息
-                                    this.$message({
-                                        showClose: true,
-                                        message: 'Submitted successfully',
-                                        type: 'success'
-                                    });
-                                    // setTimeout(function () {
-                                    //   gtag_report_conversion()
-                                    //   window.location.href =
-                                    //     '/home/usr_UsrConsult_listView';
-                                    // }, 2000)
-                                    setTimeout(function () {
-                                        window.location.reload();
-                                    }, 1500)
-                                    // 未登录时
-                                }  else {
+                                if (res.data.ret == -1) {
+                                    this.flag = false;
+                                    util_function_obj.alertWhenNoLogin(this);
+                                    return
+                                } else if (res.data.ret != 1) {
                                     this.flag = false;
                                     this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
                                         confirmButtonText: 'OK',
                                         customClass: "my-custom-element-alert-class fs-content-18",
                                     });
+                                    return
                                 }
-
+                                // 提交成功时  // 提示信息
+                                this.$message({
+                                    showClose: true,
+                                    message: 'Submitted successfully',
+                                    type: 'success'
+                                });
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 1500)
                             })
                             .catch((err) => {
                                 this.flag = false;
