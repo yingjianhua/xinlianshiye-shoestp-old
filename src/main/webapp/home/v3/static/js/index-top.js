@@ -11,7 +11,7 @@ Vue.component('index-top', {
                     <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                     </el-option>
                 </el-select>
-                <input type="text" v-model="input">
+                <input type="text" v-model="input" @keyup.enter="submit">
                 <div class="searchbotton" @click="submit"><img src="/home/v3/static/images/indexiconserch.png" alt=""></div>
             </div>
             <!--  站内信 有登录后看到 -->
@@ -219,6 +219,7 @@ Vue.component('index-top', {
             if (this.input) {
                 window.location = '/home/pdt_PdtProduct?Keyword=' + this.input + '&v=2&searchtype=' + this.select;
             } else {
+                this.$message('Please enter the keywords you need to search.');
                 return false;
             }
         },
