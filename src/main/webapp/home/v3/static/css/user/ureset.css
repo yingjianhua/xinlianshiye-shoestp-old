@@ -1,0 +1,895 @@
+@charset "UTF-8";
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+::-webkit-scrollbar-track{
+	background:#dee2ec;
+}
+::-webkit-scrollbar-thumb {
+  	border-radius: 6px;
+    min-height: 20px;
+    background:#fff;
+    border:1px solid #dee2ec;
+}
+::-webkit-scrollbar-corner {
+  background:#dee2ec;
+}
+
+.fc999{
+	color:#999;
+}
+.fc7f7f7f{
+	color:#7f7f7f;
+}
+.fc666{
+	color:#666;
+}
+.font-b{
+	font-weight:bold;
+}
+
+
+#personalCenter {
+  width: 1240px;
+  min-width: 1240px;
+  margin: 40px auto 0 auto; }
+#personalCenter .ripple {
+	animation-duration: 0.3s;
+	animation-fill-mode: both;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+ .fadeIn {
+  animation-name: fadeIn;
+}
+
+
+#personalCenter .ripple {
+	animation-duration: 1s;
+	animation-fill-mode: both;
+}
+  #personalCenter .flexSb {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center; }
+  #personalCenter .flexCc {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center; }
+  #personalCenter .flexSt {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start; }
+  #personalCenter .flexSe {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end; }
+  #personalCenter .user-menu {
+    width: 180px;
+    height: 285px;
+    background-color: #ffffff;
+    border: solid 1px #dedede;
+    flex: none;
+    position:fixed;
+    padding: 8px 24px; }
+    #personalCenter .user-menu .user-menu-title {
+      height: 44px;
+      line-height: 44px;
+      font-weight: bold; }
+    #personalCenter .user-menu .user-menu-item {
+      height: 44px;
+      line-height: 44px;
+      border-bottom: solid 1px #dddddd;
+      font-size: 14px; }
+      #personalCenter .user-menu .user-menu-item:last-child {
+        border: none; }
+      #personalCenter .user-menu .user-menu-item a {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+                justify-content: space-between;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+        color: #232323;
+        text-decoration: none; }
+  #personalCenter .user-main {
+    width: 1030px;
+    font-size: 14px; }
+    #personalCenter .user-main .user-info {
+      height: 160px;
+      background-color: #ffffff;
+      border: solid 1px #dddddd; }
+      #personalCenter .user-main .user-info .user-info-item {
+        width: 33.33%;
+        height: 110px;
+        float: left;
+        text-align: center;
+        padding: 0 30px;
+        position: relative;
+        border-right: solid 1px #edeef2; }
+      #personalCenter .user-main .user-info .user-info-item  .avatar-box{
+        position: relative;
+        height: 97px;
+      }
+      #personalCenter .user-main .user-info .user-info-item  .avatar-box .avatar-uploader .el-upload-dragger{
+         width: 80px;
+         height: 80px;
+      }
+      #personalCenter .user-main .user-info .user-info-item  .avatar-box .avatar-uploader .el-upload .avatar-uploader-icon{
+         line-height: 80px;
+      }
+      #personalCenter .user-main .user-info .user-info-item  .avatar-box .avatar img{
+          width: 68px;
+          height: 68px;
+          border-radius: 50%;
+          cursor: pointer;
+          object-fit: cover;
+      }
+      #personalCenter .user-main .user-info .user-info-item  .avatar-upload{
+        position: absolute;
+        left: 150px;
+        top: -27px;
+         width: 600px;
+         height: 150px;
+         border: 1px #ddd dashed;
+         background-color: #fff;
+         z-index:9;
+         padding: 15px 20px;
+      }
+      #personalCenter .user-main .user-info .user-info-item  .avatar-upload .upload-box .upload-button{
+        width: 80px;
+        border-radius: 3px;
+        height: 25px;
+        line-height: 25px;
+        text-align: center;
+        color: #fff;
+        background-color: #ff7519;
+        margin-top:10px;
+        cursor: pointer;
+      }
+      #personalCenter .user-main .user-info .user-info-item  .avatar-upload .upload-description{
+          text-align: left;
+          color: #999999;
+          line-height: 24px;
+          margin-left: 20px;
+      }
+      #personalCenter .user-main .user-info .user-info-item .icon-id{
+          align-items: flex-start;
+          position: absolute;
+          top: 30px;
+          right: 90px;
+      }
+        #personalCenter .user-main .user-info .user-info-item:last-child {
+          border: none; }
+        #personalCenter .user-main .user-info .user-info-item .user-info-item-name {
+          text-align: left;
+          margin-top: 10px;
+          overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              width: 200px;
+              text-align: center;
+          color: #b0b0b0; }
+    #personalCenter .user-main .quotation {
+      height: 470px;
+      margin-top: 14px;
+      background-color: #ffffff;
+      border: solid 1px #dddddd; }
+      #personalCenter .user-main .quotation .quotation-title {
+        padding: 43px 30px; }
+      #personalCenter .user-main .quotation .quotation-form {
+        padding: 0 80px; }
+    #personalCenter .user-main .favorites {
+      height: 213px;
+      margin-top: 14px;
+      background-color: #ffffff;
+      border: solid 1px #dddddd;
+      padding: 0 30px; }
+      #personalCenter .user-main .favorites .favorites-title {
+        height: 44px;
+        line-height: 44px;
+        background-color: #fcfcfc; }
+        #personalCenter .user-main .favorites .favorites-title img {
+          margin: 0 5px 5px 0; }
+      #personalCenter .user-main .favorites .favorites-main .favorites-list {
+        height: 169px;
+        width: 91%;
+        margin-top: 2px; }
+        #personalCenter .user-main .favorites .favorites-main .favorites-list .favorites-item {
+          width: 160px;
+          float: left;
+          margin-right: 20px;
+          text-align: center; }
+          #personalCenter .user-main .favorites .favorites-main .favorites-list .favorites-item:last-child {
+            margin: 0; }
+          #personalCenter .user-main .favorites .favorites-main .favorites-list .favorites-item a {
+            color: #b0b0b0;
+            text-decoration: none; }
+            #personalCenter .user-main .favorites .favorites-main .favorites-list .favorites-item a .favorites-item-img {
+              width: 130px;
+              height: 130px;
+              line-height: 130px;
+              margin: 0 auto; }
+              #personalCenter .user-main .favorites .favorites-main .favorites-list .favorites-item a .favorites-item-img img {
+                width: 100%;
+                height: 100%;
+                -o-object-fit: contain;
+                   object-fit: contain; }
+            #personalCenter .user-main .favorites .favorites-main .favorites-list .favorites-item a .favorites-item-name {
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              margin-top: 5px; }
+    #personalCenter .user-main .personalize {
+      height: 213px;
+      margin-top: 14px;
+      font-size: 16px;
+      background-color: #f3f4fc;
+      border: solid 1px #dddddd;
+      color: #7f7f7f;
+      padding: 38px 30px; }
+      #personalCenter .user-main .personalize h3 {
+        margin: 0 0 5px 0; }
+      #personalCenter .user-main .personalize p {
+        line-height: 28px; }
+      #personalCenter .user-main .personalize a {
+        display: inline-block;
+        width: 180px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        font-size: 18px;
+        background-color: #10389c;
+        border-radius: 3px;
+        color: #ffffff;
+        text-decoration: none;
+        margin-top: 27px; }
+
+        /* 联系人 */
+  #personalCenter .contacts-main {
+    width: 1030px;
+    color: #232323; }
+    #personalCenter .contacts-main .contacts-main-left {
+    	position:relative;
+      width: 288px;
+      /*height: 670px;*/
+      background-color: #ffffff;
+      border: solid 1px #dddddd; }
+      #personalCenter .contacts-main .contacts-main-left>dl{
+        font-size: 14px;
+        color: #999999;
+        position: relative;
+        width: 180px;
+        text-align: center;
+        margin: 0 auto;
+        z-index: 99;
+      }
+      #personalCenter .contacts-main .contacts-main-left>dl dd{
+        position: absolute;
+        top: 54.5px;
+        left: 50%;
+        transform: translate(-50%);
+      }
+      #personalCenter .contacts-main .contacts-main-left>dl dt i{
+        transition: all 0.3s linear;
+        }
+      #personalCenter .contacts-main .contacts-main-left>dl .rotate-i{
+        transform: rotate(180deg);
+        }
+      /* #personalCenter .contacts-main .contacts-main-left dl:hover dd{
+        display: block;
+      } */
+
+      #personalCenter .contacts-main .contacts-main-left>dl .select-header {
+        padding: 20px;
+        color: #232323;
+        font-weight: bold;
+        cursor:pointer;
+        font-size: 14px; }
+      #personalCenter .contacts-main .contacts-main-left>dl .select-content {
+        width: 180px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        border: solid 1px #dde1eb;
+        /* display: none; */
+      }
+      #personalCenter .contacts-main .contacts-main-left>dl .select-content .select-title{
+        height: 34px;
+        line-height: 34px;
+        color: #303030;
+        text-align: center;
+        border-bottom: 1px solid #dde1eb;
+      }
+      #personalCenter .contacts-main .contacts-main-left>dl .select-content .select-title>div{
+        padding: 0 20px;
+      }
+      #personalCenter .contacts-main .contacts-main-left>dl .select-content .add-group{
+        position: relative;
+      }
+      #personalCenter .contacts-main .contacts-main-left>dl .select-content .add-group>div{
+        height: 33px;
+        padding: 0 20px;
+        cursor: pointer;
+      }
+      #personalCenter .contacts-main .contacts-main-left>dl .select-content .add-group .add-group-input,#personalCenter .contacts-main .contacts-main-left>dl .select-content .add-group .edit-group-input{
+        position: absolute;
+        width: 180px;
+        top: 35px;
+        left: 50%;
+        padding: 0 10px;
+        transform: translate(-50%);
+      }
+      #personalCenter .contacts-main .contacts-main-left>dl .select-content .add-group .edit-group-input{
+        top:0;
+      }
+      #personalCenter .contacts-main .contacts-main-left>dl .select-content .add-group .add-group-input input,#personalCenter .contacts-main .contacts-main-left>dl .select-content .add-group .edit-group-input input{
+        width: 117px;
+        height: 29px;
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
+        padding-left: 5px;
+        border: solid 1px #dde1eb;
+      }
+      #personalCenter .contacts-main .contacts-main-left>dl .select-content .add-group .add-group-input .add-group-go,#personalCenter .contacts-main .contacts-main-left>dl .select-content .add-group .edit-group-input .add-group-go{
+        width: 36px;
+        height: 33px;
+        text-align: center;
+        line-height: 34px;
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+        border: solid 1px #dde1eb;
+        border-left: none;
+        background-color: #fff;
+      }
+      #personalCenter .contacts-main .contacts-main-left>dl .select-content .add-group .add-font{
+        width: 12px;
+        height: 12px;
+        line-height: 12px;
+        text-align: center;
+        font-size: 22px;
+      }
+      #personalCenter .contacts-main .contacts-main-left>dl .select-content ul{
+        max-height: 90px;
+        min-height: 40px;
+        overflow-y: auto;
+      }
+      #personalCenter .contacts-main .contacts-main-left>dl .select-content ul li{
+        height: 30px;
+        line-height: 30px;
+        padding: 0 20px;
+        cursor: pointer;
+      }
+      #personalCenter .contacts-main .contacts-main-left>dl .select-content ul li>div:first-child{
+        width: 71%;
+        text-align: left;
+      }
+      #personalCenter .contacts-main .contacts-main-left>dl .select-content ul li>div:nth-child(2) img{
+        padding:  0 4px;
+      }
+      #personalCenter .contacts-main .contacts-main-left>dl .select-content ul li:hover{
+        background-color: #e2e7f3;
+      }
+      #personalCenter .contacts-main .contacts-main-left .search {
+        width: 249px;
+        margin: 0 auto; }
+        #personalCenter .contacts-main .contacts-main-left .search input {
+          width: 194px;
+          height: 36px;
+          float: left;
+          font-size: 12px;
+          border: 1px solid #dddddd;
+          border-right:none;
+          border-top-left-radius: 3px;
+          border-bottom-left-radius: 3px;
+          padding-left: 5px; }
+        #personalCenter .contacts-main .contacts-main-left .search div {
+          width: 48px;
+          height: 40px;
+          line-height: 40px;
+          text-align: center;
+          cursor: pointer;
+          border: 1px solid #dddddd;
+          background-color: #f5f5f5;
+          border-top-right-radius: 3px;
+          border-bottom-right-radius: 3px; }
+
+         #personalCenter .contacts-main .contacts-main-left .cml-list{
+         	height:560px;
+         	/* height:130px; */
+         	margin-top:22px;
+         	overflow:auto;
+         }
+         #personalCenter .contacts-main .contacts-main-left .cml-list .contact-list-no-data{
+           padding: 0 20px;
+           font-size: 14px;
+           color: #999999;
+           text-align: center;
+           line-height: 22px;
+           margin-top: 120px;
+         }
+         #personalCenter .contacts-main .contacts-main-left .cml-list .contact-list-no-data img{
+           margin-bottom: 5px;
+         }
+         #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box{
+         	height: 80px;
+         	padding:20px 5px 0 20px;
+         	background:#eceff7;
+         	font-size:12px;
+         	line-height:18px;
+           cursor:pointer;
+           position: relative;
+         }
+         #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box.sele{
+         	background:#b2bfdf !important;
+         }
+         #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box:hover{
+        	/* background:#c2cbe2; */
+        	background:#c7d0e7;
+         }
+         #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box.sele div,
+         #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box:hover div{
+         	color:#fff;
+         }
+         #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box .h1{
+         	height:43px;
+         	width:43px;
+         	border-radius:50%;
+         	background:#dee2ec;
+         	margin-right:16px;
+         }
+         #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box .h1 img{
+           width: 100%;
+           height: 100%;
+           border-radius: 50%;
+         }
+         #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box .h2 .supplier-name{
+          width: 118px;
+          overflow: hidden;/*超出部分隐藏*/
+          white-space: nowrap;/*不换行*/
+          text-overflow:ellipsis;/*超出部分文字以...显示*/
+         }
+         #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box .h2 .supplier-svs{
+          width: 118px;
+          height: 20px;
+          line-height: 20px;
+          margin-top: 5px;
+          overflow: hidden;/*超出部分隐藏*/
+          white-space: nowrap;/*不换行*/
+          text-overflow:ellipsis;/*超出部分文字以...显示*/
+         }
+         #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box .h2 .supplier-svs img{
+          margin: 0 3.5px 3.5px 0;
+         }
+         #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box .diandian{
+          margin: 10px 0px 0 15px;
+           display:none;
+           width: 34px;
+           padding: 5px;
+         }
+         #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box.sele .diandian,
+         #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box:hover .diandian{
+         	display:block;
+         	position:relative;
+         }
+         #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box .diandian i{
+         	float:right;
+         		width:5px;
+         		height:5px;
+         		border-radius:50%;
+         		background:#7688b6;
+         		margin-left:3px;
+         }
+
+         .cml-pupbox ul li{
+           height: 33px;
+           line-height: 33px;
+           cursor: pointer;
+         }
+          .cml-pupbox ul li dl{
+         	display:none;
+	       	width:104px;
+	       	line-height:34px;
+	       	position:absolute;
+	       	border:1px solid #dee2ec;
+	       	background:#fff;
+	       	/*border-top:1px solid #fff;*/
+	       	top:-1px;
+	       	left:136px;
+	       	color:#7f7f7f;
+	       	padding:12px 0;
+         }
+
+          .cml-pupbox ul li:hover dl{
+         	display:block;
+         }
+
+           .cml-pupbox ul li{
+          	padding-left:10px;
+          }
+           .cml-pupbox ul li:hover,
+           .cml-pupbox dl dd:hover{
+          	background:#dee2ec;
+          }
+
+
+          #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2{
+          	padding:18px 0 0 20px;
+          	font-size:12px;
+          }
+          #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2 h2{
+          	font-size:14px;
+          	padding-bottom:12px;
+          }
+          #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2 li{
+          	height:72px;
+            padding-bottom:20px;
+            cursor: pointer;
+          }
+          #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2 li .h1{
+          	position:relative;
+          	width:52px;
+          	height:52px;
+          	background:#eee;
+          }
+          #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2 li .h1 img{
+                width:100%;
+                height:100%;
+                object-fit: contain;
+          }
+           #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2 li .h1 i{
+           	position:absolute;
+           	width:7px;
+           	height:7px;
+           	border-radius:50%;
+           	background:#e54544;
+           	right:4px;
+           	top:4px;
+           }
+          #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2 li .h2{
+          	width:140px;
+          	margin-left:10px;
+          	word-break: break-all;
+					  text-overflow: ellipsis;
+					  display: -webkit-box;
+					  -webkit-box-orient: vertical;
+					  -webkit-line-clamp: 2;
+					  overflow: hidden;
+					  margin-top:12px;
+          }
+          #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2 li .h3{
+          	line-height:52px;
+          	color:#999;
+          	padding-right:10px;
+          }
+
+
+
+
+    #personalCenter .contacts-main .contacts-main-right {
+      width: 723px; }
+    #personalCenter .contacts-main .contacts-main-right  .supplier-detail-no-data{
+      width: 100%;
+      height: 680px;
+      background-color: #f2f3f7;
+      font-size: 14px;
+      color: #9d9ea1;
+     }
+    #personalCenter .contacts-main .contacts-main-right  .supplier-detail-no-data img{
+      width: 200px;
+      height: 200px;
+     }
+      #personalCenter .contacts-main .contacts-main-right .contacts-info {
+        height: 140px;
+        padding: 0 20px;
+        background-color: #ffffff;
+        border: solid 1px #dddddd;
+        margin-bottom: 15px;}
+        #personalCenter .contacts-main .contacts-main-right .contacts-info > div:first-child {
+          /* width: 145px; */
+          height: 100%;
+          font-size: 14px; }
+          #personalCenter .contacts-main .contacts-main-right .contacts-info > div:first-child span{
+            display: inline-block;
+            width: 400px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow:ellipsis;
+          }
+          #personalCenter .contacts-main .contacts-main-right .contacts-info > div:first-child img {
+            border-radius: 50%;
+            width: 79px;
+            margin-right: 20px;
+            height: 79px; }
+
+       #personalCenter .contacts-main .contacts-main-right .contacts-info .conti-more{
+       	width:104px;
+       	height:34px;
+       	line-height:34px;
+       	padding-left:24px;
+       	border:1px solid #dee2ec;
+       	margin-top:40px;
+       	position:relative;
+       	font-size:12px;
+       	color:#7f7f7f;
+       	cursor:pointer;
+       }
+       #personalCenter .contacts-main .contacts-main-right .contacts-info .conti-more .el-icon-arrow-up{
+       	margin-left:6px;
+       	-webkit-transition:all .4s;-moz-transition:all .4s;-o-transition:all .4s;transition:all .4s;
+       }
+       #personalCenter .contacts-main .contacts-main-right .contacts-info .conti-more:hover .el-icon-arrow-up{
+       	transform:rotate(180deg);
+		    -webkit-transform:rotate(180deg);
+		    -moz-transform:rotate(180deg);
+		    -ms-transform:rotate(180deg);
+		    -o-transform:rotate(180deg);
+       }
+
+       #personalCenter .contacts-main .contacts-main-right .contacts-info .conti-more ul{
+       	display:none;
+       	width:104px;
+       	position:absolute;
+       	border:1px solid #dee2ec;
+       	top:32px;
+       	left:-1px;
+       	background:#fff;
+       	border-top:1px solid #fff;
+       }
+       #personalCenter .contacts-main .contacts-main-right .contacts-info .conti-more:hover ul{
+       		display: block;
+       	}
+       #personalCenter .contacts-main .contacts-main-right .contacts-info .conti-more ul li{
+       	padding-left:24px;
+       }
+       #personalCenter .contacts-main .contacts-main-right .contacts-info .conti-more ul li:hover{
+       	background:#dee2ec;
+       }
+
+      #personalCenter .contacts-main .contacts-main-right .comBox{
+      	padding:0 20px 18px 20px;
+      	background-color: #ffffff;
+        border: solid 1px #dddddd;
+        margin-bottom: 15px;
+      }
+      #personalCenter .contacts-main .contacts-main-right .title {
+        font-size: 20px;
+        font-weight: bold;
+        padding:24px 4px;
+        }
+			#personalCenter .contacts-main .contacts-main-right .info{
+				width:340px;
+				float:left;
+				font-size:12px;
+			}
+			#personalCenter .contacts-main .contacts-main-right .info li{
+				padding-bottom:20px;
+			}
+			#personalCenter .contacts-main .contacts-main-right .info li img{
+				margin-right:5px;
+			}
+			#personalCenter .contacts-main .contacts-main-right .info span{
+				width:110px;
+				float:left;
+				white-space:nowrap;
+			}
+			#personalCenter .contacts-main .contacts-main-right .info span.info-span{
+				width:170px;
+        overflow: hidden;/*超出部分隐藏*/
+        white-space: nowrap;/*不换行*/
+        text-overflow:ellipsis;/*超出部分文字以...显示*/
+			}
+
+			#personalCenter .contacts-main .contacts-main-right .info span.h1{
+				width:160px;
+				text-align:right;
+				color:#7f7f7f;
+				margin-right:10px;
+      }
+      #personalCenter .contacts-main .contacts-main-right .info span.info-h1{
+        width: 120px;
+    }
+			#personalCenter .contacts-main .contacts-main-right .comBox-b2{
+				padding:24px 0 10px 0;
+				border-bottom:#eceff7 solid 1px;
+			}
+			#personalCenter .contacts-main .contacts-main-right .comBox-b2:first-of-type{
+				padding-top:0;
+			}
+			#personalCenter .contacts-main .contacts-main-right .comBox-b2:last-of-type{
+				border-bottom:none;
+			}
+
+			#personalCenter .contacts-main .contacts-main-right .comBox-b2 h2{
+				font-size:14px;
+				padding:0 0 24px 4px;
+      }
+
+      /* 设置 */
+			#personalCenter .setting-main .account-setting-box{
+          width: 1030px;
+          padding: 0  30px;
+          font-size: 14px;
+          background-color: #ffffff;
+          border: solid 1px #dddddd;
+      }
+			#personalCenter .setting-main .account-setting-box .el-form-item__label{
+        color: #7f7f7f;
+      }
+      #personalCenter .setting-main .account-setting-box h1{
+        padding: 17px 0;
+        font-size: 16px;
+      }
+			#personalCenter .setting-main .account-setting-box .section1,#personalCenter .setting-main .account-setting-box .section2,#personalCenter .setting-main .account-setting-box .section3{
+          border-top: solid 1px #dddddd;
+          padding: 30px 0;
+      }
+      /* 收藏 */
+      #personalCenter .favorite-main{
+        width: 1030px;
+        padding: 0  30px;
+        background-color: #ffffff;
+        border: solid 1px #dddddd;
+      }
+      #personalCenter .favorite-main .title{
+        font-size: 14px;
+        padding: 15px 0;
+        border-bottom: solid 1px #dddddd;
+      }
+      #personalCenter .favorite-main .title h1{
+        font-size: 16px;
+      }
+      #personalCenter .favorite-main .title ul{
+        color: #7f7f7f;
+      }
+      #personalCenter .favorite-main .title  ul li{
+        padding: 5px 0;
+        cursor: pointer;
+        margin-left: 20px;
+      }
+      #personalCenter .favorite-main .title  ul li:hover{
+        color: #1a4091;
+      }
+      #personalCenter .favorite-main .activeLi{
+        color: #1a4091;
+      }
+      #personalCenter .favorite-main .favorite-list .favorite-item{
+        position: relative;
+        width: 227px;
+        height: 368px;
+        background-color: #ffffff;
+        border: solid 1px #dddddd;
+        line-height: 18px;
+        color: #b0b0b0;
+        /* padding: 25px 20px; */
+        padding: 10px 20px 25px 20px;
+        float: left;
+        margin: 20px 20px 0 0;
+      }
+      #personalCenter .favorite-main input[type='checkbox']{
+        width: 20px;
+        height: 20px;
+        background-color: #fff;
+        -webkit-appearance:none;
+        border: 1px solid #c9c9c9;
+        border-radius: 2px;
+        outline: none;
+      }
+      #personalCenter .favorite-main  input[type=checkbox]:checked{
+        background: url("/home/v3/static/images/user/icon-true.png")no-repeat center;
+        background-color: #fff;
+      }
+      #personalCenter .favorite-main .favorite-list .favorite-item:nth-child(4),#personalCenter .favorite-main .favorite-list .favorite-item:nth-child(8){
+         margin-right: 0;
+      }
+      #personalCenter .favorite-main .favorite-list .favorite-item input{
+        position: absolute;
+        right: 6px;
+        top: 6px;
+      }
+      #personalCenter .favorite-main .favorite-list .favorite-item .porduct-img{
+          width: 185px;
+          height: 185px;
+          margin: 0 auto;
+      }
+      #personalCenter .favorite-main .favorite-list .favorite-item .porduct-img img{
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+      }
+      #personalCenter .favorite-main .favorite-list .favorite-item .porduct-name{
+        font-size: 12px;
+        margin-top: 10px;
+      }
+      #personalCenter .favorite-main .favorite-list .favorite-item .porduct-price{
+        font-size: 18px;
+        margin: 10px 0;
+      }
+      #personalCenter .favorite-main .favorite-list .favorite-item .porduct-minOrder{
+        font-size: 12px;
+      }
+
+      #personalCenter .favorite-main .favorite-list .favorite-item .porduct-btn-list .porduct-remove-btn,#personalCenter .favorite-main .bottom-btn-list .bottom-remove-btn{
+        background-color: #f6f7f9;
+        border: solid 1px #dde1eb;
+      }
+      #personalCenter .favorite-main .favorite-list .favorite-item .porduct-btn-list .porduct-inquiry-btn,#personalCenter .favorite-main .bottom-btn-list .bottom-inquiry-btn{
+        background-color: #1a4091;
+      }
+      #personalCenter .favorite-main .favorite-list .favorite-item .porduct-btn-list .porduct-remove-btn a,#personalCenter .favorite-main .bottom-btn-list .bottom-remove-btn a{
+        color: #232323;
+      }
+      #personalCenter .favorite-main .favorite-list .favorite-item .porduct-btn-list .porduct-inquiry-btn a,#personalCenter .favorite-main .bottom-btn-list .bottom-inquiry-btn a{
+        color: #ffffff;
+      }
+      #personalCenter .favorite-main .favorite-list .favorite-item .porduct-btn-list .porduct-btn{
+        width: 88px;
+        height: 28px;
+        border-radius: 3px;
+        line-height: 28px;
+        text-align: center;
+        margin-top: 20px;
+      }
+      #personalCenter .favorite-main .favorite-list .favorite-item .porduct-btn-list .porduct-btn a,#personalCenter .favorite-main .bottom-btn-list .bottom-btn a{
+        text-decoration: none;
+        width:100%;
+        height:100%;
+        display: inline-block;
+      }
+      #personalCenter .favorite-main .favorite-list .favorite-item .porduct-name a{
+        text-decoration: none;
+        color: #b0b0b0;
+      }
+      #personalCenter .favorite-main .page-box{
+        text-align: center;
+        margin: 30px 0;
+      }
+      #personalCenter .favorite-main .page-box .btn-prev,#personalCenter .favorite-main .page-box .btn-next{
+        padding: 0 10px;
+      }
+      #personalCenter .favorite-main .bottom-btn-list{
+        margin-bottom: 50px;
+      }
+      #personalCenter .favorite-main .bottom-btn-list .bottom-btn{
+        padding: 0 10px;
+        height: 36px;
+        line-height: 36px;
+        text-align: center;
+        border-radius: 3px;
+        margin-left: 20px;
+      }
+/*# sourceMappingURL=index.css.map */

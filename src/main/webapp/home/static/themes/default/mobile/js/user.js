@@ -13,7 +13,7 @@
 				}, 'json');
 			});
 		},
-		
+
 		user_order:function(){
 			$('#cancelForm .m_form_button').on('tap', function (){
 				$('#cancelForm').submit();
@@ -26,10 +26,10 @@
 					return window.confirm('Are you sure you want to delete this pending order?');
 				}
 			});
-			
+
 			if($('#orderlist').length){
 				ajax_user_orders_list({"page":0}, 1);
-				
+
 				$(document).scroll(function(){
 					var $winTop		= $(window).scrollTop(),
 						$winH		= $(window).height(),
@@ -37,7 +37,7 @@
 						$listHeight	= $("#orderlist").outerHeight(),
 						$loadNum	= $listTop+$listHeight-$winH-100,
 						$Num		= parseInt($("#orderlist").attr('data-number'));
-					
+
 					if($winTop>=$loadNum && $Num==0){
 						$("#orderlist").attr('data-number', '1');
 						var page=parseInt($("#orderlist").attr("data-page"));
@@ -52,7 +52,7 @@
 					}
 				});
 			}
-			
+
 			function ajax_user_orders_list(data, clear){
 				clear && $("#orderlist").html('');
 				$("#orderlist").loading();
@@ -73,11 +73,11 @@
 								$("#orderlist").append(html).unloading();
 								$("#orderlist").attr('data-number', '1');
 							}
-							
+
 							$('#orderlist .item').on('tap', '.title, .prod_list', function(){
 								window.top.location.href=$(this).parents('.item').attr('data-url');
 							});
-							
+
 							$('#orderlist .btn_more').off().on('tap', function(){
 								if($(this).hasClass('current')){
 									$(this).removeClass('current');
@@ -93,10 +93,10 @@
 				}, 300);
 			}
 		},
-		
+
 		user_login:function(){
 			$('.user_login_form').submit(function(e) {return false;});
-			
+
 			//注册
 			var reg_form	= $('#reg_form'),
 				reg_notnull	= $('input[notnull]', reg_form),
@@ -127,7 +127,7 @@
 								move=1;
 							}
 						}
-						
+
 						if($pwd.val()!=''){
 							if($pwd.val().length<8||$pwd.val().length>15){
 								$('html').tips_box(lang_obj.user.reg_error.PWDLENGTH, 'error');
@@ -135,7 +135,7 @@
 							}
 						}
 						if($pwd.val()=='' || $pwd2.val()=='' || $pwd.val()!=$pwd2.val()){
-							
+
 							if($pwd.val()==''){
 								$pwd.addClass('null').next('p.error').text(lang_obj.user.reg_error.PleaseEnter.replace('%field%', $pwd.attr('data-field'))).show();
 							}else if($pwd2.val()==''){
@@ -177,12 +177,12 @@
 								$("input").val("");
 								//$(".user_login_tab div.eq(0)").click();
 							    setTimeout(function(){ window.location="/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrPurchase_userIndex";},2000);
-								
+								gtag_report_conversion()
 							} else {
 								if (data.ret==-1){//刷新水印
 									//$('#reg_form .form_code img').attr('src', '/servlet/verify.img?r='+Math.random());
 								}
-								
+
 								$('html').tips_box(getMessage(data.msg), 'error');
 								reg_rq_mark=true;
 							}
@@ -190,7 +190,7 @@
 					}, 10);
 				}
 			});
-			
+
 			//登录
 			var login_form = $('#login_form');
 			var login_notnull = $('input[notnull]', login_form);
@@ -210,7 +210,7 @@
 								$(element).removeClass('null');
 							}
 						});
-						
+
 						//判断内容
 						var Email = $('input[name=email]', login_form);
 						if(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/.test(Email.val())==false){
@@ -251,10 +251,10 @@
 							}
 						}, 'json');
 					}, 10);//setTimeout end
-					
+
 				}// if login_rq_mark end
 			});
-			
+
 			//切换
 			var user_login_tab = $('.user_login_tab div');
 			user_login_tab.on('tap', function (){
@@ -265,7 +265,7 @@
 				$('.user_login').eq(user_login_tab.index(this)).css('display', 'block').siblings('.user_login').css('display', 'none');
 			});
 		},
-		
+
 		user_binding:function(){
 			var binding_form = $('#binding_form');
 			var binding_notnull = $('input[notnull]', binding_form);
@@ -283,7 +283,7 @@
 								$(element).removeClass('null');
 							}
 						});
-						
+
 						//判断内容
 						var Email = $('input[name=Email]', binding_form);
 						if(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/.test(Email.val())==false){
@@ -308,23 +308,23 @@
 							}
 						}, 'json');
 					}, 10);//setTimeout end
-					
+
 				}// if binding_rq_mark end
 			});
 		},
-		
+
 		/*forgot_init:function(){
 			$('.forgot_back>a').click(function(){	//返回
 				history.back();
 			});
-			
+
 			var frm=$('.form_forgot');
 			frm.submit(function(){return false;});
 			frm.find('.btn_fotgot').click(function(){//发送忘记密码邮件
 				if(global_obj.check_form(frm.find('*[notnull]'), frm.find('*[format]'), 1)){
 					status=1;
 				}else status=0;
-				
+
 				if(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/.test($('#Email').val())==false){
 					$('#Email').next().show();
 					status=1;
@@ -332,10 +332,10 @@
 					$('#Email').next().hide();
 					status=0;
 				}
-				
+
 				if(status==1) return false;
 				$(this).attr('disabled', true);
-				
+
 				$.post('/account/', frm.serialize(), function(data){
 					frm.find('.btn_fotgot').attr('disabled', false);
 					if(data.ret!=1){
@@ -345,7 +345,7 @@
 					}
 				}, 'json');
 			});
-			
+
 			frm.find('.btn_reset').click(function(){//发送忘记密码邮件
 				var $pwd=$('#Password');
 					$pwd2=$('#Password2');
@@ -353,7 +353,7 @@
 				$pwd.next().hide();
 				$pwd2.removeAttr('style').next().hide();
 				if(global_obj.check_form(frm.find('*[notnull]'), frm.find('*[format]'), 1)) status=1;
-				
+
 				if(!$.trim($pwd.val())){
 					$pwd.next().show();
 					status=1;
@@ -362,10 +362,10 @@
 					$pwd2.css('border', '1px solid red').next().show();
 					status=1;
 				}
-				
+
 				if(status==1) return false;
 				$(this).attr('disabled', true);
-				
+
 				$.post('/account/', frm.serialize(), function(data){
 					frm.find('.btn_reset').attr('disabled', false);
 					if(data.ret!=1){
@@ -376,7 +376,7 @@
 				}, 'json');
 			});
 		},*/
-		
+
 		user_fav:function(){
 			var rq_mark=true;
 			$('.detail_prolist .item .info .del').on('tap', function(){
@@ -393,14 +393,14 @@
 				}
 			});
 		},
-		
+
 		user_address:function(){
 			var $form=$('.user_address_form');
-			
+
 			$('.address_row .info').on('tap', function(){ //编辑地址跳转
 				window.top.location.href=$(this).attr('data-url');
 			});
-			
+
 			$('.address_row .selected>a').on('tap', function(){ //选择地址
 				var $this=$(this), AId=$this.attr('data-aid');
 				$.post('/account/', 'do_action=user.addressbook_selected&AId='+AId, function(data){
@@ -410,7 +410,7 @@
 					}
 				}, 'json');
 			});
-			
+
 			$('.address_row .del_address_info').on('tap', function(){
 				var $this=$(this),
 					url=$this.attr('url');
@@ -423,19 +423,19 @@
 					});
 				});
 			});
-			
+
 			$form.find('.btn_back').on('tap', function(){ //返回按钮
 				window.location.href=$form.find('input[name=back_url]').val();
 				return false;
 			});
-			
+
 			var address_rq_mark=true;
 			$form.submit(function(){ return false; });
 			$('#save_address').on('tap', function(){
 				if(address_rq_mark && !$('#save_address').hasClass('disabled')){
 					$('#save_address').addClass('disabled');
 					address_rq_mark=false;
-					
+
 					var $notnull=$('.user_address_form input[notnull], .user_address_form select[notnull]');
 					$notnull.removeClass('null').next('p.error').hide();
 					setTimeout(function(){
@@ -473,7 +473,7 @@
 				}
 				return false;
 			});
-			
+
 			function change_country(){
 				var CId=$('#country').find(':selected').val();
 				user_obj.get_state_from_country(CId);
@@ -481,7 +481,7 @@
 			change_country();
 			$('#country').change(function(e){change_country()});
 		},
-		
+
 		//修改地址
 	/*	set_default_address:function(AId, NotUser){
 			$.ajax({
@@ -503,7 +503,7 @@
 						$('input[name=City]').val(data.msg.address.City);
 						var index=$('select[name=country_id]').find('option[value='+data.msg.address.CId+']').eq(0).attr('selected', 'selected').index();
 						user_obj.get_state_from_country(data.msg.address.CId);
-						
+
 						if(data.msg.address.CId==30 || data.msg.address.CId==211){
 							$('select[name=tax_code_type]').find('option[value='+data.msg.address.CodeOption+']').attr('selected', 'selected');
 							$('input[name=tax_code_value]').attr('maxlength', (data.msg.address.CodeOption==1?11:(data.msg.address.CodeOption==2?14:12))).val(data.msg.address.TaxCode);
@@ -514,7 +514,7 @@
 						}else{
 							$('input[name=State]').val(data.msg.address.State);
 						}
-						
+
 						$('input[name=ZipCode]').val(data.msg.address.ZipCode);
 						$('input[name=CountryCode]').val('+'+data.msg.address.CountryCode);
 						$('input[name=PhoneNumber]').val(data.msg.address.PhoneNumber);
@@ -524,7 +524,7 @@
 				}
 			});//ajax
 		},//set_default_address 结束
-*/		
+*/
 		get_state_from_country:function (cid){
 			$.ajax({
 				url:"/account/",
@@ -564,10 +564,10 @@
 				}
 			});//ajax end
 		},//get_state_from_country 结束
-		
+
 		user_setting:function(){
 			$('.user_login_form').submit(function(){ return false; });
-			
+
 			//账号资料更改
 			var reg_form	= $('#reg_form'),
 				reg_notnull	= $('input[notnull]', reg_form),
@@ -642,10 +642,10 @@
 				}
 			});
 		},
-		
+
 		user_password:function(){
 			$('.user_login_form').submit(function(){ return false; });
-			
+
 			//账号资料更改
 			var reg_form	= $('#reg_form'),
 				reg_notnull	= $('input[notnull]', reg_form),

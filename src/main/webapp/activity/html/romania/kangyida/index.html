@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <meta http-quiv="X-UA-Compatible" content="IE=edge,chrome=1">
+     <script src="./js/axios.js"></script>
+     <script src="./js/vue.js"></script>
+     <script src='./js/qs.js'></script>
+<!--      <script src='./config.js'></script> -->
+     <title>KANGYIDA</title>
+     <link rel="stylesheet" href="css/pc-index.css">
+     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<body>
+     <div class="allaifa" id="kangyida">
+          <!-- <div class="aifaheader clearfloat">
+               <img src="imgs/shoeslogo.png" alt="">
+               <span>永无止境的展览</span>
+               <div class="rightspan">
+                    <span>Email：marketing@shoestp.com   </span>
+                    <span>phone：+86 15060893090</span>
+               </div>
+          </div> -->
+          <div class="allaifabanner">
+               <img src="imgs/kangyidabanner.png" alt="">
+               <div class="bannercon clearfloat" id="bannercon">
+                    <img src="imgs/kangyidabanner2.png" alt="">
+                    <form>
+                         <h3>EXPLORE QUALITY SHOES</h3>
+                         <div class="formitem">
+                              <label for="Email">EMAIL*</label>
+                              <input type="text" ref="name" name="Email" v-model="userdata.Email">
+                         </div>
+                         <div class="formitem">
+                              <label for="Name">NAME*</label>
+                              <input type="text" name="Name" v-model="userdata.Name">
+                         </div>
+                         <div class="formitem">
+                              <label for="Detail">DETAIL*</label>
+                              <textarea name="Detail" id="" cols="30" rows="10" v-model="userdata.Detail"></textarea>
+                         </div>
+                         <span class="submit" @click="resetForm">INQUIRY US</span>
+                    </form>
+               </div>
+          </div>
+          <div class="allaifaabout">
+               <h2><span style="color:rgb(197, 185, 149)">ABOUT</span> KANGYIDA</h2>
+               <p>Wenzhou Kangyida Shoes Co., Ltd. Established in 2014, the professional research and design team currently has more than 10 employees.<br>Combine new processes and materials with new trends in the latest and most fashionable products. With its distinctive fashion features and humanistic connotations, our products have won high praise and praise from customers over the years.<br>With the experience of our sales and quality control teams with practical service processes and standards, our products can easily meet the diverse chemical and physical testing needs of major markets.</p>
+          </div>
+          <div class="allaifaimgs">
+               <h2>PRODUCT GALLERY</h2>
+               <div class="imgscon">
+                    <span  v-for="item,index in imgs" href="javascript:void(0)"><img :src="item.url" :alt="item.title"></span>
+                    <!-- <a  v-for="item,index in imgs" :href="item.src"><img :src="item.url" :alt="item.title"></a> -->
+               </div>
+          </div>
+          <div class="designoperation">
+               <h2>DESIGN OPERATION</h2>
+               <div class="designcon clearfloat" v-for="item,index in designmsg">
+                    <h3>{{item.h3}}</h3>
+                    <div class="design">
+                         <img :src="item.img1" :alt="item.title1">
+                         <h4>{{item.title1}}</h4>
+                         <p>{{item.text1}}</p>
+                    </div>
+                    <img class="centerimg" src="imgs/changeleft.png" alt="">
+                    <div class="design">
+                         <img :src="item.img2" :alt="item.title2">
+                         <h4>{{item.title2}}</h4>
+                         <p>{{item.text2}}</p>
+                    </div>
+               </div>
+          </div>
+          <div class="advantage clearfloat">
+               <h2>ADVANTAGE</h2>
+               <div class="advantageright">
+                    <div class="rightimg">
+                         <img src="imgs/kangyida21.png" alt="">
+                         <img src="imgs/kangyidasmall.png" alt="">
+                    </div>
+                    <p>The company is specialized in various of women’s boots which have gained consumers’ favorited. Our shoes are widely sold in Russia,United States, Spain, Romania, and other countries and regions.</p>
+                    <div class="rightimg">
+                         <img src="imgs/kangyida20.png" alt="">
+                         <img src="imgs/kangyidasmall.png" alt="">
+                    </div>
+               </div>
+               <!-- <img class="advantageimg" src="imgs/kangyidacenter.png" alt=""> -->
+               <div class="advantageleft">
+                    <p>The company has strong strength in shoe designing developing and production capacity in the good and scientific management atmosphere.We work out 800 new shoe style per year.</p>
+                    <div class="leftimg">
+                         <img src="imgs/kangyida19.png" alt="">
+                         <img src="imgs/kangyidasmall.png" alt="">
+                    </div>
+                    <p>Our products have won high praise and praise from customers over the years. With the experience of our sales and quality control groups with professional and standards service processes , our products can easily meet the diverse chemical and physical testing needs of major markets.</p>
+               </div>
+          </div>
+          <p class="advantagep">We sincerely welcome everyone to visit our company and inspect our products.</p>
+          <div class="highlights clearfloat">
+               <h2>PRODUCT HIGHLIGHTS</h2>
+               <div class="lefthighlights">
+                    <p>Therer is exquisite appearance of the shoes, and the comben ation of sewing and leather by shoes are novel.</p>
+                    <p>The shoes are not only fashionable but also fine texture.</p>
+                    <p>People could feel excellent quality among detail.</p>
+               </div>
+               <img src="imgs/kangyida22.png" alt="">
+               <div class="righthighlights">
+                    <p>The advantage of injection shoes are that the outsole are comfortable and sliding.</p>
+                    <p>We selcelt good material at our shoes.</p>
+                    <p>Fasion fine stitching embellishes the body.</p>
+               </div>
+          </div>
+          <div class="allaifafactory">
+               <h2>OUR FACTORY</h2>
+               <img src="imgs/kangyida23.png" alt="">
+               <img src="imgs/kangyida24.png" alt="">
+               <p>We have two lines of advanced shoes production systems,<br>400 sets of associated manufacturing equipments and full sets of advanced testing equipments.<br>The annual capacity reaches 1,500,000 pairs and annual<br>output value amounted to 24,000,000 USD.</p>
+          </div>
+          <div class="lastcon">
+               <!-- <h3>AILAIFA*</h3> -->
+               <p>Let us help you meet those needs！</p>
+               <span @click="scrollToTop()">INQUIRY US</span>
+          </div>
+          <!-- <div class="aifaheader aifafooter clearfloat">
+               <img src="imgs/shoeslogo.png" alt="">
+               <span>永无止境的展览</span>
+               <div class="rightspan">
+                    <span>Email：marketing@shoestp.com   </span>
+                    <span>phone：+86 15060893090</span>
+               </div>
+          </div> -->
+     </div>
+     <script>
+          new Vue({
+               el:'#kangyida',
+               data:{
+
+                    interval:0,
+
+                    userdata:{
+                         Name:'',
+                         Email:'',
+                         Detail:'',
+                         id:291
+                    },
+
+
+                    imgs:[
+                         {
+                              title:'25',
+                              url:'imgs/kangyida25.png',
+                              src:'###'
+                         },
+                         {
+                              title:'26',
+                              url:'imgs/kangyida26.png',
+                              src:'###'
+                         },
+                         {
+                              title:'27',
+                              url:'imgs/kangyida27.png',
+                              src:'###'
+                         },
+                         {
+                              title:'1',
+                              url:'imgs/kangyida1.png',
+                              src:'https://www.shoestp.com/kangyida-comfortable-cow-leather-men-shoes-soft-casual-daily-walking-shoes_p6523.html'
+                         },
+                         {
+                              title:'2',
+                              url:'imgs/kangyida2.png',
+                              src:'https://www.shoestp.com/kangyida-comfortable-lace-up-cow-leather-men-shoes-soft-casual-daily-walking-shoes_p6540.html'
+                         },
+                         {
+                              title:'3',
+                              url:'imgs/kangyida3.png',
+                              src:'https://www.shoestp.com/kangyida-popular-lace-up-men-shoes-brown-casual-cow-leather-shoes_p6543.html'
+                         },
+                         {
+                              title:'4',
+                              url:'imgs/kangyida4.png',
+                              src:'https://www.shoestp.com/kangyida-comfortable-lace-up-cow-leather-men-shoes-soft-casual-daily-walking-shoes_p6524.html'
+                         },
+                         {
+                              title:'5',
+                              url:'imgs/kangyida5.png',
+                              src:'https://www.shoestp.com/kangyida-comfortable-men-shoes-black-casual-cow-leather-walking-shoes_p6547.html'
+                         },
+                         {
+                              title:'6',
+                              url:'imgs/kangyida6.png',
+                              src:'https://www.shoestp.com/kangyida-popular-lace-up-men-shoes-black-casual-cow-leather-daily-walking-shoes_p6549.html'
+                         },
+                         {
+                              title:'7',
+                              url:'imgs/kangyida7.png',
+                              src:'https://www.shoestp.com/kangyida-good-quality-popular-lace-up-men-shoes-brown-thick-stitching-casual-cow-leather-shoes_p6526.html'
+                         },
+                         {
+                              title:'8',
+                              url:'imgs/kangyida8.png',
+                              src:'https://www.shoestp.com/kangyida-new-lace-up-men-shoes-black-casual-and-sport-cow-leather-shoes_p6558.html'
+                         },
+                         {
+                              title:'9',
+                              url:'imgs/kangyida9.png',
+                              src:'https://www.shoestp.com/kangyida-new-lace-up-men-shoes-brown-casual-and-sport-cow-leather-shoes_p6561.html'
+                         },
+                         {
+                              title:'10',
+                              url:'imgs/kangyida10.png',
+                              src:'https://www.shoestp.com/kangyida-popular-men-shoes-brown-casual-and-business-cow-leather-shoes_p6557.html'
+                         },
+                         {
+                              title:'11',
+                              url:'imgs/kangyida11.png',
+                              src:'https://www.shoestp.com/kangyida-2018new-design-men-shoes-strap-brown-casual-and-business-cow-leather-shoes_p6562.html'
+                         },
+                         {
+                              title:'12',
+                              url:'imgs/kangyida12.png',
+                              src:'https://www.shoestp.com/kangyida-popular-men-ankle-boots-black-casua-cow-leather-shoes-for-mens_p6555.html'
+                         }
+                    ],
+                    designmsg:[
+                         {
+                              h3:'Shoe Room',
+                              img1:'imgs/kangyida13.png',
+                              img2:'imgs/kangyida14.png',
+                              title1:'What we make?',
+                              title2:'What we have?',
+                              text1:'We are a company speciblizing in the production of womens boots. Offer various men’s leather for all occasion. We are good at making bussiness leather shoes and casual leather shoes, and have long been exported to countries around the world, including the United States, Spain, Romania, and other countries.',
+                              text2:'Wenzhou Kangyida Shoes Co., Ltd. was established in 2014 and currently has more than 10 employees dedicated to research and design shoes. We integrate new processes and good materials with new trends in the latest and most fashionable products.'
+                         },
+                         {
+                              h3:'Design Desk',
+                              img1:'imgs/kangyida15.png',
+                              img2:'imgs/kangyida16.png',
+                              title1:'Our persistence',
+                              title2:'Our skills',
+                              text1:'We adhere to the principle of quality first. According to different customer requirements, we use different materials to make leather shoes.',
+                              text2:'The existing staff of more than 200, the company has2 production lines and has a staff of solidarity. Our products meet the needs of various chemical and physical testing in key markets.'
+                         },
+                         {
+                              h3:'Customer Service',
+                              img1:'imgs/kangyida17.png',
+                              img2:'imgs/kangyida18.png',
+                              title1:'Our service',
+                              title2:'Our delivery',
+                              text1:'We provide different contact methods, including email, live chat, telephone, etc., and we strive to provide services for customers in the first time.',
+                              text2:'We can guarantee that you will get your orders within 2 months.'
+                         }
+                    ]
+               },
+               mounted(){
+                    this.changeheight();
+                    window.onresize = this.changeheight;
+               },
+               methods:{
+                    changeheight:function() {
+                       var html=document.getElementsByTagName('html')[0];
+                       var width = document.documentElement.clientWidth;
+                       var fontSize;
+                       if (width < 1500) {
+                           fontSize = 16;
+                       }else{
+                           fontSize = 16 * width / 1500;
+                       }
+                       // fontSize = 16 * width / 1200;
+                       html.style.fontSize = fontSize + 'px'
+                       console.log(html.style.fontSize)
+                   },
+                   resetForm:function() {
+                         var regEmail = new RegExp('.+@[a-z0-9\.]+\.(com|cn|net)$')
+                         var regTel = new RegExp('[0-9]{6,}')
+                         if(!this.userdata.Email){
+                              this.$message({
+                                   message: 'E-mail can not be empty',
+                                   type: 'warning'
+                             })
+                             return false;
+                         }else if(!regEmail.test(this.userdata.Email)){
+                              this.$message({
+                                   message: 'E-mail format error',
+                                   type: 'warning'
+                             })
+                             return false;
+                         }
+                         if(!this.userdata.Name){
+                              this.$message({
+                                   message: 'Name can not be empty',
+                                   type: 'warning'
+                             })
+                             return false;
+                         }
+                         if(!this.userdata.Detail){
+                              this.$message({
+                                   message: 'Detail can not be empty',
+                                   type: 'warning'
+                             })
+                             return false;
+                         }
+                         var self = this;
+                         axios.post('/home/Activity_Romania_inquiry',
+                              Qs.stringify(
+                                   {
+                                        name: self.userdata.Name,
+                                        email:self.userdata.Email,
+                                        detail:self.userdata.Detail,
+                                        supId:self.userdata.id
+                                   }
+                              )
+                         ).then(function (res) {
+                              gtag_report_conversion();
+                              if (res.data.ret == 1) {
+                                   self.$message({
+                                        message: 'Submitted Successfully',
+                                        type: 'success'
+                                   })
+                                   setTimeout(function(){
+                                        for (var i in self.userdata) {
+                                             self.userdata[i]='';
+                                        }
+                                   },3000)
+                              }else{
+                                   self.$message({
+                                        message: 'Submitted Failed',
+                                        type: 'warning'
+                                   })
+                              }
+                         }).catch(function(error) {
+                              console.log(error)
+                         });
+                   },
+                   scrollToTop:function(){
+                         const start = window.pageYOffset;
+                         let i = 0;
+                         let backPosition = 0;
+                         this.interval = setInterval(() => {
+                         const next = Math.floor(this.easeInOutQuad(10 * i, start, -start, 500))
+                         if (next <= backPosition) {
+                                   window.scrollTo(0, backPosition)
+                                   clearInterval(this.interval)
+                                   this.$refs.name.focus();
+                              } else {
+                                   window.scrollTo(0, next)
+                              }
+                              i++
+                         }, 16.7)
+
+                         // 姓名输入框 获取焦点
+
+                         },
+                         easeInOutQuad(t, b, c, d) {
+                         if ((t /= d / 2) < 1) return c / 2 * t * t + b
+                         return -c / 2 * (--t * (t - 2) - 1) + b
+                         },
+                    }
+          })
+     </script>
+
+     <!-- 代码追踪 -->
+     <!-- Global site tag (gtag.js) - Google Ads: 775270705 -->
+     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-775270705"></script>
+     <script>
+       window.dataLayer = window.dataLayer || [];
+       function gtag(){dataLayer.push(arguments);}
+       gtag('js', new Date());
+
+       gtag('config', 'AW-775270705');
+       gtag('config', 'UA-131117317-11');
+
+       function gtag_report_conversion(url) {
+        gtag('event', 'conversion', {
+            'send_to': 'AW-775270705/gumBCKrfzJIBELHi1vEC'
+        });
+        return false;
+      }
+     </script>
+
+<script type="text/javascript">
+	var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+	(function(){
+		var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+		s1.async=true;
+		s1.src='https://embed.tawk.to/5b8fcb48f31d0f771d8476f6/default';
+		s1.charset='UTF-8';
+		s1.setAttribute('crossorigin','*');
+		s0.parentNode.insertBefore(s1,s0);
+	})();
+</script>
+<!--End of Tawk.to Script-->
+</body>
+</html>

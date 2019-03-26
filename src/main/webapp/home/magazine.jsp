@@ -93,11 +93,14 @@
 
     </style>
 </head>
+<jsp:include page="v3/header.jsp"/>
+<jsp:include page="v3/nav.jsp"/>
 <body>
 <%@ include file="/home/template/web-top.jsp" %>
-<%@ include file="/home/template/new-header.jsp" %>
 
-
+<div id="app">
+    <index-top></index-top>
+</div>
 <div class="project-box">
     <div class="project-title"><s:text name="magazine.Magazine_Ranking"/></div>
 
@@ -132,13 +135,21 @@
             </c:forEach>
         </div>
     </div>
+    <index-bottom></index-bottom>
 </div>
-<%@ include file="/home/template/new-foot.jsp" %>
+<%--<%@ include file="/home/template/new-foot.jsp" %>--%>
 <script>
     $('.project-content .project-item').hover(function () {
         $(this).find('.project-info').find('.icon-label').attr("src", "/home/static/themes/default/mobile/images/on-label.png")
     }, function () {
         $(this).find('.project-info').find('.icon-label').attr("src", "/home/static/themes/default/mobile/images/off-label.png")
+    })
+</script>
+<script src="/home/v3/static/js/index-top.js"></script>
+<script src="/home/v3/static/js/index-bottom.js"></script>
+<script>
+    new Vue({
+        el:"#app"
     })
 </script>
 </body>

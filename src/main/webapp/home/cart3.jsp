@@ -30,8 +30,11 @@
 <body class="lang_en w_1200">
 
 	<%@ include file="/home/template/web-top.jsp" %>
-    <%@ include file="/home/template/new-header.jsp" %>
-    <div id="main" class="wide">
+    <div id="main">
+        <index-top></index-top>
+        <div class="wide">
+
+        </div>
         <script type="text/javascript">
             $(document).ready(function () {
                 cart_obj.complete_init()
@@ -182,9 +185,10 @@
             </div>
             <div class="blank12"></div>
         </div>
+        <index-bottom></index-bottom>
     </div>
 
-     <%@ include file="/home/template/new-foot.jsp" %>
+     <%--<%@ include file="/home/template/new-foot.jsp" %>--%>
     <div id="hj_top" style="opacity: 0;">
         <img src="/home/static/images/hj_top.png">
     </div>
@@ -194,6 +198,13 @@
     <script type="text/javascript" async="" src="./static/js/tracking.js"></script>
     <script type="text/javascript" async="" src="./static/js/analytics.js"></script>
     <script async="" src="./static/js/gtm.js"></script>
+    <script>
+        new Vue({
+            el:"#main"
+        })
+    </script>
+    <script src="/home/v3/static/js/index-top.js"></script>
+    <script src="/home/v3/static/js/index-bottom.js"></script>
 </body>
 
 </html>

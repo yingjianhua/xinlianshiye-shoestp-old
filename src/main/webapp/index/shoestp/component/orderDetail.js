@@ -24,7 +24,7 @@ Vue.component('order',{
 			default:'238px'
 		}
 	},
-	template:'<div :id="id" :key="id"><ul class="order_info">'+
+	template:'<div :id="id" :key="id"><ul class="order_info" style="top: 0;">'+
 			  	'<li v-for="(key,index) in orders">'+
 			  		'<p class="order_info_detail" :class="[index%2==0?\'add\':\'even\']">'+
 			  			'<span class="country">{{key.from}}</span>'+

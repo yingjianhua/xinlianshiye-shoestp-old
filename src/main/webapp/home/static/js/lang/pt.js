@@ -72,7 +72,8 @@ var lang_obj={
 		'telephone':'Por favor, preencha o número de telefone! ',
 		'fax':'Por favor preencha o número de fax corretamente! ',
 		'email':'Por favor, preencha o endereço de email corretamente! ',
-		'length':'O comprimento está incorreto! Você precisa preencher os dígitos %num%. '
+		'length':'O comprimento está incorreto! Você precisa preencher os dígitos %num%. ',
+        'isemail':'Por favor, preencha o endereço de e-mail está incorreto ou não existe'
 	},
 	signIn:{
 		'title':'Login',
@@ -104,7 +105,8 @@ var lang_obj={
 		'es':'espanhol',
 		'ru':'russo',
 		'pt':'Português',
-		'zh_tw':'Chinês Tradicional'
+		'zh_tw':'Chinês Tradicional',
+        'hu':'A LIA'
 	},
 	manage:{
 		frame:{
@@ -464,5 +466,14 @@ var lang_obj={
 	supplier:{
 		products:'Produto',
 		productsStyle:'Método de processamento'
-	}
+	},usrpurchase:{
+        have:'Já',
+        usrpurchase:'Comprador',
+        Procured:'Comprado',
+        complete:'Já concluído',
+        Dualobjective:'Alvo duplo',
+        baifenhao:'%',
+        continued:'Pode continuar a comprar'
+
+    }
 };

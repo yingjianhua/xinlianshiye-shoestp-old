@@ -182,22 +182,22 @@
             <div><s:text name="Global.Product_Number"/>: {{_itemCode}}
             </div>
         </div>
-        <%--<div class="clean prod_info_price">--%>
-            <%--<div class="box_price clean price_1 last_price">--%>
-                <%--<div class="fl title">--%>
-                    <%--<!-- Reference Price -->--%>
-                    <%--<s:text name="price"/>:--%>
-                <%--</div>--%>
-                <%--<div class="fl">--%>
-                    <%--<div class="price cur_price">--%>
-                                <%--<span>--%>
-                                        <%--{{result.currency_symbol}}--%>
-                                <%--</span>--%>
-                        <%--{{_price}}--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-        <%--</div>--%>
+        <div class="clean prod_info_price">
+            <div class="box_price clean price_1 last_price">
+                <div class="fl title">
+                    <!-- Reference Price -->
+                    <s:text name="price"/>:
+                </div>
+                <div class="fl">
+                    <div class="price cur_price">
+                        <span>
+                                {{result.currency_symbol}}
+                        </span>
+                        {{_price}}
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="clean prod_info_line ui_border_t">
             <div class="clean rows attr_show none" name="Color">
                 <div class="title">
@@ -229,59 +229,58 @@
                 </div>
             </div>
 
-            <%--<div class="clean rows">--%>
-                <%--<div class="title">--%>
-                    <%--<!-- MOQ -->--%>
-                    <%--<s:text name="products.moq"/>:--%>
-                <%--</div>--%>
-                <%--<div class="txt">--%>
-                    <%--{{result.min_oq}}--%>
-                <%--</div>--%>
-            <%--</div>--%>
-            <%--<div class="clean rows prod_info_qty">--%>
-                <%--<div class="title">--%>
-                    <%--<!-- QTY -->--%>
-                    <%--<s:text name="order_line.qty"/>:--%>
-                <%--</div>--%>
-                <%--<div class="txt" v-if="!status.isSoleOut">--%>
-                    <%--<div class="cut" v-on:click="subStock">--%>
-                        <%-----%>
-                    <%--</div>--%>
-                    <%--<div class="qty">--%>
-                        <%--<input name="Qty" v-model="status.qty" v-on:blur="checkQty">--%>
-                    <%--</div>--%>
-                    <%--<div class=" add" v-on:click="addStock">--%>
-                        <%--+--%>
-                    <%--</div>--%>
-                    <%--&lt;%&ndash;--%>
-                    <%--<div class="stock">--%>
-                        <%--<b id="inventory_number">--%>
-                            <%--{{_stock}}--%>
-                        <%--</b>--%>
-                        <%--<!-- in Stock -->--%>
-                        <%--<s:text name="product.stock"/>--%>
-                    <%--</div> &ndash;%&gt;--%>
-                <%--</div>--%>
-                <%--<div class="txt" v-if="status.isSoleOut">--%>
-                    <%--<div class="stock">--%>
-                        <%--<span>Sole Out</span>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-                <%--<a href="javascript:;" class="add_favorite fl" v-on:click="add_favorite"--%>
-                   <%--style="line-height:2.1875rem; height:2.1875rem; font-size:1rem; color:#666; margin-left:6%;"--%>
-                <%-->--%>
-                    <%--<img :src="_favorite" style="vertical-align:middle;">--%>
+            <div class="clean rows">
+                <div class="title">
+                    <!-- MOQ -->
+                    <s:text name="products.moq"/>:
+                </div>
+                <div class="txt">
+                    {{result.min_oq}}
+                </div>
+            </div>
+            <div class="clean rows prod_info_qty">
+                <div class="title">
+                    <!-- QTY -->
+                    <s:text name="order_line.qty"/>:
+                </div>
+                <div class="txt" v-if="!status.isSoleOut">
+                    <div class="cut" v-on:click="subStock">
+                        -
+                    </div>
+                    <div class="qty">
+                        <input name="Qty" v-model="status.qty" v-on:blur="checkQty">
+                    </div>
+                    <div class=" add" v-on:click="addStock">
+                        +
+                    </div>
+                    <%-- <div class="stock">
+                        <b id="inventory_number">
+                            {{_stock}}
+                        </b>
+                        <!-- in Stock -->
+                        <s:text name="product.stock"/>
+                    </div> --%>
+                </div>
+                <div class="txt" v-if="status.isSoleOut">
+                    <div class="stock">
+                        <span>Sole Out</span>
+                    </div>
+                </div>
+                <a href="javascript:;" class="add_favorite fl" v-on:click="add_favorite"
+                   style="line-height:2.1875rem; height:2.1875rem; font-size:1rem; color:#666; margin-left:6%;"
+                >
+                    <img :src="_favorite" style="vertical-align:middle;">
                     <%--{{result.favorite_count}}--%>
-                <%--</a>--%>
-            <%--</div>--%>
+                </a>
+            </div>
         </div>
         <div class="widget prod_info_actions clean">
-            <%--            <div class="btn_add" style="width:100%;" id="addCart">
-                            <input type="button" value="<s:text name="mobile.add_to_cart" />"
-                                   class="btn_global add_btn addtocart AddtoCartBgColor"
-                                   v-on:click="addCart"
-                            >
-                        </div>--%>
+            <div class="btn_add" style="width:100%;" id="addCart">
+                <input type="button" value="<s:text name="mobile.add_to_cart" />"
+                       class="btn_global add_btn addtocart AddtoCartBgColor"
+                       v-on:click="addCart"
+                >
+            </div>
             <div class="blank15">
             </div>
             <a href="javascript:void(0)" target="_blank" class="btn_global add_btn BuyNowBgColor inquiry_btn"

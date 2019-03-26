@@ -72,7 +72,8 @@ var lang_obj={
 		'telephone':'Sil vous plaît, entrez le numéro de téléphone! ',
 		'fax':'Sil vous plaît, remplissez correctement le numéro de fax! ',
 		'email':'Sil vous plaît, remplissez correctement ladresse e-mail! ',
-		'length':'La longueur est incorrecte! Vous devez renseigner les chiffres %num%. '
+		'length':'La longueur est incorrecte! Vous devez renseigner les chiffres %num%. ',
+        'isemail':'S\'il vous plaît remplir l\'adresse e-mail est incorrecte ou n\'existe pas'
 	},
 	signIn:{
 		'title':'Login',
@@ -104,7 +105,8 @@ var lang_obj={
 		'es':'espagnol',
 		'ru':'russe',
 		'pt':'Portugais',
-		'zh_tw':'Chinois traditionnel'
+		'zh_tw':'Chinois traditionnel',
+        'hu':'Hun'
 	},
 	manage:{
 		frame:{
@@ -463,5 +465,14 @@ var lang_obj={
 	supplier:{
 		products:'Produit',
 		productsStyle:'Méthode de traitement'
-	}
+	},usrpurchase:{
+        have:'Déjà',
+        usrpurchase:'Acheteur',
+        Procured:'L\'achat.',
+        complete:'C\'est fini.',
+        Dualobjective:'Double cible',
+        baifenhao:'%',
+        continued:'On peut continuer à acheter.'
+
+    }
 };

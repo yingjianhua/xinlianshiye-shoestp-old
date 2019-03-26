@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<div id="new_foot" style="width:100%">
+<div id="new_foot" style="width:100%" class="wide-wrap">
     <div class="wide" style="width:1200px;">
         <div class="foot_letter fr">
             <div class="t"><s:text name="new-foot.Subscribe_To_Our_Newsletter"/></div>
@@ -63,8 +63,8 @@
                     </div>
                 </div>
             </div>
-            <div class="fd fr">Copyright © 2016-2017 温州新联实业股份有限公司. All Rights Reserved. 浙ICP备16034166号-1 浙公网安备
-                33030402000493号 &nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="fd fr">Copyright © 2016-2017 温州新联实业股份有限公司. All Rights Reserved. <%--浙ICP备16034166号-1 浙公网安备
+                33030402000493号--%> &nbsp;&nbsp;&nbsp;&nbsp;
             </div>
         </div>
     </div>
@@ -207,9 +207,9 @@
                 if ("${sessionScope["SESSION_MSG"].isSupplier()}") {
                     $(".title_3").parent().append("<div class='item'><a href='/home/usr_UsrSupplier_supplierEntry' target='_blank'>" + lang_obj.addressfrom.Merchants_Settled + "</a></div>");
                 } else {
-                    $(".title_3").parent().append("<div class='item'><a href='/seller/admin/index/login.html' target='_blank'>" + lang_obj.addressfrom.Merchant_Side + "</a></div>");
+                    $(".title_3").parent().append("<div class='item'><a href='/newseller/' target='_blank'>" + lang_obj.addressfrom.Merchant_Side + "</a></div>");
                 }
-                $(".title_3").parent().append("<div class='item'><a href='/seller/admin/index/login.html' target='_blank'>店铺管理</a></div>")
+                $(".title_3").parent().append("<div class='item'><a href='/newseller/' target='_blank'>店铺管理</a></div>")
             }
         }
     })

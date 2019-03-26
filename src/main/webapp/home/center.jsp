@@ -69,116 +69,126 @@
 			top: 10px;
 		}
 	</style>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title></title>
+    <style type="text/css">
+
+        .clearfix:after {
+            content: "";
+            height: 0;
+            line-height: 0;
+            display: block;
+            visibility: hidden;
+            clear: both;
+        }
+
+        .clearfix {
+            zoom: 1;
+        }
+
+        .title_all {
+            width: 300px;
+            margin: 50px auto;
+        }
+
+        .pc-content_all {
+            width: 1140px;
+            margin: auto;
+        }
+
+        #pc-footer {
+            background: #eff1f1;
+            width: 100%;
+            height: 280px;
+            padding-top: 10px;
+        }
+
+        .button_contact {
+            width: 300px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .button_all {
+            background: #7ac5c5;
+            width: 200px;
+            height: 50px;
+            border-radius: 25px;
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .pc-title {
+            width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            height: 200px;
+            padding: 75px 0;
+            box-sizing: border-box;
+        }
+
+        .pc-list {
+            width: 1200px;
+            margin: 0 auto;
+            padding-bottom: 10px;
+        }
+
+        .new-style-page .pc-list a,
+        .new-style-page .pc-list a:link{
+            display: inline;
+        }
+
+        .pc-c-item {
+            width: 192px;
+            height: 271px;
+            border-radius: 10px;
+            float: left;
+            margin-right: 60px;
+            margin-bottom: 40px;
+        }
+        .pc-list a:nth-child(5n+5) .pc-c-item {
+            margin-right: 0;
+        }
+
+        .pc-c-item .pc-c-cn,
+        .pc-c-item .pc-c-en {
+            text-align: center;
+            line-height: 20px;
+            padding-top: 40px;
+        }
+
+        .pc-c-item .pc-c-en {
+            font-size: 12px;
+            color: #ffffff;
+        }
+
+        .pc-c-item .pc-c-cn {
+            font-size: 16px;
+            color: #ffffff;
+            display: none;
+        }
+    </style>
 </head>
+<jsp:include page="v3/header.jsp"/>
+<jsp:include page="v3/nav.jsp"/>
 <body class="lang_en w_1200">
 <jsp:include page="template/web-top.jsp"></jsp:include>
-<jsp:include page="template/new-header.jsp"></jsp:include>
+<%--<jsp:include page="template/new-header.jsp"></jsp:include>--%>
 
     <div class="cbox0">
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-        <meta name="description" content="">
-        <meta name="author" content="">
-    
-        <title></title>
-        <style type="text/css">
 
-            .clearfix:after {
-                content: "";
-                height: 0;
-                line-height: 0;
-                display: block;
-                visibility: hidden;
-                clear: both;
-            }
-    
-            .clearfix {
-                zoom: 1;
-            }
-    
-            .title_all {
-                width: 300px;
-                margin: 50px auto;
-            }
-    
-            .pc-content_all {
-                width: 1140px;
-                margin: auto;
-            }
-    
-            #pc-footer {
-                background: #eff1f1;
-                width: 100%;
-                height: 280px;
-                padding-top: 10px;
-            }
-    
-            .button_contact {
-                width: 300px;
-                margin: auto;
-                text-align: center;
-            }
-    
-            .button_all {
-                background: #7ac5c5;
-                width: 200px;
-                height: 50px;
-                border-radius: 25px;
-                border: none;
-                color: #fff;
-                font-size: 18px;
-                font-weight: bold;
-            }
-    
-            .pc-title {
-                width: 1200px;
-                margin: 0 auto;
-                text-align: center;
-                height: 200px;
-                padding: 75px 0;
-                box-sizing: border-box;
-            }
-    
-            .pc-list {
-                width: 1200px;
-                margin: 0 auto;
-                padding-bottom: 10px;
-            }
-    
-            .pc-c-item {
-                width: 192px;
-                height: 271px;
-                border-radius: 10px;
-                float: left;
-                margin-right: 60px;
-                margin-bottom: 40px;
-            }
-            .pc-list a:nth-child(5n+5) .pc-c-item {
-                margin-right: 0;
-            }
-    
-            .pc-c-item .pc-c-cn,
-            .pc-c-item .pc-c-en {
-                text-align: center;
-                line-height: 20px;
-                padding-top: 40px;
-            }
-    
-            .pc-c-item .pc-c-en {
-                font-size: 12px;
-                color: #ffffff;
-            }
-    
-            .pc-c-item .pc-c-cn {
-                font-size: 16px;
-                color: #ffffff;
-                display: none;
-            }
-        </style> 
         
-        
+        <div id="app">
+            <index-top></index-top>
+        </div>
             <img alt="Responsive image" class="img-responsive center-block " src="/home/static/images/centimg/banner.jpg" style="width: 100%;min-width:1200px;"/>
         <div class="container">
             <div class="pc-title">
@@ -217,6 +227,7 @@
                     <button class="button_all" onclick="parent.LC_API.open_chat_window({source:'minimized'}); return false">立即联系</button>
                 </div>
             </div>
+            <index-bottom></index-bottom>
         </div>
         <script>
             var countriesList = {
@@ -457,7 +468,14 @@
 
 
 
-	<jsp:include page="template/new-foot.jsp"></jsp:include>
+	<%--<jsp:include page="template/new-foot.jsp"></jsp:include>--%>
+<script src="/home/v3/static/js/index-top.js"></script>
+<script src="/home/v3/static/js/index-bottom.js"></script>
+<script>
+    new Vue({
+        el:"#app"
+    })
+</script>
 </body>
 
 </html>

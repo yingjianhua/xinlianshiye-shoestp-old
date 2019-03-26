@@ -66,7 +66,6 @@
     <script src="/home/static/js/axios.min.js"></script>
     <script src="/home/static/js/element-ui.js"></script>
     <link rel="stylesheet" type="text/css" href="/home/static/css/element-ui.css"/>
-
     <style type="text/css">
         #livechat-compact-container {
             transform: translateY(-50%) !important;

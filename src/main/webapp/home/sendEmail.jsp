@@ -256,7 +256,9 @@
 <!--                     <img src="./static/images/d30276cc0d.png" alt="wzsomt.com"> -->
 <!--                 </a> -->
 <!--             </div> -->
-            <div class="copyright">Copyright © 2016-2017 温州新联实业股份有限公司. All Rights Reserved. 浙ICP备16034166号-1 浙公网安备 33030402000493号 &nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="copyright">Copyright © 2016-2017 温州新联实业股份有限公司. All Rights Reserved.
+                <%--浙ICP备16034166号-1 浙公网安备 33030402000493号--%>
+                &nbsp;&nbsp;&nbsp;&nbsp;
                 </div>
         </div>
         <div align="center">
@@ -292,6 +294,7 @@
 
 		 	}
 	         function getMessage(str){
+	             debugger;
 	         	var sourceStr = str;
 	         	if(str.indexOf("##") != -1){
 	         		str = str.split("##")[0];

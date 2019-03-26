@@ -1,290 +1,469 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="/struts-tags" prefix="s"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<!-- saved from url=(0032)https://www.shoestp.com/account/ -->
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
-
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-
-	<meta name="renderer" content="webkit">
-	<script>
-		window.dataLayer = window.dataLayer || [];
-
-		function gtag() {
-			dataLayer.push(arguments);
-		}
-		gtag('js', new Date());
-
-		gtag('config', 'UA-122336495-1');
-		    gtag('config', 'UA-127715615-6')
-
-	</script>
-	<meta name="keywords" content="fashion wholesale soes,cheap wholesale shoes,wholesale shoes,shoes customization,shoes trade,shoes,Manufacturers,shoestp">
-	<meta name="description" content="foreign trade experts online service! ShoeSTP provides you with customization and wholesale for all kinds of high-quality shoes from 300 professional foreign trade shoes companies!">
-	<title>An Online B2B market——-Shoestp.com,gathering 300 professional shoes manufacture companies</title>
-	<link href="./static/css/global.css" rel="stylesheet" type="text/css">
-	<link href="./static/css/global(1).css" rel="stylesheet" type="text/css">
-	<link href="./static/css/user.css" rel="stylesheet" type="text/css">
-	<link href="./static/css/style.css" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" href="./static/css/color.css" type="text/css">
-	<link rel="stylesheet" href="./static/css/animate.min.css">
-	<link rel="stylesheet" href="./static/css/swiper.min.css" type="text/css">
-
-	<script type="text/javascript" src="./static/js/jquery-1.7.2.min.js"></script>
-</head>
-
-<body class="lang_en w_1200">
-	<%@ include file="/home/template/web-top.jsp" %>
- 	<%@ include file="/home/template/new-header.jsp" %>
-	<div id="main" class="wide">
-		<div id="lib_user" class="clearfix">
-			<div id="lib_user_crumb" class="widget">
-				<ul class="crumb_box clearfix">
-					<li class="home">
-						<a href="/" title="Home"><s:text name="home"/>
-							<i></i>
-						</a>
-					</li>
-					<li class="crumb2 root">
-						<a href="/home/usr_UsrPurchase_userIndex" title="My Account"><s:text name="my_account"/>
-							<i></i>
-						</a>
-					</li>
-				</ul>
-			</div>
-			<%@ include file="template/account/lib-user-menu.jsp" %>
-			<div id="lib_user_main">
-				<dl id="lib_user_welcome">
-					<dt id="PdtLoginName"><s:text name="web-top.Welcome"/> </dt>
-					<dd><s:text name="user.welcomeInfo"/></dd>
-				</dl>
-<!-- 				<ul id="lib_user_prompt"> -->
-<!-- 					<li class="coupons"> -->
-<!-- 						<b>0</b> You have new coupons!</li> -->
-<!-- 				</ul> -->
-<!-- 				<div class="rebate_apply"> -->
-<!-- 					点击前是这句话  start -->
-<!-- 						Click the <a href="javascript:void(0)" class="apply_btn" id="apply_btn">APPLY</a> button, through the audit can become a distribution member.     -->
-<!-- 						点击前是变这句话  end -->
-<!-- 					点击后变这句话  start -->
-<!-- 					You have submitted a distribution application, please wait for the administrator to review.  -->
-<!-- 					 点击后变这句话  end -->
-<!-- 				</div> -->
-				<div class="blank9"></div>
-				<div class="index_ml index_boxes">
-					<div class="index_item personal">
-						<h4><s:text name="user.personal"/></h4>
-						<ul>
-							<li id="UsrEmail">
-								<b><s:text name="consult.email"/>:</b></li>
-<!-- 							<li> -->
-<!-- 								<b>Approval Status:</b>Under review </li> -->
-							<li>
-								<b><s:text name="user.consumption"/>:</b>
-								<a href="/"><s:text name="user.toGoShopping"/> ...</a>
-							</li>
-						</ul>
-					</div>
-					<div class="index_item address">
-						<h4><s:text name="user.myShipping"/></h4>
-						<ul id="UsrPurchaseLine">
-						</ul>
-						<div class="link">
-							<a href="/home/usr_UsrPurchaseLine_addmanagement" ><s:text name="user.add"/></a>
-							<a href="/home/usr_UsrPurchaseLine_addmanagement" id="UsrPurchaseLineMore"><s:text name="user.more"/></a>
-						</div>
-					</div>
-				</div>
-				<div class="index_mr index_boxes index_item orders">
-					<h4><s:text name="my_orders"/></h4>
-					<table width="100%" border="0" cellspacing="0" cellpadding="0">
-						<tbody id="Odrorder">
-							<tr>
-								<th width="18%"><s:text name="user.time"/></th>
-								<th width="25%"><s:text name="user.orderNo"/></th>
-								<th width="17%"><s:text name="user.price"/></th>
-								<th width="20%"><s:text name="user.status"/></th>
-							</tr>
-<!-- 							<tr class="odd"> -->
-<!-- 								<td>07/16/2018</td> -->
-<!-- 								<td> -->
-<!-- 									<a href="https://www.shoestp.com/account/orders/view18071610112026.html">18071610112026</a> -->
-<!-- 								</td> -->
-<!-- 								<td>$414.00</td> -->
-<!-- 								<td>Cancelled</td> -->
-<!-- 							</tr> -->
-<!-- 							<tr class="even"> -->
-<!-- 								<td>07/13/2018</td> -->
-<!-- 								<td> -->
-<!-- 									<a href="https://www.shoestp.com/account/orders/view18071309175440.html">18071309175440</a> -->
-<!-- 								</td> -->
-<!-- 								<td>$9,214.00</td> -->
-<!-- 								<td>Cancelled</td> -->
-<!-- 							</tr> -->
-						</tbody>
-					</table>
-					<div class="link">
-						<a href="/home/odr_OdrOrder_orders"><s:text name="user.more"/></a>
-					</div>
-				</div>
-				<div class="blank20"></div>
-				<div class="index_ml index_boxes index_item service">
-					<h4><s:text name="user.serviceHelp"/></h4>
-					<ul>
-					</ul>
-				</div>
-				<div class="index_mr index_boxes index_item favorites horizontal" style="height: 174px; width: 568px;">
-					<h4><s:text name="user.favoriteTitle"/></h4>
-					<div class="viewport">
-						<ul class="list" data="{&quot;small&quot;:&quot;240x240&quot;,&quot;normal&quot;:&quot;500x500&quot;,&quot;large&quot;:&quot;v&quot;}"
-						    style="width: 1620px;" id="UsrFavorites">
-
-						</ul>
-					</div>
-					<div class="link">
-						<a href="/home/usr_UsrFavorites_myfavorite"><s:text name="user.more"/></a>
-					</div>
-					<a href="javascript:void(0);" hidefocus="true" class="btn btn_l left prev"></a>
-					<a href="javascript:void(0);" hidefocus="true" class="btn btn_r right next"></a>
-
-				</div>
-				<div class="blank20"></div>
-				<%-- <div class="index_boxes index_item review" id="pdtComment">
-					<h4>My Reviews</h4>
-						<ul>
-							<li class="clearfix">
-								<dl class="fl">
-									<dt>
-										<a class="pic_box" href="https://www.shoestp.com/dabowen-canvas-shoes-2018-new-design-fashion-wholesale-lace-up-red-men-and-women-casual-rubber-vulcanized-shoe_p3779.html" title="Dabowen Canvas Shoes 2018 New Design Fashion Wholesale Lace up Red Men and Women Casual Rubber Vulcanized Shoe">
-											<img src="./dddd_files/c4050b22bb.jpg.240x240.jpg" alt="Dabowen Canvas Shoes 2018 New Design Fashion Wholesale Lace up Red Men and Women Casual Rubber Vulcanized Shoe">
-											<span></span>
-										</a>
-									</dt>
-									<dd class="review">
-										<div class="title"><span title="">..</span> <span class="star star_s5"></span><div class="time fr">Aug 06,2018 09:31:47</div></div>
-										<div class="content">123213213213123123..</div>
-									</dd>
-								</dl>
-							</li>
-						</ul>
-					<div class="link">
-						<a href="https://www.shoestp.com/account/review/">More</a>
-					</div>
-				</div> --%>
-			</div>
-		</div>
-	</div>
-	<%@ include file="/home/template/new-foot.jsp" %>
-	<div id="hj_top" style="opacity: 0;">
-		<img src="./static/images/hj_top.png">
-	</div>
-</body>
-
-<script type="text/javascript">
-	$(function(){
-		$.ajax({
-			type : 'post',
-			async:false,
-			url:'/home/usr_UsrPurchase_detailById',
-			dataType:'json',
-			success:function(data){
-				if(data.ret != 1)
-					return false;
-				var orders = data.result.orders;
-				var favorites = data.result.favorites;
-				var defaultAddress = data.result.defaultAddress;
-				$("#PdtLoginName").append(data.result.loginName);
-				$("#UsrEmail").append(data.result.email);
-				$.each(orders,function(index,order){
-					$("#Odrorder").append(
-					'	<tr class="odd">'+
-					'		<td>'+moment(Date.toLocale(order.date)).format("ll")+'</td>'+
-					'		<td>'+
-					'			<a href="/home/odr_OdrOrder_detail?orderId='+order.number+'">'+order.number+'</a>'+
-					'		</td>'+
-					'		<td>'+order.total+'</td>'+
-					'		<td>'+lang_obj.orders.status[order.status]+'</td>'+
-					'	</tr>'
-					);
-				})
-				if(defaultAddress)
-					$("#UsrPurchaseLine").append(
-							'<li>'+defaultAddress.surname+' '+defaultAddress.name+'</li>'+
-							'<li>'+defaultAddress.address+'</li>'+
-							'<li>'+defaultAddress.city+' , '+defaultAddress.region.name+' , '+defaultAddress.postalCode+' , '+defaultAddress.country.name+' </li>'+
-							'<li>'+defaultAddress.phone+'</li>'
-					);
-
-				$.each(favorites,function(index,favorite){
-					$("#UsrFavorites").append(
-					'	<li>'+
-					'		<span class="photo">'+
-					'			<a href="/home/pdt_PdtProduct_gtProductsInfo?id='+favorite.productId+'"'+
-					'			    title="'+favorite.name+'" target="_blank">'+
-					'				<img src="${envConfig.imageBaseUrl}'+favorite.image+'" alt="'+favorite.name+'">'+
-					'			</a>'+
-					'		</span>'+
-					'		<a href="/home/pdt_PdtProduct_gtProductsInfo?id='+favorite.productId+'" class="name" title="'+favorite.name+'" target="_blank">'+cutstr(favorite.name,15)+'</a>'+
-					'	</li>'
-					);
-				})
-				if(data.result.pdtComment)
-					$.each(data.result.pdtComment,function(key,commentValue){//'+commentValue.name+'
-							$("#pdtComment").append(
-							'	<ul>'+
-							'		<li class="clearfix">'+
-							'			<dl class="fl">'+
-							'				<dt>'+
-							'					<a class="pic_box" href="" title="'+commentValue.name+'">'+
-							'						<img src="${envConfig.imageBaseUrl}'+commentValue.picture+'" alt="'+commentValue.name+'">'+
-							'						<span></span>'+
-							'					</a>'+
-							'				</dt>'+
-							'				<dd class="review">'+
-							'					<div class="title"><span title="'+commentValue.surname+'">'+commentValue.surname+'</span> '+
-							'						<span class="star star_s'+commentValue.productSatisfaction+'"></span>'+
-							'						<div class="time fr">'+commentValue.commentTime+'</div>'+
-							'					</div>'+
-							'					<div class="content">'+commentValue.comment+'</div>'+
-							'				</dd>'+
-							'			</dl>'+
-							'		</li>'+
-							'	</ul>'
-							)
-						})
-				}
-			})
-			user_obj.user_index_init();
-		})
-
-	function cutstr(str, len) {
-		if(str!=null && len!=null){
-	        var str_length = 0;
-	        var str_len = 0;
-	        str_cut = new String();
-	        str_len = str.length;
-	        for (var i = 0; i < str_len; i++) {
-	            a = str.charAt(i);
-	            str_length++;
-	            if (escape(a).length > 4) {
-	                //中文字符的长度经编码之后大于4
-	                str_length++;
-	            }
-	            str_cut = str_cut.concat(a);
-	            if (str_length >= len) {
-	                str_cut = str_cut.concat("...");
-	                return str_cut;
-	            }
-	        }
-	        //如果给定字符串小于指定长度，则返回源字符串；
-	        if (str_length < len) {
-	            return str;
-	        }
-		}
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<jsp:include page="v3/header.jsp"></jsp:include>
+<link rel="stylesheet" href="/home/v3/static/css/user/ureset.css"/>
+<link rel="stylesheet" href="/home/v3/static/css/user/uindex.css"/>
+<link rel="stylesheet" href="/home/v2/static/css/nav/new-top-nav-style.css"/>
+<style>
+    .el-badge__content.is-fixed.is-dot {
+        right: 10px;
+        top: 5px;
     }
 
+    .el-button {
+        width: 173px;
+        height: 40px;
+        font-size: 18px;
+        background-color: #10389c;
+        border-radius: 3px;
+        color: #ffffff;
+        margin-right: 10px;
+    }
+    .el-button:focus, .el-button:hover{
+        color: #ffffff;
+        border-color: #10389c;
+        background-color: #10389c;
+    }
+    .el-textarea__inner {
+        resize: none
+    }
+
+    .el-upload img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+</style>
+
+</head>
+
+<body>
+<jsp:include page="v3/nav-nobody.jsp"></jsp:include>
+<script src="/home/v3/static/js/index-top.js"></script>
+<div id="personalCenter" class="clearfix" v-cloak>
+    <index-top></index-top>
+    <div class="user-menu fl">
+       <div class="user-menu-title"><img src="/home/v3/static/images/user/icon_account.png" alt="" style="margin:0 8px 2px 0;">My Account
+        </div>
+        <div class="user-menu-item"><a style="color:#10389c;" href="/home/usr_UsrPurchase_userIndex">Home <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+        <div class="user-menu-item"><a href="/home/usr_UsrMessages_center">Message Center <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+        <div class="user-menu-item"><a href="/home/usr_UsrPurchase_contacts">Contacts <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+        <div class="user-menu-item"><a href="/home/usr_UsrFavorites_myfavorite">My Favourites <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+        <div class="user-menu-item"><a href="/home/usr_UsrPurchase_usrSetting">Account Settings <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+    </div>
+    <div class="user-main fr">
+        <!-- 头部信息 -->
+        <div class="user-info clearfix flexCc">
+            <div class="user-info-item flexCc">
+                <div class="flexCc">
+                    <div class="avatar-box" ref="avatarUpload">
+                        <div class="avatar">
+
+                            <img @click="clickShowUploadAvatar"
+                                 :src="userInfo.avatar?image(userInfo.avatar):'/home/v3/static/images/user/toux_me.png'"
+                                 alt="">
+                        </div>
+                        <div class="user-info-item-name" style="color: #232323;">
+                            {{userInfo.nickname?userInfo.nickname:'Nickname'}}
+                        </div>
+                         <transition name="user-fade-in">
+                        <div class="avatar-upload clearfix  " v-if="isShowAvatarUpload">
+                            <!-- action="https://jsonplaceholder.typicode.com/posts/" -->
+                            <div class="fl upload-box">
+                                <div>
+                                    <el-upload
+                                            drag
+                                            class="avatar-uploader"
+                                            :show-file-list="false"
+                                            action="/home/usr_Purchase_upload"
+                                            :on-success="handleAvatarSuccess"
+                                            :before-upload="beforeAvatarUpload">
+                                        <img :src="userInfo.avatar?image(userInfo.avatar):'/home/v3/static/images/user/upload-avatar.png'"
+                                             class="avatar">
+                                        <!-- <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
+                                        <!-- <img v-else src="/home/v3/static/images/user/upload-avatar.png" alt=""> -->
+                                    </el-upload>
+                                </div>
+                                <div class="upload-button" @click="clickUploadAvatar(userInfo.avatar)">submit</div>
+                            </div>
+                            <div class="fl upload-description">
+                                <p>Click the button or drag the image onto the dotted box to upload</p>
+                                <p>Upload JPG format,sized no larger than 3MB</p>
+                            </div>
+                        </div>
+                    </transition>
+                    </div>
+                    <div class="icon-id">
+                        <a href="/home/usr_UsrPurchase_usrSetting">
+                             <img src="/home/v3/static/images/user/icon_id.png" alt="">
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            <div class="user-info-item flexCc">
+                 <a href="/home/usr_UsrMessages_center">
+                    <div>
+                        <div class="flexCc">
+                            <span style="font-size:36px;">{{userInfo.unreadMessagersCount}}</span>
+                            <img src="/home/v3/static/images/user/icon_message.png" alt="" style="margin-left:10px;">
+                        </div>
+                        <div class="user-info-item-name">
+                            Unread Messagers
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="user-info-item flexCc">
+                <a href="/home/usr_UsrPurchase_contacts">
+                    <div>
+                        <div class="flexCc">
+                            <span style="font-size:36px;">{{userInfo.requestsFromConnectionsCount}}</span>
+                            <!-- <el-badge is-dot> -->
+                            <el-badge>
+                                <img src="/home/v3/static/images/user/icon_alarm.png" alt="" style="margin-left:10px;">
+                            </el-badge>
+                        </div>
+                        <div class="user-info-item-name">
+                            Requests from Connections
+                        </div>
+                    </div>
+                  </a>
+            </div>
+        </div>
+        <!-- 问题表单 -->
+        <div class="quotation">
+            <div class="quotation-title clearfix">
+                <h3 class="fl">Request for Quotation</h3>
+            </div>
+            <el-form ref="form" :model="form" :rules="rules" label-width="220px" class="quotation-form">
+                <el-form-item label="Product Name :" prop="title">
+                    <el-input v-model.trim="form.title" placeholder="Please Enter The Product Name."></el-input>
+                </el-form-item>
+                <el-form-item label="Product Detailed Specification :" prop="descriotion">
+                    <el-input type="textarea" :rows="6" v-model.trim="form.descriotion"
+                              placeholder="Please enter your Proct/Service Details"></el-input>
+                </el-form-item>
+                <el-form-item label="Estimates Order Quantity :" prop="quantity">
+                    <el-row>
+                        <el-col :span="7">
+                            <el-input v-model.trim="form.quantity" placeholder="Please enter the quantity"></el-input>
+                        </el-col>
+                        <el-col :span="5" :offset="1">
+                            <el-form-item prop="unit">
+                                    <el-select v-model="form.unit" placeholder="Unit">
+                                            <el-option
+                                            v-for="item in options"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value">
+                                          </el-option>
+                                    </el-select>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                </el-form-item>
+                <el-form-item>
+                    <el-button :disabled="flag" type="button" @click="submitForm('form')">Confirm</el-button>
+                    <a @click="ToRFQ" style="color: #9fafd7;font: size 12px;cursor: pointer;">Add more requirements</a>
+                </el-form-item>
+            </el-form>
+        </div>
+        <!-- 收藏 -->
+        <div class="favorites">
+            <div class="favorites-title">
+                <img src="/home/v3/static/images/user/icon_like_star.png" alt="">
+                Favorites
+            </div>
+            <div class="favorites-main flexSb">
+                <template v-if="favoriteList.length <= 0">
+                    <div class="favorites-list" style="font-size: 20px;color: #7f7f7f;text-align:center;line-height:169px;">No collection items</div>
+                </template>
+                <template v-else>
+                    <a href="/home/usr_UsrFavorites_myfavorite"><img src="/home/v3/static/images/user/icon_left_d.png" alt=""></a>
+                    <ul class="favorites-list clearfix">
+                        <li class="favorites-item" v-for="(item,index) in favoriteList" :key="index">
+                            <a :href="'/home/pdt_PdtProduct_gtProductsInfo?id='+item.pdtPkey" target="_blank">
+                                <div class="favorites-item-img">
+                                    <img :src="image(item.img,'?x-oss-process=image/resize,m_pad,h_150,w_150')" alt="">
+                                </div>
+                                <div class="favorites-item-name">
+                                    {{item.name}}
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <a href="/home/usr_UsrFavorites_myfavorite"><img src="/home/v3/static/images/user/icon_right_d.png" alt=""></a>
+                </template>
+            </div>
+        </div>
+        <!-- 个性化设置 功能没做  先隐藏 -->
+        <!-- <div class="personalize">
+            <h3>Hi {{userInfo.nickname}}</h3>
+            <p>Please complete your personalized profile to enjoy carefully selected product recommendations, access to
+                selected & verified Trade Assurance sellers, and more.</p>
+            <a href="javascript: void(0);">Personalize Now</a>
+        </div> -->
+    </div>
+</div>
+<script src="/home/v3/static/js/index-bottom.js"></script>
+<div id="bottom" style="margin-top: 25px">
+    <index-bottom></index-bottom>
+</div>
+
+<script>
+    new Vue({
+        el: "#bottom"
+    })
 </script>
+
+<script>
+    new Vue({
+        el: "#personalCenter",
+        data() {
+            return{
+                flag : false, 
+                isShowAvatarUpload: false, // 头像上传框
+                options: [{
+                        value: "1",
+                        label: "Pairs"
+                    },
+                        {
+                            value: "2",
+                            label: "Forty-Foot Container"
+                        },
+                        {
+                            value: "3",
+                            label: "Twenty-Foot Container"
+                        },
+                    ],
+            form: {
+                title: '',
+                descriotion: '',
+                quantity: '',
+                unit: '1',
+                currency: 1,
+                pay_type: 1,
+                shipping_type: 1
+            },
+            userInfo: [],
+            favoriteList: [], //收藏列表
+            rules: { //表单验证
+                title: [
+                        {required: true,message: 'Please fill in the title',trigger: 'blur'},
+                        { max: 500, message: 'Enter up to 500 digits', trigger: 'blur' }
+                    ],
+
+                descriotion: [{
+                    required: true,
+                    message: 'Please enter your Proct/Service Details',
+                    trigger: 'blur'
+                }],
+                quantity: [
+                            {required: true,message: 'Please enter the quantity',trigger: 'blur'},
+                            { pattern: util_regular_obj.register.positiveInteger, message: "Please enter the positive integer，and can\'t beyond 10 digits" }
+                        ],
+                unit: [{
+                    required: true,
+                    message: 'Please select a unit',
+                    trigger: 'change'
+                }],
+            },
+            }
+
+        },
+         created(){
+             
+            document.addEventListener('click',(e)=>{
+            //     console.log("this.$refs.dl.contains(e.target)");
+            // console.log(this.$refs.dl.contains(e.target));
+            if(!this.$refs.avatarUpload.contains(e.target)){
+                this.isShowAvatarUpload = false;
+                if(this.userInfo.avatar){
+                    this.userInfo.avatar = this.userInfo.avatar;
+                }else{
+                    this.userInfo.avatar = ''
+                }
+            }
+        })
+        },
+        mounted() {
+            this.getUserInfo();
+            this.getFavoriteList();
+        },
+        methods: {
+            // 跳转RFQ   
+            ToRFQ(){
+                let url = "/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1"+ "&backUrl=" + window.location.href
+                util_function_obj.supplierCantEnter(this, url);
+             },
+            clickShowUploadAvatar() {  // 点击头像出现 头像上传
+                this.isShowAvatarUpload = !this.isShowAvatarUpload
+                // if(this.isShowAvatarUpload == false){
+                //   this.getUserInfo();
+                // }
+            },
+            getUserInfo() { // 获取个人信息
+                var self = this;
+                // axios.get('/home/usr_Purchase_profile')
+                axios.get('/home/usr_Purchase_profile')
+                    .then(function (res) {
+                        console.log(res);
+                        if (res.data.ret == -1) {
+                            util_function_obj.alertWhenNoLogin(self);
+                            return
+                        } else if (res.data.ret != 1) {
+                            self.$message.error(res.data.msg || "Network error, please refresh the page and try again");
+                            return
+                        }
+                        self.userInfo = res.data.result;
+                    })
+                    .catch(function (error) {
+                        self.$message.error("Network error, please refresh the page and try again");
+                        console.log(error);
+                    });
+            },
+            getFavoriteList() { // 获取收藏列表
+                var self = this;
+                axios.get('/home/usr_Purchase_favorite', {
+                    params: {
+                        start: 0,
+                        limit: 5,
+                    }
+                })
+                    .then(function (res) {
+                        if (res.data.ret == -1) {
+                            util_function_obj.alertWhenNoLogin(self);
+                            return
+                        } else if (res.data.ret != 1) {
+                            self.$message.error(res.data.msg || "Network error, please refresh the page and try again");
+                            return
+                        }
+                        self.favoriteList = res.data.result.items;
+                    })
+                    .catch(function (error) {
+                        self.$message.error("Network error, please refresh the page and try again");
+                        console.log(error);
+                    });
+            },
+            submitForm(formName) { //表单提交
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        this.flag = true;
+                        let data = JSON.stringify(this.form)
+                        // console.log(this.form)
+                        // console.log('submit!');
+                        axios.post('/home/rfq_RFQConsult_putRFQInquiry', data,
+                            {headers: {'Content-Type': 'application/json'}}
+                        )
+                            .then((res) => {
+                                // console.log(res)
+                                if (res.data.ret == -1) {
+                                    this.flag = false;
+                                    util_function_obj.alertWhenNoLogin(this);
+                                    return
+                                } else if (res.data.ret != 1) {
+                                    this.flag = false;
+                                    this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
+                                        confirmButtonText: 'OK',
+                                        customClass: "my-custom-element-alert-class fs-content-18",
+                                    });
+                                    return
+                                }
+                                // 提交成功时   提示信息
+                                this.$message({
+                                    showClose: true,
+                                    message: 'Submitted successfully',
+                                    type: 'success'
+                                });
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 1500)
+                            })
+                            .catch((err) => {
+                                this.flag = false;
+                                self.$message.error("Network error, please refresh the page and try again");
+                                console.log(err)
+                            })
+                    } else {
+                        console.log('error submit!!');
+                        // if (!this.form.quantity) {
+                        //   this.$message.error('请输入数量');
+                        // } else if (!this.form.unit) {
+                        //   this.$message.error("请选择单位");
+                        // } else if (!this.form.descriotion) {
+                        //   this.$message.error('请输入内容');
+                        // }else if (!this.form.title) {
+                        //   this.$message.error("请输入标题");
+                        // }
+                        // return false;
+                    }
+                });
+               
+            },
+            // 头像上传
+            handleAvatarSuccess(res, file) {
+                // console.log(res)
+                // console.log(res.ret)
+                // console.log(res.result.url)
+                // console.log(file)
+                // this.userInfo.avatar = res.result.url
+                // console.log(this.userInfo.avatar)
+                if (res.ret == -1) {
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                } else if (res.ret != 1) {
+                    this.$message.error(res.data.msg || "Network error, please refresh the page and try again");
+                    return
+                }
+                this.$set(this.userInfo,"avatar",res.result.url)
+            },
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isLt3M = file.size / 1024 / 1024 < 3;
+                if (!isJPG) {
+                    this.$message.error('Upload avatar image can only be JPG format');
+                }
+                if (!isLt3M) {
+                    this.$message.error("Upload avatar image size can't exceed 3MB!");
+                }
+                return isJPG && isLt3M;
+            },
+            clickUploadAvatar(avatar) {
+                var self = this;
+                axios.post('/home/usr_Purchase_editAvatar', Qs.stringify({
+                    avatar,
+                }))
+                    .then(function (res) {
+                        // console.log(res);
+                        if (res.data.ret == -1) {
+                            util_function_obj.alertWhenNoLogin(self);
+                            return
+                        } else if (res.data.ret != 1) {
+                            self.$message.error(res.data.msg || "Network error, please refresh the page and try again");
+                            return
+                        }
+                        self.start = 0;
+                        self.$message.success("Submitted Successfully");
+                        self.isShowAvatarUpload = !self.isShowAvatarUpload
+                        self.getUserInfo();
+                    })
+                    .catch(function (error) {
+                        this.$message.error("Network error, please refresh the page and try again");
+                        console.log(error);
+                    });
+            },
+            image(v, params) {
+                if (!v) {
+                    return ""
+                }
+                if (!params) {
+                    params = ""
+                }
+                return "https://image.shoestp.com" + v + params
+            },
+        }
+    })
+</script>
+</body>
+
 </html>

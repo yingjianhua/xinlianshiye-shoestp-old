@@ -49,7 +49,7 @@
 				margin-top: 0.75rem;
 				position: relative;
 			}
-			
+
 			.flex-grow .main000 .xmg-xiala .xmg-top {
 				width: 7.5rem;
 				height: 2.25rem;
@@ -435,7 +435,7 @@
 						</p>
 					</div>
 				</c:if>
-				
+
 			</div>
 			<!-- 公司头部 - 含背景图 - end -->
 			<!-- 底部 -->
@@ -452,7 +452,7 @@
 	var type = 1;
 	var allPage = 0;
 	var _self = this;
-	
+
 	window.onload = function(){
 		var opt = $("#activityList li[state=2]");
 		if(opt.length == 0){
@@ -460,11 +460,11 @@
 		}
 		getActInfo(opt)
 	}
-	
+
 	$("#activityList").on("click","li",function(){
 		getActInfo($(this));
 	})
-	
+
 	$(".click_more").on("click",function(){
 		self.page = ++self.page;
   		if(self.page > self.allPage){
@@ -474,7 +474,7 @@
   		}
   		getData();
 	})
-	
+
 	function chooseThisCat(id,name){
 		_self.category = id;
 		_self.page = 1;
@@ -484,7 +484,7 @@
 		$("#proList").html('');
 		getData();
 	}
-	
+
 	function chooseThisSort(sort){
 		switch(_self.type){
 	  	case 1:
@@ -501,11 +501,11 @@
 	  _self.sort = sort;
 	  getData();
 	}
-	
+
 	function getActInfo(opt){
 		console.log($(opt).attr("data"))
 		var data = JSON.parse($(opt).attr("data"));
-		
+
 		$(".xmg-top span").text(data.title)
 		$(".main000 h2").text("{"+data.title+"}");
 		switch(Number(data.state)){
@@ -526,7 +526,7 @@
 		$("#proList").html('');
 		getData();
 	}
-	
+
 	function getData(){
 		var param = {"id":_self.pkey,"page":_self.page,"limit":8,"category":_self.category,"sort":_self.sort,"type":_self.type};
 		$.ajax({
@@ -548,7 +548,7 @@
 			}
 		})
 	}
-	
+
 	function renderProduct(items){
 	 	$(".procurement-item").remove();
 	 	var div = '';
@@ -562,29 +562,29 @@
 				'<div class="xmg-item">' +
 				'<div class="xmg-top">' + val.name + '</div>' +
 				'<div class="xmg-common">' +
-				/*'<div class="xmg-l">' +
+				'<div class="xmg-l">' +
 				'<div class="xmg-t" style="font-size:12px;">MOQ:<span>'+val.count+'</span></div>' +
 				'<div class="xmg-b">' + judgeReview(val.reviewRating) + '<span>（' + val.reviewCount +
 				'）</span> </div>' +
 				'</div>' +
 				'<div class="xmg-r">' +
-				/!* '<div class="xmg-t">${env.currency.symbols}' + val.sourcePrice + '</div>' + *!/
+				/* '<div class="xmg-t">${env.currency.symbols}' + val.sourcePrice + '</div>' + */
 				'<div class="xmg-b">${env.currency.symbols}' + val.curPrice + '</div>' +
-				'</div>' +*/
+				'</div>' +
 				'</div>' +
 				'</div>' +
 				'<div class="xmg-bottom">' +
 				'<div class="favorite" onclick="addThisToFavorite(' + val.productId + ')">Favorite</div>' +
-		/*		'<div class="addcart" onclick="addThisToCart(' + val.productId +
-				');"><img src="/home/static/themes/default/mobile/images/myfavorite-carttb.png"/>  Add to Cart</div>' +*/
+				'<div class="addcart" onclick="addThisToCart(' + val.productId +
+				');"><img src="/home/static/themes/default/mobile/images/myfavorite-carttb.png"/>  Add to Cart</div>' +
 				'</div>' +
 				'</div>';
 			$("#proList").append(div);
 		});
   }
-	
-	
-	
+
+
+
 		/* var category = '${category}';
 		var sort = '${sort}';
 		var pkey = '${prm.pkey}';
@@ -767,7 +767,7 @@
 				}
 			})
 		}
-		
+
 		$('.flex-grow .main000 .xmg-xiala').click(function(){
     		$(this).toggleClass('show');
     	})

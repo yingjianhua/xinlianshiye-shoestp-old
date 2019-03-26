@@ -77,7 +77,8 @@ var lang_obj={
 		'telephone':'請填寫電話號碼！',
 		'fax':'請正確填寫傳真號碼！',
 		'email':'請正確填寫電子郵箱地址！',
-		'length':'長度不正確！您需要填寫%num%數位。'
+		'length':'長度不正確！您需要填寫%num%數位。',
+        'isemail':'请填写电子邮箱不正确或者不存在 '
 	},
 	signIn:{
 		'title':'登錄',
@@ -109,7 +110,8 @@ var lang_obj={
 		'es':'西班牙語',
 		'ru':'俄語',
 		'pt':'葡萄牙語',
-		'zh_tw':'繁體中文'
+		'zh_tw':'繁體中文',
+		'hu':'匈利亞'
 	},
 	manage:{
 		frame:{
@@ -462,13 +464,18 @@ var lang_obj={
 		account_name:'銀行賬戶',
 		depos_it_bank_subbranch:'開戶銀行支行名稱',
 		bank_account:'開戶銀行支行所在地',
-		
-		
-		
-		
 	},
 	supplier:{
 		products:'產品',
 		productsStyle:'加工方式'
-	}
+	},usrpurchase:{
+        have:'已有',
+        usrpurchase:'比特採購商',
+        Procured:'採購了',
+        complete:'已經完成了',
+        Dualobjective:'雙的目標的',
+        baifenhao:'%',
+        continued:'還可以繼續採購'
+
+    }
 };

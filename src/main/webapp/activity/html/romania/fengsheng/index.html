@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-quiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <script src="./js/axios.js"></script>
+    <script src="./js/vue.js"></script>
+    <script src='./js/qs.js'></script>
+    <!--      <script src='./pc-config.js'></script> -->
+    <title>FENGSHENG</title>
+    <link rel="stylesheet" href="css/pc-index.css">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<body>
+<div class="allaifa" id="fengsheng">
+    <!-- <div class="aifaheader clearfloat">
+        <img src="imgs/shoeslogo.png" alt="">
+        <div class="rightspan">
+            <span>phone：+86 13777757999</span>
+        </div>
+    </div> -->
+    <div class="allaifabanner">
+        <img src="imgs/fengshengbanner.png" alt="">
+        <div class="bannercon clearfloat" id="bannercon">
+            <img src="imgs/fengshengbanner2.png" alt="">
+            <form>
+                <h3>EXPLORE QUALITY SHOES</h3>
+                <div class="formitem">
+                    <label for="Email">EMAIL*</label>
+                    <input type="text" ref="name" name="Email" v-model="userdata.Email">
+                </div>
+                <div class="formitem">
+                    <label for="Name">NAME*</label>
+                    <input type="text" name="Name" v-model="userdata.Name">
+                </div>
+                <div class="formitem">
+                    <label for="Detail">DETAIL*</label>
+                    <textarea name="Detail" id="" cols="30" rows="10" v-model="userdata.Detail"></textarea>
+                </div>
+                <span class="submit" @click="resetForm">INQUIRY US</span>
+            </form>
+        </div>
+    </div>
+    <div class="allaifaabout">
+        <h2><span style="color:rgb(194, 156, 148)">ABOUT</span> FENGSHENG</h2>
+        <p>Wenzhou Fengsheng Shoe Co., LTD.,is a collection of scientific research、development、roduction and management
+            series of womens leather shoes of a modern enterprise,the company was founded in 1997,the existing staff of
+            more than 500,of which more than 100 large and mediumsized professiona staff.Taiwan and ltaly introduced the
+            latest running water production 4 lines,and has a staff of solidarity,the company adopts the new design and
+            advanced productiontechnology,the establishment of a strict scientific modern standard management
+            systemfication. </p>
+    </div>
+    <div class="allaifaimgs">
+        <h2>PRODUCT GALLERY</h2>
+        <div class="imgscon">
+            <span v-for="item,index in imgs" href="javascript:void(0)"><img :src="item.url" :alt="item.title"></span>
+            <!-- <a v-for="item,index in imgs" :href="item.src"><img :src="item.url" :alt="item.title"></a> -->
+        </div>
+    </div>
+    <div class="designoperation">
+        <h2>DESIGN OPERATION</h2>
+        <div class="designcon clearfloat" v-for="item,index in designmsg">
+            <h3>{{item.h3}}</h3>
+            <div class="design">
+                <img :src="item.img1" :alt="item.title1">
+                <h4>{{item.title1}}</h4>
+                <p>{{item.text1}}</p>
+            </div>
+            <img class="centerimg" src="imgs/changeleft.png" alt="">
+            <div class="design">
+                <img :src="item.img2" :alt="item.title2">
+                <h4>{{item.title2}}</h4>
+                <p>{{item.text2}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="advantage clearfloat">
+        <h2>ADVANTAGE</h2>
+        <div class="advantageright">
+            <div class="rightimg">
+                <img src="imgs/fengsheng19.png" alt="">
+                <img src="imgs/fengshengsmall.png" alt="">
+            </div>
+            <p>The company is specialized in various of women’s boots which have gained consumers’ favorited. Our shoes
+                are widely sold in Russia, United States, Spain, France, and other countries and regions.</p>
+            <div class="rightimg">
+                <img src="imgs/fengsheng20.png" alt="">
+                <img src="imgs/fengshengsmall.png" alt="">
+            </div>
+        </div>
+        <!-- <img class="advantageimg" src="imgs/fengshengcenter.png" alt=""> -->
+        <div class="advantageleft">
+            <p>The company has strong strength in shoe designing developing and production capacity in the good and
+                scientific management atmosphere. We work out 1,500 new shoe style per year.</p>
+            <div class="leftimg">
+                <img src="imgs/fengsheng21.png" alt="">
+                <img src="imgs/fengshengsmall.png" alt="">
+            </div>
+            <p>Our company adopts the humanized management system, and offer a broad development platform for talents
+                with zero complaints of labor disputes. We take the brand strategy, and upholds the principle of
+                “Customer Foremost, Quality First”.</p>
+        </div>
+    </div>
+    <p class="advantagep">We sincerely welcome everyone to visit our company and inspect our products.</p>
+    <div class="highlights clearfloat">
+        <h2>PRODUCT HIGHLIGHTS</h2>
+        <div class="lefthighlights">
+            <p>Therer is exquisite appearance of the shoes, and the combenation of sewing and leather by shoes are
+                novel.</p>
+            <p>The shoes are not only fashionable but also fine texture.</p>
+            <p>People could feel excellent quality among detail.</p>
+        </div>
+        <img src="imgs/fengsheng22.png" alt="">
+        <div class="righthighlights">
+            <p>The advantage of injection shoes are that the outsole are comfortable and sliding.</p>
+            <p>We selcelt good material at our shoes.</p>
+            <p>Fasion fine stitching embellishes the body.</p>
+        </div>
+    </div>
+    <div class="allaifafactory">
+        <h2>OUR FACTORY</h2>
+        <img src="imgs/fengsheng23.png" alt="">
+        <img src="imgs/fengsheng24.png" alt="">
+        <p>We have two lines of advanced shoes production systems,<br>400 sets of associated manufacturing equipments
+            and full sets of advanced testing equipments.<br>The annual capacity reaches 1,500,000 pairs and annual<br>output
+            value amounted to 24,000,000 USD.</p>
+    </div>
+    <div class="lastcon">
+        <h3><img src="imgs/fengshenglogo.png" alt=""></h3>
+        <p>Let us help you meet those needs！</p>
+        <span @click="scrollToTop()">INQUIRY US</span>
+    </div>
+    <!-- <div class="aifaheader aifafooter clearfloat">
+        <img src="imgs/shoeslogo.png" alt="">
+        <div class="rightspan">
+            <span>phone：+86 13777757999</span>
+        </div>
+    </div> -->
+</div>
+<script>
+    new Vue({
+        el: '#fengsheng',
+        data: {
+
+            interval: 0,
+
+            userdata: {
+                Name: '',
+                Email: '',
+                Detail: '',
+                id: 283
+            },
+
+
+            imgs: [
+                {
+                    title: '1',
+                    url: 'imgs/fengsheng1.png',
+                    src: 'https://www.shoestp.com/fengsheng-fashion-suede-leather-with-elastic-women-chelsea-ankle-boot_p6758.html'
+                },
+                {
+                    title: '2',
+                    url: 'imgs/fengsheng2.png',
+                    src: 'https://www.shoestp.com/fengsheng-pink-ladies-chunky-heels-ankle-boots-with-rivet-decoration_p6760.html'
+                },
+                {
+                    title: '3',
+                    url: 'imgs/fengsheng3.png',
+                    src: 'https://www.shoestp.com/fengsheng-women-rough-heel-with-flower-patchwork-embroidery_p6761.html'
+                },
+                {
+                    title: '4',
+                    url: 'imgs/fengsheng4.png',
+                    src: 'https://www.shoestp.com/fengsheng-womens-round-toe-low-heel-with-lace-up-ankle-boots_p6766.html'
+                },
+                {
+                    title: '5',
+                    url: 'imgs/fengsheng5.png',
+                    src: 'https://www.shoestp.com/fengsheng-elegant-women-shoes-buckle-new-models-boots_p6769.html'
+                },
+                {
+                    title: '6',
+                    url: 'imgs/fengsheng6.png',
+                    src: 'https://www.shoestp.com/fengsheng-durable-comfortable-brown-rubber-outsole-half-knee-high-boots_p6771.html'
+                },
+                {
+                    title: '7',
+                    url: 'imgs/fengsheng7.png',
+                    src: 'https://www.shoestp.com/fengsheng-lady-long-shoes-overknee-boots-women-over-the-knee-high-boots_p6772.html'
+                },
+                {
+                    title: '8',
+                    url: 'imgs/fengsheng8.png',
+                    src: 'https://www.shoestp.com/fengsheng-design-ladies-flat-knee-high-with-zipper-women-boots_p6774.html'
+                },
+                {
+                    title: '9',
+                    url: 'imgs/fengsheng9.png',
+                    src: 'https://www.shoestp.com/fengsheng-ladies-boots-shoes-rough-toe-over-the-knee-tall-women-flat-boots_p6775.html'
+                },
+                {
+                    title: '10',
+                    url: 'imgs/fengsheng10.png',
+                    src: 'https://www.shoestp.com/fengsheng-women-flat-zipper-knee-boots-winter-lady-leather-buckle-boots_p6764.html'
+                },
+                {
+                    title: '11',
+                    url: 'imgs/fengsheng11.png',
+                    src: 'https://www.shoestp.com/fengsheng-fancy-winter-buckle-boots-for-women-fashion-sexy-shoes_p6777.html'
+                },
+                {
+                    title: '12',
+                    url: 'imgs/fengsheng12.png',
+                    src: 'https://www.shoestp.com/fengsheng-fashion-women-knee-high-boots-velvet-flat-boots_p6770.html'
+                }
+            ],
+            designmsg: [
+                {
+                    h3: 'Shoe Room',
+                    img1: 'imgs/fengsheng13.png',
+                    img2: 'imgs/fengsheng14.png',
+                    title1: 'What we make?',
+                    title2: 'What we have?',
+                    text1: 'We are a company speciblizing in the production of womens boots. Offer various boots for different season. We are good at making middle and long boots and have long been exported to countries around the world, including the United States, Spain, France, and other countries.',
+                    text2: 'We have own showroom and thousands of different women\'s boots typrs. Our guests could find their favourite shoes in here.'
+                },
+                {
+                    h3: 'Design Desk',
+                    img1: 'imgs/fengsheng15.png',
+                    img2: 'imgs/fengsheng16.png',
+                    title1: 'Our persistence',
+                    title2: 'Our skills',
+                    text1: 'We adhere to the principle of quality first. According to different customer requirements, we use different materials to make women\'s boots.',
+                    text2: 'The existing staff of more than 500, the company has 4 production lines and has a staff of solidarity, the company adopts the new design and advanced production technology, to set up of a strict scientific modern standard management systemfication.'
+                },
+                {
+                    h3: 'Customer Service',
+                    img1: 'imgs/fengsheng17.png',
+                    img2: 'imgs/fengsheng18.png',
+                    title1: 'Our service',
+                    title2: 'Our delivery',
+                    text1: 'We provide different contact methods, including email, live chat, telephone, etc., and we strive to provide services for customers in the first time.',
+                    text2: 'We can guarantee that you will get your orders within 2 months.'
+                }
+            ]
+        },
+        mounted() {
+            this.changeheight();
+            window.onresize = this.changeheight;
+        },
+        methods: {
+            changeheight: function () {
+                var html = document.getElementsByTagName('html')[0];
+                var width = document.documentElement.clientWidth;
+                var fontSize;
+                if (width < 1500) {
+                    fontSize = 16;
+                } else {
+                    fontSize = 16 * width / 1500;
+                }
+                // fontSize = 16 * width / 1200;
+                html.style.fontSize = fontSize + 'px'
+                console.log(html.style.fontSize)
+            },
+            resetForm: function () {
+                var regEmail = new RegExp('.+@[a-z0-9]+\.(com|cn|net)$')
+                var regTel = new RegExp('[0-9]{6,}')
+                if (!this.userdata.Email) {
+                    this.$message({
+                        message: 'E-mail can not be empty',
+                        type: 'warning'
+                    })
+                    return false;
+                } else if (!regEmail.test(this.userdata.Email)) {
+                    this.$message({
+                        message: 'E-mail format error',
+                        type: 'warning'
+                    })
+                    return false;
+                }
+                if (!this.userdata.Name) {
+                    this.$message({
+                        message: 'Name can not be empty',
+                        type: 'warning'
+                    })
+                    return false;
+                }
+                if (!this.userdata.Detail) {
+                    this.$message({
+                        message: 'Detail can not be empty',
+                        type: 'warning'
+                    })
+                    return false;
+                }
+                var self = this;
+                axios.post('/home/Activity_Romania_inquiry',
+                    Qs.stringify(
+                        {
+                            name: self.userdata.Name,
+                            email: self.userdata.Email,
+                            detail: self.userdata.Detail,
+                            supId: self.userdata.id
+                        }
+                    )
+                ).then(function (res) {
+                    gtag_report_conversion();
+                    if (res.data.ret == 1) {
+                        self.$message({
+                            message: 'Submitted Successfully',
+                            type: 'success'
+                        })
+                        setTimeout(function () {
+                            for (var i in self.userdata) {
+                                self.userdata[i] = '';
+                            }
+                        }, 3000)
+                    } else {
+                        self.$message({
+                            message: 'Submitted Failed',
+                            type: 'warning'
+                        })
+                    }
+                }).catch(function (error) {
+                    console.log(error)
+                });
+            },
+            scrollToTop: function () {
+                const start = window.pageYOffset;
+                let i = 0;
+                let backPosition = 0;
+                this.interval = setInterval(() => {
+                    const next = Math.floor(this.easeInOutQuad(10 * i, start, -start, 500))
+                    if (next <= backPosition) {
+                        window.scrollTo(0, backPosition)
+                        clearInterval(this.interval)
+                        this.$refs.name.focus();
+                    } else {
+                        window.scrollTo(0, next)
+                    }
+                    i++
+                }, 16.7)
+
+                // 姓名输入框 获取焦点
+
+            },
+            easeInOutQuad(t, b, c, d) {
+                if ((t /= d / 2) < 1) return c / 2 * t * t + b
+                return -c / 2 * (--t * (t - 2) - 1) + b
+            },
+        }
+    })
+</script>
+<!-- 代码追踪 -->
+<!-- Global site tag (gtag.js) - Google Ads: 775392846 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-775392846"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-775392846');
+  gtag('config', 'UA-131117317-6');
+
+  function gtag_report_conversion(url) {
+    gtag('event', 'conversion', {
+        'send_to': 'AW-775392846/hl8bCOqXupIBEM6c3vEC'
+    });
+    return false;
+  }
+</script>
+
+<script type="text/javascript">
+	var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+	(function(){
+		var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+		s1.async=true;
+		s1.src='https://embed.tawk.to/5b8fcb48f31d0f771d8476f6/default';
+		s1.charset='UTF-8';
+		s1.setAttribute('crossorigin','*');
+		s0.parentNode.insertBefore(s1,s0);
+	})();
+</script>
+<!--End of Tawk.to Script-->
+</body>
+</html>

@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="/struts-tags" prefix="s"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="/struts-tags" prefix="s" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!-- saved from url=(0052)https://www.shoestp.com//sell/nr/001/images/drob.png -->
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
@@ -21,101 +21,41 @@
     <link rel="stylesheet" href="./static/css/swiper.min.css" type="text/css">
     <script src="./static/js/swiper.min.js"></script>
     <script src="./static/js/lazyload.min.js"></script>
-</head>
-<body class="lang_en w_1200">
-    <style type="text/css">
-        .FontColor,
-        a.FontColor,
-        a.FontColor:hover,
-        a:hover {
-            color: #333333;
+    <style>
+        body{
+            display: flex;
+            flex-direction: column;
         }
-
-        .FontBgColor {
-            background-color: #333333;
+        #app{
+            flex: none;
         }
-
-        .FontBorderColor {
-            border-color: #333333;
+        #main{
+            text-align: center;
         }
-
-        .FontBorderHoverColor:hover,
-        a.FontBorderHoverColor:hover {
-            border-color: #333333;
+        #error_page{
+            flex: auto;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 0;
         }
-
-        .NavBgColor {
-            background-color: #333333;
+        #error_page .error_warning{
+            min-width: 0;
+            display: inline-block;
         }
-
-        .NavHoverBgColor:hover {
-            background-color: #424242;
-        }
-
-        .NavBorderColor1 {
-            border-color: #333333;
-        }
-
-        .NavBorderColor2 {
-            border-color: #333333;
-        }
-
-        .CategoryBgColor {
-            background-color: #424242;
-        }
-
-        .PriceColor {
-            color: #101010;
-        }
-
-        .AddtoCartBgColor {
-            background-color: #D80000;
-        }
-
-        .BuyNowBgColor {
-            background-color: #FF9900;
-        }
-
-        .ReviewBgColor {
-            background-color: #FF9900;
-        }
-
-        .DiscountBgColor {
-            background-color: #D80000;
-        }
-
-        .DiscountBorderColor {
-            border-color: #D80000;
-        }
-
-        .ProListBgColor {
-            background-color: #FF9900;
-        }
-
-        .ProListHoverBgColor:hover {
-            background-color: #FF9900;
-        }
-
-        .GoodBorderColor {
-            border-color: #626262;
-        }
-
-        .GoodBorderHoverColor:hover {
-            border-color: #D80000;
-        }
-
-        .GoodBorderColor.selected {
-            border-color: #D80000;
-        }
-
-        .GoodBorderBottomHoverColor {
-            border-bottom-color: #D80000;
+        .flex-grow{
+            flex: auto;
         }
     </style>
-    <%@ include file="/home/template/web-top.jsp" %>
-    <%@ include file="/home/template/new-header.jsp" %>
-    <div id="error_page">
-        <div id="main" class="wide">
+</head>
+<jsp:include page="v3/header.jsp"/>
+<jsp:include page="v3/nav.jsp"/>
+<body class="lang_en w_1200">
+<div id="app">
+    <index-top></index-top>
+</div>
+<div id="error_page">
+    <div id="main">
+        <div class="wide">
             <div class="error_logo sw"></div>
             <div class="error_warning sw"><s:text name="404.Sorry"/></div>
             <div class="error_nav sw">
@@ -125,9 +65,26 @@
             </div>
         </div>
     </div>
-  	<%@ include file="/home/template/new-foot.jsp" %>
-    <div id="hj_top" style="opacity: 0;">
-        <img src="./static/images/hj_top.png">
+    <div class="flex-grow"></div>
+    <div id="bottom">
+        <index-bottom></index-bottom>
     </div>
+</div>
+<%--<%@ include file="/home/template/new-foot.jsp" %>--%>
+<div id="hj_top" style="opacity: 0;">
+    <img src="./static/images/hj_top.png">
+</div>
+<script src="/home/v3/static/js/index-top.js"></script>
+<script src="/home/v3/static/js/index-bottom.js"></script>
+<script>
+    new Vue({
+        el: "#app"
+    })
+</script>
+<script>
+    new Vue({
+        el: "#bottom"
+    })
+</script>
 </body>
 </html>

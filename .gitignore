@@ -17,3 +17,9 @@ shoestp.iml
 src/main/webapp/newseller/
 ${logDir}/shoestp.log
 pom.xml
+target
+src/main/resources/environment
+src/main/resources/environment/*
+
+#jrebel
+src/main/resources/rebel.xml

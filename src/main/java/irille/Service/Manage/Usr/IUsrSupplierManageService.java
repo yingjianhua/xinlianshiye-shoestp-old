@@ -1,13 +1,12 @@
 package irille.Service.Manage.Usr;
 
 import com.google.inject.ImplementedBy;
+
 import irille.Service.Manage.Usr.Imp.UsrSupplierManageServiceImp;
 import irille.view.usr.UsrSupplierInfoView;
 import irille.view.usr.UsrshopSettingView;
 
-/**
- * Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/12 Time: 16:21
- */
+/** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/12 Time: 16:21 */
 @ImplementedBy(UsrSupplierManageServiceImp.class)
 public interface IUsrSupplierManageService {
 
@@ -15,6 +14,7 @@ public interface IUsrSupplierManageService {
 
   /**
    * @Description: 获取的商家详细信息
+   *
    * @date 2018/11/5 16:36
    * @author lijie@shoestp.cn
    */
@@ -26,5 +26,4 @@ public interface IUsrSupplierManageService {
    * @author zjl
    */
   UsrshopSettingView getSettingInfoById(int i);
-
 }

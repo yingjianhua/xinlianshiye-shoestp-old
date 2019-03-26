@@ -41,7 +41,8 @@
         <p class="yellow-text slogan">New Era</p>
         <p class="yellow-text time">2018.12.4-2018.12.19</p>
         <p class="yellow-text content-01">Exhibition Hall Opens All Year Round</p>
-        <p class="white-text content-02">Magozinul Universal Dragonul Rosu Strada Drumul Garii 12,Bucuresti 077190</p>
+        <p class="white-text content-02">Magozinul Universal Dragonul Rosu Strada Drumul Garii 12,Bucuresti 077190(The
+            first floor at the right side.nr 3-4)</p>
         <div class="language">
             <p><span class="lan" @click="handleLanguage"><span style="font-size: 40px;border: none;padding: 0;">=</span> English</span><a
                     href="https://www.shoestp.com/home/usr_UsrPurchase"><img src="imgs/return-home.png"/></a></p>
@@ -52,9 +53,10 @@
             </ul>
         </div>
         <div class="image-bottom">
-            <a class="btn following" href="javascript:void(0);" @click="getGift;">Get Secret
+            <a class="btn following" href="javascript:void(0);" @click="getGift">Get Secret
                 Gift</a>
-            <a class="btn btn-blur" href="https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373">Onlione Ordering Opening Soon</a>
+            <!--<a class="btn following" href="/home/Activity_Romania">ROMANIAN OFFLINE SHOES PURCHASING</a>-->
+            <!--<a class="btn btn-blur" href="https://www.shoestp.com/home/usr_UsrSupplier_gtSupGroup?pkey=262&cat=373">Onlione Ordering Opening Soon</a>-->
         </div>
     </div>
     <div class="producrt">
@@ -63,16 +65,14 @@
         <mu-carousel hide-controls>
             <mu-carousel-item v-for="item in carouselProducrt">
                 <div class="detail">
-                    <a :href="item.url">
-                        <img :src="item.imageUrl">
-                        <h4>{{ item.contentTitle }}</h4>
-                        <p>{{ item.content }}</p>
-                    </a>
+                    <img :src="item.imageUrl">
+                    <h4>{{ item.contentTitle }}</h4>
+                    <p>{{ item.content }}</p>
                 </div>
             </mu-carousel-item>
         </mu-carousel>
         <a class="producrt-button inline-block-h80 following"
-           hrefs="javascript:void(0);" @click="getGift;">Get
+           hrefs="javascript:void(0);" @click="getGift">Get
             Free Sample Now</a>
     </div>
 
@@ -86,8 +86,8 @@
             <p class="pur_p"><span class="dot"></span><span class="bigyellow">500-800</span> pairs of premium shoes.</p>
             <p class="pur_p margin_bottom_20"><span class="dot"></span><span class="bigblue">24</span> hours customer
                 service</p>
-            <a class="producrt-button inline-block-h80 following"
-               href="https://www.shoestp.com/home/usr_UsrPurchase">To the mall</a>
+            <!--<a class="producrt-button inline-block-h80 following"-->
+            <!--href="https://www.shoestp.com/home/usr_UsrPurchase">To the mall</a>-->
         </div>
     </div>
     <div class="rmnybottomsix">
@@ -103,7 +103,7 @@
                 <img src="imgs/rmnyb20.png" alt="">
                 <img src="imgs/rmnyb21.png" alt="">
             </div>
-            <a class="inline-block-h80 following" href="javascript:void(0);" @click="getGift;">Request
+            <a class="inline-block-h80 following" href="javascript:void(0);" @click="getGift">Request
                 Now</a>
         </div>
     </div>
@@ -191,7 +191,7 @@
                 <span class="graycircle"></span>
                 <p>Professional advice about customization</p>
             </div>
-            <a class="inline-block-h80 following" href="javascript:void(0);" @click="getGift;">Reserve
+            <a class="inline-block-h80" href="javascript:void(0);" @click="getGift">Reserve
                 Your
                 Seat</a>
         </div>
@@ -209,7 +209,7 @@
                 <img src="imgs/rmnyb5.png" alt="">
                 <img src="imgs/rmnyb6.png" alt="">
             </div>
-            <a class="inline-block-h80 following" href="javascript:void(0);" @click="getGift;">Get
+            <a class="inline-block-h80 following" href="javascript:void(0);" @click="getGift">Get
                 Free
                 Sample Now</a>
         </div>
@@ -221,11 +221,13 @@
             <div class="bscontactus">
                 <p><strong>Persoana de contact</strong>: Romanesc</p>
                 <p><strong>Website</strong>：https://www.shoestp.com/m/romania/</p>
-                <p><strong>Telefon</strong>： 0762 900 529</p>
+                <p><strong>Comenzi Telefonice Limba Romană:</strong> 0762 898 898</p>
+                <p><strong>English Service:</strong> 0762 900 529</p>
+                <p><strong>订购服务电话:</strong> 0762 900 529</p>
                 <p><strong>Whatsapp</strong>：+40 762 900 529</p>
             </div>
             <div class="bscontactus">
-                <p><strong>E-mail</strong>：544414672@qq.com Adresă expoziție:</p>
+                <p><strong>E-mail</strong>：shoestp.romania@gmail.com</p>
                 <p>(în limba română service)</p>
                 <p>marketing@shoestp.com (English service)</p>
             </div>
@@ -233,6 +235,7 @@
                 <p><strong>Exhibition address</strong>:</p>
                 <p>Magazinul Universal Dragonul Roșu Strada</p>
                 <p>Drumul Garii 12,București 077190</p>
+                <p>(The first floor at the right side.nr 3-4)</p>
             </div>
         </div>
     </div>
@@ -241,7 +244,8 @@
         <div class="rmnybfcon">
             <h2>Your Business<br>Needs Are Unique?</h2>
             <h3>Let us help you meet those needs!<br>Talk to us and get your free samples now.</h3>
-            <a class="inline-block-h80 following" hrefs="http://yingkebao.top/web/formview/5b87847b75a03c126de93706">Reserve
+            <a class="inline-block-h80 following" hrefs="http://yingkebao.top/web/formview/5b87847b75a03c126de93706"
+               @click="getGift">Reserve
                 Your
                 Seat</a>
         </div>
@@ -262,8 +266,11 @@
             <span class="close-btn" @click="close">+</span>
             <div class="hf-border">
                 <h2 class="hf-title">
-                    2018 ROMANIAN <br>OFFLINE SHOES PURCHASING
+                    2019 Romanian <br>Shoes Wholesale Exhibition
                 </h2>
+                <div class="hf-input">
+                    <p class="hf-text">Submit now, you will get a free ticket and secret gift at once！</p>
+                </div>
                 <mu-container>
                     <mu-form ref="form" :model="hoodleForm" class="mu-demo-form">
                         <mu-form-item label="Contact:" help-text="" prop="name" :rules="nameRules">
@@ -277,11 +284,13 @@
                         </mu-form-item>
                         <mu-form-item prop="country" label="Country:">
                             <mu-select v-model="hoodleForm.country">
-                                <mu-option v-for="item,index in countrys" :key="item.id" :label="item.name" :value="item.id"></mu-option>
+                                <mu-option v-for="item,index in countrys" :key="item.id" :label="item.name"
+                                           :value="item.id"></mu-option>
                             </mu-select>
                         </mu-form-item>
                         <mu-form-item prop="inquiry" label="Inquiry:">
-                            <mu-text-field class="text-field" v-model="hoodleForm.inquiry" multi-line :rows="3" full-width style="height: 200px"></mu-text-field>
+                            <mu-text-field class="text-field" v-model="hoodleForm.inquiry" multi-line :rows="3"
+                                           full-width style="height: 200px"></mu-text-field>
                         </mu-form-item>
                         <mu-form-item>
                             <mu-button color="primary" @click="onSubmit">Submit</mu-button>
@@ -289,11 +298,7 @@
                         </mu-form-item>
                     </mu-form>
                 </mu-container>
-                <div class="hf-input">
-                    <p class="hf-text">Filling in and send the form, you will get a mysterious gift in the Romanian exhibition room!<br>
-                    Or you can fill your needs in the remark column, our staff will contact you at the first time!<br>
-                    Thank you for coming, we will provide the best service for you!</p>
-                </div>
+
             </div>
 
         </div>
@@ -319,19 +324,22 @@
         data: {
             // rules
             nameRules: [
-                { validate: (val) => !!val, message: 'The user name must be entered'},
-                { validate: (val) => val.length >= 3, message: 'The user name length is greater than 3'}
+                {validate: (val) => !!val, message: 'The user name must be entered'},
+                {validate: (val) => val.length >= 3, message: 'The user name length is greater than 3'}
             ],
             telRules: [
-                { validate: (val) => !!val, message: 'Mobile phone number must be entered'},
-                { validate: (val) => /^[0-9]{6,}$/.test(val), message: 'Phone number must be 6 or more digits'}
+                {validate: (val) => !!val, message: 'Mobile phone number must be entered'},
+                {validate: (val) => /^[0-9]{6,}$/.test(val), message: 'Phone number must be 6 or more digits'}
             ],
             emailRule: [
                 {validate: (val) => !!val, message: 'You have to fill in the mailbox'},
-                {validate: (val) => /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(val), message: 'Please enter the correct email address'}
+                {
+                    validate: (val) => /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(val),
+                    message: 'Please enter the correct email address'
+                }
             ],
-            hintText:'',
-            hintImage:'',
+            hintText: '',
+            hintImage: '',
             hoodleShow: false,
             successfullyShow: false,
             languageShow: false,
@@ -372,7 +380,7 @@
                     content: 'Factory Direct with Reliable Native Service'
                 }
             ],
-            countrys:[],
+            countrys: [],
             hoodleForm: {
                 name: '',
                 tel: '',
@@ -385,11 +393,11 @@
             this.acquireCountry()
         },
         methods: {
-            getGift:function(){
+            getGift: function () {
                 this.hoodleShow = true;
                 this.gtag_report_conversionGoogle()
             },
-            gtag_report_conversionGoogle:function(url) {
+            gtag_report_conversionGoogle: function (url) {
                 var callback = function () {
                     if (typeof(url) != 'undefined') {
                         window.location = url;
@@ -401,7 +409,7 @@
                 });
                 return false;
             },
-            hintShow:function () {
+            hintShow: function () {
                 this.successfullyShow = false;
             },
             close: function () {
@@ -442,7 +450,7 @@
             acquireCountry: function () {
                 //获取国家列表
                 var self = this
-                axios.get('/home/plt_PltCountry_list?lang=en').then(function (res) {
+                axios.get('/home/plt_PltCountry_list?lang=en&filter=romania').then(function (res) {
                     console.log(res.data);
                     self.countrys = res.data.result
                 }).catch(function (err) {
@@ -465,14 +473,14 @@
                                 inquiry: self.hoodleForm.inquiry
                             })
                         ).then(function (res) {
-                            if (res.data.ret == 1){
+                            if (res.data.ret == 1) {
                                 console.log('提交成功');
                                 self.hoodleShow = false;
                                 self.successfullyShow = true;
                                 self.hintImage = 'imgs/true_03.png';
                                 self.hintText = 'Submit Successfully！';
                                 self.close();
-                                   self.gtag_report_conversion();
+                                self.gtag_report_conversion();
                             } else {
                                 console.log('提交失败');
                                 self.successfullyShow = true;

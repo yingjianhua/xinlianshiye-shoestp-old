@@ -91,7 +91,8 @@ var lang_obj={
 		'telephone':'Vă rugăm să completați numărul de telefon!',
 		'fax':'Completați corect numărul de fax!',
 		'email':'Completați corect adresa de e-mail!',
-		'length':'Lungimea este incorectă! Trebuie să completați cifrele %num%.'
+		'length':'Lungimea este incorectă! Trebuie să completați cifrele %num%.',
+        'isemail':'Completați adresa de e-mail este incorectă sau nu există'
 	},
 	signIn:{
 		'title':'Conectați-vă',
@@ -123,7 +124,8 @@ var lang_obj={
 		'es':'spaniolă',
 		'ru':'rusă',
 		'pt':'portugheză',
-		'zh_tw':'Chineză tradițională'
+		'zh_tw':'Chineză tradițională',
+		'hu':' ungaria.'
 	},
 	manage:{
 		frame:{
@@ -497,6 +499,15 @@ var lang_obj={
 	supplier:{
 		products:'produs',
 		productsStyle:'Metoda de procesare'
-	}
+	},usrpurchase:{
+        have:'are',
+        usrpurchase:'Cumpărători bit',
+        Procured:'achiziţionat',
+        complete:'A fost deja finalizată',
+        Dualobjective:'Obiectiv dublu',
+        baifenhao:'%',
+        continued:'Pot continua să cumpere'
+
+    }
 	
 };

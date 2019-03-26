@@ -72,7 +72,8 @@ var lang_obj = {
 		'telephone':'Bitte geben Sie die Telefonnummer ein!',
 		'fax':'Bitte geben Sie die Faxnummer richtig ein!',
 		'email':'Bitte geben Sie die E-Mail Adresse korrekt ein!',
-		'length':'Die Länge ist falsch! Sie müssen die %num%  Ziffern eingeben. '
+		'length':'Die Länge ist falsch! Sie müssen die %num%  Ziffern eingeben. ',
+        'isemail':'Bitte geben Sie an, dass die E-Mail-Adresse falsch ist oder nicht existiert'
 	},
 	signIn:{
 		'title':'Einloggen',
@@ -104,7 +105,8 @@ var lang_obj = {
 		'es':'Spanisch',
 		'ru':'Russisch',
 		'pt':'Portugiesisch',
-		'zh_tw':'Traditionelles Chinesisch'
+		'zh_tw':'Traditionelles Chinesisch',
+        'hu':'UNGARN'
 	},
 	manage:{
 		frame:{
@@ -461,5 +463,15 @@ var lang_obj = {
 	supplier:{
 		products:'Produkt',
 		productsStyle:'Verarbeitungsmethode'
+	},usrpurchase:{
+			have:'',
+			usrpurchase:'',
+        Procured:'',
+        complete:'',
+        Dualobjective:'',
+        baifenhao:'%',
+        continued:'Auch kaufen.'
+
 	}
+
 };

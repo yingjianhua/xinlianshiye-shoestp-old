@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0,maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta content="telephone=no" name="format-detection">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="keywords" content="展豪">
+	<meta name="description" content="展豪">
+	<title>展豪</title>
+	<link rel="stylesheet" href="css/index.css" />
+	<script src='./js/vue.min.js'></script>
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="https://cdn.bootcss.com/material-design-icons/3.0.1/iconfont/material-icons.css">
+	<!-- 引入组件库 -->
+	<script src="./js/muse-ui.js"></script>
+	  <script src="./js/muse-ui-toast.js"></script>
+	<link rel="stylesheet" href="./css/muse-ui.css" media="all">
+	  <link rel="stylesheet" href="./css/muse-ui-toast.all.css">
+	<script src="./js/axios.min.js"></script>
+	<script src="./js/qs.js"></script>
+	<style>
+
+		html{
+			/* 字体 宽高都是以16px 为基础 */
+			font-size: 16px;
+			background-color: #ffffff;
+		}
+
+	</style>
+</head>
+
+<body>
+	<div id="app">
+		<style>
+		</style>
+		<div class="top-container">
+			<!-- <img src="./images/banner1.jpg" alt=""> -->
+			<div class="top-form">
+				<div style="font-size: 1.88rem;width: 95%;margin: 0 auto;font-weight: bold;">Uniquely designed shoe brand</div>
+				<div style="font-size: 0.94rem;line-height: 2rem;">Zhanhao casual shoes.</div>
+				<form action="">
+					<div class="bg-box">
+						<div class="title">Inquiry Information</div>
+						<div class="label" >Name</div>
+						<input class="input" type="text" name="name" v-model="form.name" ref="name">
+						<div class="label">Email Address</div>
+						<input class="input" type="email" name="eamil" v-model="form.email">
+						<div class="label">Advisory</div>
+						<textarea style="height:2.5rem;padding: 0.2rem;" class="input" v-model="form.detail" name="detail" id="" cols="30" rows="10"></textarea>
+					</div>
+					<button type="submit" class="inquiry-btn" @click="submit">Inquiry Now</button>
+				</form>
+			</div>
+		</div>
+		<!-- Our Advantage -->
+		<div class="our-advantage">
+			<div style="font-size:1.72rem;margin:2rem 0 1rem 0;font-weight:bold;">Our Advantage</div>
+			<div class="our-advantage-list">
+				<div class="our-advantage-item">
+					<img class="our-advantage-img" src="./images/our-advantage1.png" alt="">
+					<div class="title">Reasonable Price</div>
+					<div class="content">Offer lower prices to ensure the maximum profit for your business.</div>
+				</div>
+				<div class="our-advantage-item">
+					<img class="our-advantage-img" src="./images/our-advantage2.png" alt="">
+					<div class="title">Fast Service</div>
+					<div class="content">We know that you have the choice here, we hope that the best choice is the easiest, any
+						request, we will reply and serve you within 24 hours.</div>
+				</div>
+				<div class="our-advantage-item">
+					<img class="our-advantage-img" src="./images/our-advantage3.png" alt="">
+					<div class="title">Customer Support</div>
+					<div class="content">We have professional design teams in North Korea, Europe and China. We can issue more than
+						1000 shoes every year;</div>
+				</div>
+				<div class="our-advantage-item">
+					<img class="our-advantage-img" src="./images/our-advantage4.jpg" alt="" style="width:10rem;height:auto">
+					<div class="title">Customization</div>
+					<div class="content">We can manufacture OEM for you, we are monthly Can produce more than 150,000 pairs of shoes;</div>
+				</div>
+			</div>
+		</div>
+		<!-- Sports & Casual,
+			The Global Trade In Shoes -->
+		<div class="global-product-container">
+			<div class="title">Men's shoes<br>
+				The Global Trade In Shoes</div>
+			<div class="global-product-list">
+				<a class="global-product-item" href="javascript:void(0)">
+						<img src="./images/goods1.jpg" alt="">
+				</a>
+				<a class="global-product-item" href="javascript:void(0)">
+						<img src="./images/goods2.jpg" alt="">
+				</a>
+				<a class="global-product-item" href="javascript:void(0)">
+						<img src="./images/goods3.jpg" alt="">
+				</a>
+				<!-- <a class="global-product-item" href="https://www.shoestp.com/zhanhao-women's-casual-shoes-pure-color-canvas-shoes_p6782.html">
+						<img src="./images/goods1.jpg" alt="">
+				</a>
+				<a class="global-product-item" href="https://www.shoestp.com/zhanhao-women's-sneaker-casual-lace-up-shoes-with-rabbit-ear_p6780.html">
+						<img src="./images/goods2.jpg" alt="">
+				</a>
+				<a class="global-product-item" href="https://www.shoestp.com/zhanhao-women's-shoes-casual-lace-up-plaid-cloth-shoes_p6781.html">
+						<img src="./images/goods3.jpg" alt="">
+				</a> -->
+			</div>
+			<div>
+				<div style="font-size:1.25rem;font-weight:bold;line-height:2rem;">Product Show</div>
+				<div style="font-size:0.94rem;color: #585e61;">Simple but fashionable, Lightweight,
+					Abrasion-resistant, Slip-resistant, Free flexible.</div>
+					<div class="btn" @click="scrollToTop"  style="cursor:pointer;">Inquiry Now</div>
+			</div>
+		</div>
+		<!-- Custom Shoes -->
+		<div class="custom-shoes">
+			<div class="title">Custom Shoes</div>
+			<div style="font-size:0.94rem;">You can customize your shoes to suit your brand.
+				Please follow the steps below:</div>
+			<div style="margin:3.5rem 0;">
+				<img src="./images/custom-shoes1.jpg" alt="">
+			</div>
+			<div class="custom-shoes-list">
+				<div class="custom-shoes-item">
+					<img src="./images/custom-shoes2.png" alt="" style="width: 6.53rem;height: 4.56rem;">
+					<div class="title">Contact Us</div>
+					<div class="content">Submit the form above to leave your basic information. Our professional staff will contact
+						you within 24 hours.</div>
+				</div>
+				<div class="custom-shoes-item">
+					<img src="./images/custom-shoes3.jpg" alt="" style="width: 8.63rem;">
+					<div class="title">Pick Template</div>
+					<div class="content">We need you to pick your favorite look from our existing shoe templates.</div>
+				</div>
+				<div class="custom-shoes-item">
+					<img src="./images/custom-shoes4.png" alt="" style="width: 6.53rem;height: 6rem;">
+					<div class="title">Collecting Details</div>
+					<div class="content">Provide us with details of your brand image and other information. We will develop a preview
+						plan for you.</div>
+				</div>
+				<div class="custom-shoes-item">
+					<img src="./images/custom-shoes5.png" alt="" style="	width: 6.59rem;">
+					<div class="title">Check It Again</div>
+					<div class="content">Double check the final preview we showed you and we started mass production.</div>
+				</div>
+			</div>
+			<div class="btn" @click="scrollToTop"  style="cursor:pointer;">Request Now</div>
+		</div>
+		<div style="margin:4rem 0 0 0;">
+			<img src="./images/banner2.jpg" alt="" style="margin-bottom:1.88rem;">
+			<img src="./images/banner3.jpg" alt="">
+		</div>
+		<!-- About us -->
+		<div class="new-era">
+			<div class="title">About us</div>
+			<div class="content">Wenzhou Zhanhao Shoes Co., Ltd. Established in 2013, the professional research and design team currently has more than 10 employees. Combine new processes and materials with new trends in the latest and most fashionable products. With its distinctive fashion features and humanistic connotations, our products have won high praise and praise from customers over the years.
+				   With the experience of our sales and quality control teams with practical service processes and standards, our products can easily meet the diverse chemical and physical testing needs of major markets.
+				Africa, Eastern Europe market</div>
+		</div>
+		<!-- 4个数据 -->
+		<div class="four-num">
+			<div class="four-num-item">
+				<div>
+					<div class="title">800</div>
+					<div class="content" style="width:120px;">number of</div>
+					<div class="content">new shoe</div>
+					<div class="content">styles</div>
+				</div>
+			</div>
+			<div class="four-num-item">
+				<div>
+					<div class="title">3K</div>
+					<div class="content" style="text-align:center;">㎡</div>
+					<div class="content">facility</div>
+				</div>
+			</div>
+			<div class="four-num-item">
+				<div>
+					<div class="title">500</div>
+					<div class="content">Employee</div>
+				</div>
+			</div>
+			<div class="four-num-item">
+				<div>
+					<div class="title">15W</div>
+					<div class="content">Monthly</div>
+					<div class="content">production</div>
+				</div>
+			</div>
+		</div>
+		<!-- What is so great -->
+		<div class="great-container">
+			<div class="title">What is so great</div>
+			<div class="btn">Shoes</div>
+			<div><img src="./images/great.jpg" alt="" style="width:17.5rem;height:10.5rem;margin:2rem 0;"></div>
+			<div class="great-list">
+				<div class="great-item flex">
+					<img src="./images/great1.png" alt="" style=" width: 3.63rem;height: 3.16rem;flex-shrink:0;">
+					<div class="content">Fashion Design</div>
+				</div>
+				<div class="great-item flex">
+					<img src="./images/great1.png" alt="" style=" width: 3.63rem;height: 3.16rem;flex-shrink:0;">
+					<div class="content">Professional Custom Models</div>
+				</div>
+				<div class="great-item flex">
+					<img src="./images/great1.png" alt="" style=" width: 3.63rem;height: 3.16rem;flex-shrink:0;">
+					<div class="content">QC</div>
+				</div>
+				<div class="great-item flex">
+					<img src="./images/great1.png" alt="" style=" width: 3.63rem;height: 3.16rem;flex-shrink:0;">
+					<div class="content">Professional
+						Customer Service</div>
+				</div>
+				<div class="great-item flex">
+					<img src="./images/great1.png" alt="" style=" width: 3.63rem;height: 3.16rem;flex-shrink:0;">
+					<div class="content">Factory Direct
+						Sales</div>
+				</div>
+				<div class="great-item flex">
+					<img src="./images/great1.png" alt="" style=" width: 3.63rem;height: 3.16rem;flex-shrink:0;">
+					<div class="content">Service
+						Experience</div>
+				</div>
+				<div class="great-item flex">
+					<img src="./images/great1.png" alt="" style=" width: 3.63rem;height: 3.16rem;flex-shrink:0;">
+					<div class="content">About
+						Manufacyuring</div>
+				</div>
+			</div>
+		</div>
+		<!-- Order Detail -->
+		<div class="order-detail">
+			<div class="title">Order Detail</div>
+			<div class="order-detail-container">
+				<div class="order-detail-item flex">
+					<img src="./images/love.png" alt="" style="width: 3.31rem;height: 3.09rem;">
+					<div class="content">
+						<span style="font-weight:bold;">MOQ:</span> <br>
+						<span>800pcs</span>
+					</div>
+				</div>
+				<div class="order-detail-item flex">
+					<img src="./images/love.png" alt="" style="width: 3.31rem;height: 3.09rem;">
+					<div class="content">
+						<span style="font-weight:bold;">Monthly <br>
+							production:
+						</span> <br>
+						<span>150,000</span>
+					</div>
+				</div>
+				<div class="order-detail-item flex">
+					<img src="./images/love.png" alt="" style="width: 3.31rem;height: 3.09rem;">
+					<div class="content">
+						<span style="font-weight:bold;">Delivery time:
+						</span> <br>
+						<span>60 days</span>
+					</div>
+				</div>
+				<div class="order-detail-item flex">
+					<img src="./images/love.png" alt="" style="width: 3.31rem;height: 3.09rem;">
+					<div class="content">
+						<span style="font-weight:bold;">Price:
+						</span> <br>
+						<span>lowest factory <br>
+							direct price</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Testimonials -->
+		<div class="testimonials">
+			<div class="title1">Testimonials</div>
+			<div class="testimonials-list">
+				<div class="testimonials-item flex">
+					<img src="./images/testimonials1.png" alt="" style="width: 6.31rem;height: 6.31rem;flex-shrink:0;">
+					<div>
+						<div class="title">MICHAEL RUFFLE</div>
+						<div>I was really lucky when I found
+							your company online. Your products are doing very well in my business and I can easily resell them in my
+							country. I will definitely call you again!
+						</div>
+						<img src="./images/testimonials11.jpg" alt="" style="width: 4.8rem;height: 0.7rem;">
+					</div>
+				</div>
+				<div class="testimonials-item flex">
+					<img src="./images/testimonials2.png" alt="" style="width: 6.31rem;height: 6.31rem;flex-shrink:0;">
+					<div>
+						<div class="title">JOLLY MILLS</div>
+						<div>They are truly committed to providing our customers with the highest quality and most reliable service.
+						</div>
+						<img src="./images/testimonials22.jpg" alt="" style="width: 4.8rem;height: 0.7rem;">
+					</div>
+				</div>
+				<div class="testimonials-item flex">
+					<img src="./images/testimonials3.png" alt="" style="width: 6.31rem;height: 6.31rem;flex-shrink:0;">
+					<div>
+						<div class="title">WESLEY DANSON</div>
+						<div>They are completely beyond our expectations and do so in a positive and professional manner. I quote them to
+							everyone in his network of friends and family. Guys, thank you again.
+						</div>
+						<img src="./images/testimonials33.jpg" alt="" style="width: 4.8rem;height: 0.7rem;">
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- bottom -->
+		<div class="bottom-container">
+			<img src="./images/banner4.jpg" alt="">
+			<div class="content-box">
+				<div style="font-size: 1.56rem;font-weight: bold;">Your Business
+					Needs Are Unique?</div>
+				<div style="font-size: 0.94rem;margin:1rem 0 1.5rem 0;">Let us help you meet those needs!
+					Please contact us and enter the enquiry immediately.</div>
+					<div class="btn" @click="scrollToTop"  style="cursor:pointer;">Contact Us</div>
+					<div style="margin-top:1rem;font-size: 0.7rem;">
+						<div>
+							<img src="./images/icon-phone.png" alt="" style="width:0.9rem;">
+							<span>13806550235</span> &nbsp;&nbsp;
+							<span>0577-85190768</span>
+					</div>
+					<div>
+						<img src="./images/icon-email.png" alt="" style="width:1rem;">
+						<span> wzzhxy@sina.com</span>
+					</div>
+					</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		new Vue({
+		  el: "#app",
+		  data: {
+			form: {
+			  name: "",
+			  eamil: "",
+			  detail: ""
+			}
+		  },
+		  methods: {
+			// 判断询盘form中格式是否正确
+			isInquiryFormatRight() {
+			  // 姓名
+			  if (!this.form.name) {
+				this.$toast.error("Name cannot be empty");
+				return false;
+			  }
+			  // 邮箱
+			  if (!this.form.email) {
+				this.$toast.error("Mailbox cannot be empty");
+				return false;
+			  } else if (
+				!/^[0-9A-Za-z][\.-_0-9A-Za-z]*@[0-9A-Za-z]+(\.[0-9A-Za-z]+)+$/.test(
+				  this.form.email
+				)
+			  ) {
+				this.$toast.error("Email's format is error");
+				return false;
+			  }
+			  // 内容
+			  if (!this.form.detail) {
+				this.$toast.error("Inquiry info cannot be empty");
+				return false;
+			  }
+			  return true;
+			},
+			submit(e) {
+				e.preventDefault();
+			  if (!this.isInquiryFormatRight()) return;
+			  axios
+				.post(
+				  "/home/Activity_Romania_inquiry",
+				  Qs.stringify(
+					{
+					  supId: 301,
+					  name: this.form.name,
+					  email: this.form.email,
+					  detail: this.form.detail
+					},
+					{ allowDots: true }
+				  )
+				)
+				.then(res => {
+				  console.log(res);
+					gtag_report_conversion();
+				  if (res.data.ret != 1) {
+					this.$toast.error("Network error, please try again later");
+				  }
+				  this.$toast.success("Submitted successfully");
+				  setTimeout(() => {
+					window.scrollTo(0, 0);
+					window.location.reload();
+				  }, 2500);
+				})
+				.catch(err => {
+				  this.$toast.error("Network error, please try again later");
+				});
+			},
+			scrollToTop(){
+					const start = window.pageYOffset;
+		      let i = 0;
+		      let backPosition = 0;
+					this.interval = setInterval(() => {
+		        const next = Math.floor(this.easeInOutQuad(10 * i, start, -start, 500))
+		        if (next <= backPosition) {
+		          window.scrollTo(0, backPosition)
+		          clearInterval(this.interval)
+
+							// 姓名输入框 获取焦点
+							this.$refs.name.focus();
+		        } else {
+		          window.scrollTo(0, next)
+		        }
+		        i++
+		      }, 16.7)
+				},
+				easeInOutQuad(t, b, c, d) {
+		      if ((t /= d / 2) < 1) return c / 2 * t * t + b
+		      return -c / 2 * (--t * (t - 2) - 1) + b
+		    },
+		  },
+		  mounted() {},
+		  computed: {}
+		});
+	  </script>
+<!-- 代码追踪 -->
+<!-- Global site tag (gtag.js) - Google Ads: 774821366 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-774821366"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-774821366');
+  gtag('config', 'UA-131117317-3');
+
+  function gtag_report_conversion(url) {
+    gtag('event', 'conversion', {
+        'send_to': 'AW-774821366/xaG6CPS-xpIBEParu_EC'
+    });
+    return false;
+  }
+</script>
+
+<script type="text/javascript">
+	var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+	(function(){
+		var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+		s1.async=true;
+		s1.src='https://embed.tawk.to/5b8fcb48f31d0f771d8476f6/default';
+		s1.charset='UTF-8';
+		s1.setAttribute('crossorigin','*');
+		s0.parentNode.insertBefore(s1,s0);
+	})();
+</script>
+<!--End of Tawk.to Script-->
+</body>
+
+</html>

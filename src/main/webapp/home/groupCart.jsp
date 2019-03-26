@@ -131,197 +131,201 @@
       }
     </style>
 </head>
-
+<jsp:include page="v3/header.jsp"/>
+<jsp:include page="v3/nav.jsp"/>
 <body class="lang_en w_1200">
 
 	<%@ include file="/home/template/web-top.jsp" %>
-	<%@ include file="/home/template/new-header.jsp" %>
 	<a rel="nofollow" href="javascript:;" class="SignInButton FontColor" style="display:none;"></a>
-	<div id="main" class="wide">
-		<div id="lib_cart">
-			<div class="step">
-        <div class="step-content active">
-          1. <s:text name="Shopping_Cart"/>
-        </div>
-        <div class="step-content">
-          2. <s:text name="Checkout"/>
-        </div>
-        <div class="step-content">
-          3. <s:text name="Complete"/>
-        </div>
-			</div>
-			<div class="cartHeader">
-				<a href="/" name="continue_shopping" class="textbtn fl" title="Continue Shopping"><s:text name="Global.Continue_Shopping"/></a>
-				<button class="checkoutBtn fr"><s:text name="Proceed_To_Checkout"/></button>
-			</div>
-
-			<div class="jp-or-np">
-				<div class="fr">
-					<dl>
-						<dt><s:text name="Global.Filter"/>:</dt>
-						<dd><input type="checkbox" class="chooseType" data="1"><b class="jp">JP</b></dd>
-						<dd><span>|</span></dd>
-						<dd><input type="checkbox" class="chooseType" data="0"><b class="np">NP</b></dd>
-						<dd>
-							<div class="xmg-tishi">
-								<div class="xmg-tishi000">?</div>
-								<div class="xmg-tishi111">
-									<p>JP:<s:text name="groupCart.Joint_Purchase_Of_Goods"/></p>
-									<p>NP:<s:text name="groupCart.General_Goods"/></p>
-								</div>
-							</div>
-						</dd>
-					</dl>
-
-				</div>
-			</div>
-
-      <!-- 商品列表 之前是table -->
-			<form name="shopping_cart">
-        <!-- 单个商品列表 -->
-        <div class="cart-list">
-          <div class="cart-list-shop-item">
-
-            <div class="shop-item-cart-list">
-              <!-- 表头 -->
-              <div class="cart-list-header flex-center">
-				<div class="checkbox w_one tc">
-                   <input type="checkbox" onchange="chooseAllShop(this)" id="check_1">
+	<div id="main">
+        <index-top></index-top>
+        <div class="wide">
+            <div id="lib_cart">
+                <div class="step">
+                    <div class="step-content active">
+                        1. <s:text name="Shopping_Cart"/>
+                    </div>
+                    <div class="step-content">
+                        2. <s:text name="Checkout"/>
+                    </div>
+                    <div class="step-content">
+                        3. <s:text name="Complete"/>
+                    </div>
                 </div>
-                <div class="name w_two"><s:text name="Global.Product"/></div>
-                <div class="price w_three tc"><s:text name="Global.Price"/></div>
-                <div class="quantity w_four tc"><s:text name="Global.Quantity"/></div>
-                <div class="total w_five tc"><s:text name="Global.Total_Price"/></div>
-              </div>
+                <div class="cartHeader">
+                    <a href="/" name="continue_shopping" class="textbtn fl" title="Continue Shopping"><s:text name="Global.Continue_Shopping"/></a>
+                    <button class="checkoutBtn fr"><s:text name="Proceed_To_Checkout"/></button>
+                </div>
 
-              <!-- 仿tbody -->
-              <div class="cart-list-content" id="table_body">
+                <div class="jp-or-np">
+                    <div class="fr">
+                        <dl>
+                            <dt><s:text name="Global.Filter"/>:</dt>
+                            <dd><input type="checkbox" class="chooseType" data="1"><b class="jp">JP</b></dd>
+                            <dd><span>|</span></dd>
+                            <dd><input type="checkbox" class="chooseType" data="0"><b class="np">NP</b></dd>
+                            <dd>
+                                <div class="xmg-tishi">
+                                    <div class="xmg-tishi000">?</div>
+                                    <div class="xmg-tishi111">
+                                        <p>JP:<s:text name="groupCart.Joint_Purchase_Of_Goods"/></p>
+                                        <p>NP:<s:text name="groupCart.General_Goods"/></p>
+                                    </div>
+                                </div>
+                            </dd>
+                        </dl>
 
+                    </div>
+                </div>
 
-              </div>
-              <!-- 仿tbody -->
-            </div>
-          </div>
-        </div>
-    	</form>
+                <!-- 商品列表 之前是table -->
+                <form name="shopping_cart">
+                    <!-- 单个商品列表 -->
+                    <div class="cart-list">
+                        <div class="cart-list-shop-item">
 
-      <!-- 模态框 -->
-      <div class="modal"></div>
-      <!-- 弹框 - 删除单个全部商品 -->
-      <div class="pop-frame pop-frame-delete-product">
-        <div class="pop-frame-content">
-          <!-- 关闭按钮 -->
-          <div class="pop-frame-close">&times;</div>
-          <s:text name="groupCart.Remove_Shopping_Cart"/>
-        </div>
-        <div class="pop-frame-footer">
-          <div class="btn-red btn-confirm" onclick="delProduct(this)" id="pdtDelModel"><s:text name="Global.Determine"/></div>
-          <div class="btn-red btn-cancel"><s:text name="Global.Cancel"/></div>
-        </div>
-      </div>
-      <!-- 弹框 - 删除单个全部商品 - end -->
+                            <div class="shop-item-cart-list">
+                                <!-- 表头 -->
+                                <div class="cart-list-header flex-center">
+                                    <div class="checkbox w_one tc">
+                                        <input type="checkbox" onchange="chooseAllShop(this)" id="check_1">
+                                    </div>
+                                    <div class="name w_two"><s:text name="Global.Product"/></div>
+                                    <div class="price w_three tc"><s:text name="Global.Price"/></div>
+                                    <div class="quantity w_four tc"><s:text name="Global.Quantity"/></div>
+                                    <div class="total w_five tc"><s:text name="Global.Total_Price"/></div>
+                                </div>
 
-      <!-- 弹框 - 删除单个商品的某个属性 -->
-      <div class="pop-frame pop-frame-delete-style">
-        <div class="pop-frame-content">
-          <!-- 关闭按钮 -->
-          <div class="pop-frame-close">&times;</div>
-          <s:text name="my-favorite.Confirm_Delete"/>
-        </div>
-        <div class="pop-frame-footer">
-          <div class="btn-red btn-confirm" onclick="delSpec(this)" id="specDelModel"><s:text name="Global.Determine"/></div>
-          <div class="btn-red btn-cancel"><s:text name="Global.Cancel"/></div>
-        </div>
-      </div>
-      <!-- 弹框 - 删除单个商品的某个属性 - end -->
-
-      <!-- 弹框 - 添加商品的某个属性 -->
-      <div class="pop-frame pop-frame-add-style" style="display:none">
-        <div class="pop-frame-content flex-start">
-          <!-- 关闭按钮 -->
-          <div class="pop-frame-close">&times;</div>
-
-          <!-- 类型选择框 -->
-          <div class="style-selection-wrap">
-            <div class="header-title">
-              <s:text name="Global.Colour"/>
-            </div>
-            <div class="style-selection-content">
-              <div class="style-list style-list-left flex-center" id="colorChoose">
+                                <!-- 仿tbody -->
+                                <div class="cart-list-content" id="table_body">
 
 
-              </div>
-            </div>
-          </div>
+                                </div>
+                                <!-- 仿tbody -->
+                            </div>
+                        </div>
+                    </div>
+                </form>
 
-          <!-- 颜色选择框 -->
-          <div class="style-selection-wrap">
-            <div class="header-title">
-              <s:text name="Global.Size"/>
-            </div>
-            <div class="style-selection-content" id="sizeChoose">
-            </div>
-          </div>
-        </div>
-        <div class="pop-frame-footer">
-          <div class="btn-red btn-confirm" onclick="addSpec(this)" id="addSpec"><s:text name="Global.Determine"/></div>
-          <div class="btn-red btn-cancel"><s:text name="Global.Cancel"/></div>
-        </div>
-      </div>
-      <!-- 弹框 - 添加商品的某个属性 - end -->
+                <!-- 模态框 -->
+                <div class="modal"></div>
+                <!-- 弹框 - 删除单个全部商品 -->
+                <div class="pop-frame pop-frame-delete-product">
+                    <div class="pop-frame-content">
+                        <!-- 关闭按钮 -->
+                        <div class="pop-frame-close">&times;</div>
+                        <s:text name="groupCart.Remove_Shopping_Cart"/>
+                    </div>
+                    <div class="pop-frame-footer">
+                        <div class="btn-red btn-confirm" onclick="delProduct(this)" id="pdtDelModel"><s:text name="Global.Determine"/></div>
+                        <div class="btn-red btn-cancel"><s:text name="Global.Cancel"/></div>
+                    </div>
+                </div>
+                <!-- 弹框 - 删除单个全部商品 - end -->
 
-			<div class="cartFooter">
-				<a  href="/" name="continue_shopping" class="textbtn fl" title="Continue Shopping"><s:text name="cart.continue"/></a>
-				<a id="remove" class="textbtn fl" title="Remove"><s:text name="Global.Delete"/></a>
-				<button class="checkoutBtn fr"><s:text name="Proceed_To_Checkout"/></button>
-				<div class="clear"></div>
-			</div>
-			 <!-- 没有商品时候  start-->
-			 <div class="cartBox" style="display:none;margin: 134px 0;">
-                <h2><s:text name="Global.Shopping_Cart"/></h2>
-                <div class="contents empty">
-                    <h3><s:text name="groupCart.Your_Shopping_Cart_Is_Empty"/></h3>
-                    <div class="cartDraft">
-                    <s:text name="groupCart.Looking_For_Your_Item">
-                    	<s:param>
-					        <s:property value = "'/home/odr_OdrOrder_orders'"/>
-					     </s:param>
-                    </s:text>
-                        <!-- <a href="/home/odr_OdrOrder_orders">Click here</a> to go to My Orders where you can view and complete your draft order. --></div>
-                    <ul>
-                        <li>
+                <!-- 弹框 - 删除单个商品的某个属性 -->
+                <div class="pop-frame pop-frame-delete-style">
+                    <div class="pop-frame-content">
+                        <!-- 关闭按钮 -->
+                        <div class="pop-frame-close">&times;</div>
+                        <s:text name="my-favorite.Confirm_Delete"/>
+                    </div>
+                    <div class="pop-frame-footer">
+                        <div class="btn-red btn-confirm" onclick="delSpec(this)" id="specDelModel"><s:text name="Global.Determine"/></div>
+                        <div class="btn-red btn-cancel"><s:text name="Global.Cancel"/></div>
+                    </div>
+                </div>
+                <!-- 弹框 - 删除单个商品的某个属性 - end -->
+
+                <!-- 弹框 - 添加商品的某个属性 -->
+                <div class="pop-frame pop-frame-add-style" style="display:none">
+                    <div class="pop-frame-content flex-start">
+                        <!-- 关闭按钮 -->
+                        <div class="pop-frame-close">&times;</div>
+
+                        <!-- 类型选择框 -->
+                        <div class="style-selection-wrap">
+                            <div class="header-title">
+                                <s:text name="Global.Colour"/>
+                            </div>
+                            <div class="style-selection-content">
+                                <div class="style-list style-list-left flex-center" id="colorChoose">
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 颜色选择框 -->
+                        <div class="style-selection-wrap">
+                            <div class="header-title">
+                                <s:text name="Global.Size"/>
+                            </div>
+                            <div class="style-selection-content" id="sizeChoose">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pop-frame-footer">
+                        <div class="btn-red btn-confirm" onclick="addSpec(this)" id="addSpec"><s:text name="Global.Submit"/></div>
+                        <div class="btn-red btn-cancel"><s:text name="Global.Cancel"/></div>
+                    </div>
+                </div>
+                <!-- 弹框 - 添加商品的某个属性 - end -->
+
+                <div class="cartFooter">
+                    <a  href="/" name="continue_shopping" class="textbtn fl" title="Continue Shopping"><s:text name="cart.continue"/></a>
+                    <a id="remove" class="textbtn fl" title="Remove"><s:text name="Global.Delete"/></a>
+                    <button class="checkoutBtn fr"><s:text name="Proceed_To_Checkout"/></button>
+                    <div class="clear"></div>
+                </div>
+                <!-- 没有商品时候  start-->
+                <div class="cartBox" style="display:none;margin: 134px 0;">
+                    <h2><s:text name="Global.Shopping_Cart"/></h2>
+                    <div class="contents empty">
+                        <h3><s:text name="groupCart.Your_Shopping_Cart_Is_Empty"/></h3>
+                        <div class="cartDraft">
+                            <s:text name="groupCart.Looking_For_Your_Item">
+                                <s:param>
+                                    <s:property value = "'/home/odr_OdrOrder_orders'"/>
+                                </s:param>
+                            </s:text>
+                            <!-- <a href="/home/odr_OdrOrder_orders">Click here</a> to go to My Orders where you can view and complete your draft order. --></div>
+                        <ul>
+                            <li>
 
                             <span class="roundRedDot">•
                             </span><s:text name="groupCart.Right">
-                            	<s:param value="'/home/pdt_PdtProduct?cated=373'"/>
-                            	<s:param value="'/home/pdt_PdtProduct?cated=380'"/>
-                            	<s:param value="'/home/pdt_PdtProduct?cated=387'"/>
+                                <s:param value="'/home/pdt_PdtProduct?cated=373'"/>
+                                <s:param value="'/home/pdt_PdtProduct?cated=380'"/>
+                                <s:param value="'/home/pdt_PdtProduct?cated=387'"/>
                             </s:text>
-                            <%-- <c:forEach items="${catList}" var="cat">
-                            	<a href="/home/pdt_PdtProduct?cated=${cat.pkey }">${cat.name}</a>
-                            </c:forEach> --%>
-                           </li>
-                        <li>
-                            <span class="roundRedDot">•</span> <s:text name="groupCart.Fill_Cart"/></li>
-                    </ul>
-                    <p>
-                        <a href="/" name="continue_shopping" class="continueShoppingBtn" title="Continue Shopping">
-                            <b><s:text name="cart.checkout"/></b>
-                        </a>
-                    </p>
+                                <%-- <c:forEach items="${catList}" var="cat">
+                                    <a href="/home/pdt_PdtProduct?cated=${cat.pkey }">${cat.name}</a>
+                                </c:forEach> --%>
+                            </li>
+                            <li>
+                                <span class="roundRedDot">•</span> <s:text name="groupCart.Fill_Cart"/></li>
+                        </ul>
+                        <p>
+                            <a href="/" name="continue_shopping" class="continueShoppingBtn" title="Continue Shopping">
+                                <b><s:text name="cart.checkout"/></b>
+                            </a>
+                        </p>
+                    </div>
                 </div>
-            </div>
-            <!-- 没有商品时候 end -->
-			<div class="clear" style="display:none;"></div>
+                <!-- 没有商品时候 end -->
+                <div class="clear" style="display:none;"></div>
 
-		</div>
+            </div>
+        </div>
+        <index-bottom></index-bottom>
 	</div>
 	<form action="/home/odr_OdrOrder_toSettlementPage" method="post" id="buynow">
          <input type="hidden" name="jsonCarts" value="" class="carts"/>
          <input type="hidden" name="enterType" value='1' />
          <input type="hidden" name="pid" value="${id}"/>
      </form>
-	 <%@ include file="/home/template/new-foot.jsp" %>
+	 <%--<%@ include file="/home/template/new-foot.jsp" %>--%>
 	<div id="hj_top" style="opacity: 0;">
 		<img src="./static/images/hj_top.png">
 	</div>
@@ -1112,6 +1116,13 @@
 	  })
 
   </script>
+    <script>
+        new Vue({
+            el:"#main"
+        })
+    </script>
+    <script src="/home/v3/static/js/index-top.js"></script>
+    <script src="/home/v3/static/js/index-bottom.js"></script>
 </body>
 
 </html>

@@ -1,679 +1,654 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<!-- saved from url=(0024)https://www.shoestp.com/ -->
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<jsp:include page="v3/header.jsp"/>
+<body>
+<jsp:include page="v3/nav.jsp"></jsp:include>
+<script src="/home/static/js/qs.js"></script>
+<script src="/home/v3/static/js/swiper.min.js"></script>
+<main id="shoesTp">
+    <index-top></index-top>
+    <div class="indexbannercon">
+        <el-carousel indicator-position="outside" height="224px" arrow="never">
+            <el-carousel-item>
+                <a href="/country/Romania-Pantofi-en-gros/romania-index-ro.html" target="_blank"><img
+                        src="/home/v3/static/images/ljxbanner1.jpg" alt=""></a>
+            </el-carousel-item>
+            <el-carousel-item>
+                <a href="/home/pdt_PdtProduct" target="_blank"><img src="/home/v3/static/images/ljxbanner2.jpg"
+                                                                    alt=""></a>
+            </el-carousel-item>
+            <el-carousel-item>
+                <a href="/home/usr_UsrConsult_publishView" target="_blank"><img
+                        src="/home/v3/static/images/ljxbanner3.jpg" alt=""></a>
+            </el-carousel-item>
+        </el-carousel>
+    </div>
+    <!-- 林铁垣 -->
+    <div id="lty">
+        <div class="sanduan w1240 clearfix">
+            <div class="box">
+                <h1>Categories</h1>
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="renderer" content="webkit">
-    <meta name="keywords"
-          content="fashion wholesale soes,cheap wholesale shoes,wholesale shoes,shoes customization,shoes trade,shoes,Manufacturers,shoestp">
-    <meta name="description"
-          content="foreign trade experts online service! ShoeSTP provides you with customization and wholesale for all kinds of high-quality shoes from 300 professional foreign trade shoes companies!">
-    <title>An Online B2B market——-Shoestp.com,gathering 300 professional shoes manufacture companies</title>
-    <link href="/home/static/css/global.css" rel="stylesheet" type="text/css">
-    <link href="/home/static/css/global(1).css" rel="stylesheet" type="text/css">
-    <link href="/home/static/css/user.css" rel="stylesheet" type="text/css">
-    <link href="/home/static/css/style.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="/home/static/css/animate.min.css">
-    <link rel="stylesheet" href="/home/static/css/swiper.min.css" type="text/css">
-    <link href="/home/static/css/index.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="/home/static/css/xl-style.css">
-    <link href="/home/static/css/stp.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="/home/static/css/color.css" type="text/css">
-    <script type="text/javascript" src="/home/static/js/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" src="/home/static/js/swiper.min.js"></script>
-    <script type="text/javascript" src="/home/static/js/lazyload.min.js"></script>
-</head>
+                <div class="boxList" v-for="(item,index) in classLists" for-key="index">
+                    <a class="h2" :href="'/home/pdt_PdtProduct?cated='+item.value" target="_blank">
+                        <img class="leftNav-icon1" src="/home/v3/static/images/icon_nx.png" alt="{{item.label}}"
+                             v-if="index==0"/>
+                        <img class="leftNav-icon1" src="/home/v3/static/images/icon_nvx.png" alt="{{item.label}}"
+                             v-if="index==1"/>
+                        <img class="leftNav-icon1" src="/home/v3/static/images/icon_ntx.png" alt="{{item.label}}"
+                             v-if="index==2"/>
+                        {{item.label}}
+                        <i class="el-icon-arrow-right fr"></i>
+                    </a>
+                    <ul class="clearfix">
+                        <li v-for="(item2,indextwo) in item.children" for-key="indextwo">
+                            <a :href="'/home/pdt_PdtProduct?cated='+item2.value" target="_blank">{{item2.label}}</a>
+                        </li>
+                    </ul>
+                </div>
 
-<body class="lang_en w_1200">
+            </div>
 
-
-<%@ include file="/home/template/web-top.jsp" %>
-<%@ include file="/home/template/new-header.jsp" %>
-<!-- .new_header -->
-
-
-<style type="text/css">
-    /* brand-line-height */
-    .lh-brand {
-        line-height: 56px;
-    }
-
-    /* 女鞋标题*/
-    .toptic_title_0 {
-        position: relative;
-        display: inline-block;
-        padding: 0 1em;
-        border: 0;
-        margin: 0.5em;
-        background: transparent;
-        color: #ffffff;
-        /*text-transform: uppercase;*/
-        font-weight: bold;
-        font-size: 16px;
-    }
-
-    .toptic_title_0::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        z-index: -1;
-        background: #FFA08A;
-        transform: skew(-20deg);
-        border-radius: 5px;
-    }
-
-    /*女鞋标题*/
-
-    /* 男鞋标题*/
-
-    .toptic_title_1 {
-        position: relative;
-        display: inline-block;
-        padding: 0 1em;
-        border: 0;
-        margin: 0.5em;
-        background: transparent;
-        z-index: 91;
-        color: #ffffff;
-        /*text-transform: uppercase;*/
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 16px;
-    }
-
-    .toptic_title_1::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        z-index: -1;
-        background: #7BB3EA;
-        transform: skew(-20deg);
-        border-radius: 5px;
-    }
-
-    /*男鞋标题*/
-
-    /* 童鞋标题*/
-
-    .toptic_title_2 {
-        position: relative;
-        display: inline-block;
-        padding: 0 1em;
-        border: 0;
-        margin: 0.5em;
-        background: transparent;
-        color: #ffffff;
-        /*text-transform: uppercase;*/
-        font-weight: bold;
-        font-size: 16px;
-
-    }
-
-    .toptic_title_2::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        z-index: -1;
-        background: #9CDE75;
-        transform: skew(-20deg);
-        border-radius: 5px;
-    }
-
-    /*童鞋标题*/
-
-    /* 新产品标题*/
-
-    .NewProducts {
-        position: relative;
-        display: inline-block;
-        padding: 0 1em;
-        border: 0;
-        margin: 0.5em;
-        background: transparent;
-        color: #ffffff;
-        z-index: 91;
-        /*text-transform: uppercase;*/
-        font-weight: bold;
-        font-size: 16px;
-    }
-
-    .NewProducts::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        z-index: -1;
-        background: #76CFC1;
-        transform: skew(-20deg);
-        border-radius: 5px;
-    }
-
-    /*新产品标题*/
-
-    /* 品牌展示标题*/
-
-    .BrandShow {
-        position: relative;
-        display: inline-block;
-        padding: 0 1em;
-        border: 0;
-        margin: 0.5em;
-        background: transparent;
-        color: #ffffff;
-        z-index: 91;
-        /*text-transform: uppercase;*/
-        font-weight: bold;
-        font-size: 16px;
-    }
-
-    .BrandShow::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        z-index: -1;
-        background: #7BB3EA;
-        transform: skew(-20deg);
-        border-radius: 5px;
-    }
-
-    /*品牌展示标题*/
-
-    .carousel {
-        width: 800px;
-        height: 400px;
-        overflow: hidden;
-        position: relative;
-    }
-
-    #swiperOne .swiper-pagination {
-        width: 10px;
-        height: 90px;
-    }
-
-    #swiperOne > .swiper-pagination-bullets .swiper-pagination-bullet {
-        margin: 3px 0;
-    }
-
-    #swiperOne > .swiper-pagination-bullets,
-    .swiper-pagination-custom,
-    .swiper-pagination-fraction {
-        left: 96% !important;
-    }
-
-    .swiper-pagination-bullet {
-        width: 10px;
-        height: 10px;
-        border-radius: 6px;
-        text-align: center;
-        line-height: 5px;
-        font-size: 12px;
-        color: #000;
-        opacity: 1;
-        background: rgba(255, 255, 255, 0.7);
-    }
-
-    .swiper-pagination-bullet-active {
-        background: #ffffff;
-        color: white;
-        opacity: 1;
-    }
-</style>
-<div class="supbanner">
-    <div id="xl-topic">
-        <div id="xl-banner">
-            <div id="xl-banner_left">
-                <div class="carousel">
-                    <div class="swiper-container swiper-container-horizontal swiper-container-wp8-horizontal"
-                         id="swiperOne">
-                        <div class="swiper-wrapper"
-                             style="transform: translate3d(-3200px, 0px, 0px); transition-duration: 0ms;">
-                            <c:forEach var="d" items="${purchaseIndexView.headedSwiperAds}">
-                                <div class="swiper-slide" style="width: 800px;">
-                                    <a href="${d.url}" target="_blank">
-                                        <img src="${envConfig.imageBaseUrl}${d.image}" alt="${d.name}">
-                                    </a>
-                                </div>
-                            </c:forEach>
-                        </div>
-                        <div class="swiper-pagination swiper-pagination-bullets">
-                            <%--                             <c:forEach items="${purchaseIndexView.headedSwiperAds}"> --%>
-                            <span class="swiper-pagination-bullet"></span>
-                            <%--                             </c:forEach> --%>
-                        </div>
+            <div class="box">
+                <a href="/html/SVS/svs.jsp" target="_blank">
+                    <h1>SVS Certification System</h1>
+                    <div style="font-size: 13px;"><%--SVS Certification System will make buyers find their<br/> target Supplier
+                    more
+                    faster, accurate and time-saving<br/> than other way.--%>
+                        The buyers could find their target supplier more faster, accurate and time-saving by SVS
+                        Certification System.
                     </div>
-                </div>
-            </div>
-            <div id="xl-banner_right">
-                <!--Banner右侧1图-->
-                <c:forEach var="d" items="${purchaseIndexView.headedRightTopAds}">
-                    <h1>
-                        <a target="_blank" href="${d.url}">
-                            <img src="${envConfig.imageBaseUrl}${d.image}" width="380" height="212"
-                                 alt="${d.name}"> </a>
-                    </h1>
-                </c:forEach>
-                <h1>
-                    <!--banner右侧2图-->
-                    <c:forEach var="d" items="${purchaseIndexView.headedBottomTopAds}">
-                        <a href="${d.url}" target="_blank">
-                            <img src="${envConfig.imageBaseUrl}${d.image}" alt=""
-                                 width="${380/fn:length(purchaseIndexView.headedBottomTopAds)}"
-                                 height="170" border="0"
-                            >
-                        </a>
-                        <%--<map name="Map">--%>
-                        <%--<area shape="rect" coords="33,91,162,139" href="https://www.shoestp.com/inquiry.html"--%>
-                        <%--target="_blank">--%>
-                        <%--<area shape="rect" coords="222,93,357,139"--%>
-                        <%--href="https://www.shoestp.com/inquiry.html?gt=list"--%>
-                        <%--target="_blank">--%>
-                        <%--</map>--%>
-                    </c:forEach>
-                </h1>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<!-- 内容部分 -->
-<div id="xl-main">
-    <c:if test="${indexAdView4PC.middleAd !=null}">
-        <div id="xl-middle clearfloat" style="width:1200px;margin:0 auto">
-            <c:forEach var="d" items="${indexAdView4PC.middleAd[0].items}">
-                <!--Banner下方-->
-                <a href="${d.url}" target="_blank">
-                    <img class="lazy" src="${envConfig.imageBaseUrl}${d.image}"
-                         data-original="${envConfig.imageBaseUrl}${d.image}"
-                         width="390" height="156"
-                         alt="">
-                </a>
-            </c:forEach>
-        </div>
-    </c:if>
-
-    <%--  <c:forEach items="${purchaseIndexView.pdtCategoryAds}" var="d" varStatus="status">
-          <div class="xl-banner" id="aaaaaaaa">
-              <span class="toptic_title">
-                  <a class="toptic_title_${status.index}" href="/home/pdt_PdtProduct?cated=${d.pkey}"
-                     target="_blank">
-                          ${d.name}
-                  </a>
-              </span>
-              <ul class="women_ul clearfloat">
-                  <li>
-                      <a href="/home/pdt_PdtProduct?cated=${d.pkey}" target="_blank">Global.More+</a>
-                  </li>
-                  <c:forEach var="dd" items="${d.categorys}" step="1">
-                      <li>
-                          <a href="/home/pdt_PdtProduct?cated=${dd.pkey}" target="_blank">${dd.name}</a>
-                      </li>
-                  </c:forEach>
-              </ul>
-
-              <div class="toys">
-                  <div class="${(status.index+1)%2!=0?"toys_right":"toys_left"} left800">
-                      <div class="cata-box">
-                          <ul class="toys_ul">
-                              <c:forEach var="dd" items="${d.ads.items}">
-                                  <li>
-                                      <a target="_blank" href="${dd.url}">
-                                          <img class="lazy" src="${dd.image}" data-original="${dd.pkey}" width="260" height="260"alt="${dd.name}">
-                                          <div class="cover">
-                                              <p>${dd.name}</p>
-                                              <h3></h3>
-                                          </div>
-                                      </a>
-                                  </li>
-                              </c:forEach>
-
-                                  <li>
-                                      <a target="_blank" href="#">
-                                          <img class="lazy" src="/home/static/images/user/aCasual.jpg" width="260" height="260"alt="Casual Men's PU Lace-up Shoes">
-                                          <div class="cover">
-                                              <p>Casual Men's PU Lace-up Shoes</p>
-                                              <h3></h3>
-                                          </div>
-                                      </a>
-                                  </li>
-
-
-                          </ul>
-
-                      </div>
-                  </div>
-                  <div class="${(status.index+1)%2==0?"toys_right":"toys_left"} left380">
-                      <a href="${d.ads.main.url}" target="_blank">
-                          <img class="lazy" src="${d.ads.main.image}"
-                               data-original="${d.ads.main.pkey}" width="380" height="530"
-                               alt="${d.ads.main.name}">
-                      </a>
-                  </div>
-              </div>
-
-          </div>
-
-      </c:forEach> --%>
-
-    <div class="xl-banner" id="aaaaaaaa">
-			<span class="toptic_title">
-				<a class="toptic_title_0" href="/home/pdt_PdtProduct?cated=380" target="_blank"><s:text
-                        name="home.Womens"/></a>
-			</span>
-        <ul class="women_ul clearfloat">
-            <li>
-                <a href="/home/pdt_PdtProduct?cated=380" target="_blank"><s:text name="Global.More"/>+</a>
-            </li>
-            <li>
-                <a href="/home/pdt_PdtProduct?cated=490" target="_blank"><s:text name="home.Womens_Shoes"/></a>
-            </li>
-            <li>
-                <a href="/home/pdt_PdtProduct?cated=385" target="_blank"><s:text name="home.Womens_Boots"/></a>
-            </li>
-            <li>
-                <a href="/home/pdt_PdtProduct?cated=386" target="_blank"><s:text name="home.Womens_Sandals"/></a>
-            </li>
-        </ul>
-        <div class="toys">
-            <div class="toys_right left800">
-                <div class="cata-box">
-                    <ul class="toys_ul">
-                        <c:forEach items="${indexAdView4PC.productCategoryAd }" var="ad">
-                            <c:if test="${ad.category==380 }">
-                                <c:forEach items="${ad.items }" var="line">
-                                    <c:if test="${!line.isPrimary() }">
-                                        <li>
-                                            <a target="_blank" href="${line.url}">
-                                                <img class="lazy" src=""
-                                                     data-original="${envConfig.imageBaseUrl}${line.image}" width="260"
-                                                     height="260" alt="${line.summary }">
-                                                <div class="cover">
-                                                    <p>${line.summary }</p>
-                                                    <h3></h3>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    </c:if>
-                                </c:forEach>
-                            </c:if>
-                        </c:forEach>
-                    </ul>
-                </div>
-            </div>
-            <div class="toys_left left380">
-                <c:forEach items="${indexAdView4PC.productCategoryAd }" var="ad">
-                    <c:if test="${ad.category==380 }">
-                        <c:forEach items="${ad.items }" var="line">
-                            <c:if test="${line.isPrimary() }">
-                                <a href="${line.url}" target="_blank">
-                                    <img class="lazy" src="" data-original="${envConfig.imageBaseUrl}${line.image}"
-                                         alt="${line.summary }">
-                                </a>
-                            </c:if>
-                        </c:forEach>
-                    </c:if>
-                </c:forEach>
-            </div>
-        </div>
-    </div>
-    <div class="xl-banner" id="aaaaaaaa">
-			<span class="toptic_title">
-				<a class="toptic_title_1" href="/home/pdt_PdtProduct?cated=373" target="_blank"><s:text
-                        name="home.Mens"/></a>
-			</span>
-        <ul class="women_ul clearfloat">
-            <li>
-                <a href="/home/pdt_PdtProduct?cated=373" target="_blank"><s:text name="Global.More"/>+</a>
-            </li>
-            <li>
-                <a href="/home/pdt_PdtProduct?cated=484" target="_blank"><s:text name="home.Mens_Shoes"/></a>
-            </li>
-            <li>
-                <a href="/home/pdt_PdtProduct?cated=378" target="_blank"><s:text name="home.Mens_Boots"/></a>
-            </li>
-            <li>
-                <a href="/home/pdt_PdtProduct?cated=375" target="_blank"><s:text name="home.Mens_Sandals"/></a>
-            </li>
-        </ul>
-        <div class="toys">
-            <div class="toys_left left800">
-                <div class="cata-box">
-                    <ul class="toys_ul">
-                        <c:forEach items="${indexAdView4PC.productCategoryAd }" var="ad">
-                            <c:if test="${ad.category==373 }">
-                                <c:forEach items="${ad.items }" var="line">
-                                    <c:if test="${!line.isPrimary() }">
-                                        <li>
-                                            <a target="_blank" href="${line.url}">
-                                                <img class="lazy" src=""
-                                                     data-original="${envConfig.imageBaseUrl}${line.image}" width="260"
-                                                     height="260" alt="${line.summary }">
-                                                <div class="cover">
-                                                    <p>${line.summary }</p>
-                                                    <h3></h3>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    </c:if>
-                                </c:forEach>
-                            </c:if>
-                        </c:forEach>
-                    </ul>
-                </div>
-            </div>
-            <div class="toys_right left380">
-                <c:forEach items="${indexAdView4PC.productCategoryAd }" var="ad">
-                    <c:if test="${ad.category==373 }">
-                        <c:forEach items="${ad.items }" var="line">
-                            <c:if test="${line.isPrimary() }">
-                                <a href="${line.url}" target="_blank">
-                                    <img class="lazy" src="" data-original="${envConfig.imageBaseUrl}${line.image}"
-                                         alt="${line.summary }">
-                                </a>
-                            </c:if>
-                        </c:forEach>
-                    </c:if>
-                </c:forEach>
-            </div>
-        </div>
-
-    </div>
-    <div class="xl-banner" id="aaaaaaaa">
-			<span class="toptic_title">
-				<a class="toptic_title_2" href="/home/pdt_PdtProduct?cated=387" target="_blank"><s:text
-                        name="home.Childrens"/></a>
-			</span>
-        <ul class="women_ul clearfloat">
-            <li>
-                <a href="/home/pdt_PdtProduct?cated=387" target="_blank"><s:text name="Global.More"/>+</a>
-            </li>
-            <li>
-                <a href="/home/pdt_PdtProduct?cated=508" target="_blank"><s:text name="home.Boy_Collection"/></a>
-            </li>
-            <li>
-                <a href="/home/pdt_PdtProduct?cated=509" target="_blank"><s:text name="home.Girl_Collection"/></a>
-            </li>
-            <li>
-                <a href="/home/pdt_PdtProduct?cated=507" target="_blank"><s:text name="home.Baby_Collection"/></a>
-            </li>
-            <li>
-                <a href="/home/pdt_PdtProduct?cated=519" target="_blank"><s:text
-                        name="home.Waterproof_Boots_And_Rain_Boots"/></a>
-            </li>
-        </ul>
-        <div class="toys">
-            <div class="toys_right left800">
-                <div class="cata-box">
-                    <ul class="toys_ul">
-                        <c:forEach items="${indexAdView4PC.productCategoryAd }" var="ad">
-                            <c:if test="${ad.category==387 }">
-                                <c:forEach items="${ad.items }" var="line">
-                                    <c:if test="${!line.isPrimary() }">
-                                        <li>
-                                            <a target="_blank" href="${line.url}">
-                                                <img class="lazy" src=""
-                                                     data-original="${envConfig.imageBaseUrl}${line.image}" width="260"
-                                                     height="260" alt="${line.summary }">
-                                                <div class="cover">
-                                                    <p>${line.summary }</p>
-                                                    <h3></h3>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    </c:if>
-                                </c:forEach>
-                            </c:if>
-                        </c:forEach>
-                    </ul>
-                </div>
-            </div>
-            <div class="toys_left left380">
-                <c:forEach items="${indexAdView4PC.productCategoryAd }" var="ad">
-                    <c:if test="${ad.category==387 }">
-                        <c:forEach items="${ad.items }" var="line">
-                            <c:if test="${line.isPrimary() }">
-                                <a href="${line.url}" target="_blank">
-                                    <img class="lazy" src="" data-original="${envConfig.imageBaseUrl}${line.image}"
-                                         alt="${line.summary }">
-                                </a>
-                            </c:if>
-                        </c:forEach>
-                    </c:if>
-                </c:forEach>
-            </div>
-        </div>
-    </div>
-    <div id="xl-products_content">
-        <div id="xl-banner_four">
-            <!-- 新品start -->
-            <div class="new_product">
-                <div class="clearfloat" style="padding:0 15px 0 0;">
-						<span class="toptic_title">
-							<!--                                新品标题-->
-							<a class="NewProducts" target="_blank" href="/home/pdt_PdtProduct?orderfld=New">
-								<s:text name="home.New_Products"/>
-							</a>
-						</span>
-                    <span class="more lh-brand">
-							<!--                                更多按钮-->
-							<a href="/home/pdt_PdtProduct?orderfld=New" target="_blank"><s:text
-                                    name="Global.More"/>+</a>
-						</span>
-                </div>
-                <div class="product_left">
-                    <div class="cata-box">
-                        <ul class="toys_ul product_ul_list clearfloat">
-                            <c:forEach items="${purchaseIndexView.newProducts}" var="d" step="1">
-                                <li>
-                                    <a href="/${d.rewrite}"
-                                       title="${d.name}"
-                                       target="_blank">
-                                        <img class="lazy" src=""
-                                             data-original="${envConfig.imageBaseUrl}${d.image}?x-oss-process=image/resize,m_fixed,h_200,w_200"
-                                             width="230"
-                                             height="230" alt="">
-                                        <p class="newP">${d.name}</p>
-                                        <%--<h3>${env.currency.symbols}${d.price}</h3>--%>
-                                    </a>
-                                </li>
-                            </c:forEach>
+                    <div class="h3">
+                        <img src="/home/v3/static/images/icion_svs_1d.png" alt=""/>
+                        <img src="/home/v3/static/images/icion_svs_2d.png" alt=""/>
+                        <img src="/home/v3/static/images/icion_svs_3d.png" alt=""/>
+                    </div>
+                    <div class="h4">
+                        <ul>
+                            <li><img class="fl" src="/home/v3/static/images/icon_svs01.png"/>Actual Manufacturer</li>
+                            <li><img class="fl" src="/home/v3/static/images/icon_svs05.png"/>Product Quality</li>
+                            <li><img class="fl" src="/home/v3/static/images/icon_svs07.png"/>Trade Capacity</li>
+                            <li><img class="fl" src="/home/v3/static/images/icon_svs04.png"
+                                     style="margin-right: 11px;"/>Major Client
+                            </li>
+                        </ul>
+                        <ul>
+                            <li><img class="fl" src="/home/v3/static/images/icon_svs03.png"/>Production Capacity</li>
+                            <li><img class="fl" src="/home/v3/static/images/icon_svs02.png"/>R&D Capacity</li>
+                            <li><img class="fl" src="/home/v3/static/images/icon_svs06.png" style="margin-left: 2px;"/>Trade
+                                Shows
+                            </li>
                         </ul>
                     </div>
-                </div>
+                </a>
+                <%--<a href="/html/SVS/svs.jsp" class="btn-see-all svs_learn_more">Learn More</a>--%>
             </div>
-            <!-- 新品end -->
-            <div class="brand">
-                <div class="clearfloat" style="padding:0 15px 0 0;">
-						<span class="toptic_title">
-							<!--                                品牌展示-->
-							<a class="BrandShow" target="_blank" href="/home/usr_UsrSupplier"><s:text
-                                    name="home.Brand_Show"/></a>
-						</span>
-                    <span class="more lh-brand">
-							<!--                                更多按钮-->
-							<a href="/home/usr_UsrSupplier" target="_blank"><s:text name="Global.More"/>+</a>
-						</span>
-                </div>
-                <div class="brand-right">
-                    <div class="xl-box">
-                        <div class="box_body_list clearfloat">
-                            <!-- line1 -->
-                            <c:forEach var="d" items="${purchaseIndexView.supplier}" step="1">
-                                <span href="javascript:void(0)" class="item">
-                                        <img class="lazy" src=""
-                                             data-original="${envConfig.imageBaseUrl}${d.logo}"
-                                             style="display: inline;">
-                                        <span class="_hover">
-                                               <a target="_blank"
-                                                  href="/home/usr_UsrSupplier_gtSupIndex?pkey=${d.pkey}">
-                                                <span class="_name"> ${d.name}</span>
-                                                <span class="_enterBtn"><!-- Enter --><s:text
-                                                        name="my-order.See_Details"/></span>
-                                            </a>
-                                        </span>
-                                </span>
-                            </c:forEach>
+
+            <div class="box nomr">
+                <h1>RFQ</h1>
+                <div class="fs14">Customization Service</div>
+                <div class="h5">
+                    <div class="boxListInput01">
+                        <input type="text" v-model="RFQ_title" placeholder="What are you looking for"/>
+                    </div>
+                    <div class="boxListInput01">
+                        <input class="w180" v-model="RFQ_quantity" type="text" placeholder="Quantity"/>
+                        <div class="boxListSelect">
+                            {{chooes}} <i class="el-icon-arrow-down fr"></i>
+                            <ul>
+                                <li :data-name="'Pairs'" @click="chooesbtn" :value="1">Pairs</li>
+                                <li :data-name="'Forty-Foot Container'" :value="2" @click="chooesbtn">Forty-Foot
+                                    Container
+                                </li>
+                                <li :data-name="'Twenty-Foot Container'" :value="3" @click="chooesbtn">Twenty-Foot
+                                    Container
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
+                <span>Select template type:</span>
+                <ul class="clearfix h6">
+                    <li><a href="/home/usr_UsrConsult_publishView">Request price</a></li>
+                    <li><a href="/home/usr_UsrConsult_publishView">Request a sample</a></li>
+                    <li class="nomr"><a href="/home/usr_UsrConsult_publishView">Request quotation details</a></li>
+                </ul>
+
+                <a @click="ToRFQ(encodeURIComponent(RFQ_title),RFQ_quantity,chooesValue)"
+                   class="boxListBtn01">Request For Quotation</a>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- 徐世奇 -->
+    <div id="mix" class="w_1240">
+        <div id="xsq">
+            <div class="wide">
+                <!-- 展厅显示 -->
+                <div class="goods-category-wrap">
+                    <div class="goods-category-item stop-swiping">
+                        <div class="flex-left-right">
+                            <div class="descript-box">
+                                <div class="big-title">O2O Show Room</div>
+                                <div class="content-text">
+                                    From our exhibitors,
+                                    <br>
+                                    selected by analysts
+                                </div>
+                                <a href="/html/o2o/introduceO2O.jsp" target="_blank"
+                                   class="btn-see-all">Learn More</a>
+                            </div>
+
+                            <div class="right-goods-out-wrap swiper-container swiper-category-list">
+                                <div class="slide-title">
+                                    <a class="fr more" target="_blank" href="/home/pdt_PdtProduct_o2oList">More ></a>
+                                    Romanian Show Room
+                                </div>
+
+                                <!-- 展厅的具体商品 - 轮播数据 -->
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide" v-for="showRoomItem in showRoomGoodsList">
+                                        <ul class="right-goods-wrap">
+                                            <li class="item" v-for="(goods, index) in showRoomItem" v-if="index < 4">
+                                                <a :href="goods.rewrite" target="_blank">
+                                                    <img :src="image(goods.image,'?x-oss-process=image/resize,m_pad,h_300,w_300')"
+                                                         :alt="goods.title" class="goods-pic">
+                                                    <div class="goods-info-wrap">
+                                                        <div class="goods-name">
+                                                            <div class="ellipsis_2">
+                                                                {{goods.title}}
+                                                            </div>
+                                                        </div>
+                                                        <div class="goods-price">
+                                                            US
+                                                            <span>{{sysConfig.currency_symbol}}{{goods.price}}  </span>
+                                                        </div>
+                                                        <div class="min-order">
+                                                            Min.Order:{{goods.min_order}} pairs
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <!-- <div class="hover-show">
+													<div class="btn-group">
+														<a class="btn-inquiry btn-blue" :href="'/home/usr_UsrConsult_productPublishView?product_id='+goods.id" target="_blank">
+															Inquiry
+														</a>
+													</div>
+												</div> -->
+                                                <div class="hover-show">
+                                                    <a :href="goods.rewrite" target="_blank" class="link-box">
+                                                        <div class="hover-text-wrap" >
+                                                                <div class="goods-name ellipsis_2">
+                                                                    {{goods.title}}
+                                                                </div>
+                                                             <div class="goods-price" >
+                                                                US <span>{{sysConfig.currency_symbol}}{{goods.price}}</span>
+                                                            </div>
+                                                            <div class="min-order">
+                                                                Min.Order:{{goods.min_order || 0}} pairs
+                                                            </div>
+                                                        </div>
+                                                        <div class="btn-group">
+                                                           <a class="btn-inquiry btn-blue" @click.stop="ToProductInquiry(goods.id)" style="z-index: 999">
+                                                                Inquiry
+                                                            </a>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- 展厅的具体商品 - 轮播数据 - end -->
+                            </div>
+                        </div>
+
+
+                        <!-- 轮播 - 缩略图 -->
+                        <div class="por">
+                            <div class="swiper-button-next swiper-button-white"></div>
+                            <div class="swiper-button-prev swiper-button-white"></div>
+                            <div class="swiper-container swiper-container-thumbs gallery-thumbs">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide" v-for="showRoom in showRoomPicList">
+                                        <img :src="showRoom.imgUrl" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- 展厅显示 - end -->
+
+                <!-- 询盘列表 -->
+                <div class="RFQ-list-wrap">
+                    <h3 class="RFQ-title">
+                        RFQ List
+                        <%--<a class="fr more">More ></a>--%>
+                    </h3>
+
+                    <ul class="RFQ-list">
+                        <li class="RFQ-item" v-for="item in RFQList">
+                            <img :src="image(item.countryLogo)" alt="" class="flag" :title="item.country">
+                            <div class="summary">
+                                <div class="ellipsis_1 descript" :title="item.title">{{item.title}}</div>
+                                <div class="time">{{item.time}}</div>
+                            </div>
+                            <div class="order">
+                                order: <span>{{item.quantity}} {{item.currency}}</span>
+                            </div>
+                            <div class="btn-quote" :data-pkey="item.pkey">
+                                <a :href="'/home/rfq_RFQConsult_getRFQReadMore?rfqPkey=' + item.pkey">Read More</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <!-- 询盘列表 - end -->
             </div>
         </div>
     </div>
-</div>
-<jsp:include page="template/new-foot.jsp"></jsp:include>
-<div id="hj_top" style="opacity: 0; bottom: 10%;">
-    <img src="./static/images/hj_top.png">
-</div>
-<script>
-    $(document).ready(function () {
-        // 图片懒加载
-        $("img.lazy").lazyload({
-            effect: "show",
-            threshold: 150,
-            event: 'scroll',
-            failure_limit: 6
-        });
-        // 轮播
-        var swiperOne = new Swiper('#swiperOne', {
-            pagination: {
-                el: '.swiper-pagination',
-            },
-            autoplay: {
-                delay: 2500,
-                disableOnInteraction: false,
-            },
-        });
-        $("#swiperOne").mouseover(function () {
-            swiperOne.autoplay.stop();
-        }).mouseleave(function () {
-            swiperOne.autoplay.start();
-        });
+    <!-- 夏超 -->
+    <section id="xc" class="w_1240">
+        <!-- 第二段 -->
+        <div class="section2 clearfix">
+            <!-- 左边 -->
+            <div class="product-list clearfix">
+                <div class="default-item fir-item">
+                    <h3>Recently Viewed</h3>
+                    <p style="opacity: 0.5;margin-top: 15px;line-height: 20px;">
+                        The goods you’ve <br>
+                        searched last time
+                    </p>
+                    <a href="/home/pdt_PdtProduct?orderfld=MostPopular" class="see-all fir-see-all" target="_blank">See
+                        All</a>
+                </div>
+                <template v-for="(item, index) in MostPopular" :key="index">
+                    <div class="product-item">
+                        <div class="product-img">
+                            <a :href="'/'+item.rewrite" target="_blank">
+                                <img :src="image(item.image,'?x-oss-process=image/resize,m_pad,h_200,w_200')" alt="">
+                            </a>
+                        </div>
+                        <div class="product-content">
+                            <div class="product-info ellipsis_2">
+                                <a :href="'/'+item.rewrite" target="_blank">
+                                    {{item.title}}
+                                </a>
+                            </div>
+                            <div class="product-price">
+                                <span style="color: #232323;">US</span>
+                                <span style="color: #e54544;">{{sysConfig.currency_symbol}}{{item.price}}</span>
+                            </div>
+                            <div class="product-pairs">
+                                Min.Order: {{item.min_order}} pairs
+                            </div>
+                        </div>
+                        <div class="inquiry-btn">
+                            <a :href="'/'+item.rewrite" target="_blank" style="color:#666;text-align: left;padding: 20px;height: 100%;">
+                                <div class="ellipsis_2" style="font-size:12px;line-height: 20px;max-height:120px;overflow: hidden;">{{item.title}}</div>
+                                <div style="font-size:18px;margin-top:10px;">
+                                    <span style="color: #232323;">US</span>
+                                    <span style="color: #e54544;">{{sysConfig.currency_symbol}}{{item.price}}</span>
+                                </div>
+                                <div style="font-size:12px;">
+                                    Min.Order: {{item.min_order}} pairs
+                                </div>
+                            </a>
+                            <a class="inquiry-a"  @click.stop="ToProductInquiry(item.id)" style="z-index: 999">
+                                Inquiry
+                            </a>
+                        </div>
+                    </div>
+                </template>
+            </div>
+            <!-- 右边 -->
+            <div class="product-list clearfix">
+                <div class="default-item sec-item">
+                    <h3>Recommendation</h3>
+                    <p style="margin-top: 15px;line-height: 20px;">
+                        The similar goods you <br>
+                        may like
+                    </p>
+                    <a href="/home/pdt_PdtProduct?orderfld=Sales" class="see-all sec-see-all" target="_blank">See
+                        All</a>
+                </div>
+                <template v-for="(item, index) in HotSale" :key="index">
+                    <div class="product-item">
+                        <div class="product-img">
+                            <a :href="'/'+item.rewrite" target="_blank">
+                                <img :src="image(item.image,'?x-oss-process=image/resize,m_pad,h_200,w_200')" alt="">
+                            </a>
+                        </div>
+                        <div class="product-content">
+                            <div class="product-info ellipsis_2">
+                                <a :href="'/'+item.rewrite" target="_blank">
+                                    {{item.title}}
+                                </a>
+                            </div>
+                            <div class="product-price">
+                                <span style="color: #232323;">US</span>
+                                <span style="color: #e54544;">{{sysConfig.currency_symbol}}{{item.price}}</span>
+                            </div>
+                            <div class="product-pairs">
+                                Min.Order: {{item.min_order}} pairs
+                            </div>
+                        </div>
+                        <div class="inquiry-btn">
+                            <a :href="'/'+item.rewrite" target="_blank" style="color:#666;text-align: left;padding: 20px;height: 100%;">
+                                <div class="ellipsis_2" style="font-size:12px;line-height: 20px;max-height:120px;overflow: hidden;">{{item.title}}</div>
+                                <div style="font-size:18px;margin-top:10px;">
+                                    <span style="color: #232323;">US</span>
+                                    <span style="color: #e54544;">{{sysConfig.currency_symbol}}{{item.price}}</span>
+                                </div>
+                                <div style="font-size:12px;">
+                                    Min.Order: {{item.min_order}} pairs
+                                </div>
+                            </a>
+                            <a class="inquiry-a"   @click.stop="ToProductInquiry(item.id)" style="z-index: 999">
+                                Inquiry
+                            </a>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </section>
+    <!-- 林华力 -->
+    <div id="lhl_index">
+        <!--News-->
+        <div class="index_News">
+            <p class="sub_title">Don't Miss <a href="javascript:void(0);" class="fr sub_title_more"
+                                               style="display: none">More ></a></p>
+            <div class="news_content">
+                <div class="news_detail por" v-for="item,index in newsList">
+                    <a :href="item.url" target="_blank">
+                        <img :src="item.image" name="News_img" alt="">
+                        <%--<div class="news_laste" v-if="index != 2">--%>
+                        <%--<span class="news_laste_text">Last</span>--%>
+                        <%--</div>--%>
+                        <h4 class="detail_title">{{item.title}}</h4>
+                        <div class="detail_info">
+                            <img src="/home/v3/static/images/icon_sj.png" name="news_icon" alt="">
+                            <span class="detail-text">{{item.time}}</span>
+                            <img src="/home/v3/static/images/icon_wz.png" name="news_icon" alt="">
+                            <span class="detail-text">{{item.location}}</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!--Our Strength-->
+        <div class="index_strength">
+            <h2 class="strength_title">Our Strength</h2>
+            <div class="strength_content" v-for="item in strength">
+                <div class="str_icon">
+                    <img :src="item.icon" name="icon_our" alt="">
+                </div>
+                <h4 class="str_title">{{item.title}}</h4>
+                <div class="str_text" v-for="por in item.info">
+                    <img src="/home/v3/static/images/icon_right_red.png" name="icon_right_red" alt="">
+                    <P class="str_text_p">{{por}}</P>
+                </div>
+            </div>
+        </div>
 
-        $('#swiperOne .swiper-pagination').on('mouseenter', 'span', function () {
-            var index = $(this).index();
-            swiperOne.slideTo(index, 1000, false);
-        })
+    </div>
+    <index-bottom></index-bottom>
+</main>
+<script src="/home/v3/static/js/index-top.js"></script>
+<script src="/home/v3/static/js/index-bottom.js"></script>
+<script>
+    new Vue({
+        el: "#shoesTp",
+        data: {
+            newsList: [{
+                url: '/home/rfq_RFQConsult_ExpoRivaSchuhshow' + '',
+                image: '/home/v3/static/images/zh_img.png',
+                title: 'Expo Riva Schuh',
+                time: 'Jan 12-15, 2019',
+                location: 'Italy'
+            }, {
+                url: '/home/rfq_RFQConsult_exhibitionshow',
+                image: '/home/v3/static/images/zh_img2.png',
+                title: 'FOOTWEAR SOURCING AT MAGIC',
+                time: 'February 4-7, 2019',
+                location: 'Las Vegas'
+            }, {
+                url: '/home/rfq_RFQConsult_guangjiaohuishow',
+                image: '/home/v3/static/images/zh_img3.png',
+                title: 'China Import and Export Fair',
+                time: 'Apr.15-May.5, 2019',
+                location: 'Guangzhou'
+            }],
+            strength: [{
+                icon: '/home/v3/static/images/icon_our1.png',
+                title: 'Variety of suppliers at here',
+                info: ['Different type of shoes', 'Different price level', 'Different function shoes']
+            }, {
+                icon: '/home/v3/static/images/icon_our2.png',
+                title: 'The lowest price in the whole network',
+                info: ['We provide O2O-low price area to buyers', 'We pick quality shoes with price as lower as possible']
+            }, {
+                icon: '/home/v3/static/images/icon_our3.png',
+                title: 'SVS Suppliers Standard',
+                info: ['Including factors that buyers are much concerned about', 'Showing the performance of manufacturers objectively ']
+            }, {
+                icon: '/home/v3/static/images/icon_our4.png',
+                title: 'Offer many bussiness events',
+                info: ['We could agent the three biggest exhibition;', 'We provide O2O progrom;', 'We have choiceness of suppliers for promting excellent manufacture']
+            }],
+            MostPopular: [],
+            HotSale: [],
+            RFQ_title: "",
+            RFQ_quantity: null,
+            chooes: "Pairs",
+            chooesValue: 1,
+            classLists: [],
+            showRoomGoodsList: [],
+            showRoomPicList: [{imgUrl: "/home/v3/static/images/show-room_01.jpg"}, {imgUrl: "/home/v3/static/images/show-room_02.jpg"}, {imgUrl: "/home/v3/static/images/show-room_03.jpg"}, {imgUrl: "/home/v3/static/images/show-room_04.jpg"}, {imgUrl: "/home/v3/static/images/show-room_05.jpg"}, {imgUrl: "/home/v3/static/images/show-room_06.jpg"}, {imgUrl: "/home/v3/static/images/show-room_07.jpg"}, {imgUrl: "/home/v3/static/images/show-room_08.jpg"}, {imgUrl: "/home/v3/static/images/show-room_09.jpg"}, {imgUrl: "/home/v3/static/images/show-room_10.jpg"}, {imgUrl: "/home/v3/static/images/show-room_11.png"}, {imgUrl: "/home/v3/static/images/show-room_12.jpg"}, {imgUrl: "/home/v3/static/images/show-room_13.jpg"}, {imgUrl: "/home/v3/static/images/show-room_14.jpg"}, {imgUrl: "/home/v3/static/images/show-room_15.jpg"}],
+            RFQList: []
+        },
+        mounted: function mounted() {
+            this.getMostPopular();
+            this.getHotSale();
+            this.classList();
+            this.getShowRoomGoodsList();
+            this.getRFQList();
+        },
+        methods: {
+            // 跳转RFQ   
+             ToRFQ(title,quantity,chooesValue){
+                let url = "/home/usr_UsrConsult_publishView?title=" +title+"&quantity="+quantity+"&chooesValue="+chooesValue+ "&backUrl=" + window.location.href
+                util_function_obj.supplierCantEnter(this, url);
+             },
+            // 跳转商品询盘表单
+            ToProductInquiry(pdtId){
+                let url = "/home/usr_UsrConsult_productPublishView?product_id=" + pdtId + "&backUrl=" + window.location.href
+                util_function_obj.supplierCantEnter(this, url);
+            },
+            image: function image(v, params) {
+                if (!v) {
+                    return "";
+                }
+                if (!params) {
+                    params = "";
+                }
+                var t = v.split(",");
+                if (t && t.length > 0) {
+                    return sysConfig.baseImageUrl + t[0] + params;
+                }
+                return sysConfig.baseImageUrl + v + params;
+            },
+            getRFQList(){
+                var self = this;
+                axios.get('/home/rfq_RFQConsult_getRFQList').then(function (res) {
+                    console.log("getRFQList");
+                    console.log(res);
+                    if (res.data.ret != 1) {
+                        self.$message.error(res.data.msg || "Get RFQ list error,please try again later");
+                        return;
+                    }
+                    self.RFQList = res.data.result;
+                }).catch(function (error) {
+                    self.$message.error(error || 'Network error,please try again later');
+                });
+            },
+            getMostPopular: function getMostPopular() {
+                var self = this;
+                // axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax', {
+                //     params: {
+                //         orderfld: "MostPopular",
+                //         order: true,
+                //         page: 1,
+                //         limit: 5,
+                //         cated: -1,
+                //         v: 3
+                //     }
+                // })
+                // 接口改为随机商品
+                axios.get('/home/pdt_PdtProduct_getRandomProduct', {
+                    params: {
+                        limit: 5,
+                    }
+                })
+                    .then(function (res) {
+                        if (res.data.ret != 1) {
+                            self.$message.error(res.data.msg || "Get products list error,please try again later");
+                            return;
+                        }
+                    // self.MostPopular = res.data.result.items;
+                    self.MostPopular = res.data.result;
+                }).catch(function (error) {
+                    self.$message.error(error || 'Network error,please try again later');
+                });
+            },
+            getHotSale: function getHotSale() {
+                var self = this;
+                // axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax', {
+                //     params: {
+                //         orderfld: "Sales",
+                //         order: true,
+                //         page: 1,
+                //         limit: 5,
+                //         cated: -1,
+                //         v: 3
+                //     }
+                // })
+                // 接口改为随机商品
+                axios.get('/home/pdt_PdtProduct_getRandomProduct', {
+                    params: {
+                        limit: 5,
+                    }
+                })
+                    .then(function (res) {
+                        if (res.data.ret != 1) {
+                            self.$message.error(res.data.msg || "Get products list error,please try again later");
+                            return;
+                        }
+                    self.HotSale = res.data.result;
+                }).catch(function (error) {
+                    self.$message.error(error || 'Network error,please try again later');
+                });
+            },
+            classList: function classList(e) {
+                var _this = this;
+                axios.get('/home/pdt_PdtProduct_gtProductsIndexCategoriesListAjax', {
+                    params: {
+                        page: 1,
+                        limit: 5
+                    }
+                }).then(function (res) {
+                    if (res.data.ret != 1) {
+                        _this.$message.error(res.data.msg || "Get category list error,please try again later");
+                        return;
+                    }
+                    _this.classLists = res.data.result;
+                }).catch(function (error) {
+                    _this.$message.error(error || 'Network error,please try again later');
+                });
+            },
+            chooesbtn: function chooesbtn(e) {
+                this.chooes = e.currentTarget.dataset.name;
+                this.chooesValue = e.currentTarget.value;
+            },
+            getShowRoomGoodsList: function getShowRoomGoodsList() {
+                var _this2 = this;
+                // axios.get('/home/o2o_O2oRegistration_o2oList', {
+                //     params: {
+                //         start: 0,
+                //         limit: 16 * 4
+                //     }
+                // })
+                // 接口改为随机商品
+                axios.get('/home/temporary_Temporary_randomO2oList', {
+                    params: {
+                        start: 0,
+                        // limit: 5,
+                        limit: 16 * 4
+                    }
+                })
+                    .then(function (res) {
+                    console.log("鞋子列表suc");
+                    console.log(res);
+                    if (res.data.ret != 1) {
+                        _this2.$message.error(res.data.msg || "Get O2O products error,please try again later");
+                        return;
+                    }
+                    ;
+                    var shoesList = res.data.result;
+                    var showRoomGoodsList = [];
+                    // for (var i = 0; i < 15; i++) {
+                    //   showRoomGoodsList.push(shoesList.splice(0, 4));
+                    // }
+                    // 将展会信息分组-循环显示 - 为了轮播 - 多层循环 - 防止数据过少
+                    var spliceArr;
+                    for (var i = 0; i < 15; i++) {
+                        spliceArr = shoesList.splice(0, 4);
+                        if (spliceArr.length == 4) {
+                            showRoomGoodsList.push(spliceArr)
+                        } else {
+                            break;
+                        }
+                    }
+                    sign:
+                        for (var len = showRoomGoodsList.length; len < 15; len++) {
+                            for (var i = 0; i < len; i++) {
+                                showRoomGoodsList.push(showRoomGoodsList[i])
+                                if (showRoomGoodsList.length >= 15) break sign;
+                            }
+                        }
+
+                    _this2.showRoomGoodsList = showRoomGoodsList;
+                    _this2.$nextTick(function () {
+                        _this2.galleryThumbs = new Swiper('#xsq .gallery-thumbs', {
+                            spaceBetween: 10,
+                            slidesPerView: 7,
+                            loop: true,
+                            freeMode: true,
+                            watchSlidesVisibility: true,
+                            watchSlidesProgress: true
+                        });
+                        _this2.goodsCategorySwiper = new Swiper('#xsq .swiper-category-list', {
+                            spaceBetween: 10,
+                            speed: 1000,
+                            loop: true,
+                            navigation: {
+                                nextEl: '.swiper-button-next',
+                                prevEl: '.swiper-button-prev'
+                            },
+                            thumbs: {swiper: _this2.galleryThumbs}
+                        });
+                    });
+                }).catch(function (error) {
+                    _this2.$message.error(error || 'Network error,please try again later');
+                });
+            }
+        }
     });
+
+
 </script>
 </body>
 </html>

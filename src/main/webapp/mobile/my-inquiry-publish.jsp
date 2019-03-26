@@ -612,10 +612,10 @@
                                 // 未登录时
                             } else if (res.data.ret == -1) {
                                 if (this.param_product_id != -1) {
-                                    window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView?product_id='
+                                    window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_productPublishView?product_id='
                                         + this.param_product_id;
                                 } else {
-                                    window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
+                                    window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_productPublishView';
                                 }
                                 // 提交失败时
                             } else {

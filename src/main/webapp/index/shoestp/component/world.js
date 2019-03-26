@@ -96,7 +96,7 @@
 			                min: 99,
 			                max: 600,	
 			                inRange: {
-			                	 color: ['#b52acc','#71fd21','#54f5ff','#fac942','#ff5160','#232F65'],
+			                	 color: ['rgba(180,44,202,.7)','rgba(113,253,35,.7)','rgba(255,81,96,.7)','rgba(85,245,254,.7)','rgba(250,201,66,.7)','#232F65'],
 											},
 			                text:['High','Low'],           // 文本，默认为数值文本
 			                calculable: true
@@ -134,7 +134,7 @@
 										coordinateSystem: 'geo',
 										data:[dataName[i]],
 										symbolSize: function (val) {
-											return val[2] /10;
+											return 20;
 											// return [val[2] /16,val[2] /12];
 										},
 										symbolKeepAspect :true,
@@ -170,7 +170,7 @@
 						            coordinateSystem: 'geo',
 						            data:[dataName[i]],
 						            symbolSize: function (val) {
-						                return val[2] / 10;
+						                return 15;
 						            },
 						            showEffectOn: 'render',
 						            rippleEffect: {
@@ -181,7 +181,7 @@
 						                normal: {
 						                    formatter: '{b}',
 						                    position: 'right',
-						                    show: true
+						                    show: false
 						                }
 						            },
 						            itemStyle: {

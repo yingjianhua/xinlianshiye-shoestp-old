@@ -1,0 +1,715 @@
+@charset "utf-8";
+
+
+*{
+	margin:0;
+	padding:0;
+}
+body{
+	width:100%;
+	margin:0 auto;
+	line-height: initial;
+	font-family: Arial;
+}
+a{
+	text-decoration: none;
+}
+button{
+	border: none;
+}
+li{
+	list-style: none;
+}
+.clearfloat::after{
+	content: " ";
+	display: block;
+	clear: both;
+}
+.clearfloat{
+	zoom:1;
+}
+
+/*.拉斯维加斯*/
+#linExhibitionLasVages .lasvagesbannercon,
+#linExhibitionLasVages .lasvagesdetailcon,
+#linExhibitionLasVages .lasvagesimgscon{
+    width: 1240px;
+    margin: 0 auto;
+}
+
+#linExhibitionLasVages .lasvagesbannercon img{
+    width: 100%;
+}
+#linExhibitionLasVages .h2con{
+    width: 1020px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+}
+#linExhibitionLasVages .h2con h2{
+    font-size: 22px;
+    width: 80px;
+    margin: 0 auto;
+    padding: 28px 10px;
+    font-family: Fangsong;
+    color: #a1a09e;
+    position: relative;
+    background-color: rgb(246,246,246);
+    z-index: 9;
+}
+#linExhibitionLasVages  .h2con .hen{
+    position: absolute;
+    width: 1000px;
+    background-color: #a1a09e;
+    height: 1px;
+    top: 50%;
+}
+#linExhibitionLasVages .lasvagesdetailconout{
+    background-color: rgb(246,246,246);
+    text-align: center;
+}
+#linExhibitionLasVages .lasvagesdetailcon .lasvagesdetail{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 1020px;
+    margin: 0 auto;
+    padding-bottom: 72px;
+}
+#linExhibitionLasVages .lasvagesdetailcon .lasvagesdetail video{
+    width: 500px;
+    height: 290px;
+}
+#linExhibitionLasVages .lasvagesdetailcon .lasvagesdetail .detailcon{
+    width: 520px;
+    height: 290px;
+    background-color: white;
+    text-align: center;
+}
+#linExhibitionLasVages .lasvagesdetailcon .lasvagesdetail .detailcon h3{
+    font-size: 32px;
+    font-family: Fangsong;
+    font-weight: normal;
+    padding: 22px 0 20px;
+}
+#linExhibitionLasVages .lasvagesdetailcon .lasvagesdetail .detailcon .hen{
+    width: 47%;
+    height: 1px;
+    margin: 0 auto;
+    background-color: rgb(187,187,187);
+    margin-bottom: 20px;
+}
+#linExhibitionLasVages .lasvagesdetailcon .lasvagesdetail .detailcon p{
+    width: 80%;
+    margin: 0 auto;
+    font-size: 15px;
+    font-family: Lato;
+}
+#linExhibitionLasVages .lasvagesdetailcon>h3{
+    width: 1020px;
+    margin: 0 auto;
+    text-align: left;
+}
+#linExhibitionLasVages .lasvagesdetailcon>.img1{
+    width: 1020px;
+    margin: 0 auto;
+    margin-bottom: 84px;
+}
+#linExhibitionLasVages .lasvagesdetailcon .h31{
+    font-size: 31px;
+    font-family: Fangsong;
+    margin-bottom: 5px;
+}
+#linExhibitionLasVages .lasvagesdetailcon .h32{
+    font-size: 25px;
+    font-family: Lato;
+    font-weight: normal;
+    margin-bottom: 44px;
+}
+#linExhibitionLasVages .lasvagesdetailcon .lasvagescon{
+    width: 1020px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+#linExhibitionLasVages .lasvagesdetailcon .lasvagescon .lasvagescon1{
+    height: 534px;
+    width: 298px;
+    font-size: 16px;
+    font-family: Lato;
+    font-weight: bold;
+    color: #5e2c4f;
+}
+#linExhibitionLasVages .lasvagesdetailcon .lasvagescon .lasvagescon1 .top{
+    width: 100%;
+    height: 162px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background-color: rgb(94,44,79);
+}
+#linExhibitionLasVages .lasvagesdetailcon .lasvagescon .lasvagescon1 .top img{
+    margin-bottom: 10px;
+}
+#linExhibitionLasVages .lasvagesdetailcon .lasvagescon .lasvagescon1 .top h4{
+    height: 42px;
+    display: flex;
+    align-items: center;
+}
+#linExhibitionLasVages .lasvagesdetailcon .lasvagescon .lasvagescon1 p{
+    height: 374px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+}
+#linExhibitionLasVages .lasvagesdetailcon .lasvagescon .lasvagescon2{
+    background-color: rgb(94,44,79);
+    color: white;
+    width: 298px;
+    height: 534px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-family: Lato;
+    font-weight: bold;
+}
+#linExhibitionLasVages .lasvagesimgscon{
+    width: 1040px;
+    text-align: center;
+}
+#linExhibitionLasVages .lasvagesimgscon img{
+    width: 1040px;
+    margin-top: 50px;
+    margin-bottom: 84px;
+}
+#linExhibitionLasVages .lasvagesimgscon h2:nth-child(2){
+    text-align: left;
+    font-size: 40px;
+    font-family: Fangsong;
+    color: #5e2c4f;
+    margin: 40px 0 46px;
+}
+#linExhibitionLasVages .lasvagesimgscon .map{
+    width: 1040px;
+    margin: 0 auto;
+}
+#linExhibitionLasVages .lasvagesimgscon h2:nth-child(4){
+    font-size: 30px;
+    font-family: Lato;
+    text-align: left;
+    margin: 36px 0 100px;
+    font-weight: normal;
+}
+
+
+/*chao 广州*/
+#gjhApp {
+    /* font-family: Lato-Regular; */
+    height: 100%; }
+    #gjhApp a, #gjhApp a:link, #gjhApp a:visited, #gjhApp a:hover, #gjhApp a:active {
+      display: inline-block;
+      color: inherit;
+      text-decoration: none; }
+    #gjhApp .flexSb {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      -webkit-box-pack: justify;
+          -ms-flex-pack: justify;
+              justify-content: space-between; }
+    #gjhApp .w_1240 {
+      width: 1240px;
+      min-width: 1240px;
+      margin: 0 auto; }
+    #gjhApp .w_1920 {
+      width: 1920px;
+      max-width: 1920px;
+      margin: 0 auto; }
+    #gjhApp header .left-video {
+      width: 649px;
+      height: 365px; }
+    #gjhApp header .right-banner {
+      width: 587px;
+      height: 365px; }
+    #gjhApp .section1 {
+      width: 1126px;
+      margin: 0 auto;
+      text-align: center; }
+      #gjhApp .section1 h1 {
+        font-size: 39px;
+        line-height: 30px;
+        color: #d70b17;
+        margin: 85px 0 47px 0; }
+      #gjhApp .section1 p {
+        font-size: 22px;
+        line-height: 30px;
+        color: #777777;
+        text-align: left;
+        margin-bottom: 30px; }
+        #gjhApp .section1 p:last-child {
+          margin: 0; }
+    #gjhApp .section2 {
+      color: #fff;
+      height: 294px;
+      padding: 75px 0; }
+      #gjhApp .section2 p {
+        font-size: 15px; }
+      #gjhApp .section2 h3 {
+        font-size: 30px;
+        margin-bottom: 20px; }
+      #gjhApp .section2 .font {
+        width: 628px;
+        height: 294px;
+        background-color: #a65d95;
+        opacity: 0.8;
+        padding: 30px 35px 0 57px; }
+    #gjhApp .section3 {
+      height: 1003px;
+      text-align: center;
+      background-color: #fbebeb; }
+      #gjhApp .section3 h1 {
+        font-size: 39px;
+        line-height: 30px;
+        color: #d70b17;
+        padding: 70px 0 60px 0; }
+      #gjhApp .section3 img {
+        width: 100%;
+        height: 100%; }
+      #gjhApp .section3 .font {
+        font-size: 30px;
+        color: #ffffff;
+        position: absolute;
+        width: 100%;
+        top: 0;
+        left: 0; }
+      #gjhApp .section3 .left-box {
+        width: 880px;
+        height: 757px; }
+        #gjhApp .section3 .left-box .catwalk1 {
+          width: 436px;
+          height: 295px; }
+        #gjhApp .section3 .left-box .catwalk2 {
+          position: relative;
+          margin: 4px 0; }
+        #gjhApp .section3 .left-box .catwalk3 {
+          width: 436px;
+          height: 291px; }
+        #gjhApp .section3 .left-box .catwalk4 {
+          width: 436px;
+          height: 465px;
+          margin-bottom: 4px; }
+      #gjhApp .section3 .right-box {
+        width: 359px;
+        height: 757px; }
+        #gjhApp .section3 .right-box .catwalk5 {
+          width: 359px;
+          height: 242px; }
+        #gjhApp .section3 .right-box .catwalk6 {
+          margin: 6px 0; }
+        #gjhApp .section3 .right-box .catwalk7 {
+          width: 360px;
+          height: 110px;
+          position: relative; }
+    #gjhApp .section4 {
+      position: relative;
+      margin: 118px auto 104px auto; }
+      #gjhApp .section4 .item {
+        width: 264px;
+        height: 425px;
+        background-color: #d70d19;
+        border-radius: 130px;
+        text-align: center;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                justify-content: center;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+        color: #fff;
+        position: relative; }
+        #gjhApp .section4 .item .font {
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-orient: vertical;
+          -webkit-box-direction: normal;
+              -ms-flex-direction: column;
+                  flex-direction: column;
+          -webkit-box-pack: center;
+              -ms-flex-pack: center;
+                  justify-content: center;
+          -webkit-box-align: center;
+              -ms-flex-align: center;
+                  align-items: center;
+          position: absolute; }
+          #gjhApp .section4 .item .font span {
+            font-size: 30px;
+            margin-bottom: 40px; }
+          #gjhApp .section4 .item .font p {
+            font-size: 24px; }
+        #gjhApp .section4 .item:before {
+          width: 264px;
+          height: 395px;
+          border-radius: 140px;
+          border: 15px solid #f7cfd1;
+          content: "";
+          position: absolute; }
+    #gjhApp .section5 .title {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: start;
+          -ms-flex-pack: start;
+              justify-content: flex-start;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      font-size: 30px; }
+    #gjhApp .section5 img {
+      margin: 0 20px; }
+    #gjhApp .section5 table {
+      margin: 60px 0;
+      border: 1px solid  #bbbbbb; }
+    #gjhApp .section5 th, #gjhApp .section5 td {
+      font-weight: inherit;
+      border: 1px solid  #bbbbbb;
+      text-align: center;
+      height: 120px;
+      font-size: 24px; }
+    #gjhApp .section6 {
+      text-align: center;
+      margin-bottom: 110px; }
+      #gjhApp .section6 .map {
+        height: 563px;
+        margin: 45px auto; }
+      #gjhApp .section6 h1 {
+        font-size: 48px;
+        color: #da202b;
+        margin: 116px 0 83px 0;
+        line-height: 45px; }
+      #gjhApp .section6 .content {
+        font-size: 26px;
+        line-height: 40px; }
+
+  /*# sourceMappingURL=index.css.map */
+
+  /*# sourceMappingURL=index.css.map */
+
+
+/*lhl  加达*/
+#lhl-garda{
+    background-color: #f5f5f5;
+}
+#lhl-garda .garda_center{
+    text-align: center;
+}
+#lhl-garda .garda-banner{
+    margin: 0 auto;
+    width: 1760px;
+}
+#lhl-garda .banner-title{
+    width: 600px;
+    height: 528px;
+    padding-left: 260px;
+    padding-top: 150px;
+    background-color: #ffcc00;
+    box-sizing: border-box;
+    display: inline-block;
+    vertical-align: middle;
+}
+#lhl-garda .banner-title-h2{
+    font-size: 36px;
+    color: #002d8b;
+    margin-bottom: 48px;
+}
+#lhl-garda .banner-title-time{
+    font-size: 29px;
+    color: #002d8b;
+    opacity: 0.8;
+    margin-bottom: 24px;
+}
+#lhl-garda .banner-title-address{
+    font-size: 23px;
+    color: #002d8b;
+    opacity: 0.8;
+}
+#lhl-garda .garda-banner img[name=ERS-banner]{
+    width: 1160px;
+    vertical-align: middle;
+    margin-left: -5px;
+}
+#lhl-garda .garda-banner .banner-image{
+    width: 1160px;
+    display: inline-block;
+    vertical-align: top;
+    margin-left: -5px;
+    position: relative;
+}
+#lhl-garda .garda-banner .banner-image .banner-image-video{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#lhl-garda .garda-banner .banner-image .banner-image-video video[name=video]{
+    width: 528px;
+    max-height: 100%;
+    border: solid 4px rgba(255, 204, 0, 0.69);
+}
+#lhl-garda .garda-about{
+    width: 1200px;
+    margin: 147px auto 80px;
+}
+#lhl-garda .garda-about-h2{
+    font-size: 60px;
+    line-height: 60px;
+    color: #002d8b;
+    border-left: 12px solid #ffcc00;
+    padding-left: 12px;
+    margin-bottom: 60px;
+}
+#lhl-garda .garda-about-text{
+    width: 1100px;
+    margin: 0 auto;
+    font-size: 20px;
+    line-height: 30px;
+    color: #333333;
+    margin-bottom: 30px;
+}
+#lhl-garda .garda-about-h3{
+    font-size: 32px;
+    line-height: 30px;
+    color: #002d8b;
+    margin-left: 25px;
+    padding-left: 15px;
+    border-left: 7px solid #002d8b;
+    margin-top: 60px;
+    margin-bottom: 30px;
+}
+
+/*>>>>>>>>*/
+#lhl-garda .linedition1{
+    position: relative;
+    width: 1240px;
+    height: 460px;
+    margin: 0 auto;
+}
+#lhl-garda .linedition1 img{
+    position: absolute;
+    width: 1240px;
+    height: 460px;
+}
+#lhl-garda .linedition1 .hen{
+    position: absolute;
+    top: 50%;
+    margin-top: -2px;
+    width: 96%;
+    margin-left: 2%;
+    height: 4px;
+    background-color: rgb(153,153,153);
+    border-radius: 2px;
+}
+#lhl-garda .linedition1 .timecon{
+    width: 1240px;
+    height: 460px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+}
+#lhl-garda .linedition1 .timecon .time{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 65px;
+}
+#lhl-garda .linedition1 .timecon .time .point{
+    width: 14px;
+    height: 14px;
+    border: 3px solid rgba(138,158,202,0.9);
+    border-radius: 50%;
+    background-color: rgb(0,45,139);
+}
+#lhl-garda .linedition1 .timecon .time .year{
+    font-size: 30px;
+    color: rgb(0,45,139);
+}
+#lhl-garda .linedition1 .timecon .time .month{
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#lhl-garda .linedition1 .timecon .time:nth-child(1){
+    margin-top: 70px;
+}
+#lhl-garda .linedition1 .timecon .time:nth-child(3){
+    margin-top: 50px;
+}
+#lhl-garda .linedition1 .timecon .time:nth-child(2) ,
+#lhl-garda .linedition1 .timecon .time:nth-child(4) {
+    flex-direction: column-reverse;
+    margin-bottom: 50px;
+}
+/*<<<<<<<<*/
+
+#lhl-garda .garda-about img[name=ERS-Gardabags]{
+    width: 1200px;
+    margin-top: 90px;
+    margin-bottom: 150px;
+}
+#lhl-garda .garda-detail{
+    background-color: white;
+    width: 100%;
+}
+#lhl-garda .garda-detail_edition img[name=ERS-edition]{
+    width: 1343px;
+    margin-top: 100px;
+}
+#lhl-garda .garda-detail_edition img[name=ERS-shoesList]{
+    width: 1240px;
+    margin-top: 60px;
+}
+#lhl-garda .garda_h2{
+    font-size: 60px;
+    line-height: 60px;
+    color: #002d8b;
+    width: 1150px;
+    margin: 0 auto;
+    padding-left: 16px;
+    text-align: left;
+    border-left: 12px solid #ffcc00;
+    margin-top: 120px;
+    margin-bottom: 30px;
+}
+#lhl-garda .garda_yellow{
+    background-color: #ffcc00;
+    color: #002d8b;
+}
+#lhl-garda .garda_blue{
+    background-color: #002d8b;
+    color: white;
+}
+#lhl-garda .garda-detail_div{
+    display: inline-block;
+    width: 305px;
+    height: 503px;
+    margin: 0 5px;
+    vertical-align: top;
+}
+#lhl-garda .garda-detail_div img[name=ERS-Information]{
+    width: 305px;
+    height: 212px;
+}
+#lhl-garda .garda-detail_div img[name=ERS-icon]{
+    width: 30px;
+    margin-right: 10px;
+}
+#lhl-garda .garda-detail_div_h4{
+    font-size: 27px;
+    line-height: 30px;
+    text-align: left;
+    margin-left: 53px;
+    margin-top: 69px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+}
+#lhl-garda .garda-detail_div_text{
+    margin-left: 53px;
+    width: 200px;
+    text-align: left;
+    font-size: 16px;
+    line-height: 20px;
+    white-space: pre-line;
+}
+#lhl-garda .garda-editions_div{
+    background: url("../images/ERS-little.png") center center no-repeat;
+    background-size: 1240px 100%;
+    width: 1240px;
+    height: 458px;
+    margin: 0 auto;
+}
+#lhl-garda .garda-text{
+    font-size: 22px;
+    line-height: 30px;
+    color: #333333;
+    width: 1150px;
+    text-align: left;
+    margin: 0 auto;
+}
+#lhl-garda .garda-suppliers img[name=ERS-suppliers]{
+    width: 1200px;
+    display: block;
+    margin: 0 auto 60px;
+}
+#lhl-garda .garda-suppliersList img[name=ERS-suppliersList]{
+    width: 433px;
+    height: 433px;
+    margin: 5px;
+}
+#lhl-garda .garda-servizio{
+    display: inline-block;
+    width: 1273px;
+    height: 408px;
+    background: url("../images/ERS-servizio.png") center 60px no-repeat;
+    background-size: 100% 348px;
+}
+#lhl-garda .garda-lounge img[name=ERS-ourbooth]{
+    width: 1234px;
+    height: 680px;
+    display: block;
+    margin: 0 auto;
+}
+#lhl-garda .garda-map_text{
+    font-size: 40px;
+    line-height: 40px;
+    color: #333333;
+    margin-top: 80px;
+    margin-bottom: 67px;
+}
+
+
+#lhl-garda .garda-suppliersList{
+    width: 100%;
+    min-width: 1240px;
+    text-align: center;
+    background-color: white;
+    padding: 30px 0;
+}
+#lhl-garda .garda-detail_edition{
+    background-color: #f5f5f5;
+}
+#lhl-garda .garda-map_image{
+    width: 540px;
+    height: 564px;
+    display: inline-block;
+    overflow: hidden;
+}
+#lhl-garda .garda-map_image img[name=gardabags]{
+    max-height: 100%;
+}
+.el-dialog{
+    width: 1200px;
+}
+img[name=dialog-Gardabags]{
+    max-width: 100%;
+}

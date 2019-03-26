@@ -73,7 +73,8 @@ var lang_obj={
 		'telephone':'请填写电话号码！ ',
 		'fax':'请正确填写传真号码！ ',
 		'email':'请正确填写电子邮箱地址！ ',
-		'length':'长度不正确！您需要填写 %num% 数位。 '
+		'length':'长度不正确！您需要填写 %num% 数位。 ',
+		'isemail':'请填写电子邮箱不正确或者不存在 '
 	},
 	signIn:{
 		'title':'登录',
@@ -105,7 +106,8 @@ var lang_obj={
 		'es':'西班牙语',
 		'ru':'俄语',
 		'pt':'葡萄牙语',
-		'zh_tw':'繁体中文'
+		'zh_tw':'繁体中文',
+		'hu':'匈牙利语'
 	},
 	manage:{
 		frame:{
@@ -471,7 +473,16 @@ var lang_obj={
 	supplier:{
 		products:'产品',
 		productsStyle:'加工方式'
-	}
+	},usrpurchase:{
+        have:'已有',
+        usrpurchase:'位采购商',
+        Procured:'采购了',
+        complete:'已经完成了',
+        Dualobjective:'双的目标的',
+		baifenhao:'%',
+        continued:'还可以继续采购'
+
+    }
 	
 	
 };

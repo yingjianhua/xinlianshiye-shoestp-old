@@ -72,7 +72,9 @@ var lang_obj={
 		'telephone':'¡Complete el número de teléfono! ',
 		'fax':'¡Complete el número de fax correctamente! ',
 		'email':'Por favor, complete la dirección de correo electrónico correctamente!',
-		'length':'¡La longitud es incorrecta! Debe completar los dígitos %num% . '
+		'length':'¡La longitud es incorrecta! Debe completar los dígitos %num% . ',
+        'isemail':'Por favor, rellene la dirección de correo electrónico es incorrecta o no existe'
+
 		},
 	signIn:{
 		'title':'Iniciar sesión',
@@ -104,7 +106,8 @@ var lang_obj={
 		'es':'español',
 		'ru':'Ruso',
 		'pt':'Portugués',
-		'zh_tw':'Chino tradicional'
+		'zh_tw':'Chino tradicional',
+        'hu':'Hungría'
 	},
 	manage:{
 		frame:{
@@ -462,5 +465,15 @@ var lang_obj={
 	supplier:{
 		products:'Producto',
 		productsStyle:'Método de procesamiento'
-	}
+	},usrpurchase:{
+        have:'Ya',
+        usrpurchase:'\n' +
+            'Contratista',
+        Procured:'Compras.',
+        complete:'Ya terminé.',
+        Dualobjective:'Doble objetivo',
+        baifenhao:'%',
+        continued:'Todavía puede seguir comprando.'
+
+    }
 };

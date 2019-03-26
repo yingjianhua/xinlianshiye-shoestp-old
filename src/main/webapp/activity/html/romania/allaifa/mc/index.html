@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <script src="./js/axios.js"></script>
+    <script src="./js/vue.js"></script>
+    <script src='./js/qs.js'></script>
+    <!-- 	<script src='./pc-config.js'></script> -->
+    <title>MC-ALLAIFA</title>
+    <link rel="stylesheet" href="css/mc-index.css">
+    <script src="./js/muse-ui-toast.js"></script>
+    <link rel="stylesheet" href="css/muse-ui-toast.all.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/material-design-icons/3.0.1/iconfont/material-icons.css">
+</head>
+<body>
+<div class="mc-allaifa" id="mc-allaifa">
+    <img class="mc-allaifabanner" src="imgs/mc-allaifabanner.png" alt="">
+    <img class="mc-allaifahen" src="imgs/mc-allaifahen.png" alt="">
+    <form id="form">
+        <h3 class="formh3">EXPLORE QUALITY SHOES</h3>
+        <div class="formitem">
+            <label for="Email" ref="name">EMAIL*</label><input type="text" id="Email" name="Email"
+                                                               v-model="userdata.Email">
+        </div>
+        <div class="formitem">
+            <label for="Name">NAME*</label><input type="text" id="Name" name="Name" v-model="userdata.Name">
+        </div>
+        <div class="formitem">
+            <label for="INQUIRY">INQUIRY*</label><textarea name="INQUIRY" id="Detail" cols="30" rows="10"
+                                                           v-model="userdata.Detail"></textarea>
+        </div>
+        <span class="submit" @click="resetForm">INQUIRY US</span>
+    </form>
+    <h2>LEARN<br>ABOUT<br>OUR<br>COMPANY</h2>
+    <p>Wenzhou AILAIFA Shoes Co.,Ltd is an export oriented manufacturer and exporter,established in 1990 with total
+        investment of USD160,000.Our company was located in Yangyi withbuilding area of 17,000 square meters. Now more
+        than 500 staffs are devoting theirservice to the company,including nearly 80technical specialists and managerial
+        personnel.</p>
+    <p>We have two lines of advanced shoesproduction systems, 400 sets of associated manufacturing equipments and full
+        sets ofadvanced testing equipments. The annual capacity reaches 150,000 pairs and annual output value amounted
+        to 2,400,000 USD.</p>
+    <h2>PRODUCT<br>GALLERY</h2>
+    <a href="javascript:void(0)"><img src="imgs/mc-allaifa1.png" alt=""></a>
+    <a href="javascript:void(0)"><img src="imgs/mc-allaifa2.png" alt=""></a>
+    <a href="javascript:void(0)"><img src="imgs/mc-allaifa3.png" alt=""></a>
+    <a href="javascript:void(0)"><img src="imgs/mc-allaifa4.png" alt=""></a>
+    <a href="javascript:void(0)"><img src="imgs/mc-allaifa5.png" alt=""></a>
+    <a href="javascript:void(0)"><img src="imgs/mc-allaifa6.png" alt=""></a>
+    <!-- <a href="https://www.shoestp.com/ailifa-wholesale-leather-sandals-and-slippers-for-men_p6589.html
+"><img src="imgs/mc-allaifa1.png" alt=""></a>
+    <a href="https://www.shoestp.com/ailaifa-casual-men-sandals-slippers-comfortable-men-sandals_p6579.html
+"><img src="imgs/mc-allaifa2.png" alt=""></a>
+    <a href="https://www.shoestp.com/ailaifa-fashion-design-soft-men-leather-sandals_p6596.html
+"><img src="imgs/mc-allaifa3.png" alt=""></a>
+    <a href="https://www.shoestp.com/ailaifa-classic-leather-shoes-formal-for-men_p6608.html
+"><img src="imgs/mc-allaifa4.png" alt=""></a>
+    <a href="https://www.shoestp.com/ailaifa-slip-on-men-pointed-toe-dress-shoes-leather-shoes_p6609.html
+"><img src="imgs/mc-allaifa5.png" alt=""></a>
+    <a href="https://www.shoestp.com/ailai-men's-black-formal-lace-up-stylish-shoes-on-tpr-sole_p6611.html
+"><img src="imgs/mc-allaifa6.png" alt=""></a> -->
+    <h2>DESIGN<br>OPERATION</h2>
+    <template v-for="item,index in designcon">
+        <h3>{{item.h3}}</h3>
+        <template v-for="item,index in item.con">
+            <img :src="item.url" alt="">
+            <h4>{{item.h4}}</h4>
+            <p class="smallp">{{item.smallp}}</p>
+        </template>
+    </template>
+    <template v-for="item,index in advantagecon">
+        <img class="logoimg" :src="item.img1" alt="">
+        <p v-for="item,index in  item.p" class="advantagep">{{item}}</p>
+        <img :src="item.img2" alt="">
+    </template>
+    <p class="advantageoutp">Ailaifa whole-heartedly welcome friends<br>from all social circles to join Ailaifa, and
+        hope you become present parter and future win-winner!</p>
+    <h2>PRODUCT<br>HIGHLIGHTS</h2>
+    <div class="mc-highlight">
+        <img src="imgs/mc-allaifa19.png" alt="">
+        <div class="pcon">
+            <p>The advantage of injection shoes are that the outsole are comfortable and sliding.</p>
+        </div>
+        <div class="pcon specialp">
+            <p>The shoes are not only fashionable but also fine texture.</p>
+        </div>
+        <div class="pcon">
+            <p>People could feel excellent quality among detail.</p>
+        </div>
+        <div class="pcon specialp">
+            <p>Therer is exquisite appearance of the shoes,and the combenation of sewing and leather by shoes are
+                novel.</p>
+        </div>
+        <div class="pcon">
+            <p>We selcelt good PU material at our shoes.</p>
+        </div>
+    </div>
+    <h2>OUR<br>FACTORY</h2>
+    <img src="imgs/mc-allaifa20.png" alt=""><img src="imgs/mc-allaifa21.png" alt="">
+    <p class="mc-factpryp">We have two lines of advanced shoes<br>production systems,<br>400 sets of associated
+        manufacturing<br>equipments and full sets of advanced testing equipments.The annual capacity reaches 1,500,000
+        pairsand annual output value amounted to 24,000,000 USD.</p>
+    <div class="mc-lastcon">
+        <h3>AILAIFA*</h3>
+        <p>Let us help you meet those needs！</p>
+        <span @click="scrollToTop()">INQUIRY US</span>
+    </div>
+</div>
+<script>
+    new Vue({
+        el: '#mc-allaifa',
+        data: {
+            interval: 0,
+            userdata: {
+                Name: '',
+                Email: '',
+                Detail: '',
+                id: 281
+            },
+
+
+            designcon: [
+                {
+                    h3: 'Shoe Room',
+                    con: [
+                        {
+                            h4: 'What we make?',
+                            url: 'imgs/mc-allaifa7.png',
+                            smallp: 'We are a company specializing in the\nproduction of men\'s shoes.Offer shoes for\nmen for all occasions, including dress\nshoes,casual shoes, sandals, etc.'
+                        },
+                        {
+                            h4: 'What we have?',
+                            url: 'imgs/mc-allaifa8.png',
+                            smallp: 'We have own showroom and thousands of\ndifferent men\'s shoes types. Our guests\ncould find their favourite shoes in here.'
+                        }
+                    ]
+                },
+                {
+                    h3: 'Design Desk',
+                    con: [
+                        {
+                            h4: 'Our persistence',
+                            url: 'imgs/mc-allaifa9.png',
+                            smallp: 'We adhere to the principle of quality first and\nchoose high quality PU as the material of\nshoes.'
+                        },
+                        {
+                            h4: 'Our skills',
+                            url: 'imgs/mc-allaifa10.png',
+                            smallp: 'Our shoe designers work out more 100 new\nshoe styles per year,constantly innovating and\nalways leading the fashion trend.'
+                        }
+                    ]
+                },
+                {
+                    h3: 'Customer Service',
+                    con: [
+                        {
+                            h4: 'Our service',
+                            url: 'imgs/mc-allaifa11.png',
+                            smallp: 'We provide different contact methods,including\nemail, live chat, telephone, etc., and we strive to\nprovide services for customers in the first time.'
+                        },
+                        {
+                            h4: 'Our delivery',
+                            url: 'imgs/mc-allaifa12.png',
+                            smallp: 'We can guarantee that you will get your orders\nwithin 2 months.'
+                        }
+                    ]
+                }
+            ],
+            advantagecon: [
+                {
+                    img1: 'imgs/mc-allaifa13.png',
+                    img2: 'imgs/mc-allaifa14.png',
+                    p: [
+                        'In recent years,our campany has activelyabsorbed new thoughts and new mechanism which improved and completed the management systems of production,operation,quality and human resource,etc.',
+                        'The company has strong strength in shoe designing&developing and production capacity in the good and scientific mangement atmosphere.'
+                    ]
+                },
+                {
+                    img1: 'imgs/mc-allaifa15.png',
+                    img2: 'imgs/mc-allaifa16.png',
+                    p: [
+                        'The company is specialized in various of men’s glue leather shoes which have gained consumers’ favorites with its exquisite workmanship,steady quality and the sound service network.',
+                        'Our shoes are widely spreaded in Russia,Southeast Asia, Western and Eastern Europe countries and regions. We also has shops in Russia, Middle East, Western and Eastern Europe and wins high comments from consumers there.'
+                    ]
+                },
+                {
+                    img1: 'imgs/mc-allaifa17.png',
+                    img2: 'imgs/mc-allaifa18.png',
+                    p: [
+                        'Our company adopts humanized management system, and offers broad development platform for the talents with zero complaint of labor disputes.',
+                        'We takes the brand strategy, and upholds the principle of "Customers Formost, Quality First".',
+                        'Over the years, the random inspection carried by Provincial Quality Supervision Department were all qualified in our company.',
+                        'The Chairman of Ailaifa has been elected as Executive Vice President of  the Wenzhou Council for the Promotion of Private Enterprise Development and the Ailaifa valued the Advanced Manufacturing Unit in Lucheng District, Wenzhou City.'
+                    ]
+                }
+            ]
+        },
+        mounted() {
+            this.changeheight();
+            window.onresize = this.changeheight;
+        },
+        methods: {
+            changeheight: function () {
+                var html = document.getElementsByTagName('html')[0];
+                var width = document.documentElement.clientWidth;
+                var fontSize;
+                // if (width > 640) {
+                //     fontSize = 100;
+                // }else{
+                //     fontSize = 100 * width / 640;
+                // }
+                fontSize = 100 * width / 640;
+                html.style.fontSize = fontSize + 'px'
+                console.log(html.style.fontSize)
+            },
+            resetForm: function () {
+                var regEmail = new RegExp('.+@[a-z0-9]+\.(com|cn|net)$')
+                var regTel = new RegExp('[0-9]{6,}')
+                if (!this.userdata.Email) {
+                    this.$toast.error('E-mail can not be empty');
+                    return false;
+                } else if (!regEmail.test(this.userdata.Email)) {
+                    this.$toast.error('E-mail format error');
+                    return false;
+                }
+                if (!this.userdata.Name) {
+                    this.$toast.error('Name can not be empty');
+                    return false;
+                }
+                if (!this.userdata.Detail) {
+                    this.$toast.error('Inquiry can not be empty');
+                    return false;
+                }
+                var self = this;
+                axios.post('/home/Activity_Romania_inquiry',
+                    Qs.stringify(
+                        {
+                            name: self.userdata.Name,
+                            email: self.userdata.Email,
+                            detail: self.userdata.Detail,
+                            supId: self.userdata.id
+                        }
+                    )
+                ).then(function (res) {
+                    gtag_report_conversion();
+                    if (res.data.ret == 1) {
+                        self.$toast.success('Submitted Successfully');
+                        setTimeout(function () {
+                            for (var i in self.userdata) {
+                                self.userdata[i] = '';
+                            }
+                        }, 3000)
+                    } else {
+                        self.$toast.error('Submitted Failed');
+                    }
+                }).catch(function (error) {
+                    console.log(error)
+                });
+            },
+            scrollToTop: function () {
+                const start = window.pageYOffset;
+                let i = 0;
+                let backPosition = 400;
+                this.interval = setInterval(() => {
+                    const next = Math.floor(this.easeInOutQuad(10 * i, start, -start, 500))
+                    if (next <= backPosition) {
+                        window.scrollTo(0, backPosition)
+                        clearInterval(this.interval)
+                        this.$refs.name.focus();
+                    } else {
+                        window.scrollTo(0, next)
+                    }
+                    i++
+                }, 16.7)
+
+                // 姓名输入框 获取焦点
+
+            },
+            easeInOutQuad(t, b, c, d) {
+                if ((t /= d / 2) < 1) return c / 2 * t * t + b
+                return -c / 2 * (--t * (t - 2) - 1) + b
+            },
+        }
+    })
+</script>
+<!-- 代码追踪 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-775251167"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-775251167');
+  gtag('config', 'UA-131117317-12');
+
+  function gtag_report_conversion(url) {
+    gtag('event', 'conversion', {
+        'send_to': 'AW-775251167/12PMCPzSuZIBEN_J1fEC'
+    });
+    return false;
+  }
+</script>
+
+<script type="text/javascript">
+	var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+	(function(){
+		var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+		s1.async=true;
+		s1.src='https://embed.tawk.to/5b8fcb48f31d0f771d8476f6/default';
+		s1.charset='UTF-8';
+		s1.setAttribute('crossorigin','*');
+		s0.parentNode.insertBefore(s1,s0);
+	})();
+</script>
+<!--End of Tawk.to Script-->
+</body>
+</html>

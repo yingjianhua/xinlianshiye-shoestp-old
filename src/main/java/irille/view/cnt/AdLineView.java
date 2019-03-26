@@ -7,10 +7,9 @@ import lombok.Setter;
 @Setter
 public class AdLineView {
 
-	private boolean primary;
-	private String name;
-	private String summary;
-	private String image;
-	private String url;
-	
+  private boolean primary;
+  private String name;
+  private String summary;
+  private String image;
+  private String url;
 }

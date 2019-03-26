@@ -1,49 +1,54 @@
 package irille.view.pdt;
 
+import java.util.List;
+
 import irille.pub.util.SetBeans.SetBean.Annotations.SetBean;
 import irille.view.BaseView;
 
-import java.util.List;
-
-/**
- * Created by IntelliJ IDEA.
- * User: lijie@shoestp.cn
- * Date: 2018/8/22
- * Time: 16:42
- */
+/** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/8/22 Time: 16:42 */
 public class PdtProductVueView implements BaseView {
-    @SetBean(OriginalField = "pkey")
-    private int id;
-    private String name;
-    @SetBean(NotSet = true)
-    private List items;
+  @SetBean(OriginalField = "pkey")
+  private int id;
 
+  private String name;
 
-    public int getId() {
-        return id;
-    }
+  @SetBean(NotSet = true)
+  private List items;
 
-    public String getName() {
-        return name;
-    }
+  private Integer supplier;
 
-    public PdtProductVueView setName(String name) {
-        this.name = name;
-        return this;
-    }
+  public int getId() {
+    return id;
+  }
 
-    public List getItems() {
-        return items;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public PdtProductVueView setItems(List items) {
-        this.items = items;
-        return this;
-    }
+  public PdtProductVueView setName(String name) {
+    this.name = name;
+    return this;
+  }
 
-    public PdtProductVueView setId(int id) {
-        this.id = id;
-        return this;
-    }
+  public List getItems() {
+    return items;
+  }
 
+  public PdtProductVueView setItems(List items) {
+    this.items = items;
+    return this;
+  }
+
+  public PdtProductVueView setId(int id) {
+    this.id = id;
+    return this;
+  }
+
+  public Integer getSupplier() {
+    return supplier;
+  }
+
+  public void setSupplier(Integer supplier) {
+    this.supplier = supplier;
+  }
 }

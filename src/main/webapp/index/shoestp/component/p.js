@@ -1,6 +1,6 @@
 	Vue.component('pie2', {
 	  props:["flow_source","source_name_array","field","title","id"],
-	  template: '<div :id="id" style="height:100%;background-color:#fff;"></div>',
+	  template: '<div :id="id" style="height:100%;"></div>',
 	  mounted(){
 		  this.renderOperationalData();
 	  },

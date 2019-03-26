@@ -77,7 +77,8 @@ var lang_obj={
 			'telephone':'電話番号を記入してください！',
 			'fax':'正しくファックス番号を記入してください！',
 			'email':'メールアドレスを正しく記入してください！',
-			'length':'長さが正しくありません！ %num% 桁を入力する必要があります。'
+			'length':'長さが正しくありません！ %num% 桁を入力する必要があります。',
+            'isemail':'メールアドレスを記入してください。間違っているか、存在しません。'
 		},
 		signIn:{
 			'title':'ログイン',
@@ -109,7 +110,8 @@ var lang_obj={
 			'es':'スペイン語',
 			'ru':'ロシア語',
 			'pt':'ポルトガル語',
-			'zh_tw':'繁体字中国語'
+			'zh_tw':'繁体字中国語',
+            'hu':'フン'
 		},
 		manage:{
 			frame:{
@@ -464,5 +466,14 @@ var lang_obj={
 		supplier:{
 			products:'製品',
 			productsStyle:'処理方法'
-		}
+		},usrpurchase:{
+        have:'既に',
+        usrpurchase:'買い手',
+        Procured:'購入した',
+        complete:'既に完了しました',
+        Dualobjective:'ダブルターゲット',
+        baifenhao:'%',
+        continued:'購入を続けることができます'
+
+    }
 };

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>JUNA</title>
+    <script src="js/vue.js"></script>
+    <script src="js/rem.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <link rel="stylesheet" href="css/mc-juna.css">
+    <script src="js/axios.js"></script>
+    <script src="js/qs.js"></script>
+</head>
+<body>
+<div id="yilizhou">
+    <div class="header">
+        <img src="images/header-back.png" name="background"/>
+        <div class="writer">
+            <div class="writer-content">
+                <img src="images/logo.png" name="yilizhou"/>
+                <h2 class="wc-h2">JUNA Shoes</h2>
+                <p class="wc-p">beauty up your life</p>
+                <a href="javascript:void(0);" class="button" @click="inquiryNow">Inquiry Now</a>
+            </div>
+        </div>
+    </div>
+    <div class="banner_01">
+        <div class="detail">
+            <div class="detail-img">
+                <img src="images/detail-01.png" name="detail-01"/>
+            </div>
+            <div class="detail-text">
+                <h2>Market coverage of more than 15 European countries and regions</h2>
+                <p>Our main marketing area is west of the Europe, including UK, Ireland, Netherlands, Belgium and France, etc.</p>
+            </div>
+        </div>
+        <div class="detail">
+            <div class="detail-img">
+                <img src="images/detail-02.png" name="detail-02"/>
+            </div>
+            <div class="detail-text">
+                <h2>10000 square meters manufacturing plant</h2>
+                <p>Our manufacturing plant can ensure the production of 150,000 pairs of shoes per month</p>
+            </div>
+        </div>
+    </div>
+    <div class="banner_02">
+        <img src="images/AboutUs.png" name="AboutUs"/>
+        <p>Founded in 2008, Wenzhou Juna Shoes Co., Ltd. specializes in the development and production of European-style women's shoes. The company has 40 professional research and design teams. The company has many people in Europe to grasp the latest and most fashionable new product trends. Process and materials integrated with each other. With its distinctive fashion characteristics, humanistic connotation and excellent product quality, the company has won high praise and praise from customers for many years.</p>
+        <img src="images/Sports&Casual.png" name="sports"/>
+        <a href="javascript:void(0)">
+            <img src="images/men-01.png" name="men" alt=""/>
+        </a>
+        <a href="javascript:void(0)">
+            <img src="images/men-02.png" name="men" alt=""/>
+        </a>
+        <a href="javascript:void(0)">
+            <img src="images/men-03.png" name="men" alt=""/>
+        </a>
+        <!-- <a href="https://www.shoestp.com/juna-black-leather-low-heel-with-side-zipper-women-ankle-boots_p6859.html">
+            <img src="images/men-01.png" name="men" alt=""/>
+        </a>
+        <a href="https://www.shoestp.com/juna-ladies-suede-ankle-boot-lace-up-low-heel-boots_p6880.html">
+            <img src="images/men-02.png" name="men" alt=""/>
+        </a>
+        <a href="https://www.shoestp.com/juna-leather-ankle-boots-women--shoes-with-lace-up-zippper_p6887.html">
+            <img src="images/men-03.png" name="men" alt=""/>
+        </a> -->
+        <img src="images/Men'sShoes.png" name="mens"/>
+        <p class="Shoes">Simple but fashionable, Lightweight, Abrasion-resistant, Slip-resistant, Free flexible.</p>
+        <a href="javascript:void(0)">
+            <img src="images/women-01.png" name="women" alt=""/>
+        </a>
+        <a href="javascript:void(0)">
+            <img src="images/women-02.png" name="women" alt=""/>
+        </a>
+        <a href="javascript:void(0)">
+            <img src="images/women-03.png" name="women" alt=""/>
+        </a>
+        <!-- <a href="https://www.shoestp.com/juna--ladies-comfortable-flat-slip-on-shoes-with-rivet-decoration_p6854.html">
+            <img src="images/women-01.png" name="women" alt=""/>
+        </a>
+        <a href="https://www.shoestp.com/juna-gilrls-fur-single-shoes-fashion-flat-slip-on-shoes_p6864.html">
+            <img src="images/women-02.png" name="women" alt=""/>
+        </a>
+        <a href="https://www.shoestp.com/juna-ladies-dress-shoes-chunky-heel-single-shoes_p6876.html">
+            <img src="images/women-03.png" name="women" alt=""/>
+        </a> -->
+        <img src="images/Women'sShoes.png" name="womens"/>
+        <p class="Shoes">Dynamic and comfortable, Stylish, Lightweight, Abrasion-resistant, Slip-resistant.</p>
+        <a href="javascript:void(0);" class="button" @click="inquiryNow">Inquiry Now</a>
+    </div>
+    <div class="banner_03">
+        <img src="images/welecome-01.png" style="width: calc(var(--bili) * 386);"/>
+        <img src="images/welecome-02.png" style="width: calc(var(--bili) * 270);"/>
+        <img src="images/welecome-03.png" style="width: calc(var(--bili) * 400);"/>
+        <img src="images/welecome-04.png" style="width: calc(var(--bili) * 230);"/>
+        <img src="images/welecome-05.png" style="width: calc(var(--bili) * 209);"/>
+        <img src="images/welecome-06.png" style="width: calc(var(--bili) * 232);"/>
+        <img src="images/welecome-07.png" style="width: calc(var(--bili) * 204);"/>
+        <a href="javascript:void(0);" class="button" @click="inquiryNow">Inquiry Now</a>
+    </div>
+    <div class="banner_04">
+        <img src="images/GetYour.png" style="width: calc(var(--bili) * 472)"/>
+        <div class="message">
+            <img src="images/arrow.png" style="width: calc(var(--bili) * 50)"/>
+            <div class="content">
+                <img src="images/CONSULTATION.png" name="content-title"/>
+                <p>Once we know your goals, we will set up a step-by-step production process together with you that ensures you get the best deal.</p>
+                <div class="list">
+                    <span class="bot">·</span>
+                    <p class="list-p"><span>24-hour hotline service;</span></p>
+                </div>
+                <div class="list">
+                    <span class="bot">·</span>
+                    <p class="list-p"><span>Professional advice about customization service to ensure you get the best sports shoes.</span></p>
+                </div>
+                <img src="images/message-01.png" name="message"/>
+            </div>
+        </div>
+        <div class="message">
+            <img src="images/arrow.png" style="width: calc(var(--bili) * 50)"/>
+            <div class="content">
+                <img src="images/DESIGN.png" name="content-title"/>
+                <p>We have 40 experienced designers who can design more than 2,000 new shoe models every year. Our designers consider themselves footwear fashion artists.</p>
+                <div class="list">
+                    <span class="bot">·</span>
+                    <p class="list-p"><span>Professional customization service to ensure you get awesome sports shoes ;</span></p>
+                </div>
+                <div class="list">
+                    <span class="bot">·</span>
+                    <p class="list-p"><span>3 experienced designers will give you more practical and distinguished suggestions;</span></p>
+                </div>
+                <img src="images/message-02.png" name="message"/>
+            </div>
+        </div>
+        <div class="message">
+            <img src="images/arrow.png" style="width: calc(var(--bili) * 50)"/>
+            <div class="content">
+                <img src="images/MANUFACTURING.png" name="content-title"/>
+                <p>Our manufacturing plant has a cementing production line and two injection lines. Throughout the production process, managers in charge of cutting, stitching and lasting check the quality of women shoes constantly. We are not satisfied unless every pair is perfect. </p>
+                <div class="list">
+                    <span class="bot">·</span>
+                    <p class="list-p"><span>MOQ: 600 pairs per color;</span></p>
+                </div>
+                <div class="list">
+                    <span class="bot">·</span>
+                    <p class="list-p"><span>Produce 120,000 pairs of shoes every month;</span></p>
+                </div>
+                <div class="list">
+                    <span class="bot">·</span>
+                    <p class="list-p"><span>Available BSIC Audit Report;</span></p>
+                </div>
+                <div class="list">
+                    <span class="bot">·</span>
+                    <p class="list-p"><span>Conduct chemical test according to your requirements;</span></p>
+                </div>
+                <div class="list">
+                    <span class="bot">·</span>
+                    <p class="list-p"><span>Offer lower price to ensure the maximum profits for your bussiness.</span></p>
+                </div>
+                <img src="images/message-03.png" name="message"/>
+                <img src="images/message-04.png" name="message_04"/>
+                <img src="images/message-05.png" name="message_05"/>
+            </div>
+        </div>
+        <div class="message">
+            <img src="images/arrow.png" style="width: calc(var(--bili) * 50)"/>
+            <div class="content">
+                <img src="images/QUALITYCONTROL.png" name="content-title"/>
+                <p>women shoes quality is the soul for Juna, we have very strong design and manufacturing team, as well as having strict and effective quality control policy on each stage.</p>
+                <div class="list">
+                    <span class="bot">·</span>
+                    <p class="list-p"><span>8+ experienced quality inspector will ensure your sports shoes' quality;</span></p>
+                </div>
+                <div class="list">
+                    <span class="bot">·</span>
+                    <p class="list-p"><span>Strict quality control policy;</span></p>
+                </div>
+                <div class="list">
+                    <span class="bot">·</span>
+                    <p class="list-p"><span> Products meet the demands of various chemical and physical testing in main markets.</span></p>
+                </div>
+                <img src="images/message-06.png" name="message"/>
+            </div>
+        </div>
+        <div class="message">
+            <img src="images/arrow.png" style="width: calc(var(--bili) * 50)"/>
+            <div class="content">
+                <img src="images/DELIVERY.png" name="content-title"/>
+                <p>We can guarantee that you will get your orders within two months.</p>
+                <div class="list">
+                    <span class="bot">·</span>
+                    <p class="list-p"><span>Delivery time depends on the shipping distance and may vary;</span></p>
+                </div>
+                <div class="list">
+                    <span class="bot">·</span>
+                    <p class="list-p"><span><2 months.</span></p>
+                </div>
+                <img src="images/message-07.png" name="message"/>
+            </div>
+        </div>
+    </div>
+    <div class="banner_05">
+        <div class="content">
+            <h2>Your Business <br>Needs Are Unique?</h2>
+            <p>Let us help you meet those needs! <br>Please contact us and enter the <br>enquiry immediately.</p>
+            <a href="javascript:void(0);" class="button" @click="inquiryNow">Inquiry Now</a>
+            <p class="contact">
+                <img src="images/phone.png" name="phone" alt=""> 15957709511
+            </p>
+        </div>
+    </div>
+
+    <el-dialog title="INQUIRY INFORMATION" :visible.sync="dialogFormVisible" :before-close="closeForm">
+        <el-form :model="ruleForm" label-position="top" :rules="rules" ref="ruleForm"  >
+            <el-form-item label="Email" prop="email">
+                <el-input v-model="ruleForm.email" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Name" prop="name">
+                <el-input v-model="ruleForm.name" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Inquiry" prop="detail">
+                <el-input v-model="ruleForm.detail" type="textarea" autocomplete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="onSubmit">Inquiry Now</el-button>
+        </div>
+    </el-dialog>
+
+</div>
+
+<script>
+    // 邮箱验证
+    let emailRule = (rule, value, callback) => {
+        if ( /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(value)) {
+            callback()
+        } else {
+            callback(new Error('Please enter the correct email address'))
+        }
+    }
+    // name验证
+    let nameRule = (rule, value, callback) => {
+        if (value.length >= 3) {
+            callback();
+        } else {
+            callback(new Error('The user name length is greater than 3'))
+        }
+    }
+</script>
+<script>
+    new Vue({
+        el: '#yilizhou',
+        data: {
+            dialogFormVisible: false,
+            ruleForm:{
+                email:'',
+                name:'',
+                detail:''
+            },
+            rules: {
+                name: [
+                    { required: true, message: 'The user name must be entered', trigger: 'blur' },
+                    { validator: nameRule, trigger: 'blur' }
+
+                ],
+                email: [
+                    { required: true, message: 'You have to fill in the mailbox', trigger: 'blur' },
+                    { validator: emailRule, trigger: 'blur' }
+                ],
+                detail: [
+                    { required: true, message: 'You have to fill in the inquiry', trigger: 'blur' }
+                ]
+            }
+        },
+        methods: {
+            inquiryNow: function () {
+                this.dialogFormVisible = true
+            },
+            closeForm: function () {
+                this.dialogFormVisible = false;
+                this.$refs['ruleForm'].resetFields();
+                this.ruleForm.name = '';
+                this.ruleForm.email = '';
+                this.ruleForm.detail = '';
+            },
+            onSubmit: function () {
+                var self = this;
+                this.$refs.ruleForm.validate((valid) =>{
+                    if (valid) {
+                        axios.post('/home/Activity_Romania_inquiry',
+                            Qs.stringify({
+                                supId: 295, // 温州巨纳鞋业有限公司
+                                name: self.ruleForm.name,
+                                email: self.ruleForm.email,
+                                detail: self.ruleForm.detail
+                            })
+                        ).then((res) => {
+                            gtag_report_conversion();
+                            if (res.data.ret == 1) {
+                                self.$message({
+                                    message: 'submit successfully!',
+                                    type: 'success'
+                                });
+                                self.closeForm()
+                            } else {
+                                this.$message.error('submit failure!');
+                            }
+                        }).catch((err) => {
+                            console.log(err)
+                        })
+                    } else {
+                        return false
+                    }
+                })
+            }
+        }
+    })
+</script>
+
+<!-- 代码追踪 -->
+<!-- Global site tag (gtag.js) - Google Ads: 774839119 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-774839119"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-774839119');
+  gtag('config', 'UA-131117317-1');
+
+  function gtag_report_conversion(url) {
+    gtag('event', 'conversion', {
+        'send_to': 'AW-774839119/UFtsCMuWupIBEM-2vPEC'
+    });
+    return false;
+  }
+</script>
+
+<script type="text/javascript">
+	var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+	(function(){
+		var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+		s1.async=true;
+		s1.src='https://embed.tawk.to/5b8fcb48f31d0f771d8476f6/default';
+		s1.charset='UTF-8';
+		s1.setAttribute('crossorigin','*');
+		s0.parentNode.insertBefore(s1,s0);
+	})();
+</script>
+<!--End of Tawk.to Script-->
+
+</body>
+</html>

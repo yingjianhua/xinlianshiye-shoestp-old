@@ -77,7 +77,9 @@ var lang_obj={
 			'telephone':'Please fill in the telephone number!',
 			'fax':'Please fill in the fax number correctly!',
 			'email':'Please fill in the email address correctly!',
-			'length':'Incorrect length! You need to fill in %num% digits.'
+			'length':'Incorrect length! You need to fill in %num% digits.',
+            'isemail':' Please fill in the email address is incorrect or does not exist'
+
 		},
 		signIn:{
 			'title':'Sign In',
@@ -109,7 +111,8 @@ var lang_obj={
 			'es':'Spanish',
 			'ru':'Russian',
 			'pt':'Portuguese',
-			'zh_tw':'Traditional Chinese'
+			'zh_tw':'Traditional Chinese',
+            'hu':'Hungary Leah'
 		},
 		manage:{
 			frame:{
@@ -465,7 +468,19 @@ var lang_obj={
 		supplier:{
 			products:'product',
 			productsStyle:'Processing methods'
-		}
+		},usrpurchase:{
+        have: 'Already existing',
+        usrpurchase:'\n' +
+            '\n' +
+            '位采购商\n' +
+            'Bit buyer',
+        Procured:'Procured',
+        complete:'It\'s done',
+        Dualobjective:'Dual-objective',
+        baifenhao:'%',
+        continued:'Purchases can be continued'
+
+    }
 		
 		
 		

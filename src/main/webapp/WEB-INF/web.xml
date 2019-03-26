@@ -20,11 +20,15 @@
     </filter>
     <filter>
         <filter-name>urlReWrite</filter-name>
-        <filter-class>irille.filter.urlRewrite</filter-class>
+        <filter-class>irille.Filter.urlRewrite</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>urlReWrite</filter-name>
         <url-pattern>/country/*</url-pattern>
+    </filter-mapping>
+        <filter-mapping>
+        <filter-name>urlReWrite</filter-name>
+        <url-pattern>/activity/html/romania/*</url-pattern>
     </filter-mapping>
     <filter>
         <filter-name>UrlRewriteFilter</filter-name>
@@ -63,7 +67,7 @@
     </filter-mapping>
     <filter>
         <filter-name>sellerPermission</filter-name>
-        <filter-class>irille.pub.svr.PermissionFilter</filter-class>
+        <filter-class>irille.Filter.svr.PermissionFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>sellerPermission</filter-name>
@@ -76,7 +80,7 @@
         </servlet> -->
     <servlet>
         <servlet-name>ShoestpInitServlet</servlet-name>
-        <servlet-class>irille.pub.svr.ShoestpInitServlet</servlet-class>
+        <servlet-class>irille.Filter.svr.ShoestpInitServlet</servlet-class>
         <load-on-startup>0</load-on-startup>
     </servlet>
     <servlet>
@@ -122,4 +126,9 @@
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>
         </user-data-constraint>
     </security-constraint> -->
+    
+    
+    <listener>
+	    <listener-class>irille.pub.scheduled.ScheduledTask</listener-class>
+	</listener>
 </web-app>

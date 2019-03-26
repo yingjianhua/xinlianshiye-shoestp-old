@@ -25,12 +25,13 @@
     </script>
     <link href="./static/css/row_4.css" rel="stylesheet" type="text/css">
 </head>
-
+<jsp:include page="v3/header.jsp"/>
+<jsp:include page="v3/nav.jsp"/>
 <body class="lang_en w_1200">
     <%@ include file="/home/template/web-top.jsp" %>
-    <%@ include file="/home/template/new-header.jsp" %>
-
-	<div id="main" class="wide">
+	<div id="main">
+		<index-top></index-top>
+		<div class="wide">
 		<div id="lib_user" class="clearfix">
 			<div id="lib_user_crumb" class="widget">
 				<ul class="crumb_box clearfix">
@@ -129,7 +130,9 @@
 				<div id="turn_page">
 				</div>
 			</div>
+			</div>
 		</div>
+		<index-bottom></index-bottom>
 	</div>
 	<script type="text/javascript" src="./static/js/page.js"></script>
 	<script>
@@ -239,10 +242,17 @@
 		});
 	</script>
 
-	<%@ include file="/home/template/new-foot.jsp" %>
+	<%--<%@ include file="/home/template/new-foot.jsp" %>--%>
 	<div id="hj_top" style="opacity: 1;">
 		<img src="/home/static/images/hj_top.png"/>
 	</div>
+	<script src="/home/v3/static/js/index-top.js"></script>
+	<script src="/home/v3/static/js/index-bottom.js"></script>
+	<script>
+        new Vue({
+            el:"#main"
+        })
+	</script>
 </body>
 
 </html>

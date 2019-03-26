@@ -264,7 +264,7 @@
                 </div>
             </div>
             <div class="im fl">
-                <a href="/home/usr_UsrConsult_publishView">
+                <a href="/usr_UsrConsult_productPublishView">
                     <img alt="RFQ" src="/mobile/static/images/dbf04e16c0.png">
                 </a>
                 <div class="name">
@@ -429,7 +429,7 @@
                         </a>
                     </div>
                     <div class="price">
-                            <%--${d.price}--%>
+                            ${d.price}
                     </div>
                 </div>
             </c:forEach>
@@ -468,7 +468,8 @@
     <nav>
     </nav>
     <section class="font_col border_col copyright">
-        Copyright © 2016-2017 温州新联实业股份有限公司. All Rights Reserved. 浙ICP备16034166号-1 浙公网安备 33030402000493号
+        Copyright © 2016-2017 温州新联实业股份有限公司. All Rights Reserved.
+        <%--浙ICP备16034166号-1 浙公网安备 33030402000493号--%>
     </section>
 </footer>
 <jsp:include page="./template/foot_menu.jsp"></jsp:include>

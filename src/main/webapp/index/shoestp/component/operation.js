@@ -41,7 +41,7 @@
 				type:Number,
 			}
 		},
-	  template: '<div :id="id" :style="{width:width+\'px\'}" style="height:100%;background-color:#fff;"></div>',
+	  template: '<div :id="id" :style="{width:width+\'px\'}" style="height:100%;"></div>',
 	  mounted(){
 		  this.renderOperationalData();
 	  },

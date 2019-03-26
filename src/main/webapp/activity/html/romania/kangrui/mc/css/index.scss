@@ -1,0 +1,381 @@
+@charset 'utf-8';
+@import '_reset';
+$default-color: #4a74d2;
+#app {
+  font-size: 16px;
+
+  .top-container {
+    position: relative;
+    height: 26.88rem;
+    background: url(../images/banner1.jpg) no-repeat center/cover;
+    .top-form {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%);
+      color: #ffffff;
+      margin-top: 4rem;
+      text-align: center;
+      width: 100%;
+      form {
+
+        .bg-box {
+          width: 12.66rem;
+          height: 13.75rem;
+          background: rgba(151, 65, 16, 0.5);
+          border-radius: 0.31rem;
+          text-align: center;
+          margin: 0 auto;
+          .title {
+            font-size: 0.88rem;
+            line-height: 2.5rem;
+          }
+
+          .label {
+            font-size: 0.75rem;
+            position: relative;
+            display: inline-block;
+            line-height: 1.5rem;
+
+            &::after {
+              content: '';
+              position: absolute;
+              top: 10px;
+              right: -7px;
+              width: 0.19rem;
+              height: 0.19rem;
+              background-color: #ffffff;
+              border-radius: 50%;
+            }
+          }
+
+          .input {
+            width: 7.91rem;
+            height: 1.4rem;
+            line-height: 1.4rem;
+            border-radius: 0.16rem;
+            border: none;
+            display: block;
+            margin: 0 auto;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            padding-left: 0.3rem;
+          }
+        }
+
+        .inquiry-btn {
+          border: none;
+          width: 8.75rem;
+          height: 1.88rem;
+          background-color: $default-color;
+          border-radius: 0.16rem;
+          font-size: 0.94rem;
+          color: #ffffff;
+          margin-top: 0.94rem;
+        }
+      }
+    }
+  }
+
+  // Our Advantage
+  .our-advantage {
+    padding: 0 4.6rem;
+    text-align: center;
+
+    //   style="width:6rem;height:6rem"
+    .our-advantage-list {
+
+      .our-advantage-item {
+        margin-bottom: 2.94rem;
+
+        .our-advantage-img {
+          width: 6rem;
+          height: 6rem;
+          margin-bottom: 1rem;
+        }
+
+        .title {
+          font-size: 1.5rem;
+          font-weight: bold;
+          line-height: 2.5rem;
+        }
+
+        .content {
+          font-size: 1.06rem;
+        }
+      }
+    }
+  }
+
+  // Sports & Casual, The Global Trade In Shoes
+  .global-product-container {
+    padding: 0 0.9rem;
+    text-align: center;
+
+    .title {
+      font-weight: bold;
+      margin-bottom: 3rem;
+      font-size: 1.72rem;
+    }
+
+    .global-product-list {
+      padding: 0 1rem;
+
+      .global-product-item {
+        margin-bottom: 3rem;
+      }
+    }
+
+    .btn {
+      width: 11.38rem;
+      height: 2.25rem;
+      line-height: 2.25rem;
+      background-color: $default-color;
+      border-radius: 0.19rem;
+      font-size: 1.25rem;
+      color: #ffffff;
+      margin: 1.3rem auto;
+    }
+  }
+
+  // Custom Shoes
+  .custom-shoes {
+    text-align: center;
+    padding: 0 2rem;
+
+    .title {
+      font-weight: bold;
+      line-height: 3rem;
+      font-size: 1.72rem;
+    }
+
+    .custom-shoes-list {
+
+      .custom-shoes-item {
+        padding: 0 2.9rem;
+        margin-bottom: 2.5rem;
+
+        .title {
+          font-size: 1.75rem;
+          font-weight: bold;
+          color: $default-color;
+          line-height: 2rem;
+          margin: 1rem 0;
+        }
+
+        .content {
+          font-size: 1.13rem;
+          line-height: 1.6rem;
+        }
+      }
+
+    }
+
+    .btn {
+      width: 12.06rem;
+      height: 2.13rem;
+      line-height: 2.13rem;
+      background-color: $default-color;
+      border-radius: 0.19rem;
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #ffffff;
+      margin: 0 auto;
+    }
+  }
+
+  // new-era
+  .new-era {
+    margin: 1rem 0 1.6rem 0;
+
+    .title {
+      font-size: 1.75rem;
+      font-weight: bold;
+      line-height: 4rem;
+      color: #000000;
+      text-align: center;
+    }
+
+    .content {
+      padding: 0 1.4rem;
+      line-height: 1.5rem;
+    }
+  }
+
+  // 4个数据
+  .four-num {
+    color: #ffffff;
+    padding: 5rem 0;
+	background-color: #f2f2f2;
+    .four-num-item {
+      width: 11.5rem;
+      height: 13rem;
+      border-radius: 3.48rem;
+      background-color: $default-color;
+      border: solid 0rem #ffffff;
+      position: relative;
+      margin:0 auto 4.25rem auto;
+      &:last-child{
+        margin:0 auto;
+      }
+      &>div{
+        position: absolute;
+        top: 10%;
+        left:50%;
+        transform: translate(-50%);
+        text-align: center;
+        .title{
+          font-size: 3.4rem;
+	        font-weight: bold;
+        }
+        .content{
+          font-size: 1.32rem;
+        }
+      }
+      &::after {
+        position: absolute;
+        top:0.25rem;
+        left: 0.25rem;
+        content: '';
+        width: 11rem;
+      height: 12.5rem;
+      border-radius: 3.48rem;
+      border: solid 1px #ffffff;
+      }
+    }
+  }
+  // What is so great
+  .great-container{
+    text-align: center;
+    .title{
+      font-size: 1.75rem;
+      font-weight: bold;
+      line-height: 4rem;
+      margin-top:3rem
+    }
+    .btn{
+      width: 10.72rem;
+      height: 2.63rem;
+      line-height:2.63rem;
+      background-color: $default-color;
+      margin:0 auto;
+      font-size: 1.44rem;
+      color:#ffffff;
+    }
+    .great-list{
+
+      .great-item{
+        padding: 0 3.5rem;
+        -webkit-box-pack: flex-start;
+        -moz-justify-content:flex-start;
+        -webkit-justify-content: flex-start;
+        justify-content: flex-start;
+        margin-bottom: 2rem;
+        .content{
+          font-size: 1.42rem;
+          text-align: left;
+          margin-left: 1rem;
+        }
+        img{
+          width: 3.63rem;
+          height: 3.16rem;
+          flex-shrink:0;
+        }
+      }
+    }
+  }
+  // Order Detail
+  .order-detail{
+    text-align: center;
+    .title{
+      font-size: 2.13rem;
+  font-weight: bold;
+  margin:3rem 0 2rem 0;
+    }
+    .order-detail-container{
+      background-color: #e6e6e6;
+      padding: 2.5rem 0;
+      .order-detail-item{
+        padding: 0 3.7rem;
+        -webkit-box-pack: flex-start;
+        -moz-justify-content:flex-start;
+        -webkit-justify-content: flex-start;
+        justify-content: flex-start;
+        margin-bottom: 2rem;
+        &:last-child{
+          margin-bottom: 0;
+        }
+        .content{
+          font-size: 1.38rem;
+          margin-left: 1rem;
+          text-align: left;
+        }
+      }
+    }
+  }
+  // Testimonials
+  .testimonials{
+
+    .title1{
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin: 2.5rem 0 2rem 0;
+      text-align: center;
+    }
+    .testimonials-list{
+
+      .testimonials-item{
+        padding: 0 2rem;
+        font-size: 0.69rem;
+        line-height: 1rem;
+        margin-bottom: 2.6rem;
+        &>div{
+          margin-left: 1rem;
+          .title{
+            font-size: 0.94rem;
+          font-weight: bold;
+          color: $default-color;
+          line-height: 1.3rem;
+          }
+        }
+      }
+    }
+  }
+  // bottom
+    
+    .bottom-container{
+      position: relative;
+        .content-box{
+          width: 100%;
+          text-align: center;
+          padding:0 4.5rem;
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            transform: translate(-50%);
+            .btn{
+              width: 8.97rem;
+              height: 2.56rem;
+              line-height: 2.56rem;
+              background-color: $default-color;
+              border-radius: 0.16rem;
+              color: #ffffff;
+              font-size: 1.25rem;
+              margin: 0 auto;
+            }
+        }
+    }
+
+}
+
+@media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){
+  #app{
+    .bottom-container{
+        .content-box{
+          padding:0 3.5rem;
+          position: absolute;
+          top: 0%;
+        }
+    }
+  }
+}

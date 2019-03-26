@@ -1,0 +1,442 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0,
+maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta content="telephone=no" name="format-detection">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="keywords" content="shoes purchasing, Men’s leather shoes, boy’s shoes, Men’s casual shoes,
+		Men’s Sneakers, Children sandals, Men’s shoes, Women’s shoes, Women’s high heels, Women’s sandals, shoe companies,
+		shoe suppliers, sneaker manufacturers, shoe factories, shoe manufacturing companies, sneaker manufacturer,
+		china footwear manufacturer, sport shoes manufacturer, footwear factory.">
+    <meta name="discription" content="We will have a showroom in Romanian offline shoes purchasing. During this show,
+		you can experience hundreds of styles of shoes locally and get your choosing shoes with factory direct price.
+		Also, you can receive professional advice from customization. In this purchasing, nearly 500 different styles of Men’s shoes,
+		women’s shoes and kid’s shoes will be displayed. If you reserve your seat online, you will get a secret gift when you come.
+		Several free samples of shoes will also be supplied in this show. ">
+    <title>华友鞋业</title>
+    <link rel="stylesheet" href="./css/reset.css" media="all">
+    <link rel="stylesheet" href="./css/index.css" media="all">
+    <link rel="stylesheet" href="./css/swiper.min.css" media="all">
+    <link rel="stylesheet" href="./css/element-ui/element-ui.css">
+    <script src="./js/jquery-1.7.2.min.js"></script>
+    <script src="./js/swiper.min.js"></script>
+    <script src="./js/vue.js"></script>
+    <script src="./js/axios.min.js"></script>
+    <script src="./js/qs.js"></script>
+    <script src="./js/element-ui.js"></script>
+    <script>
+        // 页面加载时
+        window.onload = function () {
+            changeRem();
+        };
+        // 页面大小变化时
+        window.onresize = function () {
+            changeRem();
+        };
+
+        // 页面宽度变化显示内容的比例
+        function changeRem() {
+            var width = document.documentElement.clientWidth;
+            var scroll = window.innerWidth - document.documentElement.clientWidth;//滚动条宽度
+            var bili = (width + scroll) / 1920;//设计稿与页面宽对比
+            var html = document.querySelector('html');
+            var rem = 16 * bili;
+            html.style.fontSize = rem + 'px';
+        }
+    </script>
+</head>
+
+<body>
+<div id="app" class="template-hy">
+    <!-- 顶部nav行 -->
+    <div class="banner-top banner-wrap">
+        <div class="w1200 flexible">
+            <img src="./images/logo.png" alt="logo" class="logo">
+        </div>
+    </div>
+
+    <!-- banner图，含form表单 -->
+    <div class="banner_01 banner-wrap">
+        <div class="w1200 flexible flex-between flex-start">
+            <div class="txt bold h2 have-bottom-bar">
+                We are professional for manufacturing
+                <br>
+                shoes-<span class="c-theme">Huayou Shoes</span>
+            </div>
+
+            <div class="inquiry-form">
+                <h2 class="form-title tc h3">
+                    Inquiry Information
+                </h2>
+
+                <div class="form-body">
+                    <div class="form-label h5">Name *</div>
+                    <div class="input-wrap">
+                        <el-input v-model.trim="form.name" ref="name"></el-input>
+                    </div>
+                    <div class="form-label h5">Email Address *</div>
+                    <div class="input-wrap">
+                        <el-input v-model.trim="form.email"></el-input>
+                    </div>
+                    <div class="form-label h5">Advisory *</div>
+                    <div class="input-wrap">
+                        <el-input type="textarea" class="my-textarea" v-model.trim="form.advisory"></el-input>
+                    </div>
+
+                    <div class="tc">
+                        <input type="button" value="Inquiry Now" class="btn-inquiry pointer" @click="submit">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 公司简介 -->
+    <div class="banner_02 banner-wrap">
+        <div class="w1200 flexible">
+            <h1 class="left-box have-bottom-bar title-common">
+                Company
+                <br>
+                Profile
+            </h1>
+            <div class="right-box h4">
+                <p>
+                    Wenzhou Huayou Shoes Co., Ltd. established in 2008. we have 4 production lines.
+                </p>
+                <p>
+                    The professional production team now has more than 80 employees and the monthly output exceeds
+                    300,000 pairs.
+                </p>
+                <p>
+                    Our company's market distributed all over the world.
+                </p>
+                <p>
+                    With experience of our sales and quality control teams with practical service processes and
+                    standards, our products can easily meet the diverse chemical and physical testing needs of major
+                    markets.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- banner 3 - 握手-->
+    <img src="./images/banner-2.png" alt="banner-2" class="banner_03 banner-wrap">
+
+    <!-- 流水 -->
+    <div class="banner_04 banner-wrap">
+        <div class="w1200">
+            <h1 class="title-common tc">
+                TURNOVER
+            </h1>
+            <ul class="content-wrap flexible flex-between">
+                <li class="item" v-for="item in turnOverList">
+                    <div class="acount h3">{{item.acount}} USD</div>
+                    <div class="time h4">{{item.time}}</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 产品列表 -->
+    <div class="banner_05 banner-wrap">
+        <div class="w1200">
+            <h2 class="title-common tc">PRODUCT <span class="c333">GALLERY</span></h2>
+            <ul class="content-wrap">
+                <span class="item" href="javascript:void(0)" target="_blank" v-for="product in productList">
+                    <img :src="product.url" alt="product" class="product-pic">
+                </span>
+                <!-- <a class="item" :href="product.linkUrl" target="_blank" v-for="product in productList">
+                    <img :src="product.url" alt="product" class="product-pic">
+                </a> -->
+            </ul>
+        </div>
+    </div>
+
+    <!-- 为什么选择我们 -->
+    <div class="choose-us-wrap banner_06 banner-wrap">
+        <div class="w1200 flexible flex-center">
+            <div class="left-wrap">
+                <div class="left-box">
+                    <ul class="icon-list">
+                        <li class="item flexible flex-center" v-for="i in 4">
+                            <img :src="'./images/icon/icon-choose_0' + i + '.png'" alt="icon" class="icon">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="right-box">
+                <h2 class="title-common have-bottom-bar">WHY <span class="c333">CHOOSE US</span></h2>
+                <ul class="content-wrap h4">
+                    <li class="item flexible" v-for="item in chooseUsReason">
+                        {{item.content}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 评论 -->
+    <div class="banner_07 banner-wrap">
+        <div class="w1200">
+            <h2 class="title-common tc">WHAT OUR <span class="c333">CUSTOMERS SAYING</span></h2>
+            <ul class="content-wrap flexible flex-around h5">
+                <li class="item" v-for="item in customerFeedback">
+                    <div class="header-pic-wrap">
+                        <div class="header-pic-box">
+                            <img :src="item.headerUrl" alt="header" class="header-pic">
+                        </div>
+                    </div>
+                    <div v-html="item.content" class="txt"></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 公司地址 -->
+    <div class="company-address banner_08 banner-wrap">
+        <div class="content-wrap">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d988.7553058804849!2d120.6003251487112!3d27.97788225914822!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x8f41858afda2d582!2z5rip5bee5biC5Y2O5Y-L6Z6L5Lia5pyJ6ZmQ5YWs5Y-4!5e0!3m2!1szh-CN!2sus!4v1543496328527"
+                    class="map-wrap" frameborder="0" style="border:0;background:#000;" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <!-- 询盘信息 -->
+    <!-- <div class="inquiry-information">
+        <h2 class="title-common">Inquiry Information</h2>
+        <div class="content-wrap">
+            you will get an attractive purchasing price.
+            <br>
+            you'll stand out!
+        </div>
+    </div> -->
+
+    <!-- 底部 -->
+    <div class="bottom-bar banner-wrap">
+        <div class="w1200 flexible flex-center h2">
+            <div class="left-box">
+                you will get an attractive
+                <br>
+                purchasing price.
+                <br>
+                you'll stand out!
+            </div>
+            <div class="form-register tc">
+                <div class="txt">Free Registration Member</div>
+                <input type="button" class="btn-inquiry h3 pointer" value="Inquiry Now" @click="scrollToTop">
+            </div>
+        </div>
+        <!-- <div class="register-form tc">
+            <div class="txt">Free Registration Member</div>
+            <input type="text" class="btn-inquiry" value="Inquiry Now">
+        </div> -->
+    </div>
+</div>
+
+<script>
+    const stpshop_config = {
+        "imageBaseUrl": "https://image.shoestp.com",
+        "lang": "en" 	//"en" "ro" "zh_CN"
+    };
+
+    new Vue({
+        el: '#app',
+        data: {
+            isLogin: false, //全局判断是否登录
+            interval: 0, //滚动事件用
+            //form提交的内容
+            form: {
+                supId: 318
+            },
+            stpshop_config: stpshop_config,
+            turnOverList: [
+                {acount: "3300000", time: "2013"},
+                {acount: "3950000", time: "2014"},
+                {acount: "4700000", time: "2015"},
+            ],
+            productList: [
+                {
+                    url: "./images/goods_01.png",
+                    linkUrl: "https://www.shoestp.com/men's-color-matching-lace-comfortable-breathable-sports-shoes_p8835.html"
+                },
+                {
+                    url: "./images/goods_02.png",
+                    linkUrl: "https://www.shoestp.com/men's-sports-shoes-korean-version-of-the-low-cut-shoes-retro-wild-men's-shoes_p8819.html"
+                },
+                {
+                    url: "./images/goods_03.png",
+                    linkUrl: "https://www.shoestp.com/men's-shoes-autumn-2018-new-men's-casual-shoes-korean-sports-shoes-men's-wild-shoes-men's-tide-shoes_p8826.html"
+                },
+                {
+                    url: "./images/goods_04.png",
+                    linkUrl: "https://www.shoestp.com/summer-men's-shoes-breathable-mesh-lazy-shoes-a-pedal-student-mesh-shoes-casual-running-flying-woven-sports-shoes_p8831.html"
+                },
+                {
+                    url: "./images/goods_05.png",
+                    linkUrl: "https://www.shoestp.com/thick-soled-sneakers-women's-ribbon-diagonal-zipper-casual-sneakers-student-shoes_p8838.html"
+                },
+                {
+                    url: "./images/goods_06.png",
+                    linkUrl: "https://www.shoestp.com/street-snap-round-head-fashion-european-and-american-thick-bottomed-muffin-women-increase-sports-white-tower-tide-color-casual-shoes_p8822.html"
+                },
+                {
+                    url: "./images/goods_07.png",
+                    linkUrl: "https://www.shoestp.com/wild-lace-short-loose-cake-shoes-female-color-matching-european-and-american-wind-increased-2018-autumn-and-winter-sports-white-shoes_p8829.html"
+                },
+                {
+                    url: "./images/goods_08.png",
+                    linkUrl: "https://www.shoestp.com/spring-and-autumn-korean-version-of-the-belt-pearl-fashion-increased-casual-shoes-round-head-female-wild_p8833.html"
+                },
+            ],
+            chooseUsReason: [		//为什么选择我们 - reason
+                {content: "We have a delivery room area 2700㎡."},
+                {content: "We have 4 production lines."},
+                {content: "Now, it has more than 80 employees."},
+                {content: "The monthly output exceeds 300,000 pairs."},
+            ],
+            customerFeedback: [  //用户评论\反馈
+                {
+                    headerUrl: "./images/header_01.png",
+                    content: "They are truly committed to providing our customers with the highest quality and most reliable service."
+                },
+                {
+                    headerUrl: "./images/header_02.png",
+                    content: "They are completely beyond our expectations and do so in a positive and professional manner. I quote them to everyone in his network of friends and family. Guys, thank you again."
+                },
+                {
+                    headerUrl: "./images/header_03.png",
+                    content: "I was really lucky when I found your company online. Your products are doing very well in my business and I can easily resell them in my country. I will definitely call you again!"
+                },
+            ],
+        },
+        mounted() {
+            console.log("mounted")
+            // 判断语种,显示相应文字
+            // if(stpshop_config.lang == "zh_CN"){
+            // 	this.text_content = this.text_content_zh;
+            // }else if(stpshop_config.lang == "ro"){
+            // 	this.text_content = this.text_content_ro;
+            // }else{
+            // 	this.text_content = this.text_content_en;
+            // }
+        },
+        methods: {
+            scrollToTop() {
+                const start = window.pageYOffset;
+                let i = 0;
+                let backPosition = 0;
+                this.interval = setInterval(() => {
+                    const next = Math.floor(this.easeInOutQuad(10 * i, start, -start, 500))
+                    if (next <= backPosition) {
+                        window.scrollTo(0, backPosition)
+                        clearInterval(this.interval)
+                        // 姓名输入框 获取焦点
+                        this.$refs.name.focus();
+                    } else {
+                        window.scrollTo(0, next)
+                    }
+                    i++
+                }, 16.7)
+            },
+            easeInOutQuad(t, b, c, d) {
+                if ((t /= d / 2) < 1) return c / 2 * t * t + b
+                return -c / 2 * (--t * (t - 2) - 1) + b
+            },
+            image(v, params) {
+                if (!v) {
+                    return ""
+                }
+                if (!params) {
+                    params = ""
+                }
+                return stpshop_config.imageBaseUrl + v + params
+            },
+
+            // 判断询盘form中格式是否正确
+            isInquiryFormatRight() {
+                // 标题
+                if (!this.form.name) {
+                    this.$message.error('Name cannot be empty');
+                    return false;
+                }
+                // 邮箱
+                if (!this.form.email) {
+                    this.$message.error('Mailbox cannot be empty');
+                    return false;
+                } else if (!(/^[0-9A-Za-z][\.-_0-9A-Za-z]*@[0-9A-Za-z]+(\.[0-9A-Za-z]+)+$/.test(this.form.email))) {
+                    this.$message.error('Please fill in the correct email format');
+                    return false;
+                }
+                // 内容
+                if (!this.form.advisory) {
+                    this.$message.error('Inquiry information cannot be empty');
+                    return false;
+                }
+                return true;
+            },
+            submit() {
+                if (!this.isInquiryFormatRight()) return;
+
+                axios.post('/home/Activity_Romania_inquiry', Qs.stringify({
+                    supId: this.form.supId,
+                    name: this.form.name,
+                    email: this.form.email,
+                    detail: this.form.advisory,
+                }, {allowDots: true}))
+                    .then((res) => {
+                        if (res.data.ret != 1) {
+                            this.$message.error('Network error, please try again later');
+                            return;
+                        }
+                        this.$message({
+                            message: 'Submitted successfully',
+                            type: 'success'
+                        });
+                        setTimeout(() => {
+                            window.scrollTo(0, 0)
+                            window.location.reload();
+                        }, 2500)
+                    })
+                    .catch((err) => {
+                        this.$message.error('Network error, please try again later');
+                    })
+            },
+        }
+    })
+</script>
+
+<!-- 代码追踪 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+  dataLayer.push(arguments);
+  }
+
+  gtag('js', new Date());
+
+  gtag('config', 'AW-783435725');
+  gtag('config', 'UA-127715615-6');
+</script>
+
+<script type="text/javascript">
+	var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+	(function(){
+		var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+		s1.async=true;
+		s1.src='https://embed.tawk.to/5b8fcb48f31d0f771d8476f6/default';
+		s1.charset='UTF-8';
+		s1.setAttribute('crossorigin','*');
+		s0.parentNode.insertBefore(s1,s0);
+	})();
+</script>
+<!--End of Tawk.to Script-->
+</body>
+
+</html>

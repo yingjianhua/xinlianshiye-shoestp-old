@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+    <title>JIANSHA</title>
+    <script src="js/vue.js"></script>
+    <script src="js/rem.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="js/axios.js"></script>
+    <script src="js/qs.js"></script>
+    <link rel="stylesheet" href="css/jiansha.css">
+</head>
+<body>
+<div id="main">
+    <div class="banner_01">
+        <div class="ban01-detail">
+            <img src="images/jiansha-logo.png" name="logo" alt=""/>
+            <h2>IT IS NOT ONLY A SHOE</h2>
+            <p>but also an excellent design-SWORD SHARK SHOES</p>
+            <a href="javascript:void(0);" class="button" @click="inquiryNow">Inquiry Now</a>
+        </div>
+    </div>
+    <div class="banner_02">
+        <div class="ban02-content">
+            <div class="detail">
+                <img src="images/yilizhou-detail01.png" name="detail-01" alt=""/>
+                <div class="detail-text">
+                    <h2>Market coverage of more than 15 European countries and regions</h2>
+                    <p>Our main marketing area is west of the Europe, including UK, Ireland, Netherlands, Belgium and
+                        France, etc.</p>
+                </div>
+            </div>
+            <span class="line"></span>
+            <div class="detail">
+                <img src="images/yilizhou-detail02.png" name="detail-02" alt=""/>
+                <div class="detail-text">
+                    <h2>7500 square meters manufacturing plant</h2>
+                    <p>Our manufacturing plant can ensure the production of 120,000 pairs of shoes per month. We have 2
+                        cold sticky production lines and we good at making genuine leather.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="banner_03">
+        <img src="images/AboutUs.png" name="AboutUs" alt=""/>
+        <p>Wenzhou is a amazing city which is known as a land of attractive resources and magical power and a Birthplace
+            of creative minds and gifted talents. China Sword Shark Footwear Co.,Ltd is founded in this land.the company
+            covers an area of ​​5,000 square meters More than 120 employees, with an annual output of 2 million pairs of
+            leather shoes, with an annual output value of nearly 220 million RMB, Sword Shark is a large-scale pillar
+            enterprises of the shoe industry in Wenzhou.</p>
+        <p>The concept of Sword Shark is confidence and freedom. We hope that we can create a beautiful future with
+            you.</p>
+        <img src="images/jiansha-Sports&Casual.png" name="sports" alt=""/>
+        <span href="javascript:void(0)">
+            <img src="images/JS10010-(1).png" name="men" alt=""/>
+        </span>
+        <span href="javascript:void(0)">
+            <img src="images/JS10011-(2).png" name="men" alt=""/>
+        </span>
+        <span href="javascript:void(0)">
+            <img src="images/JS10013-(3).png" name="men" alt=""/>
+        </span>
+        <!-- <a href="https://www.shoestp.com/jiansha-durable-soft-genuine-leather-dress-shoes-for-men_p6112.html">
+            <img src="images/JS10010-(1).png" name="men" alt=""/>
+        </a>
+        <a href="https://www.shoestp.com/jiansha-durable-soft-brown-genuine-leather-dress-shoes-for-men_p6113.html">
+            <img src="images/JS10011-(2).png" name="men" alt=""/>
+        </a>
+        <a href="https://www.shoestp.com/jiansha-fashion-gentleman-genuine-leather-dress-shoes_p6117.html">
+            <img src="images/JS10013-(3).png" name="men" alt=""/>
+        </a> -->
+        <img src="images/JS-men01.png" name="mens" alt=""/>
+        <p class="Shoes">Simple but fashionable, top grade, abrasion-resistant, slip-resistant, flexible</p>
+        <span href="javascript:void(0)">
+            <img src="images/JS10015-(2).png" name="women" alt=""/>
+        </span>
+        <span href="javascript:void(0)">
+            <img src="images/JS10016-(2).png" name="women" alt=""/>
+        </span>
+        <span href="javascript:void(0)">
+            <img src="images/JS10017-(2).png" name="women" alt=""/>
+        </span>
+        <!-- <a href="https://www.shoestp.com/jiansha-fashion-gentleman-genuine-leather-punching-blue-dress-shoes_p6120.html">
+            <img src="images/JS10015-(2).png" name="women" alt=""/>
+        </a>
+        <a href="https://www.shoestp.com/jiansha-gentleman-genuine-leather-punching-casual-dress-shoes_p6124.html">
+            <img src="images/JS10016-(2).png" name="women" alt=""/>
+        </a>
+        <a href="https://www.shoestp.com/jiansha-fashion-gentleman-genuine-leather-laser-punching-brown-dress-shoes_p6126.html">
+            <img src="images/JS10017-(2).png" name="women" alt=""/>
+        </a> -->
+        <img src="images/JS-men02.png" name="womens" alt=""/>
+        <p class="Shoes">Dynamic and comfortable, stylish, abrasion-resistant, slip-resistant</p>
+        <a class="button" href="javascript:void(0);" @click="inquiryNow">Inquiry Now</a>
+    </div>
+    <div class="banner_04">
+        <img src="images/welcome-01.png" name="welcome-01" alt="">
+        <div class="ban04-img">
+            <img src="images/JS-w-01.png" name="welecome" alt="">
+        </div>
+        <div class="ban04-img">
+            <img src="images/JS-w-02.png" name="welecome" alt="">
+        </div>
+        <div class="ban04-img">
+            <img src="images/JS-w-03.png" name="welecome" alt="">
+        </div>
+        <div class="ban04-img">
+            <img src="images/JS-w-04.png" name="welecome" alt="">
+        </div>
+        <div class="ban04-img">
+            <img src="images/JS-w-05.png" name="welecome" alt="">
+        </div>
+        <div class="ban04-img">
+            <img src="images/JS-w-06.png" name="welecome" alt="">
+        </div>
+        <div class="btn">
+            <a href="javascript:void(0);" class="button" @click="inquiryNow">Inquiry Now</a>
+        </div>
+    </div>
+    <div class="banner_05">
+        <img src="images/JS-getYour.png" name="getYour" alt=""/>
+        <div class="content">
+            <div class="content-left">
+                <div class="con-detail">
+                    <div class="title">
+                        <img src="images/CONSULTATION.png" name="con" alt="">
+                        <img src="images/arrow-left.png" name="left" alt="">
+                    </div>
+                    <p>Once we know your goals, we will set up a step-by-step production process together with you that
+                        ensures you get the best deal.</p>
+                    <div class="list">
+                        <span class="bot">·</span>
+                        <p class="list-p"><span>24-hour hotline service;</span></p>
+                    </div>
+                    <div class="list">
+                        <span class="bot">·</span>
+                        <p class="list-p"><span>Professional advice about customization service to ensure you get the best sports shoes.</span>
+                        </p>
+                    </div>
+                    <img src="images/JS-m-01.png" alt="" name="message"/>
+                    <span class="ban05-line"></span>
+                </div>
+                <div class="con-detail con-bottom">
+                    <div class="title">
+                        <img src="images/MANUFACTURING.png" name="man" alt="">
+                        <img src="images/arrow-left.png" name="left" alt="">
+                    </div>
+                    <p>Our manufacturing plant has a cementing production line and two injection lines. Throughout the
+                        production process, managers in charge of cutting, stitching and lasting check the quality of
+                        men shoes constantly. We are not satisfied unless every pair is perfect. </p>
+                    <div class="list">
+                        <span class="bot">·</span>
+                        <p class="list-p"><span>MOQ: 600 pairs per color;</span></p>
+                    </div>
+                    <div class="list">
+                        <span class="bot">·</span>
+                        <p class="list-p"><span>Produce 120,000 pairs of shoes every month;</span></p>
+                    </div>
+                    <div class="list">
+                        <span class="bot">·</span>
+                        <p class="list-p"><span>Available BSIC Audit Report;</span></p>
+                    </div>
+                    <div class="list">
+                        <span class="bot">·</span>
+                        <p class="list-p"><span>Conduct chemical test according to your requirements;</span></p>
+                    </div>
+                    <div class="list">
+                        <span class="bot">·</span>
+                        <p class="list-p">
+                            <span>Offer lower price to ensure the maximum profits for your bussiness.</span></p>
+                    </div>
+                    <div class="image">
+                        <img src="images/JS-m-02.png" alt="" name="message-man"/>
+                        <img src="images/JS-m-03.png" alt="" name="message-man"/>
+                    </div>
+                    <img src="images/JS-m-04.png" class="con-img" alt="" name="message-man"/>
+                </div>
+            </div>
+            <div class="content-right">
+                <div class="con-detail">
+                    <img src="images/JS-m-05.png" name="message" alt="">
+                    <div class="title">
+                        <img src="images/arrow-right.png" name="right" alt="">
+                        <img src="images/DESIGN.png" name="des" alt="">
+                    </div>
+                    <p>We have 40 experienced designers who can design more than 2,000 new shoe models every year. Our
+                        designers consider themselves footwear fashion artists.</p>
+                    <div class="list">
+                        <span class="bot">·</span>
+                        <p class="list-p"><span>Professional customization service to ensure you get awesome sports shoes ;</span>
+                        </p>
+                    </div>
+                    <div class="list">
+                        <span class="bot">·</span>
+                        <p class="list-p"><span>40 experienced designers will give you more practical and distinguished suggestions;</span>
+                        </p>
+                    </div>
+                    <span class="ban05-line"></span>
+                </div>
+                <div class="con-detail">
+                    <img src="images/JS-m-06.png" name="message" alt="">
+                    <div class="title">
+                        <img src="images/arrow-right.png" name="right" alt="">
+                        <img src="images/QUALITYCONTROL.png" name="qua" alt="">
+                    </div>
+                    <p>men shoes quality is the soul for Sword shark, we have very strong design and manufacturing team,
+                        as well as having strict and effective quality control policy on each stage.</p>
+                    <div class="list">
+                        <span class="bot">·</span>
+                        <p class="list-p">
+                            <span>8+ experienced quality inspector will ensure your sports shoes' quality;</span></p>
+                    </div>
+                    <div class="list">
+                        <span class="bot">·</span>
+                        <p class="list-p"><span>Strict quality control policy;</span></p>
+                    </div>
+                    <div class="list">
+                        <span class="bot">·</span>
+                        <p class="list-p"><span> Products meet the demands of various chemical and physical testing in main markets.</span>
+                        </p>
+                    </div>
+                    <span class="ban05-line"></span>
+                </div>
+                <div class="con-detail">
+                    <img src="images/JS-m-07.png" name="message" alt="">
+                    <div class="title">
+                        <img src="images/arrow-right.png" name="right" alt="">
+                        <img src="images/DELIVERY.png" name="del" alt="">
+                    </div>
+                    <p>We can guarantee that you will get your orders within two months.</p>
+                    <div class="list">
+                        <span class="bot">·</span>
+                        <p class="list-p"><span>Delivery time depends on the shipping distance and may vary;</span></p>
+                    </div>
+                    <div class="list">
+                        <span class="bot">·</span>
+                        <p class="list-p"><span><2 months.</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="banner_06">
+        <div class="content">
+            <h2>Your Business <br>Needs Are Unique?</h2>
+            <p>Let us help you meet those needs! Please contact us and enter the enquiry immediately.</p>
+            <div class="con-btn">
+                <a href="javascript:void(0);" class="button" @click="inquiryNow">Inquiry Now</a>
+            </div>
+            <p class="contact">
+                <img src="images/phone.png" name="phone" alt=""> 18356802533 &nbsp;&nbsp; 0577-67371997
+            </p>
+            <p class="contact">
+                <img src="images/email.png" name="email" alt=""> jiansha@163.com
+            </p>
+        </div>
+    </div>
+    <el-dialog title="INQUIRY INFORMATION" :visible.sync="dialogFormVisible" :before-close="closeForm">
+        <el-form :model="ruleForm" label-position="top" :rules="rules" ref="ruleForm">
+            <el-form-item label="Email" prop="email">
+                <el-input v-model="ruleForm.email" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Name" prop="name">
+                <el-input v-model="ruleForm.name" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Inquriy" prop="detail">
+                <el-input v-model="ruleForm.detail" type="textarea" autocomplete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="onSubmit">Inquiry Now</el-button>
+        </div>
+    </el-dialog>
+</div>
+
+<script>
+    // 邮箱验证
+    let emailRule = (rule, value, callback) => {
+        if (/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(value)) {
+            callback()
+        } else {
+            callback(new Error('Please enter the correct email address'))
+        }
+    }
+    // name验证
+    let nameRule = (rule, value, callback) => {
+        if (value.length >= 3) {
+            callback();
+        } else {
+            callback(new Error('The user name length is greater than 3'))
+        }
+    }
+</script>
+<script>
+    new Vue({
+        el: '#main',
+        data: {
+            dialogFormVisible: false,
+            ruleForm: {
+                email: '',
+                name: '',
+                detail: ''
+            },
+            rules: {
+                name: [
+                    {required: true, message: 'The user name must be entered', trigger: 'blur'},
+                    {validator: nameRule, trigger: 'blur'}
+
+                ],
+                email: [
+                    {required: true, message: 'You have to fill in the mailbox', trigger: 'blur'},
+                    {validator: emailRule, trigger: 'blur'}
+                ],
+                detail: [
+                    {required: true, message: 'You have to fill in the inquriy', trigger: 'blur'}
+                ]
+            }
+        },
+        mounted: function () {
+            console.log(document.documentElement.clientWidth)
+            console.log(window.innerWidth)
+        },
+        methods: {
+            inquiryNow: function () {
+                this.dialogFormVisible = true
+            },
+            closeForm: function (done) {
+                console.log(done)
+                this.dialogFormVisible = false;
+                this.$refs['ruleForm'].resetFields();
+                this.ruleForm.name = '';
+                this.ruleForm.email = '';
+                this.ruleForm.detail = '';
+            },
+            onSubmit: function () {
+                var self = this;
+                this.$refs.ruleForm.validate((valid) => {
+                    if (valid) {
+                        axios.post('/home/Activity_Romania_inquiry',
+                            Qs.stringify({
+                                supId: 279, // 浙江剑鲨鞋业有限公司
+                                name: self.ruleForm.name,
+                                email: self.ruleForm.email,
+                                detail: self.ruleForm.detail
+                            })
+                        ).then((res) => {
+                            if (res.data.ret == 1) {
+                                self.$message({
+                                    message: 'submit successfully!',
+                                    type: 'success'
+                                });
+                                self.closeForm()
+                            } else {
+                                this.$message.error('submit failure!');
+                            }
+                        }).catch((err) => {
+                            console.log(err)
+                        })
+                    } else {
+                        return false
+                    }
+                })
+            }
+        }
+    })
+</script>
+<!-- 代码追踪 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+  dataLayer.push(arguments);
+  }
+
+  gtag('js', new Date());
+
+  gtag('config', 'AW-783435725');
+  gtag('config', 'UA-127715615-6');
+</script>
+
+<script type="text/javascript">
+	var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+	(function(){
+		var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+		s1.async=true;
+		s1.src='https://embed.tawk.to/5b8fcb48f31d0f771d8476f6/default';
+		s1.charset='UTF-8';
+		s1.setAttribute('crossorigin','*');
+		s0.parentNode.insertBefore(s1,s0);
+	})();
+</script>
+<!--End of Tawk.to Script-->
+
+</body>
+</html>

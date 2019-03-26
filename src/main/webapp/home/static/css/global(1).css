@@ -1386,12 +1386,12 @@ body.hidden {
 }
 
 /*.follow_toolbox li > a:focus, .follow_toolbox li > a {*/
-    /*transform: translateY(0px);*/
+/*transform: translateY(0px);*/
 /*}*/
 
 /*.follow_toolbox li > a:focus, .follow_toolbox li > a:hover {*/
-    /*transform: translateY(-4px);*/
-    /*-webkit-transform: translateY(-4px);*/
+/*transform: translateY(-4px);*/
+/*-webkit-transform: translateY(-4px);*/
 /*}*/
 
 .follow_facebook {
@@ -3351,8 +3351,7 @@ body.hidden {
     background: url(../images/ico/arrow_up_black.png) center center no-repeat;
 }
 
-/* 閸熷棗鎼х拠锔藉剰 new E */
-/* 閸熷棗鎼х拠锔藉剰 閼辨柨鎮庨柌鍥枠 new S */
+/*联合采购倒计时*/
 .countDown_activities {
     width: 335px;
     margin-top: 20px;
@@ -3404,7 +3403,6 @@ body.hidden {
 
 .activities_goods_num {
     color: #666;
-    padding: 10px 0;
 }
 
 /* 閸熷棗鎼х拠锔藉剰 閼辨柨鎮庨柌鍥枠 new E */
