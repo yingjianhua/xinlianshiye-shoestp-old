@@ -165,7 +165,6 @@ public class UsrMainAction extends HomeAction<UsrMain> {
             MessageBuild.buildMessage(ReturnCode.valid_phone_notnull, HomeAction.curLanguage()));
       }
       String phone = getTelPre() + "-" + (getTelMid() == null ? "" : getTelMid()) + getTelAft();
-      System.out.println(phone);
       if (!ValidRegex.regMarch(Regular.REGULAR_TEL, phone)) {
         throw new WebMessageException(
             MessageBuild.buildMessage(ReturnCode.valid_phoneRegex, HomeAction.curLanguage()));

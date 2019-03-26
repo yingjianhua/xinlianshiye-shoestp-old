@@ -20,6 +20,8 @@ import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrUserDAO;
 import irille.view.usr.UserView;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.struts2.ServletActionContext;
 
 /**
@@ -40,11 +42,14 @@ public class SessionMsg {
   private Integer pkey;
   private boolean isPurchase;
   private boolean isSupplier;
+
   private Language lang;
   private Integer currency;
   private Boolean isMobile;
   private static Integer count = 0;
-
+  //  作为保留,不用每次去数据库查询相应的ID
+  @Setter @Getter private Integer purchaseId;
+  @Setter @Getter private Integer supplierId;
   private static IUsrSupplierSellerDao supplierSellerDao;
 
   public static SessionMsg build() {
@@ -153,7 +158,13 @@ public class SessionMsg {
       user.setSupplier(this.getSupplier());
       user.setPurchase(this.getPurchase());
       user.setLoginName(loginName);
-      user.setUser_type(isSupplier ? 1 : 0);
+      if (isSupplier) {
+        user.setUser_type(1);
+        user.setSupplierId(getSupplierId());
+      } else {
+        user.setUser_type(0);
+        user.setPurchaseId(getPurchaseId());
+      }
       return user;
     } else {
       return null;
@@ -176,12 +187,14 @@ public class SessionMsg {
           {
             isPurchase = true;
             isSupplier = false;
+            purchaseId = user.getPurchase().getPkey();
           }
           break;
         case 1:
           {
             isSupplier = true;
             isPurchase = false;
+            supplierId = user.getSupplier().getPkey();
           }
       }
     }

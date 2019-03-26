@@ -64,15 +64,15 @@ public class PltConfigAction extends HomeAction<PltConfig> {
     sysConfigView.setCurrency_symbol(HomeAction.curCurrency().getSymbol());
     sysConfigView.setBaseImageUrl("https://image.shoestp.com");
     UserView userView = getUser();
-    if (userView!=null &&userView.haveUser()) {
+    if (userView != null && userView.haveUser()) {
       PltUserInfo userInfo = new PltUserInfo();
       userInfo.setId(userView.getPkey());
       userInfo.setName(userView.getLoginName());
-       userInfo.setUser_type(userView.getUser_type());
+      userInfo.setUser_type(userView.getUser_type());
       if (userInfo.getUser_type() == 0) {
-        userInfo.setFavorite_count(UsrFavoritesDAO.countByPurchase(userView.getPkey()));
-        userInfo.setInquiry_count(UsrConsultDAO.countByUsrMainId(userView.getPkey()));
-        userInfo.setShopping_cart_count(UsrCartDAO.Query.countByPurchase(userView.getPkey()));
+        userInfo.setFavorite_count(UsrFavoritesDAO.countByPurchase(userView.getPurchaseId()));
+        userInfo.setInquiry_count(UsrConsultDAO.countByPurchase(userView.getPurchaseId()));
+        userInfo.setShopping_cart_count(UsrCartDAO.Query.countByPurchase(userView.getPurchaseId()));
       } else {
         // TODO
         userInfo.setInquiry_count(0);
