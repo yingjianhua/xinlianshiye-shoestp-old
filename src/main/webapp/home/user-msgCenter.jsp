@@ -228,7 +228,7 @@
 										v-for="(relation,relationsIndex) in inquiry.relations"
 										v-if="!relation.isDeleteInLocal"
 										:key="relation.supplier.pkey">
-										<el-badge is-dot :hidden="!relation.quotation.isNew" class="short-name">
+										<el-badge is-dot :hidden="!(relation.unread || relation.quotation.isNew)" class="short-name">
 											<div class="short-name"
 												 :data-inquiry-id="inquiry.pkey"
 												 :data-supplier-index="relationsIndex"
@@ -824,7 +824,7 @@
 						<!-- 聊天内容框 - end -->
 						<div class="send-msg-wrap">
 							<el-input class="msg-input"
-									  @focus="isShowMore = false"
+									  @focus="sendMsgInputFocus"
 									  @keyup.enter.native="sendMsg"
 									  v-model.trim="sendMsgValue" placeholder="Please input the message"></el-input>
 
@@ -1530,11 +1530,6 @@
 
 			// 点view 查看询盘详情及报价
 			viewInquiryDetail(e){
-				if (!sysConfig || !sysConfig.user) {
-					util_function_obj.alertWhenNoLogin(this);
-					return false;
-				}
-
 				console.log("viewInquiryDetail")
 				e.stopPropagation();
 				var inquiryIndex = e.currentTarget.dataset.inquiryIndex;
@@ -1662,11 +1657,6 @@
 
 			//获取报价详情
 			getQuotationDetail(){
-				if (!sysConfig || !sysConfig.user) {
-					util_function_obj.alertWhenNoLogin(this);
-					return false;
-				}
-
 				console.log("getQuotationDetail")
 				var nowInquiry = this.inquiryList[this.nowInquiryIndex];
 				if( !nowInquiry.relations || !nowInquiry.relations.length ) return;
@@ -1680,7 +1670,10 @@
 						.then((res) => {
 					this.btnLoading = false;
 				console.log("获取报价详情 suc");
-				if (res.data.ret != 1) {
+				if(res.data.ret == -1){
+					util_function_obj.alertWhenNoLogin(this);
+					return false;
+				}else if (res.data.ret != 1) {
 					this.$message.error(res.data.msg || "Get quotation's detail error,please try again later");
 					return
 				};
@@ -1715,11 +1708,6 @@
 
 			//确认修改 - 添加额外信息
 			addInformationConfirm(){
-				if (!sysConfig || !sysConfig.user) {
-					util_function_obj.alertWhenNoLogin(this);
-					return false;
-				}
-
 				this.$refs.addInformationForm.validate((valid) => {
 					if (valid) {
 						axios.post('/home/rfq_RFQConsult_addInformation', Qs.stringify({
@@ -1728,7 +1716,10 @@
 							validDate: this.addInformationForm.validDate,
 						}))
 								.then((res) => {
-						if (res.data.ret != 1) {
+									if(res.data.ret == -1){
+										util_function_obj.alertWhenNoLogin(this);
+										return false;
+									}else if (res.data.ret != 1) {
 							this.$message.error(res.data.msg || "Add information error,please try again later");
 							return
 						};
@@ -1762,11 +1753,6 @@
 
 			//关闭RFQ
 			closeRFQ(e){
-				if (!sysConfig || !sysConfig.user) {
-					util_function_obj.alertWhenNoLogin(this);
-					return false;
-				}
-
 				this.$confirm('Are you sure to close the inquiry?', 'tip', {
 					confirmButtonText: 'sure',
 					cancelButtonText: 'cancel',
@@ -1778,7 +1764,10 @@
 					}))
 							.then((res) => {
 						console.log(res);
-				if (res.data.ret != 1) {
+				if(res.data.ret == -1){
+					util_function_obj.alertWhenNoLogin(this);
+					return false;
+				}else if (res.data.ret != 1) {
 					this.$message.error(res.data.msg || "Close RFQ error,please try again later");
 					return
 				};
@@ -1804,11 +1793,6 @@
 
 			//删除询盘
 			deleteInquiry(e){
-				if (!sysConfig || !sysConfig.user) {
-					util_function_obj.alertWhenNoLogin(this);
-					return false;
-				}
-
 				var inquiryIndex = e.currentTarget.dataset.inquiryIndex;
 				var relationsIndex = e.currentTarget.dataset.relationsIndex;
 				var quotationPkey = e.currentTarget.dataset.quotationPkey;
@@ -1818,7 +1802,10 @@
 				}))
 						.then((res) => {
 					console.log("关闭询盘 suc");
-				if (res.data.ret != 1) {
+				if(res.data.ret == -1){
+					util_function_obj.alertWhenNoLogin(this);
+					return false;
+				}else if (res.data.ret != 1) {
 					this.$message.error(res.data.msg || "Delete inquiry error,please try again later");
 					return
 				};
@@ -1850,11 +1837,6 @@
 
 			//添加至联系人
 			addContact(e){
-				if (!sysConfig || !sysConfig.user) {
-					util_function_obj.alertWhenNoLogin(this);
-					return false;
-				}
-
 				var dataset = e.currentTarget.dataset;
 				var inquiryIndex = dataset.inquiryIndex;
 				var relationsIndex = dataset.relationsIndex;
@@ -1866,7 +1848,10 @@
 				}))
 						.then((res) => {
 					console.log("添加至联系人 suc");
-				if (res.data.ret != 1) {
+				if(res.data.ret == -1){
+					util_function_obj.alertWhenNoLogin(this);
+					return false;
+				}else if (res.data.ret != 1) {
 					this.$message.error(res.data.msg || "Add contact error,please try again later");
 					return
 				};
@@ -1886,11 +1871,6 @@
 
 			// 点击联系相应的供应商
 			contactSupplier(e){
-				if (!sysConfig || !sysConfig.user) {
-					util_function_obj.alertWhenNoLogin(this);
-					return false;
-				}
-
 				console.log("contactSupplier")
 				// 显示顶部show more信息
 				clearTimeout(this.timeoutTimer);
@@ -1913,7 +1893,8 @@
 				var inquiryId = dataset.inquiryId;
 				var supplierIndex = dataset.supplierIndex;
 				var inquiryIndex = dataset.inquiryIndex;
-				if(this.nowSupplierIndex==supplierIndex && this.nowInquiryIndex == inquiryIndex && Object.keys(this.supplierDetail).length != 0) return;
+				// 当前点击的就是当前显示的，不触发点击事件 - 首次加载显示第一个，此时也可以点第一个，so != 0
+				if(this.nowSupplierIndex==supplierIndex && this.nowInquiryIndex == inquiryIndex && this.nowInquiryIndex != 0 && Object.keys(this.supplierDetail).length != 0) return;
 
 				// 重置聊天信息
 				this.resetChatMsg();
@@ -1923,6 +1904,7 @@
 
 				// 左侧列表将点击项 设置为已读状态
 				this.$set(this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].quotation, "isNew",false)
+				this.$set(this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex], "unread",false)
 
 				//获取chat列表
 				this.getChatInfo();
@@ -2061,11 +2043,6 @@
 			//参数为 searchMore：搜索上一页，从preMessagePkey开始查询
 			//       searchLast：发消息时，获取最新消息，从nextMessagePkey开始查询
 			getChatInfo({searchMore=false,searchLast=false}={}){
-				if (!sysConfig || !sysConfig.user) {
-					util_function_obj.alertWhenNoLogin(this);
-					return false;
-				}
-
 			    console.log("searchLast is")
 			    console.log(searchLast)
 			    console.log(this.chatMsgListPageNextPkey)
@@ -2095,7 +2072,10 @@
 						.then((res) => {
 					this.isChatMsgListLoading = false;
 				console.log("获取询盘留言列表 - suc");
-				if (res.data.ret != 1) {
+				if(res.data.ret == -1){
+					util_function_obj.alertWhenNoLogin(this);
+					return false;
+				}else if (res.data.ret != 1) {
 					this.$message.error(res.data.msg || "Get chat information error,please try again later");
 					return
 				};
@@ -2262,13 +2242,14 @@
 				// });
 			},
 
+			// 聚焦时视为消息已读
+			sendMsgInputFocus(){
+				this.isShowMore = false;
+				this.isAllRead = true;
+			},
+
 			// 发送消息
 			sendMsg(){
-				if (!sysConfig || !sysConfig.user) {
-					util_function_obj.alertWhenNoLogin(this);
-					return false;
-				}
-
 				console.log("sendMsg")
 				if(!this.sendMsgValue && !this.sendMsgImgValue) return;
 				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
@@ -2280,7 +2261,10 @@
 				}))
 						.then((res) => {
 					console.log("发送消息 suc");
-				if (res.data.ret != 1) {
+				if(res.data.ret == -1){
+					util_function_obj.alertWhenNoLogin(this);
+					return false;
+				}else if (res.data.ret != 1) {
 					this.$message.error(res.data.msg || "Send message error,please try again later");
 					return
 				};
@@ -2392,10 +2376,10 @@
 				var text = "";
 				switch(status){
 					case 1:
-						text = "Reject";
+						text = "Verifying";
 						break;
 					case 2:
-						text = "Verifying";
+						text = "Reject";
 						break;
 					case 3:
 						text = haveQuotation?"Compare all quotation":"No quotation";
@@ -2421,7 +2405,7 @@
 						text = "Approved"; //审核通过
 						break;
 					default:
-						text = "Under Review";
+						text = "";
 						break;
 				}
 				return text;
