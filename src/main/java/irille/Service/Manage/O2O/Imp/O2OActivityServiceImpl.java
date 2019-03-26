@@ -453,6 +453,7 @@ public class O2OActivityServiceImpl implements O2OActivityService {
       if (null == reason) {
         throw new WebMessageException(ReturnCode.failure, "拒绝理由不能为空");
       }
+      o2OProduct.setUpdatedTime(new Date());
       o2OProduct.setMessage("拒绝申请下架，拒绝理由：" + reason);
       email.setSubject("【鞋贸港】O2O商品下架失败");
       email.setContent("您申请商品编号为【" + pdt.getCode() + "】的商品拒绝下架，拒绝理由：" + reason);

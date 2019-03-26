@@ -5,15 +5,16 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
-import irille.Entity.O2O.Enums.O2O_ProductStatus;
+import org.json.JSONException;
+
 import irille.Entity.O2O.O2O_Activity;
+import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Service.Manage.O2O.IO2OActicityServer;
 import irille.Service.Manage.O2O.IO2OMapServer;
 import irille.Service.Manage.O2O.IO2OPdtServer;
 import irille.sellerAction.SellerAction;
 import irille.sellerAction.o2o.inf.IO2oActivityAction;
 import lombok.Setter;
-import org.json.JSONException;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2019/1/28 Time: 9:53 */
 public class O2oActivityAction extends SellerAction<O2O_Activity> implements IO2oActivityAction {
@@ -80,7 +81,7 @@ public class O2oActivityAction extends SellerAction<O2O_Activity> implements IO2
     writeSuccess();
   }
 
-  /** 申请下架 */
+  /** 上架 */
   public void upper() throws IOException, JSONException {
     o2oPdtServer.lowerAndUpper(id, null, O2O_ProductStatus.ON);
     writeSuccess();

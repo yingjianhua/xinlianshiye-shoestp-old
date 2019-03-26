@@ -1,6 +1,9 @@
 package irille.view.O2O;
 
 import java.math.BigDecimal;
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import irille.view.BaseView;
 import lombok.Data;
@@ -21,5 +24,9 @@ public class O2OActivityPdtInfoView implements BaseView {
   private String remark;
   private String supplier;
   private String message;
+
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+  private Date updateTime;
+
   private byte isO2o;
 }

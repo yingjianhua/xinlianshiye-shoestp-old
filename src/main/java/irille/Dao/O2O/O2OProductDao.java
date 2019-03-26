@@ -215,6 +215,7 @@ public class O2OProductDao {
             PdtProduct.T.CODE,
             O2O_Product.T.PRICE,
             O2O_Product.T.MIN_OQ,
+            O2O_Product.T.UPDATED_TIME,
             O2O_Product.T.STATUS,
             O2O_Product.T.MESSAGE,
             O2O_Product.T.VERIFY_STATUS,
