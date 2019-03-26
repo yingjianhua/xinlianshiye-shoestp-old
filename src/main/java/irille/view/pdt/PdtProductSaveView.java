@@ -1,11 +1,13 @@
 package irille.view.pdt;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import irille.view.BaseView;
+import irille.view.plt.CountryView;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/8/24 Time: 11:25 */
 public class PdtProductSaveView implements BaseView {
@@ -49,15 +51,25 @@ public class PdtProductSaveView implements BaseView {
   private List<PdtTieredPricingView> tieredPricing;
   private List<PdtColorView> color;
   private Date putawayDate;
-    private String[] desModule;
-    
-    public String[] getDesModule() {
-		return desModule;
-	}
+  private String[] desModule;
+  private List<CountryView> selectcountry;
+  private String targetedMarket;
 
-	public void setDesModule(String[] desModule) {
-		this.desModule = desModule;
-	}
+  public String[] getDesModule() {
+    return desModule;
+  }
+
+  public List<CountryView> getSelectcountry() {
+    return selectcountry;
+  }
+
+  public void setSelectcountry(List<CountryView> selectcountry) {
+    this.selectcountry = selectcountry;
+  }
+
+  public void setDesModule(String[] desModule) {
+    this.desModule = desModule;
+  }
 
   public Date getPutawayDate() {
     return putawayDate;
@@ -339,6 +351,14 @@ public class PdtProductSaveView implements BaseView {
     this.description = description;
   }
 
+  public String getTargetedMarket() {
+    return targetedMarket;
+  }
+
+  public void setTargetedMarket(String targetedMarket) {
+    this.targetedMarket = targetedMarket;
+  }
+
   public int getFrom() {
     return from;
   }
@@ -349,33 +369,82 @@ public class PdtProductSaveView implements BaseView {
 
   @Override
   public String toString() {
-        return "PdtProductSaveView{" +
-                "id=" + id +
-                ", pdtName=" + pdtName +
-                ", productCat=" + productCat +
-                ", supplierCat=" + supplierCat +
-                ", number_left='" + number_left + '\'' +
-                ", number_right='" + number_right + '\'' +
-                ", sku='" + sku + '\'' +
-                ", attr=" + attr +
-                ", pdtPics=" + pdtPics +
-                ", specSize=" + specSize +
-                ", specColor=" + specColor +
-                ", spec=" + spec +
-                ", price=" + price +
-                ", min_oq=" + min_oq +
-                ", max_oq=" + max_oq +
-                ", warnStock=" + warnStock +
-                ", state=" + state +
-                ", soldInStatus=" + soldInStatus +
-                ", soldInTime=" + soldInTime +
-                ", weight=" + weight +
-                ", height=" + height +
-                ", width=" + width +
-                ", length=" + length +
-                ", briefDescription='" + briefDescription + '\'' +
-                ", freeShipping=" + freeShipping +
-                ", description='" + description + '\'' +
-                '}';
+    return "PdtProductSaveView {id="
+        + id
+        + ", pdtName="
+        + pdtName
+        + ", productCat="
+        + productCat
+        + ", supplierCat="
+        + supplierCat
+        + ", number_left="
+        + number_left
+        + ", number_right="
+        + number_right
+        + ", sku="
+        + sku
+        + ", attr="
+        + attr
+        + ", pdtPics="
+        + pdtPics
+        + ", specSize="
+        + specSize
+        + ", specColor="
+        + specColor
+        + ", spec="
+        + spec
+        + ", price="
+        + price
+        + ", mktPrice="
+        + mktPrice
+        + ", purPrice="
+        + purPrice
+        + ", min_oq="
+        + min_oq
+        + ", max_oq="
+        + max_oq
+        + ", warnStock="
+        + warnStock
+        + ", state="
+        + state
+        + ", soldInStatus="
+        + soldInStatus
+        + ", soldInTime="
+        + soldInTime
+        + ", weight="
+        + weight
+        + ", height="
+        + height
+        + ", width="
+        + width
+        + ", length="
+        + length
+        + ", briefDescription="
+        + briefDescription
+        + ", freeShipping="
+        + freeShipping
+        + ", description="
+        + description
+        + ", from="
+        + from
+        + ", radio="
+        + radio
+        + ", warehouse="
+        + warehouse
+        + ", newSpec="
+        + newSpec
+        + ", tieredPricing="
+        + tieredPricing
+        + ", color="
+        + color
+        + ", putawayDate="
+        + putawayDate
+        + ", desModule="
+        + Arrays.toString(desModule)
+        + ", selectcountry="
+        + selectcountry
+        + ", targetedMarket="
+        + targetedMarket
+        + "}";
   }
 }

@@ -252,7 +252,8 @@ public class PdtProductDAO {
           T.SEO_DESCRIPTION,
           T.SEO_KEYWORD,
           T.SEO_TITLE,
-          T.PRODUCT_TYPE);
+          T.PRODUCT_TYPE,
+          T.TARGETED_MARKET);
       translateUtil.newAutoTranslate(dbBean, translateFilter);
       getB().setUpdateTime(Env.getTranBeginTime());
       dbBean.setDescribeModule1(getB().getDescribeModule1());
@@ -617,7 +618,8 @@ public class PdtProductDAO {
           T.SEO_DESCRIPTION,
           T.SEO_KEYWORD,
           T.SEO_TITLE,
-          T.PRODUCT_TYPE);
+          T.PRODUCT_TYPE,
+          T.TARGETED_MARKET);
       translateUtil.newAutoTranslate(dbBean, translateFilter);
       dbBean.setDescribeModule1(getB().getDescribeModule1());
       dbBean.setDescribeModule2(getB().getDescribeModule2());

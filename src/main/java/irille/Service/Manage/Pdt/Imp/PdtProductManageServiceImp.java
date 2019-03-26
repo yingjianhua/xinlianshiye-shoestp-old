@@ -66,6 +66,7 @@ import irille.view.pdt.PdtProductCatView;
 import irille.view.pdt.PdtProductSaveView;
 import irille.view.pdt.PdtTieredPricingView;
 import irille.view.pdt.WarehouseView;
+import irille.view.plt.CountryView;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/7 Time: 15:55 */
 public class PdtProductManageServiceImp implements IPdtProductManageService, Job {
@@ -278,8 +279,18 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
         }
       }
     }
-
+    Set<Integer> country = new HashSet<>(); // 目标市场
+    if (pdtProductSaveView.getSelectcountry() != null
+        || pdtProductSaveView.getSelectcountry().isEmpty()) {
+      for (CountryView item : pdtProductSaveView.getSelectcountry()) {
+        country.add(item.getId());
+      }
+    } else {
+      return -9;
+    }
     pdtProduct.setSupplier(supId);
+    pdtProduct.setTargetedMarket(
+        country.stream().map(String::valueOf).collect(Collectors.joining(",")));
     pdtProduct.setPkey(pdtProductSaveView.getId());
     pdtProduct.setName(objectMapper.writeValueAsString(pdtProductSaveView.getPdtName()));
     // 产品分类

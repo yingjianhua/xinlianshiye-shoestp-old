@@ -712,6 +712,7 @@ public class PdtproductPageselect {
     view.setTieredPricing(PdtTieredPricingDao.getList(pdtProduct.getPkey()));
     view.setSoldInStatus(pdtProduct.gtSoldInTime());
     view.setPutawayDate(pdtProduct.getSoldTimeB());
+    view.setTargetedMarket(pdtProduct.getTargetedMarket());
     return view;
   }
 

@@ -131,7 +131,10 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
     DESCRIBE_MODULE_1(SYS.MUILTI_LANGUAGE_NULL, "详细描述模块1"),
     DESCRIBE_MODULE_2(SYS.MUILTI_LANGUAGE_NULL, "详细描述模块2"),
     DESCRIBE_MODULE_3(SYS.MUILTI_LANGUAGE_NULL, "详细描述模块3"),
+
     FIRST_PUTAWAY(SYS.YN, "是否首次上架"),
+
+    TARGETED_MARKET(SYS.STR__200, "目标市场"),
 
     UPDATE_TIME(SYS.UPDATED_DATE_TIME),
     ROW_VERSION(SYS.ROW_VERSION),
@@ -295,6 +298,7 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
   private Byte _firstPutaway;	// 是否首次上架 <OYn>  BYTE
 	// YES:1,是
 	// NO:0,否
+  private String _targetedMarket;	// 目标市场  STR(200)
   private Date _updateTime;	// 更新时间  TIME
   private Short _rowVersion;	// 版本  SHORT
 
@@ -363,6 +367,7 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
     _describeModule2=null;	// 详细描述模块2  JSONOBJECT
     _describeModule3=null;	// 详细描述模块3  JSONOBJECT
     _firstPutaway=OYn.DEFAULT.getLine().getKey();	// 是否首次上架 <OYn>  BYTE
+    _targetedMarket=null;	// 目标市场  STR(200)
     _updateTime=Env.getTranBeginTime();	// 更新时间  TIME
     _rowVersion=0;	// 版本  SHORT
     return this;
@@ -980,6 +985,12 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
   }
   public void stFirstPutaway(Boolean firstPutaway){
     _firstPutaway=booleanToByte(firstPutaway);
+  }
+  public String getTargetedMarket(){
+    return _targetedMarket;
+  }
+  public void setTargetedMarket(String targetedMarket){
+    _targetedMarket=targetedMarket;
   }
   public Date getUpdateTime(){
     return _updateTime;
