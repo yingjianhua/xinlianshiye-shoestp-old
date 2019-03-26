@@ -1,13 +1,25 @@
 package irille.Service.Manage.O2O.Imp;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.StringUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import irille.Dao.PdtCatDao;
+import irille.Dao.PdtProductDao;
 import irille.Dao.O2O.O2OActivityDao;
 import irille.Dao.O2O.O2OJoinInfoDao;
 import irille.Dao.O2O.O2OProductDao;
@@ -15,18 +27,17 @@ import irille.Dao.Old.O2O.O2O_ActivityInsDAO;
 import irille.Dao.Old.O2O.O2O_JoinInfoInsDAO;
 import irille.Dao.Old.O2O.O2O_PrivateExpoPdtInsDAO;
 import irille.Dao.Old.O2O.O2O_ProductInsDAO;
-import irille.Dao.PdtCatDao;
-import irille.Dao.PdtProductDao;
-import irille.Entity.O2O.Enums.O2O_ActivityStatus;
-import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_Activity;
 import irille.Entity.O2O.O2O_JoinInfo;
 import irille.Entity.O2O.O2O_Product;
+import irille.Entity.O2O.Enums.O2O_ActivityStatus;
+import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Service.Manage.O2O.IO2OPdtServer;
 import irille.pub.Log;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.pub.tb.FldLanguage;
+import irille.pub.util.DateTimeUtil;
 import irille.pub.util.GetValue;
 import irille.pub.util.SEOUtils;
 import irille.shop.pdt.Pdt;
@@ -34,14 +45,11 @@ import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
+import irille.view.Page;
 import irille.view.O2O.O2OActivityInfoView;
 import irille.view.O2O.O2OActivityPdtInfoView;
 import irille.view.O2O.O2OManageActivityListView;
-import irille.view.Page;
 import irille.view.v2.Pdt.PdtNewPdtInfo;
-import org.apache.commons.lang3.StringUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /** Created by IntelliJ IDEA. User: Lijie<HelloBox@outlook.com> Date: 2019/1/26 Time: 15:59 */
 public class O2OPdtServerImp implements IO2OPdtServer {
@@ -226,6 +234,8 @@ public class O2OPdtServerImp implements IO2OPdtServer {
                     v.setStatus(GetValue.get(bean, O2O_Product.T.STATUS, Byte.class, (byte) 0));
                     v.setAppr(
                         GetValue.get(bean, O2O_Product.T.VERIFY_STATUS, Byte.class, (byte) 0));
+                    v.setUpdateTime(
+                        GetValue.get(bean, O2O_Product.T.UPDATED_TIME, Date.class, null));
                     v.setMessage(GetValue.get(bean, O2O_Product.T.MESSAGE, String.class, null));
                     return v;
                   })
@@ -310,16 +320,23 @@ public class O2OPdtServerImp implements IO2OPdtServer {
 
   @Override
   public void lowerAndUpper(Integer pkey, String reason, O2O_ProductStatus status) {
-    if (StringUtils.isBlank(reason) && status.equals(O2O_ProductStatus.OFF)) {
-      throw LOG.err("noReason", "请输入下架理由");
-    }
     O2O_Product o2O_product = o2OProductDao.findByPkey(pkey);
     if (null == o2O_product) {
       throw LOG.err("noEntity", "o2o商品不存在");
     }
-    o2O_product.setRemark(reason);
-    o2O_product.setMessage("处理中");
-    o2O_product.setStatus(O2O_ProductStatus.WAITOFF.getLine().getKey());
+    if (DateTimeUtil.timeDiffForHour(o2O_product.getUpdatedTime(), new Date()) < 24) {
+      throw new WebMessageException(ReturnCode.failure, "距离上次审核不满24小时,不可再次申请");
+    }
+    if (StringUtils.isBlank(reason) && status.equals(O2O_ProductStatus.OFF)) {
+      throw LOG.err("noReason", "请输入下架理由");
+    }
+    if (status.equals(O2O_ProductStatus.OFF)) {
+      o2O_product.setMessage("处理中");
+      o2O_product.setStatus(O2O_ProductStatus.WAITOFF.getLine().getKey());
+      o2O_product.setRemark(reason);
+    } else if (status.equals(O2O_ProductStatus.ON)) {
+      o2O_product.setStatus(status.getLine().getKey());
+    }
     o2O_product.upd();
   }
 
