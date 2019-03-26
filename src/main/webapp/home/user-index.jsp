@@ -308,11 +308,14 @@
                 axios.get('/home/usr_Purchase_profile')
                     .then(function (res) {
                         console.log(res);
-                        if (res.data.ret == 1) {
-                            self.userInfo = res.data.result;
-                        }  else {
-                            self.$message.error(res.data.msg || "Failed to get personal information, please refresh the page and try again");
+                        if (res.data.ret == -1) {
+                            util_function_obj.alertWhenNoLogin(self);
+                            return
+                        } else if (res.data.ret != 1) {
+                            self.$message.error(res.data.msg || "Network error, please refresh the page and try again");
+                            return
                         }
+                        self.userInfo = res.data.result;
                     })
                     .catch(function (error) {
                         self.$message.error("Network error, please refresh the page and try again");
@@ -328,12 +331,14 @@
                     }
                 })
                     .then(function (res) {
-                         if (res.data.ret == 1) {
-                            self.favoriteList = res.data.result.items;
-                        } else {
-                            self.$message.error(res.data.msg || "Failed to get the list of favorites, please refresh the page and try again");
+                        if (res.data.ret == -1) {
+                            util_function_obj.alertWhenNoLogin(self);
+                            return
+                        } else if (res.data.ret != 1) {
+                            self.$message.error(res.data.msg || "Network error, please refresh the page and try again");
                             return
                         }
+                        self.favoriteList = res.data.result.items;
                     })
                     .catch(function (error) {
                         self.$message.error("Network error, please refresh the page and try again");
@@ -341,24 +346,7 @@
                     });
             },
             submitForm(formName) { //表单提交
-                if(!sysConfig || !sysConfig.user){
-                    util_function_obj.alertWhenNoLogin(this);
-                    return
-                }else{
-                        // 登录了
-                        if(sysConfig.user.user_type == 1){
-                            this.$alert("Sorry, the supplier cannot submit the form",{
-                                confirmButtonText: 'Ok',
-                                customClass: "my-custom-element-alert-class fs-content-18",
-                                center: true,
-                                callback: action =>{
-                                    return
-                                }
-                            });
-                            return
-                        }else{
-                            // 普通用户
-                            this.$refs[formName].validate((valid) => {
+                this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.flag = true;
                         let data = JSON.stringify(this.form)
@@ -369,27 +357,27 @@
                         )
                             .then((res) => {
                                 // console.log(res)
-                                // 提交成功时
-                                if (res.data.ret == 1) {
-                                    // 提示信息
-                                    this.$message({
-                                        showClose: true,
-                                        message: 'Submitted successfully',
-                                        type: 'success'
-                                    });
-                                    setTimeout(function () {
-                                        window.location.reload();
-                                    }, 1500)
-                                }
-                                // 提交失败时
-                                 else {
+                                if (res.data.ret == -1) {
+                                    this.flag = false;
+                                    util_function_obj.alertWhenNoLogin(this);
+                                    return
+                                } else if (res.data.ret != 1) {
                                     this.flag = false;
                                     this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
                                         confirmButtonText: 'OK',
                                         customClass: "my-custom-element-alert-class fs-content-18",
                                     });
+                                    return
                                 }
-
+                                // 提交成功时   提示信息
+                                this.$message({
+                                    showClose: true,
+                                    message: 'Submitted successfully',
+                                    type: 'success'
+                                });
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 1500)
                             })
                             .catch((err) => {
                                 this.flag = false;
@@ -410,9 +398,6 @@
                         // return false;
                     }
                 });
-                        }
-                    }
-                
                
             },
             // 头像上传
@@ -423,11 +408,14 @@
                 // console.log(file)
                 // this.userInfo.avatar = res.result.url
                 // console.log(this.userInfo.avatar)
-                if(res.ret == 1){
-                    this.$set(this.userInfo,"avatar",res.result.url)
-                }else{
-                    this.$message.error('Avatar upload failed, please refresh the page and try again');
+                if (res.ret == -1) {
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                } else if (res.ret != 1) {
+                    this.$message.error(res.data.msg || "Network error, please refresh the page and try again");
+                    return
                 }
+                this.$set(this.userInfo,"avatar",res.result.url)
             },
             beforeAvatarUpload(file) {
                 const isJPG = file.type === 'image/jpeg';
@@ -441,21 +429,19 @@
                 return isJPG && isLt3M;
             },
             clickUploadAvatar(avatar) {
-                if(!sysConfig || !sysConfig.user){
-                    util_function_obj.alertWhenNoLogin(this);
-                    return
-                }
                 var self = this;
                 axios.post('/home/usr_Purchase_editAvatar', Qs.stringify({
                     avatar,
                 }))
                     .then(function (res) {
                         // console.log(res);
-                        if (res.data.ret != 1) {
-                            self.$message.error(res.data.msg || "Avatar upload failed, please refresh the page and try again");
+                        if (res.data.ret == -1) {
+                            util_function_obj.alertWhenNoLogin(self);
+                            return
+                        } else if (res.data.ret != 1) {
+                            self.$message.error(res.data.msg || "Network error, please refresh the page and try again");
                             return
                         }
-                        ;
                         self.start = 0;
                         self.$message.success("Submitted Successfully");
                         self.isShowAvatarUpload = !self.isShowAvatarUpload
