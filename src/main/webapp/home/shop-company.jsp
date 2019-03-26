@@ -306,8 +306,8 @@
                             svs
                         </div>
                     </div>
-                    <el-form :model="form" :rules="rules" ref="form" label-width="155px">
-                        <el-form-item label="Name of inquiry" prop="title">
+                    <el-form :model="form" :rules="rules" ref="form" label-width="155px" style="margin-top: 30px;">
+                        <el-form-item label="Name of inquiry:" prop="title">
                             <el-row :gutter="15">
                                 <el-col :span="4">
                                     <div>I am looking for</div>
@@ -320,7 +320,7 @@
                                 </el-col>
                             </el-row>
                         </el-form-item>
-                        <el-form-item label="Purchase  Quantity" prop="quantity">
+                        <el-form-item label="Purchase  Quantity:" prop="quantity">
                             <el-row :gutter="10">
                                 <el-col :span="7">
                                     <el-input v-model.trim="form.quantity"></el-input>
@@ -339,7 +339,7 @@
                                 </el-col>
                             </el-row>
                         </el-form-item>
-                        <el-form-item label="Extra Request" prop="extra_request" class="request">
+                        <el-form-item label="Extra Request:" prop="extra_request">
                             <el-checkbox-group v-model="form.extra_request">
                                 <el-checkbox label="price" name="price">Price</el-checkbox>
                                 <el-checkbox label="inspection certificate" name="inspection certificate">Inspection

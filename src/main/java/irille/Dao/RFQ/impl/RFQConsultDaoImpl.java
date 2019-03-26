@@ -341,7 +341,17 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
    *     <p>询盘状态必须为RFQ询盘 有效期必须大于当前时间 审核状态必须为已审核 询盘关联表的供应商id为当前供应商(不加会出现查询重复)
    *     <p>查询inquiry时必须满足： 询盘关联表的consult等于询盘表的pkey 并且是当前登录的供应商
    */
+  @Override
   public List<Map<String, Object>> getRFQList(int start, int limit, String keyword, int supId) {
+    return Query.sql(getRFQListSql(start, limit, keyword, supId)).queryMaps();
+  }
+
+  @Override
+  public int getRFQListCount(int start, int limit, String keyword, Integer supId) {
+    return Query.sql(getRFQListSql(start, limit, keyword, supId)).queryCount();
+  }
+
+  private SQL getRFQListSql(int start, int limit, String keyword, int supId) {
     SQL sql = new SQL();
     SQL sql1 = new SQL();
     //        RFQ询盘 报价的时候,会在关联表添加一条数据
@@ -378,7 +388,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         .WHERE(RFQConsult.T.VALID_DATE, ">?", LocalDateTime.now())
         .WHERE(RFQConsult.T.VERIFY_STATUS, "=?", RFQConsultVerifyStatus.PASS);
     sql.ORDER_BY(RFQConsult.T.CREATE_TIME, "desc");
-    return Query.sql(sql).queryMaps();
+    return sql;
   }
 
   public RFQConsult getRFQInfo(int id) {
@@ -414,27 +424,6 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         .FROM(PdtProduct.class)
         .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON) // TODO 商品的其他逻辑
         .queryMap();
-  }
-
-  @Override
-  public int getRFQListCount(int start, int limit, String keyword, Integer supId) {
-    SQL sql = new SQL();
-    sql.SELECT(
-            RFQConsult.T.PKEY,
-            RFQConsult.T.TITLE,
-            RFQConsult.T.COUNTRY,
-            RFQConsult.T.CREATE_TIME,
-            RFQConsult.T.QUANTITY,
-            RFQConsult.T.LEFT_COUNT,
-            RFQConsultRelation.T.FAVORITE)
-        .FROM(RFQConsult.class)
-        .LEFT_JOIN(RFQConsultRelation.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY)
-        .LIMIT(start, limit)
-        .WHERE(keyword != null && keyword.length() > 0, RFQConsult.T.TITLE, "like ?", keyword)
-        .WHERE(RFQConsult.T.VALID_DATE, ">?", LocalDateTime.now())
-        .WHERE(RFQConsult.T.TYPE, "=?", RFQConsultType.RFQ)
-        .WHERE(RFQConsult.T.VERIFY_STATUS, "=?", RFQConsultVerifyStatus.PASS.getLine().getKey());
-    return Query.sql(sql).queryCount();
   }
 
   @Override

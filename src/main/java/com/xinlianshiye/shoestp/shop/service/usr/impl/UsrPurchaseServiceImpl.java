@@ -63,8 +63,8 @@ public class UsrPurchaseServiceImpl implements UsrPurchaseService {
       // 用户名或邮箱地址已被使用
       throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.mail_exists, language));
     }
-    purchase.setEmail(email);
-    purchase.setLoginName(email);
+    purchase.setEmail(email.toLowerCase());
+    purchase.setLoginName(email.toLowerCase());
     main.setEmail(email);
     main.upd();
     usrPurchaseDao.save(purchase);

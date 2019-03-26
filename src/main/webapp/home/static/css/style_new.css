@@ -645,7 +645,7 @@ body {
 }
 .contact-supplier .supplier-form .el-form-item__label{
   color: #232323;
-  text-align: left;
+  text-align: right;
   font-weight: bold;
 }
 .contact-supplier .supplier-form .name .el-form-item__label,.contact-supplier .supplier-form .request .el-form-item__label{

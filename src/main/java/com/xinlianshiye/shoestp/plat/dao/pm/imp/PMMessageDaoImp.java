@@ -77,7 +77,7 @@ public class PMMessageDaoImp implements IPMMessageDao {
             + " AND message.rcvr = - 1 ) ) "
             + " AND ((r.c = 0 OR r.c is null) OR (r.c > 0 AND DATEDIFF(now(),r.t) < 15)) "
             + " ORDER BY "
-            + " sendTime DESC";
+            + " r.c ASC,sendTime DESC";
 
     List<Map<String, Object>> map = Query.sql(sql).queryMaps();
     Integer count = map.size(); // 总数

@@ -73,7 +73,8 @@ public abstract class AbstractQuery {
    */
   protected Integer countRecord() {
     String sql = getSql();
-    Matcher matcher = Pattern.compile("^(.*)(LIMIT \\s*((\\d)\\s*,)?\\s*(\\d)\\s*)$").matcher(sql);
+    Matcher matcher =
+        Pattern.compile("^(.*)(LIMIT \\s*((\\d)+\\s*,)?\\s*(\\d)+\\s*)$").matcher(sql);
     if (matcher.find()) {
       sql = matcher.group(1);
     }
@@ -118,8 +119,8 @@ public abstract class AbstractQuery {
       BeanBase.toPreparedStatementData(stmt, 1, getParams());
       return stmt.executeUpdate();
     } catch (Exception e) {
-    	log.warn("执行【{}】出错!", e.getMessage());
-    	throw new WebMessageException(ReturnCode.db_unknow, "service error");
+      log.warn("执行【{}】出错!", e.getMessage());
+      throw new WebMessageException(ReturnCode.db_unknow, "service error");
     } finally {
       DbPool.close(stmt);
     }
@@ -137,8 +138,8 @@ public abstract class AbstractQuery {
       rs = stmt.executeQuery();
       return f.apply(rs);
     } catch (Exception e) {
-    	log.warn("取数据库记录时出错【{}】!", e.getMessage());
-    	throw new WebMessageException(ReturnCode.db_unknow, "service error");
+      log.warn("取数据库记录时出错【{}】!", e.getMessage());
+      throw new WebMessageException(ReturnCode.db_unknow, "service error");
     } finally {
       DbPool.close(stmt, rs);
     }
@@ -155,8 +156,8 @@ public abstract class AbstractQuery {
       rs = stmt.executeQuery();
       return f.apply(rs);
     } catch (Exception e) {
-    	log.warn("取数据库记录时出错【{}】!", e.getMessage());
-    	throw new WebMessageException(ReturnCode.db_unknow, "service error");
+      log.warn("取数据库记录时出错【{}】!", e.getMessage());
+      throw new WebMessageException(ReturnCode.db_unknow, "service error");
     } finally {
       DbPool.close(stmt, rs);
     }

@@ -165,26 +165,7 @@ Vue.component('index-top', {
     mounted() {
         Vue.set(this.$data, 'input', unescape(decodeURIComponent(getParams('Keyword', getParams('keyWord', getParams('keyword', ''))))))
         this.getconfig();
-        // this.getPMmessage(this.msgStart,this.msgLimit);
-            axios.get('/home/pm_PMMessage_list', {
-                    params: {
-                        start:this.msgStart,
-                        limit:this.msgLimit,
-                    }
-                })
-            .then((res) => {
-                if (res.data.ret == 1) {
-                    this.countNoRead = res.data.result.countNoRead;
-                    this.PMMessageList = res.data.result.items;
-                    if(res.data.result.items.length < 8){
-                        this.PMmoreSwitch = false;
-                        return;
-                    }
-                }
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        this.getPMmessage(this.msgStart,this.msgLimit);
         // setTimeout(() => {
         //     this.$nextTick(() => {
         //         let el = document.querySelector('.msg-list');
@@ -274,15 +255,18 @@ Vue.component('index-top', {
                     message,
                 }))
                 .then(function (res) {
-                    // console.log("点击消息=======" + res);
-                    // console.log(res);
                     if (!res.data.success) {
                         self.$message.error(res.data.msg);
                         return
                     };
-                    // self.$message.success("Have read");
-                    self.getPMmessage(self.msgStart,self.msgLimit);
+                    if(self.countNoRead == 0){
+                        self.countNoRead = 0
+                    }else{
+                        self.countNoRead = self.countNoRead - 1
+                    }
                     self.$set(self.PMMessageList[i],"read",1)
+                    console.log(self.msgStart)
+                    console.log(self.msgLimit)
                 })
                 .catch(function (error) { 
                     console.log(error);
@@ -291,7 +275,6 @@ Vue.component('index-top', {
         },
         moreClick(){    // 点击 加载更多消息
             var self = this;
-            // console.log("self.PMmoreSwitch ==== " + self.PMmoreSwitch)
             if(self.PMmoreSwitch){
                 self.msgStart = self.msgStart  + self.msgLimit
                 self.getPMmessage(self.msgStart,self.msgLimit);
