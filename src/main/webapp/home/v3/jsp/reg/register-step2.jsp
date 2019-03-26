@@ -422,7 +422,7 @@
     const validateTelPrefix1 = (rule, value, callback) => {
         // 正式的密码验证
         if (value === '') {
-            callback(new Error("Telephone prefix can't be empty!"));
+            callback();
         }else{
             app.$refs.registerForm.validateField('tel');
             callback();
@@ -436,7 +436,8 @@
     const validateTel = (rule, value, callback) => {
         // 正式的密码验证
         if (value === '') {
-            callback(new Error(app.registerForm.user == 'buyer' ? 'Telephone number can\'t be empty!' : '电话号码不能为空'));
+            // callback(new Error(app.registerForm.user == 'buyer' ? 'Telephone number can\'t be empty!' : '电话号码不能为空'));
+            callback();
         }else if(!util_regular_obj.register.phoneAreaCode.test(app.registerForm.telPrefix1+"-"+app.registerForm.telPrefix2+app.registerForm.tel)){
             callback(new Error('Telephone number\'s format is incorrect，please check the prefix-tel and phone'));
         } else {
@@ -719,15 +720,15 @@
                         }
 
                         // buyer\supplier传送的数据不同
-                        let postData;
+                        let postData = {};
                         if (this.registerForm.user == "buyer") {
                             postData = {
                                 pwd: this.registerForm.psd,
                                 pwdA: this.registerForm.psd2,
                                 checkCode: this.registerForm.code,
-                                telPre: this.registerForm.telPrefix1,  //此处为buyer信息
-                                telMid: this.registerForm.telPrefix2,
-                                telAft: this.registerForm.tel,
+                                telPre: null,  //此处为buyer信息
+                                telMid: null,
+                                telAft: null,
                                 uid: getParams("uid", ""),
                                 bean: {
                                     email: this.registerForm.email,
@@ -737,6 +738,12 @@
                                     // facebookUserId: 0,
                                     // googleUserId: 0,
                                 }
+                            }
+                            // 电话可以不写（不传值），写了才传3个值
+                            if(this.registerForm.tel){
+                                postData.telPre = this.registerForm.telPrefix1;
+                                postData.telMid = this.registerForm.telPrefix2;
+                                postData.telAft = this.registerForm.tel;
                             }
                         } else {
                             postData = {
