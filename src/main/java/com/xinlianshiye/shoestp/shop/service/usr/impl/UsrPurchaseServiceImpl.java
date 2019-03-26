@@ -55,6 +55,8 @@ public class UsrPurchaseServiceImpl implements UsrPurchaseService {
     checkPassword(main, password);
     // 校验邮箱地址格式的有效性
     validEmail(email);
+    // 忽略大小写
+    email = email.toLowerCase();
     if (usrPurchaseDao.findByLoginNameOrEmail(email).isPresent()) {
       // 用户名或邮箱地址已被使用
       throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.mail_exists, language));
