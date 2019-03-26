@@ -48,6 +48,7 @@ public class SVSInfoDaoImpl implements SVSInfoDao {
           {
             SELECT(SVSInfo.T.PKEY, "id")
                 .SELECT(UsrSupplier.T.NAME, "shopName")
+                .SELECT(UsrSupplier.T.PKEY,"supplierId")
                 .SELECT(UsrSupplier.T.CONTACTS, "name")
                 .SELECT(SVSInfo.T.APPLICATION_TIME, "applicationTime")
                 .SELECT(SVSInfo.T.STATUS, "status")

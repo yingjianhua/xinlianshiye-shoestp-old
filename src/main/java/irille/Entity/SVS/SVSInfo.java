@@ -53,6 +53,9 @@ public class SVSInfo extends BeanInt<SVSInfo> {
     AUTHENTICATION_TIME(Sys.T.DATE_TIME__NULL, "认证时间"),
     FAILURE_REASONS(Sys.T.STR__200_NULL, "认证失败原因"),
     APPLICATION_COUNT(Sys.T.INT, "申请认证次数"),
+    RESEARCH_BASE(Sys.T.INT, "研发能力基础分"),
+    FACTORY_BASE(Sys.T.INT, "工厂基础分"),
+    CAPACITY_BASE(Sys.T.INT, "生产能力基础分"),
     ROW_VERSION(Sys.T.ROW_VERSION),
   // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
   // <<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
@@ -118,6 +121,9 @@ public class SVSInfo extends BeanInt<SVSInfo> {
   private Date _authenticationTime; // 认证时间  TIME<null>
   private String _failureReasons; // 认证失败原因  STR(200)<null>
   private Integer _applicationCount; // 申请认证次数  INT
+  private Integer _researchBase; // 研发能力基础分  INT
+  private Integer _factoryBase; // 工厂基础分  INT
+  private Integer _capacityBase; // 生产能力基础分  INT
   private Short _rowVersion; // 版本  SHORT
 
   @Override
@@ -142,6 +148,9 @@ public class SVSInfo extends BeanInt<SVSInfo> {
     _authenticationTime = null; // 认证时间  TIME
     _failureReasons = null; // 认证失败原因  STR(200)
     _applicationCount = 0; // 申请认证次数  INT
+    _researchBase = 0; // 研发能力基础分  INT
+    _factoryBase = 0; // 工厂基础分  INT
+    _capacityBase = 0; // 生产能力基础分  INT
     _rowVersion = 0; // 版本  SHORT
     return this;
   }
@@ -367,6 +376,30 @@ public class SVSInfo extends BeanInt<SVSInfo> {
 
   public void setApplicationCount(Integer applicationCount) {
     _applicationCount = applicationCount;
+  }
+
+  public Integer getResearchBase() {
+    return _researchBase;
+  }
+
+  public void setResearchBase(Integer researchBase) {
+    _researchBase = researchBase;
+  }
+
+  public Integer getFactoryBase() {
+    return _factoryBase;
+  }
+
+  public void setFactoryBase(Integer factoryBase) {
+    _factoryBase = factoryBase;
+  }
+
+  public Integer getCapacityBase() {
+    return _capacityBase;
+  }
+
+  public void setCapacityBase(Integer capacityBase) {
+    _capacityBase = capacityBase;
   }
 
   public Short getRowVersion() {

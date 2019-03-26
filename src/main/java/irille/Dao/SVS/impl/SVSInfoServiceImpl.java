@@ -115,8 +115,9 @@ public class SVSInfoServiceImpl implements SVSInfoService {
       String exhibition,
       String part)
       throws Exception {
-
+    Map<String, Integer> map = GetBaseScoreUtils.countROS(res, capacity, factory);
     SVSInfo svs = SVSInfoDao.findSVSInfoBySupplier(supplierId);
+
     if (svs == null) throw new WebMessageException(ReturnCode.failure, "商户未申请认证，无法修改");
     if (svs.gtStatus() == SVSAuthenticationStatus.SUCCESS
         && timeDiffForDay(svs.getApplicationTime(), new Date()) <= 180)
@@ -146,6 +147,9 @@ public class SVSInfoServiceImpl implements SVSInfoService {
     svs.setExhibitionAttended(exhibition);
     svs.setPartner(part);
     svs.setApplicationCount(svs.getApplicationCount() + 1);
+    if (null != map.get("capacityBase")) svs.setCapacityBase(map.get("capacityBase"));
+    if (null != map.get("researchBase")) svs.setResearchBase(map.get("researchBase"));
+    if (null != map.get("factoryBase")) svs.setFactoryBase(map.get("factoryBase"));
     SVSInfoDao.save(svs);
     return CreateView(SVSInfoDao.save(svs));
   }
@@ -187,6 +191,7 @@ public class SVSInfoServiceImpl implements SVSInfoService {
       String team,
       String exhibition,
       String part) {
+    Map<String, Integer> map = GetBaseScoreUtils.countROS(res, capacity, factory);
     SVSInfo svs = SVSInfoDao.findSVSInfoBySupplier(supplier.getPkey());
     if (null == svs) throw new WebMessageException(ReturnCode.failure, "该用户暂未申请SVS认证");
     if (svs.gtStatus() != SVSAuthenticationStatus.FAIL)
@@ -207,6 +212,9 @@ public class SVSInfoServiceImpl implements SVSInfoService {
     svs.setExhibitionAttended(exhibition);
     svs.setAuthenticationTime(new Date());
     svs.setPartner(part);
+    if (null != map.get("capacityBase")) svs.setCapacityBase(map.get("capacityBase"));
+    if (null != map.get("researchBase")) svs.setResearchBase(map.get("researchBase"));
+    if (null != map.get("factoryBase")) svs.setFactoryBase(map.get("factoryBase"));
     SVSInfoDao.save(svs);
     pm.send(OTempType.SVS_APPR_NOTICE, supplier, null, svs);
     return CreateView(SVSInfoDao.save(svs));
@@ -227,7 +235,8 @@ public class SVSInfoServiceImpl implements SVSInfoService {
       info.setStatus(GetValue.get(map, SVSInfo.T.STATUS, Byte.class, (byte) 0));
       info.setShopStatus(GetValue.get(map, UsrSupplier.T.STATUS, Byte.class, (byte) 0));
       info.setGrade(GetValue.get(map, SVSInfo.T.GRADE, Byte.class, (byte) 0));
-      info.setApplicationTime(GetValue.get(map, SVSInfo.T.APPLICATION_TIME, Date.class, null));
+      info.setApplicationTime(GetValue.get(map, "applicationTime", Date.class, null));
+      info.setSupplierId(GetValue.get(map,"supplierId",Integer.class,0));
       infoList.add(info);
     }
 
