@@ -197,19 +197,20 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
         if (pdtProductSaveView.getNewSpec().get(i).getId() > 0) {
           spec.setPkey(pdtProductSaveView.getNewSpec().get(i).getId());
         }
+        NewSpceView v = pdtProductSaveView.getNewSpec().get(i);
         if (pdtProductSaveView.getId() <= 0) {
           if (pdtProductSaveView.getNewSpec().get(i).getColorType() == 0) {
             //            PdtColor color = new PdtColor();
             //            color.setName(pdtProductSaveView.getNewSpec().get(i).getColorName());
             //            color.setPicture(pdtProductSaveView.getNewSpec().get(i).getColorImg());
             //            PdtColor insColor = PdtColorDAO.insColor(color, supId);
-            NewSpceView v = pdtProductSaveView.getNewSpec().get(i);
+            v = pdtProductSaveView.getNewSpec().get(i);
             v.setColor(specMaps.get(v.getId()).getPkey());
             v.setColorName(specMaps.get(v.getId()).getName());
             //            pdtProductSaveView.getNewSpec().get(i).setColor(insColor.getPkey());
             //            pdtProductSaveView.getNewSpec().get(i).setColorName(insColor.getName());
           }
-          colorSet.add(pdtProductSaveView.getNewSpec().get(i).getColor());
+          colorSet.add(v.getColor());
         } else {
           spec.setProduct(pdtProductSaveView.getId());
           if (pdtProductSaveView.getNewSpec().get(i).getColor() <= 0) {
@@ -217,22 +218,18 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
             //            color.setName(pdtProductSaveView.getNewSpec().get(i).getColorName());
             //            color.setPicture(pdtProductSaveView.getNewSpec().get(i).getColorImg());
             //            PdtColor insColor = PdtColorDAO.insColor(color, supId);
-            NewSpceView v = pdtProductSaveView.getNewSpec().get(i);
+            v = pdtProductSaveView.getNewSpec().get(i);
             v.setColor(specMaps.get(v.getId()).getPkey());
             v.setColorName(specMaps.get(v.getId()).getName());
           }
-          colorSet.add(pdtProductSaveView.getNewSpec().get(i).getColor());
+          colorSet.add(v.getColor());
         }
         try {
           JSONObject jsonKeyNmae = new JSONObject();
-          JSONObject jsonColorName =
-              new JSONObject(pdtProductSaveView.getNewSpec().get(i).getColorName());
+          JSONObject jsonColorName = new JSONObject(v.getColorName());
           for (Language item : Language.values()) {
             String str = "";
-            str +=
-                jsonColorName.get(item.toString())
-                    + " "
-                    + pdtProductSaveView.getNewSpec().get(i).getSizeName();
+            str += jsonColorName.get(item.toString()) + " " + v.getSizeName();
             jsonKeyNmae.put(item.toString(), str);
           }
           spec.setKeyName(jsonKeyNmae.toString());
@@ -240,16 +237,16 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
           // TODO Auto-generated catch block
           e.printStackTrace();
         }
-        sizeSet.add(pdtProductSaveView.getNewSpec().get(i).getSize());
-        countStock += pdtProductSaveView.getNewSpec().get(i).getCount();
-        spec.setColor(pdtProductSaveView.getNewSpec().get(i).getColor());
-        spec.setSize(pdtProductSaveView.getNewSpec().get(i).getSize());
-        spec.setSku(pdtProductSaveView.getNewSpec().get(i).getSku());
+        sizeSet.add(v.getSize());
+        countStock += v.getCount();
+        spec.setColor(v.getColor());
+        spec.setSize(v.getSize());
+        spec.setSku(v.getSku());
         spec.setPrice(min);
         spec.setMarkup(BigDecimal.valueOf(0));
-        spec.setStoreCount(pdtProductSaveView.getNewSpec().get(i).getCount());
+        spec.setStoreCount(v.getCount());
         spec.setWeight(BigDecimal.valueOf(0));
-        spec.setPics(pdtProductSaveView.getNewSpec().get(i).getColorImg());
+        spec.setPics(v.getColorImg());
         spec.setDeleted(OYn.NO.getLine().getKey());
         spec.setRowVersion((short) 0);
         list.add(spec);
