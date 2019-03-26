@@ -60,6 +60,7 @@ public class SVSInfoDaoImpl implements SVSInfoDao {
                 .WHERE(status != null, SVSInfo.T.STATUS, "=?", status)
                 .WHERE(shopStatus != null, UsrSupplier.T.STATUS, "=?", shopStatus)
                 .WHERE(grade != null, SVSInfo.T.GRADE, "=?", grade)
+                .WHERE(SVSInfo.T.STATUS,"!=",-1)
                 .ORDER_BY(SVSInfo.T.APPLICATION_TIME, "desc")
                 .LIMIT(start, limit);
           }
