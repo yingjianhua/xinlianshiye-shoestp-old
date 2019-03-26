@@ -87,7 +87,7 @@
             <div class="bottom-btn-list flexSe">
                 <input type="checkbox" v-model='isAllChecked' @change='chooseAll'>
                 <div class="bottom-btn bottom-remove-btn" @click="removeAll">
-                    <a href="javascript:void(0)">{{catPkey == -1?'Empty recycle bin':'Clear all'}}</a>
+                    <a href="javascript:void(0)">{{catPkey == -1?'Empty recycle bin':'Clear'}}</a>
                 </div>
             </div>
         </template>
