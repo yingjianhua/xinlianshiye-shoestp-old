@@ -48,11 +48,12 @@ public class SVSInfoDaoImpl implements SVSInfoDao {
           {
             SELECT(SVSInfo.T.PKEY, "id")
                 .SELECT(UsrSupplier.T.NAME, "shopName")
+                .SELECT(UsrSupplier.T.PKEY,"supplierId")
                 .SELECT(UsrSupplier.T.CONTACTS, "name")
                 .SELECT(SVSInfo.T.APPLICATION_TIME, "applicationTime")
                 .SELECT(SVSInfo.T.STATUS, "status")
                 .SELECT(SVSInfo.T.GRADE, "grade")
-                .SELECT(UsrSupplier.T.STATUS, "shopStatus")
+                .SELECT(UsrSupplier.T.STORE_STATUS, "shopStatus")
                 .FROM(SVSInfo.class)
                 .LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, SVSInfo.T.SUPPLIER)
                 .WHERE(shopName != null, UsrSupplier.T.NAME, "=?", shopName)

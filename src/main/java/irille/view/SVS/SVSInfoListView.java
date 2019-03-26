@@ -15,7 +15,9 @@ import lombok.Data;
 @Data
 public class SVSInfoListView implements BaseView {
   private Integer id;
-
+  
+  private Integer supplierId;
+  
   private String shopName; // 店铺名称
 
   private String name; // 联系人名称

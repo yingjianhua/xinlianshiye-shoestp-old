@@ -117,12 +117,13 @@ public class UsrMainAction extends HomeAction<UsrMain> {
           MessageBuild.buildMessage(ReturnCode.service_Invalid_UID, HomeAction.curLanguage()));
     }
     insBefore();
-
     if (getBean().getEmail() == null) {
       throw new WebMessageException(
           MessageBuild.buildMessage(ReturnCode.valid_mail_notnull, HomeAction.curLanguage()));
     }
-    if (!ValidRegex.regMarch(Regular.REGULAR_EMAIL, getBean().getEmail().toLowerCase())) {
+    // 忽略邮箱大小写
+    getBean().setEmail(getBean().getEmail().toLowerCase());
+    if (!ValidRegex.regMarch(Regular.REGULAR_EMAIL, getBean().getEmail())) {
       throw new WebMessageException(
           MessageBuild.buildMessage(ReturnCode.valid_mailRegex, HomeAction.curLanguage()));
     }
@@ -187,12 +188,11 @@ public class UsrMainAction extends HomeAction<UsrMain> {
             MessageBuild.buildMessage(ReturnCode.valid_adrRegex, HomeAction.curLanguage()));
       }
     }
-    UsrMain main = UsrMain.chkUniqueEmail(false, getBean().getEmail().toLowerCase());
+    UsrMain main = UsrMain.chkUniqueEmail(false, getBean().getEmail());
     if (main != null) {
       throw new WebMessageException(
           MessageBuild.buildMessage(ReturnCode.service_user_exists, HomeAction.curLanguage()));
     }
-    getBean().setEmail(getBean().getEmail().toLowerCase());
     getBean().setPassword(getPwd());
     ins.setB(getBean());
     ins.commit();
@@ -211,6 +211,8 @@ public class UsrMainAction extends HomeAction<UsrMain> {
       throw new WebMessageException(
           MessageBuild.buildMessage(ReturnCode.valid_mail_notnull, HomeAction.curLanguage()));
     }
+    //  忽略邮箱大小写
+    setEmail(getEmail().toLowerCase());
     if (!ValidRegex.regMarch(Regular.REGULAR_EMAIL, getEmail())) {
       throw new WebMessageException(
           MessageBuild.buildMessage(ReturnCode.valid_mailRegex, HomeAction.curLanguage()));
@@ -339,7 +341,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
     }
     updPwd.setNewPwd(pwdA);
     updPwd.setOldPwd(pwd);
-    updPwd.setEmail(getEmail());
+    updPwd.setEmail(getEmail().toLowerCase());
     updPwd.commit();
     CacheUtils.pwdValid.invalidate(code);
     write();
