@@ -236,8 +236,10 @@ public class SVSInfoServiceImpl implements SVSInfoService {
       info.setShopStatus(GetValue.get(map, "shopStatus", Byte.class, (byte) 0));
       info.setGrade(GetValue.get(map, SVSInfo.T.GRADE, Byte.class, (byte) 0));
       info.setApplicationTime(GetValue.get(map, "applicationTime", Date.class, null));
-      info.setSupplierId(GetValue.get(map,"supplierId",Integer.class,0));
-      infoList.add(info);
+      info.setSupplierId(GetValue.get(map, "supplierId", Integer.class, 0));
+      if (GetValue.get(map, SVSInfo.T.STATUS, Byte.class, (byte) 0) != -1) {
+        infoList.add(info);
+      }
     }
 
     return new Page<>(infoList, start, limit, SVSInfoDao.count());
