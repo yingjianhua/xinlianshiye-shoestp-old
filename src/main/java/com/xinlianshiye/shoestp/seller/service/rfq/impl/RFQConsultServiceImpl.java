@@ -1,7 +1,9 @@
 package com.xinlianshiye.shoestp.seller.service.rfq.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -11,15 +13,22 @@ import com.xinlianshiye.shoestp.seller.service.rfq.RFQConsultService;
 import irille.Dao.RFQ.RFQConsultGroupDao;
 import irille.Dao.RFQ.RFQConsultGroupRelationDao;
 import irille.Dao.RFQ.RFQConsultRelationDao;
-import irille.Entity.RFQ.*;
-import irille.platform.rfq.view.*;
+import irille.Entity.RFQ.RFQConsult;
+import irille.Entity.RFQ.RFQConsultGroup;
+import irille.Entity.RFQ.RFQConsultGroupRelation;
+import irille.Entity.RFQ.RFQConsultRelation;
+import irille.platform.rfq.view.CountryView;
+import irille.platform.rfq.view.ProductView;
+import irille.platform.rfq.view.PurchaseView;
+import irille.platform.rfq.view.RFQConsultRelationView;
+import irille.platform.rfq.view.RFQConsultView;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.SqlQuery;
 import irille.pub.bean.sql.SQL;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
-import irille.sellerAction.rfq.view.RFQConsultMessageView;
+import irille.pub.util.GetValue;
 import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
 import irille.sellerAction.rfq.view.RFQConsultRelationCountView;
 import irille.shop.pdt.PdtProduct;
@@ -154,6 +163,48 @@ public class RFQConsultServiceImpl implements RFQConsultService {
     return view;
   }
 
+  private SQL pageWhereSql(
+      SQL sql,
+      UsrSupplier supplier,
+      Date startDate,
+      Date endDate,
+      Byte type,
+      Boolean isDeleted,
+      Boolean isFavorite,
+      String keyword,
+      Integer groupId) {
+    sql.LEFT_JOIN(UsrPurchase.class, RFQConsultRelation.T.PURCHASE_ID, UsrPurchase.T.PKEY);
+    sql.LEFT_JOIN(PdtProduct.class, RFQConsult.T.PRODUCT, PdtProduct.T.PKEY);
+    // 供应商
+    sql.WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supplier.getPkey());
+    // 询盘发起时间区间
+    sql.WHERE(startDate != null, RFQConsult.T.CREATE_TIME, ">?", startDate);
+    sql.WHERE(endDate != null, RFQConsult.T.CREATE_TIME, "<?", endDate);
+    // 询盘类型 RFQ询盘,普通询盘,私人展厅询盘
+    sql.WHERE(type != null, RFQConsult.T.TYPE, "=?", type);
+    // 是否在回收站
+    if (isDeleted != null) {
+      sql.WHERE(RFQConsultRelation.T.IN_RECYCLE_BIN, "=?", BeanBase.booleanToByte(isDeleted));
+    }
+    // 商家是否给该询盘做了标记
+    if (isFavorite != null) {
+      sql.WHERE(RFQConsultRelation.T.FAVORITE, "=?", BeanBase.booleanToByte(isFavorite));
+    }
+    if (keyword != null && !keyword.isEmpty()) {
+      // 根据关键字查询, 收件人或询盘标题
+      sql.WHERE(RFQConsult.T.TITLE, "like ?", "%" + keyword + "%")
+          .OR()
+          .WHERE(UsrPurchase.T.NAME, "like ?", "%" + keyword + "%");
+    }
+    if (groupId != null) {
+      // 根据询盘文件夹查询
+      sql.LEFT_JOIN(
+          RFQConsultGroupRelation.class, RFQConsult.T.PKEY, RFQConsultGroupRelation.T.CONSULT);
+      sql.WHERE(RFQConsultGroupRelation.T.CONSULT_GROUP, "=?", groupId);
+    }
+    return sql;
+  }
+
   @Override
   public Page<RFQConsultRelationView> page(
       UsrSupplier supplier,
@@ -178,15 +229,13 @@ public class RFQConsultServiceImpl implements RFQConsultService {
             .SELECT(
                 RFQConsultRelation.T.PKEY,
                 RFQConsultRelation.T.FAVORITE,
+                RFQConsultRelation.T.READ_STATUS,
                 RFQConsult.T.TYPE,
                 RFQConsult.T.TITLE,
                 RFQConsult.T.IMAGE,
                 RFQConsult.T.CREATE_TIME,
                 PdtProduct.T.NAME)
-            .SELECT(RFQConsultMessage.T.P2S, "messageP2S")
             .SELECT(RFQConsult.T.PKEY, "consultPkey")
-            .SELECT(RFQConsultMessage.T.CONTENT, "messageContent")
-            .SELECT(RFQConsultMessage.T.HAD_READ, "messageHadRead")
             .SELECT(PltCountry.T.PKEY, "countryPkey")
             .SELECT(PltCountry.T.NAME, "countryName")
             .SELECT(PltCountry.T.NATIONAL_FLAG, "countryFlag")
@@ -197,66 +246,18 @@ public class RFQConsultServiceImpl implements RFQConsultService {
             .SELECT(PdtProduct.T.NAME, "productName")
             .FROM(RFQConsultRelation.class)
             .LEFT_JOIN(RFQConsult.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY)
-            .LEFT_JOIN(PltCountry.class, PltCountry.T.PKEY, RFQConsult.T.COUNTRY)
-            .LEFT_JOIN(PdtProduct.class, RFQConsult.T.PRODUCT, PdtProduct.T.PKEY)
-            .LEFT_JOIN(UsrPurchase.class, RFQConsultRelation.T.PURCHASE_ID, UsrPurchase.T.PKEY)
-            .LEFT_JOIN(
-                new SQL()
-                    .SELECT("*")
-                    .FROM(
-                        new SQL()
-                            .SELECT(RFQConsultMessage.class)
-                            .FROM(RFQConsultMessage.class)
-                            .ORDER_BY(RFQConsultMessage.T.SEND_TIME, "desc")
-                            .LIMIT(0, 9999999),
-                        RFQConsultMessage.class)
-                    .GROUP_BY(RFQConsultMessage.T.RELATION),
-                RFQConsultMessage.class,
-                RFQConsultRelation.T.PKEY,
-                RFQConsultMessage.T.RELATION)
-            // 供应商
-            .WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supplier.getPkey())
-            // 询盘发起时间区间
-            .WHERE(startDate != null, RFQConsult.T.CREATE_TIME, ">?", startDate)
-            .WHERE(endDate != null, RFQConsult.T.CREATE_TIME, "<?", endDate)
-            // 询盘类型 RFQ询盘,普通询盘,私人展厅询盘
-            .WHERE(type != null, RFQConsult.T.TYPE, "=?", type);
-    // 是否在回收站
-    if (isDeleted != null) {
-      sql.WHERE(RFQConsultRelation.T.IN_RECYCLE_BIN, "=?", BeanBase.booleanToByte(isDeleted));
-    }
-    // 商家是否给该询盘做了标记
-    if (isFavorite != null) {
-      sql.WHERE(RFQConsultRelation.T.FAVORITE, "=?", BeanBase.booleanToByte(isFavorite));
-    }
-    if (keyword != null && !keyword.isEmpty()) {
-      // 根据关键字查询, 收件人或询盘标题
-      sql.WHERE(RFQConsult.T.TITLE, "like ?", "%" + keyword + "%")
-          .OR()
-          .WHERE(UsrPurchase.T.NAME, "like ?", "%" + keyword + "%");
-    }
-    if (groupId != null) {
-      // 根据询盘文件夹查询
-      sql.LEFT_JOIN(
-          RFQConsultGroupRelation.class, RFQConsult.T.PKEY, RFQConsultGroupRelation.T.CONSULT);
-      sql.WHERE(RFQConsultGroupRelation.T.CONSULT_GROUP, "=?", groupId);
-    }
+            .LEFT_JOIN(PltCountry.class, PltCountry.T.PKEY, RFQConsult.T.COUNTRY);
+
+    pageWhereSql(sql, supplier, startDate, endDate, type, isDeleted, isFavorite, keyword, groupId);
+
     if (readStatus != null && readStatus != 0) {
-      // 最近一条消息是商家还是买家发送的
-      sql.WHERE(
-          RFQConsultMessage.T.P2S,
-          "=?",
-          BeanBase.booleanToByte(readStatus == 3 || readStatus == 4));
-      // 最近一条消息是否已读
-      sql.WHERE(
-          RFQConsultMessage.T.HAD_READ,
-          "=?",
-          BeanBase.booleanToByte(readStatus == 2 || readStatus == 4));
+      // 消息读取状态
+      sql.WHERE(RFQConsultRelation.T.READ_STATUS, "=?", readStatus);
     }
     if (orderType == 1) {
-      sql.ORDER_BY(RFQConsultMessage.T.SEND_TIME, "desc");
+      sql.ORDER_BY(RFQConsult.T.LAST_MESSAGE_SEND_TIME, "desc");
     } else if (orderType == 2) {
-      sql.ORDER_BY(RFQConsultMessage.T.SEND_TIME, "asc");
+      sql.ORDER_BY(RFQConsult.T.LAST_MESSAGE_SEND_TIME, "asc");
     } else if (orderType == 3) {
       sql.ORDER_BY(RFQConsult.T.CREATE_TIME, "desc");
     } else if (orderType == 4) {
@@ -269,18 +270,12 @@ public class RFQConsultServiceImpl implements RFQConsultService {
             .map(
                 map -> {
                   RFQConsultRelationView view = new RFQConsultRelationView();
+                  view.setReadStatus(
+                      GetValue.get(map, RFQConsultRelation.T.READ_STATUS, Byte.class, null));
                   view.setFavorite(
                       BeanBase.byteToBoolean(
                           (Byte)
                               map.get(RFQConsultRelation.T.FAVORITE.getFld().getCodeSqlField())));
-                  view.setLastMsg(
-                      new RFQConsultMessageView() {
-                        {
-                          setContent((String) map.get("messageContent"));
-                          setP2S(BeanBase.byteToBoolean((Byte) map.get("messageP2S")));
-                          setHadRead(BeanBase.byteToBoolean((Byte) map.get("messageHadRead")));
-                        }
-                      });
                   view.setConsult(
                       new RFQConsultView() {
                         {
@@ -322,6 +317,37 @@ public class RFQConsultServiceImpl implements RFQConsultService {
                   return view;
                 })
             .collect(Collectors.toList());
-    return new Page<>(result, start, limit, query.queryCount());
+
+    return new Page<RFQConsultRelationView>(result, start, limit, query.queryCount()) {
+      private Map<Byte, Integer> statusCount = new HashMap<>();
+
+      public Map<Byte, Integer> getStatusCount() {
+        return statusCount;
+      }
+
+      public void setStatusCount(Map<Byte, Integer> statusCount) {
+        this.statusCount = statusCount;
+      }
+
+      {
+        SQL sql2 =
+            new SQL()
+                .SELECT(RFQConsultRelation.T.READ_STATUS)
+                .SELECT("count(*) as count")
+                .FROM(RFQConsultRelation.class)
+                .LEFT_JOIN(RFQConsult.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY)
+                .LEFT_JOIN(PltCountry.class, PltCountry.T.PKEY, RFQConsult.T.COUNTRY);
+        pageWhereSql(
+            sql2, supplier, startDate, endDate, type, isDeleted, isFavorite, keyword, groupId);
+        sql2.GROUP_BY(RFQConsultRelation.T.READ_STATUS);
+        Query.sql(sql2).queryMaps().stream()
+            .forEach(
+                map -> {
+                  statusCount.put(
+                      GetValue.get(map, RFQConsultRelation.T.READ_STATUS, Byte.class, null),
+                      GetValue.get(map, "count", Integer.class, 0));
+                });
+      }
+    };
   }
 }
