@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import irille.Dao.PdtProductDao;
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
 import irille.core.sys.SysUser;
@@ -34,6 +35,7 @@ import irille.pub.validate.ValidForm;
 import irille.sellerAction.SellerAction;
 import irille.shop.pdt.PdtSize.T;
 import irille.shop.plt.PltConfigDAO;
+import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
 
 public class PdtSizeDAO {
@@ -58,7 +60,10 @@ public class PdtSizeDAO {
     SQL sql =
         new SQL() {
           {
-            SELECT(PdtSize.class).FROM(PdtSize.class).WHERE(PdtSize.T.DELETED, "=0").WHERE(T.TYPEVER, "!=0");
+            SELECT(PdtSize.class)
+                .FROM(PdtSize.class)
+                .WHERE(PdtSize.T.DELETED, "=0")
+                .WHERE(T.TYPEVER, "!=0");
           }
         };
     Integer count = Query.sql(sql).queryCount();
@@ -227,7 +232,8 @@ public class PdtSizeDAO {
     return sysSize;
   }
 
-  public static List<PdtSize> newListSummary(Language lang, Integer type) {
+  public static List<PdtSize> newListSummary(
+      UsrSupplier supplier, Language lang, Integer type, Integer cat) {
 
     /*SQL sql = new I18NSQL(lang) {{
         SELECT(T.PKEY, T.NAME, T.CREATE_BY, T.ROW_VERSION);
@@ -243,31 +249,66 @@ public class PdtSizeDAO {
         sysSize.addAll(supSize);
     }
     return sysSize;*/
+    if (null == cat) {
+      throw new WebMessageException(ReturnCode.failure, "请先选择产品分类");
+    }
+    PdtProductDao pdtProductDao = new PdtProductDao();
     SQL sql =
         new I18NSQL(lang) {
           {
             SELECT(T.PKEY, T.NAME, T.CREATE_BY, T.ROW_VERSION, T.SUPPLIER, T.TYPE);
             FROM(PdtSize.class)
                 .WHERE(T.DELETED, "=?", OYn.NO)
-                .WHERE(T.SUPPLIER, " is null ")
                 .WHERE(T.TYPEVER, " =? ", Pdt.OVer.NEW_1.getLine().getKey());
+            if (type.equals(1)) {
+              WHERE(
+                  "("
+                      + PdtSize.class.getSimpleName()
+                      + "."
+                      + PdtSize.T.SUPPLIER.getFld().getCodeSqlField()
+                      + " IS NULL OR "
+                      + PdtSize.class.getSimpleName()
+                      + "."
+                      + PdtSize.T.SUPPLIER.getFld().getCodeSqlField()
+                      + " =? )",
+                  supplier.getPkey());
+              WHERE(
+                  PdtSize.T.PRODUCT_CATEGORY,
+                  " in(" + String.join(",", pdtProductDao.getParent(cat)) + ") ");
+            } else {
+              WHERE(
+                  PdtSize.class.getSimpleName()
+                      + "."
+                      + PdtSize.T.SUPPLIER.getFld().getCodeSqlField()
+                      + " IS NULL");
+            }
           }
         };
+    //    SQL sql =
+    //        new I18NSQL(lang) {
+    //          {
+    //            SELECT(T.PKEY, T.NAME, T.CREATE_BY, T.ROW_VERSION, T.SUPPLIER, T.TYPE);
+    //            FROM(PdtSize.class)
+    //                .WHERE(T.DELETED, "=?", OYn.NO)
+    //                .WHERE(T.SUPPLIER, " is null ")
+    //                .WHERE(T.TYPEVER, " =? ", Pdt.OVer.NEW_1.getLine().getKey());
+    //          }
+    //        };
     List<PdtSize> sysSize = Query.sql(sql).queryList(PdtSize.class);
-    if (type == 1) {
-      SQL supSql =
-          new I18NSQL(lang) {
-            {
-              SELECT(T.PKEY, T.NAME, T.CREATE_BY, T.ROW_VERSION, T.SUPPLIER, T.TYPE);
-              FROM(PdtSize.class)
-                  .WHERE(T.DELETED, "=?", OYn.NO)
-                  .WHERE(T.SUPPLIER, " =? ", SellerAction.getSupplier().getPkey())
-                  .WHERE(T.TYPEVER, " =? ", Pdt.OVer.NEW_1.getLine().getKey());
-            }
-          };
-      List<PdtSize> supSize = Query.sql(supSql).queryList(PdtSize.class);
-      sysSize.addAll(supSize);
-    }
+    //    if (type == 1) {
+    //      SQL supSql =
+    //          new I18NSQL(lang) {
+    //            {
+    //              SELECT(T.PKEY, T.NAME, T.CREATE_BY, T.ROW_VERSION, T.SUPPLIER, T.TYPE);
+    //              FROM(PdtSize.class)
+    //                  .WHERE(T.DELETED, "=?", OYn.NO)
+    //                  .WHERE(T.SUPPLIER, " =? ", SellerAction.getSupplier().getPkey())
+    //                  .WHERE(T.TYPEVER, " =? ", Pdt.OVer.NEW_1.getLine().getKey());
+    //            }
+    //          };
+    //      List<PdtSize> supSize = Query.sql(supSql).queryList(PdtSize.class);
+    //      sysSize.addAll(supSize);
+    //    }
     return sysSize;
   }
 

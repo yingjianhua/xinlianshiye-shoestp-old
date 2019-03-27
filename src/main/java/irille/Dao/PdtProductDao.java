@@ -42,6 +42,8 @@ import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.query.SqlQuery;
 import irille.pub.bean.sql.SQL;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.svr.DbPool;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumFld;
@@ -1459,6 +1461,28 @@ public class PdtProductDao {
     } catch (SQLException e1) {
       e1.printStackTrace();
     }
+  }
+
+  /**
+   * 传入分类的上级分类
+   *
+   * @auther liyichao
+   * @param category
+   */
+  public List<String> getParent(Integer cat) {
+    PdtCat category = BeanBase.load(PdtCat.class, cat);
+    if (null == category) {
+      throw new WebMessageException(ReturnCode.failure, "分类记录不存在");
+    }
+    List<String> pkeys = new ArrayList<>();
+    do {
+      pkeys.add(String.valueOf(category.getPkey()));
+      if (null == category.getCategoryUp()) {
+        break;
+      }
+      category = category.gtCategoryUp();
+    } while (true);
+    return pkeys;
   }
 
   public Page getPrivatePdts(Integer supId, Integer start, Integer limit) {

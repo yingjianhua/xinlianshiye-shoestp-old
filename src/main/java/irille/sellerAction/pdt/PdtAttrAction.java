@@ -96,12 +96,14 @@ public class PdtAttrAction extends SellerAction<PdtAttr> implements IPdtAttrActi
     writerOrExport(json);
   }
 
+  @Getter @Setter private Integer cat;
+
   @Override
   public void AttrList() throws IOException {
     PdtAttrDAO.PageSelect pageSelect = new PdtAttrDAO.PageSelect();
     write(
         pageSelect.getAllAttr(
-            PltConfigDAO.supplierLanguage(getSupplier()), getSupplier().getPkey()));
+            PltConfigDAO.supplierLanguage(getSupplier()), getSupplier().getPkey(), cat));
   }
 
   @Setter @Getter private String attrValue;
