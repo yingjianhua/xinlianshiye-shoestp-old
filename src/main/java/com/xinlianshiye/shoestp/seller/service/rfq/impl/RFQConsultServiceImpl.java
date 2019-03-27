@@ -16,7 +16,6 @@ import irille.Dao.RFQ.RFQConsultRelationDao;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultGroup;
 import irille.Entity.RFQ.RFQConsultGroupRelation;
-import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.platform.rfq.view.CountryView;
 import irille.platform.rfq.view.ProductView;
@@ -176,7 +175,6 @@ public class RFQConsultServiceImpl implements RFQConsultService {
       Integer groupId) {
     sql.LEFT_JOIN(UsrPurchase.class, RFQConsultRelation.T.PURCHASE_ID, UsrPurchase.T.PKEY);
     sql.LEFT_JOIN(PdtProduct.class, RFQConsult.T.PRODUCT, PdtProduct.T.PKEY);
-    sql.LEFT_JOIN(RFQConsult.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY);
     // 供应商
     sql.WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supplier.getPkey());
     // 询盘发起时间区间
@@ -247,6 +245,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
             .SELECT(PdtProduct.T.PICTURE, "productImages")
             .SELECT(PdtProduct.T.NAME, "productName")
             .FROM(RFQConsultRelation.class)
+            .LEFT_JOIN(RFQConsult.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY)
             .LEFT_JOIN(PltCountry.class, PltCountry.T.PKEY, RFQConsult.T.COUNTRY);
 
     pageWhereSql(sql, supplier, startDate, endDate, type, isDeleted, isFavorite, keyword, groupId);
@@ -322,12 +321,22 @@ public class RFQConsultServiceImpl implements RFQConsultService {
     return new Page<RFQConsultRelationView>(result, start, limit, query.queryCount()) {
       private Map<Byte, Integer> statusCount = new HashMap<>();
 
+      public Map<Byte, Integer> getStatusCount() {
+        return statusCount;
+      }
+
+      public void setStatusCount(Map<Byte, Integer> statusCount) {
+        this.statusCount = statusCount;
+      }
+
       {
         SQL sql2 =
             new SQL()
                 .SELECT(RFQConsultRelation.T.READ_STATUS)
                 .SELECT("count(*) as count")
-                .FROM(RFQConsultRelation.class);
+                .FROM(RFQConsultRelation.class)
+                .LEFT_JOIN(RFQConsult.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY)
+                .LEFT_JOIN(PltCountry.class, PltCountry.T.PKEY, RFQConsult.T.COUNTRY);
         pageWhereSql(
             sql2, supplier, startDate, endDate, type, isDeleted, isFavorite, keyword, groupId);
         sql2.GROUP_BY(RFQConsultRelation.T.READ_STATUS);
