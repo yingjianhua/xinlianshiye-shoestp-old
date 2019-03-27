@@ -799,20 +799,22 @@ public class translateUtil {
     translateFilter.setBaseLanguage(baseLanguage);
     translateFilter.setLanguageList(new ArrayList<>());
     // 前端传回来的值
-    JsonObject jsonObject = new JsonParser().parse(saveJson).getAsJsonObject();
-    translateFilter.setMode(2);
-    jsonObject
-        .entrySet()
-        .forEach(
-            stringJsonElementEntry -> {
-              // 寻找为空的字段,按照基准字段翻译补全
-              if (stringJsonElementEntry.getValue().getAsString() != null
-                  && stringJsonElementEntry.getValue().getAsString().length() > 0) {
-                translateFilter
-                    .getLanguageList()
-                    .add(FldLanguage.Language.valueOf(stringJsonElementEntry.getKey()));
-              }
-            });
+    if (saveJson != null) {
+      JsonObject jsonObject = new JsonParser().parse(saveJson).getAsJsonObject();
+      translateFilter.setMode(2);
+      jsonObject
+          .entrySet()
+          .forEach(
+              stringJsonElementEntry -> {
+                // 寻找为空的字段,按照基准字段翻译补全
+                if (stringJsonElementEntry.getValue().getAsString() != null
+                    && stringJsonElementEntry.getValue().getAsString().length() > 0) {
+                  translateFilter
+                      .getLanguageList()
+                      .add(FldLanguage.Language.valueOf(stringJsonElementEntry.getKey()));
+                }
+              });
+    }
     return translateFilter;
   }
 }
