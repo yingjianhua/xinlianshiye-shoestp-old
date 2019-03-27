@@ -29,11 +29,10 @@ public interface IRFQManageService {
   Page getMyRFQQuoteList(
       Integer start,
       Integer limit,
-      Byte type,
       Date date,
       String keyword,
       boolean flag,
-      Integer status,
+      Byte readStatus,
       Integer country,
       int supid,
       Integer userCountry)

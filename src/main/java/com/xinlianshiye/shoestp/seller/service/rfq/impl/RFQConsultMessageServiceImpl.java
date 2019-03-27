@@ -22,6 +22,7 @@ import irille.Entity.RFQ.JSON.RFQConsultTextMessage;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
+import irille.Entity.RFQ.Enums.RFQConsultRelationReadStatus;
 import irille.Entity.pm.PM.OTempType;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
@@ -48,10 +49,22 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
   public RFQConsultMessagesView page(
       UsrSupplier supplier, Integer start, Integer limit, Integer consultPkey) {
     RFQConsult consult = rFQConsultDao.findById(consultPkey);
-    if (rFQConsultRelationDao.countByConsult_PkeySupplier_Pkey(consultPkey, supplier.getPkey())
-        < 1) {
+
+    List<RFQConsultRelation> relations =
+        rFQConsultRelationDao.findAllByConsult_PkeySupplier_Pkey(
+            consultPkey + "", supplier.getPkey());
+
+    if (relations.size() == 0) {
       throw new WebMessageException(ReturnCode.service_gone, "您并没有抢到该询盘");
     }
+
+    RFQConsultRelation relation = relations.get(0);
+    // 供应商读取消息后, 若消息状态为供应商未读, 则修改为供应商已读
+    if (relation.gtReadStatus() == RFQConsultRelationReadStatus.SUPPLIER_UNREAD) {
+      relation.stReadStatus(RFQConsultRelationReadStatus.SUPPLIER_HADREAD);
+      rFQConsultRelationDao.save(relation);
+    }
+
     UsrPurchase purchase = consult.gtPurchaseId();
     List<RFQConsultMessage> list =
         rFQConsultMessageDao.findAll(start, limit, consultPkey, supplier.getPkey());
@@ -89,11 +102,6 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
       UsrSupplier supplier, Integer consultPkey, ConsultMessage message, String uuid) {
     RFQConsultRelation relation =
         rFQConsultRelationDao.findByConsult_PkeySupplier_Pkey(consultPkey, supplier.getPkey());
-    // 商家发送消息后 设置采购商消息未读取
-    if (relation.gtHadReadPurchase()) {
-      relation.stHadReadPurchase(false);
-      rFQConsultRelationDao.save(relation);
-    }
     RFQConsultMessage bean = new RFQConsultMessage();
     bean.setUuid(uuid);
     try {
@@ -107,6 +115,12 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
     bean.stP2s(false);
     bean.stHadRead(false);
     rFQConsultMessageDao.save(bean);
+
+    // 商家发送消息后 设置消息状态为-采购商未读, 并记录最后一条聊天消息
+    relation.stReadStatus(RFQConsultRelationReadStatus.PURCHASE_UNREAD);
+    relation.stLastMessage(bean);
+    relation.setLastMessageSendTime(bean.getSendTime());
+    rFQConsultRelationDao.save(relation);
     messageService.send(
         OTempType.RFQ_MESSAGE_NOTICE, null, relation.gtPurchaseId(), relation, bean, supplier);
     return RFQConsultMessageView.Builder.toView(bean);

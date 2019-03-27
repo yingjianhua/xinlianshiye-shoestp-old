@@ -454,11 +454,38 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
   public List<Map<String, Object>> getMyRFQQuoteList(
       Integer start,
       Integer limit,
-      byte type,
       Date date,
       String keyword,
       boolean flag,
-      Integer status,
+      Byte readStatus,
+      Integer country,
+      int supId,
+      Integer usrCountry) {
+    return Query.sql(
+            getMyRFQQuoteListSql(date, keyword, flag, readStatus, country, supId, usrCountry)
+                .LIMIT(start, limit))
+        .queryMaps();
+  }
+
+  @Override
+  public Integer countMyRFQQuoteList(
+      Date date,
+      String keyword,
+      boolean flag,
+      Byte readStatus,
+      Integer country,
+      int supId,
+      Integer usrCountry) {
+    return Query.sql(
+            getMyRFQQuoteListSql(date, keyword, flag, readStatus, country, supId, usrCountry))
+        .queryCount();
+  }
+
+  private SQL getMyRFQQuoteListSql(
+      Date date,
+      String keyword,
+      boolean flag,
+      Byte readStatus,
       Integer country,
       int supId,
       Integer usrCountry) {
@@ -469,8 +496,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
             RFQConsult.T.QUANTITY,
             RFQConsult.T.CONTENT,
             RFQConsult.T.CREATE_TIME,
-            RFQConsultRelation.T.HAD_READ_PURCHASE,
-            RFQConsultRelation.T.HAD_READ_SUPPLIER,
+            RFQConsultRelation.T.READ_STATUS,
             RFQConsultRelation.T.QUANTITY,
             RFQConsultRelation.T.DESCRIPTION,
             RFQConsultRelation.T.PURCHASE_ID,
@@ -483,34 +509,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         .LEFT_JOIN(UsrPurchase.class, UsrPurchase.T.PKEY, T.PURCHASE_ID)
         .WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supId)
         .WHERE(RFQConsultRelation.T.IN_RECYCLE_BIN, "=?", Sys.OYn.NO);
-    switch (status != null ? status : type) {
-      case 0:
-        sql.LEFT_JOIN(
-            RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY);
-        break;
-      case 1:
-        sql.LEFT_JOIN(
-            RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY);
-        break;
-      case 2:
-        sql.LEFT_JOIN(
-                RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY)
-            .WHERE(RFQConsultMessage.T.HAD_READ, "=?", Sys.OYn.NO)
-            .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.NO);
-        break;
-      case 3:
-        sql.LEFT_JOIN(
-                RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY)
-            .WHERE(RFQConsultMessage.T.HAD_READ, "=?", Sys.OYn.YES)
-            .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.NO);
-        break;
-      case 4:
-        sql.LEFT_JOIN(
-                RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY)
-            .WHERE(RFQConsultMessage.T.HAD_READ, "=?", Sys.OYn.YES)
-            .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.YES);
-        break;
-    }
+    sql.WHERE(readStatus != null, RFQConsultRelation.T.READ_STATUS, "=?", readStatus);
     sql.WHERE(country != null, RFQConsult.T.COUNTRY, "=?", country);
     if (null != date) {
       sql.WHERE(
@@ -524,69 +523,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
     sql.WHERE(keyword != null, RFQConsult.T.TITLE, "like ?", "%" + keyword + "%");
     sql.WHERE(T.FAVORITE, "=?", flag);
     sql.WHERE(usrCountry != null, UsrPurchase.T.COUNTRY, "=?", usrCountry);
-    sql.GROUP_BY(RFQConsultMessage.T.RELATION);
-    sql.LIMIT(start, limit);
-    return Query.sql(sql).queryMaps();
-  }
-
-  @Override
-  public Integer count(
-      byte type,
-      Date date,
-      String keyword,
-      boolean flag,
-      Integer status,
-      Integer country,
-      int supId) {
-    SQL sql = new SQL();
-    sql.SELECT(
-            RFQConsult.T.PKEY,
-            RFQConsult.T.TITLE,
-            RFQConsult.T.QUANTITY,
-            RFQConsult.T.CONTENT,
-            RFQConsult.T.CREATE_TIME,
-            RFQConsultRelation.T.HAD_READ_PURCHASE,
-            RFQConsultRelation.T.HAD_READ_SUPPLIER,
-            RFQConsultRelation.T.QUANTITY,
-            RFQConsultRelation.T.DESCRIPTION,
-            RFQConsultRelation.T.PURCHASE_ID)
-        .SELECT(RFQConsultRelation.T.TITLE, "myTitle")
-        .SELECT(RFQConsultRelation.T.CREATE_DATE, "myCreate_time")
-        .FROM(RFQConsult.class)
-        .LEFT_JOIN(RFQConsultRelation.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY)
-        .WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supId)
-        .WHERE(RFQConsultRelation.T.IN_RECYCLE_BIN, "=?", Sys.OYn.NO);
-    switch (type) {
-      case 0:
-        sql.LEFT_JOIN(
-            RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY);
-        break;
-      case 1:
-        sql.LEFT_JOIN(
-            RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY);
-        break;
-      case 2:
-        sql.LEFT_JOIN(
-                RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY)
-            .WHERE(RFQConsultMessage.T.HAD_READ, "=?", Sys.OYn.NO)
-            .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.NO);
-        break;
-      case 3:
-        sql.LEFT_JOIN(
-                RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY)
-            .WHERE(RFQConsultMessage.T.HAD_READ, "=?", Sys.OYn.YES)
-            .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.NO);
-        break;
-      case 4:
-        sql.LEFT_JOIN(
-                RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY)
-            .WHERE(RFQConsultMessage.T.HAD_READ, "=?", Sys.OYn.YES)
-            .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.YES);
-        break;
-    }
-    sql.GROUP_BY(RFQConsultMessage.T.RELATION);
-
-    return Query.sql(sql).queryMaps().size();
+    return sql;
   }
 
   @Override

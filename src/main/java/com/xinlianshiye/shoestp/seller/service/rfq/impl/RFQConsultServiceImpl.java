@@ -11,15 +11,23 @@ import com.xinlianshiye.shoestp.seller.service.rfq.RFQConsultService;
 import irille.Dao.RFQ.RFQConsultGroupDao;
 import irille.Dao.RFQ.RFQConsultGroupRelationDao;
 import irille.Dao.RFQ.RFQConsultRelationDao;
-import irille.Entity.RFQ.*;
-import irille.platform.rfq.view.*;
+import irille.Entity.RFQ.RFQConsult;
+import irille.Entity.RFQ.RFQConsultGroup;
+import irille.Entity.RFQ.RFQConsultGroupRelation;
+import irille.Entity.RFQ.RFQConsultMessage;
+import irille.Entity.RFQ.RFQConsultRelation;
+import irille.platform.rfq.view.CountryView;
+import irille.platform.rfq.view.ProductView;
+import irille.platform.rfq.view.PurchaseView;
+import irille.platform.rfq.view.RFQConsultRelationView;
+import irille.platform.rfq.view.RFQConsultView;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.SqlQuery;
 import irille.pub.bean.sql.SQL;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
-import irille.sellerAction.rfq.view.RFQConsultMessageView;
+import irille.pub.util.GetValue;
 import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
 import irille.sellerAction.rfq.view.RFQConsultRelationCountView;
 import irille.shop.pdt.PdtProduct;
@@ -178,15 +186,13 @@ public class RFQConsultServiceImpl implements RFQConsultService {
             .SELECT(
                 RFQConsultRelation.T.PKEY,
                 RFQConsultRelation.T.FAVORITE,
+                RFQConsultRelation.T.READ_STATUS,
                 RFQConsult.T.TYPE,
                 RFQConsult.T.TITLE,
                 RFQConsult.T.IMAGE,
                 RFQConsult.T.CREATE_TIME,
                 PdtProduct.T.NAME)
-            .SELECT(RFQConsultMessage.T.P2S, "messageP2S")
             .SELECT(RFQConsult.T.PKEY, "consultPkey")
-            .SELECT(RFQConsultMessage.T.CONTENT, "messageContent")
-            .SELECT(RFQConsultMessage.T.HAD_READ, "messageHadRead")
             .SELECT(PltCountry.T.PKEY, "countryPkey")
             .SELECT(PltCountry.T.NAME, "countryName")
             .SELECT(PltCountry.T.NATIONAL_FLAG, "countryFlag")
@@ -200,20 +206,6 @@ public class RFQConsultServiceImpl implements RFQConsultService {
             .LEFT_JOIN(PltCountry.class, PltCountry.T.PKEY, RFQConsult.T.COUNTRY)
             .LEFT_JOIN(PdtProduct.class, RFQConsult.T.PRODUCT, PdtProduct.T.PKEY)
             .LEFT_JOIN(UsrPurchase.class, RFQConsultRelation.T.PURCHASE_ID, UsrPurchase.T.PKEY)
-            .LEFT_JOIN(
-                new SQL()
-                    .SELECT("*")
-                    .FROM(
-                        new SQL()
-                            .SELECT(RFQConsultMessage.class)
-                            .FROM(RFQConsultMessage.class)
-                            .ORDER_BY(RFQConsultMessage.T.SEND_TIME, "desc")
-                            .LIMIT(0, 9999999),
-                        RFQConsultMessage.class)
-                    .GROUP_BY(RFQConsultMessage.T.RELATION),
-                RFQConsultMessage.class,
-                RFQConsultRelation.T.PKEY,
-                RFQConsultMessage.T.RELATION)
             // 供应商
             .WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supplier.getPkey())
             // 询盘发起时间区间
@@ -242,16 +234,8 @@ public class RFQConsultServiceImpl implements RFQConsultService {
       sql.WHERE(RFQConsultGroupRelation.T.CONSULT_GROUP, "=?", groupId);
     }
     if (readStatus != null && readStatus != 0) {
-      // 最近一条消息是商家还是买家发送的
-      sql.WHERE(
-          RFQConsultMessage.T.P2S,
-          "=?",
-          BeanBase.booleanToByte(readStatus == 3 || readStatus == 4));
-      // 最近一条消息是否已读
-      sql.WHERE(
-          RFQConsultMessage.T.HAD_READ,
-          "=?",
-          BeanBase.booleanToByte(readStatus == 2 || readStatus == 4));
+      // 消息读取状态
+      sql.WHERE(RFQConsultRelation.T.READ_STATUS, "=?", readStatus);
     }
     if (orderType == 1) {
       sql.ORDER_BY(RFQConsultMessage.T.SEND_TIME, "desc");
@@ -269,18 +253,12 @@ public class RFQConsultServiceImpl implements RFQConsultService {
             .map(
                 map -> {
                   RFQConsultRelationView view = new RFQConsultRelationView();
+                  view.setReadStatus(
+                      GetValue.get(map, RFQConsultRelation.T.READ_STATUS, Byte.class, null));
                   view.setFavorite(
                       BeanBase.byteToBoolean(
                           (Byte)
                               map.get(RFQConsultRelation.T.FAVORITE.getFld().getCodeSqlField())));
-                  view.setLastMsg(
-                      new RFQConsultMessageView() {
-                        {
-                          setContent((String) map.get("messageContent"));
-                          setP2S(BeanBase.byteToBoolean((Byte) map.get("messageP2S")));
-                          setHadRead(BeanBase.byteToBoolean((Byte) map.get("messageHadRead")));
-                        }
-                      });
                   view.setConsult(
                       new RFQConsultView() {
                         {

@@ -22,6 +22,7 @@ import irille.Dao.RFQ.RFQConsultMessageDao;
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Entity.RFQ.Enums.RFQConsultMessageType;
+import irille.Entity.RFQ.Enums.RFQConsultRelationReadStatus;
 import irille.Entity.RFQ.JSON.ConsultMessage;
 import irille.Entity.RFQ.JSON.RFQConsultAlertUrlMessage;
 import irille.Entity.RFQ.JSON.RFQConsultImageMessage;
@@ -58,9 +59,14 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
       throw new WebMessageException(
           MessageBuild.buildMessage(ReturnCode.service_wrong_data, language));
     }
-    relation.stHadReadPurchase(true);
-    relation.stIsNew(false);
-    relation.upd();
+
+    // 买家读取消息后, 若消息状态为采购商未读, 则修改为采购商已读
+    if (relation.gtReadStatus() == RFQConsultRelationReadStatus.PURCHASE_UNREAD) {
+      relation.stReadStatus(RFQConsultRelationReadStatus.PURCHASE_HADREAD);
+      //读取消息后 该报价就不是一个新报价了, isNew设置为false
+      relation.stIsNew(false);
+      relation.upd();
+    }
 
     BeanQuery<RFQConsultMessage> query2 = Query.selectFrom(RFQConsultMessage.class);
     query2.WHERE(RFQConsultMessage.T.RELATION, "=?", relationPkey);
@@ -123,11 +129,7 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
             .WHERE(RFQConsultRelation.T.PURCHASE_ID, "=?", purchase.getPkey())
             .WHERE(RFQConsultRelation.T.PKEY, "=?", relationPkey)
             .query();
-    // 采购商发送消息后 设置供应商消息未读取
-    if (relation.gtHadReadSupplier()) {
-      relation.stHadReadSupplier(false);
-      relation.upd();
-    }
+
     RFQConsultMessage bean = new RFQConsultMessage();
     bean.setUuid(UUID.randomUUID().toString().replaceAll("-", ""));
     try {
@@ -141,6 +143,13 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
     bean.stP2s(true);
     bean.stHadRead(false);
     bean.ins();
+
+    // 采购商发送消息后 设置消息状态为-供应商未读, 并记录最后一条聊天消息
+    relation.stReadStatus(RFQConsultRelationReadStatus.SUPPLIER_UNREAD);
+    relation.stLastMessage(bean);
+    relation.setLastMessageSendTime(bean.getSendTime());
+    relation.upd();
+
     messageService.send(OTempType.RFQ_REPLY, relation.gtSupplierId(), null, bean);
     return RFQConsultMessageView.Builder.toView(bean);
   }
