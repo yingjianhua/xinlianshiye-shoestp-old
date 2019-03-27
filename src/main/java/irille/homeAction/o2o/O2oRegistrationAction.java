@@ -7,6 +7,8 @@ import javax.inject.Inject;
 import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
 
 import irille.Entity.O2O.O2oRegistration;
+import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
+import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin.UserType;
 import irille.Service.Manage.O2O.IO2OPdtServer;
 import irille.homeAction.HomeAction;
 import irille.platform.o2o.View.O2o_RegistrationView;
@@ -14,10 +16,14 @@ import irille.pub.LogMessage;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.shop.o2o.O2O_RegistrationDao;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class O2oRegistrationAction extends HomeAction<O2oRegistration> {
+
+  private static final long serialVersionUID = 1L;
 
   public static final LogMessage LOG = new LogMessage(O2oRegistrationAction.class);
 
@@ -34,6 +40,7 @@ public class O2oRegistrationAction extends HomeAction<O2oRegistration> {
     write(io2OPdtServer.O2OPrivateList(getPurchase(), getStart(), getLimit()));
   }
 
+  @NeedLogin(userType = UserType.PURCHASE)
   public void apply() throws IOException {
     boolean b = true;
     if (view == null) {

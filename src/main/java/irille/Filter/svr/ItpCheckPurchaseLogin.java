@@ -15,9 +15,14 @@ import javax.servlet.http.HttpServletResponse;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.ActionProxy;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
 
+import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin.UserType;
 import irille.homeAction.HomeAction;
+import irille.pub.exception.ReturnCode;
 import irille.pub.util.AppConfig;
+import irille.view.usr.UserView;
+
 import org.apache.struts2.ServletActionContext;
 
 public class ItpCheckPurchaseLogin extends AbstractInterceptor {
@@ -38,13 +43,23 @@ public class ItpCheckPurchaseLogin extends AbstractInterceptor {
           "cache-control", "no-store, no-cache, must-reval…te, post-check=0, pre-check=0");
     }
     NeedLogin annotation = method.getAnnotation(NeedLogin.class);
+    //annotation 不为空需要进行登录和角色判断
     if (annotation != null) {
+      boolean entryable = false;
+      UserView user = HomeAction.getUser();
+      if (user != null) {
+        if (annotation.userType() == UserType.ALL) {
+          entryable = true;
+        } else if (annotation.userType() == UserType.SUPPLIER && user.isSupplier()) {
+          entryable = true;
+        } else if (annotation.userType() == UserType.PURCHASE && user.isPurchase()) {
+          entryable = true;
+        }
+      }
+
       Class<?> returnType = method.getReturnType();
-      if (returnType.equals(void.class) && HomeAction.getUser() == null) {
-        HomeAction.writeTimeout();
-        return null;
-      } else if (returnType.equals(String.class) && HomeAction.getUser() == null
-          || HomeAction.getUser().isSupplier() != annotation.supplier()) {
+      //返回值类型是String 是页面请求, 当没有登录或没有权限时 重定向到登录页面
+      if (returnType.equals(String.class) && !entryable) {
         HomeAction<?> action = (HomeAction<?>) actionInvocation.getAction();
         StringJoiner stringJoiner = new StringJoiner("&");
         getParams(ServletActionContext.getRequest())
@@ -66,6 +81,17 @@ public class ItpCheckPurchaseLogin extends AbstractInterceptor {
         }
         return HomeAction.LOGIN;
       }
+
+      //返回值类型是void, 是数据请求, 当没有登录或没有权限时 返回错误数据
+      if (returnType.equals(void.class) && !entryable) {
+        if (user == null) {
+          HomeAction.writeTimeout();
+        } else {
+          HomeAction.write(
+              MessageBuild.buildMessage(ReturnCode.service_unauthorized, HomeAction.curLanguage()));
+        }
+        return null;
+      }
     }
 
     return actionInvocation.invoke();
@@ -80,8 +106,17 @@ public class ItpCheckPurchaseLogin extends AbstractInterceptor {
   @Target({ElementType.METHOD})
   @Retention(RetentionPolicy.RUNTIME)
   public @interface NeedLogin {
-    // TODO 这里改用用户组会更好用
-    boolean supplier() default false;
+//    // TODO 这里改用用户组会更好用
+//    boolean supplier() default false;
+
+    /** 对用户类型进行校验 */
+    UserType userType() default UserType.ALL;
+
+    public enum UserType {
+      SUPPLIER, // 必须为供应商类型用户
+      PURCHASE, // 必须为采购商类型用户
+      ALL // 不进行用户类型判断
+    }
   }
 
   public static void s(Object s) {

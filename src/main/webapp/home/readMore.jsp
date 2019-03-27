@@ -214,6 +214,9 @@
             
         },
         mounted() {
+            if (sessionStorage['Temp_Read_More_form'] &&sessionStorage['Temp_Read_More_form']!=''&&sessionStorage['Temp_Read_More_form']!='null'){
+                this.form=JSON.parse(sessionStorage['Temp_Read_More_form'])
+            }
             var self = this;
             self.rfqPkey = self.getQueryString("rfqPkey");
             axios.get('/home/rfq_RFQConsult_getRFQDetails', {
@@ -242,7 +245,7 @@
             // 跳转RFQ
             ToRFQ(){
                 let url = "/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1" + "&backUrl=" + window.location.href
-                util_function_obj.supplierCantEnter(this, url);
+                util_function_obj.supplierCantEnter(this, url,"Please register or login your buyer account if you want public RFQ.");
              },
             quoteNow(){
             //     // user_type  0普通用户  1卖家
@@ -251,7 +254,7 @@
                 console.log("登录")
                     if(sysConfig.user.user_type == 0){
                         // 普通用户
-                        this.$alert('Please register or login your supplier account before you provide a quote for this RFQ', {
+                        this.$alert('Please register or login your supplier account before you provide a quote for this RFQ.', {
                         confirmButtonText: 'Sign In',
                         customClass: "my-custom-element-alert-class fs-content-18",
                         callback: action => {
@@ -274,8 +277,6 @@
                }else{
                    console.log("没有登录")
                 //    没有登录
-                //  window.location.href =
-                //             '/home/usr_UsrPurchase_sign?jumpUrl=/home/rfq_RFQConsult_getRFQReadMore?rfqPkey=' + this.rfqPkey;
                 util_function_obj.alertWhenNoLogin(this);
                         return
                }
@@ -299,13 +300,15 @@
                 return "https://image.shoestp.com" + v + params
             },
             submitForm(formName) { //表单提交
+                let self = this;
                 if(!sysConfig || !sysConfig.user){
-                    util_function_obj.alertWhenNoLogin(this);
+                    sessionStorage['Temp_Read_More_form']=JSON.stringify(self.form)
+                    util_function_obj.alertWhenNoLogin(self);
                         return
                     }else{
                         // 登录了
                         if(sysConfig.user.user_type == 1){
-                            this.$alert("Sorry, the supplier cannot submit the form",{
+                            self.$alert("Please register or login your buyer account if you want public RFQ.",{
                                 confirmButtonText: 'Ok',
                                 customClass: "my-custom-element-alert-class fs-content-18",
                                 center: true,
@@ -316,48 +319,53 @@
                             return
                         }else{
                             // 普通用户
-                            this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        this.flag = true;
-                        console.log(this.form)
-                        console.log('submit!');
-                        let data = JSON.stringify(this.form)
-                        axios.post('/home/rfq_RFQConsult_putRFQInquiry', data,
-                            {headers: {'Content-Type': 'application/json'}}
-                        )
-                            .then((res) => {
-                                console.log(res)
-                                // 提交成功时
-                                if (res.data.ret == 1) {
-                                    // 提示信息
-                                    this.$message({
-                                        showClose: true,
-                                        message: 'Submitted successfully',
-                                        type: 'success'
-                                    });
-                                    setTimeout(function () {
-                                        window.location.reload();
-                                    }, 1500)
-                                    // 未登录时
-                                }  else {
-                                    this.flag = false;
-                                    this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
-                                        confirmButtonText: 'OK',
-                                        customClass: "my-custom-element-alert-class fs-content-18",
-                                    });
+                            self.$refs[formName].validate((valid) => {
+                                if (valid) {
+                                    self.flag = true;
+                                    console.log(self.form)
+                                    console.log('submit!');
+                                    let data = JSON.stringify(self.form)
+                                    axios.post('/home/rfq_RFQConsult_putRFQInquiry', data,
+                                        {headers: {'Content-Type': 'application/json'}}
+                                    )
+                                        .then((res) => {
+                                            console.log(res)
+                                            // 提交成功时
+                                            if (res.data.ret == 1) {
+                                                // 提示信息
+                                                self.$message({
+                                                    showClose: true,
+                                                    message: 'Submitted successfully',
+                                                    type: 'success'
+                                                });
+                                                setTimeout(function () {
+                                                    sessionStorage.removeItem('Temp_Read_More_form')
+                                                    window.location.reload();
+                                                }, 1500)
+                                                // 未登录时
+                                            } else if (res.data.ret == -1) {
+                                                sessionStorage['Temp_Read_More_form'] = JSON.stringify(self.form)
+                                                util_function_obj.alertWhenNoLogin(self);
+                                                return
+                                            } else {
+                                                    self.flag = false;
+                                                    self.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
+                                                        confirmButtonText: 'OK',
+                                                        customClass: "my-custom-element-alert-class fs-content-18",
+                                                    });
+                                                }
+
+                                        })
+                                        .catch((err) => {
+                                            self.flag = false;
+                                            self.$message.error("Network error, please refresh the page and try again");
+                                            console.log(err)
+                                        })
+                                } else {
+                                    console.log('error submit!!');
+
                                 }
-
-                            })
-                            .catch((err) => {
-                                this.flag = false;
-                                this.$message.error("Network error, please refresh the page and try again");
-                                console.log(err)
-                            })
-                    } else {
-                        console.log('error submit!!');
-
-                    }
-                });
+                            });
                         }
                     }
                

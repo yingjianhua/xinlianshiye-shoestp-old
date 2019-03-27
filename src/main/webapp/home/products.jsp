@@ -417,14 +417,28 @@
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 } else {
+                    if(sysConfig.user.user_type == 1){
+                        this.$alert("If you want to get this supplier or shoes in your wish list,please register or login your buyer account.",{
+                            confirmButtonText: 'Ok',
+                            customClass: "my-custom-element-alert-class fs-content-18",
+                            center: true,
+                            callback: action =>{
+                                return
+                            }
+                        });
+                        return
+                    }
                     axios.get('/home/usr_UsrFavorites_addFavorite', {
                         params: {
                             pdtPkey: e.currentTarget.dataset.id
                         }
                     })
                         .then((res) => {
-                            this.$set(this.productLists[index], "eshrine", !this.productLists[index].eshrine)
-                            /* this.productLists[index].eshrine = !this.productLists[index].eshrine; */
+                            if (res.data.ret == 1) {
+                                this.$set(this.productLists[index], "eshrine", !this.productLists[index].eshrine)
+                            } else {
+                                this.$message.error(res.data.msg || "The operation failed, please try again later");
+                            }
                         })
                         .catch((error) => {
 
@@ -563,12 +577,12 @@
             // 跳转供应商表单
             ToContactSupplier(supplierPkey){
                 let url = "/home/usr_UsrSupplier_goContactSupplier?supplierPkey=" + supplierPkey+ "&backUrl=" + window.location.href;
-                util_function_obj.supplierCantEnter(this, url);
+                util_function_obj.supplierCantEnter(this, url,"Please register or login your buyer account if you want making enquiries.");
             },
             // 跳转商品询盘表单
             ToProductInquiry(pdtId){
                 let url = '/home/usr_UsrConsult_productPublishView?product_id=' + pdtId+ "&backUrl=" + window.location.href;
-                util_function_obj.supplierCantEnter(this, url);
+                util_function_obj.supplierCantEnter(this, url,"Please register or login your buyer account if you want making enquiries.");
             },
         },
         mounted() {
