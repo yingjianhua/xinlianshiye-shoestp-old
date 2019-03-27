@@ -29,7 +29,8 @@ public class PdtAttrCatAction extends ActionBase<PdtAttrCat> {
   @Getter @Setter private String name; // 查询属性分类名称
 
   @Inject private PdtAttrCatDAO pdtAttrCatDAO;
-
+  @Inject private PdtAttrCatDAO.InsAttrCat ic;
+  @Inject private PdtAttrCatDAO.UpdAttrCat updAttrCat;
   /**
    * 查询所有分类
    *
@@ -50,10 +51,8 @@ public class PdtAttrCatAction extends ActionBase<PdtAttrCat> {
   /** 添加分类 */
   @Override
   public void ins() throws IOException {
-    PdtAttrCatDAO.InsAttrCat ic = new PdtAttrCatDAO.InsAttrCat();
     LoginUserMsg loginUserMsg = (LoginUserMsg) this.session.get(LOGIN);
     getBean().setCreateBy(loginUserMsg.get_user().getPkey());
-    System.out.println(getBean());
     ic.setB(getBean());
     ic.commit();
     write();
@@ -62,12 +61,10 @@ public class PdtAttrCatAction extends ActionBase<PdtAttrCat> {
   /** 修改分类 */
   @Override
   public void upd() throws IOException {
-    System.out.println(getBean().getPkey());
-    PdtAttrCatDAO.UpdAttrCat ic = new PdtAttrCatDAO.UpdAttrCat();
     LoginUserMsg loginUserMsg = (LoginUserMsg) this.session.get(LOGIN);
     getBean().setCreateBy(loginUserMsg.get_user().getPkey());
-    ic.setB(getBean());
-    ic.commit();
+    updAttrCat.setB(getBean());
+    updAttrCat.commit();
     write();
   }
 }

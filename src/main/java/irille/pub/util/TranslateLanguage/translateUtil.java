@@ -2,7 +2,13 @@ package irille.pub.util.TranslateLanguage;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -11,7 +17,11 @@ import java.util.stream.Collectors;
 import com.google.cloud.translate.Translate;
 import com.google.cloud.translate.TranslateOptions;
 import com.google.cloud.translate.Translation;
-import com.google.common.cache.*;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import com.google.common.cache.RemovalListener;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -741,5 +751,74 @@ public class translateUtil {
           break;
       }
     return false;
+  }
+
+  public static TranslateFilter buildFilter(
+      String dbJsonString, String saveJson, Language baseLanguage) {
+    TranslateFilter translateFilter = new TranslateFilter();
+    translateFilter.setBaseLanguage(baseLanguage);
+    translateFilter.setLanguageList(new ArrayList<>());
+    // 转化为Json
+    JsonObject dbJson = new JsonParser().parse(dbJsonString).getAsJsonObject();
+    // 前端传回来的值
+    JsonObject jsonObject = new JsonParser().parse(saveJson).getAsJsonObject();
+    // 判断基准字段是否发生修改
+    if (dbJson.get(FldLanguage.Language.en.name()).getAsString().hashCode()
+        != jsonObject.get(FldLanguage.Language.en.name()).getAsString().hashCode()) {
+      translateFilter.setMode(0);
+      // 基准发生修改 用黑名单模式,修改的字段不翻译
+      jsonObject
+          .entrySet()
+          .forEach(
+              stringJsonElementEntry -> {
+                // 如果不相等  添加到清单
+                if (stringJsonElementEntry.getValue().getAsString() != null
+                    && stringJsonElementEntry.getValue().getAsString().length() > 0) {
+                  if (dbJson.get(stringJsonElementEntry.getKey()).getAsString().hashCode()
+                      != (stringJsonElementEntry.getValue().getAsString()).hashCode()) {
+                    translateFilter
+                        .getLanguageList()
+                        .add(FldLanguage.Language.valueOf(stringJsonElementEntry.getKey()));
+                  }
+                }
+              });
+    } else {
+      // 设置为精准修改
+      translateFilter.setMode(2);
+      jsonObject
+          .entrySet()
+          .forEach(
+              stringJsonElementEntry -> {
+                // 寻找为空的字段,按照基准字段翻译补全
+                if (stringJsonElementEntry.getValue().getAsString().length() < 1) {
+                  translateFilter
+                      .getLanguageList()
+                      .add(FldLanguage.Language.valueOf(stringJsonElementEntry.getKey()));
+                }
+              });
+    }
+    return translateFilter;
+  }
+
+  public static TranslateFilter buildFilter(String saveJson, Language baseLanguage) {
+    TranslateFilter translateFilter = new TranslateFilter();
+    translateFilter.setBaseLanguage(baseLanguage);
+    translateFilter.setLanguageList(new ArrayList<>());
+    // 前端传回来的值
+    JsonObject jsonObject = new JsonParser().parse(saveJson).getAsJsonObject();
+    // 设置为精准修改
+    translateFilter.setMode(2);
+    jsonObject
+        .entrySet()
+        .forEach(
+            stringJsonElementEntry -> {
+              // 寻找为空的字段,按照基准字段翻译补全
+              if (stringJsonElementEntry.getValue().getAsString().length() < 1) {
+                translateFilter
+                    .getLanguageList()
+                    .add(FldLanguage.Language.valueOf(stringJsonElementEntry.getKey()));
+              }
+            });
+    return translateFilter;
   }
 }

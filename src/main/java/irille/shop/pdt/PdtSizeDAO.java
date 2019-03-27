@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import irille.action.dataimport.util.StringUtil;
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
 import irille.core.sys.SysUser;
@@ -66,6 +67,7 @@ public class PdtSizeDAO {
             if (productCategory != null) {
               WHERE(T.PRODUCT_CATEGORY, "=?", productCategory);
             }
+            ORDER_BY(T.CREATE_TIME, "desc");
           }
         };
     Integer count = Query.sql(sql).queryCount();
@@ -210,6 +212,7 @@ public class PdtSizeDAO {
       super.before();
       getB().setDeleted(OYn.YES.getLine().getKey());
       PdtSize dbBean = loadThisBeanAndLock();
+      chooseSizePdt(dbBean, 2);
       PropertyUtils.copyProperties(dbBean, getB(), PdtSize.T.DELETED);
       setB(dbBean);
     }
@@ -530,6 +533,7 @@ public class PdtSizeDAO {
     size.setType(type);
     size.setTypever(Pdt.OVer.NEW_1.getLine().getKey());
     size.setRowVersion((short) 0);
+    checkNameInUse(size, name);
     translateUtil.autoTranslate(size);
     size.ins();
   }
@@ -548,6 +552,8 @@ public class PdtSizeDAO {
     size.setType(type);
     size.setName(name);
     checkName(size.getName(), true);
+    chooseSizePdt(size, 1);
+    checkNameInUse(size, size.getName());
     if (pdtCate != null) {
       PdtCat cat = Query.SELECT(PdtCat.class, pdtCate);
       if (cat != null) size.setProductCategory(pdtCate);
@@ -556,6 +562,7 @@ public class PdtSizeDAO {
     size.upd();
   }
 
+  // 校验名称合法
   public static void checkName(String name, boolean lag) {
     if (lag) {
       try {
@@ -576,6 +583,69 @@ public class PdtSizeDAO {
       if (!matcher.matches())
         throw new WebMessageException(ReturnCode.service_wrong_data, "名称只能为数字");
       if (name.length() > 5) throw new WebMessageException(ReturnCode.service_wrong_data, "长度最大为5");
+    }
+  }
+
+  // 校验该名称是否被使用
+  public static void checkNameInUse(PdtSize size, String name) {
+    SQL sql = new SQL();
+    sql.SELECT(PdtSize.class).FROM(PdtSize.class);
+    sql.WHERE(PdtSize.T.DELETED, " =? ", OYn.NO.getLine().getKey());
+    if (size.getTypever() == Pdt.OVer.ELSE.getLine().getKey()) {
+      sql.WHERE(PdtSize.T.TYPEVER, " =? ", Pdt.OVer.ELSE.getLine().getKey());
+    } else if (size.getTypever() == Pdt.OVer.NEW_1.getLine().getKey()) {
+      sql.WHERE(PdtSize.T.TYPEVER, " =? ", Pdt.OVer.NEW_1.getLine().getKey());
+    }
+    if (size.getType() != null) {
+      sql.WHERE(PdtSize.T.TYPE, " =? ", size.getType());
+    }
+    if (size.getSupplier() != null) {
+      sql.WHERE(PdtSize.T.SUPPLIER, " =? ", size.getSupplier());
+    } else {
+      sql.WHERE(PdtSize.T.SUPPLIER, " is null");
+    }
+    String str = "";
+    try {
+      str = new JSONObject(name).get(PltConfigDAO.manageLanguage().toString()).toString();
+      if (!StringUtil.hasValue(str))
+        throw new WebMessageException(ReturnCode.service_wrong_data, "当前语言下的名称不能为空");
+    } catch (JSONException e) { // TODO Auto-generated catch block
+      e.printStackTrace();
+      throw new WebMessageException(ReturnCode.service_wrong_data, "参数错误");
+    }
+    sql.WHERE(
+        "JSON_EXTRACT(PdtSize.name,?) = ?", "$." + PltConfigDAO.manageLanguage().toString(), str);
+    Integer count = Query.sql(sql).queryCount();
+    if (count > 0) {
+      String msg = "";
+      if (size.getType() == Pdt.OSizeType.USA.getLine().getKey()) {
+        msg = "美码";
+      } else if (size.getType() == Pdt.OSizeType.EU.getLine().getKey()) {
+        msg = "欧码";
+      }
+      throw new WebMessageException(ReturnCode.failure, msg + "尺码【" + str + "】已存在,请勿重复添加");
+    }
+  }
+
+  // 校验该数据是否被引用
+  public static void chooseSizePdt(PdtSize size, Integer type) {
+    SQL sql1 = new SQL();
+    sql1.SELECT(PdtProduct.T.PKEY).FROM(PdtProduct.class);
+    sql1.WHERE(
+        "size_attr like (?) or size_attr like (?) or size_attr like (?) or size_attr = ?",
+        "%," + size.getPkey(),
+        "%," + size.getPkey() + ",%",
+        size.getPkey() + ",%",
+        size.getPkey());
+    Integer count1 = Query.sql(sql1).queryCount();
+    if (count1 > 0) {
+      String strSize = "";
+      if (type == 1) {
+        strSize = "当前尺寸已被使用,无法修改";
+      } else if (type == 2) {
+        strSize = "当前尺寸已被使用,无法删除";
+      }
+      throw new WebMessageException(ReturnCode.service_gone, strSize);
     }
   }
 }
