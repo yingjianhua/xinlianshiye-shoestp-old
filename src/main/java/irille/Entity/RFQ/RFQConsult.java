@@ -58,6 +58,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
     PAY_TYPE(Tb.crt(RFQConsultPayType.DEFAULT).setNull()), // 支付方式
     SHIPPING_TYPE(Tb.crt(RFQConsultShipping_Type.DEFAULT).setNull()), // 运送方式
     CURRENCY(PltErate.fldOutKey().setNull()), // 货币类型
+    LAST_MESSAGE_SEND_TIME(Sys.T.TIME), // 记录该询盘的最新事件的时间(创建,报价,聊天),之后可以根据该字段进行排序
     EXTRA_REQUEST(
         Sys.T
             .STR__100_NULL), // 额外请求, 店铺询盘专用字段, 是用逗号分隔的请求内容 格式如: price, inspection product, product
@@ -164,6 +165,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
 	// CNF:3,CNF
 	// CRF:4,CRF
   private Integer _currency;	// 费率设置 <表主键:PltErate>  INT<null>
+  private Date _lastMessageSendTime;	// 时间  TIME
   private String _extraRequest;	// 字符100  STR(100)<null>
   private String _productRequest;	// JSON  JSONOBJECT<null>
   private String _destination;	// 目的地  STR(200)<null>
@@ -200,6 +202,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
     _payType=RFQConsultPayType.DEFAULT.getLine().getKey();	// 支付方式 <RFQConsultPayType>  BYTE
     _shippingType=RFQConsultShipping_Type.DEFAULT.getLine().getKey();	// 配送方式 <RFQConsultShipping_Type>  BYTE
     _currency=null;	// 费率设置 <表主键:PltErate>  INT
+    _lastMessageSendTime=null;	// 时间  TIME
     _extraRequest=null;	// 字符100  STR(100)
     _productRequest=null;	// JSON  JSONOBJECT
     _destination=null;	// 目的地  STR(200)
@@ -418,6 +421,12 @@ public class RFQConsult extends BeanInt<RFQConsult> {
       setCurrency(null);
     else
       setCurrency(currency.getPkey());
+  }
+  public Date getLastMessageSendTime(){
+    return _lastMessageSendTime;
+  }
+  public void setLastMessageSendTime(Date lastMessageSendTime){
+    _lastMessageSendTime=lastMessageSendTime;
   }
   public String getExtraRequest(){
     return _extraRequest;

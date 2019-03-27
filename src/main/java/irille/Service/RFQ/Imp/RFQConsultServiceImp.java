@@ -16,6 +16,7 @@ import irille.Dao.Old.RFQ.RFQConsultDAO;
 import irille.Dao.Old.RFQ.RFQConsultUpdDAO;
 import irille.Dao.PdtProductDao;
 import irille.Entity.RFQ.Enums.RFQConsultPayType;
+import irille.Entity.RFQ.Enums.RFQConsultRelationReadStatus;
 import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
 import irille.Entity.RFQ.Enums.RFQConsultStatus;
 import irille.Entity.RFQ.Enums.RFQConsultType;
@@ -77,6 +78,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         (RFQConsultPayType) RFQConsultPayType.DEFAULT.getLine().get(rfqConsultView.getPay_type()));
     rfqConsult.stShippingType(RFQConsultShipping_Type.FOB);
     rfqConsult.setCurrency(rfqConsultView.getCurrency());
+    rfqConsult.setLastMessageSendTime(new Date());
     rfqConsult.setDestination(rfqConsultView.getDestination());
     rfqConsult.setProductRequest("[]");
     rfqConsult.setTotal(10);
@@ -113,6 +115,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     rfqConsult.setTotal(0);
     rfqConsult.stType(RFQConsultType.INQUIRY);
     rfqConsult.stStatus(RFQConsultStatus.runing);
+    rfqConsult.setLastMessageSendTime(new Date());
     rfqConsult.stVerifyStatus(RFQConsultVerifyStatus.PASS);
     rfqConsult.setValidDate(
         Date.from(LocalDate.now().plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant()));
@@ -149,10 +152,10 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     rfqConsultRelation.stPaytype(RFQConsultPayType.DEFAULT);
     rfqConsultRelation.stTransittype(RFQConsultShipping_Type.FOB);
     rfqConsultRelation.setCreateDate(new Date());
+    rfqConsultRelation.setLastMessageSendTime(new Date());
+    rfqConsultRelation.stReadStatus(RFQConsultRelationReadStatus.SUPPLIER_UNREAD);
     rfqConsultRelation.stIsNew(false);
     rfqConsultRelation.stSample(false);
-    rfqConsultRelation.stHadReadSupplier(false);
-    rfqConsultRelation.stHadReadPurchase(true);
     rfqConsultRelation.stIsDeletedPurchase(false);
     rfqConsultRelation.stIsDeletedSupplier(false);
     rfqConsultRelation.setThrowaway("[]");
@@ -180,6 +183,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     rfqConsult.setTotal(0);
     rfqConsult.stType(RFQConsultType.Private_INQUIRY);
     rfqConsult.stStatus(RFQConsultStatus.runing);
+    rfqConsult.setLastMessageSendTime(new Date());
     rfqConsult.stVerifyStatus(RFQConsultVerifyStatus.PASS);
     rfqConsult.setValidDate(
         Date.from(LocalDate.now().plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant()));
@@ -214,10 +218,10 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     rfqConsultRelation.stPaytype(RFQConsultPayType.DEFAULT);
     rfqConsultRelation.stTransittype(RFQConsultShipping_Type.FOB);
     rfqConsultRelation.setCreateDate(new Date());
+    rfqConsultRelation.setLastMessageSendTime(new Date());
+    rfqConsultRelation.stReadStatus(RFQConsultRelationReadStatus.SUPPLIER_UNREAD);
     rfqConsultRelation.stIsNew(false);
     rfqConsultRelation.stSample(false);
-    rfqConsultRelation.stHadReadSupplier(false);
-    rfqConsultRelation.stHadReadPurchase(true);
     rfqConsultRelation.stIsDeletedPurchase(false);
     rfqConsultRelation.stIsDeletedSupplier(false);
     rfqConsultRelation.setThrowaway("[]");
@@ -280,6 +284,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     consult.setPurchaseId(purchase.getPkey());
     consult.stType(RFQConsultType.supplier_INQUIRY);
     consult.stStatus(RFQConsultStatus.runing);
+    consult.setLastMessageSendTime(new Date());
     consult.stVerifyStatus(RFQConsultVerifyStatus.PASS);
     consult.setValidDate(Env.getTranBeginTime());
     consult.setTotal(0);
@@ -304,10 +309,10 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     rfqConsultRelation.stPaytype(RFQConsultPayType.DEFAULT);
     rfqConsultRelation.stTransittype(RFQConsultShipping_Type.FOB);
     rfqConsultRelation.setCreateDate(new Date());
+    rfqConsultRelation.setLastMessageSendTime(new Date());
+    rfqConsultRelation.stReadStatus(RFQConsultRelationReadStatus.SUPPLIER_UNREAD);
     rfqConsultRelation.stIsNew(false);
     rfqConsultRelation.stSample(false);
-    rfqConsultRelation.stHadReadSupplier(false);
-    rfqConsultRelation.stHadReadPurchase(true);
     rfqConsultRelation.stIsDeletedPurchase(false);
     rfqConsultRelation.stIsDeletedSupplier(false);
     rfqConsultRelation.setThrowaway("[]");
