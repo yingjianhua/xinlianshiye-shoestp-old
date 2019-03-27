@@ -28,6 +28,9 @@ import irille.shop.prm.PrmGroupPurchaseLine;
 import irille.shop.usr.UsrFavorites;
 import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
+import irille.view.usr.UsrSupplierInfView;
+import irille.view.usr.UsrSupplierInfoView;
+import irille.view.usr.UsrSupplierPdtView;
 import irille.view.v3.Pdt.PdtProductView;
 import irille.view.v3.usr.UsrSupplierView;
 
@@ -188,5 +191,48 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
       view.setSVSGRade((Byte) SVSMap.get(SVSInfo.T.GRADE.getFld().getCodeSqlField()));
     }
     return view;
+  }
+  /**
+   * 3.1.1 供应商列表
+   *
+   * @author GS
+   */
+  @Override
+  public Page listSupplier(
+      Integer start,
+      Integer limit,
+      String storeName,
+      String targetMarket,
+      Integer processType,
+      Integer grade,
+      Integer pdtCategory,
+      Integer checkType) {
+    List<Map<String, Object>> list =
+        usrSupplierDao.listSuppliers(
+            start, limit, storeName, targetMarket, processType, grade, pdtCategory);
+    List<UsrSupplierInfView> supplies = new ArrayList<>();
+    for (Map<String, Object> map : list) {
+      UsrSupplierInfView view = new UsrSupplierInfView();
+      view.setId(GetValue.get(map, UsrSupplier.T.PKEY, Integer.class, 0));
+      view.setLogo(GetValue.get(map, UsrSupplier.T.LOGO, String.class, ""));
+      view.setStoreName(GetValue.get(map, UsrSupplier.T.NAME, String.class, ""));
+      List<UsrSupplierPdtView> pdtViews = new ArrayList<>();
+      // 获取产品信息
+      if (GetValue.get(map, UsrSupplier.T.PKEY, Integer.class, 0) != 0){
+        List<Map<String, Object>> pdtlist =
+            pdtProductDao.findPdtBySupplier(
+                GetValue.get(map, UsrSupplier.T.PKEY, Integer.class, 0));
+        for (Map<String, Object> pdt : pdtlist) {
+          UsrSupplierPdtView pdtView = new UsrSupplierPdtView();
+          pdtView.setPdtId(GetValue.get(pdt, PdtProduct.T.PKEY, Integer.class, 0));
+          pdtView.setPdtName(GetValue.get(pdt, PdtProduct.T.NAME, String.class, null));
+          pdtView.setPdtPictures(GetValue.get(pdt, PdtProduct.T.PICTURE, String.class, null));
+          pdtViews.add(pdtView);
+        }
+      }
+      view.setProducts(pdtViews);
+      supplies.add(view);
+    }
+    return new Page<>(supplies, start, limit, usrSupplierDao.count());
   }
 }

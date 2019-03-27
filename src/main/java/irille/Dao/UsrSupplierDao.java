@@ -14,6 +14,7 @@ import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
 import irille.pub.util.SEOUtils;
+import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.*;
 import irille.shop.usr.UsrSupplier.T;
@@ -166,6 +167,56 @@ public class UsrSupplierDao {
   }
 
   /*
+   *   3.1.1供应商中心供应商列表
+   * @Author GS
+   **/
+  public List listSuppliers(
+      Integer start,
+      Integer limit,
+      String storeName,
+      String targetMarket,
+      Integer processType,
+      Integer grade,
+      Integer pdtCategory) {
+    List list = new ArrayList<>();
+
+    BeanQuery query = new BeanQuery();
+    query
+        .SELECT(
+            UsrSupplier.T.PKEY,
+            UsrSupplier.T.SHOW_NAME,
+            UsrSupplier.T.LOGO,
+            UsrSupplier.T.MAIN_SALES_AREA)
+        .FROM(UsrSupplier.class)
+        .LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, PdtProduct.T.SUPPLIER)
+        .WHERE(storeName != null, UsrSupplier.T.NAME, "like ?", "%" + storeName + "%")
+        .WHERE(
+            targetMarket != null, UsrSupplier.T.TARGETED_MARKET, "like ?", "%" + targetMarket + "%")
+        .WHERE(processType != null, UsrSupplier.T.CATEGORY, "=?", processType)
+        .WHERE(pdtCategory != null, PdtProduct.T.CATEGORY, "=?", pdtCategory)
+        .ORDER_BY(PdtProduct.T.VERIFY_TIME, "desc");
+    if (start != null && limit != null) {
+      query.limit(start, limit);
+    }
+    return query.queryMaps();
+  }
+  /**
+   * 获取总条数
+   *
+   * @author GS
+   * @return
+   */
+  public int count() {
+    SQL sql =
+        new SQL() {
+          {
+            SELECT(UsrSupplier.T.PKEY).FROM(UsrSupplier.class);
+          }
+        };
+    return Query.sql(sql).queryCount();
+  }
+
+  /*
    *   判断用户类型
    * @Author HuangHaoBin
    **/
@@ -177,20 +228,26 @@ public class UsrSupplierDao {
         .WHERE(T.LOGIN_NAME, "like ?", "%" + loginName + "%");
     return query.queryCount() > 0;
   }
-  public Map<String, Object> getSupplierDetail(Integer supId){
-      SQL sql = new SQL(){{
-          SELECT(T.PKEY,T.NAME,T.LOGO)
-              .FROM(UsrSupplier.class)
-              .WHERE(T.PKEY,"=?",supId);
-      }};
-      return Query.sql(sql).queryMap();
+
+  public Map<String, Object> getSupplierDetail(Integer supId) {
+    SQL sql =
+        new SQL() {
+          {
+            SELECT(T.PKEY, T.NAME, T.LOGO).FROM(UsrSupplier.class).WHERE(T.PKEY, "=?", supId);
+          }
+        };
+    return Query.sql(sql).queryMap();
   }
-  public Map<String, Object> getSupplierSVS(Integer supId){
-      SQL sql = new SQL(){{
-          SELECT(SVSInfo.T.PKEY,SVSInfo.T.GRADE)
-              .FROM(SVSInfo.class)
-              .WHERE(SVSInfo.T.SUPPLIER,"=?",supId);
-      }};
-      return Query.sql(sql).queryMap();
+
+  public Map<String, Object> getSupplierSVS(Integer supId) {
+    SQL sql =
+        new SQL() {
+          {
+            SELECT(SVSInfo.T.PKEY, SVSInfo.T.GRADE)
+                .FROM(SVSInfo.class)
+                .WHERE(SVSInfo.T.SUPPLIER, "=?", supId);
+          }
+        };
+    return Query.sql(sql).queryMap();
   }
 }
