@@ -78,6 +78,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         (RFQConsultPayType) RFQConsultPayType.DEFAULT.getLine().get(rfqConsultView.getPay_type()));
     rfqConsult.stShippingType(RFQConsultShipping_Type.FOB);
     rfqConsult.setCurrency(rfqConsultView.getCurrency());
+    rfqConsult.setLastMessageSendTime(new Date());
     rfqConsult.setDestination(rfqConsultView.getDestination());
     rfqConsult.setProductRequest("[]");
     rfqConsult.setTotal(10);
@@ -114,6 +115,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     rfqConsult.setTotal(0);
     rfqConsult.stType(RFQConsultType.INQUIRY);
     rfqConsult.stStatus(RFQConsultStatus.runing);
+    rfqConsult.setLastMessageSendTime(new Date());
     rfqConsult.stVerifyStatus(RFQConsultVerifyStatus.PASS);
     rfqConsult.setValidDate(
         Date.from(LocalDate.now().plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant()));
@@ -181,6 +183,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     rfqConsult.setTotal(0);
     rfqConsult.stType(RFQConsultType.Private_INQUIRY);
     rfqConsult.stStatus(RFQConsultStatus.runing);
+    rfqConsult.setLastMessageSendTime(new Date());
     rfqConsult.stVerifyStatus(RFQConsultVerifyStatus.PASS);
     rfqConsult.setValidDate(
         Date.from(LocalDate.now().plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant()));
@@ -281,6 +284,7 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     consult.setPurchaseId(purchase.getPkey());
     consult.stType(RFQConsultType.supplier_INQUIRY);
     consult.stStatus(RFQConsultStatus.runing);
+    consult.setLastMessageSendTime(new Date());
     consult.stVerifyStatus(RFQConsultVerifyStatus.PASS);
     consult.setValidDate(Env.getTranBeginTime());
     consult.setTotal(0);

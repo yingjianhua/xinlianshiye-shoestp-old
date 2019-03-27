@@ -121,6 +121,12 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
     relation.stLastMessage(bean);
     relation.setLastMessageSendTime(bean.getSendTime());
     rFQConsultRelationDao.save(relation);
+    
+    //更新询盘的最新事件时间
+    RFQConsult consult = relation.gtConsult();
+    consult.setLastMessageSendTime(new Date());
+    rFQConsultDao.save(consult);
+    
     messageService.send(
         OTempType.RFQ_MESSAGE_NOTICE, null, relation.gtPurchaseId(), relation, bean, supplier);
     return RFQConsultMessageView.Builder.toView(bean);

@@ -159,6 +159,7 @@ public class RFQManageServiceImp implements IRFQManageService {
 
   @Override
   public int putRFQQuoteInfo(RFQConsultQuoteInfoView quoteInfo, Integer pkey) {
+    // FIXME 当报价次数超出上限时 仍能插入relation数据
     RFQConsult consult = rfqConsultDao.getRFQInfo(quoteInfo.getRfqId());
     if (consult == null) return 0;
     RFQConsultRelation rfqConsultRelation =
@@ -204,6 +205,7 @@ public class RFQManageServiceImp implements IRFQManageService {
     if (consult.getLeftCount() < consult.getTotal()) {
       consult.setLeftCount(consult.getLeftCount() + 1);
       consult.setProductRequest("{}");
+      consult.setLastMessageSendTime(new Date());
       rfqConsultUpdDAO.setB(consult).commit();
     }
     return 1;

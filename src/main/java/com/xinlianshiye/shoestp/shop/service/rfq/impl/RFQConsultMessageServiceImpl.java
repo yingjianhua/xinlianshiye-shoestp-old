@@ -19,6 +19,7 @@ import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultMessageView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultMessagesView;
 
 import irille.Dao.RFQ.RFQConsultMessageDao;
+import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Entity.RFQ.Enums.RFQConsultMessageType;
@@ -149,6 +150,11 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
     relation.stLastMessage(bean);
     relation.setLastMessageSendTime(bean.getSendTime());
     relation.upd();
+    
+    //更新询盘的最新事件时间
+    RFQConsult consult = relation.gtConsult();
+    consult.setLastMessageSendTime(new Date());
+    consult.upd();
 
     messageService.send(OTempType.RFQ_REPLY, relation.gtSupplierId(), null, bean);
     return RFQConsultMessageView.Builder.toView(bean);
