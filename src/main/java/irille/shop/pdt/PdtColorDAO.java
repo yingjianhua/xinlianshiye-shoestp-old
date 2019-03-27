@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import irille.action.dataimport.util.StringUtil;
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
@@ -42,7 +45,7 @@ public class PdtColorDAO {
   }*/
 
   /**
-   * 查询产品颜色列表
+   * 查询产品颜色列表 -平台查询
    *
    * @param start
    * @param limit
@@ -141,7 +144,7 @@ public class PdtColorDAO {
   }
 
   /**
-   * 新增产品颜色
+   * 新增产品颜色 -平台新增
    *
    * @author lingjian
    * @date 2019/1/22 13:38
@@ -158,7 +161,7 @@ public class PdtColorDAO {
   }
 
   /**
-   * 修改产品颜色
+   * 修改产品颜色 -平台修改
    *
    * @author lingjian
    * @date 2019/1/22 13:38
@@ -168,6 +171,7 @@ public class PdtColorDAO {
     public void before() {
       checkColorLength(getB().getName());
       PdtColor dbBean = loadThisBeanAndLock();
+      chooseColorPdt(dbBean.getPkey(), 1);
       getB().setCreateTime(Env.getSystemTime()); // 自动生成修改时间
       PropertyUtils.copyPropertiesWithout(
           dbBean,
@@ -185,7 +189,7 @@ public class PdtColorDAO {
   }
 
   /**
-   * 删除产品颜色
+   * 删除产品颜色 -平台删除
    *
    * @author lingjian
    * @date 2019/1/22 13:38
@@ -196,6 +200,7 @@ public class PdtColorDAO {
       super.before();
       getB().setDeleted(OYn.YES.getLine().getKey());
       PdtColor dbBean = loadThisBeanAndLock();
+      chooseColorPdt(dbBean.getPkey(), 2);
       PropertyUtils.copyProperties(dbBean, getB(), T.DELETED);
       setB(dbBean);
     }
@@ -463,8 +468,37 @@ public class PdtColorDAO {
   }
 
   public static void checkColorLength(String name) {
-    if (name.length() > 20) {
-      throw new WebMessageException(ReturnCode.service_wrong_data, "颜色名称过长");
+    String str = "";
+    try {
+      JSONObject json = new JSONObject(name);
+      str = json.get(PltConfigDAO.manageLanguage().toString()).toString();
+    } catch (JSONException e) { // TODO Auto-generated catch block
+      str = name;
+      e.printStackTrace();
+    }
+    if (str.length() > 20) {
+      throw new WebMessageException(ReturnCode.service_wrong_data, "颜色名称不能超过20");
+    }
+  }
+
+  public static void chooseColorPdt(Integer colorPkey, Integer type) {
+    SQL sql = new SQL();
+    sql.SELECT(PdtProduct.T.PKEY).FROM(PdtProduct.class);
+    sql.WHERE(
+        "color_attr like (?) or color_attr like (?) or color_attr like (?) or color_attr = ?",
+        "%," + colorPkey,
+        "%," + colorPkey + ",%",
+        colorPkey + ",%",
+        colorPkey);
+    Integer count = Query.sql(sql).queryCount();
+    if (count > 0) {
+      String str = "";
+      if (type == 1) {
+        str = "当前颜色已被使用,无法修改";
+      } else if (type == 2) {
+        str = "当前颜色已被使用,无法删除";
+      }
+      throw new WebMessageException(ReturnCode.service_gone, str);
     }
   }
 }
