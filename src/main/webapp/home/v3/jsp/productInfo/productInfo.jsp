@@ -669,7 +669,7 @@
             line-height: 16px;
         }
 
-        #productInfo .conpanyFrBox .h3 img {
+        #productInfo .conpanyFrBox .h6 img {
             width: 23px;
             height: 16px;
             margin-right: 5px;
@@ -677,7 +677,7 @@
 
         #productInfo .conpanyFrBox .h4 {
             color: #000;
-            padding: 18px 0 14px 0;
+            padding: 0 0 14px 0;
             font-size: 14px;
         }
 
@@ -699,7 +699,7 @@
         }
 
         #productInfo .conpanyFrBox .txt2 .h6 {
-            line-height: 35px;
+            line-height: 50px;
         }
 
         #productInfo .conpanyFrBox .hBtn {
@@ -1015,8 +1015,7 @@
                     </div>
 
                     <div class="txt">
-                        <div class="h3"><img src="/home/v3/static/images/productInfo/cn.png" alt=""/>CN</div>
-                        <div class="h4">Shose</div>
+                        <div class="h4">Shoe Manufacturer</div>
                         <div class="h5">
                             <img class="mr4" src="/home/v3/static/images/productInfo/icon-renzheng.png" alt=""/>Certificate
                             <div class="i"></div>
@@ -1039,7 +1038,7 @@
                     </div>
 
                     <div class="txt2">
-                        <div class="h6">China</div>
+                        <div class="h6"><img src="/home/v3/static/images/productInfo/cn.png" alt=""/>China</div>
                     </div>
 
                     <div class="hBtn" @click="contactSupplier"><a
