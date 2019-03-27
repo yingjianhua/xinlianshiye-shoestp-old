@@ -25,11 +25,6 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.struts2.ServletActionContext;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.sun.mail.util.MailSSLSocketFactory;
 import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
 
@@ -73,6 +68,10 @@ import irille.view.usr.UserIndexView;
 import irille.view.usr.UserView;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.struts2.ServletActionContext;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * 采购商action
@@ -607,33 +606,13 @@ public class UsrPurchaseAction extends HomeAction<UsrPurchase> implements IUsrPu
    * @author yingjianhua
    */
   public String sign() throws JSONException {
-    //    countrys = pltService.getCountryList(curLanguage(), null);
-    //    StringJoiner stringJoiner = new StringJoiner("&");
-    //    getParams()
-    //        .forEach(
-    //            (s, strings) -> {
-    //              if (s.equalsIgnoreCase("jumpUrl")) return;
-    //              for (String string : strings) {
-    //
-    //                String t = s + "=" + string;
-    //                stringJoiner.add(t);
-    //              }
-    //            });
-    //    if (stringJoiner.length() > 0) setJumpUrl(getJumpUrl() + "?" + stringJoiner.toString());
     setResult("/home/v3/jsp/login/login.jsp");
     return TRENDS;
   }
 
-  /** 用户重置密码 */
-  public void uda() throws Exception {
-    FIND_POSSWORD_TOKEN_MAP.remove(randomNum);
-    UsrPurchase purchase = UsrPurchase.load(UsrPurchase.class, purchasepkey);
-    UsrPurchaseDAO.Uda uda = new UsrPurchaseDAO.Uda();
-    uda.setB(purchase);
-    uda.setPassword(password);
-    uda.setCopyPassword(password2);
-    uda.commit();
-    writeSuccess();
+  public void logout() throws IOException {
+    setUser(null);
+    write();
   }
 
   public String getEmail() {
