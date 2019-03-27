@@ -15,10 +15,10 @@ import com.google.gson.JsonParser;
 import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
 import com.xinlianshiye.shoestp.plat.service.pm.imp.PMMessageServiceImp;
 
-import irille.Entity.O2O.O2O_PrivateExpoPdt;
-import irille.Entity.O2O.O2O_Product;
 import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
+import irille.Entity.O2O.O2O_PrivateExpoPdt;
+import irille.Entity.O2O.O2O_Product;
 import irille.Entity.pm.PM.OTempType;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
@@ -38,7 +38,6 @@ import irille.pub.idu.IduOther;
 import irille.pub.idu.IduUpd;
 import irille.pub.svr.Env;
 import irille.pub.tb.FldLanguage;
-import irille.pub.util.SEOUtils;
 import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.TranslateLanguage.TranslateFilter;
 import irille.pub.util.TranslateLanguage.translateUtil;
@@ -203,23 +202,7 @@ public class PdtProductDAO {
       //			super.before();
       PdtProduct dbBean = new PdtProduct().init();
       dbBean.setSupplier(SellerAction.getSupplier().getPkey());
-      //            dbBean.setSupplier(262);
       dbBean.setMemberLevel(null);
-      TranslateFilter translateFilter = new TranslateFilter();
-      translateFilter.setLanguageList(new ArrayList<>());
-      JsonObject jsonObject = new JsonParser().parse(getB().getName()).getAsJsonObject();
-      translateFilter.setMode(0);
-      jsonObject
-          .entrySet()
-          .forEach(
-              stringJsonElementEntry -> {
-                // 如果不相等  添加到清单
-                if (stringJsonElementEntry.getValue().getAsString().length() > 0) {
-                  translateFilter
-                      .getLanguageList()
-                      .add(FldLanguage.Language.valueOf(stringJsonElementEntry.getKey()));
-                }
-              });
       PropertyUtils.copyProperties(
           dbBean,
           getB(),
@@ -253,7 +236,8 @@ public class PdtProductDAO {
           T.SEO_KEYWORD,
           T.SEO_TITLE,
           T.PRODUCT_TYPE);
-      translateUtil.newAutoTranslate(dbBean, translateFilter);
+      translateUtil.newAutoTranslate(
+          dbBean, translateUtil.buildFilter(dbBean.getName(), FldLanguage.Language.en));
       getB().setUpdateTime(Env.getTranBeginTime());
       dbBean.setDescribeModule1(getB().getDescribeModule1());
       dbBean.setDescribeModule2(getB().getDescribeModule2());
@@ -548,43 +532,6 @@ public class PdtProductDAO {
     @Override
     public void before() {
       PdtProduct dbBean = load(getB().getPkey());
-      TranslateFilter translateFilter = new TranslateFilter();
-      translateFilter.setLanguageList(new ArrayList<>());
-      JsonObject dbJson = new JsonParser().parse(dbBean.getName()).getAsJsonObject();
-      JsonObject jsonObject = new JsonParser().parse(getB().getName()).getAsJsonObject();
-      jsonObject.addProperty(
-          FldLanguage.Language.en.name(),
-          SEOUtils.firstUpperCase(jsonObject.get(FldLanguage.Language.en.name()).getAsString()));
-      if (dbJson.get(FldLanguage.Language.en.name()).getAsString().hashCode()
-          != jsonObject.get(FldLanguage.Language.en.name()).getAsString().hashCode()) {
-        translateFilter.setMode(0);
-        // 基准发生修改 用黑名单模式,修改的字段不翻译
-        jsonObject
-            .entrySet()
-            .forEach(
-                stringJsonElementEntry -> {
-                  // 如果不相等  添加到清单
-                  if (dbJson.get(stringJsonElementEntry.getKey()).getAsString().hashCode()
-                      != (stringJsonElementEntry.getValue().getAsString()).hashCode()) {
-                    translateFilter
-                        .getLanguageList()
-                        .add(FldLanguage.Language.valueOf(stringJsonElementEntry.getKey()));
-                  }
-                });
-      } else {
-        translateFilter.setMode(2);
-        jsonObject
-            .entrySet()
-            .forEach(
-                stringJsonElementEntry -> {
-                  if (stringJsonElementEntry.getValue().getAsString().length() < 1) {
-                    translateFilter
-                        .getLanguageList()
-                        .add(FldLanguage.Language.valueOf(stringJsonElementEntry.getKey()));
-                  }
-                });
-      }
-
       PropertyUtils.copyProperties(
           dbBean,
           getB(),
@@ -618,7 +565,9 @@ public class PdtProductDAO {
           T.SEO_KEYWORD,
           T.SEO_TITLE,
           T.PRODUCT_TYPE);
-      translateUtil.newAutoTranslate(dbBean, translateFilter);
+      translateUtil.newAutoTranslate(
+          dbBean,
+          translateUtil.buildFilter(dbBean.getName(), getB().getName(), FldLanguage.Language.en));
       dbBean.setDescribeModule1(getB().getDescribeModule1());
       dbBean.setDescribeModule2(getB().getDescribeModule2());
       dbBean.setDescribeModule3(getB().getDescribeModule3());
