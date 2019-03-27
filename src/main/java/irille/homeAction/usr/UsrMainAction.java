@@ -160,17 +160,17 @@ public class UsrMainAction extends HomeAction<UsrMain> {
       }
     }
     if (getBean().getIdentity() == 0) {
-      if (Str.isEmpty(getTelPre()) || Str.isEmpty(getTelAft())) {
-        throw new WebMessageException(
-            MessageBuild.buildMessage(ReturnCode.valid_phone_notnull, HomeAction.curLanguage()));
+
+      String phone = (getTelPre() == null ? "" : getTelPre()) + "-" + (getTelMid() == null ? "" : getTelMid()) +  (getTelAft() == null ? "" : getTelAft());
+      if(Str.isEmpty(getTelPre())||Str.isEmpty(getTelAft())){
+        getBean().setTelphone("");
+      }else{
+        if (!ValidRegex.regMarch(Regular.REGULAR_TEL, phone)) {
+          throw new WebMessageException(
+                  MessageBuild.buildMessage(ReturnCode.valid_phoneRegex, HomeAction.curLanguage()));
+        }
+        getBean().setTelphone(phone);
       }
-      String phone = getTelPre() + "-" + (getTelMid() == null ? "" : getTelMid()) + getTelAft();
-      if (!ValidRegex.regMarch(Regular.REGULAR_TEL, phone)) {
-        throw new WebMessageException(
-            MessageBuild.buildMessage(ReturnCode.valid_phoneRegex, HomeAction.curLanguage()));
-      }
-      String tel = getTelPre() + "-" + (getTelMid() == null ? "" : getTelMid()) + "-" + getTelAft();
-      getBean().setTelphone(tel);
     } else {
       if (Str.isEmpty(getBean().getTelphone())) {
         throw new WebMessageException(
