@@ -151,7 +151,48 @@ public class GetBaseScoreUtils {
     resulutMap.put("researchBase", researchBase);
     resulutMap.put("factoryBase", factoryBase);
     resulutMap.put("capacityBase", capacityBase);
-    System.out.println(resulutMap);
     return resulutMap;
+  }
+
+  public static void checkNotNull(
+      String search,
+      String capacity,
+      String factory,
+      String quality,
+      String team,
+      String partner,
+      String exhibition) {
+    if (null == search
+        || search.trim() == ""
+        || "".equals(search.trim())
+        || "{}".equals(search.trim()))
+      throw new WebMessageException(ReturnCode.failure, "研发能力信息不能为空");
+    if (null == capacity
+        || capacity.trim() == ""
+        || "".equals(capacity.trim())
+        || "{}".equals(capacity.trim()))
+      throw new WebMessageException(ReturnCode.failure, "生产能力信息不能为空");
+    if (null == factory
+        || factory.trim() == ""
+        || "".equals(factory.trim())
+        || "{}".equals(factory.trim()))
+      throw new WebMessageException(ReturnCode.failure, "工厂模式信息不能为空");
+    if (null == quality
+        || quality.trim() == ""
+        || "".equals(quality.trim())
+        || "{}".equals(quality.trim()))
+      throw new WebMessageException(ReturnCode.failure, "产品质量信息不能为空");
+    if (null == team || team.trim() == "" || "".equals(team.trim()) || "{}".equals(team.trim()))
+      throw new WebMessageException(ReturnCode.failure, "外贸团队信息不能为空");
+    if (null == exhibition
+        || exhibition.trim() == ""
+        || "".equals(exhibition.trim())
+        || "{}".equals(exhibition.trim()))
+      throw new WebMessageException(ReturnCode.failure, "展会信息不能为空");
+    if (null == partner
+        || partner.trim() == ""
+        || "".equals(partner.trim())
+        || "{}".equals(partner.trim()))
+      throw new WebMessageException(ReturnCode.failure, "合作商信息不能为空");
   }
 }
