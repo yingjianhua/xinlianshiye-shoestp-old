@@ -23,7 +23,7 @@
 <jsp:include page="/home/v3/nav.jsp"></jsp:include>
 	<div id="svsSuplies">
         <index-top></index-top>
-        <div class="nav">
+        <!-- <div class="nav">
             <div class="navitem" @click="showcheck(1)">
                 <h3>Target Market<img src="images/svssupicondown.png" alt=""></h3>
                 <div class="select" :class="select1 ?  'height' : ''">
@@ -60,7 +60,9 @@
                     </el-checkbox-group>
                 </div>
             </div>
-        </div>
+        </div> -->
+        <!-- 隐藏筛选后 临时用 撑开距离 -->
+        <div style="background-color: #f5f5f5;height:50px;"></div>
         <div class="suplies" v-for="item,index in sublies">
             <div class="likes">
                 <img src="images/subliesiconsc.png" alt="" v-if="!item.isFavorite"  @click="cllection(index)">
@@ -124,7 +126,7 @@
                 <div class="content_item content_item_right">
                     <h2 class="content_item_h2">Supplier Search</h2>
                     <p class="content_item_text">Find More Supplier</p>
-                    <a href="javascript:void(0)" class="content_item_button btn_colour_2">Search now</a>
+                    <a href="javascript:void(0)" class="content_item_button btn_colour_2" @click="noOpen">Search now</a>
                 </div>
             </div>
         </div>
@@ -202,6 +204,13 @@
                             console.log(self.sublies)
                         }
                     })
+                },
+                // 点击 搜索供应商 (未开放先提示)
+                noOpen(){
+                    this.$alert("Sorry, this feature is not open yet.", {
+                        confirmButtonText: 'OK',
+                        customClass: "my-custom-element-alert-class fs-content-18",
+                    });
                 }
 			},
 			mounted(){
