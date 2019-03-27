@@ -1094,4 +1094,82 @@ public class PdtProductDAO {
       pp.upd();
     }
   }
+
+  /** @Author wilson Zhang @Description 商家首页获取当前供应商的产品总数 @Date 16:28 2019/3/27 */
+  public Integer productCount(Integer supplierpkey) {
+    SQL pdt =
+        new SQL() {
+          {
+            SELECT(PdtProduct.T.PKEY)
+                .FROM(PdtProduct.class)
+                .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierpkey);
+          }
+        };
+    return irille.pub.bean.Query.sql(pdt).queryCount();
+  }
+  /** @Author wilson Zhang @Description 商家首页获取当前供应商的私人展厅产品总数 @Date 16:28 2019/3/27 */
+  public Integer privateproductCount(Integer supplierpkey) {
+    SQL pdt =
+        new SQL() {
+          {
+            SELECT(PdtProduct.T.PKEY)
+                .FROM(PdtProduct.class)
+                .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierpkey)
+                .WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.PrivateExpo);
+          }
+        };
+    return irille.pub.bean.Query.sql(pdt).queryCount();
+  }
+  /** @Author wilson Zhang @Description 商家首页获取当前供应商的仓库产品总数 @Date 16:28 2019/3/27 */
+  public Integer wareHouseProductCount(Integer supplierpkey) {
+    SQL pdt =
+        new SQL() {
+          {
+            SELECT(PdtProduct.T.PKEY)
+                .FROM(PdtProduct.class)
+                .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierpkey)
+                .WHERE(PdtProduct.T.STATE, "=?", OState.OFF);
+          }
+        };
+    return irille.pub.bean.Query.sql(pdt).queryCount();
+  }
+  /** @Author wilson Zhang @Description 商家首页获取当前供应商的产品待审核总数 @Date 16:28 2019/3/27 */
+  public Integer verifyProductCount(Integer supplierpkey) {
+    SQL pdt =
+        new SQL() {
+          {
+            SELECT(PdtProduct.T.PKEY)
+                .FROM(PdtProduct.class)
+                .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierpkey)
+                .WHERE(PdtProduct.T.IS_VERIFY, "=?", Pdt.OAppr._DEFAULT.getLine().getKey());
+          }
+        };
+    return irille.pub.bean.Query.sql(pdt).queryCount();
+  }
+  /** @auther liyichao @Description 商家首页获取当前供应商的审核失败产品总数 */
+  public Integer failedProductCount(Integer supplier) {
+    SQL sql =
+        new SQL() {
+          {
+            SELECT(PdtProduct.T.PKEY)
+                .FROM(PdtProduct.class)
+                .WHERE(PdtProduct.T.SUPPLIER, " =? ", supplier)
+                .WHERE(PdtProduct.T.IS_VERIFY, " =? ", Pdt.OAppr.Failed.getLine().getKey());
+          }
+        };
+    return irille.pub.bean.Query.sql(sql).queryCount();
+  }
+  /** @auther liyichao @Description 商家首页获取当前供应商的产品回收站总数 */
+  public Integer warehouseProductCount(Integer supplier) {
+    SQL pdt =
+        new SQL() {
+          {
+            SELECT(PdtProduct.T.PKEY)
+                .FROM(PdtProduct.class)
+                .WHERE(PdtProduct.T.SUPPLIER, "=?", supplier)
+                .WHERE(PdtProduct.T.STATE, "=?", OState.MERCHANTDEL);
+          }
+        };
+    return irille.pub.bean.Query.sql(pdt).queryCount();
+  }
 }
