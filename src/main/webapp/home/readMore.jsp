@@ -27,14 +27,14 @@
                         <div class="section1-content-right">
                             <div class="flexSt">
                                 <div class="title">Posted On:</div>
-                                <div>{{companyInfo.time}}</div>
+                                <div style="width: 155px;word-wrap: break-word;">{{companyInfo.time}}</div>
                             </div>
                         </div>
                     </li>
                     <li class="flexSb">
                             <div class="section1-content-left flexSb">
                                     <div class="title">Product Image:</div>
-                                    <div class="img-list flexSt">
+                                    <div class="img-list flexSt" style="width:440px;">
                                         <div class="img-item" v-if="images.length == 0">
                                             <img src="./static/images/no-pdtImages.png" alt="">
                                         </div>
@@ -46,7 +46,7 @@
                             <div class="section1-content-right">
                                 <div class="flexSt">
                                     <div class="title">Destination Port:</div>
-                                    <div>{{companyInfo.rfqCountry}}</div>
+                                    <div style="width: 155px;word-wrap: break-word;">{{companyInfo.rfqCountry}}</div>
                                 </div>
                             </div>
                         

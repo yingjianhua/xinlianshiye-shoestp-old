@@ -437,7 +437,7 @@
                     };
                     setTimeout(() => {
                         this.nowGroupCount = this.allGroupCount;
-                    }, 100);
+                    }, 400);
                 });
             },
             methods: {

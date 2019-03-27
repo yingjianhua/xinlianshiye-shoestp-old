@@ -680,7 +680,7 @@
 												v-for="picUrl in inquiryDetail.images"
 												v-if="picUrl"
 												:key="picUrl">
-												<img class="product-pic" :src="image(picUrl)" alt="">
+												<img class="product-pic" :src="util_function_obj.image(picUrl,50)" alt="">
 											</li>
 										</ul>
 
@@ -700,7 +700,7 @@
 												<li class="goods-pic-item"
 													v-for="product in inquiryDetail.productRequest"
 													:key="product.image">
-													<img class="product-pic" :src="(product.image && product.image.split(',') && product.image.split(',')[0])?(image(product.image.split(',')[0])):'/home/v3/static/images/no_img.png'" alt="">
+													<img class="product-pic" :src="(product.image && product.image.split(',') && product.image.split(',')[0])?(util_function_obj.image(product.image.split(',')[0],50)):'/home/v3/static/images/no_img.png'" alt="">
 													<div class="goods-name ellipsis_1">
 														{{product.name}}
 													</div>
@@ -1093,7 +1093,9 @@
 				<b>ALL</b> <!-- <i class="el-icon-arrow-down"></i> -->
 			</div>
 
-			<el-input size="medium" placeholder="Please input the keywords" class="input-with-select"
+			<el-input size="medium" placeholder="Please input the keywords"
+					  class="input-with-select"
+					  style="width: 440px;"
 					  @keyup.enter.native="searchInAddProductDialog"
 					  v-model.trim="addProductKeyword">
 				<el-button slot="append" icon="el-icon-search" class="btn-search"
@@ -1136,7 +1138,7 @@
 					v-for="goods in addProductGoodsListObj.items"
 					:data-product-id="goods.pdtId"
 					@click="selectAddProductGoods">
-					<img class="goods-pic" :src="(goods.picture && goods.picture.split(',') && goods.picture.split(',')[0])?image(goods.picture.split(',')[0]):'/home/v3/static/images/no_img.png'" alt="goods's pic">
+					<img class="goods-pic" :src="(goods.picture && goods.picture.split(',') && goods.picture.split(',')[0])?util_function_obj.image(goods.picture.split(',')[0],100):'/home/v3/static/images/no_img.png'" alt="goods's pic">
 					<div class="goods-name ellipsis_1">
 						{{goods.pdtName}}
 					</div>
@@ -1245,7 +1247,7 @@
 			addProductKeyword: "", //add product弹窗中方 搜索信息
 			addProductCatogeryValue: 0, //add product中的选中分类value值 - 有的话搜索条件添加lose=1
 			addProductPageStart: 0, //add product中 分页
-			addProductPageLimit: 10, //add product中 分页
+			addProductPageLimit: 8, //add product中 分页
 			addProductCurrentPage: 1, //add product中 分页 - element插件需要
 			addProductGoodsListObj:{}, //添加商品时的 产品列表 - 含分页信息
 			addProductSelectedPdtIds: [], //add product中 选中的商品id
@@ -1885,8 +1887,6 @@
 				}, this.showChatBox?200:1000)
 
 				this.isScale = true;
-				this.showChatBox = true;
-				this.showRFQDeailBox = false;
 				this.isFromContactList = false; //从联系人列表跳转过来时的值
 
 				var dataset = e.currentTarget.dataset;
@@ -1894,7 +1894,10 @@
 				var supplierIndex = dataset.supplierIndex;
 				var inquiryIndex = dataset.inquiryIndex;
 				// 当前点击的就是当前显示的，不触发点击事件 - 首次加载显示第一个，此时也可以点第一个，so != 0
-				if(this.nowSupplierIndex==supplierIndex && this.nowInquiryIndex == inquiryIndex && this.nowInquiryIndex != 0 && Object.keys(this.supplierDetail).length != 0) return;
+				if(this.nowSupplierIndex==supplierIndex && this.nowInquiryIndex == inquiryIndex && this.nowInquiryIndex != 0 && Object.keys(this.supplierDetail).length != 0 && this.showChatBox) return;
+
+				this.showChatBox = true;
+				this.showRFQDeailBox = false;
 
 				// 重置聊天信息
 				this.resetChatMsg();
