@@ -461,12 +461,12 @@
             // 跳转RFQ   
              ToRFQ(title,quantity,chooesValue){
                 let url = "/home/usr_UsrConsult_publishView?title=" +title+"&quantity="+quantity+"&chooesValue="+chooesValue+ "&backUrl=" + window.location.href
-                util_function_obj.supplierCantEnter(this, url);
+                util_function_obj.supplierCantEnter(this, url,"Please register or login your buyer account if you want public RFQ.");
              },
             // 跳转商品询盘表单
             ToProductInquiry(pdtId){
                 let url = "/home/usr_UsrConsult_productPublishView?product_id=" + pdtId + "&backUrl=" + window.location.href
-                util_function_obj.supplierCantEnter(this, url);
+                util_function_obj.supplierCantEnter(this, url,"Please register or login your buyer account if you want making enquiries.");
             },
             image: function image(v, params) {
                 if (!v) {

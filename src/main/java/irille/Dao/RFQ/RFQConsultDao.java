@@ -79,23 +79,22 @@ public interface RFQConsultDao {
   List<Map<String, Object>> getMyRFQQuoteList(
       Integer start,
       Integer limit,
-      byte type,
       Date date,
       String keyword,
       boolean flag,
-      Integer status,
+      Byte readStatus,
       Integer country,
       int supId,
       Integer usrCountry);
 
-  Integer count(
-      byte type,
+  Integer countMyRFQQuoteList(
       Date date,
       String keyword,
       boolean flag,
-      Integer status,
+      Byte readStatus,
       Integer country,
-      int supId);
+      int supId,
+      Integer usrCountry);
 
   Map<String, Object> getMyRFQQuoteInfo(Integer id, Integer pkey);
 

@@ -14,17 +14,16 @@
     <title></title>
     <style>
         .content-warp {
-            width: 700px;
+            width: 640px;
             margin: 0 auto;
-            padding: 36px 32px;
+            padding: 36px 0;
             color: #2d2d2d;
             background: #fff;
         }
 
         /* 头部样式 */
         .header {
-            padding-bottom: 16px;
-            border-bottom: 1px solid rgba(222, 226, 236, 0.3);
+            padding: 0 32px 28px;
         }
 
         .header .logo {
@@ -43,24 +42,31 @@
         }
 
         /* 中间样式 */
+        .card-content {
+            padding: 50px 30px 70px;
+            border-radius: 10px;
+            border: solid 1px #eee;
+            background-color: #fff;
+        }
+
         .main {
-            padding-top: 47px;
-            padding-bottom: 47px;
+            padding-bottom: 60px;
             border-bottom: 1px solid rgba(222, 226, 236, 0.3);
         }
 
         .main .main-tips {
-            padding: 30px 6px 30px 10px;
-            margin-bottom: 36px;
-            line-height: 23px;
+            position: relative;
+            margin-bottom: 46px;
+            padding-left: 27px;
+            line-height: 26px;
             font-family: ArialMT;
-            border: solid 1px #ddd;
-            box-shadow: 0px 2px 4px 0px rgba(0, 24, 84, 0.19);
+            font-weight: bold;
         }
 
         .main .main-tips .icon {
-            position: relative;
-            top: -1px;
+            position: absolute;
+            top: 6px;
+            left: 4px;
             width: 15px;
             height: 15px;
             object-fit: contain;
@@ -77,11 +83,11 @@
             font-size: 16px;
             cursor: pointer;
             border-radius: 3px;
-            background-color: #10389c;
+            background-color: #e54544;
         }
 
         .main .btn-complete:hover {
-            background-color: #35c;
+            background-color: #e66;
         }
 
         /* 底部样式 */
@@ -110,21 +116,23 @@
         <div class="header-tip">You have new notifications</div>
     </div>
 
-    <div class="main">
-        <div class="main-tips">
-            <img class="icon" alt="!"
-                 src="https://image.shoestp.com/public/upload/usr/consult/c3fd689bedb1934878950f1963242c2e.png">
-            Please confirm your email address, only one step,your registration will be successful!
+    <div class="card-content">
+        <div class="main">
+            <div class="main-tips">
+                <img class="icon" alt="!"
+                     src="https://image.shoestp.com/public/upload/usr/consult/c3fd689bedb1934878950f1963242c2e.png">
+                Please confirm your email address, only one step,your registration will be successful!
+            </div>
+
+            <a class="btn-complete" href="{{url}}" target="_blank">Complete</a>
         </div>
 
-        <a class="btn-complete" href="{{url}}" target="_blank">Complete</a>
-    </div>
-
-    <div class="bottom">
-        If you don't see the button above, click on the link below to complete the registration or copy the link below
-        to the browser address bar to complete the registration:
-        <br>
-        <a href="{{url}}" target="_blank" class="link-page">{{url}}</a>
+        <div class="bottom">
+            If you don't see the button above, click on the link below to complete the registration or copy the link
+            below to the browser address bar to complete the registration:
+            <br>
+            <a href="{{url}}" target="_blank" class="link-page">{{url}}</a>
+        </div>
     </div>
 </div>
 <script>

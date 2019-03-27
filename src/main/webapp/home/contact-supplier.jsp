@@ -213,6 +213,9 @@
                 }
             },
             mounted() {
+                if (sessionStorage['Temp_Contact_Supplier_form'] &&sessionStorage['Temp_Contact_Supplier_form']!=''&&sessionStorage['Temp_Contact_Supplier_form']!='null'){
+                    this.form=JSON.parse(sessionStorage['Temp_Contact_Supplier_form'])
+                }
                 // 进来页面获取到供应商信息
                 let self = this;
                 self.supplierPkey = self.getQueryString("supplierPkey");
@@ -272,6 +275,11 @@
                 // 上传图片文件之前
                 beforeUpload(file){
                     console.log(file)
+                    if (!sysConfig || !sysConfig.user) {
+                        sessionStorage['Temp_Contact_Supplier_form']=JSON.stringify(this.form)
+                        util_function_obj.alertWhenNoLogin(this);
+                        return
+                    }
                     let size = file.size / 1024;
                     if(size > 500 ){
                         this.$message.error('Image size cannot exceed 500k');
@@ -281,12 +289,13 @@
                 submitForm(formName) { // 表单提交
                     let self = this;
                     if(!sysConfig || !sysConfig.user){
+                        sessionStorage['Temp_Contact_Supplier_form']=JSON.stringify(self.form)
                         util_function_obj.alertWhenNoLogin(self);
                         return
                     }else{
                         // 登录了
                         if(sysConfig.user.user_type == 1){
-                            self.$alert("Sorry, the supplier cannot submit the form",{
+                            self.$alert("Please register or login your buyer account if you want making enquiries.",{
                                 confirmButtonText: 'Ok',
                                 customClass: "my-custom-element-alert-class fs-content-18",
                                 center: true,
@@ -297,58 +306,52 @@
                             return
                         }else{
                             self.$refs[formName].validate((valid) => {
-                        if (valid) {
-                            self.flag = true;
-                            console.log(self.form)
-                            self.form.images = self.imgsToUpload.join(",");
-                            // self.form.pdtId = self.id;
-                            console.log(self.imgsToUpload)
-                            console.log('submit!');
-                            let data = JSON.stringify(self.form)
-                            axios.post("/home/rfq_RFQConsult_putSupplierInquiry",data,
-                                {headers: {'Content-Type': 'application/json'}}
-                            )
-                                .then((res) => {
-                                console.log(res)
-                                // 提交成功时
-                                if (res.data.ret == 1) {
-                                // 提示信息
-                                self.$message({
-                                    showClose: true,
-                                    message: 'Submitted successfully',
-                                    type: 'success'
-                                });
-                                setTimeout(function () {
-                                    // gtag_report_conversion()
-                                    // window.location.href =
-                                    //     '/home/usr_UsrSupplier_gtSupInfo?pkey=' + self.pkey;
-                                    window.location.href = util_function_obj.GetParamsFullUrl('backUrl=','/');
-                                }, 1500)
-                            }  else {
-                                self.flag = false;
-                                self.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
-                                    confirmButtonText: 'OK',
-                                    customClass: "my-custom-element-alert-class fs-content-18",
-                                });
-                            }
+                                if (valid) {
+                                    self.flag = true;
+                                    console.log(self.form)
+                                    self.form.images = self.imgsToUpload.join(",");
+                                    // self.form.pdtId = self.id;
+                                    console.log(self.imgsToUpload)
+                                    console.log('submit!');
+                                    let data = JSON.stringify(self.form)
+                                    axios.post("/home/rfq_RFQConsult_putSupplierInquiry",data,
+                                        {headers: {'Content-Type': 'application/json'}}
+                                    )
+                                        .then((res) => {
+                                        console.log(res)
+                                        // 提交成功时
+                                        if (res.data.ret == 1) {
+                                        // 提示信息
+                                        self.$message({
+                                            showClose: true,
+                                            message: 'Submitted successfully',
+                                            type: 'success'
+                                        });
+                                        setTimeout(function () {
+                                            sessionStorage.removeItem('Temp_Contact_Supplier_form')
+                                            window.location.href = util_function_obj.GetParamsFullUrl('backUrl=','/');
+                                        }, 1500)
+                                        }else if (res.data.ret == -1) {
+                                            sessionStorage['Temp_Contact_Supplier_form'] = JSON.stringify(self.form)
+                                            util_function_obj.alertWhenNoLogin(self);
+                                            return
+                                        }else {
+                                            self.flag = false;
+                                            self.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
+                                                confirmButtonText: 'OK',
+                                                customClass: "my-custom-element-alert-class fs-content-18",
+                                            });
+                                        }
 
-                        })
-                        .catch((err) => {
-                            self.flag = false;
-                            self.$message.error("Network error, please refresh the page and try again");
-                            console.log(err)
-                        })
-                        } else {
-                            console.log('error submit!!');
-                            // if (!self.form.quantity) {
-                            //     self.$message.error('Quantity cannot be empty');
-                            // } else if (!self.form.unit) {
-                            //     self.$message.error("Select unit");
-                            // } else if (!self.form.description) {
-                            //     self.$message.error('Please fill in the message');
-                            // }
-                            // return false;
-                        }
+                                        })
+                                        .catch((err) => {
+                                            self.flag = false;
+                                            self.$message.error("Network error, please refresh the page and try again");
+                                            console.log(err)
+                                        })
+                                } else {
+                                    console.log('error submit!!');
+                                }
                         });
                         }
                     }

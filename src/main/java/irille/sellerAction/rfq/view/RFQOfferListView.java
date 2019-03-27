@@ -4,12 +4,13 @@ import java.util.List;
 import java.util.Map;
 
 import irille.view.Page;
+import irille.view.Manage.RFQ.RFQManageMyQuoteListBody;
 
-public class RFQOfferListView extends Page {
+public class RFQOfferListView extends Page<RFQManageMyQuoteListBody> {
   private Map<Integer, Object> countries;
 
   public RFQOfferListView(
-      List items, int start, int limit, int totalCount, Map<Integer, Object> countries) {
+      List<RFQManageMyQuoteListBody> items, int start, int limit, int totalCount, Map<Integer, Object> countries) {
     super(items, start, limit, totalCount);
     this.countries = countries;
   }
