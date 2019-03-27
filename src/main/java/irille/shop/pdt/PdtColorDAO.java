@@ -152,7 +152,9 @@ public class PdtColorDAO {
       checkColorLength(getB().getName());
       getB().setDeleted(OYn.NO.getLine().getKey());
       getB().setCreateTime(Env.getTranBeginTime());
-      setB(translateUtil.autoTranslate(getB()));
+      setB(
+          translateUtil.newAutoTranslate(
+              getB(), translateUtil.buildFilter(getB().getName(), PltConfigDAO.manageLanguage())));
       super.before();
     }
   }
@@ -171,7 +173,10 @@ public class PdtColorDAO {
       getB().setCreateTime(Env.getSystemTime()); // 自动生成修改时间
       PropertyUtils.copyPropertiesWithout(
           dbBean,
-          translateUtil.autoTranslateByManageLanguage(getB(), true),
+          translateUtil.newAutoTranslate(
+              getB(),
+              translateUtil.buildFilter(
+                  dbBean.getName(), getB().getName(), PltConfigDAO.manageLanguage())),
           T.PKEY,
           T.SUPPLIER,
           T.CREATE_BY,
