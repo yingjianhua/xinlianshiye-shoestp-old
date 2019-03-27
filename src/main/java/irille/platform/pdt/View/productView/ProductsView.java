@@ -27,4 +27,6 @@ public class ProductsView implements BaseView {
   private Byte isVerify; // 审核状态
   private Byte state; // 商品状态
   private String isO2O; // 是否是O2O商品
+
+  private String rewrite;
 }
