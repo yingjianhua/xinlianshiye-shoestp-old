@@ -5,9 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
 import irille.core.sys.SysUser;
@@ -33,6 +30,8 @@ import irille.shop.pdt.PdtAttr.T;
 import irille.shop.plt.PltConfigDAO;
 import irille.view.Page;
 import irille.view.pdt.PdtProductVueView;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class PdtAttrDAO {
   public static final Log LOG = new Log(PdtAttrDAO.class);
@@ -103,7 +102,9 @@ public class PdtAttrDAO {
     public void before() {
       getB().setDeleted(OYn.NO.getLine().getKey());
       getB().setCreateTime(Env.getTranBeginTime());
-      setB(translateUtil.autoTranslate(getB()));
+      setB(
+          translateUtil.newAutoTranslate(
+              getB(), translateUtil.buildFilter(getB().getName(), PltConfigDAO.manageLanguage())));
       super.before();
     }
   }
@@ -118,10 +119,12 @@ public class PdtAttrDAO {
     @Override
     public void before() {
       PdtAttr dbBean = loadThisBeanAndLock();
-      //            getB().setCreateTime(Env.getSystemTime());//自动生成修改时间
       PropertyUtils.copyPropertiesWithout(
           dbBean,
-          translateUtil.autoTranslateByManageLanguage(getB(), true),
+          translateUtil.newAutoTranslate(
+              getB(),
+              translateUtil.buildFilter(
+                  dbBean.getName(), getB().getName(), PltConfigDAO.manageLanguage())),
           PdtAttr.T.PKEY,
           PdtAttr.T.CREATE_BY,
           PdtAttr.T.CREATE_TIME,

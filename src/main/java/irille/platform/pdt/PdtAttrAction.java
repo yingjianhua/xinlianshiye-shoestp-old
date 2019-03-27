@@ -2,8 +2,7 @@ package irille.platform.pdt;
 
 import java.io.IOException;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import javax.inject.Inject;
 
 import irille.action.ActionBase;
 import irille.action.dataimport.util.StringUtil;
@@ -15,6 +14,8 @@ import irille.shop.pdt.PdtAttrDAO;
 import irille.shop.pdt.PdtSize;
 import irille.shop.plt.PltConfigDAO;
 import lombok.Data;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * 产品属性
@@ -37,6 +38,9 @@ public class PdtAttrAction extends ActionBase<PdtAttr> {
   public void setBean(PdtAttr bean) {
     this._bean = bean;
   }
+
+  @Inject private PdtAttrDAO.UpdAttr upd;
+  @Inject private PdtAttrDAO.InsAttr dl;
 
   private String name; // 搜索的产品属性名称
   private String category; // 搜索的产品属性类目
@@ -62,7 +66,6 @@ public class PdtAttrAction extends ActionBase<PdtAttr> {
     verify(getBean());
     LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
     getBean().setCreateBy(lu.get_user().getPkey());
-    PdtAttrDAO.InsAttr dl = new PdtAttrDAO.InsAttr();
     dl.setB(getBean());
     dl.commit();
     write();
@@ -79,7 +82,6 @@ public class PdtAttrAction extends ActionBase<PdtAttr> {
     verify(getBean());
     LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
     getBean().setCreateBy(lu.get_user().getPkey());
-    PdtAttrDAO.UpdAttr upd = new PdtAttrDAO.UpdAttr();
     upd.setB(getBean());
     upd.commit();
     write();

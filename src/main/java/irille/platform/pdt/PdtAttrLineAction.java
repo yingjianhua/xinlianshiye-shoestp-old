@@ -2,8 +2,7 @@ package irille.platform.pdt;
 
 import java.io.IOException;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import javax.inject.Inject;
 
 import irille.action.ActionBase;
 import irille.action.dataimport.util.StringUtil;
@@ -14,6 +13,8 @@ import irille.shop.pdt.PdtAttrLine;
 import irille.shop.pdt.PdtAttrLineDAO;
 import irille.shop.plt.PltConfigDAO;
 import lombok.Data;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * 属性明细
@@ -39,6 +40,8 @@ public class PdtAttrLineAction extends ActionBase<PdtAttrLine> {
 
   private String main; // 搜索的属性明细类目
 
+  @Inject private PdtAttrLineDAO.UpdAttrLine upd;
+  @Inject private PdtAttrLineDAO.InsAttrLine dl;
   /**
    * 查询产品属性列表+搜索
    *
@@ -60,7 +63,6 @@ public class PdtAttrLineAction extends ActionBase<PdtAttrLine> {
     verify(getBean());
     LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
     getBean().setCreateBy(lu.get_user().getPkey());
-    PdtAttrLineDAO.InsAttrLine dl = new PdtAttrLineDAO.InsAttrLine();
     dl.setB(getBean());
     dl.commit();
     write();
@@ -77,7 +79,6 @@ public class PdtAttrLineAction extends ActionBase<PdtAttrLine> {
     verify(getBean());
     LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
     getBean().setCreateBy(lu.get_user().getPkey());
-    PdtAttrLineDAO.UpdAttrLine upd = new PdtAttrLineDAO.UpdAttrLine();
     upd.setB(getBean());
     upd.commit();
     write();
