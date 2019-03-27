@@ -418,7 +418,7 @@ ul{
                         return
                     }else{
                         if(sysConfig.user.user_type == 1){
-                            self.$alert("Sorry, the supplier cannot submit the form",{
+                            self.$alert("Please register or login your buyer account if you want making enquiries.",{
                                 confirmButtonText: 'Ok',
                                 customClass: "my-custom-element-alert-class fs-content-18",
                                 center: true,
@@ -455,6 +455,10 @@ ul{
                                                     sessionStorage.removeItem('Temp_Pdt_publish_form')
                                                     window.location.href = util_function_obj.GetParamsFullUrl('backUrl=','/');
                                                 }, 1500)
+                                            }else if (res.data.ret == -1) {
+                                                sessionStorage['Temp_Pdt_publish_form'] = JSON.stringify(this.form)
+                                                util_function_obj.alertWhenNoLogin(this);
+                                                return
                                             } else {
                                                 this.flag = false;
                                                 this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
@@ -471,13 +475,6 @@ ul{
                                         })
                                 } else {
                                     console.log('error submit!!');
-                                    // if (!this.form.quantity) {
-                                    //     this.$message.error('Quantity cannot be empty');
-                                    // } else if (!this.form.unitType) {
-                                    //     this.$message.error("Select unit");
-                                    // } else if (!this.form.descriotion) {
-                                    //     this.$message.error('Please fill in the message');
-                                    // }
                                     return false;
                                 }
                             });

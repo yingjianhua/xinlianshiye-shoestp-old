@@ -161,12 +161,12 @@
                 // 跳转RFQ   
                 ToRFQ(){
                     let url = "/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1"+ "&backUrl=" + window.location.href
-                    util_function_obj.supplierCantEnter(this, url);
+                    util_function_obj.supplierCantEnter(this, url,"Please register or login your buyer account if you want public RFQ.");
                 },
                 // 跳转供应商表单
                 ToContactSupplier(supplierPkey){
                     let url = "/home/usr_UsrSupplier_goContactSupplier?supplierPkey=" + supplierPkey+ "&backUrl=" + window.location.href;
-                    util_function_obj.supplierCantEnter(this, url);
+                    util_function_obj.supplierCantEnter(this, url,"Please register or login your buyer account if you want making enquiries.");
                 },
                 showcheck:function (id) {
                     for (let i=1;i<4;i++){

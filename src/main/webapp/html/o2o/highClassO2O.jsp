@@ -177,27 +177,12 @@
              // 跳转商品询盘表单
              ToProductInquiry(pdtId){
                 let url = '/home/usr_UsrConsult_productPublishView?product_id=' + pdtId+ "&backUrl=" + window.location.href;
-                util_function_obj.supplierCantEnter(this, url);
+                util_function_obj.supplierCantEnter(this, url,"Please register or login your buyer account if you want making enquiries.");
             },
-            isSupplier() {
-                if (!sysConfig.user) {
-                    util_function_obj.alertWhenNoLogin(self);
-                    return
-                }else {
-                    if(sysConfig.user.user_type === 1){
-                        this.$alert('Please register or login your buyer account if you want filling the Registration Form.', {
-                            confirmButtonText: 'Ok',
-                            customClass: "my-custom-element-alert-class fs-content-18",
-                            center: true,
-                                callback: action =>{
-                                    return
-                                }
-                        });
-                        return
-                    }else{
-                        window.location.href="O2Oinputform.jsp?backUrl=" + window.location.href;;
-                    }
-                }
+            // 跳转O2O报名表单
+            isSupplier(){
+                let url = "O2Oinputform.jsp?backUrl=" + window.location.href;
+                util_function_obj.supplierCantEnter(this, url,"Please register or login your buyer account if you want filling the Registration Form.");
             },
             enterOperate(num) {
                 this.overLi = num;

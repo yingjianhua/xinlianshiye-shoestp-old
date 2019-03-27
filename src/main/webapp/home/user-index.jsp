@@ -272,7 +272,6 @@
 
         },
          created(){
-             
             document.addEventListener('click',(e)=>{
             //     console.log("this.$refs.dl.contains(e.target)");
             // console.log(this.$refs.dl.contains(e.target));
@@ -287,6 +286,9 @@
         })
         },
         mounted() {
+            if (sessionStorage['Tempr_User_form'] &&sessionStorage['Tempr_User_form']!=''&&sessionStorage['Tempr_User_form']!='null'){
+                    this.form=JSON.parse(sessionStorage['Tempr_User_form'])
+                }
             this.getUserInfo();
             this.getFavoriteList();
         },
@@ -294,17 +296,13 @@
             // 跳转RFQ   
             ToRFQ(){
                 let url = "/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1"+ "&backUrl=" + window.location.href
-                util_function_obj.supplierCantEnter(this, url);
+                util_function_obj.supplierCantEnter(this, url,"Please register or login your buyer account if you want public RFQ.");
              },
             clickShowUploadAvatar() {  // 点击头像出现 头像上传
                 this.isShowAvatarUpload = !this.isShowAvatarUpload
-                // if(this.isShowAvatarUpload == false){
-                //   this.getUserInfo();
-                // }
             },
             getUserInfo() { // 获取个人信息
                 var self = this;
-                // axios.get('/home/usr_Purchase_profile')
                 axios.get('/home/usr_Purchase_profile')
                     .then(function (res) {
                         console.log(res);
@@ -346,68 +344,63 @@
                     });
             },
             submitForm(formName) { //表单提交
-                this.$refs[formName].validate((valid) => {
+                let self = this;
+                if(sysConfig.user.user_type == 1){
+                    self.$alert("Please register or login your buyer account if you want public RFQ.",{
+                        confirmButtonText: 'Ok',
+                        customClass: "my-custom-element-alert-class fs-content-18",
+                        center: true,
+                        callback: action =>{
+                            return
+                        }
+                    });
+                    return
+                }else{
+                    self.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.flag = true;
-                        let data = JSON.stringify(this.form)
-                        // console.log(this.form)
-                        // console.log('submit!');
+                        self.flag = true;
+                        let data = JSON.stringify(self.form)
                         axios.post('/home/rfq_RFQConsult_putRFQInquiry', data,
                             {headers: {'Content-Type': 'application/json'}}
                         )
                             .then((res) => {
                                 // console.log(res)
                                 if (res.data.ret == -1) {
-                                    this.flag = false;
-                                    util_function_obj.alertWhenNoLogin(this);
+                                    sessionStorage['Tempr_User_form'] = JSON.stringify(self.form)
+                                    util_function_obj.alertWhenNoLogin(self);
                                     return
                                 } else if (res.data.ret != 1) {
-                                    this.flag = false;
-                                    this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
+                                    self.flag = false;
+                                    self.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
                                         confirmButtonText: 'OK',
                                         customClass: "my-custom-element-alert-class fs-content-18",
                                     });
                                     return
                                 }
                                 // 提交成功时   提示信息
-                                this.$message({
+                                self.$message({
                                     showClose: true,
                                     message: 'Submitted successfully',
                                     type: 'success'
                                 });
                                 setTimeout(function () {
+                                    sessionStorage.removeItem('Tempr_User_form')
                                     window.location.reload();
                                 }, 1500)
                             })
                             .catch((err) => {
-                                this.flag = false;
+                                self.flag = false;
                                 self.$message.error("Network error, please refresh the page and try again");
                                 console.log(err)
                             })
                     } else {
                         console.log('error submit!!');
-                        // if (!this.form.quantity) {
-                        //   this.$message.error('请输入数量');
-                        // } else if (!this.form.unit) {
-                        //   this.$message.error("请选择单位");
-                        // } else if (!this.form.descriotion) {
-                        //   this.$message.error('请输入内容');
-                        // }else if (!this.form.title) {
-                        //   this.$message.error("请输入标题");
-                        // }
-                        // return false;
                     }
                 });
-               
+                }
             },
             // 头像上传
             handleAvatarSuccess(res, file) {
-                // console.log(res)
-                // console.log(res.ret)
-                // console.log(res.result.url)
-                // console.log(file)
-                // this.userInfo.avatar = res.result.url
-                // console.log(this.userInfo.avatar)
                 if (res.ret == -1) {
                     util_function_obj.alertWhenNoLogin(this);
                     return
