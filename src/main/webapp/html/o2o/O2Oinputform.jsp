@@ -379,9 +379,9 @@
                 this.centerDialogVisible = true;
                 this.$set(this, 'errmessage', msg);
                 var self = this;
-                setTimeout(function () {
-                    self.$set(self, 'centerDialogVisible', false)
-                }, 2000)
+                // setTimeout(function () {
+                //     self.$set(self, 'centerDialogVisible', false)
+                // }, 2000)
             },
             regTest: function (name, value) {
                 // let regEmail = /.+@[a-z0-9\.]+\.(com|cn|net)$/;
@@ -404,20 +404,19 @@
                     console.log("telphone错误")
                     this.showerrmesssage(name + " format error,Please enter the correct number, example: 0086-12345678, +86-12345678, 12345678901");
                     return false;
-                } 
+                }
                 // else if (name == 'countryCode' && !regCode.test(value)) {
                 //     console.log("countryCode错误")
                 //     this.showerrmesssage(name + " format error,Can't exceed 4 digits");
                 //     return false;
-                // } 
+                // }
                 else if (name == 'fullName' && !regName.test(value)) {
-                    console.log("fullName错误")
                     this.showerrmesssage(name + " format error,Can't enter numbers, Can't exceed 32 digits");
                     return false;
                 } else {
                     return true;
                 }
-                
+
             },
             filterCountry: function (val) {
                 // var reg = new RegExp("^" + val, "i")
