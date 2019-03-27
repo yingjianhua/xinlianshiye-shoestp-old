@@ -101,7 +101,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
         }
       }
       sql.GROUP_BY(RFQConsult.T.PKEY);
-      sql.ORDER_BY(RFQConsult.T.CREATE_TIME, "desc");
+      sql.ORDER_BY(RFQConsult.T.LAST_MESSAGE_SEND_TIME, "desc");
       SQL sql2 = new SQL();
       sql2.SELECT("( @i := @i + 1 ) as i");
       sql2.SELECT(RFQConsultRelation.T.PKEY);
@@ -150,7 +150,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
       }
     }
     query.GROUP_BY(RFQConsult.T.PKEY);
-    query.ORDER_BY(RFQConsult.T.CREATE_TIME, "desc");
+    query.ORDER_BY(RFQConsult.T.LAST_MESSAGE_SEND_TIME, "desc");
     query.limit(start, limit);
     List<RFQConsultView> result =
         query.queryMaps().stream()
