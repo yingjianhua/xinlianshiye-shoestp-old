@@ -885,7 +885,7 @@
 
                         <div class="h2">
                             <div class="fl">ID: {{productinfocom.pdtId}}</div>
-                            <div class="sharebox fr">
+                            <!-- <div class="sharebox fr">
                                 <div class="fl"><s:text name="products.share"/> :</div>
                                 <a href="javascript:;" class="shareTb shareTbtb1" @click="shareThis('facebook')"></a>
                                 <a href="javascript:;" class="shareTb shareTbtb2" @click="shareThis('twitter')"></a>
@@ -923,10 +923,10 @@
                                         </div>
                                     </el-dropdown-menu>
                                 </el-dropdown>
-                            </div>
+                            </div> -->
                         </div>
-
-                        <div class="h3">{{productinfocom.currency_unit}} {{productinfocom.currency_symbol}}{{price}}
+                        <!-- {{productinfocom.currency_unit}}  -->
+                        <div class="h3">{{productinfocom.currency_symbol}}{{price}}
                         </div>
 
                         <div class="h4" v-if="tpView">
