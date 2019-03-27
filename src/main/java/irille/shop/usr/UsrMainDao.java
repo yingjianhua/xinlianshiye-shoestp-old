@@ -308,4 +308,19 @@ public class UsrMainDao {
 		}).collect(Collectors.toList());
 		return list;
 	}
+	/**
+	 * 验证手机唯一性
+	 * @author chen
+	 */
+	public boolean validOnePhone(String phone,byte identity) {
+		System.out.println(phone);
+		String sql = "SELECT * FROM usr_main WHERE telphone=\""+phone+"\" AND IDENTITY="+identity+"";
+		Integer count=Query.sql(sql).queryCount();
+		if(count>0){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 }

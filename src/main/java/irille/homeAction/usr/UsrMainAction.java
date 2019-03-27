@@ -154,9 +154,14 @@ public class UsrMainAction extends HomeAction<UsrMain> {
         getBean().setContacts(null);
       }
     } else {
-      if (!ValidRegex.regMarch(Regular.REGULAR_NAME, getBean().getNickname())) {
+      if(Str.isEmpty(getBean().getNickname())){
         throw new WebMessageException(
-            MessageBuild.buildMessage(ReturnCode.valid_nameRegex, HomeAction.curLanguage()));
+                MessageBuild.buildMessage(ReturnCode.valid_name_notnull, HomeAction.curLanguage()));
+      }else{
+        if (!ValidRegex.regMarch(Regular.REGULAR_NAME, getBean().getNickname())) {
+          throw new WebMessageException(
+                  MessageBuild.buildMessage(ReturnCode.valid_nameRegex, HomeAction.curLanguage()));
+        }
       }
     }
     if (getBean().getIdentity() == 0) {
@@ -165,6 +170,10 @@ public class UsrMainAction extends HomeAction<UsrMain> {
       if(Str.isEmpty(getTelPre())||Str.isEmpty(getTelAft())){
         getBean().setTelphone("");
       }else{
+        if(usrMainDao.validOnePhone(phone,getBean().getIdentity())){
+          throw new WebMessageException(
+                  MessageBuild.buildMessage(ReturnCode.service_phone_exists, HomeAction.curLanguage()));
+        }
         if (!ValidRegex.regMarch(Regular.REGULAR_TEL, phone)) {
           throw new WebMessageException(
                   MessageBuild.buildMessage(ReturnCode.valid_phoneRegex, HomeAction.curLanguage()));
@@ -175,6 +184,10 @@ public class UsrMainAction extends HomeAction<UsrMain> {
       if (Str.isEmpty(getBean().getTelphone())) {
         throw new WebMessageException(
             MessageBuild.buildMessage(ReturnCode.valid_phone_notnull, HomeAction.curLanguage()));
+      }
+      if(usrMainDao.validOnePhone(getBean().getTelphone(),getBean().getIdentity())){
+        throw new WebMessageException(
+                MessageBuild.buildMessage(ReturnCode.service_phone_exists, HomeAction.curLanguage()));
       }
       if (!ValidRegex.regMarch(Regular.REGULAR_CHINATEL, getBean().getTelphone())) {
         throw new WebMessageException(
@@ -199,6 +212,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
     write();
     CacheUtils.mailValid.invalidate(uid);
   }
+
 
   /**
    * 发送邮件
@@ -232,6 +246,13 @@ public class UsrMainAction extends HomeAction<UsrMain> {
       if (main != null) {
         throw new WebMessageException(
             MessageBuild.buildMessage(ReturnCode.service_user_exists, HomeAction.curLanguage()));
+      }
+    }
+    if (type == 3) {
+      title = "User registration";
+      if (main != null) {
+        throw new WebMessageException(
+                MessageBuild.buildMessage(ReturnCode.service_user_exists, HomeAction.curLanguage()));
       }
     }
     if (type == 1) {
@@ -312,6 +333,34 @@ public class UsrMainAction extends HomeAction<UsrMain> {
             true);
         write();
         return;
+      case 3:
+        Cache cachea = CacheUtils.sendEm;
+        String valuea = String.valueOf(cachea.getIfPresent(getEmail()));
+        if (valuea != null && !valuea.equals("null")) {
+          Long time = Long.parseLong(valuea);
+          long now = new Date().getTime();
+          int interval = (int) ((now - time) / 1000);
+          if (interval < 60) {
+            throw new WebMessageException(
+                    MessageBuild.buildMessage(ReturnCode.send_ofen, HomeAction.curLanguage()));
+          }
+        }
+        SecureRandom secureRandoma = new SecureRandom();
+        Integer codea = secureRandoma.nextInt(999999);
+        CacheUtils.mailValid.put(codea.toString(), getEmail());
+        CacheUtils.sendEm.put(getEmail(), new Date().getTime());
+        mailer.sendMail(
+                EmailBuilder.startingBlank()
+                        .withSubject("Shoestp Rest Your Password")
+                        .prependTextHTML(
+                                mailTemplate
+                                        .get("forgetPassWord")
+                                        .replaceAll("\\{\\{CODE}}", String.valueOf(codea)))
+                        .from("Shoestp", "notice@service.shoestp.com")
+                        .to(getEmail())
+                        .buildEmail(),
+                true);
+        write();
     }
   }
 
