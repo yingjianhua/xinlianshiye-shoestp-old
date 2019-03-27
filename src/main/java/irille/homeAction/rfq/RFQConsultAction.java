@@ -13,6 +13,7 @@ import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultService;
 
 import irille.Filter.svr.ItpCheckPurchaseLogin;
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
+import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin.UserType;
 import irille.Service.Pdt.IPdtProductService;
 import irille.Service.Plt.PltService;
 import irille.Service.RFQ.IRFQConsultService;
@@ -54,7 +55,7 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
    * @date 2019/1/30 11:10
    * @author lijie@shoestp.cn
    */
-  @ItpCheckPurchaseLogin.NeedLogin
+  @NeedLogin(userType = UserType.PURCHASE)
   public void putRFQInquiry() throws IOException {
     String data = getJsonBody();
     if (data == null) {
@@ -73,7 +74,7 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
    * @date 2019/1/30 11:10
    * @author lijie@shoestp.cn
    */
-  @ItpCheckPurchaseLogin.NeedLogin
+  @NeedLogin(userType = UserType.PURCHASE)
   public void putSupplierInquiry() throws IOException {
     String data = getJsonBody();
     if (data == null) {
@@ -98,7 +99,7 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
    * @date 2019/1/30 11:10
    * @author lijie@shoestp.cn
    */
-  @ItpCheckPurchaseLogin.NeedLogin
+  @NeedLogin(userType = UserType.PURCHASE)
   public void putInquiry() throws IOException {
     String data = getJsonBody();
     if (data == null) {
@@ -132,7 +133,7 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
    * @date 2019/1/30 11:10
    * @author lijie@shoestp.cn
    */
-  @ItpCheckPurchaseLogin.NeedLogin
+  @NeedLogin(userType = UserType.PURCHASE)
   public void putPrivateInquiry() throws IOException {
     String data = getJsonBody();
     if (data == null) {
@@ -192,7 +193,7 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   private Integer limit = 10;
 
   @Override
-  @NeedLogin
+  @NeedLogin(userType = UserType.PURCHASE)
   public void pageMine() throws IOException {
     write(
         rFQConsultService.pageMine(getPurchase(), t, keyword, unread, lastRelation, start, limit));
@@ -201,7 +202,7 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   private Integer quotationPkey;
 
   @Override
-  @NeedLogin
+  @NeedLogin(userType = UserType.PURCHASE)
   public void deleteQuotation() throws IOException {
     rFQConsultService.deleteQuotation(getPurchase(), quotationPkey);
     write();
@@ -219,7 +220,7 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
     write(rFQConsultService.getRFQDetails(rfqPkey));
   }
 
-  @NeedLogin
+  @NeedLogin(userType = UserType.PURCHASE)
   public void quotationDetail() throws IOException {
     write(rFQConsultService.getQuotation(getPurchase(), quotationPkey));
   }
@@ -227,7 +228,7 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   Integer consultPkey;
 
   @Override
-  @NeedLogin
+  @NeedLogin(userType = UserType.PURCHASE)
   public void detail() throws IOException {
     write(rFQConsultService.getDetail(getPurchase(), consultPkey, curLanguage()));
   }
@@ -237,7 +238,7 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   private Integer preMessagePkey; // 询盘聊天消息主键, 从该消息开始查询 而不是从头开始查询 查询历史消息
 
   @Override
-  @NeedLogin
+  @NeedLogin(userType = UserType.PURCHASE)
   public void pageMsgs() throws IOException {
     write(
         rFQConsultMessageService.page(
@@ -254,7 +255,7 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   private String imageUrl;
 
   @Override
-  @NeedLogin
+  @NeedLogin(userType = UserType.PURCHASE)
   public void sendMessage() throws IOException {
     if (imageUrl != null) {
       write(rFQConsultMessageService.sendImageMessage(getPurchase(), relationPkey, imageUrl));
@@ -270,7 +271,7 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   private Date validDate;
 
   @Override
-  @NeedLogin
+  @NeedLogin(userType = UserType.PURCHASE)
   public void addInformation() throws IOException {
     rFQConsultService.addMoreInformation(
         getPurchase(), consultPkey, information, validDate, curLanguage());
@@ -278,14 +279,14 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   }
 
   @Override
-  @NeedLogin
+  @NeedLogin(userType = UserType.PURCHASE)
   public void close() throws IOException {
     rFQConsultService.close(getPurchase(), consultPkey, curLanguage());
     write();
   }
 
   @Override
-  @NeedLogin
+  @NeedLogin(userType = UserType.PURCHASE)
   public void edit() throws IOException {
     String data = getJsonBody();
     if (data == null) {
@@ -308,7 +309,7 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   private String images;
 
   @Override
-  @NeedLogin
+  @NeedLogin(userType = UserType.PURCHASE)
   public void addImage() throws IOException {
     rFQConsultService.addImage(getPurchase(), consultPkey, images, curLanguage());
     write();
@@ -317,14 +318,14 @@ public class RFQConsultAction extends HomeAction implements IRFQConsultAction {
   private String products;
 
   @Override
-  @NeedLogin
+  @NeedLogin(userType = UserType.PURCHASE)
   public void addProductRequest() throws IOException {
     rFQConsultService.addProductRequest(getPurchase(), consultPkey, products, curLanguage());
     write();
   }
 
   @Override
-  @NeedLogin
+  @NeedLogin(userType = UserType.PURCHASE)
   public void unreadCount() throws IOException {
     write(rFQConsultService.countUnread(getPurchase()));
   }
