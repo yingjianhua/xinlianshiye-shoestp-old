@@ -48,7 +48,7 @@ public class SVSInfoDaoImpl implements SVSInfoDao {
           {
             SELECT(SVSInfo.T.PKEY, "id")
                 .SELECT(UsrSupplier.T.NAME, "shopName")
-                .SELECT(UsrSupplier.T.PKEY,"supplierId")
+                .SELECT(UsrSupplier.T.PKEY, "supplierId")
                 .SELECT(UsrSupplier.T.CONTACTS, "name")
                 .SELECT(SVSInfo.T.APPLICATION_TIME, "applicationTime")
                 .SELECT(SVSInfo.T.STATUS, "status")
@@ -56,7 +56,7 @@ public class SVSInfoDaoImpl implements SVSInfoDao {
                 .SELECT(UsrSupplier.T.STORE_STATUS, "shopStatus")
                 .FROM(SVSInfo.class)
                 .LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, SVSInfo.T.SUPPLIER)
-                .WHERE(shopName != null, UsrSupplier.T.NAME, "like ?", "%"+shopName+"%")
+                .WHERE(shopName != null, UsrSupplier.T.NAME, "like ?", "%" + shopName + "%")
                 .WHERE(status != null, SVSInfo.T.STATUS, "=?", status)
                 .WHERE(shopStatus != null, UsrSupplier.T.STATUS, "=?", shopStatus)
                 .WHERE(grade != null, SVSInfo.T.GRADE, "=?", grade)
@@ -84,5 +84,30 @@ public class SVSInfoDaoImpl implements SVSInfoDao {
           }
         };
     return Query.sql(sql).queryCount();
+  }
+
+  @Override
+  public SVSInfo getSvsRatingAndRos(Integer supplierId) {
+    SQL sql =
+        new SQL() {
+          {
+            SELECT(SVSInfo.class).FROM(SVSInfo.class).WHERE(SVSInfo.T.SUPPLIER, "=?", supplierId);
+          }
+        };
+    return Query.sql(sql).query(SVSInfo.class);
+  }
+
+  @Override
+  public SVSInfo getSvsRatingAndRosMain(Integer mainId) {
+    SQL sql =
+        new SQL() {
+          {
+            SELECT(SVSInfo.class)
+                .FROM(SVSInfo.class)
+                .LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, SVSInfo.T.SUPPLIER)
+                .WHERE(UsrSupplier.T.UserId, "=?", mainId);
+          }
+        };
+    return Query.sql(sql).query(SVSInfo.class);
   }
 }
