@@ -256,9 +256,9 @@ public class RFQConsultServiceImpl implements RFQConsultService {
       sql.WHERE(RFQConsultRelation.T.READ_STATUS, "=?", readStatus);
     }
     if (orderType == 1) {
-      sql.ORDER_BY(RFQConsultMessage.T.SEND_TIME, "desc");
+      sql.ORDER_BY(RFQConsult.T.LAST_MESSAGE_SEND_TIME, "desc");
     } else if (orderType == 2) {
-      sql.ORDER_BY(RFQConsultMessage.T.SEND_TIME, "asc");
+      sql.ORDER_BY(RFQConsult.T.LAST_MESSAGE_SEND_TIME, "asc");
     } else if (orderType == 3) {
       sql.ORDER_BY(RFQConsult.T.CREATE_TIME, "desc");
     } else if (orderType == 4) {
