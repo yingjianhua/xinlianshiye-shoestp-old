@@ -1,5 +1,7 @@
 package irille.Dao.SVS;
 
+import java.io.IOException;
+
 import com.google.inject.ImplementedBy;
 
 import irille.Dao.SVS.impl.SVSInfoServiceImpl;
@@ -8,6 +10,7 @@ import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
 import irille.view.SVS.SVSDetailedInfoView;
 import irille.view.SVS.SVSInfoListView;
+import irille.view.v3.svs.SvsRatingAndRosDTO;
 
 @ImplementedBy(SVSInfoServiceImpl.class)
 public interface SVSInfoService {
@@ -71,6 +74,24 @@ public interface SVSInfoService {
       String exhibition,
       String part)
       throws Exception;
-  
-  public Page<SVSInfoListView>  findSVSInfoList(Integer start,Integer limit,String shopName,Byte status,Byte shopStatus,Byte grade);
+
+  public Page<SVSInfoListView> findSVSInfoList(
+      Integer start, Integer limit, String shopName, Byte status, Byte shopStatus, Byte grade);
+  /**
+   * 获取SVS认证等级；ROS分数，ROS星级
+   *
+   * @param supplierId
+   * @date 2019/03/27 11:00
+   * @author zjl
+   * @return
+   */
+  SvsRatingAndRosDTO getSvsRatingAndRos(Integer supplierId);
+  /**
+   * 获取SVS认证等级；ROS分数，ROS星级(UsrMain表)
+   *
+   * @throws IOException
+   * @date 2019/03/27 14:24
+   * @author zjl
+   */
+  SvsRatingAndRosDTO getSvsRatingAndRosMain(Integer mainId);
 }

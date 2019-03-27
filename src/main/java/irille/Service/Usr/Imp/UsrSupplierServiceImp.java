@@ -12,6 +12,7 @@ import com.xinlianshiye.shoestp.shop.view.usr.SuplierDetailView;
 
 import irille.Dao.PdtProductDao;
 import irille.Dao.UsrSupplierDao;
+import irille.Dao.SVS.SVSInfoService;
 import irille.Entity.SVS.SVSInfo;
 import irille.Service.Usr.IUsrSupplierService;
 import irille.core.sys.Sys;
@@ -29,9 +30,9 @@ import irille.shop.usr.UsrFavorites;
 import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
 import irille.view.usr.UsrSupplierInfView;
-import irille.view.usr.UsrSupplierInfoView;
 import irille.view.usr.UsrSupplierPdtView;
 import irille.view.v3.Pdt.PdtProductView;
+import irille.view.v3.svs.SvsRatingAndRosDTO;
 import irille.view.v3.usr.UsrSupplierView;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/5 Time: 16:25 */
@@ -39,6 +40,7 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
 
   @Inject UsrSupplierDao usrSupplierDao;
   @Inject PdtProductDao pdtProductDao;
+  @Inject SVSInfoService SVSInfoService;
 
   @Override
   public List<FavoritesView> getFavoritesListByCat(
@@ -212,13 +214,19 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
             start, limit, storeName, targetMarket, processType, grade, pdtCategory);
     List<UsrSupplierInfView> supplies = new ArrayList<>();
     for (Map<String, Object> map : list) {
+      SvsRatingAndRosDTO SVSDto =
+          SVSInfoService.getSvsRatingAndRos(
+              GetValue.get(map, UsrSupplier.T.PKEY, Integer.class, 0));
+      if (null != checkType && checkType == 1 && null == SVSDto) continue;
+
       UsrSupplierInfView view = new UsrSupplierInfView();
       view.setId(GetValue.get(map, UsrSupplier.T.PKEY, Integer.class, 0));
-      view.setLogo(GetValue.get(map, UsrSupplier.T.LOGO, String.class, ""));
-      view.setStoreName(GetValue.get(map, UsrSupplier.T.NAME, String.class, ""));
+      view.setLogo(GetValue.get(map, UsrSupplier.T.LOGO, String.class, null));
+      view.setStoreName(GetValue.get(map, UsrSupplier.T.SHOW_NAME, String.class, null));
+      view.setSvs(SVSDto);
       List<UsrSupplierPdtView> pdtViews = new ArrayList<>();
       // 获取产品信息
-      if (GetValue.get(map, UsrSupplier.T.PKEY, Integer.class, 0) != 0){
+      if (GetValue.get(map, UsrSupplier.T.PKEY, Integer.class, 0) != 0) {
         List<Map<String, Object>> pdtlist =
             pdtProductDao.findPdtBySupplier(
                 GetValue.get(map, UsrSupplier.T.PKEY, Integer.class, 0));

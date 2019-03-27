@@ -551,19 +551,25 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
   private Integer grade; // svs等级
 
   private Integer pdtCategory; // 产品类型
-  
-  private Integer  checkType;  //查询类型
+
+  private Integer checkType; // 查询类型
 
   /*
    *   获取供应商中心列表
    * @Author HuangHaoBin
    **/
   public void listSuppliers() throws Exception {
-    // write(usrSupplierService.listSupplier(getStart(), getLimit()));
     if (getLimit() == 0) setLimit(10);
     write(
         usrSupplierService.listSupplier(
-            getStart(), getLimit(), storeName, targetMarket, processType, grade, pdtCategory,checkType));
+            getStart(),
+            getLimit(),
+            storeName,
+            targetMarket,
+            processType,
+            grade,
+            pdtCategory,
+            checkType));
   }
 
   @Inject private UsrSupplierService usrSupplierService2;

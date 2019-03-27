@@ -188,12 +188,15 @@ public class UsrSupplierDao {
             UsrSupplier.T.LOGO,
             UsrSupplier.T.MAIN_SALES_AREA)
         .FROM(UsrSupplier.class)
-        .LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, PdtProduct.T.SUPPLIER)
-        .WHERE(storeName != null, UsrSupplier.T.NAME, "like ?", "%" + storeName + "%")
+        .LEFT_JOIN(PdtProduct.class, UsrSupplier.T.PKEY, PdtProduct.T.SUPPLIER)
+        .LEFT_JOIN(SVSInfo.class, UsrSupplier.T.PKEY, SVSInfo.T.SUPPLIER)
+        .WHERE(storeName != null, UsrSupplier.T.SHOW_NAME, "like ?", "%" + storeName + "%")
         .WHERE(
             targetMarket != null, UsrSupplier.T.TARGETED_MARKET, "like ?", "%" + targetMarket + "%")
         .WHERE(processType != null, UsrSupplier.T.CATEGORY, "=?", processType)
         .WHERE(pdtCategory != null, PdtProduct.T.CATEGORY, "=?", pdtCategory)
+        .WHERE(grade != null, SVSInfo.T.GRADE, "=?", grade)
+        .GROUP_BY(UsrSupplier.T.PKEY)
         .ORDER_BY(PdtProduct.T.VERIFY_TIME, "desc");
     if (start != null && limit != null) {
       query.limit(start, limit);
