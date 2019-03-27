@@ -41,7 +41,7 @@ public class PdtSizeAction extends ActionBase<PdtSize> {
    * @throws Exception
    */
   public void list() throws Exception {
-    write(PdtSizeDAO.listSize(name, productCategory, getStart(), getLimit()));
+    write(PdtSizeDAO.listSize(getStart(), getLimit()));
   }
 
   public void newList() throws Exception {
@@ -121,7 +121,7 @@ public class PdtSizeAction extends ActionBase<PdtSize> {
       return;
     }
     byte by = Byte.parseByte(sizeType.toString());
-    PdtSizeDAO.plaUpdSize(id, by, name, cate);
+    PdtSizeDAO.plaUpdSize(id, by, sizeName, cate);
     write();
   }
 }
