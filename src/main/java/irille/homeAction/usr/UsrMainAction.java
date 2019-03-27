@@ -242,6 +242,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
                     MessageBuild.buildMessage(ReturnCode.service_user_exists, HomeAction.curLanguage()));
         }
         getBean().setPassword(getPwd());
+        getBean().setIdentity((Byte.valueOf("0")));
         getBean().setTelphone("");
         ins.setB(getBean());
         ins.commit();
