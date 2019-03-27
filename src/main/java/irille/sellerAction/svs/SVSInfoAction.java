@@ -1,5 +1,6 @@
 package irille.sellerAction.svs;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
 
@@ -23,7 +24,9 @@ import lombok.Data;
 public class SVSInfoAction extends SellerAction<SVSInfo> implements ISVSInfoAction {
   @Inject SVSInfoService service;
   @Inject ObjectMapper om;
-
+  @Inject private SVSInfoService svsInfoService;
+  private Integer supplierId;
+  private Integer mainId;
   private String search;
   private String capacity;
   private String factory;
@@ -106,4 +109,12 @@ public class SVSInfoAction extends SellerAction<SVSInfo> implements ISVSInfoActi
     if (getSupplier() != null) write(service.getSVSInfo(getSupplier().getPkey()));
     else throw new WebMessageException(ReturnCode.failure, "用户未登录");
   };
+
+  public void getSvsRatingAndRos() throws IOException {
+    write(svsInfoService.getSvsRatingAndRos(supplierId));
+  }
+
+  public void getSvsRatingAndRosMain() throws IOException {
+    write(svsInfoService.getSvsRatingAndRosMain(mainId));
+  }
 }
