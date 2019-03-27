@@ -158,7 +158,7 @@
                 sublies:[],
 			},
 			methods:{
-                // 跳转RFQ   
+                // 跳转RFQ
                 ToRFQ(){
                     let url = "/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1"+ "&backUrl=" + window.location.href
                     util_function_obj.supplierCantEnter(this, url);
