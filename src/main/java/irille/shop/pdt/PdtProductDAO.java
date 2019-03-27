@@ -122,17 +122,17 @@ public class PdtProductDAO {
    *
    * <p>弃审同时下架产品
    */
-  public static PdtProduct verify(boolean verify, Integer pkey) {
-    PdtProduct bean = BeanBase.load(PdtProduct.class, pkey);
-    bean.stIsVerify(verify);
-
-    if (!verify) {
-      bean.stState(OState.OFF);
-    }
-
-    bean.upd();
-    return bean;
-  }
+  //  public static PdtProduct verify(boolean verify, Integer pkey) {
+  //    PdtProduct bean = BeanBase.load(PdtProduct.class, pkey);
+  //    bean.stIsVerify(verify);
+  //
+  //    if (!verify) {
+  //      bean.stState(OState.OFF);
+  //    }
+  //
+  //    bean.upd();
+  //    return bean;
+  //  }
 
   private static final UsrCartDAO.Query cartQuery = new UsrCartDAO.Query();
 
@@ -1024,6 +1024,9 @@ public class PdtProductDAO {
       }
       o2oPdt.upd();
     } else {
+      if (!pp.gtIsVerify().equals(Pdt.OAppr._DEFAULT)) {
+        throw new WebMessageException(ReturnCode.failure, "请勿重复审核");
+      }
       pp.setIsVerify(status);
       if (status.equals(Pdt.OAppr.Failed.getLine().getKey())) {
         if (null == message || (null != message && "".equals(message.trim()))) {
@@ -1083,7 +1086,7 @@ public class PdtProductDAO {
       }
       o2oPdt.upd();
     } else {
-      pp.stIsVerify(false);
+      //      pp.stIsVerify(false);
       pp.setState(status);
       if (status == 0) {
         pp.setTab3(message);

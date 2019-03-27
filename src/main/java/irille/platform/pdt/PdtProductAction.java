@@ -14,7 +14,6 @@ import irille.pub.Str;
 import irille.pub.bean.Query;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage.Language;
-import irille.pub.util.AppConfig;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtAttrLine;
 import irille.shop.pdt.PdtProduct;
@@ -39,12 +38,12 @@ public class PdtProductAction extends MgtAction<PdtProduct> implements IPdtProdu
 
   @Getter @Setter private Boolean verify;
 
-  @Override
-  public void verify() throws Exception {
-    PdtProduct bean = PdtProductDAO.verify(verify, (Integer) getPkey());
-    bean.setPicture(AppConfig.image_base_url + bean.getPicture());
-    writeSuccess(bean);
-  }
+  //  @Override
+  //  public void verify() throws Exception {
+  //    PdtProduct bean = PdtProductDAO.verify(verify, (Integer) getPkey());
+  //    bean.setPicture(AppConfig.image_base_url + bean.getPicture());
+  //    writeSuccess(bean);
+  //  }
 
   /**
    * @Description: 产品管理页面 审核 为启用停用 停用会级联销售状态一起下架
@@ -52,10 +51,10 @@ public class PdtProductAction extends MgtAction<PdtProduct> implements IPdtProdu
    * @date 2019/1/24 13:47
    * @anthor wilson zhang
    */
-  public void isverify() throws Exception {
-    PdtProduct bean = PdtProductDAO.verify(verify, (Integer) getPkey());
-    write();
-  }
+  //  public void isverify() throws Exception {
+  //    PdtProduct bean = PdtProductDAO.verify(verify, (Integer) getPkey());
+  //    write();
+  //  }
 
   @Override
   public void list() throws Exception {
