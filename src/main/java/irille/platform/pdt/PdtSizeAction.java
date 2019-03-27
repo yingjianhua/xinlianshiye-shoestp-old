@@ -122,7 +122,7 @@ public class PdtSizeAction extends ActionBase<PdtSize> {
       return;
     }
     byte by = Byte.parseByte(sizeType.toString());
-    PdtSizeDAO.plaUpdSize(id, by, name, cate);
+    PdtSizeDAO.plaUpdSize(id, by, sizeName, cate);
     write();
   }
 }
