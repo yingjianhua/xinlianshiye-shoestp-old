@@ -760,7 +760,7 @@ public class translateUtil {
         && !dbJson
             .get(baseLanguage.name())
             .getAsString()
-            .equalsIgnoreCase(jsonObject.get(baseLanguage.name()).getAsString())) {
+            .equals(jsonObject.get(baseLanguage.name()).getAsString())) {
       // 基准发生修改 用黑名单模式,修改的字段不翻译
       translateFilter.setMode(0);
       jsonObject
@@ -772,7 +772,7 @@ public class translateUtil {
                   String dbString = dbJson.get(stringJsonElementEntry.getKey()).getAsString();
                   if (!dbString
                       .trim()
-                      .equalsIgnoreCase(stringJsonElementEntry.getValue().getAsString().trim())) {
+                      .equals(stringJsonElementEntry.getValue().getAsString().trim())) {
                     translateFilter
                         .getLanguageList()
                         .add(FldLanguage.Language.valueOf(stringJsonElementEntry.getKey()));
@@ -789,7 +789,7 @@ public class translateUtil {
                 if (dbJson.has(stringJsonElementEntry.getKey())) {
                   String dbString =
                       dbJson.get(stringJsonElementEntry.getKey()).getAsString().trim();
-                  if (dbString.equalsIgnoreCase(
+                  if (dbString.equals(
                       stringJsonElementEntry.getValue().getAsString().trim())) {
                     translateFilter
                         .getLanguageList()
