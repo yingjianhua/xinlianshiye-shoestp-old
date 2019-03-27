@@ -704,6 +704,10 @@ public class translateUtil {
             }
             break;
         }
+        if (language.equals(translateFilter.getBaseLanguage())) {
+          jsonObject.addProperty(language.toString(), getBaseValue(getValue, language));
+          continue;
+        }
       }
       TranslateBean translateBean = new TranslateBean();
       if (translateFilter != null && translateFilter.getCacheFilter() != null) {
@@ -753,8 +757,10 @@ public class translateUtil {
     JsonObject jsonObject = new JsonParser().parse(saveJson).getAsJsonObject();
     // 判断基准字段是否发生修改
     if (dbJson.has(baseLanguage.name())
-        && dbJson.get(baseLanguage.name()).getAsString().hashCode()
-            != jsonObject.get(baseLanguage.name()).getAsString().hashCode()) {
+        && !dbJson
+            .get(baseLanguage.name())
+            .getAsString()
+            .equalsIgnoreCase(jsonObject.get(baseLanguage.name()).getAsString())) {
       // 基准发生修改 用黑名单模式,修改的字段不翻译
       translateFilter.setMode(0);
       jsonObject
@@ -764,8 +770,9 @@ public class translateUtil {
                 // 如果不相等  添加到清单
                 if (dbJson.has(stringJsonElementEntry.getKey())) {
                   String dbString = dbJson.get(stringJsonElementEntry.getKey()).getAsString();
-                  if (dbString.hashCode()
-                      != stringJsonElementEntry.getValue().getAsString().hashCode()) {
+                  if (!dbString
+                      .trim()
+                      .equalsIgnoreCase(stringJsonElementEntry.getValue().getAsString().trim())) {
                     translateFilter
                         .getLanguageList()
                         .add(FldLanguage.Language.valueOf(stringJsonElementEntry.getKey()));
@@ -780,9 +787,10 @@ public class translateUtil {
               stringJsonElementEntry -> {
                 // 如果相等  添加到清单
                 if (dbJson.has(stringJsonElementEntry.getKey())) {
-                  String dbString = dbJson.get(stringJsonElementEntry.getKey()).getAsString();
-                  if (dbString.hashCode()
-                      == stringJsonElementEntry.getValue().getAsString().hashCode()) {
+                  String dbString =
+                      dbJson.get(stringJsonElementEntry.getKey()).getAsString().trim();
+                  if (dbString.equalsIgnoreCase(
+                      stringJsonElementEntry.getValue().getAsString().trim())) {
                     translateFilter
                         .getLanguageList()
                         .add(FldLanguage.Language.valueOf(stringJsonElementEntry.getKey()));
