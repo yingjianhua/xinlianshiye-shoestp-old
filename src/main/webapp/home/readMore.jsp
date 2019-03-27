@@ -33,15 +33,8 @@
                     </li>
                     <li class="flexSb">
                             <div class="section1-content-left flexSb">
-                                    <div class="title">Product Image:</div>
-                                    <div class="img-list flexSt" style="width:440px;">
-                                        <div class="img-item" v-if="images.length == 0">
-                                            <img src="./static/images/no-pdtImages.png" alt="">
-                                        </div>
-                                        <div class="img-item" v-for="item in images" v-else>
-                                            <img :src="sysConfig.user?image(item):image(item)+ '?x-oss-process=image/resize,w_80/blur,r_8,s_8'" alt="">
-                                        </div>
-                                    </div>
+                                <div class="title">Quantity Required:</div>
+                                <div class="list">{{companyInfo.quantitys}} pairs</div>
                             </div>
                             <div class="section1-content-right">
                                 <div class="flexSt">
@@ -57,8 +50,16 @@
                         <div style="width:720px;word-wrap:break-word;" v-if="pdtDetails">{{companyInfo.pdtDetails}}</div>
                     </li>
                     <li class="flexSt">
-                        <div class="title">Quantity Required:</div>
-                        <div>{{companyInfo.quantitys}}pairs</div>
+                            <div class="title">Product Image:</div>
+                            <div class="img-list flexSt" style="width:440px;">
+                                <div class="img-item" v-if="images.length == 0">
+                                    <img src="./static/images/no-pdtImages.png" alt="">
+                                </div>
+                                <div class="img-item" v-for="item in images" v-else>
+                                    <img :src="sysConfig.user?image(item):image(item)+ '?x-oss-process=image/resize,w_80/blur,r_8,s_8'" alt="">
+                                </div>
+                            </div>
+                      
                     </li>
                 </ul>
             </div>
