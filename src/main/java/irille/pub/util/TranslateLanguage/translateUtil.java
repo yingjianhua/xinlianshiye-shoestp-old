@@ -2,7 +2,13 @@ package irille.pub.util.TranslateLanguage;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -11,7 +17,11 @@ import java.util.stream.Collectors;
 import com.google.cloud.translate.Translate;
 import com.google.cloud.translate.TranslateOptions;
 import com.google.cloud.translate.Translation;
-import com.google.common.cache.*;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import com.google.common.cache.RemovalListener;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -675,13 +685,26 @@ public class translateUtil {
     JsonObject jsonObject = new JsonObject();
     for (FldLanguage.Language language : FldLanguage.Language.values()) {
       if (translateFilter != null) {
-        if (translateFilter.getLanguageList() != null
-                &&
-                // 黑名单模式 存在不翻译
-                translateFilter.getLanguageList().contains(language)
-                    == (translateFilter.getMode() == 0)
-            || language.toString().equalsIgnoreCase(translateFilter.getSourceLanguage())
-            || mode(translateFilter.getMode(), translateFilter.getLanguageList(), language)) {
+        switch (translateFilter.getMode()) {
+            //          黑名单模式   在LanguageList里的不翻译
+          case 0:
+          case 2:
+            if (translateFilter.getLanguageList() != null
+                && translateFilter.getLanguageList().contains(language)) {
+              jsonObject.addProperty(language.toString(), getBaseValue(getValue, language));
+              continue;
+            }
+            break;
+            // 白名单模式   在LanguageList里的均翻译
+          case 1:
+            if (translateFilter.getLanguageList() != null
+                && !translateFilter.getLanguageList().contains(language)) {
+              jsonObject.addProperty(language.toString(), getBaseValue(getValue, language));
+              continue;
+            }
+            break;
+        }
+        if (language.equals(translateFilter.getBaseLanguage())) {
           jsonObject.addProperty(language.toString(), getBaseValue(getValue, language));
           continue;
         }
@@ -723,23 +746,83 @@ public class translateUtil {
     return jsonObject.toString();
   }
 
-  private static boolean mode(int mode, List list, FldLanguage.Language language) {
-    if (list != null)
-      switch (mode) {
-        case 0:
-          if (list.contains(language)) {
-            return true;
-          }
-          break;
-        case 1:
-          if (!list.contains(language)) return true;
-          break;
-        case 3:
-          if (!list.contains(language)) {
-            return true;
-          }
-          break;
-      }
-    return false;
+  public static TranslateFilter buildFilter(
+      String dbJsonString, String saveJson, Language baseLanguage) {
+    TranslateFilter translateFilter = new TranslateFilter();
+    translateFilter.setBaseLanguage(baseLanguage);
+    translateFilter.setLanguageList(new ArrayList<>());
+    // 转化为Json
+    JsonObject dbJson = new JsonParser().parse(dbJsonString).getAsJsonObject();
+    // 前端传回来的值
+    JsonObject jsonObject = new JsonParser().parse(saveJson).getAsJsonObject();
+    // 判断基准字段是否发生修改
+    if (dbJson.has(baseLanguage.name())
+        && !dbJson
+            .get(baseLanguage.name())
+            .getAsString()
+            .equals(jsonObject.get(baseLanguage.name()).getAsString())) {
+      // 基准发生修改 用黑名单模式,修改的字段不翻译
+      translateFilter.setMode(0);
+      jsonObject
+          .entrySet()
+          .forEach(
+              stringJsonElementEntry -> {
+                // 如果不相等  添加到清单
+                if (dbJson.has(stringJsonElementEntry.getKey())) {
+                  String dbString = dbJson.get(stringJsonElementEntry.getKey()).getAsString();
+                  if (!dbString
+                      .trim()
+                      .equals(stringJsonElementEntry.getValue().getAsString().trim())) {
+                    translateFilter
+                        .getLanguageList()
+                        .add(FldLanguage.Language.valueOf(stringJsonElementEntry.getKey()));
+                  }
+                }
+              });
+    } else {
+      translateFilter.setMode(1);
+      jsonObject
+          .entrySet()
+          .forEach(
+              stringJsonElementEntry -> {
+                // 如果相等  添加到清单
+                if (dbJson.has(stringJsonElementEntry.getKey())) {
+                  String dbString =
+                      dbJson.get(stringJsonElementEntry.getKey()).getAsString().trim();
+                  if (dbString.equals(
+                      stringJsonElementEntry.getValue().getAsString().trim())) {
+                    translateFilter
+                        .getLanguageList()
+                        .add(FldLanguage.Language.valueOf(stringJsonElementEntry.getKey()));
+                  }
+                }
+              });
+    }
+
+    return translateFilter;
+  }
+
+  public static TranslateFilter buildFilter(String saveJson, Language baseLanguage) {
+    TranslateFilter translateFilter = new TranslateFilter();
+    translateFilter.setBaseLanguage(baseLanguage);
+    translateFilter.setLanguageList(new ArrayList<>());
+    // 前端传回来的值
+    if (saveJson != null) {
+      JsonObject jsonObject = new JsonParser().parse(saveJson).getAsJsonObject();
+      translateFilter.setMode(2);
+      jsonObject
+          .entrySet()
+          .forEach(
+              stringJsonElementEntry -> {
+                // 寻找为空的字段,按照基准字段翻译补全
+                if (stringJsonElementEntry.getValue().getAsString() != null
+                    && stringJsonElementEntry.getValue().getAsString().length() > 0) {
+                  translateFilter
+                      .getLanguageList()
+                      .add(FldLanguage.Language.valueOf(stringJsonElementEntry.getKey()));
+                }
+              });
+    }
+    return translateFilter;
   }
 }

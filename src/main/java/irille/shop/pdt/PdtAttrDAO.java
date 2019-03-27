@@ -5,9 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import irille.Dao.PdtProductDao;
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
@@ -34,6 +31,8 @@ import irille.shop.pdt.PdtAttr.T;
 import irille.shop.plt.PltConfigDAO;
 import irille.view.Page;
 import irille.view.pdt.PdtProductVueView;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class PdtAttrDAO {
   public static final Log LOG = new Log(PdtAttrDAO.class);
@@ -104,7 +103,9 @@ public class PdtAttrDAO {
     public void before() {
       getB().setDeleted(OYn.NO.getLine().getKey());
       getB().setCreateTime(Env.getTranBeginTime());
-      setB(translateUtil.autoTranslate(getB()));
+      setB(
+          translateUtil.newAutoTranslate(
+              getB(), translateUtil.buildFilter(getB().getName(), PltConfigDAO.manageLanguage())));
       super.before();
     }
   }
@@ -122,7 +123,10 @@ public class PdtAttrDAO {
       // getB().setCreateTime(Env.getSystemTime());//自动生成修改时间
       PropertyUtils.copyPropertiesWithout(
           dbBean,
-          translateUtil.autoTranslateByManageLanguage(getB(), true),
+          translateUtil.newAutoTranslate(
+              getB(),
+              translateUtil.buildFilter(
+                  dbBean.getName(), getB().getName(), PltConfigDAO.manageLanguage())),
           PdtAttr.T.PKEY,
           PdtAttr.T.CREATE_BY,
           PdtAttr.T.CREATE_TIME,
@@ -277,57 +281,9 @@ public class PdtAttrDAO {
                           lineList.add(line);
                         });
                 attr.setItems(lineList);
-                return attr;
-              })
-          .collect(Collectors.toList());
-
-      // List result = new ArrayList();
-      // 不做分类查询
-      // String sql = PdtAttr.T.DELETED.getFld().getCodeSqlField() + " = " +
-      // OYn.NO.getLine().getKey();
-      // PdtAttr.list(PdtAttr.class, sql, false)
-      //      BeanBase.list(
-      //              PdtAttr.class,
-      //              "("
-      //                  + PdtAttr.T.SUPPLIER.getFld().getCodeSqlField()
-      //                  + " =? OR "
-      //                  + PdtAttr.T.SUPPLIER.getFld().getCodeSqlField()
-      //                  + " IS NULL ) AND "
-      //                  + PdtAttr.T.DELETED.getFld().getCodeSqlField()
-      //                  + " = ? ",
-      //              false,
-      //              supplier,
-      //              OYn.NO.getLine().getKey())
-      //          .forEach(
-      //              l -> {
-      //                PdtProductVueView attr = new PdtProductVueView();
-      //                translateUtil.getAutoTranslate(l, language);
-      //                attr.setId(l.getPkey());
-      //                attr.setName(l.getName());
-      //                attr.setSupplier(l.getSupplier());
-      //                List lineList = new ArrayList();
-      //                PdtAttrLine.list(
-      //                        PdtAttrLine.class,
-      //                        PdtAttrLine.T.MAIN
-      //                            + "="
-      //                            + l.getPkey()
-      //                            + " AND "
-      //                            + PdtAttrLine.T.DELETED
-      //                            + " = "
-      //                            + OYn.NO.getLine().getKey(),
-      //                        false)
-      //                    .forEach(
-      //                        ll -> {
-      //                          translateUtil.getAutoTranslate(ll, language);
-      //                          PdtProductVueView line = new PdtProductVueView();
-      //                          line.setId(ll.getPkey());
-      //                          line.setName(ll.getName());
-      //                          lineList.add(line);
-      //                        });
-      //                attr.setItems(lineList);
-      //                result.add(attr);
-      //              });
-      //      return result;
+                result.add(attr);
+              });
+      return result;
     }
   }
 
@@ -368,7 +324,7 @@ public class PdtAttrDAO {
         line = translateUtil.autoTranslateByManageLanguage(line, true);
       }
       PdtAttrLineDAO.updByMain(getLines(), getB().getPkey());
-      // updLine(getB(),getLines(), PdtAttrLine.T.MAIN.getFld());
+      //            updLine(getB(),getLines(), PdtAttrLine.T.MAIN.getFld());
     }
   }
 

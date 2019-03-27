@@ -59,6 +59,9 @@ public class PMTemplateServiceImp implements IPMTemplateService {
               view.setMailContent(bean.getMailContent());
               view.setPmContent(bean.getPmContent());
               view.setRecType(Integer.valueOf(bean.getRcvrType()));
+              view.setVariables(
+                  variableService.loadByTempType(
+                      Integer.valueOf(bean.gtType().getLine().getKey())));
               return view;
             })
         .collect(Collectors.toList());

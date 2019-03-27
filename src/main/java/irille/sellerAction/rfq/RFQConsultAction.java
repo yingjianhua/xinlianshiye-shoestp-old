@@ -57,6 +57,7 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
     write(irfqManageService.getRFQInfo(id, getSupplier().getPkey()));
   }
 
+  /** 商家给RFQ询盘提供报价 */
   public void putRFQQuoteInfo() throws IOException {
     RFQConsultQuoteInfoView quoteInfo =
         objectMapper.readValue(getJsonBody(), RFQConsultQuoteInfoView.class);
@@ -82,11 +83,10 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
         irfqManageService.getMyRFQQuoteList(
             start,
             limit,
-            type,
             date,
             keyword,
             flag,
-            status,
+            readStatus,
             country,
             getSupplier().getPkey(),
             usrCountry));

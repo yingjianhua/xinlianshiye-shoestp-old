@@ -2,8 +2,7 @@ package irille.platform.pdt;
 
 import java.io.IOException;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import javax.inject.Inject;
 
 import irille.action.ActionBase;
 import irille.action.dataimport.util.StringUtil;
@@ -15,6 +14,8 @@ import irille.shop.pdt.PdtAttrDAO;
 import irille.shop.pdt.PdtSize;
 import irille.shop.plt.PltConfigDAO;
 import lombok.Data;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * 产品属性
@@ -38,8 +39,16 @@ public class PdtAttrAction extends ActionBase<PdtAttr> {
 		this._bean = bean;
 	}
 
+<<<<<<< HEAD
 	private String name; // 搜索的产品属性名称
 	private String category; // 搜索的产品属性类目
+=======
+  @Inject private PdtAttrDAO.UpdAttr upd;
+  @Inject private PdtAttrDAO.InsAttr dl;
+
+  private String name; // 搜索的产品属性名称
+  private String category; // 搜索的产品属性类目
+>>>>>>> refs/remotes/origin/develop
 
 	/**
 	 * 查询产品属性列表+搜索
@@ -51,6 +60,7 @@ public class PdtAttrAction extends ActionBase<PdtAttr> {
 		write(PdtAttrDAO.listAttr(name, category, getStart(), getLimit()));
 	}
 
+<<<<<<< HEAD
 	/**
 	 * 新增产品属性
 	 *
@@ -67,7 +77,25 @@ public class PdtAttrAction extends ActionBase<PdtAttr> {
 		dl.commit();
 		write();
 	}
+=======
+  /**
+   * 新增产品属性
+   *
+   * @throws IOException
+   * @author lingjian
+   * @date 2019/1/22 13:36
+   */
+  public void ins() throws IOException {
+    verify(getBean());
+    LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
+    getBean().setCreateBy(lu.get_user().getPkey());
+    dl.setB(getBean());
+    dl.commit();
+    write();
+  }
+>>>>>>> refs/remotes/origin/develop
 
+<<<<<<< HEAD
 	/**
 	 * 修改产品属性
 	 *
@@ -84,6 +112,23 @@ public class PdtAttrAction extends ActionBase<PdtAttr> {
 		upd.commit();
 		write();
 	}
+=======
+  /**
+   * 修改产品属性
+   *
+   * @throws IOException
+   * @author lingjian
+   * @date 2019/1/22 13:36
+   */
+  public void upd() throws IOException {
+    verify(getBean());
+    LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
+    getBean().setCreateBy(lu.get_user().getPkey());
+    upd.setB(getBean());
+    upd.commit();
+    write();
+  }
+>>>>>>> refs/remotes/origin/develop
 
 	/**
 	 * 删除产品属性

@@ -187,14 +187,14 @@ public class SessionMsg {
           {
             isPurchase = true;
             isSupplier = false;
-            purchaseId = user.getPurchase().getPkey();
+            if (user.getPurchase() != null) purchaseId = user.getPurchase().getPkey();
           }
           break;
         case 1:
           {
             isSupplier = true;
             isPurchase = false;
-            supplierId = user.getSupplier().getPkey();
+            if (user.getSupplier() != null) supplierId = user.getSupplier().getPkey();
           }
       }
     }

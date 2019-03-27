@@ -34,6 +34,7 @@ import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Entity.RFQ.Enums.RFQConsultPayType;
 import irille.Entity.RFQ.Enums.RFQConsultRecommend;
+import irille.Entity.RFQ.Enums.RFQConsultRelationReadStatus;
 import irille.Entity.RFQ.Enums.RFQConsultStatus;
 import irille.Entity.RFQ.Enums.RFQConsultType;
 import irille.Entity.RFQ.Enums.RFQConsultUnit;
@@ -93,11 +94,14 @@ public class RFQConsultServiceImpl implements RFQConsultService {
         if (unread) {
           sql.AND()
               .WHERE(RFQConsultRelation.T.IS_NEW, "=?", true)
-              .orWhere(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", false);
+              .orWhere(
+                  RFQConsultRelation.T.READ_STATUS,
+                  "=?",
+                  RFQConsultRelationReadStatus.PURCHASE_UNREAD);
         }
       }
       sql.GROUP_BY(RFQConsult.T.PKEY);
-      sql.ORDER_BY(RFQConsult.T.CREATE_TIME, "desc");
+      sql.ORDER_BY(RFQConsult.T.LAST_MESSAGE_SEND_TIME, "desc");
       SQL sql2 = new SQL();
       sql2.SELECT("( @i := @i + 1 ) as i");
       sql2.SELECT(RFQConsultRelation.T.PKEY);
@@ -139,11 +143,14 @@ public class RFQConsultServiceImpl implements RFQConsultService {
         query
             .AND()
             .WHERE(RFQConsultRelation.T.IS_NEW, "=?", true)
-            .orWhere(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", false);
+            .orWhere(
+                RFQConsultRelation.T.READ_STATUS,
+                "=?",
+                RFQConsultRelationReadStatus.PURCHASE_UNREAD);
       }
     }
     query.GROUP_BY(RFQConsult.T.PKEY);
-    query.ORDER_BY(RFQConsult.T.CREATE_TIME, "desc");
+    query.ORDER_BY(RFQConsult.T.LAST_MESSAGE_SEND_TIME, "desc");
     query.limit(start, limit);
     List<RFQConsultView> result =
         query.queryMaps().stream()
@@ -180,7 +187,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
     query.SELECT(RFQConsultRelation.T.SAMPLE);
     query.SELECT(RFQConsultRelation.T.CREATE_DATE);
     query.SELECT(RFQConsultRelation.T.IS_NEW);
-    query.SELECT(RFQConsultRelation.T.HAD_READ_PURCHASE);
+    query.SELECT(RFQConsultRelation.T.READ_STATUS);
     query.SELECT(UsrSupplier.T.PKEY, "supplierPkey");
     query.SELECT(UsrSupplier.T.NAME, "supplierName");
     query.SELECT(UsrSupplier.T.COUNTRY, "supplierCountry");
@@ -246,9 +253,8 @@ public class RFQConsultServiceImpl implements RFQConsultService {
                   country.setFlag(GetValue.get(map, "countryFlag", String.class, null));
                   supplier.setCountry(country);
                   relation.setUnread(
-                      !BeanBase.byteToBoolean(
-                          GetValue.get(
-                              map, RFQConsultRelation.T.HAD_READ_PURCHASE, Byte.class, null)));
+                      GetValue.get(map, RFQConsultRelation.T.READ_STATUS, Byte.class, null)
+                          .equals(RFQConsultRelationReadStatus.PURCHASE_UNREAD.getLine().getKey()));
                   relation.setQuotation(quotation);
                   relation.setSupplier(supplier);
                   return relation;
@@ -703,7 +709,10 @@ public class RFQConsultServiceImpl implements RFQConsultService {
                 .LEFT_JOIN(
                     RFQConsultRelation.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY)
                 .WHERE(RFQConsult.T.PURCHASE_ID, "=?", purchase.getPkey())
-                .WHERE(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", false)
+                .WHERE(
+                    RFQConsultRelation.T.READ_STATUS,
+                    "=?",
+                    RFQConsultRelationReadStatus.PURCHASE_UNREAD)
                 .GROUP_BY(RFQConsult.T.TYPE))
         .queryMaps().stream()
         .forEach(

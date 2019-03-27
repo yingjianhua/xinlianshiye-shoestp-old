@@ -341,6 +341,9 @@
                 }
             },
             mounted() {
+                if (sessionStorage['Temp_Contact_Supplier_Shop_Contact_Us_form'] &&sessionStorage['Temp_Contact_Supplier_Shop_Contact_Us_form']!=''&&sessionStorage['Temp_Contact_Supplier_Shop_Contact_Us_form']!='null'){
+                    this.form=JSON.parse(sessionStorage['Temp_Contact_Supplier_Shop_Contact_Us_form'])
+                }
                 // 进来页面获取到供应商信息
                 let self = this;
                 self.pkey = self.getQueryString("pkey");
@@ -381,6 +384,11 @@
                 },
                 // 上传图片文件之前
                 beforeUpload(file){
+                    if (!sysConfig || !sysConfig.user) {
+                        sessionStorage['Temp_Contact_Supplier_Shop_Contact_Us_form']=JSON.stringify(this.form)
+                        util_function_obj.alertWhenNoLogin(this);
+                        return
+                    }
                     console.log(file)
                     let size = file.size / 1024;
                     if(size > 500 ){
@@ -391,12 +399,13 @@
                 submitForm(formName) { // 表单提交
                     let self = this;
                     if(!sysConfig || !sysConfig.user){
+                        sessionStorage['Temp_Contact_Supplier_Shop_Contact_Us_form']=JSON.stringify(self.form)
                         util_function_obj.alertWhenNoLogin(self);
                         return
                     }else{
                         // 登录了
                         if(sysConfig.user.user_type == 1){
-                            self.$alert("Sorry, the supplier cannot submit the form",{
+                            self.$alert("Please register or login your buyer account if you want making enquiries.",{
                                 confirmButtonText: 'Ok',
                                 customClass: "my-custom-element-alert-class fs-content-18",
                                 center: true,
@@ -430,13 +439,15 @@
                                     type: 'success'
                                 });
                                 setTimeout(function () {
-                                    // gtag_report_conversion()
-                                    // window.location.href =
-                                    //     '/home/usr_UsrSupplier_gtSupInfo?pkey=' + self.pkey;
+                                    sessionStorage.removeItem('Temp_Contact_Supplier_Shop_Contact_Us_form')
                                     window.location.reload();
                                 }, 1500)
                                 // 未登录时
-                            } else {
+                            } else if (res.data.ret == -1) {
+                                    sessionStorage['Temp_Contact_Supplier_Shop_Contact_Us_form'] = JSON.stringify(self.form)
+                                    util_function_obj.alertWhenNoLogin(self);
+                                    return
+                                }else {
                                 self.flag = false;
                                 self.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
                                     confirmButtonText: 'OK',
@@ -452,14 +463,6 @@
                             })
                         } else {
                             console.log('error submit!!');
-                    // if (!self.form.quantity) {
-                    //     self.$message.error('Quantity cannot be empty');
-                    // } else if (!self.form.unit) {
-                    //     self.$message.error("Select unit");
-                    // } else if (!self.form.description) {
-                    //     self.$message.error('Please fill in the message');
-                    // }
-                    // return false;
                 }
                 });
                         }

@@ -38,6 +38,8 @@ public class PdtCatAction extends ActionBase<PdtCat> {
   @Inject private PdtCatDAO pdtCatDAO;
 
   @Inject private IPdtCatManageService iPdtCatManageService;
+  @Inject private PdtCatDAO.enable phenable;
+  @Inject private PdtCatDAO.Del cp;
 
   /** @Description: 查询所有分类 *@anthor kouhanyang */
   public void pdtCatlist() throws IOException {
@@ -46,7 +48,6 @@ public class PdtCatAction extends ActionBase<PdtCat> {
 
   /** @Description: 删除分类 *@anthor kouhanyang */
   public void del() throws IOException {
-    PdtCatDAO.Del cp = new PdtCatDAO.Del();
     cp.setBKey(getBean().getPkey());
     cp.commit();
     write();
@@ -54,9 +55,8 @@ public class PdtCatAction extends ActionBase<PdtCat> {
 
   /** @Description: 修改是否启用 *@anthor kouhanyang */
   public void countryenable() throws Exception {
-    PdtCatDAO.enable ph = new PdtCatDAO.enable();
-    ph.setB(getBean());
-    ph.commit();
+    phenable.setB(getBean());
+    phenable.commit();
     write();
   }
 

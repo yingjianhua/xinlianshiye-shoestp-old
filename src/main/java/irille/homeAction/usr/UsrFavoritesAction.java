@@ -15,6 +15,7 @@ import com.xinlianshiye.shoestp.shop.service.usr.UsrFavoriteService;
 import com.xinlianshiye.shoestp.shop.view.usr.FavoritesView;
 
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
+import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin.UserType;
 import irille.Service.Usr.IUsrSupplierService;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
@@ -355,6 +356,7 @@ public class UsrFavoritesAction extends HomeAction<UsrFavorites> {
    * @throws IOException
    * @author liyichao
    */
+  @NeedLogin(userType = UserType.PURCHASE)
   public void delFavorite() throws IOException, JSONException {
     UsrFavoritesDAO.DelFavorite delFavorite = new UsrFavoritesDAO.DelFavorite();
     if (getPkeys() != null && getPkeys().trim() != "") {
@@ -399,7 +401,7 @@ public class UsrFavoritesAction extends HomeAction<UsrFavorites> {
    * @author liyichao
    * @updatetime 2018-8-16
    */
-  @NeedLogin
+  @NeedLogin(userType = UserType.PURCHASE)
   public void addFavorite() throws Exception {
     JSONObject json = new JSONObject();
     if (getPurchase() == null) {

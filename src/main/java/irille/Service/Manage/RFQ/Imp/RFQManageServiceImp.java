@@ -21,6 +21,7 @@ import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Entity.RFQ.Enums.RFQConsultPayType;
+import irille.Entity.RFQ.Enums.RFQConsultRelationReadStatus;
 import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
 import irille.Entity.RFQ.Enums.RFQConsultType;
 import irille.Entity.RFQ.Enums.RFQConsultUnit;
@@ -158,6 +159,7 @@ public class RFQManageServiceImp implements IRFQManageService {
 
   @Override
   public int putRFQQuoteInfo(RFQConsultQuoteInfoView quoteInfo, Integer pkey) {
+    // FIXME 当报价次数超出上限时 仍能插入relation数据
     RFQConsult consult = rfqConsultDao.getRFQInfo(quoteInfo.getRfqId());
     if (consult == null) return 0;
     RFQConsultRelation rfqConsultRelation =
@@ -192,9 +194,10 @@ public class RFQManageServiceImp implements IRFQManageService {
     } catch (JsonProcessingException e) {
       e.printStackTrace();
     }
+
+    rfqConsultRelation.setLastMessageSendTime(new Date());
+    rfqConsultRelation.stReadStatus(RFQConsultRelationReadStatus.PURCHASE_UNREAD);
     rfqConsultRelation.stIsNew(true);
-    rfqConsultRelation.stHadReadPurchase(false);
-    rfqConsultRelation.stHadReadSupplier(true);
     rfqConsultRelation.stIsDeletedPurchase(false);
     rfqConsultRelation.stIsDeletedSupplier(false);
     rfqConsultRelationDAO.setB(rfqConsultRelation);
@@ -202,6 +205,7 @@ public class RFQManageServiceImp implements IRFQManageService {
     if (consult.getLeftCount() < consult.getTotal()) {
       consult.setLeftCount(consult.getLeftCount() + 1);
       consult.setProductRequest("{}");
+      consult.setLastMessageSendTime(new Date());
       rfqConsultUpdDAO.setB(consult).commit();
     }
     return 1;
@@ -233,14 +237,13 @@ public class RFQManageServiceImp implements IRFQManageService {
   }
 
   @Override
-  public Page getMyRFQQuoteList(
+  public Page<RFQManageMyQuoteListBody> getMyRFQQuoteList(
       Integer start,
       Integer limit,
-      Byte type,
       Date date,
       String keyword,
       boolean flag,
-      Integer status,
+      Byte readStatus,
       Integer country,
       int Supid,
       Integer usrCountry)
@@ -248,7 +251,7 @@ public class RFQManageServiceImp implements IRFQManageService {
     List<Map<String, Object>> list = null;
     list =
         rfqConsultDao.getMyRFQQuoteList(
-            start, limit, type, date, keyword, flag, status, country, Supid, usrCountry);
+            start, limit, date, keyword, flag, readStatus, country, Supid, usrCountry);
     List<RFQManageMyQuoteListBody> result = new ArrayList<>();
     Map<Integer, Object> countryMap = new HashMap<>();
     for (Map<String, Object> map : list) {
@@ -270,24 +273,16 @@ public class RFQManageServiceImp implements IRFQManageService {
       body.setPurchaseCountryIMG(up.gtCountry().getNationalFlag());
       body.setPurchaseCountry(up.gtCountry().getName());
       body.setPurchaseCountryPkey(up.gtCountry().getPkey());
+      body.setReadStatus(GetValue.get(map, RFQConsultRelation.T.READ_STATUS, Byte.class, null));
       countryMap.put(up.gtCountry().getPkey(), up.gtCountry().getName());
-      if (GetValue.get(map, RFQConsultMessage.T.P2S, Byte.class, (byte) -1) == 1) {
-        body.setStatus(3);
-      } else {
-        if (GetValue.get(map, RFQConsultMessage.T.P2S, Byte.class, (byte) -1) == 0
-            && GetValue.get(map, RFQConsultMessage.T.HAD_READ, Byte.class, (byte) -1) == 0)
-          body.setStatus(1);
-        else {
-          body.setStatus(2);
-        }
-      }
       result.add(body);
     }
     return new RFQOfferListView(
         result,
         start,
         limit,
-        rfqConsultDao.count(type, date, keyword, flag, status, country, Supid),
+        rfqConsultDao.countMyRFQQuoteList(
+            date, keyword, flag, readStatus, country, Supid, usrCountry),
         countryMap);
   }
 
