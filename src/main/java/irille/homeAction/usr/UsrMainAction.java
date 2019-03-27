@@ -199,6 +199,56 @@ public class UsrMainAction extends HomeAction<UsrMain> {
     write();
     CacheUtils.mailValid.invalidate(uid);
   }
+    /**
+     * 手机端注册(3.0)
+     *
+     * @author chen
+     */
+    public void phoneRegist() throws IOException {
+        String code = verifyCode();
+        logger.debug(String.format("Method:%s\r\nCode:%s,", "regist", code));
+        if (Str.isEmpty(code) || Str.isEmpty(getCheckCode()) || code.equals(getCheckCode()) == false) {
+            throw new WebMessageException(
+                    MessageBuild.buildMessage(
+                            ReturnCode.service_verification_code, HomeAction.curLanguage()));
+        }
+        if (Str.isEmpty(getPwd()) || Str.isEmpty(getPwdA()))
+            throw new WebMessageException(
+                    MessageBuild.buildMessage(ReturnCode.valid_pwd_notnull, HomeAction.curLanguage()));
+
+        insBefore();
+        if (getBean().getEmail() == null) {
+            throw new WebMessageException(
+                    MessageBuild.buildMessage(ReturnCode.valid_mail_notnull, HomeAction.curLanguage()));
+        }
+        // 忽略邮箱大小写
+        getBean().setEmail(getBean().getEmail().toLowerCase());
+        if (!ValidRegex.regMarch(Regular.REGULAR_EMAIL, getBean().getEmail())) {
+            throw new WebMessageException(
+                    MessageBuild.buildMessage(ReturnCode.valid_mailRegex, HomeAction.curLanguage()));
+        }
+        if (!ValidRegex.regMarch(Regular.REGULAR_PWD, pwd)) {
+            throw new WebMessageException(
+                    MessageBuild.buildMessage(ReturnCode.password_format, HomeAction.curLanguage()));
+        }
+        if (!pwd.equals(pwdA)) {
+            throw new WebMessageException(
+                    MessageBuild.buildMessage(ReturnCode.dif_password, HomeAction.curLanguage()));
+        }
+
+        UsrMain main = UsrMain.chkUniqueEmail(false, getBean().getEmail());
+        if (main != null) {
+            throw new WebMessageException(
+                    MessageBuild.buildMessage(ReturnCode.service_user_exists, HomeAction.curLanguage()));
+        }
+        getBean().setPassword(getPwd());
+        getBean().setTelphone("");
+        ins.setB(getBean());
+        ins.commit();
+        insAfter();
+        write();
+
+    }
 
   /**
    * 发送邮件
