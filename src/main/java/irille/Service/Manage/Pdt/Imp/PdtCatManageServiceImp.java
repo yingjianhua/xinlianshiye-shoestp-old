@@ -14,6 +14,7 @@ import irille.sellerAction.view.ProductSEOsView;
 import irille.shop.pdt.PdtProduct;
 import irille.view.Page;
 import irille.view.pdt.CategoryView;
+import irille.view.pdt.PdtProductCatView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -148,5 +149,26 @@ public class PdtCatManageServiceImp implements IPdtCatManageService {
             })
         .collect(Collectors.toList());
   }
+
+    @Override
+    public List<PdtProductCatView> findCategoryCascader(Integer id) {
+        return pdtProductCatDao.findCategory(id).stream()
+                .map(
+                        cat -> {
+                            PdtProductCatView view = new PdtProductCatView();
+                            view.setValue(cat.getPkey());
+                            try {
+                                view.setLabel(cat.getName(FldLanguage.Language.zh_CN));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            List<PdtProductCatView> category = findCategoryCascader(cat.getPkey());
+                            if (category.size() > 0) {
+                                view.setChildren(category);
+                            }
+                            return view;
+                        })
+                .collect(Collectors.toList());
+    }
 
 }
