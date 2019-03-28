@@ -2,6 +2,7 @@ package irille.shop.usr;
 
 import java.util.Date;
 
+import irille.core.sys.Sys;
 import irille.pub.bean.BeanInt;
 import irille.pub.tb.Fld;
 import irille.pub.tb.IEnumFld;
@@ -26,6 +27,7 @@ public class UsrMain extends BeanInt<UsrMain> {
 		REG_TIME(SYS.DATE_TIME__NULL, "注册时间"), IDENTITY(TB.crt(Usr.IDType.DEFAULT)),
 		FACEBOOK_USER_ID(SYS.STR__100_NULL, "FACEBOOK用户ID"), GOOGLE_USER_ID(SYS.STR__100_NULL, "谷歌用户ID"),
 		LINKEDIN_USER_ID(SYS.STR__100_NULL, "领英用户ID"), TWITTER_USER_ID(SYS.STR__100_NULL, "推特用户ID"),
+		LAST_LOGIN(Sys.T.TIME), // 用户上次登录的时间, session失效时更新改值
 		ROW_VERSION(SYS.ROW_VERSION),
 
 		// >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
@@ -102,6 +104,7 @@ public class UsrMain extends BeanInt<UsrMain> {
   private String _googleUserId;	// 谷歌用户ID  STR(100)<null>
   private String _linkedinUserId;	// 领英用户ID  STR(100)<null>
   private String _twitterUserId;	// 推特用户ID  STR(100)<null>
+  private Date _lastLogin;	// 时间  TIME
   private Short _rowVersion;	// 版本  SHORT
 
 	@Override
@@ -124,6 +127,7 @@ public class UsrMain extends BeanInt<UsrMain> {
     _googleUserId=null;	// 谷歌用户ID  STR(100)
     _linkedinUserId=null;	// 领英用户ID  STR(100)
     _twitterUserId=null;	// 推特用户ID  STR(100)
+    _lastLogin=null;	// 时间  TIME
     _rowVersion=0;	// 版本  SHORT
     return this;
   }
@@ -316,6 +320,12 @@ public class UsrMain extends BeanInt<UsrMain> {
   }
   public void setTwitterUserId(String twitterUserId){
     _twitterUserId=twitterUserId;
+  }
+  public Date getLastLogin(){
+    return _lastLogin;
+  }
+  public void setLastLogin(Date lastLogin){
+    _lastLogin=lastLogin;
   }
   public Short getRowVersion(){
     return _rowVersion;
