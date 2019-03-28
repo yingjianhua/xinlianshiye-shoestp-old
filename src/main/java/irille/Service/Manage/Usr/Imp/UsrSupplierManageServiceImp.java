@@ -4,9 +4,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.google.gson.JsonObject;
 
 import irille.Dao.UsrSupplierDao;
@@ -17,6 +14,8 @@ import irille.shop.plt.PltConfigDAO;
 import irille.shop.usr.UsrSupplier;
 import irille.view.usr.UsrSupplierInfoView;
 import irille.view.usr.UsrshopSettingView;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/12 Time: 16:22 */
 public class UsrSupplierManageServiceImp implements IUsrSupplierManageService {
@@ -34,7 +33,7 @@ public class UsrSupplierManageServiceImp implements IUsrSupplierManageService {
   public UsrSupplierInfoView getInfoById(int i) {
     Map map = usrSupplierDao.getInfoById(i);
     UsrSupplierInfoView view = SetBeans.set(map, UsrSupplierInfoView.class);
-    view.setLanguage(PltConfigDAO.supplierLanguage(i).toString());
+    view.setLanguage(PltConfigDAO.supplierLanguage(i).name());
     return view;
   }
 
