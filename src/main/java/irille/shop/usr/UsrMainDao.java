@@ -239,32 +239,43 @@ public class UsrMainDao {
 			}
 		};
 		Integer count = irille.pub.bean.Query.sql(sql).queryCount();
-		List<UsrMainView> list = Query.sql(sql.LIMIT(start, limit)).queryMaps().stream().map(bean -> new UsrMainView() {
-			{
-				setPkey((Integer) bean.get(UsrMain.T.PKEY.getFld().getCodeSqlField()));
-				setEmail((String) bean.get(UsrMain.T.EMAIL.getFld().getCodeSqlField()));
-				setNickName((String) bean.get(UsrMain.T.NICKNAME.getFld().getCodeSqlField()));
-				setCompany((String) bean.get(UsrMain.T.COMPANY.getFld().getCodeSqlField()));
-				Object o = bean.get(UsrMain.T.PROVINCE.getFld().getCodeSqlField());
-				if (bean.get(UsrMain.T.PROVINCE.getFld().getCodeSqlField()) != null) {
-					setProvince(Bean
-							.load(PltProvinces.class, (Integer) bean.get(UsrMain.T.PROVINCE.getFld().getCodeSqlField()))
-							.getName());
-				}
-				if (bean.get(UsrMain.T.CITY.getFld().getCodeSqlField()) != null) {
-					setCity(Bean.load(PltCity.class, (Integer) bean.get(UsrMain.T.CITY.getFld().getCodeSqlField()))
-							.getName());
-				}
-				if (bean.get(UsrMain.T.ZONE.getFld().getCodeSqlField()) != null) {
-					setZone(Bean.load(PltArea.class, (Integer) bean.get(UsrMain.T.ZONE.getFld().getCodeSqlField()))
-							.getName());
-				}
-				setAddress((String) bean.get(UsrMain.T.ADDRESS.getFld().getCodeSqlField()));
-				setContacts((String) bean.get(UsrMain.T.CONTACTS.getFld().getCodeSqlField()));
-				setTelphone((String) bean.get(UsrMain.T.TELPHONE.getFld().getCodeSqlField()));
-				setRegTime((Date) bean.get(UsrMain.T.REG_TIME.getFld().getCodeSqlField()));
-			}
-		}).collect(Collectors.toList());
+    List<UsrMainView> list = Query.sql(sql.LIMIT(start, limit)).queryMaps().stream().map(bean -> new UsrMainView() {
+        {
+            setPkey((Integer) bean.get(UsrMain.T.PKEY.getFld().getCodeSqlField()));
+            setEmail((String) bean.get(UsrMain.T.EMAIL.getFld().getCodeSqlField()));
+            setNickName((String) bean.get(UsrMain.T.NICKNAME.getFld().getCodeSqlField()));
+            setCompany((String) bean.get(UsrMain.T.COMPANY.getFld().getCodeSqlField()));
+            if (bean.get(UsrMain.T.PROVINCE.getFld().getCodeSqlField()) != null) {
+              setProvince(
+                  Bean.load(
+                          PltProvinces.class,
+                          (Integer)
+                              bean.get(UsrMain.T.PROVINCE.getFld().getCodeSqlField()))
+                      .getName());
+            }
+            if (bean.get(UsrMain.T.CITY.getFld().getCodeSqlField()) != null) {
+              setCity(
+                  Bean.load(
+                          PltCity.class,
+                          (Integer) bean.get(UsrMain.T.CITY.getFld().getCodeSqlField()))
+                      .getName());
+            }
+            if (bean.get(UsrMain.T.ZONE.getFld().getCodeSqlField()) != null) {
+              setZone(
+                  Bean.load(
+                          PltArea.class,
+                          (Integer) bean.get(UsrMain.T.ZONE.getFld().getCodeSqlField()))
+                      .getName());
+            }
+            setAddress((String) bean.get(UsrMain.T.ADDRESS.getFld().getCodeSqlField()));
+            setContacts(
+                (String) bean.get(UsrMain.T.CONTACTS.getFld().getCodeSqlField()));
+            setTelphone(
+                (String) bean.get(UsrMain.T.TELPHONE.getFld().getCodeSqlField()));
+            setRegTime((Date) bean.get(UsrMain.T.REG_TIME.getFld().getCodeSqlField()));
+          }
+        })
+            .collect(Collectors.toList());
 		return new Page(list, start, limit, count);
 	}
 
@@ -302,12 +313,14 @@ public class UsrMainDao {
 				}
 				setAddress((String) bean.get(UsrMain.T.ADDRESS.getFld().getCodeSqlField()));
 				String name= (String) bean.get(UsrMain.T.CONTACTS.getFld().getCodeSqlField());
-				String [] strArray = name.split(",");
-				String contact="";
-				for(String s : strArray){
-					contact+=s;
+				if(name != null){
+					String [] strArray = name.split(",");
+					String contact="";
+					for(String s : strArray){
+						contact+=s;
+					}
+					setContacts(contact);
 				}
-				setContacts(contact);
 				setTelphone((String) bean.get(UsrMain.T.TELPHONE.getFld().getCodeSqlField()));
 				setRegTime((Date) bean.get(UsrMain.T.REG_TIME.getFld().getCodeSqlField()));
 			}

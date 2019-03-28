@@ -651,6 +651,7 @@ public class PdtSizeDAO {
     }
     sql.WHERE(
         "JSON_EXTRACT(PdtSize.name,?) = ?", "$." + PltConfigDAO.manageLanguage().toString(), str);
+    sql.WHERE(PdtSize.T.PKEY," <>? ",size.getPkey());
     Integer count = Query.sql(sql).queryCount();
     if (count > 0) {
       String msg = "";
@@ -677,9 +678,9 @@ public class PdtSizeDAO {
     if (count1 > 0) {
       String strSize = "";
       if (type == 1) {
-        strSize = "当前尺寸已被使用,无法修改";
+        strSize = "当前尺寸已被产品使用,无法修改";
       } else if (type == 2) {
-        strSize = "当前尺寸已被使用,无法删除";
+        strSize = "当前尺寸已被产品使用,无法删除";
       }
       throw new WebMessageException(ReturnCode.service_gone, strSize);
     }
