@@ -1508,9 +1508,9 @@ public class PdtProductDao {
     SQL sql =
         new SQL() {
           {
-            SELECT(PdtProduct.T.NAME, PdtProduct.T.PICTURE, PdtProduct.T.PKEY)
+            SELECT(PdtProduct.T.NAME, PdtProduct.T.PICTURE, PdtProduct.T.PKEY,PdtProduct.T.IS_DEFAULT_REVIEW)
                 .FROM(PdtProduct.class)
-                .WHERE(supplierId != null, PdtProduct.T.SUPPLIER, "=?", supplierId)
+                .WHERE(supplierId != null, PdtProduct.T.SUPPLIER, "=?")
                 .ORDER_BY(PdtProduct.T.VERIFY_TIME, "desc")
                 .LIMIT(0, 3);
           }

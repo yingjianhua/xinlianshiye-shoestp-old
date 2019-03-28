@@ -16,6 +16,7 @@ import irille.pub.bean.sql.SQL;
 import irille.pub.util.SEOUtils;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtProduct;
+import irille.shop.pdt.PdtTieredPricing;
 import irille.shop.usr.*;
 import irille.shop.usr.UsrSupplier.T;
 
@@ -185,7 +186,8 @@ public class UsrSupplierDao {
             UsrSupplier.T.PKEY,
             UsrSupplier.T.SHOW_NAME,
             UsrSupplier.T.LOGO,
-            UsrSupplier.T.MAIN_SALES_AREA)
+            UsrSupplier.T.MAIN_SALES_AREA,
+            UsrSupplier.T.COMPANY_ADDR)
         .FROM(UsrSupplier.class)
         .LEFT_JOIN(PdtProduct.class, UsrSupplier.T.PKEY, PdtProduct.T.SUPPLIER)
         .LEFT_JOIN(SVSInfo.class, UsrSupplier.T.PKEY, SVSInfo.T.SUPPLIER)
@@ -194,7 +196,7 @@ public class UsrSupplierDao {
     if (targetMarket != null) {
       for (String string : targetMarket.split(",")) {
         if (string.length() > 1) {
-          query.WHERE("find_in_set( ?, targeted_market )", string);
+          query.WHERE("find_in_set( ?,"+UsrSupplier.class.getSimpleName()+"."+"targeted_market )", string);
         }
       }
     }
@@ -235,7 +237,7 @@ public class UsrSupplierDao {
     if (targetMarket != null) {
       for (String string : targetMarket.split(",")) {
         if (string.length() > 1) {
-          query.WHERE("find_in_set( ?, targeted_market )", string);
+          query.WHERE("find_in_set( ?,"+UsrSupplier.class.getSimpleName()+"."+"targeted_market )", string);
         }
       }
     }
