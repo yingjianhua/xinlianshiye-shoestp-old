@@ -146,6 +146,7 @@ public class O2OActicityServerImp implements IO2OActicityServer, Job {
       o2oPdt.setActivityId(activityEntity.getPkey());
       o2oPdt.setPrice(pdt.getCurPrice());
       o2oPdt.setMinOq(pdt.getMinOq());
+      o2oPdt.setTimes(0);
       o2oPdt.setProductId(pdt.getPkey());
       o2oPdt.setUpdatedTime(new Date());
       if (null == o2oPdt.getPkey()) {
