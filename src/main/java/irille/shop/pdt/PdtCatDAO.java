@@ -254,6 +254,7 @@ public class PdtCatDAO {
             {
               SELECT(PdtCat.class);
               FROM(PdtCat.class);
+              WHERE(T.DELETED, "=?", OYn.NO.getLine().getKey());
               WHERE(T.CATEGORY_UP, "=?").PARAM(getB().getPkey());
             }
           };
