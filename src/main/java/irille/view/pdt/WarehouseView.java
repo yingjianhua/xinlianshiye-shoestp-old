@@ -17,6 +17,7 @@ public class WarehouseView implements BaseView {
   private String productCate;
   private String storeCate;
   private BigDecimal price;
+  private Integer cat;
 
   @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss", timezone = "GMT+8")
   private Date time;

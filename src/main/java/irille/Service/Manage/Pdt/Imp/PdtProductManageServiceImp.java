@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -144,10 +145,17 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
     List<Integer> countList = new ArrayList<>();
     if (pdtProductSaveView.getTieredPricing() != null
         && !pdtProductSaveView.getTieredPricing().isEmpty()) {
-      for (PdtTieredPricingView item : pdtProductSaveView.getTieredPricing()) {
+      List<PdtTieredPricingView> items =
+          pdtProductSaveView.getTieredPricing().stream()
+              .sorted(Comparator.comparing(PdtTieredPricingView::getPrice))
+              .collect(Collectors.toList());
+      for (int i = 0; i < items.size(); i++) {
+        PdtTieredPricingView item = items.get(i);
         PdtTieredPricing pdtTP = new PdtTieredPricing();
         pdtTP.setMinOq(item.getCount());
-        pdtTP.setCurPrice(item.getPrice());
+        if (i == 0) {
+          pdtTP.setCurPrice(item.getPrice());
+        }
         pdtTP.setMain(item.getType() == 1 ? OYn.YES.getLine().getKey() : OYn.NO.getLine().getKey());
         pdtTP.setDeleted(OYn.NO.getLine().getKey());
         minPriceList.add(item.getPrice());
@@ -348,41 +356,62 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
     // 设置上架 --不保存仓库 判断上架时间是否小于当前时间 如果小于设置为立即上架 审核通过 定时器解除
     // 立即上架 --保存到仓库 审核不通过 手动解除
     // 立即上架 --不保存到仓库 审核通过
-    if (pdtProduct.gtSoldInTime() && pdtProductSaveView.getWarehouse() == 0) {
-      if (pdtProductSaveView.getPutawayDate().compareTo(new Date()) == -1) {
-        pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
-        pdtProduct.setSoldTimeB(Env.getSystemTime());
-      } else {
-        pdtProduct.setSoldInTime(OYn.YES.getLine().getKey());
-        pdtProduct.setSoldTimeB(pdtProductSaveView.getPutawayDate());
-      }
-
-    } else if (pdtProduct.gtSoldInTime() && pdtProductSaveView.getWarehouse() != 0) {
-      if (pdtProductSaveView.getPutawayDate().compareTo(new Date()) == -1) {
-        pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
-        pdtProduct.setSoldTimeB(Env.getSystemTime());
-      } else {
-        pdtProduct.setSoldInTime(OYn.YES.getLine().getKey());
-        pdtProduct.setSoldTimeB(pdtProductSaveView.getPutawayDate());
-      }
-      //      pdtProduct.setState(Pdt.OState.ON.getLine().getKey());
-      //      pdtProduct.setIsVerify(Sys.OYn.YES.getLine().getKey());
-    } else if (!pdtProduct.gtSoldInTime() && pdtProductSaveView.getWarehouse() == 0) {
+    // TODO 待测试
+    if (pdtProductSaveView.getWarehouse().equals(0)) {
+      // 产品保存到仓库
       pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
-      pdtProduct.setSoldTimeB(Env.getSystemTime());
-      //      pdtProduct.setState(Pdt.OState.OFF.getLine().getKey());
-      //      pdtProduct.setIsVerify(Sys.OYn.NO.getLine().getKey());
     } else {
-      pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
-      pdtProduct.setSoldTimeB(Env.getSystemTime());
-      //      pdtProduct.setState(Pdt.OState.ON.getLine().getKey());
-      //      if (null != pdtProduct.getPkey()) {
-      //        PdtProduct product = BeanBase.load(PdtProduct.class, pdtProduct.getPkey());
-      //        pdtProduct.setIsVerify(product.getIsVerify());
-      //      } else {
-      //      pdtProduct.setIsVerify(Sys.OYn.YES.getLine().getKey());
-      //      }
+      // 产品直接发布
+      if (pdtProduct.gtSoldInTime()) {
+        // 立即上架
+        pdtProduct.setSoldInTime(OYn.YES.getLine().getKey());
+        pdtProduct.setSoldTimeB(Env.getSystemTime());
+      } else {
+        // 定时上架
+        if (pdtProductSaveView.getPutawayDate().compareTo(new Date()) == -1) {
+          pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
+          pdtProduct.setSoldTimeB(Env.getSystemTime());
+        } else {
+          pdtProduct.setSoldInTime(OYn.YES.getLine().getKey());
+          pdtProduct.setSoldTimeB(pdtProductSaveView.getPutawayDate());
+        }
+      }
     }
+    //    if (pdtProduct.gtSoldInTime() && pdtProductSaveView.getWarehouse() == 0) {
+    //      if (pdtProductSaveView.getPutawayDate().compareTo(new Date()) == -1) {
+    //        pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
+    //        pdtProduct.setSoldTimeB(Env.getSystemTime());
+    //      } else {
+    //        pdtProduct.setSoldInTime(OYn.YES.getLine().getKey());
+    //        pdtProduct.setSoldTimeB(pdtProductSaveView.getPutawayDate());
+    //      }
+    //
+    //    } else if (pdtProduct.gtSoldInTime() && pdtProductSaveView.getWarehouse() != 0) {
+    //      if (pdtProductSaveView.getPutawayDate().compareTo(new Date()) == -1) {
+    //        pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
+    //        pdtProduct.setSoldTimeB(Env.getSystemTime());
+    //      } else {
+    //        pdtProduct.setSoldInTime(OYn.YES.getLine().getKey());
+    //        pdtProduct.setSoldTimeB(pdtProductSaveView.getPutawayDate());
+    //      }
+    //      pdtProduct.setState(Pdt.OState.ON.getLine().getKey());
+    //      pdtProduct.setIsVerify(Sys.OYn.YES.getLine().getKey());
+    //    } else if (!pdtProduct.gtSoldInTime() && pdtProductSaveView.getWarehouse() == 0) {
+    //      pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
+    //      pdtProduct.setSoldTimeB(Env.getSystemTime());
+    //      //      pdtProduct.setState(Pdt.OState.OFF.getLine().getKey());
+    //      //      pdtProduct.setIsVerify(Sys.OYn.NO.getLine().getKey());
+    //    } else {
+    //      pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
+    //      pdtProduct.setSoldTimeB(Env.getSystemTime());
+    //      pdtProduct.setState(Pdt.OState.ON.getLine().getKey());
+    //      if (null != pdtProduct.getPkey()) {
+    //        PdtProduct product = BeanBase.load(PdtProduct.class, pdtProduct.getPkey());
+    //        pdtProduct.setIsVerify(product.getIsVerify());
+    //      } else {
+    //      pdtProduct.setIsVerify(Sys.OYn.YES.getLine().getKey());
+    //      }
+    //    }
     pdtProduct.setState(Pdt.OState.OFF.getLine().getKey());
     pdtProduct.setIsVerify(Pdt.OAppr._DEFAULT.getLine().getKey());
     pdtProduct.setIsNew((byte) 1);
@@ -574,6 +603,7 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
                                 .split(",")[0]);
                         setNum((String) o.get(PdtProduct.T.CODE.getFld().getCodeSqlField()));
                         setName((String) o.get(PdtProduct.T.NAME.getFld().getCodeSqlField()));
+                        setCat((Integer) o.get(PdtProduct.T.CATEGORY.getFld().getCodeSqlField()));
                         if (o.get(PdtProduct.T.CATEGORY.getFld().getCodeSqlField()) != null) {
                           setProductCate(
                               BeanBase.load(

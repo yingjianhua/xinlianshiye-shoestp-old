@@ -542,6 +542,7 @@ public class PdtProductDao {
             PdtProduct.T.PRODUCT_TYPE,
             PdtProduct.T.UPDATE_TIME,
             PdtProduct.T.IS_VERIFY)
+        .SELECT(PdtProduct.T.CATEGORY, "cat")
         .SELECT(PdtCat.T.NAME, "category")
         .SELECT(UsrProductCategory.T.NAME, "categoryDiy")
         .SELECT(O2O_Product.T.JOIN_INFO_ID)
