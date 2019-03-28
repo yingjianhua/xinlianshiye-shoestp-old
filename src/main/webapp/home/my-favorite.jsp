@@ -44,7 +44,6 @@
                             <a :href="'/home/pdt_PdtProduct_gtProductsInfo?id=' + item.pdtPkey" target="_blank" class="text">{{item.name}}</a>
                         </div>
                         <div class="porduct-price">
-                            <span style="color: #232323;">US</span>
                             <span style="color: #e54544;">{{sysConfig.currency_symbol}} {{item.amt}}</span>
                         </div>
                         <div class="porduct-minOrder">
