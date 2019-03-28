@@ -145,7 +145,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
       if (!Str.isEmpty(getFirstName()) && !Str.isEmpty(getLastName())) {
         String name = getFirstName() + "," + getLastName();
         if (!ValidRegex.regMarch(
-            Regular.REGULAR_NAME, getFirstName().trim() + getLastName().trim())) {
+            Regular.REGULAR_NAME, getFirstName().replace(" ", "") + getLastName().replace(" ", ""))) {
           throw new WebMessageException(
               MessageBuild.buildMessage(ReturnCode.valid_nameRegex, HomeAction.curLanguage()));
         }
