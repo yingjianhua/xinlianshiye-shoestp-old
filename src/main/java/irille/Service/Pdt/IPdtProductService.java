@@ -11,6 +11,7 @@ import irille.homeAction.pdt.dto.PdtExhibitionView;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage;
 import irille.shop.usr.UsrPurchase;
+import irille.view.Page;
 import irille.view.RFQ.RFQPdtInfo;
 import irille.view.pdt.PdtProductBaseInfoView;
 import irille.view.pdt.PdtProductCatView;
@@ -109,4 +110,6 @@ public interface IPdtProductService {
       Integer limit);
 
   RFQPdtInfo getInquiryPdtInfo(Integer id);
+  
+  Page findPdtList(Integer pkey,Integer start,Integer limit,Integer checkType);
 }

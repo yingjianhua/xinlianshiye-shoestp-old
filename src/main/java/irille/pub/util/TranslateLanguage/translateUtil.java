@@ -641,10 +641,8 @@ public class translateUtil {
       return null;
     }
     JsonObject ex = null;
-    try {
-      if (value.charAt(0) == '{' && value.charAt(value.length() - 1) == '}')
-        ex = (JsonObject) jsonParser.parse(value);
-    } catch (ClassCastException e) {
+    if (value.charAt(0) == '{' && value.charAt(value.length() - 1) == '}') {
+      ex = jsonParser.parse(value).getAsJsonObject();
     }
     String baseValue = value;
     List<FldLanguage.Language> languages =
@@ -719,6 +717,10 @@ public class translateUtil {
       translateBean.setText(
           getBaseValue(
               getValue, translateFilter == null ? null : translateFilter.getBaseLanguage()));
+      if (translateBean.getText() == null || translateBean.getText().length() < 1) {
+        jsonObject.addProperty(language.toString(), "");
+        continue;
+      }
       translateBean.setTargetLanguage(language.toString());
       try {
         translateBean = tranlateCache.get(translateBean);
@@ -746,6 +748,14 @@ public class translateUtil {
     return jsonObject.toString();
   }
 
+  /**
+   * * 仅适用于 多语言是单个字段的
+   *
+   * @param dbJsonString
+   * @param saveJson
+   * @param baseLanguage
+   * @return
+   */
   public static TranslateFilter buildFilter(
       String dbJsonString, String saveJson, Language baseLanguage) {
     TranslateFilter translateFilter = new TranslateFilter();
@@ -789,8 +799,7 @@ public class translateUtil {
                 if (dbJson.has(stringJsonElementEntry.getKey())) {
                   String dbString =
                       dbJson.get(stringJsonElementEntry.getKey()).getAsString().trim();
-                  if (dbString.equals(
-                      stringJsonElementEntry.getValue().getAsString().trim())) {
+                  if (dbString.equals(stringJsonElementEntry.getValue().getAsString().trim())) {
                     translateFilter
                         .getLanguageList()
                         .add(FldLanguage.Language.valueOf(stringJsonElementEntry.getKey()));
@@ -824,5 +833,37 @@ public class translateUtil {
               });
     }
     return translateFilter;
+  }
+
+  /**
+   * * 升格成多语言JSON
+   *
+   * @param saveJson
+   * @return
+   */
+  public static String toSaveJson(String saveJson, FldLanguage.Language language) {
+    JsonObject jsonObject = null;
+    JsonObject result = new JsonObject();
+    if (saveJson != null && saveJson.length() > 0) {
+      if (saveJson.indexOf("{") == 0 && saveJson.indexOf("}") == saveJson.length() - 1) {
+        jsonObject = new JsonParser().parse(saveJson).getAsJsonObject();
+      }
+      for (Language value : Language.values()) {
+        String values = "";
+        if (jsonObject != null && jsonObject.has(value.name())) {
+          values = jsonObject.get(value.name()).getAsString();
+        } else {
+          if (value.equals(language)) {
+            values = saveJson;
+          }
+        }
+        result.addProperty(value.name(), values);
+      }
+    } else {
+      for (Language value : Language.values()) {
+        result.addProperty(value.name(), "");
+      }
+    }
+    return result.toString();
   }
 }

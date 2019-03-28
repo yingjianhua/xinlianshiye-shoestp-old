@@ -112,10 +112,11 @@
                 </div>
                 <div class="cml-list" v-else>
                     <div class="cml-content" v-for="(item,index) in contactList" :key="index">
-                        <div class="cml-box" :data-index="index" :class="popupindex == index?'sele':''"
+                        <div class="cml-box clearfix" :data-index="index" :class="popupindex == index?'sele':''"
                             @click="clickContact(index,item.supplier.pkey)">
                             <div class="h1 fl">
-                                <img :src="image(item.supplier.logo)" alt="">
+                                <img :src="image(item.supplier.logo)" alt="" v-if="item.supplier.logo">
+                                <img src="/home/v3/static/images/supplier_no_img.png" alt="" v-else>
                             </div>
                             <div class="h2 fl">
                                 <div class="supplier-name">{{item.supplier.name}}</div>
@@ -154,33 +155,37 @@
                                     </div>
                                 </el-popover>
                             </div>
+                           <i class="el-icon-arrow-up supplier-arrow" :class="item.isScale?'supplier-rotate':''" @click.stop="supplierArrow(index)"></i>
                         </div>
-                        <div class="cml-box2" v-if="item.relation != ''">
-                            <h2>Inquiry History</h2>
-                            <ul>
-                                <li v-for="(inquiryItem,index) in item.relation" :key="index">
-                                    <a :href="'/home/usr_UsrMessages_center?supplierPkey=' + item.supplier.pkey + '&consultPkey=' + inquiryItem.consult.pkey + '&relationPkey=' + inquiryItem.quotation.pkey "
-                                        class="flexSb clearfix">
-                                        <div class="h1">
-                                            <img v-if="inquiryItem.consult.images != ''"
-                                                :src="inquiryItem.consult.type==3?util_function_obj.image(inquiryItem.consult.images[0]) + '?x-oss-process=image/resize,w_52,h_52/blur,r_5,s_20' : util_function_obj.image(inquiryItem.consult.images[0],52,52)"
-                                                alt="" />
-                                            <img v-else src="/home/v3/static/images/user_no_img.png" alt=""
-                                                style="width:52px;height:52px;" />
-                                            <i v-if="inquiryItem.quotation.isNew"></i>
-                                        </div>
-                                        <!-- <div class="h2">{{inquiryItem.consult.title}}</div> -->
-                                        <!-- <div class="h2">{{inquiryItem.consult.title}}</div> -->
-                                        <div class="wrap">
-                                            <div class="text">
-                                                {{inquiryItem.consult.title}}
+                        <!-- <transition name="el-zoom-in-top"> -->
+                                <el-collapse-transition>
+                        <template v-if="item.isScale">
+                            <div class="cml-box2" v-if="item.relation != ''">
+                                <h2>Inquiry History</h2>
+                                <ul>
+                                    <li v-for="(inquiryItem,index) in item.relation" :key="index">
+                                        <a :href="'/home/usr_UsrMessages_center?supplierPkey=' + item.supplier.pkey + '&consultPkey=' + inquiryItem.consult.pkey + '&relationPkey=' + inquiryItem.quotation.pkey "
+                                            class="flexSb clearfix">
+                                            <el-badge is-dot  class="h1" :hidden="!inquiryItem.quotation.isNew">
+                                                <img v-if="inquiryItem.consult.images != ''"
+                                                    :src="inquiryItem.consult.type==3?util_function_obj.image(inquiryItem.consult.images[0]) + '?x-oss-process=image/resize,w_52,h_52/blur,r_5,s_20' : util_function_obj.image(inquiryItem.consult.images[0],52,52)"
+                                                    alt="" />
+                                                <img v-else src="/home/v3/static/images/user_no_img.png" alt=""
+                                                    style="width:52px;height:52px;" />
+                                            </el-badge>
+                                            <div class="wrap">
+                                                <div class="text">
+                                                    {{inquiryItem.consult.title}}
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="h3">{{timeFormat(inquiryItem.quotation.createDate).substr(5)}}</div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                                            <div class="h3">{{timeFormat(inquiryItem.quotation.createDate).substr(5)}}</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </template>
+                    </el-collapse-transition>
+                    <!-- </transition> -->
                     </div>
                 </div>
             </div>
@@ -437,10 +442,13 @@
                     };
                     setTimeout(() => {
                         this.nowGroupCount = this.allGroupCount;
-                    }, 400);
+                    }, 500);
                 });
             },
             methods: {
+                supplierArrow(index){  // 点击箭头 收缩展开 询盘列表
+                    this.$set(this.contactList[index],"isScale",!this.contactList[index].isScale)
+                },
                 clickGroupItem(e, groupPkey, name, count) { // 点击分组
                     this.groupName = name;
                     this.isAddSearchGroup = false;

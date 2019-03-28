@@ -184,7 +184,7 @@
                         </h1>
                         <div class="clearfix" style="position:relative;">
                             <div class="fl" style="width: 180px;">
-                                <h2>US
+                                <h2>
                                     <span>{{sysConfig.currency_symbol}}
                                     {{ item.minCurPrice == item.maxCurPrice ? item.minCurPrice: (item.minCurPrice +" ~ "+item.maxCurPrice) }}</span>
                                 </h2>
