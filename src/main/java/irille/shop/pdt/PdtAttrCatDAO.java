@@ -47,6 +47,7 @@ public class PdtAttrCatDAO {
     sql.SELECT(PdtAttrCat.T.NAME);
     sql.SELECT(SysEm.T.NAME, "crateName");
     sql.SELECT(PdtAttrCat.T.STATE, "state");
+    sql.SELECT(PdtAttrCat.T.LOCK_ATTR, "locksym");
     sql.FROM(PdtAttrCat.class);
     sql.LEFT_JOIN(SysEm.class, PdtAttrCat.T.CREATE_BY, SysEm.T.PKEY);
     sql.WHERE(PdtAttrCat.T.DELETED, "=?", 0);
@@ -66,12 +67,8 @@ public class PdtAttrCatDAO {
                   view.setCreateName(String.valueOf(o.get("crateName")));
                   view.setCreateTime((Date) o.get("time"));
                   view.setState(Integer.valueOf(String.valueOf(o.get("state"))));
-                  if (Query.sql(
-                              "SELECT pkey FROM pdt_attr WHERE category="
-                                  + Integer.valueOf(String.valueOf(o.get("pkey")))
-                                  + " AND deleted=0")
-                          .queryCount()
-                      > 0) {
+                  Byte lock = GetValue.get(o, "locksym", Byte.class, (byte) 0);
+                  if (lock.equals(OYn.YES.getLine().getKey())) {
                     view.setShould(true);
                   } else {
                     view.setShould(false);
@@ -106,6 +103,7 @@ public class PdtAttrCatDAO {
       super.before();
       getB().setDeleted(OYn.NO.getLine().getKey());
       getB().setCreateTime(Env.getSystemTime());
+      getB().setLockAttr(OYn.NO.getLine().getKey());
     }
 
     @Override
@@ -159,9 +157,19 @@ public class PdtAttrCatDAO {
           }
         }
       }
-
+      PdtAttrCat dbBean = loadThisBeanAndLock();
+      PropertyUtils.copyProperties(dbBean, getB(), PdtAttrCat.T.NAME, PdtAttrCat.T.STATE);
+      setB(dbBean);
       if ((null != getB().getState() && getB().getState().equals(OYn.YES.getLine().getKey()))
           || f) {
+        if (null != getCat() && getB().getLockAttr().equals(OYn.YES.getLine().getKey())) {
+          throw new WebMessageException(ReturnCode.failure, "该属性分类下存在产品,不可修改此分类");
+        }
+        if (null != getB().getState()
+            && getB().getState().equals(OYn.NO.getLine().getKey())
+            && getB().getLockAttr().equals(OYn.YES.getLine().getKey())) {
+          throw new WebMessageException(ReturnCode.failure, "该属性分类下存在产品,不可禁用");
+        }
         PdtAttrCatDAO.valid(getB(), getCat());
       }
 
@@ -178,11 +186,9 @@ public class PdtAttrCatDAO {
      */
     @Override
     public void run() {
-      PdtAttrCat dbBean = loadThisBeanAndLock();
-      PropertyUtils.copyProperties(dbBean, getB(), PdtAttrCat.T.NAME, PdtAttrCat.T.STATE);
-      dbBean.setDeleted(OYn.NO.getLine().getKey());
-      dbBean.setState(OYn.NO.getLine().getKey());
-      setB(dbBean);
+
+      getB().setDeleted(OYn.NO.getLine().getKey());
+      getB().setState(OYn.NO.getLine().getKey());
       List<PdtAttrPro> pros = new ArrayList<>();
       for (Integer c : getCat()) {
         if (null != getPps() && !getPps().contains(c)) {
@@ -301,27 +307,34 @@ public class PdtAttrCatDAO {
   }
 
   public boolean getCount(Integer cat) {
-    String sql =
-        "SELECT  pkey FROM pdt_attr_line WHERE main in(SELECT pkey FROM pdt_attr WHERE category="
-            + cat
-            + " AND deleted=0)  AND deleted=0";
-    List<PdtAttrLine> list = Query.sql(sql).queryList(PdtAttrLine.class);
-    System.out.println(list.size());
-    if (list.size() > 0) {
-      for (PdtAttrLine pdtAttrLine : list) {
-        String proSql =
-            "SELECT norm_attr FROM pdt_product where FIND_IN_SET("
-                + pdtAttrLine.getPkey()
-                + ",norm_attr) AND is_verify=1 AND state=1";
-        Integer count = Query.sql(proSql).queryCount();
-        if (count > 0) {
-          return false;
-        } else {
-          return true;
-        }
-      }
+    PdtAttrCat attrCat = BeanBase.chk(PdtAttrCat.class, cat);
+    if (attrCat.getLockAttr().equals(OYn.NO.getLine().getKey())) {
+      return false;
+    } else {
+      return true;
     }
-    return true;
+    //    String sql =
+    //        "SELECT  pkey FROM pdt_attr_line WHERE main in(SELECT pkey FROM pdt_attr WHERE
+    // category="
+    //            + cat
+    //            + " AND deleted=0)  AND deleted=0";
+    //    List<PdtAttrLine> list = Query.sql(sql).queryList(PdtAttrLine.class);
+    //    System.out.println(list.size());
+    //    if (list.size() > 0) {
+    //      for (PdtAttrLine pdtAttrLine : list) {
+    //        String proSql =
+    //            "SELECT norm_attr FROM pdt_product where FIND_IN_SET("
+    //                + pdtAttrLine.getPkey()
+    //                + ",norm_attr) AND is_verify=1 AND state=1";
+    //        Integer count = Query.sql(proSql).queryCount();
+    //        if (count > 0) {
+    //          return false;
+    //        } else {
+    //          return true;
+    //        }
+    //      }
+    //    }
+    //    return true;
   }
 
   public static void valid(PdtAttrCat cat, List<Integer> cats) {

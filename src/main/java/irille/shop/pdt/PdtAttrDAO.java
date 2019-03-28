@@ -68,7 +68,8 @@ public class PdtAttrDAO {
         };
     Integer count = Query.sql(sql).queryCount();
     List<PdtAttrView> list =
-        Query.sql(sql.LIMIT(start, limit)).queryMaps().stream()
+        Query.sql(sql.ORDER_BY(PdtAttr.T.CREATE_TIME, "DESC").LIMIT(start, limit)).queryMaps()
+            .stream()
             .map(
                 bean ->
                     new PdtAttrView() {
@@ -237,7 +238,7 @@ public class PdtAttrDAO {
       String parentCat = String.join(",", pdtproductDao.getParent(cat));
 
       SQL sql1 = new SQL();
-      sql1.SELECT(PdtAttr.class).FROM(PdtAttr.class);
+      sql1.SELECT(" DISTINCT " + PdtAttr.class.getSimpleName() + ".*").FROM(PdtAttr.class);
       sql1.LEFT_JOIN(PdtAttrCat.class, PdtAttrCat.T.PKEY, PdtAttr.T.CATEGORY);
       sql1.LEFT_JOIN(PdtAttrPro.class, PdtAttrPro.T.ATTRCAT, PdtAttrCat.T.PKEY);
       sql1.WHERE(PdtAttr.T.DELETED, " =? ", OYn.NO.getLine().getKey());
@@ -252,6 +253,7 @@ public class PdtAttrDAO {
               + PdtAttr.T.SUPPLIER.getFld().getCodeSqlField()
               + " =?)",
           supplier);
+      sql1.WHERE(PdtAttrCat.T.STATE, " =? ", OYn.NO.getLine().getKey());
       sql1.WHERE(PdtAttrPro.T.PROCAT, " IN (" + parentCat + ") ");
 
       return Query.sql(sql1).queryList(PdtAttr.class).stream()
