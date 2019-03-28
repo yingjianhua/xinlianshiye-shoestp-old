@@ -38,13 +38,9 @@ import irille.pub.tb.FldLanguage;
 import irille.pub.tb.FldLanguage.Language;
 import irille.pub.tb.IEnumFld;
 import irille.pub.util.AppConfig;
-import irille.shop.pdt.PdtProduct;
-import irille.shop.pdt.PdtSize;
-import irille.shop.pdt.PdtSpec;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltTrantslate;
 import irille.shop.plt.PltTrantslateDAO;
-import irille.shop.usr.UsrSupplier;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/8/13 Time: 9:45 */
 public class translateUtil {
@@ -746,6 +742,14 @@ public class translateUtil {
     return jsonObject.toString();
   }
 
+  /**
+   * * 仅适用于 多语言是单个字段的
+   *
+   * @param dbJsonString
+   * @param saveJson
+   * @param baseLanguage
+   * @return
+   */
   public static TranslateFilter buildFilter(
       String dbJsonString, String saveJson, Language baseLanguage) {
     TranslateFilter translateFilter = new TranslateFilter();
@@ -789,8 +793,7 @@ public class translateUtil {
                 if (dbJson.has(stringJsonElementEntry.getKey())) {
                   String dbString =
                       dbJson.get(stringJsonElementEntry.getKey()).getAsString().trim();
-                  if (dbString.equals(
-                      stringJsonElementEntry.getValue().getAsString().trim())) {
+                  if (dbString.equals(stringJsonElementEntry.getValue().getAsString().trim())) {
                     translateFilter
                         .getLanguageList()
                         .add(FldLanguage.Language.valueOf(stringJsonElementEntry.getKey()));
@@ -824,5 +827,26 @@ public class translateUtil {
               });
     }
     return translateFilter;
+  }
+
+  /***
+   * 升格成多语言JSON
+   * @param saveJson
+   * @return
+   */
+  public static String toSaveJson(String saveJson) {
+    JsonObject jsonObject = null;
+    if (saveJson != null) {
+      jsonObject = new JsonParser().parse(saveJson).getAsJsonObject();
+    }
+    JsonObject result = new JsonObject();
+    for (Language value : Language.values()) {
+      String values = "";
+      if (jsonObject != null && jsonObject.has(value.name())) {
+        values = jsonObject.get(value.name()).getAsString();
+      }
+      result.addProperty(value.name(), values);
+    }
+    return result.toString();
   }
 }
