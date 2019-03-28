@@ -25,7 +25,7 @@ public class PdtSizeView implements BaseView {
   @JsonFormat(pattern = "yyyy/MM/dd HH:mm", timezone = "GMT+8")
   private Date createdTime; // 建档时间
 
-  private Integer type;
+  private Byte type;
 
   private Byte typeVer;
 }

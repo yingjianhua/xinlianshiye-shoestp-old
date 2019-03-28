@@ -321,6 +321,9 @@ public class O2OPdtServerImp implements IO2OPdtServer {
   @Override
   public void lowerAndUpper(Integer pkey, String reason, O2O_ProductStatus status) {
     O2O_Product o2O_product = o2OProductDao.findByPkey(pkey);
+    if (o2O_product.gtStatus().equals(O2O_ProductStatus.WAITOFF)) {
+      throw new WebMessageException(ReturnCode.failure, "已申请下架,请勿重复提交");
+    }
     if (null == o2O_product) {
       throw LOG.err("noEntity", "o2o商品不存在");
     }
