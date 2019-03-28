@@ -130,7 +130,7 @@
             -moz-align-items: center;
             -ms-align-items: center;
             -o-align-items: center;
-             
+
         }
 
         body {
