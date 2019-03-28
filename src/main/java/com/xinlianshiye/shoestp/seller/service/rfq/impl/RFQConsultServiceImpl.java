@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 import com.google.inject.Inject;
 import com.xinlianshiye.shoestp.seller.service.rfq.RFQConsultService;
 
+import irille.Dao.RFQ.RFQConsultDao;
 import irille.Dao.RFQ.RFQConsultGroupDao;
 import irille.Dao.RFQ.RFQConsultGroupRelationDao;
 import irille.Dao.RFQ.RFQConsultRelationDao;
@@ -42,7 +43,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
   @Inject private RFQConsultGroupDao rFQConsultGroupDao;
   @Inject private RFQConsultGroupRelationDao rFQConsultGroupRelationDao;
   @Inject private RFQConsultRelationDao rFQConsultRelationDao;
-
+  @Inject private RFQConsultDao rRFQConsultDao;
   @Override
   public Page message(UsrSupplier supplier, UsrPurchase purchase, Integer start, Integer limit) {
     if (supplier != null) {
@@ -52,6 +53,11 @@ public class RFQConsultServiceImpl implements RFQConsultService {
     } else {
       return rFQConsultGroupRelationDao.message(null, false, start, limit);
     }
+  }
+
+  @Override
+  public List<SellerIndexConsultView> getIndexInqlist(Integer supperPkey) {
+    return rRFQConsultDao.getIndexInqlist(supperPkey);
   }
 
   @Override

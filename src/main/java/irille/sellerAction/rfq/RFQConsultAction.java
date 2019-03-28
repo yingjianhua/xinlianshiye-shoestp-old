@@ -2,12 +2,15 @@ package irille.sellerAction.rfq;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import com.xinlianshiye.shoestp.seller.service.rfq.RFQConsultService;
 
+import irille.Dao.RFQ.view.SellerIndexConsultView;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Service.Manage.RFQ.IRFQManageService;
 import irille.pub.util.upload.ImageUpload;
@@ -174,5 +177,17 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
     } else {
       write(ImageUpload.upload2(beanClazz(), getFileFileName(), getFile()));
     }
+  }
+  /**
+   * @Author wilson Zhang
+   * @Description   查询商家首页第三部分商品询盘  查询商品询盘关联产品表 查询查询商家PKEY
+   * @Date 11:30 2019/3/27
+   */
+
+  private Integer supperpkey;
+
+  public void getIndexInqlist() throws  Exception {
+    System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>111111");
+    write(rFQConsultService.getIndexInqlist(supperpkey));
   }
 }
