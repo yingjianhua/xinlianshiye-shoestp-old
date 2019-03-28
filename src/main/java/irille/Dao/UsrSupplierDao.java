@@ -178,7 +178,8 @@ public class UsrSupplierDao {
       String targetMarket,
       Integer processType,
       String grade,
-      Integer pdtCategory) {
+      Integer pdtCategory,
+      Integer checkedType) {
     List list = new ArrayList<>();
     BeanQuery query = new BeanQuery();
     query
@@ -200,6 +201,9 @@ public class UsrSupplierDao {
         }
       }
     }
+    if(null!=checkedType&&checkedType==1)
+    query.WHERE(SVSInfo.T.STATUS, " =?",1);
+   
     query
         .WHERE(pdtCategory != null, PdtProduct.T.CATEGORY, "=?", pdtCategory)
         .WHERE(grade != null, SVSInfo.T.GRADE, " in(" + grade + ")")
@@ -221,7 +225,8 @@ public class UsrSupplierDao {
       String targetMarket,
       Integer processType,
       String grade,
-      Integer pdtCategory) {
+      Integer pdtCategory,
+      Integer checkedType) {
     BeanQuery query = new BeanQuery();
     query
         .SELECT(
@@ -241,6 +246,8 @@ public class UsrSupplierDao {
         }
       }
     }
+    if(null!=checkedType&&checkedType==1)
+      query.WHERE(SVSInfo.T.STATUS, " =?",1);
     query
         .WHERE(pdtCategory != null, PdtProduct.T.CATEGORY, "=?", pdtCategory)
         .WHERE(grade != null, SVSInfo.T.GRADE, " in(" + grade + ")")
