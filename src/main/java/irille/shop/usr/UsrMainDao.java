@@ -10,6 +10,7 @@ import irille.platform.usr.View.UsrMainView;
 import irille.pub.DateTools;
 import irille.pub.LogMessage;
 import irille.pub.PropertyUtils;
+import irille.pub.Str;
 import irille.pub.bean.Bean;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
@@ -27,6 +28,8 @@ import irille.shop.plt.PltCity;
 import irille.shop.plt.PltProvinces;
 import irille.view.Page;
 import irille.view.usr.UserView;
+import lombok.Getter;
+import lombok.Setter;
 
 public class UsrMainDao {
 	public static final LogMessage LOG = new LogMessage(UsrMain.class);
@@ -341,6 +344,52 @@ public class UsrMainDao {
 			return false;
 		}
 	}
+	/**
+	 * 商家修改邮箱验证密码是否正确
+	 * @author chen
+	 */
+  public boolean validPwd(String email,String pwd){
+  	UsrMain main=UsrMain.chkUniqueEmail(false,email);
+  	if(main==null){
+		throw LOG.err("Invalid email", "用户不存在");
+	}
+	String mdPwd=DateTools.getDigest(main.getPkey() + pwd);
+  	if (mdPwd.equals(main.getPassword())){
+		System.out.println("密码正确");
+  		return true;
+	}else{
+  		return false;
+	}
+  }
+	/**
+	 * 商家修改邮箱
+	 * @author chen
+	 */
+	public static class updEmail  extends IduUpd<updEmail, UsrMain>{
+		@Getter
+		@Setter
+		String email;
+		@Getter
+		@Setter
+		String emailA;
+		@Override
+		public void before() {
+			UsrMain main=UsrMain.chkUniqueEmail(false,getEmail());
+			main.setEmail(emailA);
+			setB(main);
+		}
 
+		@Override
+		public void valid() {
+
+		}
+
+		@Override
+		public void run() {
+			super.run();
+		}
+
+
+	}
 
 }

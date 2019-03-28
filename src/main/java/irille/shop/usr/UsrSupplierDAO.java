@@ -152,7 +152,7 @@ public class UsrSupplierDAO {
     UsrSupplier bean = irille.pub.bean.Query.SELECT(UsrSupplier.class, id);
     SupplierView view = new SupplierView();
     view.setPkey(bean.getPkey());
-    view.setLoginName(bean.getLoginName());
+    view.setLoginName(bean.gtUserid().getEmail());
     view.setStatus(bean.getStatus());
     view.setName(bean.getName());
     view.setCompanyType(bean.getCompanyType());
