@@ -1,5 +1,6 @@
 #readMore {
-  background-color: #f1f2f6; }
+  background-color: #f1f2f6;
+}
   #readMore .flexSb {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -49,16 +50,24 @@
         margin: 50px 0 25px 0;
         font-size: 26px; }
       #readMore .content-box .section1 .section1-content {
-        padding: 70px 100px 45px 175px;
+        padding: 50px 100px 25px 175px;
         background-color: #ffffff;
         border: solid 1px #dddddd; }
         #readMore .content-box .section1 .section1-content ul li {
           color: #777777;
           line-height: 30px;
-          /* -webkit-box-align: start;
+          -webkit-box-align: start;
               -ms-flex-align: start;
-                  align-items: flex-start; */
+                  align-items: flex-start;
           margin-bottom: 25px; }
+        #readMore .content-box .section1 .section1-content ul li .section1-content-left{
+          -webkit-box-align: start;
+              -ms-flex-align: start;
+                  align-items: flex-start; }
+        #readMore .content-box .section1 .section1-content ul li .section1-content-right{
+          -webkit-box-align: start;
+              -ms-flex-align: start;
+                  align-items: flex-start; }
           #readMore .content-box .section1 .section1-content ul li .title {
             width: 140px;
             text-align: right;

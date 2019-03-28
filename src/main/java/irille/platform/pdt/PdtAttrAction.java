@@ -2,6 +2,8 @@ package irille.platform.pdt;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,6 +40,9 @@ public class PdtAttrAction extends ActionBase<PdtAttr> {
     this._bean = bean;
   }
 
+  @Inject private PdtAttrDAO.UpdAttr upd;
+  @Inject private PdtAttrDAO.InsAttr dl;
+
   private String name; // 搜索的产品属性名称
   private String category; // 搜索的产品属性类目
 
@@ -62,7 +67,6 @@ public class PdtAttrAction extends ActionBase<PdtAttr> {
     verify(getBean());
     LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
     getBean().setCreateBy(lu.get_user().getPkey());
-    PdtAttrDAO.InsAttr dl = new PdtAttrDAO.InsAttr();
     dl.setB(getBean());
     dl.commit();
     write();
@@ -79,7 +83,6 @@ public class PdtAttrAction extends ActionBase<PdtAttr> {
     verify(getBean());
     LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
     getBean().setCreateBy(lu.get_user().getPkey());
-    PdtAttrDAO.UpdAttr upd = new PdtAttrDAO.UpdAttr();
     upd.setB(getBean());
     upd.commit();
     write();
@@ -93,6 +96,11 @@ public class PdtAttrAction extends ActionBase<PdtAttr> {
    * @date 2019/1/22 13:38
    */
   public void delete() throws IOException {
+    PdtAttrDAO pdtAttrDAO = new PdtAttrDAO();
+    if (!pdtAttrDAO.getCount(getBean().getPkey())) {
+      writeErr("该属性已被关联到发布的产品中");
+      return;
+    }
     PdtAttrDAO.DelAttr remove = new PdtAttrDAO.DelAttr();
     remove.setBKey(getBean().getPkey());
     remove.commit();

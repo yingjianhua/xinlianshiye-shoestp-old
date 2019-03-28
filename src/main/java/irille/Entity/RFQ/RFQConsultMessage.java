@@ -77,6 +77,14 @@ public class RFQConsultMessage extends BeanInt<RFQConsultMessage> {
     T.PKEY.getFld().getTb().lockAllFlds(); // 加锁所有字段,不可以修改
   }
 
+  public static Fld<?> fldOutKey() {
+    return fldOutKey(TB.getCodeNoPackage(), TB.getShortName());
+  }
+
+  public static Fld<?> fldOutKey(String code, String name) {
+    return Tb.crtOutKey(TB, code, name).setType(null);
+  }
+
   // @formatter:on
   // >>>以下是自动产生的源代码行--源代码--请保留此行用于识别>>>
   // 实例变量定义-----------------------------------------

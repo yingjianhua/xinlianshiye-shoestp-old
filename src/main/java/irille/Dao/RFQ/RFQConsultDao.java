@@ -8,9 +8,11 @@ import java.util.Map;
 import com.google.inject.ImplementedBy;
 
 import irille.Dao.RFQ.impl.RFQConsultDaoImpl;
+import irille.Dao.RFQ.view.SellerIndexConsultView;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.platform.rfq.view.RFQConsultView;
+import irille.pub.html.Nodes;
 import irille.view.Page;
 import irille.view.RFQ.InquirysView;
 import org.json.JSONException;
@@ -79,23 +81,22 @@ public interface RFQConsultDao {
   List<Map<String, Object>> getMyRFQQuoteList(
       Integer start,
       Integer limit,
-      byte type,
       Date date,
       String keyword,
       boolean flag,
-      Integer status,
+      Byte readStatus,
       Integer country,
       int supId,
       Integer usrCountry);
 
-  Integer count(
-      byte type,
+  Integer countMyRFQQuoteList(
       Date date,
       String keyword,
       boolean flag,
-      Integer status,
+      Byte readStatus,
       Integer country,
-      int supId);
+      int supId,
+      Integer usrCountry);
 
   Map<String, Object> getMyRFQQuoteInfo(Integer id, Integer pkey);
 
@@ -129,4 +130,22 @@ public interface RFQConsultDao {
    * @author zjl @Date 2019/3/22 11:51
    */
   InquirysView getInqDetail(Integer rfqPkey);
+  /**
+   * @Author wilson Zhang
+   * @Description  商家首页第3块商品询盘查询普通询盘
+   * @Date 10:39 2019/3/27
+   */
+  List<SellerIndexConsultView> getIndexInqlist(Integer supperpkey);
+  /**
+   * @Author wilson Zhang
+   * @Description  商家首页第2块询盘总数
+   * @Date 16:49 2019/3/27
+   */
+  Integer getConsultCount(Integer supperpkey);
+  /**
+   * @Author wilson Zhang
+   * @Description  商家首页第2块联系人信息
+   * @Date 16:49 2019/3/27
+   */
+  Integer getcontactsCount(Integer supperpkey);
 }

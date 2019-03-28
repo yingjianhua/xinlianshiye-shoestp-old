@@ -609,7 +609,7 @@
                     return;
                 // 供应商不能提交
                 }else if(sysConfig && sysConfig.user && sysConfig.user.user_type == 1){
-                    this.$alert("Sorry, the supplier cannot submit the form",{
+                    this.$alert("Please register or login your buyer account if you want public RFQ.",{
                         confirmButtonText: 'Ok',
                         customClass: "my-custom-element-alert-class fs-content-18",
                         center: true,

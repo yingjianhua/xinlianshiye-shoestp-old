@@ -2,6 +2,8 @@ package irille.platform.pdt;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
+
 import irille.action.ActionBase;
 import irille.action.dataimport.util.StringUtil;
 import irille.pub.svr.LoginUserMsg;
@@ -32,7 +34,8 @@ public class PdtSizeAction extends ActionBase<PdtSize> {
   private String name; // 搜索的产品尺寸名称
   private String productCategory; // 搜索的产品尺寸类目
   private Integer id;
-
+  @Inject private PdtSizeDAO.InsSize dl;
+  @Inject private PdtSizeDAO.UpdSize upd;
   /**
    * 查询产品尺寸列表+搜索
    *
@@ -59,7 +62,6 @@ public class PdtSizeAction extends ActionBase<PdtSize> {
     LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
     getBean().setCreateBy(lu.get_user().getPkey());
     getBean().setTypever(Pdt.OVer.NEW_1.getLine().getKey());
-    PdtSizeDAO.InsSize dl = new PdtSizeDAO.InsSize();
     dl.setB(getBean());
     dl.commit();
     write();
@@ -75,7 +77,6 @@ public class PdtSizeAction extends ActionBase<PdtSize> {
   public void upd() throws IOException {
     LoginUserMsg lu = (LoginUserMsg) this.session.get(LOGIN);
     getBean().setCreateBy(lu.get_user().getPkey());
-    PdtSizeDAO.UpdSize upd = new PdtSizeDAO.UpdSize();
     upd.setB(getBean());
     upd.commit();
     write();
@@ -121,7 +122,7 @@ public class PdtSizeAction extends ActionBase<PdtSize> {
       return;
     }
     byte by = Byte.parseByte(sizeType.toString());
-    PdtSizeDAO.plaUpdSize(id, by, name, cate);
+    PdtSizeDAO.plaUpdSize(id, by, sizeName, cate);
     write();
   }
 }

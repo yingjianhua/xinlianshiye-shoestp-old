@@ -1,5 +1,7 @@
 package com.xinlianshiye.shoestp.plat.view.pm;
 
+import java.util.List;
+
 import irille.view.BaseView;
 import lombok.Data;
 
@@ -15,4 +17,5 @@ public class TemplateView implements BaseView {
   private String pmContent; // 站内信模板内容
   private Integer recType; // 接收人类型
   private String mailTitle; // 邮件标题
+  private List<String> variables; // 变量列表
 }

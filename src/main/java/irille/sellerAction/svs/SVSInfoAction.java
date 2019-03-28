@@ -1,5 +1,6 @@
 package irille.sellerAction.svs;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
 
@@ -23,7 +24,9 @@ import lombok.Data;
 public class SVSInfoAction extends SellerAction<SVSInfo> implements ISVSInfoAction {
   @Inject SVSInfoService service;
   @Inject ObjectMapper om;
-
+  @Inject private SVSInfoService svsInfoService;
+  private Integer supplierId;
+  private Integer mainId;
   private String search;
   private String capacity;
   private String factory;
@@ -43,41 +46,7 @@ public class SVSInfoAction extends SellerAction<SVSInfo> implements ISVSInfoActi
     if (getSupplier() == null) throw new WebMessageException(ReturnCode.failure, "用户未登录,无法提交认证信息");
     if (getSupplier().gtStatus() != Usr.OStatus.APPR)
       throw new WebMessageException(ReturnCode.failure, "商家未审核,无法提交认证信息");
-    if (null == search.trim()
-        || search.trim() == ""
-        || "".equals(search.trim())
-        || "{}".equals(search.trim()))
-      throw new WebMessageException(ReturnCode.failure, "研发能力信息不能为空");
-    if (null == capacity.trim()
-        || capacity.trim() == ""
-        || "".equals(capacity.trim())
-        || "{}".equals(capacity.trim()))
-      throw new WebMessageException(ReturnCode.failure, "生产能力信息不能为空");
-    if (null == factory.trim()
-        || factory.trim() == ""
-        || "".equals(factory.trim())
-        || "{}".equals(factory.trim()))
-      throw new WebMessageException(ReturnCode.failure, "工厂模式信息不能为空");
-    if (null == quality.trim()
-        || quality.trim() == ""
-        || "".equals(quality.trim())
-        || "{}".equals(quality.trim()))
-      throw new WebMessageException(ReturnCode.failure, "产品质量信息不能为空");
-    if (null == team.trim()
-        || team.trim() == ""
-        || "".equals(team.trim())
-        || "{}".equals(team.trim()))
-      throw new WebMessageException(ReturnCode.failure, "外贸团队信息不能为空");
-    if (null == exhibition.trim()
-        || exhibition.trim() == ""
-        || "".equals(exhibition.trim())
-        || "{}".equals(exhibition.trim()))
-      throw new WebMessageException(ReturnCode.failure, "展会信息不能为空");
-    if (null == partner.trim()
-        || partner.trim() == ""
-        || "".equals(partner.trim())
-        || "{}".equals(partner.trim()))
-      throw new WebMessageException(ReturnCode.failure, "合作商信息不能为空");
+    GetBaseScoreUtils.checkNotNull(search, capacity, factory, quality, team, partner, exhibition);
 
     SVSInfo svs = new SVSInfo();
     Map<String, Integer> map = GetBaseScoreUtils.countROS(search, capacity, factory);
@@ -115,41 +84,7 @@ public class SVSInfoAction extends SellerAction<SVSInfo> implements ISVSInfoActi
    */
   @Override
   public void updAutInfo() throws Exception {
-    if (null == search.trim()
-        || search.trim() == ""
-        || "".equals(search.trim())
-        || "{}".equals(search.trim()))
-      throw new WebMessageException(ReturnCode.failure, "研发能力信息不能为空");
-    if (null == capacity.trim()
-        || capacity.trim() == ""
-        || "".equals(capacity.trim())
-        || "{}".equals(capacity.trim()))
-      throw new WebMessageException(ReturnCode.failure, "生产能力信息不能为空");
-    if (null == factory.trim()
-        || factory.trim() == ""
-        || "".equals(factory.trim())
-        || "{}".equals(factory.trim()))
-      throw new WebMessageException(ReturnCode.failure, "工厂模式信息不能为空");
-    if (null == quality.trim()
-        || quality.trim() == ""
-        || "".equals(quality.trim())
-        || "{}".equals(quality.trim()))
-      throw new WebMessageException(ReturnCode.failure, "产品质量信息不能为空");
-    if (null == team.trim()
-        || team.trim() == ""
-        || "".equals(team.trim())
-        || "{}".equals(team.trim()))
-      throw new WebMessageException(ReturnCode.failure, "外贸团队信息不能为空");
-    if (null == exhibition.trim()
-        || exhibition.trim() == ""
-        || "".equals(exhibition.trim())
-        || "{}".equals(exhibition.trim()))
-      throw new WebMessageException(ReturnCode.failure, "展会信息不能为空");
-    if (null == partner.trim()
-        || partner.trim() == ""
-        || "".equals(partner.trim())
-        || "{}".equals(partner.trim()))
-      throw new WebMessageException(ReturnCode.failure, "合作商信息不能为空");
+    GetBaseScoreUtils.checkNotNull(search, capacity, factory, quality, team, partner, exhibition);
     if (getSupplier() != null)
       write(
           service.updSVSInfo(
@@ -174,4 +109,12 @@ public class SVSInfoAction extends SellerAction<SVSInfo> implements ISVSInfoActi
     if (getSupplier() != null) write(service.getSVSInfo(getSupplier().getPkey()));
     else throw new WebMessageException(ReturnCode.failure, "用户未登录");
   };
+
+  public void getSvsRatingAndRos() throws IOException {
+    write(svsInfoService.getSvsRatingAndRos(supplierId));
+  }
+
+  public void getSvsRatingAndRosMain() throws IOException {
+    write(svsInfoService.getSvsRatingAndRosMain(mainId));
+  }
 }

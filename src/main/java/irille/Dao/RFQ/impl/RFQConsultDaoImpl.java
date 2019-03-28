@@ -10,6 +10,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import irille.Dao.RFQ.view.SellerIndexConsultView;
+import irille.pub.html.Nodes;
+import javassist.runtime.Desc;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -454,11 +457,38 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
   public List<Map<String, Object>> getMyRFQQuoteList(
       Integer start,
       Integer limit,
-      byte type,
       Date date,
       String keyword,
       boolean flag,
-      Integer status,
+      Byte readStatus,
+      Integer country,
+      int supId,
+      Integer usrCountry) {
+    return Query.sql(
+            getMyRFQQuoteListSql(date, keyword, flag, readStatus, country, supId, usrCountry)
+                .LIMIT(start, limit))
+        .queryMaps();
+  }
+
+  @Override
+  public Integer countMyRFQQuoteList(
+      Date date,
+      String keyword,
+      boolean flag,
+      Byte readStatus,
+      Integer country,
+      int supId,
+      Integer usrCountry) {
+    return Query.sql(
+            getMyRFQQuoteListSql(date, keyword, flag, readStatus, country, supId, usrCountry))
+        .queryCount();
+  }
+
+  private SQL getMyRFQQuoteListSql(
+      Date date,
+      String keyword,
+      boolean flag,
+      Byte readStatus,
       Integer country,
       int supId,
       Integer usrCountry) {
@@ -469,13 +499,10 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
             RFQConsult.T.QUANTITY,
             RFQConsult.T.CONTENT,
             RFQConsult.T.CREATE_TIME,
-            RFQConsultRelation.T.HAD_READ_PURCHASE,
-            RFQConsultRelation.T.HAD_READ_SUPPLIER,
+            RFQConsultRelation.T.READ_STATUS,
             RFQConsultRelation.T.QUANTITY,
             RFQConsultRelation.T.DESCRIPTION,
-            RFQConsultRelation.T.PURCHASE_ID,
-            RFQConsultMessage.T.HAD_READ,
-            RFQConsultMessage.T.P2S)
+            RFQConsultRelation.T.PURCHASE_ID)
         .SELECT(RFQConsultRelation.T.TITLE, "myTitle")
         .SELECT(RFQConsultRelation.T.CREATE_DATE, "myCreate_time")
         .FROM(RFQConsult.class)
@@ -483,34 +510,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         .LEFT_JOIN(UsrPurchase.class, UsrPurchase.T.PKEY, T.PURCHASE_ID)
         .WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supId)
         .WHERE(RFQConsultRelation.T.IN_RECYCLE_BIN, "=?", Sys.OYn.NO);
-    switch (status != null ? status : type) {
-      case 0:
-        sql.LEFT_JOIN(
-            RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY);
-        break;
-      case 1:
-        sql.LEFT_JOIN(
-            RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY);
-        break;
-      case 2:
-        sql.LEFT_JOIN(
-                RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY)
-            .WHERE(RFQConsultMessage.T.HAD_READ, "=?", Sys.OYn.NO)
-            .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.NO);
-        break;
-      case 3:
-        sql.LEFT_JOIN(
-                RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY)
-            .WHERE(RFQConsultMessage.T.HAD_READ, "=?", Sys.OYn.YES)
-            .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.NO);
-        break;
-      case 4:
-        sql.LEFT_JOIN(
-                RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY)
-            .WHERE(RFQConsultMessage.T.HAD_READ, "=?", Sys.OYn.YES)
-            .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.YES);
-        break;
-    }
+    sql.WHERE(readStatus != null, RFQConsultRelation.T.READ_STATUS, "=?", readStatus);
     sql.WHERE(country != null, RFQConsult.T.COUNTRY, "=?", country);
     if (null != date) {
       sql.WHERE(
@@ -524,69 +524,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
     sql.WHERE(keyword != null, RFQConsult.T.TITLE, "like ?", "%" + keyword + "%");
     sql.WHERE(T.FAVORITE, "=?", flag);
     sql.WHERE(usrCountry != null, UsrPurchase.T.COUNTRY, "=?", usrCountry);
-    sql.GROUP_BY(RFQConsultMessage.T.RELATION);
-    sql.LIMIT(start, limit);
-    return Query.sql(sql).queryMaps();
-  }
-
-  @Override
-  public Integer count(
-      byte type,
-      Date date,
-      String keyword,
-      boolean flag,
-      Integer status,
-      Integer country,
-      int supId) {
-    SQL sql = new SQL();
-    sql.SELECT(
-            RFQConsult.T.PKEY,
-            RFQConsult.T.TITLE,
-            RFQConsult.T.QUANTITY,
-            RFQConsult.T.CONTENT,
-            RFQConsult.T.CREATE_TIME,
-            RFQConsultRelation.T.HAD_READ_PURCHASE,
-            RFQConsultRelation.T.HAD_READ_SUPPLIER,
-            RFQConsultRelation.T.QUANTITY,
-            RFQConsultRelation.T.DESCRIPTION,
-            RFQConsultRelation.T.PURCHASE_ID)
-        .SELECT(RFQConsultRelation.T.TITLE, "myTitle")
-        .SELECT(RFQConsultRelation.T.CREATE_DATE, "myCreate_time")
-        .FROM(RFQConsult.class)
-        .LEFT_JOIN(RFQConsultRelation.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY)
-        .WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supId)
-        .WHERE(RFQConsultRelation.T.IN_RECYCLE_BIN, "=?", Sys.OYn.NO);
-    switch (type) {
-      case 0:
-        sql.LEFT_JOIN(
-            RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY);
-        break;
-      case 1:
-        sql.LEFT_JOIN(
-            RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY);
-        break;
-      case 2:
-        sql.LEFT_JOIN(
-                RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY)
-            .WHERE(RFQConsultMessage.T.HAD_READ, "=?", Sys.OYn.NO)
-            .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.NO);
-        break;
-      case 3:
-        sql.LEFT_JOIN(
-                RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY)
-            .WHERE(RFQConsultMessage.T.HAD_READ, "=?", Sys.OYn.YES)
-            .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.NO);
-        break;
-      case 4:
-        sql.LEFT_JOIN(
-                RFQConsultMessage.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY)
-            .WHERE(RFQConsultMessage.T.HAD_READ, "=?", Sys.OYn.YES)
-            .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.YES);
-        break;
-    }
-    sql.GROUP_BY(RFQConsultMessage.T.RELATION);
-
-    return Query.sql(sql).queryMaps().size();
+    return sql;
   }
 
   @Override
@@ -871,5 +809,62 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
     view.setSupplierName((String) map.get("supplierName"));
     view.setGrade((Byte) map.get("grade"));
     return view;
+  }
+  /**
+   * @Author wilson Zhang
+   * @Description   查询商家首页第三部分商品询盘  查询商品询盘关联产品表 查询查询商家PKEY
+   * @Date 11:30 2019/3/27
+   */
+
+  @Override
+  public List<SellerIndexConsultView> getIndexInqlist(Integer supperpkey) {
+    SQL sql = new SQL() {{
+    SELECT(RFQConsult.T.PRODUCT,"pkey")
+            .SELECT(PdtProduct.T.NAME,"name")
+            .SELECT("COUNT(*) as inqcount")
+            .FROM(RFQConsult.class)
+            .LEFT_JOIN(PdtProduct.class,PdtProduct.T.PKEY,RFQConsult.T.PRODUCT)
+            .LEFT_JOIN(RFQConsultRelation.class, T.CONSULT,RFQConsult.T.PKEY)
+            .WHERE(RFQConsult.T.TYPE,"=?",RFQConsultType.INQUIRY)
+            .WHERE(T.SUPPLIER_ID,"=?",supperpkey)
+            .GROUP_BY(RFQConsult.T.PRODUCT)
+            .orderByDesc("inqcount").LIMIT(0,5);
+    }};
+    List<SellerIndexConsultView> list=  Query.sql(sql).queryMaps().stream().map(o->new SellerIndexConsultView(){
+      {
+        setPdtcount((Long)o.get("inqcount"));
+        setPruductpkey((Integer)o.get("pkey"));
+        setName((String)o.get("name"));
+      }
+    }).collect(Collectors.toList());
+    return  list;
+  }
+  /**
+   * @Author wilson Zhang
+   * @Description  商家首页第2块询盘总数
+   * @Date 16:49 2019/3/27
+   */
+  @Override
+  public Integer getConsultCount(Integer supperpkey) {
+    SQL pdt = new SQL() {{
+      SELECT(RFQConsultRelation.T.PKEY).FROM(RFQConsultRelation.class)
+              .WHERE(T.SUPPLIER_ID,"=?",supperpkey).GROUP_BY(RFQConsult.T.PURCHASE_ID);
+    }};
+    return  irille.pub.bean.Query.sql(pdt).queryCount();
+  }
+  /**
+   * @Author wilson Zhang
+   * @Description  商家首页第2块联系人信息
+   * @Date 16:49 2019/3/27
+   */
+  @Override
+  public Integer getcontactsCount(Integer supperpkey) {
+    SQL pdt = new SQL() {{
+      SELECT(RFQConsultRelation.T.PKEY).FROM(RFQConsultRelation.class)
+              .LEFT_JOIN(RFQConsultMessage.class,RFQConsultMessage.T.PKEY, T.PKEY)
+              .WHERE(RFQConsultMessage.T.P2S,"=?", Sys.OYn.YES)
+              .WHERE(T.SUPPLIER_ID,"=?",supperpkey);
+    }};
+    return  irille.pub.bean.Query.sql(pdt).queryCount();
   }
 }

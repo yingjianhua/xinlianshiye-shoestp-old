@@ -79,8 +79,23 @@ public class PdtProductCatDao {
     SQL sql = new SQL();
     sql.SELECT(PdtCat.class)
         .FROM(PdtCat.class)
-        .WHERE(PdtCat.T.DELETED, "=?", Sys.OYn.NO.getLine().getKey())
-        .WHERE(PdtCat.T.CATEGORY_UP, " IS NULL ");
+        .WHERE(PdtCat.T.DELETED, "=?", Sys.OYn.NO.getLine().getKey()).WHERE(PdtCat.T.CATEGORY_UP, " IS NULL ");
     return Query.sql(sql).queryList(PdtCat.class);
   }
+  /** 获取所有三级分类 */
+  public List<PdtCat> findCategory(Integer i) {
+    SQL sql = new SQL();
+    sql.SELECT(PdtCat.class)
+            .FROM(PdtCat.class)
+            .WHERE(PdtCat.T.DELETED, "=?", Sys.OYn.NO.getLine().getKey());
+            if(i==null || i == 0){
+              sql.WHERE(PdtCat.T.CATEGORY_UP, " IS NULL ");
+            }else{
+              sql.WHERE(PdtCat.T.CATEGORY_UP, "=?",i);
+            }
+
+    return Query.sql(sql).queryList(PdtCat.class);
+  }
+
+
 }

@@ -33,6 +33,7 @@ import irille.shop.pdt.PdtSpec;
 import irille.shop.pdt.PdtSpecDAO;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltFreightSeller;
+import irille.view.pdt.PdtProductSaveView;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -90,6 +91,9 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
       case -8:
         writeErr(-8, "产品图片不能为空");
         break;
+      case -9:
+        writeErr(-9, "目标市场不能为空");
+        break;
       default:
         write();
     }
@@ -103,10 +107,16 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
    */
   public void viewProduct() throws IOException {
     try {
-      write(
+      PdtProductSaveView pdtView =
           pdtpageSelect.sellerGetProductById(
-              Integer.valueOf(String.valueOf(getId())), getSupplier().getPkey()));
-      return;
+              Integer.valueOf(String.valueOf(getId())), getSupplier().getPkey());
+      if (pdtView == null) {
+        writeErr(-49, "錯誤");
+        return;
+      } else {
+        write(pdtView);
+        return;
+      }
     } catch (JSONException e) {
       e.printStackTrace();
     }
@@ -115,10 +125,16 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
 
   public void copyProduct() {
     try {
-      write(
-          pdtpageSelect.sellerCopyProductById(
-              Integer.valueOf(String.valueOf(getId())), getSupplier().getPkey()));
-      return;
+      PdtProductSaveView pdtView =
+          pdtpageSelect.sellerGetProductById(
+              Integer.valueOf(String.valueOf(getId())), getSupplier().getPkey());
+      if (pdtView == null) {
+        writeErr(-49, "錯誤");
+        return;
+      } else {
+        write(pdtView);
+        return;
+      }
     } catch (JSONException e) {
       e.printStackTrace();
     } catch (IOException e) {
