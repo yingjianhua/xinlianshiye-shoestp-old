@@ -206,7 +206,7 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
       String storeName,
       String targetMarket,
       Integer processType,
-      Integer grade,
+      String grade,
       Integer pdtCategory,
       Integer checkType) {
     List<Map<String, Object>> list =
