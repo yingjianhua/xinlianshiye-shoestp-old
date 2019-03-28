@@ -11,11 +11,15 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.inject.Inject;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
 import com.xinlianshiye.shoestp.plat.service.pm.imp.PMMessageServiceImp;
 
+import irille.Dao.SVS.SVSInfoService;
+import irille.Dao.SVS.impl.SVSInfoServiceImpl;
 import irille.Entity.SVS.Enums.SVSAuthenticationStatus;
 import irille.Entity.SVS.Enums.SVSGradeType;
 import irille.Entity.SVS.SVSInfo;
@@ -31,6 +35,7 @@ import irille.pub.LogMessage;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.Bean;
 import irille.pub.bean.BeanBase;
+import irille.pub.bean.Query;
 import irille.pub.bean.query.SqlQuery;
 import irille.pub.bean.sql.SQL;
 import irille.pub.exception.WebMessageException;
@@ -58,6 +63,7 @@ import irille.shop.usr.Usr.OStatus;
 import irille.shop.usr.UsrSupplier.T;
 import irille.view.Page;
 import irille.view.usr.AccountSettingsView;
+import irille.view.usr.SupplierDetailsDTO;
 import irille.view.usr.SupplierView;
 import irille.view.usr.shopSettingView;
 import org.json.JSONException;
@@ -916,7 +922,7 @@ public class UsrSupplierDAO {
       supplier.stStatus(OStatus.APPR);
       supplier.stStoreStatus(Usr.SStatus.OPEN);
       supplier.setStoreopenTime(storeopenTime);
-      try{
+      try {
         messageService.send(OTempType.SHOP_APPR, supplier, null, supplier);
       } catch (Exception e) {
         throw new WebMessageException("店铺审核通知站内信出现错误，请关闭站内信");
@@ -925,7 +931,7 @@ public class UsrSupplierDAO {
     } else if (status == 2) {
       supplier.stStatus(OStatus.FAIL);
       supplier.setReason(reason);
-      try{
+      try {
         messageService.send(OTempType.SHOP_APPR, supplier, null, supplier);
       } catch (Exception e) {
         throw new WebMessageException("店铺审核通知站内信出现错误，请关闭站内信");
@@ -1051,10 +1057,10 @@ public class UsrSupplierDAO {
 
   public static String getJson() {
     String json = "{";
-    for (int i = 0;i < FldLanguage.Language.values().length;i++) {
-      if (i == FldLanguage.Language.values().length-1) {
+    for (int i = 0; i < FldLanguage.Language.values().length; i++) {
+      if (i == FldLanguage.Language.values().length - 1) {
         json += "'" + FldLanguage.Language.values()[i] + "':''}";
-      }else{
+      } else {
         json += "'" + FldLanguage.Language.values()[i] + "':'',";
       }
     }
@@ -1063,15 +1069,15 @@ public class UsrSupplierDAO {
 
   /**
    * 创建供应商信息-没有多国语言翻译
-   * @author: lingjian
-   * @Date: 2019/3/20 19:29
+   *
+   * @author: lingjian @Date: 2019/3/20 19:29
    * @param view
    * @param lang
    * @return
    * @throws JSONException
    */
   public static UsrSupplier insSupplierNo(UsrSupplier view, Language lang) throws JSONException {
-    String json =getJson();
+    String json = getJson();
     UsrMain main = irille.pub.bean.Query.SELECT(UsrMain.class, view.getUserid());
     main.setContacts(view.getContacts());
     if (view.getPhone() != null) {
@@ -1113,7 +1119,7 @@ public class UsrSupplierDAO {
     bean.setPassword(DateTools.getDigest(main.getPkey() + main.getPassword())); // UsrMain表的密码
     bean.setName(view.getName()); // 公司名称-必填
     bean.setEnglishName(view.getEnglishName()); // 公司英文名称
-    bean.stShowName(new JSONObject(json).put(lang.name(), view.getName())); //前端公司展示名称
+    bean.stShowName(new JSONObject(json).put(lang.name(), view.getName())); // 前端公司展示名称
 
     bean.stCompanyType(new JSONObject(json).put(lang.name(), view.getCompanyType())); // 企业类型
     bean.stCompanyNature(new JSONObject(json).put(lang.name(), view.getCompanyNature())); // 企业性质
@@ -1161,47 +1167,45 @@ public class UsrSupplierDAO {
    *
    * @author: lingjian @Date: 2019/3/1 16:21
    */
-  public static UsrSupplier updInfoNo(UsrSupplier supplier,Language lang) throws JSONException {
+  public static UsrSupplier updInfoNo(UsrSupplier supplier, Language lang) throws JSONException {
     UsrSupplier model = BeanBase.load(UsrSupplier.class, supplier.getPkey());
     PropertyUtils.copyProperties(
-            model,
-            supplier,
-            T.COMPANY_TYPE, // 公司类型 多国语言
-            T.COMPANY_NATURE, // 企业性质 多国语言
-            T.COMPANY_ADDR, // 公司详细地址 多国语言
-            T.PROD_PATTERN, // 生产模式 多国语言
-            T.DEPARTMENT, // 联系人部门 多国语言
-            T.JOB_TITLE, // 联系人职称 多国语言
-            T.CONTACTS, // 联系人 多国语言
-            T.SHOW_NAME, //公司名称 多国语言
-
-            T.NAME, // 公司名称
-            T.ENGLISH_NAME, // 英文名称
-            T.COMPANY_ESTABLISH_TIME, // 企业成立时间
-            T.WEBSITE, // 公司官网网站地址
-            T.ANNUAL_PRODUCTION, // 年产量
-            T.TELEPHONE, // 公司电话
-            T.FAX, // 传真
-            T.POSTCODE, // 邮编
-            T.TARGETED_MARKET, // 目标市场
-            T.CREDIT_CODE, // 统一社会信用代码
-            T.REGISTERED_CAPITAL, // 注册资本
-            T.ENTITY, // 法定代表人
-            T.BUSINESS_LICENSE_IS_SECULAR, // 营业执照是否长期
-            T.BUSINESS_LICENSE_BEGIN_TIME, // 营业执照开始时间
-            T.BUSINESS_LICENSE_END_TIME, // 营业执照结束时间
-            T.TAXPAYER_TYPE, // 纳税人类型
-            T.PHONE, // 联系人手机
-            T.CONTACT_EMAIL, // 联系人邮箱
-            T.CERT_PHOTO, // 营业执照副本复印件
-            T.ID_CARD_FRONT_PHOTO, // 法人代表身份证复印件
-            T.ID_CARD, // 法人代表身份证号码
-            T.CONTACTS_ID_CARD_FRONT_PHOTO, // 运营人员身份证复印件
-            T.OPERATE_ID_CARD, // 运营人员身份证号码
-            T.STORE_STATUS,
-            T.CLOSE_REASON
-    );
-    String json =getJson();
+        model,
+        supplier,
+        T.COMPANY_TYPE, // 公司类型 多国语言
+        T.COMPANY_NATURE, // 企业性质 多国语言
+        T.COMPANY_ADDR, // 公司详细地址 多国语言
+        T.PROD_PATTERN, // 生产模式 多国语言
+        T.DEPARTMENT, // 联系人部门 多国语言
+        T.JOB_TITLE, // 联系人职称 多国语言
+        T.CONTACTS, // 联系人 多国语言
+        T.SHOW_NAME, // 公司名称 多国语言
+        T.NAME, // 公司名称
+        T.ENGLISH_NAME, // 英文名称
+        T.COMPANY_ESTABLISH_TIME, // 企业成立时间
+        T.WEBSITE, // 公司官网网站地址
+        T.ANNUAL_PRODUCTION, // 年产量
+        T.TELEPHONE, // 公司电话
+        T.FAX, // 传真
+        T.POSTCODE, // 邮编
+        T.TARGETED_MARKET, // 目标市场
+        T.CREDIT_CODE, // 统一社会信用代码
+        T.REGISTERED_CAPITAL, // 注册资本
+        T.ENTITY, // 法定代表人
+        T.BUSINESS_LICENSE_IS_SECULAR, // 营业执照是否长期
+        T.BUSINESS_LICENSE_BEGIN_TIME, // 营业执照开始时间
+        T.BUSINESS_LICENSE_END_TIME, // 营业执照结束时间
+        T.TAXPAYER_TYPE, // 纳税人类型
+        T.PHONE, // 联系人手机
+        T.CONTACT_EMAIL, // 联系人邮箱
+        T.CERT_PHOTO, // 营业执照副本复印件
+        T.ID_CARD_FRONT_PHOTO, // 法人代表身份证复印件
+        T.ID_CARD, // 法人代表身份证号码
+        T.CONTACTS_ID_CARD_FRONT_PHOTO, // 运营人员身份证复印件
+        T.OPERATE_ID_CARD, // 运营人员身份证号码
+        T.STORE_STATUS,
+        T.CLOSE_REASON);
+    String json = getJson();
     model.stShowName(new JSONObject(json).put(lang.name(), supplier.getName()));
     model.stCompanyType(new JSONObject(json).put(lang.name(), supplier.getCompanyType()));
     model.stCompanyNature(new JSONObject(json).put(lang.name(), supplier.getCompanyNature()));
@@ -1225,12 +1229,12 @@ public class UsrSupplierDAO {
   public static UsrSupplier insSupplier(UsrSupplier view) throws JSONException {
 
     UsrSupplier beanjson = new UsrSupplier();
-    beanjson.setShowName(view.getName()); //前端公司展示名称
+    beanjson.setShowName(view.getName()); // 前端公司展示名称
     beanjson.setCompanyType(view.getCompanyType()); // 企业类型
     beanjson.setCompanyNature(view.getCompanyNature()); // 企业性质
     beanjson.setCompanyAddr(view.getCompanyAddr()); // 详细地址
     beanjson.setProdPattern(view.getProdPattern()); // 生产模式
-    beanjson.setContacts(view.getContacts()); //联系人
+    beanjson.setContacts(view.getContacts()); // 联系人
     beanjson.setDepartment(view.getDepartment()); // 联系人部门
     beanjson.setJobTitle(view.getJobTitle()); // 联系人职称
     translateUtil.autoTranslate(beanjson, true);
@@ -1275,7 +1279,7 @@ public class UsrSupplierDAO {
     bean.setPassword(DateTools.getDigest(main.getPkey() + main.getPassword())); // UsrMain表的密码
     bean.setName(view.getName()); // 公司名称-必填
     bean.setEnglishName(view.getEnglishName()); // 公司英文名称
-    bean.setShowName(beanjson.getShowName()); //前端公司展示名称
+    bean.setShowName(beanjson.getShowName()); // 前端公司展示名称
 
     bean.setCompanyType(beanjson.getCompanyType()); // 企业类型
     bean.setCompanyNature(beanjson.getCompanyNature()); // 企业性质
@@ -1326,43 +1330,41 @@ public class UsrSupplierDAO {
   public static UsrSupplier updInfo(UsrSupplier supplier) {
     UsrSupplier model = BeanBase.load(UsrSupplier.class, supplier.getPkey());
     PropertyUtils.copyProperties(
-            model,
-            supplier,
-            T.COMPANY_TYPE, // 公司类型 多国语言
-            T.COMPANY_NATURE, // 企业性质 多国语言
-            T.COMPANY_ADDR, // 公司详细地址 多国语言
-            T.PROD_PATTERN, // 生产模式 多国语言
-            T.DEPARTMENT, // 联系人部门 多国语言
-            T.JOB_TITLE, // 联系人职称 多国语言
-            T.CONTACTS, // 联系人 多国语言
-            T.SHOW_NAME, //公司名称 多国语言
-
-            T.NAME, // 公司名称
-            T.ENGLISH_NAME, // 英文名称
-            T.COMPANY_ESTABLISH_TIME, // 企业成立时间
-            T.WEBSITE, // 公司官网网站地址
-            T.ANNUAL_PRODUCTION, // 年产量
-            T.TELEPHONE, // 公司电话
-            T.FAX, // 传真
-            T.POSTCODE, // 邮编
-            T.TARGETED_MARKET, // 目标市场
-            T.CREDIT_CODE, // 统一社会信用代码
-            T.REGISTERED_CAPITAL, // 注册资本
-            T.ENTITY, // 法定代表人
-            T.BUSINESS_LICENSE_IS_SECULAR, // 营业执照是否长期
-            T.BUSINESS_LICENSE_BEGIN_TIME, // 营业执照开始时间
-            T.BUSINESS_LICENSE_END_TIME, // 营业执照结束时间
-            T.TAXPAYER_TYPE, // 纳税人类型
-            T.PHONE, // 联系人手机
-            T.CONTACT_EMAIL, // 联系人邮箱
-            T.CERT_PHOTO, // 营业执照副本复印件
-            T.ID_CARD_FRONT_PHOTO, // 法人代表身份证复印件
-            T.ID_CARD, // 法人代表身份证号码
-            T.CONTACTS_ID_CARD_FRONT_PHOTO, // 运营人员身份证复印件
-            T.OPERATE_ID_CARD, // 运营人员身份证号码
-            T.STORE_STATUS,
-            T.CLOSE_REASON
-    );
+        model,
+        supplier,
+        T.COMPANY_TYPE, // 公司类型 多国语言
+        T.COMPANY_NATURE, // 企业性质 多国语言
+        T.COMPANY_ADDR, // 公司详细地址 多国语言
+        T.PROD_PATTERN, // 生产模式 多国语言
+        T.DEPARTMENT, // 联系人部门 多国语言
+        T.JOB_TITLE, // 联系人职称 多国语言
+        T.CONTACTS, // 联系人 多国语言
+        T.SHOW_NAME, // 公司名称 多国语言
+        T.NAME, // 公司名称
+        T.ENGLISH_NAME, // 英文名称
+        T.COMPANY_ESTABLISH_TIME, // 企业成立时间
+        T.WEBSITE, // 公司官网网站地址
+        T.ANNUAL_PRODUCTION, // 年产量
+        T.TELEPHONE, // 公司电话
+        T.FAX, // 传真
+        T.POSTCODE, // 邮编
+        T.TARGETED_MARKET, // 目标市场
+        T.CREDIT_CODE, // 统一社会信用代码
+        T.REGISTERED_CAPITAL, // 注册资本
+        T.ENTITY, // 法定代表人
+        T.BUSINESS_LICENSE_IS_SECULAR, // 营业执照是否长期
+        T.BUSINESS_LICENSE_BEGIN_TIME, // 营业执照开始时间
+        T.BUSINESS_LICENSE_END_TIME, // 营业执照结束时间
+        T.TAXPAYER_TYPE, // 纳税人类型
+        T.PHONE, // 联系人手机
+        T.CONTACT_EMAIL, // 联系人邮箱
+        T.CERT_PHOTO, // 营业执照副本复印件
+        T.ID_CARD_FRONT_PHOTO, // 法人代表身份证复印件
+        T.ID_CARD, // 法人代表身份证号码
+        T.CONTACTS_ID_CARD_FRONT_PHOTO, // 运营人员身份证复印件
+        T.OPERATE_ID_CARD, // 运营人员身份证号码
+        T.STORE_STATUS,
+        T.CLOSE_REASON);
     UsrSupplier s = new UsrSupplier();
     s.setCompanyType(supplier.getCompanyType());
     s.setCompanyNature(supplier.getCompanyNature());
@@ -1372,7 +1374,7 @@ public class UsrSupplierDAO {
     s.setDepartment(supplier.getDepartment());
     s.setJobTitle(supplier.getJobTitle());
     s.setShowName(supplier.getName());
-    translateUtil.autoTranslate(s,true);
+    translateUtil.autoTranslate(s, true);
     model.setCompanyType(s.getCompanyType());
     model.setCompanyNature(s.getCompanyNature());
     model.setCompanyAddr(s.getCompanyAddr());
@@ -2448,4 +2450,38 @@ public class UsrSupplierDAO {
     }
   }
   /** ———————————————————分割线(新平台)END————————————————————————— */
+
+  /** ———————————————————分割线(3.1.1)——————————————————————————— */
+  @Inject SVSInfoService svsInfoService;
+
+  public SupplierDetailsDTO getSupplierDetails(Integer supplierId) {
+    SupplierDetailsDTO view = new SupplierDetailsDTO();
+    SQL sql =
+        new SQL() {
+          {
+            SELECT(
+                    T.PKEY,
+                    T.LOGO,
+                    T.NAME,
+                    UsrMain.T.EMAIL,
+                    T.TARGETED_MARKET,
+                    SVSInfo.T.AUTHENTICATION_TIME)
+                .FROM(UsrSupplier.class)
+                .LEFT_JOIN(SVSInfo.class, SVSInfo.T.SUPPLIER, T.PKEY)
+                .LEFT_JOIN(UsrMain.class, UsrMain.T.PKEY, T.UserId)
+                .WHERE(T.PKEY, "=?", supplierId);
+          }
+        };
+    Map<String, Object> map = irille.pub.bean.Query.sql(sql).queryMap();
+    view.setPkey((Integer) map.get(T.PKEY.getFld().getCodeSqlField()));
+    view.setLogo((String) map.get(T.LOGO.getFld().getCodeSqlField()));
+    view.setName((String) map.get(T.NAME.getFld().getCodeSqlField()));
+    view.setUserName((String) map.get(UsrMain.T.EMAIL.getFld().getCodeSqlField()));
+    view.setTargetedMarket((String) map.get(T.TARGETED_MARKET.getFld().getCodeSqlField()));
+    view.setAuthentication_time(
+        (Date) map.get(SVSInfo.T.AUTHENTICATION_TIME.getFld().getCodeSqlField()));
+    view.setSvsRatingAndRosDTO(svsInfoService.getSvsRatingAndRos(supplierId));
+    return view;
+  }
+  /** ———————————————————分割线(3.1.1END)————————————————————————— */
 }
