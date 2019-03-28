@@ -5,6 +5,7 @@ import java.util.List;
 import irille.Dao.RFQ.RFQConsultMessageDao;
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
+import irille.Entity.RFQ.Enums.RFQConsultRelationReadStatus;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
@@ -44,12 +45,10 @@ public class RFQConsultMessageDaoImpl implements RFQConsultMessageDao {
                 FROM(
                     new SQL() {
                       {
-                        SELECT("1").FROM(RFQConsultMessage.class);
-                        LEFT_JOIN(RFQConsultRelation.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY);
+                        SELECT("1").FROM(RFQConsultRelation.class);
                         WHERE(RFQConsultRelation.T.PURCHASE_ID, "=?", purchasePkey);
-                        WHERE(RFQConsultRelation.T.HAD_READ_PURCHASE, "=?", false);
+                        WHERE(RFQConsultRelation.T.READ_STATUS, "=?", RFQConsultRelationReadStatus.PURCHASE_UNREAD);
                         WHERE(RFQConsultRelation.T.IS_DELETED_PURCHASE, "=?", false);
-                        GROUP_BY(RFQConsultRelation.T.PKEY);
                       }
                     },
                     "a");

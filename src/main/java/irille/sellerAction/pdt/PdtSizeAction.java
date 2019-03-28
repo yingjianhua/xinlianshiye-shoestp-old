@@ -142,12 +142,16 @@ public class PdtSizeAction extends SellerAction<PdtSize> implements IPdtSizeActi
     write();
   }
 
+  @Getter @Setter private Integer cat;
+
   public void getList() throws Exception {
     JSONObject json = new JSONObject();
     JSONArray ja = new JSONArray();
     ja =
         new JSONArray(
-            PdtSizeDAO.newListSummary(PltConfigDAO.supplierLanguage(getSupplier()), 1), false);
+            PdtSizeDAO.newListSummary(
+                getSupplier(), PltConfigDAO.supplierLanguage(getSupplier()), 1, cat),
+            false);
     json.put(STORE_ROOT, ja);
     writerOrExport(json);
   }

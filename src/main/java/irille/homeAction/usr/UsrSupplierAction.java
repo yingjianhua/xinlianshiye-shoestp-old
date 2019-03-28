@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xinlianshiye.shoestp.shop.service.usr.UsrSupplierService;
 
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
+import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin.UserType;
 import irille.Service.Usr.IUsrSupplierService;
 import irille.homeAction.HomeAction;
 import irille.homeAction.usr.dto.Page_supplierView;
@@ -94,7 +95,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
    *
    * @author: lingjian @Date: 2019/3/4 14:23
    */
-  @NeedLogin(supplier = true)
+  @NeedLogin(userType = UserType.SUPPLIER)
   public void insInfo() throws Exception {
     if (getUser().getUser_type() == 1) {
       regex(); // 正则校验
@@ -126,8 +127,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
         UsrSupplier.T.CERT_PHOTO);
     ValidRegex2 regex = new ValidRegex2(getBean());
     if (getBean().getEnglishName() != null)
-      regex.validRegexMatched(
-              "^[a-zA-Z ]{1,60}$", "请填写英文字母,且不超过60位", UsrSupplier.T.ENGLISH_NAME);
+      regex.validRegexMatched("^[a-zA-Z ]{1,60}$", "请填写英文字母,且不超过60位", UsrSupplier.T.ENGLISH_NAME);
     if (getBean().getWebsite() != null)
       regex.validRegexMatched(
           "http[s]?:\\/\\/[\\w]{1,}.?[\\w]{1,}.?[\\w/.?&=-]{1,}",
@@ -175,7 +175,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
    *
    * @author: lingjian @Date: 2019/3/5 16:19
    */
-  @NeedLogin(supplier = true)
+  @NeedLogin(userType = UserType.SUPPLIER)
   public void loadOnlineSup() throws Exception {
     SQL sql1 =
         new SQL() {
@@ -211,7 +211,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
    *
    * @author: lingjian @Date: 2019/3/1 15:49
    */
-  @NeedLogin(supplier = true)
+  @NeedLogin(userType = UserType.SUPPLIER)
   public void updInfo() throws Exception {
     try {
       regex(); // 正则校验
@@ -486,7 +486,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
   private Byte entryStep;
 
   /** 商家入驻页面 */
-  @NeedLogin(supplier = true)
+  @NeedLogin(userType = UserType.SUPPLIER)
   public String supplierEntry() {
     UserView user = getUser();
     if (!user.isSupplier()) {
@@ -543,12 +543,34 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
     writerOrExport(json);
   }
 
+  private String storeName; // 店铺名称
+
+  private String targetMarket; // 目标市场
+
+  private Integer processType; // 工艺类型
+
+  private Integer grade; // svs等级
+
+  private Integer pdtCategory; // 产品类型
+
+  private Integer checkType; // 查询类型
+
   /*
    *   获取供应商中心列表
    * @Author HuangHaoBin
    **/
   public void listSuppliers() throws Exception {
-    write(usrSupplierService.listSupplier(getStart(), getLimit()));
+    if (getLimit() == 0) setLimit(10);
+    write(
+        usrSupplierService.listSupplier(
+            getStart(),
+            getLimit(),
+            storeName,
+            targetMarket,
+            processType,
+            grade,
+            pdtCategory,
+            checkType));
   }
 
   @Inject private UsrSupplierService usrSupplierService2;

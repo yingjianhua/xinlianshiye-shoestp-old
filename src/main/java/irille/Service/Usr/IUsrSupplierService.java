@@ -53,6 +53,27 @@ public interface IUsrSupplierService {
    * @Author HuangHaoBin
    **/
   Page listSupplier(Integer start, Integer limit);
+  /**
+   * 3.1.1供应商列表
+   *
+   * @author GS
+   * @param start
+   * @param limit
+   * @param storeName
+   * @param targetMarket
+   * @param processType
+   * @param grade
+   * @param pdtCategory
+   * @return
+   */
+  Page listSupplier(
+      Integer start,
+      Integer limit,
+      String storeName,
+      String targetMarket,
+      Integer processType,
+      Integer grade,
+      Integer pdtCategory,Integer checkType);
 
   /*
    *   判断用户类型 0:普通用户 1:商家

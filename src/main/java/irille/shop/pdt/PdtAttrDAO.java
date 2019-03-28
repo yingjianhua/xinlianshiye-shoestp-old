@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import irille.Dao.PdtProductDao;
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
 import irille.core.sys.SysUser;
@@ -103,7 +104,9 @@ public class PdtAttrDAO {
     public void before() {
       getB().setDeleted(OYn.NO.getLine().getKey());
       getB().setCreateTime(Env.getTranBeginTime());
-      setB(translateUtil.autoTranslate(getB()));
+      setB(
+          translateUtil.newAutoTranslate(
+              getB(), translateUtil.buildFilter(getB().getName(), PltConfigDAO.manageLanguage())));
       super.before();
     }
   }
@@ -118,10 +121,13 @@ public class PdtAttrDAO {
     @Override
     public void before() {
       PdtAttr dbBean = loadThisBeanAndLock();
-      //            getB().setCreateTime(Env.getSystemTime());//自动生成修改时间
+      // getB().setCreateTime(Env.getSystemTime());//自动生成修改时间
       PropertyUtils.copyPropertiesWithout(
           dbBean,
-          translateUtil.autoTranslateByManageLanguage(getB(), true),
+          translateUtil.newAutoTranslate(
+              getB(),
+              translateUtil.buildFilter(
+                  dbBean.getName(), getB().getName(), PltConfigDAO.manageLanguage())),
           PdtAttr.T.PKEY,
           PdtAttr.T.CREATE_BY,
           PdtAttr.T.CREATE_TIME,
@@ -223,24 +229,33 @@ public class PdtAttrDAO {
      * @param supplier
      * @return
      */
-    public List getAllAttr(FldLanguage.Language language, Integer supplier) {
-      List result = new ArrayList();
-      // 不做分类查询
-      String sql = PdtAttr.T.DELETED.getFld().getCodeSqlField() + " = " + OYn.NO.getLine().getKey();
-      //      PdtAttr.list(PdtAttr.class, sql, false)
-      BeanBase.list(
-              PdtAttr.class,
-              "("
-                  + PdtAttr.T.SUPPLIER.getFld().getCodeSqlField()
-                  + " =? OR "
-                  + PdtAttr.T.SUPPLIER.getFld().getCodeSqlField()
-                  + " IS NULL ) AND "
-                  + PdtAttr.T.DELETED.getFld().getCodeSqlField()
-                  + " = ? ",
-              false,
-              supplier,
-              OYn.NO.getLine().getKey())
-          .forEach(
+    public List getAllAttr(FldLanguage.Language language, Integer supplier, Integer cat) {
+      if (null == cat) {
+        throw new WebMessageException(ReturnCode.failure, "请选择产品分类");
+      }
+      PdtProductDao pdtproductDao = new PdtProductDao();
+      String parentCat = String.join(",", pdtproductDao.getParent(cat));
+
+      SQL sql1 = new SQL();
+      sql1.SELECT(PdtAttr.class).FROM(PdtAttr.class);
+      sql1.LEFT_JOIN(PdtAttrCat.class, PdtAttrCat.T.PKEY, PdtAttr.T.CATEGORY);
+      sql1.LEFT_JOIN(PdtAttrPro.class, PdtAttrPro.T.ATTRCAT, PdtAttrCat.T.PKEY);
+      sql1.WHERE(PdtAttr.T.DELETED, " =? ", OYn.NO.getLine().getKey());
+      sql1.WHERE(
+          "("
+              + PdtAttr.class.getSimpleName()
+              + "."
+              + PdtAttr.T.SUPPLIER.getFld().getCodeSqlField()
+              + " IS NULL OR "
+              + PdtAttr.class.getSimpleName()
+              + "."
+              + PdtAttr.T.SUPPLIER.getFld().getCodeSqlField()
+              + " =?)",
+          supplier);
+      sql1.WHERE(PdtAttrPro.T.PROCAT, " IN (" + parentCat + ") ");
+
+      return Query.sql(sql1).queryList(PdtAttr.class).stream()
+          .map(
               l -> {
                 PdtProductVueView attr = new PdtProductVueView();
                 translateUtil.getAutoTranslate(l, language);
@@ -267,9 +282,9 @@ public class PdtAttrDAO {
                           lineList.add(line);
                         });
                 attr.setItems(lineList);
-                result.add(attr);
-              });
-      return result;
+                return attr;
+              })
+          .collect(Collectors.toList());
     }
   }
 
@@ -469,5 +484,26 @@ public class PdtAttrDAO {
             });
     attrView.setItems(lineList);
     return attrView;
+  }
+
+  public boolean getCount(Integer cat) {
+    String sql = "SELECT  pkey FROM pdt_attr_line WHERE main = " + cat + " AND deleted=0";
+    List<PdtAttrLine> list = Query.sql(sql).queryList(PdtAttrLine.class);
+    System.out.println(list.size());
+    if (list.size() > 0) {
+      for (PdtAttrLine pdtAttrLine : list) {
+        String proSql =
+            "SELECT norm_attr FROM pdt_product where FIND_IN_SET("
+                + pdtAttrLine.getPkey()
+                + ",norm_attr) AND is_verify=1 AND state=1";
+        Integer count = Query.sql(proSql).queryCount();
+        if (count > 0) {
+          return false;
+        } else {
+          return true;
+        }
+      }
+    }
+    return true;
   }
 }

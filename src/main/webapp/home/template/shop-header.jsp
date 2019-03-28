@@ -68,7 +68,7 @@
                  // 跳转供应商表单
                  function  ToContactSupplier (){
                  let url = "/home/usr_UsrSupplier_goContactSupplier?supplierPkey=${supView.pkey}&backUrl=" + window.location.href;
-                 util_function_obj.supplierCantEnter(this, url);
+                 util_function_obj.supplierCantEnter(this, url,"Please register or login your buyer account if you want making enquiries.");
              }
             </script>
     </div>

@@ -32,12 +32,12 @@ public class UsrUserDAO {
    * @return
    */
   public static UserView supplierSignIn(UsrSupplier supplier, UsrMain main) {
-
     UserView view = new UserView();
     view.setSupplier(supplier);
     view.setPkey(main.getPkey());
     view.setLoginName(supplier.getLoginName());
     view.setUser_type(1);
+    view.setSupplierId(supplier.getPkey());
     return view;
   }
 

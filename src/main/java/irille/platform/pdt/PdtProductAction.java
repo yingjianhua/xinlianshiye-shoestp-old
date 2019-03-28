@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import irille.action.MgtAction;
 import irille.action.pdt.inf.IPdtProductAction;
 import irille.platform.pdt.View.productView.SeartchView;
@@ -11,14 +14,12 @@ import irille.pub.Str;
 import irille.pub.bean.Query;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage.Language;
-import irille.pub.util.AppConfig;
+import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtAttrLine;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.pdt.PdtProductDAO;
 import lombok.Getter;
 import lombok.Setter;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 @Setter
 public class PdtProductAction extends MgtAction<PdtProduct> implements IPdtProductAction {
@@ -37,12 +38,12 @@ public class PdtProductAction extends MgtAction<PdtProduct> implements IPdtProdu
 
   @Getter @Setter private Boolean verify;
 
-  @Override
-  public void verify() throws Exception {
-    PdtProduct bean = PdtProductDAO.verify(verify, (Integer) getPkey());
-    bean.setPicture(AppConfig.image_base_url + bean.getPicture());
-    writeSuccess(bean);
-  }
+  //  @Override
+  //  public void verify() throws Exception {
+  //    PdtProduct bean = PdtProductDAO.verify(verify, (Integer) getPkey());
+  //    bean.setPicture(AppConfig.image_base_url + bean.getPicture());
+  //    writeSuccess(bean);
+  //  }
 
   /**
    * @Description: 产品管理页面 审核 为启用停用 停用会级联销售状态一起下架
@@ -50,10 +51,10 @@ public class PdtProductAction extends MgtAction<PdtProduct> implements IPdtProdu
    * @date 2019/1/24 13:47
    * @anthor wilson zhang
    */
-  public void isverify() throws Exception {
-    PdtProduct bean = PdtProductDAO.verify(verify, (Integer) getPkey());
-    write();
-  }
+  //  public void isverify() throws Exception {
+  //    PdtProduct bean = PdtProductDAO.verify(verify, (Integer) getPkey());
+  //    write();
+  //  }
 
   @Override
   public void list() throws Exception {
@@ -130,6 +131,22 @@ public class PdtProductAction extends MgtAction<PdtProduct> implements IPdtProdu
   private Integer id;
   private Byte status;
   private String message;
+
+  /**
+   * 普通产品审核通过
+   *
+   * @throws IOException
+   * @auther liyichao
+   */
+  public void pass() throws IOException {
+    PdtProductDAO.review(id, Pdt.OAppr.PASS.getLine().getKey(), null);
+    write();
+  }
+
+  public void failed() throws IOException {
+    PdtProductDAO.review(id, Pdt.OAppr.Failed.getLine().getKey(), message);
+    write();
+  }
 
   /**
    * 审核产品(O2O/普通产品)

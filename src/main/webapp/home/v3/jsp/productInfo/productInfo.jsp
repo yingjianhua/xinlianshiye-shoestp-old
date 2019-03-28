@@ -130,7 +130,7 @@
             -moz-align-items: center;
             -ms-align-items: center;
             -o-align-items: center;
-             
+
         }
 
         body {
@@ -669,7 +669,7 @@
             line-height: 16px;
         }
 
-        #productInfo .conpanyFrBox .h3 img {
+        #productInfo .conpanyFrBox .h6 img {
             width: 23px;
             height: 16px;
             margin-right: 5px;
@@ -677,7 +677,7 @@
 
         #productInfo .conpanyFrBox .h4 {
             color: #000;
-            padding: 18px 0 14px 0;
+            padding: 0 0 14px 0;
             font-size: 14px;
         }
 
@@ -699,7 +699,7 @@
         }
 
         #productInfo .conpanyFrBox .txt2 .h6 {
-            line-height: 35px;
+            line-height: 50px;
         }
 
         #productInfo .conpanyFrBox .hBtn {
@@ -885,7 +885,7 @@
 
                         <div class="h2">
                             <div class="fl">ID: {{productinfocom.pdtId}}</div>
-                            <div class="sharebox fr">
+                            <!-- <div class="sharebox fr">
                                 <div class="fl"><s:text name="products.share"/> :</div>
                                 <a href="javascript:;" class="shareTb shareTbtb1" @click="shareThis('facebook')"></a>
                                 <a href="javascript:;" class="shareTb shareTbtb2" @click="shareThis('twitter')"></a>
@@ -923,10 +923,10 @@
                                         </div>
                                     </el-dropdown-menu>
                                 </el-dropdown>
-                            </div>
+                            </div> -->
                         </div>
-
-                        <div class="h3">{{productinfocom.currency_unit}} {{productinfocom.currency_symbol}}{{price}}
+                        <!-- {{productinfocom.currency_unit}}  -->
+                        <div class="h3">{{productinfocom.currency_symbol}}{{price}}
                         </div>
 
                         <div class="h4" v-if="tpView">
@@ -1015,8 +1015,7 @@
                     </div>
 
                     <div class="txt">
-                        <div class="h3"><img src="/home/v3/static/images/productInfo/cn.png" alt=""/>CN</div>
-                        <div class="h4">Shose</div>
+                        <div class="h4">Shoe Manufacturer</div>
                         <div class="h5">
                             <img class="mr4" src="/home/v3/static/images/productInfo/icon-renzheng.png" alt=""/>Certificate
                             <div class="i"></div>
@@ -1039,7 +1038,7 @@
                     </div>
 
                     <div class="txt2">
-                        <div class="h6">China</div>
+                        <div class="h6"><img src="/home/v3/static/images/productInfo/cn.png" alt=""/>China</div>
                     </div>
 
                     <div class="hBtn" @click="contactSupplier"><a
@@ -1122,7 +1121,7 @@
             contactSupplier() {
                 var jumpUrl = "/home/usr_UsrSupplier_goContactSupplier?supplierPkey=" + this.productinfocom.supId + '&backUrl=' + window.location.href;
                 ;
-                util_function_obj.supplierCantEnter(this, jumpUrl);
+                util_function_obj.supplierCantEnter(this, jumpUrl,"Please register or login your buyer account if you want making enquiries.");
             },
             // 选择放大镜的图片
             selePicli: function (e) {
@@ -1149,6 +1148,17 @@
                 if (!sysConfig || !sysConfig.user) {
                     // user_obj.set_form_sign_in('', window.location.href, 1);
                     util_function_obj.alertWhenNoLogin(this);
+                    return
+                }
+                if(sysConfig.user.user_type == 1){
+                    this.$alert("If you want to get this supplier or shoes in your wish list,please register or login your buyer account.",{
+                        confirmButtonText: 'Ok',
+                        customClass: "my-custom-element-alert-class fs-content-18",
+                        center: true,
+                        callback: action =>{
+                            return
+                        }
+                    });
                     return
                 }
                 var self = this
@@ -1310,7 +1320,7 @@
                     return
                 } else {
                     var jumpUrl = '/home/usr_UsrConsult_productPublishView?product_id=' + this.productinfocom.pdtId + '&backUrl=' + window.location.href;
-                    util_function_obj.supplierCantEnter(this, jumpUrl);
+                    util_function_obj.supplierCantEnter(this, jumpUrl,"Please register or login your buyer account if you want making enquiries.");
                 }
                 //window.location = '/home/usr_UsrConsult_productPublishView?product_id=' + this.productinfocom.pdtId + '&backUrl=' + window.location.href
             },

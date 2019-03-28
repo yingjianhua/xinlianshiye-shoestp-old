@@ -379,9 +379,9 @@
                 this.centerDialogVisible = true;
                 this.$set(this, 'errmessage', msg);
                 var self = this;
-                setTimeout(function () {
-                    self.$set(self, 'centerDialogVisible', false)
-                }, 2000)
+                // setTimeout(function () {
+                //     self.$set(self, 'centerDialogVisible', false)
+                // }, 2000)
             },
             regTest: function (name, value) {
                 // let regEmail = /.+@[a-z0-9\.]+\.(com|cn|net)$/;
@@ -404,20 +404,19 @@
                     console.log("telphone错误")
                     this.showerrmesssage(name + " format error,Please enter the correct number, example: 0086-12345678, +86-12345678, 12345678901");
                     return false;
-                } 
+                }
                 // else if (name == 'countryCode' && !regCode.test(value)) {
                 //     console.log("countryCode错误")
                 //     this.showerrmesssage(name + " format error,Can't exceed 4 digits");
                 //     return false;
-                // } 
+                // }
                 else if (name == 'fullName' && !regName.test(value)) {
-                    console.log("fullName错误")
                     this.showerrmesssage(name + " format error,Can't enter numbers, Can't exceed 32 digits");
                     return false;
                 } else {
                     return true;
                 }
-                
+
             },
             filterCountry: function (val) {
                 // var reg = new RegExp("^" + val, "i")
@@ -441,56 +440,74 @@
                 })
             },
             submit: function () {
-                console.log("submit start")
-                for (let i in this.form) {
-                    if (!this.regTest(i, this.form[i])) {
-                        return false;
-                    }
-                }
-                console.log('form表单数据', this.form)
-                let data = {};
-                for (let i in this.form) {
-                    data[i] = this.form[i]
-                    if (Object.prototype.toString.call(data[i]) === '[object Array]') {
-                        data[i] = data[i].join(',')
-                    }
-                }
-                data.activityId = this.getquery('activityId', 1);
-                console.log('data中的数据', data)
-                let self = this;
-                axios.post('/home/o2o_O2oRegistration_apply',
-                    Qs.stringify({
-                        'view.fullName': data.fullName,
-                        'view.gender': data.gender,
-                        'view.country': data.country,
-                        'view.email': data.email,
-                        'view.telphone': "00" + data.countryCode + "+" + data.telphone,
-                        'view.footwear': data.Collections,
-                        'view.marketing': data.marketing,
-                        'view.buyertype': data.buyerType,
-                        'view.exhibitionCountry': data.exhibitionCountry,
-                        'view.remarks': data.remarks,
-                        'view.activityId': data.activityId
-                    })
-                ).then(function (res) {
-                    if (res.data.ret == 1) {
-                        self.$alert("Your application has been submitted. We will inform you of the result within 10 work days.", {
+                if(!sysConfig || !sysConfig.user){
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
+                }else{
+                    // 登录了
+                    if(sysConfig.user.user_type == 1){
+                        this.$alert("Please register or login your buyer account if you want filling the Registration Form.",{
+                            confirmButtonText: 'Ok',
+                            customClass: "my-custom-element-alert-class fs-content-18",
+                            center: true,
+                            callback: action =>{
+                                return
+                            }
+                        });
+                        return
+                    }else{
+                        console.log("submit start")
+                        for (let i in this.form) {
+                            if (!this.regTest(i, this.form[i])) {
+                                return false;
+                            }
+                        }
+                        console.log('form表单数据', this.form)
+                        let data = {};
+                        for (let i in this.form) {
+                            data[i] = this.form[i]
+                            if (Object.prototype.toString.call(data[i]) === '[object Array]') {
+                                data[i] = data[i].join(',')
+                            }
+                        }
+                        data.activityId = this.getquery('activityId', 1);
+                        console.log('data中的数据', data)
+                        let self = this;
+                        axios.post('/home/o2o_O2oRegistration_apply',
+                            Qs.stringify({
+                                'view.fullName': data.fullName,
+                                'view.gender': data.gender,
+                                'view.country': data.country,
+                                'view.email': data.email,
+                                'view.telphone': "00" + data.countryCode + "+" + data.telphone,
+                                'view.footwear': data.Collections,
+                                'view.marketing': data.marketing,
+                                'view.buyertype': data.buyerType,
+                                'view.exhibitionCountry': data.exhibitionCountry,
+                                'view.remarks': data.remarks,
+                                'view.activityId': data.activityId
+                            })
+                        ).then(function (res) {
+                            if (res.data.ret == 1) {
+                                self.$alert("Your application has been submitted. We will inform you of the result within 10 work days.", {
                                     confirmButtonText: 'OK, I know',
                                     customClass: "my-custom-element-alert-class fs-content-18",
                                     center: true,
                                     callback: action =>{
-                                         setTimeout(function () {
+                                        setTimeout(function () {
                                             window.location.href = util_function_obj.GetParamsFullUrl('backUrl=','/');
                                         }, 2000)
                                     }
                                 });
-                        // setTimeout(function () {
-                        //     window.location.reload();
-                        // }, 3000)
-                    } else {
-                        self.showerrmesssage(res.data.msg)
+                            }else if (res.data.ret == -1) {
+                                util_function_obj.alertWhenNoLogin(self);
+                                return
+                            } else {
+                                self.showerrmesssage(res.data.msg)
+                            }
+                        })
                     }
-                })
+                }
             }
         }
     })

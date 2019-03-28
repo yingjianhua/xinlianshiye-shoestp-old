@@ -246,6 +246,12 @@ public class SQL {
   public <T extends BeanMain<?, ?>> SQL ORDER_BY(IEnumFld fld, String type) {
     return mybatisSQL.ORDER_BY(fld, type);
   }
+  public <T extends BeanMain<?, ?>> SQL orderByDesc(String field) {
+    return mybatisSQL.ORDER_BY(field , "desc");
+  }
+  public <T extends BeanMain<?, ?>> SQL orderByAsc(String field) {
+    return mybatisSQL.ORDER_BY(field, "asc");
+  }
 
   public <T extends BeanMain<?, ?>> SQL GROUP_BY(IEnumFld fld) {
     return mybatisSQL.GROUP_BY(fld);
@@ -384,6 +390,10 @@ public class SQL {
     public <T extends BeanMain<?, ?>> SQL HAVING(IEnumFld fld, String conditions) {
       if (isSelect()) return super.HAVING(columnLabelWithAlias(fld) + " " + conditions);
       else return super.HAVING(columnLabel(fld) + " " + conditions);
+    }
+
+    public <T extends BeanMain<?, ?>> SQL ORDER_BY(String field, String type) {
+      return super.ORDER_BY(field + " " + type);
     }
 
     public <T extends BeanMain<?, ?>> SQL ORDER_BY(IEnumFld fld, String type) {

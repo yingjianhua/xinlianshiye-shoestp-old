@@ -11,6 +11,8 @@ import java.util.stream.Stream;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import irille.Dao.PdtProductDao;
+import irille.action.dataimport.util.StringUtil;
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
 import irille.core.sys.SysUser;
@@ -34,6 +36,7 @@ import irille.pub.validate.ValidForm;
 import irille.sellerAction.SellerAction;
 import irille.shop.pdt.PdtSize.T;
 import irille.shop.plt.PltConfigDAO;
+import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
 
 public class PdtSizeDAO {
@@ -55,17 +58,14 @@ public class PdtSizeDAO {
     if (null == limit) {
       limit = 5;
     }
-    System.out.println(name + "---" + productCategory);
     SQL sql =
         new SQL() {
           {
-            SELECT(PdtSize.class).FROM(PdtSize.class).WHERE(PdtSize.T.DELETED, "=0");
-            if (name != null) {
-              WHERE(PdtSize.T.NAME, "like ?", "%" + name + "%");
-            }
-            if (productCategory != null) {
-              WHERE(T.PRODUCT_CATEGORY, "=?", productCategory);
-            }
+            SELECT(PdtSize.class)
+                .FROM(PdtSize.class)
+                .WHERE(PdtSize.T.DELETED, "=0")
+                .WHERE(T.TYPEVER, "!=0")
+                .WHERE(PdtSize.T.SUPPLIER, " IS NULL ");
           }
         };
     Integer count = Query.sql(sql).queryCount();
@@ -77,21 +77,11 @@ public class PdtSizeDAO {
                       {
                         setId((Integer) bean.get(T.PKEY.getFld().getCodeSqlField()));
                         setName((String) bean.get(T.NAME.getFld().getCodeSqlField()));
-                        if (bean.get(T.TYPE.getFld().getCodeSqlField()) != null)
-                          setType(
-                              Integer.parseInt(
-                                  bean.get(T.TYPE.getFld().getCodeSqlField()).toString()));
-                        setTypeVer((Byte) bean.get(T.TYPEVER.getFld().getCodeSqlField()));
+                        setType((Byte) bean.get(T.TYPE.getFld().getCodeSqlField()));
                         Integer s =
                             (Integer) bean.get(T.PRODUCT_CATEGORY.getFld().getCodeSqlField());
                         if (null != s) {
                           setProductCategory(BeanBase.load(PdtCat.class, s).getName());
-                        }
-                        setCreatedTime((Date) bean.get(T.CREATE_TIME.getFld().getCodeSqlField()));
-                        Integer c =
-                            (Integer) bean.get(PdtSize.T.CREATE_BY.getFld().getCodeSqlField());
-                        if (null != c) {
-                          setCreatedBy(BeanBase.load(SysUser.class, c).getLoginName());
                         }
                       }
                     })
@@ -210,6 +200,7 @@ public class PdtSizeDAO {
       super.before();
       getB().setDeleted(OYn.YES.getLine().getKey());
       PdtSize dbBean = loadThisBeanAndLock();
+      chooseSizePdt(dbBean, 2);
       PropertyUtils.copyProperties(dbBean, getB(), PdtSize.T.DELETED);
       setB(dbBean);
     }
@@ -245,7 +236,8 @@ public class PdtSizeDAO {
     return sysSize;
   }
 
-  public static List<PdtSize> newListSummary(Language lang, Integer type) {
+  public static List<PdtSize> newListSummary(
+      UsrSupplier supplier, Language lang, Integer type, Integer cat) {
 
     /*SQL sql = new I18NSQL(lang) {{
         SELECT(T.PKEY, T.NAME, T.CREATE_BY, T.ROW_VERSION);
@@ -261,31 +253,66 @@ public class PdtSizeDAO {
         sysSize.addAll(supSize);
     }
     return sysSize;*/
+    if (null == cat) {
+      throw new WebMessageException(ReturnCode.failure, "请先选择产品分类");
+    }
+    PdtProductDao pdtProductDao = new PdtProductDao();
     SQL sql =
         new I18NSQL(lang) {
           {
             SELECT(T.PKEY, T.NAME, T.CREATE_BY, T.ROW_VERSION, T.SUPPLIER, T.TYPE);
             FROM(PdtSize.class)
                 .WHERE(T.DELETED, "=?", OYn.NO)
-                .WHERE(T.SUPPLIER, " is null ")
                 .WHERE(T.TYPEVER, " =? ", Pdt.OVer.NEW_1.getLine().getKey());
+            if (type.equals(1)) {
+              WHERE(
+                  "("
+                      + PdtSize.class.getSimpleName()
+                      + "."
+                      + PdtSize.T.SUPPLIER.getFld().getCodeSqlField()
+                      + " IS NULL OR "
+                      + PdtSize.class.getSimpleName()
+                      + "."
+                      + PdtSize.T.SUPPLIER.getFld().getCodeSqlField()
+                      + " =? )",
+                  supplier.getPkey());
+              WHERE(
+                  PdtSize.T.PRODUCT_CATEGORY,
+                  " in(" + String.join(",", pdtProductDao.getParent(cat)) + ") ");
+            } else {
+              WHERE(
+                  PdtSize.class.getSimpleName()
+                      + "."
+                      + PdtSize.T.SUPPLIER.getFld().getCodeSqlField()
+                      + " IS NULL");
+            }
           }
         };
+    //    SQL sql =
+    //        new I18NSQL(lang) {
+    //          {
+    //            SELECT(T.PKEY, T.NAME, T.CREATE_BY, T.ROW_VERSION, T.SUPPLIER, T.TYPE);
+    //            FROM(PdtSize.class)
+    //                .WHERE(T.DELETED, "=?", OYn.NO)
+    //                .WHERE(T.SUPPLIER, " is null ")
+    //                .WHERE(T.TYPEVER, " =? ", Pdt.OVer.NEW_1.getLine().getKey());
+    //          }
+    //        };
     List<PdtSize> sysSize = Query.sql(sql).queryList(PdtSize.class);
-    if (type == 1) {
-      SQL supSql =
-          new I18NSQL(lang) {
-            {
-              SELECT(T.PKEY, T.NAME, T.CREATE_BY, T.ROW_VERSION, T.SUPPLIER, T.TYPE);
-              FROM(PdtSize.class)
-                  .WHERE(T.DELETED, "=?", OYn.NO)
-                  .WHERE(T.SUPPLIER, " =? ", SellerAction.getSupplier().getPkey())
-                  .WHERE(T.TYPEVER, " =? ", Pdt.OVer.NEW_1.getLine().getKey());
-            }
-          };
-      List<PdtSize> supSize = Query.sql(supSql).queryList(PdtSize.class);
-      sysSize.addAll(supSize);
-    }
+    //    if (type == 1) {
+    //      SQL supSql =
+    //          new I18NSQL(lang) {
+    //            {
+    //              SELECT(T.PKEY, T.NAME, T.CREATE_BY, T.ROW_VERSION, T.SUPPLIER, T.TYPE);
+    //              FROM(PdtSize.class)
+    //                  .WHERE(T.DELETED, "=?", OYn.NO)
+    //                  .WHERE(T.SUPPLIER, " =? ", SellerAction.getSupplier().getPkey())
+    //                  .WHERE(T.TYPEVER, " =? ", Pdt.OVer.NEW_1.getLine().getKey());
+    //            }
+    //          };
+    //      List<PdtSize> supSize = Query.sql(supSql).queryList(PdtSize.class);
+    //      sysSize.addAll(supSize);
+    //    }
     return sysSize;
   }
 
@@ -530,6 +557,7 @@ public class PdtSizeDAO {
     size.setType(type);
     size.setTypever(Pdt.OVer.NEW_1.getLine().getKey());
     size.setRowVersion((short) 0);
+    checkNameInUse(size, name);
     translateUtil.autoTranslate(size);
     size.ins();
   }
@@ -548,6 +576,8 @@ public class PdtSizeDAO {
     size.setType(type);
     size.setName(name);
     checkName(size.getName(), true);
+    chooseSizePdt(size, 1);
+    checkNameInUse(size, size.getName());
     if (pdtCate != null) {
       PdtCat cat = Query.SELECT(PdtCat.class, pdtCate);
       if (cat != null) size.setProductCategory(pdtCate);
@@ -556,6 +586,7 @@ public class PdtSizeDAO {
     size.upd();
   }
 
+  // 校验名称合法
   public static void checkName(String name, boolean lag) {
     if (lag) {
       try {
@@ -576,6 +607,69 @@ public class PdtSizeDAO {
       if (!matcher.matches())
         throw new WebMessageException(ReturnCode.service_wrong_data, "名称只能为数字");
       if (name.length() > 5) throw new WebMessageException(ReturnCode.service_wrong_data, "长度最大为5");
+    }
+  }
+
+  // 校验该名称是否被使用
+  public static void checkNameInUse(PdtSize size, String name) {
+    SQL sql = new SQL();
+    sql.SELECT(PdtSize.class).FROM(PdtSize.class);
+    sql.WHERE(PdtSize.T.DELETED, " =? ", OYn.NO.getLine().getKey());
+    if (size.getTypever() == Pdt.OVer.ELSE.getLine().getKey()) {
+      sql.WHERE(PdtSize.T.TYPEVER, " =? ", Pdt.OVer.ELSE.getLine().getKey());
+    } else if (size.getTypever() == Pdt.OVer.NEW_1.getLine().getKey()) {
+      sql.WHERE(PdtSize.T.TYPEVER, " =? ", Pdt.OVer.NEW_1.getLine().getKey());
+    }
+    if (size.getType() != null) {
+      sql.WHERE(PdtSize.T.TYPE, " =? ", size.getType());
+    }
+    if (size.getSupplier() != null) {
+      sql.WHERE(PdtSize.T.SUPPLIER, " =? ", size.getSupplier());
+    } else {
+      sql.WHERE(PdtSize.T.SUPPLIER, " is null");
+    }
+    String str = "";
+    try {
+      str = new JSONObject(name).get(PltConfigDAO.manageLanguage().toString()).toString();
+      if (!StringUtil.hasValue(str))
+        throw new WebMessageException(ReturnCode.service_wrong_data, "当前语言下的名称不能为空");
+    } catch (JSONException e) { // TODO Auto-generated catch block
+      e.printStackTrace();
+      throw new WebMessageException(ReturnCode.service_wrong_data, "参数错误");
+    }
+    sql.WHERE(
+        "JSON_EXTRACT(PdtSize.name,?) = ?", "$." + PltConfigDAO.manageLanguage().toString(), str);
+    Integer count = Query.sql(sql).queryCount();
+    if (count > 0) {
+      String msg = "";
+      if (size.getType() == Pdt.OSizeType.USA.getLine().getKey()) {
+        msg = "美码";
+      } else if (size.getType() == Pdt.OSizeType.EU.getLine().getKey()) {
+        msg = "欧码";
+      }
+      throw new WebMessageException(ReturnCode.failure, msg + "尺码【" + str + "】已存在,请勿重复添加");
+    }
+  }
+
+  // 校验该数据是否被引用
+  public static void chooseSizePdt(PdtSize size, Integer type) {
+    SQL sql1 = new SQL();
+    sql1.SELECT(PdtProduct.T.PKEY).FROM(PdtProduct.class);
+    sql1.WHERE(
+        "size_attr like (?) or size_attr like (?) or size_attr like (?) or size_attr = ?",
+        "%," + size.getPkey(),
+        "%," + size.getPkey() + ",%",
+        size.getPkey() + ",%",
+        size.getPkey());
+    Integer count1 = Query.sql(sql1).queryCount();
+    if (count1 > 0) {
+      String strSize = "";
+      if (type == 1) {
+        strSize = "当前尺寸已被使用,无法修改";
+      } else if (type == 2) {
+        strSize = "当前尺寸已被使用,无法删除";
+      }
+      throw new WebMessageException(ReturnCode.service_gone, strSize);
     }
   }
 }

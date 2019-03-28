@@ -1,5 +1,6 @@
 #readMore {
-  background-color: #f1f2f6; }
+  background-color: #f1f2f6;
+}
   #readMore .flexSb {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -49,18 +50,26 @@
         margin: 50px 0 25px 0;
         font-size: 26px; }
       #readMore .content-box .section1 .section1-content {
-        padding: 70px 120px 45px 140px;
+        padding: 50px 100px 25px 175px;
         background-color: #ffffff;
         border: solid 1px #dddddd; }
         #readMore .content-box .section1 .section1-content ul li {
           color: #777777;
           line-height: 30px;
-          /* -webkit-box-align: start;
+          -webkit-box-align: start;
               -ms-flex-align: start;
-                  align-items: flex-start; */
+                  align-items: flex-start;
           margin-bottom: 25px; }
+        #readMore .content-box .section1 .section1-content ul li .section1-content-left{
+          -webkit-box-align: start;
+              -ms-flex-align: start;
+                  align-items: flex-start; }
+        #readMore .content-box .section1 .section1-content ul li .section1-content-right{
+          -webkit-box-align: start;
+              -ms-flex-align: start;
+                  align-items: flex-start; }
           #readMore .content-box .section1 .section1-content ul li .title {
-            width: 155px;
+            width: 140px;
             text-align: right;
             margin-right: 30px; }
           #readMore .content-box .section1 .section1-content ul li .img-list .img-item {
@@ -78,18 +87,18 @@
                     align-items: flex-start; } */
             #readMore .content-box .section1 .section1-content ul li .section1-content-left .list {
               word-wrap: break-word;
-              width: 400px; }
+              width: 440px; }
     #readMore .content-box .section2 {
       font-size: 16px; }
       #readMore .content-box .section2 h1 {
         margin: 50px 0 25px 0;
         font-size: 26px; }
       #readMore .content-box .section2 .section2-content {
-        padding: 30px 100px 30px 175px;
+        padding: 30px 100px 30px 160px;
         background-color: #ffffff;
         border: solid 1px #dddddd; }
         #readMore .content-box .section2 .section2-content .section2-ul1 {
-          width: 500px;
+          width: 486px;
           float: left;
           padding: 20px 0;
           border-right: 1px solid  #10389c; }

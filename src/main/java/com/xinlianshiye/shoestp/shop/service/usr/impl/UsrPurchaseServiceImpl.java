@@ -40,8 +40,10 @@ public class UsrPurchaseServiceImpl implements UsrPurchaseService {
     PurchaseView view = new PurchaseView();
     view.setAvatar(purchase.getIcon());
     view.setNickname(purchase.getName());
-    view.setRequestsFromConnectionsCount(
-        rFQConsultRelationDao.countNewByPurchaseGroupBySupplier(purchase.getPkey()));
+    // 这个信息跟以后买家添加好友有关 在没有具体需求出来之前 设置为 0, 代码暂时保留 是否恢复看以后业务逻辑
+    //    view.setRequestsFromConnectionsCount(
+    //        rFQConsultRelationDao.countNewByPurchaseGroupBySupplier(purchase.getPkey()));
+    view.setRequestsFromConnectionsCount(0);
     view.setUnreadMessagersCount(
         rFQConsultMessageDao.countPurchaseUnreadByRelation_PurchaseGroupByRelation(
             purchase.getPkey()));
@@ -55,6 +57,8 @@ public class UsrPurchaseServiceImpl implements UsrPurchaseService {
     checkPassword(main, password);
     // 校验邮箱地址格式的有效性
     validEmail(email);
+    // 忽略大小写
+    email = email.toLowerCase();
     if (usrPurchaseDao.findByLoginNameOrEmail(email).isPresent()) {
       // 用户名或邮箱地址已被使用
       throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.mail_exists, language));

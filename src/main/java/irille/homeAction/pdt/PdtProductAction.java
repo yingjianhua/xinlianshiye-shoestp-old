@@ -16,7 +16,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
+import com.xinlianshiye.shoestp.shop.service.pdt.PdtProductService;
 import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultMessageService;
+import com.xinlianshiye.shoestp.shop.view.pdt.ProdSearchView;
 
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.Service.Pdt.IPdtProductService;
@@ -68,6 +70,8 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
   private static final PdtCommentDAO.pageSelect commentPageSelect = new PdtCommentDAO.pageSelect();
   @Inject private ObjectMapper objectMapper;
   @Inject private RFQConsultMessageService rFQConsultMessageService;
+
+  @Inject private PdtProductService productService;
 
   @Inject private IPdtProductService pdtProduct;
 
@@ -183,6 +187,8 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
 
   private String o2oAddress;
 
+  private ProdSearchView search;
+
   /**
    * * 获取商品列表
    *
@@ -232,6 +238,8 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
               o2oAddress,
               getStart(),
               getLimit()));
+    } else if (v.equals(4)) {
+      write(productService.list(getPurchase(), search, getStart(), getLimit(), curLanguage()));
     } else {
       write(
           objectMapper.writeValueAsString(

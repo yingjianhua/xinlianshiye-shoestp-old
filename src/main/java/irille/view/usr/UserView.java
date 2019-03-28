@@ -16,6 +16,9 @@ public class UserView {
   private String loginName;
   private UsrSupplier supplier;
   private UsrPurchase purchase;
+  //  不用每次查询数据库
+  private Integer supplierId;
+  private Integer purchaseId;
 
   private int user_type = 0;
 

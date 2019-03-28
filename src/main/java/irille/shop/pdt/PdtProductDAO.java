@@ -10,8 +10,6 @@ import java.util.Map;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
 import com.xinlianshiye.shoestp.plat.service.pm.imp.PMMessageServiceImp;
 
@@ -122,17 +120,17 @@ public class PdtProductDAO {
    *
    * <p>弃审同时下架产品
    */
-  public static PdtProduct verify(boolean verify, Integer pkey) {
-    PdtProduct bean = BeanBase.load(PdtProduct.class, pkey);
-    bean.stIsVerify(verify);
-
-    if (!verify) {
-      bean.stState(OState.OFF);
-    }
-
-    bean.upd();
-    return bean;
-  }
+  //  public static PdtProduct verify(boolean verify, Integer pkey) {
+  //    PdtProduct bean = BeanBase.load(PdtProduct.class, pkey);
+  //    bean.stIsVerify(verify);
+  //
+  //    if (!verify) {
+  //      bean.stState(OState.OFF);
+  //    }
+  //
+  //    bean.upd();
+  //    return bean;
+  //  }
 
   private static final UsrCartDAO.Query cartQuery = new UsrCartDAO.Query();
 
@@ -203,23 +201,10 @@ public class PdtProductDAO {
       //			super.before();
       PdtProduct dbBean = new PdtProduct().init();
       dbBean.setSupplier(SellerAction.getSupplier().getPkey());
-      //            dbBean.setSupplier(262);
       dbBean.setMemberLevel(null);
       TranslateFilter translateFilter = new TranslateFilter();
-      translateFilter.setLanguageList(new ArrayList<>());
-      JsonObject jsonObject = new JsonParser().parse(getB().getName()).getAsJsonObject();
-      translateFilter.setMode(0);
-      jsonObject
-          .entrySet()
-          .forEach(
-              stringJsonElementEntry -> {
-                // 如果不相等  添加到清单
-                if (stringJsonElementEntry.getValue().getAsString().length() > 0) {
-                  translateFilter
-                      .getLanguageList()
-                      .add(FldLanguage.Language.valueOf(stringJsonElementEntry.getKey()));
-                }
-              });
+      translateUtil.newAutoTranslate(
+          getB(), translateUtil.buildFilter(getB().getName(), FldLanguage.Language.en));
       PropertyUtils.copyProperties(
           dbBean,
           getB(),
@@ -252,100 +237,13 @@ public class PdtProductDAO {
           T.SEO_DESCRIPTION,
           T.SEO_KEYWORD,
           T.SEO_TITLE,
-          T.PRODUCT_TYPE);
+          T.PRODUCT_TYPE,
+          T.TARGETED_MARKET);
       translateUtil.newAutoTranslate(dbBean, translateFilter);
       getB().setUpdateTime(Env.getTranBeginTime());
       dbBean.setDescribeModule1(getB().getDescribeModule1());
       dbBean.setDescribeModule2(getB().getDescribeModule2());
       dbBean.setDescribeModule3(getB().getDescribeModule3());
-      setB(dbBean);
-    }
-
-    @Override
-    public void valid() {}
-
-    @Override
-    public void after() {
-      super.after();
-      for (PdtSpec line : getLines()) {
-        translateUtil.autoTranslate(line);
-      }
-      insLine(getB(), getLines(), PdtSpec.T.PRODUCT.getFld());
-    }
-  }
-
-  /**
-   * 商家发布产品
-   *
-   * @author yingjianhua
-   */
-  public static class ExcelLoad extends IduIns<ExcelLoad, PdtProduct> {
-
-    private List<PdtSpec> _lines;
-
-    public List<PdtSpec> getLines() {
-      return _lines;
-    }
-
-    public void setLines(List<PdtSpec> _lines) {
-      this._lines = _lines;
-    }
-
-    @Override
-    public void before() {
-      //			super.before();
-      PdtProduct dbBean = new PdtProduct().init();
-      //            dbBean.setSupplier(SellerAction.getSupplier().getPkey());
-      dbBean.setSupplier(262);
-      dbBean.setMemberLevel(null);
-      TranslateFilter translateFilter = new TranslateFilter();
-      translateFilter.setLanguageList(new ArrayList<>());
-      JsonObject jsonObject = new JsonParser().parse(getB().getName()).getAsJsonObject();
-      translateFilter.setMode(0);
-      translateUtil.addFilterToGlobalFilter(PdtSpec.class, PdtSpec.T.KEY_NAME);
-      jsonObject
-          .entrySet()
-          .forEach(
-              stringJsonElementEntry -> {
-                // 如果不相等  添加到清单
-                if (stringJsonElementEntry.getValue().getAsString().length() > 0) {
-                  translateFilter
-                      .getLanguageList()
-                      .add(FldLanguage.Language.valueOf(stringJsonElementEntry.getKey()));
-                }
-              });
-      PropertyUtils.copyProperties(
-          dbBean,
-          getB(),
-          T.NAME, // 名字
-          T.CATEGORY, // 产品类目
-          T.CATEGORY_DIY, // 店铺-产品类目
-          T.CODE, // 编号
-          T.SKU, // sku
-          T.PICTURE, // 产品图片
-          T.NORM_ATTR, // 属性
-          T.CUR_PRICE, // 价格
-          T.MIN_OQ, // 起订量
-          T.MAX_OQ, // 最大购买量
-          T.STOCK, // 库存
-          T.WARN_STOCK, // 警告库存
-          T.STATE, // 销售状态上架下架
-          T.SOLD_IN_TIME, // 定时上架
-          T.SOLD_TIME_B, // 上架时间开始
-          T.SOLD_TIME_E, // 上架时间结束
-          T.SIZE_ATTR, // 规格属性    PdtSize的pkeys
-          T.COLOR_ATTR, // 颜色属性   PdtColor的pkeys
-          T.IS_FREE_SHIPPING, // 免运费
-          T.WEIGHT, // 重量
-          T.LENGTH, // 长
-          T.WIDTH, // 宽
-          T.HEIGHT, // 高
-          T.BRIEF_DESCRIPTION, // 简短描述
-          T.DESCRIPTION // 详细介绍
-          );
-      translateUtil.newAutoTranslate(dbBean, translateFilter);
-
-      getB().setUpdateTime(Env.getTranBeginTime());
       setB(dbBean);
     }
 
@@ -376,8 +274,6 @@ public class PdtProductDAO {
 
     @Override
     public void before() {
-
-      //			super.before();
       PdtProduct dbBean = loadThisBeanAndLock();
       PropertyUtils.copyProperties(
           dbBean,
@@ -408,20 +304,13 @@ public class PdtProductDAO {
           T.BRIEF_DESCRIPTION, // 简短描述
           T.DESCRIPTION // 详细介绍
           );
-
-      //			dbBean.setSupplier(SellerAction.getSupplier().getPkey());
-      //			dbBean.setMemberLevel(null);
       try {
         dbBean.setName(dbBean.getName(HomeAction.curLanguage())); // 转
         dbBean.setDescription(dbBean.getDescription(HomeAction.curLanguage())); // 转
       } catch (Exception e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
       }
       getB().setUpdateTime(Env.getTranBeginTime());
-      //            translateUtil.autoTranslateSaveOrUpdate(dbBean, true, false, null);
-      //			updLine(getB(), getLines(), PdtSpec.T.PRODUCT.getFld());
-      //			getB().upd();
     }
 
     public void updateFavorite(int id) {
@@ -518,13 +407,8 @@ public class PdtProductDAO {
           T.BRIEF_DESCRIPTION, // 简短描述
           T.DESCRIPTION // 详细介绍
           );
-
-      //			dbBean.setSupplier(SellerAction.getSupplier().getPkey());
-      //			dbBean.setMemberLevel(null);
       setB(dbBean);
       getB().setUpdateTime(Env.getTranBeginTime());
-      //			updLine(getB(), getLines(), PdtSpec.T.PRODUCT.getFld());
-      //			getB().upd();
     }
   }
 
@@ -548,43 +432,9 @@ public class PdtProductDAO {
     @Override
     public void before() {
       PdtProduct dbBean = load(getB().getPkey());
-      TranslateFilter translateFilter = new TranslateFilter();
-      translateFilter.setLanguageList(new ArrayList<>());
-      JsonObject dbJson = new JsonParser().parse(dbBean.getName()).getAsJsonObject();
-      JsonObject jsonObject = new JsonParser().parse(getB().getName()).getAsJsonObject();
-      jsonObject.addProperty(
-          FldLanguage.Language.en.name(),
-          SEOUtils.firstUpperCase(jsonObject.get(FldLanguage.Language.en.name()).getAsString()));
-      if (dbJson.get(FldLanguage.Language.en.name()).getAsString().hashCode()
-          != jsonObject.get(FldLanguage.Language.en.name()).getAsString().hashCode()) {
-        translateFilter.setMode(0);
-        // 基准发生修改 用黑名单模式,修改的字段不翻译
-        jsonObject
-            .entrySet()
-            .forEach(
-                stringJsonElementEntry -> {
-                  // 如果不相等  添加到清单
-                  if (dbJson.get(stringJsonElementEntry.getKey()).getAsString().hashCode()
-                      != (stringJsonElementEntry.getValue().getAsString()).hashCode()) {
-                    translateFilter
-                        .getLanguageList()
-                        .add(FldLanguage.Language.valueOf(stringJsonElementEntry.getKey()));
-                  }
-                });
-      } else {
-        translateFilter.setMode(2);
-        jsonObject
-            .entrySet()
-            .forEach(
-                stringJsonElementEntry -> {
-                  if (stringJsonElementEntry.getValue().getAsString().length() < 1) {
-                    translateFilter
-                        .getLanguageList()
-                        .add(FldLanguage.Language.valueOf(stringJsonElementEntry.getKey()));
-                  }
-                });
-      }
-
+      translateUtil.newAutoTranslate(
+          getB(),
+          translateUtil.buildFilter(dbBean.getName(), getB().getName(), FldLanguage.Language.en));
       PropertyUtils.copyProperties(
           dbBean,
           getB(),
@@ -617,8 +467,8 @@ public class PdtProductDAO {
           T.SEO_DESCRIPTION,
           T.SEO_KEYWORD,
           T.SEO_TITLE,
-          T.PRODUCT_TYPE);
-      translateUtil.newAutoTranslate(dbBean, translateFilter);
+          T.PRODUCT_TYPE,
+          T.TARGETED_MARKET);
       dbBean.setDescribeModule1(getB().getDescribeModule1());
       dbBean.setDescribeModule2(getB().getDescribeModule2());
       dbBean.setDescribeModule3(getB().getDescribeModule3());
@@ -961,11 +811,12 @@ public class PdtProductDAO {
                           }
                         } else {
                           setIsO2O("普通商品");
-                          if ((Byte) o.get("isVerify") == 1) {
-                            setIsVerify((byte) 1);
-                          } else {
-                            setIsVerify((byte) 2);
-                          }
+                          setIsVerify((Byte) o.get("isVerify"));
+                          //                          if ((Byte) o.get("isVerify") == 1) {
+                          //                            setIsVerify((byte) 1);
+                          //                          } else if((Byte) o.get("isVerify") == 2){
+                          //                            setIsVerify((byte) 2);
+                          //                          }
                           setState((Byte) o.get("state"));
                         }
                         setPkey((Integer) o.get("pkey"));
@@ -979,6 +830,7 @@ public class PdtProductDAO {
                         setMinOq((Integer) o.get("minOq"));
                         setSupplierName((String) o.get("supplierName"));
                         setSoldTimeB((Date) o.get("soldTimeB"));
+                        setRewrite(SEOUtils.getPdtProductTitle(getPkey(), getPdtName()));
                       }
                     })
             .collect(Collectors.toList());
@@ -1020,9 +872,24 @@ public class PdtProductDAO {
       }
       o2oPdt.upd();
     } else {
+      if (!pp.gtIsVerify().equals(Pdt.OAppr._DEFAULT)) {
+        throw new WebMessageException(ReturnCode.failure, "请勿重复审核");
+      }
       pp.setIsVerify(status);
-      if (status == 0) {
+      if (status.equals(Pdt.OAppr.Failed.getLine().getKey())) {
+        if (null == message || (null != message && "".equals(message.trim()))) {
+          throw new WebMessageException(ReturnCode.failure, "请输入拒绝理由");
+        }
         pp.setTab3(message);
+      } else if (status.equals(Pdt.OAppr.PASS.getLine().getKey())) {
+        if (pp.gtSoldInTime()) {
+          pp.stState(Pdt.OState.ON);
+        } else {
+          Date soldTime = pp.getSoldTimeB();
+          if (soldTime.before(new Date())) {
+            pp.stState(Pdt.OState.ON);
+          }
+        }
       }
       pp.upd();
     }
@@ -1067,12 +934,90 @@ public class PdtProductDAO {
       }
       o2oPdt.upd();
     } else {
-      pp.stIsVerify(false);
+      //      pp.stIsVerify(false);
       pp.setState(status);
       if (status == 0) {
         pp.setTab3(message);
       }
       pp.upd();
     }
+  }
+
+  /** @Author wilson Zhang @Description 商家首页获取当前供应商的产品总数 @Date 16:28 2019/3/27 */
+  public Integer productCount(Integer supplierpkey) {
+    SQL pdt =
+        new SQL() {
+          {
+            SELECT(PdtProduct.T.PKEY)
+                .FROM(PdtProduct.class)
+                .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierpkey);
+          }
+        };
+    return irille.pub.bean.Query.sql(pdt).queryCount();
+  }
+  /** @Author wilson Zhang @Description 商家首页获取当前供应商的私人展厅产品总数 @Date 16:28 2019/3/27 */
+  public Integer privateproductCount(Integer supplierpkey) {
+    SQL pdt =
+        new SQL() {
+          {
+            SELECT(PdtProduct.T.PKEY)
+                .FROM(PdtProduct.class)
+                .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierpkey)
+                .WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.PrivateExpo);
+          }
+        };
+    return irille.pub.bean.Query.sql(pdt).queryCount();
+  }
+  /** @Author wilson Zhang @Description 商家首页获取当前供应商的仓库产品总数 @Date 16:28 2019/3/27 */
+  public Integer wareHouseProductCount(Integer supplierpkey) {
+    SQL pdt =
+        new SQL() {
+          {
+            SELECT(PdtProduct.T.PKEY)
+                .FROM(PdtProduct.class)
+                .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierpkey)
+                .WHERE(PdtProduct.T.STATE, "=?", OState.OFF);
+          }
+        };
+    return irille.pub.bean.Query.sql(pdt).queryCount();
+  }
+  /** @Author wilson Zhang @Description 商家首页获取当前供应商的产品待审核总数 @Date 16:28 2019/3/27 */
+  public Integer verifyProductCount(Integer supplierpkey) {
+    SQL pdt =
+        new SQL() {
+          {
+            SELECT(PdtProduct.T.PKEY)
+                .FROM(PdtProduct.class)
+                .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierpkey)
+                .WHERE(PdtProduct.T.IS_VERIFY, "=?", Pdt.OAppr._DEFAULT.getLine().getKey());
+          }
+        };
+    return irille.pub.bean.Query.sql(pdt).queryCount();
+  }
+  /** @auther liyichao @Description 商家首页获取当前供应商的审核失败产品总数 */
+  public Integer failedProductCount(Integer supplier) {
+    SQL sql =
+        new SQL() {
+          {
+            SELECT(PdtProduct.T.PKEY)
+                .FROM(PdtProduct.class)
+                .WHERE(PdtProduct.T.SUPPLIER, " =? ", supplier)
+                .WHERE(PdtProduct.T.IS_VERIFY, " =? ", Pdt.OAppr.Failed.getLine().getKey());
+          }
+        };
+    return irille.pub.bean.Query.sql(sql).queryCount();
+  }
+  /** @auther liyichao @Description 商家首页获取当前供应商的产品回收站总数 */
+  public Integer warehouseProductCount(Integer supplier) {
+    SQL pdt =
+        new SQL() {
+          {
+            SELECT(PdtProduct.T.PKEY)
+                .FROM(PdtProduct.class)
+                .WHERE(PdtProduct.T.SUPPLIER, "=?", supplier)
+                .WHERE(PdtProduct.T.STATE, "=?", OState.MERCHANTDEL);
+          }
+        };
+    return irille.pub.bean.Query.sql(pdt).queryCount();
   }
 }

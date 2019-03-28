@@ -17,6 +17,7 @@ import irille.pub.idu.IduUpd;
 import irille.pub.svr.Env;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.PdtAttrLine.T;
+import irille.shop.plt.PltConfigDAO;
 import irille.view.Page;
 
 public class PdtAttrLineDAO {
@@ -81,7 +82,10 @@ public class PdtAttrLineDAO {
     public void before() {
       getB().setDeleted(OYn.NO.getLine().getKey());
       getB().setCreateTime(Env.getTranBeginTime());
-      setB(translateUtil.autoTranslate(getB()));
+      setB(
+          translateUtil.newAutoTranslate(
+              getB(), translateUtil.buildFilter(getB().getName(), PltConfigDAO.manageLanguage())));
+
       super.before();
     }
   }
@@ -96,10 +100,12 @@ public class PdtAttrLineDAO {
     @Override
     public void before() {
       PdtAttrLine dbBean = loadThisBeanAndLock();
-      //            getB().setCreateTime(Env.getSystemTime());//自动生成修改时间
       PropertyUtils.copyPropertiesWithout(
           dbBean,
-          translateUtil.autoTranslateByManageLanguage(getB(), true),
+          translateUtil.newAutoTranslate(
+              getB(),
+              translateUtil.buildFilter(
+                  dbBean.getName(), getB().getName(), PltConfigDAO.manageLanguage())),
           PdtAttrLine.T.PKEY,
           PdtAttrLine.T.CREATE_BY,
           PdtAttrLine.T.CREATE_TIME,

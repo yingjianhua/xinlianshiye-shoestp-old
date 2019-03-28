@@ -58,6 +58,7 @@ public enum ReturnCode {
 	origin_password_wrong(249), // 原密码错误
 	no_province(250), // 省份记录不存在
 	send_ofen(251), // 发送邮件过于频繁
+	service_phone_exists(252), // 手机号已注册
 	third_unknow(300), // 第三方库异常
 
 	db_unknow(400), // 数据库异常

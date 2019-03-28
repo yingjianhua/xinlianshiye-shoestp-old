@@ -28,16 +28,18 @@ public class PdtCatAction extends ActionBase<PdtCat> {
 
   @Getter @Setter private Integer enabled; // 查询是否启用
   @Getter @Setter private String title; // 查询标题
-  @Getter @Setter private String name;
   @Getter @Setter private Integer subjectionCat;
   @Getter @Setter private String seoDescription;
   @Getter @Setter private String seoKeyword;
   @Getter @Setter private String seoName;
   @Getter @Setter private Integer id;
+  @Getter @Setter private String name;
 
   @Inject private PdtCatDAO pdtCatDAO;
 
   @Inject private IPdtCatManageService iPdtCatManageService;
+  @Inject private PdtCatDAO.enable phenable;
+  @Inject private PdtCatDAO.Del cp;
 
   /** @Description: 查询所有分类 *@anthor kouhanyang */
   public void pdtCatlist() throws IOException {
@@ -46,7 +48,6 @@ public class PdtCatAction extends ActionBase<PdtCat> {
 
   /** @Description: 删除分类 *@anthor kouhanyang */
   public void del() throws IOException {
-    PdtCatDAO.Del cp = new PdtCatDAO.Del();
     cp.setBKey(getBean().getPkey());
     cp.commit();
     write();
@@ -54,9 +55,8 @@ public class PdtCatAction extends ActionBase<PdtCat> {
 
   /** @Description: 修改是否启用 *@anthor kouhanyang */
   public void countryenable() throws Exception {
-    PdtCatDAO.enable ph = new PdtCatDAO.enable();
-    ph.setB(getBean());
-    ph.commit();
+    phenable.setB(getBean());
+    phenable.commit();
     write();
   }
 
@@ -79,4 +79,34 @@ public class PdtCatAction extends ActionBase<PdtCat> {
   public void pList() throws IOException {
     write(iPdtCatManageService.pList());
   }
+
+  /**
+   * 获取三级分类(3.1.1)
+   * @author: lingjian
+   * @Date: 2019/3/27 9:56
+   */
+  public void findCategory() throws IOException {
+    write(iPdtCatManageService.findCategory(0));
+  }
+
+  /**
+   * 添加分类(3.1.1)
+   * @throws Exception
+   */
+  public void pdtCatIns() throws Exception {
+    LoginUserMsg loginUserMsg = (LoginUserMsg) this.session.get(LOGIN);
+    Integer createBy = loginUserMsg.get_user().getPkey();
+    PdtCatDAO.pdtCatIns(getBean(),createBy);
+    write();
+  }
+
+  /**
+   * 修改分类(3.1.1)
+   * @throws IOException
+   */
+  public void pdtCatUpd() throws Exception {
+    PdtCatDAO.pdtCatUpd(getBean());
+    write();
+  }
+
 }
