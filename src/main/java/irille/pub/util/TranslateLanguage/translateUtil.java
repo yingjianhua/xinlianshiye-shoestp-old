@@ -641,10 +641,8 @@ public class translateUtil {
       return null;
     }
     JsonObject ex = null;
-    try {
-      if (value.charAt(0) == '{' && value.charAt(value.length() - 1) == '}')
-        ex = (JsonObject) jsonParser.parse(value);
-    } catch (ClassCastException e) {
+    if (value.charAt(0) == '{' && value.charAt(value.length() - 1) == '}') {
+      ex = jsonParser.parse(value).getAsJsonObject();
     }
     String baseValue = value;
     List<FldLanguage.Language> languages =
@@ -719,6 +717,10 @@ public class translateUtil {
       translateBean.setText(
           getBaseValue(
               getValue, translateFilter == null ? null : translateFilter.getBaseLanguage()));
+      if (translateBean.getText() == null || translateBean.getText().length() < 1) {
+        jsonObject.addProperty(language.toString(), "");
+        continue;
+      }
       translateBean.setTargetLanguage(language.toString());
       try {
         translateBean = tranlateCache.get(translateBean);
@@ -842,8 +844,8 @@ public class translateUtil {
   public static String toSaveJson(String saveJson, FldLanguage.Language language) {
     JsonObject jsonObject = null;
     JsonObject result = new JsonObject();
-    if (saveJson != null) {
-      if (saveJson.indexOf("{") == 0 && saveJson.indexOf("}") == saveJson.length()) {
+    if (saveJson != null && saveJson.length() > 0) {
+      if (saveJson.indexOf("{") == 0 && saveJson.indexOf("}") == saveJson.length() - 1) {
         jsonObject = new JsonParser().parse(saveJson).getAsJsonObject();
       }
       for (Language value : Language.values()) {
