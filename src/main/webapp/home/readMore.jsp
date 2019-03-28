@@ -212,8 +212,7 @@
                 },
                 }
             
-        },
-        mounted() {
+        }, mounted() {
             var self = this;
             self.rfqPkey = self.getQueryString("rfqPkey");
             axios.get('/home/rfq_RFQConsult_getRFQDetails', {
