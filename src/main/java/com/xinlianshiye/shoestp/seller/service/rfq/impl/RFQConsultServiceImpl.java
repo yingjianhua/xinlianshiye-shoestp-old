@@ -320,6 +320,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 
     return new Page<RFQConsultRelationView>(result, start, limit, query.queryCount()) {
       private Map<Byte, Integer> statusCount = new HashMap<>();
+      private Integer countInRecycleBin = 0;
 
       public Map<Byte, Integer> getStatusCount() {
         return statusCount;
@@ -327,6 +328,14 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 
       public void setStatusCount(Map<Byte, Integer> statusCount) {
         this.statusCount = statusCount;
+      }
+
+      public Integer getCountInRecycleBin() {
+        return countInRecycleBin;
+      }
+
+      public void setCountInRecycleBin(Integer countInRecycleBin) {
+        this.countInRecycleBin = countInRecycleBin;
       }
 
       {
@@ -347,6 +356,13 @@ public class RFQConsultServiceImpl implements RFQConsultService {
                       GetValue.get(map, RFQConsultRelation.T.READ_STATUS, Byte.class, null),
                       GetValue.get(map, "count", Integer.class, 0));
                 });
+
+        //统计在回收站里有几个询价单
+        countInRecycleBin =
+            Query.selectFrom(RFQConsultRelation.class)
+                .WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supplier.getPkey())
+                .WHERE(RFQConsultRelation.T.IN_RECYCLE_BIN, "=?", true)
+                .queryCount();
       }
     };
   }
