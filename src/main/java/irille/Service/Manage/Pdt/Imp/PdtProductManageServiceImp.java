@@ -356,41 +356,62 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
     // 设置上架 --不保存仓库 判断上架时间是否小于当前时间 如果小于设置为立即上架 审核通过 定时器解除
     // 立即上架 --保存到仓库 审核不通过 手动解除
     // 立即上架 --不保存到仓库 审核通过
-    if (pdtProduct.gtSoldInTime() && pdtProductSaveView.getWarehouse() == 0) {
-      if (pdtProductSaveView.getPutawayDate().compareTo(new Date()) == -1) {
-        pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
-        pdtProduct.setSoldTimeB(Env.getSystemTime());
-      } else {
-        pdtProduct.setSoldInTime(OYn.YES.getLine().getKey());
-        pdtProduct.setSoldTimeB(pdtProductSaveView.getPutawayDate());
-      }
-
-    } else if (pdtProduct.gtSoldInTime() && pdtProductSaveView.getWarehouse() != 0) {
-      if (pdtProductSaveView.getPutawayDate().compareTo(new Date()) == -1) {
-        pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
-        pdtProduct.setSoldTimeB(Env.getSystemTime());
-      } else {
-        pdtProduct.setSoldInTime(OYn.YES.getLine().getKey());
-        pdtProduct.setSoldTimeB(pdtProductSaveView.getPutawayDate());
-      }
-      //      pdtProduct.setState(Pdt.OState.ON.getLine().getKey());
-      //      pdtProduct.setIsVerify(Sys.OYn.YES.getLine().getKey());
-    } else if (!pdtProduct.gtSoldInTime() && pdtProductSaveView.getWarehouse() == 0) {
+    // TODO 待测试
+    if (pdtProductSaveView.getWarehouse().equals(0)) {
+      // 产品保存到仓库
       pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
-      pdtProduct.setSoldTimeB(Env.getSystemTime());
-      //      pdtProduct.setState(Pdt.OState.OFF.getLine().getKey());
-      //      pdtProduct.setIsVerify(Sys.OYn.NO.getLine().getKey());
     } else {
-      pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
-      pdtProduct.setSoldTimeB(Env.getSystemTime());
-      //      pdtProduct.setState(Pdt.OState.ON.getLine().getKey());
-      //      if (null != pdtProduct.getPkey()) {
-      //        PdtProduct product = BeanBase.load(PdtProduct.class, pdtProduct.getPkey());
-      //        pdtProduct.setIsVerify(product.getIsVerify());
-      //      } else {
-      //      pdtProduct.setIsVerify(Sys.OYn.YES.getLine().getKey());
-      //      }
+      // 产品直接发布
+      if (pdtProduct.gtSoldInTime()) {
+        // 立即上架
+        pdtProduct.setSoldInTime(OYn.YES.getLine().getKey());
+        pdtProduct.setSoldTimeB(Env.getSystemTime());
+      } else {
+        // 定时上架
+        if (pdtProductSaveView.getPutawayDate().compareTo(new Date()) == -1) {
+          pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
+          pdtProduct.setSoldTimeB(Env.getSystemTime());
+        } else {
+          pdtProduct.setSoldInTime(OYn.YES.getLine().getKey());
+          pdtProduct.setSoldTimeB(pdtProductSaveView.getPutawayDate());
+        }
+      }
     }
+    //    if (pdtProduct.gtSoldInTime() && pdtProductSaveView.getWarehouse() == 0) {
+    //      if (pdtProductSaveView.getPutawayDate().compareTo(new Date()) == -1) {
+    //        pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
+    //        pdtProduct.setSoldTimeB(Env.getSystemTime());
+    //      } else {
+    //        pdtProduct.setSoldInTime(OYn.YES.getLine().getKey());
+    //        pdtProduct.setSoldTimeB(pdtProductSaveView.getPutawayDate());
+    //      }
+    //
+    //    } else if (pdtProduct.gtSoldInTime() && pdtProductSaveView.getWarehouse() != 0) {
+    //      if (pdtProductSaveView.getPutawayDate().compareTo(new Date()) == -1) {
+    //        pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
+    //        pdtProduct.setSoldTimeB(Env.getSystemTime());
+    //      } else {
+    //        pdtProduct.setSoldInTime(OYn.YES.getLine().getKey());
+    //        pdtProduct.setSoldTimeB(pdtProductSaveView.getPutawayDate());
+    //      }
+    //      pdtProduct.setState(Pdt.OState.ON.getLine().getKey());
+    //      pdtProduct.setIsVerify(Sys.OYn.YES.getLine().getKey());
+    //    } else if (!pdtProduct.gtSoldInTime() && pdtProductSaveView.getWarehouse() == 0) {
+    //      pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
+    //      pdtProduct.setSoldTimeB(Env.getSystemTime());
+    //      //      pdtProduct.setState(Pdt.OState.OFF.getLine().getKey());
+    //      //      pdtProduct.setIsVerify(Sys.OYn.NO.getLine().getKey());
+    //    } else {
+    //      pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
+    //      pdtProduct.setSoldTimeB(Env.getSystemTime());
+    //      pdtProduct.setState(Pdt.OState.ON.getLine().getKey());
+    //      if (null != pdtProduct.getPkey()) {
+    //        PdtProduct product = BeanBase.load(PdtProduct.class, pdtProduct.getPkey());
+    //        pdtProduct.setIsVerify(product.getIsVerify());
+    //      } else {
+    //      pdtProduct.setIsVerify(Sys.OYn.YES.getLine().getKey());
+    //      }
+    //    }
     pdtProduct.setState(Pdt.OState.OFF.getLine().getKey());
     pdtProduct.setIsVerify(Pdt.OAppr._DEFAULT.getLine().getKey());
     pdtProduct.setIsNew((byte) 1);
