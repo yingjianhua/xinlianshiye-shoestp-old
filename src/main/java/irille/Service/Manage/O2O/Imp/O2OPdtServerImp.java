@@ -237,6 +237,7 @@ public class O2OPdtServerImp implements IO2OPdtServer {
                     v.setUpdateTime(
                         GetValue.get(bean, O2O_Product.T.UPDATED_TIME, Date.class, null));
                     v.setMessage(GetValue.get(bean, O2O_Product.T.MESSAGE, String.class, null));
+                    v.setTimes(GetValue.get(bean, O2O_Product.T.TIMES, Integer.class, 0));
                     return v;
                   })
               .collect(Collectors.toList()));
@@ -324,6 +325,9 @@ public class O2OPdtServerImp implements IO2OPdtServer {
     if (o2O_product.gtStatus().equals(O2O_ProductStatus.WAITOFF)) {
       throw new WebMessageException(ReturnCode.failure, "已申请下架,请勿重复提交");
     }
+    if (o2O_product.getTimes().compareTo(3) >= 0) {
+      throw new WebMessageException(ReturnCode.failure, "已申请下架超过3次,不可下架");
+    }
     if (null == o2O_product) {
       throw LOG.err("noEntity", "o2o商品不存在");
     }
@@ -335,6 +339,7 @@ public class O2OPdtServerImp implements IO2OPdtServer {
     }
     if (status.equals(O2O_ProductStatus.OFF)) {
       o2O_product.setMessage("处理中");
+      o2O_product.setTimes(o2O_product.getTimes() + 1);
       o2O_product.setStatus(O2O_ProductStatus.WAITOFF.getLine().getKey());
       o2O_product.setRemark(reason);
     } else if (status.equals(O2O_ProductStatus.ON)) {
@@ -355,29 +360,9 @@ public class O2OPdtServerImp implements IO2OPdtServer {
   }
 
   public static void main(String[] args) {
-    List<Integer> is = Arrays.asList(1, 2, 2, 3, 4, 3);
-    List<Integer> bb = new ArrayList<>();
-    List<Integer> cc =
-        is.stream()
-            .filter(
-                new Predicate<Integer>() {
-
-                  @Override
-                  public boolean test(Integer t) {
-                    if (bb.indexOf(t) != -1) {
-                      return false;
-                    } else {
-                      return true;
-                    }
-                  }
-                })
-            .map(
-                bean -> {
-                  bb.add(bean);
-                  return bean;
-                })
-            .collect(Collectors.toList());
-    System.out.println(bb);
+    Integer a = 4;
+    Integer v = 3;
+    System.out.println(a.compareTo(v));
   }
 
   @Override

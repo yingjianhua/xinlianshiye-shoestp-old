@@ -24,6 +24,7 @@ public class O2OActivityPdtInfoView implements BaseView {
   private String remark;
   private String supplier;
   private String message;
+  private int times;
 
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
   private Date updateTime;
