@@ -82,6 +82,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     IS_AUTH(TB.crt(Usr.OIsAuth.DEFAULT)), // 认证 true false
     SORT(SYS.SORT__INT), // 排序： 默认，最后，1-100
     SEO_TITLE(SYS.MUILTI_LANGUAGE_NULL, "店铺关键字"), // 客人能通过这些字搜索到店铺，多个关键字用空格分开
+    SEO_KEYWORD(SYS.MUILTI_LANGUAGE_NULL, "店铺关键字"), // 店铺SEO关键词
     SEO_CONTENT(SYS.MUILTI_LANGUAGE_NULL, "搜索引擎说明"), // 客人能通过这些字描述决定进不进店，多个描述字用空格分开
     AUTH_TIME(SYS.TIME__NULL, "认证时间"), // 认证时间
     SHOW_NAME(SYS.MUILTI_LANGUAGE_NULL, "网站显示名称"), // 网站显示名称
@@ -146,12 +147,12 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     AD_PHOTO_LINK(
         SYS.MUILTI_LANGUAGE_NULL,
         "广告连接"), // 广告连接 外链必须使用完整域名，即包含http://或https://，例： https://www.google.com。内链不需加域名，例:
-                 // /products/
+    // /products/
     COMPANY_PHOTO(SYS.MUILTI_LANGUAGE_NULL, "企业图片"), // 企业图片 图片大小建议: 780x480像素
     COMPANY_PHOTO_LINK(
         SYS.MUILTI_LANGUAGE_NULL,
         "企业图片连接"), // 企业图片连接 外链必须使用完整域名，即包含http://或https://，例： https://www.google.com。内链不需加域名，例:
-                   // /products/
+    // /products/
 
     /** 个性装修 选择模板 */
     HOME_PAGE_DIY(SYS.MUILTI_LANGUAGE_NULL, "首页个性装修"), // 首页个性装修  多国语言
@@ -263,6 +264,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
 	// YES:1,已认证
   private Integer _sort;	// 排序号  INT
   private String _seoTitle;	// 店铺关键字  JSONOBJECT<null>
+  private String _seoKeyword;	// 店铺关键字  JSONOBJECT<null>
   private String _seoContent;	// 搜索引擎说明  JSONOBJECT<null>
   private Date _authTime;	// 认证时间  TIME<null>
   private String _showName;	// 网站显示名称  JSONOBJECT<null>
@@ -293,7 +295,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   private String _taxpayerType;	// 纳税人类型  STR(100)<null>
   private String _idCard;	// 法人身份证号码  STR(50)<null>
   private String _operateIdCard;	// 运营身份证号码  STR(100)<null>
-  private String _contacts;	// 联系人  STR(40)<null>
+  private String _contacts;	// 联系人  JSONOBJECT<null>
   private String _phone;	// 手机  STR(20)<null>
   private String _settlementBank;	// 结算开户行  STR(100)<null>
   private String _bankAccount;	// 银行账号  STR(100)<null>
@@ -389,6 +391,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     _isAuth=OIsAuth.DEFAULT.getLine().getKey();	// 供应商认证 <OIsAuth>  BYTE
     _sort=0;	// 排序号  INT
     _seoTitle=null;	// 店铺关键字  JSONOBJECT
+    _seoKeyword=null;	// 店铺关键字  JSONOBJECT
     _seoContent=null;	// 搜索引擎说明  JSONOBJECT
     _authTime=null;	// 认证时间  TIME
     _showName=null;	// 网站显示名称  JSONOBJECT
@@ -417,7 +420,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     _taxpayerType=null;	// 纳税人类型  STR(100)
     _idCard=null;	// 法人身份证号码  STR(50)
     _operateIdCard=null;	// 运营身份证号码  STR(100)
-    _contacts=null;	// 联系人  STR(40)
+    _contacts=null;	// 联系人  JSONOBJECT
     _phone=null;	// 手机  STR(20)
     _settlementBank=null;	// 结算开户行  STR(100)
     _bankAccount=null;	// 银行账号  STR(100)
@@ -681,6 +684,24 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   }
   public void setSeoTitle(String seoTitle, FldLanguage.Language l) throws JSONException {
     stSeoTitle(gtSeoTitle().put(l.name(), seoTitle));
+  }
+  public String getSeoKeyword(){
+    return _seoKeyword;
+  }
+  public void setSeoKeyword(String seoKeyword){
+    _seoKeyword=seoKeyword;
+  }
+  public JSONObject gtSeoKeyword() throws JSONException {
+    return getSeoKeyword()==null?new JSONObject():new JSONObject(getSeoKeyword());
+  }
+  public void stSeoKeyword(JSONObject seoKeyword){
+    setSeoKeyword(seoKeyword==null?null:seoKeyword.toString());
+  }
+  public String getSeoKeyword(FldLanguage.Language l) throws JSONException {
+    return gtSeoKeyword().has(l.name())?gtSeoKeyword().getString(l.name()):"";
+  }
+  public void setSeoKeyword(String seoKeyword, FldLanguage.Language l) throws JSONException {
+    stSeoKeyword(gtSeoKeyword().put(l.name(), seoKeyword));
   }
   public String getSeoContent(){
     return _seoContent;
@@ -952,17 +973,23 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   public void setOperateIdCard(String operateIdCard){
     _operateIdCard=operateIdCard;
   }
+  public String getContacts(){
+    return _contacts;
+  }
+  public void setContacts(String contacts){
+    _contacts=contacts;
+  }
   public JSONObject gtContacts() throws JSONException {
     return getContacts()==null?new JSONObject():new JSONObject(getContacts());
   }
   public void stContacts(JSONObject contacts){
     setContacts(contacts==null?null:contacts.toString());
   }
-  public String getContacts(){
-    return _contacts;
+  public String getContacts(FldLanguage.Language l) throws JSONException {
+    return gtContacts().has(l.name())?gtContacts().getString(l.name()):"";
   }
-  public void setContacts(String contacts){
-    _contacts=contacts;
+  public void setContacts(String contacts, FldLanguage.Language l) throws JSONException {
+    stContacts(gtContacts().put(l.name(), contacts));
   }
   public String getPhone(){
     return _phone;
@@ -1022,7 +1049,6 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     else
       setBankProvince(bankProvince.getPkey());
   }
-
   public String getContactsIdCardFrontPhoto(){
     return _contactsIdCardFrontPhoto;
   }
