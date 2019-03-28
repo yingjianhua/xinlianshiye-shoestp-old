@@ -38,9 +38,13 @@ import irille.pub.tb.FldLanguage;
 import irille.pub.tb.FldLanguage.Language;
 import irille.pub.tb.IEnumFld;
 import irille.pub.util.AppConfig;
+import irille.shop.pdt.PdtProduct;
+import irille.shop.pdt.PdtSize;
+import irille.shop.pdt.PdtSpec;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltTrantslate;
 import irille.shop.plt.PltTrantslateDAO;
+import irille.shop.usr.UsrSupplier;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/8/13 Time: 9:45 */
 public class translateUtil {
