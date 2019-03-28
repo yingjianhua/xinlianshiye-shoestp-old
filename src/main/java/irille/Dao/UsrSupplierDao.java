@@ -214,14 +214,37 @@ public class UsrSupplierDao {
    * @author GS
    * @return
    */
-  public int count() {
-    SQL sql =
-        new SQL() {
-          {
-            SELECT(UsrSupplier.T.PKEY).FROM(UsrSupplier.class);
-          }
-        };
-    return Query.sql(sql).queryCount();
+  public int count(
+      String storeName,
+      String targetMarket,
+      Integer processType,
+      String grade,
+      Integer pdtCategory) {
+    BeanQuery query = new BeanQuery();
+    query
+        .SELECT(
+            UsrSupplier.T.PKEY,
+            UsrSupplier.T.SHOW_NAME,
+            UsrSupplier.T.LOGO,
+            UsrSupplier.T.MAIN_SALES_AREA)
+        .FROM(UsrSupplier.class)
+        .LEFT_JOIN(PdtProduct.class, UsrSupplier.T.PKEY, PdtProduct.T.SUPPLIER)
+        .LEFT_JOIN(SVSInfo.class, UsrSupplier.T.PKEY, SVSInfo.T.SUPPLIER)
+        .WHERE(storeName != null, UsrSupplier.T.SHOW_NAME, "like ?", "%" + storeName + "%")
+        .WHERE(processType != null, UsrSupplier.T.CATEGORY, "=?", processType);
+    if (targetMarket != null) {
+      for (String string : targetMarket.split(",")) {
+        if (string.length() > 1) {
+          query.WHERE("find_in_set( ?, targeted_market )", string);
+        }
+      }
+    }
+    query
+        .WHERE(pdtCategory != null, PdtProduct.T.CATEGORY, "=?", pdtCategory)
+        .WHERE(grade != null, SVSInfo.T.GRADE, " in(" + grade + ")")
+        .GROUP_BY(UsrSupplier.T.PKEY)
+        .ORDER_BY(PdtProduct.T.VERIFY_TIME, "desc");
+    return query.queryMaps().size();
   }
 
   /*

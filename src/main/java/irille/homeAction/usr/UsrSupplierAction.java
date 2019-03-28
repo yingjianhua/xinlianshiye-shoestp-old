@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
 import com.xinlianshiye.shoestp.shop.service.usr.UsrSupplierService;
 
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
@@ -23,6 +24,8 @@ import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.SqlQuery;
 import irille.pub.bean.sql.SQL;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage;
 import irille.pub.validate.ValidForm;
@@ -558,7 +561,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
    *   获取供应商中心列表
    * @Author HuangHaoBin
    **/
-  public void listSuppliers() throws Exception {
+  public void supplierList() throws Exception {
     if (getLimit() == 0) setLimit(10);
     write(
         usrSupplierService.listSupplier(
@@ -570,6 +573,20 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
             grade,
             pdtCategory,
             checkType));
+  }
+
+  private Integer pkey;
+  /**
+   * 手机端获取商家详情信息
+   *
+   * @author GS
+   * @throws Exception
+   */
+  public void getSupplierInfo() throws Exception {
+    if (null == pkey)
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_wrong_data, curLanguage()));
+    write(usrSupplierService.getSupplierInfo(pkey));
   }
 
   @Inject private UsrSupplierService usrSupplierService2;

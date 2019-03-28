@@ -21,6 +21,7 @@ import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultMessageService;
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.Service.Pdt.IPdtProductService;
 import irille.Service.Pdt.Imp.PdtproductPageselect;
+import irille.action.BeanAction;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
 import irille.homeAction.pdt.dto.ProductInfoView;
@@ -747,5 +748,16 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
   public void getRandomProduct() throws IOException {
     if (getLimit() < 1) setLimit(10);
     write(pdtProduct.getRandomPdt(getLimit(), getCated(), getPurchase()));
+  }
+
+  private Integer pkey;
+  private Integer checkType;
+
+  public void findSupplierPdtList() throws Exception {
+    if (pkey == null || checkType == null)
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_wrong_data, curLanguage()));
+    if (getLimit() == 0) setLimit(20);
+    BeanAction.write(pdtProduct.findPdtList(pkey, getStart(), getLimit(), checkType));
   }
 }
