@@ -10,6 +10,7 @@ import irille.platform.usr.View.UsrMainView;
 import irille.pub.DateTools;
 import irille.pub.LogMessage;
 import irille.pub.PropertyUtils;
+import irille.pub.Str;
 import irille.pub.bean.Bean;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
@@ -27,6 +28,8 @@ import irille.shop.plt.PltCity;
 import irille.shop.plt.PltProvinces;
 import irille.view.Page;
 import irille.view.usr.UserView;
+import lombok.Getter;
+import lombok.Setter;
 
 public class UsrMainDao {
 	public static final LogMessage LOG = new LogMessage(UsrMain.class);
@@ -239,32 +242,43 @@ public class UsrMainDao {
 			}
 		};
 		Integer count = irille.pub.bean.Query.sql(sql).queryCount();
-		List<UsrMainView> list = Query.sql(sql.LIMIT(start, limit)).queryMaps().stream().map(bean -> new UsrMainView() {
-			{
-				setPkey((Integer) bean.get(UsrMain.T.PKEY.getFld().getCodeSqlField()));
-				setEmail((String) bean.get(UsrMain.T.EMAIL.getFld().getCodeSqlField()));
-				setNickName((String) bean.get(UsrMain.T.NICKNAME.getFld().getCodeSqlField()));
-				setCompany((String) bean.get(UsrMain.T.COMPANY.getFld().getCodeSqlField()));
-				Object o = bean.get(UsrMain.T.PROVINCE.getFld().getCodeSqlField());
-				if (bean.get(UsrMain.T.PROVINCE.getFld().getCodeSqlField()) != null) {
-					setProvince(Bean
-							.load(PltProvinces.class, (Integer) bean.get(UsrMain.T.PROVINCE.getFld().getCodeSqlField()))
-							.getName());
-				}
-				if (bean.get(UsrMain.T.CITY.getFld().getCodeSqlField()) != null) {
-					setCity(Bean.load(PltCity.class, (Integer) bean.get(UsrMain.T.CITY.getFld().getCodeSqlField()))
-							.getName());
-				}
-				if (bean.get(UsrMain.T.ZONE.getFld().getCodeSqlField()) != null) {
-					setZone(Bean.load(PltArea.class, (Integer) bean.get(UsrMain.T.ZONE.getFld().getCodeSqlField()))
-							.getName());
-				}
-				setAddress((String) bean.get(UsrMain.T.ADDRESS.getFld().getCodeSqlField()));
-				setContacts((String) bean.get(UsrMain.T.CONTACTS.getFld().getCodeSqlField()));
-				setTelphone((String) bean.get(UsrMain.T.TELPHONE.getFld().getCodeSqlField()));
-				setRegTime((Date) bean.get(UsrMain.T.REG_TIME.getFld().getCodeSqlField()));
-			}
-		}).collect(Collectors.toList());
+    List<UsrMainView> list = Query.sql(sql.LIMIT(start, limit)).queryMaps().stream().map(bean -> new UsrMainView() {
+        {
+            setPkey((Integer) bean.get(UsrMain.T.PKEY.getFld().getCodeSqlField()));
+            setEmail((String) bean.get(UsrMain.T.EMAIL.getFld().getCodeSqlField()));
+            setNickName((String) bean.get(UsrMain.T.NICKNAME.getFld().getCodeSqlField()));
+            setCompany((String) bean.get(UsrMain.T.COMPANY.getFld().getCodeSqlField()));
+            if (bean.get(UsrMain.T.PROVINCE.getFld().getCodeSqlField()) != null) {
+              setProvince(
+                  Bean.load(
+                          PltProvinces.class,
+                          (Integer)
+                              bean.get(UsrMain.T.PROVINCE.getFld().getCodeSqlField()))
+                      .getName());
+            }
+            if (bean.get(UsrMain.T.CITY.getFld().getCodeSqlField()) != null) {
+              setCity(
+                  Bean.load(
+                          PltCity.class,
+                          (Integer) bean.get(UsrMain.T.CITY.getFld().getCodeSqlField()))
+                      .getName());
+            }
+            if (bean.get(UsrMain.T.ZONE.getFld().getCodeSqlField()) != null) {
+              setZone(
+                  Bean.load(
+                          PltArea.class,
+                          (Integer) bean.get(UsrMain.T.ZONE.getFld().getCodeSqlField()))
+                      .getName());
+            }
+            setAddress((String) bean.get(UsrMain.T.ADDRESS.getFld().getCodeSqlField()));
+            setContacts(
+                (String) bean.get(UsrMain.T.CONTACTS.getFld().getCodeSqlField()));
+            setTelphone(
+                (String) bean.get(UsrMain.T.TELPHONE.getFld().getCodeSqlField()));
+            setRegTime((Date) bean.get(UsrMain.T.REG_TIME.getFld().getCodeSqlField()));
+          }
+        })
+            .collect(Collectors.toList());
 		return new Page(list, start, limit, count);
 	}
 
@@ -302,12 +316,14 @@ public class UsrMainDao {
 				}
 				setAddress((String) bean.get(UsrMain.T.ADDRESS.getFld().getCodeSqlField()));
 				String name= (String) bean.get(UsrMain.T.CONTACTS.getFld().getCodeSqlField());
-				String [] strArray = name.split(",");
-				String contact="";
-				for(String s : strArray){
-					contact+=s;
+				if(name != null){
+					String [] strArray = name.split(",");
+					String contact="";
+					for(String s : strArray){
+						contact+=s;
+					}
+					setContacts(contact);
 				}
-				setContacts(contact);
 				setTelphone((String) bean.get(UsrMain.T.TELPHONE.getFld().getCodeSqlField()));
 				setRegTime((Date) bean.get(UsrMain.T.REG_TIME.getFld().getCodeSqlField()));
 			}
@@ -328,6 +344,52 @@ public class UsrMainDao {
 			return false;
 		}
 	}
+	/**
+	 * 商家修改邮箱验证密码是否正确
+	 * @author chen
+	 */
+  public boolean validPwd(String email,String pwd){
+  	UsrMain main=UsrMain.chkUniqueEmail(false,email);
+  	if(main==null){
+		throw LOG.err("Invalid email", "用户不存在");
+	}
+	String mdPwd=DateTools.getDigest(main.getPkey() + pwd);
+  	if (mdPwd.equals(main.getPassword())){
+		System.out.println("密码正确");
+  		return true;
+	}else{
+  		return false;
+	}
+  }
+	/**
+	 * 商家修改邮箱
+	 * @author chen
+	 */
+	public static class updEmail  extends IduUpd<updEmail, UsrMain>{
+		@Getter
+		@Setter
+		String email;
+		@Getter
+		@Setter
+		String emailA;
+		@Override
+		public void before() {
+			UsrMain main=UsrMain.chkUniqueEmail(false,getEmail());
+			main.setEmail(emailA);
+			setB(main);
+		}
 
+		@Override
+		public void valid() {
+
+		}
+
+		@Override
+		public void run() {
+			super.run();
+		}
+
+
+	}
 
 }

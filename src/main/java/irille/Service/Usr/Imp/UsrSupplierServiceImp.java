@@ -18,10 +18,13 @@ import irille.Service.Usr.IUsrSupplierService;
 import irille.core.sys.Sys;
 import irille.homeAction.usr.dto.SupplierListView;
 import irille.pub.bean.BeanBase;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage;
 import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.GetValue;
+import irille.pub.util.SEOUtils;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.PdtProduct;
@@ -29,6 +32,7 @@ import irille.shop.prm.PrmGroupPurchaseLine;
 import irille.shop.usr.UsrFavorites;
 import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
+import irille.view.usr.SupplierInfoView;
 import irille.view.usr.UsrSupplierInfView;
 import irille.view.usr.UsrSupplierPdtView;
 import irille.view.v3.Pdt.PdtProductView;
@@ -223,6 +227,7 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
       view.setId(GetValue.get(map, UsrSupplier.T.PKEY, Integer.class, 0));
       view.setLogo(GetValue.get(map, UsrSupplier.T.LOGO, String.class, null));
       view.setStoreName(GetValue.get(map, UsrSupplier.T.SHOW_NAME, String.class, null));
+      view.setAddress(GetValue.get(map, UsrSupplier.T.COMPANY_ADDR,String.class, null));
       view.setSvs(SVSDto);
       List<UsrSupplierPdtView> pdtViews = new ArrayList<>();
       // 获取产品信息
@@ -235,12 +240,39 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
           pdtView.setPdtId(GetValue.get(pdt, PdtProduct.T.PKEY, Integer.class, 0));
           pdtView.setPdtName(GetValue.get(pdt, PdtProduct.T.NAME, String.class, null));
           pdtView.setPdtPictures(GetValue.get(pdt, PdtProduct.T.PICTURE, String.class, null));
+          pdtView.setLink(SEOUtils.getPdtProductTitle(pdtView.getPdtId(),pdtView.getPdtName()));
           pdtViews.add(pdtView);
         }
       }
       view.setProducts(pdtViews);
       supplies.add(view);
     }
-    return new Page<>(supplies, start, limit, usrSupplierDao.count());
+    return new Page<>(
+        supplies,
+        start,
+        limit,
+        usrSupplierDao.count(storeName, targetMarket, processType, grade, pdtCategory));
+  }
+  /**
+   * 查询供应商信息详情
+   *
+   * @author GS
+   */
+  @Override
+  public SupplierInfoView getSupplierInfo(Integer pkey) {
+    SupplierInfoView view = new SupplierInfoView();
+    UsrSupplier supplier = BeanBase.chk(UsrSupplier.class, pkey);
+
+    if (null == supplier) return view;
+    view.setId(pkey);
+    if (null != supplier.getLogo()) view.setLogo(supplier.getLogo());
+    if (null != supplier.getShowName()) view.setSupplierName(supplier.getShowName());
+    if (null != supplier.getName()) view.setCompanyName(supplier.getName());
+    if (null != supplier.getStoreopenTime()) view.setCreateTime(supplier.getStoreopenTime());
+    if (null != supplier.getCompanyAddr()) view.setAddress(supplier.getCompanyAddr());
+    SvsRatingAndRosDTO SVSDto = SVSInfoService.getSvsRatingAndRos(pkey);
+    view.setSvs(SVSDto);
+
+    return view;
   }
 }

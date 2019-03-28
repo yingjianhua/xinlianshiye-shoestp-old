@@ -1314,15 +1314,9 @@
                 window.open(back_url, "bookmarkWindow");
             },
             addRFQ: function () {
-                if (!sysConfig || !sysConfig.user) {
-                    // user_obj.set_form_sign_in('', window.location.href, 1);
-                    util_function_obj.alertWhenNoLogin(this, "/home/usr_UsrConsult_productPublishView?product_id=" + this.productinfocom.pdtId + '&backUrl=' + window.location.href);
-                    return
-                } else {
                     var jumpUrl = '/home/usr_UsrConsult_productPublishView?product_id=' + this.productinfocom.pdtId + '&backUrl=' + window.location.href;
                     util_function_obj.supplierCantEnter(this, jumpUrl,"Please register or login your buyer account if you want making enquiries.");
-                }
-                //window.location = '/home/usr_UsrConsult_productPublishView?product_id=' + this.productinfocom.pdtId + '&backUrl=' + window.location.href
+               
             },
         },
 

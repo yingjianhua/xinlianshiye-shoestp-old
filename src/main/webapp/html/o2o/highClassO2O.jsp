@@ -120,7 +120,7 @@
                     <img :src="baseimgurl + item.image+'?x-oss-process=image/resize,w_154,h_154/blur,r_5,s_20'" alt="">
                     <div class="sample-item-text">
                         <p class="sample-text show-line">{{item.title}}</p>
-                        <p class="sample-state">US <span
+                        <p class="sample-state"><span
                                 class="text-red">{{sysConfig.currency_symbol}} {{item.price}}</span>
                         <p class="sample-text">Min.Order:{{item.min_order}} pairs</p>
                     </div>

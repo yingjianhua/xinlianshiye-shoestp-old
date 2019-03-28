@@ -21,6 +21,7 @@ import irille.pub.util.GetValue;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.pub.validate.ValidForm;
 import irille.shop.pdt.PdtCat.T;
+import irille.shop.plt.PltConfigDAO;
 import irille.view.Page;
 import irille.view.pdt.CategoryView;
 import org.json.JSONException;
@@ -309,7 +310,7 @@ public class PdtCatDAO {
   }
 
   // 添加分类(3.1.1)
-  public static void pdtCatIns(PdtCat cat,Integer createBy) throws Exception {
+  public static void pdtCatIns(PdtCat cat, Integer createBy) throws Exception {
     PdtCat pdtCat = new PdtCat();
     pdtCat.setName(cat.getName());
     pdtCat.setCategoryUp(cat.getCategoryUp());
@@ -319,19 +320,25 @@ public class PdtCatDAO {
     pdtCat.setDeleted(OYn.NO.getLine().getKey());
     pdtCat.setCreateBy(createBy);
     pdtCat.setCreateTime(Env.getSystemTime());
-    translateUtil.autoTranslate(pdtCat).ins();
+    translateUtil
+        .newAutoTranslate(
+            pdtCat, translateUtil.buildFilter(pdtCat.getName(), PltConfigDAO.manageLanguage()))
+        .ins();
   }
   // 修改分类(3.1.1)
   public static void pdtCatUpd(PdtCat cat) throws Exception {
     PdtCat pdtCat = BeanBase.load(PdtCat.class, cat.getPkey());
-    pdtCat.setName(cat.getName());
     pdtCat.setCategoryUp(cat.getCategoryUp());
     pdtCat.setProductImage(cat.getProductImage());
     pdtCat.setDisplay(cat.getDisplay());
-    translateUtil.autoTranslate(pdtCat).upd();
+    translateUtil
+        .newAutoTranslate(
+            cat,
+            translateUtil.buildFilter(
+                cat.getName(), pdtCat.getName(), PltConfigDAO.manageLanguage()));
+    pdtCat.setName(cat.getName());
+    pdtCat.upd();
   }
-
-
 
   /** -获取所有分类 */
   public static List<PdtCat> listAll() {

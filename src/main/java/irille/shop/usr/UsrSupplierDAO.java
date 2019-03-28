@@ -15,11 +15,13 @@ import javax.inject.Inject;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
 import com.xinlianshiye.shoestp.plat.service.pm.imp.PMMessageServiceImp;
 
+import irille.Dao.SVS.SVSInfoDao;
 import irille.Dao.SVS.SVSInfoService;
-import irille.Dao.SVS.impl.SVSInfoServiceImpl;
+import irille.Dao.SVS.impl.SVSInfoDaoImpl;
 import irille.Entity.SVS.Enums.SVSAuthenticationStatus;
 import irille.Entity.SVS.Enums.SVSGradeType;
 import irille.Entity.SVS.SVSInfo;
@@ -35,7 +37,6 @@ import irille.pub.LogMessage;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.Bean;
 import irille.pub.bean.BeanBase;
-import irille.pub.bean.Query;
 import irille.pub.bean.query.SqlQuery;
 import irille.pub.bean.sql.SQL;
 import irille.pub.exception.WebMessageException;
@@ -47,6 +48,7 @@ import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.SEOUtils;
 import irille.pub.util.TranslateLanguage.translateUtil;
+import irille.pub.validate.Valid;
 import irille.pub.validate.ValidForm;
 import irille.pub.validate.ValidRegex2;
 import irille.sellerAction.view.AuthenticationView;
@@ -62,6 +64,7 @@ import irille.shop.prm.PrmGroupPurchase;
 import irille.shop.usr.Usr.OStatus;
 import irille.shop.usr.UsrSupplier.T;
 import irille.view.Page;
+import irille.view.SVS.SVSInfoView;
 import irille.view.usr.AccountSettingsView;
 import irille.view.usr.SupplierDetailsDTO;
 import irille.view.usr.SupplierView;
@@ -154,7 +157,7 @@ public class UsrSupplierDAO {
     UsrSupplier bean = irille.pub.bean.Query.SELECT(UsrSupplier.class, id);
     SupplierView view = new SupplierView();
     view.setPkey(bean.getPkey());
-    view.setLoginName(bean.getLoginName());
+    view.setLoginName(bean.gtUserid().getEmail());
     view.setStatus(bean.getStatus());
     view.setName(bean.getName());
     view.setCompanyType(bean.getCompanyType());
@@ -916,12 +919,15 @@ public class UsrSupplierDAO {
       String pkey, Integer status, String reason, Date storeopenTime) {
     UsrSupplier supplier = BeanBase.load(UsrSupplier.class, pkey);
     IPMMessageService messageService = new PMMessageServiceImp();
+    String signBackgd = "/public/upload/usr/supplier/105df0d09f73c7dccd0baf4d67c38a0d.jpg";
+
     if (status == 0) {
       supplier.stStatus(OStatus.INIT);
     } else if (status == 1) {
       supplier.stStatus(OStatus.APPR);
       supplier.stStoreStatus(Usr.SStatus.OPEN);
       supplier.setStoreopenTime(storeopenTime);
+      supplier.setSignBackgd(signBackgd);
       try {
         messageService.send(OTempType.SHOP_APPR, supplier, null, supplier);
       } catch (Exception e) {
@@ -937,7 +943,7 @@ public class UsrSupplierDAO {
         throw new WebMessageException("店铺审核通知站内信出现错误，请关闭站内信");
       }
     }
-    translateUtil.autoTranslate(supplier, true).upd();
+    translateUtil.autoTranslate(supplier, false).upd();
     return supplier;
   }
 
@@ -1055,18 +1061,6 @@ public class UsrSupplierDAO {
     return list;
   }
 
-  public static String getJson() {
-    String json = "{";
-    for (int i = 0; i < FldLanguage.Language.values().length; i++) {
-      if (i == FldLanguage.Language.values().length - 1) {
-        json += "'" + FldLanguage.Language.values()[i] + "':''}";
-      } else {
-        json += "'" + FldLanguage.Language.values()[i] + "':'',";
-      }
-    }
-    return json;
-  }
-
   /**
    * 创建供应商信息-没有多国语言翻译
    *
@@ -1077,7 +1071,6 @@ public class UsrSupplierDAO {
    * @throws JSONException
    */
   public static UsrSupplier insSupplierNo(UsrSupplier view, Language lang) throws JSONException {
-    String json = getJson();
     UsrMain main = irille.pub.bean.Query.SELECT(UsrMain.class, view.getUserid());
     main.setContacts(view.getContacts());
     if (view.getPhone() != null) {
@@ -1119,19 +1112,19 @@ public class UsrSupplierDAO {
     bean.setPassword(DateTools.getDigest(main.getPkey() + main.getPassword())); // UsrMain表的密码
     bean.setName(view.getName()); // 公司名称-必填
     bean.setEnglishName(view.getEnglishName()); // 公司英文名称
-    bean.stShowName(new JSONObject(json).put(lang.name(), view.getName())); // 前端公司展示名称
+    bean.setShowName(translateUtil.toSaveJson(view.getName(), lang)); // 前端公司展示名称
 
-    bean.stCompanyType(new JSONObject(json).put(lang.name(), view.getCompanyType())); // 企业类型
-    bean.stCompanyNature(new JSONObject(json).put(lang.name(), view.getCompanyNature())); // 企业性质
+    bean.setCompanyType(translateUtil.toSaveJson(view.getCompanyType(), lang)); // 企业类型
+    bean.setCompanyNature(translateUtil.toSaveJson(view.getCompanyNature(), lang)); // 企业性质
     bean.setCompanyEstablishTime(view.getCompanyEstablishTime()); // 成立时间
     bean.setWebsite(view.getWebsite()); // 官网地址
-    bean.stCompanyAddr(new JSONObject(json).put(lang.name(), view.getCompanyAddr())); // 详细地址
+    bean.setCompanyAddr(translateUtil.toSaveJson(view.getCompanyAddr(), lang)); // 详细地址
     bean.setAnnualProduction(view.getAnnualProduction()); // 年产量
     bean.setTelephone(view.getTelephone()); // 公司电话
     bean.setFax(view.getFax()); // 传真
     bean.setPostcode(view.getPostcode()); // 邮编
     bean.setTargetedMarket(view.getTargetedMarket()); // 目标市场
-    bean.stProdPattern(new JSONObject(json).put(lang.name(), view.getProdPattern())); // 生产模式
+    bean.setProdPattern(translateUtil.toSaveJson(view.getProdPattern(), lang)); // 生产模式
     bean.setCreditCode(view.getCreditCode()); // 信用代码
     bean.setRegisteredCapital(view.getRegisteredCapital()); // 注册资金-必填
     bean.setEntity(view.getEntity()); // 企业法人-必填
@@ -1143,9 +1136,9 @@ public class UsrSupplierDAO {
     }
     bean.setTaxpayerType(view.getTaxpayerType()); // 纳税人类型
 
-    bean.stContacts(new JSONObject(json).put(lang.name(), view.getContacts())); // 联系人
-    bean.stDepartment(new JSONObject(json).put(lang.name(), view.getDepartment())); // 联系人部门
-    bean.stJobTitle(new JSONObject(json).put(lang.name(), view.getJobTitle())); // 联系人职称
+    bean.setContacts(translateUtil.toSaveJson(view.getContacts(), lang)); // 联系人
+    bean.setDepartment(translateUtil.toSaveJson(view.getDepartment(), lang)); // 联系人部门
+    bean.setJobTitle(translateUtil.toSaveJson(view.getJobTitle(), lang)); // 联系人职称
     bean.setPhone(view.getPhone()); // 联系人手机
     if (view.getContactEmail() == null) {
       bean.setContactEmail(main.getEmail()); // 联系人邮箱
@@ -1205,15 +1198,14 @@ public class UsrSupplierDAO {
         T.OPERATE_ID_CARD, // 运营人员身份证号码
         T.STORE_STATUS,
         T.CLOSE_REASON);
-    String json = getJson();
-    model.stShowName(new JSONObject(json).put(lang.name(), supplier.getName()));
-    model.stCompanyType(new JSONObject(json).put(lang.name(), supplier.getCompanyType()));
-    model.stCompanyNature(new JSONObject(json).put(lang.name(), supplier.getCompanyNature()));
-    model.stCompanyAddr(new JSONObject(json).put(lang.name(), supplier.getCompanyAddr()));
-    model.stProdPattern(new JSONObject(json).put(lang.name(), supplier.getProdPattern()));
-    model.stContacts(new JSONObject(json).put(lang.name(), supplier.getContacts()));
-    model.stDepartment(new JSONObject(json).put(lang.name(), supplier.getDepartment()));
-    model.stJobTitle(new JSONObject(json).put(lang.name(), supplier.getJobTitle()));
+    model.setShowName(translateUtil.toSaveJson(supplier.getName(), lang));
+    model.setCompanyType(translateUtil.toSaveJson(supplier.getCompanyType(), lang));
+    model.setCompanyNature(translateUtil.toSaveJson(supplier.getCompanyNature(), lang));
+    model.setCompanyAddr(translateUtil.toSaveJson(supplier.getCompanyAddr(), lang));
+    model.setProdPattern(translateUtil.toSaveJson(supplier.getProdPattern(), lang));
+    model.setContacts(translateUtil.toSaveJson(supplier.getContacts(), lang));
+    model.setDepartment(translateUtil.toSaveJson(supplier.getDepartment(), lang));
+    model.setJobTitle(translateUtil.toSaveJson(supplier.getJobTitle(), lang));
     model.upd();
     return model;
   }
@@ -1621,6 +1613,31 @@ public class UsrSupplierDAO {
           view.setContacts(supplier.getContacts()); // 联系人名称
           view.setDepartment(supplier.getDepartment()); // 联系人部门
           view.setJobTitle(supplier.getJobTitle()); // 联系人职位
+          view.setTargetedMarkets(supplier.getTargetedMarket());// 目标市场
+          view.setAnnualOutput(supplier.getAnnualProduction());// 年产量
+          SVSInfoDao sd=new SVSInfoDaoImpl();
+          if(sd.findSVSInfoBySupplier(supplier.getPkey())!=null){
+            SVSInfo si=sd.findSVSInfoBySupplier(supplier.getPkey());
+            try {
+              JSONObject getResearch = new JSONObject(si.getResearch());
+              view.setRDdepartment(getResearch.getString("isTeam"));
+              view.setAnnualNumberOfNewShoes(getResearch.getString("numOfShoes"));
+              JSONObject productionCapacity = new JSONObject(si.getProductionCapacity());
+              view.setNumberOfProductionLines(productionCapacity.getString("productionLineQuantity"));
+              view.setNumberOfSewingMachines(productionCapacity.getString("needleCartNum"));
+              view.setAnnualExportValue(productionCapacity.getString("exportVolume"));
+              JSONObject realFactory = new JSONObject(si.getRealFactory());
+              view.setNumberOfEmployees(realFactory.getString("employeesNum"));
+              view.setExportLicense(realFactory.getString("licence"));
+              JSONObject productQuality = new JSONObject(si.getProductQuality());
+              view.setTestEquipmentAndFacilities(productQuality.getString("testEquipment"));
+              JSONObject tradeTeam = new JSONObject(si.getForeignTradeTeam());
+              view.setNumberOfForeignTradeTeams(tradeTeam.getString("teamSize"));
+              view.setYearsOfForeignTradeExperience(tradeTeam.getString("experience"));
+            }catch (Exception e){
+              e.getStackTrace();
+            }
+          }
           // 页面设置
           view.setContactPageOn(supplier.getContactPageOn()); // 是否启用联系页个性化装修
           view.setContactPageDiy(supplier.getContactPageDiy()); // 联系页个性化装修

@@ -12,6 +12,8 @@ import irille.homeAction.usr.dto.SupplierListView;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage;
 import irille.view.Page;
+import irille.view.usr.SupplierInfoView;
+import irille.view.usr.UsrSupplierInfView;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/5 Time: 16:23 */
 @ImplementedBy(UsrSupplierServiceImp.class)
@@ -73,7 +75,8 @@ public interface IUsrSupplierService {
       String targetMarket,
       Integer processType,
       String grade,
-      Integer pdtCategory,Integer checkType);
+      Integer pdtCategory,
+      Integer checkType);
 
   /*
    *   判断用户类型 0:普通用户 1:商家
@@ -82,4 +85,12 @@ public interface IUsrSupplierService {
   Integer isSupplier(String loginName);
 
   SuplierDetailView getSuplierDetail(Integer supplierPkey);
+  /**
+   * 供应商详情(暂时针对手机端提供接口)
+   *
+   * @date 2019/03/08
+   * @author GS
+   * @return
+   */
+  SupplierInfoView getSupplierInfo(Integer pkey);
 }

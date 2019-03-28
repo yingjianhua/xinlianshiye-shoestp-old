@@ -106,8 +106,6 @@ public class ItpCheckPurchaseLogin extends AbstractInterceptor {
   @Target({ElementType.METHOD})
   @Retention(RetentionPolicy.RUNTIME)
   public @interface NeedLogin {
-//    // TODO 这里改用用户组会更好用
-//    boolean supplier() default false;
 
     /** 对用户类型进行校验 */
     UserType userType() default UserType.ALL;

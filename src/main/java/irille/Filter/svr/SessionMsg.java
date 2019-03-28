@@ -7,7 +7,11 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.struts2.ServletActionContext;
+
 import com.opensymphony.xwork2.ActionInvocation;
+import com.xinlianshiye.shoestp.common.dao.usr.UsrMainDao;
+import com.xinlianshiye.shoestp.common.dao.usr.impl.UsrMainDaoImpl;
 import com.xinlianshiye.shoestp.seller.service.usr.IUsrSupplierSellerDao;
 import com.xinlianshiye.shoestp.seller.service.usr.imp.UsrSupplierSellerDaoImp;
 
@@ -16,13 +20,13 @@ import irille.shop.plt.PltConfig;
 import irille.shop.plt.PltConfig.Variable;
 import irille.shop.plt.PltErate;
 import irille.shop.plt.PltErateDAO;
+import irille.shop.usr.UsrMain;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrUserDAO;
 import irille.view.usr.UserView;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.struts2.ServletActionContext;
 
 /**
  * 存放在session中,用于统计记录该会话的用户消息
@@ -51,6 +55,7 @@ public class SessionMsg {
   @Setter @Getter private Integer purchaseId;
   @Setter @Getter private Integer supplierId;
   private static IUsrSupplierSellerDao supplierSellerDao;
+  private static UsrMainDao usrMainDao = new UsrMainDaoImpl();
 
   public static SessionMsg build() {
     SessionMsg msg = new SessionMsg();
@@ -149,6 +154,14 @@ public class SessionMsg {
       isSupplier = true;
       loginName = supplier.getLoginName();
     }
+  }
+
+  public boolean haveUser() {
+    return pkey != null;
+  }
+
+  public UsrMain getUsrMain() {
+    return usrMainDao.findByPkey(pkey).orElse(null);
   }
 
   public UserView getUser() {

@@ -11,6 +11,8 @@ import irille.pub.i18n.I18NFieldSerializer;
 import irille.shop.usr.UsrSupIm;
 import irille.shop.usr.UsrSupplier;
 import irille.view.BaseView;
+import lombok.Getter;
+import lombok.Setter;
 
 public class SupplierView implements BaseView {
 
@@ -180,6 +182,25 @@ public class SupplierView implements BaseView {
   private Byte contactPageOn; // 联系页个性装修开关 <OYn>  BYTE
   private List<PdtView> productList; // 新品展示
   private List<UsrSupIm> imList; // 线上聊天工具
+
+  @Getter @Setter private String targetedMarkets; // 目标市场TARGETED_MARKET
+  @Getter @Setter private String AnnualOutput;
+  @Getter @Setter private String Name; // 联系人CONTACTS
+  // SVS  research  isTeam   numOfShoes
+  @Getter @Setter private String rDdepartment; // 独立研发团队RESEARCH
+  @Getter @Setter private String AnnualNumberOfNewShoes; // 年开发鞋款数量
+  // productionCapacity   productionLineQuantity  needleCartNum  exportVolume
+  @Getter @Setter private String NumberOfProductionLines; // 生产线数量
+  @Getter @Setter private String NumberOfSewingMachines; // 针车数量
+  @Getter @Setter private String AnnualExportValue; // 年出口额
+  //  realFactory   employeesNum   licence
+  @Getter @Setter private String NumberOfEmployees; // 员工人数TOTAL_EMPLOYEES
+  @Getter @Setter private String ExportLicense; // 出口许可证:有/无
+  //  productQuality  testEquipment
+  @Getter @Setter private String TestEquipmentAndFacilities; // 测试设备:有/无
+  // tradeTeam   teamSize  experience
+  @Getter @Setter private String NumberOfForeignTradeTeams; // 外贸团队人数
+  @Getter @Setter private String YearsOfForeignTradeExperience; // 外贸经验
 
   public List<UsrSupIm> getImList() {
     return imList;

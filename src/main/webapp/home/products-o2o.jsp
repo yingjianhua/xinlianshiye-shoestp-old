@@ -193,7 +193,7 @@
                             </h1>
                             <div class="clearfix" style="position:relative;">
                                 <div class="fl">
-                                    <h2>US <span>{{sysConfig.currency_symbol}}{{ item.price }}</span></h2>
+                                    <h2><span>{{sysConfig.currency_symbol}}{{ item.price }}</span></h2>
                                     <div class="h3">Min.Order: {{item.minOrder}} pairs</div>
                                 </div>
                                 <div class="fr" style="width: 196px;">
