@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -144,10 +145,17 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
     List<Integer> countList = new ArrayList<>();
     if (pdtProductSaveView.getTieredPricing() != null
         && !pdtProductSaveView.getTieredPricing().isEmpty()) {
-      for (PdtTieredPricingView item : pdtProductSaveView.getTieredPricing()) {
+      List<PdtTieredPricingView> items =
+          pdtProductSaveView.getTieredPricing().stream()
+              .sorted(Comparator.comparing(PdtTieredPricingView::getPrice))
+              .collect(Collectors.toList());
+      for (int i = 0; i < items.size(); i++) {
+        PdtTieredPricingView item = items.get(i);
         PdtTieredPricing pdtTP = new PdtTieredPricing();
         pdtTP.setMinOq(item.getCount());
-        pdtTP.setCurPrice(item.getPrice());
+        if (i == 0) {
+          pdtTP.setCurPrice(item.getPrice());
+        }
         pdtTP.setMain(item.getType() == 1 ? OYn.YES.getLine().getKey() : OYn.NO.getLine().getKey());
         pdtTP.setDeleted(OYn.NO.getLine().getKey());
         minPriceList.add(item.getPrice());
@@ -574,6 +582,7 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
                                 .split(",")[0]);
                         setNum((String) o.get(PdtProduct.T.CODE.getFld().getCodeSqlField()));
                         setName((String) o.get(PdtProduct.T.NAME.getFld().getCodeSqlField()));
+                        setCat((Integer) o.get(PdtProduct.T.CATEGORY.getFld().getCodeSqlField()));
                         if (o.get(PdtProduct.T.CATEGORY.getFld().getCodeSqlField()) != null) {
                           setProductCate(
                               BeanBase.load(
