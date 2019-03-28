@@ -1,10 +1,12 @@
 package com.xinlianshiye.shoestp.seller.service.rfq;
 
 import java.util.Date;
+import java.util.List;
 
 import com.google.inject.ImplementedBy;
 import com.xinlianshiye.shoestp.seller.service.rfq.impl.RFQConsultServiceImpl;
 
+import irille.Dao.RFQ.view.SellerIndexConsultView;
 import irille.platform.rfq.view.RFQConsultRelationView;
 import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
 import irille.sellerAction.rfq.view.RFQConsultRelationCountView;
@@ -96,4 +98,5 @@ public interface RFQConsultService {
   RFQConsultRelationCountView count(UsrSupplier supplier, Boolean isDeleted);
 
   Page message(UsrSupplier supplier, UsrPurchase purchase, Integer start, Integer limit);
+  List<SellerIndexConsultView> getIndexInqlist(Integer supperPkey);
 }

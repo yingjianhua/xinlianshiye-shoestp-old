@@ -51,6 +51,7 @@
                               label="Verification Code" prop="code">
                     <div class="verification-code-wrap">
                         <el-input placeholder="Verification code"
+                                  @keyup.enter.native="goStep2"
                                   v-model.trim="registerForm.code">
                         </el-input>
                         <img :src="codeUrl" alt="Verification code"
@@ -253,8 +254,10 @@
                         if (res.data.ret != 1) {
                             if(res.data.ret == 207){
                                 this.emailErrorMsg="The mailbox has been registered, please try other one"
+                                return
                             }else if(res.data.ret == 202){
                                 this.codeErrorMsg = "Verification code is wrong, please try again"
+                                return
                             }
                             this.$message.error(res.data.msg || "Send email error,please try again later");
                             return
@@ -285,6 +288,9 @@
 
             //第一步 - 验证自己的code
             goStep2() {
+                // 邮箱已注册时or验证码错误（自定义错误），不可进行点击
+                if (this.emailErrorMsg || this.codeErrorMsg) return false;
+
                 this.$refs.registerForm.validate((valid) => {
                     if (valid) {
                         console.log('goStep2');

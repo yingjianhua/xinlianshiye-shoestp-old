@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.inject.ImplementedBy;
 
 import irille.Service.Manage.Pdt.Imp.PdtCatManageServiceImp;
+import irille.platform.pdt.View.pdtCatView.PdtCatView;
 import irille.pub.tb.FldLanguage;
 import irille.sellerAction.view.ProductSEOsView;
 import irille.view.Page;
@@ -28,4 +29,7 @@ public interface IPdtCatManageService {
 
   /** 获取所有一级分类 */
   List<CategoryView> pList();
+
+  /** 获取所有三级分类 */
+  List<PdtCatView> findCategory(Integer id);
 }

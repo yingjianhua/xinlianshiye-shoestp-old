@@ -45,12 +45,10 @@ public class RFQConsultMessageDaoImpl implements RFQConsultMessageDao {
                 FROM(
                     new SQL() {
                       {
-                        SELECT("1").FROM(RFQConsultMessage.class);
-                        LEFT_JOIN(RFQConsultRelation.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY);
+                        SELECT("1").FROM(RFQConsultRelation.class);
                         WHERE(RFQConsultRelation.T.PURCHASE_ID, "=?", purchasePkey);
                         WHERE(RFQConsultRelation.T.READ_STATUS, "=?", RFQConsultRelationReadStatus.PURCHASE_UNREAD);
                         WHERE(RFQConsultRelation.T.IS_DELETED_PURCHASE, "=?", false);
-                        GROUP_BY(RFQConsultRelation.T.PKEY);
                       }
                     },
                     "a");

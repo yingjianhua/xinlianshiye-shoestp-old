@@ -23,6 +23,7 @@ import irille.pub.tb.Fld;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
+import irille.shop.pdt.Pdt.OAppr;
 import irille.shop.pdt.Pdt.OProductType;
 import irille.shop.pdt.Pdt.OState;
 import irille.shop.pdt.Pdt.OStockOut;
@@ -133,6 +134,8 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
     DESCRIBE_MODULE_3(SYS.MUILTI_LANGUAGE_NULL, "详细描述模块3"),
     FIRST_PUTAWAY(SYS.YN, "是否首次上架"),
 
+    TARGETED_MARKET(SYS.STR__200, "目标市场"),
+
     UPDATE_TIME(SYS.UPDATED_DATE_TIME),
     ROW_VERSION(SYS.ROW_VERSION),
   // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
@@ -199,9 +202,10 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
   // 实例变量定义-----------------------------------------
   private Integer _pkey; // 编号  INT
   private String _name; // 名称  JSONOBJECT
-  private Byte _isVerify; // 产品审核 <OYn>  BYTE
-  // YES:1,是
-  // NO:0,否
+  private Byte _isVerify; // 审核状态 <OAppr>  BYTE
+  // _DEFAULT:0,未审核
+  // PASS:1,审核通过
+  // Failed:2,审核失败
   private Integer _verifyBy; // 审核人员 <表主键:SysUser>  INT<null>
   private Date _verifyTime; // 审核时间  TIME
   private Integer _category; // 产品类目 <表主键:PdtCat>  INT
@@ -295,6 +299,7 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
   private Byte _firstPutaway; // 是否首次上架 <OYn>  BYTE
   // YES:1,是
   // NO:0,否
+  private String _targetedMarket; // 目标市场  STR(200)
   private Date _updateTime; // 更新时间  TIME
   private Short _rowVersion; // 版本  SHORT
 
@@ -302,7 +307,7 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
   public PdtProduct init() {
     super.init();
     _name = null; // 名称  JSONOBJECT
-    _isVerify = OYn.DEFAULT.getLine().getKey(); // 产品审核 <OYn>  BYTE
+    _isVerify = OAppr.DEFAULT.getLine().getKey(); // 审核状态 <OAppr>  BYTE
     _verifyBy = null; // 审核人员 <表主键:SysUser>  INT
     _verifyTime = Env.getTranBeginTime(); // 审核时间  TIME
     _category = null; // 产品类目 <表主键:PdtCat>  INT
@@ -363,6 +368,7 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
     _describeModule2 = null; // 详细描述模块2  JSONOBJECT
     _describeModule3 = null; // 详细描述模块3  JSONOBJECT
     _firstPutaway = OYn.DEFAULT.getLine().getKey(); // 是否首次上架 <OYn>  BYTE
+    _targetedMarket = null; // 目标市场  STR(200)
     _updateTime = Env.getTranBeginTime(); // 更新时间  TIME
     _rowVersion = 0; // 版本  SHORT
     return this;
@@ -409,12 +415,12 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
     _isVerify = isVerify;
   }
 
-  public Boolean gtIsVerify() {
-    return byteToBoolean(_isVerify);
+  public OAppr gtIsVerify() {
+    return (OAppr) (OAppr._DEFAULT.getLine().get(_isVerify));
   }
 
-  public void stIsVerify(Boolean isVerify) {
-    _isVerify = booleanToByte(isVerify);
+  public void stIsVerify(OAppr isVerify) {
+    _isVerify = isVerify.getLine().getKey();
   }
 
   public Integer getVerifyBy() {
@@ -1158,6 +1164,14 @@ public class PdtProduct extends BeanInt<PdtProduct> implements IExtName, ISeq {
 
   public void stFirstPutaway(Boolean firstPutaway) {
     _firstPutaway = booleanToByte(firstPutaway);
+  }
+
+  public String getTargetedMarket() {
+    return _targetedMarket;
+  }
+
+  public void setTargetedMarket(String targetedMarket) {
+    _targetedMarket = targetedMarket;
   }
 
   public Date getUpdateTime() {

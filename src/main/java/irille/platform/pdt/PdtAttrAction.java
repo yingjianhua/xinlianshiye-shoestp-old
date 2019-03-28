@@ -4,6 +4,9 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import irille.action.ActionBase;
 import irille.action.dataimport.util.StringUtil;
 import irille.pub.exception.ReturnCode;
@@ -14,8 +17,6 @@ import irille.shop.pdt.PdtAttrDAO;
 import irille.shop.pdt.PdtSize;
 import irille.shop.plt.PltConfigDAO;
 import lombok.Data;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * 产品属性
@@ -95,6 +96,11 @@ public class PdtAttrAction extends ActionBase<PdtAttr> {
    * @date 2019/1/22 13:38
    */
   public void delete() throws IOException {
+    PdtAttrDAO pdtAttrDAO = new PdtAttrDAO();
+    if (!pdtAttrDAO.getCount(getBean().getPkey())) {
+      writeErr("该属性已被关联到发布的产品中");
+      return;
+    }
     PdtAttrDAO.DelAttr remove = new PdtAttrDAO.DelAttr();
     remove.setBKey(getBean().getPkey());
     remove.commit();

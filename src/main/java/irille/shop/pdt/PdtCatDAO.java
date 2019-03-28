@@ -3,6 +3,7 @@ package irille.shop.pdt;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
 import irille.core.sys.SysUser;
 import irille.platform.pdt.View.pdtCatView.PdtCatView;
@@ -305,6 +306,31 @@ public class PdtCatDAO {
     pdtCat.setCreateTime(Env.getSystemTime());
     pdtCat.ins();
   }
+
+  // 添加分类(3.1.1)
+  public static void pdtCatIns(PdtCat cat,Integer createBy) throws Exception {
+    PdtCat pdtCat = new PdtCat();
+    pdtCat.setName(cat.getName());
+    pdtCat.setCategoryUp(cat.getCategoryUp());
+    pdtCat.setProductImage(cat.getProductImage());
+    pdtCat.setDisplay(cat.getDisplay());
+    pdtCat.setEnabled(Sys.OEnabled.TRUE.getLine().getKey());
+    pdtCat.setDeleted(OYn.NO.getLine().getKey());
+    pdtCat.setCreateBy(createBy);
+    pdtCat.setCreateTime(Env.getSystemTime());
+    pdtCat.ins();
+  }
+  // 修改分类(3.1.1)
+  public static void pdtCatUpd(PdtCat cat) throws Exception {
+    PdtCat pdtCat = BeanBase.load(PdtCat.class, cat.getPkey());
+    pdtCat.setName(cat.getName());
+    pdtCat.setCategoryUp(cat.getCategoryUp());
+    pdtCat.setProductImage(cat.getProductImage());
+    pdtCat.setDisplay(cat.getDisplay());
+    pdtCat.upd();
+  }
+
+
 
   /** -获取所有分类 */
   public static List<PdtCat> listAll() {

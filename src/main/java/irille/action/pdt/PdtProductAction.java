@@ -3,6 +3,9 @@ package irille.action.pdt;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import irille.action.MgtAction;
@@ -14,9 +17,6 @@ import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.AppConfig;
 import irille.shop.pdt.PdtAttrLine;
 import irille.shop.pdt.PdtProduct;
-import irille.shop.pdt.PdtProductDAO;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 public class PdtProductAction extends MgtAction<PdtProduct> implements IPdtProductAction {
 
@@ -35,14 +35,14 @@ public class PdtProductAction extends MgtAction<PdtProduct> implements IPdtProdu
 
   private Boolean verify;
 
-  @Override
-  public void verify() throws Exception {
-    System.out.println(verify);
-    System.out.println(getPkey());
-    PdtProduct bean = PdtProductDAO.verify(verify, (Integer) getPkey());
-    bean.setPicture(AppConfig.image_base_url + bean.getPicture());
-    writeSuccess(bean);
-  }
+  //  @Override
+  //  public void verify() throws Exception {
+  //    System.out.println(verify);
+  //    System.out.println(getPkey());
+  //    PdtProduct bean = PdtProductDAO.verify(verify, (Integer) getPkey());
+  //    bean.setPicture(AppConfig.image_base_url + bean.getPicture());
+  //    writeSuccess(bean);
+  //  }
 
   @Override
   public void list() throws Exception {

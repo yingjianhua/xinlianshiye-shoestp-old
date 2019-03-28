@@ -10,6 +10,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import irille.Dao.RFQ.view.SellerIndexConsultView;
+import irille.pub.html.Nodes;
+import javassist.runtime.Desc;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -499,9 +502,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
             RFQConsultRelation.T.READ_STATUS,
             RFQConsultRelation.T.QUANTITY,
             RFQConsultRelation.T.DESCRIPTION,
-            RFQConsultRelation.T.PURCHASE_ID,
-            RFQConsultMessage.T.HAD_READ,
-            RFQConsultMessage.T.P2S)
+            RFQConsultRelation.T.PURCHASE_ID)
         .SELECT(RFQConsultRelation.T.TITLE, "myTitle")
         .SELECT(RFQConsultRelation.T.CREATE_DATE, "myCreate_time")
         .FROM(RFQConsult.class)
@@ -808,5 +809,62 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
     view.setSupplierName((String) map.get("supplierName"));
     view.setGrade((Byte) map.get("grade"));
     return view;
+  }
+  /**
+   * @Author wilson Zhang
+   * @Description   查询商家首页第三部分商品询盘  查询商品询盘关联产品表 查询查询商家PKEY
+   * @Date 11:30 2019/3/27
+   */
+
+  @Override
+  public List<SellerIndexConsultView> getIndexInqlist(Integer supperpkey) {
+    SQL sql = new SQL() {{
+    SELECT(RFQConsult.T.PRODUCT,"pkey")
+            .SELECT(PdtProduct.T.NAME,"name")
+            .SELECT("COUNT(*) as inqcount")
+            .FROM(RFQConsult.class)
+            .LEFT_JOIN(PdtProduct.class,PdtProduct.T.PKEY,RFQConsult.T.PRODUCT)
+            .LEFT_JOIN(RFQConsultRelation.class, T.CONSULT,RFQConsult.T.PKEY)
+            .WHERE(RFQConsult.T.TYPE,"=?",RFQConsultType.INQUIRY)
+            .WHERE(T.SUPPLIER_ID,"=?",supperpkey)
+            .GROUP_BY(RFQConsult.T.PRODUCT)
+            .orderByDesc("inqcount").LIMIT(0,5);
+    }};
+    List<SellerIndexConsultView> list=  Query.sql(sql).queryMaps().stream().map(o->new SellerIndexConsultView(){
+      {
+        setPdtcount((Long)o.get("inqcount"));
+        setPruductpkey((Integer)o.get("pkey"));
+        setName((String)o.get("name"));
+      }
+    }).collect(Collectors.toList());
+    return  list;
+  }
+  /**
+   * @Author wilson Zhang
+   * @Description  商家首页第2块询盘总数
+   * @Date 16:49 2019/3/27
+   */
+  @Override
+  public Integer getConsultCount(Integer supperpkey) {
+    SQL pdt = new SQL() {{
+      SELECT(RFQConsultRelation.T.PKEY).FROM(RFQConsultRelation.class)
+              .WHERE(T.SUPPLIER_ID,"=?",supperpkey).GROUP_BY(RFQConsult.T.PURCHASE_ID);
+    }};
+    return  irille.pub.bean.Query.sql(pdt).queryCount();
+  }
+  /**
+   * @Author wilson Zhang
+   * @Description  商家首页第2块联系人信息
+   * @Date 16:49 2019/3/27
+   */
+  @Override
+  public Integer getcontactsCount(Integer supperpkey) {
+    SQL pdt = new SQL() {{
+      SELECT(RFQConsultRelation.T.PKEY).FROM(RFQConsultRelation.class)
+              .LEFT_JOIN(RFQConsultMessage.class,RFQConsultMessage.T.PKEY, T.PKEY)
+              .WHERE(RFQConsultMessage.T.P2S,"=?", Sys.OYn.YES)
+              .WHERE(T.SUPPLIER_ID,"=?",supperpkey);
+    }};
+    return  irille.pub.bean.Query.sql(pdt).queryCount();
   }
 }

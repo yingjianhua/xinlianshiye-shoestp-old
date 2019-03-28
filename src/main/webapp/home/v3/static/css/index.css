@@ -1694,6 +1694,10 @@ a {
     font-size: 14px;
 }
 
+.sanduan .box .boxListWrap {
+    height: 292px;
+    overflow: auto;
+}
 .sanduan .box .boxList {
     padding-bottom: 16px;
     padding-left: 30px;

@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import irille.Dao.PdtProductDao;
 import irille.action.dataimport.util.StringUtil;
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
@@ -35,6 +36,7 @@ import irille.pub.validate.ValidForm;
 import irille.sellerAction.SellerAction;
 import irille.shop.pdt.PdtSize.T;
 import irille.shop.plt.PltConfigDAO;
+import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
 
 public class PdtSizeDAO {
@@ -56,18 +58,14 @@ public class PdtSizeDAO {
     if (null == limit) {
       limit = 5;
     }
-    System.out.println(name + "---" + productCategory);
     SQL sql =
         new SQL() {
           {
-            SELECT(PdtSize.class).FROM(PdtSize.class).WHERE(PdtSize.T.DELETED, "=0");
-            if (name != null) {
-              WHERE(PdtSize.T.NAME, "like ?", "%" + name + "%");
-            }
-            if (productCategory != null) {
-              WHERE(T.PRODUCT_CATEGORY, "=?", productCategory);
-            }
-            ORDER_BY(T.CREATE_TIME, "desc");
+            SELECT(PdtSize.class)
+                .FROM(PdtSize.class)
+                .WHERE(PdtSize.T.DELETED, "=0")
+                .WHERE(T.TYPEVER, "!=0")
+                .WHERE(PdtSize.T.SUPPLIER, " IS NULL ");
           }
         };
     Integer count = Query.sql(sql).queryCount();
@@ -79,21 +77,11 @@ public class PdtSizeDAO {
                       {
                         setId((Integer) bean.get(T.PKEY.getFld().getCodeSqlField()));
                         setName((String) bean.get(T.NAME.getFld().getCodeSqlField()));
-                        if (bean.get(T.TYPE.getFld().getCodeSqlField()) != null)
-                          setType(
-                              Integer.parseInt(
-                                  bean.get(T.TYPE.getFld().getCodeSqlField()).toString()));
-                        setTypeVer((Byte) bean.get(T.TYPEVER.getFld().getCodeSqlField()));
+                        setType((Byte) bean.get(T.TYPE.getFld().getCodeSqlField()));
                         Integer s =
                             (Integer) bean.get(T.PRODUCT_CATEGORY.getFld().getCodeSqlField());
                         if (null != s) {
                           setProductCategory(BeanBase.load(PdtCat.class, s).getName());
-                        }
-                        setCreatedTime((Date) bean.get(T.CREATE_TIME.getFld().getCodeSqlField()));
-                        Integer c =
-                            (Integer) bean.get(PdtSize.T.CREATE_BY.getFld().getCodeSqlField());
-                        if (null != c) {
-                          setCreatedBy(BeanBase.load(SysUser.class, c).getLoginName());
                         }
                       }
                     })
@@ -248,7 +236,8 @@ public class PdtSizeDAO {
     return sysSize;
   }
 
-  public static List<PdtSize> newListSummary(Language lang, Integer type) {
+  public static List<PdtSize> newListSummary(
+      UsrSupplier supplier, Language lang, Integer type, Integer cat) {
 
     /*SQL sql = new I18NSQL(lang) {{
         SELECT(T.PKEY, T.NAME, T.CREATE_BY, T.ROW_VERSION);
@@ -264,31 +253,66 @@ public class PdtSizeDAO {
         sysSize.addAll(supSize);
     }
     return sysSize;*/
+    if (null == cat) {
+      throw new WebMessageException(ReturnCode.failure, "请先选择产品分类");
+    }
+    PdtProductDao pdtProductDao = new PdtProductDao();
     SQL sql =
         new I18NSQL(lang) {
           {
             SELECT(T.PKEY, T.NAME, T.CREATE_BY, T.ROW_VERSION, T.SUPPLIER, T.TYPE);
             FROM(PdtSize.class)
                 .WHERE(T.DELETED, "=?", OYn.NO)
-                .WHERE(T.SUPPLIER, " is null ")
                 .WHERE(T.TYPEVER, " =? ", Pdt.OVer.NEW_1.getLine().getKey());
+            if (type.equals(1)) {
+              WHERE(
+                  "("
+                      + PdtSize.class.getSimpleName()
+                      + "."
+                      + PdtSize.T.SUPPLIER.getFld().getCodeSqlField()
+                      + " IS NULL OR "
+                      + PdtSize.class.getSimpleName()
+                      + "."
+                      + PdtSize.T.SUPPLIER.getFld().getCodeSqlField()
+                      + " =? )",
+                  supplier.getPkey());
+              WHERE(
+                  PdtSize.T.PRODUCT_CATEGORY,
+                  " in(" + String.join(",", pdtProductDao.getParent(cat)) + ") ");
+            } else {
+              WHERE(
+                  PdtSize.class.getSimpleName()
+                      + "."
+                      + PdtSize.T.SUPPLIER.getFld().getCodeSqlField()
+                      + " IS NULL");
+            }
           }
         };
+    //    SQL sql =
+    //        new I18NSQL(lang) {
+    //          {
+    //            SELECT(T.PKEY, T.NAME, T.CREATE_BY, T.ROW_VERSION, T.SUPPLIER, T.TYPE);
+    //            FROM(PdtSize.class)
+    //                .WHERE(T.DELETED, "=?", OYn.NO)
+    //                .WHERE(T.SUPPLIER, " is null ")
+    //                .WHERE(T.TYPEVER, " =? ", Pdt.OVer.NEW_1.getLine().getKey());
+    //          }
+    //        };
     List<PdtSize> sysSize = Query.sql(sql).queryList(PdtSize.class);
-    if (type == 1) {
-      SQL supSql =
-          new I18NSQL(lang) {
-            {
-              SELECT(T.PKEY, T.NAME, T.CREATE_BY, T.ROW_VERSION, T.SUPPLIER, T.TYPE);
-              FROM(PdtSize.class)
-                  .WHERE(T.DELETED, "=?", OYn.NO)
-                  .WHERE(T.SUPPLIER, " =? ", SellerAction.getSupplier().getPkey())
-                  .WHERE(T.TYPEVER, " =? ", Pdt.OVer.NEW_1.getLine().getKey());
-            }
-          };
-      List<PdtSize> supSize = Query.sql(supSql).queryList(PdtSize.class);
-      sysSize.addAll(supSize);
-    }
+    //    if (type == 1) {
+    //      SQL supSql =
+    //          new I18NSQL(lang) {
+    //            {
+    //              SELECT(T.PKEY, T.NAME, T.CREATE_BY, T.ROW_VERSION, T.SUPPLIER, T.TYPE);
+    //              FROM(PdtSize.class)
+    //                  .WHERE(T.DELETED, "=?", OYn.NO)
+    //                  .WHERE(T.SUPPLIER, " =? ", SellerAction.getSupplier().getPkey())
+    //                  .WHERE(T.TYPEVER, " =? ", Pdt.OVer.NEW_1.getLine().getKey());
+    //            }
+    //          };
+    //      List<PdtSize> supSize = Query.sql(supSql).queryList(PdtSize.class);
+    //      sysSize.addAll(supSize);
+    //    }
     return sysSize;
   }
 

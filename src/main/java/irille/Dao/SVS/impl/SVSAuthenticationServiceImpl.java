@@ -25,8 +25,9 @@ public class SVSAuthenticationServiceImpl implements SVSAuthenticationService {
   @Override
   public SVSAuthenticationView getAutInfo(Integer pkey) throws Exception {
     SVSInfo info = SVSAuthenticationDao.querySVS(pkey);
+    if(null==info)
+    	throw new WebMessageException(ReturnCode.failure,"暂无SVS认证信息");
     SVSAuthenticationView view = CreateView(info);
-    System.out.println(info.toString());
     return view;
   }
 

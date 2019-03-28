@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import irille.Dao.PdtProductCatDao;
 import irille.Service.Manage.Pdt.IPdtCatManageService;
+import irille.platform.pdt.View.pdtCatView.PdtCatView;
 import irille.pub.bean.BeanBase;
 import irille.pub.tb.FldLanguage;
 import irille.sellerAction.view.ProductSEOsView;
@@ -127,4 +128,25 @@ public class PdtCatManageServiceImp implements IPdtCatManageService {
             })
         .collect(Collectors.toList());
   }
+
+  @Override
+  public List<PdtCatView> findCategory(Integer id) {
+    return pdtProductCatDao.findCategory(id).stream()
+        .map(
+            cat -> {
+              PdtCatView view = new PdtCatView();
+              view.setId(cat.getPkey());
+              view.setName(cat.getName());
+              view.setCategoryId(cat.getCategoryUp());
+              view.setProductImage(cat.getProductImage());
+              view.setDisplay(cat.getDisplay());
+              List<PdtCatView> category = findCategory(cat.getPkey());
+              if (category.size() > 0) {
+                view.setChildren(category);
+              }
+              return view;
+            })
+        .collect(Collectors.toList());
+  }
+
 }
