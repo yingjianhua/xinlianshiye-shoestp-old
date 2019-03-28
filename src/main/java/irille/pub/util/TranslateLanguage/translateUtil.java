@@ -659,6 +659,8 @@ public class translateUtil {
           baseValue = ex.get(language.toString()).getAsString();
           break;
         }
+      } else {
+        baseValue = "";
       }
     }
     return baseValue;
@@ -717,8 +719,8 @@ public class translateUtil {
       translateBean.setText(
           getBaseValue(
               getValue, translateFilter == null ? null : translateFilter.getBaseLanguage()));
-      if (translateBean.getText() == null || translateBean.getText().length() < 1) {
-        jsonObject.addProperty(language.toString(), "");
+      if (translateBean.getText().length() < 1) {
+        jsonObject.addProperty(language.name(), translateBean.getText());
         continue;
       }
       translateBean.setTargetLanguage(language.toString());
@@ -743,7 +745,7 @@ public class translateUtil {
                 translateBean.getTargetLanguage(),
                 translateBean.getText()));
       }
-      jsonObject.addProperty(language.toString(), translateBean.getText());
+      jsonObject.addProperty(language.name(), translateBean.getText());
     }
     return jsonObject.toString();
   }
