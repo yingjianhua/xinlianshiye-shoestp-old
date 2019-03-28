@@ -21,6 +21,7 @@ import irille.pub.util.GetValue;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.pub.validate.ValidForm;
 import irille.shop.pdt.PdtCat.T;
+import irille.shop.plt.PltConfigDAO;
 import irille.view.Page;
 import irille.view.pdt.CategoryView;
 import org.json.JSONException;
@@ -319,7 +320,8 @@ public class PdtCatDAO {
     pdtCat.setDeleted(OYn.NO.getLine().getKey());
     pdtCat.setCreateBy(createBy);
     pdtCat.setCreateTime(Env.getSystemTime());
-    translateUtil.autoTranslate(pdtCat).ins();
+    translateUtil.newAutoTranslate(pdtCat, translateUtil.buildFilter(pdtCat.getName(), PltConfigDAO.manageLanguage()));
+    pdtCat.ins();
   }
   // 修改分类(3.1.1)
   public static void pdtCatUpd(PdtCat cat) throws Exception {
@@ -328,7 +330,8 @@ public class PdtCatDAO {
     pdtCat.setCategoryUp(cat.getCategoryUp());
     pdtCat.setProductImage(cat.getProductImage());
     pdtCat.setDisplay(cat.getDisplay());
-    translateUtil.autoTranslate(pdtCat).upd();
+    translateUtil.buildFilter(pdtCat.getName(), pdtCat.getName(), PltConfigDAO.manageLanguage());
+    pdtCat.upd();
   }
 
 
