@@ -1,5 +1,7 @@
 package irille.view.usr;
 
+import java.util.Date;
+
 import irille.view.BaseView;
 import lombok.Data;
 
@@ -10,4 +12,5 @@ public class SupplierDetailsDTO implements BaseView {
     private String name;//店铺名称
     private String userName;//用户名
     private String targetedMarket;//目标市场
+    private Date authentication_time;//SVS认证时间
 }
