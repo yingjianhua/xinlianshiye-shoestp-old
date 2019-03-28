@@ -14,6 +14,7 @@ import irille.Dao.RFQ.RFQConsultDao;
 import irille.Dao.RFQ.RFQConsultGroupDao;
 import irille.Dao.RFQ.RFQConsultGroupRelationDao;
 import irille.Dao.RFQ.RFQConsultRelationDao;
+import irille.Dao.RFQ.view.SellerIndexConsultView;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultGroup;
 import irille.Entity.RFQ.RFQConsultGroupRelation;
