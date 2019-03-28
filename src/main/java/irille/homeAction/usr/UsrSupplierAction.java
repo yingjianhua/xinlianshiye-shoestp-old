@@ -548,7 +548,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
 
   private Integer processType; // 工艺类型
 
-  private Integer grade; // svs等级
+  private String grade; // svs等级
 
   private Integer pdtCategory; // 产品类型
 
