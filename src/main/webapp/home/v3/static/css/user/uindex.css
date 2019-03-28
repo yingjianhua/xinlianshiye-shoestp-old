@@ -454,12 +454,28 @@
            line-height: 22px;
            margin-top: 120px;
          }
+         #personalCenter .contacts-main .contacts-main-left .cml-list .cml-content{
+           overflow: hidden;
+         }
          #personalCenter .contacts-main .contacts-main-left .cml-list .contact-list-no-data img{
            margin-bottom: 5px;
          }
+         #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box .supplier-rotate{
+           transform: rotate(180deg);
+         }
+         #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box .supplier-arrow{
+          position: absolute;
+          bottom:0;
+          left:31px;
+          padding:5px;
+          transition: all 0.3s linear;
+         }
+         #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box.sele .supplier-arrow{
+          color: #fff;
+         }
          #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box{
-         	height: 80px;
-         	padding:20px 5px 0 20px;
+         	min-height: 80px;
+         	padding:20px 5px 25px 20px;
          	background:#eceff7;
          	font-size:12px;
          	line-height:18px;
@@ -574,13 +590,13 @@
 
 
           #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2{
-          	padding:18px 0;
-          	font-size:12px;
+          	/* padding:18px 0; */
+            font-size:12px;
+            transition: height 0.3s linear;
           }
           #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2 h2{
-          	font-size:14px;
-            padding-left:20px;
-          	padding-bottom:12px;
+            font-size:14px;
+            padding: 12px 0 12px 20px;
           }
           #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2 li{
           	height:72px;
