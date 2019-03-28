@@ -19,8 +19,8 @@
     <title></title>
     <script src="components/O2O-bottom.js"></script>
     <%--左侧分类列表--%>
+    <jsp:include page="/home/v3/header.jsp"/>
 </head>
-<jsp:include page="/home/v3/header.jsp"/>
 <body>
 <jsp:include page="/home/v3/nav.jsp"></jsp:include>
 <div id="svsSuplies">
@@ -28,6 +28,16 @@
 
     <!--页面左部分类导航-->
     <div class="w_1240">
+        <!--分级导航-->
+        <div class="topNav">
+            <div class="h1">
+                <a href="/">Home</a><i class="el-icon-arrow-right"></i>
+            </div>
+            <div class="h1">
+                <a href="javascript:;" class="now">Suppliers</a>
+            </div>
+        </div>
+
         <div id="left-nave-list" class="fl">
             <div class="leftNav">
                 <h1>Related categories</h1>
@@ -88,19 +98,17 @@
                         <%--</el-checkbox-group>--%>
 
                         <%--<div class="dividing-line"></div>--%>
-{{selectedMarketCountryList}}---test
+
                         <el-checkbox-group class="my-ele-checkbox-group"
                                            style="padding-bottom: 0;max-height: 400px;"
                                            v-model="selectedMarketCountryList">
-                            <template v-for="i in 5">
-                                <el-checkbox
+                                <el-checkbox :class="{'double-length': util_function_obj.getByteLen(item.name)>=12}"
                                         v-for="item,index in marketCountryList"
                                         v-show="(!filterAreaKeyword) || (filterAreaKeyword && item.name.toLowerCase().indexOf(filterAreaKeyword.toLowerCase())!=-1 )"
                                         :key="item.id"
                                         :label="item.id">
                                     {{item.name}}
                                 </el-checkbox>
-                            </template>
                         </el-checkbox-group>
                     </div>
                 </div>
@@ -110,11 +118,10 @@
                     <h3 @click="showcheck(2)">Shoe-making process<img src="images/svssupicondown.png" alt=""></h3>
                     <ul class="select shoes-make-wrap"  :class="select2 ?  'height' : ''"
                         style="width: 100%;">
-                        <li class="shoes-make-item">Vulcanization Shoes</li>
-                        <li class="shoes-make-item">Injection Shoes</li>
-                        <li class="shoes-make-item">Molded shoes</li>
-                        <li class="shoes-make-item">Sewing shoes</li>
-                        <li class="shoes-make-item">Adhesive shoes</li>
+                        <li class="shoes-make-item" :class="{active: processType.value == selectedProcessType}"
+                            v-for="processType in processTypeList"
+                            :data-type-value="processType.value"
+                            @click="selectProcessType">{{processType.label}}</li>
                     </ul>
                 </div>
                 <%--第三个筛选框 - 等级--%>
@@ -135,7 +142,9 @@
                     </div>
                 </div>
                 <div class="grow"></div>
-                <el-button style="margin-right: 20px;" size="small">search</el-button>
+
+                <el-button class="btn-search" style="margin-right: 20px;" size="small"
+                    @click="search">search</el-button>
             </div>
 
             <%--主体内容    --%>
@@ -182,34 +191,36 @@
             </div>
             <div class="pageBreak">
                 <el-pagination
-                        :page-size="pagerSize"
-                        :pager-count="pagerCount"
+                        :current-page.sync="currentPage"
+                        :page-size="limit"
                         layout="prev, pager, next"
                         prev-text="< Previous"
                         next-text="Next >"
-                        :total="pagerTotal"
-                        @current-change="changeCurrent">
+                        :total="totalCount"
+                        @current-change="changePage">
                 </el-pagination>
             </div>
         </div>
 
         <div style="clear: both;"></div>
 
-        <div class="supplier_footer">
-            <h2 class="supplier_footer_h2">Haven’t Find what you want?</h2>
-            <div class="supplier_footer_content">
-                <div class="content_item">
-                    <h2 class="content_item_h2">RFQ</h2>
-                    <p class="content_item_text">Post exact requests to find exact Chinese Suppliers </p>
-                    <a @click="ToRFQ" class="content_item_button btn_colour_1">Post Your Request</a>
-                </div>
-                <div class="content_item content_item_right">
-                    <h2 class="content_item_h2">Supplier Search</h2>
-                    <p class="content_item_text">Find More Supplier</p>
-                    <a href="javascript:void(0)" class="content_item_button btn_colour_2" @click="noOpen">Search now</a>
-                </div>
-            </div>
-        </div>
+        <%--<div class="supplier_footer">--%>
+            <%--<h2 class="supplier_footer_h2">Haven’t Find what you want?</h2>--%>
+            <%--<div class="supplier_footer_content">--%>
+                <%--<div class="content_item">--%>
+                    <%--<h2 class="content_item_h2">RFQ</h2>--%>
+                    <%--<p class="content_item_text">Post exact requests to find exact Chinese Suppliers </p>--%>
+                    <%--<a @click="ToRFQ" class="content_item_button btn_colour_1">Post Your Request</a>--%>
+                <%--</div>--%>
+                <%--<div class="content_item content_item_right">--%>
+                    <%--<h2 class="content_item_h2">Supplier Search</h2>--%>
+                    <%--<p class="content_item_text">Find More Supplier</p>--%>
+                    <%--<a href="javascript:void(0)" class="content_item_button btn_colour_2" @click="noOpen">Search now</a>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+        <%--模态框 - 筛选下拉 点击隐藏--%>
+        <div class="modal" @click="hiddenDropDown" v-show="select1 || select2 || select3"></div>
     </div>
     <index-bottom></index-bottom>
     <%--<o2o-bottom></o2o-bottom>--%>
@@ -222,24 +233,10 @@
         el:'#svsSuplies',
 
         data:{
-            baseurl:'',
-            // 选中的等级
-            selectedLevelList:[],
-            // 筛选的等级列表
-            levelList:[{
-                value: "3",
-                label: "Diamond",
-                iconUrl: "/home/v3/static/images/supplier-level3.png"
-            },{
-                value: "2",
-                label: "Gold",
-                iconUrl: "/home/v3/static/images/supplier-level2.png"
-            },{
-                value: "1",
-                label: "Silver",
-                iconUrl: "/home/v3/static/images/supplier-level1.png"
-            },],
-
+            // 筛选框，下拉内容是否显示
+            select1:false,
+            select2:false,
+            select3:false,
             filterAreaKeyword:"", //筛选1中的 地区筛选输入内容
             processList:[],
             // 选中的区域
@@ -266,26 +263,46 @@
             selectedMarketCountryList:[],
             // 筛选的国家列表
             marketCountryList:[],
+            // 选中的制鞋工艺
+            selectedProcessType: 0,
+            // 制鞋工艺
+            processTypeList:[
+                {label: "Vulcanization Shoes",value: 41},
+                {label: "Injection Shoes",value: 42},
+                {label: "Molded shoes",value: 40},
+                {label: "Sewing shoes",value: 43},
+                {label: "Adhesive shoes",value: 37},
+            ],
+
+            // 选中的等级
+            selectedLevelList:[],
+            // 筛选的等级列表
+            levelList:[{
+                value: "3",
+                label: "Diamond",
+                iconUrl: "/home/v3/static/images/supplier-level3.png"
+            },{
+                value: "2",
+                label: "Gold",
+                iconUrl: "/home/v3/static/images/supplier-level2.png"
+            },{
+                value: "1",
+                label: "Silver",
+                iconUrl: "/home/v3/static/images/supplier-level1.png"
+            },],
 
             classLists: [], //左侧分类列表
             lose: 1,
-            cated: -1,
-            curr: 1,
-
-            // 筛选框，下拉内容是否显示
-            select1:false,
-            select2:false,
-            select3:false,
-
-            page:1,
-            pagerSize: 6, // 页面显示条数
-            pagerCount: 6, //
-            pagerTotal: 100, // 总条数
+            cated: 0,
+            currentPage: 1,
+            page:1, //当前页数
+            limit: 6, //每页页数
+            totalCount: 100, // 总条数
 
             supplierList:[], //显示的供应商列表信息
         },
         methods:{
-            classList(e) { // 获取左边分类
+            getClassList(e) { // 获取左边分类
                 axios.get('/home/pdt_PdtProduct_gtProductsIndexCategoriesListAjax', {
                     params: {
                         page: 1,
@@ -293,6 +310,11 @@
                     }
                 })
                     .then((res) => {
+                    if(res.data.ret != 1){
+                    this.$message.error(res.data.msg || "Get category list error, please try again later");
+                    return
+                }
+
                     this.classLists = res.data.result
                     for (var i in this.classLists) {
                     var children = this.classLists[i].children;
@@ -304,6 +326,17 @@
             .catch((error) => {
                     console.log("err")
                 });
+            },
+
+            // 左边列表下拉功能
+            xiala(e) {
+                var i = e.currentTarget.dataset.index;
+                var j = e.currentTarget.dataset.indextwo;
+                if (this.classLists[i].children[j].xiala == 2) {
+                    this.$set(this.classLists[i].children[j], "xiala", 1)
+                } else {
+                    this.$set(this.classLists[i].children[j], "xiala", 2)
+                }
             },
             // 获取筛选内容-国家列表
             getCountryList() {
@@ -322,46 +355,17 @@
                 });
             },
 
-            // 下拉筛选1 - area
-            getMarketAreaList() {
-                axios.get('/home/pdt_PdtProduct_gtProductsIndexCategoriesListAjax', {
-                    params: {
-                        page: 1,
-                        limit: 5
-                    }
-                })
-                    .then((res) => {
-                    this.classLists = res.data.result
-                    for (var i in this.classLists) {
-                    var children = this.classLists[i].children;
-                    for (var j in children) {
-                        this.$set(this.classLists[i].children[j], "xiala", 2)
-                    }
-                }
-            })
-            .catch((error) => {
-                    console.log("err")
-                });
+            //选择制鞋工艺
+            selectProcessType(e){
+                this.selectedProcessType = e.currentTarget.dataset.typeValue;
             },
-            // 左边列表下拉功能
-            xiala(e) {
-                var i = e.currentTarget.dataset.index;
-                var j = e.currentTarget.dataset.indextwo;
-                if (this.classLists[i].children[j].xiala == 2) {
-                    this.$set(this.classLists[i].children[j], "xiala", 1)
-                } else {
-                    this.$set(this.classLists[i].children[j], "xiala", 2)
-                }
-            },
+
             // 点击左侧分类时跳转
             categorySearch(e) {
-                this.lose = 1
                 this.cated = e.currentTarget.dataset.cated;
-                console.log(this.cated)
-                this.page = 0;
-                this.curr = 1
-                this.getSupplierList();
+                this.search();
             },
+
             // 跳转RFQ
             ToRFQ(){
                 let url = "/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1"+ "&backUrl=" + window.location.href
@@ -382,9 +386,15 @@
                     }
                 }
             },
-            changeCurrent(res) {
-                console.log(res)
-                this.page = res;
+            // 点击隐藏筛选下拉框
+            hiddenDropDown(){
+                this.select1 = false;
+                this.select2 = false;
+                this.select3 = false;
+            },
+            // 改变分页
+            changePage(page) {
+                this.page = page;
                 this.getSupplierList();
             },
             cllection:function (index) {
@@ -392,27 +402,37 @@
             },
             //获取供货商列表
             getSupplierList:function () {
-                let self = this;
                 axios.get('/home/usr_UsrSupplier_listSuppliers',{
                     params:{
-                        start: (this.page -1) * self.pagerCount,
-                        limit: self.pagerCount,
-                        storeName: "",
-                        targetMarket: "",
-                        processType: "",
-                        grade: "",
-                        pdtCategory: "", //产品分类
-                        checkType: 1, //检索类型 1为查询已认证SVS供应商列表,0为查询所有
+                        start: (this.page -1) * this.limit,
+                        limit: this.limit,
+                        // storeName: "", //店铺名称
+                        targetMarket: this.selectedMarketCountryList.join(), //暂时写国家 - 未含地区
+                        processType: this.selectedProcessType, //工艺类型 （注塑鞋，硫化鞋）
+                        grade: this.selectedLevelList.join(),  //SVS等级 1为银，2为金，3为钻石，0为暂无等级
+                        pdtCategory: this.cated, //产品分类 - 左侧列表选中项
+                        checkType: 1, //检索类型 1为查询已认证SVS供应商列表,0为查询所有 - 此处固定为1
                     }
-                }).then(function (res) {
-                    if(res.data.ret == 1){
-                        let data = res.data.result;
-                        console.log(data)
-                        self.pagerTotal = data.totalCount
-                        self.$set(self,'supplierList',data.items)
-                        console.log(self.supplierList)
+                }).then( (res) => {
+                    if(res.data.ret != 1){
+                        this.$message.error(res.data.msg || "Get supplier list error, please try again later");
+                        return
                     }
+
+                    // 分页用
+                    this.totalCount = res.data.result.totalCount
+                    this.supplierList = res.data.result.items;
                 })
+            },
+            // 重置搜索条件 - 从第一页开始
+            resetSearchParams(){
+                this.page = 1;
+                this.currentPage = 1;
+            },
+            // 点击搜索
+            search(){
+                this.resetSearchParams();
+                this.getSupplierList();
             },
             // 点击 搜索供应商 (未开放先提示)
             noOpen(){
@@ -424,9 +444,9 @@
         },
         mounted(){
             this.cated = getParams('cated', 0) //分类点击用的
-            this.getCountryList();
+            this.getClassList();
             this.getSupplierList();
-            this.classList();
+            this.getCountryList();
         }
     })
 </script>

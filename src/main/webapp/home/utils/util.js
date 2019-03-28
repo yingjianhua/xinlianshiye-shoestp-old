@@ -73,6 +73,22 @@ var util_function_obj={
         }
         return "https://image.shoestp.com" + url + postfixUrl;
     },
+    // 获取字节数 - 计算长度 - 换行
+    getByteLen(str) {
+        if (!str) return null;
+
+        let byteLen = 0;
+        for (let i = 0; i < str.length; i++) {
+            // 中文算2个字节，其余算1个
+            if (str[i].match(/[^\x00-\xff]/gi) != null) {
+                byteLen += 1
+            } else {
+                byteLen += 0.5
+            }
+        }
+        return Math.floor(byteLen)
+
+    },
 };
 
 

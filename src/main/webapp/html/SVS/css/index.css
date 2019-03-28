@@ -371,6 +371,51 @@
             transform-origin: center bottom; }
 
 /*# sourceMappingURL=index.css.map */
+
+
+/*滚动条*/
+#svsSuplies ::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+#svsSuplies ::-webkit-scrollbar-track{
+  background:#dee2ec;
+}
+#svsSuplies ::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  min-height: 20px;
+  background:#fff;
+  border:1px solid #dee2ec;
+}
+#svsSuplies ::-webkit-scrollbar-corner {
+  background:#dee2ec;
+}
+/*模态框*/
+.modal{
+  position: fixed;top:0;left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0);
+}
+/*面包屑*/
+#svsSuplies .topNav{
+  height:60px;
+  line-height:60px;
+  font-size: 14px;
+  color:#7f7f7f;
+}
+#svsSuplies .topNav .h1{
+  /*padding-right:6px;*/
+  display:inline-block;
+}
+#svsSuplies .topNav .h1 i{
+  margin:0 6px;
+  display:inline-block;
+}
+#svsSuplies .topNav a.now{
+  color:#10389c;
+}
+/*左侧列表*/
 #left-nave-list .pl-icon2{
   display:inline-block;
   width:11px;
@@ -435,10 +480,24 @@
 #svsSuplies #o2otop{
   background-color: white;
 }
+#svsSuplies .btn-search{
+  color: #232323;
+  text-align: center;
+  border-radius: 3px;
+  border: 1px #dde1ec solid;
+  background: #f5f7f7;
+}
+#svsSuplies .btn-search:hover{
+  color: #fff;
+  background: #10389c;
+  border: 1px #10389c solid;
+}
 #svsSuplies .nav{
+  position: relative;
+  z-index: 1;
   width: 100%;
   height: 50px;
-  margin: 50px auto 20px;
+  margin: 0 auto 20px;
   display: flex;
   justify-content: left;
   align-items: center;
@@ -524,6 +583,9 @@
   background: #fff;
 }
 #svsSuplies .nav .navitem .shoes-make-item:hover{
+  background: #eee;
+}
+#svsSuplies .nav .navitem .shoes-make-item.active{
   background: #dee2ec;
 }
 /*#svsSuplies .nav .navitem .select .el-checkbox-group{*/
@@ -650,6 +712,7 @@
 .pageBreak {
   text-align: center;
   margin-top: 20px;
+  margin-bottom: 50px;
 }
 
 .pageBreak .el-pagination {
@@ -762,12 +825,16 @@
   padding: 10px 0;
   overflow: auto;
 }
+
 .my-ele-checkbox-group .el-checkbox{
-  /*min-width: 20%;*/
   min-width: 180px;
   margin-bottom: 4px;
-  padding-right: 15px;
+  /*padding-right: 15px;*/
   box-sizing: border-box;
+}
+/*长度计算*/
+.my-ele-checkbox-group .el-checkbox.double-length{
+  min-width: 360px;
 }
 .my-ele-checkbox-group.checkbox-width-135 .el-checkbox{
   min-width: 135px;
@@ -802,21 +869,4 @@
 
 .my-ele-checkbox-group .el-textarea__inner {
   min-height: 176px;
-}
-/*滚动条*/
-#svsSuplies ::-webkit-scrollbar {
-  width: 16px;
-  height: 16px;
-}
-#svsSuplies ::-webkit-scrollbar-track{
-  background:#dee2ec;
-}
-#svsSuplies ::-webkit-scrollbar-thumb {
-  border-radius: 6px;
-  min-height: 20px;
-  background:#fff;
-  border:1px solid #dee2ec;
-}
-#svsSuplies ::-webkit-scrollbar-corner {
-  background:#dee2ec;
 }
