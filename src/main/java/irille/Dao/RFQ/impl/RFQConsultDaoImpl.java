@@ -456,7 +456,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
       Integer limit,
       Date date,
       String keyword,
-      boolean flag,
+      Boolean flag,
       Byte readStatus,
       Integer country,
       int supId,
@@ -471,7 +471,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
   public Integer countMyRFQQuoteList(
       Date date,
       String keyword,
-      boolean flag,
+      Boolean flag,
       Byte readStatus,
       Integer country,
       int supId,
@@ -484,7 +484,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
   private SQL getMyRFQQuoteListSql(
       Date date,
       String keyword,
-      boolean flag,
+      Boolean flag,
       Byte readStatus,
       Integer country,
       int supId,
@@ -519,7 +519,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
           date);
     }
     sql.WHERE(keyword != null, RFQConsult.T.TITLE, "like ?", "%" + keyword + "%");
-    sql.WHERE(T.FAVORITE, "=?", flag);
+    sql.WHERE(flag != null, T.FAVORITE, "=?", flag);
     sql.WHERE(usrCountry != null, UsrPurchase.T.COUNTRY, "=?", usrCountry);
     return sql;
   }

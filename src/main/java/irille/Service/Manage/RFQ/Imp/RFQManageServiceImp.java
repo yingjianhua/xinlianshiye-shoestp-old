@@ -242,7 +242,7 @@ public class RFQManageServiceImp implements IRFQManageService {
       Integer limit,
       Date date,
       String keyword,
-      boolean flag,
+      Boolean flag,
       Byte readStatus,
       Integer country,
       int Supid,

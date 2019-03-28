@@ -81,7 +81,7 @@ public interface RFQConsultDao {
       Integer limit,
       Date date,
       String keyword,
-      boolean flag,
+      Boolean flag,
       Byte readStatus,
       Integer country,
       int supId,
@@ -90,7 +90,7 @@ public interface RFQConsultDao {
   Integer countMyRFQQuoteList(
       Date date,
       String keyword,
-      boolean flag,
+      Boolean flag,
       Byte readStatus,
       Integer country,
       int supId,
