@@ -670,7 +670,8 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
   public void authInfo() throws Exception {
     write(UsrSupplierDAO.auth(getSupplier().getPkey()));
   }
-  public void supplierDetails() throws IOException {
-    write();
+  @Inject UsrSupplierDAO dao;
+  public void getSupplierDetails() throws IOException {
+    write(dao.getSupplierDetails(getSupplier().getPkey()));
   }
 }
