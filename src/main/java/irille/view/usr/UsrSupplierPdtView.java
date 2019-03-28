@@ -18,4 +18,6 @@ public class UsrSupplierPdtView implements BaseView {
   private String pdtName; // 产品名称
 
   private String pdtPictures; // 产品图片
+  
+  private String link;
 }

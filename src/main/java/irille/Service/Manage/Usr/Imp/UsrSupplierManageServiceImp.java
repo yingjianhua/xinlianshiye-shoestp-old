@@ -10,6 +10,7 @@ import irille.Dao.UsrSupplierDao;
 import irille.Service.Manage.Usr.IUsrSupplierManageService;
 import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
+import irille.shop.plt.PltConfigDAO;
 import irille.shop.usr.UsrSupplier;
 import irille.view.usr.UsrSupplierInfoView;
 import irille.view.usr.UsrshopSettingView;
@@ -31,7 +32,9 @@ public class UsrSupplierManageServiceImp implements IUsrSupplierManageService {
   @Override
   public UsrSupplierInfoView getInfoById(int i) {
     Map map = usrSupplierDao.getInfoById(i);
-    return SetBeans.set(map, UsrSupplierInfoView.class);
+    UsrSupplierInfoView view = SetBeans.set(map, UsrSupplierInfoView.class);
+    view.setLanguage(PltConfigDAO.supplierLanguage(i).name());
+    return view;
   }
 
   @Override

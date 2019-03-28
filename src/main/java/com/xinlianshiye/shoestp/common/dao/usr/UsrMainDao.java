@@ -17,5 +17,7 @@ public interface UsrMainDao {
 	
 	void save(UsrMain main);
 	
+	Optional<UsrMain> findByPkey(Integer pkey);
+	
 	Optional<UsrMain> findByEmail(String email);
 }
