@@ -18,6 +18,7 @@ import irille.homeAction.HomeAction;
 import irille.homeAction.pdt.dto.ExhibitionSupplierView;
 import irille.homeAction.pdt.dto.PdtExhibitionView;
 import irille.homeAction.pdt.dto.PdtProductView;
+import irille.pub.Obj;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage;
 import irille.pub.util.GetValue;
@@ -28,11 +29,13 @@ import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
+import irille.view.Page;
 import irille.view.RFQ.RFQPdtInfo;
 import irille.view.pdt.PdtProductBaseInfoView;
 import irille.view.pdt.PdtProductCatView;
 import irille.view.pdt.PdtSearchView;
 import irille.view.pub.PageSearch;
+import irille.view.usr.MobilePdtView;
 import irille.view.v2.Pdt.PdtNewPdtInfo;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/7 Time: 14:54 */
@@ -396,5 +399,30 @@ public class PdtProductServiceImp implements IPdtProductService {
     pageSearch.setItems(result);
     if (cate != null && cate > 0) pageSearch.setBreadcrumbnav(pdtProductDao.getBreadcrumbNav(cate));
     return pageSearch;
+  }
+  /**
+   * 获取手机端商家产品列表
+   *
+   * @author GS
+   */
+  @Override
+  public Page findPdtList(Integer pkey, Integer start, Integer limit, Integer checkType) {
+    System.out.println(pkey);
+    List<MobilePdtView> views = new ArrayList<>();
+    List<Map<String, Object>> map =
+        pdtProductDao.findPdtListBySupplier(pkey, start, limit, checkType);
+
+    for (Map<String, Object> pdt : map) {
+      MobilePdtView view = new MobilePdtView();
+      view.setPkey(GetValue.get(pdt, PdtProduct.T.PKEY, Integer.class, 0));
+      view.setName(GetValue.get(pdt, PdtProduct.T.NAME, String.class, null));
+      view.setPicture(GetValue.get(pdt, PdtProduct.T.PICTURE, String.class, null));
+      view.setMinPrice(GetValue.get(pdt, "minPrice", BigDecimal.class, null));
+      view.setMaxPrice(GetValue.get(pdt, "maxPrice", BigDecimal.class, null));
+      view.setArtNo(GetValue.get(pdt, PdtProduct.T.CODE, String.class, null));
+      views.add(view);
+    }
+
+    return new Page<>(views, start, limit, pdtProductDao.count(pkey, start, limit, checkType));
   }
 }

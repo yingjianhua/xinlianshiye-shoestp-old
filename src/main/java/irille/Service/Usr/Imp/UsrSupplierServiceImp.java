@@ -18,6 +18,8 @@ import irille.Service.Usr.IUsrSupplierService;
 import irille.core.sys.Sys;
 import irille.homeAction.usr.dto.SupplierListView;
 import irille.pub.bean.BeanBase;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage;
 import irille.pub.util.FormaterSql.FormaterSql;
@@ -29,6 +31,7 @@ import irille.shop.prm.PrmGroupPurchaseLine;
 import irille.shop.usr.UsrFavorites;
 import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
+import irille.view.usr.SupplierInfoView;
 import irille.view.usr.UsrSupplierInfView;
 import irille.view.usr.UsrSupplierPdtView;
 import irille.view.v3.Pdt.PdtProductView;
@@ -241,6 +244,31 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
       view.setProducts(pdtViews);
       supplies.add(view);
     }
-    return new Page<>(supplies, start, limit, usrSupplierDao.count());
+    return new Page<>(
+        supplies,
+        start,
+        limit,
+        usrSupplierDao.count(storeName, targetMarket, processType, grade, pdtCategory));
+  }
+  /**
+   * 查询供应商信息详情
+   *
+   * @author GS
+   */
+  @Override
+  public SupplierInfoView getSupplierInfo(Integer pkey) {
+    SupplierInfoView view = new SupplierInfoView();
+    UsrSupplier supplier = BeanBase.chk(UsrSupplier.class, pkey);
+
+    if (null == supplier) return view;
+    view.setId(pkey);
+    if (null != supplier.getLogo()) view.setLogo(supplier.getLogo());
+    if (null != supplier.getShowName()) view.setSupplierName(supplier.getShowName());
+    if (null != supplier.getName()) view.setCompanyName(supplier.getName());
+    if (null != supplier.getStoreopenTime()) view.setCreateTime(supplier.getStoreopenTime());
+    SvsRatingAndRosDTO SVSDto = SVSInfoService.getSvsRatingAndRos(pkey);
+    view.setSvs(SVSDto);
+
+    return view;
   }
 }
