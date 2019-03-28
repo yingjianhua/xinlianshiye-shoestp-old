@@ -56,6 +56,7 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
     }
 
     query.GROUP_BY(RFQPurchaseContact.T.PKEY);
+    query.ORDER_BY(RFQPurchaseContact.T.CREATED_TIME, "desc");
     query.limit(start, limit);
     List<RFQPurchaseContactView> result =
         query.queryMaps().stream()
