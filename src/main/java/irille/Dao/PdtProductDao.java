@@ -562,7 +562,19 @@ public class PdtProductDao {
         .WHERE(PdtProduct.T.PRODUCT_TYPE, " <> ?", Pdt.OProductType.GATHER.getLine().getKey())
         .WHERE(PdtProduct.T.STATE, "<>?", Pdt.OState.DELETE.getLine().getKey())
         .WHERE(PdtProduct.T.STATE, "<>?", Pdt.OState.MERCHANTDEL.getLine().getKey())
-        .WHERE(PdtProduct.T.STATE, "<>?", Pdt.OState.OFF.getLine().getKey())
+        .WHERE(PdtProduct.T.SOLD_TIME_B, " IS NOT NULL ")
+        .WHERE(
+            "("
+                + PdtProduct.class.getSimpleName()
+                + "."
+                + PdtProduct.T.STATE.getFld().getCodeSqlField()
+                + " = ? OR "
+                + PdtProduct.class.getSimpleName()
+                + "."
+                + PdtProduct.T.STATE.getFld().getCodeSqlField()
+                + " =? )",
+            Pdt.OState.OFF.getLine().getKey(),
+            Pdt.OState.ON.getLine().getKey())
         .ORDER_BY(PdtProduct.T.UPDATE_TIME, "desc");
 
     if (null != data) {
@@ -587,31 +599,83 @@ public class PdtProductDao {
           break;
         case 3:
           sql1.WHERE(
-              "("
+              "(("
                   + O2O_PrivateExpoPdt.class.getSimpleName()
                   + "."
                   + O2O_PrivateExpoPdt.T.VERIFY_STATUS.getFld().getCodeSqlField()
-                  + "=? OR "
+                  + "=? AND "
+                  + PdtProduct.class.getSimpleName()
+                  + "."
+                  + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()
+                  + " =? ) OR ("
                   + O2O_Product.class.getSimpleName()
                   + "."
                   + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField()
-                  + " =?)",
+                  + " =? AND "
+                  + PdtProduct.class.getSimpleName()
+                  + "."
+                  + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()
+                  + " =?) OR ("
+                  + PdtProduct.class.getSimpleName()
+                  + "."
+                  + PdtProduct.T.IS_VERIFY.getFld().getCodeSqlField()
+                  + " =? AND "
+                  + PdtProduct.class.getSimpleName()
+                  + "."
+                  + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()
+                  + " =? ))",
               O2O_PrivateExpoPdtStatus.PASS.getLine().getKey(),
-              O2O_ProductStatus.PASS.getLine().getKey());
+              Pdt.OProductType.PrivateExpo.getLine().getKey(),
+              O2O_ProductStatus.PASS.getLine().getKey(),
+              Pdt.OProductType.O2O.getLine().getKey(),
+              Pdt.OAppr.PASS.getLine().getKey(),
+              Pdt.OProductType.GENERAL.getLine().getKey());
           break;
         case 4:
           sql1.WHERE(
-              "("
+              "(("
                   + O2O_PrivateExpoPdt.class.getSimpleName()
                   + "."
                   + O2O_PrivateExpoPdt.T.VERIFY_STATUS.getFld().getCodeSqlField()
-                  + "=? OR "
+                  + "=? AND "
+                  + PdtProduct.class.getSimpleName()
+                  + "."
+                  + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()
+                  + " =? ) OR ("
                   + O2O_Product.class.getSimpleName()
                   + "."
                   + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField()
-                  + " =?)",
+                  + " =? AND "
+                  + PdtProduct.class.getSimpleName()
+                  + "."
+                  + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()
+                  + " =?) OR ("
+                  + PdtProduct.class.getSimpleName()
+                  + "."
+                  + PdtProduct.T.IS_VERIFY.getFld().getCodeSqlField()
+                  + " =? AND "
+                  + PdtProduct.class.getSimpleName()
+                  + "."
+                  + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()
+                  + " =? ))",
               O2O_PrivateExpoPdtStatus.Failed.getLine().getKey(),
-              O2O_ProductStatus.Failed.getLine().getKey());
+              Pdt.OProductType.PrivateExpo.getLine().getKey(),
+              O2O_ProductStatus.Failed.getLine().getKey(),
+              Pdt.OProductType.O2O.getLine().getKey(),
+              Pdt.OAppr.Failed.getLine().getKey(),
+              Pdt.OProductType.GENERAL.getLine().getKey());
+          //          sql1.WHERE(
+          //              "("
+          //                  + O2O_PrivateExpoPdt.class.getSimpleName()
+          //                  + "."
+          //                  + O2O_PrivateExpoPdt.T.VERIFY_STATUS.getFld().getCodeSqlField()
+          //                  + "=? OR "
+          //                  + O2O_Product.class.getSimpleName()
+          //                  + "."
+          //                  + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField()
+          //                  + " =?)",
+          //              O2O_PrivateExpoPdtStatus.Failed.getLine().getKey(),
+          //              O2O_ProductStatus.Failed.getLine().getKey());
           break;
       }
     }
@@ -698,10 +762,14 @@ public class PdtProductDao {
                         }
                       } else {
                         if ((byte) o.get(PdtProduct.T.IS_VERIFY.getFld().getCodeSqlField())
-                            == Sys.OYn.YES.getLine().getKey()) {
-                          o.put("status", "正常");
-                        } else {
-                          o.put("status", "审核未通过");
+                            == Pdt.OAppr.PASS.getLine().getKey()) {
+                          o.put("status", "审核通过");
+                        } else if ((byte) o.get(PdtProduct.T.IS_VERIFY.getFld().getCodeSqlField())
+                            == Pdt.OAppr.Failed.getLine().getKey()) {
+                          o.put("status", "审核失败");
+                        } else if ((byte) o.get(PdtProduct.T.IS_VERIFY.getFld().getCodeSqlField())
+                            == Pdt.OAppr._DEFAULT.getLine().getKey()) {
+                          o.put("status", "待审核");
                         }
                         o.put("upANDlow", (Byte) PdtProduct.T.STATE.getFld().getDefaultValue());
                       }
@@ -1533,9 +1601,13 @@ public class PdtProductDao {
     SQL sql =
         new SQL() {
           {
-            SELECT(PdtProduct.T.NAME, PdtProduct.T.PICTURE, PdtProduct.T.PKEY,PdtProduct.T.IS_DEFAULT_REVIEW)
+            SELECT(
+                    PdtProduct.T.NAME,
+                    PdtProduct.T.PICTURE,
+                    PdtProduct.T.PKEY,
+                    PdtProduct.T.IS_DEFAULT_REVIEW)
                 .FROM(PdtProduct.class)
-                .WHERE(supplierId != null, PdtProduct.T.SUPPLIER, "=?",supplierId)
+                .WHERE(supplierId != null, PdtProduct.T.SUPPLIER, "=?", supplierId)
                 .ORDER_BY(PdtProduct.T.VERIFY_TIME, "desc")
                 .LIMIT(0, 3);
           }
@@ -1553,17 +1625,29 @@ public class PdtProductDao {
    */
   public List findPdtListBySupplier(Integer pkey, Integer start, Integer limit, Integer checkType) {
     List list = null;
-    
+
     SQL sql = new SQL();
     SQL favoritesSql = new SQL();
-    SQL minSql=new SQL();
-    SQL maxSql=new SQL();
-    minSql.SELECT(" MIN("+PdtTieredPricing.class.getSimpleName()+"." + PdtTieredPricing.T.CUR_PRICE + ")")
-    .FROM(PdtTieredPricing.class)
-    .WHERE(PdtTieredPricing.T.PRODUCT,"=", PdtProduct.T.PKEY);
-    maxSql.SELECT(" MAX("+PdtTieredPricing.class.getSimpleName()+"." + PdtTieredPricing.T.CUR_PRICE + ")")
-    .FROM(PdtTieredPricing.class)
-    .WHERE(PdtTieredPricing.T.PRODUCT,"=", PdtProduct.T.PKEY);
+    SQL minSql = new SQL();
+    SQL maxSql = new SQL();
+    minSql
+        .SELECT(
+            " MIN("
+                + PdtTieredPricing.class.getSimpleName()
+                + "."
+                + PdtTieredPricing.T.CUR_PRICE
+                + ")")
+        .FROM(PdtTieredPricing.class)
+        .WHERE(PdtTieredPricing.T.PRODUCT, "=", PdtProduct.T.PKEY);
+    maxSql
+        .SELECT(
+            " MAX("
+                + PdtTieredPricing.class.getSimpleName()
+                + "."
+                + PdtTieredPricing.T.CUR_PRICE
+                + ")")
+        .FROM(PdtTieredPricing.class)
+        .WHERE(PdtTieredPricing.T.PRODUCT, "=", PdtProduct.T.PKEY);
     favoritesSql
         .SELECT("count(1)")
         .FROM(UsrFavorites.class)
@@ -1573,18 +1657,14 @@ public class PdtProductDao {
         .SELECT(" count(1) ")
         .FROM(RFQConsult.class)
         .WHERE(RFQConsult.T.PRODUCT, " =", PdtProduct.T.PKEY);
-    sql.SELECT(
-    		PdtProduct.T.PKEY, 
-    		PdtProduct.T.NAME,
-    		PdtProduct.T.PICTURE,
-    		PdtProduct.T.CODE)
-        .SELECT(minSql,"minPrice")
-        .SELECT(maxSql,"maxPrice")
+    sql.SELECT(PdtProduct.T.PKEY, PdtProduct.T.NAME, PdtProduct.T.PICTURE, PdtProduct.T.CODE)
+        .SELECT(minSql, "minPrice")
+        .SELECT(maxSql, "maxPrice")
         .FROM(PdtProduct.class)
         .LEFT_JOIN(PdtTieredPricing.class, PdtTieredPricing.T.PRODUCT, PdtProduct.T.PKEY)
-        .WHERE(PdtProduct.T.SUPPLIER, "=" + pkey )
+        .WHERE(PdtProduct.T.SUPPLIER, "=" + pkey)
         .GROUP_BY(PdtProduct.T.PKEY);
-    	
+
     String newSql = "";
     if (checkType == 0) {
       sql.ORDER_BY(PdtProduct.T.VERIFY_TIME, "desc").LIMIT(start, limit);
@@ -1592,17 +1672,41 @@ public class PdtProductDao {
     }
     ;
     if (checkType == 1) {
-      newSql = sql.toString() + " order by ("+minSql.toString()+") desc  	LIMIT "+start+","+limit+"";
+      newSql =
+          sql.toString()
+              + " order by ("
+              + minSql.toString()
+              + ") desc  	LIMIT "
+              + start
+              + ","
+              + limit
+              + "";
     }
     if (checkType == 2) {
-      newSql = sql.toString() + " order by ("+subSQL.toString()+") desc  LIMIT "+start+","+limit+"";
+      newSql =
+          sql.toString()
+              + " order by ("
+              + subSQL.toString()
+              + ") desc  LIMIT "
+              + start
+              + ","
+              + limit
+              + "";
     }
     if (checkType == 3) {
-      newSql = sql.toString() + " order by ("+favoritesSql.toString()+") desc LIMIT "+start+","+limit+"";
+      newSql =
+          sql.toString()
+              + " order by ("
+              + favoritesSql.toString()
+              + ") desc LIMIT "
+              + start
+              + ","
+              + limit
+              + "";
     }
     return Query.sql(newSql).queryMaps();
   }
-  
+
   /**
    * 手机端商家产品列表
    *
@@ -1614,17 +1718,29 @@ public class PdtProductDao {
    */
   public int count(Integer pkey, Integer start, Integer limit, Integer checkType) {
     List list = null;
-    
+
     SQL sql = new SQL();
     SQL favoritesSql = new SQL();
-    SQL minSql=new SQL();
-    SQL maxSql=new SQL();
-    minSql.SELECT(" MIN("+PdtTieredPricing.class.getSimpleName()+"." + PdtTieredPricing.T.CUR_PRICE + ")")
-    .FROM(PdtTieredPricing.class)
-    .WHERE(PdtTieredPricing.T.PRODUCT,"=", PdtProduct.T.PKEY);
-    maxSql.SELECT(" MAX("+PdtTieredPricing.class.getSimpleName()+"." + PdtTieredPricing.T.CUR_PRICE + ")")
-    .FROM(PdtTieredPricing.class)
-    .WHERE(PdtTieredPricing.T.PRODUCT,"=", PdtProduct.T.PKEY);
+    SQL minSql = new SQL();
+    SQL maxSql = new SQL();
+    minSql
+        .SELECT(
+            " MIN("
+                + PdtTieredPricing.class.getSimpleName()
+                + "."
+                + PdtTieredPricing.T.CUR_PRICE
+                + ")")
+        .FROM(PdtTieredPricing.class)
+        .WHERE(PdtTieredPricing.T.PRODUCT, "=", PdtProduct.T.PKEY);
+    maxSql
+        .SELECT(
+            " MAX("
+                + PdtTieredPricing.class.getSimpleName()
+                + "."
+                + PdtTieredPricing.T.CUR_PRICE
+                + ")")
+        .FROM(PdtTieredPricing.class)
+        .WHERE(PdtTieredPricing.T.PRODUCT, "=", PdtProduct.T.PKEY);
     favoritesSql
         .SELECT("count(1)")
         .FROM(UsrFavorites.class)
@@ -1634,18 +1750,14 @@ public class PdtProductDao {
         .SELECT(" count(1) ")
         .FROM(RFQConsult.class)
         .WHERE(RFQConsult.T.PRODUCT, " =", PdtProduct.T.PKEY);
-    sql.SELECT(
-    		PdtProduct.T.PKEY, 
-    		PdtProduct.T.NAME,
-    		PdtProduct.T.PICTURE,
-    		PdtProduct.T.CODE)
-        .SELECT(minSql,"minPrice")
-        .SELECT(maxSql,"maxPrice")
+    sql.SELECT(PdtProduct.T.PKEY, PdtProduct.T.NAME, PdtProduct.T.PICTURE, PdtProduct.T.CODE)
+        .SELECT(minSql, "minPrice")
+        .SELECT(maxSql, "maxPrice")
         .FROM(PdtProduct.class)
         .LEFT_JOIN(PdtTieredPricing.class, PdtTieredPricing.T.PRODUCT, PdtProduct.T.PKEY)
-        .WHERE(PdtProduct.T.SUPPLIER, "="+pkey)
+        .WHERE(PdtProduct.T.SUPPLIER, "=" + pkey)
         .GROUP_BY(PdtProduct.T.PKEY);
-    	
+
     String newSql = "";
     if (checkType == 0) {
       sql.ORDER_BY(PdtProduct.T.VERIFY_TIME, "desc");
@@ -1653,15 +1765,14 @@ public class PdtProductDao {
     }
     ;
     if (checkType == 1) {
-      newSql = sql.toString() + " order by ("+minSql.toString()+") desc ";
+      newSql = sql.toString() + " order by (" + minSql.toString() + ") desc ";
     }
     if (checkType == 2) {
-      newSql = sql.toString() + " order by ("+subSQL.toString()+") desc ";
+      newSql = sql.toString() + " order by (" + subSQL.toString() + ") desc ";
     }
     if (checkType == 3) {
-      newSql = sql.toString() + " order by ("+favoritesSql.toString()+") desc";
+      newSql = sql.toString() + " order by (" + favoritesSql.toString() + ") desc";
     }
     return Query.sql(newSql).queryMaps().size();
   }
-  
 }
