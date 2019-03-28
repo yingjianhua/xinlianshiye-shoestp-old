@@ -44,7 +44,7 @@ public class PdtSizeAction extends ActionBase<PdtSize> {
    * @throws Exception
    */
   public void list() throws Exception {
-    write(PdtSizeDAO.listSize(getStart(), getLimit()));
+    write(PdtSizeDAO.listSize(name, productCategory, getStart(), getLimit()));
   }
 
   public void newList() throws Exception {

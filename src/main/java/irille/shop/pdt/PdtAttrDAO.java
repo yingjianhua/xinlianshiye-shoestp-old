@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import irille.Dao.PdtProductDao;
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
@@ -31,8 +34,6 @@ import irille.shop.pdt.PdtAttr.T;
 import irille.shop.plt.PltConfigDAO;
 import irille.view.Page;
 import irille.view.pdt.PdtProductVueView;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class PdtAttrDAO {
   public static final Log LOG = new Log(PdtAttrDAO.class);
@@ -281,9 +282,9 @@ public class PdtAttrDAO {
                           lineList.add(line);
                         });
                 attr.setItems(lineList);
-                result.add(attr);
-              });
-      return result;
+                return attr;
+              })
+          .collect(Collectors.toList());
     }
   }
 

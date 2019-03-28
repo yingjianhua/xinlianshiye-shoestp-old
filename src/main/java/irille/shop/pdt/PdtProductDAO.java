@@ -13,10 +13,10 @@ import java.util.stream.Collectors;
 import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
 import com.xinlianshiye.shoestp.plat.service.pm.imp.PMMessageServiceImp;
 
-import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
-import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Entity.O2O.O2O_Product;
+import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
+import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.pm.PM.OTempType;
 import irille.core.sys.Sys;
 import irille.homeAction.HomeAction;
@@ -36,7 +36,9 @@ import irille.pub.idu.IduOther;
 import irille.pub.idu.IduUpd;
 import irille.pub.svr.Env;
 import irille.pub.tb.FldLanguage;
+import irille.pub.util.SEOUtils;
 import irille.pub.util.FormaterSql.FormaterSql;
+import irille.pub.util.TranslateLanguage.TranslateFilter;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.sellerAction.SellerAction;
 import irille.shop.pdt.Pdt.OState;
@@ -200,6 +202,7 @@ public class PdtProductDAO {
       PdtProduct dbBean = new PdtProduct().init();
       dbBean.setSupplier(SellerAction.getSupplier().getPkey());
       dbBean.setMemberLevel(null);
+      TranslateFilter translateFilter = new TranslateFilter();
       translateUtil.newAutoTranslate(
           getB(), translateUtil.buildFilter(getB().getName(), FldLanguage.Language.en));
       PropertyUtils.copyProperties(
@@ -256,6 +259,7 @@ public class PdtProductDAO {
       insLine(getB(), getLines(), PdtSpec.T.PRODUCT.getFld());
     }
   }
+
   public static class Upd extends IduUpd<Upd, PdtProduct> {
 
     private List<PdtSpec> _lines;
