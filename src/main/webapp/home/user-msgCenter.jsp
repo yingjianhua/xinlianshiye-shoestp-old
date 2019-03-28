@@ -183,7 +183,7 @@
 										 :data-inquiry-index="inquiryIndex"
 										 v-if="inquiry.relations && inquiry.relations.length==0">
 										<img class="goods-pic" alt="goods's pic"
-											 :src="(inquiry.images && inquiry.images[0])?(image(inquiry.images[0]) + (inquiry.type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')):'/home/v3/static/images/no_img.png'">
+											 :src="(inquiry.images && inquiry.images[0])?(util_function_obj.image(inquiry.images[0],50,50, (inquiry.type==3?'/blur,r_5,s_20':''))):'/home/v3/static/images/user_no_img.png'">
 										<div class="goods-info">
 											<div class="goods-name">
 												<div class="ellipsis_1">{{inquiry.title}}</div>
@@ -204,7 +204,7 @@
 										 @click="(inquiry.type==1 && isScale)?viewInquiryDetail($event):''"
 										 :data-inquiry-index="inquiryIndex">
 										<img class="goods-pic" alt="goods's pic"
-											 :src="(inquiry.images && inquiry.images[0])?(image(inquiry.images[0]) + (inquiry.type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')):'/home/v3/static/images/no_img.png'"
+											 :src="(inquiry.images && inquiry.images[0])?(util_function_obj.image(inquiry.images[0],50,50, (inquiry.type==3?'/blur,r_5,s_20':''))):'/home/v3/static/images/user_no_img.png'"
 											 :data-inquiry-index="inquiryIndex">
 										<div class="goods-info"
 											 :data-inquiry-index="inquiryIndex">
@@ -229,7 +229,13 @@
 										v-if="!relation.isDeleteInLocal"
 										:key="relation.supplier.pkey">
 										<el-badge is-dot :hidden="!(relation.unread || relation.quotation.isNew)" class="short-name">
-											<div class="short-name"
+											<img class="short-name" v-if="relation.supplier && relation.supplier.logo"
+												 :src="util_function_obj.image(relation.supplier.logo, 50, 50)"
+												 :data-inquiry-id="inquiry.pkey"
+												 :data-supplier-index="relationsIndex"
+												 :data-inquiry-index="inquiryIndex"
+												 @click="isScale?contactSupplier($event):''">
+											<div class="short-name" v-else
 												 :data-inquiry-id="inquiry.pkey"
 												 :data-supplier-index="relationsIndex"
 												 :data-inquiry-index="inquiryIndex"
@@ -246,7 +252,8 @@
 											<div class="name ellipsis_1">
 												{{relation.supplier.name}}
 											</div>
-											<img class="country" :src="image(relation.supplier.country.flag)" alt="">
+											<img class="country"  v-if="relation.supplier.country && relation.supplier.country.flag"
+												 :src="util_function_obj.image(relation.supplier.country.flag, 24, 14)" alt="flag">
 										</div>
 
 										<transition name="el-fade-in">
@@ -257,7 +264,7 @@
 														{{relation.quotation.title}}
 													</div>
 													<img class="goods-pic"
-														 :src="(relation.quotation && relation.quotation.images && relation.quotation.images[0])?(image(relation.quotation.images[0].url)):'/home/v3/static/images/no_img.png'" alt="goods's pic">
+														 :src="(relation.quotation && relation.quotation.images && relation.quotation.images[0])?(util_function_obj.image(relation.quotation.images[0].url, 44)):'/home/v3/static/images/user_no_img.png'" alt="goods's pic">
 													<div class="goods-spec">
 														{{relation.quotation.minPrice}}-{{relation.quotation.maxPrice}} {{relation.quotation.currency.shortName}}
 													</div>
@@ -331,7 +338,7 @@
 						<div class="name">
                             <%--<template  v-if="supplierDetail.company"></template>--%>
                             <!-- 有头像显示头像，没有头像显示首字母 -->
-                            <img :src="image(supplierDetail.logo)" alt="" class="short-name"
+                            <img :src="util_function_obj.image(supplierDetail.logo, 50, 50)" alt="" class="short-name"
                                  :class="{isShowMore: isShowMore}"
                                  v-if="supplierDetail.logo">
                             <div class="short-name" v-else-if="supplierDetail.name"
@@ -366,7 +373,7 @@
 										<li class="basic-item">
 											<div class="label">Country / Region:</div>
 											<div class="content">
-												<img  alt="" class="pic-flag" :src="image(supplierDetail.countryFlag)">
+												<img  alt="" class="pic-flag" :src="util_function_obj.image(supplierDetail.countryFlag,26,18)">
 												{{supplierDetail.country}}
 											</div>
 										</li>
@@ -416,7 +423,7 @@
 										<div class="box-title">Inquiry information</div>
 										<div class="row-item product-info-box">
 											<img class="product-pic" alt="product's pic"
-												 :src="(inquiryDetail.images && inquiryDetail.images[0]) ? (image(inquiryDetail.images[0]) + (inquiryList[nowInquiryIndex].type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')) : '/home/v3/static/images/no_img.png'">
+												 :src="(inquiryDetail.images && inquiryDetail.images[0]) ? (util_function_obj.image(inquiryDetail.images[0], 50, 50, (inquiryList[nowInquiryIndex].type==3?'/blur,r_5,s_20':''))) : '/home/v3/static/images/user_no_img.png'">
 											<div class="product-descript">
 												{{inquiryDetail.title}}
 											</div>
@@ -443,7 +450,7 @@
 													v-if="picUrl"
 													:key="picUrl">
 													<img class="product-pic" alt="product's pic"
-														 :src="image(picUrl) + (inquiryList[nowInquiryIndex].type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')">
+														 :src="util_function_obj.image(picUrl, 50, 50, (inquiryList[nowInquiryIndex].type==3?'/blur,r_5,s_20':''))">
 												</li>
 											</ul>
 										</div>
@@ -461,7 +468,7 @@
                                         <li class="basic-item">
                                             <div class="label">Country / Region:</div>
                                             <div class="content">
-                                                <img  alt="" class="pic-flag" :src="image(supplierDetail.countryFlag)">
+                                                <img  alt="" class="pic-flag" :src="util_function_obj.image(supplierDetail.countryFlag, 26, 18)">
                                                 {{supplierDetail.country}}
                                             </div>
                                         </li>
@@ -526,7 +533,7 @@
 												<div class="label">Product Photos:</div>
 												<div class="content">
 													<img class="product-pic"  alt=""
-														 :src="image(imgUrl)"
+														 :src="util_function_obj.image(imgUrl, 50, 50)"
 														 v-if="imgUrl"
 														 v-for="imgUrl in inquiryDetail.images"
 														 :key="imgUrl">
@@ -588,7 +595,7 @@
                                         <li class="basic-item">
                                             <div class="label">Country / Region:</div>
                                             <div class="content">
-                                                <img  alt="" class="pic-flag" :src="image(supplierDetail.countryFlag)">
+                                                <img  alt="" class="pic-flag" :src="util_function_obj.image(supplierDetail.countryFlag, 26, 18)">
                                                 {{supplierDetail.country}}
                                             </div>
                                         </li>
@@ -700,7 +707,7 @@
 												<li class="goods-pic-item"
 													v-for="product in inquiryDetail.productRequest"
 													:key="product.image">
-													<img class="product-pic" :src="(product.image && product.image.split(',') && product.image.split(',')[0])?(util_function_obj.image(product.image.split(',')[0],50)):'/home/v3/static/images/no_img.png'" alt="">
+													<img class="product-pic" :src="(product.image && product.image.split(',') && product.image.split(',')[0])?(util_function_obj.image(product.image.split(',')[0],50)):'/home/v3/static/images/user_no_img.png'" alt="">
 													<div class="goods-name ellipsis_1">
 														{{product.name}}
 													</div>
@@ -751,7 +758,7 @@
 								</div>
 								<div class="chater-info">
 									LOCATION：
-									<img  alt="" class="pic-flag" :src="image(supplierDetail.countryFlag)"
+									<img  alt="" class="pic-flag" :src="util_function_obj.image(supplierDetail.countryFlag, 26, 18)"
 										  v-if="supplierDetail.countryFlag">
 									{{supplierDetail.location}}
 									<!-- IP:115.218.107.* -->
@@ -766,7 +773,7 @@
 										<template v-if="!msg.p2S">
 											<img class="pic-head"
 												 v-if="chatMsgObj.another.avatar"
-												 :src="image(chatMsgObj.another.avatar)">
+												 :src="util_function_obj.image(chatMsgObj.another.avatar, 50)">
 											<div class="pic-head" v-else-if="chatMsgObj.another.name">
 												{{chatMsgObj.another.name[0]}}
 											</div>
@@ -777,7 +784,7 @@
 										<template v-else>
 											<img class="pic-head"
 												 v-if="chatMsgObj.myself.avatar"
-												 :src="image(chatMsgObj.myself.avatar)">
+												 :src="util_function_obj.image(chatMsgObj.myself.avatar, 50)">
 											<div class="pic-head" v-else-if="chatMsgObj.myself.name">
 												{{chatMsgObj.myself.name[0]}}
 											</div>
@@ -850,7 +857,7 @@
 					<div class="inquiry-overview">
 						<img class="inquiry-main-pic" alt=""
 							 v-if="inquiryDetail.images"
-							 :src="(inquiryDetail.images && inquiryDetail.images[0])?(image(inquiryDetail.images[0])):'/home/v3/static/images/no_img.png'">
+							 :src="(inquiryDetail.images && inquiryDetail.images[0])?(util_function_obj.image(inquiryDetail.images[0], 100)):'/home/v3/static/images/user_no_img.png'">
 						<div class="content-box-wrap">
 							<div class="content-box1">
 								<div class="content-box">
@@ -908,7 +915,7 @@
 								<h3 class="content-header">Attach files:</h3>
 								<ul class="content attach-file-list">
 									<li class="attach-file-item" v-for="picUrl in inquiryDetail.images" v-if="picUrl">
-										<img v-if="isImg(picUrl)" :src="image(picUrl)" alt="product's pic" class="inquiry-pic">
+										<img v-if="isImg(picUrl)" :src="util_function_obj.image(picUrl, 100)" alt="product's pic" class="inquiry-pic">
 										<!-- <p class="ellipsis_1">goods thiods things</p> -->
 									</li>
 									<%--<li class="attach-file-item" v-for="picUrl in inquiryDetail.images" v-if="picUrl">--%>
@@ -942,7 +949,7 @@
 										<span class="title">Product image or file:</span>
 										<div class="text">
 											<img class="pic-item" alt="goods' pic"
-												 :src="image(goodsPic.url)"
+												 :src="util_function_obj.image(goodsPic.url, 100)"
 												 v-for="goodsPic in quotationDetail.images">
 										</div>
 									</li>
@@ -1007,9 +1014,9 @@
 												v-for="productBook in quotationDetail.throwaways">
 												<img class="company-book-item"  alt="product's book"
 													 v-if="isImg(productBook.url)"
-													 :src="image(productBook.url)">
+													 :src="util_function_obj.image(productBook.url, 200, 110)">
 												<div v-else>
-													<a :href="image(productBook.url)" class="book-link">《{{productBook.name}}》</a>
+													<a :href="util_function_obj.image(productBook.url)" class="book-link">《{{productBook.name}}》</a>
 												</div>
 											</template>
 										</div>
@@ -1093,8 +1100,7 @@
 				<b>ALL</b> <!-- <i class="el-icon-arrow-down"></i> -->
 			</div>
 
-			<el-input size="medium" placeholder="Please input the keywords"
-					  class="input-with-select"
+			<el-input size="medium" placeholder="Please input the keywords" class="input-with-select"
 					  style="width: 440px;"
 					  @keyup.enter.native="searchInAddProductDialog"
 					  v-model.trim="addProductKeyword">
@@ -1138,7 +1144,7 @@
 					v-for="goods in addProductGoodsListObj.items"
 					:data-product-id="goods.pdtId"
 					@click="selectAddProductGoods">
-					<img class="goods-pic" :src="(goods.picture && goods.picture.split(',') && goods.picture.split(',')[0])?util_function_obj.image(goods.picture.split(',')[0],100):'/home/v3/static/images/no_img.png'" alt="goods's pic">
+					<img class="goods-pic" :src="(goods.picture && goods.picture.split(',') && goods.picture.split(',')[0])?util_function_obj.image(goods.picture.split(',')[0],100):'/home/v3/static/images/user_no_img.png'" alt="goods's pic">
 					<div class="goods-name ellipsis_1">
 						{{goods.pdtName}}
 					</div>
@@ -1281,14 +1287,14 @@
 			this.getInquiryList();
 
 			// 从联系人那边跳转过来时，显示聊天框
-			if(this.GetQueryString("supplierPkey") && this.GetQueryString("consultPkey") && this.GetQueryString("relationPkey") ){
+			if(util_function_obj.GetQueryString("supplierPkey") && util_function_obj.GetQueryString("consultPkey") && util_function_obj.GetQueryString("relationPkey") ){
 				this.isFromContactList = true;
 				this.isScale = true;
 				this.showChatBox = true;
 
-				this.supplierPkey = this.GetQueryString("supplierPkey");
-				this.consultPkey = this.GetQueryString("consultPkey");
-				this.relationPkey = this.GetQueryString("relationPkey");
+				this.supplierPkey = util_function_obj.GetQueryString("supplierPkey");
+				this.consultPkey = util_function_obj.GetQueryString("consultPkey");
+				this.relationPkey = util_function_obj.GetQueryString("relationPkey");
 
 				//获取chat列表
 				this.getChatInfo();
@@ -1301,22 +1307,22 @@
 			}
 		},
 		methods: {
-			image(v, params) {
-				if (!v) {
-					return ""
-				}
-				if (!params) {
-					params = ""
-				}
-				return "https://image.shoestp.com" + v + params
-			},
-
-			// 读取链接带参
-			GetQueryString(name){
-				var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-				var r = window.location.search.substr(1).match(reg);
-				if(r!=null)return  unescape(r[2]); return null;
-			},
+			// image(v, params) {
+			// 	if (!v) {
+			// 		return ""
+			// 	}
+			// 	if (!params) {
+			// 		params = ""
+			// 	}
+			// 	return "https://image.shoestp.com" + v + params
+			// },
+			//
+			// // 读取链接带参
+			// GetQueryString(name){
+			// 	var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+			// 	var r = window.location.search.substr(1).match(reg);
+			// 	if(r!=null)return  unescape(r[2]); return null;
+			// },
 
 			// 时间戳转换时间
 			dataFormatMethod: function (value, fmt) {
@@ -2287,7 +2293,7 @@
 						content = content.content;
 						break;
 					case 2:
-						content = "<img src='"+this.image(content.imageUrl)+"'/>";
+						content = "<img src='" + util_function_obj.image(content.imageUrl, 500, 200)+"'/>";
 						break;
 					case 3:
 					case 4:

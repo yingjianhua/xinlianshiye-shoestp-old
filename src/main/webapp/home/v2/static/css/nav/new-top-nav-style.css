@@ -282,3 +282,27 @@
   margin-right: 15px;
 }
 /* ---------------- elementUI 弹窗样式自定义 - end ---------------- */
+
+/*其余公用样式*/
+/* 单行省略号 */
+.ellipsis_1{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+/* 两行省略号 */
+.ellipsis_2{
+  overflow : hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+/* 3行省略号 */
+.ellipsis_3{
+  overflow : hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}

@@ -163,9 +163,10 @@
                                         class="flexSb clearfix">
                                         <div class="h1">
                                             <img v-if="inquiryItem.consult.images != ''"
-                                                :src="inquiryItem.consult.type==3?util_function_obj.image(inquiryItem.consult.images[0]) + '?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20' : util_function_obj.image(inquiryItem.consult.images[0],50,50)"
+                                                :src="inquiryItem.consult.type==3?util_function_obj.image(inquiryItem.consult.images[0]) + '?x-oss-process=image/resize,w_52,h_52/blur,r_5,s_20' : util_function_obj.image(inquiryItem.consult.images[0],52,52)"
                                                 alt="" />
-                                            <img v-else src="/home/v3/static/images/user_no_img.png" alt=""/>
+                                            <img v-else src="/home/v3/static/images/user_no_img.png" alt=""
+                                                style="width:52px;height:52px;" />
                                             <i v-if="inquiryItem.quotation.isNew"></i>
                                         </div>
                                         <!-- <div class="h2">{{inquiryItem.consult.title}}</div> -->

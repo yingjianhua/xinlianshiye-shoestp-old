@@ -28,7 +28,7 @@
         <div class="sanduan w1240 clearfix">
             <div class="box">
                 <h1>Categories</h1>
-
+                <div class="boxListWrap">
                 <div class="boxList" v-for="(item,index) in classLists" for-key="index">
                     <a class="h2" :href="'/home/pdt_PdtProduct?cated='+item.value" target="_blank">
                         <img class="leftNav-icon1" src="/home/v3/static/images/icon_nx.png" alt="{{item.label}}"
@@ -45,6 +45,7 @@
                             <a :href="'/home/pdt_PdtProduct?cated='+item2.value" target="_blank">{{item2.label}}</a>
                         </li>
                     </ul>
+                </div>
                 </div>
 
             </div>
@@ -458,7 +459,7 @@
             this.getRFQList();
         },
         methods: {
-            // 跳转RFQ   
+            // 跳转RFQ
              ToRFQ(title,quantity,chooesValue){
                 let url = "/home/usr_UsrConsult_publishView?title=" +title+"&quantity="+quantity+"&chooesValue="+chooesValue+ "&backUrl=" + window.location.href
                 util_function_obj.supplierCantEnter(this, url,"Please register or login your buyer account if you want public RFQ.");
