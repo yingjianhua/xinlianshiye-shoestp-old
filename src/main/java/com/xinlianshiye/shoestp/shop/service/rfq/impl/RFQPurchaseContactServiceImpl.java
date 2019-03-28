@@ -108,6 +108,7 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
     query.WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supplierPkey);
     query.WHERE(RFQConsultRelation.T.PURCHASE_ID, "=?", purchasePkey);
     query.WHERE(RFQConsultRelation.T.IS_DELETED_PURCHASE, "=?", false);
+    query.ORDER_BY(RFQConsultRelation.T.LAST_MESSAGE_SEND_TIME, "desc");
     if (keyword != null) query.WHERE(RFQConsult.T.TITLE, "like ?", "%" + keyword + "%");
     List<RFQConsultRelationView> result =
         query.queryMaps().stream()
