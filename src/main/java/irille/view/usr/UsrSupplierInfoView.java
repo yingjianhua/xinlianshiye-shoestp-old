@@ -14,6 +14,7 @@ public class UsrSupplierInfoView implements BaseView {
 
   private String name;
   private String logo;
+  private String language;
 
   @SetBean(OriginalField = "role_name")
   private List<String> roles;
