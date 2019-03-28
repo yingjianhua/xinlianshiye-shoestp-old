@@ -12,13 +12,7 @@
     <link rel="stylesheet" href="css/reset.css">
     <%--<link rel="stylesheet" href="css/index.css">--%>
     <link rel="stylesheet" href="/html/SVS/css/index.css">
-    <!-- 引入样式 -->
-    <%--<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">--%>
-    <!-- 引入组件库 -->
-    <%--<script src="https://unpkg.com/element-ui/lib/index.js"></script>--%>
-    <title></title>
-    <script src="components/O2O-bottom.js"></script>
-    <%--左侧分类列表--%>
+    <title>Online and Offline B2B Shoes Trading Platform—Shoestp.com Shoes Wholesale O2O New Mode</title>
     <jsp:include page="/home/v3/header.jsp"/>
 </head>
 <body>
@@ -28,7 +22,7 @@
 
     <!--页面左部分类导航-->
     <div class="w_1240">
-        <!--分级导航-->
+        <!--分级导航 - 面包屑-->
         <div class="topNav">
             <div class="h1">
                 <a href="/">Home</a><i class="el-icon-arrow-right"></i>
@@ -38,6 +32,7 @@
             </div>
         </div>
 
+        <%--页面左部分类导航--%>
         <div id="left-nave-list" class="fl">
             <div class="leftNav">
                 <h1>Related categories</h1>
@@ -68,18 +63,17 @@
                         </el-collapse-transition>
                     </div>
                 </div>
-
             </div>
         </div>
         <!--页面左部分类导航 end-->
 
 
         <div class="supplier-list-main fr">
-
             <%--顶部筛选--%>
             <div class="nav">
                 <%--第一个筛选框 - 地区筛选--%>
-                <div class="navitem" :class="{active: select1}">
+                <div class="navitem" :class="{active: select1}"
+                     @mouseenter="getCountryList">
                     <h3 @click="showcheck(1)">Target Market<img src="images/svssupicondown.png" alt=""></h3>
                     <div class="select" :class="select1 ?  'height' : ''" style="width: 990px;">
                         <el-input class="region-area-input" size="small"
@@ -148,47 +142,91 @@
             </div>
 
             <%--主体内容    --%>
-            <div class="suplies" v-for="item,index in supplierList">
+            <div class="suplies" v-for="supplier,index in supplierList">
+                <%--收藏行--%>
                 <div class="likes">
-                    <img src="images/subliesiconsc.png" alt="" v-if="!item.isFavorite"  @click="cllection(index)">
-                    <img src="images/subliesiconros.png" alt="" v-else  @click="cllection(index)">
-                    <span @click="cllection(index)">Favorites </span>
+                    <%--<img src="images/subliesiconsc.png" alt="" v-if="!supplier.isFavorite"  @click="cllection(index)">--%>
+                    <%--<img src="images/subliesiconros.png" alt="" v-else  @click="cllection(index)">--%>
+                    <%--<span @click="cllection(index)">Favorites </span>--%>
                 </div>
+
                 <div class="supliescon">
+                    <%--左侧logo--%>
                     <div class="logo">
-                        <img :src="util_function_obj.image(item.logo,160,130)" alt="">
-                        <div @click="ToContactSupplier(item.id)">
+                        <img :src="supplier.logo?util_function_obj.image(supplier.logo,160,130):'/home/v3/static/images/user_no_img.png'" alt="">
+                        <div @click="toContactSupplier(supplier.id)">
                             <img src="images/subliesconxin.png" alt="">
                             <span>Contact Supplier</span>
                         </div>
                     </div>
-                    <div class="introduce" style="width:320px">
-                        <a class="title ellipsis_2" :href="'/home/usr_UsrSupplier_gtSupIndex?pkey=' + item.id" target="_blank">{{item.showName}}</a>
-                        <p class="p ellipsis_2">{{item.showName}}</p>
+                    <%--中间分数--%>
+                    <div class="introduce">
+                        <a class="company-name ellipsis_2" :href="'/home/usr_UsrSupplier_gtSupIndex?pkey=' + supplier.id" target="_blank">{{supplier.storeName}}</a>
+                        <%--test--%>
+                        <%--<p class="main-product ellipsis_2">Main Products: {{supplier.storeName}}</p>--%>
                         <div class="level">
-                            <p><img src="images/subliesiconcert.png" alt=""> Certificate | &nbsp;&nbsp;<img src="images/subliesiconsvs1.png" alt="" v-if="item.isAuth  == 1"><img src="images/subliesiconsvs2.png" alt="" v-if="item.isAuth  == 2"><img src="images/subliesiconsvs3.png" alt="" v-if="item.isAuth  == 3"> SVS</p>
+                            <template v-if="supplier.svs && supplier.svs.status==1">
+                                <img src="images/subliesiconcert.png" alt=""> Certificate | &nbsp;&nbsp;
+                                <template v-if="supplier.svs && supplier.svs.grade">
+                                    <img src="images/subliesiconsvs1.png" alt="" v-if="supplier.svs.grade  == 1">
+                                    <img src="images/subliesiconsvs2.png" alt="" v-else-if="supplier.svs.grade  == 2">
+                                    <img src="images/subliesiconsvs3.png" alt="" v-else-if="supplier.svs.grade  == 3">
+                                    SVS
+                                </template>
+                            </template>
                         </div>
-                        <p>
-                            <span>R&D: </span><img src="images/subliesiconros.png" alt="" v-for="a in (Math.floor(item.rd))"><img src="images/subliesiconhalf.png" alt="" v-if="item.rd%1">
-                        </p>
-                        <p>
-                            <span> Output: </span><img src="images/subliesiconros.png" alt="" v-for="a in (Math.floor(item.output))"><img src="images/subliesiconhalf.png" alt="" v-if="item.output%1">
-                        </p>
-                        <p>
-                            <span>Scale: </span><img src="images/subliesiconros.png" alt="" v-for="a in (Math.floor(item.scale))"><img src="images/subliesiconhalf.png" alt="" v-if="item.scale%1">
-                        </p>
-                        <p class="ellipsis_2">{{item.mainSalesArea}}</p>
+
+                        <div class="score" v-if="supplier.svs && supplier.svs.researchBaseStar">
+                            <span class="title">R&D: </span>
+                            <template v-if="Math.floor(supplier.svs.researchBaseStar) < 1">
+                                <img src="images/subliesiconsc.png" class="star" alt="">
+                            </template>
+                            <template v-else>
+                                <img src="images/subliesiconros.png" class="star" alt=""
+                                     v-for="a in (Math.floor(supplier.svs.researchBaseStar))">
+                                <img src="images/subliesiconhalf.png" class="star" alt=""
+                                     v-if="supplier.svs.researchBaseStar%1">
+                            </template>
+                        </div>
+                        <div class="score" v-if="supplier.svs && supplier.svs.capacityBaseStar">
+                            <span class="title"> Output: </span>
+                            <template v-if="Math.floor(supplier.svs.capacityBaseStar) < 1">
+                                <img src="images/subliesiconsc.png" class="star" alt="">
+                            </template>
+                            <template v-else>
+                                <img src="images/subliesiconros.png" class="star" alt=""
+                                     v-for="a in (Math.floor(supplier.svs.capacityBaseStar))">
+                                <img src="images/subliesiconhalf.png" class="star" alt=""
+                                     v-if="supplier.svs.capacityBaseStar%1">
+                            </template>
+                        </div>
+                        <div class="score" v-if="supplier.svs && supplier.svs.factoryBaseStar">
+                            <span class="title">Scale: </span>
+                            <template v-if="Math.floor(supplier.svs.factoryBaseStar) < 1">
+                                <img src="images/subliesiconsc.png" class="star" alt="">
+                            </template>
+                            <template v-else>
+                                <img src="images/subliesiconros.png" class="star" alt=""
+                                     v-for="a in (Math.floor(supplier.svs.factoryBaseStar))">
+                                <img src="images/subliesiconhalf.png" class="star" alt=""
+                                     v-if="supplier.svs.factoryBaseStar%1">
+                            </template>
+                        </div>
+                        <%--test--%>
+                        <p class="ellipsis_2" v-if="supplier.address">{{supplier.address}}</p>
                     </div>
+                    <%--右侧商品--%>
                     <div class="product">
-                        <div v-for="(pro, pdtIndex) in item.products" v-if="pdtIndex<3">
-                            <a :href="'/home/pdt_PdtProduct_gtProductsInfo?id=' + pro.id" target="_blank">
-                                <img :src="util_function_obj.image(pro.picture.split(',')[0],144)" alt="">
-                                <p>{{pro.name}}</p>
+                        <div class="product-item" v-for="(pro, pdtIndex) in supplier.products" v-if="pdtIndex<3">
+                            <a :href="'/' + pro.link" target="_blank">
+                                <img :src="util_function_obj.image(pro.pdtPictures.split(',')[0],144)" alt="">
+                                <p class="goods-name ellipsis_2">{{pro.pdtName}}</p>
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="pageBreak">
                 <el-pagination
                         :current-page.sync="currentPage"
@@ -204,13 +242,16 @@
 
         <div style="clear: both;"></div>
 
+        <%--模态框 - 筛选下拉 点击隐藏--%>
+        <div class="modal" @click="hiddenDropDown" v-show="select1 || select2 || select3"></div>
+
         <%--<div class="supplier_footer">--%>
             <%--<h2 class="supplier_footer_h2">Haven’t Find what you want?</h2>--%>
             <%--<div class="supplier_footer_content">--%>
                 <%--<div class="content_item">--%>
                     <%--<h2 class="content_item_h2">RFQ</h2>--%>
                     <%--<p class="content_item_text">Post exact requests to find exact Chinese Suppliers </p>--%>
-                    <%--<a @click="ToRFQ" class="content_item_button btn_colour_1">Post Your Request</a>--%>
+                    <%--<a @click="toRFQ" class="content_item_button btn_colour_1">Post Your Request</a>--%>
                 <%--</div>--%>
                 <%--<div class="content_item content_item_right">--%>
                     <%--<h2 class="content_item_h2">Supplier Search</h2>--%>
@@ -219,11 +260,8 @@
                 <%--</div>--%>
             <%--</div>--%>
         <%--</div>--%>
-        <%--模态框 - 筛选下拉 点击隐藏--%>
-        <div class="modal" @click="hiddenDropDown" v-show="select1 || select2 || select3"></div>
     </div>
     <index-bottom></index-bottom>
-    <%--<o2o-bottom></o2o-bottom>--%>
 </div>
 <%--<script src="components/index-top.js"></script>--%>
 <script src="/home/v3/static/js/index-top.js"></script>
@@ -264,9 +302,10 @@
             // 筛选的国家列表
             marketCountryList:[],
             // 选中的制鞋工艺
-            selectedProcessType: 0,
+            selectedProcessType: null,
             // 制鞋工艺
             processTypeList:[
+                {label: "All",value: null},
                 {label: "Vulcanization Shoes",value: 41},
                 {label: "Injection Shoes",value: 42},
                 {label: "Molded shoes",value: 40},
@@ -293,7 +332,7 @@
 
             classLists: [], //左侧分类列表
             lose: 1,
-            cated: 0,
+            cated: null,
             currentPage: 1,
             page:1, //当前页数
             limit: 6, //每页页数
@@ -302,7 +341,8 @@
             supplierList:[], //显示的供应商列表信息
         },
         methods:{
-            getClassList(e) { // 获取左边分类
+            // 获取左边分类
+            getClassList(e) {
                 axios.get('/home/pdt_PdtProduct_gtProductsIndexCategoriesListAjax', {
                     params: {
                         page: 1,
@@ -324,7 +364,7 @@
                 }
             })
             .catch((error) => {
-                    console.log("err")
+                    this.$message.error(error || 'Network error,please try again later');
                 });
             },
 
@@ -338,11 +378,38 @@
                     this.$set(this.classLists[i].children[j], "xiala", 2)
                 }
             },
+
+            // 点击左侧分类时search
+            categorySearch(e) {
+                this.cated = e.currentTarget.dataset.cated;
+                this.search();
+            },
+
+            // 顶部筛选，点击下拉，并隐藏其余几个
+            showcheck:function (id) {
+                for (let i=1;i<4;i++){
+                    if (i == id) {
+                        this.$set(this,'select'+i,!this['select'+i])
+                    }else {
+                        this.$set(this,'select'+i,false)
+                    }
+                }
+            },
+
+            // 点击modal隐藏筛选下拉框
+            hiddenDropDown(){
+                this.select1 = false;
+                this.select2 = false;
+                this.select3 = false;
+            },
+
             // 获取筛选内容-国家列表
             getCountryList() {
-                axios.get('/home/plt_PltCountry_list',)
+                // 第一次移入时发请求
+                if(this.marketCountryList.length > 0) return;
+
+                axios.get('/home/plt_PltCountry_list')
                     .then((res) => {
-                    console.log("获取国家列表 suc")
                     if (res.data.ret != 1) {
                         this.$message.error(res.data.msg || "Get country list error,please try again later");
                         return
@@ -360,58 +427,31 @@
                 this.selectedProcessType = e.currentTarget.dataset.typeValue;
             },
 
-            // 点击左侧分类时跳转
-            categorySearch(e) {
-                this.cated = e.currentTarget.dataset.cated;
-                this.search();
-            },
-
-            // 跳转RFQ
-            ToRFQ(){
-                let url = "/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1"+ "&backUrl=" + window.location.href
-                util_function_obj.supplierCantEnter(this, url);
-            },
-            // 跳转供应商表单
-            ToContactSupplier(supplierPkey){
-                let url = "/home/usr_UsrSupplier_goContactSupplier?supplierPkey=" + supplierPkey+ "&backUrl=" + window.location.href;
-                util_function_obj.supplierCantEnter(this, url);
-            },
-            // 顶部筛选，点击下拉，并隐藏其余几个
-            showcheck:function (id) {
-                for (let i=1;i<4;i++){
-                    if (i == id) {
-                        this.$set(this,'select'+i,!this['select'+i])
-                    }else {
-                        this.$set(this,'select'+i,false)
-                    }
-                }
-            },
-            // 点击隐藏筛选下拉框
-            hiddenDropDown(){
-                this.select1 = false;
-                this.select2 = false;
-                this.select3 = false;
-            },
             // 改变分页
             changePage(page) {
                 this.page = page;
                 this.getSupplierList();
             },
+
+            // 收藏事件
             cllection:function (index) {
                 // this.$set(this.supplierList[index],'isFavorite',!this.supplierList[index].isFavorite)
             },
+
             //获取供货商列表
             getSupplierList:function () {
-                axios.get('/home/usr_UsrSupplier_listSuppliers',{
+                // 筛选地区+国家 - 暂时没有,直传了国家列表 - 之后改回来时用这个值就好
+                // let  selectedTargetMarketArr = this.marketAreaList.push(...this.selectedMarketCountryList);
+                axios.get('/home/usr_UsrSupplier_supplierList',{
                     params:{
                         start: (this.page -1) * this.limit,
                         limit: this.limit,
                         // storeName: "", //店铺名称
-                        targetMarket: this.selectedMarketCountryList.join(), //暂时写国家 - 未含地区
+                        targetMarket: this.selectedMarketCountryList.length>0 ? this.selectedMarketCountryList.join(",") : null, //暂时写国家 - 未含地区
                         processType: this.selectedProcessType, //工艺类型 （注塑鞋，硫化鞋）
-                        grade: this.selectedLevelList.join(),  //SVS等级 1为银，2为金，3为钻石，0为暂无等级
-                        pdtCategory: this.cated, //产品分类 - 左侧列表选中项
-                        checkType: 1, //检索类型 1为查询已认证SVS供应商列表,0为查询所有 - 此处固定为1
+                        grade: this.selectedLevelList.length>0 ? this.selectedLevelList.join(",") : null,  //SVS等级 1为银，2为金，3为钻石，0为暂无等级
+                        pdtCategory: this.cated>0 ? this.cated : null, //产品分类 - 左侧列表选中项
+                        checkType: 0, //检索类型 1为查询已认证SVS供应商列表,0为查询所有 - 此处固定为1
                     }
                 }).then( (res) => {
                     if(res.data.ret != 1){
@@ -424,6 +464,7 @@
                     this.supplierList = res.data.result.items;
                 })
             },
+
             // 重置搜索条件 - 从第一页开始
             resetSearchParams(){
                 this.page = 1;
@@ -434,6 +475,17 @@
                 this.resetSearchParams();
                 this.getSupplierList();
             },
+
+            // 跳转RFQ
+            toRFQ(){
+                let url = "/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1"+ "&backUrl=" + window.location.href
+                util_function_obj.supplierCantEnter(this, url);
+            },
+            // 跳转供应商表单
+            toContactSupplier(supplierPkey){
+                let url = "/home/usr_UsrSupplier_goContactSupplier?supplierPkey=" + supplierPkey+ "&backUrl=" + window.location.href;
+                util_function_obj.supplierCantEnter(this, url);
+            },
             // 点击 搜索供应商 (未开放先提示)
             noOpen(){
                 this.$alert("Sorry, this feature is not open yet.", {
@@ -443,10 +495,9 @@
             }
         },
         mounted(){
-            this.cated = getParams('cated', 0) //分类点击用的
+            // this.cated = getParams('cated', "NONE") //分类点击用的
             this.getClassList();
             this.getSupplierList();
-            this.getCountryList();
         }
     })
 </script>

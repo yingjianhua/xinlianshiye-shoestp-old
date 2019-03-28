@@ -23,4 +23,10 @@ public class UsrMainDaoImpl implements UsrMainDao {
     return Optional.ofNullable(
         Query.selectFrom(UsrMain.class).WHERE(UsrMain.T.EMAIL, "=?", email).query());
   }
+
+  @Override
+  public Optional<UsrMain> findByPkey(Integer pkey) {
+    return Optional.ofNullable(
+        Query.selectFrom(UsrMain.class).WHERE(UsrMain.T.PKEY, "=?", pkey).query());
+  }
 }

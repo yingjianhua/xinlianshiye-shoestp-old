@@ -31,4 +31,7 @@ public class SupplierInfoView implements BaseView {
   private Date createTime; // 开店时间
 
   private SvsRatingAndRosDTO svs;
+
+  @JsonSerialize(using = I18NFieldSerializer.class)
+  private String address;
 }

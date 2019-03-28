@@ -44,6 +44,7 @@ public class O2O_Product extends BeanInt<O2O_Product> {
     UPPER_DATE(SYS.DATE_TIME__NULL), // 上架时间
     LOWER_DATE(SYS.DATE_TIME__NULL), // 下架时间
     REMARK(SYS.STR__100_NULL, "备注"), // 备注
+    TIMES(SYS.INT, "申请下架次数"),
     UPDATED_TIME(SYS.UPDATED_DATE_TIME), // 更新时间
     ROW_VERSION(SYS.ROW_VERSION),
   // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
@@ -118,6 +119,7 @@ public class O2O_Product extends BeanInt<O2O_Product> {
   private Date _upperDate; // 日期时间  TIME<null>
   private Date _lowerDate; // 日期时间  TIME<null>
   private String _remark; // 备注  STR(100)<null>
+  private Integer _times; // 申请下架次数  INT
   private Date _updatedTime; // 更新时间  TIME
   private Short _rowVersion; // 版本  SHORT
 
@@ -136,6 +138,7 @@ public class O2O_Product extends BeanInt<O2O_Product> {
     _upperDate = null; // 日期时间  TIME
     _lowerDate = null; // 日期时间  TIME
     _remark = null; // 备注  STR(100)
+    _times = 0; // 申请下架次数  INT
     _updatedTime = Env.getTranBeginTime(); // 更新时间  TIME
     _rowVersion = 0; // 版本  SHORT
     return this;
@@ -292,6 +295,14 @@ public class O2O_Product extends BeanInt<O2O_Product> {
 
   public void setRemark(String remark) {
     _remark = remark;
+  }
+
+  public Integer getTimes() {
+    return _times;
+  }
+
+  public void setTimes(Integer times) {
+    _times = times;
   }
 
   public Date getUpdatedTime() {

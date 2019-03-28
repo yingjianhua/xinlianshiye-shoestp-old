@@ -24,6 +24,7 @@ import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage;
 import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.GetValue;
+import irille.pub.util.SEOUtils;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.PdtProduct;
@@ -226,6 +227,7 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
       view.setId(GetValue.get(map, UsrSupplier.T.PKEY, Integer.class, 0));
       view.setLogo(GetValue.get(map, UsrSupplier.T.LOGO, String.class, null));
       view.setStoreName(GetValue.get(map, UsrSupplier.T.SHOW_NAME, String.class, null));
+      view.setAddress(GetValue.get(map, UsrSupplier.T.COMPANY_ADDR,String.class, null));
       view.setSvs(SVSDto);
       List<UsrSupplierPdtView> pdtViews = new ArrayList<>();
       // 获取产品信息
@@ -238,6 +240,7 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
           pdtView.setPdtId(GetValue.get(pdt, PdtProduct.T.PKEY, Integer.class, 0));
           pdtView.setPdtName(GetValue.get(pdt, PdtProduct.T.NAME, String.class, null));
           pdtView.setPdtPictures(GetValue.get(pdt, PdtProduct.T.PICTURE, String.class, null));
+          pdtView.setLink(SEOUtils.getPdtProductTitle(pdtView.getPdtId(),pdtView.getPdtName()));
           pdtViews.add(pdtView);
         }
       }
@@ -266,6 +269,7 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
     if (null != supplier.getShowName()) view.setSupplierName(supplier.getShowName());
     if (null != supplier.getName()) view.setCompanyName(supplier.getName());
     if (null != supplier.getStoreopenTime()) view.setCreateTime(supplier.getStoreopenTime());
+    if (null != supplier.getCompanyAddr()) view.setAddress(supplier.getCompanyAddr());
     SvsRatingAndRosDTO SVSDto = SVSInfoService.getSvsRatingAndRos(pkey);
     view.setSvs(SVSDto);
 

@@ -15,10 +15,13 @@ import javax.inject.Inject;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
 import com.xinlianshiye.shoestp.plat.service.pm.imp.PMMessageServiceImp;
 
+import irille.Dao.SVS.SVSInfoDao;
 import irille.Dao.SVS.SVSInfoService;
+import irille.Dao.SVS.impl.SVSInfoDaoImpl;
 import irille.Entity.SVS.Enums.SVSAuthenticationStatus;
 import irille.Entity.SVS.Enums.SVSGradeType;
 import irille.Entity.SVS.SVSInfo;
@@ -45,6 +48,7 @@ import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.SEOUtils;
 import irille.pub.util.TranslateLanguage.translateUtil;
+import irille.pub.validate.Valid;
 import irille.pub.validate.ValidForm;
 import irille.pub.validate.ValidRegex2;
 import irille.sellerAction.view.AuthenticationView;
@@ -60,6 +64,7 @@ import irille.shop.prm.PrmGroupPurchase;
 import irille.shop.usr.Usr.OStatus;
 import irille.shop.usr.UsrSupplier.T;
 import irille.view.Page;
+import irille.view.SVS.SVSInfoView;
 import irille.view.usr.AccountSettingsView;
 import irille.view.usr.SupplierDetailsDTO;
 import irille.view.usr.SupplierView;
@@ -152,7 +157,7 @@ public class UsrSupplierDAO {
     UsrSupplier bean = irille.pub.bean.Query.SELECT(UsrSupplier.class, id);
     SupplierView view = new SupplierView();
     view.setPkey(bean.getPkey());
-    view.setLoginName(bean.getLoginName());
+    view.setLoginName(bean.gtUserid().getEmail());
     view.setStatus(bean.getStatus());
     view.setName(bean.getName());
     view.setCompanyType(bean.getCompanyType());
