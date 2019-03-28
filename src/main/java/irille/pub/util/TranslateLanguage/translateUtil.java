@@ -833,23 +833,34 @@ public class translateUtil {
     return translateFilter;
   }
 
-  /***
-   * 升格成多语言JSON
+  /**
+   * * 升格成多语言JSON
+   *
    * @param saveJson
    * @return
    */
-  public static String toSaveJson(String saveJson) {
+  public static String toSaveJson(String saveJson, FldLanguage.Language language) {
     JsonObject jsonObject = null;
-    if (saveJson != null) {
-      jsonObject = new JsonParser().parse(saveJson).getAsJsonObject();
-    }
     JsonObject result = new JsonObject();
-    for (Language value : Language.values()) {
-      String values = "";
-      if (jsonObject != null && jsonObject.has(value.name())) {
-        values = jsonObject.get(value.name()).getAsString();
+    if (saveJson != null) {
+      if (saveJson.indexOf("{") == 0 && saveJson.indexOf("}") == saveJson.length()) {
+        jsonObject = new JsonParser().parse(saveJson).getAsJsonObject();
       }
-      result.addProperty(value.name(), values);
+      for (Language value : Language.values()) {
+        String values = "";
+        if (jsonObject != null && jsonObject.has(value.name())) {
+          values = jsonObject.get(value.name()).getAsString();
+        } else {
+          if (value.equals(language)) {
+            values = saveJson;
+          }
+        }
+        result.addProperty(value.name(), values);
+      }
+    } else {
+      for (Language value : Language.values()) {
+        result.addProperty(value.name(), "");
+      }
     }
     return result.toString();
   }
