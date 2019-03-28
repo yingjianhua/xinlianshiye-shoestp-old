@@ -20,6 +20,7 @@ import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
 import com.xinlianshiye.shoestp.plat.service.pm.imp.PMMessageServiceImp;
 
 import irille.Dao.SVS.SVSInfoDao;
+import irille.Dao.SVS.SVSInfoService;
 import irille.Dao.SVS.impl.SVSInfoDaoImpl;
 import irille.Entity.SVS.Enums.SVSAuthenticationStatus;
 import irille.Entity.SVS.Enums.SVSGradeType;
