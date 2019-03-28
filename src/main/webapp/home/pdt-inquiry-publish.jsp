@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <jsp:include page="v3/header.jsp" />
+<script type="text/javascript" src="./static/js/jquery-1.7.2.min.js"></script>
 <script src="/home/v2/static/js/base/qs.js"></script>
 <style>
         .el-form-item__content{

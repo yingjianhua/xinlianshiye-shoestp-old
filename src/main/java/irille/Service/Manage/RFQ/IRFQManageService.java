@@ -8,6 +8,7 @@ import com.google.inject.ImplementedBy;
 import irille.Service.Manage.RFQ.Imp.RFQManageServiceImp;
 import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
 import irille.view.Manage.RFQ.RFQManageInfoView;
+import irille.view.Manage.RFQ.RFQManageMyQuoteListBody;
 import irille.view.Manage.RFQ.RFQMyuoteInfo;
 import irille.view.Manage.RFQ.RFQPdtInfo;
 import irille.view.Page;
@@ -26,12 +27,12 @@ public interface IRFQManageService {
 
   Page getPdtList(Integer start, Integer limit, String keyword, Integer pkey);
 
-  Page getMyRFQQuoteList(
+  Page<RFQManageMyQuoteListBody> getMyRFQQuoteList(
       Integer start,
       Integer limit,
       Date date,
       String keyword,
-      boolean flag,
+      Boolean flag,
       Byte readStatus,
       Integer country,
       int supid,

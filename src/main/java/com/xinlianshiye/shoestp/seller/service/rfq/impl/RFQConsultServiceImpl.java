@@ -38,6 +38,7 @@ import irille.shop.plt.PltCountry;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
+import irille.view.RFQ.InquiryMessageView;
 
 public class RFQConsultServiceImpl implements RFQConsultService {
 
@@ -46,7 +47,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
   @Inject private RFQConsultRelationDao rFQConsultRelationDao;
   @Inject private RFQConsultDao rRFQConsultDao;
   @Override
-  public Page message(UsrSupplier supplier, UsrPurchase purchase, Integer start, Integer limit) {
+  public Page<InquiryMessageView> message(UsrSupplier supplier, UsrPurchase purchase, Integer start, Integer limit) {
     if (supplier != null) {
       return rFQConsultGroupRelationDao.message(supplier.getPkey(), true, start, limit);
     } else if (purchase != null) {
@@ -327,13 +328,26 @@ public class RFQConsultServiceImpl implements RFQConsultService {
 
     return new Page<RFQConsultRelationView>(result, start, limit, query.queryCount()) {
       private Map<Byte, Integer> statusCount = new HashMap<>();
+      private Integer countInRecycleBin = 0;
 
+      @SuppressWarnings("unused")
       public Map<Byte, Integer> getStatusCount() {
         return statusCount;
       }
 
+      @SuppressWarnings("unused")
       public void setStatusCount(Map<Byte, Integer> statusCount) {
         this.statusCount = statusCount;
+      }
+
+      @SuppressWarnings("unused")
+      public Integer getCountInRecycleBin() {
+        return countInRecycleBin;
+      }
+
+      @SuppressWarnings("unused")
+      public void setCountInRecycleBin(Integer countInRecycleBin) {
+        this.countInRecycleBin = countInRecycleBin;
       }
 
       {
@@ -354,6 +368,13 @@ public class RFQConsultServiceImpl implements RFQConsultService {
                       GetValue.get(map, RFQConsultRelation.T.READ_STATUS, Byte.class, null),
                       GetValue.get(map, "count", Integer.class, 0));
                 });
+
+        // 统计在回收站里有几个询价单
+        countInRecycleBin =
+            Query.selectFrom(RFQConsultRelation.class)
+                .WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supplier.getPkey())
+                .WHERE(RFQConsultRelation.T.IN_RECYCLE_BIN, "=?", true)
+                .queryCount();
       }
     };
   }

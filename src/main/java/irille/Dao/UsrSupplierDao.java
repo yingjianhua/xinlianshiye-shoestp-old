@@ -176,10 +176,9 @@ public class UsrSupplierDao {
       String storeName,
       String targetMarket,
       Integer processType,
-      Integer grade,
+      String grade,
       Integer pdtCategory) {
     List list = new ArrayList<>();
-
     BeanQuery query = new BeanQuery();
     query
         .SELECT(
@@ -191,11 +190,17 @@ public class UsrSupplierDao {
         .LEFT_JOIN(PdtProduct.class, UsrSupplier.T.PKEY, PdtProduct.T.SUPPLIER)
         .LEFT_JOIN(SVSInfo.class, UsrSupplier.T.PKEY, SVSInfo.T.SUPPLIER)
         .WHERE(storeName != null, UsrSupplier.T.SHOW_NAME, "like ?", "%" + storeName + "%")
-        .WHERE(
-            targetMarket != null, UsrSupplier.T.TARGETED_MARKET, "like ?", "%" + targetMarket + "%")
-        .WHERE(processType != null, UsrSupplier.T.CATEGORY, "=?", processType)
+        .WHERE(processType != null, UsrSupplier.T.CATEGORY, "=?", processType);
+    if (targetMarket != null) {
+      for (String string : targetMarket.split(",")) {
+        if (string.length() > 1) {
+          query.WHERE("find_in_set( ?, targeted_market )", string);
+        }
+      }
+    }
+    query
         .WHERE(pdtCategory != null, PdtProduct.T.CATEGORY, "=?", pdtCategory)
-        .WHERE(grade != null, SVSInfo.T.GRADE, "=?", grade)
+        .WHERE(grade != null, SVSInfo.T.GRADE, " in(" + grade + ")")
         .GROUP_BY(UsrSupplier.T.PKEY)
         .ORDER_BY(PdtProduct.T.VERIFY_TIME, "desc");
     if (start != null && limit != null) {

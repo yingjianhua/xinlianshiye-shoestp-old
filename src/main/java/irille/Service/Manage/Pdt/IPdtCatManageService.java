@@ -10,6 +10,7 @@ import irille.pub.tb.FldLanguage;
 import irille.sellerAction.view.ProductSEOsView;
 import irille.view.Page;
 import irille.view.pdt.CategoryView;
+import irille.view.pdt.PdtProductCatView;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/8 Time: 11:18 */
 @ImplementedBy(PdtCatManageServiceImp.class)
@@ -32,4 +33,7 @@ public interface IPdtCatManageService {
 
   /** 获取所有三级分类 */
   List<PdtCatView> findCategory(Integer id);
+
+  /** 获取所有三级分类 */
+  List<PdtProductCatView> findCategoryCascader(Integer id);
 }

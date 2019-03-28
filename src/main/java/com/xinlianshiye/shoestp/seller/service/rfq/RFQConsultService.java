@@ -13,6 +13,7 @@ import irille.sellerAction.rfq.view.RFQConsultRelationCountView;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
+import irille.view.RFQ.InquiryMessageView;
 
 @ImplementedBy(RFQConsultServiceImpl.class)
 public interface RFQConsultService {
@@ -97,6 +98,6 @@ public interface RFQConsultService {
    */
   RFQConsultRelationCountView count(UsrSupplier supplier, Boolean isDeleted);
 
-  Page message(UsrSupplier supplier, UsrPurchase purchase, Integer start, Integer limit);
+  Page<InquiryMessageView> message(UsrSupplier supplier, UsrPurchase purchase, Integer start, Integer limit);
   List<SellerIndexConsultView> getIndexInqlist(Integer supperPkey);
 }

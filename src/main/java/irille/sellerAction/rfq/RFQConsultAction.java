@@ -34,7 +34,7 @@ public class RFQConsultAction extends SellerAction<RFQConsult> implements IRFQCo
   private Integer limit;
   private String keyword;
   private Date date;
-  private boolean flag;
+  private Boolean flag;
   private Integer status;
   private Integer country;
   private Integer id;
