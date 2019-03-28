@@ -90,6 +90,16 @@ public class PdtCatAction extends ActionBase<PdtCat> {
   }
 
   /**
+   * 获取三级分类级联选择框(3.1.1)
+   * @author: lingjian
+   * @Date: 2019/3/28 11:29
+   * @throws IOException
+   */
+  public void findCategoryCascader() throws IOException {
+    write(iPdtCatManageService.findCategoryCascader(0));
+  }
+
+  /**
    * 添加分类(3.1.1)
    * @throws Exception
    */

@@ -30,12 +30,12 @@
         left: 9999px;
     }
 </style>
-<script>
-    $('html').on('click', '#signin_close', function () {
-        $('#signin_module').remove();
-        global_obj.div_mask(1);
-    })
-</script>
+<%--<script>--%>
+    <%--$('html').on('click', '#signin_close', function () {--%>
+        <%--$('#signin_module').remove();--%>
+        <%--global_obj.div_mask(1);--%>
+    <%--})--%>
+<%--</script>--%>
 <body>
 <jsp:include page="v3/nav-nobody.jsp"></jsp:include>
 <div id="productList" class="clearfix w1240">
@@ -215,7 +215,7 @@
                             <!-- <a class="product-inquiry-btn" target="_blank"
                                :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId"
                                :data-id="item.supId">Product Inquiry</a> -->
-                               
+
                             </div>
                         </a>
                         <div class="product-inquiry-btn" @click.stop="ToProductInquiry(item.pdtId)">Product Inquiry</div>

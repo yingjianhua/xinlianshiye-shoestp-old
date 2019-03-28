@@ -932,7 +932,7 @@
                             }
                         }).catch(() => {
                             self.$message({
-                                message: 'Submit cancel',
+                                message: '提交取消',
                                 type: 'warning'
                             });
                         })
@@ -946,13 +946,13 @@
                     Qs.stringify(data)
                 ).then(function (res) {
                     if (res.data.ret == 1) {
-                        self.showmsg('Submit Success')
+                        self.showmsg('提交成功')
                         setTimeout(function () {
                             self.step += 1;
                         }, 1000)
                     } else {
                         self.$message({
-                            message: res.data.msg || 'Submit Fail',
+                            message: res.data.msg || '提交失败',
                             type: 'warning'
                         });
                     }
@@ -970,13 +970,13 @@
                 ).then(function (res) {
                     if (res.data.ret == 1) {
                         self.state = false;
-                        self.showmsg('Submit Success')
+                        self.showmsg('提交成功')
                         setTimeout(function () {
                             self.step += 1;
                         }, 1000)
                     } else {
                         self.$message({
-                            message: res.data.msg || 'Submit Fail',
+                            message: res.data.msg || '提交失败',
                             type: 'warning'
                         });
                     }

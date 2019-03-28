@@ -157,7 +157,6 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
     ValidForm valid = new ValidForm(getBean());
     valid.validNotEmpty(UsrSupplier.T.NAME,UsrSupplier.T.ENGLISH_NAME, UsrSupplier.T.COMPANY_ADDR,UsrSupplier.T.TARGETED_MARKET,UsrSupplier.T.PROD_PATTERN,UsrSupplier.T.CREDIT_CODE,UsrSupplier.T.CERT_PHOTO);
     ValidRegex2 regex = new ValidRegex2(getBean());
-    regex.validAZLen(50,UsrSupplier.T.ENGLISH_NAME);
     if(mainEmail != null){
       if(!ValidRegex.regMarch("^[\\w]{1,32}@+\\w{1,15}.\\w{2,5}$", mainEmail))
         throw new WebMessageException("请输入正确邮箱格式");

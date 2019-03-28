@@ -931,7 +931,7 @@ public class UsrSupplierDAO {
         throw new WebMessageException("店铺审核通知站内信出现错误，请关闭站内信");
       }
     }
-    supplier.upd();
+    translateUtil.autoTranslate(supplier, true).upd();
     return supplier;
   }
 

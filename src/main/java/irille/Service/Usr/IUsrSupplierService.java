@@ -72,7 +72,7 @@ public interface IUsrSupplierService {
       String storeName,
       String targetMarket,
       Integer processType,
-      Integer grade,
+      String grade,
       Integer pdtCategory,Integer checkType);
 
   /*

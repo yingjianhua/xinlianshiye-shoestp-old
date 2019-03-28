@@ -254,6 +254,7 @@ public class PdtCatDAO {
             {
               SELECT(PdtCat.class);
               FROM(PdtCat.class);
+              WHERE(T.DELETED, "=?", OYn.NO.getLine().getKey());
               WHERE(T.CATEGORY_UP, "=?").PARAM(getB().getPkey());
             }
           };
@@ -318,7 +319,7 @@ public class PdtCatDAO {
     pdtCat.setDeleted(OYn.NO.getLine().getKey());
     pdtCat.setCreateBy(createBy);
     pdtCat.setCreateTime(Env.getSystemTime());
-    pdtCat.ins();
+    translateUtil.autoTranslate(pdtCat).ins();
   }
   // 修改分类(3.1.1)
   public static void pdtCatUpd(PdtCat cat) throws Exception {
@@ -327,7 +328,7 @@ public class PdtCatDAO {
     pdtCat.setCategoryUp(cat.getCategoryUp());
     pdtCat.setProductImage(cat.getProductImage());
     pdtCat.setDisplay(cat.getDisplay());
-    pdtCat.upd();
+    translateUtil.autoTranslate(pdtCat).upd();
   }
 
 

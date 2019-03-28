@@ -108,6 +108,10 @@ public class PdtSizeAction extends ActionBase<PdtSize> {
       writeErr(0, "参数错误");
       return;
     }
+    if(cate == null){
+      writeErr(0, "产品分类不得为空");
+      return;
+    }
     byte by = Byte.parseByte(sizeType.toString());
     PdtSizeDAO.plaInsSize(getLoginSys(), by, sizeName, cate);
     write();
@@ -119,6 +123,10 @@ public class PdtSizeAction extends ActionBase<PdtSize> {
         || (!sizeType.equals((int) Pdt.OSizeType.USA.getLine().getKey())
             && !sizeType.equals((int) Pdt.OSizeType.EU.getLine().getKey()))) {
       writeErr(0, "参数错误");
+      return;
+    }
+    if(cate == null){
+      writeErr(0, "产品分类不得为空");
       return;
     }
     byte by = Byte.parseByte(sizeType.toString());

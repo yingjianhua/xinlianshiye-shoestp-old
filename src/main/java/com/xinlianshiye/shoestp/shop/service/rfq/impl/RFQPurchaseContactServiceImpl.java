@@ -37,7 +37,7 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
     BeanQuery<?> query = Query.SELECT(RFQPurchaseContact.T.PKEY);
     query.SELECT(RFQPurchaseContact.T.CREATED_TIME);
     query.SELECT(UsrSupplier.T.PKEY, "supplierPkey");
-    query.SELECT(UsrSupplier.T.NAME);
+    query.SELECT(UsrSupplier.T.SHOW_NAME);
     query.SELECT(UsrSupplier.T.LOGO);
     // TODO svs 认证信息待完善
     query.SELECT(UsrSupplier.T.CONTACTS);
@@ -50,12 +50,13 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
     if (groupPkey != null) query.WHERE(RFQPurchaseContact.T.CONTACT_GROUP, "=?", groupPkey);
     if (keyword != null && !keyword.isEmpty()) {
       query.AND();
-      query.WHERE(UsrSupplier.T.NAME, "like ?", "%" + keyword + "%");
+      query.WHERE(UsrSupplier.T.SHOW_NAME, "like ?", "%" + keyword + "%");
       query.or();
       query.WHERE(RFQConsult.T.TITLE, "like ?", "%" + keyword + "%");
     }
 
     query.GROUP_BY(RFQPurchaseContact.T.PKEY);
+    query.ORDER_BY(RFQPurchaseContact.T.CREATED_TIME, "desc");
     query.limit(start, limit);
     List<RFQPurchaseContactView> result =
         query.queryMaps().stream()
@@ -70,7 +71,7 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
                   supplier.setPkey(GetValue.get(map, "supplierPkey", Integer.class, null));
                   supplier.setContacts(
                       GetValue.get(map, UsrSupplier.T.CONTACTS, String.class, null));
-                  supplier.setName(GetValue.get(map, UsrSupplier.T.NAME, String.class, ""));
+                  supplier.setName(GetValue.get(map, UsrSupplier.T.SHOW_NAME, String.class, ""));
                   supplier.setLogo(GetValue.get(map, UsrSupplier.T.LOGO, String.class, ""));
                   contact.setSupplier(supplier);
                   contact.setRelation(
@@ -108,6 +109,7 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
     query.WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supplierPkey);
     query.WHERE(RFQConsultRelation.T.PURCHASE_ID, "=?", purchasePkey);
     query.WHERE(RFQConsultRelation.T.IS_DELETED_PURCHASE, "=?", false);
+    query.ORDER_BY(RFQConsultRelation.T.LAST_MESSAGE_SEND_TIME, "desc");
     if (keyword != null) query.WHERE(RFQConsult.T.TITLE, "like ?", "%" + keyword + "%");
     List<RFQConsultRelationView> result =
         query.queryMaps().stream()

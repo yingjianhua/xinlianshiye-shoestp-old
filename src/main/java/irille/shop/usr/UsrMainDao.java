@@ -281,7 +281,7 @@ public class UsrMainDao {
 				SELECT(UsrMain.class).FROM(UsrMain.class).WHERE(UsrMain.T.PKEY, "=?", pkey);
 			}
 		};
-		List<UsrMainView> list = irille.pub.bean.Query.sql(sql).queryMaps().stream().map(bean -> new UsrMainView() {
+		List<UsrMainView> list = Query.sql(sql).queryMaps().stream().map(bean -> new UsrMainView() {
 			{
 				setPkey((Integer) bean.get(UsrMain.T.PKEY.getFld().getCodeSqlField()));
 				setEmail((String) bean.get(UsrMain.T.EMAIL.getFld().getCodeSqlField()));
@@ -301,7 +301,13 @@ public class UsrMainDao {
 							.getName());
 				}
 				setAddress((String) bean.get(UsrMain.T.ADDRESS.getFld().getCodeSqlField()));
-				setContacts((String) bean.get(UsrMain.T.CONTACTS.getFld().getCodeSqlField()));
+				String name= (String) bean.get(UsrMain.T.CONTACTS.getFld().getCodeSqlField());
+				String [] strArray = name.split(",");
+				String contact="";
+				for(String s : strArray){
+					contact+=s;
+				}
+				setContacts(contact);
 				setTelphone((String) bean.get(UsrMain.T.TELPHONE.getFld().getCodeSqlField()));
 				setRegTime((Date) bean.get(UsrMain.T.REG_TIME.getFld().getCodeSqlField()));
 			}
@@ -322,5 +328,6 @@ public class UsrMainDao {
 			return false;
 		}
 	}
+
 
 }
