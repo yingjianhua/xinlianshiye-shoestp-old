@@ -277,8 +277,17 @@ public class PdtSizeDAO {
                       + " =? )",
                   supplier.getPkey());
               WHERE(
-                  PdtSize.T.PRODUCT_CATEGORY,
-                  " in(" + String.join(",", pdtProductDao.getParent(cat)) + ") ");
+                  "("
+                      + PdtSize.class.getSimpleName()
+                      + "."
+                      + PdtSize.T.PRODUCT_CATEGORY.getFld().getCodeSqlField()
+                      + " in("
+                      + String.join(",", pdtProductDao.getParent(cat))
+                      + ") OR "
+                      + PdtSize.class.getSimpleName()
+                      + "."
+                      + PdtSize.T.PRODUCT_CATEGORY.getFld().getCodeSqlField()
+                      + " IS NULL )");
             } else {
               WHERE(
                   PdtSize.class.getSimpleName()
@@ -443,11 +452,14 @@ public class PdtSizeDAO {
                 + PdtSize.T.SUPPLIER.getFld().getCodeSqlField()
                 + " =? AND "
                 + PdtSize.T.DELETED.getFld().getCodeSqlField()
+                + " =? AND "
+                + PdtSize.T.TYPE.getFld().getCodeSqlField()
                 + " =? ",
             false,
             engName,
             supplier,
-            OYn.NO.getLine().getKey());
+            OYn.NO.getLine().getKey(),
+            type);
     if (null != attrs && attrs.size() > 0) {
       throw new WebMessageException(ReturnCode.failure, "尺码【" + engName + "】已存在,请勿重复添加");
     }
@@ -456,9 +468,9 @@ public class PdtSizeDAO {
     size.setSupplier(supplier);
     size.setDeleted(OYn.NO.getLine().getKey());
     size.setCreateTime(Env.getSystemTime());
-    if (type == Pdt.OSizeType.EU.getLine().getKey())
+    if (type.equals(Pdt.OSizeType.EU.getLine().getKey()))
       size.setType(Pdt.OSizeType.EU.getLine().getKey());
-    else if (type == Pdt.OSizeType.USA.getLine().getKey())
+    else if (type.equals(Pdt.OSizeType.USA.getLine().getKey()))
       size.setType(Pdt.OSizeType.USA.getLine().getKey());
     size.setTypever(Pdt.OVer.NEW_1.getLine().getKey());
     size.setRowVersion((short) 0);

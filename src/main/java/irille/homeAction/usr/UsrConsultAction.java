@@ -51,7 +51,6 @@ public class UsrConsultAction extends HomeAction<UsrConsult> implements IUsrCons
    * @author yingjianhua
    */
   @Override
-  @NeedLogin(userType = UserType.PURCHASE)
   public String publishView() {
     setResult("/home/my-inquiry-publish.jsp");
     return TRENDS;
