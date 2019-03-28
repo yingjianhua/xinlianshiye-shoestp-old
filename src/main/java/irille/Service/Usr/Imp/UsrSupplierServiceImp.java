@@ -265,6 +265,7 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
     if (null != supplier.getLogo()) view.setLogo(supplier.getLogo());
     if (null != supplier.getShowName()) view.setSupplierName(supplier.getShowName());
     if (null != supplier.getName()) view.setCompanyName(supplier.getName());
+    if (null != supplier.getStoreopenTime()) view.setCreateTime(supplier.getStoreopenTime());
     SvsRatingAndRosDTO SVSDto = SVSInfoService.getSvsRatingAndRos(pkey);
     view.setSvs(SVSDto);
 
