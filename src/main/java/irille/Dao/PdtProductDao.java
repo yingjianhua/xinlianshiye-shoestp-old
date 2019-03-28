@@ -1496,4 +1496,24 @@ public class PdtProductDao {
     return Query.sql(productRules(new SQL()).SELECT(PdtProduct.class).FROM(PdtProduct.class))
         .queryCount();
   }
+  /**
+   * 获取供应商最新发布的三条产品信息
+   *
+   * @author GS
+   * @param supplierId
+   * @return
+   */
+  public List findPdtBySupplier(Integer supplierId) {
+    SQL sql =
+        new SQL() {
+          {
+            SELECT(PdtProduct.T.NAME, PdtProduct.T.PICTURE, PdtProduct.T.PKEY)
+                .FROM(PdtProduct.class)
+                .WHERE(supplierId != null, PdtProduct.T.SUPPLIER, "=?", supplierId)
+                .ORDER_BY(PdtProduct.T.VERIFY_TIME, "desc")
+                .LIMIT(0, 3);
+          }
+        };
+    return Query.sql(sql).queryMaps();
+  }
 }

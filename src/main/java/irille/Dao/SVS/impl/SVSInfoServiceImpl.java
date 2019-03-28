@@ -250,6 +250,7 @@ public class SVSInfoServiceImpl implements SVSInfoService {
   public SvsRatingAndRosDTO getSvsRatingAndRos(Integer supplierId) {
     SvsRatingAndRosDTO view = new SvsRatingAndRosDTO();
     SVSInfo svsInfo = SVSInfoDao.getSvsRatingAndRos(supplierId);
+    if (null == svsInfo) return null;
     view.setPkey(svsInfo.getPkey());
     view.setSupplierId(svsInfo.getSupplier());
     view.setGrade(svsInfo.getGrade());
@@ -269,6 +270,7 @@ public class SVSInfoServiceImpl implements SVSInfoService {
   public SvsRatingAndRosDTO getSvsRatingAndRosMain(Integer mainId) {
     SvsRatingAndRosDTO view = new SvsRatingAndRosDTO();
     SVSInfo svsInfo = SVSInfoDao.getSvsRatingAndRosMain(mainId);
+    if (null == svsInfo) return null;
     view.setPkey(svsInfo.getPkey());
     view.setSupplierId(svsInfo.getSupplier());
     view.setGrade(svsInfo.getGrade());
@@ -277,10 +279,10 @@ public class SVSInfoServiceImpl implements SVSInfoService {
     view.setFactoryBase(svsInfo.getFactoryBase());
     view.setCapacityBase(svsInfo.getCapacityBase());
     view.setResearchBaseStar(
-            svsInfo.getResearchBase() == null ? 0 : svsInfo.getResearchBase() / 4.0);
+        svsInfo.getResearchBase() == null ? 0 : svsInfo.getResearchBase() / 4.0);
     view.setFactoryBaseStar(svsInfo.getFactoryBase() == null ? 0 : svsInfo.getFactoryBase() / 4.0);
     view.setCapacityBaseStar(
-            svsInfo.getCapacityBase() == null ? 0 : svsInfo.getCapacityBase() / 4.0);
+        svsInfo.getCapacityBase() == null ? 0 : svsInfo.getCapacityBase() / 4.0);
     return view;
   }
 }
