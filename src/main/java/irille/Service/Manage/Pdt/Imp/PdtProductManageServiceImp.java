@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -51,6 +52,9 @@ import irille.pub.tb.FldLanguage;
 import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.BatchUtils;
 import irille.shop.pdt.Pdt;
+import irille.shop.pdt.PdtAttr;
+import irille.shop.pdt.PdtAttrCat;
+import irille.shop.pdt.PdtAttrLine;
 import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtColor;
 import irille.shop.pdt.PdtColorDAO;
@@ -334,11 +338,39 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
     pdtProduct.setMaxOq(99999); // 最大购买量
     pdtProduct.setSales(0); // 销量
     pdtProduct.setWarnStock(0); // 警告库存
-    pdtProduct.setNormAttr(
-        pdtProductSaveView.getAttr().stream()
-            .filter(o -> o != null)
-            .map(String::valueOf)
-            .collect(Collectors.joining(",")));
+    if (null != pdtProductSaveView.getAttr() && pdtProductSaveView.getAttr().size() > 0) {
+      String attrs =
+          pdtProductSaveView.getAttr().stream()
+              .filter(o -> o != null)
+              .map(String::valueOf)
+              .collect(Collectors.joining(","));
+      List<PdtAttrLine> lines =
+          BeanBase.list(
+              PdtAttrLine.class,
+              PdtAttrLine.T.PKEY.getFld().getCodeSqlField() + " IN(" + attrs + ") ",
+              false);
+      List<Integer> attrsPkeys = new ArrayList<>();
+      Map<Integer, PdtAttrCat> cats = new HashMap<>();
+      for (PdtAttrLine l : lines) {
+        PdtAttr a = l.gtMain();
+        if (!attrsPkeys.contains(a.getPkey())) {
+          PdtAttrCat c = a.gtCategory();
+          if (!cats.containsKey(c.getPkey())) {
+            cats.put(c.getPkey(), c);
+          }
+          attrsPkeys.add(a.getPkey());
+        }
+      }
+      for (Entry<Integer, PdtAttrCat> entry : cats.entrySet()) {
+        PdtAttrCat p = entry.getValue();
+        if (p.getLockAttr().equals(OYn.NO.getLine().getKey())) {
+          p.setLockAttr(OYn.YES.getLine().getKey());
+          p.upd();
+        }
+      }
+      pdtProduct.setNormAttr(attrs);
+    }
+
     /*
      * pdtProduct.setColorAttr(pdtProductSaveView.getSpecColor().stream().map(String
      * ::valueOf) .collect(Collectors.joining(",")));
@@ -362,7 +394,7 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
       pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
     } else {
       // 产品直接发布
-      if (pdtProduct.gtSoldInTime()) {
+      if (!pdtProductSaveView.isSoldInStatus()) {
         // 立即上架
         pdtProduct.setSoldInTime(OYn.YES.getLine().getKey());
         pdtProduct.setSoldTimeB(Env.getSystemTime());
@@ -371,9 +403,12 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
         if (pdtProductSaveView.getPutawayDate().compareTo(new Date()) == -1) {
           pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
           pdtProduct.setSoldTimeB(Env.getSystemTime());
-        } else {
+        } else if (pdtProductSaveView.getPutawayDate().compareTo(new Date()) >= 1) {
           pdtProduct.setSoldInTime(OYn.YES.getLine().getKey());
           pdtProduct.setSoldTimeB(pdtProductSaveView.getPutawayDate());
+        } else {
+          pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
+          pdtProduct.setSoldTimeB(Env.getSystemTime());
         }
       }
     }
@@ -576,7 +611,13 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
             if (type != null) {
               WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.MERCHANTDEL.getLine().getKey());
             } else {
-              WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.OFF.getLine().getKey());
+              WHERE(
+                  PdtProduct.class.getSimpleName()
+                      + "."
+                      + PdtProduct.T.STATE.getFld().getCodeSqlField()
+                      + "=? ",
+                  Pdt.OState.OFF.getLine().getKey());
+              WHERE(PdtProduct.T.SOLD_TIME_B, " IS NULL ");
             }
 
             if (productName != null) {

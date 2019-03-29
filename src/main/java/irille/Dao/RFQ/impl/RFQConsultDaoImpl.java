@@ -848,7 +848,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
   public Integer getConsultCount(Integer supperpkey) {
     SQL pdt = new SQL() {{
       SELECT(RFQConsultRelation.T.PKEY).FROM(RFQConsultRelation.class)
-              .WHERE(T.SUPPLIER_ID,"=?",supperpkey).GROUP_BY(RFQConsult.T.PURCHASE_ID);
+              .WHERE(RFQConsultRelation.T.SUPPLIER_ID,"=?",supperpkey).GROUP_BY(RFQConsultRelation.T.PURCHASE_ID);
     }};
     return  irille.pub.bean.Query.sql(pdt).queryCount();
   }
@@ -861,9 +861,9 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
   public Integer getcontactsCount(Integer supperpkey) {
     SQL pdt = new SQL() {{
       SELECT(RFQConsultRelation.T.PKEY).FROM(RFQConsultRelation.class)
-              .LEFT_JOIN(RFQConsultMessage.class,RFQConsultMessage.T.PKEY, T.PKEY)
+              .LEFT_JOIN(RFQConsultMessage.class,RFQConsultMessage.T.PKEY, RFQConsultRelation.T.PKEY)
               .WHERE(RFQConsultMessage.T.P2S,"=?", Sys.OYn.YES)
-              .WHERE(T.SUPPLIER_ID,"=?",supperpkey);
+              .WHERE(RFQConsultRelation.T.SUPPLIER_ID,"=?",supperpkey);
     }};
     return  irille.pub.bean.Query.sql(pdt).queryCount();
   }

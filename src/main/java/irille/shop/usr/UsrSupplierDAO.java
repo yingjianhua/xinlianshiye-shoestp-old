@@ -1629,6 +1629,31 @@ public class UsrSupplierDAO {
           view.setContacts(supplier.getContacts()); // 联系人名称
           view.setDepartment(supplier.getDepartment()); // 联系人部门
           view.setJobTitle(supplier.getJobTitle()); // 联系人职位
+          view.setTargetedMarkets(supplier.getTargetedMarket());// 目标市场
+          view.setAnnualOutput(supplier.getAnnualProduction());// 年产量
+          SVSInfoDao sd=new SVSInfoDaoImpl();
+          if(sd.findSVSInfoBySupplier(supplier.getPkey())!=null){
+            SVSInfo si=sd.findSVSInfoBySupplier(supplier.getPkey());
+            try {
+              JSONObject getResearch = new JSONObject(si.getResearch());
+              view.setRDdepartment(getResearch.getString("isTeam"));
+              view.setAnnualNumberOfNewShoes(getResearch.getString("numOfShoes"));
+              JSONObject productionCapacity = new JSONObject(si.getProductionCapacity());
+              view.setNumberOfProductionLines(productionCapacity.getString("productionLineQuantity"));
+              view.setNumberOfSewingMachines(productionCapacity.getString("needleCartNum"));
+              view.setAnnualExportValue(productionCapacity.getString("exportVolume"));
+              JSONObject realFactory = new JSONObject(si.getRealFactory());
+              view.setNumberOfEmployees(realFactory.getString("employeesNum"));
+              view.setExportLicense(realFactory.getString("licence"));
+              JSONObject productQuality = new JSONObject(si.getProductQuality());
+              view.setTestEquipmentAndFacilities(productQuality.getString("testEquipment"));
+              JSONObject tradeTeam = new JSONObject(si.getForeignTradeTeam());
+              view.setNumberOfForeignTradeTeams(tradeTeam.getString("teamSize"));
+              view.setYearsOfForeignTradeExperience(tradeTeam.getString("experience"));
+            }catch (Exception e){
+              e.getStackTrace();
+            }
+          }
           // 页面设置
           view.setContactPageOn(supplier.getContactPageOn()); // 是否启用联系页个性化装修
           view.setContactPageDiy(supplier.getContactPageDiy()); // 联系页个性化装修

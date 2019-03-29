@@ -215,7 +215,7 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
       Integer checkType) {
     List<Map<String, Object>> list =
         usrSupplierDao.listSuppliers(
-            start, limit, storeName, targetMarket, processType, grade, pdtCategory);
+            start, limit, storeName, targetMarket, processType, grade, pdtCategory,checkType);
     List<UsrSupplierInfView> supplies = new ArrayList<>();
     for (Map<String, Object> map : list) {
       SvsRatingAndRosDTO SVSDto =
@@ -251,7 +251,7 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
         supplies,
         start,
         limit,
-        usrSupplierDao.count(storeName, targetMarket, processType, grade, pdtCategory));
+        usrSupplierDao.count(storeName, targetMarket, processType, grade, pdtCategory,checkType));
   }
   /**
    * 查询供应商信息详情
