@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import irille.Dao.PdtProductDao;
 import irille.Dao.RFQ.RFQConsultDao;
+import irille.Entity.SVS.Enums.SVSGradeType;
 import irille.Service.Manage.Usr.IUsrSupplierManageService;
 import irille.action.dataimport.util.StringUtil;
 import irille.pub.DateTools;
@@ -692,6 +693,11 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     UsrSupplierInfo usi=new UsrSupplierInfo();
     Integer pkey= getSupplier().getPkey();
     usi.setSupplierDetailsDTO(dao.getSupplierDetails(pkey));
+    for (SVSGradeType value : SVSGradeType.values()) {
+      if(usi.getSupplierDetailsDTO().getSvsRatingAndRosDTO().getGrade()== value.getLine().getKey()){
+        usi.setSvsLevel(value.getLine().getName());
+      }
+    }
     usi.setInquiriesCount(rfqConsultDao.getConsultCount(pkey));
     usi.setContactsCount(rfqConsultDao.getcontactsCount(pkey));
     usi.setProductCount(pdtProductDAO.productCount(pkey));

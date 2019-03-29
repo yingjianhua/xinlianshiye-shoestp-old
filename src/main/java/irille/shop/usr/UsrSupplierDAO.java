@@ -2482,6 +2482,7 @@ public class UsrSupplierDAO {
                     T.NAME,
                     UsrMain.T.EMAIL,
                     T.TARGETED_MARKET,
+                    UsrMain.T.LAST_LOGIN,
                     SVSInfo.T.AUTHENTICATION_TIME)
                 .FROM(UsrSupplier.class)
                 .LEFT_JOIN(SVSInfo.class, SVSInfo.T.SUPPLIER, T.PKEY)
@@ -2495,6 +2496,7 @@ public class UsrSupplierDAO {
     view.setName((String) map.get(T.NAME.getFld().getCodeSqlField()));
     view.setUserName((String) map.get(UsrMain.T.EMAIL.getFld().getCodeSqlField()));
     view.setTargetedMarket((String) map.get(T.TARGETED_MARKET.getFld().getCodeSqlField()));
+    view.setLastLoginTIME((Date)map.get(UsrMain.T.LAST_LOGIN.getFld().getCodeSqlField()));
     view.setAuthentication_time(
         (Date) map.get(SVSInfo.T.AUTHENTICATION_TIME.getFld().getCodeSqlField()));
     view.setSvsRatingAndRosDTO(svsInfoService.getSvsRatingAndRos(supplierId));
