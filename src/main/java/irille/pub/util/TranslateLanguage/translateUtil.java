@@ -130,6 +130,9 @@ public class translateUtil {
     jsonParser = new JsonParser();
     //        service = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(5));
     addFilterToGlobalFilter(PdtProduct.class, PdtProduct.T.DESCRIPTION);
+    addFilterToGlobalFilter(PdtProduct.class, PdtProduct.T.DESCRIBE_MODULE_1);
+    addFilterToGlobalFilter(PdtProduct.class, PdtProduct.T.DESCRIBE_MODULE_2);
+    addFilterToGlobalFilter(PdtProduct.class, PdtProduct.T.DESCRIBE_MODULE_3);
     addFilterToGlobalFilter(UsrSupplier.class, UsrSupplier.T.HOME_PAGE_DIY);
     addFilterToGlobalFilter(UsrSupplier.class, UsrSupplier.T.PRODUCT_PAGE_DIY);
     addFilterToGlobalFilter(UsrSupplier.class, UsrSupplier.T.CONTACT_PAGE_DIY);
