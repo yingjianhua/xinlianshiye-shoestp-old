@@ -630,6 +630,13 @@
   height: 130px;
   object-fit: contain;
 }
+#svsSuplies .suplies .supliescon .logo .logo-placeholder{
+  width: 130px;
+  margin-left: 15px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+}
 #svsSuplies .suplies .supliescon .logo div {
   margin: 15px 0 45px;
   background-color: #f6f7f9;
