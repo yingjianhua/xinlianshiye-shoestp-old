@@ -789,8 +789,9 @@ public class translateUtil {
                 if (dbJson.has(stringJsonElementEntry.getKey())) {
                   String dbString = dbJson.get(stringJsonElementEntry.getKey()).getAsString();
                   if (!dbString
-                      .trim()
-                      .equals(stringJsonElementEntry.getValue().getAsString().trim())) {
+                          .trim()
+                          .equals(stringJsonElementEntry.getValue().getAsString().trim())
+                      && stringJsonElementEntry.getValue().getAsString().length() > 0) {
                     translateFilter
                         .getLanguageList()
                         .add(FldLanguage.Language.valueOf(stringJsonElementEntry.getKey()));
