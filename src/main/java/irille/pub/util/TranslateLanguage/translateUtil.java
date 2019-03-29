@@ -649,11 +649,13 @@ public class translateUtil {
       ex = jsonParser.parse(value).getAsJsonObject();
     }
     String baseValue = value;
-    List<FldLanguage.Language> languages =
-        new ArrayList<>(
-            Arrays.asList(
-                FldLanguage.Language.en, FldLanguage.Language.zh_CN, FldLanguage.Language.zh_TW));
-    if (baseLangauge != null) languages.add(0, baseLangauge);
+    List<FldLanguage.Language> languages = new ArrayList<>();
+    if (baseLangauge != null) {
+      languages.add(0, baseLangauge);
+    }
+    languages.addAll(
+        Arrays.asList(
+            FldLanguage.Language.en, FldLanguage.Language.zh_CN, FldLanguage.Language.zh_TW));
     for (FldLanguage.Language language : languages) {
       if (ex == null) break;
       if (ex.get(language.toString()) != null
@@ -789,8 +791,9 @@ public class translateUtil {
                 if (dbJson.has(stringJsonElementEntry.getKey())) {
                   String dbString = dbJson.get(stringJsonElementEntry.getKey()).getAsString();
                   if (!dbString
-                      .trim()
-                      .equals(stringJsonElementEntry.getValue().getAsString().trim())) {
+                          .trim()
+                          .equals(stringJsonElementEntry.getValue().getAsString().trim())
+                      && stringJsonElementEntry.getValue().getAsString().length() > 0) {
                     translateFilter
                         .getLanguageList()
                         .add(FldLanguage.Language.valueOf(stringJsonElementEntry.getKey()));
@@ -807,7 +810,8 @@ public class translateUtil {
                 if (dbJson.has(stringJsonElementEntry.getKey())) {
                   String dbString =
                       dbJson.get(stringJsonElementEntry.getKey()).getAsString().trim();
-                  if (dbString.equals(stringJsonElementEntry.getValue().getAsString().trim())) {
+                  if (dbString.equals(stringJsonElementEntry.getValue().getAsString().trim())
+                      || stringJsonElementEntry.getValue().getAsString().length() < 1) {
                     translateFilter
                         .getLanguageList()
                         .add(FldLanguage.Language.valueOf(stringJsonElementEntry.getKey()));
