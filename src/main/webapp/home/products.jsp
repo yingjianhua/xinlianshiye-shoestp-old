@@ -355,7 +355,7 @@
             priceBtn(rule){  // 价格排序
                 console.log(rule)
                 this.priceSortIndex = rule;
-                this.sort =  JSON.stringify([{name:"curPrice",sort:1,rule:rule}])
+                this.sort =  rule
                 console.log(this.sort)
                 this.productList();
             },
@@ -366,20 +366,54 @@
                 })
             },
             productList(){
-                axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax?v=4', {
-                    params: {
+                var params = {
                         start:this.page,
                         limit:this.limit,
+                        "search.supplier":8,
                         "search.export": this.selectedMarketCountryList.toString(),
-                        "search.sort": this.sort,
                         "search.minOq": this.lessthan,
                         "search.minCurPrice": this.min,
                         "search.maxCurPrice": this.max,
                         "search.keywords": this.pName,
                         "search.category": this.cated,
+                        "newSort[0].name":"curPrice",
+                        "newSort[0].rule":this.sort,
                         "search.grade": this.grade.toString(),
+                    };
+                    var url = '/home/pdt_PdtProduct_gtProductsIndexListAjax?v=4'
+
+                    console.log(Object.keys(params).length)
+                    var numbers = 0 
+                    for(var i in params){
+                        if(i != Object.keys(params).length - 1 && params[i] != null){
+                            url += "&"
+                        }
+                        if(params[i] != null){
+                            url += i+"="+params[i]
+                        }
+                        
+                        numbers++
+                        console.log(numbers)
                     }
-                })
+                console.log(url)
+
+                axios.get(encodeURI(url)
+                // , {
+                //     params: {
+                //         start:this.page,
+                //         limit:this.limit,
+                //         "search.export": this.selectedMarketCountryList.toString(),
+                //         "search.minOq": this.lessthan,
+                //         "search.minCurPrice": this.min,
+                //         "search.maxCurPrice": this.max,
+                //         "search.keywords": this.pName,
+                //         "search.category": this.cated,
+                //         "newSort[0].name":"curPrice",
+                //         "newSort[0].rule":1,
+                //         "search.grade": this.grade.toString(),
+                //     }
+                // }
+                )
                     .then((res) => {
                         console.log("res")
                         console.log(res)
