@@ -1698,7 +1698,7 @@ public class UsrSupplierDAO {
             SVSInfo si = sd.findSVSInfoBySupplier(supplier.getPkey());
             try {
               JSONObject getResearch = new JSONObject(si.getResearch());
-              view.setRDdepartment(getResearch.getString("isTeam"));
+              view.setRddepartment(getResearch.getString("isTeam"));
               view.setAnnualNumberOfNewShoes(getResearch.getString("numOfShoes"));
               JSONObject productionCapacity = new JSONObject(si.getProductionCapacity());
               view.setNumberOfProductionLines(
