@@ -525,7 +525,7 @@ public class PdtProductDAO {
     public void run() {
       PdtProduct product = BeanBase.load(PdtProduct.class, getB().getPkey());
       product.setState(OState.OFF.getLine().getKey());
-      product.setIsVerify(Sys.OYn.NO.getLine().getKey());
+      product.setSoldTimeB(null);
       product.setSoldTimeE(Env.getTranBeginTime());
       product.upd();
       if (product.getProductType() == Pdt.OProductType.PrivateExpo.getLine().getKey()) {
