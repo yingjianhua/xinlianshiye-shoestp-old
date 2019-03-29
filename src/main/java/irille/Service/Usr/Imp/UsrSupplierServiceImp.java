@@ -14,6 +14,7 @@ import irille.Dao.PdtProductDao;
 import irille.Dao.UsrSupplierDao;
 import irille.Dao.SVS.SVSInfoService;
 import irille.Entity.SVS.SVSInfo;
+import irille.Service.Pdt.IPdtProductService;
 import irille.Service.Usr.IUsrSupplierService;
 import irille.core.sys.Sys;
 import irille.homeAction.usr.dto.SupplierListView;
@@ -45,6 +46,7 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
   @Inject UsrSupplierDao usrSupplierDao;
   @Inject PdtProductDao pdtProductDao;
   @Inject SVSInfoService SVSInfoService;
+  @Inject IPdtProductService  productService;
 
   @Override
   public List<FavoritesView> getFavoritesListByCat(
@@ -229,6 +231,8 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
       view.setStoreName(GetValue.get(map, UsrSupplier.T.SHOW_NAME, String.class, null));
       view.setAddress(GetValue.get(map, UsrSupplier.T.COMPANY_ADDR,String.class, null));
       view.setSvs(SVSDto);
+      view.setCategories(productService.getMainCateName(GetValue.get(map, UsrSupplier.T.PKEY, Integer.class, 0)));
+      
       List<UsrSupplierPdtView> pdtViews = new ArrayList<>();
       // 获取产品信息
       if (GetValue.get(map, UsrSupplier.T.PKEY, Integer.class, 0) != 0) {

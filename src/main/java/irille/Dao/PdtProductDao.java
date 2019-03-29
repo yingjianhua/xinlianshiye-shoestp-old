@@ -1778,4 +1778,22 @@ public class PdtProductDao {
     }
     return Query.sql(newSql).queryMaps().size();
   }
+  /**
+   * 获取商家主要产品类型名称
+   *
+   * @author GS
+   * @param supplier
+   * @return
+   */
+  public List getTopPdtCaties(Integer supplier) {
+    SQL sql = new SQL();
+    sql.SELECT(PdtCat.T.NAME)
+        .SELECT("count(1) cat")
+        .FROM(PdtProduct.class)
+        .LEFT_JOIN(PdtCat.class, PdtCat.T.PKEY, PdtProduct.T.CATEGORY)
+        .WHERE(supplier != null, PdtProduct.T.SUPPLIER, "=" + supplier)
+        .GROUP_BY(PdtProduct.T.CATEGORY);
+    String newSql = sql.toString() + "  order by cat desc limit 0,3";
+    return Query.sql(newSql).queryMaps();
+  }
 }
