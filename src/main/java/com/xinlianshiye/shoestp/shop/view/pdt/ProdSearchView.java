@@ -21,5 +21,5 @@ public class ProdSearchView {
   private String export; // 产品主要销售区域
 
   // 排序字段
-  private String sort; // json
+  //  private String sort; // json
 }
