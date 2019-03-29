@@ -45,11 +45,7 @@ public class PdtProductServiceImpl implements PdtProductService {
             })
         .collect(Collectors.toList());
     PageSearch pageSearch = new PageSearch(data);
-<<<<<<< HEAD
     if (null != search && null != search.getCategory() && search.getCategory() > 0) {
-=======
-    if (null != search.getCategory() && search.getCategory() > 0) {
->>>>>>> refs/heads/develop
       pageSearch.setBreadcrumbnav(pdtProductDao.getBreadcrumbNav(search.getCategory()));
     }
     return pageSearch;
