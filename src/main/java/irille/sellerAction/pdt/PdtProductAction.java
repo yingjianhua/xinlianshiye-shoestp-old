@@ -126,7 +126,7 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
   public void copyProduct() {
     try {
       PdtProductSaveView pdtView =
-          pdtpageSelect.sellerGetProductById(
+          pdtpageSelect.sellerCopyProductById(
               Integer.valueOf(String.valueOf(getId())), getSupplier().getPkey());
       if (pdtView == null) {
         writeErr(-49, "錯誤");
