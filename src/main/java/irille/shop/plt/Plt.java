@@ -34,6 +34,7 @@ import irille.pub.tb.Tb;
 import irille.pub.tb.TbBase;
 import irille.shop.pdt.PdtAttrCat;
 import irille.shop.pdt.PdtAttrPro;
+import irille.shop.pdt.PdtTargetMarket;
 import irille.shop.pdt.PdtTieredPricing;
 import irille.shop.usr.UsrAnnex;
 
@@ -94,6 +95,7 @@ public class Plt extends PackageBase {
     addTb(76, PdtTieredPricing.class);
     addTb(77, PdtAttrPro.class);
     addTb(78, PdtAttrCat.class);
+    addTb(79, PdtTargetMarket.class);
   }
 
   @Override

@@ -29,6 +29,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import com.google.gson.JsonObject;
+import com.xinlianshiye.shoestp.seller.service.pdt.IPdtTargetMarketService;
 
 import irille.Dao.PdtProductDao;
 import irille.Dao.O2O.O2OProductDao;
@@ -83,6 +84,8 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
 
   @Inject private PdtProductDAO.Publish pdtSave;
   @Inject private PdtProductDAO.Upd2 pdtUpdate;
+
+  @Inject private IPdtTargetMarketService targetMarketService;
 
   @Override
   public Page getProductList(
@@ -300,6 +303,7 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
       return -9;
     }
     pdtProduct.setSupplier(supId);
+
     pdtProduct.setTargetedMarket(
         country.stream().map(String::valueOf).collect(Collectors.joining(",")));
     pdtProduct.setPkey(pdtProductSaveView.getId());
@@ -530,6 +534,8 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
       pdtUpdate.setLines(list);
       pdtUpdate.commit();
     }
+    targetMarketService.ins(
+        pdtSave.getB(), country.stream().map(String::valueOf).collect(Collectors.joining(",")));
     PdtProduct pdt = null;
     if (pdtSave.getB() != null) {
       pdt = pdtSave.getB();
