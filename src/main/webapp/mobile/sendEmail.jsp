@@ -50,7 +50,7 @@
                         size="40" maxlength="100" format="Email" notnull="">
                         <p class="on_error">
                             <!-- The Email address you entered is incorrect. -->
-                            <s:text name="user.enteredEmail" />
+                            <s:text name="EmailEntered" />
                         </p>
                     </div>
                     <dl class="intro">
