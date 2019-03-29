@@ -127,8 +127,9 @@
                     <p style="padding: 0 43px;padding-top:10px;">Price<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
                     <div class="i1"></div>
                     <ul style="padding:10px 0;width:auto;height:auto;">
-                        <div class="price-sort" @click="priceBtn(0)">From low to high</div>
-                        <div class="price-sort" @click="priceBtn(1)">From hige to low</div>
+                        <!-- :class="priceSortIndex == item.rule?price-sort-active:''" -->
+                        <div class="price-sort"  v-for="(item, index) in priceSortList" :key="index" @click="priceBtn(item.rule)">{{item.name}}</div>
+                        <!-- <div class="price-sort" @click="priceBtn(1)">From hige to low</div> -->
                        <!-- <li @click="priceBtn(0)">From low to high</li>
                        <li @click="priceBtn(1)">From hige to low</li> -->
                     </ul>
@@ -341,6 +342,11 @@
             max:'', //最大价格
             filterAreaKeyword:'', // 过滤 搜索国家
             selectedMarketCountryList:[], // 国家主键
+            priceSortIndex:"",
+            priceSortList:[
+                {name:"From low to high",rule:0},
+                {name:"From high to low",rule:1},
+            ]
         },
         methods: {
             grade(){
@@ -348,6 +354,7 @@
             },
             priceBtn(rule){  // 价格排序
                 console.log(rule)
+                this.priceSortIndex = rule;
                 this.sort =  JSON.stringify([{name:"curPrice",sort:1,rule:rule}])
                 console.log(this.sort)
                 this.productList();

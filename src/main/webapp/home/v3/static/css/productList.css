@@ -642,3 +642,6 @@ a, a:link, a:visited, a:hover, a:active {
 #productList .price-sort:hover{
 	 background-color: #dee2ec;
 }
+#productList .price-sort-active{
+	background-color: #dee2ec;
+}
