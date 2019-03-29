@@ -1,8 +1,5 @@
 package irille.Dao;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import irille.pub.bean.Query;
@@ -21,6 +18,7 @@ public class UsrTargetMarketDao {
   public void save(List<Integer> countrties, Integer supplier) {
     SQL sql = new SQL();
     sql.DELETE_FROM(UsrTargetMarker.class).WHERE(UsrTargetMarker.T.SUPPLIER, "=?", supplier);
+    Query.sql(sql).executeUpdate();
     for (Integer integer : countrties) {
       UsrTargetMarker market = new UsrTargetMarker();
       market.setCountry(integer);
