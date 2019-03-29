@@ -171,8 +171,8 @@ public class PdtProductDaoImpl implements com.xinlianshiye.shoestp.shop.dao.PdtP
     sql.SELECT(UsrSupplier.T.PKEY, "supPkey");
     sql.SELECT(UsrSupplier.T.SHOW_NAME, "supName");
     sql.SELECT(UsrSupplier.T.STATUS, UsrSupplier.T.AUTH_TIME);
-    sql.JSON_EXTRACT(PltCountry.T.NAME, language.name());
-    sql.JSON_EXTRACT(PltProvince.T.NAME, language.name());
+    sql.SELECT(PltCountry.T.NAME, "pltCountry");
+    sql.SELECT(PltProvince.T.NAME, "pltProvince");
     sql.SELECT(PdtCat.T.PKEY, "pdtCatPkey");
     sql.SELECT(PdtCat.T.NAME, "pdtCatName");
     sql.SELECT(PdtCat.T.CATEGORY_UP, "pdtCatUp");
