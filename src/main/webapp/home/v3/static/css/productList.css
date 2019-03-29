@@ -392,6 +392,11 @@ a, a:link, a:visited, a:hover, a:active {
 	padding-right:36px;
 	line-height:24px;
 }
+#productList .rightList .common .common-box .common-boxspan .common-a:hover{
+		text-decoration: none;
+		cursor: text;
+		color: inherit;
+}
 #productList .rightList .common .common-box .common-boxspan .h1{
 	overflow: hidden;
 	white-space: nowrap;
@@ -636,8 +641,8 @@ a, a:link, a:visited, a:hover, a:active {
 }
 #productList .price-sort{
 	padding: 0 24px;
-	height: 28px;
-	line-height: 28px;
+	height: 35px;
+	line-height: 35px;
 }
 #productList .price-sort:hover{
 	 background-color: #dee2ec;

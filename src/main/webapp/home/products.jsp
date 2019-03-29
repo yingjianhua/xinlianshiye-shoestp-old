@@ -224,10 +224,6 @@
                                     {{item.closed?item.closed:'No data'}}
                                 </div>
                             </div>
-                            <!-- <a class="product-inquiry-btn" target="_blank"
-                               :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId"
-                               :data-id="item.supId">Product Inquiry</a> -->
-
                             </div>
                         </a>
                         <div class="product-inquiry-btn" @click.stop="ToProductInquiry(item.pdtId)">Product Inquiry</div>
@@ -235,31 +231,35 @@
                 <div class="common-boxspan fr">
                     <a class="h1" :href="'/home/usr_UsrSupplier_gtSupIndex?pkey='+item.supId"
                        target="_blank"><%--<div class="year">{{item.enter}}YRS</div>--%>{{item.supName}}</a>
-                    <div>
+                    <div v-if="item.svsInfo && item.svsInfo.status == 1">
                         <img class="mr6 icon01" src="/home/v3/static/images/ico/icon_cert.png" alt="Certificate"/>
                         Certificate
                         <div class="i"></div>
-                        <img class="mr6" v-if="item.svsInfo && item.svsInfo.grade == 1" src="/home/v3/static/images/supplier-level1.png" alt="SVS"/>
-                        <img class="mr6" v-if="item.svsInfo && item.svsInfo.grade == 2" src="/home/v3/static/images/supplier-level2.png" alt="SVS"/>
-                        <img class="mr6" v-if="item.svsInfo && item.svsInfo.grade == 3" src="/home/v3/static/images/supplier-level3.png" alt="SVS"/>
-                        <!--<img class="mr6" src="./images/icon_svs_2.png" alt="SVS" />-->
-                        <!--<img class="mr6" src="./images/icon_svs_3.png" alt="SVS" />-->
-                        SVS
-                        <div class="i"></div>
-
+                        <template  v-if="item.svsInfo && item.svsInfo.grade != 0">
+                            <img class="mr6" v-if="item.svsInfo.grade == 1" src="/home/v3/static/images/supplier-level1.png" alt="SVS"/>
+                            <img class="mr6" v-if="item.svsInfo.grade == 2" src="/home/v3/static/images/supplier-level2.png" alt="SVS"/>
+                            <img class="mr6" v-if="item.svsInfo.grade == 3" src="/home/v3/static/images/supplier-level3.png" alt="SVS"/>
+                            SVS
+                            <div class="i"></div>
+                        </template>
                     </div>
-
                     <div>
                         <div class="ww42">R&D：</div>
-                        <el-rate v-model="3.2" disabled></el-rate>
+                        <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="item.svsInfo.researchBase">
+                            <el-rate v-model="item.svsInfo.researchBaseStar" disabled></el-rate>
+                        </a>
                     </div>
                     <div>
                         <div class="ww42">Output：</div>
-                        <el-rate v-model="3.8" disabled></el-rate>
+                        <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="item.svsInfo.factoryBase">
+                            <el-rate v-model="item.svsInfo.factoryBaseStar" disabled></el-rate>
+                        </a>
                     </div>
                     <div>
                         <div class="ww42">Scale：</div>
-                        <el-rate v-model="3.5" disabled></el-rate>
+                        <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="item.svsInfo.capacityBase">
+                            <el-rate v-model="item.svsInfo.capacityBaseStar" disabled></el-rate>
+                        </a>
                     </div>
                     <div>
                         {{item.originCountry}} ( {{item.originProvince}} )
@@ -344,9 +344,6 @@
             ]
         },
         methods: {
-            grade(){
-                console.log(this.grade)
-            },
             priceBtn(rule){  // 价格排序 选择按钮
                 this.sort =  rule
                 this.limit = 8
@@ -377,8 +374,6 @@
                         "search.grade": this.grade.toString(),
                     };
                     var url = '/home/pdt_PdtProduct_gtProductsIndexListAjax?v=4'
-
-                    console.log(Object.keys(params).length)
                     var numbers = 0 
                     for(var i in params){
                         if(i != Object.keys(params).length - 1 && params[i] != null){
@@ -622,7 +617,6 @@
             categorySearch(e) {
                 this.lose = 1
                 this.cated = e.currentTarget.dataset.cated;
-                console.log(this.cated)
                 this.page = 0;
                 this.curr = 1
                 this.productList();
@@ -687,7 +681,6 @@
             this.classList();
             this.productList();
             this.getCountry();
-            console.log("this.sort = = = = = " + this.sort)
         },
         watch: {
             // 输入监听
