@@ -30,4 +30,6 @@ public class Regular {
   public static String REGULAR_CHINESE = "^[\\u4e00-\\u9fa5]{2,6}$"; // 纯中文，长度为2-6个
   public static String REGULAR_IDCARD =
       "^(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)$"; // 身份证号码校验 格式 330825199903236569
+
+  public static String REGULAR_PKEY_ARRS = "^(\\d,?)+(?<!,)$"; // 校验主键组成的字符串 如1,2,3,4,5
 }
