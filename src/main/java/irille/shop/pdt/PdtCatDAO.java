@@ -3,6 +3,7 @@ package irille.shop.pdt;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import irille.action.dataimport.util.StringUtil;
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
 import irille.core.sys.SysUser;
@@ -10,8 +11,11 @@ import irille.platform.pdt.View.pdtCatView.PdtCatView;
 import irille.pub.Log;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.BeanBase;
+import irille.pub.bean.Query;
 import irille.pub.bean.query.SqlQuery;
 import irille.pub.bean.sql.SQL;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.idu.IduIns;
 import irille.pub.idu.IduOther;
 import irille.pub.idu.IduUpd;
@@ -25,6 +29,7 @@ import irille.shop.plt.PltConfigDAO;
 import irille.view.Page;
 import irille.view.pdt.CategoryView;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 public class PdtCatDAO {
   public static final Log LOG = new Log(PdtCatDAO.class);
@@ -320,6 +325,7 @@ public class PdtCatDAO {
     pdtCat.setDeleted(OYn.NO.getLine().getKey());
     pdtCat.setCreateBy(createBy);
     pdtCat.setCreateTime(Env.getSystemTime());
+    checkNameInUse(pdtCat,cat.getName());
     translateUtil
         .newAutoTranslate(
             pdtCat, translateUtil.buildFilter(pdtCat.getName(), PltConfigDAO.manageLanguage()))
@@ -331,6 +337,7 @@ public class PdtCatDAO {
     pdtCat.setCategoryUp(cat.getCategoryUp());
     pdtCat.setProductImage(cat.getProductImage());
     pdtCat.setDisplay(cat.getDisplay());
+    checkNameInUse(pdtCat,cat.getName());
     translateUtil
         .newAutoTranslate(
             cat,
@@ -339,6 +346,33 @@ public class PdtCatDAO {
     pdtCat.setName(cat.getName());
     pdtCat.upd();
   }
+
+
+  // 校验该名称是否被使用
+  public static void checkNameInUse(PdtCat cat, String name) {
+    SQL sql = new SQL();
+    sql.SELECT(PdtCat.class).FROM(PdtCat.class);
+    sql.WHERE(PdtCat.T.DELETED, " =? ", OYn.NO.getLine().getKey());
+    String str = "";
+    try {
+      str = new JSONObject(name).get(PltConfigDAO.manageLanguage().toString()).toString();
+      if (!StringUtil.hasValue(str))
+        throw new WebMessageException(ReturnCode.service_wrong_data, "当前语言下的名称不能为空");
+    } catch (JSONException e) { // TODO Auto-generated catch block
+      e.printStackTrace();
+      throw new WebMessageException(ReturnCode.service_wrong_data, "参数错误");
+    }
+    sql.WHERE(
+            "JSON_EXTRACT(PdtCat.name,?) = ?", "$." + PltConfigDAO.manageLanguage().toString(), str);
+    sql.WHERE(cat.getPkey() != null,PdtCat.T.PKEY," <>? ",cat.getPkey());
+    Integer count = irille.pub.bean.Query.sql(sql).queryCount();
+    if (count > 0) {
+      String msg = "";
+      throw new WebMessageException(ReturnCode.failure, msg + "此产品分类【" + str + "】已存在,请勿重复添加");
+    }
+  }
+
+
 
   /** -获取所有分类 */
   public static List<PdtCat> listAll() {

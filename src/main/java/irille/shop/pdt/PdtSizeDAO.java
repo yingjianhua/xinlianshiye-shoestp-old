@@ -651,7 +651,7 @@ public class PdtSizeDAO {
     }
     sql.WHERE(
         "JSON_EXTRACT(PdtSize.name,?) = ?", "$." + PltConfigDAO.manageLanguage().toString(), str);
-    sql.WHERE(PdtSize.T.PKEY," <>? ",size.getPkey());
+    sql.WHERE(size.getPkey() != null,PdtSize.T.PKEY," <>? ",size.getPkey());
     Integer count = Query.sql(sql).queryCount();
     if (count > 0) {
       String msg = "";
