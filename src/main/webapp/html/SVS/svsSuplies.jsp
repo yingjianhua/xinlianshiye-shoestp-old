@@ -157,7 +157,7 @@
                             :src="util_function_obj.image(supplier.logo,160,130)" alt="">
                         <%--logo占位图--%>
                         <img v-else class="logo-placeholder"
-                            src="/home/v3/static/images/user_no_img.png" alt="">
+                            src="/home/v3/static/images/supplier_no_img.png" alt="">
                         <div @click="toContactSupplier(supplier.id)">
                             <img src="images/subliesconxin.png" alt="">
                             <span>Contact Supplier</span>
@@ -216,7 +216,6 @@
                                      v-if="supplier.svs.factoryBaseStar%1">
                             </template>
                         </div>
-                        <%--test--%>
                         <p class="ellipsis_2" v-if="supplier.address">{{supplier.address}}</p>
                     </div>
                     <%--右侧商品--%>
@@ -444,6 +443,7 @@
 
             //获取供货商列表
             getSupplierList:function () {
+                console.log("getList")
                 // 筛选地区+国家 - 暂时没有,直传了国家列表 - 之后改回来时用这个值就好
                 // let  selectedTargetMarketArr = this.marketAreaList.push(...this.selectedMarketCountryList);
                 axios.get('/home/usr_UsrSupplier_supplierList',{
@@ -479,6 +479,11 @@
                 // 隐藏下拉框
                 this.hiddenDropDown();
                 this.resetSearchParams();
+                // test
+                // console.log("search")
+                // util_function_obj.throttle(this.getSupplierList,2000)()
+                // return;
+
                 this.getSupplierList();
             },
 
