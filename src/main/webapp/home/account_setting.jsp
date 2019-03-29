@@ -4,24 +4,25 @@
 <link rel="stylesheet" href="/home/v3/static/css/user/uindex.css"/>
 <link rel="stylesheet" href="/home/v2/static/css/nav/new-top-nav-style.css"/>
 <style>
-    .el-button--primary {
+    .btn-save {
         width: 100px;
-        height: 36px;
-        background-color: #10389c;
+        font-size: 14px;
+        background: #10389c;
         border-radius: 4px;
         color: #ffffff;
         border-color: #10389c;
     }
 
-    .el-button--primary:hover {
+    .btn-save:hover {
         color: #ffffff;
-        border-color: #10389c;
-        background-color: #10389c;
+        border-color: #35c;
+        background: #35c;
     }
-    .el-button--primary.is-disabled, .el-button--primary.is-disabled:active, .el-button--primary.is-disabled:focus, .el-button--primary.is-disabled:hover{
+    .btn-save.is-disabled, .btn-save.is-disabled:active,
+    .btn-save.is-disabled:focus, .btn-save.is-disabled:hover{
         color: #ffffff;
-        border-color: #10389c;
-        background-color: #10389c;
+        border-color: #35c;
+        background: #35c;
     }
 
 </style>
@@ -51,7 +52,7 @@
                     <el-col :span="12" :offset="6">
                         <el-form-item label="Gender" prop="gender">
                             <el-select v-model="form1.gender" placeholder="Please select gender">
-                                <el-option label="confidentiality" value="0"></el-option>
+                                <el-option label="secrecy" value="0"></el-option>
                                 <el-option label="men" value="1"></el-option>
                                 <el-option label="women" value="2"></el-option>
                             </el-select>
@@ -83,7 +84,7 @@
                                 <el-input v-model.trim="form1.address" placeholder="Please enter the address"/>
                             </el-form-item>
                             <el-form-item>
-                                <el-button :disabled="flag" type="primary" @click="submitForm1('form1')">Save</el-button>
+                                <el-button class="btn-save" :disabled="flag" size="small" type="primary" @click="submitForm1('form1')">Save</el-button>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -103,7 +104,7 @@
                                 <el-input type="email" v-model.trim="form2.email" placeholder="Please input the email address"/>
                             </el-form-item>
                             <el-form-item>
-                                <el-button :disabled="flag" type="primary" @click="submitForm2('form2')">Save</el-button>
+                                <el-button class="btn-save" :disabled="flag" size="small" type="primary" @click="submitForm2('form2')">Save</el-button>
                             </el-form-item>
                         </el-form>
                     </el-col>
@@ -126,7 +127,7 @@
                                 <el-input type="password" v-model.trim="form3.ckPwd" placeholder="Please enter the confirmation password"/>
                             </el-form-item>
                             <el-form-item>
-                                <el-button :disabled="flag" type="primary" @click="submitForm3('form3')">Save</el-button>
+                                <el-button class="btn-save" :disabled="flag" size="small" type="primary" @click="submitForm3('form3')">Save</el-button>
                             </el-form-item>
                         </el-form>
                     </el-col>
@@ -149,6 +150,27 @@
     new Vue({
         el: "#personalCenter",
         data() {
+            // 姓名 - 名字验证
+            var validatefirstName = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('First name should not be empty'));
+                }else if(this.form1.firstName != ""){
+                    this.$refs.form1.validateField('surname');
+                    callback();
+                }else{
+                    callback();
+                }
+            };
+            // 姓名 - 名字验证
+            const validateSurName = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('Sur name should not be empty'));
+                } else if ( !util_regular_obj.register.nameGlobal.test( this.form1.firstName + this.form1.surname ) ) {
+                    callback(new Error('Please fill in your real name.'));
+                } else {
+                    callback();
+                }
+            };
             var validatePhone = (rule, value, callback) => {
                 if (!value) {
                     callback(new Error('Please input the phone number'));
@@ -218,13 +240,17 @@
                     ckPwd: '',  // 确认密码
                 },
                 rules: { //表单验证
-                    firstName: [{required: true,message: 'Please enter a firstName',trigger: 'blur'},
+                    firstName: [
+                        // {required: true,message: 'Please enter a firstName',trigger: 'blur'},
                         // { pattern: util_regular_obj.register.nameGlobal, message: 'Name cannot exceed 32 digits' }
-                        { pattern: /^[^ ].{1,32}$/, message: 'Name cannot exceed 32 digits' }
+                        // { pattern: /^[^ ].{1,32}$/, message: 'Name cannot exceed 32 digits' }
+                        {validator: validatefirstName, trigger: ['blur', 'change']}
                     ],
-                    surname: [{ required: true,message: 'Please enter a surname',trigger: 'blur'},
+                    surname: [
+                        // { required: true,message: 'Please enter a surname',trigger: 'blur'},
                         // { pattern: util_regular_obj.register.nameGlobal, message: 'Name cannot exceed 32 digits' }
-                        { pattern: /^[^ ].{1,32}$/  , message: 'Name cannot exceed 32 digits' }
+                        // { pattern: /^[^ ].{1,32}$/  , message: 'Name cannot exceed 32 digits' }
+                        {validator: validateSurName, trigger: ['blur', 'change']}
                     ],
 
                     phone:[{validator: validatePhone, trigger: ['blur', 'change'], required: true,}],
@@ -232,8 +258,8 @@
                         { pattern: /^[^!@~`%^&*()+|\\}{":?/].{0,180}$/, message: 'Cannot enter special symbols, up to 180 digits' }
                     ],
                     company: [{required: true,message: 'Please enter the company name',trigger: 'blur'},
-                        // { pattern: util_regular_obj.register.companyName, message: 'Name cannot exceed 50 digits' }
-                        { pattern: /^[^ ].{1,32}$/, message: 'Name cannot exceed 50 digits' }
+                        { pattern: util_regular_obj.register.companyName, message: 'Please enter the correct company name.' }
+                        // { pattern: /^[^ ].{1,32}$/, message: 'Name cannot exceed 50 digits' }
                     ],
                     gender: [{
                         message: 'Please select gender',
@@ -309,6 +335,7 @@
                                     this.flag = false;
                                     this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
                                         confirmButtonText: 'OK',
+                                        center: true,
                                         customClass: "my-custom-element-alert-class fs-content-18",
                                     });
                                     return
@@ -362,6 +389,7 @@
                                     this.flag = false;
                                     this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
                                         confirmButtonText: 'OK',
+                                        center: true,
                                         customClass: "my-custom-element-alert-class fs-content-18",
                                     });
                                     return
@@ -413,6 +441,7 @@
                                     this.flag = false;
                                     this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
                                         confirmButtonText: 'OK',
+                                        center: true,
                                         customClass: "my-custom-element-alert-class fs-content-18",
                                     });
                                     return

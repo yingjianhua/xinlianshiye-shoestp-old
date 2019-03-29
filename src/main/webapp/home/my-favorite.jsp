@@ -178,10 +178,9 @@
                     confimName = 'Whether to move the item to the recycle bin'
                     url = '/home/usr_UsrFavorites_recycleFavorite'
                 }
-                self.$confirm(confimName, 'Prompt', {
+                self.$confirm(confimName,  {
                     confirmButtonText: 'Determine',
                     cancelButtonText: 'Cancel',
-                    type: 'warning',
                     customClass: "my-custom-element-alert-class fs-content-18",
                 }).then(() => {
                     //  确定按钮
@@ -199,9 +198,9 @@
                             }
                             self.$message.success("Successfully deleted");
                             self.isAllChecked = false;  // 取消全选
-                            self.checkedCode = [];      // 清空选中数据         
+                            self.checkedCode = [];      // 清空选中数据
                             self.getFavoriteList(self.catPkey, self.start, self.limit);
-                            
+
                         })
                         .catch(function (error) {
                             self.$message.error("Network error, please refresh the page and try again");
@@ -230,10 +229,9 @@
                     url = '/home/usr_UsrFavorites_recycleFavorite'
                 }
                 console.log(confimName)
-                self.$confirm(confimName, 'Prompt', {
+                self.$confirm(confimName, {
                     confirmButtonText: 'Determine',
                     cancelButtonText: 'Cancel',
-                    type: 'warning',
                     customClass: "my-custom-element-alert-class fs-content-18",
                 }).then(() => {
                     //  确定按钮
@@ -253,7 +251,7 @@
                                 self.isAllChecked = false;  // 取消全选
                                 self.checkedCode = [];      // 清空选中数据
                                 self.getFavoriteList(self.catPkey, self.start, self.limit);
-                            
+
                         })
                         .catch(function (error) {
                             self.$message.error("Network error, please refresh the page and try again");
@@ -265,10 +263,9 @@
             },
             restore(pkey) {  // 回收站 商品  还原到 收藏夹
                 var self = this;
-                self.$confirm("Whether to restore to favorites", 'Prompt', {
+                self.$confirm("Whether to restore to favorites", {
                     confirmButtonText: 'Determine',
                     cancelButtonText: 'Cancel',
-                    type: 'warning',
                     customClass: "my-custom-element-alert-class fs-content-18",
                 }).then(() => {
                     //  确定按钮
@@ -286,9 +283,9 @@
                             }
                                 self.$message.success("Successful recovery");
                                 self.isAllChecked = false;  // 取消全选
-                                self.checkedCode = [];      // 清空选中数据   
+                                self.checkedCode = [];      // 清空选中数据
                                 self.getFavoriteList(self.catPkey, self.start, self.limit);
-                            
+
                         })
                         .catch(function (error) {
                             self.$message.error("Network error, please refresh the page and try again");
@@ -320,7 +317,7 @@
                         }
                         self.totalCount = res.data.result.totalCount
                         self.favoriteList = res.data.result.items;
-                       
+
                     })
                     .catch(function (error) {
                         self.$message.error("Network error, please refresh the page and try again");

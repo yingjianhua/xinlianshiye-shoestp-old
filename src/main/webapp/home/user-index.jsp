@@ -8,20 +8,18 @@
         right: 10px;
         top: 5px;
     }
-
-    .el-button {
+    .btn-config{
         width: 173px;
-        height: 40px;
         font-size: 18px;
         background-color: #10389c;
         border-radius: 3px;
         color: #ffffff;
         margin-right: 10px;
     }
-    .el-button:focus, .el-button:hover{
+    .btn-config:focus, .btn-config:hover{
         color: #ffffff;
-        border-color: #10389c;
-        background-color: #10389c;
+        /*border-color: #10389c;*/
+        background-color: #35c;
     }
     .el-textarea__inner {
         resize: none
@@ -163,8 +161,8 @@
                     </el-row>
                 </el-form-item>
                 <el-form-item>
-                    <el-button :disabled="flag" type="button" @click="submitForm('form')">Confirm</el-button>
-                    <a @click="ToRFQ" style="color: #9fafd7;font: size 12px;cursor: pointer;">Add more requirements</a>
+                    <el-button class="btn-config" size="" :disabled="flag" type="button" @click="submitForm('form')">Confirm</el-button>
+                    <a @click="ToRFQ" style="color: #9fafd7;font-size: 12px;cursor: pointer;">Add more requirements</a>
                 </el-form-item>
             </el-form>
         </div>
@@ -221,7 +219,7 @@
         el: "#personalCenter",
         data() {
             return{
-                flag : false, 
+                flag : false,
                 isShowAvatarUpload: false, // 头像上传框
                 options: [{
                         value: "1",
@@ -293,7 +291,7 @@
             this.getFavoriteList();
         },
         methods: {
-            // 跳转RFQ   
+            // 跳转RFQ
             ToRFQ(){
                 let url = "/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1"+ "&backUrl=" + window.location.href
                 util_function_obj.supplierCantEnter(this, url,"Please register or login your buyer account if you want public RFQ.");
