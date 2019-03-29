@@ -1644,6 +1644,8 @@ public class UsrSupplierDAO {
                 e.getStackTrace();
               }
             }
+          }else {
+            view.setStatusAuth(0);
           }
           // 页面设置
           view.setContactPageOn(supplier.getContactPageOn()); // 是否启用联系页个性化装修
