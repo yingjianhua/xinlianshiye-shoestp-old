@@ -296,8 +296,6 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
       throws JSONException, NoSuchMethodException, IllegalAccessException,
           InvocationTargetException {
     setSupView(UsrSupplierDAO.Select.getSupView(curLanguage(), getPkey(), 3));
-    System.out.println( getSupView());
-    System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<)))))))))))))))))))))))))))))))))))))))))");
     setResult("/home/shop-company.jsp");
     return HomeAction.TRENDS;
   }
