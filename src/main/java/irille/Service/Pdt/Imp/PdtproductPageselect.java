@@ -7,10 +7,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -420,6 +422,27 @@ public class PdtproductPageselect {
         }
       }
       productInfoView.setStock(pdtProduct.getStock().intValue());
+
+      for (Entry<String, List<SpecView>> entry : colorspecMap.entrySet()) {
+        List<SpecView> specs = entry.getValue();
+        specs =
+            specs.stream()
+                .sorted(
+                    Comparator.comparing(
+                        SpecView::getSize,
+                        (x, y) -> {
+                          try {
+                            Integer enSizeX = Integer.valueOf(x);
+                            Integer enSizeY = Integer.valueOf(y);
+                            return enSizeX.compareTo(enSizeY);
+                          } catch (NumberFormatException e) {
+                            return 1;
+                          }
+                        }))
+                .collect(Collectors.toList());
+        entry.setValue(specs);
+      }
+
       productInfoView.setSpec(colorspecMap);
       try {
         productInfoView.setSpecJson(new ObjectMapper().writeValueAsString(colorspecMap));
