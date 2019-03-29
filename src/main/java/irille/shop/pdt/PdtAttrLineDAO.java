@@ -4,9 +4,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import irille.core.sys.Sys.OYn;
 import irille.core.sys.SysUser;
 import irille.platform.pdt.View.PdtAttrLineView;
+import irille.pub.Log;
 import irille.pub.PropertyUtils;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
@@ -15,12 +19,15 @@ import irille.pub.idu.Idu;
 import irille.pub.idu.IduIns;
 import irille.pub.idu.IduUpd;
 import irille.pub.svr.Env;
+import irille.pub.tb.FldLanguage;
+import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.PdtAttrLine.T;
 import irille.shop.plt.PltConfigDAO;
 import irille.view.Page;
 
 public class PdtAttrLineDAO {
+  public static final Log LOG = new Log(PdtAttrLine.class);
 
   /**
    * 查询产品属性
@@ -80,6 +87,33 @@ public class PdtAttrLineDAO {
   public static class InsAttrLine extends IduIns<PdtAttrLineDAO.InsAttrLine, PdtAttrLine> {
     @Override
     public void before() {
+      try {
+        JSONObject json = new JSONObject(getB().getName());
+        for (Language l : FldLanguage.Language.values()) {
+          if (null != json.getString(l.name()) && !"".equals(json.getString(l.name()).trim())) {
+            SQL sql = new SQL();
+            sql.SELECT(PdtAttrLine.T.PKEY);
+            sql.FROM(PdtAttrLine.class);
+            sql.WHERE(
+                PdtAttrLine.class.getSimpleName()
+                    + "."
+                    + PdtAttrLine.T.NAME
+                    + "->'$."
+                    + l.name()
+                    + "' = ?",
+                json.getString(l.name()));
+            sql.WHERE(PdtAttrLine.T.MAIN, " =? ", getB().getMain());
+            sql.WHERE(PdtAttrLine.T.DELETED, "=?", OYn.NO.getLine().getKey());
+            Integer attrs = Query.sql(sql).queryCount();
+            if (null != attrs && attrs > 0) {
+              throw LOG.err(
+                  "nameCopy", l.displayName() + "名称【" + json.getString(l.name()) + "】已存在");
+            }
+          }
+        }
+      } catch (JSONException e) {
+        throw LOG.err("noaccess", "非法参数");
+      }
       getB().setDeleted(OYn.NO.getLine().getKey());
       getB().setCreateTime(Env.getTranBeginTime());
       setB(
@@ -99,6 +133,33 @@ public class PdtAttrLineDAO {
   public static class UpdAttrLine extends IduUpd<PdtAttrLineDAO.UpdAttrLine, PdtAttrLine> {
     @Override
     public void before() {
+      try {
+        JSONObject json = new JSONObject(getB().getName());
+        for (Language l : FldLanguage.Language.values()) {
+          if (null != json.getString(l.name()) && !"".equals(json.getString(l.name()).trim())) {
+            SQL sql = new SQL();
+            sql.SELECT(PdtAttrLine.T.PKEY);
+            sql.FROM(PdtAttrLine.class);
+            sql.WHERE(
+                PdtAttrLine.class.getSimpleName()
+                    + "."
+                    + PdtAttrLine.T.NAME
+                    + "->'$."
+                    + l.name()
+                    + "' = ?",
+                json.getString(l.name()));
+            sql.WHERE(PdtAttrLine.T.MAIN, " =? ", getB().getMain());
+            sql.WHERE(PdtAttrLine.T.DELETED, "=?", OYn.NO.getLine().getKey());
+            Integer attrs = Query.sql(sql).queryCount();
+            if (null != attrs && attrs > 1) {
+              throw LOG.err(
+                  "nameCopy", l.displayName() + "名称【" + json.getString(l.name()) + "】已存在");
+            }
+          }
+        }
+      } catch (JSONException e) {
+        throw LOG.err("noaccess", "非法参数");
+      }
       PdtAttrLine dbBean = loadThisBeanAndLock();
       PropertyUtils.copyPropertiesWithout(
           dbBean,

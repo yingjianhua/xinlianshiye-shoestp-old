@@ -19,6 +19,7 @@ import java.util.stream.Stream;
 import javax.inject.Inject;
 
 import irille.Dao.UsrTargetMarketDao;
+import irille.shop.plt.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -82,15 +83,7 @@ import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.pdt.PdtProductDAO;
 import irille.shop.pdt.PdtSpec;
-import irille.shop.plt.PltCountry;
-import irille.shop.plt.PltFreight;
-import irille.shop.plt.PltFreightLine;
-import irille.shop.plt.PltFreightSeller;
-import irille.shop.plt.PltFreightSellerDAO;
-import irille.shop.plt.PltFreightSellerLine;
-import irille.shop.plt.PltPay;
 import irille.shop.plt.PltPay.OPay_Mode;
-import irille.shop.plt.PltProvince;
 import irille.shop.prm.PrmGroupPurchase;
 import irille.shop.usr.Usr.OStatus;
 import irille.shop.usr.UsrSupplier.T;
@@ -1434,7 +1427,8 @@ public class UsrSupplierDAO {
     s.setDepartment(supplier.getDepartment());
     s.setJobTitle(supplier.getJobTitle());
     s.setShowName(supplier.getName());
-    translateUtil.autoTranslate(s, true);
+    translateUtil.newAutoTranslate(s,
+            translateUtil.buildFilter(s.getName(), PltConfigDAO.manageLanguage()));
     model.setCompanyType(s.getCompanyType());
     model.setCompanyNature(s.getCompanyNature());
     model.setCompanyAddr(s.getCompanyAddr());

@@ -110,6 +110,15 @@ public class PdtAttrCatDAO {
     public void valid() {
       super.valid();
       ValidForm.validEmpty(getB().getName(), PdtAttrCat.T.NAME);
+      List<PdtAttrCat> attrCats =
+          BeanBase.list(
+              PdtAttrCat.class,
+              PdtAttrCat.T.NAME.getFld().getCodeSqlField() + " =? ",
+              false,
+              getB().getName());
+      if (null != attrCats && attrCats.size() > 0) {
+        throw new WebMessageException(ReturnCode.failure, "属性分类名称【" + getB().getName() + "】已存在");
+      }
     }
 
     @Override
@@ -308,7 +317,7 @@ public class PdtAttrCatDAO {
 
   public boolean getCount(Integer cat) {
     PdtAttrCat attrCat = BeanBase.chk(PdtAttrCat.class, cat);
-    if (attrCat.getLockAttr().equals(OYn.NO.getLine().getKey())) {
+    if (attrCat.getLockAttr().equals(OYn.YES.getLine().getKey())) {
       return false;
     } else {
       return true;
