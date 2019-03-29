@@ -1,7 +1,6 @@
 /** */
 package com.xinlianshiye.shoestp.shop.dao.impl;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -72,6 +71,7 @@ public class PdtProductDaoImpl implements com.xinlianshiye.shoestp.shop.dao.PdtP
   public Page list(
       UsrPurchase purchase,
       ProdSearchView search,
+      List<SortView> sort,
       Integer start,
       Integer limit,
       Language language) {
@@ -306,26 +306,17 @@ public class PdtProductDaoImpl implements com.xinlianshiye.shoestp.shop.dao.PdtP
       //      sql.WHERE("(" + s + ")", search.getExport().split(","));
     }
 
-    if (null != search.getSort()) {
-      try {
-        List<SortView> sorts =
-            om.readValue(
-                search.getSort(),
-                om.getTypeFactory().constructParametricType(ArrayList.class, SortView.class));
-
-        sorts =
-            sorts.stream()
-                .sorted(Comparator.comparing(SortView::getSort).reversed())
-                .collect(Collectors.toList());
-        for (SortView s : sorts) {
-          if (s.getName().equals(PdtProduct.T.CUR_PRICE.getFld().getCode())) {
-            if (null != s.getRule() && SortView.sortMap.containsKey(s.getRule())) {
-              sql.ORDER_BY(PdtProduct.T.CUR_PRICE, SortView.sortMap.get(s.getRule()));
-            }
+    if (null != sort) {
+      sort =
+          sort.stream()
+              .sorted(Comparator.comparing(SortView::getSort).reversed())
+              .collect(Collectors.toList());
+      for (SortView s : sort) {
+        if (s.getName().equals(PdtProduct.T.CUR_PRICE.getFld().getCode())) {
+          if (null != s.getRule() && SortView.sortMap.containsKey(s.getRule())) {
+            sql.ORDER_BY(PdtProduct.T.CUR_PRICE, SortView.sortMap.get(s.getRule()));
           }
         }
-      } catch (IOException e) {
-        e.printStackTrace();
       }
     }
 
