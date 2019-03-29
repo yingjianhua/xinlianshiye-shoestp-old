@@ -153,7 +153,11 @@
                 <div class="supliescon">
                     <%--左侧logo--%>
                     <div class="logo">
-                        <img :src="supplier.logo?util_function_obj.image(supplier.logo,160,130):'/home/v3/static/images/user_no_img.png'" alt="">
+                        <img v-if="supplier.logo"
+                            :src="util_function_obj.image(supplier.logo,160,130)" alt="">
+                        <%--logo占位图--%>
+                        <img v-else class="logo-placeholder"
+                            src="/home/v3/static/images/user_no_img.png" alt="">
                         <div @click="toContactSupplier(supplier.id)">
                             <img src="images/subliesconxin.png" alt="">
                             <span>Contact Supplier</span>
@@ -227,7 +231,7 @@
                 </div>
             </div>
 
-            <div class="pageBreak">
+            <div class="pageBreak" v-if="totalCount > 0">
                 <el-pagination
                         :current-page.sync="currentPage"
                         :page-size="limit"
@@ -451,7 +455,7 @@
                         processType: this.selectedProcessType, //工艺类型 （注塑鞋，硫化鞋）
                         grade: this.selectedLevelList.length>0 ? this.selectedLevelList.join(",") : null,  //SVS等级 1为银，2为金，3为钻石，0为暂无等级
                         pdtCategory: this.cated>0 ? this.cated : null, //产品分类 - 左侧列表选中项
-                        checkType: 0, //检索类型 1为查询已认证SVS供应商列表,0为查询所有 - 此处固定为1
+                        checkType: 1, //检索类型 1为查询已认证SVS供应商列表,0为查询所有 - 此处固定为1
                     }
                 }).then( (res) => {
                     if(res.data.ret != 1){
@@ -472,6 +476,8 @@
             },
             // 点击搜索
             search(){
+                // 隐藏下拉框
+                this.hiddenDropDown();
                 this.resetSearchParams();
                 this.getSupplierList();
             },
