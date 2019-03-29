@@ -44,6 +44,7 @@ import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtCatDAO;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.pdt.PdtSpec;
+import irille.shop.pdt.PdtTargetMarket;
 import irille.shop.pdt.PdtTieredPricing;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltProvince;
@@ -149,8 +150,12 @@ public class PdtProductDaoImpl implements com.xinlianshiye.shoestp.shop.dao.PdtP
     favorite.WHERE(UsrFavorites.T.PURCHASE, "=?", null == purchase ? -1 : purchase.getPkey());
 
     SQL sql = new SQL();
-
-    sql.SELECT(PdtProduct.T.PKEY, "pdtPkey");
+    sql.SELECT(
+        " DISTINCT "
+            + PdtProduct.class.getSimpleName()
+            + "."
+            + PdtProduct.T.PKEY.getFld().getCodeSqlField()
+            + " AS pdtPkey ");
     sql.SELECT(PdtProduct.T.NAME, "pdtName");
     sql.SELECT(maxCurPrice, "maxCurPrice");
     sql.SELECT(minCurPrice, "minCurPrice");
@@ -166,8 +171,8 @@ public class PdtProductDaoImpl implements com.xinlianshiye.shoestp.shop.dao.PdtP
     sql.SELECT(UsrSupplier.T.PKEY, "supPkey");
     sql.SELECT(UsrSupplier.T.SHOW_NAME, "supName");
     sql.SELECT(UsrSupplier.T.STATUS, UsrSupplier.T.AUTH_TIME);
-    sql.JSON_EXTRACT(PltCountry.T.NAME, language.name());
-    sql.JSON_EXTRACT(PltProvince.T.NAME, language.name());
+    sql.SELECT(PltCountry.T.NAME, "pltCountry");
+    sql.SELECT(PltProvince.T.NAME, "pltProvince");
     sql.SELECT(PdtCat.T.PKEY, "pdtCatPkey");
     sql.SELECT(PdtCat.T.NAME, "pdtCatName");
     sql.SELECT(PdtCat.T.CATEGORY_UP, "pdtCatUp");
@@ -187,24 +192,54 @@ public class PdtProductDaoImpl implements com.xinlianshiye.shoestp.shop.dao.PdtP
     sql.WHERE(PdtProduct.T.IS_VERIFY, " =? ", Sys.OYn.YES.getLine().getKey());
     sql.WHERE(PdtProduct.T.STATE, " =? ", Pdt.OState.ON.getLine().getKey());
     sql.WHERE(search.getSupplier() != null, PdtProduct.T.SUPPLIER, "=?", search.getSupplier());
-    if (null != search.getGrade()
-        && !search.getGrade().equals(SVSGradeType.NotAvailable.getLine().getKey())) {
-      sql.WHERE(SVSInfo.T.GRADE, " =? ", search.getGrade());
-    }
-    if (null != search.getGrade()
-        && search.getGrade().equals(SVSGradeType.NotAvailable.getLine().getKey())) {
-      sql.WHERE(
-          "("
-              + SVSInfo.class.getSimpleName()
+    sql.WHERE(null != search.getGrade(), SVSInfo.T.GRADE, " in( ? )", search.getGrade());
+    if (null != search.getGrade()) {
+      String where =
+          SVSInfo.class.getSimpleName()
               + "."
               + SVSInfo.T.GRADE.getFld().getCodeSqlField()
-              + " =? OR "
-              + SVSInfo.class.getSimpleName()
-              + "."
-              + SVSInfo.T.GRADE.getFld().getCodeSqlField()
-              + " IS NULL )",
-          search.getGrade());
+              + " IN(?) ";
+      List<Integer> grades =
+          Arrays.asList(search.getGrade().split(",")).stream()
+              .map(
+                  b -> {
+                    return Integer.valueOf(b);
+                  })
+              .collect(Collectors.toList());
+      boolean flag = false;
+      if (grades.contains(Integer.valueOf(SVSGradeType.NotAvailable.getLine().getKey()))) {
+        flag = true;
+        where +=
+            " OR "
+                + SVSInfo.class.getSimpleName()
+                + "."
+                + SVSInfo.T.GRADE.getFld().getCodeSqlField()
+                + " IS NULL ";
+      }
+      if (flag) {
+        where = "(" + where + ")";
+      }
+
+      sql.WHERE(where, search.getGrade());
     }
+    //    if (null != search.getGrade()
+    //        && !search.getGrade().equals(SVSGradeType.NotAvailable.getLine().getKey())) {
+    //      sql.WHERE(SVSInfo.T.GRADE, " =? ", search.getGrade());
+    //    }
+    //    if (null != search.getGrade()
+    //        && search.getGrade().equals(SVSGradeType.NotAvailable.getLine().getKey())) {
+    //      sql.WHERE(
+    //          "("
+    //              + SVSInfo.class.getSimpleName()
+    //              + "."
+    //              + SVSInfo.T.GRADE.getFld().getCodeSqlField()
+    //              + " =? OR "
+    //              + SVSInfo.class.getSimpleName()
+    //              + "."
+    //              + SVSInfo.T.GRADE.getFld().getCodeSqlField()
+    //              + " IS NULL )",
+    //          search.getGrade());
+    //    }
     List<Integer> catsitems =
         pdtProductDao.getCatsNodeByCatId(null == search.getCategory() ? 0 : search.getCategory());
     String cats = null;
@@ -253,20 +288,22 @@ public class PdtProductDaoImpl implements com.xinlianshiye.shoestp.shop.dao.PdtP
           keywords);
     }
     if (null != search.getExport()) {
-      List<String> strs = Arrays.asList(search.getExport().split(","));
-      String s = "";
-      for (int i = 0; i < strs.size(); i++) {
-        s +=
-            " FIND_IN_SET( ? ," // strs.get(i)
-                + PdtProduct.class.getSimpleName()
-                + "."
-                + PdtProduct.T.TARGETED_MARKET.getFld().getCodeSqlField()
-                + ") ";
-        if (i != strs.size() - 1) {
-          s += " OR ";
-        }
-      }
-      sql.WHERE("(" + s + ")", search.getExport().split(","));
+      sql.LEFT_JOIN(PdtTargetMarket.class, PdtTargetMarket.T.PRODUCT, PdtProduct.T.PKEY);
+      sql.WHERE(PdtTargetMarket.T.COUNTRY, "  IN(?) ", search.getExport());
+      //      List<String> strs = Arrays.asList(search.getExport().split(","));
+      //      String s = "";
+      //      for (int i = 0; i < strs.size(); i++) {
+      //        s +=
+      //            " FIND_IN_SET( ? ," // strs.get(i)
+      //                + PdtProduct.class.getSimpleName()
+      //                + "."
+      //                + PdtProduct.T.TARGETED_MARKET.getFld().getCodeSqlField()
+      //                + ") ";
+      //        if (i != strs.size() - 1) {
+      //          s += " OR ";
+      //        }
+      //      }
+      //      sql.WHERE("(" + s + ")", search.getExport().split(","));
     }
 
     if (null != search.getSort()) {

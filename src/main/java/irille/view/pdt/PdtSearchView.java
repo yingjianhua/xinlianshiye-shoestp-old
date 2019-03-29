@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import irille.pub.i18n.I18NFieldSerializer;
 import irille.view.BaseView;
+import irille.view.v3.svs.SvsRatingAndRosDTO;
 import lombok.Data;
 
 @Data
@@ -49,6 +50,8 @@ public class PdtSearchView implements BaseView {
   private double scale; // 规模？----暂无功能
   private String country; // 国家?----暂无功能
   private Integer enter; // 入驻时间
+
+  private SvsRatingAndRosDTO svsInfo;
 
   private BigDecimal maxCurPrice;
 

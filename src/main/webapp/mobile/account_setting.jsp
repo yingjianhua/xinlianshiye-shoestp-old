@@ -240,11 +240,11 @@
   			dataType:"json",
   			success:function(data){
   				if(data.ret=='1'){
-  				$("#tip").html("UPDATE SUCCESS!");
+  				$("#tip").html(" <s:text name="updateSuccess"/>");
   				$('.psdModal').show().delay(3000).fadeOut();
   				setTimeout(function () {window.location="/home/usr_UsrPurchase_userIndex";},1000);    		
   				}else{
-  				$("#tip").html("UPDATE FAIL!");
+  				$("#tip").html(" <s:text name="updateFail"/>");
   	  			$('.psdModal').show().delay(3000).fadeOut();	
   	  			setTimeout(function () {location.reload();},3000);    					
   				}

@@ -7,31 +7,51 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.inject.Inject;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
 import com.xinlianshiye.shoestp.plat.service.pm.imp.PMMessageServiceImp;
 
 import irille.Dao.SVS.SVSInfoDao;
 import irille.Dao.SVS.SVSInfoService;
 import irille.Dao.SVS.impl.SVSInfoDaoImpl;
+import irille.Entity.SVS.SVSInfo;
 import irille.Entity.SVS.Enums.SVSAuthenticationStatus;
 import irille.Entity.SVS.Enums.SVSGradeType;
-import irille.Entity.SVS.SVSInfo;
 import irille.Entity.pm.PM.OTempType;
 import irille.core.sys.Sys;
 import irille.homeAction.usr.dto.Page_supplierProductView;
 import irille.homeAction.usr.dto.SupplierListView;
 import irille.platform.usr.View.UsrSUPSelectView;
 import irille.platform.usr.View.UsrSupplierNewView;
-import irille.platform.usr.View.UsrSupplierView.*;
+import irille.platform.usr.View.UsrSupplierView.AuthView;
+import irille.platform.usr.View.UsrSupplierView.BasicInformationView;
+import irille.platform.usr.View.UsrSupplierView.CategorysView;
+import irille.platform.usr.View.UsrSupplierView.CountryView;
+import irille.platform.usr.View.UsrSupplierView.IsProsView;
+import irille.platform.usr.View.UsrSupplierView.ListView;
+import irille.platform.usr.View.UsrSupplierView.MarketingSettingsView;
+import irille.platform.usr.View.UsrSupplierView.PageInformationView;
+import irille.platform.usr.View.UsrSupplierView.PersonalityDecorationView;
+import irille.platform.usr.View.UsrSupplierView.SVSGradeView;
+import irille.platform.usr.View.UsrSupplierView.SVSStatusView;
+import irille.platform.usr.View.UsrSupplierView.StatusView;
+import irille.platform.usr.View.UsrSupplierView.StoreStatusView;
+import irille.platform.usr.View.UsrSupplierView.SuppliersView;
 import irille.pub.DateTools;
 import irille.pub.LogMessage;
 import irille.pub.PropertyUtils;
@@ -40,15 +60,18 @@ import irille.pub.bean.BeanBase;
 import irille.pub.bean.query.SqlQuery;
 import irille.pub.bean.sql.SQL;
 import irille.pub.exception.WebMessageException;
-import irille.pub.idu.*;
+import irille.pub.idu.Idu;
+import irille.pub.idu.IduIns;
+import irille.pub.idu.IduOther;
+import irille.pub.idu.IduPage;
+import irille.pub.idu.IduUpd;
 import irille.pub.svr.DbPool;
 import irille.pub.svr.Env;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.FldLanguage.Language;
-import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.SEOUtils;
+import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.TranslateLanguage.translateUtil;
-import irille.pub.validate.Valid;
 import irille.pub.validate.ValidForm;
 import irille.pub.validate.ValidRegex2;
 import irille.sellerAction.view.AuthenticationView;
@@ -58,19 +81,23 @@ import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.pdt.PdtProductDAO;
 import irille.shop.pdt.PdtSpec;
-import irille.shop.plt.*;
+import irille.shop.plt.PltCountry;
+import irille.shop.plt.PltFreight;
+import irille.shop.plt.PltFreightLine;
+import irille.shop.plt.PltFreightSeller;
+import irille.shop.plt.PltFreightSellerDAO;
+import irille.shop.plt.PltFreightSellerLine;
+import irille.shop.plt.PltPay;
 import irille.shop.plt.PltPay.OPay_Mode;
+import irille.shop.plt.PltProvince;
 import irille.shop.prm.PrmGroupPurchase;
 import irille.shop.usr.Usr.OStatus;
 import irille.shop.usr.UsrSupplier.T;
 import irille.view.Page;
-import irille.view.SVS.SVSInfoView;
 import irille.view.usr.AccountSettingsView;
 import irille.view.usr.SupplierDetailsDTO;
 import irille.view.usr.SupplierView;
 import irille.view.usr.shopSettingView;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class UsrSupplierDAO {
 
@@ -1629,17 +1656,18 @@ public class UsrSupplierDAO {
           view.setContacts(supplier.getContacts()); // 联系人名称
           view.setDepartment(supplier.getDepartment()); // 联系人部门
           view.setJobTitle(supplier.getJobTitle()); // 联系人职位
-          view.setTargetedMarkets(supplier.getTargetedMarket());// 目标市场
-          view.setAnnualOutput(supplier.getAnnualProduction());// 年产量
-          SVSInfoDao sd=new SVSInfoDaoImpl();
-          if(sd.findSVSInfoBySupplier(supplier.getPkey())!=null){
-            SVSInfo si=sd.findSVSInfoBySupplier(supplier.getPkey());
+          view.setTargetedMarkets(supplier.getTargetedMarket()); // 目标市场
+          view.setAnnualOutput(supplier.getAnnualProduction()); // 年产量
+          SVSInfoDao sd = new SVSInfoDaoImpl();
+          if (sd.findSVSInfoBySupplier(supplier.getPkey()) != null) {
+            SVSInfo si = sd.findSVSInfoBySupplier(supplier.getPkey());
             try {
               JSONObject getResearch = new JSONObject(si.getResearch());
               view.setRDdepartment(getResearch.getString("isTeam"));
               view.setAnnualNumberOfNewShoes(getResearch.getString("numOfShoes"));
               JSONObject productionCapacity = new JSONObject(si.getProductionCapacity());
-              view.setNumberOfProductionLines(productionCapacity.getString("productionLineQuantity"));
+              view.setNumberOfProductionLines(
+                  productionCapacity.getString("productionLineQuantity"));
               view.setNumberOfSewingMachines(productionCapacity.getString("needleCartNum"));
               view.setAnnualExportValue(productionCapacity.getString("exportVolume"));
               JSONObject realFactory = new JSONObject(si.getRealFactory());
@@ -1650,7 +1678,7 @@ public class UsrSupplierDAO {
               JSONObject tradeTeam = new JSONObject(si.getForeignTradeTeam());
               view.setNumberOfForeignTradeTeams(tradeTeam.getString("teamSize"));
               view.setYearsOfForeignTradeExperience(tradeTeam.getString("experience"));
-            }catch (Exception e){
+            } catch (Exception e) {
               e.getStackTrace();
             }
           }
@@ -2498,6 +2526,7 @@ public class UsrSupplierDAO {
                     T.NAME,
                     UsrMain.T.EMAIL,
                     T.TARGETED_MARKET,
+                    UsrMain.T.LAST_LOGIN,
                     SVSInfo.T.AUTHENTICATION_TIME)
                 .FROM(UsrSupplier.class)
                 .LEFT_JOIN(SVSInfo.class, SVSInfo.T.SUPPLIER, T.PKEY)
@@ -2511,10 +2540,22 @@ public class UsrSupplierDAO {
     view.setName((String) map.get(T.NAME.getFld().getCodeSqlField()));
     view.setUserName((String) map.get(UsrMain.T.EMAIL.getFld().getCodeSqlField()));
     view.setTargetedMarket((String) map.get(T.TARGETED_MARKET.getFld().getCodeSqlField()));
+    view.setLastLoginTIME((Date)map.get(UsrMain.T.LAST_LOGIN.getFld().getCodeSqlField()));
     view.setAuthentication_time(
         (Date) map.get(SVSInfo.T.AUTHENTICATION_TIME.getFld().getCodeSqlField()));
     view.setSvsRatingAndRosDTO(svsInfoService.getSvsRatingAndRos(supplierId));
     return view;
   }
+
+  // 获取商家的目标市场
+  public static Map<String, Object> getTargetedMarket(Integer pkey) {
+    SQL sql = new SQL();
+    sql.SELECT(UsrSupplier.T.TARGETED_MARKET);
+    sql.FROM(UsrSupplier.class);
+    sql.WHERE(UsrSupplier.T.PKEY, " =? ", pkey);
+    Map<String, Object> map = irille.pub.bean.Query.sql(sql).queryMap();
+    return map;
+  }
+
   /** ———————————————————分割线(3.1.1END)————————————————————————— */
 }

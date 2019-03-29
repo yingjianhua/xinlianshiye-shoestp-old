@@ -25,4 +25,5 @@ public class UsrSupplierInfo implements BaseView {
   private Integer  failedProductCount;// 商家首页获取当前供应商的审核失败产品总数
   private Integer  warehouseProductCounts;//商家首页获取当前供应商的产品回收站总数
   private List<SellerIndexConsultView> sellerIndexConsultViewList; //商家首页第3块商品询盘查询普通询盘
+  private String svsLevel;// SVS等级
 }
