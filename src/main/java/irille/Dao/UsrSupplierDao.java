@@ -3,6 +3,7 @@ package irille.Dao;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import irille.Aops.Caches;
 import irille.Entity.SVS.SVSInfo;
@@ -15,6 +16,7 @@ import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
 import irille.pub.util.SEOUtils;
 import irille.shop.pdt.Pdt;
+import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.pdt.PdtTieredPricing;
 import irille.shop.usr.*;
@@ -195,18 +197,21 @@ public class UsrSupplierDao {
         .WHERE(storeName != null, UsrSupplier.T.SHOW_NAME, "like ?", "%" + storeName + "%")
         .WHERE(processType != null, UsrSupplier.T.CATEGORY, "=?", processType);
     if (targetMarket != null) {
-      for (String string : targetMarket.split(",")) {
-        if (string.length() > 1) {
-          query.WHERE(
-              "find_in_set( ?," + UsrSupplier.class.getSimpleName() + "." + "targeted_market )",
-              string);
-        }
-      }
+      query.WHERE(
+          UsrSupplier.T.PKEY,
+          "in(select DISTINCT marker.supplier from usr_target_marker  marker where marker.country in("
+              + targetMarket
+              + "))");
     }
     if (null != checkedType && checkedType == 1) query.WHERE(SVSInfo.T.STATUS, " =?", 1);
+    if (pdtCategory != null && pdtCategory > -1) {
+      List listCate = getCatsNodeByCatId(pdtCategory);
+      System.out.println(listCate);
+      if (listCate != null)
+        query.WHERE(PdtProduct.T.CATEGORY, "in(" + listCate.stream().map(b->{return String.valueOf(b);}).collect(Collectors.joining(",")) + ")");
+    }
 
     query
-        .WHERE(pdtCategory != null, PdtProduct.T.CATEGORY, "=?", pdtCategory)
         .WHERE(grade != null, SVSInfo.T.GRADE, " in(" + grade + ")")
         .GROUP_BY(UsrSupplier.T.PKEY)
         .ORDER_BY(PdtProduct.T.VERIFY_TIME, "desc");
@@ -241,17 +246,20 @@ public class UsrSupplierDao {
         .WHERE(storeName != null, UsrSupplier.T.SHOW_NAME, "like ?", "%" + storeName + "%")
         .WHERE(processType != null, UsrSupplier.T.CATEGORY, "=?", processType);
     if (targetMarket != null) {
-      for (String string : targetMarket.split(",")) {
-        if (string.length() > 1) {
-          query.WHERE(
-              "find_in_set( ?," + UsrSupplier.class.getSimpleName() + "." + "targeted_market )",
-              string);
-        }
-      }
+      query.WHERE(
+          UsrSupplier.T.PKEY,
+          "in(select DISTINCT marker.supplier from usr_target_marker  marker where marker.country in("
+              + targetMarket
+              + "))");
     }
     if (null != checkedType && checkedType == 1) query.WHERE(SVSInfo.T.STATUS, " =?", 1);
+    if (pdtCategory != null && pdtCategory > -1) {
+      List listCate = getCatsNodeByCatId(pdtCategory);
+      if (listCate != null)
+        query.WHERE(PdtProduct.T.CATEGORY, "in(" + listCate.stream().map(b->{return String.valueOf(b);}).collect(Collectors.joining(","))+ ")");
+    }
+
     query
-        .WHERE(pdtCategory != null, PdtProduct.T.CATEGORY, "=?", pdtCategory)
         .WHERE(grade != null, SVSInfo.T.GRADE, " in(" + grade + ")")
         .GROUP_BY(UsrSupplier.T.PKEY)
         .ORDER_BY(PdtProduct.T.VERIFY_TIME, "desc");
@@ -291,5 +299,45 @@ public class UsrSupplierDao {
           }
         };
     return Query.sql(sql).queryMap();
+  }
+  /**
+   * 获取商品子节点
+   *
+   * @param id
+   * @return
+   */
+  public List<Integer> getCatsNodeByCatId(int id) {
+    if (id < 1) {
+      return null;
+    }
+    BeanQuery query = new BeanQuery();
+    query.SELECT(PdtCat.T.PKEY).FROM(PdtCat.class).WHERE(PdtCat.T.CATEGORY_UP, "=?", id);
+    List<PdtCat> l = new ArrayList();
+    List<PdtCat> tList = query.queryList();
+    List ttList = new ArrayList();
+    l.addAll(tList);
+    List<Integer> result = new ArrayList();
+    result.add(id);
+    do {
+      ttList.clear();
+      for (PdtCat objects : tList) {
+        ttList.addAll(
+            new BeanQuery()
+                .SELECT(PdtCat.T.PKEY)
+                .FROM(PdtCat.class)
+                .WHERE(PdtCat.T.CATEGORY_UP, "=?", objects.getPkey())
+                .queryList());
+      }
+      l.addAll(ttList);
+      tList.clear();
+      tList.addAll(ttList);
+      if (ttList.size() < 1) break;
+    } while (true);
+    for (PdtCat o : l) {
+      if (o.getPkey() > 0) {
+        result.add(o.getPkey());
+      }
+    }
+    return result;
   }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import irille.pub.i18n.I18NFieldSerializer;
+import irille.shop.usr.MainCateInfoView;
 import irille.view.BaseView;
 import irille.view.v3.svs.SvsRatingAndRosDTO;
 import lombok.Data;
@@ -29,4 +30,6 @@ public class UsrSupplierInfView implements BaseView {
 
   @JsonSerialize(using = I18NFieldSerializer.class)
   private String address;
+
+  private List<MainCateInfoView> categories;
 }
