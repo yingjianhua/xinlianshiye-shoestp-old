@@ -668,7 +668,7 @@ public class translateUtil {
       }
     }
 
-    return StringEscapeUtils.unescapeHtml4(baseValue);
+    return baseValue;
   }
 
   public static JsonObject valuetoMultilanguageJson(String s) {
@@ -750,7 +750,8 @@ public class translateUtil {
                 translateBean.getTargetLanguage(),
                 translateBean.getText()));
       }
-      jsonObject.addProperty(language.name(), translateBean.getText());
+      jsonObject.addProperty(
+          language.name(), StringEscapeUtils.unescapeHtml4(translateBean.getText()));
     }
     return jsonObject.toString();
   }
