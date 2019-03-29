@@ -542,6 +542,7 @@ public class PdtProductDao {
             PdtProduct.T.PICTURE,
             PdtProduct.T.PRODUCT_TYPE,
             PdtProduct.T.UPDATE_TIME,
+            PdtProduct.T.STATE,
             PdtProduct.T.IS_VERIFY)
         .SELECT(PdtProduct.T.CATEGORY, "cat")
         .SELECT(PdtCat.T.NAME, "category")
@@ -771,7 +772,9 @@ public class PdtProductDao {
                             == Pdt.OAppr._DEFAULT.getLine().getKey()) {
                           o.put("status", "待审核");
                         }
-                        o.put("upANDlow", (Byte) PdtProduct.T.STATE.getFld().getDefaultValue());
+                        o.put(
+                            "upANDlow",
+                            (Byte) o.get(PdtProduct.T.STATE.getFld().getCodeSqlField()));
                       }
                       o.put(
                           "category",
