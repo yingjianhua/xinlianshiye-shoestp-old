@@ -94,6 +94,12 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
       case -9:
         writeErr(-9, "目标市场不能为空");
         break;
+      case -10:
+        writeErr(-10, "名称必须为中文");
+        break;
+      case -11:
+        writeErr(-11, "不能有相同颜色的名称");
+        break;
       default:
         write();
     }

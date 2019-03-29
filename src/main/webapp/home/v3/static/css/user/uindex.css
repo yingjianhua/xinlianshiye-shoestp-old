@@ -674,6 +674,7 @@
             top: -20px;
             padding-right: 5px;
             background-color: #FFF;
+            transition: all 0.2s linear;
         }
           /* #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2 li .h2{
           	width:140px;

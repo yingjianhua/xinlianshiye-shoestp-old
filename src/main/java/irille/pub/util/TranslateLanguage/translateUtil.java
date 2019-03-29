@@ -14,6 +14,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import com.google.cloud.translate.Translate;
 import com.google.cloud.translate.TranslateOptions;
 import com.google.cloud.translate.Translation;
@@ -45,7 +47,6 @@ import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltTrantslate;
 import irille.shop.plt.PltTrantslateDAO;
 import irille.shop.usr.UsrSupplier;
-import org.apache.commons.lang3.StringEscapeUtils;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/8/13 Time: 9:45 */
 public class translateUtil {
@@ -130,6 +131,7 @@ public class translateUtil {
     System.setProperty("GOOGLE_API_KEY", appKey);
     jsonParser = new JsonParser();
     //        service = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(5));
+    addFilterToGlobalFilter(PdtProduct.class, PdtProduct.T.NAME);
     addFilterToGlobalFilter(PdtProduct.class, PdtProduct.T.DESCRIPTION);
     addFilterToGlobalFilter(PdtProduct.class, PdtProduct.T.DESCRIBE_MODULE_1);
     addFilterToGlobalFilter(PdtProduct.class, PdtProduct.T.DESCRIBE_MODULE_2);
@@ -649,11 +651,13 @@ public class translateUtil {
       ex = jsonParser.parse(value).getAsJsonObject();
     }
     String baseValue = value;
-    List<FldLanguage.Language> languages =
-        new ArrayList<>(
-            Arrays.asList(
-                FldLanguage.Language.en, FldLanguage.Language.zh_CN, FldLanguage.Language.zh_TW));
-    if (baseLangauge != null) languages.add(0, baseLangauge);
+    List<FldLanguage.Language> languages = new ArrayList<>();
+    if (baseLangauge != null) {
+      languages.add(0, baseLangauge);
+    }
+    languages.addAll(
+        Arrays.asList(
+            FldLanguage.Language.en, FldLanguage.Language.zh_CN, FldLanguage.Language.zh_TW));
     for (FldLanguage.Language language : languages) {
       if (ex == null) break;
       if (ex.get(language.toString()) != null
@@ -808,7 +812,8 @@ public class translateUtil {
                 if (dbJson.has(stringJsonElementEntry.getKey())) {
                   String dbString =
                       dbJson.get(stringJsonElementEntry.getKey()).getAsString().trim();
-                  if (dbString.equals(stringJsonElementEntry.getValue().getAsString().trim())) {
+                  if (dbString.equals(stringJsonElementEntry.getValue().getAsString().trim())
+                      || stringJsonElementEntry.getValue().getAsString().length() < 1) {
                     translateFilter
                         .getLanguageList()
                         .add(FldLanguage.Language.valueOf(stringJsonElementEntry.getKey()));
