@@ -79,7 +79,7 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
 
   private final Log LOG = new Log(PdtProductManageServiceImp.class);
 
-  @Inject PdtProductDao pdtProductDao;
+  private PdtProductDao pdtProductDao = new PdtProductDao();
 
   private O2OProductDao o2oProductDao = new O2OProductDao();
 
