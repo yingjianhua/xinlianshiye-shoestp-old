@@ -1215,6 +1215,7 @@
 			isInquiresOptionShow: false,	// inquires是否显示下拉筛选
 			inquiresOptionUnreadInfo: {},	// inquires下拉 对应的未读信息数量
 			isUnread: false, //unread是否选中
+            lastRelation: null, //从联系人处点击过来时，左侧列表直接加载至该联系人位置 - 跳转过来时才用该参数，否则不传该参数
 			inquiryKeyword: "", //搜索信息
 			inquiryList: [], //询盘列表信息
 			inquiryLisPageStart: 0, //询盘列表 分页
@@ -1282,9 +1283,6 @@
 			testObj:{}
 		},
 		mounted() {
-			// 获取询盘列表
-			this.getInquiryList();
-
 			// 从联系人那边跳转过来时，显示聊天框
 			if(util_function_obj.GetQueryString("supplierPkey") && util_function_obj.GetQueryString("consultPkey") && util_function_obj.GetQueryString("relationPkey") ){
 				this.isFromContactList = true;
@@ -1295,6 +1293,8 @@
 				this.consultPkey = util_function_obj.GetQueryString("consultPkey");
 				this.relationPkey = util_function_obj.GetQueryString("relationPkey");
 
+				this.lastRelation = this.relationPkey; //从联系人跳转过来时
+
 				//获取chat列表
 				this.getChatInfo();
 				//获取询盘详情
@@ -1303,6 +1303,9 @@
 				this.getSupplierDetail();
 				// 显示下拉show more选项
 				this.chatShowMore();
+			}else{
+				// 获取询盘列表
+				this.getInquiryList();
 			}
 		},
 		methods: {
@@ -1409,10 +1412,20 @@
 				if( this.isUnread ){
 					postData.unread = true;
 				}
+				//从联系人跳转过来时，该参数使列表加载至包含该联系人处 => 使该联系人处于当前列表处
+				// if( this.lastRelation && this.lastRelation > this.inquiryLisPageLimit ){
+				// 	postData.lastRelation = this.lastRelation;
+				// }
 				axios.get('/home/rfq_RFQConsult_pageMine', {
 					params: postData
 				})
 						.then((res) => {
+
+					if(this.lastRelation){
+						this.inquiryLisPageStart = this.lastRelation;
+						this.lastRelation = null;
+					}
+
 					this.isInquiryLisLoading = false;
 				if (res.data.ret != 1) {
 					this.$message.error(res.data.msg || "Get inquiry list error,please try again later");
