@@ -76,17 +76,28 @@
     })
 
     function listmenu() {
-        $.each(listpage, function (i, val) {
-            var str = "<div class='help_title'>"
-                + "<div >" + val.name + "</div><ul class='help_list'>";
-            $.each(val.pages, function (j, jal) {
-                str = str + "<li>"
-                    + "<a href='/home/cnt_CntSglPageCategory_gosglpage?pkey=" + jal.id + "' title='" + jal.title + "' id=" + jal.id + ">" + jal.title + "</a>"
-                    + "</li>";
-            })
-            str = str + "</ul></div>";
-            $(".help_menu").append(str);
+        $.ajax({
+            type: 'post',
+            async: false,
+            url: '/home/cnt_CntSglPageCategory_listAll',
+            dataType: 'json',
+            success: function (data) {
+                if(data.ret==1){
+                    $.each(data.result, function (i, val) {
+                        var str = "<div class='help_title'>"
+                            + "<div >" + val.name + "</div><ul class='help_list'>";
+                        $.each(val.pages, function (j, jal) {
+                            str = str + "<li>"
+                                + "<a href='/home/cnt_CntSglPageCategory_gosglpage?pkey=" + jal.id + "' title='" + jal.title + "' id=" + jal.id + ">" + jal.title + "</a>"
+                                + "</li>";
+                        })
+                        str = str + "</ul></div>";
+                        $(".help_menu").append(str);
+                    })
+                }
+            }
         })
+
 
 
     }

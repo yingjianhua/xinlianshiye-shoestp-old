@@ -1,8 +1,10 @@
 package irille.sellerAction.usr;
 
+import static irille.pub.validate.Regular.REGULAR_NAME;
+
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -13,23 +15,38 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import irille.Dao.RFQ.RFQConsultDao;
+import irille.Entity.SVS.Enums.SVSGradeType;
 import irille.Service.Manage.Usr.IUsrSupplierManageService;
+import irille.action.dataimport.util.StringUtil;
+import irille.pub.DateTools;
 import irille.pub.Exp;
 import irille.pub.Str;
 import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
+import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.query.SqlQuery;
 import irille.pub.bean.sql.SQL;
-import irille.pub.tb.FldLanguage;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.tb.FldLanguage.Language;
+import irille.pub.validate.Regular;
+import irille.pub.validate.ValidForm;
+import irille.pub.validate.ValidRegex;
+import irille.pub.validate.ValidRegex2;
 import irille.pub.verify.RandomImageServlet;
 import irille.sellerAction.SellerAction;
+import irille.sellerAction.usr.dto.UsrSupplierInfo;
 import irille.sellerAction.usr.inf.IUsrSupplierAction;
 import irille.sellerAction.view.SupinfoView;
 import irille.sellerAction.view.operateinfoView;
+import irille.shop.pdt.PdtProductDAO;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltProvince;
+import irille.shop.usr.Usr;
+import irille.shop.usr.UsrAnnex;
+import irille.shop.usr.UsrMain;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplierCategory;
 import irille.shop.usr.UsrSupplierDAO;
@@ -42,15 +59,9 @@ import lombok.Setter;
 
 public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsrSupplierAction {
 
-  @Getter
-  @Setter
-  private String logo;
-  @Getter
-  @Setter
-  private String newPwd;
-  @Getter
-  @Setter
-  private String oldPwd;
+  @Getter @Setter private String logo;
+  @Getter @Setter private String newPwd;
+  @Getter @Setter private String oldPwd;
 
   public void updBase() throws Exception {
     UsrSupplierDAO.UpdBase upd = new UsrSupplierDAO.UpdBase();
@@ -100,52 +111,43 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
   private String vCode;
 
   @Override
-  public void login() throws IOException {
-    System.out.println("vCode:" + vCode);
+  public void login() throws Exception {
     String verifyCode = verifyCode();
-    System.out.println("verifyCode:" + verifyCode);
-
     if (Str.isEmpty(verifyCode) || Str.isEmpty(vCode) || !verifyCode.equals(vCode)) {
       writeErr("验证码错误");
       return;
     }
-    UserView user;
-    try {
-      user = UsrUserDAO.supplierSignIn(email, password);
-      setUser(user);
-      write();
-    } catch (Exp e) {
-      writeErr(e.getLastMessage());
+    UserView user = null;
+    if (Str.isEmpty(email)) throw LOG.err("loginCheck", "请输入用户名");
+    if (password == null || Str.isEmpty(password)) throw LOG.err("loginCheck", "请输入密码");
+    // TODO Email 改为小写
+    UsrMain main = UsrMain.chkUniqueEmail(false, email.toLowerCase());
+    if (main == null) {
+      throw LOG.err("Invalid User", "用户名不存在或无效的用户名");
+    } else {
+      if (!DateTools.getDigest(main.getPkey() + password).equals(main.getPassword())) {
+        throw LOG.err("wrong password", "用户名和密码不匹配");
+      }
     }
-
-//    	UsrSupplier supplier=new UsrSupplier();
-//        try {
-//        	String verifyCode = verifyCode();
-//            if (Str.isEmpty(verifyCode) || Str.isEmpty(getCheckCode()) || verifyCode.equals(getCheckCode()) == false)
-//                throw LOG.err("errcode", "验证码错误");
-//             supplier = UsrSupplierDAO.loginCheck(getBean().getLoginName(), getMmCheck());
-//
-//            this.session.put(LOGIN, supplier);
-//            SellerAction.initTran(supplier);
-//        } catch (Exp e) {
-//            setSarg1(e.getLastMessage());
-//            return SellerAction.LOGIN;
-//        }
-//
-//        setResult("/seller/admin/index/index.html");
-//        return RTRENDS;
-
-  }
-
-
-  /**
-   * 注销供应商登录信息
-   */
-  @Override
-  public String logon() {
-    setUser(null);
-    setResult("/seller/admin/index/login.jsp");
-    return RTRENDS;
+    BeanQuery<UsrSupplier> query = new BeanQuery();
+    query
+        .SELECT(UsrSupplier.class)
+        .FROM(UsrSupplier.class)
+        .WHERE(UsrSupplier.T.UserId, "=?", main.getPkey());
+    UsrSupplier supplier = query.query();
+    if (supplier == null) {
+      JSONObject json = new JSONObject();
+      json.put("ret", -2);
+      json.put("msg", "用户尚未开通店铺,是否前往开通店铺");
+      writerOrExport(json);
+      return;
+    }
+    if (supplier.gtStatus() == Usr.OStatus.INIT) {
+      throw LOG.err("wait for appr", "审核中不能登录");
+    }
+    user = UsrUserDAO.supplierSignIn(supplier, main);
+    setUser(user);
+    write();
   }
 
   /**
@@ -153,7 +155,6 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
    *
    * @author zw
    */
-
   public void returnname() throws Exception {
     UsrSupplier us = new UsrSupplier();
     us.setName(getSupplier().getName());
@@ -203,9 +204,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     this._checkCode = _checkCode;
   }
 
-  /**
-   * 更新店铺设置信息
-   */
+  /** 更新店铺设置信息 */
   public void UpdBizDiy() throws Exception {
     UsrSupplierDAO.UpdBizDiy updbizdiy = new UsrSupplierDAO.UpdBizDiy();
     getBean().setPkey(SellerAction.getSupplier().getPkey());
@@ -225,13 +224,9 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
    *
    * @author zjl
    */
-  @Getter
-  @Setter
-  private AccountSettingsView asv;
+  @Getter @Setter private AccountSettingsView asv;
 
-  /**
-   * 更新账户设置
-   */
+  /** 更新账户设置 */
   public void upAccount() throws IOException {
     UsrSupplierDAO.updAccount(getSupplier().getPkey(), getAsv());
     write();
@@ -246,7 +241,6 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     write(UsrSupplierDAO.findById4AccountSet(getSupplier().getPkey()));
   }
 
-
   /**
    * 更新商家LOGO
    *
@@ -257,22 +251,22 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     write();
   }
 
-
   /**
    * 修改密码
    *
    * @author yingjianhua
    */
   public void UpdPwd() throws Exception {
+    if ("".equals(newPwd) || null == newPwd || "".equals(oldPwd) || null == oldPwd)
+      throw new WebMessageException(ReturnCode.failure, "密码输入不能为空");
+    if (!ValidRegex.regMarch(Regular.REGULAR_PWD, newPwd))
+      throw new WebMessageException(ReturnCode.password_format, "密码为6到20为的数字和字母组成");
     UsrUserDAO.updSupplierPassword(getSupplier().getPkey(), oldPwd, newPwd);
     write();
   }
 
-  @Getter
-  @Setter
-  private UsrshopSettingView usv;
-  @Inject
-  private UsrSupplierDAO.setting usrSupplierSetting;
+  @Getter @Setter private UsrshopSettingView usv;
+  @Inject private UsrSupplierDAO.setting usrSupplierSetting;
 
   /**
    * 店铺装修
@@ -307,11 +301,9 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
 
   }
 
-  /**
-   * 供应商列表页面 Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/7/19 Time: 15:46
-   */
-
+  /** 供应商列表页面 Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/7/19 Time: 15:46 */
   private int _curr;
+
   private int _showItem;
   private int _cated = -1;
 
@@ -342,7 +334,6 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     this._showItem = showItem;
   }
 
-
   public String getEmail() {
     return email;
   }
@@ -367,7 +358,6 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     this.vCode = vCode;
   }
 
-
   /**
    * 获取国家数据,省份数据,以及供应商分类数据,采购商信息,返会给前端页面
    *
@@ -386,14 +376,14 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     JSONObject categoryJson = null;
     JSONObject provinceJson = null;
     JSONObject supplierJson = crtJsonByBean(supplier);
-    supplierJson
-        .put(UsrSupplier.T.HOME_PAGE_DIY.getFld().getCode(), supplier.getHomePageDiy(Language.en));
+    supplierJson.put(
+        UsrSupplier.T.HOME_PAGE_DIY.getFld().getCode(), supplier.getHomePageDiy(Language.en));
     supplierJson.put(UsrSupplier.T.COUNTRY.getFld().getCode(), crtJsonByBean(supplier.gtCountry()));
-    supplierJson
-        .put(UsrSupplier.T.PROVINCE.getFld().getCode(), crtJsonByBean(supplier.gtProvince()));
-    supplierJson
-        .put(UsrSupplier.T.CATEGORY.getFld().getCode(), crtJsonByBean(supplier.gtCategory()));
-    //supplierArray.put(supplierJson);
+    supplierJson.put(
+        UsrSupplier.T.PROVINCE.getFld().getCode(), crtJsonByBean(supplier.gtProvince()));
+    supplierJson.put(
+        UsrSupplier.T.CATEGORY.getFld().getCode(), crtJsonByBean(supplier.gtCategory()));
+    // supplierArray.put(supplierJson);
     for (PltCountry countryObj : countryList) {
       countryJson = crtJsonByBean(countryObj);
       countryArray.put(countryJson);
@@ -413,74 +403,129 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     writerOrExport(json);
   }
 
-
   /**
-   * 获取登录供应商信息
+   * 获取供应商信息
    *
-   * @author liyichao
+   * @author: lingjian @Date: 2019/3/1 15:49
    */
   public void loadOnlineSup() throws Exception {
-    UsrSupplier supplier = BeanBase
-        .loadAndLock(UsrSupplier.class, SellerAction.getSupplier().getPkey());
-    SQL sql = new SQL() {{
-      SELECT(UsrSupplier.T.SHOW_NAME);
-      FROM(UsrSupplier.class);
-      WHERE(UsrSupplier.T.PKEY, "=?").PARAM(SellerAction.getSupplier().getPkey());
-    }};
+    UsrSupplier supplier = BeanBase.load(UsrSupplier.class, getSupplier().getPkey());
+    SQL sql =
+        new SQL() {
+          {
+            SELECT(UsrAnnex.class);
+            FROM(UsrAnnex.class);
+            WHERE(UsrAnnex.T.SUPPLIER, "=?", supplier.getPkey());
+          }
+        };
     SqlQuery query = Query.sql(sql);
-    JSONObject showname = null;
-    if (query.queryObject(UsrSupplier.class) != null) {
-      showname = new JSONObject(String.valueOf(query.queryObject(UsrSupplier.class)));
-    }
+    Map<String, Object> obj = query.queryMap();
     JSONObject json = crtJsonByBean(supplier);
-    json.put("showname", showname);
+    JSONObject j = new JSONObject();
+    for (String key : obj.keySet()) {
+      j.put(key, obj.get(key));
+    }
+    json.put("annex", j);
     writerOrExport(json);
   }
 
   /**
    * @Description: 店铺信息
+   *
    * @date 2018/12/18 9:34
    * @anthor wilson zhang
    */
   public void getsupinfo() throws Exception {
-    write(UsrSupplierDAO.getsupinfo(getSupplier().getPkey(),
-        PltConfigDAO.supplierLanguage(getSupplier().getPkey())));
+    write(
+        UsrSupplierDAO.getsupinfo(
+            getSupplier().getPkey(), PltConfigDAO.supplierLanguage(getSupplier().getPkey())));
   }
+
+  @Getter @Setter private Integer purchasePkey;
+
+  @Getter @Setter private String contactsIdCardFrontPhotoName;
+  @Getter @Setter private String idCardFrontPhotoName;
 
   /**
    * 更新供应商信息
    *
-   * @author liyichao
-   * @return
    * @throws IOException
+   * @author: lingjian @Date: 2019/3/1 15:49
    */
-  @Getter
-  @Setter
-  private String showName;
-
-
   public void updInfo() throws Exception {
     try {
-      JSONObject json = new JSONObject(getShowName());
-      Iterator<String> jsonIte = json.keys();
-      while (jsonIte.hasNext()) {
-        String key = jsonIte.next();
-        String value = json.getString(key);
-        if ((key.equals("en") && value.equals("")) || (key.equals("zh_CN") && value.equals("")) || (
-            key.equals("zh_TW") && value.equals(""))) {
-          throw LOG.err("needWrite", "{0}语种必填", FldLanguage.Language.valueOf(key).displayName());
-        }
-        if (value.equals("")) {
-          json.put(key, json.getString("en"));
-        }
+      regex();
+      UsrAnnex annex = UsrAnnex.chkUniqueSupplier(false, getSupplier().getPkey());
+      if (annex != null) {
+        annex.setIdCardFrontPhotoName(idCardFrontPhotoName);
+        annex.setContactsIdCardFrontPhotoName(contactsIdCardFrontPhotoName);
+      } else {
+        UsrAnnex annex1 = new UsrAnnex();
+        annex1.setSupplier(getBean().getPkey());
+        annex1.setIdCardFrontPhotoName(idCardFrontPhotoName);
+        annex1.setContactsIdCardFrontPhotoName(contactsIdCardFrontPhotoName);
+        annex1.ins();
+      }
+      UsrMain main = BeanBase.load(UsrMain.class, getBean().getUserid());
+      if (main != null) {
+        main.setContacts(getBean().getContacts());
+        main.setTelphone(getBean().getPhone());
+        main.upd();
       }
       UsrSupplier newSupplier = UsrSupplierDAO.updInfo(getBean());
-      newSupplier.stShowName(json);
       newSupplier.upd();
+      annex.upd();
       write();
     } catch (Exp e) {
       writeErr(e.getLastMessage());
     }
+  }
+
+  // 正则校验
+  public void regex() throws Exception {
+    ValidForm valid = new ValidForm(getBean());
+    valid.validNotEmpty(UsrSupplier.T.TARGETED_MARKET);
+    ValidRegex2 regex = new ValidRegex2(getBean());
+    if (getBean().getWebsite() != null)
+      regex.validRegexMatched(
+          "http[s]?:\\/\\/[\\w]{1,}.?[\\w]{1,}.?[\\w/.?&=-]{1,}",
+          "请输入完整的网址格式，如https://www.shoestp.com",
+          UsrSupplier.T.WEBSITE);
+    if (getBean().getAnnualProduction() != null)
+      regex.validRegexMatched(
+          "([1-9]\\d*|0)(\\.\\d*[1-9])?", "年产量请填写数字,不能以0开头", UsrSupplier.T.ANNUAL_PRODUCTION);
+    if (getBean().getTelephone() != null)
+      regex.validRegexMatched(
+          "((\\d{3,4}-)?\\d{7,8})|(1\\d{10})", "请填写正确的固定电话格式", UsrSupplier.T.TELEPHONE);
+    if (getBean().getFax() != null)
+      regex.validRegexMatched("(\\d{3,4}-)?\\d{7,8}", "请填写正确传真格式", UsrSupplier.T.FAX);
+    if (getBean().getPostcode() != null)
+      regex.validRegexMatched("[0-9]{6}", "邮编只能输入数字，且数字个数为6个", UsrSupplier.T.POSTCODE);
+    if (getBean().getRegisteredCapital() != null)
+      regex.validRegexMatched(
+          "([1-9]\\d*|0)(\\.\\d*[1-9])?", "注册资本请填写数字,不能以0开头", UsrSupplier.T.REGISTERED_CAPITAL);
+    if (getBean().getEntity() != null)
+      regex.validRegexMatched(
+          "[\\u4e00-\\u9fa5]{2,6}", "法定代表人只能输入中文，且个数为2~6个", UsrSupplier.T.ENTITY);
+    if (getBean().getContacts() != null)
+      regex.validRegexMatched(REGULAR_NAME, "联系人姓名首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.CONTACTS);
+    if (getBean().getDepartment() != null)
+      regex.validRegexMatched(REGULAR_NAME, "联系人部门首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.DEPARTMENT);
+    if (getBean().getJobTitle() != null)
+      regex.validRegexMatched(REGULAR_NAME, "联系人职称首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.JOB_TITLE);
+    if (getBean().getPhone() != null)
+      regex.validRegexMatched("1\\d{10}", "请填写11位手机格式的号码", UsrSupplier.T.PHONE);
+    if (getBean().getContactEmail() != null)
+      regex.validRegexMatched(
+          "^[\\w]{1,32}@+\\w{1,15}.\\w{2,5}$", "联系人邮箱请填写正确的邮箱格式", UsrSupplier.T.CONTACT_EMAIL);
+    if (getBean().getIdCard() != null)
+      regex.validRegexMatched(
+          "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)", "请输入正确的18位身份证号码", UsrSupplier.T.ID_CARD);
+    if (getBean().getOperateIdCard() != null)
+      regex.validRegexMatched(
+          "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)",
+          "请输入正确的18位身份证号码",
+          UsrSupplier.T.OPERATE_ID_CARD);
   }
 
   public String getNewPwd() {
@@ -505,15 +550,13 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
    * @author wilson zhang
    */
   public void loadshopsetting() throws Exception {
-    write(UsrSupplierDAO.loadshopsetting(getSupplier().getPkey(),
-        PltConfigDAO.supplierLanguage(SellerAction.getSupplier())));
-
+    write(
+        UsrSupplierDAO.loadshopsetting(
+            getSupplier().getPkey(), PltConfigDAO.supplierLanguage(SellerAction.getSupplier())));
   }
 
-  /*                 新的写法   分割线               */
-  @Inject
-  IUsrSupplierManageService usrSupplierManageService;
-
+  /* 新的写法 分割线 */
+  @Inject IUsrSupplierManageService usrSupplierManageService;
 
   public void getShopSetting() throws IOException {
     write(usrSupplierManageService.getSettingInfoById(getSupplier().getPkey()));
@@ -529,9 +572,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     writeSuccess();
   }
 
-  @Getter
-  @Setter
-  UsrshopSettingView view;
+  @Getter @Setter UsrshopSettingView view;
 
   public void updShopSetting() throws IOException {
     usrSupplierManageService.updShopSetting(getSupplier().getPkey(), getView());
@@ -539,15 +580,25 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
   }
 
   /**
-   * @Description: 修改  店铺信息
+   * @Description: 修改 店铺信息
+   *
    * @date 2018/12/19 14:40
    * @anthor wilson zhang
    */
-  @Getter
-  @Setter
-  SupinfoView results;
+  @Getter @Setter SupinfoView results;
 
   public void updShopbase() throws Exception {
+    if (!StringUtil.hasValue(results.getQQ()) || !StringUtil.hasValue(results.getCredit_code())) {
+      writeErr("请输入QQ与信用代码");
+      return;
+    }
+    try {
+      JSONObject json = new JSONObject(results.getProd_patiern());
+      if (!StringUtil.hasValue(json.get("en"))) throw new NullPointerException();
+    } catch (JSONException | NullPointerException e) {
+      writeErr("请输入正确的生产模式");
+      return;
+    }
     UsrSupplier us = new UsrSupplier();
     us.setPkey(results.getId());
     us.setCompanyNature(results.getCompany_nature());
@@ -570,22 +621,23 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
 
   /**
    * @Description: 运营信息
+   *
    * @date 2018/12/19 14:40
    * @anthor wilson zhang
    */
   public void getoperateinfo() throws Exception {
-    write(UsrSupplierDAO.getoperateinfo(getSupplier().getPkey(),
-        PltConfigDAO.supplierLanguage(SellerAction.getSupplier())));
+    write(
+        UsrSupplierDAO.getoperateinfo(
+            getSupplier().getPkey(), PltConfigDAO.supplierLanguage(SellerAction.getSupplier())));
   }
 
   /**
-   * @Description: 修改  运营信息
+   * @Description: 修改 运营信息
+   *
    * @date 2018/12/19 14:40
    * @anthor wilson zhang
    */
-  @Getter
-  @Setter
-  operateinfoView ovs;
+  @Getter @Setter operateinfoView ovs;
 
   public void updoperateinfo() throws Exception {
     UsrSupplier us = new UsrSupplier();
@@ -609,10 +661,50 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
 
   /**
    * @Description: 2.1 认证信息
+   *
    * @date 2018/12/21 16:16
    * @anthor wilson zhang
    */
   public void authInfo() throws Exception {
     write(UsrSupplierDAO.auth(getSupplier().getPkey()));
+  }
+
+  @Inject UsrSupplierDAO dao;
+
+  public void getSupplierDetails() throws IOException {
+    write(dao.getSupplierDetails(getSupplier().getPkey()));
+  }
+
+  @Override
+  public void getTargetedMarket() throws Exception {
+    JSONObject json = new JSONObject(dao.getTargetedMarket(getSupplier().getPkey()));
+    writerOrExport(json);
+  }
+
+  /** @Author wilson Zhang @Description 商家端首页信息总方法 @Date 21:27 2019/3/28 */
+  @Inject RFQConsultDao rfqConsultDao;
+
+  @Inject PdtProductDAO pdtProductDAO;
+
+  public void getsupplierinfo() throws Exception {
+    UsrSupplierInfo usi = new UsrSupplierInfo();
+    Integer pkey = getSupplier().getPkey();
+    usi.setSupplierDetailsDTO(dao.getSupplierDetails(pkey));
+    for (SVSGradeType value : SVSGradeType.values()) {
+      if (usi.getSupplierDetailsDTO().getSvsRatingAndRosDTO().getGrade()
+          == value.getLine().getKey()) {
+        usi.setSvsLevel(value.getLine().getName());
+      }
+    }
+    usi.setInquiriesCount(rfqConsultDao.getConsultCount(pkey));
+    usi.setContactsCount(rfqConsultDao.getcontactsCount(pkey));
+    usi.setProductCount(pdtProductDAO.productCount(pkey));
+    usi.setPrivateproductCount(pdtProductDAO.privateproductCount(pkey));
+    usi.setWareHouseProductCount(pdtProductDAO.wareHouseProductCount(pkey));
+    usi.setVerifyProductCount(pdtProductDAO.verifyProductCount(pkey));
+    usi.setFailedProductCount(pdtProductDAO.failedProductCount(pkey));
+    usi.setWarehouseProductCounts(pdtProductDAO.warehouseProductCount(pkey));
+    usi.setSellerIndexConsultViewList(rfqConsultDao.getIndexInqlist(pkey));
+    write(usi);
   }
 }

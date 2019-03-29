@@ -19,72 +19,68 @@ import lombok.Setter;
 @Setter
 public class PurchaseAction extends AbstractHomeAction implements IPurchaseAction {
 
-	private static final long serialVersionUID = 1L;
-	
-	@Inject
-	private UsrPurchaseService usrPurchaseService;
-	@Inject
-	private UsrFavoriteService usrFavoriteService;
-	@Inject
-	private ObjectMapper om;
+  private static final long serialVersionUID = 1L;
 
-	@Override
-	@NeedLogin
-	public void profile() throws IOException {
-		write(usrPurchaseService.getProfile(getPurchase()));
-	}
-	
-	private String avatar;
+  @Inject private UsrPurchaseService usrPurchaseService;
+  @Inject private UsrFavoriteService usrFavoriteService;
+  @Inject private ObjectMapper om;
 
-	@Override
-	@NeedLogin
-	public void editAvatar() throws IOException {
-		usrPurchaseService.editAvatar(getPurchase(), avatar);
-		write();
-	}
+  @Override
+  @NeedLogin
+  public void profile() throws IOException {
+    write(usrPurchaseService.getProfile(getPurchase()));
+  }
 
-	@Override
-	@NeedLogin
-	public void upload() throws IOException {
-		write(ImageUpload.upload(UsrPurchase.class, getFileFileName(), getFile()));
-	}
-	
-    private Integer category;
+  private String avatar;
 
-	@Override
-	@NeedLogin
-	public void favorite() throws IOException {
-		write(usrFavoriteService.page(getPurchase(), category, true,  start,  limit));
-	}
+  @Override
+  @NeedLogin
+  public void editAvatar() throws IOException {
+    usrPurchaseService.editAvatar(getPurchase(), avatar, curLanguage());
+    write();
+  }
 
-	private String password;
-	private String email;
-	private String newPassword;
-	
-	@Override
-	@NeedLogin
-	public void changePassword() throws IOException {
-		usrPurchaseService.changePassword(getPurchase(), newPassword, password);
-		write();
-	}
+  @Override
+  @NeedLogin
+  public void upload() throws IOException {
+    write(ImageUpload.upload(UsrPurchase.class, getFileFileName(), getFile()));
+  }
 
-	@Override
-	@NeedLogin
-	public void changeEmail() throws IOException {
-		usrPurchaseService.changeEmail(getPurchase(), email, password);
-		write();
-	}
+  private Integer category;
 
-	@Override
-	@NeedLogin
-	public void editAccount() throws IOException {
-		usrPurchaseService.editAccount(getPurchase(), om.readValue(getJsonBody(), PurchaseView.class));
-		write();
-	}
+  @Override
+  @NeedLogin
+  public void favorite() throws IOException {
+    write(usrFavoriteService.page(getPurchase(), category, true, start, limit));
+  }
 
-	@Override
-	public void accountProfile() throws IOException {
-		write(usrPurchaseService.getAccount(getPurchase()));
-	}
+  private String password;
+  private String email;
+  private String newPassword;
 
+  @Override
+  @NeedLogin
+  public void changePassword() throws IOException {
+    usrPurchaseService.changePassword(getPurchase(), newPassword, password);
+    write();
+  }
+
+  @Override
+  @NeedLogin
+  public void changeEmail() throws IOException {
+    usrPurchaseService.changeEmail(getPurchase(), email, password, curLanguage());
+    write();
+  }
+
+  @Override
+  @NeedLogin
+  public void editAccount() throws IOException {
+    usrPurchaseService.editAccount(getPurchase(), om.readValue(getJsonBody(), PurchaseView.class));
+    write();
+  }
+
+  @Override
+  public void accountProfile() throws IOException {
+    write(usrPurchaseService.getAccount(getPurchase()));
+  }
 }

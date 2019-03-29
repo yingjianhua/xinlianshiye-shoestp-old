@@ -5,6 +5,9 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5">
     <display-name>irillePlat</display-name>
+    <listener>
+      <listener-class>com.xinlianshiye.shoestp.listener.SessionListener</listener-class>
+    </listener>
     <!--GuIce 单例-->
     <listener>
         <listener-class>irille.Config.GuiceConfig</listener-class>

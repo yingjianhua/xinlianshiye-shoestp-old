@@ -446,8 +446,8 @@
            margin-bottom: 5px;
          }
          #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box{
-         	height: 80px;
-         	padding:20px 5px 0 20px;
+         	min-height: 80px;
+         	padding:20px 5px 20px 20px;
          	background:#eceff7;
          	font-size:12px;
          	line-height:18px;
@@ -538,8 +538,7 @@
          	display:block;
          }
 
-           .cml-pupbox ul li,
-           .cml-pupbox dl dd{
+           .cml-pupbox ul li{
           	padding-left:10px;
           }
            .cml-pupbox ul li:hover,
@@ -549,7 +548,7 @@
 
 
           #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2{
-          	padding:18px 0 0 20px;
+          	/* padding:18px 0 0 20px; */
           	font-size:12px;
           }
           #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2 h2{

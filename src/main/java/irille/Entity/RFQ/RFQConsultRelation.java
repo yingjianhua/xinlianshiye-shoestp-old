@@ -1,8 +1,18 @@
 package irille.Entity.RFQ;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import irille.Config.Attribute;
+import irille.Config.Variable;
 import irille.Entity.RFQ.Enums.RFQConsultPayType;
+import irille.Entity.RFQ.Enums.RFQConsultRelationReadStatus;
 import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
 import irille.Entity.RFQ.Enums.RFQConsultUnit;
+import irille.Entity.pm.PM.OTempType;
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
 import irille.pub.bean.BeanInt;
@@ -13,93 +23,97 @@ import irille.pub.tb.Tb;
 import irille.shop.plt.PltErate;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.util.Date;
-
+@Variable(
+    group = {OTempType.INQUIRY_NOTICE_PURCHASE, OTempType.RFQ_MESSAGE_NOTICE},
+    enumType = RFQConsultRelation.T.class,
+    clazz = RFQConsultRelation.class,
+    attributes = {
+      @Attribute(name = "报价标题", field = "TITLE", type = String.class),
+      @Attribute(name = "产品描述", field = "DESCRIPTION", type = String.class)
+    })
 public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
 
-	private static final long serialVersionUID = 2353321755373329372L;
+  private static final long serialVersionUID = 2353321755373329372L;
 
-	public static final Tb<?> TB = new Tb<>(RFQConsultRelation.class, "询盘关联表")
-            .setAutoIncrement();
+  public static final Tb<?> TB = new Tb<>(RFQConsultRelation.class, "询盘关联表").setAutoIncrement();
 
-    public enum T implements IEnumFld {// @formatter:off
-        PKEY(Tb.crtIntPkey()),
-        CONSULT(RFQConsult.fldOutKey("consult", "询盘")), //询盘
-        SUPPLIER_ID(UsrSupplier.fldOutKey().setName("供应商")),
-        PURCHASE_ID(UsrPurchase.fldOutKey().setName("采购商")),
-        IN_RECYCLE_BIN(Sys.T.YN, "是否在回收站"),//是否在回收站, true: 在回收站, false: 不在回收站
-        FAVORITE(Sys.T.YN, "是否添加FLAG"),
-        TITLE(Sys.T.STR__200_NULL),//报价标题(产品标题)
-        DESCRIPTION(Sys.T.STR__2000_NULL, "描述"),//产品描述
-        IMAGE(Sys.T.JSON, "图片(多图)"),//产品图片
-        QUANTITY(Sys.T.INT, "数量"),
-        UNIT(Tb.crt(RFQConsultUnit.DEFAULT)),//商品数量单位
-        MINPRICE(Sys.T.INT, "价格区间"),
-        MAXPRICE(Sys.T.INT, "价格区间"),
-        CURRENCY(PltErate.fldOutKey()),
-        VALID_DATE(Sys.T.DATE_TIME__NULL),//过期时间 RFQ询盘可以设置过期时间, 过期后RFQ列表中将不再出现 供应商也就不能报价
-        PAYTYPE(Tb.crt(RFQConsultPayType.DEFAULT)),  //支付方式
-        TRANSITTYPE(Tb.crt(RFQConsultShipping_Type.DEFAULT)), //运送方面是
-        SAMPLE(Sys.T.YN),//是否有样品
-        COMPANYDESCRIBE(Sys.T.STR__2000_NULL),
-        THROWAWAY(Sys.T.JSON),
-        CREATE_DATE(Sys.T.CREATED_DATE_TIME),
-        IS_NEW(Sys.T.YN),//是否为新关联, 初始为true, 供应商查看后为false
-        HAD_READ_PURCHASE(Sys.T.YN),//采购商是否已经读取消息
-        HAD_READ_SUPPLIER(Sys.T.YN),//供应商是否已经读取消息
-        IS_DELETED_PURCHASE(Sys.T.YN),//采购商已删除
-        IS_DELETED_SUPPLIER(Sys.T.YN),//供应商已删除
-        ROW_VERSION(Sys.T.ROW_VERSION),
-            // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
-            // <<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
-        ;
+  public enum T implements IEnumFld { // @formatter:off
+    PKEY(Tb.crtIntPkey()),
+    CONSULT(RFQConsult.fldOutKey("consult", "询盘")), // 询盘
+    SUPPLIER_ID(UsrSupplier.fldOutKey().setName("供应商")),
+    PURCHASE_ID(UsrPurchase.fldOutKey().setName("采购商")),
+    IN_RECYCLE_BIN(Sys.T.YN, "是否在回收站"), // 是否在回收站, true: 在回收站, false: 不在回收站
+    FAVORITE(Sys.T.YN, "是否添加FLAG"),
+    TITLE(Sys.T.STR__200_NULL), // 报价标题(产品标题)
+    DESCRIPTION(Sys.T.STR__2000_NULL, "描述"), // 产品描述
+    IMAGE(Sys.T.JSON, "图片(多图)"), // 产品图片
+    QUANTITY(Sys.T.INT, "数量"),
+    UNIT(Tb.crt(RFQConsultUnit.DEFAULT)), // 商品数量单位
+    MINPRICE(Sys.T.AMT, "价格区间"),
+    MAXPRICE(Sys.T.AMT, "价格区间"),
+    CURRENCY(PltErate.fldOutKey()),
+    VALID_DATE(Sys.T.DATE_TIME__NULL), // 过期时间 RFQ询盘可以设置过期时间, 过期后RFQ列表中将不再出现 供应商也就不能报价
+    PAYTYPE(Tb.crt(RFQConsultPayType.DEFAULT)), // 支付方式
+    TRANSITTYPE(Tb.crt(RFQConsultShipping_Type.DEFAULT)), // 运送方面是
+    SAMPLE(Sys.T.YN), // 是否有样品
+    COMPANYDESCRIBE(Sys.T.STR__2000_NULL),
+    THROWAWAY(Sys.T.JSON),
+    CREATE_DATE(Sys.T.CREATED_DATE_TIME),
+    LAST_MESSAGE(RFQConsultMessage.fldOutKey().setNull(true)), // 该关联下的最后一条消息
+    LAST_MESSAGE_SEND_TIME(Sys.T.TIME), // 该关联下最后一条消息的发送时间, 当还没有消息时 该字段存储的是该记录的创建时间
+    READ_STATUS(Tb.crt(RFQConsultRelationReadStatus.DEFAULT)), // 消息读取状态
+    IS_NEW(Sys.T.YN), // 是否为新关联, 初始为true, 供应商查看后为false
+    IS_DELETED_PURCHASE(Sys.T.YN), // 采购商已删除
+    IS_DELETED_SUPPLIER(Sys.T.YN), // 供应商已删除
+    ROW_VERSION(Sys.T.ROW_VERSION),
+  // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
+  // <<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
+  ;
 
-        // >>>以下是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别>>>
-        // <<<以上是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别<<<
-        private Fld<?> _fld;
+    // >>>以下是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别>>>
+    // <<<以上是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别<<<
+    private Fld<?> _fld;
 
-        private T(Class<?> clazz, String name, boolean... isnull) {
-            _fld = TB.addOutKey(clazz, this, name, isnull);
-        }
-
-        private T(IEnumFld fld, boolean... isnull) {
-            this(fld, null, isnull);
-        }
-
-        private T(IEnumFld fld, String name, boolean... null1) {
-            _fld = TB.add(fld, this, name, null1);
-        }
-
-        private T(IEnumFld fld, String name, int strLen) {
-            _fld = TB.add(fld, this, name, strLen);
-        }
-
-        private T(Fld<?> fld) {
-            _fld = TB.add(fld, this);
-        }
-
-        public Fld<?> getFld() {
-            return _fld;
-        }
-        }
-
-    static { // 在此可以加一些对FLD进行特殊设定的代码
-        T.PKEY.getFld().getTb().lockAllFlds();// 加锁所有字段,不可以修改
+    private T(Class<?> clazz, String name, boolean... isnull) {
+      _fld = TB.addOutKey(clazz, this, name, isnull);
     }
 
-    public static Fld<?> fldOutKey() {
-        return fldOutKey(TB.getCodeNoPackage(), TB.getShortName());
+    private T(IEnumFld fld, boolean... isnull) {
+      this(fld, null, isnull);
     }
 
-    public static Fld<?> fldOutKey(String code, String name) {
-        return Tb.crtOutKey(TB, code, name).setType(null);
+    private T(IEnumFld fld, String name, boolean... null1) {
+      _fld = TB.add(fld, this, name, null1);
     }
 
-    // @formatter:on
-    // >>>以下是自动产生的源代码行--源代码--请保留此行用于识别>>>
+    private T(IEnumFld fld, String name, int strLen) {
+      _fld = TB.add(fld, this, name, strLen);
+    }
+
+    private T(Fld<?> fld) {
+      _fld = TB.add(fld, this);
+    }
+
+    public Fld<?> getFld() {
+      return _fld;
+    }
+  }
+
+  static { // 在此可以加一些对FLD进行特殊设定的代码
+    T.PKEY.getFld().getTb().lockAllFlds(); // 加锁所有字段,不可以修改
+  }
+
+  public static Fld<?> fldOutKey() {
+    return fldOutKey(TB.getCodeNoPackage(), TB.getShortName());
+  }
+
+  public static Fld<?> fldOutKey(String code, String name) {
+    return Tb.crtOutKey(TB, code, name).setType(null);
+  }
+
+  // @formatter:on
+  // >>>以下是自动产生的源代码行--源代码--请保留此行用于识别>>>
   //实例变量定义-----------------------------------------
   private Integer _pkey;	// 编号  INT
   private Integer _consult;	// 询盘 <表主键:RFQConsult>  INT
@@ -119,12 +133,12 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
 	// PAIR:1,Pairs
 	// Twenty_Foot_Container:2,Twenty-Foot Container
 	// Forty_Foot_Container:3,Forty-Foot Container
-  private Integer _minprice;	// 价格区间  INT
-  private Integer _maxprice;	// 价格区间  INT
+  private BigDecimal _minprice;	// 价格区间  DEC(16,2)
+  private BigDecimal _maxprice;	// 价格区间  DEC(16,2)
   private Integer _currency;	// 费率设置 <表主键:PltErate>  INT
   private Date _validDate;	// 日期时间  TIME<null>
   private Byte _paytype;	// 支付方式 <RFQConsultPayType>  BYTE
-	// TT:1,TT支付
+	// TT:1,T/T
 	// LC:2,L/C
 	// DP:3,D/P
 	// WesternUnion:4,Western Union
@@ -140,13 +154,14 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
   private String _companydescribe;	// 字符2000  STR(2000)<null>
   private String _throwaway;	// JSON  JSONOBJECT
   private Date _createDate;	// 建档时间  TIME
+  private Integer _lastMessage;	// 询盘留言 <表主键:RFQConsultMessage>  INT<null>
+  private Date _lastMessageSendTime;	// 时间  TIME
+  private Byte _readStatus;	// 询盘关联的消息读取状态 <RFQConsultRelationReadStatus>  BYTE
+	// PURCHASE_UNREAD:1,采购商未读
+	// PURCHASE_HADREAD:2,采购商已读
+	// SUPPLIER_UNREAD:3,供应商未读
+	// SUPPLIER_HADREAD:4,供应商已读
   private Byte _isNew;	// 是否 <OYn>  BYTE
-	// YES:1,是
-	// NO:0,否
-  private Byte _hadReadPurchase;	// 是否 <OYn>  BYTE
-	// YES:1,是
-	// NO:0,否
-  private Byte _hadReadSupplier;	// 是否 <OYn>  BYTE
 	// YES:1,是
 	// NO:0,否
   private Byte _isDeletedPurchase;	// 是否 <OYn>  BYTE
@@ -170,8 +185,8 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
     _image=null;	// 图片(多图)  JSONOBJECT
     _quantity=0;	// 数量  INT
     _unit=RFQConsultUnit.DEFAULT.getLine().getKey();	// 货物单位 <RFQConsultUnit>  BYTE
-    _minprice=0;	// 价格区间  INT
-    _maxprice=0;	// 价格区间  INT
+    _minprice=ZERO;	// 价格区间  DEC(16,2)
+    _maxprice=ZERO;	// 价格区间  DEC(16,2)
     _currency=null;	// 费率设置 <表主键:PltErate>  INT
     _validDate=null;	// 日期时间  TIME
     _paytype=RFQConsultPayType.DEFAULT.getLine().getKey();	// 支付方式 <RFQConsultPayType>  BYTE
@@ -180,9 +195,10 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
     _companydescribe=null;	// 字符2000  STR(2000)
     _throwaway=null;	// JSON  JSONOBJECT
     _createDate=Env.getTranBeginTime();	// 建档时间  TIME
+    _lastMessage=null;	// 询盘留言 <表主键:RFQConsultMessage>  INT
+    _lastMessageSendTime=null;	// 时间  TIME
+    _readStatus=RFQConsultRelationReadStatus.DEFAULT.getLine().getKey();	// 询盘关联的消息读取状态 <RFQConsultRelationReadStatus>  BYTE
     _isNew=OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
-    _hadReadPurchase=OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
-    _hadReadSupplier=OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
     _isDeletedPurchase=OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
     _isDeletedSupplier=OYn.DEFAULT.getLine().getKey();	// 是否 <OYn>  BYTE
     _rowVersion=0;	// 版本  SHORT
@@ -313,16 +329,16 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
   public void stUnit(RFQConsultUnit unit){
     _unit=unit.getLine().getKey();
   }
-  public Integer getMinprice(){
+  public BigDecimal getMinprice(){
     return _minprice;
   }
-  public void setMinprice(Integer minprice){
+  public void setMinprice(BigDecimal minprice){
     _minprice=minprice;
   }
-  public Integer getMaxprice(){
+  public BigDecimal getMaxprice(){
     return _maxprice;
   }
-  public void setMaxprice(Integer maxprice){
+  public void setMaxprice(BigDecimal maxprice){
     _maxprice=maxprice;
   }
   public Integer getCurrency(){
@@ -408,6 +424,41 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
   public void setCreateDate(Date createDate){
     _createDate=createDate;
   }
+  public Integer getLastMessage(){
+    return _lastMessage;
+  }
+  public void setLastMessage(Integer lastMessage){
+    _lastMessage=lastMessage;
+  }
+  public RFQConsultMessage gtLastMessage(){
+    if(getLastMessage()==null)
+      return null;
+    return (RFQConsultMessage)get(RFQConsultMessage.class,getLastMessage());
+  }
+  public void stLastMessage(RFQConsultMessage lastMessage){
+    if(lastMessage==null)
+      setLastMessage(null);
+    else
+      setLastMessage(lastMessage.getPkey());
+  }
+  public Date getLastMessageSendTime(){
+    return _lastMessageSendTime;
+  }
+  public void setLastMessageSendTime(Date lastMessageSendTime){
+    _lastMessageSendTime=lastMessageSendTime;
+  }
+  public Byte getReadStatus(){
+    return _readStatus;
+  }
+  public void setReadStatus(Byte readStatus){
+    _readStatus=readStatus;
+  }
+  public RFQConsultRelationReadStatus gtReadStatus(){
+    return (RFQConsultRelationReadStatus)(RFQConsultRelationReadStatus.PURCHASE_HADREAD.getLine().get(_readStatus));
+  }
+  public void stReadStatus(RFQConsultRelationReadStatus readStatus){
+    _readStatus=readStatus.getLine().getKey();
+  }
   public Byte getIsNew(){
     return _isNew;
   }
@@ -419,30 +470,6 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
   }
   public void stIsNew(Boolean isNew){
     _isNew=booleanToByte(isNew);
-  }
-  public Byte getHadReadPurchase(){
-    return _hadReadPurchase;
-  }
-  public void setHadReadPurchase(Byte hadReadPurchase){
-    _hadReadPurchase=hadReadPurchase;
-  }
-  public Boolean gtHadReadPurchase(){
-    return byteToBoolean(_hadReadPurchase);
-  }
-  public void stHadReadPurchase(Boolean hadReadPurchase){
-    _hadReadPurchase=booleanToByte(hadReadPurchase);
-  }
-  public Byte getHadReadSupplier(){
-    return _hadReadSupplier;
-  }
-  public void setHadReadSupplier(Byte hadReadSupplier){
-    _hadReadSupplier=hadReadSupplier;
-  }
-  public Boolean gtHadReadSupplier(){
-    return byteToBoolean(_hadReadSupplier);
-  }
-  public void stHadReadSupplier(Boolean hadReadSupplier){
-    _hadReadSupplier=booleanToByte(hadReadSupplier);
   }
   public Byte getIsDeletedPurchase(){
     return _isDeletedPurchase;
@@ -475,6 +502,6 @@ public class RFQConsultRelation extends BeanInt<RFQConsultRelation> {
     _rowVersion=rowVersion;
   }
 
-    // <<<以上是自动产生的源代码行--源代码--请保留此行用于识别<<<
+  // <<<以上是自动产生的源代码行--源代码--请保留此行用于识别<<<
 
 }
