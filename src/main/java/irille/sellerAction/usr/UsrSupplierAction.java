@@ -1,5 +1,7 @@
 package irille.sellerAction.usr;
 
+import static irille.pub.validate.Regular.REGULAR_NAME;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -8,11 +10,13 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.xinlianshiye.shoestp.common.service.UsrMainService;
+import org.apache.struts2.ServletActionContext;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import irille.Dao.RFQ.RFQConsultDao;
 import irille.Entity.SVS.Enums.SVSGradeType;
-import irille.Filter.svr.SessionMsg;
 import irille.Service.Manage.Usr.IUsrSupplierManageService;
 import irille.action.dataimport.util.StringUtil;
 import irille.pub.DateTools;
@@ -52,15 +56,9 @@ import irille.view.usr.UserView;
 import irille.view.usr.UsrshopSettingView;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.struts2.ServletActionContext;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import static irille.pub.validate.Regular.REGULAR_NAME;
 
 public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsrSupplierAction {
-  @Inject UsrMainService usrMainService;
+
   @Getter @Setter private String logo;
   @Getter @Setter private String newPwd;
   @Getter @Setter private String oldPwd;
@@ -570,11 +568,6 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
   }
 
   public void logout() throws IOException, JSONException {
-    SessionMsg sessionMsg = (SessionMsg) session.get(SessionMsg.session_key);
-    if (sessionMsg != null && sessionMsg.haveUser()) {
-      UsrMain usrMain = sessionMsg.getUsrMain();
-      usrMainService.signOut(usrMain);
-    }
     setUser(null);
     writeSuccess();
   }
@@ -681,6 +674,13 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
   public void getSupplierDetails() throws IOException {
     write(dao.getSupplierDetails(getSupplier().getPkey()));
   }
+
+  @Override
+  public void getTargetedMarket() throws Exception {
+    JSONObject json = new JSONObject(dao.getTargetedMarket(getSupplier().getPkey()));
+    writerOrExport(json);
+  }
+
   /** @Author wilson Zhang @Description 商家端首页信息总方法 @Date 21:27 2019/3/28 */
   @Inject RFQConsultDao rfqConsultDao;
 

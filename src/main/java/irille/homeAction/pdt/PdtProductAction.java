@@ -19,6 +19,7 @@ import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
 import com.xinlianshiye.shoestp.shop.service.pdt.PdtProductService;
 import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultMessageService;
 import com.xinlianshiye.shoestp.shop.view.pdt.ProdSearchView;
+import com.xinlianshiye.shoestp.shop.view.pdt.SortView;
 
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.Service.Pdt.IPdtProductService;
@@ -189,6 +190,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
   private String o2oAddress;
 
   private ProdSearchView search;
+  private List<SortView> newSort;
 
   /**
    * * 获取商品列表
@@ -240,7 +242,9 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
               getStart(),
               getLimit()));
     } else if (v.equals(4)) {
-      write(productService.list(getPurchase(), search, getStart(), getLimit(), curLanguage()));
+      write(
+          productService.list(
+              getPurchase(), search, getNewSort(), getStart(), getLimit(), curLanguage()));
     } else {
       write(
           objectMapper.writeValueAsString(

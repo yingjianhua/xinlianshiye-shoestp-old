@@ -29,6 +29,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import com.google.gson.JsonObject;
+import com.xinlianshiye.shoestp.seller.service.pdt.IPdtTargetMarketService;
 
 import irille.Dao.PdtProductDao;
 import irille.Dao.O2O.O2OProductDao;
@@ -83,6 +84,8 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
 
   @Inject private PdtProductDAO.Publish pdtSave;
   @Inject private PdtProductDAO.Upd2 pdtUpdate;
+
+  @Inject private IPdtTargetMarketService targetMarketService;
 
   @Override
   public Page getProductList(
@@ -179,12 +182,17 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
     int countStock = 0; // 总库存
     List<PdtSpec> list = new ArrayList<>();
     // 优先新增颜色
+    Set<Integer> colorPkeyList = new HashSet<>();
+    for (int i = 0; i < pdtProductSaveView.getNewSpec().size(); i++) {
+      colorPkeyList.add(pdtProductSaveView.getNewSpec().get(i).getColor());
+    }
     if (pdtProductSaveView.getNewSpec() != null && !pdtProductSaveView.getNewSpec().isEmpty()) {
       Map<Integer, PdtColor> specMaps = new HashMap<>(); // key为specId  value为颜色
       Map<String, PdtColor> insColorNames = new HashMap<>();
       for (NewSpceView v : pdtProductSaveView.getNewSpec()) {
         if (v.getColor() < 0) {
-          if (!insColorNames.containsKey(v.getColorName())) {
+          if (!insColorNames.containsKey(v.getColorName())
+              || !colorPkeyList.contains(v.getColor())) {
             PdtColor color = new PdtColor();
             color.setName(v.getColorName());
             color.setPicture(v.getColorImg());
@@ -300,6 +308,7 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
       return -9;
     }
     pdtProduct.setSupplier(supId);
+
     pdtProduct.setTargetedMarket(
         country.stream().map(String::valueOf).collect(Collectors.joining(",")));
     pdtProduct.setPkey(pdtProductSaveView.getId());
@@ -338,27 +347,28 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
     pdtProduct.setMaxOq(99999); // 最大购买量
     pdtProduct.setSales(0); // 销量
     pdtProduct.setWarnStock(0); // 警告库存
-    if (null != pdtProductSaveView.getAttr() && pdtProductSaveView.getAttr().size() > 0) {
-      String attrs =
-          pdtProductSaveView.getAttr().stream()
-              .filter(o -> o != null)
-              .map(String::valueOf)
-              .collect(Collectors.joining(","));
-      List<PdtAttrLine> lines =
+    String attrs =
+        pdtProductSaveView.getAttr().stream()
+            .filter(o -> o != null && Integer.parseInt(o.toString()) > 0)
+            .map(String::valueOf)
+            .collect(Collectors.joining(","));
+    System.out.println(attrs);
+    List<PdtAttrLine> lines = new ArrayList<>();
+    if (attrs != null && !"".equals(attrs)) {
+      lines =
           BeanBase.list(
               PdtAttrLine.class,
               PdtAttrLine.T.PKEY.getFld().getCodeSqlField() + " IN(" + attrs + ") ",
               false);
-      List<Integer> attrsPkeys = new ArrayList<>();
-      Map<Integer, PdtAttrCat> cats = new HashMap<>();
-      for (PdtAttrLine l : lines) {
-        PdtAttr a = l.gtMain();
-        if (!attrsPkeys.contains(a.getPkey())) {
-          PdtAttrCat c = a.gtCategory();
-          if (!cats.containsKey(c.getPkey())) {
-            cats.put(c.getPkey(), c);
-          }
-          attrsPkeys.add(a.getPkey());
+    }
+    List<Integer> attrsPkeys = new ArrayList<>();
+    Map<Integer, PdtAttrCat> cats = new HashMap<>();
+    for (PdtAttrLine l : lines) {
+      PdtAttr a = l.gtMain();
+      if (!attrsPkeys.contains(a.getPkey())) {
+        PdtAttrCat c = a.gtCategory();
+        if (!cats.containsKey(c.getPkey())) {
+          cats.put(c.getPkey(), c);
         }
       }
       for (Entry<Integer, PdtAttrCat> entry : cats.entrySet()) {
@@ -530,6 +540,8 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
       pdtUpdate.setLines(list);
       pdtUpdate.commit();
     }
+    targetMarketService.ins(
+        pdtSave.getB(), country.stream().map(String::valueOf).collect(Collectors.joining(",")));
     PdtProduct pdt = null;
     if (pdtSave.getB() != null) {
       pdt = pdtSave.getB();

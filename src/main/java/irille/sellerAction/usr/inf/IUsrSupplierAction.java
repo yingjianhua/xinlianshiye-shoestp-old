@@ -140,4 +140,7 @@ public interface IUsrSupplierAction extends ISellerAction {
 
   @RequestMapping(alias = "2.1认证信息", sort = 53)
   void authInfo() throws Exception;
+
+  @RequestMapping(alias = "获取目标市场", sort = 54)
+  void getTargetedMarket() throws Exception;
 }
