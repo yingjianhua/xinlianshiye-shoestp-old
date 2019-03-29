@@ -919,7 +919,7 @@ public class UsrSupplierDAO {
       String pkey, Integer status, String reason, Date storeopenTime) {
     UsrSupplier supplier = BeanBase.load(UsrSupplier.class, pkey);
     IPMMessageService messageService = new PMMessageServiceImp();
-    String signBackgd = "/public/upload/usr/supplier/105df0d09f73c7dccd0baf4d67c38a0d.jpg";
+    String signBackgd = "/public/upload/usr/supplier/a65e5c6ff166514aa1266bc62d920668.jpg";
 
     if (status == 0) {
       supplier.stStatus(OStatus.INIT);
