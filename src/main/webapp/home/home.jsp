@@ -31,11 +31,11 @@
                 <div class="boxListWrap">
                 <div class="boxList" v-for="(item,index) in classLists" for-key="index">
                     <a class="h2" :href="'/home/pdt_PdtProduct?cated='+item.value" target="_blank">
-                        <img class="leftNav-icon1" src="/home/v3/static/images/icon_nx.png" alt="{{item.label}}"
+                        <img class="leftNav-icon1" src="/home/v3/static/images/icon_nx.png" :alt="item.label"
                              v-if="index==0"/>
-                        <img class="leftNav-icon1" src="/home/v3/static/images/icon_nvx.png" alt="{{item.label}}"
+                        <img class="leftNav-icon1" src="/home/v3/static/images/icon_nvx.png" :alt="item.label"
                              v-if="index==1"/>
-                        <img class="leftNav-icon1" src="/home/v3/static/images/icon_ntx.png" alt="{{item.label}}"
+                        <img class="leftNav-icon1" src="/home/v3/static/images/icon_ntx.png" :alt="item.label"
                              v-if="index==2"/>
                         {{item.label}}
                         <i class="el-icon-arrow-right fr"></i>
