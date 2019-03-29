@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import com.google.protobuf.StringValue;
+
 import irille.Aops.Caches;
 import irille.Dao.PdtProductDao;
 import irille.Dao.O2O.O2OProductDao;
@@ -23,10 +25,13 @@ import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage;
 import irille.pub.util.GetValue;
 import irille.pub.util.SEOUtils;
+import irille.pub.util.SetBeans.Customs.MapGetMethod;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.Pdt;
+import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
+import irille.shop.usr.MainCateInfoView;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
@@ -424,5 +429,18 @@ public class PdtProductServiceImp implements IPdtProductService {
     }
 
     return new Page<>(views, start, limit, pdtProductDao.count(pkey, start, limit, checkType));
+  }
+
+  @Override
+  public List<MainCateInfoView> getMainCateName(Integer supplier) {
+
+    List<Map<String, Object>> list = pdtProductDao.getTopPdtCaties(supplier);
+    List<MainCateInfoView> result = new ArrayList<>();
+    for (Map<String, Object> map : list) {
+      MainCateInfoView view = new MainCateInfoView();
+      view.setCateName(GetValue.get(map, PdtCat.T.NAME, String.class, null));
+      result.add(view);
+    }
+    return result;
   }
 }

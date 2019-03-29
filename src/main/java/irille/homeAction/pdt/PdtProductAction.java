@@ -760,4 +760,8 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
     if (getLimit() == 0) setLimit(20);
     BeanAction.write(pdtProduct.findPdtList(pkey, getStart(), getLimit(), checkType));
   }
+  
+  public  void  test() {
+	  pdtProduct.getMainCateName(8);
+  }
 }

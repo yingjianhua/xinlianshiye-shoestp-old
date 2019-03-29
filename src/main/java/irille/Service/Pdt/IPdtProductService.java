@@ -10,6 +10,7 @@ import irille.Service.Pdt.Imp.PdtProductServiceImp;
 import irille.homeAction.pdt.dto.PdtExhibitionView;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage;
+import irille.shop.usr.MainCateInfoView;
 import irille.shop.usr.UsrPurchase;
 import irille.view.Page;
 import irille.view.RFQ.RFQPdtInfo;
@@ -112,4 +113,6 @@ public interface IPdtProductService {
   RFQPdtInfo getInquiryPdtInfo(Integer id);
   
   Page findPdtList(Integer pkey,Integer start,Integer limit,Integer checkType);
+  
+  public List<MainCateInfoView> getMainCateName(Integer supplier);
 }

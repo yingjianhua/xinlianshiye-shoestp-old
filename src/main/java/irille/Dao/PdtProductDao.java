@@ -1508,9 +1508,13 @@ public class PdtProductDao {
     SQL sql =
         new SQL() {
           {
-            SELECT(PdtProduct.T.NAME, PdtProduct.T.PICTURE, PdtProduct.T.PKEY,PdtProduct.T.IS_DEFAULT_REVIEW)
+            SELECT(
+                    PdtProduct.T.NAME,
+                    PdtProduct.T.PICTURE,
+                    PdtProduct.T.PKEY,
+                    PdtProduct.T.IS_DEFAULT_REVIEW)
                 .FROM(PdtProduct.class)
-                .WHERE(supplierId != null, PdtProduct.T.SUPPLIER, "=?",supplierId)
+                .WHERE(supplierId != null, PdtProduct.T.SUPPLIER, "=?", supplierId)
                 .ORDER_BY(PdtProduct.T.VERIFY_TIME, "desc")
                 .LIMIT(0, 3);
           }
@@ -1528,17 +1532,29 @@ public class PdtProductDao {
    */
   public List findPdtListBySupplier(Integer pkey, Integer start, Integer limit, Integer checkType) {
     List list = null;
-    
+
     SQL sql = new SQL();
     SQL favoritesSql = new SQL();
-    SQL minSql=new SQL();
-    SQL maxSql=new SQL();
-    minSql.SELECT(" MIN("+PdtTieredPricing.class.getSimpleName()+"." + PdtTieredPricing.T.CUR_PRICE + ")")
-    .FROM(PdtTieredPricing.class)
-    .WHERE(PdtTieredPricing.T.PRODUCT,"=", PdtProduct.T.PKEY);
-    maxSql.SELECT(" MAX("+PdtTieredPricing.class.getSimpleName()+"." + PdtTieredPricing.T.CUR_PRICE + ")")
-    .FROM(PdtTieredPricing.class)
-    .WHERE(PdtTieredPricing.T.PRODUCT,"=", PdtProduct.T.PKEY);
+    SQL minSql = new SQL();
+    SQL maxSql = new SQL();
+    minSql
+        .SELECT(
+            " MIN("
+                + PdtTieredPricing.class.getSimpleName()
+                + "."
+                + PdtTieredPricing.T.CUR_PRICE
+                + ")")
+        .FROM(PdtTieredPricing.class)
+        .WHERE(PdtTieredPricing.T.PRODUCT, "=", PdtProduct.T.PKEY);
+    maxSql
+        .SELECT(
+            " MAX("
+                + PdtTieredPricing.class.getSimpleName()
+                + "."
+                + PdtTieredPricing.T.CUR_PRICE
+                + ")")
+        .FROM(PdtTieredPricing.class)
+        .WHERE(PdtTieredPricing.T.PRODUCT, "=", PdtProduct.T.PKEY);
     favoritesSql
         .SELECT("count(1)")
         .FROM(UsrFavorites.class)
@@ -1548,18 +1564,14 @@ public class PdtProductDao {
         .SELECT(" count(1) ")
         .FROM(RFQConsult.class)
         .WHERE(RFQConsult.T.PRODUCT, " =", PdtProduct.T.PKEY);
-    sql.SELECT(
-    		PdtProduct.T.PKEY, 
-    		PdtProduct.T.NAME,
-    		PdtProduct.T.PICTURE,
-    		PdtProduct.T.CODE)
-        .SELECT(minSql,"minPrice")
-        .SELECT(maxSql,"maxPrice")
+    sql.SELECT(PdtProduct.T.PKEY, PdtProduct.T.NAME, PdtProduct.T.PICTURE, PdtProduct.T.CODE)
+        .SELECT(minSql, "minPrice")
+        .SELECT(maxSql, "maxPrice")
         .FROM(PdtProduct.class)
         .LEFT_JOIN(PdtTieredPricing.class, PdtTieredPricing.T.PRODUCT, PdtProduct.T.PKEY)
-        .WHERE(PdtProduct.T.SUPPLIER, "=" + pkey )
+        .WHERE(PdtProduct.T.SUPPLIER, "=" + pkey)
         .GROUP_BY(PdtProduct.T.PKEY);
-    	
+
     String newSql = "";
     if (checkType == 0) {
       sql.ORDER_BY(PdtProduct.T.VERIFY_TIME, "desc").LIMIT(start, limit);
@@ -1567,17 +1579,41 @@ public class PdtProductDao {
     }
     ;
     if (checkType == 1) {
-      newSql = sql.toString() + " order by ("+minSql.toString()+") desc  	LIMIT "+start+","+limit+"";
+      newSql =
+          sql.toString()
+              + " order by ("
+              + minSql.toString()
+              + ") desc  	LIMIT "
+              + start
+              + ","
+              + limit
+              + "";
     }
     if (checkType == 2) {
-      newSql = sql.toString() + " order by ("+subSQL.toString()+") desc  LIMIT "+start+","+limit+"";
+      newSql =
+          sql.toString()
+              + " order by ("
+              + subSQL.toString()
+              + ") desc  LIMIT "
+              + start
+              + ","
+              + limit
+              + "";
     }
     if (checkType == 3) {
-      newSql = sql.toString() + " order by ("+favoritesSql.toString()+") desc LIMIT "+start+","+limit+"";
+      newSql =
+          sql.toString()
+              + " order by ("
+              + favoritesSql.toString()
+              + ") desc LIMIT "
+              + start
+              + ","
+              + limit
+              + "";
     }
     return Query.sql(newSql).queryMaps();
   }
-  
+
   /**
    * 手机端商家产品列表
    *
@@ -1589,17 +1625,29 @@ public class PdtProductDao {
    */
   public int count(Integer pkey, Integer start, Integer limit, Integer checkType) {
     List list = null;
-    
+
     SQL sql = new SQL();
     SQL favoritesSql = new SQL();
-    SQL minSql=new SQL();
-    SQL maxSql=new SQL();
-    minSql.SELECT(" MIN("+PdtTieredPricing.class.getSimpleName()+"." + PdtTieredPricing.T.CUR_PRICE + ")")
-    .FROM(PdtTieredPricing.class)
-    .WHERE(PdtTieredPricing.T.PRODUCT,"=", PdtProduct.T.PKEY);
-    maxSql.SELECT(" MAX("+PdtTieredPricing.class.getSimpleName()+"." + PdtTieredPricing.T.CUR_PRICE + ")")
-    .FROM(PdtTieredPricing.class)
-    .WHERE(PdtTieredPricing.T.PRODUCT,"=", PdtProduct.T.PKEY);
+    SQL minSql = new SQL();
+    SQL maxSql = new SQL();
+    minSql
+        .SELECT(
+            " MIN("
+                + PdtTieredPricing.class.getSimpleName()
+                + "."
+                + PdtTieredPricing.T.CUR_PRICE
+                + ")")
+        .FROM(PdtTieredPricing.class)
+        .WHERE(PdtTieredPricing.T.PRODUCT, "=", PdtProduct.T.PKEY);
+    maxSql
+        .SELECT(
+            " MAX("
+                + PdtTieredPricing.class.getSimpleName()
+                + "."
+                + PdtTieredPricing.T.CUR_PRICE
+                + ")")
+        .FROM(PdtTieredPricing.class)
+        .WHERE(PdtTieredPricing.T.PRODUCT, "=", PdtProduct.T.PKEY);
     favoritesSql
         .SELECT("count(1)")
         .FROM(UsrFavorites.class)
@@ -1609,18 +1657,14 @@ public class PdtProductDao {
         .SELECT(" count(1) ")
         .FROM(RFQConsult.class)
         .WHERE(RFQConsult.T.PRODUCT, " =", PdtProduct.T.PKEY);
-    sql.SELECT(
-    		PdtProduct.T.PKEY, 
-    		PdtProduct.T.NAME,
-    		PdtProduct.T.PICTURE,
-    		PdtProduct.T.CODE)
-        .SELECT(minSql,"minPrice")
-        .SELECT(maxSql,"maxPrice")
+    sql.SELECT(PdtProduct.T.PKEY, PdtProduct.T.NAME, PdtProduct.T.PICTURE, PdtProduct.T.CODE)
+        .SELECT(minSql, "minPrice")
+        .SELECT(maxSql, "maxPrice")
         .FROM(PdtProduct.class)
         .LEFT_JOIN(PdtTieredPricing.class, PdtTieredPricing.T.PRODUCT, PdtProduct.T.PKEY)
-        .WHERE(PdtProduct.T.SUPPLIER, "="+pkey)
+        .WHERE(PdtProduct.T.SUPPLIER, "=" + pkey)
         .GROUP_BY(PdtProduct.T.PKEY);
-    	
+
     String newSql = "";
     if (checkType == 0) {
       sql.ORDER_BY(PdtProduct.T.VERIFY_TIME, "desc");
@@ -1628,15 +1672,32 @@ public class PdtProductDao {
     }
     ;
     if (checkType == 1) {
-      newSql = sql.toString() + " order by ("+minSql.toString()+") desc ";
+      newSql = sql.toString() + " order by (" + minSql.toString() + ") desc ";
     }
     if (checkType == 2) {
-      newSql = sql.toString() + " order by ("+subSQL.toString()+") desc ";
+      newSql = sql.toString() + " order by (" + subSQL.toString() + ") desc ";
     }
     if (checkType == 3) {
-      newSql = sql.toString() + " order by ("+favoritesSql.toString()+") desc";
+      newSql = sql.toString() + " order by (" + favoritesSql.toString() + ") desc";
     }
     return Query.sql(newSql).queryMaps().size();
   }
-  
+  /**
+   * 获取商家主要产品类型名称
+   *
+   * @author GS
+   * @param supplier
+   * @return
+   */
+  public List getTopPdtCaties(Integer supplier) {
+    SQL sql = new SQL();
+    sql.SELECT(PdtCat.T.NAME)
+        .SELECT("count(1) cat")
+        .FROM(PdtProduct.class)
+        .LEFT_JOIN(PdtCat.class, PdtCat.T.PKEY, PdtProduct.T.CATEGORY)
+        .WHERE(supplier != null, PdtProduct.T.SUPPLIER, "=" + supplier)
+        .GROUP_BY(PdtProduct.T.CATEGORY);
+    String newSql = sql.toString() + "  order by cat desc limit 0,3";
+    return Query.sql(newSql).queryMaps();
+  }
 }
