@@ -227,7 +227,7 @@
                         { pattern: /^[^ ].{1,32}$/  , message: 'Name cannot exceed 32 digits' }
                     ],
 
-                    phone:[{validator: validatePhone, trigger: 'blur', required: true,}],
+                    phone:[{validator: validatePhone, trigger: ['blur', 'change'], required: true,}],
                     address: [{message: 'Please enter the address',trigger: 'blur'},
                         { pattern: /^[^!@~`%^&*()+|\\}{":?/].{0,180}$/, message: 'Cannot enter special symbols, up to 180 digits' }
                     ],
@@ -375,7 +375,7 @@
                                 setTimeout(function () {
                                     window.location.reload();
                                 }, 1500)
-                                
+
                             })
                             .catch((err) => {
                                 this.flag = false;

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import irille.Dao.PdtProductDao;
 import irille.Dao.RFQ.RFQConsultDao;
+import irille.Entity.SVS.Enums.SVSGradeType;
 import irille.Service.Manage.Usr.IUsrSupplierManageService;
 import irille.action.dataimport.util.StringUtil;
 import irille.pub.DateTools;
@@ -484,9 +485,8 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
   // 正则校验
   public void regex() throws Exception {
     ValidForm valid = new ValidForm(getBean());
-    valid.validNotEmpty(UsrSupplier.T.NAME,UsrSupplier.T.ENGLISH_NAME, UsrSupplier.T.COMPANY_ADDR,UsrSupplier.T.TARGETED_MARKET,UsrSupplier.T.PROD_PATTERN,UsrSupplier.T.CREDIT_CODE,UsrSupplier.T.CERT_PHOTO);
+    valid.validNotEmpty(UsrSupplier.T.TARGETED_MARKET);
     ValidRegex2 regex = new ValidRegex2(getBean());
-    regex.validAZLen(50,UsrSupplier.T.ENGLISH_NAME);
     if (getBean().getWebsite() != null)
       regex.validRegexMatched(
               "http[s]?:\\/\\/[\\w]{1,}.?[\\w]{1,}.?[\\w/.?&=-]{1,}",
@@ -692,6 +692,11 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     UsrSupplierInfo usi=new UsrSupplierInfo();
     Integer pkey= getSupplier().getPkey();
     usi.setSupplierDetailsDTO(dao.getSupplierDetails(pkey));
+    for (SVSGradeType value : SVSGradeType.values()) {
+      if(usi.getSupplierDetailsDTO().getSvsRatingAndRosDTO().getGrade()== value.getLine().getKey()){
+        usi.setSvsLevel(value.getLine().getName());
+      }
+    }
     usi.setInquiriesCount(rfqConsultDao.getConsultCount(pkey));
     usi.setContactsCount(rfqConsultDao.getcontactsCount(pkey));
     usi.setProductCount(pdtProductDAO.productCount(pkey));
