@@ -15,6 +15,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import irille.Dao.RFQ.RFQConsultDao;
+import irille.Entity.SVS.Enums.SVSGradeType;
 import irille.Service.Manage.Usr.IUsrSupplierManageService;
 import irille.action.dataimport.util.StringUtil;
 import irille.pub.DateTools;
@@ -34,9 +36,11 @@ import irille.pub.validate.ValidRegex;
 import irille.pub.validate.ValidRegex2;
 import irille.pub.verify.RandomImageServlet;
 import irille.sellerAction.SellerAction;
+import irille.sellerAction.usr.dto.UsrSupplierInfo;
 import irille.sellerAction.usr.inf.IUsrSupplierAction;
 import irille.sellerAction.view.SupinfoView;
 import irille.sellerAction.view.operateinfoView;
+import irille.shop.pdt.PdtProductDAO;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltProvince;
@@ -480,16 +484,8 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
   // 正则校验
   public void regex() throws Exception {
     ValidForm valid = new ValidForm(getBean());
-    valid.validNotEmpty(
-        UsrSupplier.T.NAME,
-        UsrSupplier.T.ENGLISH_NAME,
-        UsrSupplier.T.COMPANY_ADDR,
-        UsrSupplier.T.TARGETED_MARKET,
-        UsrSupplier.T.PROD_PATTERN,
-        UsrSupplier.T.CREDIT_CODE,
-        UsrSupplier.T.CERT_PHOTO);
+    valid.validNotEmpty(UsrSupplier.T.TARGETED_MARKET);
     ValidRegex2 regex = new ValidRegex2(getBean());
-    regex.validAZLen(50, UsrSupplier.T.ENGLISH_NAME);
     if (getBean().getWebsite() != null)
       regex.validRegexMatched(
           "http[s]?:\\/\\/[\\w]{1,}.?[\\w]{1,}.?[\\w/.?&=-]{1,}",
@@ -683,5 +679,32 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
   public void getTargetedMarket() throws Exception {
     JSONObject json = new JSONObject(dao.getTargetedMarket(getSupplier().getPkey()));
     writerOrExport(json);
+  }
+
+  /** @Author wilson Zhang @Description 商家端首页信息总方法 @Date 21:27 2019/3/28 */
+  @Inject RFQConsultDao rfqConsultDao;
+
+  @Inject PdtProductDAO pdtProductDAO;
+
+  public void getsupplierinfo() throws Exception {
+    UsrSupplierInfo usi = new UsrSupplierInfo();
+    Integer pkey = getSupplier().getPkey();
+    usi.setSupplierDetailsDTO(dao.getSupplierDetails(pkey));
+    for (SVSGradeType value : SVSGradeType.values()) {
+      if (usi.getSupplierDetailsDTO().getSvsRatingAndRosDTO().getGrade()
+          == value.getLine().getKey()) {
+        usi.setSvsLevel(value.getLine().getName());
+      }
+    }
+    usi.setInquiriesCount(rfqConsultDao.getConsultCount(pkey));
+    usi.setContactsCount(rfqConsultDao.getcontactsCount(pkey));
+    usi.setProductCount(pdtProductDAO.productCount(pkey));
+    usi.setPrivateproductCount(pdtProductDAO.privateproductCount(pkey));
+    usi.setWareHouseProductCount(pdtProductDAO.wareHouseProductCount(pkey));
+    usi.setVerifyProductCount(pdtProductDAO.verifyProductCount(pkey));
+    usi.setFailedProductCount(pdtProductDAO.failedProductCount(pkey));
+    usi.setWarehouseProductCounts(pdtProductDAO.warehouseProductCount(pkey));
+    usi.setSellerIndexConsultViewList(rfqConsultDao.getIndexInqlist(pkey));
+    write(usi);
   }
 }

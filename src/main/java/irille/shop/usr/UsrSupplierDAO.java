@@ -946,7 +946,7 @@ public class UsrSupplierDAO {
       String pkey, Integer status, String reason, Date storeopenTime) {
     UsrSupplier supplier = BeanBase.load(UsrSupplier.class, pkey);
     IPMMessageService messageService = new PMMessageServiceImp();
-    String signBackgd = "/public/upload/usr/supplier/105df0d09f73c7dccd0baf4d67c38a0d.jpg";
+    String signBackgd = "/public/upload/usr/supplier/a65e5c6ff166514aa1266bc62d920668.jpg";
 
     if (status == 0) {
       supplier.stStatus(OStatus.INIT);
@@ -1098,75 +1098,82 @@ public class UsrSupplierDAO {
    * @throws JSONException
    */
   public static UsrSupplier insSupplierNo(UsrSupplier view, Language lang) throws JSONException {
-    UsrMain main = irille.pub.bean.Query.SELECT(UsrMain.class, view.getUserid());
-    main.setContacts(view.getContacts());
-    if (view.getPhone() != null) {
-      main.setTelphone(view.getPhone());
-    }
-    main.setCompany(view.getName());
-    main.setAddress(view.getCompanyAddr());
-    main.upd();
+      UsrMain main = irille.pub.bean.Query.SELECT(UsrMain.class, view.getUserid());
+      main.setContacts(view.getContacts());
+      if (view.getPhone() != null) {
+        main.setTelphone(view.getPhone());
+      }
+      main.setCompany(view.getName());
+      main.setAddress(view.getCompanyAddr());
+      main.upd();
 
-    UsrSupplier bean = new UsrSupplier();
-    // 必填项
-    bean.stRole(UsrSupplierRoleDAO.getDefault());
-    if (main.getNickname() == null) {
-      bean.setLoginName(main.getEmail()); // UsrMain表的昵称
-    } else {
-      bean.setLoginName(main.getNickname()); // UsrMain表的昵称
-    }
-    bean.setEmail(main.getEmail()); // UsrMain表的邮箱
-    bean.stStatus(Usr.OStatus.INIT); // 审核状态
-    bean.stStoreStatus(Usr.SStatus.DOWN); // 店铺状态
-    bean.stIsAuth(Usr.OIsAuth.NO); // 认证状态
-    bean.setSort(default_sort); // 排序
-    bean.setCountry(7); // 国家
-    bean.setProvince(257); // 省份
-    bean.setBankCountry(7); // 开户行国家
-    bean.setBankProvince(257); // 开户行省份
-    bean.stHomePageOn(false); // 首页个性装修开关
-    bean.stProductPageOn(false); // 产品页个性装修开关
-    bean.stContactPageOn(false); // 联系页个性装修开关
-    bean.stBottomHomeProductsOn(false); // 首页底部产品展示开关
-    bean.stHomePosterOn(false);
-    bean.stHomeBusinessBigPosterOn(false);
-    bean.stCompanyIntroductionPageCustomDecorationOn(false);
-    bean.stIsPro(false); // 供应商首页产品展示
-    bean.setUpdateTime(Env.getTranBeginTime()); // 更新时间
-    bean.setCategory(40); // 供应商分类
+      UsrSupplier bean = new UsrSupplier();
+      // 必填项
+      bean.stRole(UsrSupplierRoleDAO.getDefault());
+      if (main.getNickname() == null) {
+        bean.setLoginName(main.getEmail()); // UsrMain表的昵称
+      } else {
+        bean.setLoginName(main.getNickname()); // UsrMain表的昵称
+      }
+      bean.setEmail(main.getEmail()); // UsrMain表的邮箱
+      bean.stStatus(Usr.OStatus.INIT); // 审核状态
+      bean.stStoreStatus(Usr.SStatus.DOWN); // 店铺状态
+      bean.stIsAuth(Usr.OIsAuth.NO); // 认证状态
+      bean.setSort(default_sort); // 排序
+      bean.setCountry(7); // 国家
+      bean.setProvince(257); // 省份
+      bean.setBankCountry(7); // 开户行国家
+      bean.setBankProvince(257); // 开户行省份
+      bean.stHomePageOn(false); // 首页个性装修开关
+      bean.stProductPageOn(false); // 产品页个性装修开关
+      bean.stContactPageOn(false); // 联系页个性装修开关
+      bean.stBottomHomeProductsOn(false); // 首页底部产品展示开关
+      bean.stHomePosterOn(false);
+      bean.stHomeBusinessBigPosterOn(false);
+      bean.stCompanyIntroductionPageCustomDecorationOn(false);
+      bean.stIsPro(false); // 供应商首页产品展示
+      bean.setUpdateTime(Env.getTranBeginTime()); // 更新时间
+      bean.setCategory(40); // 供应商分类
 
-    bean.setUserid(view.getUserid()); // UsrMain表的pkey
-    bean.setPassword(DateTools.getDigest(main.getPkey() + main.getPassword())); // UsrMain表的密码
-    bean.setName(view.getName()); // 公司名称-必填
-    bean.setEnglishName(view.getEnglishName()); // 公司英文名称
-    bean.setShowName(translateUtil.toSaveJson(view.getName(), lang)); // 前端公司展示名称
+      bean.setUserid(view.getUserid()); // UsrMain表的pkey
+      bean.setPassword(DateTools.getDigest(main.getPkey() + main.getPassword())); // UsrMain表的密码
+      bean.setName(view.getName()); // 公司名称-必填
+      bean.setEnglishName(view.getEnglishName()); // 公司英文名称
 
-    bean.setCompanyType(translateUtil.toSaveJson(view.getCompanyType(), lang)); // 企业类型
-    bean.setCompanyNature(translateUtil.toSaveJson(view.getCompanyNature(), lang)); // 企业性质
-    bean.setCompanyEstablishTime(view.getCompanyEstablishTime()); // 成立时间
-    bean.setWebsite(view.getWebsite()); // 官网地址
-    bean.setCompanyAddr(translateUtil.toSaveJson(view.getCompanyAddr(), lang)); // 详细地址
-    bean.setAnnualProduction(view.getAnnualProduction()); // 年产量
-    bean.setTelephone(view.getTelephone()); // 公司电话
-    bean.setFax(view.getFax()); // 传真
-    bean.setPostcode(view.getPostcode()); // 邮编
-    bean.setTargetedMarket(view.getTargetedMarket()); // 目标市场
-    bean.setProdPattern(translateUtil.toSaveJson(view.getProdPattern(), lang)); // 生产模式
-    bean.setCreditCode(view.getCreditCode()); // 信用代码
-    bean.setRegisteredCapital(view.getRegisteredCapital()); // 注册资金-必填
-    bean.setEntity(view.getEntity()); // 企业法人-必填
-    bean.setEntity(view.getEntity()); // 企业法人-必填
-    bean.setBusinessLicenseIsSecular(view.getBusinessLicenseIsSecular()); // 营业执照是否在有效期-必填
-    bean.setBusinessLicenseBeginTime(view.getBusinessLicenseBeginTime()); // 营业执照开始时间
-    if (view.getBusinessLicenseIsSecular() == 0) {
-      bean.setBusinessLicenseEndTime(view.getBusinessLicenseEndTime()); // 营业执照结束时间
-    }
-    bean.setTaxpayerType(view.getTaxpayerType()); // 纳税人类型
-
-    bean.setContacts(translateUtil.toSaveJson(view.getContacts(), lang)); // 联系人
-    bean.setDepartment(translateUtil.toSaveJson(view.getDepartment(), lang)); // 联系人部门
-    bean.setJobTitle(translateUtil.toSaveJson(view.getJobTitle(), lang)); // 联系人职称
-    bean.setPhone(view.getPhone()); // 联系人手机
+      if(view.getName() != null)
+          bean.setShowName(translateUtil.toSaveJson(view.getName(), lang)); // 前端公司展示名称
+      if(view.getCompanyType() != null)
+          bean.setCompanyType(translateUtil.toSaveJson(view.getCompanyType(), lang)); // 企业类型
+      if(view.getCompanyNature() != null)
+          bean.setCompanyNature(translateUtil.toSaveJson(view.getCompanyNature(), lang)); // 企业性质
+      if(view.getCompanyAddr() != null)
+          bean.setCompanyAddr(translateUtil.toSaveJson(view.getCompanyAddr(), lang)); // 详细地址
+      if(view.getProdPattern() != null)
+          bean.setProdPattern(translateUtil.toSaveJson(view.getProdPattern(), lang)); // 生产模式
+      if(view.getContacts() != null)
+          bean.setContacts(translateUtil.toSaveJson(view.getContacts(), lang)); // 联系人
+      if(view.getDepartment() != null)
+          bean.setDepartment(translateUtil.toSaveJson(view.getDepartment(), lang)); // 联系人部门
+      if(view.getJobTitle() != null)
+          bean.setJobTitle(translateUtil.toSaveJson(view.getJobTitle(), lang)); // 联系人职称
+      bean.setCompanyEstablishTime(view.getCompanyEstablishTime()); // 成立时间
+      bean.setWebsite(view.getWebsite()); // 官网地址
+      bean.setAnnualProduction(view.getAnnualProduction()); // 年产量
+      bean.setTelephone(view.getTelephone()); // 公司电话
+      bean.setFax(view.getFax()); // 传真
+      bean.setPostcode(view.getPostcode()); // 邮编
+      bean.setTargetedMarket(view.getTargetedMarket()); // 目标市场
+      bean.setCreditCode(view.getCreditCode()); // 信用代码
+      bean.setRegisteredCapital(view.getRegisteredCapital()); // 注册资金-必填
+      bean.setEntity(view.getEntity()); // 企业法人-必填
+      bean.setEntity(view.getEntity()); // 企业法人-必填
+      bean.setBusinessLicenseIsSecular(view.getBusinessLicenseIsSecular()); // 营业执照是否在有效期-必填
+      bean.setBusinessLicenseBeginTime(view.getBusinessLicenseBeginTime()); // 营业执照开始时间
+      if (view.getBusinessLicenseIsSecular() == 0) {
+          bean.setBusinessLicenseEndTime(view.getBusinessLicenseEndTime()); // 营业执照结束时间
+      }
+      bean.setTaxpayerType(view.getTaxpayerType()); // 纳税人类型
+      bean.setPhone(view.getPhone()); // 联系人手机
     if (view.getContactEmail() == null) {
       bean.setContactEmail(main.getEmail()); // 联系人邮箱
     } else {
@@ -1225,14 +1232,23 @@ public class UsrSupplierDAO {
         T.OPERATE_ID_CARD, // 运营人员身份证号码
         T.STORE_STATUS,
         T.CLOSE_REASON);
-    model.setShowName(translateUtil.toSaveJson(supplier.getName(), lang));
-    model.setCompanyType(translateUtil.toSaveJson(supplier.getCompanyType(), lang));
-    model.setCompanyNature(translateUtil.toSaveJson(supplier.getCompanyNature(), lang));
-    model.setCompanyAddr(translateUtil.toSaveJson(supplier.getCompanyAddr(), lang));
-    model.setProdPattern(translateUtil.toSaveJson(supplier.getProdPattern(), lang));
-    model.setContacts(translateUtil.toSaveJson(supplier.getContacts(), lang));
-    model.setDepartment(translateUtil.toSaveJson(supplier.getDepartment(), lang));
-    model.setJobTitle(translateUtil.toSaveJson(supplier.getJobTitle(), lang));
+      if(supplier.getName() != null)
+          model.setShowName(translateUtil.toSaveJson(supplier.getName(), lang));
+      if(supplier.getCompanyType() != null)
+          model.setCompanyType(translateUtil.toSaveJson(supplier.getCompanyType(), lang));
+      if(supplier.getCompanyNature() != null)
+          model.setCompanyNature(translateUtil.toSaveJson(supplier.getCompanyNature(), lang));
+      if(supplier.getCompanyAddr() != null)
+          model.setCompanyAddr(translateUtil.toSaveJson(supplier.getCompanyAddr(), lang));
+      if(supplier.getProdPattern() != null)
+          model.setProdPattern(translateUtil.toSaveJson(supplier.getProdPattern(), lang));
+
+      if(supplier.getContacts() != null)
+          model.setContacts(translateUtil.toSaveJson(supplier.getContacts(), lang));
+      if(supplier.getDepartment() != null)
+          model.setDepartment(translateUtil.toSaveJson(supplier.getDepartment(), lang));
+      if(supplier.getJobTitle() != null)
+          model.setJobTitle(translateUtil.toSaveJson(supplier.getJobTitle(), lang));
     model.upd();
     return model;
   }
@@ -2510,6 +2526,7 @@ public class UsrSupplierDAO {
                     T.NAME,
                     UsrMain.T.EMAIL,
                     T.TARGETED_MARKET,
+                    UsrMain.T.LAST_LOGIN,
                     SVSInfo.T.AUTHENTICATION_TIME)
                 .FROM(UsrSupplier.class)
                 .LEFT_JOIN(SVSInfo.class, SVSInfo.T.SUPPLIER, T.PKEY)
@@ -2523,6 +2540,7 @@ public class UsrSupplierDAO {
     view.setName((String) map.get(T.NAME.getFld().getCodeSqlField()));
     view.setUserName((String) map.get(UsrMain.T.EMAIL.getFld().getCodeSqlField()));
     view.setTargetedMarket((String) map.get(T.TARGETED_MARKET.getFld().getCodeSqlField()));
+    view.setLastLoginTIME((Date)map.get(UsrMain.T.LAST_LOGIN.getFld().getCodeSqlField()));
     view.setAuthentication_time(
         (Date) map.get(SVSInfo.T.AUTHENTICATION_TIME.getFld().getCodeSqlField()));
     view.setSvsRatingAndRosDTO(svsInfoService.getSvsRatingAndRos(supplierId));

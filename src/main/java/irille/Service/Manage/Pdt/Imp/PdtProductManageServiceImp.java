@@ -366,17 +366,17 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
         if (!cats.containsKey(c.getPkey())) {
           cats.put(c.getPkey(), c);
         }
-        attrsPkeys.add(a.getPkey());
       }
-    }
-    for (Entry<Integer, PdtAttrCat> entry : cats.entrySet()) {
-      PdtAttrCat p = entry.getValue();
-      if (p.getLockAttr().equals(OYn.NO.getLine().getKey())) {
-        p.setLockAttr(OYn.YES.getLine().getKey());
-        p.upd();
+      for (Entry<Integer, PdtAttrCat> entry : cats.entrySet()) {
+        PdtAttrCat p = entry.getValue();
+        if (p.getLockAttr().equals(OYn.NO.getLine().getKey())) {
+          p.setLockAttr(OYn.YES.getLine().getKey());
+          p.upd();
+        }
       }
+      pdtProduct.setNormAttr(attrs);
     }
-    pdtProduct.setNormAttr(attrs);
+
     /*
      * pdtProduct.setColorAttr(pdtProductSaveView.getSpecColor().stream().map(String
      * ::valueOf) .collect(Collectors.joining(",")));
@@ -400,7 +400,7 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
       pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
     } else {
       // 产品直接发布
-      if (pdtProduct.gtSoldInTime()) {
+      if (!pdtProductSaveView.isSoldInStatus()) {
         // 立即上架
         pdtProduct.setSoldInTime(OYn.YES.getLine().getKey());
         pdtProduct.setSoldTimeB(Env.getSystemTime());
@@ -409,9 +409,12 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
         if (pdtProductSaveView.getPutawayDate().compareTo(new Date()) == -1) {
           pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
           pdtProduct.setSoldTimeB(Env.getSystemTime());
-        } else {
+        } else if (pdtProductSaveView.getPutawayDate().compareTo(new Date()) >= 1) {
           pdtProduct.setSoldInTime(OYn.YES.getLine().getKey());
           pdtProduct.setSoldTimeB(pdtProductSaveView.getPutawayDate());
+        } else {
+          pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
+          pdtProduct.setSoldTimeB(Env.getSystemTime());
         }
       }
     }
@@ -614,7 +617,13 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
             if (type != null) {
               WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.MERCHANTDEL.getLine().getKey());
             } else {
-              WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.OFF.getLine().getKey());
+              WHERE(
+                  PdtProduct.class.getSimpleName()
+                      + "."
+                      + PdtProduct.T.STATE.getFld().getCodeSqlField()
+                      + "=? ",
+                  Pdt.OState.OFF.getLine().getKey());
+              WHERE(PdtProduct.T.SOLD_TIME_B, " IS NULL ");
             }
 
             if (productName != null) {
