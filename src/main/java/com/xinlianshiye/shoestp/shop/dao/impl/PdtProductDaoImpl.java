@@ -184,21 +184,17 @@ public class PdtProductDaoImpl implements com.xinlianshiye.shoestp.shop.dao.PdtP
     sql.LEFT_JOIN(SVSInfo.class, SVSInfo.T.SUPPLIER, UsrSupplier.T.PKEY);
     sql.LEFT_JOIN(PdtCat.class, PdtProduct.T.CATEGORY, PdtCat.T.PKEY);
     sql.LEFT_JOIN(o2oSQL);
-    sql.WHERE(
-        null != purchase,
-        UsrFavorites.T.PURCHASE,
-        " =? ",
-        null == purchase ? -1 : purchase.getPkey());
     sql.WHERE(PdtProduct.T.IS_VERIFY, " =? ", Sys.OYn.YES.getLine().getKey());
     sql.WHERE(PdtProduct.T.STATE, " =? ", Pdt.OState.ON.getLine().getKey());
     sql.WHERE(search.getSupplier() != null, PdtProduct.T.SUPPLIER, "=?", search.getSupplier());
-    sql.WHERE(null != search.getGrade(), SVSInfo.T.GRADE, " in( ? )", search.getGrade());
     if (null != search.getGrade()) {
       String where =
           SVSInfo.class.getSimpleName()
               + "."
               + SVSInfo.T.GRADE.getFld().getCodeSqlField()
-              + " IN(?) ";
+              + " IN("
+              + search.getGrade()
+              + ") ";
       List<Integer> grades =
           Arrays.asList(search.getGrade().split(",")).stream()
               .map(
@@ -220,26 +216,8 @@ public class PdtProductDaoImpl implements com.xinlianshiye.shoestp.shop.dao.PdtP
         where = "(" + where + ")";
       }
 
-      sql.WHERE(where, search.getGrade());
+      sql.WHERE(where);
     }
-    //    if (null != search.getGrade()
-    //        && !search.getGrade().equals(SVSGradeType.NotAvailable.getLine().getKey())) {
-    //      sql.WHERE(SVSInfo.T.GRADE, " =? ", search.getGrade());
-    //    }
-    //    if (null != search.getGrade()
-    //        && search.getGrade().equals(SVSGradeType.NotAvailable.getLine().getKey())) {
-    //      sql.WHERE(
-    //          "("
-    //              + SVSInfo.class.getSimpleName()
-    //              + "."
-    //              + SVSInfo.T.GRADE.getFld().getCodeSqlField()
-    //              + " =? OR "
-    //              + SVSInfo.class.getSimpleName()
-    //              + "."
-    //              + SVSInfo.T.GRADE.getFld().getCodeSqlField()
-    //              + " IS NULL )",
-    //          search.getGrade());
-    //    }
     List<Integer> catsitems =
         pdtProductDao.getCatsNodeByCatId(null == search.getCategory() ? 0 : search.getCategory());
     String cats = null;
@@ -261,6 +239,8 @@ public class PdtProductDaoImpl implements com.xinlianshiye.shoestp.shop.dao.PdtP
     sql.WHERE(null != search.getMinOq(), PdtProduct.T.MIN_OQ, " <=? ", search.getMinOq());
     if (null != search.getIsO2o()) {
       sql.WHERE(" O2ORecord.o2oCount > 0 ");
+    } else {
+      sql.WHERE(PdtProduct.T.PRODUCT_TYPE, " =? ", Pdt.OProductType.GENERAL.getLine().getKey());
     }
     if (null != search.getKeywords()) {
       String keywords = "%" + search.getKeywords() + "%";
@@ -289,21 +269,7 @@ public class PdtProductDaoImpl implements com.xinlianshiye.shoestp.shop.dao.PdtP
     }
     if (null != search.getExport()) {
       sql.LEFT_JOIN(PdtTargetMarket.class, PdtTargetMarket.T.PRODUCT, PdtProduct.T.PKEY);
-      sql.WHERE(PdtTargetMarket.T.COUNTRY, "  IN(?) ", search.getExport());
-      //      List<String> strs = Arrays.asList(search.getExport().split(","));
-      //      String s = "";
-      //      for (int i = 0; i < strs.size(); i++) {
-      //        s +=
-      //            " FIND_IN_SET( ? ," // strs.get(i)
-      //                + PdtProduct.class.getSimpleName()
-      //                + "."
-      //                + PdtProduct.T.TARGETED_MARKET.getFld().getCodeSqlField()
-      //                + ") ";
-      //        if (i != strs.size() - 1) {
-      //          s += " OR ";
-      //        }
-      //      }
-      //      sql.WHERE("(" + s + ")", search.getExport().split(","));
+      sql.WHERE(PdtTargetMarket.T.COUNTRY, "  IN(" + search.getExport() + ") ");
     }
 
     if (null != sort) {
