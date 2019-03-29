@@ -21,18 +21,19 @@
   <div id='help'>
     <index-top></index-top>
     <div class="main">
-    <h1>帮助文章</h1>
     <div class="msg">
       <div class="nav">
+        <h1>帮助文章</h1>
         <h3><a href="xmgIntroduce.jsp">鞋贸港介绍</a></h3>
-        <h3><a href="getInquery.jsp">如何快速获得询盘</a></h3>
-        <h3><a href="changePassword.jsp">账号的密码如何修改</a></h3>
-        <h3><a href="findPassword.jsp">如何找回密码</a></h3>
-        <h3 class="acitved"><a href="productAudit.jsp">产品审核</a></h3>
-        <h3><a href="changePro.jsp">产品发布后能不能修改</a></h3>
+        <h3 class="sanji"><a href="getInquery.jsp">如何快速获得询盘</a></h3>
+        <h3 class="sanji"><a href="changePassword.jsp">账号的密码如何修改</a></h3>
+        <h3 class="sanji"><a href="findPassword.jsp">如何找回密码</a></h3>
+        <h3 class="acitved sanji"><a href="productAudit.jsp">产品审核</a></h3>
+        <h3 class="sanji"><a href="changePro.jsp">产品发布后能不能修改</a></h3>
         <h3><a href="omtIntroduce.jsp">瓯贸通介绍</a></h3>
       </div>
       <div class="content">
+        <h3>产品审核</h3>
         <h4>产品审核时间：</h4>普通产品审核：在三个工作日内完成审核 <br>O2O产品审核：在三个工作日内完成审核<br><br>
         <h4>产品审核未通过：</h4>产品审核未通过将会被平台自动下架，同时平台会将以站内信的方式通知卖家同时附上为何未通过的原因。<br>若卖家对判定结果有任何的疑问，可以联系平台客服。
       </div>

@@ -14,13 +14,16 @@ import com.xinlianshiye.shoestp.plat.service.pm.imp.PMMessageServiceImp;
 import irille.Entity.pm.PM.OTempType;
 import irille.core.sys.Sys.OSex;
 import irille.homeAction.HomeAction;
+import irille.platform.usr.View.UsrPurView;
 import irille.platform.usr.View.UsrPurchaseListView;
 import irille.platform.usr.View.UsrPurchaseView;
 import irille.pub.DateTools;
 import irille.pub.LogMessage;
 import irille.pub.PropertyUtils;
+import irille.pub.Str;
 import irille.pub.bean.Bean;
 import irille.pub.bean.BeanBase;
+import irille.pub.bean.Query;
 import irille.pub.bean.sql.MconditionsView;
 import irille.pub.bean.sql.SQL;
 import irille.pub.exception.ReturnCode;
@@ -503,6 +506,7 @@ public class UsrPurchaseDAO {
    */
   public static Page listUsrPurchaseListViews(
       List<MconditionsView> listmv, Integer start, Integer limit) {
+    System.out.println("11111111122222222");
     if (null == start) {
       start = 0;
     }
@@ -548,5 +552,50 @@ public class UsrPurchaseDAO {
                 })
             .collect(Collectors.toList());
     return new Page(list, start, limit, count);
+  }
+  /**
+   * @Description: 3.1.1平台端采购商列表(会员)
+   * @anthor chen
+   */
+  public static Page listUsrPurchaseListViewsCopy(String name,String email,Integer  country,Integer start, Integer limit){
+    System.out.println("111111111111111");
+    SQL sql = new SQL();
+    sql.SELECT(UsrPurchase.T.PKEY, "pkey");
+    sql.SELECT(UsrPurchase.T.NAME, "name");
+    sql.SELECT(UsrPurchase.T.TELPHONE, "phone");
+    sql.SELECT(UsrPurchase.T.REG_TIME, "time");
+    sql.SELECT(UsrMain.T.EMAIL,"email");
+    sql.SELECT(PltCountry.T.NAME,"country");
+    sql.FROM(UsrPurchase.class);
+    sql.LEFT_JOIN(UsrMain.class,UsrPurchase.T.UserId, UsrMain.T.PKEY);
+    sql.LEFT_JOIN(PltCountry.class,UsrPurchase.T.COUNTRY, PltCountry.T.PKEY);
+    if(name!=null){
+      sql.WHERE(UsrPurchase.T.NAME," like ?","%" + name + "%");
+    }
+    if(email!=null){
+      sql.WHERE(UsrMain.T.EMAIL," like ?","%" + email + "%");
+    }
+    if(country!=null){
+      sql.WHERE(UsrPurchase.T.COUNTRY," = ?",country );
+    }
+    Integer count = irille.pub.bean.Query.sql(sql).queryCount();
+
+    List<UsrPurView> list =
+            irille.pub.bean.Query.sql(sql.LIMIT(start, limit).ORDER_BY(UsrPurchase.T.REG_TIME, "DESC")).queryMaps().stream()
+                    .map(
+                            o -> {
+                              UsrPurView up =new UsrPurView();
+                               up.setId(Integer.valueOf(String.valueOf(o.get("pkey"))));
+                               up.setEmail(String.valueOf(o.get("email")));
+                               up.setPhone(String.valueOf(o.get("phone")));
+                               up.setTime((Date)o.get("time"));
+                               up.setName(String.valueOf(o.get("name")));
+                               up.setCountry(String.valueOf(o.get("country")));
+                              return up;
+                            })
+                    .collect(Collectors.toList());
+    return new Page(list, start, limit, count);
+
+
   }
 }

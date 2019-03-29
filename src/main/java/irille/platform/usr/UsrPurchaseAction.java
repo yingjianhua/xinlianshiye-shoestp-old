@@ -28,9 +28,12 @@ public class UsrPurchaseAction extends MgtAction<UsrPurchase> {
   }
 
   @Setter @Getter private List<MconditionsView> mv;
+  @Setter @Getter private String name;
+  @Setter @Getter private String email;
+  @Setter @Getter private Integer country;
 
   public void listMd() throws IOException {
-    write(UsrPurchaseDAO.listUsrPurchaseListViews(mv, getStart(), getLimit()));
+    write(UsrPurchaseDAO.listUsrPurchaseListViewsCopy(name,email,country, getStart(), getLimit()));
   }
 
   // 平台性别列表
@@ -61,6 +64,7 @@ public class UsrPurchaseAction extends MgtAction<UsrPurchase> {
    * @date 2019/1/24 14:30
    */
   public void list() throws Exception {
+    System.out.println("22225555");
     write(UsrPurchaseDAO.listpurselect(fldvalue, condition, getStart(), getLimit()));
   }
 }
