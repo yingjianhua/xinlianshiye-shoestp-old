@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.google.inject.Inject;
 import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
 import com.xinlianshiye.shoestp.shop.service.rfq.RFQPurchaseContactService;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultRelationView;
@@ -14,6 +15,7 @@ import com.xinlianshiye.shoestp.shop.view.rfq.RFQPurchaseContactView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQSupplierView;
 
+import irille.Dao.SVS.SVSInfoService;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Entity.RFQ.RFQPurchaseContact;
@@ -30,6 +32,8 @@ import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
 
 public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService {
+
+  @Inject private SVSInfoService svsInfoService;
 
   @Override
   public Page<RFQPurchaseContactView> page(
@@ -73,6 +77,7 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
                       GetValue.get(map, UsrSupplier.T.CONTACTS, String.class, null));
                   supplier.setName(GetValue.get(map, UsrSupplier.T.SHOW_NAME, String.class, ""));
                   supplier.setLogo(GetValue.get(map, UsrSupplier.T.LOGO, String.class, ""));
+                  supplier.setSvsInfo(svsInfoService.getSvsRatingAndRos(supplier.getPkey()));
                   contact.setSupplier(supplier);
                   contact.setRelation(
                       listConsultRelation(
@@ -274,7 +279,8 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
                   BeanQuery<RFQPurchaseContact> query = Query.SELECT(RFQPurchaseContact.class);
                   view.setCount(
                       map.getPkey() == null
-                          ? query.WHERE(RFQPurchaseContact.T.CONTACT_GROUP, "is null")
+                          ? query
+                              .WHERE(RFQPurchaseContact.T.CONTACT_GROUP, "is null")
                               .WHERE(RFQPurchaseContact.T.PURCHASE, "=?", purchase.getPkey())
                               .queryCount()
                           : query
