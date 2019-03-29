@@ -248,17 +248,26 @@
                         <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="item.svsInfo.researchBase">
                             <el-rate v-model="item.svsInfo.researchBaseStar" disabled></el-rate>
                         </a>
+                        <a v-else class="common-a" href="javascript:void(0);" title="0">
+                                <el-rate value="0" disabled></el-rate>
+                        </a>
                     </div>
                     <div>
                         <div class="ww42">Output：</div>
                         <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="item.svsInfo.factoryBase">
                             <el-rate v-model="item.svsInfo.factoryBaseStar" disabled></el-rate>
                         </a>
+                        <a v-else class="common-a" href="javascript:void(0);" title="0">
+                            <el-rate value="0" disabled></el-rate>
+                        </a>
                     </div>
                     <div>
                         <div class="ww42">Scale：</div>
                         <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="item.svsInfo.capacityBase">
                             <el-rate v-model="item.svsInfo.capacityBaseStar" disabled></el-rate>
+                        </a>
+                        <a v-else class="common-a" href="javascript:void(0);" title="0">
+                            <el-rate value="0" disabled></el-rate>
                         </a>
                     </div>
                     <div>

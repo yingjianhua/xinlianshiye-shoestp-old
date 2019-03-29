@@ -112,7 +112,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
       sql3.FROM(sql2, RFQConsultRelation.class);
       sql3.WHERE(RFQConsultRelation.T.PKEY, "=?", lastRelation);
       Integer index = Query.sql(sql3).queryObject(Integer.class);
-      if (index != null) limit = index;
+      if (index != null) limit = (index > limit ? index : limit);
     }
     BeanQuery<?> query = Query.SELECT(RFQConsult.T.PKEY);
     query.SELECT(RFQConsult.T.VERIFY_STATUS);
@@ -189,7 +189,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
     query.SELECT(RFQConsultRelation.T.IS_NEW);
     query.SELECT(RFQConsultRelation.T.READ_STATUS);
     query.SELECT(UsrSupplier.T.PKEY, "supplierPkey");
-    query.SELECT(UsrSupplier.T.NAME, "supplierName");
+    query.SELECT(UsrSupplier.T.SHOW_NAME, "supplierName");
     query.SELECT(UsrSupplier.T.COUNTRY, "supplierCountry");
     query.SELECT(UsrSupplier.T.LOGO, "supplierLogo");
     query.SELECT(PltCountry.T.SHORT_NAME, "countryShortName");
@@ -202,6 +202,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
     query.LEFT_JOIN(PltErate.class, RFQConsultRelation.T.CURRENCY, PltErate.T.PKEY);
     query.WHERE(RFQConsultRelation.T.CONSULT, "=?", consultPkey);
     query.WHERE(RFQConsultRelation.T.IS_DELETED_PURCHASE, "=?", false);
+    query.ORDER_BY(RFQConsultRelation.T.LAST_MESSAGE_SEND_TIME, "desc");
 
     List<RFQConsultRelationView> result =
         query.queryMaps().stream()

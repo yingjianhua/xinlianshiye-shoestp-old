@@ -524,6 +524,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
     sql.WHERE(keyword != null, RFQConsult.T.TITLE, "like ?", "%" + keyword + "%");
     sql.WHERE(flag != null, T.FAVORITE, "=?", flag);
     sql.WHERE(usrCountry != null, UsrPurchase.T.COUNTRY, "=?", usrCountry);
+    sql.ORDER_BY(RFQConsultRelation.T.LAST_MESSAGE_SEND_TIME, "desc");
     return sql;
   }
 
