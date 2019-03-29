@@ -201,7 +201,7 @@
             <div class="contacts-main-right fr" v-else>
                 <div class="contacts-info">
                     <div class="flexSb fl">
-                        <img :src="image(supplierInfo.logo)" alt="">
+                        <img :src="supplierInfo.logo?image(supplierInfo.logo):'/home/v3/static/images/supplier_no_img.png'" alt="">
                         <span>{{supplierInfo.name}}</span>
                     </div>
 

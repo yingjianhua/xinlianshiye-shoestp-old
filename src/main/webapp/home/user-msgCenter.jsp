@@ -229,19 +229,19 @@
 										v-if="!relation.isDeleteInLocal"
 										:key="relation.supplier.pkey">
 										<el-badge is-dot :hidden="!(relation.unread || relation.quotation.isNew)" class="short-name">
-											<img class="short-name" v-if="relation.supplier && relation.supplier.logo"
-												 :src="util_function_obj.image(relation.supplier.logo, 50, 50)"
+											<img class="short-name"
+												 :src="(relation.supplier && relation.supplier.logo)?util_function_obj.image(relation.supplier.logo, 50, 50):'/home/v3/static/images/supplier_no_img.png'"
 												 :data-inquiry-id="inquiry.pkey"
 												 :data-supplier-index="relationsIndex"
 												 :data-inquiry-index="inquiryIndex"
 												 @click="isScale?contactSupplier($event):''">
-											<div class="short-name" v-else
-												 :data-inquiry-id="inquiry.pkey"
-												 :data-supplier-index="relationsIndex"
-												 :data-inquiry-index="inquiryIndex"
-												 @click="isScale?contactSupplier($event):''">
-												{{relation.supplier && relation.supplier.name && relation.supplier.name[0]}}
-											</div>
+											<%--<div class="short-name" v-else--%>
+												 <%--:data-inquiry-id="inquiry.pkey"--%>
+												 <%--:data-supplier-index="relationsIndex"--%>
+												 <%--:data-inquiry-index="inquiryIndex"--%>
+												 <%--@click="isScale?contactSupplier($event):''">--%>
+												<%--{{relation.supplier && relation.supplier.name && relation.supplier.name[0]}}--%>
+											<%--</div>--%>
 										</el-badge>
 
 										<div class="contacter-info" :class="{'show-long-name': inquiry.type!=1 && !isScale}"
@@ -335,25 +335,24 @@
 			<transition name="slide-right">
 				<div class="chat-wrap" v-show="isScale && showChatBox && inquiryList.length">
 					<div class="chat-header">
-						<div class="name">
-                            <%--<template  v-if="supplierDetail.company"></template>--%>
+						<a class="name" target="_blank"
+						   :href="'/home/usr_UsrSupplier_gtSupInfo?pkey=' + supplierDetail.pkey">
                             <!-- 有头像显示头像，没有头像显示首字母 -->
-                            <img :src="util_function_obj.image(supplierDetail.logo, 50, 50)" alt="" class="short-name"
-                                 :class="{isShowMore: isShowMore}"
-                                 v-if="supplierDetail.logo">
-                            <div class="short-name" v-else-if="supplierDetail.name"
+                            <img :src="supplierDetail.logo?util_function_obj.image(supplierDetail.logo, 50, 50):'/home/v3/static/images/supplier_no_img.png'" alt="" class="short-name"
                                  :class="{isShowMore: isShowMore}">
-                                {{supplierDetail.name && supplierDetail.name[0]}}
-                            </div>
-                            <div class="short-name" v-else
-                                 :class="{isShowMore: isShowMore}">
-                                H
-                            </div>
+                            <%--<div class="short-name" v-else-if="supplierDetail.name"--%>
+                                 <%--:class="{isShowMore: isShowMore}">--%>
+                                <%--{{supplierDetail.name && supplierDetail.name[0]}}--%>
+                            <%--</div>--%>
+                            <%--<div class="short-name" v-else--%>
+                                 <%--:class="{isShowMore: isShowMore}">--%>
+                                <%--H--%>
+                            <%--</div>--%>
 
 							<div class="full-name" :class="{isShowMore: isShowMore, ellipsis_5: isShowMore, ellipsis_1: !isShowMore}">
 								{{supplierDetail.name}}
 							</div>
-						</div>
+						</a>
 						<div class="grow"></div>
 
 						<div class="more" @click="chatShowMore">

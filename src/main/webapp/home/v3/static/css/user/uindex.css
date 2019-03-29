@@ -456,6 +456,7 @@
          }
          #personalCenter .contacts-main .contacts-main-left .cml-list .cml-content{
            overflow: hidden;
+           margin-bottom: 10px;
          }
          #personalCenter .contacts-main .contacts-main-left .cml-list .contact-list-no-data img{
            margin-bottom: 5px;
@@ -640,21 +641,21 @@
           	margin-left:10px;
             padding-right: 10px;
         }
-        
+
         #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2 li .wrap .text {
             float: right;
             margin-left: -5px;
             width: 100%;
             word-break: break-all;
         }
-        
+
         #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2 li .wrap::before {
             float: left;
             width: 5px;
             content: '';
             height: 40px;
         }
-        
+
         #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2 li:hover .wrap::after {
           background-color:#e2e7f3;
         }
@@ -946,21 +947,21 @@
         line-height: 20px;
         overflow: hidden;
     }
-    
+
     #personalCenter .favorite-main .favorite-list .favorite-item .porduct-name .text {
         float: right;
         margin-left: -5px;
         width: 100%;
         word-break: break-all;
     }
-    
+
     #personalCenter .favorite-main .favorite-list .favorite-item .porduct-name::before {
         float: left;
         width: 5px;
         content: '';
         height: 40px;
     }
-    
+
     #personalCenter .favorite-main .favorite-list .favorite-item .porduct-name::after {
         float: right;
         content: "...";

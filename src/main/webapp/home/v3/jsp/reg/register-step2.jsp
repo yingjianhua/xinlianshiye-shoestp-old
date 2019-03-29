@@ -165,14 +165,14 @@
                     <!-- 供应商联系人姓名 -->
                     <el-form-item label="联系人姓名">
                         <div class="two-division">
-                            <el-form-item id="supLastName" key="supLastName" prop="supLastName" class="half">
-                                <el-input placeholder="名"
-                                          v-model.trim="registerForm.supLastName">
-                                </el-input>
-                            </el-form-item>
                             <el-form-item id="supFirstName" key="supFirstName" prop="supFirstName" class="half">
                                 <el-input placeholder="姓"
                                           v-model.trim="registerForm.supFirstName">
+                                </el-input>
+                            </el-form-item>
+                            <el-form-item id="supLastName" key="supLastName" prop="supLastName" class="half">
+                                <el-input placeholder="名"
+                                          v-model.trim="registerForm.supLastName">
                                 </el-input>
                             </el-form-item>
                         </div>
@@ -447,6 +447,27 @@
             callback();
         }
     };
+    // 姓名 - 名字验证
+    const validateSupFirstName = (rule, value, callback) => {
+        if (value === '') {
+            callback(new Error('联系人姓氏不可为空'));
+        }else if(app.registerForm.supLastName != ""){
+            app.$refs.registerForm.validateField('supLastName');
+            callback();
+        }else{
+            callback();
+        }
+    };
+    // 姓名 - 名字验证
+    const validateSupLastName = (rule, value, callback) => {
+        if (value === '') {
+            callback(new Error('联系人名字不可为空'));
+        } else if ( !util_regular_obj.register.nameGlobal.test( app.registerForm.supFirstName + app.registerForm.supLastName ) ) {
+            callback(new Error('请填写真实姓名'));
+        } else {
+            callback();
+        }
+    };
 
     // 电话号码验 - buyer - 电话 + 2个前缀
     const validateTelPrefix1 = (rule, value, callback) => {
@@ -459,12 +480,10 @@
         }
     };
     const validateTelPrefix2 = (rule, value, callback) => {
-        // 正式的密码验证
         app.$refs.registerForm.validateField('tel');
         callback();
     };
     const validateTel = (rule, value, callback) => {
-        // 正式的密码验证
         if (value === '') {
             // callback(new Error(app.registerForm.user == 'buyer' ? 'Telephone number can\'t be empty!' : '电话号码不能为空'));
             callback();
@@ -565,21 +584,23 @@
                     }
                 ],
                 supFirstName: [
-                    {required: true, message: '联系人姓名不可为空', trigger: 'blur'},
-                    {
-                        pattern: util_regular_obj.register.nameGlobal,
-                        message: '请填写真实姓名',
-                        trigger: 'blur'
-                    }
+                    // {required: true, message: '联系人姓名不可为空', trigger: 'blur'},
+                    // {
+                    //     pattern: util_regular_obj.register.nameGlobal,
+                    //     message: '请填写真实姓名',
+                    //     trigger: 'blur'
+                    // }
+                    {validator: validateSupFirstName, trigger: 'blur'}
                 ],
                 supLastName: [
-                    {required: true, message: '联系人姓名不可为空', trigger: 'blur'},
-                    {
-                        // pattern: /^[\u4E00-\u9FA5]{1,6}$/,
-                        pattern: util_regular_obj.register.nameGlobal,
-                        message: '请填写真实姓名',
-                        trigger: 'blur'
-                    }
+                    // {required: true, message: '联系人姓名不可为空', trigger: 'blur'},
+                    // {
+                    //     // pattern: /^[\u4E00-\u9FA5]{1,6}$/,
+                    //     pattern: util_regular_obj.register.nameGlobal,
+                    //     message: '请填写真实姓名',
+                    //     trigger: 'blur'
+                    // }
+                    {validator: validateSupLastName, trigger: 'blur'}
                 ],
                 supTel: [
                     {required: true, message: '电话号码不可为空!', trigger: 'blur'}, {
@@ -644,7 +665,7 @@
                 }
             },
 
-            // 节流节流
+            // 节流节流 - 连续点击时，不生效 - 过了ms时间后点击才生效
             throttle(cb, ms) {
                 var self = this;
                 let startTime = Date.now()

@@ -546,7 +546,8 @@
     -webkit-transition: all 0.6s;
     transition: all 0.6s;
     font-size: 12px;
-    text-align: center; }
+    text-align: center;
+    color: #232323; }
 .page-personal-center .chat-wrap .chat-header .full-name.isShowMore {
     left: 14px;
     top: 125px;
