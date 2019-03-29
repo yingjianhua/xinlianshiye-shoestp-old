@@ -579,7 +579,7 @@
                     {required: true, message: '公司名称不可为空', trigger: 'blur'},
                     {
                         pattern: util_regular_obj.register.companyName,
-                        message: '公司名称不可包含特殊字符',
+                        message: '请输入正确的公司名称',
                         trigger: 'blur'
                     }
                 ],

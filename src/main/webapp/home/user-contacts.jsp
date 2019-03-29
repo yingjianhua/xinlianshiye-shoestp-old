@@ -517,10 +517,9 @@
 
                 deleteContact(supplierPkey) { // 删除联系人
                     var self = this;
-                    self.$confirm('Whether to delete the contact?', 'Prompt', {
+                    self.$confirm('Whether to delete the contact?', {
                         confirmButtonText: 'Determine',
                         cancelButtonText: 'Cancel',
-                        type: 'warning',
                         customClass: "my-custom-element-alert-class fs-content-18",
                     }).then(() => {
                         axios.post('/home/rfq_RFQContact_delete', Qs.stringify({
@@ -637,10 +636,9 @@
                 },
                 deleteGroup(groupPkey) { // 删除分组
                     var self = this;
-                    self.$confirm('Whether to delete the group?', 'Prompt', {
+                    self.$confirm('Whether to delete the group?', {
                         confirmButtonText: 'Determine',
                         cancelButtonText: 'Cancel',
-                        type: 'warning',
                         customClass: "my-custom-element-alert-class fs-content-18",
                     }).then(() => {
                         axios.post('/home/rfq_RFQContact_deleteGroup', Qs.stringify({
