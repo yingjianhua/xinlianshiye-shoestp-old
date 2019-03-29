@@ -121,7 +121,15 @@
                             <div class="h2 fl">
                                 <div class="supplier-name">{{item.supplier.name}}</div>
                                 <div class="fc999 supplier-svs">
-                                    <img src="/home/v3/static/images/user/icon-svs.png" alt="">SVS
+                                    <template v-if="item.supplier.svsInfo">
+                                        <img v-if="item.supplier.svsInfo.grade == 1" src="/home/v3/static/images/ico/icon_svs_3.png" alt="">
+                                        <img v-if="item.supplier.svsInfo.grade == 2" src="/home/v3/static/images/ico/icon_svs.png" alt="">
+                                        <img v-if="item.supplier.svsInfo.grade == 3" src="/home/v3/static/images/ico/icon_yx.png" alt="">
+                                        SVS
+                                    </template>
+                                    <!-- <template v-else>
+                                        No rating
+                                    </template> -->
                                     <span style="margin-left:5px;">{{item.supplier.contacts}}</span>
                                 </div>
                             </div>
