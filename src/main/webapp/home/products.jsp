@@ -115,7 +115,7 @@
             <div class="top-box">
                 <p>Supplier Level<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
                 <div class="i1"></div>
-                <ul>
+                <ul style="height:auto;">
                     <el-checkbox-group v-model="grade">
                         <el-checkbox label="3" name="3"> <img src="/home/v3/static/images/supplier-level3.png" alt="" style="margin-right:8px;">Diamond</el-checkbox>
                         <el-checkbox label="2" name="2"><img src="/home/v3/static/images/supplier-level2.png" alt="" style="margin-right:8px;">Gold</el-checkbox>
@@ -127,11 +127,7 @@
                     <p style="padding: 0 43px;padding-top:10px;">Price<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
                     <div class="i1"></div>
                     <ul style="padding:10px 0;width:auto;height:auto;">
-                        <!-- :class="priceSortIndex == item.rule?price-sort-active:''" -->
-                        <div class="price-sort"  v-for="(item, index) in priceSortList" :key="index" @click="priceBtn(item.rule)">{{item.name}}</div>
-                        <!-- <div class="price-sort" @click="priceBtn(1)">From hige to low</div> -->
-                       <!-- <li @click="priceBtn(0)">From low to high</li>
-                       <li @click="priceBtn(1)">From hige to low</li> -->
+                        <div class="price-sort" :class="sort == item.rule?'price-sort-active' :''" v-for="(item, index) in priceSortList" :key="index" @click="priceBtn(item.rule)">{{item.name}}</div>
                     </ul>
                 </div>
             <%-- <div class="top-box">
@@ -243,7 +239,9 @@
                         <img class="mr6 icon01" src="/home/v3/static/images/ico/icon_cert.png" alt="Certificate"/>
                         Certificate
                         <div class="i"></div>
-                        <img class="mr6" src="/home/v3/static/images/ico/icon_svs.png" alt="SVS"/>
+                        <img class="mr6" v-if="item.svsInfo && item.svsInfo.grade == 1" src="/home/v3/static/images/supplier-level1.png" alt="SVS"/>
+                        <img class="mr6" v-if="item.svsInfo && item.svsInfo.grade == 2" src="/home/v3/static/images/supplier-level2.png" alt="SVS"/>
+                        <img class="mr6" v-if="item.svsInfo && item.svsInfo.grade == 3" src="/home/v3/static/images/supplier-level3.png" alt="SVS"/>
                         <!--<img class="mr6" src="./images/icon_svs_2.png" alt="SVS" />-->
                         <!--<img class="mr6" src="./images/icon_svs_3.png" alt="SVS" />-->
                         SVS
@@ -253,20 +251,19 @@
 
                     <div>
                         <div class="ww42">R&D：</div>
-                        <el-rate v-model="5.0" disabled></el-rate>
+                        <el-rate v-model="3.2" disabled></el-rate>
                     </div>
                     <div>
                         <div class="ww42">Output：</div>
-                        <el-rate v-model="5.0" disabled></el-rate>
+                        <el-rate v-model="3.8" disabled></el-rate>
                     </div>
                     <div>
                         <div class="ww42">Scale：</div>
-                        <el-rate v-model="5.0" disabled></el-rate>
+                        <el-rate v-model="3.5" disabled></el-rate>
                     </div>
                     <div>
                         {{item.originCountry}} ( {{item.originProvince}} )
                     </div>
-                    <a @click="productList">test</a>
                     <!-- <a class="btn" href="javascript:;" @click="addRFQ" :data-id = "item.pdtId">Contact Supplier</a> -->
                     <a class="btn" @click="ToContactSupplier(item.supId)">
                         Contact Supplier
@@ -333,18 +330,16 @@
             bigPicBox: false,
             bigPicBoxpic: '',
             countryList:[], // 国家列表
-            export:[], // 国家主键
             pName:'', // 搜索值
             lessthan:'', // 最小起订量
-            sort:[], // 参数格式为 : [{name:"curPrice",sort:1,rule:1}] name为排序的字段  rule 1 为倒序,0为正序
+            sort:null, // 参数格式为 : [{name:"curPrice",sort:1,rule:1}] name为排序的字段  rule 1 为倒序,0为正序
             grade:[], // SVS等级 0-无等级商家 1-银 2 -金 3-钻石
             min:'', // 最小价格
             max:'', //最大价格
             filterAreaKeyword:'', // 过滤 搜索国家
             selectedMarketCountryList:[], // 国家主键
-            priceSortIndex:"",
             priceSortList:[
-                {name:"From low to high",rule:0},
+                {name:"From low to high",rule:0,},
                 {name:"From high to low",rule:1},
             ]
         },
@@ -352,11 +347,11 @@
             grade(){
                 console.log(this.grade)
             },
-            priceBtn(rule){  // 价格排序
-                console.log(rule)
-                this.priceSortIndex = rule;
+            priceBtn(rule){  // 价格排序 选择按钮
                 this.sort =  rule
-                console.log(this.sort)
+                this.limit = 8
+                this.page = 0
+                this.curr = 1
                 this.productList();
             },
             getCountry(){  // 获取 国家列表
@@ -365,11 +360,12 @@
                     self.countryList = res.data.result
                 })
             },
+             // 获取产品列表
             productList(){
                 var params = {
                         start:this.page,
                         limit:this.limit,
-                        "search.supplier":8,
+                        // "search.supplier":8,
                         "search.export": this.selectedMarketCountryList.toString(),
                         "search.minOq": this.lessthan,
                         "search.minCurPrice": this.min,
@@ -391,29 +387,9 @@
                         if(params[i] != null){
                             url += i+"="+params[i]
                         }
-                        
                         numbers++
-                        console.log(numbers)
                     }
-                console.log(url)
-
-                axios.get(encodeURI(url)
-                // , {
-                //     params: {
-                //         start:this.page,
-                //         limit:this.limit,
-                //         "search.export": this.selectedMarketCountryList.toString(),
-                //         "search.minOq": this.lessthan,
-                //         "search.minCurPrice": this.min,
-                //         "search.maxCurPrice": this.max,
-                //         "search.keywords": this.pName,
-                //         "search.category": this.cated,
-                //         "newSort[0].name":"curPrice",
-                //         "newSort[0].rule":1,
-                //         "search.grade": this.grade.toString(),
-                //     }
-                // }
-                )
+                axios.get(encodeURI(url))
                     .then((res) => {
                         console.log("res")
                         console.log(res)
@@ -711,6 +687,7 @@
             this.classList();
             this.productList();
             this.getCountry();
+            console.log("this.sort = = = = = " + this.sort)
         },
         watch: {
             // 输入监听
