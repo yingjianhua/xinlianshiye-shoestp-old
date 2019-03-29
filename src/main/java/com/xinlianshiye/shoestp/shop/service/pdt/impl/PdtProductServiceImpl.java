@@ -1,6 +1,7 @@
 /** */
 package com.xinlianshiye.shoestp.shop.service.pdt.impl;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -8,6 +9,7 @@ import javax.inject.Inject;
 import com.xinlianshiye.shoestp.shop.dao.PdtProductDao;
 import com.xinlianshiye.shoestp.shop.service.pdt.PdtProductService;
 import com.xinlianshiye.shoestp.shop.view.pdt.ProdSearchView;
+import com.xinlianshiye.shoestp.shop.view.pdt.SortView;
 
 import irille.Dao.SVS.SVSInfoService;
 import irille.pub.tb.FldLanguage.Language;
@@ -26,11 +28,12 @@ public class PdtProductServiceImpl implements PdtProductService {
   public Page list(
       UsrPurchase purchase,
       ProdSearchView search,
+      List<SortView> sort,
       Integer start,
       Integer limit,
       Language language) {
 
-    Page data = productDao.list(purchase, search, start, limit, language);
+    Page data = productDao.list(purchase, search, sort, start, limit, language);
     data.getItems().stream()
         .map(
             bean -> {
