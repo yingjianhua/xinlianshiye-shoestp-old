@@ -1613,29 +1613,36 @@ public class UsrSupplierDAO {
           view.setContacts(supplier.getContacts()); // 联系人名称
           view.setDepartment(supplier.getDepartment()); // 联系人部门
           view.setJobTitle(supplier.getJobTitle()); // 联系人职位
-          view.setTargetedMarkets(supplier.getTargetedMarket());// 目标市场
-          view.setAnnualOutput(supplier.getAnnualProduction());// 年产量
-          SVSInfoDao sd=new SVSInfoDaoImpl();
-          if(sd.findSVSInfoBySupplier(supplier.getPkey())!=null){
-            SVSInfo si=sd.findSVSInfoBySupplier(supplier.getPkey());
-            try {
-              JSONObject getResearch = new JSONObject(si.getResearch());
-              view.setRDdepartment(getResearch.getString("isTeam"));
-              view.setAnnualNumberOfNewShoes(getResearch.getString("numOfShoes"));
-              JSONObject productionCapacity = new JSONObject(si.getProductionCapacity());
-              view.setNumberOfProductionLines(productionCapacity.getString("productionLineQuantity"));
-              view.setNumberOfSewingMachines(productionCapacity.getString("needleCartNum"));
-              view.setAnnualExportValue(productionCapacity.getString("exportVolume"));
-              JSONObject realFactory = new JSONObject(si.getRealFactory());
-              view.setNumberOfEmployees(realFactory.getString("employeesNum"));
-              view.setExportLicense(realFactory.getString("licence"));
-              JSONObject productQuality = new JSONObject(si.getProductQuality());
-              view.setTestEquipmentAndFacilities(productQuality.getString("testEquipment"));
-              JSONObject tradeTeam = new JSONObject(si.getForeignTradeTeam());
-              view.setNumberOfForeignTradeTeams(tradeTeam.getString("teamSize"));
-              view.setYearsOfForeignTradeExperience(tradeTeam.getString("experience"));
-            }catch (Exception e){
-              e.getStackTrace();
+          view.setTargetedMarkets(supplier.getTargetedMarket()); // 目标市场
+          view.setAnnualOutput(supplier.getAnnualProduction()); // 年产量
+          SVSInfoDao sd = new SVSInfoDaoImpl();
+          if (sd.findSVSInfoBySupplier(supplier.getPkey()) != null) {
+            SVSInfo si = sd.findSVSInfoBySupplier(supplier.getPkey());
+            view.setStatusAuth(1);
+            if (si.getStatus() == SVSAuthenticationStatus.NoApplication.getLine().getKey()) {
+              view.setStatusAuth(0);
+            }
+            if (si.getStatus() != SVSAuthenticationStatus.SUCCESS.getLine().getKey()) {
+              try {
+                JSONObject getResearch = new JSONObject(si.getResearch());
+                view.setRDdepartment(getResearch.getString("isTeam"));
+                view.setAnnualNumberOfNewShoes(getResearch.getString("numOfShoes"));
+                JSONObject productionCapacity = new JSONObject(si.getProductionCapacity());
+                view.setNumberOfProductionLines(
+                    productionCapacity.getString("productionLineQuantity"));
+                view.setNumberOfSewingMachines(productionCapacity.getString("needleCartNum"));
+                view.setAnnualExportValue(productionCapacity.getString("exportVolume"));
+                JSONObject realFactory = new JSONObject(si.getRealFactory());
+                view.setNumberOfEmployees(realFactory.getString("employeesNum"));
+                view.setExportLicense(realFactory.getString("licence"));
+                JSONObject productQuality = new JSONObject(si.getProductQuality());
+                view.setTestEquipmentAndFacilities(productQuality.getString("testEquipment"));
+                JSONObject tradeTeam = new JSONObject(si.getForeignTradeTeam());
+                view.setNumberOfForeignTradeTeams(tradeTeam.getString("teamSize"));
+                view.setYearsOfForeignTradeExperience(tradeTeam.getString("experience"));
+              } catch (Exception e) {
+                e.getStackTrace();
+              }
             }
           }
           // 页面设置
@@ -2482,7 +2489,8 @@ public class UsrSupplierDAO {
                     T.NAME,
                     UsrMain.T.EMAIL,
                     T.TARGETED_MARKET,
-                    SVSInfo.T.AUTHENTICATION_TIME)
+                    SVSInfo.T.AUTHENTICATION_TIME,
+                    UsrMain.T.LAST_LOGIN)
                 .FROM(UsrSupplier.class)
                 .LEFT_JOIN(SVSInfo.class, SVSInfo.T.SUPPLIER, T.PKEY)
                 .LEFT_JOIN(UsrMain.class, UsrMain.T.PKEY, T.UserId)
@@ -2498,6 +2506,7 @@ public class UsrSupplierDAO {
     view.setAuthentication_time(
         (Date) map.get(SVSInfo.T.AUTHENTICATION_TIME.getFld().getCodeSqlField()));
     view.setSvsRatingAndRosDTO(svsInfoService.getSvsRatingAndRos(supplierId));
+    view.setLastLogin((Date) map.get(UsrMain.T.LAST_LOGIN.getFld().getCodeSqlField()));
     return view;
   }
   /** ———————————————————分割线(3.1.1END)————————————————————————— */
