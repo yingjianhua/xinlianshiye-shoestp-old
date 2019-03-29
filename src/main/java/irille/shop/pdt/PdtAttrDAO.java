@@ -103,6 +103,29 @@ public class PdtAttrDAO {
   public static class InsAttr extends IduIns<PdtAttrDAO.Ins, PdtAttr> {
     @Override
     public void before() {
+      try {
+        JSONObject json = new JSONObject(getB().getName());
+        for (Language l : FldLanguage.Language.values()) {
+          if (null != json.getString(l.name()) && !"".equals(json.getString(l.name()).trim())) {
+            SQL sql = new SQL();
+            sql.SELECT(PdtAttr.T.PKEY);
+            sql.FROM(PdtAttr.class);
+            sql.WHERE(
+                PdtAttr.class.getSimpleName() + "." + PdtAttr.T.NAME + "->'$." + l.name() + "' = ?",
+                json.getString(l.name()));
+            sql.WHERE(PdtAttr.T.CATEGORY, " =? ", getB().getCategory());
+            sql.WHERE(PdtAttr.T.DELETED, "=?", OYn.NO.getLine().getKey());
+            Integer attrs = Query.sql(sql).queryCount();
+            if (null != attrs && attrs > 0) {
+              throw LOG.err(
+                  "nameCopy", l.displayName() + "名称【" + json.getString(l.name()) + "】已存在");
+            }
+          }
+        }
+      } catch (JSONException e) {
+        throw LOG.err("noaccess", "非法参数");
+      }
+
       getB().setDeleted(OYn.NO.getLine().getKey());
       getB().setCreateTime(Env.getTranBeginTime());
       setB(
@@ -121,6 +144,28 @@ public class PdtAttrDAO {
   public static class UpdAttr extends IduUpd<PdtAttrDAO.Upd, PdtAttr> {
     @Override
     public void before() {
+      try {
+        JSONObject json = new JSONObject(getB().getName());
+        for (Language l : FldLanguage.Language.values()) {
+          if (null != json.getString(l.name()) && !"".equals(json.getString(l.name()).trim())) {
+            SQL sql = new SQL();
+            sql.SELECT(PdtAttr.T.PKEY);
+            sql.FROM(PdtAttr.class);
+            sql.WHERE(
+                PdtAttr.class.getSimpleName() + "." + PdtAttr.T.NAME + "->'$." + l.name() + "' = ?",
+                json.getString(l.name()));
+            sql.WHERE(PdtAttr.T.CATEGORY, " =? ", getB().getCategory());
+            sql.WHERE(PdtAttr.T.DELETED, "=?", OYn.NO.getLine().getKey());
+            Integer attrs = Query.sql(sql).queryCount();
+            if (null != attrs && attrs > 1) {
+              throw LOG.err(
+                  "nameCopy", l.displayName() + "名称【" + json.getString(l.name()) + "】已存在");
+            }
+          }
+        }
+      } catch (JSONException e) {
+        throw LOG.err("noaccess", "非法参数");
+      }
       PdtAttr dbBean = loadThisBeanAndLock();
       // getB().setCreateTime(Env.getSystemTime());//自动生成修改时间
       PropertyUtils.copyPropertiesWithout(
