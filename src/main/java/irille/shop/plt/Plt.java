@@ -32,6 +32,7 @@ import irille.pub.tb.EnumLine;
 import irille.pub.tb.IEnumOpt;
 import irille.pub.tb.Tb;
 import irille.pub.tb.TbBase;
+import irille.shop.pdt.PdtAttrCat;
 import irille.shop.pdt.PdtAttrPro;
 import irille.shop.pdt.PdtTieredPricing;
 import irille.shop.usr.UsrAnnex;
@@ -92,6 +93,7 @@ public class Plt extends PackageBase {
     addTb(73, UsrAnnex.class);
     addTb(76, PdtTieredPricing.class);
     addTb(77, PdtAttrPro.class);
+    addTb(78, PdtAttrCat.class);
   }
 
   @Override
