@@ -459,6 +459,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
       if (annex != null) {
         annex.setIdCardFrontPhotoName(idCardFrontPhotoName);
         annex.setContactsIdCardFrontPhotoName(contactsIdCardFrontPhotoName);
+        annex.upd();
       } else {
         UsrAnnex annex1 = new UsrAnnex();
         annex1.setSupplier(getBean().getPkey());
@@ -474,7 +475,6 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
       }
       UsrSupplier newSupplier = UsrSupplierDAO.updInfo(getBean());
       newSupplier.upd();
-      annex.upd();
       write();
     } catch (Exp e) {
       writeErr(e.getLastMessage());
