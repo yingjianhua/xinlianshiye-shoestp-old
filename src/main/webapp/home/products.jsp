@@ -91,33 +91,75 @@
     <div class="rightList fr">
         <div class="top">
             <div class="top-box">
+                <p>Export Market<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
+                <div class="i1"></div>
+                <ul>
+                    <!-- <el-checkbox-group v-model="export">
+                        <el-checkbox :label="item.id" v-for="(item, index) in countryList" :key="index">{{item.name}}</el-checkbox>
+                    </el-checkbox-group> -->
+                    <!-- <el-checkbox-group v-model="form.extra_request">
+                            <el-checkbox label="price" name="price">Price</el-checkbox>
+                            <el-checkbox label="inspection certificate" name="inspection certificate">Inspection Certificate</el-checkbox>
+                            <el-checkbox label="product specifications" name="product specifications">Product Specifications</el-checkbox>
+                            <el-checkbox label="company profile" name="company profile">Company Profile</el-checkbox>
+                        </el-checkbox-group> -->
+                        <el-input class="region-area-input" size="small"
+                                  placeholder="Type to find a country or region"
+                                  prefix-icon="el-icon-search"
+                                  v-model.lazy.trim="filterAreaKeyword">
+                        </el-input>
+
+                        <el-checkbox-group class="my-ele-checkbox-group"
+                                           style="padding-bottom: 0;max-height: 400px;"
+                                           v-model="selectedMarketCountryList">
+                                <el-checkbox :class="{'double-length': util_function_obj.getByteLen(item.name)>=12}"
+                                        v-for="item,index in countryList"
+                                        v-show="(!filterAreaKeyword) || (filterAreaKeyword && item.name.toLowerCase().indexOf(filterAreaKeyword.toLowerCase())!=-1 )"
+                                        :key="item.id"
+                                        :label="item.id">
+                                    {{item.name}}
+                                </el-checkbox>
+                        </el-checkbox-group>
+                </ul>
+            </div>
+            <div class="top-box">
                 <p>Supplier Level<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
                 <div class="i1"></div>
                 <ul>
-                    <li data-selelv="3" @click="seleLevel">
+                    <el-checkbox-group v-model="grade">
+                        <el-checkbox label="3" name="3">Diamond</el-checkbox>
+                        <el-checkbox label="2" name="2">Gold</el-checkbox>
+                        <el-checkbox label="1" name="1">Silver</el-checkbox>
+                    </el-checkbox-group>
+                    <!-- <li data-selelv="3" @click="seleLevel">
                         <div class="s" :class="[selelv==3?'sele':'']"></div>
-                        <!-- <img src="/home/v3/static/images/icion_svs_1d.png" alt=""> -->
                         <img src="/home/v3/static/images/supplier-level3.png" alt="" style="margin-right:8px;">
-                        <!-- Level 3 -->
+    
                         Diamond
                     </li>
                     <li data-selelv="2" @click="seleLevel">
                         <div class="s" :class="[selelv==2?'sele':'']"></div>
-                        <!-- <img src="/home/v3/static/images/icion_svs_2d.png" alt=""> -->
                         <img src="/home/v3/static/images/supplier-level2.png" alt="" style="margin-right:8px;">
-                        <!-- Level 2 -->
+                      
                         Gold
                     </li>
                     <li data-selelv="1" @click="seleLevel">
                         <div class="s" :class="[selelv==1?'sele':'']"></div>
-                        <!-- <img src="/home/v3/static/images/icion_svs_3d.png" alt=""> -->
+                       
                         <img src="/home/v3/static/images/supplier-level1.png" alt="" style="margin-right:8px;">
-                        <!-- Level 1 -->
+                     
                         Silver
-                    </li>
+                    </li> -->
                 </ul>
             </div>
-
+            <div class="top-box">
+                    <p>Price<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
+                    <div class="i1"></div>
+                    <ul>
+                       <li @click="priceBtn(0)">From low to high</li>
+                       <li @click="priceBtn(1)">From hige to low</li>
+                    </ul>
+                </div>
             <%-- <div class="top-box">
                 <p>Export Countries<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt="" /></p><div class="i1"></div>
                 <ul>
@@ -250,7 +292,7 @@
                     <div>
                         {{item.originCountry}} ( {{item.originProvince}} )
                     </div>
-
+                    <a @click="test">test</a>
                     <!-- <a class="btn" href="javascript:;" @click="addRFQ" :data-id = "item.pdtId">Contact Supplier</a> -->
                     <a class="btn" @click="ToContactSupplier(item.supId)">
                         Contact Supplier
@@ -303,10 +345,6 @@
             selelv: "",
             selecount: "",
             selestore: "",
-            pName: '',
-            lessthan: '',
-            min: '',
-            max: '',
             cated: -1,
             lose: '',
             currentPage: 1,
@@ -314,14 +352,70 @@
             noData: false,
             productLists: [],
             breadcrumbnav: [],
-            page: 0,
-            limit: 8,
-            curr: 1,
+            page: 0,   // 第几个商品开始
+            limit: 8,   // 每页请求数量
+            curr: 1,    // 当前页数
             classLists: [],
             bigPicBox: false,
             bigPicBoxpic: '',
+            countryList:[], // 国家列表
+            export:[], // 国家主键
+            pName:'', // 搜索值
+            lessthan:'', // 最小起订量
+            sort:[], // 参数格式为 : [{name:"curPrice",sort:1,rule:1}] name为排序的字段  rule 1 为倒序,0为正序
+            grade:[], // SVS等级 0-无等级商家 1-银 2 -金 3-钻石
+            min:'', // 最小价格
+            max:'', //最大价格
+            selectedMarketCountryList:[],
+            filterAreaKeyword:'',
         },
         methods: {
+            grade(){
+                console.log(this.grade)
+            },
+            priceBtn(rule){  // 价格排序
+                console.log(rule)
+                this.sort =  JSON.stringify([{name:"curPrice",sort:1,rule:rule}])
+                console.log(this.sort)
+                this.test();
+            },
+            getCountry(){  // 获取 国家列表
+                let self = this;
+                axios.get('/home/plt_PltCountry_list').then(function (res) {
+                    self.countryList = res.data.result
+                })
+            },
+            test(){
+                axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax?v=4', {
+                    params: {
+                        start:this.page,
+                        limit:this.limit,
+                        "search.export": this.export.toString(),
+                        "search.sort": this.sort,
+                        "search.minOq": this.lessthan,
+                        "search.minCurPrice": this.min,
+                        "search.maxCurPrice": this.max,
+                        "search.keywords": this.pName,
+                        "search.category": this.cated,
+                        "search.grade": this.grade.toString(),
+                    }
+                })
+                    .then((res) => {
+                        console.log("res")
+                        console.log(res)
+                        // this.productLists = res.data.result.items
+                        // this.allpage = res.data.result.totalCount
+                        // this.breadcrumbnav = res.data.result.breadcrumbnav
+                        // if (res.data.result.items.length <= 0) {
+                        //     this.noData = true
+                        // } else {
+                        //     this.noData = false
+                        // }
+                    })
+                    .catch((error) => {
+                        console.log("err")
+                    });
+            },
             // 读取链接带参
             GetQueryString(name) {
                 var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -584,6 +678,15 @@
                 let url = '/home/usr_UsrConsult_productPublishView?product_id=' + pdtId+ "&backUrl=" + window.location.href;
                 util_function_obj.supplierCantEnter(this, url,"Please register or login your buyer account if you want making enquiries.");
             },
+            acTiveArrStringFun: function(obj) {
+                var arr = [];
+                if (obj != null && obj.length != 0) {
+                    for (var i = 0; i < obj.length; i++) {
+                        arr.push(obj[i]);
+                    }
+                }
+                return arr.toString();
+            }
         },
         mounted() {
             this.pName = this.GetQueryString("Keyword")
@@ -593,8 +696,7 @@
             // }
             this.classList();
             this.productList();
-
-
+            this.getCountry();
         },
         watch: {
             // 输入监听
