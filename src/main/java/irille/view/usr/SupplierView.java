@@ -201,6 +201,7 @@ public class SupplierView implements BaseView {
   // tradeTeam   teamSize  experience
   @Getter @Setter private String NumberOfForeignTradeTeams; // 外贸团队人数
   @Getter @Setter private String YearsOfForeignTradeExperience; // 外贸经验
+  @Getter @Setter private Integer statusAuth; // SVS认证状态;未认证:0,认证成功:1
 
   public List<UsrSupIm> getImList() {
     return imList;
