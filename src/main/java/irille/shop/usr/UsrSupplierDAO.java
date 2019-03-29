@@ -1657,13 +1657,14 @@ public class UsrSupplierDAO {
           view.setDepartment(supplier.getDepartment()); // 联系人部门
           view.setJobTitle(supplier.getJobTitle()); // 联系人职位
           view.setTargetedMarkets(supplier.getTargetedMarket()); // 目标市场
+          System.out.println(supplier.getAnnualProduction()+">>>>>>>>>年产量>>>>>>>>>>>>>");
           view.setAnnualOutput(supplier.getAnnualProduction()); // 年产量
           SVSInfoDao sd = new SVSInfoDaoImpl();
           if (sd.findSVSInfoBySupplier(supplier.getPkey()) != null) {
             SVSInfo si = sd.findSVSInfoBySupplier(supplier.getPkey());
             try {
               JSONObject getResearch = new JSONObject(si.getResearch());
-              view.setRDdepartment(getResearch.getString("isTeam"));
+              view.setRddepartment(getResearch.getString("isTeam"));
               view.setAnnualNumberOfNewShoes(getResearch.getString("numOfShoes"));
               JSONObject productionCapacity = new JSONObject(si.getProductionCapacity());
               view.setNumberOfProductionLines(
