@@ -30,6 +30,7 @@ import org.quartz.JobExecutionException;
 
 import com.google.gson.JsonObject;
 import com.xinlianshiye.shoestp.seller.service.pdt.IPdtTargetMarketService;
+import com.xinlianshiye.shoestp.seller.service.pdt.impl.PdtTargetMarketServiceImpl;
 
 import irille.Dao.PdtProductDao;
 import irille.Dao.O2O.O2OProductDao;
@@ -85,7 +86,7 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
   @Inject private PdtProductDAO.Publish pdtSave;
   @Inject private PdtProductDAO.Upd2 pdtUpdate;
 
-  @Inject private IPdtTargetMarketService targetMarketService;
+  private IPdtTargetMarketService targetMarketService = new PdtTargetMarketServiceImpl();
 
   @Override
   public Page getProductList(
@@ -161,8 +162,9 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
         PdtTieredPricing pdtTP = new PdtTieredPricing();
         pdtTP.setMinOq(item.getCount());
         if (i == 0) {
-          pdtTP.setCurPrice(item.getPrice());
+          pdtProduct.setCurPrice(item.getPrice());
         }
+        pdtTP.setCurPrice(item.getPrice());
         pdtTP.setMain(item.getType() == 1 ? OYn.YES.getLine().getKey() : OYn.NO.getLine().getKey());
         pdtTP.setDeleted(OYn.NO.getLine().getKey());
         minPriceList.add(item.getPrice());
@@ -535,13 +537,16 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
       pdtSave.setB(pdtProduct);
       pdtSave.setLines(list);
       pdtSave.commit();
+      targetMarketService.ins(
+          pdtSave.getB(), country.stream().map(String::valueOf).collect(Collectors.joining(",")));
     } else {
       pdtUpdate.setB(pdtProduct);
       pdtUpdate.setLines(list);
       pdtUpdate.commit();
+      targetMarketService.ins(
+          pdtUpdate.getB(), country.stream().map(String::valueOf).collect(Collectors.joining(",")));
     }
-    targetMarketService.ins(
-        pdtSave.getB(), country.stream().map(String::valueOf).collect(Collectors.joining(",")));
+
     PdtProduct pdt = null;
     if (pdtSave.getB() != null) {
       pdt = pdtSave.getB();

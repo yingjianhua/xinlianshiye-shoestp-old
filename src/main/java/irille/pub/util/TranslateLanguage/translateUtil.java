@@ -45,6 +45,7 @@ import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltTrantslate;
 import irille.shop.plt.PltTrantslateDAO;
 import irille.shop.usr.UsrSupplier;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/8/13 Time: 9:45 */
 public class translateUtil {
@@ -666,7 +667,8 @@ public class translateUtil {
         baseValue = "";
       }
     }
-    return baseValue;
+
+    return StringEscapeUtils.unescapeHtml4(baseValue);
   }
 
   public static JsonObject valuetoMultilanguageJson(String s) {

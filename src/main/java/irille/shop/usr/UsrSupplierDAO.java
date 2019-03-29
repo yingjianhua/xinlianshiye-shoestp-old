@@ -18,6 +18,8 @@ import java.util.stream.Stream;
 
 import javax.inject.Inject;
 
+import irille.Dao.UsrTargetMarketDao;
+import irille.shop.plt.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -81,15 +83,7 @@ import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.pdt.PdtProductDAO;
 import irille.shop.pdt.PdtSpec;
-import irille.shop.plt.PltCountry;
-import irille.shop.plt.PltFreight;
-import irille.shop.plt.PltFreightLine;
-import irille.shop.plt.PltFreightSeller;
-import irille.shop.plt.PltFreightSellerDAO;
-import irille.shop.plt.PltFreightSellerLine;
-import irille.shop.plt.PltPay;
 import irille.shop.plt.PltPay.OPay_Mode;
-import irille.shop.plt.PltProvince;
 import irille.shop.prm.PrmGroupPurchase;
 import irille.shop.usr.Usr.OStatus;
 import irille.shop.usr.UsrSupplier.T;
@@ -1087,7 +1081,8 @@ public class UsrSupplierDAO {
             .collect(Collectors.toList());
     return list;
   }
-
+//  @Inject
+//  public static UsrTargetMarketDao usrTargetMarketDao = new UsrTargetMarketDao();
   /**
    * 创建供应商信息-没有多国语言翻译
    *
@@ -1186,6 +1181,14 @@ public class UsrSupplierDAO {
     bean.setOperateIdCard(view.getOperateIdCard()); // 运营负责人身份证号码
     bean.setApplicationTime(view.getApplicationTime()); // 申请时间
     bean.ins();
+//    if(bean.getTargetedMarket() != null){
+//      List<Integer> integers = new ArrayList<Integer>();
+//      String[] split = bean.getTargetedMarket().split(",");
+//      for (String a : split) {
+//        integers.add(Integer.parseInt(a));
+//      }
+//      usrTargetMarketDao.save(integers,bean.getPkey());
+//    }
     return bean;
   }
 
@@ -1242,15 +1245,22 @@ public class UsrSupplierDAO {
           model.setCompanyAddr(translateUtil.toSaveJson(supplier.getCompanyAddr(), lang));
       if(supplier.getProdPattern() != null)
           model.setProdPattern(translateUtil.toSaveJson(supplier.getProdPattern(), lang));
-
       if(supplier.getContacts() != null)
           model.setContacts(translateUtil.toSaveJson(supplier.getContacts(), lang));
       if(supplier.getDepartment() != null)
           model.setDepartment(translateUtil.toSaveJson(supplier.getDepartment(), lang));
       if(supplier.getJobTitle() != null)
           model.setJobTitle(translateUtil.toSaveJson(supplier.getJobTitle(), lang));
-    model.upd();
-    return model;
+//      if(supplier.getTargetedMarket() != null){
+//        List<Integer> integers = new ArrayList<Integer>();
+//        String[] split = supplier.getTargetedMarket().split(",");
+//        for (String a : split) {
+//          integers.add(Integer.parseInt(a));
+//        }
+//        usrTargetMarketDao.save(integers,supplier.getPkey());
+//      }
+      model.upd();
+      return model;
   }
 
   /**
@@ -1354,6 +1364,14 @@ public class UsrSupplierDAO {
     bean.setOperateIdCard(view.getOperateIdCard()); // 运营负责人身份证号码
     bean.setApplicationTime(view.getApplicationTime()); // 申请时间
     bean.ins();
+//    if(bean.getTargetedMarket() != null){
+//      List<Integer> integers = new ArrayList<Integer>();
+//      String[] split = bean.getTargetedMarket().split(",");
+//      for (String a : split) {
+//        integers.add(Integer.parseInt(a));
+//      }
+//      usrTargetMarketDao.save(integers,bean.getPkey());
+//    }
     return bean;
   }
 
@@ -1409,7 +1427,8 @@ public class UsrSupplierDAO {
     s.setDepartment(supplier.getDepartment());
     s.setJobTitle(supplier.getJobTitle());
     s.setShowName(supplier.getName());
-    translateUtil.autoTranslate(s, true);
+    translateUtil.newAutoTranslate(s,
+            translateUtil.buildFilter(s.getName(), PltConfigDAO.manageLanguage()));
     model.setCompanyType(s.getCompanyType());
     model.setCompanyNature(s.getCompanyNature());
     model.setCompanyAddr(s.getCompanyAddr());
@@ -1418,6 +1437,14 @@ public class UsrSupplierDAO {
     model.setDepartment(s.getDepartment());
     model.setJobTitle(s.getJobTitle());
     model.setShowName(s.getShowName());
+//    if(supplier.getTargetedMarket() != null){
+//      List<Integer> integers = new ArrayList<>();
+//      String[] split = supplier.getTargetedMarket().split(",");
+//      for (String a : split) {
+//        integers.add(Integer.parseInt(a));
+//      }
+//      usrTargetMarketDao.save(integers,supplier.getPkey());
+//    }
     model.upd();
     return model;
   }
@@ -1458,7 +1485,8 @@ public class UsrSupplierDAO {
             SELECT(UsrSupplier.class)
                 .FROM(UsrSupplier.class)
                 .WHERE(T.STATUS, "!=1")
-                .WHERE(T.STORE_STATUS, "!=1");
+                .WHERE(T.STORE_STATUS, "!=1")
+                .ORDER_BY(T.APPLICATION_TIME,"DESC");;
             if (name != null) {
               WHERE(T.NAME, "like '%" + name + "%'");
             }
@@ -1516,7 +1544,8 @@ public class UsrSupplierDAO {
                 .SELECT(SVSInfo.T.GRADE)
                 .SELECT(SVSInfo.T.STATUS, "svsStatus")
                 .FROM(UsrSupplier.class)
-                .WHERE(T.STATUS, "=1");
+                .WHERE(T.STATUS, "=1")
+                .ORDER_BY(T.STOREOPEN_TIME,"DESC");
             LEFT_JOIN(SVSInfo.class, T.PKEY, SVSInfo.T.SUPPLIER);
             if (name != null) {
               WHERE(T.NAME, "like '%" + name + "%'");
@@ -1663,7 +1692,7 @@ public class UsrSupplierDAO {
             SVSInfo si = sd.findSVSInfoBySupplier(supplier.getPkey());
             try {
               JSONObject getResearch = new JSONObject(si.getResearch());
-              view.setRDdepartment(getResearch.getString("isTeam"));
+              view.setRddepartment(getResearch.getString("isTeam"));
               view.setAnnualNumberOfNewShoes(getResearch.getString("numOfShoes"));
               JSONObject productionCapacity = new JSONObject(si.getProductionCapacity());
               view.setNumberOfProductionLines(

@@ -232,7 +232,7 @@ public class UsrMainDao {
 	public static Page getRegistList(Integer start, Integer limit, String company, String email) {
 		SQL sql = new SQL() {
 			{
-				SELECT(UsrMain.class).FROM(UsrMain.class).WHERE(UsrMain.T.IDENTITY, "=1");
+				SELECT(UsrMain.class).FROM(UsrMain.class).WHERE(UsrMain.T.IDENTITY, "=1").ORDER_BY(UsrMain.T.PKEY,"DESC");;
 				if (company != null) {
 					WHERE(UsrMain.T.COMPANY, "like '%" + company + "%'");
 				}
