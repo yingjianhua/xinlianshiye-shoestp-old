@@ -178,7 +178,8 @@ public class UsrSupplierDao {
       String targetMarket,
       Integer processType,
       String grade,
-      Integer pdtCategory) {
+      Integer pdtCategory,
+      Integer checkedType) {
     List list = new ArrayList<>();
     BeanQuery query = new BeanQuery();
     query
@@ -196,10 +197,14 @@ public class UsrSupplierDao {
     if (targetMarket != null) {
       for (String string : targetMarket.split(",")) {
         if (string.length() > 1) {
-          query.WHERE("find_in_set( ?,"+UsrSupplier.class.getSimpleName()+"."+"targeted_market )", string);
+          query.WHERE(
+              "find_in_set( ?," + UsrSupplier.class.getSimpleName() + "." + "targeted_market )",
+              string);
         }
       }
     }
+    if (null != checkedType && checkedType == 1) query.WHERE(SVSInfo.T.STATUS, " =?", 1);
+
     query
         .WHERE(pdtCategory != null, PdtProduct.T.CATEGORY, "=?", pdtCategory)
         .WHERE(grade != null, SVSInfo.T.GRADE, " in(" + grade + ")")
@@ -221,7 +226,8 @@ public class UsrSupplierDao {
       String targetMarket,
       Integer processType,
       String grade,
-      Integer pdtCategory) {
+      Integer pdtCategory,
+      Integer checkedType) {
     BeanQuery query = new BeanQuery();
     query
         .SELECT(
@@ -237,10 +243,13 @@ public class UsrSupplierDao {
     if (targetMarket != null) {
       for (String string : targetMarket.split(",")) {
         if (string.length() > 1) {
-          query.WHERE("find_in_set( ?,"+UsrSupplier.class.getSimpleName()+"."+"targeted_market )", string);
+          query.WHERE(
+              "find_in_set( ?," + UsrSupplier.class.getSimpleName() + "." + "targeted_market )",
+              string);
         }
       }
     }
+    if (null != checkedType && checkedType == 1) query.WHERE(SVSInfo.T.STATUS, " =?", 1);
     query
         .WHERE(pdtCategory != null, PdtProduct.T.CATEGORY, "=?", pdtCategory)
         .WHERE(grade != null, SVSInfo.T.GRADE, " in(" + grade + ")")
