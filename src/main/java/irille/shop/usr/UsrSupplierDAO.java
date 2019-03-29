@@ -1088,9 +1088,8 @@ public class UsrSupplierDAO {
             .collect(Collectors.toList());
     return list;
   }
-
-  @Inject
-  public static UsrTargetMarketDao usrTargetMarketDao;
+//  @Inject
+//  public static UsrTargetMarketDao usrTargetMarketDao = new UsrTargetMarketDao();
   /**
    * 创建供应商信息-没有多国语言翻译
    *
@@ -1189,14 +1188,14 @@ public class UsrSupplierDAO {
     bean.setOperateIdCard(view.getOperateIdCard()); // 运营负责人身份证号码
     bean.setApplicationTime(view.getApplicationTime()); // 申请时间
     bean.ins();
-    if(bean.getTargetedMarket() != null){
-      List<Integer> integers = new ArrayList<Integer>();
-      String[] split = bean.getTargetedMarket().split(",");
-      for (String a : split) {
-        integers.add(Integer.parseInt(a));
-      }
-      usrTargetMarketDao.save(integers,bean.getPkey());
-    }
+//    if(bean.getTargetedMarket() != null){
+//      List<Integer> integers = new ArrayList<Integer>();
+//      String[] split = bean.getTargetedMarket().split(",");
+//      for (String a : split) {
+//        integers.add(Integer.parseInt(a));
+//      }
+//      usrTargetMarketDao.save(integers,bean.getPkey());
+//    }
     return bean;
   }
 
@@ -1259,14 +1258,14 @@ public class UsrSupplierDAO {
           model.setDepartment(translateUtil.toSaveJson(supplier.getDepartment(), lang));
       if(supplier.getJobTitle() != null)
           model.setJobTitle(translateUtil.toSaveJson(supplier.getJobTitle(), lang));
-      if(supplier.getTargetedMarket() != null){
-        List<Integer> integers = new ArrayList<Integer>();
-        String[] split = supplier.getTargetedMarket().split(",");
-        for (String a : split) {
-          integers.add(Integer.parseInt(a));
-        }
-        usrTargetMarketDao.save(integers,supplier.getPkey());
-      }
+//      if(supplier.getTargetedMarket() != null){
+//        List<Integer> integers = new ArrayList<Integer>();
+//        String[] split = supplier.getTargetedMarket().split(",");
+//        for (String a : split) {
+//          integers.add(Integer.parseInt(a));
+//        }
+//        usrTargetMarketDao.save(integers,supplier.getPkey());
+//      }
       model.upd();
       return model;
   }
@@ -1372,14 +1371,14 @@ public class UsrSupplierDAO {
     bean.setOperateIdCard(view.getOperateIdCard()); // 运营负责人身份证号码
     bean.setApplicationTime(view.getApplicationTime()); // 申请时间
     bean.ins();
-    if(bean.getTargetedMarket() != null){
-      List<Integer> integers = new ArrayList<Integer>();
-      String[] split = bean.getTargetedMarket().split(",");
-      for (String a : split) {
-        integers.add(Integer.parseInt(a));
-      }
-      usrTargetMarketDao.save(integers,bean.getPkey());
-    }
+//    if(bean.getTargetedMarket() != null){
+//      List<Integer> integers = new ArrayList<Integer>();
+//      String[] split = bean.getTargetedMarket().split(",");
+//      for (String a : split) {
+//        integers.add(Integer.parseInt(a));
+//      }
+//      usrTargetMarketDao.save(integers,bean.getPkey());
+//    }
     return bean;
   }
 
@@ -1444,14 +1443,14 @@ public class UsrSupplierDAO {
     model.setDepartment(s.getDepartment());
     model.setJobTitle(s.getJobTitle());
     model.setShowName(s.getShowName());
-    if(supplier.getTargetedMarket() != null){
-      List<Integer> integers = new ArrayList<>();
-      String[] split = supplier.getTargetedMarket().split(",");
-      for (String a : split) {
-        integers.add(Integer.parseInt(a));
-      }
-      usrTargetMarketDao.save(integers,supplier.getPkey());
-    }
+//    if(supplier.getTargetedMarket() != null){
+//      List<Integer> integers = new ArrayList<>();
+//      String[] split = supplier.getTargetedMarket().split(",");
+//      for (String a : split) {
+//        integers.add(Integer.parseInt(a));
+//      }
+//      usrTargetMarketDao.save(integers,supplier.getPkey());
+//    }
     model.upd();
     return model;
   }
