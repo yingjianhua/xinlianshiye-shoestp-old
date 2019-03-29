@@ -112,7 +112,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
       sql3.FROM(sql2, RFQConsultRelation.class);
       sql3.WHERE(RFQConsultRelation.T.PKEY, "=?", lastRelation);
       Integer index = Query.sql(sql3).queryObject(Integer.class);
-      if (index != null) limit = index;
+      if (index != null) limit = (index > limit ? index : limit);
     }
     BeanQuery<?> query = Query.SELECT(RFQConsult.T.PKEY);
     query.SELECT(RFQConsult.T.VERIFY_STATUS);
