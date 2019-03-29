@@ -51,9 +51,17 @@ public class PMMessageServiceImp implements IPMMessageService {
   public Page list(
       UsrSupplier supplier, UsrPurchase purchase, ORCVRType type, Integer start, Integer limit) {
     if (type.getLine().getKey() == ORCVRType.PURCHASE.getLine().getKey()) {
-      return messageDao.list(purchase.getPkey(), type, start, limit);
+      if (null != purchase) {
+        return messageDao.list(purchase.getPkey(), type, start, limit);
+      } else {
+        return null;
+      }
     } else if (type.getLine().getKey() == ORCVRType.SUPPLIER.getLine().getKey()) {
-      return messageDao.list(supplier.getPkey(), type, start, limit);
+      if (null != purchase) {
+        return messageDao.list(supplier.getPkey(), type, start, limit);
+      } else {
+        return null;
+      }
     } else {
       return messageDao.list(null, null, start, limit);
     }
