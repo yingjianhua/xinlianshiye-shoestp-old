@@ -32,4 +32,5 @@ public class Regular {
       "^(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)$"; // 身份证号码校验 格式 330825199903236569
 
   public static String REGULAR_PKEY_ARRS = "^(\\d,?)+(?<!,)$"; // 校验主键组成的字符串 如1,2,3,4,5
+  public static String REGULAR_ZH_CN = "^[\\u0391-\\uFFE5]+$"; // 中文校验
 }

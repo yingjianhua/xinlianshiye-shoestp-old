@@ -17,6 +17,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -53,6 +55,7 @@ import irille.pub.svr.Env;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.BatchUtils;
+import irille.pub.validate.Regular;
 import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtAttr;
 import irille.shop.pdt.PdtAttrCat;
@@ -185,8 +188,29 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
     List<PdtSpec> list = new ArrayList<>();
     // 优先新增颜色
     Set<Integer> colorPkeyList = new HashSet<>();
+    Map<Integer, String> colorI_N = new HashMap<>();
     for (int i = 0; i < pdtProductSaveView.getNewSpec().size(); i++) {
       colorPkeyList.add(pdtProductSaveView.getNewSpec().get(i).getColor());
+      String str = "";
+      try {
+        JSONObject json = new JSONObject(pdtProductSaveView.getNewSpec().get(i).getColorName());
+        str = json.get("zh_CN").toString();
+      } catch (JSONException e) {
+        str = pdtProductSaveView.getNewSpec().get(i).getColorName();
+        // TODO: handle exception
+      }
+      Pattern p = Pattern.compile(Regular.REGULAR_ZH_CN);
+      Matcher matcher = p.matcher(str);
+      if (!matcher.matches()) return -10;
+      if (!colorI_N.isEmpty()) {
+        for (Entry item : colorI_N.entrySet()) {
+          if (!item.getKey().equals(pdtProductSaveView.getNewSpec().get(i).getColor())
+              && item.getValue().equals(str)) {
+            return -11;
+          }
+        }
+      }
+      colorI_N.put(pdtProductSaveView.getNewSpec().get(i).getColor(), str);
     }
     if (pdtProductSaveView.getNewSpec() != null && !pdtProductSaveView.getNewSpec().isEmpty()) {
       Map<Integer, PdtColor> specMaps = new HashMap<>(); // key为specId  value为颜色
