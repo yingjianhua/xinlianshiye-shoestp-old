@@ -93,22 +93,12 @@
             <div class="top-box">
                 <p>Export Market<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
                 <div class="i1"></div>
-                <ul>
-                    <!-- <el-checkbox-group v-model="export">
-                        <el-checkbox :label="item.id" v-for="(item, index) in countryList" :key="index">{{item.name}}</el-checkbox>
-                    </el-checkbox-group> -->
-                    <!-- <el-checkbox-group v-model="form.extra_request">
-                            <el-checkbox label="price" name="price">Price</el-checkbox>
-                            <el-checkbox label="inspection certificate" name="inspection certificate">Inspection Certificate</el-checkbox>
-                            <el-checkbox label="product specifications" name="product specifications">Product Specifications</el-checkbox>
-                            <el-checkbox label="company profile" name="company profile">Company Profile</el-checkbox>
-                        </el-checkbox-group> -->
+                <ul style="width:990px;height:auto;min-height: 215px;">
                         <el-input class="region-area-input" size="small"
                                   placeholder="Type to find a country or region"
                                   prefix-icon="el-icon-search"
                                   v-model.lazy.trim="filterAreaKeyword">
                         </el-input>
-
                         <el-checkbox-group class="my-ele-checkbox-group"
                                            style="padding-bottom: 0;max-height: 400px;"
                                            v-model="selectedMarketCountryList">
@@ -127,37 +117,20 @@
                 <div class="i1"></div>
                 <ul>
                     <el-checkbox-group v-model="grade">
-                        <el-checkbox label="3" name="3">Diamond</el-checkbox>
-                        <el-checkbox label="2" name="2">Gold</el-checkbox>
-                        <el-checkbox label="1" name="1">Silver</el-checkbox>
+                        <el-checkbox label="3" name="3"> <img src="/home/v3/static/images/supplier-level3.png" alt="" style="margin-right:8px;">Diamond</el-checkbox>
+                        <el-checkbox label="2" name="2"><img src="/home/v3/static/images/supplier-level2.png" alt="" style="margin-right:8px;">Gold</el-checkbox>
+                        <el-checkbox label="1" name="1"><img src="/home/v3/static/images/supplier-level1.png" alt="" style="margin-right:8px;">Silver</el-checkbox>
                     </el-checkbox-group>
-                    <!-- <li data-selelv="3" @click="seleLevel">
-                        <div class="s" :class="[selelv==3?'sele':'']"></div>
-                        <img src="/home/v3/static/images/supplier-level3.png" alt="" style="margin-right:8px;">
-    
-                        Diamond
-                    </li>
-                    <li data-selelv="2" @click="seleLevel">
-                        <div class="s" :class="[selelv==2?'sele':'']"></div>
-                        <img src="/home/v3/static/images/supplier-level2.png" alt="" style="margin-right:8px;">
-                      
-                        Gold
-                    </li>
-                    <li data-selelv="1" @click="seleLevel">
-                        <div class="s" :class="[selelv==1?'sele':'']"></div>
-                       
-                        <img src="/home/v3/static/images/supplier-level1.png" alt="" style="margin-right:8px;">
-                     
-                        Silver
-                    </li> -->
                 </ul>
             </div>
             <div class="top-box">
-                    <p>Price<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
+                    <p style="padding: 0 43px;padding-top:10px;">Price<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
                     <div class="i1"></div>
-                    <ul>
-                       <li @click="priceBtn(0)">From low to high</li>
-                       <li @click="priceBtn(1)">From hige to low</li>
+                    <ul style="padding:10px 0;width:auto;height:auto;">
+                        <div class="price-sort" @click="priceBtn(0)">From low to high</div>
+                        <div class="price-sort" @click="priceBtn(1)">From hige to low</div>
+                       <!-- <li @click="priceBtn(0)">From low to high</li>
+                       <li @click="priceBtn(1)">From hige to low</li> -->
                     </ul>
                 </div>
             <%-- <div class="top-box">
@@ -292,7 +265,7 @@
                     <div>
                         {{item.originCountry}} ( {{item.originProvince}} )
                     </div>
-                    <a @click="test">test</a>
+                    <a @click="productList">test</a>
                     <!-- <a class="btn" href="javascript:;" @click="addRFQ" :data-id = "item.pdtId">Contact Supplier</a> -->
                     <a class="btn" @click="ToContactSupplier(item.supId)">
                         Contact Supplier
@@ -345,7 +318,7 @@
             selelv: "",
             selecount: "",
             selestore: "",
-            cated: -1,
+            cated: '', // 分类 
             lose: '',
             currentPage: 1,
             allpage: '',
@@ -366,8 +339,8 @@
             grade:[], // SVS等级 0-无等级商家 1-银 2 -金 3-钻石
             min:'', // 最小价格
             max:'', //最大价格
-            selectedMarketCountryList:[],
-            filterAreaKeyword:'',
+            filterAreaKeyword:'', // 过滤 搜索国家
+            selectedMarketCountryList:[], // 国家主键
         },
         methods: {
             grade(){
@@ -377,7 +350,7 @@
                 console.log(rule)
                 this.sort =  JSON.stringify([{name:"curPrice",sort:1,rule:rule}])
                 console.log(this.sort)
-                this.test();
+                this.productList();
             },
             getCountry(){  // 获取 国家列表
                 let self = this;
@@ -385,12 +358,12 @@
                     self.countryList = res.data.result
                 })
             },
-            test(){
+            productList(){
                 axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax?v=4', {
                     params: {
                         start:this.page,
                         limit:this.limit,
-                        "search.export": this.export.toString(),
+                        "search.export": this.selectedMarketCountryList.toString(),
                         "search.sort": this.sort,
                         "search.minOq": this.lessthan,
                         "search.minCurPrice": this.min,
@@ -403,14 +376,14 @@
                     .then((res) => {
                         console.log("res")
                         console.log(res)
-                        // this.productLists = res.data.result.items
-                        // this.allpage = res.data.result.totalCount
-                        // this.breadcrumbnav = res.data.result.breadcrumbnav
-                        // if (res.data.result.items.length <= 0) {
-                        //     this.noData = true
-                        // } else {
-                        //     this.noData = false
-                        // }
+                        this.productLists = res.data.result.items
+                        this.allpage = res.data.result.totalCount
+                        this.breadcrumbnav = res.data.result.breadcrumbnav
+                        if (res.data.result.items.length <= 0) {
+                            this.noData = true
+                        } else {
+                            this.noData = false
+                        }
                     })
                     .catch((error) => {
                         console.log("err")
@@ -445,55 +418,55 @@
                     });
             },
             // 获取产品列表
-            productList(e) {
-                var params = {}
-                if (this.cated != null || this.cated > 0) {
-                    this.lose = 1
-                    params = {
-                        start: this.page,
-                        limit: this.limit,
-                        cate: this.cated,
-                        min: this.min,
-                        max: this.max,
-                        mOrder: this.lessthan,
-                        pName: this.pName,
-                        level: this.selelv,
-                        export: this.selecount,
-                        o2oAddress: this.selestore,
-                        orderfld: getParams("orderfld", "NONE"),
-                        lose: this.lose
-                    }
-                } else {
-                    params = {
-                        start: this.page,
-                        limit: this.limit,
-                        min: this.min,
-                        max: this.max,
-                        mOrder: this.lessthan,
-                        pName: this.pName,
-                        level: this.selelv,
-                        export: this.selecount,
-                        o2oAddress: this.selestore,
-                        orderfld: getParams("orderfld", "NONE")
-                    }
-                }
-                axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax?v=3', {
-                    params: params
-                })
-                    .then((res) => {
-                        this.productLists = res.data.result.items
-                        this.allpage = res.data.result.totalCount
-                        this.breadcrumbnav = res.data.result.breadcrumbnav
-                        if (res.data.result.items.length <= 0) {
-                            this.noData = true
-                        } else {
-                            this.noData = false
-                        }
-                    })
-                    .catch((error) => {
-                        console.log("err")
-                    });
-            },
+            // productList(e) {
+            //     var params = {}
+            //     if (this.cated != null || this.cated > 0) {
+            //         this.lose = 1
+            //         params = {
+            //             start: this.page,
+            //             limit: this.limit,
+            //             cate: this.cated,
+            //             min: this.min,
+            //             max: this.max,
+            //             mOrder: this.lessthan,
+            //             pName: this.pName,
+            //             level: this.selelv,
+            //             export: this.selecount,
+            //             o2oAddress: this.selestore,
+            //             orderfld: getParams("orderfld", "NONE"),
+            //             lose: this.lose
+            //         }
+            //     } else {
+            //         params = {
+            //             start: this.page,
+            //             limit: this.limit,
+            //             min: this.min,
+            //             max: this.max,
+            //             mOrder: this.lessthan,
+            //             pName: this.pName,
+            //             level: this.selelv,
+            //             export: this.selecount,
+            //             o2oAddress: this.selestore,
+            //             orderfld: getParams("orderfld", "NONE")
+            //         }
+            //     }
+            //     axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax?v=3', {
+            //         params: params
+            //     })
+            //         .then((res) => {
+            //             this.productLists = res.data.result.items
+            //             this.allpage = res.data.result.totalCount
+            //             this.breadcrumbnav = res.data.result.breadcrumbnav
+            //             if (res.data.result.items.length <= 0) {
+            //                 this.noData = true
+            //             } else {
+            //                 this.noData = false
+            //             }
+            //         })
+            //         .catch((error) => {
+            //             console.log("err")
+            //         });
+            // },
             // 左边列表下拉功能
             xiala(e) {
                 var i = e.currentTarget.dataset.index;
@@ -690,7 +663,7 @@
         },
         mounted() {
             this.pName = this.GetQueryString("Keyword")
-            this.cated = getParams('cated', 0)
+            this.cated = getParams('cated','')
             // if(this.GetQueryString("cated").length>0){
             // 	this.lose=1
             // }

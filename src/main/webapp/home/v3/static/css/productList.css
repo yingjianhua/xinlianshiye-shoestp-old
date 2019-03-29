@@ -573,4 +573,72 @@ a, a:link, a:visited, a:hover, a:active {
   animation-name: slideInRight;
 }
 
+/* 新增国家 筛选 */
+/*搜索region输入框*/
+#productList .region-area-input{
+  width: 400px;
+  margin-bottom: 10px;
+}
+#productList .region-area-input .el-input__inner{
+  border-color: #d9e1ec;
+  border-radius: 0;
+}
+#productList .region-area-input .el-input__inner .el-input__icon{
+  font-size: 20px;
+}
+/*自定义checkbox样式*/
+#productList .my-ele-checkbox-group{
+  /*max-height: 120px;*/
+  max-height: 140px;
+  padding: 10px 0;
+  overflow: auto;
+}
 
+#productList .my-ele-checkbox-group .el-checkbox{
+  min-width: 180px;
+  margin-bottom: 4px;
+  /*padding-right: 15px;*/
+  box-sizing: border-box;
+}
+/*长度计算*/
+#productList .my-ele-checkbox-group .el-checkbox.double-length{
+  min-width: 360px;
+}
+#productList .my-ele-checkbox-group.checkbox-width-135 .el-checkbox{
+  min-width: 135px;
+}
+#productList .my-ele-checkbox-group .el-checkbox + .el-checkbox{
+  margin-left: 0;
+}
+#productList .my-ele-checkbox-group .el-checkbox__input.is-checked + .el-checkbox__label {
+  color: #606266;
+}
+
+#productList .my-ele-checkbox-group .el-checkbox__input.is-checked .el-checkbox__inner{
+  border-color: #dcdfe6;
+  background-color: #fff;
+}
+
+#productList .my-ele-checkbox-group .el-checkbox__inner::after {
+  border: 1px solid #3c5bae;
+  border-left: 0;
+  border-top: 0;
+}
+
+#productList .my-ele-checkbox-group .el-checkbox__inner:hover {
+  border: 1px solid #dcdfe6;
+}
+
+#productList .my-ele-checkbox-group .el-checkbox__inner.is-focus,
+#productList .my-ele-checkbox-group .el-checkbox__inner,
+#productList .my-ele-checkbox-group .el-checkbox__input.is-focus .el-checkbox__inner{
+  border-color: #dcdfe6;
+}
+#productList .price-sort{
+	padding: 0 24px;
+	height: 28px;
+	line-height: 28px;
+}
+#productList .price-sort:hover{
+	 background-color: #dee2ec;
+}
