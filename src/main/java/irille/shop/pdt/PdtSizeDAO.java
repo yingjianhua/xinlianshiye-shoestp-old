@@ -258,12 +258,12 @@ public class PdtSizeDAO {
     }
     PdtProductDao pdtProductDao = new PdtProductDao();
     SQL sql =
-        new I18NSQL(lang) {
+        new SQL() {
           {
             SELECT(T.PKEY, T.NAME, T.CREATE_BY, T.ROW_VERSION, T.SUPPLIER, T.TYPE);
             FROM(PdtSize.class)
-                .WHERE(T.DELETED, "=?", OYn.NO)
-                .WHERE(T.TYPEVER, " =? ", Pdt.OVer.NEW_1.getLine().getKey());
+                .WHERE(T.DELETED, "=" + OYn.NO.getLine().getKey())
+                .WHERE(T.TYPEVER, " =" + Pdt.OVer.NEW_1.getLine().getKey());
             if (type.equals(1)) {
               WHERE(
                   "("
@@ -274,54 +274,49 @@ public class PdtSizeDAO {
                       + PdtSize.class.getSimpleName()
                       + "."
                       + PdtSize.T.SUPPLIER.getFld().getCodeSqlField()
-                      + " =? )",
-                  supplier.getPkey());
+                      + " ="
+                      + supplier.getPkey()
+                      + " )");
               WHERE(
-                  "("
-                      + PdtSize.class.getSimpleName()
-                      + "."
-                      + PdtSize.T.PRODUCT_CATEGORY.getFld().getCodeSqlField()
-                      + " in("
-                      + String.join(",", pdtProductDao.getParent(cat))
-                      + ") OR "
-                      + PdtSize.class.getSimpleName()
-                      + "."
-                      + PdtSize.T.PRODUCT_CATEGORY.getFld().getCodeSqlField()
-                      + " IS NULL )");
+                      "("
+                          + PdtSize.class.getSimpleName()
+                          + "."
+                          + PdtSize.T.PRODUCT_CATEGORY.getFld().getCodeSqlField()
+                          + " in("
+                          + String.join(",", pdtProductDao.getParent(cat))
+                          + ") OR "
+                          + PdtSize.class.getSimpleName()
+                          + "."
+                          + PdtSize.T.PRODUCT_CATEGORY.getFld().getCodeSqlField()
+                          + " IS NULL )")
+                  .ORDER_BY(PdtSize.T.SUPPLIER, " ASC ");
             } else {
               WHERE(
                   PdtSize.class.getSimpleName()
                       + "."
                       + PdtSize.T.SUPPLIER.getFld().getCodeSqlField()
                       + " IS NULL");
+              ORDER_BY(PdtSize.T.SUPPLIER, " ASC ");
             }
           }
         };
-    //    SQL sql =
-    //        new I18NSQL(lang) {
-    //          {
-    //            SELECT(T.PKEY, T.NAME, T.CREATE_BY, T.ROW_VERSION, T.SUPPLIER, T.TYPE);
-    //            FROM(PdtSize.class)
-    //                .WHERE(T.DELETED, "=?", OYn.NO)
-    //                .WHERE(T.SUPPLIER, " is null ")
-    //                .WHERE(T.TYPEVER, " =? ", Pdt.OVer.NEW_1.getLine().getKey());
-    //          }
-    //        };
-    List<PdtSize> sysSize = Query.sql(sql).queryList(PdtSize.class);
-    //    if (type == 1) {
-    //      SQL supSql =
-    //          new I18NSQL(lang) {
-    //            {
-    //              SELECT(T.PKEY, T.NAME, T.CREATE_BY, T.ROW_VERSION, T.SUPPLIER, T.TYPE);
-    //              FROM(PdtSize.class)
-    //                  .WHERE(T.DELETED, "=?", OYn.NO)
-    //                  .WHERE(T.SUPPLIER, " =? ", SellerAction.getSupplier().getPkey())
-    //                  .WHERE(T.TYPEVER, " =? ", Pdt.OVer.NEW_1.getLine().getKey());
-    //            }
-    //          };
-    //      List<PdtSize> supSize = Query.sql(supSql).queryList(PdtSize.class);
-    //      sysSize.addAll(supSize);
-    //    }
+
+    String supSql = sql.toString() + " ,CONVERT(name->'$.en',SIGNED) ASC ";
+    List<PdtSize> sysSize = Query.sql(supSql).queryList(PdtSize.class);
+    if (null != sysSize && sysSize.size() > 0) {
+      sysSize =
+          sysSize.stream()
+              .filter(
+                  b -> {
+                    try {
+                      b.setName(b.getName(lang));
+                    } catch (JSONException e) {
+                      b.setName(null);
+                    }
+                    return true;
+                  })
+              .collect(Collectors.toList());
+    }
     return sysSize;
   }
 
@@ -651,7 +646,7 @@ public class PdtSizeDAO {
     }
     sql.WHERE(
         "JSON_EXTRACT(PdtSize.name,?) = ?", "$." + PltConfigDAO.manageLanguage().toString(), str);
-    sql.WHERE(size.getPkey() != null,PdtSize.T.PKEY," <>? ",size.getPkey());
+    sql.WHERE(size.getPkey() != null, PdtSize.T.PKEY, " <>? ", size.getPkey());
     Integer count = Query.sql(sql).queryCount();
     if (count > 0) {
       String msg = "";
