@@ -1294,7 +1294,7 @@
 				this.relationPkey = util_function_obj.GetQueryString("relationPkey");
 
 				this.lastRelation = this.relationPkey; //从联系人跳转过来时
-
+console.log("从别的地方跳过来的")
 				//获取chat列表
 				this.getChatInfo();
 				//获取询盘详情
@@ -1303,10 +1303,9 @@
 				this.getSupplierDetail();
 				// 显示下拉show more选项
 				this.chatShowMore();
-			}else{
-				// 获取询盘列表
-				this.getInquiryList();
 			}
+			// 获取询盘列表
+			this.getInquiryList();
 		},
 		methods: {
 			// image(v, params) {
@@ -1413,24 +1412,50 @@
 					postData.unread = true;
 				}
 				//从联系人跳转过来时，该参数使列表加载至包含该联系人处 => 使该联系人处于当前列表处
-				// if( this.lastRelation && this.lastRelation > this.inquiryLisPageLimit ){
-				// 	postData.lastRelation = this.lastRelation;
-				// }
+				if( this.lastRelation && this.lastRelation > this.inquiryLisPageLimit ){
+					postData.lastRelation = this.lastRelation;
+				}
 				axios.get('/home/rfq_RFQConsult_pageMine', {
 					params: postData
 				})
 						.then((res) => {
-
-					if(this.lastRelation){
-						this.inquiryLisPageStart = this.lastRelation;
-						this.lastRelation = null;
-					}
-
-					this.isInquiryLisLoading = false;
-				if (res.data.ret != 1) {
+					if (res.data.ret != 1) {
 					this.$message.error(res.data.msg || "Get inquiry list error,please try again later");
 					return
 				};
+				this.isInquiryLisLoading = false;
+
+				if(this.lastRelation){
+				    // 不再执行默认展开第一个
+				    this.isShowFirstOne = false;
+
+				    // 确保下一页加载正确
+                    if( res.data.result.limit > this.inquiryLisPageLimit ){
+                        this.inquiryLisPageStart +=  (res.data.result.limit - this.inquiryLisPageLimit)
+                    }
+
+					var resData = res.data.result.items;
+					listForEach:
+					for(var i = resData.length-1; i>=0; i--){
+						var relations = resData[i].relations;
+						if(relations && relations.length > 0){
+							for(var j=0,len2=relations.length;j<len2;j++){
+								var relation = relations[j];
+								if( relation.quotation && relation.quotation.pkey ){
+									if( relation.quotation.pkey == this.lastRelation ){
+										this.nowInquiryIndex = i;
+										this.nowSupplierIndex = j;
+										break listForEach;
+									}
+								}
+							}
+						}
+					}
+					
+					this.lastRelation = null;
+				}
+
+
 
 				this.inquiryList.push(...res.data.result.items);
 
@@ -1449,27 +1474,7 @@
 
 				//为了功能-搜索后显示第一个
 				if(isShowFirstOne){
-				    // RFQ时显示询盘详情
-				    if(res.data.result.items[0].type==1){
-                        this.showChatBox = false;
-                        this.showRFQDeailBox = true;
-
-                        //获取询盘详情
-                        this.getInquiryDetail();
-                        //获取报价详情 - 第一个
-                        this.quotationDetailList=[];
-                        this.quotationDetailListIndex=0;
-                        this.getQuotationDetail();
-                    }else{
-                        this.showChatBox = true;
-                        this.showRFQDeailBox = false;
-                        //获取chat列表
-                        this.getChatInfo();
-                        //获取询盘详情
-                        this.getInquiryDetail();
-                        //获取功能供应商详情
-                        this.getSupplierDetail();
-                    }
+				    this.showFirstOne(res.data.result.items[0]);
                 }
 			})
 			.catch((error) => {
@@ -1477,6 +1482,31 @@
 				this.$message.error(error || 'Network error,please try again later');
 			});
 			},
+
+            // 一进来后显示第一个
+            showFirstOne(firstInquiryObj){
+                // RFQ时显示询盘详情
+                if(firstInquiryObj.type==1){
+                    this.showChatBox = false;
+                    this.showRFQDeailBox = true;
+
+                    //获取询盘详情
+                    this.getInquiryDetail();
+                    //获取报价详情 - 第一个
+                    this.quotationDetailList=[];
+                    this.quotationDetailListIndex=0;
+                    this.getQuotationDetail();
+                }else{
+                    this.showChatBox = true;
+                    this.showRFQDeailBox = false;
+                    //获取chat列表
+                    this.getChatInfo();
+                    //获取询盘详情
+                    this.getInquiryDetail();
+                    //获取功能供应商详情
+                    this.getSupplierDetail();
+                }
+            },
 
 			// 加载下一页询盘列表
 			loadMoreInquiryList(){
@@ -1908,7 +1938,7 @@
 				this.isFromContactList = false; //从联系人列表跳转过来时的值
 
 				var dataset = e.currentTarget.dataset;
-				var inquiryId = dataset.inquiryId;
+				// var inquiryId = dataset.inquiryId;
 				var supplierIndex = dataset.supplierIndex;
 				var inquiryIndex = dataset.inquiryIndex;
 				// 当前点击的就是当前显示的，不触发点击事件 - 首次加载显示第一个，此时也可以点第一个，so != 0
