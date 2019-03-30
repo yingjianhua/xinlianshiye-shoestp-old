@@ -113,7 +113,7 @@
                 </ul>
             </div>
             <div class="top-box">
-                <p>Supplier Level<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
+                <p>SVS Level<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
                 <div class="i1"></div>
                 <ul style="height:auto;">
                     <el-checkbox-group v-model="grade">
