@@ -25,6 +25,7 @@ import org.json.JSONObject;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
 import com.xinlianshiye.shoestp.plat.service.pm.imp.PMMessageServiceImp;
 
@@ -1545,7 +1546,7 @@ public class UsrSupplierDAO {
                 .SELECT(SVSInfo.T.STATUS, "svsStatus")
                 .FROM(UsrSupplier.class)
                 .WHERE(T.STATUS, "=1")
-                .ORDER_BY(T.STOREOPEN_TIME,"DESC");
+                .ORDER_BY(T.STOREOPEN_TIME, "DESC");
             LEFT_JOIN(SVSInfo.class, T.PKEY, SVSInfo.T.SUPPLIER);
             if (name != null) {
               WHERE(T.NAME, "like '%" + name + "%'");
@@ -1554,7 +1555,13 @@ public class UsrSupplierDAO {
               WHERE(T.STORE_STATUS, "=?", storeStatus);
             }
             if (svsGrade != null) {
-              WHERE(SVSInfo.T.GRADE, "=?", svsGrade);
+              if (svsGrade == 0) {
+                WHERE(SVSInfo.T.GRADE, "=?", svsGrade);
+                OR();
+                WHERE(SVSInfo.T.GRADE, " IS NULL");
+              }else{
+                WHERE(SVSInfo.T.GRADE, "=?", svsGrade);
+              }
             }
           }
         };
@@ -1687,36 +1694,44 @@ public class UsrSupplierDAO {
           view.setJobTitle(supplier.getJobTitle()); // 联系人职位
           view.setTargetedMarkets(supplier.getTargetedMarket()); // 目标市场
           view.setAnnualOutput(supplier.getAnnualProduction()); // 年产量
-          SVSInfoDao sd = new SVSInfoDaoImpl();
-          if (sd.findSVSInfoBySupplier(supplier.getPkey()) != null) {
-            SVSInfo si = sd.findSVSInfoBySupplier(supplier.getPkey());
-            try {
-              JSONObject getResearch = new JSONObject(si.getResearch());
-              view.setRddepartment(getResearch.getString("isTeam"));
-              view.setAnnualNumberOfNewShoes(getResearch.getString("numOfShoes"));
-              JSONObject productionCapacity = new JSONObject(si.getProductionCapacity());
-              view.setNumberOfProductionLines(
-                  productionCapacity.getString("productionLineQuantity"));
-              view.setNumberOfSewingMachines(productionCapacity.getString("needleCartNum"));
-              view.setAnnualExportValue(productionCapacity.getString("exportVolume"));
-              JSONObject realFactory = new JSONObject(si.getRealFactory());
-              view.setNumberOfEmployees(realFactory.getString("employeesNum"));
-              view.setExportLicense(realFactory.getString("licence"));
-              JSONObject productQuality = new JSONObject(si.getProductQuality());
-              view.setTestEquipmentAndFacilities(productQuality.getString("testEquipment"));
-              JSONObject tradeTeam = new JSONObject(si.getForeignTradeTeam());
-              view.setNumberOfForeignTradeTeams(tradeTeam.getString("teamSize"));
-              view.setYearsOfForeignTradeExperience(tradeTeam.getString("experience"));
-            } catch (Exception e) {
-              e.getStackTrace();
-            }
-          }
           // 页面设置
           view.setContactPageOn(supplier.getContactPageOn()); // 是否启用联系页个性化装修
           view.setContactPageDiy(supplier.getContactPageDiy()); // 联系页个性化装修
+          SVSInfoDao sd = new SVSInfoDaoImpl();
+          if (sd.findSVSInfoBySupplier(supplier.getPkey()) != null) {
+            SVSInfo si = sd.findSVSInfoBySupplier(supplier.getPkey());
+            view.setStatusAuth(1);
+            if (si.getStatus() == SVSAuthenticationStatus.NoApplication.getLine().getKey()) {
+              view.setStatusAuth(0);
+              break;
+            }
+            if (si.getStatus() == SVSAuthenticationStatus.SUCCESS.getLine().getKey()) {
+              try {
+                JSONObject getResearch = new JSONObject(si.getResearch());
+                view.setRddepartment(getResearch.getString("isTeam"));
+                view.setAnnualNumberOfNewShoes(getResearch.getString("numOfShoes"));
+                JSONObject productionCapacity = new JSONObject(si.getProductionCapacity());
+                view.setNumberOfProductionLines(
+                        productionCapacity.getString("productionLineQuantity"));
+                view.setNumberOfSewingMachines(productionCapacity.getString("needleCartNum"));
+                view.setAnnualExportValue(productionCapacity.getString("exportVolume"));
+                JSONObject realFactory = new JSONObject(si.getRealFactory());
+                view.setNumberOfEmployees(realFactory.getString("employeesNum"));
+                view.setExportLicense(realFactory.getString("licence"));
+                JSONObject productQuality = new JSONObject(si.getProductQuality());
+                view.setTestEquipmentAndFacilities(productQuality.getString("testEquipment"));
+                JSONObject tradeTeam = new JSONObject(si.getForeignTradeTeam());
+                view.setNumberOfForeignTradeTeams(tradeTeam.getString("teamSize"));
+                view.setYearsOfForeignTradeExperience(tradeTeam.getString("experience"));
+              } catch (Exception e) {
+                e.getStackTrace();
+              }
+            }
+          }else {
+            view.setStatusAuth(0);
+          }
           break;
       }
-
       return view;
     }
   }

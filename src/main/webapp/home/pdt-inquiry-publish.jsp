@@ -214,7 +214,7 @@ ul{
                 <el-col :span="2">
                     <div style="box-shadow:#333 0px 0px 10px;width:60px;height:60px;">
                         <!-- 商品图片 -->
-                        <img :src="image(supData.image,'?x-oss-process=image/resize,w_60,h_60') + (supData.type==3 ?'/blur,r_5,s_30':'')" alt="" style="width:100%;">
+                        <img :src="image(supData.image,'?x-oss-process=image/resize,w_60,h_60') + (supData.type==3 ?'/blur,r_5,s_30':'')" alt="" style="width:100%;height:100%;object-fit: contain;">
                     </div>
                 </el-col>
                 <el-col :span="12">
@@ -419,7 +419,7 @@ ul{
                         return
                     }else{
                         if(sysConfig.user.user_type == 1){
-                            self.$alert("Please register or login your buyer account if you want making enquiries.",{
+                            this.$alert("Please register or login your buyer account if you want making enquiries.",{
                                 confirmButtonText: 'Ok',
                                 customClass: "my-custom-element-alert-class fs-content-18",
                                 center: true,

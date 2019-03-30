@@ -966,267 +966,116 @@ public class SupplierView implements BaseView {
 
   @Override
   public String toString() {
-    return "SupplierView{"
-        + "pkey="
-        + pkey
-        + ", role="
-        + role
-        + ", loginName='"
-        + loginName
-        + '\''
-        + ", password='"
-        + password
-        + '\''
-        + ", status="
-        + status
-        + ", apprBy="
-        + apprBy
-        + ", apprTime="
-        + apprTime
-        + ", name='"
-        + name
-        + '\''
-        + ", registeredCapital='"
-        + registeredCapital
-        + '\''
-        + ", category="
-        + category
-        + ", isAuth="
-        + isAuth
-        + ", sort="
-        + sort
-        + ", seoTitleEn='"
-        + seoTitleEn
-        + '\''
-        + ", seoContentEn='"
-        + seoContentEn
-        + '\''
-        + ", authTime="
-        + authTime
-        + ", showName='"
-        + showName
-        + '\''
-        + ", entity='"
-        + entity
-        + '\''
-        + ", companyType='"
-        + companyType
-        + '\''
-        + ", companyNature='"
-        + companyNature
-        + '\''
-        + ", creditCode='"
-        + creditCode
-        + '\''
-        + ", companyEstablishTime="
-        + companyEstablishTime
-        + ", operationTerm='"
-        + operationTerm
-        + '\''
-        + ", mainSalesArea='"
-        + mainSalesArea
-        + '\''
-        + ", mainProd='"
-        + mainProd
-        + '\''
-        + ", prodPattern='"
-        + prodPattern
-        + '\''
-        + ", companyAddr='"
-        + companyAddr
-        + '\''
-        + ", des='"
-        + des
-        + '\''
-        + ", email='"
-        + email
-        + '\''
-        + ", businessLicenseBeginTime='"
-        + businessLicenseBeginTime
-        + '\''
-        + ", businessLicenseEndTime='"
-        + businessLicenseEndTime
-        + '\''
-        + ", businessLicenseIsSecular="
-        + businessLicenseIsSecular
-        + ", telephone='"
-        + telephone
-        + '\''
-        + ", fax='"
-        + fax
-        + '\''
-        + ", qq='"
-        + qq
-        + '\''
-        + ", certPhoto='"
-        + certPhoto
-        + '\''
-        + ", idCardFrontPhoto='"
-        + idCardFrontPhoto
-        + '\''
-        + ", idCardBackPhoto='"
-        + idCardBackPhoto
-        + '\''
-        + ", coopCertPhoto='"
-        + coopCertPhoto
-        + '\''
-        + ", taxpayerType='"
-        + taxpayerType
-        + '\''
-        + ", idCard='"
-        + idCard
-        + '\''
-        + ", operateIdCard='"
-        + operateIdCard
-        + '\''
-        + ", contacts='"
-        + contacts
-        + '\''
-        + ", phone='"
-        + phone
-        + '\''
-        + ", settlementBank='"
-        + settlementBank
-        + '\''
-        + ", bankAccount='"
-        + bankAccount
-        + '\''
-        + ", bankBranch='"
-        + bankBranch
-        + '\''
-        + ", bankCountry="
-        + bankCountry
-        + ", bankProvince="
-        + bankProvince
-        + ", contactsIdCardFrontPhoto='"
-        + contactsIdCardFrontPhoto
-        + '\''
-        + ", contactsIdCardBackPhoto='"
-        + contactsIdCardBackPhoto
-        + '\''
-        + ", businessTyp='"
-        + businessTyp
-        + '\''
-        + ", location='"
-        + location
-        + '\''
-        + ", production='"
-        + production
-        + '\''
-        + ", developer='"
-        + developer
-        + '\''
-        + ", totalEmployees='"
-        + totalEmployees
-        + '\''
-        + ", annualSales='"
-        + annualSales
-        + '\''
-        + ", top3Markets='"
-        + top3Markets
-        + '\''
-        + ", materials='"
-        + materials
-        + '\''
-        + ", headPic='"
-        + headPic
-        + '\''
-        + ", department='"
-        + department
-        + '\''
-        + ", jobTitle='"
-        + jobTitle
-        + '\''
-        + ", website='"
-        + website
-        + '\''
-        + ", country="
-        + country
-        + ", province="
-        + province
-        + ", city='"
-        + city
-        + '\''
-        + ", isPro="
-        + isPro
-        + ", logo='"
-        + logo
-        + '\''
-        + ", signBackgd='"
-        + signBackgd
-        + '\''
-        + ", adPhoto='"
-        + adPhoto
-        + '\''
-        + ", adPhotoMobile='"
-        + adPhotoMobile
-        + '\''
-        + ", adPhotoLink='"
-        + adPhotoLink
-        + '\''
-        + ", companyPhoto='"
-        + companyPhoto
-        + '\''
-        + ", companyPhotoLink='"
-        + companyPhotoLink
-        + '\''
-        + ", homePageDiy='"
-        + homePageDiy
-        + '\''
-        + ", productPageDiy='"
-        + productPageDiy
-        + '\''
-        + ", contactPageDiy='"
-        + contactPageDiy
-        + '\''
-        + ", homePageDiyMobile='"
-        + homePageDiyMobile
-        + '\''
-        + ", productPageDiyMobile='"
-        + productPageDiyMobile
-        + '\''
-        + ", contactPageDiyMobile='"
-        + contactPageDiyMobile
-        + '\''
-        + ", traceCode='"
-        + traceCode
-        + '\''
-        + ", webSizeTitle='"
-        + webSizeTitle
-        + '\''
-        + ", webSite='"
-        + webSite
-        + '\''
-        + ", tongjiUrl='"
-        + tongjiUrl
-        + '\''
-        + ", tongjiPwd='"
-        + tongjiPwd
-        + '\''
-        + ", updateTime="
-        + updateTime
-        + ", rowVersion="
-        + rowVersion
-        + ", prmAuthrity="
-        + prmAuthrity
-        + ", authAge="
-        + authAge
-        + ", countryName='"
-        + countryName
-        + '\''
-        + ", provinceName='"
-        + provinceName
-        + '\''
-        + ", homePageOn="
-        + homePageOn
-        + ", productPageOn="
-        + productPageOn
-        + ", contactPageOn="
-        + contactPageOn
-        + ", productList="
-        + productList
-        + ", imList="
-        + imList
-        + '}';
+    return "SupplierView{" +
+            "pkey=" + pkey +
+            ", role=" + role +
+            ", loginName='" + loginName + '\'' +
+            ", password='" + password + '\'' +
+            ", status=" + status +
+            ", apprBy=" + apprBy +
+            ", apprTime=" + apprTime +
+            ", name='" + name + '\'' +
+            ", registeredCapital='" + registeredCapital + '\'' +
+            ", category=" + category +
+            ", isAuth=" + isAuth +
+            ", sort=" + sort +
+            ", seoTitleEn='" + seoTitleEn + '\'' +
+            ", seoContentEn='" + seoContentEn + '\'' +
+            ", authTime=" + authTime +
+            ", showName='" + showName + '\'' +
+            ", entity='" + entity + '\'' +
+            ", companyType='" + companyType + '\'' +
+            ", companyNature='" + companyNature + '\'' +
+            ", creditCode='" + creditCode + '\'' +
+            ", companyEstablishTime=" + companyEstablishTime +
+            ", operationTerm='" + operationTerm + '\'' +
+            ", mainSalesArea='" + mainSalesArea + '\'' +
+            ", mainProd='" + mainProd + '\'' +
+            ", prodPattern='" + prodPattern + '\'' +
+            ", companyAddr='" + companyAddr + '\'' +
+            ", des='" + des + '\'' +
+            ", email='" + email + '\'' +
+            ", businessLicenseBeginTime='" + businessLicenseBeginTime + '\'' +
+            ", businessLicenseEndTime='" + businessLicenseEndTime + '\'' +
+            ", businessLicenseIsSecular=" + businessLicenseIsSecular +
+            ", telephone='" + telephone + '\'' +
+            ", fax='" + fax + '\'' +
+            ", qq='" + qq + '\'' +
+            ", certPhoto='" + certPhoto + '\'' +
+            ", idCardFrontPhoto='" + idCardFrontPhoto + '\'' +
+            ", idCardBackPhoto='" + idCardBackPhoto + '\'' +
+            ", coopCertPhoto='" + coopCertPhoto + '\'' +
+            ", taxpayerType='" + taxpayerType + '\'' +
+            ", idCard='" + idCard + '\'' +
+            ", operateIdCard='" + operateIdCard + '\'' +
+            ", contacts='" + contacts + '\'' +
+            ", phone='" + phone + '\'' +
+            ", settlementBank='" + settlementBank + '\'' +
+            ", bankAccount='" + bankAccount + '\'' +
+            ", bankBranch='" + bankBranch + '\'' +
+            ", bankCountry=" + bankCountry +
+            ", bankProvince=" + bankProvince +
+            ", contactsIdCardFrontPhoto='" + contactsIdCardFrontPhoto + '\'' +
+            ", contactsIdCardBackPhoto='" + contactsIdCardBackPhoto + '\'' +
+            ", businessTyp='" + businessTyp + '\'' +
+            ", location='" + location + '\'' +
+            ", production='" + production + '\'' +
+            ", developer='" + developer + '\'' +
+            ", totalEmployees='" + totalEmployees + '\'' +
+            ", annualSales='" + annualSales + '\'' +
+            ", top3Markets='" + top3Markets + '\'' +
+            ", materials='" + materials + '\'' +
+            ", headPic='" + headPic + '\'' +
+            ", department='" + department + '\'' +
+            ", jobTitle='" + jobTitle + '\'' +
+            ", website='" + website + '\'' +
+            ", country=" + country +
+            ", province=" + province +
+            ", city='" + city + '\'' +
+            ", isPro=" + isPro +
+            ", logo='" + logo + '\'' +
+            ", signBackgd='" + signBackgd + '\'' +
+            ", adPhoto='" + adPhoto + '\'' +
+            ", adPhotoMobile='" + adPhotoMobile + '\'' +
+            ", adPhotoLink='" + adPhotoLink + '\'' +
+            ", companyPhoto='" + companyPhoto + '\'' +
+            ", companyPhotoLink='" + companyPhotoLink + '\'' +
+            ", homePageDiy='" + homePageDiy + '\'' +
+            ", productPageDiy='" + productPageDiy + '\'' +
+            ", contactPageDiy='" + contactPageDiy + '\'' +
+            ", homePageDiyMobile='" + homePageDiyMobile + '\'' +
+            ", productPageDiyMobile='" + productPageDiyMobile + '\'' +
+            ", contactPageDiyMobile='" + contactPageDiyMobile + '\'' +
+            ", traceCode='" + traceCode + '\'' +
+            ", webSizeTitle='" + webSizeTitle + '\'' +
+            ", webSite='" + webSite + '\'' +
+            ", tongjiUrl='" + tongjiUrl + '\'' +
+            ", tongjiPwd='" + tongjiPwd + '\'' +
+            ", updateTime=" + updateTime +
+            ", rowVersion=" + rowVersion +
+            ", prmAuthrity=" + prmAuthrity +
+            ", authAge=" + authAge +
+            ", countryName='" + countryName + '\'' +
+            ", provinceName='" + provinceName + '\'' +
+            ", homePageOn=" + homePageOn +
+            ", productPageOn=" + productPageOn +
+            ", contactPageOn=" + contactPageOn +
+            ", productList=" + productList +
+            ", imList=" + imList +
+            ", targetedMarkets='" + targetedMarkets + '\'' +
+            ", annualOutput='" + annualOutput + '\'' +
+            ", contactsName='" + contactsName + '\'' +
+            ", rddepartment='" + rddepartment + '\'' +
+            ", annualNumberOfNewShoes='" + annualNumberOfNewShoes + '\'' +
+            ", numberOfProductionLines='" + numberOfProductionLines + '\'' +
+            ", numberOfSewingMachines='" + numberOfSewingMachines + '\'' +
+            ", annualExportValue='" + annualExportValue + '\'' +
+            ", numberOfEmployees='" + numberOfEmployees + '\'' +
+            ", exportLicense='" + exportLicense + '\'' +
+            ", testEquipmentAndFacilities='" + testEquipmentAndFacilities + '\'' +
+            ", numberOfForeignTradeTeams='" + numberOfForeignTradeTeams + '\'' +
+            ", yearsOfForeignTradeExperience='" + yearsOfForeignTradeExperience + '\'' +
+            ", statusAuth=" + statusAuth +
+            '}';
   }
 }

@@ -216,12 +216,12 @@ Vue.component('index-top', {
             util_function_obj.supplierCantEnter(this, url,"Please register or login your buyer account if you want public RFQ.");
          },
         submit: function () {
-            if (this.input) {
+            // if (this.input) {
                 window.location = '/home/pdt_PdtProduct?Keyword=' + this.input + '&v=2&searchtype=' + this.select;
-            } else {
-                this.$message('Please enter the keywords you need to search.');
-                return false;
-            }
+            // } else {
+            //     this.$message('Please enter the keywords you need to search.');
+            //     return false;
+            // }
         },
         selected: function (res) {
 

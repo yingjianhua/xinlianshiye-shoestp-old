@@ -331,7 +331,8 @@ public class O2OPdtServerImp implements IO2OPdtServer {
     if (null == o2O_product) {
       throw LOG.err("noEntity", "o2o商品不存在");
     }
-    if (DateTimeUtil.timeDiffForHour(o2O_product.getUpdatedTime(), new Date()) < 24) {
+    if (!o2O_product.getStatus().equals(O2O_ProductStatus.ON.getLine().getKey())
+        && DateTimeUtil.timeDiffForHour(o2O_product.getUpdatedTime(), new Date()) < 24) {
       throw new WebMessageException(ReturnCode.failure, "距离上次审核不满24小时,不可再次申请");
     }
     if (StringUtils.isBlank(reason) && status.equals(O2O_ProductStatus.OFF)) {

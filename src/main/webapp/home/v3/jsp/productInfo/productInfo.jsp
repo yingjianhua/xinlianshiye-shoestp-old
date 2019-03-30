@@ -364,6 +364,7 @@
         #productInfo .productInfo-com .flBox .h2 img,
         #productInfo .productInfo-com .flBox .h1 img {
             width: 100%;
+            object-fit: contain;
         }
 
         #productInfo .productInfo-com .flBox .h2 ul {
@@ -493,6 +494,7 @@
 
         #productInfo .productInfo-com .frBox .h5 li .hPic {
             width: 100%;
+            object-fit: contain;
         }
 
         #productInfo .productInfo-com .frBox .h5 .y3 li {
@@ -884,7 +886,7 @@
                         </div>
 
                         <div class="h2">
-                            <div class="fl">ID: {{productinfocom.pdtId}}</div>
+                            <div class="fl">ID: {{productinfocom.sku}}</div>
                             <!-- <div class="sharebox fr">
                                 <div class="fl"><s:text name="products.share"/> :</div>
                                 <a href="javascript:;" class="shareTb shareTbtb1" @click="shareThis('facebook')"></a>
@@ -1016,23 +1018,42 @@
 
                     <div class="txt">
                         <div class="h4">Shoe Manufacturer</div>
-                        <div class="h5">
+                        <div class="h5" v-if="productinfocom.svsInfo && productinfocom.svsInfo.status == 1">
                             <img class="mr4" src="/home/v3/static/images/productInfo/icon-renzheng.png" alt=""/>Certificate
                             <div class="i"></div>
-                            <img class="mr4" src="/home/v3/static/images/productInfo/icon-jinpai.png" alt=""/>SVS
+                            <!-- <img class="mr4" src="/home/v3/static/images/productInfo/icon-jinpai.png" alt=""/> -->
+                            <img class="mr4" v-if="productinfocom.svsInfo.grade == 1" src="/home/v3/static/images/supplier-level1.png" alt="SVS" style="width:14px;"/>
+                            <img class="mr4" v-if="productinfocom.svsInfo.grade == 2" src="/home/v3/static/images/supplier-level2.png" alt="SVS" style="width:14px;"/>
+                            <img class="mr4" v-if="productinfocom.svsInfo.grade == 3" src="/home/v3/static/images/supplier-level3.png" alt="SVS" style="width:14px;"/>
+                            SVS
                         </div>
                         <div class="h6">
                             <div>
                                 <div class="ww42">R&D：</div>
-                                <el-rate v-model="5.0" disabled></el-rate>
+                                <a v-if="productinfocom.svsInfo" class="common-a" href="javascript:void(0);" :title="productinfocom.svsInfo.researchBase">
+                                    <el-rate v-model="productinfocom.svsInfo.researchBaseStar" disabled></el-rate>
+                                </a>
+                                <a v-else class="common-a" href="javascript:void(0);" title="0">
+                                        <el-rate value="0" disabled></el-rate>
+                                </a>
                             </div>
                             <div>
                                 <div class="ww42">Output：</div>
-                                <el-rate v-model="5.0" disabled></el-rate>
+                                <a v-if="productinfocom.svsInfo" class="common-a" href="javascript:void(0);" :title="productinfocom.svsInfo.factoryBase">
+                                    <el-rate v-model="productinfocom.svsInfo.factoryBaseStar" disabled></el-rate>
+                                </a>
+                                <a v-else class="common-a" href="javascript:void(0);" title="0">
+                                        <el-rate value="0" disabled></el-rate>
+                                </a>
                             </div>
                             <div>
                                 <div class="ww42">Scale：</div>
-                                <el-rate v-model="5.0" disabled></el-rate>
+                                <a v-if="productinfocom.svsInfo" class="common-a" href="javascript:void(0);" :title="productinfocom.svsInfo.capacityBase">
+                                    <el-rate v-model="productinfocom.svsInfo.capacityBaseStar" disabled></el-rate>
+                                </a>
+                                <a v-else class="common-a" href="javascript:void(0);" title="0">
+                                        <el-rate value="0" disabled></el-rate>
+                                </a>
                             </div>
                         </div>
                     </div>

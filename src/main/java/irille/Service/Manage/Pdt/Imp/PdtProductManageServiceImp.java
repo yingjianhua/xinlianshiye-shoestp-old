@@ -353,8 +353,11 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
     } else if (!StringUtil.hasValue(pdtProduct.getCode())) {
       return -7;
     }
-
-    pdtProduct.setSku("");
+    StringBuffer buff = new StringBuffer();
+    for (int i = 0; i < 12; i++) {
+      buff.append((int) (1 + Math.random() * 9));
+    }
+    pdtProduct.setSku(buff.toString());
     pdtProduct.setCurPrice(min); // 商城价
     pdtProduct.setPurPrice(BigDecimal.valueOf(0));
     pdtProduct.setMktPrice(BigDecimal.valueOf(0));
@@ -432,7 +435,7 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
       // 产品直接发布
       if (!pdtProductSaveView.isSoldInStatus()) {
         // 立即上架
-        pdtProduct.setSoldInTime(OYn.YES.getLine().getKey());
+        pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
         pdtProduct.setSoldTimeB(Env.getSystemTime());
       } else {
         // 定时上架
@@ -755,7 +758,7 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
     SQL sql = new SQL();
     sql.SELECT(PdtProduct.class);
     sql.FROM(PdtProduct.class);
-    sql.WHERE(PdtProduct.T.STATE, " =? ", Pdt.OState.OFF.getLine().getKey());
+    // sql.WHERE(PdtProduct.T.STATE, " =? ", Pdt.OState.OFF.getLine().getKey());
     sql.WHERE(PdtProduct.T.IS_VERIFY, " =? ", Pdt.OAppr.PASS.getLine().getKey());
     sql.WHERE(PdtProduct.T.SOLD_IN_TIME, " =? ", OYn.YES.getLine().getKey());
     //    sql.WHERE(PdtProduct.T.SOLD_TIME_B, " <=? ", new Date());

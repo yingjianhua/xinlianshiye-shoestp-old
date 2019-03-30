@@ -3,7 +3,7 @@
 <jsp:include page="v3/header.jsp"/>
 <link rel="stylesheet" href="/home/v3/static/css/productList.css">
 <link href="./static/css/style.css" rel="stylesheet" type="text/css">
-<link href="./static/css/global.css" rel="stylesheet" type="text/css">
+<!-- <link href="./static/css/global.css" rel="stylesheet" type="text/css"> -->
 <link href="./static/css/user.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="./static/js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="/home/static/js/user.js"></script>
@@ -43,6 +43,7 @@
     <!--分级导航-->
     <div class="topNav">
         <div class="h1"><a href="/">Home</a><i class="el-icon-arrow-right"></i></div>
+        <div class="h1"><a :class="{'now':(!breadcrumbnav || breadcrumbnav.length<=0)}" href="/home/pdt_PdtProduct"> All product</a><i v-if="breadcrumbnav && breadcrumbnav.length>0" class="el-icon-arrow-right"></i></div>
         <blcok v-if="breadcrumbnav && breadcrumbnav.length>0">
             <div class="h1" v-for="(item,index) in breadcrumbnav" for-key="index">
                 <a @click="categorySearch" :data-cated="item.pkey" href="javascript:;"
@@ -50,7 +51,6 @@
                 <i class="el-icon-arrow-right" v-show="breadcrumbnav.length-1!=index"></i>
             </div>
         </blcok>
-        <div class="h1"><a class="now" href="/" v-if="!breadcrumbnav || breadcrumbnav.length<=0"> All product</a></div>
     </div>
     <!--页面左部分类导航-->
     <div class="leftNav fl">
@@ -113,7 +113,7 @@
                 </ul>
             </div>
             <div class="top-box">
-                <p>Supplier Level<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
+                <p>SVS Level<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
                 <div class="i1"></div>
                 <ul style="height:auto;">
                     <el-checkbox-group v-model="grade">
