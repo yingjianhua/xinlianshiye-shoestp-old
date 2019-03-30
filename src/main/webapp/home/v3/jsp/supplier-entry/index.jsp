@@ -848,7 +848,6 @@
                                 self.$set(self,'usermsg',res.data.result.user)
                                 self.basicInfo.userid = res.data.result.user.id
                                 self.getcountry();
-                                self.getRetype();
                             }else{
                                 // self.showmsg('请先登录,3秒后跳转至登录页面')
                                 // setTimeout(function(){
@@ -910,6 +909,7 @@
                         self.$set(self, 'country', res.data.result)
                         self.$set(self, 'exhibitionCountry', res.data.result)
                         self.exhibitionCountrylength = Math.ceil(self.exhibitionCountry.length / 3)
+                        self.getRetype();
                     }else{
                         self.$message({
                             message: res.data.msg || '获取国家列表失败',
@@ -1140,10 +1140,12 @@
             //选择国家显示
             selectshow: function () {
                 this.selectcountry = []
+                console.log('asdfasdfasdfasdfsadfasdasdfasd',this.country )
                 for (let i in this.basicInfo.targetedMarket) {
                     for (let j in this.country) {
                         if (this.basicInfo.targetedMarket[i] == this.country[j].id) {
                             this.selectcountry.push(this.country[j])
+                            console.log('asdfasdfasdfasdfsadfasdasdfasd',this.selectcountry )
                         }
                     }
                 }
