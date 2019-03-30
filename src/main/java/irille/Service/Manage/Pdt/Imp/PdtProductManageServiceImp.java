@@ -128,7 +128,15 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
         }
       }
     }
+    // 校验商品货号
+    Integer verify =
+        pdtProductDao.verifyCode(
+            pdtProductSaveView.getNumber_right(), pdtProductSaveView.getId(), supId);
+    if (verify == 0) {
+      return -12;
+    }
 
+    // pdtProductSaveView.getNumber_right()
     PdtProduct pdtProduct = new PdtProduct();
     if (pdtProductSaveView.getId() > 0) {
       PdtProduct prod = pdtProductDao.findByPkey(pdtProductSaveView.getId());
@@ -440,8 +448,9 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
       } else {
         // 定时上架
         if (pdtProductSaveView.getPutawayDate().compareTo(new Date()) == -1) {
-          pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
-          pdtProduct.setSoldTimeB(Env.getSystemTime());
+          /*pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
+          pdtProduct.setSoldTimeB(Env.getSystemTime());*/
+          return -13;
         } else if (pdtProductSaveView.getPutawayDate().compareTo(new Date()) >= 1) {
           pdtProduct.setSoldInTime(OYn.YES.getLine().getKey());
           pdtProduct.setSoldTimeB(pdtProductSaveView.getPutawayDate());

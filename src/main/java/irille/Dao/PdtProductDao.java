@@ -1803,4 +1803,28 @@ public class PdtProductDao {
     String newSql = sql.toString() + "  order by cat desc limit 0,3";
     return Query.sql(newSql).queryMaps();
   }
+
+  /** @Author wilson Zhang @Description 判断货号是否存在 并且产品不是本身 @Date 17:30 2019/3/30 */
+  public static Integer verifyCode(String code, Integer pruductPkey, Integer supplierPkey) {
+    SQL sql =
+        new SQL() {
+          {
+            SELECT(PdtProduct.T.PKEY)
+                .FROM(PdtProduct.class)
+                .WHERE(PdtProduct.T.CODE, "=?", code)
+                .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierPkey);
+          }
+        };
+    if (Query.sql(sql).queryCount() > 1) {
+      return 0;
+    } else if (Query.sql(sql).queryCount() == 0) {
+      return 1;
+    } else if (Query.sql(sql).queryCount() == 1) {
+      Integer num = Query.sql(sql).query(PdtProduct.class).getPkey();
+      if (num.equals(pruductPkey)) {
+        return 1;
+      }
+    }
+    return 0;
+  };
 }
