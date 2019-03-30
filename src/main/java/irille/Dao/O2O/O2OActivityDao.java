@@ -122,6 +122,8 @@ public class O2OActivityDao {
             .WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.PrivateExpo)
             .WHERE(supName != null, UsrSupplier.T.NAME, "like ? ", supName)
             .WHERE(status != null, O2O_PrivateExpoPdt.T.STATUS, "=?", status)
+            .WHERE(PdtProduct.T.IS_VERIFY, "=?", Pdt.OAppr.PASS)
+            .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON)
             .WHERE(verify_status != null, O2O_PrivateExpoPdt.T.VERIFY_STATUS, "=?", verify_status)
             .WHERE(cat != null, PdtCat.T.NAME, "like ?", "%" + cat + "%")
             .WHERE(
