@@ -308,7 +308,11 @@ public class PdtAttrDAO {
           .map(
               l -> {
                 PdtProductVueView attr = new PdtProductVueView();
-                translateUtil.getAutoTranslate(l, language);
+                if (l.getSupplier() != null) {
+                  translateUtil.getAutoTranslate(l, Language.en);
+                } else {
+                  translateUtil.getAutoTranslate(l, language);
+                }
                 attr.setId(l.getPkey());
                 attr.setName(l.getName());
                 attr.setSupplier(l.getSupplier());
@@ -325,7 +329,11 @@ public class PdtAttrDAO {
                         false)
                     .forEach(
                         ll -> {
-                          translateUtil.getAutoTranslate(ll, language);
+                          if (ll.gtMain().getSupplier() != null) {
+                            translateUtil.getAutoTranslate(ll, Language.en);
+                          } else {
+                            translateUtil.getAutoTranslate(ll, language);
+                          }
                           PdtProductVueView line = new PdtProductVueView();
                           line.setId(ll.getPkey());
                           line.setName(ll.getName());
@@ -534,10 +542,15 @@ public class PdtAttrDAO {
             false)
         .forEach(
             ll -> {
-              translateUtil.getAutoTranslate(ll, lag);
+              translateUtil.autoTranslate(ll);
               PdtProductVueView line = new PdtProductVueView();
               line.setId(ll.getPkey());
-              line.setName(ll.getName());
+              try {
+                line.setName(ll.getName(Language.en));
+              } catch (JSONException e) {
+                line.setName(ll.getName());
+                e.printStackTrace();
+              }
               lineList.add(line);
             });
     attrView.setItems(lineList);
