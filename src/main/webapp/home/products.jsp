@@ -149,14 +149,20 @@
             </div> --%>
 
             <div class="top-box2" style="margin-left: 20px;">Min Order :
-                <input class="w63" type="text" @blur="lessthan222" @keyup.enter="lessthan222" v-model.trim="lessthan"
-                       placeholder="less than" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/>
+                <input class="w63" type="text"
+                       v-model.trim="lessthan"
+                       placeholder="less than"
+                       @keyup.enter="search"
+                       onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/>
             </div>
             <div class="i0"></div>
             <div class="top-box2">Price :
-                <input class="w63" type="text" @blur="min222" @keyup.enter="min222" v-model.trim.number="min" placeholder="min."
+                <input class="w63" type="text"
+                       @keyup.enter="search"
+                       v-model.trim.number="min" placeholder="min."
                        onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/> -
-                <input class="w63" type="text" @blur="min222" @keyup.enter="min222" v-model.trim.number="max" placeholder="max."
+                <input class="w63" type="text" v-model.trim.number="max" placeholder="max."
+                       @keyup.enter="search"
                        onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/>
             </div>
 
