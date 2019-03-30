@@ -60,7 +60,7 @@ public class RFQConsultGroupRelationDaoImpl implements RFQConsultGroupRelationDa
       Integer rec, boolean supplier, Integer start, Integer limit) {
     limit = limit == 0 ? 15 : limit;
     String sql =
-        " SELECT relation.pkey,consult.title,message.re,consult.create_time "
+        " SELECT consult.pkey,consult.title,message.re,consult.create_time "
             + " FROM r_f_q_consult_relation relation "
             + " LEFT JOIN r_f_q_consult consult "
             + " ON consult.pkey = relation.consult "
@@ -71,7 +71,8 @@ public class RFQConsultGroupRelationDaoImpl implements RFQConsultGroupRelationDa
             + "			LIMIT 0,1) message "
             + " ON message.r = relation.pkey "
             + " WHERE relation.supplier_id = "
-            + rec;
+            + rec
+            + " AND message.re = 0";
 
     List<Map<String, Object>> map = Query.sql(sql).queryMaps();
     Integer count = map.size(); // 总数
