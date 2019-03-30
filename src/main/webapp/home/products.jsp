@@ -116,7 +116,7 @@
                 <p>SVS Level<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
                 <div class="i1"></div>
                 <ul style="height:auto;">
-                    <el-checkbox-group v-model="grade">
+                    <el-checkbox-group v-model="grade" class="my-ele-checkbox-group1">
                         <el-checkbox label="3" name="3"> <img src="/home/v3/static/images/supplier-level3.png" alt="" style="margin-right:8px;">Diamond</el-checkbox>
                         <el-checkbox label="2" name="2"><img src="/home/v3/static/images/supplier-level2.png" alt="" style="margin-right:8px;">Gold</el-checkbox>
                         <el-checkbox label="1" name="1"><img src="/home/v3/static/images/supplier-level1.png" alt="" style="margin-right:8px;">Silver</el-checkbox>

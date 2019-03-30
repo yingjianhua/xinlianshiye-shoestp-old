@@ -616,31 +616,30 @@ a, a:link, a:visited, a:hover, a:active {
   min-width: 135px;
 }
 #productList .my-ele-checkbox-group .el-checkbox + .el-checkbox{
-  margin-left: 0;
+	margin-left: 0;
 }
-#productList .my-ele-checkbox-group .el-checkbox__input.is-checked + .el-checkbox__label {
-  color: #606266;
+#productList .my-ele-checkbox-group .el-checkbox__input.is-checked + .el-checkbox__label ,#productList .my-ele-checkbox-group1 .el-checkbox__input.is-checked + .el-checkbox__label{
+	color: #606266;
 }
-
-#productList .my-ele-checkbox-group .el-checkbox__input.is-checked .el-checkbox__inner{
-  border-color: #dcdfe6;
-  background-color: #fff;
-}
-
-#productList .my-ele-checkbox-group .el-checkbox__inner::after {
-  border: 1px solid #3c5bae;
-  border-left: 0;
-  border-top: 0;
+#productList .my-ele-checkbox-group .el-checkbox__input.is-checked .el-checkbox__inner,#productList .my-ele-checkbox-group1 .el-checkbox__input.is-checked .el-checkbox__inner{
+	border-color: #dcdfe6;
+	background-color: #fff;
 }
 
-#productList .my-ele-checkbox-group .el-checkbox__inner:hover {
-  border: 1px solid #dcdfe6;
+#productList .my-ele-checkbox-group .el-checkbox__inner::after,#productList .my-ele-checkbox-group1 .el-checkbox__inner::after{
+	border: 1px solid #3c5bae;
+	border-left: 0;
+	border-top: 0;
 }
 
-#productList .my-ele-checkbox-group .el-checkbox__inner.is-focus,
-#productList .my-ele-checkbox-group .el-checkbox__inner,
-#productList .my-ele-checkbox-group .el-checkbox__input.is-focus .el-checkbox__inner{
-  border-color: #dcdfe6;
+#productList .my-ele-checkbox-group .el-checkbox__inner:hover, #productList .my-ele-checkbox-group1 .el-checkbox__inner:hover{
+	border: 1px solid #dcdfe6;
+}
+
+#productList .my-ele-checkbox-group .el-checkbox__inner.is-focus,#productList .my-ele-checkbox-group1 .el-checkbox__inner.is-focus,
+#productList .my-ele-checkbox-group .el-checkbox__inner,#productList .my-ele-checkbox-group1 .el-checkbox__inner
+#productList .my-ele-checkbox-group .el-checkbox__input.is-focus .el-checkbox__inner,#productList .my-ele-checkbox-group1 .el-checkbox__input.is-focus .el-checkbox__inner{
+	border-color: #dcdfe6;
 }
 #productList .price-sort{
 	padding: 0 24px;
