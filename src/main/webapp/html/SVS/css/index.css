@@ -649,11 +649,10 @@
   height: 30px;
 }
 #svsSuplies .suplies .supliescon .logo div:hover {
-  background-color: #35c;
-  color: white;
+  background-color: #efefef;
 }
 #svsSuplies .suplies .supliescon .logo div:hover span{
-  color: white;
+  color: #666;
 }
 #svsSuplies .suplies .supliescon .logo div img{
   width: 13px;

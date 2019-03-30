@@ -59,6 +59,7 @@
 <div id="shoesTp"  class=" w_1240 ">
 	<index-top></index-top>
 	<main class="main">
+
 		<div class="wide por clearfix flex-layout">
 			<!-- 左侧 My-Accoung 列表 -->
 			<%--<div class="por"--%>
@@ -170,7 +171,8 @@
 
 					<!-- 手风琴效果 - 下拉加载事件 -->
 					<div class="collapse-box" id="inquiry-collapse-list">
-						<el-collapse :value="(inquiryList[0] && inquiryList[0].relations && inquiryList[0].relations.length)?0:-1" v-if="inquiryList.length">
+                        <%--this.relationPkey?this.nowInquiryIndex:--%>
+						<el-collapse :value="showAccordionContacterIndex!==null?showAccordionContacterIndex:(inquiryList[0] && inquiryList[0].relations && inquiryList[0].relations.length)?0:-1" v-if="inquiryList.length">
 							<el-collapse-item :class="{active: nowInquiryIndex==inquiryIndex}" :name="inquiryIndex"
 											  v-for="(inquiry,inquiryIndex) in inquiryList"
                                               v-if="(inquiry.type==1 || !inquiry.isDeleteInLocal )"
@@ -184,9 +186,10 @@
 										 v-if="inquiry.relations && inquiry.relations.length==0">
 										<img class="goods-pic" alt="goods's pic"
 											 :src="(inquiry.images && inquiry.images[0])?(util_function_obj.image(inquiry.images[0],50,50, (inquiry.type==3?'/blur,r_5,s_20':''))):'/home/v3/static/images/user_no_img.png'">
-										<div class="goods-info">
+										<%--RFQ信息显示一行，其余显示两行--%>
+										<div class="goods-info" :class="{'two-row': inquiry.type != 1}">
 											<div class="goods-name">
-												<div class="ellipsis_1">{{inquiry.title}}</div>
+												<div :class="inquiry.type == 1 ? 'ellipsis_1' : 'ellipsis_2'">{{inquiry.title}}</div>
 											</div>
 											<div class="status" v-if="inquiry.type==1">{{inquiry.verifyStatus | inquiryStatus2Text}}</div>
 										</div>
@@ -206,10 +209,11 @@
 										<img class="goods-pic" alt="goods's pic"
 											 :src="(inquiry.images && inquiry.images[0])?(util_function_obj.image(inquiry.images[0],50,50, (inquiry.type==3?'/blur,r_5,s_20':''))):'/home/v3/static/images/user_no_img.png'"
 											 :data-inquiry-index="inquiryIndex">
-										<div class="goods-info"
+										<%--RFQ信息显示一行，其余显示两行--%>
+										<div class="goods-info"  :class="{'two-row': inquiry.type != 1}"
 											 :data-inquiry-index="inquiryIndex">
 											<div class="goods-name">
-												<div class="ellipsis_1">{{inquiry.title}}</div>
+												<div :class="inquiry.type == 1 ? 'ellipsis_1' : 'ellipsis_2'">{{inquiry.title}}</div>
 											</div>
                                             <div class="status" v-if="inquiry.type==1">{{inquiry.verifyStatus | inquiryStatus2Text(true)}}</div>
 										</div>
@@ -851,7 +855,10 @@
 
 			<!-- view信息 - 询盘详情 + 报价详情 -->
 			<transition name="slide-right">
-				<div class="inquiry-detail-wrap" v-show="isScale && showRFQDeailBox && !showChatBox && inquiryList.length">
+				<div class="inquiry-detail-wrap"
+                     v-show="isScale && showRFQDeailBox && !showChatBox && inquiryList.length"
+                     v-cloak
+                >
 					<!-- 第一个框 - 询盘详情 -->
 					<div class="inquiry-overview">
 						<img class="inquiry-main-pic" alt=""
@@ -926,111 +933,113 @@
 					</div>
 
 					<!-- 第二个框 报价详情 -->
-					<template v-if="quotationDetailList.length > 0">
-						<div class="quotation-detail-box"
-							 v-for="(quotationDetail, quotationIndex) in quotationDetailList">
-							<div class="inquiry-detail-header"
-								 v-if="quotationIndex == 0 && inquiryList[nowInquiryIndex] && inquiryList[nowInquiryIndex].relations">
-								All {{inquiryList[nowInquiryIndex].relations.length}} quotations comparison
-							</div>
-							<div class="content-box content-box01">
-								<h3 class="content-header">Product Information</h3>
-								<ul class="content">
-									<li class="item" v-if="quotationDetail.title">
-										<span class="title">Product name:</span>
-										<span class="text product-name">{{quotationDetail.title}}</span>
-									</li>
-									<li class="item" v-if="quotationDetail.description">
-										<span class="title">Product details:</span>
-										<span class="text">{{quotationDetail.description}}</span>
-									</li>
-									<li class="item" v-if="quotationDetail.images.length">
-										<span class="title">Product image or file:</span>
-										<div class="text">
-											<img class="pic-item" alt="goods' pic"
-												 :src="util_function_obj.image(goodsPic.url, 100)"
-												 v-for="goodsPic in quotationDetail.images">
-										</div>
-									</li>
-								</ul>
-							</div>
+                    <transition name="el-zoom-in-top">
+                        <template v-if="quotationDetailList.length > 0">
+                            <div class="quotation-detail-box"
+                                 v-for="(quotationDetail, quotationIndex) in quotationDetailList">
+                                <div class="inquiry-detail-header"
+                                     v-if="quotationIndex == 0 && inquiryList[nowInquiryIndex] && inquiryList[nowInquiryIndex].relations">
+                                    All {{inquiryList[nowInquiryIndex].relations.length}} quotations comparison
+                                </div>
+                                <div class="content-box content-box01">
+                                    <h3 class="content-header">Product Information</h3>
+                                    <ul class="content">
+                                        <li class="item" v-if="quotationDetail.title">
+                                            <span class="title">Product name:</span>
+                                            <span class="text product-name">{{quotationDetail.title}}</span>
+                                        </li>
+                                        <li class="item" v-if="quotationDetail.description">
+                                            <span class="title">Product details:</span>
+                                            <span class="text">{{quotationDetail.description}}</span>
+                                        </li>
+                                        <li class="item" v-if="quotationDetail.images.length">
+                                            <span class="title">Product image or file:</span>
+                                            <div class="text">
+                                                <img class="pic-item" alt="goods' pic"
+                                                     :src="util_function_obj.image(goodsPic.url, 100)"
+                                                     v-for="goodsPic in quotationDetail.images">
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
 
-							<div class="content-box content-box02">
-								<h3 class="content-header">Product Information</h3>
-								<ul class="content">
-									<li class="item" v-if="quotationDetail.quantity">
-										<span class="title">Quantity: </span>
-										<span class="text">
-												<span class="product-quantity">{{quotationDetail.quantity}}</span>
-												pairs
-											</span>
-									</li>
-									<li class="item">
-										<span class="title">Prices:</span>
-										<span class="text product-name">
-												{{quotationDetail.minPrice}}-{{quotationDetail.maxPrice}}
-											</span>
-									</li>
-									<li class="item" v-if="quotationDetail.currency && quotationDetail.currency.shortName">
-										<span class="title">Currency Unit:</span>
-										<span class="text">{{quotationDetail.currency.shortName}}</span>
-									</li>
-									<li class="item" v-if="quotationDetail.validDate">
-										<span class="title">Quote validity period:</span>
-										<span class="text">{{quotationDetail.validDate | dataFormat('yyyy-MM-dd hh:mm:ss')}}</span>
-									</li>
-									<li class="item" v-if="quotationDetail.shippingTerms">
-										<span class="title">Shipping terms:</span>
-										<span class="text">{{quotationDetail.shippingTerms}}</span>
-									</li>
-									<li class="item" v-if="quotationDetail.paymentTerms">
-										<span class="title">Payment method:</span>
-										<span class="text">{{quotationDetail.paymentTerms}}</span>
-									</li>
-								</ul>
-							</div>
+                                <div class="content-box content-box02">
+                                    <h3 class="content-header">Product Information</h3>
+                                    <ul class="content">
+                                        <li class="item" v-if="quotationDetail.quantity">
+                                            <span class="title">Quantity: </span>
+                                            <span class="text">
+                                                    <span class="product-quantity">{{quotationDetail.quantity}}</span>
+                                                    pairs
+                                                </span>
+                                        </li>
+                                        <li class="item">
+                                            <span class="title">Prices:</span>
+                                            <span class="text product-name">
+                                                    {{quotationDetail.minPrice}}-{{quotationDetail.maxPrice}}
+                                                </span>
+                                        </li>
+                                        <li class="item" v-if="quotationDetail.currency && quotationDetail.currency.shortName">
+                                            <span class="title">Currency Unit:</span>
+                                            <span class="text">{{quotationDetail.currency.shortName}}</span>
+                                        </li>
+                                        <li class="item" v-if="quotationDetail.validDate">
+                                            <span class="title">Quote validity period:</span>
+                                            <span class="text">{{quotationDetail.validDate | dataFormat('yyyy-MM-dd hh:mm:ss')}}</span>
+                                        </li>
+                                        <li class="item" v-if="quotationDetail.shippingTerms">
+                                            <span class="title">Shipping terms:</span>
+                                            <span class="text">{{quotationDetail.shippingTerms}}</span>
+                                        </li>
+                                        <li class="item" v-if="quotationDetail.paymentTerms">
+                                            <span class="title">Payment method:</span>
+                                            <span class="text">{{quotationDetail.paymentTerms}}</span>
+                                        </li>
+                                    </ul>
+                                </div>
 
-							<div class="content-box content-box03">
-								<h3 class="content-header">Quotation supplemental information</h3>
-								<ul class="content">
-									<li class="item">
-										<span class="title">Whether to provide samples: </span>
-										<span class="text">
-												<span class="roundCheck checked" v-if="quotationDetail.sample"></span>
-												{{quotationDetail.sample?"Yes":"No"}}
-											</span>
-									</li>
-									<li class="item" v-if="quotationDetail.companyProfile">
-										<div class="title">Company Profile:</div>
-										<div class="text company-profile">
-											{{quotationDetail.companyProfile}}
-										</div>
-									</li>
-									<li class="item" v-if="quotationDetail.throwaways && quotationDetail.throwaways.length">
-										<div class="title">Company product book:</div>
-										<div class="text books">
-											<template
-												v-for="productBook in quotationDetail.throwaways">
-												<img class="company-book-item"  alt="product's book"
-													 v-if="isImg(productBook.url)"
-													 :src="util_function_obj.image(productBook.url, 200, 110)">
-												<div v-else>
-													<a :href="util_function_obj.image(productBook.url)" class="book-link">《{{productBook.name}}》</a>
-												</div>
-											</template>
-										</div>
-									</li>
-								</ul>
-							</div>
+                                <div class="content-box content-box03">
+                                    <h3 class="content-header">Quotation supplemental information</h3>
+                                    <ul class="content">
+                                        <li class="item">
+                                            <span class="title">Whether to provide samples: </span>
+                                            <span class="text">
+                                                    <span class="roundCheck checked" v-if="quotationDetail.sample"></span>
+                                                    {{quotationDetail.sample?"Yes":"No"}}
+                                                </span>
+                                        </li>
+                                        <li class="item" v-if="quotationDetail.companyProfile">
+                                            <div class="title">Company Profile:</div>
+                                            <div class="text company-profile">
+                                                {{quotationDetail.companyProfile}}
+                                            </div>
+                                        </li>
+                                        <li class="item" v-if="quotationDetail.throwaways && quotationDetail.throwaways.length">
+                                            <div class="title">Company product book:</div>
+                                            <div class="text books">
+                                                <template
+                                                    v-for="productBook in quotationDetail.throwaways">
+                                                    <img class="company-book-item"  alt="product's book"
+                                                         v-if="isImg(productBook.url)"
+                                                         :src="util_function_obj.image(productBook.url, 200, 110)">
+                                                    <div v-else>
+                                                        <a :href="util_function_obj.image(productBook.url)" class="book-link">《{{productBook.name}}》</a>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
 
-						</div>
-					</template>
+                            </div>
+                        </template>
+                    </transition>
 
-					<el-collapse-transition>
+                    <transition name="el-zoom-in-top">
 						<el-button size="" class="view-more"
 								   v-show="inquiryList[nowInquiryIndex] && inquiryList[nowInquiryIndex].relations.length && quotationDetailListIndex < (inquiryList[nowInquiryIndex].relations.length-1)"
 								   @click="viewQuotationMoew">View More</el-button>
-					</el-collapse-transition>
+                    </transition>
 				</div>
 			</transition>
 			<!-- view信息 - 询盘详情 + 报价详情 - end -->
@@ -1209,12 +1218,14 @@
 			showRFQDeailBox: false, //是否显示RFQ详情box
 			isShowMore: false, //是否显示更多 - 对话框顶部信息
 			btnLoading: false, //按钮是否可以点击 - 报价详情 - more
+            showAccordionContacterIndex: null, //从联系人列表过来时，手风琴列表显示对应的弹框
 
 			//询盘列表信息
 			inquiresType: null,	// inquires筛选选中的值 1.RFQ 2.普通询盘 3.私人 4.店铺询盘 其余为All
 			isInquiresOptionShow: false,	// inquires是否显示下拉筛选
 			inquiresOptionUnreadInfo: {},	// inquires下拉 对应的未读信息数量
 			isUnread: false, //unread是否选中
+            lastRelation: null, //从联系人处点击过来时，左侧列表直接加载至该联系人位置 - 跳转过来时才用该参数，否则不传该参数
 			inquiryKeyword: "", //搜索信息
 			inquiryList: [], //询盘列表信息
 			inquiryLisPageStart: 0, //询盘列表 分页
@@ -1282,28 +1293,26 @@
 			testObj:{}
 		},
 		mounted() {
-			// 获取询盘列表
-			this.getInquiryList();
+			//获取联系人列表跳转过来时携带的参数
+			let whichPageFrom = sessionStorage.getItem("whichPageFrom")
+			// let supplierPkey = sessionStorage.getItem("supplierPkey")
+			// let consultPkey = sessionStorage.getItem("consultPkey")
+			let relationPkey = sessionStorage.getItem("relationPkey")
 
 			// 从联系人那边跳转过来时，显示聊天框
-			if(util_function_obj.GetQueryString("supplierPkey") && util_function_obj.GetQueryString("consultPkey") && util_function_obj.GetQueryString("relationPkey") ){
+			// if(whichPageFrom=="contactsList" && supplierPkey && consultPkey && relationPkey){
+			if(whichPageFrom=="contactsList" && relationPkey){
+				console.log("从别的地方跳过来的")
 				this.isFromContactList = true;
 				this.isScale = true;
 				this.showChatBox = true;
-
-				this.supplierPkey = util_function_obj.GetQueryString("supplierPkey");
-				this.consultPkey = util_function_obj.GetQueryString("consultPkey");
-				this.relationPkey = util_function_obj.GetQueryString("relationPkey");
-
-				//获取chat列表
-				this.getChatInfo();
-				//获取询盘详情
-				this.getInquiryDetail();
-				//获取功能供应商详情
-				this.getSupplierDetail();
-				// 显示下拉show more选项
-				this.chatShowMore();
+				// this.supplierPkey = supplierPkey;
+				// this.consultPkey = consultPkey;
+				// this.relationPkey = relationPkey;
+				this.lastRelation = relationPkey; //从联系人跳转过来时才有 - 获取需询盘列表时需要
 			}
+			// 获取询盘列表
+			this.getInquiryList();
 		},
 		methods: {
 			// image(v, params) {
@@ -1391,14 +1400,15 @@
 			getInquiryList() {
 			    // 在缩小状态 - 且是重新加载时（reset使inquiryLisPageStart=0），显示第一个
                 let isShowFirstOne = false;
-			    if(this.isScale && this.inquiryLisPageStart==0){
+                // 缩小情况下，且从第一个开始加载时（第一次加载），显示第一个
+			    if( (util_function_obj.GetQueryString("showFirstInquiry") || this.isScale) && this.inquiryLisPageStart==0){
                     isShowFirstOne = true;
                 }
-				console.log("获取询盘列表")
 
 				// 正在加载 or 已加载完全
 				if(this.isInquiryLisLoading || this.isInquiryLoadOver) return;
 				this.isInquiryLisLoading = true;
+
 				// 参数拼接 - unread未勾选时不传
 				var postData={
 					keyword: this.inquiryKeyword,
@@ -1409,19 +1419,24 @@
 				if( this.isUnread ){
 					postData.unread = true;
 				}
+				//从联系人跳转过来时，该参数使列表加载至包含该联系人处 => 使该联系人处于当前列表处
+				if( this.lastRelation ){
+					postData.lastRelation = this.lastRelation;
+				}
 				axios.get('/home/rfq_RFQConsult_pageMine', {
 					params: postData
 				})
 						.then((res) => {
-					this.isInquiryLisLoading = false;
-				if (res.data.ret != 1) {
+					if (res.data.ret != 1) {
 					this.$message.error(res.data.msg || "Get inquiry list error,please try again later");
 					return
 				};
 
+				this.isInquiryLisLoading = false;
+
 				this.inquiryList.push(...res.data.result.items);
 
-				// 加载至最后一页
+				// 判断是否加载完成（加载至最后一页）
 				if (res.data.result.items.length < this.inquiryLisPageLimit) {
 					this.isInquiryLoadOver = true;
 				}else{
@@ -1431,32 +1446,57 @@
                     });
                 }
 
-				// 从联系人那边跳转过来时，显示对应的聊天框，而不用显示第一个
-				if(this.isFromContactList) return;
+                // 从联系人列表中跳转过来时
+                if(this.lastRelation){
+                    // 不再执行默认展开第一个
+                    isShowFirstOne = false;
+
+                    // 确保下一页加载正确
+                    if( res.data.result.limit > this.inquiryLisPageLimit ){
+                        this.inquiryLisPageStart +=  (res.data.result.limit - this.inquiryLisPageLimit)
+                    }
+
+                    // 寻找目标对象（联系人列表中点击的对象）与询盘列表对应的下标
+                    var resData = res.data.result.items;
+                    listForEach:
+                        for(var i = resData.length-1; i>=0; i--){
+                            var relations = resData[i].relations;
+                            if(relations && relations.length > 0){
+                                for(var j=0,len2=relations.length;j<len2;j++){
+                                    var relation = relations[j];
+                                    if( relation.quotation && relation.quotation.pkey ){
+                                        if( relation.quotation.pkey == this.lastRelation ){
+                                            this.nowInquiryIndex = i;
+                                            this.nowSupplierIndex = j;
+                                            this.showAccordionContacterIndex = i;
+                                            console.log("嵌套for有值")
+                                            console.log(i)
+                                            console.log(j)
+                                            break listForEach;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+					// 请求成功时！才清除其余页面跳转过来时的数据
+					// 否则如果未登录 - 登录刷新后数据将消失
+					this.removeOtherPageInfo();
+
+                    // 找到联系人目标后，显示对应的联系人聊天框及相应内容
+                    this.contactSupplier({
+                        currentTarget:{
+                            dataset:{
+                                supplierIndex: this.nowSupplierIndex,
+                                inquiryIndex: this.nowInquiryIndex
+                            }
+                        }
+                    })
+                }
 
 				//为了功能-搜索后显示第一个
 				if(isShowFirstOne){
-				    // RFQ时显示询盘详情
-				    if(res.data.result.items[0].type==1){
-                        this.showChatBox = false;
-                        this.showRFQDeailBox = true;
-
-                        //获取询盘详情
-                        this.getInquiryDetail();
-                        //获取报价详情 - 第一个
-                        this.quotationDetailList=[];
-                        this.quotationDetailListIndex=0;
-                        this.getQuotationDetail();
-                    }else{
-                        this.showChatBox = true;
-                        this.showRFQDeailBox = false;
-                        //获取chat列表
-                        this.getChatInfo();
-                        //获取询盘详情
-                        this.getInquiryDetail();
-                        //获取功能供应商详情
-                        this.getSupplierDetail();
-                    }
+				    this.showFirstOne(res.data.result.items[0]);
                 }
 			})
 			.catch((error) => {
@@ -1464,6 +1504,43 @@
 				this.$message.error(error || 'Network error,please try again later');
 			});
 			},
+
+			// 清除其余页面跳转过来时的数据(联系人列表过来时保存的sessionStorage)
+			removeOtherPageInfo(){
+				sessionStorage.removeItem("whichPageFrom")
+				// sessionStorage.removeItem("supplierPkey")
+				// sessionStorage.removeItem("consultPkey")
+				sessionStorage.removeItem("relationPkey")
+
+				this.lastRelation = null;
+				this.isFromContactList = false;
+			},
+
+            // 一进来后显示第一个
+            showFirstOne(firstInquiryObj){
+                // RFQ时显示询盘详情
+                if(firstInquiryObj.type==1){
+                    this.showChatBox = false;
+                    this.showRFQDeailBox = true;
+                    this.isScale = true;
+
+                    //获取询盘详情
+                    this.getInquiryDetail();
+                    //获取报价详情 - 第一个
+                    this.quotationDetailList=[];
+                    this.quotationDetailListIndex=0;
+                    this.getQuotationDetail();
+                }else{
+                    this.showChatBox = true;
+                    this.showRFQDeailBox = false;
+                    //获取chat列表
+                    this.getChatInfo();
+                    //获取询盘详情
+                    this.getInquiryDetail();
+                    //获取功能供应商详情
+                    this.getSupplierDetail();
+                }
+            },
 
 			// 加载下一页询盘列表
 			loadMoreInquiryList(){
@@ -1478,11 +1555,6 @@
 				// this.showRFQDeailBox = false;
 				this.nowInquiryIndex = 0;
 				this.nowSupplierIndex = 0;
-				//以下4个为 从联系人列表跳转过来时使用
-				this.supplierPkey = 0;
-				this.consultPkey = 0;
-				this.relationPkey = 0;
-				this.isFromContactList = false;
 
 				this.quotationDetailList = [];
 				this.quotationDetailListIndex = 0;
@@ -1558,11 +1630,9 @@
 			getInquiryDetail(){
 				//先清空之前的数据
 				this.inquiryDetail={};
-				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
-				this.consultPkey = this.isFromContactList?this.consultPkey:this.inquiryList[this.nowInquiryIndex].pkey;
 				axios.get('/home/rfq_RFQConsult_detail', {
 					params:{
-						consultPkey: this.consultPkey,
+						consultPkey: this.inquiryList[this.nowInquiryIndex].pkey,
 					}
 				})
 						.then((res) => {
@@ -1570,6 +1640,7 @@
 					this.$message.error(res.data.msg || "Get inquiry's detail error,please try again later");
 					return
 				};
+
 				this.inquiryDetail = res.data.result;
 				this.addInformationForm.validDate = this.dataFormatMethod(res.data.result.valieDate,"yyyy-MM-dd hh:mm:ss");
 
@@ -1611,11 +1682,9 @@
 				//先清空之前的数据
 				this.supplierDetail={};
 
-				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
-				this.supplierPkey = this.isFromContactList?this.supplierPkey:this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].supplier.pkey;
 				axios.get('/home/usr_UsrSupplier_getDetail', {
 					params:{
-						supplierPkey: this.supplierPkey,
+						supplierPkey: this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].supplier.pkey
 					}
 				})
 						.then((res) => {
@@ -1641,10 +1710,8 @@
 					this.$message.error(res.msg || "Images upload error,please try again later");
 					return
 				};
-				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
-				this.consultPkey = this.isFromContactList?this.consultPkey:this.inquiryList[this.nowInquiryIndex].pkey;
 				axios.post('/home/rfq_RFQConsult_addImage', Qs.stringify({
-					consultPkey: this.consultPkey,
+					consultPkey: this.inquiryList[this.nowInquiryIndex].pkey,
 					images: res.result.url,
 				}))
 						.then((res) => {
@@ -1684,6 +1751,7 @@
 					this.$message.error(res.data.msg || "Get quotation's detail error,please try again later");
 					return
 				};
+				
 				this.quotationDetailList.push(res.data.result);
 			})
 			.catch((error) => {
@@ -1878,7 +1946,6 @@
 
 			// 点击联系相应的供应商
 			contactSupplier(e){
-				console.log("contactSupplier")
 				// 显示顶部show more信息
 				clearTimeout(this.timeoutTimer);
 				this.timeoutTimer = setTimeout(()=>{
@@ -1895,25 +1962,20 @@
 				this.isFromContactList = false; //从联系人列表跳转过来时的值
 
 				var dataset = e.currentTarget.dataset;
-				var inquiryId = dataset.inquiryId;
+				// var inquiryId = dataset.inquiryId;
 				var supplierIndex = dataset.supplierIndex;
 				var inquiryIndex = dataset.inquiryIndex;
 				// 当前点击的就是当前显示的，不触发点击事件 - 首次加载显示第一个，此时也可以点第一个，so != 0
 				if(this.nowSupplierIndex==supplierIndex && this.nowInquiryIndex == inquiryIndex && this.nowInquiryIndex != 0 && Object.keys(this.supplierDetail).length != 0 && this.showChatBox) return;
-
 				this.showChatBox = true;
 				this.showRFQDeailBox = false;
-
 				// 重置聊天信息
 				this.resetChatMsg();
-
 				this.nowSupplierIndex = supplierIndex;
 				this.nowInquiryIndex = inquiryIndex;
-
 				// 左侧列表将点击项 设置为已读状态
 				this.$set(this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].quotation, "isNew",false)
 				this.$set(this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex], "unread",false)
-
 				//获取chat列表
 				this.getChatInfo();
 				//获取询盘详情
@@ -1930,15 +1992,13 @@
 
 			// 获取add product商品列表
 			getAddProductList(){
-				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
-				this.supplierPkey = this.isFromContactList?this.supplierPkey:this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].supplier.pkey;
 				axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax', {
 					params: {
 						v: 3,
 						lose: this.addProductCatogeryValue?1:0,
 						cate: this.addProductCatogeryValue,
 						pName: this.addProductKeyword,
-						supplier: this.supplierPkey,
+						supplier: this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].supplier.pkey,
 						// IsO2o: 1,
 						start: this.addProductPageStart,
 						limit: this.addProductPageLimit
@@ -1997,11 +2057,9 @@
 			//确认选中add product商品
 			confirmAddProduct(e){
 				console.log(this.addProductSelectedPdtIds)
-				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
-				this.consultPkey = this.isFromContactList?this.consultPkey:this.inquiryList[this.nowInquiryIndex].pkey;
 				axios.post('/home/rfq_RFQConsult_addProductRequest', Qs.stringify({
 					products: this.addProductSelectedPdtIds.join(),
-					consultPkey: this.consultPkey
+					consultPkey: this.inquiryList[this.nowInquiryIndex].pkey
 				}))
 						.then((res) => {
 					if (res.data.ret != 1) {
@@ -2065,16 +2123,13 @@
 				// }
 				this.isChatMsgListLoading = true;
 
-				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
-				this.relationPkey = this.isFromContactList?this.relationPkey:this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].quotation.pkey;
-
 				axios.get('/home/rfq_RFQConsult_pageMsgs', {
 					params:{
 						start: 0,
                         preMessagePkey:  searchMore?this.chatMsgListPagePrePkey:null,
                         nextMessagePkey: searchLast?this.chatMsgListPageNextPkey:null,
 						limit: this.chatMsgListPageLimit,
-						relationPkey: this.relationPkey,
+						relationPkey: this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].quotation.pkey,
 					}
 				})
 						.then((res) => {
@@ -2087,14 +2142,12 @@
 					this.$message.error(res.data.msg || "Get chat information error,please try again later");
 					return
 				};
+
 				// 是否全部加载完毕 - 不以加载最新消息为判断
 				if (!searchLast && (res.data.result.msgs.length < this.chatMsgListPageLimit)) {
 					this.isChatMsgListLoadOver = true;
 				};
 
-                console.log("msgs is")
-                console.log(res.data.result.msgs)
-                console.log(searchLast)
 				// 保存最后一个 prePkey，用以load more
                 if(!searchLast){
                     this.chatMsgListPagePrePkey = res.data.result.msgs[res.data.result.msgs.length - 1].pkey || null;
@@ -2260,12 +2313,11 @@
 			sendMsg(){
 				console.log("sendMsg")
 				if(!this.sendMsgValue && !this.sendMsgImgValue) return;
-				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
-				this.relationPkey = this.isFromContactList?this.relationPkey:this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].quotation.pkey;
+
 				axios.post('/home/rfq_RFQConsult_sendMessage', Qs.stringify({
 					content: this.sendMsgValue,
 					imageUrl: this.sendMsgImgValue,
-					relationPkey: this.relationPkey,
+					relationPkey: this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].quotation.pkey,
 				}))
 						.then((res) => {
 					console.log("发送消息 suc");
