@@ -3,7 +3,7 @@
 <jsp:include page="v3/header.jsp"/>
 <link rel="stylesheet" href="/home/v3/static/css/productList.css">
 <link href="./static/css/style.css" rel="stylesheet" type="text/css">
-<link href="./static/css/global.css" rel="stylesheet" type="text/css">
+<!-- <link href="./static/css/global.css" rel="stylesheet" type="text/css"> -->
 <link href="./static/css/user.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="./static/js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="/home/static/js/user.js"></script>

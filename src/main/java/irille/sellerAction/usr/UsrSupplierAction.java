@@ -15,6 +15,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.xinlianshiye.shoestp.common.service.UsrMainService;
+
 import irille.Dao.RFQ.RFQConsultDao;
 import irille.Entity.SVS.Enums.SVSGradeType;
 import irille.Service.Manage.Usr.IUsrSupplierManageService;
@@ -59,6 +61,7 @@ import lombok.Setter;
 
 public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsrSupplierAction {
 
+  @Inject UsrMainService usrMainService;
   @Getter @Setter private String logo;
   @Getter @Setter private String newPwd;
   @Getter @Setter private String oldPwd;
@@ -568,6 +571,12 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
   }
 
   public void logout() throws IOException, JSONException {
+    irille.Filter.svr.SessionMsg sessionMsg =
+        (irille.Filter.svr.SessionMsg) session.get(irille.Filter.svr.SessionMsg.session_key);
+    if (sessionMsg != null && sessionMsg.haveUser()) {
+      UsrMain usrMain = sessionMsg.getUsrMain();
+      usrMainService.signOut(usrMain);
+    }
     setUser(null);
     writeSuccess();
   }
