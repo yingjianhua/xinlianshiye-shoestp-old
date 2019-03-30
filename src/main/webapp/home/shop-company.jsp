@@ -35,6 +35,10 @@
         .enterprise-info-content .info-item .title{
             flex: 0 0 250px;
         }
+
+        .enterprise-info-content .info-item .text {
+            word-break: break-all;
+        }
     </style>
 </head>
 <jsp:include page="v3/header.jsp"/>
@@ -152,7 +156,17 @@
                             <s:text name="NumberOfProductionLines"/>
                         </h5>
                         <div class="text">
-                            <c:if test="${supView.numberOfProductionLines != 'null'}">${supView.numberOfProductionLines}</c:if>
+                            <c:if test="${supView.numberOfProductionLines != 'null'}">
+                                <c:if test="${supView.numberOfProductionLines < 50}">
+                                    <s:text name="needleCartNumOptions1"/>
+                                </c:if>
+                                <c:if test="${supView.numberOfProductionLines > 50 && supView.numberOfProductionLines < 70}">
+                                    <s:text name="needleCartNumOptions2"/>
+                                </c:if>
+                                <c:if test="${supView.numberOfProductionLines > 70}">
+                                    <s:text name="needleCartNumOptions3"/>
+                                </c:if>
+                            </c:if>
                         </div>
                     </div>
 
@@ -162,7 +176,14 @@
                             <s:text name="NumberOfSewingMachines"/>
                         </h5>
                         <div class="text">
-                            <c:if test="${supView.numberOfSewingMachines != 'null'}">${supView.numberOfSewingMachines}</c:if>
+                            <c:if test="${supView.numberOfSewingMachines != 'null'}">
+                                <c:if test="${supView.numberOfSewingMachines < 3}">
+                                    ${supView.numberOfSewingMachines}
+                                </c:if>
+                                <c:if test="${supView.numberOfSewingMachines > 2}">
+                                    <s:text name="productionLineQuantityOptions3"/>
+                                </c:if>
+                            </c:if>
                         </div>
                     </div>
 
@@ -171,10 +192,18 @@
                         <h5 class="title">
                             <s:text name="AnnualExportValue"/>
                         </h5>
-
-
                         <div class="text">
-                            <c:if test="${supView.annualExportValue != 'null'}">${supView.annualExportValue}</c:if>
+                            <c:if test="${supView.annualExportValue != 'null'}">
+                                <c:if test="${supView.annualExportValue < 200}">
+                                    <s:text name="exportVolumeOptions1"/>
+                                </c:if>
+                                <c:if test="${supView.annualExportValue > 200 && supView.annualExportValue < 500}">
+                                    <s:text name="exportVolumeOptions2"/>
+                                </c:if>
+                                <c:if test="${supView.annualExportValue > 500}">
+                                    <s:text name="exportVolumeOptions3"/>
+                                </c:if>
+                            </c:if>
                         </div>
                     </div>
 
@@ -187,7 +216,18 @@
                             <s:text name="NumberOfEmployees"/>
                         </h5>
                         <div class="text">
-                            <c:if test="${supView.numberOfEmployees != 'null'}">${supView.numberOfEmployees}</c:if></div>
+                            <c:if test="${supView.numberOfEmployees != 'null'}">
+                                <c:if test="${supView.numberOfEmployees < 200}">
+                                    <s:text name="exportVolumeOptions1"/>
+                                </c:if>
+                                <c:if test="${supView.numberOfEmployees > 200 && supView.numberOfEmployees < 300}">
+                                    <s:text name="exportVolumeOptions2"/>
+                                </c:if>
+                                <c:if test="${supView.numberOfEmployees > 300}">
+                                    <s:text name="exportVolumeOptions3"/>
+                                </c:if>
+                            </c:if>
+                        </div>
                     </div>
 
                     <div class="info-item">
@@ -227,7 +267,17 @@
                         <h5 class="title">
                             <s:text name="NumberOfForeignTradeTeams"/>
                         </h5>
-                        <div class="text"><c:if test="${supView.numberOfForeignTradeTeams != 'null'}">${supView.numberOfForeignTradeTeams}</c:if>
+                        <div class="text"><c:if test="${supView.numberOfForeignTradeTeams != 'null'}">
+                            <c:if test="${supView.numberOfForeignTradeTeams < 10}">
+                                <s:text name="employeesNumOptions1"/>
+                            </c:if>
+                            <c:if test="${supView.numberOfForeignTradeTeams > 10 && supView.numberOfForeignTradeTeams < 15}">
+                                <s:text name="employeesNumOptions2"/>
+                            </c:if>
+                            <c:if test="${supView.numberOfForeignTradeTeams > 15}">
+                                <s:text name="employeesNumOptions3"/>
+                            </c:if>
+                        </c:if>
                         </div>
                     </div>
 
@@ -236,11 +286,20 @@
                         <h5 class="title">
                             <s:text name="YearsOfForeignTradeExperience"/>
                         </h5>
-                        <div class="text"><c:if test="${supView.yearsOfForeignTradeExperience != 'null'}">${supView.yearsOfForeignTradeExperience}</c:if>
+                        <div class="text">
+                            <c:if test="${supView.yearsOfForeignTradeExperience != 'null'}">
+                                <c:if test="${supView.yearsOfForeignTradeExperience < 5}">
+                                    <s:text name="experienceOptions1"/>
+                                </c:if>
+                                <c:if test="${supView.yearsOfForeignTradeExperience > 5 && supView.yearsOfForeignTradeExperience < 10}">
+                                    <s:text name="experienceOptions2"/>
+                                </c:if>
+                                <c:if test="${supView.yearsOfForeignTradeExperience > 10}">
+                                    <s:text name="experienceOptions3"/>
+                                </c:if>
+                            </c:if>
                         </div>
                     </div>
-
-
 
                 </div>
             </div>
@@ -305,8 +364,18 @@
                         </div>
                         <p class="company-name"><c:if test="${supView.name != 'null'}">${supView.showName}</c:if></p>
                         <div>
-                            <img src="./static/images/ico/icon-svs.png" alt="">
-                            svs
+
+                            <c:if test="${supView.grade != 'null'}">
+                                <c:if test="${supView.grade == 1}">
+                                    <img src="./static/images/ico/icon-svs-yp.png" alt="">svs
+                                </c:if>
+                                <c:if test="${supView.grade == 2}">
+                                    <img src="./static/images/ico/icon-svs-jp.png" alt="">svs
+                                </c:if>
+                                <c:if test="${supView.grade == 3}">
+                                    <img src="./static/images/ico/icon-svs-zs.png" alt="">svs
+                                </c:if>
+                            </c:if>
                         </div>
                     </div>
                     <el-form :model="form" :rules="rules" ref="form" label-width="155px" style="margin-top: 30px;">
