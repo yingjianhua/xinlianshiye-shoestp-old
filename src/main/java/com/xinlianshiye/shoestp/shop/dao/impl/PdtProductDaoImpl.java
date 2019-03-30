@@ -238,7 +238,8 @@ public class PdtProductDaoImpl implements com.xinlianshiye.shoestp.shop.dao.PdtP
         null != search.getMaxCurPrice(), PdtProduct.T.CUR_PRICE, " <=? ", search.getMaxCurPrice());
     sql.WHERE(null != search.getMinOq(), PdtProduct.T.MIN_OQ, " <=? ", search.getMinOq());
     if (null != search.getIsO2o()) {
-      sql.WHERE(" O2ORecord.o2oCount > 0 ");
+      sql.WHERE(PdtProduct.T.PRODUCT_TYPE, " =? ", Pdt.OProductType.O2O.getLine().getKey());
+      //      sql.WHERE(" O2ORecord.o2oCount > 0 ");
     } else {
       sql.WHERE(PdtProduct.T.PRODUCT_TYPE, " =? ", Pdt.OProductType.GENERAL.getLine().getKey());
     }
