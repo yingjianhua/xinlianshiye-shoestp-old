@@ -516,7 +516,7 @@ public class PdtAttrDAO {
     PdtProductVueView attrView = new PdtProductVueView();
     attrView.setId(attr.getPkey());
     try {
-      attrView.setName(attr.getName(lag));
+      attrView.setName(attr.getName(Language.en));
     } catch (JSONException e) {
       e.printStackTrace();
     }
