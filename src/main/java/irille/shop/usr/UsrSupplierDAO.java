@@ -1545,7 +1545,7 @@ public class UsrSupplierDAO {
                 .SELECT(SVSInfo.T.STATUS, "svsStatus")
                 .FROM(UsrSupplier.class)
                 .WHERE(T.STATUS, "=1")
-                .ORDER_BY(T.STOREOPEN_TIME,"DESC");
+                .ORDER_BY(T.STOREOPEN_TIME, "DESC");
             LEFT_JOIN(SVSInfo.class, T.PKEY, SVSInfo.T.SUPPLIER);
             if (name != null) {
               WHERE(T.NAME, "like '%" + name + "%'");
@@ -1554,7 +1554,13 @@ public class UsrSupplierDAO {
               WHERE(T.STORE_STATUS, "=?", storeStatus);
             }
             if (svsGrade != null) {
-              WHERE(SVSInfo.T.GRADE, "=?", svsGrade);
+              if (svsGrade == 0) {
+                WHERE(SVSInfo.T.GRADE, "=?", svsGrade);
+                OR();
+                WHERE(SVSInfo.T.GRADE, " IS NULL");
+              }else{
+                WHERE(SVSInfo.T.GRADE, "=?", svsGrade);
+              }
             }
           }
         };
