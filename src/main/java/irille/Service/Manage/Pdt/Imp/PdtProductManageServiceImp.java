@@ -189,117 +189,117 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
     // 优先新增颜色
     Set<Integer> colorPkeyList = new HashSet<>();
     Map<Integer, String> colorI_N = new HashMap<>();
-    for (int i = 0; i < pdtProductSaveView.getNewSpec().size(); i++) {
-      colorPkeyList.add(pdtProductSaveView.getNewSpec().get(i).getColor());
-      String str = "";
-      try {
-        JSONObject json = new JSONObject(pdtProductSaveView.getNewSpec().get(i).getColorName());
-        str = json.get("zh_CN").toString();
-      } catch (JSONException e) {
-        str = pdtProductSaveView.getNewSpec().get(i).getColorName();
-        // TODO: handle exception
-      }
-      Pattern p = Pattern.compile(Regular.REGULAR_ZH_CN);
-      Matcher matcher = p.matcher(str);
-      if (!matcher.matches()) return -10;
-      if (!colorI_N.isEmpty()) {
-        for (Entry item : colorI_N.entrySet()) {
-          if (!item.getKey().equals(pdtProductSaveView.getNewSpec().get(i).getColor())
-              && item.getValue().equals(str)) {
-            return -11;
-          }
-        }
-      }
-      colorI_N.put(pdtProductSaveView.getNewSpec().get(i).getColor(), str);
-    }
     if (pdtProductSaveView.getNewSpec() != null && !pdtProductSaveView.getNewSpec().isEmpty()) {
-      Map<Integer, PdtColor> specMaps = new HashMap<>(); // key为specId  value为颜色
-      Map<String, PdtColor> insColorNames = new HashMap<>();
-      for (NewSpceView v : pdtProductSaveView.getNewSpec()) {
-        if (v.getColor() < 0) {
-          if (!insColorNames.containsKey(v.getColorName())
-              || !colorPkeyList.contains(v.getColor())) {
-            PdtColor color = new PdtColor();
-            color.setName(v.getColorName());
-            color.setPicture(v.getColorImg());
-            PdtColor insColor = PdtColorDAO.insColor(color, supId);
-            insColorNames.put(v.getColorName(), insColor);
-          }
-          specMaps.put(v.getId(), insColorNames.get(v.getColorName()));
-        }
-      }
-
       for (int i = 0; i < pdtProductSaveView.getNewSpec().size(); i++) {
-        if (pdtProductSaveView.getSpecColor() != null
-            && !pdtProductSaveView.getSpecColor().isEmpty()) {
-          if (!pdtProductSaveView
-                  .getSpecColor()
-                  .contains(pdtProductSaveView.getNewSpec().get(i).getColor())
-              && pdtProductSaveView.getNewSpec().get(i).getColor() > 0) {
-            PdtColorDAO.delColor(pdtProductSaveView.getNewSpec().get(i).getColor());
-          }
-        }
-        PdtSpec spec = new PdtSpec();
-        if (pdtProductSaveView.getNewSpec().get(i).getId() > 0) {
-          spec.setPkey(pdtProductSaveView.getNewSpec().get(i).getId());
-        }
-        NewSpceView v = pdtProductSaveView.getNewSpec().get(i);
-        if (pdtProductSaveView.getId() <= 0) {
-          if (pdtProductSaveView.getNewSpec().get(i).getColorType() == 0) {
-            //            PdtColor color = new PdtColor();
-            //            color.setName(pdtProductSaveView.getNewSpec().get(i).getColorName());
-            //            color.setPicture(pdtProductSaveView.getNewSpec().get(i).getColorImg());
-            //            PdtColor insColor = PdtColorDAO.insColor(color, supId);
-            v = pdtProductSaveView.getNewSpec().get(i);
-            v.setColor(specMaps.get(v.getId()).getPkey());
-            v.setColorName(specMaps.get(v.getId()).getName());
-            //            pdtProductSaveView.getNewSpec().get(i).setColor(insColor.getPkey());
-            //            pdtProductSaveView.getNewSpec().get(i).setColorName(insColor.getName());
-          }
-          colorSet.add(v.getColor());
-        } else {
-          spec.setProduct(pdtProductSaveView.getId());
-          if (pdtProductSaveView.getNewSpec().get(i).getColor() <= 0) {
-            //            PdtColor color = new PdtColor();
-            //            color.setName(pdtProductSaveView.getNewSpec().get(i).getColorName());
-            //            color.setPicture(pdtProductSaveView.getNewSpec().get(i).getColorImg());
-            //            PdtColor insColor = PdtColorDAO.insColor(color, supId);
-            v = pdtProductSaveView.getNewSpec().get(i);
-            v.setColor(specMaps.get(v.getId()).getPkey());
-            v.setColorName(specMaps.get(v.getId()).getName());
-          }
-          colorSet.add(v.getColor());
-        }
+        colorPkeyList.add(pdtProductSaveView.getNewSpec().get(i).getColor());
+        String str = "";
         try {
-          JSONObject jsonKeyNmae = new JSONObject();
-          JSONObject jsonColorName = new JSONObject(v.getColorName());
-          for (Language item : Language.values()) {
-            String str = "";
-            str += jsonColorName.get(item.toString()) + " " + v.getSizeName();
-            jsonKeyNmae.put(item.toString(), str);
-          }
-          spec.setKeyName(jsonKeyNmae.toString());
-        } catch (JSONException | NullPointerException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+          JSONObject json = new JSONObject(pdtProductSaveView.getNewSpec().get(i).getColorName());
+          str = json.get("zh_CN").toString();
+        } catch (JSONException e) {
+          str = pdtProductSaveView.getNewSpec().get(i).getColorName();
+          // TODO: handle exception
         }
-        sizeSet.add(v.getSize());
-        countStock += v.getCount();
-        spec.setColor(v.getColor());
-        spec.setSize(v.getSize());
-        spec.setSku(v.getSku());
-        spec.setPrice(min);
-        spec.setMarkup(BigDecimal.valueOf(0));
-        spec.setStoreCount(v.getCount());
-        spec.setWeight(BigDecimal.valueOf(0));
-        spec.setPics(v.getColorImg());
-        spec.setDeleted(OYn.NO.getLine().getKey());
-        spec.setRowVersion((short) 0);
-        list.add(spec);
+        Pattern p = Pattern.compile(Regular.REGULAR_ZH_CN);
+        Matcher matcher = p.matcher(str);
+        if (!matcher.matches()) return -10;
+        if (!colorI_N.isEmpty()) {
+          for (Entry item : colorI_N.entrySet()) {
+            if (!item.getKey().equals(pdtProductSaveView.getNewSpec().get(i).getColor())
+                && item.getValue().equals(str)) {
+              return -11;
+            }
+          }
+        }
+        colorI_N.put(pdtProductSaveView.getNewSpec().get(i).getColor(), str);
       }
     } else {
       return 0;
     }
+    Map<Integer, PdtColor> specMaps = new HashMap<>(); // key为specId  value为颜色
+    Map<String, PdtColor> insColorNames = new HashMap<>();
+    for (NewSpceView v : pdtProductSaveView.getNewSpec()) {
+      if (v.getColor() < 0) {
+        if (!insColorNames.containsKey(v.getColorName()) || !colorPkeyList.contains(v.getColor())) {
+          PdtColor color = new PdtColor();
+          color.setName(v.getColorName());
+          color.setPicture(v.getColorImg());
+          PdtColor insColor = PdtColorDAO.insColor(color, supId);
+          insColorNames.put(v.getColorName(), insColor);
+        }
+        specMaps.put(v.getId(), insColorNames.get(v.getColorName()));
+      }
+    }
+
+    for (int i = 0; i < pdtProductSaveView.getNewSpec().size(); i++) {
+      if (pdtProductSaveView.getSpecColor() != null
+          && !pdtProductSaveView.getSpecColor().isEmpty()) {
+        if (!pdtProductSaveView
+                .getSpecColor()
+                .contains(pdtProductSaveView.getNewSpec().get(i).getColor())
+            && pdtProductSaveView.getNewSpec().get(i).getColor() > 0) {
+          PdtColorDAO.delColor(pdtProductSaveView.getNewSpec().get(i).getColor());
+        }
+      }
+      PdtSpec spec = new PdtSpec();
+      if (pdtProductSaveView.getNewSpec().get(i).getId() > 0) {
+        spec.setPkey(pdtProductSaveView.getNewSpec().get(i).getId());
+      }
+      NewSpceView v = pdtProductSaveView.getNewSpec().get(i);
+      if (pdtProductSaveView.getId() <= 0) {
+        if (pdtProductSaveView.getNewSpec().get(i).getColorType() == 0) {
+          //            PdtColor color = new PdtColor();
+          //            color.setName(pdtProductSaveView.getNewSpec().get(i).getColorName());
+          //            color.setPicture(pdtProductSaveView.getNewSpec().get(i).getColorImg());
+          //            PdtColor insColor = PdtColorDAO.insColor(color, supId);
+          v = pdtProductSaveView.getNewSpec().get(i);
+          v.setColor(specMaps.get(v.getId()).getPkey());
+          v.setColorName(specMaps.get(v.getId()).getName());
+          //            pdtProductSaveView.getNewSpec().get(i).setColor(insColor.getPkey());
+          //            pdtProductSaveView.getNewSpec().get(i).setColorName(insColor.getName());
+        }
+        colorSet.add(v.getColor());
+      } else {
+        spec.setProduct(pdtProductSaveView.getId());
+        if (pdtProductSaveView.getNewSpec().get(i).getColor() <= 0) {
+          //            PdtColor color = new PdtColor();
+          //            color.setName(pdtProductSaveView.getNewSpec().get(i).getColorName());
+          //            color.setPicture(pdtProductSaveView.getNewSpec().get(i).getColorImg());
+          //            PdtColor insColor = PdtColorDAO.insColor(color, supId);
+          v = pdtProductSaveView.getNewSpec().get(i);
+          v.setColor(specMaps.get(v.getId()).getPkey());
+          v.setColorName(specMaps.get(v.getId()).getName());
+        }
+        colorSet.add(v.getColor());
+      }
+      try {
+        JSONObject jsonKeyNmae = new JSONObject();
+        JSONObject jsonColorName = new JSONObject(v.getColorName());
+        for (Language item : Language.values()) {
+          String str = "";
+          str += jsonColorName.get(item.toString()) + " " + v.getSizeName();
+          jsonKeyNmae.put(item.toString(), str);
+        }
+        spec.setKeyName(jsonKeyNmae.toString());
+      } catch (JSONException | NullPointerException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      sizeSet.add(v.getSize());
+      countStock += v.getCount();
+      spec.setColor(v.getColor());
+      spec.setSize(v.getSize());
+      spec.setSku(v.getSku());
+      spec.setPrice(min);
+      spec.setMarkup(BigDecimal.valueOf(0));
+      spec.setStoreCount(v.getCount());
+      spec.setWeight(BigDecimal.valueOf(0));
+      spec.setPics(v.getColorImg());
+      spec.setDeleted(OYn.NO.getLine().getKey());
+      spec.setRowVersion((short) 0);
+      list.add(spec);
+    }
+
     if (pdtProductSaveView.getDesModule() != null) {
       for (int i = 0; i < pdtProductSaveView.getDesModule().length; i++) {
         String des = null;
