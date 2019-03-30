@@ -537,6 +537,7 @@ public class PdtProductDao {
     sql1.SELECT(
             PdtProduct.T.PKEY,
             PdtProduct.T.NAME,
+            PdtProduct.T.SKU,
             PdtProduct.T.CODE,
             PdtProduct.T.CUR_PRICE,
             PdtProduct.T.PICTURE,
@@ -588,7 +589,12 @@ public class PdtProductDao {
               + PdtProduct.class.getSimpleName()
               + "."
               + PdtProduct.T.NAME.getFld().getCodeSqlField()
-              + " like ?  )",
+              + " like ? OR "
+              + PdtProduct.class.getSimpleName()
+              + "."
+              + PdtProduct.T.SKU.getFld().getCodeSqlField()
+              + " like ? )",
+          "%" + data + "%",
           "%" + data + "%",
           "%" + data + "%");
     }
@@ -796,6 +802,7 @@ public class PdtProductDao {
                       o.put(
                           "update_time",
                           new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(o.get("update_time")));
+                      o.put("sku", (String) o.get(PdtProduct.T.SKU.getFld().getCodeSqlField()));
                       return o;
                     })
                 .collect(toList()),
@@ -1611,6 +1618,8 @@ public class PdtProductDao {
                     PdtProduct.T.IS_DEFAULT_REVIEW)
                 .FROM(PdtProduct.class)
                 .WHERE(supplierId != null, PdtProduct.T.SUPPLIER, "=?", supplierId)
+                .WHERE(PdtProduct.T.IS_VERIFY,"=1")
+                .WHERE(PdtProduct.T.STATE,"=1")
                 .ORDER_BY(PdtProduct.T.VERIFY_TIME, "desc")
                 .LIMIT(0, 3);
           }
@@ -1666,6 +1675,8 @@ public class PdtProductDao {
         .FROM(PdtProduct.class)
         .LEFT_JOIN(PdtTieredPricing.class, PdtTieredPricing.T.PRODUCT, PdtProduct.T.PKEY)
         .WHERE(PdtProduct.T.SUPPLIER, "=" + pkey)
+        .WHERE(PdtProduct.T.IS_VERIFY,"=1")
+        .WHERE(PdtProduct.T.STATE,"=1")
         .GROUP_BY(PdtProduct.T.PKEY);
 
     String newSql = "";
@@ -1759,6 +1770,8 @@ public class PdtProductDao {
         .FROM(PdtProduct.class)
         .LEFT_JOIN(PdtTieredPricing.class, PdtTieredPricing.T.PRODUCT, PdtProduct.T.PKEY)
         .WHERE(PdtProduct.T.SUPPLIER, "=" + pkey)
+        .WHERE(PdtProduct.T.IS_VERIFY,"=1")
+        .WHERE(PdtProduct.T.STATE,"=1")
         .GROUP_BY(PdtProduct.T.PKEY);
 
     String newSql = "";

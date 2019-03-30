@@ -5,6 +5,8 @@ import java.util.Map;
 
 import irille.Dao.SVS.SVSInfoDao;
 import irille.Entity.RFQ.RFQConsultRelation;
+import irille.Entity.SVS.Enums.SVSAuthenticationStatus;
+import irille.Entity.SVS.Enums.SVSGradeType;
 import irille.Entity.SVS.SVSInfo;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
@@ -91,7 +93,11 @@ public class SVSInfoDaoImpl implements SVSInfoDao {
     SQL sql =
         new SQL() {
           {
-            SELECT(SVSInfo.class).FROM(SVSInfo.class).WHERE(SVSInfo.T.SUPPLIER, "=?", supplierId);
+            SELECT(SVSInfo.class)
+                .FROM(SVSInfo.class)
+                .WHERE(SVSInfo.T.SUPPLIER, "=?", supplierId)
+                .WHERE(SVSInfo.T.STATUS, "=?", SVSAuthenticationStatus.SUCCESS)
+                .WHERE(SVSInfo.T.GRADE, "<>?", SVSGradeType.NotAvailable);
           }
         };
     return Query.sql(sql).query(SVSInfo.class);
@@ -105,7 +111,9 @@ public class SVSInfoDaoImpl implements SVSInfoDao {
             SELECT(SVSInfo.class)
                 .FROM(SVSInfo.class)
                 .LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, SVSInfo.T.SUPPLIER)
-                .WHERE(UsrSupplier.T.UserId, "=?", mainId);
+                .WHERE(UsrSupplier.T.UserId, "=?", mainId)
+                .WHERE(SVSInfo.T.STATUS, "=?", SVSAuthenticationStatus.SUCCESS)
+                .WHERE(SVSInfo.T.GRADE, "<>?", SVSGradeType.NotAvailable);
           }
         };
     return Query.sql(sql).query(SVSInfo.class);

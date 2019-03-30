@@ -514,6 +514,7 @@ public class PdtproductPageselect {
       if (pdtProduct.getDescribeModule3() != null) {
         desModule.add(pdtProduct.getDescribeModule3(HomeAction.curLanguage()));
       }
+      productInfoView.setSku(pdtProduct.getSku());
       productInfoView.setDesModule(desModule);
       //
       // productInfoView.setSeoKeywords(SEOUtils.firstUpperCase(productInfoView.getPdtName()));

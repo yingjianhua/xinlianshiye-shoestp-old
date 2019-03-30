@@ -96,8 +96,18 @@ public class ProductInfoView implements BaseView {
 
   private boolean isFavorite;
 
+  private String sku;
+
   @JsonSerialize(using = I18NFieldSerializer.class)
   private String seoTitle;
+
+  public String getSku() {
+    return sku;
+  }
+
+  public void setSku(String sku) {
+    this.sku = sku;
+  }
 
   @JsonSerialize(using = I18NFieldSerializer.class)
   private String seoKeywords;
