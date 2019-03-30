@@ -690,10 +690,12 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     UsrSupplierInfo usi = new UsrSupplierInfo();
     Integer pkey = getSupplier().getPkey();
     usi.setSupplierDetailsDTO(dao.getSupplierDetails(pkey));
-    for (SVSGradeType value : SVSGradeType.values()) {
-      if (usi.getSupplierDetailsDTO().getSvsRatingAndRosDTO().getGrade()
-          == value.getLine().getKey()) {
-        usi.setSvsLevel(value.getLine().getName());
+    if (usi.getSupplierDetailsDTO().getSvsRatingAndRosDTO() != null) {
+      for (SVSGradeType value : SVSGradeType.values()) {
+        if (usi.getSupplierDetailsDTO().getSvsRatingAndRosDTO().getGrade()
+            == value.getLine().getKey()) {
+          usi.setSvsLevel(value.getLine().getName());
+        }
       }
     }
     usi.setInquiriesCount(rfqConsultDao.getConsultCount(pkey));
