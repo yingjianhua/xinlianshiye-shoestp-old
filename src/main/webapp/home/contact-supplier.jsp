@@ -56,17 +56,19 @@
                         <p class="company-name">
                             {{companyInfo.companyName}}
                         </p>
-                        <div v-if="companyInfo.svsgrade == 0" style="color:#7f7f7f">
-                            暂无等级
+                        <div v-if="companyInfo.svsgrade && companyInfo.svsgrade == 0" style="color:#7f7f7f">
                         </div>
-                        <div v-if="companyInfo.svsgrade == 1" style="color:#7f7f7f">
-                            银牌级卖家
+                        <div v-if="companyInfo.svsgrade && companyInfo.svsgrade == 1" style="color:#7f7f7f">
+                            <img src="./v3/static/images/ico/icon_svs_3.png" alt="">
+                            svs
                         </div>
-                        <div v-if="companyInfo.svsgrade == 2" style="color:#7f7f7f">
-                            金牌级卖家
+                        <div v-if="companyInfo.svsgrade && companyInfo.svsgrade == 2" style="color:#7f7f7f">
+                            <img src="./v3/static/images/icon_svs.png" alt="">
+                            svs
                         </div>
-                        <div v-if="companyInfo.svsgrade == 3" style="color:#7f7f7f">
-                            钻石级卖家
+                        <div v-if="companyInfo.svsgrade && companyInfo.svsgrade == 3" style="color:#7f7f7f">
+                            <img src="./v3/static/images/ico/icon_yx.png" alt="">
+                            svs
                         </div>
                     </div>
                     <el-form :model="form" :rules="rules" ref="form" label-width="155px" style="margin-top: 30px;">
