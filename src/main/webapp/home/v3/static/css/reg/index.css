@@ -503,7 +503,9 @@
     width: 70px;
     flex: none;
 }
-
+.page-register_2 .count-info-form .tel-wrap .tel-inner1.isRight .el-input__inner{
+    border-color: #67c23a;
+}
 .page-register_2 .count-info-form .tel-wrap .tel-inner1 .el-form-item__error {
     left: 398px;
 }
@@ -511,6 +513,9 @@
 .page-register_2 .count-info-form .tel-wrap .tel-inner2 {
     width: 70px;
     flex: none;
+}
+.page-register_2 .count-info-form .tel-wrap .tel-inner2.isRight .el-input__inner{
+    border-color: #67c23a;
 }
 
 .page-register_2 .count-info-form .tel-wrap .tel-inner2 .el-form-item__error {
