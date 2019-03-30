@@ -419,7 +419,7 @@ a, a:link, a:visited, a:hover, a:active {
 }
 #productList .rightList .common .common-box .common-boxspan img{
 	display:inline-block;
-	width:14px;
+	/*width:14px;*/
 }
 #productList .rightList .common .common-box .common-boxspan img.icon01{
 	width:17px;

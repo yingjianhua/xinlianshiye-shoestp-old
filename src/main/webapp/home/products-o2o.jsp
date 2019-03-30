@@ -249,9 +249,9 @@
                         Certificate
                         <div class="i"></div>
                         <template  v-if="item.svsInfo && item.svsInfo.grade != 0">
-                            <img class="mr6" v-if="item.svsInfo.grade == 1" src="/home/v3/static/images/supplier-level1.png" alt="SVS"/>
-                            <img class="mr6" v-if="item.svsInfo.grade == 2" src="/home/v3/static/images/supplier-level2.png" alt="SVS"/>
-                            <img class="mr6" v-if="item.svsInfo.grade == 3" src="/home/v3/static/images/supplier-level3.png" alt="SVS"/>
+                            <img class="mr6" v-if="item.svsInfo.grade == 1" src="/home/v3/static/images/ico/icon_yx.png" alt="SVS"/>
+                            <img class="mr6" v-if="item.svsInfo.grade == 2" src="/home/v3/static/images/ico/icon_svs.png" alt="SVS"/>
+                            <img class="mr6" v-if="item.svsInfo.grade == 3" src="/home/v3/static/images/ico/icon_svs_3.png" alt="SVS"/>
                             SVS
                             <div class="i"></div>
                         </template>
