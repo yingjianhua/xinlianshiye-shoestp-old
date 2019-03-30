@@ -59,7 +59,6 @@ import irille.view.pdt.CommentView;
 import irille.view.pdt.PdtCommentSatisFactionView;
 import irille.view.pdt.PdtCommentViewPageView;
 import irille.view.usr.SupplierView;
-import irille.view.v3.svs.SvsRatingAndRosDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -320,8 +319,6 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
 
   private String expoKey; // 私人展厅产品的密钥, 没有密钥或者密钥过期都不能进入页面
 
-  private SvsRatingAndRosDTO dto;
-
   /**
    * @Description: 商品详情页 Jsp
    *
@@ -363,7 +360,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
 
       if (null != infoView.getMap()) setMap(infoView.getMap());
       seoView = new SEOView();
-      dto = svsInfoService.getSvsRatingAndRos(supplier.getPkey());
+      infoView.setSvsInfo(svsInfoService.getSvsRatingAndRos(supplier.getPkey()));
       seoView.setTitle(translateUtil.getLanguage(infoView.getSeoTitle(), HomeAction.curLanguage()));
       seoView.setDescription(
           translateUtil.getLanguage(infoView.getSeoDescription(), HomeAction.curLanguage()));
