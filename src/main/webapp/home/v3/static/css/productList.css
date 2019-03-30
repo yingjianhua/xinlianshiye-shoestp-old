@@ -305,9 +305,12 @@ a, a:link, a:visited, a:hover, a:active {
 	display:inline-block;
 	width:11px;
 }
-#productList .rightList .common .common-box .common-boxslide img{
+#productList .rightList .common .common-box .common-boxslide .goods-img{
 	display:inline-block;
-	width:100%;
+	width:195px;
+	height:195px;
+	-o-object-fit: cover;
+	object-fit: cover;
 	/*vertical-align: middle;*/
 }
 #productList .rightList .common .common-box .common-boxslide .el-carousel__arrow--left,

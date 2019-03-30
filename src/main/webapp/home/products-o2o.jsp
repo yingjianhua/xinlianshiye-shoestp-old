@@ -188,7 +188,7 @@
                             <el-carousel-item v-for="item2 in item.picture.split(',')" :key="item">
                                 <div class="h3" @mouseenter="bigPicBoxopen" @mouseleave="bigPicBoxclose"
                                      :data-pic="item2">
-                                    <a :href="'/'+item.rewrite" target="_blank"><img class="fl"
+                                    <a :href="'/'+item.rewrite" target="_blank"><img class="fl goods-img"
                                                                                      :src="util_function_obj.image(item2,195)"/></a>
                                 </div>
                             </el-carousel-item>
@@ -354,7 +354,7 @@
             selelv: "",
             selecount: "",
             selestore: "",
-            cated: '', // 分类 
+            cated: '', // 分类
             lose: '',
             currentPage: 1,
             allpage: '',
@@ -471,7 +471,7 @@
                         "search.isO2o": 1,
                     };
                     var url = '/home/pdt_PdtProduct_gtProductsIndexListAjax?v=4'
-                    var numbers = 0 
+                    var numbers = 0
                     for(var i in params){
                         if(i != Object.keys(params).length - 1 && params[i] != null){
                             url += "&"
