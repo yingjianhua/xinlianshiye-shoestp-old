@@ -384,7 +384,7 @@ public class O2OProductDao {
                 + "."
                 + SVSInfo.T.GRADE.getFld().getCodeSqlField()
                 + " = ? )",
-            O2O_ProductStatus.ON.getLine().getKey());
+                SVSGradeType.NotAvailable.getLine().getKey());
       } else {
         sql.WHERE(SVSInfo.T.GRADE, " =? ", search.getGrade());
       }
@@ -442,7 +442,7 @@ public class O2OProductDao {
                 + "."
                 + SVSInfo.T.GRADE.getFld().getCodeSqlField()
                 + " = ? )",
-            O2O_ProductStatus.ON.getLine().getKey());
+                SVSGradeType.NotAvailable.getLine().getKey());
       } else {
         sql.WHERE(SVSInfo.T.GRADE, " =? ", search.getGrade());
       }
