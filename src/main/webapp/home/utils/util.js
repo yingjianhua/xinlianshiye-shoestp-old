@@ -89,6 +89,48 @@ var util_function_obj={
         return Math.floor(byteLen)
 
     },
+
+    // 节流函数 - 计时器
+    _throttleTimeout: null,
+    // 节流函数 - 上次执行时间点
+    _throttlePrevious: 0,
+    // 节流函数 - 不管连续点击，wait时间内只生效一次
+    _throttle: function(func, wait, options) {
+        wait = wait || 1000;
+        var context, args, result;
+
+        if (!options) options = {};
+        // 延迟执行函数
+        var later = function() {
+            // 若设定了开始边界不执行选项，上次执行时间始终为0
+            util_function_obj._throttlePrevious = options.leading === false ? 0 : Date.now();
+            util_function_obj._throttleTimeout = null;
+            result = func.apply(context, args);
+            if (!util_function_obj._throttleTimeout) context = args = null;
+        };
+        return function() {
+            var now = Date.now();
+            // 首次执行时，如果设定了开始边界不执行选项，将上次执行时间设定为当前时间。
+            if (!util_function_obj._throttlePrevious && options.leading === false) util_function_obj._throttlePrevious = now;
+            // 延迟执行时间间隔
+            var remaining = wait - (now - util_function_obj._throttlePrevious);
+            context = this;
+            args = arguments;
+            // 延迟时间间隔remaining小于等于0，表示上次执行至此所间隔时间已经超过一个时间窗口
+            // remaining大于时间窗口wait，表示客户端系统时间被调整过
+            if (remaining <= 0 || remaining > wait) {
+                clearTimeout(util_function_obj._throttleTimeout);
+                util_function_obj._throttleTimeout = null;
+                util_function_obj._throttlePrevious = now;
+                result = func.apply(context, args);
+                if (!util_function_obj._throttleTimeout) context = args = null;
+                //如果延迟执行不存在，且没有设定结尾边界不执行选项
+            } else if (!util_function_obj._throttleTimeout && options.trailing !== false) {
+                util_function_obj._throttleTimeout = setTimeout(later, remaining);
+            }
+            return result;
+        };
+    }
 };
 
 

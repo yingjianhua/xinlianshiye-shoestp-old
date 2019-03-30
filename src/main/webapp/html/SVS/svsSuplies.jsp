@@ -187,7 +187,7 @@
 
                         <div class="score">
                             <span class="title">R&D: </span>
-                            <span :title="(supplier.svs && supplier.svs.researchBaseStar)?supplier.svs.researchBaseStar:0">
+                            <span :title="(supplier.svs && supplier.svs.researchBase)?supplier.svs.researchBase:0">
                                 <template v-if="supplier.svs && supplier.svs.researchBaseStar">
                                     <template v-for="i in 5">
                                         <img src="images/subliesiconros.png"
@@ -209,7 +209,7 @@
                         </div>
                         <div class="score">
                             <span class="title"> Output: </span>
-                            <span :title="(supplier.svs && supplier.svs.capacityBaseStar)?supplier.svs.capacityBaseStar:0">
+                            <span :title="(supplier.svs && supplier.svs.capacityBase)?supplier.svs.capacityBase:0">
                                 <template v-if="supplier.svs && supplier.svs.capacityBaseStar">
                                     <template v-for="i in 5">
                                         <img src="images/subliesiconros.png"
@@ -240,7 +240,7 @@
                         </div>
                         <div class="score">
                             <span class="title">Scale: </span>
-                            <span :title="(supplier.svs && supplier.svs.factoryBaseStar)?supplier.svs.factoryBaseStar:0">
+                            <span :title="(supplier.svs && supplier.svs.factoryBase)?supplier.svs.factoryBase:0">
                                 <template v-if="supplier.svs && supplier.svs.factoryBaseStar">
                                     <template v-for="i in 5">
                                         <img src="images/subliesiconros.png"
