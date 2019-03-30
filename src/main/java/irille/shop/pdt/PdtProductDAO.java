@@ -950,7 +950,11 @@ public class PdtProductDAO {
           {
             SELECT(PdtProduct.T.PKEY)
                 .FROM(PdtProduct.class)
-                .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierpkey);
+                .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierpkey)
+                .WHERE(PdtProduct.T.STATE, " =? ", Pdt.OState.ON.getLine().getKey())
+                .or()
+                .WHERE(PdtProduct.T.STATE, " =? ", Pdt.OState.OFF.getLine().getKey())
+                .WHERE(PdtProduct.T.SOLD_TIME_B, " IS NOT NULL ");
           }
         };
     return irille.pub.bean.Query.sql(pdt).queryCount();
@@ -976,7 +980,8 @@ public class PdtProductDAO {
             SELECT(PdtProduct.T.PKEY)
                 .FROM(PdtProduct.class)
                 .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierpkey)
-                .WHERE(PdtProduct.T.STATE, "=?", OState.OFF);
+                .WHERE(PdtProduct.T.STATE, "=?", OState.OFF)
+                .WHERE(PdtProduct.T.SOLD_TIME_B, " IS NULL ");
           }
         };
     return irille.pub.bean.Query.sql(pdt).queryCount();
@@ -988,8 +993,17 @@ public class PdtProductDAO {
           {
             SELECT(PdtProduct.T.PKEY)
                 .FROM(PdtProduct.class)
+                .LEFT_JOIN(O2O_PrivateExpoPdt.class, O2O_PrivateExpoPdt.T.PDT_ID, PdtProduct.T.PKEY)
                 .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierpkey)
-                .WHERE(PdtProduct.T.IS_VERIFY, "=?", Pdt.OAppr._DEFAULT.getLine().getKey());
+                .WHERE(PdtProduct.T.IS_VERIFY, "=?", Pdt.OAppr._DEFAULT.getLine().getKey())
+                .WHERE(PdtProduct.T.SOLD_TIME_B, " IS NULL ")
+                .WHERE(PdtProduct.T.STATE, " <> ? ", OState.MERCHANTDEL)
+                .WHERE(PdtProduct.T.STATE, " <> ? ", OState.DELETE)
+                .OR()
+                .WHERE(
+                    O2O_PrivateExpoPdt.T.VERIFY_STATUS,
+                    " =? ",
+                    O2O_PrivateExpoPdtStatus._DEFAULT.getLine().getKey());
           }
         };
     return irille.pub.bean.Query.sql(pdt).queryCount();

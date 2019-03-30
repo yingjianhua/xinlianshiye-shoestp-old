@@ -3,7 +3,7 @@
 <jsp:include page="v3/header.jsp"/>
 <link rel="stylesheet" href="/home/v3/static/css/productList.css">
 <link href="./static/css/style.css" rel="stylesheet" type="text/css">
-<link href="./static/css/global.css" rel="stylesheet" type="text/css">
+<!-- <link href="./static/css/global.css" rel="stylesheet" type="text/css"> -->
 <link href="./static/css/user.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="./static/js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="/home/static/js/user.js"></script>
@@ -124,7 +124,7 @@
                 </ul>
             </div>
             <div class="top-box">
-                    <p style="padding: 0 43px;padding-top:10px;">Price<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
+                    <p style="padding: 0 44px;padding-top:10px;">Price<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
                     <div class="i1"></div>
                     <ul style="padding:10px 0;width:auto;height:auto;">
                         <div class="price-sort" :class="sort == item.rule?'price-sort-active' :''" v-for="(item, index) in priceSortList" :key="index" @click="priceBtn(item.rule)">{{item.name}}</div>

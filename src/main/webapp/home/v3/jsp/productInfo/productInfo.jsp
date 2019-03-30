@@ -364,6 +364,7 @@
         #productInfo .productInfo-com .flBox .h2 img,
         #productInfo .productInfo-com .flBox .h1 img {
             width: 100%;
+            object-fit: contain;
         }
 
         #productInfo .productInfo-com .flBox .h2 ul {
@@ -493,6 +494,7 @@
 
         #productInfo .productInfo-com .frBox .h5 li .hPic {
             width: 100%;
+            object-fit: contain;
         }
 
         #productInfo .productInfo-com .frBox .h5 .y3 li {
