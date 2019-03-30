@@ -64,6 +64,8 @@ public class PdtAttrDAO {
             if (category != null) {
               WHERE(T.CATEGORY, "=?", category);
             }
+            WHERE(PdtAttr.T.SUPPLIER, " IS NULL ");
+            WHERE(PdtAttr.T.DELETED, " =? ", OYn.NO.getLine().getKey());
           }
         };
     Integer count = Query.sql(sql).queryCount();
@@ -300,6 +302,7 @@ public class PdtAttrDAO {
           supplier);
       sql1.WHERE(PdtAttrCat.T.STATE, " =? ", OYn.NO.getLine().getKey());
       sql1.WHERE(PdtAttrPro.T.PROCAT, " IN (" + parentCat + ") ");
+      sql1.ORDER_BY(PdtAttr.T.SUPPLIER, " ASC ");
 
       return Query.sql(sql1).queryList(PdtAttr.class).stream()
           .map(
@@ -330,6 +333,14 @@ public class PdtAttrDAO {
                         });
                 attr.setItems(lineList);
                 return attr;
+              })
+          .filter(
+              l -> {
+                if (l.getItems().size() > 0) {
+                  return true;
+                } else {
+                  return false;
+                }
               })
           .collect(Collectors.toList());
     }

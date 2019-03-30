@@ -231,7 +231,7 @@ public class PdtProductDaoImpl implements com.xinlianshiye.shoestp.shop.dao.PdtP
               .collect(Collectors.joining(","));
     }
 
-    sql.WHERE(null != cats, PdtProduct.T.CATEGORY, " in(?)", cats);
+    sql.WHERE(null != cats, PdtProduct.T.CATEGORY, " in(" + cats + ")");
     sql.WHERE(
         null != search.getMinCurPrice(), PdtProduct.T.CUR_PRICE, " >=? ", search.getMinCurPrice());
     sql.WHERE(
