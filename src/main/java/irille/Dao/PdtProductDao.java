@@ -1618,6 +1618,8 @@ public class PdtProductDao {
                     PdtProduct.T.IS_DEFAULT_REVIEW)
                 .FROM(PdtProduct.class)
                 .WHERE(supplierId != null, PdtProduct.T.SUPPLIER, "=?", supplierId)
+                .WHERE(PdtProduct.T.IS_VERIFY,"=1")
+                .WHERE(PdtProduct.T.STATE,"=1")
                 .ORDER_BY(PdtProduct.T.VERIFY_TIME, "desc")
                 .LIMIT(0, 3);
           }
@@ -1673,6 +1675,8 @@ public class PdtProductDao {
         .FROM(PdtProduct.class)
         .LEFT_JOIN(PdtTieredPricing.class, PdtTieredPricing.T.PRODUCT, PdtProduct.T.PKEY)
         .WHERE(PdtProduct.T.SUPPLIER, "=" + pkey)
+        .WHERE(PdtProduct.T.IS_VERIFY,"=1")
+        .WHERE(PdtProduct.T.STATE,"=1")
         .GROUP_BY(PdtProduct.T.PKEY);
 
     String newSql = "";
@@ -1766,6 +1770,8 @@ public class PdtProductDao {
         .FROM(PdtProduct.class)
         .LEFT_JOIN(PdtTieredPricing.class, PdtTieredPricing.T.PRODUCT, PdtProduct.T.PKEY)
         .WHERE(PdtProduct.T.SUPPLIER, "=" + pkey)
+        .WHERE(PdtProduct.T.IS_VERIFY,"=1")
+        .WHERE(PdtProduct.T.STATE,"=1")
         .GROUP_BY(PdtProduct.T.PKEY);
 
     String newSql = "";
