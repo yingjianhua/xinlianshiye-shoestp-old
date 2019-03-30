@@ -490,7 +490,6 @@
         }
     };
     var validateAddr = function (rule, value, callback) {
-        console.log(value)
         if (!value) {
             return callback(new Error("请填写详细地址"));
         } else {
@@ -1004,7 +1003,6 @@
                                     data[i] = null
                                 }
                             }
-                            console.log(data)
                             if (self.state) {
                                 self.retypeSubmit(data)
                             } else {
@@ -1140,12 +1138,10 @@
             //选择国家显示
             selectshow: function () {
                 this.selectcountry = []
-                console.log('asdfasdfasdfasdfsadfasdasdfasd',this.country )
                 for (let i in this.basicInfo.targetedMarket) {
                     for (let j in this.country) {
                         if (this.basicInfo.targetedMarket[i] == this.country[j].id) {
                             this.selectcountry.push(this.country[j])
-                            console.log('asdfasdfasdfasdfsadfasdasdfasd',this.selectcountry )
                         }
                     }
                 }
