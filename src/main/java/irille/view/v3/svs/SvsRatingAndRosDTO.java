@@ -9,6 +9,7 @@ public class SvsRatingAndRosDTO implements BaseView {
   private Integer supplierId;//供应商pkey
   private Byte grade; // SVS认证等级
   private Byte status; // SVS认证状态
+  private Integer baseScore;//SVS基础分
   private Integer researchBase; // R分数
   private Integer factoryBase; // O分数
   private Integer capacityBase; // S分数
