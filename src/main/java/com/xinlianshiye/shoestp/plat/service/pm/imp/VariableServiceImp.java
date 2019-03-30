@@ -173,7 +173,7 @@ public class VariableServiceImp implements IVariableService {
       VariableView variable = variableMap.get(key);
       Object object = null;
 
-      if (key.equals("now") || key.equals("当前时刻")) {
+      if (key.equals("now") || key.equals("当前时间")) {
         object = sdf.format(new Date());
         template =
             template.replaceAll(
@@ -242,7 +242,7 @@ public class VariableServiceImp implements IVariableService {
     Map<String, VariableView> vs = map.get(Integer.valueOf(type));
     boolean flag = true;
     for (String v : varibales) {
-      if ("now".equals(v) || "当前时刻".equals(v)) {
+      if ("now".equals(v) || "当前时间".equals(v)) {
         continue;
       }
       if (!vs.containsKey(v)) {
