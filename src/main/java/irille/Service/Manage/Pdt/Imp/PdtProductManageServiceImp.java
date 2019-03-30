@@ -353,8 +353,11 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
     } else if (!StringUtil.hasValue(pdtProduct.getCode())) {
       return -7;
     }
-
-    pdtProduct.setSku("");
+    StringBuffer buff = new StringBuffer();
+    for (int i = 0; i < 12; i++) {
+      buff.append((int) (1 + Math.random() * 9));
+    }
+    pdtProduct.setSku(buff.toString());
     pdtProduct.setCurPrice(min); // 商城价
     pdtProduct.setPurPrice(BigDecimal.valueOf(0));
     pdtProduct.setMktPrice(BigDecimal.valueOf(0));

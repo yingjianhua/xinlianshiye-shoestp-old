@@ -537,6 +537,7 @@ public class PdtProductDao {
     sql1.SELECT(
             PdtProduct.T.PKEY,
             PdtProduct.T.NAME,
+            PdtProduct.T.SKU,
             PdtProduct.T.CODE,
             PdtProduct.T.CUR_PRICE,
             PdtProduct.T.PICTURE,
@@ -588,7 +589,12 @@ public class PdtProductDao {
               + PdtProduct.class.getSimpleName()
               + "."
               + PdtProduct.T.NAME.getFld().getCodeSqlField()
-              + " like ?  )",
+              + " like ? OR "
+              + PdtProduct.class.getSimpleName()
+              + "."
+              + PdtProduct.T.SKU.getFld().getCodeSqlField()
+              + " like ? )",
+          "%" + data + "%",
           "%" + data + "%",
           "%" + data + "%");
     }
@@ -796,6 +802,7 @@ public class PdtProductDao {
                       o.put(
                           "update_time",
                           new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(o.get("update_time")));
+                      o.put("sku", (String) o.get(PdtProduct.T.SKU.getFld().getCodeSqlField()));
                       return o;
                     })
                 .collect(toList()),
