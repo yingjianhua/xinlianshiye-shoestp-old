@@ -494,6 +494,7 @@
 
         #productInfo .productInfo-com .frBox .h5 li .hPic {
             width: 100%;
+            object-fit: contain;
         }
 
         #productInfo .productInfo-com .frBox .h5 .y3 li {
