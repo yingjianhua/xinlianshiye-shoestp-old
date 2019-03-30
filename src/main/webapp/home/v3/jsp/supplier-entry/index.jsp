@@ -490,7 +490,6 @@
         }
     };
     var validateAddr = function (rule, value, callback) {
-        console.log(value)
         if (!value) {
             return callback(new Error("请填写详细地址"));
         } else {
@@ -848,7 +847,6 @@
                                 self.$set(self,'usermsg',res.data.result.user)
                                 self.basicInfo.userid = res.data.result.user.id
                                 self.getcountry();
-                                self.getRetype();
                             }else{
                                 // self.showmsg('请先登录,3秒后跳转至登录页面')
                                 // setTimeout(function(){
@@ -910,6 +908,7 @@
                         self.$set(self, 'country', res.data.result)
                         self.$set(self, 'exhibitionCountry', res.data.result)
                         self.exhibitionCountrylength = Math.ceil(self.exhibitionCountry.length / 3)
+                        self.getRetype();
                     }else{
                         self.$message({
                             message: res.data.msg || '获取国家列表失败',
@@ -1004,7 +1003,6 @@
                                     data[i] = null
                                 }
                             }
-                            console.log(data)
                             if (self.state) {
                                 self.retypeSubmit(data)
                             } else {

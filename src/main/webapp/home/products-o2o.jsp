@@ -50,6 +50,7 @@
     <!--分级导航-->
     <div class="topNav">
         <div class="h1"><a href="/">Home</a><i class="el-icon-arrow-right"></i></div>
+        <div class="h1"><a :class="{'now':(!breadcrumbnav || breadcrumbnav.length<=0)}" href="/home/pdt_PdtProduct_o2oList"> All product</a><i v-if="breadcrumbnav && breadcrumbnav.length>0" class="el-icon-arrow-right"></i></div>
         <blcok v-if="breadcrumbnav && breadcrumbnav.length>0">
             <div class="h1" v-for="(item,index) in breadcrumbnav" for-key="index">
                 <a @click="categorySearch" :data-cated="item.pkey" href="javascript:;"
@@ -57,7 +58,6 @@
                 <i class="el-icon-arrow-right" v-show="breadcrumbnav.length-1!=index"></i>
             </div>
         </blcok>
-        <div class="h1"><a class="now" href="/" v-if="!breadcrumbnav || breadcrumbnav.length<=0"> All product</a></div>
     </div>
     <!--分级导航 end-->
 
@@ -122,7 +122,7 @@
                         </ul>
                     </div>
                     <div class="top-box">
-                            <p>Supplier Level<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
+                            <p>SVS Level<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
                             <div class="i1"></div>
                             <ul style="height:auto;">
                                 <el-checkbox-group v-model="grade">

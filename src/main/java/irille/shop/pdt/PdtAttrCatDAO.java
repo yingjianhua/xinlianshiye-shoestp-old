@@ -179,7 +179,7 @@ public class PdtAttrCatDAO {
             && getB().getLockAttr().equals(OYn.YES.getLine().getKey())) {
           throw new WebMessageException(ReturnCode.failure, "该属性分类下存在产品,不可禁用");
         }
-        PdtAttrCatDAO.valid(getB(), getCat());
+        //        PdtAttrCatDAO.valid(getB(), getCat());
       }
 
       if (null == cat && !pps.contains(cat)) {
@@ -305,11 +305,14 @@ public class PdtAttrCatDAO {
 
     @Override
     public void before() {
+      PdtAttrCat dbBean = loadThisBeanAndLock();
       if (getState().equals(OYn.YES.getLine().getKey())) {
-        PdtAttrCatDAO.valid(getB(), null);
+        if (dbBean.getLockAttr().equals(OYn.YES.getLine().getKey())) {
+          throw new WebMessageException(ReturnCode.failure, "该属性分类下存在产品,不可禁用");
+        }
       }
       getB().setState(state);
-      PdtAttrCat dbBean = loadThisBeanAndLock();
+
       PropertyUtils.copyProperties(dbBean, getB(), T.STATE);
       setB(dbBean);
     }

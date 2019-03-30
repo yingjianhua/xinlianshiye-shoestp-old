@@ -122,7 +122,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     if (password == null || Str.isEmpty(password)) throw LOG.err("loginCheck", "请输入密码");
     // TODO Email 改为小写
     UsrMain main = UsrMain.chkUniqueEmail(false, email.toLowerCase());
-    if (main == null) {
+    if (main == null || main.getIdentity() == 0) {
       throw LOG.err("Invalid User", "用户名不存在或无效的用户名");
     } else {
       if (!DateTools.getDigest(main.getPkey() + password).equals(main.getPassword())) {
@@ -690,10 +690,12 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     UsrSupplierInfo usi = new UsrSupplierInfo();
     Integer pkey = getSupplier().getPkey();
     usi.setSupplierDetailsDTO(dao.getSupplierDetails(pkey));
-    for (SVSGradeType value : SVSGradeType.values()) {
-      if (usi.getSupplierDetailsDTO().getSvsRatingAndRosDTO().getGrade()
-          == value.getLine().getKey()) {
-        usi.setSvsLevel(value.getLine().getName());
+    if (usi.getSupplierDetailsDTO().getSvsRatingAndRosDTO() != null) {
+      for (SVSGradeType value : SVSGradeType.values()) {
+        if (usi.getSupplierDetailsDTO().getSvsRatingAndRosDTO().getGrade()
+            == value.getLine().getKey()) {
+          usi.setSvsLevel(value.getLine().getName());
+        }
       }
     }
     usi.setInquiriesCount(rfqConsultDao.getConsultCount(pkey));
