@@ -976,8 +976,8 @@
     top: 30px;
     width: 100px;
     height: 100px;
-    -o-object-fit: cover;
-    object-fit: cover; }
+    -o-object-fit: contain;
+    object-fit: contain; }
 .page-personal-center .inquiry-detail-wrap .inquiry-overview .content-box1 {
     display: -webkit-box;
     display: -ms-flexbox;

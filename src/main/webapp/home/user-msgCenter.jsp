@@ -59,6 +59,7 @@
 <div id="shoesTp"  class=" w_1240 ">
 	<index-top></index-top>
 	<main class="main">
+
 		<div class="wide por clearfix flex-layout">
 			<!-- 左侧 My-Accoung 列表 -->
 			<%--<div class="por"--%>
@@ -854,7 +855,10 @@
 
 			<!-- view信息 - 询盘详情 + 报价详情 -->
 			<transition name="slide-right">
-				<div class="inquiry-detail-wrap" v-show="isScale && showRFQDeailBox && !showChatBox && inquiryList.length">
+				<div class="inquiry-detail-wrap"
+                     v-show="isScale && showRFQDeailBox && !showChatBox && inquiryList.length"
+                     v-cloak
+                >
 					<!-- 第一个框 - 询盘详情 -->
 					<div class="inquiry-overview">
 						<img class="inquiry-main-pic" alt=""
@@ -929,111 +933,113 @@
 					</div>
 
 					<!-- 第二个框 报价详情 -->
-					<template v-if="quotationDetailList.length > 0">
-						<div class="quotation-detail-box"
-							 v-for="(quotationDetail, quotationIndex) in quotationDetailList">
-							<div class="inquiry-detail-header"
-								 v-if="quotationIndex == 0 && inquiryList[nowInquiryIndex] && inquiryList[nowInquiryIndex].relations">
-								All {{inquiryList[nowInquiryIndex].relations.length}} quotations comparison
-							</div>
-							<div class="content-box content-box01">
-								<h3 class="content-header">Product Information</h3>
-								<ul class="content">
-									<li class="item" v-if="quotationDetail.title">
-										<span class="title">Product name:</span>
-										<span class="text product-name">{{quotationDetail.title}}</span>
-									</li>
-									<li class="item" v-if="quotationDetail.description">
-										<span class="title">Product details:</span>
-										<span class="text">{{quotationDetail.description}}</span>
-									</li>
-									<li class="item" v-if="quotationDetail.images.length">
-										<span class="title">Product image or file:</span>
-										<div class="text">
-											<img class="pic-item" alt="goods' pic"
-												 :src="util_function_obj.image(goodsPic.url, 100)"
-												 v-for="goodsPic in quotationDetail.images">
-										</div>
-									</li>
-								</ul>
-							</div>
+                    <transition name="el-zoom-in-top">
+                        <template v-if="quotationDetailList.length > 0">
+                            <div class="quotation-detail-box"
+                                 v-for="(quotationDetail, quotationIndex) in quotationDetailList">
+                                <div class="inquiry-detail-header"
+                                     v-if="quotationIndex == 0 && inquiryList[nowInquiryIndex] && inquiryList[nowInquiryIndex].relations">
+                                    All {{inquiryList[nowInquiryIndex].relations.length}} quotations comparison
+                                </div>
+                                <div class="content-box content-box01">
+                                    <h3 class="content-header">Product Information</h3>
+                                    <ul class="content">
+                                        <li class="item" v-if="quotationDetail.title">
+                                            <span class="title">Product name:</span>
+                                            <span class="text product-name">{{quotationDetail.title}}</span>
+                                        </li>
+                                        <li class="item" v-if="quotationDetail.description">
+                                            <span class="title">Product details:</span>
+                                            <span class="text">{{quotationDetail.description}}</span>
+                                        </li>
+                                        <li class="item" v-if="quotationDetail.images.length">
+                                            <span class="title">Product image or file:</span>
+                                            <div class="text">
+                                                <img class="pic-item" alt="goods' pic"
+                                                     :src="util_function_obj.image(goodsPic.url, 100)"
+                                                     v-for="goodsPic in quotationDetail.images">
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
 
-							<div class="content-box content-box02">
-								<h3 class="content-header">Product Information</h3>
-								<ul class="content">
-									<li class="item" v-if="quotationDetail.quantity">
-										<span class="title">Quantity: </span>
-										<span class="text">
-												<span class="product-quantity">{{quotationDetail.quantity}}</span>
-												pairs
-											</span>
-									</li>
-									<li class="item">
-										<span class="title">Prices:</span>
-										<span class="text product-name">
-												{{quotationDetail.minPrice}}-{{quotationDetail.maxPrice}}
-											</span>
-									</li>
-									<li class="item" v-if="quotationDetail.currency && quotationDetail.currency.shortName">
-										<span class="title">Currency Unit:</span>
-										<span class="text">{{quotationDetail.currency.shortName}}</span>
-									</li>
-									<li class="item" v-if="quotationDetail.validDate">
-										<span class="title">Quote validity period:</span>
-										<span class="text">{{quotationDetail.validDate | dataFormat('yyyy-MM-dd hh:mm:ss')}}</span>
-									</li>
-									<li class="item" v-if="quotationDetail.shippingTerms">
-										<span class="title">Shipping terms:</span>
-										<span class="text">{{quotationDetail.shippingTerms}}</span>
-									</li>
-									<li class="item" v-if="quotationDetail.paymentTerms">
-										<span class="title">Payment method:</span>
-										<span class="text">{{quotationDetail.paymentTerms}}</span>
-									</li>
-								</ul>
-							</div>
+                                <div class="content-box content-box02">
+                                    <h3 class="content-header">Product Information</h3>
+                                    <ul class="content">
+                                        <li class="item" v-if="quotationDetail.quantity">
+                                            <span class="title">Quantity: </span>
+                                            <span class="text">
+                                                    <span class="product-quantity">{{quotationDetail.quantity}}</span>
+                                                    pairs
+                                                </span>
+                                        </li>
+                                        <li class="item">
+                                            <span class="title">Prices:</span>
+                                            <span class="text product-name">
+                                                    {{quotationDetail.minPrice}}-{{quotationDetail.maxPrice}}
+                                                </span>
+                                        </li>
+                                        <li class="item" v-if="quotationDetail.currency && quotationDetail.currency.shortName">
+                                            <span class="title">Currency Unit:</span>
+                                            <span class="text">{{quotationDetail.currency.shortName}}</span>
+                                        </li>
+                                        <li class="item" v-if="quotationDetail.validDate">
+                                            <span class="title">Quote validity period:</span>
+                                            <span class="text">{{quotationDetail.validDate | dataFormat('yyyy-MM-dd hh:mm:ss')}}</span>
+                                        </li>
+                                        <li class="item" v-if="quotationDetail.shippingTerms">
+                                            <span class="title">Shipping terms:</span>
+                                            <span class="text">{{quotationDetail.shippingTerms}}</span>
+                                        </li>
+                                        <li class="item" v-if="quotationDetail.paymentTerms">
+                                            <span class="title">Payment method:</span>
+                                            <span class="text">{{quotationDetail.paymentTerms}}</span>
+                                        </li>
+                                    </ul>
+                                </div>
 
-							<div class="content-box content-box03">
-								<h3 class="content-header">Quotation supplemental information</h3>
-								<ul class="content">
-									<li class="item">
-										<span class="title">Whether to provide samples: </span>
-										<span class="text">
-												<span class="roundCheck checked" v-if="quotationDetail.sample"></span>
-												{{quotationDetail.sample?"Yes":"No"}}
-											</span>
-									</li>
-									<li class="item" v-if="quotationDetail.companyProfile">
-										<div class="title">Company Profile:</div>
-										<div class="text company-profile">
-											{{quotationDetail.companyProfile}}
-										</div>
-									</li>
-									<li class="item" v-if="quotationDetail.throwaways && quotationDetail.throwaways.length">
-										<div class="title">Company product book:</div>
-										<div class="text books">
-											<template
-												v-for="productBook in quotationDetail.throwaways">
-												<img class="company-book-item"  alt="product's book"
-													 v-if="isImg(productBook.url)"
-													 :src="util_function_obj.image(productBook.url, 200, 110)">
-												<div v-else>
-													<a :href="util_function_obj.image(productBook.url)" class="book-link">《{{productBook.name}}》</a>
-												</div>
-											</template>
-										</div>
-									</li>
-								</ul>
-							</div>
+                                <div class="content-box content-box03">
+                                    <h3 class="content-header">Quotation supplemental information</h3>
+                                    <ul class="content">
+                                        <li class="item">
+                                            <span class="title">Whether to provide samples: </span>
+                                            <span class="text">
+                                                    <span class="roundCheck checked" v-if="quotationDetail.sample"></span>
+                                                    {{quotationDetail.sample?"Yes":"No"}}
+                                                </span>
+                                        </li>
+                                        <li class="item" v-if="quotationDetail.companyProfile">
+                                            <div class="title">Company Profile:</div>
+                                            <div class="text company-profile">
+                                                {{quotationDetail.companyProfile}}
+                                            </div>
+                                        </li>
+                                        <li class="item" v-if="quotationDetail.throwaways && quotationDetail.throwaways.length">
+                                            <div class="title">Company product book:</div>
+                                            <div class="text books">
+                                                <template
+                                                    v-for="productBook in quotationDetail.throwaways">
+                                                    <img class="company-book-item"  alt="product's book"
+                                                         v-if="isImg(productBook.url)"
+                                                         :src="util_function_obj.image(productBook.url, 200, 110)">
+                                                    <div v-else>
+                                                        <a :href="util_function_obj.image(productBook.url)" class="book-link">《{{productBook.name}}》</a>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
 
-						</div>
-					</template>
+                            </div>
+                        </template>
+                    </transition>
 
-					<el-collapse-transition>
+                    <transition name="el-zoom-in-top">
 						<el-button size="" class="view-more"
 								   v-show="inquiryList[nowInquiryIndex] && inquiryList[nowInquiryIndex].relations.length && quotationDetailListIndex < (inquiryList[nowInquiryIndex].relations.length-1)"
 								   @click="viewQuotationMoew">View More</el-button>
-					</el-collapse-transition>
+                    </transition>
 				</div>
 			</transition>
 			<!-- view信息 - 询盘详情 + 报价详情 - end -->
@@ -1395,7 +1401,7 @@
 			    // 在缩小状态 - 且是重新加载时（reset使inquiryLisPageStart=0），显示第一个
                 let isShowFirstOne = false;
                 // 缩小情况下，且从第一个开始加载时（第一次加载），显示第一个
-			    if(this.isScale && this.inquiryLisPageStart==0){
+			    if( (util_function_obj.GetQueryString("showFirstInquiry") || this.isScale) && this.inquiryLisPageStart==0){
                     isShowFirstOne = true;
                 }
 
@@ -1516,6 +1522,7 @@
                 if(firstInquiryObj.type==1){
                     this.showChatBox = false;
                     this.showRFQDeailBox = true;
+                    this.isScale = true;
 
                     //获取询盘详情
                     this.getInquiryDetail();
@@ -1633,6 +1640,7 @@
 					this.$message.error(res.data.msg || "Get inquiry's detail error,please try again later");
 					return
 				};
+
 				this.inquiryDetail = res.data.result;
 				this.addInformationForm.validDate = this.dataFormatMethod(res.data.result.valieDate,"yyyy-MM-dd hh:mm:ss");
 
@@ -1743,6 +1751,7 @@
 					this.$message.error(res.data.msg || "Get quotation's detail error,please try again later");
 					return
 				};
+				
 				this.quotationDetailList.push(res.data.result);
 			})
 			.catch((error) => {
