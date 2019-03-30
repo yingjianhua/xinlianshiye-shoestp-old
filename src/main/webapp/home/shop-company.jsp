@@ -115,7 +115,7 @@
             <h3 class="enterprise-info-title">
                 <s:text name="SupplierVerifiedInformation"/>
             </h3>
-            <%--<c:if test="${supView.StatusAuth == 1}">--%>
+            <c:if test="${supView.statusAuth == 1}">
             <div class="enterprise-info-content divide-harf">
                 <div class="divide-harf-item">
                     <div class="info-item">
@@ -123,7 +123,16 @@
                         <h5 class="title">
                             <s:text name="rDepartment"/>
                         </h5>
-                        <div class="text"><c:if test="${supView.rddepartment != 'null'}">${supView.rddepartment}</c:if></div>
+                        <div class="text">
+                            <c:if test="${supView.rddepartment != 'null'}">
+                                <c:if test="${supView.rddepartment == 0}">
+                                    <s:text name="yes"/>
+                                </c:if>
+                                <c:if test="${supView.rddepartment == 1}">
+                                    <s:text name="no"/>
+                                </c:if>
+                            </c:if>
+                        </div>
                     </div>
 
                     <c:set var="symbolNoLogin" value="********"/>
@@ -186,7 +195,14 @@
                         <h5 class="title">
                             <s:text name="ExportLicense"/>
                         </h5>
-                        <div class="text"><c:if test="${supView.exportLicense != 'null'}">${supView.exportLicense}</c:if>
+                        <div class="text"><c:if test="${supView.exportLicense != 'null'}">
+                            <c:if test="${supView.exportLicense == ''}">
+                                <s:text name="yes"/>
+                            </c:if>
+                            <c:if test="${supView.exportLicense != ''}">
+                                <s:text name="no"/>
+                            </c:if>
+                        </c:if>
                         </div>
                     </div>
 
@@ -195,7 +211,14 @@
                         <h5 class="title">
                             <s:text name="TestEquipmentAndFacilities"/>
                         </h5>
-                        <div class="text"><c:if test="${supView.testEquipmentAndFacilities != 'null'}">${supView.testEquipmentAndFacilities}</c:if>
+                        <div class="text"><c:if test="${supView.testEquipmentAndFacilities != 'null'}">
+                            <c:if test="${supView.testEquipmentAndFacilities == 0}">
+                                <s:text name="yes"/>
+                            </c:if>
+                            <c:if test="${supView.testEquipmentAndFacilities == 1}">
+                                <s:text name="no"/>
+                            </c:if>
+                        </c:if>
                         </div>
                     </div>
 
@@ -218,19 +241,20 @@
                     </div>
 
 
+
                 </div>
             </div>
-            <%--</c:if>--%>
-                <%--<c:if test="${supView.StatusAuth == 0}">--%>
-                <%--<div class="enterprise-info-content horizontal-arrange">--%>
-                    <%--<div style="margin: 0 auto;">--%>
-                        <%--<p style="text-align: center;font-size: 16px;color: #999;">--%>
-                            <%--<span style="display: inline-block;width: 15px;height: 15px;line-height: 15px;border: 1px solid;border-radius: 50%;font-size: 12px;">!</span>--%>
-                            <%--&lt;%&ndash;No Verified Information</p>&ndash;%&gt;--%>
-                            <%--<s:text name="NoVerifiedInformation"/></p>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-                <%--</c:if>--%>
+            </c:if>
+                <c:if test="${supView.statusAuth == 0}">
+                <div class="enterprise-info-content horizontal-arrange">
+                    <div style="margin: 0 auto;">
+                        <p style="text-align: center;font-size: 16px;color: #999;">
+                            <span style="display: inline-block;width: 15px;height: 15px;line-height: 15px;border: 1px solid;border-radius: 50%;font-size: 12px;">!</span>
+                            <%--No Verified Information</p>--%>
+                            <s:text name="NoVerifiedInformation"/></p>
+                    </div>
+                </div>
+                </c:if>
             <!-- svs认证信息 - end-->
 
             <!-- 联系信息 -->
