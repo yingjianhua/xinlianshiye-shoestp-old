@@ -249,6 +249,8 @@
     background-color: #f5f5f5; }
 .page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item.is-active .el-collapse-item__header {
     background-color: #f3f4fc; }
+.page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item.is-active .el-collapse-item__header .collapse-title .mask {
+    background: #f3f4fc; }
 .page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item:last-child {
     padding-bottom: 0; }
 .page-personal-center .inquires-list-wrap .collapse-box .el-collapse-item.active .el-collapse-item__header {
@@ -310,7 +312,7 @@
     top: 0;
     width: 32px;
     height: 100%;
-    background: #f3f4fc; }
+    background: #f5f5f5; }
 .page-personal-center .inquires-list-wrap .collapse-box .contact-list .contact-item {
     position: relative;
     display: -webkit-box;
@@ -451,6 +453,8 @@
 .page-personal-center .inquires-list-wrap.isScale .collapse-box .goods-info {
     width: 140px;
     margin-right: 20px; }
+.page-personal-center .inquires-list-wrap.isScale .collapse-box .goods-info.two-row {
+    white-space: normal; }
 .page-personal-center .inquires-list-wrap.isScale .contacter-info {
     -webkit-box-flex: 1;
     -ms-flex-positive: 1;

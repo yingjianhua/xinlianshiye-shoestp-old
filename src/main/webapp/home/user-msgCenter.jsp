@@ -170,7 +170,8 @@
 
 					<!-- 手风琴效果 - 下拉加载事件 -->
 					<div class="collapse-box" id="inquiry-collapse-list">
-						<el-collapse :value="(inquiryList[0] && inquiryList[0].relations && inquiryList[0].relations.length)?0:-1" v-if="inquiryList.length">
+                        <%--this.relationPkey?this.nowInquiryIndex:--%>
+						<el-collapse :value="showAccordionContacterIndex!==null?showAccordionContacterIndex:(inquiryList[0] && inquiryList[0].relations && inquiryList[0].relations.length)?0:-1" v-if="inquiryList.length">
 							<el-collapse-item :class="{active: nowInquiryIndex==inquiryIndex}" :name="inquiryIndex"
 											  v-for="(inquiry,inquiryIndex) in inquiryList"
                                               v-if="(inquiry.type==1 || !inquiry.isDeleteInLocal )"
@@ -184,9 +185,10 @@
 										 v-if="inquiry.relations && inquiry.relations.length==0">
 										<img class="goods-pic" alt="goods's pic"
 											 :src="(inquiry.images && inquiry.images[0])?(util_function_obj.image(inquiry.images[0],50,50, (inquiry.type==3?'/blur,r_5,s_20':''))):'/home/v3/static/images/user_no_img.png'">
-										<div class="goods-info">
+										<%--RFQ信息显示一行，其余显示两行--%>
+										<div class="goods-info" :class="{'two-row': inquiry.type != 1}">
 											<div class="goods-name">
-												<div class="ellipsis_1">{{inquiry.title}}</div>
+												<div :class="inquiry.type == 1 ? 'ellipsis_1' : 'ellipsis_2'">{{inquiry.title}}</div>
 											</div>
 											<div class="status" v-if="inquiry.type==1">{{inquiry.verifyStatus | inquiryStatus2Text}}</div>
 										</div>
@@ -206,10 +208,11 @@
 										<img class="goods-pic" alt="goods's pic"
 											 :src="(inquiry.images && inquiry.images[0])?(util_function_obj.image(inquiry.images[0],50,50, (inquiry.type==3?'/blur,r_5,s_20':''))):'/home/v3/static/images/user_no_img.png'"
 											 :data-inquiry-index="inquiryIndex">
-										<div class="goods-info"
+										<%--RFQ信息显示一行，其余显示两行--%>
+										<div class="goods-info"  :class="{'two-row': inquiry.type != 1}"
 											 :data-inquiry-index="inquiryIndex">
 											<div class="goods-name">
-												<div class="ellipsis_1">{{inquiry.title}}</div>
+												<div :class="inquiry.type == 1 ? 'ellipsis_1' : 'ellipsis_2'">{{inquiry.title}}</div>
 											</div>
                                             <div class="status" v-if="inquiry.type==1">{{inquiry.verifyStatus | inquiryStatus2Text(true)}}</div>
 										</div>
@@ -1209,6 +1212,7 @@
 			showRFQDeailBox: false, //是否显示RFQ详情box
 			isShowMore: false, //是否显示更多 - 对话框顶部信息
 			btnLoading: false, //按钮是否可以点击 - 报价详情 - more
+            showAccordionContacterIndex: null, //从联系人列表过来时，手风琴列表显示对应的弹框
 
 			//询盘列表信息
 			inquiresType: null,	// inquires筛选选中的值 1.RFQ 2.普通询盘 3.私人 4.店铺询盘 其余为All
@@ -1283,26 +1287,23 @@
 			testObj:{}
 		},
 		mounted() {
+			//获取联系人列表跳转过来时携带的参数
+			let whichPageFrom = sessionStorage.getItem("whichPageFrom")
+			// let supplierPkey = sessionStorage.getItem("supplierPkey")
+			// let consultPkey = sessionStorage.getItem("consultPkey")
+			let relationPkey = sessionStorage.getItem("relationPkey")
+
 			// 从联系人那边跳转过来时，显示聊天框
-			if(util_function_obj.GetQueryString("supplierPkey") && util_function_obj.GetQueryString("consultPkey") && util_function_obj.GetQueryString("relationPkey") ){
-				// this.isFromContactList = true;
+			// if(whichPageFrom=="contactsList" && supplierPkey && consultPkey && relationPkey){
+			if(whichPageFrom=="contactsList" && relationPkey){
+				console.log("从别的地方跳过来的")
+				this.isFromContactList = true;
 				this.isScale = true;
 				this.showChatBox = true;
-
-				this.supplierPkey = util_function_obj.GetQueryString("supplierPkey");
-				this.consultPkey = util_function_obj.GetQueryString("consultPkey");
-				this.relationPkey = util_function_obj.GetQueryString("relationPkey");
-
-				this.lastRelation = this.relationPkey; //从联系人跳转过来时
-console.log("从别的地方跳过来的")
-				// //获取chat列表
-				// this.getChatInfo();
-				// //获取询盘详情
-				// this.getInquiryDetail();
-				// //获取功能供应商详情
-				// this.getSupplierDetail();
-				// // 显示下拉show more选项
-				// this.chatShowMore();
+				// this.supplierPkey = supplierPkey;
+				// this.consultPkey = consultPkey;
+				// this.relationPkey = relationPkey;
+				this.lastRelation = relationPkey; //从联系人跳转过来时才有 - 获取需询盘列表时需要
 			}
 			// 获取询盘列表
 			this.getInquiryList();
@@ -1393,18 +1394,15 @@ console.log("从别的地方跳过来的")
 			getInquiryList() {
 			    // 在缩小状态 - 且是重新加载时（reset使inquiryLisPageStart=0），显示第一个
                 let isShowFirstOne = false;
+                // 缩小情况下，且从第一个开始加载时（第一次加载），显示第一个
 			    if(this.isScale && this.inquiryLisPageStart==0){
                     isShowFirstOne = true;
                 }
 
-			    if(this.lastRelation){
-                    isShowFirstOne = false;
-                }
-				console.log("获取询盘列表")
-
 				// 正在加载 or 已加载完全
 				if(this.isInquiryLisLoading || this.isInquiryLoadOver) return;
 				this.isInquiryLisLoading = true;
+
 				// 参数拼接 - unread未勾选时不传
 				var postData={
 					keyword: this.inquiryKeyword,
@@ -1416,7 +1414,7 @@ console.log("从别的地方跳过来的")
 					postData.unread = true;
 				}
 				//从联系人跳转过来时，该参数使列表加载至包含该联系人处 => 使该联系人处于当前列表处
-				if( this.lastRelation && this.lastRelation > this.inquiryLisPageLimit ){
+				if( this.lastRelation ){
 					postData.lastRelation = this.lastRelation;
 				}
 				axios.get('/home/rfq_RFQConsult_pageMine', {
@@ -1427,11 +1425,12 @@ console.log("从别的地方跳过来的")
 					this.$message.error(res.data.msg || "Get inquiry list error,please try again later");
 					return
 				};
+
 				this.isInquiryLisLoading = false;
 
 				this.inquiryList.push(...res.data.result.items);
 
-				// 加载至最后一页
+				// 判断是否加载完成（加载至最后一页）
 				if (res.data.result.items.length < this.inquiryLisPageLimit) {
 					this.isInquiryLoadOver = true;
 				}else{
@@ -1441,7 +1440,7 @@ console.log("从别的地方跳过来的")
                     });
                 }
 
-
+                // 从联系人列表中跳转过来时
                 if(this.lastRelation){
                     // 不再执行默认展开第一个
                     isShowFirstOne = false;
@@ -1451,6 +1450,7 @@ console.log("从别的地方跳过来的")
                         this.inquiryLisPageStart +=  (res.data.result.limit - this.inquiryLisPageLimit)
                     }
 
+                    // 寻找目标对象（联系人列表中点击的对象）与询盘列表对应的下标
                     var resData = res.data.result.items;
                     listForEach:
                         for(var i = resData.length-1; i>=0; i--){
@@ -1462,7 +1462,8 @@ console.log("从别的地方跳过来的")
                                         if( relation.quotation.pkey == this.lastRelation ){
                                             this.nowInquiryIndex = i;
                                             this.nowSupplierIndex = j;
-                                            console.log("有值")
+                                            this.showAccordionContacterIndex = i;
+                                            console.log("嵌套for有值")
                                             console.log(i)
                                             console.log(j)
                                             break listForEach;
@@ -1471,9 +1472,12 @@ console.log("从别的地方跳过来的")
                                 }
                             }
                         }
-                    console.log(" after lastRelation")
 
-                    // 显示对应的联系人
+					// 请求成功时！才清除其余页面跳转过来时的数据
+					// 否则如果未登录 - 登录刷新后数据将消失
+					this.removeOtherPageInfo();
+
+                    // 找到联系人目标后，显示对应的联系人聊天框及相应内容
                     this.contactSupplier({
                         currentTarget:{
                             dataset:{
@@ -1482,17 +1486,7 @@ console.log("从别的地方跳过来的")
                             }
                         }
                     })
-                    this.lastRelation = null;
                 }
-
-                console.log(" after lastRelation222")
-
-
-
-
-
-                // 从联系人那边跳转过来时，显示对应的聊天框，而不用显示第一个
-				if(this.isFromContactList) return;
 
 				//为了功能-搜索后显示第一个
 				if(isShowFirstOne){
@@ -1503,6 +1497,17 @@ console.log("从别的地方跳过来的")
 					this.isInquiryLisLoading = false;
 				this.$message.error(error || 'Network error,please try again later');
 			});
+			},
+
+			// 清除其余页面跳转过来时的数据(联系人列表过来时保存的sessionStorage)
+			removeOtherPageInfo(){
+				sessionStorage.removeItem("whichPageFrom")
+				// sessionStorage.removeItem("supplierPkey")
+				// sessionStorage.removeItem("consultPkey")
+				sessionStorage.removeItem("relationPkey")
+
+				this.lastRelation = null;
+				this.isFromContactList = false;
 			},
 
             // 一进来后显示第一个
@@ -1543,11 +1548,6 @@ console.log("从别的地方跳过来的")
 				// this.showRFQDeailBox = false;
 				this.nowInquiryIndex = 0;
 				this.nowSupplierIndex = 0;
-				//以下4个为 从联系人列表跳转过来时使用
-				this.supplierPkey = 0;
-				this.consultPkey = 0;
-				this.relationPkey = 0;
-				this.isFromContactList = false;
 
 				this.quotationDetailList = [];
 				this.quotationDetailListIndex = 0;
@@ -1623,8 +1623,6 @@ console.log("从别的地方跳过来的")
 			getInquiryDetail(){
 				//先清空之前的数据
 				this.inquiryDetail={};
-				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
-				// this.consultPkey = this.isFromContactList?this.consultPkey:this.inquiryList[this.nowInquiryIndex].pkey;
 				axios.get('/home/rfq_RFQConsult_detail', {
 					params:{
 						consultPkey: this.inquiryList[this.nowInquiryIndex].pkey,
@@ -1676,8 +1674,6 @@ console.log("从别的地方跳过来的")
 				//先清空之前的数据
 				this.supplierDetail={};
 
-				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
-				// this.supplierPkey = this.isFromContactList?this.supplierPkey:this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].supplier.pkey;
 				axios.get('/home/usr_UsrSupplier_getDetail', {
 					params:{
 						supplierPkey: this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].supplier.pkey
@@ -1706,8 +1702,6 @@ console.log("从别的地方跳过来的")
 					this.$message.error(res.msg || "Images upload error,please try again later");
 					return
 				};
-				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
-				// this.consultPkey = this.isFromContactList?this.consultPkey:this.inquiryList[this.nowInquiryIndex].pkey;
 				axios.post('/home/rfq_RFQConsult_addImage', Qs.stringify({
 					consultPkey: this.inquiryList[this.nowInquiryIndex].pkey,
 					images: res.result.url,
@@ -1956,42 +1950,29 @@ console.log("从别的地方跳过来的")
 				}, this.showChatBox?200:1000)
 
 				this.isScale = true;
-				// this.isFromContactList = false; //从联系人列表跳转过来时的值
+				this.isFromContactList = false; //从联系人列表跳转过来时的值
 
 				var dataset = e.currentTarget.dataset;
 				// var inquiryId = dataset.inquiryId;
 				var supplierIndex = dataset.supplierIndex;
 				var inquiryIndex = dataset.inquiryIndex;
-                console.log("contactSupplier1")
 				// 当前点击的就是当前显示的，不触发点击事件 - 首次加载显示第一个，此时也可以点第一个，so != 0
 				if(this.nowSupplierIndex==supplierIndex && this.nowInquiryIndex == inquiryIndex && this.nowInquiryIndex != 0 && Object.keys(this.supplierDetail).length != 0 && this.showChatBox) return;
-                console.log("contactSupplier22")
 				this.showChatBox = true;
 				this.showRFQDeailBox = false;
-                console.log("contactSupplier2.5")
 				// 重置聊天信息
 				this.resetChatMsg();
-                console.log("contactSupplier3")
 				this.nowSupplierIndex = supplierIndex;
 				this.nowInquiryIndex = inquiryIndex;
-                console.log("contactSupplier3.5")
-                console.log(this.inquiryList)
-                console.log(this.nowInquiryIndex)
-                console.log(this.nowSupplierIndex)
-                console.log("contactSupplier4")
 				// 左侧列表将点击项 设置为已读状态
 				this.$set(this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].quotation, "isNew",false)
 				this.$set(this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex], "unread",false)
-                console.log("contactSupplier33")
 				//获取chat列表
 				this.getChatInfo();
-                console.log("contactSupplier44")
 				//获取询盘详情
 				this.getInquiryDetail();
-                console.log("contactSupplier55")
 				//获取功能供应商详情
 				this.getSupplierDetail();
-                console.log("contactSupplier66")
 			},
 
 			// 显示添加商品的dialog
@@ -2002,8 +1983,6 @@ console.log("从别的地方跳过来的")
 
 			// 获取add product商品列表
 			getAddProductList(){
-				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
-				// this.supplierPkey = this.isFromContactList?this.supplierPkey:this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].supplier.pkey;
 				axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax', {
 					params: {
 						v: 3,
@@ -2069,8 +2048,6 @@ console.log("从别的地方跳过来的")
 			//确认选中add product商品
 			confirmAddProduct(e){
 				console.log(this.addProductSelectedPdtIds)
-				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
-				// this.consultPkey = this.isFromContactList?this.consultPkey:this.inquiryList[this.nowInquiryIndex].pkey;
 				axios.post('/home/rfq_RFQConsult_addProductRequest', Qs.stringify({
 					products: this.addProductSelectedPdtIds.join(),
 					consultPkey: this.inquiryList[this.nowInquiryIndex].pkey
@@ -2137,9 +2114,6 @@ console.log("从别的地方跳过来的")
 				// }
 				this.isChatMsgListLoading = true;
 
-				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
-				// this.relationPkey = this.isFromContactList?this.relationPkey:this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].quotation.pkey;
-
 				axios.get('/home/rfq_RFQConsult_pageMsgs', {
 					params:{
 						start: 0,
@@ -2159,14 +2133,12 @@ console.log("从别的地方跳过来的")
 					this.$message.error(res.data.msg || "Get chat information error,please try again later");
 					return
 				};
+
 				// 是否全部加载完毕 - 不以加载最新消息为判断
 				if (!searchLast && (res.data.result.msgs.length < this.chatMsgListPageLimit)) {
 					this.isChatMsgListLoadOver = true;
 				};
 
-                console.log("msgs is")
-                console.log(res.data.result.msgs)
-                console.log(searchLast)
 				// 保存最后一个 prePkey，用以load more
                 if(!searchLast){
                     this.chatMsgListPagePrePkey = res.data.result.msgs[res.data.result.msgs.length - 1].pkey || null;
@@ -2332,8 +2304,7 @@ console.log("从别的地方跳过来的")
 			sendMsg(){
 				console.log("sendMsg")
 				if(!this.sendMsgValue && !this.sendMsgImgValue) return;
-				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
-				// this.relationPkey = this.isFromContactList?this.relationPkey:this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].quotation.pkey;
+
 				axios.post('/home/rfq_RFQConsult_sendMessage', Qs.stringify({
 					content: this.sendMsgValue,
 					imageUrl: this.sendMsgImgValue,
