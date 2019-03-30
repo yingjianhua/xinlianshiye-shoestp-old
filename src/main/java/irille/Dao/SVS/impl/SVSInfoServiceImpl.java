@@ -252,6 +252,7 @@ public class SVSInfoServiceImpl implements SVSInfoService {
     SVSInfo svsInfo = SVSInfoDao.getSvsRatingAndRos(supplierId);
     if (null == svsInfo) return null;
     view.setPkey(svsInfo.getPkey());
+    view.setBaseScore(svsInfo.getBaseScore());
     view.setSupplierId(svsInfo.getSupplier());
     view.setGrade(svsInfo.getGrade());
     view.setStatus(svsInfo.getStatus());
