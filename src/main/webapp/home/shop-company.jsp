@@ -367,15 +367,14 @@
 
                             <c:if test="${supView.grade != 'null'}">
                                 <c:if test="${supView.grade == 1}">
-                                    <img src="./static/images/ico/icon-svs-yp.png" alt="">
+                                    <img src="./static/images/ico/icon-svs-yp.png" alt="">svs
                                 </c:if>
                                 <c:if test="${supView.grade == 2}">
-                                    <img src="./static/images/ico/icon-svs-jp.png" alt="">
+                                    <img src="./static/images/ico/icon-svs-jp.png" alt="">svs
                                 </c:if>
                                 <c:if test="${supView.grade == 3}">
-                                    <img src="./static/images/ico/icon-svs-zs.png" alt="">
+                                    <img src="./static/images/ico/icon-svs-zs.png" alt="">svs
                                 </c:if>
-                                svs
                             </c:if>
                         </div>
                     </div>
