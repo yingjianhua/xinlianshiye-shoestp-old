@@ -273,7 +273,7 @@
                         </div>
                         <div class="product-content">
                             <div class="product-info ellipsis_2">
-                                <a :href="'/'+item.rewrite" target="_blank">
+                                <a class="ellipsis_2" :href="'/'+item.rewrite" target="_blank">
                                     {{item.title}}
                                 </a>
                             </div>
@@ -321,7 +321,7 @@
                         </div>
                         <div class="product-content">
                             <div class="product-info ellipsis_2">
-                                <a :href="'/'+item.rewrite" target="_blank">
+                                <a class="ellipsis_2" :href="'/'+item.rewrite" target="_blank">
                                     {{item.title}}
                                 </a>
                             </div>
