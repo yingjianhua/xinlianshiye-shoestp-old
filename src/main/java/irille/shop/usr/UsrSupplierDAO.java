@@ -25,6 +25,7 @@ import org.json.JSONObject;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
 import com.xinlianshiye.shoestp.plat.service.pm.imp.PMMessageServiceImp;
 
@@ -1693,14 +1694,18 @@ public class UsrSupplierDAO {
           view.setJobTitle(supplier.getJobTitle()); // 联系人职位
           view.setTargetedMarkets(supplier.getTargetedMarket()); // 目标市场
           view.setAnnualOutput(supplier.getAnnualProduction()); // 年产量
+          // 页面设置
+          view.setContactPageOn(supplier.getContactPageOn()); // 是否启用联系页个性化装修
+          view.setContactPageDiy(supplier.getContactPageDiy()); // 联系页个性化装修
           SVSInfoDao sd = new SVSInfoDaoImpl();
           if (sd.findSVSInfoBySupplier(supplier.getPkey()) != null) {
             SVSInfo si = sd.findSVSInfoBySupplier(supplier.getPkey());
             view.setStatusAuth(1);
             if (si.getStatus() == SVSAuthenticationStatus.NoApplication.getLine().getKey()) {
               view.setStatusAuth(0);
+              break;
             }
-            if (si.getStatus() != SVSAuthenticationStatus.SUCCESS.getLine().getKey()) {
+            if (si.getStatus() == SVSAuthenticationStatus.SUCCESS.getLine().getKey()) {
               try {
                 JSONObject getResearch = new JSONObject(si.getResearch());
                 view.setRddepartment(getResearch.getString("isTeam"));
@@ -1725,12 +1730,8 @@ public class UsrSupplierDAO {
           }else {
             view.setStatusAuth(0);
           }
-          // 页面设置
-          view.setContactPageOn(supplier.getContactPageOn()); // 是否启用联系页个性化装修
-          view.setContactPageDiy(supplier.getContactPageDiy()); // 联系页个性化装修
           break;
       }
-
       return view;
     }
   }
