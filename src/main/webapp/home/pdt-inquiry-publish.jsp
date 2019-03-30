@@ -419,7 +419,7 @@ ul{
                         return
                     }else{
                         if(sysConfig.user.user_type == 1){
-                            self.$alert("Please register or login your buyer account if you want making enquiries.",{
+                            this.$alert("Please register or login your buyer account if you want making enquiries.",{
                                 confirmButtonText: 'Ok',
                                 customClass: "my-custom-element-alert-class fs-content-18",
                                 center: true,
