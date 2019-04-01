@@ -39,7 +39,6 @@
 <jsp:include page="v3/nav.jsp"/>
 
 
-
 <body class="lang_en w_1200">
 <%@ include file="/home/template/web-top.jsp" %>
 <div id="main">
@@ -61,7 +60,6 @@
         <div class="wide">
             <div class="enterprise-info-wrap">
                 <h3 class="enterprise-info-title clearfix">
-                <%--<h3 class="enterprise-info-title clearfix" style="margin-bottom: 5px">--%>
                     <s:text name="hottestItems"/>
                     <div class="fr">
                         <ul class="tool-group">
@@ -69,9 +67,9 @@
                                 <span class="tool-name"><s:text name="sort_by"/></span>
                                 <div class="tool-content tool-drop-down-wrap">
                                     <div class="tool-drop-down-btn">
-                    <span class="select-text" id="sort">
-                    		<s:text name="most_popular"/>
-                    </span>
+                                        <span class="select-text" id="sort">
+                                                <s:text name="most_popular"/>
+                                        </span>
                                         <i class="icon icon-arrow-down"></i>
                                     </div>
 
@@ -107,19 +105,26 @@
                                 <span class="tool-name"><s:text name="attr.category"/></span>
                                 <div class="tool-content tool-drop-down-wrap">
                                     <div class="tool-drop-down-btn">
-                    <span class="select-text" id="category">
-						<s:text name="allCategories"/>
-					</span>
+                                        <span class="select-text" id="category">
+                                            <s:text name="allCategories"/>
+                                        </span>
                                         <i class="icon icon-arrow-down"></i>
                                     </div>
 
                                     <div class="tool-drop-down-content">
                                         <ul class="category">
-                                            <li><a @click="chooseThisCat('')"><s:text
-                                                    name="allCategories"/></a></li>
+                                            <li>
+                                                <a @click="chooseThisCat"
+                                                   data-cat-pkey=""
+                                                   data-cat-name="<s:text name='allCategories'/>"><s:text name="allCategories"/></a>
+                                            </li>
                                             <c:forEach items="${topDiyCat}" var="cat">
                                                 <li>
-                                                    <a @click="chooseThisCat(${cat.pkey},'${cat.name}')">${cat.name}</a>
+                                                    <a @click="chooseThisCat"
+                                                        data-cat-pkey="${cat.pkey}"
+                                                        data-cat-name="${cat.name}"
+                                                    >${cat.name}</a>
+                                                    <%--<a @click="chooseThisCat(${cat.pkey},'${cat.name}')">${cat.name}</a>--%>
                                                 </li>
                                             </c:forEach>
                                         </ul>
@@ -129,16 +134,16 @@
                         </ul>
                     </div>
                 </h3>
-                <div  style="clear:both;"></div>
+                <div style="clear:both;"></div>
 
                 <!-- 商品展示 -->
-                
+
                 <div class="goods-wrap">
                     <div class="goods-box" v-for="item,index in products" style="width: 284px">
                         <div class="goods-item">
                             <div class="goods-pic pic_box">
                                 <a :href="'/' + item.rewrite" title="item.name" target="_blank">
-                                    <img :src="getFirstPic(item.pdt.picture)" >
+                                    <img :src="getFirstPic(item.pdt.picture)">
                                 </a>
                                 <span></span>
                             </div>
@@ -147,14 +152,14 @@
                             </h5>
                             <div class="goods-price">${env.currency.symbols} {{item.pdt.curPrice}}</div>
                             <div class="btn btn-enter">
-                                <a :href="'/' + item.rewrite" class="btn btn-enter" target="_blank"><s:text name="show_now"/></a>
+                                <a :href="'/' + item.rewrite" class="btn btn-enter" target="_blank"><s:text
+                                        name="show_now"/></a>
                             </div>
                         </div>
                     </div>
                 </div>
 
-               
-                
+
                 <!-- 没有商品时显示 -->
                 <div style="border-top: 1px dotted #ccc;text-align: center;" v-show="products.length==0">
                     <p style="padding: 215px 0;text-align: center;display:  inline-block;">
@@ -164,25 +169,25 @@
                     </p>
                 </div>
 
-                     <!-- 页面跳转 - 按钮组 -->
+                <!-- 页面跳转 - 按钮组 -->
                 <div class="page-box" style="text-align: center;">
-                        <el-pagination
-                                background
-                                @current-change="handleCurrentChange"
-                                prev-text="< Previous"
-                                next-text="Next >"
-                                :current-page="currentPage"
-                                layout="prev, pager, next"
-                                :page-count="totalCount">
-                        </el-pagination>
-                    </div>
+                    <el-pagination
+                            v-if="totalCount>0"
+                            background
+                            @current-change="handleCurrentChange"
+                            prev-text="< Previous"
+                            next-text="Next >"
+                            :current-page="currentPage"
+                            layout="prev, pager, next"
+                            :page-count="totalCount">
+                    </el-pagination>
+                </div>
 
                 <div class="blank25"></div>
             </div>
         </div>
-            <index-bottom></index-bottom>
+        <index-bottom></index-bottom>
     </div>
-
 
 
     <div align="center">
@@ -190,7 +195,7 @@
 </div>
 
 <!-- <script type="text/javascript">
-   
+
 
     function getData() {
         var param = {
@@ -396,13 +401,13 @@ ${supView.traceCode}
     new Vue({
         el: "#main",
         data: {
-            pkey:'',
-            totalCount:0,
-            currentPage:1,
-            cated:-1,
-            rankingBasis:-1,
-            type:1,
-            products:[],
+            pkey: '',
+            totalCount: 0,
+            currentPage: 1,
+            cated: -1,
+            rankingBasis: -1,
+            type: 1,
+            products: [],
         },
         mounted() {
             this.pkey = this.GetQueryString("pkey")
@@ -428,13 +433,13 @@ ${supView.traceCode}
                         "rankingBasis": that.rankingBasis,
                         "basis": that.type
                     }
-                    })
+                })
                     .then(function (res) {
                         console.log(res);
                         if (res.data.page) {
                             that.products = res.data.items;
                             that.totalCount = res.data.pageAll;
-                        }  else {
+                        } else {
                             that.$message.error(res.data.msg || "Network exception, please try again later");
                         }
                     })
@@ -442,12 +447,12 @@ ${supView.traceCode}
                         that.$message.error(res.data.msg || "Network exception, please try again later");
                     });
             },
-            getFirstPic: function(str) {
+            getFirstPic: function (str) {
                 console.log(str)
                 if (str == '') {
                     return '/home/static/images/noImage.png';
                 } else {
-                    
+
                     if (str.indexOf(",") != -1) {
                         return '${envConfig.imageBaseUrl}' + str.split(",")[0]
                             + '?x-oss-process=image/resize,m_pad,h_256,w_256';
@@ -461,55 +466,65 @@ ${supView.traceCode}
                 // this.start = (this.currentPage - 1) * this.limit;
                 this.getProducts();
             },
-            chooseThisCat:function(cat, catName) {
+            chooseThisCat: function (e) {
+                let cat = e.currentTarget.dataset.catPkey || "";
+                let catName = e.currentTarget.dataset.catName;
                 this.cated = cat;
                 $("#category").text(catName);
                 this.page = 1;
                 this.getProducts();
+
+                // 将显示出来的下拉内容隐藏掉
+                $(".tool-group .tool-drop-down-content").hide();
+                $(".tool-group .tool-drop-down-btn").removeClass("active");
             },
-            chooseThisSort: function(sort) {
-                
-                    this.rankingBasis = sort;
-                    var sortName = '<s:text name="most_popular"/>';
-                    switch (sort) {
-                        case 1:
-                            sortName = '<s:text name="sales"/>';
-                            break;
-                        case 2:
-                            sortName = '<s:text name="fav"/>';
-                            break;
-                        case 3:
-                            sortName = '<s:text name="new"/>';
-                            break;
-                        case 4:
-                            sortName = '<s:text name="price"/>';
-                            break;
-                        default:
-                            sortName = '<s:text name="most_popular"/>';
-                    }
+            chooseThisSort: function (sort) {
+
+                this.rankingBasis = sort;
+                var sortName = '<s:text name="most_popular"/>';
+                switch (sort) {
+                    case 1:
+                        sortName = '<s:text name="sales"/>';
+                        break;
+                    case 2:
+                        sortName = '<s:text name="fav"/>';
+                        break;
+                    case 3:
+                        sortName = '<s:text name="new"/>';
+                        break;
+                    case 4:
+                        sortName = '<s:text name="price"/>';
+                        break;
+                    default:
+                        sortName = '<s:text name="most_popular"/>';
+                }
                 $("#sort").text(sortName);
                 console.log("66666666666666666666")
                 this.getProducts();
+
+                // 将显示出来的下拉内容隐藏掉
+                $(".tool-group .tool-drop-down-content").hide();
+                $(".tool-group .tool-drop-down-btn").removeClass("active");
             },
         },
     })
     // 点击选择下拉框按钮，显示下拉内容
-$(".tool-group .tool-drop-down-btn").click(function(){
-	$(".tool-group .tool-drop-down-content").hide();
-	$(".tool-group .tool-drop-down-btn").removeClass("active");
-	$(this).toggleClass("active")
-				 .siblings(".tool-drop-down-content").toggle();
-})
+    $(".tool-group .tool-drop-down-btn").click(function () {
+        $(".tool-group .tool-drop-down-content").hide();
+        $(".tool-group .tool-drop-down-btn").removeClass("active");
+        $(this).toggleClass("active")
+            .siblings(".tool-drop-down-content").toggle();
+    })
 
-// 获得点击事件
-$(document).click(function(e){
-	var target = $(e.target);
-	// 如果点击的是 选择下拉框中，则不干什么；如果点击的是其余地方，则将显示出来的下拉内容隐藏掉
-	if( target.closest(".tool-drop-down-wrap").length !== 0 ) return;
-	$(".tool-group .tool-drop-down-content").hide();
-	$(".tool-group .tool-drop-down-btn").removeClass("active");
-	// e.stopPropagation();
-})
+    // 获得点击事件
+    $(document).click(function (e) {
+        var target = $(e.target);
+        // 如果点击的是 选择下拉框中，则不干什么；如果点击的是其余地方，则将显示出来的下拉内容隐藏掉
+        if (target.closest(".tool-drop-down-wrap").length !== 0) return;
+        $(".tool-group .tool-drop-down-content").hide();
+        $(".tool-group .tool-drop-down-btn").removeClass("active");
+        // e.stopPropagation();
+    })
 
 </script>
 </body>

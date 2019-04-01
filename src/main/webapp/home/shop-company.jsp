@@ -35,6 +35,10 @@
         .enterprise-info-content .info-item .title{
             flex: 0 0 250px;
         }
+
+        .enterprise-info-content .info-item .text {
+            word-break: break-all;
+        }
     </style>
 </head>
 <jsp:include page="v3/header.jsp"/>
@@ -65,7 +69,9 @@
                         <h5 class="title">
                             <s:text name="purchase.company"/>
                         </h5>
-                        <div class="text"><c:if test="${supView.name != 'null'}">${supView.showName}</c:if></div>
+                        <div class="text">
+                            <c:if test="${not empty supView.showName && !(supView.showName eq null)}">
+                                ${supView.showName}</c:if></div>
                     </div>
 
                     <c:set var="symbolNoLogin" value="********"/>
@@ -75,7 +81,8 @@
                             <s:text name="review.address"/>
                         </h5>
                         <div class="text">
-                            <c:if test="${supView.companyAddr != 'null'}">${supView.companyAddr}</c:if>
+                            <c:if test="${not empty supView.companyAddr && !(supView.companyAddr eq null)}">
+                                ${supView.companyAddr}</c:if>
                         </div>
                     </div>
                     <div class="info-item">
@@ -84,7 +91,8 @@
                             <s:text name="TargetedMarkets"/>
                         </h5>
                         <div class="text">
-                            <c:if test="${supView.targetedMarkets != 'null'}">${supView.targetedMarkets}</c:if>
+                            <c:if test="${not empty supView.targetedMarkets && !(supView.targetedMarkets eq null)}">
+                                ${supView.targetedMarkets}</c:if>
                         </div>
                     </div>
                     <div class="info-item">
@@ -93,7 +101,8 @@
                             <s:text name="shop-company.Production_Mode"/>
                         </h5>
                         <div class="text">
-                            <c:if test="${supView.prodPattern != 'null'}">${supView.prodPattern}</c:if>
+                            <c:if test="${not empty supView.prodPattern && !(supView.prodPattern eq null)}">
+                                ${supView.prodPattern}</c:if>
                         </div>
                     </div>
                     <div class="info-item">
@@ -102,7 +111,8 @@
                             <s:text name="AnnualOutput"/>
                         </h5>
                         <div class="text">
-                            <c:if test="${supView.annualOutput != null}">${supView.annualOutput}</c:if>
+                            <c:if test="${not empty supView.annualOutput && !(supView.annualOutput eq null)}">
+                                ${supView.annualOutput}</c:if>
                         </div>
                     </div>
                 </div>
@@ -124,7 +134,7 @@
                             <s:text name="rDepartment"/>
                         </h5>
                         <div class="text">
-                            <c:if test="${supView.rddepartment != 'null'}">
+                            <c:if test="${not empty supView.rddepartment && !(supView.rddepartment eq null)}">
                                 <c:if test="${supView.rddepartment == 0}">
                                     <s:text name="yes"/>
                                 </c:if>
@@ -142,7 +152,9 @@
                             <s:text name="AnnualNumberOfNewShoes"/>
                         </h5>
                         <div class="text">
-                            <c:if test="${supView.annualNumberOfNewShoes != 'null'}">${supView.annualNumberOfNewShoes}</c:if>
+                            <c:if test="${not empty supView.annualNumberOfNewShoes && !(supView.annualNumberOfNewShoes eq null)}">
+                                ${supView.annualNumberOfNewShoes}
+                            </c:if>
                         </div>
                     </div>
 
@@ -152,7 +164,17 @@
                             <s:text name="NumberOfProductionLines"/>
                         </h5>
                         <div class="text">
-                            <c:if test="${supView.numberOfProductionLines != 'null'}">${supView.numberOfProductionLines}</c:if>
+                            <c:if test="${not empty supView.numberOfProductionLines && !(supView.numberOfProductionLines eq null)}">
+                                <c:if test="${supView.numberOfProductionLines < 50}">
+                                    <s:text name="needleCartNumOptions1"/>
+                                </c:if>
+                                <c:if test="${supView.numberOfProductionLines > 50 && supView.numberOfProductionLines < 70}">
+                                    <s:text name="needleCartNumOptions2"/>
+                                </c:if>
+                                <c:if test="${supView.numberOfProductionLines > 70}">
+                                    <s:text name="needleCartNumOptions3"/>
+                                </c:if>
+                            </c:if>
                         </div>
                     </div>
 
@@ -162,7 +184,14 @@
                             <s:text name="NumberOfSewingMachines"/>
                         </h5>
                         <div class="text">
-                            <c:if test="${supView.numberOfSewingMachines != 'null'}">${supView.numberOfSewingMachines}</c:if>
+                            <c:if test="${not empty supView.numberOfSewingMachines && !(supView.numberOfSewingMachines eq null)}">
+                                <c:if test="${supView.numberOfSewingMachines < 3}">
+                                    ${supView.numberOfSewingMachines}
+                                </c:if>
+                                <c:if test="${supView.numberOfSewingMachines > 2}">
+                                    <s:text name="productionLineQuantityOptions3"/>
+                                </c:if>
+                            </c:if>
                         </div>
                     </div>
 
@@ -171,10 +200,18 @@
                         <h5 class="title">
                             <s:text name="AnnualExportValue"/>
                         </h5>
-
-
                         <div class="text">
-                            <c:if test="${supView.annualExportValue != 'null'}">${supView.annualExportValue}</c:if>
+                            <c:if test="${not empty supView.annualExportValue && !(supView.annualExportValue eq null)}">
+                                <c:if test="${supView.annualExportValue < 200}">
+                                    <s:text name="exportVolumeOptions1"/>
+                                </c:if>
+                                <c:if test="${supView.annualExportValue > 200 && supView.annualExportValue < 500}">
+                                    <s:text name="exportVolumeOptions2"/>
+                                </c:if>
+                                <c:if test="${supView.annualExportValue > 500}">
+                                    <s:text name="exportVolumeOptions3"/>
+                                </c:if>
+                            </c:if>
                         </div>
                     </div>
 
@@ -187,7 +224,18 @@
                             <s:text name="NumberOfEmployees"/>
                         </h5>
                         <div class="text">
-                            <c:if test="${supView.numberOfEmployees != 'null'}">${supView.numberOfEmployees}</c:if></div>
+                            <c:if test="${not empty supView.numberOfEmployees && !(supView.numberOfEmployees eq null)}">
+                                <c:if test="${supView.numberOfEmployees < 200}">
+                                    <s:text name="exportVolumeOptions1"/>
+                                </c:if>
+                                <c:if test="${supView.numberOfEmployees > 200 && supView.numberOfEmployees < 300}">
+                                    <s:text name="exportVolumeOptions2"/>
+                                </c:if>
+                                <c:if test="${supView.numberOfEmployees > 300}">
+                                    <s:text name="exportVolumeOptions3"/>
+                                </c:if>
+                            </c:if>
+                        </div>
                     </div>
 
                     <div class="info-item">
@@ -195,14 +243,15 @@
                         <h5 class="title">
                             <s:text name="ExportLicense"/>
                         </h5>
-                        <div class="text"><c:if test="${supView.exportLicense != 'null'}">
-                            <c:if test="${supView.exportLicense == ''}">
-                                <s:text name="yes"/>
+                        <div class="text">
+                            <c:if test="${not empty supView.exportLicense && !(supView.exportLicense eq null)}">
+                                <c:if test="${supView.exportLicense == ''}">
+                                    <s:text name="yes"/>
+                                </c:if>
+                                <c:if test="${supView.exportLicense != ''}">
+                                    <s:text name="no"/>
+                                </c:if>
                             </c:if>
-                            <c:if test="${supView.exportLicense != ''}">
-                                <s:text name="no"/>
-                            </c:if>
-                        </c:if>
                         </div>
                     </div>
 
@@ -211,14 +260,15 @@
                         <h5 class="title">
                             <s:text name="TestEquipmentAndFacilities"/>
                         </h5>
-                        <div class="text"><c:if test="${supView.testEquipmentAndFacilities != 'null'}">
-                            <c:if test="${supView.testEquipmentAndFacilities == 0}">
-                                <s:text name="yes"/>
+                        <div class="text">
+                            <c:if test="${not empty supView.testEquipmentAndFacilities && !(supView.testEquipmentAndFacilities eq null)}">
+                                <c:if test="${supView.testEquipmentAndFacilities == 0}">
+                                    <s:text name="yes"/>
+                                </c:if>
+                                <c:if test="${supView.testEquipmentAndFacilities == 1}">
+                                    <s:text name="no"/>
+                                </c:if>
                             </c:if>
-                            <c:if test="${supView.testEquipmentAndFacilities == 1}">
-                                <s:text name="no"/>
-                            </c:if>
-                        </c:if>
                         </div>
                     </div>
 
@@ -227,7 +277,18 @@
                         <h5 class="title">
                             <s:text name="NumberOfForeignTradeTeams"/>
                         </h5>
-                        <div class="text"><c:if test="${supView.numberOfForeignTradeTeams != 'null'}">${supView.numberOfForeignTradeTeams}</c:if>
+                        <div class="text">
+                            <c:if test="${not empty supView.numberOfForeignTradeTeams && !(supView.numberOfForeignTradeTeams eq null)}">
+                                <c:if test="${supView.numberOfForeignTradeTeams < 10}">
+                                    <s:text name="employeesNumOptions1"/>
+                                </c:if>
+                                <c:if test="${supView.numberOfForeignTradeTeams > 10 && supView.numberOfForeignTradeTeams < 15}">
+                                    <s:text name="employeesNumOptions2"/>
+                                </c:if>
+                                <c:if test="${supView.numberOfForeignTradeTeams > 15}">
+                                    <s:text name="employeesNumOptions3"/>
+                                </c:if>
+                            </c:if>
                         </div>
                     </div>
 
@@ -236,11 +297,20 @@
                         <h5 class="title">
                             <s:text name="YearsOfForeignTradeExperience"/>
                         </h5>
-                        <div class="text"><c:if test="${supView.yearsOfForeignTradeExperience != 'null'}">${supView.yearsOfForeignTradeExperience}</c:if>
+                        <div class="text">
+                            <c:if test="${not empty supView.yearsOfForeignTradeExperience && !(supView.yearsOfForeignTradeExperience eq null)}">
+                                <c:if test="${supView.yearsOfForeignTradeExperience < 5}">
+                                    <s:text name="experienceOptions1"/>
+                                </c:if>
+                                <c:if test="${supView.yearsOfForeignTradeExperience > 5 && supView.yearsOfForeignTradeExperience < 10}">
+                                    <s:text name="experienceOptions2"/>
+                                </c:if>
+                                <c:if test="${supView.yearsOfForeignTradeExperience > 10}">
+                                    <s:text name="experienceOptions3"/>
+                                </c:if>
+                            </c:if>
                         </div>
                     </div>
-
-
 
                 </div>
             </div>
@@ -268,7 +338,9 @@
                             <h5 class="title">
                                 <s:text name="supplier.department"/>
                             </h5><!-- 联系人部门 -->
-                            <div class="text"><c:if test="${supView.department != 'null'}">${supView.department}</c:if>
+                            <div class="text">
+                                <c:if test="${not empty supView.department && !(supView.department eq null)}">
+                                    ${supView.department}</c:if>
                             </div>
                         </div>
 
@@ -276,7 +348,9 @@
                             <h5 class="title">
                                 <s:text name="position"/>
                             </h5><!-- 联系人职位 -->
-                            <div class="text"><c:if test="${supView.jobTitle != 'null'}">${supView.jobTitle }</c:if>
+                            <div class="text">
+                                <c:if test="${not empty supView.jobTitle && !(supView.jobTitle eq null)}">
+                                    ${supView.jobTitle }</c:if>
                             </div>
                         </div>
 
@@ -285,7 +359,10 @@
                                 <s:text name="review.name"/>
                             </h5><!-- 联系人 -->
                             <div class="text">
-                                <c:if test="${supView.contactsName != 'null'}">${supView.contactsName}</c:if></div>
+                                <c:if test="${not empty supView.contactsName && !(supView.contactsName eq null)}">
+                                    ${supView.contactsName}
+                                </c:if>
+                            </div>
                         </div>
 
                     </div>
@@ -303,10 +380,25 @@
                             <img src="${envConfig.imageBaseUrl}${supView.logo}?x-oss-process=image/resize,m_pad,h_130,w_165"
                                  alt="">
                         </div>
-                        <p class="company-name"><c:if test="${supView.name != 'null'}">${supView.showName}</c:if></p>
+                        <p class="company-name">
+                            <c:if test="${not empty supView.name && !(supView.name eq null)}">
+                                ${supView.showName}
+                            </c:if>
+                        </p>
                         <div>
-                            <img src="./static/images/ico/icon-svs.png" alt="">
-                            svs
+
+                            <c:if test="${not empty supView.grade || !(supView.grade eq null)}">
+                                <c:if test="${supView.grade == 1}">
+                                    <img src="./static/images/ico/icon-svs-yp.png" alt="">
+                                </c:if>
+                                <c:if test="${supView.grade == 2}">
+                                    <img src="./static/images/ico/icon-svs-jp.png" alt="">
+                                </c:if>
+                                <c:if test="${supView.grade == 3}">
+                                    <img src="./static/images/ico/icon-svs-zs.png" alt="">
+                                </c:if>
+                                svs
+                            </c:if>
                         </div>
                     </div>
                     <el-form :model="form" :rules="rules" ref="form" label-width="155px" style="margin-top: 30px;">
@@ -503,7 +595,7 @@
                 // 上传图片文件之前
                 beforeUpload(file) {
                     console.log(file)
-                    // if (!sysConfig || !sysConfig.user) {
+                    // if (!sysConfig && !sysConfig.user) {
                     //     this.$alert('Please login to operate', 'Please login to operate', {
                     //         confirmButtonText: 'Ok',
                     //         customClass: "my-custom-element-alert-class fs-content-18",

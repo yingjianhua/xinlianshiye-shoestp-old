@@ -95,10 +95,16 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
         writeErr(-9, "目标市场不能为空");
         break;
       case -10:
-        writeErr(-10, "名称必须为中文");
+        writeErr(-10, "颜色名称必须为中文");
         break;
       case -11:
         writeErr(-11, "不能有相同颜色的名称");
+        break;
+      case -12:
+        writeErr(-12, "您的商品中已存在该商品货号");
+        break;
+      case -13:
+        writeErr(-13, "上架时间不能小于当前时间");
         break;
       default:
         write();
