@@ -1,5 +1,6 @@
 package com.xinlianshiye.shoestp.common.errcode;
 
+import java.io.File;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -74,14 +75,13 @@ public class MessageBuild {
     Properties properties = new Properties();
     for (FldLanguage.Language value : FldLanguage.Language.values()) {
       try {
-
-        if (Files.isExecutable(
-            Paths.get(
-                new URI(
-                    MessageBuild.class.getResource("/")
-                        + "shoestp_"
-                        + value.name()
-                        + ".properties")))) {
+        String filePath =
+            MessageBuild.class.getResource("/") + "shoestp_" + value.name() + ".properties";
+        if ("/".equals(File.separator)) {
+          System.out.println(filePath);
+          filePath = filePath.replace("\\", "/");
+        }
+        if (Files.isExecutable(Paths.get(new URI(filePath)))) {
           try {
             //            BufferedReader bufferedReader =
             //                new BufferedReader(
@@ -159,7 +159,9 @@ public class MessageBuild {
   }
 
   public static void main(String[] args) {
-    System.out.println(hashMap);
+    String filePath = MessageBuild.class.getResource("/") + "shoestp_en.properties";
+    System.out.println(filePath);
+    System.out.println(filePath.indexOf("/"));
   }
 
   public static MessageView build(int code, FldLanguage.Language language) {
