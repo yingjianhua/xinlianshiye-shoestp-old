@@ -105,6 +105,7 @@ public class RFQManageServiceImp implements IRFQManageService {
     infoView.setValid_date(rfqConsult.getValidDate());
     infoView.setLeft_count(rfqConsult.getTotal() - rfqConsult.getLeftCount());
     infoView.setImage(rfqConsult.getImage());
+    infoView.setProductImage(rfqConsult.gtProduct().getPicture().split(",")[0]);
     infoView.setPurchaseName(rfqConsult.gtPurchaseId().getName());
     if (rfqConsult.gtType() == RFQConsultType.RFQ) {
       String[] price = rfqConsult.getPrice().split("-");

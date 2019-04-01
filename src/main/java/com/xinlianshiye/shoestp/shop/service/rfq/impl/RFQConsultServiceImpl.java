@@ -470,6 +470,12 @@ public class RFQConsultServiceImpl implements RFQConsultService {
       case RFQ:
         view.setChangeCount(consult.getChangeCount());
         break;
+      case INQUIRY:
+        view.setProductImage(consult.gtProduct().getPicture().split(",")[0]);
+        break;
+      case Private_INQUIRY:
+        view.setProductImage(consult.gtProduct().getPicture().split(",")[0]);
+        break;
       default:
         break;
     }
@@ -534,8 +540,20 @@ public class RFQConsultServiceImpl implements RFQConsultService {
       throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.time_wrong, language));
       //      throw new WebMessageException(ReturnCode.valid_illegal, "有效时间不合法");
     }
+    if (information == null || (information = information.trim()).isEmpty()) {
+      throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.valid_tooShort, language));
+    }
+
+    if (information.length() > 100) {
+      throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.valid_toolong, language));
+    }
     consult.setChangeCount((short) (consult.getChangeCount() + (short) 1));
-    consult.setExtraDescription(information);
+    StringBuilder sb = new StringBuilder();
+    if (consult.getExtraDescription() != null) {
+      sb.append(consult.getExtraDescription()).append("\r\n");
+    }
+    sb.append(information);
+    consult.setExtraDescription(sb.toString());
     consult.setValidDate(validDate);
     consult.upd();
   }
