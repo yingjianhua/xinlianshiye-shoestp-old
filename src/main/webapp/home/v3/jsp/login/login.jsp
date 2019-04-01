@@ -67,41 +67,41 @@
                                    @click="submit">Sign In
                         </el-button>
 
-                        <div class="login-form-bottom">
-                            <div class="title">Sign in with</div>
-                            <ul class="share-list">
-                                <li class="share-item">
-                                    <a href="javascript: void(0);">
-                                        <img src="/home/v3/static/images/login/icon_f.png" alt="">
-                                    </a>
-                                </li>
-                                <li class="share-item">
-                                    <!-- <a href="javascript: void(0);" @click="loginByThird('google')">
-                                        <img src="/home/v3/static/images/login/icon_g.png" alt="">
-                                    </a> -->
-                                    <a href="javascript: void(0);">
-                                        <img src="/home/v3/static/images/login/icon_g.png" alt="">
-                                    </a>
-                                </li>
-                                <li class="share-item">
-                                    <a href="javascript: void(0);">
-                                        <img src="/home/v3/static/images/login/icon_in.png" alt="">
-                                    </a>
-                                </li>
-                                <li class="share-item">
-                                    <a href="javascript: void(0);">
-                                        <img src="/home/v3/static/images/login/icon_niao.png" alt="">
-                                    </a>
-                                </li>
+                        <%--<div class="login-form-bottom">--%>
+                            <%--<div class="title">Sign in with</div>--%>
+                            <%--<ul class="share-list">--%>
+                                <%--<li class="share-item">--%>
+                                    <%--<a href="javascript: void(0);">--%>
+                                        <%--<img src="/home/v3/static/images/login/icon_f.png" alt="">--%>
+                                    <%--</a>--%>
+                                <%--</li>--%>
+                                <%--<li class="share-item">--%>
+                                    <%--<!-- <a href="javascript: void(0);" @click="loginByThird('google')">--%>
+                                        <%--<img src="/home/v3/static/images/login/icon_g.png" alt="">--%>
+                                    <%--</a> -->--%>
+                                    <%--<a href="javascript: void(0);">--%>
+                                        <%--<img src="/home/v3/static/images/login/icon_g.png" alt="">--%>
+                                    <%--</a>--%>
+                                <%--</li>--%>
+                                <%--<li class="share-item">--%>
+                                    <%--<a href="javascript: void(0);">--%>
+                                        <%--<img src="/home/v3/static/images/login/icon_in.png" alt="">--%>
+                                    <%--</a>--%>
+                                <%--</li>--%>
+                                <%--<li class="share-item">--%>
+                                    <%--<a href="javascript: void(0);">--%>
+                                        <%--<img src="/home/v3/static/images/login/icon_niao.png" alt="">--%>
+                                    <%--</a>--%>
+                                <%--</li>--%>
 
-                                <li class="share-item user-supplier">
-                                    <!-- test -->
-                                    <a href="/newseller/">
-                                        I am a supplier
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                                <%--<li class="share-item user-supplier">--%>
+                                    <%--<!-- test -->--%>
+                                    <%--<a href="/newseller/">--%>
+                                        <%--I am a supplier--%>
+                                    <%--</a>--%>
+                                <%--</li>--%>
+                            <%--</ul>--%>
+                        <%--</div>--%>
                     </div>
                     <!-- 右侧表单面板 - end -->
                 </div>

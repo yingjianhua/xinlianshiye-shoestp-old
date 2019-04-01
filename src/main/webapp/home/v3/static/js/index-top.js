@@ -85,30 +85,31 @@ Vue.component('index-top', {
                     <div class="login-btn"><a href="javascript:void(0);" @click="toLogin">Login</a></div>
                     <div style="text-align:center;font-size:16px;margin:  8px  0;">or</div>
                     <div class="registered-btn"><a href="/home/usr_UsrMain_register" target="_blank">Registration</a></div>
-                    <div style="color:#777777;text-align:center;margin:  15px  0;">Continue with：</div>
-                    <div class="clearfix  other-login-list">
-                        <div class="fl  other-login-item">
-                            <a href="javascript: void(0);">
-                                <img src="/home/v3/static/images/nav/facebook.png" alt="facebook">
-                            </a>
-                        </div>
-                        <div class="fl  other-login-item">
-                            <a href="javascript: void(0);">
-                                <img src="/home/v3/static/images/nav/google.png" alt="google">
-                            </a>
-                        </div>
-                        <div class="fl  other-login-item">
-                            <a href="javascript: void(0);">
-                                <img src="/home/v3/static/images/nav/in.png" alt="in">
-                            </a>
-                        </div>
-                        <div class="fl  other-login-item">
-                            <a href="javascript: void(0);">
-                                <img src="/home/v3/static/images/nav/twitter.png" alt="twitter">
-                            </a>
-                        </div>
-                    </div>
-                    <div class="hours  after-login">Get multiple quotes within 24 hours！</div>
+                    <div style="height: 20px;"></div>
+                    <!--<div style="color:#777777;text-align:center;margin:  15px  0;">Continue with：</div>-->
+                    <!--<div class="clearfix  other-login-list">-->
+                        <!--<div class="fl  other-login-item">-->
+                            <!--<a href="javascript: void(0);">-->
+                                <!--<img src="/home/v3/static/images/nav/facebook.png" alt="facebook">-->
+                            <!--</a>-->
+                        <!--</div>-->
+                        <!--<div class="fl  other-login-item">-->
+                            <!--<a href="javascript: void(0);">-->
+                                <!--<img src="/home/v3/static/images/nav/google.png" alt="google">-->
+                            <!--</a>-->
+                        <!--</div>-->
+                        <!--<div class="fl  other-login-item">-->
+                            <!--<a href="javascript: void(0);">-->
+                                <!--<img src="/home/v3/static/images/nav/in.png" alt="in">-->
+                            <!--</a>-->
+                        <!--</div>-->
+                        <!--<div class="fl  other-login-item">-->
+                            <!--<a href="javascript: void(0);">-->
+                                <!--<img src="/home/v3/static/images/nav/twitter.png" alt="twitter">-->
+                            <!--</a>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="hours  after-login">Get multiple quotes within 24 hours！</div>-->
                 </dd>
                 <!--  登陆后看到的  -->
                 <dd v-if="sysConfig.user">
@@ -210,14 +211,15 @@ Vue.component('index-top', {
                 window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=' + window.location.href;
             }
         },
-        // 跳转RFQ   
+        // 跳转RFQ
         ToRFQ(){
             let url = "/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1" + "&backUrl=" + window.location.href
             util_function_obj.supplierCantEnter(this, url,"Please register or login your buyer account if you want public RFQ.");
          },
         submit: function () {
             // if (this.input) {
-                window.location = '/home/pdt_PdtProduct?Keyword=' + this.input + '&v=2&searchtype=' + this.select;
+            //     window.location = '/home/pdt_PdtProduct?Keyword=' + this.input + '&v=2&searchtype=' + this.select;
+                window.location = '/home/pdt_PdtProduct?Keyword=' + this.input + '&searchtype=' + this.select;
             // } else {
             //     this.$message('Please enter the keywords you need to search.');
             //     return false;
@@ -283,7 +285,7 @@ Vue.component('index-top', {
                     console.log(self.msgStart)
                     console.log(self.msgLimit)
                 })
-                .catch(function (error) { 
+                .catch(function (error) {
                     console.log(error);
                 });
             }
