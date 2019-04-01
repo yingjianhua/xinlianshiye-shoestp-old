@@ -126,7 +126,9 @@
                     <!-- 电话 -->
                     <el-form-item label="Tel" class="tel-wrap">
                         <div class="tel-inner">
-                            <el-form-item class="tel-inner1" id="telPrefix1" key="telPrefix1" prop="telPrefix1">
+                            <el-form-item class="tel-inner1" :class="{isRight: is3PhoneRight}"
+                                          :error="isShow3PhoneErrMsg"
+                                          id="telPrefix1" key="telPrefix1" prop="telPrefix1">
                                 <el-input
                                         v-model.trim="registerForm.telPrefix1">
                                 </el-input>
@@ -134,7 +136,9 @@
 
                             <span>-</span>
 
-                            <el-form-item class="tel-inner2" id="telPrefix2" key="telPrefix2" prop="telPrefix2">
+                            <el-form-item class="tel-inner2" :class="{isRight: is3PhoneRight && registerForm.telPrefix2}"
+                                          :error="isShow3PhoneErrMsg"
+                                          id="telPrefix2" key="telPrefix2" prop="telPrefix2">
                                 <el-input
                                         v-model.trim="registerForm.telPrefix2">
                                 </el-input>
@@ -142,7 +146,8 @@
 
                             <span>-</span>
 
-                            <el-form-item class=" tel-inner3" id="tel" prop="tel" key="tel">
+                            <el-form-item class=" tel-inner3" :error="isShow3PhoneErrMsg"
+                                          id="tel" prop="tel" key="tel">
                                 <el-input placeholder="Please enter your telephone"
                                           v-model.trim="registerForm.tel">
                                 </el-input>
@@ -471,28 +476,40 @@
 
     // 电话号码验 - buyer - 电话 + 2个前缀
     const validateTelPrefix1 = (rule, value, callback) => {
-        // 正式的密码验证
-        if (value === '') {
-            callback();
-        }else{
-            app.$refs.registerForm.validateField('tel');
-            callback();
-        }
+        app.$refs.registerForm.validateField('tel');
+        callback();
     };
     const validateTelPrefix2 = (rule, value, callback) => {
         app.$refs.registerForm.validateField('tel');
         callback();
     };
     const validateTel = (rule, value, callback) => {
-        if (value === '') {
+        app.isShow3PhoneErrMsg = null;
+        // 3个都为空时，不报错-也不报对
+        if (!value && !app.registerForm.telPrefix1 && !app.registerForm.telPrefix2) {
             // callback(new Error(app.registerForm.user == 'buyer' ? 'Telephone number can\'t be empty!' : '电话号码不能为空'));
+            console.log("null")
+            app.is3PhoneRight = false;
             callback();
+        // 否则进行正则判断-不符合的直接三个都显示错误
         }else if(!util_regular_obj.register.phoneAreaCode.test(app.registerForm.telPrefix1+"-"+app.registerForm.telPrefix2+app.registerForm.tel)){
+            console.log("reg err")
+            app.is3PhoneRight = false;
+            // Prefix1的error属性会被这里的callback覆盖，所以延时赋值
+            // 该函数内的error不会被callback覆盖
+            setTimeout(()=>{
+                app.isShow3PhoneErrMsg = 'Telephone number\'s format is incorrect，please check the prefix-tel and phone';
+            },20)
             callback(new Error('Telephone number\'s format is incorrect，please check the prefix-tel and phone'));
         } else {
-            // app.$refs.registerForm.validateField('telPrefix1');
-            // app.$refs.registerForm.validateField('telPrefix2');
-            callback();
+            app.is3PhoneRight = true;
+            console.log("right")
+
+            // 此处error会覆盖callback，导致不显示绿色，so需延时显示
+            setTimeout(()=>{
+                callback();
+            },20)
+
         }
     };
 
@@ -509,8 +526,12 @@
         el: "#app",
         data: {
             testB: "nihao1",
+
             isAgreeAgreement: true, //是否勾选已读
             codeUrl: "/servlet/verify.img", // 本地验证码 - 刷新用
+            isShow3PhoneErrMsg: false, //是否显示3个phone输入框的错误提示信息
+            is3PhoneRight: false,   //3个空格的电话正则是否正确 - 显示绿色框框用 -
+                                    // 没有此值时框框没有颜色 - 难受 - 为true时显示绿色 - 否则照ele逻辑显示
             psdStrength: { //密码强度
                 isPsdRight: false, //密码是否符合要求
                 arr: [],    //密码强度 三个规则的匹配 true、false
@@ -560,15 +581,15 @@
                     {required: true, message: 'Country can\'t be empty!', trigger: 'change'}
                 ],
                 telPrefix1: [
-                    {validator: validateTelPrefix1, trigger: 'blur'},
+                    {validator: validateTelPrefix1, trigger: 'change'},
                     // {required: true, message: 'Telephone prefix can\'t be empty!', trigger: 'blur'}
                 ],
                 telPrefix2: [
-                    {validator: validateTelPrefix2, trigger: 'blur'},
+                    {validator: validateTelPrefix2, trigger: 'change'},
                     // {required: true, message: 'Telephone prefix can\'t be empty!', trigger: 'blur'}
                 ],
                 tel: [
-                    {validator: validateTel, trigger: 'blur'},
+                    {validator: validateTel, trigger: 'change'},
                 ],
                 code: [
                     {validator: validateCode, trigger: 'blur'},
