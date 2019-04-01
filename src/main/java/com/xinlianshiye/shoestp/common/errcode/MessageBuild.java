@@ -178,6 +178,10 @@ public class MessageBuild {
   }
 
   public static MessageView buildMessage(ReturnCode code, FldLanguage.Language language) {
+    System.out.println("系统消息map");
+    System.err.println(hashMap);
+    System.out.println("配置文件路径");
+    System.err.println(MessageBuild.class.getResource("/") + "shoestp_en.properties");
     HashMap<Integer, String> map = hashMap.get(language.name());
     String body = null;
     if (map != null) {
