@@ -453,18 +453,26 @@ public class RFQConsultServiceImpl implements RFQConsultService {
         consult.getPayType() == null ? null : consult.gtPayType().getLine().getName());
     view.setVerifyStatus(consult.getVerifyStatus());
     view.setStatus(consult.getStatus());
-    if (consult.gtType() == RFQConsultType.supplier_INQUIRY) {
-      view.setExtraRequest(consult.getExtraRequest());
-      try {
-        if (consult.getProductRequest() != null && !consult.getProductRequest().isEmpty()) {
-          view.setProductRequest(
-              om.readValue(
-                  consult.getProductRequest(),
-                  new TypeReference<List<RFQConsultProductView>>() {}));
+    consult.gtType();
+    switch (consult.gtType()) {
+      case supplier_INQUIRY:
+        view.setExtraRequest(consult.getExtraRequest());
+        try {
+          if (consult.getProductRequest() != null && !consult.getProductRequest().isEmpty()) {
+            view.setProductRequest(
+                om.readValue(
+                    consult.getProductRequest(),
+                    new TypeReference<List<RFQConsultProductView>>() {}));
+          }
+        } catch (IOException e) {
+          log.warn("RFQConsult表主键为{}的记录 字段productRequest格式错误", consult.getPkey());
         }
-      } catch (IOException e) {
-        log.warn("RFQConsult表主键为{}的记录 字段productRequest格式错误", consult.getPkey());
-      }
+        break;
+      case RFQ:
+        view.setChangeCount(consult.getChangeCount());
+        break;
+      default:
+        break;
     }
     view.setImages(
         consult.getImage() == null
