@@ -13,8 +13,10 @@ import java.util.regex.Pattern;
 
 import irille.pub.exception.ReturnCode;
 import irille.pub.tb.FldLanguage;
+import lombok.extern.slf4j.Slf4j;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2019/3/13 Time: 16:02 */
+@Slf4j
 public class MessageBuild {
   private static ConcurrentHashMap<String, HashMap<Integer, String>> hashMap;
 
@@ -178,6 +180,10 @@ public class MessageBuild {
   }
 
   public static MessageView buildMessage(ReturnCode code, FldLanguage.Language language) {
+    log.info("系统消息map");
+    log.info("====" + hashMap);
+    log.info("配置文件路径");
+    log.info(MessageBuild.class.getResource("/") + "shoestp_en.properties");
     HashMap<Integer, String> map = hashMap.get(language.name());
     String body = null;
     if (map != null) {

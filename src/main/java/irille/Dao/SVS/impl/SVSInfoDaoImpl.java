@@ -60,7 +60,7 @@ public class SVSInfoDaoImpl implements SVSInfoDao {
                 .LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, SVSInfo.T.SUPPLIER)
                 .WHERE(shopName != null, UsrSupplier.T.NAME, "like ?", "%" + shopName + "%")
                 .WHERE(status != null, SVSInfo.T.STATUS, "=?", status)
-                .WHERE(shopStatus != null, UsrSupplier.T.STATUS, "=?", shopStatus)
+                .WHERE(shopStatus != null, UsrSupplier.T.STORE_STATUS, "=?", shopStatus)
                 .WHERE(grade != null, SVSInfo.T.GRADE, "=?", grade)
                 .ORDER_BY(SVSInfo.T.APPLICATION_TIME, "desc")
                 .LIMIT(start, limit);
