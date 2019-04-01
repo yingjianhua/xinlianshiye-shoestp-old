@@ -453,7 +453,6 @@ public class RFQConsultServiceImpl implements RFQConsultService {
         consult.getPayType() == null ? null : consult.gtPayType().getLine().getName());
     view.setVerifyStatus(consult.getVerifyStatus());
     view.setStatus(consult.getStatus());
-    consult.gtType();
     switch (consult.gtType()) {
       case supplier_INQUIRY:
         view.setExtraRequest(consult.getExtraRequest());
