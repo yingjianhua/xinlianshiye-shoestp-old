@@ -1,9 +1,12 @@
 package irille.shop.pdt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import irille.core.sys.Sys.OYn;
@@ -136,7 +139,9 @@ public class PdtAttrCatDAO {
 
   public static class UpdAttrCat extends IduUpd<UpdAttrCat, PdtAttrCat> {
     @Getter @Setter private List<Integer> cat;
-    @Getter @Setter private List<Integer> pps;
+    private Map<Integer, List<PdtAttrPro>> pps = new HashMap<>();
+    private List<Integer> insPros = new ArrayList<>();
+    private List<PdtAttrPro> delPros = new ArrayList<>();
 
     @Override
     public void before() {
@@ -151,39 +156,38 @@ public class PdtAttrCatDAO {
               false,
               getB().getPkey());
 
-      pps =
-          pros.stream()
-              .map(
-                  p -> {
-                    return p.getProcat();
-                  })
-              .collect(Collectors.toList());
-      boolean f = false;
-      if (null != getCat()) {
-        for (Integer c : getCat()) {
-          if (!pps.contains(c)) {
-            f = true;
-          }
+      for (PdtAttrPro p : pros) {
+        if (pps.containsKey(p.getProcat())) {
+          List<PdtAttrPro> ppsList = pps.get(p.getProcat());
+          ppsList.add(p);
+        } else {
+          List<PdtAttrPro> ppsList = new ArrayList<>();
+          ppsList.add(p);
+          pps.put(p.getProcat(), ppsList);
         }
+      }
+      for (Integer c : getCat()) {
+        if (null == pps.remove(c)) {
+          // 不存在,新增
+          insPros.add(c);
+        } else {
+          // 存在此分类,修改;暂不处理
+        }
+      }
+      if (null != pps && pps.size() > 0) {
+        // 删除//需判断该分类是否被商品引用
+        List<Integer> cats = new ArrayList<>();
+        for (Entry<Integer, List<PdtAttrPro>> entry : pps.entrySet()) {
+          cats.add(entry.getKey());
+          delPros.addAll(entry.getValue());
+        }
+        PdtAttrCatDAO.valid(getB(), cats);
       }
       PdtAttrCat dbBean = loadThisBeanAndLock();
       PropertyUtils.copyProperties(dbBean, getB(), PdtAttrCat.T.NAME, PdtAttrCat.T.STATE);
       setB(dbBean);
-      if ((null != getB().getState() && getB().getState().equals(OYn.YES.getLine().getKey()))
-          || f) {
-        if (null != getCat() && getB().getLockAttr().equals(OYn.YES.getLine().getKey())) {
-          throw new WebMessageException(ReturnCode.failure, "该属性分类下存在产品,不可修改此分类");
-        }
-        if (null != getB().getState()
-            && getB().getState().equals(OYn.NO.getLine().getKey())
-            && getB().getLockAttr().equals(OYn.YES.getLine().getKey())) {
-          throw new WebMessageException(ReturnCode.failure, "该属性分类下存在产品,不可禁用");
-        }
-        //        PdtAttrCatDAO.valid(getB(), getCat());
-      }
-
-      if (null == cat && !pps.contains(cat)) {
-        throw new WebMessageException(ReturnCode.failure, "请选择产品分类");
+      if ((null != getB().getState() && getB().getState().equals(OYn.YES.getLine().getKey()))) {
+        PdtAttrCatDAO.valid(getB(), getCat());
       }
     }
     /** @auther liyichao */
@@ -199,17 +203,18 @@ public class PdtAttrCatDAO {
       getB().setDeleted(OYn.NO.getLine().getKey());
       getB().setState(OYn.NO.getLine().getKey());
       List<PdtAttrPro> pros = new ArrayList<>();
-      for (Integer c : getCat()) {
-        if (null != getPps() && !getPps().contains(c)) {
-          PdtAttrPro ap = new PdtAttrPro();
-          ap.setAttrcat(getB().getPkey());
-          ap.setProcat(c);
-          ap.setRowVersion((short) 0);
-          pros.add(ap);
-        }
+      for (Integer c : insPros) {
+        PdtAttrPro ap = new PdtAttrPro();
+        ap.setAttrcat(getB().getPkey());
+        ap.setProcat(c);
+        ap.setRowVersion((short) 0);
+        pros.add(ap);
       }
       if (pros.size() > 0) {
         BatchUtils.batchIns(PdtAttrPro.class, pros);
+      }
+      if (delPros.size() > 0) {
+        BatchUtils.batchDel(PdtAttrPro.class, Arrays.asList(PdtAttrPro.T.PKEY), delPros);
       }
       super.run();
     }
@@ -381,7 +386,18 @@ public class PdtAttrCatDAO {
                   })
               .collect(Collectors.toList());
       SQL sql = new SQL();
-      sql.SELECT(PdtProduct.T.NORM_ATTR).FROM(PdtProduct.class);
+      sql.SELECT(PdtProduct.T.NORM_ATTR)
+          .FROM(PdtProduct.class)
+          .WHERE(
+              PdtProduct.T.CATEGORY,
+              " in("
+                  + cats.stream()
+                      .map(
+                          b -> {
+                            return String.valueOf(b);
+                          })
+                      .collect(Collectors.joining(","))
+                  + ")");
       List<Map<String, Object>> normAttrs = Query.sql(sql).queryMaps();
       boolean flag = false;
       for (Map<String, Object> m : normAttrs) {

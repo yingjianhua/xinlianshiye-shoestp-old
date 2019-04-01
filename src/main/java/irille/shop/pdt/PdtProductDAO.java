@@ -946,17 +946,12 @@ public class PdtProductDAO {
   /** @Author wilson Zhang @Description 商家首页获取当前供应商的产品总数 @Date 16:28 2019/3/27 */
   public Integer productCount(Integer supplierpkey) {
     SQL pdt =
-        new SQL() {
-          {
-            SELECT(PdtProduct.T.PKEY)
-                .FROM(PdtProduct.class)
-                .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierpkey)
-                .WHERE(PdtProduct.T.STATE, " =? ", Pdt.OState.ON.getLine().getKey())
-                .or()
-                .WHERE(PdtProduct.T.STATE, " =? ", Pdt.OState.OFF.getLine().getKey())
-                .WHERE(PdtProduct.T.SOLD_TIME_B, " IS NOT NULL ");
-          }
-        };
+            new SQL()
+                    .SELECT(PdtProduct.class)
+                    .FROM(PdtProduct.class)
+                    .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierpkey).WHERE(PdtProduct.T.STATE, "=?", OState.ON)
+                    .or()
+                    .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierpkey).WHERE(PdtProduct.T.STATE, "=?", OState.OFF).WHERE(PdtProduct.T.SOLD_TIME_B, "IS NULL");
     return irille.pub.bean.Query.sql(pdt).queryCount();
   }
   /** @Author wilson Zhang @Description 商家首页获取当前供应商的私人展厅产品总数 @Date 16:28 2019/3/27 */
@@ -988,22 +983,23 @@ public class PdtProductDAO {
   }
   /** @Author wilson Zhang @Description 商家首页获取当前供应商的产品待审核总数 @Date 16:28 2019/3/27 */
   public Integer verifyProductCount(Integer supplierpkey) {
+    SQL priPdt = new SQL(){{
+      SELECT(O2O_PrivateExpoPdt.T.PDT_ID)
+              .FROM(O2O_PrivateExpoPdt.class)
+              .WHERE(O2O_PrivateExpoPdt.T.VERIFY_STATUS,"="+O2O_PrivateExpoPdtStatus._DEFAULT.getLine().getKey());
+    }};
+
     SQL pdt =
         new SQL() {
           {
             SELECT(PdtProduct.T.PKEY)
                 .FROM(PdtProduct.class)
-                .LEFT_JOIN(O2O_PrivateExpoPdt.class, O2O_PrivateExpoPdt.T.PDT_ID, PdtProduct.T.PKEY)
+                .LEFT_JOIN(priPdt,"pripdt", "pripdt.pdt_id", PdtProduct.T.PKEY)
                 .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierpkey)
                 .WHERE(PdtProduct.T.IS_VERIFY, "=?", Pdt.OAppr._DEFAULT.getLine().getKey())
                 .WHERE(PdtProduct.T.SOLD_TIME_B, " IS NULL ")
                 .WHERE(PdtProduct.T.STATE, " <> ? ", OState.MERCHANTDEL)
-                .WHERE(PdtProduct.T.STATE, " <> ? ", OState.DELETE)
-                .OR()
-                .WHERE(
-                    O2O_PrivateExpoPdt.T.VERIFY_STATUS,
-                    " =? ",
-                    O2O_PrivateExpoPdtStatus._DEFAULT.getLine().getKey());
+                .WHERE(PdtProduct.T.STATE, " <> ? ", OState.DELETE);
           }
         };
     return irille.pub.bean.Query.sql(pdt).queryCount();
