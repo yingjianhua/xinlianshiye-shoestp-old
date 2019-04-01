@@ -1352,6 +1352,7 @@ a {
     align-items: center;
     margin-left: 10px;
     position: relative;
+    cursor: pointer;
 }
 #o2otop .o2otopcon .o2otoplikes .o2otoplikenum{
    position: relative;
@@ -1701,6 +1702,10 @@ a {
 .sanduan .box .boxList {
     padding-bottom: 16px;
     padding-left: 30px;
+}
+.sanduan .box .boxList .subcate-list-box{
+    max-height: 40px;
+    overflow: hidden;
 }
 
 .sanduan .box .boxList-icon1 {

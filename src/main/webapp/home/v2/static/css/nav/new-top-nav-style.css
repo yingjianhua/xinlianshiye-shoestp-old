@@ -283,6 +283,18 @@
 }
 /* ---------------- elementUI 弹窗样式自定义 - end ---------------- */
 
+/* ---------------- elementUI 按钮样式自定义---------------- */
+.el-button--primary.my-primary-btn{
+  border-radius: 3px;
+  border-color: #10389c;
+  background-color: #10389c;
+}
+.el-button--primary.my-primary-btn:hover {
+  border-color: #35c;
+  background-color: #35c;
+}
+/* ---------------- elementUI 按钮样式自定义 - end ---------------- */
+
 /* ---------------- 滚动条自定义 ---------------- */
 .normal-scrollbar-wrap{
   background: #f60;

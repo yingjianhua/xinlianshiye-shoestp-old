@@ -897,8 +897,9 @@
 										</template>
 									</div>
 									<!-- 审核通过且有报价时不能编辑 -->
+									<!-- 修改3次后不能编辑 -->
 									<el-button size="mini"
-											   :disabled="(inquiryDetail.verifyStatus == 3 && quotationDetailList.length) || (inquiryDetail.status == 4)"
+											   :disabled="(inquiryDetail.verifyStatus == 3 && quotationDetailList.length) || (inquiryDetail.status == 4) || (inquiryDetail.changeCount && inquiryDetail.changeCount >=3)"
 											   @click="showEditAddInformationDialog">
 										Edit
 									</el-button>
@@ -1751,7 +1752,7 @@
 					this.$message.error(res.data.msg || "Get quotation's detail error,please try again later");
 					return
 				};
-				
+
 				this.quotationDetailList.push(res.data.result);
 			})
 			.catch((error) => {
@@ -1828,12 +1829,12 @@
 
 			//关闭RFQ
 			closeRFQ(e){
-				this.$confirm('Are you sure to close the inquiry?', 'tip', {
+				this.$confirm('Are you sure to close the inquiry?', {
 					confirmButtonText: 'sure',
 					cancelButtonText: 'cancel',
-					type: 'warning'
+					customClass: "my-custom-element-alert-class",
+					center: true,
 				}).then(() => {
-
 					axios.post('/home/rfq_RFQConsult_close', Qs.stringify({
 						consultPkey: this.inquiryList[this.nowInquiryIndex].pkey,
 					}))
@@ -2328,6 +2329,11 @@
 					this.$message.error(res.data.msg || "Send message error,please try again later");
 					return
 				};
+				// 因为只请求了新的数据，老数据并没有重新请求，so老数据需要手动更新是否已读信息
+				//将之前的信息全部更新为已读信息
+				this.chatMsgList.forEach((chatMsgItem,index)=>{
+					chatMsgItem.hadRead = true;
+				})
 				this.getChatInfo({searchLast: true});
 			})
 			.catch((error) => {
@@ -2366,7 +2372,7 @@
 				this.$confirm('After the link click on start the countdown, you will have 72 hours to view this private business of goods throughout the hall.', '', {
 					confirmButtonText: 'Start',
 					cancelButtonText: 'Cancel',
-					customClass: "my-confirm-class",
+					customClass: "my-custom-element-alert-class",
 					cancelButtonClass: "el-button--medium",
 					confirmButtonClass: "el-button--medium",
 				}).then(() => {

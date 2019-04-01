@@ -2,6 +2,12 @@ var util_function_obj={
     // 参数jumpUrl为login后跳转的页面 - 不传时login后刷新当前页
     //          如点击 按钮buy，判断并login后跳转至购物车
     alertWhenNoLogin: function(that,jumpUrl,callback){
+
+        // 如果在登录页点击的，不弹出登录框，直接刷新登录页
+        if( window.location.pathname.indexOf("usr_UsrPurchase_sign")!=-1 ){
+            window.location.reload();
+            return;
+        }
         // 显示登录弹框 - jsp引入的vue实例
         loginBoxVue.showLoginBox = true;
         loginBoxVue.jumpUrl = jumpUrl || null;

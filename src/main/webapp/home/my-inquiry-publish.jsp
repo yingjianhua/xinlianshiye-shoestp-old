@@ -579,7 +579,7 @@
             handlePictureCardPreview(file, p2, p3) {
                 if (file.ret != 1) {
                     p3.splice(p3.length - 1, 1);
-                    this.$message.error(file.msg || "Upload error,please try again later");
+                    // this.$message.error(file.msg || "Upload error,please try again later");
                     return;
                 }
                 // 添加图片后，在前面显示 img
