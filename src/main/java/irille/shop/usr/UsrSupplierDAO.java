@@ -938,11 +938,10 @@ public class UsrSupplierDAO {
    * @author: lingjian @Date: 2019/3/11 10:49
    */
   public static UsrSupplier reviewStatus(
-      String pkey, Integer status, String reason, Date storeopenTime) {
+      String pkey, Integer status, String reason, Date storeopenTime) throws JSONException {
     UsrSupplier supplier = BeanBase.load(UsrSupplier.class, pkey);
     IPMMessageService messageService = new PMMessageServiceImp();
     String signBackgd = "/public/upload/usr/supplier/a65e5c6ff166514aa1266bc62d920668.jpg";
-
     if (status == 0) {
       supplier.stStatus(OStatus.INIT);
     } else if (status == 1) {
@@ -965,7 +964,11 @@ public class UsrSupplierDAO {
         throw new WebMessageException("店铺审核通知站内信出现错误，请关闭站内信");
       }
     }
-    translateUtil.autoTranslate(supplier, false).upd();
+    translateUtil.autoTranslate(supplier, false);
+    supplier.setShowName(new JSONObject(
+            translateUtil.toSaveJson(supplier.getName(), FldLanguage.Language.zh_CN))
+            .put("en",supplier.getEnglishName()).toString());
+    supplier.upd();
     return supplier;
   }
 
@@ -1130,28 +1133,38 @@ public class UsrSupplierDAO {
     bean.stIsPro(false); // 供应商首页产品展示
     bean.setUpdateTime(Env.getTranBeginTime()); // 更新时间
     bean.setCategory(40); // 供应商分类
-
     bean.setUserid(view.getUserid()); // UsrMain表的pkey
     bean.setPassword(DateTools.getDigest(main.getPkey() + main.getPassword())); // UsrMain表的密码
     bean.setName(view.getName()); // 公司名称-必填
     bean.setEnglishName(view.getEnglishName()); // 公司英文名称
-
-    if (view.getName() != null)
-      bean.setShowName(translateUtil.toSaveJson(view.getName(), lang)); // 前端公司展示名称
-    if (view.getCompanyType() != null)
+    if (view.getName() != null) {
+      bean.setShowName(new JSONObject(
+              translateUtil.toSaveJson(view.getName(), lang))
+              .put("en",view.getEnglishName()).toString());
+    }
+    if (view.getCompanyType() != null) {
       bean.setCompanyType(translateUtil.toSaveJson(view.getCompanyType(), lang)); // 企业类型
-    if (view.getCompanyNature() != null)
+    }
+
+    if (view.getCompanyNature() != null){
       bean.setCompanyNature(translateUtil.toSaveJson(view.getCompanyNature(), lang)); // 企业性质
-    if (view.getCompanyAddr() != null)
+    }
+
+    if (view.getCompanyAddr() != null) {
       bean.setCompanyAddr(translateUtil.toSaveJson(view.getCompanyAddr(), lang)); // 详细地址
-    if (view.getProdPattern() != null)
+    }
+    if (view.getProdPattern() != null) {
       bean.setProdPattern(translateUtil.toSaveJson(view.getProdPattern(), lang)); // 生产模式
-    if (view.getContacts() != null)
+    }
+    if (view.getContacts() != null) {
       bean.setContacts(translateUtil.toSaveJson(view.getContacts(), lang)); // 联系人
-    if (view.getDepartment() != null)
+    }
+    if (view.getDepartment() != null) {
       bean.setDepartment(translateUtil.toSaveJson(view.getDepartment(), lang)); // 联系人部门
-    if (view.getJobTitle() != null)
+    }
+    if (view.getJobTitle() != null) {
       bean.setJobTitle(translateUtil.toSaveJson(view.getJobTitle(), lang)); // 联系人职称
+    }
     bean.setCompanyEstablishTime(view.getCompanyEstablishTime()); // 成立时间
     bean.setWebsite(view.getWebsite()); // 官网地址
     bean.setAnnualProduction(view.getAnnualProduction()); // 年产量
@@ -1236,22 +1249,30 @@ public class UsrSupplierDAO {
         T.OPERATE_ID_CARD, // 运营人员身份证号码
         T.STORE_STATUS,
         T.CLOSE_REASON);
-    if (supplier.getName() != null)
-      model.setShowName(translateUtil.toSaveJson(supplier.getName(), lang));
-    if (supplier.getCompanyType() != null)
+    if (supplier.getName() != null) {
+      model.setShowName(new JSONObject(translateUtil.toSaveJson(supplier.getName(), lang)).put("en",supplier.getEnglishName()).toString());
+    }
+    if (supplier.getCompanyType() != null) {
       model.setCompanyType(translateUtil.toSaveJson(supplier.getCompanyType(), lang));
-    if (supplier.getCompanyNature() != null)
+    }
+    if (supplier.getCompanyNature() != null) {
       model.setCompanyNature(translateUtil.toSaveJson(supplier.getCompanyNature(), lang));
-    if (supplier.getCompanyAddr() != null)
+    }
+    if (supplier.getCompanyAddr() != null) {
       model.setCompanyAddr(translateUtil.toSaveJson(supplier.getCompanyAddr(), lang));
-    if (supplier.getProdPattern() != null)
+    }
+    if (supplier.getProdPattern() != null) {
       model.setProdPattern(translateUtil.toSaveJson(supplier.getProdPattern(), lang));
-    if (supplier.getContacts() != null)
+    }
+    if (supplier.getContacts() != null) {
       model.setContacts(translateUtil.toSaveJson(supplier.getContacts(), lang));
-    if (supplier.getDepartment() != null)
+    }
+    if (supplier.getDepartment() != null) {
       model.setDepartment(translateUtil.toSaveJson(supplier.getDepartment(), lang));
-    if (supplier.getJobTitle() != null)
+    }
+    if (supplier.getJobTitle() != null) {
       model.setJobTitle(translateUtil.toSaveJson(supplier.getJobTitle(), lang));
+    }
     //      if(supplier.getTargetedMarket() != null){
     //        List<Integer> integers = new ArrayList<Integer>();
     //        String[] split = supplier.getTargetedMarket().split(",");
@@ -1381,7 +1402,7 @@ public class UsrSupplierDAO {
    *
    * @author: lingjian @Date: 2019/3/1 16:21
    */
-  public static UsrSupplier updInfo(UsrSupplier supplier) {
+  public static UsrSupplier updInfo(UsrSupplier supplier) throws JSONException {
     UsrSupplier model = BeanBase.load(UsrSupplier.class, supplier.getPkey());
     PropertyUtils.copyProperties(
         model,
@@ -1427,7 +1448,6 @@ public class UsrSupplierDAO {
     s.setContacts(supplier.getContacts());
     s.setDepartment(supplier.getDepartment());
     s.setJobTitle(supplier.getJobTitle());
-    s.setShowName(supplier.getName());
     translateUtil.newAutoTranslate(
         s, translateUtil.buildFilter(s.getName(), PltConfigDAO.manageLanguage()));
     model.setCompanyType(s.getCompanyType());
@@ -1437,7 +1457,7 @@ public class UsrSupplierDAO {
     model.setContacts(s.getContacts());
     model.setDepartment(s.getDepartment());
     model.setJobTitle(s.getJobTitle());
-    model.setShowName(s.getShowName());
+    model.setShowName(new JSONObject(translateUtil.toSaveJson(supplier.getName(), Language.zh_CN)).put("en",supplier.getEnglishName()).toString());
     //    if(supplier.getTargetedMarket() != null){
     //      List<Integer> integers = new ArrayList<>();
     //      String[] split = supplier.getTargetedMarket().split(",");
