@@ -116,7 +116,7 @@
                 <p>SVS Level<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
                 <div class="i1"></div>
                 <ul style="height:auto;">
-                    <el-checkbox-group v-model="grade">
+                    <el-checkbox-group v-model="grade" class="my-ele-checkbox-group1">
                         <el-checkbox label="3" name="3"> <img src="/home/v3/static/images/supplier-level3.png" alt="" style="margin-right:8px;">Diamond</el-checkbox>
                         <el-checkbox label="2" name="2"><img src="/home/v3/static/images/supplier-level2.png" alt="" style="margin-right:8px;">Gold</el-checkbox>
                         <el-checkbox label="1" name="1"><img src="/home/v3/static/images/supplier-level1.png" alt="" style="margin-right:8px;">Silver</el-checkbox>
@@ -149,14 +149,20 @@
             </div> --%>
 
             <div class="top-box2" style="margin-left: 20px;">Min Order :
-                <input class="w63" type="text" @blur="lessthan222" @keyup.enter="lessthan222" v-model.trim="lessthan"
-                       placeholder="less than" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/>
+                <input class="w63" type="text"
+                       v-model.trim="lessthan"
+                       placeholder="less than"
+                       @keyup.enter="search"
+                       onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/>
             </div>
             <div class="i0"></div>
             <div class="top-box2">Price :
-                <input class="w63" type="text" @blur="min222" @keyup.enter="min222" v-model.trim.number="min" placeholder="min."
+                <input class="w63" type="text"
+                       @keyup.enter="search"
+                       v-model.trim.number="min" placeholder="min."
                        onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/> -
-                <input class="w63" type="text" @blur="min222" @keyup.enter="min222" v-model.trim.number="max" placeholder="max."
+                <input class="w63" type="text" v-model.trim.number="max" placeholder="max."
+                       @keyup.enter="search"
                        onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/>
             </div>
 
@@ -178,7 +184,7 @@
                             <el-carousel-item v-for="item2 in item.picture.split(',')" :key="item">
                                 <div class="h3" @mouseenter="bigPicBoxopen" @mouseleave="bigPicBoxclose"
                                      :data-pic="item2">
-                                    <a :href="'/'+item.rewrite" target="_blank"><img class="fl"
+                                    <a :href="'/'+item.rewrite" target="_blank"><img class="fl goods-img"
                                                                                      :src="util_function_obj.image(item2,195)"/></a>
                                 </div>
                             </el-carousel-item>
@@ -236,9 +242,9 @@
                         Certificate
                         <div class="i"></div>
                         <template  v-if="item.svsInfo && item.svsInfo.grade != 0">
-                            <img class="mr6" v-if="item.svsInfo.grade == 1" src="/home/v3/static/images/supplier-level1.png" alt="SVS"/>
-                            <img class="mr6" v-if="item.svsInfo.grade == 2" src="/home/v3/static/images/supplier-level2.png" alt="SVS"/>
-                            <img class="mr6" v-if="item.svsInfo.grade == 3" src="/home/v3/static/images/supplier-level3.png" alt="SVS"/>
+                            <img class="mr6" v-if="item.svsInfo.grade == 1" src="/home/v3/static/images/ico/icon_yx.png" alt="SVS"/>
+                            <img class="mr6" v-if="item.svsInfo.grade == 2" src="/home/v3/static/images/ico/icon_svs.png" alt="SVS"/>
+                            <img class="mr6" v-if="item.svsInfo.grade == 3" src="/home/v3/static/images/ico/icon_svs_3.png" alt="SVS"/>
                             SVS
                             <div class="i"></div>
                         </template>
@@ -325,7 +331,7 @@
             selelv: "",
             selecount: "",
             selestore: "",
-            cated: '', // 分类 
+            cated: '', // 分类
             lose: '',
             currentPage: 1,
             allpage: '',
@@ -383,7 +389,7 @@
                         "search.grade": this.grade.toString(),
                     };
                     var url = '/home/pdt_PdtProduct_gtProductsIndexListAjax?v=4'
-                    var numbers = 0 
+                    var numbers = 0
                     for(var i in params){
                         if(i != Object.keys(params).length - 1 && params[i] != null){
                             url += "&"

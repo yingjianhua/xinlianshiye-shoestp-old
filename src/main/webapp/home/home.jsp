@@ -26,7 +26,7 @@
     <!-- 林铁垣 -->
     <div id="lty">
         <div class="sanduan w1240 clearfix">
-            <div class="box">
+            <div class="box normal-scrollbar-wrap">
                 <h1>Categories</h1>
                 <div class="boxListWrap">
                 <div class="boxList" v-for="(item,index) in classLists" for-key="index">
