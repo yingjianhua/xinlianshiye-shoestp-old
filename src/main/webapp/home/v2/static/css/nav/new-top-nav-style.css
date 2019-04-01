@@ -283,6 +283,28 @@
 }
 /* ---------------- elementUI 弹窗样式自定义 - end ---------------- */
 
+/* ---------------- 滚动条自定义 ---------------- */
+.normal-scrollbar-wrap{
+  background: #f60;
+}
+.normal-scrollbar-wrap ::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+.normal-scrollbar-wrap ::-webkit-scrollbar-track{
+  background:#dee2ec;
+}
+.normal-scrollbar-wrap ::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  min-height: 20px;
+  background:#fff;
+  border:1px solid #dee2ec;
+}
+.normal-scrollbar-wrap ::-webkit-scrollbar-corner {
+  background:#dee2ec;
+}
+/* ---------------- 滚动条自定义 - end ---------------- */
+
 /*其余公用样式*/
 /* 单行省略号 */
 .ellipsis_1{

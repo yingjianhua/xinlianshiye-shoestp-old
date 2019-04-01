@@ -1,6 +1,17 @@
+.flex-layout-column-wrap{
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: vertical;
+  -moz-flex-direction: column;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+}
+
 #login {
   background-color: whitesmoke;
-  padding-bottom: 150px;
+  /*padding-bottom: 150px;*/
 }
 
 #login .statecon {
@@ -179,7 +190,7 @@ a {
   margin: 0 auto;
   padding-top: 70px;
   background-color: white;
-  padding-bottom: 150px;
+  padding-bottom: 50px;
 }
 
 .judge-email .hint {

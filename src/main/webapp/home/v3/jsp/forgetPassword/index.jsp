@@ -3,163 +3,167 @@
     <jsp:include page="/home/v3/header.jsp"/>
     <link rel="stylesheet" href="/home/v2/static/css/nav/new-top-nav-style.css"/>
     <link rel="stylesheet" href="/home/v3/static/css/forgetPassword/index.css"/>
-    <body style="background-color: rgb(245, 245, 245);">
+    <body style="background-color: rgb(245, 245, 245);" class="flex-layout-column-wrap">
     <jsp:include page="/home/v3/nav-nobody.jsp"></jsp:include>
-    <div id='login'>
+    <div id='login' class="grow flex-layout-column-wrap">
         <index-top></index-top>
-        <div class="statecon">
-            <div class="states">
-                <div class="hen left"></div>
-                <div class="state" v-for="item,index in loginstate">
-                    <img :src="item.loginimg" :class="{showimg:state >=
-                            index}" alt="">
-                    <h3 :class="{showh3:state >= index}">{{item.title}}</h3>
-                </div>
-                <div class="hen right"></div>
-            </div>
-        </div>
-        <div class="judgeEmail">
-            <div class="judge-email" v-show="!judgeEmailShow && state == 0">
-                <p class="hint">
-                    <img src="/home/v3/static/images/forgetPassword/icon_gantana.png" name="gantana"
-                         alt="">
-                    Enter your email address that you used to create the
-                    Shoestp account <br>
-                    This Email address has not been registered Shoestp
-                    account.
-                </p>
-                <div class="form">
-                    <div class="form-item">
-                        <span class="form-item_label">Your Email Address</span>
-                        <input type="text" class="form-item_input"
-                               v-model.trim="email" @blur="judgeEmail" style="border:1px solid gray">
-                        <span class="form-item_hint">{{promptMessage}}</span>
+
+        <div class="grow">
+            <div class="statecon">
+                <div class="states">
+                    <div class="hen left"></div>
+                    <div class="state" v-for="item,index in loginstate">
+                        <img :src="item.loginimg" :class="{showimg:state >=
+                                index}" alt="">
+                        <h3 :class="{showh3:state >= index}">{{item.title}}</h3>
                     </div>
-                    <div class="form-item">
-                        <span class="form-item_label"></span>
-                        <span class="register-hint">
-                                    This email address isn't registered. Please
-                                    enter another one or <a
-                                class="register-hint-btn"
-                                href="/home/usr_UsrMain_register">register a new account</a>
-                                </span>
-                    </div>
-                    <div class="form-item">
-                        <span class="form-item_label">Verification Code</span>
-                        <input type="text" class="form-item_input
-                                    form-item_code" v-model.trim="authCode" style="border:1px solid gray">
-                        <span class="code-image" @click="codechange"><img
-                                :src="imgCode" alt=""></span>
-                    </div>
-                    <div class="form-item">
-                        <span class="form-item_label"></span>
-                        <a class="button" href="javascript:void(0);"
-                           @click="changeContinue">Continue</a>
-                    </div>
+                    <div class="hen right"></div>
                 </div>
             </div>
 
-            <div class="judge-email" v-show="judgeEmailShow && state == 0">
-                <p class="hint">
-                    <img src="/home/v3/static/images/forgetPassword/icon_gantana.png" name="gantana"
-                         alt="">
-                    Checking your inbox for verification codeemail <br>
-                    and enter this code to reset your password
-                </p>
-                <div class="form">
-                    <div class="form-item">
-                        <span class="form-item_label boldface">Email</span>
-                        <span class="email boldface">{{email}}</span>
-                    </div>
-                    <div class="form-item">
-                        <span class="form-item_label">Verification Code</span>
-                        <input type="text" class="form-item_input
-                                    form-item_codePass" style="border: 1px solid gray;" v-model.trim="promptMessage">
-                        <span class="send-button" @click="getemailCode">Get
-                                    verification code again <span v-if="again != 0">{{again}}
-                                        s</span></span>
-                    </div>
-                    <div class="form-item">
-                        <span class="form-item_label"></span>
-                        <span class="form-item_error" v-show="errorShow">
-                                    <img src="/home/v3/static/images/forgetPassword/icon_cuo.png" name="cuo"
-                                         alt="">
-                                    {{errMessage}}</span>
-                    </div>
-                    <div class="form-item">
-                        <span class="form-item_label"></span>
-                        <a class="button" href="javascript:void(0);"
-                           @click="changeSubmit">submit</a>
+            <div class="judgeEmail">
+                <div class="judge-email" v-show="!judgeEmailShow && state == 0">
+                    <p class="hint">
+                        <img src="/home/v3/static/images/forgetPassword/icon_gantana.png" name="gantana"
+                             alt="">
+                        Enter your email address that you used to create the
+                        Shoestp account <br>
+                        This Email address has not been registered Shoestp
+                        account.
+                    </p>
+                    <div class="form">
+                        <div class="form-item">
+                            <span class="form-item_label">Your Email Address</span>
+                            <input type="text" class="form-item_input"
+                                   v-model.trim="email" @blur="judgeEmail" style="border:1px solid gray">
+                            <span class="form-item_hint">{{promptMessage}}</span>
+                        </div>
+                        <div class="form-item">
+                            <span class="form-item_label"></span>
+                            <span class="register-hint">
+                                        This email address isn't registered. Please
+                                        enter another one or <a
+                                    class="register-hint-btn"
+                                    href="/home/usr_UsrMain_register">register a new account</a>
+                                    </span>
+                        </div>
+                        <div class="form-item">
+                            <span class="form-item_label">Verification Code</span>
+                            <input type="text" class="form-item_input
+                                        form-item_code" v-model.trim="authCode" style="border:1px solid gray">
+                            <span class="code-image" @click="codechange"><img
+                                    :src="imgCode" alt=""></span>
+                        </div>
+                        <div class="form-item">
+                            <span class="form-item_label"></span>
+                            <a class="button" href="javascript:void(0);"
+                               @click="changeContinue">Continue</a>
+                        </div>
                     </div>
                 </div>
-                <div class="announcements">
-                    <h2 class="announcements-h2">Not received the email
-                        verification code? </h2>
-                    <p class="announcements-p">
-                        1. Your email code may take ten minutes to get to
-                        (depending on your email service provider), please
-                        do
-                        not click again.
+
+                <div class="judge-email" v-show="judgeEmailShow && state == 0">
+                    <p class="hint">
+                        <img src="/home/v3/static/images/forgetPassword/icon_gantana.png" name="gantana"
+                             alt="">
+                        Checking your inbox for verification codeemail <br>
+                        and enter this code to reset your password
                     </p>
-                    <p class="announcements-p">
-                        2. Please check your email address is valid, or
-                        whether it into the dustbin/junk mail folder, or
-                        your
-                        email inbox is full.
-                    </p>
-                    <p class="announcements-p">
-                        3. Lost four network anomalies may lead to mail,
-                        please submit a request again or try a different
-                        browser or later browser cookies are clear.
-                    </p>
-                    <p class="announcements-p">
-                        4. Contact your email service provider, check to see
-                        if the verification code email has been
-                        blocked.
-                    </p>
+                    <div class="form">
+                        <div class="form-item">
+                            <span class="form-item_label boldface">Email</span>
+                            <span class="email boldface">{{email}}</span>
+                        </div>
+                        <div class="form-item">
+                            <span class="form-item_label">Verification Code</span>
+                            <input type="text" class="form-item_input
+                                        form-item_codePass" style="border: 1px solid gray;" v-model.trim="promptMessage">
+                            <span class="send-button" @click="getemailCode">Get
+                                        verification code again <span v-if="again != 0">{{again}}
+                                            s</span></span>
+                        </div>
+                        <div class="form-item">
+                            <span class="form-item_label"></span>
+                            <span class="form-item_error" v-show="errorShow">
+                                        <img src="/home/v3/static/images/forgetPassword/icon_cuo.png" name="cuo"
+                                             alt="">
+                                        {{errMessage}}</span>
+                        </div>
+                        <div class="form-item">
+                            <span class="form-item_label"></span>
+                            <a class="button" href="javascript:void(0);"
+                               @click="changeSubmit">submit</a>
+                        </div>
+                    </div>
+                    <div class="announcements">
+                        <h2 class="announcements-h2">Not received the email
+                            verification code? </h2>
+                        <p class="announcements-p">
+                            1. Your email code may take ten minutes to get to
+                            (depending on your email service provider), please
+                            do
+                            not click again.
+                        </p>
+                        <p class="announcements-p">
+                            2. Please check your email address is valid, or
+                            whether it into the dustbin/junk mail folder, or
+                            your
+                            email inbox is full.
+                        </p>
+                        <p class="announcements-p">
+                            3. Lost four network anomalies may lead to mail,
+                            please submit a request again or try a different
+                            browser or later browser cookies are clear.
+                        </p>
+                        <p class="announcements-p">
+                            4. Contact your email service provider, check to see
+                            if the verification code email has been
+                            blocked.
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="passwordcon" v-if="state == 1">
-            <div class="formcon">
-                <div class="input">
-                    <h4 class="label fb">Email</h4>
-                    <h4 class="label email fb">{{email}}</h4>
-                </div>
-                <div class="input">
-                    <h4 class="label">New password</h4>
-                    <input type="password" v-model.trim="password"
-                           onkeyup="this.value=this.value.replace(/\s+/g,'')"
-                           @input="passwordtest" placeholder="Please input  password">
-                    <div class="showmsg">
-                        <%--<img src="/home/v3/static/images/forgetPassword/loginright.png" alt=""--%>
-                             <%--v-if="password">--%>
-                        <img src="/home/v3/static/images/forgetPassword/loginright.png" alt="" v-if="password
-                        && checkpass">
-                        <img src="/home/v3/static/images/forgetPassword/loginerr.png" alt="" v-if="password
-                        && !checkpass">
-                        <h4 class="msg">{{passwordStrength}}</h4>
+            <div class="passwordcon" v-if="state == 1">
+                <div class="formcon">
+                    <div class="input">
+                        <h4 class="label fb">Email</h4>
+                        <h4 class="label email fb">{{email}}</h4>
+                    </div>
+                    <div class="input">
+                        <h4 class="label">New password</h4>
+                        <input type="password" v-model.trim="password"
+                               onkeyup="this.value=this.value.replace(/\s+/g,'')"
+                               @input="passwordtest" placeholder="Please input  password">
+                        <div class="showmsg">
+                            <%--<img src="/home/v3/static/images/forgetPassword/loginright.png" alt=""--%>
+                                 <%--v-if="password">--%>
+                            <img src="/home/v3/static/images/forgetPassword/loginright.png" alt="" v-if="password
+                            && checkpass">
+                            <img src="/home/v3/static/images/forgetPassword/loginerr.png" alt="" v-if="password
+                            && !checkpass">
+                            <h4 class="msg">{{passwordStrength}}</h4>
+                        </div>
+                    </div>
+                    <div class="input">
+                        <h4 class="label">Confirm password</h4>
+                        <input type="password" v-model.trim="checkpasword"
+                               onkeyup="this.value=this.value.replace(/\s+/g,'')"
+                               @blur="checkpassword" @keyup.enter="checkpassword"
+                               placeholder="Please input password again">
+                        <div class="showmsg">
+                            <img src="/home/v3/static/images/forgetPassword/loginright.png" alt="" v-if="hidden
+                                        && check">
+                            <img src="/home/v3/static/images/forgetPassword/loginerr.png" alt="" v-if="hidden
+                                        && !check">
+                            <h4 class="msg">{{checkpasswordtext}}</h4>
+                        </div>
                     </div>
                 </div>
-                <div class="input">
-                    <h4 class="label">Confirm password</h4>
-                    <input type="password" v-model.trim="checkpasword"
-                           onkeyup="this.value=this.value.replace(/\s+/g,'')"
-                           @blur="checkpassword" @keyup.enter="checkpassword"
-                           placeholder="Please input password again">
-                    <div class="showmsg">
-                        <img src="/home/v3/static/images/forgetPassword/loginright.png" alt="" v-if="hidden
-                                    && check">
-                        <img src="/home/v3/static/images/forgetPassword/loginerr.png" alt="" v-if="hidden
-                                    && !check">
-                        <h4 class="msg">{{checkpasswordtext}}</h4>
-                    </div>
-                </div>
+                <div class="confirm" @click="submitpassword">Confirm</div>
             </div>
-            <div class="confirm" @click="submitpassword">Confirm</div>
-        </div>
-        <div class="checksuccess" v-if="state == 2">
-            Password recovery successful, <a href="/">Return</a> immediately
+            <div class="checksuccess" v-if="state == 2">
+                Password recovery successful, <a href="/">Return</a> immediately
+            </div>
         </div>
         <index-bottom></index-bottom>
     </div>
