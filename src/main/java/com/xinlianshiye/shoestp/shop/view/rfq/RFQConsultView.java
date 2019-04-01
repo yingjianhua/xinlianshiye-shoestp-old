@@ -18,7 +18,7 @@ public class RFQConsultView implements BaseView {
   private String price; // 单位价格
   private String currency; // 货币单位
   private Byte type; // 询盘类型
-  private String moreInformation; // RFQ询盘专用字段, 可以额外编辑三次
+  private List<String> moreInformation; // RFQ询盘专用字段, 可以额外编辑三次
   private Date valieDate; // 有效时间
   private String paymentTerms; // 支付条约
   private String destination; // 目的地

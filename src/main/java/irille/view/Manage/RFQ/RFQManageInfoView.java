@@ -33,6 +33,7 @@ public class RFQManageInfoView implements BaseView {
   private int countryId;
   private int quantity;
   private String descriotion; // 描述
+  private List<String> moreInformation; // RFQ额外信息, 用户可以在询盘没有报价的情况下, 添加三次信息
   private String pay_type;
   private String shipping_type;
   private Integer currency;

@@ -444,7 +444,19 @@ public class RFQConsultServiceImpl implements RFQConsultService {
     view.setPrice(consult.getPrice());
     view.setCurrency(consult.getCurrency() == null ? null : consult.gtCurrency().getCurName());
     view.setType(consult.getType());
-    view.setMoreInformation(consult.getExtraDescription());
+    try {
+      if (consult.getExtraDescription() != null
+          && !consult.getExtraDescription().trim().isEmpty()) {
+        List<String> moreInformation =
+            om.readValue(consult.getExtraDescription(), new TypeReference<List<String>>() {});
+        view.setMoreInformation(moreInformation);
+      }
+    } catch (IOException e1) {
+      log.error(
+          "主键为{}的consult extraDescription[{}] 字段 数据格式异常!",
+          consult.getPkey(),
+          consult.getExtraDescription());
+    }
     view.setValieDate(consult.getValidDate());
     view.setShippingTerms(
         consult.getShippingType() == null ? null : consult.gtShippingType().getLine().getName());
@@ -548,13 +560,25 @@ public class RFQConsultServiceImpl implements RFQConsultService {
       throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.valid_toolong, language));
     }
     consult.setChangeCount((short) (consult.getChangeCount() + (short) 1));
-    StringBuilder sb = new StringBuilder();
-    if (consult.getExtraDescription() != null) {
-      sb.append(consult.getExtraDescription()).append("\r\n");
+    List<String> extraDescription;
+    try {
+      if (consult.getExtraDescription() == null || consult.getExtraDescription().trim().isEmpty()) {
+        extraDescription = new ArrayList<>();
+      } else {
+        extraDescription =
+            om.readValue(consult.getExtraDescription(), new TypeReference<List<String>>() {});
+      }
+      extraDescription.add(information);
+      consult.setExtraDescription(om.writeValueAsString(extraDescription));
+    } catch (IOException e) {
+      log.error(
+          "主键为{}的consult extraDescription[{}] 字段 数据格式异常!",
+          consult.getPkey(),
+          consult.getExtraDescription());
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_wrong_data, language));
     }
-    sb.append(information);
     consult.setLastMessageSendTime(new Date());
-    consult.setExtraDescription(sb.toString());
     consult.setValidDate(validDate);
     consult.upd();
   }

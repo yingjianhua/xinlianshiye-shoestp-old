@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import irille.Dao.Old.RFQ.RFQConsultMessageDAO;
@@ -18,7 +19,6 @@ import irille.Dao.Old.RFQ.RFQConsultRelationDAO;
 import irille.Dao.Old.RFQ.RFQConsultUpdDAO;
 import irille.Dao.RFQ.RFQConsultDao;
 import irille.Entity.RFQ.RFQConsult;
-import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Entity.RFQ.Enums.RFQConsultPayType;
 import irille.Entity.RFQ.Enums.RFQConsultRelationReadStatus;
@@ -42,9 +42,13 @@ import irille.view.Manage.RFQ.RFQManageInfoView;
 import irille.view.Manage.RFQ.RFQManageMyQuoteListBody;
 import irille.view.Manage.RFQ.RFQMyuoteInfo;
 import irille.view.Manage.RFQ.RFQPdtInfo;
+import lombok.extern.slf4j.Slf4j;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2019/1/30 Time: 14:58 */
+@Slf4j
 public class RFQManageServiceImp implements IRFQManageService {
+
+  @Inject ObjectMapper om;
   @Inject RFQConsultDao rfqConsultDao;
 
   @Inject RFQConsultMessageDAO rfqConsultMessageDAO;
@@ -56,7 +60,7 @@ public class RFQManageServiceImp implements IRFQManageService {
   @Inject private ObjectMapper objectMapper;
 
   @Override
-  public Page getRFQList(int start, int limit, String keyword, Integer supId) {
+  public Page<RFQListBodyInfoView> getRFQList(int start, int limit, String keyword, Integer supId) {
     if (keyword != null) keyword = "%" + keyword + "%";
     List<Map<String, Object>> list = rfqConsultDao.getRFQList(start, limit, keyword, supId);
     List<RFQListBodyInfoView> result = new ArrayList<>();
@@ -89,7 +93,7 @@ public class RFQManageServiceImp implements IRFQManageService {
       result.add(rfqListBodyInfoView);
     }
 
-    return new Page(
+    return new Page<>(
         result, start, limit, rfqConsultDao.getRFQListCount(start, limit, keyword, supId));
   }
 
@@ -105,7 +109,8 @@ public class RFQManageServiceImp implements IRFQManageService {
     infoView.setValid_date(rfqConsult.getValidDate());
     infoView.setLeft_count(rfqConsult.getTotal() - rfqConsult.getLeftCount());
     infoView.setImage(rfqConsult.getImage());
-    infoView.setProductImage(rfqConsult.gtProduct().getPicture().split(",")[0]);
+    if (rfqConsult.getProduct() != null)
+      infoView.setProductImage(rfqConsult.gtProduct().getPicture().split(",")[0]);
     infoView.setPurchaseName(rfqConsult.gtPurchaseId().getName());
     if (rfqConsult.gtType() == RFQConsultType.RFQ) {
       String[] price = rfqConsult.getPrice().split("-");
@@ -130,6 +135,17 @@ public class RFQManageServiceImp implements IRFQManageService {
     infoView.setQuantity(rfqConsult.getQuantity());
     infoView.setDestination(rfqConsult.getDestination()); // 目的地
     infoView.setDescriotion(rfqConsult.getContent()); // 询盘内容
+    String extraDescription = rfqConsult.getExtraDescription();
+    try {
+      if (extraDescription != null && !extraDescription.trim().isEmpty()) {
+        List<String> moreInformation =
+            om.readValue(extraDescription, new TypeReference<List<String>>() {});
+        infoView.setMoreInformation(moreInformation);
+      }
+    } catch (IOException e1) {
+      log.error(
+          "主键为{}的consult extraDescription[{}] 字段 数据格式异常!", infoView.getId(), extraDescription);
+    }
     if (rfqConsult.getCurrency() != null) {
       infoView.setCurrencyname(
           BeanBase.load(PltErate.class, rfqConsult.getCurrency()).getCurName());
