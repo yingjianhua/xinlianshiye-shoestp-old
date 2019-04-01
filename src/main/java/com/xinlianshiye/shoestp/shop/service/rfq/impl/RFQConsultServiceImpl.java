@@ -553,6 +553,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
       sb.append(consult.getExtraDescription()).append("\r\n");
     }
     sb.append(information);
+    consult.setLastMessageSendTime(new Date());
     consult.setExtraDescription(sb.toString());
     consult.setValidDate(validDate);
     consult.upd();
@@ -618,6 +619,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
     List<String> list = new ArrayList<>(Arrays.asList(consult.getImage().split(",")));
     list.addAll(Arrays.asList(images.split(",")));
     consult.setImage(list.stream().collect(Collectors.joining(",")));
+    consult.setLastMessageSendTime(new Date());
     consult.upd();
   }
 
@@ -718,6 +720,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
     }
     try {
       consult.setProductRequest(om.writeValueAsString(target));
+      consult.setLastMessageSendTime(new Date());
       consult.upd();
     } catch (JsonProcessingException e) {
       e.printStackTrace();
