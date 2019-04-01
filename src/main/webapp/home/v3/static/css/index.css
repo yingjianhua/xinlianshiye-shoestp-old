@@ -1352,6 +1352,7 @@ a {
     align-items: center;
     margin-left: 10px;
     position: relative;
+    cursor: pointer;
 }
 #o2otop .o2otopcon .o2otoplikes .o2otoplikenum{
    position: relative;

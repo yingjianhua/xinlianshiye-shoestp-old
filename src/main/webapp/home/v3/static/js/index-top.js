@@ -125,8 +125,9 @@ Vue.component('index-top', {
                     <div class="hours after-login">Get multiple quotes within 24 hours！</div>
                 </dd>
             </dl>
-
-            <a class="o2otoplikes" href="/home/usr_UsrFavorites_myfavorite" target="_blank">
+            
+            <!--我的收藏-->
+            <a class="o2otoplikes" @click="toMyFavorite" target="_blank">
                 <img src="/home/v3/static/images/icon_top_love.png" alt="" style="margin-right:10px;">
                 <div class="o2otoplikenum">
                     <div style="height: 20px;">
@@ -297,6 +298,18 @@ Vue.component('index-top', {
                 self.getPMmessage(self.msgStart,self.msgLimit);
             }else{
                 self.$message('No more station letters');
+            }
+        },
+        // 点击收藏按钮事件
+        toMyFavorite(){
+            // 未登陆时
+            if( !sysConfig.user ){
+                util_function_obj.alertWhenNoLogin(this);
+            // 卖家账号登录时
+            }else if(sysConfig.user.user_type==1){
+                util_function_obj.supplierCantEnter(this);
+            }else{
+                window.location.href = "/home/usr_UsrFavorites_myfavorite";
             }
         },
 
