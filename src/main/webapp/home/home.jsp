@@ -40,7 +40,7 @@
                         {{item.label}}
                         <i class="el-icon-arrow-right fr"></i>
                     </a>
-                    <ul class="clearfix">
+                    <ul class="clearfix subcate-list-box">
                         <li v-for="(item2,indextwo) in item.children" for-key="indextwo">
                             <a :href="'/home/pdt_PdtProduct?cated='+item2.value" target="_blank">{{item2.label}}</a>
                         </li>

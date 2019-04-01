@@ -1703,6 +1703,10 @@ a {
     padding-bottom: 16px;
     padding-left: 30px;
 }
+.sanduan .box .boxList .subcate-list-box{
+    max-height: 40px;
+    overflow: hidden;
+}
 
 .sanduan .box .boxList-icon1 {
     width: 30px;

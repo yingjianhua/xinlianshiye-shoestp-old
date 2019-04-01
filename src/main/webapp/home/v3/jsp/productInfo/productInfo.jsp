@@ -885,9 +885,9 @@
                             {{productinfocom.pdtName}}
                         </div>
 
-                        <div class="h2">
+                        <!-- <div class="h2">
                             <div class="fl">ID: {{productinfocom.sku}}</div>
-                            <!-- <div class="sharebox fr">
+                            <div class="sharebox fr">
                                 <div class="fl"><s:text name="products.share"/> :</div>
                                 <a href="javascript:;" class="shareTb shareTbtb1" @click="shareThis('facebook')"></a>
                                 <a href="javascript:;" class="shareTb shareTbtb2" @click="shareThis('twitter')"></a>
@@ -925,8 +925,8 @@
                                         </div>
                                     </el-dropdown-menu>
                                 </el-dropdown>
-                            </div> -->
-                        </div>
+                            </div>
+                        </div> -->
                         <!-- {{productinfocom.currency_unit}}  -->
                         <div class="h3">{{productinfocom.currency_symbol}}{{price}}
                         </div>
@@ -1107,7 +1107,7 @@
         mounted() {
             var that = this
             //this.productinfo();
-            
+
 
             var firstKey = Object.keys(that.productinfocom.spec)[0];
             that.seleColorIndex = firstKey;
@@ -1337,7 +1337,7 @@
             addRFQ: function () {
                     var jumpUrl = '/home/usr_UsrConsult_productPublishView?product_id=' + this.productinfocom.pdtId + '&backUrl=' + window.location.href;
                     util_function_obj.supplierCantEnter(this, jumpUrl,"Please register or login your buyer account if you want making enquiries.");
-               
+
             },
         },
 
