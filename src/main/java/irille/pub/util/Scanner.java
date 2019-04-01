@@ -68,7 +68,7 @@ public class Scanner {
   }
 
   /**
-   * 从从项目根目录开始搜索带有annotationClass注解的类
+   * 从从项目根目录开始搜索带有annotationClass注解的类`
    *
    * <p>eg. <code>findClassByAnnotation(Controller.class)</code>
    *
@@ -84,11 +84,25 @@ public class Scanner {
       Class<T> annotationClass, String rootPackage, boolean initialize, boolean noCache) {
     log.debug("scanning annotation {} in {}", annotationClass.getName(), rootPackage);
     if (noCache || TYPE_ANNOTATION_MAPS.containsKey(annotationClass)) {
-      String classPath = new File(Scanner.class.getResource("/").getFile()).getAbsolutePath();
-      String rootPath =
-          classPath
-              + File.separator
-              + (rootPackage == null ? "" : rootPackage.replaceAll("\\.", "\\\\"));
+      String classPath =
+          new File(Scanner.class.getClassLoader().getResource("/").getFile()).getAbsolutePath();
+      String rootPath = "";
+
+      rootPath = classPath + File.separator + (rootPackage == null ? "" : rootPackage);
+      if ("\\".equals(File.separator)) {
+        // window
+        // classPath.substring(1, classPath.indexOf("/WEB-INF/classes"));
+        rootPath = rootPath.replace("/", "\\");
+      }
+      if ("/".equals(File.separator)) {
+        // Linux
+        rootPath = rootPath.replace("\\", "/");
+      }
+
+      //      String rootPath =
+      //          classPath
+      //              + File.separator
+      //              + (rootPackage == null ? "" : rootPackage.replaceAll("\\.", "\\\\"));
 
       List<Class<?>> classes =
           new Finder()
