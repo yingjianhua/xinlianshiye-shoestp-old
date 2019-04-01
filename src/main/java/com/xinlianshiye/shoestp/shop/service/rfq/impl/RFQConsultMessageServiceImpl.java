@@ -101,7 +101,7 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 
     RFQConsultMessageContactView another = new RFQConsultMessageContactView();
     UsrSupplier supplier = relation.gtSupplierId();
-    another.setAvatar(supplier.getHeadPic());
+    another.setAvatar(supplier.getLogo());
     another.setName(supplier.getName());
 
     return new RFQConsultMessagesView(msgs, myself, another);
