@@ -144,8 +144,6 @@
                 } else {  // 只要有一个checkbox不选中，让全选按钮不选中
                     this.isAllChecked = false;
                 }
-                console.log("this.favoriteList.length ===" + this.favoriteList.length)
-            console.log("this.checkedCode.length ===" + this.checkedCode.length)
             },
             chooseAll: function (e) {  // 用户全选
                 var self = this;
@@ -160,10 +158,8 @@
                 } else {
                     self.checkedCode = [];
                 }
-                // console.log(self.checkedCode)
             },
             remove(pkey) {  // 商品单个移除到回收站  和  回收站单个商品永久删除
-                // console.log("点了删除" + pkey)
                 if(!sysConfig || !sysConfig.user){
                     util_function_obj.alertWhenNoLogin(this);
                     return
@@ -197,8 +193,8 @@
                                 return
                             }
                             self.$message.success("Successfully deleted");
-                            self.isAllChecked = false;  // 取消全选
-                            self.checkedCode = [];      // 清空选中数据
+                            let index = self.findall(self.checkedCode,pkey)
+                            self.checkedCode.splice(index, 1)
                             self.getFavoriteList(self.catPkey, self.start, self.limit);
 
                         })
@@ -282,8 +278,8 @@
                                 return
                             }
                                 self.$message.success("Successful recovery");
-                                self.isAllChecked = false;  // 取消全选
-                                self.checkedCode = [];      // 清空选中数据
+                                let index = self.findall(self.checkedCode,pkey)
+                                self.checkedCode.splice(index, 1)
                                 self.getFavoriteList(self.catPkey, self.start, self.limit);
 
                         })
@@ -338,8 +334,34 @@
 						postfixUrl += param;
 					}
 					return "https://image.shoestp.com" + url + postfixUrl;
-				},
-        }
+                },
+              findall(a,x){ // 找出某个元素在数组里的索引值
+                var results=[],
+                len=a.length,
+                pos=0;
+                while(pos<len){
+                    pos=a.indexOf(x,pos);
+                if(pos===-1){//未找到就退出循环完成搜索
+                    break;
+                }
+                    results.push(pos);//找到就存储索引
+                    pos+=1;//并从下个位置开始搜索
+                }
+                return results;
+            }
+        },
+        watch: {
+            checkedCode: {
+                handler: function(val, oldVal) {
+                    if (val.length === this.favoriteList.length) {
+                        this.isAllChecked = true;
+                    } else {
+                        this.isAllChecked = false;
+                    }
+                },
+                deep: true
+            }
+        },
     })
 </script>
 </body>

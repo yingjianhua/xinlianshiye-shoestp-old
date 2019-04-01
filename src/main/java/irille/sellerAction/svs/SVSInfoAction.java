@@ -18,6 +18,7 @@ import irille.pub.exception.WebMessageException;
 import irille.pub.util.GetBaseScoreUtils;
 import irille.sellerAction.svs.inf.ISVSInfoAction;
 import irille.shop.usr.Usr;
+import irille.shop.usr.Usr.SStatus;
 import lombok.Data;
 
 @Data
@@ -46,6 +47,8 @@ public class SVSInfoAction extends SellerAction<SVSInfo> implements ISVSInfoActi
     if (getSupplier() == null) throw new WebMessageException(ReturnCode.failure, "用户未登录,无法提交认证信息");
     if (getSupplier().gtStatus() != Usr.OStatus.APPR)
       throw new WebMessageException(ReturnCode.failure, "商家未审核,无法提交认证信息");
+    if (getSupplier().gtStoreStatus() != SStatus.OPEN)
+      throw new WebMessageException(ReturnCode.failure, "商家店铺未开启,无法提交认证信息");
     GetBaseScoreUtils.checkNotNull(search, capacity, factory, quality, team, partner, exhibition);
 
     SVSInfo svs = new SVSInfo();
@@ -85,7 +88,11 @@ public class SVSInfoAction extends SellerAction<SVSInfo> implements ISVSInfoActi
   @Override
   public void updAutInfo() throws Exception {
     GetBaseScoreUtils.checkNotNull(search, capacity, factory, quality, team, partner, exhibition);
-    if (getSupplier() != null)
+    if (getSupplier() != null) {
+      if (getSupplier().gtStatus() != Usr.OStatus.APPR)
+        throw new WebMessageException(ReturnCode.failure, "商家未审核,无法提交认证信息");
+      if (getSupplier().gtStoreStatus() != SStatus.OPEN)
+        throw new WebMessageException(ReturnCode.failure, "商家店铺未开启,无法提交认证信息");
       write(
           service.updSVSInfo(
               getSupplier().getPkey(),
@@ -96,7 +103,9 @@ public class SVSInfoAction extends SellerAction<SVSInfo> implements ISVSInfoActi
               team,
               exhibition,
               partner));
-    else throw new WebMessageException(ReturnCode.failure, "用户未登录");
+    } else {
+      throw new WebMessageException(ReturnCode.failure, "用户未登录");
+    }
   }
 
   /**

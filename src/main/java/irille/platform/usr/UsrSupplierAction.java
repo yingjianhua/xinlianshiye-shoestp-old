@@ -23,6 +23,7 @@ import irille.shop.usr.UsrSupplierDAO;
 import irille.view.plt.ImageView;
 import lombok.Getter;
 import lombok.Setter;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import static irille.pub.validate.Regular.REGULAR_COMPANY;
@@ -36,10 +37,12 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
     return UsrSupplier.class;
   }
 
+  @Override
   public UsrSupplier getBean() {
     return _bean;
   }
 
+  @Override
   public void setBean(UsrSupplier bean) {
     this._bean = bean;
   }
@@ -74,7 +77,7 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
    * @author: lingjian @Date: 2019/3/11 10:48
    */
   public void getShopList() throws IOException {
-    write(UsrSupplierDAO.getShopList(getStart(), getLimit(), name, storeStatus,svsGrade));
+    write(UsrSupplierDAO.getShopList(getStart(), getLimit(), name, storeStatus, svsGrade));
   }
 
   /**
@@ -123,8 +126,8 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
 
       UsrMain main = BeanBase.load(UsrMain.class, getBean().getUserid());
       if (main != null) {
-        if(mainEmail != null){
-            main.setEmail(mainEmail);
+        if (mainEmail != null) {
+          main.setEmail(mainEmail);
         }
         main.setCompany(getBean().getName());
         main.setAddress(getBean().getCompanyAddr());
@@ -132,13 +135,13 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
         if (getBean().getPhone() != null) {
           main.setTelphone(getBean().getPhone());
         }
-        if(mainProvince != null){
+        if (mainProvince != null) {
           main.setProvince(mainProvince);
         }
-        if(mainCity != null){
+        if (mainCity != null) {
           main.setCity(mainCity);
         }
-        if(mainZone != null){
+        if (mainZone != null) {
           main.setZone(mainZone);
         }
         main.upd();
@@ -152,74 +155,86 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
     }
   }
 
-  //正则校验
-  public void regex() throws Exception{
+  // 正则校验
+  public void regex() throws Exception {
     ValidForm valid = new ValidForm(getBean());
-    valid.validNotEmpty(UsrSupplier.T.NAME,UsrSupplier.T.ENGLISH_NAME, UsrSupplier.T.COMPANY_ADDR,UsrSupplier.T.TARGETED_MARKET,UsrSupplier.T.PROD_PATTERN,UsrSupplier.T.CREDIT_CODE,UsrSupplier.T.CERT_PHOTO);
+    valid.validNotEmpty(
+        UsrSupplier.T.NAME,
+        UsrSupplier.T.ENGLISH_NAME,
+        UsrSupplier.T.COMPANY_ADDR,
+        UsrSupplier.T.TARGETED_MARKET,
+        UsrSupplier.T.PROD_PATTERN,
+        UsrSupplier.T.CREDIT_CODE,
+        UsrSupplier.T.CERT_PHOTO);
     ValidRegex2 regex = new ValidRegex2(getBean());
-    if(mainEmail != null){
-      if(!ValidRegex.regMarch("^[\\w]{1,32}@+\\w{1,15}.\\w{2,5}$", mainEmail))
+    if (mainEmail != null) {
+      if (!ValidRegex.regMarch("^[\\w]{1,32}@+\\w{1,15}.\\w{2,5}$", mainEmail)) {
         throw new WebMessageException("请输入正确邮箱格式");
+      }
     }
     UsrMain main = UsrMain.chkUniqueEmail(false, mainEmail);
     UsrMain main1 = BeanBase.load(UsrMain.class, getBean().getUserid());
-    if(main != null && !main1.getEmail().toLowerCase().equals(mainEmail.toLowerCase())){
-        throw new WebMessageException("邮箱已被他人注册，请更换邮箱");
+    if (main != null && !main1.getEmail().toLowerCase().equals(mainEmail.toLowerCase())) {
+      throw new WebMessageException("邮箱已被他人注册，请更换邮箱");
     }
-    if (getBean().getName() != null)
+    if (getBean().getName() != null) {
+      regex.validRegexMatched(REGULAR_COMPANY, "首尾不能为符号 且 长度在1-52位之间", UsrSupplier.T.NAME);
+    }
+    if (getBean().getEnglishName() != null) {
+      regex.validRegexMatched("[a-zA-Z ]{1,60}", "请填写英文字母,且不超过60位", UsrSupplier.T.ENGLISH_NAME);
+    }
+    if (getBean().getWebsite() != null) {
       regex.validRegexMatched(
-              REGULAR_COMPANY,
-          "首尾不能为符号 且 长度在1-52位之间",
-          UsrSupplier.T.NAME);
-    if (getBean().getEnglishName() != null)
+          "http[s]?:\\/\\/[\\w]{1,}.?[\\w]{1,}.?[\\w/.?&=-]{1,}",
+          "请输入完整的网址格式，如https://www.shoestp.com",
+          UsrSupplier.T.WEBSITE);
+    }
+    if (getBean().getTelephone() != null) {
       regex.validRegexMatched(
-              "[a-zA-Z ]{1,60}",
-              "请填写英文字母,且不超过60位",
-              UsrSupplier.T.ENGLISH_NAME);
-    if (getBean().getWebsite() != null)
+          "((\\d{3,4}-)?\\d{7,8})|(1\\d{10})", "请填写正确的固定电话格式", UsrSupplier.T.TELEPHONE);
+    }
+    if (getBean().getPostcode() != null) {
+      regex.validRegexMatched("[0-9]{6}", "邮编只能输入数字，且数字个数为6个", UsrSupplier.T.POSTCODE);
+    }
+    if (getBean().getFax() != null) {
+      regex.validRegexMatched("(\\d{3,4}-)?\\d{7,8}", "请填写正确传真格式", UsrSupplier.T.FAX);
+    }
+    if (getBean().getCreditCode() != null) {
+      regex.validRegexMatched("[0-9A-Za-z]{18}", "请填写正确的统一社会信用代码", UsrSupplier.T.CREDIT_CODE);
+    }
+    if (getBean().getAnnualProduction() != null) {
       regex.validRegexMatched(
-              "http[s]?:\\/\\/[\\w]{1,}.?[\\w]{1,}.?[\\w/.?&=-]{1,}",
-              "请输入完整的网址格式，如https://www.shoestp.com",
-              UsrSupplier.T.WEBSITE);
-    if (getBean().getTelephone() != null)
+          "([1-9]\\d*|0)(\\.\\d*[1-9])?", "年产量请填写数字,不能以0开头", UsrSupplier.T.ANNUAL_PRODUCTION);
+    }
+    if (getBean().getRegisteredCapital() != null) {
       regex.validRegexMatched(
-              "((\\d{3,4}-)?\\d{7,8})|(1\\d{10})", "请填写正确的固定电话格式", UsrSupplier.T.TELEPHONE);
-    if(getBean().getPostcode() != null)
-      regex.validRegexMatched("[0-9]{6}","邮编只能输入数字，且数字个数为6个", UsrSupplier.T.POSTCODE);
-    if (getBean().getFax() != null)
+          "([1-9]\\d*|0)(\\.\\d*[1-9])?", "注册资本请填写数字,不能以0开头", UsrSupplier.T.REGISTERED_CAPITAL);
+    }
+    if (getBean().getEntity() != null) {
       regex.validRegexMatched(
-              "(\\d{3,4}-)?\\d{7,8}", "请填写正确传真格式", UsrSupplier.T.FAX);
-    if (getBean().getCreditCode() != null)
-      regex.validRegexMatched(
-              "[0-9A-Za-z]{18}", "请填写正确的统一社会信用代码", UsrSupplier.T.CREDIT_CODE);
-    if (getBean().getAnnualProduction() != null)
-      regex.validRegexMatched(
-              "([1-9]\\d*|0)(\\.\\d*[1-9])?",
-              "年产量请填写数字,不能以0开头",
-              UsrSupplier.T.ANNUAL_PRODUCTION);
-    if (getBean().getRegisteredCapital() != null)
-      regex.validRegexMatched(
-              "([1-9]\\d*|0)(\\.\\d*[1-9])?", "注册资本请填写数字,不能以0开头", UsrSupplier.T.REGISTERED_CAPITAL);
-    if(getBean().getEntity() != null)
-      regex.validRegexMatched("[\\u4e00-\\u9fa5]{2,6}", "法定代表人只能输入中文，且个数为2~6个", UsrSupplier.T.ENTITY);
-    if (getBean().getContacts() != null)
-      regex.validRegexMatched(
-              REGULAR_NAME, "联系人姓名首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.CONTACTS);
-    if (getBean().getDepartment() != null)
-      regex.validRegexMatched(
-              REGULAR_NAME, "联系人部门首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.DEPARTMENT);
-    if (getBean().getJobTitle() != null)
-      regex.validRegexMatched(
-              REGULAR_NAME, "联系人职称首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.JOB_TITLE);
-    if (getBean().getPhone() != null)
+          "[\\u4e00-\\u9fa5]{2,6}", "法定代表人只能输入中文，且个数为2~6个", UsrSupplier.T.ENTITY);
+    }
+    if (getBean().getContacts() != null) {
+      regex.validRegexMatched(REGULAR_NAME, "联系人姓名首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.CONTACTS);
+    }
+    if (getBean().getDepartment() != null) {
+      regex.validRegexMatched(REGULAR_NAME, "联系人部门首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.DEPARTMENT);
+    }
+    if (getBean().getJobTitle() != null) {
+      regex.validRegexMatched(REGULAR_NAME, "联系人职称首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.JOB_TITLE);
+    }
+    if (getBean().getPhone() != null) {
       regex.validRegexMatched("1\\d{10}", "请填写11位手机格式的号码", UsrSupplier.T.PHONE);
-    if (getBean().getContactEmail() != null)
+    }
+    if (getBean().getContactEmail() != null) {
       regex.validRegexMatched(
-              "^[\\w]{1,32}@+\\w{1,15}.\\w{2,5}$", "联系人邮箱请填写正确的邮箱格式", UsrSupplier.T.CONTACT_EMAIL);
+          "^[\\w]{1,32}@+\\w{1,15}.\\w{2,5}$", "联系人邮箱请填写正确的邮箱格式", UsrSupplier.T.CONTACT_EMAIL);
+    }
   }
 
   /**
    * 更新店铺关闭后的信息
+   *
    * @throws IOException
    */
   public void updStore() throws IOException {
@@ -238,7 +253,7 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
    * 根据id获取供应商信息
    *
    * @throws IOException
-   * @author: lingjian  @Date: 2019/3/8 10:41
+   * @author: lingjian @Date: 2019/3/8 10:41
    */
   public void getSupplierById() throws IOException {
     write(UsrSupplierDAO.getSupplierById(id));
@@ -253,8 +268,8 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
    * @throws IOException
    * @author: lingjian @Date: 2019/3/11 10:45
    */
-  public void reviewStatus() throws IOException {
-    UsrSupplier supplier = UsrSupplierDAO.reviewStatus(id, status, reason,storeopenTime);
+  public void reviewStatus() throws IOException, JSONException {
+    UsrSupplier supplier = UsrSupplierDAO.reviewStatus(id, status, reason, storeopenTime);
     UsrSupplierNewView usrSupplierNewView = new UsrSupplierNewView();
     usrSupplierNewView.setStatus(supplier.getStatus());
     write(usrSupplierNewView);
@@ -325,15 +340,15 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
 
   /** @Description: 更新供应商页面资料 *@date 2019/1/21 14:58 *@anthor zjl */
   public void updPageInformation() throws IOException {
-    if (getBean().getCountry()==null){
+    if (getBean().getCountry() == null) {
       writeErr("国家不能为空");
       return;
     }
-    if (getBean().getProvince()==null){
+    if (getBean().getProvince() == null) {
       writeErr("省份不能为空");
       return;
     }
-    if (getBean().getIsPro()==null){
+    if (getBean().getIsPro() == null) {
       writeErr("供应商首页产品展示不能为空");
       return;
     }
