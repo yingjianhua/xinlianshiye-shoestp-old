@@ -80,6 +80,7 @@
                         <h5 class="title">
                             <s:text name="review.address"/>
                         </h5>
+
                         <div class="text">
                             <c:if test="${not empty supView.companyAddr && !(supView.companyAddr eq null)}">
                                 ${supView.companyAddr}</c:if>
