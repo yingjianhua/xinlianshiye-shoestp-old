@@ -1031,7 +1031,7 @@ public class PdtProductDao {
                   pdtProductVueView.setValue(s.getPkey());
                   pdtProductVueView.setLabel(s.getName());
                   List l = getCatChildNodesByCatId(s.getPkey(), language);
-                  if (l.size() > 1) {
+                  if (l.size() > 0) {
                     pdtProductVueView.setChildren(l);
                   }
                   return pdtProductVueView;
