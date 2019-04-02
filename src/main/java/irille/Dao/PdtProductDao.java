@@ -1020,6 +1020,7 @@ public class PdtProductDao {
     } else {
       sql.eqAutoAnd(PdtCat.T.CATEGORY_UP, integer);
     }
+    sql.eqAutoAnd(PdtCat.T.DISPLAY,1);
     List<PdtProductCatView> result =
         PdtCat.list(PdtCat.class, sql.toWhereString(), false, sql.getParms()).stream()
             .filter(s -> !s.gtDeleted())
