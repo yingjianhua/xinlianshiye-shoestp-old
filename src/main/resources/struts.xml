@@ -37,10 +37,10 @@
 			<result name="rtrends" type="redirect">${result}</result>
 			<result name="tact" type="chain">${result}</result>
 		</global-results>
-		<action name="">
-			<interceptor-ref name="defaultStack"></interceptor-ref>
-			<result type="redirect">/home/usr_UsrPurchase</result>
-		</action>
+		<!--<action name="">-->
+			<!--<interceptor-ref name="defaultStack"></interceptor-ref>-->
+			<!--<result type="redirect">/home/usr_UsrPurchase</result>-->
+		<!--</action>-->
 		<action name="*_*_*" class="irille.homeAction.{1}.{2}Action" method="{3}"></action>
 	</package>
 	<package name="supplier" namespace="/seller" extends="struts-default">
