@@ -786,8 +786,8 @@
 
 <jsp:include page="/home/v3/nav-nobody.jsp"></jsp:include>
 <jsp:include page="/home/template/web-top.jsp"></jsp:include>
-<%--全局登录弹框--%>
-<jsp:include page="/home/v3/login-box.jsp"></jsp:include>
+<%--全局登录弹框 - 已包含在nav-body中--%>
+<%--<jsp:include page="/home/v3/login-box.jsp"></jsp:include>--%>
 <div id="productInfo">
     <index-top></index-top>
 
@@ -1035,9 +1035,9 @@
                             <img class="mr4" src="/home/v3/static/images/productInfo/icon-renzheng.png" alt=""/>Certificate
                             <div class="i"></div>
                             <!-- <img class="mr4" src="/home/v3/static/images/productInfo/icon-jinpai.png" alt=""/> -->
-                            <img class="mr4" v-if="productinfocom.svsInfo.grade == 1" src="/home/v3/static/images/supplier-level1.png" alt="SVS" style="width:14px;"/>
-                            <img class="mr4" v-if="productinfocom.svsInfo.grade == 2" src="/home/v3/static/images/supplier-level2.png" alt="SVS" style="width:14px;"/>
-                            <img class="mr4" v-if="productinfocom.svsInfo.grade == 3" src="/home/v3/static/images/supplier-level3.png" alt="SVS" style="width:14px;"/>
+                            <img class="mr4" v-if="productinfocom.svsInfo.grade == 1" src="/home/static/images/ico/icon-svs-yp.png" alt="SVS" style="width:14px;"/>
+                            <img class="mr4" v-if="productinfocom.svsInfo.grade == 2" src="/home/static/images/ico/icon-svs-jp.png" alt="SVS" style="width:14px;"/>
+                            <img class="mr4" v-if="productinfocom.svsInfo.grade == 3" src="/home/static/images/ico/icon-svs-zs.png" alt="SVS" style="width:14px;"/>
                             SVS
                         </div>
                         <div class="h6">
@@ -1183,12 +1183,17 @@
 
 
             addfav: function () {
+                console.log("addfav")
                 if (!sysConfig || !sysConfig.user) {
+                    console.log("无user")
+                    console.log(util_function_obj.alertWhenNoLogin)
+                    console.log(util_function_obj.alertWhenNoLogin(this))
                     // user_obj.set_form_sign_in('', window.location.href, 1);
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 }
                 if(sysConfig.user.user_type == 1){
+                    console.log("有user")
                     this.$alert("If you want to get this supplier or shoes in your wish list,please register or login your buyer account.",{
                         confirmButtonText: 'Ok',
                         customClass: "my-custom-element-alert-class fs-content-18",
