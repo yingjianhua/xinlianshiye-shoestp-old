@@ -9,10 +9,10 @@ import org.json.JSONException;
 
 import irille.homeAction.HomeAction;
 import irille.pub.util.DataFilters;
+import irille.shop.pdt.PdtColor;
 import irille.shop.pdt.PdtSpec;
 import irille.shop.plt.PltErate;
 import irille.shop.plt.PltErateDAO;
-import org.json.JSONException;
 
 public class SpecView {
   private Integer id;
@@ -30,6 +30,8 @@ public class SpecView {
   // 颜色Id
   private int colorId;
   private int sizeId;
+
+  private int colorType;
 
   private int sizeType;
   /**
@@ -68,6 +70,8 @@ public class SpecView {
     view.setColor(spec.gtColor().getName(HomeAction.curLanguage()));
     view.setSize(spec.gtSize().getName(HomeAction.curLanguage()));
     view.setSizeType(spec.gtSize().getType() == null ? -1 : spec.gtSize().getType());
+    PdtColor color = spec.gtColor();
+    view.setColorType(color.getDefaultColor());
     view.setPrice(
         PltErateDAO.Query.getTargetPrice(spec.getPrice(), bigDecimal.getRate())
             .setScale(2, RoundingMode.HALF_UP));
@@ -128,6 +132,14 @@ public class SpecView {
 
   public void setColor(String color) {
     this.color = color;
+  }
+
+  public int getColorType() {
+    return colorType;
+  }
+
+  public void setColorType(int colorType) {
+    this.colorType = colorType;
   }
 
   public String getSize() {

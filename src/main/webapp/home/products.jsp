@@ -123,10 +123,10 @@
                     </el-checkbox-group>
                 </ul>
             </div>
-            <div class="top-box">
-                    <p style="padding: 0 44px;padding-top:10px;">Price<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
+            <div class="top-box" style="width:143px;">
+                    <p style="padding-top:10px;width:143px;text-align: center;">Price<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
                     <div class="i1"></div>
-                    <ul style="padding:10px 0;width:auto;height:auto;">
+                    <ul style="padding:10px 0;width:143px;height:auto;text-align: center;">
                         <div class="price-sort" :class="sort == item.rule?'price-sort-active' :''" v-for="(item, index) in priceSortList" :key="index" @click="priceBtn(item.rule)">{{item.name}}</div>
                     </ul>
                 </div>

@@ -55,7 +55,7 @@
   -ms-flex-negative: 0;
   flex-shrink: 0; }
 .page-login .login-page-content, .popup-login-box-global .login-page-content, .popup-register-box-global .login-page-content {
-  background: url("../images/logoin_bg.png") no-repeat center/cover; }
+  background: url("../../images/login/logoin_bg.png") no-repeat center/cover; }
 .page-login .login-page-content-inner, .popup-login-box-global .login-page-content-inner, .popup-register-box-global .login-page-content-inner {
   display: -webkit-box;
   display: -ms-flexbox;

@@ -83,7 +83,7 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
             .collect(Collectors.toList());
 
     RFQConsultMessageContactView myself = new RFQConsultMessageContactView();
-    myself.setAvatar(supplier.getHeadPic());
+    myself.setAvatar(supplier.getLogo());
     myself.setName(supplier.getName());
     RFQConsultMessageContactView another = new RFQConsultMessageContactView();
     another.setAvatar(purchase.getIcon());

@@ -27,6 +27,7 @@ import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.GetValue;
+import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
@@ -108,9 +109,11 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
     query.SELECT(RFQConsult.T.PKEY, "consultPkey");
     query.SELECT(RFQConsult.T.TITLE);
     query.SELECT(RFQConsult.T.IMAGE);
+    query.SELECT(PdtProduct.T.PICTURE);
     query.SELECT(RFQConsult.T.TYPE);
     query.FROM(RFQConsultRelation.class);
     query.LEFT_JOIN(RFQConsult.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY);
+    query.LEFT_JOIN(PdtProduct.class, RFQConsult.T.PRODUCT, PdtProduct.T.PKEY);
     query.WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supplierPkey);
     query.WHERE(RFQConsultRelation.T.PURCHASE_ID, "=?", purchasePkey);
     query.WHERE(RFQConsultRelation.T.IS_DELETED_PURCHASE, "=?", false);
@@ -134,6 +137,12 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
                   consult.setPkey(GetValue.get(map, "consultPkey", Integer.class, null));
                   consult.setTitle(GetValue.get(map, RFQConsult.T.TITLE, String.class, ""));
                   consult.setType(GetValue.get(map, RFQConsult.T.TYPE, Byte.class, null));
+                  String productImages =
+                      GetValue.get(map, PdtProduct.T.PICTURE, String.class, null);
+                  if (productImages != null) {
+                    String[] productImage = productImages.split(",");
+                    consult.setProductImage(productImage.length > 0 ? productImage[0] : null);
+                  }
                   consult.setImages(
                       Arrays.asList(
                           GetValue.get(map, RFQConsult.T.IMAGE, String.class, "").split(",")));

@@ -1,6 +1,6 @@
 package com.xinlianshiye.shoestp.common.errcode;
 
-import java.io.File;
+import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -13,10 +13,8 @@ import java.util.regex.Pattern;
 
 import irille.pub.exception.ReturnCode;
 import irille.pub.tb.FldLanguage;
-import lombok.extern.slf4j.Slf4j;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2019/3/13 Time: 16:02 */
-@Slf4j
 public class MessageBuild {
   private static ConcurrentHashMap<String, HashMap<Integer, String>> hashMap;
 
@@ -77,13 +75,14 @@ public class MessageBuild {
     Properties properties = new Properties();
     for (FldLanguage.Language value : FldLanguage.Language.values()) {
       try {
-        String filePath =
-            MessageBuild.class.getResource("/") + "shoestp_" + value.name() + ".properties";
-        if ("/".equals(File.separator)) {
-          System.out.println(filePath);
-          filePath = filePath.replace("\\", "/");
-        }
-        if (Files.isExecutable(Paths.get(new URI(filePath)))) {
+
+        if (Files.isExecutable(
+            Paths.get(
+                new URI(
+                    MessageBuild.class.getResource("/")
+                        + "shoestp_"
+                        + value.name()
+                        + ".properties")))) {
           try {
             //            BufferedReader bufferedReader =
             //                new BufferedReader(
@@ -92,10 +91,10 @@ public class MessageBuild {
             //                            .getResource("/shoestp_" + value.name() + ".properties")
             //                            .openStream(),
             //                        StandardCharsets.UTF_8));
-            properties.load(
-                MessageBuild.class
-                    .getResource("/shoestp_" + value.name() + ".properties")
-                    .openStream());
+            InputStream in =
+                MessageBuild.class.getResourceAsStream("/shoestp_" + value.name() + ".properties");
+            //                      getResource("/shoestp_" + value.name() + ".properties")
+            properties.load(in);
 
             for (Entry<Object, Object> entry : properties.entrySet()) {
 
@@ -161,9 +160,7 @@ public class MessageBuild {
   }
 
   public static void main(String[] args) {
-    String filePath = MessageBuild.class.getResource("/") + "shoestp_en.properties";
-    System.out.println(filePath);
-    System.out.println(filePath.indexOf("/"));
+    System.out.println(hashMap);
   }
 
   public static MessageView build(int code, FldLanguage.Language language) {
@@ -180,10 +177,6 @@ public class MessageBuild {
   }
 
   public static MessageView buildMessage(ReturnCode code, FldLanguage.Language language) {
-    log.info("系统消息map");
-    log.info("====" + hashMap);
-    log.info("配置文件路径");
-    log.info(MessageBuild.class.getResource("/") + "shoestp_en.properties");
     HashMap<Integer, String> map = hashMap.get(language.name());
     String body = null;
     if (map != null) {

@@ -7,17 +7,18 @@ import com.google.inject.ImplementedBy;
 
 import irille.Service.Manage.RFQ.Imp.RFQManageServiceImp;
 import irille.sellerAction.rfq.view.RFQConsultQuoteInfoView;
+import irille.view.Page;
+import irille.view.Manage.RFQ.RFQListBodyInfoView;
 import irille.view.Manage.RFQ.RFQManageInfoView;
 import irille.view.Manage.RFQ.RFQManageMyQuoteListBody;
 import irille.view.Manage.RFQ.RFQMyuoteInfo;
 import irille.view.Manage.RFQ.RFQPdtInfo;
-import irille.view.Page;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2019/1/30 Time: 14:57 */
 @ImplementedBy(RFQManageServiceImp.class)
 public interface IRFQManageService {
 
-  Page getRFQList(int start, int limit, String keyword, Integer supId);
+  Page<RFQListBodyInfoView> getRFQList(int start, int limit, String keyword, Integer supId);
 
   RFQManageInfoView getRFQInfo(int id, int supId);
 
