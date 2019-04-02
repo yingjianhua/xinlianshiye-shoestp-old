@@ -119,7 +119,8 @@ Vue.component('index-top', {
                         <li v-if="sysConfig.user.user_type==0"><a href="/home/usr_UsrMessages_center" target="_blank">RFQ List <i class="el-icon-arrow-right"></i></a></li>
                         <li v-if="sysConfig.user.user_type==0"><a href="/home/usr_UsrMessages_center" target="_blank">My Inquiry <i class="el-icon-arrow-right"></i></a></li>
                         <li v-if="sysConfig.user.user_type==0"><a href="/home/usr_UsrPurchase_usrSetting" target="_blank">My Account <i class="el-icon-arrow-right"></i></a></li>
-                        <li v-if="sysConfig.user.user_type==1" style="font-size:15px;font-weight: bold;"><a href="/home/usr_UsrSupplier_supplierEntry" target="_blank">我要开店 <i class="el-icon-arrow-right"></i></a></li>
+                        <li v-if="sysConfig.user.user_type==1 && sysConfig.user.store_type!=1" style="font-size:15px;font-weight: bold;"><a href="/home/usr_UsrSupplier_supplierEntry" target="_blank">我要开店 <i class="el-icon-arrow-right"></i></a></li>
+                        <li v-if="sysConfig.user.user_type==1 && sysConfig.user.store_type==1" style="font-size:15px;font-weight: bold;"><a href="/home/usr_UsrSupplier_supplierEntry" target="_blank">店铺管理 <i class="el-icon-arrow-right"></i></a></li>
                     </ul>
                     <div v-if="sysConfig.user.user_type==0" class="after-login"  @click="ToRFQ" style="cursor: pointer;">Submit RFQ</div>
                     <div class="hours after-login">Get multiple quotes within 24 hours！</div>

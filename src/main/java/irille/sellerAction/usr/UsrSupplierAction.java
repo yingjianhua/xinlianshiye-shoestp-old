@@ -144,9 +144,17 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
       json.put("msg", "用户尚未开通店铺,是否前往开通店铺");
       writerOrExport(json);
       return;
+    }else if (supplier.getStoreStatus() == 0){
+      JSONObject json = new JSONObject();
+      json.put("ret", -2);
+      json.put("msg", "用户店铺已关闭,请重新开通店铺");
+      writerOrExport(json);
+      return;
     }
     if (supplier.gtStatus() == Usr.OStatus.INIT) {
       throw LOG.err("wait for appr", "审核中不能登录");
+    } else if(supplier.gtStatus() == Usr.OStatus.FAIL) {
+      throw LOG.err("wait for appr", "审核失败，请前往开通店铺页面");
     }
     user = UsrUserDAO.supplierSignIn(supplier, main);
     setUser(user);
