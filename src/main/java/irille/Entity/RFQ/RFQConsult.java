@@ -70,7 +70,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
     DESTINATION(Sys.T.STR__200_NULL, "目的地"),
     TOTAL(Sys.T.INT_PLUS_OR_ZERO, "总抢单数"),
     CHANGE_COUNT(Sys.T.SHORT, "修改总数"),
-    EXTRA_DESCRIPTION(Sys.T.STR__2000_NULL, "额外信息"), // 总共可以修改3次, 修改次数在change_count字段统计
+    EXTRA_DESCRIPTION(Sys.T.JSON, "额外信息"), // 总共可以修改3次, 修改次数在change_count字段统计
     CREATE_TIME(Sys.T.DATE_TIME, "创建时间"),
     IS_DELETED(Sys.T.YN, "是否已删除"), // 为了适应在删除询盘的情况, 只影响到询盘不能被抢单,而不影响已抢单询盘的聊天功能, 故增加此字段, 用于标记询盘是否已删除
     RECOMMEND(Tb.crt(RFQConsultRecommend.DEFAULT).setNull()), // 是否推荐，0：不推荐，1：推荐
@@ -171,7 +171,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
   private String _destination;	// 目的地  STR(200)<null>
   private Integer _total;	// 总抢单数  INT
   private Short _changeCount;	// 修改总数  SHORT
-  private String _extraDescription;	// 额外信息  STR(2000)<null>
+  private String _extraDescription;	// 额外信息  JSONOBJECT
   private Date _createTime;	// 创建时间  TIME
   private Byte _isDeleted;	// 是否已删除 <OYn>  BYTE
 	// YES:1,是
@@ -208,7 +208,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
     _destination=null;	// 目的地  STR(200)
     _total=0;	// 总抢单数  INT
     _changeCount=0;	// 修改总数  SHORT
-    _extraDescription=null;	// 额外信息  STR(2000)
+    _extraDescription=null;	// 额外信息  JSONOBJECT
     _createTime=Env.getTranBeginTime();	// 创建时间  TIME
     _isDeleted=OYn.DEFAULT.getLine().getKey();	// 是否已删除 <OYn>  BYTE
     _recommend=RFQConsultRecommend.DEFAULT.getLine().getKey();	// 是否推荐 <RFQConsultRecommend>  BYTE
@@ -469,6 +469,12 @@ public class RFQConsult extends BeanInt<RFQConsult> {
   }
   public void setExtraDescription(String extraDescription){
     _extraDescription=extraDescription;
+  }
+  public JSONObject gtExtraDescription() throws JSONException {
+    return getExtraDescription()==null?new JSONObject():new JSONObject(getExtraDescription());
+  }
+  public void stExtraDescription(JSONObject extraDescription){
+    setExtraDescription(extraDescription==null?null:extraDescription.toString());
   }
   public Date getCreateTime(){
     return _createTime;
