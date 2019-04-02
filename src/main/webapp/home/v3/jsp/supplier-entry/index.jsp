@@ -804,7 +804,7 @@
                         return false;
                     } else if (data.status == 0) {
                         self.step = 3;
-                    } else if (data.status == 1) {
+                    } else if (data.status == 1 && data.storeStatus == 1) {
                         window.location.href = '/newseller/'
                     } else if (data.status == 2) {
                         self.state = true;

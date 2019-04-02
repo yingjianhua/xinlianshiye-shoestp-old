@@ -1020,6 +1020,7 @@ public class PdtProductDao {
     } else {
       sql.eqAutoAnd(PdtCat.T.CATEGORY_UP, integer);
     }
+    sql.eqAutoAnd(PdtCat.T.DISPLAY,1);
     List<PdtProductCatView> result =
         PdtCat.list(PdtCat.class, sql.toWhereString(), false, sql.getParms()).stream()
             .filter(s -> !s.gtDeleted())
@@ -1030,7 +1031,7 @@ public class PdtProductDao {
                   pdtProductVueView.setValue(s.getPkey());
                   pdtProductVueView.setLabel(s.getName());
                   List l = getCatChildNodesByCatId(s.getPkey(), language);
-                  if (l.size() > 1) {
+                  if (l.size() > 0) {
                     pdtProductVueView.setChildren(l);
                   }
                   return pdtProductVueView;

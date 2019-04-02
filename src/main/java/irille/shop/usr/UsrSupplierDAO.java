@@ -929,6 +929,27 @@ public class UsrSupplierDAO {
   // <<<================<2019-3-8 && 3.10-new-start>==================>>>
 
   /**
+   * 获取店铺状态
+   * @author: lingjian
+   * @Date: 2019/4/2 13:50
+   * @param pkey
+   * @return
+   */
+  public static UsrSupplier getStoreStatus(Integer pkey) {
+    UsrSupplier supplier = BeanBase.load(UsrSupplier.class, pkey);
+    SQL sql =
+            new SQL() {
+              {
+                SELECT(T.PKEY, T.STORE_STATUS);
+                FROM(UsrSupplier.class);
+              }
+            };
+    SqlQuery query = irille.pub.bean.Query.sql(sql);
+    supplier.stStoreStatus(supplier.gtStoreStatus());
+    return supplier;
+  }
+
+  /**
    * 审核
    *
    * @param pkey
@@ -937,18 +958,17 @@ public class UsrSupplierDAO {
    * @return
    * @author: lingjian @Date: 2019/3/11 10:49
    */
-  public static UsrSupplier reviewStatus(
-      String pkey, Integer status, String reason, Date storeopenTime) throws JSONException {
+  public static UsrSupplier reviewStatus(String pkey, Integer status, String reason, Date storeopenTime) throws JSONException {
     UsrSupplier supplier = BeanBase.load(UsrSupplier.class, pkey);
     IPMMessageService messageService = new PMMessageServiceImp();
-    String signBackgd = "/public/upload/usr/supplier/a65e5c6ff166514aa1266bc62d920668.jpg";
+    String SING_BACKGED = "/public/upload/usr/supplier/a65e5c6ff166514aa1266bc62d920668.jpg";
     if (status == 0) {
       supplier.stStatus(OStatus.INIT);
     } else if (status == 1) {
       supplier.stStatus(OStatus.APPR);
       supplier.stStoreStatus(Usr.SStatus.OPEN);
       supplier.setStoreopenTime(storeopenTime);
-      supplier.setSignBackgd(signBackgd);
+      supplier.setSignBackgd(SING_BACKGED);
       try {
         messageService.send(OTempType.SHOP_APPR, supplier, null, supplier);
       } catch (Exception e) {
@@ -1479,6 +1499,7 @@ public class UsrSupplierDAO {
   public static UsrSupplier updStore(UsrSupplier supplier) {
     UsrSupplier model = BeanBase.load(UsrSupplier.class, supplier.getPkey());
     PropertyUtils.copyProperties(model, supplier, T.STORE_STATUS, T.CLOSE_REASON, T.STOREOPEN_TIME);
+    model.stStatus(OStatus.FAIL);
     model.upd();
     return model;
   }

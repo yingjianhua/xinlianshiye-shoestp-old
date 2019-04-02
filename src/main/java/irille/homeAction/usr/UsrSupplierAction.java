@@ -514,7 +514,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
     }
     // 没有Supplier 信息未入住商家
     UsrSupplier supplier = user.getSupplier();
-    if (supplier != null && supplier.gtStatus() == OStatus.APPR) {
+    if (supplier != null && supplier.gtStatus() == OStatus.APPR && supplier.gtStoreStatus() == Usr.SStatus.OPEN) {
       setResult("/newseller/", false);
       return RTRENDS;
     }
