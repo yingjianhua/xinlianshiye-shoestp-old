@@ -1168,7 +1168,7 @@
                 var colorType = e.currentTarget.dataset.colorType;
                 // 没有img字段传回时，直接显示list的第一张，
                 // 否则，colorType为0时，规格图片为商家添加的（说明有img上传），否则显示list中的第一张
-                this.selePic = !e.currentTarget.dataset.lipic? productinfocom.pdtImg[0]:colorType==0? e.currentTarget.dataset.lipic: productinfocom.pdtImg[0];
+                this.selePic = !e.currentTarget.dataset.lipic? this.productinfocom.pdtImg[0]:colorType==0? e.currentTarget.dataset.lipic: this.productinfocom.pdtImg[0];
 
                 var firstKey = index
                 this.seleColorIndex = index;

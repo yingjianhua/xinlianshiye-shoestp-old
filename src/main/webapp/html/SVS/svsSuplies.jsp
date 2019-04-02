@@ -74,7 +74,10 @@
                 <%--第一个筛选框 - 地区筛选--%>
                 <div class="navitem" :class="{active: select1}"
                      @mouseenter="getCountryList">
-                    <h3 @click="showcheck(1)">Target Market<img src="images/svssupicondown.png" alt=""></h3>
+                    <h3 @click="showcheck(1)">
+                        Target Market
+                        <img class="icon-down" src="images/svssupicondown.png" alt="">
+                    </h3>
                     <div class="select" :class="select1 ?  'height' : ''" style="width: 990px;">
                         <el-input class="region-area-input" size="small"
                                   placeholder="Type to find a country or region"
@@ -109,18 +112,24 @@
 
                 <%--第二个筛选框 - 材质筛选--%>
                 <div class="navitem" :class="{active: select2}">
-                    <h3 @click="showcheck(2)">Shoe-making process<img src="images/svssupicondown.png" alt=""></h3>
+                    <h3 @click="showcheck(2)" style="min-width: 206px;">
+                        {{selectedProcessTypeLabel?selectedProcessTypeLabel:"Shoe-making process"}}
+                        <img class="icon-down" src="images/svssupicondown.png" alt="">
+                    </h3>
                     <ul class="select shoes-make-wrap"  :class="select2 ?  'height' : ''"
-                        style="width: 100%;">
+                        style="min-width: 100%;">
                         <li class="shoes-make-item" :class="{active: processType.value == selectedProcessType}"
                             v-for="processType in processTypeList"
                             :data-type-value="processType.value"
+                            :data-type-label="processType.label"
                             @click="selectProcessType">{{processType.label}}</li>
                     </ul>
                 </div>
                 <%--第三个筛选框 - 等级--%>
                 <div class="navitem" :class="{active: select3}">
-                    <h3 @click="showcheck(3)">SVS Level<img src="images/svssupicondown.png" alt=""></h3>
+                    <h3 @click="showcheck(3)">
+                        SVS Level<img class="icon-down" src="images/svssupicondown.png" alt="">
+                    </h3>
                     <div class="select"  :class="select3 ?  'height' : ''"
                          style="padding-top: 0;padding-bottom: 0;">
                         <el-checkbox-group v-model="selectedLevelList"
@@ -137,8 +146,8 @@
                 </div>
                 <div class="grow"></div>
 
-                <el-button class="btn-search" style="margin-right: 20px;" size="small"
-                    @click="search">search</el-button>
+                <%--<el-button class="btn-search" style="margin-right: 20px;" size="small"--%>
+                    <%--@click="search">search</el-button>--%>
             </div>
 
             <%--主体内容    --%>
@@ -348,16 +357,18 @@
             selectedMarketCountryList:[],
             // 筛选的国家列表
             marketCountryList:[],
-            // 选中的制鞋工艺
+            // 选中的制鞋工艺-value值
             selectedProcessType: null,
+            // 选中的制鞋工艺-名称
+            selectedProcessTypeLabel: null,
             // 制鞋工艺
             processTypeList:[
                 {label: "All",value: null},
                 {label: "Vulcanization Shoes",value: 41},
                 {label: "Injection Shoes",value: 42},
-                {label: "Molded shoes",value: 40},
-                {label: "Sewing shoes",value: 43},
-                {label: "Adhesive shoes",value: 37},
+                {label: "Molded Shoes",value: 40},
+                {label: "Sewing Shoes",value: 43},
+                {label: "Adhesive Shoes",value: 37},
             ],
 
             // 选中的等级
@@ -472,6 +483,9 @@
             //选择制鞋工艺
             selectProcessType(e){
                 this.selectedProcessType = e.currentTarget.dataset.typeValue;
+                this.selectedProcessTypeLabel = e.currentTarget.dataset.typeLabel;
+                this.hiddenDropDown();
+                this.search();
             },
 
             // 改变分页
@@ -521,7 +535,7 @@
             // 点击搜索
             search(){
                 // 隐藏下拉框
-                this.hiddenDropDown();
+                // this.hiddenDropDown();
                 this.resetSearchParams();
                 // util_function_obj._throttle(this.getSupplierList)()
                 this.getSupplierList();
@@ -549,6 +563,14 @@
             // this.cated = getParams('cated', "NONE") //分类点击用的
             this.getClassList();
             this.getSupplierList();
+        },
+        watch:{
+            selectedLevelList: function (val) {
+                this.search();
+            },
+            selectedMarketCountryList: function (val) {
+                this.search();
+            },
         }
     })
 </script>

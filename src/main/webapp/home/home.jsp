@@ -29,18 +29,20 @@
             <div class="box normal-scrollbar-wrap">
                 <h1>Categories</h1>
                 <div class="boxListWrap">
-                <div class="boxList" v-for="(item,index) in classLists" for-key="index">
+                <div class="boxList" v-for="(item,index) in classLists" for-key="index" v-if="item.label">
                     <a class="h2" :href="'/home/pdt_PdtProduct?cated='+item.value" target="_blank">
                         <img class="leftNav-icon1" src="/home/v3/static/images/icon_nx.png" :alt="item.label"
                              v-if="index==0"/>
                         <img class="leftNav-icon1" src="/home/v3/static/images/icon_nvx.png" :alt="item.label"
-                             v-if="index==1"/>
+                             v-else-if="index==1"/>
                         <img class="leftNav-icon1" src="/home/v3/static/images/icon_ntx.png" :alt="item.label"
-                             v-if="index==2"/>
+                             v-else-if="index==2"/>
+                        <img class="leftNav-icon1" src="/home/v3/static/images/icon_ntx.png" :alt="item.label"
+                             v-else/>
                         {{item.label}}
                         <i class="el-icon-arrow-right fr"></i>
                     </a>
-                    <ul class="clearfix subcate-list-box">
+                    <ul class="clearfix sub-list-wrap">
                         <li v-for="(item2,indextwo) in item.children" for-key="indextwo">
                             <a :href="'/home/pdt_PdtProduct?cated='+item2.value" target="_blank">{{item2.label}}</a>
                         </li>

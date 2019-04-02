@@ -1697,17 +1697,18 @@ a {
 
 .sanduan .box .boxListWrap {
     height: 292px;
-    overflow: auto;
+    overflow: hidden;
 }
 .sanduan .box .boxList {
-    padding-bottom: 16px;
+    /*padding-bottom: 16px;*/
+    margin-bottom: 16px;
     padding-left: 30px;
 }
-.sanduan .box .boxList .subcate-list-box{
+/*分类下的子类组*/
+.sanduan .box .boxListWrap .sub-list-wrap{
     max-height: 40px;
     overflow: hidden;
 }
-
 .sanduan .box .boxList-icon1 {
     width: 30px;
 }
@@ -1726,7 +1727,7 @@ a {
 
 .sanduan .box .h2 img {
     float: left;
-    margin-right: 5px;
+    /*margin-right: 5px;*/
     margin-left: -30px;
 }
 
@@ -1736,8 +1737,9 @@ a {
 
 .sanduan .box .boxList ul li {
     float: left;
-    margin-right: 28px;
     line-height: 20px;
+    width: 50%;
+    padding-right: 28px;
 }
 
 .sanduan .box .h3 {
