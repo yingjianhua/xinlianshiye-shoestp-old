@@ -645,6 +645,8 @@ a, a:link, a:visited, a:hover, a:active {
 	padding: 0 24px;
 	height: 35px;
 	line-height: 35px;
+	white-space: nowrap;
+	font-size: 14px;
 }
 #productList .price-sort:hover{
 	 background-color: #dee2ec;
