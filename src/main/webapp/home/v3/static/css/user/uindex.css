@@ -522,9 +522,6 @@
           white-space: nowrap;/*不换行*/
           text-overflow:ellipsis;/*超出部分文字以...显示*/
          }
-         #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box .h2 .supplier-svs img{
-          margin: 0 3.5px 3.5px 0;
-         }
          #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box .diandian{
           margin: 10px 0px 0 15px;
            display:none;

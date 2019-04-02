@@ -115,30 +115,34 @@
                                                 v-for="item,index in countryList"
                                                 v-show="(!filterAreaKeyword) || (filterAreaKeyword && item.name.toLowerCase().indexOf(filterAreaKeyword.toLowerCase())!=-1 )"
                                                 :key="item.id"
-                                                :label="item.id">
+                                                :label="item.id"
+                                                @change="changeCountry"
+                                                >
                                             {{item.name}}
                                         </el-checkbox>
                                 </el-checkbox-group>
                         </ul>
                     </div>
                     <div class="top-box">
-                            <p>SVS Level<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
-                            <div class="i1"></div>
-                            <ul style="height:auto;">
-                                <el-checkbox-group v-model="grade" class="my-ele-checkbox-group1">
-                                    <el-checkbox label="3" name="3"> <img src="/home/v3/static/images/supplier-level3.png" alt="" style="margin-right:8px;">Diamond</el-checkbox>
-                                    <el-checkbox label="2" name="2"><img src="/home/v3/static/images/supplier-level2.png" alt="" style="margin-right:8px;">Gold</el-checkbox>
-                                    <el-checkbox label="1" name="1"><img src="/home/v3/static/images/supplier-level1.png" alt="" style="margin-right:8px;">Silver</el-checkbox>
-                                </el-checkbox-group>
-                            </ul>
-                        </div>
-                        <div class="top-box" style="width:143px;">
-                            <p style="padding-top:10px;width:143px;text-align: center;">Price<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
-                            <div class="i1"></div>
-                            <ul style="padding:10px 0;width:143px;height:auto;text-align: center;">
-                                <div class="price-sort" :class="sort == item.rule?'price-sort-active' :''" v-for="(item, index) in priceSortList" :key="index" @click="priceBtn(item.rule)">{{item.name}}</div>
-                            </ul>
-                        </div>
+                        <p>SVS Level<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
+                        <div class="i1"></div>
+                        <ul style="height:auto;">
+                            <el-checkbox-group v-model="grade" class="my-ele-checkbox-group1">
+                                <el-checkbox label="3" name="3" @change="changeSVSLevel"> <img src="/home/v3/static/images/supplier-level3.png" alt="" style="margin-right:8px;">Diamond</el-checkbox>
+                                <el-checkbox label="2" name="2" @change="changeSVSLevel"><img src="/home/v3/static/images/supplier-level2.png" alt="" style="margin-right:8px;">Gold</el-checkbox>
+                                <el-checkbox label="1" name="1" @change="changeSVSLevel"><img src="/home/v3/static/images/supplier-level1.png" alt="" style="margin-right:8px;">Silver</el-checkbox>
+                            </el-checkbox-group>
+                        </ul>
+                    </div>
+                    <div class="top-box">
+                        <p style="min-width: 120px;text-align: center;white-space: nowrap;">
+                        {{(sort || sort===0)? priceSortList[sort].name: "Price"}}
+                        <img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
+                        <div class="i1"></div>
+                        <ul style="padding:10px 0;width:168px;height:auto;text-align: center;">
+                            <div class="price-sort" :class="sort == item.rule?'price-sort-active' :''" v-for="(item, index) in priceSortList" :key="index" @click="priceBtn(item.rule)">{{item.name}}</div>
+                        </ul>
+                    </div>
 
             <%-- <div class="top-box">
                 <p>Export Countries<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt="" /></p><div class="i1"></div>
@@ -388,9 +392,18 @@
             ]
         },
         methods: {
+            changeCountry(){
+                this.page = 0
+                this.curr = 1
+                this.productList();
+            },
+            changeSVSLevel(){
+                this.page = 0
+                this.curr = 1
+                this.productList();
+            },
             priceBtn(rule){  // 价格排序 选择按钮
                 this.sort =  rule
-                this.limit = 8
                 this.page = 0
                 this.curr = 1
                 this.productList();
