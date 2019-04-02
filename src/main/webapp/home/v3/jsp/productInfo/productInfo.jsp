@@ -491,6 +491,11 @@
             cursor: pointer;
             overflow: hidden;
         }
+        /*没有图片时,显示文字*/
+        #productInfo .productInfo-com .frBox .h5 .y2 li.show-text {
+            width: auto;
+            padding: 0 4px;
+        }
 
         #productInfo .productInfo-com .frBox .h5 li .hPic {
             width: 100%;
@@ -942,11 +947,19 @@
                         <div class="h5 clearfix">
                             <div class="y1 fl"><s:text name="Global.Colour"/>:</div>
                             <ul class="y2 fr clearfix">
-                                <li class="flexCc" :class="seleColorIndex==index?'sele':''"
+                                <li class="flexCc" :class="[seleColorIndex==index?'sele':'',{'show-text': !(item[0].img && item[0].colorType == 0)}]"
                                     v-for="item,index in productinfocom.spec"
-                                    @click="seleColorli" :data-index="index"
+                                    @click="seleColorli"
+                                    :data-index="index"
+                                    :data-color-type="item[0].colorType"
                                     :data-lipic="item[0].img">
-                                    <img class="hPic" :src="image(item[0].img)" :title="item[0].color"/>
+                                    <%--img存在且商家有添加（colorType为0）时显示img--%>
+                                    <img class="hPic" v-if="item[0].img && item[0].colorType == 0"
+                                         :src="image(item[0].img)" :title="item[0].color"/>
+                                    <%--否则显示文字--%>
+                                    <div v-else>
+                                        {{item[0].color}}
+                                    </div>
                                     <img class="hitb" src="/home/v3/static/images/productInfo/icon-sele01.png" alt=""/>
                                 </li>
                             </ul>
@@ -1152,7 +1165,11 @@
             // 选择颜色
             seleColorli: function (e) {
                 var index = e.currentTarget.dataset.index;
-                this.selePic = e.currentTarget.dataset.lipic;
+                var colorType = e.currentTarget.dataset.colorType;
+                // 没有img字段传回时，直接显示list的第一张，
+                // 否则，colorType为0时，规格图片为商家添加的（说明有img上传），否则显示list中的第一张
+                this.selePic = !e.currentTarget.dataset.lipic? productinfocom.pdtImg[0]:colorType==0? e.currentTarget.dataset.lipic: productinfocom.pdtImg[0];
+
                 var firstKey = index
                 this.seleColorIndex = index;
                 this.sizeList = this.productinfocom.spec[firstKey]

@@ -2423,13 +2423,13 @@
 						text = "RFQ";
 						break;
 					case 2:
-						text = "Inquiry";
+						text = "Product Inquires";
 						break;
 					case 3:
-						text = "Personal Inquiry";
+						text = "O2O Inquires";
 						break;
 					case 4:
-						text = "Store Inquiry";
+						text = "Supplier Inquires";
 						break;
 					default:
 						text = "All Inquires";
