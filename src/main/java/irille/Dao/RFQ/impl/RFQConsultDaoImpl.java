@@ -765,8 +765,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
     JSONArray inqTypeArray = new JSONArray();
     JSONArray svsGradeArray = new JSONArray();
     for (RFQConsultType value : RFQConsultType.values()) {
-      if (value.getLine().getKey() == RFQConsultType.INQUIRY.getLine().getKey()
-          || value.getLine().getKey() == RFQConsultType.Private_INQUIRY.getLine().getKey()) {
+      if (value.getLine().getKey() != RFQConsultType.RFQ.getLine().getKey()) {
         JSONObject object = new JSONObject();
         object.put("key", value.getLine().getKey());
         object.put("value", value.getLine().getName());
