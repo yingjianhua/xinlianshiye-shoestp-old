@@ -600,6 +600,9 @@ public class PdtProductDao {
     }
     if (search != null) {
       switch (search) {
+        case 0:
+          sql1.WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.GENERAL.getLine().getKey());
+          break;
         case 2:
           sql1.WHERE(
               PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.PrivateExpo.getLine().getKey());
@@ -683,6 +686,40 @@ public class PdtProductDao {
           //                  + " =?)",
           //              O2O_PrivateExpoPdtStatus.Failed.getLine().getKey(),
           //              O2O_ProductStatus.Failed.getLine().getKey());
+          break;
+        case 5:
+          sql1.WHERE(
+              "(("
+                  + O2O_PrivateExpoPdt.class.getSimpleName()
+                  + "."
+                  + O2O_PrivateExpoPdt.T.VERIFY_STATUS.getFld().getCodeSqlField()
+                  + "=? AND "
+                  + PdtProduct.class.getSimpleName()
+                  + "."
+                  + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()
+                  + " =? ) OR ("
+                  + O2O_Product.class.getSimpleName()
+                  + "."
+                  + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField()
+                  + " =? AND "
+                  + PdtProduct.class.getSimpleName()
+                  + "."
+                  + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()
+                  + " =?) OR ("
+                  + PdtProduct.class.getSimpleName()
+                  + "."
+                  + PdtProduct.T.IS_VERIFY.getFld().getCodeSqlField()
+                  + " =? AND "
+                  + PdtProduct.class.getSimpleName()
+                  + "."
+                  + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()
+                  + " =? ))",
+              O2O_PrivateExpoPdtStatus._DEFAULT.getLine().getKey(),
+              Pdt.OProductType.PrivateExpo.getLine().getKey(),
+              O2O_ProductStatus._DEFAULT.getLine().getKey(),
+              Pdt.OProductType.O2O.getLine().getKey(),
+              Pdt.OAppr._DEFAULT.getLine().getKey(),
+              Pdt.OProductType.GENERAL.getLine().getKey());
           break;
       }
     }

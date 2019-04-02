@@ -709,6 +709,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     }
     usi.setInquiriesCount(rfqConsultDao.getConsultCount(pkey));
     usi.setContactsCount(rfqConsultDao.getcontactsCount(pkey));
+    usi.setMessageCount(rfqConsultDao.getMessageCount(pkey));
     usi.setProductCount(pdtProductDAO.productCount(pkey));
     usi.setPrivateproductCount(pdtProductDAO.privateproductCount(pkey));
     usi.setWareHouseProductCount(pdtProductDAO.wareHouseProductCount(pkey));

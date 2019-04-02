@@ -41,6 +41,7 @@ import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.TranslateLanguage.TranslateFilter;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.sellerAction.SellerAction;
+import irille.shop.pdt.Pdt.OProductType;
 import irille.shop.pdt.Pdt.OState;
 import irille.shop.pdt.PdtProduct.T;
 import irille.shop.usr.UsrCart;
@@ -518,26 +519,48 @@ public class PdtProductDAO {
 		 * @param sort      排序依据 1->热卖 2->收藏数 3->新品 4->产品价格 默认审核时间
 		 * @param orderType 排序方式 1->ASC 默认->DESC
 		 */
-		public static Map getProductBySup(FldLanguage.Language lang, Serializable supplier, Integer start,
-				Integer limit, Integer cat, Integer sort, Integer orderType) {
+    public static Map getProductBySup(
+        FldLanguage.Language lang,
+        Serializable supplier,
+        Integer start,
+        Integer limit,
+        Integer cat,
+        Integer sort,
+        Integer orderType) {
 			Map map = new HashMap();
 			SQL sql = new SQL();
 			StringJoiner joiner = new StringJoiner(",");
 			joiner.add(String.valueOf(Pdt.OProductType.GENERAL.getLine().getKey()));
 			joiner.add(String.valueOf(Pdt.OProductType.GATHER.getLine().getKey()));
-			sql.SELECT(T.PKEY, T.PICTURE, T.NAME, T.CUR_PRICE, T.IS_HOT).FROM(PdtProduct.class)
-					.WHERE(T.SUPPLIER, "=?", supplier).WHERE(T.STATE, "=?", Pdt.OState.ON)
-					.WHERE(T.IS_VERIFY, "=?", Sys.OYn.YES).WHERE(T.PRODUCT_TYPE, "in (" + joiner.toString() + ")");
-			// 粘合O2O商品
-			SQL o2oSql = new SQL();
-			o2oSql.SELECT(T.PKEY, T.PICTURE, T.NAME, T.CUR_PRICE, T.IS_HOT).FROM(PdtProduct.class)
-					.LEFT_JOIN(O2O_Product.class, O2O_Product.T.PRODUCT_ID, T.PKEY)
-					.WHERE(O2O_Product.T.VERIFY_STATUS, "=?", O2O_ProductStatus.PASS)
-					.WHERE(O2O_Product.T.STATUS, "=?", O2O_ProductStatus.ON).WHERE(cat != -1, T.CATEGORY_DIY,
-							"in(" + UsrProductCategoryDAO.Sellect.getAllChild(lang, supplier, cat) + ")");
+      joiner.add(String.valueOf(Pdt.OProductType.O2O.getLine().getKey()));
 
-			if (cat != -1) {
-				sql.WHERE(T.CATEGORY_DIY, "in(" + UsrProductCategoryDAO.Sellect.getAllChild(lang, supplier, cat) + ")");
+      sql.SELECT(T.PKEY, T.PICTURE, T.NAME, T.CUR_PRICE, T.IS_HOT)
+          .FROM(PdtProduct.class)
+          .LEFT_JOIN(O2O_Product.class, O2O_Product.T.PRODUCT_ID, PdtProduct.T.PKEY)
+          .WHERE(T.SUPPLIER, "=?", supplier)
+          .WHERE(T.STATE, "=?", Pdt.OState.ON)
+          .WHERE(T.IS_VERIFY, "=?", Sys.OYn.YES)
+          .WHERE(T.PRODUCT_TYPE, "in (" + joiner.toString() + ")")
+          .WHERE(
+              "(("
+                  + O2O_Product.class.getSimpleName()
+                  + "."
+                  + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField()
+                  + " =? AND "
+                  + O2O_Product.class.getSimpleName()
+                  + "."
+                  + O2O_Product.T.STATUS.getFld().getCodeSqlField()
+                  + " =?) OR "
+                  + O2O_Product.class.getSimpleName()
+                  + "."
+                  + O2O_Product.T.PKEY.getFld().getCodeSqlField()
+                  + " IS NULL )",
+              O2O_ProductStatus.PASS,
+              O2O_ProductStatus.ON);
+      if (cat != -1) {
+        sql.WHERE(
+            T.CATEGORY_DIY,
+							"in(" + UsrProductCategoryDAO.Sellect.getAllChild(lang, supplier, cat) + ")");
 			}
 			map.put("pageAll", Math.ceil((double) irille.pub.bean.Query.sql(sql).queryCount() / limit));
 			String rankingBasis = " DESC ";
@@ -547,39 +570,26 @@ public class PdtProductDAO {
 			switch (sort) {
 			case 1:
 				sql.ORDER_BY(T.SALES, rankingBasis);
-				o2oSql.ORDER_BY(T.SALES, rankingBasis);
-				break;
+     				break;
 			case 2:
 				sql.ORDER_BY(T.Favorite_Count, rankingBasis);
-				o2oSql.ORDER_BY(T.Favorite_Count, rankingBasis);
 				break;
 			case 3:
 				sql.ORDER_BY(T.IS_NEW, rankingBasis);
-				o2oSql.ORDER_BY(T.IS_NEW, rankingBasis);
 				break;
 			case 4:
 				sql.ORDER_BY(T.CUR_PRICE, rankingBasis);
-				o2oSql.ORDER_BY(T.CUR_PRICE, rankingBasis);
 				break;
 			default:
 				sql.ORDER_BY(T.IS_HOT, rankingBasis.trim().equalsIgnoreCase("desc") ? " ASC " : " DESC ");
-				o2oSql.ORDER_BY(T.IS_HOT, rankingBasis.trim().equalsIgnoreCase("desc") ? " ASC " : " DESC ");
 				break;
 			}
 			sql.ORDER_BY(T.PKEY, rankingBasis);
-			o2oSql.ORDER_BY(T.PKEY, rankingBasis);
+      sql.GROUP_BY(PdtProduct.T.PKEY);
+      //      o2oSql.ORDER_BY(T.PKEY, rankingBasis);
 			sql.LIMIT(start, limit);
-			o2oSql.LIMIT(start, limit);
 			List<PdtView> list = new ArrayList<>();
 			irille.pub.bean.Query.sql(sql).queryList(PdtProduct.class).forEach(pdtProduct -> {
-				PdtView pdtView = new PdtView();
-				String name = pdtProduct.getName();
-				translateUtil.getAutoTranslate(pdtProduct, lang);
-				pdtView.setPdt(pdtProduct);
-				pdtView.setRewrite(pdtProduct.getPkey(), name);
-				list.add(pdtView);
-			});
-			irille.pub.bean.Query.sql(o2oSql).queryList(PdtProduct.class).forEach(pdtProduct -> {
 				PdtView pdtView = new PdtView();
 				String name = pdtProduct.getName();
 				translateUtil.getAutoTranslate(pdtProduct, lang);

@@ -32,6 +32,7 @@ import irille.Entity.RFQ.Enums.RFQConsultVerifyStatus;
 import irille.Entity.SVS.SVSInfo;
 import irille.Entity.SVS.Enums.SVSGradeType;
 import irille.core.sys.Sys;
+import irille.core.sys.Sys.OYn;
 import irille.platform.rfq.view.CountryView;
 import irille.platform.rfq.view.ProductView;
 import irille.platform.rfq.view.PurchaseView;
@@ -890,5 +891,24 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
           }
         };
     return irille.pub.bean.Query.sql(pdt).queryCount();
+  }
+
+  /** @author liyichao */
+  @Override
+  public Integer getMessageCount(Integer pkey) { // TODO Auto-generated method stub
+    SQL sql =
+        new SQL() {
+          {
+            SELECT(RFQConsultMessage.T.PKEY)
+                .FROM(RFQConsultMessage.class)
+                .LEFT_JOIN(
+                    RFQConsultRelation.class,
+                    RFQConsultRelation.T.PKEY,
+                    RFQConsultMessage.T.RELATION)
+                .WHERE(RFQConsultRelation.T.SUPPLIER_ID, " =? ", pkey)
+                .WHERE(RFQConsultMessage.T.P2S, " =? ", OYn.YES);
+          }
+        };
+    return irille.pub.bean.Query.sql(sql).queryCount();
   }
 }
