@@ -75,13 +75,15 @@ public class SessionMsg {
         (HttpServletResponse) ActionContext.getContext().get(ServletActionContext.HTTP_RESPONSE);
     // 设置是否为移动设备
     String agent = request.getHeader("User-Agent").toLowerCase();
-    for (String device : mobile_device_array) {
-      if (agent.indexOf(device) > 0) {
-        response.setStatus(301);
-        response.setHeader("Location",  "/m/");
-        // response.setHeader( "Location", "http://www.hao123.com");
-         response.setHeader( "Connection", "close" );
-        return;
+    if (request.getRequestURI() != null && request.getRequestURI().indexOf("/home/") == -1) {
+      for (String device : mobile_device_array) {
+        if (agent.indexOf(device) > 0) {
+          response.setStatus(301);
+          response.setHeader("Location", "/m/");
+          // response.setHeader( "Location", "http://www.hao123.com");
+          response.setHeader("Connection", "close");
+          return;
+        }
       }
     }
 
