@@ -1657,6 +1657,7 @@ public class PdtProductDao {
                 .WHERE(supplierId != null, PdtProduct.T.SUPPLIER, "=?", supplierId)
                 .WHERE(PdtProduct.T.IS_VERIFY, "=?", Pdt.OAppr.PASS)
                 .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON)
+                .WHERE(PdtProduct.T.PRODUCT_TYPE, "<>?", Pdt.OProductType.PrivateExpo)
                 .ORDER_BY(PdtProduct.T.VERIFY_TIME, "desc")
                 .LIMIT(0, 3);
           }
@@ -1716,6 +1717,7 @@ public class PdtProductDao {
         .WHERE(PdtProduct.T.SUPPLIER, "=?", pkey)
         .WHERE(PdtProduct.T.IS_VERIFY, "=?", Pdt.OAppr.PASS)
         .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON)
+        .WHERE(PdtProduct.T.PRODUCT_TYPE, "<>?", Pdt.OProductType.PrivateExpo)
         .GROUP_BY(PdtProduct.T.PKEY);
 
     if (checkType == 0) {
@@ -1788,6 +1790,7 @@ public class PdtProductDao {
         .WHERE(PdtProduct.T.SUPPLIER, "=?", pkey)
         .WHERE(PdtProduct.T.IS_VERIFY, "=?", Pdt.OAppr.PASS)
         .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON)
+        .WHERE(PdtProduct.T.PRODUCT_TYPE, "<>?", Pdt.OProductType.PrivateExpo)
         .GROUP_BY(PdtProduct.T.PKEY);
     if (checkType == 0) {
       sql.ORDER_BY(PdtProduct.T.VERIFY_TIME, "desc");
