@@ -109,6 +109,7 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
 	public Integer saveProduct(String data, Integer supId) throws IOException, ExecutionException {
 		PdtProductSaveView pdtProductSaveView = objectMapper.readValue(data, PdtProductSaveView.class);
 		Map pdtName = pdtProductSaveView.getPdtName();
+		// 对产品名称校验
 		if (null == pdtName.get(FldLanguage.Language.en.name()) || (null == pdtName.get(FldLanguage.Language.en.name())
 				&& "".equals(String.valueOf(pdtName.get(FldLanguage.Language.en.name())).trim()))) {
 			throw new WebMessageException(ReturnCode.failure, "请输入产品英文名称");
@@ -127,8 +128,8 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
 		if (verify == 0) {
 			return -12;
 		}
-
-		// pdtProductSaveView.getNumber_right()
+		StringBuffer skuId = new StringBuffer();
+		// 判断是否为020产品和是否为当前商家产品
 		PdtProduct pdtProduct = new PdtProduct();
 		if (pdtProductSaveView.getId() > 0) {
 			PdtProduct prod = pdtProductDao.findByPkey(pdtProductSaveView.getId());
@@ -150,10 +151,15 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
 			if (!prod.getSupplier().equals(supId)) {
 				throw new WebMessageException(ReturnCode.service_wrong_data, "参数错误");
 			}
+		} else {
+			for (int i = 0; i < 12; i++) {
+				skuId.append((int) (1 + Math.random() * 9));
+			}
 		}
 		List<PdtTieredPricing> tieredPricing = new ArrayList<>();
-		List<BigDecimal> minPriceList = new ArrayList<>();
-		List<Integer> countList = new ArrayList<>();
+		List<BigDecimal> minPriceList = new ArrayList<>();// 价格
+		List<Integer> countList = new ArrayList<>();// 数量
+		// 判断阶梯价每个阶梯价的数量要大于上一条,价格要小于上一条 对阶梯价进行预填充与获取阶梯价价格集合与数量集合
 		if (pdtProductSaveView.getTieredPricing() != null && !pdtProductSaveView.getTieredPricing().isEmpty()) {
 			for (int i = 0; i < pdtProductSaveView.getTieredPricing().size(); i++) {
 				PdtTieredPricingView item = pdtProductSaveView.getTieredPricing().get(i);
@@ -192,6 +198,7 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
 		int countStock = 0; // 总库存
 		List<PdtSpec> list = new ArrayList<>();
 		// 优先新增颜色
+		// 校验颜色 名称只能为中文且除颜色id相同的 不能有相同名称的颜色
 		Set<Integer> colorPkeyList = new HashSet<>();
 		Map<Integer, String> colorI_N = new HashMap<>();
 		if (pdtProductSaveView.getNewSpec() != null && !pdtProductSaveView.getNewSpec().isEmpty()) {
@@ -224,6 +231,7 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
 		}
 		Map<Integer, PdtColor> specMaps = new HashMap<>(); // key为specId value为颜色
 		Map<String, PdtColor> insColorNames = new HashMap<>();
+		// 新增颜色 颜色id小于0直接新增
 		for (NewSpceView v : pdtProductSaveView.getNewSpec()) {
 			if (v.getColor() < 0) {
 				if (!insColorNames.containsKey(v.getColorName()) || !colorPkeyList.contains(v.getColor())) {
@@ -236,12 +244,23 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
 				specMaps.put(v.getId(), insColorNames.get(v.getColorName()));
 			}
 		}
-
+		// 填充规格
 		for (int i = 0; i < pdtProductSaveView.getNewSpec().size(); i++) {
+			// 对比原来选择的产品颜色与本次操作选择的产品颜色进行删除操作
 			if (pdtProductSaveView.getSpecColor() != null && !pdtProductSaveView.getSpecColor().isEmpty()) {
-				if (!pdtProductSaveView.getSpecColor().contains(pdtProductSaveView.getNewSpec().get(i).getColor())
-						&& pdtProductSaveView.getNewSpec().get(i).getColor() > 0) {
-					PdtColorDAO.delColor(pdtProductSaveView.getNewSpec().get(i).getColor());
+				/*
+				 * if
+				 * (!pdtProductSaveView.getSpecColor().contains(pdtProductSaveView.getNewSpec().
+				 * get(i).getColor()) && pdtProductSaveView.getNewSpec().get(i).getColor() > 0)
+				 * { PdtColorDAO.delColor(pdtProductSaveView.getNewSpec().get(i).getColor(),
+				 * supId); }
+				 */
+				for (Integer in : pdtProductSaveView.getSpecColor()) {
+					if (colorPkeyList.contains(in)) {
+						continue;
+					} else {
+						PdtColorDAO.delColor(in, supId);
+					}
 				}
 			}
 			PdtSpec spec = new PdtSpec();
@@ -249,6 +268,7 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
 				spec.setPkey(pdtProductSaveView.getNewSpec().get(i).getId());
 			}
 			NewSpceView v = pdtProductSaveView.getNewSpec().get(i);
+			// 将新增的颜色数据重新填充并对规格进行赋值
 			if (pdtProductSaveView.getId() <= 0) {
 				if (pdtProductSaveView.getNewSpec().get(i).getColorType() == 0) {
 					// PdtColor color = new PdtColor();
@@ -302,7 +322,7 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
 			spec.setRowVersion((short) 0);
 			list.add(spec);
 		}
-
+		// 对产品描述模板赋值
 		if (pdtProductSaveView.getDesModule() != null) {
 			for (int i = 0; i < pdtProductSaveView.getDesModule().length; i++) {
 				String des = null;
@@ -359,11 +379,7 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
 		} else if (!StringUtil.hasValue(pdtProduct.getCode())) {
 			return -7;
 		}
-		StringBuffer buff = new StringBuffer();
-		for (int i = 0; i < 12; i++) {
-			buff.append((int) (1 + Math.random() * 9));
-		}
-		pdtProduct.setSku(buff.toString());
+		pdtProduct.setSku(skuId.toString());
 		pdtProduct.setCurPrice(min); // 商城价
 		pdtProduct.setPurPrice(BigDecimal.valueOf(0));
 		pdtProduct.setMktPrice(BigDecimal.valueOf(0));
@@ -393,6 +409,7 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
 		}
 		List<Integer> attrsPkeys = new ArrayList<>();
 		Map<Integer, PdtAttrCat> cats = new HashMap<>();
+		// 设置属性
 		for (PdtAttrLine l : lines) {
 			PdtAttr a = l.gtMain();
 			if (!attrsPkeys.contains(a.getPkey())) {
@@ -429,6 +446,7 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
 		// 立即上架 --保存到仓库 审核不通过 手动解除
 		// 立即上架 --不保存到仓库 审核通过
 		// TODO 待测试
+		// 设置上架状态
 		if (pdtProductSaveView.getWarehouse().equals(0)) {
 			// 产品保存到仓库
 			pdtProduct.setSoldInTime(OYn.NO.getLine().getKey());
@@ -626,6 +644,7 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
 				o2o_privateExpoPdt.del();
 			}
 		}
+		// 新增或修改阶梯价
 		if (pdtProductSaveView.getId() <= 0) {
 			for (int s = 0; s < tieredPricing.size(); s++) {
 				tieredPricing.get(s).setProduct(pdt.getPkey());
