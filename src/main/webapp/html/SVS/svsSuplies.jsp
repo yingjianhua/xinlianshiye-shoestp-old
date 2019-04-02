@@ -177,9 +177,9 @@
                             <template v-if="supplier.svs && supplier.svs.status==1">
                                 <img src="images/subliesiconcert.png" alt=""> Certificate | &nbsp;&nbsp;
                                 <template v-if="supplier.svs && supplier.svs.grade">
-                                    <img src="images/subliesiconsvs1.png" alt="" v-if="supplier.svs.grade  == 1">
-                                    <img src="images/subliesiconsvs2.png" alt="" v-else-if="supplier.svs.grade  == 2">
-                                    <img src="images/subliesiconsvs3.png" alt="" v-else-if="supplier.svs.grade  == 3">
+                                    <img src="/home/static/images/ico/icon-svs-yp.png" alt="" v-if="supplier.svs.grade  == 1">
+                                    <img src="/home/static/images/ico/icon-svs-jp.png" alt="" v-else-if="supplier.svs.grade  == 2">
+                                    <img src="/home/static/images/ico/icon-svs-zs.png" alt="" v-else-if="supplier.svs.grade  == 3">
                                     SVS
                                 </template>
                             </template>

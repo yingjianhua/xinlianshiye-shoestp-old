@@ -52,10 +52,10 @@
                     <li class="flexSt">
                             <div class="title">Product Image:</div>
                             <div class="img-list flexSt" style="width:440px;">
-                                <div class="img-item" v-if="images.length == 0">
+                                <!-- <div class="img-item" v-if="images.length == 0">
                                     <img src="./static/images/no-pdtImages.png" alt="">
-                                </div>
-                                <div class="img-item" v-for="item in images" v-else>
+                                </div> -->
+                                <div class="img-item" v-for="item in images">
                                     <img :src="sysConfig.user?image(item):image(item)+ '?x-oss-process=image/resize,w_80/blur,r_8,s_8'" alt="">
                                 </div>
                             </div>
@@ -248,27 +248,22 @@
                 util_function_obj.supplierCantEnter(this, url,"Please register or login your buyer account if you want public RFQ.");
              },
             quoteNow(){
-            //     // user_type  0普通用户  1卖家
+                // user_type  0普通用户  1卖家
                if(sysConfig.user){
                 //   有登录
                 console.log("登录")
                     if(sysConfig.user.user_type == 0){
                         // 普通用户
-                        this.$alert('Please register or login your supplier account before you provide a quote for this RFQ.', {
-                        confirmButtonText: 'Sign In',
-                        customClass: "my-custom-element-alert-class fs-content-18",
-                        callback: action => {
-                            console.log(action)
-                            if(action == 'confirm'){
-                                console.log("确定")
-                                window.location.href =
-                                '/home/usr_UsrPurchase_sign?jumpUrl=/home/rfq_RFQConsult_getRFQReadMore?rfqPkey=' + this.rfqPkey;
-                            }else{
-                                console.log("关闭")
-                                return;
-                            }
-                        }
-                    });
+                        this.$confirm('Please register or login your supplier account before you provide a quote for this RFQ.', {
+                            customClass: "my-custom-element-alert-class fs-content-18",
+                            confirmButtonText: 'Sign In',
+                            cancelButtonText: 'Cancel',
+                        }).then(() => {
+                            window.location.href =
+                                        '/home/usr_UsrPurchase_sign?jumpUrl=/home/rfq_RFQConsult_getRFQReadMore?rfqPkey=' + this.rfqPkey;
+                        }).catch(() => {
+                                    
+                        });
                     }else{
                         // 卖家
                          window.location.href =
