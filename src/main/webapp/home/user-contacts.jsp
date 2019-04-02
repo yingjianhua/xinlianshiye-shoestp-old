@@ -122,9 +122,9 @@
                                 <div class="supplier-name">{{item.supplier.name}}</div>
                                 <div class="fc999 supplier-svs">
                                     <template v-if="item.supplier.svsInfo">
-                                        <img v-if="item.supplier.svsInfo.grade == 1" src="/home/v3/static/images/ico/icon_svs_3.png" alt="">
-                                        <img v-if="item.supplier.svsInfo.grade == 2" src="/home/v3/static/images/ico/icon_svs.png" alt="">
-                                        <img v-if="item.supplier.svsInfo.grade == 3" src="/home/v3/static/images/ico/icon_yx.png" alt="">
+                                        <img v-if="item.supplier.svsInfo.grade == 1" src="/home/static/images/ico/icon-svs-yp.png" alt="">
+                                        <img v-if="item.supplier.svsInfo.grade == 2" src="/home/static/images/ico/icon-svs-jp.png" alt="">
+                                        <img v-if="item.supplier.svsInfo.grade == 3" src="/home/static/images/ico/icon-svs-zs.png" alt="">
                                         SVS
                                     </template>
                                     <!-- <template v-else>

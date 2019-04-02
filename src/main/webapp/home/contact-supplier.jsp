@@ -56,19 +56,11 @@
                         <p class="company-name">
                             {{companyInfo.companyName}}
                         </p>
-                        <div v-if="companyInfo.svsgrade && companyInfo.svsgrade == 0" style="color:#7f7f7f">
-                        </div>
-                        <div v-if="companyInfo.svsgrade && companyInfo.svsgrade == 1" style="color:#7f7f7f">
-                            <img src="./v3/static/images/ico/icon_svs_3.png" alt="">
-                            svs
-                        </div>
-                        <div v-if="companyInfo.svsgrade && companyInfo.svsgrade == 2" style="color:#7f7f7f">
-                            <img src="./v3/static/images/icon_svs.png" alt="">
-                            svs
-                        </div>
-                        <div v-if="companyInfo.svsgrade && companyInfo.svsgrade == 3" style="color:#7f7f7f">
-                            <img src="./v3/static/images/ico/icon_yx.png" alt="">
-                            svs
+                        <div v-if="companyInfo.svsgrade" style="color:#7f7f7f">
+                            <img v-if="companyInfo.svsgrade == 1" src="/home/static/images/ico/icon-svs-yp.png" alt="">
+                            <img v-if="companyInfo.svsgrade == 2" src="/home/static/images/ico/icon-svs-jp.png" alt="">
+                            <img v-if="companyInfo.svsgrade == 3" src="/home/static/images/ico/icon-svs-zs.png" alt="">
+                            SVS
                         </div>
                     </div>
                     <el-form :model="form" :rules="rules" ref="form" label-width="155px" style="margin-top: 30px;">
