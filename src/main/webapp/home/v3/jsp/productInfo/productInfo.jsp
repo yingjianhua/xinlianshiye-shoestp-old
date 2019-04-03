@@ -1045,7 +1045,7 @@
                             <div>
                                 <div class="ww42">R&D：</div>
                                 <a v-if="productinfocom.svsInfo" class="common-a" href="javascript:void(0);" :title="productinfocom.svsInfo.researchBase">
-                                    <el-rate v-model="productinfocom.svsInfo.researchBaseStar" disabled></el-rate>
+                                    <el-rate v-model="/[\.]/.test(productinfocom.svsInfo.researchBaseStar)?Math.floor(productinfocom.svsInfo.researchBaseStar) + 0.5 : productinfocom.svsInfo.researchBaseStar" disabled></el-rate>
                                 </a>
                                 <a v-else class="common-a" href="javascript:void(0);" title="0">
                                         <el-rate value="0" disabled></el-rate>
@@ -1054,7 +1054,7 @@
                             <div>
                                 <div class="ww42">Output：</div>
                                 <a v-if="productinfocom.svsInfo" class="common-a" href="javascript:void(0);" :title="productinfocom.svsInfo.factoryBase">
-                                    <el-rate v-model="productinfocom.svsInfo.factoryBaseStar" disabled></el-rate>
+                                    <el-rate v-model="/[\.]/.test(productinfocom.svsInfo.factoryBaseStar)?Math.floor(productinfocom.svsInfo.factoryBaseStar) + 0.5 : productinfocom.svsInfo.factoryBaseStar" disabled></el-rate>
                                 </a>
                                 <a v-else class="common-a" href="javascript:void(0);" title="0">
                                         <el-rate value="0" disabled></el-rate>
@@ -1063,7 +1063,7 @@
                             <div>
                                 <div class="ww42">Scale：</div>
                                 <a v-if="productinfocom.svsInfo" class="common-a" href="javascript:void(0);" :title="productinfocom.svsInfo.capacityBase">
-                                    <el-rate v-model="productinfocom.svsInfo.capacityBaseStar" disabled></el-rate>
+                                    <el-rate v-model="/[\.]/.test(productinfocom.svsInfo.capacityBaseStar)?Math.floor(productinfocom.svsInfo.capacityBaseStar) + 0.5 : productinfocom.svsInfo.capacityBaseStar" disabled></el-rate>
                                 </a>
                                 <a v-else class="common-a" href="javascript:void(0);" title="0">
                                         <el-rate value="0" disabled></el-rate>
