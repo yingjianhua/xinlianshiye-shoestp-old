@@ -263,19 +263,19 @@
                     <div>
                         <div class="ww42">R&D：</div>
                         <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="item.svsInfo.researchBase">
-                            <el-rate v-model="item.svsInfo.researchBaseStar" disabled></el-rate>
+                            <el-rate v-model="/[\.]/.test(item.svsInfo.researchBaseStar)?Math.floor(item.svsInfo.researchBaseStar) + 0.5 : item.svsInfo.researchBaseStar" disabled></el-rate>
                         </a>
                     </div>
                     <div>
                         <div class="ww42">Output：</div>
                         <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="item.svsInfo.factoryBase">
-                            <el-rate v-model="item.svsInfo.factoryBaseStar" disabled></el-rate>
+                            <el-rate v-model="/[\.]/.test(item.svsInfo.factoryBaseStar)?Math.floor(item.svsInfo.factoryBaseStar) + 0.5 : item.svsInfo.factoryBaseStar" disabled></el-rate>
                         </a>
                     </div>
                     <div>
                         <div class="ww42">Scale：</div>
                         <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="item.svsInfo.capacityBase">
-                            <el-rate v-model="item.svsInfo.capacityBaseStar" disabled></el-rate>
+                            <el-rate v-model="/[\.]/.test(item.svsInfo.capacityBaseStar)?Math.floor(item.svsInfo.capacityBaseStar) + 0.5 : item.svsInfo.capacityBaseStar" disabled></el-rate>
                         </a>
                     </div>
                     <div>

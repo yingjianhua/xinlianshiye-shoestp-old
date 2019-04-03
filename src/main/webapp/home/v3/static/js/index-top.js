@@ -169,7 +169,7 @@ Vue.component('index-top', {
     mounted() {
         Vue.set(this.$data, 'input', unescape(decodeURIComponent(getParams('Keyword', getParams('keyWord', getParams('keyword', ''))))))
         this.getconfig();
-        this.getPMmessage(this.msgStart,this.msgLimit,false);
+        this.getPMmessage(this.msgStart,this.msgLimit,true);
 
         // 屏幕过小时，左右滚动
         window.onscroll = function () {
@@ -231,18 +231,17 @@ Vue.component('index-top', {
                 })
             .then(function (res) {
                 if (res.data.ret == 1) {
-                    if(res.data.result.items.length == 0){
-                        self.$message('No more station letters');
-                        self.PMmoreSwitch = false;
-                       return;
+                    if(flag){
+                        self.PMMessageList = res.data.result.items
+                        self.countNoRead = res.data.result.countNoRead;
                     }else{
-                        if(flag){
-                            self.PMMessageList = res.data.result.items
-                            self.countNoRead = res.data.result.countNoRead;
-                        }else{
-                            self.countNoRead = res.data.result.countNoRead;
-                            self.PMMessageList.push(...res.data.result.items);
-                            // console.log(res.data.result.items.length)
+                        self.countNoRead = res.data.result.countNoRead;
+                        self.PMMessageList.push(...res.data.result.items);
+                        // console.log(res.data.result.items.length)
+                        if(res.data.result.items.length == 0){
+                            self.$message('No more station letters');
+                            self.PMmoreSwitch = false;
+                            return;
                         }
                     }
                 }
