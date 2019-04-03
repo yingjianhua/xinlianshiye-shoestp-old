@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -248,7 +249,7 @@ public class PdtProductDao {
           break;
       }
     }
-    // 缺少权重计算，待优化  策略模式
+    // 缺少权重计算，待优化 策略模式
     if (pdtProductView.getFlds() != null) {
       for (String fld : pdtProductView.getFlds()) {
         try {
@@ -356,7 +357,8 @@ public class PdtProductDao {
       query.WHERE(PdtProduct.T.SUPPLIER, "=?", pdtProductView.getSupplierId());
     }
     if (pdtProductView.getKeyword() != null && pdtProductView.getKeyword().length() > 0) {
-      //            query.LEFT_JOIN(UsrSupplier.class, PdtProduct.T.SUPPLIER, UsrSupplier.T.PKEY);
+      // query.LEFT_JOIN(UsrSupplier.class, PdtProduct.T.SUPPLIER,
+      // UsrSupplier.T.PKEY);
       try {
         query.WHERE(
             UsrSupplier.T.NAME,
@@ -390,7 +392,7 @@ public class PdtProductDao {
           break;
       }
     }
-    // 缺少权重计算，待优化  策略模式
+    // 缺少权重计算，待优化 策略模式
     if (pdtProductView.getFlds() != null) {
       for (String fld : pdtProductView.getFlds()) {
         try {
@@ -553,7 +555,7 @@ public class PdtProductDao {
         .LEFT_JOIN(PdtCat.class, PdtProduct.T.CATEGORY, PdtCat.T.PKEY)
         .LEFT_JOIN(UsrProductCategory.class, PdtProduct.T.CATEGORY_DIY, UsrProductCategory.T.PKEY)
         .LEFT_JOIN(O2O_PrivateExpoPdt.class, O2O_PrivateExpoPdt.T.PDT_ID, PdtProduct.T.PKEY)
-        //                .LEFT_JOIN(O2O_Product.class, O2O_Product.T.PRODUCT_ID, PdtProduct.T.PKEY)
+        // .LEFT_JOIN(O2O_Product.class, O2O_Product.T.PRODUCT_ID, PdtProduct.T.PKEY)
         .LEFT_JOIN(
             "(select * from o2_o__product ORDER BY updated_time DESC limit 1) O2O_Product  ON O2O_Product.product_id = PdtProduct.pkey ")
         .WHERE(name != null && name.length() > 0, PdtProduct.T.NAME, "like ?", "%" + name + "%")
@@ -674,18 +676,18 @@ public class PdtProductDao {
               Pdt.OProductType.O2O.getLine().getKey(),
               Pdt.OAppr.Failed.getLine().getKey(),
               Pdt.OProductType.GENERAL.getLine().getKey());
-          //          sql1.WHERE(
-          //              "("
-          //                  + O2O_PrivateExpoPdt.class.getSimpleName()
-          //                  + "."
-          //                  + O2O_PrivateExpoPdt.T.VERIFY_STATUS.getFld().getCodeSqlField()
-          //                  + "=? OR "
-          //                  + O2O_Product.class.getSimpleName()
-          //                  + "."
-          //                  + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField()
-          //                  + " =?)",
-          //              O2O_PrivateExpoPdtStatus.Failed.getLine().getKey(),
-          //              O2O_ProductStatus.Failed.getLine().getKey());
+          // sql1.WHERE(
+          // "("
+          // + O2O_PrivateExpoPdt.class.getSimpleName()
+          // + "."
+          // + O2O_PrivateExpoPdt.T.VERIFY_STATUS.getFld().getCodeSqlField()
+          // + "=? OR "
+          // + O2O_Product.class.getSimpleName()
+          // + "."
+          // + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField()
+          // + " =?)",
+          // O2O_PrivateExpoPdtStatus.Failed.getLine().getKey(),
+          // O2O_ProductStatus.Failed.getLine().getKey());
           break;
         case 5:
           sql1.WHERE(
@@ -735,10 +737,12 @@ public class PdtProductDao {
       sql1.WHERE(cat != 0, PdtProduct.T.CATEGORY, "in (" + String.join(",", list) + ")");
     }
     Integer totalCount = Query.sql(sql1).queryCount();
-    //    start = (start - 1 > -1 ? start - 1 : 0);
-    //        q.limit(start * limit, limit).queryMaps();
+    // start = (start - 1 > -1 ? start - 1 : 0);
+    // q.limit(start * limit, limit).queryMaps();
     sql1.LIMIT(start, limit);
     List<Map<String, Object>> list = Query.sql(sql1).queryMaps();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    dateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
     Page page =
         new Page(
             list.stream()
@@ -836,9 +840,7 @@ public class PdtProductDao {
                           "categoryDiy",
                           translateUtil.getLanguage(
                               o.get("categoryDiy"), PltConfigDAO.supplierLanguage(supplierId)));
-                      o.put(
-                          "update_time",
-                          new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(o.get("update_time")));
+                      o.put("update_time", dateFormat.format(o.get("update_time")));
                       o.put("sku", (String) o.get(PdtProduct.T.SKU.getFld().getCodeSqlField()));
                       return o;
                     })
@@ -1020,7 +1022,7 @@ public class PdtProductDao {
     } else {
       sql.eqAutoAnd(PdtCat.T.CATEGORY_UP, integer);
     }
-    sql.eqAutoAnd(PdtCat.T.DISPLAY,1);
+    sql.eqAutoAnd(PdtCat.T.DISPLAY, 1);
     List<PdtProductCatView> result =
         PdtCat.list(PdtCat.class, sql.toWhereString(), false, sql.getParms()).stream()
             .filter(s -> !s.gtDeleted())
@@ -1221,8 +1223,12 @@ public class PdtProductDao {
     sql.WHERE(PdtProduct.T.IS_VERIFY, " =? ", Sys.OYn.YES.getLine().getKey());
     sql.WHERE(PdtProduct.T.STATE, " =? ", Pdt.OState.ON.getLine().getKey());
     sql.WHERE(supplier != null, PdtProduct.T.SUPPLIER, "=?", supplier);
-    /*sql.WHERE(PdtProduct.T.PRODUCT_TYPE, " =? ",Pdt.OProductType.GENERAL.getLine().getKey())
-    .orWhere(PdtProduct.T.PRODUCT_TYPE, " =? ", Pdt.OProductType.O2O.getLine().getKey());*/
+    /*
+     * sql.WHERE(PdtProduct.T.PRODUCT_TYPE,
+     * " =? ",Pdt.OProductType.GENERAL.getLine().getKey())
+     * .orWhere(PdtProduct.T.PRODUCT_TYPE, " =? ",
+     * Pdt.OProductType.O2O.getLine().getKey());
+     */
     if (IsO2o != null && IsO2o.equals(1)) {
       sql.WHERE("PdtProduct.product_type =?", Pdt.OProductType.O2O);
     } else {
@@ -1342,9 +1348,11 @@ public class PdtProductDao {
     Integer count = irille.pub.bean.Query.sql(sql).queryCount();
     List<Map<String, Object>> queryMaps =
         irille.pub.bean.Query.sql(sql.LIMIT(start, limit)).queryMaps();
-    /*List<O2O_Product> copy = o2oProduct.stream().sorted((c1,c2)->{{
-    	return c1.getUpdatedTime().compareTo(c2.getUpdatedTime());
-    }}).collect(Collectors.toList());*/
+    /*
+     * List<O2O_Product> copy = o2oProduct.stream().sorted((c1,c2)->{{ return
+     * c1.getUpdatedTime().compareTo(c2.getUpdatedTime());
+     * }}).collect(Collectors.toList());
+     */
     List<O2O_Product> copy = o2oProduct;
     List<PdtSearchView> pdtListViwe =
         queryMaps.stream()
@@ -1395,7 +1403,7 @@ public class PdtProductDao {
                                   new BigDecimal(
                                       map.get(PdtProduct.T.CUR_PRICE.getFld().getCodeSqlField())
                                           .toString()));
-                              //                        setPrice(o2opdt.getPrice());
+                              // setPrice(o2opdt.getPrice());
                               setMinOrder(o2opdt.getMinOq());
                               break;
                             }
@@ -1528,8 +1536,8 @@ public class PdtProductDao {
   }
 
   /*
-   *   查找供应商中心列表,供应商要展示的产品
-   *   条件:IS_VERIFY=  1    STATE = 1    PRODUCT_TYPE  = 0
+   * 查找供应商中心列表,供应商要展示的产品 条件:IS_VERIFY= 1 STATE = 1 PRODUCT_TYPE = 0
+   *
    * @Author HuangHaoBin
    **/
   public List findBySupplier(Integer supplier) {
@@ -1638,6 +1646,7 @@ public class PdtProductDao {
     return Query.sql(productRules(new SQL()).SELECT(PdtProduct.class).FROM(PdtProduct.class))
         .queryCount();
   }
+
   /**
    * 获取供应商最新发布的三条产品信息
    *
@@ -1665,6 +1674,7 @@ public class PdtProductDao {
         };
     return Query.sql(sql).queryMaps();
   }
+
   /**
    * 手机端商家产品列表
    *
@@ -1808,6 +1818,7 @@ public class PdtProductDao {
     }
     return Query.sql(sql).queryMaps().size();
   }
+
   /**
    * 获取商家主要产品类型名称
    *
