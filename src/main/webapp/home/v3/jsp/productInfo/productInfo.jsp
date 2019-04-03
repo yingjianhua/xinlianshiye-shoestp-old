@@ -859,7 +859,7 @@
                         </div>
                         <div class="wrap" id="picBoxs">
                             <div class="h1 flexCc" id="small-box">
-                                <img :src="image(selePic)" alt="">
+                                <img :src="image(selePic,'?x-oss-process=image/resize,w_380,h_380')" alt="">
                                 <div id="float-box"></div>
                             </div>
                             <div id="big-box">
@@ -875,7 +875,7 @@
                                     :data-index="index"
                                     v-if="index<5"
                                     @mouseenter="selePicli">
-                                    <img :src="image(item)" alt=""/>
+                                    <img :src="image(item,'?x-oss-process=image/resize,w_60,h_60')" alt=""/>
                                 </li>
                             </ul>
                         </div>
@@ -956,7 +956,7 @@
                                     :data-lipic="item[0].img">
                                     <%--img存在且商家有添加（colorType为0）时显示img--%>
                                     <img class="hPic" v-if="item[0] && item[0].img && item[0].colorType === 0"
-                                         :src="image(item[0].img)" :title="item[0].color"/>
+                                         :src="image(item[0].img,'?x-oss-process=image/resize,w_40,h_40')" :title="item[0].color"/>
                                     <%--否则显示文字--%>
                                     <div v-else>
                                         {{item[0].color}}
@@ -1111,7 +1111,7 @@
         data: {
             selePic: '',
             selePicIndex: 0,
-            seleColorIndex: 0,
+            seleColorIndex: -1,
             seleSizeIndex: -1,
             productinfocom:${goodsInfo},
             sizeList: [],
@@ -1124,26 +1124,28 @@
 
 
             var firstKey = Object.keys(that.productinfocom.spec)[0];
-            that.seleColorIndex = firstKey;
+            // 进入后默认选中第一个color
+            // that.seleColorIndex = firstKey;
             that.sizeList = that.productinfocom.spec[firstKey];
             var colorType = that.sizeList[0].colorType;
-            console.log(that.sizeList[0])
-			console.log(that.productinfocom)
 			// if(that.sizeList[0].imgList != undefined){
 			// 	that.selePic = that.sizeList[0].imgList[0];
 			// }else{
 			// 	that.selePic = that.productinfocom.pdtImg[0];
 			// }
             // 没有img字段传回时，直接显示list的第一张，
-            if(!that.sizeList[0].img){
-                that.selePic = that.productinfocom.pdtImg[0]
-            // 否则，colorType为0时，规格图片为商家添加的（说明有img上传）
-            }else if(colorType===0){
-                that.selePic = that.sizeList[0].img;
-            // 其余情况全部显示list的第一张
-            }else{
-                that.selePic = that.productinfocom.pdtImg[0]
-            }
+            // if(!that.sizeList[0].img){
+            //     that.selePic = that.productinfocom.pdtImg[0]
+            // // 否则，colorType为0时，规格图片为商家添加的（说明有img上传）
+            // }else if(colorType===0){
+            //     that.selePic = that.sizeList[0].img;
+            // // 其余情况全部显示list的第一张
+            // }else{
+            //     that.selePic = that.productinfocom.pdtImg[0]
+            // }
+            // 进来显示第一张主图
+            that.selePic = that.productinfocom.pdtImg[0]
+
             if (that.productinfocom.tpView) {
                 that.tpView = that.productinfocom.tpView
                 var arr = new Array;
@@ -1180,13 +1182,31 @@
                 var colorType = e.currentTarget.dataset.colorType;
                 // 没有img字段传回时，直接显示list的第一张，
                 // 否则，colorType为0时，规格图片为商家添加的（说明有img上传），否则显示list中的第一张
-                this.selePic = !e.currentTarget.dataset.lipic? this.productinfocom.pdtImg[0]:colorType==0? e.currentTarget.dataset.lipic: this.productinfocom.pdtImg[0];
-
+                // this.selePic = !e.currentTarget.dataset.lipic? this.productinfocom.pdtImg[0]:colorType==0? e.currentTarget.dataset.lipic: this.productinfocom.pdtImg[0];
+                if( e.currentTarget.dataset.lipic && colorType==0 ){
+                    this.selePic = e.currentTarget.dataset.lipic;
+                }else{
+                    this.selePic = this.productinfocom.pdtImg[0];
+                    this.selePicIndex = 0;
+                }
                 var firstKey = index
                 this.seleColorIndex = index;
                 this.sizeList = this.productinfocom.spec[firstKey]
 
             },
+            // 鼠标进入时，显示对应大图
+            // mousEenterColorli(e){
+            //     console.log("移入")
+            //     var colorType = e.currentTarget.dataset.colorType;
+            //     // 没有img字段传回时，直接显示list的第一张，
+            //     // 否则，colorType为0时，规格图片为商家添加的（说明有img上传），否则显示list中的第一张
+            //     if( e.currentTarget.dataset.lipic && colorType==0 ){
+            //         this.selePic = e.currentTarget.dataset.lipic;
+            //     }else{
+            //         this.selePic = this.productinfocom.pdtImg[0];
+            //         this.selePicIndex = 0;
+            //     }
+            // },
             // 选择尺寸
             seleSizeli: function (e) {
                 this.seleSizeIndex = e.currentTarget.dataset.index;
