@@ -1007,7 +1007,7 @@ public class PdtProductDao {
   }
 
   /**
-   * @Description: 根据分类获取该节点子节点
+   * @Description: 根据分类获取该节点子节点-商城端-三级分类调用-过滤首页显示字段
    *
    * @author lijie@shoestp.cn
    * @date 2018/8/22 21:59
@@ -1037,6 +1037,39 @@ public class PdtProductDao {
                   return pdtProductVueView;
                 })
             .collect(Collectors.toList());
+    return result;
+  }
+
+  /**
+   * @Description: 根据分类获取该节点子节点-商家端-商品分类调用-没有过滤首页显示字段
+   *
+   * @author lijie@shoestp.cn
+   * @date 2018/8/22 21:59
+   */
+  public List<PdtProductCatView> getCatChildNodesByCatIdRemoveDisplay(
+          Integer integer, FldLanguage.Language language) {
+    FormaterSql sql = FormaterSql.build();
+    if (integer == null || integer == 0) {
+      sql.isNull(PdtCat.T.CATEGORY_UP);
+    } else {
+      sql.eqAutoAnd(PdtCat.T.CATEGORY_UP, integer);
+    }
+    List<PdtProductCatView> result =
+            PdtCat.list(PdtCat.class, sql.toWhereString(), false, sql.getParms()).stream()
+                    .filter(s -> !s.gtDeleted())
+                    .map(
+                            s -> {
+                              PdtProductCatView pdtProductVueView = new PdtProductCatView();
+                              translateUtil.getAutoTranslate(s, language);
+                              pdtProductVueView.setValue(s.getPkey());
+                              pdtProductVueView.setLabel(s.getName());
+                              List l = getCatChildNodesByCatId(s.getPkey(), language);
+                              if (l.size() > 0) {
+                                pdtProductVueView.setChildren(l);
+                              }
+                              return pdtProductVueView;
+                            })
+                    .collect(Collectors.toList());
     return result;
   }
 

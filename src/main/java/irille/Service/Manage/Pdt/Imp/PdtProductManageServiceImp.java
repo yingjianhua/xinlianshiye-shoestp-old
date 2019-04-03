@@ -106,6 +106,11 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
 	}
 
 	@Override
+	public List<PdtProductCatView> getCatChildNodesByCatIdRemoveDisplay(int i, Language supplierLanguage) {
+		return pdtProductDao.getCatChildNodesByCatIdRemoveDisplay(i, supplierLanguage);
+	}
+
+	@Override
 	public Integer saveProduct(String data, Integer supId) throws IOException, ExecutionException {
 		PdtProductSaveView pdtProductSaveView = objectMapper.readValue(data, PdtProductSaveView.class);
 		Map pdtName = pdtProductSaveView.getPdtName();
