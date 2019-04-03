@@ -323,7 +323,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
         CacheUtils.mailValid.put(uid, getEmail());
         CacheUtils.sendEm.put(getEmail(), new Date().getTime());
         String mesg =
-            AppConfig.domain + "home/usr_UsrMain_simpleCompleteReg?uid=" + uid + "&email=" + email;
+            AppConfig.domain + "home/usr_UsrMain_completeReg?uid=" + uid + "&email=" + email;
         mailer.sendMail(
             EmailBuilder.startingBlank()
                 .withSubject("Shoestp User Registration")
@@ -346,8 +346,8 @@ public class UsrMainAction extends HomeAction<UsrMain> {
                 MessageBuild.buildMessage(ReturnCode.send_ofen, HomeAction.curLanguage()));
           }
         }
-        SecureRandom secureRandom = new SecureRandom();
-        Integer code = secureRandom.nextInt(999999);
+        Integer intCode=(int)((Math.random()*9+1)*100000);
+        String code=intCode.toString();
         CacheUtils.pwdValid.put(code, getEmail());
         CacheUtils.sendEm.put(getEmail(), new Date().getTime());
         mailer.sendMail(
@@ -375,9 +375,9 @@ public class UsrMainAction extends HomeAction<UsrMain> {
                     MessageBuild.buildMessage(ReturnCode.send_ofen, HomeAction.curLanguage()));
           }
         }
-        SecureRandom secureRandoma = new SecureRandom();
-        Integer codea = secureRandoma.nextInt(999999);
-        CacheUtils.mailValid.put(codea.toString(), getEmail());
+        Integer intCodea=(int)((Math.random()*9+1)*100000);
+        String codea=intCodea.toString();
+        CacheUtils.mailValid.put(codea, getEmail());
         CacheUtils.sendEm.put(getEmail(), new Date().getTime());
         mailer.sendMail(
                 EmailBuilder.startingBlank()
@@ -408,7 +408,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
         CacheUtils.mailValid.put(uid, getEmail());
         CacheUtils.sendEm.put(getEmail(), new Date().getTime());
         String mesgf =
-                AppConfig.domain + "home/usr_UsrMain_completeReg?uid=" + uid + "&email=" + email+ "&pwd=" + getBean().getPassword()+ "&name=" + getBean().getNickname()+ "&country=" + getBean().getCountry();
+                AppConfig.domain + "home/usr_UsrMain_simpleCompleteReg?uid=" + uid + "&email=" + email+ "&pwd=" + getBean().getPassword()+ "&name=" + getBean().getNickname()+ "&country=" + getBean().getCountry();
         mailer.sendMail(
                 EmailBuilder.startingBlank()
                         .withSubject("Shoestp User Registration")
@@ -432,8 +432,8 @@ public class UsrMainAction extends HomeAction<UsrMain> {
       throw new WebMessageException(
           MessageBuild.buildMessage(ReturnCode.service_Invalid_UID, HomeAction.curLanguage()));
     }
-    if (CacheUtils.pwdValid.getIfPresent(Integer.valueOf(code)) == null
-        || !CacheUtils.pwdValid.getIfPresent(Integer.valueOf(code)).equals(getEmail())) {
+    if (CacheUtils.pwdValid.getIfPresent(code) == null
+        || !CacheUtils.pwdValid.getIfPresent(code).equals(getEmail())) {
       throw new WebMessageException(
           MessageBuild.buildMessage(ReturnCode.service_Invalid_email, HomeAction.curLanguage()));
     }
@@ -524,8 +524,8 @@ public class UsrMainAction extends HomeAction<UsrMain> {
           MessageBuild.buildMessage(ReturnCode.valid_code_overlenth, HomeAction.curLanguage()));
     }
     Cache cache = CacheUtils.pwdValid;
-    String value = String.valueOf(cache.getIfPresent(Integer.parseInt(getCode())));
-    if (cache.getIfPresent(Integer.parseInt(getCode())) != null
+    String value = String.valueOf(cache.getIfPresent(getCode()));
+    if (cache.getIfPresent(getCode()) != null
         && value.equalsIgnoreCase(getEmail())) {
       write();
     } else {
