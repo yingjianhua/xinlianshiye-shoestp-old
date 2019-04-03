@@ -1,6 +1,7 @@
 package irille.Service.Manage.Pdt.Imp;
 
 import static irille.pub.util.AppConfig.objectMapper;
+import static java.util.stream.Collectors.toList;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -111,11 +112,12 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
   }
 
   @Override
-	public List<PdtProductCatView> getCatChildNodesByCatIdRemoveDisplay(int i, Language supplierLanguage) {
-		return pdtProductDao.getCatChildNodesByCatIdRemoveDisplay(i, supplierLanguage);
-	}
+  public List<PdtProductCatView> getCatChildNodesByCatIdRemoveDisplay(
+      int i, Language supplierLanguage) {
+    return pdtProductDao.getCatChildNodesByCatIdRemoveDisplay(i, supplierLanguage);
+  }
 
-	@Override
+  @Override
   public Integer saveProduct(String data, Integer supId) throws IOException, ExecutionException {
     PdtProductSaveView pdtProductSaveView = objectMapper.readValue(data, PdtProductSaveView.class);
     Map pdtName = pdtProductSaveView.getPdtName();
@@ -708,15 +710,25 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
                   Pdt.OState.OFF.getLine().getKey());
               WHERE(PdtProduct.T.SOLD_TIME_B, " IS NULL ");
             }
-
             if (productName != null) {
+              AND();
               WHERE(PdtProduct.T.NAME, "like ?", "%" + productName + "%");
+              orWhere(PdtProduct.T.CODE, "like ?", "%" + productNum + "%");
+              orWhere(PdtProduct.T.SKU, "like ?", "%" + productNum + "%");
             }
-            if (productNum != null) {
-              WHERE(PdtProduct.T.CODE, "like ?", "%" + productNum + "%");
-            }
-            if (status != null) {
+            /*if (status != null) {
               WHERE(PdtProduct.T.CATEGORY, "=?", status);
+            }*/
+            if (status != null && status > 0) {
+              List list =
+                  (List)
+                      pdtProductDao.getCatsNodeByCatId(status).stream()
+                          .map(
+                              o -> {
+                                return String.valueOf(o);
+                              })
+                          .collect(toList());
+              WHERE(status != 0, PdtProduct.T.CATEGORY, "in (" + String.join(",", list) + ")");
             }
           }
         };
