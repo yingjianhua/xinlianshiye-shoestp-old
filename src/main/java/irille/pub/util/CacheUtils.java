@@ -1,5 +1,6 @@
 package irille.pub.util;
 
+import java.security.SecureRandom;
 import java.util.concurrent.TimeUnit;
 
 import com.github.benmanes.caffeine.cache.Cache;
@@ -67,4 +68,12 @@ public class CacheUtils {
 	 * @author chen
 	 */
 	public static Cache sendEm = Caffeine.newBuilder().expireAfterAccess(1, TimeUnit.MINUTES).build();
+	/**
+	 * @Description: 60S邮箱验证码有效期
+	 *
+	 * @author chen
+	 */
+	public static Cache sixtyValidCode = Caffeine.newBuilder().expireAfterAccess(1, TimeUnit.MINUTES).build();
+
+
 }

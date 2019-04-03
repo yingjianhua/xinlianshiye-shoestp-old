@@ -441,6 +441,6 @@ public class O2OPdtServerImp implements IO2OPdtServer {
     } else if (null != products && products.size() > 0) {
       return false;
     }
-    return null;
+    return false;
   }
 }

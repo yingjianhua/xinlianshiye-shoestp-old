@@ -256,7 +256,7 @@
                     <div>
                         <div class="ww42">R&D：</div>
                         <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="item.svsInfo.researchBase">
-                            <el-rate v-model="item.svsInfo.researchBaseStar" disabled></el-rate>
+                            <el-rate v-model="/[\.]/.test(item.svsInfo.researchBaseStar)?Math.floor(item.svsInfo.researchBaseStar) + 0.5 : item.svsInfo.researchBaseStar" disabled></el-rate>
                         </a>
                         <a v-else class="common-a" href="javascript:void(0);" title="0">
                                 <el-rate value="0" disabled></el-rate>
@@ -265,7 +265,7 @@
                     <div>
                         <div class="ww42">Output：</div>
                         <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="item.svsInfo.factoryBase">
-                            <el-rate v-model="item.svsInfo.factoryBaseStar" disabled></el-rate>
+                            <el-rate v-model="/[\.]/.test(item.svsInfo.factoryBaseStar)?Math.floor(item.svsInfo.factoryBaseStar) + 0.5 : item.svsInfo.factoryBaseStar" disabled></el-rate>
                         </a>
                         <a v-else class="common-a" href="javascript:void(0);" title="0">
                             <el-rate value="0" disabled></el-rate>
@@ -274,7 +274,7 @@
                     <div>
                         <div class="ww42">Scale：</div>
                         <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="item.svsInfo.capacityBase">
-                            <el-rate v-model="item.svsInfo.capacityBaseStar" disabled></el-rate>
+                            <el-rate v-model="/[\.]/.test(item.svsInfo.capacityBaseStar)?Math.floor(item.svsInfo.capacityBaseStar) + 0.5 : item.svsInfo.capacityBaseStar" disabled></el-rate>
                         </a>
                         <a v-else class="common-a" href="javascript:void(0);" title="0">
                             <el-rate value="0" disabled></el-rate>
@@ -715,6 +715,9 @@
             this.classList();
             this.productList();
             this.getCountry();
+            // console.log("向下取整  = = = = =  4.2  = = = ==" + Math.floor(4.2))
+            // console.log("向下取整  = = = = =  4.5  = =  = = =" + Math.floor(4.5))
+            // console.log("向下取整  = = = = =  4.8 = = = = = " + Math.floor(4.8))
         },
         watch: {
             // 输入监听
