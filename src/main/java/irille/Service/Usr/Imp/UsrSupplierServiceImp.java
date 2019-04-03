@@ -14,6 +14,7 @@ import irille.Dao.PdtProductDao;
 import irille.Dao.UsrSupplierDao;
 import irille.Dao.SVS.SVSInfoService;
 import irille.Entity.SVS.SVSInfo;
+import irille.Service.Manage.O2O.IO2OPdtServer;
 import irille.Service.Pdt.IPdtProductService;
 import irille.Service.Usr.IUsrSupplierService;
 import irille.core.sys.Sys;
@@ -47,7 +48,9 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
   @Inject PdtProductDao pdtProductDao;
   @Inject SVSInfoService SVSInfoService;
   @Inject IPdtProductService  productService;
-
+  @Inject IO2OPdtServer IO2OPdtServer
+  ;
+ 
   @Override
   public List<FavoritesView> getFavoritesListByCat(
       IduPage page, int cat, int purId, Sys.OYn showState) {
@@ -241,10 +244,13 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
                 GetValue.get(map, UsrSupplier.T.PKEY, Integer.class, 0));
         for (Map<String, Object> pdt : pdtlist) {
           UsrSupplierPdtView pdtView = new UsrSupplierPdtView();
+          PdtProduct product=new PdtProduct();
+          product.setPkey(GetValue.get(pdt, PdtProduct.T.PKEY, Integer.class, 0));
           pdtView.setPdtId(GetValue.get(pdt, PdtProduct.T.PKEY, Integer.class, 0));
           pdtView.setPdtName(GetValue.get(pdt, PdtProduct.T.NAME, String.class, null));
           pdtView.setPdtPictures(GetValue.get(pdt, PdtProduct.T.PICTURE, String.class, null));
           pdtView.setLink(SEOUtils.getPdtProductTitle(pdtView.getPdtId(),pdtView.getPdtName()));
+          pdtView.setIsO2O(IO2OPdtServer.judgeO2o(product)?1:0);
           pdtViews.add(pdtView);
         }
       }
