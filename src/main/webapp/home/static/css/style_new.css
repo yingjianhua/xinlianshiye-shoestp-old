@@ -835,7 +835,20 @@ body {
   margin: 0 auto;
   margin-bottom: 5px;
 }
-
+.goods-wrap .goods-item .goods-title .o2o-icon-wrap{
+  display: inline-block;
+  padding: 0 4px;
+  line-height: 18px;
+  font-size: 12px;
+  color: #b0b0b0;
+  border-radius: 50%;
+  background: #f6f7f9;
+}
+.goods-wrap .goods-item .goods-title .o2o-icon-wrap img{
+  width: 13px;
+  height: 11px;
+  margin-bottom: 3px;
+}
 .goods-wrap .goods-item .goods-title a {
   font-size: 13px;
   text-overflow:ellipsis;

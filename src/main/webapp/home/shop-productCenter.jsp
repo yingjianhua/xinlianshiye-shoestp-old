@@ -148,7 +148,12 @@
                                 <span></span>
                             </div>
                             <h5 class="goods-title">
-                                <a :href="'/' + item.rewrite" title="" target="_blank">{{item.pdt.name}}</a>
+                                <a :href="'/' + item.rewrite" title="" target="_blank"><%--
+                                    O2O图标--%><span class="o2o-icon-wrap" v-if="item.pdt.productType==4"><img src="/home/v3/static/images/ico/icon_o2o.png" alt=""/>
+                                                    O2O
+                                                </span>
+                                    {{item.pdt.name}}
+                                </a>
                             </h5>
                             <div class="goods-price">${env.currency.symbols} {{item.pdt.curPrice}}</div>
                             <div class="btn btn-enter">

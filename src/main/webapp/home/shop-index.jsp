@@ -212,7 +212,16 @@
                                             <span></span>
                                         </div>
                                         <h5 class="goods-title">
-                                            <a href="/${pro.rewrite}" title="${pro.pdt.name}" target="_blank">${pro.pdt.name}</a>
+                                            <a href="/${pro.rewrite}" title="${pro.pdt.name}" target="_blank">
+                                                <c:if test="${pro.pdt.productType==4}">
+                                                    <%--
+                                                O2O图标
+                                                --%><span class="o2o-icon-wrap"><img src="/home/v3/static/images/ico/icon_o2o.png" alt=""/>
+                                                    O2O
+                                                </span>
+                                                </c:if>
+                                                ${pro.pdt.name}
+                                            </a>
                                         </h5>
                                         <div class="goods-price">
                                             ${env.currency.symbols}${pro.pdt.curPrice}
