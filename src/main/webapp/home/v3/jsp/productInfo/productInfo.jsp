@@ -955,7 +955,7 @@
                                     :data-color-type="item[0].colorType"
                                     :data-lipic="item[0].img">
                                     <%--img存在且商家有添加（colorType为0）时显示img--%>
-                                    <img class="hPic" v-if="item[0].img && item[0].colorType === 0"
+                                    <img class="hPic" v-if="item[0] && item[0].img && item[0].colorType === 0"
                                          :src="image(item[0].img)" :title="item[0].color"/>
                                     <%--否则显示文字--%>
                                     <div v-else>
