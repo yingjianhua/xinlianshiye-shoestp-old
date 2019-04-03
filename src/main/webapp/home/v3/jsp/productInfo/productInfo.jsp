@@ -1032,20 +1032,22 @@
 
                     <div class="txt">
                         <div class="h4">Shoe Manufacturer</div>
-                        <div class="h5" v-if="productinfocom.svsInfo && productinfocom.svsInfo.status == 1">
+                        <div class="h5">
                             <img class="mr4" src="/home/v3/static/images/productInfo/icon-renzheng.png" alt=""/>Certificate
-                            <div class="i"></div>
+                            <div class="i" v-if="productinfocom.svsInfo && productinfocom.svsInfo.status == 1"></div>
                             <!-- <img class="mr4" src="/home/v3/static/images/productInfo/icon-jinpai.png" alt=""/> -->
-                            <img class="mr4" v-if="productinfocom.svsInfo.grade == 1" src="/home/static/images/ico/icon-svs-yp.png" alt="SVS" style="width:14px;"/>
-                            <img class="mr4" v-if="productinfocom.svsInfo.grade == 2" src="/home/static/images/ico/icon-svs-jp.png" alt="SVS" style="width:14px;"/>
-                            <img class="mr4" v-if="productinfocom.svsInfo.grade == 3" src="/home/static/images/ico/icon-svs-zs.png" alt="SVS" style="width:14px;"/>
-                            SVS
+                            <template v-if="productinfocom.svsInfo && productinfocom.svsInfo.status == 1">
+                                <img class="mr4" v-if="productinfocom.svsInfo.grade == 1" src="/home/static/images/ico/icon-svs-yp.png" alt="SVS" style="width:14px;"/>
+                                <img class="mr4" v-if="productinfocom.svsInfo.grade == 2" src="/home/static/images/ico/icon-svs-jp.png" alt="SVS" style="width:14px;"/>
+                                <img class="mr4" v-if="productinfocom.svsInfo.grade == 3" src="/home/static/images/ico/icon-svs-zs.png" alt="SVS" style="width:14px;"/>
+                                SVS
+                            </template>
                         </div>
-                        <div class="h6">
+                        <div class="h6" style="margin-top: 5px;">
                             <div>
                                 <div class="ww42">R&D：</div>
-                                <a v-if="productinfocom.svsInfo" class="common-a" href="javascript:void(0);" :title="productinfocom.svsInfo.researchBase">
-                                    <el-rate v-model="/[\.]/.test(productinfocom.svsInfo.researchBaseStar)?Math.floor(productinfocom.svsInfo.researchBaseStar) + 0.5 : productinfocom.svsInfo.researchBaseStar" disabled></el-rate>
+                                <a v-if="productinfocom.svsInfo" class="common-a" href="javascript:void(0);" :title="(productinfocom.svsInfo.researchBase + 12) > 20 ? 20 : (productinfocom.svsInfo.researchBase + 12)">
+                                    <el-rate v-model="/[\.]/.test(productinfocom.svsInfo.researchBaseStar)?Math.floor(productinfocom.svsInfo.researchBaseStar) + 0.5 + 3: productinfocom.svsInfo.researchBaseStar + 3" disabled></el-rate>
                                 </a>
                                 <a v-else class="common-a" href="javascript:void(0);" title="0">
                                         <el-rate value="0" disabled></el-rate>
@@ -1053,8 +1055,8 @@
                             </div>
                             <div>
                                 <div class="ww42">Output：</div>
-                                <a v-if="productinfocom.svsInfo" class="common-a" href="javascript:void(0);" :title="productinfocom.svsInfo.factoryBase">
-                                    <el-rate v-model="/[\.]/.test(productinfocom.svsInfo.factoryBaseStar)?Math.floor(productinfocom.svsInfo.factoryBaseStar) + 0.5 : productinfocom.svsInfo.factoryBaseStar" disabled></el-rate>
+                                <a v-if="productinfocom.svsInfo" class="common-a" href="javascript:void(0);" :title="(productinfocom.svsInfo.factoryBase + 12) > 20 ? 20 : (productinfocom.svsInfo.factoryBase + 12)">
+                                    <el-rate v-model="/[\.]/.test(productinfocom.svsInfo.factoryBaseStar)?Math.floor(productinfocom.svsInfo.factoryBaseStar) + 0.5 + 3: productinfocom.svsInfo.factoryBaseStar + 3" disabled></el-rate>
                                 </a>
                                 <a v-else class="common-a" href="javascript:void(0);" title="0">
                                         <el-rate value="0" disabled></el-rate>
@@ -1062,8 +1064,8 @@
                             </div>
                             <div>
                                 <div class="ww42">Scale：</div>
-                                <a v-if="productinfocom.svsInfo" class="common-a" href="javascript:void(0);" :title="productinfocom.svsInfo.capacityBase">
-                                    <el-rate v-model="/[\.]/.test(productinfocom.svsInfo.capacityBaseStar)?Math.floor(productinfocom.svsInfo.capacityBaseStar) + 0.5 : productinfocom.svsInfo.capacityBaseStar" disabled></el-rate>
+                                <a v-if="productinfocom.svsInfo" class="common-a" href="javascript:void(0);" :title="(productinfocom.svsInfo.capacityBase + 12) > 20 ? 20 : (productinfocom.svsInfo.capacityBase + 12)">
+                                    <el-rate v-model="/[\.]/.test(productinfocom.svsInfo.capacityBaseStar)?Math.floor(productinfocom.svsInfo.capacityBaseStar) + 0.5 + 3: productinfocom.svsInfo.capacityBaseStar + 3" disabled></el-rate>
                                 </a>
                                 <a v-else class="common-a" href="javascript:void(0);" title="0">
                                         <el-rate value="0" disabled></el-rate>

@@ -14,6 +14,12 @@
     <link rel="stylesheet" href="/html/SVS/css/index.css">
     <title>Online and Offline B2B Shoes Trading Platform—Shoestp.com Shoes Wholesale O2O New Mode</title>
     <jsp:include page="/home/v3/header.jsp"/>
+    <style>
+        #svsSuplies .el-rate__item, #svsSuplies .el-rate__icon{
+            font-size: 16px;
+            margin: 0 !important;
+        }
+    </style>
 </head>
 <body>
 <jsp:include page="/home/v3/nav.jsp"></jsp:include>
@@ -183,9 +189,10 @@
                             </span>
                         </p>
                         <div class="level">
-                            <template v-if="supplier.svs && supplier.svs.status==1">
-                                <img src="images/subliesiconcert.png" alt=""> Certificate | &nbsp;&nbsp;
-                                <template v-if="supplier.svs && supplier.svs.grade">
+                            <template>
+                                <img src="images/subliesiconcert.png" alt=""> Certificate
+                                <template v-if="supplier.svs && supplier.svs.grade != 0 && supplier.svs.status==1">
+                                        &nbsp;&nbsp;  | &nbsp;&nbsp;
                                     <img src="/home/static/images/ico/icon-svs-yp.png" alt="" v-if="supplier.svs.grade  == 1">
                                     <img src="/home/static/images/ico/icon-svs-jp.png" alt="" v-else-if="supplier.svs.grade  == 2">
                                     <img src="/home/static/images/ico/icon-svs-zs.png" alt="" v-else-if="supplier.svs.grade  == 3">
@@ -194,80 +201,38 @@
                             </template>
                         </div>
 
-                        <div class="score">
+                        <div class="score mb5">
                             <span class="title">R&D: </span>
-                            <span :title="(supplier.svs && supplier.svs.researchBase)?supplier.svs.researchBase:0">
-                                <template v-if="supplier.svs && supplier.svs.researchBaseStar">
-                                    <template v-for="i in 5">
-                                        <img src="images/subliesiconros.png"
-                                             v-if="i <= supplier.svs.researchBaseStar"
-                                             class="star" alt="">
-                                        <img src="images/subliesiconhalf.png"
-                                             v-else-if="supplier.svs.researchBaseStar>(i-1) && supplier.svs.researchBaseStar<i"
-                                             class="star" alt="">
-                                        <img src="images/subliesiconsc.png" v-else
-                                             class="star" alt="">
-                                    </template>
-                                </template>
-                                <%--没有的话显示5个空星--%>
-                                <template v-else>
-                                    <img src="images/subliesiconsc.png" v-for="i in 5"
-                                         class="star" alt="">
-                                </template>
-                            </span>
+                            <div style="display: inline-block;line-height: 24px;">
+                                <span v-if="supplier.svs" :title="(supplier.svs.researchBase + 12) > 20 ? 20 : (supplier.svs.researchBase + 12)">
+                                        <el-rate v-model="/[\.]/.test(supplier.svs.researchBaseStar)?Math.floor(supplier.svs.researchBaseStar) + 0.5 + 3: supplier.svs.researchBaseStar + 3" disabled></el-rate>
+                                </span>
+                                <span v-else title="0">
+                                        <el-rate value="0" disabled></el-rate>
+                                </span>
+                            </div>
                         </div>
-                        <div class="score">
+                        <div class="score mb5">
                             <span class="title"> Output: </span>
-                            <span :title="(supplier.svs && supplier.svs.capacityBase)?supplier.svs.capacityBase:0">
-                                <template v-if="supplier.svs && supplier.svs.capacityBaseStar">
-                                    <template v-for="i in 5">
-                                        <img src="images/subliesiconros.png"
-                                             v-if="i <= supplier.svs.capacityBaseStar"
-                                             class="star" alt="">
-                                        <img src="images/subliesiconhalf.png"
-                                             v-else-if="supplier.svs.capacityBaseStar>(i-1) && supplier.svs.capacityBaseStar<i"
-                                             class="star" alt="">
-                                        <img src="images/subliesiconsc.png" v-else
-                                             class="star" alt="">
-                                    </template>
-                                </template>
-                                <%--没有的话显示5个空星--%>
-                                <template v-else>
-                                    <img src="images/subliesiconsc.png" v-for="i in 5"
-                                         class="star" alt="">
-                                </template>
-                            </span>
-                            <%--<template v-if="Math.floor(supplier.svs.capacityBaseStar) < 1">--%>
-                                <%--<img src="images/subliesiconsc.png" class="star" alt="">--%>
-                            <%--</template>--%>
-                            <%--<template v-else>--%>
-                                <%--<img src="images/subliesiconros.png" class="star" alt=""--%>
-                                     <%--v-for="a in (Math.floor(supplier.svs.capacityBaseStar))">--%>
-                                <%--<img src="images/subliesiconhalf.png" class="star" alt=""--%>
-                                     <%--v-if="supplier.svs.capacityBaseStar%1">--%>
-                            <%--</template>--%>
+                            <div style="display: inline-block;line-height: 24px;">
+                                <span v-if="supplier.svs" :title="(supplier.svs.capacityBase + 12) > 20 ? 20 : (supplier.svs.capacityBase + 12)">
+                                        <el-rate v-model="/[\.]/.test(supplier.svs.capacityBaseStar)?Math.floor(supplier.svs.capacityBaseStar) + 0.5 + 3: supplier.svs.capacityBaseStar + 3" disabled></el-rate>
+                                </span>
+                                <span v-else title="0">
+                                        <el-rate value="0" disabled></el-rate>
+                                </span>
+                            </div>
                         </div>
                         <div class="score">
                             <span class="title">Scale: </span>
-                            <span :title="(supplier.svs && supplier.svs.factoryBase)?supplier.svs.factoryBase:0">
-                                <template v-if="supplier.svs && supplier.svs.factoryBaseStar">
-                                    <template v-for="i in 5">
-                                        <img src="images/subliesiconros.png"
-                                             v-if="i <= supplier.svs.factoryBaseStar"
-                                             class="star" alt="">
-                                        <img src="images/subliesiconhalf.png"
-                                             v-else-if="supplier.svs.factoryBaseStar>(i-1) && supplier.svs.factoryBaseStar<i"
-                                             class="star" alt="">
-                                        <img src="images/subliesiconsc.png" v-else
-                                             class="star" alt="">
-                                    </template>
-                                </template>
-                                <%--没有的话显示5个空星--%>
-                                <template v-else>
-                                    <img src="images/subliesiconsc.png" v-for="i in 5"
-                                         class="star" alt="">
-                                </template>
-                            </span>
+                            <div style="display: inline-block;line-height: 24px;" :title="(supplier.svs && supplier.svs.factoryBase)?supplier.svs.factoryBase:0">
+                                <span v-if="supplier.svs" :title="(supplier.svs.factoryBase + 12) > 20 ? 20 : (supplier.svs.factoryBase + 12)">
+                                        <el-rate v-model="/[\.]/.test(supplier.svs.factoryBaseStar)?Math.floor(supplier.svs.factoryBaseStar) + 0.5 + 3: supplier.svs.factoryBaseStar + 3" disabled></el-rate>
+                                </span>
+                                <span v-else title="0">
+                                        <el-rate value="0" disabled></el-rate>
+                                </span>
+                            </div>
                         </div>
                         <p class="ellipsis_2" v-if="supplier.address">{{supplier.address}}</p>
                     </div>

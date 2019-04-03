@@ -701,8 +701,12 @@
   position: relative;
   top: 3px;
   display: inline-block;
-  width: 50px;
+  line-height: 22px;
+  width: 42px;
   color: #999;
+}
+#svsSuplies .suplies .supliescon .introduce .mb5{
+  margin-bottom: 0;
 }
 #svsSuplies .suplies .supliescon .product{
   display: flex;
