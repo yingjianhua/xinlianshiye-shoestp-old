@@ -194,6 +194,9 @@ public class VariableServiceImp implements IVariableService {
       for (Object obj : objects) {
         try {
           field.setAccessible(true);
+          if (null == obj) {
+            continue;
+          }
           if (null == field.get(obj)) {
             object = String.valueOf("");
           } else if (variable.getFieldType() == ConsultMessage.class) {

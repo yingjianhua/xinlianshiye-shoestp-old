@@ -19,20 +19,21 @@
     <link rel="stylesheet" href="/home/v3/static/css/productInfo/reset.css"/>
     <script src='/home/v2/static/js/base/vue.min.js'></script>
     <!-- 引入样式 -->
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-    <!-- 引入组件库 -->
-    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <%--<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">--%>
+    <!-- 引入组件库 -->/
+    <%--<script src="https://unpkg.com/element-ui/lib/index.js"></script>--%>
     <script src="/home/static/js/axios.min.js"></script>
     <script src="/home/static/js/qs.js"></script>
     <%--公共函数--%>
     <script src="/home/utils/util.js"></script>
-    <link rel="stylesheet" href="/home/v2/static/css/base/element-ui/element-ui.css"/>
+    <%--<link rel="stylesheet" href="/home/v2/static/css/base/element-ui/element-ui.css"/>--%>
 
     <link href="/home/v3/static/css/productInfo/goodsInfoNew.css" rel="stylesheet" type="text/css">
     <link href="/home/static/css/style.css" rel="stylesheet" type="text/css">
     <link href="/home/static/css/global.css" rel="stylesheet" type="text/css">
     <link href="/home/static/css/user.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="/home/v2/static/css/base/element-ui/element-ui.css"/>
+    <script src='/home/v2/static/js/base/element-ui.js'></script>
     <link rel="stylesheet" href="/home/v2/static/css/base/foot.css"/>
     <link rel="stylesheet" href="/home/v3/static/css/index.css">
     <link rel="stylesheet" href="/home/v3/static/css/swiper.min.css"/>
@@ -823,7 +824,7 @@
     </div>-->
 
 
-    <div class="w1240">
+    <div class="w1240" v-cloak>
         <!--分级导航-->
         <div class="topNav">
             <!-- <div class="h1"><a href="/">Home</a><i class="el-icon-arrow-right"></i></div>
@@ -947,14 +948,14 @@
                         <div class="h5 clearfix">
                             <div class="y1 fl"><s:text name="Global.Colour"/>:</div>
                             <ul class="y2 fr clearfix">
-                                <li class="flexCc" :class="[seleColorIndex==index?'sele':'',{'show-text': !(item[0].img && item[0].colorType == 0)}]"
+                                <li class="flexCc" :class="[seleColorIndex==index?'sele':'',{'show-text': !(item[0] && item[0].img && item[0].colorType === 0)}]"
                                     v-for="item,index in productinfocom.spec"
                                     @click="seleColorli"
                                     :data-index="index"
                                     :data-color-type="item[0].colorType"
                                     :data-lipic="item[0].img">
                                     <%--img存在且商家有添加（colorType为0）时显示img--%>
-                                    <img class="hPic" v-if="item[0].img && item[0].colorType == 0"
+                                    <img class="hPic" v-if="item[0] && item[0].img && item[0].colorType === 0"
                                          :src="image(item[0].img)" :title="item[0].color"/>
                                     <%--否则显示文字--%>
                                     <div v-else>
@@ -1125,13 +1126,24 @@
             var firstKey = Object.keys(that.productinfocom.spec)[0];
             that.seleColorIndex = firstKey;
             that.sizeList = that.productinfocom.spec[firstKey];
+            var colorType = that.sizeList[0].colorType;
             console.log(that.sizeList[0])
 			console.log(that.productinfocom)
-			if(that.sizeList[0].imgList != undefined){
-				that.selePic = that.sizeList[0].imgList[0];
-			}else{
-				that.selePic = that.productinfocom.pdtImg[0];
-			}
+			// if(that.sizeList[0].imgList != undefined){
+			// 	that.selePic = that.sizeList[0].imgList[0];
+			// }else{
+			// 	that.selePic = that.productinfocom.pdtImg[0];
+			// }
+            // 没有img字段传回时，直接显示list的第一张，
+            if(!that.sizeList[0].img){
+                that.selePic = that.productinfocom.pdtImg[0]
+            // 否则，colorType为0时，规格图片为商家添加的（说明有img上传）
+            }else if(colorType===0){
+                that.selePic = that.sizeList[0].img;
+            // 其余情况全部显示list的第一张
+            }else{
+                that.selePic = that.productinfocom.pdtImg[0]
+            }
             if (that.productinfocom.tpView) {
                 that.tpView = that.productinfocom.tpView
                 var arr = new Array;
