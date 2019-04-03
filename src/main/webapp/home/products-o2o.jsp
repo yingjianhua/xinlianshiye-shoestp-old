@@ -248,35 +248,43 @@
                 <div class="common-boxspan fr">
                     <a class="h1" :href="'/home/usr_UsrSupplier_gtSupIndex?pkey='+item.supId"
                        target="_blank"><%--<div class="year">{{item.enter}}YRS</div>--%>{{item.supName}}</a>
-                    <div v-if="item.svsInfo && item.svsInfo.status == 1">
+                    <div>
                         <img class="mr6 icon01" src="/home/v3/static/images/ico/icon_cert.png" alt="Certificate"/>
                         Certificate
-                        <div class="i"></div>
-                        <template  v-if="item.svsInfo && item.svsInfo.grade != 0">
+                        <div class="i" v-if="item.svsInfo && item.svsInfo.status == 1"></div>
+                        <template  v-if="item.svsInfo && item.svsInfo.grade != 0 && item.svsInfo.status == 1">
                             <img v-if="item.svsInfo.grade == 1" src="/home/static/images/ico/icon-svs-yp.png" alt="SVS"/>
                             <img v-if="item.svsInfo.grade == 2" src="/home/static/images/ico/icon-svs-jp.png" alt="SVS"/>
                             <img v-if="item.svsInfo.grade == 3" src="/home/static/images/ico/icon-svs-zs.png" alt="SVS"/>
                             SVS
-                            <div class="i"></div>
                         </template>
                     </div>
                     <div>
                         <div class="ww42">R&D：</div>
-                        <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="item.svsInfo.researchBase">
-                            <el-rate v-model="/[\.]/.test(item.svsInfo.researchBaseStar)?Math.floor(item.svsInfo.researchBaseStar) + 0.5 : item.svsInfo.researchBaseStar" disabled></el-rate>
+                        <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="(item.svsInfo.researchBase + 12) > 20 ? 20 : (item.svsInfo.researchBase + 12)">
+                            <el-rate v-model="/[\.]/.test(item.svsInfo.researchBaseStar)?Math.floor(item.svsInfo.researchBaseStar) + 0.5 + 3: item.svsInfo.researchBaseStar + 3" disabled></el-rate>
                         </a>
+                        <a v-else class="common-a" href="javascript:void(0);" title="0">
+                                <el-rate value="0" disabled></el-rate>
+                            </a>
                     </div>
                     <div>
                         <div class="ww42">Output：</div>
-                        <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="item.svsInfo.factoryBase">
-                            <el-rate v-model="/[\.]/.test(item.svsInfo.factoryBaseStar)?Math.floor(item.svsInfo.factoryBaseStar) + 0.5 : item.svsInfo.factoryBaseStar" disabled></el-rate>
+                        <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="(item.svsInfo.factoryBase + 12) > 20 ? 20 : (item.svsInfo.factoryBase + 12)">
+                            <el-rate v-model="/[\.]/.test(item.svsInfo.factoryBaseStar)?Math.floor(item.svsInfo.factoryBaseStar) + 0.5 + 3: item.svsInfo.factoryBaseStar + 3" disabled></el-rate>
                         </a>
+                        <a v-else class="common-a" href="javascript:void(0);" title="0">
+                                <el-rate value="0" disabled></el-rate>
+                            </a>
                     </div>
                     <div>
                         <div class="ww42">Scale：</div>
-                        <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="item.svsInfo.capacityBase">
-                            <el-rate v-model="/[\.]/.test(item.svsInfo.capacityBaseStar)?Math.floor(item.svsInfo.capacityBaseStar) + 0.5 : item.svsInfo.capacityBaseStar" disabled></el-rate>
+                        <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="(item.svsInfo.capacityBase + 12) > 20 ? 20 : (item.svsInfo.capacityBase + 12)">
+                            <el-rate v-model="/[\.]/.test(item.svsInfo.capacityBaseStar)?Math.floor(item.svsInfo.capacityBaseStar) + 0.5 + 3: item.svsInfo.capacityBaseStar + 3" disabled></el-rate>
                         </a>
+                        <a v-else class="common-a" href="javascript:void(0);" title="0">
+                                <el-rate value="0" disabled></el-rate>
+                            </a>
                     </div>
                     <div>
                         {{item.originCountry}} ( {{item.originProvince}} )
