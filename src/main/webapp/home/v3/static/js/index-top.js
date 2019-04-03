@@ -169,28 +169,7 @@ Vue.component('index-top', {
     mounted() {
         Vue.set(this.$data, 'input', unescape(decodeURIComponent(getParams('Keyword', getParams('keyWord', getParams('keyword', ''))))))
         this.getconfig();
-        this.getPMmessage(this.msgStart,this.msgLimit);
-        // setTimeout(() => {
-        //     this.$nextTick(() => {
-        //         let el = document.querySelector('.msg-list');
-        //         let offsetHeight = el.offsetHeight;
-        //         el.onscroll = () => {
-        //             let scrollTop = el.scrollTop;
-        //             let scrollHeight = el.scrollHeight;
-        //             if ((offsetHeight + scrollTop) - scrollHeight >= -1) {
-        //                 console.log("到底了")
-        //                 // 滚动到底部需要执行的代码
-        //                 if(this.PMmoreSwitch){
-        //                     this.msgStart = this.msgStart  + this.msgLimit
-        //                     this.getPMmessage(this.msgStart,this.msgLimit);
-        //                 }else{
-        //                     this.$message('No more station letters');
-        //                 }
-
-        //             }
-        //         };
-        //     });
-        // }, 1000);
+        this.getPMmessage(this.msgStart,this.msgLimit,false);
 
         // 屏幕过小时，左右滚动
         window.onscroll = function () {
@@ -241,7 +220,7 @@ Vue.component('index-top', {
                 }
             })
         },
-        getPMmessage(start,limit){
+        getPMmessage(start,limit,flag){
             var self = this
             axios.get(
                 '/home/pm_PMMessage_list', {
@@ -252,12 +231,18 @@ Vue.component('index-top', {
                 })
             .then(function (res) {
                 if (res.data.ret == 1) {
-                    self.countNoRead = res.data.result.countNoRead;
-                    self.PMMessageList.push(...res.data.result.items);
-                    console.log(res.data.result.items.length)
-                    if(res.data.result.items.length < 8){
+                    if(res.data.result.items.length == 0){
+                        self.$message('No more station letters');
                         self.PMmoreSwitch = false;
                        return;
+                    }else{
+                        if(flag){
+                            self.PMMessageList = res.data.result.items
+                        }else{
+                            self.countNoRead = res.data.result.countNoRead;
+                            self.PMMessageList.push(...res.data.result.items);
+                            // console.log(res.data.result.items.length)
+                        }
                     }
                 }
             })
@@ -278,14 +263,8 @@ Vue.component('index-top', {
                         self.$message.error(res.data.msg);
                         return
                     };
-                    if(self.countNoRead == 0){
-                        self.countNoRead = 0
-                    }else{
-                        self.countNoRead = self.countNoRead - 1
-                    }
-                    self.$set(self.PMMessageList[i],"read",1)
-                    console.log(self.msgStart)
-                    console.log(self.msgLimit)
+                    self.getPMmessage(0,self.PMMessageList.length,true);
+                    // console.log(self.msgLimit)
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -296,7 +275,7 @@ Vue.component('index-top', {
             var self = this;
             if(self.PMmoreSwitch){
                 self.msgStart = self.msgStart  + self.msgLimit
-                self.getPMmessage(self.msgStart,self.msgLimit);
+                self.getPMmessage(self.msgStart,self.msgLimit,false);
             }else{
                 self.$message('No more station letters');
             }
