@@ -79,7 +79,9 @@ public class PltConfigAction extends HomeAction<PltConfig> {
         userInfo.setInquiry_count(0);
         userInfo.setFavorite_count(0);
         userInfo.setShopping_cart_count(0);
-        userInfo.setStore_type(UsrSupplierDAO.getStoreStatus(userView.getSupplierId()).getStoreStatus());
+        if (userView.getSupplierId() != null){
+          userInfo.setStore_type(UsrSupplierDAO.getStoreStatus(userView.getSupplierId()).getStoreStatus());
+        }
       }
       userInfo.setUser_type(userInfo.getUser_type()); // 判断是否为商家用户 赋值给usertype 0:普通用户 1: 商家用户
       sysConfigView.setUser(userInfo);
