@@ -885,7 +885,7 @@
                     <div class="frBox fr">
                         <div class="h1">
                             <div class="otowotb" v-if="productinfocom.type==4">
-                                <img src="/home/v3/static/images/productInfo/icon-jinpai.png" alt=""/>
+                                <img src="/home/v3/static/images/ico/icon_o2o.png" alt=""/>
                                 O2O
                             </div>
                             {{productinfocom.pdtName}}

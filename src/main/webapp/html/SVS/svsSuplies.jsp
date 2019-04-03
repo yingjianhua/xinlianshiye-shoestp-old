@@ -275,8 +275,18 @@
                     <div class="product">
                         <div class="product-item" v-for="(pro, pdtIndex) in supplier.products" v-if="pdtIndex<3">
                             <a :href="'/' + pro.link" target="_blank">
+
                                 <img :src="util_function_obj.image(pro.pdtPictures.split(',')[0],144)" alt="">
-                                <p class="goods-name ellipsis_2">{{pro.pdtName}}</p>
+                                <p class="goods-name ellipsis_2">
+                                    <span v-if="pro.isO2O == 1"
+                                            style="display: inline-block;padding: 0 4px;line-height: 18px;font-size: 12px;
+                                    border-radius: 50%;background: #f6f7f9;color: #b0b0b0;">
+                                        <img style="width: 13px;height: 11px;margin-bottom: 3px;"
+                                             src="/home/v3/static/images/ico/icon_o2o.png" alt=""/>
+                                        O2O
+                                    </span>
+                                    {{pro.pdtName}}
+                                </p>
                             </a>
                         </div>
                     </div>
