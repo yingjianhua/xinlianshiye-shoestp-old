@@ -436,11 +436,10 @@ public class O2OPdtServerImp implements IO2OPdtServer {
   public Boolean judgeO2o(PdtProduct product) {
     List<O2O_Product> products =
         o2OProductDao.findAllByVerifyStatusAndStatusAndActivity_Status(product);
-    if (null != products && products.size() > 1) {
+    if (null != products && products.size() > 0) {
       return true;
-    } else if (null != products && products.size() > 0) {
+    } else{
       return false;
     }
-    return false;
   }
 }

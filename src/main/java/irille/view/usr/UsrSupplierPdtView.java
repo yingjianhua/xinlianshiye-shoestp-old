@@ -20,4 +20,6 @@ public class UsrSupplierPdtView implements BaseView {
   private String pdtPictures; // 产品图片
   
   private String link;
+  
+  private Integer isO2O;
 }
