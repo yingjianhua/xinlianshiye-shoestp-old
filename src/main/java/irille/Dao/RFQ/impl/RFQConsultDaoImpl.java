@@ -887,7 +887,8 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                 .FROM(RFQConsultRelation.class)
                 .LEFT_JOIN(
                     RFQConsultMessage.class, RFQConsultMessage.T.PKEY, RFQConsultRelation.T.PKEY)
-                .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.YES)
+                //                .WHERE(RFQConsultMessage.T.P2S, "=?", Sys.OYn.YES)
+                .WHERE(RFQConsultRelation.T.IN_RECYCLE_BIN, " =? ", OYn.NO)
                 .WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supperpkey);
           }
         };
