@@ -71,6 +71,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
   @Setter @Getter private String uid;
   @Setter @Getter private Integer country;
   @Setter @Getter private String name;
+  @Setter @Getter private String backUrl;
   @Inject private Mailer mailer;
   private static Map<String, String> mailTemplate;
   private static final Logger logger = LoggerFactory.getLogger(UsrMainAction.class);
@@ -408,7 +409,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
         CacheUtils.mailValid.put(uid, getEmail());
         CacheUtils.sendEm.put(getEmail(), new Date().getTime());
         String mesgf =
-                AppConfig.domain + "home/usr_UsrMain_simpleCompleteReg?uid=" + uid + "&email=" + email+ "&pwd=" + getBean().getPassword()+ "&name=" + getBean().getNickname()+ "&country=" + getBean().getCountry();
+                AppConfig.domain + "home/usr_UsrMain_simpleCompleteReg?uid=" + uid + "&email=" + getEmail()+ "&pwd=" + getBean().getPassword()+ "&name=" + getBean().getNickname()+ "&country=" + getBean().getCountry()+ "&backUrl=" +getBackUrl();
         mailer.sendMail(
                 EmailBuilder.startingBlank()
                         .withSubject("Shoestp User Registration")
@@ -561,22 +562,25 @@ public class UsrMainAction extends HomeAction<UsrMain> {
    * @author chen
    */
   public String simpleCompleteReg() {
-
+    System.out.println("...+"+getEmail());
       Cache cache = CacheUtils.mailValid;
       String value = String.valueOf(cache.getIfPresent(getUid()));
       if (cache.getIfPresent(getUid()) != null && value.equalsIgnoreCase(getEmail())) {
-        getBean().setEmail(email);
-        getBean().setNickname(name);
-        getBean().setCountry(country);
-        getBean().setIdentity((byte)0);
-        getBean().setPassword(pwd);
-        ins.setB(getBean());
+        UsrMain us=new UsrMain();
+        us.setEmail(getEmail());
+        us.setNickname(getName());
+        us.setCountry(getCountry());
+        us.setIdentity((byte)0);
+        us.setPassword(getPwd());
+        us.setTelphone("");
+        ins.setB(us);
         ins.commit();
-        setResult("/home/v3/jsp/reg/register-step2.jsp");
+        System.out.println(".."+getBackUrl());
+        setResult(getBackUrl()+"?result=1");
       } else {
-        setResult("/home/v3/jsp/reg/register-error.jsp");
+        setResult(getBackUrl()+"?result=0");
       }
-
+    CacheUtils.mailValid.invalidate(uid);
     return HomeAction.TRENDS;
   }
 }
