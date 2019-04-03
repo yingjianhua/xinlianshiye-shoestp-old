@@ -573,7 +573,7 @@
                     // 清空imgs数组
                     this.imgsToUpload = [];
                     // 删除图片后，将授予的图片地址放入数组
-                    $.each(fileList, (i, v) = > {
+                    $.each(fileList, (i, v) => {
                         console.log(v)
                         this.imgsToUpload.push(v.response.result.url)
                     }
@@ -629,7 +629,7 @@
                                 confirmButtonText: 'Ok',
                                 customClass: "my-custom-element-alert-class fs-content-18",
                                 center: true,
-                                callback: action = > {
+                                callback: action => {
                                 return
                             }
                         })
@@ -637,7 +637,7 @@
                             return
                         } else {
                             // 普通用户
-                            self.$refs[formName].validate((valid) = > {
+                            self.$refs[formName].validate((valid) => {
                                 if(valid) {
                                     self.flag = true;
                                     console.log(self.form)
@@ -648,7 +648,7 @@
                                     axios.post("/home/rfq_RFQConsult_putSupplierInquiry", data,
                                         {headers: {'Content-Type': 'application/json'}}
                                     )
-                                        .then((res) = > {
+                                        .then((res) => {
                                         console.log(res)
                                         // 提交成功时
                                         if(res.data.ret == 1
@@ -679,7 +679,7 @@
 
                                 })
                                 .
-                                    catch((err) = > {
+                                    catch((err) => {
                                         self.flag = false;
                                     self.$message.error("Network error, please refresh the page and try again");
                                     console.log(err)
@@ -701,7 +701,7 @@
                     }
 
                 },
-                getQueryString: (name) = > {
+                getQueryString: (name) => {
                 let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
         let reg_rewrite = new RegExp("(^|/)" + name + "/([^/]*)(/|$)", "i");
         let r = window.location.search.substr(1).match(reg);
