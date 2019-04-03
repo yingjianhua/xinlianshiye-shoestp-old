@@ -117,7 +117,7 @@
                         </c:if>
                     </div>
                 </div>
-        
+
 
         <!-- 公司介绍 - wrap -->
         <div class="bg-gray">
@@ -219,7 +219,9 @@
                                         </div>
                                         <div class="btn btn-enter">
                                             <a href="/${pro.rewrite}" class="btn btn-enter" target="_blank">
-                                                <s:text name="show_now" /></a>
+                                                <%--<s:text name="show_now" />--%>
+                                                Inquiry
+                                            </a>
                                         </div>
                                     </div>
                                 </div>

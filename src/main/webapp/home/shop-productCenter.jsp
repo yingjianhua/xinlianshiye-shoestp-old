@@ -152,8 +152,10 @@
                             </h5>
                             <div class="goods-price">${env.currency.symbols} {{item.pdt.curPrice}}</div>
                             <div class="btn btn-enter">
-                                <a :href="'/' + item.rewrite" class="btn btn-enter" target="_blank"><s:text
-                                        name="show_now"/></a>
+                                <a :href="'/' + item.rewrite" class="btn btn-enter" target="_blank">
+                                    <%--<s:text name="show_now"/>--%>
+                                    Inquiry
+                                </a>
                             </div>
                         </div>
                     </div>
