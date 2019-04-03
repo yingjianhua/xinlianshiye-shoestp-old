@@ -470,7 +470,7 @@
 <script>
 
     var validateName = function(rule, value, callback){
-        let reg = /^([^`~!@#$%^&*()+= -\]\[';/.,<>?:"{}|]).{0,52}(?<![`~!@#$%^&*()+= -\]\[';/.,<>?:"{}|])$/
+        let reg = /^[^`~!@#$%^&*()_+?><":\]\[}\{].{0,51}[^`~!@#$%^&*()_+?><":\]\[}\{]$/
         if (!value) {
             return callback(new Error("请填写名称"));
         } else if(!reg.test(value)){
@@ -628,7 +628,7 @@
         }
     };
     var validatecontacts = function(rule, value, callback){
-        let reg = /^([^`~!@#$%^&*()+= -\]\[';/.,<>?:"{}|]).{0,32}(?<![`~!@#$%^&*()+= -\]\[';/.,<>?:"{}|])$/
+        let reg = /^[^`~!@#$%^&*()_+?><":\]\[}\{].{0,31}[^`~!@#$%^&*()_+?><":\]\[}\{]$/
         if (!value) {
             callback();
         } else if(!reg.test(value)){
