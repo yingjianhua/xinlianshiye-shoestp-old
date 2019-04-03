@@ -117,7 +117,7 @@
                         </c:if>
                     </div>
                 </div>
-        
+
 
         <!-- 公司介绍 - wrap -->
         <div class="bg-gray">
@@ -201,7 +201,7 @@
                         <!-- 商品展示 -->
                         <div class="goods-wrap">
                             <c:forEach items="${supView.productList}" var="pro" varStatus="index">
-                                <div class="goods-box" style="width: 284px;">
+                                <div class="goods-box">
                                     <div class="goods-item">
                                         <div class="goods-pic pic_box">
                                             <a href="/${pro.rewrite}" title="${pro.pdt.name}" target="_blank">
@@ -218,8 +218,11 @@
                                             ${env.currency.symbols}${pro.pdt.curPrice}
                                         </div>
                                         <div class="btn btn-enter">
-                                            <a href="/${pro.rewrite}" class="btn btn-enter" target="_blank">
-                                                <s:text name="show_now" /></a>
+                                            <a @click="addRFQ" data-proid="${pro.pdt.pkey}"
+                                               href="javascript: void(0);" class="btn btn-enter" target="_blank">
+                                                <%--<s:text name="show_now" />--%>
+                                                Inquiry
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -262,7 +265,13 @@
     <script src="/home/v3/static/js/index-bottom.js"></script>
     <script>
         new Vue({
-            el: "#main"
+            el: "#main",
+            methods:{
+                addRFQ(e){
+                    var jumpUrl = '/home/usr_UsrConsult_productPublishView?product_id=' + e.currentTarget.dataset.proid + '&backUrl=' + window.location.href;
+                    util_function_obj.supplierCantEnter(this, jumpUrl,"Please register or login your buyer account if you want making enquiries.");
+                }
+            }
         })
     </script>
 </body>

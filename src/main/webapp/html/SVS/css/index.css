@@ -634,6 +634,7 @@
   margin: 0 20px 0 25px;
 }
 #svsSuplies .suplies .supliescon .logo img{
+  display: inline-block;
   width: 160px;
   height: 130px;
   object-fit: contain;
@@ -721,6 +722,7 @@
   align-items: center;
 }
 #svsSuplies .suplies .supliescon .product img{
+  display: inline-block;
   width: 145px;
   height: 145px;
   object-fit: cover;

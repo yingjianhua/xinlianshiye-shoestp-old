@@ -213,7 +213,8 @@ public class UsrSupplierDao {
     query
         .WHERE(grade != null, SVSInfo.T.GRADE, " in(" + grade + ")")
         .GROUP_BY(UsrSupplier.T.PKEY)
-        .ORDER_BY(PdtProduct.T.VERIFY_TIME, "desc");
+        .ORDER_BY(SVSInfo.T.GRADE,"desc")
+        .ORDER_BY(PdtProduct.T.VERIFY_TIME, "asc");
     if (start != null && limit != null) {
       query.limit(start, limit);
     }
