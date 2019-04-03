@@ -526,7 +526,8 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
         .LEFT_JOIN(RFQConsultRelation.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY)
         .LEFT_JOIN(UsrPurchase.class, UsrPurchase.T.PKEY, T.PURCHASE_ID)
         .WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supId)
-        .WHERE(RFQConsultRelation.T.IN_RECYCLE_BIN, "=?", Sys.OYn.NO);
+        .WHERE(RFQConsultRelation.T.IN_RECYCLE_BIN, "=?", Sys.OYn.NO)
+        .WHERE(RFQConsult.T.TYPE, "=?", RFQConsultType.RFQ);
     sql.WHERE(readStatus != null, RFQConsultRelation.T.READ_STATUS, "=?", readStatus);
     sql.WHERE(country != null, RFQConsult.T.COUNTRY, "=?", country);
     if (null != date) {
