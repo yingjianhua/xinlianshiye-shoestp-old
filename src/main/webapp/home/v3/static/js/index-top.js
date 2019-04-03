@@ -237,6 +237,7 @@ Vue.component('index-top', {
                        return;
                     }else{
                         if(flag){
+                            self.countNoRead = res.data.result.countNoRead;
                             self.PMMessageList = res.data.result.items
                         }else{
                             self.countNoRead = res.data.result.countNoRead;
