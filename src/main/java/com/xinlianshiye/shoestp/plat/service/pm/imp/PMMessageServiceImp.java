@@ -70,6 +70,7 @@ public class PMMessageServiceImp implements IPMMessageService {
   @Override
   public void send(
       OTempType tempType, UsrSupplier supplier, UsrPurchase purchase, Object... objects) {
+    try {
     PMTemplate template =
         templateService.getTemplateMap().get(Integer.valueOf(tempType.getLine().getKey()));
     if (null != template) {
@@ -102,6 +103,9 @@ public class PMMessageServiceImp implements IPMMessageService {
           sendPm(tempType, null, null, template.getTitle(), content);
         }
       }
+      }
+    } catch (Exception e) {
+      Log.info("消息发送失败:" + e.getMessage());
     }
   }
 
