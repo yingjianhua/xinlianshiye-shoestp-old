@@ -69,6 +69,8 @@ public class UsrMainAction extends HomeAction<UsrMain> {
   @Getter @Setter private String thirdName;
   @Getter @Setter private String thirdId;
   @Setter @Getter private String uid;
+  @Setter @Getter private Integer country;
+  @Setter @Getter private String name;
   @Inject private Mailer mailer;
   private static Map<String, String> mailTemplate;
   private static final Logger logger = LoggerFactory.getLogger(UsrMainAction.class);
@@ -271,6 +273,34 @@ public class UsrMainAction extends HomeAction<UsrMain> {
       }
       write();
     }
+    //着陆页注册
+    if(type == 4) {
+      if (main != null) {
+        throw new WebMessageException(
+                MessageBuild.buildMessage(ReturnCode.service_user_exists, HomeAction.curLanguage()));
+      }
+      if (Str.isEmpty(getBean().getPassword())) {
+        throw new WebMessageException(
+                MessageBuild.buildMessage(ReturnCode.valid_pwd_notnull, HomeAction.curLanguage()));
+      }
+      if (!ValidRegex.regMarch(Regular.REGULAR_PWD, getBean().getPassword())) {
+        throw new WebMessageException(
+                MessageBuild.buildMessage(ReturnCode.password_format, HomeAction.curLanguage()));
+      }
+      if(Str.isEmpty(getBean().getNickname())){
+        throw new WebMessageException(
+                MessageBuild.buildMessage(ReturnCode.valid_name_notnull, HomeAction.curLanguage()));
+      }
+      if (!ValidRegex.regMarch(Regular.REGULAR_NAME, getBean().getNickname())) {
+        throw new WebMessageException(
+                MessageBuild.buildMessage(ReturnCode.valid_nameRegex, HomeAction.curLanguage()));
+      }
+      if(getBean().getCountry() == null){
+        throw new WebMessageException(
+                MessageBuild.buildMessage(ReturnCode.valid_country_notnull, HomeAction.curLanguage()));
+      }
+
+    }
 
     String uid = UUID.randomUUID().toString();
 
@@ -293,7 +323,7 @@ public class UsrMainAction extends HomeAction<UsrMain> {
         CacheUtils.mailValid.put(uid, getEmail());
         CacheUtils.sendEm.put(getEmail(), new Date().getTime());
         String mesg =
-            AppConfig.domain + "home/usr_UsrMain_completeReg?uid=" + uid + "&email=" + email;
+            AppConfig.domain + "home/usr_UsrMain_simpleCompleteReg?uid=" + uid + "&email=" + email;
         mailer.sendMail(
             EmailBuilder.startingBlank()
                 .withSubject("Shoestp User Registration")
@@ -361,6 +391,34 @@ public class UsrMainAction extends HomeAction<UsrMain> {
                         .buildEmail(),
                 true);
         write();
+        return;
+      case 4:
+        Cache cachef = CacheUtils.sendEm;
+        String valuef = String.valueOf(cachef.getIfPresent(getEmail()));
+        if (valuef != null && !valuef.equals("null")) {
+          Long time = Long.parseLong(valuef);
+          long now = new Date().getTime();
+          int interval = (int) ((now - time) / 1000);
+          if (interval < 60) {
+            throw new WebMessageException(
+                    MessageBuild.buildMessage(ReturnCode.send_ofen, HomeAction.curLanguage()));
+          }
+        }
+
+        CacheUtils.mailValid.put(uid, getEmail());
+        CacheUtils.sendEm.put(getEmail(), new Date().getTime());
+        String mesgf =
+                AppConfig.domain + "home/usr_UsrMain_completeReg?uid=" + uid + "&email=" + email+ "&pwd=" + getBean().getPassword()+ "&name=" + getBean().getNickname()+ "&country=" + getBean().getCountry();
+        mailer.sendMail(
+                EmailBuilder.startingBlank()
+                        .withSubject("Shoestp User Registration")
+                        .prependTextHTML(mailTemplate.get("checkEmail").replaceAll("\\{\\{url}}", mesgf))
+                        .from("Shoestp", "notice@service.shoestp.com")
+                        .to(getEmail())
+                        .buildEmail(),
+                true);
+        write();
+        return;
     }
   }
 
@@ -496,5 +554,29 @@ public class UsrMainAction extends HomeAction<UsrMain> {
    */
   public void getRegistById() throws IOException {
     write(UsrMainDao.getRegistById(id));
+  }
+  /**
+   * 完成注册
+   *
+   * @author chen
+   */
+  public String simpleCompleteReg() {
+
+      Cache cache = CacheUtils.mailValid;
+      String value = String.valueOf(cache.getIfPresent(getUid()));
+      if (cache.getIfPresent(getUid()) != null && value.equalsIgnoreCase(getEmail())) {
+        getBean().setEmail(email);
+        getBean().setNickname(name);
+        getBean().setCountry(country);
+        getBean().setIdentity((byte)0);
+        getBean().setPassword(pwd);
+        ins.setB(getBean());
+        ins.commit();
+        setResult("/home/v3/jsp/reg/register-step2.jsp");
+      } else {
+        setResult("/home/v3/jsp/reg/register-error.jsp");
+      }
+
+    return HomeAction.TRENDS;
   }
 }
