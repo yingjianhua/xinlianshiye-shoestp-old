@@ -583,7 +583,7 @@ public class PdtProductDAO {
       joiner.add(String.valueOf(Pdt.OProductType.GATHER.getLine().getKey()));
       joiner.add(String.valueOf(Pdt.OProductType.O2O.getLine().getKey()));
 
-      sql.SELECT(T.PKEY, T.PICTURE, T.NAME, T.CUR_PRICE, T.IS_HOT)
+      sql.SELECT(T.PKEY, T.PICTURE, T.NAME, T.CUR_PRICE, T.IS_HOT,T.PRODUCT_TYPE)
           .FROM(PdtProduct.class)
           .LEFT_JOIN(O2O_Product.class, O2O_Product.T.PRODUCT_ID, PdtProduct.T.PKEY)
           .WHERE(T.SUPPLIER, "=?", supplier)
