@@ -389,7 +389,8 @@
             priceSortList:[
                 {name:"From low to high",rule:0,},
                 {name:"From high to low",rule:1},
-            ]
+            ],
+            pricerRuleActive:null,
         },
         methods: {
             changeCountry(){
@@ -403,10 +404,15 @@
                 this.productList();
             },
             priceBtn(rule){  // 价格排序 选择按钮
-                this.sort =  rule
-                this.page = 0
-                this.curr = 1
-                this.productList();
+                if(this.pricerRuleActive == rule){
+                    return;
+                }else{
+                    this.sort =  rule
+                    this.page = 0
+                    this.curr = 1
+                    this.productList();
+                }
+                this.pricerRuleActive = rule
             },
             getCountry(){  // 获取 国家列表
                 let self = this;
