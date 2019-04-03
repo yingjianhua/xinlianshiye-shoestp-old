@@ -5,7 +5,7 @@ import irille.pub.tb.IEnumOpt;
 
 /** by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/13 Time: 16:18 */
 public enum O2O_PrivateExpoPdtStatus implements IEnumOpt {
-  _DEFAULT(0, "未审核"),
+  _DEFAULT(0, "待审核"),
   OFF(1, "下架"),
   ON(2, "上架"),
   PASS(3, "审核通过"),

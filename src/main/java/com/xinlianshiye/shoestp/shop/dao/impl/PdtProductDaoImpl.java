@@ -44,6 +44,8 @@ import irille.shop.pdt.PdtTargetMarket;
 import irille.shop.pdt.PdtTieredPricing;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltProvince;
+import irille.shop.usr.Usr.OStatus;
+import irille.shop.usr.Usr.SStatus;
 import irille.shop.usr.UsrFavorites;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
@@ -181,6 +183,8 @@ public class PdtProductDaoImpl implements com.xinlianshiye.shoestp.shop.dao.PdtP
     sql.LEFT_JOIN(SVSInfo.class, SVSInfo.T.SUPPLIER, UsrSupplier.T.PKEY);
     sql.LEFT_JOIN(PdtCat.class, PdtProduct.T.CATEGORY, PdtCat.T.PKEY);
     sql.LEFT_JOIN(o2oSQL);
+    sql.WHERE(UsrSupplier.T.STORE_STATUS, " =? ", SStatus.OPEN);
+    sql.WHERE(UsrSupplier.T.STATUS, " =? ", OStatus.APPR);
     sql.WHERE(PdtProduct.T.IS_VERIFY, " =? ", Sys.OYn.YES.getLine().getKey());
     sql.WHERE(PdtProduct.T.STATE, " =? ", Pdt.OState.ON.getLine().getKey());
     sql.WHERE(search.getSupplier() != null, PdtProduct.T.SUPPLIER, "=?", search.getSupplier());
