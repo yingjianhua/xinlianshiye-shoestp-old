@@ -42,7 +42,7 @@ import irille.shop.usr.UsrSupplier;
     clazz = PdtProduct.class,
     attributes = {
       @Attribute(name = "商品名称", field = "NAME", type = FldLanguage.class),
-      @Attribute(name = "商品审核状态", field = "IS_VERIFY", type = Sys.OYn.class),
+      @Attribute(name = "商品审核状态", field = "IS_VERIFY", type = Pdt.OAppr.class),
       @Attribute(name = "商品审核时间", field = "VERIFY_TIME", type = Date.class),
       @Attribute(name = "商品编号", field = "CODE", type = String.class),
       @Attribute(name = "商品商城价", field = "CUR_PRICE", type = BigDecimal.class)
