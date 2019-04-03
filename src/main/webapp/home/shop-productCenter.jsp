@@ -152,7 +152,8 @@
                             </h5>
                             <div class="goods-price">${env.currency.symbols} {{item.pdt.curPrice}}</div>
                             <div class="btn btn-enter">
-                                <a :href="'/' + item.rewrite" class="btn btn-enter" target="_blank">
+                                <a @click="addRFQ" :data-proid="item.pdt.pkey"
+                                    href="javascript: void(0);" class="btn btn-enter" target="_blank">
                                     <%--<s:text name="show_now"/>--%>
                                     Inquiry
                                 </a>
@@ -508,6 +509,10 @@ ${supView.traceCode}
                 $(".tool-group .tool-drop-down-content").hide();
                 $(".tool-group .tool-drop-down-btn").removeClass("active");
             },
+            addRFQ(e){
+                var jumpUrl = '/home/usr_UsrConsult_productPublishView?product_id=' + e.currentTarget.dataset.proid + '&backUrl=' + window.location.href;
+                util_function_obj.supplierCantEnter(this, jumpUrl,"Please register or login your buyer account if you want making enquiries.");
+            }
         },
     })
     // 点击选择下拉框按钮，显示下拉内容
