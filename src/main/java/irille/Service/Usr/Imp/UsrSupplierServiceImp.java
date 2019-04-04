@@ -194,12 +194,12 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
   public SuplierDetailView getSuplierDetail(Integer supplierPkey) {
     SuplierDetailView view = new SuplierDetailView();
     Map<String, Object> supMap = usrSupplierDao.getSupplierDetail(supplierPkey);
-    Map<String, Object> SVSMap = usrSupplierDao.getSupplierSVS(supplierPkey);
+    Map<String, Object> svsMap = usrSupplierDao.getSupplierSVS(supplierPkey);
     view.setPkey((Integer) supMap.get(UsrSupplier.T.PKEY.getFld().getCodeSqlField()));
     view.setCompanyName((String) supMap.get(UsrSupplier.T.NAME.getFld().getCodeSqlField()));
     view.setLogo((String) supMap.get(UsrSupplier.T.LOGO.getFld().getCodeSqlField()));
-    if (SVSMap.size() > 0) {
-      view.setSVSGRade((Byte) SVSMap.get(SVSInfo.T.GRADE.getFld().getCodeSqlField()));
+    if (svsMap.size() > 0) {
+      view.setSVSGRade((Byte) svsMap.get(SVSInfo.T.GRADE.getFld().getCodeSqlField()));
     }
     return view;
   }

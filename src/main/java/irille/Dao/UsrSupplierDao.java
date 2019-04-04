@@ -202,18 +202,28 @@ public class UsrSupplierDao {
               + targetMarket
               + "))");
     }
-    if (null != checkedType && checkedType == 1) query.WHERE(SVSInfo.T.STATUS, " =?",SVSAuthenticationStatus.SUCCESS);
+    if (null != checkedType && checkedType == 1)
+      query.WHERE(SVSInfo.T.STATUS, " =?", SVSAuthenticationStatus.SUCCESS);
     if (pdtCategory != null && pdtCategory > -1) {
       List listCate = getCatsNodeByCatId(pdtCategory);
       System.out.println(listCate);
       if (listCate != null)
-        query.WHERE(PdtProduct.T.CATEGORY, "in(" + listCate.stream().map(b->{return String.valueOf(b);}).collect(Collectors.joining(",")) + ")");
+        query.WHERE(
+            PdtProduct.T.CATEGORY,
+            "in("
+                + listCate.stream()
+                    .map(
+                        b -> {
+                          return String.valueOf(b);
+                        })
+                    .collect(Collectors.joining(","))
+                + ")");
     }
 
     query
         .WHERE(grade != null, SVSInfo.T.GRADE, " in(" + grade + ")")
         .GROUP_BY(UsrSupplier.T.PKEY)
-        .ORDER_BY(SVSInfo.T.GRADE,"desc")
+        .ORDER_BY(SVSInfo.T.GRADE, "desc")
         .ORDER_BY(PdtProduct.T.VERIFY_TIME, "asc");
     if (start != null && limit != null) {
       query.limit(start, limit);
@@ -252,11 +262,21 @@ public class UsrSupplierDao {
               + targetMarket
               + "))");
     }
-    if (null != checkedType && checkedType == 1) query.WHERE(SVSInfo.T.STATUS, " =?", SVSAuthenticationStatus.SUCCESS);
+    if (null != checkedType && checkedType == 1)
+      query.WHERE(SVSInfo.T.STATUS, " =?", SVSAuthenticationStatus.SUCCESS);
     if (pdtCategory != null && pdtCategory > -1) {
       List listCate = getCatsNodeByCatId(pdtCategory);
       if (listCate != null)
-        query.WHERE(PdtProduct.T.CATEGORY, "in(" + listCate.stream().map(b->{return String.valueOf(b);}).collect(Collectors.joining(","))+ ")");
+        query.WHERE(
+            PdtProduct.T.CATEGORY,
+            "in("
+                + listCate.stream()
+                    .map(
+                        b -> {
+                          return String.valueOf(b);
+                        })
+                    .collect(Collectors.joining(","))
+                + ")");
     }
 
     query
@@ -283,7 +303,7 @@ public class UsrSupplierDao {
     SQL sql =
         new SQL() {
           {
-            SELECT(T.PKEY, T.NAME, T.LOGO).FROM(UsrSupplier.class).WHERE(T.PKEY, "=?", supId);
+            SELECT(T.PKEY, T.SHOW_NAME, T.LOGO).FROM(UsrSupplier.class).WHERE(T.PKEY, "=?", supId);
           }
         };
     return Query.sql(sql).queryMap();
