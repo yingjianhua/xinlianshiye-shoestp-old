@@ -66,6 +66,9 @@ public class PdtProductDaoImpl implements com.xinlianshiye.shoestp.shop.dao.PdtP
   private static final int upper = 139; // PdtAttr鞋面材料pkey
   private static final int colsed = 152; // PdtAttr闭合方式pkey
 
+  // 查询产品是否已收藏的字段别名
+  private static final String SELECT_FAVORITE = "favorite";
+
   @Override
   public Page list(
       UsrPurchase purchase,
@@ -158,7 +161,7 @@ public class PdtProductDaoImpl implements com.xinlianshiye.shoestp.shop.dao.PdtP
     sql.SELECT(PdtProduct.T.NAME, "pdtName");
     sql.SELECT(maxCurPrice, "maxCurPrice");
     sql.SELECT(minCurPrice, "minCurPrice");
-    sql.SELECT(favorite, "favorite");
+    sql.SELECT(favorite, SELECT_FAVORITE);
     //    sql.SELECT(o2oSql, "o2o");
     sql.SELECT(
         PdtProduct.T.CUR_PRICE,
@@ -389,7 +392,7 @@ public class PdtProductDaoImpl implements com.xinlianshiye.shoestp.shop.dao.PdtP
 
               view.setOriginCountry(String.valueOf(d.get("pltCountry")));
               view.setOriginProvince(String.valueOf(d.get("pltProvince")));
-              Integer favorites = GetValue.get(d, "favorites", Integer.class, 0);
+              Integer favorites = GetValue.get(d, SELECT_FAVORITE, Integer.class, 0);
               view.setEshrine(favorites.equals(0) ? false : true);
 
               view.setPdtType(GetValue.get(d, PdtProduct.T.PRODUCT_TYPE, Integer.class, null));
