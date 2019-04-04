@@ -715,6 +715,7 @@ public class PdtProductDAO {
                 .WHERE(PdtProduct.T.PRODUCT_TYPE, "<>?", Pdt.OProductType.GROUP)
                 .WHERE(PdtProduct.T.PRODUCT_TYPE, "<>?", Pdt.OProductType.GATHER)
                 .WHERE(PdtProduct.T.PRODUCT_TYPE, "<>?", Pdt.OProductType.PrivateExpo)
+                .WHERE(PdtProduct.T.SOLD_TIME_B, " IS NOT NULL ")
                 .WHERE(T.STATE, "<>?", OState.DELETE)
                 .WHERE(T.STATE, "<>?", OState.MERCHANTDEL);
             if (seartch != null) {
