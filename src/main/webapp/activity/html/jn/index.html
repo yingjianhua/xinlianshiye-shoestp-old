@@ -1,492 +1,562 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>巨纳</title>
-	</head>
-	<link rel="stylesheet" href="./css/reset.css"/>
-	<link rel="stylesheet" href="./css/juna.css"/>
-	<link rel="stylesheet" href="./css/donghua.css"/>
-	<link rel="stylesheet" href="./css/element-ui.css"/>
-    <script src='./js/vue.min.js'></script>
-    <!-- 引入组件库 -->
-    <script src="./js/element-ui.min.js"></script>
-    <script src="./js/axios.min.js"></script>
-    <script src="./js/qs.js"></script>
-    
-	<body>
-		<div id="jnIndex">
-			<div class="bannerBox">
-				 <!-- @mouseenter="timeOff" @mouseleave="timeOn" -->
-				<div class="banner">
-					<div class="h1" style="background-image: url(./images/banner.jpg);" v-show="banner==1"></div>
-					<div class="h1" style="background-image: url(./images/banner2.jpg);" v-show="banner==2"></div>
-					<div class="h1" style="background-image: url(./images/banner3.jpg);" v-show="banner==3"></div>
-				</div>
-				<div class="bannerDal w1240 flexCc">
-					<div class="h1 flexCc ripple zoomIn" style="animation-delay:0.1s;" :class="banner==1?'sele':''" @click="hbanner(1)">
-						Производитель<br/>кожаной<br/>женской обуви
-					</div>
-					<div class="h1 flexCc ripple zoomIn" style="animation-delay:0.3s;" :class="banner==2?'sele':''" @click="hbanner(2)">
-						Охват рынка более<br/>чем в 15 европейских<br/>странах и регионах
-					</div>
-					<div class="h1 flexCc ripple zoomIn" style="animation-delay:0.5s;" :class="banner==3?'sele':''" @click="hbanner(3)">
-						Наши преимущества
-					</div>
-					<div class="hFormBox  ripple slideInUp">
-						<div class="hTitle">Отправить запрос</div>
-						<el-form :model="contactForm1" :rules="contactRules" ref="contactForm1">
-							<el-form-item label="Имя*" prop="name">
-							  <el-input type="text" v-model="contactForm1.name"></el-input>
-							</el-form-item>
-							<el-form-item label="Электронная почта*" prop="email">
-							  <el-input type="text" v-model="contactForm1.email"></el-input>
-							</el-form-item>
-							<el-form-item label="Требования*" prop="content">
-								<el-input type="textarea" v-model="contactForm1.content"></el-input>
-							</el-form-item>
-							<el-form-item>
-								<el-button type="submit" @click="submitForm('contactForm1')">Получить образцы</el-button>
-							</el-form-item>
-						</el-form>
-					</div>
-				</div>
-			</div>
-			
-			<div class="floor floor1">
-				<h1 class="ripple zoomIn" style="animation-delay:0.7s;">Товар</h1>
-				<h2 class="ripple zoomIn" style="animation-delay:0.9s;">Juna кожаные ботинки</h2>
-				<div class="hSpan ripple zoomIn"  style="animation-delay:1.1s;">Juna - крупнейший поставщик кожаной женской обуви на российские рынки из Вэньчжоу</div>
-				<div class="box">
-					<div class="w1240">
-						<ul class="flexSb">
-							<li :class="gaogao>=100?'ripple slideInUp':'opacity0'" style="animation-delay:0.1s;"><img class="wh100" src="./images/f1tb1.jpg" alt=""></li>
-							<li :class="gaogao>=100?'ripple slideInUp':'opacity0'" style="animation-delay:0.3s;"><img class="wh100" src="./images/f1tb2.jpg" alt=""></li>
-							<li :class="gaogao>=100?'ripple slideInUp':'opacity0'" style="animation-delay:0.5s;"><img class="wh100" src="./images/f1tb3.jpg" alt=""></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-			
-			<div class="floor2">
-				<div class="w1240">
-					<img class="hPic fl" :class="gaogao>=1080?'ripple zoomIn':'opacity0'" src="./images/f2pic.jpg" alt="">
-					<div class="fr">
-						<div class="h1" :class="gaogao>=1080?'ripple slideInRight':'opacity0'" style="animation-delay:0.2s;">О нас</div>
-						<div class="h2" :class="gaogao>=1080?'ripple slideInRight':'opacity0'" style="animation-delay:0.4s;"><span>JUNA</span>——Производитель кожаной женской обуви</div>
-						<div class="h3" :class="gaogao>=1080?'ripple slideInRight':'opacity0'" style="animation-delay:0.6s;">
-							Wenzhou Juna Footwear Co., Ltd. была основана в 2008 году, специализируется на разработке и производстве женской обуви европейского стиля，в компании работает профессиональная команда разработчиков из 40 человек. В Европейских странах находятся несколько человек, чтобы узнавать  о последних и самых модных тенденциях обуви, сочетающих новейшие технологии и новые материалы.
-							<br/>Благодаря своим отличительным модным особенностям и превосходному качеству продукции, компания уже много лет завоевывает высокую оценку и похвалу со стороны клиентов.
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			<div class="floor3">
-				<h1 :class="gaogao>=1700?'ripple zoomIn':'opacity0'">Выставка</h1>
-				<div class="hSpan" :class="gaogao>=1700?'ripple zoomIn':'opacity0'" style="animation-delay:0.2s;">Мы участвовали в МосШуз выставке в 2019 году,  компания уже много лет
-				<br/>завоевывает высокую оценку и похвалу со стороны клиентов.</div>
-				<div class="box w1240">
-					<ul class="flexCc">
-						<li :class="gaogao>=2000?'ripple slideInUp':'opacity0'"><img class="wh100" src="./images/f3pic1.jpg" alt=""></li>
-						<li class="sele" :class="gaogao>=2000?'ripple slideInUp':'opacity0'" style="animation-delay:0.2s;"><img class="wh100" src="./images/f3pic2.jpg" alt=""></li>
-						<li :class="gaogao>=2000?'ripple slideInUp':'opacity0'" style="animation-delay:0.4s;"><img class="wh100" src="./images/f3pic3.jpg" alt=""></li>
-					</ul>
-					<ul class="flexCc">
-						<li :class="gaogao>=2000?'ripple slideInUp':'opacity0'" style="animation-delay:0.6s;"><img class="wh100" src="./images/f3pic4.jpg" alt=""></li>
-						<li class="sele" :class="gaogao>=2000?'ripple slideInUp':'opacity0'" style="animation-delay:0.8s;"><img class="wh100" src="./images/f3pic5.jpg" alt=""></li>
-						<li :class="gaogao>=2000?'ripple slideInUp':'opacity0'" style="animation-delay:1s;"><img class="wh100" src="./images/f3pic6.jpg" alt=""></li>
-					</ul>
-				</div>
-			</div>
-			
-			<div class="hMinBanner" style="background-image: url(./images/minbanner1.jpg);">
-				<div :class="gaogao>=2880?'ripple zoomIn':'opacity0'">Какие услуги мы можем</div>
-				<div :class="gaogao>=2880?'ripple zoomIn':'opacity0'" style="animation-delay:0.2s;">предоставить для вас?</div>
-			</div>
-			
-			<div class="floor4">
-				<div class="w1240">
-					<div class="box1 clearfix">
-						<div class="hTxt fl">
-							<div class="h1" :class="gaogao>=3300?'ripple slideInLeft':'opacity0'">01</div>
-							<div class="h2" :class="gaogao>=3300?'ripple slideInLeft':'opacity0'" style="animation-delay:0.2s;"><i></i></div>
-							<div class="h3" :class="gaogao>=3300?'ripple slideInLeft':'opacity0'" style="animation-delay:0.4s;">oбсуждения</div>
-							<div class="h4" :class="gaogao>=3300?'ripple slideInLeft':'opacity0'" style="animation-delay:0.6s;">Круглосуточная горячая линия</div>
-							<div class="h4" :class="gaogao>=3300?'ripple slideInLeft':'opacity0'" style="animation-delay:0.8s;">
-								Профессиональные консультации по
-								<br/> индивидуальным услугам, чтобы
-								<br/> гарантировать, что вы получите обувь 
-								<br/>самого высокого качества.</div>
-						</div>
-						<img class="fr" src="./images/f4pic1.jpg" alt="" :class="gaogao>=3300?'ripple slideInRight':'opacity0'" style="animation-delay:0.2s;">
-					</div>
-					
-					<div class="box2 clearfix">
-						<div class="hTxt fr"  :class="gaogao>=4000?'ripple slideInRight':'opacity0'">
-							<div class="h1" :class="gaogao>=4000?'ripple slideInRight':'opacity0'" style="animation-delay:0.2s;">02</div>
-							<div class="h2" :class="gaogao>=4000?'ripple slideInRight':'opacity0'" style="animation-delay:0.4s;"><i></i></div>
-							<div class="h3" :class="gaogao>=4000?'ripple slideInRight':'opacity0'" style="animation-delay:0.6s;">Дизайн</div>
-							<div class="h4" :class="gaogao>=4000?'ripple slideInRight':'opacity0'" style="animation-delay:0.8s;">
-								С 40 опытными дизайнерами мы можем 
-								<br/>проектировать более 2000 новых моделей 
-								<br/>каждый год.
-							</div>
-							<div class="h4" :class="gaogao>=4000?'ripple slideInRight':'opacity0'" style="animation-delay:1s;">
-								40 опытных дизайнеров предоставят вам 
-								<br/>много полезных советов.
-							</div>
-							<img class="fl" src="./images/f4pic2.jpg" alt="" :class="gaogao>=4000?'ripple zoomIn':'opacity0'" style="animation-delay:0.2s;">
-						</div>
-					</div>
-					
-					<div class="box3">
-						<div class="hTxt">
-							<div class="h1" :class="gaogao>=5000?'ripple slideInLeft':'opacity0'">03</div>
-							<div class="h2" :class="gaogao>=5000?'ripple slideInLeft':'opacity0'" style="animation-delay:0.2s;"><i></i></div>
-							<div class="h3" :class="gaogao>=5000?'ripple slideInLeft':'opacity0'" style="animation-delay:0.4s;">Производство</div>
-							<div class="h4" :class="gaogao>=5000?'ripple slideInLeft':'opacity0'" style="animation-delay:0.6s;">
-								Наша производственная компания имеет 3 международные 
-								<br/>стандартизированные производственные линии и сильную 
-								<br/>производственную команду. 
-							</div>
-						</div>
-						<div class="hBg"  :class="gaogao>=5120?'ripple slideInRight':'opacity0'"></div>
-						<ul class="clearfix">
-							<li :class="gaogao>=5120?'ripple slideInRight':'opacity0'" style="animation-delay:0.2s;">
-								<div class="h1 flexCc"><img src="./images/ziyuan.png" alt=""></div>
-								<div class="h2">
-									Предложите цены ниже, 
-									<br/>чтобы обеспечить 
-									<br/>максимальную прибыль
-									<br/>вашему бизнесу.
-								</div>
-							</li>
-							<li :class="gaogao>=5120?'ripple slideInRight':'opacity0'" style="animation-delay:0.4s;">
-								<div class="h1 flexCc"><img src="./images/shiyan.png" alt=""></div>
-								<div class="h2">
-									Проводятся
-									<br/>химические
-									<br/>испытания 
-									<br/>по вашему
-									<br/>требованию.
-								</div>
-							</li>
-							<li :class="gaogao>=5120?'ripple slideInRight':'opacity0'" style="animation-delay:0.6s;">
-								<div class="h1 flexCc"><img src="./images/kaohebiaozhun.png" alt=""></div>
-								<div class="h2">
-									Требования к 
-									<br/>производству материалов 
-									<br/>соответствуют 
-									<br/>международным 
-									<br/>отраслевым стандартам.
-								</div>
-							</li>
-						</ul>
-					</div>
-					
-					<div class="box4">
-						<div class="hPicBox fl clearfix">
-							<img class="hPic1" src="./images/f4pic3.jpg" alt="" :class="gaogao>=5800?'ripple zoomIn':'opacity0'">
-							<img class="hPic2" src="./images/f4pic4.jpg" alt="" :class="gaogao>=5800?'ripple zoomIn':'opacity0'" style="animation-delay:0.2s;">
-							<img class="hPic3" src="./images/f4pic5.jpg" alt="" :class="gaogao>=5800?'ripple zoomIn':'opacity0'" style="animation-delay:0.4s;">
-						</div>
-						<div class="hTxt fr">
-							<div class="h1" :class="gaogao>=5800?'ripple slideInRight':'opacity0'">04</div>
-							<div class="h2" :class="gaogao>=5800?'ripple slideInRight':'opacity0'" style="animation-delay:0.2s;"><i></i></div>
-							<div class="h3" :class="gaogao>=5800?'ripple slideInRight':'opacity0'" style="animation-delay:0.4s;">Контроль качества</div>
-							<div class="h4" :class="gaogao>=5800?'ripple slideInRight':'opacity0'" style="animation-delay:0.6s;">
-								Качество обуви - это душа Juna, и на каждом 
-								<br/>этапе производства существует строгая и 
-								<br/>эффективная политика контроля качества.
-							</div>
-							<div class="h4" src="./images/f4pic4.jpg" alt="" :class="gaogao>=5800?'ripple slideInRight':'opacity0'" style="animation-delay:0.8s;">
-								8 опытных инспекторов обеспечат качество 
-								<br/>вашей обуви.
-							</div>
-							<div class="h4" src="./images/f4pic4.jpg" alt="" :class="gaogao>=5800?'ripple slideInRight':'opacity0'" style="animation-delay:1s;">
-								Обувь отвечает различным химическим и  
-								<br/>физическим испытаниям на основных рынках.
-							</div>
-						</div>
-						<div class="hBg"></div>
-					</div>
-					
-					<div class="box5 clearfix">
-						<div class="hTxt fl">
-							<div class="h1" :class="gaogao>=6600?'ripple slideInLeft':'opacity0'">05</div>
-							<div class="h2" :class="gaogao>=6600?'ripple slideInLeft':'opacity0'" style="animation-delay:0.2s;"><i></i></div>
-							<div class="h3" :class="gaogao>=6600?'ripple slideInLeft':'opacity0'" style="animation-delay:0.4s;">Доставка</div>
-							<div class="h4" :class="gaogao>=6600?'ripple slideInLeft':'opacity0'" style="animation-delay:0.6s;">Производственный цикл: 45-60 дней</div>
-							<div class="h4" :class="gaogao>=6600?'ripple slideInLeft':'opacity0'" style="animation-delay:0.8s;">
-								Мы можем гарантировать, что вы получите 
-								<br/>товар в течение трех месяцев.
-							</div>
-						</div>
-						<img class="fr" src="./images/f4pic6.jpg" alt="" :class="gaogao>=6600?'ripple slideInRight':'opacity0'">
-					</div>
+<head>
+    <meta charset="UTF-8">
+    <title>巨纳</title>
+</head>
+<link rel="stylesheet" href="./css/reset.css"/>
+<link rel="stylesheet" href="./css/juna.css"/>
+<link rel="stylesheet" href="./css/donghua.css"/>
+<link rel="stylesheet" href="./css/element-ui.css"/>
+<script src='./js/vue.min.js'></script>
+<!-- 引入组件库 -->
+<script src="./js/element-ui.min.js"></script>
+<script src="./js/axios.min.js"></script>
+<script src="./js/qs.js"></script>
 
-				</div>
-			</div>
-			
-			
-			<div class="floor5">
-				<h1 :class="gaogao>=7000?'ripple zoomIn':'opacity0'">Похвалы клиентов</h1>
-				<div class="w1240">
-					<ul class="flexSb">
-						<li :class="gaogao>=7160?'ripple slideInUp':'opacity0'">
-							<div class="h1 flexCc"><img class="w100" src="./images/f5tb1.jpg" alt=""></div>
-							<div class="h2">KARI</div>
-							<div class="h3">
-								Мы торговали с Juna в течение 6 лет. Их 
-								<br/>высококачественная  обувь соответствует 
-								<br/>потребностям нашей компании.
-							</div>
-						</li>
-						<li :class="gaogao>=7160?'ripple slideInUp':'opacity0'" style="animation-delay:0.2s;">
-							<div class="h1 flexCc"><img class="w100" src="./images/f5tb2.jpg" alt=""></div>
-							<div class="h2">BONA</div>
-							<div class="h3">
-								Мы никогда не сомневаемся в выборе JU-
-								<br/>NA.Их высококачественная  обувь и услуги 
-								<br/>полностью заслуживают нашего доверия.
-							</div>
-						</li>
-						<li :class="gaogao>=7160?'ripple slideInUp':'opacity0'" style="animation-delay:0.4s;">
-							<div class="h1 flexCc"><img class="w100" src="./images/f5tb3.jpg" alt=""></div>
-							<div class="h2">DORO</div>
-							<div class="h3">
-								Они действительно стремятся предоставить  
-								<br/>нам самое высокое качество и самый 
-								<br/>надежный сервис.
-							</div>
-						</li>
-					</ul>
-				</div>
-			</div>
-			
-			
-			<div class="foot clearfix w1240">
-				<div class="box fl" :class="gaogao>=8000?'ripple slideInLeft':'opacity0'">
-					<div class="hBg">?</div>
-					<div class="h1">
-						Есть ли у вашего 
-						<br/>бизнеса уникальные 
-						<br/>потребности?
-					</div>
-					<div class="h2">
-						Позвольте нам помочь и 
-						<br/>удовлетворить ваши потребности!
-					</div>
-					<ul class="flexCc">
-						<li class="flexCc"><img class="w100" src="./images/foottb1.jpg" alt=""></li>
-						<li class="flexCc"><img class="w100" src="./images/foottb2.jpg" alt=""></li>
-						<li class="flexCc"><img class="w100" src="./images/foottb3.jpg" alt=""></li>
-					</ul>
-					
-				</div>
-				<div class="fr box2">
-					<h2 :class="gaogao>=8000?'ripple slideInRight':'opacity0'">Пожалуйста,<br/>свяжитесь с нами！</h2>
-					<div class="h2" :class="gaogao>=8000?'ripple slideInRight':'opacity0'"  style="animation-delay:0.2s;"><span>Телефон</span><img src="./images/telephoneiocn.png" alt="">0086-15957709511</div>
-					<div class="h2" :class="gaogao>=8000?'ripple slideInRight':'opacity0'"  style="animation-delay:0.4s;"><span>почтовый ящик</span><img src="./images/emailicon.png" alt="">wenzhoujunashoes@126.com</div>
-					<div class="hFormBox" :class="gaogao>=8000?'ripple slideInRight':'opacity0'" style="animation-delay:0.6s;">
-						<el-form :model="contactForm2" :rules="contactRules" ref="contactForm2">
-							<el-form-item prop="name">
-							  <el-input type="text" v-model="contactForm2.name"  placeholder="Имя*"></el-input>
-							</el-form-item>
-							<el-form-item prop="email">
-							  <el-input type="text" v-model="contactForm2.email"  placeholder="Электронная почта*"></el-input>
-							</el-form-item>
-							<el-form-item prop="content">
-								<el-input type="textarea" v-model="contactForm2.content" placeholder="Требования*"></el-input>
-							</el-form-item>
-							<el-form-item>
-								<el-button type="submit" @click="submitForm('contactForm2')">Получить образцы</el-button>
-							</el-form-item>
-						</el-form>
-					</div>
-				</div>
-			</div>
-			
-			<div class="hChatBox">
-				<div class="hFormBox" :class="chat?'sele':''">
-					<img class="hClose" src="./images/guanbi.png" v-show="chat" @click="hChat">
-					<div class="h1" @click="hChat">Бесплатная консультация</div>
-					<div class="box" v-show="chat">
-						<el-form :model="contactForm3" :rules="contactRules" ref="contactForm3">
-							<el-form-item label="Имя*" prop="name">
-							  <el-input type="text" v-model="contactForm3.name"></el-input>
-							</el-form-item>
-							<el-form-item label="Электронная почта*" prop="email">
-							  <el-input type="text" v-model="contactForm3.email"></el-input>
-							</el-form-item>
-							<el-form-item label="Требования*" prop="content">
-								<el-input type="textarea" v-model="contactForm3.content"></el-input>
-							</el-form-item>
-							<el-form-item>
-								<el-button type="submit" @click="submitForm('contactForm3')">Получить образцы</el-button>
-							</el-form-item>
-						</el-form>
-					</div>
-				</div>
-				<img src="./images/chat.png" alt="" class="hPic" :class="chat?'sele':''">
-			</div>
-			
-		</div>	
-	</body>
-	
-	
-	<script>
-		var interval=null;
-	    new Vue({
-	        el: '#jnIndex',
-	        data:function() {
-				var ruleName = function(rule, value, callback){
-				    if (!value) {
-				      return callback(new Error("The name cannot be empty"));
-				    } else {
-				      callback();
-				    }
-				  };
-							
-				  var ruleEmail = function(rule, value, callback){
-				    var regular = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
-				    if (!value) {
-				      return callback(new Error("The mailbox cannot be empty"));
-				    } else if (!regular.test(value)) {
-				      return callback(new Error("Please enter the correct email address"));
-				    } else {
-				      callback();
-				    }
-				  };
-							
-				  var ruleContent = function(rule, value, callback) {
-				    if (!value) {
-				      return callback(new Error("Can not be empty"));
-				    } else {
-				      callback();
-				    }
-				  };
-		      return {
-		       banner:1,
-			   chat:false,
-			   gaogao:0,
-			   contactForm1: {
-			       name: "",
-			       email: "",
-			       content: ""
-			     },
-				contactForm2: {
-			    name: "",
-			    email: "",
-			    content: ""
-			  },
-			  contactForm3: {
-			      name: "",
-			      email: "",
-			      content: ""
-			    },
-			     contactRules: {
-			       name: [{ validator: ruleName, trigger: ["blur", "change"] }],
-			       email: [{ validator: ruleEmail, trigger: ["blur", "change"] }],
-			       content: [{ validator: ruleContent, trigger: ["blur", "change"] }]
-			     },
-		      };
-		    },
-			mounted: function() {
-				window.addEventListener('scroll', this.handleScroll);
-				this.jishi();
-			},
-			beforeDestroy: function() {
-				window.removeEventListener('scroll',this.handleScroll);
-			},
-		    methods: {
-		      // 表单提交
-			    submitForm:function(formName) {
-			      	var that = this;
-			      	that.$refs[formName].validate(function(valid) {
-						console.log(formName)
-						var name,email,content;
-						if(formName=="contactForm1"){
-							 name = that.contactForm1.name;
-							 email = that.contactForm1.email;
-							 content = that.contactForm1.content;
-						}else if(formName=="contactForm2"){
-							 name = that.contactForm2.name;
-							 email = that.contactForm2.email;
-							 content = that.contactForm2.content;
-						}else if(formName=="contactForm3"){
-							 name = that.contactForm3.name;
-							 email = that.contactForm3.email;
-							 content = that.contactForm3.content;
-						}
-						console.log(name)
-						console.log(valid)
-			        if (valid) {
-				         axios.get('http://192.168.1.48:8888//home/Activity_Romania_inquiry', {
-		                    params: {
-		                    	supId:295,
-								name: name,
-					            email: email,
-					            detail: content
-		                    }
-				          }).then(function(res){
-				            if (res.data.ret == 1) {
-				              that.$message({
-						          message: 'Submit Success',
-						          type: 'success'
-						        });
-				            }
-				          }).catch(function(err){
-				            console.log(err)
-				            that.$message.error('Submission failed, please check the network');
-				          })
-			          } else {
-				          console.log("error submit!!")
-				          return false
-				        }
-				      });
-			    },
-			    handleScroll:function () {
-				  var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-					if(scrollTop>this.gaogao){
-						this.gaogao=scrollTop;
-						// console.log(this.gaogao)
-					}
-				},
-				hbanner:function (j){
-					this.banner=j
-				},
-				hChat:function(){
-					this.chat=!this.chat
-				},
-				jishi:function(){
-					var that = this;
-					interval = setInterval(function () {
-				        that.banner = that.banner+1;
-						if(that.banner>3){
-							that.banner=1
-						}
-				    }, 10000);
-				},
-		    }
-		  })
-	</script>
-	
-	<!--Globalsitetag(gtag.js)-GoogleAds:783435725-->
-	<scriptasyncsrc="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
-	<script>
-	window.dataLayer=window.dataLayer||[];
-	functiongtag(){dataLayer.push(arguments);}
-	gtag('js',newDate());
-	gtag('config','AW-783435725');
-	</script>
-	<!--Globalsitetag(gtag.js)-GoogleAnalytics-->
-	<scriptasyncsrc="https://www.googletagmanager.com/gtag/js?id=UA-127715615-6"></script>
-	<script>
-	window.dataLayer=window.dataLayer||[];
-	functiongtag(){dataLayer.push(arguments);}
-	gtag('js',newDate());
-	gtag('config','UA-127715615-6');
-	</script>
+<body>
+<div id="jnIndex">
+    <div class="bannerBox">
+        <!-- @mouseenter="timeOff" @mouseleave="timeOn" -->
+        <div class="banner">
+            <div class="h1" style="background-image: url(./images/banner.jpg);" v-show="banner==1"></div>
+            <div class="h1" style="background-image: url(./images/banner2.jpg);" v-show="banner==2"></div>
+            <div class="h1" style="background-image: url(./images/banner3.jpg);" v-show="banner==3"></div>
+        </div>
+        <div class="bannerDal w1240 flexCc">
+            <div class="h1 flexCc ripple zoomIn" style="animation-delay:0.1s;" :class="banner==1?'sele':''"
+                 @click="hbanner(1)">
+                Производитель<br/>кожаной<br/>женской обуви
+            </div>
+            <div class="h1 flexCc ripple zoomIn" style="animation-delay:0.3s;" :class="banner==2?'sele':''"
+                 @click="hbanner(2)">
+                Охват рынка более<br/>чем в 15 европейских<br/>странах и регионах
+            </div>
+            <div class="h1 flexCc ripple zoomIn" style="animation-delay:0.5s;" :class="banner==3?'sele':''"
+                 @click="hbanner(3)">
+                Наши преимущества
+            </div>
+            <div class="hFormBox  ripple slideInUp">
+                <div class="hTitle">Отправить запрос</div>
+                <el-form :model="contactForm1" :rules="contactRules" ref="contactForm1">
+                    <el-form-item label="Имя*" prop="name">
+                        <el-input type="text" v-model="contactForm1.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="Электронная почта*" prop="email">
+                        <el-input type="text" v-model="contactForm1.email"></el-input>
+                    </el-form-item>
+                    <el-form-item label="Требования*" prop="content">
+                        <el-input type="textarea" v-model="contactForm1.content"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="submit" @click="submitForm('contactForm1')">Получить образцы</el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
+        </div>
+    </div>
+
+    <div class="floor floor1">
+        <h1 class="ripple zoomIn" style="animation-delay:0.7s;">Товар</h1>
+        <h2 class="ripple zoomIn" style="animation-delay:0.9s;">Juna кожаные ботинки</h2>
+        <div class="hSpan ripple zoomIn" style="animation-delay:1.1s;">Juna - крупнейший поставщик кожаной женской обуви
+            на российские рынки из Вэньчжоу
+        </div>
+        <div class="box">
+            <div class="w1240">
+                <ul class="flexSb">
+                    <li :class="gaogao>=100?'ripple slideInUp':'opacity0'" style="animation-delay:0.1s;"><img
+                            class="wh100" src="./images/f1tb1.jpg" alt=""></li>
+                    <li :class="gaogao>=100?'ripple slideInUp':'opacity0'" style="animation-delay:0.3s;"><img
+                            class="wh100" src="./images/f1tb2.jpg" alt=""></li>
+                    <li :class="gaogao>=100?'ripple slideInUp':'opacity0'" style="animation-delay:0.5s;"><img
+                            class="wh100" src="./images/f1tb3.jpg" alt=""></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="floor2">
+        <div class="w1240">
+            <img class="hPic fl" :class="gaogao>=1080?'ripple zoomIn':'opacity0'" src="./images/f2pic.jpg" alt="">
+            <div class="fr">
+                <div class="h1" :class="gaogao>=1080?'ripple slideInRight':'opacity0'" style="animation-delay:0.2s;">О
+                    нас
+                </div>
+                <div class="h2" :class="gaogao>=1080?'ripple slideInRight':'opacity0'" style="animation-delay:0.4s;">
+                    <span>JUNA</span>——Производитель кожаной женской обуви
+                </div>
+                <div class="h3" :class="gaogao>=1080?'ripple slideInRight':'opacity0'" style="animation-delay:0.6s;">
+                    Wenzhou Juna Footwear Co., Ltd. была основана в 2008 году, специализируется на разработке и
+                    производстве женской обуви европейского стиля，в компании работает профессиональная команда
+                    разработчиков из 40 человек. В Европейских странах находятся несколько человек, чтобы узнавать о
+                    последних и самых модных тенденциях обуви, сочетающих новейшие технологии и новые материалы.
+                    <br/>Благодаря своим отличительным модным особенностям и превосходному качеству продукции, компания
+                    уже много лет завоевывает высокую оценку и похвалу со стороны клиентов.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="floor3">
+        <h1 :class="gaogao>=1700?'ripple zoomIn':'opacity0'">Выставка</h1>
+        <div class="hSpan" :class="gaogao>=1700?'ripple zoomIn':'opacity0'" style="animation-delay:0.2s;">Мы участвовали
+            в МосШуз выставке в 2019 году, компания уже много лет
+            <br/>завоевывает высокую оценку и похвалу со стороны клиентов.
+        </div>
+        <div class="box w1240">
+            <ul class="flexCc">
+                <li :class="gaogao>=2000?'ripple slideInUp':'opacity0'"><img class="wh100" src="./images/f3pic1.jpg"
+                                                                             alt=""></li>
+                <li class="sele" :class="gaogao>=2000?'ripple slideInUp':'opacity0'" style="animation-delay:0.2s;"><img
+                        class="wh100" src="./images/f3pic2.jpg" alt=""></li>
+                <li :class="gaogao>=2000?'ripple slideInUp':'opacity0'" style="animation-delay:0.4s;"><img class="wh100"
+                                                                                                           src="./images/f3pic3.jpg"
+                                                                                                           alt=""></li>
+            </ul>
+            <ul class="flexCc">
+                <li :class="gaogao>=2000?'ripple slideInUp':'opacity0'" style="animation-delay:0.6s;"><img class="wh100"
+                                                                                                           src="./images/f3pic4.jpg"
+                                                                                                           alt=""></li>
+                <li class="sele" :class="gaogao>=2000?'ripple slideInUp':'opacity0'" style="animation-delay:0.8s;"><img
+                        class="wh100" src="./images/f3pic5.jpg" alt=""></li>
+                <li :class="gaogao>=2000?'ripple slideInUp':'opacity0'" style="animation-delay:1s;"><img class="wh100"
+                                                                                                         src="./images/f3pic6.jpg"
+                                                                                                         alt=""></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="hMinBanner" style="background-image: url(./images/minbanner1.jpg);">
+        <div :class="gaogao>=2880?'ripple zoomIn':'opacity0'">Какие услуги мы можем</div>
+        <div :class="gaogao>=2880?'ripple zoomIn':'opacity0'" style="animation-delay:0.2s;">предоставить для вас?</div>
+    </div>
+
+    <div class="floor4">
+        <div class="w1240">
+            <div class="box1 clearfix">
+                <div class="hTxt fl">
+                    <div class="h1" :class="gaogao>=3300?'ripple slideInLeft':'opacity0'">01</div>
+                    <div class="h2" :class="gaogao>=3300?'ripple slideInLeft':'opacity0'" style="animation-delay:0.2s;">
+                        <i></i></div>
+                    <div class="h3" :class="gaogao>=3300?'ripple slideInLeft':'opacity0'" style="animation-delay:0.4s;">
+                        oбсуждения
+                    </div>
+                    <div class="h4" :class="gaogao>=3300?'ripple slideInLeft':'opacity0'" style="animation-delay:0.6s;">
+                        Круглосуточная горячая линия
+                    </div>
+                    <div class="h4" :class="gaogao>=3300?'ripple slideInLeft':'opacity0'" style="animation-delay:0.8s;">
+                        Профессиональные консультации по
+                        <br/> индивидуальным услугам, чтобы
+                        <br/> гарантировать, что вы получите обувь
+                        <br/>самого высокого качества.
+                    </div>
+                </div>
+                <img class="fr" src="./images/f4pic1.jpg" alt="" :class="gaogao>=3300?'ripple slideInRight':'opacity0'"
+                     style="animation-delay:0.2s;">
+            </div>
+
+            <div class="box2 clearfix">
+                <div class="hTxt fr" :class="gaogao>=4000?'ripple slideInRight':'opacity0'">
+                    <div class="h1" :class="gaogao>=4000?'ripple slideInRight':'opacity0'"
+                         style="animation-delay:0.2s;">02
+                    </div>
+                    <div class="h2" :class="gaogao>=4000?'ripple slideInRight':'opacity0'"
+                         style="animation-delay:0.4s;"><i></i></div>
+                    <div class="h3" :class="gaogao>=4000?'ripple slideInRight':'opacity0'"
+                         style="animation-delay:0.6s;">Дизайн
+                    </div>
+                    <div class="h4" :class="gaogao>=4000?'ripple slideInRight':'opacity0'"
+                         style="animation-delay:0.8s;">
+                        С 40 опытными дизайнерами мы можем
+                        <br/>проектировать более 2000 новых моделей
+                        <br/>каждый год.
+                    </div>
+                    <div class="h4" :class="gaogao>=4000?'ripple slideInRight':'opacity0'" style="animation-delay:1s;">
+                        40 опытных дизайнеров предоставят вам
+                        <br/>много полезных советов.
+                    </div>
+                    <img class="fl" src="./images/f4pic2.jpg" alt="" :class="gaogao>=4000?'ripple zoomIn':'opacity0'"
+                         style="animation-delay:0.2s;">
+                </div>
+            </div>
+
+            <div class="box3">
+                <div class="hTxt">
+                    <div class="h1" :class="gaogao>=5000?'ripple slideInLeft':'opacity0'">03</div>
+                    <div class="h2" :class="gaogao>=5000?'ripple slideInLeft':'opacity0'" style="animation-delay:0.2s;">
+                        <i></i></div>
+                    <div class="h3" :class="gaogao>=5000?'ripple slideInLeft':'opacity0'" style="animation-delay:0.4s;">
+                        Производство
+                    </div>
+                    <div class="h4" :class="gaogao>=5000?'ripple slideInLeft':'opacity0'" style="animation-delay:0.6s;">
+                        Наша производственная компания имеет 3 международные
+                        <br/>стандартизированные производственные линии и сильную
+                        <br/>производственную команду.
+                    </div>
+                </div>
+                <div class="hBg" :class="gaogao>=5120?'ripple slideInRight':'opacity0'"></div>
+                <ul class="clearfix">
+                    <li :class="gaogao>=5120?'ripple slideInRight':'opacity0'" style="animation-delay:0.2s;">
+                        <div class="h1 flexCc"><img src="./images/ziyuan.png" alt=""></div>
+                        <div class="h2">
+                            Предложите цены ниже,
+                            <br/>чтобы обеспечить
+                            <br/>максимальную прибыль
+                            <br/>вашему бизнесу.
+                        </div>
+                    </li>
+                    <li :class="gaogao>=5120?'ripple slideInRight':'opacity0'" style="animation-delay:0.4s;">
+                        <div class="h1 flexCc"><img src="./images/shiyan.png" alt=""></div>
+                        <div class="h2">
+                            Проводятся
+                            <br/>химические
+                            <br/>испытания
+                            <br/>по вашему
+                            <br/>требованию.
+                        </div>
+                    </li>
+                    <li :class="gaogao>=5120?'ripple slideInRight':'opacity0'" style="animation-delay:0.6s;">
+                        <div class="h1 flexCc"><img src="./images/kaohebiaozhun.png" alt=""></div>
+                        <div class="h2">
+                            Требования к
+                            <br/>производству материалов
+                            <br/>соответствуют
+                            <br/>международным
+                            <br/>отраслевым стандартам.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="box4">
+                <div class="hPicBox fl clearfix">
+                    <img class="hPic1" src="./images/f4pic3.jpg" alt=""
+                         :class="gaogao>=5800?'ripple zoomIn':'opacity0'">
+                    <img class="hPic2" src="./images/f4pic4.jpg" alt="" :class="gaogao>=5800?'ripple zoomIn':'opacity0'"
+                         style="animation-delay:0.2s;">
+                    <img class="hPic3" src="./images/f4pic5.jpg" alt="" :class="gaogao>=5800?'ripple zoomIn':'opacity0'"
+                         style="animation-delay:0.4s;">
+                </div>
+                <div class="hTxt fr">
+                    <div class="h1" :class="gaogao>=5800?'ripple slideInRight':'opacity0'">04</div>
+                    <div class="h2" :class="gaogao>=5800?'ripple slideInRight':'opacity0'"
+                         style="animation-delay:0.2s;"><i></i></div>
+                    <div class="h3" :class="gaogao>=5800?'ripple slideInRight':'opacity0'"
+                         style="animation-delay:0.4s;">Контроль качества
+                    </div>
+                    <div class="h4" :class="gaogao>=5800?'ripple slideInRight':'opacity0'"
+                         style="animation-delay:0.6s;">
+                        Качество обуви - это душа Juna, и на каждом
+                        <br/>этапе производства существует строгая и
+                        <br/>эффективная политика контроля качества.
+                    </div>
+                    <div class="h4" src="./images/f4pic4.jpg" alt=""
+                         :class="gaogao>=5800?'ripple slideInRight':'opacity0'" style="animation-delay:0.8s;">
+                        8 опытных инспекторов обеспечат качество
+                        <br/>вашей обуви.
+                    </div>
+                    <div class="h4" src="./images/f4pic4.jpg" alt=""
+                         :class="gaogao>=5800?'ripple slideInRight':'opacity0'" style="animation-delay:1s;">
+                        Обувь отвечает различным химическим и
+                        <br/>физическим испытаниям на основных рынках.
+                    </div>
+                </div>
+                <div class="hBg"></div>
+            </div>
+
+            <div class="box5 clearfix">
+                <div class="hTxt fl">
+                    <div class="h1" :class="gaogao>=6600?'ripple slideInLeft':'opacity0'">05</div>
+                    <div class="h2" :class="gaogao>=6600?'ripple slideInLeft':'opacity0'" style="animation-delay:0.2s;">
+                        <i></i></div>
+                    <div class="h3" :class="gaogao>=6600?'ripple slideInLeft':'opacity0'" style="animation-delay:0.4s;">
+                        Доставка
+                    </div>
+                    <div class="h4" :class="gaogao>=6600?'ripple slideInLeft':'opacity0'" style="animation-delay:0.6s;">
+                        Производственный цикл: 45-60 дней
+                    </div>
+                    <div class="h4" :class="gaogao>=6600?'ripple slideInLeft':'opacity0'" style="animation-delay:0.8s;">
+                        Мы можем гарантировать, что вы получите
+                        <br/>товар в течение трех месяцев.
+                    </div>
+                </div>
+                <img class="fr" src="./images/f4pic6.jpg" alt="" :class="gaogao>=6600?'ripple slideInRight':'opacity0'">
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="floor5">
+        <h1 :class="gaogao>=7000?'ripple zoomIn':'opacity0'">Похвалы клиентов</h1>
+        <div class="w1240">
+            <ul class="flexSb">
+                <li :class="gaogao>=7160?'ripple slideInUp':'opacity0'">
+                    <div class="h1 flexCc"><img class="w100" src="./images/f5tb1.jpg" alt=""></div>
+                    <div class="h2">KARI</div>
+                    <div class="h3">
+                        Мы торговали с Juna в течение 6 лет. Их
+                        <br/>высококачественная обувь соответствует
+                        <br/>потребностям нашей компании.
+                    </div>
+                </li>
+                <li :class="gaogao>=7160?'ripple slideInUp':'opacity0'" style="animation-delay:0.2s;">
+                    <div class="h1 flexCc"><img class="w100" src="./images/f5tb2.jpg" alt=""></div>
+                    <div class="h2">BONA</div>
+                    <div class="h3">
+                        Мы никогда не сомневаемся в выборе JU-
+                        <br/>NA.Их высококачественная обувь и услуги
+                        <br/>полностью заслуживают нашего доверия.
+                    </div>
+                </li>
+                <li :class="gaogao>=7160?'ripple slideInUp':'opacity0'" style="animation-delay:0.4s;">
+                    <div class="h1 flexCc"><img class="w100" src="./images/f5tb3.jpg" alt=""></div>
+                    <div class="h2">DORO</div>
+                    <div class="h3">
+                        Они действительно стремятся предоставить
+                        <br/>нам самое высокое качество и самый
+                        <br/>надежный сервис.
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="foot clearfix w1240">
+        <div class="box fl" :class="gaogao>=8000?'ripple slideInLeft':'opacity0'">
+            <div class="hBg">?</div>
+            <div class="h1">
+                Есть ли у вашего
+                <br/>бизнеса уникальные
+                <br/>потребности?
+            </div>
+            <div class="h2">
+                Позвольте нам помочь и
+                <br/>удовлетворить ваши потребности!
+            </div>
+            <ul class="flexCc">
+                <li class="flexCc"><img class="w100" src="./images/foottb1.jpg" alt=""></li>
+                <li class="flexCc"><img class="w100" src="./images/foottb2.jpg" alt=""></li>
+                <li class="flexCc"><img class="w100" src="./images/foottb3.jpg" alt=""></li>
+            </ul>
+
+        </div>
+        <div class="fr box2">
+            <h2 :class="gaogao>=8000?'ripple slideInRight':'opacity0'">Пожалуйста,<br/>свяжитесь с нами！</h2>
+            <div class="h2" :class="gaogao>=8000?'ripple slideInRight':'opacity0'" style="animation-delay:0.2s;"><span>Телефон</span><img
+                    src="./images/telephoneiocn.png" alt="">0086-15957709511
+            </div>
+            <div class="h2" :class="gaogao>=8000?'ripple slideInRight':'opacity0'" style="animation-delay:0.4s;"><span>почтовый ящик</span><img
+                    src="./images/emailicon.png" alt="">wenzhoujunashoes@126.com
+            </div>
+            <div class="hFormBox" :class="gaogao>=8000?'ripple slideInRight':'opacity0'" style="animation-delay:0.6s;">
+                <el-form :model="contactForm2" :rules="contactRules" ref="contactForm2">
+                    <el-form-item prop="name">
+                        <el-input type="text" v-model="contactForm2.name" placeholder="Имя*"></el-input>
+                    </el-form-item>
+                    <el-form-item prop="email">
+                        <el-input type="text" v-model="contactForm2.email" placeholder="Электронная почта*"></el-input>
+                    </el-form-item>
+                    <el-form-item prop="content">
+                        <el-input type="textarea" v-model="contactForm2.content" placeholder="Требования*"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="submit" @click="submitForm('contactForm2')">Получить образцы</el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
+        </div>
+    </div>
+
+    <div class="hChatBox">
+        <div class="hFormBox" :class="chat?'sele':''">
+            <img class="hClose" src="./images/guanbi.png" v-show="chat" @click="hChat">
+            <div class="h1" @click="hChat">Бесплатная консультация</div>
+            <div class="box" v-show="chat">
+                <el-form :model="contactForm3" :rules="contactRules" ref="contactForm3">
+                    <el-form-item label="Имя*" prop="name">
+                        <el-input type="text" v-model="contactForm3.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="Электронная почта*" prop="email">
+                        <el-input type="text" v-model="contactForm3.email"></el-input>
+                    </el-form-item>
+                    <el-form-item label="Требования*" prop="content">
+                        <el-input type="textarea" v-model="contactForm3.content"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="submit" @click="submitForm('contactForm3')">Получить образцы</el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
+        </div>
+        <img src="./images/chat.png" alt="" class="hPic" :class="chat?'sele':''">
+    </div>
+
+</div>
+</body>
+
+
+<script>
+    var interval = null;
+    new Vue({
+        el: '#jnIndex',
+        data: function () {
+            var ruleName = function (rule, value, callback) {
+                if (!value) {
+                    return callback(new Error("The name cannot be empty"));
+                } else {
+                    callback();
+                }
+            };
+
+            var ruleEmail = function (rule, value, callback) {
+                var regular = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+                if (!value) {
+                    return callback(new Error("The mailbox cannot be empty"));
+                } else if (!regular.test(value)) {
+                    return callback(new Error("Please enter the correct email address"));
+                } else {
+                    callback();
+                }
+            };
+
+            var ruleContent = function (rule, value, callback) {
+                if (!value) {
+                    return callback(new Error("Can not be empty"));
+                } else {
+                    callback();
+                }
+            };
+            return {
+                banner: 1,
+                chat: false,
+                gaogao: 0,
+                contactForm1: {
+                    name: "",
+                    email: "",
+                    content: ""
+                },
+                contactForm2: {
+                    name: "",
+                    email: "",
+                    content: ""
+                },
+                contactForm3: {
+                    name: "",
+                    email: "",
+                    content: ""
+                },
+                contactRules: {
+                    name: [{validator: ruleName, trigger: ["blur", "change"]}],
+                    email: [{validator: ruleEmail, trigger: ["blur", "change"]}],
+                    content: [{validator: ruleContent, trigger: ["blur", "change"]}]
+                },
+            };
+        },
+        mounted: function () {
+            window.addEventListener('scroll', this.handleScroll);
+            this.jishi();
+        },
+        beforeDestroy: function () {
+            window.removeEventListener('scroll', this.handleScroll);
+        },
+        methods: {
+            // 表单提交
+            submitForm: function (formName) {
+                var that = this;
+                that.$refs[formName].validate(function (valid) {
+                    console.log(formName)
+                    var name, email, content;
+                    if (formName == "contactForm1") {
+                        name = that.contactForm1.name;
+                        email = that.contactForm1.email;
+                        content = that.contactForm1.content;
+                    } else if (formName == "contactForm2") {
+                        name = that.contactForm2.name;
+                        email = that.contactForm2.email;
+                        content = that.contactForm2.content;
+                    } else if (formName == "contactForm3") {
+                        name = that.contactForm3.name;
+                        email = that.contactForm3.email;
+                        content = that.contactForm3.content;
+                    }
+                    console.log(name)
+                    console.log(valid)
+                    if (valid) {
+                        axios.get('/home/Activity_Romania_inquiry', {
+                            params: {
+                                supId: 295,
+                                name: name,
+                                email: email,
+                                detail: content
+                            }
+                        }).then(function (res) {
+                            if (res.data.ret == 1) {
+                                that.$message({
+                                    message: 'Submit Success',
+                                    type: 'success'
+                                });
+                            }
+                        }).catch(function (err) {
+                            console.log(err)
+                            that.$message.error('Submission failed, please check the network');
+                        })
+                    } else {
+                        console.log("error submit!!")
+                        return false
+                    }
+                });
+            },
+            handleScroll: function () {
+                var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+                if (scrollTop > this.gaogao) {
+                    this.gaogao = scrollTop;
+                    // console.log(this.gaogao)
+                }
+            },
+            hbanner: function (j) {
+                this.banner = j
+            },
+            hChat: function () {
+                this.chat = !this.chat
+            },
+            jishi: function () {
+                var that = this;
+                interval = setInterval(function () {
+                    that.banner = that.banner + 1;
+                    if (that.banner > 3) {
+                        that.banner = 1
+                    }
+                }, 10000);
+            },
+        }
+    })
+</script>
+
+<!--Globalsitetag(gtag.js)-GoogleAds:783435725-->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', newDate());
+    gtag('config', 'AW-783435725');
+</script>
+<!--Globalsitetag(gtag.js)-GoogleAnalytics-->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-127715615-6"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', newDate());
+    gtag('config', 'UA-127715615-6');
+</script>
 </html>
