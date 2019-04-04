@@ -18,23 +18,17 @@ import java.util.stream.Stream;
 
 import javax.inject.Inject;
 
-import irille.Dao.UsrTargetMarketDao;
-import irille.shop.plt.*;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import com.xinlianshiye.shoestp.plat.service.pm.IPMMessageService;
 import com.xinlianshiye.shoestp.plat.service.pm.imp.PMMessageServiceImp;
 
 import irille.Dao.SVS.SVSInfoDao;
 import irille.Dao.SVS.SVSInfoService;
 import irille.Dao.SVS.impl.SVSInfoDaoImpl;
-import irille.Entity.SVS.SVSInfo;
 import irille.Entity.SVS.Enums.SVSAuthenticationStatus;
 import irille.Entity.SVS.Enums.SVSGradeType;
+import irille.Entity.SVS.SVSInfo;
 import irille.Entity.pm.PM.OTempType;
 import irille.core.sys.Sys;
 import irille.homeAction.usr.dto.Page_supplierProductView;
@@ -72,8 +66,8 @@ import irille.pub.svr.DbPool;
 import irille.pub.svr.Env;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.FldLanguage.Language;
-import irille.pub.util.SEOUtils;
 import irille.pub.util.FormaterSql.FormaterSql;
+import irille.pub.util.SEOUtils;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.pub.validate.ValidForm;
 import irille.pub.validate.ValidRegex2;
@@ -84,7 +78,16 @@ import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.pdt.PdtProductDAO;
 import irille.shop.pdt.PdtSpec;
+import irille.shop.plt.PltConfigDAO;
+import irille.shop.plt.PltCountry;
+import irille.shop.plt.PltFreight;
+import irille.shop.plt.PltFreightLine;
+import irille.shop.plt.PltFreightSeller;
+import irille.shop.plt.PltFreightSellerDAO;
+import irille.shop.plt.PltFreightSellerLine;
+import irille.shop.plt.PltPay;
 import irille.shop.plt.PltPay.OPay_Mode;
+import irille.shop.plt.PltProvince;
 import irille.shop.prm.PrmGroupPurchase;
 import irille.shop.usr.Usr.OStatus;
 import irille.shop.usr.UsrSupplier.T;
@@ -93,6 +96,8 @@ import irille.view.usr.AccountSettingsView;
 import irille.view.usr.SupplierDetailsDTO;
 import irille.view.usr.SupplierView;
 import irille.view.usr.shopSettingView;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class UsrSupplierDAO {
 
@@ -2610,7 +2615,7 @@ public class UsrSupplierDAO {
             SELECT(
                     T.PKEY,
                     T.LOGO,
-                    T.NAME,
+                    T.SHOW_NAME,
                     UsrMain.T.EMAIL,
                     T.TARGETED_MARKET,
                     UsrMain.T.LAST_LOGIN,
@@ -2624,7 +2629,7 @@ public class UsrSupplierDAO {
     Map<String, Object> map = irille.pub.bean.Query.sql(sql).queryMap();
     view.setPkey((Integer) map.get(T.PKEY.getFld().getCodeSqlField()));
     view.setLogo((String) map.get(T.LOGO.getFld().getCodeSqlField()));
-    view.setName((String) map.get(T.NAME.getFld().getCodeSqlField()));
+    view.setName((String) map.get(T.SHOW_NAME.getFld().getCodeSqlField()));
     view.setUserName((String) map.get(UsrMain.T.EMAIL.getFld().getCodeSqlField()));
     view.setTargetedMarket((String) map.get(T.TARGETED_MARKET.getFld().getCodeSqlField()));
     view.setLastLoginTIME((Date) map.get(UsrMain.T.LAST_LOGIN.getFld().getCodeSqlField()));
