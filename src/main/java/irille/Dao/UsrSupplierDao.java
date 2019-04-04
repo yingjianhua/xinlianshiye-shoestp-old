@@ -18,8 +18,13 @@ import irille.pub.bean.sql.SQL;
 import irille.pub.util.SEOUtils;
 import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
-import irille.shop.usr.*;
+import irille.shop.usr.Usr;
+import irille.shop.usr.Usr.SStatus;
+import irille.shop.usr.UsrProductCategory;
+import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplier.T;
+import irille.shop.usr.UsrSupplierCategory;
+import irille.shop.usr.UsrSupplierRole;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/5 Time: 16:36 */
 public class UsrSupplierDao {
@@ -193,6 +198,7 @@ public class UsrSupplierDao {
         .FROM(UsrSupplier.class)
         .LEFT_JOIN(PdtProduct.class, UsrSupplier.T.PKEY, PdtProduct.T.SUPPLIER)
         .LEFT_JOIN(SVSInfo.class, UsrSupplier.T.PKEY, SVSInfo.T.SUPPLIER)
+        .WHERE(UsrSupplier.T.STORE_STATUS, " =? ", SStatus.OPEN)
         .WHERE(storeName != null, UsrSupplier.T.SHOW_NAME, "like ?", "%" + storeName + "%")
         .WHERE(processType != null, UsrSupplier.T.CATEGORY, "=?", processType);
     if (targetMarket != null) {

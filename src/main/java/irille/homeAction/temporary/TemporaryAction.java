@@ -8,21 +8,34 @@ package irille.homeAction.temporary;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import org.json.JSONException;
+
 import irille.Dao.PdtProductDao;
-import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_Activity;
 import irille.Entity.O2O.O2O_Product;
+import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.homeAction.HomeAction;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
 import irille.pub.tb.IEnumFld;
 import irille.pub.util.GetValue;
 import irille.pub.util.SEOUtils;
+import irille.pub.validate.Regular;
+import irille.pub.validate.ValidRegex;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrFavorites;
 import irille.shop.usr.UsrFavorites.T;
@@ -34,6 +47,46 @@ public class TemporaryAction extends HomeAction<O2O_Product> {
 
   @Inject private PdtProductDao productDao;
   @Setter @Getter private Integer cat;
+
+  @Setter @Getter private String ids;
+
+  public void productByIds() throws IOException {
+    if (null == ids || (ids != null && !ValidRegex.regMarch(Regular.REGULAR_PKEY_ARRS, ids))) {
+      throw new WebMessageException(ReturnCode.failure, "非法参数");
+    }
+    SQL sql = new SQL();
+    sql.SELECT(
+        new IEnumFld[] {
+          irille.shop.pdt.PdtProduct.T.PKEY,
+          irille.shop.pdt.PdtProduct.T.NAME,
+          irille.shop.pdt.PdtProduct.T.PICTURE,
+          irille.shop.pdt.PdtProduct.T.CUR_PRICE,
+          irille.shop.pdt.PdtProduct.T.MIN_OQ
+        });
+    sql.FROM(irille.shop.pdt.PdtProduct.class);
+    sql.WHERE(irille.shop.pdt.PdtProduct.T.PKEY, " IN(" + ids + ") ");
+    List<irille.shop.pdt.PdtProduct> products =
+        Query.sql(sql).queryList(irille.shop.pdt.PdtProduct.class);
+    List<PdtNewPdtInfo> items =
+        products.stream()
+            .map(
+                entity -> {
+                  PdtNewPdtInfo item = new PdtNewPdtInfo();
+                  item.setId(Long.valueOf(entity.getPkey()));
+                  try {
+                    item.setTitle(entity.getName(curLanguage()));
+                  } catch (JSONException e) {
+                    e.printStackTrace();
+                  }
+                  item.setImage(entity.getPicture());
+                  item.setMin_order(entity.getMinOq());
+                  item.setRewrite(SEOUtils.getPdtProductTitle(entity.getPkey(), entity.getName()));
+                  item.setPrice(entity.getCurPrice());
+                  return item;
+                })
+            .collect(Collectors.toList());
+    write(items);
+  }
 
   public void randomO2oList() throws IOException {
     SQL sql = new SQL();
