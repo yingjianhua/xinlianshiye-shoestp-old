@@ -224,17 +224,17 @@
             // 查看是否登录
             this.getLoginInfo();
 		    console.log('GetQueryString', this.GetQueryString("result"))
-		    console.log('landPageHaveSendEmail', sessionStorage.getItem("landPageHaveSendEmail"))
+		    console.log('landPageHaveSendEmail', localStorage.getItem("landPageHaveSendEmail"))
             // 注册时 -邮箱调转回来时显示成功提示
-            if(this.GetQueryString("result")==1 && sessionStorage.getItem("landPageHaveSendEmail")){
+            if(this.GetQueryString("result")==1 && localStorage.getItem("landPageHaveSendEmail")){
                 this.propsReg.showRegister=true;
                 this.propsReg.step=3;
-                sessionStorage.removeItem("landPageHaveSendEmail")
+                localStorage.removeItem("landPageHaveSendEmail")
                 // 否则当作页面刷新 - reset
-            }else if(this.GetQueryString("result")==0 && sessionStorage.getItem("landPageHaveSendEmail")){
+            }else if(this.GetQueryString("result")==0 && localStorage.getItem("landPageHaveSendEmail")){
                 this.propsReg.showRegister=true;
                 this.propsReg.step=404;
-                sessionStorage.removeItem("landPageHaveSendEmail")
+                localStorage.removeItem("landPageHaveSendEmail")
             }else{
                 this.propsReg.step=1;
             }

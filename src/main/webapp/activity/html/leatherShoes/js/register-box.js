@@ -292,7 +292,7 @@ Vue.component('register-box', {
 
               this.propsReg.step = 2;
               // 邮箱跳转回来刷新时会无限显示成功页 so这边加个参数进行判断
-              sessionStorage.setItem("landPageHaveSendEmail",true)
+              localStorage.setItem("landPageHaveSendEmail",true)
           })
           .catch((error) => {
                   this.$message.error(error || 'Network error,please try again later');
