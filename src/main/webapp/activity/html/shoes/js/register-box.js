@@ -29,7 +29,7 @@ Vue.component('register-box', {
                                   placeholder="Enter Password" auto-complete="on" type="password"></el-input>
                     </el-form-item>
 
-                    <el-form-item label="Nickname" prop="nickName">
+                    <el-form-item label="UserName" prop="nickName">
                         <el-input v-model.trim="registerForm.nickName"
                                   placeholder="Enter Nickname"></el-input>
                     </el-form-item>
@@ -292,7 +292,7 @@ Vue.component('register-box', {
 
               this.propsReg.step = 2;
               // 邮箱跳转回来刷新时会无限显示成功页 so这边加个参数进行判断
-              sessionStorage.setItem("landPageHaveSendEmail",true)
+              localStorage.setItem("landPageHaveSendEmail",true)
           })
           .catch((error) => {
                   this.$message.error(error || 'Network error,please try again later');

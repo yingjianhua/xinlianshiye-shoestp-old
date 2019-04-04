@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="scroll-behavior: smooth;">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
@@ -29,22 +29,24 @@
 		<div class="box bb">
 			<div class="leather-banner-head">
 				<span>
-					<img src="./images/logo.png" name="logo" alt="">
+					<a href="/home/usr_UsrPurchase">
+						<img src="./images/logo.png" name="logo" alt="">
+					</a>
 				</span>
 				<span class="head-text">
 					 <a href="/home/pdt_PdtProduct" class="p_16 c_w">PRODUCTS</a>
 				</span>
 				<span class="head-text">
-					 <a href="javascript:;" class="p_16 c_w">POPULAR GOODS</a>
+					 <a href="#productGoods" class="p_16 c_w">POPULAR GOODS</a>
 				</span>
 				<span class="fg_r">
 					<span class="mw_300 c_w" v-if="sysConfig && sysConfig.user">{{sysConfig.user.name}}</span>
 					<a href="javascript:void(0);" v-else class="button" @click="testFormSubmit">SIGN UP</a>
 				</span>
-				<!--				<span class="head-search">-->
-<!--					<input type="text" v-model ="search">-->
-<!--					<img src="./images/serach.png" name="search" @click="changeSearch" alt="">-->
-<!--				</span>-->
+				<span class="head-search">
+					<input type="text" v-model ="search">
+					<img src="./images/serach.png" name="search" @click="changeSearch" alt="">
+				</span>
 				<span class="separate"></span>
 				<span class="head-share">
 					<a href="https://www.facebook.com/ShoestpCN/">
@@ -53,9 +55,9 @@
 					<a href="https://twitter.com/shoes_logo">
 						<img src="./images/f2.png" name="share" alt="">
 					</a>
-<!--					<a href="https://www.facebook.com/ShoestpCN/">-->
-<!--						<img src="./images/f3.png" name="share" alt="">-->
-<!--					</a>-->
+					<a href="https://www.instagram.com/shoestpcn/">
+						<img src="./images/f3.png" name="share" alt="">
+					</a>
 					<a href="https://www.linkedin.com/company/shoestp/?viewAsMember=true">
 						<img src="./images/f4.png" name="share" alt="">
 					</a>
@@ -110,22 +112,24 @@
 		</div>
 	</div>
 	<!--product-->
-	<div class="leather-product box">
+	<div class="leather-product box" id="productGoods">
 		<div class="leather-product-dress w_1240">
 			<h2 class="ta_c dress-h2">Dress Shoes</h2>
 			<div class="dress-list" v-if="dressShoes.length > 0">
 				<div class="dress-list-item" v-for="(item,index) in dressShoes" v-if="index < 3" :class="index == 1 ? 'm_l35_r35' : ''">
 					<div class="item-image-box">
 						<div class="item-image">
-							<img v-if="item.picture" :src="'https://image.shoestp.com' + item.picture.split(',')[0] + '?x-oss-process=image/resize,w_298,h_261'" name="productShoes" alt="">
+							<img v-if="item.image" :src="'https://image.shoestp.com' + item.image.split(',')[0] + '?x-oss-process=image/resize,w_298,h_261'" name="productShoes" alt="">
 						</div>
 					</div>
 					<div class="item-intro">
-						<p class="item-intro-title fz_24">{{item.pdtName}}</p>
+						<a :href="'/' + item.rewrite">
+							<p class="item-intro-title fz_24">{{item.title}}</p>
+						</a>
 						<h2 class="item-intro-price">${{item.price}}</h2>
-						<p class="fz_24 item-intro-text">Min.Order:{{item.minOrder}} pairs</p>
+						<p class="fz_24 item-intro-text">Min.Order:{{item.min_order}} pairs</p>
 						<div class="item-intro-button">
-							<a :href="'/home/usr_UsrConsult_productPublishView?product_id=' + item.pdtId" class="button">INQUIRY</a>
+							<a href="javascript:void(0);" class="button" @click="skipInquiry(item.id)">Get a Free Sample</a>
 						</div>
 					</div>
 				</div>
@@ -142,15 +146,17 @@
 				<div class="dress-list-item" v-for="(item,index) in leatherShoes" v-if="index < 3" :class="index == 1 ? 'm_l35_r35' : ''">
 					<div class="item-image-box">
 						<div class="item-image">
-							<img v-if="item.picture" :src="'https://image.shoestp.com' + item.picture.split(',')[0] + '?x-oss-process=image/resize,w_298,h_261'" name="productShoes" alt="">
+							<img v-if="item.image" :src="'https://image.shoestp.com' + item.image.split(',')[0] + '?x-oss-process=image/resize,w_298,h_261'" name="productShoes" alt="">
 						</div>
 					</div>
 					<div class="item-intro">
-						<p class="item-intro-title fz_24">{{item.pdtName}}</p>
+						<a :href="'/' + item.rewrite">
+							<p class="item-intro-title fz_24">{{item.title}}</p>
+						</a>
 						<h2 class="item-intro-price">${{item.price}}</h2>
-						<p class="fz_24 item-intro-text">Min.Order:{{item.minOrder}} pairs</p>
+						<p class="fz_24 item-intro-text">Min.Order:{{item.min_order}} pairs</p>
 						<div class="item-intro-button">
-							<a :href="'/home/usr_UsrConsult_productPublishView?product_id=' + item.pdtId" class="button">INQUIRY</a>
+							<a href="javascript:void(0);" class="button" @click="skipInquiry(item.id)">Get a Free Sample</a>
 						</div>
 					</div>
 				</div>
@@ -208,25 +214,8 @@
             },
 
             search: '',
-            dressShoes: [
-	            {
-	                image: './images/del-shoes.png',
-	                name: 'Autumn and winter retro outdoor men\'s shoes Autumn and winter retro outdoor men\'s shoes',
-		            price: 7.9,
-		            minOrder: 600
-	            },{
-                    image: './images/del-shoes.png',
-                    name: 'Autumn and winter retro outdoor men\'s shoes Autumn and winter retro outdoor men\'s shoes',
-                    price: 7.9,
-                    minOrder: 600
-                },{
-                    image: './images/del-shoes.png',
-                    name: 'Autumn and winter retro outdoor men\'s shoes Autumn and winter retro outdoor men\'s shoes',
-                    price: 7.9,
-                    minOrder: 600
-                }
-            ],
-            leatherShoes: []
+            dressShoes: [], // 礼服鞋列表
+            leatherShoes: [] // 皮鞋列表
 	    },
 	    mounted() {
 	        this.sendDressShoes()
@@ -234,36 +223,34 @@
 
             // 查看是否登录
             this.getLoginInfo();
-
+		    console.log('GetQueryString', this.GetQueryString("result"))
+		    console.log('landPageHaveSendEmail', localStorage.getItem("landPageHaveSendEmail"))
             // 注册时 -邮箱调转回来时显示成功提示
-            if(this.GetQueryString("result")==1 && sessionStorage.getItem("landPageHaveSendEmail")){
+            if(this.GetQueryString("result")==1 && localStorage.getItem("landPageHaveSendEmail")){
                 this.propsReg.showRegister=true;
                 this.propsReg.step=3;
-                sessionStorage.removeItem("landPageHaveSendEmail")
+                localStorage.removeItem("landPageHaveSendEmail")
                 // 否则当作页面刷新 - reset
-            }else if(this.GetQueryString("result")==0 && sessionStorage.getItem("landPageHaveSendEmail")){
+            }else if(this.GetQueryString("result")==0 && localStorage.getItem("landPageHaveSendEmail")){
                 this.propsReg.showRegister=true;
                 this.propsReg.step=404;
-                sessionStorage.removeItem("landPageHaveSendEmail")
+                localStorage.removeItem("landPageHaveSendEmail")
             }else{
                 this.propsReg.step=1;
             }
 	    },
 	    methods:{
-	        // 获取礼服鞋
+	        // 获取礼服鞋 -- 396
 	        sendDressShoes() {
                 let self = this;
-                axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax', {
+                axios.get('/home/temporary_Temporary_productByIds', {
                     params: {
-                        v: 4,
-                        start: 0,
-                        'search.category': 396,
-                        limit:3
+                        ids: '6123,6152,6142'
                     }
                 }).then(function (res) {
                     console.log(res)
                     if(res.data.ret == 1){
-                        self.$set(self,'dressShoes',res.data.result.items)
+                        self.$set(self,'dressShoes',res.data.result)
                     }else{
                         let msg = 'Failed to get dress shoe list'
                         if(res.data.msg){
@@ -276,20 +263,17 @@
                     }
                 })
 	        },
-		    // 获取皮鞋
+		    // 获取皮鞋 -- 527
 		    sendLeatherShoes() {
                 let self = this;
-                axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax', {
+                axios.get('/home/temporary_Temporary_productByIds', {
                     params: {
-                        v: 4,
-                        start: 0,
-                        'search.category': 527,
-                        limit: 3
+                        ids: '6558,6523,6158'
                     }
                 }).then(function (res) {
                     console.log(res)
                     if(res.data.ret == 1){
-                        self.$set(self,'leatherShoes',res.data.result.items)
+                        self.$set(self,'leatherShoes',res.data.result)
                     }else{
                         let msg = 'Failed to get a list of shoes'
                         if(res.data.msg){
@@ -309,6 +293,15 @@
                     return;
                 } else {
                     window.location.href = '/home/usr_UsrConsult_publishView'
+                }
+            },
+		    // 跳转inquiry
+            skipInquiry(pdtId) {
+                if( !sysConfig || !sysConfig.user ){
+                    this.propsLogin.showLogin=true
+                    return;
+                } else {
+                    window.location.href = '/home/usr_UsrConsult_productPublishView?product_id=' + pdtId
                 }
             },
             // 判断登录
@@ -343,6 +336,7 @@
             loginSuccess(){
                 this.propsReg.step=1;
                 this.getLoginInfo();
+                window.location.reload()
             },
 
             // 去注册
@@ -359,7 +353,14 @@
             },
 		    // 搜索列表
             changeSearch() {
-                console.log(this.search)
+	            if (this.search != null && this.search != undefined && this.search != ''){
+                    window.location.href = '/home/pdt_PdtProduct?Keyword=' + this.search + '&searchtype=0'
+	            } else {
+	                this.$message({
+                        message: 'Search content cannot be empty',
+                        type: 'warning'
+	                })
+	            }
             }
 	    }
 	})
