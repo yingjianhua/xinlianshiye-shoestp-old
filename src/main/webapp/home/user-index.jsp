@@ -185,7 +185,7 @@
                                     <img :src="image(item.img,'?x-oss-process=image/resize,m_pad,h_150,w_150')" alt="">
                                 </div>
                                 <div class="favorites-item-name">
-                                    {{item.name}}
+                                        <div class="icon-o2o"><img src="/home/v3/static/images/ico/icon_o2o.png" alt="O2O">O2O</div>{{item.name}}
                                 </div>
                             </a>
                         </li>

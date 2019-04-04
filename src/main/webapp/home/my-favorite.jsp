@@ -41,7 +41,9 @@
                             </a>
                         </div>
                         <div class="porduct-name">
-                            <a :href="'/home/pdt_PdtProduct_gtProductsInfo?id=' + item.pdtPkey" target="_blank" class="text">{{item.name}}</a>
+                            <a :href="'/home/pdt_PdtProduct_gtProductsInfo?id=' + item.pdtPkey" target="_blank" class="text">
+                                <div class="icon-o2o"><img src="/home/v3/static/images/ico/icon_o2o.png" alt="O2O">O2O</div>{{item.name}}
+                            </a>
                         </div>
                         <div class="porduct-price">
                             <span style="color: #e54544;">{{sysConfig.currency_symbol}} {{item.amt}}</span>
