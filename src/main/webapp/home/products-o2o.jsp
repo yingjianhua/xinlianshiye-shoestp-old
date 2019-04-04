@@ -78,7 +78,8 @@
             <div class="h2" v-for="(item2,indextwo) in item.children" for-key="indextwo">
                 <p :class="[item2.value==cated?'active':'']"><span @click="categorySearch" :data-cated="item2.value">{{item2.label}}</span><img
                         class="pl-icon2" :class="[item2.xiala==2?'':'pl-icon22']"
-                        src="/home/v3/static/images/icon_down.png" alt="" @click="xiala" :data-index="index"
+                           v-if="item2&&item2.children"
+                        src="/home/v3/static/images/icon_up.png" alt="" @click="xiala" :data-index="index"
                         :data-indextwo="indextwo"/></p>
                 <el-collapse-transition>
                     <ul v-show="item2.xiala==2">
