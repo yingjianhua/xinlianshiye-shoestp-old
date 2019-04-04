@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'/>
+  <meta name='viewport' content='width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no'>
+  <meta http-quiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+  <meta name='keywords' content=''>
+  <meta name=' escription' content=''>
+  <script src='./js/axios.js'></script>
+  <script src='./js/vue.min.js'></script>
+  <!-- 引入组件库 -->
+  <script src="./js/element-ui.min.js"></script>
+  <script src="./js/qs.js"></script>
+  <link rel="stylesheet" href="./css/element.css">
+  <link rel='stylesheet' href='./css/index.css'>
+
+  <script src="./js/util.js"></script>
+  <script src="./js/register-box.js"></script>
+  <script src="./js/login-box.js"></script>
+  <link rel="stylesheet" href="./css/login.css"/>
+  <title>shoestp</title>
+</head>
+<body>
+  <div id='wmshoes'>
+
+    <register-box :props-reg="propsReg" @registersuccess="testFormSubmit"></register-box>
+    <login-box :props-login="propsLogin" @toregister="toRegister" @loginsuccess="loginSuccess"></login-box>
+
+    <div class="con banner">
+      <div class="nav">
+        <img name="logo" src="images/logo.png" alt="新联-鞋贸港">
+        <div class="navtitle cu"><a href="/home/pdt_PdtProduct" style="color: inherit;">PRODUCTS</a></div>
+        <div class="navtitle cu">POPULAR GOODS</div>
+        <div class="search" style="padding-right: 20px;">
+          <span class="cu mw_300" v-if="sysConfig && sysConfig.user">{{sysConfig.user.name}}</span>
+          <span class="cu" @click="testFormSubmit" v-else>SIGN UP</span>
+<!--          <input type="text" :class=" showinput ? '' : 'noinput'">-->
+<!--          <img class="cu" src="images/serach.png" @click="inputshow">-->
+        </div>
+        <div class="fx">
+          <img name="fx" class="cu" src="images/f1.png">
+          <img name="fx" class="cu" src="images/f2.png">
+          <img name="fx" class="cu" src="images/f3.png">
+          <img name="fx" class="cu" src="images/f4.png">
+          <img name="fx" class="cu" src="images/f5.png">
+        </div>
+      </div>
+      <img name="banner" src="images/banner.png" alt="">
+      <a class="block rfq" href="javascript:;" @click="skipRFQ">RFQ</a>
+    </div>
+    <div class="con point3">
+      <div class="points">
+        <div class="point" v-for="item,index in points" :key="index">
+          <img :src="item.img" alt="">
+          <h3>{{item.h3}}</h3>
+          <p v-for="span,indexspan in item.spans" :key="indexspan">{{span}}</p>
+          <a v-if="item.view" href="/html/SVS/svsSuplies.jsp">View</a>
+        </div>
+      </div>
+    </div>
+    <div class="con boots">
+      <div class="boot">
+        <h2>MEN’S BOOTS</h2>
+        <h3>Click <a href="">INQUIRY</a> And Get A Free Sample</h3>
+        <div class="shoes">
+          <div class="shoe" v-for="item,index in men">
+            <div class="imgcon">
+              <img :src="'https://image.shoestp.com' + item.picture.split(',')[0] + '?x-oss-process=image/resize,w_298,h_261'" alt="">
+            </div>
+            <h3>{{item.pdtName}}</h3>
+            <h4>${{item.price}}</h4>
+            <p>Min.Order:{{item.minOrder}} pairs</p>
+            <div class="shoehover">
+              <h3>{{item.pdtName}}</h3>
+              <h4>${{item.price}}</h4>
+              <p>Min.Order:{{item.minOrder}} pairs</p>
+              <a :href="'/home/usr_UsrConsult_productPublishView?product_id=' + item.pdtId">INQUIRY</a>
+            </div>
+            <div class="imgcon2">
+              <img :src="'https://image.shoestp.com' + item.picture.split(',')[0] + '?x-oss-process=image/resize,w_298,h_261'" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="con boots">
+      <div class="boot">
+        <h2>WOMEN’S BOOTS</h2>
+        <h3>Click <a href="">INQUIRY</a> And Get A Free Sample</h3>
+        <div class="shoes">
+          <div class="shoe" v-for="item,index in men">
+            <div class="imgcon">
+              <img :src="'https://image.shoestp.com' + item.picture.split(',')[0] + '?x-oss-process=image/resize,w_298,h_261'" alt="">
+            </div>
+            <h3>{{item.pdtName}}</h3>
+            <h4>${{item.price}}</h4>
+            <p>Min.Order:{{item.minOrder}} pairs</p>
+            <div class="shoehover">
+              <h3>{{item.pdtName}}</h3>
+              <h4>${{item.price}}</h4>
+              <p>Min.Order:{{item.minOrder}} pairs</p>
+              <a :href="'/home/usr_UsrConsult_productPublishView?product_id=' + item.pdtId">INQUIRY</a>
+            </div>
+            <div class="imgcon2">
+              <img :src="'https://image.shoestp.com' + item.picture.split(',')[0] + '?x-oss-process=image/resize,w_298,h_261'" alt="">
+            </div>
+          </div>
+        </div>
+        <p class="more"><a href="/home/pdt_PdtProduct">Visit More</a></p>
+      </div>
+    </div>
+    <div class="con aboutcon">
+      <div class="aboutus">
+        <img src="./images/aboutus.png" alt="">
+        <div class="msg">
+          <h4>S<div></div>H<div></div>O<div></div>E<div></div>S<div></div>T<div></div>P</h4>
+          <h2>ABOUT US</h2>
+          <h3>SHOESTP.COM</h3>
+          <p>Shoestp is the biggest platform of shoe industries in china. All kinds of well-made shoes which are more than 1000 items for every occasion are available with high quality but low price. Manufacturers direct marketing promises you the most reasonable price and our own SVS Certification System ensures you the quality of shoes. It warmly expects to establish cooperative relationships with companies and manufacturers at home and abroad to obtain common development.</p>
+        </div>
+      </div>
+    </div>
+    <div class="con shoesfoot">
+      <div class="footmsg">
+        <h2>What Is SVS?</h2>
+        <p>SVS is a certification system for the factory, which is based on the key aspects such as actual manufacturers , production capacity, product quality, R&D capacity, trade capacity, trade show, etc. And it helps buyer find their target Supplier more faster, accurate and time-saving than any other way.<a href="/html/SVS/svs.jsp">View More＋</a></p>
+        <div>
+          <a href="/html/SVS/svsSuplies.jsp" target="_blank" class="footmsgButton">
+            SVS Suppliers
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    var sysConfig;
+    new Vue({
+      el:'#wmshoes',
+      data:{
+        // 注册弹框 - props属性
+        propsReg:{
+          showRegister: false,
+          step: 1
+        },
+        // 登录弹框 - props属性
+        propsLogin:{
+          showLogin: false
+        },
+
+        points:[
+          {
+            img:'images/point1.png',
+            h3:'Variety Of Suppliers',
+            spans:['More than 1000 items','Different type of shoes','Well-made shoes for every occasion'],
+            view:false
+          },
+          {
+            img:'images/point2.png',
+            h3:'The Lowest Price In The Market',
+            spans:['Low price in O2O','High quality but low price'],
+            view:false
+          },
+          {
+            img:'images/point3.png',
+            h3:'SVS Suppliers Standard',
+            spans:['·Including factors that buyers are much concerned about','·Showing the performance of manufac-turers objectively'],
+            view:true
+          }
+        ],
+        men:[],
+        women:[],
+
+        showinput:false
+      },
+      mounted() {
+        this.getMenShoes();
+        this.getWomenShoes();
+
+        // 查看是否登录
+        this.getLoginInfo();
+
+        // 注册时 -邮箱调转回来时显示成功提示
+        if(this.GetQueryString("result")==1 && sessionStorage.getItem("landPageHaveSendEmail")){
+          this.propsReg.showRegister=true;
+          this.propsReg.step=3;
+          sessionStorage.removeItem("landPageHaveSendEmail")
+          // 否则当作页面刷新 - reset
+        }else if(this.GetQueryString("result")==0 && sessionStorage.getItem("landPageHaveSendEmail")){
+          this.propsReg.showRegister=true;
+          this.propsReg.step=404;
+          sessionStorage.removeItem("landPageHaveSendEmail")
+        }else{
+          this.propsReg.step=1;
+        }
+      },
+      methods:{
+        skipRFQ() {
+          if( !sysConfig || !sysConfig.user ){
+            this.propsLogin.showLogin=true
+            return;
+          } else {
+            window.location.href = '/home/usr_UsrConsult_publishView'
+          }
+        },
+        // 判断登录
+        testFormSubmit(){
+          // 未登录时操作 - 显示登录框
+          if( !sysConfig || !sysConfig.user ){
+            this.propsLogin.showLogin=true
+            return;
+          } else {
+            this.$message({
+              message: 'Already Logged In',
+              type: 'success'
+            });
+          }
+          console.log("已登陆 - 在次进行操作")
+        },
+        // 判断是否已经登录
+        getLoginInfo(){
+          var self = this
+          axios({
+            url: "/home/plt_PltConfig_getSysConfig"
+          }).then(function (res) {
+            if (res.data.ret && res.data.ret == 1) {
+              sysConfig = res.data.result
+              Vue.set(self, "language", res.data.result.current_language)
+              Vue.set(self, "sysConfig", res.data.result)
+              Vue.set(self, "languageList", res.data.result.languages)
+            } else {
+              console.error("ERR::FLAG")
+            }
+          }).catch(function (err) {
+            console.error("ERR::FLAG")
+          })
+        },
+        // 登录成功后刷新登录信息
+        loginSuccess(){
+          this.propsReg.step=1;
+          this.getLoginInfo();
+        },
+
+        // 去注册
+        toRegister(){
+          this.propsLogin.showLogin=false;
+          this.propsReg.showRegister=true;
+        },
+        // 读取链接带参
+        GetQueryString: function(name){
+          var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+          var r = window.location.search.substr(1).match(reg);
+          if(r!=null)return  decodeURI(unescape(r[2]));
+          return null;
+        },
+        //获取男鞋
+        getMenShoes:function(val){
+          let self = this;
+          axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax', {
+            params: {
+              v:3,
+              cate:373,
+              lose:1,
+              start:0,
+              limit:3
+            }
+          }).then(function (res) {
+            console.log(res)
+            if(res.data.ret == 1){
+              self.$set(self,'men',res.data.result.items)
+            }else{
+              let msg = '获取男鞋列表失败'
+              if(res.data.msg){
+                msg = res.data.msg
+              }
+              self.$message({
+                message: msg,
+                type: 'warning'
+              });
+            }
+          })
+        },
+        //获取女鞋
+        getWomenShoes:function(val){
+          let self = this;
+          axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax', {
+            params: {
+              v:3,
+              cate:380,
+              lose:1,
+              start:0,
+              limit:3
+            }
+          }).then(function (res) {
+            if(res.data.ret == 1){
+              self.$set(self,'women',res.data.result.items)
+            }else{
+              let msg = '获取女鞋列表失败'
+              if(res.data.msg){
+                msg = res.data.msg
+              }
+              self.$message({
+                message: msg,
+                type: 'warning'
+              });
+            }
+          })
+        },
+        //show
+        inputshow:function(val){
+          this.showinput = !this.showinput
+        },
+      }
+    })
+  </script>
+
+  <!-- Global site tag (gtag.js) - Google Ads: 783435725 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'AW-783435725');
+  </script>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127715615-6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-127715615-6');
+  </script>
+
+</body>
+</html>

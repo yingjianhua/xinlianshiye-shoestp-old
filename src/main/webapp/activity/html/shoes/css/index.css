@@ -1,0 +1,474 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: Arial;
+}
+
+body {
+  width: 100%;
+  margin: 0 auto;
+  line-height: initial;
+  font-family: Arial;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  border: none;
+}
+
+li {
+  list-style: none;
+}
+
+input {
+  border: none;
+  outline: none;
+}
+
+.cu {
+  cursor: pointer;
+}
+
+.block {
+  display: block;
+}
+
+.clearfloat::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.clearfloat {
+  zoom: 1;
+}
+
+#wmshoes .con {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  min-width: 1350px;
+}
+
+#wmshoes .con .nav, #wmshoes .con .points, #wmshoes .con .boot, #wmshoes .con .footmsg {
+  width: 1250px;
+  margin: 0 auto;
+}
+
+#wmshoes .banner {
+  background-image: url("../images/bannerback.png");
+  text-align: center;
+  padding-bottom: 290px;
+}
+
+#wmshoes .banner .nav {
+  padding: 35px 0 200px;
+  height: 335px;
+  display: flex;
+  align-items: center;
+}
+
+#wmshoes .banner .nav img[name=logo] {
+  width: 211px;
+  margin-right: 29px;
+}
+
+#wmshoes .banner .nav .navtitle {
+  width: 200px;
+  height: 54px;
+  border-radius: 27px;
+  text-align: center;
+  line-height: 54px;
+  font-size: 18px;
+  color: white;
+  margin-right: 21px;
+}
+
+#wmshoes .banner .nav .navtitle:hover {
+  background-color: white;
+  color: #4c6daa;
+}
+
+#wmshoes .banner .nav .search {
+  width: 400px;
+  margin: 0 23px 0 0px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 16px;
+  color: #ffc13f;
+  border-right: 1px solid white;
+}
+
+#wmshoes .banner .nav .search input {
+  width: 155px;
+  height: 30px;
+  margin-left: 10px;
+  transition: all 0.5s ease;
+  text-indent: 0.6em;
+}
+
+#wmshoes .banner .nav .search .noinput {
+  width: 0;
+}
+
+#wmshoes .banner .nav .search img {
+  padding: 0 25px 0 10px;
+}
+
+#wmshoes .banner .nav .fx {
+  width: 190px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#wmshoes .banner .nav .fx img {
+  width: 30px;
+  height: 30px;
+}
+
+#wmshoes .banner img[name=banner] {
+  width: 740px;
+}
+
+#wmshoes .banner .rfq {
+  width: 238px;
+  height: 61px;
+  margin: 0 auto;
+  background: linear-gradient(to right, #ffc645, #ffd56a);
+  box-shadow: 0px 5px 10px 0px rgba(255, 227, 74, 0.5);
+  border-radius: 31px;
+  text-align: center;
+  line-height: 61px;
+  color: #fff;
+  font-size: 36px;
+  margin-top: 69px;
+}
+
+#wmshoes .point3 .points {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: -80px;
+  margin-bottom: 125px;
+}
+
+#wmshoes .point3 .points .point {
+  width: 360px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0px 6px 16px 0px rgba(27, 48, 85, 0.25);
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+#wmshoes .point3 .points .point img {
+  width: 80px;
+  margin: 66px 0 41px;
+}
+
+#wmshoes .point3 .points .point h3 {
+  font-size: 18px;
+  color: #222222;
+  margin-bottom: 25px;
+}
+
+#wmshoes .point3 .points .point p {
+  width: 268px;
+  text-align: left;
+  font-size: 15px;
+  line-height: 25px;
+  color: #6e8391;
+}
+
+#wmshoes .point3 .points .point a {
+  align-self: flex-start;
+  font-size: 16px;
+  margin-top: 15px;
+  margin-left: 47px;
+  text-decoration: underline;
+  color: #7176fe;
+}
+
+#wmshoes .point3 .points .point:nth-child(3) p {
+  text-indent: -0.4em;
+}
+
+#wmshoes .boots .boot {
+  margin-bottom: 100px;
+}
+
+#wmshoes .boots .boot > h2 {
+  font-size: 43px;
+  color: #1c2e47;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+#wmshoes .boots .boot > h3 {
+  font-size: 24px;
+  font-weight: normal;
+  color: #533db7;
+  opacity: 0.4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 58px;
+}
+
+#wmshoes .boots .boot > h3 a {
+  display: inline-block;
+  width: 77px;
+  height: 27px;
+  text-align: center;
+  background: linear-gradient(-35deg, #ffba34, #ffdb6c);
+  border-radius: 4px;
+  font-size: 12px;
+  color: #ffffff;
+  line-height: 27px;
+  margin: 0 6px;
+}
+
+#wmshoes .boots .boot .shoes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#wmshoes .boots .boot .shoes .shoe {
+  width: 388px;
+  height: 541px;
+  background-color: #ffffff;
+  box-shadow: 0px 1px 20px 0px rgba(83, 61, 183, 0.2);
+  border-radius: 10px;
+  padding: 45px 45px 40px 45px;
+  position: relative;
+  overflow: hidden;
+}
+
+#wmshoes .boots .boot .shoes .shoe .imgcon {
+  width: 100%;
+  height: 261px;
+  margin-bottom: 16px;
+}
+
+#wmshoes .boots .boot .shoes .shoe .imgcon > img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+#wmshoes .boots .boot .shoes .shoe > h3 {
+  font-size: 24px;
+  font-weight: normal;
+  line-height: 40px;
+  color: #b0b0b0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  height: 80px;
+}
+
+#wmshoes .boots .boot .shoes .shoe > h4 {
+  font-size: 40px;
+  font-weight: normal;
+  color: #e54544;
+  margin-top: 30px;
+}
+
+#wmshoes .boots .boot .shoes .shoe > p {
+  font-size: 24px;
+  color: #b0b0b0;
+}
+
+#wmshoes .boots .boot .shoes .shoe .shoehover, #wmshoes .boots .boot .shoes .shoe .imgcon2 {
+  position: absolute;
+  top: 541px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: all 0.7s ease;
+}
+
+#wmshoes .boots .boot .shoes .shoe .shoehover {
+  background-color: #3a57c5;
+  border-radius: 10px;
+  opacity: 0.8;
+  z-index: 99;
+}
+
+#wmshoes .boots .boot .shoes .shoe .shoehover > h3 {
+  padding: 48px 45px 0 45px;
+  font-size: 24px;
+  line-height: 30px;
+  height: 110px;
+  color: #b0b0b0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  margin-bottom: 30px;
+}
+
+#wmshoes .boots .boot .shoes .shoe .shoehover > h4 {
+  padding: 0 45px 0 45px;
+  font-size: 40px;
+  color: #ffcd34;
+}
+
+#wmshoes .boots .boot .shoes .shoe .shoehover > p {
+  font-size: 24px;
+  color: #ffffff;
+  opacity: 0.5;
+  padding: 10px 45px 0 45px;
+}
+
+#wmshoes .boots .boot .shoes .shoe .shoehover > a {
+  display: inline-block;
+  width: 349px;
+  height: 68px;
+  text-align: center;
+  line-height: 68px;
+  background: linear-gradient(-35deg, #ffba34, #ffdb6c);
+  border-radius: 10px;
+  font-size: 24px;
+  color: #ffffff;
+  margin: 230px 20px 0;
+}
+
+#wmshoes .boots .boot .shoes .shoe .imgcon2 {
+  background-color: white;
+}
+
+#wmshoes .boots .boot .shoes .shoe .imgcon2 > img {
+  position: absolute;
+  width: 298px;
+  height: 261px;
+  left: 45px;
+  top: 210px;
+}
+
+#wmshoes .boots .boot .shoes .shoe:hover .shoehover {
+  top: 0;
+}
+
+#wmshoes .boots .boot .shoes .shoe:hover .imgcon2 {
+  top: 0;
+}
+
+#wmshoes .boots .boot .more {
+  width: 100%;
+  text-align: right;
+  margin-top: 37px;
+  font-size: 18px;
+  color: #7176fe;
+  text-decoration: underline;
+}
+
+#wmshoes .aboutcon {
+  margin-bottom: 85px;
+  color: white;
+  text-align: right;
+}
+
+#wmshoes .aboutcon .aboutus {
+  display: flex;
+  justify-content: center;
+}
+
+#wmshoes .aboutcon .aboutus img {
+  width: 575px;
+  height: 524px;
+}
+
+#wmshoes .aboutcon .aboutus .msg {
+  width: 429px;
+  padding-right: 37px;
+  background: linear-gradient(80deg, #333da7, #5479d8);
+}
+
+#wmshoes .aboutcon .aboutus .msg > h4 {
+  font-size: 14px;
+  margin-top: 83px;
+}
+
+#wmshoes .aboutcon .aboutus .msg > h4 > div {
+  display: inline-block;
+  width: 15px;
+  height: 100%;
+}
+
+#wmshoes .aboutcon .aboutus .msg > h2 {
+  font-size: 53px;
+  margin-top: 19px;
+}
+
+#wmshoes .aboutcon .aboutus .msg > h3 {
+  font-size: 32px;
+  margin-top: -3px;
+  font-weight: normal;
+}
+
+#wmshoes .aboutcon .aboutus .msg > p {
+  padding-left: 57px;
+  margin-top: 30px;
+  font-size: 13px;
+  opacity: 0.5;
+  line-height: 23px;
+}
+
+#wmshoes .shoesfoot {
+  background-color: #4c6ca7;
+  text-align: center;
+  color: #fff;
+  padding-bottom: 120px;
+}
+
+#wmshoes .shoesfoot .footmsg > h2 {
+  font-size: 50px;
+  padding-top: 125px;
+}
+
+#wmshoes .shoesfoot .footmsg > p {
+  width: 1106px;
+  margin: 0 auto;
+  font-size: 18px;
+  text-align: left;
+  padding-top: 35px;
+  line-height: 25px;
+}
+
+#wmshoes .shoesfoot .footmsg > p a {
+  text-decoration: underline;
+  font-size: 18px;
+  color: #ffdb6c;
+  margin-left: 10px;
+}
+
+#wmshoes .shoesfoot .footmsg > div {
+  width: 238px;
+  height: 61px;
+  line-height: 61px;
+  margin: 0 auto;
+  margin-top: 70px;
+  border-radius: 31px;
+  background: linear-gradient(-35deg, #ffba34, #ffdb6c);
+}
+#wmshoes .shoesfoot .footmsg  .footmsgButton{
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  color: #ffffff;
+}

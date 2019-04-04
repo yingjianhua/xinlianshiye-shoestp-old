@@ -300,6 +300,10 @@ public class UsrMainAction extends HomeAction<UsrMain> {
         throw new WebMessageException(
                 MessageBuild.buildMessage(ReturnCode.valid_country_notnull, HomeAction.curLanguage()));
       }
+      if(Str.isEmpty(getBackUrl())){
+        throw new WebMessageException(
+                MessageBuild.buildMessage(ReturnCode.valid_url_notnull, HomeAction.curLanguage()));
+      }
 
     }
 
@@ -576,11 +580,11 @@ public class UsrMainAction extends HomeAction<UsrMain> {
         ins.setB(us);
         ins.commit();
         System.out.println(".."+getBackUrl());
-        setResult(getBackUrl()+"?result=1");
+        setResult(getBackUrl()+"?result=1",false);
       } else {
-        setResult(getBackUrl()+"?result=0");
+        setResult(getBackUrl()+"?result=0",false);
       }
     CacheUtils.mailValid.invalidate(uid);
-    return HomeAction.TRENDS;
+    return RTRENDS;
   }
 }

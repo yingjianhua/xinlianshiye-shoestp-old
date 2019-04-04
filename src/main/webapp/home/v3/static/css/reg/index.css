@@ -78,6 +78,7 @@
     overflow: hidden;
     font-size: 14px;
     background: #fff;
+    box-sizing: border-box;
 }
 
 .page-register_1 .step-overview, .page-register_2 .step-overview {
@@ -406,7 +407,7 @@
 .page-register_2 .count-info-form {
     position: relative;
     width: 500px;
-    margin-left: 280px;
+    margin-left: 250px;
 }
 
 .page-register_2 .count-info-form .text-form-item {

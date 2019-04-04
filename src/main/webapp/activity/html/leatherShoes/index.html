@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<title>shoestp</title>
+	<script src="js/vue.js"></script>
+	<link rel="stylesheet" href="element/element-ui.css">
+<!--	<script src="element/element-ui.js"></script>-->
+	<script src="js/axios.js"></script>
+	<script src='./js/vue.min.js'></script>
+	<script src="./js/element-ui.min.js"></script>
+	<script src="./js/qs.js"></script>
+	<link rel="stylesheet" href="css/index.css">
+
+	<script src="./js/util.js"></script>
+	<script src="./js/register-box.js"></script>
+	<script src="./js/login-box.js"></script>
+	<link rel="stylesheet" href="./css/login.css"/>
+</head>
+<body>
+<div id="leather">
+
+	<register-box :props-reg="propsReg" @registersuccess="testFormSubmit"></register-box>
+	<login-box :props-login="propsLogin" @toregister="toRegister" @loginsuccess="loginSuccess"></login-box>
+
+	<!-- 头部 -->
+	<div class="leather-banner">
+		<div class="box bb">
+			<div class="leather-banner-head">
+				<span>
+					<img src="./images/logo.png" name="logo" alt="">
+				</span>
+				<span class="head-text">
+					 <a href="/home/pdt_PdtProduct" class="p_16 c_w">PRODUCTS</a>
+				</span>
+				<span class="head-text">
+					 <a href="javascript:;" class="p_16 c_w">POPULAR GOODS</a>
+				</span>
+				<span>
+                    <span class="mw_300" v-if="sysConfig && sysConfig.user">{{sysConfig.user.name}}</span>
+					<a href="javascript:;" v-else class="button" @click="testFormSubmit">SIGN UP</a>
+				</span>
+<!--				<span class="head-search">-->
+<!--					<input type="text" v-model ="search">-->
+<!--					<img src="./images/serach.png" name="search" @click="changeSearch" alt="">-->
+<!--				</span>-->
+				<span class="separate"></span>
+				<span class="head-share">
+					<img src="./images/f1.png" name="share" alt="">
+					<img src="./images/f2.png" name="share" alt="">
+					<img src="./images/f3.png" name="share" alt="">
+					<img src="./images/f4.png" name="share" alt="">
+					<img src="./images/f5.png" name="share" alt="">
+				</span>
+			</div>
+		</div>
+		<div class="box">
+			<div class="leather-banner-rfq w_1240">
+				<div class="rfq-button">
+					<a href="javascript:;" class="button" @click="skipRFQ">RFQ</a>
+				</div>
+				<div class="rfq-module">
+					<div class="rfq-module-item">
+						<span class="rfq-module-item__image">
+							<img src="./images/icon-js_01.png" name="bannerIcon" alt="">
+						</span>
+						<span class="rfq-module-item__text">
+							<h2>Variety Of Suppliers</h2>
+							<p>More than 1000 items</p>
+							<p>Different type of shoes</p>
+							<p>Well-made shoes for every occasion </p>
+						</span>
+					</div>
+					<div class="rfq-module-item m_l30_r30">
+						<span class="rfq-module-item__image">
+							<img src="./images/icon-js_02.png" name="bannerIcon" alt="">
+						</span>
+						<span class="rfq-module-item__text">
+							<h2>The Lowest Price In The Market</h2>
+							<p>Low price in O2O </p>
+							<p>High quality but low price</p>
+						</span>
+					</div>
+					<div class="rfq-module-item">
+						<span class="rfq-module-item__image">
+							<img src="./images/icon-js_03.png" name="bannerIcon" alt="">
+						</span>
+						<span class="rfq-module-item__text">
+							<h2>SVS Suppliers Standard</h2>
+							<p>Including factors that buyers are much concerned about</p>
+							<p>Showing the performance of manufacturers objectively</p>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="w_1240 ta_r">
+			<a href="/html/SVS/svsSuplies.jsp" class="view ban-view">View</a>
+		</div>
+	</div>
+	<!--product-->
+	<div class="leather-product box">
+		<div class="leather-product-dress w_1240">
+			<h2 class="ta_c dress-h2">Dress Shoes</h2>
+			<div class="dress-list" v-if="dressShoes.length > 0">
+				<div class="dress-list-item" v-for="(item,index) in dressShoes" v-if="index < 3" :class="index == 1 ? 'm_l35_r35' : ''">
+					<div class="item-image-box">
+						<div class="item-image">
+							<img v-if="item.picture" :src="'https://image.shoestp.com' + item.picture.split(',')[0] + '?x-oss-process=image/resize,w_298,h_261'" name="productShoes" alt="">
+						</div>
+					</div>
+					<div class="item-intro">
+						<p class="item-intro-title fz_24">{{item.pdtName}}</p>
+						<h2 class="item-intro-price">${{item.price}}</h2>
+						<p class="fz_24 item-intro-text">Min.Order:{{item.minOrder}} pairs</p>
+						<div class="item-intro-button">
+							<a :href="'/home/usr_UsrConsult_productPublishView?product_id=' + item.pdtId" class="button">INQUIRY</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="dress-list" v-else>
+				<h2 style="text-align: center">NO RESULT</h2>
+				<p style="text-align: center;color: #999999;">There is no relevant content for the time being.</p>
+			</div>
+		</div>
+
+		<div class="leather-product-dress w_1240 mt_120">
+			<h2 class="ta_c dress-h2">Causal Leather Shoes</h2>
+			<div class="dress-list" v-if="leatherShoes.length > 0">
+				<div class="dress-list-item" v-for="(item,index) in leatherShoes" v-if="index < 3" :class="index == 1 ? 'm_l35_r35' : ''">
+					<div class="item-image-box">
+						<div class="item-image">
+							<img v-if="item.picture" :src="'https://image.shoestp.com' + item.picture.split(',')[0] + '?x-oss-process=image/resize,w_298,h_261'" name="productShoes" alt="">
+						</div>
+					</div>
+					<div class="item-intro">
+						<p class="item-intro-title fz_24">{{item.pdtName}}</p>
+						<h2 class="item-intro-price">${{item.price}}</h2>
+						<p class="fz_24 item-intro-text">Min.Order:{{item.minOrder}} pairs</p>
+						<div class="item-intro-button">
+							<a :href="'/home/usr_UsrConsult_productPublishView?product_id=' + item.pdtId" class="button">INQUIRY</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="dress-list" v-else>
+				<h2 style="text-align: center">NO RESULT</h2>
+				<p style="text-align: center; color: #999999;">There is no relevant content for the time being.</p>
+			</div>
+		</div>
+
+		<div class="w_1240 ta_r mt_40">
+			<a href="/home/pdt_PdtProduct" class="view">View</a>
+		</div>
+	</div>
+	<!--about us-->
+	<div class="leather-about box">
+		<div class="w_1240 leather-about-box">
+			<div class="leather-about-intro">
+				<h2 class="intro-h2">About</h2>
+				<h2 class="intro-h2">Shoestp</h2>
+				<p class="intro-p">Shoestp is the biggest platform of shoe industries in china. All kinds of well-made shoes which are more than 1000 items for every occasion are available with high quality but low price. Manufacturers direct marketing promises you the most reasonable price and our own SVS Certification System ensures you the quality of shoes. It warmly expects to establish cooperative relationships with companies and manufacturers at home and abroad to obtain common development.</p>
+			</div>
+			<div class="leather-about-image">
+				<img src="./images/lhl-about-company.png" name="company" alt="">
+			</div>
+		</div>
+	</div>
+	<!--尾部-->
+	<div class="leather-footer box">
+		<div class="w_1240 leather-footer-box">
+			<div class="leather-footer-svs">
+				<h2 class="leather-footer-svs__title">What is SVS?</h2>
+				<p class="leather-footer-svs__p">SVS is a certification system for the factory, which is based on the key aspects such as actual manufacturers , production capacity, product quality, R&D capacity, trade capacity, trade show, etc. And it helps buyer find their target Supplier more faster, accurate and time-saving than any other way.  <a href="javascript:;" class="view">View More＋</a></p>
+				<div class="leather-footer-svs__button">
+					<a href="/html/SVS/svsSuplies.jsp" class="button">SVS Suppliers</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	var sysConfig;
+	new Vue({
+	    el: '#leather',
+	    data: {
+            // 注册弹框 - props属性
+            propsReg:{
+                showRegister: false,
+                step: 1
+            },
+            // 登录弹框 - props属性
+            propsLogin:{
+                showLogin: false
+            },
+
+            search: '',
+            dressShoes: [
+	            {
+	                image: './images/del-shoes.png',
+	                name: 'Autumn and winter retro outdoor men\'s shoes Autumn and winter retro outdoor men\'s shoes',
+		            price: 7.9,
+		            minOrder: 600
+	            },{
+                    image: './images/del-shoes.png',
+                    name: 'Autumn and winter retro outdoor men\'s shoes Autumn and winter retro outdoor men\'s shoes',
+                    price: 7.9,
+                    minOrder: 600
+                },{
+                    image: './images/del-shoes.png',
+                    name: 'Autumn and winter retro outdoor men\'s shoes Autumn and winter retro outdoor men\'s shoes',
+                    price: 7.9,
+                    minOrder: 600
+                }
+            ],
+            leatherShoes: []
+	    },
+	    mounted() {
+	        this.sendDressShoes()
+		    this.sendLeatherShoes()
+            // 注册时 -邮箱调转回来时显示成功提示
+            if(this.GetQueryString("result")==1 && sessionStorage.getItem("landPageHaveSendEmail")){
+                this.propsReg.showRegister=true;
+                this.propsReg.step=3;
+                sessionStorage.removeItem("landPageHaveSendEmail")
+                // 否则当作页面刷新 - reset
+            }else if(this.GetQueryString("result")==0 && sessionStorage.getItem("landPageHaveSendEmail")){
+                this.propsReg.showRegister=true;
+                this.propsReg.step=404;
+                sessionStorage.removeItem("landPageHaveSendEmail")
+            }else{
+                this.propsReg.step=1;
+            }
+	    },
+	    methods:{
+	        // 获取礼服鞋
+	        sendDressShoes() {
+                let self = this;
+                axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax', {
+                    params: {
+                        v: 4,
+                        start: 0,
+                        'search.category': 396,
+                        limit:3
+                    }
+                }).then(function (res) {
+                    console.log(res)
+                    if(res.data.ret == 1){
+                        self.$set(self,'dressShoes',res.data.result.items)
+                    }else{
+                        let msg = 'Failed to get dress shoe list'
+                        if(res.data.msg){
+                            msg = res.data.msg
+                        }
+                        self.$message({
+                            message: msg,
+                            type: 'warning'
+                        });
+                    }
+                })
+	        },
+		    // 获取皮鞋
+		    sendLeatherShoes() {
+                let self = this;
+                axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax', {
+                    params: {
+                        v: 4,
+                        start: 0,
+                        'search.category': 527,
+                        limit: 3
+                    }
+                }).then(function (res) {
+                    console.log(res)
+                    if(res.data.ret == 1){
+                        self.$set(self,'leatherShoes',res.data.result.items)
+                    }else{
+                        let msg = 'Failed to get a list of shoes'
+                        if(res.data.msg){
+                            msg = res.data.msg
+                        }
+                        self.$message({
+                            message: msg,
+                            type: 'warning'
+                        });
+                    }
+                })
+		    },
+	        // 跳转RFQ
+            skipRFQ() {
+                if( !sysConfig || !sysConfig.user ){
+                    this.propsLogin.showLogin=true
+                    return;
+                } else {
+                    window.location.href = '/home/usr_UsrConsult_publishView'
+                }
+            },
+            // 判断登录
+            testFormSubmit(){
+                // 未登录时操作 - 显示登录框
+                if( !sysConfig || !sysConfig.user ){
+                    this.propsLogin.showLogin=true
+                    return;
+                } else {
+                    this.$message({
+                        message: 'Already Logged In',
+                        type: 'success'
+                    });
+                }
+                console.log("已登陆 - 在次进行操作")
+            },
+            // 判断是否已经登录
+            getLoginInfo(){
+                var self = this
+                axios({
+                    url: "/home/plt_PltConfig_getSysConfig"
+                }).then(function (res) {
+                    if (res.data.ret && res.data.ret == 1) {
+                        sysConfig = res.data.result
+                        Vue.set(self, "language", res.data.result.current_language)
+                        Vue.set(self, "sysConfig", res.data.result)
+                        Vue.set(self, "languageList", res.data.result.languages)
+                        this.$message({
+                            message: 'Already Logged In',
+                            type: 'success'
+                        });
+                    } else {
+                        console.error("ERR::FLAG")
+                    }
+                }).catch(function (err) {
+                    console.error("ERR::FLAG")
+                })
+            },
+            // 登录成功后刷新登录信息
+            loginSuccess(){
+                this.propsReg.step=1;
+                this.getLoginInfo();
+            },
+
+            // 去注册
+            toRegister(){
+                this.propsLogin.showLogin=false;
+                this.propsReg.showRegister=true;
+            },
+            // 读取链接带参
+            GetQueryString: function(name){
+                var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if(r!=null)return  decodeURI(unescape(r[2]));
+                return null;
+            },
+		    // 搜索列表
+            changeSearch() {
+                console.log(this.search)
+            }
+	    }
+	})
+</script>
+
+
+<!-- Global site tag (gtag.js) - Google Ads: 783435725 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'AW-783435725');
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-127715615-6"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-127715615-6');
+</script>
+</body>
+</html>
