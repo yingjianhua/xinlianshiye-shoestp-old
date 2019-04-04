@@ -117,7 +117,11 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
     }
   }
 
-  // 正则校验
+  /**
+   * 正则校验
+   * @author: lingjian
+   * @Date: 2019/4/3 11:43
+   */
   public void regex() throws Exception {
     ValidForm valid = new ValidForm(getBean());
     valid.validNotEmpty(
@@ -130,7 +134,8 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
         UsrSupplier.T.CERT_PHOTO);
     ValidRegex2 regex = new ValidRegex2(getBean());
     if (getBean().getEnglishName() != null){
-      regex.validRegexMatched("^[a-zA-Z ]{1,60}$", "请填写英文字母,且不超过60位", UsrSupplier.T.ENGLISH_NAME);
+      regex.validRegexMatched(
+          "^[^\\u4e00-\\u9fa5]{0,90}$", "请填写英文名称，不能填写中文，且长度不可超过90位", UsrSupplier.T.ENGLISH_NAME);
     }
     if (getBean().getWebsite() != null){
       regex.validRegexMatched(
