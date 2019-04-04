@@ -37,21 +37,31 @@
 				<span class="head-text">
 					 <a href="javascript:;" class="p_16 c_w">POPULAR GOODS</a>
 				</span>
-				<span>
-                    <span class="mw_300" v-if="sysConfig && sysConfig.user">{{sysConfig.user.name}}</span>
-					<a href="javascript:;" v-else class="button" @click="testFormSubmit">SIGN UP</a>
+				<span class="fg_r">
+					<span class="mw_300 c_w" v-if="sysConfig && sysConfig.user">{{sysConfig.user.name}}</span>
+					<a href="javascript:void(0);" v-else class="button" @click="testFormSubmit">SIGN UP</a>
 				</span>
-<!--				<span class="head-search">-->
+				<!--				<span class="head-search">-->
 <!--					<input type="text" v-model ="search">-->
 <!--					<img src="./images/serach.png" name="search" @click="changeSearch" alt="">-->
 <!--				</span>-->
 				<span class="separate"></span>
 				<span class="head-share">
-					<img src="./images/f1.png" name="share" alt="">
-					<img src="./images/f2.png" name="share" alt="">
-					<img src="./images/f3.png" name="share" alt="">
-					<img src="./images/f4.png" name="share" alt="">
-					<img src="./images/f5.png" name="share" alt="">
+					<a href="https://www.facebook.com/ShoestpCN/">
+						<img src="./images/f1.png" name="share" alt="">
+					</a>
+					<a href="https://twitter.com/shoes_logo">
+						<img src="./images/f2.png" name="share" alt="">
+					</a>
+<!--					<a href="https://www.facebook.com/ShoestpCN/">-->
+<!--						<img src="./images/f3.png" name="share" alt="">-->
+<!--					</a>-->
+					<a href="https://www.linkedin.com/company/shoestp/?viewAsMember=true">
+						<img src="./images/f4.png" name="share" alt="">
+					</a>
+					<a href="https://www.youtube.com/channel/UCUHObFxGQ_FaHCKolyZ9k0w/featured?view_as=subscriber">
+						<img src="./images/f5.png" name="share" alt="">
+					</a>
 				</span>
 			</div>
 		</div>
@@ -173,7 +183,7 @@
 		<div class="w_1240 leather-footer-box">
 			<div class="leather-footer-svs">
 				<h2 class="leather-footer-svs__title">What is SVS?</h2>
-				<p class="leather-footer-svs__p">SVS is a certification system for the factory, which is based on the key aspects such as actual manufacturers , production capacity, product quality, R&D capacity, trade capacity, trade show, etc. And it helps buyer find their target Supplier more faster, accurate and time-saving than any other way.  <a href="javascript:;" class="view">View More＋</a></p>
+				<p class="leather-footer-svs__p">SVS is a certification system for the factory, which is based on the key aspects such as actual manufacturers , production capacity, product quality, R&D capacity, trade capacity, trade show, etc. And it helps buyer find their target Supplier more faster, accurate and time-saving than any other way.  <a href="/html/SVS/svs.jsp" class="view">View More＋</a></p>
 				<div class="leather-footer-svs__button">
 					<a href="/html/SVS/svsSuplies.jsp" class="button">SVS Suppliers</a>
 				</div>
@@ -221,6 +231,10 @@
 	    mounted() {
 	        this.sendDressShoes()
 		    this.sendLeatherShoes()
+
+            // 查看是否登录
+            this.getLoginInfo();
+
             // 注册时 -邮箱调转回来时显示成功提示
             if(this.GetQueryString("result")==1 && sessionStorage.getItem("landPageHaveSendEmail")){
                 this.propsReg.showRegister=true;
@@ -303,11 +317,6 @@
                 if( !sysConfig || !sysConfig.user ){
                     this.propsLogin.showLogin=true
                     return;
-                } else {
-                    this.$message({
-                        message: 'Already Logged In',
-                        type: 'success'
-                    });
                 }
                 console.log("已登陆 - 在次进行操作")
             },
@@ -322,14 +331,11 @@
                         Vue.set(self, "language", res.data.result.current_language)
                         Vue.set(self, "sysConfig", res.data.result)
                         Vue.set(self, "languageList", res.data.result.languages)
-                        this.$message({
-                            message: 'Already Logged In',
-                            type: 'success'
-                        });
                     } else {
                         console.error("ERR::FLAG")
                     }
                 }).catch(function (err) {
+                    console.log(err)
                     console.error("ERR::FLAG")
                 })
             },
