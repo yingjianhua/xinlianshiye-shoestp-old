@@ -181,7 +181,8 @@ public class UsrSupplierAction extends MgtAction<UsrSupplier> {
       regex.validRegexMatched(REGULAR_COMPANY, "首尾不能为符号 且 长度在1-52位之间", UsrSupplier.T.NAME);
     }
     if (getBean().getEnglishName() != null) {
-      regex.validRegexMatched("[a-zA-Z ]{1,60}", "请填写英文字母,且不超过60位", UsrSupplier.T.ENGLISH_NAME);
+      regex.validRegexMatched(
+          "^[^\\u4e00-\\u9fa5]{0,90}$", "请填写英文名称，不能填写中文，且长度不可超过90位", UsrSupplier.T.ENGLISH_NAME);
     }
     if (getBean().getWebsite() != null) {
       regex.validRegexMatched(
