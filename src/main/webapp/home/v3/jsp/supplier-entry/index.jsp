@@ -480,11 +480,11 @@
         }
     };
     var validateenglishName = function(rule, value, callback){
-        let reg = /^[a-zA-Z ]{1,60}$/
+        let reg = /^[^\u4e00-\u9fa5]{0,90}$/
         if (!value) {
             return callback(new Error("请填写英文名称"));
         } else if(!reg.test(value)){
-            return callback(new Error("请填写英文字母,且不超过60位"));
+            return callback(new Error("请填写英文名称，不能填写中文"));
         } else {
          callback();
         }
