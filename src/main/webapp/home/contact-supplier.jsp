@@ -56,7 +56,7 @@
                         <p class="company-name">
                             {{companyInfo.companyName}}
                         </p>
-                        <div v-if="companyInfo.svsgrade" style="color:#7f7f7f">
+                        <div v-if="companyInfo.svsgrade && companyInfo.svsgrade != 0" style="color:#7f7f7f">
                             <img v-if="companyInfo.svsgrade == 1" src="/home/static/images/ico/icon-svs-yp.png" alt="">
                             <img v-if="companyInfo.svsgrade == 2" src="/home/static/images/ico/icon-svs-jp.png" alt="">
                             <img v-if="companyInfo.svsgrade == 3" src="/home/static/images/ico/icon-svs-zs.png" alt="">

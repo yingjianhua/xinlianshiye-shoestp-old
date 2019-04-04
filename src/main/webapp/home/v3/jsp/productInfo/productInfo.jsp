@@ -1036,7 +1036,7 @@
                             <img class="mr4" src="/home/v3/static/images/productInfo/icon-renzheng.png" alt=""/>Certificate
                             <div class="i" v-if="productinfocom.svsInfo && productinfocom.svsInfo.status == 1"></div>
                             <!-- <img class="mr4" src="/home/v3/static/images/productInfo/icon-jinpai.png" alt=""/> -->
-                            <template v-if="productinfocom.svsInfo && productinfocom.svsInfo.status == 1">
+                            <template v-if="productinfocom.svsInfo && productinfocom.svsInfo.grade != 0 && productinfocom.svsInfo.status == 1">
                                 <img class="mr4" v-if="productinfocom.svsInfo.grade == 1" src="/home/static/images/ico/icon-svs-yp.png" alt="SVS" style="width:14px;"/>
                                 <img class="mr4" v-if="productinfocom.svsInfo.grade == 2" src="/home/static/images/ico/icon-svs-jp.png" alt="SVS" style="width:14px;"/>
                                 <img class="mr4" v-if="productinfocom.svsInfo.grade == 3" src="/home/static/images/ico/icon-svs-zs.png" alt="SVS" style="width:14px;"/>
