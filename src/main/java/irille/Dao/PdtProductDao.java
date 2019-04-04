@@ -1,5 +1,8 @@
 package irille.Dao;
 
+import static irille.core.sys.Sys.OYn.YES;
+import static java.util.stream.Collectors.toList;
+
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLDecoder;
@@ -20,15 +23,21 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import org.apache.logging.log4j.util.Strings;
+import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import irille.Aops.Caches;
-import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
-import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_Activity;
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Entity.O2O.O2O_Product;
+import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
+import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.RFQ.RFQConsult;
 import irille.action.dataimport.util.StringUtil;
 import irille.core.sys.Sys;
+import irille.core.sys.Sys.OEnabled;
 import irille.core.sys.Sys.OYn;
 import irille.homeAction.pdt.dto.PdtProductView;
 import irille.pub.bean.BeanBase;
@@ -41,9 +50,9 @@ import irille.pub.exception.WebMessageException;
 import irille.pub.svr.DbPool;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumFld;
-import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.GetValue;
 import irille.pub.util.SEOUtils;
+import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.sellerAction.pdt.view.PrivatePdtView;
@@ -68,13 +77,6 @@ import irille.view.Page;
 import irille.view.pdt.PdtProductBaseInfoView;
 import irille.view.pdt.PdtProductCatView;
 import irille.view.pdt.PdtSearchView;
-import org.apache.logging.log4j.util.Strings;
-import org.json.JSONException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import static irille.core.sys.Sys.OYn.YES;
-import static java.util.stream.Collectors.toList;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/7 Time: 14:47 */
 public class PdtProductDao {
@@ -495,7 +497,12 @@ public class PdtProductDao {
       return null;
     }
     BeanQuery query = new BeanQuery();
-    query.SELECT(PdtCat.T.PKEY).FROM(PdtCat.class).WHERE(PdtCat.T.CATEGORY_UP, "=?", id);
+    query
+        .SELECT(PdtCat.T.PKEY)
+        .FROM(PdtCat.class)
+        .WHERE(PdtCat.T.CATEGORY_UP, "=?", id)
+        .WHERE(PdtCat.T.ENABLED, " =? ", OEnabled.TRUE)
+        .WHERE(PdtCat.T.DELETED, " =? ", OYn.NO);
     List<PdtCat> l = new ArrayList();
     List<PdtCat> tList = query.queryList();
     List ttList = new ArrayList();
@@ -510,6 +517,8 @@ public class PdtProductDao {
                 .SELECT(PdtCat.T.PKEY)
                 .FROM(PdtCat.class)
                 .WHERE(PdtCat.T.CATEGORY_UP, "=?", objects.getPkey())
+                .WHERE(PdtCat.T.ENABLED, " =? ", OEnabled.TRUE)
+                .WHERE(PdtCat.T.DELETED, " =? ", OYn.NO)
                 .queryList());
       }
       l.addAll(ttList);
@@ -1048,7 +1057,7 @@ public class PdtProductDao {
    * @date 2018/8/22 21:59
    */
   public List<PdtProductCatView> getCatChildNodesByCatIdRemoveDisplay(
-          Integer integer, FldLanguage.Language language) {
+      Integer integer, FldLanguage.Language language) {
     FormaterSql sql = FormaterSql.build();
     if (integer == null || integer == 0) {
       sql.isNull(PdtCat.T.CATEGORY_UP);
@@ -1056,21 +1065,21 @@ public class PdtProductDao {
       sql.eqAutoAnd(PdtCat.T.CATEGORY_UP, integer);
     }
     List<PdtProductCatView> result =
-            PdtCat.list(PdtCat.class, sql.toWhereString(), false, sql.getParms()).stream()
-                    .filter(s -> !s.gtDeleted())
-                    .map(
-                            s -> {
-                              PdtProductCatView pdtProductVueView = new PdtProductCatView();
-                              translateUtil.getAutoTranslate(s, language);
-                              pdtProductVueView.setValue(s.getPkey());
-                              pdtProductVueView.setLabel(s.getName());
-                              List l = getCatChildNodesByCatId(s.getPkey(), language);
-                              if (l.size() > 0) {
-                                pdtProductVueView.setChildren(l);
-                              }
-                              return pdtProductVueView;
-                            })
-                    .collect(Collectors.toList());
+        PdtCat.list(PdtCat.class, sql.toWhereString(), false, sql.getParms()).stream()
+            .filter(s -> !s.gtDeleted())
+            .map(
+                s -> {
+                  PdtProductCatView pdtProductVueView = new PdtProductCatView();
+                  translateUtil.getAutoTranslate(s, language);
+                  pdtProductVueView.setValue(s.getPkey());
+                  pdtProductVueView.setLabel(s.getName());
+                  List l = getCatChildNodesByCatId(s.getPkey(), language);
+                  if (l.size() > 0) {
+                    pdtProductVueView.setChildren(l);
+                  }
+                  return pdtProductVueView;
+                })
+            .collect(Collectors.toList());
     return result;
   }
 
