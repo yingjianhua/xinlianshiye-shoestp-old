@@ -68,9 +68,10 @@ public class PdtCatAction extends SellerAction<PdtCat> implements IPdtCatAction 
     ServletActionContext.getResponse().getWriter().print(json.toString());
   }
 
+  @Override
   public void getPdtCatList() {
     try {
-      write(iPdtProduct.getCatChildNodesByCatId(0, PltConfigDAO.supplierLanguage(getSupplier())));
+      write(iPdtProduct.getCatChildNodesByCatIdRemoveDisplay(0, PltConfigDAO.supplierLanguage(getSupplier())));
     } catch (IOException e) {
       e.printStackTrace();
     }

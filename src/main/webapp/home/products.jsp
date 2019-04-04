@@ -3,7 +3,7 @@
 <jsp:include page="v3/header.jsp"/>
 <link rel="stylesheet" href="/home/v3/static/css/productList.css">
 <link href="./static/css/style.css" rel="stylesheet" type="text/css">
-<link href="./static/css/global.css" rel="stylesheet" type="text/css">
+<!-- <link href="./static/css/global.css" rel="stylesheet" type="text/css"> -->
 <link href="./static/css/user.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="./static/js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="/home/static/js/user.js"></script>
@@ -43,6 +43,7 @@
     <!--分级导航-->
     <div class="topNav">
         <div class="h1"><a href="/">Home</a><i class="el-icon-arrow-right"></i></div>
+        <div class="h1"><a :class="{'now':(!breadcrumbnav || breadcrumbnav.length<=0)}" href="/home/pdt_PdtProduct"> All product</a><i v-if="breadcrumbnav && breadcrumbnav.length>0" class="el-icon-arrow-right"></i></div>
         <blcok v-if="breadcrumbnav && breadcrumbnav.length>0">
             <div class="h1" v-for="(item,index) in breadcrumbnav" for-key="index">
                 <a @click="categorySearch" :data-cated="item.pkey" href="javascript:;"
@@ -50,7 +51,6 @@
                 <i class="el-icon-arrow-right" v-show="breadcrumbnav.length-1!=index"></i>
             </div>
         </blcok>
-        <div class="h1"><a class="now" href="/" v-if="!breadcrumbnav || breadcrumbnav.length<=0"> All product</a></div>
     </div>
     <!--页面左部分类导航-->
     <div class="leftNav fl">
@@ -106,30 +106,34 @@
                                         v-for="item,index in countryList"
                                         v-show="(!filterAreaKeyword) || (filterAreaKeyword && item.name.toLowerCase().indexOf(filterAreaKeyword.toLowerCase())!=-1 )"
                                         :key="item.id"
-                                        :label="item.id">
+                                        :label="item.id"
+                                        @change="changeCountry"
+                                        >
                                     {{item.name}}
                                 </el-checkbox>
                         </el-checkbox-group>
                 </ul>
             </div>
             <div class="top-box">
-                <p>Supplier Level<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
+                <p>SVS Level<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
                 <div class="i1"></div>
                 <ul style="height:auto;">
-                    <el-checkbox-group v-model="grade">
-                        <el-checkbox label="3" name="3"> <img src="/home/v3/static/images/supplier-level3.png" alt="" style="margin-right:8px;">Diamond</el-checkbox>
-                        <el-checkbox label="2" name="2"><img src="/home/v3/static/images/supplier-level2.png" alt="" style="margin-right:8px;">Gold</el-checkbox>
-                        <el-checkbox label="1" name="1"><img src="/home/v3/static/images/supplier-level1.png" alt="" style="margin-right:8px;">Silver</el-checkbox>
+                    <el-checkbox-group v-model="grade" class="my-ele-checkbox-group1">
+                        <el-checkbox label="3" name="3" @change="changeSVSLevel"> <img src="/home/v3/static/images/supplier-level3.png" alt="" style="margin-right:8px;">Diamond</el-checkbox>
+                        <el-checkbox label="2" name="2" @change="changeSVSLevel"><img src="/home/v3/static/images/supplier-level2.png" alt="" style="margin-right:8px;">Gold</el-checkbox>
+                        <el-checkbox label="1" name="1" @change="changeSVSLevel"><img src="/home/v3/static/images/supplier-level1.png" alt="" style="margin-right:8px;">Silver</el-checkbox>
                     </el-checkbox-group>
                 </ul>
             </div>
             <div class="top-box">
-                    <p style="padding: 0 43px;padding-top:10px;">Price<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
-                    <div class="i1"></div>
-                    <ul style="padding:10px 0;width:auto;height:auto;">
-                        <div class="price-sort" :class="sort == item.rule?'price-sort-active' :''" v-for="(item, index) in priceSortList" :key="index" @click="priceBtn(item.rule)">{{item.name}}</div>
-                    </ul>
-                </div>
+                <p style="min-width: 120px;text-align: center;white-space: nowrap;">
+                {{(sort || sort===0)? priceSortList[sort].name: "Price"}}
+                <img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
+                <div class="i1"></div>
+                <ul style="padding:10px 0;width:168px;height:auto;text-align: center;">
+                    <div class="price-sort" :class="sort == item.rule?'price-sort-active' :''" v-for="(item, index) in priceSortList" :key="index" @click="priceBtn(item.rule)">{{item.name}}</div>
+                </ul>
+            </div>
             <%-- <div class="top-box">
                 <p>Export Countries<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt="" /></p><div class="i1"></div>
                 <ul>
@@ -149,14 +153,20 @@
             </div> --%>
 
             <div class="top-box2" style="margin-left: 20px;">Min Order :
-                <input class="w63" type="text" @blur="lessthan222" @keyup.enter="lessthan222" v-model.trim="lessthan"
-                       placeholder="less than" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/>
+                <input class="w63" type="text"
+                       v-model.trim="lessthan"
+                       placeholder="less than"
+                       @keyup.enter="search"
+                       onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/>
             </div>
             <div class="i0"></div>
             <div class="top-box2">Price :
-                <input class="w63" type="text" @blur="min222" @keyup.enter="min222" v-model.trim.number="min" placeholder="min."
+                <input class="w63" type="text"
+                       @keyup.enter="search"
+                       v-model.trim.number="min" placeholder="min."
                        onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/> -
-                <input class="w63" type="text" @blur="min222" @keyup.enter="min222" v-model.trim.number="max" placeholder="max."
+                <input class="w63" type="text" v-model.trim.number="max" placeholder="max."
+                       @keyup.enter="search"
                        onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/>
             </div>
 
@@ -178,7 +188,7 @@
                             <el-carousel-item v-for="item2 in item.picture.split(',')" :key="item">
                                 <div class="h3" @mouseenter="bigPicBoxopen" @mouseleave="bigPicBoxclose"
                                      :data-pic="item2">
-                                    <a :href="'/'+item.rewrite" target="_blank"><img class="fl"
+                                    <a :href="'/'+item.rewrite" target="_blank"><img class="fl goods-img"
                                                                                      :src="util_function_obj.image(item2,195)"/></a>
                                 </div>
                             </el-carousel-item>
@@ -231,22 +241,21 @@
                 <div class="common-boxspan fr">
                     <a class="h1" :href="'/home/usr_UsrSupplier_gtSupIndex?pkey='+item.supId"
                        target="_blank"><%--<div class="year">{{item.enter}}YRS</div>--%>{{item.supName}}</a>
-                    <div v-if="item.svsInfo && item.svsInfo.status == 1">
-                        <img class="mr6 icon01" src="/home/v3/static/images/ico/icon_cert.png" alt="Certificate"/>
-                        Certificate
-                        <div class="i"></div>
-                        <template  v-if="item.svsInfo && item.svsInfo.grade != 0">
-                            <img class="mr6" v-if="item.svsInfo.grade == 1" src="/home/v3/static/images/supplier-level1.png" alt="SVS"/>
-                            <img class="mr6" v-if="item.svsInfo.grade == 2" src="/home/v3/static/images/supplier-level2.png" alt="SVS"/>
-                            <img class="mr6" v-if="item.svsInfo.grade == 3" src="/home/v3/static/images/supplier-level3.png" alt="SVS"/>
+                    <div>
+                       <img class="mr6 icon01" src="/home/v3/static/images/ico/icon_cert.png" alt="Certificate"/>
+                       Certificate
+                        <div class="i" v-if="item.svsInfo && item.svsInfo.status == 1"></div>
+                        <template  v-if="item.svsInfo && item.svsInfo.grade != 0 && item.svsInfo.status == 1">
+                            <img v-if="item.svsInfo.grade == 1" src="/home/static/images/ico/icon-svs-yp.png" alt="SVS"/>
+                            <img v-if="item.svsInfo.grade == 2" src="/home/static/images/ico/icon-svs-jp.png" alt="SVS"/>
+                            <img v-if="item.svsInfo.grade == 3" src="/home/static/images/ico/icon-svs-zs.png" alt="SVS"/>
                             SVS
-                            <div class="i"></div>
                         </template>
                     </div>
                     <div>
                         <div class="ww42">R&D：</div>
-                        <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="item.svsInfo.researchBase">
-                            <el-rate v-model="item.svsInfo.researchBaseStar" disabled></el-rate>
+                        <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="(item.svsInfo.researchBase + 12) > 20 ? 20 : (item.svsInfo.researchBase + 12)">
+                            <el-rate v-model="/[\.]/.test(item.svsInfo.researchBaseStar)?Math.floor(item.svsInfo.researchBaseStar) + 0.5 + 3 : item.svsInfo.researchBaseStar + 3" disabled></el-rate>
                         </a>
                         <a v-else class="common-a" href="javascript:void(0);" title="0">
                                 <el-rate value="0" disabled></el-rate>
@@ -254,8 +263,8 @@
                     </div>
                     <div>
                         <div class="ww42">Output：</div>
-                        <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="item.svsInfo.factoryBase">
-                            <el-rate v-model="item.svsInfo.factoryBaseStar" disabled></el-rate>
+                        <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="(item.svsInfo.factoryBase + 12) > 20 ? 20 : (item.svsInfo.factoryBase + 12)">
+                            <el-rate v-model="/[\.]/.test(item.svsInfo.factoryBaseStar)?Math.floor(item.svsInfo.factoryBaseStar) + 0.5 + 3: item.svsInfo.factoryBaseStar + 3" disabled></el-rate>
                         </a>
                         <a v-else class="common-a" href="javascript:void(0);" title="0">
                             <el-rate value="0" disabled></el-rate>
@@ -263,15 +272,15 @@
                     </div>
                     <div>
                         <div class="ww42">Scale：</div>
-                        <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="item.svsInfo.capacityBase">
-                            <el-rate v-model="item.svsInfo.capacityBaseStar" disabled></el-rate>
+                        <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="(item.svsInfo.capacityBase + 12) > 20 ? 20 : (item.svsInfo.capacityBase + 12)">
+                            <el-rate v-model="/[\.]/.test(item.svsInfo.capacityBaseStar)?Math.floor(item.svsInfo.capacityBaseStar) + 0.5 + 3: item.svsInfo.capacityBaseStar + 3" disabled></el-rate>
                         </a>
                         <a v-else class="common-a" href="javascript:void(0);" title="0">
                             <el-rate value="0" disabled></el-rate>
                         </a>
                     </div>
                     <div>
-                        {{item.originCountry}} ( {{item.originProvince}} )
+                        {{item.originCountry}} {{item.originProvince? ("(" + item.originProvince + ")"): ""}}
                     </div>
                     <!-- <a class="btn" href="javascript:;" @click="addRFQ" :data-id = "item.pdtId">Contact Supplier</a> -->
                     <a class="btn" @click="ToContactSupplier(item.supId)">
@@ -325,7 +334,7 @@
             selelv: "",
             selecount: "",
             selestore: "",
-            cated: '', // 分类 
+            cated: '', // 分类
             lose: '',
             currentPage: 1,
             allpage: '',
@@ -350,15 +359,30 @@
             priceSortList:[
                 {name:"From low to high",rule:0,},
                 {name:"From high to low",rule:1},
-            ]
+            ],
+            pricerRuleActive:null,
         },
         methods: {
-            priceBtn(rule){  // 价格排序 选择按钮
-                this.sort =  rule
-                this.limit = 8
+            changeCountry(){
                 this.page = 0
                 this.curr = 1
                 this.productList();
+            },
+            changeSVSLevel(){
+                this.page = 0
+                this.curr = 1
+                this.productList();
+            },
+            priceBtn(rule){  // 价格排序 选择按钮
+                if(this.pricerRuleActive == rule){
+                    return;
+                }else{
+                    this.sort =  rule
+                    this.page = 0
+                    this.curr = 1
+                    this.productList();
+                }
+                this.pricerRuleActive = rule
             },
             getCountry(){  // 获取 国家列表
                 let self = this;
@@ -383,7 +407,7 @@
                         "search.grade": this.grade.toString(),
                     };
                     var url = '/home/pdt_PdtProduct_gtProductsIndexListAjax?v=4'
-                    var numbers = 0 
+                    var numbers = 0
                     for(var i in params){
                         if(i != Object.keys(params).length - 1 && params[i] != null){
                             url += "&"
@@ -690,6 +714,9 @@
             this.classList();
             this.productList();
             this.getCountry();
+            // console.log("向下取整  = = = = =  4.2  = = = ==" + Math.floor(4.2))
+            // console.log("向下取整  = = = = =  4.5  = =  = = =" + Math.floor(4.5))
+            // console.log("向下取整  = = = = =  4.8 = = = = = " + Math.floor(4.8))
         },
         watch: {
             // 输入监听

@@ -57,7 +57,7 @@ public class PMMessageServiceImp implements IPMMessageService {
         return null;
       }
     } else if (type.getLine().getKey() == ORCVRType.SUPPLIER.getLine().getKey()) {
-      if (null != purchase) {
+      if (null != supplier) {
         return messageDao.list(supplier.getPkey(), type, start, limit);
       } else {
         return null;
@@ -70,38 +70,42 @@ public class PMMessageServiceImp implements IPMMessageService {
   @Override
   public void send(
       OTempType tempType, UsrSupplier supplier, UsrPurchase purchase, Object... objects) {
-    PMTemplate template =
-        templateService.getTemplateMap().get(Integer.valueOf(tempType.getLine().getKey()));
-    if (null != template) {
-      if (template.getEmailStatus().equals(OYn.YES.getLine().getKey())
-          && null != template.getMailContent()) {
-        // 发送邮件
-        String content =
-            variableService.render(
-                variableService.getMap(tempType), template.getMailContent(), objects);
-        if (tempType.getRcvrType().equals(ORCVRType.SUPPLIER) && null != supplier) {
-          sendEmail(tempType, supplier, null, template.getMailTitle(), content);
-        } else if (tempType.getRcvrType().equals(ORCVRType.PURCHASE) && null != purchase) {
-          sendEmail(tempType, null, purchase, template.getMailTitle(), content);
-        } else {
-          sendEmail(tempType, null, null, template.getMailTitle(), content);
+    try {
+      PMTemplate template =
+          templateService.getTemplateMap().get(Integer.valueOf(tempType.getLine().getKey()));
+      if (null != template) {
+        if (template.getEmailStatus().equals(OYn.YES.getLine().getKey())
+            && null != template.getMailContent()) {
+          // 发送邮件
+          String content =
+              variableService.render(
+                  variableService.getMap(tempType), template.getMailContent(), objects);
+          if (tempType.getRcvrType().equals(ORCVRType.SUPPLIER) && null != supplier) {
+            sendEmail(tempType, supplier, null, template.getMailTitle(), content);
+          } else if (tempType.getRcvrType().equals(ORCVRType.PURCHASE) && null != purchase) {
+            sendEmail(tempType, null, purchase, template.getMailTitle(), content);
+          } else {
+            sendEmail(tempType, null, null, template.getMailTitle(), content);
+          }
         }
-      }
 
-      if (template.getPmStatus().equals(OYn.YES.getLine().getKey())
-          && null != template.getPmContent()) {
-        // 发送站内信
-        String content =
-            variableService.render(
-                variableService.getMap(tempType), template.getPmContent(), objects);
-        if (tempType.getRcvrType().equals(ORCVRType.SUPPLIER) && null != supplier) {
-          sendPm(tempType, supplier, null, template.getTitle(), content);
-        } else if (tempType.getRcvrType().equals(ORCVRType.PURCHASE) && null != purchase) {
-          sendPm(tempType, null, purchase, template.getTitle(), content);
-        } else {
-          sendPm(tempType, null, null, template.getTitle(), content);
+        if (template.getPmStatus().equals(OYn.YES.getLine().getKey())
+            && null != template.getPmContent()) {
+          // 发送站内信
+          String content =
+              variableService.render(
+                  variableService.getMap(tempType), template.getPmContent(), objects);
+          if (tempType.getRcvrType().equals(ORCVRType.SUPPLIER) && null != supplier) {
+            sendPm(tempType, supplier, null, template.getTitle(), content);
+          } else if (tempType.getRcvrType().equals(ORCVRType.PURCHASE) && null != purchase) {
+            sendPm(tempType, null, purchase, template.getTitle(), content);
+          } else {
+            sendPm(tempType, null, null, template.getTitle(), content);
+          }
         }
       }
+    } catch (Exception e) {
+      Log.info("消息发送失败:" + e.getMessage());
     }
   }
 

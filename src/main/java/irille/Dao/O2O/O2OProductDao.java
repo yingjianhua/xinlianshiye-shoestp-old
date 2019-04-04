@@ -384,7 +384,7 @@ public class O2OProductDao {
                 + "."
                 + SVSInfo.T.GRADE.getFld().getCodeSqlField()
                 + " = ? )",
-            O2O_ProductStatus.ON.getLine().getKey());
+            SVSGradeType.NotAvailable.getLine().getKey());
       } else {
         sql.WHERE(SVSInfo.T.GRADE, " =? ", search.getGrade());
       }
@@ -442,7 +442,7 @@ public class O2OProductDao {
                 + "."
                 + SVSInfo.T.GRADE.getFld().getCodeSqlField()
                 + " = ? )",
-            O2O_ProductStatus.ON.getLine().getKey());
+            SVSGradeType.NotAvailable.getLine().getKey());
       } else {
         sql.WHERE(SVSInfo.T.GRADE, " =? ", search.getGrade());
       }
@@ -516,13 +516,29 @@ public class O2OProductDao {
   /** 根据获取通过审核/上架/活动未结束的O2O商品 */
   public List<O2O_Product> findAllByVerifyStatusAndStatusAndActivity_Status(PdtProduct product) {
     SQL sql = new SQL();
-    sql.SELECT(O2O_Product.class)
+    sql.SELECT(O2O_Product.T.PKEY)
         .FROM(O2O_Product.class)
         .LEFT_JOIN(O2O_Activity.class, O2O_Activity.T.PKEY, O2O_Product.T.ACTIVITY_ID)
+        .WHERE(O2O_Activity.T.STATUS, " =? ", O2O_ActivityStatus.ACTIVITY)
+        .WHERE(O2O_Product.T.PRODUCT_ID, " =? ", product.getPkey())
         .WHERE(O2O_Product.T.VERIFY_STATUS, "=?", O2O_ProductStatus.PASS.getLine().getKey())
-        .WHERE(O2O_Product.T.STATUS, "=?", O2O_ProductStatus.ON.getLine().getKey())
-        .WHERE(O2O_Activity.T.STATUS, "<>?", O2O_ActivityStatus.END.getLine().getKey())
-        .WHERE(O2O_Activity.T.STATUS, "<>?", O2O_ActivityStatus.CLOSE.getLine().getKey());
+        .WHERE(
+            "("
+                + O2O_Product.class.getSimpleName()
+                + "."
+                + O2O_Product.T.STATUS.getFld().getCodeSqlField()
+                + "=? OR "
+                + O2O_Product.class.getSimpleName()
+                + "."
+                + O2O_Product.T.STATUS.getFld().getCodeSqlField()
+                + " =? OR "
+                + O2O_Product.class.getSimpleName()
+                + "."
+                + O2O_Product.T.STATUS.getFld().getCodeSqlField()
+                + " =? )",
+            O2O_ProductStatus.ON.getLine().getKey(),
+            O2O_ProductStatus.WAITOFF.getLine().getKey(),
+            O2O_ProductStatus.Failed.getLine().getKey());
 
     return Query.sql(sql).queryList(O2O_Product.class);
   }

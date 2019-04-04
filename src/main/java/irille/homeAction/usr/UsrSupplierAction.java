@@ -129,48 +129,63 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
         UsrSupplier.T.CREDIT_CODE,
         UsrSupplier.T.CERT_PHOTO);
     ValidRegex2 regex = new ValidRegex2(getBean());
-    if (getBean().getEnglishName() != null)
+    if (getBean().getEnglishName() != null){
       regex.validRegexMatched("^[a-zA-Z ]{1,60}$", "请填写英文字母,且不超过60位", UsrSupplier.T.ENGLISH_NAME);
-    if (getBean().getWebsite() != null)
+    }
+    if (getBean().getWebsite() != null){
       regex.validRegexMatched(
-          "http[s]?:\\/\\/[\\w]{1,}.?[\\w]{1,}.?[\\w/.?&=-]{1,}",
-          "请输入完整的网址格式，如https://www.shoestp.com",
-          UsrSupplier.T.WEBSITE);
-    if (getBean().getAnnualProduction() != null)
+              "http[s]?:\\/\\/[\\w]{1,}.?[\\w]{1,}.?[\\w/.?&=-]{1,}",
+              "请输入完整的网址格式，如https://www.shoestp.com",
+              UsrSupplier.T.WEBSITE);
+    }
+    if (getBean().getAnnualProduction() != null){
       regex.validRegexMatched(
-          "([1-9]\\d*|0)(\\.\\d*[1-9])?", "年产量请填写数字,不能以0开头", UsrSupplier.T.ANNUAL_PRODUCTION);
-    if (getBean().getTelephone() != null)
+              "([1-9]\\d*|0)(\\.\\d*[1-9])?", "年产量请填写数字,不能以0开头", UsrSupplier.T.ANNUAL_PRODUCTION);
+    }
+    if (getBean().getTelephone() != null) {
       regex.validRegexMatched(
-          "((\\d{3,4}-)?\\d{7,8})|(1\\d{10})", "请填写正确的固定电话格式", UsrSupplier.T.TELEPHONE);
-    if (getBean().getFax() != null)
+              "((\\d{3,4}-)?\\d{7,8})|(1\\d{10})", "请填写正确的固定电话格式", UsrSupplier.T.TELEPHONE);
+    }
+    if (getBean().getFax() != null) {
       regex.validRegexMatched("(\\d{3,4}-)?\\d{7,8}", "请填写正确传真格式", UsrSupplier.T.FAX);
-    if (getBean().getPostcode() != null)
+    }
+    if (getBean().getPostcode() != null){
       regex.validRegexMatched("[0-9]{6}", "邮编只能输入数字，且数字个数为6个", UsrSupplier.T.POSTCODE);
-    if (getBean().getRegisteredCapital() != null)
+    }
+    if (getBean().getRegisteredCapital() != null){
       regex.validRegexMatched(
-          "([1-9]\\d*|0)(\\.\\d*[1-9])?", "注册资本请填写数字,不能以0开头", UsrSupplier.T.REGISTERED_CAPITAL);
-    if (getBean().getEntity() != null)
+              "([1-9]\\d*|0)(\\.\\d*[1-9])?", "注册资本请填写数字,不能以0开头", UsrSupplier.T.REGISTERED_CAPITAL);
+    }
+    if (getBean().getEntity() != null){
       regex.validRegexMatched(
-          "[\\u4e00-\\u9fa5]{2,6}", "法定代表人只能输入中文，且个数为2~6个", UsrSupplier.T.ENTITY);
-    if (getBean().getContacts() != null)
+              "[\\u4e00-\\u9fa5]{2,6}", "法定代表人只能输入中文，且个数为2~6个", UsrSupplier.T.ENTITY);
+    }
+    if (getBean().getContacts() != null){
       regex.validRegexMatched(REGULAR_NAME, "联系人姓名首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.CONTACTS);
-    if (getBean().getDepartment() != null)
+    }
+    if (getBean().getDepartment() != null){
       regex.validRegexMatched(REGULAR_NAME, "联系人部门首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.DEPARTMENT);
-    if (getBean().getJobTitle() != null)
+    }
+    if (getBean().getJobTitle() != null){
       regex.validRegexMatched(REGULAR_NAME, "联系人职称首尾不能为符号 且 长度在1-32位之间", UsrSupplier.T.JOB_TITLE);
-    if (getBean().getPhone() != null)
+    }
+    if (getBean().getPhone() != null) {
       regex.validRegexMatched("1\\d{10}", "请填写11位手机格式的号码", UsrSupplier.T.PHONE);
-    if (getBean().getContactEmail() != null)
+    }
+    if (getBean().getContactEmail() != null){
       regex.validRegexMatched(
-          "^[\\w]{1,32}@+\\w{1,15}.\\w{2,5}$", "联系人邮箱请填写正确的邮箱格式", UsrSupplier.T.CONTACT_EMAIL);
-    if (getBean().getIdCard() != null)
+              "^[\\w]{1,32}@+\\w{1,15}.\\w{2,5}$", "联系人邮箱请填写正确的邮箱格式", UsrSupplier.T.CONTACT_EMAIL);
+    }
+    if (getBean().getIdCard() != null){
       regex.validRegexMatched(
-          "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)", "请输入正确的18位身份证号码", UsrSupplier.T.ID_CARD);
-    if (getBean().getOperateIdCard() != null)
+              "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)", "请输入正确的18位身份证号码", UsrSupplier.T.ID_CARD);
+    }
+    if (getBean().getOperateIdCard() != null){
       regex.validRegexMatched(
-          "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)",
-          "请输入正确的18位身份证号码",
-          UsrSupplier.T.OPERATE_ID_CARD);
+              "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)",
+              "请输入正确的18位身份证号码",
+              UsrSupplier.T.OPERATE_ID_CARD);
+    }
   }
 
   /**
@@ -499,7 +514,7 @@ public class UsrSupplierAction extends HomeAction<UsrSupplier> implements ISuppl
     }
     // 没有Supplier 信息未入住商家
     UsrSupplier supplier = user.getSupplier();
-    if (supplier != null && supplier.gtStatus() == OStatus.APPR) {
+    if (supplier != null && supplier.gtStatus() == OStatus.APPR && supplier.gtStoreStatus() == Usr.SStatus.OPEN) {
       setResult("/newseller/", false);
       return RTRENDS;
     }

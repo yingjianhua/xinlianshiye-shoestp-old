@@ -32,8 +32,12 @@
     <script type="text/javascript" src="./static/js/jquery.SuperSlide.js"></script>
     <script type="text/javascript" src="./static/js/qs.js"></script>
     <style>
-        .enterprise-info-content .info-item .title{
+        .enterprise-info-content .info-item .title {
             flex: 0 0 250px;
+        }
+
+        .enterprise-info-content .info-item .text {
+            word-break: break-all;
         }
     </style>
 </head>
@@ -65,7 +69,9 @@
                         <h5 class="title">
                             <s:text name="purchase.company"/>
                         </h5>
-                        <div class="text"><c:if test="${supView.name != 'null'}">${supView.showName}</c:if></div>
+                        <div class="text">
+                            <c:if test="${not empty supView.showName and !(supView.showName eq 'null') and !(supView.showName eq null)}">
+                                ${supView.showName}</c:if></div>
                     </div>
 
                     <c:set var="symbolNoLogin" value="********"/>
@@ -74,8 +80,10 @@
                         <h5 class="title">
                             <s:text name="review.address"/>
                         </h5>
+
                         <div class="text">
-                            <c:if test="${supView.companyAddr != 'null'}">${supView.companyAddr}</c:if>
+                            <c:if test="${not empty supView.companyAddr and !(supView.companyAddr eq 'null') and !(supView.showName eq null)}">
+                                ${supView.companyAddr}</c:if>
                         </div>
                     </div>
                     <div class="info-item">
@@ -84,7 +92,8 @@
                             <s:text name="TargetedMarkets"/>
                         </h5>
                         <div class="text">
-                            <c:if test="${supView.targetedMarkets != 'null'}">${supView.targetedMarkets}</c:if>
+                            <c:if test="${not empty supView.targetedMarkets and !(supView.targetedMarkets eq 'null') and !(supView.showName eq null)}">
+                                ${supView.targetedMarkets}</c:if>
                         </div>
                     </div>
                     <div class="info-item">
@@ -93,7 +102,8 @@
                             <s:text name="shop-company.Production_Mode"/>
                         </h5>
                         <div class="text">
-                            <c:if test="${supView.prodPattern != 'null'}">${supView.prodPattern}</c:if>
+                            <c:if test="${not empty supView.prodPattern and !(supView.prodPattern eq 'null') and !(supView.showName eq null)}">
+                                ${supView.prodPattern}</c:if>
                         </div>
                     </div>
                     <div class="info-item">
@@ -102,7 +112,8 @@
                             <s:text name="AnnualOutput"/>
                         </h5>
                         <div class="text">
-                            <c:if test="${supView.annualOutput != null}">${supView.annualOutput}</c:if>
+                            <c:if test="${not empty supView.annualOutput and !(supView.annualOutput eq 'null') and !(supView.showName eq null)}">
+                                ${supView.annualOutput}</c:if>
                         </div>
                     </div>
                 </div>
@@ -115,122 +126,206 @@
             <h3 class="enterprise-info-title">
                 <s:text name="SupplierVerifiedInformation"/>
             </h3>
-            <%--<c:if test="${supView.StatusAuth == 1}">--%>
-            <div class="enterprise-info-content divide-harf">
-                <div class="divide-harf-item">
-                    <div class="info-item">
-                        <%--独立研发团队--%>
-                        <h5 class="title">
-                            <s:text name="rDepartment"/>
-                        </h5>
-                        <div class="text"><c:if test="${supView.rddepartment != 'null'}">${supView.rddepartment}</c:if></div>
-                    </div>
-
-                    <c:set var="symbolNoLogin" value="********"/>
-                    <div class="info-item">
-                        <%--年开发鞋款数量--%>
-                        <h5 class="title">
-                            <s:text name="AnnualNumberOfNewShoes"/>
-                        </h5>
-                        <div class="text">
-                            <c:if test="${supView.annualNumberOfNewShoes != 'null'}">${supView.annualNumberOfNewShoes}</c:if>
+            <c:if test="${supView.statusAuth == 1}">
+                <div class="enterprise-info-content divide-harf">
+                    <div class="divide-harf-item">
+                        <div class="info-item">
+                                <%--独立研发团队--%>
+                            <h5 class="title">
+                                <s:text name="rDepartment"/>
+                            </h5>
+                            <div class="text">
+                                <c:if test="${not empty supView.rddepartment and !(supView.rddepartment eq 'null') and !(supView.showName eq null)}">
+                                    <c:if test="${supView.rddepartment == 0}">
+                                        <s:text name="yes"/>
+                                    </c:if>
+                                    <c:if test="${supView.rddepartment == 1}">
+                                        <s:text name="no"/>
+                                    </c:if>
+                                </c:if>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="info-item">
-                        <%--生产线数量--%>
-                        <h5 class="title">
-                            <s:text name="NumberOfProductionLines"/>
-                        </h5>
-                        <div class="text">
-                            <c:if test="${supView.numberOfProductionLines != 'null'}">${supView.numberOfProductionLines}</c:if>
+                        <c:set var="symbolNoLogin" value="********"/>
+                        <div class="info-item">
+                                <%--年开发鞋款数量--%>
+                            <h5 class="title">
+                                <s:text name="AnnualNumberOfNewShoes"/>
+                            </h5>
+                            <div class="text">
+                                <c:if test="${not empty supView.annualNumberOfNewShoes and !(supView.annualNumberOfNewShoes eq 'null') and !(supView.showName eq null)}">
+                                    ${supView.annualNumberOfNewShoes}
+                                </c:if>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="info-item">
-                        <%--针车数量--%>
-                        <h5 class="title">
-                            <s:text name="NumberOfSewingMachines"/>
-                        </h5>
-                        <div class="text">
-                            <c:if test="${supView.numberOfSewingMachines != 'null'}">${supView.numberOfSewingMachines}</c:if>
+                        <div class="info-item">
+                                <%--生产线数量--%>
+                            <h5 class="title">
+                                <s:text name="NumberOfProductionLines"/>
+                            </h5>
+                            <div class="text">
+                                <c:if test="${not empty supView.numberOfProductionLines and !(supView.numberOfProductionLines eq 'null') and !(supView.showName eq null)}">
+                                    <c:if test="${supView.numberOfProductionLines < 50}">
+                                        <s:text name="needleCartNumOptions1"/>
+                                    </c:if>
+                                    <c:if test="${supView.numberOfProductionLines > 50 and supView.numberOfProductionLines < 70}">
+                                        <s:text name="needleCartNumOptions2"/>
+                                    </c:if>
+                                    <c:if test="${supView.numberOfProductionLines > 70}">
+                                        <s:text name="needleCartNumOptions3"/>
+                                    </c:if>
+                                </c:if>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="info-item">
-                        <%--年出口额--%>
-                        <h5 class="title">
-                            <s:text name="AnnualExportValue"/>
-                        </h5>
-
-
-                        <div class="text">
-                            <c:if test="${supView.annualExportValue != 'null'}">${supView.annualExportValue}</c:if>
+                        <div class="info-item">
+                                <%--针车数量--%>
+                            <h5 class="title">
+                                <s:text name="NumberOfSewingMachines"/>
+                            </h5>
+                            <div class="text">
+                                <c:if test="${not empty supView.numberOfSewingMachines and !(supView.numberOfSewingMachines eq 'null') and !(supView.showName eq null)}">
+                                    <c:if test="${supView.numberOfSewingMachines < 3}">
+                                        ${supView.numberOfSewingMachines}
+                                    </c:if>
+                                    <c:if test="${supView.numberOfSewingMachines > 2}">
+                                        <s:text name="productionLineQuantityOptions3"/>
+                                    </c:if>
+                                </c:if>
+                            </div>
                         </div>
+
+                        <div class="info-item">
+                                <%--年出口额--%>
+                            <h5 class="title">
+                                <s:text name="AnnualExportValue"/>
+                            </h5>
+                            <div class="text">
+                                <c:if test="${not empty supView.annualExportValue and !(supView.annualExportValue eq 'null') and !(supView.showName eq null)}">
+                                    <c:if test="${supView.annualExportValue < 200}">
+                                        <s:text name="exportVolumeOptions1"/>
+                                    </c:if>
+                                    <c:if test="${supView.annualExportValue > 200 and supView.annualExportValue < 500}">
+                                        <s:text name="exportVolumeOptions2"/>
+                                    </c:if>
+                                    <c:if test="${supView.annualExportValue > 500}">
+                                        <s:text name="exportVolumeOptions3"/>
+                                    </c:if>
+                                </c:if>
+                            </div>
+                        </div>
+
                     </div>
 
+                    <div class="divide-harf-item">
+                        <div class="info-item">
+                                <%--员工人数--%>
+                            <h5 class="title">
+                                <s:text name="NumberOfEmployees"/>
+                            </h5>
+                            <div class="text">
+                                <c:if test="${not empty supView.numberOfEmployees and !(supView.numberOfEmployees eq 'null') and !(supView.showName eq null)}">
+                                    <c:if test="${supView.numberOfEmployees < 200}">
+                                        <s:text name="exportVolumeOptions1"/>
+                                    </c:if>
+                                    <c:if test="${supView.numberOfEmployees > 200 and supView.numberOfEmployees < 300}">
+                                        <s:text name="exportVolumeOptions2"/>
+                                    </c:if>
+                                    <c:if test="${supView.numberOfEmployees > 300}">
+                                        <s:text name="exportVolumeOptions3"/>
+                                    </c:if>
+                                </c:if>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                                <%--出口许可证--%>
+                            <h5 class="title">
+                                <s:text name="ExportLicense"/>
+                            </h5>
+                            <div class="text">
+                                <c:if test="${not empty supView.exportLicense and !(supView.exportLicense eq 'null') and !(supView.showName eq null)}">
+                                    <c:if test="${supView.exportLicense == ''}">
+                                        <s:text name="yes"/>
+                                    </c:if>
+                                    <c:if test="${supView.exportLicense != ''}">
+                                        <s:text name="no"/>
+                                    </c:if>
+                                </c:if>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                                <%--测试设备--%>
+                            <h5 class="title">
+                                <s:text name="TestEquipmentAndFacilities"/>
+                            </h5>
+                            <div class="text">
+                                <c:if test="${not empty supView.testEquipmentAndFacilities and !(supView.testEquipmentAndFacilities eq 'null') and !(supView.showName eq null)}">
+                                    <c:if test="${supView.testEquipmentAndFacilities == 0}">
+                                        <s:text name="yes"/>
+                                    </c:if>
+                                    <c:if test="${supView.testEquipmentAndFacilities == 1}">
+                                        <s:text name="no"/>
+                                    </c:if>
+                                </c:if>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                                <%--外贸团队人数--%>
+                            <h5 class="title">
+                                <s:text name="NumberOfForeignTradeTeams"/>
+                            </h5>
+                            <div class="text">
+                                <c:if test="${not empty supView.numberOfForeignTradeTeams and !(supView.numberOfForeignTradeTeams eq 'null') and !(supView.showName eq null)}">
+                                    <c:if test="${supView.numberOfForeignTradeTeams < 10}">
+                                        <s:text name="employeesNumOptions1"/>
+                                    </c:if>
+                                    <c:if test="${supView.numberOfForeignTradeTeams > 10 and supView.numberOfForeignTradeTeams < 15}">
+                                        <s:text name="employeesNumOptions2"/>
+                                    </c:if>
+                                    <c:if test="${supView.numberOfForeignTradeTeams > 15}">
+                                        <s:text name="employeesNumOptions3"/>
+                                    </c:if>
+                                </c:if>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                                <%--外贸经验--%>
+                            <h5 class="title">
+                                <s:text name="YearsOfForeignTradeExperience"/>
+                            </h5>
+                            <div class="text">
+                                <c:if test="${not empty supView.yearsOfForeignTradeExperience and !(supView.yearsOfForeignTradeExperience eq 'null') and !(supView.showName eq null)}">
+                                    <c:if test="${supView.yearsOfForeignTradeExperience < 5}">
+                                        <s:text name="experienceOptions1"/>
+                                    </c:if>
+                                    <c:if test="${supView.yearsOfForeignTradeExperience > 5 and supView.yearsOfForeignTradeExperience < 10}">
+                                        <s:text name="experienceOptions2"/>
+                                    </c:if>
+                                    <c:if test="${supView.yearsOfForeignTradeExperience > 10}">
+                                        <s:text name="experienceOptions3"/>
+                                    </c:if>
+                                </c:if>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-
-                <div class="divide-harf-item">
-                    <div class="info-item">
-                        <%--员工人数--%>
-                        <h5 class="title">
-                            <s:text name="NumberOfEmployees"/>
-                        </h5>
-                        <div class="text">
-                            <c:if test="${supView.numberOfEmployees != 'null'}">${supView.numberOfEmployees}</c:if></div>
+            </c:if>
+            <c:if test="${supView.statusAuth == 0}">
+                <div class="enterprise-info-content horizontal-arrange">
+                    <div style="margin: 0 auto;">
+                        <p style="text-align: center;font-size: 16px;color: #999;">
+                            <span style="display: inline-block;width: 15px;height: 15px;line-height: 15px;border: 1px solid;border-radius: 50%;font-size: 12px;">!</span>
+                                <%--No Verified Information</p>--%>
+                            <s:text name="NoVerifiedInformation"/></p>
                     </div>
-
-                    <div class="info-item">
-                        <%--出口许可证--%>
-                        <h5 class="title">
-                            <s:text name="ExportLicense"/>
-                        </h5>
-                        <div class="text"><c:if test="${supView.exportLicense != 'null'}">${supView.exportLicense}</c:if>
-                        </div>
-                    </div>
-
-                    <div class="info-item">
-                        <%--测试设备--%>
-                        <h5 class="title">
-                            <s:text name="TestEquipmentAndFacilities"/>
-                        </h5>
-                        <div class="text"><c:if test="${supView.testEquipmentAndFacilities != 'null'}">${supView.testEquipmentAndFacilities}</c:if>
-                        </div>
-                    </div>
-
-                    <div class="info-item">
-                            <%--外贸团队人数--%>
-                        <h5 class="title">
-                            <s:text name="NumberOfForeignTradeTeams"/>
-                        </h5>
-                        <div class="text"><c:if test="${supView.numberOfForeignTradeTeams != 'null'}">${supView.numberOfForeignTradeTeams}</c:if>
-                        </div>
-                    </div>
-
-                    <div class="info-item">
-                            <%--外贸经验--%>
-                        <h5 class="title">
-                            <s:text name="YearsOfForeignTradeExperience"/>
-                        </h5>
-                        <div class="text"><c:if test="${supView.yearsOfForeignTradeExperience != 'null'}">${supView.yearsOfForeignTradeExperience}</c:if>
-                        </div>
-                    </div>
-
-
                 </div>
-            </div>
-            <%--</c:if>--%>
-                <%--<c:if test="${supView.StatusAuth == 0}">--%>
-                <%--<div class="enterprise-info-content horizontal-arrange">--%>
-                    <%--<div style="margin: 0 auto;">--%>
-                        <%--<p style="text-align: center;font-size: 16px;color: #999;">--%>
-                            <%--<span style="display: inline-block;width: 15px;height: 15px;line-height: 15px;border: 1px solid;border-radius: 50%;font-size: 12px;">!</span>--%>
-                            <%--&lt;%&ndash;No Verified Information</p>&ndash;%&gt;--%>
-                            <%--<s:text name="NoVerifiedInformation"/></p>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-                <%--</c:if>--%>
+            </c:if>
             <!-- svs认证信息 - end-->
 
             <!-- 联系信息 -->
@@ -244,7 +339,9 @@
                             <h5 class="title">
                                 <s:text name="supplier.department"/>
                             </h5><!-- 联系人部门 -->
-                            <div class="text"><c:if test="${supView.department != 'null'}">${supView.department}</c:if>
+                            <div class="text">
+                                <c:if test="${not empty supView.department and !(supView.department eq 'null') and !(supView.showName eq null)}">
+                                    ${supView.department}</c:if>
                             </div>
                         </div>
 
@@ -252,7 +349,9 @@
                             <h5 class="title">
                                 <s:text name="position"/>
                             </h5><!-- 联系人职位 -->
-                            <div class="text"><c:if test="${supView.jobTitle != 'null'}">${supView.jobTitle }</c:if>
+                            <div class="text">
+                                <c:if test="${not empty supView.jobTitle and !(supView.jobTitle eq 'null') and !(supView.showName eq null)}">
+                                    ${supView.jobTitle }</c:if>
                             </div>
                         </div>
 
@@ -261,7 +360,10 @@
                                 <s:text name="review.name"/>
                             </h5><!-- 联系人 -->
                             <div class="text">
-                                <c:if test="${supView.contactsName != 'null'}">${supView.contactsName}</c:if></div>
+                                <c:if test="${not empty supView.contactsName and !(supView.contactsName eq 'null') and !(supView.showName eq null)}">
+                                    ${supView.contactsName}
+                                </c:if>
+                            </div>
                         </div>
 
                     </div>
@@ -279,10 +381,25 @@
                             <img src="${envConfig.imageBaseUrl}${supView.logo}?x-oss-process=image/resize,m_pad,h_130,w_165"
                                  alt="">
                         </div>
-                        <p class="company-name"><c:if test="${supView.name != 'null'}">${supView.showName}</c:if></p>
+                        <p class="company-name">
+                            <c:if test="${not empty supView.name and !(supView.name eq 'null') and !(supView.showName eq null)}">
+                                ${supView.showName}
+                            </c:if>
+                        </p>
                         <div>
-                            <img src="./static/images/ico/icon-svs.png" alt="">
-                            svs
+
+                            <c:if test="${not empty supView.grade || !(supView.grade eq 'null') and !(supView.showName eq null)}">
+                                <c:if test="${supView.grade == 1}">
+                                    <img src="./static/images/ico/icon-svs-yp.png" alt="">
+                                </c:if>
+                                <c:if test="${supView.grade == 2}">
+                                    <img src="./static/images/ico/icon-svs-jp.png" alt="">
+                                </c:if>
+                                <c:if test="${supView.grade == 3}">
+                                    <img src="./static/images/ico/icon-svs-zs.png" alt="">
+                                </c:if>
+                                svs
+                            </c:if>
                         </div>
                     </div>
                     <el-form :model="form" :rules="rules" ref="form" label-width="155px" style="margin-top: 30px;">
@@ -307,12 +424,12 @@
                                 <el-col :span="5">
                                     <el-form-item prop="unit">
                                         <el-select v-model="form.unit" placeholder="Unit">
-                                                <el-option
-                                                v-for="item in options"
-                                                :key="item.value"
-                                                :label="item.label"
-                                                :value="item.value">
-                                              </el-option>
+                                            <el-option
+                                                    v-for="item in options"
+                                                    :key="item.value"
+                                                    :label="item.label"
+                                                    :value="item.value">
+                                            </el-option>
                                         </el-select>
                                     </el-form-item>
                                 </el-col>
@@ -356,7 +473,8 @@
                             </div>
                         </el-form-item>
                         <el-form-item>
-                            <el-button :disabled="flag" type="primary" @click="submitForm('form')">Send inquiry now</el-button>
+                            <el-button :disabled="flag" type="primary" @click="submitForm('form')">Send inquiry now
+                            </el-button>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -391,7 +509,7 @@
             el: "#main",
             data() {
                 return {
-                    flag : false,
+                    flag: false,
                     imgsToUpload: [], // 需要upload的img - 显示在页面上
                     options: [{
                         value: "1",
@@ -419,11 +537,14 @@
                     rules: {
                         title: [
                             {required: true, message: 'Please fill in the title'},
-                            { max: 500, message: 'Enter up to 500 digits', trigger: 'blur' }
+                            {max: 500, message: 'Enter up to 500 digits', trigger: 'blur'}
                         ],
                         quantity: [
-                            {required: true,message: 'Please enter the quantity',trigger: 'blur'},
-                            { pattern: util_regular_obj.register.positiveInteger, message: "Please enter the positive integer，and can\'t beyond 10 digits" }
+                            {required: true, message: 'Please enter the quantity', trigger: 'blur'},
+                            {
+                                pattern: util_regular_obj.register.positiveInteger,
+                                message: "Please enter the positive integer，and can\'t beyond 10 digits"
+                            }
                         ],
                         description: [{
                             required: true,
@@ -440,12 +561,12 @@
                 let self = this;
                 // console.log(window.location.href)
                 self.pkey = self.getQueryString("pkey");
-                self.$set(self.form,"supplierId",self.pkey)
+                self.$set(self.form, "supplierId", self.pkey)
             },
             methods: {
-                paxTrimBlur(){
-                    this.form.description =  this.form.description.trim();
-                    this.form.title =  this.form.title.trim();
+                paxTrimBlur() {
+                    this.form.description = this.form.description.trim();
+                    this.form.title = this.form.title.trim();
                 },
                 // elementui 上传功能 *2 - 删除操作
                 handleRemove(file, fileList) {
@@ -455,7 +576,8 @@
                     $.each(fileList, (i, v) => {
                         console.log(v)
                         this.imgsToUpload.push(v.response.result.url)
-                    })
+                    }
+                )
 
                     if ((this.imgsToUpload.length <= 4)) {
                         $(".upImg .el-upload.el-upload--picture-card,.upImg .add-photos-font").show();
@@ -479,7 +601,7 @@
                 // 上传图片文件之前
                 beforeUpload(file) {
                     console.log(file)
-                    // if (!sysConfig || !sysConfig.user) {
+                    // if (!sysConfig && !sysConfig.user) {
                     //     this.$alert('Please login to operate', 'Please login to operate', {
                     //         confirmButtonText: 'Ok',
                     //         customClass: "my-custom-element-alert-class fs-content-18",
@@ -497,38 +619,41 @@
                 },
                 submitForm(formName) { // 表单提交
                     let self = this;
-                    if(!sysConfig || !sysConfig.user){
+                    if (!sysConfig || !sysConfig.user) {
                         util_function_obj.alertWhenNoLogin(self);
                         return
-                    }else{
+                    } else {
                         // 登录了
-                        if(sysConfig.user.user_type == 1){
-                            self.$alert("Sorry, the supplier cannot submit the form",{
+                        if (sysConfig.user.user_type == 1) {
+                            self.$alert("Sorry, the supplier cannot submit the form", {
                                 confirmButtonText: 'Ok',
                                 customClass: "my-custom-element-alert-class fs-content-18",
                                 center: true,
-                                callback: action =>{
-                                    return
-                                }
-                            });
+                                callback: action => {
+                                return
+                            }
+                        })
+                            ;
                             return
-                        }else{
+                        } else {
                             // 普通用户
-                        self.$refs[formName].validate((valid) => {
-                         if (valid) {
-                            self.flag = true;
-                            console.log(self.form)
-                            self.form.images = self.imgsToUpload.join(",");
-                            console.log(self.imgsToUpload)
-                            console.log('submit!');
-                            let data = JSON.stringify(self.form)
-                            axios.post("/home/rfq_RFQConsult_putSupplierInquiry", data,
-                                {headers: {'Content-Type': 'application/json'}}
-                            )
-                                .then((res) => {
-                                    console.log(res)
-                                    // 提交成功时
-                                    if (res.data.ret == 1) {
+                            self.$refs[formName].validate((valid) => {
+                                if(valid) {
+                                    self.flag = true;
+                                    console.log(self.form)
+                                    self.form.images = self.imgsToUpload.join(",");
+                                    console.log(self.imgsToUpload)
+                                    console.log('submit!');
+                                    let data = JSON.stringify(self.form)
+                                    axios.post("/home/rfq_RFQConsult_putSupplierInquiry", data,
+                                        {headers: {'Content-Type': 'application/json'}}
+                                    )
+                                        .then((res) => {
+                                        console.log(res)
+                                        // 提交成功时
+                                        if(res.data.ret == 1
+                                )
+                                    {
                                         // 提示信息
                                         self.$message({
                                             showClose: true,
@@ -542,7 +667,9 @@
                                             window.location.reload();
                                         }, 1500)
                                         // 未登录时
-                                    } else {
+                                    }
+                                else
+                                    {
                                         self.flag = false;
                                         this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
                                             confirmButtonText: 'OK',
@@ -551,41 +678,43 @@
                                     }
 
                                 })
-                                .catch((err) => {
-                                    self.flag = false;
+                                .
+                                    catch((err) => {
+                                        self.flag = false;
                                     self.$message.error("Network error, please refresh the page and try again");
                                     console.log(err)
                                 })
                                 } else {
                                     console.log('error submit!!');
-                                    // if (!self.form.quantity) {
-                                    //     self.$message.error('Quantity cannot be empty');
-                                    // } else if (!self.form.unit) {
-                                    //     self.$message.error("Select unit");
-                                    // } else if (!self.form.description) {
-                                    //     self.$message.error('Please fill in the message');
-                                    // }
-                                    // return false;
-                                }
-                            });
+                            // if (!self.form.quantity) {
+                            //     self.$message.error('Quantity cannot be empty');
+                            // } else if (!self.form.unit) {
+                            //     self.$message.error("Select unit");
+                            // } else if (!self.form.description) {
+                            //     self.$message.error('Please fill in the message');
+                            // }
+                            // return false;
+                        }
+                        })
+                            ;
                         }
                     }
 
                 },
                 getQueryString: (name) => {
-                    let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-                    let reg_rewrite = new RegExp("(^|/)" + name + "/([^/]*)(/|$)", "i");
-                    let r = window.location.search.substr(1).match(reg);
-                    let q = window.location.pathname.substr(1).match(reg_rewrite);
-                    if (r != null) {
-                        return unescape(r[2]);
-                    } else if (q != null) {
-                        return unescape(q[2]);
-                    } else {
-                        return null;
-                    }
-                }
-            }
+                let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        let reg_rewrite = new RegExp("(^|/)" + name + "/([^/]*)(/|$)", "i");
+        let r = window.location.search.substr(1).match(reg);
+        let q = window.location.pathname.substr(1).match(reg_rewrite);
+        if (r != null) {
+            return unescape(r[2]);
+        } else if (q != null) {
+            return unescape(q[2]);
+        } else {
+            return null;
+        }
+        }
+        }
         })
     </script>
 </body>

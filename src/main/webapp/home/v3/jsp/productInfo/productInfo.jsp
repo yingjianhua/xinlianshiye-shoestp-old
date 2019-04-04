@@ -19,20 +19,21 @@
     <link rel="stylesheet" href="/home/v3/static/css/productInfo/reset.css"/>
     <script src='/home/v2/static/js/base/vue.min.js'></script>
     <!-- 引入样式 -->
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-    <!-- 引入组件库 -->
-    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <%--<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">--%>
+    <!-- 引入组件库 -->/
+    <%--<script src="https://unpkg.com/element-ui/lib/index.js"></script>--%>
     <script src="/home/static/js/axios.min.js"></script>
     <script src="/home/static/js/qs.js"></script>
     <%--公共函数--%>
     <script src="/home/utils/util.js"></script>
-    <link rel="stylesheet" href="/home/v2/static/css/base/element-ui/element-ui.css"/>
+    <%--<link rel="stylesheet" href="/home/v2/static/css/base/element-ui/element-ui.css"/>--%>
 
     <link href="/home/v3/static/css/productInfo/goodsInfoNew.css" rel="stylesheet" type="text/css">
     <link href="/home/static/css/style.css" rel="stylesheet" type="text/css">
     <link href="/home/static/css/global.css" rel="stylesheet" type="text/css">
     <link href="/home/static/css/user.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="/home/v2/static/css/base/element-ui/element-ui.css"/>
+    <script src='/home/v2/static/js/base/element-ui.js'></script>
     <link rel="stylesheet" href="/home/v2/static/css/base/foot.css"/>
     <link rel="stylesheet" href="/home/v3/static/css/index.css">
     <link rel="stylesheet" href="/home/v3/static/css/swiper.min.css"/>
@@ -364,6 +365,7 @@
         #productInfo .productInfo-com .flBox .h2 img,
         #productInfo .productInfo-com .flBox .h1 img {
             width: 100%;
+            object-fit: contain;
         }
 
         #productInfo .productInfo-com .flBox .h2 ul {
@@ -490,9 +492,15 @@
             cursor: pointer;
             overflow: hidden;
         }
+        /*没有图片时,显示文字*/
+        #productInfo .productInfo-com .frBox .h5 .y2 li.show-text {
+            width: auto;
+            padding: 0 4px;
+        }
 
         #productInfo .productInfo-com .frBox .h5 li .hPic {
             width: 100%;
+            object-fit: contain;
         }
 
         #productInfo .productInfo-com .frBox .h5 .y3 li {
@@ -779,8 +787,8 @@
 
 <jsp:include page="/home/v3/nav-nobody.jsp"></jsp:include>
 <jsp:include page="/home/template/web-top.jsp"></jsp:include>
-<%--全局登录弹框--%>
-<jsp:include page="/home/v3/login-box.jsp"></jsp:include>
+<%--全局登录弹框 - 已包含在nav-body中--%>
+<%--<jsp:include page="/home/v3/login-box.jsp"></jsp:include>--%>
 <div id="productInfo">
     <index-top></index-top>
 
@@ -816,7 +824,7 @@
     </div>-->
 
 
-    <div class="w1240">
+    <div class="w1240" v-cloak>
         <!--分级导航-->
         <div class="topNav">
             <!-- <div class="h1"><a href="/">Home</a><i class="el-icon-arrow-right"></i></div>
@@ -851,7 +859,7 @@
                         </div>
                         <div class="wrap" id="picBoxs">
                             <div class="h1 flexCc" id="small-box">
-                                <img :src="image(selePic)" alt="">
+                                <img :src="image(selePic,'?x-oss-process=image/resize,w_380,h_380')" alt="">
                                 <div id="float-box"></div>
                             </div>
                             <div id="big-box">
@@ -867,7 +875,7 @@
                                     :data-index="index"
                                     v-if="index<5"
                                     @mouseenter="selePicli">
-                                    <img :src="image(item)" alt=""/>
+                                    <img :src="image(item,'?x-oss-process=image/resize,w_60,h_60')" alt=""/>
                                 </li>
                             </ul>
                         </div>
@@ -877,15 +885,15 @@
                     <div class="frBox fr">
                         <div class="h1">
                             <div class="otowotb" v-if="productinfocom.type==4">
-                                <img src="/home/v3/static/images/productInfo/icon-jinpai.png" alt=""/>
+                                <img src="/home/v3/static/images/ico/icon_o2o.png" alt=""/>
                                 O2O
                             </div>
                             {{productinfocom.pdtName}}
                         </div>
 
-                        <div class="h2">
-                            <div class="fl">ID: {{productinfocom.pdtId}}</div>
-                            <!-- <div class="sharebox fr">
+                        <!-- <div class="h2">
+                            <div class="fl">ID: {{productinfocom.sku}}</div>
+                            <div class="sharebox fr">
                                 <div class="fl"><s:text name="products.share"/> :</div>
                                 <a href="javascript:;" class="shareTb shareTbtb1" @click="shareThis('facebook')"></a>
                                 <a href="javascript:;" class="shareTb shareTbtb2" @click="shareThis('twitter')"></a>
@@ -923,8 +931,8 @@
                                         </div>
                                     </el-dropdown-menu>
                                 </el-dropdown>
-                            </div> -->
-                        </div>
+                            </div>
+                        </div> -->
                         <!-- {{productinfocom.currency_unit}}  -->
                         <div class="h3">{{productinfocom.currency_symbol}}{{price}}
                         </div>
@@ -940,11 +948,19 @@
                         <div class="h5 clearfix">
                             <div class="y1 fl"><s:text name="Global.Colour"/>:</div>
                             <ul class="y2 fr clearfix">
-                                <li class="flexCc" :class="seleColorIndex==index?'sele':''"
+                                <li class="flexCc" :class="[seleColorIndex==index?'sele':'',{'show-text': !(item[0] && item[0].img && item[0].colorType === 0)}]"
                                     v-for="item,index in productinfocom.spec"
-                                    @click="seleColorli" :data-index="index"
+                                    @click="seleColorli"
+                                    :data-index="index"
+                                    :data-color-type="item[0].colorType"
                                     :data-lipic="item[0].img">
-                                    <img class="hPic" :src="image(item[0].img)" :title="item[0].color"/>
+                                    <%--img存在且商家有添加（colorType为0）时显示img--%>
+                                    <img class="hPic" v-if="item[0] && item[0].img && item[0].colorType === 0"
+                                         :src="image(item[0].img,'?x-oss-process=image/resize,w_40,h_40')" :title="item[0].color"/>
+                                    <%--否则显示文字--%>
+                                    <div v-else>
+                                        {{item[0].color}}
+                                    </div>
                                     <img class="hitb" src="/home/v3/static/images/productInfo/icon-sele01.png" alt=""/>
                                 </li>
                             </ul>
@@ -1018,21 +1034,42 @@
                         <div class="h4">Shoe Manufacturer</div>
                         <div class="h5">
                             <img class="mr4" src="/home/v3/static/images/productInfo/icon-renzheng.png" alt=""/>Certificate
-                            <div class="i"></div>
-                            <img class="mr4" src="/home/v3/static/images/productInfo/icon-jinpai.png" alt=""/>SVS
+                            <div class="i" v-if="productinfocom.svsInfo && productinfocom.svsInfo.status == 1"></div>
+                            <!-- <img class="mr4" src="/home/v3/static/images/productInfo/icon-jinpai.png" alt=""/> -->
+                            <template v-if="productinfocom.svsInfo && productinfocom.svsInfo.status == 1">
+                                <img class="mr4" v-if="productinfocom.svsInfo.grade == 1" src="/home/static/images/ico/icon-svs-yp.png" alt="SVS" style="width:14px;"/>
+                                <img class="mr4" v-if="productinfocom.svsInfo.grade == 2" src="/home/static/images/ico/icon-svs-jp.png" alt="SVS" style="width:14px;"/>
+                                <img class="mr4" v-if="productinfocom.svsInfo.grade == 3" src="/home/static/images/ico/icon-svs-zs.png" alt="SVS" style="width:14px;"/>
+                                SVS
+                            </template>
                         </div>
-                        <div class="h6">
+                        <div class="h6" style="margin-top: 5px;">
                             <div>
                                 <div class="ww42">R&D：</div>
-                                <el-rate v-model="5.0" disabled></el-rate>
+                                <a v-if="productinfocom.svsInfo" class="common-a" href="javascript:void(0);" :title="(productinfocom.svsInfo.researchBase + 12) > 20 ? 20 : (productinfocom.svsInfo.researchBase + 12)">
+                                    <el-rate v-model="/[\.]/.test(productinfocom.svsInfo.researchBaseStar)?Math.floor(productinfocom.svsInfo.researchBaseStar) + 0.5 + 3: productinfocom.svsInfo.researchBaseStar + 3" disabled></el-rate>
+                                </a>
+                                <a v-else class="common-a" href="javascript:void(0);" title="0">
+                                        <el-rate value="0" disabled></el-rate>
+                                </a>
                             </div>
                             <div>
                                 <div class="ww42">Output：</div>
-                                <el-rate v-model="5.0" disabled></el-rate>
+                                <a v-if="productinfocom.svsInfo" class="common-a" href="javascript:void(0);" :title="(productinfocom.svsInfo.factoryBase + 12) > 20 ? 20 : (productinfocom.svsInfo.factoryBase + 12)">
+                                    <el-rate v-model="/[\.]/.test(productinfocom.svsInfo.factoryBaseStar)?Math.floor(productinfocom.svsInfo.factoryBaseStar) + 0.5 + 3: productinfocom.svsInfo.factoryBaseStar + 3" disabled></el-rate>
+                                </a>
+                                <a v-else class="common-a" href="javascript:void(0);" title="0">
+                                        <el-rate value="0" disabled></el-rate>
+                                </a>
                             </div>
                             <div>
                                 <div class="ww42">Scale：</div>
-                                <el-rate v-model="5.0" disabled></el-rate>
+                                <a v-if="productinfocom.svsInfo" class="common-a" href="javascript:void(0);" :title="(productinfocom.svsInfo.capacityBase + 12) > 20 ? 20 : (productinfocom.svsInfo.capacityBase + 12)">
+                                    <el-rate v-model="/[\.]/.test(productinfocom.svsInfo.capacityBaseStar)?Math.floor(productinfocom.svsInfo.capacityBaseStar) + 0.5 + 3: productinfocom.svsInfo.capacityBaseStar + 3" disabled></el-rate>
+                                </a>
+                                <a v-else class="common-a" href="javascript:void(0);" title="0">
+                                        <el-rate value="0" disabled></el-rate>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -1076,7 +1113,7 @@
         data: {
             selePic: '',
             selePicIndex: 0,
-            seleColorIndex: 0,
+            seleColorIndex: -1,
             seleSizeIndex: -1,
             productinfocom:${goodsInfo},
             sizeList: [],
@@ -1086,18 +1123,31 @@
         mounted() {
             var that = this
             //this.productinfo();
-            
+
 
             var firstKey = Object.keys(that.productinfocom.spec)[0];
-            that.seleColorIndex = firstKey;
+            // 进入后默认选中第一个color
+            // that.seleColorIndex = firstKey;
             that.sizeList = that.productinfocom.spec[firstKey];
-            console.log(that.sizeList[0])
-			console.log(that.productinfocom)
-			if(that.sizeList[0].imgList != undefined){
-				that.selePic = that.sizeList[0].imgList[0];
-			}else{
-				that.selePic = that.productinfocom.pdtImg[0];
-			}
+            var colorType = that.sizeList[0].colorType;
+			// if(that.sizeList[0].imgList != undefined){
+			// 	that.selePic = that.sizeList[0].imgList[0];
+			// }else{
+			// 	that.selePic = that.productinfocom.pdtImg[0];
+			// }
+            // 没有img字段传回时，直接显示list的第一张，
+            // if(!that.sizeList[0].img){
+            //     that.selePic = that.productinfocom.pdtImg[0]
+            // // 否则，colorType为0时，规格图片为商家添加的（说明有img上传）
+            // }else if(colorType===0){
+            //     that.selePic = that.sizeList[0].img;
+            // // 其余情况全部显示list的第一张
+            // }else{
+            //     that.selePic = that.productinfocom.pdtImg[0]
+            // }
+            // 进来显示第一张主图
+            that.selePic = that.productinfocom.pdtImg[0]
+
             if (that.productinfocom.tpView) {
                 that.tpView = that.productinfocom.tpView
                 var arr = new Array;
@@ -1131,12 +1181,34 @@
             // 选择颜色
             seleColorli: function (e) {
                 var index = e.currentTarget.dataset.index;
-                this.selePic = e.currentTarget.dataset.lipic;
+                var colorType = e.currentTarget.dataset.colorType;
+                // 没有img字段传回时，直接显示list的第一张，
+                // 否则，colorType为0时，规格图片为商家添加的（说明有img上传），否则显示list中的第一张
+                // this.selePic = !e.currentTarget.dataset.lipic? this.productinfocom.pdtImg[0]:colorType==0? e.currentTarget.dataset.lipic: this.productinfocom.pdtImg[0];
+                if( e.currentTarget.dataset.lipic && colorType==0 ){
+                    this.selePic = e.currentTarget.dataset.lipic;
+                }else{
+                    this.selePic = this.productinfocom.pdtImg[0];
+                    this.selePicIndex = 0;
+                }
                 var firstKey = index
                 this.seleColorIndex = index;
                 this.sizeList = this.productinfocom.spec[firstKey]
 
             },
+            // 鼠标进入时，显示对应大图
+            // mousEenterColorli(e){
+            //     console.log("移入")
+            //     var colorType = e.currentTarget.dataset.colorType;
+            //     // 没有img字段传回时，直接显示list的第一张，
+            //     // 否则，colorType为0时，规格图片为商家添加的（说明有img上传），否则显示list中的第一张
+            //     if( e.currentTarget.dataset.lipic && colorType==0 ){
+            //         this.selePic = e.currentTarget.dataset.lipic;
+            //     }else{
+            //         this.selePic = this.productinfocom.pdtImg[0];
+            //         this.selePicIndex = 0;
+            //     }
+            // },
             // 选择尺寸
             seleSizeli: function (e) {
                 this.seleSizeIndex = e.currentTarget.dataset.index;
@@ -1145,12 +1217,17 @@
 
 
             addfav: function () {
+                console.log("addfav")
                 if (!sysConfig || !sysConfig.user) {
+                    console.log("无user")
+                    console.log(util_function_obj.alertWhenNoLogin)
+                    console.log(util_function_obj.alertWhenNoLogin(this))
                     // user_obj.set_form_sign_in('', window.location.href, 1);
                     util_function_obj.alertWhenNoLogin(this);
                     return
                 }
                 if(sysConfig.user.user_type == 1){
+                    console.log("有user")
                     this.$alert("If you want to get this supplier or shoes in your wish list,please register or login your buyer account.",{
                         confirmButtonText: 'Ok',
                         customClass: "my-custom-element-alert-class fs-content-18",
@@ -1316,7 +1393,7 @@
             addRFQ: function () {
                     var jumpUrl = '/home/usr_UsrConsult_productPublishView?product_id=' + this.productinfocom.pdtId + '&backUrl=' + window.location.href;
                     util_function_obj.supplierCantEnter(this, jumpUrl,"Please register or login your buyer account if you want making enquiries.");
-               
+
             },
         },
 

@@ -85,30 +85,31 @@ Vue.component('index-top', {
                     <div class="login-btn"><a href="javascript:void(0);" @click="toLogin">Login</a></div>
                     <div style="text-align:center;font-size:16px;margin:  8px  0;">or</div>
                     <div class="registered-btn"><a href="/home/usr_UsrMain_register" target="_blank">Registration</a></div>
-                    <div style="color:#777777;text-align:center;margin:  15px  0;">Continue with：</div>
-                    <div class="clearfix  other-login-list">
-                        <div class="fl  other-login-item">
-                            <a href="javascript: void(0);">
-                                <img src="/home/v3/static/images/nav/facebook.png" alt="facebook">
-                            </a>
-                        </div>
-                        <div class="fl  other-login-item">
-                            <a href="javascript: void(0);">
-                                <img src="/home/v3/static/images/nav/google.png" alt="google">
-                            </a>
-                        </div>
-                        <div class="fl  other-login-item">
-                            <a href="javascript: void(0);">
-                                <img src="/home/v3/static/images/nav/in.png" alt="in">
-                            </a>
-                        </div>
-                        <div class="fl  other-login-item">
-                            <a href="javascript: void(0);">
-                                <img src="/home/v3/static/images/nav/twitter.png" alt="twitter">
-                            </a>
-                        </div>
-                    </div>
-                    <div class="hours  after-login">Get multiple quotes within 24 hours！</div>
+                    <div style="height: 20px;"></div>
+                    <!--<div style="color:#777777;text-align:center;margin:  15px  0;">Continue with：</div>-->
+                    <!--<div class="clearfix  other-login-list">-->
+                        <!--<div class="fl  other-login-item">-->
+                            <!--<a href="javascript: void(0);">-->
+                                <!--<img src="/home/v3/static/images/nav/facebook.png" alt="facebook">-->
+                            <!--</a>-->
+                        <!--</div>-->
+                        <!--<div class="fl  other-login-item">-->
+                            <!--<a href="javascript: void(0);">-->
+                                <!--<img src="/home/v3/static/images/nav/google.png" alt="google">-->
+                            <!--</a>-->
+                        <!--</div>-->
+                        <!--<div class="fl  other-login-item">-->
+                            <!--<a href="javascript: void(0);">-->
+                                <!--<img src="/home/v3/static/images/nav/in.png" alt="in">-->
+                            <!--</a>-->
+                        <!--</div>-->
+                        <!--<div class="fl  other-login-item">-->
+                            <!--<a href="javascript: void(0);">-->
+                                <!--<img src="/home/v3/static/images/nav/twitter.png" alt="twitter">-->
+                            <!--</a>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="hours  after-login">Get multiple quotes within 24 hours！</div>-->
                 </dd>
                 <!--  登陆后看到的  -->
                 <dd v-if="sysConfig.user">
@@ -118,14 +119,16 @@ Vue.component('index-top', {
                         <li v-if="sysConfig.user.user_type==0"><a href="/home/usr_UsrMessages_center" target="_blank">RFQ List <i class="el-icon-arrow-right"></i></a></li>
                         <li v-if="sysConfig.user.user_type==0"><a href="/home/usr_UsrMessages_center" target="_blank">My Inquiry <i class="el-icon-arrow-right"></i></a></li>
                         <li v-if="sysConfig.user.user_type==0"><a href="/home/usr_UsrPurchase_usrSetting" target="_blank">My Account <i class="el-icon-arrow-right"></i></a></li>
-                        <li v-if="sysConfig.user.user_type==1" style="font-size:15px;font-weight: bold;"><a href="/home/usr_UsrSupplier_supplierEntry" target="_blank">我要开店 <i class="el-icon-arrow-right"></i></a></li>
+                        <li v-if="sysConfig.user.user_type==1 && sysConfig.user.store_type!=1" style="font-size:15px;font-weight: bold;"><a href="/home/usr_UsrSupplier_supplierEntry" target="_blank">我要开店 <i class="el-icon-arrow-right"></i></a></li>
+                        <li v-if="sysConfig.user.user_type==1 && sysConfig.user.store_type==1" style="font-size:15px;font-weight: bold;"><a href="/home/usr_UsrSupplier_supplierEntry" target="_blank">店铺管理 <i class="el-icon-arrow-right"></i></a></li>
                     </ul>
                     <div v-if="sysConfig.user.user_type==0" class="after-login"  @click="ToRFQ" style="cursor: pointer;">Submit RFQ</div>
                     <div class="hours after-login">Get multiple quotes within 24 hours！</div>
                 </dd>
             </dl>
-
-            <a class="o2otoplikes" href="/home/usr_UsrFavorites_myfavorite" target="_blank">
+            
+            <!--我的收藏-->
+            <a class="o2otoplikes" @click="toMyFavorite" target="_blank">
                 <img src="/home/v3/static/images/icon_top_love.png" alt="" style="margin-right:10px;">
                 <div class="o2otoplikenum">
                     <div style="height: 20px;">
@@ -166,28 +169,7 @@ Vue.component('index-top', {
     mounted() {
         Vue.set(this.$data, 'input', unescape(decodeURIComponent(getParams('Keyword', getParams('keyWord', getParams('keyword', ''))))))
         this.getconfig();
-        this.getPMmessage(this.msgStart,this.msgLimit);
-        // setTimeout(() => {
-        //     this.$nextTick(() => {
-        //         let el = document.querySelector('.msg-list');
-        //         let offsetHeight = el.offsetHeight;
-        //         el.onscroll = () => {
-        //             let scrollTop = el.scrollTop;
-        //             let scrollHeight = el.scrollHeight;
-        //             if ((offsetHeight + scrollTop) - scrollHeight >= -1) {
-        //                 console.log("到底了")
-        //                 // 滚动到底部需要执行的代码
-        //                 if(this.PMmoreSwitch){
-        //                     this.msgStart = this.msgStart  + this.msgLimit
-        //                     this.getPMmessage(this.msgStart,this.msgLimit);
-        //                 }else{
-        //                     this.$message('No more station letters');
-        //                 }
-
-        //             }
-        //         };
-        //     });
-        // }, 1000);
+        this.getPMmessage(this.msgStart,this.msgLimit,true);
 
         // 屏幕过小时，左右滚动
         window.onscroll = function () {
@@ -210,18 +192,19 @@ Vue.component('index-top', {
                 window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=' + window.location.href;
             }
         },
-        // 跳转RFQ   
+        // 跳转RFQ
         ToRFQ(){
             let url = "/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1" + "&backUrl=" + window.location.href
             util_function_obj.supplierCantEnter(this, url,"Please register or login your buyer account if you want public RFQ.");
          },
         submit: function () {
-            if (this.input) {
-                window.location = '/home/pdt_PdtProduct?Keyword=' + this.input + '&v=2&searchtype=' + this.select;
-            } else {
-                this.$message('Please enter the keywords you need to search.');
-                return false;
-            }
+            // if (this.input) {
+            //     window.location = '/home/pdt_PdtProduct?Keyword=' + this.input + '&v=2&searchtype=' + this.select;
+                window.location = '/home/pdt_PdtProduct?Keyword=' + this.input + '&searchtype=' + this.select;
+            // } else {
+            //     this.$message('Please enter the keywords you need to search.');
+            //     return false;
+            // }
         },
         selected: function (res) {
 
@@ -237,7 +220,7 @@ Vue.component('index-top', {
                 }
             })
         },
-        getPMmessage(start,limit){
+        getPMmessage(start,limit,flag){
             var self = this
             axios.get(
                 '/home/pm_PMMessage_list', {
@@ -248,12 +231,18 @@ Vue.component('index-top', {
                 })
             .then(function (res) {
                 if (res.data.ret == 1) {
-                    self.countNoRead = res.data.result.countNoRead;
-                    self.PMMessageList.push(...res.data.result.items);
-                    console.log(res.data.result.items.length)
-                    if(res.data.result.items.length < 8){
-                        self.PMmoreSwitch = false;
-                       return;
+                    if(flag){
+                        self.PMMessageList = res.data.result.items
+                        self.countNoRead = res.data.result.countNoRead;
+                    }else{
+                        self.countNoRead = res.data.result.countNoRead;
+                        self.PMMessageList.push(...res.data.result.items);
+                        // console.log(res.data.result.items.length)
+                        if(res.data.result.items.length == 0){
+                            self.$message('No more station letters');
+                            self.PMmoreSwitch = false;
+                            return;
+                        }
                     }
                 }
             })
@@ -274,16 +263,10 @@ Vue.component('index-top', {
                         self.$message.error(res.data.msg);
                         return
                     };
-                    if(self.countNoRead == 0){
-                        self.countNoRead = 0
-                    }else{
-                        self.countNoRead = self.countNoRead - 1
-                    }
-                    self.$set(self.PMMessageList[i],"read",1)
-                    console.log(self.msgStart)
-                    console.log(self.msgLimit)
+                    self.getPMmessage(0,self.PMMessageList.length,true);
+                    // console.log(self.msgLimit)
                 })
-                .catch(function (error) { 
+                .catch(function (error) {
                     console.log(error);
                 });
             }
@@ -292,9 +275,21 @@ Vue.component('index-top', {
             var self = this;
             if(self.PMmoreSwitch){
                 self.msgStart = self.msgStart  + self.msgLimit
-                self.getPMmessage(self.msgStart,self.msgLimit);
+                self.getPMmessage(self.msgStart,self.msgLimit,false);
             }else{
                 self.$message('No more station letters');
+            }
+        },
+        // 点击收藏按钮事件
+        toMyFavorite(){
+            // 未登陆时
+            if( !sysConfig.user ){
+                util_function_obj.alertWhenNoLogin(this);
+            // 卖家账号登录时
+            }else if(sysConfig.user.user_type==1){
+                util_function_obj.supplierCantEnter(this);
+            }else{
+                window.location.href = "/home/usr_UsrFavorites_myfavorite";
             }
         },
 

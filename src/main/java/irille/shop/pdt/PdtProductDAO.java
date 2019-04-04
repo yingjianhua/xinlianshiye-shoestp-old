@@ -120,17 +120,17 @@ public class PdtProductDAO {
    *
    * <p>弃审同时下架产品
    */
-  //  public static PdtProduct verify(boolean verify, Integer pkey) {
-  //    PdtProduct bean = BeanBase.load(PdtProduct.class, pkey);
-  //    bean.stIsVerify(verify);
+  // public static PdtProduct verify(boolean verify, Integer pkey) {
+  // PdtProduct bean = BeanBase.load(PdtProduct.class, pkey);
+  // bean.stIsVerify(verify);
   //
-  //    if (!verify) {
-  //      bean.stState(OState.OFF);
-  //    }
+  // if (!verify) {
+  // bean.stState(OState.OFF);
+  // }
   //
-  //    bean.upd();
-  //    return bean;
-  //  }
+  // bean.upd();
+  // return bean;
+  // }
 
   private static final UsrCartDAO.Query cartQuery = new UsrCartDAO.Query();
 
@@ -198,7 +198,7 @@ public class PdtProductDAO {
 
     @Override
     public void before() {
-      //			super.before();
+      // super.before();
       PdtProduct dbBean = new PdtProduct().init();
       dbBean.setSupplier(SellerAction.getSupplier().getPkey());
       dbBean.setMemberLevel(null);
@@ -225,8 +225,8 @@ public class PdtProductDAO {
           T.SOLD_IN_TIME, // 定时上架
           T.SOLD_TIME_B, // 上架时间开始
           T.SOLD_TIME_E, // 上架时间结束
-          T.SIZE_ATTR, // 规格属性    PdtSize的pkeys
-          T.COLOR_ATTR, // 颜色属性   PdtColor的pkeys
+          T.SIZE_ATTR, // 规格属性 PdtSize的pkeys
+          T.COLOR_ATTR, // 颜色属性 PdtColor的pkeys
           T.IS_FREE_SHIPPING, // 免运费
           T.WEIGHT, // 重量
           T.LENGTH, // 长
@@ -238,7 +238,8 @@ public class PdtProductDAO {
           T.SEO_KEYWORD,
           T.SEO_TITLE,
           T.PRODUCT_TYPE,
-          T.TARGETED_MARKET);
+          T.TARGETED_MARKET,
+          T.UPDATE_TIME);
       translateUtil.newAutoTranslate(dbBean, translateFilter);
       getB().setUpdateTime(Env.getTranBeginTime());
       dbBean.setDescribeModule1(getB().getDescribeModule1());
@@ -294,8 +295,8 @@ public class PdtProductDAO {
           T.SOLD_IN_TIME, // 定时上架
           T.SOLD_TIME_B, // 上架时间开始
           T.SOLD_TIME_E, // 上架时间结束
-          T.SIZE_ATTR, // 规格属性    PdtSize的pkeys
-          T.COLOR_ATTR, // 颜色属性   PdtColor的pkeys
+          T.SIZE_ATTR, // 规格属性 PdtSize的pkeys
+          T.COLOR_ATTR, // 颜色属性 PdtColor的pkeys
           T.IS_FREE_SHIPPING, // 免运费
           T.WEIGHT, // 重量
           T.LENGTH, // 长
@@ -376,7 +377,7 @@ public class PdtProductDAO {
     @Override
     public void before() {
 
-      //			super.before();
+      // super.before();
       PdtProduct dbBean = loadThisBeanAndLock();
       PropertyUtils.copyProperties(
           dbBean,
@@ -397,8 +398,8 @@ public class PdtProductDAO {
           T.SOLD_IN_TIME, // 定时上架
           T.SOLD_TIME_B, // 上架时间开始
           T.SOLD_TIME_E, // 上架时间结束
-          T.SIZE_ATTR, // 规格属性    PdtSize的pkeys
-          T.COLOR_ATTR, // 颜色属性   PdtColor的pkeys
+          T.SIZE_ATTR, // 规格属性 PdtSize的pkeys
+          T.COLOR_ATTR, // 颜色属性 PdtColor的pkeys
           T.IS_FREE_SHIPPING, // 免运费
           T.WEIGHT, // 重量
           T.LENGTH, // 长
@@ -443,7 +444,6 @@ public class PdtProductDAO {
           T.CATEGORY, // 产品类目
           T.CATEGORY_DIY, // 店铺-产品类目
           T.CODE, // 编号
-          T.SKU, // sku
           T.PICTURE, // 产品图片
           T.NORM_ATTR, // 属性
           T.CUR_PRICE, // 价格
@@ -455,8 +455,8 @@ public class PdtProductDAO {
           T.SOLD_IN_TIME, // 定时上架
           T.SOLD_TIME_B, // 上架时间开始
           T.SOLD_TIME_E, // 上架时间结束
-          T.SIZE_ATTR, // 规格属性    PdtSize的pkeys
-          T.COLOR_ATTR, // 颜色属性   PdtColor的pkeys
+          T.SIZE_ATTR, // 规格属性 PdtSize的pkeys
+          T.COLOR_ATTR, // 颜色属性 PdtColor的pkeys
           T.IS_FREE_SHIPPING, // 免运费
           T.WEIGHT, // 重量
           T.LENGTH, // 长
@@ -468,7 +468,8 @@ public class PdtProductDAO {
           T.SEO_KEYWORD,
           T.SEO_TITLE,
           T.PRODUCT_TYPE,
-          T.TARGETED_MARKET);
+          T.TARGETED_MARKET,
+          T.UPDATE_TIME);
       dbBean.setDescribeModule1(getB().getDescribeModule1());
       dbBean.setDescribeModule2(getB().getDescribeModule2());
       dbBean.setDescribeModule3(getB().getDescribeModule3());
@@ -580,25 +581,31 @@ public class PdtProductDAO {
       StringJoiner joiner = new StringJoiner(",");
       joiner.add(String.valueOf(Pdt.OProductType.GENERAL.getLine().getKey()));
       joiner.add(String.valueOf(Pdt.OProductType.GATHER.getLine().getKey()));
-      sql.SELECT(T.PKEY, T.PICTURE, T.NAME, T.CUR_PRICE, T.IS_HOT)
+      joiner.add(String.valueOf(Pdt.OProductType.O2O.getLine().getKey()));
+
+      sql.SELECT(T.PKEY, T.PICTURE, T.NAME, T.CUR_PRICE, T.IS_HOT,T.PRODUCT_TYPE)
           .FROM(PdtProduct.class)
+          .LEFT_JOIN(O2O_Product.class, O2O_Product.T.PRODUCT_ID, PdtProduct.T.PKEY)
           .WHERE(T.SUPPLIER, "=?", supplier)
           .WHERE(T.STATE, "=?", Pdt.OState.ON)
           .WHERE(T.IS_VERIFY, "=?", Sys.OYn.YES)
-          .WHERE(T.PRODUCT_TYPE, "in (" + joiner.toString() + ")");
-      //            粘合O2O商品
-      SQL o2oSql = new SQL();
-      o2oSql
-          .SELECT(T.PKEY, T.PICTURE, T.NAME, T.CUR_PRICE, T.IS_HOT)
-          .FROM(PdtProduct.class)
-          .LEFT_JOIN(O2O_Product.class, O2O_Product.T.PRODUCT_ID, T.PKEY)
-          .WHERE(O2O_Product.T.VERIFY_STATUS, "=?", O2O_ProductStatus.PASS)
-          .WHERE(O2O_Product.T.STATUS, "=?", O2O_ProductStatus.ON)
+          .WHERE(T.PRODUCT_TYPE, "in (" + joiner.toString() + ")")
           .WHERE(
-              cat != -1,
-              T.CATEGORY_DIY,
-              "in(" + UsrProductCategoryDAO.Sellect.getAllChild(lang, supplier, cat) + ")");
-
+              "(("
+                  + O2O_Product.class.getSimpleName()
+                  + "."
+                  + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField()
+                  + " =? AND "
+                  + O2O_Product.class.getSimpleName()
+                  + "."
+                  + O2O_Product.T.STATUS.getFld().getCodeSqlField()
+                  + " =?) OR "
+                  + O2O_Product.class.getSimpleName()
+                  + "."
+                  + O2O_Product.T.PKEY.getFld().getCodeSqlField()
+                  + " IS NULL )",
+              O2O_ProductStatus.PASS,
+              O2O_ProductStatus.ON);
       if (cat != -1) {
         sql.WHERE(
             T.CATEGORY_DIY,
@@ -612,43 +619,26 @@ public class PdtProductDAO {
       switch (sort) {
         case 1:
           sql.ORDER_BY(T.SALES, rankingBasis);
-          o2oSql.ORDER_BY(T.SALES, rankingBasis);
           break;
         case 2:
           sql.ORDER_BY(T.Favorite_Count, rankingBasis);
-          o2oSql.ORDER_BY(T.Favorite_Count, rankingBasis);
           break;
         case 3:
           sql.ORDER_BY(T.IS_NEW, rankingBasis);
-          o2oSql.ORDER_BY(T.IS_NEW, rankingBasis);
           break;
         case 4:
           sql.ORDER_BY(T.CUR_PRICE, rankingBasis);
-          o2oSql.ORDER_BY(T.CUR_PRICE, rankingBasis);
           break;
         default:
           sql.ORDER_BY(T.IS_HOT, rankingBasis.trim().equalsIgnoreCase("desc") ? " ASC " : " DESC ");
-          o2oSql.ORDER_BY(
-              T.IS_HOT, rankingBasis.trim().equalsIgnoreCase("desc") ? " ASC " : " DESC ");
           break;
       }
       sql.ORDER_BY(T.PKEY, rankingBasis);
-      o2oSql.ORDER_BY(T.PKEY, rankingBasis);
+      sql.GROUP_BY(PdtProduct.T.PKEY);
+      // o2oSql.ORDER_BY(T.PKEY, rankingBasis);
       sql.LIMIT(start, limit);
-      o2oSql.LIMIT(start, limit);
       List<PdtView> list = new ArrayList<>();
       irille.pub.bean.Query.sql(sql)
-          .queryList(PdtProduct.class)
-          .forEach(
-              pdtProduct -> {
-                PdtView pdtView = new PdtView();
-                String name = pdtProduct.getName();
-                translateUtil.getAutoTranslate(pdtProduct, lang);
-                pdtView.setPdt(pdtProduct);
-                pdtView.setRewrite(pdtProduct.getPkey(), name);
-                list.add(pdtView);
-              });
-      irille.pub.bean.Query.sql(o2oSql)
           .queryList(PdtProduct.class)
           .forEach(
               pdtProduct -> {
@@ -671,10 +661,10 @@ public class PdtProductDAO {
               SELECT(T.PKEY, T.PICTURE, T.NAME, T.CUR_PRICE)
                   .FROM(PdtProduct.class)
                   .WHERE(T.SUPPLIER, "=?", supplier)
-                  //                        .WHERE(T.IS_NEW, "=?", Sys.OYn.YES)
+                  // .WHERE(T.IS_NEW, "=?", Sys.OYn.YES)
                   .WHERE(T.STATE, "=?", Pdt.OState.ON)
-                  //                        TODO  商家目前不能设置首页商品所以展示去掉
-                  //                        .WHERE(T.IS_INDEX, "=?", Sys.OYn.YES)
+                  // TODO 商家目前不能设置首页商品所以展示去掉
+                  // .WHERE(T.IS_INDEX, "=?", Sys.OYn.YES)
                   .WHERE(T.IS_VERIFY, "=?", Sys.OYn.YES)
                   // TODO 这里缺少O2O的商品列表
                   .WHERE(T.PRODUCT_TYPE, "=?", Pdt.OProductType.GENERAL)
@@ -812,11 +802,11 @@ public class PdtProductDAO {
                         } else {
                           setIsO2O("普通商品");
                           setIsVerify((Byte) o.get("isVerify"));
-                          //                          if ((Byte) o.get("isVerify") == 1) {
-                          //                            setIsVerify((byte) 1);
-                          //                          } else if((Byte) o.get("isVerify") == 2){
-                          //                            setIsVerify((byte) 2);
-                          //                          }
+                          // if ((Byte) o.get("isVerify") == 1) {
+                          // setIsVerify((byte) 1);
+                          // } else if((Byte) o.get("isVerify") == 2){
+                          // setIsVerify((byte) 2);
+                          // }
                           setState((Byte) o.get("state"));
                         }
                         setPkey((Integer) o.get("pkey"));
@@ -934,7 +924,7 @@ public class PdtProductDAO {
       }
       o2oPdt.upd();
     } else {
-      //      pp.stIsVerify(false);
+      // pp.stIsVerify(false);
       pp.setState(status);
       if (status == 0) {
         pp.setTab3(message);
@@ -946,15 +936,20 @@ public class PdtProductDAO {
   /** @Author wilson Zhang @Description 商家首页获取当前供应商的产品总数 @Date 16:28 2019/3/27 */
   public Integer productCount(Integer supplierpkey) {
     SQL pdt =
-        new SQL() {
-          {
-            SELECT(PdtProduct.T.PKEY)
-                .FROM(PdtProduct.class)
-                .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierpkey);
-          }
-        };
+        new SQL()
+            .SELECT(PdtProduct.class)
+            .FROM(PdtProduct.class)
+            .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierpkey)
+            .WHERE(PdtProduct.T.STATE, "=?", OState.ON)
+            .WHERE(PdtProduct.T.PRODUCT_TYPE, " =? ", Pdt.OProductType.GENERAL)
+            .or()
+            .WHERE(PdtProduct.T.PRODUCT_TYPE, " =? ", Pdt.OProductType.GENERAL)
+            .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierpkey)
+            .WHERE(PdtProduct.T.STATE, "=?", OState.OFF)
+            .WHERE(PdtProduct.T.SOLD_TIME_B, "IS NOT NULL");
     return irille.pub.bean.Query.sql(pdt).queryCount();
   }
+
   /** @Author wilson Zhang @Description 商家首页获取当前供应商的私人展厅产品总数 @Date 16:28 2019/3/27 */
   public Integer privateproductCount(Integer supplierpkey) {
     SQL pdt =
@@ -963,11 +958,15 @@ public class PdtProductDAO {
             SELECT(PdtProduct.T.PKEY)
                 .FROM(PdtProduct.class)
                 .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierpkey)
+                .WHERE(PdtProduct.T.STATE, " <> ? ", OState.MERCHANTDEL)
+                .WHERE(PdtProduct.T.STATE, " <> ? ", OState.DELETE)
+                .WHERE(PdtProduct.T.SOLD_TIME_B, " IS NOT NULL ")
                 .WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.PrivateExpo);
           }
         };
     return irille.pub.bean.Query.sql(pdt).queryCount();
   }
+
   /** @Author wilson Zhang @Description 商家首页获取当前供应商的仓库产品总数 @Date 16:28 2019/3/27 */
   public Integer wareHouseProductCount(Integer supplierpkey) {
     SQL pdt =
@@ -976,11 +975,13 @@ public class PdtProductDAO {
             SELECT(PdtProduct.T.PKEY)
                 .FROM(PdtProduct.class)
                 .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierpkey)
-                .WHERE(PdtProduct.T.STATE, "=?", OState.OFF);
+                .WHERE(PdtProduct.T.STATE, "=?", OState.OFF)
+                .WHERE(PdtProduct.T.SOLD_TIME_B, " IS NULL ");
           }
         };
     return irille.pub.bean.Query.sql(pdt).queryCount();
   }
+
   /** @Author wilson Zhang @Description 商家首页获取当前供应商的产品待审核总数 @Date 16:28 2019/3/27 */
   public Integer verifyProductCount(Integer supplierpkey) {
     SQL pdt =
@@ -988,12 +989,50 @@ public class PdtProductDAO {
           {
             SELECT(PdtProduct.T.PKEY)
                 .FROM(PdtProduct.class)
+                .LEFT_JOIN(O2O_PrivateExpoPdt.class, O2O_PrivateExpoPdt.T.PDT_ID, PdtProduct.T.PKEY)
+                .LEFT_JOIN(O2O_Product.class, O2O_Product.T.PRODUCT_ID, PdtProduct.T.PKEY)
                 .WHERE(PdtProduct.T.SUPPLIER, "=?", supplierpkey)
-                .WHERE(PdtProduct.T.IS_VERIFY, "=?", Pdt.OAppr._DEFAULT.getLine().getKey());
+                .WHERE(PdtProduct.T.IS_VERIFY, "=?", Pdt.OAppr._DEFAULT.getLine().getKey())
+                .WHERE(PdtProduct.T.SOLD_TIME_B, " IS NOT NULL ")
+                .WHERE(PdtProduct.T.STATE, " <> ? ", OState.MERCHANTDEL)
+                .WHERE(PdtProduct.T.STATE, " <> ? ", OState.DELETE)
+                .WHERE(
+                    "(("
+                        + O2O_PrivateExpoPdt.class.getSimpleName()
+                        + "."
+                        + O2O_PrivateExpoPdt.T.VERIFY_STATUS.getFld().getCodeSqlField()
+                        + "=? AND "
+                        + PdtProduct.class.getSimpleName()
+                        + "."
+                        + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()
+                        + " =? ) OR ("
+                        + O2O_Product.class.getSimpleName()
+                        + "."
+                        + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField()
+                        + " =? AND "
+                        + PdtProduct.class.getSimpleName()
+                        + "."
+                        + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()
+                        + " =?) OR ("
+                        + PdtProduct.class.getSimpleName()
+                        + "."
+                        + PdtProduct.T.IS_VERIFY.getFld().getCodeSqlField()
+                        + " =? AND "
+                        + PdtProduct.class.getSimpleName()
+                        + "."
+                        + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()
+                        + " =? ))",
+                    O2O_PrivateExpoPdtStatus._DEFAULT.getLine().getKey(),
+                    Pdt.OProductType.PrivateExpo.getLine().getKey(),
+                    O2O_ProductStatus._DEFAULT.getLine().getKey(),
+                    Pdt.OProductType.O2O.getLine().getKey(),
+                    Pdt.OAppr._DEFAULT.getLine().getKey(),
+                    Pdt.OProductType.GENERAL.getLine().getKey());
           }
         };
     return irille.pub.bean.Query.sql(pdt).queryCount();
   }
+
   /** @auther liyichao @Description 商家首页获取当前供应商的审核失败产品总数 */
   public Integer failedProductCount(Integer supplier) {
     SQL sql =
@@ -1001,12 +1040,65 @@ public class PdtProductDAO {
           {
             SELECT(PdtProduct.T.PKEY)
                 .FROM(PdtProduct.class)
+                .LEFT_JOIN(O2O_PrivateExpoPdt.class, O2O_PrivateExpoPdt.T.PDT_ID, PdtProduct.T.PKEY)
+                .LEFT_JOIN(O2O_Product.class, O2O_Product.T.PRODUCT_ID, PdtProduct.T.PKEY)
                 .WHERE(PdtProduct.T.SUPPLIER, " =? ", supplier)
-                .WHERE(PdtProduct.T.IS_VERIFY, " =? ", Pdt.OAppr.Failed.getLine().getKey());
+                .WHERE(
+                    PdtProduct.T.PRODUCT_TYPE, " <> ?", Pdt.OProductType.GROUP.getLine().getKey())
+                .WHERE(
+                    PdtProduct.T.PRODUCT_TYPE, " <> ?", Pdt.OProductType.GATHER.getLine().getKey())
+                .WHERE(PdtProduct.T.STATE, "<>?", Pdt.OState.DELETE.getLine().getKey())
+                .WHERE(PdtProduct.T.STATE, "<>?", Pdt.OState.MERCHANTDEL.getLine().getKey())
+                .WHERE(PdtProduct.T.SOLD_TIME_B, " IS NOT NULL ")
+                .WHERE(
+                    "("
+                        + PdtProduct.class.getSimpleName()
+                        + "."
+                        + PdtProduct.T.STATE.getFld().getCodeSqlField()
+                        + " = ? OR "
+                        + PdtProduct.class.getSimpleName()
+                        + "."
+                        + PdtProduct.T.STATE.getFld().getCodeSqlField()
+                        + " =? )",
+                    Pdt.OState.OFF.getLine().getKey(),
+                    Pdt.OState.ON.getLine().getKey())
+                .WHERE(
+                    "(("
+                        + O2O_PrivateExpoPdt.class.getSimpleName()
+                        + "."
+                        + O2O_PrivateExpoPdt.T.VERIFY_STATUS.getFld().getCodeSqlField()
+                        + "=? AND "
+                        + PdtProduct.class.getSimpleName()
+                        + "."
+                        + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()
+                        + " =? ) OR ("
+                        + O2O_Product.class.getSimpleName()
+                        + "."
+                        + O2O_Product.T.VERIFY_STATUS.getFld().getCodeSqlField()
+                        + " =? AND "
+                        + PdtProduct.class.getSimpleName()
+                        + "."
+                        + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()
+                        + " =?) OR ("
+                        + PdtProduct.class.getSimpleName()
+                        + "."
+                        + PdtProduct.T.IS_VERIFY.getFld().getCodeSqlField()
+                        + " =? AND "
+                        + PdtProduct.class.getSimpleName()
+                        + "."
+                        + PdtProduct.T.PRODUCT_TYPE.getFld().getCodeSqlField()
+                        + " =? ))",
+                    O2O_PrivateExpoPdtStatus.Failed.getLine().getKey(),
+                    Pdt.OProductType.PrivateExpo.getLine().getKey(),
+                    O2O_ProductStatus.Failed.getLine().getKey(),
+                    Pdt.OProductType.O2O.getLine().getKey(),
+                    Pdt.OAppr.Failed.getLine().getKey(),
+                    Pdt.OProductType.GENERAL.getLine().getKey());
           }
         };
     return irille.pub.bean.Query.sql(sql).queryCount();
   }
+
   /** @auther liyichao @Description 商家首页获取当前供应商的产品回收站总数 */
   public Integer warehouseProductCount(Integer supplier) {
     SQL pdt =

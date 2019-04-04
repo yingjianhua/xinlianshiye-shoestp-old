@@ -3,7 +3,7 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <!-- 顶部nav栏 -->
 <div id="nav" style="height: auto;">
-    <div id="new-top-nav" class="wide-wrap">
+    <div id="new-top-nav" class="wide-wrap" v-cloak>
         <div class="wide" style="width: 1240px;min-width: 1240px;margin: 0 auto">
             <!-- 顶部左侧 - 4个下拉选 -->
             <el-menu :default-active="activeTopNavIndex" class="el-menu-demo" mode="horizontal"
@@ -135,7 +135,7 @@
             })
         },
         methods: {
-            // 跳转RFQ   
+            // 跳转RFQ
             ToRFQ(){
                 let url = "/home/usr_UsrConsult_publishView?title=&quantity=null&chooesValue=1"+ "&backUrl=" + window.location.href
                 util_function_obj.supplierCantEnter(this, url,"Please register or login your buyer account if you want public RFQ.");

@@ -88,9 +88,9 @@ public class UsrMainAction extends  SellerAction<UsrMain> {
                 throw LOG.err("Send Ofen,wait minute", "邮箱发送频繁，请稍后再试");
             }
         }
-        SecureRandom secureRandom = new SecureRandom();
-        Integer code = secureRandom.nextInt(999999);
-        CacheUtils.pwdValid.put(code, getEmail());
+        Integer intCode=(int)((Math.random()*9+1)*100000);
+        String code=intCode.toString();
+        CacheUtils.sixtyValidCode.put(code, getEmail());
         CacheUtils.sendEm.put(getEmail(), new Date().getTime());
         mailer.sendMail(
                 EmailBuilder.startingBlank()
@@ -126,15 +126,14 @@ public class UsrMainAction extends  SellerAction<UsrMain> {
         if(!usrMainDao.validPwd(getEmail(),getPwd())){
             throw LOG.err("Wrong password", "密码不正确");
         }
-        Cache cache = CacheUtils.pwdValid;
-        String value = String.valueOf(cache.getIfPresent(Integer.parseInt(getCode())));
-        if (cache.getIfPresent(Integer.parseInt(getCode())) != null
+        Cache cache = CacheUtils.sixtyValidCode;
+        String value = String.valueOf(cache.getIfPresent(getCode()));
+        System.out.println("...验证码"+value);
+        if (cache.getIfPresent(getCode()) != null
                 && value.equalsIgnoreCase(getEmail())) {
             write();
-        } else if(cache.getIfPresent(Integer.parseInt(getCode())) == null){
+        } else {
             throw LOG.err("Invalid code", "验证码失效或未发送");
-        }else if(!value.equalsIgnoreCase(getEmail())){
-            throw LOG.err("Wrong code", "验证码不正确");
         }
     }
     /**修改邮箱
@@ -165,7 +164,7 @@ public class UsrMainAction extends  SellerAction<UsrMain> {
         updEmail.setEmail(getEmail());
         updEmail.setEmailA(getNewEmail());
         updEmail.commit();
-        CacheUtils.pwdValid.invalidate(code);
+        CacheUtils.sixtyValidCode.invalidate(code);
         write();
     }
 }

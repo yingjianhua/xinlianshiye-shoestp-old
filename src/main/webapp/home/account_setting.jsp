@@ -352,7 +352,7 @@
                             })
                             .catch((err) => {
                                 this.flag = false;
-                                self.$message.error("Network error, please refresh the page and try again");
+                                this.$message.error("Network error, please refresh the page and try again");
                                 console.log(err)
                             })
                     } else {
@@ -407,7 +407,7 @@
                             })
                             .catch((err) => {
                                 this.flag = false;
-                                self.$message.error("Network error, please refresh the page and try again");
+                                this.$message.error("Network error, please refresh the page and try again");
                                 console.log(err)
                             })
                     } else {
@@ -458,7 +458,7 @@
                             })
                             .catch((err) => {
                                 this.flag = false;
-                                self.$message.error("Network error, please refresh the page and try again");
+                                this.$message.error("Network error, please refresh the page and try again");
                                 console.log(err)
                             })
                     } else {

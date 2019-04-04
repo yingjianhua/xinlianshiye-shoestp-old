@@ -2,6 +2,7 @@ package irille.shop.usr;
 
 import java.util.Date;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
@@ -389,7 +390,17 @@ public class UsrMainDao {
 			super.run();
 		}
 
+		@Override
+		public void after() {
+			UsrSupplier sp=UsrSupplier.chkUniqueLogin_name(false,getB().getEmail());
+			if(sp == null){
+				String sql = "UPDATE usr_supplier SET login_name =\""+getB().getEmail()+"\" WHERE userid ="+getB().getPkey()+"";
+				Query.sql(sql).executeUpdate();
+			}else{
+				throw LOG.err("Registed  Email", "邮箱已注册");
+			}
 
+		}
 	}
 
 }

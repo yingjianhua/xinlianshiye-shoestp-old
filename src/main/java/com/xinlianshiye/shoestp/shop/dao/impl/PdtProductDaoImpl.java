@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
-import org.apache.logging.log4j.util.Strings;
 import org.json.JSONException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,7 +28,6 @@ import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.SVS.SVSInfo;
 import irille.Entity.SVS.Enums.SVSGradeType;
 import irille.core.sys.Sys;
-import irille.pub.bean.BeanBase;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
 import irille.pub.tb.FldLanguage;
@@ -42,11 +40,12 @@ import irille.shop.pdt.PdtAttrLineDAO;
 import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtCatDAO;
 import irille.shop.pdt.PdtProduct;
-import irille.shop.pdt.PdtSpec;
 import irille.shop.pdt.PdtTargetMarket;
 import irille.shop.pdt.PdtTieredPricing;
 import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltProvince;
+import irille.shop.usr.Usr.OStatus;
+import irille.shop.usr.Usr.SStatus;
 import irille.shop.usr.UsrFavorites;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
@@ -184,6 +183,8 @@ public class PdtProductDaoImpl implements com.xinlianshiye.shoestp.shop.dao.PdtP
     sql.LEFT_JOIN(SVSInfo.class, SVSInfo.T.SUPPLIER, UsrSupplier.T.PKEY);
     sql.LEFT_JOIN(PdtCat.class, PdtProduct.T.CATEGORY, PdtCat.T.PKEY);
     sql.LEFT_JOIN(o2oSQL);
+    sql.WHERE(UsrSupplier.T.STORE_STATUS, " =? ", SStatus.OPEN);
+    sql.WHERE(UsrSupplier.T.STATUS, " =? ", OStatus.APPR);
     sql.WHERE(PdtProduct.T.IS_VERIFY, " =? ", Sys.OYn.YES.getLine().getKey());
     sql.WHERE(PdtProduct.T.STATE, " =? ", Pdt.OState.ON.getLine().getKey());
     sql.WHERE(search.getSupplier() != null, PdtProduct.T.SUPPLIER, "=?", search.getSupplier());
@@ -238,7 +239,8 @@ public class PdtProductDaoImpl implements com.xinlianshiye.shoestp.shop.dao.PdtP
         null != search.getMaxCurPrice(), PdtProduct.T.CUR_PRICE, " <=? ", search.getMaxCurPrice());
     sql.WHERE(null != search.getMinOq(), PdtProduct.T.MIN_OQ, " <=? ", search.getMinOq());
     if (null != search.getIsO2o()) {
-      sql.WHERE(" O2ORecord.o2oCount > 0 ");
+      sql.WHERE(PdtProduct.T.PRODUCT_TYPE, " =? ", Pdt.OProductType.O2O.getLine().getKey());
+      //      sql.WHERE(" O2ORecord.o2oCount > 0 ");
     } else {
       sql.WHERE(PdtProduct.T.PRODUCT_TYPE, " =? ", Pdt.OProductType.GENERAL.getLine().getKey());
     }
@@ -324,30 +326,33 @@ public class PdtProductDaoImpl implements com.xinlianshiye.shoestp.shop.dao.PdtP
               view.setMaxCurPrice(GetValue.get(d, "maxCurPrice", BigDecimal.class, p));
               view.setPdtName(GetValue.get(d, "pdtName", String.class, null));
               view.setMinOrder(GetValue.get(d, PdtProduct.T.MIN_OQ, Integer.class, null));
-              List<PdtSpec> specs =
-                  BeanBase.list(PdtSpec.class, PdtSpec.T.PRODUCT + " =? ", false, pdtPkey);
-              ArrayList<String> stringList = new ArrayList<>();
-              for (PdtSpec spec : specs) {
-                if (null == spec.getPics()) {
-                  continue;
-                }
-                String[] s = spec.getPics().split(",");
-                if (s.length > 0) {
-                  for (String s1 : s) {
-                    if (s1.length() > 0 && !stringList.contains(s1)) {
-                      stringList.add(s1);
-                    }
-                  }
-                }
-              }
-              if (stringList.size() > 0) {
-                String t =
-                    GetValue.getFirstImage(GetValue.get(d, PdtProduct.T.PICTURE, String.class, ""));
-                //                if (!seasonList.contains(t)) stringList.add(0, t);
-                view.setPicture(Strings.join(stringList, ','));
-              } else {
-                view.setPicture(GetValue.get(d, PdtProduct.T.PICTURE, String.class, ""));
-              }
+              //              List<PdtSpec> specs =
+              //                  BeanBase.list(PdtSpec.class, PdtSpec.T.PRODUCT + " =? ", false,
+              // pdtPkey);
+              //              ArrayList<String> stringList = new ArrayList<>();
+              //              for (PdtSpec spec : specs) {
+              //                if (null == spec.getPics()) {
+              //                  continue;
+              //                }
+              //                String[] s = spec.getPics().split(",");
+              //                if (s.length > 0) {
+              //                  for (String s1 : s) {
+              //                    if (s1.length() > 0 && !stringList.contains(s1)) {
+              //                      stringList.add(s1);
+              //                    }
+              //                  }
+              //                }
+              //              }
+              //              if (stringList.size() > 0) {
+              //                String t =
+              //                    GetValue.getFirstImage(GetValue.get(d, PdtProduct.T.PICTURE,
+              // String.class, ""));
+              //                //                if (!seasonList.contains(t)) stringList.add(0, t);
+              //                view.setPicture(Strings.join(stringList, ','));
+              //              } else {
+              //				view.setPicture(GetValue.get(d, PdtProduct.T.PICTURE, String.class, ""));
+              //              }
+              view.setPicture(GetValue.get(d, PdtProduct.T.PICTURE, String.class, ""));
               String pdtCatName =
                   d.get("pdtCatName") == null ? null : d.get("pdtCatName").toString();
               Integer gender = 0;

@@ -11,6 +11,7 @@ import irille.pub.i18n.I18NFieldSerializer;
 import irille.view.BaseView;
 import irille.view.O2O.O2OMapView;
 import irille.view.pdt.PdtTieredPricingView;
+import irille.view.v3.svs.SvsRatingAndRosDTO;
 
 public class ProductInfoView implements BaseView {
   /** ===============O2O INFO START=============== */
@@ -72,6 +73,9 @@ public class ProductInfoView implements BaseView {
   // 评论
   private List comment;
 
+  // 商家SVS信息
+  private SvsRatingAndRosDTO svsInfo;
+
   /** * 根据现有的逻辑 商品的库存就是个个规格相加的库存了 */
   // 剩余库存:每个规格的库存累加所得
   private Integer qty_num;
@@ -92,8 +96,18 @@ public class ProductInfoView implements BaseView {
 
   private boolean isFavorite;
 
+  private String sku;
+
   @JsonSerialize(using = I18NFieldSerializer.class)
   private String seoTitle;
+
+  public String getSku() {
+    return sku;
+  }
+
+  public void setSku(String sku) {
+    this.sku = sku;
+  }
 
   @JsonSerialize(using = I18NFieldSerializer.class)
   private String seoKeywords;
@@ -128,6 +142,14 @@ public class ProductInfoView implements BaseView {
 
   public List<String> getDesModule() {
     return desModule;
+  }
+
+  public SvsRatingAndRosDTO getSvsInfo() {
+    return svsInfo;
+  }
+
+  public void setSvsInfo(SvsRatingAndRosDTO svsInfo) {
+    this.svsInfo = svsInfo;
   }
 
   public void setDesModule(List<String> desModule) {

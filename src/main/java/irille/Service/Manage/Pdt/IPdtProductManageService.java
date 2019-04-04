@@ -29,6 +29,8 @@ public interface IPdtProductManageService {
 
   List<PdtProductCatView> getCatChildNodesByCatId(int i, FldLanguage.Language supplierLanguage);
 
+  List<PdtProductCatView> getCatChildNodesByCatIdRemoveDisplay(int i, FldLanguage.Language supplierLanguage);
+
   Integer saveProduct(String data, Integer supId) throws IOException, ExecutionException;
 
   Page getWarehouse(

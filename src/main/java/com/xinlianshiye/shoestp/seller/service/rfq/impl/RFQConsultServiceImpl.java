@@ -271,8 +271,8 @@ public class RFQConsultServiceImpl implements RFQConsultService {
     } else if (orderType == 4) {
       sql.ORDER_BY(RFQConsult.T.CREATE_TIME, "asc");
     }
+    sql.LIMIT(start, limit);
     SqlQuery query = Query.sql(sql);
-    query.limit(start, limit);
     List<RFQConsultRelationView> result =
         query.queryMaps().stream()
             .map(

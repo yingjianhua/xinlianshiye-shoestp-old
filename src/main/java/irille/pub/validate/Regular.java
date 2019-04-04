@@ -4,7 +4,7 @@ public class Regular {
 
   public static final String REGULAR_ENG = "[A-Za-z\\s]{0,}"; // 英文字符校验
   public static final String REGULAR_TEL = "^[+\\d]?\\d{1,3}-\\d{1,16}$"; // 国外手机校验
-  public static final String REGULAR_EMAIL = "^[\\w]{1,32}@\\w{1,15}.\\w{2,5}$"; // 邮箱校验
+  public static final String REGULAR_EMAIL = "^[\\w.]{1,32}@\\w{1,15}.\\w{2,5}$"; // 邮箱校验
   public static final String REGULAR_PWD = "^[^\\s]{6,20}$"; // 密码校验(6-20位字母加数字)
   public static final String REGULAR_ARRRESS =
       "^[^!@~`%^&*()+|\\\\}{\":?/].{1,180}$"; // 地址校验 限制!@%^&*()`~ 等符号输入 其他任意,

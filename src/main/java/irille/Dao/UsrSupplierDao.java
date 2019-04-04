@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import irille.Aops.Caches;
 import irille.Entity.SVS.SVSInfo;
+import irille.Entity.SVS.Enums.SVSAuthenticationStatus;
 import irille.core.sys.Sys;
 import irille.homeAction.usr.dto.Page_supplierProductView;
 import irille.homeAction.usr.dto.SupplierListView;
@@ -15,10 +16,8 @@ import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
 import irille.pub.util.SEOUtils;
-import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
-import irille.shop.pdt.PdtTieredPricing;
 import irille.shop.usr.*;
 import irille.shop.usr.UsrSupplier.T;
 
@@ -203,7 +202,7 @@ public class UsrSupplierDao {
               + targetMarket
               + "))");
     }
-    if (null != checkedType && checkedType == 1) query.WHERE(SVSInfo.T.STATUS, " =?", 1);
+    if (null != checkedType && checkedType == 1) query.WHERE(SVSInfo.T.STATUS, " =?",SVSAuthenticationStatus.SUCCESS);
     if (pdtCategory != null && pdtCategory > -1) {
       List listCate = getCatsNodeByCatId(pdtCategory);
       System.out.println(listCate);
@@ -214,7 +213,8 @@ public class UsrSupplierDao {
     query
         .WHERE(grade != null, SVSInfo.T.GRADE, " in(" + grade + ")")
         .GROUP_BY(UsrSupplier.T.PKEY)
-        .ORDER_BY(PdtProduct.T.VERIFY_TIME, "desc");
+        .ORDER_BY(SVSInfo.T.GRADE,"desc")
+        .ORDER_BY(PdtProduct.T.VERIFY_TIME, "asc");
     if (start != null && limit != null) {
       query.limit(start, limit);
     }
@@ -252,7 +252,7 @@ public class UsrSupplierDao {
               + targetMarket
               + "))");
     }
-    if (null != checkedType && checkedType == 1) query.WHERE(SVSInfo.T.STATUS, " =?", 1);
+    if (null != checkedType && checkedType == 1) query.WHERE(SVSInfo.T.STATUS, " =?", SVSAuthenticationStatus.SUCCESS);
     if (pdtCategory != null && pdtCategory > -1) {
       List listCate = getCatsNodeByCatId(pdtCategory);
       if (listCate != null)
