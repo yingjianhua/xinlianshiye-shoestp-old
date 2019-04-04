@@ -2615,7 +2615,7 @@ public class UsrSupplierDAO {
             SELECT(
                     T.PKEY,
                     T.LOGO,
-                    T.SHOW_NAME,
+                    T.NAME,
                     UsrMain.T.EMAIL,
                     T.TARGETED_MARKET,
                     UsrMain.T.LAST_LOGIN,
@@ -2629,7 +2629,7 @@ public class UsrSupplierDAO {
     Map<String, Object> map = irille.pub.bean.Query.sql(sql).queryMap();
     view.setPkey((Integer) map.get(T.PKEY.getFld().getCodeSqlField()));
     view.setLogo((String) map.get(T.LOGO.getFld().getCodeSqlField()));
-    view.setName((String) map.get(T.SHOW_NAME.getFld().getCodeSqlField()));
+    view.setName((String) map.get(T.NAME.getFld().getCodeSqlField()));
     view.setUserName((String) map.get(UsrMain.T.EMAIL.getFld().getCodeSqlField()));
     view.setTargetedMarket((String) map.get(T.TARGETED_MARKET.getFld().getCodeSqlField()));
     view.setLastLoginTIME((Date) map.get(UsrMain.T.LAST_LOGIN.getFld().getCodeSqlField()));
