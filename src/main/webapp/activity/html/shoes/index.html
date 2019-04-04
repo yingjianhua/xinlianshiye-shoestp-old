@@ -38,11 +38,21 @@
 <!--          <img class="cu" src="images/serach.png" @click="inputshow">-->
         </div>
         <div class="fx">
-          <img name="fx" class="cu" src="images/f1.png">
-          <img name="fx" class="cu" src="images/f2.png">
-          <img name="fx" class="cu" src="images/f3.png">
-          <img name="fx" class="cu" src="images/f4.png">
-          <img name="fx" class="cu" src="images/f5.png">
+          <a href="https://www.facebook.com/ShoestpCN/">
+            <img src="./images/f1.png" name="share" alt="">
+          </a>
+          <a href="https://twitter.com/shoes_logo">
+            <img src="./images/f2.png" name="share" alt="">
+          </a>
+          <!--					<a href="https://www.facebook.com/ShoestpCN/">-->
+          <!--						<img src="./images/f3.png" name="share" alt="">-->
+          <!--					</a>-->
+          <a href="https://www.linkedin.com/company/shoestp/?viewAsMember=true">
+            <img src="./images/f4.png" name="share" alt="">
+          </a>
+          <a href="https://www.youtube.com/channel/UCUHObFxGQ_FaHCKolyZ9k0w/featured?view_as=subscriber">
+            <img src="./images/f5.png" name="share" alt="">
+          </a>
         </div>
       </div>
       <img name="banner" src="images/banner.png" alt="">
@@ -58,7 +68,7 @@
         </div>
       </div>
     </div>
-    <div class="con boots">
+    <div class="con boots" v-if="men.length > 0">
       <div class="boot">
         <h2>MEN’S BOOTS</h2>
         <h3>Click <a href="">INQUIRY</a> And Get A Free Sample</h3>
@@ -83,12 +93,16 @@
         </div>
       </div>
     </div>
-    <div class="con boots">
+    <div class="dress-list" v-else>
+      <h2 style="text-align: center">NO RESULT</h2>
+      <p style="text-align: center;color: #999999;">There is no relevant content for the time being.</p>
+    </div>
+    <div class="con boots" v-if="women.length > 0">
       <div class="boot">
         <h2>WOMEN’S BOOTS</h2>
         <h3>Click <a href="">INQUIRY</a> And Get A Free Sample</h3>
         <div class="shoes">
-          <div class="shoe" v-for="item,index in men">
+          <div class="shoe" v-for="item,index in women">
             <div class="imgcon">
               <img :src="'https://image.shoestp.com' + item.picture.split(',')[0] + '?x-oss-process=image/resize,w_298,h_261'" alt="">
             </div>
@@ -108,6 +122,10 @@
         </div>
         <p class="more"><a href="/home/pdt_PdtProduct">Visit More</a></p>
       </div>
+    </div>
+    <div class="dress-list" v-else>
+      <h2 style="text-align: center">NO RESULT</h2>
+      <p style="text-align: center;color: #999999;">There is no relevant content for the time being.</p>
     </div>
     <div class="con aboutcon">
       <div class="aboutus">
@@ -257,10 +275,9 @@
           let self = this;
           axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax', {
             params: {
-              v:3,
-              cate:373,
-              lose:1,
-              start:0,
+              v: 4,
+              start: 0,
+              'search.category': 373,
               limit:3
             }
           }).then(function (res) {
@@ -284,10 +301,9 @@
           let self = this;
           axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax', {
             params: {
-              v:3,
-              cate:380,
-              lose:1,
-              start:0,
+              v: 4,
+              start: 0,
+              'search.category': 380,
               limit:3
             }
           }).then(function (res) {

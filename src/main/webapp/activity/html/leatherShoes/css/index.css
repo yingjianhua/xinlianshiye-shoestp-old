@@ -7,10 +7,14 @@ a {
   text-decoration: none; }
 
 #leather .mw_300 {
-  max-width: 160px;
+  max-width: 200px;
   overflow: hidden;
   display: inline-block;
-  flex-grow: 1; }
+  flex-grow: 1;
+  vertical-align: middle; }
+#leather .fg_r {
+  flex-grow: 1;
+  text-align: right; }
 #leather .p_16 {
   font-size: 16px; }
 #leather .c_w {
@@ -50,7 +54,9 @@ a {
     min-width: 1240px;
     height: 60px;
     line-height: 60px;
-    margin: 0 auto; }
+    margin: 0 auto;
+    display: flex;
+    align-items: center; }
     #leather .leather-banner-head img[name='logo'] {
       width: 234px;
       vertical-align: middle; }
@@ -58,7 +64,7 @@ a {
       display: inline-block;
       line-height: 60px;
       vertical-align: top;
-      margin: 0 20px; }
+      margin: 0 40px; }
     #leather .leather-banner-head .button {
       display: inline-block;
       width: 112px;
@@ -170,10 +176,10 @@ a {
       #leather .leather-product .leather-product-dress .dress-list .dress-list-item .item-image-box {
         width: 100%;
         height: 300px;
-        padding-top: 92px; }
+        padding-top: 40px; }
       #leather .leather-product .leather-product-dress .dress-list .dress-list-item .item-image {
-        width: 287px;
-        height: 204px;
+        width: 300px;
+        height: 300px;
         margin: 0 auto;
         display: flex;
         justify-content: center;
@@ -195,12 +201,14 @@ a {
           color: #b0b0b0; }
         #leather .leather-product .leather-product-dress .dress-list .dress-list-item .item-intro .item-intro-title {
           width: 100%;
+          max-height: 62px;
           overflow: hidden;
           display: -webkit-box;
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 2; }
         #leather .leather-product .leather-product-dress .dress-list .dress-list-item .item-intro .item-intro-text {
           width: 100%;
+          max-height: 30px;
           overflow: hidden;
           display: -webkit-box;
           -webkit-box-orient: vertical;
