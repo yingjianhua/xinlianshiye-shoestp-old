@@ -2,15 +2,10 @@ package irille.Entity.RFQ;
 
 import java.util.Date;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import irille.Entity.RFQ.Enums.RFQConsultPayType;
-import irille.Entity.RFQ.Enums.RFQConsultShipping_Type;
-import irille.Entity.RFQ.Enums.RFQConsultStatus;
-import irille.Entity.RFQ.Enums.RFQConsultType;
-import irille.Entity.RFQ.Enums.RFQConsultUnit;
-import irille.Entity.RFQ.Enums.RFQConsultVerifyStatus;
+import irille.Config.Attribute;
+import irille.Config.Variable;
+import irille.Entity.RFQ.Enums.*;
+import irille.Entity.pm.PM.OTempType;
 import irille.core.sys.Sys;
 import irille.core.sys.Sys.OYn;
 import irille.pub.bean.BeanInt;
@@ -23,87 +18,110 @@ import irille.shop.plt.PltCountry;
 import irille.shop.plt.PltErate;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+@Variable(
+    group = {
+      OTempType.INQUIRY_NOTICE_SUPPLIER,
+      OTempType.RFQ_INFO_NOTICE,
+      OTempType.INQUIRY_NOTICE_PURCHASE
+    },
+    enumType = RFQConsult.T.class,
+    clazz = RFQConsult.class,
+    attributes = {
+      @Attribute(name = "RFQ/询盘标题", field = "TITLE", type = String.class),
+      @Attribute(name = "RFQ/询盘内容", field = "CONTENT", type = String.class),
+      @Attribute(name = "RFQ/询盘时间", field = "CREATE_TIME", type = Date.class)
+    })
 public class RFQConsult extends BeanInt<RFQConsult> {
-    private static final long serialVersionUID = 7524946206877858631L;
-    public static final Tb<?> TB = new Tb<>(RFQConsult.class, "新询盘").setAutoIncrement();
+  private static final long serialVersionUID = 7524946206877858631L;
+  public static final Tb<?> TB = new Tb<>(RFQConsult.class, "新询盘").setAutoIncrement();
 
-    public enum T implements IEnumFld {//@formatter:off
-        PKEY(Tb.crtIntPkey()),
-        TITLE(Sys.T.STR__500, "标题"),//一般为产品名字
-        IMAGE(Sys.T.IMG_MULTI__2000_NULL),
-        COUNTRY(PltCountry.fldOutKey()),
-        PRODUCT(PdtProduct.fldOutKey().setNull()), //产品ID
-        CONTENT(Sys.T.STR__200_NULL, "内容"),
-        LEFT_COUNT(Sys.T.INT_PLUS_OR_ZERO, "剩余抢单次数"), //初始化次数为5
-        QUANTITY(Sys.T.INT, "商品数量"),//商品数量
-        UNIT(Tb.crt(RFQConsultUnit.DEFAULT)),//商品数量单位
-        PURCHASE_ID(UsrPurchase.fldOutKey().setName("采购商")),
-        SUPPLIER_ID(UsrSupplier.fldOutKey().setNull().setName("供应商")),
-        TYPE(Tb.crt(RFQConsultType.DEFAULT)),//询盘类型
-        STATUS(Tb.crt(RFQConsultStatus.DEFAULT)),//发布状态
-        VERIFY_STATUS(Tb.crt(RFQConsultVerifyStatus.DEFAULT)),//审核状态
-        VALID_DATE(Sys.T.DATE_TIME, "有效期至"),
-        PRICE(Sys.T.STR__20_NULL, "价格(价格区间)"),
-        PAY_TYPE(Tb.crt(RFQConsultPayType.DEFAULT).setNull()), //支付方式
-        SHIPPING_TYPE(Tb.crt(RFQConsultShipping_Type.DEFAULT).setNull()), //运送方式
-        CURRENCY(PltErate.fldOutKey().setNull()),  //货币类型
-        EXTRA_REQUEST(Sys.T.STR__100_NULL),//额外请求, 店铺询盘专用字段, 是用逗号分隔的请求内容 格式如: price, inspection product, product specification
-        PRODUCT_REQUEST(Sys.T.JSON, true),//请求产品列表, 店铺询盘专用字段, 在店铺的基础上指定感兴趣的产品 格式如: [{"pkey":1, "name":"bb", "image":"aa"}, {"pkey":2, "name":"dd", "image":"cc"}]
-        DESTINATION(Sys.T.STR__200_NULL, "目的地"),
-        TOTAL(Sys.T.INT_PLUS_OR_ZERO, "总抢单数"),
-        CHANGE_COUNT(Sys.T.SHORT, "修改总数"),
-        EXTRA_DESCRIPTION(Sys.T.STR__2000_NULL, "额外信息"),//总共可以修改3次, 修改次数在change_count字段统计
-        CREATE_TIME(Sys.T.DATE_TIME, "创建时间"),
-        IS_DELETED(Sys.T.YN, "是否已删除"),//为了适应在删除询盘的情况, 只影响到询盘不能被抢单,而不影响已抢单询盘的聊天功能, 故增加此字段, 用于标记询盘是否已删除
-        ROW_VERSION(Sys.T.ROW_VERSION),
-        // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
-        // <<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
-        ;
+  public enum T implements IEnumFld { // @formatter:off
+    PKEY(Tb.crtIntPkey()),
+    TITLE(Sys.T.STR__500, "标题"), // 一般为产品名字
+    IMAGE(Sys.T.IMG_MULTI__2000_NULL),
+    COUNTRY(PltCountry.fldOutKey()),
+    PRODUCT(PdtProduct.fldOutKey().setNull()), // 产品ID
+    CONTENT(Sys.T.STR__200_NULL, "内容"),
+    LEFT_COUNT(Sys.T.INT_PLUS_OR_ZERO, "剩余抢单次数"), // 初始化次数为5
+    QUANTITY(Sys.T.INT, "商品数量"), // 商品数量
+    UNIT(Tb.crt(RFQConsultUnit.DEFAULT)), // 商品数量单位
+    PURCHASE_ID(UsrPurchase.fldOutKey().setName("采购商")),
+    SUPPLIER_ID(UsrSupplier.fldOutKey().setNull().setName("供应商")),
+    TYPE(Tb.crt(RFQConsultType.DEFAULT)), // 询盘类型
+    STATUS(Tb.crt(RFQConsultStatus.DEFAULT)), // 发布状态
+    VERIFY_STATUS(Tb.crt(RFQConsultVerifyStatus.DEFAULT)), // 审核状态
+    VALID_DATE(Sys.T.DATE_TIME, "有效期至"),
+    PRICE(Sys.T.STR__20_NULL, "价格(价格区间)"),
+    PAY_TYPE(Tb.crt(RFQConsultPayType.DEFAULT).setNull()), // 支付方式
+    SHIPPING_TYPE(Tb.crt(RFQConsultShipping_Type.DEFAULT).setNull()), // 运送方式
+    CURRENCY(PltErate.fldOutKey().setNull()), // 货币类型
+    LAST_MESSAGE_SEND_TIME(Sys.T.TIME), // 记录该询盘的最新事件的时间(创建,报价,聊天),之后可以根据该字段进行排序
+    EXTRA_REQUEST(
+        Sys.T
+            .STR__100_NULL), // 额外请求, 店铺询盘专用字段, 是用逗号分隔的请求内容 格式如: price, inspection product, product
+                             // specification
+    PRODUCT_REQUEST(
+        Sys.T.JSON,
+        true), // 请求产品列表, 店铺询盘专用字段, 在店铺的基础上指定感兴趣的产品 格式如: [{"pkey":1, "name":"bb", "image":"aa"},
+               // {"pkey":2, "name":"dd", "image":"cc"}]
+    DESTINATION(Sys.T.STR__200_NULL, "目的地"),
+    TOTAL(Sys.T.INT_PLUS_OR_ZERO, "总抢单数"),
+    CHANGE_COUNT(Sys.T.SHORT, "修改总数"),
+    EXTRA_DESCRIPTION(Sys.T.STR__2000_NULL, "额外信息"), // 总共可以修改3次, 修改次数在change_count字段统计
+    CREATE_TIME(Sys.T.DATE_TIME, "创建时间"),
+    IS_DELETED(Sys.T.YN, "是否已删除"), // 为了适应在删除询盘的情况, 只影响到询盘不能被抢单,而不影响已抢单询盘的聊天功能, 故增加此字段, 用于标记询盘是否已删除
+    RECOMMEND(Tb.crt(RFQConsultRecommend.DEFAULT).setNull()), // 是否推荐，0：不推荐，1：推荐
+    ROW_VERSION(Sys.T.ROW_VERSION),
+  // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
+  // <<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
+  ;
 
-        // >>>以下是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别>>>
-        // <<<以上是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别<<<
-        private Fld<?> _fld;
+    // >>>以下是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别>>>
+    // <<<以上是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别<<<
+    private Fld<?> _fld;
 
-        private T(Class<?> clazz, String name, boolean... isnull) {
-            _fld = TB.addOutKey(clazz, this, name, isnull);
-        }
-
-        private T(IEnumFld fld, boolean... isnull) {
-            this(fld, null, isnull);
-        }
-
-        private T(IEnumFld fld, String name, boolean... null1) {
-            _fld = TB.add(fld, this, name, null1);
-        }
-
-        private T(IEnumFld fld, String name, int strLen) {
-            _fld = TB.add(fld, this, name, strLen);
-        }
-
-        private T(Fld<?> fld) {
-            _fld = TB.add(fld, this);
-        }
-
-        public Fld<?> getFld() {
-            return _fld;
-        }
+    private T(Class<?> clazz, String name, boolean... isnull) {
+      _fld = TB.addOutKey(clazz, this, name, isnull);
     }
 
-    static { // 在此可以加一些对FLD进行特殊设定的代码
-        T.PKEY.getFld().getTb().lockAllFlds();// 加锁所有字段,不可以修改
+    private T(IEnumFld fld, boolean... isnull) {
+      this(fld, null, isnull);
     }
 
-    public static Fld<?> fldOutKey() {
-        return fldOutKey(TB.getCodeNoPackage(), TB.getShortName());
+    private T(IEnumFld fld, String name, boolean... null1) {
+      _fld = TB.add(fld, this, name, null1);
     }
 
-    public static Fld<?> fldOutKey(String code, String name) {
-        return Tb.crtOutKey(TB, code, name);
+    private T(IEnumFld fld, String name, int strLen) {
+      _fld = TB.add(fld, this, name, strLen);
     }
 
-    // @formatter:on
-    // >>>以下是自动产生的源代码行--源代码--请保留此行用于识别>>>
+    private T(Fld<?> fld) {
+      _fld = TB.add(fld, this);
+    }
+
+    public Fld<?> getFld() {
+      return _fld;
+    }
+  }
+
+  static { // 在此可以加一些对FLD进行特殊设定的代码
+    T.PKEY.getFld().getTb().lockAllFlds(); // 加锁所有字段,不可以修改
+  }
+
+  public static Fld<?> fldOutKey() {
+    return fldOutKey(TB.getCodeNoPackage(), TB.getShortName());
+  }
+
+  public static Fld<?> fldOutKey(String code, String name) {
+    return Tb.crtOutKey(TB, code, name);
+  }
+
+  // @formatter:on
+  // >>>以下是自动产生的源代码行--源代码--请保留此行用于识别>>>
   //实例变量定义-----------------------------------------
   private Integer _pkey;	// 编号  INT
   private String _title;	// 标题  STR(500)
@@ -136,7 +154,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
   private Date _validDate;	// 有效期至  TIME
   private String _price;	// 价格(价格区间)  STR(20)<null>
   private Byte _payType;	// 支付方式 <RFQConsultPayType>  BYTE<null>
-	// TT:1,TT支付
+	// TT:1,T/T
 	// LC:2,L/C
 	// DP:3,D/P
 	// WesternUnion:4,Western Union
@@ -147,7 +165,8 @@ public class RFQConsult extends BeanInt<RFQConsult> {
 	// CNF:3,CNF
 	// CRF:4,CRF
   private Integer _currency;	// 费率设置 <表主键:PltErate>  INT<null>
-  private String _extraRequest;	// 字符100  STR(100)
+  private Date _lastMessageSendTime;	// 时间  TIME
+  private String _extraRequest;	// 字符100  STR(100)<null>
   private String _productRequest;	// JSON  JSONOBJECT<null>
   private String _destination;	// 目的地  STR(200)<null>
   private Integer _total;	// 总抢单数  INT
@@ -157,6 +176,9 @@ public class RFQConsult extends BeanInt<RFQConsult> {
   private Byte _isDeleted;	// 是否已删除 <OYn>  BYTE
 	// YES:1,是
 	// NO:0,否
+  private Byte _recommend;	// 是否推荐 <RFQConsultRecommend>  BYTE<null>
+	// NOT_RECOMMENDED:0,不推荐
+	// RECOMMENDED:1,推荐
   private Short _rowVersion;	// 版本  SHORT
 
 	@Override
@@ -180,6 +202,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
     _payType=RFQConsultPayType.DEFAULT.getLine().getKey();	// 支付方式 <RFQConsultPayType>  BYTE
     _shippingType=RFQConsultShipping_Type.DEFAULT.getLine().getKey();	// 配送方式 <RFQConsultShipping_Type>  BYTE
     _currency=null;	// 费率设置 <表主键:PltErate>  INT
+    _lastMessageSendTime=null;	// 时间  TIME
     _extraRequest=null;	// 字符100  STR(100)
     _productRequest=null;	// JSON  JSONOBJECT
     _destination=null;	// 目的地  STR(200)
@@ -188,6 +211,7 @@ public class RFQConsult extends BeanInt<RFQConsult> {
     _extraDescription=null;	// 额外信息  STR(2000)
     _createTime=Env.getTranBeginTime();	// 创建时间  TIME
     _isDeleted=OYn.DEFAULT.getLine().getKey();	// 是否已删除 <OYn>  BYTE
+    _recommend=RFQConsultRecommend.DEFAULT.getLine().getKey();	// 是否推荐 <RFQConsultRecommend>  BYTE
     _rowVersion=0;	// 版本  SHORT
     return this;
   }
@@ -398,6 +422,12 @@ public class RFQConsult extends BeanInt<RFQConsult> {
     else
       setCurrency(currency.getPkey());
   }
+  public Date getLastMessageSendTime(){
+    return _lastMessageSendTime;
+  }
+  public void setLastMessageSendTime(Date lastMessageSendTime){
+    _lastMessageSendTime=lastMessageSendTime;
+  }
   public String getExtraRequest(){
     return _extraRequest;
   }
@@ -458,6 +488,18 @@ public class RFQConsult extends BeanInt<RFQConsult> {
   public void stIsDeleted(Boolean isDeleted){
     _isDeleted=booleanToByte(isDeleted);
   }
+  public Byte getRecommend(){
+    return _recommend;
+  }
+  public void setRecommend(Byte recommend){
+    _recommend=recommend;
+  }
+  public RFQConsultRecommend gtRecommend(){
+    return (RFQConsultRecommend)(RFQConsultRecommend.NOT_RECOMMENDED.getLine().get(_recommend));
+  }
+  public void stRecommend(RFQConsultRecommend recommend){
+    _recommend=recommend.getLine().getKey();
+  }
   public Short getRowVersion(){
     return _rowVersion;
   }
@@ -465,6 +507,6 @@ public class RFQConsult extends BeanInt<RFQConsult> {
     _rowVersion=rowVersion;
   }
 
-    // <<<以上是自动产生的源代码行--源代码--请保留此行用于识别<<<
+  // <<<以上是自动产生的源代码行--源代码--请保留此行用于识别<<<
 
 }

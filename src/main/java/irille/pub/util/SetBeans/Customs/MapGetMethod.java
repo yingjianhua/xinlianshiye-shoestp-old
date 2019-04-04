@@ -1,31 +1,25 @@
 package irille.pub.util.SetBeans.Customs;
 
-
 import irille.pub.util.SetBeans.Core.AbsGetMethodString;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Hellobox
- * Date: 2018/8/20
- * Time: 13:51
- */
+/** Created by IntelliJ IDEA. User: Hellobox Date: 2018/8/20 Time: 13:51 */
 public class MapGetMethod extends AbsGetMethodString {
-    @Override
-    public String getName() {
-        return "java.util.*Map";
-    }
+  @Override
+  public String getName() {
+    return "java.util.*Map";
+  }
 
-    @Override
-    public String getMethodString(String o, Class ocla) {
-        if (o.charAt(0) == '_') {
-            return o.substring(1);
-        } else {
-            return o;
-        }
+  @Override
+  public String getMethodString(String o, Class ocla) {
+    if (o.charAt(0) == '_') {
+      return o.substring(1);
+    } else {
+      return o;
     }
+  }
 
-    @Override
-    public String setMethodString(String o, Class ocla) {
-        return null;
-    }
+  @Override
+  public String setMethodString(String o, Class ocla) {
+    return null;
+  }
 }

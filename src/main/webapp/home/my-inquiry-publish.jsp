@@ -28,19 +28,15 @@
     <link href="./static/css/global(1).css" rel="stylesheet" type="text/css">
     <link href="./static/css/user.css" rel="stylesheet" type="text/css">
     <link href="./static/css/style.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="./static/js/jquery-1.7.2.min.js">
-    </script>
+    <%--<script type="text/javascript" src="./static/js/jquery-1.7.2.min.js"></script>--%>
     <script type="text/javascript" src="./static/js/lang/en.js">
     </script>
-    <script type="text/javascript" src="./static/js/main.js">
-    </script>
+    <%--<script type="text/javascript" src="./static/js/main.js"></script>--%>
     <!--<link href="//www.shoestp.com/static/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">-->
-    <link rel="stylesheet" href="./static/css/animate.min.css" type="text/css">
-    <link rel="stylesheet" href="./static/css/swiper.min.css" type="text/css">
-    <script src="./static/js/swiper.min.js" type="text/javascript">
-    </script>
-    <script src="./static/js/lazyload.min.js" type="text/javascript">
-    </script>
+    <%--<link rel="stylesheet" href="./static/css/animate.min.css" type="text/css">--%>
+    <%--<link rel="stylesheet" href="./static/css/swiper.min.css" type="text/css">--%>
+    <%--<script src="./static/js/swiper.min.js" type="text/javascript"></script>--%>
+    <%--<script src="./static/js/lazyload.min.js" type="text/javascript"></script>--%>
     <!-- <script type="text/javascript">
         $(function () {
             products_list_obj.init();
@@ -48,16 +44,14 @@
     </script> -->
     <%-- <script src="./static/js/saved_resource" type="text/javascript">
     </script> --%>
-    <script src="./static/js/qs.js" type="text/javascript">
-    </script>
+    <%--<script src="./static/js/qs.js" type="text/javascript"></script>--%>
     <link href="./static/css/row_4.css" rel="stylesheet" type="text/css">
     <link href="./static/css/inquiry-publish.css" rel="stylesheet" type="text/css">
 
-    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
-    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.4.6/lib/theme-chalk/index.css">
-    <script src="https://unpkg.com/element-ui@2.4.6/lib/index.js"></script>
+    <%--<script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>--%>
+    <%--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>--%>
+    <%--<link rel="stylesheet" href="https://unpkg.com/element-ui@2.4.6/lib/theme-chalk/index.css">--%>
+    <%--<script src="https://unpkg.com/element-ui@2.4.6/lib/index.js"></script>--%>
     <style media="screen">
         /* 上传图片 预览的样式调整 */
         .el-upload--picture-card {
@@ -88,6 +82,53 @@
         #o2otop .o2otopcon .topsearch > input{
             border: 1px solid #10389c;
         }
+
+        /*左侧个人中心*/
+        #left-user-menu .user-menu {
+            font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+            width: 180px;
+            height: 285px;
+            flex: none;
+            background-color: #ffffff;
+            border: solid 1px #dedede;
+            padding: 8px 24px;
+        }
+
+        #left-user-menu .user-menu .user-menu-title {
+            height: 44px;
+            line-height: 44px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        #left-user-menu .user-menu .user-menu-item {
+            height: 44px;
+            line-height: 44px;
+            border-bottom: solid 1px #dddddd;
+            font-size: 14px;
+        }
+
+        #left-user-menu .user-menu .user-menu-item:last-child {
+            border: none;
+        }
+
+        #left-user-menu .user-menu .user-menu-item a {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            color: #232323;
+            text-decoration: none;
+        }
+
+        .el-form-item__label{
+            white-space: nowrap;
+        }
     </style>
 
     <%--统计代码--%>
@@ -99,6 +140,21 @@
     <index-top></index-top>
     <div class="wide">
         <div id="lib_user" class="clearfix">
+            <%--左侧个人中心列表--%>
+            <s:if test="env.login!=null">
+                <div id="left-user-menu" class="fl">
+                    <div class="user-menu">
+                        <div class="user-menu-title"><img src="/home/v3/static/images/user/icon_account.png" alt="" style="margin:0 8px 2px 0;">My Account</div>
+                        <div class="user-menu-item"><a href="/home/usr_UsrPurchase_userIndex">Home <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+                        <div class="user-menu-item"><a href="/home/usr_UsrMessages_center">Message Center <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+                        <div class="user-menu-item"><a href="/home/usr_UsrPurchase_contacts">Contacts <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+                        <div class="user-menu-item"><a href="/home/usr_UsrFavorites_myfavorite">My Favourites <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+                        <div class="user-menu-item"><a href="/home/usr_UsrPurchase_usrSetting">Account Settings <img src="/home/v3/static/images/user/icon_right.png" alt=""></a></div>
+                    </div>
+                </div>
+            </s:if>
+
+            <%--中间具体内容   --%>
             <div id="lib_user_main">
                 <div id="lib_user_msg" class="clearfix">
 
@@ -116,7 +172,7 @@
                         <el-form size="small" label-width="160px" ref="form" :rules="rules" :model="form" id="inquiry_form">
                             <div class="input-wrap required">
                                 <el-form-item label-width="0" prop="title">
-                                    <el-input placeholder="Key words of products you are looking for" v-model="form.title"></el-input>
+                                    <el-input placeholder="Key words of products you are looking for" v-model.trim="form.title"></el-input>
                                 </el-form-item>
                             </div>
 
@@ -127,7 +183,7 @@
                             <div class="form_main">
                                 <el-form-item label-width="0" prop="descriotion">
                                     <el-input type="textarea" :autosize="{ minRows: 14, maxRows: 14}" placeholder="Please let us know your requirements as detail as possible. You may include: color, size, material, gradw/standard, etc."
-                                              v-model="form.descriotion">
+                                              v-model.trim="form.descriotion">
                                     </el-input>
                                 </el-form-item>
                             </div>
@@ -135,7 +191,7 @@
                             <div class="form_main marginBottom">
                                 <!--  添加 勾选商品后的图片显示 -->
                                 <div class="chooseImgWrap clearfix">
-                                    <div class="chooseImg fl">
+                                    <div class="chooseImg fl" :class="{'no-plus-btn': imgsToUpload.length >= 5}">
                                         <el-upload action="/home/usr_UsrConsult_upload" list-type="picture-card"
                                                    :on-success="handlePictureCardPreview" :limit="5"
                                                    :before-upload="beforeUpload"
@@ -148,16 +204,17 @@
                             </div>
 
                             <div class="inquiry-goods-info">
-                                <el-form-item style="white-space: nowrap;" label="Purchase Quantity：" required>
+                                <el-form-item label="Purchase Quantity：" required>
                                     <el-col :span="15">
                                         <el-form-item label-width="0" prop="quantity">
-                                            <el-input v-model.number="form.quantity"></el-input>
+                                            <el-input v-model.trim="form.quantity"
+                                                      onkeyup="this.value=this.value.replace(/[^0-9]+/g,'')"></el-input>
                                         </el-form-item>
                                     </el-col>
 
                                     <el-col class="input-unit" :span="6" :offset="1">
                                         <!-- Pairs -->
-                                        <el-select placeholder="" v-model="form.unit">
+                                        <el-select placeholder="" v-model.trim="form.unit">
                                             <el-option label="Pairs" :value="1"></el-option>
                                             <el-option label="Forty-Foot Container" :value="2"></el-option>
                                             <el-option label="Twenty-Foot Container" :value="3"></el-option>
@@ -170,7 +227,8 @@
                                 <el-form-item label="Price：">
                                     <el-col :span="7">
                                         <el-form-item prop="min_price">
-                                            <el-input v-model.number="form.min_price"></el-input>
+                                            <el-input v-model.trim="form.min_price"
+                                                      onkeyup="this.value=this.value.replace(/[^0-9.]+/g,'')"></el-input>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :span="1">
@@ -178,7 +236,8 @@
                                     </el-col>
                                     <el-col :span="7">
                                         <el-form-item prop="max_price">
-                                            <el-input v-model.number="form.max_price"></el-input>
+                                            <el-input v-model.trim="form.max_price"
+                                                      onkeyup="this.value=this.value.replace(/[^0-9.]+/g,'')"></el-input>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :span="6" :offset="1">
@@ -217,7 +276,7 @@
                                             </el-form-item>
                                             <!-- 目的地 -->
                                             <el-form-item label-width="0">
-                                                <el-input v-model="form.destination" placeholder="Destination Port"></el-input>
+                                                <el-input v-model.trim="form.destination" placeholder="Destination Port"></el-input>
                                             </el-form-item>
                                             <!-- 支付方式 -->
                                             <el-form-item label-width="0">
@@ -298,16 +357,38 @@
 <script src="/home/v3/static/js/index-top.js"></script>
 <script src="/home/v3/static/js/index-bottom.js"></script>
 <script type="text/javascript">
-    // 最高价格 - 不鞥低于最低价
-    const validateMaxPrice = (rule, value, callback) => {
-        let pattrn = /^((?!0)\d+(\.\d+)?)$/g
+    // 最低价格
+    const validateMinPrice = (rule, value, callback) => {
         if (!value) {
             callback();
             return
+            // 小数点验证
+        }else if(parseFloat(value) != value){
+            callback(new Error('Please enter a right number'));
+            return;
+        } else if( !(util_regular_obj.register.priceDecimal.test(value)) ){
+            callback(new Error('Price can\'t greater than 6 digit integer and 2 decimal places'));
+        } else {
+            callback();
         }
-        if (!pattrn.test(value)) {
-            callback(new Error('Please enter a number type'));
-        } else if (value < (vm.form.min_price ? vm.form.min_price : 0)) {
+    };
+    // 最高价格 - 不鞥低于最低价
+    const validateMaxPrice = (rule, value, callback) => {
+        // let pattrn = /^((?!0)\d+(\.\d+)?)$/g
+        if (!value) {
+            callback();
+            return
+        // 小数点验证
+        }else if(parseFloat(value) != value){
+            callback(new Error('Please enter a right number'));
+            return;
+        } else
+        // if (!pattrn.test(value)) {
+        //     callback(new Error('Please enter a number type'));
+        // }else
+            if( !(util_regular_obj.register.priceDecimal.test(value)) ){
+            callback(new Error('Price can\'t greater than 6 digit integer and 2 decimal places'));
+        } else if (parseFloat(value) < (vm.form.min_price ? parseFloat(vm.form.min_price) : 0)) {
             callback(new Error('The maximum must be greater than the minimum!'));
         } else {
             callback();
@@ -444,15 +525,15 @@
                     trigger: 'blur'
                 },
                     {
-                        type: "number",
-                        message: 'Please fill in with numbers.',
+                        pattern: util_regular_obj.register.positiveInteger,
+                        message: 'Please enter the positive integer，and can\'t beyond 10 digits',
                         trigger: 'blur'
                     }
                 ],
                 min_price: [{
-                    type: "number",
-                    message: 'Please enter a number type',
-                    trigger: 'blur'
+                    validator: validateMinPrice,
+                    trigger: 'blur',
+                    type: "number"
                 }],
                 max_price: [{
                     validator: validateMaxPrice,
@@ -469,28 +550,22 @@
                 if (r != null) return unescape(decodeURIComponent(r[2]));
                 return null;
             },
+            //完成后跳转回哪个页面
+            // - 参数为手输的默认地址
+            // - 地址中有值时用地址中的值，否则用调用时的参数地址，也没填写时跳转回首页
             // elementui 上传功能 *2 - 删除操作
             handleRemove(file, fileList) {
                 // 清空imgs数组
                 this.imgsToUpload = [];
                 // 删除图片后，将授予的图片地址放入数组
-                $.each(fileList, (i, v) => {
+                fileList.forEach( (v, i) => {
                     this.imgsToUpload.push(v.response.result.url)
                 })
-
-                if (!(this.imgsToUpload.length >= 5)) {
-                    $(".chooseImg .el-upload.el-upload--picture-card").show();
-                }
             },
             beforeUpload(file) {
-                if (!isLogin) {
+                if (!sysConfig || !sysConfig.user) {
                     sessionStorage['Temp_publish_form'] = JSON.stringify(this.form)
-                    this.$alert('Please login to operate', 'Please login to operate', {
-                        confirmButtonText: 'Ok',
-                        callback: action => {
-                            window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView"
-                        }
-                    });
+                    util_function_obj.alertWhenNoLogin(this);
                     return
                 }
                 const isLt2M = file.size / 1024 < 500;
@@ -504,29 +579,47 @@
             handlePictureCardPreview(file, p2, p3) {
                 if (file.ret != 1) {
                     p3.splice(p3.length - 1, 1);
+                    this.$message.error(file.msg || "Upload error,please try again later");
                     return;
                 }
                 // 添加图片后，在前面显示 img
                 this.imgsToUpload.push(file.result.url);
-
-                // 勾选商品后 - 上传的图片4张时，隐藏添加按钮
-                if (this.imgsToUpload.length >= 5) {
-                    $(".chooseImg .el-upload.el-upload--picture-card").hide();
-                }
             },
 
             // 整个form提交
             submit() {
-                if (!isLogin) {
-                    sessionStorage['Temp_publish_form'] = JSON.stringify(this.form)
-                    this.$alert('Please login to operate', 'Please login to operate', {
+                // if (!sysConfig || !sysConfig.user) {
+                //     sessionStorage['Temp_publish_form'] = JSON.stringify(this.form)
+                //     this.$alert('Please login to operate', {
+                //         confirmButtonText: 'Ok',
+                //         customClass: "my-custom-element-alert-class fs-content-18",
+                //         center: true,
+                //         callback: action => {
+                //             if(action=="confirm"){
+                //                 window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView"
+                //             }
+                //         }
+                //     });
+                //     return
+                // }
+
+                if (!sysConfig || !sysConfig.user) {
+                    sessionStorage['Temp_publish_form'] = JSON.stringify(this.form);
+                    util_function_obj.alertWhenNoLogin(this);
+                    return;
+                // 供应商不能提交
+                }else if(sysConfig && sysConfig.user && sysConfig.user.user_type == 1){
+                    this.$alert("Please register or login your buyer account if you want public RFQ.",{
                         confirmButtonText: 'Ok',
-                        callback: action => {
-                            window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView"
+                        customClass: "my-custom-element-alert-class fs-content-18",
+                        center: true,
+                        callback: action =>{
+                            return
                         }
                     });
                     return
                 }
+
                 this.$refs.form.validate((valid) => {
                     if (valid) {
                         console.log('submit validate suc');
@@ -571,7 +664,7 @@
                                             message: '<s:text name="my-inquiry-publish.Successfully_Released"/>',
                                             type: 'success'
                                         });
-                                        setTimeout(function () {
+                                        setTimeout( () => {
                                             gtag_report_conversion()
                                             sessionStorage['Temp_publish_form'] = { // 需要上传给后台的对象
                                                 title: "",
@@ -587,19 +680,25 @@
                                                 destination: "", //目的地
                                                 pay_type: 1, //支付方式
                                             }
-                                            window.location.href =
-                                                '/home/usr_UsrMessages_center';
+                                            // 有传回跳地址时直接回跳，否则跳首页
+                                            let url = window.location.href;
+                                            if(url.indexOf("backUrl=")!=-1){
+                                                let backUrl = url.substr(url.indexOf("backUrl")+8);
+                                                window.location.href = backUrl;
+                                            }else{
+                                                window.location.href = "/";
+                                            }
+
                                         }, 2000)
                                         // 未登录时
                                     } else if (res.data.ret == -1) {
-                                        console.log('提交失败-1');
-                                        window.location.href =
-                                            '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
-                                        // 提交失败时
+                                        sessionStorage['Temp_publish_form'] = JSON.stringify(this.form)
+                                        util_function_obj.alertWhenNoLogin(this);
+                                        return
                                     } else {
                                         console.log('提交失败else');
                                         this.flag = false;
-                                        this.$alert(res.data.msg, {
+                                        this.$alert(res.data.msg || "Submit error,please try again later", {
                                             confirmButtonText: '<s:text name="my-inquiry-publish.Ok"/>'
                                         });
                                     }
@@ -608,6 +707,7 @@
                                 .catch((err) => {
                                     this.flag = false;
                                     this.rq_mark = true;
+                                    this.$message.error(err || 'Network error,please try again later');
                                 })
                         }
                     } else {
@@ -618,7 +718,6 @@
 
         },
         mounted() {
-
             if (sessionStorage['Temp_publish_form']) {
                 this.form = JSON.parse(sessionStorage['Temp_publish_form'])
                 // Vue.$set()

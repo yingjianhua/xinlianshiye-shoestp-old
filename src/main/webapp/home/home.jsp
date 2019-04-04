@@ -28,14 +28,14 @@
         <div class="sanduan w1240 clearfix">
             <div class="box">
                 <h1>Categories</h1>
-
+                <div class="boxListWrap">
                 <div class="boxList" v-for="(item,index) in classLists" for-key="index">
                     <a class="h2" :href="'/home/pdt_PdtProduct?cated='+item.value" target="_blank">
-                        <img class="leftNav-icon1" src="/home/v3/static/images/icon_nx.png" alt="{{item.label}}"
+                        <img class="leftNav-icon1" src="/home/v3/static/images/icon_nx.png" :alt="item.label"
                              v-if="index==0"/>
-                        <img class="leftNav-icon1" src="/home/v3/static/images/icon_nvx.png" alt="{{item.label}}"
+                        <img class="leftNav-icon1" src="/home/v3/static/images/icon_nvx.png" :alt="item.label"
                              v-if="index==1"/>
-                        <img class="leftNav-icon1" src="/home/v3/static/images/icon_ntx.png" alt="{{item.label}}"
+                        <img class="leftNav-icon1" src="/home/v3/static/images/icon_ntx.png" :alt="item.label"
                              v-if="index==2"/>
                         {{item.label}}
                         <i class="el-icon-arrow-right fr"></i>
@@ -45,6 +45,7 @@
                             <a :href="'/home/pdt_PdtProduct?cated='+item2.value" target="_blank">{{item2.label}}</a>
                         </li>
                     </ul>
+                </div>
                 </div>
 
             </div>
@@ -114,8 +115,8 @@
                     <li class="nomr"><a href="/home/usr_UsrConsult_publishView">Request quotation details</a></li>
                 </ul>
 
-                <a :href="'/home/usr_UsrConsult_publishView?title='+encodeURIComponent(RFQ_title)+'&quantity='+RFQ_quantity+'&chooesValue='+chooesValue"
-                   class="boxListBtn01" target="_blank">Request For Quotation</a>
+                <a @click="ToRFQ(encodeURIComponent(RFQ_title),RFQ_quantity,chooesValue)"
+                   class="boxListBtn01">Request For Quotation</a>
             </div>
 
         </div>
@@ -161,7 +162,6 @@
                                                             </div>
                                                         </div>
                                                         <div class="goods-price">
-                                                            US
                                                             <span>{{sysConfig.currency_symbol}}{{goods.price}}  </span>
                                                         </div>
                                                         <div class="min-order">
@@ -183,15 +183,14 @@
                                                                     {{goods.title}}
                                                                 </div>
                                                              <div class="goods-price" >
-                                                                US <span>{{sysConfig.currency_symbol}}{{goods.price}}</span>
+                                                                 <span>{{sysConfig.currency_symbol}}{{goods.price}}</span>
                                                             </div>
                                                             <div class="min-order">
                                                                 Min.Order:{{goods.min_order || 0}} pairs
                                                             </div>
                                                         </div>
                                                         <div class="btn-group">
-                                                           <a class="btn-inquiry btn-blue"
-                                                               :href="'/home/usr_UsrConsult_productPublishView?product_id='+goods.id+'&backUrl='+window.location.href" target="_blank" style="z-index: 999">
+                                                           <a class="btn-inquiry btn-blue" @click.stop="ToProductInquiry(goods.id)" style="z-index: 999">
                                                                 Inquiry
                                                             </a>
                                                         </div>
@@ -260,7 +259,7 @@
                     <h3>Recently Viewed</h3>
                     <p style="opacity: 0.5;margin-top: 15px;line-height: 20px;">
                         The goods you’ve <br>
-                        serched at last time
+                        searched last time
                     </p>
                     <a href="/home/pdt_PdtProduct?orderfld=MostPopular" class="see-all fir-see-all" target="_blank">See
                         All</a>
@@ -279,7 +278,6 @@
                                 </a>
                             </div>
                             <div class="product-price">
-                                <span style="color: #232323;">US</span>
                                 <span style="color: #e54544;">{{sysConfig.currency_symbol}}{{item.price}}</span>
                             </div>
                             <div class="product-pairs">
@@ -288,17 +286,15 @@
                         </div>
                         <div class="inquiry-btn">
                             <a :href="'/'+item.rewrite" target="_blank" style="color:#666;text-align: left;padding: 20px;height: 100%;">
-                                <div class="ellipsis_2" style="font-size:12px;line-height: 20px;">{{item.title}}</div>
+                                <div class="ellipsis_2" style="font-size:12px;line-height: 20px;max-height:120px;overflow: hidden;">{{item.title}}</div>
                                 <div style="font-size:18px;margin-top:10px;">
-                                    <span style="color: #232323;">US</span>
                                     <span style="color: #e54544;">{{sysConfig.currency_symbol}}{{item.price}}</span>
                                 </div>
                                 <div style="font-size:12px;">
                                     Min.Order: {{item.min_order}} pairs
                                 </div>
                             </a>
-                            <a class="inquiry-a"
-                               :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.id+'&backUrl='+window.location.href" target="_blank" style="z-index: 999">
+                            <a class="inquiry-a"  @click.stop="ToProductInquiry(item.id)" style="z-index: 999">
                                 Inquiry
                             </a>
                         </div>
@@ -330,7 +326,6 @@
                                 </a>
                             </div>
                             <div class="product-price">
-                                <span style="color: #232323;">US</span>
                                 <span style="color: #e54544;">{{sysConfig.currency_symbol}}{{item.price}}</span>
                             </div>
                             <div class="product-pairs">
@@ -339,17 +334,15 @@
                         </div>
                         <div class="inquiry-btn">
                             <a :href="'/'+item.rewrite" target="_blank" style="color:#666;text-align: left;padding: 20px;height: 100%;">
-                                <div class="ellipsis_2" style="font-size:12px;line-height: 20px;">{{item.title}}</div>
+                                <div class="ellipsis_2" style="font-size:12px;line-height: 20px;max-height:120px;overflow: hidden;">{{item.title}}</div>
                                 <div style="font-size:18px;margin-top:10px;">
-                                    <span style="color: #232323;">US</span>
                                     <span style="color: #e54544;">{{sysConfig.currency_symbol}}{{item.price}}</span>
                                 </div>
                                 <div style="font-size:12px;">
                                     Min.Order: {{item.min_order}} pairs
                                 </div>
                             </a>
-                            <a class="inquiry-a"
-                               :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.id+'&backUrl='+window.location.href" target="_blank" style="z-index: 999">
+                            <a class="inquiry-a"   @click.stop="ToProductInquiry(item.id)" style="z-index: 999">
                                 Inquiry
                             </a>
                         </div>
@@ -451,57 +444,26 @@
             classLists: [],
             showRoomGoodsList: [],
             showRoomPicList: [{imgUrl: "/home/v3/static/images/show-room_01.jpg"}, {imgUrl: "/home/v3/static/images/show-room_02.jpg"}, {imgUrl: "/home/v3/static/images/show-room_03.jpg"}, {imgUrl: "/home/v3/static/images/show-room_04.jpg"}, {imgUrl: "/home/v3/static/images/show-room_05.jpg"}, {imgUrl: "/home/v3/static/images/show-room_06.jpg"}, {imgUrl: "/home/v3/static/images/show-room_07.jpg"}, {imgUrl: "/home/v3/static/images/show-room_08.jpg"}, {imgUrl: "/home/v3/static/images/show-room_09.jpg"}, {imgUrl: "/home/v3/static/images/show-room_10.jpg"}, {imgUrl: "/home/v3/static/images/show-room_11.png"}, {imgUrl: "/home/v3/static/images/show-room_12.jpg"}, {imgUrl: "/home/v3/static/images/show-room_13.jpg"}, {imgUrl: "/home/v3/static/images/show-room_14.jpg"}, {imgUrl: "/home/v3/static/images/show-room_15.jpg"}],
-            RFQList: [{
-                id: 1,
-                country: "Egypt",
-                country_logo: "/home/v3/static/images/flag-egypt.png",
-                title: "Do you have some sandals styles? pls kindly send me the photos.",
-                quantity: 600,
-                create_date: "03-02-2019"
-            }, {
-                id: 2,
-                country: "Netherlands",
-                country_logo: "/home/v3/static/images/flag-netherlands.png",
-                title: "I'm looking for some new Autumn-Winter styles,do you have？",
-                quantity: 1200,
-                create_date: "03-02-2019"
-            }, {
-                id: 3,
-                country: "Brazil",
-                country_logo: "/home/v3/static/images/flag-brazil.jpg",
-                title: "Do you have some sandals styles? pls kindly send me the photos.",
-                quantity: 500,
-                create_date: "03-02-2019"
-            }, {
-                id: 4,
-                country: "Singapore",
-                country_logo: "/home/v3/static/images/flag-singapore.jpg",
-                title: "We are looking for very cheap shoes styles, do you have?",
-                quantity: 1500,
-                create_date: "03-02-2019"
-            }, {
-                id: 5,
-                country: "Philippines",
-                country_logo: "/home/v3/static/images/flag-philippines.jpg",
-                title: "I want some kids boots, for girl.",
-                quantity: 800,
-                create_date: "03-02-2019"
-            }, {
-                id: 6,
-                country: "South Africa",
-                country_logo: "/home/v3/static/images/flag-south-africa.png",
-                title: "If my order is big, will your price become cheap? Price on your website is too high.",
-                quantity: 2000,
-                create_date: "03-02-2019"
-            }]
+            RFQList: []
         },
         mounted: function mounted() {
             this.getMostPopular();
             this.getHotSale();
             this.classList();
             this.getShowRoomGoodsList();
+            this.getRFQList();
         },
         methods: {
+            // 跳转RFQ
+             ToRFQ(title,quantity,chooesValue){
+                let url = "/home/usr_UsrConsult_publishView?title=" +title+"&quantity="+quantity+"&chooesValue="+chooesValue+ "&backUrl=" + window.location.href
+                util_function_obj.supplierCantEnter(this, url,"Please register or login your buyer account if you want public RFQ.");
+             },
+            // 跳转商品询盘表单
+            ToProductInquiry(pdtId){
+                let url = "/home/usr_UsrConsult_productPublishView?product_id=" + pdtId + "&backUrl=" + window.location.href
+                util_function_obj.supplierCantEnter(this, url,"Please register or login your buyer account if you want making enquiries.");
+            },
             image: function image(v, params) {
                 if (!v) {
                     return "";
@@ -521,12 +483,12 @@
                     console.log("getRFQList");
                     console.log(res);
                     if (res.data.ret != 1) {
-                        self.$message.error(res.data.msg);
+                        self.$message.error(res.data.msg || "Get RFQ list error,please try again later");
                         return;
                     }
                     self.RFQList = res.data.result;
                 }).catch(function (error) {
-                    console.log(error);
+                    self.$message.error(error || 'Network error,please try again later');
                 });
             },
             getMostPopular: function getMostPopular() {
@@ -542,19 +504,20 @@
                 //     }
                 // })
                 // 接口改为随机商品
-                axios.get('/home/temporary_Temporary_generalList', {
+                axios.get('/home/pdt_PdtProduct_getRandomProduct', {
                     params: {
                         limit: 5,
                     }
                 })
                     .then(function (res) {
-                    console.log("getMostPopular");
-                    console.log(res);
+                        if (res.data.ret != 1) {
+                            self.$message.error(res.data.msg || "Get products list error,please try again later");
+                            return;
+                        }
                     // self.MostPopular = res.data.result.items;
                     self.MostPopular = res.data.result;
-                    console.log(self.MostPopular);
                 }).catch(function (error) {
-                    console.log(error);
+                    self.$message.error(error || 'Network error,please try again later');
                 });
             },
             getHotSale: function getHotSale() {
@@ -570,16 +533,19 @@
                 //     }
                 // })
                 // 接口改为随机商品
-                axios.get('/home/temporary_Temporary_generalList', {
+                axios.get('/home/pdt_PdtProduct_getRandomProduct', {
                     params: {
                         limit: 5,
                     }
                 })
                     .then(function (res) {
-                    console.log(res);
+                        if (res.data.ret != 1) {
+                            self.$message.error(res.data.msg || "Get products list error,please try again later");
+                            return;
+                        }
                     self.HotSale = res.data.result;
                 }).catch(function (error) {
-                    console.log(error);
+                    self.$message.error(error || 'Network error,please try again later');
                 });
             },
             classList: function classList(e) {
@@ -590,9 +556,13 @@
                         limit: 5
                     }
                 }).then(function (res) {
+                    if (res.data.ret != 1) {
+                        _this.$message.error(res.data.msg || "Get category list error,please try again later");
+                        return;
+                    }
                     _this.classLists = res.data.result;
                 }).catch(function (error) {
-                    console.log("err");
+                    _this.$message.error(error || 'Network error,please try again later');
                 });
             },
             chooesbtn: function chooesbtn(e) {
@@ -619,7 +589,7 @@
                     console.log("鞋子列表suc");
                     console.log(res);
                     if (res.data.ret != 1) {
-                        _this2.$message.error(res.data.msg);
+                        _this2.$message.error(res.data.msg || "Get O2O products error,please try again later");
                         return;
                     }
                     ;
@@ -668,7 +638,7 @@
                         });
                     });
                 }).catch(function (error) {
-                    console.log(error);
+                    _this2.$message.error(error || 'Network error,please try again later');
                 });
             }
         }
@@ -676,18 +646,5 @@
 
 
 </script>
-<style>
-    .svs_learn_more {
-        display: block !important;
-        background-color: rgb(26, 64, 145);
-        font-size: 18px;
-        padding: 8px;
-        border-radius: 2px;
-        text-align: center;
-        color: #ffffff !important;
-        width: 131px;
-        margin: 44px auto;
-    }
-</style>
 </body>
 </html>

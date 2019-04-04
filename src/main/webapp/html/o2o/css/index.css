@@ -55,6 +55,7 @@ li {
 }
 
 #linIntroduceO2O .bannercon {
+    margin-top: 98px;
     position: relative;
     background-color: rgba(145,166,217,0.2);
     background-image: url(../images/introducebanner.png);
@@ -418,6 +419,7 @@ li {
 
 #lhl-highClass .main-head {
     height: 675px;
+    margin-top: 98px;
     text-align: center;
     background: white url("../images/banner-hcO2O.png") center center no-repeat;
     background-size: cover;
@@ -471,7 +473,10 @@ li {
     min-height: 75px;
     position: relative;
     border-left: 2px solid #dddddd;
+}
 
+#lhl-highClass .main-operate-content ul li:last-child {
+    border-left: 2px solid transparent;
 }
 
 #lhl-highClass .rank {
@@ -500,6 +505,7 @@ li {
 #lhl-highClass .content-text01 {
     color: #7f7f7f;
     margin-top: 15px;
+    cursor: default;
 }
 
 #lhl-highClass .operate-image {
@@ -520,8 +526,8 @@ li {
 }
 
 #lhl-highClass .main-sample {
-    height: 612px;
-    background: white url("../images/highClass-sam_bg.png") center center no-repeat;
+    height: 638px;
+    background: white url("../images/highClass-sam_bg.png") no-repeat center center ;
     background-size: cover;
     margin-top: 90px;
 }
@@ -561,7 +567,11 @@ li {
 
 #lhl-highClass .sample-item {
     width: 180px;
-    height: 250px;
+    /*height: 250px;*/
+    height: 260px;
+    padding-top: 13px;
+    box-sizing: border-box;
+
     margin: 10px;
     display: inline-block;
     background-color: white;
@@ -607,6 +617,10 @@ li {
     margin-top: 40px;
 }
 
+#lhl-highClass .sample-button:hover{
+    background-color: #35c;
+}
+
 #lhl-highClass .sample-item img {
     width: 154px;
     height: 154px;
@@ -635,6 +649,8 @@ li {
 }
 
 #lhl-highClass .show-line {
+    line-height: 16px;
+    height: 32px;
     text-overflow: -o-ellipsis-lastline;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -885,6 +901,10 @@ li {
     font-size: 18px;
     background-color: #10389c;
     border-radius: 3px;
+    cursor: pointer;
+}
+.o2o-form .btn-submit:hover{
+    background-color: #35c;
 }
 
 #o2oinputform .el-dialog__header {

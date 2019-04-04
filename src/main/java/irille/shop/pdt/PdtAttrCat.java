@@ -1,5 +1,7 @@
 package irille.shop.pdt;
 
+import java.util.Date;
+
 import irille.core.sys.Sys.OYn;
 import irille.core.sys.SysUser;
 import irille.pub.bean.BeanInt;
@@ -10,57 +12,74 @@ import irille.pub.tb.Fld;
 import irille.pub.tb.IEnumFld;
 import irille.pub.tb.Tb;
 
-import java.util.Date;
-
 /**
  * 产品属性分类
+ *
  * @author yingjianhua
  */
-public class PdtAttrCat extends BeanInt<PdtAttrCat> implements IExtName{
-	public static final Tb TB = new Tb(PdtAttrCat.class, "属性分类").setAutoIncrement().addActIUDL();
+public class PdtAttrCat extends BeanInt<PdtAttrCat> implements IExtName {
+  public static final Tb TB = new Tb(PdtAttrCat.class, "属性分类").setAutoIncrement().addActIUDL();
 
-	public enum T implements IEnumFld {//@formatter:off
-		PKEY(TB.crtIntPkey()),
-		NAME(SYS.NAME__100, "名称"), // 名称
-		DELETED(SYS.NY,"是否删除"),
-		CREATE_BY(SYS.CREATED_BY),
-		CREATE_TIME(SYS.CREATED_DATE_TIME),
-		ROW_VERSION(SYS.ROW_VERSION),
-		//>>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
-		//<<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
-		;
-		//>>>以下是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别>>>
-		//<<<以上是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别<<<
-		private Fld _fld;
-		private T(Class clazz,String name,boolean... isnull) 
-			{_fld=TB.addOutKey(clazz,this,name,isnull);	}
-		private T(IEnumFld fld,boolean... isnull) { this(fld,null,isnull); } 
-		private T(IEnumFld fld, String name,boolean... null1) {
-			_fld=TB.add(fld,this,name,null1);}
-		private T(IEnumFld fld, String name,int strLen) {
-			_fld=TB.add(fld,this,name,strLen);}
-		private T(Fld fld) {_fld=TB.add(fld,this); }
-		public Fld getFld(){return _fld;}
-	}
+  public enum T implements IEnumFld { // @formatter:off
+    PKEY(TB.crtIntPkey()),
+    NAME(SYS.NAME__100, "名称"), // 名称
+    DELETED(SYS.NY, "是否删除"),
+    CREATE_BY(SYS.CREATED_BY),
+    CREATE_TIME(SYS.CREATED_DATE_TIME),
+    STATE(SYS.NY, "是否关闭关联属性名称"),
+    LOCK_ATTR(SYS.NY, "是否锁定"),
+    ROW_VERSION(SYS.ROW_VERSION),
+  // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
+  // <<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
+  ;
+    // >>>以下是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别>>>
+    // <<<以上是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别<<<
+    private Fld _fld;
 
-	static { //在此可以加一些对FLD进行特殊设定的代码
-		T.PKEY.getFld().getTb().lockAllFlds();//加锁所有字段,不可以修改
-	}
-	public static Fld fldOutKey() {
-		return fldOutKey(TB.getCodeNoPackage(), TB.getShortName());
-	}
+    private T(Class clazz, String name, boolean... isnull) {
+      _fld = TB.addOutKey(clazz, this, name, isnull);
+    }
 
-	public static Fld fldOutKey(String code, String name) {
-		return Tb.crtOutKey(TB, code, name);
-	}
+    private T(IEnumFld fld, boolean... isnull) {
+      this(fld, null, isnull);
+    }
 
-	@Override
-	public String getExtName() {
-		return getName();
-	}
-	//@formatter:on
+    private T(IEnumFld fld, String name, boolean... null1) {
+      _fld = TB.add(fld, this, name, null1);
+    }
 
-	//>>>以下是自动产生的源代码行--源代码--请保留此行用于识别>>>
+    private T(IEnumFld fld, String name, int strLen) {
+      _fld = TB.add(fld, this, name, strLen);
+    }
+
+    private T(Fld fld) {
+      _fld = TB.add(fld, this);
+    }
+
+    public Fld getFld() {
+      return _fld;
+    }
+  }
+
+  static { // 在此可以加一些对FLD进行特殊设定的代码
+    T.PKEY.getFld().getTb().lockAllFlds(); // 加锁所有字段,不可以修改
+  }
+
+  public static Fld fldOutKey() {
+    return fldOutKey(TB.getCodeNoPackage(), TB.getShortName());
+  }
+
+  public static Fld fldOutKey(String code, String name) {
+    return Tb.crtOutKey(TB, code, name);
+  }
+
+  @Override
+  public String getExtName() {
+    return getName();
+  }
+  // @formatter:on
+
+  // >>>以下是自动产生的源代码行--源代码--请保留此行用于识别>>>
   //实例变量定义-----------------------------------------
   private Integer _pkey;	// 编号  INT
   private String _name;	// 名称  STR(100)
@@ -69,6 +88,12 @@ public class PdtAttrCat extends BeanInt<PdtAttrCat> implements IExtName{
 	// NO:0,否
   private Integer _createBy;	// 建档员 <表主键:SysUser>  INT
   private Date _createTime;	// 建档时间  TIME
+  private Byte _state;	// 是否关闭关联属性名称 <OYn>  BYTE
+	// YES:1,是
+	// NO:0,否
+  private Byte _lockAttr;	// 是否锁定 <OYn>  BYTE
+	// YES:1,是
+	// NO:0,否
   private Short _rowVersion;	// 版本  SHORT
 
 	@Override
@@ -78,6 +103,8 @@ public class PdtAttrCat extends BeanInt<PdtAttrCat> implements IExtName{
     _deleted=OYn.DEFAULT.getLine().getKey();	// 是否删除 <OYn>  BYTE
     _createBy=Idu.getUser().getPkey();	// 建档员 <表主键:SysUser>  INT
     _createTime=Env.getTranBeginTime();	// 建档时间  TIME
+    _state=OYn.DEFAULT.getLine().getKey();	// 是否关闭关联属性名称 <OYn>  BYTE
+    _lockAttr=OYn.DEFAULT.getLine().getKey();	// 是否锁定 <OYn>  BYTE
     _rowVersion=0;	// 版本  SHORT
     return this;
   }
@@ -130,6 +157,30 @@ public class PdtAttrCat extends BeanInt<PdtAttrCat> implements IExtName{
   public void setCreateTime(Date createTime){
     _createTime=createTime;
   }
+  public Byte getState(){
+    return _state;
+  }
+  public void setState(Byte state){
+    _state=state;
+  }
+  public Boolean gtState(){
+    return byteToBoolean(_state);
+  }
+  public void stState(Boolean state){
+    _state=booleanToByte(state);
+  }
+  public Byte getLockAttr(){
+    return _lockAttr;
+  }
+  public void setLockAttr(Byte lockAttr){
+    _lockAttr=lockAttr;
+  }
+  public Boolean gtLockAttr(){
+    return byteToBoolean(_lockAttr);
+  }
+  public void stLockAttr(Boolean lockAttr){
+    _lockAttr=booleanToByte(lockAttr);
+  }
   public Short getRowVersion(){
     return _rowVersion;
   }
@@ -137,5 +188,5 @@ public class PdtAttrCat extends BeanInt<PdtAttrCat> implements IExtName{
     _rowVersion=rowVersion;
   }
 
-	//<<<以上是自动产生的源代码行--源代码--请保留此行用于识别<<<
+  // <<<以上是自动产生的源代码行--源代码--请保留此行用于识别<<<
 }

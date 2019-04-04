@@ -63,8 +63,14 @@
 
         <!-- 按钮-联系供应商 -->
         <!-- 按钮-开始下单 -->
-        <a class="btn btn-begin-order"
-           href="/home/usr_UsrConsult_publishView?supplierId=${supView.pkey }" target="_blank"></a>
+        <a class="btn btn-begin-order" onclick="ToContactSupplier()"></a>
+           <script>
+                 // 跳转供应商表单
+                 function  ToContactSupplier (){
+                 let url = "/home/usr_UsrSupplier_goContactSupplier?supplierPkey=${supView.pkey}&backUrl=" + window.location.href;
+                 util_function_obj.supplierCantEnter(this, url);
+             }
+            </script>
     </div>
 </div>
 <!-- 商家-顶部导航 -->
@@ -83,10 +89,11 @@
                 <a href="/home/usr_UsrSupplier_gtSupInfo?pkey=${supView.pkey}"><s:text
                         name="companyProfile"/></a>
             </li>
-            <li class="enterprise-nav-item">
-                <a href="/home/usr_UsrSupplier_gtSupContact?pkey=${supView.pkey}"><s:text
-                        name="Global.Contact_Us"/></a>
-            </li>
+            <%--<li class="enterprise-nav-item">--%>
+                <%--<a href="/home/usr_UsrSupplier_gtSupContact?pkey=${supView.pkey}"><s:text--%>
+                        <%--name="Global.Contact_Us"/></a>--%>
+            <%--</li>--%>
+
             <%--<c:if test="${supView.prmAuthrity == true}">--%>
             <%--<li class="enterprise-nav-item GroupPurchase">--%>
             <%--<a href="/home/usr_UsrSupplier_gtSupGroup?pkey=${supView.pkey}"><s:text name="Global.Joint_Procurement"/></a>--%>

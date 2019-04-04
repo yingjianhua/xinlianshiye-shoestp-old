@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <jsp:include page="v3/header.jsp" />
+<script type="text/javascript" src="./static/js/jquery-1.7.2.min.js"></script>
 <script src="/home/v2/static/js/base/qs.js"></script>
 <style>
         .el-form-item__content{
@@ -159,6 +160,25 @@ ul{
         max-width: 500px; }
         .xpMain .xp-form .detail-box .detail a:hover {
           color: #409EFF; }
+         
+    .el-button--primary {
+        height: 36px;
+        background-color: #10389c;
+        border-radius: 4px;
+        color: #ffffff;
+        border-color: #10389c;
+    }
+   
+    .el-button--primary:hover {
+        color: #ffffff;
+        border-color: #10389c;
+        background-color: #10389c;
+    }
+    .el-button--primary.is-disabled, .el-button--primary.is-disabled:active, .el-button--primary.is-disabled:focus, .el-button--primary.is-disabled:hover{
+        color: #ffffff;
+        border-color: #10389c;
+        background-color: #10389c;
+    }
 /*# sourceMappingURL=index.css.map */
     </style>
 
@@ -194,13 +214,12 @@ ul{
                 <el-col :span="2">
                     <div style="box-shadow:#333 0px 0px 10px;width:60px;height:60px;">
                         <!-- 商品图片 -->
-
-                        <img :src="image(supData.image, supData.type==3 ?'?x-oss-process=image/resize,w_60,h_60/blur,r_5,s_30':'')" alt="" style="width:100%;">
+                        <img :src="image(supData.image,'?x-oss-process=image/resize,w_60,h_60') + (supData.type==3 ?'/blur,r_5,s_30':'')" alt="" style="width:100%;">
                     </div>
                 </el-col>
                 <el-col :span="12">
                     <div class="ellipsis_2 detail">
-                        <a href="javascript:void(0)">
+                        <a :href="'/home/pdt_PdtProduct_gtProductsInfo?id=' + supData.id" target="_blank">
                             <!-- 商品名字 -->
                             {{supData.title}}
                         </a>
@@ -208,7 +227,7 @@ ul{
                 </el-col>
                 <el-col class="" :span="5">
                     <el-form-item label="" prop="quantity">
-                        <el-input size="medium" placeholder="Quantity" v-model.lazy.trim.number="form.quantity"
+                        <el-input size="medium" placeholder="Quantity" v-model.trim="form.quantity"
                             clearable>
                         </el-input>
                     </el-form-item>
@@ -256,7 +275,7 @@ ul{
             <el-row type="flex" justify="end">
                 <div style="padding:30px;">
                     <el-form-item>
-                        <el-button type="primary" @click="submitForm('form')">Send inquiry now</el-button>
+                        <el-button :disabled="flag" type="primary" @click="submitForm('form')">Send inquiry now</el-button>
                     </el-form-item>
                 </div>
             </el-row>
@@ -269,8 +288,10 @@ ul{
     <script>
         new Vue({
             el: "#xpApp",
-            data: {
-                imgsToUpload: [], // 需要upload的img - 显示在页面上
+            data(){
+                return{
+                    flag : false, 
+                     imgsToUpload: [], // 需要upload的img - 显示在页面上
                 options: [{
                         value: "1",
                         label: "Pairs"
@@ -291,15 +312,12 @@ ul{
                     descriotion: '',
                     title: '',
                     images: ''
-                },
+                }, 
                 rules: {
-                    quantity: [{
-                        required: true,
-                        message: 'Can not be empty'
-                    }, {
-                        type: 'number',
-                        message: 'Must be a number'
-                    }],
+                    quantity: [
+                            {required: true,message: 'Please enter the quantity',trigger: 'blur'},
+                            { pattern: util_regular_obj.register.positiveInteger, message: "Please enter the positive integer，and can\'t beyond 10 digits" }
+                        ],
                     unitType: [{
                         required: true,
                         message: 'Please select a unit',
@@ -313,25 +331,29 @@ ul{
                 },
                 id: null,
                 supData: [],
+                }
             },
-            mounted()
-            {if (sessionStorage['Temp_Pdt_publish_form'] &&sessionStorage['Temp_Pdt_publish_form']!=''&&sessionStorage['Temp_Pdt_publish_form']!='null'){
+            mounted(){
+                if (sessionStorage['Temp_Pdt_publish_form'] &&sessionStorage['Temp_Pdt_publish_form']!=''&&sessionStorage['Temp_Pdt_publish_form']!='null'){
                     this.form=JSON.parse(sessionStorage['Temp_Pdt_publish_form'])
                 }
                 // 进来页面获取到供应商信息
                 var self = this;
                 self.id = self.getQueryString("product_id");
-                // var id = 5
-
                 axios.post('/home/rfq_RFQConsult_getPdtInfo', Qs.stringify({
                         id: self.id,
                     }))
                     .then(function (res) {
                         console.log(res);
-                        self.supData = res.data.result;
-                        self.form.title = self.supData.title;
+                        if(res.data.ret != 1){
+                            self.$message.error('Failed to get information, please refresh the page and try again');
+                        }else{
+                            self.supData = res.data.result;
+                            self.form.title = self.supData.title;
+                        }
                     })
                     .catch(function (error) {
+                        self.$message.error("Network error, please refresh the page and try again");
                         console.log(error);
                     });
             },
@@ -364,6 +386,10 @@ ul{
                     console.log(response)
                     console.log(file)
                     console.log(fileList)
+                    // if (response.ret != 1) {
+                    //     this.$message.error('Image upload failed, please refresh the page and try again');
+                    //     return;
+                    // }
                     if (response.ret != 1) return;
                     // 添加图片后，在前面显示 img
                     this.imgsToUpload.push(file.response.result.url);
@@ -375,14 +401,9 @@ ul{
                 },
                 // 上传图片文件之前
                 beforeUpload(file) {
-                    if (!isLogin) {
+                    if (!sysConfig || !sysConfig.user) {
                         sessionStorage['Temp_Pdt_publish_form']=JSON.stringify(this.form)
-                        this.$alert('Please login to operate', 'Please login to operate', {
-                            confirmButtonText: 'Ok',
-                            callback: action => {
-                                window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_productPublishView?product_id"+this.getQueryString("product_id")
-                            }
-                        });
+                        util_function_obj.alertWhenNoLogin(this);
                         return
                     }
                     let size = file.size / 1024;
@@ -392,84 +413,74 @@ ul{
                     }
                 },
                 submitForm(formName) { // 表单提交
-                    if (!isLogin) {
+                    if (!sysConfig || !sysConfig.user) {
                         sessionStorage['Temp_Pdt_publish_form']=JSON.stringify(this.form)
-                        this.$alert('Please login to operate', 'Please login to operate', {
-                            confirmButtonText: 'Ok',
-                            callback: action => {
-                                window.location.href = "/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_productPublishView?product_id="+this.getQueryString("product_id")
-                            }
-                        });
+                        util_function_obj.alertWhenNoLogin(this);
                         return
-                    }
-                    let url;
-                    if (this.supData.type == 3) {
-                        url = "/home/rfq_RFQConsult_putPrivateInquiry"
-                    } else {
-                        url = "/home/rfq_RFQConsult_putInquiry"
-                    }
-                    this.$refs[formName].validate((valid) => {
-                        if (valid) {
-                            console.log(this.form)
-                            this.form.images = this.imgsToUpload.join(",");
-                            this.form.pdtId = this.id;
-                            console.log(this.imgsToUpload)
-                            // if (this.form.images.length == 0) {
-                                // if(${env.login==null}){
-                                //     this.$message({
-                                //         showClose: true,
-                                //         message: 'Pleaselogin',
-                                //         type: 'warning'
-                                //     });
-
-                                //     window.location.href = '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
-                                // }
-                                // this.$message.error('Please upload an image');
-                                // return
-                            // }
-                            // console.log('submit!');
-                            axios.post(url, this.form)
-                                .then((res) => {
-                                    console.log(res)
-                                    // 提交成功时
-                                    if (res.data.ret == 1) {
-                                        // 提示信息
-                                        this.$message({
-                                            showClose: true,
-                                            message: 'my-inquiry-publish.Successfully_Released',
-                                            type: 'success'
-                                        });
-                                        setTimeout(function () {
-                                                    sessionStorage.removeItem('Temp_Pdt_publish_form')
-                                            window.location.href =getParams('backUrl','/');
-                                        }, 2000)
-                                        // 未登录时
-                                    } else if (res.data.ret == -1) {
-                                        window.location.href =
-                                            '/home/usr_UsrPurchase_sign?jumpUrl=/home/usr_UsrConsult_publishView';
-                                        // 提交失败时
-                                    } else {
-                                        this.$alert(res.data.msg, {
-                                            confirmButtonText: 'OK'
-                                        });
-                                    }
-
-                                })
-                                .catch((err) => {
-                                    console.log(err)
-                                })
-                        } else {
-                            console.log('error submit!!');
-                            if (!this.form.quantity) {
-                                this.$message.error('Quantity cannot be empty');
-                            } else if (!this.form.unitType) {
-                                this.$message.error("Select unit");
-                            } else if (!this.form.descriotion) {
-                                this.$message.error('Please fill in the message');
+                    }else{
+                        if(sysConfig.user.user_type == 1){
+                            self.$alert("Please register or login your buyer account if you want making enquiries.",{
+                                confirmButtonText: 'Ok',
+                                customClass: "my-custom-element-alert-class fs-content-18",
+                                center: true,
+                                callback: action =>{
+                                    return
+                                }
+                            });
+                            return
+                        }else{
+                            let url;
+                            if (this.supData.type == 3) {
+                                url = "/home/rfq_RFQConsult_putPrivateInquiry"
+                            } else {
+                                url = "/home/rfq_RFQConsult_putInquiry"
                             }
-                            return false;
+                            this.$refs[formName].validate((valid) => {
+                                if (valid) {
+                                    this.flag = true;
+                                    console.log(this.form)
+                                    this.form.images = this.imgsToUpload.join(",");
+                                    this.form.pdtId = this.id;
+                                    axios.post(url, this.form)
+                                        .then((res) => {
+                                            console.log(res)
+                                            // 提交成功时
+                                            if (res.data.ret == 1) {
+                                                // 提示信息
+                                                this.$message({
+                                                    showClose: true,
+                                                    message: 'my-inquiry-publish.Successfully_Released',
+                                                    type: 'success'
+                                                });
+                                                setTimeout(function () {
+                                                    sessionStorage.removeItem('Temp_Pdt_publish_form')
+                                                    window.location.href = util_function_obj.GetParamsFullUrl('backUrl=','/');
+                                                }, 1500)
+                                            }else if (res.data.ret == -1) {
+                                                sessionStorage['Temp_Pdt_publish_form'] = JSON.stringify(this.form)
+                                                util_function_obj.alertWhenNoLogin(this);
+                                                return
+                                            } else {
+                                                this.flag = false;
+                                                this.$alert(res.data.msg || "Failed to submit the form, please refresh the page and try again", {
+                                                    confirmButtonText: 'OK',
+                                                    customClass: "my-custom-element-alert-class fs-content-18",
+                                                });
+                                            }
+
+                                        })
+                                        .catch((err) => {
+                                            this.flag = false;
+                                            this.$message.error("Network error, please refresh the page and try again");
+                                            console.log(err)
+                                        })
+                                } else {
+                                    console.log('error submit!!');
+                                    return false;
+                                }
+                            });
                         }
-                    });
+                    }
                 },
                 getQueryString: (name) => {
                     let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");

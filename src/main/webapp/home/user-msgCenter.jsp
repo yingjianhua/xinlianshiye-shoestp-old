@@ -57,6 +57,7 @@
 <jsp:include page="v3/nav-nobody.jsp"
 ></jsp:include>
 <div id="shoesTp"  class=" w_1240 ">
+	<index-top></index-top>
 	<main class="main">
 		<div class="wide por clearfix flex-layout">
 			<!-- 左侧 My-Accoung 列表 -->
@@ -170,7 +171,7 @@
 					<!-- 手风琴效果 - 下拉加载事件 -->
 					<div class="collapse-box" id="inquiry-collapse-list">
 						<el-collapse :value="(inquiryList[0] && inquiryList[0].relations && inquiryList[0].relations.length)?0:-1" v-if="inquiryList.length">
-							<el-collapse-item :name="inquiryIndex"
+							<el-collapse-item :class="{active: nowInquiryIndex==inquiryIndex}" :name="inquiryIndex"
 											  v-for="(inquiry,inquiryIndex) in inquiryList"
                                               v-if="(inquiry.type==1 || !inquiry.isDeleteInLocal )"
 											  :key="inquiry.pkey">
@@ -182,12 +183,12 @@
 										 :data-inquiry-index="inquiryIndex"
 										 v-if="inquiry.relations && inquiry.relations.length==0">
 										<img class="goods-pic" alt="goods's pic"
-											 :src="(inquiry.images && inquiry.images[0])?(image(inquiry.images[0]) + (inquiry.type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')):'/home/v3/static/images/no_img.png'">
+											 :src="(inquiry.images && inquiry.images[0])?(util_function_obj.image(inquiry.images[0],50,50, (inquiry.type==3?'/blur,r_5,s_20':''))):'/home/v3/static/images/user_no_img.png'">
 										<div class="goods-info">
 											<div class="goods-name">
 												<div class="ellipsis_1">{{inquiry.title}}</div>
 											</div>
-											<div class="status" v-if="inquiry.type==1">{{inquiry.status | inquiryStatus2Text}}</div>
+											<div class="status" v-if="inquiry.type==1">{{inquiry.verifyStatus | inquiryStatus2Text}}</div>
 										</div>
 										<transition name="el-fade-in">
 											<div class="my-btn-normal btn-view"
@@ -203,14 +204,14 @@
 										 @click="(inquiry.type==1 && isScale)?viewInquiryDetail($event):''"
 										 :data-inquiry-index="inquiryIndex">
 										<img class="goods-pic" alt="goods's pic"
-											 :src="(inquiry.images && inquiry.images[0])?(image(inquiry.images[0]) + (inquiry.type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')):'/home/v3/static/images/no_img.png'"
+											 :src="(inquiry.images && inquiry.images[0])?(util_function_obj.image(inquiry.images[0],50,50, (inquiry.type==3?'/blur,r_5,s_20':''))):'/home/v3/static/images/user_no_img.png'"
 											 :data-inquiry-index="inquiryIndex">
 										<div class="goods-info"
 											 :data-inquiry-index="inquiryIndex">
 											<div class="goods-name">
 												<div class="ellipsis_1">{{inquiry.title}}</div>
 											</div>
-                                            <div class="status" v-if="inquiry.type==1">{{inquiry.status | inquiryStatus2Text}}</div>
+                                            <div class="status" v-if="inquiry.type==1">{{inquiry.verifyStatus | inquiryStatus2Text(true)}}</div>
 										</div>
 										<transition name="el-fade-in">
 											<div class="my-btn-normal btn-view"
@@ -223,18 +224,24 @@
 
 								<!-- 每一个下拉的内容 -->
 								<ul class="contact-list" v-if="inquiry.relations && inquiry.relations.length">
-									<li class="contact-item"
+									<li class="contact-item" :class="{active: nowInquiryIndex==inquiryIndex && nowSupplierIndex==relationsIndex}"
 										v-for="(relation,relationsIndex) in inquiry.relations"
 										v-if="!relation.isDeleteInLocal"
 										:key="relation.supplier.pkey">
-										<el-badge is-dot :hidden="!relation.quotation.isNew" class="short-name">
-											<div class="short-name"
+										<el-badge is-dot :hidden="!(relation.unread || relation.quotation.isNew)" class="short-name">
+											<img class="short-name"
+												 :src="(relation.supplier && relation.supplier.logo)?util_function_obj.image(relation.supplier.logo, 50, 50):'/home/v3/static/images/supplier_no_img.png'"
 												 :data-inquiry-id="inquiry.pkey"
 												 :data-supplier-index="relationsIndex"
 												 :data-inquiry-index="inquiryIndex"
 												 @click="isScale?contactSupplier($event):''">
-												{{relation.supplier && relation.supplier.name && relation.supplier.name[0]}}
-											</div>
+											<%--<div class="short-name" v-else--%>
+												 <%--:data-inquiry-id="inquiry.pkey"--%>
+												 <%--:data-supplier-index="relationsIndex"--%>
+												 <%--:data-inquiry-index="inquiryIndex"--%>
+												 <%--@click="isScale?contactSupplier($event):''">--%>
+												<%--{{relation.supplier && relation.supplier.name && relation.supplier.name[0]}}--%>
+											<%--</div>--%>
 										</el-badge>
 
 										<div class="contacter-info" :class="{'show-long-name': inquiry.type!=1 && !isScale}"
@@ -245,7 +252,8 @@
 											<div class="name ellipsis_1">
 												{{relation.supplier.name}}
 											</div>
-											<img class="country" :src="image(relation.supplier.country.flag)" alt="">
+											<img class="country"  v-if="relation.supplier.country && relation.supplier.country.flag"
+												 :src="util_function_obj.image(relation.supplier.country.flag, 24, 14)" alt="flag">
 										</div>
 
 										<transition name="el-fade-in">
@@ -256,7 +264,7 @@
 														{{relation.quotation.title}}
 													</div>
 													<img class="goods-pic"
-														 :src="(relation.quotation && relation.quotation.images && relation.quotation.images[0])?(image(relation.quotation.images[0].url)):'/home/v3/static/images/no_img.png'" alt="goods's pic">
+														 :src="(relation.quotation && relation.quotation.images && relation.quotation.images[0])?(util_function_obj.image(relation.quotation.images[0].url, 44)):'/home/v3/static/images/user_no_img.png'" alt="goods's pic">
 													<div class="goods-spec">
 														{{relation.quotation.minPrice}}-{{relation.quotation.maxPrice}} {{relation.quotation.currency.shortName}}
 													</div>
@@ -327,20 +335,24 @@
 			<transition name="slide-right">
 				<div class="chat-wrap" v-show="isScale && showChatBox && inquiryList.length">
 					<div class="chat-header">
-						<div class="name" v-if="supplierDetail.company">
-							<!-- 有头像显示头像，没有头像显示首字母 -->
-							<img :src="image(supplierDetail.logo)" alt="" class="short-name"
-								 :class="{isShowMore: isShowMore}"
-								 v-if="supplierDetail.logo">
-							<div class="short-name" v-else
-								 :class="{isShowMore: isShowMore}">
-								{{supplierDetail.name && supplierDetail.name[0]}}
-							</div>
+						<a class="name" target="_blank"
+						   :href="'/home/usr_UsrSupplier_gtSupInfo?pkey=' + supplierDetail.pkey">
+                            <!-- 有头像显示头像，没有头像显示首字母 -->
+                            <img :src="supplierDetail.logo?util_function_obj.image(supplierDetail.logo, 50, 50):'/home/v3/static/images/supplier_no_img.png'" alt="" class="short-name"
+                                 :class="{isShowMore: isShowMore}">
+                            <%--<div class="short-name" v-else-if="supplierDetail.name"--%>
+                                 <%--:class="{isShowMore: isShowMore}">--%>
+                                <%--{{supplierDetail.name && supplierDetail.name[0]}}--%>
+                            <%--</div>--%>
+                            <%--<div class="short-name" v-else--%>
+                                 <%--:class="{isShowMore: isShowMore}">--%>
+                                <%--H--%>
+                            <%--</div>--%>
 
 							<div class="full-name" :class="{isShowMore: isShowMore, ellipsis_5: isShowMore, ellipsis_1: !isShowMore}">
 								{{supplierDetail.name}}
 							</div>
-						</div>
+						</a>
 						<div class="grow"></div>
 
 						<div class="more" @click="chatShowMore">
@@ -360,7 +372,7 @@
 										<li class="basic-item">
 											<div class="label">Country / Region:</div>
 											<div class="content">
-												<img  alt="" class="pic-flag" :src="image(supplierDetail.countryFlag)">
+												<img  alt="" class="pic-flag" :src="util_function_obj.image(supplierDetail.countryFlag,26,18)">
 												{{supplierDetail.country}}
 											</div>
 										</li>
@@ -407,11 +419,10 @@
 
 									<!-- 普通询盘基础信息 -->
 									<div class="basic-details-wrap normal-inquiry-drop-down-wrap">
-										<div class="box-title">Basic information</div>
+										<div class="box-title">Inquiry information</div>
 										<div class="row-item product-info-box">
 											<img class="product-pic" alt="product's pic"
-												 v-if="inquiryDetail.images"
-												 :src="image(inquiryDetail.images[0]) + (inquiryList[nowInquiryIndex].type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')">
+												 :src="(inquiryDetail.images && inquiryDetail.images[0]) ? (util_function_obj.image(inquiryDetail.images[0], 50, 50, (inquiryList[nowInquiryIndex].type==3?'/blur,r_5,s_20':''))) : '/home/v3/static/images/user_no_img.png'">
 											<div class="product-descript">
 												{{inquiryDetail.title}}
 											</div>
@@ -435,9 +446,10 @@
 											<ul class="photos-list">
 												<li class="photo-item"
 													v-for="picUrl in inquiryDetail.images"
+													v-if="picUrl"
 													:key="picUrl">
 													<img class="product-pic" alt="product's pic"
-														 :src="image(picUrl) + (inquiryList[nowInquiryIndex].type==3?'?x-oss-process=image/resize,w_50,h_50/blur,r_5,s_20':'')">
+														 :src="util_function_obj.image(picUrl, 50, 50, (inquiryList[nowInquiryIndex].type==3?'/blur,r_5,s_20':''))">
 												</li>
 											</ul>
 										</div>
@@ -455,7 +467,7 @@
                                         <li class="basic-item">
                                             <div class="label">Country / Region:</div>
                                             <div class="content">
-                                                <img  alt="" class="pic-flag" :src="image(supplierDetail.countryFlag)">
+                                                <img  alt="" class="pic-flag" :src="util_function_obj.image(supplierDetail.countryFlag, 26, 18)">
                                                 {{supplierDetail.country}}
                                             </div>
                                         </li>
@@ -520,7 +532,8 @@
 												<div class="label">Product Photos:</div>
 												<div class="content">
 													<img class="product-pic"  alt=""
-														 :src="image(imgUrl)"
+														 :src="util_function_obj.image(imgUrl, 50, 50)"
+														 v-if="imgUrl"
 														 v-for="imgUrl in inquiryDetail.images"
 														 :key="imgUrl">
 												</div>
@@ -581,7 +594,7 @@
                                         <li class="basic-item">
                                             <div class="label">Country / Region:</div>
                                             <div class="content">
-                                                <img  alt="" class="pic-flag" :src="image(supplierDetail.countryFlag)">
+                                                <img  alt="" class="pic-flag" :src="util_function_obj.image(supplierDetail.countryFlag, 26, 18)">
                                                 {{supplierDetail.country}}
                                             </div>
                                         </li>
@@ -671,8 +684,9 @@
 										<ul class="goods-pic-wrap" v-if="inquiryDetail.images && inquiryDetail.images.length">
 											<li class="goods-pic-item"
 												v-for="picUrl in inquiryDetail.images"
+												v-if="picUrl"
 												:key="picUrl">
-												<img class="product-pic" :src="image(picUrl)" alt="">
+												<img class="product-pic" :src="util_function_obj.image(picUrl,50)" alt="">
 											</li>
 										</ul>
 
@@ -692,7 +706,7 @@
 												<li class="goods-pic-item"
 													v-for="product in inquiryDetail.productRequest"
 													:key="product.image">
-													<img class="product-pic" :src="(product.image && product.image.split(',') && product.image.split(',')[0])?(image(product.image.split(',')[0])):'/home/v3/static/images/no_img.png'" alt="">
+													<img class="product-pic" :src="(product.image && product.image.split(',') && product.image.split(',')[0])?(util_function_obj.image(product.image.split(',')[0],50)):'/home/v3/static/images/user_no_img.png'" alt="">
 													<div class="goods-name ellipsis_1">
 														{{product.name}}
 													</div>
@@ -743,7 +757,7 @@
 								</div>
 								<div class="chater-info">
 									LOCATION：
-									<img  alt="" class="pic-flag" :src="image(supplierDetail.countryFlag)"
+									<img  alt="" class="pic-flag" :src="util_function_obj.image(supplierDetail.countryFlag, 26, 18)"
 										  v-if="supplierDetail.countryFlag">
 									{{supplierDetail.location}}
 									<!-- IP:115.218.107.* -->
@@ -758,17 +772,23 @@
 										<template v-if="!msg.p2S">
 											<img class="pic-head"
 												 v-if="chatMsgObj.another.avatar"
-												 :src="image(chatMsgObj.another.avatar)">
-											<div class="pic-head" v-else>
+												 :src="util_function_obj.image(chatMsgObj.another.avatar, 50)">
+											<div class="pic-head" v-else-if="chatMsgObj.another.name">
 												{{chatMsgObj.another.name[0]}}
+											</div>
+											<div class="pic-head" v-else>
+												H
 											</div>
 										</template>
 										<template v-else>
 											<img class="pic-head"
 												 v-if="chatMsgObj.myself.avatar"
-												 :src="image(chatMsgObj.myself.avatar)">
-											<div class="pic-head" v-else>
+												 :src="util_function_obj.image(chatMsgObj.myself.avatar, 50)">
+											<div class="pic-head" v-else-if="chatMsgObj.myself.name">
 												{{chatMsgObj.myself.name[0]}}
+											</div>
+											<div class="pic-head" v-else>
+												M
 											</div>
 										</template>
 
@@ -810,9 +830,18 @@
 						<!-- 聊天内容框 - end -->
 						<div class="send-msg-wrap">
 							<el-input class="msg-input"
-									  @focus="isShowMore = false"
+									  @focus="sendMsgInputFocus"
 									  @keyup.enter.native="sendMsg"
 									  v-model.trim="sendMsgValue" placeholder="Please input the message"></el-input>
+
+							<el-upload style="margin-right: 10px;"
+									   :show-file-list="false"
+									   :on-success="chatAddImgSuc"
+									   action="/home/usr_Purchase_upload">
+								<el-button slot="trigger" icon="el-icon-plus" size="small" circle></el-button>
+							</el-upload>
+
+							<%--<el-button icon="el-icon-plus"  size="small" circle></el-button>--%>
 							<el-button class="btn-send" type="primary" size="small" @click="sendMsg">send</el-button>
 						</div>
 					</div>
@@ -827,7 +856,7 @@
 					<div class="inquiry-overview">
 						<img class="inquiry-main-pic" alt=""
 							 v-if="inquiryDetail.images"
-							 :src="inquiryDetail.images[0]?(image(inquiryDetail.images[0])):'/home/v3/static/images/no_img.png'">
+							 :src="(inquiryDetail.images && inquiryDetail.images[0])?(util_function_obj.image(inquiryDetail.images[0], 100)):'/home/v3/static/images/user_no_img.png'">
 						<div class="content-box-wrap">
 							<div class="content-box1">
 								<div class="content-box">
@@ -836,12 +865,18 @@
 										<li class="item">
 											Quantity required：{{inquiryDetail.quantity}} {{inquiryDetail.unit}}
 										</li>
+                                        <li class="item" v-if="inquiryDetail.price">
+                                            Price：{{inquiryDetail.price}} {{inquiryDetail.currency}}
+                                        </li>
 										<li class="item">
 											Expiration time：{{inquiryDetail.valieDate | dataFormat('yyyy-MM-dd hh:mm:ss')}}
 										</li>
 										<li class="item" v-if="inquiryDetail.paymentTerms">
 											Payment：{{inquiryDetail.paymentTerms}}
 										</li>
+                                        <li class="item" v-if="inquiryDetail.destination">
+                                            Destination：{{inquiryDetail.destination}}
+                                        </li>
 										<li class="item" v-if="inquiryDetail.shippingTerms">
 											Shipping：{{inquiryDetail.shippingTerms}}
 										</li>
@@ -870,6 +905,8 @@
 								<h3 class="content-header">Product detailed specifications:</h3>
 								<div class="content">
 									{{inquiryDetail.detail}}
+                                    <br>
+                                    {{inquiryDetail.moreInformation?inquiryDetail.moreInformation:""}}
 								</div>
 							</div>
 
@@ -877,7 +914,7 @@
 								<h3 class="content-header">Attach files:</h3>
 								<ul class="content attach-file-list">
 									<li class="attach-file-item" v-for="picUrl in inquiryDetail.images" v-if="picUrl">
-										<img v-if="isImg(picUrl)" :src="image(picUrl)" alt="product's pic" class="inquiry-pic">
+										<img v-if="isImg(picUrl)" :src="util_function_obj.image(picUrl, 100)" alt="product's pic" class="inquiry-pic">
 										<!-- <p class="ellipsis_1">goods thiods things</p> -->
 									</li>
 									<%--<li class="attach-file-item" v-for="picUrl in inquiryDetail.images" v-if="picUrl">--%>
@@ -911,7 +948,7 @@
 										<span class="title">Product image or file:</span>
 										<div class="text">
 											<img class="pic-item" alt="goods' pic"
-												 :src="image(goodsPic.url)"
+												 :src="util_function_obj.image(goodsPic.url, 100)"
 												 v-for="goodsPic in quotationDetail.images">
 										</div>
 									</li>
@@ -976,9 +1013,9 @@
 												v-for="productBook in quotationDetail.throwaways">
 												<img class="company-book-item"  alt="product's book"
 													 v-if="isImg(productBook.url)"
-													 :src="image(productBook.url)">
+													 :src="util_function_obj.image(productBook.url, 200, 110)">
 												<div v-else>
-													<a :href="image(productBook.url)" class="book-link">《{{productBook.name}}》</a>
+													<a :href="util_function_obj.image(productBook.url)" class="book-link">《{{productBook.name}}》</a>
 												</div>
 											</template>
 										</div>
@@ -1063,6 +1100,7 @@
 			</div>
 
 			<el-input size="medium" placeholder="Please input the keywords" class="input-with-select"
+					  style="width: 440px;"
 					  @keyup.enter.native="searchInAddProductDialog"
 					  v-model.trim="addProductKeyword">
 				<el-button slot="append" icon="el-icon-search" class="btn-search"
@@ -1105,7 +1143,7 @@
 					v-for="goods in addProductGoodsListObj.items"
 					:data-product-id="goods.pdtId"
 					@click="selectAddProductGoods">
-					<img class="goods-pic" :src="image(goods.picture.split(',')[0])" alt="goods's pic">
+					<img class="goods-pic" :src="(goods.picture && goods.picture.split(',') && goods.picture.split(',')[0])?util_function_obj.image(goods.picture.split(',')[0],100):'/home/v3/static/images/user_no_img.png'" alt="goods's pic">
 					<div class="goods-name ellipsis_1">
 						{{goods.pdtName}}
 					</div>
@@ -1149,6 +1187,7 @@
 	<!-- 修改弹框 - end -->
 
 </div>
+<script src="/home/v3/static/js/index-top.js"></script>
 <script src="/home/v3/static/js/index-bottom.js"></script>
 <div id="bottom" style="margin-top: 25px">
 	<index-bottom></index-bottom>
@@ -1213,7 +1252,7 @@
 			addProductKeyword: "", //add product弹窗中方 搜索信息
 			addProductCatogeryValue: 0, //add product中的选中分类value值 - 有的话搜索条件添加lose=1
 			addProductPageStart: 0, //add product中 分页
-			addProductPageLimit: 10, //add product中 分页
+			addProductPageLimit: 8, //add product中 分页
 			addProductCurrentPage: 1, //add product中 分页 - element插件需要
 			addProductGoodsListObj:{}, //添加商品时的 产品列表 - 含分页信息
 			addProductSelectedPdtIds: [], //add product中 选中的商品id
@@ -1237,25 +1276,24 @@
 
 			isAllRead: false,  //信息是否已读
 			sendMsgValue: "", //发送的内容
+			sendMsgImgValue: "", //发送的图片地址
 
 			isFromContactList: false, //显示联系人 聊天框（从联系人列表跳转过来时为true）
-			testObj:{
-				status
-			}
+			testObj:{}
 		},
 		mounted() {
 			// 获取询盘列表
 			this.getInquiryList();
 
 			// 从联系人那边跳转过来时，显示聊天框
-			if(this.GetQueryString("supplierPkey") && this.GetQueryString("consultPkey") && this.GetQueryString("relationPkey") ){
+			if(util_function_obj.GetQueryString("supplierPkey") && util_function_obj.GetQueryString("consultPkey") && util_function_obj.GetQueryString("relationPkey") ){
 				this.isFromContactList = true;
 				this.isScale = true;
 				this.showChatBox = true;
 
-				this.supplierPkey = this.GetQueryString("supplierPkey");
-				this.consultPkey = this.GetQueryString("consultPkey");
-				this.relationPkey = this.GetQueryString("relationPkey");
+				this.supplierPkey = util_function_obj.GetQueryString("supplierPkey");
+				this.consultPkey = util_function_obj.GetQueryString("consultPkey");
+				this.relationPkey = util_function_obj.GetQueryString("relationPkey");
 
 				//获取chat列表
 				this.getChatInfo();
@@ -1263,25 +1301,27 @@
 				this.getInquiryDetail();
 				//获取功能供应商详情
 				this.getSupplierDetail();
+				// 显示下拉show more选项
+				this.chatShowMore();
 			}
 		},
 		methods: {
-			image(v, params) {
-				if (!v) {
-					return ""
-				}
-				if (!params) {
-					params = ""
-				}
-				return "https://image.shoestp.com" + v + params
-			},
-
-			// 读取链接带参
-			GetQueryString(name){
-				var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-				var r = window.location.search.substr(1).match(reg);
-				if(r!=null)return  unescape(r[2]); return null;
-			},
+			// image(v, params) {
+			// 	if (!v) {
+			// 		return ""
+			// 	}
+			// 	if (!params) {
+			// 		params = ""
+			// 	}
+			// 	return "https://image.shoestp.com" + v + params
+			// },
+			//
+			// // 读取链接带参
+			// GetQueryString(name){
+			// 	var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+			// 	var r = window.location.search.substr(1).match(reg);
+			// 	if(r!=null)return  unescape(r[2]); return null;
+			// },
 
 			// 时间戳转换时间
 			dataFormatMethod: function (value, fmt) {
@@ -1375,7 +1415,7 @@
 						.then((res) => {
 					this.isInquiryLisLoading = false;
 				if (res.data.ret != 1) {
-					this.$message.error(res.data.msg);
+					this.$message.error(res.data.msg || "Get inquiry list error,please try again later");
 					return
 				};
 
@@ -1421,7 +1461,7 @@
 			})
 			.catch((error) => {
 					this.isInquiryLisLoading = false;
-				console.log(error);
+				this.$message.error(error || 'Network error,please try again later');
 			});
 			},
 
@@ -1470,13 +1510,13 @@
 					console.log("显示下拉选项 点击事件 suc");
 				console.log(res);
 				if (res.data.ret != 1) {
-					this.$message.error(res.data.msg);
+					this.$message.error(res.data.msg || "Get Inquiry's options error,please try again later");
 					return
 				};
 				this.inquiresOptionUnreadInfo = res.data.result;
 			})
 			.catch((error) => {
-					console.log(error);
+				this.$message.error(error || 'Network error,please try again later');
 			});
 			},
 
@@ -1527,7 +1567,7 @@
 				})
 						.then((res) => {
 					if (res.data.ret != 1) {
-					this.$message.error(res.data.msg);
+					this.$message.error(res.data.msg || "Get inquiry's detail error,please try again later");
 					return
 				};
 				this.inquiryDetail = res.data.result;
@@ -1544,7 +1584,7 @@
 				}
 			})
 			.catch((error) => {
-					console.log(error);
+				this.$message.error(error || 'Network error,please try again later');
 			});
 			},
 
@@ -1580,14 +1620,14 @@
 				})
 						.then((res) => {
 					if (res.data.ret != 1) {
-					this.$message.error(res.data.msg);
+					this.$message.error(res.data.msg || "Get supplier's detail error,please try again later");
 					return
 				};
 				this.supplierDetail = res.data.result;
 
 			})
 			.catch((error) => {
-					console.log(error);
+					this.$message.error(error || 'Network error,please try again later');
 			});
 			},
 
@@ -1598,7 +1638,7 @@
 				console.log(res.ret)
 				console.log(file)
 				if (res.ret != 1) {
-					this.$message.error(res.msg);
+					this.$message.error(res.msg || "Images upload error,please try again later");
 					return
 				};
 				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
@@ -1609,7 +1649,7 @@
 				}))
 						.then((res) => {
 					if (res.data.ret != 1) {
-					this.$message.error(res.data.msg);
+					this.$message.error(res.data.msg || "Images upload error,please try again later");
 					return
 				};
 				this.$message({
@@ -1618,7 +1658,7 @@
 				});
 			})
 			.catch((error) => {
-					console.log(error);
+					this.$message.error(error || 'Network error,please try again later');
 			});
 			},
 
@@ -1637,15 +1677,18 @@
 						.then((res) => {
 					this.btnLoading = false;
 				console.log("获取报价详情 suc");
-				if (res.data.ret != 1) {
-					this.$message.error(res.data.msg);
+				if(res.data.ret == -1){
+					util_function_obj.alertWhenNoLogin(this);
+					return false;
+				}else if (res.data.ret != 1) {
+					this.$message.error(res.data.msg || "Get quotation's detail error,please try again later");
 					return
 				};
 				this.quotationDetailList.push(res.data.result);
 			})
 			.catch((error) => {
 					this.btnLoading = false;
-				console.log(error);
+				this.$message.error(error || 'Network error,please try again later');
 			});
 			},
 
@@ -1680,8 +1723,11 @@
 							validDate: this.addInformationForm.validDate,
 						}))
 								.then((res) => {
-						if (res.data.ret != 1) {
-							this.$message.error(res.data.msg);
+									if(res.data.ret == -1){
+										util_function_obj.alertWhenNoLogin(this);
+										return false;
+									}else if (res.data.ret != 1) {
+							this.$message.error(res.data.msg || "Add information error,please try again later");
 							return
 						};
 						this.$message({
@@ -1703,7 +1749,7 @@
 					})
 					.catch((error) => {
 							this.isEditAddInformationDialogShow = false;
-							console.log(error);
+						this.$message.error(error || 'Network error,please try again later');
 					});
 					} else {
 						console.log('error submit!!');
@@ -1725,8 +1771,11 @@
 					}))
 							.then((res) => {
 						console.log(res);
-				if (res.data.ret != 1) {
-					this.$message.error(res.data.msg);
+				if(res.data.ret == -1){
+					util_function_obj.alertWhenNoLogin(this);
+					return false;
+				}else if (res.data.ret != 1) {
+					this.$message.error(res.data.msg || "Close RFQ error,please try again later");
 					return
 				};
 				this.$message({
@@ -1741,7 +1790,7 @@
 				this.getQuotationDetail();
 			})
 			.catch((error) => {
-					console.log(error);
+					this.$message.error(error || 'Network error,please try again later');
 			});
 
 			}).catch((error) => {
@@ -1760,8 +1809,11 @@
 				}))
 						.then((res) => {
 					console.log("关闭询盘 suc");
-				if (res.data.ret != 1) {
-					this.$message.error(res.data.msg);
+				if(res.data.ret == -1){
+					util_function_obj.alertWhenNoLogin(this);
+					return false;
+				}else if (res.data.ret != 1) {
+					this.$message.error(res.data.msg || "Delete inquiry error,please try again later");
 					return
 				};
 				this.$message({
@@ -1803,8 +1855,11 @@
 				}))
 						.then((res) => {
 					console.log("添加至联系人 suc");
-				if (res.data.ret != 1) {
-					this.$message.error(res.data.msg);
+				if(res.data.ret == -1){
+					util_function_obj.alertWhenNoLogin(this);
+					return false;
+				}else if (res.data.ret != 1) {
+					this.$message.error(res.data.msg || "Add contact error,please try again later");
 					return
 				};
 				this.$message({
@@ -1813,7 +1868,7 @@
 				});
 			})
 			.catch((error) => {
-					console.log(error);
+					this.$message.error(error || 'Network error,please try again later');
 			});
 			},
 
@@ -1825,24 +1880,29 @@
 			contactSupplier(e){
 				console.log("contactSupplier")
 				// 显示顶部show more信息
+				clearTimeout(this.timeoutTimer);
 				this.timeoutTimer = setTimeout(()=>{
 					// 聊天信息大于8条时，不再自动显示show more
 					if( this.chatMsgList.length < 8 ){
 						this.isShowMore = true;
+					}else{
+						this.isAllRead = true;
 					}
 					clearTimeout(this.timeoutTimer);
 				}, this.showChatBox?200:1000)
 
 				this.isScale = true;
-				this.showChatBox = true;
-				this.showRFQDeailBox = false;
 				this.isFromContactList = false; //从联系人列表跳转过来时的值
 
 				var dataset = e.currentTarget.dataset;
 				var inquiryId = dataset.inquiryId;
 				var supplierIndex = dataset.supplierIndex;
 				var inquiryIndex = dataset.inquiryIndex;
-				if(this.nowSupplierIndex==supplierIndex && this.nowInquiryIndex == inquiryIndex && Object.keys(this.supplierDetail).length != 0) return;
+				// 当前点击的就是当前显示的，不触发点击事件 - 首次加载显示第一个，此时也可以点第一个，so != 0
+				if(this.nowSupplierIndex==supplierIndex && this.nowInquiryIndex == inquiryIndex && this.nowInquiryIndex != 0 && Object.keys(this.supplierDetail).length != 0 && this.showChatBox) return;
+
+				this.showChatBox = true;
+				this.showRFQDeailBox = false;
 
 				// 重置聊天信息
 				this.resetChatMsg();
@@ -1852,6 +1912,7 @@
 
 				// 左侧列表将点击项 设置为已读状态
 				this.$set(this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].quotation, "isNew",false)
+				this.$set(this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex], "unread",false)
 
 				//获取chat列表
 				this.getChatInfo();
@@ -1886,13 +1947,13 @@
 						.then((res) => {
 					console.log("获取商品列表 suc");
 				if (res.data.ret != 1) {
-					this.$message.error(res.data.msg);
+					this.$message.error(res.data.msg || "Get product's list error,please try again later");
 					return
 				};
 				this.addProductGoodsListObj = res.data.result;
 			})
 			.catch((error) => {
-					console.log(error);
+				this.$message.error(error || 'Network error,please try again later');
 			});
 			},
 
@@ -1944,7 +2005,7 @@
 				}))
 						.then((res) => {
 					if (res.data.ret != 1) {
-					this.$message.error(res.data.msg);
+					this.$message.error(res.data.msg || "Add products error,please try again later");
 					return
 				};
 
@@ -1957,7 +2018,7 @@
 				this.getInquiryDetail();
 			})
 			.catch((error) => {
-					console.log(error);
+				this.$message.error(error || 'Network error,please try again later');
 			});
 			},
 
@@ -2019,8 +2080,11 @@
 						.then((res) => {
 					this.isChatMsgListLoading = false;
 				console.log("获取询盘留言列表 - suc");
-				if (res.data.ret != 1) {
-					this.$message.error(res.data.msg);
+				if(res.data.ret == -1){
+					util_function_obj.alertWhenNoLogin(this);
+					return false;
+				}else if (res.data.ret != 1) {
+					this.$message.error(res.data.msg || "Get chat information error,please try again later");
 					return
 				};
 				// 是否全部加载完毕 - 不以加载最新消息为判断
@@ -2097,11 +2161,12 @@
 				})
 				}
 				this.sendMsgValue = "";
+				this.sendMsgImgValue = "";
 
 			})
 			.catch((error) => {
 					this.isChatMsgListLoading = false;
-				console.log(error);
+				this.$message.error(error || 'Network error,please try again later');
 			});
 			},
 
@@ -2158,26 +2223,63 @@
 			}, 1000);
 			},
 
+			// 聊天时发送图片
+			chatAddImgSuc(res, file, fileList){
+				console.log("chatAddImgSuc")
+				console.log(res)
+				console.log(file)
+				console.log(fileList)
+				if (res.ret != 1) {
+					this.$message.error(res.msg || "Images upload error,please try again later");
+					return
+				}else{
+					this.sendMsgImgValue = res.result.url;
+					this.sendMsg();
+				}
+				// axios.post('', Qs.stringify({
+				//
+				// }))
+				// 		.then((res) => {
+				// 	if (res.data.ret != 1) {
+				// 	this.$message.error(res.data.msg || "Images upload error,please try again later");
+				// 	return
+				// };
+				// this.$message({
+				// 	message: 'Add image success!',
+				// 	type: 'success'
+				// });
+			},
+
+			// 聚焦时视为消息已读
+			sendMsgInputFocus(){
+				this.isShowMore = false;
+				this.isAllRead = true;
+			},
+
 			// 发送消息
 			sendMsg(){
 				console.log("sendMsg")
-				if(!this.sendMsgValue) return;
+				if(!this.sendMsgValue && !this.sendMsgImgValue) return;
 				//从联系人列表跳转过来时 直接使用使用带过来的参数，否则用下标取值
 				this.relationPkey = this.isFromContactList?this.relationPkey:this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].quotation.pkey;
 				axios.post('/home/rfq_RFQConsult_sendMessage', Qs.stringify({
 					content: this.sendMsgValue,
+					imageUrl: this.sendMsgImgValue,
 					relationPkey: this.relationPkey,
 				}))
 						.then((res) => {
 					console.log("发送消息 suc");
-				if (res.data.ret != 1) {
-					this.$message.error(res.data.msg);
+				if(res.data.ret == -1){
+					util_function_obj.alertWhenNoLogin(this);
+					return false;
+				}else if (res.data.ret != 1) {
+					this.$message.error(res.data.msg || "Send message error,please try again later");
 					return
 				};
 				this.getChatInfo({searchLast: true});
 			})
 			.catch((error) => {
-					console.log(error);
+					this.$message.error(error || 'Network error,please try again later');
 			});
 
 			},
@@ -2190,7 +2292,7 @@
 						content = content.content;
 						break;
 					case 2:
-						content = "<img src='"+this.image(content.imageUrl)+"'/>";
+						content = "<img src='" + util_function_obj.image(content.imageUrl, 500, 200)+"'/>";
 						break;
 					case 3:
 					case 4:
@@ -2209,7 +2311,7 @@
 
 			//第一次点击type=4的私人展厅
 			alertPersonalShowTime(linkUrl, itemObj) {
-				this.$confirm('After the link click on start the countdown, you will have 48 hours to view this private business of goods throughout the hall.', '', {
+				this.$confirm('After the link click on start the countdown, you will have 72 hours to view this private business of goods throughout the hall.', '', {
 					confirmButtonText: 'Start',
 					cancelButtonText: 'Cancel',
 					customClass: "my-confirm-class",
@@ -2222,7 +2324,7 @@
 					// this.getChatInfo();
 
 					//本地自己计算个倒计时 - 获取数据时也会起 - 不刷新页面
-					var diffTime = 48*60*60*1000; //倒计时48小时
+					var diffTime = 72*60*60*1000; //倒计时72小时
 					this.$set(itemObj,'validDate',Date.now()+diffTime);
 					this.countDown(diffTime, itemObj);
 			},1000)
@@ -2278,20 +2380,17 @@
 				return text;
 			},
 			// Inquiry的status转换对应文字
-			inquiryStatus2Text: function (status) {
+			inquiryStatus2Text: function (status, haveQuotation) {
 				var text = "";
 				switch(status){
 					case 1:
-						text = "Waiting for publication";
-						break;
-					case 2:
 						text = "Verifying";
 						break;
-					case 3:
-						text = "Finished";
+					case 2:
+						text = "Reject";
 						break;
-					case 4:
-						text = "Closed";
+					case 3:
+						text = haveQuotation?"Compare all quotation":"No quotation";
 						break;
 					default:
 						text = "";
@@ -2305,16 +2404,16 @@
 				var text = "All Inquires";
 				switch(status){
 					case 1:
-						text = "Under Review"; //审核中
+						text = "Verifying"; //审核中
 						break;
 					case 2:
-						text = "Audit Not Passed"; //审核不通过
+						text = "Reject"; //审核不通过
 						break;
 					case 3:
 						text = "Approved"; //审核通过
 						break;
 					default:
-						text = "Under Review";
+						text = "";
 						break;
 				}
 				return text;

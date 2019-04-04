@@ -1,0 +1,174 @@
+#readMore {
+  background-color: #f1f2f6;
+}
+  #readMore .flexSb {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center; }
+  #readMore .flexCc {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center; }
+  #readMore .flexSt {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center; }
+  #readMore .top-box {
+    width: 100%;
+    height: 60px;
+    background-color: #2d045c; }
+    #readMore .top-box .top-banner {
+      min-width: 1200px;
+      height: 60px;
+      text-align: center;
+      background: url("../images/top-banner.png") center center no-repeat; }
+  #readMore .content-box {
+    width: 1200px;
+    min-width: 1200px;
+    margin: 0 auto; }
+    #readMore .content-box .section1 {
+      font-size: 16px; }
+      #readMore .content-box .section1 h1 {
+        margin: 50px 0 25px 0;
+        font-size: 26px; }
+      #readMore .content-box .section1 .section1-content {
+        padding: 50px 100px 25px 175px;
+        background-color: #ffffff;
+        border: solid 1px #dddddd; }
+        #readMore .content-box .section1 .section1-content ul li {
+          color: #777777;
+          line-height: 30px;
+          -webkit-box-align: start;
+              -ms-flex-align: start;
+                  align-items: flex-start;
+          margin-bottom: 25px; }
+        #readMore .content-box .section1 .section1-content ul li .section1-content-left{
+          -webkit-box-align: start;
+              -ms-flex-align: start;
+                  align-items: flex-start; }
+        #readMore .content-box .section1 .section1-content ul li .section1-content-right{
+          -webkit-box-align: start;
+              -ms-flex-align: start;
+                  align-items: flex-start; }
+          #readMore .content-box .section1 .section1-content ul li .title {
+            width: 140px;
+            text-align: right;
+            margin-right: 30px; }
+          #readMore .content-box .section1 .section1-content ul li .img-list .img-item {
+            width: 80px;
+            height: 80px;
+            margin-right: 8px; }
+            #readMore .content-box .section1 .section1-content ul li .img-list .img-item img {
+              width: 100%;
+              height: 100%;
+              -o-object-fit: cover;
+                 object-fit: cover; }
+          /* #readMore .content-box .section1 .section1-content ul li .section1-content-left {
+            -webkit-box-align: start;
+                -ms-flex-align: start;
+                    align-items: flex-start; } */
+            #readMore .content-box .section1 .section1-content ul li .section1-content-left .list {
+              word-wrap: break-word;
+              width: 440px; }
+    #readMore .content-box .section2 {
+      font-size: 16px; }
+      #readMore .content-box .section2 h1 {
+        margin: 50px 0 25px 0;
+        font-size: 26px; }
+      #readMore .content-box .section2 .section2-content {
+        padding: 30px 100px 30px 160px;
+        background-color: #ffffff;
+        border: solid 1px #dddddd; }
+        #readMore .content-box .section2 .section2-content .section2-ul1 {
+          width: 486px;
+          float: left;
+          padding: 20px 0;
+          border-right: 1px solid  #10389c; }
+        #readMore .content-box .section2 .section2-content .section2-ul2 {
+          width: 360px;
+          float: left;
+          margin-left: 56px; }
+          #readMore .content-box .section2 .section2-content .section2-ul2 p {
+            line-height: 24px;
+            margin-bottom: 25px;
+            color: #7c7c7c; }
+          #readMore .content-box .section2 .section2-content .section2-ul2 a {
+            display: inline-block;
+            width: 200px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            background-color: #10389c;
+            border-radius: 3px;
+            font-size: 18px;
+            color: #fff;
+            text-decoration: none; }
+        #readMore .content-box .section2 .section2-content ul li {
+          color: #777777;
+          line-height: 40px;
+          -webkit-box-align: start;
+              -ms-flex-align: start;
+                  align-items: flex-start; }
+          #readMore .content-box .section2 .section2-content ul li .title {
+            width: 155px;
+            text-align: right;
+            margin-right: 30px; }
+          #readMore .content-box .section2 .section2-content ul li .content {
+            width: 300px; }
+    #readMore .content-box .banner-box {
+      margin: 38px 0 15px 0; }
+    #readMore .content-box .banner-box .el-carousel .el-carousel__indicator .el-carousel__button {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #b0b0b0; }
+    #readMore .content-box .banner-box .el-carousel .el-carousel__indicator.is-active .el-carousel__button {
+      background-color: #e54544 !important; }
+    #readMore .content-box .quotation {
+      padding-bottom: 20px;
+      margin-bottom: 37px;
+      background-color: #ffffff;
+      border: solid 1px #dddddd; }
+    #readMore .content-box .quotation .textarea-placeholder textarea{
+      font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif !important;
+     }
+      #readMore .content-box .quotation .quotation-title {
+        padding: 43px 30px; }
+      #readMore .content-box .quotation .quotation-title h3{
+        font-size: 26px;}
+      #readMore .content-box .quotation .quotation-form {
+            padding: 0 100px 0 80px; }
+      #readMore .content-box .quotation .quotation-form .el-form-item__label{
+            font-size: 16px;
+        }
+      #readMore .content-box .quotation .el-button--primary {
+        width: 173px;
+        height: 40px;
+        font-size: 18px;
+        background-color: #10389c;
+        border-color: #10389c;
+        border-radius: 3px;
+        color: #ffffff;
+        margin-right: 10px; }
+      #readMore .content-box .quotation .el-textarea__inner {
+        resize: none; }
+
+/*# sourceMappingURL=index.css.map */
