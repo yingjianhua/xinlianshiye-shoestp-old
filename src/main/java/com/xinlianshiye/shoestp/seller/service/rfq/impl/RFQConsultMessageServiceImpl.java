@@ -1,8 +1,12 @@
 package com.xinlianshiye.shoestp.seller.service.rfq.impl;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -15,15 +19,17 @@ import irille.Dao.PdtProductDao;
 import irille.Dao.RFQ.RFQConsultDao;
 import irille.Dao.RFQ.RFQConsultMessageDao;
 import irille.Dao.RFQ.RFQConsultRelationDao;
-import irille.Entity.RFQ.JSON.ConsultMessage;
-import irille.Entity.RFQ.JSON.RFQConsultAlertUrlMessage;
-import irille.Entity.RFQ.JSON.RFQConsultImageMessage;
-import irille.Entity.RFQ.JSON.RFQConsultTextMessage;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultMessage;
 import irille.Entity.RFQ.RFQConsultRelation;
+import irille.Entity.RFQ.Enums.RFQConsultMessageType;
 import irille.Entity.RFQ.Enums.RFQConsultRelationReadStatus;
+import irille.Entity.RFQ.JSON.ConsultMessage;
+import irille.Entity.RFQ.JSON.RFQConsultImageMessage;
+import irille.Entity.RFQ.JSON.RFQConsultPrivateProductUrlMessage;
+import irille.Entity.RFQ.JSON.RFQConsultTextMessage;
 import irille.Entity.pm.PM.OTempType;
+import irille.pub.bean.Query;
 import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.pub.util.AppConfig;
@@ -95,15 +101,17 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 
   private RFQConsultMessageView sendMessage(
       UsrSupplier supplier, Integer consultPkey, ConsultMessage message) {
-    return sendMessage(supplier, consultPkey, message, createUuid());
+    return sendMessage(supplier, consultPkey, message, null);
   }
 
   private RFQConsultMessageView sendMessage(
-      UsrSupplier supplier, Integer consultPkey, ConsultMessage message, String uuid) {
+      UsrSupplier supplier,
+      Integer consultPkey,
+      ConsultMessage message,
+      Consumer<RFQConsultMessage> callback) {
     RFQConsultRelation relation =
         rFQConsultRelationDao.findByConsult_PkeySupplier_Pkey(consultPkey, supplier.getPkey());
     RFQConsultMessage bean = new RFQConsultMessage();
-    bean.setUuid(uuid);
     try {
       bean.setContent(om.writeValueAsString(message));
     } catch (JsonProcessingException e) {
@@ -121,19 +129,18 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
     relation.stLastMessage(bean);
     relation.setLastMessageSendTime(bean.getSendTime());
     rFQConsultRelationDao.save(relation);
-    
-    //更新询盘的最新事件时间
+
+    // 更新询盘的最新事件时间
     RFQConsult consult = relation.gtConsult();
     consult.setLastMessageSendTime(new Date());
+
+    // 回调
+    if (callback != null) callback.accept(bean);
     rFQConsultDao.save(consult);
-    
+
     messageService.send(
         OTempType.RFQ_MESSAGE_NOTICE, null, relation.gtPurchaseId(), relation, bean, supplier);
     return RFQConsultMessageView.Builder.toView(bean);
-  }
-
-  private static String createUuid() {
-    return UUID.randomUUID().toString().replaceAll("-", "");
   }
 
   @Override
@@ -164,7 +171,7 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
 
   @Override
   public RFQConsultMessageView sendPrivateExpoPdt(
-      UsrSupplier supplier, Integer consultPkey, Integer productPkey) {
+      final UsrSupplier supplier, final Integer consultPkey, final Integer productPkey) {
     PdtProduct product = pdtProductDao.findByPkey(productPkey);
     if (product.getSupplier() != null && !(product.getSupplier().equals(supplier.getPkey()))) {
       throw new WebMessageException(ReturnCode.service_gone, "商品错误");
@@ -172,19 +179,53 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
     if (!product.gtProductType().equals(OProductType.PrivateExpo)) {
       throw new WebMessageException(ReturnCode.service_gone, "不是私人展厅商品");
     }
-    RFQConsultAlertUrlMessage message = new RFQConsultAlertUrlMessage();
-    //		//三天(72小时)后过期
-    //	message.setValidDate(Date.from(LocalDateTime.now().plusDays(3).atZone(ZoneId.systemDefault()).toInstant()));
-    message.setProductId(productPkey);
-    message.setAlertMsg("该链接被打开后72小时内有效，72小时后该链接失效，买家将无法查看该产品");
-    message.setShowMsg(product.getName());
+    // 若供应商上一次发送的私人展厅产品链接还没有失效 信息使用上一次的内容
+    RFQConsultMessage sendBefore =
+        Query.selectFrom(RFQConsultMessage.class)
+            .LEFT_JOIN(
+                RFQConsultRelation.class, RFQConsultMessage.T.RELATION, RFQConsultRelation.T.PKEY)
+            .LEFT_JOIN(RFQConsult.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY)
+            .WHERE(RFQConsultMessage.T.TYPE, "=?", RFQConsultMessageType.PRIVATE_PRODUCT_URL)
+            .WHERE(RFQConsult.T.PKEY, "=?", consultPkey)
+            .WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supplier.getPkey())
+            .WHERE(RFQConsultMessage.T.PRIVATE_PRODUCT_URL_MESSAGE_PRODUCT_ID, "=?", productPkey)
+            .WHERE(
+                RFQConsultMessage.T.PRIVATE_PRODUCT_URL_MESSAGE_VALID_DATE,
+                ">?",
+                LocalDateTime.now())
+            .query();
+    RFQConsultPrivateProductUrlMessage message = null;
     String uuid = createUuid();
-    message.setUrl(
-        AppConfig.domain
-            + "home/pdt_PdtProduct_gtProductsInfo?id="
-            + product.getPkey()
-            + "&expoKey="
-            + uuid); // TODO 链接现在尚未确定  确定后补上 带上询盘聊天消息的uuid做为参数
-    return sendMessage(supplier, consultPkey, message, uuid);
+    if (sendBefore != null) {
+      try {
+        message = om.readValue(sendBefore.getContent(), RFQConsultPrivateProductUrlMessage.class);
+      } catch (IOException e) {
+      }
+    }
+    if (message == null) {
+      message = new RFQConsultPrivateProductUrlMessage();
+      message.setProductId(productPkey);
+      message.setAlertMsg("该链接被打开后72小时内有效，72小时后该链接失效，买家将无法查看该产品");
+      message.setShowMsg(product.getName());
+      message.setUrl(
+          AppConfig.domain
+              + "home/pdt_PdtProduct_gtProductsInfo?id="
+              + product.getPkey()
+              + "&expoKey="
+              + uuid);
+    }
+
+    return sendMessage(
+        supplier,
+        consultPkey,
+        message,
+        (bean) -> {
+          bean.setPrivateProductUrlMessageUuid(uuid);
+          bean.setPrivateProductUrlMessageProductId(productPkey);
+        });
+  }
+
+  private static String createUuid() {
+    return UUID.randomUUID().toString().replaceAll("-", "");
   }
 }

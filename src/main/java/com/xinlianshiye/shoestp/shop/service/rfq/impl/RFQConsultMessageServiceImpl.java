@@ -25,7 +25,7 @@ import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Entity.RFQ.Enums.RFQConsultMessageType;
 import irille.Entity.RFQ.Enums.RFQConsultRelationReadStatus;
 import irille.Entity.RFQ.JSON.ConsultMessage;
-import irille.Entity.RFQ.JSON.RFQConsultAlertUrlMessage;
+import irille.Entity.RFQ.JSON.RFQConsultPrivateProductUrlMessage;
 import irille.Entity.RFQ.JSON.RFQConsultImageMessage;
 import irille.Entity.RFQ.JSON.RFQConsultTextMessage;
 import irille.Entity.pm.PM.OTempType;
@@ -64,7 +64,7 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
     // 买家读取消息后, 若消息状态为采购商未读, 则修改为采购商已读
     if (relation.gtReadStatus() == RFQConsultRelationReadStatus.PURCHASE_UNREAD) {
       relation.stReadStatus(RFQConsultRelationReadStatus.PURCHASE_HADREAD);
-      //读取消息后 该报价就不是一个新报价了, isNew设置为false
+      // 读取消息后 该报价就不是一个新报价了, isNew设置为false
       relation.stIsNew(false);
       relation.upd();
     }
@@ -132,7 +132,6 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
             .query();
 
     RFQConsultMessage bean = new RFQConsultMessage();
-    bean.setUuid(UUID.randomUUID().toString().replaceAll("-", ""));
     try {
       bean.setContent(om.writeValueAsString(message));
     } catch (JsonProcessingException e) {
@@ -150,8 +149,8 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
     relation.stLastMessage(bean);
     relation.setLastMessageSendTime(bean.getSendTime());
     relation.upd();
-    
-    //更新询盘的最新事件时间
+
+    // 更新询盘的最新事件时间
     RFQConsult consult = relation.gtConsult();
     consult.setLastMessageSendTime(new Date());
     consult.upd();
@@ -166,13 +165,14 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
   public Integer checkPrivateExpoKey(String expoKey) {
     RFQConsultMessage message = rFQConsultMessageDao.findByUuid(expoKey);
     if (message == null) return null;
-    if (message.gtType() != RFQConsultMessageType.ALERT_URL) return null;
+    if (message.gtType() != RFQConsultMessageType.PRIVATE_PRODUCT_URL) return null;
     try {
-      RFQConsultAlertUrlMessage content =
-          om.readValue(message.getContent(), RFQConsultAlertUrlMessage.class);
+      RFQConsultPrivateProductUrlMessage content =
+          om.readValue(message.getContent(), RFQConsultPrivateProductUrlMessage.class);
       if (content.getValidDate() == null) {
         content.setValidDate(
             Date.from(LocalDateTime.now().plusDays(3).atZone(ZoneId.systemDefault()).toInstant()));
+        message.setPrivateProductUrlMessageValidDate(content.getValidDate());
         message.setContent(om.writeValueAsString(content));
         rFQConsultMessageDao.save(message);
         return content.getProductId();

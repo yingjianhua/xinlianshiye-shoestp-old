@@ -60,7 +60,7 @@ public class RFQConsultMessageDaoImpl implements RFQConsultMessageDao {
   @Override
   public RFQConsultMessage findByUuid(String uuid) {
     return Query.selectFrom(RFQConsultMessage.class)
-        .WHERE(RFQConsultMessage.T.UUID, "=?", uuid)
+        .WHERE(RFQConsultMessage.T.PRIVATE_PRODUCT_URL_MESSAGE_UUID, "=?", uuid)
         .query();
   }
 }

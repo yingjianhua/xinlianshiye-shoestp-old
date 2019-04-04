@@ -12,7 +12,7 @@ import lombok.Data;
  * @author Jianhua Ying
  */
 @Data
-public class RFQConsultAlertUrlMessage implements BaseView, ConsultMessage {
+public class RFQConsultPrivateProductUrlMessage implements BaseView, ConsultMessage {
 
   private Date validDate; // 过期时间
   private Integer productId; // 商品主键
@@ -22,6 +22,6 @@ public class RFQConsultAlertUrlMessage implements BaseView, ConsultMessage {
 
   @Override
   public Byte type() {
-    return RFQConsultMessageType.ALERT_URL.getLine().getKey();
+    return RFQConsultMessageType.PRIVATE_PRODUCT_URL.getLine().getKey();
   }
 }
