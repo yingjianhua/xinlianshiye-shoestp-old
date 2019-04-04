@@ -566,7 +566,12 @@ public class UsrMainAction extends HomeAction<UsrMain> {
    * @author chen
    */
   public String simpleCompleteReg() {
-    System.out.println("...+"+getEmail());
+
+      UsrMain main = UsrMain.chkUniqueEmail(false, getEmail());
+      if (main != null) {
+          throw new WebMessageException(
+                  MessageBuild.buildMessage(ReturnCode.service_user_exists, HomeAction.curLanguage()));
+      }
       Cache cache = CacheUtils.mailValid;
       String value = String.valueOf(cache.getIfPresent(getUid()));
       if (cache.getIfPresent(getUid()) != null && value.equalsIgnoreCase(getEmail())) {
@@ -579,12 +584,12 @@ public class UsrMainAction extends HomeAction<UsrMain> {
         us.setTelphone("");
         ins.setB(us);
         ins.commit();
-        System.out.println(".."+getBackUrl());
         setResult(getBackUrl()+"?result=1",false);
+        CacheUtils.mailValid.invalidate(uid);
       } else {
         setResult(getBackUrl()+"?result=0",false);
       }
-    CacheUtils.mailValid.invalidate(uid);
+
     return RTRENDS;
   }
 }
