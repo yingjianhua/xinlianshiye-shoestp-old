@@ -64,7 +64,7 @@ a {
       display: inline-block;
       line-height: 60px;
       vertical-align: top;
-      margin: 0 40px; }
+      margin: 0 30px; }
     #leather .leather-banner-head .button {
       display: inline-block;
       width: 112px;
@@ -74,8 +74,7 @@ a {
       border: 1px solid rgba(255, 255, 255, 0.5);
       vertical-align: middle;
       font-size: 14px;
-      color: rgba(255, 255, 255, 0.5);
-      margin-left: 80px; }
+      color: rgba(255, 255, 255, 0.5); }
     #leather .leather-banner-head .head-search {
       display: inline-block;
       width: 255px;

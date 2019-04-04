@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html style="scroll-behavior: smooth;">
 <head>
   <meta charset='utf-8'/>
   <meta name='viewport' content='width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no'>
@@ -28,14 +28,16 @@
 
     <div class="con banner">
       <div class="nav">
-        <img name="logo" src="images/logo.png" alt="新联-鞋贸港">
+        <a href="/home/usr_UsrPurchase">
+          <img name="logo" src="images/logo.png" alt="新联-鞋贸港">
+        </a>
         <div class="navtitle cu"><a href="/home/pdt_PdtProduct" style="color: inherit;">PRODUCTS</a></div>
-        <div class="navtitle cu">POPULAR GOODS</div>
-        <div class="search" style="padding-right: 20px;">
+        <div class="navtitle cu"><a href="#productGoods" style="color: inherit;">POPULAR GOODS</a></div>
+        <div class="search">
           <span class="cu mw_300" v-if="sysConfig && sysConfig.user">{{sysConfig.user.name}}</span>
           <span class="cu" @click="testFormSubmit" v-else>SIGN UP</span>
-<!--          <input type="text" :class=" showinput ? '' : 'noinput'">-->
-<!--          <img class="cu" src="images/serach.png" @click="inputshow">-->
+          <input type="text" :class=" showinput ? '' : 'noinput'" v-model="search">
+          <img class="cu" src="images/serach.png" @click="inputshow">
         </div>
         <div class="fx">
           <a href="https://www.facebook.com/ShoestpCN/">
@@ -68,10 +70,10 @@
         </div>
       </div>
     </div>
-    <div class="con boots" v-if="men.length > 0">
+    <div class="con boots" v-if="men.length > 0" id="productGoods">
       <div class="boot">
         <h2>MEN’S BOOTS</h2>
-        <h3>Click <a href="">INQUIRY</a> And Get A Free Sample</h3>
+        <h3>Click <a href="javascript:void(0);">INQUIRY</a> And Get A Free Sample</h3>
         <div class="shoes">
           <div class="shoe" v-for="item,index in men">
             <div class="imgcon">
@@ -84,7 +86,7 @@
               <h3>{{item.pdtName}}</h3>
               <h4>${{item.price}}</h4>
               <p>Min.Order:{{item.minOrder}} pairs</p>
-              <a :href="'/home/usr_UsrConsult_productPublishView?product_id=' + item.pdtId">INQUIRY</a>
+              <a href="javascript:void(0);" @click="skipInquiry(item.pdtId)">INQUIRY</a>
             </div>
             <div class="imgcon2">
               <img :src="'https://image.shoestp.com' + item.picture.split(',')[0] + '?x-oss-process=image/resize,w_298,h_261'" alt="">
@@ -100,7 +102,7 @@
     <div class="con boots" v-if="women.length > 0">
       <div class="boot">
         <h2>WOMEN’S BOOTS</h2>
-        <h3>Click <a href="">INQUIRY</a> And Get A Free Sample</h3>
+        <h3>Click <a href="javascript:void(0);">INQUIRY</a> And Get A Free Sample</h3>
         <div class="shoes">
           <div class="shoe" v-for="item,index in women">
             <div class="imgcon">
@@ -113,7 +115,7 @@
               <h3>{{item.pdtName}}</h3>
               <h4>${{item.price}}</h4>
               <p>Min.Order:{{item.minOrder}} pairs</p>
-              <a :href="'/home/usr_UsrConsult_productPublishView?product_id=' + item.pdtId">INQUIRY</a>
+              <a href="javascript:void(0);" @click="skipInquiry(item.pdtId)">INQUIRY</a>
             </div>
             <div class="imgcon2">
               <img :src="'https://image.shoestp.com' + item.picture.split(',')[0] + '?x-oss-process=image/resize,w_298,h_261'" alt="">
@@ -187,7 +189,7 @@
         ],
         men:[],
         women:[],
-
+        search: '',
         showinput:false
       },
       mounted() {
@@ -212,12 +214,22 @@
         }
       },
       methods:{
+        // 跳转RFQ
         skipRFQ() {
           if( !sysConfig || !sysConfig.user ){
             this.propsLogin.showLogin=true
             return;
           } else {
             window.location.href = '/home/usr_UsrConsult_publishView'
+          }
+        },
+        // 跳转inquiry
+        skipInquiry(pdtId) {
+          if( !sysConfig || !sysConfig.user ){
+            this.propsLogin.showLogin=true
+            return;
+          } else {
+            window.location.href = '/home/usr_UsrConsult_productPublishView?product_id=' + pdtId
           }
         },
         // 判断登录
@@ -323,8 +335,15 @@
         },
         //show
         inputshow:function(val){
+          if (this.search != null && this.search != undefined && this.search != '') {
+            this.changeSearch()
+          }
           this.showinput = !this.showinput
         },
+        // 搜索列表
+        changeSearch() {
+          window.location.href = '/home/pdt_PdtProduct?Keyword=' + this.search + '&searchtype=0'
+        }
       }
     })
   </script>
