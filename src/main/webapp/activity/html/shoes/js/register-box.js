@@ -29,7 +29,7 @@ Vue.component('register-box', {
                                   placeholder="Enter Password" auto-complete="on" type="password"></el-input>
                     </el-form-item>
 
-                    <el-form-item label="Nickname" prop="nickName">
+                    <el-form-item label="UserName" prop="nickName">
                         <el-input v-model.trim="registerForm.nickName"
                                   placeholder="Enter Nickname"></el-input>
                     </el-form-item>
