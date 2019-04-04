@@ -576,7 +576,7 @@
     width: 100%;
     max-height: 400px;
     overflow: auto;
-    padding: 0px 20px 20px;
+    padding: 0px 4px 20px;
     color: #7f7f7f;
     border-bottom: solid 1px #ddd;
     background-color: #fff; }
@@ -607,7 +607,7 @@
     margin-top: 5px;
     color: #232323; }
 .page-personal-center .chat-wrap .chater-more-info .basic-info-wrap {
-    width: 300px;
+    width: 260px;
     -ms-flex-negative: 1;
     flex-shrink: 1; }
 .page-personal-center .chat-wrap .chater-more-info .basic-info-wrap .box-title {
@@ -641,7 +641,10 @@
     width: 250px;
     -webkit-box-flex: 1;
     -ms-flex-positive: 1;
-    flex-grow: 1; }
+    flex-grow: 1;
+    padding-left: 25px;
+    margin-left: 15px;
+    border-left: 1px solid #eee; }
 .page-personal-center .chat-wrap .chater-more-info .basic-details-wrap .box-title {
     margin-bottom: 12px;
     font-size: 14px;
@@ -716,17 +719,25 @@
     -ms-flex-negative: 1;
     flex-shrink: 1;
     color: #b0b0b0; }
-.page-personal-center .chat-wrap .chater-more-info .normal-inquiry-drop-down-wrap .row-title {
-    margin-top: 5px;
-    margin-bottom: 5px; }
+.page-personal-center .chat-wrap .chater-more-info .normal-inquiry-drop-down-wrap .row-item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin-bottom: 10px; }
+.page-personal-center .chat-wrap .chater-more-info .normal-inquiry-drop-down-wrap .row-item .row-title-left {
+    -webkit-box-flex: 0;
+    -ms-flex: none;
+    flex: none;
+    min-width: 56px; }
+.page-personal-center .chat-wrap .chater-more-info .normal-inquiry-drop-down-wrap .row-item .row-content-right {
+    -webkit-box-flex: 1;
+    -ms-flex: auto;
+    flex: auto;
+    padding-left: 4px; }
 .page-personal-center .chat-wrap .chater-more-info .normal-inquiry-drop-down-wrap .row-item .content {
     color: #b0b0b0; }
 .page-personal-center .chat-wrap .chater-more-info .normal-inquiry-drop-down-wrap .row-item .msg-content {
     max-height: 200px; }
-.page-personal-center .chat-wrap .chater-more-info .normal-inquiry-drop-down-wrap .product-info-box {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex; }
 .page-personal-center .chat-wrap .chater-more-info .normal-inquiry-drop-down-wrap .product-info-box .product-pic {
     -webkit-box-flex: 0;
     -ms-flex: none;

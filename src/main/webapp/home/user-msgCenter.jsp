@@ -184,8 +184,15 @@
 										 @click.stop = "(inquiry.type==1 && isScale)?viewInquiryDetail($event):''"
 										 :data-inquiry-index="inquiryIndex"
 										 v-if="inquiry.relations && inquiry.relations.length==0">
-										<img class="goods-pic" alt="goods's pic"
-											 :src="(inquiry.images && inquiry.images[0])?(util_function_obj.image(inquiry.images[0],50,50, (inquiry.type==3?'/blur,r_5,s_20':''))):'/home/v3/static/images/user_no_img.png'">
+										<%--普通产品询盘(2)和私人展厅产品询盘(3)首图显示productImage--%>
+										<template v-if="inquiry.type == 2 || inquiry.type == 3">
+											<img class="goods-pic" alt="goods's pic"
+												 :src="inquiry.productImage?(util_function_obj.image(inquiry.productImage,50,50, (inquiry.type==3?'/blur,r_5,s_20':''))):'/home/v3/static/images/user_no_img.png'">
+										</template>
+										<template v-else>
+											<img class="goods-pic" alt="goods's pic"
+												 :src="(inquiry.images && inquiry.images[0])?(util_function_obj.image(inquiry.images[0],50,50)):'/home/v3/static/images/user_no_img.png'">
+										</template>
 										<%--RFQ信息显示一行，其余显示两行--%>
 										<div class="goods-info" :class="{'two-row': inquiry.type != 1}">
 											<div class="goods-name">
@@ -206,9 +213,18 @@
 									<div class="collapse-title" v-else
 										 @click="(inquiry.type==1 && isScale)?viewInquiryDetail($event):''"
 										 :data-inquiry-index="inquiryIndex">
-										<img class="goods-pic" alt="goods's pic"
-											 :src="(inquiry.images && inquiry.images[0])?(util_function_obj.image(inquiry.images[0],50,50, (inquiry.type==3?'/blur,r_5,s_20':''))):'/home/v3/static/images/user_no_img.png'"
-											 :data-inquiry-index="inquiryIndex">
+										<%--普通产品询盘(2)和私人展厅产品询盘(3)首图显示productImage--%>
+										<template v-if="inquiry.type == 2 || inquiry.type == 3">
+											<img class="goods-pic" alt="goods's pic"
+												 :src="inquiry.productImage?(util_function_obj.image(inquiry.productImage,50,50, (inquiry.type==3?'/blur,r_5,s_20':''))):'/home/v3/static/images/user_no_img.png'">
+										</template>
+										<template v-else>
+											<img class="goods-pic" alt="goods's pic"
+												 :src="(inquiry.images && inquiry.images[0])?(util_function_obj.image(inquiry.images[0],50,50)):'/home/v3/static/images/user_no_img.png'">
+										</template>
+										<%--<img class="goods-pic" alt="goods's pic"--%>
+											 <%--:src="(inquiry.images && inquiry.images[0])?(util_function_obj.image(inquiry.images[0],50,50, (inquiry.type==3?'/blur,r_5,s_20':''))):'/home/v3/static/images/user_no_img.png'"--%>
+											 <%--:data-inquiry-index="inquiryIndex">--%>
 										<%--RFQ信息显示一行，其余显示两行--%>
 										<div class="goods-info"  :class="{'two-row': inquiry.type != 1}"
 											 :data-inquiry-index="inquiryIndex">
@@ -425,35 +441,37 @@
 									<div class="basic-details-wrap normal-inquiry-drop-down-wrap">
 										<div class="box-title">Inquiry information</div>
 										<div class="row-item product-info-box">
+											<%--<img class="product-pic" alt="product's pic"--%>
+												 <%--:src="(inquiryDetail.images && inquiryDetail.images[0]) ? (util_function_obj.image(inquiryDetail.images[0], 50, 50, (inquiryList[nowInquiryIndex].type==3?'/blur,r_5,s_20':''))) : '/home/v3/static/images/user_no_img.png'">--%>
 											<img class="product-pic" alt="product's pic"
-												 :src="(inquiryDetail.images && inquiryDetail.images[0]) ? (util_function_obj.image(inquiryDetail.images[0], 50, 50, (inquiryList[nowInquiryIndex].type==3?'/blur,r_5,s_20':''))) : '/home/v3/static/images/user_no_img.png'">
+												 :src="(inquiryDetail.productImage) ? (util_function_obj.image(inquiryDetail.productImage, 50, 50, (inquiryList[nowInquiryIndex].type==3?'/blur,r_5,s_20':''))) : '/home/v3/static/images/user_no_img.png'">
 											<div class="product-descript">
 												{{inquiryDetail.title}}
 											</div>
 										</div>
-										<div class="row-item row-title">
-											<span class="">Quantity:</span>
-											<span class="content">
+										<div class="row-item">
+											<span class="row-title-left">Quantity:</span>
+											<span class="content row-content-right">
 													{{inquiryDetail.quantity}} {{inquiryDetail.unit}}
 												</span>
 										</div>
 										<div class="row-item" v-if="inquiryDetail.detail">
-											<div class="row-title">Message:</div>
+											<div class="row-title-left">Message:</div>
 											<!-- <el-scrollbar style="height: 100%;" :native="false" wrapStyle="" wrapClass="" viewClass="" viewStyle="" noresize="false" tag="div"> -->
-											<div class="content msg-content">
+											<div class="content msg-content row-content-right">
 												{{inquiryDetail.detail}}
 											</div>
 											<!-- </el-scrollbar> -->
 										</div>
 										<div class="row-item goods-photos" v-if="inquiryDetail.images && inquiryDetail.images.length">
-											<div class="row-title">Photos:</div>
-											<ul class="photos-list">
+											<div class="row-title-left">Photos:</div>
+											<ul class="photos-list row-content-right">
 												<li class="photo-item"
 													v-for="picUrl in inquiryDetail.images"
 													v-if="picUrl"
 													:key="picUrl">
 													<img class="product-pic" alt="product's pic"
-														 :src="util_function_obj.image(picUrl, 50, 50, (inquiryList[nowInquiryIndex].type==3?'/blur,r_5,s_20':''))">
+														 :src="util_function_obj.image(picUrl, 50, 50)">
 												</li>
 											</ul>
 										</div>
