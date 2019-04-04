@@ -1,5 +1,21 @@
 package 备份.irille;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.net.JarURLConnection;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+
 import irille.core.prv.PrvRoleAct;
 import irille.pub.bean.Bean;
 import irille.pub.bean.BeanBase;
@@ -9,17 +25,6 @@ import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumFld;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.usr.UsrSupplier;
-
-import java.io.File;
-import java.io.FileFilter;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.net.JarURLConnection;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.util.*;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 /**
  * 自动升格语言,读取原来的字段,补上没有的..
