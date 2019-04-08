@@ -37,7 +37,7 @@
                              v-else-if="index==1"/>
                         <img class="leftNav-icon1" src="/home/v3/static/images/icon_ntx.png" :alt="item.label"
                              v-else-if="index==2"/>
-                        <img class="leftNav-icon1" src="/home/v3/static/images/icon_ntx.png" :alt="item.label"
+                        <img class="leftNav-icon1" src="/home/v3/static/images/icon_nvtx.png" :alt="item.label"
                              v-else/>
                         {{item.label}}
                         <i class="el-icon-arrow-right fr"></i>

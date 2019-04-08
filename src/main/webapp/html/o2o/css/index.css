@@ -301,10 +301,13 @@ li {
 }
 
 #o2obottom .o2obottomlinks ul .ultitle {
+    margin-bottom: 6px;
     font-size: 18px;
     font-weight: bold;
 }
-
+#o2obottom .o2obottomlinks ul .ullink{
+    margin-bottom: 2px;
+}
 #o2obottom .o2obottomlinks ul .ullink a {
     font-size: 12px;
     color: rgb(127, 127, 127);

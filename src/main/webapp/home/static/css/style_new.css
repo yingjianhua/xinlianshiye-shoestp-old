@@ -866,6 +866,7 @@ body {
   height: 35px;
   line-height: 35px;
   padding: 0 18px;
+  min-width: 80%;
   color: #fff;
   font-size: 16px;
   border-radius: 18px;

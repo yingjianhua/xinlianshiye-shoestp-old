@@ -40,7 +40,7 @@
 
 
 
-<div id="main">
+<div id="main" v-cloak>
     <div class="clean">
     </div>
     <index-top></index-top>
@@ -125,7 +125,7 @@
                             </div>
                         </el-form-item>
                         <el-form-item>
-                            <el-button :disabled="flag" type="primary" @click="submitForm('form')">Send inquiry now</el-button>
+                            <el-button class="my-primary-btn" :disabled="flag" type="primary" @click="submitForm('form')">Send inquiry now</el-button>
                         </el-form-item>
                     </el-form>
                 </div>

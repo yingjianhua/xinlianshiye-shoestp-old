@@ -167,7 +167,7 @@ ul{
 <body class="xpMain">
 <jsp:include page="v3/nav.jsp"></jsp:include>
 
-    <main id="xpApp" class="w_1200">
+    <main id="xpApp" class="w_1200" v-cloak>
         <el-form :model="form" :rules="rules" ref="form" label-width="100px" class="xp-form">
             <!-- 第一行 -->
             <div class="info">
