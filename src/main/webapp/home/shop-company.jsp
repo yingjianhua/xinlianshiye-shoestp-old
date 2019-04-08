@@ -475,7 +475,7 @@
                             </div>
                         </el-form-item>
                         <el-form-item>
-                            <el-button class="" :disabled="flag" type="primary" @click="submitForm('form')">Send inquiry now
+                            <el-button class="my-primary-btn" :disabled="flag" type="primary" @click="submitForm('form')">Send inquiry now
                             </el-button>
                         </el-form-item>
                     </el-form>
