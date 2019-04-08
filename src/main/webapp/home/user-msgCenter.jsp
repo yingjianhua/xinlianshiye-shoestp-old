@@ -934,8 +934,11 @@
 								<h3 class="content-header">Product detailed specifications:</h3>
 								<div class="content">
 									{{inquiryDetail.detail}}
-                                    <br>
-                                    {{inquiryDetail.moreInformation?inquiryDetail.moreInformation:""}}
+                                    <template v-if="inquiryDetail.moreInformation">
+										<div v-for="moreInfo in inquiryDetail.moreInformation">
+											{{moreInfo}}
+										</div>
+									</template>
 								</div>
 							</div>
 

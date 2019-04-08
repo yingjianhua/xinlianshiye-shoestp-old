@@ -1,4 +1,7 @@
 @charset "UTF-8";
+body{
+    cursor: default;
+}
 a{
   color: inherit;
 }

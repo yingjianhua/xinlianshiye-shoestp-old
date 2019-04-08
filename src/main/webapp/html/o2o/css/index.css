@@ -624,6 +624,8 @@ li {
 #lhl-highClass .sample-item img {
     width: 154px;
     height: 154px;
+    margin-bottom: 4px;
+    object-fit: cover;
 }
 
 #lhl-highClass .sample-item-text {

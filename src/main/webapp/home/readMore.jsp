@@ -42,7 +42,7 @@
                                     <div style="width: 155px;word-wrap: break-word;">{{companyInfo.rfqCountry}}</div>
                                 </div>
                             </div>
-                        
+
                     </li>
                     <li class="flexSt">
                         <div class="title">Product Details:</div>
@@ -59,7 +59,7 @@
                                     <img :src="sysConfig.user?image(item):image(item)+ '?x-oss-process=image/resize,w_80/blur,r_8,s_8'" alt="">
                                 </div>
                             </div>
-                      
+
                     </li>
                 </ul>
             </div>
@@ -116,7 +116,7 @@
                 <el-form-item label="Product Name :" prop="title">
                     <el-input v-model.trim="form.title" placeholder="Please Enter The Product Name."></el-input>
                 </el-form-item>
-                
+
                 <el-form-item label="Product Detailed Specification :" prop="descriotion">
                     <el-input class="textarea-placeholder" type="textarea" :rows="6" v-model.trim="form.descriotion"
                               placeholder="Please enter your Proct/Service Details"></el-input>
@@ -141,7 +141,7 @@
                     </el-row>
                 </el-form-item>
                 <el-form-item>
-                    <el-button :disabled="flag" type="primary" @click="submitForm('form')">Submit</el-button>
+                    <el-button class="my-primary-btn" :disabled="flag" type="primary" @click="submitForm('form')">Submit</el-button>
                     <a @click="ToRFQ" style="color: #9fafd7;font-size :14px;cursor: pointer;">Add more requirements</a>
                 </el-form-item>
             </el-form>
@@ -158,7 +158,7 @@
         el: "#readMore",
         data(){
             return{
-                flag : false, 
+                flag : false,
                 companyInfo: [],
                 images: [],
                 pdtDetails: false, // 商品详情是否显示
@@ -211,7 +211,7 @@
                     }],
                 },
                 }
-            
+
         },
         mounted() {
             if (sessionStorage['Temp_Read_More_form'] &&sessionStorage['Temp_Read_More_form']!=''&&sessionStorage['Temp_Read_More_form']!='null'){
@@ -262,7 +262,7 @@
                             window.location.href =
                                         '/home/usr_UsrPurchase_sign?jumpUrl=/home/rfq_RFQConsult_getRFQReadMore?rfqPkey=' + this.rfqPkey;
                         }).catch(() => {
-                                    
+
                         });
                     }else{
                         // 卖家
@@ -363,7 +363,7 @@
                             });
                         }
                     }
-               
+
             },
             getQueryString: (name) => {
                 let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");

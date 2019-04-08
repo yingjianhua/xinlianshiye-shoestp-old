@@ -53,7 +53,7 @@
             </div>
 
             <div class="box">
-                <a href="/html/SVS/svs.jsp" target="_blank">
+                <%--<a href="/html/SVS/svs.jsp" target="_blank">--%>
                     <h1>SVS Certification System</h1>
                     <div style="font-size: 13px;"><%--SVS Certification System will make buyers find their<br/> target Supplier
                     more
@@ -62,28 +62,61 @@
                         Certification System.
                     </div>
                     <div class="h3">
-                        <img src="/home/v3/static/images/icion_svs_1d.png" alt=""/>
-                        <img src="/home/v3/static/images/icion_svs_2d.png" alt=""/>
-                        <img src="/home/v3/static/images/icion_svs_3d.png" alt=""/>
+                        <a href="/html/SVS/svs.jsp" target="_blank">
+                            <img src="/home/v3/static/images/icion_svs_1d.png" alt=""/>
+                        </a>
+                        <a href="/html/SVS/svs.jsp" target="_blank">
+                            <img src="/home/v3/static/images/icion_svs_2d.png" alt=""/>
+                        </a>
+                        <a href="/html/SVS/svs.jsp" target="_blank">
+                            <img src="/home/v3/static/images/icion_svs_3d.png" alt=""/>
+                        </a>
                     </div>
                     <div class="h4">
                         <ul>
-                            <li><img class="fl" src="/home/v3/static/images/icon_svs01.png"/>Actual Manufacturer</li>
-                            <li><img class="fl" src="/home/v3/static/images/icon_svs05.png"/>Product Quality</li>
-                            <li><img class="fl" src="/home/v3/static/images/icon_svs07.png"/>Trade Capacity</li>
-                            <li><img class="fl" src="/home/v3/static/images/icon_svs04.png"
-                                     style="margin-right: 11px;"/>Major Client
+                            <li>
+                                <a href="/html/SVS/svs.jsp" target="_blank">
+                                    <img class="fl" src="/home/v3/static/images/icon_svs01.png"/>Actual Manufacturer
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/html/SVS/svs.jsp" target="_blank">
+                                    <img class="fl" src="/home/v3/static/images/icon_svs05.png"/>Product Quality
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/html/SVS/svs.jsp" target="_blank">
+                                    <img class="fl" src="/home/v3/static/images/icon_svs07.png"/>Trade Capacity
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/html/SVS/svs.jsp" target="_blank">
+                                    <img class="fl" src="/home/v3/static/images/icon_svs04.png"
+                                         style="margin-right: 11px;"/>
+                                    Major Client
+                                </a>
                             </li>
                         </ul>
                         <ul>
-                            <li><img class="fl" src="/home/v3/static/images/icon_svs03.png"/>Production Capacity</li>
-                            <li><img class="fl" src="/home/v3/static/images/icon_svs02.png"/>R&D Capacity</li>
-                            <li><img class="fl" src="/home/v3/static/images/icon_svs06.png" style="margin-left: 2px;"/>Trade
-                                Shows
+                            <li>
+                                <a href="/html/SVS/svs.jsp" target="_blank">
+                                    <img class="fl" src="/home/v3/static/images/icon_svs03.png"/>Production Capacity
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/html/SVS/svs.jsp" target="_blank">
+                                    <img class="fl" src="/home/v3/static/images/icon_svs02.png"/>R&D Capacity
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/html/SVS/svs.jsp" target="_blank">
+                                    <img class="fl" src="/home/v3/static/images/icon_svs06.png" style="margin-left: 2px;"/>Trade
+                                    Shows
+                                </a>
                             </li>
                         </ul>
                     </div>
-                </a>
+                <%--</a>--%>
                 <%--<a href="/html/SVS/svs.jsp" class="btn-see-all svs_learn_more">Learn More</a>--%>
             </div>
 
