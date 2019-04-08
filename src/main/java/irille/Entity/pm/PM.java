@@ -56,7 +56,7 @@ public class PM {
     O2O_STOCK(7, "O2O批发库存状态提醒", ORCVRType.SUPPLIER, ""),
     O2O_ORDER(8, "O2O批发订单状态提醒", ORCVRType.SUPPLIER, ""),
     RFQ_REPLY(9, "RFQ报价回复提醒", ORCVRType.SUPPLIER, ""),
-    INQUIRY_NOTICE_SUPPLIER(10, "询盘提醒", ORCVRType.SUPPLIER, ""),
+    INQUIRY_NOTICE_SUPPLIER(10, "询盘提醒", ORCVRType.SUPPLIER, "/home/rfq_RFQConsult_putInquiry"),
     CONTACT_INFO_NOTICE_SUPPLIER(11, "联系人信息提醒", ORCVRType.SUPPLIER, ""),
     ORDER_STATUS_NOTICE_SUPPLIER(12, "订单状态提醒", ORCVRType.SUPPLIER, ""),
     O2O_ACTIVITY_NOTICE(
