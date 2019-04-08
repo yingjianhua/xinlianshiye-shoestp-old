@@ -1,4 +1,7 @@
 @charset "UTF-8";
+a{
+  color: inherit;
+}
 /* ---------------- 顶部导航栏 ---------------- */
 #new-top-nav {
   position: fixed;
@@ -13,7 +16,7 @@
 #new-top-nav .el-menu--horizontal {
   background: #fff; }
 
-.el-menu--horizontal {
+#new-top-nav .el-menu--horizontal {
   border-bottom-width: 0 !important; }
 
 /* 减小默认高度 */
@@ -40,8 +43,8 @@
 #new-top-nav .el-menu--horizontal > .el-menu-item.mr0 {
   margin-right: 0; }
 
-.el-menu--horizontal > .el-menu-item.fr,
-.el-menu--horizontal > .el-submenu.fr {
+#new-top-nav .el-menu--horizontal > .el-menu-item.fr,
+#new-top-nav .el-menu--horizontal > .el-submenu.fr {
   float: right; }
 
 /* 下拉项取消箭头显示 */
@@ -49,7 +52,7 @@
   display: none; }
 
 /* top-nav弹出的子类 样式 */
-.el-menu--horizontal .el-menu--popup-bottom-start {
+#new-top-nav .el-menu--horizontal .el-menu--popup-bottom-start {
   position: relative;
   top: -2px;
   margin-top: 0;
@@ -60,13 +63,13 @@
   border-right: 1px solid #ccc; }
 
 /* 下拉框item样式 */
-.el-menu--horizontal .el-menu .el-menu-item,
-.el-menu--horizontal .el-menu .el-submenu__title {
+#new-top-nav .el-menu--horizontal .el-menu .el-menu-item,
+#new-top-nav .el-menu--horizontal .el-menu .el-submenu__title {
   position: relative;
   border-bottom: 1px solid #ccc;
   background-color: #fff; }
 
-.el-menu--horizontal .el-menu .el-menu-item {
+#new-top-nav .el-menu--horizontal .el-menu .el-menu-item {
   color: #000; }
 
 /* hover时改变颜色 */
@@ -75,13 +78,13 @@
   color: #273bb6; }
 
 /* 下拉框hover时改变颜色 */
-.el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
-.el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
+#new-top-nav .el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
+#new-top-nav .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
   outline: 0;
   color: #273bb6;
   background-color: #f0f0f0; }
 
-.el-menu--horizontal .el-menu--popup {
+#new-top-nav .el-menu--horizontal .el-menu--popup {
   min-width: 130px;
   max-width: 220px; }
 
@@ -282,6 +285,51 @@
   margin-right: 15px;
 }
 /* ---------------- elementUI 弹窗样式自定义 - end ---------------- */
+
+/* ---------------- elementUI 分页样式修改---------------- */
+.my-el-pagination-wrap{
+  margin: 30px 0;
+  text-align: center;
+}
+.my-el-pagination-wrap .el-pagination{
+  text-align: center;
+  margin-top:30px;
+}
+.my-el-pagination-wrap .el-pagination .el-pager li{
+  width:40px;
+  height:38px;
+  border:1px solid #ededed;
+  line-height:38px;
+  margin-left:-1px;
+  color:#999;
+}
+.my-el-pagination-wrap .el-pagination .el-pager li.active,
+.my-el-pagination-wrap .el-pagination.is-background .el-pager li.active{
+  color:#10389c;
+}
+.my-el-pagination-wrap .el-pagination button{
+  width:96px;
+  height:38px;
+  line-height:38px;
+  border:1px solid #ededed;
+  margin-left:-1px;
+}
+.my-el-pagination-wrap .el-pagination button:hover{
+  color:#10389c;
+}
+.my-el-pagination-wrap .el-pagination button span{
+  height:38px;
+  line-height:38px;
+}
+.my-el-pagination-wrap .el-pagination button.btn-prev{
+  text-align: right;
+  background:#fff url("/home/v3/static/images/shangyiye.png") no-repeat 16px 12px;
+}
+.my-el-pagination-wrap .el-pagination button.btn-next{
+  text-align: left;
+  background:#fff url("/home/v3/static/images/xiayiye.png") no-repeat 70px 12px;
+}
+/* ---------------- elementUI 分页样式修改 - end ---------------- */
 
 /* ---------------- elementUI 按钮样式自定义---------------- */
 .el-button--primary.my-primary-btn{
