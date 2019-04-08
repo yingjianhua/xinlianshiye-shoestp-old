@@ -38,7 +38,7 @@ public class RFQConsultMessageAction extends SellerAction<RFQConsultMessage>
       message = rFQConsultMessageService.sendTextMessage(getSupplier(), consultId, content);
     } else if (RFQConsultMessageType.IMAGE.getLine().getKey() == type) {
       message = rFQConsultMessageService.sendImageMessage(getSupplier(), consultId, imageUrl);
-    } else if (RFQConsultMessageType.ALERT_URL.getLine().getKey() == type) {
+    } else if (RFQConsultMessageType.PRIVATE_PRODUCT_URL.getLine().getKey() == type) {
       message = rFQConsultMessageService.sendPrivateExpoPdt(getSupplier(), consultId, productId);
     } else {
 

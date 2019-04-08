@@ -1,5 +1,6 @@
 package irille.Dao.RFQ.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import irille.Dao.RFQ.RFQConsultMessageDao;
@@ -47,7 +48,10 @@ public class RFQConsultMessageDaoImpl implements RFQConsultMessageDao {
                       {
                         SELECT("1").FROM(RFQConsultRelation.class);
                         WHERE(RFQConsultRelation.T.PURCHASE_ID, "=?", purchasePkey);
-                        WHERE(RFQConsultRelation.T.READ_STATUS, "=?", RFQConsultRelationReadStatus.PURCHASE_UNREAD);
+                        WHERE(
+                            RFQConsultRelation.T.READ_STATUS,
+                            "=?",
+                            RFQConsultRelationReadStatus.PURCHASE_UNREAD);
                         WHERE(RFQConsultRelation.T.IS_DELETED_PURCHASE, "=?", false);
                       }
                     },
@@ -60,7 +64,16 @@ public class RFQConsultMessageDaoImpl implements RFQConsultMessageDao {
   @Override
   public RFQConsultMessage findByUuid(String uuid) {
     return Query.selectFrom(RFQConsultMessage.class)
-        .WHERE(RFQConsultMessage.T.UUID, "=?", uuid)
+        .WHERE(RFQConsultMessage.T.PRIVATE_PRODUCT_URL_MESSAGE_UUID, "=?", uuid)
         .query();
+  }
+
+  @Override
+  public void updateValidDateAndContentByUuid(String uuid, Date validDate, String content) {
+    Query.UPDATE(RFQConsultMessage.class)
+        .SET(RFQConsultMessage.T.PRIVATE_PRODUCT_URL_MESSAGE_VALID_DATE, validDate)
+        .SET(RFQConsultMessage.T.CONTENT, content)
+        .WHERE(RFQConsultMessage.T.PRIVATE_PRODUCT_URL_MESSAGE_UUID, "=?", uuid)
+        .executeUpdate();
   }
 }
